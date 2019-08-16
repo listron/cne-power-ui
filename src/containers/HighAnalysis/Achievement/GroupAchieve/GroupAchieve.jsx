@@ -22,6 +22,7 @@ class GroupAchieve extends Component {
     getGroupTrendInfo: PropTypes.func,
     getGroupLostGenHour: PropTypes.func,
     groupTimeStatus: PropTypes.string,
+    quotaInfo: PropTypes.array,
   };
 
   componentDidMount(){
@@ -29,7 +30,6 @@ class GroupAchieve extends Component {
     const { search } = this.props.location;
     const { groupTimeStatus } = this.props;
     const groupInfoStr = searchUtil(search).getValue('group');
-    console.log(groupInfoStr, '====');
     if(groupInfoStr) {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
       const basicParams = this.basicParams(groupInfo);
@@ -103,7 +103,6 @@ class GroupAchieve extends Component {
       };
       const paramsTrend = {
         ...basicParams,
-        regionName: paramsCapacity.regionName,
         indicatorCode: quotaValue,
         type: groupTimeStatus, // 默认按月
       };
@@ -121,15 +120,39 @@ class GroupAchieve extends Component {
 
   // 基本-公共参数
   basicParams = (data) => {
-    const { stations = [] } = data.stations || {};
-    const stationCode = stations.map(cur => {
-      return cur.stationCode;
-    });
     return {
       startTime: data.dates[0],
       endTime: data.dates[1],
-      stationCodes: stationCode,
+      stationCodes: data.searchCode,
     };
+  };
+
+  titleFunc = () => {
+    const { quotaInfo } = this.props;
+    const { search } = this.props.location;
+    const groupInfoStr = searchUtil(search).getValue('group');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const { quota = [] } = groupInfo;
+      // 默认指标分析
+      let qutaName = ''; //  根据quota的value值遍历名称
+      quotaInfo.forEach(cur => {
+        // 有没有子集
+        if(quota[1] === cur.value) {
+          cur.children.forEach(item => {
+            if(quota[0] === item.value) {
+              qutaName = item.label;
+            }
+          });
+          return false;
+        }
+        if(quota[0] === cur.value) {
+          qutaName = cur.label;
+        }
+      });
+      return qutaName;
+    }
+    return '--';
   };
 
   render() {
@@ -139,11 +162,11 @@ class GroupAchieve extends Component {
         <div className={styles.groupChartBox}>
           <div className={styles.chartTop}>
             <GroupAreaChart {...this.props} />
-            <GroupStationChart {...this.props} />
+            <GroupStationChart titleFunc={this.titleFunc()} {...this.props} />
           </div>
           <div className={styles.chartBottom}>
-            <GroupTrendChart {...this.props} />
-            <GroupLossChart {...this.props} />
+            <GroupTrendChart titleFunc={this.titleFunc()} {...this.props} />
+            <GroupLossChart titleFunc={this.titleFunc()} {...this.props} />
           </div>
         </div>
       </div>
@@ -156,6 +179,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  changeStore: payload => dispatch({type: groupAchieveAction.changeStore, payload}),
   getGroupModesInfo: payload => dispatch({type: groupAchieveAction.getGroupModesInfo, payload}),
   getGroupCapacity: payload => dispatch({type: groupAchieveAction.getGroupCapacity, payload}),
   getGroupRank: payload => dispatch({type: groupAchieveAction.getGroupRank, payload}),

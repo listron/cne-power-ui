@@ -121,7 +121,6 @@ export default class AreaSearch extends Component {
     const newSearch = searchUtil(search).replace({area: JSON.stringify({
         searchCode, modes, dates, quota, stations, modesInfo,
       })}).stringify();
-    console.log(newSearch, 'newSearch');
     history.push(`/analysis/achievement/analysis/area?${newSearch}`);
   };
 
@@ -163,7 +162,6 @@ export default class AreaSearch extends Component {
   queryCharts = () => {
     // 组合state参数, 发起history.push操作。
     const { searchCode, modes, dates, quota, stations, modesInfo } = this.state;
-    console.log(modes, 'queryCharts');
     this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
   };
 
@@ -179,7 +177,7 @@ export default class AreaSearch extends Component {
     } = this.props;
     const { modes, dates, quota, stations } = this.state;
     // console.log(modes, 'modesrender');
-    // console.log(stations, 'stationsrender');
+    console.log(stations, 'stationsrender');
     // console.log(modesInfo, 'modesInforender');
     return (
       <div className={styles.topSearch}>

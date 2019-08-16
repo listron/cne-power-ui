@@ -52,22 +52,16 @@ export default class AreaSearch extends Component {
     const preDevice = this.props.modesInfo;
     const preQuota = this.props.quotaInfo;
     if (!groupInfoStr && preArea.length === 0 && areaStation.length > 0) { // 路径无参数时 得到电站数据
-      // console.log('11111');
       this.propsAreaStationChange(areaStation);
     }
     if (!groupInfoStr && preDevice.length === 0 && modesInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到机型数据
-      // console.log('22222');
-      // console.log(preDevice, 'preDevice');
-      // console.log(modesInfo, 'modesInfo');
       this.propsModeDevicesChange(modesInfo);
     }
     if (!groupInfoStr && preQuota.length === 0 && quotaInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到指标
-      // console.log('333333');
       this.propsQuotaChange(quotaInfo);
     }
     // 判断选中区域之后机型数据变化
     if(JSON.stringify(preDevice) && JSON.stringify(preDevice) !== JSON.stringify(modesInfo)) {
-      // console.log('6666666');
       const modes = this.getAllDeviceCodes(modesInfo);
       this.setState({
         modes,
@@ -77,14 +71,20 @@ export default class AreaSearch extends Component {
   }
 
   propsAreaStationChange = (areaStation = []) => { // 得到电站信息.
-    const { stations = [] } = areaStation || {};
+    const { stations = [] } = areaStation || [];
+    const searchCode = [];
+    areaStation.forEach(cur => {
+      cur.stations && cur.stations.forEach(item => {
+        searchCode.push(item.stationCode);
+      });
+    });
     const firstStation = stations.map(cur => {
       return cur.stationCode;
     });
     this.props.getGroupModesInfo({ stationCodes: firstStation });
     if (!this.state.searchCode) { // 路径无数据 => 存入state待请求.
       this.setState({
-        searchCode: firstStation,
+        searchCode,
         stations: areaStation,
       });
     }
@@ -93,7 +93,6 @@ export default class AreaSearch extends Component {
   propsModeDevicesChange = (modeDevices) => { // 得到电站下机型信息;
     const { searchCode, dates, quota, stations } = this.state;
     const modes = this.getAllDeviceCodes(modeDevices);
-    console.log(modes, 'modes');
     if (quota.length > 0) { // 已有指标
       this.historyChange(searchCode, modes, dates, quota, stations, modeDevices);
     } else { // 存入state, 得到quota时再请求
@@ -121,7 +120,6 @@ export default class AreaSearch extends Component {
     const newSearch = searchUtil(search).replace({group: JSON.stringify({
         searchCode, modes, dates, quota, stations, modesInfo,
       })}).stringify();
-    console.log(newSearch, 'newSearch111111');
     history.push(`/analysis/achievement/analysis/group?${newSearch}`);
   };
 

@@ -220,7 +220,7 @@ function* getGroupLostGenHour(action) { // 损失电量分解图
       yield put({
         type: groupAchieveAction.fetchSuccess,
         payload: {
-          groupLostGenHourInfo: formatData(response.data) || {},
+          groupLostGenHourInfo: response.data ? formatData(response.data) : {},
           groupLostTime: moment().unix(),
           groupLoseLoading: false,
         },
