@@ -127,7 +127,7 @@ class StopElecTypes extends Component {
             <div className={styles.lostContent}>
               <p className={styles.eachDetail}>
                 <span>损失电量</span>
-                <span>{detailInfo.value}</span>
+                <span>{detailInfo.value}万kWh</span>
               </p>
               <p className={styles.eachDetail}>
                 <span>占比</span>

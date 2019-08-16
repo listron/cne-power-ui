@@ -84,7 +84,7 @@ class ChartStopTypes extends Component {
     });
     series = [
       {
-        ...this.createBaseBar(genData, ['#e024f2', '#bd10e0']),
+        ...this.createBaseBar(countData, ['#e024f2', '#bd10e0']),
         xAxisIndex: 0,
         yAxisIndex: 0,
       }, {
@@ -92,7 +92,7 @@ class ChartStopTypes extends Component {
         xAxisIndex: 1,
         yAxisIndex: 1,
       }, {
-        ...this.createBaseBar(countData, ['#f2b75f', '#e08031']),
+        ...this.createBaseBar(genData, ['#f2b75f', '#e08031']),
         xAxisIndex: 2,
         yAxisIndex: 2,
       },
@@ -154,9 +154,9 @@ class ChartStopTypes extends Component {
         { ...getBaseXAxis(dataAxis), gridIndex: 2 },
       ],
       yAxis: [
-        { ...getBaseYAxis('电量(万kWh)'), gridIndex: 0, min: 0 },
+        { ...getBaseYAxis('次数(h)'), gridIndex: 0, min: 0 },
         { ...getBaseYAxis('时长(h)'), gridIndex: 1, min: 0 },
-        { ...getBaseYAxis('次数(h)'), gridIndex: 2, min: 0 },
+        { ...getBaseYAxis('电量(万kWh)'), gridIndex: 2, min: 0 },
       ],
       axisPointer: {
         link: {xAxisIndex: 'all'},
@@ -173,7 +173,7 @@ class ChartStopTypes extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${['停机电量', '停机时长', '停机次数'][i]}</span>
+                  <span>${['停机次数', '停机时长', '停机电量'][i]}</span>
                   <span>${e.value}</span>
                 </span>`
               )).join('')}
@@ -207,7 +207,7 @@ class ChartStopTypes extends Component {
       <div className={styles.stopTrend}>
         <div className={styles.top}>
           <span className={styles.title}>
-            {stopDeviceText}{stopTimeText}停机时长及次数
+            {stopDeviceText}{stopTimeText}各类停机次数及时长
           </span>
           <span className={styles.handle}>
             <span className={styles.eachHandle}>
