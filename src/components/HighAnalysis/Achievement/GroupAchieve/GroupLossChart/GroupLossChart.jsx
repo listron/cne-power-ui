@@ -14,6 +14,8 @@ export default class GroupLossChart extends Component {
     groupLostTime: PropTypes.number,
     location: PropTypes.object,
     history: PropTypes.object,
+    selectStationCode: PropTypes.array,
+    selectTime: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
@@ -110,20 +112,36 @@ export default class GroupLossChart extends Component {
   toAreaPage = () => { // 携带选中信息进入区域页面
     // 页面路径参数结构/{pathKey}?pages=['group','area']&group={a:1,b:2}&area={c:1,d:4}&station={e:2,ff:12};
     // 其中group, area, station后面的选中内容为JSON.stringify后的字符串
-    // const { location, history } = this.props;
-    // const { search } = location || {};
-    // const areaInfo = {a: Math.random(), b: Math.random};
-    // // 新的search: pages参数不变, area参数变为选中项内容集合
-    // const newSearch = searchUtil(search).replace({ area: JSON.stringify(areaInfo) }).stringify(); // 删除search中页面的记录信息
-    // history.push(`/analysis/achievement/analysis/group?${newSearch}`);
+    // searchCode, modes, dates, quota, stations, modesInfo,
+    const { location, history, selectStationCode } = this.props;
+    const { search } = location || {};
+    const groupInfoStr = searchUtil(search).getValue('group');
+    const pagesStr = searchUtil(search).getValue('pages');
+    let pages = pagesStr;
+    if(!pagesStr) {
+      pages = 'group_area';
+    }
+    const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+    const areaInfo = {
+      searchCode: selectStationCode,
+      modes: groupInfo.modes,
+      dates: groupInfo.dates,
+      quota: groupInfo.quota,
+      stations: [groupInfo.stations[5]],
+      modesInfo: groupInfo.modesInfo,
+    };
+    // 新的search: pages参数不变, area参数变为选中项内容集合
+    const newSearch = searchUtil(search).replace({ area: JSON.stringify(areaInfo) }).stringify(); // 删除search中页面的记录信息
+    history.push(`/analysis/achievement/analysis/area?pages=${pages}&${newSearch}`);
   };
 
   render() {
+    const { selectStationCode, selectTime } = this.props;
     return (
       <div className={styles.groupLossBox}>
         <div className={styles.groupLossTitle}>
-          <span>损失电量分解图</span>
-          <Button onClick={this.toAreaPage}>查看区域</Button>
+          <span>{selectTime === '' ? '损失电量分解图' : `河南-${selectTime}-损失电量分解图`}</span>
+          <Button disabled={selectStationCode.length === 0} onClick={this.toAreaPage}>查看区域</Button>
         </div>
         <div className={styles.groupLossCenter} ref={ref => {this.groupLossChart = ref;}} />
       </div>
