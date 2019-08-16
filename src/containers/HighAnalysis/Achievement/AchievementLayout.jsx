@@ -7,6 +7,7 @@ import { achieveAction } from './achieveReducer';
 import GroupAchieve from './GroupAchieve/GroupAchieve';
 import AreaAchieve from './AreaAchieve/AreaAchieve';
 import StationAchieve from './StationAchieve/StationAchieve';
+import StopStatus from './StopStatus/StopStatus';
 import Footer from '../../../components/Common/Footer';
 import styles from './layout.scss';
 
@@ -28,8 +29,8 @@ class AchievementLayout extends Component {
     const { search } = props.location;
     const { pages } = searchUtil(search).parse();
     const { pathKey } = props.match.params || {};
-    this.tabs = ['group', 'area', 'station'];
-    this.tabNames = ['集团绩效分析', '区域绩效分析', '电站效能分析'];
+    this.tabs = ['group', 'area', 'station', 'stop'];
+    this.tabNames = ['集团绩效分析', '区域绩效分析', '电站效能分析', '停机状态分析'];
     this.state = {
       pages: pages ? pages.split('_') : [pathKey], // 页面内开启的页面 => tab数量
     };
@@ -109,6 +110,7 @@ class AchievementLayout extends Component {
           {pathKey === 'group' && <GroupAchieve {...this.props} />}
           {pathKey === 'area' && <AreaAchieve {...this.props} />}
           {pathKey === 'station' && <StationAchieve {...this.props} />}
+          {pathKey === 'stop' && <StopStatus {...this.props} />}
         </div>
         <Footer />
       </div>

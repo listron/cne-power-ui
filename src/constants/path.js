@@ -619,6 +619,7 @@ export default {
       getCurveMonths: '/v3/fan/efficiency/ratio/analysis', // 功率曲线环比分析
       getCurveMonthAep: '/v3/fan/efficiency/date/aepandspeed', // 设备各月机组AEP以及平均风速
       getCurveMonthPsd: '/v3/fan/efficiency/date/psd', // 停机 - 各类停机时长及次数
+      getStopStatus: '/v3/fan/efficiency/stopstatustrend', // 风电分析 - 停机状态分析
     },
   },
 };

@@ -472,6 +472,10 @@ const menuData = [
             name: '电站效能分析',
             path: 'analysis/station',
             rightKey: 'statistics_device',
+          }, {
+            name: '停机状态分析',
+            path: 'analysis/stop',
+            rightKey: 'statistics_device',
           },
         ],
       },
