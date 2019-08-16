@@ -7,12 +7,14 @@ import AreaStation from '../../../../components/Common/AreaStation';
 import AutoSelect from '../../../../components/Common/AutoSelect';
 import { stopStatusAction } from './stopStatusReducer';
 import { Button, DatePicker } from 'antd';
+import searchUtil from '../../../../utils/searchUtil';
 import styles from './stop.scss';
 const { RangePicker } = DatePicker;
 
 class StopStatus extends Component {
 
   static propTypes = {
+    location: PropTypes.object,
     areaStation: PropTypes.array,
     modeDevices: PropTypes.array,
     deviceCodes: PropTypes.array,
@@ -21,14 +23,32 @@ class StopStatus extends Component {
     endTime: PropTypes.string,
     getDevices: PropTypes.func,
     changeStore: PropTypes.func,
+    getStopStatus: PropTypes.func,
   }
 
   componentDidMount(){
-
+    const { location } = this.props;
+    const { search } = location;
+    const infoStr = searchUtil(search).getValue('stop');
+    if (infoStr) {
+      const param = this.getQueryParam(infoStr);
+      this.queryChart(param);
+    }
   }
 
   componentWillReceiveProps(nextProps){
 
+  }
+
+  getQueryParam = (infoStr) => {
+    const searchParam = JSON.parse(infoStr) || {};
+    const { code, device = '', dates = [] } = searchParam;
+    return {
+      stationCode: [code],
+      deviceCodes: device.split('_').filter(e => !!e),
+      startTime: dates[0],
+      endTime: dates[1],
+    };
   }
 
   onStationChange = ([regionName, stationCode, stationName]) => {
@@ -47,6 +67,11 @@ class StopStatus extends Component {
   goSearch = () => {
     const { stationCode, deviceCodes, startTime, endTime } = this.props;
     console.log(stationCode, deviceCodes, startTime, endTime);
+  }
+
+  queryChart = (param) => {
+    console.log(param);
+    // this.props.getStopStatus(param);
   }
 
   render() {
