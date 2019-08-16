@@ -89,6 +89,7 @@ import { watchAchieveLayout } from './HighAnalysis/Achievement/achieveSaga'; // 
 import { watchGroupAchieve } from './HighAnalysis/Achievement/GroupAchieve/groupAchieveSaga'; // 高级分析-风电分析-集团
 import { watchAreaAchieve } from './HighAnalysis/Achievement/AreaAchieve/areaAchieveSaga'; // 高级分析-风电分析-区域
 import { watchStationAhieve } from './HighAnalysis/Achievement/StationAchieve/stationAchieveSaga'; // 高级分析-风电分析-电站
+import { watchRunAhieve } from './HighAnalysis/Achievement/RunAchieve/runAchieveSaga'; // 高级分析-风电分析-运行
 
 import { watchWorkOrder } from './Operation/Ticket/WorkOrder/workOrderSaga';
 import { watchBookAssetsConfig } from './Operation/Book/AssetsConfig/assetsConfigSaga';
@@ -195,6 +196,7 @@ export default function* rootSaga() {
     watchGroupAchieve(), // 高级分析 - 风电分析 - 集团
     watchAreaAchieve(), // 高级分析 - 风电分析 - 区域
     watchStationAhieve(), // 高级分析 - 风电分析 - 电站
+    watchRunAhieve(), // 高级分析 - 风电分析 - 运行
     // 工单
     watchWorkOrder(),
     //operation_Book台账
