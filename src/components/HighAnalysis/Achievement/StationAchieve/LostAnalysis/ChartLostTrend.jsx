@@ -11,10 +11,9 @@ import styles from './lost.scss';
 class ChartLostTrend extends Component {
 
   static propTypes = {
-    quotaName: PropTypes.string,
     lostChartTime: PropTypes.string,
     lostChartTimeMode: PropTypes.string,
-    lostQuota: PropTypes.string,
+    selectedQuota: PropTypes.object,
     lostTrend: PropTypes.array,
     location: PropTypes.object,
     lostChartDevice: PropTypes.object,
@@ -99,7 +98,7 @@ class ChartLostTrend extends Component {
   }
 
   timeModeChange = (lostChartTimeMode) => {
-    const { changeStore, lostQuota, getLostTrend } = this.props;
+    const { changeStore, selectedQuota, getLostTrend } = this.props;
     // 携带参数重新请求信息
     changeStore({ lostChartTimeMode });
     const searchParam = this.getSearchInfo();
@@ -108,7 +107,7 @@ class ChartLostTrend extends Component {
       deviceFullcodes: searchParam.searchDevice,
       startTime: searchParam.searchDates[0],
       endTime: searchParam.searchDates[1],
-      indicatorCode: lostQuota,
+      indicatorCode: selectedQuota.value,
       type: lostChartTimeMode,
     });
   }
@@ -142,7 +141,7 @@ class ChartLostTrend extends Component {
   }
 
   renderChart = (lostTrend = []) => {
-    const { quotaName } = this.props;
+    const { selectedQuota } = this.props;
     const trendChart = echarts.init(this.trendRef);
     const { dataAxis, series } = this.createSeries(lostTrend);
     const baseOption = getBaseOption(dataAxis);
@@ -160,7 +159,7 @@ class ChartLostTrend extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 1 ? '应发小时数' : quotaName}</span>
+                  <span>${i === 1 ? '应发小时数' : `${selectedQuota.label}(${selectedQuota.unit || ''})`}</span>
                   <span>${e.value}</span>
                 </span>`
               )).join('')}
@@ -185,13 +184,13 @@ class ChartLostTrend extends Component {
   }
 
   render() {
-    const { lostChartTimeMode, lostChartDevice, quotaName } = this.props;
+    const { lostChartTimeMode, lostChartDevice, selectedQuota } = this.props;
     const chartName = lostChartDevice && lostChartDevice.deviceName ? `${lostChartDevice.deviceName}-` : '';
     return (
       <div className={styles.lostTrend}>
         <div className={styles.top}>
           <span className={styles.title}>
-            {chartName}{quotaName}
+            {chartName}{selectedQuota.label || ''}
           </span>
           <TimeSelect lostChartTimeMode={lostChartTimeMode} timeModeChange={this.timeModeChange} />
         </div>

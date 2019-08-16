@@ -12,8 +12,7 @@ class ChartLostRank extends Component {
 
   static propTypes = {
     lostRank: PropTypes.array, // 损失根源 - 指标排名
-    quotaName: PropTypes.string,
-    lostQuota: PropTypes.string,
+    selectedQuota: PropTypes.object,
     lostChartTimeMode: PropTypes.string,
     lostChartTime: PropTypes.string,
     lostRankLoading: PropTypes.bool,
@@ -76,7 +75,8 @@ class ChartLostRank extends Component {
 
   cascaderChange = (codes, fullInfo) => {
     const index = (fullInfo && fullInfo.length > 1) ? 1 : 0;
-    this.props.onQuotaChange(codes[index], fullInfo[index].label);
+    const quotaInfo = fullInfo[index];
+    this.props.onQuotaChange(quotaInfo);
   }
 
   sortChart = (value) => {
@@ -136,7 +136,7 @@ class ChartLostRank extends Component {
   }
 
   chartHandle = ({dataIndex}, sortedLostRank, chart) => {
-    const { lostQuota, lostChartTimeMode, lostChartTime, location, lostChartDevice } = this.props;
+    const { selectedQuota, lostChartTimeMode, lostChartTime, location, lostChartDevice } = this.props;
     if (lostChartTime) {
       message.info('请先取消下方事件选择, 再选择设备');
       return;
@@ -158,18 +158,18 @@ class ChartLostRank extends Component {
       deviceFullcodes,
       startTime: searchParam.searchDates[0],
       endTime: searchParam.searchDates[1],
-      indicatorCode: lostQuota,
+      indicatorCode: selectedQuota.value,
       type: lostChartTimeMode,
     });
   }
 
   renderChart = (lostRank = [], sortType) => {
-    const { quotaName } = this.props;
+    const { selectedQuota } = this.props;
     const rankChart = echarts.init(this.rankRef);
     const sortedLostRank = this.sortRank(lostRank, sortType);
     const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank);
     const baseOption = getBaseOption(dataAxis);
-    baseOption.yAxis.name = quotaName;
+    baseOption.yAxis.name = `${selectedQuota.label || '--'}(${selectedQuota.unit || ''})`;
     const option = {
       ...baseOption,
       legend: { data: modeArr },
@@ -186,7 +186,7 @@ class ChartLostRank extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 1 ? '应发小时数' : quotaName}</span>
+                  <span>${i === 1 ? '应发小时数' : `${selectedQuota.label || '--'}(${selectedQuota.unit || ''})`}</span>
                   <span>${e.value}</span>
                 </span>`
               )).join('')}
@@ -216,18 +216,18 @@ class ChartLostRank extends Component {
   }
 
   render() {
-    const { quotaInfo, lostQuota, quotaName } = this.props;
+    const { quotaInfo, selectedQuota } = this.props;
     const { sortType } = this.state;
     return (
       <div className={styles.lostRank}>
         <div className={styles.top}>
           <span className={styles.title}>
-            风机{quotaName}排名
+            风机{selectedQuota.label || ''}排名
           </span>
           <span className={styles.handle}>
             <span className={styles.eachHandle}>
               <span className={styles.text}>选择指标</span>
-              <IndicateCascader quotaInfo={quotaInfo} lostQuota={lostQuota} onChange={this.cascaderChange} />
+              <IndicateCascader quotaInfo={quotaInfo} selectedQuota={selectedQuota} onChange={this.cascaderChange} />
             </span>
             <span className={styles.eachHandle}>
               <span className={styles.text}>选择排序</span>
@@ -237,7 +237,7 @@ class ChartLostRank extends Component {
                 value={sortType}
               >
                 <Option value="name">风机名称</Option>
-                <Option value="quota">{quotaName}</Option>
+                <Option value="quota">{selectedQuota.label}</Option>
               </Select>
             </span>
           </span>
