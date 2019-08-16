@@ -1,13 +1,15 @@
 import Immutable from 'immutable';
+import moment from 'moment';
 import { dataAnalysisSequenceAction } from './dataAnalysisSequenceAction';
 var initState = Immutable.fromJS({
   chartLoading: false,
+  bigchartLoading: false,
   chartTime: null, //图的时间戳
   stationCode: null,
   pointY1: '',
   pointY2: '',
-  startTime: '',
-  endTime: '',
+  startTime: moment().month(moment().month() - 1).startOf('month').format(),
+  endTime: moment().month(moment().month() - 1).endOf('month').format(),
   deviceFullCode: '',
   pointCodeNameX: '',
   pointCodeNameY: '',
@@ -19,6 +21,10 @@ var initState = Immutable.fromJS({
   sequenceData: [], //时序图汇总数据
   curBigChartData: {}, //当前请求到的时序图
   down: false,
+  point1Max: null,
+  point1Min: null,
+  point2Max: null,
+  point2Min: null,
 
 
 

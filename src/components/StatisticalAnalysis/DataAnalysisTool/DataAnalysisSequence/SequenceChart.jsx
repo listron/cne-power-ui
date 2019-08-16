@@ -2,20 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './sequenceStyles.scss';
 import eCharts from 'echarts';
+import { Icon } from 'antd';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
-import { downloadFile } from '../../../../utils/utilFunc';
+// import { downloadFile } from '../../../../utils/utilFunc';
 import moment from 'moment';
 class SequenceChart extends React.Component {
   static propTypes = {
     chartLoading: PropTypes.bool,
+    saveBtn: PropTypes.bool,
     index: PropTypes.number,
-    chartTime: PropTypes.number,
     sequenceData: PropTypes.array,
     deviceList: PropTypes.array,
     allChartData: PropTypes.object,
     getSequenceData: PropTypes.func,
     pointY1: PropTypes.string,
     pointY2: PropTypes.string,
+    showImg: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
@@ -25,42 +27,24 @@ class SequenceChart extends React.Component {
     const myChart = eCharts.init(sequenceChart); //构建下一个实例
     const option = this.creatOption(this.props);
     myChart.setOption(option);
-    // const { deviceList, pointY1, pointY2 } = this.props;
-    // const fristDevice = deviceList[0];
-    // const deviceFullCode = fristDevice.deviceFullCode;
-    // const defaultStartime = moment().month(moment().month() - 1).startOf('month').format();
-    // const defaultEndtime = moment().month(moment().month() - 1).endOf('month').format();
-    // this.props.getSequenceData({
-    //   deviceFullCode,
-    //   startTime: defaultStartime,
-    //   endTime: defaultEndtime,
-    //   pointY1,
-    //   pointY2,
-    //   interval: 10,
-    // });
 
   }
   componentWillReceiveProps(nextProps) {
-    const { chartTime: currentChartTime, chartLoading, index, allChartData, sequenceData, saveBtn } = this.props;
-    // console.log('index: ', index);
-    // console.log('sequenceData: ', sequenceData, 'nextProps.sequenceData', nextProps.sequenceData);
-    // console.log('chartLoading: ', chartLoading, 'nextProps.chartLoading', nextProps.chartLoading);
-    // console.log('sequenceData.length: ', sequenceData.length);
-    // console.log('loading变化', chartLoading && nextProps.chartLoading !== chartLoading);
-    const { chartTime } = nextProps;
+    const { chartLoading, index, saveBtn, point1Max, point2Max } = this.props;
     const { sequenceChart } = this;
     const myChart = eCharts.init(sequenceChart);
-    if (chartLoading && (index + 1) === nextProps.sequenceData.length) { // loading态控制。第一次无数据，请求数据的过程
+    if (nextProps.chartLoading && (index + 1) === nextProps.sequenceData.length) { // loading态控制。第一次无数据，请求数据的过程
       myChart.showLoading();
     }
     if (!nextProps.chartLoading) {
       myChart.hideLoading();
     }
-    if (nextProps.saveBtn !== saveBtn) {
+    if ((nextProps.saveBtn !== saveBtn)) {
       // console.log('likestatus发生改变重新渲染');
       this.renderChart(nextProps);
     }
-    if ((index + 1 === nextProps.sequenceData.length) && (allChartData && allChartData !== nextProps.allChartData)) {
+
+    if ((index + 1 === nextProps.sequenceData.length)) {
       // console.log('后面的图渲染');
       myChart.clear();//清除
       this.renderChart(nextProps);
@@ -70,14 +54,18 @@ class SequenceChart extends React.Component {
       myChart.clear();//清除
       this.renderChart(nextProps);
     }
+    if (point1Max !== nextProps.point1Max || point2Max !== nextProps.point2Max) {
+      myChart.clear();//清除
+      this.renderChart(nextProps);
+    }
 
   }
   creatOption = (payload) => {
-    // console.log('payload: ', payload);
-    const { allChartData, deviceName, pointCodeNameX, pointCodeNameY, saveBtn } = payload;
+    const { allChartData, deviceName, pointCodeNameX, pointCodeNameY, saveBtn, point1Max, point1Min, point2Max, point2Min } = payload;
     const { timeLine, point1Data, point2Data } = allChartData ? allChartData : { timeLine: [], point1Data: [], point2Data: [] };
+    // const xAxisTime = timeLine.map((e, i) => (moment(e).format('YYYY-MM-DD HH:mm:ss')));
     const option = {
-      graphic: allChartData ? hiddenNoData : showNoData,
+      graphic: timeLine ? hiddenNoData : showNoData,
       title: {
         text: [`${deviceName}`, '{b|}'].join(''),
         left: '5%',
@@ -113,10 +101,33 @@ class SequenceChart extends React.Component {
         type: 'category',
         boundaryGap: false,
         data: timeLine,
+        axisLabel: {
+          formatter: (value) => {
+            return moment(value).format('YYYY-MM-DD') + '\n' + moment(value).format('HH:mm:ss');
+
+          },
+        },
       },
-      yAxis: {
-        type: 'value',
-      },
+      yAxis: [
+        {
+          type: 'value',
+          // name: '功率',
+          min: point1Min,
+          max: point1Max,
+          // axisLabel: {
+          //   formatter: '{value} kW',
+          // },
+        }, {
+          type: 'value',
+          // name: '温度',
+          min: point2Min,
+          max: point2Max,
+          splitLine: false,
+          // axisLabel: {
+          //   formatter: '{value} °C',
+          // },
+        },
+      ],
       series: [
         {
           name: pointCodeNameX,
@@ -124,6 +135,7 @@ class SequenceChart extends React.Component {
           progressiveThreshold: 1000,
           progressive: 100,
           data: point1Data,
+
         },
         {
           name: pointCodeNameY,
@@ -132,13 +144,13 @@ class SequenceChart extends React.Component {
           progressiveThreshold: 1000,
           progressive: 100,
 
+
         }],
     };
     return option;
   }
-
   renderChart = (payload) => {
-    const { allChartData, deviceList, getSequenceData, sequenceData, index, pointY1, pointY2, startTime, endTime, likeStatusChange, saveBtn, deviceName } = payload;
+    const { deviceList, getSequenceData, sequenceData, index, pointY1, pointY2, startTime, endTime, likeStatusChange, saveBtn, deviceName } = payload;
     const parms = {
       pointY1,
       pointY2,
@@ -148,9 +160,7 @@ class SequenceChart extends React.Component {
     };
     const { sequenceChart } = this;
     const myChart = eCharts.init(sequenceChart); //构建下一个实例
-    // if (!allChartData) { // 空数据销毁后，不进行处理
-    //   return;
-    // }
+
     const option = this.creatOption(payload);
     myChart.off();
     myChart.on('click', 'title', (payload) => {
@@ -175,25 +185,18 @@ class SequenceChart extends React.Component {
           {
             ...parms,
             deviceFullCode: deviceList[index + 1].deviceFullCode,
-            // imgData: { title: deviceName, src: imgUrl },
           });
       });
     }
-    // if (sequenceData.length === deviceList.length && index + 1 === deviceList.length) {
-    //   myChart.on('finished', () => {
-    //     getSequenceData(
-    //       {
-    //         ...parms,
-    //         deviceFullCode: deviceList[index].deviceFullCode,
-    //         // imgData: { title: deviceName, src: imgUrl },
-    //       });
-    //   });
-    // }
     myChart.setOption(option, 'noMerge');
   }
   render() {
+    const { index, showImg } = this.props;
     return (
-      <div ref={(ref) => { this.sequenceChart = ref; }} className={styles.sequenceChart}>
+      <div className={styles.chartWrap}>
+        {showImg && <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalInco} />}
+        <div ref={(ref) => { this.sequenceChart = ref; }} className={styles.sequenceChart}>
+        </div>
       </div>
     );
   }

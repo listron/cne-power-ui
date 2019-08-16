@@ -14,7 +14,7 @@ const options = [{
   isLeaf: false,
 },
 {
-  value: '震动相关',
+  value: '振动相关',
   pointsUnionName: '振动相关',
   isLeaf: false,
 }, {
@@ -22,11 +22,11 @@ const options = [{
   pointsUnionName: '控制相关',
   isLeaf: false,
 },
-  // {
-  //   value: '其他',
-  //   pointsUnionName: '其他',
-  //   isLeaf: false,
-  // },
+{
+  value: 'xx相关',
+  pointsUnionName: 'xx相关',
+  isLeaf: false,
+},
 ];
 
 class HandleSeachData extends React.Component {
@@ -36,7 +36,7 @@ class HandleSeachData extends React.Component {
     changeSquenceStore: PropTypes.func,
     getScatterName: PropTypes.func,
     getSequenceOtherName: PropTypes.func,
-    scatterotherNames: PropTypes.array,
+    sequenceotherNames: PropTypes.array,
     getSequenceData: PropTypes.func,
   }
   constructor(props, context) {
@@ -44,19 +44,26 @@ class HandleSeachData extends React.Component {
     this.state = {
       isSwap: false,
       options,
-      scatterNameValue: [],
+      sequenceNameValue: [],
       showOther: false,
       xName: '',
       yName: '',
       xCode: '',
       yCode: '',
+      saveStartTime: '',
+      saveEndTime: '',
+      point1Max: null,
+      point1Min: null,
+      point2Max: null,
+      point2Min: null,
+
     };
   }
   componentWillReceiveProps(nextProp) {
-    const { sequenceNames, getSequenceData, deviceList, sequenceNameTime } = nextProp;
-    const defaultStartime = moment().month(moment().month() - 1).startOf('month').format();
-    const defaultEndtime = moment().month(moment().month() - 1).endOf('month').format();
-    // const preScatterName = this.props.sequenceNames;
+    const { sequenceNames, getSequenceData, deviceList, sequenceNameTime, startTime, endTime, sequenceData } = nextProp;
+    console.log('startTime: ', startTime);
+    const { point1Max } = this.state;
+    console.log('sequenceData: ', sequenceData);
     if (this.props.sequenceNameTime !== sequenceNameTime) {
       const { options } = this.state;
       const newscatterNames = this.formater(sequenceNames);
@@ -81,23 +88,46 @@ class HandleSeachData extends React.Component {
         const deviceFullCode = fristDevice.deviceFullCode;
         const firstData = pointNameList ? pointNameList[0] : [];
         const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = firstData;
-        this.setState({ options: [...option, otherName], scatterNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
+        this.setState({ options: [...option, otherName], sequenceNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
         this.props.changeSquenceStore({ pointCodeNameX, pointCodeNameY, pointY1: pointCodeX, pointY2: pointCodeY });
         this.setState({
           xName: pointCodeNameX,
           yName: pointCodeNameY,
           xCode: pointCodeX,
           yCode: pointCodeY,
+          saveStartTime: startTime,
+          saveEndTime: endTime,
+
         });
         getSequenceData({
           deviceFullCode,
-          startTime: defaultStartime,
-          endTime: defaultEndtime,
+          startTime: startTime,
+          endTime: endTime,
           pointY1: pointCodeX,
           pointY2: pointCodeY,
           interval: 10,
         });
       }
+    }
+    if (!point1Max && deviceList.length === sequenceData.length) {
+      const y1Max = sequenceData.map((e, i) => (e.point1Max ? e.point1Max : 0));
+      const y1Min = sequenceData.map((e, i) => (e.point1Min ? e.point1Min : 0));
+      const y2Max = sequenceData.map((e, i) => (e.point2Max ? e.point2Max : 0));
+      const y2Min = sequenceData.map((e, i) => (e.point2Min ? e.point2Min : 0));
+      this.setState({
+        point1Max: Math.ceil(Math.max(...y1Max)),
+        point1Min: Math.floor(Math.min(...y1Min)),
+        point2Max: Math.ceil(Math.max(...y2Max)),
+        point2Min: Math.floor(Math.min(...y2Min)),
+      });
+      this.props.changeSquenceStore({
+        point1Max: Math.ceil(Math.max(...y1Max)),
+        point1Min: Math.floor(Math.min(...y1Min)),
+        point2Max: Math.ceil(Math.max(...y2Max)),
+        point2Min: Math.floor(Math.min(...y2Min)),
+      });
+
+
     }
   }
   formater = (data) => {
@@ -111,19 +141,27 @@ class HandleSeachData extends React.Component {
   }
   selectStationCode = (stationCodeArr) => {
     const { stationCode } = stationCodeArr[0];
+    //暂存电站code
     this.props.changeSquenceStore({
       stationCode,
+      sequenceData: [],
     });
-    this.props.getScatterName({ stationCode });
+    this.props.getStationDevice({ stationCode });
+    this.props.getSequenceName({ stationCode });
+
   }
+  //改时间
   changeTime = (date, dateString) => {
-    const { changeSquenceStore } = this.props;
-    changeSquenceStore({
-      startTime: dateString[0],
-      endTime: dateString[1],
+    //暂存时间
+    this.setState({
+      saveStartTime: dateString[0],
+      saveEndTime: dateString[1],
     });
   }
+  //改测点
   onChangeContrast = (value, selectedOptions) => {
+    console.log('selectedOptions: ', selectedOptions);
+    console.log('value: ', value);
     const { stationCode } = this.props;
     if (value[0] === '其他') {
       this.setState({
@@ -136,25 +174,27 @@ class HandleSeachData extends React.Component {
       const selectedOption = selectedOptions[1] ? selectedOptions[1] : [];
       const { pointCodeNameX, pointCodeNameY } = selectedOption;
       const codeValue = value[value.length - 1];
-      const { pointCodeX, pointCodeY } = codeValue.split('_');
-      this.props.changeSquenceStore({
-        pointCodeNameX,
-        pointCodeNameY,
-        pointY1: pointCodeX,
-        pointY2: pointCodeY,
+      const valueArr = codeValue.split('_');
+      const pointCodeX = valueArr[0];
+      const pointCodeY = valueArr[1];
+
+      this.setState({
+        xName: pointCodeNameX,
+        yName: pointCodeNameY,
+        xCode: pointCodeX,
+        yCode: pointCodeY,
       });
       this.setState({
-        scatterNameValue: value,
+        sequenceNameValue: value,
         showOther: false,
       });
     }
   }
+  //交换左右y轴
   changeSwap = () => {
     const { xCode, yCode, xName, yName } = this.state;
     this.setState({
       isSwap: !this.state.isSwap,
-    });
-    this.setState({
       xName: yName,
       yName: xName,
       xCode: yCode,
@@ -162,40 +202,71 @@ class HandleSeachData extends React.Component {
     });
 
   }
+  //查询图表数据
   getSequenceData = () => {
     //请求数据
-    const { getSequenceData, changeSquenceStore, deviceList, startTime, endTime } = this.props;
-    const { xCode, yCode, xName, yName } = this.state;
+    const { getSequenceData, changeSquenceStore, deviceList } = this.props;
+    const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, point1Max, point1Min, point2Max, point2Min } = this.state;
+    changeSquenceStore({
+      sequenceData: [],
+      pointCodeNameX: xName,
+      pointCodeNameY: yName,
+      point1Max,
+      point1Min,
+      point2Max,
+      point2Min,
+    });
     const fristDevice = deviceList[0];
     const deviceFullCode = fristDevice.deviceFullCode;
-
     getSequenceData({
       deviceFullCode,
       pointY1: xCode,
       pointY2: yCode,
-      startTime,
-      endTime,
+      startTime: saveStartTime,
+      endTime: saveEndTime,
       interval: 10,
     });
-    changeSquenceStore({
-      pointCodeNameX: xName,
-      pointCodeNameY: yName,
-    });
   }
-  changeXvalue = (value, option) => {
+  //改变第一个y轴
+  changeY1value = (value, option) => {
     const { props: { chidren } } = option;
     this.props.changeSquenceStore({
       pointCodeX: value,
       pointCodeNameX: chidren,
     });
   }
-  changeYvalue = (value, option) => {
+  //改变第二个y轴
+  changeY2value = (value, option) => {
     const { props: { chidren } } = option;
     this.props.changeSquenceStore({
       pointCodeY: value,
       pointCodeNameY: chidren,
     });
   }
+  //改变最大值
+  changeY1max = (value) => {
+    console.log('value: ', value);
+    this.setState({
+      point1Max: value,
+    });
+  }
+  changeY1min = (value) => {
+    this.setState({
+      point1Min: value,
+    });
+  }
+  changeY2max = (value) => {
+    this.setState({
+      point2Max: value,
+    });
+  }
+
+  changeY2min = (value) => {
+    this.setState({
+      point2Min: value,
+    });
+  }
+  //下载
   downPic = () => {
     this.props.changeSquenceStore({
       down: true,
@@ -203,10 +274,10 @@ class HandleSeachData extends React.Component {
 
   }
   render() {
-    const { stationCode, stations, scatterotherNames, theme, newSrcUrl } = this.props;
-    const { isSwap, options, scatterNameValue, showOther, xName, yName } = this.state;
-    const defaultStartime = moment().month(moment().month() - 1).startOf('month');
-    const defaultEndtime = moment().month(moment().month() - 1).endOf('month');
+    const { stationCode, stations, sequenceotherNames, theme, newSrcUrl, startTime, endTime } = this.props;
+    const { isSwap, options, sequenceNameValue, showOther, xName, yName, point1Max, point1Min, point2Max, point2Min } = this.state;
+    console.log(' point1Max, point1Min, point2Max, point2Min: ', point1Max, point1Min, point2Max, point2Min);
+
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => e.stationType === 0);
     return (
@@ -221,16 +292,15 @@ class HandleSeachData extends React.Component {
           />
           <label className={styles.nameStyle}>时间</label>
           <RangePicker
-            defaultValue={[moment(defaultStartime, dateFormat), moment(defaultEndtime, dateFormat)]}
+            defaultValue={[moment(startTime, dateFormat), moment(endTime, dateFormat)]}
             format={dateFormat}
             onChange={this.changeTime}
             style={{ width: '240px' }}
-
           />
           <label className={styles.nameStyle}>散点</label>
           <Cascader
             options={options}
-            value={scatterNameValue}
+            value={sequenceNameValue}
             fieldNames={{ label: 'pointsUnionName', value: 'value', children: 'pointNameList' }}
             onChange={this.onChangeContrast}
             style={{ width: '400px' }}
@@ -238,20 +308,20 @@ class HandleSeachData extends React.Component {
           {showOther && <div className={styles.contrastValue}>
             <Select
               style={{ width: 120 }}
-              onChange={this.changeXvalue}
+              onChange={this.changeY1value}
               value={this.props.pointCodeX}
             >
-              {scatterotherNames.map((e, i) => (
+              {sequenceotherNames.map((e, i) => (
                 <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
               ))}
             </Select>
             <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
             <Select
               style={{ width: 120 }}
-              onChange={this.changeYvalue}
+              onChange={this.changeY2value}
               value={this.props.pointCodeY}
             >
-              {scatterotherNames.map((e, i) => (
+              {sequenceotherNames.map((e, i) => (
                 <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
               ))}
             </Select>
@@ -259,41 +329,46 @@ class HandleSeachData extends React.Component {
         </div>
         <div className={styles.headBottom}>
 
-          {!showOther && <div className={styles.contrastValue}>
+          {<div className={styles.contrastValue}>
             <div className={styles.bottomLeft}>
               <span>{xName ? xName : '--'}</span>
-              <InputNumber
-                min={0}
-                max={100}
-                formatter={value => `最大值 ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                onChange={this.changeXmax}
-              />
-              <InputNumber
 
+              <InputNumber
                 min={0}
-                max={100}
-                formatter={value => `最小值 ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                onChange={this.changeXmin}
+                max={point1Max}
+                value={point1Max}
+                formatter={value => `最大值 ${value}`}
+                parser={value => value.replace(/\D/g, '')}
+                onChange={this.changeY1max}
+              />
+
+              <InputNumber
+                value={point1Min}
+                min={0}
+                max={point1Max}
+                formatter={value => `最小值 ${value}`}
+                parser={value => value.replace(/\D/g, '')}
+                onChange={this.changeY1min}
               />
             </div>
             <div className={styles.bottomLeft}>
               {/* <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} /> */}
               <span className={styles.defaultStyle} >{yName ? yName : '--'}</span>
               <InputNumber
+                value={point2Max}
                 min={0}
-                max={100}
-                formatter={value => `最大值 ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                onChange={this.changeYmax}
+                max={point2Max}
+                formatter={value => `最大值 ${value}`}
+                parser={value => value.replace(/\D/g, '')}
+                onChange={this.changeY2max}
               />
               <InputNumber
+                value={point2Min}
                 min={0}
-                max={100}
-                formatter={value => `最小值 ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                onChange={this.changeYmin}
+                max={point2Max}
+                formatter={value => `最小值 ${value}`}
+                parser={value => value.replace(/\D/g, '')}
+                onChange={this.changeY2min}
               />
               <Button className={styles.seachBtn} onClick={this.getSequenceData}>查询</Button>
             </div>

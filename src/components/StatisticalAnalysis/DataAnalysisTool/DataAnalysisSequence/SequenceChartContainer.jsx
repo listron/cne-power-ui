@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 import styles from './sequenceStyles.scss';
 import SequenceChart from './SequenceChart';
 import { downloadFile } from '../../../../utils/utilFunc';
+import SequenceModal from './SequenceModal';
 class SequenceChartContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
       newSrcUrl: [],
       srcObj: {},
+      isShowModal: false,
+      currentImgIndex: 0,
 
     };
   }
@@ -52,9 +55,46 @@ class SequenceChartContainer extends React.Component {
       srcObj: srcObj,
     });
   }
+  hideImg = () => {
+    this.setState({
+      isShowModal: false,
+    });
+  }
+  showImg = (index) => {
+    const { deviceList } = this.props;
+    this.setState({
+      isShowModal: true,
+      currentImgIndex: index,
+    });
+    const deviceFullCode = deviceList[index].deviceFullCode;
+    this.queryData(deviceFullCode);
+
+  }
+  changeCurrentImgIndex = (index) => {
+    const { deviceList } = this.props;
+    const deviceFullCode = deviceList[index].deviceFullCode;
+    this.setState({
+      currentImgIndex: index,
+    });
+    this.queryData(deviceFullCode);
+  }
+
+  queryData = (value) => {
+    const { getSequenceData, pointY1, pointY2, startTime, endTime } = this.props;
+    getSequenceData({
+      deviceFullCode: value,
+      pointY1,
+      pointY2,
+      startTime,
+      endTime,
+      interval: 60,
+    });
+
+  }
 
   render() {
     const { deviceList, sequenceData } = this.props;
+    const { currentImgIndex, isShowModal } = this.state;
     return (
       <div className={styles.chartsContainer}>
         {deviceList.map((e, i) => (
@@ -65,15 +105,24 @@ class SequenceChartContainer extends React.Component {
                 saveBtn={e.likeStatus}
                 allChartData={sequenceData[i]}
                 index={i}
+                showImg={this.showImg}
                 deviceName={e.deviceName}
                 saveImgUrl={this.saveImgUrl}
                 likeStatusChange={this.likeStatusChange} />
             </div>
-            <div>
 
-            </div>
           </div>
         ))}
+        {
+          <SequenceModal
+            {...this.props}
+            isShowModal={isShowModal}
+            hideImg={this.hideImg}
+            currentImgIndex={currentImgIndex}
+            changeCurrentImgIndex={this.changeCurrentImgIndex}
+            likeStatusChange={this.likeStatusChange}
+          />
+        }
 
       </div>
     );

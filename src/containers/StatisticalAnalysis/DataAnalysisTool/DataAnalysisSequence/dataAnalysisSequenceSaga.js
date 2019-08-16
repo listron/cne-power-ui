@@ -1,4 +1,4 @@
-import { call, put, takeLatest, all, select } from 'redux-saga/effects';
+import { call, put, takeLatest, all, select, message } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { dataAnalysisSequenceAction } from './dataAnalysisSequenceAction';
@@ -89,6 +89,7 @@ function* getSequenceOtherName(action) {//获取
 function* getSequenceData(action) {//获取
   const { payload } = action;
   const { deviceFullCode, pointY1, pointY2, startTime, endTime, interval } = payload;
+  console.log('startTime: ', startTime);
   const parmas = { deviceFullCode, pointY1, pointY2, startTime, endTime, interval };
 
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSequenceData}`;
@@ -98,6 +99,8 @@ function* getSequenceData(action) {//获取
       payload: {
         ...parmas,
         chartLoading: true,
+        bigchartLoading: true,
+
       },
     });
     const response = yield call(axios.post, url, {
@@ -106,30 +109,39 @@ function* getSequenceData(action) {//获取
       endTime: moment(endTime).utc().format(),
     });
     const preSequenceData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('sequenceData').toJS()));
+
     if (response.data.code === '10000') {
       const curChartData = response.data.data || {};
-      yield put({
-        type: dataAnalysisSequenceAction.changeSquenceStore,
-        payload: {
-          chartTime: moment().unix(), // 用于比较
-          sequenceData: interval === 10 ? [...preSequenceData, curChartData] : preSequenceData,
-          curBigChartData: interval === 60 ? curChartData : {},
-          chartLoading: false,
+      if (interval === 10) {
+        yield put({
+          type: dataAnalysisSequenceAction.changeSquenceStore,
+          payload: {
 
-        },
-      });
+            sequenceData: [...preSequenceData, curChartData],
+            chartLoading: false,
+          },
+        });
+      } else if (interval === 60) {
+        yield put({
+          type: dataAnalysisSequenceAction.changeSquenceStore,
+          payload: {
+            chartTime: moment().unix(), // 用于比较
+            curBigChartData: curChartData,
+            bigchartLoading: false,
+          },
+        });
+      }
     } else {
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           chartLoading: false,
-          sequenceData: [...preSequenceData, null],
+          sequenceData: interval === 60 ? [...preSequenceData] : [...preSequenceData, {}],
           chartTime: moment().unix(),
-
         },
       });
+      message.error('请求失败');
       throw response.data.message;
-
     }
   } catch (e) {
     console.log(e);
