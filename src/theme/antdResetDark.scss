@@ -553,10 +553,9 @@
     border-color: $button-border;
   }
   .ant-checkbox-disabled .ant-checkbox-inner {
-    background-color: #eaeaea;
-    border-color: rgba(0, 0, 0, 0.15);
-    border-radius: 2px;
-    color: $darkColor;
+    background: #405080;
+    border: 1px solid #7088c3;
+    color: #7088c3;
   }
 
   .ant-checkbox-indeterminate .ant-checkbox-inner::after {
@@ -868,9 +867,13 @@
     color: $fontColor;
   }
 
-  .ant-form-explain,
+  .has-error .ant-form-explain,
   .ant-form-extra {
     color: #fd6e8f;
+  }
+  .has-error .ant-input,
+  .has-error .ant-input:hover {
+    background: $input-Background;
   }
 
   // ==========ant-popover-inner=========
