@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './historyWarning.scss';
+import PropTypes from 'prop-types';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { historyWarningAction } from './historyWarningAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
@@ -12,6 +13,7 @@ import HistoryWarningContainer from '../../../../components/HighAnalysis/Intelli
 
 class HistoryWarning extends Component {
   static propTypes = {
+    theme: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -34,10 +36,10 @@ class HistoryWarning extends Component {
     this.props.changeHistoryWarningStore({ ...value });
   }
   render() {
-    const { pageName, defectId } = this.props;
+    const { pageName, defectId, theme } = this.props;
     const { showPage } = this.state;
     return (
-      <div className={styles.history}>
+      <div className={`${styles.history} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '历史预警' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.transferColor}>
           <div className={styles.transferAlarmContainer}>

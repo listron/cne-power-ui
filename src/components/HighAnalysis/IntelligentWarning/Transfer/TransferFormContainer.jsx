@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './transferForm.scss';
 import WarningStatisticTop from '../commonArea/WarningStatisticTop';
@@ -25,34 +25,35 @@ class TransferFormContaienr extends Component {
     deviceName: PropTypes.string,
     durationType: PropTypes.string,
     stations: PropTypes.array,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
-  componentDidMount(){
-    const { getTransferFormStatistic, warningStatus, warningType } = this.props
-    getTransferFormStatistic({ warningStatus, warningType })
-    this.queryTransferFrom()
+  componentDidMount() {
+    const { getTransferFormStatistic, warningStatus, warningType } = this.props;
+    getTransferFormStatistic({ warningStatus, warningType });
+    this.queryTransferFrom();
   }
   onChangeFilter = (value) => {
-   
-    this.queryTransferFrom(value)
+
+    this.queryTransferFrom(value);
   }
 
   queryTransferFrom = (value) => {
-    const { getTransferForm, warningTypeStatus,warningType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType,pageSize, pageNum, } = this.props;
-    const params = { warningTypeStatus,warningType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType,pageSize, pageNum, }
-    getTransferForm({ ...params, ...value })
+    const { getTransferForm, warningTypeStatus, warningType, rangTime, stationType, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, pageSize, pageNum } = this.props;
+    const params = { warningTypeStatus, warningType, rangTime, deviceTypeCode, stationType, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, pageSize, pageNum };
+    getTransferForm({ ...params, ...value });
   }
   render() {
-    const { stations, deviceTypes, } = this.props;
+    const { stations, deviceTypes, theme } = this.props;
     return (
-      <div className={styles.transferFormContaienr}>
+      <div className={`${styles.transferFormContaienr} ${styles[theme]}`}>
         <WarningStatisticTop {...this.props} warningStatus={'3'} />
         <TransferFormFilter {...this.props} stations={stations} deviceTypes={deviceTypes} onSearch={this.onChangeFilter} />
         <TransferFormTable {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>
-    )
+    );
   }
 }
-export default (TransferFormContaienr)
+export default (TransferFormContaienr);

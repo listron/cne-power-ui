@@ -13,6 +13,7 @@ class HandleRemove extends Component {
   static propTypes = {
     getLostGenType: PropTypes.func,
     resetHandleRemoveStore: PropTypes.func,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -24,8 +25,9 @@ class HandleRemove extends Component {
     this.props.resetHandleRemoveStore();
   }
   render() {
+    const { theme } = this.props;
     return (
-      <div className={styles.handle}>
+      <div className={`${styles.handle} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '手动解除' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.handleRemoveBox}>
           <HandleRemoveContainer {...this.props} />
@@ -63,4 +65,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(HandleRemove)
-;
+  ;

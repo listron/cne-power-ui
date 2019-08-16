@@ -1,327 +1,93 @@
-@import '../../../../theme/theme.scss';
-.realTimeWarningContainer {
-    width: 100%;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    background: #fff;
-    .realTimeWarningFilter {
-        position: relative;
-        display: flex;
-        flex-direction: column; // flex: 1 0 auto;
-        background-color: #fff;
+@import "../../../../theme/theme.scss";
+@import "./layout.scss";
+
+.light {
+  background: #fff;
+  .deviceNameSearch {
+    background-color: #f9f9f9;
+    > span {
+      color: $darkColor;
     }
-    .realTimeWarningTop {
-        .alarmInfo {
-            display: flex;
-            flex-shrink: 0;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            height: 100px;
-            background-color: #fff;
-            border-bottom: 1px solid #dfdfdf;
-            a {
-                text-decoration: underline;
-            }
-            .alarmInfoLeft {
-                display: flex;
-                flex-direction: row;
-            }
-            .alarmInfoRight {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                margin-right: 56px;
-                .updateTimeContainer {
-                    display: flex;
-                    flex-direction: column;
-                    font-size: 14px;
-                    margin-right: 27px;
-                    .updateTime {
-                        color: $themeColor;
-                    }
-                    .updateTimeText {
-                        color: $darkColor;
-                    }
-                }
-                .refreshIcon {
-                    width: 32px;
-                    height: 32px;
-                    background-image: url(/img/refresh.png);
-                    background-position: center center;
-                    background-repeat: no-repeat;
-                    &:hover {
-                        background-image: url(/img/refresh-on.png);
-                    }
-                }
-            }
-            .alarmInfoItem {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-right: 30px;
-                .alarmNum {
-                    font-size: 24px;
-                    color: $themeColor;
-                    opacity: 0.74;
-                }
-                .alarmText {
-                    font-size: 14px;
-                    color: $darkColor;
-                }
-            }
-            .alarmNumDetail {
-                padding-left: 30px;
-                margin-right: 22px;
-                border-left: 1px solid #f1f1f1;
-                border-right: 1px solid #f1f1f1;
-                display: flex;
-                flex-direction: row;
-            }
-            .alarmAction {
-                margin-right: 24px;
-                margin-top: 8px;
-                display: flex;
-                width: 73px;
-                height: 57px;
-                flex-direction: column;
-                align-items: center;
-                .alarmText {
-                    font-size: 14px;
-                    color: $darkColor;
-                }
-                &:hover {
-                    border: 1px solid $themeColor;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    .alarmText {
-                        color: $themeColor;
-                    }
-                }
-            }
-            :global {
-                .icon-alarm {
-                    font-size: 30px;
-                    color: #a42b2c;
-                    margin-left: 47px;
-                    margin-right: 35px;
-                }
-                .icon-action {
-                    font-size: 18px;
-                    color: $darkColor;
-                    &:hover {
-                        color: $themeColor;
-                    }
-                }
-                .icon-title {
-                    background-color: #ceebe0;
-                    color: $themeColor;
-                    width: 30px;
-                    height: 30px;
-                    font-size: 20px;
-                    border-radius: 100%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    margin-left: 47px;
-                    margin-right: 35px;
-                    margin-top: 15px;
-                }
-                .icon-refresh {
-                    width: 29px;
-                    height: 29px;
-                    border: 1px solid $themeColor;
-                    color: $themeColor;
-                    border-radius: 100%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-                .icon-help {
-                    color: #f9b600;
-                    font-size: 12px;
-                    margin-left: 4px;
-                    margin-top: -4px;
-                }
-            }
-        }
+    > span:last-child {
+      color: $themeColor;
     }
-    .deviceNameSearch {
-        display: flex;
-        height: 50px;
-        flex-shrink: 0;
-        background-color: #f9f9f9;
-        flex-direction: row;
-        align-items: center;
-        padding-left: 28px;
-        >span {
-            color: $darkColor;
-        }
-        .deviceName {
-            width: 200px;
-            margin: 0 16px;
-        }
-        >span:last-child {
-            color: $themeColor;
-            font-size: 14px;
-            cursor: pointer;
-            margin-left: 16px;
-        }
+  }
+  .realTimeWarningTable {
+    .tableHeader {
+      background-color: #fff;
     }
-    .realTimeWarningTable {
-        :global {
-            .ant-table-placeholder {
-                border-bottom: none
-            }
-        }
-        .tableHeader {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            flex-shrink: 0;
-            height: 55px;
-            padding: 0 28px;
-            background-color: #fff;
-        }
-        .iconDetail {
-            i {
-                display: block;
-                color: $themeColor;
-                cursor: pointer;
-            }
-        }
-        .deviceName {
-            :global {
-                a {
-                    border-bottom: 1px $darkColor solid;
-                    color: $darkColor;
-                    text-decoration: none;
-                    &:hover {
-                        border-bottom: 1px $themeColor solid;
-                        color: $themeColor;
-                    }
-                }
-            }
-        }
-        .alarmDesc {
-            cursor: pointer;
-        }
+    .iconDetail {
+      i {
+        display: block;
+        color: $themeColor;
+        cursor: pointer;
+      }
     }
-    .tableFooter {
-        background-color: #fff;
-        height: 45px;
-        line-height: 45px;
-        .info {
-            color: $darkColor;
-            margin-right: 20px;
-            margin-left: 24px;
-            .totalNum {
-                color: rgb(250, 185, 7);
-                margin: auto 4px;
-            }
+    .deviceName {
+      a {
+        border-bottom: 1px $darkColor solid;
+        color: $darkColor;
+        text-decoration: none;
+        &:hover {
+          border-bottom: 1px $themeColor solid;
+          color: $themeColor;
         }
-        .cancel {
-            color: $themeColor;
-            cursor: pointer;
-        }
+      }
     }
+  }
+  .tableFooter {
+    background-color: #fff;
+    .info {
+      color: $darkColor;
+      .totalNum {
+        color: rgb(250, 185, 7);
+      }
+    }
+    .cancel {
+      color: $themeColor;
+    }
+  }
 }
 
-.relieveModal {
-    .formItem {
-        display: flex;
-        flex-direction: row;
-        :global {
-            .ant-form-item-label {
-                overflow: visible;
-                .ant-form-item-required::before {
-                    position: absolute;
-                    top: 5px;
-                    left: -10px;
-                }
-            }
-        }
-    }
-    .input {
-        margin-left: -60px;
-        margin-top: 15px
-    }
-    .instructionText {
-        display: flex;
-        flex: 1;
-        align-items: flex-end;
-        justify-content: flex-end;
-        margin-right: 8px;
-    }
+.dark {
+  @import "../../../../theme/darkTheme.scss";
+  background: $background;
+  .realTimeWarningTable {
+    background: $light-background;
+    border: 1px solid $border-color;
+    margin-top: 10px;
     :global {
-        .ant-modal-content {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            height: 100%;
-            margin-top: 180px;
-        }
-        .ant-form-item-control-wrapper {
-            .ant-form-item-control {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                .ant-form-item-children {
-                    display: flex;
-                    flex-direction: row;
-                    .ant-calendar-picker {
-                        margin-left: 12px;
-                        vertical-align: top;
-                    }
-                }
-            }
-        }
-        .ant-btn-primary {
-            color: $themeColor;
-            border-color: $themeColor;
-            background-color: #fff;
-            &:hover {
-                background-color: $themeColor;
-                color: #fff;
-            }
-        }
+      .ant-table-placeholder {
+      }
     }
-}
-
-.transferModal {
-    .formItem {
-        display: flex;
-        flex-direction: row;
+    .iconDetail {
+      i {
+        color: $themeColor;
+        cursor: pointer;
+      }
     }
-    .input {
-        margin-left: -60px;
-        margin-top: 15px
-    }
-    .instructionText {
-        display: flex;
-        flex: 1;
-        align-items: flex-end;
-        justify-content: flex-end;
-        margin-right: 8px;
-    }
-    :global {
-        .ant-modal-content {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            height: 100%;
-            margin-top: 180px;
+    .deviceName {
+      a {
+        border-bottom: 1px solid $fontColor;
+        color: $fontColor;
+        text-decoration: none;
+        &:hover {
+          border-bottom: 1px solid $fontColor-hover;
+          color: $fontColor-hover;
         }
-        .ant-btn-primary {
-            color: $themeColor;
-            border-color: $themeColor;
-            background-color: #fff;
-            &:hover {
-                background-color: $themeColor;
-                color: #fff;
-            }
-        }
+      }
     }
+  }
+  .tableFooter {
+    background-color: transparent;
+    .info {
+      color: $fontColor;
+      .totalNum {
+        color: #f8b14e;
+      }
+    }
+    .cancel {
+      color: #f8b14e;
+    }
+  }
 }

@@ -18,6 +18,7 @@ class RealTimeWarning extends Component {
     history: PropTypes.object,
     warningType: PropTypes.string,
     warningTypeStatus: PropTypes.string,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -39,8 +40,9 @@ class RealTimeWarning extends Component {
     this.props.resetRealtimeWarninStore();
   }
   render() {
+    const { theme } = this.props;
     return (
-      <div className={styles.realtime}>
+      <div className={`${styles.realtime} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '实时告警' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.realtimeWarningBox}>
           <RealTimeWarningContainer {...this.props} />

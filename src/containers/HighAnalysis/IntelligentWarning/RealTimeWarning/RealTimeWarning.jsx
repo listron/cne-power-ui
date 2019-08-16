@@ -14,6 +14,7 @@ class RealTimeWarning extends Component {
   static propTypes = {
     getLostGenType: PropTypes.func,
     resetRealtimeWarninStore: PropTypes.func,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -23,8 +24,9 @@ class RealTimeWarning extends Component {
     this.props.resetRealtimeWarninStore();
   }
   render() {
+    const { theme } = this.props;
     return (
-      <div className={styles.realtime}>
+      <div className={`${styles.realtime} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '实时预警' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.realtimeWarningBox}>
           <RealTimeWarningContainer {...this.props} />
@@ -60,4 +62,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(RealTimeWarning)
-;
+  ;

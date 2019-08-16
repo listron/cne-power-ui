@@ -18,6 +18,7 @@ class TransferForm extends Component {
     changeTransferFormStore: PropTypes.func,
     pageName: PropTypes.string,
     defectId: PropTypes.string,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -40,10 +41,10 @@ class TransferForm extends Component {
     this.props.changeTransferFormStore({ ...value });
   }
   render() {
-    const { pageName, defectId } = this.props;
+    const { pageName, defectId, theme } = this.props;
     const { showPage } = this.state;
     return (
-      <div className={styles.transfer}>
+      <div className={`${styles.transfer} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '已转工单' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.transferColor}>
           <div className={styles.transferAlarmContainer}>
@@ -90,4 +91,4 @@ const mapDispatchToProps = (dispatch) => ({
   }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(TransferForm)
-;
+  ;
