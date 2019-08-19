@@ -8,14 +8,14 @@ import styles from './userList.scss';
 import { getCookie } from '../../../../../utils/index.js';
 import Path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
-import { apiUrlReal } from '../../../../../config/apiConfig';
 
 // to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
 // 动态确认/取消后，改回调重置为null。可减少诸多记录状态的变量，利用一个交互函数进行覆盖处理。
-
 const RadioGroup = Radio.Group;
 const { Option } = Select;
 
+const { APIBasePath } = Path.basePaths;
+const {system} = Path.APISubPaths;
 class UserList extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -452,13 +452,15 @@ class UserList extends Component {
 
   downloadTemplate = () => {
     const { downLoadUserTemplate } = this.props;
-    const url = `${apiUrlReal}/template/UserInfoTemplate.xlsx`;
+    const url = `${APIBasePath}${system.downLoadUserTemplate}`;
+    const authData = localStorage.getItem('authData') || '';
     downLoadUserTemplate({
       url,
       method: 'get',
       fileName: '导入用户模板.xlsx',
-      params: {}
-    })
+      params: {},
+      headers: { 'Authorization': 'bearer ' + authData },
+    });
   }
 
   examineModal = () => (

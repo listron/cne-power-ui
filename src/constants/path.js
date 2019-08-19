@@ -258,6 +258,7 @@ export default {
       getInviteLink: '/v3/user/link', //邀请用户
       getRoleAllList: '/v3/role/all/list', //获取企业角色
       importUserBatch: '/v3/user/batch', //批量导入用户
+      downLoadUserTemplate: '/v3/usertemplate', //1.4.8.       导入用户模板下载
 
       // 电站管理部分
       uploadStationFile: '/v3/management/stationimport', // 导入电站信息

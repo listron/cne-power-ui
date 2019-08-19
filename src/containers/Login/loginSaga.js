@@ -55,7 +55,8 @@ function* userNameLogin(action) {
       //   }
       // })
       if (data.userEnterpriseStatus === 3) {//3启用状态
-        data.access_token && Cookie.set('authData', JSON.stringify(data.access_token));
+        console.log(data.access_token);
+        data.access_token && Cookie.set('authData', data.access_token);
         data.access_token && localStorage.setItem('authData', data.access_token);
         data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
         data.enterpriseCode && Cookie.set('enterpriseCode', data.enterpriseCode);
