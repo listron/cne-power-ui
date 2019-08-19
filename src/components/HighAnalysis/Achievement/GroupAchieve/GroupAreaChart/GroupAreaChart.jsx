@@ -82,14 +82,14 @@ export default class GroupAreaChart extends Component {
   drawChart = (data, dataIndex) => {
     const dataMap = data && data.map(cur => ({
       name: cur.regionName,
-      value: [cur.longitude, cur.latitude, cur.stationCapacity],
+      value: [cur.longitude, cur.latitude, cur.stationCapacity / 10000],
     }));
     return {
       tooltip: {
         show: true,
         formatter: (params) => {
           return `<div>
-            <span>${params.name}</span><br /><span>装机容量：</span><span>${params.data['value'][2] || '--'}</span>
+            <span>${params.name}</span><br /><span>装机容量：</span><span>${params.data['value'][2] + 'MW' || '--'}</span>
           </div>`;
         },
       },

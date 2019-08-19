@@ -140,7 +140,7 @@ export default class GroupStationChart extends Component {
         formatter: (params) => {
           if(titleFunc === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[1].value || '--'}</span><br /><span>应发小时数：</span><span>${params[0].value || '--'}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[0].value || '--'}</span><br /><span>应发小时数：</span><span>${params[1].value || '--'}</span>
           </div>`;
           }
           return `<div>
@@ -154,6 +154,9 @@ export default class GroupStationChart extends Component {
           data: data && data.map(cur => {
             return cur.regionName || '--';
           }),
+          axisLabel: {
+            interval: 0,
+          },
         },
       ],
       yAxis: [
