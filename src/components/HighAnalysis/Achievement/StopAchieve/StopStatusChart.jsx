@@ -33,17 +33,6 @@ class StopStatusChart extends Component {
     statusChart && statusChart.showLoading();
   }
 
-  // const stopStatusList = [1, 2, 3, 4, 5, 6, 7].map(e => ({
-  //   deviceFullcode: `${e}M${e * e}MM${e * 2}`,
-  //   deviceName: `A${e}_FE${e * 2}`,
-  //   faultInfos: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(m => ({
-  //     startTime: moment('2018-01-01').add(m, 'month').format('YYYY-MM-DD'),
-  //     endTime: moment('2018-01-01').add(m, 'month').add(e + parseInt(10 * Math.random(), 10), 'day').format('YYYY-MM-DD'),
-  //     faultName: faultNames[m] || '风机故障',
-  //     reason: `${e}故障的描述啊，详情啊${m}, hahhahaha ${m + e * m + m ** m}`,
-  //   })),
-  // }));
-
   renderItem = (params, api) => { // param当前数据信息和坐标; api开发者调用方法集合
     const categoryIndex = api.value(0); // api.value取出dataItem值, api.value(0)取出当前dataItem第一个维度数值
     const start = api.coord([api.value(1), categoryIndex]); // api.coord进行坐标转换计算
@@ -134,6 +123,12 @@ class StopStatusChart extends Component {
           </section>`;
         },
       },
+      // dataset: {
+      //   source: [
+      //     ['product', '风机故障', '计划停机', '变电故障', '场外因素', '其他损失'],
+
+      //   ],
+      // },
       series: [{
         type: 'custom',
         renderItem: this.renderItem,

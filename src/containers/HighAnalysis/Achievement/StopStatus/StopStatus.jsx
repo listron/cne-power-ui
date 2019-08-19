@@ -144,6 +144,17 @@ class StopStatus extends Component {
 
   render() {
     const { areaStation, stationCode, modeDevices, deviceCodes, startTime, endTime } = this.props;
+    // const faultNames = ['风机故障', '计划停机', '变电故障', '场外因素', '其他损失'];
+    // const stopStatusList = [1, 2, 3, 4, 5, 6, 7].map(e => ({
+    //   deviceFullcode: `${e}M${e * e}MM${e * 2}`,
+    //   deviceName: `A${e}_FE${e * 2}`,
+    //   faultInfos: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(m => ({
+    //     startTime: moment('2018-01-01').add(m, 'month').format('YYYY-MM-DD'),
+    //     endTime: moment('2018-01-01').add(m, 'month').add(e + parseInt(10 * Math.random(), 10), 'day').format('YYYY-MM-DD'),
+    //     faultName: faultNames[m] || '风机故障',
+    //     reason: `${e}故障的描述啊，详情啊${m}, hahhahaha ${m + e * m + m ** m}`,
+    //   })),
+    // }));
     return (
       <div className={styles.stop}>
         <div className={styles.searchPart}>
