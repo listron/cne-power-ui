@@ -531,6 +531,8 @@ export default {
       getScatterName: '/v3/wind/analysis/scatterplot/names', //散点图测点名称列表
       getScatterOtherName: '/v3/wind/analysis/scatterplot/xylist', //散点图自定义测点名称列表
       getScatterData: '/v3/wind/analysis/scatterplot/list', //散点图列表
+      getStationDevice: '/v3/wind/analysis/windturbinelist', //电站风机列表
+      getSequenceData: '/v3/wind/analysis/sequencechart', //时序图数据
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表
