@@ -14,6 +14,7 @@ const initState = immutable.fromJS({
   deviceCodes: [], // 选中的设备
   startTime: null,
   endTime: null,
+  stopStringify: '', // 存储的路径信息
 
   modeDevices: [], // 电站 设备型号+设备集合
   stopStatusLoading: false, // loading状态

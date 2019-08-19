@@ -43,6 +43,9 @@ class StationCascader extends Component {
         return false;
       });
     });
+    console.log(value)
+    console.log(data)
+    console.log(result)
     return result;
   }
 
