@@ -238,13 +238,11 @@ function* getLostGenHour(action) { // 损失电量分解图
         loseLoading: true,
       },
     });
-    console.log(response, 'response');
     if (response.code === '10000') {
-      console.log(moment().unix(), 'moment().unix()');
       yield put({
         type: areaAchieveAction.fetchSuccess,
         payload: {
-          lostGenHourInfo: formatData(response.data) || {},
+          lostGenHourInfo: response.data ? formatData(response.data) : {},
           lostTime: moment().unix(),
           loseLoading: false,
         },

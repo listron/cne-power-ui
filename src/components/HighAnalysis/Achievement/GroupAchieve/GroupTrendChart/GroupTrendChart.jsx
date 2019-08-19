@@ -38,12 +38,12 @@ export default class GroupTrendChart extends Component {
       eCharts.init(groupTrendChart).clear();//清除
       const myChart = eCharts.init(groupTrendChart);
       myChart.setOption(this.drawChart(groupTrendInfo));
-      myChart.on('click', (param) => this.chartHandle(param, groupTrendInfo, myChart));
+      myChart.on('click', (param) => this.chartHandle(param));
     }
   }
 
 
-  chartHandle = (params, groupTrendInfo, myChart) => {
+  chartHandle = (params) => {
     const { selectStationCode, changeStore, getGroupLostGenHour, groupTimeStatus } = this.props;
     if(selectStationCode.length > 0) {
       const { search } = this.props.location;
@@ -137,9 +137,8 @@ export default class GroupTrendChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: 'PBA',
+          name: titleFunc,
           min: 0,
-          max: 100,
           splitLine: {
             show: false,
           },
