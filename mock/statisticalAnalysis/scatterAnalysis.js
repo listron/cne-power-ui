@@ -65,4 +65,27 @@ module.exports = [
     delay: 1000,
     error: {},
   },
+  {
+    api: '/mock/api/v3/wind/analysis/sequencechart',
+    method: 'post',
+    response: {
+      'code': '10000',
+      'message': '时序图测点名称列表请求成功',
+      'data':
+      {
+        timeLine: Array(20).fill(1).map((e, i) => (`时间${i + 1}`)),
+        point1Max: '9000',
+        point1Min: '1000',
+        yMaxValue: '9000',
+        Point2Max: '1000',
+        deviceFullCode: `WT${Math.floor(Math.random(1, 9) * 100)}`,
+        point1Data: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((e, i) => (Math.floor(Math.random() * 1000))),
+        Point2Data: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((e, i) => (Math.floor(Math.random() * 1000))),
+      },
+      'serviceCode': '3.0',
+    },
+
+    delay: 1000,
+    error: {},
+  },
 ];
