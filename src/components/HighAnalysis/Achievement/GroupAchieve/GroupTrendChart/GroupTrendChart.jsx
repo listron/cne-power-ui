@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Radio} from 'antd';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
+import moment from 'moment';
 import searchUtil from '../../../../../utils/searchUtil';
 
 import styles from './groupTrendChart.scss';
@@ -15,6 +16,10 @@ export default class GroupTrendChart extends Component {
     location: PropTypes.object,
     getGroupTrendInfo: PropTypes.func,
     groupTimeStatus: PropTypes.string,
+    selectStationCode: PropTypes.array,
+    titleFunc: PropTypes.string,
+    changeStore: PropTypes.func,
+    getGroupLostGenHour: PropTypes.func,
   };
 
   componentDidUpdate(prevProps) {
@@ -33,10 +38,71 @@ export default class GroupTrendChart extends Component {
       eCharts.init(groupTrendChart).clear();//清除
       const myChart = eCharts.init(groupTrendChart);
       myChart.setOption(this.drawChart(groupTrendInfo));
+      myChart.on('click', (param) => this.chartHandle(param));
     }
   }
 
+
+  chartHandle = (params) => {
+    const { selectStationCode, changeStore, getGroupLostGenHour, groupTimeStatus } = this.props;
+    if(selectStationCode.length > 0) {
+      const { search } = this.props.location;
+      const groupInfoStr = searchUtil(search).getValue('group');
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const {
+        modes = [],
+        modesInfo = [],
+      } = groupInfo;
+      // 格式化日月年的开始结束日期
+      const timeFormat = {
+        '1': [moment(params.name).startOf('d').format('YYYY-MM-DD'), moment(params.name).endOf('d').format('YYYY-MM-DD')],
+        '2': [moment(params.name).startOf('m').format('YYYY-MM'), moment(params.name).endOf('m').format('YYYY-MM')],
+        '3': [moment(params.name).startOf('y').format('YYYY'), moment(params.name).endOf('y').format('YYYY')],
+      };
+      const paramsHour = {
+        startTime: timeFormat[groupTimeStatus][0],
+        endTime: timeFormat[groupTimeStatus][1],
+        stationCodes: groupInfo.searchCode,
+        manufactorIds: modesInfo.map(cur => {
+        return cur.value;
+      }),
+        deviceModes: modes,
+      };
+      console.log(params, 'params');
+      changeStore({
+        selectTime: params.name,
+      });
+      getGroupLostGenHour(paramsHour);
+    }
+  };
+
   drawChart = (data) => {
+    const { titleFunc } = this.props;
+
+    const oneLine = [{
+        name: titleFunc,
+        type: 'line',
+        barWidth: '10',
+        data: data && data.map(cur => {
+          return cur.indicatorData.value ? cur.indicatorData.value.toFixed(2) : '--';
+        }),
+      },
+    ];
+
+    const twoLine = [{
+      name: titleFunc,
+      type: 'line',
+      data: data && data.map(cur => {
+        return cur.indicatorData.actualGen ? cur.indicatorData.actualGen.toFixed(2) : '--';
+      }),
+    }, {
+      name: titleFunc,
+      type: 'line',
+      data: data && data.map(cur => {
+        return cur.indicatorData.theoryGen ? cur.indicatorData.theoryGen.toFixed(2) : '--';
+      }),
+    }];
+    const seriesData = titleFunc === '利用小时数' ? twoLine : oneLine;
     return {
       tooltip: {
         trigger: 'axis',
@@ -44,9 +110,14 @@ export default class GroupTrendChart extends Component {
           return [pt[0], '10%'];
         },
         formatter: (params) => {
+          if(titleFunc === '利用小时数') {
+            return `<div>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[1].value || '--'}</span><br /><span>应发小时数：</span><span>${params[0].value || '--'}</span>
+          </div>`;
+          }
           return `<div>
-        <span>${params[0].name}</span><br />${params[0].marker}<span>PBA </span><span>${params[0].value}%</span>
-      </div>`;
+            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}</span><span>${params[0].value || '--'}</span>
+          </div>`;
         },
       },
       grid: {
@@ -66,9 +137,8 @@ export default class GroupTrendChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: 'PBA',
+          name: titleFunc,
           min: 0,
-          max: 100,
           splitLine: {
             show: false,
           },
@@ -87,32 +157,18 @@ export default class GroupTrendChart extends Component {
           shadowOffsetY: 2,
         },
       }],
-      series: [
-        {
-          name: 'PBA',
-          type: 'line',
-          barWidth: '10',
-          itemStyle: {
-            barBorderRadius: [5, 5, 0, 0],
-          },
-          symbol: 'none',
-          data: data && data.map(cur => {
-            return cur.indicatorData.value ? cur.indicatorData.value.toFixed(2) : '0';
-          }),
-        },
-      ],
+      series: seriesData,
     };
   };
 
   // 切换日月年
   handleStatusChange = (e) => {
-    const { getGroupTrendInfo } = this.props;
+    const { getGroupTrendInfo, selectStationCode } = this.props;
     const { search } = this.props.location;
     const groupInfoStr = searchUtil(search).getValue('group');
     if(groupInfoStr) {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
       const {
-        stations = [],
         quota = [],
         dates = [],
         searchCode = [],
@@ -122,8 +178,7 @@ export default class GroupTrendChart extends Component {
       const paramsTrend = {
         startTime: dates[0],
         endTime: dates[1],
-        stationCodes: searchCode,
-        regionName: [stations[0].regionName],
+        stationCodes: selectStationCode.length === 0 ? searchCode : selectStationCode,
         indicatorCode: quotaValue,
         type: e.target.value, // 默认按月
       };
@@ -133,11 +188,11 @@ export default class GroupTrendChart extends Component {
   };
 
   render() {
-    const { groupTimeStatus } = this.props;
+    const { groupTimeStatus, titleFunc } = this.props;
     return (
       <div className={styles.groupTrendBox}>
         <div className={styles.groupTrendTitle}>
-          <span>PBA趋势图</span>
+          <span>{`${titleFunc || '--'}趋势图`}</span>
           <Radio.Group value={groupTimeStatus} buttonStyle="solid" onChange={this.handleStatusChange}>
             <Radio.Button value="1">按日</Radio.Button>
             <Radio.Button value="2">按月</Radio.Button>

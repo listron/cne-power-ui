@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 
 import styles from './groupStationChart.scss';
+import searchUtil from "../../../../../utils/searchUtil";
 
 export default class GroupStationChart extends Component {
 
@@ -10,12 +11,20 @@ export default class GroupStationChart extends Component {
     groupRankInfo: PropTypes.array,
     groupRankTime: PropTypes.number,
     groupRankLoading: PropTypes.bool,
+    dataIndex: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    changeStore: PropTypes.func,
+    getGroupTrendInfo: PropTypes.func,
+    location: PropTypes.object,
+    titleFunc: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
     const { groupSortChart } = this;
-    const { groupRankTime, groupRankLoading, groupRankInfo } = this.props;
-    const { groupRankTime: rankTimePrev } = prevProps;
+    const { groupRankTime, groupRankLoading, groupRankInfo, dataIndex } = this.props;
+    const { groupRankTime: rankTimePrev, dataIndex: dataIndexPrev } = prevProps;
     const myChart = eCharts.init(groupSortChart);
     if (groupRankLoading) { // loading态控制。
       myChart.showLoading();
@@ -24,29 +33,101 @@ export default class GroupStationChart extends Component {
     if (!groupRankLoading) {
       myChart.hideLoading();
     }
-    if(groupRankTime && groupRankTime !== rankTimePrev) {
+    if(groupRankTime && groupRankTime !== rankTimePrev || dataIndex !== '' && dataIndexPrev !== dataIndex) {
       eCharts.init(groupSortChart).clear();//清除
       const myChart = eCharts.init(groupSortChart);
-      myChart.setOption(this.drawChart(groupRankInfo));
+      myChart.setOption(this.drawChart(groupRankInfo, dataIndex));
+      myChart.on('click', (param) => this.chartHandle(param, groupRankInfo, myChart));
     }
   }
 
-  drawChart = (data) => {
-    const dataSeries = data && data.map(cur => {
-      const obj = {};
-      obj.name = cur.regionName;
-      obj.type = 'bar';
-      obj.barWidth = '10';
-      obj.itemStyle = {
-        barBorderRadius: [5, 5, 0, 0],
-      };
-      obj.data = [cur.indicatorData.value ? cur.indicatorData.value : 0];
-      return obj;
+  chartHandle = (params, groupCapacityInfo, myChart) => {
+    const { dataIndex, name } = params;
+    const { changeStore, getGroupTrendInfo, location: { search } } = this.props;
+    const groupInfoStr = searchUtil(search).getValue('group');
+    const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+    const {
+      quota = [],
+      stations = [],
+    } = groupInfo;
+    const stationCodes = [];
+    stations.forEach(cur => {
+      if(cur.regionName === name){
+        cur.stations && cur.stations.forEach(item => {
+          stationCodes.push(item.stationCode);
+        });
+      }
     });
-    console.log(dataSeries, 'dataSeries');
-    console.log(data && data.map(cur => {
-      return cur.regionName || '--';
-    }), '=====');
+    // 默认指标分析
+    const quotaValue = quota[1] || quota[0];
+    const paramsTrend = {
+      startTime: groupInfo.dates[0],
+      endTime: groupInfo.dates[1],
+      indicatorCode: quotaValue,
+      type: '2', // 默认按月
+      stationCodes,
+    };
+    changeStore({
+      dataIndex: params.dataIndex, // 下标
+      selectStationCode: stationCodes, // 保存单选区域的信息
+    });
+    myChart.setOption(this.drawChart(groupCapacityInfo, dataIndex));
+    getGroupTrendInfo(paramsTrend);
+  };
+
+  drawChart = (data, dataIndex) => {
+    const { titleFunc } = this.props;
+    const twoBar = [{ // 实发
+      data: data && data.map(cur => (cur.indicatorData.actualGen)),
+      type: 'bar',
+      barWidth: 10,
+      itemStyle: {
+        normal: {
+          // color:['#07a6ba','#4bc0c9','#3b56d9','#dbbb32','03ecef','#8648e7','#0fb2db']
+          color: function(params) {//柱子颜色
+            const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
+            return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
+          },
+        },
+        emphasis: {
+          borderColor: '#fff',
+          borderWidth: 1,
+        },
+      },
+    }, {// 应发
+      data: data && data.map(cur => (cur.indicatorData.theoryGen)),
+      type: 'bar',
+      barWidth: 10,
+      itemStyle: {
+        normal: {
+          color: '#cccccc',
+        },
+        emphasis: {
+          borderColor: '#fff',
+          borderWidth: 1,
+        },
+      },
+    }];
+    const oneBar = [{
+      data: data && data.map(cur => (cur.indicatorData.value)),
+      type: 'bar',
+      barWidth: 10,
+      itemStyle: {
+        barBorderRadius: [5, 5, 0, 0],
+        normal: {
+          // color:['#07a6ba','#4bc0c9','#3b56d9','#dbbb32','03ecef','#8648e7','#0fb2db']
+          color: function(params) {//柱子颜色
+            const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
+            return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
+          },
+        },
+        emphasis: {
+          borderColor: '#fff',
+          borderWidth: 1,
+        },
+      },
+    }];
+    const seriesData = titleFunc === '利用小时数' ? twoBar : oneBar;
     return {
       tooltip: {
         trigger: 'axis',
@@ -57,11 +138,14 @@ export default class GroupStationChart extends Component {
           return [pt[0], '10%'];
         },
         formatter: (params) => {
-          params.forEach(cur => {
+          if(titleFunc === '利用小时数') {
             return `<div>
-        <span>${cur.name}</span><br />${cur.marker}<span>PBA </span><span>${cur.value}%</span>
-      </div>`;
-          });
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[1].value || '--'}</span><br /><span>应发小时数：</span><span>${params[0].value || '--'}</span>
+          </div>`;
+          }
+          return `<div>
+            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}</span><span>${params[0].value || '--'}</span>
+          </div>`;
         },
       },
       xAxis: [
@@ -75,9 +159,8 @@ export default class GroupStationChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: 'PBA',
+          name: titleFunc,
           min: 0,
-          max: 100,
           splitLine: {
             show: false,
           },
@@ -97,15 +180,16 @@ export default class GroupStationChart extends Component {
         },
         textStyle: false,
       }],
-      series: dataSeries,
+      series: seriesData,
     };
   };
 
   render() {
+    const { titleFunc } = this.props;
     return (
       <div className={styles.groupSortBox}>
         <div className={styles.groupSortTitle}>
-          各电站PBA排名
+          {`各电站${titleFunc || '--'}排名`}
         </div>
         <div className={styles.groupSortChartCenter} ref={ref => {this.groupSortChart = ref;}} />
       </div>
