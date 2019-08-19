@@ -67,8 +67,8 @@ function* getSequenceName(action) {//获取
 }
 function* getSequenceOtherName(action) {//获取
   const { payload } = action;
-  const url = '/mock/api/v3/wind/analysis/scatterplot/xylist';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterOtherName}/${payload.stationCode}`;
+  // const url = '/mock/api/v3/wind/analysis/scatterplot/xylist';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterOtherName}/${payload.stationCode}`;
   try {
     yield put({ type: dataAnalysisSequenceAction.changeSquenceStore });
     const response = yield call(axios.get, url);//{ params: payload }
@@ -89,9 +89,7 @@ function* getSequenceOtherName(action) {//获取
 function* getSequenceData(action) {//获取
   const { payload } = action;
   const { deviceFullCode, pointY1, pointY2, startTime, endTime, interval } = payload;
-  console.log('startTime: ', startTime);
   const parmas = { deviceFullCode, pointY1, pointY2, startTime, endTime, interval };
-
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSequenceData}`;
   try {
     yield put({

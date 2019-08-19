@@ -82,6 +82,12 @@
         margin: 0 24px;
         display: flex;
 
+        :global {
+          .ant-input-number {
+            width: 115px;
+          }
+        }
+
         .bottomLeft {
           width: 500px;
         }

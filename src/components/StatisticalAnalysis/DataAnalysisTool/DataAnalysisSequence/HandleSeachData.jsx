@@ -61,10 +61,8 @@ class HandleSeachData extends React.Component {
   }
   componentWillReceiveProps(nextProp) {
     const { sequenceNames, getSequenceData, deviceList, sequenceNameTime, startTime, endTime, sequenceData } = nextProp;
-    console.log('startTime: ', startTime);
     const { point1Max } = this.state;
-    console.log('sequenceData: ', sequenceData);
-    if (this.props.sequenceNameTime !== sequenceNameTime) {
+    if (this.props.sequenceNameTime !== sequenceNameTime) {//格式化测点数据
       const { options } = this.state;
       const newscatterNames = this.formater(sequenceNames);
       const arr = options.map(e => e.pointsUnionName);
@@ -82,7 +80,7 @@ class HandleSeachData extends React.Component {
         pointsUnionName: '其他',
         isLeaf: false,
       };
-      if (sequenceNames[0] && deviceList.length) {
+      if (sequenceNames[0] && deviceList.length) {//获取测点数据并且取第一项
         const { pointNameList, pointType } = sequenceNames[0];
         const fristDevice = deviceList[0];
         const deviceFullCode = fristDevice.deviceFullCode;
@@ -109,7 +107,7 @@ class HandleSeachData extends React.Component {
         });
       }
     }
-    if (!point1Max && deviceList.length === sequenceData.length) {
+    if (!point1Max && deviceList.length === sequenceData.length) {//当拿到所有图表数据，进行最大值最小值筛选
       const y1Max = sequenceData.map((e, i) => (e.point1Max ? e.point1Max : 0));
       const y1Min = sequenceData.map((e, i) => (e.point1Min ? e.point1Min : 0));
       const y2Max = sequenceData.map((e, i) => (e.point2Max ? e.point2Max : 0));
@@ -126,11 +124,9 @@ class HandleSeachData extends React.Component {
         point2Max: Math.ceil(Math.max(...y2Max)),
         point2Min: Math.floor(Math.min(...y2Min)),
       });
-
-
     }
   }
-  formater = (data) => {
+  formater = (data) => {//对测点数据进行处理
     return data.map((e, i) => {
       const pointNameList = e.pointNameList.map((item, index) => ({
         ...item, value: `${item.pointCodeX}_${item.pointCodeY}`,
@@ -139,16 +135,30 @@ class HandleSeachData extends React.Component {
     }
     );
   }
-  selectStationCode = (stationCodeArr) => {
+  clearoutLimit = () => {
+    this.setState({
+      point1Max: null,
+      point1Min: null,
+      point2Max: null,
+      point2Min: null,
+    });
+  }
+  selectStationCode = (stationCodeArr) => {//电站选择
     const { stationCode } = stationCodeArr[0];
-    //暂存电站code
+    this.clearoutLimit();
+    this.setState({
+      showOther: false,
+    });
     this.props.changeSquenceStore({
       stationCode,
       sequenceData: [],
+      point1Max: null,
+      point1Min: null,
+      point2Max: null,
+      point2Min: null,
     });
     this.props.getStationDevice({ stationCode });
     this.props.getSequenceName({ stationCode });
-
   }
   //改时间
   changeTime = (date, dateString) => {
@@ -157,15 +167,15 @@ class HandleSeachData extends React.Component {
       saveStartTime: dateString[0],
       saveEndTime: dateString[1],
     });
+    this.clearoutLimit();
   }
   //改测点
   onChangeContrast = (value, selectedOptions) => {
-    console.log('selectedOptions: ', selectedOptions);
-    console.log('value: ', value);
     const { stationCode } = this.props;
     if (value[0] === '其他') {
       this.setState({
         showOther: true,
+        sequenceNameValue: ['其他'],
       });
       this.props.getSequenceOtherName({
         stationCode,
@@ -183,11 +193,10 @@ class HandleSeachData extends React.Component {
         yName: pointCodeNameY,
         xCode: pointCodeX,
         yCode: pointCodeY,
-      });
-      this.setState({
         sequenceNameValue: value,
         showOther: false,
       });
+      this.clearoutLimit();
     }
   }
   //交换左右y轴
@@ -229,55 +238,30 @@ class HandleSeachData extends React.Component {
   }
   //改变第一个y轴
   changeY1value = (value, option) => {
-    const { props: { chidren } } = option;
-    this.props.changeSquenceStore({
-      pointCodeX: value,
-      pointCodeNameX: chidren,
+    const { props: { children } } = option;
+    this.setState({
+      xCode: value,
+      xName: children,
     });
   }
   //改变第二个y轴
   changeY2value = (value, option) => {
-    const { props: { chidren } } = option;
-    this.props.changeSquenceStore({
-      pointCodeY: value,
-      pointCodeNameY: chidren,
-    });
-  }
-  //改变最大值
-  changeY1max = (value) => {
-    console.log('value: ', value);
+    const { props: { children } } = option;
     this.setState({
-      point1Max: value,
-    });
-  }
-  changeY1min = (value) => {
-    this.setState({
-      point1Min: value,
-    });
-  }
-  changeY2max = (value) => {
-    this.setState({
-      point2Max: value,
+      yCode: value,
+      yName: children,
     });
   }
 
-  changeY2min = (value) => {
-    this.setState({
-      point2Min: value,
-    });
-  }
   //下载
   downPic = () => {
     this.props.changeSquenceStore({
       down: true,
     });
-
   }
   render() {
-    const { stationCode, stations, sequenceotherNames, theme, newSrcUrl, startTime, endTime } = this.props;
+    const { stationCode, stations, sequenceotherNames, theme, startTime, endTime } = this.props;
     const { isSwap, options, sequenceNameValue, showOther, xName, yName, point1Max, point1Min, point2Max, point2Min } = this.state;
-    console.log(' point1Max, point1Min, point2Max, point2Min: ', point1Max, point1Min, point2Max, point2Min);
-
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => e.stationType === 0);
     return (
@@ -309,7 +293,7 @@ class HandleSeachData extends React.Component {
             <Select
               style={{ width: 120 }}
               onChange={this.changeY1value}
-              value={this.props.pointCodeX}
+              value={this.state.xCode}
             >
               {sequenceotherNames.map((e, i) => (
                 <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
@@ -319,7 +303,7 @@ class HandleSeachData extends React.Component {
             <Select
               style={{ width: 120 }}
               onChange={this.changeY2value}
-              value={this.props.pointCodeY}
+              value={this.state.yCode}
             >
               {sequenceotherNames.map((e, i) => (
                 <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
@@ -339,7 +323,7 @@ class HandleSeachData extends React.Component {
                 value={point1Max}
                 formatter={value => `最大值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
-                onChange={this.changeY1max}
+                onChange={(value) => this.setState({ point1Max: value })}
               />
 
               <InputNumber
@@ -348,7 +332,7 @@ class HandleSeachData extends React.Component {
                 max={point1Max}
                 formatter={value => `最小值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
-                onChange={this.changeY1min}
+                onChange={(value) => this.setState({ point1Min: value })}
               />
             </div>
             <div className={styles.bottomLeft}>
@@ -360,7 +344,7 @@ class HandleSeachData extends React.Component {
                 max={point2Max}
                 formatter={value => `最大值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
-                onChange={this.changeY2max}
+                onChange={(value) => this.setState({ point2Max: value })}
               />
               <InputNumber
                 value={point2Min}
@@ -368,14 +352,13 @@ class HandleSeachData extends React.Component {
                 max={point2Max}
                 formatter={value => `最小值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
-                onChange={this.changeY2min}
+                onChange={(value) => this.setState({ point2Min: value })}
               />
               <Button className={styles.seachBtn} onClick={this.getSequenceData}>查询</Button>
             </div>
           </div>}
           <Button className={styles.seachBtn} onClick={this.downPic}>图片下载</Button>
         </div>
-
       </div>
     );
   }
