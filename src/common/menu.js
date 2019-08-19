@@ -454,6 +454,29 @@ const menuData = [
             rightKey: 'analysis_turbineFDD_console',
           },
         ],
+      }, {
+        name: '风电分析',
+        path: 'achievement',
+        rightKey: 'statistics_device',
+        children: [
+          {
+            name: '集团绩效分析',
+            path: 'analysis/group',
+            rightKey: 'statistics_device',
+          }, {
+            name: '区域绩效分析',
+            path: 'analysis/area',
+            rightKey: 'statistics_device',
+          }, {
+            name: '电站效能分析',
+            path: 'analysis/station',
+            rightKey: 'statistics_device',
+          }, {
+            name: '运行数据分析',
+            path: 'analysis/run',
+            rightKey: 'statistics_device',
+          },
+        ],
       },
     ],
   }, {
