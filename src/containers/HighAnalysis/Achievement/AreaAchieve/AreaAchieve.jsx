@@ -57,7 +57,7 @@ class AreaAchieve extends Component {
       };
       const paramsTrend = {
         ...basicParams,
-        regionName: paramsCapacity.regionName,
+        // regionName: paramsCapacity.regionName,
         indicatorCode: quotaValue,
         type: timeStatus, // 默认按月
       };
@@ -175,6 +175,35 @@ class AreaAchieve extends Component {
     return <span>--:--</span>;
   };
 
+  //选中选择指标名字
+  qutaName = () => {
+    const { quotaInfo } = this.props;
+    const { search } = this.props.location;
+    const groupInfoStr = searchUtil(search).getValue('area');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const { quota = [] } = groupInfo;
+      // 默认指标分析
+      let qutaName = ''; //  根据quota的value值遍历名称
+      quotaInfo.forEach(cur => {
+        // 有没有子集
+        if(quota[1] === cur.value) {
+          cur.children.forEach(item => {
+            if(quota[0] === item.value) {
+              qutaName = item.label;
+            }
+          });
+          return false;
+        }
+        if(quota[0] === cur.value) {
+          qutaName = cur.label;
+        }
+      });
+      return qutaName;
+    }
+    return '--';
+  };
+
   render() {
     return (
       <div className={styles.areaAchieveBox}>
@@ -185,10 +214,10 @@ class AreaAchieve extends Component {
         <div className={styles.areaChartBox}>
           <div className={styles.areaTopChart}>
             <AreaChart {...this.props} />
-            <StationPBAChart {...this.props} />
+            <StationPBAChart qutaName={this.qutaName()} {...this.props} />
           </div>
           <div className={styles.areaBottomChart}>
-            <AreaTrendChart {...this.props} />
+            <AreaTrendChart qutaName={this.qutaName()} {...this.props} />
             <AreaLossChart {...this.props} />
           </div>
         </div>
@@ -208,6 +237,7 @@ const mapDispatchToProps = (dispatch) => ({
   getIndicatorRank: (payload) => dispatch({type: areaAchieveAction.getIndicatorRank, payload}),
   getIndicatorRankTotal: (payload) => dispatch({type: areaAchieveAction.getIndicatorRankTotal, payload}),
   getModesInfo: (payload) => dispatch({type: areaAchieveAction.getModesInfo, payload}),
+  changeStore: (payload) => dispatch({type: areaAchieveAction.changeStore, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AreaAchieve);
