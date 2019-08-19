@@ -43,7 +43,6 @@ export default class GroupStationChart extends Component {
 
   chartHandle = (params, groupCapacityInfo, myChart) => {
     const { dataIndex, name } = params;
-    console.log(params, '哈哈');
     const { changeStore, getGroupTrendInfo, location: { search } } = this.props;
     const groupInfoStr = searchUtil(search).getValue('group');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
@@ -68,7 +67,6 @@ export default class GroupStationChart extends Component {
       type: '2', // 默认按月
       stationCodes,
     };
-    console.log(groupCapacityInfo[dataIndex]);
     changeStore({
       dataIndex: params.dataIndex, // 下标
       selectStationCode: stationCodes, // 保存单选区域的信息
@@ -161,9 +159,8 @@ export default class GroupStationChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: 'PBA',
+          name: titleFunc,
           min: 0,
-          max: 100,
           splitLine: {
             show: false,
           },

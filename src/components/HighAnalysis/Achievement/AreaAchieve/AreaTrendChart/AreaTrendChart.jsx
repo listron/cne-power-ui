@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import eCharts from 'echarts';
 import { Radio } from 'antd';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 
 import styles from './areaTrendChart.scss';
@@ -16,6 +17,10 @@ export default class AreaTrendChart extends Component {
     timeStatus: PropTypes.string,
     getTrendInfo: PropTypes.func,
     location: PropTypes.object,
+    selectStationCode: PropTypes.array,
+    qutaName: PropTypes.string,
+    changeStore: PropTypes.func,
+    getLostGenHour: PropTypes.func,
   };
 
   componentDidUpdate(prevProps) {
@@ -34,10 +39,69 @@ export default class AreaTrendChart extends Component {
       eCharts.init(trendChart).clear();//清除
       const myChart = eCharts.init(trendChart);
       myChart.setOption(this.drawChart(trendInfo));
+      myChart.on('click', (param) => this.chartHandle(param));
     }
   }
 
+  chartHandle = (params) => {
+    const { selectStationCode, changeStore, getLostGenHour, timeStatus } = this.props;
+    console.log(selectStationCode, 'selectStationCode');
+    if(selectStationCode.length > 0) {
+      const { search } = this.props.location;
+      const groupInfoStr = searchUtil(search).getValue('area');
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const {
+        modes = [],
+        modesInfo = [],
+      } = groupInfo;
+      // 格式化日月年的开始结束日期
+      const timeFormat = {
+        '1': [moment(params.name).startOf('d').format('YYYY-MM-DD'), moment(params.name).endOf('d').format('YYYY-MM-DD')],
+        '2': [moment(params.name).startOf('m').format('YYYY-MM'), moment(params.name).endOf('m').format('YYYY-MM')],
+        '3': [moment(params.name).startOf('y').format('YYYY'), moment(params.name).endOf('y').format('YYYY')],
+      };
+      const paramsHour = {
+        startTime: timeFormat[timeStatus][0],
+        endTime: timeFormat[timeStatus][1],
+        stationCodes: groupInfo.searchCode,
+        manufactorIds: modesInfo.map(cur => {
+          return cur.value;
+        }),
+        deviceModes: modes,
+      };
+      changeStore({
+        selectTime: params.name,
+      });
+      getLostGenHour(paramsHour);
+    }
+  };
+
   drawChart = (data) => {
+    const { qutaName } = this.props;
+    const oneLine = [{
+      name: qutaName,
+      type: 'line',
+      barWidth: '10',
+      data: data && data.map(cur => {
+        return cur.indicatorData.value ? cur.indicatorData.value.toFixed(2) : '--';
+      }),
+    },
+    ];
+
+    const twoLine = [{
+      name: qutaName,
+      type: 'line',
+      data: data && data.map(cur => {
+        return cur.indicatorData.actualGen ? cur.indicatorData.actualGen.toFixed(2) : '--';
+      }),
+    }, {
+      name: qutaName,
+      type: 'line',
+      data: data && data.map(cur => {
+        return cur.indicatorData.theoryGen ? cur.indicatorData.theoryGen.toFixed(2) : '--';
+      }),
+    }];
+    const seriesData = qutaName === '利用小时数' ? twoLine : oneLine;
     return {
       graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
       tooltip: {
@@ -70,7 +134,6 @@ export default class AreaTrendChart extends Component {
           type: 'value',
           name: 'PBA',
           min: 0,
-          max: 100,
           splitLine: {
             show: false,
           },
@@ -89,27 +152,14 @@ export default class AreaTrendChart extends Component {
           shadowOffsetY: 2,
         },
       }],
-      series: [
-        {
-          name: 'PBA',
-          type: 'line',
-          barWidth: '10',
-          itemStyle: {
-            barBorderRadius: [5, 5, 0, 0],
-          },
-          symbol: 'none',
-          data: data && data.map(cur => {
-            return cur.indicatorData.value ? cur.indicatorData.value.toFixed(2) : '0';
-          }),
-        },
-      ],
+      series: seriesData,
     };
   };
 
 
   // 切换日月年
   handleStatusChange = (e) => {
-    const { getTrendInfo } = this.props;
+    const { getTrendInfo, selectStationCode } = this.props;
     const { search } = this.props.location;
     const groupInfoStr = searchUtil(search).getValue('area');
     if(groupInfoStr) {
@@ -125,7 +175,7 @@ export default class AreaTrendChart extends Component {
       const paramsTrend = {
         startTime: dates[0],
         endTime: dates[1],
-        stationCodes: searchCode,
+        stationCodes: selectStationCode.length === 0 ? searchCode : selectStationCode,
         regionName: [stations[0].regionName],
         indicatorCode: quotaValue,
         type: e.target.value, // 默认按月
