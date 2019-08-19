@@ -35,6 +35,9 @@ const initState = immutable.fromJS({
   trendLoading: false,
   loseLoading: false,
   timeStatus: '2', // 日月年
+  dataSelect: '', // 选中信息
+  selectStationCode: [], // 选中电站信息
+  selectTime: '', // 选中时间
 });
 
 export const achieveArea = (state = initState, action) => {
