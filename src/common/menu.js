@@ -318,16 +318,15 @@ const menuData = [
             path: 'scatter',
             rightKey: 'analysis_dataTool_scatter',
           },
-          // {
-          //   name: '时序图',
-          //   path: 'sequence',
-          //   rightKey: 'analysis_dataTool_sequence',
-          // },
+          {
+            name: '时序图',
+            path: 'sequence',
+            rightKey: 'analysis_dataTool_sequence',
+          },
           // {
           //   name: '统计图',
           //   path: 'histogram',
           //   rightKey: 'analysis_dataTool_histogram',
-
           // },
         ],
       },
