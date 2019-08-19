@@ -4,6 +4,8 @@ import styles from './sequenceStyles.scss';
 import SequenceChart from './SequenceChart';
 import { downloadFile } from '../../../../utils/utilFunc';
 import SequenceModal from './SequenceModal';
+import toZip from '../../../../utils/js-zip';
+
 class SequenceChartContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -17,9 +19,13 @@ class SequenceChartContainer extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.down && this.props.down !== nextProps.down) {
-      this.state.newSrcUrl.forEach((e, i) => {
-        downloadFile(`${e.title}`, e.src);
-      });
+      // this.state.newSrcUrl.forEach((e, i) => {
+      //   downloadFile(`${e.title}`, e.src);
+      // });
+      const { stations, stationCode, pointCodeNameX, pointCodeNameY } = this.props;
+      const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
+      const { stationName } = stationArr;
+      toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}vs${pointCodeNameY}`);
       this.props.changeSquenceStore({ down: false });
     }
   }
