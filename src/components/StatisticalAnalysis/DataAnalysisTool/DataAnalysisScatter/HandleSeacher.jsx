@@ -212,19 +212,13 @@ class HandleSeacher extends React.Component {
     });
     //下载照片
   }
-
-
-
-
-
   render() {
     const { stationCode, stations, pointCodeNameX, pointCodeNameY, scatterotherNames, theme } = this.props;
-    // console.log('scatterotherNames: ', scatterotherNames);
     const { isSwap, options, scatterNameValue, showOther, xName, yName } = this.state;
     const defaultStartime = moment().month(moment().month() - 1).startOf('month');
     const defaultEndtime = moment().month(moment().month() - 1).endOf('month');
     const dateFormat = 'YYYY.MM.DD';
-    const selectStation = stations.filter(e => e.stationType === 0);
+    const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
     return (
       <div className={styles.headBox}>
         <div className={styles.headTop}>

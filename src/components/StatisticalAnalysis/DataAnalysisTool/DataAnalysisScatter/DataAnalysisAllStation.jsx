@@ -23,7 +23,7 @@ class DataAnalysisAllStation extends React.Component {
   }
   render() {
     const { stations, theme } = this.props;
-    const dataList = stations.filter(e => e.stationType === 0);
+    const dataList = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
     return (
       <div className={`${styles.allstationBox}  ${styles[theme]} `}>
         <div className={styles.boxtitle}>风电站列表<span>(点击查看电站散点图)</span></div>
