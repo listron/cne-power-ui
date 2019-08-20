@@ -24,6 +24,7 @@ import { achieveLayout } from './Achievement/achieveReducer'; // 风电绩效分
 import { achieveGroup } from './Achievement/GroupAchieve/groupAchieveReducer'; // 风电绩效分析-集团
 import { achieveArea } from './Achievement/AreaAchieve/areaAchieveReducer'; // 风电绩效分析-区域
 import { achieveStation } from './Achievement/StationAchieve/stationAchieveReducer'; // 风电绩效分析-电站
+import { achieveStop } from './Achievement/StopStatus/stopStatusReducer'; // 风电绩效分析 - 停机状态
 import { achieveRun } from './Achievement/RunAchieve/runAchieveReducer'; // 风电绩效分析-运行
 
 
@@ -52,6 +53,7 @@ const highAnalysisReducer = combineReducers({
   achieveGroup,
   achieveArea,
   achieveStation,
+  achieveStop,
   achieveRun,
 });
 
