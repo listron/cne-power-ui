@@ -15,6 +15,7 @@ class StopStatus extends Component {
 
   static propTypes = {
     stopStringify: PropTypes.string,
+    stopStatusLoading: PropTypes.bool,
     location: PropTypes.object,
     history: PropTypes.object,
     areaStation: PropTypes.array,
@@ -132,7 +133,7 @@ class StopStatus extends Component {
 
   goSearch = () => { // 查询
     const { stationCode, deviceCodes, startTime, endTime } = this.props;
-    this.historyChange(stationCode, deviceCodes.map(e => e.value).join('_'), startTime, endTime);
+    this.historyChange(stationCode, deviceCodes.join('_'), startTime, endTime);
   }
 
   queryChart = ({ stationCode, ...rest}) => {
@@ -143,7 +144,17 @@ class StopStatus extends Component {
   }
 
   render() {
-    const { areaStation, stationCode, modeDevices, deviceCodes, startTime, endTime } = this.props;
+    const { areaStation, stationCode, modeDevices, deviceCodes, startTime, endTime, stopStatusLoading, stopStringify } = this.props;
+    const searchInfoLost = modeDevices.length === 0; // 未选择设备 => 不可查询
+    let device = [], dates = [];
+    try{
+      const stopInfo = JSON.parse(stopStringify);
+      device = stopInfo.device.split('_');
+      dates = stopInfo.dates;
+    } catch(error){ null; } // 任性吞错误，嘎嘎。~
+    const deviceChanged = deviceCodes.length !== device.length || deviceCodes.find(e => !device.includes(e));
+    const timeChanged = startTime !== dates[0] || endTime !== dates[1];
+    const searchForbidden = stopStatusLoading || searchInfoLost || (!timeChanged && !deviceChanged);
     // const faultNames = ['风机故障', '计划停机', '变电故障', '场外因素', '其他损失'];
     // const stopStatusList = [1, 2, 3, 4, 5, 6, 7].map(e => ({
     //   deviceFullcode: `${e}M${e * e}MM${e * 2}`,
@@ -186,7 +197,12 @@ class StopStatus extends Component {
               style={{width: '220px'}}
             />
           </div>
-          <Button onClick={this.goSearch} className={styles.search}>查询</Button>
+          <Button
+            disabled={searchForbidden}
+            onClick={this.goSearch}
+            className={styles.search}
+            loading={stopStatusLoading}
+          >查询</Button>
         </div>
         <StopStatusChart {...this.props} />
       </div>
