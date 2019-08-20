@@ -5,20 +5,20 @@ import styles from './dataAnalysisStyle.scss';
 
 class DataAnalysisAllStation extends React.Component {
   static propTypes = {
-
     stations: PropTypes.array,
     changeToolStore: PropTypes.func,
     getScatterName: PropTypes.func,
-    getScatterData: PropTypes.func,
+    getStationDevice: PropTypes.func,
 
   }
   constructor(props, context) {
     super(props, context);
   }
   selectStation = (stationCode) => {
-    const { changeToolStore, getScatterName } = this.props;
+    const { changeToolStore, getScatterName, getStationDevice } = this.props;
     changeToolStore({ stationCode, showPage: 'singleStation' });
     getScatterName({ stationCode });
+    getStationDevice({ stationCode });
 
   }
   render() {

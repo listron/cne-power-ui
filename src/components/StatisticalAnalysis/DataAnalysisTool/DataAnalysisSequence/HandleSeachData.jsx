@@ -282,7 +282,7 @@ class HandleSeachData extends React.Component {
             onChange={this.changeTime}
             style={{ width: '240px' }}
           />
-          <label className={styles.nameStyle}>散点</label>
+          <label className={styles.nameStyle}>测点</label>
           <Cascader
             options={options}
             value={sequenceNameValue}

@@ -61,13 +61,17 @@ class HandleSeacher extends React.Component {
       yName: '',
       xCode: '',
       yCode: '',
-
+      saveStartTime: '',
+      saveEndTime: '',
+      point1Max: null,
+      point1Min: null,
+      point2Max: null,
+      point2Min: null,
     };
   }
   componentWillReceiveProps(nextProp) {
-    const { scatterNames, getScatterData, stationCode, scatterNameTime } = nextProp;
-    const defaultStartime = moment().month(moment().month() - 1).startOf('month');
-    const defaultEndtime = moment().month(moment().month() - 1).endOf('month');
+    const { scatterNames, getScatterData, stationCode, scatterNameTime, deviceList, startTime, endTime } = nextProp;
+
     // const preScatterName = this.props.scatterNames;
     if (this.props.scatterNameTime !== scatterNameTime) {
       const { options } = this.state;
@@ -87,9 +91,11 @@ class HandleSeacher extends React.Component {
         // pointsUnionName: '其他',
         // isLeaf: false,
       };
-      if (scatterNames[0]) {
+      if (scatterNames[0] && deviceList.length) {
         const { pointNameList, pointType } = scatterNames[0];
         const firstData = pointNameList ? pointNameList[0] : [];
+        const fristDevice = deviceList[0];
+        const deviceFullCode = fristDevice.deviceFullCode;
         const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = firstData;
         this.setState({ options: [...option, otherName], scatterNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
         this.props.changeToolStore({ pointCodeNameX, pointCodeNameY, xPointCode: pointCodeX, yPointCode: pointCodeY });
@@ -98,11 +104,14 @@ class HandleSeacher extends React.Component {
           yName: pointCodeNameY,
           xCode: pointCodeX,
           yCode: pointCodeY,
+          saveStartTime: startTime,
+          saveEndTime: endTime,
         });
         getScatterData({
           stationCode,
-          startTime: defaultStartime,
-          endTime: defaultEndtime,
+          deviceFullCode,
+          startTime: startTime,
+          endTime: endTime,
           xPointCode: pointCodeX,
           yPointCode: pointCodeY,
         });
@@ -119,54 +128,67 @@ class HandleSeacher extends React.Component {
     }
     );
   }
+  clearoutLimit = () => {
+    this.setState({
+      point1Max: null,
+      point1Min: null,
+      point2Max: null,
+      point2Min: null,
+    });
+  }
   selectStationCode = (stationCodeArr) => {
     const { stationCode } = stationCodeArr[0];
     this.props.changeToolStore({
       stationCode,
+      scatterData: [],
+      point1Max: null,
+      point1Min: null,
+      point2Max: null,
+      point2Min: null,
     });
+    this.props.getStationDevice({ stationCode });
     this.props.getScatterName({ stationCode });
   }
 
   changeTime = (date, dateString) => {
-    const { changeToolStore } = this.props;
-    changeToolStore({
-      startTime: dateString[0],
-      endTime: dateString[1],
+    this.setState({
+      saveStartTime: dateString[0],
+      saveEndTime: dateString[1],
     });
+    this.clearoutLimit();
   }
   onChangeContrast = (value, selectedOptions) => {
     const { stationCode } = this.props;
     if (value[0] === '其他') {
       this.setState({
         showOther: true,
+        scatterNameValue: ['其他'],
       });
       this.props.getScatterOtherName({
         stationCode,
       });
     } else {
-      const { pointCodeNameX, pointCodeNameY } = selectedOptions[1];
+      const selectedOption = selectedOptions[1] ? selectedOptions[1] : [];
+      const { pointCodeNameX, pointCodeNameY } = selectedOption;
       const codeValue = value[value.length - 1];
-      const { pointCodeX, pointCodeY } = codeValue.split('_');
-      this.props.changeToolStore({
-        pointCodeNameX,
-        pointCodeNameY,
-        xPointCode: pointCodeX,
-        yPointCode: pointCodeY,
-      });
+      const valueArr = codeValue.split('_');
+      const pointCodeX = valueArr[0];
+      const pointCodeY = valueArr[1];
       this.setState({
+        xName: pointCodeNameX,
+        yName: pointCodeNameY,
+        xCode: pointCodeX,
+        yCode: pointCodeY,
         scatterNameValue: value,
         showOther: false,
       });
     }
-
 
   }
   changeSwap = () => {
     const { xCode, yCode, xName, yName } = this.state;
     this.setState({
       isSwap: !this.state.isSwap,
-    });
-    this.setState({
       xName: yName,
       yName: xName,
       xCode: yCode,
@@ -176,47 +198,67 @@ class HandleSeacher extends React.Component {
   }
   getScatterData = () => {
     //请求数据
-    const { getScatterData, changeToolStore, stationCode, startTime, endTime } = this.props;
-    const { xCode, yCode, xName, yName } = this.state;
-    getScatterData({
-      stationCode,
-      xPointCode: xCode,
-      yPointCode: yCode,
-      startTime,
-      endTime,
-    });
+    const { getScatterData, changeToolStore, stationCode, deviceList } = this.props;
+    const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, point1Max, point1Min, point2Max, point2Min } = this.state;
     changeToolStore({
+      scatterData: [],
       pointCodeNameX: xName,
       pointCodeNameY: yName,
+      point1Max,
+      point1Min,
+      point2Max,
+      point2Min,
     });
+    const fristDevice = deviceList[0];
+    const deviceFullCode = fristDevice.deviceFullCode;
+    getScatterData({
+      stationCode,
+      deviceFullCode,
+      xPointCode: xCode,
+      yPointCode: yCode,
+      startTime: saveStartTime,
+      endTime: saveEndTime,
+    });
+
   }
   changeXvalue = (value, option) => {
-    const { props: { chidren } } = option;
-    this.props.changeToolStore({
-      pointCodeX: value,
-      pointCodeNameX: chidren,
+    const { props: { children } } = option;
+    // this.props.changeToolStore({
+    //   pointCodeX: value,
+    //   pointCodeNameX: children,
+    // });
+    this.setState({
+      xCode: value,
+      xName: children,
     });
   }
   changeYvalue = (value, option) => {
-    const { props: { chidren } } = option;
-    this.props.changeToolStore({
-      pointCodeY: value,
-      pointCodeNameY: chidren,
+    const { props: { children } } = option;
+    // this.props.changeToolStore({
+    //   pointCodeY: value,
+    //   pointCodeNameY: children,
+    // });
+    this.setState({
+      yCode: value,
+      yName: children,
     });
   }
 
   downPic = () => {
-    const { newSrcUrl, startTime, endTime, pointCodeNameX, pointCodeNameY } = this.props;
-    newSrcUrl.forEach((e, i) => {
-      downloadFile(`${e.title}_${pointCodeNameX}vs${pointCodeNameY}_`, e.src);
-    });
+    // const { newSrcUrl, startTime, endTime, pointCodeNameX, pointCodeNameY } = this.props;
+    // newSrcUrl.forEach((e, i) => {
+    //   downloadFile(`${e.title}_${pointCodeNameX}vs${pointCodeNameY}_`, e.src);
+    // });
     //下载照片
+    this.props.changeToolStore({
+      down: true,
+    });
   }
   render() {
-    const { stationCode, stations, pointCodeNameX, pointCodeNameY, scatterotherNames, theme } = this.props;
-    const { isSwap, options, scatterNameValue, showOther, xName, yName } = this.state;
-    const defaultStartime = moment().month(moment().month() - 1).startOf('month');
-    const defaultEndtime = moment().month(moment().month() - 1).endOf('month');
+    const { stationCode, stations, pointCodeNameX, pointCodeNameY, scatterotherNames, theme, startTime, endTime } = this.props;
+    const { isSwap, options, scatterNameValue, showOther, xName, yName,
+      point1Max, point1Min, point2Max, point2Min } = this.state;
+
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
     return (
@@ -231,7 +273,7 @@ class HandleSeacher extends React.Component {
           />
           <label className={styles.nameStyle}>时间</label>
           <RangePicker
-            defaultValue={[moment(defaultStartime, dateFormat), moment(defaultEndtime, dateFormat)]}
+            defaultValue={[moment(startTime, dateFormat), moment(endTime, dateFormat)]}
             format={dateFormat}
             onChange={this.changeTime}
             style={{ width: '240px' }}
@@ -248,9 +290,9 @@ class HandleSeacher extends React.Component {
             style={{ width: '400px' }}
           />
           {!showOther && <div className={styles.contrastValue}>
-            <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} >{xName}</Button>
+            <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} >{xName ? xName : '--'}</Button>
             <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
-            <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} >{yName}</Button>
+            <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} >{yName ? yName : '--'}</Button>
           </div>}
           {showOther && <div className={styles.contrastValue}>
             <Select

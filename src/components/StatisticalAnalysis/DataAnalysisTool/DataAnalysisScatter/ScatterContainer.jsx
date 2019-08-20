@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import SingleScatter from './SingleScatter';
 import SingleStationModal from './SingleStationModal';
-
+import toZip from '../../../../utils/js-zip';
 class ScatterContainer extends React.Component {
   static propTypes = {
     scatterData: PropTypes.array,
@@ -16,24 +16,39 @@ class ScatterContainer extends React.Component {
     this.state = {
       imageListShow: false,
       currentImgIndex: 0,
+      newSrcUrl: [],
+      srcObj: {},
     };
   }
-
-
-
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.down && this.props.down !== nextProps.down) {
+      const { stations, stationCode, pointCodeNameX, pointCodeNameY } = this.props;
+      const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
+      const { stationName } = stationArr;
+      toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}vs${pointCodeNameY}`);
+      this.props.changeToolStore({ down: false });
+    }
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    if ((nextState.newSrcUrl !== this.state.newSrcUrl) || (nextState.srcObj !== this.state.srcObj)) {
+      return false;
+    }
+    return true;
+  }
   saveImgUrl = (title, src) => {//存储批量下载图片的编码
-    const srcArr = [];
+    const { srcObj } = this.state;
     const newSrcUrl = [];
-    const { srcObj } = this.props;
+    const srcArr = [];
     srcArr.push({ title, src });
     srcArr.forEach((e, i) => {
       srcObj[e.title] = e.src;
     });
     for (var item in srcObj) {
-      newSrcUrl.push({ title: [item], src: srcObj[item] });
+      newSrcUrl.push({ title: item, src: srcObj[item] });
     }
-    this.props.changeToolStore({
-      newSrcUrl, srcObj,
+    this.setState({
+      newSrcUrl: newSrcUrl,
+      srcObj: srcObj,
     });
   }
   hideImg = () => {
@@ -56,32 +71,37 @@ class ScatterContainer extends React.Component {
 
   likeChange = (index, bool) => {
     // console.log('index', index, bool);
-    const { scatterData, changeToolStore } = this.props;
-    scatterData[index].likeStatus = bool;
-    changeToolStore({ scatterData });
+    const { deviceList, changeToolStore } = this.props;
+    deviceList[index].likeStatus = bool;
+    changeToolStore({ deviceList });
   };
 
   render() {
-    const { scatterData } = this.props;
+    const { scatterData, deviceList } = this.props;
     const { currentImgIndex, imageListShow } = this.state;
-    const test = scatterData.length > 0 && [scatterData[0]] || [];
     return (
-      <React.Fragment>
-        {scatterData.map((e, i) => {
-          return (<SingleScatter
-            {...this.props}
-            key={i}
-            index={i}
-            saveBtn={e.likeStatus}
-            id={e.deviceName}
-            title={e.deviceName}
-            chartData={e.chartData}
-            showImg={this.showImg}
-            saveImgUrl={this.saveImgUrl}
-            onChange={this.likeChange}
-          />);
-        })}
-        <span ref={'date'}></span>
+      <div className={styles.chartsContainer}>
+        {deviceList.map((e, i) =>
+          (
+            <div className={styles.chartStyle} key={i}>
+              <div className={styles.scatterChart} >
+                <SingleScatter
+                  {...this.props}
+                  key={i}
+                  index={i}
+                  saveBtn={e.likeStatus}
+                  id={e.deviceName}
+                  title={e.deviceName}
+                  chartData={scatterData[i]}
+                  showImg={this.showImg}
+                  saveImgUrl={this.saveImgUrl}
+                  onChange={this.likeChange}
+                />
+              </div>
+            </div>
+          )
+        )}
+        {/* <span ref={'date'}></span> */}
         {
           <SingleStationModal
             {...this.props}
@@ -90,10 +110,10 @@ class ScatterContainer extends React.Component {
             hideImg={this.hideImg}
             currentImgIndex={currentImgIndex}
             changeCurrentImgIndex={this.changeCurrentImgIndex}
-            onChange={this.likeChange}
+            likeChange={this.likeChange}
           />
         }
-      </React.Fragment>
+      </div>
     );
   }
 }

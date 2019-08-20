@@ -21,34 +21,43 @@ class SingleScatter extends React.Component {
     super(props, context);
   }
   componentDidMount() {
-    this.drawChart(this.props);
+    const { chartId } = this;
+    const { theme } = this.props;
+    const myChart = echarts.init(chartId, themeConfig[theme]); //构建下一个实例
+    const option = this.creatOption(this.props);
+    myChart.setOption(option);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { pointCodeNameX, pointCodeNameY, id, saveBtn, theme, scatterDataTime } = nextProps;
-    if (scatterDataTime !== this.props.scatterDataTime || theme !== this.props.theme) {
+    const { id, saveBtn, theme, scatterDataTime, chartLoading, scatterData } = nextProps;
+    const scatterChart = echarts.init(this.chartId);
+    if (chartLoading && (this.props.index) === this.props.scatterData.length) { // loading态控制。第一次无数据，请求数据的过程
+      scatterChart.showLoading();
+    }
+    if (!chartLoading) {
+      scatterChart.hideLoading();
+    }
+    if ((this.props.chartLoading && chartLoading !== this.props.chartLoading)) {
+      // scatterChart.clear();//清除
       this.drawChart(nextProps);
     }
-    if (id !== this.props.id || saveBtn !== this.props.saveBtn) {
-      this.drawChart(nextProps, true);
+    if (saveBtn !== this.props.saveBtn || id !== this.props.id) {
+      scatterChart.clear();
+      this.drawChart(nextProps);
     }
+    // if ((this.props.index + 1 === scatterData.length)) {
+    //   
+    //   scatterChart.clear();//清除
+    //   this.drawChart(nextProps);
+    // }
+    // if (scatterDataTime !== this.props.scatterDataTime || theme !== this.props.theme) {
+    //   this.drawChart(nextProps);
+    // }
   }
-
-  format = (val) => {
-    if (val) {
-      return val.split('').join('\n');
-    }
-    return val;
-  }
-  drawChart = (params, change) => {
-    const { title, pointCodeNameX, pointCodeNameY, chartData, saveBtn, index, onChange, theme } = params;
-    let scatterChart = echarts.init(this.chartId, themeConfig[theme]);
-    if (scatterChart) {
-      scatterChart.dispose();
-      scatterChart = echarts.init(this.chartId, themeConfig[theme]);
-    }
-    const filterYaxisData = chartData.map(e => e.y);
-    const filterXaxisData = chartData.map(e => e.x);
+  creatOption = (payload) => {
+    const { title, pointCodeNameX, pointCodeNameY, chartData, saveBtn } = payload;
+    const filterYaxisData = chartData ? chartData.chartData.map(e => e.y) : [];
+    const filterXaxisData = chartData ? chartData.chartData.map(e => e.x) : [];
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
     const option = {
       graphic: inverterTenMinGraphic,
@@ -80,7 +89,7 @@ class SingleScatter extends React.Component {
         trigger: 'item',
         enterable: true,
         show: false,
-        formatter: (params) => {
+        formatter: (payload) => {
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
             </div>
@@ -161,7 +170,7 @@ class SingleScatter extends React.Component {
           },
         },
       ],
-      series: chartData.map((e, i) => {
+      series: chartData ? chartData.chartData.map((e, i) => {
         return {
           name: `${e.deviceName}`,
           type: 'scatter',
@@ -171,21 +180,43 @@ class SingleScatter extends React.Component {
           },
           data: [e.x, e.y],
         };
-      }),
+      }) : [],
     };
+    return option;
+  }
+  format = (val) => {
+    if (val) {
+      return val.split('').join('\n');
+    }
+    return val;
+  }
+  drawChart = (params) => {
+    const { title, saveBtn, index, onChange, theme, scatterData, deviceList, getScatterData, stationCode, xPointCode, yPointCode, startTime, endTime } = params;
+    const parms = { stationCode, xPointCode, yPointCode, startTime, endTime };
+    const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
+    const option = this.creatOption(params);
     scatterChart.off();
     scatterChart.on('click', 'title', (params) => {
       onChange(index, !saveBtn);
     });
-    scatterChart.setOption(option, 'notMerge');
-    scatterChart.resize();
-    scatterChart.on('rendered', () => {
-      const imgUrl = scatterChart.getDataURL({
-        pixelRatio: 2,
-        backgroundColor: '#fff',
+    if (scatterData.length === index + 1 && index + 1 < deviceList.length && scatterData.length < deviceList.length) {
+      scatterChart.on('rendered', () => {
+        const imgUrl = scatterChart.getDataURL({
+          pixelRatio: 2,
+          backgroundColor: '#fff',
+        });
+        this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
       });
-      this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
-    });
+      scatterChart.on('finished', () => {
+        getScatterData({
+          ...parms,
+          deviceFullCode: deviceList[index + 1].deviceFullCode,
+        });
+      });
+    }
+    scatterChart.setOption(option, 'notMerge');
+    // scatterChart.resize();
+
   }
   render() {
     const { id, index, showImg } = this.props;
