@@ -166,7 +166,7 @@ class ChartLostTrend extends Component {
           const { axisValue } = param && param[0] || {};
           return `<section class=${styles.tooltip}>
             <h3 class=${styles.title}>
-              <span>${axisValue}</span>
+              <span class=${styles.titleText}>${axisValue}</span>
             </h3>
             <div class=${styles.info}>
               ${param.map((e, i) => (

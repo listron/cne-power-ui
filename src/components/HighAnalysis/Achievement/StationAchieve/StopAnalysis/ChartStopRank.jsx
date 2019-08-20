@@ -176,7 +176,7 @@ class ChartStopRank extends Component {
           return `<section class=${styles.tooltip}>
             <h3 class=${styles.title}>
               <span>${axisValue}</span>
-              <span>${name}</span>
+              <span class=${styles.modeName}>${name}</span>
             </h3>
             <div class=${styles.info}>
               ${param.map((e, i) => (
