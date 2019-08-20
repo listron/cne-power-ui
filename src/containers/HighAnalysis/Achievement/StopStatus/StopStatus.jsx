@@ -30,10 +30,10 @@ class StopStatus extends Component {
   }
 
   componentDidMount(){
-    const { location, stopStringify } = this.props;
+    const { location, stopStringify, areaStation } = this.props;
     const { search } = location;
     const infoStr = searchUtil(search).getValue('stop');
-    if (infoStr && !stopStringify) { // 有search路径但无访问记录 初始或刷新进入。
+    if (infoStr && !stopStringify) { // 有search路径但无访问记录: 刷新进入。
       const { stationCode, deviceCodes, startTime, endTime } = this.getQueryParam(infoStr);
       this.props.changeStore({
         stopStringify: infoStr,
@@ -44,6 +44,9 @@ class StopStatus extends Component {
       });
       this.props.getDevices({ stationCode });
       this.queryChart({ stationCode, deviceCodes, startTime, endTime });
+    }
+    if (!infoStr && areaStation.length > 0) { // 从别的同级页面初次进入该页面 => code获取保存继续请求后续参数。
+      this.propsAreaStationChange(areaStation);
     }
   }
 
