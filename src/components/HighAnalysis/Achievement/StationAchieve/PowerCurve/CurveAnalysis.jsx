@@ -16,9 +16,10 @@ import styles from './curve.scss';
 class CurveAnalysis extends Component {
 
   static propTypes = {
-    pageName: PropTypes.bool,
+    pageName: PropTypes.string,
     curveTopStringify: PropTypes.string,
     curveDeviceFullcode: PropTypes.string,
+    active: PropTypes.bool,
     modeDevices: PropTypes.array,
     location: PropTypes.object,
     getCurveDevices: PropTypes.func,
@@ -87,7 +88,9 @@ class CurveAnalysis extends Component {
     const defaultDevice = deviceFullcodes[0];
     const monthParam = {
       ...searchParam,
-      deviceFullcodes: [defaultDevice],
+      startTime: curveDevicesTime,
+      endTime: moment(endTime).format('YYYY-MM'),
+      deviceFullcodes: defaultDevice ? [defaultDevice] : [],
     };
     const deviceParam = {
       ...searchParam,

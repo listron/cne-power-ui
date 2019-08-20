@@ -143,6 +143,7 @@ class StationSearch extends Component {
               value={[moment(searchDates[0]), moment(searchDates[1])]}
               onChange={this.onDateChange}
               style={{width: '220px'}}
+              allowClear={false}
             />
           </div>
           <Button onClick={this.queryCharts} className={styles.search}>查询</Button>
