@@ -40,7 +40,7 @@ function* getQuotaInfo() { // 可选指标信息
         value: m.indicatorCode,
         label: m.indicatorName,
         unit: e.indicatorUnit,
-      })) : [],
+      })) : undefined,
     }));
     if (response.code === '10000') {
       yield put({

@@ -10,6 +10,9 @@ import AreaStation from '../../../../Common/AreaStation';
 import AutoSelect from '../../../../Common/AutoSelect';
 const { RangePicker } = DatePicker;
 
+// 禁止选择时间
+const disabledDate = current => current && current > moment().subtract(2, 'days');
+
 export default class RunSearch extends Component {
 
   static propTypes = {
@@ -25,8 +28,8 @@ export default class RunSearch extends Component {
     const { search } = props.location;
     const stationInfoStr = searchUtil(search).getValue('run');
     const stationInfo = stationInfoStr ? JSON.parse(stationInfoStr) : {};
-    const defaultStartTime = moment().subtract(1, 'year').format('YYYY-MM-DD');
-    const defaultEndTime = moment().format('YYYY-MM-DD');
+    const defaultEndTime = moment().subtract(2, 'days').format('YYYY-MM-DD');
+    const defaultStartTime = moment(defaultEndTime).subtract(1, 'year').format('YYYY-MM-DD');
     this.state = {
       stationInfoStr,
       searchCode: stationInfo.searchCode,
@@ -138,6 +141,7 @@ export default class RunSearch extends Component {
               value={[moment(searchDates[0]), moment(searchDates[1])]}
               onChange={this.onDateChange}
               style={{width: '220px'}}
+              disabledDate={disabledDate}
             />
           </div>
           <Button onClick={this.queryCharts} className={styles.search}>查询</Button>
