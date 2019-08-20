@@ -146,7 +146,10 @@ class StationSearch extends Component {
               allowClear={false}
             />
           </div>
-          <Button onClick={this.queryCharts} className={styles.search}>查询</Button>
+          <Button
+            onClick={this.queryCharts}
+            className={styles.search}
+          >查询</Button>
         </div>
         <Button
           onClick={this.resetCharts}
