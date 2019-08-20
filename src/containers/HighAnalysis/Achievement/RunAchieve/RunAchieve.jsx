@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import searchUtil from '../../../../utils/searchUtil';
+import searchUtil from '../../../../utils/searchUtil';
 import { runAchieveAction } from './runAchieveReducer';
 import RunSearch from '../../../../components/HighAnalysis/Achievement/RunAchieve/RunSearch/RunSearch';
-// import RunSequenceChart from '../../../../components/HighAnalysis/Achievement/RunAchieve/RunSequenceChart/RunSequenceChart';
-// import RunScatterChart from '../../../../components/HighAnalysis/Achievement/RunAchieve/RunScatterChart/RunScatterChart';
-import searchUtil from '../../../../utils/searchUtil';
+import RunSequenceChart from '../../../../components/HighAnalysis/Achievement/RunAchieve/RunSequenceChart/RunSequenceChart';
+import RunScatterChart from '../../../../components/HighAnalysis/Achievement/RunAchieve/RunScatterChart/RunScatterChart';
 
 import styles from './runAchieve.scss';
 
@@ -27,8 +26,8 @@ class RunAchieve extends Component {
     return (
       <div className={styles.runAchieve}>
         <RunSearch {...this.props} />
-        {/*<RunSequenceChart {...this.props} />*/}
-        {/*<RunScatterChart {...this.props} />*/}
+        <RunSequenceChart {...this.props} />
+        <RunScatterChart {...this.props} />
       </div>
     );
   }
