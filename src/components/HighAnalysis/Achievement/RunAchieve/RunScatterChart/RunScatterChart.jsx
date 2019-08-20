@@ -19,8 +19,8 @@ export default class RunScatterChart extends Component {
 
   componentDidMount() {
     const { scatterChart } = this;
-    const myChart1 = eCharts.init(scatterChart);
-    myChart1.setOption(this.drawChart());
+    const myChart = eCharts.init(scatterChart);
+    myChart.setOption(this.drawChart());
     // 控制联动的
   }
 

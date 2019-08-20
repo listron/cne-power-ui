@@ -160,7 +160,7 @@ class AreaAchieve extends Component {
           qutaName = cur.label;
           return false;
         }
-        cur.children.forEach(item => {
+        cur.children && cur.children.forEach(item => {
           if(quota[1] === item.value) {
             qutaName = item.label;
           }
