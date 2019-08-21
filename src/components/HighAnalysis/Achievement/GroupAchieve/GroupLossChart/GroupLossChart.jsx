@@ -16,12 +16,13 @@ export default class GroupLossChart extends Component {
     history: PropTypes.object,
     selectStationCode: PropTypes.array,
     selectTime: PropTypes.string,
+    dataName: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
     const { groupLossChart } = this;
     const { groupLostTime, groupLoseLoading, groupLostGenHourInfo } = this.props;
-    const { lostTime: lostTimePrev } = prevProps;
+    const { groupLostTime: groupLostTimePrev } = prevProps;
     const myChart = eCharts.init(groupLossChart);
     if (groupLoseLoading) { // loading态控制。
       myChart.showLoading();
@@ -30,7 +31,7 @@ export default class GroupLossChart extends Component {
     if (!groupLoseLoading) {
       myChart.hideLoading();
     }
-    if(groupLostTime && groupLostTime !== lostTimePrev) {
+    if(groupLostTime && groupLostTime !== groupLostTimePrev) {
       eCharts.init(groupLossChart).clear();//清除
       const myChart = eCharts.init(groupLossChart);
       myChart.setOption(this.drawChart(groupLostGenHourInfo));
@@ -136,11 +137,11 @@ export default class GroupLossChart extends Component {
   };
 
   render() {
-    const { selectStationCode, selectTime } = this.props;
+    const { selectStationCode, selectTime, dataName } = this.props;
     return (
       <div className={styles.groupLossBox}>
         <div className={styles.groupLossTitle}>
-          <span>{selectTime === '' ? '损失电量分解图' : `河南-${selectTime}-损失电量分解图`}</span>
+          <span>{selectTime === '' ? '损失电量分解图' : `${dataName}-${selectTime}-损失电量分解图`}</span>
           <Button disabled={selectStationCode.length === 0} onClick={this.toAreaPage}>查看区域</Button>
         </div>
         <div className={styles.groupLossCenter} ref={ref => {this.groupLossChart = ref;}} />

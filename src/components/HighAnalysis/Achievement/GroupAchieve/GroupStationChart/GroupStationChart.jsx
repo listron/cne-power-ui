@@ -17,6 +17,7 @@ export default class GroupStationChart extends Component {
     ]),
     changeStore: PropTypes.func,
     getGroupTrendInfo: PropTypes.func,
+    getGroupLostGenHour: PropTypes.func,
     location: PropTypes.object,
     titleFunc: PropTypes.string,
   };
@@ -43,12 +44,14 @@ export default class GroupStationChart extends Component {
 
   chartHandle = (params, groupCapacityInfo, myChart) => {
     const { dataIndex, name } = params;
-    const { changeStore, getGroupTrendInfo, location: { search } } = this.props;
+    const { changeStore, getGroupTrendInfo, getGroupLostGenHour, location: { search } } = this.props;
     const groupInfoStr = searchUtil(search).getValue('group');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const {
       quota = [],
       stations = [],
+      modesInfo = [],
+      modes = [],
     } = groupInfo;
     const stationCodes = [];
     stations.forEach(cur => {
@@ -67,12 +70,23 @@ export default class GroupStationChart extends Component {
       type: '2', // 默认按月
       stationCodes,
     };
+    const paramsHour = {
+      startTime: groupInfo.dates[0],
+      endTime: groupInfo.dates[1],
+      stationCodes,
+      manufactorIds: modesInfo.map(cur => {
+        return cur.value;
+      }),
+      deviceModes: modes,
+    };
     changeStore({
       dataIndex: params.dataIndex, // 下标
+      dataName: name, // 名称
       selectStationCode: stationCodes, // 保存单选区域的信息
     });
     myChart.setOption(this.drawChart(groupCapacityInfo, dataIndex));
     getGroupTrendInfo(paramsTrend);
+    getGroupLostGenHour(paramsHour);
   };
 
   drawChart = (data, dataIndex) => {
@@ -83,7 +97,6 @@ export default class GroupStationChart extends Component {
       barWidth: 10,
       itemStyle: {
         normal: {
-          // color:['#07a6ba','#4bc0c9','#3b56d9','#dbbb32','03ecef','#8648e7','#0fb2db']
           color: function(params) {//柱子颜色
             const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
             return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
@@ -134,17 +147,14 @@ export default class GroupStationChart extends Component {
         axisPointer: {
           type: 'shadow',
         },
-        position: function (pt) {
-          return [pt[0], '10%'];
-        },
         formatter: (params) => {
           if(titleFunc === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[0].value || '--'}</span><br /><span>应发小时数：</span><span>${params[1].value || '--'}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[0].value || (params[0].value === 0 ? params[0].value : '--')}</span><br /><span>应发小时数：</span><span>${params[1].value || (params[1].value === 0 ? params[1].value : '--')}</span>
           </div>`;
           }
           return `<div>
-            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}</span><span>${params[0].value || '--'}</span>
+            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${params[0].value || (params[0].value === 0 ? params[0].value : '--')}</span>
           </div>`;
         },
       },

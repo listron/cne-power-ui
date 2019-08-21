@@ -25,116 +25,103 @@ class AreaAchieve extends Component {
     rankTotal: PropTypes.array,
     quotaInfo: PropTypes.array,
     timeStatus: PropTypes.string,
+    dataName: PropTypes.string,
+    selectTime: PropTypes.string,
+    changeStore: PropTypes.func,
   };
 
   componentDidMount(){
     const { search } = this.props.location;
-    const { timeStatus } = this.props;
     const groupInfoStr = searchUtil(search).getValue('area');
     if(groupInfoStr) {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
-      const basicParams = this.basicParams(groupInfo);
-      const {
-        stations = [],
-        modes = [],
-        quota = [],
-        modesInfo = [],
-      } = groupInfo;
-      // 默认指标分析
-      const quotaValue = quota[1] || quota[0];
-      const paramsCapacity = {
-        ...basicParams,
-        deviceModes: modes,
-        regionName: [stations[0].regionName],
-        manufactorIds: modesInfo.map(cur => {
-          return cur.value;
-        }),
-      };
-      const paramsHour = {
-        ...basicParams,
-        manufactorIds: paramsCapacity.manufactorIds,
-        deviceModes: paramsCapacity.deviceModes,
-      };
-      const paramsTrend = {
-        ...basicParams,
-        // regionName: paramsCapacity.regionName,
-        indicatorCode: quotaValue,
-        type: timeStatus, // 默认按月
-      };
-      const paramsRank = {
-        ...basicParams,
-        indicatorCode: quotaValue,
-      };
-      const paramsTotal = {
-        ...basicParams,
-        deviceModes: paramsCapacity.deviceModes,
-        regionName: paramsCapacity.regionName,
-        indicatorCode: quotaValue,
-        manufactorIds: paramsCapacity.manufactorIds,
-      };
-      this.props.getStationCapacity(paramsCapacity);
-      this.props.getLostGenHour(paramsHour);
-      this.props.getTrendInfo(paramsTrend);
-      this.props.getIndicatorRank(paramsRank);
-      this.props.getIndicatorRankTotal(paramsTotal);
+      this.queryParamsFunc(groupInfo);
     }
+    // 右键重置图表
+    // 去掉默认的contextmenu事件，否则会和右键事件同时出现。
+    document.oncontextmenu = (e) => {
+      e.preventDefault();
+    };
+    // 鼠标右击
+    document.getElementsByTagName('body')[0].onmousedown = e => {
+      if (e.button === 2) {
+        const { dataName, selectTime, changeStore } = this.props;
+        // 判断如果选中过区域或时间可以重置图表
+        if(dataName !== '' || selectTime !== '') {
+          const { search } = this.props.location;
+          const groupInfoStr = searchUtil(search).getValue('area');
+          const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+          changeStore({
+            dataIndex: '', // 选中信息
+            selectStationCode: [], // 选中电站信息
+            selectTime: '', // 选中时间
+            dataName: '', // 保存选择区域名称
+          });
+          this.queryParamsFunc(groupInfo);
+        }
+      }
+    };
   }
 
   componentWillReceiveProps(nextProps){
     const nextSearch = nextProps.location.search;
     const { search } = this.props.location;
-    const { timeStatus } = this.props;
     const groupNextInfoStr = searchUtil(nextSearch).getValue('area');
     const groupInfoStr = searchUtil(search).getValue('area');
     // 发生变化
     if (groupNextInfoStr && groupNextInfoStr !== groupInfoStr) {
       const groupInfo = groupNextInfoStr ? JSON.parse(groupNextInfoStr) : {};
-      const basicParams = this.basicParams(groupInfo);
-      const {
-        stations = [],
-        modes = [],
-        quota = [],
-        modesInfo = [],
-      } = groupInfo;
-      // 默认指标分析
-      const quotaValue = quota[1] || quota[0];
-      const paramsCapacity = {
-        ...basicParams,
-        deviceModes: modes,
-        regionName: [stations[0].regionName],
-        manufactorIds: modesInfo.map(cur => {
-          return cur.value;
-        }),
-      };
-      const paramsHour = {
-        ...basicParams,
-        manufactorIds: paramsCapacity.manufactorIds,
-        deviceModes: paramsCapacity.deviceModes,
-      };
-      const paramsTrend = {
-        ...basicParams,
-        regionName: paramsCapacity.regionName,
-        indicatorCode: quotaValue,
-        type: timeStatus, // 默认按月
-      };
-      const paramsRank = {
-        ...basicParams,
-        indicatorCode: quotaValue,
-      };
-      const paramsTotal = {
-        ...basicParams,
-        deviceModes: paramsCapacity.deviceModes,
-        regionName: paramsCapacity.regionName,
-        indicatorCode: quotaValue,
-        manufactorIds: paramsCapacity.manufactorIds,
-      };
-      this.props.getStationCapacity(paramsCapacity);
-      this.props.getLostGenHour(paramsHour);
-      this.props.getTrendInfo(paramsTrend);
-      this.props.getIndicatorRank(paramsRank);
-      this.props.getIndicatorRankTotal(paramsTotal);
+      this.queryParamsFunc(groupInfo);
     }
   }
+
+  queryParamsFunc = (groupInfo) => {
+    const { timeStatus } = this.props;
+    const basicParams = this.basicParams(groupInfo);
+    const {
+      stations = [],
+      modes = [],
+      quota = [],
+      modesInfo = [],
+    } = groupInfo;
+    // 默认指标分析
+    const quotaValue = quota[1] || quota[0];
+    const paramsCapacity = {
+      ...basicParams,
+      deviceModes: modes,
+      regionName: [stations[0].regionName],
+      manufactorIds: modesInfo.map(cur => {
+        return cur.value;
+      }),
+    };
+    const paramsHour = {
+      ...basicParams,
+      manufactorIds: paramsCapacity.manufactorIds,
+      deviceModes: paramsCapacity.deviceModes,
+    };
+    const paramsTrend = {
+      ...basicParams,
+      regionName: paramsCapacity.regionName,
+      indicatorCode: quotaValue,
+      type: timeStatus, // 默认按月
+    };
+    const paramsRank = {
+      ...basicParams,
+      indicatorCode: quotaValue,
+    };
+    const paramsTotal = {
+      ...basicParams,
+      deviceModes: paramsCapacity.deviceModes,
+      regionName: paramsCapacity.regionName,
+      indicatorCode: quotaValue,
+      manufactorIds: paramsCapacity.manufactorIds,
+    };
+    this.props.getStationCapacity(paramsCapacity);
+    this.props.getLostGenHour(paramsHour);
+    this.props.getTrendInfo(paramsTrend);
+    this.props.getIndicatorRank(paramsRank);
+    this.props.getIndicatorRankTotal(paramsTotal);
+  };
 
   // 基本-公共参数
   basicParams = (data) => {
@@ -207,7 +194,7 @@ class AreaAchieve extends Component {
   render() {
     return (
       <div className={styles.areaAchieveBox}>
-        <AreaSearch {...this.props} />
+        <AreaSearch queryParamsFunc={this.queryParamsFunc} {...this.props} />
         <div className={styles.areaTitle}>
           {this.titleFunc()}
         </div>
