@@ -498,12 +498,13 @@ class UserList extends Component {
   render() {
     const { pageSize, pageNum, userData, totalNum, loading, selectedUser, selectedKey, downloading } = this.props;
     const { selectedUserColumns, showDeleteTip, showExamineTip, deleteWarningTip, columnsHandleArr } = this.state;
-    const authData = getCookie('authData');
+    const authData = localStorage.getItem('authData')|| '';
+    console.log(authData);
     const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.importUserBatch;
     const uploadProps = {
       name: 'file',
       action: url,
-      headers: { 'Authorization': 'bearer ' + ((authData && authData !== 'undefined') ? JSON.parse(authData) : '') },
+      headers: { 'Authorization': 'bearer ' + ((authData && authData !== 'undefined') ? authData : '') },
       beforeUpload: this.beforeUpload,
       data: {
         enterpriseId: this.props.enterpriseId,
