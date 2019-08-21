@@ -57,22 +57,7 @@ class AreaStation extends Component {
     style: {},
     onChange: () => {},
     holderText: '请选择',
-    data: [{
-      regionName: '山东',
-      stations:	[{
-        stationCode: 56,
-        stationName: '山东平原',
-      }, {
-        stationCode: 560,
-        stationName: '烟台电站',
-      }],
-    }, {
-      regionName: '河北',
-      stations:	[{
-        stationCode: 360,
-        stationName: '阳光',
-      }],
-    }],
+    data: [],
   }
 
   render() {

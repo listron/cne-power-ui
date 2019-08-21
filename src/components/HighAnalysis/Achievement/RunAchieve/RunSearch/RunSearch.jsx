@@ -86,11 +86,11 @@ export default class RunSearch extends Component {
 
   getAllDeviceCodes = (modeDevices = []) => { // 解析所有设备得到codes数组
     const codes = [];
-    modeDevices.forEach(e => {
-      const { children = [] } = e || {};
-      children.forEach(m => {
-        codes.push(m.value);
-      });
+    // 默认取第一个电站下的第一条数据的前三个
+    modeDevices[0] && modeDevices[0].children && modeDevices[0].children.forEach((e, i) => {
+      if(i < 3) { // 默认取前三个
+        codes.push(e.value);
+      }
     });
     return codes;
   };
@@ -111,8 +111,9 @@ export default class RunSearch extends Component {
 
   render() {
     const { areaStation, modeDevices } = this.props;
-    console.log(modeDevices, 'modeDevices');
+    // console.log(modeDevices, 'modeDevices');
     const { searchCode, searchDevice, searchDates } = this.state;
+    // console.log(searchDevice, 'searchDevice');
     return (
       <div className={styles.topSearch}>
         <div className={styles.leftPart}>

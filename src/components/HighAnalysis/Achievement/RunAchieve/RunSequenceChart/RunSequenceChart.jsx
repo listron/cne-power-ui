@@ -1,7 +1,9 @@
 
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Select } from 'antd';
+import moment from 'moment';
 import eCharts from 'echarts';
 
 import styles from './runSequenceChart.scss';
@@ -10,31 +12,61 @@ const { Option } = Select;
 
 export default class RunSequenceChart extends Component {
 
-  componentDidMount() {
+  static propTypes = {
+    indicatorsList: PropTypes.array,
+    hourOptionValue: PropTypes.string,
+    sequenceLoading: PropTypes.bool,
+    sequenceData: PropTypes.array,
+    sequenceTime: PropTypes.number,
+  };
+
+  componentDidUpdate(prevProps) {
     const { sequenceChart } = this;
+    const { sequenceTime, sequenceLoading, sequenceData } = this.props;
+    const { sequenceTime: sequenceTimePrev } = prevProps;
     const myChart = eCharts.init(sequenceChart);
-    myChart.setOption(this.drawChart());
+    if (sequenceLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!sequenceLoading) {
+      myChart.hideLoading();
+    }
+    if(sequenceTime && sequenceTime !== sequenceTimePrev) {
+      eCharts.init(sequenceChart).clear();//清除
+      const myChart = eCharts.init(sequenceChart);
+      myChart.setOption(this.drawChart(sequenceData));
+    }
   }
 
 
-  drawChart = () => {
+  drawChart = (sequenceData) => {
+    // 数据
+    const seriesData = sequenceData && sequenceData.map(cur => ({
+      name: cur.deviceName,
+      type: 'line',
+      symbol: 'none',
+      data: cur.dataList && cur.dataList.map(item => (item.value)),
+    }));
     return {
       tooltip: {
         trigger: 'axis',
       },
       legend: {
-        data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎'],
+        data: sequenceData && sequenceData.map(cur => (cur.deviceName)),
       },
       grid: {
-        left: '2%',
-        right: '2%',
+        left: '3%',
+        right: '3%',
         bottom: '40px',
         containLabel: true,
       },
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+        data: sequenceData && sequenceData[0].dataList && sequenceData[0].dataList.map(cur => (
+          moment(cur.time).format('YYYY-MM-DD')
+        )),
       },
       yAxis: {
         name: '功率KW',
@@ -56,43 +88,7 @@ export default class RunSequenceChart extends Component {
           shadowOffsetY: 2,
         },
       }],
-      series: [
-        {
-          name: '邮件营销',
-          type: 'line',
-          stack: '总量',
-          symbol: 'none',
-          data: [120, '', 100, 134, 90, 230, 210],
-        },
-        {
-          name: '联盟广告',
-          type: 'line',
-          stack: '总量',
-          symbol: 'none',
-          data: [220, '', '', 234, 290, 330, 310],
-        },
-        {
-          name: '视频广告',
-          type: 'line',
-          stack: '总量',
-          symbol: 'none',
-          data: [150, 100, 200, 154, 190, 330, 410],
-        },
-        {
-          name: '直接访问',
-          type: 'line',
-          stack: '总量',
-          symbol: 'none',
-          data: [320, 200, '', 334, 390, 330, 320],
-        },
-        {
-          name: '搜索引擎',
-          type: 'line',
-          stack: '总量',
-          symbol: 'none',
-          data: [820, '', 200, 934, 1290, 1330, 1320],
-        },
-      ],
+      series: seriesData,
     };
   };
 
@@ -101,16 +97,20 @@ export default class RunSequenceChart extends Component {
   };
 
   render() {
+    const { indicatorsList, hourOptionValue } = this.props;
+    const optionItem = indicatorsList && indicatorsList.map(cur => {
+      return (
+        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+      );
+    });
     return (
       <div className={styles.runSequenceChart}>
         <div className={styles.sequenceTop}>
           <div className={styles.topTitle}>时序图</div>
           <div className={styles.topSelect}>
             <span>时序图指标</span>
-            <Select defaultValue="lucy" style={{ width: 120 }} onChange={this.handleChange}>
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="Yiminghe">yiminghe</Option>
+            <Select value={hourOptionValue} style={{ width: 120 }} onChange={this.handleChange}>
+              {optionItem}
             </Select>
           </div>
         </div>

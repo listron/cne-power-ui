@@ -475,6 +475,10 @@ const menuData = [
             name: '运行数据分析',
             path: 'analysis/run',
             rightKey: 'statistics_device',
+          }, {
+            name: '停机状态分析',
+            path: 'analysis/stop',
+            rightKey: 'statistics_device',
           },
         ],
       },
