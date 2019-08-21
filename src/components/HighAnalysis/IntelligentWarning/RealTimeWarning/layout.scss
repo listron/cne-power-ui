@@ -1,0 +1,168 @@
+@import "../../../../theme/theme.scss";
+.realTimeWarningContainer {
+  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .realTimeWarningFilter {
+    position: relative;
+    display: flex;
+    flex-direction: column; // flex: 1 0 auto;
+  }
+  .deviceNameSearch {
+    display: flex;
+    height: 50px;
+    flex-shrink: 0;
+    background-color: #f9f9f9;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 28px;
+    > span {
+      color: $darkColor;
+    }
+    .deviceName {
+      width: 200px;
+      margin: 0 16px;
+    }
+    > span:last-child {
+      color: $themeColor;
+      font-size: 14px;
+      cursor: pointer;
+      margin-left: 16px;
+    }
+  }
+  .realTimeWarningTable {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    :global {
+      .ant-table-placeholder {
+        border-bottom: none;
+      }
+    }
+    .tableHeader {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      height: 55px;
+      padding: 0 28px;
+    }
+    .iconDetail {
+      i {
+        display: block;
+        cursor: pointer;
+      }
+    }
+    .deviceName {
+      :global {
+        a {
+          color: $darkColor;
+          text-decoration: none;
+        }
+      }
+    }
+    .alarmDesc {
+      cursor: pointer;
+    }
+  }
+  .tableFooter {
+    background-color: #fff;
+    height: 45px;
+    line-height: 45px;
+    .info {
+      color: $darkColor;
+      margin-right: 20px;
+      margin-left: 24px;
+      .totalNum {
+        color: rgb(250, 185, 7);
+        margin: auto 4px;
+      }
+    }
+    .cancel {
+      color: $themeColor;
+      cursor: pointer;
+    }
+  }
+}
+
+.relieveModal {
+  .formItem {
+    display: flex;
+    flex-direction: row;
+    :global {
+      .ant-form-item-label {
+        overflow: visible;
+        .ant-form-item-required::before {
+          position: absolute;
+          top: 5px;
+          left: -10px;
+        }
+      }
+    }
+  }
+  .input {
+    margin-left: -60px;
+    margin-top: 15px;
+  }
+  .instructionText {
+    display: flex;
+    flex: 1;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-right: 8px;
+  }
+  :global {
+    .ant-modal-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      height: 100%;
+      margin-top: 180px;
+    }
+    .ant-form-item-control-wrapper {
+      .ant-form-item-control {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        .ant-form-item-children {
+          display: flex;
+          flex-direction: row;
+          .ant-calendar-picker {
+            margin-left: 12px;
+            vertical-align: top;
+          }
+        }
+      }
+    }
+  }
+}
+
+.transferModal {
+  .formItem {
+    display: flex;
+    flex-direction: row;
+  }
+  .input {
+    margin-left: -60px;
+    margin-top: 15px;
+  }
+  .instructionText {
+    display: flex;
+    flex: 1;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-right: 8px;
+  }
+  :global {
+    .ant-modal-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      height: 100%;
+      margin-top: 180px;
+    }
+  }
+}

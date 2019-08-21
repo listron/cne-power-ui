@@ -15,8 +15,7 @@
       color: $button-active;
     }
     .ant-table-tbody {
-      background: $background;
-      // background: #2a338d;
+      background: transparent;
       & > tr:hover {
         td {
           background: #2a338d;
@@ -28,8 +27,13 @@
       padding: 0 16px;
       height: 40px;
       line-height: 40px;
-      background: rgba(83, 104, 241, 0.15);
       color: $fontColor;
+    }
+    .ant-table-row-selected {
+      background: rgba(83, 104, 241, 0.15);
+      td {
+        background: rgba(83, 104, 241, 0.15);
+      }
     }
 
     .ant-table-thead > tr > th {
@@ -40,7 +44,7 @@
 
     .ant-table-empty .ant-table-placeholder,
     .ant-table-placeholder {
-      background: rgba(83, 104, 241, 0.15);
+      background: transparent;
       border: 1px solid $border-color;
       color: $fontColor;
     }
@@ -174,7 +178,7 @@
 
   .ant-select-selection {
     background-color: $input-Background;
-    border: 1px solid $input-border;
+    border: 1px solid $input-border !important ;
   }
 
   .ant-select-dropdown-menu-item {
@@ -202,6 +206,7 @@
     color: $fontColor;
     background: $background;
     border: 1px solid $border-color;
+    box-shadow: 0 0 4px 2px #4d5fe2;
   }
 
   .ant-select-selection-selected-value {
@@ -215,7 +220,7 @@
   }
 
   .ant-select-arrow {
-    color: $input-border;
+    color: $fontColor !important ;
   }
 
   //ant-select-dropdown-menu下拉框选中的√颜色
@@ -235,6 +240,13 @@
     color: rgba(0, 0, 0, 0.75);
     &:hover {
       color: $fontColor;
+    }
+  }
+
+  .ant-select-dropdown-menu-item-disabled {
+    color: $fontColor-disabled;
+    &:hover {
+      color: $fontColor-disabled;
     }
   }
 
@@ -260,14 +272,17 @@
 
   // =================input ==============
 
-  .ant-input:not(.ant-input-disabled):hover {
-    border-color: $themeColor;
-  }
-  .ant-input {
+  .ant-input:not(.ant-input-disabled) {
     background: $input-Background;
     border: 1px solid $input-border;
     color: $fontColor;
+    &:hover,
+    &:focus,
+    &:active {
+      border-color: $themeColor;
+    }
   }
+
   .ant-input-number {
     line-height: 30px;
     background: transparent;
@@ -406,7 +421,9 @@
     }
   }
 
-  .ant-calendar-selected-date .ant-calendar-date {
+  .ant-calendar-selected-date .ant-calendar-date,
+  .ant-calendar-selected-start-date .ant-calendar-date,
+  .ant-calendar-selected-end-date .ant-calendar-date {
     color: $fontColor-invert;
     background: $themeColor;
     border: 1px solid transparent;
@@ -440,6 +457,13 @@
 
   .ant-calendar-footer {
     border-top: 1px solid $border-color;
+  }
+
+  .ant-calendar-range .ant-calendar-body {
+    border: none;
+  }
+  .ant-calendar-range .ant-calendar-in-range-cell::before {
+    background: #205bac;
   }
 
   /*输入框前面的小方块*/
@@ -538,10 +562,9 @@
     border-color: $button-border;
   }
   .ant-checkbox-disabled .ant-checkbox-inner {
-    background-color: #eaeaea;
-    border-color: rgba(0, 0, 0, 0.15);
-    border-radius: 2px;
-    color: $darkColor;
+    background: #405080;
+    border: 1px solid #7088c3;
+    color: #7088c3;
   }
 
   .ant-checkbox-indeterminate .ant-checkbox-inner::after {
@@ -798,5 +821,81 @@
   ::selection {
     color: #fff;
     background: $themeColor;
+  }
+
+  // ======== cascader  ====
+  .ant-cascader {
+    color: $fontColor;
+  }
+  .ant-cascader-input.ant-input {
+    background: #161858;
+  }
+  .ant-cascader-picker {
+    background: transparent;
+  }
+  .ant-cascader-picker-arrow {
+    color: #fff;
+  }
+  .ant-cascader-menus {
+    background: #1e246e;
+    border: 1px solid rgba(83, 104, 241, 0.6);
+    box-shadow: inset 0 0 4px 2px #5368f1;
+    color: $fontColor;
+  }
+  .ant-cascader-menu {
+    border: 1px solid rgba(83, 104, 241, 0.6);
+  }
+  .ant-cascader-menu-item-expand-icon,
+  .ant-cascader-menu-item-loading-icon {
+    color: $fontColor !important;
+  }
+
+  .ant-cascader-menu-item {
+    &:hover {
+      background: #00baff;
+      color: #fff;
+    }
+  }
+
+  .ant-cascader-picker-label {
+    color: $fontColor;
+  }
+
+  .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled),
+  .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover {
+    background: #00baff;
+    color: #fff;
+    .ant-cascader-menu-item-expand-icon,
+    .ant-cascader-menu-item-loading-icon {
+      color: #fff !important;
+    }
+  }
+
+  // =============form===========
+  .ant-form-item-label > label {
+    color: $fontColor;
+  }
+
+  .has-error .ant-form-explain,
+  .ant-form-extra {
+    color: #fd6e8f;
+  }
+  .has-error .ant-input,
+  .has-error .ant-input:hover {
+    background: $input-Background;
+  }
+
+  // ==========ant-popover-inner=========
+  .ant-popover-inner {
+    background: $select-background;
+    border: 1px solid $select-border;
+    box-shadow: inset 0 0 5px 2px $select-border-shadow;
+    color: $fontColor;
+  }
+  .ant-popover-placement-top .ant-popover-arrow,
+  .ant-popover-placement-topLeft .ant-popover-arrow,
+  .ant-popover-placement-topRight .ant-popover-arrow {
+    border-right-color: $select-border !important;
+    border-bottom-color: $select-border !important;
   }
 }

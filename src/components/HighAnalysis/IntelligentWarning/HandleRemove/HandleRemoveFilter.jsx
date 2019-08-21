@@ -4,10 +4,10 @@ import { Input, Button } from 'antd';
 import styles from './handleRemove.scss';
 import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 
-class HandleRemoveFilter extends Component{
- static propTypes = {
-   }
-   constructor(props, context) {
+class HandleRemoveFilter extends Component {
+  static propTypes = {
+  }
+  constructor(props, context) {
     super(props, context)
     this.state = {
       value: ''
@@ -43,24 +43,25 @@ class HandleRemoveFilter extends Component{
       deviceName: value
     });
   }
-    render(){
-      const { stations, deviceTypes } = this.props;
-        return(
-          <div className={styles.realTimeWarningFilter}>
-          <FilterCondition
-            option={['warningLevel', 'stationName', 'deviceType', 'rangeTime']}
-            stations={stations || []}
-            deviceTypes={deviceTypes || []}
-            onChange={this.onChangeFilter}
-          />
-          <div className={styles.deviceNameSearch}>
-            <span>设备名称</span>
-            <Input className={styles.deviceName} value={this.state.value} placeholder="请输入..." onChange={this.onChange} />
-            <Button onClick={this.onSearch}>查询</Button>
-            {this.state.value !== '' && <span onClick={this.onReset}>重置</span>}
-          </div>
+  render() {
+    const { stations, deviceTypes, theme } = this.props;
+    return (
+      <div className={styles.realTimeWarningFilter}>
+        <FilterCondition
+          option={['warningLevel', 'stationName', 'deviceType', 'rangeTime']}
+          stations={stations || []}
+          deviceTypes={deviceTypes || []}
+          onChange={this.onChangeFilter}
+          theme={theme}
+        />
+        <div className={styles.deviceNameSearch}>
+          <span>设备名称</span>
+          <Input className={styles.deviceName} value={this.state.value} placeholder="请输入..." onChange={this.onChange} />
+          <Button onClick={this.onSearch}>查询</Button>
+          {this.state.value !== '' && <span onClick={this.onReset}>重置</span>}
         </div>
-        )
-    }
+      </div>
+    )
+  }
 }
 export default (HandleRemoveFilter)

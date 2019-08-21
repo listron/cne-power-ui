@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './transferForm.scss';
 import CommonPagination from '../../../Common/CommonPagination';
@@ -20,56 +20,57 @@ class TransferFormTable extends Component {
     stationCodes: PropTypes.array,
     orderField: PropTypes.string,
     orderCommand: PropTypes.string,
+    theme: PropTypes.string,
+
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       showTransferPopover: [],
-    }
+    };
   }
- 
-  onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    const { changeTransferFormStore,onChangeFilter,   } = this.props;
-    changeTransferFormStore({ pageNum:currentPage, pageSize })
-    onChangeFilter({pageNum:currentPage, pageSize})
-  }
-  
-  onTransferChange(visible,workOrderId,index) { // 切换需求
-    this.setState((state) => {
-      return state.showTransferPopover[index] = visible
-    })
-    this.props.getTransferInfo({workOrderId})//请求工单的详细信息
-  }
- 
 
-  getDetail = (defectId,index) => { // 查看工单详情
-    this.props.changeTransferFormStore({pageName:'detail',defectId})
-    this.setState((state) => {
-      return state.showTransferPopover[index] = false
-    })
+  onPaginationChange = ({ currentPage, pageSize }) => {//分页器
+    const { changeTransferFormStore, onChangeFilter } = this.props;
+    onChangeFilter({ pageNum: currentPage, pageSize });
   }
-  
+
+  onTransferChange(visible, workOrderId, index) { // 切换需求
+    this.setState((state) => {
+      return state.showTransferPopover[index] = visible;
+    });
+    this.props.getTransferInfo({ workOrderId });//请求工单的详细信息
+  }
+
+
+  getDetail = (defectId, index) => { // 查看工单详情
+    this.props.changeTransferFormStore({ pageName: 'detail', defectId });
+    this.setState((state) => {
+      return state.showTransferPopover[index] = false;
+    });
+  }
+
   tableChange = (pagination, filters, sorter) => {
-    const { changeTransferFormStore,onChangeFilter, } = this.props;
+    const { changeTransferFormStore, onChangeFilter } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
       warningLevel: '1',
       stationName: '2',
       deviceName: '8',
-      deviceTypeName:'3',
+      deviceTypeName: '3',
       timeOn: '5',
       durationTime: '9',
     };
-     const orderField = sortInfo[field] ? sortInfo[field] : '';
+    const orderField = sortInfo[field] ? sortInfo[field] : '';
     const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
-    changeTransferFormStore({ orderField, orderCommand })
+    changeTransferFormStore({ orderField, orderCommand });
     onChangeFilter({
-        orderField, orderCommand
-    })
+      orderField, orderCommand,
+    });
   }
- 
-  renderTransferPopover(index,record) { // 转到工单页面的气泡
-    const {ticketInfo}=this.props;
+
+  renderTransferPopover(index, record) { // 转到工单页面的气泡
+    const { ticketInfo } = this.props;
     return (
       <div className={styles.detailInfo}>
         <div className={styles.header}>
@@ -78,7 +79,7 @@ class TransferFormTable extends Component {
             <span className={styles.titleText}>已转工单</span>
           </div>
           <Icon type="close" onClick={() => {
-            let showTransferPopover = this.state.showTransferPopover;
+            const showTransferPopover = this.state.showTransferPopover;
             showTransferPopover[index] = false;
             this.setState({ showTransferPopover });
           }} />
@@ -101,7 +102,7 @@ class TransferFormTable extends Component {
             <span className={styles.value}>{ticketInfo.defectDescribe}</span>
           </div>
         </div>
-        <Button className={styles.ticketButton} onClick={()=>{this.getDetail(record.workOrderId,index)}}>
+        <Button className={styles.ticketButton} onClick={() => { this.getDetail(record.workOrderId, index); }}>
           查看工单详情
         </Button>
       </div>
@@ -116,7 +117,7 @@ class TransferFormTable extends Component {
         dataIndex: 'warningLevel',
         key: 'warningLevel',
         render: (text, record, index) => {
-          return level[text - 1]
+          return level[text - 1];
         },
         sorter: true,
       }, {
@@ -130,7 +131,7 @@ class TransferFormTable extends Component {
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
-          const deviceTypeCodes = ["202", "304", "302", "201", "509", "206", "203", "101"];
+          const deviceTypeCodes = ['202', '304', '302', '201', '509', '206', '203', '101'];
           const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
           if (isClick) {
             return (
@@ -138,10 +139,10 @@ class TransferFormTable extends Component {
                 <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
               </div>
             );
-          } else {
-            return text;
           }
-        }
+          return text;
+
+        },
       }, {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
@@ -152,8 +153,8 @@ class TransferFormTable extends Component {
         dataIndex: 'warningCheckDesc',
         key: 'warningCheckDesc',
         render: (text, record) => {
-          return <div className={styles.alarmDesc} title={text}>{text}</div>
-        }
+          return <div className={styles.alarmDesc} title={text}>{text}</div>;
+        },
       }, {
         title: '发生时间',
         dataIndex: 'timeOn',
@@ -165,33 +166,35 @@ class TransferFormTable extends Component {
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
-      },{
+      }, {
         title: '预警处理',
         key: 'warningRemove',
         render: (text, record, index) => {
           // if (record.isTransferWork === 0) {
-            return (
-              <Popover
-                content={this.renderTransferPopover(index, record)}
-                trigger="click"
-                visible={this.state.showTransferPopover[index]}
-                onVisibleChange={(visible) => this.onTransferChange(visible,record.workOrderId, index)}
-                arrowPointAtCenter
-              >
-                <div className={this.state.showTransferPopover[index] ? styles.selected : null}><i className="iconfont icon-tranlist icon-action"></i></div>
-              </Popover>
-            );
-          }
+          return (
+            <Popover
+              content={this.renderTransferPopover(index, record)}
+              trigger="click"
+              visible={this.state.showTransferPopover[index]}
+              onVisibleChange={(visible) => this.onTransferChange(visible, record.workOrderId, index)}
+              arrowPointAtCenter
+              getPopupContainer={() => this.refs.popover}
+            >
+              <div className={this.state.showTransferPopover[index] ? styles.selected : null}><i className="iconfont icon-tranlist icon-action"></i></div>
+            </Popover>
+          );
+        },
         // }
-      }
-    ]
-    const { transferFormList,  pageSize, pageNum,total } = this.props;
-   
+      },
+    ];
+    const { transferFormList, pageSize, pageNum, total, theme } = this.props;
+
     return (
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} theme={theme} />
         </div>
+        <span ref="popover" />
         <Table
           dataSource={transferFormList}
           rowKey={record => record.warningLogId}
@@ -201,9 +204,9 @@ class TransferFormTable extends Component {
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
       </div>
-    )
+    );
   }
 }
-export default (TransferFormTable)
+export default (TransferFormTable);
 
 
