@@ -169,7 +169,7 @@ class ChartLostRank extends Component {
     const sortedLostRank = this.sortRank(lostRank, sortType);
     const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank);
     const baseOption = getBaseOption(dataAxis);
-    baseOption.yAxis.name = `${selectedQuota.label || '--'}${selectedQuota.unit ? `(${selectedQuota.unit})` : ''})`;
+    baseOption.yAxis.name = `${selectedQuota.label || '--'}${selectedQuota.unit ? `(${selectedQuota.unit})` : ''}`;
     const option = {
       ...baseOption,
       legend: { data: modeArr },

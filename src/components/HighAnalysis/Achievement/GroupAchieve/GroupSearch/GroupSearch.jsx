@@ -10,6 +10,9 @@ import AreaStation from '../../../../Common/AreaStation';
 import AutoSelect from '../../../../Common/AutoSelect';
 const { RangePicker } = DatePicker;
 
+// 禁止选择时间
+const disabledDate = current => current && current > moment().subtract(2, 'days');
+
 export default class AreaSearch extends Component {
 
   static propTypes = {
@@ -19,6 +22,7 @@ export default class AreaSearch extends Component {
     modesInfo: PropTypes.array,
     getGroupModesInfo: PropTypes.func,
     history: PropTypes.object,
+    changeStore: PropTypes.func,
   };
 
   constructor(props){
@@ -26,8 +30,8 @@ export default class AreaSearch extends Component {
     const { search } = props.location;
     const groupInfoStr = searchUtil(search).getValue('group');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
-    const defaultStartTime = moment().subtract(1, 'year').format('YYYY-MM-DD');
-    const defaultEndTime = moment().format('YYYY-MM-DD');
+    const defaultEndTime = moment().subtract(2, 'days').format('YYYY-MM-DD');
+    const defaultStartTime = moment(defaultEndTime).subtract(1, 'year').format('YYYY-MM-DD');
     this.state = {
       groupInfoStr,
       searchCode: groupInfo.searchCode,
@@ -135,6 +139,7 @@ export default class AreaSearch extends Component {
   };
 
   onAreaChange = (info) => {
+    const { changeStore } = this.props;
     const stations = [];
     info.forEach(e => {
       const tmp = e.stations || [];
@@ -143,13 +148,20 @@ export default class AreaSearch extends Component {
     this.setState({
       stations: info,
       searchCode: stations,
+      modes: [],
     }, () => {
+      changeStore({
+        modesInfo: [],
+      });
       this.props.getGroupModesInfo({ stationCodes: stations});
     });
   };
 
-  onModelChange = (modes) => {
-    this.setState({ modes: modes.map(e => e.value) });
+  onModelChange = (value) => {
+    const { modes } = this.state;
+    this.setState({
+      modes: value.length === 0 ? modes : value.map(e => e.value),
+    });
   };
 
   onDateChange = ([], [start, end]) => this.setState({ dates: [start, end] });
@@ -207,6 +219,7 @@ export default class AreaSearch extends Component {
             value={[moment(dates[0]), moment(dates[1])]}
             onChange={this.onDateChange}
             style={{width: '220px'}}
+            disabledDate={disabledDate}
           />
         </div>
         <div>

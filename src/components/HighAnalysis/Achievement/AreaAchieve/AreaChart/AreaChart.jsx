@@ -77,7 +77,7 @@ export default class AreaChart extends Component {
     const childrenArr = data.map(cur => {
       const obj = {};
       obj.name = cur.stationName;
-      obj.value = cur.stationCapacity;
+      obj.value = cur.stationCapacity / 1000;
       return obj;
     });
     return {
@@ -101,6 +101,9 @@ export default class AreaChart extends Component {
             },
           },
           borderWidth: 1,
+        },
+        label: {
+          formatter: '{b}\n{c}MW',
         },
         nodeClick: 'link',
         data: childrenArr,

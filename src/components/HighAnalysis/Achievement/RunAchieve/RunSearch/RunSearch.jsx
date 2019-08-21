@@ -10,6 +10,9 @@ import AreaStation from '../../../../Common/AreaStation';
 import AutoSelect from '../../../../Common/AutoSelect';
 const { RangePicker } = DatePicker;
 
+// 禁止选择时间
+const disabledDate = current => current && current > moment().subtract(2, 'days');
+
 export default class RunSearch extends Component {
 
   static propTypes = {
@@ -25,8 +28,8 @@ export default class RunSearch extends Component {
     const { search } = props.location;
     const stationInfoStr = searchUtil(search).getValue('run');
     const stationInfo = stationInfoStr ? JSON.parse(stationInfoStr) : {};
-    const defaultStartTime = moment().subtract(1, 'year').format('YYYY-MM-DD');
-    const defaultEndTime = moment().format('YYYY-MM-DD');
+    const defaultEndTime = moment().subtract(2, 'days').format('YYYY-MM-DD');
+    const defaultStartTime = moment(defaultEndTime).subtract(1, 'year').format('YYYY-MM-DD');
     this.state = {
       stationInfoStr,
       searchCode: stationInfo.searchCode,
@@ -83,11 +86,11 @@ export default class RunSearch extends Component {
 
   getAllDeviceCodes = (modeDevices = []) => { // 解析所有设备得到codes数组
     const codes = [];
-    modeDevices.forEach(e => {
-      const { children = [] } = e || {};
-      children.forEach(m => {
-        codes.push(m.value);
-      });
+    // 默认取第一个电站下的第一条数据的前三个
+    modeDevices[0] && modeDevices[0].children && modeDevices[0].children.forEach((e, i) => {
+      if(i < 3) { // 默认取前三个
+        codes.push(e.value);
+      }
     });
     return codes;
   };
@@ -108,8 +111,9 @@ export default class RunSearch extends Component {
 
   render() {
     const { areaStation, modeDevices } = this.props;
-    console.log(modeDevices, 'modeDevices');
+    // console.log(modeDevices, 'modeDevices');
     const { searchCode, searchDevice, searchDates } = this.state;
+    // console.log(searchDevice, 'searchDevice');
     return (
       <div className={styles.topSearch}>
         <div className={styles.leftPart}>
@@ -138,6 +142,7 @@ export default class RunSearch extends Component {
               value={[moment(searchDates[0]), moment(searchDates[1])]}
               onChange={this.onDateChange}
               style={{width: '220px'}}
+              disabledDate={disabledDate}
             />
           </div>
           <Button onClick={this.queryCharts} className={styles.search}>查询</Button>

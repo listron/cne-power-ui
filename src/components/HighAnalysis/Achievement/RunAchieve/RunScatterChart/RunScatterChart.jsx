@@ -1,6 +1,7 @@
 
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import { Switch, Checkbox, Icon, Select } from 'antd';
 import styles from './runScatterChart.scss';
@@ -10,86 +11,116 @@ const { Option } = Select;
 
 export default class RunScatterChart extends Component {
 
-  constructor(props) {
+  static propTypes = {
+    indicatorsList: PropTypes.array,
+    checkedMonths: PropTypes.array,
+    allMonths: PropTypes.array,
+    changeStore: PropTypes.func,
+    firstChartLoading: PropTypes.bool,
+    firstChartTime: PropTypes.number,
+    firstChartData: PropTypes.array,
+    secondChartLoading: PropTypes.bool,
+    secondChartTime: PropTypes.number,
+    secondChartData: PropTypes.array,
+    thirdChartLoading: PropTypes.bool,
+    thirdChartTime: PropTypes.number,
+    thirdChartData: PropTypes.array,
+    fourthChartLoading: PropTypes.bool,
+    fourthChartTime: PropTypes.number,
+    fourthChartData: PropTypes.array,
+    // 第一个散点图坐标
+    firstChartXAxis: PropTypes.string,
+    firstChartYAxis: PropTypes.string,
+
+    // 第二个散点图坐标
+    secondChartXAxis: PropTypes.string,
+    secondChartYAxis: PropTypes.string,
+
+    // 第三个散点图坐标
+    thirdChartXAxis: PropTypes.string,
+    thirdChartYAxis: PropTypes.string,
+
+    // 第四个散点图坐标
+    fourthChartXAxis: PropTypes.string,
+    fourthChartYAxis: PropTypes.string,
+  };
+
+  constructor (props) {
     super(props);
     this.state = {
-      checkedList: [],
+      minNum: 0, // 显示停机
     };
   }
 
-  componentDidMount() {
+  componentDidUpdate(prevProps) {
     const { scatterChart } = this;
-    const myChart1 = eCharts.init(scatterChart);
-    myChart1.setOption(this.drawChart());
-    // 控制联动的
+    const {
+      firstChartTime,
+      secondChartTime,
+      thirdChartTime,
+      fourthChartTime,
+      firstChartLoading,
+      firstChartData,
+      secondChartData,
+      thirdChartData,
+      fourthChartData,
+      secondChartLoading,
+      thirdChartLoading,
+      fourthChartLoading,
+    } = this.props;
+    const {
+      firstChartTime: firstChartTimePrev,
+      secondChartTime: secondChartTimePrev,
+      thirdChartTime: thirdChartTimePrev,
+      fourthChartTime: fourthChartTimePrev,
+    } = prevProps;
+    const myChart = eCharts.init(scatterChart);
+    if (firstChartLoading || secondChartLoading || thirdChartLoading || fourthChartLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!firstChartLoading || !secondChartLoading || !thirdChartLoading || !fourthChartLoading) {
+      myChart.hideLoading();
+    }
+    if(firstChartTime && firstChartTime !== firstChartTimePrev || secondChartTime && secondChartTime !== secondChartTimePrev || thirdChartTime && thirdChartTime !== thirdChartTimePrev || fourthChartTime && fourthChartTime !== fourthChartTimePrev) {
+      eCharts.init(scatterChart).clear();//清除
+      const myChart = eCharts.init(scatterChart);
+      myChart.setOption(this.drawChart(firstChartData, secondChartData, thirdChartData, fourthChartData));
+    }
   }
 
+  formatNumberFunc = (number) => {
+    return number ? Number(number).toFixed(2) : number;
+  };
 
-  drawChart = () => {
-    // const a = [];
-    // const b = [];
-    // const c = [];
-    // const d = [];
-    // for(let i = 0; i < 15000; i++) {
-    //   a.push([Math.floor(Math.random() * 13 + 1), Math.floor(Math.random() * 8 + 1)]);
-    //   b.push([Math.floor(Math.random() * 12 + 1), Math.floor(Math.random() * 7 + 1)]);
-    //   c.push([Math.floor(Math.random() * 11 + 1), Math.floor(Math.random() * 9 + 1)]);
-    //   d.push([Math.floor(Math.random() * 9 + 1), Math.floor(Math.random() * 14 + 1)]);
-    // }
-    const dataAll = [
-      [
-        [10.0, 8.04, '1'],
-        [8.0, 6.95, '2'],
-        [13.0, 7.58, '3'],
-        [9.0, 8.81, '1'],
-        [11.0, 8.33, '2'],
-        [14.0, 9.96, '3'],
-        [6.0, 7.24, '1'],
-        [4.0, 4.26, '2'],
-        [12.0, 10.84, '3'],
-        [7.0, 4.82, '1'],
-        [5.0, 5.68, '2'],
-      ],
-      [
-        [10.0, 9.14, '1'],
-        [8.0, 8.14, '2'],
-        [13.0, 8.74, '3'],
-        [9.0, 8.77, '1'],
-        [11.0, 9.26, '2'],
-        [14.0, 8.10, '3'],
-        [6.0, 6.13, '1'],
-        [4.0, 3.10, '2'],
-        [12.0, 9.13, '3'],
-        [7.0, 7.26, '1'],
-        [5.0, 4.74, '2'],
-      ],
-      [
-        [10.0, 7.46, '1'],
-        [8.0, 6.77, '2'],
-        [13.0, 12.74, '3'],
-        [9.0, 7.11, '1'],
-        [11.0, 7.81, '2'],
-        [14.0, 8.84, '3'],
-        [6.0, 6.08, '1'],
-        [4.0, 5.39, '2'],
-        [12.0, 8.15, '3'],
-        [7.0, 6.42, '1'],
-        [5.0, 5.73, '2'],
-      ],
-      [
-        [8.0, 6.58, '1'],
-        [8.0, 5.76, '2'],
-        [8.0, 7.71, '3'],
-        [8.0, 8.84, '1'],
-        [8.0, 8.47, '2'],
-        [8.0, 7.04, '3'],
-        [8.0, 5.25, '1'],
-        [19.0, 12.50, '2'],
-        [8.0, 5.56, '3'],
-        [8.0, 7.91, '1'],
-        [8.0, 6.89, '2'],
-      ],
-    ];
+
+  drawChart = (firstChartData, secondChartData, thirdChartData, fourthChartData) => {
+    const { minNum } = this.state;
+    const firstData = [];
+      firstChartData.forEach(cur => {
+        cur.dataList && cur.dataList.forEach(item => {
+          firstData.push([this.formatNumberFunc(item.xAxis), this.formatNumberFunc(item.yAxis), cur.deviceName]);
+        });
+    });
+    const secondData = [];
+    secondChartData.forEach(cur => {
+      cur.dataList && cur.dataList.forEach(item => {
+        secondData.push([this.formatNumberFunc(item.xAxis), this.formatNumberFunc(item.yAxis), cur.deviceName]);
+      });
+    });
+    const thirdData = [];
+    thirdChartData.forEach(cur => {
+      cur.dataList && cur.dataList.forEach(item => {
+        thirdData.push([this.formatNumberFunc(item.xAxis), this.formatNumberFunc(item.yAxis), cur.deviceName]);
+      });
+    });
+    const fourthData = [];
+    fourthChartData.forEach(cur => {
+      cur.dataList && cur.dataList.forEach(item => {
+        fourthData.push([this.formatNumberFunc(item.xAxis), this.formatNumberFunc(item.yAxis), cur.deviceName]);
+      });
+    });
+    console.log(firstData, 'firstData');
     return {
       animation: false,
       grid: [
@@ -99,12 +130,18 @@ export default class RunScatterChart extends Component {
         {left: '47%', top: '500px', width: '30%', height: '300px'},
       ],
       toolbox: {
+        show: true,
         top: '40px',
         right: '25px',
+        feature: {
+          brush: {
+            type: ['rect', 'polygon', 'keep', 'clear'],
+          },
+        },
       },
       visualMap: {
         type: 'piecewise',
-        categories: ['1', '2', '3'],
+        categories: firstChartData && firstChartData.map(cur => (cur.deviceName)),
         outOfRange: {
           symbol: 'circle',
           color: '#cccccc',
@@ -114,8 +151,8 @@ export default class RunScatterChart extends Component {
       },
       brush: {
         brushLink: 'all',
-        xAxisIndex: [0, 1, 2, 3], // 只可以在坐标系中
-        yAxisIndex: [0, 1, 2, 3], // 只可以在坐标系中
+        xAxisIndex: [0, 1, 2, 3],
+        yAxisIndex: [0, 1, 2, 3],
         inBrush: {
           opacity: 1,
         },
@@ -124,16 +161,16 @@ export default class RunScatterChart extends Component {
       //   formatter: '{a}: ({c})',
       // },
       xAxis: [
-        {name: '功率(KW)', gridIndex: 0, min: 0, max: 20, splitLine: {show: false}},
-        {name: '功率(KW)', gridIndex: 1, min: 0, max: 20, splitLine: {show: false}},
-        {name: '功率(KW)', gridIndex: 2, min: 0, max: 20, splitLine: {show: false}},
-        {name: '功率(KW)', gridIndex: 3, min: 0, max: 20, splitLine: {show: false}},
+        {name: '功率(KW)', gridIndex: 0, min: minNum, splitLine: {show: false}},
+        {name: '功率(KW)', gridIndex: 1, min: minNum, splitLine: {show: false}},
+        {name: '功率(KW)', gridIndex: 2, min: minNum, splitLine: {show: false}},
+        {name: '功率(KW)', gridIndex: 3, min: minNum, splitLine: {show: false}},
       ],
       yAxis: [
-        {name: '功率(KW)', gridIndex: 0, min: 0, max: 15, splitLine: {show: false}},
-        {name: '功率(KW)', gridIndex: 1, min: 0, max: 15, splitLine: {show: false}},
-        {name: '功率(KW)', gridIndex: 2, min: 0, max: 15, splitLine: {show: false}},
-        {name: '功率(KW)', gridIndex: 3, min: 0, max: 15, splitLine: {show: false}},
+        {name: '功率(KW)', gridIndex: 0, min: minNum, splitLine: {show: false}},
+        {name: '功率(KW)', gridIndex: 1, min: minNum, splitLine: {show: false}},
+        {name: '功率(KW)', gridIndex: 2, min: minNum, splitLine: {show: false}},
+        {name: '功率(KW)', gridIndex: 3, min: minNum, splitLine: {show: false}},
       ],
       series: [
         {
@@ -141,28 +178,28 @@ export default class RunScatterChart extends Component {
           type: 'scatter',
           xAxisIndex: 0,
           yAxisIndex: 0,
-          data: dataAll[0],
+          data: firstData,
         },
         {
           name: 'II',
           type: 'scatter',
           xAxisIndex: 1,
           yAxisIndex: 1,
-          data: dataAll[1],
+          data: secondData,
         },
         {
           name: 'III',
           type: 'scatter',
           xAxisIndex: 2,
           yAxisIndex: 2,
-          data: dataAll[2],
+          data: thirdData,
         },
         {
           name: 'IV',
           type: 'scatter',
           xAxisIndex: 3,
           yAxisIndex: 3,
-          data: dataAll[3],
+          data: fourthData,
         },
       ],
     };
@@ -172,19 +209,96 @@ export default class RunScatterChart extends Component {
     console.log(value);
   };
 
-  onChangeSwitch = () => {};
-
-  onChangeGroup = (checkedList) => {
+  onChangeSwitch = (checked) => {
+    const {
+      firstChartData,
+      secondChartData,
+      thirdChartData,
+      fourthChartData,
+    } = this.props;
     this.setState({
-      checkedList,
+      minNum: checked ? null : 0,
+    }, () => {
+      const { scatterChart } = this;
+      eCharts.init(scatterChart).clear();//清除
+      const myChart = eCharts.init(scatterChart);
+      myChart.setOption(this.drawChart(firstChartData, secondChartData, thirdChartData, fourthChartData));
     });
   };
 
-  onAllSwitch = () => {};
+  onChangeGroup = (checkedList) => {
+    const { changeStore } = this.props;
+    changeStore({
+      checkedMonths: checkedList,
+    });
+  };
+
+  onAllSwitch = (checked) => {
+    const { allMonths, changeStore } = this.props;
+    changeStore({
+      checkedMonths: checked ? allMonths : [],
+    });
+  };
 
   render() {
-    const { checkedList } = this.state;
-    const timeData = ['2019.01', '2019.02', '2019.03', '2019.04', '2019.05', '2019.06', '2019.07', '2019.08', '2019.09', '2019.10', '2019.11', '2019.12', '2019.13', '2019.14'];
+    const { minNum } = this.state;
+    const {
+      indicatorsList,
+      checkedMonths,
+      allMonths,
+      // 第一个散点图坐标
+      firstChartXAxis,
+      firstChartYAxis,
+      // 第二个散点图坐标
+      secondChartXAxis,
+      secondChartYAxis,
+      // 第三个散点图坐标
+      thirdChartXAxis,
+      thirdChartYAxis,
+      // 第四个散点图坐标
+      fourthChartXAxis,
+      fourthChartYAxis,
+    } = this.props;
+    const firstXAxisOption = indicatorsList && indicatorsList.map(cur => {
+      return (
+        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+      );
+    });
+    const firstYAxisOption = indicatorsList && indicatorsList.map(cur => {
+      return (
+        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+      );
+    });
+    const secondXAxisOption = indicatorsList && indicatorsList.map(cur => {
+      return (
+        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+      );
+    });
+    const secondYAxisOption = indicatorsList && indicatorsList.map(cur => {
+      return (
+        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+      );
+    });
+    const thirdXAxisOption = indicatorsList && indicatorsList.map(cur => {
+      return (
+        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+      );
+    });
+    const thirdYAxisOption = indicatorsList && indicatorsList.map(cur => {
+      return (
+        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+      );
+    });
+    const fourthXAxisOption = indicatorsList && indicatorsList.map(cur => {
+      return (
+        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+      );
+    });
+    const fourthYAxisOption = indicatorsList && indicatorsList.map(cur => {
+      return (
+        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+      );
+    });
     return (
       <div className={styles.runScatterChart}>
         <div className={styles.sequenceChart} ref={ref => {this.scatterChart = ref;}} />
@@ -195,8 +309,8 @@ export default class RunScatterChart extends Component {
           <div className={styles.paramsSelect}>
             <span>参数选择</span>
             <div className={styles.switchBox}>
-              <Switch defaultChecked onChange={this.onChangeSwitch} />
-              <span>显示停机</span>
+              <Switch checked={minNum === null} onChange={this.onChangeSwitch} />
+              <span>{minNum === null ? '显示' : '隐藏'}停机</span>
             </div>
           </div>
           <div className={styles.devicesSelect}>
@@ -207,14 +321,14 @@ export default class RunScatterChart extends Component {
             <div className={styles.checkBox}>
               <CheckboxGroup
                 style={{height: '250px', overflowY: 'auto'}}
-                options={timeData}
-                value={checkedList}
+                options={allMonths}
+                value={checkedMonths}
                 onChange={this.onChangeGroup}
               />
             </div>
             <div className={styles.allSwitch}>
-              <Switch defaultChecked onChange={this.onAllSwitch} />
-              <span>全部显示</span>
+              <Switch checked={checkedMonths.length > 0} onChange={this.onAllSwitch} />
+              <span>全部{checkedMonths.length === 0 ? '隐藏' : '显示'}</span>
             </div>
           </div>
         </div>
@@ -232,62 +346,46 @@ export default class RunScatterChart extends Component {
         </div>
         <div className={styles.firCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select defaultValue="lucy" style={{ width: 120 }} onChange={this.handleChange}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="Yiminghe">yiminghe</Option>
+          <Select value={firstChartXAxis} style={{ width: 120 }} onChange={this.handleChange}>
+            {firstXAxisOption}
           </Select>
           <Icon type="swap" />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select defaultValue="lucy" style={{ width: 120 }} onChange={this.handleChange}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="Yiminghe">yiminghe</Option>
+          <Select value={firstChartYAxis} style={{ width: 120 }} onChange={this.handleChange}>
+            {firstYAxisOption}
           </Select>
         </div>
         <div className={styles.secCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select defaultValue="lucy" style={{ width: 120 }} onChange={this.handleChange}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="Yiminghe">yiminghe</Option>
+          <Select value={secondChartXAxis} style={{ width: 120 }} onChange={this.handleChange}>
+            {secondXAxisOption}
           </Select>
           <Icon type="swap" />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select defaultValue="lucy" style={{ width: 120 }} onChange={this.handleChange}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="Yiminghe">yiminghe</Option>
+          <Select value={secondChartYAxis} style={{ width: 120 }} onChange={this.handleChange}>
+            {secondYAxisOption}
           </Select>
         </div>
         <div className={styles.thrCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select defaultValue="lucy" style={{ width: 120 }} onChange={this.handleChange}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="Yiminghe">yiminghe</Option>
+          <Select value={thirdChartXAxis} style={{ width: 120 }} onChange={this.handleChange}>
+            {thirdXAxisOption}
           </Select>
           <Icon type="swap" />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select defaultValue="lucy" style={{ width: 120 }} onChange={this.handleChange}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="Yiminghe">yiminghe</Option>
+          <Select value={thirdChartYAxis} style={{ width: 120 }} onChange={this.handleChange}>
+            {thirdYAxisOption}
           </Select>
         </div>
         <div className={styles.fouCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select defaultValue="lucy" style={{ width: 120 }} onChange={this.handleChange}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="Yiminghe">yiminghe</Option>
+          <Select value={fourthChartXAxis} style={{ width: 120 }} onChange={this.handleChange}>
+            {fourthXAxisOption}
           </Select>
           <Icon type="swap" />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select defaultValue="lucy" style={{ width: 120 }} onChange={this.handleChange}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="Yiminghe">yiminghe</Option>
+          <Select value={fourthChartYAxis} style={{ width: 120 }} onChange={this.handleChange}>
+            {fourthYAxisOption}
           </Select>
         </div>
       </div>
