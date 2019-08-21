@@ -157,8 +157,11 @@ export default class AreaSearch extends Component {
     });
   };
 
-  onModelChange = (modes) => {
-    this.setState({ modes: modes.map(e => e.value) });
+  onModelChange = (value) => {
+    const { modes } = this.state;
+    this.setState({
+      modes: value.length === 0 ? modes : value.map(e => e.value),
+    });
   };
 
   onDateChange = ([], [start, end]) => this.setState({ dates: [start, end] });

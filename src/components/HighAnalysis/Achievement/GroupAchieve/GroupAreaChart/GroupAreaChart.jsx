@@ -82,7 +82,7 @@ export default class GroupAreaChart extends Component {
   drawChart = (data, dataIndex) => {
     const dataMap = data && data.map(cur => ({
       name: cur.regionName,
-      value: [cur.longitude, cur.latitude, cur.stationCapacity / 10000],
+      value: [cur.longitude, cur.latitude, cur.stationCapacity / 1000],
     }));
     return {
       tooltip: {
