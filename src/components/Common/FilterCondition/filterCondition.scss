@@ -12,12 +12,10 @@
     align-items: center;
     flex-shrink: 0;
     .text {
-      color: $darkColor;
       margin-right: 16px;
     }
     button {
       margin-right: 16px;
-      color: $darkColor;
     }
   }
   .filterBox {
@@ -33,20 +31,8 @@
       display: flex;
       flex-direction: row;
       margin-right: 16px;
-      color: $darkColor;
       > span:first-child {
         margin-right: 28px;
-      }
-    }
-    :global {
-      .ant-radio-button-wrapper {
-        padding: 0 8px;
-        color: $darkColor;
-      }
-      .ant-radio-button-wrapper-checked {
-        background-color: $themeColor;
-        border: 1px solid $themeColor;
-        color: #fff;
       }
     }
   }
@@ -61,21 +47,16 @@
   padding-left: 26px;
   min-height: 40px;
   border-radius: 4px;
-  background-color: #f0f2f5;
   > span {
     margin-right: 10px;
   }
   :global {
     .ant-input {
       width: 300px;
-      &:hover {
-        border-color: $themeColor;
-      }
     }
   }
   .all {
     display: inline-block;
-    color: $darkColor;
     width: 29px;
     height: 19px;
     border-bottom: none;
@@ -83,10 +64,8 @@
   }
   .selected {
     display: inline-block;
-    color: $themeColor;
     width: 29px;
     height: 19px;
-    border-bottom: 1px $themeColor solid;
     cursor: pointer;
     text-align: center;
   }
@@ -101,52 +80,8 @@
   min-height: 40px;
   overflow-y: auto;
   border-radius: 4px;
-  background-color: #f0f2f5;
-  padding-left: 26px;
+  padding: 10px 16px;
   padding-bottom: 24px;
-  // .allCheck {
-  //     flex: 0 0 70px;
-  // }
-}
-
-.deviceTypeFilter {
-  margin-top: 10px;
-  display: flex;
-  flex: 1;
-  align-items: flex-start;
-  padding: 10px 0;
-  flex-shrink: 0;
-  padding-left: 26px;
-  min-height: 40px;
-  border-radius: 4px;
-  background-color: #f0f2f5;
-  > span {
-    margin-right: 10px;
-  }
-  :global {
-    .ant-checkbox-group-item {
-      margin-bottom: 8px;
-    }
-  }
-  .all {
-    display: inline-block;
-    color: $darkColor;
-    width: 35px;
-    height: 19px;
-    border-bottom: none;
-    cursor: pointer;
-    word-break: keep-all;
-  }
-  .selected {
-    display: inline-block;
-    color: $themeColor;
-    width: 30px;
-    height: 19px;
-    border-bottom: 1px $themeColor solid;
-    cursor: pointer;
-    text-align: center;
-    white-space: nowrap;
-  }
 }
 
 .defectTypeFilter {
@@ -196,14 +131,11 @@
   align-items: center;
   flex-wrap: wrap;
   > span:first-child {
-    color: $darkColor;
     font-size: 14px;
     margin-right: 16px;
     height: 20px;
   }
   .clearAll {
-    color: $themeColor;
-    color: $themeColor;
     font-size: 14px;
     cursor: pointer;
   }
@@ -217,7 +149,6 @@
       align-items: center;
       font-size: 14px;
       margin-right: 16px;
-      background: #fff;
       margin-top: 5px;
     }
   }
@@ -225,11 +156,102 @@
 
 .light {
   background-color: #fff;
+  color: $darkColor;
+  .filterItem {
+    background-color: #f0f2f5;
+    :global {
+      .ant-input {
+        &:hover {
+          border-color: $themeColor;
+        }
+      }
+    }
+    .selected {
+      color: $themeColor;
+      border-bottom: 1px $themeColor solid;
+    }
+  }
+
+  .stationFilter {
+    background-color: #f0f2f5;
+  }
+
+  .filteredItems {
+    .clearAll {
+      color: $themeColor;
+    }
+  }
+
+  :global {
+    .ant-radio-button-wrapper {
+      color: $darkColor;
+    }
+    .ant-tag {
+      background: #fff;
+    }
+    .ant-radio-button-wrapper-checked {
+      background-color: $themeColor;
+      border: 1px solid $themeColor;
+      color: #fff;
+    }
+  }
 }
 
 .dark {
-  @import "../../../theme/darkTheme.scss";
+  @import "../../../theme/antdResetDark.scss";
   background: $light-background;
   border: 1px solid $border-color;
   color: $fontColor;
+  .filterItem {
+    color: $fontColor;
+    background-color: #1e246e;
+    .selected {
+      color: $fontColor-hover;
+      border-bottom: 1px solid $fontColor-hover;
+    }
+  }
+  .stationFilter {
+    background-color: #1e246e;
+  }
+  .filteredItems {
+    .clearAll {
+      color: $fontColor-hover;
+    }
+  }
+  :global {
+    .ant-tag {
+      background: transparent;
+      color: $fontColor;
+      border: 1px dashed $fontColor;
+      .anticon-close {
+        color: $fontColor;
+      }
+      &:hover {
+        background: #fcffe5;
+        border: 1px solid #f8b14e;
+        color: #f8b14e;
+        .anticon-close {
+          color: #f8b14e;
+        }
+      }
+    }
+    .ant-tabs-bar {
+      border-bottom: 1px solid $border-color;
+    }
+    .ant-tabs-nav-scroll {
+      background: transparent !important;
+    }
+    .ant-tabs-tab-prev,
+    .ant-tabs-tab-next {
+      color: $fontColor;
+      &:hover {
+        color: $fontColor-hover;
+      }
+    }
+    .ant-tabs-nav .ant-tabs-tab {
+      &:hover {
+        color: $fontColor-hover;
+      }
+    }
+  }
 }

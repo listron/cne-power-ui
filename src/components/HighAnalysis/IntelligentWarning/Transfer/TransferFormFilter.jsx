@@ -34,7 +34,7 @@ class TransferFormFilter extends Component {
 
   onChangeFilter = (value) => {
     const { stationCodes, warningLevel, deviceTypeCode, rangTime, deviceName, durationType, warningTypeStatus, warningType } = this.props;
-    const params = { stationCodes, warningLevel, warningTypeStatus, warningType, deviceTypeCode, rangTime,deviceName  }
+    const params = { stationCodes, warningLevel, warningTypeStatus, warningType, deviceTypeCode, rangTime, deviceName }
     this.props.onSearch({ ...params, ...value })
   }
 
@@ -62,7 +62,7 @@ class TransferFormFilter extends Component {
   }
 
   render() {
-    const { stations, deviceTypes } = this.props;
+    const { stations, deviceTypes, theme } = this.props;
     return (
       <div className={styles.realTimeWarningFilter}>
         <FilterCondition
@@ -70,6 +70,7 @@ class TransferFormFilter extends Component {
           stations={stations || []}
           deviceTypes={deviceTypes || []}
           onChange={this.onChangeFilter}
+          theme={theme}
         />
         <div className={styles.deviceNameSearch}>
           <span>设备名称</span>

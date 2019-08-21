@@ -421,7 +421,9 @@
     }
   }
 
-  .ant-calendar-selected-date .ant-calendar-date {
+  .ant-calendar-selected-date .ant-calendar-date,
+  .ant-calendar-selected-start-date .ant-calendar-date,
+  .ant-calendar-selected-end-date .ant-calendar-date {
     color: $fontColor-invert;
     background: $themeColor;
     border: 1px solid transparent;
@@ -455,6 +457,13 @@
 
   .ant-calendar-footer {
     border-top: 1px solid $border-color;
+  }
+
+  .ant-calendar-range .ant-calendar-body {
+    border: none;
+  }
+  .ant-calendar-range .ant-calendar-in-range-cell::before {
+    background: #205bac;
   }
 
   /*输入框前面的小方块*/
