@@ -25,16 +25,13 @@ class LostAnalysis extends Component {
   }
 
   componentDidMount(){
-    const { selectedQuota, lostStringify, location, pageName } = this.props;
+    const { lostStringify, location } = this.props;
     const { search } = location;
     const infoStr = searchUtil(search).getValue('station');
-    const originLoad = infoStr && !lostStringify; // // 初次加载
-    const pageBack = lostStringify && infoStr && infoStr !== lostStringify; // 其他两个页面修改路径信息后返回
-    if (pageName === 'lost' && (originLoad || pageBack)) {
+    const pageReload = infoStr && !lostStringify; // 有路径信息的跳转打开 或者 f5刷新
+    if (pageReload) {
       this.props.changeStore({ lostStringify: infoStr });
-      this.queryTypes(infoStr); // 初次加载只重新请求损失电量分解
-      pageBack && selectedQuota.value && this.queryRank(infoStr, selectedQuota.value);
-      pageBack && selectedQuota.value && this.queryTrend(infoStr, selectedQuota.value);
+      this.queryTypes(infoStr); // 只能重新请求损失电量分解, 等指标数据得到后再请求风机指标排名rank, trend
     }
   }
 
@@ -45,6 +42,7 @@ class LostAnalysis extends Component {
     const nextSearch = nextLocation.search || '';
     const { lostStringify, quotaInfo, changeStore } = this.props;
     const infoStr = searchUtil(nextSearch).getValue('station');
+    // 停机或者功率tab跳转过来
     if (infoStr && infoStr !== lostStringify && nextQuotaParam.value) { // 搜索信息有变
       changeStore({ lostStringify: infoStr });
       this.queryTypes(infoStr);
@@ -54,6 +52,7 @@ class LostAnalysis extends Component {
     if (quotaInfo.length === 0 && nextQuota.length > 0) { // 得到指标数据
       this.propsQuotaChange(nextQuota, infoStr);
     }
+    // 得到电站数据 - 直接进入风电分析/电站效能; 或刷新f5得到电站数据。
   }
 
   propsQuotaChange = (quotaInfo, infoStr) => { // 得到指标
@@ -68,7 +67,6 @@ class LostAnalysis extends Component {
       selectedQuota = firstType;
     }
     changeStore({ selectedQuota });
-    infoStr && this.queryRank(infoStr, selectedQuota.value);
     infoStr && this.queryRank(infoStr, selectedQuota.value);
   }
 

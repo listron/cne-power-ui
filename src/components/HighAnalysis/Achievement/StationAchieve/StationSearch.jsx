@@ -50,7 +50,7 @@ class StationSearch extends Component {
     if (!stationInfoStr && preArea.length === 0 && areaStation.length > 0) { // 路径无参数时 得到电站数据
       this.propsAreaStationChange(areaStation);
     }
-    if (!stationInfoStr && preDevice.length === 0 && modeDevices.length > 0 && !stationInfoStr) { // 路径无参数时  得到设备数据
+    if (!stationInfoStr && preDevice.length === 0 && modeDevices.length > 0) { // 路径无参数时  得到设备数据
       this.propsModeDevicesChange(modeDevices);
     }
   }
