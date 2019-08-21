@@ -158,6 +158,9 @@ class HandleSeacher extends React.Component {
     this.clearoutLimit();
   }
   onChangeContrast = (value, selectedOptions) => {
+    this.setState({
+      isSwap: false,
+    });
     const { stationCode } = this.props;
     if (value[0] === '其他') {
       this.setState({
