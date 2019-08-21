@@ -36,11 +36,14 @@ class SingleStationModal extends React.Component {
   }
 
   render() {
-    const { imageListShow, hideImg, data = [], currentImgIndex, onChange } = this.props;
-    const curChart = data[currentImgIndex];
+    const { imageListShow, hideImg, deviceList, data = [], currentImgIndex, likeChange } = this.props;
+    const curChart = deviceList[currentImgIndex];
+    const chartData = data[currentImgIndex];
     const likeStatus = curChart ? curChart.likeStatus : false;
     const deviceName = curChart ? curChart.deviceName : '';
-    const chartData = curChart ? curChart.chartData : [];
+
+
+
     return (
       <React.Fragment>
         <span ref={'date'}></span>
@@ -68,7 +71,7 @@ class SingleStationModal extends React.Component {
                 title={deviceName}
                 chartData={chartData}
                 saveImgUrl={this.saveImgUrl}
-                onChange={onChange}
+                onChange={likeChange}
 
               />
             </div>
