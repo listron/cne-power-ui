@@ -4,6 +4,8 @@ import styles from './sequenceStyles.scss';
 import eCharts from 'echarts';
 import { Icon } from 'antd';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
+import { themeConfig } from '../../../../utils/darkConfig';
+
 // import { downloadFile } from '../../../../utils/utilFunc';
 import moment from 'moment';
 class SequenceChart extends React.Component {
@@ -24,15 +26,15 @@ class SequenceChart extends React.Component {
   }
   componentDidMount() {
     const { sequenceChart } = this;
-    const myChart = eCharts.init(sequenceChart); //构建下一个实例
+    const myChart = eCharts.init(sequenceChart, themeConfig[this.props.theme]); //构建下一个实例
     const option = this.creatOption(this.props);
     myChart.setOption(option);
 
   }
   componentWillReceiveProps(nextProps) {
-    const { chartLoading, index, saveBtn, point1Max, point2Max } = this.props;
+    const { chartLoading, index, saveBtn, point1Max, point2Max, theme } = this.props;
     const { sequenceChart } = this;
-    const myChart = eCharts.init(sequenceChart);
+    const myChart = eCharts.init(sequenceChart, themeConfig[theme]);
     if (nextProps.chartLoading && (index + 1) === nextProps.sequenceData.length) { // loading态控制。第一次无数据，请求数据的过程
       myChart.showLoading();
     }
@@ -44,11 +46,11 @@ class SequenceChart extends React.Component {
       this.renderChart(nextProps);
     }
 
-    if ((index + 1 === nextProps.sequenceData.length)) {
-      // console.log('后面的图渲染');
-      myChart.clear();//清除
-      this.renderChart(nextProps);
-    }
+    // if ((index + 1 === nextProps.sequenceData.length)) {
+    //   // console.log('后面的图渲染');
+    //   myChart.clear();//清除
+    //   this.renderChart(nextProps);
+    // }
     if ((chartLoading && nextProps.chartLoading !== chartLoading)) {
       // console.log('loadding渲染');
       myChart.clear();//清除
@@ -65,7 +67,7 @@ class SequenceChart extends React.Component {
     const { timeLine, point1Data, point2Data } = allChartData ? allChartData : { timeLine: [], point1Data: [], point2Data: [] };
     // const xAxisTime = timeLine.map((e, i) => (moment(e).format('YYYY-MM-DD HH:mm:ss')));
     const option = {
-      graphic: timeLine ? hiddenNoData : showNoData,
+      graphic: timeLine.length ? hiddenNoData : showNoData,
       title: {
         text: [`${deviceName}`, '{b|}'].join(''),
         left: '5%',
@@ -95,7 +97,26 @@ class SequenceChart extends React.Component {
       tooltip: {
         trigger: 'item',
         enterable: true,
-        show: false,
+        show: true,
+        axisPointer: {
+          type: 'cross',
+        },
+        formatter: (payload) => {
+          console.log('payload: ', payload);
+          const info = payload.data;
+          return `<div class=${styles.formatStyle}>
+            <div class=${styles.topStyle}>
+            <div>${payload.seriesName}</div>
+            </div>
+            <div  style='background:#dfdfdf;height:1px;
+            width:100%;' ></div>
+            <div>${moment().format('YYYY-MM-DD HH:mm:ss')}-${
+            moment().format('YYYY-MM-DD HH:mm:ss')
+            }</div>
+            <div class=${styles.lineStyle}>${pointCodeNameX}: </div>
+            <div class=${styles.lineStyle}>${pointCodeNameY}: </div>
+          </div>`;
+        },
       },
       xAxis: {
         type: 'category',
@@ -111,17 +132,17 @@ class SequenceChart extends React.Component {
       yAxis: [
         {
           type: 'value',
-          // name: '功率',
           min: point1Min,
           max: point1Max,
+          position: 'left',
           // axisLabel: {
           //   formatter: '{value} kW',
           // },
         }, {
           type: 'value',
-          // name: '温度',
           min: point2Min,
           max: point2Max,
+          position: 'right',
           splitLine: false,
           // axisLabel: {
           //   formatter: '{value} °C',
@@ -132,6 +153,7 @@ class SequenceChart extends React.Component {
         {
           name: pointCodeNameX,
           type: 'line',
+          yAxisIndex: 0,
           progressiveThreshold: 1000,
           progressive: 100,
           data: point1Data,
@@ -140,6 +162,7 @@ class SequenceChart extends React.Component {
         {
           name: pointCodeNameY,
           type: 'line',
+          yAxisIndex: 1,
           data: point2Data,
           progressiveThreshold: 1000,
           progressive: 100,
@@ -150,16 +173,16 @@ class SequenceChart extends React.Component {
     return option;
   }
   renderChart = (payload) => {
-    const { deviceList, getSequenceData, sequenceData, index, pointY1, pointY2, startTime, endTime, likeStatusChange, saveBtn, deviceName } = payload;
+    const { deviceList, getSequenceData, sequenceData, index, pointY1, pointY2, startTime, endTime, likeStatusChange, saveBtn, deviceName, theme } = payload;
     const parms = {
       pointY1,
       pointY2,
       startTime,
       endTime,
-      interval: 10,
+      interval: 60,
     };
     const { sequenceChart } = this;
-    const myChart = eCharts.init(sequenceChart); //构建下一个实例
+    const myChart = eCharts.init(sequenceChart, themeConfig[theme]); //构建下一个实例
 
     const option = this.creatOption(payload);
     myChart.off();

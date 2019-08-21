@@ -10,8 +10,17 @@ import moment from 'moment';
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 const options = [{
-  value: '温度相关',
-  pointsUnionName: '温度相关',
+  value: '风速相关',
+  pointsUnionName: '风速相关',
+  isLeaf: false,
+},
+{
+  value: '功率相关',
+  pointsUnionName: '功率相关',
+  isLeaf: false,
+}, {
+  value: '转速相关',
+  pointsUnionName: '转速相关',
   isLeaf: false,
 },
 {
@@ -19,13 +28,20 @@ const options = [{
   pointsUnionName: '振动相关',
   isLeaf: false,
 }, {
-  value: '控制相关',
-  pointsUnionName: '控制相关',
+  value: '温度相关',
+  pointsUnionName: '温度相关',
   isLeaf: false,
-},
-{
-  value: 'xx相关',
-  pointsUnionName: 'xx相关',
+}, {
+  value: '震动相关',
+  pointsUnionName: '震动相关',
+  isLeaf: false,
+}, {
+  value: '相控相关',
+  pointsUnionName: '相控相关',
+  isLeaf: false,
+}, {
+  value: '其他',
+  pointsUnionName: '其他',
   isLeaf: false,
 },
 ];
@@ -104,7 +120,7 @@ class HandleSeachData extends React.Component {
           endTime: endTime,
           pointY1: pointCodeX,
           pointY2: pointCodeY,
-          interval: 10,
+          interval: 60,
         });
       }
     }
@@ -130,9 +146,11 @@ class HandleSeachData extends React.Component {
   formater = (data) => {//对测点数据进行处理
     return data.map((e, i) => {
       const pointNameList = e.pointNameList.map((item, index) => ({
-        ...item, value: `${item.pointCodeX}_${item.pointCodeY}`,
+        key: index,
+        ...item,
+        value: `${item.pointCodeX}_${item.pointCodeY}`,
       }));
-      return { ...e, pointNameList };
+      return { key: i, ...e, pointNameList };
     }
     );
   }
@@ -234,7 +252,7 @@ class HandleSeachData extends React.Component {
       pointY2: yCode,
       startTime: saveStartTime,
       endTime: saveEndTime,
-      interval: 10,
+      interval: 60,
     });
   }
   //改变第一个y轴
@@ -288,26 +306,26 @@ class HandleSeachData extends React.Component {
             value={sequenceNameValue}
             fieldNames={{ label: 'pointsUnionName', value: 'value', children: 'pointNameList' }}
             onChange={this.onChangeContrast}
-            style={{ width: '400px' }}
+            style={showOther ? { width: '200px' } : { width: '400px' }}
           />
           {showOther && <div className={styles.contrastValue}>
             <Select
-              style={{ width: 120 }}
+              style={{ width: 160 }}
               onChange={this.changeY1value}
               value={this.state.xCode}
             >
               {sequenceotherNames.map((e, i) => (
-                <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
+                <Option key={e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
               ))}
             </Select>
             <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
             <Select
-              style={{ width: 120 }}
+              style={{ width: 160 }}
               onChange={this.changeY2value}
               value={this.state.yCode}
             >
               {sequenceotherNames.map((e, i) => (
-                <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
+                <Option key={e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
               ))}
             </Select>
           </div>}
@@ -319,8 +337,8 @@ class HandleSeachData extends React.Component {
               <span>{xName ? xName : '--'}</span>
 
               <InputNumber
-                min={0}
-                max={point1Max}
+                // min={0}
+                // max={point1Max}
                 value={point1Max}
                 formatter={value => `最大值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
@@ -328,9 +346,9 @@ class HandleSeachData extends React.Component {
               />
 
               <InputNumber
+                // min={0}
+                // max={point1Max}
                 value={point1Min}
-                min={0}
-                max={point1Max}
                 formatter={value => `最小值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
                 onChange={(value) => this.setState({ point1Min: value })}
@@ -340,17 +358,17 @@ class HandleSeachData extends React.Component {
               {/* <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} /> */}
               <span className={styles.defaultStyle} >{yName ? yName : '--'}</span>
               <InputNumber
+                //  min={0}
+                //  max={point2Max}
                 value={point2Max}
-                min={0}
-                max={point2Max}
                 formatter={value => `最大值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
                 onChange={(value) => this.setState({ point2Max: value })}
               />
               <InputNumber
+                //  min={0}
+                //  max={point2Max}
                 value={point2Min}
-                min={0}
-                max={point2Max}
                 formatter={value => `最小值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
                 onChange={(value) => this.setState({ point2Min: value })}

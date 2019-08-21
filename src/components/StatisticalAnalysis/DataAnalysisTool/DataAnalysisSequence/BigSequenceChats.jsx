@@ -91,6 +91,7 @@ class BigSequenceCharts extends React.Component {
           // name: '温度',
           min: point2Min,
           max: point2Max,
+          splitLine: false,
           // axisLabel: {
           //   formatter: '{value} °C',
           // },
