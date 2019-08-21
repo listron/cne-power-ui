@@ -14,6 +14,7 @@ export default class AreaLossChart extends Component {
     lostTime: PropTypes.number,
     dataSelect: PropTypes.string,
     selectTime: PropTypes.string,
+    dataName: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
@@ -109,11 +110,11 @@ export default class AreaLossChart extends Component {
   };
 
   render() {
-    const { dataSelect, selectTime } = this.props;
+    const { dataSelect, selectTime, dataName } = this.props;
     return (
       <div className={styles.areaLossBox}>
         <div className={styles.areaLossTitle}>
-          <span>{selectTime === '' ? '损失电量分解图' : `河南-${selectTime}-损失电量分解图`}</span>
+          <span>{selectTime === '' ? '损失电量分解图' : `${dataName}-${selectTime}-损失电量分解图`}</span>
           <Button disabled={dataSelect === ''}>根源分析</Button>
         </div>
         <div className={styles.areaLossCenter} ref={ref => {this.lossChart = ref;}} />
