@@ -144,6 +144,12 @@
 .dark {
   @import "../../../../theme/darkTheme.scss";
   background: $background;
+  .deviceNameSearch {
+    background-color: $light-background;
+    color: $fontColor;
+    margin-top: 10px;
+    border: 1px solid $border-color;
+  }
   .realTimeWarningTable {
     background: $light-background;
     border: 1px solid $border-color;

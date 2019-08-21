@@ -48,10 +48,10 @@
 
   .deviceNameSearch {
     background-color: $light-background;
-    margin-top: 10px;
     color: $fontColor;
+    margin-top: 10px;
+    border: 1px solid $border-color;
   }
-
   .realTimeWarningTable {
     background: $light-background;
     border: 1px solid $border-color;

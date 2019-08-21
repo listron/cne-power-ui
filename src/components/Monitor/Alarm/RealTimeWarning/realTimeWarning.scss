@@ -5,12 +5,7 @@
   background: #fff;
   .deviceNameSearch {
     background-color: #f9f9f9;
-    > span {
-      color: $darkColor;
-    }
-    > span:last-child {
-      color: $themeColor;
-    }
+    color: $darkColor;
   }
   .realTimeWarningTable {
     .tableHeader {
@@ -52,6 +47,17 @@
 .dark {
   @import "../../../../theme/darkTheme.scss";
   background: $background;
+  .realTimeWarningFilter {
+    margin-top: 10px;
+  }
+
+  .deviceNameSearch {
+    background-color: $light-background;
+    color: $fontColor;
+    margin-top: 10px;
+    border: 1px solid $border-color;
+  }
+
   .realTimeWarningTable {
     background: $light-background;
     border: 1px solid $border-color;
@@ -78,6 +84,7 @@
       }
     }
   }
+
   .tableFooter {
     background-color: transparent;
     .info {

@@ -14,19 +14,14 @@
     display: flex;
     height: 50px;
     flex-shrink: 0;
-    background-color: #f9f9f9;
     flex-direction: row;
     align-items: center;
     padding-left: 28px;
-    > span {
-      color: $darkColor;
-    }
     .deviceName {
       width: 200px;
       margin: 0 16px;
     }
     > span:last-child {
-      color: $themeColor;
       font-size: 14px;
       cursor: pointer;
       margin-left: 16px;
@@ -57,11 +52,9 @@
       }
     }
     .deviceName {
-      :global {
-        a {
-          color: $darkColor;
-          text-decoration: none;
-        }
+      a {
+        color: $darkColor;
+        text-decoration: none;
       }
     }
     .alarmDesc {
@@ -69,20 +62,16 @@
     }
   }
   .tableFooter {
-    background-color: #fff;
     height: 45px;
     line-height: 45px;
     .info {
-      color: $darkColor;
       margin-right: 20px;
       margin-left: 24px;
       .totalNum {
-        color: rgb(250, 185, 7);
         margin: auto 4px;
       }
     }
     .cancel {
-      color: $themeColor;
       cursor: pointer;
     }
   }
