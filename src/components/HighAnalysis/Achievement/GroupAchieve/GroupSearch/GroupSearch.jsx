@@ -23,6 +23,9 @@ export default class AreaSearch extends Component {
     getGroupModesInfo: PropTypes.func,
     history: PropTypes.object,
     changeStore: PropTypes.func,
+    dataName: PropTypes.string,
+    selectTime: PropTypes.string,
+    queryParamsFunc: PropTypes.func,
   };
 
   constructor(props){
@@ -178,7 +181,19 @@ export default class AreaSearch extends Component {
   };
 
   resetCharts = () => {
-    console.log('重置');
+    const { groupInfoStr } = this.state;
+    const { dataName, selectTime, queryParamsFunc, changeStore } = this.props;
+    // 判断如果选中过区域或时间可以重置图表
+    if(dataName !== '' || selectTime !== '') {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      changeStore({
+        dataIndex: '', // 保存点击的下标
+        selectStationCode: [], // 保存单选区域的信息
+        selectTime: '', // 保存选择时间
+        dataName: '', // 保存选择区域名称
+      });
+      queryParamsFunc(groupInfo);
+    }
   };
 
   render() {
@@ -186,6 +201,8 @@ export default class AreaSearch extends Component {
       areaStation,
       modesInfo,
       quotaInfo,
+      dataName,
+      selectTime,
     } = this.props;
     const { modes, dates, quota, stations } = this.state;
     // console.log(modes, 'modesrender');
@@ -235,7 +252,7 @@ export default class AreaSearch extends Component {
         </div>
         <div>
           <Button style={{marginRight: '20px'}} onClick={this.queryCharts}>查询</Button>
-          <Button onClick={this.resetCharts}>恢复图表</Button>
+          <Button disabled={dataName === '' && selectTime === ''} onClick={this.resetCharts}>恢复图表</Button>
         </div>
       </div>
     );

@@ -12,15 +12,19 @@ export default class AreaChart extends Component {
     capacityInfo: PropTypes.array,
     capacityTime: PropTypes.number,
     capacityLoading: PropTypes.bool,
-    dataSelect: PropTypes.string,
+    dataIndex: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
     changeStore: PropTypes.func,
     getTrendInfo: PropTypes.func,
+    getLostGenHour: PropTypes.func,
     location: PropTypes.object,
   };
 
   componentDidUpdate(prevProps) {
     const { areaChart } = this;
-    const { capacityTime, capacityLoading, capacityInfo, dataSelect } = this.props;
+    const { capacityTime, capacityLoading, capacityInfo, dataIndex } = this.props;
     const { capacityTime: capacityTimePrev } = prevProps;
     const myChart = eCharts.init(areaChart);
     if (capacityLoading) { // loading态控制。
@@ -33,19 +37,21 @@ export default class AreaChart extends Component {
     if(capacityTime && capacityTime !== capacityTimePrev) {
       eCharts.init(areaChart).clear();//清除
       const myChart = eCharts.init(areaChart);
-      myChart.setOption(this.drawChart(capacityInfo, dataSelect));
+      myChart.setOption(this.drawChart(capacityInfo, dataIndex));
       myChart.on('click', (param) => this.chartHandle(param, capacityInfo, myChart));
     }
   }
 
   chartHandle = (params, capacityInfo, myChart) => {
-    const { changeStore, dataSelect, getTrendInfo, location: { search }} = this.props;
+    const { changeStore, dataIndex, getTrendInfo, getLostGenHour, location: { search }} = this.props;
     const { data } = params;
     const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const {
       quota = [],
       stations = [],
+      modesInfo =[],
+      modes = [],
     } = groupInfo;
     const stationCodes = [];
     stations.forEach(cur => {
@@ -64,16 +70,27 @@ export default class AreaChart extends Component {
       type: '2', // 默认按月
       stationCodes,
     };
+    const paramsHour = {
+      startTime: groupInfo.dates[0],
+      endTime: groupInfo.dates[1],
+      deviceModes: modes,
+      manufactorIds: modesInfo.map(cur => {
+        return cur.value;
+      }),
+      stationCodes,
+    };
     changeStore({
-      dataSelect: params.name,
+      dataSelect: params.dataIndex,
+      dataName: data.name,
       selectStationCode: stationCodes, // 保存单选区域的信息
     });
-    myChart.setOption(this.drawChart(capacityInfo, dataSelect));
+    myChart.setOption(this.drawChart(capacityInfo, dataIndex));
     getTrendInfo(paramsTrend);
+    getLostGenHour(paramsHour);
   };
 
 
-  drawChart = (data, dataSelect) => {
+  drawChart = (data, dataIndex) => {
     const childrenArr = data.map(cur => {
       const obj = {};
       obj.name = cur.stationName;
@@ -94,10 +111,9 @@ export default class AreaChart extends Component {
         },
         itemStyle: {
           normal: {
-            // color:['#07a6ba','#4bc0c9','#3b56d9','#dbbb32','03ecef','#8648e7','#0fb2db']
             color: function(params) {//柱子颜色
               const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
-              return dataSelect === '' ? colorList[params.name] : (dataSelect === params.name ? colorList[params.name] : '#cccccc');
+              return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
             },
           },
           borderWidth: 1,
