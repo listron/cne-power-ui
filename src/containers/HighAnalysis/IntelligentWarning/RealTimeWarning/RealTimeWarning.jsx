@@ -1,9 +1,9 @@
 
 
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from "react-redux";
-import styles from './realTimeWarning.scss'
+import { connect } from 'react-redux';
+import styles from './realTimeWarning.scss';
 import { realtimeWarningAction } from './realtimeWarningAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
@@ -14,31 +14,26 @@ class RealTimeWarning extends Component {
   static propTypes = {
     getLostGenType: PropTypes.func,
     resetRealtimeWarninStore: PropTypes.func,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
-  
-  componentWillUnmount(){
-    this.props.resetRealtimeWarninStore()
+
+  componentWillUnmount() {
+    this.props.resetRealtimeWarninStore();
   }
   render() {
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '实时预警',
-        }
-      ],
-    };
+    const { theme } = this.props;
     return (
-      <div className={styles.realtime}>
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+      <div className={`${styles.realtime} ${styles[theme]}`}>
+        <CommonBreadcrumb breadData={[{ name: '实时预警' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.realtimeWarningBox}>
-          <RealTimeWarningContainer {...this.props}  />
+          <RealTimeWarningContainer {...this.props} />
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
@@ -46,8 +41,9 @@ const mapStateToProps = (state) => {
     ...state.highAanlysisReducer.realtimeWarningReducer.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
-  }
-}
+    theme: state.common.get('theme'),
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
   changeRealtimeWarningStore: payload => dispatch({ type: realtimeWarningAction.changeRealtimeWarningStore, payload }),
   resetRealtimeWarninStore: payload => dispatch({ type: realtimeWarningAction.resetRealtimeWarninStore, payload }),
@@ -58,11 +54,12 @@ const mapDispatchToProps = (dispatch) => ({
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
     payload: {
-      params, 
-      actionName: realtimeWarningAction.changeRealtimeWarningStore, 
-      resultName: 'defectTypes'
-    }
+      params,
+      actionName: realtimeWarningAction.changeRealtimeWarningStore,
+      resultName: 'defectTypes',
+    },
   }),
 
-})
+});
 export default connect(mapStateToProps, mapDispatchToProps)(RealTimeWarning)
+  ;

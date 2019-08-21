@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import styles from './realTimeWarning.scss';
 import WarningStatisticTop from '../commonArea/WarningStatisticTop';
 import RealTimeWarningFilter from './RealTimeWarningFilter';
@@ -25,43 +25,45 @@ class RealTimeWarningContainer extends Component {
     deviceName: PropTypes.string,
     durationType: PropTypes.string,
     stations: PropTypes.array,
+    theme: PropTypes.string,
 
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   componentDidMount() {
-    const { getRealtimeWarningStatistic, warningStatus, warningType, } = this.props
-    getRealtimeWarningStatistic({ warningStatus, warningType })
+    const { getRealtimeWarningStatistic, warningStatus, warningType } = this.props;
+    getRealtimeWarningStatistic({ warningStatus, warningType });
     this.WarningStatistic = setInterval(() => getRealtimeWarningStatistic({ warningStatus, warningType }), 10000);
     this.realtimeWarningSetInterval(),
       this.realtimeSetInterval = setInterval(() => this.realtimeWarningSetInterval(), 10000);
   }
-  componentWillUnmount(){
-    clearInterval(this.realtimeSetInterval)
-    clearInterval(this.WarningStatistic)
+  componentWillUnmount() {
+    clearInterval(this.realtimeSetInterval);
+    clearInterval(this.WarningStatistic);
   }
   onChangeFilter = (value) => {
-    clearInterval(this.realtimeSetInterval)
-    clearInterval(this.WarningStatistic)
-    this.realtimeWarningSetInterval(value)
+    clearInterval(this.realtimeSetInterval);
+    clearInterval(this.WarningStatistic);
+    this.realtimeWarningSetInterval(value);
   }
 
   realtimeWarningSetInterval = (value) => {
-    const { getRealtimeWarning, warningTypeStatus,warningType,stationType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, } = this.props;
-    const params = { warningTypeStatus, rangTime,warningType,stationType, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType }
-    getRealtimeWarning({ ...params, ...value })
+    const { getRealtimeWarning, warningTypeStatus, warningType, stationType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType } = this.props;
+    const params = { warningTypeStatus, rangTime, warningType, stationType, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType };
+    getRealtimeWarning({ ...params, ...value });
   }
   render() {
 
-    const { stations, deviceTypes, } = this.props;
+    const { stations, deviceTypes, theme } = this.props;
     return (
-      <div className={styles.realTimeWarningContainer}>
+      <div className={`${styles.realTimeWarningContainer} ${styles[theme]}`}>
         <WarningStatisticTop {...this.props} warningStatus={'1'} />
-        <RealTimeWarningFilter {...this.props} stations={stations} deviceTypes={deviceTypes} onSearch={this.onChangeFilter} />
+        <RealTimeWarningFilter {...this.props} stations={stations} deviceTypes={deviceTypes} onSearch={this.onChangeFilter} theme={theme} />
         <RealTimeWarningTable {...this.props} />
       </div>
-    )
+    );
   }
 }
 export default (RealTimeWarningContainer)
+  ;

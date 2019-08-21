@@ -1,6 +1,6 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
 
-.realTimeWarningTop{
+.realTimeWarningTop {
   .alarmInfo {
     display: flex;
     flex-shrink: 0;
@@ -8,8 +8,6 @@
     justify-content: space-between;
     align-items: center;
     height: 100px;
-    background-color: #fff;
-    border-bottom: 1px solid #dfdfdf;
     a {
       text-decoration: none;
     }
@@ -27,22 +25,10 @@
         flex-direction: column;
         font-size: 14px;
         margin-right: 27px;
-        .updateTime {
-          color: $themeColor;
-        }
-        .updateTimeText {
-          color: $darkColor;
-        }
       }
       .refreshIcon {
-        width: 32px;
         height: 32px;
-        background-image: url(/img/refresh.png);
-        background-position: center center;
-        background-repeat: no-repeat;
-        &:hover {
-          background-image: url(/img/refresh-on.png);
-        }
+        display: flex;
       }
     }
     .alarmInfoItem {
@@ -51,20 +37,16 @@
       align-items: center;
       margin-right: 30px;
       .alarmNum {
-        font-size:24px;
-        color: $themeColor;
+        font-size: 24px;
         opacity: 0.74;
       }
       .alarmText {
         font-size: 14px;
-        color: $darkColor;
       }
     }
     .alarmNumDetail {
       padding-left: 30px;
       margin-right: 22px;
-      border-left: 1px solid #f1f1f1;
-      border-right: 1px solid #f1f1f1;
       display: flex;
       flex-direction: row;
     }
@@ -72,44 +54,33 @@
       margin-right: 24px;
       margin-top: 8px;
       display: flex;
-      width:73px;
-      height:57px;
+      width: 73px;
+      height: 57px;
       flex-direction: column;
       align-items: center;
       .alarmText {
         font-size: 14px;
-        color: $darkColor;
       }
       &:hover {
-        border:1px solid $themeColor;
-        border-radius:4px;
+        border-radius: 4px;
         cursor: pointer;
-        .alarmText {
-          color: $themeColor;
-        }
       }
     }
     :global {
       .icon-alarm {
         font-size: 30px;
-        color: #a42b2c;
         margin-left: 47px;
         margin-right: 35px;
+        line-height: 56px;
       }
       .icon-action {
         font-size: 18px;
-        color: $darkColor;
-        &:hover {
-          color: $themeColor;
-        }
       }
       .icon-title {
-        background-color:#ceebe0;
-        color: $themeColor;
-        width:30px;
-        height:30px;
+        width: 30px;
+        height: 30px;
         font-size: 20px;
-        border-radius:100%;
+        border-radius: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -120,18 +91,152 @@
       .icon-refresh {
         width: 29px;
         height: 29px;
-        border:1px solid $themeColor;
-        color: $themeColor;
         border-radius: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
       }
       .icon-help {
-        color: #f9b600;
         font-size: 12px;
         margin-left: 4px;
         margin-top: -4px;
+      }
+    }
+  }
+}
+
+.light {
+  .alarmInfo {
+    background-color: #fff;
+    border-bottom: 1px solid #dfdfdf;
+    .alarmInfoRight {
+      .updateTimeContainer {
+        .updateTime {
+          color: $themeColor;
+        }
+        .updateTimeText {
+          color: $darkColor;
+        }
+      }
+      .refreshIcon {
+        &:hover {
+          :global {
+            .icon-refresh {
+              border: 1px solid $themeColor;
+              color: #fff;
+              background: $themeColor;
+            }
+          }
+        }
+      }
+    }
+    .alarmInfoItem {
+      .alarmNum {
+        color: $themeColor;
+        opacity: 0.74;
+      }
+      .alarmText {
+        color: $darkColor;
+      }
+    }
+    .alarmNumDetail {
+      border-left: 1px solid #f1f1f1;
+      border-right: 1px solid #f1f1f1;
+    }
+    .alarmAction {
+      .alarmText {
+        color: $darkColor;
+      }
+      &:hover {
+        border: 1px solid $themeColor;
+        cursor: pointer;
+        .alarmText {
+          color: $themeColor;
+        }
+      }
+    }
+    :global {
+      .icon-alarm {
+        color: #a42b2c;
+      }
+      .icon-action {
+        color: $darkColor;
+        &:hover {
+          color: $themeColor;
+        }
+      }
+      .icon-title {
+        background-color: #ceebe0;
+        color: $themeColor;
+      }
+      .icon-refresh {
+        border: 1px solid $themeColor;
+        color: $themeColor;
+      }
+      .icon-help {
+        color: #f9b600;
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../../theme/darkTheme.scss";
+  .alarmInfo {
+    background-color: $light-background;
+    border: 1px solid $border-color;
+    color: $fontColor;
+    .alarmInfoRight {
+      .updateTime {
+        color: $fontColor-hover;
+      }
+      .refreshIcon {
+        &:hover {
+          :global {
+            .icon-refresh {
+              color: #fff;
+              background: $fontColor;
+            }
+          }
+        }
+      }
+    }
+    .alarmNum {
+      color: $fontColor-hover;
+    }
+    .alarmNumDetail {
+      border-left: 1px solid $border-color;
+      border-right: 1px solid $border-color;
+    }
+    .alarmAction {
+      &:hover {
+        border: 1px solid $border-color;
+        cursor: pointer;
+        .alarmText {
+          color: $fontColor-hover;
+        }
+      }
+    }
+    :global {
+      .icon-alarm {
+        color: #fd6e8f;
+      }
+      .icon-action {
+        color: $darkColor;
+        &:hover {
+          color: $themeColor;
+        }
+      }
+      .icon-title {
+        background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+        color: $fontColor-invert;
+      }
+      .icon-refresh {
+        border: 1px solid $themeColor;
+        color: $themeColor;
+      }
+      .icon-help {
+        color: $fontColor;
       }
     }
   }

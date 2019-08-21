@@ -20,11 +20,11 @@ class RangeDateFilter extends Component {
   onChange = (date, dateString) => {
     if (date.length === 0) {
       this.props.onChangeFilter({
-        rangTime: date
+        rangTime: date,
       });
     } else {
       this.props.onChangeFilter({
-        rangTime: [date[0].hour(0).minute(0).second(0).toISOString(), date[1].hour(23).minute(59).second(59).toISOString()]
+        rangTime: [date[0].hour(0).minute(0).second(0).toISOString(), date[1].hour(23).minute(59).second(59).toISOString()],
       });
     }
   }
@@ -40,9 +40,11 @@ class RangeDateFilter extends Component {
     return (
       <div className={styles.filterItem}>
         <span onClick={this.onReset} className={rangTime.length === 0 ? styles.selected : styles.all}>不限</span>
+        <span ref={'datePicker'} />
         <RangePicker
           value={[rangTime[0] ? moment(rangTime[0]) : null, rangTime[1] ? moment(rangTime[1]) : null]}
           onChange={this.onChange}
+          getCalendarContainer={() => this.refs.datePicker}
         />
       </div>
     );

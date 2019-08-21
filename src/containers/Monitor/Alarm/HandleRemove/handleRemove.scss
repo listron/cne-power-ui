@@ -1,12 +1,21 @@
-.handle{
+@import "../../../../theme/theme.scss";
+.handle {
   min-height: 100%;
   display: flex;
-  flex:1;
+  flex: 1;
   flex-direction: column;
 }
-  .handleRemoveBox{
-    display: flex;
-    flex: 1;
-    padding: 24px 24px 0;
-    background-color: #ececec;                       
+.handleRemoveBox {
+  // display: flex;
+  // flex: 1;
+  // padding: 24px 24px 0;
+  // background-color: #ececec;
+  @include contentBoxStyle();
+}
+
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  .handleRemoveBox {
+    background-color: $background;
   }
+}

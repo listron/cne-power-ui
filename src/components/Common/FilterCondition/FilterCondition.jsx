@@ -171,12 +171,12 @@ class FilterCondition extends Component {
 
   render() {
     const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningStatus, warningConfigName, rangTime, handleUser, endTime, docketTypes } = this.state;
-    const { stations = [], option, deviceTypes = [], defectTypes = [], defectSourceName, defectLevelName, matrixList = [], username, warningLevelName, warningStatusName, docketTypeList = [] } = this.props;
+    const { stations = [], option, deviceTypes = [], defectTypes = [], defectSourceName, defectLevelName, matrixList = [], username, warningLevelName, warningStatusName, docketTypeList = [], theme } = this.props;
     const windStations = stations.map(e => e.stationType === 0);
     const pvStations = stations.map(e => e.stationType === 1);
     const hasSelectStation = windStations.length > 0 && pvStations.length > 0;
     return (
-      <div className={styles.filterCondition}>
+      <div className={`${styles.filterCondition} ${styles[theme]}`}>
         <div className={styles.topSearch}>
           <span className={styles.text}>筛选条件</span>
           {
