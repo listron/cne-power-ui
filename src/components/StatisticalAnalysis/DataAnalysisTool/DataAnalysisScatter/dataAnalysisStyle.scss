@@ -172,6 +172,45 @@
             height: 400px;
 
           }
+
+          .formatStyle {
+            // width: 150px;
+            // height: 120px;
+            display: flex;
+            flex-direction: column;
+
+            .topStyle {
+              display: flex;
+              justify-content: space-between;
+              line-height: 20px;
+              height: 20px;
+            }
+
+            .lineStyle {
+              line-height: 28px;
+              height: 28px;
+
+              .itemStyle {
+                margin: 0 8px;
+                position: relative;
+
+                &::before,
+                &::after {
+                  color: inherit;
+                  content: "-";
+                  position: absolute;
+                }
+
+                &::before {
+                  left: 5px;
+                }
+
+                &::after {
+                  right: 5px;
+                }
+              }
+            }
+          }
         }
 
       }

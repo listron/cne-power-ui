@@ -5,6 +5,9 @@ import echarts from 'echarts';
 import { Icon } from 'antd';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import { themeConfig } from '../../../../utils/darkConfig';
+import { dataFormat } from '../../../../utils/utilFunc';
+
+import moment from 'moment';
 
 class SingleScatter extends React.Component {
   static propTypes = {
@@ -55,7 +58,7 @@ class SingleScatter extends React.Component {
     // }
   }
   creatOption = (payload) => {
-    const { title, pointCodeNameX, pointCodeNameY, chartData, saveBtn } = payload;
+    const { title, pointCodeNameX, pointCodeNameY, chartData, saveBtn, startTime, endTime } = payload;
     const filterYaxisData = chartData ? chartData.chartData.map(e => e.y) : [];
     const filterXaxisData = chartData ? chartData.chartData.map(e => e.x) : [];
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
@@ -88,13 +91,20 @@ class SingleScatter extends React.Component {
       tooltip: {
         trigger: 'item',
         enterable: true,
-        show: false,
+        show: true,
         formatter: (payload) => {
+          const info = payload.data;
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
+            <div>${payload.seriesName}</div>
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
+            <div>${moment(startTime).format('YYYY-MM-DD HH:mm:ss')}-${
+            moment(endTime).format('YYYY-MM-DD HH:mm:ss')
+            }</div>
+            <div class=${styles.lineStyle}>${pointCodeNameX}: ${dataFormat(info[0], '--', 2)}</div>
+            <div class=${styles.lineStyle}>${pointCodeNameY}: ${dataFormat(info[1], '--', 2)}</div>
           </div>`;
         },
         backgroundColor: '#fff',
@@ -171,14 +181,16 @@ class SingleScatter extends React.Component {
         },
       ],
       series: chartData ? chartData.chartData.map((e, i) => {
+        const data = [];
+        data.push([e.x, e.y]);
         return {
-          name: `${e.deviceName}`,
+          name: title,
           type: 'scatter',
           symbolSize: 5,
           emphasis: {
             symbolSize: 8,
           },
-          data: [e.x, e.y],
+          data: data,
         };
       }) : [],
     };
