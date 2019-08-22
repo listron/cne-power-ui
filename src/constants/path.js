@@ -516,6 +516,15 @@ export default {
       faultReport: 'v3/performance/generalreport/fault',
       genReport: 'v3/performance/generalreport/gen',
       indicatorReport: 'v3/performance/generalreport/indicator',
+      // 日报查询
+      getQuotaList: '/v3/performance/report/index/list', // 关键指标列表
+      getFaultList: '/v3/performance/report/fault/list', // 故障信息列表
+      getLimitList: '/v3/performance/report/limit/list', // 限电信息列表
+      getQuota: '/v3/performance/report/index', // 关键指标选项
+      getFault: '/v3/faulttype/getlist', // 故障信息选项
+      getExportQuota: '/v3/performance/report/index/list/export', // 关键指标列表导出
+      getExportFault: '/v3/performance/report/fault/list/export', // 故障信息列表导出
+      getExportLimit: '/v3/performance/report/limit/list/export', // 限电信息列表导出
       // 电站评分
       singleStaionScore: '/v3/performance/score',
       getScoreList: '/v3/performance/score/list',
