@@ -24,7 +24,6 @@ export default class AreaSearch extends Component {
     history: PropTypes.object,
     changeStore: PropTypes.func,
     dataName: PropTypes.string,
-    selectTime: PropTypes.string,
     queryParamsFunc: PropTypes.func,
   };
 
@@ -59,17 +58,14 @@ export default class AreaSearch extends Component {
     const preDevice = this.props.modesInfo;
     const preQuota = this.props.quotaInfo;
     if (!groupInfoStr && preArea.length === 0 && areaStation.length > 0) { // 路径无参数时 得到电站数据
-      // console.log('11111');
       this.propsAreaStationChange(areaStation);
     }
     if (!groupInfoStr && preDevice.length === 0 && modesInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到机型数据
-      // console.log('22222');
       console.log(preDevice, 'preDevice');
       console.log(modesInfo, 'modesInfo');
       this.propsModeDevicesChange(modesInfo);
     }
     if (!groupInfoStr && preQuota.length === 0 && quotaInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到指标
-      // console.log('333333');
       this.propsQuotaChange(quotaInfo);
     }
     // 判断选中区域之后机型数据变化
@@ -177,9 +173,9 @@ export default class AreaSearch extends Component {
 
   resetCharts = () => {
     const { groupInfoStr } = this.state;
-    const { dataName, selectTime, queryParamsFunc, changeStore } = this.props;
+    const { dataName, queryParamsFunc, changeStore } = this.props;
     // 判断如果选中过区域或时间可以重置图表
-    if(dataName !== '' || selectTime !== '') {
+    if(dataName !== '') {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
       changeStore({
         dataIndex: '', // 保存点击的下标
@@ -197,7 +193,6 @@ export default class AreaSearch extends Component {
       modesInfo,
       quotaInfo,
       dataName,
-      selectTime,
     } = this.props;
     const { modes, dates, quota, stations } = this.state;
     console.log(areaStation, 'areaStationrender');
@@ -247,7 +242,7 @@ export default class AreaSearch extends Component {
         </div>
         <div>
           <Button style={{marginRight: '20px'}} onClick={this.queryCharts}>查询</Button>
-          <Button disabled={dataName === '' && selectTime === ''} onClick={this.resetCharts}>恢复图表</Button>
+          <Button disabled={dataName === ''} onClick={this.resetCharts}>恢复图表</Button>
         </div>
       </div>
     );

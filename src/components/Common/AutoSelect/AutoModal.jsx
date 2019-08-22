@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import CheckTree from './CheckTree';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
@@ -12,6 +12,7 @@ class AutoModal extends Component {
     infoLists: PropTypes.array,
     checkedList: PropTypes.array,
     onValueCheck: PropTypes.func,
+    max: PropTypes.number,
   }
 
   state = {
@@ -33,6 +34,13 @@ class AutoModal extends Component {
   });
 
   onTreeCheck = (checkedTrees) => {
+    const { max } = this.props;
+    if(!max) {
+      return this.setState({ checkedTrees });
+    }
+    if(checkedTrees.length > max) {
+      return message.error(`最多选择${max}个设备`);
+    }
     this.setState({ checkedTrees });
   }
 

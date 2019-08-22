@@ -56,6 +56,18 @@ class RunAchieve extends Component {
     getIndicatorsList();
   }
 
+  componentWillReceiveProps (nextProps) {
+    const nextSearch = nextProps.location.search;
+    const { search } = this.props.location;
+    const groupNextInfoStr = searchUtil(nextSearch).getValue('run');
+    const groupInfoStr = searchUtil(search).getValue('run');
+    // 发生变化
+    if (groupNextInfoStr && groupNextInfoStr !== groupInfoStr) {
+      const groupInfo = groupNextInfoStr ? JSON.parse(groupNextInfoStr) : {};
+      this.queryParamsFunc(groupInfo);
+    }
+  }
+
   // 统一请求
   queryParamsFunc = (groupInfo) => {
     const {

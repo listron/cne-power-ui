@@ -264,7 +264,7 @@ class HandleSeachData extends React.Component {
     const { stationCode, stations, sequenceotherNames, theme, startTime, endTime } = this.props;
     const { isSwap, options, sequenceNameValue, showOther, xName, yName, point1Max, point1Min, point2Max, point2Min } = this.state;
     const dateFormat = 'YYYY.MM.DD';
-    const selectStation = stations.filter(e => e.stationType === 0);
+    const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
     return (
       <div className={styles.headBox}>
         <div className={styles.headTop}>
@@ -282,7 +282,7 @@ class HandleSeachData extends React.Component {
             onChange={this.changeTime}
             style={{ width: '240px' }}
           />
-          <label className={styles.nameStyle}>散点</label>
+          <label className={styles.nameStyle}>测点</label>
           <Cascader
             options={options}
             value={sequenceNameValue}

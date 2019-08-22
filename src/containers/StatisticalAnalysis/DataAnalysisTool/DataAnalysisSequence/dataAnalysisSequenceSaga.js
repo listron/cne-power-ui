@@ -6,7 +6,6 @@ import moment from 'moment';
 
 function* getStationDevice(action) {//获取
   const { payload } = action;
-  // const url = '/mock/api/v3/wind/analysis/scatterplot/names';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getStationDevice}/${payload.stationCode}`;
   try {
     yield put({ type: dataAnalysisSequenceAction.changeSquenceStore });
