@@ -81,9 +81,10 @@ class ScatterContainer extends React.Component {
     const { currentImgIndex, imageListShow } = this.state;
     return (
       <div className={styles.chartsContainer}>
-        {deviceList.map((e, i) =>
-          (
-            <div className={styles.chartStyle} key={i}>
+        {deviceList.map((e, i) => {
+          const data = this.props[e.deviceFullCode];
+          return (
+            <div className={styles.chartStyle} key={e.deviceFullCode}>
               <div className={styles.scatterChart} >
                 <SingleScatter
                   {...this.props}
@@ -92,14 +93,16 @@ class ScatterContainer extends React.Component {
                   saveBtn={e.likeStatus}
                   id={e.deviceName}
                   title={e.deviceName}
-                  chartData={scatterData[i]}
+                  chartData={data[0]}
+                  // chartData={scatterData[i]}
                   showImg={this.showImg}
                   saveImgUrl={this.saveImgUrl}
                   onChange={this.likeChange}
                 />
               </div>
             </div>
-          )
+          );
+        }
         )}
         {/* <span ref={'date'}></span> */}
         {

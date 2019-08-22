@@ -40,27 +40,28 @@ class SingleScatter extends React.Component {
     if (!chartLoading) {
       scatterChart.hideLoading();
     }
-    if ((this.props.chartLoading && chartLoading !== this.props.chartLoading)) {
-      // scatterChart.clear();//清除
-      this.drawChart(nextProps);
-    }
+    // if ((this.props.chartLoading && chartLoading !== this.props.chartLoading)) {
+    //   // scatterChart.clear();//清除
+    //   this.drawChart(nextProps);
+    // }
     if (saveBtn !== this.props.saveBtn || id !== this.props.id) {
       scatterChart.clear();
       this.drawChart(nextProps);
     }
-    // if ((this.props.index + 1 === scatterData.length)) {
-    //   
-    //   scatterChart.clear();//清除
-    //   this.drawChart(nextProps);
-    // }
+    if ((this.props.index + 1 === scatterData.length) && (this.props.chartLoading && chartLoading !== this.props.chartLoading)) {
+      scatterChart.clear();//清除
+      console.log('111111');
+      this.drawChart(nextProps);
+    }
     // if (scatterDataTime !== this.props.scatterDataTime || theme !== this.props.theme) {
     //   this.drawChart(nextProps);
     // }
   }
   creatOption = (payload) => {
     const { title, pointCodeNameX, pointCodeNameY, chartData, saveBtn, startTime, endTime } = payload;
-    const filterYaxisData = chartData ? chartData.chartData.map(e => e.y) : [];
-    const filterXaxisData = chartData ? chartData.chartData.map(e => e.x) : [];
+    console.log('chartData: ', chartData);
+    const filterYaxisData = (chartData && Object.keys(chartData).length) ? chartData.chartData.map(e => e.y) : [];
+    const filterXaxisData = (chartData && Object.keys(chartData).length) ? chartData.chartData.map(e => e.x) : [];
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
     const option = {
       graphic: inverterTenMinGraphic,
@@ -180,7 +181,7 @@ class SingleScatter extends React.Component {
           },
         },
       ],
-      series: chartData ? chartData.chartData.map((e, i) => {
+      series: (chartData && Object.keys(chartData).length) ? chartData.chartData.map((e, i) => {
         const data = [];
         data.push([e.x, e.y]);
         return {
@@ -211,7 +212,18 @@ class SingleScatter extends React.Component {
     scatterChart.on('click', 'title', (params) => {
       onChange(index, !saveBtn);
     });
+
+    scatterChart.setOption(option, 'notMerge');
     if (scatterData.length === index + 1 && index + 1 < deviceList.length && scatterData.length < deviceList.length) {
+      console.log(' deviceList.length: ', deviceList.length);
+      console.log('index + 1: ', index + 1);
+      console.log('scatterData.length : ', scatterData.length);
+      scatterChart.on('finished', () => {
+        getScatterData({
+          ...parms,
+          deviceFullCode: deviceList[index + 1].deviceFullCode,
+        });
+      });
       scatterChart.on('rendered', () => {
         const imgUrl = scatterChart.getDataURL({
           pixelRatio: 2,
@@ -219,14 +231,9 @@ class SingleScatter extends React.Component {
         });
         this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
       });
-      scatterChart.on('finished', () => {
-        getScatterData({
-          ...parms,
-          deviceFullCode: deviceList[index + 1].deviceFullCode,
-        });
-      });
+
     }
-    scatterChart.setOption(option, 'notMerge');
+
     // scatterChart.resize();
 
   }

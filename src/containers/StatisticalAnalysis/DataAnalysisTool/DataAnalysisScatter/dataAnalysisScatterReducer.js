@@ -30,6 +30,8 @@ var initState = Immutable.fromJS({
 
 
 
+
+
 });
 const dataAnalysisScatterReducer = (state = initState, action) => {
   switch (action.type) {
