@@ -6,9 +6,9 @@ import { Icon } from 'antd';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import { themeConfig } from '../../../../utils/darkConfig';
 import { dataFormat } from '../../../../utils/utilFunc';
-
-// import { downloadFile } from '../../../../utils/utilFunc';
 import moment from 'moment';
+// import { downloadFile } from '../../../../utils/utilFunc';
+
 class SequenceChart extends React.Component {
   static propTypes = {
     chartLoading: PropTypes.bool,
@@ -100,9 +100,6 @@ class SequenceChart extends React.Component {
         trigger: 'axis',
         enterable: true,
         show: true,
-        axisPointer: {
-          type: 'cross',
-        },
         formatter: (payload) => {
           const y1 = payload[0];
           const y2 = payload[1];
