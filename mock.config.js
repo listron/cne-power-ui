@@ -27,6 +27,7 @@ const intelligentAnalysis = require('./mock/statisticalAnalysis/intelligenAnalys
 const reportSeacher = require('./mock/monitor/report');
 const book = require('./mock/operation/book');
 const scatterAnalysis = require('./mock/statisticalAnalysis/scatterAnalysis');
+const dailyQuery = require('./mock/statisticalAnalysis/dailyQuery');
 
 
 // as
@@ -62,4 +63,5 @@ exports.mockConfig = [
   ...reportSeacher, //报表查询
   ...book, //台账
   ...scatterAnalysis, //数据分析工具得散点
+  ...dailyQuery, // 日报查询
 ];
