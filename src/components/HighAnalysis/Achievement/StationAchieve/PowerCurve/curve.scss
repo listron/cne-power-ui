@@ -33,8 +33,21 @@
       display: flex;
       flex: 1;
     }
-    .totalChart{
+    .leftCurve{
       flex-basis: calc(50% - 170px);
+      display: flex;
+      flex-direction: column;
+      h3 {
+        flex: 0 0 46px;
+        line-height: 46px;
+        padding-left: 24px;
+        margin-bottom: 0;
+        font-weight: 600;
+      }
+      .totalChart{
+        width: 100%;
+        flex: 1;
+      }
     }
     .timeSelector{
       flex-basis: 170px;
