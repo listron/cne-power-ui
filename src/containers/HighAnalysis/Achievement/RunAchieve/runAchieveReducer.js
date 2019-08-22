@@ -21,6 +21,8 @@ const initState = immutable.fromJS({
   allMonths: [],
 
   hourOptionValue: 'TR002', // 功率
+  hourOptionName: '功率',
+  hourUnitName: 'kw',
   sequenceTime: 0,
   sequenceLoading: false,
   sequenceData: [],
@@ -31,6 +33,10 @@ const initState = immutable.fromJS({
   firstChartTime: 0,
   firstChartLoading: false,
   firstChartData: [],
+  firstXAxisName: '风速',
+  firstXAxisUnit: 'm/s',
+  firstYAxisName: '功率',
+  firstYAxisUnit: 'kw',
 
   // 第二个散点图坐标
   secondChartXAxis: 'NC002', // 风速
@@ -38,6 +44,10 @@ const initState = immutable.fromJS({
   secondChartTime: 0,
   secondChartLoading: false,
   secondChartData: [],
+  secondXAxisName: '风速',
+  secondXAxisUnit: 'm/s',
+  secondYAxisName: '桨叶角',
+  secondYAxisUnit: '°',
 
   // 第三个散点图坐标
   thirdChartXAxis: 'GN001', // 发电机转速
@@ -45,6 +55,10 @@ const initState = immutable.fromJS({
   thirdChartTime: 0,
   thirdChartLoading: false,
   thirdChartData: [],
+  thirdXAxisName: '发电机转速',
+  thirdXAxisUnit: 'Rpm',
+  thirdYAxisName: '扭矩',
+  thirdYAxisUnit: 'Nm',
 
   // 第四个散点图坐标
   fourthChartXAxis: 'NC002', // 风速
@@ -52,6 +66,10 @@ const initState = immutable.fromJS({
   fourthChartTime: 0,
   fourthChartLoading: false,
   fourthChartData: [],
+  fourthXAxisName: '风速',
+  fourthXAxisUnit: 'm/s',
+  fourthYAxisName: '发电机转速',
+  fourthYAxisUnit: 'Rpm',
 });
 
 export const achieveRun = (state = initState, action) => {

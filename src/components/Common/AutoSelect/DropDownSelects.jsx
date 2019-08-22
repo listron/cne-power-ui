@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Select } from 'antd';
+import { Select, message } from 'antd';
 import PropTypes from 'prop-types';
 const { Option } = Select;
 
@@ -12,10 +12,22 @@ class DropDownSelects extends Component {
     infoLists: PropTypes.array,
     checkedList: PropTypes.array,
     onValueCheck: PropTypes.func,
+    max: PropTypes.number,
   }
 
   handleChange = (checkedValue) => {
-    const { multiple, onValueCheck, infoLists } = this.props;
+    const { multiple, onValueCheck, infoLists, max } = this.props;
+    if(!max) {
+      if (multiple) { // 参数value数组转为infoLists子集[{},{}]输出
+        onValueCheck(infoLists.filter(e => checkedValue.includes(e.value)));
+      } else { // 单选模式value为简单的value
+        onValueCheck(infoLists.filter(e => checkedValue === e.value));
+      }
+      return false;
+    }
+    if(checkedValue.length > max) {
+      return message.error(`最多选择${max}个设备`);
+    }
     if (multiple) { // 参数value数组转为infoLists子集[{},{}]输出
       onValueCheck(infoLists.filter(e => checkedValue.includes(e.value)));
     } else { // 单选模式value为简单的value
