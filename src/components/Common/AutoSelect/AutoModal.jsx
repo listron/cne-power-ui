@@ -33,16 +33,13 @@ class AutoModal extends Component {
   });
 
   onTreeCheck = (checkedTrees) => {
-    const data = checkedTrees.map(cur => {
-      return parseInt(cur, 0);
-    });
-    this.setState({ checkedTrees: data });
+    this.setState({ checkedTrees });
   }
 
   handleOK = () => {
     const { infoLists, onValueCheck } = this.props;
     const { checkedTrees } = this.state;
-    const valueResult = infoLists.filter(e => checkedTrees.includes(e.value));
+    const valueResult = infoLists.filter(e => checkedTrees.includes(`${e.value}`));
     this.setState({ isShow: false });
     onValueCheck(valueResult);
   }

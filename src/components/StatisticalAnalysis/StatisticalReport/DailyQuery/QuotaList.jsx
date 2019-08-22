@@ -1,21 +1,33 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { Button, Table } from 'antd';
-import CommonPagination from '../../Common/CommonPagination';
+import path from '../../../../constants/path';
+import CommonPagination from '../../../Common/CommonPagination';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { dataFormat } from '../../../../utils/utilFunc';
 import styles from './dailyQuery.scss';
 
-class QuotaList extends Component {
+const { APIBasePath } = path.basePaths;
+const { statisticalAnalysis } = path.APISubPaths;
 
+class QuotaList extends Component {
   static propTypes = {
     listParam: PropTypes.object,
+    queryParam: PropTypes.object,
     quotaListData: PropTypes.object,
     changeDailyQueryStore: PropTypes.func,
     getQuotaList: PropTypes.func,
     tableLoading: PropTypes.bool,
+    quotaInfoData: PropTypes.array,
+    downLoadFile: PropTypes.func,
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器
-    const { changeDailyQueryStore, getQuotaList, listParam } = this.props;
+    const { changeDailyQueryStore, getQuotaList, listParam, queryParam, quotaInfoData } = this.props;
+    const { startDate, endDate, stationCodes } = queryParam;
+    const indexCodes = quotaInfoData.map(e => {
+      return e.value;
+    });
     const newParam = {
       ...listParam,
       pageSize,
@@ -26,38 +38,76 @@ class QuotaList extends Component {
     });
     getQuotaList({
       ...newParam,
+      stationCodes,
+      startDate,
+      endDate,
+      indexCodes,
+    });
+  }
+
+  onExport = () => { // 列表导出
+    const { downLoadFile, queryParam, listParam, quotaInfoData } = this.props;
+    const url = `${APIBasePath}${statisticalAnalysis.getExportQuota}`;
+    const { startDate, endDate, stationCodes } = queryParam;
+    const { pageNum, pageSize } = listParam;
+    const indexCodes = quotaInfoData.map(e => {
+      return e.value;
+    });
+
+    downLoadFile({
+      url,
+      fileName: '指标列表',
+      params: {
+        pageNum,
+        pageSize,
+        stationCodes,
+        startDate,
+        endDate,
+        indexCodes,
+      },
     });
   }
 
   render(){
-    const { listParam, quotaListData, tableLoading } = this.props;
+    const { listParam, quotaListData, tableLoading, quotaInfoData } = this.props;
     const { pageNum, pageSize } = listParam;
     const { total = 0, dataList = [] } = quotaListData;
-    const dataSource = dataList.map((e, i) => {
-      return 
-    })
+
+    const otherCol = quotaInfoData.map(e => ({
+      title: e.unit ? () => (<TableColumnTitle title={e.label} unit={e.unit} style={{ maxWidth: '100%', height: '52px' }} />) : e.label,
+      dataIndex: e.name,
+      className: 'quotaTd',
+      render: (text) => <span title={text}>{(dataFormat(text, '--', 2))}</span>,
+    }));
+
     const columns = [{
       title: '电站名称',
-      dataIndex: 'deviceName',
-      className: 'deviceName',
-      sorter: true,
-    }, {
-      title: '区域名称',
+      width: (otherCol.length > 9) ? 140 : 0,
       dataIndex: 'stationName',
       className: 'stationName',
-      sorter: true,
+      fixed: (otherCol.length > 9) ? 'left' : 'false',
+      render: (text) => <span title={text}>{text}</span>,
+    }, {
+      title: '区域',
+      width: (otherCol.length > 9) ? 80 : 0,
+      dataIndex: 'regionName',
+      className: 'regionName',
+      fixed: (otherCol.length > 9) ? 'left' : 'false',
+      render: (text) => <span title={text}>{text}</span>,
     }, {
       title: '时间',
-      dataIndex: 'deviceTypeName',
-      className: 'deviceTypeName',
+      width: (otherCol.length > 9) ? 120 : 0,
+      dataIndex: 'reportDate',
+      className: 'reportDate',
       sorter: true,
-    },
-    ];
+      fixed: (otherCol.length > 9) ? 'left' : 'false',
+      render: (text) => <span title={text}>{text}</span>,
+    }];
 
     return (
       <div className={styles.quotaList}>
         <div className={styles.pagination}>
-          <Button className={styles.listExport}>导出</Button>
+          <Button className={styles.listExport} onClick={this.onExport}>导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
@@ -68,9 +118,10 @@ class QuotaList extends Component {
 
         <Table
           loading={tableLoading}
-          dataSource={dataSource}
-          columns={columns}
+          dataSource={dataList && dataList.map((e, i) => ({ ...e, key: i }))}
+          columns={columns.concat(otherCol)}
           pagination={false}
+          scroll={(otherCol.length > 9) ? { x: 3500 } : {x: 0}}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>

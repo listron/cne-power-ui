@@ -96,8 +96,6 @@ class DataExportList extends Component {
     const { tableLoading, listParam, partDataExport } = this.props;
     const { pageNum, pageSize } = listParam;
     const { totalCount = 0, dataList = [] } = partDataExport;
-    console.log('partDataExport: ', partDataExport);
-
     const columns = [
       {
         title: '电站名称',
