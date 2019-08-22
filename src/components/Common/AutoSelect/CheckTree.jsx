@@ -18,7 +18,7 @@ export default class CheckTree extends Component{
 
   renderTreeNodes = data => data.map(item => {
     const { children = [] } = item || {};
-    if (children.length > 0) {
+    if (children && children.length > 0) {
       const hasSubChild = children.find(e => e.children && e.children.length > 0);
       return (
         <TreeNode

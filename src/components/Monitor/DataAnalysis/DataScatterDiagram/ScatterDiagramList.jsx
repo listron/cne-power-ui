@@ -52,15 +52,16 @@ class ScatterDiagramList extends Component{
     const yCurrentPoint = pointsInfo.find(e => {
       return e.devicePointCode === logPointY;
     }) || {};
-    const dataSource = dataList.map((e,i) => {
-      return  ({
+
+    const dataSource = dataList.map((e, i) => {
+      return({
         key: i,
         ...e,
-        xData: numWithComma(dataFormat(e.xData,'--',2)),
-        yData: numWithComma(dataFormat(e.yData,'--',2)),
-        time: e.time ? moment(e.time).format('YYYY-MM-DD HH:mm:ss') : '--'
-      })
-    })
+        xData: numWithComma(dataFormat(e.xData, '--', 2)),
+        yData: numWithComma(dataFormat(e.yData, '--', 2)),
+        time: e.time ? moment(e.time).format('YYYY-MM-DD HH:mm:ss') : '--',
+      });
+    });
     
     const columns = [{
       title: '设备名称',
