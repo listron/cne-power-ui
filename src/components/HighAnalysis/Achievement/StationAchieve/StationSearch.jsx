@@ -19,78 +19,33 @@ class StationSearch extends Component {
     areaStation: PropTypes.array,
     modeDevices: PropTypes.array,
     getDevices: PropTypes.func,
+
+    searchCode: PropTypes.number,
+    searchDevice: PropTypes.array,
+    searchDates: PropTypes.array,
+    searchQuota: PropTypes.number,
   }
 
   constructor(props){
     super(props);
-    const { search } = props.location;
-    const stationInfoStr = searchUtil(search).getValue('station');
-    const stationInfo = stationInfoStr ? JSON.parse(stationInfoStr) : {};
-    const defaultStartTime = moment().subtract(1, 'year').format('YYYY-MM-DD');
-    const defaultEndTime = moment().format('YYYY-MM-DD');
     this.state = {
-      stationInfoStr,
-      searchCode: stationInfo.searchCode,
-      searchDevice: stationInfo.searchDevice || [],
-      searchDates: stationInfo.searchDates || [defaultStartTime, defaultEndTime],
+      searchCode: props.searchCode,
+      searchDevice: props.searchDevice,
+      searchDates: props.searchDates,
+      searchQuota: props.searchQuota,
     };
   }
 
-  componentDidMount(){
-    const { searchCode } = this.state;
-    searchCode && this.props.getDevices({ stationCode: searchCode });
-  }
-
-  componentWillReceiveProps(nextProps){
-    // 得到区域数据 ==> 请求机型 areaStation
-    const { areaStation, modeDevices } = nextProps;
-    const { stationInfoStr } = this.state;
-    const preArea = this.props.areaStation;
-    const preDevice = this.props.modeDevices;
-    if (!stationInfoStr && preArea.length === 0 && areaStation.length > 0) { // 路径无参数时 得到电站数据
-      this.propsAreaStationChange(areaStation);
-    }
-    if (!stationInfoStr && preDevice.length === 0 && modeDevices.length > 0) { // 路径无参数时  得到设备数据
-      this.propsModeDevicesChange(modeDevices);
-    }
-  }
-
-  propsAreaStationChange = (areaStation = []) => { // 得到电站信息.
-    const { stations = [] } = areaStation[0] || {};
-    const firstStation = stations[0] || {};
-    this.props.getDevices({ stationCode: firstStation.stationCode });
-    if (!this.state.searchCode) { // 路径无数据 => 存入state待请求.
-      this.setState({
-        searchCode: firstStation.stationCode,
-      });
-    }
-  }
-
-  propsModeDevicesChange = (modeDevices) => { // 得到电站下设备信息;
-    const { searchCode, searchDates } = this.state;
-    const searchDevice = this.getAllDeviceCodes(modeDevices);
-    this.setState({ searchDevice });
-    this.historyChange(searchCode, searchDevice, searchDates);
-  }
-
-  historyChange = (searchCode, searchDevice, searchDates) => { // 切换路径 => 托管外部进行请求
+  historyChange = (code, device = [], date = [
+    moment().subtract(1, 'year').format('YYYY-MM-DD'),
+    moment().format('YYYY-MM-DD'),
+  ], quota) => { // 切换路径 => 托管外部进行请求
     const { location, history } = this.props;
     const { search } = location;
     const newSearch = searchUtil(search).replace({station: JSON.stringify({
-      searchCode, searchDevice, searchDates,
+      code, device, date, quota,
     })}).stringify();
     history.push(`/analysis/achievement/analysis/station?${newSearch}`);
-  }
-
-  getAllDeviceCodes = (modeDevices = []) => { // 解析所有设备得到codes数组
-    const codes = [];
-    modeDevices.forEach(e => {
-      const { children = [] } = e || {};
-      children.forEach(m => {
-        codes.push(m.value);
-      });
-    });
-    return codes;
   }
 
   onStationChange = ([regionName, stationCode, stationName]) => {
@@ -103,8 +58,8 @@ class StationSearch extends Component {
   onDateChange = ([], [start, end]) => this.setState({ searchDates: [start, end] });
 
   queryCharts = () => {
-    const { searchCode, searchDevice, searchDates } = this.state;
-    this.historyChange(searchCode, searchDevice, searchDates);
+    const { searchCode, searchDevice, searchDates, searchQuota } = this.state;
+    this.historyChange(searchCode, searchDevice, searchDates, searchQuota);
   }
 
   resetCharts = () => {

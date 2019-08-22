@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Select, message } from 'antd';
-import searchUtil from '../../../../../utils/searchUtil';
 import IndicateCascader from './IndicateCascader';
 import { getBaseOption } from './chartBaseOption';
 import styles from './lost.scss';
@@ -13,11 +12,11 @@ class ChartLostRank extends Component {
   static propTypes = {
     lostRank: PropTypes.array, // 损失根源 - 指标排名
     selectedQuota: PropTypes.object,
+    lostStringify: PropTypes.string,
     lostChartTimeMode: PropTypes.string,
     lostChartTime: PropTypes.string,
     lostRankLoading: PropTypes.bool,
     quotaInfo: PropTypes.array,
-    location: PropTypes.object,
     lostChartDevice: PropTypes.object,
     onQuotaChange: PropTypes.func,
     changeStore: PropTypes.func,
@@ -136,31 +135,45 @@ class ChartLostRank extends Component {
   }
 
   chartHandle = ({dataIndex}, sortedLostRank, chart) => {
-    const { selectedQuota, lostChartTimeMode, lostChartTime, location, lostChartDevice } = this.props;
+    const { lostChartTimeMode, lostChartTime, lostStringify, lostChartDevice } = this.props;
     if (lostChartTime) {
       message.info('请先取消下方事件选择, 再选择设备');
       return;
     }
     const selectedInfo = sortedLostRank[dataIndex] || {};
-    const { search } = location;
-    const infoStr = searchUtil(search).getValue('station');
-    const searchParam = JSON.parse(infoStr) || {};
+    const searchParam = JSON.parse(lostStringify) || {};
     let deviceFullcodes;
     if (lostChartDevice && lostChartDevice.deviceFullcode === selectedInfo.deviceFullcode) { // 取消当前选中项.
-      deviceFullcodes = searchParam.searchDevice;
+      deviceFullcodes = searchParam.device;
       this.props.changeStore({ lostChartDevice: null });
     } else {
       deviceFullcodes = [selectedInfo.deviceFullcode];
       this.props.changeStore({ lostChartDevice: selectedInfo });
     }
     this.props.getLostTrend({
-      stationCodes: [searchParam.searchCode],
+      stationCodes: [searchParam.code],
       deviceFullcodes,
-      startTime: searchParam.searchDates[0],
-      endTime: searchParam.searchDates[1],
-      indicatorCode: selectedQuota.value,
+      startTime: searchParam.date[0],
+      endTime: searchParam.date[1],
+      indicatorCode: searchParam.quota,
       type: lostChartTimeMode,
     });
+  }
+
+  getQuota = (quotaList = [], quotaCode) => {
+    let selectedQuota = {};
+    quotaList.find(e => {
+      const { value, children = [] } = e || {};
+      if (children.length > 0) {
+        return children.find(m => {
+          m.value === quotaCode && (selectedQuota = { ...m });
+          return m.value === quotaCode;
+        });
+      }
+      value === quotaCode && (selectedQuota = { ...e });
+      return value === quotaCode;
+    });
+    return selectedQuota;
   }
 
   renderChart = (lostRank = [], sortType) => {
@@ -217,8 +230,10 @@ class ChartLostRank extends Component {
   }
 
   render() {
-    const { quotaInfo, selectedQuota } = this.props;
+    const { quotaInfo, lostStringify } = this.props;
     const { sortType } = this.state;
+    const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
+    const selectedQuota = this.getQuota(quotaInfo, quota);
     return (
       <div className={styles.lostRank}>
         <div className={styles.top}>

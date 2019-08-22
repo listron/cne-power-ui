@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Select } from 'antd';
 import moment from 'moment';
-import searchUtil from '../../../../../utils/searchUtil';
 import { getBaseGrid, getBaseYAxis, getBaseXAxis } from './chartBaseOption';
 import styles from './stop.scss';
 const { Option } = Select;
@@ -14,7 +13,7 @@ class ChartStopRank extends Component {
     stopElecType: PropTypes.string,
     stopChartTime: PropTypes.string,
     stopChartTimeMode: PropTypes.string,
-    location: PropTypes.object,
+    stopTopStringify: PropTypes.string,
     stopChartTypes: PropTypes.object,
     stopChartDevice: PropTypes.object,
     changeStore: PropTypes.func,
@@ -122,14 +121,12 @@ class ChartStopRank extends Component {
   }
 
   chartHandle = ({dataIndex}, sortedStopRank, chart) => {
-    const { stopElecType, stopChartTimeMode, location, stopChartTime, stopChartDevice, stopChartTypes } = this.props;
+    const { stopElecType, stopChartTimeMode, stopChartTime, stopChartDevice, stopChartTypes, stopTopStringify } = this.props;
     const selectedDevice = sortedStopRank[dataIndex] || {};
-    const { search } = location;
-    const infoStr = searchUtil(search).getValue('station');
-    const searchParam = JSON.parse(infoStr) || {};
-    let deviceFullcodes = searchParam.searchDevice;
-    let startTime = searchParam.searchDates[0];
-    let endTime = searchParam.searchDates[1];
+    const searchParam = JSON.parse(stopTopStringify) || {};
+    let deviceFullcodes = searchParam.device;
+    let startTime = searchParam.date[0];
+    let endTime = searchParam.date[1];
     if (stopChartDevice && selectedDevice.deviceFullcode === stopChartDevice.deviceFullcode) { // 取消选中
       this.props.changeStore({ stopChartDevice: null });
     } else {
@@ -143,7 +140,7 @@ class ChartStopRank extends Component {
       endTime = moment.min(recordEnd, moment(endTime)).format('YYYY-MM-DD');
     }
     const param = {
-      stationCodes: [searchParam.searchCode],
+      stationCodes: [searchParam.code],
       deviceFullcodes,
       startTime,
       endTime,
@@ -160,7 +157,7 @@ class ChartStopRank extends Component {
   renderChart = (stopRank = [], sortType) => {
     const rankChart = echarts.init(this.rankRef);
     const sortedStopRank = this.sortRank(stopRank, sortType);
-    const { dataAxis, series, modeArr } = this.createSeries(sortedStopRank);
+    const { dataAxis, series } = this.createSeries(sortedStopRank);
     const option = {
       grid: getBaseGrid(),
       xAxis: getBaseXAxis(dataAxis),
