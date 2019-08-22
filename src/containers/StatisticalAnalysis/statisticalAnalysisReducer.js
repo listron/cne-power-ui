@@ -11,6 +11,7 @@ import customize from './EquipmentAnalysis/Customize/customizeReducer';
 import scoreAnalysis from './StationAnalysis/ScoreAnalysis/scoreAnalysisReducer';
 import intelligentAnalysisReducer from './StatisticalReport/IntelligentAnalysis/intelligentAnalysisReducer';
 import dataAnalysisScatterReducer from './DataAnalysisTool/DataAnalysisScatter/dataAnalysisScatterReducer';
+import dailyQueryReducer from './StatisticalReport/DailyQuery/dailyQueryReducer';
 import dataAnalysisSequenceReducer from './DataAnalysisTool/DataAnalysisSequence/dataAnalysisSequenceReducer';
 
 const statisticalAnalysisReducer = combineReducers({
@@ -25,6 +26,7 @@ const statisticalAnalysisReducer = combineReducers({
   scoreAnalysis,
   intelligentAnalysisReducer,
   dataAnalysisScatterReducer,
+  dailyQueryReducer,
   dataAnalysisSequenceReducer,
 });
 

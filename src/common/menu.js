@@ -306,6 +306,11 @@ const menuData = [
             path: 'intelligentReport',
             rightKey: 'statistics_report_table',
           },
+          {
+            name: '日报查询',
+            path: 'dailyQuery',
+            rightKey: 'statistics_report_dailyQuery',
+          },
         ],
       }, {
         name: '数据分析工具',
