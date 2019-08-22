@@ -1,0 +1,41 @@
+@import '../../../../../theme/theme.scss';
+
+.runSequenceChart{
+  width: 100%;
+  height: 250px;
+  margin: 10px 0;
+
+  .sequenceTop{
+    width: 100%;
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    line-height: 32px;
+
+    .topTitle{
+      font-size: 16px;
+    }
+
+    .topSelect{
+      > span{
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .sequenceChart{
+    width: 100%;
+    height: 189px;
+  }
+}
+
+/*css样式*/
+.runSequenceChart{
+  background-color: $pageGround;
+
+  .sequenceTop{
+    .topTitle{
+      color: $blackColor;
+    }
+  }
+}

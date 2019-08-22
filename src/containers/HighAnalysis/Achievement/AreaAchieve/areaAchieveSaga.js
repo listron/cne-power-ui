@@ -66,13 +66,13 @@ function* getStationCapacity(action) { // 各电站装机容量
   const {payload} = action;
   try {
     const url = `${APIBasePath}${highAnalysis.getStationCapacity}`;
-    const response = yield call(request.post, url, payload);
     yield put({
       type: areaAchieveAction.changeStore,
       payload: {
         capacityLoading: true,
       },
     });
+    const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
 
       yield put({
@@ -107,13 +107,13 @@ function* getIndicatorRank(action) { // 风电指标数据 PBA排名
   const {payload} = action;
   try {
     const url = `${APIBasePath}${highAnalysis.getIndicatorRank}`;
-    const response = yield call(request.post, url, payload);
     yield put({
       type: areaAchieveAction.changeStore,
       payload: {
         rankLoading: true,
       },
     });
+    const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
       yield put({
         type: areaAchieveAction.fetchSuccess,
@@ -148,7 +148,6 @@ function* getTrendInfo(action) { // 风电指标趋势 PBA趋势
   const {payload} = action;
   try {
     const url = `${APIBasePath}${highAnalysis.getTrendInfo}`;
-    const response = yield call(request.post, url, payload);
     yield put({
       type: areaAchieveAction.changeStore,
       payload: {
@@ -156,6 +155,7 @@ function* getTrendInfo(action) { // 风电指标趋势 PBA趋势
         timeStatus: payload.type,
       },
     });
+    const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
 
       yield put({
@@ -231,20 +231,18 @@ function* getLostGenHour(action) { // 损失电量分解图
   const {payload} = action;
   try {
     const url = `${APIBasePath}${highAnalysis.getLostGenHour}`;
-    const response = yield call(request.post, url, payload);
     yield put({
       type: areaAchieveAction.changeStore,
       payload: {
         loseLoading: true,
       },
     });
-    console.log(response, 'response');
+    const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
-      console.log(moment().unix(), 'moment().unix()');
       yield put({
         type: areaAchieveAction.fetchSuccess,
         payload: {
-          lostGenHourInfo: formatData(response.data) || {},
+          lostGenHourInfo: response.data ? formatData(response.data) : {},
           lostTime: moment().unix(),
           loseLoading: false,
         },

@@ -10,6 +10,9 @@ import AreaStation from '../../../../Common/AreaStation';
 import AutoSelect from '../../../../Common/AutoSelect';
 const { RangePicker } = DatePicker;
 
+// 禁止选择时间
+const disabledDate = current => current && current > moment().subtract(2, 'days');
+
 export default class AreaSearch extends Component {
 
   static propTypes = {
@@ -19,6 +22,10 @@ export default class AreaSearch extends Component {
     modesInfo: PropTypes.array,
     getModesInfo: PropTypes.func,
     history: PropTypes.object,
+    changeStore: PropTypes.func,
+    dataName: PropTypes.string,
+    selectTime: PropTypes.string,
+    queryParamsFunc: PropTypes.func,
   };
 
   constructor(props){
@@ -26,8 +33,8 @@ export default class AreaSearch extends Component {
     const { search } = props.location;
     const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
-    const defaultStartTime = moment().subtract(1, 'year').format('YYYY-MM-DD');
-    const defaultEndTime = moment().format('YYYY-MM-DD');
+    const defaultEndTime = moment().subtract(2, 'days').format('YYYY-MM-DD');
+    const defaultStartTime = moment(defaultEndTime).subtract(1, 'year').format('YYYY-MM-DD');
     this.state = {
       groupInfoStr,
       searchCode: groupInfo.searchCode,
@@ -67,7 +74,6 @@ export default class AreaSearch extends Component {
     }
     // 判断选中区域之后机型数据变化
     if(JSON.stringify(preDevice) && JSON.stringify(preDevice) !== JSON.stringify(modesInfo)) {
-      console.log('6666666');
       const modes = this.getAllDeviceCodes(modesInfo);
       this.setState({
         modes,
@@ -93,7 +99,6 @@ export default class AreaSearch extends Component {
   propsModeDevicesChange = (modeDevices) => { // 得到电站下机型信息;
     const { searchCode, dates, quota, stations } = this.state;
     const modes = this.getAllDeviceCodes(modeDevices);
-    console.log(modes, 'modes');
     if (quota.length > 0) { // 已有指标
       this.historyChange(searchCode, modes, dates, quota, stations, modeDevices);
     } else { // 存入state, 得到quota时再请求
@@ -121,7 +126,6 @@ export default class AreaSearch extends Component {
     const newSearch = searchUtil(search).replace({area: JSON.stringify({
         searchCode, modes, dates, quota, stations, modesInfo,
       })}).stringify();
-    console.log(newSearch, 'newSearch');
     history.push(`/analysis/achievement/analysis/area?${newSearch}`);
   };
 
@@ -137,6 +141,7 @@ export default class AreaSearch extends Component {
   };
 
   onAreaChange = (info) => {
+    const { changeStore } = this.props;
     const stations = [];
     info.forEach(e => {
       const tmp = e.stations || [];
@@ -145,7 +150,11 @@ export default class AreaSearch extends Component {
     this.setState({
       stations: info,
       searchCode: stations,
+      modes: [],
     }, () => {
+      changeStore({
+        modesInfo: [],
+      });
       this.props.getModesInfo({ stationCodes: stations});
     });
   };
@@ -163,12 +172,23 @@ export default class AreaSearch extends Component {
   queryCharts = () => {
     // 组合state参数, 发起history.push操作。
     const { searchCode, modes, dates, quota, stations, modesInfo } = this.state;
-    console.log(modes, 'queryCharts');
     this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
   };
 
   resetCharts = () => {
-    console.log('重置');
+    const { groupInfoStr } = this.state;
+    const { dataName, selectTime, queryParamsFunc, changeStore } = this.props;
+    // 判断如果选中过区域或时间可以重置图表
+    if(dataName !== '' || selectTime !== '') {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      changeStore({
+        dataIndex: '', // 保存点击的下标
+        selectStationCode: [], // 保存单选区域的信息
+        selectTime: '', // 保存选择时间
+        dataName: '', // 保存选择区域名称
+      });
+      queryParamsFunc(groupInfo);
+    }
   };
 
   render() {
@@ -176,10 +196,12 @@ export default class AreaSearch extends Component {
       areaStation,
       modesInfo,
       quotaInfo,
+      dataName,
+      selectTime,
     } = this.props;
     const { modes, dates, quota, stations } = this.state;
-    // console.log(modes, 'modesrender');
-    // console.log(stations, 'stationsrender');
+    console.log(areaStation, 'areaStationrender');
+    console.log(stations, 'stationsrender');
     // console.log(modesInfo, 'modesInforender');
     return (
       <div className={styles.topSearch}>
@@ -209,6 +231,7 @@ export default class AreaSearch extends Component {
             value={[moment(dates[0]), moment(dates[1])]}
             onChange={this.onDateChange}
             style={{width: '220px'}}
+            disabledDate={disabledDate}
           />
         </div>
         <div>
@@ -224,7 +247,7 @@ export default class AreaSearch extends Component {
         </div>
         <div>
           <Button style={{marginRight: '20px'}} onClick={this.queryCharts}>查询</Button>
-          <Button onClick={this.resetCharts}>恢复图表</Button>
+          <Button disabled={dataName === '' && selectTime === ''} onClick={this.resetCharts}>恢复图表</Button>
         </div>
       </div>
     );

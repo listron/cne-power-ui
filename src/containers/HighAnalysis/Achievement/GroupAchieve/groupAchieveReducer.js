@@ -35,6 +35,10 @@ const initState = immutable.fromJS({
   pbaStatistics: [], // 各区域PBA排名信息
   pbaDatesInfo: [], // 区域pba的时间趋势
   powerLostInfo: [], // 损失电量分解图
+  dataIndex: '', // 保存点击的下标
+  selectStationCode: [], // 保存单选区域的信息
+  selectTime: '', // 保存选择时间
+  dataName: '', // 保存选择区域名称
 
 });
 

@@ -20,7 +20,7 @@ export const preTemperatureOptions = (data, name) => {
     });
   }
   // 处理data
-  function dataFunc (arr) {
+  function dataFunc(arr) {
     const newArr = [];
     arr.map(cur => {
       const obj = {}; // 保存对象
@@ -48,12 +48,12 @@ export const preTemperatureOptions = (data, name) => {
       styles = showNoData;
     }
     if (arr.length !== 0) {
-      for(let i = 0; i < arr.length; i++ ) {
-        if (arr[i].data.length !== 0){
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].data.length !== 0) {
           styles = hiddenNoData;
           return false;
         }
-          styles = showNoData;
+        styles = showNoData;
 
       }
     }
@@ -98,7 +98,7 @@ export const preTemperatureOptions = (data, name) => {
         },
       },
       axisTick: {
-        lineStyle: { color: themeColor}, // 刻度的颜色
+        lineStyle: { color: themeColor }, // 刻度的颜色
       },
       boundaryGap: false,
       data: dateFunc(data),
@@ -115,7 +115,7 @@ export const preTemperatureOptions = (data, name) => {
         },
       },
       axisTick: {
-        lineStyle: { color: themeColor}, // 刻度的颜色
+        lineStyle: { color: themeColor }, // 刻度的颜色
       },
       splitLine: {
         show: true,
@@ -148,7 +148,7 @@ export const afterTemperatureOptions = (data, name) => {
     return newArr;
   }
   // 处理data
-  function dataFunc (arr) {
+  function dataFunc(arr) {
     const newArr = [];
     arr.map(cur => {
       const obj = {}; // 保存对象
@@ -176,12 +176,12 @@ export const afterTemperatureOptions = (data, name) => {
       styles = showNoData;
     }
     if (arr.length !== 0) {
-      for(let i = 0; i < arr.length; i++ ) {
-        if (arr[i].data.length !== 0){
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].data.length !== 0) {
           styles = hiddenNoData;
           return false;
         }
-          styles = showNoData;
+        styles = showNoData;
 
       }
     }
@@ -225,7 +225,7 @@ export const afterTemperatureOptions = (data, name) => {
         },
       },
       axisTick: {
-        lineStyle: { color: themeColor}, // 刻度的颜色
+        lineStyle: { color: themeColor }, // 刻度的颜色
       },
       boundaryGap: false,
       data: dateFunc(data),
@@ -242,7 +242,7 @@ export const afterTemperatureOptions = (data, name) => {
         },
       },
       axisTick: {
-        lineStyle: { color: themeColor}, // 刻度的颜色
+        lineStyle: { color: themeColor }, // 刻度的颜色
       },
       splitLine: {
         show: true,
@@ -275,7 +275,7 @@ export const diffTemperatureOptions = (data, name) => {
     return newArr;
   }
   // 处理data
-  function dataFunc (arr) {
+  function dataFunc(arr) {
     const newArr = [];
     arr.map(cur => {
       const obj = {}; // 保存对象
@@ -303,12 +303,12 @@ export const diffTemperatureOptions = (data, name) => {
       styles = showNoData;
     }
     if (arr.length !== 0) {
-      for(let i = 0; i < arr.length; i++ ) {
-        if (arr[i].data.length !== 0){
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].data.length !== 0) {
           styles = hiddenNoData;
           return false;
         }
-          styles = showNoData;
+        styles = showNoData;
 
       }
     }
@@ -352,7 +352,7 @@ export const diffTemperatureOptions = (data, name) => {
         },
       },
       axisTick: {
-        lineStyle: { color: themeColor}, // 刻度的颜色
+        lineStyle: { color: themeColor }, // 刻度的颜色
       },
       boundaryGap: false,
       data: dateFunc(data),
@@ -369,7 +369,7 @@ export const diffTemperatureOptions = (data, name) => {
         },
       },
       axisTick: {
-        lineStyle: { color: themeColor}, // 刻度的颜色
+        lineStyle: { color: themeColor }, // 刻度的颜色
       },
       splitLine: {
         show: true,
@@ -439,7 +439,7 @@ export const singleTemperatureOptions = (data, name) => {
         },
       },
       axisTick: {
-        lineStyle: { color: themeColor}, // 刻度的颜色
+        lineStyle: { color: themeColor }, // 刻度的颜色
       },
       data: dateFunc(data),
     },
@@ -451,7 +451,7 @@ export const singleTemperatureOptions = (data, name) => {
         },
       },
       axisTick: {
-        lineStyle: { color: themeColor}, // 刻度的颜色
+        lineStyle: { color: themeColor }, // 刻度的颜色
       },
       splitLine: {
         show: false,
@@ -533,16 +533,15 @@ export const heatTemperatureOptions = (data, name) => {
         rotate: 90,
       },
       axisTick: {
-        lineStyle: { color: themeColor}, // 刻度的颜色
+        lineStyle: { color: themeColor }, // 刻度的颜色
       },
     },
     yAxis: {
       type: 'category',
       splitArea: {
-        show: true,
       },
       axisTick: {
-        lineStyle: { color: themeColor}, // 刻度的颜色
+        lineStyle: { color: themeColor }, // 刻度的颜色
       },
     },
     visualMap: {
@@ -587,7 +586,7 @@ export const allFansOptions = (data, name) => {
   }
   function arrFunc(list) {
     const newArr = [];
-    for(let i = 0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i++) {
       newArr.push(toNonExponential(list[i].stdY));
     }
     return newArr;
@@ -688,7 +687,7 @@ export const allFansOptions = (data, name) => {
         },
       },
       axisTick: {
-        lineStyle: {color: themeColor}, // 刻度的颜色
+        lineStyle: { color: themeColor }, // 刻度的颜色
       },
       axisLabel: {
         formatter: function (value) {
@@ -717,7 +716,7 @@ export const allFansOptions = (data, name) => {
         color: themeColor,
       },
       axisTick: {
-        lineStyle: { color: themeColor}, // 刻度的颜色
+        lineStyle: { color: themeColor }, // 刻度的颜色
       },
     },
     series: [{

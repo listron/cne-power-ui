@@ -324,16 +324,15 @@ const menuData = [
             path: 'scatter',
             rightKey: 'analysis_dataTool_scatter',
           },
-          // {
-          //   name: '时序图',
-          //   path: 'sequence',
-          //   rightKey: 'analysis_dataTool_sequence',
-          // }, 
+          {
+            name: '时序图',
+            path: 'sequence',
+            rightKey: 'analysis_dataTool_sequence',
+          },
           // {
           //   name: '统计图',
           //   path: 'histogram',
           //   rightKey: 'analysis_dataTool_histogram',
-
           // },
         ],
       },
@@ -477,6 +476,14 @@ const menuData = [
           }, {
             name: '电站效能分析',
             path: 'analysis/station',
+            rightKey: 'statistics_device',
+          }, {
+            name: '运行数据分析',
+            path: 'analysis/run',
+            rightKey: 'statistics_device',
+          }, {
+            name: '停机状态分析',
+            path: 'analysis/stop',
             rightKey: 'statistics_device',
           },
         ],

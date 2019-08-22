@@ -64,6 +64,7 @@ import { watchScoreAnalysis } from './StatisticalAnalysis/StationAnalysis/ScoreA
 import { watchIntelligentAnalysis } from './StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/intelligentAnalysisSaga';
 import { watchDataAnalysisScatterSaga } from './StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/dataAnalysisScatterSaga';
 import { watchDailyQuery } from './StatisticalAnalysis/StatisticalReport/DailyQuery/dailyQuerySaga';
+import { watchDataAnalysisSequenceSaga } from './StatisticalAnalysis/DataAnalysisTool/DataAnalysisSequence/dataAnalysisSequenceSaga';
 
 
 
@@ -90,6 +91,8 @@ import { watchAchieveLayout } from './HighAnalysis/Achievement/achieveSaga'; // 
 import { watchGroupAchieve } from './HighAnalysis/Achievement/GroupAchieve/groupAchieveSaga'; // 高级分析-风电分析-集团
 import { watchAreaAchieve } from './HighAnalysis/Achievement/AreaAchieve/areaAchieveSaga'; // 高级分析-风电分析-区域
 import { watchStationAhieve } from './HighAnalysis/Achievement/StationAchieve/stationAchieveSaga'; // 高级分析-风电分析-电站
+import { watchRunAchieve } from './HighAnalysis/Achievement/RunAchieve/runAchieveSaga'; // 高级分析-风电分析-运行
+import { watchStopAhieve } from './HighAnalysis/Achievement/StopStatus/stopStatusSaga'; // 高级分析 - 风电分析 - 停机状态分析
 
 import { watchWorkOrder } from './Operation/Ticket/WorkOrder/workOrderSaga';
 import { watchBookAssetsConfig } from './Operation/Book/AssetsConfig/assetsConfigSaga';
@@ -173,6 +176,7 @@ export default function* rootSaga() {
     watchIntelligentAnalysis(), // 智能分析报告
     watchDataAnalysisScatterSaga(), //数据分析散点图
     watchDailyQuery(), // 日报查询
+    watchDataAnalysisSequenceSaga(),
     //高级分析>清洗模型>清洗记录+清洗预警
     watchRealtimeWarning(),
     watchTransferForm(),
@@ -197,6 +201,8 @@ export default function* rootSaga() {
     watchGroupAchieve(), // 高级分析 - 风电分析 - 集团
     watchAreaAchieve(), // 高级分析 - 风电分析 - 区域
     watchStationAhieve(), // 高级分析 - 风电分析 - 电站
+    watchStopAhieve(), // 高级分析 - 风电分析 - 停机状态分析
+    watchRunAchieve(), // 高级分析 - 风电分析 - 运行
     // 工单
     watchWorkOrder(),
     //operation_Book台账

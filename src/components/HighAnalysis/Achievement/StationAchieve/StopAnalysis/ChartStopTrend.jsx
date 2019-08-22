@@ -145,8 +145,8 @@ class ChartLostTrend extends Component {
     const { dataAxis, series } = this.createSeries(stopTrend);
     const option = {
       grid: [
-        { ...getBaseGrid(), top: 40, height: 160 },
-        { ...getBaseGrid(), top: 240, height: 160 },
+        { ...getBaseGrid(), top: 40, height: 150 },
+        { ...getBaseGrid(), top: 230, height: 150 },
       ],
       xAxis: [
         { ...getBaseXAxis(dataAxis), gridIndex: 0 },
@@ -185,6 +185,8 @@ class ChartLostTrend extends Component {
       type: 'slider',
       filterMode: 'empty',
       bottom: 16,
+      showDetail: false,
+      height: 20,
     }, {
       type: 'inside',
       filterMode: 'empty',

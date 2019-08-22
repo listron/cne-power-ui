@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { Cascader } from 'antd';
-import styles from './style.scss';
 import PropTypes from 'prop-types';
 
 class StationCascader extends Component {

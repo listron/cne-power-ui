@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData.js';
+import searchUtil from '../../../../../utils/searchUtil';
 
 import styles from './areaChart.scss';
 
@@ -11,11 +12,19 @@ export default class AreaChart extends Component {
     capacityInfo: PropTypes.array,
     capacityTime: PropTypes.number,
     capacityLoading: PropTypes.bool,
+    dataIndex: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    changeStore: PropTypes.func,
+    getTrendInfo: PropTypes.func,
+    getLostGenHour: PropTypes.func,
+    location: PropTypes.object,
   };
 
   componentDidUpdate(prevProps) {
     const { areaChart } = this;
-    const { capacityTime, capacityLoading, capacityInfo } = this.props;
+    const { capacityTime, capacityLoading, capacityInfo, dataIndex } = this.props;
     const { capacityTime: capacityTimePrev } = prevProps;
     const myChart = eCharts.init(areaChart);
     if (capacityLoading) { // loading态控制。
@@ -28,16 +37,64 @@ export default class AreaChart extends Component {
     if(capacityTime && capacityTime !== capacityTimePrev) {
       eCharts.init(areaChart).clear();//清除
       const myChart = eCharts.init(areaChart);
-      myChart.setOption(this.drawChart(capacityInfo));
+      myChart.setOption(this.drawChart(capacityInfo, dataIndex));
+      myChart.on('click', (param) => this.chartHandle(param, capacityInfo, myChart));
     }
   }
 
+  chartHandle = (params, capacityInfo, myChart) => {
+    const { changeStore, dataIndex, getTrendInfo, getLostGenHour, location: { search }} = this.props;
+    const { data } = params;
+    const groupInfoStr = searchUtil(search).getValue('area');
+    const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+    const {
+      quota = [],
+      stations = [],
+      modesInfo =[],
+      modes = [],
+    } = groupInfo;
+    const stationCodes = [];
+    stations.forEach(cur => {
+      cur.stations && cur.stations.forEach(item => {
+        if(data.name === item.stationName) {
+          stationCodes.push(item.stationCode);
+        }
+      });
+    });
+    // 默认指标分析
+    const quotaValue = quota[1] || quota[0];
+    const paramsTrend = {
+      startTime: groupInfo.dates[0],
+      endTime: groupInfo.dates[1],
+      indicatorCode: quotaValue,
+      type: '2', // 默认按月
+      stationCodes,
+    };
+    const paramsHour = {
+      startTime: groupInfo.dates[0],
+      endTime: groupInfo.dates[1],
+      deviceModes: modes,
+      manufactorIds: modesInfo.map(cur => {
+        return cur.value;
+      }),
+      stationCodes,
+    };
+    changeStore({
+      dataSelect: params.dataIndex,
+      dataName: data.name,
+      selectStationCode: stationCodes, // 保存单选区域的信息
+    });
+    myChart.setOption(this.drawChart(capacityInfo, dataIndex));
+    getTrendInfo(paramsTrend);
+    getLostGenHour(paramsHour);
+  };
 
-  drawChart = (data) => {
+
+  drawChart = (data, dataIndex) => {
     const childrenArr = data.map(cur => {
       const obj = {};
       obj.name = cur.stationName;
-      obj.value = cur.stationCapacity;
+      obj.value = cur.stationCapacity / 1000;
       return obj;
     });
     return {
@@ -53,7 +110,16 @@ export default class AreaChart extends Component {
           show: false,
         },
         itemStyle: {
+          normal: {
+            color: function(params) {//柱子颜色
+              const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
+              return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
+            },
+          },
           borderWidth: 1,
+        },
+        label: {
+          formatter: '{b}\n{c}MW',
         },
         nodeClick: 'link',
         data: childrenArr,

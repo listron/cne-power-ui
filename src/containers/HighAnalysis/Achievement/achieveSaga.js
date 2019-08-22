@@ -35,10 +35,12 @@ function* getQuotaInfo() { // 可选指标信息
     const quotaInfo = response.data.map(e => ({
       value: e.indicatorCode,
       label: e.indicatorName,
+      unit: e.indicatorUnit,
       children: (e.children && e.children.length > 0) ? e.children.map(m => ({
         value: m.indicatorCode,
         label: m.indicatorName,
-      })) : [],
+        unit: e.indicatorUnit,
+      })) : undefined,
     }));
     if (response.code === '10000') {
       yield put({

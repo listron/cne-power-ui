@@ -10,7 +10,8 @@ class LostAnalysis extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
-    lostQuota: PropTypes.string,
+    pageName: PropTypes.string,
+    selectedQuota: PropTypes.object,
     lostStringify: PropTypes.string,
     lostChartTimeMode: PropTypes.string,
     lostChartDevice: PropTypes.object,
@@ -23,35 +24,32 @@ class LostAnalysis extends Component {
     getLostTypes: PropTypes.func,
   }
 
-  state = {
-    quotaName: '',
-  }
-
   componentDidMount(){
-    const { lostQuota, lostStringify, location } = this.props;
+    const { selectedQuota, lostStringify, location, pageName } = this.props;
     const { search } = location;
     const infoStr = searchUtil(search).getValue('station');
     const originLoad = infoStr && !lostStringify; // // 初次加载
     const pageBack = lostStringify && infoStr && infoStr !== lostStringify; // 其他两个页面修改路径信息后返回
-    if (originLoad || pageBack) {
+    if (pageName === 'lost' && (originLoad || pageBack)) {
+      this.props.changeStore({ lostStringify: infoStr });
       this.queryTypes(infoStr); // 初次加载只重新请求损失电量分解
-      pageBack && lostQuota && this.queryRank(infoStr, lostQuota);
-      pageBack && lostQuota && this.queryTrend(infoStr, lostQuota);
+      pageBack && selectedQuota.value && this.queryRank(infoStr, selectedQuota.value);
+      pageBack && selectedQuota.value && this.queryTrend(infoStr, selectedQuota.value);
     }
   }
 
   componentWillReceiveProps(nextProps){
     const nextLocation = nextProps.location;
     const nextQuota = nextProps.quotaInfo;
-    const nextQuotaParam = nextProps.lostQuota;
+    const nextQuotaParam = nextProps.selectedQuota || {};
     const nextSearch = nextLocation.search || '';
     const { lostStringify, quotaInfo, changeStore } = this.props;
     const infoStr = searchUtil(nextSearch).getValue('station');
-    if (infoStr && infoStr !== lostStringify && nextQuotaParam) { // 搜索信息有变
+    if (infoStr && infoStr !== lostStringify && nextQuotaParam.value) { // 搜索信息有变
       changeStore({ lostStringify: infoStr });
       this.queryTypes(infoStr);
-      this.queryRank(infoStr, nextQuotaParam);
-      this.queryTrend(infoStr, nextQuotaParam);
+      this.queryRank(infoStr, nextQuotaParam.value);
+      this.queryTrend(infoStr, nextQuotaParam.value);
     }
     if (quotaInfo.length === 0 && nextQuota.length > 0) { // 得到指标数据
       this.propsQuotaChange(nextQuota, infoStr);
@@ -63,19 +61,15 @@ class LostAnalysis extends Component {
     // 第一个指标作为数据
     const firstType = quotaInfo[0] || {};
     const quotas = firstType.children || [];
-    let lostQuota, quotaName;
+    let selectedQuota;
     if(quotas.length > 0){
-      const firstQuota = quotas[0] || {};
-      lostQuota = firstQuota.value || null;
-      quotaName = firstQuota.label || '';
+      selectedQuota = quotas[0] || {};
     } else {
-      lostQuota = firstType.value || null;
-      quotaName = firstType.label || '';
+      selectedQuota = firstType;
     }
-    this.setState({ quotaName });
-    changeStore({ lostQuota });
-    infoStr && this.queryRank(infoStr, lostQuota);
-    infoStr && this.queryRank(infoStr, lostQuota);
+    changeStore({ selectedQuota });
+    infoStr && this.queryRank(infoStr, selectedQuota.value);
+    infoStr && this.queryRank(infoStr, selectedQuota.value);
   }
 
   getQueryParam = (infoStr) => {
@@ -88,16 +82,16 @@ class LostAnalysis extends Component {
     };
   }
 
-  queryRank = (infoStr, lostQuota) => {
+  queryRank = (infoStr, quotaCode) => {
     const baseParam = this.getQueryParam(infoStr);
-    this.props.getLostRank({ ...baseParam, indicatorCode: lostQuota });
+    this.props.getLostRank({ ...baseParam, indicatorCode: quotaCode });
   }
 
-  queryTrend = (infoStr, lostQuota) => {
+  queryTrend = (infoStr, quotaCode) => {
     const baseParam = this.getQueryParam(infoStr);
     this.props.getLostTrend({
       ...baseParam,
-      indicatorCode: lostQuota,
+      indicatorCode: quotaCode,
       type: this.props.lostChartTimeMode,
     });
   }
@@ -107,38 +101,27 @@ class LostAnalysis extends Component {
     this.props.getLostTypes({ ...baseParam });
   }
 
-  quotaSelect = (lostQuota, quotaName) => { // 指标选择
+  onQuotaChange = (selectedQuota = {}) => { // 指标选择 selectedQuota { value, label, unit }
     const { search } = this.props.location || {};
+    const { value } = selectedQuota;
     const infoStr = searchUtil(search).getValue('station');
     const baseParam = this.getQueryParam(infoStr);
-    this.setState({ quotaName });
-    this.props.changeStore({ lostQuota });
-    this.props.getLostRank({ ...baseParam, indicatorCode: lostQuota });
+    this.props.changeStore({ selectedQuota });
+    this.props.getLostRank({ ...baseParam, indicatorCode: value });
     this.props.getLostTrend({
       ...baseParam,
-      indicatorCode: lostQuota,
+      indicatorCode: value,
       type: this.props.lostChartTimeMode,
     });
   }
 
   render() {
     const { active } = this.props;
-    const { quotaName } = this.state;
     return (
       <div className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
-        <ChartLostRank
-          {...this.props}
-          quotaName={quotaName}
-          onQuotaChange={this.quotaSelect}
-        />
-        <ChartLostTrend
-          {...this.props}
-          quotaName={quotaName}
-        />
-        <ChartLostTypes
-          {...this.props}
-          quotaName={quotaName}
-        />
+        <ChartLostRank {...this.props} />
+        <ChartLostTrend {...this.props} />
+        <ChartLostTypes {...this.props} />
       </div>
     );
   }

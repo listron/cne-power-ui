@@ -210,7 +210,7 @@ export default {
       editSettedInfo: '/v3/workflow/station/distribution/update', // 编辑已配置电站
       getSettedInfo: '/v3/workflow/station/distribution/detail', // 查看已配置电站
       getSettableUsers: '/v3/workflow/node/ableCheckUser', // 查看可配置的人员列表
-      // 两票管理 
+      // 两票管理
       getDocketList: '/v3/docket/pageList', //列表
       getDocketStatus: '/v3/docket/state/total', //票据状态及总数
       getDocketType: '/v3/docket/typeList', //票据类型
@@ -329,7 +329,7 @@ export default {
       seriesinverterDetail: '/v3/monitor/seriesinverter', //组串式逆变器详情
       inverterSubList: '/v3/monitor/seriesinverter/sublist', // 逆变器下级设备信息
       seriesinverterTenMin: '/v3/monitor/seriesinverter/sequencechart', //组串式逆变器10min时序图
-      seriesBranchTenMin: '/v3/monitor/seriesinverter/sequencechart/zl', // 组串式逆变器下支路电流10min时序图 
+      seriesBranchTenMin: '/v3/monitor/seriesinverter/sequencechart/zl', // 组串式逆变器下支路电流10min时序图
       confluenceboxDetail: '/v3/monitor/confluencebox', //汇流箱详情
       confluenceboxSubList: '/v3/monitor/confluencebox/sublist', // 汇流箱下级设备信息
       confluenceboxTenMin: '/v3/monitor/confluencebox/sequencechart', //汇流箱10min时序图
@@ -539,6 +539,8 @@ export default {
       getScatterName: '/v3/wind/analysis/scatterplot/names', //散点图测点名称列表
       getScatterOtherName: '/v3/wind/analysis/scatterplot/xylist', //散点图自定义测点名称列表
       getScatterData: '/v3/wind/analysis/scatterplot/list', //散点图列表
+      getStationDevice: '/v3/wind/analysis/windturbinelist', //电站风机列表
+      getSequenceData: '/v3/wind/analysis/sequencechart', //时序图数据
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表
@@ -621,6 +623,21 @@ export default {
       getStopRank: '/v3/fan/efficiency/stoprank', // 停机 - 设备停机时长及次数
       getStopTrend: '/v3/fan/efficiency/stoptrend', // 停机 - 日月年 停机时长次数趋势图
       getStopTypes: '/v3/fan/efficiency/stoptype', // 停机 - 各类停机时长及次数
+
+      getIndicatorsList: '/v3/fan/efficiency/infuxdbindicator', //获取指标接口
+      getSequenceChart: '/v3/fan/efficiency/sequence', //获取时序图
+      getFirstChart: '/v3/fan/efficiency/speedpower', //获取第一个散点图
+      getSecondChart: '/v3/fan/efficiency/speedangle', //获取第二个散点图
+      getThirdChart: '/v3/fan/efficiency/layration', //获取第三个散点图
+      getFourthChart: '/v3/fan/efficiency/speedration', //获取第四个散点图
+
+      getCurveDevices: '/v3/fan/efficiency/neighbor/analysis', // 功率曲线邻比分析
+      getCurveDevicesAep: '/v3/fan/efficiency/device/aepandspeed', // 各机组AEP以及平均风速
+      getCurveDevicesPsd: '/v3/fan/efficiency/device/psd', // 各机组曲线聚合度PSD
+      getCurveMonths: '/v3/fan/efficiency/ratio/analysis', // 功率曲线环比分析
+      getCurveMonthAep: '/v3/fan/efficiency/date/aepandspeed', // 设备各月机组AEP以及平均风速
+      getCurveMonthPsd: '/v3/fan/efficiency/date/psd', // 停机 - 各类停机时长及次数
+      getStopStatus: '/v3/fan/efficiency/stopstatustrend', // 风电分析 - 停机状态分析
     },
   },
 };

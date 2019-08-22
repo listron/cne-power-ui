@@ -186,8 +186,21 @@ class StationDropdown extends Component {
   getCheckedText = (data, checkedList) => { // 允许多区域时, 该函数需调整展示
     const totalStations = this.getStationSet(data);
     const checkedStations = this.getStationSet(checkedList);
+    const { mode } = this.props; // mode = all // 多区域 region // 单区域
     if (totalStations.size === checkedStations.size) {
       return '全部区域';
+    }
+    // 全部区域
+    if (mode === 'all') {
+      const textArr = []; // 选中的区域数量
+      let textNum = 0; // 选中的电站数量
+      checkedList.forEach(cur => {
+        if(cur.stations && cur.stations.length > 0){
+          textArr.push(cur);
+          textNum += cur.stations.length;
+        }
+      });
+      return `已选${textArr.length}个区域-${textNum}个电站`;
     }
     const textArr = checkedList.map(e => {
       const { regionName, stations } = e || {};

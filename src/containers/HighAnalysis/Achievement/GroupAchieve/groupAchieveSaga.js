@@ -46,13 +46,13 @@ function* getGroupCapacity(action) { // 各区域分布图
   try {
     const url = `${APIBasePath}${highAnalysis.getGroupCapacity}`;
     // const url = '/mock/cleanWarning/detail';
-    const response = yield call(request.post, url, payload);
     yield put({
       type: groupAchieveAction.changeStore,
       payload: {
         groupCapacityLoading: true,
       },
     });
+    const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
       yield put({
         type: groupAchieveAction.fetchSuccess,
@@ -86,13 +86,13 @@ function* getGroupRank(action) { // 风电指标数据 PBA排名
   const {payload} = action;
   try {
     const url = `${APIBasePath}${highAnalysis.getGroupRank}`;
-    const response = yield call(request.post, url, payload);
     yield put({
       type: groupAchieveAction.changeStore,
       payload: {
         groupRankLoading: true,
       },
     });
+    const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
       yield put({
         type: groupAchieveAction.fetchSuccess,
@@ -126,7 +126,6 @@ function* getGroupTrendInfo(action) { // 指标趋势 PBA趋势
   const {payload} = action;
   try {
     const url = `${APIBasePath}${highAnalysis.getTrendInfo}`;
-    const response = yield call(request.post, url, payload);
     yield put({
       type: groupAchieveAction.changeStore,
       payload: {
@@ -134,6 +133,7 @@ function* getGroupTrendInfo(action) { // 指标趋势 PBA趋势
         groupTimeStatus: payload.type,
       },
     });
+    const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
 
       yield put({
@@ -209,18 +209,18 @@ function* getGroupLostGenHour(action) { // 损失电量分解图
   const {payload} = action;
   try {
     const url = `${APIBasePath}${highAnalysis.getLostGenHour}`;
-    const response = yield call(request.post, url, payload);
     yield put({
       type: groupAchieveAction.changeStore,
       payload: {
         groupLoseLoading: true,
       },
     });
+    const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
       yield put({
         type: groupAchieveAction.fetchSuccess,
         payload: {
-          groupLostGenHourInfo: formatData(response.data) || {},
+          groupLostGenHourInfo: response.data ? formatData(response.data) : {},
           groupLostTime: moment().unix(),
           groupLoseLoading: false,
         },
