@@ -5,6 +5,7 @@ import eCharts from 'echarts';
 import { Icon } from 'antd';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import { themeConfig } from '../../../../utils/darkConfig';
+import { dataFormat } from '../../../../utils/utilFunc';
 
 // import { downloadFile } from '../../../../utils/utilFunc';
 import moment from 'moment';
@@ -95,26 +96,26 @@ class SequenceChart extends React.Component {
         left: '20%',
       },
       tooltip: {
-        trigger: 'item',
+        // trigger: 'item',
+        trigger: 'axis',
         enterable: true,
         show: true,
         axisPointer: {
           type: 'cross',
         },
         formatter: (payload) => {
-          console.log('payload: ', payload);
-          const info = payload.data;
+          const y1 = payload[0];
+          const y2 = payload[1];
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
-            <div>${payload.seriesName}</div>
+            <div>${deviceName}</div>
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div>${moment().format('YYYY-MM-DD HH:mm:ss')}-${
-            moment().format('YYYY-MM-DD HH:mm:ss')
-            }</div>
-            <div class=${styles.lineStyle}>${pointCodeNameX}: </div>
-            <div class=${styles.lineStyle}>${pointCodeNameY}: </div>
+            <div>${moment(y1.axisValue).format('YYYY-MM-DD HH:mm:ss')}
+            </div>
+            <div class=${styles.lineStyle}>${pointCodeNameX}:${dataFormat(y1.value, '--', 2)} </div>
+            <div class=${styles.lineStyle}>${pointCodeNameY}:${dataFormat(y2.value, '--', 2)} </div>
           </div>`;
         },
       },
