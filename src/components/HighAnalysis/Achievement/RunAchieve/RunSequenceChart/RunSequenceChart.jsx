@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Select } from 'antd';
 import moment from 'moment';
 import eCharts from 'echarts';
+import searchUtil from '../../../../../utils/searchUtil';
 
 import styles from './runSequenceChart.scss';
 
@@ -18,6 +19,11 @@ export default class RunSequenceChart extends Component {
     sequenceLoading: PropTypes.bool,
     sequenceData: PropTypes.array,
     sequenceTime: PropTypes.number,
+    changeStore: PropTypes.func,
+    hourOptionName: PropTypes.string,
+    hourUnitName: PropTypes.string,
+    getSequenceChart: PropTypes.func,
+    location: PropTypes.object,
   };
 
   componentDidUpdate(prevProps) {
@@ -41,6 +47,7 @@ export default class RunSequenceChart extends Component {
 
 
   drawChart = (sequenceData) => {
+    const { hourOptionName, hourUnitName } = this.props;
     // 数据
     const seriesData = sequenceData && sequenceData.map(cur => ({
       name: cur.deviceName,
@@ -64,12 +71,12 @@ export default class RunSequenceChart extends Component {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: sequenceData && sequenceData[0].dataList && sequenceData[0].dataList.map(cur => (
+        data: sequenceData && sequenceData[0] && sequenceData[0].dataList.map(cur => (
           moment(cur.time).format('YYYY-MM-DD')
         )),
       },
       yAxis: {
-        name: '功率KW',
+        name: `${hourOptionName}${hourUnitName}`,
         type: 'value',
         splitLine: {
           show: false,
@@ -93,7 +100,37 @@ export default class RunSequenceChart extends Component {
   };
 
   handleChange = (value) => {
+    const {indicatorsList, changeStore, getSequenceChart} = this.props;
     console.log(value);
+    indicatorsList && indicatorsList.forEach(cur => {
+      if (value === cur.value) {
+        changeStore({
+          hourOptionName: cur.name,
+          hourUnitName: cur.unitName,
+        });
+      }
+    });
+    const {
+      location: {
+        search,
+      },
+    } = this.props;
+    // 发送请求
+    const groupInfoStr = searchUtil(search).getValue('run');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const {
+        searchDevice,
+        searchDates,
+      } = groupInfo;
+      const params = {
+        startTime: moment(searchDates[0]).utc().format(),
+        endTime: moment(searchDates[1]).utc().format(),
+        deviceFullcodes: searchDevice,
+        codes: [`${value}-value`],
+      };
+      getSequenceChart(params);
+    }
   };
 
   render() {

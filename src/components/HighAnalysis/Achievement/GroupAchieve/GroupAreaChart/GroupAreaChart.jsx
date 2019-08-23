@@ -19,6 +19,7 @@ export default class GroupAreaChart extends Component {
     changeStore: PropTypes.func,
     location: PropTypes.object,
     getGroupTrendInfo: PropTypes.func,
+    getGroupLostGenHour: PropTypes.func,
   };
 
   componentDidUpdate(prevProps) {
@@ -45,38 +46,53 @@ export default class GroupAreaChart extends Component {
   }
 
   chartHandle = (params, groupCapacityInfo, myChart) => {
+    console.log(params, 'params');
     const { dataIndex, data } = params;
-    const { changeStore, getGroupTrendInfo, location: { search } } = this.props;
-    const groupInfoStr = searchUtil(search).getValue('group');
-    const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
-    const {
-      quota = [],
-      stations = [],
-    } = groupInfo;
-    const stationCodes = [];
-    stations.forEach(cur => {
-      if(cur.regionName === data.name){
-        cur.stations && cur.stations.forEach(item => {
-          stationCodes.push(item.stationCode);
-        });
-      }
-    });
-    // 默认指标分析
-    const quotaValue = quota[1] || quota[0];
-    const paramsTrend = {
-      startTime: groupInfo.dates[0],
-      endTime: groupInfo.dates[1],
-      indicatorCode: quotaValue,
-      type: '2', // 默认按月
-      stationCodes,
-    };
-    console.log(groupCapacityInfo[dataIndex]);
-    changeStore({
-      dataIndex: params.dataIndex, // 下标
-      selectStationCode: stationCodes, // 保存单选区域的信息
-    });
-    myChart.setOption(this.drawChart(groupCapacityInfo, dataIndex));
-    getGroupTrendInfo(paramsTrend);
+    if(data) {
+      const { changeStore, getGroupTrendInfo, getGroupLostGenHour, location: { search } } = this.props;
+      const groupInfoStr = searchUtil(search).getValue('group');
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const {
+        quota = [],
+        stations = [],
+        modesInfo = [],
+        modes = [],
+      } = groupInfo;
+      const stationCodes = [];
+      stations.forEach(cur => {
+        if(cur.regionName === data.name){
+          cur.stations && cur.stations.forEach(item => {
+            stationCodes.push(item.stationCode);
+          });
+        }
+      });
+      // 默认指标分析
+      const quotaValue = quota[1] || quota[0];
+      const paramsTrend = {
+        startTime: groupInfo.dates[0],
+        endTime: groupInfo.dates[1],
+        indicatorCode: quotaValue,
+        type: '2', // 默认按月
+        stationCodes,
+      };
+      const paramsHour = {
+        startTime: groupInfo.dates[0],
+        endTime: groupInfo.dates[1],
+        stationCodes,
+        manufactorIds: modesInfo.map(cur => {
+          return cur.value;
+        }),
+        deviceModes: modes,
+      };
+      changeStore({
+        dataIndex: params.dataIndex, // 下标
+        dataName: data.name, // 名称
+        selectStationCode: stationCodes, // 保存单选区域的信息
+      });
+      myChart.setOption(this.drawChart(groupCapacityInfo, dataIndex));
+      getGroupTrendInfo(paramsTrend);
+      getGroupLostGenHour(paramsHour);
+    }
   };
 
   drawChart = (data, dataIndex) => {
@@ -133,7 +149,6 @@ export default class GroupAreaChart extends Component {
           },
           itemStyle: {
             normal: {
-              // color:['#07a6ba','#4bc0c9','#3b56d9','#dbbb32','03ecef','#8648e7','#0fb2db']
               color: function(params) {//柱子颜色
                 const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
                 return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
