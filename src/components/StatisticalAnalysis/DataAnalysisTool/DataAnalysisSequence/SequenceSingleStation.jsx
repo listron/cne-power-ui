@@ -12,9 +12,9 @@ class SequenceSingleStation extends React.Component {
   constructor(props, context) {
     super(props, context);
   }
-  componentWillUnmount() {
-    this.props.resetStore();
-  }
+  // componentWillUnmount() {
+  //   this.props.resetStore();
+  // }
   render() {
     const { theme } = this.props;
     return (
