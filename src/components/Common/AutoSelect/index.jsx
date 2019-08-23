@@ -72,31 +72,7 @@ class AutoSelect extends Component {
     max: 0,
     onChange: () => {},
     holderText: '请选择',
-    data: [{
-      value: 1001123142,
-      label: '金风科技',
-      children: [{
-        value: 'M12011M221M13',
-        label: 'SD-13',
-        children: [{
-          value: 'M12#1',
-          label: 'M12#1',
-        }],
-      }, {
-        value: 'M12011M221M11',
-        label: 'SD-11',
-      }],
-    }, {
-      value: 10011231445,
-      label: '湘电',
-      children: [{
-        value: 'M35011M221M221',
-        label: 'XD-221',
-      }, {
-        value: 'M35011M221M222',
-        label: 'XD-222',
-      }],
-    }],
+    data: [],
   }
 
   constructor(props){
@@ -112,19 +88,29 @@ class AutoSelect extends Component {
 
   componentWillReceiveProps(nextProps){
     const { value, data } = this.props;
+    const { infoLists } = this.state;
     const nextValue = nextProps.value;
     const nextData = nextProps.data;
-    const isGetData = nextData.length > 0 && data.length === 0;
+    const nextInfoList = getRoots(nextData);
+    const dataChange = nextData.length !== data.length || isSetDiff(
+      new Set(nextInfoList.map(e => e.value)),
+      new Set(infoLists.map(e => e.value)),
+    );
     const isValueChange = nextData.length > 0 && isSetDiff(
       new Set(nextValue),
       new Set(value),
     );
-    if (isGetData || isValueChange) { // data数据新到 或者 手动指定选中项变化
+    if (dataChange) { // 数据源发生变化 => 重新判断checkedlist, 基于新的data生成新的infolists
+      const checkedList = nextValue.length > 0 ? nextInfoList.filter(e => nextValue.includes(e.value)) : [];
+      this.setState({
+        infoLists: nextInfoList,
+        checkedList,
+      });
+    }
+    if (isValueChange) { // 选中项发生变化 => state同步改变checkedlist;
       const infoLists = getRoots(nextData) || [];
       const checkedList = nextValue.length > 0 ? infoLists.filter(e => nextValue.includes(e.value)) : [];
-      const newState = { checkedList };
-      isGetData && (newState.infoLists = infoLists);
-      this.setState(newState);
+      this.setState({ checkedList });
     }
   }
 

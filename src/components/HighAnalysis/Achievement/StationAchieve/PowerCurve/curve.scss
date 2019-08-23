@@ -33,8 +33,21 @@
       display: flex;
       flex: 1;
     }
-    .totalChart{
+    .leftCurve{
       flex-basis: calc(50% - 170px);
+      display: flex;
+      flex-direction: column;
+      h3 {
+        flex: 0 0 46px;
+        line-height: 46px;
+        padding-left: 24px;
+        margin-bottom: 0;
+        font-weight: 600;
+      }
+      .totalChart{
+        width: 100%;
+        flex: 1;
+      }
     }
     .timeSelector{
       flex-basis: 170px;
@@ -135,6 +148,7 @@
 
 // 颜色部分。
 .curveAnalysis{
+  background-color: #ececec;
   .curveAllDevice, .curveEachMonth{
     .header{
       background-image:linear-gradient(-180deg, #ffffff 0%, #dedede 100%);
@@ -173,7 +187,7 @@
 .tooltip{ // chart提示
   background-color: #fff;
   color: #666;
-  box-shadow:0 0 4px 1px rgba(0,0,0,0.20);
+  box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
   .title{
     border-bottom: 1px solid #dfdfdf;
   }

@@ -15,7 +15,6 @@ class ChartStopTypes extends Component {
     stopChartTimeMode: PropTypes.string,
     stopTypes: PropTypes.array,
     location: PropTypes.object,
-    lostChartTime: PropTypes.string,
     stopChartDevice: PropTypes.object,
     stopChartTypes: PropTypes.object,
     stopElecType: PropTypes.string,
