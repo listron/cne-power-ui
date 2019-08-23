@@ -5,4 +5,5 @@ export const dataAnalysisSequenceAction = {
   getStationDevice: Symbol('getStationDevice'),
   getSequenceOtherName: Symbol('getSequenceOtherName'),
   getSequenceData: Symbol('getSequenceData'),
+  getBigSequenceData: Symbol('getBigSequenceData'),
 };

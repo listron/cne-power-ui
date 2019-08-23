@@ -88,20 +88,18 @@ function* getSequenceOtherName(action) {//获取
 function* getSequenceData(action) {//获取
   const { payload } = action;
   const { deviceFullCode, pointY1, pointY2, startTime, endTime, interval } = payload;
-  const parmas = { deviceFullCode, pointY1, pointY2, startTime, endTime, interval };
+
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSequenceData}`;
   try {
     yield put({
       type: dataAnalysisSequenceAction.changeSquenceStore,
       payload: {
-        ...parmas,
+        ...payload,
         chartLoading: true,
-        bigchartLoading: true,
-
       },
     });
     const response = yield call(axios.post, url, {
-      ...parmas,
+      ...payload,
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).utc().format(),
     });
@@ -109,32 +107,64 @@ function* getSequenceData(action) {//获取
 
     if (response.data.code === '10000') {
       const curChartData = response.data.data || {};
-      if (interval === 10) {
-        yield put({
-          type: dataAnalysisSequenceAction.changeSquenceStore,
-          payload: {
-
-            sequenceData: [...preSequenceData, curChartData],
-            chartLoading: false,
-          },
-        });
-      } else if (interval === 60) {
-        yield put({
-          type: dataAnalysisSequenceAction.changeSquenceStore,
-          payload: {
-            chartTime: moment().unix(), // 用于比较
-            curBigChartData: curChartData,
-            bigchartLoading: false,
-          },
-        });
-      }
+      yield put({
+        type: dataAnalysisSequenceAction.changeSquenceStore,
+        payload: {
+          ...payload,
+          sequenceData: [...preSequenceData, curChartData],
+          chartLoading: false,
+        },
+      });
     } else {
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           chartLoading: false,
-          sequenceData: interval === 60 ? [...preSequenceData] : [...preSequenceData, {}],
+          sequenceData: [...preSequenceData, { timeLine: [], point1Data: [], point2Data: [] }],
           chartTime: moment().unix(),
+        },
+      });
+      message.error('请求失败');
+      throw response.data.message;
+    }
+  } catch (e) {
+    console.log(e);
+
+  }
+}
+function* getBigSequenceData(action) {//获取
+  const { payload } = action;
+  const { deviceFullCode, pointY1, pointY2, startTime, endTime, interval } = payload;
+
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSequenceData}`;
+  try {
+    yield put({
+      type: dataAnalysisSequenceAction.changeSquenceStore,
+      payload: {
+        ...payload,
+        bigchartLoading: true,
+      },
+    });
+    const response = yield call(axios.post, url, {
+      ...payload,
+      startTime: moment(startTime).utc().format(),
+      endTime: moment(endTime).utc().format(),
+    });
+    if (response.data.code === '10000') {
+      const curChartData = response.data.data || {};
+      yield put({
+        type: dataAnalysisSequenceAction.changeSquenceStore,
+        payload: {
+          ...payload,
+          curBigChartData: curChartData,
+          bigchartLoading: false,
+        },
+      });
+    } else {
+      yield put({
+        type: dataAnalysisSequenceAction.changeSquenceStore,
+        payload: {
+
         },
       });
       message.error('请求失败');
@@ -154,4 +184,5 @@ export function* watchDataAnalysisSequenceSaga() {
   yield takeLatest(dataAnalysisSequenceAction.getSequenceName, getSequenceName);
   yield takeLatest(dataAnalysisSequenceAction.getSequenceOtherName, getSequenceOtherName);
   yield takeLatest(dataAnalysisSequenceAction.getSequenceData, getSequenceData);
+  yield takeLatest(dataAnalysisSequenceAction.getBigSequenceData, getBigSequenceData);
 }
