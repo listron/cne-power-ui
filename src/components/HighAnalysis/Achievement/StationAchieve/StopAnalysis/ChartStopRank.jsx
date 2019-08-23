@@ -4,6 +4,7 @@ import echarts from 'echarts';
 import { Select } from 'antd';
 import moment from 'moment';
 import { getBaseGrid, getBaseYAxis, getBaseXAxis } from './chartBaseOption';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './stop.scss';
 const { Option } = Select;
 
@@ -179,7 +180,7 @@ class ChartStopRank extends Component {
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>${i === 0 ? '停机时长' : '故障次数'}</span>
-                  <span>${e.value}</span>
+                  <span>${dataFormats(e.value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
             </div>

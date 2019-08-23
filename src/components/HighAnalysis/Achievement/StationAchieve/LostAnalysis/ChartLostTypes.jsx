@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import echarts from 'echarts';
 import { getBaseOption } from './chartBaseOption';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './lost.scss';
 
 class ChartLostTypes extends Component {
@@ -29,8 +30,8 @@ class ChartLostTypes extends Component {
     }
   }
 
-  dataAxis = ['应发小时', '降容损失', '风机故障', '变电故障', '场外因素', '计划停机', '其他损失', '实发小时'];
-  dataKey = ['theoryGen', 'deratingGen', 'faultGen', 'substationGen', 'courtGen', 'planShutdownGen', 'otherGen', 'actualGen'];
+  // dataAxis = ['应发小时', '降容损失', '风机故障', '变电故障', '场外因素', '计划停机', '其他损失', '实发小时'];
+  // dataKey = ['theoryGen', 'deratingGen', 'faultGen', 'substationGen', 'courtGen', 'planShutdownGen', 'otherGen', 'actualGen'];
   barColor = [
     ['#72c8ea', '#3e97d1'],
     ['#36c6ad', '#199475'],
@@ -48,17 +49,20 @@ class ChartLostTypes extends Component {
     typesChart && typesChart.showLoading();
   }
 
-  getBarValue = (lostTypes, dataKey) => {
-    const hideBarData = [];
-    const barData = [];
-    dataKey.map((e, i) => {
-      const barValue = lostTypes[e] || 0;
-      i === 0 && hideBarData.push(0);
-      i === 1 && hideBarData.push(lostTypes[dataKey[0]] - barValue);
-      i > 1 && hideBarData.push(hideBarData[i - 1] - barValue);
-      barData.push(barValue);
+  getBarValue = (lostTypes = {}) => {
+    const { theoryGen, actualGen, detailList = [] } = lostTypes;
+    const hideBarData = [0];
+    const xAxisLabel = ['应发小时'];
+    const barData = [theoryGen ? dataFormats(theoryGen, '', 1) : 0];
+    detailList && detailList.forEach((e, i) => {
+      hideBarData.push(e.value ? detailList[i] - dataFormats(e.value, '', 1) : detailList[i]);
+      xAxisLabel.push(e.name || '--');
+      barData.push(e.value ? dataFormats(e.value, '', 1) : 0);
     });
-    return { hideBarData, barData };
+    hideBarData.push(0);
+    xAxisLabel.push('实发小时');
+    barData.push(actualGen ? dataFormats(actualGen, '', 1) : 0);
+    return { hideBarData, barData, xAxisLabel };
   }
 
   toWorkDetail = () => {
@@ -67,8 +71,8 @@ class ChartLostTypes extends Component {
 
   renderChart = (lostTypes = {}) => {
     const typesChart = echarts.init(this.typesRef);
-    const baseOption = getBaseOption(this.dataAxis);
-    const { hideBarData, barData } = this.getBarValue(lostTypes, this.dataKey);
+    const { hideBarData, barData, xAxisLabel } = this.getBarValue(lostTypes);
+    const baseOption = getBaseOption(xAxisLabel);
     baseOption.yAxis.name = '小时数(h)';
     baseOption.yAxis.min = 0;
     const option = {

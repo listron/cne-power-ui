@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
 import TimeSelect from '../../AchieveCommon/TimeSelect';
-import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import { getBaseGrid, getBaseYAxis, getBaseXAxis } from './chartBaseOption';
 import styles from './stop.scss';
 
@@ -14,7 +14,6 @@ class ChartLostTrend extends Component {
     stopChartTime: PropTypes.string,
     stopTopStringify: PropTypes.string,
     stopTrend: PropTypes.array,
-    location: PropTypes.object,
     stopChartDevice: PropTypes.object,
     stopChartTypes: PropTypes.object,
     stopElecType: PropTypes.string,
@@ -86,13 +85,6 @@ class ChartLostTrend extends Component {
       },
     };
     return { dataAxis, series };
-  }
-
-  getSearchInfo = () => {
-    const { location } = this.props;
-    const { search } = location;
-    const infoStr = searchUtil(search).getValue('station');
-    return JSON.parse(infoStr) || {};
   }
 
   timeModeChange = (stopChartTimeMode) => {
@@ -173,7 +165,7 @@ class ChartLostTrend extends Component {
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>${i === 0 ? '故障次数' : '故障时长'}</span>
-                  <span>${e.value}</span>
+                  <span>${dataFormats(e.value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
             </div>

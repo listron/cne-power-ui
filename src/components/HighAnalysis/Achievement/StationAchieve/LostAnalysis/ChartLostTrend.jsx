@@ -4,7 +4,7 @@ import echarts from 'echarts';
 import moment from 'moment';
 import { message } from 'antd';
 import TimeSelect from '../../AchieveCommon/TimeSelect';
-import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import { getBaseOption } from './chartBaseOption';
 import styles from './lost.scss';
 
@@ -16,7 +16,6 @@ class ChartLostTrend extends Component {
     lostChartTimeMode: PropTypes.string,
     selectedQuota: PropTypes.object,
     lostTrend: PropTypes.array,
-    location: PropTypes.object,
     quotaInfo: PropTypes.array,
     lostChartDevice: PropTypes.object,
     lostTrendLoading: PropTypes.bool,
@@ -174,7 +173,7 @@ class ChartLostTrend extends Component {
                   <span>
                     ${i === 1 ? '应发小时数' : `${selectedQuota.label}`}
                   </span>
-                  <span>${e.value}${selectedQuota.unit || ''}</span>
+                  <span>${dataFormats(e.value, '--', 2, true)}${selectedQuota.unit || ''}</span>
                 </span>`
               )).join('')}
             </div>
