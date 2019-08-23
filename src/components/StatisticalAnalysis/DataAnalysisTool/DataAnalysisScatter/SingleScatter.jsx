@@ -50,7 +50,6 @@ class SingleScatter extends React.Component {
     }
     if ((this.props.index + 1 === scatterData.length) && (this.props.chartLoading && chartLoading !== this.props.chartLoading)) {
       scatterChart.clear();//清除
-      console.log('111111');
       this.drawChart(nextProps);
     }
     // if (scatterDataTime !== this.props.scatterDataTime || theme !== this.props.theme) {
@@ -59,7 +58,6 @@ class SingleScatter extends React.Component {
   }
   creatOption = (payload) => {
     const { title, pointCodeNameX, pointCodeNameY, chartData, saveBtn, startTime, endTime } = payload;
-    console.log('chartData: ', chartData);
     const filterYaxisData = (chartData && Object.keys(chartData).length) ? chartData.chartData.map(e => e.y) : [];
     const filterXaxisData = (chartData && Object.keys(chartData).length) ? chartData.chartData.map(e => e.x) : [];
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
@@ -208,20 +206,21 @@ class SingleScatter extends React.Component {
     const parms = { stationCode, xPointCode, yPointCode, startTime, endTime };
     const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
     const option = this.creatOption(params);
-    scatterChart.off();
+    // scatterChart.off();
     scatterChart.on('click', 'title', (params) => {
       onChange(index, !saveBtn);
     });
 
-    scatterChart.setOption(option, 'notMerge');
     if (scatterData.length === index + 1 && index + 1 < deviceList.length && scatterData.length < deviceList.length) {
-      console.log(' deviceList.length: ', deviceList.length);
-      console.log('index + 1: ', index + 1);
-      console.log('scatterData.length : ', scatterData.length);
+
       scatterChart.on('finished', () => {
+        scatterChart.off();
         getScatterData({
           ...parms,
           deviceFullCode: deviceList[index + 1].deviceFullCode,
+        });
+        scatterChart.on('click', 'title', (params) => {
+          onChange(index, !saveBtn);
         });
       });
       scatterChart.on('rendered', () => {
@@ -233,7 +232,7 @@ class SingleScatter extends React.Component {
       });
 
     }
-
+    scatterChart.setOption(option, 'notMerge');
     // scatterChart.resize();
 
   }

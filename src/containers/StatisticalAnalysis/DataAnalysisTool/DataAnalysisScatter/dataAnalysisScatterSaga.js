@@ -122,9 +122,6 @@ function* getScatterData(action) {//获取
           deviceData[e] = scatterArr;
         }
       });
-      console.log('deviceData: ', deviceData);
-
-
       const scatterData = scatterArr.length ? scatterArr : [{ chartData: [] }];
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
