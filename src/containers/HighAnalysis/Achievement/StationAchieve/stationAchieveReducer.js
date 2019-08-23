@@ -58,7 +58,7 @@ const initState = immutable.fromJS({
   lostTypes: {}, // 损失根源 - 损失电量分解
   lostTypesLoading: false,
 
-  stopElec: {}, // 停机 - 损失电量
+  stopElec: [], // 停机 - 损失电量
   stopRank: [], // 停机 - 设备停机时长及次数
   stopRankLoading: false,
   stopTrend: [], // 停机  - 日月年 停机时长次数趋势图

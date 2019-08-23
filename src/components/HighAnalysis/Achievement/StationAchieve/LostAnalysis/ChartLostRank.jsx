@@ -12,7 +12,6 @@ class ChartLostRank extends Component {
 
   static propTypes = {
     lostRank: PropTypes.array, // 损失根源 - 指标排名
-    selectedQuota: PropTypes.object,
     lostStringify: PropTypes.string,
     lostChartTimeMode: PropTypes.string,
     lostChartTime: PropTypes.string,
@@ -47,11 +46,11 @@ class ChartLostRank extends Component {
 
   sortRank = (rankList, sortType = 'name') => {
     const sortedList = [...rankList].sort((a, b) => {
-      if (sortType = 'name' && a.deviceName) {
+      if (sortType === 'name' && a.deviceName) {
         return a.deviceName.localeCompare(b.deviceName);
       }
       const sortName = Object.keys(a.indicatorData).includes('value') ? 'value' : 'actualGen';
-      return a.indicatorData[sortName] - b.indicatorData[sortName];
+      return b.indicatorData[sortName] - a.indicatorData[sortName];
     });
     return sortedList;
   }
@@ -81,10 +80,12 @@ class ChartLostRank extends Component {
 
   sortChart = (value) => {
     const { lostRank } = this.props;
-    this.renderChart(lostRank, value);
+    this.setState({ sortType: value }, () => {
+      this.renderChart(lostRank, value);
+    });
   }
 
-  createSeries = (lostRank = []) => {
+  createSeries = (lostRank = [], lostChartDevice) => {
     const dataAxis = [];
     const firstBarData = [];
     const secendBarData = [];
@@ -100,7 +101,7 @@ class ChartLostRank extends Component {
     });
     const modeArr = [...modeSet];
     lostRank.forEach((e) => {
-      const { deviceModeName, indicatorData = {} } = e || {};
+      const { deviceModeName, deviceFullcode, indicatorData = {} } = e || {};
       const colorIndex = modeArr.indexOf(deviceModeName);
       firstBarData.push({
         name: deviceModeName,
@@ -110,18 +111,23 @@ class ChartLostRank extends Component {
             {offset: 0, color: this.barColor[colorIndex][0] },
             {offset: 1, color: this.barColor[colorIndex][1] },
           ]),
+          opacity: (lostChartDevice && deviceFullcode !== lostChartDevice.deviceFullcode) ? 0.4 : 1,
         },
       });
       if (indicatorType === 'double') {
         secendBarData.push({
           name: deviceModeName,
           value: indicatorData.theoryGen,
+          opacity: (lostChartDevice && deviceFullcode !== lostChartDevice.deviceFullcode) ? 0.4 : 1,
         });
       }
     });
     series[0] = {
       type: 'bar',
       barWidth: '10px',
+      itemStyle: {
+        opacity: 1,
+      },
       data: firstBarData,
     };
     indicatorType === 'double' && (series[1] = {
@@ -129,6 +135,7 @@ class ChartLostRank extends Component {
       barWidth: '10px',
       itemStyle: {
         color: '#c1c1c1',
+        opacity: 1,
       },
       data: secendBarData,
     });
@@ -136,7 +143,8 @@ class ChartLostRank extends Component {
   }
 
   chartHandle = ({dataIndex}, sortedLostRank, chart) => {
-    const { lostChartTimeMode, lostChartTime, lostStringify, lostChartDevice } = this.props;
+    const { lostChartTimeMode, lostChartTime, lostStringify, lostChartDevice, lostRank } = this.props;
+    const { sortType } = this.state;
     if (lostChartTime) {
       message.info('请先取消下方事件选择, 再选择设备');
       return;
@@ -151,6 +159,7 @@ class ChartLostRank extends Component {
       deviceFullcodes = [selectedInfo.deviceFullcode];
       this.props.changeStore({ lostChartDevice: selectedInfo });
     }
+    this.renderChart(lostRank, sortType);
     this.props.getLostTrend({
       stationCodes: [searchParam.code],
       deviceFullcodes,
@@ -178,10 +187,10 @@ class ChartLostRank extends Component {
   }
 
   renderChart = (lostRank = [], sortType) => {
-    const { quotaInfo, lostStringify } = this.props;
+    const { quotaInfo, lostStringify, lostChartDevice } = this.props;
     const rankChart = echarts.init(this.rankRef);
     const sortedLostRank = this.sortRank(lostRank, sortType);
-    const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank);
+    const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank, lostChartDevice);
     const baseOption = getBaseOption(dataAxis);
     const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
     const selectedQuota = this.getQuota(quotaInfo, quota);
@@ -229,6 +238,7 @@ class ChartLostRank extends Component {
     }]);
     rankChart.hideLoading();
     rankChart.setOption(option);
+    rankChart.off('click');
     rankChart.on('click', (param) => this.chartHandle(param, sortedLostRank, rankChart ));
   }
 
