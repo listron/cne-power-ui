@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Select, message } from 'antd';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import IndicateCascader from './IndicateCascader';
 import { getBaseOption } from './chartBaseOption';
 import styles from './lost.scss';
@@ -177,11 +178,13 @@ class ChartLostRank extends Component {
   }
 
   renderChart = (lostRank = [], sortType) => {
-    const { selectedQuota } = this.props;
+    const { quotaInfo, lostStringify } = this.props;
     const rankChart = echarts.init(this.rankRef);
     const sortedLostRank = this.sortRank(lostRank, sortType);
     const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank);
     const baseOption = getBaseOption(dataAxis);
+    const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
+    const selectedQuota = this.getQuota(quotaInfo, quota);
     baseOption.yAxis.name = `${selectedQuota.label || '--'}${selectedQuota.unit ? `(${selectedQuota.unit})` : ''}`;
     const option = {
       ...baseOption,
@@ -200,7 +203,7 @@ class ChartLostRank extends Component {
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>${i === 1 ? '应发小时数' : `${selectedQuota.label || '--'}`}</span>
-                  <span>${e.value}${selectedQuota.unit || ''}</span>
+                  <span>${dataFormats(e.value, '--', 2, true)}${selectedQuota.unit || ''}</span>
                 </span>`
               )).join('')}
             </div>

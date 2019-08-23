@@ -23,7 +23,7 @@ class StationSearch extends Component {
     searchCode: PropTypes.number,
     searchDevice: PropTypes.array,
     searchDates: PropTypes.array,
-    searchQuota: PropTypes.number,
+    searchQuota: PropTypes.string,
   }
 
   constructor(props){
