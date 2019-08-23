@@ -85,13 +85,13 @@ class StationAchieve extends Component {
     const { search } = location;
     const newSearchPath = searchUtil(search).getValue('station') || '';
     const prePageName = this.props.pageName;
-    if (areaStation.length > 0 && !stationInfoStr && !searchCode) { // 电站数据获得 => 存默认电站并发起设备请求.
+    if (areaStation.length > 0 && !searchCode) { // 电站数据获得 => 存默认电站并发起设备请求.
       const { stations = [] } = areaStation[0] || {};
       const firstStation = stations[0] || {};
       this.setState({ searchCode: firstStation.stationCode });
       this.props.getDevices({ stationCode: firstStation.stationCode });
     }
-    if (modeDevices.length > 0 && !stationInfoStr && searchDevice.length === 0) { // 设备数据获得 => 存默认设备,若已有指标,发起路径变化
+    if (modeDevices.length > 0 && searchDevice.length === 0) { // 设备数据获得 => 存默认设备,若已有指标,发起路径变化
       const selectedDevice = [];
       modeDevices.forEach(e => {
         const { children = [] } = e || {};
@@ -100,11 +100,9 @@ class StationAchieve extends Component {
         });
       });
       this.setState({ searchDevice: selectedDevice });
-      if(quotaInfo.length > 0) { // 路径自动变化
-        this.historyChange(searchCode, selectedDevice, undefined, searchQuota);
-      }
+      searchQuota && this.historyChange(searchCode, selectedDevice, undefined, searchQuota);
     }
-    if (quotaInfo.length > 0 && !stationInfoStr && !searchQuota) { // 得到指标 => 存选中
+    if (quotaInfo.length > 0 && !searchQuota) { // 得到指标 => 存选中
       const firstType = quotaInfo[0] || {};
       const quotas = firstType.children || [];
       let selectedQuota;

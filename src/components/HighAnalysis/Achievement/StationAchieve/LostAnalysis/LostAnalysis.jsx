@@ -57,7 +57,7 @@ class LostAnalysis extends Component {
     const { active } = this.props;
     return (
       <div className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
-        <ChartLostRank {...this.props} />
+        <ChartLostRank {...this.props} onQuotaChange={this.onQuotaChange} />
         <ChartLostTrend {...this.props} />
         <ChartLostTypes {...this.props} />
       </div>
