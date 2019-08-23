@@ -153,7 +153,7 @@ class SequenceChart extends React.Component {
           type: 'line',
           yAxisIndex: 0,
           progressiveThreshold: 1000,
-          progressive: 100,
+          progressive: 200,
           data: point1Data,
 
         },

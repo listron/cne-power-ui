@@ -40,11 +40,9 @@ class SingleScatter extends React.Component {
     if (!chartLoading) {
       scatterChart.hideLoading();
     }
-    // if ((this.props.chartLoading && chartLoading !== this.props.chartLoading)) {
-    //   // scatterChart.clear();//清除
-    //   this.drawChart(nextProps);
-    // }
+
     if (saveBtn !== this.props.saveBtn || id !== this.props.id) {
+      // console.log('likestatus');
       scatterChart.clear();
       this.drawChart(nextProps);
     }
@@ -52,7 +50,8 @@ class SingleScatter extends React.Component {
       scatterChart.clear();//清除
       this.drawChart(nextProps);
     }
-    // if (scatterDataTime !== this.props.scatterDataTime || theme !== this.props.theme) {
+    // if ((this.props.chartLoading && chartLoading !== this.props.chartLoading)) {
+    //   // scatterChart.clear();//清除
     //   this.drawChart(nextProps);
     // }
   }
@@ -185,6 +184,8 @@ class SingleScatter extends React.Component {
         return {
           name: title,
           type: 'scatter',
+          progressiveThreshold: 1000,
+          progressive: 200,
           symbolSize: 5,
           emphasis: {
             symbolSize: 8,
@@ -207,12 +208,17 @@ class SingleScatter extends React.Component {
     const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
     const option = this.creatOption(params);
     // scatterChart.off();
-    scatterChart.on('click', 'title', (params) => {
-      onChange(index, !saveBtn);
+    // scatterChart.on('click', 'title', (params) => {
+    //   onChange(index, !saveBtn);
+    // });
+    scatterChart.on('rendered', () => {
+      const imgUrl = scatterChart.getDataURL({
+        pixelRatio: 2,
+        backgroundColor: '#fff',
+      });
+      this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
     });
-
     if (scatterData.length === index + 1 && index + 1 < deviceList.length && scatterData.length < deviceList.length) {
-
       scatterChart.on('finished', () => {
         scatterChart.off();
         getScatterData({
@@ -223,18 +229,9 @@ class SingleScatter extends React.Component {
           onChange(index, !saveBtn);
         });
       });
-      scatterChart.on('rendered', () => {
-        const imgUrl = scatterChart.getDataURL({
-          pixelRatio: 2,
-          backgroundColor: '#fff',
-        });
-        this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
-      });
-
     }
     scatterChart.setOption(option, 'notMerge');
     // scatterChart.resize();
-
   }
   render() {
     const { id, index, showImg } = this.props;
