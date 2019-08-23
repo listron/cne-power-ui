@@ -39,6 +39,7 @@ const initState = immutable.fromJS({
   selectStationCode: [], // 选中电站信息
   selectTime: '', // 选中时间
   dataName: '', // 保存选择区域名称
+  colorData: {}, // color
 });
 
 export const achieveArea = (state = initState, action) => {

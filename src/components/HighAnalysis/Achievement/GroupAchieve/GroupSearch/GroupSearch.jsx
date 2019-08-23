@@ -175,7 +175,14 @@ export default class AreaSearch extends Component {
   queryCharts = () => {
     // 组合state参数, 发起history.push操作。
     const { searchCode, modes, dates, quota, stations, modesInfo } = this.state;
-    console.log(modes, 'queryCharts');
+    const { changeStore } = this.props;
+    changeStore({
+      groupTimeStatus: '2', // 日月年
+      dataIndex: '', // 保存点击的下标
+      selectStationCode: [], // 保存单选区域的信息
+      selectTime: '', // 保存选择时间
+      dataName: '', // 保存选择区域名称
+    });
     this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
   };
 
@@ -246,6 +253,7 @@ export default class AreaSearch extends Component {
             placeholder="请选择"
             onChange={this.onQuotaChange}
             value={quota}
+            popupClassName={styles.cascaderBox}
           />
         </div>
         <div>

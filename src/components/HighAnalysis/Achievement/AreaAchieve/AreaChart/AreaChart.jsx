@@ -20,12 +20,13 @@ export default class AreaChart extends Component {
     getTrendInfo: PropTypes.func,
     getLostGenHour: PropTypes.func,
     location: PropTypes.object,
+    colorData: PropTypes.object,
   };
 
   componentDidUpdate(prevProps) {
     const { areaChart } = this;
     const { capacityTime, capacityLoading, capacityInfo, dataIndex } = this.props;
-    const { capacityTime: capacityTimePrev } = prevProps;
+    const { capacityTime: capacityTimePrev, dataIndex: dataIndexPrev } = prevProps;
     const myChart = eCharts.init(areaChart);
     if (capacityLoading) { // loading态控制。
       myChart.showLoading();
@@ -34,7 +35,7 @@ export default class AreaChart extends Component {
     if (!capacityLoading) {
       myChart.hideLoading();
     }
-    if(capacityTime && capacityTime !== capacityTimePrev) {
+    if(capacityTime && capacityTime !== capacityTimePrev || dataIndex !== '' && dataIndexPrev !== dataIndex) {
       eCharts.init(areaChart).clear();//清除
       const myChart = eCharts.init(areaChart);
       myChart.setOption(this.drawChart(capacityInfo, dataIndex));
@@ -43,7 +44,7 @@ export default class AreaChart extends Component {
   }
 
   chartHandle = (params, capacityInfo, myChart) => {
-    const { changeStore, dataIndex, getTrendInfo, getLostGenHour, location: { search }} = this.props;
+    const { changeStore, getTrendInfo, getLostGenHour, location: { search }} = this.props;
     const { data } = params;
     const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
@@ -79,22 +80,31 @@ export default class AreaChart extends Component {
       }),
       stationCodes,
     };
-    changeStore({
-      dataSelect: params.dataIndex,
-      dataName: data.name,
-      selectStationCode: stationCodes, // 保存单选区域的信息
-    });
-    myChart.setOption(this.drawChart(capacityInfo, dataIndex));
-    getTrendInfo(paramsTrend);
-    getLostGenHour(paramsHour);
+    if(params.name) {
+      changeStore({
+        dataIndex: params.name,
+        dataName: data.name,
+        selectStationCode: stationCodes, // 保存单选区域的信息
+      });
+      myChart.setOption(this.drawChart(capacityInfo, params.name));
+      getTrendInfo(paramsTrend);
+      getLostGenHour(paramsHour);
+    }
   };
 
 
   drawChart = (data, dataIndex) => {
+    const { colorData } = this.props;
+    function colorFunc(stationName) {
+      return dataIndex === '' ? colorData[stationName] : (dataIndex === stationName ? colorData[stationName] : '#cccccc');
+    }
     const childrenArr = data.map(cur => {
       const obj = {};
       obj.name = cur.stationName;
       obj.value = cur.stationCapacity / 1000;
+      obj.itemStyle = {
+        color: colorFunc(cur.stationName),
+      };
       return obj;
     });
     return {
@@ -110,12 +120,6 @@ export default class AreaChart extends Component {
           show: false,
         },
         itemStyle: {
-          normal: {
-            color: function(params) {//柱子颜色
-              const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
-              return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
-            },
-          },
           borderWidth: 1,
         },
         label: {

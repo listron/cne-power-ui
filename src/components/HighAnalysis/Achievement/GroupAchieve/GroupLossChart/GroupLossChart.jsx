@@ -5,6 +5,7 @@ import eCharts from 'echarts';
 import searchUtil from '../../../../../utils/searchUtil';
 
 import styles from './groupLossChart.scss';
+import {hiddenNoData, showNoData} from "../../../../../constants/echartsNoData";
 
 export default class GroupLossChart extends Component {
 
@@ -38,9 +39,13 @@ export default class GroupLossChart extends Component {
     }
   }
 
-  drawChart = (data) => {
-    const { dataArr, basicArr } = data;
+  drawChart = (groupLostGenHourInfo) => {
+    const { actualGen, theoryGen, detailList } = groupLostGenHourInfo;
+    const xAxisName = detailList && detailList.map(cur => (cur.name)) || [];
+    const xAxisBaseValue = detailList && detailList.map(cur => (cur.baseValue)) || [];
+    const xAxisValue = detailList && detailList.map(cur => (cur.value)) || [];
     return {
+      graphic: !actualGen && !theoryGen && (!detailList || detailList.length === 0) ? showNoData : hiddenNoData,
       tooltip: {
         trigger: 'axis',
         axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -58,7 +63,7 @@ export default class GroupLossChart extends Component {
       xAxis: {
         type: 'category',
         splitLine: {show: false},
-        data: ['应发小时', '降容损失', '风机故障', '变电故障', '场外因素', '计划停机', '其他损失', '实发小时'],
+        data: ['应发小时', ...xAxisName, '实发小时'],
         axisLabel: {
           interval: 0,
         },
@@ -91,7 +96,7 @@ export default class GroupLossChart extends Component {
               color: 'rgba(0,0,0,0)',
             },
           },
-          data: basicArr,
+          data: [0, ...xAxisBaseValue, 0],
         },
         {
           name: '生活费',
@@ -104,7 +109,7 @@ export default class GroupLossChart extends Component {
               position: 'top',
             },
           },
-          data: dataArr,
+          data: [theoryGen || '', ...xAxisValue, actualGen || ''],
         },
       ],
     };
@@ -136,12 +141,23 @@ export default class GroupLossChart extends Component {
     history.push(`/analysis/achievement/analysis/area?pages=${pages}&${newSearch}`);
   };
 
+  titleName = () => {
+    const { selectTime, dataName } = this.props;
+    if(dataName !== '' && selectTime !== '') {
+      return `${dataName}-${selectTime}-损失电量分解图`;
+    }
+    if(dataName !== '' && selectTime === '') {
+      return `${dataName}-损失电量分解图`;
+    }
+    return '损失电量分解图';
+  };
+
   render() {
-    const { selectStationCode, selectTime, dataName } = this.props;
+    const { selectStationCode } = this.props;
     return (
       <div className={styles.groupLossBox}>
         <div className={styles.groupLossTitle}>
-          <span>{selectTime === '' ? '损失电量分解图' : `${dataName}-${selectTime}-损失电量分解图`}</span>
+          <span>{this.titleName()}</span>
           <Button disabled={selectStationCode.length === 0} onClick={this.toAreaPage}>查看区域</Button>
         </div>
         <div className={styles.groupLossCenter} ref={ref => {this.groupLossChart = ref;}} />

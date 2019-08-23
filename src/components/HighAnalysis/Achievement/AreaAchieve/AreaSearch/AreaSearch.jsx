@@ -168,6 +168,14 @@ export default class AreaSearch extends Component {
   queryCharts = () => {
     // 组合state参数, 发起history.push操作。
     const { searchCode, modes, dates, quota, stations, modesInfo } = this.state;
+    const { changeStore } = this.props;
+    changeStore({
+      timeStatus: '2', // 日月年
+      dataIndex: '', // 选中信息
+      selectStationCode: [], // 选中电站信息
+      selectTime: '', // 选中时间
+      dataName: '', // 保存选择区域名称
+    });
     this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
   };
 
@@ -195,9 +203,6 @@ export default class AreaSearch extends Component {
       dataName,
     } = this.props;
     const { modes, dates, quota, stations } = this.state;
-    console.log(areaStation, 'areaStationrender');
-    console.log(stations, 'stationsrender');
-    // console.log(modesInfo, 'modesInforender');
     return (
       <div className={styles.topSearch}>
         <div>
@@ -237,6 +242,7 @@ export default class AreaSearch extends Component {
             options={quotaInfo}
             placeholder="请选择"
             onChange={this.onQuotaChange}
+            popupClassName={styles.cascaderBox}
             value={quota}
           />
         </div>

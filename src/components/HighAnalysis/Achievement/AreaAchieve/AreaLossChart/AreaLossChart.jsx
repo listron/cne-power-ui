@@ -36,10 +36,13 @@ export default class AreaLossChart extends Component {
     }
   }
 
-  drawChart = (data) => {
-    const { dataArr, basicArr } = data;
+  drawChart = (lostGenHourInfo) => {
+    const { actualGen, theoryGen, detailList } = lostGenHourInfo;
+    const xAxisName = detailList && detailList.map(cur => (cur.name)) || [];
+    const xAxisBaseValue = detailList && detailList.map(cur => (cur.baseValue)) || [];
+    const xAxisValue = detailList && detailList.map(cur => (cur.value)) || [];
     return {
-      graphic: !dataArr || dataArr.length === 0 ? showNoData : hiddenNoData,
+      graphic: !actualGen && !theoryGen && (!detailList || detailList.length === 0) ? showNoData : hiddenNoData,
       tooltip: {
         trigger: 'axis',
         axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -57,7 +60,7 @@ export default class AreaLossChart extends Component {
       xAxis: {
         type: 'category',
         splitLine: {show: false},
-        data: ['应发小时', '降容损失', '风机故障', '变电故障', '场外因素', '计划停机', '其他损失', '实发小时'],
+        data: ['应发小时', ...xAxisName, '实发小时'],
         axisLabel: {
           interval: 0,
         },
@@ -90,7 +93,7 @@ export default class AreaLossChart extends Component {
               color: 'rgba(0,0,0,0)',
             },
           },
-          data: basicArr,
+          data: [0, ...xAxisBaseValue, 0],
         },
         {
           name: '小时数',
@@ -103,7 +106,7 @@ export default class AreaLossChart extends Component {
               position: 'top',
             },
           },
-          data: dataArr,
+          data: [theoryGen || '', ...xAxisValue, actualGen || ''],
         },
       ],
     };
@@ -113,12 +116,23 @@ export default class AreaLossChart extends Component {
     console.log('跳');
   };
 
+  titleName = () => {
+    const {selectTime, dataName } = this.props;
+    if(dataName !== '' && selectTime !== '') {
+      return `${dataName}-${selectTime}-损失电量分解图`;
+    }
+    if(dataName !== '' && selectTime === '') {
+      return `${dataName}-损失电量分解图`;
+    }
+    return '损失电量分解图';
+  };
+
   render() {
-    const {selectTime, dataName, selectStationCode } = this.props;
+    const { selectStationCode } = this.props;
     return (
       <div className={styles.areaLossBox}>
         <div className={styles.areaLossTitle}>
-          <span>{selectTime === '' ? '损失电量分解图' : `${dataName}-${selectTime}-损失电量分解图`}</span>
+          <span>{this.titleName()}</span>
           <Button disabled={selectStationCode.length === 0} onClick={this.toLostAnalysis}>根源分析</Button>
         </div>
         <div className={styles.areaLossCenter} ref={ref => {this.lossChart = ref;}} />

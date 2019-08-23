@@ -20,6 +20,7 @@ export default class GroupTrendChart extends Component {
     titleFunc: PropTypes.string,
     changeStore: PropTypes.func,
     getGroupLostGenHour: PropTypes.func,
+    dataName: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
@@ -188,11 +189,11 @@ export default class GroupTrendChart extends Component {
   };
 
   render() {
-    const { groupTimeStatus, titleFunc } = this.props;
+    const { groupTimeStatus, titleFunc, dataName } = this.props;
     return (
       <div className={styles.groupTrendBox}>
         <div className={styles.groupTrendTitle}>
-          <span>{`${titleFunc || '--'}趋势图`}</span>
+          <span>{dataName === '' ? `${titleFunc || '--'}趋势图` : `${dataName}-${titleFunc || '--'}趋势图`}</span>
           <Radio.Group value={groupTimeStatus} buttonStyle="solid" onChange={this.handleStatusChange}>
             <Radio.Button value="1">按日</Radio.Button>
             <Radio.Button value="2">按月</Radio.Button>

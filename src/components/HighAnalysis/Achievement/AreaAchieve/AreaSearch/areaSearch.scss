@@ -11,18 +11,32 @@
   > div {
     @include lineheight(32px);
     display: flex;
-    span{
+
+    span {
       margin-right: 5px;
     }
   }
-  > div:not(:first-child){
+
+  > div:not(:first-child) {
     margin-left: 20px;
   }
 
-  > div:last-child{
+  > div:last-child {
     margin-left: 10px;
   }
 }
+
+.cascaderBox {
+  :global{
+    .ant-cascader-menu{
+      width: 150px;
+      .ant-cascader-menu-item{
+        width: 150px;
+      }
+    }
+  }
+}
+
 
 // 颜色s
 .topSearch {
