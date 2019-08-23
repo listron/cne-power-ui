@@ -89,7 +89,7 @@ class ProvinceItem extends Component {
                   title={m.stationName}
                   className={`${styles.eachStation} ${checked ? styles.checked : styles.disabled} `}>
                   <Checkbox
-                    style={{ color: checked ? '#fff' : '#666' }}
+                    // style={{ color: checked ? '#fff' : '#666' }}
                     onChange={() => this.checkStation(m)}
                     checked={checked}
                     disabled={disableCheck}

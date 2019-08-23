@@ -1,0 +1,132 @@
+@import "../../../../theme/theme.scss";
+.singleStationType {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .stationTimeFilter {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    align-items: center;
+    margin-bottom: 20px;
+    .leftFilter {
+      display: flex;
+      flex-direction: row;
+      .stationFilter {
+        padding-left: 30px;
+        display: flex;
+        align-items: center;
+        line-height: 43px;
+        .text {
+          margin-right: 10px;
+        }
+      }
+    }
+    .rightContent {
+      margin-right: 30px;
+    }
+  }
+  .componentContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .title {
+      display: flex;
+      flex-direction: column;
+      padding-left: 28px;
+      padding-top: 10px;
+      justify-content: space-between;
+      .stationStatus {
+        height: 40px;
+        line-height: 40px;
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        justify-content: space-between;
+        .status {
+          margin-right: 4px;
+          :global {
+            .iconfont {
+              margin-right: 4px;
+            }
+          }
+        }
+        .plan {
+          margin-left: 24px;
+        }
+        .rightFont {
+          margin-right: 30px;
+        }
+        .choiceYear {
+          display: inline-block;
+          :global {
+            .active {
+              border: none;
+            }
+          }
+          span {
+            border-radius: 2px;
+            width: 45px;
+            cursor: pointer;
+            display: inline-block;
+            margin: 0 4px;
+            text-align: center;
+            height: 19px;
+            line-height: 19px;
+            padding: 0 5px;
+            &.noSelect {
+              cursor: not-allowed;
+            }
+          }
+        }
+      }
+      .graph {
+        display: flex;
+        .stationTargetData {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          margin: 20px 30px;
+          .stationTargetValue {
+            font-size: 26px;
+          }
+        }
+      }
+    }
+    .targetGraphContainer {
+      .bgStyle {
+        .fontStyle {
+          width: 160px;
+        }
+      }
+      .tabContainer {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 20px 0;
+        .dataGraph {
+          display: flex;
+          flex-direction: row;
+          height: 300px;
+          margin-right: 24px;
+          > div:nth-child(1) {
+            flex: 5;
+          }
+          > div:nth-child(2) {
+            flex: 4;
+          }
+          .LostPowerTypeRate {
+            width: 50%;
+            .LostPowerTypeTitle {
+              display: flex;
+              justify-content: space-between;
+              height: 40px;
+              line-height: 40px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
