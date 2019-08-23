@@ -23,100 +23,95 @@ class GroupAchieve extends Component {
     getGroupLostGenHour: PropTypes.func,
     groupTimeStatus: PropTypes.string,
     quotaInfo: PropTypes.array,
+    dataName: PropTypes.string,
+    changeStore: PropTypes.func,
   };
 
   componentDidMount(){
     // 若是上级页面下钻进入 => search中的area与之前记录有变化。
     const { search } = this.props.location;
-    const { groupTimeStatus } = this.props;
     const groupInfoStr = searchUtil(search).getValue('group');
     if(groupInfoStr) {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
-      const basicParams = this.basicParams(groupInfo);
-      const {
-        stations = [],
-        modes = [],
-        quota = [],
-        modesInfo = [],
-      } = groupInfo;
-      // 默认指标分析
-      const quotaValue = quota[1] || quota[0];
-      const paramsCapacity = {
-        ...basicParams,
-        deviceModes: modes,
-        regionName: stations.map(cur => {return cur.regionName;}),
-        manufactorIds: modesInfo.map(cur => {
-          return cur.value;
-        }),
-      };
-      const paramsRank = {
-        ...basicParams,
-        indicatorCode: quotaValue,
-      };
-      const paramsTrend = {
-        ...basicParams,
-        regionName: paramsCapacity.regionName,
-        indicatorCode: quotaValue,
-        type: groupTimeStatus, // 默认按月
-      };
-      const paramsHour = {
-        ...basicParams,
-        manufactorIds: paramsCapacity.manufactorIds,
-        deviceModes: paramsCapacity.deviceModes,
-      };
-      this.props.getGroupCapacity(paramsCapacity);
-      this.props.getGroupRank(paramsRank);
-      this.props.getGroupTrendInfo(paramsTrend);
-      this.props.getGroupLostGenHour(paramsHour);
+      this.queryParamsFunc(groupInfo);
     }
+    // 右键重置图表
+    // 去掉默认的contextmenu事件，否则会和右键事件同时出现。
+    document.oncontextmenu = (e) => {
+      e.preventDefault();
+    };
+    // 鼠标右击
+    document.getElementsByTagName('body')[0].onmousedown = e => {
+      if (e.button === 2) {
+        const { dataName, changeStore } = this.props;
+        // 判断如果选中过区域可以重置图表
+        if(dataName !== '') {
+          const { search } = this.props.location;
+          const groupInfoStr = searchUtil(search).getValue('group');
+          const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+          changeStore({
+            dataIndex: '', // 保存点击的下标
+            selectStationCode: [], // 保存单选区域的信息
+            selectTime: '', // 保存选择时间
+            dataName: '', // 保存选择区域名称
+          });
+          this.queryParamsFunc(groupInfo);
+        }
+      }
+    };
   }
 
   componentWillReceiveProps(nextProps){ // search中的area字符串对比, 不同 => 解析+请求图表数据.
     const nextSearch = nextProps.location.search;
     const { search } = this.props.location;
-    const { groupTimeStatus } = this.props;
     const groupNextInfoStr = searchUtil(nextSearch).getValue('group');
     const groupInfoStr = searchUtil(search).getValue('group');
     // 发生变化
     if (groupNextInfoStr && groupNextInfoStr !== groupInfoStr) {
       const groupInfo = groupNextInfoStr ? JSON.parse(groupNextInfoStr) : {};
-      const basicParams = this.basicParams(groupInfo);
-      const {
-        stations = [],
-        modes = [],
-        quota = [],
-        modesInfo = [],
-      } = groupInfo;
-      // 默认指标分析
-      const quotaValue = quota[1] || quota[0];
-      const paramsCapacity = {
-        ...basicParams,
-        deviceModes: modes,
-        regionName: stations.map(cur => {return cur.regionName;}),
-        manufactorIds: modesInfo.map(cur => {
-          return cur.value;
-        }),
-      };
-      const paramsRank = {
-        ...basicParams,
-        indicatorCode: quotaValue,
-      };
-      const paramsTrend = {
-        ...basicParams,
-        indicatorCode: quotaValue,
-        type: groupTimeStatus, // 默认按月
-      };
-      const paramsHour = {
-        ...basicParams,
-        manufactorIds: paramsCapacity.manufactorIds,
-        deviceModes: paramsCapacity.deviceModes,
-      };
-      this.props.getGroupCapacity(paramsCapacity);
-      this.props.getGroupRank(paramsRank);
-      this.props.getGroupTrendInfo(paramsTrend);
-      this.props.getGroupLostGenHour(paramsHour);
+      this.queryParamsFunc(groupInfo);
     }
   }
+
+  queryParamsFunc = (groupInfo) => {
+    const { groupTimeStatus } = this.props;
+    const basicParams = this.basicParams(groupInfo);
+    const {
+      stations = [],
+      modes = [],
+      quota = [],
+      modesInfo = [],
+    } = groupInfo;
+    // 默认指标分析
+    const quotaValue = quota[1] || quota[0];
+    const paramsCapacity = {
+      ...basicParams,
+      deviceModes: modes,
+      regionName: stations.map(cur => {return cur.regionName;}),
+      manufactorIds: modesInfo.map(cur => {
+        return cur.value;
+      }),
+    };
+    const paramsRank = {
+      ...basicParams,
+      indicatorCode: quotaValue,
+    };
+    const paramsTrend = {
+      ...basicParams,
+      regionName: paramsCapacity.regionName,
+      indicatorCode: quotaValue,
+      type: groupTimeStatus, // 默认按月
+    };
+    const paramsHour = {
+      ...basicParams,
+      manufactorIds: paramsCapacity.manufactorIds,
+      deviceModes: paramsCapacity.deviceModes,
+    };
+    this.props.getGroupCapacity(paramsCapacity);
+    this.props.getGroupRank(paramsRank);
+    this.props.getGroupTrendInfo(paramsTrend);
+    this.props.getGroupLostGenHour(paramsHour);
+  };
 
   // 基本-公共参数
   basicParams = (data) => {
@@ -158,7 +153,7 @@ class GroupAchieve extends Component {
   render() {
     return (
       <div style={{width: '100%'}}>
-        <GroupSearch {...this.props} />
+        <GroupSearch queryParamsFunc={this.queryParamsFunc} {...this.props} />
         <div className={styles.groupChartBox}>
           <div className={styles.chartTop}>
             <GroupAreaChart {...this.props} />

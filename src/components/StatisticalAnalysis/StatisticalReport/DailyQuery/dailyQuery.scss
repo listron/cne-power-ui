@@ -1,0 +1,137 @@
+@import '../../../../theme/theme.scss';
+
+.dailySearch{
+  .typeCheck{
+    display: flex;
+    .typeNormal, .typeActive{
+      height: 40px;
+      line-height: 40px;
+      flex-basis: 120px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      border-left: none;
+    }
+    .typeActive{
+      border-bottom: none;
+    }
+    .holder{
+      flex: 1;
+    }
+  }
+  .searchPart{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    .text{
+      margin-right: 4px;
+    }
+    .category{
+      margin: 0 0 18px 38px;
+      :global{
+        .ant-radio-button-wrapper{
+          padding: 0 5px;
+        }
+      }
+    }
+    .searchChange{
+      display: flex;
+      background-color: #f8f8f8;
+      padding-left: 38px;
+      height: 50px;
+      .stationSelect,.quotaSelect,.lossElectric,.keyWord,.powerInformation,.timeSelect{
+        display: flex;
+        align-items: center;
+      }
+      .stationSelect{
+        line-height: 45px;
+      }
+      .faultInformation,.powerInformation,.quotaSelect{
+        display: flex;
+      }
+      .powerInformation{
+        .text{
+          width: 74px;
+          line-height: 32px;
+        }
+      }
+      .stationSelect,.quotaSelect,.lossElectric,.keyWord,.powerInformation,.timeSelect,.search,.reset{
+        margin-right: 24px;
+      }
+      .search,.reset{
+        margin-top: 8px;
+      }
+      .reset{
+        line-height: 32px;
+        cursor: pointer;
+      }
+      .keyWord{
+        :global{
+          .ant-input{
+            width: 263px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.quotaList,.limitList,.faultList{
+  flex: 1;
+  .pagination{
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    .listExport{
+      width: 82px;
+      margin: 10px 0 0 38px;
+    }
+  }
+}
+
+.quotaList,.faultList{
+  :global{
+    .ant-table-scroll{
+      table{
+        .ant-table-fixed-columns-in-body{
+          visibility: visible;
+        }
+      }
+    }  
+  }
+}
+
+// 颜色
+.dailySearch{
+  background-color: #fff;
+  .typeNormal, .typeActive{
+    border: 1px solid $promptColor;
+    color: $lightColor;
+    background-color: #f8f8f8;
+  }
+  .typeActive{
+    background-color: #fff;
+    border-top: 2px solid $themeColor;
+    color: #000;
+  }
+  .holder{
+    background-color: #f8f8f8;
+    border-top: 1px solid $promptColor;
+    border-bottom: 1px solid $promptColor;
+  }
+  .search{
+    color: $themeColor;
+    border-color: $themeColor;
+  }
+  .reset{
+    color: $themeColor;
+  }
+}
+
+.quotaList,.limitList,.faultList{
+  background-color: #fff;
+  .listExport{
+    color: $themeColor;
+    border-color: $themeColor;
+  }
+}

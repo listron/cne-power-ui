@@ -112,7 +112,7 @@ export default class GroupTrendChart extends Component {
         formatter: (params) => {
           if(titleFunc === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[1].value || '--'}</span><br /><span>应发小时数：</span><span>${params[0].value || '--'}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[0].value || '--'}</span><br /><span>应发小时数：</span><span>${params[1].value || '--'}</span>
           </div>`;
           }
           return `<div>

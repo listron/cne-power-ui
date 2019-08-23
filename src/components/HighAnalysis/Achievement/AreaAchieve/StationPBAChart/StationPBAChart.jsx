@@ -14,14 +14,18 @@ export default class StationPBAChart extends Component {
     rankLoading: PropTypes.bool,
     changeStore: PropTypes.func,
     getTrendInfo: PropTypes.func,
-    dataSelect: PropTypes.string,
+    getLostGenHour: PropTypes.func,
+    dataIndex: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
     location: PropTypes.object,
     qutaName: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
     const { sortChart } = this;
-    const { rankTime, rankLoading, indicatorRankInfo, dataSelect } = this.props;
+    const { rankTime, rankLoading, indicatorRankInfo, dataIndex } = this.props;
     const { rankTime: rankTimePrev } = prevProps;
     const myChart = eCharts.init(sortChart);
     if (rankLoading) { // loading态控制。
@@ -34,20 +38,21 @@ export default class StationPBAChart extends Component {
     if(rankTime && rankTime !== rankTimePrev) {
       eCharts.init(sortChart).clear();//清除
       const myChart = eCharts.init(sortChart);
-      myChart.setOption(this.drawChart(indicatorRankInfo, dataSelect));
+      myChart.setOption(this.drawChart(indicatorRankInfo, dataIndex));
       myChart.on('click', (param) => this.chartHandle(param, indicatorRankInfo, myChart));
     }
   }
 
   chartHandle = (params, indicatorRankInfo, myChart) => {
-    const { changeStore, dataSelect, getTrendInfo, location: { search }} = this.props;
+    const { changeStore, dataIndex, getTrendInfo, getLostGenHour, location: { search }} = this.props;
     const { name } = params;
-    console.log(params, '11111');
     const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const {
       quota = [],
       stations = [],
+      modes = [],
+      modesInfo = [],
     } = groupInfo;
     const stationCodes = [];
     stations.forEach(cur => {
@@ -66,15 +71,26 @@ export default class StationPBAChart extends Component {
       type: '2', // 默认按月
       stationCodes,
     };
+    const paramsHour = {
+      startTime: groupInfo.dates[0],
+      endTime: groupInfo.dates[1],
+      deviceModes: modes,
+      manufactorIds: modesInfo.map(cur => {
+        return cur.value;
+      }),
+      stationCodes,
+    };
     changeStore({
       dataSelect: params.name,
+      dataName: name,
       selectStationCode: stationCodes, // 保存单选区域的信息
     });
-    myChart.setOption(this.drawChart(indicatorRankInfo, dataSelect));
+    myChart.setOption(this.drawChart(indicatorRankInfo, dataIndex));
     getTrendInfo(paramsTrend);
+    getLostGenHour(paramsHour);
   };
 
-  drawChart = (data, dataSelect) => {
+  drawChart = (data, dataIndex) => {
     const { qutaName } = this.props;
     const twoBar = [{ // 实发
       data: data && data.map(cur => (cur.indicatorData.actualGen)),
@@ -82,10 +98,9 @@ export default class StationPBAChart extends Component {
       barWidth: 10,
       itemStyle: {
         normal: {
-          // color:['#07a6ba','#4bc0c9','#3b56d9','#dbbb32','03ecef','#8648e7','#0fb2db']
           color: function(params) {//柱子颜色
             const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
-            return dataSelect === '' ? colorList[params.dataIndex] : (dataSelect === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
+            return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
           },
         },
         emphasis: {
@@ -114,10 +129,9 @@ export default class StationPBAChart extends Component {
       itemStyle: {
         barBorderRadius: [5, 5, 0, 0],
         normal: {
-          // color:['#07a6ba','#4bc0c9','#3b56d9','#dbbb32','03ecef','#8648e7','#0fb2db']
           color: function(params) {//柱子颜色
             const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
-            return dataSelect === '' ? colorList[params.dataIndex] : (dataSelect === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
+            return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
           },
         },
         emphasis: {
@@ -137,17 +151,14 @@ export default class StationPBAChart extends Component {
         axisPointer: {
           type: 'shadow',
         },
-        position: function (pt) {
-          return [pt[0], '10%'];
-        },
         formatter: (params) => {
-          if(qutaName === 'PBA') {
+          if(qutaName === '利用小时数') {
             return `<div>
             <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[0].value || '--'}</span><br /><span>应发小时数：</span><span>${params[1].value || '--'}</span>
           </div>`;
           }
           return `<div>
-            <span>${qutaName || '--'}</span><br /><span>${params[0].name}</span><span>${params[0].value || '--'}</span>
+            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${params[0].value || '--'}</span>
           </div>`;
         },
       },

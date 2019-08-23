@@ -45,7 +45,6 @@ export default class AreaTrendChart extends Component {
 
   chartHandle = (params) => {
     const { selectStationCode, changeStore, getLostGenHour, timeStatus } = this.props;
-    console.log(selectStationCode, 'selectStationCode');
     if(selectStationCode.length > 0) {
       const { search } = this.props.location;
       const groupInfoStr = searchUtil(search).getValue('area');
@@ -63,7 +62,7 @@ export default class AreaTrendChart extends Component {
       const paramsHour = {
         startTime: timeFormat[timeStatus][0],
         endTime: timeFormat[timeStatus][1],
-        stationCodes: groupInfo.searchCode,
+        stationCodes: selectStationCode,
         manufactorIds: modesInfo.map(cur => {
           return cur.value;
         }),
@@ -110,9 +109,14 @@ export default class AreaTrendChart extends Component {
           return [pt[0], '10%'];
         },
         formatter: (params) => {
+          if(qutaName === '利用小时数') {
+            return `<div>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[0].value || '--'}</span><br /><span>应发小时数：</span><span>${params[1].value || '--'}</span>
+          </div>`;
+          }
           return `<div>
-        <span>${params[0].name}</span><br />${params[0].marker}<span>PBA </span><span>${params[0].value}%</span>
-      </div>`;
+            <span>${qutaName || '--'}</span><br /><span>${params[0].name}</span><span>${params[0].value || '--'}</span>
+          </div>`;
         },
       },
       grid: {
@@ -132,7 +136,7 @@ export default class AreaTrendChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: 'PBA',
+          name: qutaName,
           min: 0,
           splitLine: {
             show: false,

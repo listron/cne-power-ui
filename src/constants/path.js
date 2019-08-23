@@ -210,7 +210,7 @@ export default {
       editSettedInfo: '/v3/workflow/station/distribution/update', // 编辑已配置电站
       getSettedInfo: '/v3/workflow/station/distribution/detail', // 查看已配置电站
       getSettableUsers: '/v3/workflow/node/ableCheckUser', // 查看可配置的人员列表
-      // 两票管理 
+      // 两票管理
       getDocketList: '/v3/docket/pageList', //列表
       getDocketStatus: '/v3/docket/state/total', //票据状态及总数
       getDocketType: '/v3/docket/typeList', //票据类型
@@ -329,7 +329,7 @@ export default {
       seriesinverterDetail: '/v3/monitor/seriesinverter', //组串式逆变器详情
       inverterSubList: '/v3/monitor/seriesinverter/sublist', // 逆变器下级设备信息
       seriesinverterTenMin: '/v3/monitor/seriesinverter/sequencechart', //组串式逆变器10min时序图
-      seriesBranchTenMin: '/v3/monitor/seriesinverter/sequencechart/zl', // 组串式逆变器下支路电流10min时序图 
+      seriesBranchTenMin: '/v3/monitor/seriesinverter/sequencechart/zl', // 组串式逆变器下支路电流10min时序图
       confluenceboxDetail: '/v3/monitor/confluencebox', //汇流箱详情
       confluenceboxSubList: '/v3/monitor/confluencebox/sublist', // 汇流箱下级设备信息
       confluenceboxTenMin: '/v3/monitor/confluencebox/sequencechart', //汇流箱10min时序图
@@ -515,6 +515,15 @@ export default {
       faultReport: 'v3/performance/generalreport/fault',
       genReport: 'v3/performance/generalreport/gen',
       indicatorReport: 'v3/performance/generalreport/indicator',
+      // 日报查询
+      getQuotaList: '/v3/performance/report/index/list', // 关键指标列表
+      getFaultList: '/v3/performance/report/fault/list', // 故障信息列表
+      getLimitList: '/v3/performance/report/limit/list', // 限电信息列表
+      getQuota: '/v3/performance/report/index', // 关键指标选项
+      getFault: '/v3/faulttype/getlist', // 故障信息选项
+      getExportQuota: '/v3/performance/report/index/list/export', // 关键指标列表导出
+      getExportFault: '/v3/performance/report/fault/list/export', // 故障信息列表导出
+      getExportLimit: '/v3/performance/report/limit/list/export', // 限电信息列表导出
       // 电站评分
       singleStaionScore: '/v3/performance/score',
       getScoreList: '/v3/performance/score/list',
@@ -614,6 +623,13 @@ export default {
       getStopRank: '/v3/fan/efficiency/stoprank', // 停机 - 设备停机时长及次数
       getStopTrend: '/v3/fan/efficiency/stoptrend', // 停机 - 日月年 停机时长次数趋势图
       getStopTypes: '/v3/fan/efficiency/stoptype', // 停机 - 各类停机时长及次数
+
+      getIndicatorsList: '/v3/fan/efficiency/infuxdbindicator', //获取指标接口
+      getSequenceChart: '/v3/fan/efficiency/sequence', //获取时序图
+      getFirstChart: '/v3/fan/efficiency/speedpower', //获取第一个散点图
+      getSecondChart: '/v3/fan/efficiency/speedangle', //获取第二个散点图
+      getThirdChart: '/v3/fan/efficiency/layration', //获取第三个散点图
+      getFourthChart: '/v3/fan/efficiency/speedration', //获取第四个散点图
 
       getCurveDevices: '/v3/fan/efficiency/neighbor/analysis', // 功率曲线邻比分析
       getCurveDevicesAep: '/v3/fan/efficiency/device/aepandspeed', // 各机组AEP以及平均风速

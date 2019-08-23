@@ -45,6 +45,7 @@ import styles from './style.scss';
   8. 选填todo - disabled: bool; 默认false， 传入true值时组件为禁用状态。
   9. 选填 - maxTagCount: number; 默认是null - 不开启
   10. 选填todo - onlyModal: false; 当不需要下拉框, 只需要筛选弹框时启用.
+  11. 选填 - max: number; 0 - 不开启 限制选中个数
 
   注意:
   多选时；
@@ -61,12 +62,14 @@ class AutoSelect extends Component {
     style: PropTypes.object,
     onChange: PropTypes.func,
     holderText: PropTypes.string,
+    max: PropTypes.number,
   }
 
   static defaultProps = {
     multiple: true,
     value: [],
     style: {},
+    max: 0,
     onChange: () => {},
     holderText: '请选择',
     data: [],

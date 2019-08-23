@@ -21,6 +21,7 @@ export default class RunSearch extends Component {
     areaStation: PropTypes.array,
     modeDevices: PropTypes.array,
     getDevices: PropTypes.func,
+    changeStore: PropTypes.func,
   };
 
   constructor(props){
@@ -55,6 +56,11 @@ export default class RunSearch extends Component {
     if (!stationInfoStr && preDevice.length === 0 && modeDevices.length > 0 && !stationInfoStr) { // 路径无参数时  得到设备数据
       this.propsModeDevicesChange(modeDevices);
     }
+    // 路径有参数 更改电站 得到新的设备数据
+    if(stationInfoStr && modeDevices.length > 0 && JSON.stringify(modeDevices) !== JSON.stringify(preDevice)){
+      const searchDevice = this.getAllDeviceCodes(modeDevices);
+      this.setState({searchDevice});
+    }
   }
 
   propsAreaStationChange = (areaStation = []) => { // 得到电站信息.
@@ -86,11 +92,11 @@ export default class RunSearch extends Component {
 
   getAllDeviceCodes = (modeDevices = []) => { // 解析所有设备得到codes数组
     const codes = [];
-    modeDevices.forEach(e => {
-      const { children = [] } = e || {};
-      children.forEach(m => {
-        codes.push(m.value);
-      });
+    // 默认取第一个电站下的第一条数据的前三个
+    modeDevices[0] && modeDevices[0].children && modeDevices[0].children.forEach((e, i) => {
+      if(i < 3) { // 默认取前三个
+        codes.push(e.value);
+      }
     });
     return codes;
   };
@@ -98,6 +104,7 @@ export default class RunSearch extends Component {
   onStationChange = ([regionName, stationCode]) => {
     this.setState({ searchCode: stationCode, searchDevice: [] });
     this.props.getDevices({ stationCode });
+    this.props.changeStore({ modeDevices: [] });
   };
 
   onDeviceChange = (devices) => this.setState({ searchDevice: devices.map(e => e.value) });
@@ -111,7 +118,6 @@ export default class RunSearch extends Component {
 
   render() {
     const { areaStation, modeDevices } = this.props;
-    console.log(modeDevices, 'modeDevices');
     const { searchCode, searchDevice, searchDates } = this.state;
     return (
       <div className={styles.topSearch}>
@@ -133,6 +139,7 @@ export default class RunSearch extends Component {
               onChange={this.onDeviceChange}
               style={{width: '150px'}}
               maxTagCount={0}
+              max={3}
             />
           </div>
           <div className={styles.eachParts}>
