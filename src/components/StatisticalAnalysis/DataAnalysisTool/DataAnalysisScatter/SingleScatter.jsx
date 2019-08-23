@@ -48,6 +48,8 @@ class SingleScatter extends React.Component {
     }
     if ((this.props.index + 1 === scatterData.length) && (this.props.chartLoading && chartLoading !== this.props.chartLoading)) {
       scatterChart.clear();//清除
+      scatterChart.dispose();//清除
+
       this.drawChart(nextProps);
     }
     // if ((this.props.chartLoading && chartLoading !== this.props.chartLoading)) {
@@ -230,8 +232,9 @@ class SingleScatter extends React.Component {
         });
       });
     }
-    scatterChart.setOption(option, 'notMerge');
+    scatterChart.setOption(option, false, false);
     // scatterChart.resize();
+
   }
   render() {
     const { id, index, showImg } = this.props;
