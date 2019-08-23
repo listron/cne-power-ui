@@ -308,6 +308,38 @@ function *getCurveMonthPsd({ payload }){ // 某机组psd聚合度
   }
 }
 
+function *resetLost({ payload }){
+  yield call(easyPut, 'changeStore', {
+    lostStringify: payload.lostStringify,
+    lostChartDevice: null,
+    lostChartTime: null,
+    lostChartTimeMode: 'month',
+  });
+}
+
+function *resetStop({ payload }){ // 停机重置。
+  yield call(easyPut, 'changeStore', {
+    stopTopStringify: payload.stopTopStringify,
+    stopElecType: 'all',
+    stopType: '',
+    stopChartDevice: null,
+    stopChartTime: null,
+    stopChartTimeMode: 'month',
+    stopChartTypes: null,
+  });
+}
+
+function *resetCurve({ payload }){
+  yield call(easyPut, 'changeStore', {
+    curveTopStringify: payload.curveTopStringify,
+    curveDeviceFullcode: null,
+    curveDeviceName: null,
+    curveDevicesTime: null,
+    curveCheckedMonths: [],
+    curveAllMonths: [],
+  });
+}
+
 export function* watchStationAhieve() {
   yield takeLatest(stationAchieveAction.getDevices, getDevices);
   yield takeLatest(stationAchieveAction.getLostRank, getLostRank);
@@ -323,5 +355,8 @@ export function* watchStationAhieve() {
   yield takeLatest(stationAchieveAction.getCurveMonths, getCurveMonths);
   yield takeLatest(stationAchieveAction.getCurveMonthAep, getCurveMonthAep);
   yield takeLatest(stationAchieveAction.getCurveMonthPsd, getCurveMonthPsd);
+  yield takeLatest(stationAchieveAction.resetLost, resetLost);
+  yield takeLatest(stationAchieveAction.resetStop, resetStop);
+  yield takeLatest(stationAchieveAction.resetCurve, resetCurve);
 }
 

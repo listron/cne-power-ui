@@ -103,6 +103,9 @@
     line-height: 21px;
     justify-content: space-between;
   }
+  .modeName{
+    @include overflowText();
+  }
 }
 .stopAnalysis .eleTypes{
   background-color: #fff;
@@ -125,6 +128,7 @@
 
 
 .stopAnalysis{
+  background-color: #ececec;
   .stopRank, .stopTrend, .stopTypes{
     background-color: #fff;
     .top .title{
@@ -136,8 +140,8 @@
   }
 }
 .tooltip{ // chart提示
-  min-width: 160px;
   background-color: #fff;
+  box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
   color: #666;
   .title{
     border-bottom: 1px solid #dfdfdf;

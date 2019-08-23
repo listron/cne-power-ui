@@ -58,7 +58,7 @@ class StationCascader extends Component {
   });
 
   checkStation = (selectedValue, selectedOption) => {
-    const value = [...selectedValue, selectedOption[1].label];
+    const value = selectedValue.length > 0 ? [...selectedValue, selectedOption[1].label] : [];
     this.setState({ value });
     this.props.onChange(value);
   }
@@ -73,6 +73,7 @@ class StationCascader extends Component {
         options={options}
         onChange={this.checkStation}
         value={[value[0], value[1]]}
+        allowClear={false}
       />
     );
   }
