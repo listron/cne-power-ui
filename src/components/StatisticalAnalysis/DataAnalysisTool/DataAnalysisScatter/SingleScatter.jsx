@@ -9,7 +9,7 @@ import { dataFormat } from '../../../../utils/utilFunc';
 
 import moment from 'moment';
 
-class SingleScatter extends React.Component {
+class SingleScatter extends React.PureComponent {
   static propTypes = {
     // title: PropTypes.string,
     pointCodeNameX: PropTypes.string,
