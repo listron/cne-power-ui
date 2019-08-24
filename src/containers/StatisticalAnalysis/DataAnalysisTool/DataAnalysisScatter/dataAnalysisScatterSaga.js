@@ -109,12 +109,13 @@ function* getScatterData(action) {//获取
     );// { params: payload }
     if (response.data.code === '10000') {
       const scatterArr = response.data.data || [];
-      const scatterData = scatterArr.length ? scatterArr : [{ chartData: [] }];
+      // const scatterData = scatterArr.length ? scatterArr : [{ chartData: [] }];
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
-          scatterData: [...preScatterData, ...scatterData],
-          scatterDataTime: moment().unix(),
+          scatterData: scatterArr[0] || {},
+          activeCode: payload.deviceFullCode,
+          // scatterDataTime: moment().unix(),
           chartLoading: false,
         },
       });
@@ -127,7 +128,7 @@ function* getScatterData(action) {//获取
       type: dataAnalysisScatterAction.changeToolStore,
       payload: {
         scatterData: [],
-        scatterDataTime: moment().unix(),
+        // scatterDataTime: moment().unix(),
         chartLoading: false,
       },
     });

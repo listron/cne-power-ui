@@ -87,12 +87,12 @@ class ScatterContainer extends React.Component {
               <div className={styles.scatterChart} >
                 <SingleScatter
                   {...this.props}
-                  key={i}
+                  key={e.deviceFullCode}
+                  deviceFullCode={e.deviceFullCode}
                   index={i}
                   saveBtn={e.likeStatus}
-                  id={e.deviceName}
+                  // id={e.deviceName}
                   title={e.deviceName}
-                  chartData={scatterData[i]}
                   showImg={this.showImg}
                   saveImgUrl={this.saveImgUrl}
                   onChange={this.likeChange}
