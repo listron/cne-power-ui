@@ -90,7 +90,7 @@ class ChartLostTypes extends Component {
               ${param && param[1] &&
               `<span class=${styles.eachItem}>
                 <span>小时数:</span>
-                <span>${param[1].value}</span>
+                <span>${dataFormats(param[1].value, '--', 1)}</span>
               </span>`}
             </div>
           </section>`;

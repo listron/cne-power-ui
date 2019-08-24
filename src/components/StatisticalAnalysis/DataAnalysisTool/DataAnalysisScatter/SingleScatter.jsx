@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import echarts from 'echarts';
 import { Icon } from 'antd';
-import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
+// import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import { themeConfig } from '../../../../utils/darkConfig';
 import { dataFormat } from '../../../../utils/utilFunc';
 
 import moment from 'moment';
 
-class SingleScatter extends React.Component {
+class SingleScatter extends React.PureComponent {
   static propTypes = {
     // title: PropTypes.string,
     pointCodeNameX: PropTypes.string,
     pointCodeNameY: PropTypes.string,
-    id: PropTypes.string,
+    // id: PropTypes.string,
     saveImgUrl: PropTypes.func,
     showImg: PropTypes.func,
     saveBtn: PropTypes.bool,
@@ -23,46 +23,57 @@ class SingleScatter extends React.Component {
   constructor(props, context) {
     super(props, context);
   }
-  componentDidMount() {
-    const { chartId } = this;
-    const { theme } = this.props;
-    const myChart = echarts.init(chartId, themeConfig[theme]); //构建下一个实例
-    const option = this.creatOption(this.props);
-    myChart.setOption(option);
-  }
+  // componentDidMount() {
+  //   const { chartId } = this;
+  //   const { theme } = this.props;
+  //   const myChart = echarts.init(chartId, themeConfig[theme]); //构建下一个实例
+  //   const option = this.creatOption(this.props);
+  //   myChart.setOption(option);
+  // }
 
   componentWillReceiveProps(nextProps) {
-    const { id, saveBtn, theme, scatterDataTime, chartLoading, scatterData } = nextProps;
-    const scatterChart = echarts.init(this.chartId);
-    if (chartLoading && (this.props.index) === this.props.scatterData.length) { // loading态控制。第一次无数据，请求数据的过程
-      scatterChart.showLoading();
+    // const { saveBtn, theme, scatterDataTime, chartLoading, scatterData } = nextProps;
+    // const scatterChart = echarts.init(this.chartId);
+    // if (chartLoading && (this.props.index) === this.props.scatterData.length) { // loading态控制。第一次无数据，请求数据的过程
+    //   scatterChart.showLoading();
+    // }
+    // if (!chartLoading) {
+    //   scatterChart.hideLoading();
+    // }
+    const { activeCode, scatterData } = nextProps;
+    const prevCode = this.props.activeCode;
+    if ((activeCode && activeCode !== prevCode && activeCode === this.props.deviceFullCode )) {
+      // scatterChart.clear();//清除
+      this.drawChart(scatterData);
     }
-    if (!chartLoading) {
-      scatterChart.hideLoading();
-    }
-    // if ((this.props.chartLoading && chartLoading !== this.props.chartLoading)) {
-    //   // scatterChart.clear();//清除
+    // if (saveBtn !== this.props.saveBtn || id !== this.props.id) {
+    //   scatterChart.clear();
     //   this.drawChart(nextProps);
     // }
-    if (saveBtn !== this.props.saveBtn || id !== this.props.id) {
-      scatterChart.clear();
-      this.drawChart(nextProps);
-    }
-    if ((this.props.index + 1 === scatterData.length) && (this.props.chartLoading && chartLoading !== this.props.chartLoading)) {
-      scatterChart.clear();//清除
-      this.drawChart(nextProps);
-    }
+    // if ((this.props.index + 1 === scatterData.length)) {
+    //   
+    //   scatterChart.clear();//清除
+    //   this.drawChart(nextProps);
+    // }
     // if (scatterDataTime !== this.props.scatterDataTime || theme !== this.props.theme) {
     //   this.drawChart(nextProps);
     // }
   }
-  creatOption = (payload) => {
-    const { title, pointCodeNameX, pointCodeNameY, chartData, saveBtn, startTime, endTime } = payload;
-    const filterYaxisData = (chartData && Object.keys(chartData).length) ? chartData.chartData.map(e => e.y) : [];
-    const filterXaxisData = (chartData && Object.keys(chartData).length) ? chartData.chartData.map(e => e.x) : [];
-    const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
+
+  shouldComponentUpdate(nextProps){
+    const { activeCode, deviceFullCode } = nextProps;
+    return activeCode === this.props.deviceFullCode || this.props.deviceFullCode !== deviceFullCode;
+  }
+
+  creatOption = (scatterData = {}) => {
+    const { title, pointCodeNameX, pointCodeNameY, saveBtn, startTime, endTime } = this.props;
+    const { chartData = [] } = scatterData;
+    // const filterYaxisData = scatterData.chartData.map(e => e.y) : [];
+    // const filterXaxisData = scatterData.chartData.map(e => e.x) : [];
+    // const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
+
     const option = {
-      graphic: inverterTenMinGraphic,
+      // graphic: inverterTenMinGraphic,
       title: {
         text: [`${title}`, '{b|}'].join(''),
         left: '5%',
@@ -179,19 +190,15 @@ class SingleScatter extends React.Component {
           },
         },
       ],
-      series: (chartData && Object.keys(chartData).length) ? chartData.chartData.map((e, i) => {
-        const data = [];
-        data.push([e.x, e.y]);
-        return {
-          name: title,
-          type: 'scatter',
-          symbolSize: 5,
-          emphasis: {
-            symbolSize: 8,
-          },
-          data: data,
-        };
-      }) : [],
+      series: [{
+        name: title,
+        type: 'scatter',
+        symbolSize: 5,
+        emphasis: {
+          symbolSize: 8,
+        },
+        data: chartData.map(e => [e.x, e.y]),
+      }],
     };
     return option;
   }
@@ -201,43 +208,46 @@ class SingleScatter extends React.Component {
     }
     return val;
   }
-  drawChart = (params) => {
-    const { title, saveBtn, index, onChange, theme, scatterData, deviceList, getScatterData, stationCode, xPointCode, yPointCode, startTime, endTime } = params;
+  drawChart = (scatterData) => {
+    const { title, saveBtn, index, onChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
     const parms = { stationCode, xPointCode, yPointCode, startTime, endTime };
     const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
-    const option = this.creatOption(params);
-    // scatterChart.off();
+    const option = this.creatOption(scatterData);
+    scatterChart.off();
     scatterChart.on('click', 'title', (params) => {
       onChange(index, !saveBtn);
     });
-
-    if (scatterData.length === index + 1 && index + 1 < deviceList.length && scatterData.length < deviceList.length) {
-
-      scatterChart.on('finished', () => {
-        scatterChart.off();
-        getScatterData({
+    // if (scatterData.length === index + 1 && index + 1 < deviceList.length && scatterData.length < deviceList.length) {
+    //   scatterChart.on('rendered', () => {
+    //     const imgUrl = scatterChart.getDataURL({
+    //       pixelRatio: 2,
+    //       backgroundColor: '#fff',
+    //     });
+    //     this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
+    //   });
+    setTimeout(() => {
+      const continueQuery = index < deviceList.length;
+        continueQuery && this.props.getScatterData({
           ...parms,
           deviceFullCode: deviceList[index + 1].deviceFullCode,
         });
-        scatterChart.on('click', 'title', (params) => {
-          onChange(index, !saveBtn);
-        });
-      });
-      scatterChart.on('rendered', () => {
-        const imgUrl = scatterChart.getDataURL({
-          pixelRatio: 2,
-          backgroundColor: '#fff',
-        });
-        this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
-      });
-
-    }
-    scatterChart.setOption(option, 'notMerge');
+    }, 3000);
+      // scatterChart.on('finished', () => {
+        
+      // });
+    // }
+    // scatterChart.setOption(option, 'notMerge');
+    scatterChart.setOption(option);
     // scatterChart.resize();
 
   }
+
+  componentWillUnmount(){
+    echarts.dispose(this.chartId); //这个用法？哈？忘了？
+  }
+
   render() {
-    const { id, index, showImg } = this.props;
+    const { index, showImg } = this.props;
     return (
       <div className={styles.chartWrap}>
         {showImg && <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalInco} />}
