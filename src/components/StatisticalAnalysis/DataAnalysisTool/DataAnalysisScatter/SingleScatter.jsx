@@ -241,6 +241,11 @@ class SingleScatter extends React.PureComponent {
     // scatterChart.resize();
 
   }
+
+  componentWillUnmount(){
+    echarts.dispose(this.chartId); //这个用法？哈？忘了？
+  }
+
   render() {
     const { index, showImg } = this.props;
     return (
