@@ -19,13 +19,17 @@ export const stationAchieveAction = {
   getCurveMonths: Symbol('getCurveMonths'),
   getCurveMonthAep: Symbol('getCurveMonthAep'),
   getCurveMonthPsd: Symbol('getCurveMonthPsd'),
+
+  resetLost: Symbol('resetLost'),
+  resetStop: Symbol('resetStop'),
+  resetCurve: Symbol('resetCurve'),
 };
 
 const initState = immutable.fromJS({
   pageName: 'lost', // lost, stop, curve
 
-  lostStringify: '', // station - 缓存search信息字符串
   selectedQuota: {}, // 选中的指标 {value: 指标code, label: 指标name, unit: 单位}
+  lostStringify: '', // station - 缓存search信息字符串
   lostChartDevice: null, // chart选中的设备{deviceFullcode, deviceName}
   lostChartTime: null, // chart选中的时间
   lostChartTimeMode: 'month', // chart选中时间格式 - month year day
@@ -54,7 +58,7 @@ const initState = immutable.fromJS({
   lostTypes: {}, // 损失根源 - 损失电量分解
   lostTypesLoading: false,
 
-  stopElec: {}, // 停机 - 损失电量
+  stopElec: [], // 停机 - 损失电量
   stopRank: [], // 停机 - 设备停机时长及次数
   stopRankLoading: false,
   stopTrend: [], // 停机  - 日月年 停机时长次数趋势图

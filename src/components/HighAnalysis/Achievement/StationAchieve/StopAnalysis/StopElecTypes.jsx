@@ -11,7 +11,7 @@ class StopElecTypes extends Component {
     stopElecType: PropTypes.string,
     stopChartTimeMode: PropTypes.string,
     stopElec: PropTypes.object,
-    location: PropTypes.object,
+    stopTopStringify: PropTypes.string,
     changeStore: PropTypes.func,
     getStopElec: PropTypes.func,
     getStopRank: PropTypes.func,
@@ -41,7 +41,7 @@ class StopElecTypes extends Component {
     key: 'otherGen',
   }];
 
-  resetElecTypes = (stopElecType = {}) => {
+  resetElecTypes = (elecArr = []) => {
     const colors = [
       ['#ec8284', '#a42b2c'],
       ['#e59f2d', '#c66614'],
@@ -49,32 +49,25 @@ class StopElecTypes extends Component {
       ['#07c8ec', '#0397d4'],
       ['#1cb78a', '#0c8052'],
     ];
-    const elecTypeArr = this.typesBase.map(e => ({
-      value: stopElecType[e.key] > 0 ? parseFloat(stopElecType[e.key]) : 0,
-      key: e.key,
-      label: e.label,
-    })).sort((a, b) => b.value - a.value);
-    const sum = elecTypeArr.reduce((a, b) => (a + b.value), 0);
-    return elecTypeArr.map((e, i) => ({
-      label: e.label,
-      key: e.key,
+    const sumValue = elecArr.reduce((a, b) => (a + b.value), 0);
+    return elecArr.map((e, i) => ({
       value: e.value,
-      rate: (e.value / sum * 100).toFixed(1),
-      color: colors[i],
-    }));
+      label: e.name,
+      key: e.name,
+      rate: (e.value / sumValue * 100).toFixed(1),
+      color: colors[i % colors.length],
+    })).sort((a, b) => b.value - a.value);
   }
 
   stopTypeChange = (stopElecType) => {
-    const { stopChartTimeMode, location } = this.props;
+    const { stopChartTimeMode, stopTopStringify } = this.props;
     this.props.changeStore({ stopElecType });
-    const { search } = location;
-    const infoStr = searchUtil(search).getValue('station');
-    const tmpParams = JSON.parse(infoStr) || {};
+    const tmpParams = JSON.parse(stopTopStringify) || {};
     const params = {
-      stationCodes: [tmpParams.searchCode],
-      deviceFullcodes: tmpParams.searchDevice,
-      startTime: tmpParams.searchDates[0],
-      endTime: tmpParams.searchDates[1],
+      stationCodes: [tmpParams.code],
+      deviceFullcodes: tmpParams.device,
+      startTime: tmpParams.date[0],
+      endTime: tmpParams.date[1],
     };
     this.props.getStopElec({ ...params });
     this.props.getStopRank({ ...params, parentFaultId: stopElecType });
@@ -144,8 +137,8 @@ class StopElecTypes extends Component {
             style={{width: '150px'}}
           >
             <Option value="all">全部类型</Option>
-            {this.typesBase.map(e => (
-              <Option key={e.key} value={e.key}>{e.label}</Option>
+            {stopElec.map(e => (
+              <Option key={e.name} value={e.name}>{e.name}</Option>
             ))}
           </Select>
         </div>

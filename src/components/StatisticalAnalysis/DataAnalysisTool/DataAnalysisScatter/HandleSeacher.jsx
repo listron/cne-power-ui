@@ -167,6 +167,7 @@ class HandleSeacher extends React.Component {
       point1Min: null,
       point2Max: null,
       point2Min: null,
+
     });
     this.props.getStationDevice({ stationCode });
     this.props.getScatterName({ stationCode });

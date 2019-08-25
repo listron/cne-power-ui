@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
 import TimeSelect from '../../AchieveCommon/TimeSelect';
-import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import { getBaseGrid, getBaseYAxis, getBaseXAxis } from './chartBaseOption';
 import styles from './stop.scss';
 
@@ -12,8 +12,8 @@ class ChartLostTrend extends Component {
   static propTypes = {
     stopChartTimeMode: PropTypes.string,
     stopChartTime: PropTypes.string,
+    stopTopStringify: PropTypes.string,
     stopTrend: PropTypes.array,
-    location: PropTypes.object,
     stopChartDevice: PropTypes.object,
     stopChartTypes: PropTypes.object,
     stopElecType: PropTypes.string,
@@ -87,35 +87,28 @@ class ChartLostTrend extends Component {
     return { dataAxis, series };
   }
 
-  getSearchInfo = () => {
-    const { location } = this.props;
-    const { search } = location;
-    const infoStr = searchUtil(search).getValue('station');
-    return JSON.parse(infoStr) || {};
-  }
-
   timeModeChange = (stopChartTimeMode) => {
-    const { stopElecType, stopChartDevice } = this.props;
-    const searchParam = this.getSearchInfo();
+    const { stopElecType, stopChartDevice, stopTopStringify } = this.props;
+    const searchParam = JSON.parse(stopTopStringify) || {};
     const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.searchDevice;
     this.props.changeStore({ stopChartTimeMode, stopChartTime: null });
     this.props.getStopTrend({
-      stationCodes: [searchParam.searchCode],
+      stationCodes: [searchParam.code],
       deviceFullcodes,
-      startTime: searchParam.searchDates[0],
-      endTime: searchParam.searchDates[1],
+      startTime: searchParam.date[0],
+      endTime: searchParam.date[1],
       type: stopChartTimeMode,
       parentFaultId: stopElecType,
     });
   }
 
   chartHandle = ({dataIndex}, stopTrend, chart) => {
-    const { stopChartTime, stopChartTimeMode, stopElecType, stopChartTypes, stopChartDevice } = this.props;
+    const { stopChartTime, stopChartTimeMode, stopElecType, stopChartTypes, stopChartDevice, stopTopStringify } = this.props;
     const selectedInfo = stopTrend[dataIndex] || {};
     const { efficiencyDate } = selectedInfo;
-    const searchParam = this.getSearchInfo();
-    const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.searchDevice;
-    let [startTime, endTime] = searchParam.searchDates;
+    const searchParam = JSON.parse(stopTopStringify) || {};
+    const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.device;
+    let [startTime, endTime] = searchParam.date;
     if (stopChartTime !== efficiencyDate) { // 非取消选择
       const recordStart = moment(efficiencyDate).startOf(stopChartTimeMode);
       const recordEnd = moment(efficiencyDate).endOf(stopChartTimeMode);
@@ -130,7 +123,7 @@ class ChartLostTrend extends Component {
       faultInfo = { faultId: stopChartTypes.faultTypeId };
     }
     const param = {
-      stationCodes: [searchParam.searchCode],
+      stationCodes: [searchParam.code],
       deviceFullcodes,
       startTime,
       endTime,
@@ -166,13 +159,13 @@ class ChartLostTrend extends Component {
           const { axisValue } = param && param[0] || {};
           return `<section class=${styles.tooltip}>
             <h3 class=${styles.title}>
-              <span>${axisValue}</span>
+              <span class=${styles.titleText}>${axisValue}</span>
             </h3>
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>${i === 0 ? '故障次数' : '故障时长'}</span>
-                  <span>${e.value}</span>
+                  <span>${dataFormats(e.value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
             </div>

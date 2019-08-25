@@ -21,6 +21,12 @@ class ScatterContainer extends React.Component {
     };
   }
   componentWillReceiveProps(nextProps) {
+    if (nextProps.stationCode !== this.props.stationCode) {//改变电站清空图片地址
+      this.setState({
+        newSrcUrl: [],
+        srcObj: {},
+      });
+    }
     if (nextProps.down && this.props.down !== nextProps.down) {
       const { stations, stationCode, pointCodeNameX, pointCodeNameY } = this.props;
       const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
@@ -56,45 +62,58 @@ class ScatterContainer extends React.Component {
       imageListShow: false,
     });
   }
-  showImg = (index) => {
+  showImg = (index, scatterData) => {
+
     this.setState({
       imageListShow: true,
       currentImgIndex: index,
     });
+    this.props.changeToolStore({
+      bigScatterData: scatterData,
+    });
+
   }
   changeCurrentImgIndex = (index) => {
     this.setState({
       currentImgIndex: index,
     });
 
+    const { getBigScatterData, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
+    const params = { stationCode, xPointCode, yPointCode, startTime, endTime };
+    const deviceFullCode = deviceList[index].deviceFullCode;
+
+    getBigScatterData({
+      ...params,
+      deviceFullCode,
+    });
+
   }
 
-  likeChange = (index, bool) => {
-    // console.log('index', index, bool);
+  likeChange = (index, bool, scatterData) => {
+
     const { deviceList, changeToolStore } = this.props;
     deviceList[index].likeStatus = bool;
-    changeToolStore({ deviceList });
+    changeToolStore({ deviceList, scatterData });
   };
 
   render() {
     const { scatterData, deviceList } = this.props;
     const { currentImgIndex, imageListShow } = this.state;
+
     return (
       <div className={styles.chartsContainer}>
         {deviceList.map((e, i) => {
-          const data = this.props[e.deviceFullCode];
+          // const data = this.props[e.deviceFullCode];
           return (
             <div className={styles.chartStyle} key={e.deviceFullCode}>
               <div className={styles.scatterChart} >
                 <SingleScatter
                   {...this.props}
-                  key={i}
+                  key={e.deviceFullCode}
+                  deviceFullCode={e.deviceFullCode}
                   index={i}
                   saveBtn={e.likeStatus}
-                  id={e.deviceName}
                   title={e.deviceName}
-                  chartData={data[0]}
-                  // chartData={scatterData[i]}
                   showImg={this.showImg}
                   saveImgUrl={this.saveImgUrl}
                   onChange={this.likeChange}

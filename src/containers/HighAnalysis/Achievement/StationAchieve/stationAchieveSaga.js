@@ -13,15 +13,6 @@ const timeType = {
   year: '3',
 };
 
-const stopElecType = {
-  all: undefined,
-  faultGen: 1,
-  planShutdownGen: 2,
-  substationGen: 3,
-  courtGen: 4,
-  otherGen: 5,
-};
-
 function* easyPut(actionName, payload){
   yield put({
     type: stationAchieveAction[actionName],
@@ -120,12 +111,12 @@ function *getStopElec({ payload }){ // 停机 - 损失电量
     const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
-        stopElec: response.data || {},
+        stopElec: response.data || [],
       });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
-      stopElec: {},
+      stopElec: [],
     });
   }
 }
@@ -134,9 +125,10 @@ function *getStopRank({ payload }){ // 停机 - 设备停机时长及次数
   const url = `${APIBasePath}${highAnalysis.getStopRank}`;
   try {
     yield call(easyPut, 'changeStore', { stopRankLoading: true });
+    const { parentFaultId } = payload;
     const response = yield call(request.post, url, {
       ...payload,
-      parentFaultId: stopElecType[payload.parentFaultId],
+      parentFaultId: (parentFaultId === 'all' || !parentFaultId) ? undefined : parentFaultId,
     });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
@@ -156,9 +148,10 @@ function *getStopTrend({ payload }){ // 停机 - 日月年 停机时长次数趋
   const url = `${APIBasePath}${highAnalysis.getStopTrend}`;
   try {
     yield call(easyPut, 'changeStore', { stopTrendLoading: true });
+    const { parentFaultId } = payload;
     const response = yield call(request.post, url, {
       ...payload,
-      parentFaultId: stopElecType[payload.parentFaultId],
+      parentFaultId: (parentFaultId === 'all' || !parentFaultId) ? undefined : parentFaultId,
       type: timeType[payload.type],
     });
     if (response.code === '10000') {
@@ -308,6 +301,38 @@ function *getCurveMonthPsd({ payload }){ // 某机组psd聚合度
   }
 }
 
+function *resetLost({ payload }){
+  yield call(easyPut, 'changeStore', {
+    lostStringify: payload.lostStringify,
+    lostChartDevice: null,
+    lostChartTime: null,
+    lostChartTimeMode: 'month',
+  });
+}
+
+function *resetStop({ payload }){ // 停机重置。
+  yield call(easyPut, 'changeStore', {
+    stopTopStringify: payload.stopTopStringify,
+    stopElecType: 'all',
+    stopType: '',
+    stopChartDevice: null,
+    stopChartTime: null,
+    stopChartTimeMode: 'month',
+    stopChartTypes: null,
+  });
+}
+
+function *resetCurve({ payload }){
+  yield call(easyPut, 'changeStore', {
+    curveTopStringify: payload.curveTopStringify,
+    curveDeviceFullcode: null,
+    curveDeviceName: null,
+    curveDevicesTime: null,
+    curveCheckedMonths: [],
+    curveAllMonths: [],
+  });
+}
+
 export function* watchStationAhieve() {
   yield takeLatest(stationAchieveAction.getDevices, getDevices);
   yield takeLatest(stationAchieveAction.getLostRank, getLostRank);
@@ -323,5 +348,8 @@ export function* watchStationAhieve() {
   yield takeLatest(stationAchieveAction.getCurveMonths, getCurveMonths);
   yield takeLatest(stationAchieveAction.getCurveMonthAep, getCurveMonthAep);
   yield takeLatest(stationAchieveAction.getCurveMonthPsd, getCurveMonthPsd);
+  yield takeLatest(stationAchieveAction.resetLost, resetLost);
+  yield takeLatest(stationAchieveAction.resetStop, resetStop);
+  yield takeLatest(stationAchieveAction.resetCurve, resetCurve);
 }
 

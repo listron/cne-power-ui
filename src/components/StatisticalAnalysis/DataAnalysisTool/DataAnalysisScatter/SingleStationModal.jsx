@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Icon } from 'antd';
-import SingleScatter from './SingleScatter';
+import BigScatterChart from './BigScatterChart';
 import styles from './dataAnalysisStyle.scss';
 
 class SingleStationModal extends React.Component {
@@ -28,19 +28,20 @@ class SingleStationModal extends React.Component {
 
   nextImg = () => {
     const { currentImgIndex, data } = this.props;
-    // console.log('currentImgIndex: ', currentImgIndex);
+    // 
     if (!data || currentImgIndex >= data.length - 1) {
       return;
     }
     this.props.changeCurrentImgIndex(currentImgIndex + 1);
   }
+  likeChange = (index, bool) => {
 
+    const { deviceList, changeToolStore } = this.props;
+    deviceList[index].likeStatus = bool;
+    changeToolStore({ deviceList });
+  };
   render() {
-    const { imageListShow, hideImg, deviceList, data = [], currentImgIndex, likeChange } = this.props;
-    const curChart = deviceList[currentImgIndex];
-    const chartData = data[currentImgIndex];
-    const likeStatus = curChart ? curChart.likeStatus : false;
-    const deviceName = curChart ? curChart.deviceName : '';
+    const { imageListShow, hideImg, deviceList, data, currentImgIndex } = this.props;
 
 
 
@@ -63,16 +64,12 @@ class SingleStationModal extends React.Component {
               </Button>
             </div>
             <div className={styles.imgContainer} >
-              <SingleScatter
+              <BigScatterChart
                 {...this.props}
-                saveBtn={likeStatus}
-                id={`${deviceName}_${currentImgIndex}`}
+                // saveBtn={likeStatus}
                 index={currentImgIndex}
-                title={deviceName}
-                chartData={chartData}
-                saveImgUrl={this.saveImgUrl}
-                onChange={likeChange}
-
+                // title={deviceName}
+                likeChange={this.likeChange}
               />
             </div>
             <div className={styles.handleButton}>
