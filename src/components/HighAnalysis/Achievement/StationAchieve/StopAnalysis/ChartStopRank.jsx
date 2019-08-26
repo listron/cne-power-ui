@@ -45,12 +45,18 @@ class ChartStopRank extends Component {
     }
   }
 
+  sortChart = (value) => {
+    const { stopRank } = this.props;
+    this.setState({ sortType: value }, () => {
+      this.renderChart(stopRank, value);
+    });
+  }
   sortRank = (rankList, sortType = 'deviceName') => {
     const sortedList = [...rankList].sort((a, b) => {
-      if (sortType = 'deviceName') {
+      if (sortType === 'deviceName') {
         return a[sortType] && b[sortType] && a[sortType].localeCompare(b[sortType]);
       }
-      return a[sortType] - b[sortType];
+      return b[sortType] - a[sortType];
     });
     return sortedList;
   }

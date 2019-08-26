@@ -114,22 +114,15 @@ function* getScatterData(action) {//获取
     );// { params: payload }
     if (response.data.code === '10000') {
       const scatterArr = response.data.data || [];
-
-      const deviceFullCodeArr = deviceList.map(e => e.deviceFullCode);//拿到设备型号数组
-      const deviceData = {};//存储设备型号数据
-      deviceFullCodeArr.forEach((e, i) => {
-        if (e === deviceFullCode) {
-          deviceData[e] = scatterArr;
-        }
-      });
-      const scatterData = scatterArr.length ? scatterArr : [{ chartData: [] }];
+      // const scatterData = scatterArr.length ? scatterArr : [{ chartData: [] }];
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
-          scatterData: [...preScatterData, ...scatterData],
-          scatterDataTime: moment().unix(),
+          scatterData: scatterArr[0] || {},
+          activeCode: payload.deviceFullCode,
+          // scatterDataTime: moment().unix(),
           chartLoading: false,
-          ...deviceData,
+          // ...deviceData,
         },
       });
     } else {
@@ -142,7 +135,7 @@ function* getScatterData(action) {//获取
       payload: {
         deviceFullCode: [{}],
         scatterData: [],
-        scatterDataTime: moment().unix(),
+        // scatterDataTime: moment().unix(),
         chartLoading: false,
       },
     });

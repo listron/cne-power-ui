@@ -14,7 +14,7 @@ class StationSearch extends Component {
 
   static propTypes = {
     location: PropTypes.object,
-    lostChartDevice: PropTypes.string, // chart选中的设备
+    lostChartDevice: PropTypes.object, // chart选中的设备
     history: PropTypes.object,
     areaStation: PropTypes.array,
     modeDevices: PropTypes.array,

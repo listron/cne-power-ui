@@ -14,7 +14,6 @@ class ChartLostTrend extends Component {
     lostChartTime: PropTypes.string,
     lostStringify: PropTypes.string,
     lostChartTimeMode: PropTypes.string,
-    selectedQuota: PropTypes.object,
     lostTrend: PropTypes.array,
     quotaInfo: PropTypes.array,
     lostChartDevice: PropTypes.object,
@@ -44,7 +43,7 @@ class ChartLostTrend extends Component {
     trendChart && trendChart.showLoading();
   }
 
-  createSeries = (lostTrend = []) => {
+  createSeries = (lostTrend = [], lostChartTime) => {
     const dataAxis = [];
     const series = [];
     const firstLineData = [];
@@ -55,37 +54,37 @@ class ChartLostTrend extends Component {
     lostTrend.forEach(e => {
       const { efficiencyDate, indicatorData = {} } = e || {};
       dataAxis.push(efficiencyDate);
+      const choosed = lostChartTime && efficiencyDate !== lostChartTime;
+      const symbolSize = choosed ? 4 : 8;
       if (indicatorType === 'single') {
-        firstLineData.push(indicatorData.value);
+        firstLineData.push({ value: indicatorData.value, symbolSize });
       } else {
-        firstLineData.push(indicatorData.actualGen);
-        secendLineData.push(indicatorData.theoryGen);
+        firstLineData.push({ value: indicatorData.actualGen, symbolSize });
+        secendLineData.push({ value: indicatorData.theoryGen, symbolSize });
       }
     });
     series[0] = {
       type: 'line',
       data: firstLineData,
       lineStyle: {
-        normal: {
-          color: '#2564cc',
-          width: 2,
-          shadowColor: 'rgba(0,0,0,0.20)',
-          shadowBlur: 3,
-          shadowOffsetY: 3,
-        },
+        opacity: lostChartTime ? 0.2 : 1,
+        color: '#2564cc',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
     };
     indicatorType === 'double' && (series[1] = {
       type: 'line',
       data: secendLineData,
       lineStyle: {
-        normal: {
-          color: '#f9b600',
-          width: 2,
-          shadowColor: 'rgba(0,0,0,0.20)',
-          shadowBlur: 3,
-          shadowOffsetY: 3,
-        },
+        opacity: lostChartTime ? 0.2 : 1,
+        color: '#f9b600',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
     });
     return { dataAxis, series, indicatorType };
@@ -126,6 +125,7 @@ class ChartLostTrend extends Component {
     const { lostChartTimeMode, lostChartDevice, lostChartTime, lostStringify } = this.props;
     if(!lostChartDevice){
       message.info('先选择设备后, 才能对时间进行操作');
+      return;
     }
     const chartTimeInfo = lostTrend[dataIndex] || {};
     const { efficiencyDate } = chartTimeInfo;
@@ -135,6 +135,7 @@ class ChartLostTrend extends Component {
     if (efficiencyDate === lostChartTime) {
       startTime = date[0];
       endTime = date[1];
+      this.props.changeStore({ lostChartTime: null });
     } else {
       const clickStart = moment(efficiencyDate).startOf(lostChartTimeMode);
       const clickEnd = moment(efficiencyDate).endOf(lostChartTimeMode);
@@ -142,6 +143,7 @@ class ChartLostTrend extends Component {
       startTime = moment.max(clickStart, moment(date[0])).format('YYYY-MM-DD');
       endTime = moment.min(clickEnd, moment(date[1])).format('YYYY-MM-DD');
     }
+    this.renderChart(lostTrend);
     this.props.getLostTypes({
       startTime,
       endTime,
@@ -151,9 +153,11 @@ class ChartLostTrend extends Component {
   }
 
   renderChart = (lostTrend = []) => {
-    const { selectedQuota } = this.props;
+    const { lostChartTime, lostStringify, quotaInfo } = this.props;
+    const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
+    const selectedQuota = this.getQuota(quotaInfo, quota);
     const trendChart = echarts.init(this.trendRef);
-    const { dataAxis, series } = this.createSeries(lostTrend);
+    const { dataAxis, series } = this.createSeries(lostTrend, lostChartTime);
     const baseOption = getBaseOption(dataAxis);
     baseOption.yAxis.name = `${selectedQuota.label || '--'}${selectedQuota.unit ? `(${selectedQuota.unit})` : ''}`;
     const option = {
@@ -193,6 +197,7 @@ class ChartLostTrend extends Component {
       filterMode: 'empty',
     }]);
     trendChart.setOption(option);
+    trendChart.off('click');
     trendChart.on('click', (param) => this.chartHandle(param, lostTrend, trendChart));
   }
 

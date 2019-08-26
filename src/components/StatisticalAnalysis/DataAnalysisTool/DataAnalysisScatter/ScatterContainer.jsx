@@ -82,18 +82,19 @@ class ScatterContainer extends React.Component {
     return (
       <div className={styles.chartsContainer}>
         {deviceList.map((e, i) => {
-          const data = this.props[e.deviceFullCode];
+          // const data = this.props[e.deviceFullCode];
           return (
             <div className={styles.chartStyle} key={e.deviceFullCode}>
               <div className={styles.scatterChart} >
                 <SingleScatter
                   {...this.props}
-                  key={i}
+                  key={e.deviceFullCode}
+                  deviceFullCode={e.deviceFullCode}
                   index={i}
                   saveBtn={e.likeStatus}
-                  id={e.deviceName}
+                  // id={e.deviceName}
                   title={e.deviceName}
-                  chartData={data[0]}
+                  // chartData={data[0]}
                   // chartData={scatterData[i]}
                   showImg={this.showImg}
                   saveImgUrl={this.saveImgUrl}
