@@ -4,6 +4,7 @@ export const dataAnalysisScatterAction = {
   getScatterName: Symbol('getScatterName'),
   getScatterOtherName: Symbol('getScatterOtherName'),
   getScatterData: Symbol('getScatterData'),
+  getBigScatterData: Symbol('getBigScatterData'),
   getStationDevice: Symbol('getStationDevice'),
 }
   ;

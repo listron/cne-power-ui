@@ -36,7 +36,7 @@ class SequenceChart extends React.Component {
     const { chartLoading, index, saveBtn, point1Max, point2Max, theme } = this.props;
     const { sequenceChart } = this;
     const myChart = eCharts.init(sequenceChart, themeConfig[theme]);
-    if (nextProps.chartLoading && (index + 1) === nextProps.sequenceData.length) { // loading态控制。第一次无数据，请求数据的过程
+    if (nextProps.chartLoading && (index) === this.props.sequenceData.length) { // loading态控制。第一次无数据，请求数据的过程
       myChart.showLoading();
     }
     if (!nextProps.chartLoading) {
@@ -44,20 +44,24 @@ class SequenceChart extends React.Component {
     }
     if ((nextProps.saveBtn !== saveBtn)) {
       // console.log('likestatus发生改变重新渲染');
+      myChart.clear();
       this.renderChart(nextProps);
     }
 
-    // if ((index + 1 === nextProps.sequenceData.length)) {
-    //   // console.log('后面的图渲染');
+    if ((index + 1 === nextProps.sequenceData.length) && (chartLoading && nextProps.chartLoading !== chartLoading)) {
+      // console.log('后面的图渲染');
+      myChart.clear();//清除
+      myChart.dispose();
+      this.renderChart(nextProps);
+    }
+    // if ((chartLoading && nextProps.chartLoading !== chartLoading)) {
+    //   // console.log('loadding渲染');
     //   myChart.clear();//清除
     //   this.renderChart(nextProps);
     // }
-    if ((chartLoading && nextProps.chartLoading !== chartLoading)) {
-      // console.log('loadding渲染');
-      myChart.clear();//清除
-      this.renderChart(nextProps);
-    }
-    if (point1Max !== nextProps.point1Max || point2Max !== nextProps.point2Max) {
+
+    if ((point1Max !== nextProps.point1Max || point2Max !== nextProps.point2Max)) {
+      // console.log('limitValue');
       myChart.clear();//清除
       this.renderChart(nextProps);
     }
@@ -65,7 +69,7 @@ class SequenceChart extends React.Component {
   }
   creatOption = (payload) => {
     const { allChartData, deviceName, pointCodeNameX, pointCodeNameY, saveBtn, point1Max, point1Min, point2Max, point2Min } = payload;
-    const { timeLine, point1Data, point2Data } = allChartData ? allChartData : { timeLine: [], point1Data: [], point2Data: [] };
+    const { timeLine, point1Data, point2Data } = Object.keys(allChartData).length ? allChartData : { timeLine: [], point1Data: [], point2Data: [] };
     // const xAxisTime = timeLine.map((e, i) => (moment(e).format('YYYY-MM-DD HH:mm:ss')));
     const option = {
       graphic: timeLine.length ? hiddenNoData : showNoData,
@@ -153,7 +157,7 @@ class SequenceChart extends React.Component {
           type: 'line',
           yAxisIndex: 0,
           progressiveThreshold: 1000,
-          progressive: 100,
+          progressive: 200,
           data: point1Data,
 
         },
@@ -198,10 +202,13 @@ class SequenceChart extends React.Component {
         backgroundColor: '#fff',
       });
       this.props.saveImgUrl && this.props.saveImgUrl(deviceName, imgUrl);
-
     });
-    if (+sequenceData.length === index + 1 && index + 1 < deviceList.length) {
+    if ((+sequenceData.length === index + 1) && (index + 1 < deviceList.length)) {
       myChart.on('finished', () => {
+        myChart.off();
+        myChart.on('click', 'title', (payload) => {
+          likeStatusChange(index, !saveBtn);
+        });
         getSequenceData(
           {
             ...parms,
