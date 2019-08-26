@@ -93,8 +93,7 @@ function* getScatterOtherName(action) {//获取
 function* getScatterData(action) {//获取
   const { payload } = action;
   const { startTime, endTime, deviceFullCode } = payload;
-  const preScatterData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisScatterReducer.get('scatterData').toJS()));
-  const deviceList = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisScatterReducer.get('deviceList').toJS()));
+
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
   try {
     yield put({
@@ -111,18 +110,16 @@ function* getScatterData(action) {//获取
       endTime: moment(endTime).utc().format(),
     },
 
-    );// { params: payload }
+    );
     if (response.data.code === '10000') {
       const scatterArr = response.data.data || [];
-      // const scatterData = scatterArr.length ? scatterArr : [{ chartData: [] }];
+
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
           scatterData: scatterArr[0] || {},
-          activeCode: payload.deviceFullCode,
-          // scatterDataTime: moment().unix(),
+          activeCode: deviceFullCode,
           chartLoading: false,
-          // ...deviceData,
         },
       });
     } else {
@@ -133,9 +130,7 @@ function* getScatterData(action) {//获取
     yield put({
       type: dataAnalysisScatterAction.changeToolStore,
       payload: {
-        deviceFullCode: [{}],
         scatterData: [],
-        // scatterDataTime: moment().unix(),
         chartLoading: false,
       },
     });
@@ -143,9 +138,8 @@ function* getScatterData(action) {//获取
 }
 function* getBigScatterData(action) {//获取
   const { payload } = action;
-  const { startTime, endTime, deviceFullCode } = payload;
-  const preScatterData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisScatterReducer.get('scatterData').toJS()));
-  const deviceList = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisScatterReducer.get('deviceList').toJS()));
+  const { startTime, endTime } = payload;
+
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
   try {
     yield put({
@@ -164,7 +158,7 @@ function* getBigScatterData(action) {//获取
     );
     if (response.data.code === '10000') {
       const bigscatterArr = response.data.data || [];
-      // const scatterData = scatterArr.length ? scatterArr : [{ chartData: [] }];
+
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
@@ -181,7 +175,6 @@ function* getBigScatterData(action) {//获取
       type: dataAnalysisScatterAction.changeToolStore,
       payload: {
         bigScatterData: {},
-        // scatterDataTime: moment().unix(),
         bigchartLoading: false,
       },
     });

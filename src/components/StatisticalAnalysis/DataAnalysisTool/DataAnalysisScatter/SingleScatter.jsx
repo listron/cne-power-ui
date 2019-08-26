@@ -30,18 +30,24 @@ class SingleScatter extends React.PureComponent {
     myChart.setOption(option);
   }
   componentWillReceiveProps(nextProps) {
-    const { activeCode, scatterData, chartLoading, theme, saveBtn } = nextProps;
+    const { activeCode, scatterData, chartLoading, theme, saveBtn, deviceList } = nextProps;
     const prevCode = this.props.activeCode;
-    if ((activeCode && activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
+    if (activeCode !== prevCode) {
       const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
-      if (chartLoading) {
-        scatterChart.showLoading();
-      }
-      if (!chartLoading) {
+      if (this.props.chartLoading) {
         scatterChart.hideLoading();
       }
-      this.drawChart(scatterData, saveBtn, true);//此处的第三个参数是控制定时器是否发送下一个请求
 
+    }
+    if ((activeCode && activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
+      const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
+      this.drawChart(scatterData, saveBtn, true);//此处的第三个参数是控制定时器是否发送下一个请求
+      if (this.props.deviceFullCode !== deviceList[deviceList.length - 1].deviceFullCode && !chartLoading) {
+        scatterChart.showLoading();
+      }
+      if (this.props.deviceFullCode === deviceList[deviceList.length - 1].deviceFullCode) {
+        scatterChart.hideLoading();
+      }
     }
     if (saveBtn !== this.props.saveBtn) {
       this.drawChart(scatterData, saveBtn, false);
@@ -198,7 +204,7 @@ class SingleScatter extends React.PureComponent {
     }
     return val;
   }
-  drawChart = (scatterData, saveBtn, isRequest) => {
+  drawChart = (scatterData, saveBtn, isRequest, ) => {
     const { title, index, onChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
     const parms = { stationCode, xPointCode, yPointCode, startTime, endTime };
     const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
@@ -217,7 +223,7 @@ class SingleScatter extends React.PureComponent {
       this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
     });
     isRequest && setTimeout(() => {
-      const continueQuery = index < deviceList.length;
+      const continueQuery = index < deviceList.length - 1;
       continueQuery && this.props.getScatterData({
         ...parms,
         deviceFullCode: deviceList[index + 1].deviceFullCode,

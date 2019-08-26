@@ -99,7 +99,7 @@ function* getSequenceData(action) {//获取
     yield put({
       type: dataAnalysisSequenceAction.changeSquenceStore,
       payload: {
-        ...payload,
+        // ...payload,
         chartLoading: true,
       },
     });
@@ -108,25 +108,27 @@ function* getSequenceData(action) {//获取
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).utc().format(),
     });
-    const preSequenceData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('sequenceData').toJS()));
-    const deviceList = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('deviceList').toJS()));
+    // const preSequenceData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('sequenceData').toJS()));
+    // const deviceList = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('deviceList').toJS()));
 
     if (response.data.code === '10000') {
       const curChartData = response.data.data || {};
-      const deviceFullCodeArr = deviceList.map(e => e.deviceFullCode);//拿到设备型号数组
-      const deviceData = {};//存储设备型号数据
-      deviceFullCodeArr.forEach((e, i) => {
-        if (e === deviceFullCode) {
-          deviceData[e] = curChartData;
-        }
-      });
+      // const deviceFullCodeArr = deviceList.map(e => e.deviceFullCode);//拿到设备型号数组
+      // const deviceData = {};//存储设备型号数据
+      // deviceFullCodeArr.forEach((e, i) => {
+      //   if (e === deviceFullCode) {
+      //     deviceData[e] = curChartData;
+      //   }
+      // });
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           ...payload,
-          sequenceData: [...preSequenceData, curChartData],
+          sequenceData: curChartData,
+          activeCode: deviceFullCode,
+          // sequenceData: [...preSequenceData, curChartData],
           chartLoading: false,
-          ...deviceData,
+          // ...deviceData,
         },
       });
     } else {
@@ -134,8 +136,8 @@ function* getSequenceData(action) {//获取
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           chartLoading: false,
-          sequenceData: [...preSequenceData, { timeLine: [], point1Data: [], point2Data: [] }],
-          chartTime: moment().unix(),
+          // sequenceData: [...preSequenceData, { timeLine: [], point1Data: [], point2Data: [] }],
+          // chartTime: moment().unix(),
         },
       });
       message.error('请求失败');
