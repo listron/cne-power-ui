@@ -104,18 +104,9 @@
 .limitList,.faultList{
   :global{
     .ant-table{
-      .reason,.process,.manufactorName{
+      .reason,.process,.manufactorName,.deviceName,.deviceModeName{
         div{
-          width: 170px;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          word-break: keep-all;
-        }
-      }
-      .deviceName{
-        div{
-          width: 120px;
+          width: 150px;
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;

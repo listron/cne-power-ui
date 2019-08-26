@@ -134,7 +134,7 @@ class LimitList extends Component {
       render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: '原因',
-      width: 200,
+      width: 170,
       dataIndex: 'reason',
       className: 'reason',
       render: (text) => <div title={text}>{text || '--'}</div>,
