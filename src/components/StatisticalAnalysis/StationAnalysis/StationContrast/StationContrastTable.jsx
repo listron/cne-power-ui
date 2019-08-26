@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Popover } from 'antd';
 import styles from './stationContrast.scss';
 import StationContrastDetail from './StationContrastDetail';
@@ -19,6 +19,7 @@ class StationContrastTable extends React.Component {
     month: PropTypes.number,
     stationContrastDetail: PropTypes.array,
     stationContrastList: PropTypes.array,
+    theme: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -38,28 +39,30 @@ class StationContrastTable extends React.Component {
     const { stations, stationCode, dateType, year, month } = this.props;
     this.props.toChangeStationContrastStore({
       column: e.currentTarget.getAttribute('data-rowName'),
-    })
+    });
+    const column = e.currentTarget.getAttribute('data-datafieldname');
     dateType === 'day' ?
       this.props.getStationContrastDetail({
         stationCode,
         dateType,
         year,
         month,
-        column: e.currentTarget.getAttribute('data-datafieldname'),
+        column,
       }) : this.props.getStationContrastDetail({
         stationCode,
         dateType,
         year,
-        column: e.currentTarget.getAttribute('data-datafieldname'),
-      })
-      ;
+        column,
+      });
   }
 
   render() {
-    const { stationContrastList } = this.props;
+    const { stationContrastDetail, theme, stationContrastList } = this.props;
     const content = (
       <div>
         <StationContrastDetail
+          stationContrastDetail={stationContrastDetail}
+          theme={theme}
           {...this.props}
         />
       </div>
@@ -73,7 +76,7 @@ class StationContrastTable extends React.Component {
               <Col className={styles.baseClassifyName} span={4}><span>{e.baseClassifyName}</span></Col>
               <Col className={styles.rowName} span={20}>
                 {e.rowName.map((item, index) => {
-                  return (<div key={index}>{item}</div>)
+                  return (<div key={index}>{item}</div>);
                 })}
               </Col>
             </Row>);
@@ -101,6 +104,7 @@ class StationContrastTable extends React.Component {
               <div className={styles.baseInfoBg} >{stationContrastList[0].unitCount || '--'}</div>
               <div className={styles.baseInfoBg} >{stationContrastList[1].unitCount || '--'}</div>
             </div>
+            <span ref="popover" />
             {Object.entries(stationContrastDataInfo).map((item, index) => {
               const differHighLight = stationContrastList[0][item[0]] && stationContrastList[1][item[0]] && ((Math.abs(stationContrastList[0][item[0]] - stationContrastList[1][item[0]]) / stationContrastList[1][item[0]]) > 0.2);
               const highLightColumn = [
@@ -116,7 +120,14 @@ class StationContrastTable extends React.Component {
 
               return (
                 <div key={index} data-rowname={item[0]} data-datafieldname={item[1]} onClick={this.showContrastDetail} >
-                  <Popover content={content} trigger="click" onVisibleChange={item => this.onVisibleChange(item)} className={highLightColumn.includes(item[0]) ? (differHighLight ? styles.differHighLight : styles.contrastDetailPopover) : styles.contrastDetailPopover} placement="bottom" overlayClassName={styles.contrastOverlayClassName} >
+                  <Popover
+                    content={content}
+                    trigger="click"
+                    getPopupContainer={() => this.refs.popover}
+                    onVisibleChange={item => this.onVisibleChange(item)}
+                    className={highLightColumn.includes(item[0]) ? (differHighLight ? styles.differHighLight : styles.contrastDetailPopover) : styles.contrastDetailPopover}
+                    placement="bottom"
+                    overlayClassName={styles.contrastOverlayClassName} >
                     <div className={styles.stationContrastOne} >{stationContrastList[0][item[0]] || '--'}</div>
                     <div className={styles.stationContrastTwo} >{stationContrastList[1][item[0]] || '--'}</div>
                   </Popover>

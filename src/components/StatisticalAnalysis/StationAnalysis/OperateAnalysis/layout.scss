@@ -1,0 +1,197 @@
+.singleStationType {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .stationTimeFilter {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    align-items: center;
+    margin-bottom: 20px;
+    .leftFilter {
+      display: flex;
+      flex-direction: row;
+      .stationFilter {
+        padding-left: 30px;
+        display: flex;
+        align-items: center;
+        line-height: 43px;
+        .text {
+          margin-right: 10px;
+        }
+      }
+    }
+    .rightContent {
+      margin-right: 30px;
+    }
+  }
+  .componentContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .title {
+      display: flex;
+      flex-direction: column; // padding-left: 30px;
+      justify-content: space-between;
+      padding-top: 10px;
+      .stationStatus {
+        margin-left: 30px;
+        height: 40px;
+        line-height: 40px;
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        justify-content: space-between;
+        .status {
+          margin-right: 4px;
+          display: flex;
+          :global {
+            .iconfont {
+              margin-right: 4px;
+            }
+          }
+          .plan {
+            margin-left: 24px;
+          }
+          .choiceYear {
+            display: inline-block;
+            :global {
+              .active {
+                border: none;
+              }
+            }
+            span {
+              border-radius: 2px;
+              width: 45px;
+              cursor: pointer;
+              display: inline-block;
+              margin: 0 4px;
+              text-align: center;
+              height: 19px;
+              line-height: 19px;
+              padding: 0 5px;
+              &.noSelect {
+                cursor: not-allowed;
+              }
+            }
+          }
+        }
+        .rightFont {
+          margin-right: 30px;
+        }
+      }
+      .graph {
+        display: flex;
+        padding-left: 30px;
+        .stationTargetData {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          margin: 20px 30px;
+          .stationTargetValue {
+            font-size: 26px;
+          }
+        }
+      }
+    }
+    .cardContainer {
+      display: flex;
+      align-items: center;
+      padding: 30px 0;
+      .cardList {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 30px;
+      }
+      .cardItem {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 210px;
+        height: 130px;
+        border-radius: 5px;
+        .cardTitle {
+          margin-bottom: 8px;
+        }
+        .innerTop {
+          margin: 20px 10px 12px 20px;
+        }
+        .innerBottom {
+          height: 30px;
+          padding-left: 20px;
+          line-height: 30px;
+        }
+        .activeInnerBottom {
+          height: 30px;
+          padding-left: 20px;
+          line-height: 30px;
+        }
+      }
+      i {
+        font-size: 20px;
+      }
+    }
+    .targetGraphContainer {
+      .bgStyle {
+        .fontStyle {
+          width: 160px;
+          height: 30px;
+          line-height: 30px;
+          margin-left: 30px;
+        }
+      }
+      .tabContainer {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 20px 0;
+        .dataGraph {
+          display: flex;
+          flex-direction: row;
+          height: 300px;
+          margin-right: 24px;
+          > div:nth-child(1) {
+            flex: 5;
+          }
+          > div:nth-child(2) {
+            flex: 4;
+          }
+          .LostPowerTypeRate {
+            height: 300px;
+            .LostPowerTypeTitle {
+              display: flex;
+              justify-content: space-between;
+              height: 40px;
+              line-height: 40px;
+              flex-direction: row;
+              > div:nth-child(1) {
+                flex: 1;
+                text-align: left;
+              }
+              > div:nth-child(2) {
+                flex: 1;
+                text-align: right;
+              }
+            }
+            > div:nth-child(2) {
+              flex: 1;
+              height: 250;
+            }
+          }
+        }
+        .dataGraphs {
+          display: flex;
+          flex-direction: row;
+          height: 300px;
+          > div:nth-child(1) {
+            flex: 1;
+          }
+          > div:nth-child(2) {
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+}
