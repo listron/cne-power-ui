@@ -17,24 +17,15 @@ var initState = Immutable.fromJS({
   endTime: moment().month(moment().month() - 1).endOf('month').format(),
   pointCodeNameX: '',
   pointCodeNameY: '',
-  srcObj: {},
-  newSrcUrl: [],
   scatterNameTime: null,
   deviceList: [],
+  down: false,
+  bigScatterData: {},
+  bigchartLoading: false,
   point1Max: null,
   point1Min: null,
   point2Max: null,
   point2Min: null,
-  down: false,
-  bigScatterData: {},
-  bigchartLoading: false,
-
-
-
-
-
-
-
 });
 const dataAnalysisScatterReducer = (state = initState, action) => {
   switch (action.type) {

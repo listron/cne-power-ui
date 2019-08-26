@@ -22,25 +22,30 @@ class SingleScatter extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
   }
-  // componentDidMount() {
-  //   const { chartId } = this;
-  //   const { theme } = this.props;
-  //   const myChart = echarts.init(chartId, themeConfig[theme]); //构建下一个实例
-  //   const option = this.creatOption(this.props);
-  //   myChart.setOption(option);
-
-  // }
-
+  componentDidMount() {
+    const { chartId } = this;
+    const { theme } = this.props;
+    const myChart = echarts.init(chartId, themeConfig[theme]); //构建下一个实例
+    const option = this.creatOption(this.props);
+    myChart.setOption(option);
+  }
   componentWillReceiveProps(nextProps) {
     const { activeCode, scatterData, chartLoading, theme, saveBtn } = nextProps;
     const prevCode = this.props.activeCode;
     if ((activeCode && activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
-
+      const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
+      if (chartLoading) {
+        scatterChart.showLoading();
+      }
+      if (!chartLoading) {
+        scatterChart.hideLoading();
+      }
       this.drawChart(scatterData, saveBtn, true);//此处的第三个参数是控制定时器是否发送下一个请求
+
     }
-    // if (saveBtn !== this.props.saveBtn) {
-    //   this.drawChart(scatterData, saveBtn, false);
-    // }
+    if (saveBtn !== this.props.saveBtn) {
+      this.drawChart(scatterData, saveBtn, false);
+    }
   }
 
   shouldComponentUpdate(nextProps) {
@@ -48,8 +53,8 @@ class SingleScatter extends React.PureComponent {
     return activeCode === this.props.deviceFullCode || this.props.deviceFullCode !== deviceFullCode;
   }
   componentWillUnmount() {
-    echarts.dispose(this.chartId, themeConfig[this.props.theme]);
-    // scatterChart.dispose();
+    echarts.init(this.chartId, themeConfig[this.props.theme]).dispose();
+
   }
   creatOption = (scatterData = {}, saveBtn) => {
     const { title, pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
@@ -57,7 +62,6 @@ class SingleScatter extends React.PureComponent {
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
-
     const option = {
       graphic: inverterTenMinGraphic,
       title: {
@@ -199,39 +203,28 @@ class SingleScatter extends React.PureComponent {
     const parms = { stationCode, xPointCode, yPointCode, startTime, endTime };
     const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
     scatterChart.clear();
-    // const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
-    // if (chartsLoading) {
-    //   scatterChart.showLoading();
-    // }
-    // if (!chartLoading) {
-    //   scatterChart.hideLoading();
-    // }
     const option = this.creatOption(scatterData, saveBtn);
-    // scatterChart.off();
-    // scatterChart.on('click', 'title', (params) => {
-    // onChange(index, !saveBtn, scatterData);//保留当前数据值scatterData，避免重新渲染时数据源发生改变。
-    // });
-    // if (scatterData.length === index + 1 && index + 1 < deviceList.length && scatterData.length < deviceList.length) {
-    // scatterChart.on('rendered', () => {
-    //   const imgUrl = scatterChart.getDataURL({
-    //     pixelRatio: 2,
-    //     backgroundColor: '#fff',
-    //   });
-    // this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
-    // });
+    scatterChart.off();
+    scatterChart.on('click', 'title', (params) => {
+      onChange(index, !saveBtn, scatterData);//保留当前数据值scatterData，避免重新渲染时数据源发生改变。
+    });
+
+    scatterChart.on('rendered', () => {
+      const imgUrl = scatterChart.getDataURL({
+        pixelRatio: 2,
+        backgroundColor: '#fff',
+      });
+      this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
+    });
     isRequest && setTimeout(() => {
       const continueQuery = index < deviceList.length;
       continueQuery && this.props.getScatterData({
         ...parms,
         deviceFullCode: deviceList[index + 1].deviceFullCode,
       });
-    }, 1000);
-    // scatterChart.on('finished', () => {
-    // });
-    // }
-    // scatterChart.setOption(option, 'notMerge');
+    }, 50);
+
     scatterChart.setOption(option, true);
-    // scatterChart.resize();
 
   }
 

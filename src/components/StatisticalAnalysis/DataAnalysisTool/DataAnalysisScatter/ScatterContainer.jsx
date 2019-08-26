@@ -4,9 +4,9 @@ import styles from './dataAnalysisStyle.scss';
 import SingleScatter from './SingleScatter';
 import SingleStationModal from './SingleStationModal';
 import toZip from '../../../../utils/js-zip';
-class ScatterContainer extends React.Component {
+class ScatterContainer extends React.PureComponent {
   static propTypes = {
-    scatterData: PropTypes.array,
+    scatterData: PropTypes.object,
     newSrcUrl: PropTypes.array,
     srcObj: PropTypes.object,
     changeToolStore: PropTypes.func,
@@ -90,7 +90,6 @@ class ScatterContainer extends React.Component {
   }
 
   likeChange = (index, bool, scatterData) => {
-
     const { deviceList, changeToolStore } = this.props;
     deviceList[index].likeStatus = bool;
     changeToolStore({ deviceList, scatterData });
@@ -123,7 +122,6 @@ class ScatterContainer extends React.Component {
           );
         }
         )}
-        {/* <span ref={'date'}></span> */}
         {
           <SingleStationModal
             {...this.props}

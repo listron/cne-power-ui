@@ -8,7 +8,7 @@ class SingleStationModal extends React.Component {
   static propTypes = {
     currentImgIndex: PropTypes.number,
     changeCurrentImgIndex: PropTypes.func,
-    data: PropTypes.array,
+    data: PropTypes.object,
     imageListShow: PropTypes.bool,
     hideImg: PropTypes.func,
     onChange: PropTypes.func,
