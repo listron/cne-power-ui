@@ -1,0 +1,163 @@
+.singleStationType {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .stationTimeFilter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    height: 80px;
+    .leftFilter {
+      padding-left: 30px;
+      display: flex;
+      flex-direction: row;
+      .stationFilter {
+        display: flex;
+        align-items: center;
+        :global {
+          .ant-form-item,
+          .ant-form-horizontal {
+            margin-bottom: 0;
+            display: flex;
+          }
+          .ant-form-item {
+            margin-bottom: 0;
+          }
+          .ant-form-item-required:before {
+            display: none;
+          }
+        }
+      }
+    }
+    .rightContent {
+      margin-right: 30px;
+    }
+  }
+  .componentContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 24px;
+    min-height: 500px;
+    .componentContainerTip {
+      display: flex;
+      justify-content: space-between;
+      line-height: 40px;
+    }
+    .nodata {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      height: 400px;
+      img {
+        margin: 0 auto;
+      }
+    }
+  }
+}
+
+.stationContrastTable {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 0;
+  border-right: 0;
+  .stationOne {
+    display: flex;
+    flex-direction: column;
+    line-height: 40px;
+    text-align: center;
+    > div {
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      > div {
+        width: 50%;
+      }
+      > span {
+        display: flex;
+        flex: 1;
+      }
+    }
+    .contrastDetailPopover {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+    }
+    .stationContrastOne {
+      display: flex;
+      flex: 1;
+      border-left: 0;
+      justify-content: center;
+    }
+    .stationContrastTwo {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+    }
+    .differHighLight {
+      display: flex;
+      flex-direction: row;
+      .stationContrastOne {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+      }
+      .stationContrastTwo {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+      }
+    }
+  }
+  .baseNameBox {
+    display: flex;
+    flex-direction: column;
+    .baseName {
+      display: flex;
+      .baseClassifyName {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        span {
+          writing-mode: vertical-rl;
+        }
+      }
+      .rowName {
+        display: flex;
+        flex-direction: column;
+        line-height: 40px;
+        text-align: right;
+        > div {
+          padding-right: 12px;
+        }
+      }
+    }
+  }
+}
+.contrastOverlayClassName {
+  :global {
+    .ant-popover-content {
+      width: 848px;
+      height: 360px;
+      .ant-popover-inner {
+        width: 100%;
+        height: 100%;
+        .ant-popover-inner-content {
+          line-height: 360px;
+          text-align: center;
+          padding: 0px;
+        }
+      }
+    }
+  }
+}
+
+.stationContrastDetailBox {
+  width: 848px;
+  height: 364px;
+  border-radius: 4px;
+  padding-top: 20px;
+  line-height: 360px;
+}

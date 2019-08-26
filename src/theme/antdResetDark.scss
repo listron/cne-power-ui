@@ -68,6 +68,7 @@
   }
   .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
     background: transparent;
+    border: 0 !important;
   }
 
   .ant-tree {
@@ -232,14 +233,11 @@
 
   .ant-select-selection--multiple .ant-select-selection__choice {
     color: $fontColor;
-    background-color: #4d5fe2;
-    border: 1px solid #4d5fe2;
-  }
-
-  .ant-select-selection--multiple .ant-select-selection__choice__remove {
-    color: rgba(0, 0, 0, 0.75);
+    background-color: #205bac;
+    border: 1px solid #205bac;
     &:hover {
-      color: $fontColor;
+      background: #fcffe5;
+      color: #f8b14e;
     }
   }
 
@@ -807,6 +805,7 @@
   ::-webkit-scrollbar {
     // 滚动条的设置
     width: 6px;
+    height: 6px;
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 3px;
@@ -815,9 +814,9 @@
 
   ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
-    background-color: #0c0a3e;
     width: 6px;
   }
+
   ::selection {
     color: #fff;
     background: $themeColor;
