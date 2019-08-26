@@ -27,10 +27,12 @@ class AreaAchieve extends Component {
     timeStatus: PropTypes.string,
     dataName: PropTypes.string,
     changeStore: PropTypes.func,
+    areaStation: PropTypes.array,
+    modesInfo: PropTypes.array,
   };
 
   componentDidMount(){
-    const { search } = this.props.location;
+    const {location: { search }} = this.props;
     const groupInfoStr = searchUtil(search).getValue('area');
     if(groupInfoStr) {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
@@ -69,6 +71,7 @@ class AreaAchieve extends Component {
     const groupInfoStr = searchUtil(search).getValue('area');
     // 发生变化
     if (groupNextInfoStr && groupNextInfoStr !== groupInfoStr) {
+      console.log('componentWillReceiveProps');
       const groupInfo = groupNextInfoStr ? JSON.parse(groupNextInfoStr) : {};
       this.queryParamsFunc(groupInfo);
     }
@@ -223,6 +226,7 @@ const mapDispatchToProps = (dispatch) => ({
   getIndicatorRank: (payload) => dispatch({type: areaAchieveAction.getIndicatorRank, payload}),
   getIndicatorRankTotal: (payload) => dispatch({type: areaAchieveAction.getIndicatorRankTotal, payload}),
   getModesInfo: (payload) => dispatch({type: areaAchieveAction.getModesInfo, payload}),
+  getDeviceType: (payload) => dispatch({type: areaAchieveAction.getDeviceType, payload}),
   changeStore: (payload) => dispatch({type: areaAchieveAction.changeStore, payload}),
 });
 
