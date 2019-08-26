@@ -58,7 +58,7 @@ class ChartLostTrend extends Component {
     });
     series[0] = {
       type: 'line',
-      data: countData,
+      data: hourData,
       xAxisIndex: 0,
       yAxisIndex: 0,
       lineStyle: {
@@ -72,7 +72,7 @@ class ChartLostTrend extends Component {
     };
     series[1] = {
       type: 'line',
-      data: hourData,
+      data: countData,
       xAxisIndex: 1,
       yAxisIndex: 1,
       lineStyle: {
@@ -148,8 +148,8 @@ class ChartLostTrend extends Component {
         { ...getBaseXAxis(dataAxis), gridIndex: 1 },
       ],
       yAxis: [
-        { ...getBaseYAxis('次数(次)'), gridIndex: 0 },
-        { ...getBaseYAxis('时长(h)'), gridIndex: 1 },
+        { ...getBaseYAxis('时长(h)'), gridIndex: 0 },
+        { ...getBaseYAxis('次数(次)'), gridIndex: 1 },
       ],
       axisPointer: {
         link: {xAxisIndex: 'all'},
@@ -166,7 +166,7 @@ class ChartLostTrend extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 0 ? '故障次数' : '故障时长'}</span>
+                  <span>${i === 0 ? '故障时长' : '故障次数'}</span>
                   <span>${dataFormats(e.value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
