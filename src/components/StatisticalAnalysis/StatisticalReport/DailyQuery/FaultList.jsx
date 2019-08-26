@@ -169,7 +169,7 @@ class FaultList extends Component {
     return (
       <div className={styles.faultList}>
         <div className={styles.pagination}>
-          <Button className={styles.listExport} onClick={this.onExport}>导出</Button>
+          <Button className={styles.listExport} onClick={this.onExport} disabled={dataList.length === 0 ? true : false}>导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}

@@ -100,7 +100,7 @@ class DailySearch extends Component {
         ...queryParam,
         stationCodes: [],
       },
-      listParam:{
+      listParam: {
         ...listParam,
         pageNum: 1,
         pageSize: 10,
@@ -187,7 +187,7 @@ class DailySearch extends Component {
 
   onSearch = () => { // 查询
     const { tableType, queryParam, listParam, changeDailyQueryStore, getQuotaList, getFaultList, getLimitList } = this.props;
-    const { stationCodes, quotaInfoData, faultIds, keyWord } = this.state;
+    const { stationCodes, quotaInfoData, faultIds, keyWord, powerInformation } = this.state;
     const { startDate, endDate } = queryParam;
     const { pageNum, pageSize } = listParam;
     if (stationCodes.length === 0) {
@@ -220,10 +220,11 @@ class DailySearch extends Component {
 
     tableType === 'quotaList' && getQuotaList({ stationCodes, startDate, endDate, pageNum, pageSize, indexCodes });
     tableType === 'faultList' && getFaultList({ stationCodes, startDate, endDate, pageNum, pageSize, faultIds, keyWord });
-    tableType === 'limitList' && getLimitList({ stationCodes, startDate, endDate, pageNum, pageSize, keyWord });
+    tableType === 'limitList' && getLimitList({ stationCodes, startDate, endDate, pageNum, pageSize, keyWord: powerInformation });
   }
 
   onReset = () => { // 重置
+    const { changeDailyQueryStore } = this.props;
     this.setState({
       stationCodes: [],
       selectStations: [],
@@ -233,10 +234,16 @@ class DailySearch extends Component {
       faultIds: [],
       dateValue: [],
     });
+    changeDailyQueryStore({
+      quotaListData: {},
+      faultListData: {},
+      limitListData: {},
+    });
   }
 
   render(){
     const { stationTypeCount, stationType, stations, tableType, quotaData, faultData } = this.props;
+    console.log('quotaData: ', quotaData);
     const { keyWord, powerInformation, quotaInfoData, faultIds, selectStations, dateValue } = this.state;
     const quotaCode = quotaInfoData.map(e => {
       return e.value;
@@ -266,7 +273,6 @@ class DailySearch extends Component {
                 data={typeof(stationType) === 'number' ? stations.filter(e => e.stationType === stationType) : stations}
                 onOK={this.selectStation}
                 value={selectStations}
-                disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}
                 multiple={true}
                 stationShowNumber={true}
               />

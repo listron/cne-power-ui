@@ -1,5 +1,5 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
-import axios from 'axios';
+import request from '../../../../utils/request';
 import Path from '../../../../constants/path';
 import { message } from 'antd';
 import { dailyQueryAction } from './dailyQueryAction';
@@ -19,7 +19,7 @@ function* getQuota({ payload = {} }) { // 获取指标
   const { stationType } = payload;
   const url = `${APIBasePath}${statisticalAnalysis.getQuota}/${stationType}`;
   try {
-    const response = yield call(axios.get, url, payload);
+    const response = yield call(request.get, url, payload);
     if (response.data.code === '10000') {
       const quotaData = response.data.data && response.data.data.map(cur=>{
         return dataArr(cur, 'desc', 'code');
@@ -42,7 +42,7 @@ function* getQuota({ payload = {} }) { // 获取指标
 function* getFault({ payload = {} }) { // 获取故障类型
   const url = `${APIBasePath}${statisticalAnalysis.getFault}`;
   try {
-    const response = yield call(axios.get, url, payload);
+    const response = yield call(request.get, url, {params: payload});
     if (response.data.code === '10000') {
       const faultData = response.data.data && response.data.data.map(cur=>{
         return dataArr(cur, 'name', 'id');
@@ -71,7 +71,7 @@ function *getQuotaList({ payload = {} }) { // 关键指标列表
         tableLoading: true,
       },
     });
-    const response = yield call(axios.post, url, {...payload});
+    const response = yield call(request.post, url, {...payload});
     const { total = 0 } = response.data.data;
     let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(total / pageSize);
@@ -115,7 +115,7 @@ function *getFaultList({ payload = {} }) { // 故障信息列表
         tableLoading: true,
       },
     });
-    const response = yield call(axios.post, url, {...payload});
+    const response = yield call(request.post, url, {...payload});
     const { total = 0 } = response.data.data;
     let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(total / pageSize);
@@ -159,7 +159,7 @@ function *getLimitList({ payload = {} }) { // 故障信息列表
         tableLoading: true,
       },
     });
-    const response = yield call(axios.post, url, {...payload});
+    const response = yield call(request.post, url, {...payload});
     const { total = 0 } = response.data.data;
     let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(total / pageSize);
