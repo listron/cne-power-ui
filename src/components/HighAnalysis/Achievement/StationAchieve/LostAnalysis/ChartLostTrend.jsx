@@ -54,8 +54,8 @@ class ChartLostTrend extends Component {
     lostTrend.forEach(e => {
       const { efficiencyDate, indicatorData = {} } = e || {};
       dataAxis.push(efficiencyDate);
-      const choosed = lostChartTime && efficiencyDate !== lostChartTime;
-      const symbolSize = choosed ? 4 : 10;
+      const activeSymbol = (lostChartTime && efficiencyDate === lostChartTime);
+      const symbolSize = activeSymbol ? 10 : 4;
       if (indicatorType === 'single') {
         firstLineData.push({ value: indicatorData.value, symbolSize });
       } else {
@@ -66,7 +66,6 @@ class ChartLostTrend extends Component {
     series[0] = {
       type: 'line',
       data: firstLineData,
-      symbolSize: 4,
       lineStyle: {
         opacity: lostChartTime ? 0.2 : 1,
         color: '#2564cc',
@@ -79,7 +78,6 @@ class ChartLostTrend extends Component {
     indicatorType === 'double' && (series[1] = {
       type: 'line',
       data: secendLineData,
-      symbolSize: 4,
       lineStyle: {
         opacity: lostChartTime ? 0.2 : 1,
         color: '#f9b600',

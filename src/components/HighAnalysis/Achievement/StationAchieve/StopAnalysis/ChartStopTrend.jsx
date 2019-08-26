@@ -50,8 +50,8 @@ class ChartLostTrend extends Component {
     const countData = [];
     const series = [];
     stopTrend.forEach(e => {
-      const choosed = stopChartTime && e.efficiencyDate !== stopChartTime;
-      const symbolSize = choosed ? 4 : 10;
+      const activeSymbol = (stopChartTime && e.efficiencyDate === stopChartTime);
+      const symbolSize = activeSymbol ? 10 : 4;
       dataAxis.push(e.efficiencyDate);
       hourData.push({ value: e.stopHour, symbolSize });
       countData.push({ value: e.stopCount, symbolSize});
@@ -61,7 +61,6 @@ class ChartLostTrend extends Component {
       data: countData,
       xAxisIndex: 0,
       yAxisIndex: 0,
-      symbolSize: 4,
       lineStyle: {
         opacity: stopChartTime ? 0.2 : 1,
         color: '#f9b600',
@@ -76,7 +75,6 @@ class ChartLostTrend extends Component {
       data: hourData,
       xAxisIndex: 1,
       yAxisIndex: 1,
-      symbolSize: 4,
       lineStyle: {
         opacity: stopChartTime ? 0.2 : 1,
         color: '#2564cc',
