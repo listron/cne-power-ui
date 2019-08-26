@@ -2,63 +2,40 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import echarts from 'echarts';
-import { Icon } from 'antd';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import { themeConfig, chartsLoading } from '../../../../utils/darkConfig';
 import { dataFormat } from '../../../../utils/utilFunc';
-
 import moment from 'moment';
 
-class SingleScatter extends React.PureComponent {
-  static propTypes = {
-    // title: PropTypes.string,
-    pointCodeNameX: PropTypes.string,
-    pointCodeNameY: PropTypes.string,
-    saveImgUrl: PropTypes.func,
-    showImg: PropTypes.func,
-    saveBtn: PropTypes.bool,
-    // chartData: PropTypes.array,
-  }
+
+class BigScattrChart extends React.Component {
   constructor(props, context) {
     super(props, context);
   }
   componentDidMount() {
-    const { chartId } = this;
-    const { theme } = this.props;
-    const myChart = echarts.init(chartId, themeConfig[theme]); //构建下一个实例
-    const option = this.creatOption(this.props);
-    myChart.setOption(option);
+    const { bigScatterData, deviceList, index } = this.props;
+    const curChart = deviceList[index];
+    const saveBtn = curChart ? curChart.likeStatus : false;
+    const title = curChart ? curChart.deviceName : '';
+    this.drawChat(bigScatterData, saveBtn, title);
   }
   componentWillReceiveProps(nextProps) {
-    const { activeCode, scatterData, chartLoading, theme, saveBtn } = nextProps;
-    const prevCode = this.props.activeCode;
-    if ((activeCode && activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
-      const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
-      if (chartLoading) {
-        scatterChart.showLoading();
-      }
-      if (!chartLoading) {
-        scatterChart.hideLoading();
-      }
-      this.drawChart(scatterData, saveBtn, true);//此处的第三个参数是控制定时器是否发送下一个请求
-
+    const { bigScatterData, bigchartLoading, theme, index, deviceList } = nextProps;
+    const curChart = deviceList[index];
+    const saveBtn = curChart ? curChart.likeStatus : false;
+    const title = curChart ? curChart.deviceName : '';
+    const bigscatterChart = echarts.init(this.bigScattrchart, themeConfig[theme]);
+    if (bigchartLoading) {
+      bigscatterChart.showLoading();
     }
-    if (saveBtn !== this.props.saveBtn) {
-      this.drawChart(scatterData, saveBtn, false);
+    if (!bigchartLoading) {
+      bigscatterChart.hideLoading();
     }
+    this.drawChat(bigScatterData, saveBtn, title);
   }
-
-  shouldComponentUpdate(nextProps) {
-    const { activeCode, deviceFullCode } = nextProps;
-    return activeCode === this.props.deviceFullCode || this.props.deviceFullCode !== deviceFullCode;
-  }
-  componentWillUnmount() {
-    echarts.init(this.chartId, themeConfig[this.props.theme]).dispose();
-
-  }
-  creatOption = (scatterData = {}, saveBtn) => {
-    const { title, pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
-    const { chartData = [] } = scatterData;
+  creatOption = (bigScatterData = {}, saveBtn, title) => {
+    const { pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
+    const { chartData = [] } = bigScatterData;
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
@@ -198,45 +175,23 @@ class SingleScatter extends React.PureComponent {
     }
     return val;
   }
-  drawChart = (scatterData, saveBtn, isRequest) => {
-    const { title, index, onChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
-    const parms = { stationCode, xPointCode, yPointCode, startTime, endTime };
-    const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
-    scatterChart.clear();
-    const option = this.creatOption(scatterData, saveBtn);
-    scatterChart.off();
-    scatterChart.on('click', 'title', (params) => {
-      onChange(index, !saveBtn, scatterData);//保留当前数据值scatterData，避免重新渲染时数据源发生改变。
+  drawChat = (bigScatterData, saveBtn, title) => {
+    const { index, likeChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
+
+    const bigscatterChart = echarts.init(this.bigScattrchart, themeConfig[theme]);
+    const option = this.creatOption(bigScatterData, saveBtn, title);
+    bigscatterChart.off();
+    bigscatterChart.on('click', 'title', (params) => {
+      likeChange(index, !saveBtn);
     });
-
-    scatterChart.on('rendered', () => {
-      const imgUrl = scatterChart.getDataURL({
-        pixelRatio: 2,
-        backgroundColor: '#fff',
-      });
-      this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
-    });
-    isRequest && setTimeout(() => {
-      const continueQuery = index < deviceList.length;
-      continueQuery && this.props.getScatterData({
-        ...parms,
-        deviceFullCode: deviceList[index + 1].deviceFullCode,
-      });
-    }, 50);
-
-    scatterChart.setOption(option, true);
-
+    bigscatterChart.setOption(option);
   }
-
   render() {
-    const { index, showImg, scatterData } = this.props;
     return (
       <div className={styles.chartWrap}>
-        {showImg && <Icon type="zoom-in" onClick={() => showImg(index, scatterData)} className={styles.showModalInco} />}
-        <div ref={(ref) => { this.chartId = ref; }} className={styles.scatterStyle}></div>
+        <div ref={(ref) => { this.bigScattrchart = ref; }} className={styles.scatterStyle}></div>
       </div>
     );
   }
 }
-export default (SingleScatter);
-
+export default (BigScattrChart);
