@@ -20,8 +20,8 @@ function* getQuota({ payload = {} }) { // 获取指标
   const url = `${APIBasePath}${statisticalAnalysis.getQuota}/${stationType}`;
   try {
     const response = yield call(request.get, url, payload);
-    if (response.data.code === '10000') {
-      const quotaData = response.data.data && response.data.data.map(cur=>{
+    if (response.code === '10000') {
+      const quotaData = response.data && response.data.map(cur=>{
         return dataArr(cur, 'desc', 'code');
       });
       yield put({
@@ -43,8 +43,9 @@ function* getFault({ payload = {} }) { // 获取故障类型
   const url = `${APIBasePath}${statisticalAnalysis.getFault}`;
   try {
     const response = yield call(request.get, url, {params: payload});
-    if (response.data.code === '10000') {
-      const faultData = response.data.data && response.data.data.map(cur=>{
+    console.log('response: ', response);
+    if (response.code === '10000') {
+      const faultData = response.data && response.data.map(cur=>{
         return dataArr(cur, 'name', 'id');
       });
       yield put({

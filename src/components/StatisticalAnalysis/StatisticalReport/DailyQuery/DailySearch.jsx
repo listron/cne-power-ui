@@ -243,7 +243,6 @@ class DailySearch extends Component {
 
   render(){
     const { stationTypeCount, stationType, stations, tableType, quotaData, faultData } = this.props;
-    console.log('quotaData: ', quotaData);
     const { keyWord, powerInformation, quotaInfoData, faultIds, selectStations, dateValue } = this.state;
     const quotaCode = quotaInfoData.map(e => {
       return e.value;
