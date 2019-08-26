@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import eCharts from 'echarts';
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
+import searchUtil from '../../../../../utils/searchUtil';
 
 import styles from './areaLossChart.scss';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
@@ -15,6 +16,9 @@ export default class AreaLossChart extends Component {
     selectTime: PropTypes.string,
     dataName: PropTypes.string,
     selectStationCode: PropTypes.array,
+    location: PropTypes.object,
+    history: PropTypes.object,
+    deviceData: PropTypes.array,
   };
 
   componentDidUpdate(prevProps) {
@@ -36,10 +40,13 @@ export default class AreaLossChart extends Component {
     }
   }
 
-  drawChart = (data) => {
-    const { dataArr, basicArr } = data;
+  drawChart = (lostGenHourInfo) => {
+    const { actualGen, theoryGen, detailList } = lostGenHourInfo;
+    const xAxisName = detailList && detailList.map(cur => (cur.name)) || [];
+    const xAxisBaseValue = detailList && detailList.map(cur => (cur.baseValue)) || [];
+    const xAxisValue = detailList && detailList.map(cur => (cur.value)) || [];
     return {
-      graphic: !dataArr || dataArr.length === 0 ? showNoData : hiddenNoData,
+      graphic: !actualGen && !theoryGen && (!detailList || detailList.length === 0) ? showNoData : hiddenNoData,
       tooltip: {
         trigger: 'axis',
         axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -57,7 +64,7 @@ export default class AreaLossChart extends Component {
       xAxis: {
         type: 'category',
         splitLine: {show: false},
-        data: ['应发小时', '降容损失', '风机故障', '变电故障', '场外因素', '计划停机', '其他损失', '实发小时'],
+        data: ['应发小时', ...xAxisName, '实发小时'],
         axisLabel: {
           interval: 0,
         },
@@ -90,7 +97,7 @@ export default class AreaLossChart extends Component {
               color: 'rgba(0,0,0,0)',
             },
           },
-          data: basicArr,
+          data: [0, ...xAxisBaseValue, 0],
         },
         {
           name: '小时数',
@@ -103,22 +110,76 @@ export default class AreaLossChart extends Component {
               position: 'top',
             },
           },
-          data: dataArr,
+          data: [theoryGen || '', ...xAxisValue, actualGen || ''],
         },
       ],
     };
   };
 
   toLostAnalysis = () => {
-    console.log('跳');
+    // 页面路径参数结构/{pathKey}?pages=['group','area']&group={a:1,b:2}&area={c:1,d:4}&station={e:2,ff:12};
+    // 其中group, area, station后面的选中内容为JSON.stringify后的字符串
+    // searchCode, modes, dates, quota, stations, modesInfo,
+    const { location, history, selectStationCode, deviceData } = this.props;
+    const { search } = location || {};
+    const groupInfoStr = searchUtil(search).getValue('area');
+    const pagesStr = searchUtil(search).getValue('pages');
+    let pages = pagesStr;
+    if(!pagesStr) {
+      pages = 'area_station';
+    }
+    if(pagesStr) {
+      if(!pagesStr.split('_').includes('station')) {
+        pages = `${pagesStr}_station`;
+      }
+    }
+    // {"code":73,"device":["73M101M34M1","73M101M34M2","73M101M34M10"],"date":["2018-08-23","2019-08-23"],"quota":"100"}
+    const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+    const {
+      modes,
+      dates,
+      quota,
+    } = groupInfo;
+    const device = []; // 筛选选中机型下面的设备型号
+    deviceData && deviceData.forEach(cur => {
+      modes && modes.forEach(item => {
+        if(cur.deviceModeCode === item) {
+          cur.devices && cur.devices.forEach(e => {
+            device.push(e.deviceFullcode);
+          });
+        }
+      });
+    });
+    // 指标
+    const quotaValue = quota[1] || quota[0];
+    const stationInfo = {
+      code: Number(selectStationCode.toString()),
+      device,
+      date: dates,
+      quota: quotaValue,
+    };
+    // 新的search: pages参数不变, area参数变为选中项内容集合
+    const newSearch = searchUtil(search).replace({ station: JSON.stringify(stationInfo), pages }).stringify(); // 删除search中页面的记录信息
+    history.push(`/analysis/achievement/analysis/station?${newSearch}`);
+  };
+
+  titleName = () => {
+    const {selectTime, dataName } = this.props;
+    if(dataName !== '' && selectTime !== '') {
+      return `${dataName}-${selectTime}-损失电量分解图`;
+    }
+    if(dataName !== '' && selectTime === '') {
+      return `${dataName}-损失电量分解图`;
+    }
+    return '损失电量分解图';
   };
 
   render() {
-    const {selectTime, dataName, selectStationCode } = this.props;
+    const { selectStationCode } = this.props;
     return (
       <div className={styles.areaLossBox}>
         <div className={styles.areaLossTitle}>
-          <span>{selectTime === '' ? '损失电量分解图' : `${dataName}-${selectTime}-损失电量分解图`}</span>
+          <span>{this.titleName()}</span>
           <Button disabled={selectStationCode.length === 0} onClick={this.toLostAnalysis}>根源分析</Button>
         </div>
         <div className={styles.areaLossCenter} ref={ref => {this.lossChart = ref;}} />

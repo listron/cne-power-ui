@@ -24,6 +24,17 @@
   }
 }
 
+.cascaderBox {
+  :global{
+    .ant-cascader-menu{
+      width: 150px;
+      .ant-cascader-menu-item{
+        width: 150px;
+      }
+    }
+  }
+}
+
 // 颜色s
 .topSearch {
   background-color: #fff;

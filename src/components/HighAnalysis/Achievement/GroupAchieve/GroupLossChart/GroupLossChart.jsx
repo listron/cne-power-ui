@@ -3,6 +3,7 @@ import {Button} from 'antd';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import searchUtil from '../../../../../utils/searchUtil';
+import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
 
 import styles from './groupLossChart.scss';
 
@@ -38,9 +39,13 @@ export default class GroupLossChart extends Component {
     }
   }
 
-  drawChart = (data) => {
-    const { dataArr, basicArr } = data;
+  drawChart = (groupLostGenHourInfo) => {
+    const { actualGen, theoryGen, detailList } = groupLostGenHourInfo;
+    const xAxisName = detailList && detailList.map(cur => (cur.name)) || [];
+    const xAxisBaseValue = detailList && detailList.map(cur => (cur.baseValue)) || [];
+    const xAxisValue = detailList && detailList.map(cur => (cur.value)) || [];
     return {
+      graphic: !actualGen && !theoryGen && (!detailList || detailList.length === 0) ? showNoData : hiddenNoData,
       tooltip: {
         trigger: 'axis',
         axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -58,7 +63,7 @@ export default class GroupLossChart extends Component {
       xAxis: {
         type: 'category',
         splitLine: {show: false},
-        data: ['应发小时', '降容损失', '风机故障', '变电故障', '场外因素', '计划停机', '其他损失', '实发小时'],
+        data: ['应发小时', ...xAxisName, '实发小时'],
         axisLabel: {
           interval: 0,
         },
@@ -91,7 +96,7 @@ export default class GroupLossChart extends Component {
               color: 'rgba(0,0,0,0)',
             },
           },
-          data: basicArr,
+          data: [0, ...xAxisBaseValue, 0],
         },
         {
           name: '生活费',
@@ -104,7 +109,7 @@ export default class GroupLossChart extends Component {
               position: 'top',
             },
           },
-          data: dataArr,
+          data: [theoryGen || '', ...xAxisValue, actualGen || ''],
         },
       ],
     };
@@ -117,10 +122,15 @@ export default class GroupLossChart extends Component {
     const { location, history, selectStationCode } = this.props;
     const { search } = location || {};
     const groupInfoStr = searchUtil(search).getValue('group');
-    const pagesStr = searchUtil(search).getValue('pages');
+    const { pages: pagesStr } = searchUtil(search).parse();
     let pages = pagesStr;
     if(!pagesStr) {
       pages = 'group_area';
+    }
+    if(pagesStr) {
+      if(!pagesStr.split('_').includes('area')) {
+        pages = `${pagesStr}_area`;
+      }
     }
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const areaInfo = {
@@ -131,17 +141,28 @@ export default class GroupLossChart extends Component {
       stations: [groupInfo.stations[5]],
       modesInfo: groupInfo.modesInfo,
     };
-    // 新的search: pages参数不变, area参数变为选中项内容集合
-    const newSearch = searchUtil(search).replace({ area: JSON.stringify(areaInfo) }).stringify(); // 删除search中页面的记录信息
-    history.push(`/analysis/achievement/analysis/area?pages=${pages}&${newSearch}`);
+    // // 新的search: pages参数不变, area参数变为选中项内容集合
+    const newSearch = searchUtil(search).replace({ area: JSON.stringify(areaInfo), pages }).stringify(); // 删除search中页面的记录信息
+    history.push(`/analysis/achievement/analysis/area?${newSearch}`);
+  };
+
+  titleName = () => {
+    const { selectTime, dataName } = this.props;
+    if(dataName !== '' && selectTime !== '') {
+      return `${dataName}-${selectTime}-损失电量分解图`;
+    }
+    if(dataName !== '' && selectTime === '') {
+      return `${dataName}-损失电量分解图`;
+    }
+    return '损失电量分解图';
   };
 
   render() {
-    const { selectStationCode, selectTime, dataName } = this.props;
+    const { selectStationCode } = this.props;
     return (
       <div className={styles.groupLossBox}>
         <div className={styles.groupLossTitle}>
-          <span>{selectTime === '' ? '损失电量分解图' : `${dataName}-${selectTime}-损失电量分解图`}</span>
+          <span>{this.titleName()}</span>
           <Button disabled={selectStationCode.length === 0} onClick={this.toAreaPage}>查看区域</Button>
         </div>
         <div className={styles.groupLossCenter} ref={ref => {this.groupLossChart = ref;}} />

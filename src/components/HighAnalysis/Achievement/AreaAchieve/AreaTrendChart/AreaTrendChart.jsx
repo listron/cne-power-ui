@@ -21,6 +21,7 @@ export default class AreaTrendChart extends Component {
     qutaName: PropTypes.string,
     changeStore: PropTypes.func,
     getLostGenHour: PropTypes.func,
+    dataName: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
@@ -190,11 +191,11 @@ export default class AreaTrendChart extends Component {
   };
 
   render() {
-    const { timeStatus } = this.props;
+    const { timeStatus, dataName, qutaName } = this.props;
     return (
       <div className={styles.areaTrendBox}>
         <div className={styles.areaTrendTitle}>
-          <span>PBA趋势图</span>
+          <span>{dataName === '' ? `${qutaName || '--'}趋势图` : `${dataName}-${qutaName || '--'}趋势图`}</span>
           <Radio.Group value={timeStatus} buttonStyle="solid" onChange={this.handleStatusChange}>
             <Radio.Button value="1">按日</Radio.Button>
             <Radio.Button value="2">按月</Radio.Button>

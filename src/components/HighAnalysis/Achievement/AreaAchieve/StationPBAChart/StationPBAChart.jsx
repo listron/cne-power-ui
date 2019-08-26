@@ -15,18 +15,16 @@ export default class StationPBAChart extends Component {
     changeStore: PropTypes.func,
     getTrendInfo: PropTypes.func,
     getLostGenHour: PropTypes.func,
-    dataIndex: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    dataIndex: PropTypes.string,
     location: PropTypes.object,
     qutaName: PropTypes.string,
+    colorData: PropTypes.object,
   };
 
   componentDidUpdate(prevProps) {
     const { sortChart } = this;
     const { rankTime, rankLoading, indicatorRankInfo, dataIndex } = this.props;
-    const { rankTime: rankTimePrev } = prevProps;
+    const { rankTime: rankTimePrev, dataIndex: dataIndexPrev } = prevProps;
     const myChart = eCharts.init(sortChart);
     if (rankLoading) { // loading态控制。
       myChart.showLoading();
@@ -35,7 +33,7 @@ export default class StationPBAChart extends Component {
     if (!rankLoading) {
       myChart.hideLoading();
     }
-    if(rankTime && rankTime !== rankTimePrev) {
+    if(rankTime && rankTime !== rankTimePrev || dataIndex !== '' && dataIndexPrev !== dataIndex) {
       eCharts.init(sortChart).clear();//清除
       const myChart = eCharts.init(sortChart);
       myChart.setOption(this.drawChart(indicatorRankInfo, dataIndex));
@@ -81,7 +79,7 @@ export default class StationPBAChart extends Component {
       stationCodes,
     };
     changeStore({
-      dataSelect: params.name,
+      dataIndex: params.name,
       dataName: name,
       selectStationCode: stationCodes, // 保存单选区域的信息
     });
@@ -91,7 +89,7 @@ export default class StationPBAChart extends Component {
   };
 
   drawChart = (data, dataIndex) => {
-    const { qutaName } = this.props;
+    const { qutaName, colorData } = this.props;
     const twoBar = [{ // 实发
       data: data && data.map(cur => (cur.indicatorData.actualGen)),
       type: 'bar',
@@ -99,8 +97,7 @@ export default class StationPBAChart extends Component {
       itemStyle: {
         normal: {
           color: function(params) {//柱子颜色
-            const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
-            return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
+            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
           },
         },
         emphasis: {
@@ -130,8 +127,7 @@ export default class StationPBAChart extends Component {
         barBorderRadius: [5, 5, 0, 0],
         normal: {
           color: function(params) {//柱子颜色
-            const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
-            return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
+            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
           },
         },
         emphasis: {

@@ -29,8 +29,9 @@ export default class AreaSearch extends Component {
 
   constructor(props){
     super(props);
-    const { search } = props.location;
+    const { search } = props.history.location;
     const groupInfoStr = searchUtil(search).getValue('area');
+
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const defaultEndTime = moment().subtract(2, 'days').format('YYYY-MM-DD');
     const defaultStartTime = moment(defaultEndTime).subtract(1, 'year').format('YYYY-MM-DD');
@@ -61,8 +62,6 @@ export default class AreaSearch extends Component {
       this.propsAreaStationChange(areaStation);
     }
     if (!groupInfoStr && preDevice.length === 0 && modesInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到机型数据
-      console.log(preDevice, 'preDevice');
-      console.log(modesInfo, 'modesInfo');
       this.propsModeDevicesChange(modesInfo);
     }
     if (!groupInfoStr && preQuota.length === 0 && quotaInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到指标
@@ -168,6 +167,14 @@ export default class AreaSearch extends Component {
   queryCharts = () => {
     // 组合state参数, 发起history.push操作。
     const { searchCode, modes, dates, quota, stations, modesInfo } = this.state;
+    const { changeStore } = this.props;
+    changeStore({
+      timeStatus: '2', // 日月年
+      dataIndex: '', // 选中信息
+      selectStationCode: [], // 选中电站信息
+      selectTime: '', // 选中时间
+      dataName: '', // 保存选择区域名称
+    });
     this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
   };
 
@@ -195,9 +202,6 @@ export default class AreaSearch extends Component {
       dataName,
     } = this.props;
     const { modes, dates, quota, stations } = this.state;
-    console.log(areaStation, 'areaStationrender');
-    console.log(stations, 'stationsrender');
-    // console.log(modesInfo, 'modesInforender');
     return (
       <div className={styles.topSearch}>
         <div>
@@ -237,6 +241,7 @@ export default class AreaSearch extends Component {
             options={quotaInfo}
             placeholder="请选择"
             onChange={this.onQuotaChange}
+            popupClassName={styles.cascaderBox}
             value={quota}
           />
         </div>
