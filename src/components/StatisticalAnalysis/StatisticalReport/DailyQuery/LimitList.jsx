@@ -143,7 +143,7 @@ class LimitList extends Component {
     return (
       <div className={styles.limitList}>
         <div className={styles.pagination}>
-          <Button className={styles.listExport} onClick={this.onExport} disabled={dataList.length === 0 ? true : false}>导出</Button>
+          <Button className={styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
