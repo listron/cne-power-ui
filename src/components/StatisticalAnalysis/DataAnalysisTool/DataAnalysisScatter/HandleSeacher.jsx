@@ -81,10 +81,7 @@ class HandleSeacher extends React.Component {
       yCode: '',
       saveStartTime: '',
       saveEndTime: '',
-      point1Max: null,
-      point1Min: null,
-      point2Max: null,
-      point2Min: null,
+
     };
   }
   componentWillReceiveProps(nextProp) {
@@ -150,10 +147,7 @@ class HandleSeacher extends React.Component {
   }
   clearoutLimit = () => {
     this.setState({
-      point1Max: null,
-      point1Min: null,
-      point2Max: null,
-      point2Min: null,
+
     });
   }
   selectStationCode = (stationCodeArr) => {
@@ -161,10 +155,7 @@ class HandleSeacher extends React.Component {
     this.props.changeToolStore({
       stationCode,
       scatterData: [],
-      point1Max: null,
-      point1Min: null,
-      point2Max: null,
-      point2Min: null,
+
 
     });
     this.props.getStationDevice({ stationCode });
@@ -223,15 +214,12 @@ class HandleSeacher extends React.Component {
   getScatterData = () => {
     //请求数据
     const { getScatterData, changeToolStore, stationCode, deviceList } = this.props;
-    const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, point1Max, point1Min, point2Max, point2Min } = this.state;
+    const { saveStartTime, saveEndTime, xCode, yCode, xName, yName } = this.state;
     changeToolStore({
       scatterData: [],
       pointCodeNameX: xName,
       pointCodeNameY: yName,
-      point1Max,
-      point1Min,
-      point2Max,
-      point2Min,
+
     });
     const fristDevice = deviceList[0];
     const deviceFullCode = fristDevice.deviceFullCode;
@@ -268,8 +256,7 @@ class HandleSeacher extends React.Component {
   }
   render() {
     const { stationCode, stations, scatterotherNames, theme, startTime, endTime } = this.props;
-    const { isSwap, options, scatterNameValue, showOther, xName, yName,
-      point1Max, point1Min, point2Max, point2Min } = this.state;
+    const { isSwap, options, scatterNameValue, showOther, xName, yName } = this.state;
 
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));

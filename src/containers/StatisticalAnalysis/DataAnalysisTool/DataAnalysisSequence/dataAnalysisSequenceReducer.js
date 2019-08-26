@@ -25,6 +25,7 @@ var initState = Immutable.fromJS({
   point1Min: null,
   point2Max: null,
   point2Min: null,
+  xyValueLimit: {},
 
 
 

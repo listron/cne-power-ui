@@ -187,6 +187,39 @@ function* getBigScatterData(action) {//获取
     });
   }
 }
+function* getxyLimitValue(action) {//获取
+  const { payload } = action;
+  const { startTime, endTime } = payload;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getxyLimitValue}`;
+  try {
+    const response = yield call(axios.post, url, {
+      ...payload,
+      startTime: moment(startTime).utc().format(),
+      endTime: moment(endTime).utc().format(),
+    },
+    );
+    if (response.data.code === '10000') {
+
+      yield put({
+        type: dataAnalysisScatterAction.changeToolStore,
+        payload: {
+          xyValueLimit: response.data.data || {},
+
+        },
+      });
+    } else {
+      throw response.data.message;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: dataAnalysisScatterAction.changeToolStore,
+      payload: {
+        xyValueLimit: {},
+      },
+    });
+  }
+}
 
 
 
@@ -196,4 +229,5 @@ export function* watchDataAnalysisScatterSaga() {
   yield takeLatest(dataAnalysisScatterAction.getScatterOtherName, getScatterOtherName);
   yield takeLatest(dataAnalysisScatterAction.getScatterData, getScatterData);
   yield takeLatest(dataAnalysisScatterAction.getBigScatterData, getBigScatterData);
+  yield takeLatest(dataAnalysisScatterAction.getxyLimitValue, getxyLimitValue);
 }

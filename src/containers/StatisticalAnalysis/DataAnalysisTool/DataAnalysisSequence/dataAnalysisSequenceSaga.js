@@ -189,6 +189,39 @@ function* getBigSequenceData(action) {//获取
 
   }
 }
+function* getxyLimitValue(action) {//获取
+  const { payload } = action;
+  const { startTime, endTime } = payload;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getxyLimitValue}`;
+  try {
+    const response = yield call(axios.post, url, {
+      ...payload,
+      startTime: moment(startTime).utc().format(),
+      endTime: moment(endTime).utc().format(),
+    },
+    );
+    if (response.data.code === '10000') {
+
+      yield put({
+        type: dataAnalysisSequenceAction.changeSquenceStore,
+        payload: {
+          xyValueLimit: response.data.data || {},
+
+        },
+      });
+    } else {
+      throw response.data.message;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: dataAnalysisSequenceAction.changeSquenceStore,
+      payload: {
+        xyValueLimit: {},
+      },
+    });
+  }
+}
 
 
 
@@ -199,4 +232,5 @@ export function* watchDataAnalysisSequenceSaga() {
   yield takeLatest(dataAnalysisSequenceAction.getSequenceOtherName, getSequenceOtherName);
   yield takeLatest(dataAnalysisSequenceAction.getSequenceData, getSequenceData);
   yield takeLatest(dataAnalysisSequenceAction.getBigSequenceData, getBigSequenceData);
+  yield takeLatest(dataAnalysisSequenceAction.getxyLimitValue, getxyLimitValue);
 }

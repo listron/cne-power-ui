@@ -50,6 +50,7 @@ const mapDispatchToProps = (dispatch) => ({
   getScatterData: payload => dispatch({ type: dataAnalysisScatterAction.getScatterData, payload }),
   getStationDevice: payload => dispatch({ type: dataAnalysisScatterAction.getStationDevice, payload }),
   getBigScatterData: payload => dispatch({ type: dataAnalysisScatterAction.getBigScatterData, payload }),
+  getxyLimitValue: payload => dispatch({ type: dataAnalysisScatterAction.getxyLimitValue, payload }),
 
 
 });
