@@ -12,25 +12,45 @@ const options = [{
   value: '风速相关',
   pointsUnionName: '风速相关',
   isLeaf: false,
+  key: 1,
 },
 {
   value: '功率相关',
   pointsUnionName: '功率相关',
   isLeaf: false,
+  key: 2,
 }, {
   value: '转速相关',
   pointsUnionName: '转速相关',
   isLeaf: false,
+  key: 3,
+},
+{
+  value: '振动相关',
+  pointsUnionName: '振动相关',
+  isLeaf: false,
+  key: 4,
+}, {
+  value: '温度相关',
+  pointsUnionName: '温度相关',
+  isLeaf: false,
+  key: 5,
 }, {
   value: '震动相关',
   pointsUnionName: '震动相关',
   isLeaf: false,
+  key: 6,
+}, {
+  value: '相控相关',
+  pointsUnionName: '相控相关',
+  isLeaf: false,
+  key: 7,
+}, {
+  value: '其他',
+  pointsUnionName: '其他',
+  isLeaf: false,
+  key: 8,
 },
-  // {
-  //   value: '其他',
-  //   pointsUnionName: '其他',
-  //   isLeaf: false,
-  // },
 ];
 
 class HandleSeacher extends React.Component {
@@ -122,9 +142,11 @@ class HandleSeacher extends React.Component {
   formater = (data) => {
     return data.map((e, i) => {
       const pointNameList = e.pointNameList.map((item, index) => ({
-        ...item, value: `${item.pointCodeX}_${item.pointCodeY}`,
+        key: index,
+        ...item,
+        value: `${item.pointCodeX}_${item.pointCodeY}`,
       }));
-      return { ...e, pointNameList };
+      return { key: i, ...e, pointNameList };
     }
     );
   }

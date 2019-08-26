@@ -21,6 +21,7 @@ export default class RunSearch extends Component {
     areaStation: PropTypes.array,
     modeDevices: PropTypes.array,
     getDevices: PropTypes.func,
+    changeStore: PropTypes.func,
   };
 
   constructor(props){
@@ -54,6 +55,11 @@ export default class RunSearch extends Component {
     }
     if (!stationInfoStr && preDevice.length === 0 && modeDevices.length > 0 && !stationInfoStr) { // 路径无参数时  得到设备数据
       this.propsModeDevicesChange(modeDevices);
+    }
+    // 路径有参数 更改电站 得到新的设备数据
+    if(stationInfoStr && modeDevices.length > 0 && JSON.stringify(modeDevices) !== JSON.stringify(preDevice)){
+      const searchDevice = this.getAllDeviceCodes(modeDevices);
+      this.setState({searchDevice});
     }
   }
 
@@ -98,6 +104,7 @@ export default class RunSearch extends Component {
   onStationChange = ([regionName, stationCode]) => {
     this.setState({ searchCode: stationCode, searchDevice: [] });
     this.props.getDevices({ stationCode });
+    this.props.changeStore({ modeDevices: [] });
   };
 
   onDeviceChange = (devices) => this.setState({ searchDevice: devices.map(e => e.value) });
@@ -111,9 +118,7 @@ export default class RunSearch extends Component {
 
   render() {
     const { areaStation, modeDevices } = this.props;
-    // console.log(modeDevices, 'modeDevices');
     const { searchCode, searchDevice, searchDates } = this.state;
-    // console.log(searchDevice, 'searchDevice');
     return (
       <div className={styles.topSearch}>
         <div className={styles.leftPart}>
@@ -134,6 +139,7 @@ export default class RunSearch extends Component {
               onChange={this.onDeviceChange}
               style={{width: '150px'}}
               maxTagCount={0}
+              max={3}
             />
           </div>
           <div className={styles.eachParts}>

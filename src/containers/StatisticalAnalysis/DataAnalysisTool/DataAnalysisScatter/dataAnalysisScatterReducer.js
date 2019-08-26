@@ -9,7 +9,8 @@ var initState = Immutable.fromJS({
   showPage: 'allStation', //allStation显示全部电站，singleStation,显示单电站
   scatterNames: [],
   scatterotherNames: [],
-  scatterData: [],
+  activeCode: null,
+  scatterData: {},
   xPointCode: '',
   yPointCode: '',
   startTime: moment().month(moment().month() - 1).startOf('month').format(),
@@ -25,6 +26,8 @@ var initState = Immutable.fromJS({
   point2Max: null,
   point2Min: null,
   down: false,
+
+
 
 
 

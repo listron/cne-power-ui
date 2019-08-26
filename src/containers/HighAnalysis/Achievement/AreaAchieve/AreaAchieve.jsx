@@ -26,7 +26,6 @@ class AreaAchieve extends Component {
     quotaInfo: PropTypes.array,
     timeStatus: PropTypes.string,
     dataName: PropTypes.string,
-    selectTime: PropTypes.string,
     changeStore: PropTypes.func,
   };
 
@@ -45,9 +44,9 @@ class AreaAchieve extends Component {
     // 鼠标右击
     document.getElementsByTagName('body')[0].onmousedown = e => {
       if (e.button === 2) {
-        const { dataName, selectTime, changeStore } = this.props;
-        // 判断如果选中过区域或时间可以重置图表
-        if(dataName !== '' || selectTime !== '') {
+        const { dataName, changeStore } = this.props;
+        // 判断如果选中过区域可以重置图表
+        if(dataName !== '') {
           const { search } = this.props.location;
           const groupInfoStr = searchUtil(search).getValue('area');
           const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};

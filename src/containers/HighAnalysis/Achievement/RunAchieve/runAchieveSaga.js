@@ -76,7 +76,7 @@ function *getSequenceChart(action){
       yield put({
         type: runAchieveAction.fetchSuccess,
         payload: {
-          sequenceData: response.data,
+          sequenceData: !response.data || JSON.stringify(response.data) === '{}' ? [] : response.data,
           sequenceLoading: false,
           sequenceTime: moment().unix(), //时间戳
         },
@@ -117,7 +117,7 @@ function *getFirstChart(action){
       yield put({
         type: runAchieveAction.fetchSuccess,
         payload: {
-          firstChartData: response.data,
+          firstChartData: !response.data || JSON.stringify(response.data) === '{}' ? [] : response.data,
           firstChartLoading: false,
           firstChartTime: moment().unix(), //时间戳
         },
@@ -157,7 +157,7 @@ function *getSecondChart(action){
       yield put({
         type: runAchieveAction.fetchSuccess,
         payload: {
-          secondChartData: response.data,
+          secondChartData: !response.data || JSON.stringify(response.data) === '{}' ? [] : response.data,
           secondChartLoading: false,
           secondChartTime: moment().unix(), //时间戳
         },
@@ -197,7 +197,7 @@ function *getThirdChart(action){
       yield put({
         type: runAchieveAction.fetchSuccess,
         payload: {
-          thirdChartData: response.data,
+          thirdChartData: !response.data || JSON.stringify(response.data) === '{}' ? [] : response.data,
           thirdChartLoading: false,
           thirdChartTime: moment().unix(), //时间戳
         },
@@ -237,7 +237,7 @@ function *getFourthChart(action){
       yield put({
         type: runAchieveAction.fetchSuccess,
         payload: {
-          fourthChartData: response.data,
+          fourthChartData: !response.data || JSON.stringify(response.data) === '{}' ? [] : response.data,
           fourthChartLoading: false,
           fourthChartTime: moment().unix(), //时间戳
         },

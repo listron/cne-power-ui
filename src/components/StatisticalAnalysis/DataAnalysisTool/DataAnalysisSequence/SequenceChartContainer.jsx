@@ -86,14 +86,14 @@ class SequenceChartContainer extends React.Component {
   }
 
   queryData = (value) => {
-    const { getSequenceData, pointY1, pointY2, startTime, endTime } = this.props;
-    getSequenceData({
+    const { getBigSequenceData, pointY1, pointY2, startTime, endTime } = this.props;
+    getBigSequenceData({
       deviceFullCode: value,
       pointY1,
       pointY2,
       startTime,
       endTime,
-      interval: 60,
+      interval: 10,
     });
 
   }

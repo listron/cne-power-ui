@@ -13,10 +13,16 @@ function* getStationDevice(action) {//获取
     if (response.data.code === '10000') {
       const data = response.data.data || [];
       const deviceList = data.map((e, i) => ({ ...e, likeStatus: false }));
+      const deviceFullCodeArr = deviceList.map(e => e.deviceFullCode);//拿到设备型号数组
+      const deviceData = {};//存储设备型号数据
+      deviceFullCodeArr.forEach((e, i) => {
+        deviceData[e] = [{}];
+      });
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
           deviceList,
+          ...deviceData,
         },
       });
     } else {
@@ -86,11 +92,9 @@ function* getScatterOtherName(action) {//获取
 }
 function* getScatterData(action) {//获取
   const { payload } = action;
-  const { startTime, endTime } = payload;
-  // payload.startTime = moment(startTime).utc().format();
-  // payload.endTime = moment(endTime).utc().format();
-  // const url = '/mock/api/v3/wind/analysis/scatterplot/list';
+  const { startTime, endTime, deviceFullCode } = payload;
   const preScatterData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisScatterReducer.get('scatterData').toJS()));
+  const deviceList = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisScatterReducer.get('deviceList').toJS()));
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
   try {
     yield put({
@@ -100,6 +104,7 @@ function* getScatterData(action) {//获取
         chartLoading: true,
       },
     });
+
     const response = yield call(axios.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
@@ -109,13 +114,15 @@ function* getScatterData(action) {//获取
     );// { params: payload }
     if (response.data.code === '10000') {
       const scatterArr = response.data.data || [];
-      const scatterData = scatterArr.length ? scatterArr : [{ chartData: [] }];
+      // const scatterData = scatterArr.length ? scatterArr : [{ chartData: [] }];
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
-          scatterData: [...preScatterData, ...scatterData],
-          scatterDataTime: moment().unix(),
+          scatterData: scatterArr[0] || {},
+          activeCode: payload.deviceFullCode,
+          // scatterDataTime: moment().unix(),
           chartLoading: false,
+          // ...deviceData,
         },
       });
     } else {
@@ -126,8 +133,9 @@ function* getScatterData(action) {//获取
     yield put({
       type: dataAnalysisScatterAction.changeToolStore,
       payload: {
+        deviceFullCode: [{}],
         scatterData: [],
-        scatterDataTime: moment().unix(),
+        // scatterDataTime: moment().unix(),
         chartLoading: false,
       },
     });

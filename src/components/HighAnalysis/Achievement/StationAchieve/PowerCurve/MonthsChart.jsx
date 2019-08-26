@@ -8,6 +8,7 @@ class MonthsChart extends Component {
 
   static propTypes = {
     curveCheckedMonths: PropTypes.array,
+    curveDeviceName: PropTypes.string,
     curveMonths: PropTypes.object,
     curveMonthsLoading: PropTypes.bool,
   }
@@ -110,8 +111,12 @@ class MonthsChart extends Component {
   }
 
   render() {
+    const { curveDeviceName } = this.props;
     return (
-      <div className={styles.totalChart} ref={(ref)=> {this.monthRef = ref;}} />
+      <section className={styles.leftCurve}>
+        <h3>{curveDeviceName || '--'}各月功率曲线</h3>
+        <div className={styles.totalChart} ref={(ref)=> {this.monthRef = ref;}} />
+      </section>
     );
   }
 }

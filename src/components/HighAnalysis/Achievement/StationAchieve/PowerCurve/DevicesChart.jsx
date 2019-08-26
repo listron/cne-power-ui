@@ -119,7 +119,10 @@ class DevicesChart extends Component {
 
   render() {
     return (
-      <div className={styles.totalChart} ref={(ref)=> {this.devicesRef = ref;}} />
+      <section className={styles.leftCurve}>
+        <h3>各机组功率曲线</h3>
+        <div className={styles.totalChart} ref={(ref)=> {this.devicesRef = ref;}} />
+      </section>
     );
   }
 }
