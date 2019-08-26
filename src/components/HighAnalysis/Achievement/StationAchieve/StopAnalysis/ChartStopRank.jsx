@@ -96,7 +96,7 @@ class ChartStopRank extends Component {
       const colorIndex = modeArr.indexOf(deviceModeName);
       hourData.push({
         name: deviceModeName,
-        value: stopCount,
+        value: stopHour,
         itemStyle: {
           color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
             {offset: 0, color: this.barColor[colorIndex][0]},
@@ -105,7 +105,7 @@ class ChartStopRank extends Component {
           opacity: (stopChartDevice && deviceFullcode !== stopChartDevice.deviceFullcode) ? 0.4 : 1,
         },
       });
-      countData.push(stopHour);
+      countData.push(stopCount);
     });
     series[0] = {
       type: 'bar',

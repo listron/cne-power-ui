@@ -140,11 +140,11 @@ class ChartLostTrend extends Component {
     const { dataAxis, series } = this.createSeries(stopTrend, stopChartTime);
     const option = {
       grid: [
-        { ...getBaseGrid(), top: 40, height: 150 },
-        { ...getBaseGrid(), top: 230, height: 150 },
+        { ...getBaseGrid(), top: 30, height: 140, containLabel: false, left: 40 },
+        { ...getBaseGrid(), top: 220, height: 140, containLabel: false, left: 40 },
       ],
       xAxis: [
-        { ...getBaseXAxis(dataAxis), gridIndex: 0 },
+        { ...getBaseXAxis(dataAxis), gridIndex: 0, axisLabel: { show: false } },
         { ...getBaseXAxis(dataAxis), gridIndex: 1 },
       ],
       yAxis: [

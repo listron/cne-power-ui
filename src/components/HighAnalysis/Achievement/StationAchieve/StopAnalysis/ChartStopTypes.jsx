@@ -4,6 +4,7 @@ import echarts from 'echarts';
 import moment from 'moment';
 import { Select } from 'antd';
 import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import { getBaseGrid, getBaseYAxis, getBaseXAxis } from './chartBaseOption';
 import styles from './stop.scss';
 const { Option } = Select;
@@ -162,13 +163,13 @@ class ChartStopTypes extends Component {
     const { dataAxis, series } = this.createSeries(sortedTypes, stopChartTypes);
     const option = {
       grid: [
-        { ...getBaseGrid(), top: 30, height: 90 },
-        { ...getBaseGrid(), top: 160, height: 90 },
-        { ...getBaseGrid(), top: 290, height: 90 },
+        { ...getBaseGrid(), top: 30, height: 90, containLabel: false, left: 40 },
+        { ...getBaseGrid(), top: 160, height: 90, containLabel: false, left: 40 },
+        { ...getBaseGrid(), top: 290, height: 90, containLabel: false, left: 40 },
       ],
       xAxis: [
-        { ...getBaseXAxis(dataAxis), gridIndex: 0 },
-        { ...getBaseXAxis(dataAxis), gridIndex: 1 },
+        { ...getBaseXAxis(dataAxis), gridIndex: 0, axisLabel: { show: false } },
+        { ...getBaseXAxis(dataAxis), gridIndex: 1, axisLabel: { show: false } },
         { ...getBaseXAxis(dataAxis), gridIndex: 2 },
       ],
       yAxis: [
@@ -181,6 +182,9 @@ class ChartStopTypes extends Component {
       },
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         padding: 0,
         formatter: (param) => {
           const { axisValue } = param && param[0] || {};
@@ -192,7 +196,7 @@ class ChartStopTypes extends Component {
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>${['停机次数', '停机时长', '停机电量'][i]}</span>
-                  <span>${e.value}</span>
+                  <span>${dataFormats(e.value / ([1, 1, 10000][i]), '--', [0, 0, 4][i], true)}</span>
                 </span>`
               )).join('')}
             </div>
