@@ -59,8 +59,8 @@ const menuData = [
             name: '数据导出',
             path: 'dataExport',
             rightKey: 'dataAnalysis_dataExport',
-          }
-        ]
+          },
+        ],
       }, {
         name: '报表查询',
         iconStyle: 'icon-trends',
@@ -306,6 +306,33 @@ const menuData = [
             path: 'intelligentReport',
             rightKey: 'statistics_report_table',
           },
+          {
+            name: '日报查询',
+            path: 'dailyQuery',
+            rightKey: 'statistics_report_dailyQuery',
+          },
+        ],
+      }, {
+        name: '数据分析工具',
+        path: 'analysisTool',
+        iconStyle: 'icon-device-data',
+        rightKey: 'analysis_dataTool',
+        children: [
+          {
+            name: '散点图',
+            path: 'scatter',
+            rightKey: 'analysis_dataTool_scatter',
+          },
+          {
+            name: '时序图',
+            path: 'sequence',
+            rightKey: 'analysis_dataTool_sequence',
+          },
+          // {
+          //   name: '统计图',
+          //   path: 'histogram',
+          //   rightKey: 'analysis_dataTool_histogram',
+          // },
         ],
       },
     ],
@@ -430,6 +457,33 @@ const menuData = [
             name: '算法控制台',
             path: 'algorithmControl',
             rightKey: 'analysis_turbineFDD_console',
+          },
+        ],
+      }, {
+        name: '风电分析',
+        path: 'achievement',
+        rightKey: 'statistics_device',
+        children: [
+          {
+            name: '集团绩效分析',
+            path: 'analysis/group',
+            rightKey: 'statistics_device',
+          }, {
+            name: '区域绩效分析',
+            path: 'analysis/area',
+            rightKey: 'statistics_device',
+          }, {
+            name: '电站效能分析',
+            path: 'analysis/station',
+            rightKey: 'statistics_device',
+          }, {
+            name: '运行数据分析',
+            path: 'analysis/run',
+            rightKey: 'statistics_device',
+          }, {
+            name: '停机状态分析',
+            path: 'analysis/stop',
+            rightKey: 'statistics_device',
           },
         ],
       },

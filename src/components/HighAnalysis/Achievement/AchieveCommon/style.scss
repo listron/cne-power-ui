@@ -1,0 +1,40 @@
+
+@import '../../../../theme/theme.scss';
+
+.timeSelect{
+  display: flex;
+  flex-basis: 150px;
+  width: 150px;
+  .day, .month, .year{
+    flex: 0 0 50px;
+    height:30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    border-width:1px;
+    border-style: solid;
+  }
+  .day{
+    border-radius:4px 0 0 4px;
+    border-right: none;
+  }
+  .year{
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+  }
+  .choosed{
+    cursor: initial;
+  }
+}
+
+// 颜色
+.timeSelect{
+  .day, .month, .year{
+    color: $darkColor;
+    border-color:#d9d9d9;
+  }
+  .choosed{
+    color: #fff;
+    background-color: $themeColor;
+  }
+}

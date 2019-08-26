@@ -45,14 +45,34 @@ const statement = [ // 统计分析 - 统计报表
   }, { // 统计报表-智能分析报告
     path: '/statistical/statement/intelligentAnalysis',
     component: lazy(() => import('../../containers/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/IntelligentAnalysis')),
-  },{ // 统计报表-智能报表
+  }, { // 统计报表-智能报表
     path: '/statistical/statement/intelligentReport',
     component: lazy(() => import('../../containers/StatisticalAnalysis/StatisticalReport/IntelligentReport/IntelligentReport')),
+  }, { // 统计报表-日报查询
+    path: '/statistical/statement/dailyQuery',
+    component: lazy(() => import('../../containers/StatisticalAnalysis/StatisticalReport/DailyQuery/DailyQuery')),
   },
-]
+];
+const analysisTool = [
+  {
+    path: '/statistical/analysisTool/scatter',
+    component: lazy(() => import('../../containers/StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/DataAnalysisScatter.jsx')),
+  },
+  {
+    path: '/statistical/analysisTool/sequence',
+    component: lazy(() => import('../../containers/StatisticalAnalysis/DataAnalysisTool/DataAnalysisSequence/DataAnalysisSequence.jsx')
+    ),
+  },
+  // {
+  //   path: '/statistical/analysisTool/sequence',
+  //   component: lazy(() => import('../../containers/StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/DataAnalysisScatter.jsx')
+  //   ),
+  // }
+];
 
 export const statisticalRoute = [
   ...stationAccount,
   ...equipment,
-  ...statement
+  ...statement,
+  ...analysisTool,
 ];

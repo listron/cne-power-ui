@@ -10,7 +10,7 @@ const getVerificationCode = require('./mock/login/getVerificationCode');
 const user = require('./mock/system/user');
 const stationManage = require('./mock/system/stationManage');
 
-const monitor =require('./mock/monitor/stationMonitor');
+const monitor = require('./mock/monitor/stationMonitor');
 const dataAnalysis = require('./mock/monitor/dataAnalysis');
 
 const singleStationMonitor = require('./mock/monitor/singleStationMonitor');
@@ -25,7 +25,9 @@ const cleanWarning = require('./mock/highAnalysis/cleanWarning');
 const score = require('./mock/system/score.js');
 const intelligentAnalysis = require('./mock/statisticalAnalysis/intelligenAnalysis.js');
 const reportSeacher = require('./mock/monitor/report');
-const book=require('./mock/operation/book');
+const book = require('./mock/operation/book');
+const scatterAnalysis = require('./mock/statisticalAnalysis/scatterAnalysis');
+const dailyQuery = require('./mock/statisticalAnalysis/dailyQuery');
 
 
 // as
@@ -47,17 +49,19 @@ exports.mockConfig = [
 
   ...monitor,
   ...dataAnalysis,
-  ...monitorpowerCurve,//监控功率曲线
+  ...monitorpowerCurve, //监控功率曲线
 
   ...singleStationMonitor,
   ...monitorDevice, //监控-单设备详情
   ...others,
-  ...MockStationContrast,//统计分析-电站对比
-  ...allstationanalysis,//电站分析
+  ...MockStationContrast, //统计分析-电站对比
+  ...allstationanalysis, //电站分析
   ...stationContrast,
   ...cleanWarning, // 高级分析-清洗预警
-  ...score,//电站评分
+  ...score, //电站评分
   ...intelligentAnalysis, // 智能分析报告
-  ...reportSeacher,//报表查询
-  ...book,//台账
-]
+  ...reportSeacher, //报表查询
+  ...book, //台账
+  ...scatterAnalysis, //数据分析工具得散点
+  ...dailyQuery, // 日报查询
+];

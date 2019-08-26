@@ -1,0 +1,41 @@
+import Immutable from 'immutable';
+import moment from 'moment';
+import { dataAnalysisSequenceAction } from './dataAnalysisSequenceAction';
+var initState = Immutable.fromJS({
+  chartLoading: false,
+  bigchartLoading: false,
+  chartTime: null, //图的时间戳
+  stationCode: null,
+  pointY1: '',
+  pointY2: '',
+  startTime: moment().startOf('year').format(),
+  endTime: moment().format(),
+  deviceFullCode: '',
+  pointCodeNameX: '',
+  pointCodeNameY: '',
+  showPage: 'allStation', //allStation显示全部电站，singleStation,显示单电站
+  deviceList: [], //电站下的设备
+  sequenceNames: [], //测点
+  sequenceNameTime: null, //请求测点的时间戳
+  sequenceotherNames: [], //其他测点名字
+  sequenceData: [], //时序图汇总数据
+  curBigChartData: {}, //当前请求到的时序图
+  down: false,
+  point1Max: null,
+  point1Min: null,
+  point2Max: null,
+  point2Min: null,
+
+
+
+});
+const dataAnalysisSequenceReducer = (state = initState, action) => {
+  switch (action.type) {
+    case dataAnalysisSequenceAction.changeSquenceStore:
+      return state.merge(Immutable.fromJS(action.payload));
+    case dataAnalysisSequenceAction.resetStore:
+      return initState;
+  }
+  return state;
+};
+export default dataAnalysisSequenceReducer;

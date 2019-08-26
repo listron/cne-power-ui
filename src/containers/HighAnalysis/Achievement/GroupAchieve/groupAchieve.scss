@@ -1,0 +1,21 @@
+@import '../../../../theme/theme.scss';
+
+.groupChartBox {
+  width: 100%;
+  padding-top: 20px;
+
+  .chartTop {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .chartBottom{
+    width: 100%;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+/*css样式*/
