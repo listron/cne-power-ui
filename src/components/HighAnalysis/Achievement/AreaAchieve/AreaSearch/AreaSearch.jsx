@@ -29,8 +29,9 @@ export default class AreaSearch extends Component {
 
   constructor(props){
     super(props);
-    const { search } = props.location;
+    const { search } = props.history.location;
     const groupInfoStr = searchUtil(search).getValue('area');
+
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const defaultEndTime = moment().subtract(2, 'days').format('YYYY-MM-DD');
     const defaultStartTime = moment(defaultEndTime).subtract(1, 'year').format('YYYY-MM-DD');
@@ -61,8 +62,6 @@ export default class AreaSearch extends Component {
       this.propsAreaStationChange(areaStation);
     }
     if (!groupInfoStr && preDevice.length === 0 && modesInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到机型数据
-      console.log(preDevice, 'preDevice');
-      console.log(modesInfo, 'modesInfo');
       this.propsModeDevicesChange(modesInfo);
     }
     if (!groupInfoStr && preQuota.length === 0 && quotaInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到指标

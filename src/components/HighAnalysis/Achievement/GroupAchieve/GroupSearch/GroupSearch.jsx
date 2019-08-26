@@ -29,7 +29,7 @@ export default class AreaSearch extends Component {
 
   constructor(props){
     super(props);
-    const { search } = props.location;
+    const { search } = props.history.location;
     const groupInfoStr = searchUtil(search).getValue('group');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const defaultEndTime = moment().subtract(2, 'days').format('YYYY-MM-DD');

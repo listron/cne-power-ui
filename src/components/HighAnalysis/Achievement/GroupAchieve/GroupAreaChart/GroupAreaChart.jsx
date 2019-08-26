@@ -12,10 +12,7 @@ export default class GroupAreaChart extends Component {
     groupCapacityInfo: PropTypes.array,
     groupCapacityTime: PropTypes.number,
     groupCapacityLoading: PropTypes.bool,
-    dataIndex: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    dataIndex: PropTypes.string,
     changeStore: PropTypes.func,
     location: PropTypes.object,
     getGroupTrendInfo: PropTypes.func,

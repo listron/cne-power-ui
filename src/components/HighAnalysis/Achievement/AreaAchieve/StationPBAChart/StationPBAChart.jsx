@@ -15,10 +15,7 @@ export default class StationPBAChart extends Component {
     changeStore: PropTypes.func,
     getTrendInfo: PropTypes.func,
     getLostGenHour: PropTypes.func,
-    dataIndex: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    dataIndex: PropTypes.string,
     location: PropTypes.object,
     qutaName: PropTypes.string,
     colorData: PropTypes.object,

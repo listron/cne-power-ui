@@ -266,6 +266,26 @@ function* getLostGenHour(action) { // 损失电量分解图
   }
 }
 
+function* getDeviceType(action) { // 查询指定电站的设备型号
+  const { payload } = action;
+  try {
+    const url = `${APIBasePath}${highAnalysis.getDevices}`;
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield put({
+        type: areaAchieveAction.fetchSuccess,
+        payload: {
+          deviceData: response.data.dataList || [],
+        },
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (error) {
+    message.error('获取设备型号失败, 请刷新重试!');
+  }
+}
+
 export function* watchAreaAchieve() {
   yield takeLatest(areaAchieveAction.getStationCapacity, getStationCapacity);
   yield takeLatest(areaAchieveAction.getLostGenHour, getLostGenHour);
@@ -273,5 +293,6 @@ export function* watchAreaAchieve() {
   yield takeLatest(areaAchieveAction.getIndicatorRank, getIndicatorRank);
   yield takeLatest(areaAchieveAction.getIndicatorRankTotal, getIndicatorRankTotal);
   yield takeLatest(areaAchieveAction.getModesInfo, getModesInfo);
+  yield takeLatest(areaAchieveAction.getDeviceType, getDeviceType);
 }
 

@@ -26,7 +26,7 @@ export default class RunSearch extends Component {
 
   constructor(props){
     super(props);
-    const { search } = props.location;
+    const { search } = props.history.location;
     const stationInfoStr = searchUtil(search).getValue('run');
     const stationInfo = stationInfoStr ? JSON.parse(stationInfoStr) : {};
     const defaultEndTime = moment().subtract(2, 'days').format('YYYY-MM-DD');

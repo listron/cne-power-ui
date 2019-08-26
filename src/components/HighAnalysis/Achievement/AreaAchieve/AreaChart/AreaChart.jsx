@@ -12,15 +12,13 @@ export default class AreaChart extends Component {
     capacityInfo: PropTypes.array,
     capacityTime: PropTypes.number,
     capacityLoading: PropTypes.bool,
-    dataIndex: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    dataIndex: PropTypes.string,
     changeStore: PropTypes.func,
     getTrendInfo: PropTypes.func,
     getLostGenHour: PropTypes.func,
     location: PropTypes.object,
     colorData: PropTypes.object,
+    getDeviceType: PropTypes.func,
   };
 
   componentDidUpdate(prevProps) {
@@ -44,7 +42,7 @@ export default class AreaChart extends Component {
   }
 
   chartHandle = (params, capacityInfo, myChart) => {
-    const { changeStore, getTrendInfo, getLostGenHour, location: { search }} = this.props;
+    const { changeStore, getTrendInfo, getLostGenHour, getDeviceType, location: { search }} = this.props;
     const { data } = params;
     const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
@@ -89,6 +87,7 @@ export default class AreaChart extends Component {
       myChart.setOption(this.drawChart(capacityInfo, params.name));
       getTrendInfo(paramsTrend);
       getLostGenHour(paramsHour);
+      getDeviceType({stationCodes: stationCodes});
     }
   };
 

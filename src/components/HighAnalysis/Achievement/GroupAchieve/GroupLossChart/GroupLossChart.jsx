@@ -3,9 +3,9 @@ import {Button} from 'antd';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import searchUtil from '../../../../../utils/searchUtil';
+import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
 
 import styles from './groupLossChart.scss';
-import {hiddenNoData, showNoData} from "../../../../../constants/echartsNoData";
 
 export default class GroupLossChart extends Component {
 
@@ -122,10 +122,15 @@ export default class GroupLossChart extends Component {
     const { location, history, selectStationCode } = this.props;
     const { search } = location || {};
     const groupInfoStr = searchUtil(search).getValue('group');
-    const pagesStr = searchUtil(search).getValue('pages');
+    const { pages: pagesStr } = searchUtil(search).parse();
     let pages = pagesStr;
     if(!pagesStr) {
       pages = 'group_area';
+    }
+    if(pagesStr) {
+      if(!pagesStr.split('_').includes('area')) {
+        pages = `${pagesStr}_area`;
+      }
     }
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const areaInfo = {
@@ -136,9 +141,9 @@ export default class GroupLossChart extends Component {
       stations: [groupInfo.stations[5]],
       modesInfo: groupInfo.modesInfo,
     };
-    // 新的search: pages参数不变, area参数变为选中项内容集合
-    const newSearch = searchUtil(search).replace({ area: JSON.stringify(areaInfo) }).stringify(); // 删除search中页面的记录信息
-    history.push(`/analysis/achievement/analysis/area?pages=${pages}&${newSearch}`);
+    // // 新的search: pages参数不变, area参数变为选中项内容集合
+    const newSearch = searchUtil(search).replace({ area: JSON.stringify(areaInfo), pages }).stringify(); // 删除search中页面的记录信息
+    history.push(`/analysis/achievement/analysis/area?${newSearch}`);
   };
 
   titleName = () => {

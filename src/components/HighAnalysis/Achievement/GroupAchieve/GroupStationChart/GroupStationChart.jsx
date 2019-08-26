@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
+import searchUtil from '../../../../../utils/searchUtil';
 
 import styles from './groupStationChart.scss';
-import searchUtil from "../../../../../utils/searchUtil";
 
 export default class GroupStationChart extends Component {
 
@@ -11,10 +11,7 @@ export default class GroupStationChart extends Component {
     groupRankInfo: PropTypes.array,
     groupRankTime: PropTypes.number,
     groupRankLoading: PropTypes.bool,
-    dataIndex: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    dataIndex: PropTypes.string,
     changeStore: PropTypes.func,
     getGroupTrendInfo: PropTypes.func,
     getGroupLostGenHour: PropTypes.func,
@@ -85,7 +82,7 @@ export default class GroupStationChart extends Component {
       dataName: name, // 名称
       selectStationCode: stationCodes, // 保存单选区域的信息
     });
-    myChart.setOption(this.drawChart(groupCapacityInfo, dataIndex));
+    myChart.setOption(this.drawChart(groupCapacityInfo, name));
     getGroupTrendInfo(paramsTrend);
     getGroupLostGenHour(paramsHour);
   };

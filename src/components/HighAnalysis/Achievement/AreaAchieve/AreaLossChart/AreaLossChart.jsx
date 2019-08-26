@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import eCharts from 'echarts';
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
+import searchUtil from '../../../../../utils/searchUtil';
 
 import styles from './areaLossChart.scss';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
@@ -15,6 +16,9 @@ export default class AreaLossChart extends Component {
     selectTime: PropTypes.string,
     dataName: PropTypes.string,
     selectStationCode: PropTypes.array,
+    location: PropTypes.object,
+    history: PropTypes.object,
+    deviceData: PropTypes.array,
   };
 
   componentDidUpdate(prevProps) {
@@ -113,7 +117,50 @@ export default class AreaLossChart extends Component {
   };
 
   toLostAnalysis = () => {
-    console.log('跳');
+    // 页面路径参数结构/{pathKey}?pages=['group','area']&group={a:1,b:2}&area={c:1,d:4}&station={e:2,ff:12};
+    // 其中group, area, station后面的选中内容为JSON.stringify后的字符串
+    // searchCode, modes, dates, quota, stations, modesInfo,
+    const { location, history, selectStationCode, deviceData } = this.props;
+    const { search } = location || {};
+    const groupInfoStr = searchUtil(search).getValue('area');
+    const pagesStr = searchUtil(search).getValue('pages');
+    let pages = pagesStr;
+    if(!pagesStr) {
+      pages = 'area_station';
+    }
+    if(pagesStr) {
+      if(!pagesStr.split('_').includes('station')) {
+        pages = `${pagesStr}_station`;
+      }
+    }
+    // {"code":73,"device":["73M101M34M1","73M101M34M2","73M101M34M10"],"date":["2018-08-23","2019-08-23"],"quota":"100"}
+    const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+    const {
+      modes,
+      dates,
+      quota,
+    } = groupInfo;
+    const device = []; // 筛选选中机型下面的设备型号
+    deviceData && deviceData.forEach(cur => {
+      modes && modes.forEach(item => {
+        if(cur.deviceModeCode === item) {
+          cur.devices && cur.devices.forEach(e => {
+            device.push(e.deviceFullcode);
+          });
+        }
+      });
+    });
+    // 指标
+    const quotaValue = quota[1] || quota[0];
+    const stationInfo = {
+      code: Number(selectStationCode.toString()),
+      device,
+      date: dates,
+      quota: quotaValue,
+    };
+    // 新的search: pages参数不变, area参数变为选中项内容集合
+    const newSearch = searchUtil(search).replace({ station: JSON.stringify(stationInfo), pages }).stringify(); // 删除search中页面的记录信息
+    history.push(`/analysis/achievement/analysis/station?${newSearch}`);
   };
 
   titleName = () => {
