@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
+import searchUtil from '../../../../../utils/searchUtil';
 
 import styles from './groupStationChart.scss';
-import searchUtil from "../../../../../utils/searchUtil";
 
 export default class GroupStationChart extends Component {
 
@@ -11,15 +11,13 @@ export default class GroupStationChart extends Component {
     groupRankInfo: PropTypes.array,
     groupRankTime: PropTypes.number,
     groupRankLoading: PropTypes.bool,
-    dataIndex: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    dataIndex: PropTypes.string,
     changeStore: PropTypes.func,
     getGroupTrendInfo: PropTypes.func,
     getGroupLostGenHour: PropTypes.func,
     location: PropTypes.object,
     titleFunc: PropTypes.string,
+    colorData: PropTypes.object,
   };
 
   componentDidUpdate(prevProps) {
@@ -43,8 +41,8 @@ export default class GroupStationChart extends Component {
   }
 
   chartHandle = (params, groupCapacityInfo, myChart) => {
-    const { dataIndex, name } = params;
-    const { changeStore, getGroupTrendInfo, getGroupLostGenHour, location: { search } } = this.props;
+    const { name } = params;
+    const { changeStore, dataIndex, getGroupTrendInfo, getGroupLostGenHour, location: { search } } = this.props;
     const groupInfoStr = searchUtil(search).getValue('group');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const {
@@ -80,17 +78,17 @@ export default class GroupStationChart extends Component {
       deviceModes: modes,
     };
     changeStore({
-      dataIndex: params.dataIndex, // 下标
+      dataIndex: name, // 下标
       dataName: name, // 名称
       selectStationCode: stationCodes, // 保存单选区域的信息
     });
-    myChart.setOption(this.drawChart(groupCapacityInfo, dataIndex));
+    myChart.setOption(this.drawChart(groupCapacityInfo, name));
     getGroupTrendInfo(paramsTrend);
     getGroupLostGenHour(paramsHour);
   };
 
   drawChart = (data, dataIndex) => {
-    const { titleFunc } = this.props;
+    const { titleFunc, colorData } = this.props;
     const twoBar = [{ // 实发
       data: data && data.map(cur => (cur.indicatorData.actualGen)),
       type: 'bar',
@@ -98,8 +96,7 @@ export default class GroupStationChart extends Component {
       itemStyle: {
         normal: {
           color: function(params) {//柱子颜色
-            const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
-            return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
+            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
           },
         },
         emphasis: {
@@ -128,10 +125,8 @@ export default class GroupStationChart extends Component {
       itemStyle: {
         barBorderRadius: [5, 5, 0, 0],
         normal: {
-          // color:['#07a6ba','#4bc0c9','#3b56d9','#dbbb32','03ecef','#8648e7','#0fb2db']
           color: function(params) {//柱子颜色
-            const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
-            return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
+            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
           },
         },
         emphasis: {
@@ -202,7 +197,7 @@ export default class GroupStationChart extends Component {
     return (
       <div className={styles.groupSortBox}>
         <div className={styles.groupSortTitle}>
-          {`各电站${titleFunc || '--'}排名`}
+          {`各区域${titleFunc || '--'}排名`}
         </div>
         <div className={styles.groupSortChartCenter} ref={ref => {this.groupSortChart = ref;}} />
       </div>

@@ -35,6 +35,9 @@
     cursor: pointer;
     line-height: 28px;
   }
+  .group > label{
+    display: block;
+  }
   &:hover{
     .stations{
       display: block;
