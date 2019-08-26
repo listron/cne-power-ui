@@ -10,7 +10,7 @@ class StopElecTypes extends Component {
   static propTypes = {
     stopElecType: PropTypes.string,
     stopChartTimeMode: PropTypes.string,
-    stopElec: PropTypes.object,
+    stopElec: PropTypes.array,
     stopTopStringify: PropTypes.string,
     changeStore: PropTypes.func,
     getStopElec: PropTypes.func,

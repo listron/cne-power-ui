@@ -25,15 +25,15 @@ class ChartLostTrend extends Component {
   }
 
   componentDidMount(){
-    const { stopTrend } = this.props;
-    stopTrend.length > 0 && this.renderChart(stopTrend);
+    const { stopTrend, stopChartTime } = this.props;
+    stopTrend.length > 0 && this.renderChart(stopTrend, stopChartTime);
   }
 
   componentWillReceiveProps(nextProps){
-    const { stopTrendLoading, stopTrend } = nextProps;
+    const { stopTrendLoading, stopTrend, stopChartTime } = nextProps;
     const preLoading = this.props.stopTrendLoading;
     if (preLoading && !stopTrendLoading) { // 请求完毕
-      this.renderChart(stopTrend);
+      this.renderChart(stopTrend, stopChartTime);
     } else if (!preLoading && stopTrendLoading) { // 请求中
       this.setChartLoading();
     }
@@ -44,29 +44,31 @@ class ChartLostTrend extends Component {
     trendChart && trendChart.showLoading();
   }
 
-  createSeries = (stopTrend = []) => {
+  createSeries = (stopTrend = [], stopChartTime) => {
     const dataAxis = [];
     const hourData = [];
     const countData = [];
     const series = [];
     stopTrend.forEach(e => {
+      const choosed = stopChartTime && e.efficiencyDate !== stopChartTime;
+      const symbolSize = choosed ? 4 : 10;
       dataAxis.push(e.efficiencyDate);
-      hourData.push(e.stopHour);
-      countData.push(e.stopCount);
+      hourData.push({ value: e.stopHour, symbolSize });
+      countData.push({ value: e.stopCount, symbolSize});
     });
     series[0] = {
       type: 'line',
       data: countData,
       xAxisIndex: 0,
       yAxisIndex: 0,
+      symbolSize: 4,
       lineStyle: {
-        normal: {
-          color: '#f9b600',
-          width: 2,
-          shadowColor: 'rgba(0,0,0,0.20)',
-          shadowBlur: 3,
-          shadowOffsetY: 3,
-        },
+        opacity: stopChartTime ? 0.2 : 1,
+        color: '#f9b600',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
     };
     series[1] = {
@@ -74,14 +76,14 @@ class ChartLostTrend extends Component {
       data: hourData,
       xAxisIndex: 1,
       yAxisIndex: 1,
+      symbolSize: 4,
       lineStyle: {
-        normal: {
-          color: '#2564cc',
-          width: 2,
-          shadowColor: 'rgba(0,0,0,0.20)',
-          shadowBlur: 3,
-          shadowOffsetY: 3,
-        },
+        opacity: stopChartTime ? 0.2 : 1,
+        color: '#2564cc',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
     };
     return { dataAxis, series };
@@ -114,9 +116,11 @@ class ChartLostTrend extends Component {
       const recordEnd = moment(efficiencyDate).endOf(stopChartTimeMode);
       startTime = moment.max(recordStart, moment(startTime)).format('YYYY-MM-DD');
       endTime = moment.min(recordEnd, moment(endTime)).format('YYYY-MM-DD');
-      this.props.changeStore({ stopChartTime: null });
-    } else {
       this.props.changeStore({ stopChartTime: efficiencyDate });
+      this.renderChart(stopTrend, efficiencyDate);
+    } else { // 取消选择
+      this.props.changeStore({ stopChartTime: null });
+      this.renderChart(stopTrend, null);
     }
     let faultInfo = {};
     if (stopChartTypes) {
@@ -133,9 +137,9 @@ class ChartLostTrend extends Component {
     this.props.getStopTypes({ ...param });
   }
 
-  renderChart = (stopTrend = []) => {
+  renderChart = (stopTrend = [], stopChartTime) => {
     const trendChart = echarts.init(this.trendRef);
-    const { dataAxis, series } = this.createSeries(stopTrend);
+    const { dataAxis, series } = this.createSeries(stopTrend, stopChartTime);
     const option = {
       grid: [
         { ...getBaseGrid(), top: 40, height: 150 },
@@ -186,12 +190,12 @@ class ChartLostTrend extends Component {
     }]);
     trendChart.hideLoading();
     trendChart.setOption(option);
+    trendChart.off('click');
     trendChart.on('click', (param) => this.chartHandle(param, stopTrend, trendChart));
   }
 
   render() {
-    const { stopChartTimeMode } = this.props;
-    const { stopChartTypes, stopChartDevice } = this.props;
+    const { stopChartTypes, stopChartDevice, stopChartTimeMode } = this.props;
     const stopDeviceText = stopChartDevice ? `${stopChartDevice.deviceName}-` : '';
     const stopTypeText = stopChartTypes ? `${stopChartTypes.faultName}-` : '';
     return (
@@ -200,7 +204,7 @@ class ChartLostTrend extends Component {
           <span className={styles.title}>
             {stopDeviceText}{stopTypeText}停机时长及次数
           </span>
-          <TimeSelect stopChartTimeMode={stopChartTimeMode} timeModeChange={this.timeModeChange} />
+          <TimeSelect timeMode={stopChartTimeMode} timeModeChange={this.timeModeChange} />
         </div>
         <div className={styles.chart} ref={(ref)=> {this.trendRef = ref;}} />
       </div>

@@ -35,22 +35,23 @@ class ChartStopRank extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const { stopRankLoading, stopRank } = nextProps;
+    const { stopRankLoading, stopRank, stopChartDevice } = nextProps;
     const preLoading = this.props.stopRankLoading;
     const { sortType } = this.state;
     if (preLoading && !stopRankLoading) { // 请求完毕
-      this.renderChart(stopRank, sortType);
+      this.renderChart(stopRank, sortType, stopChartDevice);
     } else if (!preLoading && stopRankLoading) { // 请求中
       this.setChartLoading();
     }
   }
 
   sortChart = (value) => {
-    const { stopRank } = this.props;
+    const { stopRank, stopChartDevice } = this.props;
     this.setState({ sortType: value }, () => {
-      this.renderChart(stopRank, value);
+      this.renderChart(stopRank, value, stopChartDevice);
     });
   }
+
   sortRank = (rankList, sortType = 'deviceName') => {
     const sortedList = [...rankList].sort((a, b) => {
       if (sortType === 'deviceName') {
@@ -78,7 +79,7 @@ class ChartStopRank extends Component {
     rankChart && rankChart.showLoading();
   }
 
-  createSeries = (stopRank = []) => {
+  createSeries = (stopRank = [], stopChartDevice) => {
     const dataAxis = [];
     const countData = [];
     const hourData = [];
@@ -91,7 +92,7 @@ class ChartStopRank extends Component {
     });
     const modeArr = [...modeSet];
     stopRank.forEach(e => {
-      const { deviceModeName, stopCount, stopHour } = e || {};
+      const { deviceModeName, stopCount, stopHour, deviceFullcode } = e || {};
       const colorIndex = modeArr.indexOf(deviceModeName);
       hourData.push({
         name: deviceModeName,
@@ -101,6 +102,7 @@ class ChartStopRank extends Component {
             {offset: 0, color: this.barColor[colorIndex][0]},
             {offset: 1, color: this.barColor[colorIndex][1]},
           ]),
+          opacity: (stopChartDevice && deviceFullcode !== stopChartDevice.deviceFullcode) ? 0.4 : 1,
         },
       });
       countData.push(stopHour);
@@ -128,6 +130,7 @@ class ChartStopRank extends Component {
   }
 
   chartHandle = ({dataIndex}, sortedStopRank, chart) => {
+    const { sortType } = this.state;
     const { stopElecType, stopChartTimeMode, stopChartTime, stopChartDevice, stopChartTypes, stopTopStringify } = this.props;
     const selectedDevice = sortedStopRank[dataIndex] || {};
     const searchParam = JSON.parse(stopTopStringify) || {};
@@ -136,9 +139,11 @@ class ChartStopRank extends Component {
     let endTime = searchParam.date[1];
     if (stopChartDevice && selectedDevice.deviceFullcode === stopChartDevice.deviceFullcode) { // 取消选中
       this.props.changeStore({ stopChartDevice: null });
+      this.renderChart(sortedStopRank, sortType, null);
     } else {
       deviceFullcodes = [selectedDevice.deviceFullcode];
       this.props.changeStore({ stopChartDevice: selectedDevice });
+      this.renderChart(sortedStopRank, sortType, selectedDevice);
     }
     if (stopChartTime) { // 已有时间选择。
       const recordStart = moment(stopChartTime).startOf(stopChartTimeMode);
@@ -161,10 +166,10 @@ class ChartStopRank extends Component {
     this.props.getStopTypes({ ...param });
   }
 
-  renderChart = (stopRank = [], sortType) => {
+  renderChart = (stopRank = [], sortType, stopChartDevice) => {
     const rankChart = echarts.init(this.rankRef);
     const sortedStopRank = this.sortRank(stopRank, sortType);
-    const { dataAxis, series } = this.createSeries(sortedStopRank);
+    const { dataAxis, series } = this.createSeries(sortedStopRank, stopChartDevice);
     const option = {
       grid: getBaseGrid(),
       xAxis: getBaseXAxis(dataAxis),
@@ -212,6 +217,7 @@ class ChartStopRank extends Component {
     }]);
     rankChart.hideLoading();
     rankChart.setOption(option);
+    rankChart.off('click');
     rankChart.on('click', (param) => this.chartHandle(param, sortedStopRank, rankChart ));
   }
 

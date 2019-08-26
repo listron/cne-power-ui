@@ -55,7 +55,7 @@ class ChartLostTrend extends Component {
       const { efficiencyDate, indicatorData = {} } = e || {};
       dataAxis.push(efficiencyDate);
       const choosed = lostChartTime && efficiencyDate !== lostChartTime;
-      const symbolSize = choosed ? 4 : 8;
+      const symbolSize = choosed ? 4 : 10;
       if (indicatorType === 'single') {
         firstLineData.push({ value: indicatorData.value, symbolSize });
       } else {
@@ -66,6 +66,7 @@ class ChartLostTrend extends Component {
     series[0] = {
       type: 'line',
       data: firstLineData,
+      symbolSize: 4,
       lineStyle: {
         opacity: lostChartTime ? 0.2 : 1,
         color: '#2564cc',
@@ -78,6 +79,7 @@ class ChartLostTrend extends Component {
     indicatorType === 'double' && (series[1] = {
       type: 'line',
       data: secendLineData,
+      symbolSize: 4,
       lineStyle: {
         opacity: lostChartTime ? 0.2 : 1,
         color: '#f9b600',
@@ -121,7 +123,7 @@ class ChartLostTrend extends Component {
     });
   }
 
-  chartHandle = ({dataIndex}, lostTrend, chart) => {
+  chartHandle = ({ dataIndex }, lostTrend, chart) => {
     const { lostChartTimeMode, lostChartDevice, lostChartTime, lostStringify } = this.props;
     if(!lostChartDevice){
       message.info('先选择设备后, 才能对时间进行操作');
@@ -212,7 +214,7 @@ class ChartLostTrend extends Component {
           <span className={styles.title}>
             {chartName}{selectedQuota.label || '--'}
           </span>
-          <TimeSelect lostChartTimeMode={lostChartTimeMode} timeModeChange={this.timeModeChange} />
+          <TimeSelect timeMode={lostChartTimeMode} timeModeChange={this.timeModeChange} />
         </div>
         <div className={styles.chart} ref={(ref)=> {this.trendRef = ref;}} />
       </div>
