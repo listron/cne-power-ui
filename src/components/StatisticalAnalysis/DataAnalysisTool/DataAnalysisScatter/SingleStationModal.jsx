@@ -52,7 +52,7 @@ class SingleStationModal extends React.Component {
           footer={null}
           visible={imageListShow}
           onCancel={hideImg}
-          width={980}
+          width={1280}
           destroyOnClose={true}
           wrapClassName={styles.singleStationModal}
           getContainer={() => this.refs.date}

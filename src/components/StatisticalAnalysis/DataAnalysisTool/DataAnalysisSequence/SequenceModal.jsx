@@ -49,7 +49,7 @@ class SequenceModal extends React.Component {
           footer={null}
           visible={isShowModal}
           onCancel={hideImg}
-          width={980}
+          width={1280}
           destroyOnClose={true}
           wrapClassName={styles.sequenceModal}
           getContainer={() => this.refs.date}
