@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Icon, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
+import Cookie from 'js-cookie';
 
 /*
   全局共用信息提示组件：
@@ -35,7 +36,8 @@ class WarningTip extends Component {
   }
 
   render() {
-    const { style, hiddenCancel, value, onCancel, onOK, theme = 'light' } = this.props;
+    const { style, hiddenCancel, value, onCancel, onOK } = this.props;
+    const theme = Cookie.get('theme') || 'light';
     return (
       <React.Fragment>
         {/* <span ref={'tooltip'} /> */}

@@ -34,6 +34,12 @@
       td {
         background: rgba(83, 104, 241, 0.15);
       }
+      td.ant-table-column-sort {
+        background: rgba(83, 104, 241, 0.15);
+        &:hover {
+          background: rgba(83, 104, 241, 0.15);
+        }
+      }
     }
 
     .ant-table-thead > tr > th {
@@ -45,8 +51,9 @@
     .ant-table-empty .ant-table-placeholder,
     .ant-table-placeholder {
       background: transparent;
-      border: 1px solid $border-color;
       color: $fontColor;
+      border-top: 1px solid $border-color;
+      border-bottom: none;
     }
     .ant-empty-normal {
       color: $fontColor;
@@ -270,6 +277,11 @@
 
   // =================input ==============
 
+  .ant-input[disabled] {
+    background: #405080;
+    border: 1px solid #7088c3;
+    color: #7088c3;
+  }
   .ant-input:not(.ant-input-disabled) {
     background: $input-Background;
     border: 1px solid $input-border;
@@ -457,11 +469,19 @@
     border-top: 1px solid $border-color;
   }
 
-  .ant-calendar-range .ant-calendar-body {
-    border: none;
-  }
   .ant-calendar-range .ant-calendar-in-range-cell::before {
     background: #205bac;
+  }
+
+  .ant-calendar-range {
+    .ant-calendar-input,
+    .ant-calendar-time-picker-input {
+      background: transparent;
+      color: $fontColor;
+    }
+    .ant-calendar-body {
+      border: none;
+    }
   }
 
   /*输入框前面的小方块*/

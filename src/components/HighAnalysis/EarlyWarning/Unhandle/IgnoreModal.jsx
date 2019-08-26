@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from './newUnhandle.scss';
+import styles from './unhandle.scss';
 import PropTypes from 'prop-types';
 import { Select, DatePicker, Modal, Radio, message, Form } from 'antd';
 import InputLimit from '../../../Common/InputLimit';
@@ -19,17 +19,17 @@ class IgnoreModal extends Component {
         super(props);
         this.state = {
             ignoreReasonCode: '', // 忽略原因
-            otherReason: '',// 其他原因
+            otherReason: '', // 其他原因
             timeType: 'sevenDay',
-            otherData:'',
+            otherData: '',
             deadline: moment().add(7, 'days').utc().format(),
-        }
+        };
     }
 
     onChangeDuration = (value) => { // 修改截止时间
         this.setState({
             timeType: value,
-        })
+        });
         let deadline;
         if (value === 'sevenDay') {
             deadline = moment().add(7, 'days').utc().format('');
@@ -40,16 +40,16 @@ class IgnoreModal extends Component {
         }
         this.setState({
             deadline: deadline,
-        })
+        });
     }
 
     handleIngoreOk = () => { // 忽略原因点击确定
-        const { ignoreReasonCode, otherReason, timeType, deadline,otherData } = this.state;
+        const { ignoreReasonCode, otherReason, timeType, deadline, otherData } = this.state;
         const { ignoreReason } = this.props;
-        message.config({top:188,duration: 2, maxCount: 1,});
+        message.config({ top: 188, duration: 2, maxCount: 1 });
         if (ignoreReasonCode === 1407 && otherReason.trim().length === 0) {
             message.warning('请填写其他忽略原因');
-        } else if(!ignoreReasonCode){
+        } else if (!ignoreReasonCode) {
             message.warning('请填写忽略原因');
         } else if (timeType === 'other' && !otherData) {
             message.warning('请填写截止时间');
@@ -58,31 +58,31 @@ class IgnoreModal extends Component {
                 ignoreReasonCode: ignoreReasonCode,
                 ignoreReason: ignoreReasonCode !== 1407 ? ignoreReason.filter(e => e.id === ignoreReasonCode)[0].name : otherReason,
                 buttonStatus: 'sure',
-                deadline:timeType==='other'? otherData:deadline,
-                ignoreTime:moment().utc().format()
-            })
+                deadline: timeType === 'other' ? otherData : deadline,
+                ignoreTime: moment().utc().format(),
+            });
             this.setState({ // 恢复初始值
                 ignoreReasonCode: '', // 忽略原因
-                otherReason: '',// 其他原因
+                otherReason: '', // 其他原因
                 timeType: 'sevenDay',
-                otherData:'',
+                otherData: '',
                 deadline: moment().add(7, 'days').utc().format(),
-            })
+            });
         }
     }
 
     handleIngoreCancel = () => { // 忽略原因点击取消
-        this.props.onChange({ buttonStatus: 'cancle' })
-        this.setState({ ignoreReasonCode: '', otherReason: '' })
+        this.props.onChange({ buttonStatus: 'cancle' });
+        this.setState({ ignoreReasonCode: '', otherReason: '' });
 
     }
 
     inputChange = (value) => { //输入其他的原因
-        this.setState({ otherReason: value })
+        this.setState({ otherReason: value });
     }
 
     resonClick = (e) => { // 原因的选择
-        this.setState({ ignoreReasonCode: e.target.value })
+        this.setState({ ignoreReasonCode: e.target.value });
     }
 
     disabledDate = (current) => {
@@ -90,7 +90,7 @@ class IgnoreModal extends Component {
     }
 
     timeSelect = (date, dateString) => {
-        this.setState({otherData:moment(date).utc().format()})
+        this.setState({ otherData: moment(date).utc().format() });
     }
 
 
@@ -98,48 +98,54 @@ class IgnoreModal extends Component {
         const { ignoreReason, ingoreVisible } = this.props;
         const { otherReason, ignoreReasonCode, timeType } = this.state;
         return (
-            <Modal
-                visible={ingoreVisible}
-                onOk={this.handleIngoreOk}
-                onCancel={this.handleIngoreCancel}
-                width={750}
-                closable={false}
-                centered={true}
-                wrapClassName={styles.stationModal}
-            >
-                <div className={styles.reasonItem} >
-                    <p className={styles.title} >忽略选中预警</p>
-                    <div className={styles.label} >
-                        <div className={styles.timeline}>
-                            <p className={styles.labels}> 截至时间 <span>*</span></p>
-                            <Select className={styles.duration} style={{ width: 120, marginRight: 20 }} value={timeType} onChange={this.onChangeDuration}>
-                                <Option value="oneDay">1天</Option>
-                                <Option value="threeDay">3天</Option>
-                                <Option value="sevenDay">7天</Option>
-                                <Option value="other">其他</Option>
-                            </Select>
-                            {timeType === 'other' &&
-                                <DatePicker placeholder="请输入" disabledDate={this.disabledDate} onChange={this.timeSelect} />
-                            }
-                        </div>
-                        <div className={styles.ignoreReason}>
-                            <div className={styles.ignoreReasonTop}>
-                                <p className={styles.labels}> 忽略原因 <span>*</span></p>
-                                <div className={styles.reasonName}>
-                                    <Radio.Group onChange={this.resonClick} value={ignoreReasonCode} >
-                                        {ignoreReason.map((item) => {
-                                            return <Radio.Button value={item.id} key={item.id}>{item.name}</Radio.Button>
-                                        })}
-                                    </Radio.Group>
-                                </div>
+            <React.Fragment>
+                <span ref="modal" />
+                <Modal
+                    visible={ingoreVisible}
+                    onOk={this.handleIngoreOk}
+                    onCancel={this.handleIngoreCancel}
+                    width={750}
+                    closable={false}
+                    centered={true}
+                    wrapClassName={styles.stationModal}
+                    getContainer={() => this.refs.modal}
+                >
+                    <div className={styles.reasonItem} >
+                        <p className={styles.title} >忽略选中预警</p>
+                        <div className={styles.label} >
+                            <div className={styles.timeline}>
+                                <p className={styles.labels}> 截至时间 <span>*</span></p>
+                                <Select className={styles.duration} style={{ width: 120, marginRight: 20 }} value={timeType} onChange={this.onChangeDuration}>
+                                    <Option value="oneDay">1天</Option>
+                                    <Option value="threeDay">3天</Option>
+                                    <Option value="sevenDay">7天</Option>
+                                    <Option value="other">其他</Option>
+                                </Select>
+                                {timeType === 'other' &&
+                                    <DatePicker placeholder="请输入" disabledDate={this.disabledDate} onChange={this.timeSelect} />
+                                }
                             </div>
-                            <div className={styles.descripe} >
-                                <InputLimit placeholder="请描述，不超过80个汉字" onChange={this.inputChange} value={otherReason} disabled={ignoreReasonCode === 1407 ? false : true} />
+                            <div className={styles.ignoreReason}>
+                                <div className={styles.ignoreReasonTop}>
+                                    <p className={styles.labels}> 忽略原因 <span>*</span></p>
+                                    <div className={styles.reasonName}>
+                                        <Radio.Group onChange={this.resonClick} value={ignoreReasonCode} >
+                                            {ignoreReason.map((item) => {
+                                                return <Radio.Button value={item.id} key={item.id}>{item.name}</Radio.Button>;
+                                            })}
+                                        </Radio.Group>
+                                    </div>
+                                </div>
+                                <div className={styles.descripe} >
+                                    <InputLimit placeholder="请描述，不超过80个汉字" onChange={this.inputChange} value={otherReason} disabled={ignoreReasonCode === 1407 ? false : true} />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </Modal>
+                </Modal>
+            </React.Fragment>
+
+
         );
     }
 }
