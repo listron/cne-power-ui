@@ -75,6 +75,17 @@ class ChartLostTypes extends Component {
     const baseOption = getBaseOption(xAxisLabel);
     baseOption.yAxis.name = '小时数(h)';
     baseOption.yAxis.min = 0;
+    baseOption.xAxis.axisLabel.interval = 0;
+    baseOption.xAxis.axisLabel.formatter = (str) => {
+      const labelStr = [];
+      let index = 0;
+      while(str[index]){
+        labelStr.push(str[index]);
+        index % 4 === 3 && str[index + 1] && labelStr.push('\n');
+        index++;
+      }
+      return labelStr.join('');
+    };
     const option = {
       ...baseOption,
       tooltip: {
