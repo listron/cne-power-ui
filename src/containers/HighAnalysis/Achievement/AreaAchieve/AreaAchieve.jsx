@@ -39,6 +39,17 @@ class AreaAchieve extends Component {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
       this.queryParamsFunc(groupInfo);
     }
+    // 判断从别的页面头次进入，请求机型
+    if(!groupInfoStr) {
+      const { areaStation } = this.props;
+      const { stations = [] } = areaStation[0] || {};
+      const firstStation = stations.map(cur => {
+        return cur.stationCode;
+      });
+      if(firstStation){
+        this.props.getModesInfo({ stationCodes: firstStation});
+      }
+    }
     // 右键重置图表
     // 去掉默认的contextmenu事件，否则会和右键事件同时出现。
     document.oncontextmenu = (e) => {
