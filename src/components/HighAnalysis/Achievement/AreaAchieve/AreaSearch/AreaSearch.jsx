@@ -202,6 +202,13 @@ export default class AreaSearch extends Component {
       dataName,
     } = this.props;
     const { modes, dates, quota, stations } = this.state;
+    const stationsValue = [];
+    stations && stations.forEach(cur => {
+      const { stations = [] } = cur || {};
+      stations.forEach(item => {
+        stationsValue.push(item.stationCode);
+      });
+    });
     return (
       <div className={styles.topSearch}>
         <div>
