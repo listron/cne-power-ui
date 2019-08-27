@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Spin } from 'antd';
 import styles from './sequenceStyles.scss';
 import SequenceChart from './SequenceChart';
 import { downloadFile } from '../../../../utils/utilFunc';
@@ -99,12 +100,11 @@ class SequenceChartContainer extends React.Component {
   }
 
   render() {
-    const { deviceList, sequenceData } = this.props;
+    const { deviceList } = this.props;
     const { currentImgIndex, isShowModal } = this.state;
     return (
       <div className={styles.chartsContainer}>
         {deviceList.map((e, i) => {
-          // const data = this.props[e.deviceFullCode];
           return (
             <div className={styles.chartStyle} key={i}>
               <div className={styles.sequenceChart} >
@@ -112,8 +112,6 @@ class SequenceChartContainer extends React.Component {
                   {...this.props}
                   saveBtn={e.likeStatus}
                   deviceFullCode={e.deviceFullCode}
-                  // allChartData={data}
-                  // allChartData={sequenceData[i]}
                   index={i}
                   showImg={this.showImg}
                   deviceName={e.deviceName}

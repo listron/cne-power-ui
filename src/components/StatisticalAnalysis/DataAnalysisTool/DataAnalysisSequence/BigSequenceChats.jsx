@@ -9,23 +9,33 @@ import moment from 'moment';
 
 class BigSequenceCharts extends React.Component {
   static propTypes = {
-    allChartData: PropTypes.object,
+    curBigChartData: PropTypes.object,
     saveBtn: PropTypes.bool,
     bigchartLoading: PropTypes.bool,
-
+    deviceList: PropTypes.array,
+    index: PropTypes.num,
+    theme: PropTypes.string,
+    likeStatusChange: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
   }
   componentDidMount() {
-    this.renderChart(this.props);
+    const { curBigChartData, deviceList, index } = this.props;
+    const curChart = deviceList[index];
+    const saveBtn = curChart ? curChart.likeStatus : false;
+    const deviceName = curChart ? curChart.deviceName : '';
+    this.renderChart(curBigChartData, saveBtn, deviceName);
   }
   componentWillReceiveProps(nextProps) {
-    const { allChartData, saveBtn } = this.props;
+    const { curBigChartData, theme, index, deviceList } = nextProps;
     const { bigChart } = this;
-    const myChart = eCharts.init(bigChart, themeConfig[this.props.theme]); //构建下一个实例
-    if (JSON.stringify(allChartData) !== JSON.stringify(nextProps.allChartData)) {
-      this.renderChart(nextProps);
+    const curChart = deviceList[index];
+    const saveBtn = curChart ? curChart.likeStatus : false;
+    const deviceName = curChart ? curChart.deviceName : '';
+    const myChart = eCharts.init(bigChart, themeConfig[theme]); //构建下一个实例
+    if (JSON.stringify(this.props.curBigChartData) !== JSON.stringify(curBigChartData)) {
+      this.renderChart(curBigChartData, saveBtn, deviceName);
     }
     if (nextProps.bigchartLoading) {
       myChart.showLoading();
@@ -33,16 +43,17 @@ class BigSequenceCharts extends React.Component {
     if (!nextProps.bigchartLoading) {
       myChart.hideLoading();
     }
-    if ((nextProps.saveBtn !== saveBtn) || (nextProps.id !== this.props.id)) {
+    if ((this.props.saveBtn !== saveBtn) || (nextProps.id !== this.props.id)) {
       // console.log('likestatus发生改变重新渲染');
-      this.renderChart(nextProps);
+      this.renderChart(curBigChartData, saveBtn, deviceName);
     }
   }
-  creatOption = (payload) => {
-    const { allChartData, deviceName, pointCodeNameX, pointCodeNameY, saveBtn, point1Max, point1Min, point2Max, point2Min } = payload;
-    const { timeLine, point1Data, point2Data } = Object.keys(allChartData).length ? allChartData : { timeLine: [], point1Data: [], point2Data: [] };
+  creatOption = (curBigChartData = {}, saveBtn, deviceName) => {
+    const { pointCodeNameX, pointCodeNameY, xyValueLimit } = this.props;
+    const { xMax, xMin, yMax, yMin } = xyValueLimit;
+    const { timeLine = [], point1Data = [], point2Data = [] } = curBigChartData;
     const option = {
-      graphic: Object.keys(allChartData).length ? hiddenNoData : showNoData,
+      graphic: timeLine.length ? hiddenNoData : showNoData,
       title: {
         text: [`${deviceName}`, '{b|}'].join(''),
         left: '5%',
@@ -102,20 +113,19 @@ class BigSequenceCharts extends React.Component {
         axisLabel: {
           formatter: (value) => {
             return moment(value).format('YYYY-MM-DD') + '\n' + moment(value).format('HH:mm:ss');
-
           },
         },
       },
       yAxis: [
         {
           type: 'value',
-          min: point1Min,
-          max: point1Max,
+          min: xMin,
+          max: xMax,
 
         }, {
           type: 'value',
-          min: point2Min,
-          max: point2Max,
+          min: yMin,
+          max: yMax,
           splitLine: false,
         },
       ],
@@ -139,11 +149,11 @@ class BigSequenceCharts extends React.Component {
     };
     return option;
   }
-  renderChart(payload) {
-    const { likeStatusChange, index, saveBtn } = payload;
+  renderChart(curBigChartData, saveBtn, deviceName) {
+    const { likeStatusChange, index } = this.props;
     const { bigChart } = this;
     const myChart = eCharts.init(bigChart, themeConfig[this.props.theme]); //构建下一个实例
-    const option = this.creatOption(payload);
+    const option = this.creatOption(curBigChartData, saveBtn, deviceName);
     myChart.off();
     myChart.on('click', 'title', (payload) => {
       likeStatusChange(index, !saveBtn);

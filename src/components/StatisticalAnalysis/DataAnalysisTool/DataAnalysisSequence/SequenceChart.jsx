@@ -17,8 +17,11 @@ class SequenceChart extends React.Component {
     deviceList: PropTypes.array,
     sequenceData: PropTypes.object,
     getSequenceData: PropTypes.func,
+    likeStatusChange: PropTypes.func,
     pointY1: PropTypes.string,
     pointY2: PropTypes.string,
+    activeCode: PropTypes.string,
+    theme: PropTypes.string,
     showImg: PropTypes.func,
   }
   constructor(props, context) {
@@ -26,15 +29,16 @@ class SequenceChart extends React.Component {
   }
   componentDidMount() {
     const { sequenceChart } = this;
+    const { sequenceData, saveBtn } = this.props;
     const myChart = eCharts.init(sequenceChart, themeConfig[this.props.theme]); //构建下一个实例
-    const option = this.creatOption(this.props);
+    const option = this.creatOption(sequenceData, saveBtn);
     myChart.setOption(option);
 
   }
   componentWillReceiveProps(nextProps) {
-    // const myChart = eCharts.init(this.sequenceChart, themeConfig[nextProps.theme]);
-    const { activeCode, chartLoading, saveBtn, sequenceData } = nextProps;
-
+    const { activeCode, saveBtn, sequenceData, deviceList, xyValueLimit, startTime, endTime, pointY1, pointY2 } = nextProps;
+    const requestParams = { startTime, endTime, pointY1, pointY2 };
+    console.log('xyValueLimit22222: ', xyValueLimit);
     const prevCode = this.props.activeCode;
     const preData = this.props.sequenceData;
     if (preData.deviceFullCode === this.props.deviceFullCode) {
@@ -48,48 +52,22 @@ class SequenceChart extends React.Component {
       if (this.props.chartLoading) {
         myChart.showLoading();
       }
-
-
-      this.renderChart(sequenceData, saveBtn, true);//此处的第三个参数是控制定时器是否发送下一个请求
+      if (this.props.deviceFullCode === deviceList[deviceList.length - 1].deviceFullCode) {//最后一项取消loading
+        myChart.hideLoading();
+      }
+      this.renderChart(sequenceData, saveBtn, requestParams);//此处的第三个参数是控制定时器是否发送下一个请求
     }
     if (saveBtn !== this.props.saveBtn) {
       this.renderChart(sequenceData, saveBtn, false);
     }
-
-
-    // const { chartLoading, index, saveBtn, point1Max, point2Max, theme } = this.props;
-    // if (nextProps.chartLoading && (index) === this.props.sequenceData.length) { // loading态控制。第一次无数据，请求数据的过程
-    //   myChart.showLoading();
-    // }
-    // if (!nextProps.chartLoading) {
-    //   myChart.hideLoading();
-    // }
-    // if ((nextProps.saveBtn !== saveBtn)) {
-    //   // console.log('likestatus发生改变重新渲染');
-    //   myChart.clear();
-    //   this.renderChart(nextProps);
-    // }
-    // if ((index + 1 === nextProps.sequenceData.length) && (chartLoading && nextProps.chartLoading !== chartLoading)) {
-    //   // console.log('后面的图渲染');
-    //   myChart.clear();//清除
-    //   myChart.dispose();
-    //   this.renderChart(nextProps);
-    // }
-    // if ((point1Max !== nextProps.point1Max || point2Max !== nextProps.point2Max)) {
-    //   // console.log('limitValue');
-    //   myChart.clear();//清除
-    //   this.renderChart(nextProps);
-    // }
-
   }
   shouldComponentUpdate(nextProps) {
     const { activeCode, deviceFullCode } = nextProps;
     return activeCode === this.props.deviceFullCode || this.props.deviceFullCode !== deviceFullCode;
   }
   componentWillUnmount() {
-    console.log('卸载');
-    // eCharts.init(this.chartId, themeConfig[this.props.theme]).dispose();
-
+    const myChart = eCharts.init(this.sequenceChart, themeConfig[this.props.theme]);
+    myChart.dispose();
   }
   creatOption = (sequenceData = {}, saveBtn) => {
     const { deviceName, pointCodeNameX, pointCodeNameY, xyValueLimit } = this.props;
@@ -161,8 +139,6 @@ class SequenceChart extends React.Component {
           type: 'value',
           min: xMin,
           max: xMax,
-          // min: point1Min,
-          // max: point1Max,
           position: 'left',
           // axisLabel: {
           //   formatter: '{value} kW',
@@ -171,8 +147,6 @@ class SequenceChart extends React.Component {
           type: 'value',
           min: yMin,
           max: yMax,
-          // min: point2Min,
-          // max: point2Max,
           position: 'right',
           splitLine: false,
           // axisLabel: {
@@ -204,12 +178,13 @@ class SequenceChart extends React.Component {
     return option;
   }
   renderChart = (sequenceData, saveBtn, isRequest) => {
-    const { deviceList, getSequenceData, index, pointY1, pointY2, startTime, endTime, likeStatusChange, deviceName, theme } = this.props;
+    const { deviceList, getSequenceData, index, pointY1, pointY2, likeStatusChange, deviceName, theme } = this.props;
     const parms = {
-      pointY1,
-      pointY2,
-      startTime,
-      endTime,
+      // pointY1,
+      // pointY2,
+      // startTime,
+      // endTime,
+      ...isRequest,
       interval: 60,
     };
 
@@ -218,7 +193,7 @@ class SequenceChart extends React.Component {
     const option = this.creatOption(sequenceData, saveBtn);
     myChart.off();
     myChart.on('click', 'title', (payload) => {
-      likeStatusChange(index, !saveBtn, sequenceData);
+      likeStatusChange(index, !saveBtn);
     });
 
 
@@ -229,22 +204,10 @@ class SequenceChart extends React.Component {
       });
       this.props.saveImgUrl && this.props.saveImgUrl(deviceName, imgUrl);
     });
-    // if ((+sequenceData.length === index + 1) && (index + 1 < deviceList.length)) {
-    //   myChart.on('finished', () => {
-    //     myChart.off();
-    //     myChart.on('click', 'title', (payload) => {
-    //       likeStatusChange(index, !saveBtn);
-    //     });
-    //     getSequenceData(
-    //       {
-    //         ...parms,
-    //         deviceFullCode: deviceList[index + 1].deviceFullCode,
-    //       });
-    //   });
-    // }
+
     isRequest && setTimeout(() => {
       const continueQuery = index < deviceList.length - 1;
-      continueQuery && this.props.getSequenceData({
+      continueQuery && getSequenceData({
         ...parms,
         deviceFullCode: deviceList[index + 1].deviceFullCode,
       });

@@ -208,6 +208,7 @@ function* getxyLimitValue(action) {//获取
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           xyValueLimit: response.data.data || {},
+          pageLoading: false,
 
         },
       });
@@ -220,6 +221,7 @@ function* getxyLimitValue(action) {//获取
       type: dataAnalysisSequenceAction.changeSquenceStore,
       payload: {
         xyValueLimit: {},
+        pageLoading: false,
       },
     });
   }

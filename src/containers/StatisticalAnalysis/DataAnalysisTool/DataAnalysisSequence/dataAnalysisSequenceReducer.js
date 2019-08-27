@@ -2,6 +2,7 @@ import Immutable from 'immutable';
 import moment from 'moment';
 import { dataAnalysisSequenceAction } from './dataAnalysisSequenceAction';
 var initState = Immutable.fromJS({
+
   chartLoading: false,
   bigchartLoading: false,
   chartTime: null, //图的时间戳
@@ -18,13 +19,13 @@ var initState = Immutable.fromJS({
   sequenceNames: [], //测点
   sequenceNameTime: null, //请求测点的时间戳
   sequenceotherNames: [], //其他测点名字
-  sequenceData: [], //时序图汇总数据
+  sequenceData: {}, //时序图汇总数据
   curBigChartData: {}, //当前请求到的时序图
   down: false,
-  point1Max: null,
-  point1Min: null,
-  point2Max: null,
-  point2Min: null,
+  // point1Max: null,
+  // point1Min: null,
+  // point2Max: null,
+  // point2Min: null,
   xyValueLimit: {},
   activeCode: '',
 
