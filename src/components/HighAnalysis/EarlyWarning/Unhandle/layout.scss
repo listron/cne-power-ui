@@ -1,0 +1,171 @@
+.UnhandleBox {
+  min-height: 100%;
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  .wrap {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .unhandleMain {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    width: 100%;
+
+    .selectCondition {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 26px 28px 20px;
+    }
+    :global {
+      .ant-table-placeholder {
+        border-bottom: none;
+      }
+      .ant-table-thead {
+        th > div {
+          height: 60px;
+        }
+      }
+      .ant-table-column-sorter {
+        top: 18px;
+      }
+    }
+    .iconDetail {
+      span {
+        display: block;
+        cursor: pointer;
+      }
+    }
+  }
+  .unhandleSide {
+    display: flex;
+    flex: 1 0 auto;
+    width: 100%;
+    z-index: 15;
+    flex-direction: column;
+    .top {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      height: 64px;
+      line-height: 64px;
+      padding-left: 41px;
+      align-items: center;
+      font-size: 18px;
+      .warnButton {
+        margin-left: 30px;
+        font-size: 14px;
+      }
+      .backIcon {
+        font-size: 20px;
+        height: 100%;
+        width: 64px;
+        line-height: 64px;
+        cursor: pointer;
+      }
+    }
+    .detail {
+      display: flex;
+      height: 53px;
+      align-items: center;
+      line-height: 53px;
+      align-items: center;
+      align-content: center;
+      justify-content: space-around;
+      p {
+        margin-bottom: 0;
+      }
+    }
+    .chartTop {
+      margin: 0 20px;
+      display: flex;
+      padding: 0 20px;
+      height: 50px;
+      justify-content: space-between;
+      align-items: center;
+      :global {
+        .ant-input {
+          width: 210px;
+        }
+      }
+    }
+    .chartCont {
+      display: flex;
+      flex: 1;
+      height: 500px;
+      padding: 0 20px;
+      > div {
+        display: flex;
+        flex: 1;
+      }
+    }
+  }
+}
+
+.stationModal {
+  :global {
+    .ant-modal-body {
+      padding: 0;
+    }
+  }
+  .reasonItem {
+    display: flex;
+    flex-direction: column;
+    .title {
+      line-height: 52px;
+      padding-left: 31px;
+    }
+    .label {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      margin-left: 31px;
+      .timeline {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        .labels {
+          margin-right: 4px;
+          line-height: 30px;
+          margin-bottom: 0;
+        }
+      }
+      .ignoreReason {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        margin-top: 20px;
+        .ignoreReasonTop {
+          display: flex;
+          flex: 1;
+          .labels {
+            display: flex;
+            margin-right: 4px;
+            line-height: 30px;
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+    .reasonName {
+      display: flex;
+      flex-wrap: wrap;
+      :global {
+        .ant-radio-button-wrapper {
+          border-radius: 4px;
+          margin: 0 4px;
+          padding: 0 4px;
+        }
+      }
+    }
+    .descripe {
+      margin-left: 68px;
+      margin-top: 16px;
+      margin-bottom: 20px;
+    }
+  }
+}

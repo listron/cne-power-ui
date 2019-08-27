@@ -1,108 +1,11 @@
 @import "../../../../theme/theme.scss";
 @import "./layout.scss";
 
-.relieveModal {
-  .formItem {
-    display: flex;
-    flex-direction: row;
-    :global {
-      .ant-form-item-label {
-        overflow: visible;
-        .ant-form-item-required::before {
-          position: absolute;
-          top: 5px;
-          left: -10px;
-        }
-      }
-    }
-  }
-  .input {
-    margin-left: -60px;
-    margin-top: 15px;
-  }
-  .instructionText {
-    display: flex;
-    flex: 1;
-    align-items: flex-end;
-    justify-content: flex-end;
-    margin-right: 8px;
-  }
-  :global {
-    .ant-modal-content {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      height: 100%;
-      margin-top: 180px;
-    }
-    .ant-form-item-control-wrapper {
-      .ant-form-item-control {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        .ant-form-item-children {
-          display: flex;
-          flex-direction: row;
-          .ant-calendar-picker {
-            margin-left: 12px;
-            vertical-align: top;
-          }
-        }
-      }
-    }
-  }
-}
-
-.transferModal {
-  .formItem {
-    display: flex;
-    flex-direction: row;
-  }
-  .input {
-    margin-left: -60px;
-    margin-top: 15px;
-  }
-  .instructionText {
-    display: flex;
-    flex: 1;
-    align-items: flex-end;
-    justify-content: flex-end;
-    margin-right: 8px;
-  }
-  :global {
-    .ant-modal-content {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      height: 100%;
-      margin-top: 180px;
-    }
-  }
-}
-
 .light {
   background: #fff;
   .deviceNameSearch {
-    display: flex;
-    height: 50px;
-    flex-shrink: 0;
     background-color: #f9f9f9;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 28px;
-    > span {
-      color: $darkColor;
-    }
-    .deviceName {
-      width: 200px;
-      margin: 0 16px;
-    }
-    > span:last-child {
-      color: $themeColor;
-      font-size: 14px;
-      cursor: pointer;
-      margin-left: 16px;
-    }
+    color: $darkColor;
   }
   .realTimeWarningTable {
     .tableHeader {
@@ -144,12 +47,17 @@
 .dark {
   @import "../../../../theme/darkTheme.scss";
   background: $background;
+  .realTimeWarningFilter {
+    margin-top: 10px;
+  }
+
   .deviceNameSearch {
     background-color: $light-background;
     color: $fontColor;
     margin-top: 10px;
     border: 1px solid $border-color;
   }
+
   .realTimeWarningTable {
     background: $light-background;
     border: 1px solid $border-color;
@@ -176,6 +84,7 @@
       }
     }
   }
+
   .tableFooter {
     background-color: transparent;
     .info {
