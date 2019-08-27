@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import styles from "./historyWarn.scss";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import styles from './historyWarn.scss';
 import PropTypes from 'prop-types';
 import { historyWarnAction } from './historyWarnAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
@@ -9,21 +9,23 @@ import HistoryWarnCon from '../../../../components/HighAnalysis/EarlyWarning/His
 
 class HistoryWarn extends Component {
   static propTypes = {
-    resetStore:PropTypes.func
+    resetStore: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
 
-  componentWillUnmount(){
-    this.props.resetStore()
+  componentWillUnmount() {
+    this.props.resetStore();
   }
 
   render() {
+    const { theme } = this.props;
     return (
-      <div className={styles.historyWarnBox}>
-        <CommonBreadcrumb breadData={[{name:'历史预警'}]} style={{marginLeft:'38px'}} />
+      <div className={`${styles.historyWarnBox} ${styles[theme]}`}>
+        <CommonBreadcrumb breadData={[{ name: '历史预警' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.historyWarnContainer}>
           <div className={styles.historyWarnContent}>
             <HistoryWarnCon {...this.props} />
@@ -31,20 +33,22 @@ class HistoryWarn extends Component {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
   return ({
     ...state.highAanlysisReducer.historyWarn.toJS(),
     stations: state.common.get('stations').toJS(),
-  })
-}
+    theme: state.common.get('theme'),
+  });
+};
 const mapDispatchToProps = (dispatch) => ({
   changeCleanoutRecordStore: payload => dispatch({ type: historyWarnAction.changeHistoryWarnStoreSaga, payload }),
   getHistoryWarnList: payload => dispatch({ type: historyWarnAction.getHistoryWarnList, payload }),
   getHistoryWarnMatrixList: payload => dispatch({ type: historyWarnAction.getHistoryWarnMatrixList, payload }),
   getSequencechart: payload => dispatch({ type: historyWarnAction.getSequencechart, payload }),
   resetStore: () => dispatch({ type: historyWarnAction.resetStore }),
-})
+});
 export default connect(mapStateToProps, mapDispatchToProps)(HistoryWarn)
+  ;

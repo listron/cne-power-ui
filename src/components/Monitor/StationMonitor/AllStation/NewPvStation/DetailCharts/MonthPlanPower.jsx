@@ -88,7 +88,7 @@ class MonthPlanPower extends Component {
                     let paramsItem = '';
                     params.forEach(item => {
                         const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
-                        return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
+                        paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
                         ${item.seriesName} :  ${item.value}</div>`;
                     });
                     return (

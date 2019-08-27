@@ -1,15 +1,17 @@
-.operateAnalysisBox{
+@import "../../../../theme/theme.scss";
+.operateAnalysisBox {
   min-height: 100%;
   display: flex;
-  flex:1;
+  flex: 1;
   flex-direction: column;
-  .operateAnalysis{
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 24px 24px 0;
-    background-color: #ececec;                       
+  .operateAnalysis {
+    @include contentBoxStyle();
   }
+}
 
+.dark {
+  @import "../../../../theme/darkTheme.scss";
+  .operateAnalysis {
+    @include contentBoxStyle();
+  }
 }

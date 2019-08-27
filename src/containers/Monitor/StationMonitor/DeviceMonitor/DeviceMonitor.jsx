@@ -17,24 +17,25 @@ class DeviceMonitor extends Component {
     match: PropTypes.object,
     getDevices: PropTypes.func,
     resetDeviceStore: PropTypes.func,
+    theme: PropTypes.string,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const main = document.getElementById('main');
-    main && main.scroll(0,0);
-    const { stationCode, deviceTypeCode } =this.props.match.params;
+    main && main.scroll(0, 0);
+    const { stationCode, deviceTypeCode } = this.props.match.params;
     this.props.getDevices({ deviceTypeCode, stationCode });
   }
 
-  componentDidUpdate(prevProps){
-    const { deviceTypeCode, stationCode } =this.props.match.params;
+  componentDidUpdate(prevProps) {
+    const { deviceTypeCode, stationCode } = this.props.match.params;
     const preTypeCode = prevProps.match.params.deviceTypeCode;
     if (preTypeCode !== deviceTypeCode) { // 设备类型变化，重新请求设备列表
       this.props.getDevices({ deviceTypeCode, stationCode });
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.resetDeviceStore();
   }
 
@@ -42,14 +43,14 @@ class DeviceMonitor extends Component {
     const { deviceTypeCode } = this.props.match.params;
     return (
       <div className={styles.monitorDevice}>
-        {(deviceTypeCode === '206' || deviceTypeCode === '201') && <Inverter {...this.props} /> }
-        {(deviceTypeCode === '202' || deviceTypeCode === '207') && <Confluencebox {...this.props} /> }
-        {deviceTypeCode === '304' && <Boxtransformer {...this.props} /> }
+        {(deviceTypeCode === '206' || deviceTypeCode === '201') && <Inverter {...this.props} />}
+        {(deviceTypeCode === '202' || deviceTypeCode === '207') && <Confluencebox {...this.props} />}
+        {deviceTypeCode === '304' && <Boxtransformer {...this.props} />}
         {/* {deviceTypeCode === '203' && <Weatherstation {...this.props} /> } */}
-        {deviceTypeCode === '101' && <WindDevice {...this.props} /> }
-        {deviceTypeCode === '302' && <IntegrateLine {...this.props} /> }
-        {deviceTypeCode === '301' && <BoosterStation {...this.props} /> }
-        <Footer />
+        {deviceTypeCode === '101' && <WindDevice {...this.props} />}
+        {deviceTypeCode === '302' && <IntegrateLine {...this.props} />}
+        {deviceTypeCode === '301' && <BoosterStation {...this.props} />}
+        <Footer theme={this.props.theme} />
       </div>
     );
   }
@@ -57,26 +58,21 @@ class DeviceMonitor extends Component {
 const mapStateToProps = (state) => ({
   ...state.monitor.deviceMonitor.toJS(),
   stations: state.common.get('stations').toJS(),
+  theme: state.common.get('theme'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeDeviceStore: payload => dispatch({ type: deviceAction.CHANGE_DEVICE_MONITOR_STORE, payload}),
+  changeDeviceStore: payload => dispatch({ type: deviceAction.CHANGE_DEVICE_MONITOR_STORE, payload }),
   resetDeviceStore: () => dispatch({ type: deviceAction.RESET_DEVICE_MONITOR_STORE }),
-
   getDevices: payload => dispatch({ type: deviceAction.getDevices, payload }),
   getDeviceInfoMonitor: payload => dispatch({ type: deviceAction.getDeviceInfoMonitor, payload }),
   getDeviceChartMonitor: payload => dispatch({ type: deviceAction.getDeviceChartMonitor, payload }),
   stopMonitor: payload => dispatch({ type: deviceAction.stopMonitor, payload }),
-  // getIntegrateData: payload => dispatch({type: deviceAction.getIntegrateData, payload}),
-  // getBoosterData: payload => dispatch({type: deviceAction.getBoosterData, payload}),
-  // getMonitorDeviceData: payload => dispatch({ type: deviceAction.GET_DEVICE_DATA_SAGA, payload }),
-  // getTenMinDeviceData: payload => dispatch({ type: deviceAction.GET_DEVICE_MONITOR_TEN_MIN_DATA_SAGA, payload }),
-  // 风机部分
-  getwindturbineData: payload => dispatch({type: deviceAction.getwindturbineData, payload}),
-  getSequencechartData: payload => dispatch({type: deviceAction.getSequencechartData, payload}),
-  getWindDeviceCharts: payload => dispatch({type: deviceAction.getWindDeviceCharts, payload}),
-  stopWindDeviceCharts: payload => dispatch({type: deviceAction.stopWindDeviceCharts, payload}),
-  getWindDeviceRealData: payload => dispatch({type: deviceAction.getWindDeviceRealData, payload}),
+  getwindturbineData: payload => dispatch({ type: deviceAction.getwindturbineData, payload }),
+  getSequencechartData: payload => dispatch({ type: deviceAction.getSequencechartData, payload }),
+  getWindDeviceCharts: payload => dispatch({ type: deviceAction.getWindDeviceCharts, payload }),
+  stopWindDeviceCharts: payload => dispatch({ type: deviceAction.stopWindDeviceCharts, payload }),
+  getWindDeviceRealData: payload => dispatch({ type: deviceAction.getWindDeviceRealData, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceMonitor);

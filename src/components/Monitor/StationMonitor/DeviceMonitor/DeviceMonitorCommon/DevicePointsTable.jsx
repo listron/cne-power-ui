@@ -10,7 +10,7 @@ class PointsData extends Component {
     devicePointData: PropTypes.array,
   }
 
-  shouldComponentUpdate(nextprops){
+  shouldComponentUpdate(nextprops) {
     const nextPointsData = nextprops.devicePointData;
     const { devicePointData } = this.props;
     if (devicePointData.length !== nextPointsData.length) {
@@ -19,15 +19,14 @@ class PointsData extends Component {
     return false;
   }
 
-  render(){
+  render() {
     const { devicePointData } = this.props;
     return (
-      <div className={styles.listBox}>
-        {devicePointData.map((e,i) => (
+      <div className={`${styles.listBox}`}>
+        {devicePointData.map((e, i) => (
           <div
             key={e.devicePointName}
             className={styles.eachInfo}
-            style={{backgroundColor: i % 2 === 0 ? 'transparent' : '#f8f8f8'}}
           >
             <span>{e.devicePointName || ''}</span>
             <span className={styles.pointValue}>
@@ -37,7 +36,7 @@ class PointsData extends Component {
           </div>
         ))}
       </div>
-    )
+    );
   }
 }
 
@@ -47,7 +46,7 @@ class EventsData extends Component {
     deviceEvents: PropTypes.array,
   }
 
-  shouldComponentUpdate(nextprops){
+  shouldComponentUpdate(nextprops) {
     const nextEventsData = nextprops.deviceEvents;
     const { deviceEvents } = this.props;
     if (deviceEvents.length !== nextEventsData.length) {
@@ -56,29 +55,28 @@ class EventsData extends Component {
     return false;
   }
 
-  render(){
+  render() {
     const { deviceEvents } = this.props;
     return (
       <div className={styles.listBox}>
-        {deviceEvents && deviceEvents.length > 0 ? deviceEvents.map((e,i) => (
+        {deviceEvents && deviceEvents.length > 0 ? deviceEvents.map((e, i) => (
           <div
             key={i}
             className={styles.eachInfo}
-            style={{backgroundColor: i % 2 === 0 ? 'transparent' : '#f8f8f8'}}
           >
             <span>{e.eventTime ? moment(e.eventTime).format('YYYY-MM-DD HH:mm') : '--'}</span>
             <span className={styles.eventDescribe}>{e.eventDesc || '--'}</span>
           </div>
-        )): <span className={styles.noEvents}>暂无数据</span>}
+        )) : <span className={styles.noEvents}>暂无数据</span>}
       </div>
-    )
+    );
   }
 }
 
-export default function DevicePointsTable({ devicePointData, deviceEvents }){
+export default function DevicePointsTable({ devicePointData, deviceEvents, theme }) {
 
   return (
-    <div className={styles.devicePointsTable}>
+    <div className={`${styles.devicePointsTable} ${styles[theme]}`}>
       <div className={styles.pointsList}>
         <h3>实时测点数据</h3>
         <PointsData devicePointData={devicePointData} />
@@ -88,10 +86,11 @@ export default function DevicePointsTable({ devicePointData, deviceEvents }){
         <EventsData deviceEvents={deviceEvents} />
       </div>
     </div>
-  )
+  );
 }
 
 DevicePointsTable.propTypes = {
   devicePointData: PropTypes.array,
   deviceEvents: PropTypes.array,
-}
+  theme: PropTypes.string,
+};

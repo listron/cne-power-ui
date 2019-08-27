@@ -42,32 +42,32 @@ const EarlyWarning = [ // 高级分析-低效组串预警 什么鬼名字。 起
   }, { // 高级分析-低效组串预警-历史预警
     path: '/analysis/earlyWarning/history',
     component: lazy(() => import('../../containers/HighAnalysis/EarlyWarning/HistoryWarn/HistoryWarn')),
-  }, 
+  },
 ];
 
 const FaultDiagnose = [// 高级分析 - 风机预警 这个名字也是，起的跟目录完全不对等。语义化做的太差。
   { // 高级分析-风机故障检测与诊断-故障预警
     path: '/analysis/faultDiagnose/faultWarn',
     component: lazy(() => import('../../containers/HighAnalysis/FaultDiagnose/FaultWarn/FaultWarn')),
-  },{ // 高级分析-风机故障检测与诊断-故障预警-单风场故障预警
+  }, { // 高级分析-风机故障检测与诊断-故障预警-单风场故障预警
     path: '/analysis/faultDiagnose/fanWarn/:fanWarnId',
     component: lazy(() => import('../../containers/HighAnalysis/FaultDiagnose/FaultWarnList/FaultWarnList')),
-  },{ // 高级分析-风机故障检测与诊断-故障预警-单风机详情图表展示
+  }, { // 高级分析-风机故障检测与诊断-故障预警-单风机详情图表展示
     path: '/hidden/analysis/single/fan',
     component: lazy(() => import('../../containers/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan')),
-  },{ // 高级分析-风机故障检测与诊断-故障预警-按模型单风机详情图表展示
+  }, { // 高级分析-风机故障检测与诊断-故障预警-按模型单风机详情图表展示
     path: '/hidden/analysis/single/fan/:code',
     component: lazy(() => import('../../containers/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan')),
-  },{ // 高级分析-风机故障检测与诊断-故障预警-按模型单风机详情图表展示
+  }, { // 高级分析-风机故障检测与诊断-故障预警-按模型单风机详情图表展示
     path: '/hidden/analysis/all/fan/:stationCode',
     component: lazy(() => import('../../containers/HighAnalysis/FaultDiagnose/FaultAllFan/FaultAllFan')),
-  },{ // 高级分析-风机故障检测与诊断-算法控制台
+  }, { // 高级分析-风机故障检测与诊断-算法控制台
     path: '/analysis/faultDiagnose/algorithmControl',
     component: lazy(() => import('../../containers/HighAnalysis/FaultDiagnose/AlgorithmControl/AlgorithmControl')),
-  },{ // 高级分析-风机故障检测与诊断-历史预警
+  }, { // 高级分析-风机故障检测与诊断-历史预警
     path: '/analysis/faultDiagnose/historyWarn',
     component: lazy(() => import('../../containers/HighAnalysis/FaultDiagnose/HistoryWarn/HistoryWarn')),
-  }
+  },
 ];
 
 const yawAnalysis = [ // 偏航对风分析
@@ -81,7 +81,14 @@ const yawAnalysis = [ // 偏航对风分析
     path: '/analysis/yaw/config',
     component: lazy(() => import('../../components/Common/Building/Building')),
   },
-]
+];
+
+const achievement = [
+  { // 集团绩效
+    path: '/analysis/achievement/analysis/:pathKey',
+    component: lazy(() => import('../../containers/HighAnalysis/Achievement/AchievementLayout')),
+  },
+];
 
 export const highAnalysisRoute = [
   ...intelligentWarning,
@@ -89,4 +96,5 @@ export const highAnalysisRoute = [
   ...yawAnalysis,
   ...EarlyWarning,
   ...FaultDiagnose,
+  ...achievement,
 ];

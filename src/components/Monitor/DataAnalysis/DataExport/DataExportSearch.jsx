@@ -175,7 +175,6 @@ class DataExportSearch extends Component{
     const { timeInterval, deviceFullCodes } = queryParams;
     const tmpQueryParam = {
       ...queryParams,
-      deviceFullCodes: deviceFullCodes.slice(0, 2),
       timeInterval: interval,
       dataTypes: [],
     };
@@ -196,7 +195,6 @@ class DataExportSearch extends Component{
         },
       });
       getPointInfo({
-        deviceFullCodes: deviceFullCodes.slice(0, 2),
         timeInterval: interval,
       });
     } else { // 秒级数据( 1s与5s)切换
@@ -398,8 +396,8 @@ class DataExportSearch extends Component{
                 filterOption={[]}
               >
                 <Option value="1" key="1">平均值</Option>
-                <Option value="2" key="2">最大值</Option>
-                <Option value="3" key="3">最小值</Option>
+                <Option value="3" key="3">最小值/起始值</Option>
+                <Option value="2" key="2">最大值/结束值</Option>
                 <Option value="4" key="4">瞬时值</Option>
               </Select> :
               <Select

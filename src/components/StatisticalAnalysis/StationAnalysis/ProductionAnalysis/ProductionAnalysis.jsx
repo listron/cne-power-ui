@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Radio } from 'antd';
+import { Radio, Button } from 'antd';
 import styles from './productionAnalysis.scss';
 import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
@@ -241,6 +241,7 @@ class ProductionAnalysis extends React.Component {
 
     return (
       <div className={`${styles.singleStationType} ${styles[theme]}`}>
+
         <div className={styles.stationTimeFilter}>
           <div className={styles.leftFilter}>
             <div className={styles.stationFilter}>

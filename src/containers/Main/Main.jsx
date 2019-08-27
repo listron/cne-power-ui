@@ -151,24 +151,26 @@ class Main extends Component {
         <div className={`${styles.app} ${styles[theme]}`}>
           {!isHomePage && <div className={styles.appHeader}>
             <div className={styles.headerLeft}>
-              <LogoInfo />
-              <MenuBoard
-                changeCommonStore={this.props.changeCommonStore}
-                screenAddress={this.props.screenAddress}
-                menuBoardRequired={this.props.menuBoardRequired}
-                menuBoardShow={this.props.menuBoardShow}
-              />
+              <div className={styles.logoBg}>
+                <LogoInfo />
+                <MenuBoard
+                  changeCommonStore={this.props.changeCommonStore}
+                  screenAddress={this.props.screenAddress}
+                  menuBoardRequired={this.props.menuBoardRequired}
+                  menuBoardShow={this.props.menuBoardShow}
+                />
+              </div>
               {!this.props.menuBoardShow && <TopMenu />}
             </div>
             <div className={styles.headerRight}>
               <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
               <div ref={'changeTheme'} />
-              <Dropdown overlay={themeMenu}
+              {/*<Dropdown overlay={themeMenu}
                 getPopupContainer={() => this.refs.changeTheme}
                 overlayStyle={{ width: '70px' }}
                 placement="bottomCenter">
                 <div className={styles.changeTheme}> <span className={'iconfont icon-skinpeel'} /> 换肤</div>
-              </Dropdown>
+              </Dropdown> */}
               <UserInfo
                 username={username}
                 userFullName={userFullName}

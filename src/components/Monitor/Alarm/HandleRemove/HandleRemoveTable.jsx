@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './handleRemove.scss';
 import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
 import TransferWarningModal from '../RealTimeWarning/TransferWarningModal';
 import { Link } from 'react-router-dom';
-import { Table, Select, Popover, Icon, Button, } from 'antd';
+import { Table, Select, Popover, Icon, Button } from 'antd';
 import moment from 'moment';
 const Option = Select.Option;
 
@@ -20,44 +20,44 @@ class HandleRemoveTable extends Component {
     handleRemoveList: PropTypes.array,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       showTransferTicketModal: false,
       showWarningTip: false,
       warningTipText: '',
       showRelievePopover: [],
-    }
+    };
   }
   onConfirmWarningTip = () => {
     const { selectedRowKeys } = this.props;
     this.setState({
       showWarningTip: false,
-      warningTipText: ''
+      warningTipText: '',
     });
     this.props.cancleHandleRemove({
-      warningLogId: selectedRowKeys
+      warningLogId: selectedRowKeys,
     });
   }
 
   onCancelWarningTip = () => {//信息提示栏隐藏
     this.setState({
-      showWarningTip: false
+      showWarningTip: false,
     });
   }
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    const { changeHandleRemoveStore, onChangeFilter, } = this.props;
-    changeHandleRemoveStore({ pageNum: currentPage, pageSize })
-    onChangeFilter({ pageNum: currentPage, pageSize })
+    const { changeHandleRemoveStore, onChangeFilter } = this.props;
+    changeHandleRemoveStore({ pageNum: currentPage, pageSize });
+    onChangeFilter({ pageNum: currentPage, pageSize });
   }
   onHandle = (value) => {//转工单或手动解除的modal
     if (value === 'ticket') {
       this.setState({
-        showTransferTicketModal: true
+        showTransferTicketModal: true,
       });
     } else if (value === 'cancleRemove') {
       this.setState({
         showWarningTip: true,
-        warningTipText: ' 确定要取消解除么'
+        warningTipText: ' 确定要取消解除么',
       });
     }
   }
@@ -67,17 +67,17 @@ class HandleRemoveTable extends Component {
   onRelieveChange(visible, operateId, i) {
     if (visible) {
       this.props.getHandleRemoveInfo({
-        operateId
+        operateId,
       });
     } else {
       this.props.changeHandleRemoveStore({
-        relieveInfo: {}
+        relieveInfo: {},
       });
     }
-    let showRelievePopover = this.state.showRelievePopover;
+    const showRelievePopover = this.state.showRelievePopover;
     showRelievePopover[i] = visible;
     this.setState({
-      showRelievePopover
+      showRelievePopover,
     });
   }
   cancelRowSelect = () => {//取消选中
@@ -85,7 +85,7 @@ class HandleRemoveTable extends Component {
   }
 
   tableChange = (pagination, filters, sorter) => {
-    const { changeHandleRemoveStore, onChangeFilter, } = this.props;
+    const { changeHandleRemoveStore, onChangeFilter } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
       warningLevel: '1',
@@ -97,10 +97,10 @@ class HandleRemoveTable extends Component {
     };
     const orderField = sortInfo[field] ? sortInfo[field] : '';
     const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
-    changeHandleRemoveStore({ orderField, orderCommand })
+    changeHandleRemoveStore({ orderField, orderCommand });
     onChangeFilter({
-      orderField, orderCommand
-    })
+      orderField, orderCommand,
+    });
   }
 
   renderRelievePopover(i) {
@@ -113,7 +113,7 @@ class HandleRemoveTable extends Component {
             <span className={styles.titleText}>手动解除</span>
           </div>
           <Icon type="close" onClick={() => {
-            let showRelievePopover = this.state.showRelievePopover;
+            const showRelievePopover = this.state.showRelievePopover;
             showRelievePopover[i] = false;
             this.setState({ showRelievePopover });
           }} />
@@ -144,7 +144,7 @@ class HandleRemoveTable extends Component {
     this.setState({
       showTransferTicketModal: true,
     });
-    this.props.changeHandleRemoveStore({ selectedTransfer: [record] })
+    this.props.changeHandleRemoveStore({ selectedTransfer: [record] });
   }
 
 
@@ -156,7 +156,7 @@ class HandleRemoveTable extends Component {
         dataIndex: 'warningLevel',
         key: 'warningLevel',
         render: (text, record, index) => {
-          return level[text - 1]
+          return level[text - 1];
         },
         sorter: true,
       }, {
@@ -170,7 +170,7 @@ class HandleRemoveTable extends Component {
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
-          const deviceTypeCodes = ["202", "304", "302", "201", "509", "206", "203", "101"];
+          const deviceTypeCodes = ['202', '304', '302', '201', '509', '206', '203', '101'];
           const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
           if (isClick) {
             return (
@@ -178,10 +178,10 @@ class HandleRemoveTable extends Component {
                 <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
               </div>
             );
-          }  else {
-            return text;
           }
-        }
+          return text;
+
+        },
       }, {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
@@ -192,8 +192,8 @@ class HandleRemoveTable extends Component {
         dataIndex: 'warningCheckDesc',
         key: 'warningCheckDesc',
         render: (text, record) => {
-          return <div className={styles.alarmDesc} title={text}>{text}</div>
-        }
+          return <div className={styles.alarmDesc} title={text}>{text}</div>;
+        },
       }, {
         title: '发生时间',
         dataIndex: 'timeOn',
@@ -215,25 +215,27 @@ class HandleRemoveTable extends Component {
               trigger="click"
               className={this.state.showRelievePopover[index] ? styles.selected : null}
               visible={this.state.showRelievePopover[index]}
+              getPopupContainer={() => this.refs.select}
               onVisibleChange={(visible) => this.onRelieveChange(visible, record.operateId, index)}
             >
-              <div className={this.state.showRelievePopover[index] ? styles.selected : null}><i className="iconfont icon-manual icon-action"></i></div>
+              <div className={this.state.showRelievePopover[index] ? styles.selected : null}>
+                <i className="iconfont icon-manual icon-action" /></div>
             </Popover>
           );
-        }
+        },
       }, {
         title: '操作',
         className: styles.iconDetail,
         render: (text, record) => (
           <div>
             <span>
-              <i className="iconfont icon-tranlist" onClick={() => { this.onShowDetail(record) }} />
+              <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
             </span>
           </div>
-        )
-      }
-    ]
-    const { handleRemoveList, selectedRowKeys, pageSize, pageNum, total, loading, selectedTransfer, getLostGenType } = this.props;
+        ),
+      },
+    ];
+    const { handleRemoveList, selectedRowKeys, pageSize, pageNum, total, loading, selectedTransfer, getLostGenType, theme } = this.props;
     const { showTransferTicketModal, showWarningTip, warningTipText } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -246,14 +248,21 @@ class HandleRemoveTable extends Component {
           style={{ marginTop: '350px', width: '210px', height: '88px' }}
           onCancel={this.onCancelWarningTip}
           hiddenCancel={false}
+          theme={theme}
           onOK={this.onConfirmWarningTip}
           value={warningTipText} />}
+        <span ref={'select'} />
         <div className={styles.tableHeader}>
-          <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+          <Select onChange={this.onHandle}
+            value="操作"
+            placeholder="操作"
+            dropdownMatchSelectWidth={false}
+            getPopupContainer={() => this.refs.select}
+            dropdownClassName={styles.handleDropdown}>
             {/* <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option> */}
             <Option value="cancleRemove" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>取消手动解除</Option>
           </Select>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} theme={theme} />
         </div>
         <Table
           dataSource={handleRemoveList}
@@ -280,9 +289,9 @@ class HandleRemoveTable extends Component {
         }
 
       </div>
-    )
+    );
   }
 }
-export default (HandleRemoveTable)
+export default (HandleRemoveTable);
 
 

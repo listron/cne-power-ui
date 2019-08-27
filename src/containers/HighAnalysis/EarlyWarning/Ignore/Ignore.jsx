@@ -9,21 +9,21 @@ import Ingore from '../../../../components/HighAnalysis/EarlyWarning/Ignore/Igno
 
 class Ignore extends Component {
   static propTypes = {
-    resetStore:PropTypes.func
+    resetStore: PropTypes.func
   }
   constructor(props, context) {
     super(props, context)
 
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.resetStore()
   }
 
   render() {
     return (
       <div className={styles.ignoreBox} >
-        <CommonBreadcrumb  breadData={[{ name: '已忽略',}]} style={{ marginLeft: '38px' }} />
+        <CommonBreadcrumb breadData={[{ name: '已忽略', }]} style={{ marginLeft: '38px' }} />
         <div className={styles.ignoreContainer}>
           <Ingore {...this.props} />
         </div>
@@ -36,6 +36,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.highAanlysisReducer.ignore.toJS(),
     stations: state.common.get('stations').toJS(),
+    theme: state.common.get('theme'),
   }
 }
 const mapDispatchToProps = (dispatch) => ({

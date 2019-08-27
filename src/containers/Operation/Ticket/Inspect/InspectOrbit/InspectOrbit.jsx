@@ -48,25 +48,49 @@ class InspectOrbit extends Component {
   }
 
   handleUser = (e) => {
-    const { inspectTrackData, inspectUserData } = this.props;
-    const { users } = this.state;
-    let user = e.target.value;
+    const user = e.target.value;
     this.setState({
       users: user,
-    })
-
+    });
   }
+
+  uniq(array){
+    //var temp =  array;
+    var temp=[array[0]];
+    array.map((e,i) => {
+      if(e.username != temp[temp.length-1].username){
+        temp.push(e);
+      }
+    });
+
+    return temp;
+}
+
   selectUser() {
     const { inspectTrackData, inspectUserData } = this.props;
-    if (inspectUserData.length > 0) {
+    var uniqInspectTrackData = this.uniq(inspectTrackData);
+    const names = [];
+    if(uniqInspectTrackData){
+      uniqInspectTrackData.map((any) => {
+        //console.log(any);
+        for (var p in any){
+          if(p == 'username'){
+            names.push(any[p]);
+          }
+        }
+      });
+    }
+    console.log(names);
+    if (names.length > 0) {
       return (
         <Radio.Group defaultValue="all" buttonStyle="solid" style={{ position: 'absolute', left: '100px', top: '100px' }} onChange={this.handleUser} >
           <Radio.Button value="all" style={{ marginRight: '5px', zIndex: 1 }}>全部</Radio.Button>
-          {inspectUserData && inspectUserData.map((e, i) => (
-            <Radio.Button value={e.name} style={{ margin: '0 5px', zIndex: 1 }} key={i}>{e.name}</Radio.Button>
-          ))}
+          {names && names.map((e, index) => (
+            <Radio.Button value={e} style={{ margin: '0 5px', zIndex: 1 }} key={index}>{e}</Radio.Button> 
+          )
+            )}
         </Radio.Group>
-      )
+      );
     }
   }
 
@@ -77,8 +101,7 @@ class InspectOrbit extends Component {
     let data = [];
     let datas = [];
     let timeArray = [];
-    let name=[];
-    let pointArray2=[];
+  
     let userOrbit = inspectTrackData.filter(e => {
       if (users === 'all') {
         return true;
@@ -86,13 +109,9 @@ class InspectOrbit extends Component {
         return e.username === users;
       }
     });
-    // console.log(users);
-    // console.log(inspectTrackData);
-    // console.log(userOrbit);
     let userOrbits = [];
     userOrbits = userOrbit.map((item, index) => {
       for (var i = 0; i < item.pointData.length - 1; i++) {
-        //console.log(i);
         let value = item.pointData[i];
         if(value.longitude == Number.MIN_VALUE){
           item.pointData.splice(i, 1);
@@ -112,11 +131,6 @@ class InspectOrbit extends Component {
       for (var i = 0; i < item.pointData.length - 1; i++) {
         let value = item.pointData[i]
         let value1 = item.pointData[i + 1]
-        // if(value.longitude == Number.MIN_VALUE){
-        //   console.log(i);
-        //   continue;
-        // }
-
         data.push({
           // date: [value.trackDate, value1.trackDate],
            date: [`${startDate}-${endDate}`],

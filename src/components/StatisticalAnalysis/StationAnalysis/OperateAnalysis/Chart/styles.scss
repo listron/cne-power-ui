@@ -1,0 +1,9 @@
+@import "../../../../../theme/theme.scss";
+
+.dark {
+  @include tooltipBox(rgba(83, 104, 241, 0.4));
+}
+
+.light {
+  @include tooltipBox(#dfdfdf);
+}

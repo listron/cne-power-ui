@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
-import styles from './boxtransformer.scss';
-import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
+import styles from '../eachDeviceMonitor.scss';
+import { dataFormat } from '../../../../../utils/utilFunc';
+import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
 
 class BoxtransformerTenMin extends Component {
   static propTypes = {
@@ -12,89 +13,69 @@ class BoxtransformerTenMin extends Component {
     deviceTenMin: PropTypes.array,
   }
 
-  componentDidUpdate(prevProps){
-    const { tenMinUnix, tenMinChartLoading } = this.props;
+  componentDidUpdate(prevProps) {
+    const { tenMinUnix, tenMinChartLoading, theme } = this.props;
     const prevTenMinUnix = prevProps.tenMinUnix;
-    if (tenMinUnix !== prevTenMinUnix || tenMinChartLoading) { // 获得数据
+    if (tenMinUnix !== prevTenMinUnix || tenMinChartLoading || theme !== prevProps.theme) { // 获得数据
       this.renderChart();
     }
   }
 
   renderChart = () => {
-    const { deviceTenMin, tenMinChartLoading } = this.props;
+    const { deviceTenMin, tenMinChartLoading, theme } = this.props;
     const echartBox = document.getElementById('boxtransformer_monitor_tenMin');
-    const boxtransformerChart = echarts.init(echartBox);
-    if (tenMinChartLoading) {
-      boxtransformerChart.showLoading();
-      return;
-    } else {
-      boxtransformerChart.hideLoading();
+    let boxtransformerChart = echarts.init(echartBox, themeConfig[theme]);
+    if (boxtransformerChart) {
+      boxtransformerChart.dispose();
+      boxtransformerChart = echarts.init(echartBox, themeConfig[theme]);
     }
-    const lineColor = '#666';
-    let powerLineData = [], instantaneousData = [], xTime = [];
-    deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
+    chartsLoading(boxtransformerChart, tenMinChartLoading, theme);
+    const powerLineData = [], instantaneousData = [], xTime = [];
+    deviceTenMin.length > 0 && deviceTenMin.forEach(e => {
       xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm:ss'));
       powerLineData.push(e.acPower);
       instantaneousData.push(e.instantaneous);
     });
-    const filterStationPower = deviceTenMin.filter(e=>e.acPower);
-    const filterInstantaneous = deviceTenMin.filter(e=>e.instantaneous);
-    const boxtransformerTenMinGraphic = (filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
+    const filterStationPower = deviceTenMin.filter(e => e.acPower);
+    const filterInstantaneous = deviceTenMin.filter(e => e.instantaneous);
+    const boxtransformerTenMinGraphic = (filterStationPower.length === 0 && filterInstantaneous.length === 0);
+    const graphic = !tenMinChartLoading && chartsNodata(!boxtransformerTenMinGraphic, theme);
     const option = {
-      graphic: boxtransformerTenMinGraphic,
+      graphic: graphic,
       title: {
         text: '时序图',
-        textStyle: {
-          color: '#666',
-          fontSize: 14,
-        },
-        left: 60
+        left: 60,
       },
       legend: {
-        data:['功率','瞬时辐照'],
+        data: ['功率', '瞬时辐照'],
         top: 24,
         itemWidth: 24,
         itemHeight: 6,
         textStyle: {
-          color: lineColor,
           fontSize: 12,
-        }
+        },
       },
       tooltip: {
         trigger: 'axis',
         show: true,
-        backgroundColor: '#fff',
-        textStyle: {
-          color: lineColor,
-          fontSize: '12px',
-        },
         axisPointer: {
           type: 'cross',
-          label: {
-            backgroundColor: '#666',
-          }
         },
-        formatter: (param) => {
-          if(!param || param.length===0){
-            return <div></div>
-          }
-          let irradiation='',power='';
-          const irradiationObj = param.find(e=>e.seriesName==='瞬时辐照');
-          const powerObj = param.find(e=>e.seriesName==='功率');
-          const tmpIrradiation = irradiationObj && !isNaN(irradiationObj.value);
-          const tmpPower = powerObj && !isNaN(powerObj.value);
-          if(tmpIrradiation){
-            irradiation = `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> 瞬时辐照: ${irradiationObj.value}</div>`;
-          }
-          if(tmpPower){
-            power = `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #a42b2c; width:6px; height:6px; border-radius:100%;"></span> 功率: ${powerObj.value}</div>`;
-          }
-          return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
-            <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;" >${param[0] && param[0].name}</div>
-            ${irradiation}${power}
-          </div>`;
+        formatter: (params) => {
+          let paramsItem = '';
+          params.forEach(item => {
+            const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
+            paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
+              ${item.seriesName} :  ${dataFormat(item.value, 2, '--')} 
+            </div>`;
+          });
+          return (
+            `<div class=${styles.tooltipBox}>
+                  <div class=${styles.axisValue}><span>${params[0].name}</span></div>
+                  <div class=${styles.tooltipContainer}> ${paramsItem}</div>
+              </div>`
+          );
         },
-        extraCssText:'background: rgba(0,0,0,0);',
       },
       grid: {
         top: 95,
@@ -106,36 +87,17 @@ class BoxtransformerTenMin extends Component {
         axisTick: {
           show: false,
         },
-        axisLine: {
-          lineStyle: {
-            color: '#dfdfdf',
-          },
-        },
-        axisLabel: {
-          color: lineColor,
-        },
-        axisPointer:{
+        axisPointer: {
           label: {
             show: false,
-          }
+          },
         },
       },
       yAxis: [
         {
           name: '功率(kW)',
-          nameTextStyle: {
-            color: lineColor,
-          },
-          splitLine:{
-            show:false
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#dfdfdf',
-            },
-          },
-          axisLabel: {
-            color: lineColor,
+          splitLine: {
+            show: false,
           },
           axisTick: {
             show: false,
@@ -143,24 +105,13 @@ class BoxtransformerTenMin extends Component {
         },
         {
           name: '瞬时辐照(W/m²)',
-          nameTextStyle: {
-            color: lineColor,
-          },
-          splitLine:{
-            show:false
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#dfdfdf',
-            },
-          },
-          axisLabel: {
-            color: lineColor,
+          splitLine: {
+            show: false,
           },
           axisTick: {
             show: false,
           },
-        }
+        },
       ],
       series: [
         {
@@ -171,18 +122,18 @@ class BoxtransformerTenMin extends Component {
             color: '#c57576',
             width: 1,
           },
-          itemStyle:{
+          itemStyle: {
             opacity: 0,
           },
           areaStyle: {
             normal: {
               opacity: 0.2,
-            }
+            },
           },
           label: {
             normal: {
-              show: false
-            }
+              show: false,
+            },
           },
           yAxisIndex: 0,
           data: powerLineData,
@@ -190,34 +141,35 @@ class BoxtransformerTenMin extends Component {
         {
           name: '瞬时辐照',
           type: 'line',
-          smooth:true,
+          smooth: true,
           lineStyle: {
             type: 'dotted',
             color: '#199475',
             width: 1,
           },
-          itemStyle:{
-            color: "#199475",
+          itemStyle: {
+            color: '#199475',
             opacity: 0,
           },
           label: {
             normal: {
-              show: false
-            }
+              show: false,
+            },
           },
           yAxisIndex: 1,
           data: instantaneousData,
         },
-      ]
+      ],
     };
     boxtransformerChart.setOption(option);
     boxtransformerChart.resize();
   }
 
-  render(){
+  render() {
+    const { theme } = this.props;
     return (
-      <div id="boxtransformer_monitor_tenMin" className={styles.boxtransformerTenMin} style={{height:"335px"}}></div>
-    )
+      <div id="boxtransformer_monitor_tenMin" className={`${styles.boxtransformerTenMin} ${styles[theme]}`} style={{ height: '335px', marginTop: 10 }}></div>
+    );
   }
 }
 

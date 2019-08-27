@@ -1,9 +1,9 @@
 
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import styles from "./operateAnalysis.scss";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import styles from './operateAnalysis.scss';
 import { operateAnalysisAction } from './operateAnalysisAction';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import OperateAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/OperateAnalysis/OperateAnalysis';
 // import { getCookie } from '../../../../utils/index.js';
 import Cookie from 'js-cookie';
@@ -13,8 +13,9 @@ import Footer from '../../../../components/Common/Footer';
 
 class OperateAnalysisContainer extends Component {
   static propTypes = {
-    resetStore:PropTypes.func,
+    resetStore: PropTypes.func,
     location: PropTypes.object,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
@@ -23,27 +24,20 @@ class OperateAnalysisContainer extends Component {
 
 
   componentWillUnmount() {
-    this.props.resetStore()
+    this.props.resetStore();
   }
 
   render() {
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '运行分析',
-        }
-      ],
-    };
-
+    const { theme } = this.props;
     return (
-      <div className={styles.operateAnalysisBox} >
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+      <div className={`${styles.operateAnalysisBox} ${styles[theme]}`} >
+        <CommonBreadcrumb breadData={[{ name: '运行分析' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.operateAnalysis}>
           <OperateAnalysis {...this.props} />
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
@@ -51,8 +45,9 @@ const mapStateToProps = (state) => {
     ...state.statisticalAnalysisReducer.operateAnalysisReducer.toJS(),
     stations: state.common.get('stations'),
     userId: Cookie.get('userId'),
-  }
-}
+    theme: state.common.get('theme'),
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
   changeOperateStationStore: payload => dispatch({ type: operateAnalysisAction.CHANGE_OPERATESTATIONDATA_STORE_SAGA, payload }),
   getOperatePlanComplete: payload => dispatch({ type: operateAnalysisAction.getOperatePlanComplete, payload }),
@@ -67,7 +62,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAllStationAvalibaData: payload => dispatch({ type: operateAnalysisAction.getAllStationAvalibaData, payload }),
   resetStore: payload => dispatch({ type: operateAnalysisAction.resetStore, payload }),
 
-})
+});
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(OperateAnalysisContainer);
