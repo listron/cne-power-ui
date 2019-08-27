@@ -93,7 +93,6 @@ function* getScatterOtherName(action) {//获取
 function* getScatterData(action) {//获取
   const { payload } = action;
   const { startTime, endTime, deviceFullCode } = payload;
-
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
   try {
     yield put({
@@ -103,13 +102,11 @@ function* getScatterData(action) {//获取
         chartLoading: true,
       },
     });
-
     const response = yield call(axios.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).utc().format(),
+      endTime: moment(endTime).endOf('d').utc().format(),
     },
-
     );
     if (response.data.code === '10000') {
       const scatterArr = response.data.data || [];
@@ -153,7 +150,8 @@ function* getBigScatterData(action) {//获取
     const response = yield call(axios.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).utc().format(),
+      endTime: moment(endTime).endOf('d').utc().format(),
+
     },
     );
     if (response.data.code === '10000') {
@@ -183,12 +181,13 @@ function* getBigScatterData(action) {//获取
 function* getxyLimitValue(action) {//获取
   const { payload } = action;
   const { startTime, endTime } = payload;
+
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getxyLimitValue}`;
   try {
     const response = yield call(axios.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).utc().format(),
+      endTime: moment(endTime).endOf('d').utc().format(),
     },
     );
     if (response.data.code === '10000') {

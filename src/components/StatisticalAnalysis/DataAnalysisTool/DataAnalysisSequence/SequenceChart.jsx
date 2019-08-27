@@ -38,7 +38,6 @@ class SequenceChart extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { activeCode, saveBtn, sequenceData, deviceList, xyValueLimit, startTime, endTime, pointY1, pointY2 } = nextProps;
     const requestParams = { startTime, endTime, pointY1, pointY2 };
-    console.log('xyValueLimit22222: ', xyValueLimit);
     const prevCode = this.props.activeCode;
     const preData = this.props.sequenceData;
     if (preData.deviceFullCode === this.props.deviceFullCode) {

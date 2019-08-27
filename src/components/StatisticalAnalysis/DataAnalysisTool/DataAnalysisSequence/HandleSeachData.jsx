@@ -71,16 +71,11 @@ class HandleSeachData extends React.Component {
       saveStartTime: '',
       saveEndTime: '',
       xyValueLimit: {},
-      // point1Max: null,
-      // point1Min: null,
-      // point2Max: null,
-      // point2Min: null,
-
+      disableDateFun: (current) => current > moment(),
     };
   }
   componentWillReceiveProps(nextProp) {
     const { sequenceNames, getSequenceData, stationCode, deviceList, sequenceNameTime, startTime, endTime, sequenceData, getxyLimitValue, changeSquenceStore, xyValueLimit } = nextProp;
-    // const { point1Max } = this.state;
     if (this.props.sequenceNameTime !== sequenceNameTime) {//格式化测点数据
       const { options } = this.state;
       const newscatterNames = this.formater(sequenceNames);
@@ -263,6 +258,7 @@ class HandleSeachData extends React.Component {
       xCode: value,
       xName: children,
     });
+    this.getLimitValue({ xPointCode: value });
   }
   //改变第二个y轴
   changeY2value = (value, option) => {
@@ -271,6 +267,23 @@ class HandleSeachData extends React.Component {
       yCode: value,
       yName: children,
     });
+    this.getLimitValue({ yPointCode: value });
+  }
+
+  onCalendarChange = (dates, dateStrings) => {
+    if (dates.length === 1) {
+      this.setState({ // 时间跨度不超过1年
+        disableDateFun: (current) => {
+          const maxTime = moment(dates[0]).add(366, 'days');
+          const minTime = moment(dates[0]).subtract(366, 'days');
+          return current > moment() || current > maxTime || current < minTime;
+        },
+      });
+    } else {
+      this.setState({
+        disableDateFun: (current) => current > moment(),
+      });
+    }
   }
 
   //下载
@@ -281,7 +294,7 @@ class HandleSeachData extends React.Component {
   }
   render() {
     const { stationCode, stations, sequenceotherNames, theme, startTime, endTime } = this.props;
-    const { isSwap, options, sequenceNameValue, showOther, xName, yName, point1Max, point1Min, point2Max, point2Min, xyValueLimit } = this.state;
+    const { isSwap, options, sequenceNameValue, showOther, xName, yName, xyValueLimit, disableDateFun } = this.state;
     const { yMin, yMax, xMin, xMax } = xyValueLimit;
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
@@ -298,12 +311,15 @@ class HandleSeachData extends React.Component {
           <label className={styles.nameStyle}>时间</label>
           <RangePicker
             defaultValue={[moment(startTime, dateFormat), moment(endTime, dateFormat)]}
+            disabledDate={disableDateFun}
+            onCalendarChange={this.onCalendarChange}
             format={dateFormat}
             onChange={this.changeTime}
             style={{ width: '240px' }}
           />
           <label className={styles.nameStyle}>测点</label>
           <Cascader
+            placeholder=""
             options={options}
             value={sequenceNameValue}
             fieldNames={{ label: 'pointsUnionName', value: 'value', children: 'pointNameList' }}

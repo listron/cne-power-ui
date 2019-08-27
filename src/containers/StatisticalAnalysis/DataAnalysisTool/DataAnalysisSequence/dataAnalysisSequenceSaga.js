@@ -106,7 +106,7 @@ function* getSequenceData(action) {//获取
     const response = yield call(axios.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).utc().format(),
+      endTime: moment(endTime).endOf('d').utc().format(),
     });
     // const preSequenceData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('sequenceData').toJS()));
     // const deviceList = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('deviceList').toJS()));
@@ -164,7 +164,7 @@ function* getBigSequenceData(action) {//获取
     const response = yield call(axios.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).utc().format(),
+      endTime: moment(endTime).endOf('d').utc().format(),
     });
     if (response.data.code === '10000') {
       const curChartData = response.data.data || {};
@@ -199,7 +199,7 @@ function* getxyLimitValue(action) {//获取
     const response = yield call(axios.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).utc().format(),
+      endTime: moment(endTime).endOf('d').utc().format(),
     },
     );
     if (response.data.code === '10000') {
@@ -208,7 +208,6 @@ function* getxyLimitValue(action) {//获取
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           xyValueLimit: response.data.data || {},
-          pageLoading: false,
 
         },
       });
@@ -221,7 +220,6 @@ function* getxyLimitValue(action) {//获取
       type: dataAnalysisSequenceAction.changeSquenceStore,
       payload: {
         xyValueLimit: {},
-        pageLoading: false,
       },
     });
   }

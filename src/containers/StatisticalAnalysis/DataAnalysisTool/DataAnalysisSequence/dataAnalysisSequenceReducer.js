@@ -22,10 +22,6 @@ var initState = Immutable.fromJS({
   sequenceData: {}, //时序图汇总数据
   curBigChartData: {}, //当前请求到的时序图
   down: false,
-  // point1Max: null,
-  // point1Min: null,
-  // point2Max: null,
-  // point2Min: null,
   xyValueLimit: {},
   activeCode: '',
 
