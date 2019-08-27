@@ -36,6 +36,7 @@ export default class RunSearch extends Component {
       searchCode: stationInfo.searchCode,
       searchDevice: stationInfo.searchDevice || [],
       searchDates: stationInfo.searchDates || [defaultStartTime, defaultEndTime],
+      areaFlag: false, // 控制第一次进来，有数据的时候
     };
   }
 
@@ -47,7 +48,7 @@ export default class RunSearch extends Component {
   componentWillReceiveProps(nextProps){
     // 得到区域数据 ==> 请求机型 areaStation
     const { areaStation, modeDevices } = nextProps;
-    const { stationInfoStr } = this.state;
+    const { stationInfoStr, areaFlag } = this.state;
     const preArea = this.props.areaStation;
     const preDevice = this.props.modeDevices;
     if (!stationInfoStr && preArea.length === 0 && areaStation.length > 0) { // 路径无参数时 得到电站数据
@@ -60,6 +61,14 @@ export default class RunSearch extends Component {
     if(stationInfoStr && modeDevices.length > 0 && JSON.stringify(modeDevices) !== JSON.stringify(preDevice)){
       const searchDevice = this.getAllDeviceCodes(modeDevices);
       this.setState({searchDevice});
+    }
+    // 判断从别的页面头次进入页面，电站和指标分析数据是有的话，改变state值， 发送请求
+    if(!stationInfoStr && !areaFlag && areaStation.length > 0) {
+      this.setState({
+        areaFlag: true,
+      }, () => {
+        this.propsAreaStationChange(areaStation);
+      });
     }
   }
 
@@ -119,6 +128,8 @@ export default class RunSearch extends Component {
   render() {
     const { areaStation, modeDevices } = this.props;
     const { searchCode, searchDevice, searchDates } = this.state;
+    const searchFlag = searchCode && searchDevice && searchDevice.length !== 0;
+
     return (
       <div className={styles.topSearch}>
         <div className={styles.leftPart}>
@@ -151,7 +162,7 @@ export default class RunSearch extends Component {
               disabledDate={disabledDate}
             />
           </div>
-          <Button onClick={this.queryCharts} className={styles.search}>查询</Button>
+          <Button disabled={!searchFlag} onClick={this.queryCharts}>查询</Button>
         </div>
       </div>
     );
