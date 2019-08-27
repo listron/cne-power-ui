@@ -10,6 +10,7 @@ class DevicesCheckTime extends Component {
   static propTypes = {
     curveTopStringify: PropTypes.string,
     curveDevicesTime: PropTypes.string,
+    getCurveDevices: PropTypes.func,
     getCurveDevicesAep: PropTypes.func,
     getCurveDevicesPsd: PropTypes.func,
     changeStore: PropTypes.func,
@@ -25,6 +26,7 @@ class DevicesCheckTime extends Component {
       deviceFullcodes: searchParam.searchDevice,
     };
     this.props.changeStore({ curveDevicesTime: stringValue });
+    this.props.getCurveDevices(param);
     this.props.getCurveDevicesAep(param);
     this.props.getCurveDevicesPsd(param);
   }
@@ -35,7 +37,7 @@ class DevicesCheckTime extends Component {
       <section className={styles.timeSelector}>
         <h3 className={styles.timeTitle}>切换月份</h3>
         <MonthPicker
-          value={moment(curveDevicesTime)}
+          value={curveDevicesTime && moment(curveDevicesTime)}
           onChange={this.checkMonth}
           placeholder="请选择月份"
           allowClear={false}
