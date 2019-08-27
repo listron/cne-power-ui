@@ -51,21 +51,21 @@ class StationAchieve extends Component {
   // 别的页面不带参数直接点击目录处进入页面 => 无路径 等待数据得到后, 自动写入默认项, 当默认项齐全后, 发送页面请求 willprops
   constructor(props){
     super(props);
-    const { search } = props.location;
+    const { search } = props.history.location;
     const stationInfoStr = searchUtil(search).getValue('station') || '';
     const {
       stationCodes = [],
       deviceFullcodes = [],
       startTime = moment().subtract(1, 'year').format('YYYY-MM-DD'),
       endTime = moment().format('YYYY-MM-DD'),
-      quota,
+      indicatorCode,
     } = stationInfoStr ? this.getSearchParam(stationInfoStr) : {};
     this.state = {
       stationInfoStr,
       searchCode: stationCodes[0] || null,
       searchDevice: deviceFullcodes,
       searchDates: [startTime, endTime],
-      searchQuota: quota,
+      searchQuota: indicatorCode,
     };
   }
 
@@ -80,9 +80,9 @@ class StationAchieve extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const { areaStation, modeDevices, pageName, quotaInfo, location } = nextProps;
+    const { areaStation, modeDevices, pageName, quotaInfo, history } = nextProps;
     const { stationInfoStr, searchCode, searchDevice, searchQuota } = this.state;
-    const { search } = location;
+    const { search } = history.location;
     const newSearchPath = searchUtil(search).getValue('station') || '';
     const prePageName = this.props.pageName;
     if (areaStation.length > 0 && !searchCode) { // 电站数据获得 => 存默认电站并发起设备请求.
@@ -169,8 +169,8 @@ class StationAchieve extends Component {
     moment().subtract(1, 'year').format('YYYY-MM-DD'),
     moment().format('YYYY-MM-DD'),
   ], quota) => { // 切换路径 => 托管外部进行请求
-    const { location, history } = this.props;
-    const { search } = location;
+    const { history } = this.props;
+    const { search } = history.location;
     const newSearch = searchUtil(search).replace({station: JSON.stringify({
       code, device, date, quota,
     })}).stringify();
@@ -256,7 +256,7 @@ class StationAchieve extends Component {
 
   render() {
     const { pageName, changeStore } = this.props;
-    const { searchCode, searchDevice, searchDates, searchQuota } = this.state;
+    const { searchCode, searchDevice, searchDates, searchQuota, stationInfoStr } = this.state;
     return (
       <div className={styles.stationAchieve} >
         <StationSearch
@@ -265,6 +265,7 @@ class StationAchieve extends Component {
           searchDevice={searchDevice}
           searchDates={searchDates}
           searchQuota={searchQuota}
+          stationInfoStr={stationInfoStr}
         />
         <AnimationBox changeStore={changeStore} pageName={pageName}>
           <LostAnalysis {...this.props} active={pageName === 'lost'} />

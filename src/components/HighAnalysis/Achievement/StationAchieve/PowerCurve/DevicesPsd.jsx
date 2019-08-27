@@ -126,7 +126,7 @@ class DevicesPsd extends Component {
     baseOption.yAxis.name = 'PSD(%)';
     baseOption.grid.top = 30;
     baseOption.grid.bottom = 40;
-    baseOption.grid.left = 30;
+    baseOption.grid.left = 35;
     const option = {
       ...baseOption,
       tooltip: {
