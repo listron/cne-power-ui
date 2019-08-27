@@ -16,7 +16,6 @@ class DailySearch extends Component {
     stationTypeCount: PropTypes.string,
     tableType: PropTypes.string,
     stationType: PropTypes.number,
-    objectType: PropTypes.number,
     queryParam: PropTypes.object,
     listParam: PropTypes.object,
     changeDailyQueryStore: PropTypes.func,
@@ -41,18 +40,17 @@ class DailySearch extends Component {
   }
 
   componentDidMount(){
-    const { getQuota, getFault, stationType, objectType } = this.props;
+    const { getQuota, getFault, stationType } = this.props;
     getQuota({ // 请求指标树
       stationType,
     });
     getFault({ // 请求故障类型树
       stationType,
-      objectType,
     });
   }
 
   onStationTypeChange = (stationType) => { // 切换风/光tab页
-    const { changeDailyQueryStore, getQuota, getFault, objectType, queryParam } = this.props;
+    const { changeDailyQueryStore, getQuota, getFault, queryParam } = this.props;
     this.setState({
       stationCodes: [],
       selectStations: [],
@@ -82,7 +80,6 @@ class DailySearch extends Component {
 
     getFault({ // 请求故障类型树
       stationType,
-      objectType,
     });
   }
 
@@ -187,14 +184,18 @@ class DailySearch extends Component {
 
   onSearch = () => { // 查询
     const { tableType, queryParam, listParam, changeDailyQueryStore, getQuotaList, getFaultList, getLimitList } = this.props;
-    const { stationCodes, quotaInfoData, faultIds, keyWord, powerInformation } = this.state;
+    const { stationCodes, quotaInfoData, faultIds, keyWord, powerInformation, dateValue } = this.state;
     const { startDate, endDate } = queryParam;
     const { pageNum, pageSize } = listParam;
     if (stationCodes.length === 0) {
       message.warning('请选择电站名称！');
       return;
     }
-    if (!startDate) {
+    if (tableType === 'quotaList' && quotaInfoData.length === 0) {
+      message.warning('请选择指标！');
+      return;
+    }
+    if (dateValue.length === 0) {
       message.warning('请选择时间！');
       return;
     }
@@ -238,6 +239,7 @@ class DailySearch extends Component {
       quotaListData: {},
       faultListData: {},
       limitListData: {},
+      quotaInfoData: [],
     });
   }
 
