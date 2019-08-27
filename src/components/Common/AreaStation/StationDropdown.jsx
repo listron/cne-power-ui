@@ -19,7 +19,7 @@ class StationDropdown extends Component {
     const { value = [], data } = props;
     this.state = {
       visible: false,
-      checkedList: (data.length > 0 && value.length > 0) ? this.getInfoFromData(value, data) : [],
+      checkedList: (data.length > 0 && value.length > 0) ? value : [],
     };
   }
 
@@ -37,21 +37,6 @@ class StationDropdown extends Component {
         checkedList: nextValue,
       });
     }
-  }
-
-  getInfoFromData = (value, data) => { // data中寻找stationCodes匹配的信息
-    const result = data.map(e => {
-      const { stations = [], regionName } = e || {};
-      const filteredStations = stations.filter(m => value.includes(m.stationCode));
-      if (filteredStations.length > 0) {
-        return {
-          regionName,
-          stations: filteredStations,
-        };
-      }
-      return null;
-    });
-    return result.filter(e => !!e);
   }
 
   isSetDiff = (a, b) => { // 比价两个电站codes的set集。
