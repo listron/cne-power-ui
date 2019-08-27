@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
 import { Select } from 'antd';
-import searchUtil from '../../../../../utils/searchUtil';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import { getBaseGrid, getBaseYAxis, getBaseXAxis } from './chartBaseOption';
 import styles from './stop.scss';
@@ -117,13 +116,10 @@ class ChartStopTypes extends Component {
   }
 
   chartHandle = ({ dataIndex }, sortedTypes, chart) => {
-    console.log(dataIndex)
-    console.log(sortedTypes)
     const { sortName } = this.state;
     const { stopElecType, stopChartTypes, stopChartDevice, stopChartTime, stopChartTimeMode, stopTopStringify } = this.props;
     const curFaultInfo = sortedTypes[dataIndex] || {};
     const searchParam = JSON.parse(stopTopStringify) || {};
-    console.log(searchParam)
     const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.device;
     let [startTime, endTime] = searchParam.date;
     if (stopChartTime) { // 已有时间选择。
@@ -132,7 +128,6 @@ class ChartStopTypes extends Component {
       startTime = moment.max(recordStart, moment(startTime)).format('YYYY-MM-DD');
       endTime = moment.min(recordEnd, moment(endTime)).format('YYYY-MM-DD');
     }
-    console.log('.....')
     let faultInfo = {};
     if (stopChartTypes && stopChartTypes.faultId === curFaultInfo.faultId) { // 取消选中
       this.props.changeStore({ stopChartTypes: null });
@@ -142,7 +137,6 @@ class ChartStopTypes extends Component {
       this.props.changeStore({ stopChartTypes: curFaultInfo });
       this.renderChart(sortedTypes, sortName, curFaultInfo);
     }
-    console.log(faultInfo)
     const param = {
       stationCodes: [searchParam.code],
       deviceFullcodes,
@@ -151,7 +145,6 @@ class ChartStopTypes extends Component {
       parentFaultId: stopElecType,
       ...faultInfo,
     };
-    console.log(param)
     this.props.getStopRank({ ...param });
     this.props.getStopTrend({ ...param });
   }
