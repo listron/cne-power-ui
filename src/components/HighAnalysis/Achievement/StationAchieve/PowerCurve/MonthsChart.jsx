@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { getCurveBaseOption } from './curveBaseOption';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './curve.scss';
 
 class MonthsChart extends Component {
@@ -26,25 +27,12 @@ class MonthsChart extends Component {
     const preLoading = this.props.curveMonthsLoading;
     const preChecked = this.props.curveCheckedMonths;
     if (preLoading && !curveMonthsLoading) { // 请求完毕
-      this.renderChart(curveMonths);
+      this.renderChart(curveMonths, curveCheckedMonths);
     } else if (!preLoading && curveMonthsLoading) { // 请求中
       this.setChartLoading();
     }
-    if (preChecked.length > 0 && curveCheckedMonths.length !== preChecked.length) {
-      // const monthChart = echarts.getInstanceByDom(this.monthRef);
-      // const lastOption = monthChart.getOption();
-      // const selectedLegend = { '理论功率': true };
-      // curveCheckedMonths.forEach(e => { selectedLegend[e] = true; });
-      // const newOption = {
-      //   ...lastOption,
-      //   legend: {
-      //     ...lastOption.legend[0],
-      //     selected: selectedLegend,
-      //   },
-      // };
-      // console.log(newOption.legend);
-      // monthChart.dispose();
-      // monthChart.setOption(newOption);
+    if (curveCheckedMonths.length !== preChecked.length) {
+      this.renderChart(curveMonths, curveCheckedMonths);
     }
   }
 
@@ -53,17 +41,20 @@ class MonthsChart extends Component {
     monthChart && monthChart.showLoading();
   }
 
-  createSeires = (curveData = []) => curveData.map((e) => {
+  createSeires = (curveData = [], activeMonths = []) => curveData.map((e) => {
     const { devicePowerInfoVos = [], calcDate } = e || {};
+    const lineOpacity = activeMonths.includes(calcDate) || (calcDate === '理论功率') ? 1 : 0;
     return {
       type: 'line',
       smooth: true,
       name: calcDate,
+      itemStyle: { opacity: lineOpacity },
+      lineStyle: { opacity: lineOpacity },
       data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]),
     };
   })
 
-  renderChart = (monthsData) => {
+  renderChart = (monthsData, checkedMonths) => {
     const monthChart = echarts.init(this.monthRef);
     const { actual = [], theory = [] } = monthsData;
     const modeName = theory[0] && theory[0].modeName || '--';
@@ -94,19 +85,20 @@ class MonthsChart extends Component {
               </span>
               <span class=${styles.eachItem}>
                 <span>平均风速</span>
-                <span>${value[0]}</span>
+                <span>${dataFormats(value[0], '--', 2, true)}</span>
               </span>
               <span class=${styles.eachItem}>
                 <span>平均功率</span>
-                <span>${value[1]}</span>
+                <span>${dataFormats(value[1], '--', 2, true)}</span>
               </span>
             </div>
           </section>`;
         },
       },
-      series: this.createSeires(totalMonthData),
+      series: this.createSeires(totalMonthData, checkedMonths),
     };
     monthChart.hideLoading();
+    monthChart.clear();
     monthChart.setOption(option);
   }
 

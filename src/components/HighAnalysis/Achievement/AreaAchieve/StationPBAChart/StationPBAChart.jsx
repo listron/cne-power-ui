@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import eCharts from 'echarts';
 import PropTypes from 'prop-types';
-
-import styles from './stationPBAChart.scss';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
 import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormat } from '../../../../../utils/utilFunc';
+
+import styles from './stationPBAChart.scss';
 
 export default class StationPBAChart extends Component {
 
@@ -19,6 +20,8 @@ export default class StationPBAChart extends Component {
     location: PropTypes.object,
     qutaName: PropTypes.string,
     colorData: PropTypes.object,
+    unitName: PropTypes.string,
+    pointLength: PropTypes.number,
   };
 
   componentDidUpdate(prevProps) {
@@ -37,6 +40,7 @@ export default class StationPBAChart extends Component {
       eCharts.init(sortChart).clear();//清除
       const myChart = eCharts.init(sortChart);
       myChart.setOption(this.drawChart(indicatorRankInfo, dataIndex));
+      myChart.off('click');
       myChart.on('click', (param) => this.chartHandle(param, indicatorRankInfo, myChart));
     }
   }
@@ -89,9 +93,9 @@ export default class StationPBAChart extends Component {
   };
 
   drawChart = (data, dataIndex) => {
-    const { qutaName, colorData } = this.props;
+    const { qutaName, colorData, unitName, pointLength } = this.props;
     const twoBar = [{ // 实发
-      data: data && data.map(cur => (cur.indicatorData.actualGen)),
+      data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2))),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -106,7 +110,7 @@ export default class StationPBAChart extends Component {
         },
       },
     }, {// 应发
-      data: data && data.map(cur => (cur.indicatorData.theoryGen)),
+      data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2))),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -120,7 +124,7 @@ export default class StationPBAChart extends Component {
       },
     }];
     const oneBar = [{
-      data: data && data.map(cur => (cur.indicatorData.value)),
+      data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2))),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -150,11 +154,11 @@ export default class StationPBAChart extends Component {
         formatter: (params) => {
           if(qutaName === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[0].value || '--'}</span><br /><span>应发小时数：</span><span>${params[1].value || '--'}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}${unitName}</span>
           </div>`;
           }
           return `<div>
-            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${params[0].value || '--'}</span>
+            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span>
           </div>`;
         },
       },
@@ -181,8 +185,9 @@ export default class StationPBAChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: qutaName,
+          name: `${qutaName}（${unitName}）`,
           min: 0,
+          max: unitName === '%' ? 100 : null,
           splitLine: {
             show: false,
           },

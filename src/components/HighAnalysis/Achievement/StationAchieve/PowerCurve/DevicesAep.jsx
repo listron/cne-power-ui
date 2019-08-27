@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Select } from 'antd';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import { getPartsOption } from './curveBaseOption';
 import styles from './curve.scss';
 const { Option } = Select;
@@ -67,6 +68,7 @@ class DevicesAep extends Component {
 
   sortChart = (sortName) => {
     const { curveDevicesAep = [] } = this.props;
+    this.setState({ sortName });
     this.renderChart(curveDevicesAep, sortName);
   }
 
@@ -78,7 +80,7 @@ class DevicesAep extends Component {
       xData.push(deviceName);
       const colorIndex = [...modes].indexOf(deviceModeName);
       aspData.push({
-        value: aep,
+        value: dataFormats(aep) / 10000,
         name: deviceModeName,
         itemStyle: {
           color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
@@ -136,11 +138,15 @@ class DevicesAep extends Component {
     const { series, xData } = this.createSeires(sortedAepData);
     const option = {
       grid: {
-        top: 10,
+        top: 30,
         ...getPartsOption('grid'),
+        left: 35,
         bottom: 40,
       },
-      xAxis: { ...getPartsOption('xAxis'), data: xData },
+      xAxis: {
+        ...getPartsOption('xAxis'),
+        data: xData,
+      },
       yAxis: [
         { ...getPartsOption('yAxis'), name: 'AEP(万kWh)' },
         { ...getPartsOption('yAxis'), name: '风速(m/s)' },
@@ -159,7 +165,7 @@ class DevicesAep extends Component {
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>${e.seriesIndex === 0 ? 'AEP' : '风速'}</span>
-                  <span>${e.value}</span>
+                  <span>${dataFormats(e.value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
             </div>

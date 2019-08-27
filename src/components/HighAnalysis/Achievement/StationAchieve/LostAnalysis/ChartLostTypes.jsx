@@ -51,18 +51,23 @@ class ChartLostTypes extends Component {
 
   getBarValue = (lostTypes = {}) => {
     const { theoryGen, actualGen, detailList = [] } = lostTypes;
-    const hideBarData = [0];
+    const hideBarData = [dataFormats(theoryGen, '0')];
     const xAxisLabel = ['应发小时'];
-    const barData = [theoryGen ? dataFormats(theoryGen, '', 1) : 0];
+    const barData = [dataFormats(theoryGen, '0')];
     detailList && detailList.forEach((e, i) => {
-      hideBarData.push(e.value ? detailList[i] - dataFormats(e.value, '', 1) : detailList[i]);
+      barData.push(dataFormats(e.value, '0'));
+      hideBarData.push(hideBarData[i] - dataFormats(e.value, '0'));
       xAxisLabel.push(e.name || '--');
-      barData.push(e.value ? dataFormats(e.value, '', 1) : 0);
     });
     hideBarData.push(0);
+    hideBarData[0] = 0;
     xAxisLabel.push('实发小时');
-    barData.push(actualGen ? dataFormats(actualGen, '', 1) : 0);
-    return { hideBarData, barData, xAxisLabel };
+    barData.push(dataFormats(actualGen, '0'));
+    return {
+      hideBarData,
+      barData: barData.map(val => dataFormats(val, '', 1)),
+      xAxisLabel,
+    };
   }
 
   toWorkDetail = () => {
@@ -75,6 +80,17 @@ class ChartLostTypes extends Component {
     const baseOption = getBaseOption(xAxisLabel);
     baseOption.yAxis.name = '小时数(h)';
     baseOption.yAxis.min = 0;
+    baseOption.xAxis.axisLabel.interval = 0;
+    baseOption.xAxis.axisLabel.formatter = (str) => {
+      const labelStr = [];
+      let index = 0;
+      while(str[index]){
+        labelStr.push(str[index]);
+        index % 4 === 3 && str[index + 1] && labelStr.push('\n');
+        index++;
+      }
+      return labelStr.join('');
+    };
     const option = {
       ...baseOption,
       tooltip: {

@@ -56,7 +56,7 @@
         }
       }
       .stationSelect,.quotaSelect,.lossElectric,.keyWord,.powerInformation,.timeSelect,.search,.reset{
-        margin-right: 24px;
+        margin-right: 16px;
       }
       .search,.reset{
         margin-top: 8px;
@@ -68,7 +68,14 @@
       .keyWord{
         :global{
           .ant-input{
-            width: 263px;
+            width: 249px;
+          }
+        }
+      }
+      .timeSelect{
+        :global{
+          .ant-calendar-picker{
+            width: 217px;
           }
         }
       }
@@ -98,6 +105,22 @@
         }
       }
     }  
+  }
+}
+
+.limitList,.faultList{
+  :global{
+    .ant-table{
+      .reason,.process,.manufactorName,.deviceName,.deviceModeName{
+        div{
+          width: 150px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          word-break: keep-all;
+        }
+      }
+    }
   }
 }
 

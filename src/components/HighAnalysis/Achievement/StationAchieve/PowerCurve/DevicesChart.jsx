@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { getCurveBaseOption } from './curveBaseOption';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './curve.scss';
 
 class DevicesChart extends Component {
@@ -100,11 +101,11 @@ class DevicesChart extends Component {
               </span>
               <span class=${styles.eachItem}>
                 <span>平均风速</span>
-                <span>${value[0]}</span>
+                <span>${dataFormats(value[0], '--', 2, true)}</span>
               </span>
               <span class=${styles.eachItem}>
                 <span>平均功率</span>
-                <span>${value[1]}</span>
+                <span>${dataFormats(value[1], '--', 2, true)}</span>
               </span>
             </div>
           </section>`;

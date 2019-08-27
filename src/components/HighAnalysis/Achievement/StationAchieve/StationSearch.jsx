@@ -13,6 +13,7 @@ const { RangePicker } = DatePicker;
 class StationSearch extends Component {
 
   static propTypes = {
+    pageName: PropTypes.string,
     location: PropTypes.object,
     lostChartDevice: PropTypes.object, // chart选中的设备
     history: PropTypes.object,
@@ -20,6 +21,7 @@ class StationSearch extends Component {
     modeDevices: PropTypes.array,
     getDevices: PropTypes.func,
 
+    stationInfoStr: PropTypes.string,
     searchCode: PropTypes.number,
     searchDevice: PropTypes.array,
     searchDates: PropTypes.array,
@@ -28,12 +30,33 @@ class StationSearch extends Component {
 
   constructor(props){
     super(props);
+    const { stationInfoStr, searchCode, searchDevice, searchDates, searchQuota } = props;
     this.state = {
-      searchCode: props.searchCode,
-      searchDevice: props.searchDevice,
-      searchDates: props.searchDates,
-      searchQuota: props.searchQuota,
+      stationInfoStr,
+      searchCode,
+      searchDevice,
+      searchDates,
+      searchQuota,
+      queryTimer,
     };
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { stationInfoStr } = nextProps;
+    if (stationInfoStr !== this.state.stationInfoStr ) { // 外界路径自动改变时进行数据同步映射。
+      let searchParam = {};
+      try {
+        searchParam = JSON.parse(stationInfoStr);
+      } catch(err){ null; }
+      const { code, device = [], date = [], quota } = searchParam;
+      this.setState({
+        stationInfoStr,
+        searchCode: code,
+        searchDevice: device,
+        searchDates: date,
+        searchQuota: quota,
+      });
+    }
   }
 
   historyChange = (code, device = [], date = [
@@ -58,12 +81,26 @@ class StationSearch extends Component {
   onDateChange = ([], [start, end]) => this.setState({ searchDates: [start, end] });
 
   queryCharts = () => {
-    const { searchCode, searchDevice, searchDates, searchQuota } = this.state;
-    this.historyChange(searchCode, searchDevice, searchDates, searchQuota);
+    const { searchCode, searchDevice, searchDates, searchQuota, queryTimer } = this.state;
+    if (!queryTimer) { // 防抖
+      this.historyChange(searchCode, searchDevice, searchDates, searchQuota);
+      const tmpTimer = setTimeout(() => {
+        this.setState({ queryTimer: null });
+      }, 1000);
+      this.setState({ queryTimer: tmpTimer });
+    }
   }
 
   resetCharts = () => {
     console.log('重置');
+  }
+
+  queryDisable = () => {
+    const { pageName } = this.props;
+    const { searchDevice, searchCode, searchQuota } = this.state;
+    const infoLoss = !searchDevice || searchDevice.length === 0 || !searchCode;
+    const quotaLoss = pageName === 'lost' && !searchQuota;
+    return infoLoss || quotaLoss || this.queryTimer;
   }
 
   render() {
@@ -104,6 +141,7 @@ class StationSearch extends Component {
           <Button
             onClick={this.queryCharts}
             className={styles.search}
+            disabled={this.queryDisable()}
           >查询</Button>
         </div>
         <Button

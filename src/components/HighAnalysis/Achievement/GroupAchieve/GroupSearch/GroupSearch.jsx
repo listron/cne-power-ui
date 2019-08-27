@@ -42,6 +42,8 @@ export default class AreaSearch extends Component {
       dates: groupInfo.dates || [defaultStartTime, defaultEndTime],
       quota: groupInfo.quota || [],
       modesInfo: groupInfo.modesInfo || [],
+      areaFlag: false, // 控制第一次进来，有数据的时候
+      quotaFlag: false, // 控制第一次进来，有数据的时候
     };
   }
 
@@ -53,7 +55,7 @@ export default class AreaSearch extends Component {
   componentWillReceiveProps(nextProps){
     // 得到区域数据 ==> 请求机型 areaStation
     const { areaStation, modesInfo, quotaInfo } = nextProps;
-    const { groupInfoStr } = this.state;
+    const { groupInfoStr, areaFlag, quotaFlag } = this.state;
     const preArea = this.props.areaStation;
     const preDevice = this.props.modesInfo;
     const preQuota = this.props.quotaInfo;
@@ -72,6 +74,16 @@ export default class AreaSearch extends Component {
       this.setState({
         modes,
         modesInfo,
+      });
+    }
+    // 判断从别的页面头次进入页面，电站和指标分析数据是有的话，改变state值， 发送请求
+    if(!groupInfoStr && !areaFlag && areaStation.length > 0 && !quotaFlag && quotaInfo.length > 0) {
+      this.setState({
+        areaFlag: true,
+        quotaFlag: true,
+      }, () => {
+        this.propsAreaStationChange(areaStation);
+        this.propsQuotaChange(quotaInfo);
       });
     }
   }
@@ -209,10 +221,15 @@ export default class AreaSearch extends Component {
       quotaInfo,
       dataName,
     } = this.props;
-    const { modes, dates, quota, stations } = this.state;
-    // console.log(modes, 'modesrender');
-    // console.log(stations, 'stationsrender');
-    // console.log(modesInfo, 'modesInforender');
+    const { modes, dates, quota, stations, searchCode } = this.state;
+    let stationsFlag = false;
+    stations && stations.forEach(cur => {
+      if(cur.stations.length > 0){
+        stationsFlag = true;
+      }
+    });
+    const searchFlag = searchCode && modes && modes.length !== 0 && quota && quota.length !== 0 && stationsFlag && stations && stations.length !== 0 && modesInfo && modesInfo.length !== 0;
+
     return (
       <div className={styles.topSearch}>
         <div>
@@ -257,7 +274,7 @@ export default class AreaSearch extends Component {
           />
         </div>
         <div>
-          <Button style={{marginRight: '20px'}} onClick={this.queryCharts}>查询</Button>
+          <Button disabled={!searchFlag} style={{marginRight: '20px'}} onClick={this.queryCharts}>查询</Button>
           <Button disabled={dataName === ''} onClick={this.resetCharts}>恢复图表</Button>
         </div>
       </div>

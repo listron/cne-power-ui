@@ -36,10 +36,12 @@ function* getQuotaInfo() { // 可选指标信息
       value: e.indicatorCode,
       label: e.indicatorName,
       unit: e.unitName,
+      pointLength: e.pointLength,
       children: (e.children && e.children.length > 0) ? e.children.map(m => ({
         value: m.indicatorCode,
         label: m.indicatorName,
         unit: e.unitName,
+        pointLength: e.pointLength,
       })) : undefined,
     }));
     if (response.code === '10000') {

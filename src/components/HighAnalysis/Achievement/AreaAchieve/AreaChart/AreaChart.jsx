@@ -37,6 +37,7 @@ export default class AreaChart extends Component {
       eCharts.init(areaChart).clear();//清除
       const myChart = eCharts.init(areaChart);
       myChart.setOption(this.drawChart(capacityInfo, dataIndex));
+      myChart.off('click');
       myChart.on('click', (param) => this.chartHandle(param, capacityInfo, myChart));
     }
   }

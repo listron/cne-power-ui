@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import searchUtil from '../../../../../utils/searchUtil';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
+import {dataFormat} from '../../../../../utils/utilFunc';
 
 import styles from './groupLossChart.scss';
 
@@ -40,10 +41,11 @@ export default class GroupLossChart extends Component {
   }
 
   drawChart = (groupLostGenHourInfo) => {
+    const pointLength = 1;
     const { actualGen, theoryGen, detailList } = groupLostGenHourInfo;
     const xAxisName = detailList && detailList.map(cur => (cur.name)) || [];
     const xAxisBaseValue = detailList && detailList.map(cur => (cur.baseValue)) || [];
-    const xAxisValue = detailList && detailList.map(cur => (cur.value)) || [];
+    const xAxisValue = detailList && detailList.map(cur => (dataFormat(cur.value, '--', pointLength))) || [];
     return {
       graphic: !actualGen && !theoryGen && (!detailList || detailList.length === 0) ? showNoData : hiddenNoData,
       tooltip: {
@@ -53,7 +55,7 @@ export default class GroupLossChart extends Component {
         },
         formatter: function (params) {
           var tar = params[1];
-          return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
+          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormat(tar.value, '--', pointLength) + 'h';
         },
       },
       grid: {
@@ -99,7 +101,7 @@ export default class GroupLossChart extends Component {
           data: [0, ...xAxisBaseValue, 0],
         },
         {
-          name: '生活费',
+          name: '小时数',
           type: 'bar',
           barWidth: 10,
           stack: '总量',
@@ -109,7 +111,7 @@ export default class GroupLossChart extends Component {
               position: 'top',
             },
           },
-          data: [theoryGen || '', ...xAxisValue, actualGen || ''],
+          data: [dataFormat(theoryGen, '--', pointLength), ...xAxisValue, dataFormat(theoryGen, '--', pointLength)],
         },
       ],
     };
@@ -133,12 +135,23 @@ export default class GroupLossChart extends Component {
       }
     }
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+    const resultStation = [];
+    groupInfo.stations && groupInfo.stations.forEach(e => {
+      const { stations = [], regionName } = e || {};
+      const filteredStations = stations.filter(m => selectStationCode.includes(m.stationCode));
+      if (filteredStations.length > 0) {
+        resultStation.push({
+          regionName,
+          stations: filteredStations,
+        });
+      }
+    });
     const areaInfo = {
       searchCode: selectStationCode,
       modes: groupInfo.modes,
       dates: groupInfo.dates,
       quota: groupInfo.quota,
-      stations: [groupInfo.stations[5]],
+      stations: resultStation,
       modesInfo: groupInfo.modesInfo,
     };
     // // 新的search: pages参数不变, area参数变为选中项内容集合
