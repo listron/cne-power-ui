@@ -12,10 +12,10 @@ const { Option } = Select;
 class ChartStopTypes extends Component {
 
   static propTypes = {
+    stopTopStringify: PropTypes.string,
     stopChartTime: PropTypes.string,
     stopChartTimeMode: PropTypes.string,
     stopTypes: PropTypes.array,
-    location: PropTypes.object,
     stopChartDevice: PropTypes.object,
     stopChartTypes: PropTypes.object,
     stopElecType: PropTypes.string,
@@ -77,24 +77,24 @@ class ChartStopTypes extends Component {
     const countData = [];
     let series = [];
     sortedTypes.forEach(e => {
-      const { faultTypeId, faultName } = e;
+      const { faultId, faultName } = e;
       dataAxis.push(faultName);
       genData.push({
         value: e.stopLostGen,
         itemStyle: {
-          opacity: (stopChartTypes && faultTypeId !== stopChartTypes.faultTypeId) ? 0.4 : 1,
+          opacity: (stopChartTypes && faultId !== stopChartTypes.faultId) ? 0.4 : 1,
         },
       });
       hourData.push({
         value: e.stopHour,
         itemStyle: {
-          opacity: (stopChartTypes && faultTypeId !== stopChartTypes.faultTypeId) ? 0.4 : 1,
+          opacity: (stopChartTypes && faultId !== stopChartTypes.faultId) ? 0.4 : 1,
         },
       });
       countData.push({
         value: e.stopCount,
         itemStyle: {
-          opacity: (stopChartTypes && faultTypeId !== stopChartTypes.faultTypeId) ? 0.4 : 1,
+          opacity: (stopChartTypes && faultId !== stopChartTypes.faultId) ? 0.4 : 1,
         },
       });
     });
@@ -116,43 +116,42 @@ class ChartStopTypes extends Component {
     return { dataAxis, series };
   }
 
-  getSearchInfo = () => {
-    const { location } = this.props;
-    const { search } = location;
-    const infoStr = searchUtil(search).getValue('station');
-    return JSON.parse(infoStr) || {};
-  }
-
-  handleChart = ({ dataIndex }, sortedTypes, chart) => {
+  chartHandle = ({ dataIndex }, sortedTypes, chart) => {
+    console.log(dataIndex)
+    console.log(sortedTypes)
     const { sortName } = this.state;
-    const { stopElecType, stopChartTypes, stopChartDevice, stopChartTime, stopChartTimeMode } = this.props;
+    const { stopElecType, stopChartTypes, stopChartDevice, stopChartTime, stopChartTimeMode, stopTopStringify } = this.props;
     const curFaultInfo = sortedTypes[dataIndex] || {};
-    const searchParam = this.getSearchInfo();
-    const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.searchDevice;
-    let [startTime, endTime] = searchParam.searchDates;
+    const searchParam = JSON.parse(stopTopStringify) || {};
+    console.log(searchParam)
+    const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.device;
+    let [startTime, endTime] = searchParam.date;
     if (stopChartTime) { // 已有时间选择。
       const recordStart = moment(stopChartTime).startOf(stopChartTimeMode);
       const recordEnd = moment(stopChartTime).endOf(stopChartTimeMode);
       startTime = moment.max(recordStart, moment(startTime)).format('YYYY-MM-DD');
       endTime = moment.min(recordEnd, moment(endTime)).format('YYYY-MM-DD');
     }
+    console.log('.....')
     let faultInfo = {};
-    if (stopChartTypes && stopChartTypes.faultTypeId === curFaultInfo.faultTypeId) { // 取消选中
+    if (stopChartTypes && stopChartTypes.faultId === curFaultInfo.faultId) { // 取消选中
       this.props.changeStore({ stopChartTypes: null });
       this.renderChart(sortedTypes, sortName, null);
     } else {
-      faultInfo = { faultId: curFaultInfo.faultTypeId };
+      faultInfo = { faultId: curFaultInfo.faultId };
       this.props.changeStore({ stopChartTypes: curFaultInfo });
       this.renderChart(sortedTypes, sortName, curFaultInfo);
     }
+    console.log(faultInfo)
     const param = {
-      stationCodes: [searchParam.searchCode],
+      stationCodes: [searchParam.code],
       deviceFullcodes,
       startTime,
       endTime,
       parentFaultId: stopElecType,
       ...faultInfo,
     };
+    console.log(param)
     this.props.getStopRank({ ...param });
     this.props.getStopTrend({ ...param });
   }
@@ -165,7 +164,7 @@ class ChartStopTypes extends Component {
       grid: [
         { ...getBaseGrid(), top: 30, height: 85, containLabel: false, left: 40 },
         { ...getBaseGrid(), top: 155, height: 85, containLabel: false, left: 40 },
-        { ...getBaseGrid(), top: 280, height: 85, containLabel: false, left: 40 },
+        { ...getBaseGrid(), top: 275, height: 85, containLabel: false, left: 40 },
       ],
       xAxis: [
         { ...getBaseXAxis(dataAxis), gridIndex: 0, axisLabel: { show: false } },

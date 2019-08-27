@@ -122,7 +122,7 @@ class ChartLostTrend extends Component {
     }
     let faultInfo = {};
     if (stopChartTypes) {
-      faultInfo = { faultId: stopChartTypes.faultTypeId };
+      faultInfo = { faultId: stopChartTypes.faultId };
     }
     const param = {
       stationCodes: [searchParam.code],

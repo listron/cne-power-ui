@@ -160,7 +160,7 @@ class ChartStopRank extends Component {
     };
     const trendParam = { ...param, type: stopChartTimeMode };
     if (stopChartTypes) { // 选中了停机时长及次数中的故障内容。
-      trendParam.faultId = stopChartTypes.faultTypeId;
+      trendParam.faultId = stopChartTypes.faultId;
     }
     this.props.getStopTrend({ ...trendParam });
     this.props.getStopTypes({ ...param });
