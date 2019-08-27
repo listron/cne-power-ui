@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Select } from 'antd';
 import { getCurveBaseOption } from './curveBaseOption';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './curve.scss';
 const { Option } = Select;
 
@@ -67,6 +68,7 @@ class DevicesPsd extends Component {
 
   sortChart = (sortName) => {
     const { curveDevicesPsd = [] } = this.props;
+    this.setState({ sortName });
     this.renderChart(curveDevicesPsd, sortName);
   }
 
@@ -121,8 +123,10 @@ class DevicesPsd extends Component {
     const { series, xData } = this.createSeires(sortedPsdData);
     const baseOption = getCurveBaseOption();
     baseOption.xAxis.data = xData;
-    baseOption.grid.top = 10;
+    baseOption.yAxis.name = 'PSD(%)';
+    baseOption.grid.top = 30;
     baseOption.grid.bottom = 40;
+    baseOption.grid.left = 30;
     const option = {
       ...baseOption,
       tooltip: {
@@ -139,7 +143,7 @@ class DevicesPsd extends Component {
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>PSD</span>
-                  <span>${e.value}</span>
+                  <span>${dataFormats(e.value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
             </div>
