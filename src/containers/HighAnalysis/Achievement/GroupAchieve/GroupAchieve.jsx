@@ -27,13 +27,6 @@ class GroupAchieve extends Component {
     changeStore: PropTypes.func,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      pointLength: 0,
-    };
-  }
-
   componentDidMount(){
     // 若是上级页面下钻进入 => search中的area与之前记录有变化。
     const { search } = this.props.location;
