@@ -85,7 +85,9 @@ class ChartLostRank extends Component {
     });
   }
 
-  createSeries = (lostRank = [], lostChartDevice) => {
+  unitValue = (value, unit) => dataFormats(dataFormats(value) * (unit === '%' ? 100 : 1), '')
+
+  createSeries = (lostRank = [], lostChartDevice, unit) => {
     const dataAxis = [];
     const firstBarData = [];
     const secendBarData = [];
@@ -105,7 +107,7 @@ class ChartLostRank extends Component {
       const colorIndex = modeArr.indexOf(deviceModeName);
       firstBarData.push({
         name: deviceModeName,
-        value: indicatorType === 'single' ? indicatorData.value : indicatorData.actualGen,
+        value: this.unitValue(indicatorType === 'single' ? indicatorData.value: indicatorData.actualGen, unit),
         itemStyle: {
           color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
             {offset: 0, color: this.barColor[colorIndex][0] },
@@ -190,11 +192,12 @@ class ChartLostRank extends Component {
     const { quotaInfo, lostStringify, lostChartDevice } = this.props;
     const rankChart = echarts.init(this.rankRef);
     const sortedLostRank = this.sortRank(lostRank, sortType);
-    const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank, lostChartDevice);
-    const baseOption = getBaseOption(dataAxis);
     const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
     const selectedQuota = this.getQuota(quotaInfo, quota);
-    baseOption.yAxis.name = `${selectedQuota.label || '--'}${selectedQuota.unit ? `(${selectedQuota.unit})` : ''}`;
+    const { label = '--', unit, pointLength } = selectedQuota;
+    const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank, lostChartDevice, unit);
+    const baseOption = getBaseOption(dataAxis);
+    baseOption.yAxis.name = `${label || '--'}${unit ? `(${unit})` : ''}`;
     const option = {
       ...baseOption,
       legend: { data: modeArr },
@@ -211,8 +214,8 @@ class ChartLostRank extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 1 ? '应发小时数' : `${selectedQuota.label || '--'}`}</span>
-                  <span>${dataFormats(e.value, '--', 2, true)}${selectedQuota.unit || ''}</span>
+                  <span>${i === 1 ? '应发小时数' : `${label || '--'}`}</span>
+                  <span>${dataFormats(e.value, '--', pointLength, true)}${unit || ''}</span>
                 </span>`
               )).join('')}
             </div>
@@ -237,6 +240,7 @@ class ChartLostRank extends Component {
       end: endPosition,
     }]);
     rankChart.hideLoading();
+    rankChart.clear();
     rankChart.setOption(option);
     rankChart.off('click');
     rankChart.on('click', (param) => this.chartHandle(param, sortedLostRank, rankChart ));

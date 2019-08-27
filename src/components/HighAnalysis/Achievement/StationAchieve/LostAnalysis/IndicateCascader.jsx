@@ -33,7 +33,6 @@ class IndicateCascader extends Component {
   }
 
   onQuotaChange = (codes, fullInfo) => {
-    console.log(codes, fullInfo)
     this.props.onChange(codes, fullInfo);
   }
 
