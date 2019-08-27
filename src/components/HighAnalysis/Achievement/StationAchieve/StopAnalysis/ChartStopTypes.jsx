@@ -163,9 +163,9 @@ class ChartStopTypes extends Component {
     const { dataAxis, series } = this.createSeries(sortedTypes, stopChartTypes);
     const option = {
       grid: [
-        { ...getBaseGrid(), top: 30, height: 90, containLabel: false, left: 40 },
-        { ...getBaseGrid(), top: 160, height: 90, containLabel: false, left: 40 },
-        { ...getBaseGrid(), top: 290, height: 90, containLabel: false, left: 40 },
+        { ...getBaseGrid(), top: 30, height: 85, containLabel: false, left: 40 },
+        { ...getBaseGrid(), top: 155, height: 85, containLabel: false, left: 40 },
+        { ...getBaseGrid(), top: 280, height: 85, containLabel: false, left: 40 },
       ],
       xAxis: [
         { ...getBaseXAxis(dataAxis), gridIndex: 0, axisLabel: { show: false } },
