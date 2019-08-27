@@ -9,8 +9,8 @@ import BoxTransformerList from './BoxTransformerList';
 import IntegrateList from './IntegrateList';
 import Boosterstation from './Boosterstation';
 import PowerNet from './PowerNet';
-import WeatherStation from './WeatherStation'
-import Schematic from './SchematicMap'
+import WeatherStation from './WeatherStation';
+import Schematic from './SchematicMap';
 import styles from './deviceList.scss';
 
 class DeviceList extends Component {
@@ -26,10 +26,10 @@ class DeviceList extends Component {
   }
 
   render() {
-    const { deviceTypeCode,theme } = this.props;
+    const { deviceTypeCode, theme } = this.props;
     //  207 为交流汇流箱 暂时已经舍去了
     return (
-      <div className={styles.deviceListBox}>
+      <div className={`${styles.deviceListBox} ${styles[theme]}`} >
         {/* 1 示意图 509 光伏组件 206(组串) ／201(集中) 逆变器  202/207(交流) 汇流箱  304 箱变 */}
         {`${deviceTypeCode}` === '1' && <Schematic {...this.props} theme={theme} />}
         {`${deviceTypeCode}` === '509' && <PvmoduleList {...this.props} />}
@@ -45,7 +45,7 @@ class DeviceList extends Component {
         {`${deviceTypeCode}` === '0' && <PowerNet {...this.props} />}
         {`${deviceTypeCode}` === '203' && <WeatherStation {...this.props} />}
       </div>
-    )
+    );
   }
 }
 

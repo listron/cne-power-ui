@@ -32,8 +32,18 @@ const barRadius = {
   },
 };
 
-const chartsLoading = (charts, loading) => {
-  return loading ? charts.showLoading('default', { color: '#00baff', maskColor: 'rgba(22, 24, 88, 0.5)' }) : charts.hideLoading();
+const chartsLoading = (charts, loading, theme) => {
+  const lightColor = {
+    maskColor: 'rgba(255, 255, 255, 0.8)',
+    color: '#199475',
+  };
+  const darkColor = {
+    color: '#00baff',
+    textColor: '#fff',
+    maskColor: 'rgba(22, 24, 88, 0.5)',
+  };
+
+  return loading ? charts.showLoading('default', theme === 'dark' ? darkColor : lightColor) : charts.hideLoading();
 };
 
 const chartsNodata = (hasNoData, theme) => {

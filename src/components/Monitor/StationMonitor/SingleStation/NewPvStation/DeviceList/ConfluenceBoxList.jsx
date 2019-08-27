@@ -259,7 +259,7 @@ class ConfluenceBoxList extends Component {
 
 
   render() {
-    const { confluenceBoxList, deviceTypeCode, loading } = this.props;
+    const { confluenceBoxList, deviceTypeCode, loading, theme } = this.props;
     const { currentPage, pageSize, renderList } = this.state;
     const { deviceList = [] } = confluenceBoxList;
     const baseLinkPath = '/hidden/monitorDevice';
@@ -280,11 +280,8 @@ class ConfluenceBoxList extends Component {
     return (
       <div className={styles.deviceList} >
         <Tabs defaultActiveKey="1" className={styles.deviceListTab} tabBarExtraContent={operations}>
-          <TabPane
-            tab={<span><i className="iconfont icon-grid" ></i></span>}
-            key="1"
-          >
-            <div ref={ref => this.newPinterest = ref} className={styles.deviceListBlockBox}>
+          <TabPane tab={<span><i className="iconfont icon-grid" /></span>} key="1" >
+            <div ref={ref => { this.newPinterest = ref; }} className={styles.deviceListBlockBox}>
               {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
                 (deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
                   const { parentDeviceName, parentDeviceFullCode } = list.length > 0 && list[0];
@@ -293,8 +290,7 @@ class ConfluenceBoxList extends Component {
                     <div key={index}>
                       <div className={styles.parentDeviceName} >
                         <Link to={`/hidden/monitorDevice/${stationCode}/${praentTypeCode}/${parentDeviceFullCode}`} className={styles.underlin} >
-                          <i className={'iconfont icon-hl'}></i>
-                          {parentDeviceName}
+                          <i className={'iconfont icon-hl'} />  {parentDeviceName}
                         </Link>
                       </div>
                       <div className={styles.singledeviceItemBox}>
@@ -306,14 +302,13 @@ class ConfluenceBoxList extends Component {
                           const devicePower = dataFormats(item.devicePower, '--', 2);
                           const progressPercent = deviceCapacity && devicePower && devicePower / deviceCapacity * 100 || 0;
                           return (
-                            <div key={item.deviceCode}
-                              className={`${styles.singledeviceItem} ${styles[statusName]} ${alarm && styles.alarm} `}>
+                            <div key={item.deviceCode} className={`${styles.singledeviceItem} ${styles[statusName]} ${alarm && styles.alarm} `}>
                               <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}>
                                 <div className={`${styles.statusBox}`} >
                                   <div className={styles.deviceItemIcon} >
-                                    {deviceStatus === 500 && <i className="iconfont icon-outage" ></i> || null}
+                                    {deviceStatus === 500 && <i className="iconfont icon-outage" /> || null}
                                     <i className={`iconfont icon-hl ${styles.icon}`} ></i>
-                                    {(item.alarmNum && item.alarmNum > 0) && <i className="iconfont icon-alarm" ></i> || null}
+                                    {(item.alarmNum && item.alarmNum > 0) && <i className="iconfont icon-alarm" /> || null}
                                   </div>
                                   <div className={styles.deviceItemR} >
                                     <div className={styles.deviceBlockName}><span>{item.deviceName}</span></div>
@@ -324,7 +319,6 @@ class ConfluenceBoxList extends Component {
                                     </div>
                                   </div>
                                 </div>
-
                                 <div className={styles.deviceBlockFooter} >
                                   <div>电压：{dataFormats(item.voltage, '--', 2)} V</div>
                                   <div>电流：{dataFormats(item.electricity, '--', 2)} A</div>
@@ -336,18 +330,17 @@ class ConfluenceBoxList extends Component {
                           );
                         })}
                       </div>
-
                     </div>);
                 }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
               }
             </div>
             {(renderList.length < filteredDeviceList.length) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
           </TabPane>
-
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.deviceTableBox} >
             <div>
               <div className={styles.pagination} >
-                <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length} />
+                <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length}
+                  theme={theme} />
               </div>
               <Table
                 dataSource={this.createTableSource(filteredDeviceList).map((e, i) => { return { ...e, key: e.deviceCode }; })}
