@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
 import { Select } from 'antd';
-import searchUtil from '../../../../../utils/searchUtil';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import { getBaseGrid, getBaseYAxis, getBaseXAxis } from './chartBaseOption';
 import styles from './stop.scss';
@@ -12,10 +11,10 @@ const { Option } = Select;
 class ChartStopTypes extends Component {
 
   static propTypes = {
+    stopTopStringify: PropTypes.string,
     stopChartTime: PropTypes.string,
     stopChartTimeMode: PropTypes.string,
     stopTypes: PropTypes.array,
-    location: PropTypes.object,
     stopChartDevice: PropTypes.object,
     stopChartTypes: PropTypes.object,
     stopElecType: PropTypes.string,
@@ -77,24 +76,24 @@ class ChartStopTypes extends Component {
     const countData = [];
     let series = [];
     sortedTypes.forEach(e => {
-      const { faultTypeId, faultName } = e;
+      const { faultId, faultName } = e;
       dataAxis.push(faultName);
       genData.push({
         value: e.stopLostGen,
         itemStyle: {
-          opacity: (stopChartTypes && faultTypeId !== stopChartTypes.faultTypeId) ? 0.4 : 1,
+          opacity: (stopChartTypes && faultId !== stopChartTypes.faultId) ? 0.4 : 1,
         },
       });
       hourData.push({
         value: e.stopHour,
         itemStyle: {
-          opacity: (stopChartTypes && faultTypeId !== stopChartTypes.faultTypeId) ? 0.4 : 1,
+          opacity: (stopChartTypes && faultId !== stopChartTypes.faultId) ? 0.4 : 1,
         },
       });
       countData.push({
         value: e.stopCount,
         itemStyle: {
-          opacity: (stopChartTypes && faultTypeId !== stopChartTypes.faultTypeId) ? 0.4 : 1,
+          opacity: (stopChartTypes && faultId !== stopChartTypes.faultId) ? 0.4 : 1,
         },
       });
     });
@@ -116,20 +115,13 @@ class ChartStopTypes extends Component {
     return { dataAxis, series };
   }
 
-  getSearchInfo = () => {
-    const { location } = this.props;
-    const { search } = location;
-    const infoStr = searchUtil(search).getValue('station');
-    return JSON.parse(infoStr) || {};
-  }
-
-  handleChart = ({ dataIndex }, sortedTypes, chart) => {
+  chartHandle = ({ dataIndex }, sortedTypes, chart) => {
     const { sortName } = this.state;
-    const { stopElecType, stopChartTypes, stopChartDevice, stopChartTime, stopChartTimeMode } = this.props;
+    const { stopElecType, stopChartTypes, stopChartDevice, stopChartTime, stopChartTimeMode, stopTopStringify } = this.props;
     const curFaultInfo = sortedTypes[dataIndex] || {};
-    const searchParam = this.getSearchInfo();
-    const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.searchDevice;
-    let [startTime, endTime] = searchParam.searchDates;
+    const searchParam = JSON.parse(stopTopStringify) || {};
+    const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.device;
+    let [startTime, endTime] = searchParam.date;
     if (stopChartTime) { // 已有时间选择。
       const recordStart = moment(stopChartTime).startOf(stopChartTimeMode);
       const recordEnd = moment(stopChartTime).endOf(stopChartTimeMode);
@@ -137,16 +129,16 @@ class ChartStopTypes extends Component {
       endTime = moment.min(recordEnd, moment(endTime)).format('YYYY-MM-DD');
     }
     let faultInfo = {};
-    if (stopChartTypes && stopChartTypes.faultTypeId === curFaultInfo.faultTypeId) { // 取消选中
+    if (stopChartTypes && stopChartTypes.faultId === curFaultInfo.faultId) { // 取消选中
       this.props.changeStore({ stopChartTypes: null });
       this.renderChart(sortedTypes, sortName, null);
     } else {
-      faultInfo = { faultId: curFaultInfo.faultTypeId };
+      faultInfo = { faultId: curFaultInfo.faultId };
       this.props.changeStore({ stopChartTypes: curFaultInfo });
       this.renderChart(sortedTypes, sortName, curFaultInfo);
     }
     const param = {
-      stationCodes: [searchParam.searchCode],
+      stationCodes: [searchParam.code],
       deviceFullcodes,
       startTime,
       endTime,
@@ -163,9 +155,9 @@ class ChartStopTypes extends Component {
     const { dataAxis, series } = this.createSeries(sortedTypes, stopChartTypes);
     const option = {
       grid: [
-        { ...getBaseGrid(), top: 30, height: 90, containLabel: false, left: 40 },
-        { ...getBaseGrid(), top: 160, height: 90, containLabel: false, left: 40 },
-        { ...getBaseGrid(), top: 290, height: 90, containLabel: false, left: 40 },
+        { ...getBaseGrid(), top: 30, height: 85, containLabel: false, left: 40 },
+        { ...getBaseGrid(), top: 155, height: 85, containLabel: false, left: 40 },
+        { ...getBaseGrid(), top: 275, height: 85, containLabel: false, left: 40 },
       ],
       xAxis: [
         { ...getBaseXAxis(dataAxis), gridIndex: 0, axisLabel: { show: false } },
