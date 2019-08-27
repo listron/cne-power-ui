@@ -1,0 +1,128 @@
+@import "../../../../theme/theme";
+@import "./layout.scss";
+.light {
+  background: #fff;
+  .unhandleMain {
+    border: 1px solid #e1e2e2;
+    background: #fff;
+    .wrap {
+      background: #fff;
+    }
+    .selectCondition {
+      border-top: 1px solid $promptColor;
+    }
+    .iconDetail {
+      span {
+        color: $themeColor;
+      }
+    }
+  }
+  .unhandleSide {
+    background: #fff;
+    .top {
+      border-bottom: 1px solid $promptColor;
+      .warnButton {
+        border-color: $themeColor;
+        color: $themeColor;
+        &:hover {
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+      .backIcon {
+        color: $darkColor;
+        border-left: 1px solid $promptColor;
+      }
+    }
+    .chartTop {
+      background: $promptColor;
+    }
+  }
+  .stationModal {
+    :global {
+      .ant-modal-footer {
+        background: #f1f1f1;
+      }
+    }
+    .reasonItem {
+      .title {
+        border-bottom: 1px solid $promptColor;
+      }
+      .label {
+        .labels {
+          span {
+            color: red;
+          }
+        }
+      }
+      .reasonName {
+        :global {
+          .ant-radio-button-wrapper {
+            border: 1px solid $themeColor;
+            color: $themeColor;
+          }
+          .ant-radio-button-wrapper:not(:first-child)::before {
+            background-color: $themeColor;
+          }
+          .ant-radio-button-wrapper:hover,
+          .ant-radio-button-wrapper-focused {
+            color: $darkColor;
+          }
+          .ant-radio-button-wrapper-checked {
+            border-color: $themeColor;
+            -webkit-box-shadow: -1px 0 0 0 $themeColor;
+            box-shadow: -1px 0 0 0 $themeColor;
+            color: #fff;
+            background: $themeColor;
+          }
+          .ant-radio-button-wrapper-checked:hover {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../../theme/darkTheme.scss";
+  .unhandleMain {
+    .wrap {
+      background: $light-background;
+      border: 1px solid $border-color;
+      margin-top: 10px;
+    }
+    .iconDetail {
+      span {
+        color: $themeColor;
+      }
+    }
+  }
+  .unhandleSide {
+    background: $background;
+    color: $fontColor;
+    .top {
+      background: $light-background;
+      border: 1px solid $border-color;
+      .warnButton {
+        border-color: $themeColor;
+        color: $themeColor;
+        &:hover {
+          background: $themeColor;
+          color: $fontColor-invert;
+        }
+      }
+      .backIcon {
+        border-left: 1px solid $border-color;
+      }
+    }
+    .wrap {
+      background: $light-background;
+      border: 1px solid $border-color;
+      margin-top: 10px;
+    }
+    .chartTop {
+      background: $background;
+    }
+  }
+}

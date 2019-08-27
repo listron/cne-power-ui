@@ -1,14 +1,26 @@
 .UnhandleBox {
-    min-height: 100%;
+  min-height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  .unhandleContainer {
     display: flex;
     flex: 1;
     flex-direction: column;
-    .unhandleContainer {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 24px 24px 0;
-        background-color: #ececec;
-    }
+    justify-content: space-between;
+    padding: 24px 24px 0;
+  }
+}
+
+.light {
+  .unhandleContainer {
+    background-color: #ececec;
+  }
+}
+
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  .unhandleContainer {
+    background-color: $background;
+  }
 }
