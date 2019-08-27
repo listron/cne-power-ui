@@ -35,7 +35,7 @@ class DevicesCheckTime extends Component {
       <section className={styles.timeSelector}>
         <h3 className={styles.timeTitle}>切换月份</h3>
         <MonthPicker
-          value={moment(curveDevicesTime)}
+          value={curveDevicesTime && moment(curveDevicesTime)}
           onChange={this.checkMonth}
           placeholder="请选择月份"
           allowClear={false}

@@ -134,17 +134,6 @@ class StationAchieve extends Component {
     }
   }
 
-  getAllDeviceCodes = (modeDevices = []) => { // 解析所有设备得到codes数组
-    const codes = [];
-    modeDevices.forEach(e => {
-      const { children = [] } = e || {};
-      children.forEach(m => {
-        codes.push(m.value);
-      });
-    });
-    return codes;
-  }
-
   getSearchParam = (infoStr) => {
     let searchParam = {};
     try {
@@ -206,13 +195,14 @@ class StationAchieve extends Component {
     if (page === 'curve') {
       const { stationCodes, deviceFullcodes, startTime, endTime } = params;
       const curveStartTime = moment(startTime).format('YYYY-MM');
-      const defaultDevice = deviceFullcodes[0];
+      const defaultDeviceCode = deviceFullcodes[0];
       const rangeMonths = this.getAllMonths(startTime, endTime);
+      const defaultDeviceName = this.getDeviceName(defaultDeviceCode);
       const monthParam = {
         stationCodes,
         startTime: curveStartTime,
         endTime: moment(endTime).format('YYYY-MM'),
-        deviceFullcodes: defaultDevice ? [defaultDevice] : [],
+        deviceFullcodes: defaultDeviceCode ? [defaultDeviceCode] : [],
       };
       const deviceParam = {
         stationCodes,
@@ -220,13 +210,14 @@ class StationAchieve extends Component {
         startTime: curveStartTime,
         endTime: curveStartTime,
       };
-      this.props.changeStore({
-        curveDeviceFullcode: defaultDevice,
-        curveStartTime, // 邻比分析设备选中时间
+      this.props.resetCurve({
+        curveDeviceFullcode: defaultDeviceCode,
+        curveDeviceName: defaultDeviceName,
+        curveDevicesTime: curveStartTime, // 邻比分析设备选中时间
         curveAllMonths: rangeMonths,
         curveCheckedMonths: rangeMonths,
+        curveTopStringify: infoStr,
       });
-      this.props.resetCurve({ curveTopStringify: infoStr });
       this.props.getCurveDevices(deviceParam);
       this.props.getCurveDevicesAep(deviceParam);
       this.props.getCurveDevicesPsd(deviceParam);
@@ -247,6 +238,20 @@ class StationAchieve extends Component {
       return allMonths;
     }
     return [];
+  }
+
+  getDeviceName = (deviceCode) => {
+    const { modeDevices } = this.props;
+    let deviceName = '';
+    modeDevices.find(e => {
+      const { children = [] } = e || {};
+      return children.find(m => {
+        const getResultName = m.value === deviceCode;
+        getResultName && (deviceName = m.label);
+        return getResultName;
+      });
+    });
+    return deviceName;
   }
 
   render() {

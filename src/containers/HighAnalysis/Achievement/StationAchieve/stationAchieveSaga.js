@@ -301,35 +301,38 @@ function *getCurveMonthPsd({ payload }){ // 某机组psd聚合度
   }
 }
 
-function *resetLost({ payload }){
+function *resetLost({ payload = {} }){
   yield call(easyPut, 'changeStore', {
-    lostStringify: payload.lostStringify,
+    lostStringify: '',
     lostChartDevice: null,
     lostChartTime: null,
     lostChartTimeMode: 'month',
+    ...payload,
   });
 }
 
-function *resetStop({ payload }){ // 停机重置。
+function *resetStop({ payload = {} }){ // 停机重置。
   yield call(easyPut, 'changeStore', {
-    stopTopStringify: payload.stopTopStringify,
+    stopTopStringify: '',
     stopElecType: 'all',
     stopType: '',
     stopChartDevice: null,
     stopChartTime: null,
     stopChartTimeMode: 'month',
     stopChartTypes: null,
+    ...payload,
   });
 }
 
-function *resetCurve({ payload }){
+function *resetCurve({ payload = {} }){
   yield call(easyPut, 'changeStore', {
-    curveTopStringify: payload.curveTopStringify,
+    curveTopStringify: '',
     curveDeviceFullcode: null,
     curveDeviceName: null,
     curveDevicesTime: null,
     curveCheckedMonths: [],
     curveAllMonths: [],
+    ...payload,
   });
 }
 
