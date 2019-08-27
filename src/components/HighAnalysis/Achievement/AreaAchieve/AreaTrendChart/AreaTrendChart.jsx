@@ -3,10 +3,11 @@ import eCharts from 'echarts';
 import { Radio } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-
-import styles from './areaTrendChart.scss';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
 import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormat } from '../../../../../utils/utilFunc';
+
+import styles from './areaTrendChart.scss';
 
 export default class AreaTrendChart extends Component {
 
@@ -22,6 +23,8 @@ export default class AreaTrendChart extends Component {
     changeStore: PropTypes.func,
     getLostGenHour: PropTypes.func,
     dataName: PropTypes.string,
+    unitName: PropTypes.string,
+    pointLength: PropTypes.number,
   };
 
   componentDidUpdate(prevProps) {
@@ -40,6 +43,7 @@ export default class AreaTrendChart extends Component {
       eCharts.init(trendChart).clear();//清除
       const myChart = eCharts.init(trendChart);
       myChart.setOption(this.drawChart(trendInfo));
+      myChart.off('click');
       myChart.on('click', (param) => this.chartHandle(param));
     }
   }
@@ -53,16 +57,12 @@ export default class AreaTrendChart extends Component {
       const {
         modes = [],
         modesInfo = [],
+        dates,
       } = groupInfo;
-      // 格式化日月年的开始结束日期
-      const timeFormat = {
-        '1': [moment(params.name).startOf('d').format('YYYY-MM-DD'), moment(params.name).endOf('d').format('YYYY-MM-DD')],
-        '2': [moment(params.name).startOf('m').format('YYYY-MM'), moment(params.name).endOf('m').format('YYYY-MM')],
-        '3': [moment(params.name).startOf('y').format('YYYY'), moment(params.name).endOf('y').format('YYYY')],
-      };
+      const dateFormatArr = this.dateFormat(dates, params.name, timeStatus);
       const paramsHour = {
-        startTime: timeFormat[timeStatus][0],
-        endTime: timeFormat[timeStatus][1],
+        startTime: dateFormatArr[0],
+        endTime: dateFormatArr[1],
         stationCodes: selectStationCode,
         manufactorIds: modesInfo.map(cur => {
           return cur.value;
@@ -76,14 +76,47 @@ export default class AreaTrendChart extends Component {
     }
   };
 
+  dateFormat = (dates, time, type) => {
+    // 日
+    if(type === '1') {
+      return [time, time];
+    }
+    // 月
+    if(type === '2') {
+      let selectStart = moment(time).startOf('month').format('YYYY-MM-DD');
+      let selectEnd = moment(time).endOf('month').format('YYYY-MM-DD');
+      // 如果选择的时间比筛选的时间还早
+      if(selectStart < dates[0]) {
+        selectStart = dates[0];
+      }
+      if(selectEnd > dates[1]) {
+        selectEnd = dates[1];
+      }
+      return [selectStart, selectEnd];
+    }
+    // 年
+    if(type === '3') {
+      let selectStart = moment(time).startOf('year').format('YYYY-MM-DD');
+      let selectEnd = moment(time).endOf('year').format('YYYY-MM-DD');
+      // 如果选择的时间比筛选的时间还早
+      if(selectStart < dates[0]) {
+        selectStart = dates[0];
+      }
+      if(selectEnd > dates[1]) {
+        selectEnd = dates[1];
+      }
+      return [selectStart, selectEnd];
+    }
+  };
+
   drawChart = (data) => {
-    const { qutaName } = this.props;
+    const { qutaName, unitName, pointLength } = this.props;
     const oneLine = [{
       name: qutaName,
       type: 'line',
       barWidth: '10',
       data: data && data.map(cur => {
-        return cur.indicatorData.value ? cur.indicatorData.value.toFixed(2) : '--';
+        return dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2);
       }),
     },
     ];
@@ -92,13 +125,13 @@ export default class AreaTrendChart extends Component {
       name: qutaName,
       type: 'line',
       data: data && data.map(cur => {
-        return cur.indicatorData.actualGen ? cur.indicatorData.actualGen.toFixed(2) : '--';
+        return dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2);
       }),
     }, {
       name: qutaName,
       type: 'line',
       data: data && data.map(cur => {
-        return cur.indicatorData.theoryGen ? cur.indicatorData.theoryGen.toFixed(2) : '--';
+        return dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2);
       }),
     }];
     const seriesData = qutaName === '利用小时数' ? twoLine : oneLine;
@@ -112,11 +145,11 @@ export default class AreaTrendChart extends Component {
         formatter: (params) => {
           if(qutaName === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[0].value || '--'}</span><br /><span>应发小时数：</span><span>${params[1].value || '--'}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}${unitName}</span>
           </div>`;
           }
           return `<div>
-            <span>${qutaName || '--'}</span><br /><span>${params[0].name}</span><span>${params[0].value || '--'}</span>
+            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span>
           </div>`;
         },
       },
@@ -137,8 +170,9 @@ export default class AreaTrendChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: qutaName,
+          name: `${qutaName}（${unitName}）`,
           min: 0,
+          max: unitName === '%' ? 100 : null,
           splitLine: {
             show: false,
           },
@@ -170,7 +204,6 @@ export default class AreaTrendChart extends Component {
     if(groupInfoStr) {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
       const {
-        stations = [],
         quota = [],
         dates = [],
         searchCode = [],
@@ -181,7 +214,6 @@ export default class AreaTrendChart extends Component {
         startTime: dates[0],
         endTime: dates[1],
         stationCodes: selectStationCode.length === 0 ? searchCode : selectStationCode,
-        regionName: [stations[0].regionName],
         indicatorCode: quotaValue,
         type: e.target.value, // 默认按月
       };

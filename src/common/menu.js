@@ -462,28 +462,28 @@ const menuData = [
       }, {
         name: '风电分析',
         path: 'achievement',
-        rightKey: 'statistics_device',
+        rightKey: 'analysis_windPower',
         children: [
           {
             name: '集团绩效分析',
             path: 'analysis/group',
-            rightKey: 'statistics_device',
+            rightKey: 'analysis_windPower_groupPerformance',
           }, {
             name: '区域绩效分析',
             path: 'analysis/area',
-            rightKey: 'statistics_device',
+            rightKey: 'analysis_windPower_regionPerformance',
           }, {
             name: '电站效能分析',
             path: 'analysis/station',
-            rightKey: 'statistics_device',
+            rightKey: 'analysis_windPower_stationPerformance',
           }, {
             name: '运行数据分析',
             path: 'analysis/run',
-            rightKey: 'statistics_device',
+            rightKey: 'analysis_windPower_operationalData',
           }, {
             name: '停机状态分析',
             path: 'analysis/stop',
-            rightKey: 'statistics_device',
+            rightKey: 'analysis_windPower_stopStatus',
           },
         ],
       },

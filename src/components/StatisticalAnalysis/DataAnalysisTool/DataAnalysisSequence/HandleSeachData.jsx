@@ -124,7 +124,9 @@ class HandleSeachData extends React.Component {
         });
       }
     }
+
     if (!point1Max && deviceList.length === sequenceData.length) {//当拿到所有图表数据，进行最大值最小值筛选
+      console.log('!point1Max && deviceList.length === sequenceData.length: ', !point1Max && deviceList.length === sequenceData.length);
       const y1Max = sequenceData.map((e, i) => (e.point1Max ? e.point1Max : 0));
       const y1Min = sequenceData.map((e, i) => (e.point1Min ? e.point1Min : 0));
       const y2Max = sequenceData.map((e, i) => (e.point2Max ? e.point2Max : 0));

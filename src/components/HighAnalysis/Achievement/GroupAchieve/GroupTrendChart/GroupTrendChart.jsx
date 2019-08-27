@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import moment from 'moment';
 import searchUtil from '../../../../../utils/searchUtil';
+import {dataFormat} from '../../../../../utils/utilFunc';
 
 import styles from './groupTrendChart.scss';
 
@@ -21,6 +22,8 @@ export default class GroupTrendChart extends Component {
     changeStore: PropTypes.func,
     getGroupLostGenHour: PropTypes.func,
     dataName: PropTypes.string,
+    unitName: PropTypes.string,
+    pointLength: PropTypes.number,
   };
 
   componentDidUpdate(prevProps) {
@@ -39,6 +42,7 @@ export default class GroupTrendChart extends Component {
       eCharts.init(groupTrendChart).clear();//清除
       const myChart = eCharts.init(groupTrendChart);
       myChart.setOption(this.drawChart(groupTrendInfo));
+      myChart.off('click');
       myChart.on('click', (param) => this.chartHandle(param));
     }
   }
@@ -53,23 +57,18 @@ export default class GroupTrendChart extends Component {
       const {
         modes = [],
         modesInfo = [],
+        dates,
       } = groupInfo;
-      // 格式化日月年的开始结束日期
-      const timeFormat = {
-        '1': [moment(params.name).startOf('d').format('YYYY-MM-DD'), moment(params.name).endOf('d').format('YYYY-MM-DD')],
-        '2': [moment(params.name).startOf('m').format('YYYY-MM'), moment(params.name).endOf('m').format('YYYY-MM')],
-        '3': [moment(params.name).startOf('y').format('YYYY'), moment(params.name).endOf('y').format('YYYY')],
-      };
+      const dateFormatArr = this.dateFormat(dates, params.name, groupTimeStatus);
       const paramsHour = {
-        startTime: timeFormat[groupTimeStatus][0],
-        endTime: timeFormat[groupTimeStatus][1],
+        startTime: dateFormatArr[0],
+        endTime: dateFormatArr[1],
         stationCodes: groupInfo.searchCode,
         manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
         deviceModes: modes,
       };
-      console.log(params, 'params');
       changeStore({
         selectTime: params.name,
       });
@@ -77,15 +76,48 @@ export default class GroupTrendChart extends Component {
     }
   };
 
+  dateFormat = (dates, time, type) => {
+    // 日
+    if(type === '1') {
+      return [time, time];
+    }
+    // 月
+    if(type === '2') {
+      let selectStart = moment(time).startOf('month').format('YYYY-MM-DD');
+      let selectEnd = moment(time).endOf('month').format('YYYY-MM-DD');
+      // 如果选择的时间比筛选的时间还早
+      if(selectStart < dates[0]) {
+        selectStart = dates[0];
+      }
+      if(selectEnd > dates[1]) {
+        selectEnd = dates[1];
+      }
+      return [selectStart, selectEnd];
+    }
+    // 年
+    if(type === '3') {
+      let selectStart = moment(time).startOf('year').format('YYYY-MM-DD');
+      let selectEnd = moment(time).endOf('year').format('YYYY-MM-DD');
+      // 如果选择的时间比筛选的时间还早
+      if(selectStart < dates[0]) {
+        selectStart = dates[0];
+      }
+      if(selectEnd > dates[1]) {
+        selectEnd = dates[1];
+      }
+      return [selectStart, selectEnd];
+    }
+  };
+
   drawChart = (data) => {
-    const { titleFunc } = this.props;
+    const { titleFunc, unitName, pointLength } = this.props;
 
     const oneLine = [{
         name: titleFunc,
         type: 'line',
         barWidth: '10',
         data: data && data.map(cur => {
-          return cur.indicatorData.value ? cur.indicatorData.value.toFixed(2) : '--';
+          return dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2);
         }),
       },
     ];
@@ -94,13 +126,13 @@ export default class GroupTrendChart extends Component {
       name: titleFunc,
       type: 'line',
       data: data && data.map(cur => {
-        return cur.indicatorData.actualGen ? cur.indicatorData.actualGen.toFixed(2) : '--';
+        return dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2);
       }),
     }, {
       name: titleFunc,
       type: 'line',
       data: data && data.map(cur => {
-        return cur.indicatorData.theoryGen ? cur.indicatorData.theoryGen.toFixed(2) : '--';
+        return dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2);
       }),
     }];
     const seriesData = titleFunc === '利用小时数' ? twoLine : oneLine;
@@ -113,11 +145,11 @@ export default class GroupTrendChart extends Component {
         formatter: (params) => {
           if(titleFunc === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[0].value || '--'}</span><br /><span>应发小时数：</span><span>${params[1].value || '--'}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}${unitName}</span>
           </div>`;
           }
           return `<div>
-            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}</span><span>${params[0].value || '--'}</span>
+            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span>
           </div>`;
         },
       },
@@ -138,8 +170,9 @@ export default class GroupTrendChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: titleFunc,
+          name: `${titleFunc}（${unitName}）`,
           min: 0,
+          max: unitName === '%' ? 100 : null,
           splitLine: {
             show: false,
           },

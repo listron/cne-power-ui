@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormat } from '../../../../../utils/utilFunc';
 
 import styles from './groupStationChart.scss';
 
@@ -18,6 +19,8 @@ export default class GroupStationChart extends Component {
     location: PropTypes.object,
     titleFunc: PropTypes.string,
     colorData: PropTypes.object,
+    unitName: PropTypes.string,
+    pointLength: PropTypes.number,
   };
 
   componentDidUpdate(prevProps) {
@@ -36,13 +39,14 @@ export default class GroupStationChart extends Component {
       eCharts.init(groupSortChart).clear();//清除
       const myChart = eCharts.init(groupSortChart);
       myChart.setOption(this.drawChart(groupRankInfo, dataIndex));
+      myChart.off('click');
       myChart.on('click', (param) => this.chartHandle(param, groupRankInfo, myChart));
     }
   }
 
   chartHandle = (params, groupCapacityInfo, myChart) => {
     const { name } = params;
-    const { changeStore, dataIndex, getGroupTrendInfo, getGroupLostGenHour, location: { search } } = this.props;
+    const { changeStore, getGroupTrendInfo, getGroupLostGenHour, location: { search } } = this.props;
     const groupInfoStr = searchUtil(search).getValue('group');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const {
@@ -88,9 +92,9 @@ export default class GroupStationChart extends Component {
   };
 
   drawChart = (data, dataIndex) => {
-    const { titleFunc, colorData } = this.props;
+    const { titleFunc, colorData, unitName, pointLength } = this.props;
     const twoBar = [{ // 实发
-      data: data && data.map(cur => (cur.indicatorData.actualGen)),
+      data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2))),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -105,7 +109,7 @@ export default class GroupStationChart extends Component {
         },
       },
     }, {// 应发
-      data: data && data.map(cur => (cur.indicatorData.theoryGen)),
+      data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2))),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -119,7 +123,7 @@ export default class GroupStationChart extends Component {
       },
     }];
     const oneBar = [{
-      data: data && data.map(cur => (cur.indicatorData.value)),
+      data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2))),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -145,11 +149,11 @@ export default class GroupStationChart extends Component {
         formatter: (params) => {
           if(titleFunc === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${params[0].value || (params[0].value === 0 ? params[0].value : '--')}</span><br /><span>应发小时数：</span><span>${params[1].value || (params[1].value === 0 ? params[1].value : '--')}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}${unitName}</span>
           </div>`;
           }
           return `<div>
-            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${params[0].value || (params[0].value === 0 ? params[0].value : '--')}</span>
+            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span>
           </div>`;
         },
       },
@@ -167,8 +171,9 @@ export default class GroupStationChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: titleFunc,
+          name: `${titleFunc}（${unitName}）`,
           min: 0,
+          max: unitName === '%' ? 100 : null,
           splitLine: {
             show: false,
           },

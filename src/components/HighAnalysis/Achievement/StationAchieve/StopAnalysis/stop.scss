@@ -28,7 +28,7 @@
       position: absolute;
       border-radius: 4px;
       top: 32px;
-      width: 150px;
+      min-width: 150px;
       height: 76px;
       .title, .eachDetail{
         padding: 0 8px;
@@ -39,6 +39,9 @@
       .eachDetail{
         display: flex;
         justify-content: space-between;
+        .detailText{
+          flex: 0 0 auto;
+        }
       }
     }
     .stopTypeHanlder{
