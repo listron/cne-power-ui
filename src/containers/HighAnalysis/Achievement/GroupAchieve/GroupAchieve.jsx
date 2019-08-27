@@ -150,6 +150,63 @@ class GroupAchieve extends Component {
     return '--';
   };
 
+  //选中选择指标名字
+  unitName = () => {
+    const { quotaInfo } = this.props;
+    const { search } = this.props.location;
+    const groupInfoStr = searchUtil(search).getValue('group');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const { quota = [] } = groupInfo;
+      // 默认指标分析
+      let unitName = ''; //  根据quota的value值遍历名称
+      quotaInfo.forEach(cur => {
+        // 有没有子集
+        if(quota[1] === cur.value) {
+          cur.children.forEach(item => {
+            if(quota[0] === item.value) {
+              unitName = item.unit;
+            }
+          });
+          return false;
+        }
+        if(quota[0] === cur.value) {
+          unitName = cur.unit;
+        }
+      });
+      return unitName;
+    }
+    return '-';
+  };
+
+  pointLength = () => {
+    const { quotaInfo } = this.props;
+    const { search } = this.props.location;
+    const groupInfoStr = searchUtil(search).getValue('group');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const { quota = [] } = groupInfo;
+      // 默认指标分析
+      let pointLength = 0; //  根据quota的value值遍历名称
+      quotaInfo.forEach(cur => {
+        // 有没有子集
+        if(quota[1] === cur.value) {
+          cur.children.forEach(item => {
+            if(quota[0] === item.value) {
+              pointLength = item.pointLength;
+            }
+          });
+          return false;
+        }
+        if(quota[0] === cur.value) {
+          pointLength = cur.pointLength;
+        }
+      });
+      return pointLength;
+    }
+    return 0;
+  };
+
   render() {
     return (
       <div style={{width: '100%'}}>
@@ -157,11 +214,23 @@ class GroupAchieve extends Component {
         <div className={styles.groupChartBox}>
           <div className={styles.chartTop}>
             <GroupAreaChart {...this.props} />
-            <GroupStationChart titleFunc={this.titleFunc()} {...this.props} />
+            <GroupStationChart
+              titleFunc={this.titleFunc()}
+              unitName={this.unitName()}
+              pointLength={this.pointLength()}
+              {...this.props} />
           </div>
           <div className={styles.chartBottom}>
-            <GroupTrendChart titleFunc={this.titleFunc()} {...this.props} />
-            <GroupLossChart titleFunc={this.titleFunc()} {...this.props} />
+            <GroupTrendChart
+              titleFunc={this.titleFunc()}
+              unitName={this.unitName()}
+              pointLength={this.pointLength()}
+              {...this.props}
+            />
+            <GroupLossChart
+              pointLength={this.pointLength()}
+              {...this.props}
+            />
           </div>
         </div>
       </div>

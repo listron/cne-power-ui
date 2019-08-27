@@ -48,11 +48,13 @@ class AchievementLayout extends Component {
     const { match, location, history } = this.props;
     const { search } = location; // 上次的search
     const { pathKey } = match.params || {};
+    const { pages: nextPages } = searchUtil(search).parse(); // 新的pages变化
 
     const nextMatchParam = nextProps.match.params || {};
     const nextLocation = nextProps.location;
     const nextSearch = nextLocation.search;
     const nexPathKey = nextMatchParam.pathKey;
+    const currentPages = pages.join('_'); // 当前pages变化
     const pageExist = pages.includes(nexPathKey); // 新页面
     const pageChange = pathKey !== nexPathKey; // 激活页变化
     if(pageChange && !pageExist && !nextSearch){ // 目录新开一个未开启页面: 切换至新页面, search信息中只添加入新的pages
@@ -62,6 +64,8 @@ class AchievementLayout extends Component {
       history.push(`${nextLocation.pathname}?${searchResult}`);
     } else if (pageChange && pageExist && !nextSearch) {// 2. 目录处点击已开启页面 => 切换至页面, search信息不变
       history.push(`${nextLocation.pathname}${search}`);
+    } else if(nextPages && nextPages !== currentPages) {
+      this.setState({pages: nextPages.split('_')});
     }
   }
 

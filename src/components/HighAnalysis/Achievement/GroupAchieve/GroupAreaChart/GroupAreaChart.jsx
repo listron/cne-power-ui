@@ -38,6 +38,7 @@ export default class GroupAreaChart extends Component {
       axios.get('/mapJson/China.json').then(response => {
         eCharts.registerMap('China', response.data);
         myChart.setOption(this.drawChart(groupCapacityInfo, dataIndex));
+        myChart.off('click');
         myChart.on('click', (param) => this.chartHandle(param, groupCapacityInfo, myChart));
       });
     }

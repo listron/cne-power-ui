@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Select } from 'antd';
 import { getPartsOption } from './curveBaseOption';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './curve.scss';
 const { Option } = Select;
 
@@ -51,15 +52,16 @@ class MonthsAep extends Component {
 
   sortChart = (sortName) => {
     const { curveMonthAep = [] } = this.props;
+    this.setState({ sortName });
     this.renderChart(curveMonthAep, sortName);
   }
 
   createSeires = (sortedAepData) => {
-    const xData = [], aspData = [], speedData = [];
+    const xData = [], aepData = [], speedData = [];
     sortedAepData.forEach(e => {
       const { efficiencyDate, windSpeed, aep } = e || {};
       xData.push(efficiencyDate);
-      aspData.push(aep);
+      aepData.push(dataFormats(aep) / 10000);
       speedData.push(windSpeed);
     });
     const series = [{
@@ -71,7 +73,7 @@ class MonthsAep extends Component {
           {offset: 1, color: '#f47a37' },
         ]),
       },
-      data: aspData,
+      data: aepData,
     }, {
       name: 'speed',
       type: 'line',
@@ -96,9 +98,10 @@ class MonthsAep extends Component {
     const { series, xData } = this.createSeires(sortedAepData);
     const option = {
       grid: {
-        top: 10,
+        top: 30,
         ...getPartsOption('grid'),
         bottom: 40,
+        left: 30,
       },
       xAxis: { ...getPartsOption('xAxis'), data: xData },
       yAxis: [
@@ -118,7 +121,7 @@ class MonthsAep extends Component {
               ${param.map((e) => (
                 `<span class=${styles.eachItem}>
                   <span>${e.seriesIndex === 0 ? 'AEP' : '风速'}</span>
-                  <span>${e.value}</span>
+                  <span>${dataFormats(e.value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
             </div>

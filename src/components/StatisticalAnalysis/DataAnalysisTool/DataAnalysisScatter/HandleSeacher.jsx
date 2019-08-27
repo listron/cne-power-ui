@@ -57,8 +57,6 @@ class HandleSeacher extends React.Component {
   static propTypes = {
     stationCode: PropTypes.number,
     stations: PropTypes.array,
-    newSrcUrl: PropTypes.array,
-    scatterNames: PropTypes.array,
     changeToolStore: PropTypes.func,
     getScatterName: PropTypes.func,
     getScatterOtherName: PropTypes.func,
@@ -167,6 +165,7 @@ class HandleSeacher extends React.Component {
       point1Min: null,
       point2Max: null,
       point2Min: null,
+
     });
     this.props.getStationDevice({ stationCode });
     this.props.getScatterName({ stationCode });
@@ -248,10 +247,6 @@ class HandleSeacher extends React.Component {
   }
   changeXvalue = (value, option) => {
     const { props: { children } } = option;
-    // this.props.changeToolStore({
-    //   pointCodeX: value,
-    //   pointCodeNameX: children,
-    // });
     this.setState({
       xCode: value,
       xName: children,
@@ -259,10 +254,6 @@ class HandleSeacher extends React.Component {
   }
   changeYvalue = (value, option) => {
     const { props: { children } } = option;
-    // this.props.changeToolStore({
-    //   pointCodeY: value,
-    //   pointCodeNameY: children,
-    // });
     this.setState({
       yCode: value,
       yName: children,
@@ -270,17 +261,13 @@ class HandleSeacher extends React.Component {
   }
 
   downPic = () => {
-    // const { newSrcUrl, startTime, endTime, pointCodeNameX, pointCodeNameY } = this.props;
-    // newSrcUrl.forEach((e, i) => {
-    //   downloadFile(`${e.title}_${pointCodeNameX}vs${pointCodeNameY}_`, e.src);
-    // });
     //下载照片
     this.props.changeToolStore({
       down: true,
     });
   }
   render() {
-    const { stationCode, stations, pointCodeNameX, pointCodeNameY, scatterotherNames, theme, startTime, endTime } = this.props;
+    const { stationCode, stations, scatterotherNames, theme, startTime, endTime } = this.props;
     const { isSwap, options, scatterNameValue, showOther, xName, yName,
       point1Max, point1Min, point2Max, point2Min } = this.state;
 

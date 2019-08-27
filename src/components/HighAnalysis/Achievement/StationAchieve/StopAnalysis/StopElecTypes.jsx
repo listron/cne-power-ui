@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './stop.scss';
 const { Option } = Select;
 
@@ -10,7 +10,7 @@ class StopElecTypes extends Component {
   static propTypes = {
     stopElecType: PropTypes.string,
     stopChartTimeMode: PropTypes.string,
-    stopElec: PropTypes.object,
+    stopElec: PropTypes.array,
     stopTopStringify: PropTypes.string,
     changeStore: PropTypes.func,
     getStopElec: PropTypes.func,
@@ -23,23 +23,6 @@ class StopElecTypes extends Component {
     showDetail: false,
     detailInfo: {},
   }
-
-  typesBase = [{
-    label: '风机故障',
-    key: 'faultGen',
-  }, {
-    label: '计划停机',
-    key: 'planShutdownGen',
-  }, {
-    label: '变电故障',
-    key: 'substationGen',
-  }, {
-    label: '场外因素',
-    key: 'courtGen',
-  }, {
-    label: '其他损失',
-    key: 'otherGen',
-  }];
 
   resetElecTypes = (elecArr = []) => {
     const colors = [
@@ -119,12 +102,12 @@ class StopElecTypes extends Component {
             <h3 className={styles.title}>{detailInfo.label}</h3>
             <div className={styles.lostContent}>
               <p className={styles.eachDetail}>
-                <span>损失电量</span>
-                <span>{detailInfo.value}万kWh</span>
+                <span className={styles.detailText}>损失电量</span>
+                <span className={styles.detailText}>{dataFormats(dataFormats(detailInfo.value) / 10000, '--', 4, true)}万kWh</span>
               </p>
               <p className={styles.eachDetail}>
-                <span>占比</span>
-                <span>{detailInfo.rate}%</span>
+                <span className={styles.detailText}>占比</span>
+                <span className={styles.detailText}>{detailInfo.rate}%</span>
               </p>
             </div>
           </section>}
@@ -137,8 +120,8 @@ class StopElecTypes extends Component {
             style={{width: '150px'}}
           >
             <Option value="all">全部类型</Option>
-            {stopElec.map(e => (
-              <Option key={e.name} value={e.name}>{e.name}</Option>
+            {[...stopElec].sort((a, b) => a.parentFaultId - b.parentFaultId).map(e => (
+              <Option key={e.name} value={e.parentFaultId}>{e.name}</Option>
             ))}
           </Select>
         </div>

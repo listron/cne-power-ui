@@ -103,22 +103,26 @@ class SequenceChartContainer extends React.Component {
     const { currentImgIndex, isShowModal } = this.state;
     return (
       <div className={styles.chartsContainer}>
-        {deviceList.map((e, i) => (
-          <div className={styles.chartStyle} key={i}>
-            <div className={styles.sequenceChart} >
-              <SequenceChart
-                {...this.props}
-                saveBtn={e.likeStatus}
-                allChartData={sequenceData[i]}
-                index={i}
-                showImg={this.showImg}
-                deviceName={e.deviceName}
-                saveImgUrl={this.saveImgUrl}
-                likeStatusChange={this.likeStatusChange} />
-            </div>
+        {deviceList.map((e, i) => {
+          const data = this.props[e.deviceFullCode];
+          return (
+            <div className={styles.chartStyle} key={i}>
+              <div className={styles.sequenceChart} >
+                <SequenceChart
+                  {...this.props}
+                  saveBtn={e.likeStatus}
+                  allChartData={data}
+                  // allChartData={sequenceData[i]}
+                  index={i}
+                  showImg={this.showImg}
+                  deviceName={e.deviceName}
+                  saveImgUrl={this.saveImgUrl}
+                  likeStatusChange={this.likeStatusChange} />
+              </div>
 
-          </div>
-        ))}
+            </div>
+          );
+        })}
         {
           <SequenceModal
             {...this.props}
