@@ -42,7 +42,7 @@ const SubConfluenceList = ({ subDeviceList = [], stationCode }) => {
                   {(item.alarmNum && item.alarmNum > 0) && <i className="iconfont icon-alarm" ></i> || null}
                 </div>
                 <div className={styles.deviceItemR} >
-                  <div className={styles.deviceBlockName}><span className={styles.deviceName} title={item.deviceName}>{'item.deviceNameitem.deviceName'}</span></div>
+                  <div className={styles.deviceBlockName}><span className={styles.deviceName} title={item.deviceName}>{item.deviceName}</span></div>
                   <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
                   <div className={styles.deviceItemPower}>
                     <div className={styles.realDevicePower}>{devicePower} kW</div>

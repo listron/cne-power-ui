@@ -21,7 +21,7 @@ class PowerNet extends Component {
     this.state = {
       alarmSwitch: false,
       firstLoad: true,
-    }
+    };
   }
 
   componentDidMount() {
@@ -81,13 +81,13 @@ class PowerNet extends Component {
                 { name: '反向有功', value: dataFormat(e.backwardActivePower, '--', 2), unit: 'kWh' },
                 { name: '正向无功', value: dataFormat(e.forwardReactivePower, '--', 2), unit: 'kVar' },
                 { name: '反向无功', value: dataFormat(e.backwardReactivePower, '--', 2), unit: 'kVar' },
-              ]
+              ];
               return (
                 <section className={`${styles.eachDevice} ${e.warningStatus && styles.alarm}`} key={e.deviceCode}>
-                  <h3 className={styles.deviceName}>
+                  <div className={styles.deviceName}>
                     <span className={styles.name} title={e.deviceName}>{e.deviceName}</span>
                     {e.warningStatus && <span className="iconfont icon-alarm" />}
-                  </h3>
+                  </div>
                   <div className={styles.deviceValue}>
                     {netInfoArr.map(e => (<div key={e.name} className={styles.eachValue}>
                       <span>{e.name}</span>
@@ -98,11 +98,11 @@ class PowerNet extends Component {
                     </div>))}
                   </div>
                 </section>
-              )
+              );
             }) : <img src="/img/nodata.png" className={styles.emptyData} />}
           </div>}
       </div>
-    )
+    );
   }
 }
 

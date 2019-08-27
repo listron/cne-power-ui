@@ -101,6 +101,22 @@
   }
 }
 
+.limitList,.faultList{
+  :global{
+    .ant-table{
+      .reason,.process,.manufactorName,.deviceName,.deviceModeName{
+        div{
+          width: 150px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          word-break: keep-all;
+        }
+      }
+    }
+  }
+}
+
 // 颜色
 .dailySearch{
   background-color: #fff;
