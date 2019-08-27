@@ -16,6 +16,7 @@ class PvmoduleList extends Component {
     loading: PropTypes.bool,
     pvLevelNums: PropTypes.object,
     moduleTime: PropTypes.number,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
@@ -98,12 +99,22 @@ class PvmoduleList extends Component {
   }
 
   pointStatus = {
-    '801': { backgroundColor: '#f9b600', color: '#fff' }, // 偏低
-    '802': { backgroundColor: '#3e97d1', color: '#fff' }, // 偏高
-    '803': { backgroundColor: '#a42b2c', color: '#fff' }, // 异常
-    '400': { backgroundColor: '#ceebe0', color: '#199475' }, // 正常
-    '500': { backgroundColor: '#f1f1f1', color: '#fff' }, // 无通讯
-    '900': { backgroundColor: '#f1f1f1', color: '#fff' }, // 未接入
+    light: {
+      '801': { backgroundColor: '#f9b600', color: '#fff' }, // 偏低
+      '802': { backgroundColor: '#3e97d1', color: '#fff' }, // 偏高
+      '803': { backgroundColor: '#a42b2c', color: '#fff' }, // 异常
+      '400': { backgroundColor: '#ceebe0', color: '#199475' }, // 正常
+      '500': { backgroundColor: '#f1f1f1', color: '#fff' }, // 无通讯
+      '900': { backgroundColor: '#f1f1f1', color: '#fff' }, // 未接入
+    },
+    dark: {
+      '801': { backgroundColor: '#f8b14e', color: '#fff' }, // 偏低
+      '802': { backgroundColor: '#4d5fe2', color: '#fff' }, // 偏高
+      '803': { backgroundColor: '#fd6e8f', color: '#fff' }, // 异常
+      '400': { backgroundColor: '#00baff', color: '#fff' }, // 正常
+      '500': { backgroundColor: '#405080', color: '#fff' }, // 无通讯
+      '900': { backgroundColor: '#405080', color: '#fff' }, // 未接入
+    },
   }
 
   buttonClick = (e) => {
@@ -116,7 +127,7 @@ class PvmoduleList extends Component {
   }
 
   render() {
-    const { pvmoduleList, loading, pvLevelNums } = this.props;
+    const { pvmoduleList, loading, pvLevelNums, theme } = this.props;
     const { pvLevelStatus, renderList } = this.state;
     const tmpPvmoduleList = pvLevelStatus ? pvmoduleList.filter(e => e.pvAllLevel.includes(pvLevelStatus)) : pvmoduleList;
     const pvStatus = [
@@ -144,7 +155,7 @@ class PvmoduleList extends Component {
                       </p>);
                   })}
               </div>
-              <div className={styles.pvmoduleCont} ref={ref => this.newPinterest = ref}>
+              <div className={styles.pvmoduleCont} ref={ref => { this.newPinterest = ref; }}>
                 {(tmpPvmoduleList.length > 0 ?
                   <React.Fragment>
                     {renderList.map((item, index) => {
@@ -160,7 +171,7 @@ class PvmoduleList extends Component {
                           </div>
                           <div className={styles.singlePvmodule}>
                             {item.electricityList.map((e, i) => {
-                              const colorStatus = this.pointStatus[e.pointStatus];
+                              const colorStatus = this.pointStatus[theme][e.pointStatus];
                               return (
                                 <span
                                   style={{ backgroundColor: colorStatus.backgroundColor, color: colorStatus.color }}

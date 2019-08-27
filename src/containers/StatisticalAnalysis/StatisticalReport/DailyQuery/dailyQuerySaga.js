@@ -1,5 +1,5 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
-import axios from 'axios';
+import request from '../../../../utils/request';
 import Path from '../../../../constants/path';
 import { message } from 'antd';
 import { dailyQueryAction } from './dailyQueryAction';
@@ -19,9 +19,9 @@ function* getQuota({ payload = {} }) { // 获取指标
   const { stationType } = payload;
   const url = `${APIBasePath}${statisticalAnalysis.getQuota}/${stationType}`;
   try {
-    const response = yield call(axios.get, url, payload);
-    if (response.data.code === '10000') {
-      const quotaData = response.data.data && response.data.data.map(cur=>{
+    const response = yield call(request.get, url, payload);
+    if (response.code === '10000') {
+      const quotaData = response.data && response.data.map(cur=>{
         return dataArr(cur, 'desc', 'code');
       });
       yield put({
@@ -42,9 +42,9 @@ function* getQuota({ payload = {} }) { // 获取指标
 function* getFault({ payload = {} }) { // 获取故障类型
   const url = `${APIBasePath}${statisticalAnalysis.getFault}`;
   try {
-    const response = yield call(axios.get, url, payload);
-    if (response.data.code === '10000') {
-      const faultData = response.data.data && response.data.data.map(cur=>{
+    const response = yield call(request.get, url, {params: payload});
+    if (response.code === '10000') {
+      const faultData = response.data && response.data.map(cur=>{
         return dataArr(cur, 'name', 'id');
       });
       yield put({
@@ -71,8 +71,8 @@ function *getQuotaList({ payload = {} }) { // 关键指标列表
         tableLoading: true,
       },
     });
-    const response = yield call(axios.post, url, {...payload});
-    const { total = 0 } = response.data.data;
+    const response = yield call(request.post, url, {...payload});
+    const { total = 0 } = response.data;
     let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(total / pageSize);
     if (total === 0) {
@@ -80,7 +80,7 @@ function *getQuotaList({ payload = {} }) { // 关键指标列表
     } else if (maxPage < pageNum) {
       pageNum = maxPage;
     }
-    if (response.data.code === '10000') {
+    if (response.code === '10000') {
       yield put({
         type: dailyQueryAction.GET_DAILYQUERY_SUCCESS,
         payload: {
@@ -90,11 +90,11 @@ function *getQuotaList({ payload = {} }) { // 关键指标列表
             pageSize,
           },
           tableLoading: false,
-          quotaListData: response.data.data || {},
+          quotaListData: response.data || {},
         },
       });
     } else {
-      throw response.data;
+      throw response;
     }
   }catch(error) {
     message.error('获取关键指标列表信息失败!');
@@ -115,8 +115,8 @@ function *getFaultList({ payload = {} }) { // 故障信息列表
         tableLoading: true,
       },
     });
-    const response = yield call(axios.post, url, {...payload});
-    const { total = 0 } = response.data.data;
+    const response = yield call(request.post, url, {...payload});
+    const { total = 0 } = response.data;
     let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(total / pageSize);
     if (total === 0) {
@@ -124,7 +124,7 @@ function *getFaultList({ payload = {} }) { // 故障信息列表
     } else if (maxPage < pageNum) {
       pageNum = maxPage;
     }
-    if (response.data.code === '10000') {
+    if (response.code === '10000') {
       yield put({
         type: dailyQueryAction.GET_DAILYQUERY_SUCCESS,
         payload: {
@@ -134,11 +134,11 @@ function *getFaultList({ payload = {} }) { // 故障信息列表
             pageSize,
           },
           tableLoading: false,
-          faultListData: response.data.data || {},
+          faultListData: response.data || {},
         },
       });
     } else {
-      throw response.data;
+      throw response;
     }
   }catch(error) {
     message.error('获取故障信息列表信息失败!');
@@ -159,8 +159,8 @@ function *getLimitList({ payload = {} }) { // 故障信息列表
         tableLoading: true,
       },
     });
-    const response = yield call(axios.post, url, {...payload});
-    const { total = 0 } = response.data.data;
+    const response = yield call(request.post, url, {...payload});
+    const { total = 0 } = response.data;
     let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(total / pageSize);
     if (total === 0) {
@@ -168,7 +168,7 @@ function *getLimitList({ payload = {} }) { // 故障信息列表
     } else if (maxPage < pageNum) {
       pageNum = maxPage;
     }
-    if (response.data.code === '10000') {
+    if (response.code === '10000') {
       yield put({
         type: dailyQueryAction.GET_DAILYQUERY_SUCCESS,
         payload: {
@@ -178,11 +178,11 @@ function *getLimitList({ payload = {} }) { // 故障信息列表
             pageSize,
           },
           tableLoading: false,
-          limitListData: response.data.data || {},
+          limitListData: response.data|| {},
         },
       });
     } else {
-      throw response.data;
+      throw response;
     }
   }catch(error) {
     message.error('获取故障信息列表信息失败!');

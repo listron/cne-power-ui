@@ -49,6 +49,19 @@ class MonthPower extends Component {
     yAxisType = () => { // 左侧y轴的数据
         const { chartType } = this.state;
         const { powerUnit } = this.props;
+        const raduis = {
+            name: '累计辐射(MJ/m²)',
+            type: 'value',
+            axisLabel: {
+                formatter: '{value}',
+            },
+            nameTextStyle: {
+                padding: [0, 30, 0, 0],
+            },
+            splitLine: {
+                show: false,
+            },
+        };
         const equipmentHoursObj = [{
             name: '利用小时(h)',
             type: 'value',
@@ -58,7 +71,7 @@ class MonthPower extends Component {
             splitLine: {
                 show: false,
             },
-        }];
+        }, raduis];
         const monthPowerObj = [
             {
                 name: `发电量(${powerUnit})`,
@@ -71,10 +84,11 @@ class MonthPower extends Component {
                     show: false,
                 },
             },
+            raduis,
             {
                 name: '完成率',
                 type: 'value',
-                offset: 40,
+                offset: 45,
                 position: 'right',
                 axisLabel: {
                     formatter: '{value}%',
@@ -131,13 +145,13 @@ class MonthPower extends Component {
             monthPower: Gradient1,
             monthPlanPower: Gradient2,
             completeRate: '#4d5fe2',
-            equipmentHoursObj: Gradient2,
+            equipmentHours: Gradient2,
         },
         light: {
             monthPower: '#3e97d1',
             monthPlanPower: '#fbe6e3',
-            completeRate: '$themeColor',
-            equipmentHoursObj: '#c7ceb2',
+            completeRate: '#199475',
+            equipmentHours: '#c7ceb2',
         },
 
     }
@@ -163,7 +177,7 @@ class MonthPower extends Component {
             monthPowerChart.dispose();
             monthPowerChart = echarts.init(document.getElementById('powerChart'), themeConfig[theme]);
         }
-        chartsLoading(monthPowerChart, loading);
+        chartsLoading(monthPowerChart, loading, theme);
         const yAxisType = this.yAxisType(powerUnit);
         const seriesType = this.seriesType({ monthPower, monthPlanPower, completeRate, equipmentHours });
         const powerOption = {
@@ -191,7 +205,7 @@ class MonthPower extends Component {
                     let paramsItem = '';
                     params.forEach(item => {
                         const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
-                        return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
+                        paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
                         ${item.seriesName} :  ${item.value}${item.seriesName === '完成率' && '%' || ''}</div>`;
                     });
                     return (
@@ -222,23 +236,7 @@ class MonthPower extends Component {
                     boundaryGap: true,
                 },
             ],
-            yAxis: [
-                ...yAxisType,
-                {
-                    name: '累计辐射(MJ/m²)',
-                    type: 'value',
-                    axisLabel: {
-                        formatter: '{value}',
-                    },
-                    nameTextStyle: {
-                        padding: [0, 30, 0, 0],
-                    },
-                    splitLine: {
-                        show: false,
-                    },
-                },
-
-            ],
+            yAxis: yAxisType,
             series: [
                 ...seriesType,
                 {

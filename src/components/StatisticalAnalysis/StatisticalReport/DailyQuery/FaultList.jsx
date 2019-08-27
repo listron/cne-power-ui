@@ -75,101 +75,101 @@ class FaultList extends Component {
       dataIndex: 'stationName',
       className: 'stationName',
       fixed: 'left',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '区域',
       width: 80,
       dataIndex: 'regionName',
       className: 'regionName',
       fixed: 'left',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '损失电量类型',
       width: 140,
       dataIndex: 'faultTypeName',
       className: 'faultTypeName',
       fixed: 'left',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '设备类型',
       width: 100,
       dataIndex: 'deviceTypeName',
       className: 'deviceTypeName',
       fixed: 'left',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '设备名称',
       width: 120,
       dataIndex: 'deviceName',
       className: 'deviceName',
       fixed: 'left',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '厂家',
-      width: 125,
+      width: 170,
       dataIndex: 'manufactorName',
       className: 'manufactorName',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '型号',
-      width: 110,
+      width: 150,
       dataIndex: 'deviceModeName',
       className: 'deviceModeName',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '开始时间',
       width: 160,
       dataIndex: 'startTime',
       className: 'startTime',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '截至时间',
       width: 160,
       dataIndex: 'endTime',
       className: 'endTime',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: () => <TableColumnTitle title="总时长" unit="h" style={{ maxWidth: '100%', height: '52px' }} />,
-      width: 80,
+      width: 100,
       dataIndex: 'totalHours',
       className: 'totalHours',
-      render: (text) => <span title={text}>{(dataFormats(text, '--', 2, true))}</span>,
+      render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: () => <TableColumnTitle title="总损失电量" unit="kWh" style={{ maxWidth: '100%', height: '52px' }} />,
-      width: 80,
+      width: 100,
       dataIndex: 'totalGen',
       className: 'totalGen',
-      render: (text) => <span title={text}>{(dataFormats(text, '--', 2, true))}</span>,
+      render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: () => <TableColumnTitle title="统计时长" unit="h" style={{ maxWidth: '100%', height: '52px' }} />,
-      width: 80,
+      width: 100,
       dataIndex: 'statisticsHours',
       className: 'statisticsHours',
-      render: (text) => <span title={text}>{(dataFormats(text, '--', 2, true))}</span>,
+      render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: () => <TableColumnTitle title="统计损失电量" unit="kWh" style={{ maxWidth: '100%', height: '52px' }} />,
-      width: 80,
+      width: 100,
       dataIndex: 'statisticsGen',
       className: 'statisticsGen',
-      render: (text) => <span title={text}>{(dataFormats(text, '--', 2, true))}</span>,
+      render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: '原因',
-      width: 200,
+      width: 170,
       dataIndex: 'reason',
       className: 'reason',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => (<div title={text}>{text || '--'}</div>),
     }, {
       title: '故障处理进展',
-      width: 200,
+      width: 170,
       dataIndex: 'process',
       className: 'process',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }];
 
     return (
       <div className={styles.faultList}>
         <div className={styles.pagination}>
-          <Button className={styles.listExport} onClick={this.onExport}>导出</Button>
+          <Button className={styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
@@ -183,7 +183,7 @@ class FaultList extends Component {
           dataSource={dataList && dataList.map((e, i) => ({ ...e, key: i }))}
           columns={columns}
           pagination={false}
-          scroll={{ x: 2000 }}
+          scroll={{x: 'max-content' }}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>

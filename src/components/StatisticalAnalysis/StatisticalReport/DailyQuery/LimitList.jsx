@@ -71,79 +71,79 @@ class LimitList extends Component {
       width: 140,
       dataIndex: 'stationName',
       className: 'stationName',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '区域',
       width: 80,
       dataIndex: 'regionName',
       className: 'regionName',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '设备类型',
-      width: 100,
+      width: 110,
       dataIndex: 'deviceTypeName',
       className: 'deviceTypeName',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '设备名称',
-      width: 100,
+      width: 110,
       dataIndex: 'deviceName',
       className: 'deviceName',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '限功率',
       width: 100,
       dataIndex: 'limitPower',
       className: 'limitPower',
-      render: (text) => <span title={text}>{(dataFormats(text, '--', 2, true))}%</span>,
+      render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}%</div>,
     }, {
       title: '开始时间',
       width: 150,
       dataIndex: 'startTime',
       className: 'startTime',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '截至时间',
       width: 150,
       dataIndex: 'endTime',
       className: 'endTime',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: () => <TableColumnTitle title="总时长" unit="h" />,
       width: 100,
       dataIndex: 'totalHours',
       className: 'totalHours',
-      render: (text) => <span title={text}>{(dataFormats(text, '--', 2, true))}</span>,
+      render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: () => <TableColumnTitle title="总损失电量" unit="kWh" />,
       width: 100,
       dataIndex: 'totalGen',
       className: 'totalGen',
-      render: (text) => <span title={text}>{(dataFormats(text, '--', 2, true))}</span>,
+      render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: () => <TableColumnTitle title="统计时长" unit="h" />,
       width: 100,
       dataIndex: 'statisticsHours',
       className: 'statisticsHours',
-      render: (text) => <span title={text}>{(dataFormats(text, '--', 2, true))}</span>,
+      render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: () => <TableColumnTitle title="统计损失电量" unit="kWh" />,
       width: 100,
       dataIndex: 'statisticsGen',
       className: 'statisticsGen',
-      render: (text) => <span title={text}>{(dataFormats(text, '--', 2, true))}</span>,
+      render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: '原因',
-      width: 180,
+      width: 170,
       dataIndex: 'reason',
       className: 'reason',
-      render: (text) => <span title={text}>{text || '--'}</span>,
+      render: (text) => <div title={text}>{text || '--'}</div>,
     }];
 
     return (
       <div className={styles.limitList}>
         <div className={styles.pagination}>
-          <Button className={styles.listExport} onClick={this.onExport}>导出</Button>
+          <Button className={styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}

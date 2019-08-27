@@ -12,14 +12,12 @@ export default class GroupAreaChart extends Component {
     groupCapacityInfo: PropTypes.array,
     groupCapacityTime: PropTypes.number,
     groupCapacityLoading: PropTypes.bool,
-    dataIndex: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    dataIndex: PropTypes.string,
     changeStore: PropTypes.func,
     location: PropTypes.object,
     getGroupTrendInfo: PropTypes.func,
     getGroupLostGenHour: PropTypes.func,
+    colorData: PropTypes.object,
   };
 
   componentDidUpdate(prevProps) {
@@ -40,13 +38,13 @@ export default class GroupAreaChart extends Component {
       axios.get('/mapJson/China.json').then(response => {
         eCharts.registerMap('China', response.data);
         myChart.setOption(this.drawChart(groupCapacityInfo, dataIndex));
+        myChart.off('click');
         myChart.on('click', (param) => this.chartHandle(param, groupCapacityInfo, myChart));
       });
     }
   }
 
   chartHandle = (params, groupCapacityInfo, myChart) => {
-    console.log(params, 'params');
     const { dataIndex, data } = params;
     if(data) {
       const { changeStore, getGroupTrendInfo, getGroupLostGenHour, location: { search } } = this.props;
@@ -85,7 +83,7 @@ export default class GroupAreaChart extends Component {
         deviceModes: modes,
       };
       changeStore({
-        dataIndex: params.dataIndex, // 下标
+        dataIndex: params.name, // 下标
         dataName: data.name, // 名称
         selectStationCode: stationCodes, // 保存单选区域的信息
       });
@@ -96,6 +94,7 @@ export default class GroupAreaChart extends Component {
   };
 
   drawChart = (data, dataIndex) => {
+    const { colorData } = this.props;
     const dataMap = data && data.map(cur => ({
       name: cur.regionName,
       value: [cur.longitude, cur.latitude, cur.stationCapacity / 1000],
@@ -150,8 +149,7 @@ export default class GroupAreaChart extends Component {
           itemStyle: {
             normal: {
               color: function(params) {//柱子颜色
-                const colorList = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
-                return dataIndex === '' ? colorList[params.dataIndex] : (dataIndex === params.dataIndex ? colorList[params.dataIndex] : '#cccccc');
+                return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
               },
             },
             emphasis: {

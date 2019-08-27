@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import echarts from 'echarts';
 import { Icon } from 'antd';
-// import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
-import { themeConfig } from '../../../../utils/darkConfig';
+import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
+import { themeConfig, chartsLoading } from '../../../../utils/darkConfig';
 import { dataFormat } from '../../../../utils/utilFunc';
 
 import moment from 'moment';
@@ -14,7 +14,6 @@ class SingleScatter extends React.PureComponent {
     // title: PropTypes.string,
     pointCodeNameX: PropTypes.string,
     pointCodeNameY: PropTypes.string,
-    // id: PropTypes.string,
     saveImgUrl: PropTypes.func,
     showImg: PropTypes.func,
     saveBtn: PropTypes.bool,
@@ -23,57 +22,48 @@ class SingleScatter extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
   }
-  // componentDidMount() {
-  //   const { chartId } = this;
-  //   const { theme } = this.props;
-  //   const myChart = echarts.init(chartId, themeConfig[theme]); //构建下一个实例
-  //   const option = this.creatOption(this.props);
-  //   myChart.setOption(option);
-  // }
-
+  componentDidMount() {
+    const { chartId } = this;
+    const { theme } = this.props;
+    const myChart = echarts.init(chartId, themeConfig[theme]); //构建下一个实例
+    const option = this.creatOption(this.props);
+    myChart.setOption(option);
+  }
   componentWillReceiveProps(nextProps) {
-    // const { saveBtn, theme, scatterDataTime, chartLoading, scatterData } = nextProps;
-    // const scatterChart = echarts.init(this.chartId);
-    // if (chartLoading && (this.props.index) === this.props.scatterData.length) { // loading态控制。第一次无数据，请求数据的过程
-    //   scatterChart.showLoading();
-    // }
-    // if (!chartLoading) {
-    //   scatterChart.hideLoading();
-    // }
-    const { activeCode, scatterData } = nextProps;
+    const { activeCode, scatterData, chartLoading, theme, saveBtn } = nextProps;
     const prevCode = this.props.activeCode;
-    if ((activeCode && activeCode !== prevCode && activeCode === this.props.deviceFullCode )) {
-      // scatterChart.clear();//清除
-      this.drawChart(scatterData);
+    if ((activeCode && activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
+      const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
+      if (chartLoading) {
+        scatterChart.showLoading();
+      }
+      if (!chartLoading) {
+        scatterChart.hideLoading();
+      }
+      this.drawChart(scatterData, saveBtn, true);//此处的第三个参数是控制定时器是否发送下一个请求
+
     }
-    // if (saveBtn !== this.props.saveBtn || id !== this.props.id) {
-    //   scatterChart.clear();
-    //   this.drawChart(nextProps);
-    // }
-    // if ((this.props.index + 1 === scatterData.length)) {
-    //   
-    //   scatterChart.clear();//清除
-    //   this.drawChart(nextProps);
-    // }
-    // if (scatterDataTime !== this.props.scatterDataTime || theme !== this.props.theme) {
-    //   this.drawChart(nextProps);
-    // }
+    if (saveBtn !== this.props.saveBtn) {
+      this.drawChart(scatterData, saveBtn, false);
+    }
   }
 
-  shouldComponentUpdate(nextProps){
+  shouldComponentUpdate(nextProps) {
     const { activeCode, deviceFullCode } = nextProps;
     return activeCode === this.props.deviceFullCode || this.props.deviceFullCode !== deviceFullCode;
   }
+  componentWillUnmount() {
+    echarts.init(this.chartId, themeConfig[this.props.theme]).dispose();
 
-  creatOption = (scatterData = {}) => {
-    const { title, pointCodeNameX, pointCodeNameY, saveBtn, startTime, endTime } = this.props;
+  }
+  creatOption = (scatterData = {}, saveBtn) => {
+    const { title, pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
     const { chartData = [] } = scatterData;
-    // const filterYaxisData = scatterData.chartData.map(e => e.y) : [];
-    // const filterXaxisData = scatterData.chartData.map(e => e.x) : [];
-    // const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
-
+    const filterYaxisData = chartData.map(e => e.y);
+    const filterXaxisData = chartData.map(e => e.x);
+    const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
     const option = {
-      // graphic: inverterTenMinGraphic,
+      graphic: inverterTenMinGraphic,
       title: {
         text: [`${title}`, '{b|}'].join(''),
         left: '5%',
@@ -208,49 +198,41 @@ class SingleScatter extends React.PureComponent {
     }
     return val;
   }
-  drawChart = (scatterData) => {
-    const { title, saveBtn, index, onChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
+  drawChart = (scatterData, saveBtn, isRequest) => {
+    const { title, index, onChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
     const parms = { stationCode, xPointCode, yPointCode, startTime, endTime };
     const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
-    const option = this.creatOption(scatterData);
+    scatterChart.clear();
+    const option = this.creatOption(scatterData, saveBtn);
     scatterChart.off();
     scatterChart.on('click', 'title', (params) => {
-      onChange(index, !saveBtn);
+      onChange(index, !saveBtn, scatterData);//保留当前数据值scatterData，避免重新渲染时数据源发生改变。
     });
-    // if (scatterData.length === index + 1 && index + 1 < deviceList.length && scatterData.length < deviceList.length) {
-    //   scatterChart.on('rendered', () => {
-    //     const imgUrl = scatterChart.getDataURL({
-    //       pixelRatio: 2,
-    //       backgroundColor: '#fff',
-    //     });
-    //     this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
-    //   });
-    setTimeout(() => {
+
+    scatterChart.on('rendered', () => {
+      const imgUrl = scatterChart.getDataURL({
+        pixelRatio: 2,
+        backgroundColor: '#fff',
+      });
+      this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
+    });
+    isRequest && setTimeout(() => {
       const continueQuery = index < deviceList.length;
-        continueQuery && this.props.getScatterData({
-          ...parms,
-          deviceFullCode: deviceList[index + 1].deviceFullCode,
-        });
-    }, 3000);
-      // scatterChart.on('finished', () => {
-        
-      // });
-    // }
-    // scatterChart.setOption(option, 'notMerge');
-    scatterChart.setOption(option);
-    // scatterChart.resize();
+      continueQuery && this.props.getScatterData({
+        ...parms,
+        deviceFullCode: deviceList[index + 1].deviceFullCode,
+      });
+    }, 50);
 
-  }
+    scatterChart.setOption(option, true);
 
-  componentWillUnmount(){
-    echarts.dispose(this.chartId); //这个用法？哈？忘了？
   }
 
   render() {
-    const { index, showImg } = this.props;
+    const { index, showImg, scatterData } = this.props;
     return (
       <div className={styles.chartWrap}>
-        {showImg && <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalInco} />}
+        {showImg && <Icon type="zoom-in" onClick={() => showImg(index, scatterData)} className={styles.showModalInco} />}
         <div ref={(ref) => { this.chartId = ref; }} className={styles.scatterStyle}></div>
       </div>
     );

@@ -7,9 +7,10 @@ import AreaChart from '../../../../components/HighAnalysis/Achievement/AreaAchie
 import StationPBAChart from '../../../../components/HighAnalysis/Achievement/AreaAchieve/StationPBAChart/StationPBAChart';
 import AreaTrendChart from '../../../../components/HighAnalysis/Achievement/AreaAchieve/AreaTrendChart/AreaTrendChart';
 import AreaLossChart from '../../../../components/HighAnalysis/Achievement/AreaAchieve/AreaLossChart/AreaLossChart';
+import searchUtil from '../../../../utils/searchUtil';
+import { dataFormat } from '../../../../utils/utilFunc';
 
 import styles from './areaAchieve.scss';
-import searchUtil from '../../../../utils/searchUtil';
 
 class AreaAchieve extends Component {
 
@@ -27,10 +28,12 @@ class AreaAchieve extends Component {
     timeStatus: PropTypes.string,
     dataName: PropTypes.string,
     changeStore: PropTypes.func,
+    areaStation: PropTypes.array,
+    modesInfo: PropTypes.array,
   };
 
   componentDidMount(){
-    const { search } = this.props.location;
+    const {location: { search }} = this.props;
     const groupInfoStr = searchUtil(search).getValue('area');
     if(groupInfoStr) {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
@@ -78,7 +81,6 @@ class AreaAchieve extends Component {
     const { timeStatus } = this.props;
     const basicParams = this.basicParams(groupInfo);
     const {
-      stations = [],
       modes = [],
       quota = [],
       modesInfo = [],
@@ -88,7 +90,6 @@ class AreaAchieve extends Component {
     const paramsCapacity = {
       ...basicParams,
       deviceModes: modes,
-      regionName: [stations[0].regionName],
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
@@ -141,22 +142,28 @@ class AreaAchieve extends Component {
       // 默认指标分析
       const quotaValue = quota[1] || quota[0];
       let qutaName = ''; //  根据quota的value值遍历名称
+      let unitName = ''; //  单位
+      let pointLength = ''; //  小数位数
       quotaInfo.forEach(cur => {
         if(quota[0] === cur.value) {
           qutaName = cur.label;
+          unitName = cur.unit;
+          pointLength = cur.pointLength;
           return false;
         }
         cur.children && cur.children.forEach(item => {
           if(quota[1] === item.value) {
             qutaName = item.label;
+            unitName = item.unit;
+            pointLength = item.pointLength;
           }
         });
       });
       // 等于PBA => 能量可利用率
       if(quotaValue === '100') {
-        return <span>{rankTotal.length > 0 && `${rankTotal[0].regionName || '--'}: ${qutaName.toString() || ''} ${rankTotal[0].indicatorData.value || '--'}%`}</span>;
+        return <span>{rankTotal.length > 0 && `${rankTotal[0].regionName || '--'}: ${qutaName.toString() || ''} ${dataFormat(unitName === '%' ? rankTotal[0].indicatorData.value * 100 : rankTotal[0].indicatorData.value, '--', pointLength)}${unitName || '--'}`}</span>;
       }
-      return <span>{`${rankTotal[0].regionName || '--'}: 实发小时数${rankTotal[0].indicatorData.actualGen || '--'} 应发小时数${rankTotal[0].indicatorData.theoryGen || '--'}`}</span>;
+      return <span>{`${rankTotal[0].regionName || '--'}: 实发小时数${dataFormat(unitName === '%' ? rankTotal[0].indicatorData.actualGen : rankTotal[0].indicatorData.actualGen, '--', pointLength)}${unitName || '--'} 应发小时数${dataFormat(unitName === '%' ? rankTotal[0].indicatorData.theoryGen * 100 : rankTotal[0].indicatorData.theoryGen, '--', pointLength)}${unitName || '--'}`}</span>;
     }
     return <span>--:--</span>;
   };
@@ -190,6 +197,63 @@ class AreaAchieve extends Component {
     return '--';
   };
 
+  //选中选择指标名字
+  unitName = () => {
+    const { quotaInfo } = this.props;
+    const { search } = this.props.location;
+    const groupInfoStr = searchUtil(search).getValue('area');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const { quota = [] } = groupInfo;
+      // 默认指标分析
+      let unitName = ''; //  根据quota的value值遍历名称
+      quotaInfo.forEach(cur => {
+        // 有没有子集
+        if(quota[1] === cur.value) {
+          cur.children.forEach(item => {
+            if(quota[0] === item.value) {
+              unitName = item.unit;
+            }
+          });
+          return false;
+        }
+        if(quota[0] === cur.value) {
+          unitName = cur.unit;
+        }
+      });
+      return unitName;
+    }
+    return '-';
+  };
+
+  pointLength = () => {
+    const { quotaInfo } = this.props;
+    const { search } = this.props.location;
+    const groupInfoStr = searchUtil(search).getValue('area');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const { quota = [] } = groupInfo;
+      // 默认指标分析
+      let pointLength = 0; //  根据quota的value值遍历名称
+      quotaInfo.forEach(cur => {
+        // 有没有子集
+        if(quota[1] === cur.value) {
+          cur.children.forEach(item => {
+            if(quota[0] === item.value) {
+              pointLength = item.pointLength;
+            }
+          });
+          return false;
+        }
+        if(quota[0] === cur.value) {
+          pointLength = cur.pointLength;
+        }
+      });
+      return pointLength;
+    }
+    return 0;
+  };
+
   render() {
     return (
       <div className={styles.areaAchieveBox}>
@@ -200,11 +264,24 @@ class AreaAchieve extends Component {
         <div className={styles.areaChartBox}>
           <div className={styles.areaTopChart}>
             <AreaChart {...this.props} />
-            <StationPBAChart qutaName={this.qutaName()} {...this.props} />
+            <StationPBAChart
+              unitName={this.unitName()}
+              qutaName={this.qutaName()}
+              pointLength={this.pointLength()}
+              {...this.props}
+            />
           </div>
           <div className={styles.areaBottomChart}>
-            <AreaTrendChart qutaName={this.qutaName()} {...this.props} />
-            <AreaLossChart {...this.props} />
+            <AreaTrendChart
+              unitName={this.unitName()}
+              qutaName={this.qutaName()}
+              pointLength={this.pointLength()}
+              {...this.props}
+            />
+            <AreaLossChart
+              {...this.props}
+              pointLength={this.pointLength()}
+            />
           </div>
         </div>
       </div>
@@ -223,6 +300,7 @@ const mapDispatchToProps = (dispatch) => ({
   getIndicatorRank: (payload) => dispatch({type: areaAchieveAction.getIndicatorRank, payload}),
   getIndicatorRankTotal: (payload) => dispatch({type: areaAchieveAction.getIndicatorRankTotal, payload}),
   getModesInfo: (payload) => dispatch({type: areaAchieveAction.getModesInfo, payload}),
+  getDeviceType: (payload) => dispatch({type: areaAchieveAction.getDeviceType, payload}),
   changeStore: (payload) => dispatch({type: areaAchieveAction.changeStore, payload}),
 });
 

@@ -41,6 +41,40 @@ function* getGroupModesInfo(action) { // 可选机型
   }
 }
 
+const colorArr = [
+  '#8c0a3a',
+  '#8a086b',
+  '#8c0392',
+  '#735daf',
+  '#2d0085',
+  '#006497',
+  '#004f9f',
+  '#034753',
+  '#135600',
+  '#4c7400',
+  '#9a7d00',
+  '#9b4c00',
+  '#834e00',
+  '#9a1a03',
+  '#950027',
+  '#c50538',
+  '#e51c48',
+  '#b8002d',
+  '#bc2d00',
+  '#9f6705',
+  '#bc6900',
+  '#bca103',
+  '#729f00',
+];
+
+function colorCapacityFunc(data) {
+  const obj = {};
+  data && data.forEach((cur, index) => {
+    obj[cur.regionName] = colorArr[index];
+  });
+  return obj;
+}
+
 function* getGroupCapacity(action) { // 各区域分布图
   const { payload = {} } = action;
   try {
@@ -59,6 +93,7 @@ function* getGroupCapacity(action) { // 各区域分布图
         payload: {
           groupCapacityInfo: response.data,
           groupCapacityLoading: false,
+          colorData: colorCapacityFunc(response.data),
           groupCapacityTime: moment().unix(),
         },
       });
@@ -99,6 +134,7 @@ function* getGroupRank(action) { // 风电指标数据 PBA排名
         payload: {
           groupRankInfo: response.data || [],
           groupRankTime: moment().unix(),
+          colorData: colorCapacityFunc(response.data),
           groupRankLoading: false,
         },
       });
@@ -118,7 +154,7 @@ function* getGroupRank(action) { // 风电指标数据 PBA排名
         groupRankLoading: false,
       },
     });
-    message.error('获取PBA排名失败, 请刷新重试!');
+    message.error('获取排名失败, 请刷新重试!');
   }
 }
 
@@ -160,49 +196,8 @@ function* getGroupTrendInfo(action) { // 指标趋势 PBA趋势
         groupTrendLoading: false,
       },
     });
-    message.error('获取PBA趋势失败, 请刷新重试!');
+    message.error('获取趋势失败, 请刷新重试!');
   }
-}
-
-function formatData(data) {
-  const basicArr = []; //基础数据
-  const dataArr = []; // 原始数据
-  const {
-    actualGen, // 实发小时数
-    courtGen, // 场外因素
-    deratingGen, // 阵容损失
-    faultGen, // 风机故障
-    otherGen, // 其他损失
-    planShutdownGen, // 计划停机
-    substationGen, //变电故障
-    theoryGen, // 应发
-  } = data;
-  dataArr.push(
-    Number(theoryGen),
-    Number(deratingGen),
-    Number(faultGen),
-    Number(substationGen),
-    Number(courtGen),
-    Number(planShutdownGen),
-    Number(otherGen),
-    Number(actualGen)
-  );
-  // 应发小时和实发小时从0开始
-  basicArr.push(
-    0,
-    Number(deratingGen) + Number(actualGen) + Number(actualGen) + Number(courtGen) + Number(substationGen) + Number(faultGen) + Number(deratingGen),
-    Number(deratingGen) + Number(actualGen) + Number(actualGen) + Number(courtGen) + Number(substationGen) + Number(faultGen),
-    Number(deratingGen) + Number(actualGen) + Number(actualGen) + Number(courtGen) + Number(substationGen),
-    Number(deratingGen) + Number(actualGen) + Number(actualGen) + Number(courtGen),
-    Number(deratingGen) + Number(actualGen) + Number(actualGen),
-    Number(deratingGen) + Number(actualGen),
-    Number(actualGen),
-    0
-  );
-  return {
-    dataArr,
-    basicArr,
-  };
 }
 
 function* getGroupLostGenHour(action) { // 损失电量分解图
@@ -220,7 +215,11 @@ function* getGroupLostGenHour(action) { // 损失电量分解图
       yield put({
         type: groupAchieveAction.fetchSuccess,
         payload: {
-          groupLostGenHourInfo: response.data ? formatData(response.data) : {},
+          groupLostGenHourInfo: response.data || {
+            detailList: null,
+            theoryGen: null,
+            actualGen: null,
+          },
           groupLostTime: moment().unix(),
           groupLoseLoading: false,
         },

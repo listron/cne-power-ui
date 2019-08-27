@@ -136,7 +136,8 @@
 .operator.dark {
   @import "../../../../theme/darkTheme.scss";
   .newOperatorList {
-    color: $fontColor-hover;
+    // color: $fontColor-hover;
+    color: $fontColor-invert;
     background: #205bac;
     .scrollAnmiate {
       background: #205bac;
