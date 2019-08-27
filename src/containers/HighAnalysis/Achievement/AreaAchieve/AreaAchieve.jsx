@@ -7,9 +7,9 @@ import AreaChart from '../../../../components/HighAnalysis/Achievement/AreaAchie
 import StationPBAChart from '../../../../components/HighAnalysis/Achievement/AreaAchieve/StationPBAChart/StationPBAChart';
 import AreaTrendChart from '../../../../components/HighAnalysis/Achievement/AreaAchieve/AreaTrendChart/AreaTrendChart';
 import AreaLossChart from '../../../../components/HighAnalysis/Achievement/AreaAchieve/AreaLossChart/AreaLossChart';
+import searchUtil from '../../../../utils/searchUtil';
 
 import styles from './areaAchieve.scss';
-import searchUtil from '../../../../utils/searchUtil';
 
 class AreaAchieve extends Component {
 
@@ -71,7 +71,6 @@ class AreaAchieve extends Component {
     const groupInfoStr = searchUtil(search).getValue('area');
     // 发生变化
     if (groupNextInfoStr && groupNextInfoStr !== groupInfoStr) {
-      console.log('componentWillReceiveProps');
       const groupInfo = groupNextInfoStr ? JSON.parse(groupNextInfoStr) : {};
       this.queryParamsFunc(groupInfo);
     }
@@ -81,7 +80,6 @@ class AreaAchieve extends Component {
     const { timeStatus } = this.props;
     const basicParams = this.basicParams(groupInfo);
     const {
-      stations = [],
       modes = [],
       quota = [],
       modesInfo = [],
@@ -91,7 +89,6 @@ class AreaAchieve extends Component {
     const paramsCapacity = {
       ...basicParams,
       deviceModes: modes,
-      regionName: [stations[0].regionName],
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
@@ -193,6 +190,63 @@ class AreaAchieve extends Component {
     return '--';
   };
 
+  //选中选择指标名字
+  unitName = () => {
+    const { quotaInfo } = this.props;
+    const { search } = this.props.location;
+    const groupInfoStr = searchUtil(search).getValue('area');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const { quota = [] } = groupInfo;
+      // 默认指标分析
+      let unitName = ''; //  根据quota的value值遍历名称
+      quotaInfo.forEach(cur => {
+        // 有没有子集
+        if(quota[1] === cur.value) {
+          cur.children.forEach(item => {
+            if(quota[0] === item.value) {
+              unitName = item.unit;
+            }
+          });
+          return false;
+        }
+        if(quota[0] === cur.value) {
+          unitName = cur.unit;
+        }
+      });
+      return unitName;
+    }
+    return '-';
+  };
+
+  pointLength = () => {
+    const { quotaInfo } = this.props;
+    const { search } = this.props.location;
+    const groupInfoStr = searchUtil(search).getValue('area');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const { quota = [] } = groupInfo;
+      // 默认指标分析
+      let pointLength = 0; //  根据quota的value值遍历名称
+      quotaInfo.forEach(cur => {
+        // 有没有子集
+        if(quota[1] === cur.value) {
+          cur.children.forEach(item => {
+            if(quota[0] === item.value) {
+              pointLength = item.pointLength;
+            }
+          });
+          return false;
+        }
+        if(quota[0] === cur.value) {
+          pointLength = cur.pointLength;
+        }
+      });
+      return pointLength;
+    }
+    return 0;
+  };
+
   render() {
     return (
       <div className={styles.areaAchieveBox}>
@@ -203,11 +257,24 @@ class AreaAchieve extends Component {
         <div className={styles.areaChartBox}>
           <div className={styles.areaTopChart}>
             <AreaChart {...this.props} />
-            <StationPBAChart qutaName={this.qutaName()} {...this.props} />
+            <StationPBAChart
+              unitName={this.unitName()}
+              qutaName={this.qutaName()}
+              pointLength={this.pointLength()}
+              {...this.props}
+            />
           </div>
           <div className={styles.areaBottomChart}>
-            <AreaTrendChart qutaName={this.qutaName()} {...this.props} />
-            <AreaLossChart {...this.props} />
+            <AreaTrendChart
+              unitName={this.unitName()}
+              qutaName={this.qutaName()}
+              pointLength={this.pointLength()}
+              {...this.props}
+            />
+            <AreaLossChart
+              {...this.props}
+              pointLength={this.pointLength()}
+            />
           </div>
         </div>
       </div>
