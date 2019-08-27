@@ -15,6 +15,7 @@ class WorkFlow extends Component {
     static propTypes = {
         showPage: PropTypes.string,
         resetStore: PropTypes.func,
+        theme: PropTypes.string,
     }
 
     constructor() {
@@ -29,9 +30,9 @@ class WorkFlow extends Component {
     }
 
     render() {
-        const { showPage } = this.props;
+        const { showPage, theme } = this.props;
         return (
-            <div className={styles.workflow}>
+            <div className={`${styles.workflow} ${styles[theme]}`}>
                 <Header breadData={[{ name: '工作票' }]} style={{ marginLeft: '38px' }} />
                 <div className={styles.contentBox}>
                     <div className={styles.container}>
@@ -59,6 +60,7 @@ const mapStateToProps = (state) => {
     return {
         ...state.operation.workFlow.toJS(),
         stations: state.common.get('stations').toJS(),
+        theme: state.common.get('theme'),
     };
 };
 

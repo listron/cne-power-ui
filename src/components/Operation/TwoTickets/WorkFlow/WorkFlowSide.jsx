@@ -13,6 +13,7 @@ class WorkFlowSide extends Component {
         docketDetail: PropTypes.object,
         showPage: PropTypes.string,
         changeFlowStore: PropTypes.func,
+        theme: PropTypes.string,
     }
 
     onCancelEdit = () => {
@@ -20,7 +21,7 @@ class WorkFlowSide extends Component {
     };
 
     render() {
-        const { showPage, docketDetail = {} } = this.props;
+        const { showPage, docketDetail = {}, theme } = this.props;
         const { docketInfo = {} } = docketDetail;
         const { operTitle } = docketInfo;
         return (
