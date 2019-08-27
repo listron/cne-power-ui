@@ -43,7 +43,9 @@ class ChartLostTrend extends Component {
     trendChart && trendChart.showLoading();
   }
 
-  createSeries = (lostTrend = [], lostChartTime) => {
+  unitValue = (value, unit) => dataFormats(dataFormats(value) * (unit === '%' ? 100 : 1), '')
+
+  createSeries = (lostTrend = [], lostChartTime, unit) => {
     const dataAxis = [];
     const series = [];
     const firstLineData = [];
@@ -56,12 +58,14 @@ class ChartLostTrend extends Component {
       dataAxis.push(efficiencyDate);
       const activeSymbol = (lostChartTime && efficiencyDate === lostChartTime);
       const symbolSize = activeSymbol ? 10 : 4;
-      if (indicatorType === 'single') {
-        firstLineData.push({ value: indicatorData.value, symbolSize });
-      } else {
-        firstLineData.push({ value: indicatorData.actualGen, symbolSize });
-        secendLineData.push({ value: indicatorData.theoryGen, symbolSize });
-      }
+      firstLineData.push({
+        value: this.unitValue(indicatorData[indicatorType === 'single' ? 'value': 'actualGen'], unit),
+        symbolSize,
+      });
+      indicatorType !== 'single' && secendLineData.push({
+        value: this.unitValue(indicatorData.theoryGen, unit),
+        symbolSize,
+      });
     });
     series[0] = {
       type: 'line',
@@ -156,10 +160,11 @@ class ChartLostTrend extends Component {
     const { lostChartTime, lostStringify, quotaInfo } = this.props;
     const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
     const selectedQuota = this.getQuota(quotaInfo, quota);
+    const { label = '--', unit, pointLength } = selectedQuota;
     const trendChart = echarts.init(this.trendRef);
-    const { dataAxis, series } = this.createSeries(lostTrend, lostChartTime);
+    const { dataAxis, series } = this.createSeries(lostTrend, lostChartTime, unit);
     const baseOption = getBaseOption(dataAxis);
-    baseOption.yAxis.name = `${selectedQuota.label || '--'}${selectedQuota.unit ? `(${selectedQuota.unit})` : ''}`;
+    baseOption.yAxis.name = `${label}${unit ? `(${unit})` : ''}`;
     const option = {
       ...baseOption,
       tooltip: {
@@ -175,9 +180,9 @@ class ChartLostTrend extends Component {
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>
-                    ${i === 1 ? '应发小时数' : `${selectedQuota.label}`}
+                    ${i === 1 ? '应发小时数' : `${label}`}
                   </span>
-                  <span>${dataFormats(e.value, '--', 2, true)}${selectedQuota.unit || ''}</span>
+                  <span>${dataFormats(e.value, '--', pointLength, true)}${unit || ''}</span>
                 </span>`
               )).join('')}
             </div>
@@ -196,6 +201,7 @@ class ChartLostTrend extends Component {
       type: 'inside',
       filterMode: 'empty',
     }]);
+    trendChart.clear();
     trendChart.setOption(option);
     trendChart.off('click');
     trendChart.on('click', (param) => this.chartHandle(param, lostTrend, trendChart));

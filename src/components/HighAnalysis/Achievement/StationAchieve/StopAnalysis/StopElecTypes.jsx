@@ -120,7 +120,7 @@ class StopElecTypes extends Component {
             style={{width: '150px'}}
           >
             <Option value="all">全部类型</Option>
-            {stopElec.map(e => (
+            {[...stopElec].sort((a, b) => a.parentFaultId - b.parentFaultId).map(e => (
               <Option key={e.name} value={e.parentFaultId}>{e.name}</Option>
             ))}
           </Select>
