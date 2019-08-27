@@ -10,6 +10,7 @@ class DevicesCheckTime extends Component {
   static propTypes = {
     curveTopStringify: PropTypes.string,
     curveDevicesTime: PropTypes.string,
+    getCurveDevices: PropTypes.func,
     getCurveDevicesAep: PropTypes.func,
     getCurveDevicesPsd: PropTypes.func,
     changeStore: PropTypes.func,
@@ -25,6 +26,7 @@ class DevicesCheckTime extends Component {
       deviceFullcodes: searchParam.searchDevice,
     };
     this.props.changeStore({ curveDevicesTime: stringValue });
+    this.props.getCurveDevices(param);
     this.props.getCurveDevicesAep(param);
     this.props.getCurveDevicesPsd(param);
   }
