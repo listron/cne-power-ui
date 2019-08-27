@@ -222,7 +222,13 @@ export default class AreaSearch extends Component {
       dataName,
     } = this.props;
     const { modes, dates, quota, stations, searchCode } = this.state;
-    const searchFlag = searchCode && modes && modes.length !== 0 && quota && quota.length !== 0 && stations && stations.length !== 0 && modesInfo && modesInfo.length !== 0;
+    let stationsFlag = false;
+    stations && stations.forEach(cur => {
+      if(cur.stations.length > 0){
+        stationsFlag = true;
+      }
+    });
+    const searchFlag = searchCode && modes && modes.length !== 0 && quota && quota.length !== 0 && stationsFlag && stations && stations.length !== 0 && modesInfo && modesInfo.length !== 0;
 
     return (
       <div className={styles.topSearch}>
