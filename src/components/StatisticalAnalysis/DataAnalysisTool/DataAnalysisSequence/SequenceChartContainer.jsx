@@ -6,7 +6,7 @@ import SequenceChart from './SequenceChart';
 import { downloadFile } from '../../../../utils/utilFunc';
 import SequenceModal from './SequenceModal';
 import toZip from '../../../../utils/js-zip';
-
+import { message } from 'antd';
 class SequenceChartContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -19,14 +19,31 @@ class SequenceChartContainer extends React.Component {
     };
   }
   componentWillReceiveProps(nextProps) {
+    const { stationCode, startTime, endTime, xPointCode, yPointCode } = nextProps;
+    const isChangeStationCode = stationCode !== this.props.stationCode;
+    const isChangeStartTime = startTime !== this.props.startTime;
+    const isChangeEndTime = endTime !== this.props.endTime;
+    const isChangeXcode = xPointCode !== this.props.xPointCode;
+    const isChangeYcode = yPointCode !== this.props.yPointCode;
+    if (isChangeStationCode || isChangeStartTime || isChangeEndTime || isChangeXcode || isChangeYcode) {//改变电站清空图片地址
+      this.setState({
+        newSrcUrl: [],
+        srcObj: {},
+      });
+    }
     if (nextProps.down && this.props.down !== nextProps.down) {
       // this.state.newSrcUrl.forEach((e, i) => {
       //   downloadFile(`${e.title}`, e.src);
       // });
-      const { stations, stationCode, pointCodeNameX, pointCodeNameY } = this.props;
-      const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
-      const { stationName } = stationArr;
-      toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}vs${pointCodeNameY}`);
+      if (this.state.newSrcUrl.length === nextProps.deviceList.length) {
+        const { stations, stationCode, pointCodeNameX, pointCodeNameY } = this.props;
+        const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
+        const { stationName } = stationArr;
+        toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}vs${pointCodeNameY}`);
+      } else {
+        message.warning('图片未全部加载完成');
+      }
+
       this.props.changeSquenceStore({ down: false });
     }
   }
@@ -41,10 +58,10 @@ class SequenceChartContainer extends React.Component {
     return true;
   }
 
-  likeStatusChange = (index, bool) => {
+  likeStatusChange = (index, bool, sequenceData) => {
     const { deviceList, changeSquenceStore } = this.props;
     deviceList[index].likeStatus = bool;
-    changeSquenceStore({ deviceList });
+    changeSquenceStore({ deviceList, sequenceData });
   };
   saveImgUrl = (title, src) => {
     const { srcObj } = this.state;

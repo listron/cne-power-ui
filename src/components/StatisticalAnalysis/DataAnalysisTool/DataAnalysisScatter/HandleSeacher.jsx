@@ -90,9 +90,6 @@ class HandleSeacher extends React.Component {
   }
   componentWillReceiveProps(nextProp) {
     const { scatterNames, getScatterData, stationCode, scatterNameTime, deviceList, startTime, endTime, getxyLimitValue, xyValueLimit } = nextProp;
-
-
-
     if (this.props.scatterNameTime !== scatterNameTime) {
       const { options } = this.state;
       const newscatterNames = this.formater(scatterNames);
@@ -230,10 +227,6 @@ class HandleSeacher extends React.Component {
       });
       this.getLimitValue({ xPointCode: pointCodeX, yPointCode: pointCodeY });
     }
-
-
-
-
   }
   changeSwap = () => {
     const { xCode, yCode, xName, yName } = this.state;
@@ -260,17 +253,19 @@ class HandleSeacher extends React.Component {
       deviceList: [],
     });
     this.props.getStationDevice({ stationCode });
+    setTimeout(() => {
+      const fristDevice = deviceList[0];
+      const deviceFullCode = fristDevice.deviceFullCode;
+      getScatterData({
+        stationCode,
+        deviceFullCode,
+        xPointCode: xCode,
+        yPointCode: yCode,
+        startTime: saveStartTime,
+        endTime: saveEndTime,
+      });
+    }, 10);
 
-    const fristDevice = deviceList[0];
-    const deviceFullCode = fristDevice.deviceFullCode;
-    getScatterData({
-      stationCode,
-      deviceFullCode,
-      xPointCode: xCode,
-      yPointCode: yCode,
-      startTime: saveStartTime,
-      endTime: saveEndTime,
-    });
 
   }
   changeXvalue = (value, option) => {
@@ -323,9 +318,7 @@ class HandleSeacher extends React.Component {
   }
   render() {
     const { stationCode, stations, scatterotherNames, theme, startTime, endTime } = this.props;
-    // console.log('endTime: ', endTime);
-    // const test = moment(endTime).endOf('d').format();
-    // console.log('test: ', test);
+
     const { isSwap, options, scatterNameValue, showOther, xName, yName, xyValueLimit, disableDateFun } = this.state;
     const { yMin, yMax, xMin, xMax } = xyValueLimit;
     const dateFormat = 'YYYY.MM.DD';

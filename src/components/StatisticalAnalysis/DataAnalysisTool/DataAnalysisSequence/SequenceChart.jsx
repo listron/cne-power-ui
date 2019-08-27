@@ -28,25 +28,25 @@ class SequenceChart extends React.Component {
     super(props, context);
   }
   componentDidMount() {
-    const { sequenceChart } = this;
     const { sequenceData, saveBtn } = this.props;
-    const myChart = eCharts.init(sequenceChart, themeConfig[this.props.theme]); //构建下一个实例
+    const myChart = eCharts.init(this.sequenceChart, themeConfig[this.props.theme]); //构建下一个实例
     const option = this.creatOption(sequenceData, saveBtn);
-    myChart.setOption(option);
-
+    myChart.setOption(option, true);
   }
   componentWillReceiveProps(nextProps) {
-    const { activeCode, saveBtn, sequenceData, deviceList, xyValueLimit, startTime, endTime, pointY1, pointY2 } = nextProps;
+    const { activeCode, saveBtn, sequenceData, deviceList, startTime, endTime, pointY1, pointY2 } = nextProps;
     const requestParams = { startTime, endTime, pointY1, pointY2 };
     const prevCode = this.props.activeCode;
-    const preData = this.props.sequenceData;
-    if (preData.deviceFullCode === this.props.deviceFullCode) {
+    // const preData = this.props.sequenceData;
+    // if (preData.deviceFullCode === this.props.deviceFullCode) {
+    if (prevCode === this.props.deviceFullCode) {
       const myChart = eCharts.init(this.sequenceChart, themeConfig[nextProps.theme]);
       if (this.props.chartLoading) {
         myChart.hideLoading();
       }
     }
-    if ((activeCode && activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
+    if ((activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
+      this.renderChart(sequenceData, saveBtn, requestParams);//此处的第三个参数是控制定时器是否发送下一个请求
       const myChart = eCharts.init(this.sequenceChart, themeConfig[nextProps.theme]); //构建下一个实例
       if (this.props.chartLoading) {
         myChart.showLoading();
@@ -54,9 +54,11 @@ class SequenceChart extends React.Component {
       if (this.props.deviceFullCode === deviceList[deviceList.length - 1].deviceFullCode) {//最后一项取消loading
         myChart.hideLoading();
       }
-      this.renderChart(sequenceData, saveBtn, requestParams);//此处的第三个参数是控制定时器是否发送下一个请求
+
     }
     if (saveBtn !== this.props.saveBtn) {
+      console.log('sequenceData: ', sequenceData);
+
       this.renderChart(sequenceData, saveBtn, false);
     }
   }
@@ -179,10 +181,6 @@ class SequenceChart extends React.Component {
   renderChart = (sequenceData, saveBtn, isRequest) => {
     const { deviceList, getSequenceData, index, pointY1, pointY2, likeStatusChange, deviceName, theme } = this.props;
     const parms = {
-      // pointY1,
-      // pointY2,
-      // startTime,
-      // endTime,
       ...isRequest,
       interval: 60,
     };
@@ -192,7 +190,7 @@ class SequenceChart extends React.Component {
     const option = this.creatOption(sequenceData, saveBtn);
     myChart.off();
     myChart.on('click', 'title', (payload) => {
-      likeStatusChange(index, !saveBtn);
+      likeStatusChange(index, !saveBtn, sequenceData);
     });
 
 

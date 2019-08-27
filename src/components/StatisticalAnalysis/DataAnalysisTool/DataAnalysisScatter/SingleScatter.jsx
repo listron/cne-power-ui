@@ -35,12 +35,12 @@ class SingleScatter extends React.PureComponent {
     const prevCode = this.props.activeCode;
     if (activeCode !== prevCode) {
       const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
-      if (this.props.chartLoading) {
+      if (!chartLoading) {
         scatterChart.hideLoading();
       }
 
     }
-    if ((activeCode && activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
+    if ((activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
       const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
       this.drawChart(scatterData, saveBtn, true);//此处的第三个参数是控制定时器是否发送下一个请求
       if (this.props.deviceFullCode !== deviceList[deviceList.length - 1].deviceFullCode && !chartLoading) {

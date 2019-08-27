@@ -232,14 +232,20 @@ class HandleSeachData extends React.Component {
   //查询图表数据
   getSequenceData = () => {
     //请求数据
-    const { getSequenceData, changeSquenceStore, deviceList } = this.props;
+    const { getSequenceData, changeSquenceStore, deviceList, stationCode } = this.props;
     const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
     changeSquenceStore({
       sequenceData: {},
       pointCodeNameX: xName,
       pointCodeNameY: yName,
       xyValueLimit,
+      deviceList: [],
+      activeCode: '',
+      startTime: saveStartTime,
+      endTime: saveEndTime,
     });
+
+    this.props.getStationDevice({ stationCode });
     const fristDevice = deviceList[0];
     const deviceFullCode = fristDevice.deviceFullCode;
     getSequenceData({

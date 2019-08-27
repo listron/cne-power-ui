@@ -11,7 +11,7 @@ var initState = Immutable.fromJS({
   pointY2: '',
   startTime: moment().startOf('year').format(),
   endTime: moment().format(),
-  deviceFullCode: '',
+  // deviceFullCode: '',
   pointCodeNameX: '',
   pointCodeNameY: '',
   showPage: 'allStation', //allStation显示全部电站，singleStation,显示单电站

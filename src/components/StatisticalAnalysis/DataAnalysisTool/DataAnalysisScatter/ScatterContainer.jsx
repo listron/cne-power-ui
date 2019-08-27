@@ -4,6 +4,7 @@ import styles from './dataAnalysisStyle.scss';
 import SingleScatter from './SingleScatter';
 import SingleStationModal from './SingleStationModal';
 import toZip from '../../../../utils/js-zip';
+import { message } from 'antd';
 class ScatterContainer extends React.PureComponent {
   static propTypes = {
     scatterData: PropTypes.object,
@@ -21,18 +22,30 @@ class ScatterContainer extends React.PureComponent {
     };
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.stationCode !== this.props.stationCode) {//改变电站清空图片地址
+    const { stationCode, startTime, endTime, xPointCode, yPointCode } = nextProps;
+    const isChangeStationCode = stationCode !== this.props.stationCode;
+    const isChangeStartTime = startTime !== this.props.startTime;
+    const isChangeEndTime = endTime !== this.props.endTime;
+    const isChangeXcode = xPointCode !== this.props.xPointCode;
+    const isChangeYcode = yPointCode !== this.props.yPointCode;
+    if (isChangeStationCode || isChangeStartTime || isChangeEndTime || isChangeXcode || isChangeYcode) {//改变电站清空图片地址
       this.setState({
         newSrcUrl: [],
         srcObj: {},
       });
     }
     if (nextProps.down && this.props.down !== nextProps.down) {
-      const { stations, stationCode, pointCodeNameX, pointCodeNameY } = this.props;
-      const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
-      const { stationName } = stationArr;
-      toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}vs${pointCodeNameY}`);
+      if (this.state.newSrcUrl.length === nextProps.deviceList.length) {
+        const { stations, stationCode, pointCodeNameX, pointCodeNameY } = this.props;
+        const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
+        const { stationName } = stationArr;
+        toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}vs${pointCodeNameY}`);
+      } else {
+        message.warning('图片未全部加载完成');
+      }
       this.props.changeToolStore({ down: false });
+
+
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
@@ -86,9 +99,7 @@ class ScatterContainer extends React.PureComponent {
       ...params,
       deviceFullCode,
     });
-
   }
-
   likeChange = (index, bool, scatterData) => {
     const { deviceList, changeToolStore } = this.props;
     deviceList[index].likeStatus = bool;
