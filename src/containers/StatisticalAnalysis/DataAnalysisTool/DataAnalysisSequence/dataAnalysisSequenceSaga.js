@@ -13,10 +13,16 @@ function* getStationDevice(action) {//获取
     if (response.data.code === '10000') {
       const data = response.data.data || [];
       const deviceList = data.map((e, i) => ({ ...e, likeStatus: false }));
+      const deviceFullCodeArr = deviceList.map(e => e.deviceFullCode);//拿到设备型号数组
+      const deviceData = {};//存储设备型号数据
+      deviceFullCodeArr.forEach((e, i) => {
+        deviceData[e] = {};
+      });
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           deviceList,
+          ...deviceData,
         },
       });
     } else {
@@ -87,8 +93,7 @@ function* getSequenceOtherName(action) {//获取
 }
 function* getSequenceData(action) {//获取
   const { payload } = action;
-  const { deviceFullCode, pointY1, pointY2, startTime, endTime, interval } = payload;
-
+  const { deviceFullCode, startTime, endTime } = payload;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSequenceData}`;
   try {
     yield put({
@@ -104,15 +109,24 @@ function* getSequenceData(action) {//获取
       endTime: moment(endTime).utc().format(),
     });
     const preSequenceData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('sequenceData').toJS()));
+    const deviceList = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('deviceList').toJS()));
 
     if (response.data.code === '10000') {
       const curChartData = response.data.data || {};
+      const deviceFullCodeArr = deviceList.map(e => e.deviceFullCode);//拿到设备型号数组
+      const deviceData = {};//存储设备型号数据
+      deviceFullCodeArr.forEach((e, i) => {
+        if (e === deviceFullCode) {
+          deviceData[e] = curChartData;
+        }
+      });
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           ...payload,
           sequenceData: [...preSequenceData, curChartData],
           chartLoading: false,
+          ...deviceData,
         },
       });
     } else {
@@ -134,7 +148,7 @@ function* getSequenceData(action) {//获取
 }
 function* getBigSequenceData(action) {//获取
   const { payload } = action;
-  const { deviceFullCode, pointY1, pointY2, startTime, endTime, interval } = payload;
+  const { deviceFullCode, startTime, endTime } = payload;
 
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSequenceData}`;
   try {

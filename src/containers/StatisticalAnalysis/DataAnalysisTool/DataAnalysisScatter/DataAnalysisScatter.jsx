@@ -49,6 +49,7 @@ const mapDispatchToProps = (dispatch) => ({
   getScatterOtherName: payload => dispatch({ type: dataAnalysisScatterAction.getScatterOtherName, payload }),
   getScatterData: payload => dispatch({ type: dataAnalysisScatterAction.getScatterData, payload }),
   getStationDevice: payload => dispatch({ type: dataAnalysisScatterAction.getStationDevice, payload }),
+  getBigScatterData: payload => dispatch({ type: dataAnalysisScatterAction.getBigScatterData, payload }),
 
 
 });
