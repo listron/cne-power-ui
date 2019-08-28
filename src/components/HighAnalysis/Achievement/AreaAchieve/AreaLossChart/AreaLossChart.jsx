@@ -20,7 +20,6 @@ export default class AreaLossChart extends Component {
     location: PropTypes.object,
     history: PropTypes.object,
     deviceData: PropTypes.array,
-    pointLength: PropTypes.number,
   };
 
   componentDidUpdate(prevProps) {
@@ -43,7 +42,7 @@ export default class AreaLossChart extends Component {
   }
 
   drawChart = (lostGenHourInfo) => {
-    const { pointLength } = this.props;
+    const pointLength = 1;
     const { actualGen, theoryGen, detailList } = lostGenHourInfo;
     const xAxisName = detailList && detailList.map(cur => (cur.name)) || [];
     const xAxisBaseValue = detailList && detailList.map(cur => (cur.baseValue)) || [];

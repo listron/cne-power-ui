@@ -19,7 +19,6 @@ export default class GroupLossChart extends Component {
     selectStationCode: PropTypes.array,
     selectTime: PropTypes.string,
     dataName: PropTypes.string,
-    pointLength: PropTypes.number,
   };
 
   componentDidUpdate(prevProps) {
@@ -42,7 +41,7 @@ export default class GroupLossChart extends Component {
   }
 
   drawChart = (groupLostGenHourInfo) => {
-    const { pointLength } = this.props;
+    const pointLength = 1;
     const { actualGen, theoryGen, detailList } = groupLostGenHourInfo;
     const xAxisName = detailList && detailList.map(cur => (cur.name)) || [];
     const xAxisBaseValue = detailList && detailList.map(cur => (cur.baseValue)) || [];

@@ -4,7 +4,6 @@ import { dailyQueryAction } from './dailyQueryAction';
  const initState = immutable.fromJS({
   tableLoading: false,
   stationType: 0, // 选中的电站类型
-  objectType: 0, // 日报故障类型
   tableType: 'quotaList', // 列表类别
   queryParam: { // 请求数据的集合
     stationCodes: [], // 选中的电站
