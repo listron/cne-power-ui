@@ -26,14 +26,4 @@
 /*css样式*/
 .topSearch {
   background-color: #fff;
-
-  .search {
-    color: $themeColor;
-    border: 1px solid $themeColor;
-
-    &:hover {
-      background-color: $themeColor;
-      color: #fff;
-    }
-  }
 }

@@ -140,7 +140,7 @@ class DevicesAep extends Component {
       grid: {
         top: 30,
         ...getPartsOption('grid'),
-        left: 30,
+        left: 35,
         bottom: 40,
       },
       xAxis: {

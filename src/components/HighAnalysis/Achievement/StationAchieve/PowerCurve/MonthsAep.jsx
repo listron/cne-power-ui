@@ -101,7 +101,7 @@ class MonthsAep extends Component {
         top: 30,
         ...getPartsOption('grid'),
         bottom: 40,
-        left: 30,
+        left: 35,
       },
       xAxis: { ...getPartsOption('xAxis'), data: xData },
       yAxis: [

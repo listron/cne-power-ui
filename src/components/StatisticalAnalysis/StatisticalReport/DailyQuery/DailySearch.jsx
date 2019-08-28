@@ -129,6 +129,7 @@ class DailySearch extends Component {
   }
 
   onQuotaChange = (quota) => { // 关键指标 - 选择指标
+    console.log('quota: ', quota);
     this.setState({
       quotaInfoData: quota,
     });
@@ -246,6 +247,7 @@ class DailySearch extends Component {
   render(){
     const { stationTypeCount, stationType, stations, tableType, quotaData, faultData } = this.props;
     const { keyWord, powerInformation, quotaInfoData, faultIds, selectStations, dateValue } = this.state;
+    console.log('quotaInfoData: ', quotaInfoData);
     const quotaCode = quotaInfoData.map(e => {
       return e.value;
     });
