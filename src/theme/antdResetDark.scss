@@ -181,34 +181,60 @@
 
   .ant-select {
     color: $fontColor;
-  }
-  .ant-select > ul > li > a {
-    background-color: $fontColor;
-  }
-
-  .ant-select-selection {
-    background-color: $input-Background;
-    border: 1px solid $input-border !important ;
-  }
-
-  .ant-select-dropdown-menu-item {
-    color: $fontColor;
-    background-color: $select-background;
-    &:hover:not(.ant-select-dropdown-menu-item-disabled) {
-      background: $themeColor;
-      color: $fontColor-invert;
+    > ul > li > a {
+      background-color: $fontColor;
     }
-  }
 
-  .ant-select:not(.ant-select-disabled) {
-    .ant-select-selection {
-      .ant-select-selection__rendered {
-        .ant-select-selection__placeholder {
-          color: $fontColor;
+    &-arrow {
+      color: $fontColor;
+    }
+
+    &:not(.ant-select-disabled) {
+      color: $fontColor;
+      .ant-select-selection {
+        background-color: $input-Background;
+        border: 1px solid $input-border;
+        @include highLight($themeColor);
+        color: $fontColor;
+        &:hover,
+        &:active,
+        &:focus {
+          background: #161858;
+          border: 1px solid #4d5fe2;
+        }
+
+        &__placeholder {
+          color: rgba($fontColor, 0.8) !important;
+        }
+        .ant-select-search__field__placeholder {
+          color: rgba($fontColor, 0.8);
+        }
+
+        &--multiple {
+          .ant-select-selection__choice {
+            color: $fontColor;
+            background-color: $slide-backgound;
+            border: 1px solid $slide-backgound;
+            &:hover {
+              background: #fcffe5;
+              color: #f8b14e;
+            }
+          }
         }
       }
+    }
 
-      @include highLight($themeColor);
+    &-disabled {
+      .ant-select-selection {
+        background: #405080;
+        border: 1px solid #7088c3;
+        color: #7088c3;
+        &:hover,
+        &:active,
+        &:focus {
+          border: 1px solid #7088c3;
+        }
+      }
     }
   }
 
@@ -217,43 +243,96 @@
     background: $background;
     border: 1px solid $border-color;
     box-shadow: 0 0 4px 2px #4d5fe2;
-  }
+    &-menu {
+      &-item {
+        color: $fontColor;
+        &:hover:not(.ant-select-dropdown-disabled) {
+          background: $themeColor;
+          color: $fontColor-invert;
+        }
 
-  .ant-select-selection-selected-value {
-    color: $fontColor;
-  }
+        &-disabled {
+          color: $fontColor-disabled;
+          &:hover {
+            color: $fontColor-disabled;
+          }
+        }
 
-  .ant-select-dropdown-menu-item-selected:not(.ant-select-dropdown-menu-item-disabled),
-  .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
-    background: $button-active;
-    color: $fontColor-invert;
-  }
+        &-selected {
+          &,
+          &:hover {
+            background: $button-active;
+            color: $fontColor-invert;
+          }
+        }
 
-  .ant-select-arrow {
-    color: $fontColor !important ;
-  }
+        &-active:not(.ant-select-dropdown-disabled) {
+          background: $button-active;
+          color: $fontColor-invert;
+        }
 
-  //ant-select-dropdown-menu下拉框选中的√颜色
-  .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after,
-  .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
-    color: $fontColor;
-    background: $themeColor;
-  }
+        &-divider {
+        }
+      }
+    }
 
-  .ant-select-selection--multiple .ant-select-selection__choice {
-    color: $fontColor;
-    background-color: #205bac;
-    border: 1px solid #205bac;
-    &:hover {
-      background: #fcffe5;
-      color: #f8b14e;
+    &--multiple {
+      .ant-select-dropdown-menu-item-selected:after,
+      .ant-select-dropdown-menu-item-selected:hover:after {
+        color: $fontColor;
+        background: $themeColor;
+      }
+
+      .ant-select-selection__choice {
+        color: $fontColor;
+        background-color: $slide-backgound;
+        border: 1px solid $slide-backgound;
+        &:hover {
+          background: #fcffe5;
+          color: #f8b14e;
+        }
+      }
     }
   }
 
-  .ant-select-dropdown-menu-item-disabled {
-    color: $fontColor-disabled;
-    &:hover {
-      color: $fontColor-disabled;
+  .ant-select-tree {
+    color: $fontColor;
+    $prefix: ant-select-tree;
+    li {
+      .#{$prefix}-node-content-wrapper {
+        color: $fontColor;
+        &:hover {
+          background: $themeColor;
+          color: $fontColor-invert;
+        }
+        & .#{$prefix}-node-selected {
+          background: $themeColor;
+          color: $fontColor-invert;
+        }
+      }
+
+      span {
+      }
+    }
+    .#{$prefix}-checkbox-inner {
+      background: transparent;
+      border: 1px solid $themeColor;
+    }
+    .#{$prefix}-checkbox-checked .#{$prefix}-checkbox-inner {
+      background: $themeColor;
+      border: 1px solid $themeColor;
+    }
+
+    .#{$prefix}-dropdown {
+      color: $fontColor;
+      background: $background;
+      border: 1px solid $border-color;
+      box-shadow: 0 0 4px 2px #4d5fe2;
+      .#{$prefix}-dropdown-search {
+        .#{$prefix}-search__field {
+          border: 1px solid $border-color;
+        }
+      }
     }
   }
 
@@ -261,20 +340,19 @@
 
   .ant-switch {
     background: $button-primary;
-  }
+    &:after {
+      background: #161858;
+    }
 
-  .ant-switch-checked {
-    color: $themeColor;
-    background: $button-active;
-  }
+    &-checked {
+      color: $themeColor;
+      background: $button-active;
+    }
 
-  .ant-switch::after {
-    background: #161858;
-  }
-
-  .ant-switch-loading-icon,
-  .ant-switch-checked::after {
-    background: $fontColor-invert;
+    &-loading-icon,
+    &-checked:after {
+      background: $fontColor-invert;
+    }
   }
 
   // =================input ==============
@@ -391,7 +469,7 @@
   .ant-calendar-month-panel-next-decade-cell .ant-calendar-month-panel-month,
   .ant-calendar-year-panel-last-decade-cell .ant-calendar-year-panel-year,
   .ant-calendar-year-panel-next-decade-cell .ant-calendar-year-panel-year {
-    color: #205bac;
+    color: $fontColor-dark;
   }
 
   .ant-calendar-year-panel-prev-decade-btn,
@@ -416,12 +494,12 @@
   .ant-calendar-month-panel-month:hover,
   .ant-calendar-year-panel-year:hover {
     background: $button-active;
-    color: #205bac;
+    color: $fontColor-dark;
   }
 
   .ant-calendar-month-panel-cell-disabled .ant-calendar-month-panel-month {
     background: transparent;
-    color: #205bac;
+    color: $fontColor-dark;
   }
 
   // 带今天的日历
@@ -472,7 +550,7 @@
   }
 
   .ant-calendar-range .ant-calendar-in-range-cell::before {
-    background: #205bac;
+    background: $slide-backgound;
   }
 
   .ant-calendar-range {
@@ -810,10 +888,11 @@
     .ant-tabs-nav,
     .ant-tabs-tab-active {
       color: #00baff;
+      &:hover {
+        color: #00baff;
+      }
     }
-    .ant-tabs-nav .ant-tabs-tab-active:hover {
-      color: #00baff;
-    }
+
     .ant-tabs-tab {
       color: #00baff;
     }

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import styles from "./manufacturers.scss";
+import React, { Component } from 'react';
+import styles from './manufacturers.scss';
 import PropTypes from 'prop-types';
 import { Select, DatePicker, TreeSelect } from 'antd';
 import moment from 'moment';
-import StationSelect from "../../../Common/StationSelect";
+import StationSelect from '../../../Common/StationSelect';
 const Option = Select.Option;
 const { RangePicker, MonthPicker } = DatePicker;
 
@@ -24,27 +24,28 @@ class Search extends Component {
     manufacturers: PropTypes.array,
     deviceModeIds: PropTypes.array,
     changeManufacturersStore: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       selectOption: 'manufacturer',
       optionValue: [],
-    }
+    };
   }
 
   componentDidMount() {
     const { stationCode, deviceTypeNameLike } = this.props;
-    this.props.getManufacturer({ stationCode, deviceTypeNameLike })
-    this.props.getDevicemode({ stationCode, deviceTypeNameLike })
+    this.props.getManufacturer({ stationCode, deviceTypeNameLike });
+    this.props.getDevicemode({ stationCode, deviceTypeNameLike });
   }
 
   getDevice = (value) => { // 获取筛选之后的厂家型号
     const { stationCode, startDate, endDate, deviceTypeNameLike, manufacturers, deviceModeIds } = this.props;
     const { selectOption } = this.state;
-    const manufactureParams = { stationCode, startDate, endDate, deviceTypeNameLike, manufacturers }
-    const devicemodeParams = { stationCode, startDate, endDate, deviceTypeNameLike, deviceModeIds }
+    const manufactureParams = { stationCode, startDate, endDate, deviceTypeNameLike, manufacturers };
+    const devicemodeParams = { stationCode, startDate, endDate, deviceTypeNameLike, deviceModeIds };
     selectOption === 'manufacturer' ? this.props.getChartsData({ ...manufactureParams, ...value }) : this.props.getChartsData({ ...devicemodeParams, ...value });
   }
 
@@ -58,7 +59,7 @@ class Search extends Component {
           title: e.deviceModeName,
           value: e.deviceModeId,
           key: e.deviceModeId,
-        }
+        };
       }
     }) || [];
     const manufacturerData = manufacturerList.length > 0 && manufacturerList.map(e => {
@@ -66,7 +67,7 @@ class Search extends Component {
         title: e.manufacturer,
         value: e.manufacturer,
         key: e.manufacturer,
-      }
+      };
     }) || [];
     const treeData = selectOption === 'manufacturer' ? manufacturerData : devicemodeData;
     const treeProps = {
@@ -75,14 +76,14 @@ class Search extends Component {
       filterTreeNode: false,
       searchPlaceholder: null,
       isLeaf: true,
-    }
+    };
     return treeProps;
   }
 
   timeSelect = (date, dateString) => { // 切换时间
     const startDate = moment(dateString).startOf('month').format('YYYY-MM-DD');
-    const endDate = moment(dateString).endOf('month').format('YYYY-MM-DD')
-    this.getDevice({ startDate, endDate })
+    const endDate = moment(dateString).endOf('month').format('YYYY-MM-DD');
+    this.getDevice({ startDate, endDate });
   }
 
   disabledDate = (current) => { // 不可以选择的时间
@@ -92,38 +93,38 @@ class Search extends Component {
   stationSelected = (value) => { // 电站选择
     const stationCode = [];
     const { deviceTypeNameLike } = this.props;
-    value.forEach(e => { stationCode.push(e.stationCode) })
-    this.props.getManufacturer({ stationCode, deviceTypeNameLike })
-    this.props.getDevicemode({ stationCode, deviceTypeNameLike })
-    this.setState({ optionValue: [] })
+    value.forEach(e => { stationCode.push(e.stationCode); });
+    this.props.getManufacturer({ stationCode, deviceTypeNameLike });
+    this.props.getDevicemode({ stationCode, deviceTypeNameLike });
+    this.setState({ optionValue: [] });
     const { selectOption } = this.state;
-    selectOption === 'manufacturer' ? this.getDevice({ stationCode: stationCode, manufacturers: [] }) : this.getDevice({ stationCode: stationCode, deviceModeIds: [] })
+    selectOption === 'manufacturer' ? this.getDevice({ stationCode: stationCode, manufacturers: [] }) : this.getDevice({ stationCode: stationCode, deviceModeIds: [] });
   }
 
   changeType = (value) => { // 改变厂家型号
     this.setState({ selectOption: value, optionValue: [] }, () => {
-      value === 'manufacturer' ? this.getDevice({ manufacturers: [] }) : this.getDevice({ deviceModeIds: [] })
-    })
-    this.props.changeManufacturersStore({ selectOption: value })
+      value === 'manufacturer' ? this.getDevice({ manufacturers: [] }) : this.getDevice({ deviceModeIds: [] });
+    });
+    this.props.changeManufacturersStore({ selectOption: value });
   }
 
 
   TreeSelect = (value) => { // 选择厂家或者选择设备型号
-    this.setState({ optionValue: value })
+    this.setState({ optionValue: value });
     const optionValue = value.map(e => e.value);
     const { selectOption } = this.state;
-    selectOption === 'manufacturer' ? this.getDevice({ manufacturers: optionValue }) : this.getDevice({ deviceModeIds: optionValue })
+    selectOption === 'manufacturer' ? this.getDevice({ manufacturers: optionValue }) : this.getDevice({ deviceModeIds: optionValue });
   }
 
 
   render() {
-    const { stations, deviceTypeNameLike } = this.props;
+    const { stations, deviceTypeNameLike, theme } = this.props;
     const { selectOption, optionValue } = this.state;
     const currentYearDay = moment().year() + '/01/01';
     const treeProps = this.getTreeProps();
     return (
       <div className={styles.search}>
-        <div ref={'searchBox'} className={styles.searchBox}></div>
+        <div ref={'searchBox'} className={styles.searchBox} />
         <div className={styles.condition}>
           <span>条件查询</span>
           <Select defaultValue={deviceTypeNameLike} style={{ width: 200, marginLeft: 15 }}
@@ -142,15 +143,16 @@ class Search extends Component {
           />
           <StationSelect
             data={stations.filter(e => e.stationType === 1)}
-            holderText={"全部电站"}
+            holderText={'全部电站'}
             multiple={true}
             onChange={this.stationSelected}
+            theme={theme}
           />
         </div>
         <div className={styles.antherCondition}>
           <span>厂家型号</span>
           <Select defaultValue="manufacturer" style={{ width: 200, marginLeft: 15 }} onChange={this.changeType}
-           getPopupContainer={() => this.refs.searchBox}
+            getPopupContainer={() => this.refs.searchBox}
           >
             <Option value="manufacturer">按厂家</Option>
             <Option value="deviceMode">按型号</Option>
@@ -168,8 +170,8 @@ class Search extends Component {
           />
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default Search
+export default Search;
