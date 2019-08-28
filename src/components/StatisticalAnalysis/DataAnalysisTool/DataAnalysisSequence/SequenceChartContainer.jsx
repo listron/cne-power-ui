@@ -34,7 +34,6 @@ class SequenceChartContainer extends React.Component {
       });
     }
     if (nextProps.down && this.props.down !== nextProps.down) {
-
       if (this.state.newSrcUrl.length === nextProps.deviceList.length) {
         const { stations, stationCode, pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
         const sTime = moment(startTime).format('YYYY-MM-DD');
@@ -50,12 +49,8 @@ class SequenceChartContainer extends React.Component {
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
-
     if ((nextState.newSrcUrl !== this.state.newSrcUrl) || (nextState.srcObj !== this.state.srcObj)) {
       return false;
-    }
-    if (nextProps.deviceList !== this.props.deviceList || (nextProps.sequenceChart !== this.props.sequenceChart)) {
-      return true;
     }
     return true;
   }
@@ -63,8 +58,9 @@ class SequenceChartContainer extends React.Component {
   likeStatusChange = (index, bool, sequenceData) => {
     const { deviceList, changeSquenceStore } = this.props;
     deviceList[index].likeStatus = bool;
-    changeSquenceStore({ deviceList, sequenceData });
+    sequenceData ? changeSquenceStore({ deviceList, sequenceData }) : changeSquenceStore({ deviceList });
   };
+
   saveImgUrl = (title, src) => {
     const { srcObj } = this.state;
     const newSrcUrl = [];
