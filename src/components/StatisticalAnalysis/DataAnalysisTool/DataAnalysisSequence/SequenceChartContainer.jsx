@@ -7,6 +7,8 @@ import { downloadFile } from '../../../../utils/utilFunc';
 import SequenceModal from './SequenceModal';
 import toZip from '../../../../utils/js-zip';
 import { message } from 'antd';
+import moment from 'moment';
+
 class SequenceChartContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -32,14 +34,14 @@ class SequenceChartContainer extends React.Component {
       });
     }
     if (nextProps.down && this.props.down !== nextProps.down) {
-      // this.state.newSrcUrl.forEach((e, i) => {
-      //   downloadFile(`${e.title}`, e.src);
-      // });
+
       if (this.state.newSrcUrl.length === nextProps.deviceList.length) {
-        const { stations, stationCode, pointCodeNameX, pointCodeNameY } = this.props;
+        const { stations, stationCode, pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
+        const sTime = moment(startTime).format('YYYY-MM-DD');
+        const eTime = moment(endTime).format('YYYY-MM-DD');
         const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
         const { stationName } = stationArr;
-        toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}vs${pointCodeNameY}`);
+        toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}&${pointCodeNameY}-${sTime}_${eTime}`, `${pointCodeNameX}&${pointCodeNameY}`);
       } else {
         message.warning('图片未全部加载完成');
       }

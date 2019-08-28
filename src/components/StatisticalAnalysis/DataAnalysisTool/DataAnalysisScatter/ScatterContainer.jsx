@@ -5,6 +5,7 @@ import SingleScatter from './SingleScatter';
 import SingleStationModal from './SingleStationModal';
 import toZip from '../../../../utils/js-zip';
 import { message } from 'antd';
+import moment from 'moment';
 class ScatterContainer extends React.PureComponent {
   static propTypes = {
     scatterData: PropTypes.object,
@@ -36,10 +37,12 @@ class ScatterContainer extends React.PureComponent {
     }
     if (nextProps.down && this.props.down !== nextProps.down) {
       if (this.state.newSrcUrl.length === nextProps.deviceList.length) {
-        const { stations, stationCode, pointCodeNameX, pointCodeNameY } = this.props;
+        const { stations, stationCode, pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
+        const sTime = moment(startTime).format('YYYY-MM-DD');
+        const eTime = moment(endTime).format('YYYY-MM-DD');
         const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
         const { stationName } = stationArr;
-        toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}vs${pointCodeNameY}`);
+        toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}vs${pointCodeNameY}-${sTime}_${eTime}`, `${pointCodeNameX}vs${pointCodeNameY}`);
       } else {
         message.warning('图片未全部加载完成');
       }

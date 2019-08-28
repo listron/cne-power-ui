@@ -1,7 +1,7 @@
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
 
-export default function toZip(imgSrcList, fileName) {//imgSrcList是base64位的图片数组，fileName是文件名
+export default function toZip(imgSrcList, fileName, childFileName) {//imgSrcList是base64位的图片数组，fileName是文件名
   const zip = new JSZip();//实例化一个压缩文件对象
   const imgFolder = zip.folder(fileName); //新建一个图片文件夹用来存放图片，参数为文件名
   for (let i = 0; i < imgSrcList.length; i++) {
@@ -13,7 +13,7 @@ export default function toZip(imgSrcList, fileName) {//imgSrcList是base64位的
     tempImage.onload = () => {
       // imgFolder.file((i+1)+'.jpg', getBase64Image(tempImage).substring(22), { base64: true })
       //第一个参数是保存在文件夹里的文件名，第二个是base64位的图片编码，
-      imgFolder.file(imgname + '.png', src.substring(22), { base64: true });
+      imgFolder.file(imgname + childFileName + '.png', src.substring(22), { base64: true });
     };
   }
 

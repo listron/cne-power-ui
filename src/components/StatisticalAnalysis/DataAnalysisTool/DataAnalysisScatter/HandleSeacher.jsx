@@ -284,15 +284,7 @@ class HandleSeacher extends React.Component {
     });
     this.getLimitValue({ yPointCode: value });
   }
-  changeMax = () => {
-    this.setState({
-      xyValueLimit: {
-        ...this.state.xyValueLimit,
-        yMax: 2500,
-        xMax: 20,
-      },
-    });
-  }
+
 
   onCalendarChange = (dates, dateStrings) => {
     if (dates.length === 1) {
@@ -343,7 +335,7 @@ class HandleSeacher extends React.Component {
             style={{ width: '240px' }}
 
           />
-          <span onClick={this.changeMax}>{yMin}, {yMax}, {xMin}, {xMax}</span>
+
         </div>
         <div className={styles.headBottom}>
           <label className={styles.nameStyle}>散点</label>
