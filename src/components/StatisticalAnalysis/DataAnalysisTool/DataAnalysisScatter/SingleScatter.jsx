@@ -204,11 +204,7 @@ class SingleScatter extends React.PureComponent {
     }
     return val;
   }
-<<<<<<< HEAD
-  drawChart = (scatterData, saveBtn, isRequest) => {
-=======
   drawChart = (scatterData, saveBtn, isRequest, ) => {
->>>>>>> c203902e47d214df64a3b95930883f87b7694fac
     const { title, index, onChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
     const parms = { stationCode, xPointCode, yPointCode, startTime, endTime };
     const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
@@ -218,24 +214,6 @@ class SingleScatter extends React.PureComponent {
     scatterChart.on('click', 'title', (params) => {
       onChange(index, !saveBtn, scatterData);//保留当前数据值scatterData，避免重新渲染时数据源发生改变。
     });
-<<<<<<< HEAD
-
-    scatterChart.on('rendered', () => {
-      const imgUrl = scatterChart.getDataURL({
-        pixelRatio: 2,
-        backgroundColor: '#fff',
-      });
-      this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
-    });
-    isRequest && setTimeout(() => {
-      const continueQuery = index < deviceList.length;
-      continueQuery && this.props.getScatterData({
-        ...parms,
-        deviceFullCode: deviceList[index + 1].deviceFullCode,
-      });
-    }, 50);
-
-=======
 
     scatterChart.on('rendered', () => {
       const imgUrl = scatterChart.getDataURL({
@@ -252,7 +230,6 @@ class SingleScatter extends React.PureComponent {
       });
     }, 50);
 
->>>>>>> c203902e47d214df64a3b95930883f87b7694fac
     scatterChart.setOption(option, true);
 
   }
