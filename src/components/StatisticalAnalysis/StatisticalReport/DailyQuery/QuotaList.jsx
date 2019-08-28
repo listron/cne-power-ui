@@ -74,10 +74,10 @@ class QuotaList extends Component {
     const { total = 0, dataList = [] } = quotaListData;
 
     const otherCol = quotaInfoData.map(e => ({
-      title: e.unit ? () => (<TableColumnTitle title={e.label} unit={e.unit} style={{ maxWidth: '100%', height: '52px' }} />) : e.label,
+      title: (e.unit && e.unit !== '%') ? () => (<TableColumnTitle title={e.label} unit={e.unit} style={{ maxWidth: '100%', height: '52px' }} />) : e.label,
       dataIndex: e.name,
-      className: 'quotaTd',
-      render: (text) => <span title={text}>{(dataFormat(text, '--', 2))}</span>,
+      className: 'numberStyle',
+      render: (text) => <span title={text}>{(dataFormat(text, '--', 2))}{e.unit === '%' && `%`}</span>,
     }));
 
     const columns = [{
