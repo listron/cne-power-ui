@@ -20,6 +20,7 @@ export default class AreaLossChart extends Component {
     location: PropTypes.object,
     history: PropTypes.object,
     deviceData: PropTypes.array,
+    pointLength: PropTypes.number,
   };
 
   componentDidUpdate(prevProps) {
