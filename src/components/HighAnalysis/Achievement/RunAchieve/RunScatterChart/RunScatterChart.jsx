@@ -196,12 +196,24 @@ export default class RunScatterChart extends Component {
       visualMap: {
         type: 'piecewise',
         categories: firstChartData && firstChartData.map(cur => (cur.deviceName)),
-        // outOfRange: {
-        //   symbol: 'circle',
-        //   color: '#cccccc',
-        // },
+        // 表示 目标系列 的视觉样式。
+        target: {
+          outOfRange: {
+            symbol: 'circle',
+            color: 'transparent',
+          },
+        },
+        // 表示 visualMap-piecewise 本身的视觉样式。
+        controller: {
+          outOfRange: {
+            symbol: 'circle',
+            color: '#cccccc',
+          },
+        },
+        align: 'left',
+        hoverLink: false,
         top: '230px',
-        right: '60px',
+        right: '45px',
       },
       brush: {
         brushLink: 'all',
@@ -238,6 +250,7 @@ export default class RunScatterChart extends Component {
           xAxisIndex: 0,
           yAxisIndex: 0,
           data: firstData,
+          progressive: 0,
         },
         {
           name: 'II',
@@ -245,6 +258,7 @@ export default class RunScatterChart extends Component {
           xAxisIndex: 1,
           yAxisIndex: 1,
           data: secondData,
+          progressive: 0,
         },
         {
           name: 'III',
@@ -252,6 +266,7 @@ export default class RunScatterChart extends Component {
           xAxisIndex: 2,
           yAxisIndex: 2,
           data: thirdData,
+          progressive: 0,
         },
         {
           name: 'IV',
@@ -259,6 +274,7 @@ export default class RunScatterChart extends Component {
           xAxisIndex: 3,
           yAxisIndex: 3,
           data: fourthData,
+          progressive: 0,
         },
       ],
     };
