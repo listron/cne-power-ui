@@ -197,7 +197,7 @@ class ChartLostRank extends Component {
     const { label = '--', unit, pointLength } = selectedQuota;
     const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank, lostChartDevice, unit);
     const baseOption = getBaseOption(dataAxis);
-    baseOption.yAxis.name = `${label || '--'}${unit ? `(${unit})` : ''}`;
+    baseOption.yAxis.name = `${label}${unit ? `(${unit})` : ''}`;
     const option = {
       ...baseOption,
       legend: { data: modeArr },
@@ -214,7 +214,7 @@ class ChartLostRank extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 1 ? '应发小时数' : `${label || '--'}`}</span>
+                  <span>${i === 1 ? '应发小时数' : `${label === '利用小时数' ? '实发小时数' : label}`}</span>
                   <span>${dataFormats(e.value, '--', pointLength, true)}${unit || ''}</span>
                 </span>`
               )).join('')}
