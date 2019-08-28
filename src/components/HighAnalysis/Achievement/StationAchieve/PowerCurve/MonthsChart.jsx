@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { getCurveBaseOption } from './curveBaseOption';
 import { dataFormats } from '../../../../../utils/utilFunc';
+import searchUtil from '../../../../utils/searchUtil';
 import styles from './curve.scss';
 
 class MonthsChart extends Component {
 
   static propTypes = {
+    history: PropTypes.object,
     curveCheckedMonths: PropTypes.array,
     curveDeviceName: PropTypes.string,
     curveMonths: PropTypes.object,
@@ -53,6 +55,19 @@ class MonthsChart extends Component {
       data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]),
     };
   })
+
+  toStopPage = () => {
+    const { history } = this.props;
+    const { search } = history.location;
+    const { pages = '', station } = searchUtil(search).parse(); // 新的pages变化
+    const curPages = pages.split('_');
+    const stopExist = curPages.includes('stop');
+    const nextPagesStr = stopExist ? pages : curPages.push('stop');
+    const { code, device, date } = JSON.parse(station); // 传入运行数据
+    const stationSearch = JSON.stringify({ code, device: device.join('_'), dates: date });
+    const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({stop: stationSearch}).stringify();
+    this.props.history.push(`/analysis/achievement/analysis/stop?${searchResult}`);
+  }
 
   renderChart = (monthsData, checkedMonths) => {
     const monthChart = echarts.init(this.monthRef);
@@ -100,6 +115,7 @@ class MonthsChart extends Component {
     monthChart.hideLoading();
     monthChart.clear();
     monthChart.setOption(option);
+    monthChart.on('click', this.toStopPage);
   }
 
   render() {

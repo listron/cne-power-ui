@@ -49,6 +49,7 @@ class StationAchieve extends Component {
   // f5刷新 => 有路径, 无reducer数据 => 路径数据重新写入reducer并发起对应的页面请求 didmount
   // 别的页面带参数进入该页面 => 有路径 路径参数写入reducer并发起对应请求 didmount
   // 别的页面不带参数直接点击目录处进入页面 => 无路径 等待数据得到后, 自动写入默认项, 当默认项齐全后, 发送页面请求 willprops
+  // 本页路径参数: station={code:stationCode,device:[deviceCodes],date:[startTime,endTime],quota:quotaCode}
   constructor(props){
     super(props);
     const { search } = props.history.location;
@@ -184,6 +185,8 @@ class StationAchieve extends Component {
     return selectedQuota;
   }
 
+  stationChange = (searchCode) => this.setState({searchCode})
+
   historyChange = (code, device = [], date = [
     moment().subtract(1, 'year').format('YYYY-MM-DD'),
     moment().format('YYYY-MM-DD'),
@@ -286,6 +289,7 @@ class StationAchieve extends Component {
           searchQuota={searchQuota}
           stationInfoStr={stationInfoStr}
           pageQuery={this.pageQuery}
+          stationChange={this.stationChange}
         />
         <AnimationBox changeStore={changeStore} pageName={pageName}>
           <LostAnalysis {...this.props} active={pageName === 'lost'} />

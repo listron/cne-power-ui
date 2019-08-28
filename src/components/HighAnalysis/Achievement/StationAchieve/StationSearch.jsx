@@ -24,6 +24,7 @@ class StationSearch extends Component {
     modeDevices: PropTypes.array,
     getDevices: PropTypes.func,
     pageQuery: PropTypes.func,
+    stationChange: PropTypes.func,
 
     stationInfoStr: PropTypes.string,
     searchCode: PropTypes.number,
@@ -77,6 +78,7 @@ class StationSearch extends Component {
 
   onStationChange = ([regionName, stationCode, stationName]) => {
     this.setState({ searchCode: stationCode, searchDevice: [] });
+    this.props.stationChange(stationCode);
     this.props.getDevices({ stationCode });
   }
 
@@ -134,6 +136,7 @@ class StationSearch extends Component {
     const { areaStation, modeDevices } = this.props;
     const { searchCode, searchDevice, searchDates } = this.state;
     const recoveryDisable = this.getResetDisable();
+    console.log(searchCode)
     return (
       <div className={styles.topSearch}>
         <div className={styles.leftPart}>

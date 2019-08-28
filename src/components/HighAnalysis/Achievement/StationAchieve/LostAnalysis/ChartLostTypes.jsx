@@ -4,11 +4,13 @@ import { Button } from 'antd';
 import echarts from 'echarts';
 import { getBaseOption } from './chartBaseOption';
 import { dataFormats } from '../../../../../utils/utilFunc';
+import searchUtil from '../../../../../utils/searchUtil';
 import styles from './lost.scss';
 
 class ChartLostTypes extends Component {
 
   static propTypes = {
+    history: PropTypes.object,
     lostTypes: PropTypes.object, // 损失根源 - 指标排名
     lostTypesLoading: PropTypes.bool,
     lostChartDevice: PropTypes.object,
@@ -71,7 +73,16 @@ class ChartLostTypes extends Component {
   }
 
   toWorkDetail = () => {
-    console.log('去运行数据分析页');
+    const { history } = this.props;
+    const { search } = history.location;
+    const { pages = '', station } = searchUtil(search).parse(); // 新的pages变化
+    const curPages = pages.split('_');
+    const stopExist = curPages.includes('stop');
+    const nextPagesStr = stopExist ? pages : curPages.push('stop');
+    const { code, device, date } = JSON.parse(station); // 传入运行数据
+    const stationSearch = JSON.stringify({ code, device: device.join('_'), dates: date });
+    const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({stop: stationSearch}).stringify();
+    this.props.history.push(`/analysis/achievement/analysis/stop?${searchResult}`);
   }
 
   renderChart = (lostTypes = {}) => {

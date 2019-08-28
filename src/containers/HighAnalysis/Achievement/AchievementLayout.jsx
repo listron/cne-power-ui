@@ -107,7 +107,7 @@ class AchievementLayout extends Component {
                 className={`${styles.button} ${pathKey === e ? styles.actievButton : ''}`}
                 onClick={() => this.tabChange(e)}
               >{this.tabNames[i]}</span>
-              <Icon className={styles.close} type="close" onClick={() => this.closeTab(e)} />
+              {pages.length > 1 && <Icon className={styles.close} type="close" onClick={() => this.closeTab(e)} />}
             </div>
           ))}
         </div>
