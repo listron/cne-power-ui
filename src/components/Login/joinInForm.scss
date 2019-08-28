@@ -19,10 +19,11 @@
             width: 220px;
           }
         }
-      } 
+      }
     }
     .agreementItem{
       margin-bottom: 0;
+      height: 37px;
       :global{
         .ant-form-item-control{
           line-height: 21px;
@@ -116,9 +117,9 @@
       // left: 20px;
       left: 8px;
       width: 416px;
-      // margin-left: -40px; 
+      // margin-left: -40px;
       // left: 0;
-     
+
       text-align: center;
       box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
       .enterpriseBack{
@@ -138,7 +139,7 @@
       }
     }
   }
-  
+
   .checkCodeBox{
     display: flex;
     justify-content: space-between;
