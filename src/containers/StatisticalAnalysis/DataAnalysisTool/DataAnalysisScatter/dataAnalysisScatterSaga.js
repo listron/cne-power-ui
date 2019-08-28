@@ -152,7 +152,6 @@ function* getBigScatterData(action) {//获取
     );
     if (response.data.code === '10000') {
       const bigscatterArr = response.data.data || [];
-
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {

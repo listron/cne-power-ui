@@ -19,6 +19,7 @@ export default class GroupLossChart extends Component {
     selectStationCode: PropTypes.array,
     selectTime: PropTypes.string,
     dataName: PropTypes.string,
+    pointLength: PropTypes.number,
   };
 
   componentDidUpdate(prevProps) {

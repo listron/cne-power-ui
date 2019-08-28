@@ -99,7 +99,6 @@ class QuotaList extends Component {
       width: (otherCol.length > 9) ? 120 : 0,
       dataIndex: 'reportDate',
       className: 'reportDate',
-      sorter: true,
       fixed: (otherCol.length > 9) ? 'left' : 'false',
       render: (text) => <span title={text}>{text}</span>,
     }];
@@ -107,7 +106,7 @@ class QuotaList extends Component {
     return (
       <div className={styles.quotaList}>
         <div className={styles.pagination}>
-          <Button className={styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
+          <Button className={dataList.length === 0 ? styles.disabledExport : styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}

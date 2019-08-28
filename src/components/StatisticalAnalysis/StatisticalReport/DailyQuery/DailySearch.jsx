@@ -72,6 +72,7 @@ class DailySearch extends Component {
       quotaListData: {},
       faultListData: {},
       limitListData: {},
+      quotaInfoData: [],
     });
 
     getQuota({ // 请求指标树
