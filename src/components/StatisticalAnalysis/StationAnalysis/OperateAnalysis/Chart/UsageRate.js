@@ -1,13 +1,14 @@
-import React from "react";
-import echarts from "echarts";
-import { setTimeout } from "timers";
-import PropTypes from "prop-types";
-import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
+import React from 'react';
+import echarts from 'echarts';
+import PropTypes from 'prop-types';
+import { themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
+import { dataFormats } from '../../../../../utils/utilFunc';
+import styles from './styles.scss';
 
 /* 
      1 必填 graphId, 根据ID确定图表
      2 选填 yAxisName, y轴的name
-     3 选填 xAxisName,
+     3 选填 type, 确定为什么类型的图表
      4 选填 title,图表的title
      5 必填 data, 数据 data=[[],[]] 其中为line的数据数组
      6 选填 hasData 是否有数据 如果有数据为true，否则为false
@@ -15,10 +16,8 @@ import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData
 class UsageRate extends React.Component {
   static propTypes = {
     graphId: PropTypes.string,
-    yAxisName: PropTypes.array,
-    xAxisName: PropTypes.string,
     title: PropTypes.string,
-    data: PropTypes.object
+    data: PropTypes.object,
   };
   constructor(props, context) {
     super(props, context);
@@ -31,163 +30,107 @@ class UsageRate extends React.Component {
     this.drawChart(nextProps);
   }
 
-  getColor = xAxisName => {
-    let result = "";
-    switch (xAxisName) {
-      case "可利用率":
-        result = ["#e08031", "#3e97d1"];
-        break;
-      case "厂用电情况":
-        result = ["#e08031", "#199475"];
-        break;
-      case "厂损情况":
-        result = ["#e08031", "#3e97d1"];
-        break;
-      default:
-        result = "#ccc";
-    }
-    return result;
-  };
 
-  getYaxisName = yAxisName => {
-    let result = "";
-    switch (yAxisName) {
-      case "可利用率":
-        result = ["电站可利用率", "发电系统可利用率"];
-        break;
-      case "厂用电情况":
-        result = ["厂用电率", "综合厂用电率"];
-        break;
-      case "产损情况":
-        result = ["送出线损率", "厂损率"];
-        break;
-      default:
-        result = " ";
-    }
-    return result;
-  };
+  getColor = {
+    'light': {
+      'useRate': ['#e08031', '#3e97d1'],
+      'electricity': ['#e08031', '#199475'],
+      'loss': ['#e08031', '#3e97d1'],
+    },
+    dark: {
+      'useRate': ['#f8b14e', '#00f8ff'],
+      'electricity': ['#fd6e8f', '#00f8ff'],
+      'loss': ['#f8b14e', '#00f8ff'],
+    },
+  }
+
 
   getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
     const length = data.length;
-    let replaceData = [];
-    for (let i = 0; i < length; i++) { replaceData.push('--') }
-    let realData = data.some(e => e || e === 0) ? data : replaceData;
-    return realData
+    const replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--'); }
+    const realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData;
   }
 
   drawChart = param => {
-    const {
-      graphId,
-      yAxisName,
-      xAxisName,
-      title,
-      data,
-      hasData
-    } = param;
-    const targetChart = echarts.init(document.getElementById(graphId));
-    let color = this.getColor(xAxisName);
-    let yData = (data && data.yData) || [];
-    const lineColor = ' #f1f1f1';
-    const fontColor = '#333';
-    let series = yData.map((item, index) => {
+    const { graphId, yAxisName, type, title, data, hasData, theme } = param;
+    let targetChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    if (targetChart) {
+      targetChart.dispose();
+      targetChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    }
+    const color = this.getColor[theme][type];
+    const yData = (data && data.yData) || [];
+    const series = yData.map((item, index) => {
       return {
         name: yAxisName[index],
-        type: "line",
+        type: 'line',
         yAxisIndex: index,
-        data: this.getDefaultData(item)
+        data: this.getDefaultData(item),
       };
     });
 
-    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
+    const graphic = chartsNodata(hasData, theme);
     const targetMonthOption = {
-      graphic: confluenceTenMinGraphic,
+      graphic: graphic,
       title: {
         text: title,
-        show: title ? "show" : false,
-        left: "23",
-        top: "top",
-        textStyle: {
-          color: fontColor,
-          fontSize: 14,
-          fontWeight: "normal"
-        }
+        show: title ? 'show' : false,
+        left: '23',
+        top: 'top',
       },
       color: color,
       tooltip: {
-        trigger: "axis",
-        axisPointer: {
-          type: "cross",
-          crossStyle: {
-            color: fontColor,
-          },
-          label: { color: fontColor },
-        },
-        backgroundColor: "#fff",
-        formatter: function (params) {
-          let paramsItem = "";
-          params.forEach((item, index) => {
-            return (paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${item.seriesName
-              } :${item.value === 0 || item.value ? item.value : '--'}${'%'}</div>`);
+        trigger: 'axis',
+        formatter: (params) => {
+          let paramsItem = '';
+          params.forEach(item => {
+            const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
+            paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
+                        ${item.seriesName} :  ${dataFormats(item.value, '--', 2)}${'%'}</div>`;
           });
-          return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${
-            params[0].name
-            } </span>
-          </div>
-         ${paramsItem}`;
+          return (
+            `<div class=${styles[theme]}>
+                <div class=${styles.axisValue}>${params[0].name}</div>
+                <div class=${styles.tooltipContainer}> ${paramsItem}</div>
+            </div>`
+          );
         },
-        padding: 10,
-        textStyle: {
-          color: "rgba(0, 0, 0, 0.65)",
-          fontSize: 12
+        axisPointer: {
+          type: 'cross',
         },
-        extraCssText: "box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)"
       },
       grid: {
-        right: '15%'
+        right: '15%',
       },
       legend: {
         top: title ? 0 : 20,
-        left: "center",
+        left: 'center',
         itemWidth: 8,
         itemHeight: 5,
       },
       xAxis: {
-        type: "category",
+        type: 'category',
         boundaryGap: false,
         data: data && data.xData,
         axisPointer: {
-          type: "shadow"
+          type: 'shadow',
         },
         axisLine: {
           show: true,
           onZero: false,
-          lineStyle: {
-            color: lineColor
-          }
-        },
-        axisLabel: {
-          color: fontColor
         },
         axisTick: {
-          show: false
-        }
+          show: false,
+        },
       },
       yAxis: [
         {
-          type: "value",
+          type: 'value',
           name: yAxisName[0],
-          nameTextStyle: {
-            color: fontColor,
-          },
           axisLabel: {
-            color: fontColor,
-            formatter: "{value} %"
-          },
-          axisLine: {
-            show: true,
-            lineStyle: {
-              color: lineColor
-            }
+            formatter: '{value} %',
           },
           axisTick: {
             show: false,
@@ -197,24 +140,16 @@ class UsageRate extends React.Component {
           },
         },
         {
-          type: "value",
+          type: 'value',
           name: yAxisName[1],
-          nameTextStyle: { color: fontColor },
-          axisLine: {
-            show: true,
-            lineStyle: { color: lineColor }
-          },
-          axisLabel: { color: fontColor, formatter: "{value} %" },
+          axisLabel: { formatter: '{value} %' },
           axisTick: { show: false },
           splitLine: { show: false },
-        }
+        },
       ],
-      series: series
+      series: series,
     };
-    setTimeout(() => {
-      targetChart.resize();
-    }, 100);
-    targetChart.setOption(targetMonthOption);
+    targetChart.setOption(targetMonthOption, 'notMerge');
   };
 
 

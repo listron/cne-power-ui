@@ -1,0 +1,117 @@
+@import "../../../theme/theme.scss";
+.filterCondition {
+  min-height: 80px;
+  height: auto;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  padding: 26px 28px 20px;
+}
+.filterConditionTitle {
+  display: flex;
+  color: #00baff;
+  .text {
+    margin-right: 16px;
+    line-height: 30px;
+  }
+  .filterlist {
+    height: 32px;
+    border: 1px solid #00baff;
+    line-height: 32px;
+    padding: 0 16px;
+    white-space: nowrap;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    margin-right: 16px;
+    i {
+      // width: 30px;
+      // font-size: 12px;
+      display: inline-block;
+      margin-left: 8px;
+    }
+  }
+}
+
+.filteredItems {
+  display: flex;
+  .selectText {
+    line-height: 30px;
+    margin-right: 12px;
+    height: 30px;
+    width: 40px;
+  }
+  .tagWrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    .tag {
+      border: 1px dashed #dfdfdf;
+      padding: 0 10px;
+      height: 30px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      margin-right: 16px;
+      margin-top: 5px;
+      cursor: pointer;
+      &:hover {
+        background: #199475;
+        color: #fff;
+        border: 1px dashed #199475;
+      }
+    }
+  }
+  .resetAll {
+    color: #199475;
+    font-size: 14px;
+    cursor: pointer;
+    font-style: normal;
+    display: inline-block;
+    line-height: 30px;
+  }
+}
+
+.filterItem {
+  margin-top: 10px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  // align-items: center;
+  flex-shrink: 0;
+  padding: 12px 24px;
+  min-height: 40px;
+  border-radius: 4px;
+  background-color: #f0f2f5;
+  > span {
+    margin-bottom: 8px;
+  }
+  :global {
+    .ant-input {
+      width: 300px;
+      &:hover {
+        border-color: $themeColor;
+      }
+    }
+  }
+  .all {
+    display: inline-block;
+    color: $darkColor;
+    width: 29px;
+    height: 19px;
+    border-bottom: none;
+    cursor: pointer;
+  }
+  .selected {
+    display: inline-block;
+    color: $themeColor;
+    width: 29px;
+    height: 19px;
+    border-bottom: 1px $themeColor solid;
+    cursor: pointer;
+    text-align: center;
+  }
+}

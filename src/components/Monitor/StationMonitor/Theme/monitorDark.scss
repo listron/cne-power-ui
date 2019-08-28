@@ -1,0 +1,55 @@
+// 正常
+$normal: rgba(83, 104, 241, 0.15);
+$normal_color: #00baff;
+$normal-border: rgba(83, 104, 241, 0.6);
+$normal-active: inset 0 0 4px 2px rgba(255, 255, 255, 0.5);
+
+// 告警
+$alarm: rgba(145, 44, 65, 0.8);
+$alarm_color: #fd6e8f;
+$alarm-border: rgba(145, 44, 65, 1);
+$alarm-active: inset 0 0 4px 2px #ffa1ac;
+
+// 无通讯
+$noContact: #4a4343;
+$noContact_color: #f8b14e;
+$noContact-border: #4a4343;
+$noContact-active: inset 0 0 4px 2px rgba(255, 255, 255, 0.5);
+
+// 未接入
+$noAccess: #181a4e;
+$noAccess_color: #bbcef7;
+$noAccess-border: #7088c3;
+$noAccess-active: none;
+
+// >10%
+$moreThanTen: rgba(85, 34, 228, 0.3);
+$moreThanTen_color: #00f8ff;
+$moreThanTen-border: rgba(83, 104, 241, 0.6);
+$moreThanTen-active: inset 0 0 4px 2px #4d5fe2;
+
+// >20%
+$moreThanTwenty: rgba(95, 35, 112, 0.8);
+$moreThanTwenty_color: #fd6e8f;
+$moreThanTwenty-border: rgba(95, 35, 112, 0.8);
+$moreThanTwenty-active: inset 0 0 4px 2px #ffa1ac;
+
+$fontColor-invert: #fff;
+
+@mixin singleItem($stuatus, $stuatus_color, $stuatus_border, $status_active) {
+  background: $stuatus;
+  border: 1px solid $stuatus_border;
+  a {
+    color: $fontColor-invert;
+  }
+  &:hover {
+    box-shadow: $status_active;
+  }
+  .iconHl {
+    color: $stuatus_color;
+  }
+
+  .value {
+    color: $fontColor-invert;
+  }
+}

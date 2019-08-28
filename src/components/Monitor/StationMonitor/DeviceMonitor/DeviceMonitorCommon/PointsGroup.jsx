@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import styles from './deviceMonitor.scss';
 import { dataFormat } from '../../../../../utils/utilFunc';
 
-export const YcPoints = ({ ycData = [] }) => {
+export const YcPoints = ({ ycData = [], theme = 'light' }) => {
   return (
-    <section className={styles.ycInfo}>
+    <section className={`${styles.ycInfo} ${styles[theme]}`}>
       <h3>遥测量(YC)</h3>
       <div className={styles.ycList}>
         <div className={styles.top}>
@@ -29,9 +29,11 @@ export const YcPoints = ({ ycData = [] }) => {
 
 YcPoints.propTypes = {
   ycData: PropTypes.array,
+  theme: PropTypes.string,
 };
 
-export const YxPoints = ({ yxData = [] }) => {
+
+export const YxPoints = ({ yxData = [], theme = 'light' }) => {
   const valueColor = value => {
     if (value === '1') {
       return { backgroundColor: '#7ed321' };
@@ -41,7 +43,7 @@ export const YxPoints = ({ yxData = [] }) => {
     return { backgroundColor: '#dfdfdf' };
   };
   return (
-    <section className={styles.yxInfo}>
+    <section className={`${styles.yxInfo} ${styles[theme]}`}>
       <h3>遥信量(YX)</h3>
       <div className={styles.yxList}>
         {yxData.map(e => (
@@ -60,16 +62,17 @@ export const YxPoints = ({ yxData = [] }) => {
 
 YxPoints.propTypes = {
   yxData: PropTypes.array,
+  theme: PropTypes.string,
 };
 
-export const YmPoints = ({ data = [], name = 'YM' }) => { //  遥脉测点或ycs展示。
+export const YmPoints = ({ data = [], name = 'YM', theme = 'light' }) => { //  遥脉测点或ycs展示。
   const groupMax = 10;
   const groupedData = [];
   data.forEach((e, i) => {
     const groupIndex = parseInt(i / groupMax, 10);
-    if(!groupedData[groupIndex]){
+    if (!groupedData[groupIndex]) {
       groupedData[groupIndex] = [e];
-    }else{
+    } else {
       groupedData[groupIndex].push(e);
     }
   });
@@ -88,11 +91,12 @@ export const YmPoints = ({ data = [], name = 'YM' }) => { //  遥脉测点或ycs
           </div>
         ))}
       </div>
-    </section>: null
+    </section> : '暂无数据'
   );
 };
 
 YmPoints.propTypes = {
   data: PropTypes.array,
   name: PropTypes.string,
+  theme: PropTypes.string,
 };

@@ -1,15 +1,17 @@
-.productionAnalysisBox{
+@import "../../../../theme/theme.scss";
+.productionAnalysisBox {
   min-height: 100%;
   display: flex;
-  flex:1;
+  flex: 1;
   flex-direction: column;
-  .productionAnalysis{
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 24px 24px 0;
-    background-color: #ececec;                       
+  .productionAnalysis {
+    @include contentBoxStyle();
   }
+}
 
+.dark {
+  @import "../../../../theme/darkTheme.scss";
+  .productionAnalysis {
+    @include contentBoxStyle();
+  }
 }

@@ -5,31 +5,32 @@ import { Progress } from 'antd';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './integrate.scss';
 
-const SubBoxtransformer = ({ subDeviceList, deviceDetail, stationCode }) => {
+const SubBoxtransformer = ({ subDeviceList = [], deviceDetail, stationCode, theme = 'light' }) => {
   const baseLinkPath = '/hidden/monitorDevice';
-  // const boxStatus = { // 逆变器各种设备状态
-  //   '400': {color: '#199475', statusName: '正常', name: 'normal'}, // 正常
-  //   '500': {color: '#a42b2c', statusName: '无通讯', name: 'break'}, // 中断
-  //   '900': {color: '#999', statusName: '未接入', name: 'unconnect'}, // 未接入
-  // }
-
+  const getStatusName = { // 逆变器各种设备状态
+    '400': { name: 'normal', text: '正常' },
+    '500': { name: 'noContact', text: '中断' },
+    '900': { name: 'noAccess', text: '未接入' },
+  };
   return (
-    <div className={styles.subBoxtransformer}>
+    <div className={`${styles.subBoxtransformer} ${styles[theme]}`}>
       {subDeviceList.map((item, i) => {
         const { deviceCode, devicePower, deviceCapacity, alarmNum } = item;
-        let progressPercent = devicePower / deviceCapacity * 100 || 0;
+        const progressPercent = devicePower / deviceCapacity * 100 || 0;
         const deviceTypeCode = deviceCode && deviceCode.split('M')[1] || '';
+        const statusName = item.deviceStatus && getStatusName[`${item.deviceStatus}`].name || 'noAccess';
+        const alarm = item.alarmNum && item.alarmNum > 0;
         return (
-          <div key={i} className={`${styles.singledeviceItem} `}>
-            <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`} >
-              <div className={`${styles.statusBox}`} style={{ backgroundColor: alarmNum > 0 ? '#ff8e9c' : 'transparent' }}>
+          <div key={i} className={`${styles.singledeviceItem} ${styles[statusName]} ${alarm && styles.alarm}`}>
+            <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`}>
+              <div className={`${styles.statusBox}`} >
                 <div className={styles.deviceItemIcon} >
                   <i className={`iconfont icon-xb ${styles.icon}`} />
                   {(alarmNum > 0) && <i className="iconfont icon-alarm" />}
                 </div>
                 <div className={styles.deviceItemR} >
                   <div className={styles.deviceBlockName}>
-                    <span style={{ color: alarmNum > 0 ? '#a42b2c' : '#666' }}>{item.deviceName}</span>
+                    <span>{item.deviceName || '--'}</span>
                   </div>
                   <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
                   <div className={styles.deviceItemPower}>
@@ -48,8 +49,8 @@ const SubBoxtransformer = ({ subDeviceList, deviceDetail, stationCode }) => {
           </div>);
       })}
     </div>
-  )
-}
+  );
+};
 
 export default SubBoxtransformer;
 

@@ -41,11 +41,11 @@ class WeatherStation extends Component {
         const { stationCode } = this.props.match.params;
         const nextParams = nextProps.match.params;
         const nextStation = nextParams.stationCode;
-        const { radiationchartTime } = this.props;
+        const { radiationchartTime, theme } = this.props;
         if (nextStation !== stationCode) {
             this.getData(nextStation);
         }
-        if (radiationchartTime !== nextProps.radiationchartTime) {
+        if (radiationchartTime !== nextProps.radiationchartTime || theme !== nextProps.theme) {
             this.drawChart(nextProps);
         }
     }
