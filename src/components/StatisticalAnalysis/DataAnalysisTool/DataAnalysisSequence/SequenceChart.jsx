@@ -35,7 +35,7 @@ class SequenceChart extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     const { activeCode, saveBtn, sequenceData, deviceList, startTime, endTime, pointY1, pointY2 } = nextProps;
-    console.log('sequenceData: ', sequenceData);
+
     const requestParams = { startTime, endTime, pointY1, pointY2 };
     const prevCode = this.props.activeCode;
     // const preData = this.props.sequenceData;

@@ -31,7 +31,7 @@ class SingleScatter extends React.PureComponent {
   }
   componentWillReceiveProps(nextProps) {
     const { activeCode, scatterData, chartLoading, theme, saveBtn, deviceList, xyValueLimit } = nextProps;
-    // console.log('xyValueLimit22222: ', xyValueLimit);
+    // 
     const prevCode = this.props.activeCode;
     if (activeCode !== prevCode) {
       const scatterChart = echarts.init(this.chartId, themeConfig[theme]);

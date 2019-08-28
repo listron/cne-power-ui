@@ -48,7 +48,7 @@ class BigSequenceCharts extends React.Component {
       myChart.hideLoading();
     }
     if ((this.props.saveBtn !== saveBtn) || (nextProps.id !== this.props.id)) {
-      // console.log('likestatus发生改变重新渲染');
+      // 
       this.renderChart(curBigChartData, saveBtn, deviceName);
     }
   }
