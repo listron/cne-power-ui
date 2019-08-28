@@ -87,7 +87,7 @@ class AchievementLayout extends Component {
       const reverseArr = this.tabs.filter(e => pages.includes(e)).reverse();
       newPathKey = reverseArr.find((e, i, tabs) => (i > 0 && tabs[i - 1] === key));
     }
-    this.props.history.push(`/analysis/achievement/analysis/${newPathKey}?${newSearch}`);
+    this.props.history.push(`/analysis/achievement/analysis/${newPathKey || newPage.toString()}?${newSearch}`);
   }
 
   render() {
