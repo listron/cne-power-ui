@@ -37,7 +37,10 @@ class AreaAchieve extends Component {
     const groupInfoStr = searchUtil(search).getValue('area');
     if(groupInfoStr) {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
-      this.queryParamsFunc(groupInfo);
+      // 判断如果电站为空不请求
+      if(groupInfo.searchCode && groupInfo.searchCode.length > 0) {
+        this.queryParamsFunc(groupInfo);
+      }
     }
     // 判断从别的页面头次进入，请求机型
     if(!groupInfoStr) {
@@ -84,7 +87,10 @@ class AreaAchieve extends Component {
     // 发生变化
     if (groupNextInfoStr && groupNextInfoStr !== groupInfoStr) {
       const groupInfo = groupNextInfoStr ? JSON.parse(groupNextInfoStr) : {};
-      this.queryParamsFunc(groupInfo);
+      // 判断如果电站为空不请求
+      if(groupInfo.searchCode && groupInfo.searchCode.length > 0) {
+        this.queryParamsFunc(groupInfo);
+      }
     }
   }
 
