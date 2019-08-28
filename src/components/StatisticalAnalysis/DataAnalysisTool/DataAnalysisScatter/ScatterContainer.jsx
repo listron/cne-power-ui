@@ -10,8 +10,19 @@ class ScatterContainer extends React.PureComponent {
   static propTypes = {
     scatterData: PropTypes.object,
     newSrcUrl: PropTypes.array,
+    stations: PropTypes.array,
     srcObj: PropTypes.object,
     changeToolStore: PropTypes.func,
+    stationCode: PropTypes.number,
+    xPointCode: PropTypes.string,
+    yPointCode: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    down: PropTypes.bool,
+    deviceList: PropTypes.array,
+    pointCodeNameX: PropTypes.string,
+    pointCodeNameY: PropTypes.string,
+    getBigScatterData: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);

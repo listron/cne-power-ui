@@ -12,6 +12,8 @@ class SingleStationModal extends React.Component {
     imageListShow: PropTypes.bool,
     hideImg: PropTypes.func,
     onChange: PropTypes.func,
+    deviceList: PropTypes.array,
+    changeToolStore: PropTypes.func,
 
   }
   constructor(props, context) {
@@ -41,7 +43,7 @@ class SingleStationModal extends React.Component {
     changeToolStore({ deviceList });
   };
   render() {
-    const { imageListShow, hideImg, deviceList, data, currentImgIndex } = this.props;
+    const { imageListShow, hideImg, data, currentImgIndex } = this.props;
 
 
 
@@ -66,9 +68,7 @@ class SingleStationModal extends React.Component {
             <div className={styles.imgContainer} >
               <BigScatterChart
                 {...this.props}
-                // saveBtn={likeStatus}
                 index={currentImgIndex}
-                // title={deviceName}
                 likeChange={this.likeChange}
               />
             </div>

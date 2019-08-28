@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import StationSelect from '../../../Common/StationSelect';
 import { Button, DatePicker, Cascader, Icon, Select } from 'antd';
-import { downloadFile } from '../../../../utils/utilFunc';
 import moment from 'moment';
 
 const { RangePicker } = DatePicker;
@@ -61,13 +60,15 @@ class HandleSeacher extends React.Component {
     getScatterName: PropTypes.func,
     getScatterOtherName: PropTypes.func,
     getxyLimitValue: PropTypes.func,
-    pointCodeNameX: PropTypes.string,
-    pointCodeNameY: PropTypes.string,
     getScatterData: PropTypes.func,
-    pointCodeX: PropTypes.string,
-    pointCodeY: PropTypes.string,
-    // startTime: PropTypes.string,
-    // endTime: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    getStationDevice: PropTypes.func,
+    theme: PropTypes.string,
+    scatterotherNames: PropTypes.array,
+    deviceList: PropTypes.array,
+
+
   }
   constructor(props, context) {
     super(props, context);

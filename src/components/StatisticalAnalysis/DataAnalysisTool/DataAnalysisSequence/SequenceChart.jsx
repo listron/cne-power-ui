@@ -23,6 +23,12 @@ class SequenceChart extends React.Component {
     activeCode: PropTypes.string,
     theme: PropTypes.string,
     showImg: PropTypes.func,
+    deviceName: PropTypes.string,
+    pointCodeNameX: PropTypes.string,
+    pointCodeNameY: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    xyValueLimit: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context);
@@ -38,8 +44,7 @@ class SequenceChart extends React.Component {
 
     const requestParams = { startTime, endTime, pointY1, pointY2 };
     const prevCode = this.props.activeCode;
-    // const preData = this.props.sequenceData;
-    // if (preData.deviceFullCode === this.props.deviceFullCode) {
+
     if (prevCode === this.props.deviceFullCode) {
       const myChart = eCharts.init(this.sequenceChart, themeConfig[nextProps.theme]);
       if (this.props.chartLoading) {
@@ -77,7 +82,6 @@ class SequenceChart extends React.Component {
     const { deviceName, pointCodeNameX, pointCodeNameY, xyValueLimit } = this.props;
     const { xMax, xMin, yMax, yMin } = xyValueLimit;
     const { timeLine = [], point1Data = [], point2Data = [] } = sequenceData;
-    // const xAxisTime = timeLine.map((e, i) => (moment(e).format('YYYY-MM-DD HH:mm:ss')));
     const color = ['#ff7878', '#00cdff'];
     const option = {
       graphic: timeLine.length ? hiddenNoData : showNoData,
@@ -105,8 +109,8 @@ class SequenceChart extends React.Component {
       },
       grid: {
         right: '10%',
-        top: '50px',
-        left: '20%',
+        top: 50,
+        left: '10%',
       },
       tooltip: {
         trigger: 'axis',
@@ -119,7 +123,7 @@ class SequenceChart extends React.Component {
           const y1 = payload[0];
           var data = '';
           payload.forEach(e => {
-            return data += `<div class=${styles.lineStyle}>${e.seriesName}:${dataFormat(e.value, '--', 2)} </div>`;
+            data += `<div class=${styles.lineStyle}>${e.seriesName}:${dataFormat(e.value, '--', 2)} </div>`;
           });
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
@@ -189,7 +193,7 @@ class SequenceChart extends React.Component {
     return option;
   }
   renderChart = (sequenceData, saveBtn, isRequest) => {
-    const { deviceList, getSequenceData, index, pointY1, pointY2, likeStatusChange, deviceName, theme } = this.props;
+    const { deviceList, getSequenceData, index, likeStatusChange, deviceName, theme, saveImgUrl } = this.props;
     const parms = {
       ...isRequest,
       interval: 60,
@@ -209,7 +213,7 @@ class SequenceChart extends React.Component {
         pixelRatio: 2,
         backgroundColor: '#fff',
       });
-      this.props.saveImgUrl && this.props.saveImgUrl(deviceName, imgUrl);
+      saveImgUrl && saveImgUrl(deviceName, imgUrl);
     });
 
     isRequest && setTimeout(() => {

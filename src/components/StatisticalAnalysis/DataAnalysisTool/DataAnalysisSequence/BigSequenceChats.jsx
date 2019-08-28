@@ -10,12 +10,16 @@ import moment from 'moment';
 class BigSequenceCharts extends React.Component {
   static propTypes = {
     curBigChartData: PropTypes.object,
+    xyValueLimit: PropTypes.object,
     saveBtn: PropTypes.bool,
     bigchartLoading: PropTypes.bool,
     deviceList: PropTypes.array,
     index: PropTypes.num,
     theme: PropTypes.string,
+    pointCodeNameX: PropTypes.string,
+    pointCodeNameY: PropTypes.string,
     likeStatusChange: PropTypes.func,
+    id: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -48,7 +52,7 @@ class BigSequenceCharts extends React.Component {
       myChart.hideLoading();
     }
     if ((this.props.saveBtn !== saveBtn) || (nextProps.id !== this.props.id)) {
-      // 
+
       this.renderChart(curBigChartData, saveBtn, deviceName);
     }
   }
@@ -84,13 +88,13 @@ class BigSequenceCharts extends React.Component {
       dataZoom: {
         show: true,
         handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-
+        bottom: 10,
       },
-
       grid: {
         right: '10%',
-        top: '50px',
-        left: '20%',
+        top: 50,
+        bottom: '15%',
+        left: '10%',
       },
       tooltip: {
         trigger: 'axis',
@@ -100,7 +104,7 @@ class BigSequenceCharts extends React.Component {
           const y1 = payload[0];
           var data = '';
           payload.forEach(e => {
-            return data += `<div class=${styles.lineStyle}>${e.seriesName}:${dataFormat(e.value, '--', 2)} </div>`;
+            data += `<div class=${styles.lineStyle}>${e.seriesName}:${dataFormat(e.value, '--', 2)} </div>`;
           });
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
@@ -117,7 +121,7 @@ class BigSequenceCharts extends React.Component {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: timeLine,
+        data: timeLine.map((e, i) => (moment(e).format('YYYY-MM-DD HH:mm:ss'))),
         axisLabel: {
           formatter: (value) => {
             return moment(value).format('YYYY-MM-DD') + '\n' + moment(value).format('HH:mm:ss');

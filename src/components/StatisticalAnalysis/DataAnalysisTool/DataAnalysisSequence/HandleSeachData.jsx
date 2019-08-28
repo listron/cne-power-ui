@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styles from './sequenceStyles.scss';
 import StationSelect from '../../../Common/StationSelect';
 import { Button, DatePicker, Cascader, Icon, Select, InputNumber } from 'antd';
-import { downloadFile } from '../../../../utils/utilFunc';
 import moment from 'moment';
 
 
@@ -51,11 +50,15 @@ class HandleSeachData extends React.Component {
     stationCode: PropTypes.number,
     stations: PropTypes.array,
     changeSquenceStore: PropTypes.func,
-    getScatterName: PropTypes.func,
     getSequenceOtherName: PropTypes.func,
     getxyLimitValue: PropTypes.func,
     sequenceotherNames: PropTypes.array,
     getSequenceData: PropTypes.func,
+    getSequenceName: PropTypes.func,
+    getStationDevice: PropTypes.func,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -375,7 +378,6 @@ class HandleSeachData extends React.Component {
               />
             </div>
             <div className={styles.bottomLeft}>
-              {/* <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} /> */}
               <span className={styles.defaultStyle} >{yName ? yName : '--'}</span>
               <InputNumber
                 value={yMax}

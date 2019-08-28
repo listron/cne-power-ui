@@ -4,20 +4,33 @@ import styles from './dataAnalysisStyle.scss';
 import echarts from 'echarts';
 import { Icon } from 'antd';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
-import { themeConfig, chartsLoading } from '../../../../utils/darkConfig';
+import { themeConfig } from '../../../../utils/darkConfig';
 import { dataFormat } from '../../../../utils/utilFunc';
-
 import moment from 'moment';
 
 class SingleScatter extends React.PureComponent {
   static propTypes = {
-    // title: PropTypes.string,
     pointCodeNameX: PropTypes.string,
     pointCodeNameY: PropTypes.string,
     saveImgUrl: PropTypes.func,
     showImg: PropTypes.func,
     saveBtn: PropTypes.bool,
-    // chartData: PropTypes.array,
+    theme: PropTypes.string,
+    activeCode: PropTypes.string,
+    scatterData: PropTypes.object,
+    chartLoading: PropTypes.bool,
+    deviceList: PropTypes.array,
+    deviceFullCode: PropTypes.string,
+    xyValueLimit: PropTypes.object,
+    title: PropTypes.string,
+    stationCode: PropTypes.number,
+    xPointCode: PropTypes.string,
+    yPointCode: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    getScatterData: PropTypes.func,
+    index: PropTypes.number,
+    onChange: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
@@ -30,8 +43,7 @@ class SingleScatter extends React.PureComponent {
     myChart.setOption(option);
   }
   componentWillReceiveProps(nextProps) {
-    const { activeCode, scatterData, chartLoading, theme, saveBtn, deviceList, xyValueLimit } = nextProps;
-    // 
+    const { activeCode, scatterData, chartLoading, theme, saveBtn, deviceList } = nextProps;
     const prevCode = this.props.activeCode;
     if (activeCode !== prevCode) {
       const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
@@ -67,7 +79,7 @@ class SingleScatter extends React.PureComponent {
     echarts.init(this.chartId, themeConfig[this.props.theme]).dispose();
   }
   creatOption = (scatterData = {}, saveBtn) => {
-    const { title, pointCodeNameX, pointCodeNameY, startTime, endTime, xyValueLimit } = this.props;
+    const { title, pointCodeNameX, pointCodeNameY, xyValueLimit } = this.props;
     const { xMax, xMin, yMax, yMin } = xyValueLimit;
     const { chartData = [] } = scatterData;
     const filterYaxisData = chartData.map(e => e.y);
@@ -99,7 +111,6 @@ class SingleScatter extends React.PureComponent {
         right: '10%',
         top: '50px',
         left: '20%',
-
       },
       tooltip: {
         trigger: 'item',
@@ -113,7 +124,6 @@ class SingleScatter extends React.PureComponent {
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-           
             <div class=${styles.lineStyle}>${pointCodeNameX}: ${dataFormat(info[0], '--', 2)}</div>
             <div class=${styles.lineStyle}>${pointCodeNameY}: ${dataFormat(info[1], '--', 2)}</div>
           </div>`;
@@ -209,7 +219,7 @@ class SingleScatter extends React.PureComponent {
     return val;
   }
   drawChart = (scatterData, saveBtn, isRequest, ) => {
-    const { title, index, onChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
+    const { title, index, onChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime, saveImgUrl } = this.props;
     const parms = { stationCode, xPointCode, yPointCode, startTime, endTime };
     const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
     scatterChart.clear();
@@ -224,7 +234,7 @@ class SingleScatter extends React.PureComponent {
         pixelRatio: 2,
         backgroundColor: '#fff',
       });
-      this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
+      saveImgUrl && saveImgUrl(title, imgUrl);
     });
     isRequest && setTimeout(() => {
       const continueQuery = index < deviceList.length - 1;
