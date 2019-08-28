@@ -15,6 +15,7 @@ class OperateFlow extends Component {
     static propTypes = {
         showPage: PropTypes.string,
         resetStore: PropTypes.func,
+        theme: PropTypes.string,
     }
 
     constructor() {
@@ -29,10 +30,10 @@ class OperateFlow extends Component {
     }
 
     render() {
-        const { showPage } = this.props;
+        const { showPage, theme } = this.props;
         return (
-            <div className={styles.workflow}>
-                <Header breadData={[{ name: '工作票' }]} style={{ marginLeft: '38px' }} />
+            <div className={`${styles.workflow} ${styles[theme]}`}>
+                <Header breadData={[{ name: '操作票' }]} style={{ marginLeft: '38px' }} />
                 <div className={styles.contentBox}>
                     <div className={styles.container}>
                         <div className={styles.workflowList}>
@@ -59,6 +60,7 @@ const mapStateToProps = (state) => {
     return {
         ...state.operation.operateFlow.toJS(),
         stations: state.common.get('stations').toJS(),
+        theme: state.common.get('theme'),
     };
 };
 

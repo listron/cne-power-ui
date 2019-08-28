@@ -16,7 +16,7 @@ class Transfer extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     changeTransferStore: PropTypes.func,
-    theme: PropTypes.func,
+    theme: PropTypes.string,
 
   }
   constructor(props, context) {
