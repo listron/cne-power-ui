@@ -47,7 +47,7 @@ class AutoModal extends Component {
   handleOK = () => {
     const { infoLists, onValueCheck } = this.props;
     const { checkedTrees } = this.state;
-    const valueResult = infoLists.filter(e => checkedTrees.includes(`${e.value}`));
+    const valueResult = infoLists.filter(e => checkedTrees.map(cur => (Number(cur))).includes(e.value));
     this.setState({ isShow: false });
     onValueCheck(valueResult);
   }
