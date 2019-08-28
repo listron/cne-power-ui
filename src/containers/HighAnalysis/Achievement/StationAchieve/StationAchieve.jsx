@@ -266,6 +266,7 @@ class StationAchieve extends Component {
           searchDates={searchDates}
           searchQuota={searchQuota}
           stationInfoStr={stationInfoStr}
+          pageQuery={this.pageQuery}
         />
         <AnimationBox changeStore={changeStore} pageName={pageName}>
           <LostAnalysis {...this.props} active={pageName === 'lost'} />
