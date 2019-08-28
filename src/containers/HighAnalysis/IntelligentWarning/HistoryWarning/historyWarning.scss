@@ -1,24 +1,33 @@
-.history{
+.history {
   min-height: 100%;
   display: flex;
-  flex:1;
+  flex: 1;
   flex-direction: column;
- 
-  .transferColor{
+
+  .transferColor {
     display: flex;
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
     padding: 24px 24px 0 24px;
-    background-color: #ececec;
     overflow: hidden;
-}
-.transferAlarmContainer {
+  }
+  .transferAlarmContainer {
     display: flex;
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
-    background: #fff;
     overflow: hidden;
+  }
 }
+.light {
+  .transferColor {
+    background-color: #ececec;
+  }
+}
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  .transferColor {
+    background-color: $background;
+  }
 }

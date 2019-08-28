@@ -341,17 +341,17 @@
       }
     }
     .uncategorized {
-      color: $fontColor-noConnect;
+      color: #bbcef7;
       border: 1px solid #7088c3;
       &:hover {
         box-shadow: none;
       }
       .scoreCircleCon {
-        background: $fontColor-noConnect;
+        background: #bbcef7;
       }
       .stationName {
         background: none;
-        -webkit-text-fill-color: $fontColor-noConnect;
+        -webkit-text-fill-color: #bbcef7;
       }
     }
   }

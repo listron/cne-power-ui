@@ -77,7 +77,7 @@ const SingleChart = ({ keyWord, data = [], id }) => { // 灰尘影响charts图(�
       yAxis: [
         {
           type: 'value',
-          name: '发电量(kWh)',
+          name: '发电量(万kWh)',
           nameTextStyle: {
             color: '#666',
           },

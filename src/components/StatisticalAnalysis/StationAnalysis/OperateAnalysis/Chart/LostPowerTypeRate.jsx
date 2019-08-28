@@ -1,15 +1,16 @@
-import React from "react";
+import React from 'react';
 import echarts from 'echarts';
-import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
+import styles from './styles.scss';
+import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
 class LostPowerTypeRate extends React.Component {
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   componentDidMount() {
     this.drawCharts(this.props);
   }
   componentWillReceiveProps(nextProps) {
-    this.drawCharts(nextProps)
+    this.drawCharts(nextProps);
   }
 
   getName = (type) => { // 根据类型，匹配name
@@ -24,50 +25,58 @@ class LostPowerTypeRate extends React.Component {
     return name;
   }
 
-  getColor = (type) => { //根据类型，匹配颜色
-    let color = '';
-    switch (type) {
-      case 'limit': color = '#f9b600'; break;
-      case 'eletric': color = '#999999'; break;
-      case 'plane': color = '#199475'; break;
-      case 'system': color = '#c7ceb2'; break;
-      case 'other': color = '#a42b2c'; break;
-      default:color='#ceebe0'
-    }
-    return color;
+  getColor = {
+    'light': {
+      'limit': '#f9b600',
+      'eletric': '#999999',
+      'plane': '#199475',
+      'system': '#c7ceb2',
+      'other': '#a42b2c',
+    },
+    'dark': {
+      'limit': '#f8b14e',
+      'eletric': '#f8e71c',
+      'plane': '#ff73f4',
+      'system': '#ff7878',
+      'other': '#00f0ff',
+    },
   }
 
   drawCharts = (params) => {
-    const { graphId, data, yAxisName, hasData } = params;
-    const targetPieChart = echarts.init(document.getElementById(graphId));
-    let color=["#f9b600",'#999999','#199475','#c7ceb2','#a42b2c','#ceebe0']
-    let seriesData = [];
+    const { graphId, data, hasData, theme } = params;
+    let targetPieChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    if (targetPieChart) {
+      targetPieChart.dispose();
+      targetPieChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    }
+    const color = ['#f9b600', '#999999', '#199475', '#c7ceb2', '#a42b2c', '#ceebe0'];
+    const seriesData = [];
     for (var type in data) {
       if (type !== 'date') {
-        seriesData.push({ 
-          name: this.getName(type), 
+        seriesData.push({
+          name: this.getName(type),
           value: +data[type] === 0 ? '' : data[type],
-          itemStyle:{
-            color:this.getColor(type)
-          }
-         });
+          itemStyle: {
+            color: type && this.getColor[theme][type] || '#ceebe0',
+          },
+        });
       }
     }
-    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
+    const graphic = chartsNodata(hasData, theme);
     const targetPieOption = {
-      graphic: confluenceTenMinGraphic,
+      graphic: graphic,
       tooltip: {
         trigger: 'item',
-        backgroundColor: '#fff',
-        formatter: function (params) {
-          return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">' + params.name + '</div>'
-            + '损失电量' + '：' + params.value + '<br>'
-            + '所占比例' + '：' + params.percent + '%<br>';
-        },
-        padding: 10,
-        textStyle: {
-          color: 'rgba(0, 0, 0, 0.65)',
-          fontSize: 12,
+        formatter: (params) => {
+          return (
+            `<div class=${styles[theme]}>
+                <div class=${styles.axisValue}>${params.name}</div>
+                <div class=${styles.tooltipContainer}>
+                  <div> 损失电量: ${params.value}</div>
+                  <div> 所占比例: ${params.percent} %</div>
+                </div>
+            </div>`
+          );
         },
       },
       color: color,
@@ -80,23 +89,22 @@ class LostPowerTypeRate extends React.Component {
           data: seriesData,
           label: {
             normal: {
-              show: false
+              show: false,
             },
             emphasis: {
-              show: false
-            }
+              show: false,
+            },
           },
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
               shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
+      ],
     };
-    setTimeout(() => { targetPieChart.resize(); }, 1000)
     targetPieChart.setOption(targetPieOption);
   }
 
@@ -104,7 +112,7 @@ class LostPowerTypeRate extends React.Component {
     const { graphId } = this.props;
     return (
       <div id={graphId} style={{ height: 260 }}> </div>
-    )
+    );
   }
 }
-export default (LostPowerTypeRate)
+export default (LostPowerTypeRate);

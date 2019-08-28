@@ -1,48 +1,79 @@
-@import '../../../../theme/theme';
+@import "../../../../theme/theme";
 .transferMain {
-    border: 1px solid #e1e2e2;
-    position: relative;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  .wrap {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    flex: 1 0 auto;
-    background: #fff;
-    .selectCondition {
+  }
+  .selectCondition {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 26px 0 20px 28px;
+  }
+  :global {
+    .ant-table-placeholder {
+      border-bottom: none;
+    }
+  }
+  .iconDetail {
+    .iconBox {
+      display: flex;
+      height: 30px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      width: 30px;
+      cursor: pointer;
+      &:hover {
         display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-        padding: 26px 0 20px 28px;
-        border-top: 1px solid $promptColor;
+        height: 30px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        width: 30px;
+      }
     }
-    :global {
-        .ant-table-placeholder {
-            border-bottom: none
-        }
-    }
-    .iconDetail {
-        .iconBox {
-            display: flex;
-            height: 30px;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            width: 30px;
-            background: #d1d1d1;
-            cursor: pointer;
-            &:hover {
-                display: flex;
-                height: 30px;
-                justify-content: center;
-                align-items: center;
-                border-radius: 50%;
-                width: 30px;
-                background: $themeColor;
-                :global {
-                    .icon-action {
-                        color: #fff;
-                    }
-                }
-            }
-        }
-    }
+  }
+}
 
+.light {
+  border: 1px solid #e1e2e2;
+  background: #fff;
+  .selectCondition {
+    border-top: 1px solid $promptColor;
+  }
+  .iconBox {
+    background: #d1d1d1;
+    &:hover {
+      background: $themeColor;
+      :global {
+        .icon-action {
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../../theme/darkTheme.scss";
+  background: $background;
+  .wrap {
+    border: 1px solid $border-color;
+    background: $light-background;
+    margin-top: 10px;
+  }
+
+  .iconBox {
+    background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+    color: #fff;
+    &:hover {
+      background-image: linear-gradient(-180deg, #b4ec51 0%, #429321 100%);
+    }
+  }
 }

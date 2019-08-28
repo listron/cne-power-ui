@@ -13,10 +13,16 @@ function* getStationDevice(action) {//获取
     if (response.data.code === '10000') {
       const data = response.data.data || [];
       const deviceList = data.map((e, i) => ({ ...e, likeStatus: false }));
+      const deviceFullCodeArr = deviceList.map(e => e.deviceFullCode);//拿到设备型号数组
+      const deviceData = {};//存储设备型号数据
+      deviceFullCodeArr.forEach((e, i) => {
+        deviceData[e] = {};
+      });
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           deviceList,
+          ...deviceData,
         },
       });
     } else {

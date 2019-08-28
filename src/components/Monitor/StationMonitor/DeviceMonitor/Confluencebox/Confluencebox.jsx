@@ -17,11 +17,12 @@ class Confluencebox extends Component {
     getDeviceInfoMonitor: PropTypes.func,
     getDeviceChartMonitor: PropTypes.func,
     stopMonitor: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   componentDidMount() {
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
-    const startTime = moment().utc().subtract(720,'hours').format();
+    const startTime = moment().utc().subtract(720, 'hours').format();
     const endTime = moment().utc().format();
     const params = {
       stationCode,
@@ -33,14 +34,14 @@ class Confluencebox extends Component {
     this.props.getDeviceChartMonitor(params);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { deviceCode } = this.props.match.params;
     const nextParams = nextProps.match.params;
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
-    if( nextDevice !== deviceCode ){
-      const startTime = moment().subtract(720,'hours').utc().format();
+    if (nextDevice !== deviceCode) {
+      const startTime = moment().subtract(720, 'hours').utc().format();
       const endTime = moment().utc().format();
       const params = {
         stationCode: nextStation,
@@ -57,47 +58,49 @@ class Confluencebox extends Component {
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.resetDeviceStore();
     this.props.stopMonitor(); // 停止之前的定时器。
   }
 
-  render(){
-    const { match,  stations } = this.props;
+  render() {
+    const { match, stations, theme = 'light' } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = match.params;
     const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
-    const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
+    const backData = { path: `/monitor/singleStation/${stationCode}`, name: '返回电站' };
     const breadCrumbData = {
-      breadData:[{
+      breadData: [{
         link: true,
         name: currentStation.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
       }, {
         name: '汇流箱',
       }],
-      iconName: 'iconfont icon-hl'
+      iconName: 'iconfont icon-hl',
     };
     return (
-      <div className={styles.confluencebox}>
-        <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
+      <div className={`${styles.confluencebox} ${styles[theme]}`}>
+        <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
         <div className={styles.deviceContent}>
           <ConfluenceHeader
-             {...this.props}
+            {...this.props}
             stationCode={stationCode}
             deviceTypeCode={deviceTypeCode}
           />
           <ConfluenceStatistics {...this.props} />
-          <ConfluenceTenMin {...this.props} />
-          <DevicePointsTable {...this.props} />
-          <DeviceAlarmTable
-             {...this.props}
-            stationCode={stationCode}
-            deviceTypeCode={deviceTypeCode}
-            deviceCode={deviceCode}
-          />
+          <div className={styles.contWrap}>
+            <ConfluenceTenMin {...this.props} />
+            <DevicePointsTable {...this.props} />
+            <DeviceAlarmTable
+              {...this.props}
+              stationCode={stationCode}
+              deviceTypeCode={deviceTypeCode}
+              deviceCode={deviceCode}
+            />
+          </div>
         </div>
       </div>
-    ) 
+    );
   }
 }
 

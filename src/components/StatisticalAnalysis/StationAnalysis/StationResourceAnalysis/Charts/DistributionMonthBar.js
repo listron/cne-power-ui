@@ -1,7 +1,9 @@
-import React from "react";
+import React from 'react';
 import echarts from 'echarts';
-import PropTypes from "prop-types";
-import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
+import PropTypes from 'prop-types';
+import { Gradient1, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
+import { dataFormats } from '../../../../../utils/utilFunc';
+import styles from './styles.scss';
 
 
 class BarGraph extends React.Component {
@@ -10,72 +12,68 @@ class BarGraph extends React.Component {
     yAxisName: PropTypes.string,
     xAxisName: PropTypes.string,
     dateType: PropTypes.string,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
 
   componentDidMount() {
-    this.drawChart(this.props)
+    this.drawChart(this.props);
   }
   componentWillReceiveProps(nextProps) {
-    this.drawChart(nextProps)
+    this.drawChart(nextProps);
   }
 
   getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
     const length = data.length;
-    let replaceData = [];
-    for (let i = 0; i < length; i++) { replaceData.push('--') }
-    let realData = data.some(e => e || e === 0) ? data : replaceData;
-    return realData
+    const replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--'); }
+    const realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData;
+  }
+
+  getColor = {
+    light: ['#199475', '#e08031', '#fff'],
+    dark: [Gradient1, '#f8e71c', 'rgba(83,104,241,0.60)'],
   }
 
   drawChart = (param) => {
-    const { graphId, yAxisName, xAxisName, dateType, title, data, hasData } = param;
-    const targetChart = echarts.init(document.getElementById(graphId));
-    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
-    const lineColor = '#f1f1f1';
-    const fontColor='#333';
-    const color = ['#199475', '#e08031','#fff'];
+    const { graphId, yAxisName, xAxisName, dateType, title, data, hasData, theme = 'light' } = param;
+    let targetChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    if (targetChart) {
+      targetChart.dispose();
+      targetChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    }
+    const graphic = chartsNodata(hasData, theme);
     const targetOption = {
-      graphic: confluenceTenMinGraphic,
-      color: color,
+      graphic: graphic,
+      color: this.getColor[theme],
       title: {
         text: title,
         show: title ? 'show' : false,
         left: '23',
         top: 'top',
-        textStyle: {
-          color: fontColor,
-          fontSize: 14,
-          fontWeight: 'normal',
-        }
       },
       tooltip: {
         trigger: 'axis',
+        formatter: (params) => {
+          let paramsItem = '';
+          params.forEach(item => {
+            const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
+            paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
+                        ${item.seriesName} :  ${dataFormats(item.value, '--', 2)}${item.seriesName === '占比' && '%' || ''}</div>`;
+          });
+          return (
+            `<div class=${styles[theme]}>
+                <div class=${styles.axisValue}><span>${params[0].name}</span><span>${xAxisName}</span></div>
+                <div class=${styles.tooltipContainer}> ${paramsItem}</div>
+            </div>`
+          );
+        },
         axisPointer: {
           type: 'cross',
-          crossStyle: {
-            color: fontColor,
-          },
-          label: { color: fontColor },
         },
-        backgroundColor: '#fff',
-        formatter: function (params) {
-          let paramsItem = '';
-          params.forEach((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${item.seriesName} :${item.value === '0' || item.value || '--'}${item.seriesName==='占比' && '%' ||''}</div>`
-          });
-          return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
-          </div>${paramsItem}`
-
-        },
-        padding: 10,
-        textStyle: {
-          color: 'rgba(0, 0, 0, 0.65)',
-          fontSize: 12,
-        },
-        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
       },
       legend: {
         left: 'center',
@@ -88,80 +86,52 @@ class BarGraph extends React.Component {
           type: 'category',
           data: data && data.xData,
           axisPointer: {
-            type: 'shadow'
-          },
-          axisLine: {
-            lineStyle: {
-              color: lineColor,
-            },
+            type: 'shadow',
           },
           axisLabel: {
-            color: fontColor,
             interval: 0,
-            rotate: -30
+            rotate: -30,
           },
-        }
+        },
       ],
       yAxis: [
         {
           type: 'value',
           name: yAxisName,
-          nameTextStyle: {
-            color: fontColor,
-          },
-
-          axisLabel: {
-            color:fontColor,
-          },
           axisLine: {
             show: false,
-            lineStyle: {
-              color: lineColor,
-            }
           },
           axisTick: {
             show: false,
           },
           splitLine: {
             lineStyle: {
-              color: lineColor,
-              type: 'dashed'
-            }
+              type: 'dashed',
+            },
           },
         },
         {
           type: 'value',
           name: '占比',
-          nameTextStyle: {
-            color: fontColor,
-          },
           axisLabel: {
-            color: fontColor,
-            formatter: '{value} %'
+            formatter: '{value} %',
           },
           axisLine: {
             show: false,
-            lineStyle: {
-              color: lineColor,
-            }
           },
           axisTick: {
             show: false,
           },
           splitLine: {
             show: false,
-            lineStyle: {
-              color: fontColor,
-              type: 'dashed'
-            }
           },
-        }
+        },
       ],
       series: [
         {
           name: '辐射总量',
           type: 'bar',
-          stack: "总量",
+          stack: '总量',
           data: data && this.getDefaultData(data.yData.barData),
           itemStyle: {
             barBorderRadius: 10,
@@ -175,21 +145,21 @@ class BarGraph extends React.Component {
           data: data && this.getDefaultData(data.yData.lineData),
         },
         {
-          name:'瞬时辐射区间（w/㎡）',
+          name: '瞬时辐射区间（w/㎡）',
           type: 'bar',
-          stack: "总量",
-        }
-      ]
+          stack: '总量',
+        },
+      ],
     };
-    setTimeout(() => { targetChart.resize(); }, 1000)
-    targetChart.setOption(targetOption)
+    targetChart.setOption(targetOption);
 
   }
   render() {
     const { graphId } = this.props;
     return (
       <div id={graphId}> </div>
-    )
+    );
   }
 }
 export default (BarGraph)
+  ;

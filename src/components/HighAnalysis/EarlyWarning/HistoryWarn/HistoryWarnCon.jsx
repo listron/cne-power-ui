@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import styles from "./historyWarnCon.scss";
+import React, { Component } from 'react';
+import styles from './historyWarnCon.scss';
 import { Table, Modal, DatePicker } from 'antd';
 import PropTypes from 'prop-types';
 import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
@@ -11,15 +11,15 @@ import { numWithComma } from '../../../../utils/utilFunc';
 
 class HistoryWarnCon extends Component {
   static propTypes = {
-    inefficiencyStatus: PropTypes.number,// 历史预警 后台默认的
+    inefficiencyStatus: PropTypes.number, // 历史预警 后台默认的
     stationCodes: PropTypes.array, // 选中的电站
-    belongMatrixs: PropTypes.array,//所属方阵
-    stations: PropTypes.array,//所属方阵
+    belongMatrixs: PropTypes.array, //所属方阵
+    stations: PropTypes.array, //所属方阵
     createTimeStart: PropTypes.string, // 查询时段起点
-    createTimeEnd: PropTypes.string,//查询时段结点
+    createTimeEnd: PropTypes.string, //查询时段结点
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    sortField: PropTypes.string,// 排序字段
+    sortField: PropTypes.string, // 排序字段
     sortMethod: PropTypes.string, //排序方式 desc/asc
     totalNum: PropTypes.number,
     historyWarnList: PropTypes.array, //  历史预警列表
@@ -32,25 +32,25 @@ class HistoryWarnCon extends Component {
   }
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       visible: false,
-      record: {}
-    }
+      record: {},
+    };
   }
 
   componentDidMount() { //获取数据
     const { stationCodes, getHistoryWarnMatrixList } = this.props;
     this.getHistoryWarnList();
-    getHistoryWarnMatrixList({ stationCodes: stationCodes })
+    getHistoryWarnMatrixList({ stationCodes: stationCodes });
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
-    this.getHistoryWarnList({ pageNum: currentPage, pageSize, });
+    this.getHistoryWarnList({ pageNum: currentPage, pageSize });
   }
 
   onShowDetail = (record) => { // 查看详情
-    this.setState({ visible: true, record })
+    this.setState({ visible: true, record });
     const deviceCode = record.deviceCode;
     const happenTime = record.happenTime;
     const startTime = moment.utc(moment(happenTime).subtract(1, 'days')).format();
@@ -58,64 +58,64 @@ class HistoryWarnCon extends Component {
     const lastDay = moment().subtract(1, 'days').format('YYYY-MM-DD');
     const nowStartTime = moment.utc(lastDay + ' 00:00:00').format();
     const nowEndTimd = moment.utc(lastDay + ' 23:59:59').format();
-    this.props.getSequencechart({ params: { deviceCode, startTime, endTime }, resultName: 'sequenceChartList' })
-    this.props.getSequencechart({ params: { deviceCode, startTime:nowStartTime,endTime:nowEndTimd }, resultName: 'nowSequenceChartList' })
+    this.props.getSequencechart({ params: { deviceCode, startTime, endTime }, resultName: 'sequenceChartList' });
+    this.props.getSequencechart({ params: { deviceCode, startTime: nowStartTime, endTime: nowEndTimd }, resultName: 'nowSequenceChartList' });
   }
 
   getHistoryWarnList = (param) => { //请求数据
-    const { stationCodes, belongMatrixs, inefficiencyStatus, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod
+    const { stationCodes, belongMatrixs, inefficiencyStatus, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod,
     } = this.props;
-    let initParam = {
-      stationCodes, belongMatrixs, inefficiencyStatus, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod
+    const initParam = {
+      stationCodes, belongMatrixs, inefficiencyStatus, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod,
     };
-    this.props.getHistoryWarnList({ ...initParam, ...param })
+    this.props.getHistoryWarnList({ ...initParam, ...param });
   }
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
-    const initSorterField = 'lost_gen_percent'
+    const initSorterField = 'lost_gen_percent';
     const sortField = sorter.field ? this.sortField(sorter.field) : initSorterField;
-    let ascend = "";
+    let ascend = '';
     ascend = sorter.order === 'ascend' ? 'asc' : 'desc';
     this.getHistoryWarnList({ sortField, sortMethod: ascend });
   }
 
   sortField(sortField) {
-    let result = "";
+    let result = '';
     switch (sortField) {
       case 'stationName': result = 'station_code'; break;
       case 'happenTime': result = 'happen_time'; break;
       case 'lostGenPercent': result = 'lost_gen_percent'; break;
-      default: result = ""; break;
+      default: result = ''; break;
     }
-    return result
+    return result;
   }
 
   filterCondition = (change) => { // 筛选条件
     const { stationCodes, belongMatrixs, inefficiencyStatus, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod } = this.props;
-    const param = { stationCodes, belongMatrixs, inefficiencyStatus, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod }
+    const param = { stationCodes, belongMatrixs, inefficiencyStatus, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod };
     this.props.getHistoryWarnList({ ...param, ...change });
-    change.stationCodes && this.props.getHistoryWarnMatrixList({ stationCodes: change.stationCodes })
+    change.stationCodes && this.props.getHistoryWarnMatrixList({ stationCodes: change.stationCodes });
   }
 
   handleCancel = () => { // 点击关闭按钮时
-    this.setState({ visible: false })
-  }
- 
-  timeChange=(value)=>{ // 选择时间查看日期
-    const {record}=this.state;
-    const deviceCode = record.deviceCode;
-    const selectTime=moment(value).format('YYYY-MM-DD')
-    const nowStartTime = moment.utc(selectTime + ' 00:00:00').format();
-    const nowEndTimd = moment.utc(selectTime + ' 23:59:59').format();
-    this.props.getSequencechart({ params: { deviceCode,startTime:nowStartTime, endTime:nowEndTimd }, resultName: 'nowSequenceChartList' })
+    this.setState({ visible: false });
   }
 
-  disabledDate=(current)=>{ // 只能选截止今天的日期
+  timeChange = (value) => { // 选择时间查看日期
+    const { record } = this.state;
+    const deviceCode = record.deviceCode;
+    const selectTime = moment(value).format('YYYY-MM-DD');
+    const nowStartTime = moment.utc(selectTime + ' 00:00:00').format();
+    const nowEndTimd = moment.utc(selectTime + ' 23:59:59').format();
+    this.props.getSequencechart({ params: { deviceCode, startTime: nowStartTime, endTime: nowEndTimd }, resultName: 'nowSequenceChartList' });
+  }
+
+  disabledDate = (current) => { // 只能选截止今天的日期
     return current && current > moment().endOf('day');
   }
 
   render() {
-    const { stations, matrixList, loading, historyWarnList, pageSize, totalNum, pageNum, sequenceChartList, nowSequenceChartList } = this.props;
+    const { stations, matrixList, loading, historyWarnList, pageSize, totalNum, pageNum, sequenceChartList, nowSequenceChartList, theme } = this.props;
     const { record } = this.state;
     const columns = [
       {
@@ -127,17 +127,17 @@ class HistoryWarnCon extends Component {
         title: '所属方阵',
         dataIndex: 'belongMatrix',
         key: 'belongMatrix',
-        render: text => (text || text === 0) ? text : '--'
+        render: text => text ? text : '--',
       }, {
         title: '设备名称',
         dataIndex: 'parentDeviceName',
         key: 'parentDeviceName',
-        render: text => (text || text === 0) ? text : '--'
+        render: text => text ? text : '--',
       }, {
         title: '电流偏低支路',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        render: text => (text || text === 0) ? text : '--'
+        render: text => text ? text : '--',
       }, {
         title: '发生时间',
         dataIndex: 'happenTime',
@@ -148,47 +148,47 @@ class HistoryWarnCon extends Component {
         title: () => <TableColumnTitle title="电量损失比" unit="%" />,
         dataIndex: 'lostGenPercent',
         key: 'lostGenPercent',
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
         sorter: true,
       }, {
         title: '查看',
         className: styles.iconDetail,
         render: (text, record) => (
           <span>
-            <i className="iconfont icon-look" onClick={() => {
-              this.onShowDetail
-                (record)
-            }} />
+            <i className="iconfont icon-look" onClick={() => this.onShowDetail(record)} />
           </span>
-        )
-      }
-    ]
+        ),
+      },
+    ];
     const dataSource = historyWarnList.map((item, index) => ({
       ...item,
       key: index,
-      happenTime: moment(item.happenTime).format('YYYY-MM-DD')
+      happenTime: moment(item.happenTime).format('YYYY-MM-DD'),
     }));
 
     return (
-      <div className={styles.historyWarnMain}>
+      <div className={`${styles.historyWarnMain} ${styles[theme]}`}>
         <FilterCondition
           option={['time', 'stationName', 'belongMatrixs']}
           stations={stations.filter(e => e.stationType === 1)}
           matrixList={matrixList}
           onChange={this.filterCondition}
+          theme={theme}
         />
-        <div className={styles.selectCondition}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
+        <div className={styles.wrap}>
+          <div className={styles.selectCondition}>
+            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} theme={theme} />
+          </div>
+          <Table
+            loading={loading}
+            dataSource={dataSource}
+            columns={columns}
+            pagination={false}
+            onChange={this.tableChange}
+            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          />
         </div>
-        <Table
-          loading={loading}
-          dataSource={dataSource}
-          columns={columns}
-          pagination={false}
-          onChange={this.tableChange}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-        />
-
+        <span ref="modal" />
         <Modal
           centered={true}
           footer={null}
@@ -196,26 +196,28 @@ class HistoryWarnCon extends Component {
           onCancel={this.handleCancel}
           wrapClassName={styles.charts}
           width={1200}
+          getContainer={() => this.refs.modal}
         >
           <div className={styles.modalTitle}>{record.stationName}-{record.deviceName}</div>
           <div className={styles.chartCont} >
-            <SequenceChart idName={'sequenceChart'} sequenceChartList={sequenceChartList} currentDeviceName={record.deviceName} title={'预警发生时间:'+ moment(record.happenTime).format('YYYY/MM/DD')} />
+            <SequenceChart idName={'sequenceChart'} sequenceChartList={sequenceChartList} currentDeviceName={record.deviceName} title={'预警发生时间:' + moment(record.happenTime).format('YYYY/MM/DD')} theme={theme} />
             <div className={styles.dataPciker}>
               <DatePicker defaultValue={moment(record.happenTime, 'YYYY/MM/DD')} format={'YYYY/MM/DD'} disabled={true}
+                getCalendarContainer={() => this.refs.modal}
               />
             </div>
           </div>
           <div className={styles.chartCont} >
-            <SequenceChart idName={'nowSequenceChart'} sequenceChartList={nowSequenceChartList} currentDeviceName={record.deviceName} />
+            <SequenceChart idName={'nowSequenceChart'} sequenceChartList={nowSequenceChartList} currentDeviceName={record.deviceName} theme={theme} />
             <div className={styles.dataPciker} >
               <DatePicker defaultValue={moment(moment().subtract(1, 'days'), 'YYYY/MM/DD')} format={'YYYY/MM/DD'}
-              onChange={this.timeChange} disabledDate={this.disabledDate}
+                onChange={this.timeChange} disabledDate={this.disabledDate} getCalendarContainer={() => this.refs.modal}
               />
             </div>
           </div>
         </Modal>
       </div>
-    )
+    );
   }
 }
 export default HistoryWarnCon;

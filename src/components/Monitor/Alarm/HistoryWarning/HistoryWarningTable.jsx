@@ -274,6 +274,7 @@ class HistoryWarningTable extends Component {
               <Popover content={this.renderRelievePopover(index)}
                 trigger="click"
                 visible={this.state.showRelievePopover[index]}
+                getPopupContainer={() => this.refs.popover}
                 onVisibleChange={(visible) => this.onRelieveChange(visible, record.operateId, index)}
               >
                 <div className={this.state.showRelievePopover[index] ? styles.selected : null}><i className="iconfont icon-manual icon-action"></i></div>
@@ -285,6 +286,7 @@ class HistoryWarningTable extends Component {
               visible={this.state.showAutoRelievePopover[index]}
               onVisibleChange={(visible) => this.onAutoRelieveChange(visible, index)}
               content={this.renderAutoRelievePopover(record, index)}
+              getPopupContainer={() => this.refs.popover}
               trigger="click">
               <div className={this.state.showAutoRelievePopover[index] ? styles.selected : null}><i className="iconfont icon-lifted icon-action"></i></div>
             </Popover>
@@ -293,14 +295,15 @@ class HistoryWarningTable extends Component {
         // }
       }
     ]
-    const { historyWarningList, pageSize, pageNum, total } = this.props;
+    const { historyWarningList, pageSize, pageNum, total, theme } = this.props;
 
 
     return (
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} theme={theme} />
         </div>
+        <span ref={'popover'} />
         <Table
           dataSource={historyWarningList}
           rowKey={record => record.warningLogId}
