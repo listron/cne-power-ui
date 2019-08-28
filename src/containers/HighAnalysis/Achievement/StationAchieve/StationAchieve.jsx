@@ -80,6 +80,7 @@ class StationAchieve extends Component {
   }
 
   componentWillReceiveProps(nextProps){
+    const preDevices = this.props.modeDevices;
     const { areaStation, modeDevices, pageName, quotaInfo, history } = nextProps;
     const { stationInfoStr, searchCode, searchDevice, searchQuota } = this.state;
     const { search } = history.location;
@@ -91,7 +92,7 @@ class StationAchieve extends Component {
       this.setState({ searchCode: firstStation.stationCode });
       this.props.getDevices({ stationCode: firstStation.stationCode });
     }
-    if (modeDevices.length > 0 && searchDevice.length === 0) { // 设备数据获得 => 存默认设备,若已有指标,发起路径变化
+    if (this.getIsDevicesChange(preDevices, modeDevices)) { // 得到设备数据, 存默认设备,若已有指标,发起路径变化
       const selectedDevice = [];
       modeDevices.forEach(e => {
         const { children = [] } = e || {};
@@ -132,6 +133,24 @@ class StationAchieve extends Component {
         || (pageName === 'curve' && curveTopStringify !== newSearchPath);
       needQuery && this.pageQuery(newSearchPath, pageName);
     }
+  }
+
+  getIsDevicesChange = (pre, cur) => { // 判断设备是否发生改变
+    if(pre.length === 0 && cur.length > 0) {
+      return true;
+    }
+    if (pre.length > 0 && cur.length > 0) { // deviceFullCode唯一。进行比较。
+      let isDeviceChange = false;
+      const preMode = pre[0] || {};
+      const preChild = preMode.children || [];
+      const preDevice = preChild[0] || {};
+      const curMode = cur[0] || {};
+      const curChild = curMode.children || [];
+      const curDevice = curChild[0] || {};
+      (preMode.value !== curMode.value || preDevice.value !== curDevice.value) && (isDeviceChange = true);
+      return isDeviceChange;
+    }
+    return false;
   }
 
   getSearchParam = (infoStr) => {

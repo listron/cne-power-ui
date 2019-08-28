@@ -182,9 +182,11 @@ class ChartLostTrend extends Component {
       bottom: 16,
       showDetail: false,
       height: 20,
+      xAxisIndex: [0, 1],
     }, {
       type: 'inside',
       filterMode: 'empty',
+      xAxisIndex: [0, 1],
     }]);
     trendChart.hideLoading();
     trendChart.setOption(option);
