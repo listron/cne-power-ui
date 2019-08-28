@@ -4,6 +4,7 @@ import eCharts from 'echarts';
 import moment from 'moment';
 import {Checkbox, Icon, Select, Switch} from 'antd';
 import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormat } from '../../../../../utils/utilFunc';
 
 import styles from './runScatterChart.scss';
 
@@ -125,7 +126,7 @@ export default class RunScatterChart extends Component {
   }
 
   formatNumberFunc = (number) => {
-    return number ? Number(number).toFixed(2) : number;
+    return dataFormat(number, '--', 2);
   };
 
 
@@ -195,10 +196,10 @@ export default class RunScatterChart extends Component {
       visualMap: {
         type: 'piecewise',
         categories: firstChartData && firstChartData.map(cur => (cur.deviceName)),
-        outOfRange: {
-          symbol: 'circle',
-          color: '#cccccc',
-        },
+        // outOfRange: {
+        //   symbol: 'circle',
+        //   color: '#cccccc',
+        // },
         top: '230px',
         right: '60px',
       },
@@ -209,6 +210,11 @@ export default class RunScatterChart extends Component {
         inBrush: {
           opacity: 1,
         },
+        outOfBrush: {
+          color: '#cccccc',
+        },
+        throttleType: 'debounce',
+        throttleDelay: 300,
       },
       // tooltip: {
       //   formatter: '{a}: ({c})',
