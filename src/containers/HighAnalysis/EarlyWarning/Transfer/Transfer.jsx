@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styles from "./reTransfer.scss";
+import styles from './reTransfer.scss';
 import { transferAction } from './transferAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
@@ -16,35 +16,36 @@ class Transfer extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     changeTransferStore: PropTypes.func,
+    theme: PropTypes.func,
 
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       showPage: false,
-    }
+    };
 
   }
 
   onEnterToggleSide = () => {
-    this.setState({ showPage: true })
+    this.setState({ showPage: true });
   }
 
   onEndToggleSide = () => {
-    this.setState({ showPage: false })
-    this.props.changeTransferStore({defectId:''})
+    this.setState({ showPage: false });
+    this.props.changeTransferStore({ defectId: '' });
   }
 
   prevChange = (value) => {
-    this.props.changeTransferStore({ ...value })
+    this.props.changeTransferStore({ ...value });
   }
 
   render() {
-    const { defectId, pageNum, pageSize, pageName } = this.props;
+    const { defectId, pageNum, pageSize, pageName, theme } = this.props;
     const { showPage } = this.state;
     return (
-      <div className={styles.transferBox} >
-        <CommonBreadcrumb breadData={[{ name: '已转工单', }]} style={{ marginLeft: '38px' }} />
+      <div className={`${styles.transferBox} ${styles[theme]}`} >
+        <CommonBreadcrumb breadData={[{ name: '已转工单' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.transferColor}>
           <div className={styles.transferContainer}>
             <div className={styles.transBox}>
@@ -65,20 +66,21 @@ class Transfer extends Component {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
   return {
     ...state.highAanlysisReducer.transFer.toJS(),
     stations: state.common.get('stations').toJS(),
+    theme: state.common.get('theme'),
 
-  }
-}
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
   changeTransferStore: payload => dispatch({ type: transferAction.changeTransferStoreSaga, payload }),
   getMatrixlist: payload => dispatch({ type: transferAction.getMatrixlist, payload }),
   getTransferList: payload => dispatch({ type: transferAction.getTransferList, payload }),
   resetStore: () => dispatch({ type: transferAction.resetStore }),
-})
-export default connect(mapStateToProps, mapDispatchToProps)(Transfer)
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Transfer);

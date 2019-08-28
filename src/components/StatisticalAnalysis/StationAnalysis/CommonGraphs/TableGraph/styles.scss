@@ -1,7 +1,6 @@
 .TableGraphContainer {
   .TableGraphContainerTitle {
     height: 31px;
-    // line-height: 40px;
     display: flex;
     flex: 1;
     justify-content: space-between;
@@ -10,11 +9,12 @@
     }
   }
   .tableList {
-    // width: 520px;
     width: 100%;
     overflow: hidden;
-    // border-bottom:1px solid #3b3838;
     :global {
+      .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr > td {
+        padding: 0 0 0 8px;
+      }
       .ant-table-small
         > .ant-table-content
         > .ant-table-scroll
@@ -24,9 +24,6 @@
         > tr
         > th {
         padding: 0 8px;
-      }
-      .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr > td {
-        padding: 0 0 0 8px;
       }
     }
   }
@@ -104,6 +101,15 @@
         background-color: transparent;
         color: $fontColor;
         padding: 0 8px;
+        border-bottom: 0 !important;
+      }
+      .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr {
+        border-bottom: 1px solid $border-color !important;
+      }
+      .ant-table-fixed-header .ant-table-scroll .ant-table-header {
+        &::-webkit-scrollbar {
+          border: 0 !important;
+        }
       }
     }
   }

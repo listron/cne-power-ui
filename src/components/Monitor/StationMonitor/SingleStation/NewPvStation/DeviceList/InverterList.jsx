@@ -114,12 +114,6 @@ class InverterList extends Component {
     }, 60000);
   }
 
-  getStatusBox = (alarmNum, isLowEfficiency) => {
-    let backgroundColor = 'transparent', color = '#666';
-    alarmNum >= 0 && `${isLowEfficiency}` === '1' && (backgroundColor = '#fefad2') && (color = '#e08031');
-    alarmNum > 0 && `${isLowEfficiency}` === '0' && (backgroundColor = '#ff8e9c') && (color = '#a42b2c');
-    return { backgroundColor, color };
-  }
 
   tableColumn = () => {
     const baseLinkPath = '/hidden/monitorDevice';
@@ -335,7 +329,7 @@ class InverterList extends Component {
 
   render() {
     const { deviceTypeCode, inverterList, loading, theme } = this.props;
-    const { currentPage, pageSize, renderList = [] } = this.state;
+    const { currentPage, pageSize, renderList } = this.state;
     const baseLinkPath = '/hidden/monitorDevice';
     const { stationCode } = this.props.match.params;
     const { deviceList = [], deviceStatusSummary = [] } = inverterList;
@@ -391,11 +385,10 @@ class InverterList extends Component {
                                   const deviceTypeCode = deviceCode.split('M')[1];
                                   const progressPercent = devicePower / deviceCapacity * 100 || 0;
                                   const unconnect = `${deviceStatus}` === '900';
-                                  // const statusBoxStyle = this.getStatusBox(item.alarmNum, item.isLowEfficiency);
                                   const statusBoxStyle = item.isLowEfficiency > 0 ? 'lowEfficiency' : item.alarmNum > 0 && 'alarm';
                                   return (
                                     <div key={i} className={`${styles.singledeviceItem} 
-                                    ${styles[statusBoxStyle]}  ${unconnect && styles.unconnect}`}>
+                                    ${styles[statusBoxStyle]}  ${unconnect && styles.noAccess}`}>
                                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`}>
                                         <div className={`${styles.statusBox}`}>
                                           <div className={styles.deviceItemIcon}>
@@ -448,7 +441,6 @@ class InverterList extends Component {
                 </div>
               }
             </div>
-
           </TabPane>
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.deviceTableBox} >
             <div>

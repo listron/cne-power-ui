@@ -17,26 +17,26 @@ class DeviceTypeFilter extends Component {
 
   onChange = (value) => {
     this.props.onChangeFilter({
-      deviceTypeCode: value
+      deviceTypeCode: value,
     });
   }
 
   onReset = () => {
     this.props.onChangeFilter({
-      deviceTypeCode: []
+      deviceTypeCode: [],
     });
   }
 
   render() {
     const { deviceTypes, deviceTypeCode } = this.props;
-    const options = deviceTypes.map((item,i)=>({
+    const options = deviceTypes.map((item, i) => ({
       label: item.deviceTypeName,
-      value: `${item.deviceTypeCode}`
+      value: `${item.deviceTypeCode}`,
     }));
     const devieceCodeArr = deviceTypeCode;
     return (
-      <div className={styles.deviceTypeFilter}>
-        <span onClick={this.onReset} className={deviceTypeCode.length===0?styles.selected:styles.all}>不限</span>
+      <div className={styles.filterItem}>
+        <span onClick={this.onReset} className={deviceTypeCode.length === 0 ? styles.selected : styles.all}>不限</span>
         <CheckboxGroup options={options} value={devieceCodeArr} onChange={this.onChange} />
       </div>
     );

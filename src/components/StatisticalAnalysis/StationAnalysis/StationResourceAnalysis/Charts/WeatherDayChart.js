@@ -1,6 +1,9 @@
-import React from "react";
-import echarts from "echarts";
+import React from 'react';
+import echarts from 'echarts';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
+import { dataFormats } from '../../../../../utils/utilFunc';
+import styles from './styles.scss';
+import { themeConfig } from '../../../../../utils/darkConfig';
 
 class WeatherDayChart extends React.Component {
   constructor(props, context) {
@@ -24,127 +27,106 @@ class WeatherDayChart extends React.Component {
       case '1': name = '雪'; break;
       case '3': name = '霾'; break;
       case '0': name = '其他'; break;
-      default: name = ""; break;
+      default: name = ''; break;
     }
     return name;
   }
   getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
     const length = data.length;
-    let replaceData = [];
-    for (let i = 0; i < length; i++) { replaceData.push('--') }
-    let realData = data.some(e => e || e === 0) ? data : replaceData;
-    return realData
+    const replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--'); }
+    const realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData;
+  }
+
+
+  getColor = {
+    'light': ['#ceebe0', '#c7ceb2', '#199475', '#a42b2c', '#999999', '#f9b600'],
+    'dark': ['#7ed321', '#ff7878', '#ff73f4', '#00f0ff', '#f8e71c', '#f8b14e'],
   }
 
   drawChart = param => {
-    const { graphId, yAxisName, xAxisName, yData, xData, title, hasData } = param;
-
-    const targetChart = echarts.init(document.getElementById(graphId));
-    let color = ['#ceebe0', '#c7ceb2', '#199475', '#a42b2c', '#dfdfdf', "#f9b600"];
-    const lineColor = '#f1f1f1';
-    const fontColor = '#333';
-    let seriesData = [];
+    const { graphId, yAxisName, yData, title, hasData, theme = 'light' } = param;
+    let targetChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    if (targetChart) {
+      targetChart.dispose();
+      targetChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    }
+    const seriesData = [];
     yData.forEach(e => {
       seriesData.push({
         name: this.getName(e.weather),
-        barWidth: 13,
-        value: [e.temp ? e.temp : '--'],
+        barWidth: 10,
+        value: [e.day, dataFormats(e.temp, '--')],
         itemStyle: {
-          color: color[+e.weather]
-        }
-      })
-    })
-    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
+          color: this.getColor[theme][+e.weather],
+        },
+      });
+    });
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || ' ';
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,
       tooltip: {
-        trigger: "axis",
+        trigger: 'axis',
         axisPointer: {
-          type: "shadow"
+          type: 'shadow',
         },
-        backgroundColor: '#fff',
-        padding: 10,
-        textStyle: {
-          color: 'rgba(0, 0, 0, 0.65)',
-          fontSize: 12,
-        },
-        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
+        alwaysShowContent: true,
         formatter: function (params) {
-          let paramsItem = '';
-          params.forEach((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${item.seriesName} :${item.value === '0' || item.value || '--'}</div>`
-          });
-          return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:160px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
-            </div>${paramsItem}`
-        }
+          if (params[0].name) {
+             const color = params[0].color.colorStops && params[0].color.colorStops[1].color || params[0].color;
+            return (
+              `<div class=${styles[theme]}>
+                <div class=${styles.axisValue}><span>${params[0].value[0]}日</span> <span>天气</span></div>
+                <div class=${styles.tooltipContainer}>
+                 <div class=${styles.tooltipCont}> <span style="background:${color}"></span>  ${params[0].name} :   ${params[0].value[1]}℃</div>
+                </div>
+               </div>`
+            );
+          }
+        },
       },
       title: {
         text: title,
-        show: title ? "show" : false,
-        left: "23",
-        top: "top",
-        textStyle: {
-          color: fontColor,
-          fontSize: 14,
-          fontWeight: "normal"
-        }
+        show: title ? 'show' : false,
+        left: '23',
+        top: 'top',
       },
-      color: color,
       legend: {
-        left: "center",
-        icon: "circle",
+        left: 'center',
+        icon: 'circle',
         itemWidth: 8,
         itemHeight: 5,
+        data: ['晴', '阴', '雨', '雪', '霾', '其他', '--'],
       },
       yAxis: {
-        type: "value",
+        type: 'value',
         name: yAxisName,
-        nameTextStyle: {
-          color: fontColor
-        },
-        axisLabel: {
-          color: fontColor
-        },
         axisLine: {
           show: false,
-          lineStyle: { color: lineColor }
         },
         axisTick: {
-          show: false
+          show: false,
         },
         splitLine: {
-          // show:false,
           lineStyle: {
-            color: lineColor,
-            type: "dashed"
-          }
-        }
+            type: 'dashed',
+          },
+        },
       },
       xAxis: {
-        type: "category",
-        data: xData,
-        axisLine: {
-          lineStyle: {
-            color: lineColor
-          }
-        },
-        axisLabel: {
-          color: fontColor
-        }
+        type: 'category',
       },
       series: {
         name: '天气',
-        type: "bar",
-        data: seriesData
-      }
+        type: 'bar',
+        data: seriesData,
+      },
     };
-    setTimeout(() => {
-      targetChart.resize();
-    }, 1000);
     targetChart.setOption(targetMonthOption);
   };
   render() {
-    const { graphId, dateType } = this.props;
+    const { graphId } = this.props;
     return <div id={graphId}> </div>;
   }
 }

@@ -15,8 +15,7 @@
       color: $button-active;
     }
     .ant-table-tbody {
-      background: $background;
-      // background: #2a338d;
+      background: transparent;
       & > tr:hover {
         td {
           background: #2a338d;
@@ -28,8 +27,19 @@
       padding: 0 16px;
       height: 40px;
       line-height: 40px;
-      background: rgba(83, 104, 241, 0.15);
       color: $fontColor;
+    }
+    .ant-table-row-selected {
+      background: rgba(83, 104, 241, 0.15);
+      td {
+        background: rgba(83, 104, 241, 0.15);
+      }
+      td.ant-table-column-sort {
+        background: rgba(83, 104, 241, 0.15);
+        &:hover {
+          background: rgba(83, 104, 241, 0.15);
+        }
+      }
     }
 
     .ant-table-thead > tr > th {
@@ -40,9 +50,10 @@
 
     .ant-table-empty .ant-table-placeholder,
     .ant-table-placeholder {
-      background: rgba(83, 104, 241, 0.15);
-      border: 1px solid $border-color;
+      background: transparent;
       color: $fontColor;
+      border-top: 1px solid $border-color;
+      border-bottom: none;
     }
     .ant-empty-normal {
       color: $fontColor;
@@ -64,6 +75,7 @@
   }
   .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
     background: transparent;
+    border: 0 !important;
   }
 
   .ant-tree {
@@ -86,25 +98,62 @@
   // ====button ======
   .ant-btn {
     //antd按钮样式调整-高亮
-    color: $fontColor;
     background: transparent;
-    border: 1px solid $border-color;
-    @include highLight($themeColor);
-    &:hover {
-      color: $themeColor;
+    color: $fontColor;
+    border: 1px solid $fontColor;
+    &:hover,
+    &:focus,
+    &:active {
+      color: #fff;
+      background: #00baff;
+      box-shadow: inset 0 0 4px 1px #00f8ff;
     }
   }
 
-  .ant-btn-primary,
-  .ant-btn-primary:active,
-  .ant-btn-primary.active,
-  .ant-btn-primary:focus {
-    background-color: #205bac;
-    color: #00baff;
-    border-color: #00baff;
-    &:hover {
-      background-color: #00baff;
+  .ant-btn-default {
+    background: #0fcefa;
+    color: #fff;
+    &:hover,
+    &:focus,
+    &:active {
       color: #fff;
+      background: #00baff;
+      box-shadow: inset 0 0 4px 1px #00f8ff;
+    }
+  }
+
+  .ant-btn-primary {
+    background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+    color: #fff;
+    &:hover,
+    &:focus,
+    &:active {
+      background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+      box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.6);
+    }
+  }
+
+  .ant-btn-add {
+    background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    i {
+      background-image: linear-gradient(-180deg, #b4ec51 0%, #429321 100%);
+      border: 2px solid #7ed321;
+      width: 18px;
+      height: 18px;
+      border-radius: 100%;
+      display: inline-block;
+      margin-right: 4px;
+      line-height: 12px;
+    }
+    &:hover,
+    &:focus,
+    &:active {
+      background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+      box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.6);
     }
   }
 
@@ -137,7 +186,7 @@
 
   .ant-select-selection {
     background-color: $input-Background;
-    border: 1px solid $input-border;
+    border: 1px solid $input-border !important ;
   }
 
   .ant-select-dropdown-menu-item {
@@ -165,6 +214,7 @@
     color: $fontColor;
     background: $background;
     border: 1px solid $border-color;
+    box-shadow: 0 0 4px 2px #4d5fe2;
   }
 
   .ant-select-selection-selected-value {
@@ -178,7 +228,7 @@
   }
 
   .ant-select-arrow {
-    color: $input-border;
+    color: $fontColor !important ;
   }
 
   //ant-select-dropdown-menu下拉框选中的√颜色
@@ -190,14 +240,18 @@
 
   .ant-select-selection--multiple .ant-select-selection__choice {
     color: $fontColor;
-    background-color: #4d5fe2;
-    border: 1px solid #4d5fe2;
+    background-color: #205bac;
+    border: 1px solid #205bac;
+    &:hover {
+      background: #fcffe5;
+      color: #f8b14e;
+    }
   }
 
-  .ant-select-selection--multiple .ant-select-selection__choice__remove {
-    color: rgba(0, 0, 0, 0.75);
+  .ant-select-dropdown-menu-item-disabled {
+    color: $fontColor-disabled;
     &:hover {
-      color: $fontColor;
+      color: $fontColor-disabled;
     }
   }
 
@@ -223,13 +277,43 @@
 
   // =================input ==============
 
-  .ant-input:not(.ant-input-disabled):hover {
-    border-color: $themeColor;
+  .ant-input[disabled] {
+    background: #405080;
+    border: 1px solid #7088c3;
+    color: #7088c3;
   }
-  .ant-input {
+  .ant-input:not(.ant-input-disabled) {
     background: $input-Background;
     border: 1px solid $input-border;
     color: $fontColor;
+    &:hover,
+    &:focus,
+    &:active {
+      border-color: $themeColor;
+    }
+  }
+
+  .ant-input-number {
+    line-height: 30px;
+    background: transparent;
+    border: 1px solid $input-border;
+  }
+
+  .ant-input-number-input {
+    background: $input-Background;
+    color: $fontColor;
+  }
+
+  .ant-input-number-handler-wrap {
+    color: $fontColor;
+    background: $input-Background;
+    border-left: 1px solid $input-border;
+  }
+  .ant-input-number-handler-down {
+    border-top: 1px solid $input-border;
+  }
+  .ant-input-number-handler:active {
+    background: #fd6e8f;
   }
 
   // ============ ant-calendar 日历============
@@ -347,7 +431,9 @@
     }
   }
 
-  .ant-calendar-selected-date .ant-calendar-date {
+  .ant-calendar-selected-date .ant-calendar-date,
+  .ant-calendar-selected-start-date .ant-calendar-date,
+  .ant-calendar-selected-end-date .ant-calendar-date {
     color: $fontColor-invert;
     background: $themeColor;
     border: 1px solid transparent;
@@ -381,6 +467,21 @@
 
   .ant-calendar-footer {
     border-top: 1px solid $border-color;
+  }
+
+  .ant-calendar-range .ant-calendar-in-range-cell::before {
+    background: #205bac;
+  }
+
+  .ant-calendar-range {
+    .ant-calendar-input,
+    .ant-calendar-time-picker-input {
+      background: transparent;
+      color: $fontColor;
+    }
+    .ant-calendar-body {
+      border: none;
+    }
   }
 
   /*输入框前面的小方块*/
@@ -479,10 +580,9 @@
     border-color: $button-border;
   }
   .ant-checkbox-disabled .ant-checkbox-inner {
-    background-color: #eaeaea;
-    border-color: rgba(0, 0, 0, 0.15);
-    border-radius: 2px;
-    color: $darkColor;
+    background: #405080;
+    border: 1px solid #7088c3;
+    color: #7088c3;
   }
 
   .ant-checkbox-indeterminate .ant-checkbox-inner::after {
@@ -725,6 +825,7 @@
   ::-webkit-scrollbar {
     // 滚动条的设置
     width: 6px;
+    height: 6px;
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 3px;
@@ -733,11 +834,87 @@
 
   ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
-    background-color: #0c0a3e;
     width: 6px;
   }
+
   ::selection {
     color: #fff;
     background: $themeColor;
+  }
+
+  // ======== cascader  ====
+  .ant-cascader {
+    color: $fontColor;
+  }
+  .ant-cascader-input.ant-input {
+    background: #161858;
+  }
+  .ant-cascader-picker {
+    background: transparent;
+  }
+  .ant-cascader-picker-arrow {
+    color: #fff;
+  }
+  .ant-cascader-menus {
+    background: #1e246e;
+    border: 1px solid rgba(83, 104, 241, 0.6);
+    box-shadow: inset 0 0 4px 2px #5368f1;
+    color: $fontColor;
+  }
+  .ant-cascader-menu {
+    border: 1px solid rgba(83, 104, 241, 0.6);
+  }
+  .ant-cascader-menu-item-expand-icon,
+  .ant-cascader-menu-item-loading-icon {
+    color: $fontColor !important;
+  }
+
+  .ant-cascader-menu-item {
+    &:hover {
+      background: #00baff;
+      color: #fff;
+    }
+  }
+
+  .ant-cascader-picker-label {
+    color: $fontColor;
+  }
+
+  .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled),
+  .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover {
+    background: #00baff;
+    color: #fff;
+    .ant-cascader-menu-item-expand-icon,
+    .ant-cascader-menu-item-loading-icon {
+      color: #fff !important;
+    }
+  }
+
+  // =============form===========
+  .ant-form-item-label > label {
+    color: $fontColor;
+  }
+
+  .has-error .ant-form-explain,
+  .ant-form-extra {
+    color: #fd6e8f;
+  }
+  .has-error .ant-input,
+  .has-error .ant-input:hover {
+    background: $input-Background;
+  }
+
+  // ==========ant-popover-inner=========
+  .ant-popover-inner {
+    background: $select-background;
+    border: 1px solid $select-border;
+    box-shadow: inset 0 0 5px 2px $select-border-shadow;
+    color: $fontColor;
+  }
+  .ant-popover-placement-top .ant-popover-arrow,
+  .ant-popover-placement-topLeft .ant-popover-arrow,
+  .ant-popover-placement-topRight .ant-popover-arrow {
+    border-right-color: $select-border !important;
+    border-bottom-color: $select-border !important;
   }
 }

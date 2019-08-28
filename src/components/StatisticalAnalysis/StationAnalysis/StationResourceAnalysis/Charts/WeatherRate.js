@@ -1,16 +1,18 @@
-import React from "react";
+import React from 'react';
 import echarts from 'echarts';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
+import { themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
+import styles from './styles.scss';
 
 class WeatherRate extends React.Component {
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   componentDidMount() {
     this.drawCharts(this.props);
   }
   componentWillReceiveProps(nextProps) {
-    this.drawCharts(nextProps)
+    this.drawCharts(nextProps);
   }
 
   getName = (type) => {
@@ -27,73 +29,86 @@ class WeatherRate extends React.Component {
     return name;
   }
 
+  getColor = {
+    light: ['#ceebe0', '#c7ceb2', '#199475', '#a42b2c', '#999999', '#f9b600'],
+    dark: ['#7ed321', '#ff7878', '#ff73f4', '#00f0ff', '#f8e71c', '#f8b14e'],
+  }
+
+
   drawCharts = (params) => {
-    const { graphId, data, yAxisName ,hasData} = params;
-    const targetPieChart = echarts.init(document.getElementById(graphId));
-    let color=['#ceebe0','#c7ceb2','#199475','#a42b2c', '#dfdfdf',"#f9b600"];
-    let seriesData= data.map((item)=>{
-       return {
-         name:this.getName(item.weather),
-         value:item.days===0 ? '':item.days,
-         itemStyle:{
-           color:color[item.weather]
-         }
-       }
-    })
-    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
+    const { graphId, data, yAxisName, hasData, theme } = params;
+    let targetPieChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    if (targetPieChart) {
+      targetPieChart.dispose();
+      targetPieChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    }
+    const seriesData = data.map((item) => {
+      return {
+        name: this.getName(item.weather),
+        value: item.days === 0 ? '' : item.days,
+        itemStyle: {
+          color: this.getColor[theme][item.weather],
+        },
+      };
+    });
+    const graphic = chartsNodata(hasData, theme);
     const targetPieOption = {
-      graphic: confluenceTenMinGraphic,
+      graphic: graphic,
       tooltip: {
         trigger: 'item',
-        backgroundColor: '#fff',
-        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
-        padding: 10,
-        textStyle: {
-          color: 'rgba(0, 0, 0, 0.65)',
-          fontSize: 12,
-        },
-        formatter: function (params) {
-          return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:140px;overflow:hidden;">' + params.name + '</div>'
-            + '天数' + '：' + params.value +'<br>'
-            + '所占比例' + '：' + params.percent + '%<br>';
+        formatter: (params) => {
+          return (
+            `<div class=${styles[theme]}>
+                <div class=${styles.axisValue}>${params.name}</div>
+                <div class=${styles.tooltipContainer}>
+                  <div> 天数: ${params.value}</div>
+                  <div> 所占比例: ${params.percent} %</div>
+                </div>
+            </div>`
+          );
         },
       },
-      // color: color,
+      legend: {
+        left: 'center',
+        // icon: 'circle',
+        itemWidth: 8,
+        itemHeight: 5,
+        data: ['晴', '阴', '雨', '雪', '霾', '其他'],
+      },
       series: [
         {
           name: '发电量',
           type: 'pie',
           radius: '70%',
           center: ['50%', '50%'],
-          stillShowZeroSum:true,
+          stillShowZeroSum: true,
           data: seriesData,
           label: {
             normal: {
-              show: false
+              show: false,
             },
             emphasis: {
-              show: false
-            }
+              show: false,
+            },
           },
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
               shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
+      ],
     };
-    setTimeout(() => { targetPieChart.resize(); }, 1000)
     targetPieChart.setOption(targetPieOption);
   }
 
   render() {
     const { graphId } = this.props;
     return (
-      <div id={graphId} style={{height:260}}> </div>
-    )
+      <div id={graphId} style={{ height: 260 }}> </div>
+    );
   }
 }
-export default (WeatherRate)
+export default (WeatherRate);

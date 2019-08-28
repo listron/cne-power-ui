@@ -21,17 +21,17 @@ class BoosterHeader extends Component {
     super(props);
     this.state = {
       showDeviceChangeBox: false,
-    }
+    };
   }
 
   componentDidMount(){
     const main = document.getElementById('main');
-    main && main.addEventListener('click', this.hideDeviceChange,true);
+    main && main.addEventListener('click', this.hideDeviceChange, true);
   }
 
   componentWillUnmount() {
     const main = document.getElementById('main');
-    main && main.removeEventListener('click', this.hideDeviceChange,true);
+    main && main.removeEventListener('click', this.hideDeviceChange, true);
   }
 
   showDeviceChange = () => {
@@ -57,14 +57,14 @@ class BoosterHeader extends Component {
     const { showDeviceChangeBox } = this.state;
     const { manufacturer, deviceModeName } = deviceDetail;
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
-    let parentDevice = deviceDetail.parentDevice || {};
+    const parentDevice = deviceDetail.parentDevice || {};
     const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     return (
       <div className={styles.deviceMonitorHeader} >
         {showDeviceChangeBox && <HeaderDeviceChange
           devices={devices.map(e => ({
             deviceName: e.deviceTypeName,
-            deviceCode: e.deviceTypeCode
+            deviceCode: e.deviceTypeCode,
           }))}
           deviceDetail={deviceDetail}
           baseLinkPath={baseLinkPath}
@@ -103,7 +103,7 @@ class BoosterHeader extends Component {
           </Link>} */}
         </div>
       </div>
-    )
+    );
   }
 }
 export default BoosterHeader;

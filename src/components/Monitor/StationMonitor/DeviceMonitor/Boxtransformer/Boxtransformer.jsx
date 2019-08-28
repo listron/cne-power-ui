@@ -16,9 +16,10 @@ class Boxtransformer extends Component {
     getDeviceChartMonitor: PropTypes.func,
     resetDeviceStore: PropTypes.func,
     stopMonitor: PropTypes.func,
+    theme: PropTypes.string,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
     const params = {
       stationCode,
@@ -30,13 +31,13 @@ class Boxtransformer extends Component {
     this.props.getDeviceChartMonitor(params);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { deviceCode } = this.props.match.params;
     const nextParams = nextProps.match.params;
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
-    if( nextDevice !== deviceCode ){
+    if (nextDevice !== deviceCode) {
       const params = {
         stationCode: nextStation,
         deviceCode: nextDevice,
@@ -52,39 +53,41 @@ class Boxtransformer extends Component {
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.stopMonitor(); // 停止之前的定时器。
     this.props.resetDeviceStore();
   }
 
-  render(){
-    const { stations } = this.props;
-    const { stationCode, deviceTypeCode,deviceCode } = this.props.match.params;
-    const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
+  render() {
+    const { stations, theme } = this.props;
+    const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
+    const backData = { path: `/monitor/singleStation/${stationCode}`, name: '返回电站' };
     const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
     const breadCrumbData = {
-      breadData:[{
+      breadData: [{
         link: true,
         name: currentStation.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
-      },{
+      }, {
         name: '箱变',
       }],
-      iconName: 'iconfont icon-xb'
+      iconName: 'iconfont icon-xb',
     };
     return (
-      <div className={styles.boxtransformer}>
-        <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
+      <div className={`${styles.boxtransformer} ${styles[theme]}`}>
+        <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
         <div className={styles.deviceContent}>
           <BoxtransformerHeader {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-          <BoxtransformerTenMin {...this.props} />
-          <DevicePointsTable {...this.props} />
-          <DeviceAlarmTable {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} />
-          <h3 className={styles.subTitleConfig}>下级设备</h3>
-          <SubInverter {...this.props} stationCode={stationCode} />
+          <div className={styles.contWrap}>
+            <BoxtransformerTenMin {...this.props} />
+            <DevicePointsTable {...this.props} />
+            <DeviceAlarmTable {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} />
+            <h3 className={styles.subTitleConfig}>下级设备</h3>
+            <SubInverter {...this.props} stationCode={stationCode} />
+          </div>
         </div>
       </div>
-    ) 
+    );
   }
 }
 
