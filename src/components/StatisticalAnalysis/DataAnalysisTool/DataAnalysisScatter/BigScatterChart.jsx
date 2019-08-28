@@ -25,8 +25,12 @@ class BigScattrChart extends React.Component {
     const saveBtn = curChart ? curChart.likeStatus : false;
     const title = curChart ? curChart.deviceName : '';
     const bigscatterChart = echarts.init(this.bigScattrchart, themeConfig[theme]);
+    const lightColor = {
+      maskColor: 'rgba(255, 255, 255, 0.8)',
+      color: '#199475',
+    };
     if (bigchartLoading) {
-      bigscatterChart.showLoading();
+      bigscatterChart.showLoading('default', lightColor);
     }
     if (!bigchartLoading) {
       bigscatterChart.hideLoading();
@@ -34,13 +38,16 @@ class BigScattrChart extends React.Component {
     this.drawChat(bigScatterData, saveBtn, title);
   }
   creatOption = (bigScatterData = {}, saveBtn, title) => {
-    const { pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
+    const { pointCodeNameX, pointCodeNameY, startTime, endTime, xyValueLimit } = this.props;
+    const { xMax, xMin, yMax, yMin } = xyValueLimit;
     const { chartData = [] } = bigScatterData;
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
+    const color = '#199475';
     const option = {
       graphic: inverterTenMinGraphic,
+      color: color,
       title: {
         text: [`${title}`, '{b|}'].join(''),
         left: '5%',
@@ -77,9 +84,7 @@ class BigScattrChart extends React.Component {
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div>${moment(startTime).format('YYYY-MM-DD HH:mm:ss')}-${
-            moment(endTime).format('YYYY-MM-DD HH:mm:ss')
-            }</div>
+           
             <div class=${styles.lineStyle}>${pointCodeNameX}: ${dataFormat(info[0], '--', 2)}</div>
             <div class=${styles.lineStyle}>${pointCodeNameY}: ${dataFormat(info[1], '--', 2)}</div>
           </div>`;
@@ -100,6 +105,8 @@ class BigScattrChart extends React.Component {
       xAxis: {
         type: 'value',
         nameGap: -40,
+        min: xMin,
+        max: xMax,
         name: pointCodeNameX,
         nameTextStyle: {
           fontSize: 18,
@@ -133,6 +140,8 @@ class BigScattrChart extends React.Component {
           nameRotate: 360,
           nameGap: 20,
           type: 'value',
+          min: yMin,
+          max: yMax,
           nameLocation: 'center',
           nameTextStyle: {
             fontSize: 18,

@@ -160,17 +160,13 @@ class HandleSeachData extends React.Component {
   }
   selectStationCode = (stationCodeArr) => {//电站选择
     const { stationCode } = stationCodeArr[0];
-    // this.clearoutLimit();
     this.setState({
       showOther: false,
     });
     this.props.changeSquenceStore({
       stationCode,
       sequenceData: {},
-      point1Max: null,
-      point1Min: null,
-      point2Max: null,
-      point2Min: null,
+      deviceList: [],
     });
     this.props.getStationDevice({ stationCode });
     this.props.getSequenceName({ stationCode });
@@ -264,6 +260,9 @@ class HandleSeachData extends React.Component {
       xCode: value,
       xName: children,
     });
+    const selectY1value = this.props.sequenceotherNames.filter((e, i) => (e.devicePointCode === value))[0];
+    const y1Unit = selectY1value.devicePointUnit;
+    this.props.changeSquenceStore({ y1Unit });
     this.getLimitValue({ xPointCode: value });
   }
   //改变第二个y轴
@@ -273,6 +272,9 @@ class HandleSeachData extends React.Component {
       yCode: value,
       yName: children,
     });
+    const selectY2value = this.props.sequenceotherNames.filter((e, i) => (e.devicePointCode === value))[0];
+    const y2Unit = selectY2value.devicePointUnit;
+    this.props.changeSquenceStore({ y2Unit });
     this.getLimitValue({ yPointCode: value });
   }
 
@@ -359,14 +361,12 @@ class HandleSeachData extends React.Component {
           {<div className={styles.contrastValue}>
             <div className={styles.bottomLeft}>
               <span>{xName ? xName : '--'}</span>
-
               <InputNumber
                 value={xMax}
                 formatter={value => `最大值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
                 onChange={(value) => this.setState({ xyValueLimit: { ...xyValueLimit, xMax: value } })}
               />
-
               <InputNumber
                 value={xMin}
                 formatter={value => `最小值 ${value}`}

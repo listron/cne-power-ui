@@ -38,13 +38,17 @@ class BigSequenceCharts extends React.Component {
       this.renderChart(curBigChartData, saveBtn, deviceName);
     }
     if (nextProps.bigchartLoading) {
-      myChart.showLoading();
+      const lightColor = {
+        maskColor: 'rgba(255, 255, 255, 0.8)',
+        color: '#199475',
+      };
+      myChart.showLoading('default', lightColor);
     }
     if (!nextProps.bigchartLoading) {
       myChart.hideLoading();
     }
     if ((this.props.saveBtn !== saveBtn) || (nextProps.id !== this.props.id)) {
-      // console.log('likestatus发生改变重新渲染');
+      // 
       this.renderChart(curBigChartData, saveBtn, deviceName);
     }
   }
@@ -52,8 +56,10 @@ class BigSequenceCharts extends React.Component {
     const { pointCodeNameX, pointCodeNameY, xyValueLimit } = this.props;
     const { xMax, xMin, yMax, yMin } = xyValueLimit;
     const { timeLine = [], point1Data = [], point2Data = [] } = curBigChartData;
+    const color = ['#ff7878', '#00cdff'];
     const option = {
       graphic: timeLine.length ? hiddenNoData : showNoData,
+      color: color,
       title: {
         text: [`${deviceName}`, '{b|}'].join(''),
         left: '5%',
@@ -92,7 +98,10 @@ class BigSequenceCharts extends React.Component {
         show: true,
         formatter: (payload) => {
           const y1 = payload[0];
-          const y2 = payload[1];
+          var data = '';
+          payload.forEach(e => {
+            return data += `<div class=${styles.lineStyle}>${e.seriesName}:${dataFormat(e.value, '--', 2)} </div>`;
+          });
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
             <div>${deviceName}</div>
@@ -101,8 +110,7 @@ class BigSequenceCharts extends React.Component {
             width:100%;' ></div>
             <div>${moment(y1.axisValue).format('YYYY-MM-DD HH:mm:ss')}
             </div>
-            <div class=${styles.lineStyle}>${pointCodeNameX}:${dataFormat(y1.value, '--', 2)} </div>
-            <div class=${styles.lineStyle}>${pointCodeNameY}:${dataFormat(y2.value, '--', 2)} </div>
+           ${data}
           </div>`;
         },
       },

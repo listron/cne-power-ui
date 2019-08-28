@@ -42,7 +42,8 @@ function* getStationDevice(action) {//获取
 
 function* getSequenceName(action) {//获取
   const { payload } = action;
-  const chartType = 1;
+  const chartType = 1;//时序图是2
+  // const chartType = 2;
   // const url = '/mock/api/v3/wind/analysis/scatterplot/names';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterName}/${payload.stationCode}/${chartType}`;
   try {
