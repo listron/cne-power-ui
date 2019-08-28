@@ -10,12 +10,26 @@ class StopAnalysis extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
+    stationInfoStr: PropTypes.string,
+    pageName: PropTypes.string,
+    stopChartDevice: PropTypes.object,
+    stopChartTime: PropTypes.object,
+    stopChartTypes: PropTypes.object,
+    pageQuery: PropTypes.func,
+  }
+
+  handleContextMenu = () => {
+    event.preventDefault();
+    const { stationInfoStr, pageName, stopChartDevice, stopChartTime, stopChartTypes } = this.props;
+    if (stopChartDevice, stopChartTime, stopChartTypes) {
+      this.props.pageQuery(stationInfoStr, pageName);
+    }
   }
 
   render() {
     const { active } = this.props;
     return (
-      <div className={`${styles.stopAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
+      <div onContextMenu={this.handleContextMenu} className={`${styles.stopAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <StopElecTypes {...this.props} />
         <ChartStopRank {...this.props} />
         <ChartStopTrend {...this.props} />

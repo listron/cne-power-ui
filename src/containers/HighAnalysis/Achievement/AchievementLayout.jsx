@@ -33,7 +33,7 @@ class AchievementLayout extends Component {
     this.tabs = ['group', 'area', 'station', 'run', 'stop'];
     this.tabNames = ['集团绩效分析', '区域绩效分析', '电站效能分析', '运行数据分析', '停机状态分析'];
     this.state = {
-      pages: pages ? pages.split('_') : [pathKey], // 页面内开启的页面 => tab数量
+      pages: pages ? pages.split('_').filter(e => !!e) : [pathKey], // 页面内开启的页面 => tab数量
     };
   }
 
@@ -65,7 +65,7 @@ class AchievementLayout extends Component {
     } else if (pageChange && pageExist && !nextSearch) {// 2. 目录处点击已开启页面 => 切换至页面, search信息不变
       history.push(`${nextLocation.pathname}${search}`);
     } else if(nextPages && nextPages !== currentPages) {
-      this.setState({pages: nextPages.split('_')});
+      this.setState({pages: nextPages.split('_').filter(e => !!e)});
     }
   }
 
@@ -107,7 +107,7 @@ class AchievementLayout extends Component {
                 className={`${styles.button} ${pathKey === e ? styles.actievButton : ''}`}
                 onClick={() => this.tabChange(e)}
               >{this.tabNames[i]}</span>
-              <Icon className={styles.close} type="close" onClick={() => this.closeTab(e)} />
+              {pages.length > 1 && <Icon className={styles.close} type="close" onClick={() => this.closeTab(e)} />}
             </div>
           ))}
         </div>
