@@ -9,6 +9,7 @@ class DataAnalysisAllStation extends React.Component {
     changeToolStore: PropTypes.func,
     getScatterName: PropTypes.func,
     getStationDevice: PropTypes.func,
+    theme: PropTypes.string,
 
   }
   constructor(props, context) {

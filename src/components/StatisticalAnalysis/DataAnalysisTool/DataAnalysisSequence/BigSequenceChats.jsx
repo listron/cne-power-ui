@@ -14,7 +14,7 @@ class BigSequenceCharts extends React.Component {
     saveBtn: PropTypes.bool,
     bigchartLoading: PropTypes.bool,
     deviceList: PropTypes.array,
-    index: PropTypes.num,
+    index: PropTypes.number,
     theme: PropTypes.string,
     pointCodeNameX: PropTypes.string,
     pointCodeNameY: PropTypes.string,
