@@ -77,9 +77,7 @@ class BigScattrChart extends React.Component {
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div>${moment(startTime).format('YYYY-MM-DD HH:mm:ss')}-${
-            moment(endTime).format('YYYY-MM-DD HH:mm:ss')
-            }</div>
+           
             <div class=${styles.lineStyle}>${pointCodeNameX}: ${dataFormat(info[0], '--', 2)}</div>
             <div class=${styles.lineStyle}>${pointCodeNameY}: ${dataFormat(info[1], '--', 2)}</div>
           </div>`;

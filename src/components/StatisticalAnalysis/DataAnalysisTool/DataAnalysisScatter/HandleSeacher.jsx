@@ -197,7 +197,7 @@ class HandleSeacher extends React.Component {
     this.getLimitValue(value);
 
   }
-  onChangeContrast = (value, selectedOptions) => {
+  onChangeContrast = (value, selectedOptions) => {//选择散点名称
     const { stationCode, getScatterOtherName } = this.props;
     this.setState({
       isSwap: false,
@@ -228,7 +228,7 @@ class HandleSeacher extends React.Component {
       this.getLimitValue({ xPointCode: pointCodeX, yPointCode: pointCodeY });
     }
   }
-  changeSwap = () => {
+  changeSwap = () => {//交换xy轴
     const { xCode, yCode, xName, yName } = this.state;
     this.setState({
       isSwap: !this.state.isSwap,
@@ -241,7 +241,7 @@ class HandleSeacher extends React.Component {
     this.getLimitValue(value);
 
   }
-  getScatterData = () => {
+  getScatterData = () => {//查询数据
     //请求数据
     const { getScatterData, changeToolStore, stationCode, deviceList } = this.props;
     const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
@@ -268,19 +268,31 @@ class HandleSeacher extends React.Component {
 
 
   }
-  changeXvalue = (value, option) => {
+  changeXvalue = (value, option) => {//改变其他项中的x轴
+    const { scatterotherNames } = this.props;
     const { props: { children } } = option;
     this.setState({
       xCode: value,
       xName: children,
     });
+    const selectXvalue = scatterotherNames.filter((e, i) => (e.devicePointCode === value))[0];
+    const xUnit = selectXvalue.devicePointUnit;
+    this.props.changeToolStore({
+      xUnit,
+    });
     this.getLimitValue({ xPointCode: value });
   }
-  changeYvalue = (value, option) => {
+  changeYvalue = (value, option) => {//改变其他项中的y轴
+    const { scatterotherNames } = this.props;
     const { props: { children } } = option;
     this.setState({
       yCode: value,
       yName: children,
+    });
+    const selectYvalue = scatterotherNames.filter((e, i) => (e.devicePointCode === value))[0];
+    const yUnit = selectYvalue.devicePointUnit;
+    this.props.changeToolStore({
+      yUnit,
     });
     this.getLimitValue({ yPointCode: value });
   }
