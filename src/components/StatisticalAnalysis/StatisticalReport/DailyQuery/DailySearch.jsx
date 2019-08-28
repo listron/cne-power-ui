@@ -72,6 +72,7 @@ class DailySearch extends Component {
       quotaListData: {},
       faultListData: {},
       limitListData: {},
+      quotaInfoData: [],
     });
 
     getQuota({ // 请求指标树
@@ -129,7 +130,6 @@ class DailySearch extends Component {
   }
 
   onQuotaChange = (quota) => { // 关键指标 - 选择指标
-    console.log('quota: ', quota);
     this.setState({
       quotaInfoData: quota,
     });
