@@ -34,13 +34,13 @@ class SequenceChart extends React.Component {
     super(props, context);
   }
   componentDidMount() {
-    const { sequenceData, saveBtn } = this.props;
+    const { sequenceData, saveBtn, xyValueLimit } = this.props;
     const myChart = eCharts.init(this.sequenceChart, themeConfig[this.props.theme]); //构建下一个实例
-    const option = this.creatOption(sequenceData, saveBtn);
+    const option = this.creatOption(sequenceData, saveBtn, xyValueLimit);
     myChart.setOption(option, true);
   }
   componentWillReceiveProps(nextProps) {
-    const { activeCode, saveBtn, sequenceData, deviceList, startTime, endTime, pointY1, pointY2 } = nextProps;
+    const { activeCode, saveBtn, sequenceData, deviceList, startTime, endTime, pointY1, pointY2, xyValueLimit } = nextProps;
 
     const requestParams = { startTime, endTime, pointY1, pointY2 };
     const prevCode = this.props.activeCode;
@@ -52,7 +52,7 @@ class SequenceChart extends React.Component {
       }
     }
     if ((activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
-      this.renderChart(sequenceData, saveBtn, requestParams);//此处的第三个参数是控制定时器是否发送下一个请求
+      this.renderChart(sequenceData, saveBtn, requestParams, xyValueLimit);//此处的第三个参数是控制定时器是否发送下一个请求
       const myChart = eCharts.init(this.sequenceChart, themeConfig[nextProps.theme]); //构建下一个实例
       const lightColor = {
         maskColor: 'rgba(255, 255, 255, 0.8)',
@@ -67,7 +67,7 @@ class SequenceChart extends React.Component {
 
     }
     if (saveBtn !== this.props.saveBtn) {
-      this.renderChart(sequenceData, saveBtn, false);
+      this.renderChart(sequenceData, saveBtn, false, xyValueLimit);
     }
   }
   shouldComponentUpdate(nextProps) {
@@ -78,8 +78,8 @@ class SequenceChart extends React.Component {
     const myChart = eCharts.init(this.sequenceChart, themeConfig[this.props.theme]);
     myChart.dispose();
   }
-  creatOption = (sequenceData = {}, saveBtn) => {
-    const { deviceName, pointCodeNameX, pointCodeNameY, xyValueLimit } = this.props;
+  creatOption = (sequenceData = {}, saveBtn, xyValueLimit) => {
+    const { deviceName, pointCodeNameX, pointCodeNameY } = this.props;
     const { xMax, xMin, yMax, yMin } = xyValueLimit;
     const { timeLine = [], point1Data = [], point2Data = [] } = sequenceData;
     const color = ['#ff7878', '#00cdff'];
@@ -192,7 +192,7 @@ class SequenceChart extends React.Component {
     };
     return option;
   }
-  renderChart = (sequenceData, saveBtn, isRequest) => {
+  renderChart = (sequenceData, saveBtn, isRequest, xyValueLimit) => {
     const { deviceList, getSequenceData, index, likeStatusChange, deviceName, theme, saveImgUrl } = this.props;
     const parms = {
       ...isRequest,
@@ -201,7 +201,7 @@ class SequenceChart extends React.Component {
 
     const myChart = eCharts.init(this.sequenceChart, themeConfig[theme]); //构建下一个实例
     myChart.clear();
-    const option = this.creatOption(sequenceData, saveBtn);
+    const option = this.creatOption(sequenceData, saveBtn, xyValueLimit);
     myChart.off();
     myChart.on('click', 'title', (payload) => {
       likeStatusChange(index, !saveBtn, sequenceData);
