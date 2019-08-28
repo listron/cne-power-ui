@@ -10,6 +10,7 @@ class LostAnalysis extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
+    stationInfoStr: PropTypes.string,
     pageName: PropTypes.string,
     selectedQuota: PropTypes.object,
     lostStringify: PropTypes.string,
@@ -23,6 +24,15 @@ class LostAnalysis extends Component {
     getLostRank: PropTypes.func,
     getLostTrend: PropTypes.func,
     getLostTypes: PropTypes.func,
+    pageQuery: PropTypes.func,
+  }
+
+  handleContextMenu = () => {
+    event.preventDefault();
+    const { stationInfoStr, pageName, lostChartDevice } = this.props;
+    if (lostChartDevice) {
+      this.props.pageQuery(stationInfoStr, pageName);
+    }
   }
 
   getSearchParam = (infoStr) => {
@@ -56,7 +66,10 @@ class LostAnalysis extends Component {
   render() {
     const { active } = this.props;
     return (
-      <div className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
+      <div
+        onContextMenu={this.handleContextMenu}
+        className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}
+      >
         <ChartLostRank {...this.props} onQuotaChange={this.onQuotaChange} />
         <ChartLostTrend {...this.props} />
         <ChartLostTypes {...this.props} />

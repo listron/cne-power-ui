@@ -124,6 +124,9 @@ class StationSearch extends Component {
     if (pageName === 'stop') {
       !(stopChartDevice || stopChartTime || stopChartTypes) && (resetDisable = true);
     }
+    if (pageName === 'curve') {
+      resetDisable = true;
+    }
     return resetDisable;
   }
 
@@ -136,7 +139,6 @@ class StationSearch extends Component {
     const { areaStation, modeDevices } = this.props;
     const { searchCode, searchDevice, searchDates } = this.state;
     const recoveryDisable = this.getResetDisable();
-    console.log(searchCode)
     return (
       <div className={styles.topSearch}>
         <div className={styles.leftPart}>

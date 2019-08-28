@@ -185,10 +185,10 @@ class ChartStopTypes extends Component {
               <span>${axisValue}</span>
             </h3>
             <div class=${styles.info}>
-              ${param.map((e, i) => (
+              ${param.sort((a, b) => a.seriesIndex - b.seriesIndex).map(({ seriesIndex, value }) => (
                 `<span class=${styles.eachItem}>
-                  <span>${['停机次数', '停机时长', '停机电量'][i]}</span>
-                  <span>${dataFormats(e.value / ([1, 1, 10000][i]), '--', [0, 0, 4][i], true)}</span>
+                  <span>${['停机次数', '停机时长', '停机电量'][seriesIndex]}</span>
+                  <span>${dataFormats(value / ([1, 1, 10000][seriesIndex]), '--', [0, 0, 4][seriesIndex], true)}</span>
                 </span>`
               )).join('')}
             </div>

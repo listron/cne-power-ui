@@ -292,9 +292,24 @@ class StationAchieve extends Component {
           stationChange={this.stationChange}
         />
         <AnimationBox changeStore={changeStore} pageName={pageName}>
-          <LostAnalysis {...this.props} active={pageName === 'lost'} />
-          <StopAnalysis {...this.props} active={pageName === 'stop'} />
-          <CurveAnalysis {...this.props} active={pageName === 'curve'} />
+          <LostAnalysis
+            {...this.props}
+            active={pageName === 'lost'}
+            pageQuery={this.pageQuery}
+            stationInfoStr={stationInfoStr}
+          />
+          <StopAnalysis
+            {...this.props}
+            active={pageName === 'stop'}
+            pageQuery={this.pageQuery}
+            stationInfoStr={stationInfoStr}
+          />
+          <CurveAnalysis
+            {...this.props}
+            active={pageName === 'curve'}
+            pageQuery={this.pageQuery}
+            stationInfoStr={stationInfoStr}
+          />
         </AnimationBox>
       </div>
     );
