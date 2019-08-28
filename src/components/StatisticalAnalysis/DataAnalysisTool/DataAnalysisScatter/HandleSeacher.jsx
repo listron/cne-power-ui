@@ -163,18 +163,18 @@ class HandleSeacher extends React.Component {
     }
     );
   }
-  getLimitValue = (value) => {
-    const { getxyLimitValue, stationCode } = this.props;
-    const { xCode, yCode, saveStartTime, saveEndTime } = this.state;
-    getxyLimitValue({
-      stationCode,
-      startTime: saveStartTime,
-      endTime: saveEndTime,
-      xPointCode: xCode,
-      yPointCode: yCode,
-      ...value,
-    });
-  }
+  // getLimitValue = (value) => {
+  //   const { getxyLimitValue, stationCode } = this.props;
+  //   const { xCode, yCode, saveStartTime, saveEndTime } = this.state;
+  //   getxyLimitValue({
+  //     stationCode,
+  //     startTime: saveStartTime,
+  //     endTime: saveEndTime,
+  //     xPointCode: xCode,
+  //     yPointCode: yCode,
+  //     ...value,
+  //   });
+  // }
 
 
 
@@ -194,8 +194,8 @@ class HandleSeacher extends React.Component {
       saveStartTime: dateString[0],
       saveEndTime: dateString[1],
     });
-    const value = { startTime: dateString[0], endTime: dateString[1] };
-    this.getLimitValue(value);
+    // const value = { startTime: dateString[0], endTime: dateString[1] };
+    // this.getLimitValue(value);
 
   }
   onChangeContrast = (value, selectedOptions) => {//选择散点名称
@@ -226,7 +226,7 @@ class HandleSeacher extends React.Component {
         scatterNameValue: value,
         showOther: false,
       });
-      this.getLimitValue({ xPointCode: pointCodeX, yPointCode: pointCodeY });
+      // this.getLimitValue({ xPointCode: pointCodeX, yPointCode: pointCodeY });
     }
   }
   changeSwap = () => {//交换xy轴
@@ -238,13 +238,13 @@ class HandleSeacher extends React.Component {
       xCode: yCode,
       yCode: xCode,
     });
-    const value = { xPointCode: yCode, yPointCode: xCode };
-    this.getLimitValue(value);
+    // const value = { xPointCode: yCode, yPointCode: xCode };
+    // this.getLimitValue(value);
 
   }
   getScatterData = () => {//查询数据
     //请求数据
-    const { getScatterData, changeToolStore, stationCode, deviceList } = this.props;
+    const { getScatterData, changeToolStore, stationCode, deviceList, getxyLimitValue } = this.props;
     const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
     changeToolStore({
       scatterData: {},
@@ -252,6 +252,13 @@ class HandleSeacher extends React.Component {
       pointCodeNameY: yName,
       xyValueLimit,
       deviceList: [],
+    });
+    getxyLimitValue({
+      stationCode,
+      startTime: saveStartTime,
+      endTime: saveEndTime,
+      xPointCode: xCode,
+      yPointCode: yCode,
     });
     this.props.getStationDevice({ stationCode });
     setTimeout(() => {
@@ -265,7 +272,7 @@ class HandleSeacher extends React.Component {
         startTime: saveStartTime,
         endTime: saveEndTime,
       });
-    }, 10);
+    }, 100);
 
 
   }
@@ -281,7 +288,7 @@ class HandleSeacher extends React.Component {
     this.props.changeToolStore({
       xUnit,
     });
-    this.getLimitValue({ xPointCode: value });
+    // this.getLimitValue({ xPointCode: value });
   }
   changeYvalue = (value, option) => {//改变其他项中的y轴
     const { scatterotherNames } = this.props;
@@ -295,7 +302,7 @@ class HandleSeacher extends React.Component {
     this.props.changeToolStore({
       yUnit,
     });
-    this.getLimitValue({ yPointCode: value });
+    // this.getLimitValue({ yPointCode: value });
   }
 
 

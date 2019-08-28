@@ -66,6 +66,9 @@ class ScatterContainer extends React.PureComponent {
     if ((nextState.newSrcUrl !== this.state.newSrcUrl) || (nextState.srcObj !== this.state.srcObj)) {
       return false;
     }
+    if (JSON.stringify(nextProps.xyValueLimit) !== JSON.stringify(this.props.xyValueLimit)) {
+      return false;
+    }
     return true;
   }
   saveImgUrl = (title, src) => {//存储批量下载图片的编码

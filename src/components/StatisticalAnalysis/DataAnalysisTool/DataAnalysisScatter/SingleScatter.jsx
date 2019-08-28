@@ -37,13 +37,13 @@ class SingleScatter extends React.PureComponent {
   }
   componentDidMount() {
     const { chartId } = this;
-    const { theme } = this.props;
+    const { theme, xyValueLimit, scatterData, saveBtn } = this.props;
     const myChart = echarts.init(chartId, themeConfig[theme]); //构建下一个实例
-    const option = this.creatOption(this.props);
+    const option = this.creatOption(scatterData, saveBtn, xyValueLimit);
     myChart.setOption(option);
   }
   componentWillReceiveProps(nextProps) {
-    const { activeCode, scatterData, chartLoading, theme, saveBtn, deviceList } = nextProps;
+    const { activeCode, scatterData, chartLoading, theme, saveBtn, deviceList, xyValueLimit } = nextProps;
     const prevCode = this.props.activeCode;
     if (activeCode !== prevCode) {
       const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
@@ -54,7 +54,7 @@ class SingleScatter extends React.PureComponent {
     }
     if ((activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
       const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
-      this.drawChart(scatterData, saveBtn, true);//此处的第三个参数是控制定时器是否发送下一个请求
+      this.drawChart(scatterData, saveBtn, true, xyValueLimit);//此处的第三个参数是控制定时器是否发送下一个请求
       if (this.props.deviceFullCode !== deviceList[deviceList.length - 1].deviceFullCode && !chartLoading) {
         const lightColor = {
           maskColor: 'rgba(255, 255, 255, 0.8)',
@@ -67,8 +67,9 @@ class SingleScatter extends React.PureComponent {
       }
     }
     if (saveBtn !== this.props.saveBtn) {
-      this.drawChart(scatterData, saveBtn, false);
+      this.drawChart(scatterData, saveBtn, false, xyValueLimit);
     }
+
   }
 
   shouldComponentUpdate(nextProps) {
@@ -78,10 +79,10 @@ class SingleScatter extends React.PureComponent {
   componentWillUnmount() {
     echarts.init(this.chartId, themeConfig[this.props.theme]).dispose();
   }
-  creatOption = (scatterData = {}, saveBtn) => {
-    const { title, pointCodeNameX, pointCodeNameY, xyValueLimit } = this.props;
+  creatOption = (scatterData = {}, saveBtn, xyValueLimit) => {
+    const { title, pointCodeNameX, pointCodeNameY } = this.props;
     const { xMax, xMin, yMax, yMin } = xyValueLimit;
-    const { chartData = [] } = scatterData;
+    const { chartData = [], xUnit, yUnit } = scatterData;
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
@@ -126,6 +127,7 @@ class SingleScatter extends React.PureComponent {
             width:100%;' ></div>
             <div class=${styles.lineStyle}>${pointCodeNameX}: ${dataFormat(info[0], '--', 2)}</div>
             <div class=${styles.lineStyle}>${pointCodeNameY}: ${dataFormat(info[1], '--', 2)}</div>
+            <div class=${styles.lineStyle}>时间: ${info[2] ? moment(info[2]).format('YYYY-MM-DD HH:mm:ss') : '--'}</div>
           </div>`;
         },
         backgroundColor: '#fff',
@@ -136,8 +138,11 @@ class SingleScatter extends React.PureComponent {
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
       },
-      xAxis: {
+      xAxis: [{
         type: 'value',
+        axisLabel: {
+          formatter: '{value}',
+        },
         nameGap: -40,
         min: xMin,
         max: xMax,
@@ -167,13 +172,18 @@ class SingleScatter extends React.PureComponent {
         splitLine: {
           show: false,
         },
-      },
+      }, {
+        name: xUnit,
+      }],
       yAxis: [
         {
           name: this.format(pointCodeNameY),
           nameRotate: 360,
           nameGap: 20,
           type: 'value',
+          axisLabel: {
+            formatter: '{value}',
+          },
           min: yMin,
           max: yMax,
           nameLocation: 'center',
@@ -198,6 +208,13 @@ class SingleScatter extends React.PureComponent {
               type: 'dashed',
             },
           },
+        }, {
+          name: yUnit,
+          nameTextStyle: {
+            verticalAlign: 'bottom',
+            lineHeight: 5,
+
+          },
         },
       ],
       series: [{
@@ -207,7 +224,7 @@ class SingleScatter extends React.PureComponent {
         emphasis: {
           symbolSize: 8,
         },
-        data: chartData.map(e => [e.x, e.y]),
+        data: chartData.map(e => [e.x, e.y, e.time]),
       }],
     };
     return option;
@@ -218,12 +235,12 @@ class SingleScatter extends React.PureComponent {
     }
     return val;
   }
-  drawChart = (scatterData, saveBtn, isRequest, ) => {
+  drawChart = (scatterData, saveBtn, isRequest, xyValueLimit) => {
     const { title, index, onChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime, saveImgUrl } = this.props;
     const parms = { stationCode, xPointCode, yPointCode, startTime, endTime };
     const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
     scatterChart.clear();
-    const option = this.creatOption(scatterData, saveBtn);
+    const option = this.creatOption(scatterData, saveBtn, xyValueLimit);
     scatterChart.off();
     scatterChart.on('click', 'title', (params) => {
       onChange(index, !saveBtn, scatterData);//保留当前数据值scatterData，避免重新渲染时数据源发生改变。
