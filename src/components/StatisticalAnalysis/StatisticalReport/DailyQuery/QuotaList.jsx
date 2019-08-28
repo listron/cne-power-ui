@@ -74,10 +74,10 @@ class QuotaList extends Component {
     const { total = 0, dataList = [] } = quotaListData;
 
     const otherCol = quotaInfoData.map(e => ({
-      title: e.unit ? () => (<TableColumnTitle title={e.label} unit={e.unit} style={{ maxWidth: '100%', height: '52px' }} />) : e.label,
+      title: (e.unit && e.unit !== '%') ? () => (<TableColumnTitle title={e.label} unit={e.unit} style={{ maxWidth: '100%', height: '52px' }} />) : e.label,
       dataIndex: e.name,
-      className: 'quotaTd',
-      render: (text) => <span title={text}>{(dataFormat(text, '--', 2))}</span>,
+      className: 'numberStyle',
+      render: (text) => <span title={text}>{(dataFormat(text, '--', 2))}{e.unit === '%' && `%`}</span>,
     }));
 
     const columns = [{
@@ -99,7 +99,6 @@ class QuotaList extends Component {
       width: (otherCol.length > 9) ? 120 : 0,
       dataIndex: 'reportDate',
       className: 'reportDate',
-      sorter: true,
       fixed: (otherCol.length > 9) ? 'left' : 'false',
       render: (text) => <span title={text}>{text}</span>,
     }];
@@ -107,7 +106,7 @@ class QuotaList extends Component {
     return (
       <div className={styles.quotaList}>
         <div className={styles.pagination}>
-          <Button className={styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
+          <Button className={dataList.length === 0 ? styles.disabledExport : styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
