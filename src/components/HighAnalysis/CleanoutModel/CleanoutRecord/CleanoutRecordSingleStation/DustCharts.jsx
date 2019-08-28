@@ -7,14 +7,24 @@ import { Tabs, DatePicker } from 'antd';
 import styles from './cleanoutRecordDetail.scss';
 import { dataFormat } from '../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
+import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
 
-const SingleChart = ({ keyWord, data = [], id }) => { // 灰尘影响charts图(全局 + 方阵特殊覆盖属性 )
+const SingleChart = ({ keyWord, data = [], id, theme }) => { // 灰尘影响charts图(全局 + 方阵特殊覆盖属性 )
   const chartBox = document.getElementById(id);
+  console.log('theme', theme);
+  const getColor = {
+    light: ['#199475', '#f9b600', '#3e97d1'],
+    dark: ['#00f8ff', '#fd6e8f', '#f8e71c'],
+  };
   if (chartBox) {
-    const chartInitBox = echarts.init(chartBox);
+    let chartInitBox = echarts.init(chartBox, themeConfig[theme]);
+    if (chartInitBox) {
+      chartInitBox.dispose();
+      chartInitBox = echarts.init(chartBox, themeConfig[theme]);
+    }
     let xAxis = [], genArr = [], effctArr = [], effectRate = [], hasData = false;
     data.length > 0 && data.forEach(e => {
       xAxis.push(keyWord === 'total' ? e.date : e.matrix);
@@ -22,13 +32,12 @@ const SingleChart = ({ keyWord, data = [], id }) => { // 灰尘影响charts图(�
       effctArr.push(e.influencePower);
       effectRate.push(e.influencePercent);
       (e.actualPower || e.influencePower) && (hasData = true);
-    })
+    });
     const option = {
-      graphic: hasData ? hiddenNoData : showNoData,
-      color: ['#199475', '#f9b600', '#3e97d1'],
+      graphic: chartsNodata(hasData, theme),
+      color: getColor[theme],
       legend: {
         textStyle: {
-          color: '#666',
           fontSize: 14,
         },
         icon: 'rect',
@@ -37,7 +46,6 @@ const SingleChart = ({ keyWord, data = [], id }) => { // 灰尘影响charts图(�
       },
       tooltip: {
         trigger: 'axis',
-        extraCssText: 'background-color: rgba(255, 255, 255); box-shadow:0 1px 4px 0 rgba(0,0,0,0.20); border-radius:2px;',
         padding: 0,
         formatter: params => {
           const chartInfo = params.map(e => {
@@ -59,60 +67,35 @@ const SingleChart = ({ keyWord, data = [], id }) => { // 灰尘影响charts图(�
                 <span class=${styles.value}>${dataFormat(e.value)}${e.seriesType === 'line' ? '%' : ''}</span>
               </div>`).join('')}
             </div>`
-          )
-        }
+          );
+        },
       },
       xAxis: {
         type: 'category',
         data: xAxis,
-        axisLine: {
-          lineStyle: {
-            color: '#dfdfdf',
-          },
-        },
-        axisLabel: {
-          color: '#666',
-        },
       },
       yAxis: [
         {
           type: 'value',
           name: '发电量(kWh)',
-          nameTextStyle: {
-            color: '#666',
-          },
           splitLine: {
-            show: false
+            show: false,
           },
           axisLine: {
             show: false,
           },
           axisTick: {
             show: false,
-          },
-          axisLabel: {
-            color: '#666',
           },
         },
         {
           type: 'value',
           name: '占比(%)',
-          nameTextStyle: {
-            color: '#666',
-          },
           splitLine: {
             show: false,
           },
           axisTick: {
             show: false,
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#dfdfdf',
-            },
-          },
-          axisLabel: {
-            color: '#666',
           },
         },
       ],
@@ -129,28 +112,28 @@ const SingleChart = ({ keyWord, data = [], id }) => { // 灰尘影响charts图(�
           type: 'bar',
           stack: '发电量',
           barWidth: 6,
-          data: effctArr
+          data: effctArr,
         }, {
           name: '灰尘影响占比',
           type: 'line',
           yAxisIndex: 1,
-          data: effectRate
-        }
-      ]
-    }
+          data: effectRate,
+        },
+      ],
+    };
     chartInitBox.setOption(option);
   }
 
   return (
     <div className={styles.effectChart} id={id} />
-  )
-}
+  );
+};
 
 SingleChart.propTypes = {
   keyWord: PropTypes.string,
   data: PropTypes.array,
   id: PropTypes.string,
-}
+};
 
 class DustEffectCharts extends Component {
 
@@ -167,7 +150,7 @@ class DustEffectCharts extends Component {
     this.state = {
       startTime: moment().subtract(30, 'day'),
       endTime: moment(),
-    }
+    };
   }
 
   timeSelect = (timeMoment, timeString) => {
@@ -176,36 +159,38 @@ class DustEffectCharts extends Component {
       stationCode: singleStationCode,
       startTime: timeString[0],
       endTime: timeString[1],
-    }
-    getMatrixDust(effectParam)
-    getStationDust(effectParam)
+    };
+    getMatrixDust(effectParam);
+    getStationDust(effectParam);
   }
 
   render() {
     const { startTime, endTime } = this.state;
-    const { totalEffects, matrixEffects } = this.props;
+    const { totalEffects, matrixEffects, theme } = this.props;
     return (
       <div className={styles.effectCharts}>
+        <span ref="wrap" />
         <RangePicker
           // disabled
           defaultValue={[startTime, endTime]}
           onChange={this.timeSelect}
           disabledDate={() => false}
+          getCalendarContainer={() => this.refs.wrap}
         />
         <Tabs defaultActiveKey="1">
           <TabPane tab={<span>全局灰尘影响(基于系统效率/清洗板)</span>} key="1" forceRender={true}>
             <div className={styles.eachChart}>
-              <SingleChart data={totalEffects} keyWord="total" id="cleanWarningTotalEffect" />
+              <SingleChart data={totalEffects} keyWord="total" id="cleanWarningTotalEffect" theme={theme} />
             </div>
           </TabPane>
           <TabPane className={styles.eachChart} tab={<span>方阵灰尘影响(基于系统效率/清洗板)</span>} key="2" forceRender={true}>
             <div className={styles.eachChart}>
-              <SingleChart data={matrixEffects} keyWord="matrix" id="cleanWarningMatrixEffect" />
+              <SingleChart data={matrixEffects} keyWord="matrix" id="cleanWarningMatrixEffect" theme={theme} />
             </div>
           </TabPane>
         </Tabs>
       </div>
-    )
+    );
   }
 
 }

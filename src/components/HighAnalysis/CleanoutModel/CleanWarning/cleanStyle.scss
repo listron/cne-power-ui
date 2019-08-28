@@ -1,254 +1,155 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
+@import "./layout.scss";
 
-.cleanWarningMain{
-  @include contentBoxStyle();
-  .mainContent{
-    flex: 1;
+.cleanWarningMain.light {
+  .mainContent {
     background-color: #fff;
   }
-  .pagination{
-    height: 50px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
- 
-  :global{
-    .iconfont{
-      font-size: 20px;
-      &:hover{
-        color:#199475
+  :global {
+    .iconfont {
+      &:hover {
+        color: #199475;
       }
-    }
-    .ant-table{
-      .ant-table-thead{
-        th>div{
-          height: 60px;
-        }
-      }
-      .ant-table-column-sorter{
-        top: 18px;
-      }
-      .icon-look{
-        cursor: pointer;
-      }
-    }
-    .ant-table .ant-table-thead > tr > th{
-      padding: 0 24px;
-    }
-    .ant-table .ant-table-tbody > tr > td{
-      padding: 0 24px;
     }
   }
-  
 }
-
-.clearWarningSide{
+.clearWarningSide.light {
   @include contentBoxStyle();
-  z-index: 99;
-  .sideContent{
-    flex: 1;
+  color: $darkColor;
+  .sideContent {
     background-color: #fff;
   }
-}
-
-.topStations{
-  height: 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid $promptColor;
-  position: relative;
-  .leftPart{
-    height: 100%;
-    line-height: 60px;
-    .stationName{
-      color: $darkColor;
-      font-size: 18px;
-    }
-    :global{
-      .anticon{
-        height: 100%;
-        line-height: 60px;
-        cursor: pointer;
-        font-size: 16px;
+  .topStations {
+    border-bottom: 1px solid $promptColor;
+    color: $darkColor;
+    :global {
+      .anticon {
         color: $themeColor;
-        padding: 0 20px;
+      }
+    }
+    .rightPart {
+      border-left: 1px solid $promptColor;
+    }
+    .stationList {
+      background-color: #fff;
+      .provinceName {
+        background-color: #f8f8f8;
       }
     }
   }
-  .rightPart{
-    width: 60px;
-    height: 100%;
-    line-height: 60px;
-    text-align: center;
-    font-size: 20px;
-    // color: $themeColor;
-    cursor: pointer;
-    border-left: 1px solid $promptColor;
-  }
-  .stationList{
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 99;
-    background-color: #fff;
-    width: 300px;
-    max-height: calc(100vh - 123px);
-    overflow: auto;
-    .title{
-      margin-bottom: 0;
-      height: 60px;
-      line-height: 60px;
-      color: $darkColor;
-      font-size: 18px;
-      :global{
-        .anticon{
-          font-size: 16px;
-          color: $themeColor;
-          padding: 0 20px;
-        }
-      }
-    }
-    .eachProvince{
-      padding-left: 40px;
-    }
-    .provinceName{
-      color: $darkColor;
-      background-color: #f8f8f8;
-      height: 30px;
-      line-height: 30px;
-    }
-    .stationContent{
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      .stationName{
-        flex-basis: 50%;
-        height: 30px;
-        color: $darkColor;
-        cursor: pointer;
-        word-break: break-all;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
-    
-  }
-}
 
-.dustInfo{
-  height: 124px;
-  display: flex;
-  border-bottom: 1px solid $promptColor;
-  .effectGen, .effectDay{
-    width: 140px;
-    margin: 12px 0 24px 24px;
-    border-right: 1px solid $promptColor;
-    display: flex;
-    flex-direction: column;
-    .text{
-      color: $darkColor;
-    }
-    .dustEffectValue, .lastCleanValue {
-      height: 52px;
-      line-height: 64px;
-      font-size: 24px;
-      color: $themeColor;
+  .dustInfo {
+    border-bottom: 1px solid $promptColor;
+    .effectGen,
+    .effectDay {
+      border-right: 1px solid $promptColor;
+      .dustEffectValue,
+      .lastCleanValue {
+        color: $themeColor;
+      }
     }
   }
-  .effectGen{
-    width: 215px;
-    .demicalValue{
-      font-size: 16px;
+
+  .effectCharts {
+    .title {
+      border-bottom: 1px solid $promptColor;
     }
-  }
-  .weather{
-    padding-left: 24px;
-    display: flex;
-    align-items: center;
-    width: 252px;
-    .eachWeather{
-      margin-top: 12px;
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      align-items: center;
-      font-size: 10px;
-      color: $darkColor;
+    .darkRect {
+      background-color: #199475;
     }
-    img{
-      height: 24px;
-      margin: 4px 0;
+    .lightRect {
+      background-color: #f9b600;
     }
-    .noWeather{
-      font-size: 12px;
+    .round {
+      border: 1px solid #3e97d1;
+    }
+    :global {
+      .ant-tabs-nav-container {
+        background-color: #f8f8f8;
+      }
     }
   }
 }
 
-.effectCharts{
-  position: relative;
-  .eachChart{
-    width: 100%;
-    display: flex;
-    padding: 0 24px;
-    justify-content: center;
+@import "../../../../theme/darkTheme.scss";
+.cleanWarningMain.dark {
+  background: $background;
+  .wrap {
+    background: $light-background;
+    border: 1px solid $border-color;
+    margin-top: 10px;
   }
-  .effectChart{
-    height: 400px;
-    flex: 1;
-    .chartTool{
-      display: flex;
-      flex-direction: column;
-      padding-bottom: 10px;
-      .title{
-        display: flex;
-        height: 14px;
-        padding: 10px 10px 12px;
-        font-size: 12px;
-        align-items: center;
-        color: $darkColor;
-        border-bottom: 1px solid $promptColor;
-        margin-bottom: 8px;
+}
+
+.clearWarningSide.dark {
+  background: $background;
+  color: $fontColor;
+  .topStations {
+    border: 1px solid $border-color;
+    background: $light-background;
+    :global {
+      .anticon {
+        color: $fontColor-hover;
       }
-      .content{
-        display: flex;
-        height: 21px;
-        padding: 0 10px;
-        font-size: 12px;
-        color: $darkColor;
-        align-items: center;
-        .darkRect, .lightRect, .round, .text, .value{
-          margin-right: 4px;
-        }
-        .darkRect, .lightRect, .round{
-          width: 6px;
-          height: 6px;
-          background-color: #199475,
-        }
-        .lightRect {
-          background-color: #f9b600,
-        }
-        .round{
-          border-radius: 50%;
-          border: 1px solid #3e97d1;
-        }
+    }
+    .leftPart {
+      .stationName {
+        color: $fontColor-hover;
+      }
+    }
+    .rightPart {
+      border-left: 1px solid $border-color;
+    }
+    .stationList {
+      background: $sideBar-background;
+      border: 1px solid $border-color;
+      box-shadow: 0 0 4px 0 $box-shadow-color;
+      color: $fontColor;
+      .title {
+        color: $fontColor-hover;
+      }
+      .provinceName {
+        color: $fontColor-hover;
       }
     }
   }
-  :global{
-    .ant-tabs-nav-container{
-      background-color: #f8f8f8;
+
+  .dustInfo {
+    background: $light-background;
+    border: 1px solid $border-color;
+    margin-top: 10px;
+    .effectGen,
+    .effectDay {
+      border-right: 1px solid $border-color;
+      .dustEffectValue,
+      .lastCleanValue {
+        color: $fontColor-hover;
+      }
     }
-    .ant-calendar-picker{
-      position: absolute;
-      right: 24px;
-      top: 56px;
-      z-index: 99;
-      .ant-calendar-picker-input .anticon{
-        right: 8px;
+  }
+
+  .effectCharts {
+    background: $light-background;
+    border: 1px solid $border-color;
+    margin-top: 10px;
+    .title {
+      border-bottom: 1px solid $border-color;
+    }
+    .darkRect {
+      background-color: #00f8ff;
+    }
+    .lightRect {
+      background-color: #fd6e8f;
+    }
+    .round {
+      border: 1px solid #f8e71c;
+    }
+    :global {
+      .ant-tabs-nav-container {
+        background-color: transparent;
+      }
+      .ant-tabs-bar {
+        border: none;
       }
     }
   }
