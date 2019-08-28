@@ -11,6 +11,7 @@ class DefectCheckForm extends Component {
     getDocketHandle: PropTypes.func,
     onChange: PropTypes.func,
     docketId: PropTypes.string,
+    theme: PropTypes.string,
   }
 
   componentWillUnmount() {
@@ -38,9 +39,10 @@ class DefectCheckForm extends Component {
 
 
   render() {
+    const { theme } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.onSubmit} className={styles.dealForm}>
+      <Form onSubmit={this.onSubmit} className={`${styles.dealForm} ${styles[theme]}`}>
         <FormItem label="处理建议" colon={false}>
           {getFieldDecorator('handleDesc', {
             rules: [{

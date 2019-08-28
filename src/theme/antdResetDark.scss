@@ -139,6 +139,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: 8px;
+    height: 34px;
     i {
       background-image: linear-gradient(-180deg, #b4ec51 0%, #429321 100%);
       border: 2px solid #7ed321;
@@ -891,8 +893,17 @@
   }
 
   // =============form===========
-  .ant-form-item-label > label {
+  .ant-form {
     color: $fontColor;
+    &-item {
+      color: $fontColor;
+      &-label {
+        color: $fontColor;
+        label {
+          color: $fontColor !important;
+        }
+      }
+    }
   }
 
   .has-error .ant-form-explain,
