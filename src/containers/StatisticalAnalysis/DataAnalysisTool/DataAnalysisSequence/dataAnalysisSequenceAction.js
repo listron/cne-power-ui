@@ -6,4 +6,5 @@ export const dataAnalysisSequenceAction = {
   getSequenceOtherName: Symbol('getSequenceOtherName'),
   getSequenceData: Symbol('getSequenceData'),
   getBigSequenceData: Symbol('getBigSequenceData'),
+  getxyLimitValue: Symbol('getxyLimitValue'),
 };

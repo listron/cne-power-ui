@@ -30,18 +30,25 @@ class SingleScatter extends React.PureComponent {
     myChart.setOption(option);
   }
   componentWillReceiveProps(nextProps) {
-    const { activeCode, scatterData, chartLoading, theme, saveBtn } = nextProps;
+    const { activeCode, scatterData, chartLoading, theme, saveBtn, deviceList, xyValueLimit } = nextProps;
+    // console.log('xyValueLimit22222: ', xyValueLimit);
     const prevCode = this.props.activeCode;
-    if ((activeCode && activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
+    if (activeCode !== prevCode) {
       const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
-      if (chartLoading) {
-        scatterChart.showLoading();
-      }
       if (!chartLoading) {
         scatterChart.hideLoading();
       }
-      this.drawChart(scatterData, saveBtn, true);//此处的第三个参数是控制定时器是否发送下一个请求
 
+    }
+    if ((activeCode !== prevCode && activeCode === this.props.deviceFullCode)) {
+      const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
+      this.drawChart(scatterData, saveBtn, true);//此处的第三个参数是控制定时器是否发送下一个请求
+      if (this.props.deviceFullCode !== deviceList[deviceList.length - 1].deviceFullCode && !chartLoading) {
+        scatterChart.showLoading();
+      }
+      if (this.props.deviceFullCode === deviceList[deviceList.length - 1].deviceFullCode) {
+        scatterChart.hideLoading();
+      }
     }
     if (saveBtn !== this.props.saveBtn) {
       this.drawChart(scatterData, saveBtn, false);
@@ -57,7 +64,9 @@ class SingleScatter extends React.PureComponent {
 
   }
   creatOption = (scatterData = {}, saveBtn) => {
-    const { title, pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
+    const { title, pointCodeNameX, pointCodeNameY, startTime, endTime, xyValueLimit } = this.props;
+    // console.log('xyValueLimit11111: ', xyValueLimit);
+    const { xMax, xMin, yMax, yMin } = xyValueLimit;
     const { chartData = [] } = scatterData;
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
@@ -100,19 +109,12 @@ class SingleScatter extends React.PureComponent {
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div>${moment(startTime).format('YYYY-MM-DD HH:mm:ss')}-${
-            moment(endTime).format('YYYY-MM-DD HH:mm:ss')
-            }</div>
+           
             <div class=${styles.lineStyle}>${pointCodeNameX}: ${dataFormat(info[0], '--', 2)}</div>
             <div class=${styles.lineStyle}>${pointCodeNameY}: ${dataFormat(info[1], '--', 2)}</div>
           </div>`;
         },
         backgroundColor: '#fff',
-        axisPointer: {
-          // type: 'cross',
-
-        },
-
         padding: 10,
         textStyle: {
           color: 'rgba(0, 0, 0, 0.65)',
@@ -123,6 +125,8 @@ class SingleScatter extends React.PureComponent {
       xAxis: {
         type: 'value',
         nameGap: -40,
+        min: xMin,
+        max: xMax,
         name: pointCodeNameX,
         nameTextStyle: {
           fontSize: 18,
@@ -156,6 +160,8 @@ class SingleScatter extends React.PureComponent {
           nameRotate: 360,
           nameGap: 20,
           type: 'value',
+          min: yMin,
+          max: yMax,
           nameLocation: 'center',
           nameTextStyle: {
             fontSize: 18,
@@ -198,7 +204,7 @@ class SingleScatter extends React.PureComponent {
     }
     return val;
   }
-  drawChart = (scatterData, saveBtn, isRequest) => {
+  drawChart = (scatterData, saveBtn, isRequest, ) => {
     const { title, index, onChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
     const parms = { stationCode, xPointCode, yPointCode, startTime, endTime };
     const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
@@ -217,7 +223,7 @@ class SingleScatter extends React.PureComponent {
       this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
     });
     isRequest && setTimeout(() => {
-      const continueQuery = index < deviceList.length;
+      const continueQuery = index < deviceList.length - 1;
       continueQuery && this.props.getScatterData({
         ...parms,
         deviceFullCode: deviceList[index + 1].deviceFullCode,

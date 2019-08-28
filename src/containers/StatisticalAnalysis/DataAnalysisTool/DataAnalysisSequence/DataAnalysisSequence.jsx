@@ -53,6 +53,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSequenceOtherName: payload => dispatch({ type: dataAnalysisSequenceAction.getSequenceOtherName, payload }),
   getSequenceData: payload => dispatch({ type: dataAnalysisSequenceAction.getSequenceData, payload }),
   getBigSequenceData: payload => dispatch({ type: dataAnalysisSequenceAction.getBigSequenceData, payload }),
+  getxyLimitValue: payload => dispatch({ type: dataAnalysisSequenceAction.getxyLimitValue, payload }),
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(DataAnalysisSequence);
