@@ -361,14 +361,12 @@ class HandleSeachData extends React.Component {
           {<div className={styles.contrastValue}>
             <div className={styles.bottomLeft}>
               <span>{xName ? xName : '--'}</span>
-
               <InputNumber
                 value={xMax}
                 formatter={value => `最大值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
                 onChange={(value) => this.setState({ xyValueLimit: { ...xyValueLimit, xMax: value } })}
               />
-
               <InputNumber
                 value={xMin}
                 formatter={value => `最小值 ${value}`}

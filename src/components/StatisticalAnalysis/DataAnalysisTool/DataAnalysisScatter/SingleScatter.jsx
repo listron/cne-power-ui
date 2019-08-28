@@ -44,7 +44,11 @@ class SingleScatter extends React.PureComponent {
       const scatterChart = echarts.init(this.chartId, themeConfig[theme]);
       this.drawChart(scatterData, saveBtn, true);//此处的第三个参数是控制定时器是否发送下一个请求
       if (this.props.deviceFullCode !== deviceList[deviceList.length - 1].deviceFullCode && !chartLoading) {
-        scatterChart.showLoading();
+        const lightColor = {
+          maskColor: 'rgba(255, 255, 255, 0.8)',
+          color: '#199475',
+        };
+        scatterChart.showLoading('default', lightColor);
       }
       if (this.props.deviceFullCode === deviceList[deviceList.length - 1].deviceFullCode) {
         scatterChart.hideLoading();
@@ -61,18 +65,18 @@ class SingleScatter extends React.PureComponent {
   }
   componentWillUnmount() {
     echarts.init(this.chartId, themeConfig[this.props.theme]).dispose();
-
   }
   creatOption = (scatterData = {}, saveBtn) => {
     const { title, pointCodeNameX, pointCodeNameY, startTime, endTime, xyValueLimit } = this.props;
-    // console.log('xyValueLimit11111: ', xyValueLimit);
     const { xMax, xMin, yMax, yMin } = xyValueLimit;
     const { chartData = [] } = scatterData;
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
+    const color = '#199475';
     const option = {
       graphic: inverterTenMinGraphic,
+      color: color,
       title: {
         text: [`${title}`, '{b|}'].join(''),
         left: '5%',

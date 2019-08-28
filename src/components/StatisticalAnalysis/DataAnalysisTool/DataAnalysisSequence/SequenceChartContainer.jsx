@@ -52,17 +52,15 @@ class SequenceChartContainer extends React.Component {
     if ((nextState.newSrcUrl !== this.state.newSrcUrl) || (nextState.srcObj !== this.state.srcObj)) {
       return false;
     }
-    // if (nextProps.deviceList !== this.props.deviceList || (nextProps.sequenceChart !== this.props.sequenceChart)) {
-    //   return true;
-    // }
     return true;
   }
 
   likeStatusChange = (index, bool, sequenceData) => {
     const { deviceList, changeSquenceStore } = this.props;
     deviceList[index].likeStatus = bool;
-    changeSquenceStore({ deviceList, sequenceData });
+    sequenceData ? changeSquenceStore({ deviceList, sequenceData }) : changeSquenceStore({ deviceList });
   };
+
   saveImgUrl = (title, src) => {
     const { srcObj } = this.state;
     const newSrcUrl = [];
