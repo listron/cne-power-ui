@@ -67,7 +67,7 @@ class SequenceModal extends React.Component {
                 id={`${deviceName}_${currentImgIndex}`}
                 index={currentImgIndex}
                 deviceName={deviceName}
-                allChartData={curBigChartData}
+                // chartData={curBigChartData}
                 likeStatusChange={likeStatusChange}
               />
             </div>

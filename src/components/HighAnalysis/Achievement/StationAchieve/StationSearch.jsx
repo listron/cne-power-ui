@@ -37,7 +37,7 @@ class StationSearch extends Component {
       searchDevice,
       searchDates,
       searchQuota,
-      queryTimer,
+      queryTimer: null,
     };
   }
 
@@ -97,10 +97,10 @@ class StationSearch extends Component {
 
   queryDisable = () => {
     const { pageName } = this.props;
-    const { searchDevice, searchCode, searchQuota } = this.state;
+    const { searchDevice, searchCode, searchQuota, queryTimer } = this.state;
     const infoLoss = !searchDevice || searchDevice.length === 0 || !searchCode;
     const quotaLoss = pageName === 'lost' && !searchQuota;
-    return infoLoss || quotaLoss || this.queryTimer;
+    return infoLoss || quotaLoss || queryTimer;
   }
 
   render() {
