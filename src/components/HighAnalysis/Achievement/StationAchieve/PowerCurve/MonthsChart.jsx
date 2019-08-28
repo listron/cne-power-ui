@@ -14,6 +14,7 @@ class MonthsChart extends Component {
     curveDeviceName: PropTypes.string,
     curveMonths: PropTypes.object,
     curveMonthsLoading: PropTypes.bool,
+    curveAllMonths: PropTypes.array,
   }
 
   componentDidMount(){
@@ -38,20 +39,33 @@ class MonthsChart extends Component {
     }
   }
 
+  monthColors = [
+    'rgb(80,227,194)', 'rgb(126,211,33)', 'rgb(184,233,134)', 'rgb(160,255,235)',
+    'rgb(255,108,238)', 'rgb(159,152,255)', 'rgb(255,120,120)', 'rgb(255,0,128)',
+    'rgb(255,0,0)', 'rgb(255,144,0)', 'rgb(255,197,129)', 'rgb(255,253,0)',
+  ]
+
   setChartLoading = () => {
     const monthChart = this.monthRef && echarts.getInstanceByDom(this.monthRef);
     monthChart && monthChart.showLoading();
   }
 
   createSeires = (curveData = [], activeMonths = []) => curveData.map((e) => {
+    const { curveAllMonths } = this.props;
     const { devicePowerInfoVos = [], calcDate } = e || {};
     const lineOpacity = activeMonths.includes(calcDate) || (calcDate === '理论功率') ? 1 : 0;
+    const monthIndex = curveAllMonths.indexOf(calcDate);
+    const lineColor = monthIndex % this.monthColors.length;
     return {
       type: 'line',
       smooth: true,
       name: calcDate,
+      silent: !lineOpacity,
       itemStyle: { opacity: lineOpacity },
-      lineStyle: { opacity: lineOpacity },
+      lineStyle: {
+        opacity: lineOpacity,
+        color: calcDate === '理论功率' ? 'rgb(194,53,49)' : this.monthColors[lineColor],
+      },
       data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]),
     };
   })
@@ -60,9 +74,9 @@ class MonthsChart extends Component {
     const { history } = this.props;
     const { search } = history.location;
     const { pages = '', station } = searchUtil(search).parse(); // 新的pages变化
-    const curPages = pages.split('_');
+    const curPages = pages.split('_').filter(e => !!e);
     const stopExist = curPages.includes('stop');
-    const nextPagesStr = stopExist ? pages : curPages.concat('stop');
+    const nextPagesStr = (stopExist ? curPages : curPages.concat('stop')).join('_');
     const { code, device, date } = JSON.parse(station); // 传入运行数据
     const stationSearch = JSON.stringify({ code, device: device.join('_'), dates: date });
     const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({stop: stationSearch}).stringify();
