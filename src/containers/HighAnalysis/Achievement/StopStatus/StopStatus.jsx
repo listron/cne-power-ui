@@ -30,8 +30,8 @@ class StopStatus extends Component {
   }
 
   componentDidMount(){
-    const { location, stopStringify, areaStation, modeDevices } = this.props;
-    const { search } = location;
+    const { history, stopStringify, areaStation, modeDevices } = this.props;
+    const { search } = history.location;
     const infoStr = searchUtil(search).getValue('stop');
     if (infoStr && !stopStringify) { // 有search路径但无访问记录: 刷新进入。
       const { stationCode, deviceCodes, startTime, endTime } = this.getQueryParam(infoStr);
@@ -51,7 +51,7 @@ class StopStatus extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const nextLocation = nextProps.location;
+    const nextLocation = nextProps.history.location;
     const nextDevices = nextProps.modeDevices;
     const nextArea = nextProps.areaStation;
     const nextSearch = nextLocation.search || '';
@@ -71,9 +71,27 @@ class StopStatus extends Component {
     if (!stopStringify && areaStation.length === 0 && nextArea.length > 0) { // 刷新 得到电站数据
       this.propsAreaStationChange(nextArea);
     }
-    if (!stopStringify && modeDevices.length === 0 && nextDevices.length > 0) { // 第一次 得到设备信息
+    if (this.getIsDevicesChange(modeDevices, nextDevices)) { // 第一次 得到设备信息
       this.propsModeDevicesChange(nextDevices);
     }
+  }
+
+  getIsDevicesChange = (pre, cur) => { // 判断设备是否发生改变
+    if(pre.length === 0 && cur.length > 0) {
+      return true;
+    }
+    if (pre.length > 0 && cur.length > 0) { // deviceFullCode唯一。进行比较。
+      let isDeviceChange = false;
+      const preMode = pre[0] || {};
+      const preChild = preMode.children || [];
+      const preDevice = preChild[0] || {};
+      const curMode = cur[0] || {};
+      const curChild = curMode.children || [];
+      const curDevice = curChild[0] || {};
+      (preMode.value !== curMode.value || preDevice.value !== curDevice.value) && (isDeviceChange = true);
+      return isDeviceChange;
+    }
+    return false;
   }
 
   propsAreaStationChange = (areaStation = []) => { // 得到电站信息. => 默认选中第一个。
@@ -102,8 +120,8 @@ class StopStatus extends Component {
   }
 
   historyChange = (code, device, startTime, endTime) => {
-    const { location, history } = this.props;
-    const { search } = location;
+    const { history } = this.props;
+    const { search } = history.location;
     const newSearch = searchUtil(search).replace({
       stop: JSON.stringify({ code, device, dates: [startTime, endTime] }),
     }).stringify();
@@ -195,6 +213,7 @@ class StopStatus extends Component {
             <span className={styles.text}>选择时间</span>
             <RangePicker
               value={[startTime ? moment(startTime) : null, endTime ? moment(endTime) : null]}
+              disabledDate={(cur) => moment().subtract(2, 'day').isBefore(cur, 'day')}
               onChange={this.onDateChange}
               allowClear={false}
               style={{width: '220px'}}
