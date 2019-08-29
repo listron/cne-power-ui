@@ -59,14 +59,12 @@ class BigSequenceCharts extends React.Component {
       this.renderChart(curBigChartData, saveBtn, deviceName);
     }
     if (nextProps.bigchartLoading) {
-
       myChart.showLoading('default', lightColor);
     }
     if (!nextProps.bigchartLoading) {
       myChart.hideLoading();
     }
     if ((this.props.saveBtn !== saveBtn) || (nextProps.id !== this.props.id)) {
-
       this.renderChart(curBigChartData, saveBtn, deviceName);
     }
   }

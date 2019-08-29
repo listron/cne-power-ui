@@ -144,7 +144,6 @@ class SequenceChart extends React.Component {
         axisLabel: {
           formatter: (value) => {
             return moment(value).format('YYYY-MM-DD') + '\n' + moment(value).format('HH:mm:ss');
-
           },
         },
       },

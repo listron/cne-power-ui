@@ -125,9 +125,10 @@ class SingleScatter extends React.PureComponent {
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
+            <div class=${styles.lineStyle}>时间: ${info[2] ? moment(info[2]).format('YYYY-MM-DD HH:mm:ss') : '--'}</div>
             <div class=${styles.lineStyle}>${pointCodeNameX}: ${dataFormat(info[0], '--', 2)}</div>
             <div class=${styles.lineStyle}>${pointCodeNameY}: ${dataFormat(info[1], '--', 2)}</div>
-            <div class=${styles.lineStyle}>时间: ${info[2] ? moment(info[2]).format('YYYY-MM-DD HH:mm:ss') : '--'}</div>
+          
           </div>`;
         },
         backgroundColor: '#fff',

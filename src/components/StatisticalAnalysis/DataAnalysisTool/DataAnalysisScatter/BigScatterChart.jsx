@@ -51,7 +51,7 @@ class BigScattrChart extends React.Component {
   creatOption = (bigScatterData = {}, saveBtn, title) => {
     const { pointCodeNameX, pointCodeNameY, xyValueLimit } = this.props;
     const { xMax, xMin, yMax, yMin } = xyValueLimit;
-    const { chartData = [] } = bigScatterData;
+    const { chartData = [], xUnit, yUnit } = bigScatterData;
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
@@ -80,8 +80,7 @@ class BigScattrChart extends React.Component {
       grid: {
         right: '10%',
         top: '50px',
-        left: '20%',
-
+        left: '10%',
       },
       tooltip: {
         trigger: 'item',
@@ -95,7 +94,7 @@ class BigScattrChart extends React.Component {
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-           
+            <div class=${styles.lineStyle}>时间: ${info[2] ? moment(info[2]).format('YYYY-MM-DD HH:mm:ss') : '--'}</div>
             <div class=${styles.lineStyle}>${pointCodeNameX}: ${dataFormat(info[0], '--', 2)}</div>
             <div class=${styles.lineStyle}>${pointCodeNameY}: ${dataFormat(info[1], '--', 2)}</div>
           </div>`;
@@ -113,7 +112,7 @@ class BigScattrChart extends React.Component {
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
       },
-      xAxis: {
+      xAxis: [{
         type: 'value',
         nameGap: -40,
         min: xMin,
@@ -144,7 +143,9 @@ class BigScattrChart extends React.Component {
         splitLine: {
           show: false,
         },
-      },
+      }, {
+        name: xUnit,
+      }],
       yAxis: [
         {
           name: this.format(pointCodeNameY),
@@ -175,6 +176,12 @@ class BigScattrChart extends React.Component {
               type: 'dashed',
             },
           },
+        }, {
+          name: yUnit,
+          nameTextStyle: {
+            verticalAlign: 'bottom',
+            lineHeight: 5,
+          },
         },
       ],
       series: [{
@@ -184,7 +191,7 @@ class BigScattrChart extends React.Component {
         emphasis: {
           symbolSize: 8,
         },
-        data: chartData.map(e => [e.x, e.y]),
+        data: chartData.map(e => [e.x, e.y, e.time]),
       }],
     };
     return option;
