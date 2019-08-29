@@ -316,7 +316,7 @@ class HandleSeacher extends React.Component {
     });
   }
   render() {
-    const { stationCode, stations, scatterotherNames, theme, startTime, endTime } = this.props;
+    const { stationCode, stations, scatterotherNames, theme, startTime, endTime, isClick } = this.props;
 
     const { isSwap, options, scatterNameValue, showOther, xName, yName, xyValueLimit, disableDateFun } = this.state;
     const { yMin, yMax, xMin, xMax } = xyValueLimit;
@@ -381,7 +381,7 @@ class HandleSeacher extends React.Component {
             </Select>
           </div>}
           <Button className={styles.seachBtn} onClick={this.getScatterData}>查询</Button>
-          <Button className={styles.seachBtn} onClick={this.downPic}>图片下载</Button>
+          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!isClick} onClick={this.downPic}>图片下载</Button>
 
         </div>
       </div>

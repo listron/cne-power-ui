@@ -87,6 +87,7 @@
       .contrastValue {
         margin: 0 24px;
         display: flex;
+        flex: 1;
 
         :global {
           .ant-input-number {
@@ -95,7 +96,9 @@
         }
 
         .bottomLeft {
-          width: 500px;
+          // width: 500px;
+          display: flex;
+          flex: 1;
 
           :global {
             .ant-input-number {
@@ -138,6 +141,16 @@
         &:hover {
           background: $themeColor;
           color: #fff;
+        }
+      }
+      .disabledSeach {
+        border: none;
+        background: #f5f5f5;
+        color: #BFBFBF;
+
+        &:hover {
+          background: #f5f5f5;
+          color: #BFBFBF;
         }
       }
     }

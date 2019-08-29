@@ -195,22 +195,24 @@ class HandleSeachData extends React.Component {
       this.props.getSequenceOtherName({
         stationCode,
       });
-    }
-    const selectedOption = selectedOptions[1] ? selectedOptions[1] : [];
-    const { pointCodeNameX, pointCodeNameY } = selectedOption;
-    const codeValue = value[1];
-    const valueArr = codeValue.split('_');
-    const pointCodeX = valueArr[0];
-    const pointCodeY = valueArr[1];
+    } else {
+      const selectedOption = selectedOptions[1] ? selectedOptions[1] : [];
+      const { pointCodeNameX, pointCodeNameY } = selectedOption;
+      const codeValue = value[1];
+      const valueArr = codeValue.split('_');
+      const pointCodeX = valueArr[0];
+      const pointCodeY = valueArr[1];
 
-    this.setState({
-      xName: pointCodeNameX,
-      yName: pointCodeNameY,
-      xCode: pointCodeX,
-      yCode: pointCodeY,
-      sequenceNameValue: value,
-      showOther: false,
-    });
+      this.setState({
+        xName: pointCodeNameX,
+        yName: pointCodeNameY,
+        xCode: pointCodeX,
+        yCode: pointCodeY,
+        sequenceNameValue: value,
+        showOther: false,
+      });
+    }
+
 
     // this.getLimitValue({ xPointCode: pointCodeX, yPointCode: pointCodeY });
 
@@ -306,7 +308,7 @@ class HandleSeachData extends React.Component {
     });
   }
   render() {
-    const { stationCode, stations, sequenceotherNames, theme, startTime, endTime } = this.props;
+    const { stationCode, stations, sequenceotherNames, theme, startTime, endTime, isClick } = this.props;
     const { isSwap, options, sequenceNameValue, showOther, xName, yName, xyValueLimit, disableDateFun } = this.state;
     const { yMin, yMax, xMin, xMax } = xyValueLimit;
     const dateFormat = 'YYYY.MM.DD';
@@ -393,10 +395,11 @@ class HandleSeachData extends React.Component {
                 parser={value => value.replace(/\D/g, '')}
                 onChange={(value) => this.setState({ xyValueLimit: { ...xyValueLimit, yMin: value } })}
               />
-              <Button className={styles.seachBtn} onClick={this.getSequenceData}>查询</Button>
+
             </div>
           </div>}
-          <Button className={styles.seachBtn} onClick={this.downPic}>图片下载</Button>
+          <Button className={styles.seachBtn} onClick={this.getSequenceData}>查询</Button>
+          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!this.props.isClick} onClick={this.downPic}>图片下载</Button>
         </div>
       </div>
     );
