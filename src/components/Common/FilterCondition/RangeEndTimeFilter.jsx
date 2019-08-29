@@ -20,11 +20,11 @@ class RangeEndTimeFilter extends Component {
   onChange = (date, dateString) => {
     if (date.length === 0) {
       this.props.onChangeFilter({
-        endTime: date
+        endTime: date,
       });
     } else {
       this.props.onChangeFilter({
-        endTime: [date[0].hour(0).minute(0).second(0).toISOString(), date[1].hour(23).minute(59).second(59).toISOString()]
+        endTime: [date[0].hour(0).minute(0).second(0).toISOString(), date[1].hour(23).minute(59).second(59).toISOString()],
       });
     }
   }
@@ -40,9 +40,11 @@ class RangeEndTimeFilter extends Component {
     return (
       <div className={styles.filterItem}>
         <span onClick={this.onReset} className={endTime.length === 0 ? styles.selected : styles.all}>不限</span>
+        <span ref={'datePicker'} />
         <RangePicker
           value={[endTime[0] ? moment(endTime[0]) : null, endTime[1] ? moment(endTime[1]) : null]}
           onChange={this.onChange}
+          getCalendarContainer={() => this.refs.datePicker}
         />
       </div>
     );

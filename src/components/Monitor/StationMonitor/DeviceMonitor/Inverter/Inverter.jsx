@@ -18,13 +18,14 @@ class Seriesinverter extends Component {
     stopMonitor: PropTypes.func,
     getDeviceInfoMonitor: PropTypes.func,
     getDeviceChartMonitor: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   state = {
     chartName: 'output', // 组串式逆变器 chart图表切换 output <=> branch
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
     const params = {
       stationCode,
@@ -36,13 +37,13 @@ class Seriesinverter extends Component {
     this.props.getDeviceChartMonitor(params);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { deviceCode } = this.props.match.params;
     const nextParams = nextProps.match.params;
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
-    if( nextDevice !== deviceCode){
+    if (nextDevice !== deviceCode) {
       const params = {
         stationCode: nextStation,
         deviceCode: nextDevice,
@@ -58,7 +59,7 @@ class Seriesinverter extends Component {
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.resetDeviceStore();
     this.props.stopMonitor(); // 停止之前的定时器。
   }
@@ -73,55 +74,58 @@ class Seriesinverter extends Component {
     }
   }
 
-  render(){
+  render() {
     const { chartName } = this.state;
-    const { match, stations } = this.props;
+    const { match, stations, theme } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = match.params;
-    const backData={ path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
+    const backData = { path: `/monitor/singleStation/${stationCode}`, name: '返回电站' };
     const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
     const breadCrumbData = {
-      breadData:[{
+      breadData: [{
         link: true,
         name: currentStation.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
-      },{
-        name: deviceTypeCode === '201'?'集中式逆变器': '组串式逆变器',
+      }, {
+        name: deviceTypeCode === '201' ? '集中式逆变器' : '组串式逆变器',
       }],
-      iconName: 'iconfont icon-nb'
+      iconName: 'iconfont icon-nb',
     };
     return (
-      <div className={styles.seriesinverter}>
-        <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
+      <div className={`${styles.seriesinverter} ${styles[theme]}`}>
+        <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
         <div className={styles.deviceContent}>
           <InverterHeader {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <InverterStatistics {...this.props} />
-          <div className={styles.inverterChartTitle}>
-            {deviceTypeCode === '201' && <span className={styles.single}>出力图</span>}
-            {deviceTypeCode === '206' && <span className={styles.tabs} onClick={this.toggleChart}>
-              <span
-                className={chartName === 'output' ? styles.active : styles.inactive}
-                style={{borderTopRightRadius: '0px', borderBottomRightRadius: '0px'}}
-              >出力图</span>
-              <span
-                className={chartName === 'branch' ? styles.active : styles.inactive}
-                style={{borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px'}}
-              >支路电流图</span>
-            </span>}
+          <div className={styles.contWrap}>
+            <div className={styles.inverterChartTitle}>
+              {deviceTypeCode === '201' && <span className={styles.single}>出力图</span>}
+              {deviceTypeCode === '206' && <span className={styles.tabs} onClick={this.toggleChart}>
+                <span
+                  className={chartName === 'output' ? styles.active : styles.inactive}
+                  style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}
+                >出力图</span>
+                <span
+                  className={chartName === 'branch' ? styles.active : styles.inactive}
+                  style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}
+                >支路电流图</span>
+              </span>}
+            </div>
+            {chartName === 'output' && <InverterOutPutTenMin {...this.props} />}
+            {chartName === 'branch' && <InverterSeriesTenMin {...this.props} />}
+            <DevicePointsTable {...this.props} />
+            <DeviceAlarmTable
+              {...this.props}
+              stationCode={stationCode}
+              deviceTypeCode={deviceTypeCode}
+              deviceCode={deviceCode}
+              theme={theme}
+            />
+            {deviceTypeCode === '201' && <h3 className={styles.subTitleConfig}>下级设备</h3>}
+            {deviceTypeCode === '201' && <SubConfluenceList {...this.props} stationCode={stationCode} />}
           </div>
-          {chartName === 'output' && <InverterOutPutTenMin {...this.props} />}
-          {chartName === 'branch' && <InverterSeriesTenMin {...this.props} />}
-          <DevicePointsTable {...this.props} />
-          <DeviceAlarmTable
-            {...this.props}
-            stationCode={stationCode}
-            deviceTypeCode={deviceTypeCode}
-            deviceCode={deviceCode}
-          />
-          {deviceTypeCode === '201' && <h3 className={styles.subTitleConfig}>下级设备</h3>}
-          {deviceTypeCode === '201' && <SubConfluenceList {...this.props} stationCode={stationCode} />}
         </div>
       </div>
-    ) 
+    );
   }
 }
 

@@ -39,7 +39,7 @@ class ScoreAnalysis extends Component {
     const { activeKey } = this.state;
     return (
       <div className={`${styles.stationScore} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '电站评分' }]} style={{ paddingLeft: '38px' }} theme={theme} />
+        <CommonBreadcrumb breadData={[{ name: '电站评分' }]} style={{ paddingLeft: '38px' }} />
         <div className={styles.scoreContainer}>
           <div className={styles.scoreContent}>
             {stationTypeCount === 'multiple' &&
@@ -54,7 +54,7 @@ class ScoreAnalysis extends Component {
             {stationTypeCount === 'wind' && <div>风电</div>}
           </div>
         </div>
-        <Footer theme={theme} />
+        <Footer />
       </div>
     );
   }

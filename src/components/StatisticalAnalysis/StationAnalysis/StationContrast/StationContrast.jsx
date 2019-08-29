@@ -18,6 +18,7 @@ class StationContrast extends React.Component {
     stationContrastList: PropTypes.array,
     selectedStations: PropTypes.array,
     resetStationContrastStore: PropTypes.func,
+    theme: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -34,9 +35,7 @@ class StationContrast extends React.Component {
   }
   onTimeChange = (timeObj) => {
 
-    const { stationCode, year,month, toChangeStationContrastStore } = this.props;
-    // toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] });
-
+    const { stationCode, year, month, toChangeStationContrastStore } = this.props;
     if (timeObj.timeStyle === 'year') {
       toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] })
       if (stationCode.length === 2) {
@@ -62,7 +61,7 @@ class StationContrast extends React.Component {
     if (timeObj.timeStyle === 'day') {
       const currentYear = [moment(timeObj.startTime).format('YYYY')];
       const currentMonth = +moment(timeObj.startTime).format('MM');
-      toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: currentYear,month:currentMonth })
+      toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: currentYear, month: currentMonth })
       if (stationCode.length === 2) {
         this.props.getStationContrast({
           stationCode: stationCode,
@@ -77,19 +76,19 @@ class StationContrast extends React.Component {
 
   }
   stationSelected = (stations) => {
-    const { dateType, year,month } = this.props;
+    const { dateType, year, month } = this.props;
     this.props.toChangeStationContrastStore({
       stationCode: stations.map(e => e.stationCode),
       selectedStations: stations,
     });
-    if(dateType==='day'){
+    if (dateType === 'day') {
       this.props.getStationContrast({
         stationCode: stations.map(e => e.stationCode),
         dateType,
         year,
         month
       });
-    }else{
+    } else {
       this.props.getStationContrast({
         stationCode: stations.map(e => e.stationCode),
         dateType,
@@ -102,9 +101,9 @@ class StationContrast extends React.Component {
 
 
   render() {
-    const { stations, stationContrastList, selectedStations, year } = this.props;
+    const { stations, stationContrastList, selectedStations, theme } = this.props;
     return (
-      <div className={styles.singleStationType}>
+      <div className={`${styles.singleStationType} ${styles[theme]}`}>
         <div className={styles.stationTimeFilter}>
           <div className={styles.leftFilter}>
             <div className={styles.stationFilter}>
@@ -114,10 +113,10 @@ class StationContrast extends React.Component {
                 multiple={true}
                 onChange={this.stationSelected}
                 value={selectedStations}
+                theme={theme}
               />
             </div>
-
-            <TimeSelect timerText="" onChange={this.onTimeChange} />
+            <TimeSelect timerText="" onChange={this.onTimeChange} theme={theme} />
           </div>
           <span className={styles.rightContent}>数据统计截止时间{moment().subtract(1, 'days').format('MM[月]DD[日]')}</span>
         </div>

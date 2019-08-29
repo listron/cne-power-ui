@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 import styles from './styles.scss';
 import { Table } from 'antd';
 
 class TableGraph extends React.Component {
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   onMouseEnter = (record) => {
 
     return (
       <div>xuanfukuang</div>
-    )
+    );
   }
   //table排序
   getSort(a, b, sortBy, variable) {
@@ -22,7 +22,7 @@ class TableGraph extends React.Component {
     if (!b[variable]) {
       return -1 * result;
     }
-    return a[variable] - b[variable]
+    return a[variable] - b[variable];
   }
 
   getRadiationSort(a, b, sortBy, variable) {
@@ -32,11 +32,11 @@ class TableGraph extends React.Component {
     if (!b[variable].split('-')[1]) {
       return -1;
     }
-    return a[variable].split('-')[0] - b[variable].split('-')[0]
+    return a[variable].split('-')[0] - b[variable].split('-')[0];
   }
 
   render() {
-    const { column, dataArray } = this.props
+    const { column, dataArray, theme } = this.props;
     const children = column.map((item) => {
       return {
         title: item,
@@ -44,9 +44,9 @@ class TableGraph extends React.Component {
         key: item,
         sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, item),
         width: 90,
-        render: text => (text || text === 0) ? text : '--'
-      }
-    })
+        render: text => (text || text === 0) ? text : '--',
+      };
+    });
     const columns = [
       {
         title: '瞬时辐射区间',
@@ -56,14 +56,14 @@ class TableGraph extends React.Component {
         // fixed: 'left',
         defaultSortOrder: 'ascend',
         sorter: (a, b, sortBy) => this.getRadiationSort(a, b, sortBy, 'radiationInterval'),
-        render: text => (text || text === 0) ? text : '--'
+        render: text => (text || text === 0) ? text : '--',
       }, {
         title: '辐射总量',
-        children: children
-      },];
-    const data = dataArray && dataArray.map((e, i) => ({ ...e, key: i, }));
+        children: children,
+      }];
+    const data = dataArray && dataArray.map((e, i) => ({ ...e, key: i }));
     return (
-      <div className={styles.TableGraphContainer} >
+      <div className={`${styles.TableGraphContainer} ${styles[theme]}`} >
         <div className={styles.TableGraphContainerTitle}>
           <div>
             光资源分布排名
@@ -80,9 +80,9 @@ class TableGraph extends React.Component {
           pagination={false}
           scroll={{ x: '150%', y: 151 }}
           size="small"
-          onRow={(record) => { return { onMouseEnter: this.onMouseEnter } }} />
+          onRow={(record) => { return { onMouseEnter: this.onMouseEnter }; }} />
       </div>
-    )
+    );
   }
 }
-export default (TableGraph)
+export default (TableGraph);

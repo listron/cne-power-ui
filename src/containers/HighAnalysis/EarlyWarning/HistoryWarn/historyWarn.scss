@@ -1,23 +1,39 @@
-.historyWarnBox{
+.historyWarnBox {
   min-height: 100%;
   display: flex;
-  flex:1;
+  flex: 1;
   flex-direction: column;
-  .historyWarnContainer{
+  .historyWarnContainer {
     display: flex;
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
     padding: 24px 24px 0 24px;
-    background-color: #ececec;
-    overflow: hidden;   
+    overflow: hidden;
   }
-  .historyWarnContent{
+  .historyWarnContent {
     display: flex;
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
+    overflow: hidden;
+  }
+}
+
+.light {
+  .historyWarnContainer {
+    background-color: #ececec;
+  }
+  .historyWarnContent {
     background: #fff;
-    overflow: hidden;    
+  }
+}
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  .historyWarnContainer {
+    background: $background;
+  }
+  .historyWarnContent {
+    background: $background;
   }
 }

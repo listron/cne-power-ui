@@ -77,17 +77,14 @@ class BoxTransformerList extends Component {
     }, 60000);
   }
 
-  getStatusName = (value) => {
-    let result = [];
-    switch (value) {
-      case '100': result = [{ name: 'normal', text: '正常' }]; break;
-      case '200': result = [{ name: 'downtime', text: '停机' }]; break;
-      case '300': result = [{ name: 'fault', text: '故障' }]; break;
-      case '900': result = [{ name: 'noAccess', text: '未接入' }]; break;
-      default: result = [{ name: 'normal', text: '' }]; break;
-    }
-    return result;
+
+
+  getStatusName = {
+    '400': { name: 'normal', text: '正常' },
+    '500': { name: 'noContact', text: '中断' },
+    '900': { name: 'noAccess', text: '未接入' },
   }
+
 
   tableColumn = () => {
     const baseLinkPath = '/hidden/monitorDevice';
@@ -205,7 +202,7 @@ class BoxTransformerList extends Component {
                   </div>
                   <div className={styles.singledeviceItemBox}>
                     {list.map((item, i) => {
-                      const statusName = this.getStatusName(`${item.deviceStatus}`)[0].name;
+                      const statusName = item.deviceStatus && this.getStatusName[`${item.deviceStatus}`]['name'] || '';
                       const alarm = item.alarmNum && item.alarmNum > 0;
                       const devicePower = dataFormats(item.devicePower, '--', 2);
                       const deviceCapacity = dataFormats(item.deviceCapacity, '--', 2);
@@ -215,8 +212,9 @@ class BoxTransformerList extends Component {
                           <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
                             <div className={`${styles.statusBox}`} >
                               <div className={styles.deviceItemIcon} >
+                                {item.deviceStatus === 500 && <i className="iconfont icon-outage" /> || null}
                                 <i className={`iconfont icon-xb ${styles.icon}`} ></i>
-                                {(item.alarmNum && item.alarmNum > 0) && <i className="iconfont icon-alarm" ></i> || null}
+                                {(item.alarmNum && item.alarmNum > 0) && <i className="iconfont icon-alarm" /> || null}
                               </div>
                               <div className={styles.deviceItemR} >
                                 <div className={styles.deviceBlockName}><span>{item.deviceName}</span></div>

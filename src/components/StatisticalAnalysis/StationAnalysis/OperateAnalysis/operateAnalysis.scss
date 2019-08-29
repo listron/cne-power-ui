@@ -1,247 +1,188 @@
-@import '../../../../theme/theme.scss';
-.singleStationType {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    .stationTimeFilter {
-        background: #fff;
-        display: flex;
-        justify-content: space-between;
-        flex: 1;
-        align-items: center;
-        margin-bottom: 20px;
-        .leftFilter {
-            display: flex;
-            flex-direction: row;
-            .stationFilter {
-                padding-left: 30px;
-                display: flex;
-                align-items: center;
-                line-height: 43px;
-                .text {
-                    margin-right: 10px;
-                }
-            }
+@import "../../../../theme/theme.scss";
+@import "./layout.scss";
+.light {
+  .stationTimeFilter {
+    background: #fff;
+    .rightContent {
+      color: $lightColor;
+    }
+  }
+  .componentContainer {
+    background: #fff;
+    .title {
+      border-bottom: 2px solid #ececec;
+      .stationStatus {
+        .stationIcon {
+          i {
+            color: $themeColor;
+          }
         }
-        .rightContent {
-            margin-right: 30px;
+        .choiceYear {
+          :global {
+            .active {
+              background: #199475;
+              color: #fff;
+            }
+          }
+          span {
+            background: #fff;
+            color: #999999;
+            border: 1px solid #dfdfdf;
+            &.noSelect {
+              background: #f5f5f5;
+              border: 1px solid #d9d9d9;
+              color: rgba(0, 0, 0, 0.25);
+            }
+          }
+        }
+        .rightFont {
+          color: $lightColor;
+        }
+      }
+      .graph {
+        .stationTargetValue {
+          color: #199475;
+        }
+      }
+    }
+    .cardContainer {
+      .cardList {
+        :global {
+          .anticon {
             color: $lightColor;
+          }
         }
+      }
+      .cardItem {
+        background: #199475;
+        color: #fff;
+        .innerBottom {
+          background: rgba(0, 0, 0, 0.7);
+        }
+        .activeInnerBottom {
+          background: #a42b2c;
+        }
+      }
+      .lightResourcesn {
+        background: url("/img/operateBg1.png") no-repeat center;
+      }
+      .photovoltaicModule {
+        background: url("/img/operateBg2.png") no-repeat center;
+      }
+      .inverter {
+        background: url("/img/operateBg3.png") no-repeat center;
+      }
+      .electricPowerLine {
+        background: url("/img/operateBg4.png") no-repeat center;
+      }
+      .boosterStation {
+        background: url("/img/operateBg5.png") no-repeat center;
+      }
     }
-    .componentContainer {
-        background: #fff;
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        .title {
-            display: flex;
-            flex-direction: column; // padding-left: 30px;    
-            justify-content: space-between;
-            border-bottom: 2px solid #ececec;
-            padding-top: 10px;
-            .stationStatus {
-                margin-left: 30px;
-                color: $darkColor;
-                height: 40px;
-                line-height: 40px;
-                display: flex;
-                flex: 1;
-                flex-direction: row;
-                justify-content: space-between;
-                .stationIcon {
-                    i {
-                        color: $themeColor;
-                    }
-                }
-                .status {
-                    margin-right: 4px;
-                    display: flex;
-                    :global {
-                        .iconfont {
-                            margin-right: 4px;
-                        }
-                    }
-                    .plan {
-                        margin-left: 24px;
-                    }
-                    .choiceYear {
-                        display: inline-block;
-                        :global {
-                            .active {
-                                background: #199475;
-                                color: #fff;
-                                border: none;
-                            }
-                        }
-                        span {
-                            background: #fff;
-                            color: #999999;
-                            border: 1px solid #dfdfdf;
-                            border-radius: 2px;
-                            width: 45px;
-                            cursor: pointer;
-                            display: inline-block;
-                            margin: 0 4px;
-                            text-align: center;
-                            height: 19px;
-                            line-height: 16px;
-                            padding: 0 5px;
-                            &.noSelect {
-                                cursor: not-allowed;
-                                background: #f5f5f5;
-                                border: 1px solid #d9d9d9;
-                                color: rgba(0, 0, 0, 0.25);
-                            }
-                        }
-                    }
-                }
-                .rightFont {
-                    margin-right: 30px;
-                    color: $lightColor;
-                }
-            }
-            .graph {
-                display: flex;
-                padding-left: 30px;
-                .stationTargetData {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    margin: 20px 30px;
-                    .stationTargetValue {
-                        font-size: 26px;
-                        color: #199475;
-                    }
-                }
-            }
+    .targetGraphContainer {
+      .bgStyle {
+        background: #f1f1f1;
+        .fontStyle {
+          border-top: 1px solid #199475;
+          color: #666;
         }
-        .cardContainer {
-            display: flex;
-            align-items: center;
-            padding: 30px 0;
-            .cardList {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding-left: 30px;
-                :global {
-                    .anticon {
-                        color: $lightColor;
-                    }
-                }
-            }
-            .cardItem {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                background: #199475;
-                width: 210px;
-                height: 130px;
-                border-radius: 5px;
-                color: #fff;
-                .cardTitle{
-                  margin-bottom: 8px;
-                }
-                .innerTop {
-                  margin: 20px 10px 12px 20px;
-                }
-                .innerBottom{
-                  height: 30px;
-                  background:rgba(0, 0, 0, 0.7);
-                  padding-left: 20px;
-                  line-height: 30px;
-                }
-                .activeInnerBottom{
-                  height: 30px;
-                  background:#a42b2c;
-                  padding-left: 20px;
-                  line-height: 30px;
-                }
-            }
-            .lightResourcesn {
-                background: url('/img/operateBg1.png') no-repeat center;
-            }
-            .photovoltaicModule {
-                background: url('/img/operateBg2.png') no-repeat center;
-            }
-            .inverter {
-                background: url('/img/operateBg3.png') no-repeat center;
-            }
-            .electricPowerLine {
-                background: url('/img/operateBg4.png') no-repeat center;
-            }
-            .boosterStation {
-                background: url('/img/operateBg5.png') no-repeat center;
-            }
-            i {
-                font-size: 20px
-            }
-        }
-        .targetGraphContainer {
-            .bgStyle {
-                background: #f1f1f1;
-                .fontStyle {
-                    border-top: 1px solid #199475;
-                    width: 160px;
-                    color: #666;
-                    height: 30px;
-                    line-height: 30px;
-                    margin-left: 30px;
-                }
-            }
-            .tabContainer {
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-                padding: 20px 0;
-                border-bottom: 1px solid #ececec;
-                .dataGraph {
-                    display: flex;
-                    flex-direction: row;
-                    height: 300px;
-                    // flex: 1;
-                    margin-right: 24px;
-                    >div:nth-child(1) {
-                        flex: 5;
-                    }
-                    >div:nth-child(2) {
-                        flex: 4;
-                    }
-                    .LostPowerTypeRate {
-                        height: 300px;
-                        .LostPowerTypeTitle {
-                            display: flex;
-                            justify-content: space-between;
-                            height: 40px;
-                            line-height: 40px;
-                            flex-direction: row;
-                            >div:nth-child(1) {
-                                flex: 1;
-                                text-align: left
-                            }
-                            >div:nth-child(2) {
-                                flex: 1;
-                                text-align: right;
-                            }
-                        }
-                        >div:nth-child(2) {
-                            flex: 1;
-                            height: 250;
-                        }
-                    }
-                }
-                .dataGraphs {
-                    display: flex;
-                    flex-direction: row;
-                    height: 300px;
-                    >div:nth-child(1) {
-                        flex: 1;
-                    }
-                    >div:nth-child(2) {
-                        flex: 1;
-                    }
-                }
-            }
-        }
+      }
+      .tabContainer {
+        border-bottom: 1px solid #ececec;
+      }
     }
+  }
+}
+
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  color: $fontColor;
+  .stationTimeFilter {
+    background: $light-background;
+    border: 1px solid $border-color;
+  }
+
+  .componentContainer {
+    .title {
+      background: $light-background;
+      border: 1px solid $border-color;
+      border-bottom: none;
+      .stationStatus {
+        i {
+          color: $themeColor;
+        }
+        .choiceYear {
+          :global {
+            .active {
+              background: $themeColor;
+              color: $fontColor-invert;
+              border: 1px solid $themeColor;
+            }
+          }
+          span {
+            color: $fontColor;
+            border: 1px solid $themeColor;
+            &.noSelect {
+              background: #405080;
+              border: 1px solid #7088c3;
+              color: #7088c3;
+            }
+          }
+        }
+      }
+      .stationTargetValue {
+        color: $fontColor-hover;
+      }
+    }
+    .cardContainer {
+      background: $light-background;
+      border: 1px solid $border-color;
+      border-top: none;
+      .cardList {
+        :global {
+          .anticon {
+            color: $fontColor;
+          }
+        }
+      }
+      .cardItem {
+        color: $fontColor-invert;
+        .innerBottom {
+          background: rgba(0, 0, 0, 0.7);
+        }
+        .activeInnerBottom {
+          background: #b70016;
+        }
+      }
+      .lightResourcesn {
+        background: url("/img/operateBg11.png") no-repeat center;
+      }
+      .photovoltaicModule {
+        background: url("/img/operateBg21.png") no-repeat center;
+      }
+      .inverter {
+        background: url("/img/operateBg31.png") no-repeat center;
+      }
+      .electricPowerLine {
+        background: url("/img/operateBg41.png") no-repeat center;
+      }
+      .boosterStation {
+        background: url("/img/operateBg51.png") no-repeat center;
+      }
+    }
+  }
+  .chartWrap {
+    background: $light-background;
+    border: 1px solid $border-color;
+    margin-top: 10px;
+  }
+  .bgStyle {
+    border: 1px solid $border-color;
+    background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(#00f8ff), to(#00baff));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .tabContainer {
+    border-bottom: 1px dashed $border-color;
+  }
 }

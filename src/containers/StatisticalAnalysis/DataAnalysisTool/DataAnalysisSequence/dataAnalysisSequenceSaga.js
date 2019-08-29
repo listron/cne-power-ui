@@ -13,10 +13,16 @@ function* getStationDevice(action) {//获取
     if (response.data.code === '10000') {
       const data = response.data.data || [];
       const deviceList = data.map((e, i) => ({ ...e, likeStatus: false }));
+      const deviceFullCodeArr = deviceList.map(e => e.deviceFullCode);//拿到设备型号数组
+      const deviceData = {};//存储设备型号数据
+      deviceFullCodeArr.forEach((e, i) => {
+        deviceData[e] = {};
+      });
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           deviceList,
+          ...deviceData,
         },
       });
     } else {
@@ -36,7 +42,8 @@ function* getStationDevice(action) {//获取
 
 function* getSequenceName(action) {//获取
   const { payload } = action;
-  const chartType = 1;
+  const chartType = 1;//时序图是2
+  // const chartType = 2;
   // const url = '/mock/api/v3/wind/analysis/scatterplot/names';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterName}/${payload.stationCode}/${chartType}`;
   try {
@@ -130,7 +137,7 @@ function* getSequenceData(action) {//获取
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           chartLoading: false,
-          activeCode: '',
+          activeCode: deviceFullCode,
           sequenceData: {},
 
         },
@@ -175,7 +182,7 @@ function* getBigSequenceData(action) {//获取
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
-
+          bigchartLoading: false,
         },
       });
       message.error('请求失败');

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Select ,AutoComplete  } from 'antd';
-import StationSelectModal from './StationSelectModal'
+import { Select, AutoComplete } from 'antd';
+import StationSelectModal from './StationSelectModal';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 const Option = Select.Option;
@@ -53,7 +53,7 @@ class StationSelectContrast extends Component {
     disabledStation: PropTypes.array,
     onChange: PropTypes.func,
     onOK: PropTypes.func,
-    style: PropTypes.object
+    style: PropTypes.object,
   }
   static defaultProps = {
     multiple: false,
@@ -68,86 +68,85 @@ class StationSelectContrast extends Component {
     this.state = {
       stationModalShow: false,
       checkedStations: props.value,
-      checkedStationName: props.value.map(e=>e.stationName),
+      checkedStationName: props.value.map(e => e.stationName),
       filteredSelectedStation: [],
-    }
+    };
   }
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { data, value } = nextProps;
-    if( data && data.length > 0 && value && value.length === 2){
+    if (data && data.length > 0 && value && value.length === 2) {
       this.setState({
         checkedStations: nextProps.value,
-        checkedStationName: nextProps.value.map(e=>e.stationName),
-      })
+        checkedStationName: nextProps.value.map(e => e.stationName),
+      });
     }
   }
   onOK = (stations) => {
-    const { onChange,onOK } = this.props
+    const { onChange, onOK } = this.props;
     onOK && onOK(stations);
     onChange && onChange(stations);
   }
   onModalHandelOK = (stations) => {
-    const checkedStationName = stations.map(e=>e.stationName);
+    const checkedStationName = stations.map(e => e.stationName);
     this.setState({
       checkedStationName,
-      checkedStations:stations,
+      checkedStations: stations,
       stationModalShow: false,
-    },()=>this.onOK(stations));
-    
+    }, () => this.onOK(stations));
+
   }
-  onSelect = (stationName) =>{
+  onSelect = (stationName) => {
     const { data } = this.props;
-    const checkedStations = data.filter(e=>e.stationName===stationName);
-    const checkedStationName = checkedStations.map(e=>e.stationName);
+    const checkedStations = data.filter(e => e.stationName === stationName);
+    const checkedStationName = checkedStations.map(e => e.stationName);
     this.setState({
       checkedStationName,
-      checkedStations
-    })
-    this.onOK(checkedStations)
+      checkedStations,
+    });
+    this.onOK(checkedStations);
   }
   hideStationModal = () => {
     this.setState({
       stationModalShow: false,
-    })
+    });
   }
   handleSearch = (text) => {
     const { data, disabledStation } = this.props;
-    let filteredSelectedStation = data.filter(
-      e=> !disabledStation.includes(e.stationCode) // 剔除禁选电站
+    const filteredSelectedStation = data.filter(
+      e => !disabledStation.includes(e.stationCode) // 剔除禁选电站
     ).filter(
-      e=>e.stationName.indexOf(text) >= 0
+      e => e.stationName.indexOf(text) >= 0
     );
     this.setState({
-      checkedStationName:[text],
-      filteredSelectedStation
-    })
+      checkedStationName: [text],
+      filteredSelectedStation,
+    });
   }
   selectStation = (stations) => {//stations:选中的电站名称数组
     const { data } = this.props;
-    const checkedStations = data.filter(e=>stations.includes(e.stationName))
+    const checkedStations = data.filter(e => stations.includes(e.stationName));
     const checkedStationName = stations;
     this.setState({
       stationModalShow: false,
       checkedStationName,
-      checkedStations
-    })
-    this.onOK(checkedStations)
+      checkedStations,
+    });
+    this.onOK(checkedStations);
   }
-  
+
   showStationModal = () => {
     !this.props.disabled && this.setState({
       stationModalShow: true,
-    })
+    });
   }
 
   render() {
-    const { data, multiple, holderText, disabledStation, disabled } = this.props;
+    const { data, multiple, holderText, disabledStation, disabled, theme = 'light' } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
-    
     return (
-      <div className={styles.stationSelect} style={this.props.style}>
+      <div className={`${styles.stationSelect} ${styles[theme]}`} style={this.props.style}>
         <Select
-          mode="multiple"  
+          mode="multiple"
           disabled={disabled}
           style={{ width: '100%' }}
           placeholder={holderText}
@@ -155,22 +154,23 @@ class StationSelectContrast extends Component {
           value={checkedStationName}
           className={styles.stationSelectMainInput}
         >
-          
+
         </Select>
-        <StationSelectModal 
+        <StationSelectModal
           multiple={multiple}
           disabled={disabled}
           disabledStation={disabledStation}
           checkedStations={checkedStations}
-          data={data} 
+          data={data}
           handleOK={this.onModalHandelOK}
           stationModalShow={stationModalShow}
-          hideStationModal={this.hideStationModal} 
+          hideStationModal={this.hideStationModal}
           showStationModal={this.showStationModal}
+          theme={theme}
         />
       </div>
-    )
-    
+    );
+
   }
 }
 export default StationSelectContrast;

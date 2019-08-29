@@ -112,7 +112,7 @@ class PvStationHeader extends React.Component {
             {powerUnit}</div>
           <div> 年完成率 <span className={styles.dataValue}>{deviceValueFormat(yearRate, '--', 2)} </span> % </div>
         </div>
-
+        <span ref={'modal'} />
         <Modal
           title="请填写"
           style={{ top: 300 }}
@@ -122,6 +122,7 @@ class PvStationHeader extends React.Component {
           mask={false}
           closable={false}
           maskClosable={false}
+          getContainer={() => this.refs.modal}
         >
           <div >
             {<span>截止到昨日，{editType === 'month' && '本月' || '本年'}累计发电量  </span>}

@@ -34,11 +34,13 @@ class AutoModal extends Component {
   });
 
   onTreeCheck = (checkedTrees) => {
-    const { max } = this.props;
+    const { max, infoLists } = this.props;
     if(!max) {
       return this.setState({ checkedTrees });
     }
-    if(checkedTrees.length > max) {
+    // 因为这里checkedTrees，会包含父节点的value，所以length会出现错误，所以过滤一下
+    const checkedArr = infoLists.filter(e => checkedTrees.map(cur => (cur.toString())).includes(`${e.value}`));
+    if(checkedArr.length > max) {
       return message.error(`最多选择${max}个设备`);
     }
     this.setState({ checkedTrees });
@@ -47,6 +49,7 @@ class AutoModal extends Component {
   handleOK = () => {
     const { infoLists, onValueCheck } = this.props;
     const { checkedTrees } = this.state;
+    // 因为checkedTrees里面值是数字的话会存在不相等的情况，所以把checkedTrees转为了字符串
     const valueResult = infoLists.filter(e => checkedTrees.some(treeNode => `${e.value}` === `${treeNode}`));
     this.setState({ isShow: false });
     onValueCheck(valueResult);

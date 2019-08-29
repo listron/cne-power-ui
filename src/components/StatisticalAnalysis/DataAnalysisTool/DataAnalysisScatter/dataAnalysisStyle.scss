@@ -102,8 +102,6 @@
           color: #f9b600;
           ;
           background: #fcffe5;
-          // color: rgb(249, 183, 6);
-          // background: rgb(252, 255, 229);
           border: none;
         }
       }
@@ -118,9 +116,19 @@
           color: #fff;
         }
       }
+
+      .disabledSeach {
+        border: none;
+        background: #f5f5f5;
+        color: #BFBFBF;
+
+        &:hover {
+          background: #f5f5f5;
+          color: #BFBFBF;
+        }
+      }
     }
   }
-
 
   .scatterBox {
     background: #ececec;

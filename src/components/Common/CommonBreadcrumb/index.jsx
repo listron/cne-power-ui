@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './style.scss';
+import Cookie from 'js-cookie';
 
 
 /*
@@ -23,10 +24,11 @@ import styles from './style.scss';
   4.选填参数backData:obj;链接路径；
 */
 
-function CommonBreadcrumb({ breadData, iconName, style = {}, backData = {}, theme = 'light' }) {
+function CommonBreadcrumb({ breadData, iconName, style = {}, backData = {} }) {
   if (!breadData || !(breadData.length > 0)) {
     return <div></div>;
   }
+  const theme = Cookie.get('theme') || 'light';
   return (
     <div className={`${styles.breadcrumb} ${styles[theme]}`} style={{ ...style }}>
       <div className={styles.leftText}>

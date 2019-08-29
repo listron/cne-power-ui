@@ -1,353 +1,92 @@
-
-@import '../../../../theme/theme.scss';
-.historyWarningContainer{
-  width: 100%;
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: column;
+@import "../../../../theme/theme.scss";
+@import "./layout.scss";
+.light {
   background: #fff;
-  .realTimeWarningFilter{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    // flex: 1 0 auto;
+  .realTimeWarningFilter {
     background-color: #fff;
   }
-  .realTimeWarningTop{
-    .alarmInfo {
-      display: flex;
-      flex-shrink: 0;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      height: 100px;
-      background-color: #fff;
-      border-bottom: 1px solid #dfdfdf;
-      a {
-        text-decoration: underline;
-      }
-      .alarmInfoLeft {
-        display: flex;
-        flex-direction: row;
-      }
-      .alarmInfoRight {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin-right: 56px;
-        .updateTimeContainer {
-          display: flex;
-          flex-direction: column;
-          font-size: 14px;
-          margin-right: 27px;
-          .updateTime {
-            color: $themeColor;
-          }
-          .updateTimeText {
-            color: $darkColor;
-          }
-        }
-        .refreshIcon {
-          width: 32px;
-          height: 32px;
-          background-image: url(/img/refresh.png);
-          background-position: center center;
-          background-repeat: no-repeat;
-          &:hover {
-            background-image: url(/img/refresh-on.png);
-          }
-        }
-      }
-      .alarmInfoItem {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-right: 30px;
-        .alarmNum {
-          font-size:24px;
-          color: $themeColor;
-          opacity: 0.74;
-        }
-        .alarmText {
-          font-size: 14px;
-          color: $darkColor;
-        }
-      }
-      .alarmNumDetail {
-        padding-left: 30px;
-        margin-right: 22px;
-        border-left: 1px solid #f1f1f1;
-        border-right: 1px solid #f1f1f1;
-        display: flex;
-        flex-direction: row;
-      }
-      .alarmAction {
-        margin-right: 24px;
-        margin-top: 8px;
-        display: flex;
-        width:73px;
-        height:57px;
-        flex-direction: column;
-        align-items: center;
-        .alarmText {
-          font-size: 14px;
-          color: $darkColor;
-        }
-        &:hover {
-          border:1px solid $themeColor;
-          border-radius:4px;
-          cursor: pointer;
-          .alarmText {
-            color: $themeColor;
-          }
-        }
-      }
-      :global {
-        .icon-alarm {
-          font-size: 30px;
-          color: #a42b2c;
-          margin-left: 47px;
-          margin-right: 35px;
-        }
-        .icon-action {
-          font-size: 18px;
-          color: $darkColor;
-          &:hover {
-            color: $themeColor;
-          }
-        }
-        .icon-title {
-          background-color:#ceebe0;
-          color: $themeColor;
-          width:30px;
-          height:30px;
-          font-size: 20px;
-          border-radius:100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-left: 47px;
-          margin-right: 35px;
-          margin-top: 15px;
-        }
-        .icon-refresh {
-          width: 29px;
-          height: 29px;
-          border:1px solid $themeColor;
-          color: $themeColor;
-          border-radius: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        .icon-help {
-          color: #f9b600;
-          font-size: 12px;
-          margin-left: 4px;
-          margin-top: -4px;
-        }
-      }
-    }
-  }
-  
   .deviceNameSearch {
-    
-    display: flex;
-    height: 50px;
-    flex-shrink: 0;
     background-color: #f9f9f9;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 28px;
-    >span {
-      color: $darkColor;
-    }
-    .deviceName {
-      width: 200px;
-      margin: 0 16px;
-    }
-    >span:last-child {
-      color: $themeColor;
-      font-size: 14px;
-      cursor: pointer;
-      margin-left: 16px;
-    }
+    color: $darkColor;
   }
-  .realTimeWarningTable{
+  .realTimeWarningTable {
     .tableHeader {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      flex-shrink: 0;
-      height: 55px;
-      padding: 0 28px;
       background-color: #fff;
     }
     .deviceName {
-      :global {
-        a {
-          border-bottom: 1px $darkColor solid;
-          color: $darkColor;
-          text-decoration: none;
-          &:hover {
-            border-bottom: 1px $themeColor solid;
-            color: $themeColor;
-          }
+      a {
+        border-bottom: 1px $darkColor solid;
+        color: $darkColor;
+        text-decoration: none;
+        &:hover {
+          border-bottom: 1px $themeColor solid;
+          color: $themeColor;
         }
       }
     }
-    .alarmDesc{
+    .alarmDesc {
       cursor: pointer;
     }
-    .selected {
-      :global {
-          .icon-action {
-              background-color: $themeColor;
-              color: #fff;
-          }
-      }
-  }
-  :global {
-      .icon-action {
-          background-color: #ceebe0;
-          color: $themeColor;
-          width: 30px;
-          height: 30px;
-          border-radius: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          cursor: pointer;
-      }
-      .ant-table-placeholder {
-          border-bottom: none;
-      }
   }
   .detailInfo {
-    display: flex;
-    flex-direction: column;
-    width: 250px;
-    max-height: 300px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    .header {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-      .title {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        .titleText {
-          color: $darkColor;
-          font-size: 14px;
-          margin-left: 10px;
-        }
-      }
-    }
-    .content {
-      display: flex;
-      flex-direction: column;
-      line-height: 24px;
-      .infoItem {
-        display: flex;
-        flex-direction: row;
-        .label {
-          color: $darkColor;
-          font-size: 14px;
-          min-width: 70px;
-        }
-        .value {
-          display: flex;
-          flex-wrap: wrap;
-          color: $darkColor;
-          font-size: 14px;
-        }
-      }
-    }
-    .ticketButton {
-      margin-top: 24px;
-      margin-left: 65px;
-      width: 120px;
-    }
-    :global {
-      .icon-action {
-        background-color:#ceebe0;
-        color: $themeColor;
-        width:30px;
-        height:30px;
-        border-radius:100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-  }
+    color: $darkColor;
   }
 
-}
-.detailInfo {
-  display: flex;
-  flex-direction: column;
-  width: 250px;
-  max-height: 300px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-    .title {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      .titleText {
-        color: $darkColor;
-        font-size: 14px;
-        margin-left: 10px;
-      }
-    }
-  }
-  .content {
-    display: flex;
-    flex-direction: column;
-    line-height: 24px;
-    .infoItem {
-      display: flex;
-      flex-direction: row;
-      .label {
-        color: $darkColor;
-        font-size: 14px;
-        min-width: 70px;
-      }
-      .value {
-        display: flex;
-        flex-wrap: wrap;
-        color: $darkColor;
-        font-size: 14px;
-      }
-    }
-  }
-  .ticketButton {
-    margin-top: 24px;
-    margin-left: 65px;
-    width: 120px;
-  }
   :global {
     .icon-action {
-      background-color:#ceebe0;
+      background-color: #ceebe0;
       color: $themeColor;
-      width:30px;
-      height:30px;
-      border-radius:100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    }
+    .ant-table-placeholder {
+      border-bottom: none;
+    }
+  }
+}
+.dark {
+  @import "../../../../theme/darkTheme.scss";
+  background: $background;
+
+  .deviceNameSearch {
+    background-color: $light-background;
+    color: $fontColor;
+    margin-top: 10px;
+    border: 1px solid $border-color;
+  }
+
+  .realTimeWarningTable {
+    background: $light-background;
+    border: 1px solid $border-color;
+    margin-top: 10px;
+    .iconDetail {
+      i {
+        color: $themeColor;
+        cursor: pointer;
+      }
+    }
+    .deviceName {
+      a {
+        border-bottom: 1px solid $fontColor;
+        color: $fontColor;
+        text-decoration: none;
+        &:hover {
+          border-bottom: 1px solid $fontColor-hover;
+          color: $fontColor-hover;
+        }
+      }
+    }
+  }
+
+  .detailInfo {
+    color: $fontColor;
+  }
+
+  :global {
+    .icon-action {
+      background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+      color: $fontColor-invert;
+      &:hover {
+        background-image: linear-gradient(-180deg, #b4ec51 0%, #429321 100%);
+      }
     }
   }
 }

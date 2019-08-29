@@ -49,14 +49,15 @@ class HistoryWarningFilter extends Component {
   }
 
   render() {
-    const { stations, deviceTypes } = this.props;
+    const { stations, deviceTypes, theme } = this.props;
     return (
       <div className={styles.realTimeWarningFilter}>
         <FilterCondition
-          option={['warningLevel', 'stationName', 'deviceType', 'rangeTime','endTime','warningStatus']}
+          option={['warningLevel', 'stationName', 'deviceType', 'rangeTime', 'endTime', 'warningStatus']}
           stations={stations || []}
           deviceTypes={deviceTypes || []}
           onChange={this.onChangeFilter}
+          theme={theme}
         />
         <div className={styles.deviceNameSearch}>
           <span>设备名称</span>

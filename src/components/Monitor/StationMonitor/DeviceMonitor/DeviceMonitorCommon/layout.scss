@@ -56,11 +56,6 @@
   width: 215px;
   margin-top: 24px;
   align-content: flex-start;
-  :global {
-    .ant-progress-inner {
-      background-color: #dfdfdf;
-    }
-  }
   .progressNum,
   .progressText {
     width: 100%;
@@ -69,7 +64,6 @@
     .leftText,
     .rightText {
       width: 50%;
-      color: $themeColor;
       font-size: 24px;
     }
     .leftText {
@@ -85,7 +79,6 @@
     .leftText,
     .rightText {
       font-size: 14px;
-      color: $darkColor;
     }
   }
 }
@@ -255,25 +248,21 @@
   flex: 1 0 50%;
   .ycList {
     margin-bottom: 20px;
-    border: 1px solid $promptColor;
   }
   .ycContent {
     overflow: auto;
     height: 240px;
     &::-webkit-scrollbar {
       width: 6px;
-      background-color: #f4f4f4;
     }
     &::-webkit-scrollbar-thumb {
       border-radius: 3px;
-      background-color: #555;
       opacity: 0.5;
     }
   }
   .top,
   .eachYc {
     display: flex;
-    color: $darkColor;
     align-items: center;
     .name,
     .value,
@@ -290,17 +279,13 @@
   }
   .top {
     height: 30px;
-    background-color: #f4f4f4;
     margin-bottom: 4px;
   }
   .eachYc {
     height: 40px;
-    background-color: #fff;
-    &:hover {
-      background: #f0f9f5;
-    }
   }
 }
+
 .yxInfo {
   flex: 1 0 50%;
   h3 {

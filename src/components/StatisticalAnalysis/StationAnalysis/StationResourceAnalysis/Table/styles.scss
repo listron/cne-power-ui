@@ -1,32 +1,88 @@
-.TableGraphContainer{
-  .TableGraphContainerTitle{
-    height:40px;
+.TableGraphContainer {
+  .TableGraphContainerTitle {
+    height: 40px;
     line-height: 40px;
     display: flex;
-    flex:1;
+    flex: 1;
     justify-content: space-between;
   }
   .tableList {
     height: 274px;
-    overflow-y:hidden;
-    :global{
-      .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th{
-        background-color: #199475;
-        color:#fff;
-        text-align: center;
-        padding:0;
+    overflow-y: hidden;
+  }
+}
+
+.light {
+  :global {
+    .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th {
+      background-color: #199475;
+      color: #fff;
+      text-align: center;
+      padding: 0;
+    }
+    .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr > td {
+      padding: 0 0 0 10px;
+    }
+    .ant-table-small
+      > .ant-table-content
+      > .ant-table-scroll
+      > .ant-table-header
+      > table
+      > .ant-table-thead
+      > tr
+      > th
+      .ant-table-column-sorter {
+      color: #fff;
+    }
+    .ant-table-small
+      > .ant-table-content
+      > .ant-table-fixed-left
+      > .ant-table-body-outer
+      > .ant-table-body-inner
+      > table
+      > .ant-table-tbody
+      > tr
+      > td {
+      padding: 0 5px;
+    }
+    .ant-table-thead > tr > th .ant-table-column-sorter-up.on,
+    .ant-table-thead > tr > th .ant-table-column-sorter-down.on {
+      color: #ddd;
+    }
+  }
+}
+
+.dark {
+  @import "../../../../../theme/antdResetDark.scss";
+  :global {
+    .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th {
+      background-color: transparent;
+      color: $themeColor;
+      text-align: center;
+      padding: 0;
+    }
+    .ant-table-small {
+      border: none;
+    }
+    .ant-table-small.ant-table-bordered .ant-table-content {
+      border-right: 1px solid $border-color;
+    }
+    .ant-table-small > .ant-table-content .ant-table-header {
+      background: transparent;
+    }
+    .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr > td {
+      padding: 0 0 0 5px;
+    }
+
+    .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr {
+      border-bottom: 1px solid $border-color !important;
+    }
+    .ant-table-fixed-header .ant-table-scroll .ant-table-header {
+      &::-webkit-scrollbar {
+        border: 0 !important;
       }
-      .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr > td{
-        padding:0 0 0 10px;
-      }
-      .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th .ant-table-column-sorter{
-        color:#fff;
-      }
-      .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-tbody > tr > td{
-        padding: 0 5px
-      }
-      .ant-table-thead > tr > th .ant-table-column-sorter-up.on, .ant-table-thead > tr > th .ant-table-column-sorter-down.on{
-        color: #ddd;
+      &::-webkit-scrollbar-thumb {
+        background: transparent;
       }
     }
   }
