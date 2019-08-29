@@ -10,8 +10,19 @@ class ScatterContainer extends React.PureComponent {
   static propTypes = {
     scatterData: PropTypes.object,
     newSrcUrl: PropTypes.array,
+    stations: PropTypes.array,
     srcObj: PropTypes.object,
     changeToolStore: PropTypes.func,
+    stationCode: PropTypes.number,
+    xPointCode: PropTypes.string,
+    yPointCode: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    down: PropTypes.bool,
+    deviceList: PropTypes.array,
+    pointCodeNameX: PropTypes.string,
+    pointCodeNameY: PropTypes.string,
+    getBigScatterData: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
@@ -53,6 +64,9 @@ class ScatterContainer extends React.PureComponent {
   }
   shouldComponentUpdate(nextProps, nextState) {
     if ((nextState.newSrcUrl !== this.state.newSrcUrl) || (nextState.srcObj !== this.state.srcObj)) {
+      return false;
+    }
+    if (JSON.stringify(nextProps.xyValueLimit) !== JSON.stringify(this.props.xyValueLimit)) {
       return false;
     }
     return true;
