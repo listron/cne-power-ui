@@ -118,10 +118,10 @@ class DevicesAep extends Component {
     const { curveTopStringify } = this.props;
     const queryInfo = JSON.parse(curveTopStringify) || {};
     const param = {
-      stationCodes: [queryInfo.searchCode],
+      stationCodes: [queryInfo.code],
       deviceFullcodes: [deviceFullcode],
-      startTime: queryInfo.searchDates[0],
-      endTime: queryInfo.searchDates[1],
+      startTime: queryInfo.date[0],
+      endTime: queryInfo.date[1],
     };
     this.props.changeStore({
       curveDeviceName: deviceName,
