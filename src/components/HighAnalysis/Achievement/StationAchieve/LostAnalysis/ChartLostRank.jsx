@@ -25,6 +25,7 @@ class ChartLostRank extends Component {
 
   state= {
     sortType: 'name',
+    modeArr: [],
   }
 
   componentDidMount(){
@@ -141,7 +142,8 @@ class ChartLostRank extends Component {
       },
       data: secendBarData,
     });
-    return { dataAxis, series, modeArr, indicatorType };
+    this.setState({ modeArr });
+    return { dataAxis, series, indicatorType };
   }
 
   chartHandle = ({dataIndex}, sortedLostRank, chart) => {
@@ -195,12 +197,11 @@ class ChartLostRank extends Component {
     const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
     const selectedQuota = this.getQuota(quotaInfo, quota);
     const { label = '--', unit, pointLength } = selectedQuota;
-    const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank, lostChartDevice, unit);
+    const { dataAxis, series } = this.createSeries(sortedLostRank, lostChartDevice, unit);
     const baseOption = getBaseOption(dataAxis);
     baseOption.yAxis.name = `${label}${unit ? `(${unit})` : ''}`;
     const option = {
       ...baseOption,
-      legend: { data: modeArr },
       tooltip: {
         trigger: 'axis',
         padding: 0,
@@ -248,9 +249,10 @@ class ChartLostRank extends Component {
 
   render() {
     const { quotaInfo, lostStringify } = this.props;
-    const { sortType } = this.state;
+    const { sortType, modeArr } = this.state;
     const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
     const selectedQuota = this.getQuota(quotaInfo, quota);
+    // console.log(modeArr)
     return (
       <div className={styles.lostRank}>
         <div className={styles.top}>
