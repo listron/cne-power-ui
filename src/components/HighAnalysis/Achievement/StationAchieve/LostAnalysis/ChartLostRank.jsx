@@ -252,7 +252,6 @@ class ChartLostRank extends Component {
     const { sortType, modeArr } = this.state;
     const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
     const selectedQuota = this.getQuota(quotaInfo, quota);
-    // console.log(modeArr)
     return (
       <div className={styles.lostRank}>
         <div className={styles.top}>
@@ -276,6 +275,16 @@ class ChartLostRank extends Component {
               </Select>
             </span>
           </span>
+        </div>
+        <div className={styles.modes}>
+          {modeArr.map((e, i) => (
+            <span key={e} className={styles.eachMode}>
+              <span className={styles.rect} style={{
+                backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
+                }} />
+              <span className={styles.modeText}>{e}</span>
+            </span>
+          ))}
         </div>
         <div className={styles.chart} ref={(ref)=> {this.rankRef = ref;}} />
       </div>

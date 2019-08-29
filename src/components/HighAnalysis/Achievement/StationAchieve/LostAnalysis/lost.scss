@@ -3,6 +3,29 @@
 .lostAnalysis{
   display: flex;
   flex-wrap: wrap;
+  .modes{
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    right: 36px;
+    top: 48px;
+    font-size: 12px;
+    .eachMode{
+      margin-right: 20px;
+    }
+    .rect{
+      margin-right: 4px;
+      border-radius:2px;
+      display: inline-block;
+      width: 15px;
+      height: 9px;
+    }
+    .modeText{
+      white-space: nowrap;
+    }
+  }
   .lostRank, .lostTrend, .lostTypes{
     display: flex;
     flex-direction: column;
