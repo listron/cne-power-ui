@@ -172,7 +172,11 @@ function *getStopTypes({ payload }){ // 停机 - 各类停机时长及次数
   const url = `${APIBasePath}${highAnalysis.getStopTypes}`;
   try {
     yield call(easyPut, 'changeStore', { stopTypesLoading: true });
-    const response = yield call(request.post, url, payload);
+    const { parentFaultId } = payload;
+    const response = yield call(request.post, url, {
+      ...payload,
+      parentFaultId: (parentFaultId === 'all' || !parentFaultId) ? undefined : parentFaultId,
+    });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         stopTypes: response.data || [],

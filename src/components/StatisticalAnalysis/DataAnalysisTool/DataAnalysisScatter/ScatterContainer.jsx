@@ -10,8 +10,19 @@ class ScatterContainer extends React.PureComponent {
   static propTypes = {
     scatterData: PropTypes.object,
     newSrcUrl: PropTypes.array,
+    stations: PropTypes.array,
     srcObj: PropTypes.object,
     changeToolStore: PropTypes.func,
+    stationCode: PropTypes.number,
+    xPointCode: PropTypes.string,
+    yPointCode: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    down: PropTypes.bool,
+    deviceList: PropTypes.array,
+    pointCodeNameX: PropTypes.string,
+    pointCodeNameY: PropTypes.string,
+    getBigScatterData: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
@@ -35,6 +46,15 @@ class ScatterContainer extends React.PureComponent {
         srcObj: {},
       });
     }
+    if (this.state.newSrcUrl.length >= nextProps.deviceList.length - 1) {//控制是否可以下载图片
+      this.props.changeToolStore({
+        isClick: true,
+      });
+    } else {
+      this.props.changeToolStore({
+        isClick: false,
+      });
+    }
     if (nextProps.down && this.props.down !== nextProps.down) {
       if (this.state.newSrcUrl.length === nextProps.deviceList.length) {
         const { stations, stationCode, pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
@@ -53,6 +73,9 @@ class ScatterContainer extends React.PureComponent {
   }
   shouldComponentUpdate(nextProps, nextState) {
     if ((nextState.newSrcUrl !== this.state.newSrcUrl) || (nextState.srcObj !== this.state.srcObj)) {
+      return false;
+    }
+    if (JSON.stringify(nextProps.xyValueLimit) !== JSON.stringify(this.props.xyValueLimit)) {
       return false;
     }
     return true;

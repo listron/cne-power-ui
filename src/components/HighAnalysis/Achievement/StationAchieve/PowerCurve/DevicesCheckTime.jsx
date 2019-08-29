@@ -20,10 +20,10 @@ class DevicesCheckTime extends Component {
     const { curveTopStringify } = this.props;
     const searchParam = JSON.parse(curveTopStringify) || {};
     const param = {
-      stationCodes: [searchParam.searchCode],
+      stationCodes: [searchParam.code],
       startTime: stringValue,
       endTime: stringValue,
-      deviceFullcodes: searchParam.searchDevice,
+      deviceFullcodes: searchParam.device,
     };
     this.props.changeStore({ curveDevicesTime: stringValue });
     this.props.getCurveDevices(param);

@@ -1,8 +1,7 @@
 import React from 'react';
-import styles from './styles.scss';
+import styles from '../styles.scss';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
-import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 import { Gradient1, Gradient2, chartsNodata } from '../../../../../utils/darkConfig';
 /*
   双柱单折线组件：
@@ -78,9 +77,9 @@ class BarGraph extends React.Component {
   getYearOption = (param) => {
     const { yAxisName, xAxisName, barGraphThatYear, barGraphmonth, barGraphRingRatio, title, hasData, theme = 'light' } = param;
     const color = this.getColor[theme][xAxisName] || ['#dfdfdf', '#3e97d1', '#f9b600'];
-    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || ' ';
+    const graphic = chartsNodata(hasData, theme);
     return {
-      graphic: confluenceTenMinGraphic,
+      graphic: graphic,
       title: {
         text: title,
         show: title ? 'show' : false,
@@ -97,12 +96,12 @@ class BarGraph extends React.Component {
           let paramsItem = '';
           params.forEach(item => {
             const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
-            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
+            paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
               ${item.seriesName} :  ${item.value || '--'} 
                ${(item.seriesType === 'line' || xAxisName === 'PR') && '%' || ''}</div>`;
           });
           return (
-            `<div class=${styles.tooltipBox}>
+            `<div class=${styles[theme]}>
                   <div class=${styles.axisValue}><span>${params[0].name}</span><span>${xAxisName}</span></div>
                   <div class=${styles.tooltipContainer}> ${paramsItem}</div>
               </div>`
@@ -124,14 +123,6 @@ class BarGraph extends React.Component {
           type: 'category',
           data: barGraphmonth,
           axisPointer: { type: 'shadow' },
-          axisLine: {
-            lineStyle: {
-              // color: lineColor,
-            },
-          },
-          axisLabel: {
-            // color: fontColor,
-          },
         },
       ],
       color: color.slice(1),
@@ -139,37 +130,23 @@ class BarGraph extends React.Component {
         {
           type: 'value',
           name: yAxisName,
-          // nameTextStyle: { color: fontColor },
-          // axisLabel: { color: fontColor },
           axisLine: {
             show: false,
-            lineStyle: {
-              // color: lineColor,
-            },
           },
           axisTick: { show: false },
-          // splitLine: { lineStyle: { color: lineColor, type: 'dashed' } },
           splitLine: { lineStyle: { type: 'dashed' } },
           axisLabel: {
-            // color: fontColor,
             formatter: xAxisName === 'PR' ? '{value} %' : '{value}',
           },
         },
         {
           type: 'value',
           name: '环比',
-          nameTextStyle: {
-            // color: fontColor,
-          },
           axisLabel: {
-            // color: fontColor,
             formatter: '{value} %',
           },
           axisLine: {
             show: false,
-            lineStyle: {
-              // color: lineColor,
-            },
           },
           axisTick: { show: false },
           splitLine: { show: false },
@@ -199,9 +176,9 @@ class BarGraph extends React.Component {
   getMonthOption = (param) => {
     const { yAxisName, xAxisName, barGraphThatYear, barGraphLastYear, barGraphmonth, barGraphYearOnYear, lastYear, currentYear, title, hasData, theme = 'light' } = param;
     const color = this.getColor[theme][xAxisName] || ['#dfdfdf', '#3e97d1', '#f9b600'];
-    const confluenceTenMinGraphic = (hasData || hasData === false) && (chartsNodata(hasData, theme)) || ' ';
+    const graphic = chartsNodata(hasData, theme);
     return {
-      graphic: confluenceTenMinGraphic,
+      graphic: graphic,
       color: color,
       title: {
         text: title,
@@ -221,11 +198,11 @@ class BarGraph extends React.Component {
           let paramsItem = '';
           params.forEach(item => {
             const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
-            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
+            paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
               ${item.seriesName} :  ${item.value || '--'}  ${(item.seriesType === 'line' || xAxisName === 'PR') && '%' || ''}</div>`;
           });
           return (
-            `<div class=${styles.tooltipBox}>
+            `<div class=${styles[theme]}>
                   <div class=${styles.axisValue}><span>${params[0].name}</span><span>${xAxisName}</span></div>
                   <div class=${styles.tooltipContainer}> ${paramsItem}</div>
               </div>`
@@ -245,15 +222,6 @@ class BarGraph extends React.Component {
           axisPointer: {
             type: 'shadow',
           },
-          axisLine: {
-            show: true,
-            lineStyle: {
-              // color: lineColor,
-            },
-          },
-          axisLabel: {
-            // color: fontColor,
-          },
           axisTick: {
             show: false,
           },
@@ -263,19 +231,11 @@ class BarGraph extends React.Component {
         {
           type: 'value',
           name: yAxisName,
-          nameTextStyle: {
-            // color: fontColor,
-          },
+
           splitNumber: 5,
           scale: true,
-          axisLabel: {
-            // color: fontColor,
-          },
           axisLine: {
             show: false,
-            lineStyle: {
-              // color: lineColor,
-            },
           },
           axisTick: {
             show: false,
@@ -292,15 +252,11 @@ class BarGraph extends React.Component {
           name: '同比',
           axisLabel: {
             formatter: '{value} %',
-            // color: fontColor,
           },
           max: null,
           axisTick: { show: false },
           axisLine: {
             show: false,
-            lineStyle: {
-              // color: lineColor,
-            },
           },
           splitLine: { show: false },
         },

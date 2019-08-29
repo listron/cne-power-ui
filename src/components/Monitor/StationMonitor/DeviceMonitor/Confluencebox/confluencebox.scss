@@ -1,12 +1,10 @@
-@import '../../../../../theme/theme.scss';
+@import "../../../../../theme/theme.scss";
 
-.confluenceStatistics{
+.confluenceStatistics {
   display: flex;
   height: 100px;
-  border-top: solid 1px $promptColor;
-  border-bottom: solid 1px $promptColor;
   justify-content: space-between;
-  .confluenceInfo{
+  .confluenceInfo {
     display: flex;
   }
   .deviceIcon {
@@ -16,57 +14,104 @@
     :global {
       .iconfont {
         font-size: 24px;
-        color: $themeColor;
       }
     }
   }
-  .line{
+  .line {
     height: 48px;
     width: 1px;
-    background-color: $promptColor;
     margin-top: 30px;
     margin-left: 12px;
   }
-  .elecInfo, .statisticsInfo{
+  .elecInfo,
+  .statisticsInfo {
     margin-top: 18px;
   }
-  .eachRecord{
-    color: $darkColor;
+  .eachRecord {
     line-height: 36px;
     height: 36px;
-    .text{
+    .text {
       display: inline-block;
       width: 68px;
       padding-left: 12px;
     }
-    .unit{
+    .unit {
       margin-left: 4px;
     }
   }
-  .elecInfo .eachRecord .text{
+  .elecInfo .eachRecord .text {
     width: 54px;
   }
-  .seriesCurrent{
+  .seriesCurrent {
     display: flex;
     width: 400px;
     flex-wrap: wrap;
-    &:before{ // 利用伪元素实现高度居中适配。
-      content: '';
+    &:before {
+      // 利用伪元素实现高度居中适配。
+      content: "";
       width: 400px;
       display: block;
     }
-    .eachCurrent{
+    .eachCurrent {
       width: 40px;
       height: 24px;
       line-height: 24px;
       text-align: center;
-      background:#ceebe0;
-      border-radius:2px;
+      border-radius: 2px;
       margin-right: 6px;
-      color: $themeColor;
-      &:nth-child(4n){
+      &:nth-child(4n) {
         margin-right: 20px;
       }
+    }
+  }
+}
+
+.confluenceStatistics.light {
+  // border-top: solid 1px $promptColor;
+  border-bottom: solid 1px $promptColor;
+  .deviceIcon {
+    :global {
+      .iconfont {
+        color: $themeColor;
+      }
+    }
+  }
+  .line {
+    background-color: $promptColor;
+  }
+  .eachRecord {
+    color: $darkColor;
+  }
+  .seriesCurrent {
+    .eachCurrent {
+      background: #ceebe0;
+      color: $themeColor;
+    }
+  }
+}
+
+.confluenceStatistics.dark {
+  @import "../../../../../theme/antdResetDark.scss";
+  border: 1px solid $border-color;
+  background: $light-background;
+  margin-top: 10px;
+  .deviceIcon {
+    :global {
+      .iconfont {
+        color: $fontColor-hover;
+      }
+    }
+  }
+  .line {
+    background-color: $border-color;
+  }
+  .eachRecord {
+    color: $fontColor;
+  }
+  .seriesCurrent {
+    .eachCurrent {
+      background: #ceebe0;
+      color: $themeColor;
     }
   }
 }

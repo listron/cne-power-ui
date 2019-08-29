@@ -6,6 +6,7 @@ import { Select } from 'antd';
 import moment from 'moment';
 import eCharts from 'echarts';
 import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormat } from '../../../../../utils/utilFunc';
 
 import styles from './runSequenceChart.scss';
 
@@ -47,13 +48,14 @@ export default class RunSequenceChart extends Component {
 
 
   drawChart = (sequenceData) => {
+    const pointLength = 2;
     const { hourOptionName, hourUnitName } = this.props;
     // 数据
     const seriesData = sequenceData && sequenceData.map(cur => ({
       name: cur.deviceName,
       type: 'line',
       symbol: 'none',
-      data: cur.dataList && cur.dataList.map(item => (item.value)),
+      data: cur.dataList && cur.dataList.map(item => (dataFormat(item.value, '--', pointLength))),
     }));
     return {
       tooltip: {
@@ -72,8 +74,13 @@ export default class RunSequenceChart extends Component {
         type: 'category',
         boundaryGap: false,
         data: sequenceData && sequenceData[0] && sequenceData[0].dataList.map(cur => (
-          moment(cur.time).format('YYYY-MM-DD')
+          moment(cur.time).format('YYYY-MM-DD HH:mm:ss')
         )),
+        axisLabel: {
+          formatter: (value) => {
+            return moment(value).format('YYYY-MM-DD');
+          },
+        },
       },
       yAxis: {
         name: `${hourOptionName}${hourUnitName}`,
@@ -101,12 +108,12 @@ export default class RunSequenceChart extends Component {
 
   handleChange = (value) => {
     const {indicatorsList, changeStore, getSequenceChart} = this.props;
-    console.log(value);
     indicatorsList && indicatorsList.forEach(cur => {
       if (value === cur.value) {
         changeStore({
           hourOptionName: cur.name,
           hourUnitName: cur.unitName,
+          hourOptionValue: value,
         });
       }
     });

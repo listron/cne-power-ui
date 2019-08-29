@@ -61,7 +61,7 @@ class MonthsPsd extends Component {
     sortedPsdData.forEach(e => {
       const { efficiencyDate, psd } = e || {};
       xData.push(efficiencyDate);
-      psdData.push(psd);
+      psdData.push(dataFormats(psd) * 100);
     });
     const series = [{
       type: 'bar',
@@ -69,8 +69,8 @@ class MonthsPsd extends Component {
       data: psdData,
       itemStyle: {
         color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
-          {offset: 0, color: '#f95071' },
-          {offset: 1, color: '#f47a37' },
+          {offset: 0, color: '#00baff' },
+          {offset: 1, color: '#5beda9' },
         ]),
       },
     }];

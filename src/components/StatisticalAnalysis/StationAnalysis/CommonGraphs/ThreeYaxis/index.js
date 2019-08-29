@@ -1,8 +1,8 @@
 import React from 'react';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
-import styles from './index.scss';
-import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
+import styles from '../styles.scss';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import { Gradient1, Gradient2, barRadius, chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
 
 /* 
@@ -142,24 +142,27 @@ class PowerEfficency extends React.Component {
       }
       seriesData.push(json);
     }
-    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || ' ';
+    const graphic = chartsNodata(hasData, theme);
     const targetMonthOption = {
-      graphic: confluenceTenMinGraphic,
+      graphic: graphic,
       tooltip: {
         trigger: 'axis',
+        formatter: (params) => {
+          let paramsItem = '';
+          params.forEach(item => {
+            const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
+            paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
+                        ${item.seriesName} :  ${dataFormats(item.value, '--', 2)}${(item.seriesName === '计划完成率' || item.seriesName === 'PR') && '%' || ''}</div>`;
+          });
+          return (
+            `<div class=${styles[theme]}>
+                <div class=${styles.axisValue}>${params[0].name}</div>
+                <div class=${styles.tooltipContainer}> ${paramsItem}</div>
+            </div>`
+          );
+        },
         axisPointer: {
           type: 'cross',
-        },
-        formatter: function (params) {
-          let paramsItem = '';
-          params.map((item) => {
-            const color = item.color.colorStops && item.color.colorStops[0].color || item.color;
-            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
-            ${item.seriesName} :${item.value === 0 || item.value ? item.value : '--'}${(item.seriesName === '计划完成率' || item.seriesName === 'PR') && '%' || ''}
-            </div>`;
-          });
-          return `<div class=${styles.tooltipTitle}> ${params[0].name}</div>
-           ${paramsItem}`;
         },
       },
       title: {

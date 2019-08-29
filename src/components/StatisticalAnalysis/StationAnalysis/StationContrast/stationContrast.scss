@@ -1,204 +1,133 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
+@import "./layout.scss";
 
-.singleStationType{
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-
-  .stationTimeFilter{
+.light {
+  .stationTimeFilter {
     background: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    border:1px solid #e1e2e2;
-    height: 80px;
-    .leftFilter{
-      padding-left: 30px;
-      display: flex;
-      flex-direction: row;
-      .stationFilter{
-        display: flex;
-        align-items: center;
-        :global{
-          .ant-form-item, .ant-form-horizontal{
-            margin-bottom: 0;
-            display: flex;
-
-          }
-          .ant-form-item{
-            margin-bottom: 0;
-          }
-          .ant-form-item-required:before{
-            display:none;
-          }
-        }
-      }
-    }
-    .rightContent{
-      margin-right: 30px;
-    }
+    border: 1px solid #e1e2e2;
   }
-  .componentContainer{
+  .componentContainer {
     background: #fff;
-    display: flex;
-    flex:1;
-    flex-direction: column;
-    padding: 24px;
-    border:1px solid #e1e2e2;
-    min-height: 500px;
-    .componentContainerTip{
-      display: flex;
-      justify-content: space-between;
-      line-height: 40px;
-    }
-    .nodata{
-      display: flex;
-      align-items: center;
-      text-align: center;
-      height: 400px;
-      img{
-        margin: 0 auto;
-      }
-    }
-   
+    border: 1px solid #e1e2e2;
   }
-} 
 
-.stationContrastTable{
-  display: flex;
-  flex-direction: row;
-  border: 1px solid #dfdfdf;
-  border-bottom: 0;
-  border-right: 0;
-  .stationOne{
-    display: flex;
-    flex-direction: column;
-    line-height: 40px;
-    border-left: 1px solid #dfdfdf;
-    text-align: center;
-    .baseInfoBg{
-      background:#f8f8f8;
-      border-right: 1px solid #dfdfdf; 
-    }
-    >div{
-      border-bottom: 1px solid #dfdfdf;
-      cursor: pointer;
-      display: flex;
-      flex-direction: row;
-      >div{
-        width: 50%;
+  .stationContrastTable {
+    border: 1px solid #dfdfdf;
+    .stationOne {
+      border-left: 1px solid #dfdfdf;
+      .baseInfoBg {
+        background: #f8f8f8;
+        border-right: 1px solid #dfdfdf;
       }
-      >span{
-        // width: 100%;
-        // height: 100%;
-        //display: block;
-        display:flex;
-        flex:1;
-      }
-    }
-    .contrastDetailPopover{
-      display: flex;
-      flex-direction: row;
-      flex:1;
-      &:hover,&:active,&:focus,&:visited{
-        background: #ceebe0;
-      }
-      
-    }
-    .stationContrastOne{
-      //width: 50%;
-      display: flex;
-      flex:1;
-
-      border-right: 1px solid #dfdfdf; 
-      border-left: 0;
-      justify-content: center;
-    }
-    .stationContrastTwo{
-      //width: 50%;
-      display: flex;
-      border-right: 1px solid #dfdfdf; 
-      flex:1;
-      justify-content: center;
-    }
-    .differHighLight{
-      display: flex;
-      flex-direction: row;
-      background: #fcffe5;
-      &:hover,&:active,&:focus,&:visited{
-        background: #ceebe0;
-      }
-      .stationContrastOne{
-        display: flex;
-        border-right: 1px solid #dfdfdf; 
-        flex:1;
-        justify-content: center;
-      }
-      .stationContrastTwo{
-        display: flex;
-        border-right: 1px solid #dfdfdf; 
-        flex:1;
-        justify-content: center;
-      }
-    }
-  }
-  .baseNameBox{
-    display: flex;
-    flex-direction: column;
-    .baseName{
-      display: flex;
-      flex-direction: row;
-      background:#f8f8f8;
-      .baseClassifyName{
+      > div {
         border-bottom: 1px solid #dfdfdf;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        span{
-          writing-mode: vertical-rl;
+      }
+      .contrastDetailPopover {
+        &:hover,
+        &:active,
+        &:focus,
+        &:visited {
+          background: #ceebe0;
         }
       }
-      .rowName{
-        display: flex;
-        flex-direction: column;
-        line-height: 40px;
-        text-align: right;
-        border-left: 1px solid #dfdfdf;
-        >div{
-          padding-right: 12px;
+      .stationContrastOne,
+      .stationContrastTwo {
+        border-right: 1px solid #dfdfdf;
+      }
+      .differHighLight {
+        background: #fcffe5;
+        &:hover,
+        &:active,
+        &:focus,
+        &:visited {
+          background: #ceebe0;
+        }
+        .stationContrastOne {
+          border-right: 1px solid #dfdfdf;
+        }
+        .stationContrastTwo {
+          border-right: 1px solid #dfdfdf;
+        }
+      }
+    }
+    .baseNameBox {
+      .baseName {
+        background: #f8f8f8;
+        .baseClassifyName {
           border-bottom: 1px solid #dfdfdf;
         }
+        .rowName {
+          border-left: 1px solid #dfdfdf;
+          > div {
+            border-bottom: 1px solid #dfdfdf;
+          }
+        }
       }
     }
   }
-  
-}
-.contrastOverlayClassName{
-  
-  :global{
-    .ant-popover-content{
-      width: 848px;
-      height: 360px;
-      .ant-popover-inner{
-        width: 100%;
-        height: 100%;
-        .ant-popover-inner-content {
-          line-height: 360px;
-          text-align: center;
-          padding: 0px;
-        }
-      }
-      
-    }
-    
+
+  .tooltipBox {
+    @include tooltipBox(#dfdfdf);
   }
 }
 
-.stationContrastDetailBox{
-  width: "848px";
-  height: "364px";
-  border-radius: "4px";
-  padding-top: "20px";
-  line-height: "360px";
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  .stationTimeFilter {
+    background: $light-background;
+    border: 1px solid $border-color;
+    color: $fontColor;
+  }
+
+  .componentContainer {
+    background: $light-background;
+    border: 1px solid $border-color;
+    color: $fontColor;
+  }
+
+  .stationContrastTable {
+    border: 1px solid $border-color;
+    .stationOne {
+      border-left: 1px solid $border-color;
+      .baseInfoBg {
+        background: #1f246f;
+        border-right: 1px solid $border-color;
+      }
+      > div {
+        border-bottom: 1px solid $border-color;
+      }
+      .contrastDetailPopover {
+        &:hover,
+        &:active,
+        &:focus,
+        &:visited {
+          background: #1f246f;
+        }
+      }
+      .stationContrastOne,
+      .stationContrastTwo {
+        border-right: 1px solid $border-color;
+      }
+      .differHighLight {
+        background: #4d5fe2;
+      }
+    }
+    .baseNameBox {
+      .baseName {
+        background: #1f246f;
+        .baseClassifyName {
+          border-bottom: 1px solid $border-color;
+        }
+        .rowName {
+          border-left: 1px solid $border-color;
+          > div {
+            border-bottom: 1px solid $border-color;
+          }
+        }
+      }
+    }
+  }
+  .tooltipBox {
+    @include tooltipBox(rgba(83, 104, 241, 0.4));
+  }
 }

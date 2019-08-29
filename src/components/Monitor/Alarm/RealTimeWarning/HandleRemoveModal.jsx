@@ -16,6 +16,8 @@ class HandleRemoveModal extends Component {
     HandleRemoveWarning: PropTypes.func,
     onCancel: PropTypes.func,
     selectedRowKeys: PropTypes.array,
+    theme: PropTypes.string,
+    HandleRemoveWarning: PropTypes.func,
   }
 
   constructor(props) {
@@ -24,7 +26,7 @@ class HandleRemoveModal extends Component {
       showWarningTip: false,
       warningTipText: '',
       timeType: 'sevenDay',
-      endTime: moment().add(7, 'days').utc().format()
+      endTime: moment().add(7, 'days').utc().format(),
     };
   }
 
@@ -33,21 +35,20 @@ class HandleRemoveModal extends Component {
       if (!err) {
         this.setState({
           showWarningTip: true,
-          warningTipText: '点击确定，解除告警'
+          warningTipText: '点击确定，解除告警',
         });
       }
-    })
+    });
   }
   onCancelWarningTip = () => {//信息提示栏隐藏
     this.setState({
-      showWarningTip: false
-    })
+      showWarningTip: false,
+    });
   }
   onChangeDuration = (value) => {
-    console.log(value);
     this.setState({
       timeType: value,
-    })
+    });
 
     let endTime;
     if (value === 'sevenDay') {
@@ -59,12 +60,12 @@ class HandleRemoveModal extends Component {
     }
     this.setState({
       endTime: endTime,
-    })
+    });
 
 
   }
   HandleRemoveWarning = () => {
-    const {  endTime } = this.state;
+    const { endTime } = this.state;
     this.props.form.validateFieldsAndScroll((err, values) => {
       const recordValue = values.endTime ? moment(values.endTime).utc().format('') : endTime;
       if (!err) {
@@ -78,7 +79,7 @@ class HandleRemoveModal extends Component {
       this.setState({ showWarningTip: false });
     });
   }
-  disabledDate=(current)=>{
+  disabledDate = (current) => {
     return current && current < moment().endOf('day');
   }
 
@@ -92,17 +93,24 @@ class HandleRemoveModal extends Component {
           hiddenCancel={false}
           style={{ marginTop: '280px', width: '210px', height: '88px' }}
           onCancel={this.onCancelWarningTip}
+          theme={this.props.theme}
           onOK={this.HandleRemoveWarning} value={warningTipText} />}
+        <span ref="modal" />
         <Modal title="手动解除告警" className={styles.relieveModal}
           style={{ minHeight: 450 }}
           bodyStyle={{ display: 'flex', flex: 1, flexDirection: 'column', padding: 24 }}
           width={625}
           onOk={this.onSubmit}
-          okText='保存'
+          okText="保存"
           visible={true}
+          getContainer={() => this.refs.modal}
           onCancel={this.props.onCancel}>
           <FormItem className={styles.formItem} label="截止时间">
-            <Select className={styles.duration} style={{ width: 120 }} value={timeType} onChange={this.onChangeDuration}>
+            <Select className={styles.duration}
+              style={{ width: 120 }}
+              getPopupContainer={() => this.refs.modal}
+              value={timeType}
+              onChange={this.onChangeDuration}>
               <Option value="oneDay">1天</Option>
               <Option value="threeDay">3天</Option>
               <Option value="sevenDay">7天</Option>
@@ -112,7 +120,7 @@ class HandleRemoveModal extends Component {
               {getFieldDecorator('endTime', {
                 rules: [{
                   required: true,
-                  message: '请输入解除时间'
+                  message: '请输入解除时间',
                 }],
               })(
                 <DatePicker placeholder="请输入" disabledDate={this.disabledDate} />
@@ -123,7 +131,7 @@ class HandleRemoveModal extends Component {
             {getFieldDecorator('operateReason', {
               rules: [{
                 required: true,
-                message: '请输入解除原因'
+                message: '请输入解除原因',
               }],
             })(
               <InputLimit style={{ marginLeft: -80, marginTop: 15 }} placeholder="请输入不超过80字的解除原因..." />

@@ -4,6 +4,7 @@ import eCharts from 'echarts';
 import moment from 'moment';
 import {Checkbox, Icon, Select, Switch} from 'antd';
 import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormat } from '../../../../../utils/utilFunc';
 
 import styles from './runScatterChart.scss';
 
@@ -125,7 +126,7 @@ export default class RunScatterChart extends Component {
   }
 
   formatNumberFunc = (number) => {
-    return number ? Number(number).toFixed(2) : number;
+    return dataFormat(number, '--', 2);
   };
 
 
@@ -195,12 +196,30 @@ export default class RunScatterChart extends Component {
       visualMap: {
         type: 'piecewise',
         categories: firstChartData && firstChartData.map(cur => (cur.deviceName)),
-        outOfRange: {
-          symbol: 'circle',
-          color: '#cccccc',
+        // 表示 目标系列 的视觉样式。
+        target: {
+          outOfRange: {
+            symbol: 'circle',
+            color: 'transparent',
+          },
+          inRange: {
+            color: ['#00cdff', '#ff6cee', '#ff9000'],
+          },
         },
+        // 表示 visualMap-piecewise 本身的视觉样式。
+        controller: {
+          outOfRange: {
+            symbol: 'circle',
+            color: '#cccccc',
+          },
+          inRange: {
+            color: ['#00cdff', '#ff6cee', '#ff9000'],
+          },
+        },
+        align: 'left',
+        hoverLink: false,
         top: '230px',
-        right: '60px',
+        right: '45px',
       },
       brush: {
         brushLink: 'all',
@@ -209,6 +228,11 @@ export default class RunScatterChart extends Component {
         inBrush: {
           opacity: 1,
         },
+        outOfBrush: {
+          color: '#cccccc',
+        },
+        throttleType: 'debounce',
+        throttleDelay: 300,
       },
       // tooltip: {
       //   formatter: '{a}: ({c})',
@@ -232,6 +256,7 @@ export default class RunScatterChart extends Component {
           xAxisIndex: 0,
           yAxisIndex: 0,
           data: firstData,
+          progressive: 0,
         },
         {
           name: 'II',
@@ -239,6 +264,7 @@ export default class RunScatterChart extends Component {
           xAxisIndex: 1,
           yAxisIndex: 1,
           data: secondData,
+          progressive: 0,
         },
         {
           name: 'III',
@@ -246,6 +272,7 @@ export default class RunScatterChart extends Component {
           xAxisIndex: 2,
           yAxisIndex: 2,
           data: thirdData,
+          progressive: 0,
         },
         {
           name: 'IV',
@@ -253,6 +280,7 @@ export default class RunScatterChart extends Component {
           xAxisIndex: 3,
           yAxisIndex: 3,
           data: fourthData,
+          progressive: 0,
         },
       ],
     };
@@ -878,7 +906,6 @@ export default class RunScatterChart extends Component {
             <span>选择月份</span>
             <div className={styles.checkBox}>
               <CheckboxGroup
-                style={{height: '250px', overflowY: 'auto'}}
                 options={allMonths}
                 value={checkedMonths}
                 onChange={this.onChangeGroup}

@@ -90,6 +90,10 @@
       background-color: $themeColor;
       color: #fff;
     }
+    &:disabled{
+      color: #ccc;
+      background-color: #f6f6f6;
+    }
   }
   .recovery{
     color: #fff;

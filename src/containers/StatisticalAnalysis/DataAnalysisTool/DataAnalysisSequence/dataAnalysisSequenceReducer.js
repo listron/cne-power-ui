@@ -24,6 +24,8 @@ var initState = Immutable.fromJS({
   down: false,
   xyValueLimit: {},
   activeCode: '',
+  isClick: false,
+
 
 
 

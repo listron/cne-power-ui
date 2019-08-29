@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import StationSelect from '../../../Common/StationSelect';
 import { Button, DatePicker, Cascader, Icon, Select } from 'antd';
-import { downloadFile } from '../../../../utils/utilFunc';
 import moment from 'moment';
 
 const { RangePicker } = DatePicker;
@@ -61,13 +60,16 @@ class HandleSeacher extends React.Component {
     getScatterName: PropTypes.func,
     getScatterOtherName: PropTypes.func,
     getxyLimitValue: PropTypes.func,
-    pointCodeNameX: PropTypes.string,
-    pointCodeNameY: PropTypes.string,
     getScatterData: PropTypes.func,
-    pointCodeX: PropTypes.string,
-    pointCodeY: PropTypes.string,
-    // startTime: PropTypes.string,
-    // endTime: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    getStationDevice: PropTypes.func,
+    theme: PropTypes.string,
+    scatterotherNames: PropTypes.array,
+    deviceList: PropTypes.array,
+    isClick: PropTypes.bool,
+
+
   }
   constructor(props, context) {
     super(props, context);
@@ -162,21 +164,18 @@ class HandleSeacher extends React.Component {
     }
     );
   }
-  getLimitValue = (value) => {
-    const { getxyLimitValue, stationCode } = this.props;
-    const { xCode, yCode, saveStartTime, saveEndTime } = this.state;
-    getxyLimitValue({
-      stationCode,
-      startTime: saveStartTime,
-      endTime: saveEndTime,
-      xPointCode: xCode,
-      yPointCode: yCode,
-      ...value,
-    });
-  }
-
-
-
+  // getLimitValue = (value) => {
+  //   const { getxyLimitValue, stationCode } = this.props;
+  //   const { xCode, yCode, saveStartTime, saveEndTime } = this.state;
+  //   getxyLimitValue({
+  //     stationCode,
+  //     startTime: saveStartTime,
+  //     endTime: saveEndTime,
+  //     xPointCode: xCode,
+  //     yPointCode: yCode,
+  //     ...value,
+  //   });
+  // }
   selectStationCode = (stationCodeArr) => {
     const { stationCode } = stationCodeArr[0];
     this.props.changeToolStore({
@@ -193,11 +192,11 @@ class HandleSeacher extends React.Component {
       saveStartTime: dateString[0],
       saveEndTime: dateString[1],
     });
-    const value = { startTime: dateString[0], endTime: dateString[1] };
-    this.getLimitValue(value);
+    // const value = { startTime: dateString[0], endTime: dateString[1] };
+    // this.getLimitValue(value);
 
   }
-  onChangeContrast = (value, selectedOptions) => {
+  onChangeContrast = (value, selectedOptions) => {//选择散点名称
     const { stationCode, getScatterOtherName } = this.props;
     this.setState({
       isSwap: false,
@@ -225,10 +224,10 @@ class HandleSeacher extends React.Component {
         scatterNameValue: value,
         showOther: false,
       });
-      this.getLimitValue({ xPointCode: pointCodeX, yPointCode: pointCodeY });
+      // this.getLimitValue({ xPointCode: pointCodeX, yPointCode: pointCodeY });
     }
   }
-  changeSwap = () => {
+  changeSwap = () => {//交换xy轴
     const { xCode, yCode, xName, yName } = this.state;
     this.setState({
       isSwap: !this.state.isSwap,
@@ -237,13 +236,13 @@ class HandleSeacher extends React.Component {
       xCode: yCode,
       yCode: xCode,
     });
-    const value = { xPointCode: yCode, yPointCode: xCode };
-    this.getLimitValue(value);
+    // const value = { xPointCode: yCode, yPointCode: xCode };
+    // this.getLimitValue(value);
 
   }
-  getScatterData = () => {
+  getScatterData = () => {//查询数据
     //请求数据
-    const { getScatterData, changeToolStore, stationCode, deviceList } = this.props;
+    const { getScatterData, changeToolStore, stationCode, deviceList, getxyLimitValue } = this.props;
     const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
     changeToolStore({
       scatterData: {},
@@ -251,6 +250,13 @@ class HandleSeacher extends React.Component {
       pointCodeNameY: yName,
       xyValueLimit,
       deviceList: [],
+    });
+    getxyLimitValue({
+      stationCode,
+      startTime: saveStartTime,
+      endTime: saveEndTime,
+      xPointCode: xCode,
+      yPointCode: yCode,
     });
     this.props.getStationDevice({ stationCode });
     setTimeout(() => {
@@ -264,25 +270,27 @@ class HandleSeacher extends React.Component {
         startTime: saveStartTime,
         endTime: saveEndTime,
       });
-    }, 10);
+    }, 100);
 
 
   }
-  changeXvalue = (value, option) => {
+  changeXvalue = (value, option) => {//改变其他项中的x轴
     const { props: { children } } = option;
     this.setState({
       xCode: value,
       xName: children,
     });
-    this.getLimitValue({ xPointCode: value });
+
+    // this.getLimitValue({ xPointCode: value });
   }
-  changeYvalue = (value, option) => {
+  changeYvalue = (value, option) => {//改变其他项中的y轴
     const { props: { children } } = option;
     this.setState({
       yCode: value,
       yName: children,
     });
-    this.getLimitValue({ yPointCode: value });
+
+    // this.getLimitValue({ yPointCode: value });
   }
 
 
@@ -309,7 +317,7 @@ class HandleSeacher extends React.Component {
     });
   }
   render() {
-    const { stationCode, stations, scatterotherNames, theme, startTime, endTime } = this.props;
+    const { stationCode, stations, scatterotherNames, theme, startTime, endTime, isClick } = this.props;
 
     const { isSwap, options, scatterNameValue, showOther, xName, yName, xyValueLimit, disableDateFun } = this.state;
     const { yMin, yMax, xMin, xMax } = xyValueLimit;
@@ -374,7 +382,7 @@ class HandleSeacher extends React.Component {
             </Select>
           </div>}
           <Button className={styles.seachBtn} onClick={this.getScatterData}>查询</Button>
-          <Button className={styles.seachBtn} onClick={this.downPic}>图片下载</Button>
+          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!isClick} onClick={this.downPic}>图片下载</Button>
 
         </div>
       </div>

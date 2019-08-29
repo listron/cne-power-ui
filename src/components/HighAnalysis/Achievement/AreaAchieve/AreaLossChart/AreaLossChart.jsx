@@ -8,6 +8,18 @@ import { dataFormat } from '../../../../../utils/utilFunc';
 
 import styles from './areaLossChart.scss';
 
+const barColor = [
+  ['#72c8ea', '#3e97d1'],
+  ['#36c6ad', '#199475'],
+  ['#ffb8c4', '#ff8291'],
+  ['#df7789', '#bc4251'],
+  ['#f2b75f', '#e08031'],
+  ['#ffeecc', '#ffd99d'],
+  ['#4c9de8', '#2564cc'],
+  ['#058447', '#024d22'],
+  ['#e024f2', '#bd10e0'],
+];
+
 export default class AreaLossChart extends Component {
 
   static propTypes = {
@@ -113,7 +125,15 @@ export default class AreaLossChart extends Component {
               position: 'top',
             },
           },
-          data: [dataFormat(theoryGen, '--', pointLength), ...xAxisValue, dataFormat(theoryGen, '--', pointLength)],
+          data: [dataFormat(theoryGen, '--', pointLength), ...xAxisValue, dataFormat(theoryGen, '--', pointLength)].map((cur, i) => ({
+            value: cur,
+            itemStyle: {
+              color: new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
+                {offset: 0, color: barColor[i][0]},
+                {offset: 1, color: barColor[i][1]},
+              ]),
+            },
+          })),
         },
       ],
     };

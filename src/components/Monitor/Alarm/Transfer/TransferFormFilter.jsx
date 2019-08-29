@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './transferForm.scss';
 import { Input, Button } from 'antd';
@@ -27,50 +27,51 @@ class TransferFormFilter extends Component {
     stations: PropTypes.array,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
-      value: ''
+      value: '',
     };
   }
 
   onChangeFilter = (value) => {
-    const { stationCodes, warningLevel,stationType, deviceTypeCode, rangTime, deviceName, durationType, warningTypeStatus, warningType } = this.props;
-    const params = { stationCodes, warningLevel,stationType, warningTypeStatus, warningType, deviceTypeCode, rangTime,deviceName  }
-    this.props.onSearch({ ...params, ...value })
+    const { stationCodes, warningLevel, stationType, deviceTypeCode, rangTime, deviceName, durationType, warningTypeStatus, warningType } = this.props;
+    const params = { stationCodes, warningLevel, stationType, warningTypeStatus, warningType, deviceTypeCode, rangTime, deviceName };
+    this.props.onSearch({ ...params, ...value });
   }
 
   onChange = (e) => {
     this.setState({
-      value: e.target.value
+      value: e.target.value,
     });
   }
 
   onReset = () => {
     this.setState({
-      value: ''
+      value: '',
     });
     if (this.props.deviceName) {
       this.props.onSearch({
-        deviceName: ''
+        deviceName: '',
       });
     }
   }
   onSearch = () => {
     const value = this.state.value;
     this.props.onSearch({
-      deviceName: value
+      deviceName: value,
     });
   }
 
   render() {
-    const { stations, deviceTypes } = this.props;
+    const { stations, deviceTypes, theme } = this.props;
     return (
       <div className={styles.realTimeWarningFilter}>
         <FilterCondition
-          option={['alarmLevel','stationType', 'stationName', 'deviceType', 'rangeTime']}
+          option={['alarmLevel', 'stationType', 'stationName', 'deviceType', 'rangeTime']}
           stations={stations || []}
           deviceTypes={deviceTypes || []}
           onChange={this.onChangeFilter}
+          theme={theme}
         />
         <div className={styles.deviceNameSearch}>
           <span>设备名称</span>
@@ -79,7 +80,7 @@ class TransferFormFilter extends Component {
           {this.state.value !== '' && <span onClick={this.onReset}>重置</span>}
         </div>
       </div>
-    )
+    );
   }
 }
-export default (TransferFormFilter)
+export default (TransferFormFilter);

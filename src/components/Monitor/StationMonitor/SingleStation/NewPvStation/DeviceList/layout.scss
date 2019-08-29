@@ -118,6 +118,10 @@
           border-radius: 4px;
           font-size: 12px;
           cursor: pointer;
+          a {
+            display: block;
+            width: 100%;
+          }
           .statusBox {
             padding: 5px 5px 0px 5px;
             .deviceItemIcon {
@@ -257,6 +261,9 @@
         margin: 10px auto;
       }
     }
+    .unconnect {
+      pointer-events: none;
+    }
   }
 
   $arlam: #ff8e9c;
@@ -315,6 +322,7 @@
       line-height: 50px;
       margin-bottom: 0;
       border-radius: 4px 4px 0 0;
+      display: flex;
       :global {
         .icon-jidian {
           margin-left: 8px;
@@ -352,7 +360,6 @@
       height: 35px;
       margin-bottom: 0;
       border-radius: 4px 4px 0 0;
-      display: flex;
       display: flex;
       justify-content: space-between;
       align-items: center;

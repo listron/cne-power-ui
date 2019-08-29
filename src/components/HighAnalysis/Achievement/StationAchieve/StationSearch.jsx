@@ -16,10 +16,15 @@ class StationSearch extends Component {
     pageName: PropTypes.string,
     location: PropTypes.object,
     lostChartDevice: PropTypes.object, // chart选中的设备
+    stopChartDevice: PropTypes.object,
+    stopChartTime: PropTypes.string,
+    stopChartTypes: PropTypes.object,
     history: PropTypes.object,
     areaStation: PropTypes.array,
     modeDevices: PropTypes.array,
     getDevices: PropTypes.func,
+    pageQuery: PropTypes.func,
+    stationChange: PropTypes.func,
 
     stationInfoStr: PropTypes.string,
     searchCode: PropTypes.number,
@@ -73,6 +78,7 @@ class StationSearch extends Component {
 
   onStationChange = ([regionName, stationCode, stationName]) => {
     this.setState({ searchCode: stationCode, searchDevice: [] });
+    this.props.stationChange(stationCode);
     this.props.getDevices({ stationCode });
   }
 
@@ -91,22 +97,48 @@ class StationSearch extends Component {
     }
   }
 
-  resetCharts = () => {
-    console.log('重置');
-  }
-
-  queryDisable = () => {
+  getQueryDisable = () => {
     const { pageName } = this.props;
     const { searchDevice, searchCode, searchQuota, queryTimer } = this.state;
     const infoLoss = !searchDevice || searchDevice.length === 0 || !searchCode;
     const quotaLoss = pageName === 'lost' && !searchQuota;
-    return infoLoss || quotaLoss || queryTimer;
+    // let pathSame = true;
+    // try { //路径不变暂时, 不发请求。
+    //   const stateStr = JSON.stringify({
+    //     code: searchCode,
+    //     device: searchDevice,
+    //     date: searchDates,
+    //     quota: searchQuota,
+    //   });
+    //   stateStr !== stationInfoStr && (pathSame = false);
+    // } catch(err){ null; }
+    return infoLoss || quotaLoss || queryTimer; // || pathSame 
+  }
+
+  getResetDisable = () => { // 恢复图表按钮
+    const { pageName, lostChartDevice, stopChartDevice, stopChartTime, stopChartTypes } = this.props;
+    let resetDisable = false;
+    if (pageName === 'lost') {
+      !lostChartDevice && (resetDisable = true);
+    }
+    if (pageName === 'stop') {
+      !(stopChartDevice || stopChartTime || stopChartTypes) && (resetDisable = true);
+    }
+    if (pageName === 'curve') {
+      resetDisable = true;
+    }
+    return resetDisable;
+  }
+
+  recoverPage = () => { // 恢复图表
+    const { stationInfoStr, pageName } = this.props;
+    this.props.pageQuery(stationInfoStr, pageName);
   }
 
   render() {
-    const { areaStation, modeDevices, lostChartDevice } = this.props;
+    const { areaStation, modeDevices } = this.props;
     const { searchCode, searchDevice, searchDates } = this.state;
-    const recoveryDisable = !lostChartDevice;
+    const recoveryDisable = this.getResetDisable();
     return (
       <div className={styles.topSearch}>
         <div className={styles.leftPart}>
@@ -136,16 +168,17 @@ class StationSearch extends Component {
               onChange={this.onDateChange}
               style={{width: '220px'}}
               allowClear={false}
+              disabledDate={(cur) => moment().subtract(2, 'day').isBefore(cur, 'day')}
             />
           </div>
           <Button
             onClick={this.queryCharts}
             className={styles.search}
-            disabled={this.queryDisable()}
+            disabled={this.getQueryDisable()}
           >查询</Button>
         </div>
         <Button
-          onClick={this.resetCharts}
+          onClick={this.recoverPage}
           disabled={recoveryDisable}
           className={`${styles.recovery} ${recoveryDisable ? styles.disabled : null}`}
         >恢复图表</Button>
