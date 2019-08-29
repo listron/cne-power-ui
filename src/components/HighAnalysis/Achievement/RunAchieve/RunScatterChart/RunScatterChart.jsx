@@ -202,12 +202,18 @@ export default class RunScatterChart extends Component {
             symbol: 'circle',
             color: 'transparent',
           },
+          inRange: {
+            color: ['#00cdff', '#ff6cee', '#ff9000'],
+          },
         },
         // 表示 visualMap-piecewise 本身的视觉样式。
         controller: {
           outOfRange: {
             symbol: 'circle',
             color: '#cccccc',
+          },
+          inRange: {
+            color: ['#00cdff', '#ff6cee', '#ff9000'],
           },
         },
         align: 'left',
@@ -900,7 +906,6 @@ export default class RunScatterChart extends Component {
             <span>选择月份</span>
             <div className={styles.checkBox}>
               <CheckboxGroup
-                style={{height: '250px', overflowY: 'auto'}}
                 options={allMonths}
                 value={checkedMonths}
                 onChange={this.onChangeGroup}
