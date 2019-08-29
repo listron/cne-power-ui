@@ -137,7 +137,7 @@ function* getSequenceData(action) {//获取
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           chartLoading: false,
-          activeCode: '',
+          activeCode: deviceFullCode,
           sequenceData: {},
 
         },
@@ -182,7 +182,7 @@ function* getBigSequenceData(action) {//获取
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
-
+          bigchartLoading: false,
         },
       });
       message.error('请求失败');

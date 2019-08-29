@@ -87,6 +87,7 @@
       .contrastValue {
         margin: 0 24px;
         display: flex;
+        flex: 1;
 
         :global {
           .ant-input-number {
@@ -95,7 +96,9 @@
         }
 
         .bottomLeft {
-          width: 500px;
+          // width: 500px;
+          display: flex;
+          flex: 1;
 
           :global {
             .ant-input-number {

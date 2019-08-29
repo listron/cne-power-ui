@@ -81,7 +81,7 @@ class SequenceChart extends React.Component {
   creatOption = (sequenceData = {}, saveBtn, xyValueLimit) => {
     const { deviceName, pointCodeNameX, pointCodeNameY } = this.props;
     const { xMax, xMin, yMax, yMin } = xyValueLimit;
-    const { timeLine = [], point1Data = [], point2Data = [] } = sequenceData;
+    const { timeLine = [], point1Data = [], point2Data = [], point1Unit = '', point2Unit = '' } = sequenceData;
     const color = ['#ff7878', '#00cdff'];
     const option = {
       graphic: timeLine.length ? hiddenNoData : showNoData,
@@ -151,6 +151,7 @@ class SequenceChart extends React.Component {
       yAxis: [
         {
           type: 'value',
+          name: point1Unit,
           min: xMin,
           max: xMax,
           position: 'left',
@@ -159,6 +160,7 @@ class SequenceChart extends React.Component {
           // },
         }, {
           type: 'value',
+          name: point2Unit,
           min: yMin,
           max: yMax,
 
@@ -174,8 +176,8 @@ class SequenceChart extends React.Component {
           name: pointCodeNameX,
           type: 'line',
           yAxisIndex: 0,
-          progressiveThreshold: 1000,
-          progressive: 200,
+          progressiveThreshold: 3000,
+          progressive: 500,
           data: point1Data,
 
         },
@@ -184,8 +186,8 @@ class SequenceChart extends React.Component {
           type: 'line',
           yAxisIndex: 1,
           data: point2Data,
-          progressiveThreshold: 1000,
-          progressive: 100,
+          progressiveThreshold: 3000,
+          progressive: 500,
 
 
         }],
@@ -226,8 +228,9 @@ class SequenceChart extends React.Component {
     myChart.setOption(option, true);
   }
   render() {
-    const { index, showImg } = this.props;
+    const { index, showImg, sequenceData } = this.props;
     return (
+      //showImg不应该传第二个参数，会污染数据源
       <div className={styles.chartWrap}>
         {showImg && <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalInco} />}
         <div ref={(ref) => { this.sequenceChart = ref; }} className={styles.sequenceChart}>
