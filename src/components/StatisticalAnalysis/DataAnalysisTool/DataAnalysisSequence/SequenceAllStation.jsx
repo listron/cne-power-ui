@@ -9,10 +9,12 @@ class SequenceAllStation extends React.Component {
     getStationDevice: PropTypes.func,
     stations: PropTypes.array,
     theme: PropTypes.string,
+    resetStore: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
   }
+
   selectStation = (stationCode) => {
     const { changeSquenceStore, getStationDevice, getSequenceName } = this.props;
     changeSquenceStore({ stationCode, showPage: 'singleStation' });
