@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './manufacturers.scss';
 import { dataFormats, getDefaultData } from '../../../../utils/utilFunc';
 import { gradient, Gradient1, Gradient2, chartsLoading, themeConfig, chartsNodata } from '../../../../utils/darkConfig';
+import { runSaga } from 'redux-saga';
 
 /* 
   2 必填   data
@@ -81,7 +82,6 @@ class Charts extends React.Component {
     return result;
   };
 
-
   drawChart = (params) => {
     const { data, type, selectOption, loading, theme } = params;
     const manufacturerData = data.map(e => e.manufacturer);
@@ -117,7 +117,16 @@ class Charts extends React.Component {
             </div>`
           );
         },
+        axisPointer: {
+          type: 'line',
+          snap: true,
+          lineStyle: {
+            width: 38,
+            color: 'rgba(0,0,0,0.3)',
+          },
+        },
       },
+
       title: {
         text: this.getTitle(type, selectOption),
         left: '23',
@@ -152,13 +161,7 @@ class Charts extends React.Component {
       xAxis: {
         type: 'category',
         data: xData,
-        axisPointer: {
-          type: 'line',
-          snap: true,
-          lineStyle: {
-            width: 38,
-          },
-        },
+
         axisLabel: {
           rotate: -45,
           height: 10,
@@ -177,24 +180,22 @@ class Charts extends React.Component {
           show: false,
         },
       },
-      yAxis: [
-        {
-          type: 'value',
-          name: this.getParmas[type]['yaxisName'],
-          axisLabel: { formatter: '{value}' },
-          axisLine: {
-            show: false,
-          },
-          axisTick: {
-            show: false,
-          },
-          splitLine: {
-            lineStyle: {
-              type: 'dashed',
-            },
+      yAxis: {
+        type: 'value',
+        name: this.getParmas[type]['yaxisName'],
+        axisLabel: { formatter: '{value}' },
+        axisLine: {
+          show: false,
+        },
+        axisTick: {
+          show: false,
+        },
+        splitLine: {
+          lineStyle: {
+            type: 'dashed',
           },
         },
-      ],
+      },
       series: {
         name: this.getParmas[type]['legend'],
         type: 'bar',
@@ -210,7 +211,7 @@ class Charts extends React.Component {
   render() {
     const { type } = this.props;
     return (
-      <div id={type}></div>
+      <div id={type} />
     );
   }
 }
