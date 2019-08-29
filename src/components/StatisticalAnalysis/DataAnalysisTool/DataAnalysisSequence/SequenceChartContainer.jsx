@@ -58,6 +58,15 @@ class SequenceChartContainer extends React.Component {
         srcObj: {},
       });
     }
+    if (this.state.newSrcUrl.length >= nextProps.deviceList.length - 1) {//控制是否可以下载图片
+      this.props.changeSquenceStore({
+        isClick: true,
+      });
+    } else {
+      this.props.changeSquenceStore({
+        isClick: false,
+      });
+    }
     if (nextProps.down && this.props.down !== nextProps.down) {
       if (this.state.newSrcUrl.length === nextProps.deviceList.length) {
         const { stations, stationCode, pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;

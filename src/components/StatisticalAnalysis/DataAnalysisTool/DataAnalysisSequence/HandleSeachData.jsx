@@ -308,7 +308,7 @@ class HandleSeachData extends React.Component {
     });
   }
   render() {
-    const { stationCode, stations, sequenceotherNames, theme, startTime, endTime } = this.props;
+    const { stationCode, stations, sequenceotherNames, theme, startTime, endTime, isClick } = this.props;
     const { isSwap, options, sequenceNameValue, showOther, xName, yName, xyValueLimit, disableDateFun } = this.state;
     const { yMin, yMax, xMin, xMax } = xyValueLimit;
     const dateFormat = 'YYYY.MM.DD';
@@ -399,7 +399,7 @@ class HandleSeachData extends React.Component {
             </div>
           </div>}
           <Button className={styles.seachBtn} onClick={this.getSequenceData}>查询</Button>
-          <Button className={styles.seachBtn} onClick={this.downPic}>图片下载</Button>
+          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!this.props.isClick} onClick={this.downPic}>图片下载</Button>
         </div>
       </div>
     );

@@ -143,6 +143,16 @@
           color: #fff;
         }
       }
+      .disabledSeach {
+        border: none;
+        background: #f5f5f5;
+        color: #BFBFBF;
+
+        &:hover {
+          background: #f5f5f5;
+          color: #BFBFBF;
+        }
+      }
     }
   }
 
