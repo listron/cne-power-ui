@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styles from './sequenceStyles.scss';
 import StationSelect from '../../../Common/StationSelect';
 import { Button, DatePicker, Cascader, Icon, Select, InputNumber } from 'antd';
-import { downloadFile } from '../../../../utils/utilFunc';
 import moment from 'moment';
 
 
@@ -51,11 +50,15 @@ class HandleSeachData extends React.Component {
     stationCode: PropTypes.number,
     stations: PropTypes.array,
     changeSquenceStore: PropTypes.func,
-    getScatterName: PropTypes.func,
     getSequenceOtherName: PropTypes.func,
     getxyLimitValue: PropTypes.func,
     sequenceotherNames: PropTypes.array,
     getSequenceData: PropTypes.func,
+    getSequenceName: PropTypes.func,
+    getStationDevice: PropTypes.func,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -146,18 +149,18 @@ class HandleSeachData extends React.Component {
     }
     );
   }
-  getLimitValue = (value) => {
-    const { getxyLimitValue, stationCode } = this.props;
-    const { xCode, yCode, saveStartTime, saveEndTime } = this.state;
-    getxyLimitValue({
-      stationCode,
-      startTime: saveStartTime,
-      endTime: saveEndTime,
-      xPointCode: xCode,
-      yPointCode: yCode,
-      ...value,
-    });
-  }
+  // getLimitValue = (value) => {
+  //   const { getxyLimitValue, stationCode } = this.props;
+  //   const { xCode, yCode, saveStartTime, saveEndTime } = this.state;
+  //   getxyLimitValue({
+  //     stationCode,
+  //     startTime: saveStartTime,
+  //     endTime: saveEndTime,
+  //     xPointCode: xCode,
+  //     yPointCode: yCode,
+  //     ...value,
+  //   });
+  // }
   selectStationCode = (stationCodeArr) => {//电站选择
     const { stationCode } = stationCodeArr[0];
     this.setState({
@@ -178,8 +181,8 @@ class HandleSeachData extends React.Component {
       saveStartTime: dateString[0],
       saveEndTime: dateString[1],
     });
-    const value = { startTime: dateString[0], endTime: dateString[1] };
-    this.getLimitValue(value);
+    // const value = { startTime: dateString[0], endTime: dateString[1] };
+    // this.getLimitValue(value);
   }
   //改测点
   onChangeContrast = (value, selectedOptions) => {
@@ -209,7 +212,7 @@ class HandleSeachData extends React.Component {
       showOther: false,
     });
 
-    this.getLimitValue({ xPointCode: pointCodeX, yPointCode: pointCodeY });
+    // this.getLimitValue({ xPointCode: pointCodeX, yPointCode: pointCodeY });
 
   }
   //交换左右y轴
@@ -223,13 +226,21 @@ class HandleSeachData extends React.Component {
       yCode: xCode,
     });
     const value = { xPointCode: yCode, yPointCode: xCode };
-    this.getLimitValue(value);
+    // this.getLimitValue(value);
   }
   //查询图表数据
   getSequenceData = () => {
     //请求数据
-    const { getSequenceData, changeSquenceStore, deviceList, stationCode } = this.props;
+    const { getSequenceData, changeSquenceStore, deviceList, stationCode, getxyLimitValue } = this.props;
     const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
+    getxyLimitValue({
+      stationCode,
+      startTime: saveStartTime,
+      endTime: saveEndTime,
+      xPointCode: xCode,
+      yPointCode: yCode,
+
+    });
     changeSquenceStore({
       sequenceData: {},
       pointCodeNameX: xName,
@@ -260,10 +271,7 @@ class HandleSeachData extends React.Component {
       xCode: value,
       xName: children,
     });
-    const selectY1value = this.props.sequenceotherNames.filter((e, i) => (e.devicePointCode === value))[0];
-    const y1Unit = selectY1value.devicePointUnit;
-    this.props.changeSquenceStore({ y1Unit });
-    this.getLimitValue({ xPointCode: value });
+    // this.getLimitValue({ xPointCode: value });
   }
   //改变第二个y轴
   changeY2value = (value, option) => {
@@ -272,10 +280,7 @@ class HandleSeachData extends React.Component {
       yCode: value,
       yName: children,
     });
-    const selectY2value = this.props.sequenceotherNames.filter((e, i) => (e.devicePointCode === value))[0];
-    const y2Unit = selectY2value.devicePointUnit;
-    this.props.changeSquenceStore({ y2Unit });
-    this.getLimitValue({ yPointCode: value });
+    // this.getLimitValue({ yPointCode: value });
   }
 
   onCalendarChange = (dates, dateStrings) => {
@@ -375,7 +380,6 @@ class HandleSeachData extends React.Component {
               />
             </div>
             <div className={styles.bottomLeft}>
-              {/* <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} /> */}
               <span className={styles.defaultStyle} >{yName ? yName : '--'}</span>
               <InputNumber
                 value={yMax}

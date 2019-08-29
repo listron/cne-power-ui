@@ -3,13 +3,38 @@ import PropTypes from 'prop-types';
 import { Spin } from 'antd';
 import styles from './sequenceStyles.scss';
 import SequenceChart from './SequenceChart';
-import { downloadFile } from '../../../../utils/utilFunc';
 import SequenceModal from './SequenceModal';
 import toZip from '../../../../utils/js-zip';
 import { message } from 'antd';
 import moment from 'moment';
 
 class SequenceChartContainer extends React.Component {
+  static propTypes = {
+
+    down: PropTypes.bool,
+    saveBtn: PropTypes.bool,
+    stationCode: PropTypes.number,
+    deviceList: PropTypes.array,
+    stations: PropTypes.array,
+    sequenceData: PropTypes.object,
+    getSequenceData: PropTypes.func,
+    likeStatusChange: PropTypes.func,
+    getBigSequenceData: PropTypes.func,
+    changeSquenceStore: PropTypes.func,
+    pointY1: PropTypes.string,
+    pointY2: PropTypes.string,
+    activeCode: PropTypes.string,
+    theme: PropTypes.string,
+    showImg: PropTypes.func,
+    deviceName: PropTypes.string,
+    pointCodeNameX: PropTypes.string,
+    pointCodeNameY: PropTypes.string,
+    xPointCode: PropTypes.string,
+    yPointCode: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    xyValueLimit: PropTypes.object,
+  }
   constructor(props, context) {
     super(props, context);
     this.state = {

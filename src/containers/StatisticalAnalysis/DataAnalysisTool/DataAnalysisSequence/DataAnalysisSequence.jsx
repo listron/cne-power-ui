@@ -12,6 +12,7 @@ class DataAnalysisSequence extends Component {
   static propTypes = {
     resetStore: PropTypes.func,
     showPage: PropTypes.string,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -35,9 +36,6 @@ class DataAnalysisSequence extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  // const tets = { ...state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.toJS() };
-  // console.log('tets: ', tets);
-
   return {
     ...state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.toJS(),
     stations: state.common.get('stations').toJS(),

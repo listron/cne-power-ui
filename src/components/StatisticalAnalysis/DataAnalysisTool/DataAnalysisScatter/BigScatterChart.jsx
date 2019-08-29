@@ -3,12 +3,23 @@ import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import echarts from 'echarts';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
-import { themeConfig, chartsLoading } from '../../../../utils/darkConfig';
+import { themeConfig } from '../../../../utils/darkConfig';
 import { dataFormat } from '../../../../utils/utilFunc';
 import moment from 'moment';
 
 
 class BigScattrChart extends React.Component {
+  static propTypes = {
+    pointCodeNameX: PropTypes.string,
+    pointCodeNameY: PropTypes.string,
+    theme: PropTypes.string,
+    bigScatterData: PropTypes.object,
+    deviceList: PropTypes.array,
+    index: PropTypes.number,
+    bigchartLoading: PropTypes.bool,
+    xyValueLimit: PropTypes.object,
+    likeChange: PropTypes.func,
+  }
   constructor(props, context) {
     super(props, context);
   }
@@ -38,7 +49,7 @@ class BigScattrChart extends React.Component {
     this.drawChat(bigScatterData, saveBtn, title);
   }
   creatOption = (bigScatterData = {}, saveBtn, title) => {
-    const { pointCodeNameX, pointCodeNameY, startTime, endTime, xyValueLimit } = this.props;
+    const { pointCodeNameX, pointCodeNameY, xyValueLimit } = this.props;
     const { xMax, xMin, yMax, yMin } = xyValueLimit;
     const { chartData = [] } = bigScatterData;
     const filterYaxisData = chartData.map(e => e.y);
@@ -185,8 +196,7 @@ class BigScattrChart extends React.Component {
     return val;
   }
   drawChat = (bigScatterData, saveBtn, title) => {
-    const { index, likeChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
-
+    const { index, likeChange, theme } = this.props;
     const bigscatterChart = echarts.init(this.bigScattrchart, themeConfig[theme]);
     const option = this.creatOption(bigScatterData, saveBtn, title);
     bigscatterChart.off();
