@@ -46,7 +46,7 @@ class DevicesChart extends Component {
       type: 'line',
       smooth: true,
       name: deviceName,
-      data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]),
+      data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]).sort((a, b) => a[0] - b[0]),
     };
   })
 
@@ -56,10 +56,10 @@ class DevicesChart extends Component {
       const { curveTopStringify } = this.props;
       const queryInfo = JSON.parse(curveTopStringify) || {};
       const param = {
-        stationCodes: [queryInfo.searchCode],
+        stationCodes: [queryInfo.code],
         deviceFullcodes: [deviceFullcode],
-        startTime: queryInfo.searchDates[0],
-        endTime: queryInfo.searchDates[1],
+        startTime: queryInfo.date[0],
+        endTime: queryInfo.date[1],
       };
       this.props.changeStore({
         curveDeviceName: deviceName,
@@ -114,7 +114,9 @@ class DevicesChart extends Component {
       series: this.createSeires(totalCurveData),
     };
     devicesChart.hideLoading();
+    devicesChart.clear();
     devicesChart.setOption(option);
+    devicesChart.off('click');
     devicesChart.on('click', (param) => this.deviceHandle(param, totalCurveData, devicesChart));
   }
 
