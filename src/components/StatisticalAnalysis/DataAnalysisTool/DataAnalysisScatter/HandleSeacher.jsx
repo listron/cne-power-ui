@@ -175,9 +175,6 @@ class HandleSeacher extends React.Component {
   //     ...value,
   //   });
   // }
-
-
-
   selectStationCode = (stationCodeArr) => {
     const { stationCode } = stationCodeArr[0];
     this.props.changeToolStore({
@@ -277,31 +274,21 @@ class HandleSeacher extends React.Component {
 
   }
   changeXvalue = (value, option) => {//改变其他项中的x轴
-    const { scatterotherNames } = this.props;
     const { props: { children } } = option;
     this.setState({
       xCode: value,
       xName: children,
     });
-    const selectXvalue = scatterotherNames.filter((e, i) => (e.devicePointCode === value))[0];
-    const xUnit = selectXvalue.devicePointUnit;
-    this.props.changeToolStore({
-      xUnit,
-    });
+
     // this.getLimitValue({ xPointCode: value });
   }
   changeYvalue = (value, option) => {//改变其他项中的y轴
-    const { scatterotherNames } = this.props;
     const { props: { children } } = option;
     this.setState({
       yCode: value,
       yName: children,
     });
-    const selectYvalue = scatterotherNames.filter((e, i) => (e.devicePointCode === value))[0];
-    const yUnit = selectYvalue.devicePointUnit;
-    this.props.changeToolStore({
-      yUnit,
-    });
+
     // this.getLimitValue({ yPointCode: value });
   }
 

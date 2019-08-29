@@ -271,9 +271,6 @@ class HandleSeachData extends React.Component {
       xCode: value,
       xName: children,
     });
-    const selectY1value = this.props.sequenceotherNames.filter((e, i) => (e.devicePointCode === value))[0];
-    const y1Unit = selectY1value.devicePointUnit;
-    this.props.changeSquenceStore({ y1Unit });
     // this.getLimitValue({ xPointCode: value });
   }
   //改变第二个y轴
@@ -283,9 +280,6 @@ class HandleSeachData extends React.Component {
       yCode: value,
       yName: children,
     });
-    const selectY2value = this.props.sequenceotherNames.filter((e, i) => (e.devicePointCode === value))[0];
-    const y2Unit = selectY2value.devicePointUnit;
-    this.props.changeSquenceStore({ y2Unit });
     // this.getLimitValue({ yPointCode: value });
   }
 
