@@ -80,7 +80,7 @@ class DevicesPsd extends Component {
       xData.push(deviceName);
       const colorIndex = [...modes].indexOf(deviceModeName);
       psdData.push({
-        value: psd,
+        value: dataFormats(psd) * 100,
         name: deviceModeName,
         itemStyle: {
           color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
