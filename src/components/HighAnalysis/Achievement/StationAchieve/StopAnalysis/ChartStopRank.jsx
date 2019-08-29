@@ -26,6 +26,7 @@ class ChartStopRank extends Component {
 
   state = {
     sortType: 'deviceName',
+    modeArr: [],
   }
 
   componentDidMount(){
@@ -126,7 +127,8 @@ class ChartStopRank extends Component {
         },
       },
     };
-    return { dataAxis, series, modeArr };
+    this.setState({ modeArr });
+    return { dataAxis, series };
   }
 
   chartHandle = ({dataIndex}, sortedStopRank, chart) => {
@@ -222,7 +224,7 @@ class ChartStopRank extends Component {
   }
 
   render() {
-    const { sortType } = this.state;
+    const { sortType, modeArr } = this.state;
     const { stopChartTypes, stopChartTime } = this.props;
     const stopTimeText = stopChartTime ? `${stopChartTime}-` : '';
     const stopTypeText = stopChartTypes ? `${stopChartTypes.faultName}-` : '';
@@ -245,6 +247,20 @@ class ChartStopRank extends Component {
                 <Option value="stopCount">停机次数</Option>
               </Select>
             </span>
+          </span>
+        </div>
+        <div className={styles.modes}>
+          {modeArr.map((e, i) => (
+            <span key={e} className={styles.eachMode}>
+              <span className={styles.rect} style={{
+                backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
+                }} />
+              <span className={styles.modeText}>{e}</span>
+            </span>
+          ))}
+          <span className={styles.eachMode}>
+            <span className={styles.line} />
+            <span className={styles.modeText}>停机次数</span>
           </span>
         </div>
         <div className={styles.chart} ref={(ref)=> {this.rankRef = ref;}} />

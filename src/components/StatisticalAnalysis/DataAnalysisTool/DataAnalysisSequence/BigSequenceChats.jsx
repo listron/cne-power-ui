@@ -25,10 +25,22 @@ class BigSequenceCharts extends React.Component {
     super(props, context);
   }
   componentDidMount() {
-    const { curBigChartData, deviceList, index } = this.props;
+    const { curBigChartData, deviceList, index, theme } = this.props;
     const curChart = deviceList[index];
     const saveBtn = curChart ? curChart.likeStatus : false;
     const deviceName = curChart ? curChart.deviceName : '';
+    const myChart = eCharts.init(this.bigChart, themeConfig[theme]); //构建下一个实例
+    const lightColor = {
+      maskColor: 'rgba(255, 255, 255, 0.8)',
+      color: '#199475',
+    };
+    if (this.props.bigchartLoading) {
+
+      myChart.showLoading('default', lightColor);
+    }
+    if (!this.props.bigchartLoading) {
+      myChart.hideLoading();
+    }
     this.renderChart(curBigChartData, saveBtn, deviceName);
   }
   componentWillReceiveProps(nextProps) {
@@ -38,28 +50,28 @@ class BigSequenceCharts extends React.Component {
     const saveBtn = curChart ? curChart.likeStatus : false;
     const deviceName = curChart ? curChart.deviceName : '';
     const myChart = eCharts.init(bigChart, themeConfig[theme]); //构建下一个实例
+    const lightColor = {
+      maskColor: 'rgba(255, 255, 255, 0.8)',
+      color: '#199475',
+    };
     if (JSON.stringify(this.props.curBigChartData) !== JSON.stringify(curBigChartData)) {
+      myChart.showLoading('default', lightColor);
       this.renderChart(curBigChartData, saveBtn, deviceName);
     }
     if (nextProps.bigchartLoading) {
-      const lightColor = {
-        maskColor: 'rgba(255, 255, 255, 0.8)',
-        color: '#199475',
-      };
       myChart.showLoading('default', lightColor);
     }
     if (!nextProps.bigchartLoading) {
       myChart.hideLoading();
     }
     if ((this.props.saveBtn !== saveBtn) || (nextProps.id !== this.props.id)) {
-
       this.renderChart(curBigChartData, saveBtn, deviceName);
     }
   }
   creatOption = (curBigChartData = {}, saveBtn, deviceName) => {
     const { pointCodeNameX, pointCodeNameY, xyValueLimit } = this.props;
     const { xMax, xMin, yMax, yMin } = xyValueLimit;
-    const { timeLine = [], point1Data = [], point2Data = [] } = curBigChartData;
+    const { timeLine = [], point1Data = [], point2Data = [], point1Unit = '', point2Unit = '' } = curBigChartData;
     const color = ['#ff7878', '#00cdff'];
     const option = {
       graphic: timeLine.length ? hiddenNoData : showNoData,
@@ -131,11 +143,13 @@ class BigSequenceCharts extends React.Component {
       yAxis: [
         {
           type: 'value',
+          name: point1Unit,
           min: xMin,
           max: xMax,
 
         }, {
           type: 'value',
+          name: point2Unit,
           min: yMin,
           max: yMax,
           splitLine: false,
@@ -147,16 +161,16 @@ class BigSequenceCharts extends React.Component {
           type: 'line',
           yAxisIndex: 0,
           data: point1Data,
-          progressiveThreshold: 1000,
-          progressive: 100,
+          progressiveThreshold: 10000,
+          progressive: 500,
         },
         {
           name: pointCodeNameY,
           type: 'line',
           yAxisIndex: 1,
           data: point2Data,
-          progressiveThreshold: 1000,
-          progressive: 100,
+          progressiveThreshold: 10000,
+          progressive: 500,
         }],
     };
     return option;

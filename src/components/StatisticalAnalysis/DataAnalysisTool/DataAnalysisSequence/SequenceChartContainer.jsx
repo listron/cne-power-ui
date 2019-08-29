@@ -58,6 +58,15 @@ class SequenceChartContainer extends React.Component {
         srcObj: {},
       });
     }
+    if (this.state.newSrcUrl.length >= nextProps.deviceList.length - 1) {//控制是否可以下载图片
+      this.props.changeSquenceStore({
+        isClick: true,
+      });
+    } else {
+      this.props.changeSquenceStore({
+        isClick: false,
+      });
+    }
     if (nextProps.down && this.props.down !== nextProps.down) {
       if (this.state.newSrcUrl.length === nextProps.deviceList.length) {
         const { stations, stationCode, pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
@@ -83,7 +92,12 @@ class SequenceChartContainer extends React.Component {
   likeStatusChange = (index, bool, sequenceData) => {
     const { deviceList, changeSquenceStore } = this.props;
     deviceList[index].likeStatus = bool;
-    sequenceData ? changeSquenceStore({ deviceList, sequenceData }) : changeSquenceStore({ deviceList });
+    changeSquenceStore({ deviceList, sequenceData });
+  };
+  likeStatusChange2 = (index, bool) => {
+    const { deviceList, changeSquenceStore } = this.props;
+    deviceList[index].likeStatus = bool;
+    changeSquenceStore({ deviceList });
   };
 
   saveImgUrl = (title, src) => {
@@ -107,12 +121,14 @@ class SequenceChartContainer extends React.Component {
       isShowModal: false,
     });
   }
+  //如果参数中有当前风机数据怕影响数据源
   showImg = (index) => {
     const { deviceList } = this.props;
     this.setState({
       isShowModal: true,
       currentImgIndex: index,
     });
+    this.props.changeSquenceStore({ curBigChartData: {} });
     const deviceFullCode = deviceList[index].deviceFullCode;
     this.queryData(deviceFullCode);
 
@@ -169,7 +185,7 @@ class SequenceChartContainer extends React.Component {
             hideImg={this.hideImg}
             currentImgIndex={currentImgIndex}
             changeCurrentImgIndex={this.changeCurrentImgIndex}
-            likeStatusChange={this.likeStatusChange}
+            likeStatusChange={this.likeStatusChange2}
           />
         }
 

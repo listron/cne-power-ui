@@ -168,6 +168,7 @@ class StationSearch extends Component {
               onChange={this.onDateChange}
               style={{width: '220px'}}
               allowClear={false}
+              disabledDate={(cur) => moment().subtract(2, 'day').isBefore(cur, 'day')}
             />
           </div>
           <Button
