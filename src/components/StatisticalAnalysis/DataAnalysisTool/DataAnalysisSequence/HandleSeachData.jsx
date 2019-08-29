@@ -59,6 +59,7 @@ class HandleSeachData extends React.Component {
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     theme: PropTypes.string,
+    isClick: PropTypes.bool,
   }
   constructor(props, context) {
     super(props, context);

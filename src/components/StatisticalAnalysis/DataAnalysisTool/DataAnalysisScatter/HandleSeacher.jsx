@@ -67,6 +67,7 @@ class HandleSeacher extends React.Component {
     theme: PropTypes.string,
     scatterotherNames: PropTypes.array,
     deviceList: PropTypes.array,
+    isClick: PropTypes.bool,
 
 
   }
