@@ -1,26 +1,33 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
 
-.PerformanceAnalysisContainerBox{
+.PerformanceAnalysisContainerBox {
   display: flex;
   flex: 1;
   flex-direction: column;
   min-height: 100%;
-  .PerformanceAnalysisContainer{
+  .PerformanceAnalysisContainer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     flex: 1;
-    // width: 100%;
-    background-color:#ececec;
-    padding:24px 24px 0;
-    .PerformanceAnalysisMain{
+    padding: 24px 24px 0;
+    .PerformanceAnalysisMain {
       display: flex;
       flex-direction: column;
       flex: 1;
-      // background: #fff;
-      
-      
-
     }
+  }
+}
+
+.light {
+  .PerformanceAnalysisContainer {
+    background-color: #ececec;
+  }
+}
+
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  .PerformanceAnalysisContainer {
+    background-color: $background;
   }
 }

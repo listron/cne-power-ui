@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import styles from "./manufacturers.scss";
+import React, { Component } from 'react';
+import styles from './manufacturers.scss';
 import PropTypes from 'prop-types';
 import Search from './Search';
 import Charts from './chart';
@@ -19,32 +19,34 @@ class Manufacturers extends Component {
     deviceCapacityList: PropTypes.array,
     selectOption: PropTypes.string,
     loading: PropTypes.bool,
+    theme: PropTypes.string,
   }
 
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
 
   componentDidMount() {
     const { stationCode, deviceTypeNameLike, startDate, endDate, manufacturers } = this.props;
-    const parms = { stationCode, deviceTypeNameLike, startDate, endDate, manufacturers }
-    this.props.getChartsData(parms)
+    const parms = { stationCode, deviceTypeNameLike, startDate, endDate, manufacturers };
+    this.props.getChartsData(parms);
   }
 
   render() {
-    const { conversioneffList, faultNumList, faultHoursList, deviceCapacityList, selectOption, loading } = this.props;
+    const { conversioneffList, faultNumList, faultHoursList, deviceCapacityList, selectOption, loading, theme } = this.props;
     return (
-      <div className={styles.manufacturers}>
+      <div className={`${styles.manufacturers} ${styles[theme]}`}>
         <Search {...this.props} />
         <div className={styles.manuCont}>
-          <Charts type={"conversioneff"} data={conversioneffList} selectOption={selectOption} loading={loading} />
-          <Charts type={"faultHours"} data={faultHoursList} selectOption={selectOption} loading={loading} />
-          <Charts type={"faultNum"} data={faultNumList} selectOption={selectOption} loading={loading} />
-          <Charts type={"deviceCapacity"} data={deviceCapacityList} selectOption={selectOption} loading={loading} />
+          <Charts type={'conversioneff'} data={conversioneffList} selectOption={selectOption} loading={loading} theme={theme} />
+          <Charts type={'faultHours'} data={faultHoursList} selectOption={selectOption} loading={loading} theme={theme} />
+          <Charts type={'faultNum'} data={faultNumList} selectOption={selectOption} loading={loading} theme={theme} />
+          <Charts type={'deviceCapacity'} data={deviceCapacityList} selectOption={selectOption} loading={loading} theme={theme} />
         </div>
       </div>
-    )
+    );
   }
 }
 
 export default Manufacturers
+  ;

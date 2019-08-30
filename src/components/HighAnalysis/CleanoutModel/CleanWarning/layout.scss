@@ -1,0 +1,234 @@
+@import "../../../../theme/theme.scss";
+
+.cleanWarningMain {
+  @include contentBoxStyle();
+  .mainContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .pagination {
+    height: 60px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  :global {
+    .iconfont {
+      font-size: 20px;
+    }
+    .ant-table {
+      .ant-table-thead {
+        th > div {
+          height: 60px;
+        }
+      }
+      .ant-table-column-sorter {
+        top: 18px;
+      }
+      .icon-look {
+        cursor: pointer;
+      }
+    }
+    .ant-table .ant-table-thead > tr > th {
+      padding: 0 24px;
+    }
+    .ant-table .ant-table-tbody > tr > td {
+      padding: 0 24px;
+    }
+  }
+}
+
+.clearWarningSide {
+  @include contentBoxStyle();
+  z-index: 99;
+  .sideContent {
+    flex: 1;
+  }
+
+  .topStations {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    .leftPart {
+      height: 100%;
+      line-height: 60px;
+      .stationName {
+        font-size: 18px;
+      }
+      :global {
+        .anticon {
+          height: 100%;
+          line-height: 60px;
+          cursor: pointer;
+          font-size: 16px;
+          padding: 0 20px;
+        }
+      }
+    }
+    .rightPart {
+      width: 60px;
+      height: 100%;
+      line-height: 60px;
+      text-align: center;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .stationList {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 99;
+      width: 300px;
+      max-height: calc(100vh - 123px);
+      overflow: auto;
+      .title {
+        margin-bottom: 0;
+        height: 60px;
+        line-height: 60px;
+        font-size: 18px;
+        :global {
+          .anticon {
+            font-size: 16px;
+            padding: 0 20px;
+          }
+        }
+      }
+      .eachProvince {
+        padding-left: 40px;
+      }
+      .provinceName {
+        height: 30px;
+        line-height: 30px;
+      }
+      .stationContent {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        .stationName {
+          flex-basis: 50%;
+          height: 30px;
+          cursor: pointer;
+          word-break: break-all;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  .dustInfo {
+    height: 124px;
+    display: flex;
+    .effectGen,
+    .effectDay {
+      width: 140px;
+      margin: 12px 0 24px 24px;
+      display: flex;
+      flex-direction: column;
+      .dustEffectValue,
+      .lastCleanValue {
+        height: 52px;
+        line-height: 64px;
+        font-size: 24px;
+      }
+    }
+    .effectGen {
+      width: 215px;
+      .demicalValue {
+        font-size: 16px;
+      }
+    }
+    .weather {
+      padding-left: 24px;
+      display: flex;
+      align-items: center;
+      width: 450px;
+      .eachWeather {
+        margin-top: 12px;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        font-size: 10px;
+      }
+      img {
+        height: 24px;
+        margin: 4px 0;
+      }
+      .noWeather {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .effectCharts {
+    position: relative;
+    .eachChart {
+      width: 100%;
+      display: flex;
+      padding: 0 24px;
+      justify-content: center;
+    }
+    .effectChart {
+      height: 400px;
+      flex: 1;
+      .chartTool {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 10px;
+        .title {
+          display: flex;
+          height: 14px;
+          padding: 10px 10px 12px;
+          font-size: 12px;
+          align-items: center;
+          margin-bottom: 8px;
+        }
+        .content {
+          display: flex;
+          height: 21px;
+          padding: 0 10px;
+          font-size: 12px;
+          align-items: center;
+          .darkRect,
+          .lightRect,
+          .round,
+          .text,
+          .value {
+            margin-right: 4px;
+          }
+          .darkRect,
+          .lightRect,
+          .round {
+            width: 6px;
+            height: 6px;
+          }
+          .round {
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+    :global {
+      .ant-calendar-picker {
+        position: absolute;
+        right: 24px;
+        top: 56px;
+        z-index: 99;
+        .ant-calendar-picker-input .anticon {
+          right: 8px;
+        }
+      }
+    }
+  }
+}

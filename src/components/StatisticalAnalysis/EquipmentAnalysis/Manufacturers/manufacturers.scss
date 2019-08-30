@@ -1,4 +1,4 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
 
 .manufacturers {
   display: flex;
@@ -10,8 +10,8 @@
     display: flex;
     flex-direction: column;
     padding: 24px 28px;
-    .searchBox{
-      width:100%;
+    .searchBox {
+      width: 100%;
       height: 10px;
     }
 
@@ -43,7 +43,7 @@
     background: $pageGround;
     margin-top: 12px;
 
-    >div {
+    > div {
       display: flex;
       // flex: 1;
       height: 383px;
@@ -53,24 +53,38 @@
   }
 }
 
-.tooltipTitle {
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 7px;
-  margin-bottom: 7px;
-  width: 180px;
+.light {
+  .search {
+    background: $pageGround;
+  }
+  .manuCont {
+    background: $pageGround;
+    > div {
+      border-bottom: 1px solid $promptColor;
+    }
+  }
+
+  .tooltipBox {
+    @include tooltipBox(#ccc);
+  }
 }
 
-.tooltipCont {
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  line-height: 20px;
-
-  span {
-    display: flex;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    margin-right: 4px;
+.dark {
+  @import "../../../../theme/darkTheme.scss";
+  .search {
+    background: $light-background;
+    border: 1px solid $border-color;
+    color: $fontColor;
+  }
+  .manuCont {
+    background: $light-background;
+    border: 1px solid $border-color;
+    color: $fontColor;
+    > div {
+      border-bottom: 1px solid $border-color;
+    }
+  }
+  .tooltipBox {
+    @include tooltipBox($border-color);
   }
 }

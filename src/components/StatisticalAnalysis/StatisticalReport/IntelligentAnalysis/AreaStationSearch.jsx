@@ -1,4 +1,4 @@
-import React,{ Component } from "react";
+import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import styles from './intelligentAnalysis.scss';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
@@ -11,7 +11,7 @@ const Option = Select.Option;
 const { APIBasePath } = path.basePaths;
 const { statisticalAnalysis } = path.APISubPaths;
 
-class AreaStationSearch extends Component{
+class AreaStationSearch extends Component {
 
   static propTypes = {
     stations: PropTypes.array,
@@ -27,13 +27,13 @@ class AreaStationSearch extends Component{
     areaName: PropTypes.string,
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       regionName: '',
-      year:'',
-      month:'', 
-      dateType:'',
+      year: '',
+      month: '',
+      dateType: '',
       startTime: moment().subtract(0, 'months').format('YYYY-MM-DD'),
     }
   }
@@ -41,12 +41,12 @@ class AreaStationSearch extends Component{
   onTimeChange = (value) => { // 选择时间
     const { startTime, timeStyle } = value;
     let dateType = timeStyle === 'month' ? 2 : 1;
-    if(timeStyle === 'month'){
+    if (timeStyle === 'month') {
       this.setState({
         dateType: 2,
-        year : moment(startTime).format('YYYY'),
+        year: moment(startTime).format('YYYY'),
       })
-    }else if(timeStyle === 'day'){
+    } else if (timeStyle === 'day') {
       this.setState({
         dateType: 1,
         year: moment(startTime).format('YYYY'),
@@ -86,19 +86,19 @@ class AreaStationSearch extends Component{
   exportReport = () => { // 下载
     const { downLoadFile, areaName, dateType, year, month } = this.props;
     const url = `${APIBasePath}${statisticalAnalysis.exportAreaStation}`;
-    downLoadFile({ 
+    downLoadFile({
       url,
       fileName: `同区域电站对比报告`,
       params: {
-        areaName, 
-        dateType, 
-        year, 
+        areaName,
+        dateType,
+        year,
         month
       },
     })
   }
 
-  render(){
+  render() {
     const { stations, reportShow } = this.props;
     const { regionName } = this.state;
 
@@ -107,21 +107,23 @@ class AreaStationSearch extends Component{
       e.regionName && regionSet.add(e.regionName);
     });
 
-    return(
+    return (
       <div className={styles.areaStationSearch}>
         <div className={styles.searchPart}>
           <div className={styles.leftLayout}>
+            <span ref="wrap" />
             <div className={styles.regionStationSelect}>
               <span className={styles.text}>区域选择</span>
-              <Select 
-                className={styles.searchInput} 
-                placeholder="请选择" 
-                value={ !regionName ? undefined : regionName }
+              <Select
+                className={styles.searchInput}
+                placeholder="请选择"
+                value={!regionName ? undefined : regionName}
+                getPopupContainer={() => this.refs.wrap}
                 onChange={this.selectArea}>
-                  <Option value={null}>请选择</Option>
-                    {[...regionSet].map(e=>(
-                      <Option value={e} key={e}>{e}</Option>
-                    ))}
+                <Option value={null}>请选择</Option>
+                {[...regionSet].map(e => (
+                  <Option value={e} key={e}>{e}</Option>
+                ))}
               </Select>
             </div>
             <div className={styles.dateSelect}>
@@ -132,14 +134,14 @@ class AreaStationSearch extends Component{
                 timerText={''}
                 refuseDefault={true}
                 value={{
-                 timeStyle: 'day',
-                 startTime: null
+                  timeStyle: 'day',
+                  startTime: null
                 }}
               />
             </div>
             <Button className={styles.searchInfo} onClick={this.searchInfo}>查询</Button>
           </div>
-            <Button className={styles.exportReport} onClick={this.exportReport} icon="download" disabled={!reportShow}>下载报告</Button>
+          <Button className={styles.exportReport} onClick={this.exportReport} icon="download" disabled={!reportShow}>下载报告</Button>
         </div>
       </div>
     )

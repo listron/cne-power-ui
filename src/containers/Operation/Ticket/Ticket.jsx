@@ -30,11 +30,12 @@ class Ticket extends Component {
     getInspectList: PropTypes.func,
     getInspectIdList: PropTypes.func,
     history: PropTypes.object,
+    theme: PropTypes.string,
   };
   constructor(props) {
     super(props);
     this.state = {
-      tab: "defect",
+      tab: 'defect',
     };
   }
 
@@ -49,7 +50,7 @@ class Ticket extends Component {
   onChangeTab = (tab) => {
     this.setState({ tab: tab });
     this.props.onChangeShowContainer({ container: 'list' });
-    if (tab === "inspect") {
+    if (tab === 'inspect') {
       this.props.clearDefectState();//清除缺陷状态
       var params = {
         stationType: '2',
@@ -62,7 +63,7 @@ class Ticket extends Component {
         createTimeStart: '',
         createTimeEnd: '',
         deviceTypeCode: '',
-      }
+      };
       this.props.getInspectList(params);//获取巡检列表
       this.props.getInspectIdList(params);
     }
@@ -82,8 +83,8 @@ class Ticket extends Component {
         defectTypeCode: [],
         sortField: 'create_time',
         sortMethod: 'desc ',
-        handleUser: '',      //处理人
-      }
+        handleUser: '', //处理人
+      };
       this.props.getDefectList(params);//获取缺陷列表
       this.props.getDefectIdList(params); // 获取缺陷ID
     }
@@ -94,10 +95,10 @@ class Ticket extends Component {
   }
 
   render() {
-    const { container, onChangeShowContainer, defectId, pageSize, pageNum, defectIdList } = this.props;
+    const { container, onChangeShowContainer, defectId, pageSize, pageNum, defectIdList, theme } = this.props;
     const { tab } = this.state;
     return (
-      <div className={styles.ticketBox}>
+      <div className={`${styles.ticketBox} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '工单列表' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.ticket}>
           {container === 'list' &&
@@ -141,9 +142,10 @@ const mapStateToProps = (state) => {
     pageNum: state.operation.defect.get('pageNum'),
     pageSize: state.operation.defect.get('pageSize'),
     defectDetail: state.operation.defect.get('defectDetail').toJS(),
-    defectIdList: state.operation.defect.get('defectIdList').toJS()
-  }
-}
+    defectIdList: state.operation.defect.get('defectIdList').toJS(),
+    theme: state.common.get('theme'),
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeShowContainer: payload => dispatch({ type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA, payload }),
