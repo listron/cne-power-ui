@@ -202,6 +202,7 @@ export default class AreaSearch extends Component {
     // 判断如果选中过区域或时间可以重置图表
     if(dataName !== '') {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      console.log(groupInfo, 'groupInfo');
       changeStore({
         dataIndex: '', // 保存点击的下标
         selectStationCode: [], // 保存单选区域的信息
