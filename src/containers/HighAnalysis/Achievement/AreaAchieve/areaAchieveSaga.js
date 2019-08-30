@@ -19,7 +19,7 @@ function* getModesInfo(action) { // 可选机型
         value: parseInt(cur.manufactorId, 0),
         label: cur.manufactorName,
         children: (cur.deviceModesList && cur.deviceModesList.length > 0) ? cur.deviceModesList.map(m => ({
-          value: m.deviceModeCode,
+          value: `${cur.manufactorId}-${m.deviceModeCode}`,
           label: m.deviceModeName,
         })) : [],
       }));

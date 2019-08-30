@@ -50,7 +50,7 @@ class AutoModal extends Component {
     const { infoLists, onValueCheck } = this.props;
     const { checkedTrees } = this.state;
     // 因为checkedTrees里面值是数字的话会存在不相等的情况，所以把checkedTrees转为了字符串
-    const valueResult = infoLists.filter(e => checkedTrees.map(cur => (cur.toString())).includes(`${e.value}`));
+    const valueResult = infoLists.filter(e => checkedTrees.some(treeNode => `${e.value}` === `${treeNode}`));
     this.setState({ isShow: false });
     onValueCheck(valueResult);
   }

@@ -46,7 +46,7 @@ export default class StationPBAChart extends Component {
   }
 
   chartHandle = (params, indicatorRankInfo, myChart) => {
-    const { changeStore, dataIndex, getTrendInfo, getLostGenHour, location: { search }} = this.props;
+    const { changeStore, getTrendInfo, getLostGenHour, location: { search }} = this.props;
     const { name } = params;
     const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
@@ -87,7 +87,7 @@ export default class StationPBAChart extends Component {
       dataName: name,
       selectStationCode: stationCodes, // 保存单选区域的信息
     });
-    myChart.setOption(this.drawChart(indicatorRankInfo, dataIndex));
+    myChart.setOption(this.drawChart(indicatorRankInfo, name));
     getTrendInfo(paramsTrend);
     getLostGenHour(paramsHour);
   };
@@ -148,6 +148,7 @@ export default class StationPBAChart extends Component {
       },
       tooltip: {
         trigger: 'axis',
+        triggerEvent: true,
         axisPointer: {
           type: 'shadow',
         },

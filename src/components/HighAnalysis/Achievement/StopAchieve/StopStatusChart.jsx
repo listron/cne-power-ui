@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
+import moment from 'moment';
 import styles from './stopStatus.scss';
 
 class StopStatusChart extends Component {
@@ -9,6 +10,10 @@ class StopStatusChart extends Component {
   static propTypes = {
     stopStatusList: PropTypes.array,
     stopStatusLoading: PropTypes.bool,
+  }
+
+  state = {
+    stopTypes: [],
   }
 
   componentDidMount(){
@@ -37,7 +42,7 @@ class StopStatusChart extends Component {
     const categoryIndex = api.value(0); // api.value取出dataItem值, api.value(0)取出当前dataItem第一个维度数值
     const start = api.coord([api.value(1), categoryIndex]); // api.coord进行坐标转换计算
     const end = api.coord([api.value(2), categoryIndex]);
-    const height = 20; // api.size得到坐标系上一段数值范围对应的长度 default: api.size([0, 1])[1] * 0.6;
+    const height = api.size([0, 1])[1] * 0.6; // api.size得到坐标系上一段数值范围对应的长度 default: api.size([0, 1])[1] * 0.6;
     const rectShape = echarts.graphic.clipRectByRect({
         x: start[0],
         y: start[1] - height / 2,
@@ -58,20 +63,18 @@ class StopStatusChart extends Component {
 
   renderChart = (lists) => {
     const statusChart = echarts.init(this.statusRef);
-    const yAxisLabels = [], statusResult = [];
+    const yAxisLabels = [], statusResult = [], fualtNameSet = new Set();
     lists.forEach((e, index) => {
       const { deviceName, faultInfos = [] } = e || {};
       yAxisLabels.push(deviceName);
       faultInfos.forEach(m => {
         const {startTime, endTime, faultName, reason} = m || {};
+        fualtNameSet.add(faultName);
         statusResult.push({
           name: faultName,
-          value: [index, startTime, endTime, faultName, reason],
+          value: [index, startTime, endTime, faultName, reason, deviceName],
           itemStyle: {
-            normal: {
-              color: this.stopColors[parseInt(Math.random() * 5, 10)],
-              opacity: 0.8,
-            },
+            color: this.stopColors[[...fualtNameSet].indexOf(faultName)],
           },
         });
       });
@@ -89,8 +92,12 @@ class StopStatusChart extends Component {
       },
       xAxis: {
         type: 'time',
+        position: 'top',
         axisLine: {
           lineStyle: { color: '#666' },
+        },
+        axisLabel: {
+          formatter: (value) => moment(value).format('YYYY.MM.DD'),
         },
         axisTick: { show: false },
         splitLine: { show: false },
@@ -110,7 +117,7 @@ class StopStatusChart extends Component {
           const { value = [] } = data || {};
           return `<section class=${styles.tooltip}>
             <h3 class=${styles.title}>
-              <span>${value[3] || '--'}</span>
+              <span>${value[5] || '--'}</span>
             </h3>
             <div class=${styles.info}>
               ${['开始时间', '结束时间', '停机类型', '停机原因'].map((e, index) => (`
@@ -123,12 +130,6 @@ class StopStatusChart extends Component {
           </section>`;
         },
       },
-      // dataset: {
-      //   source: [
-      //     ['product', '风机故障', '计划停机', '变电故障', '场外因素', '其他损失'],
-
-      //   ],
-      // },
       series: [{
         type: 'custom',
         renderItem: this.renderItem,
@@ -155,14 +156,29 @@ class StopStatusChart extends Component {
       end: endPosition,
     }]);
     statusChart.hideLoading();
+    this.setState({ stopTypes: [...fualtNameSet] });
+    statusChart.clear();
     statusChart.setOption(option);
   }
 
   render() {
+    const { stopTypes } = this.state;
     const { stopStatusList } = this.props;
     const height = stopStatusList.length * 20 + 240;
     return (
-      <div className={styles.stautsChart} style={{height: `${height}px`}} ref={(ref)=> {this.statusRef = ref;}} />
+      <div className={styles.stopStatus}>
+        <div className={styles.modes}>
+          {stopTypes.map((e, i) => (
+            <span key={e} className={styles.eachFault}>
+              <span className={styles.rect} style={{
+                backgroundImage: `linear-gradient(-180deg, ${this.stopColors[i]} 0%, ${this.stopColors[i]} 100%)`,
+                }} />
+              <span className={styles.modeText}>{e}</span>
+            </span>
+          ))}
+        </div>
+        <div className={styles.stautsChart} style={{height: '600px'}} ref={(ref)=> {this.statusRef = ref;}} />
+      </div>
     );
   }
 }

@@ -37,6 +37,7 @@ export default class RunSearch extends Component {
       searchDevice: stationInfo.searchDevice || [],
       searchDates: stationInfo.searchDates || [defaultStartTime, defaultEndTime],
       areaFlag: false, // 控制第一次进来，有数据的时候
+      searchFlag: true, // 控制切换电站搜索
     };
   }
 
@@ -84,10 +85,10 @@ export default class RunSearch extends Component {
   };
 
   propsModeDevicesChange = (modeDevices) => { // 得到电站下设备信息;
-    const { searchCode, searchDates } = this.state;
+    const { searchCode, searchDates, searchFlag } = this.state;
     const searchDevice = this.getAllDeviceCodes(modeDevices);
     this.setState({ searchDevice });
-    this.historyChange(searchCode, searchDevice, searchDates);
+    searchFlag && this.historyChange(searchCode, searchDevice, searchDates);
   };
 
   historyChange = (searchCode, searchDevice, searchDates) => { // 切换路径 => 托管外部进行请求
@@ -111,9 +112,14 @@ export default class RunSearch extends Component {
   };
 
   onStationChange = ([regionName, stationCode]) => {
-    this.setState({ searchCode: stationCode, searchDevice: [] });
-    this.props.getDevices({ stationCode });
-    this.props.changeStore({ modeDevices: [] });
+    this.setState({
+      searchCode: stationCode,
+      searchDevice: [],
+      searchFlag: false,
+    }, () => {
+      this.props.getDevices({ stationCode });
+      this.props.changeStore({ modeDevices: [] });
+    });
   };
 
   onDeviceChange = (devices) => this.setState({ searchDevice: devices.map(e => e.value) });
@@ -122,7 +128,11 @@ export default class RunSearch extends Component {
 
   queryCharts = () => {
     const { searchCode, searchDevice, searchDates } = this.state;
-    this.historyChange(searchCode, searchDevice, searchDates);
+    this.setState({
+      searchFlag: true,
+    }, () => {
+      this.historyChange(searchCode, searchDevice, searchDates);
+    });
   };
 
   render() {
