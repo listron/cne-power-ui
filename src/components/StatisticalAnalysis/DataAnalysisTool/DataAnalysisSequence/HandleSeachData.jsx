@@ -81,14 +81,14 @@ class HandleSeachData extends React.Component {
   componentWillReceiveProps(nextProp) {
     const { sequenceNames, getSequenceData, stationCode, deviceList, sequenceNameTime, startTime, endTime, sequenceData, getxyLimitValue, changeSquenceStore, xyValueLimit } = nextProp;
     if (this.props.sequenceNameTime !== sequenceNameTime) {//格式化测点数据
-      const { options } = this.state;
       const newscatterNames = this.formater(sequenceNames);
       const arr = options.map(e => e.pointsUnionName);
+
       const option = newscatterNames.map((e, i) => {
         return {
           key: i,
           value: e.pointType,
-          pointsUnionName: arr[i],
+          pointsUnionName: arr[e.pointType - 1],
           isLeaf: false,
           pointNameList: e.pointNameList,
         };
