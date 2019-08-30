@@ -18,6 +18,7 @@ export default class GroupAreaChart extends Component {
     getGroupTrendInfo: PropTypes.func,
     getGroupLostGenHour: PropTypes.func,
     colorData: PropTypes.object,
+    queryParamsFunc: PropTypes.func,
   };
 
   componentDidUpdate(prevProps) {
@@ -45,9 +46,9 @@ export default class GroupAreaChart extends Component {
   }
 
   chartHandle = (params, groupCapacityInfo, myChart) => {
-    const { dataIndex, data } = params;
+    const { data } = params;
     if(data) {
-      const { changeStore, getGroupTrendInfo, getGroupLostGenHour, location: { search } } = this.props;
+      const { changeStore, dataIndex, getGroupTrendInfo, getGroupLostGenHour, location: { search } } = this.props;
       const groupInfoStr = searchUtil(search).getValue('group');
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
       const {
@@ -80,16 +81,31 @@ export default class GroupAreaChart extends Component {
         manufactorIds: modesInfo.map(cur => {
           return cur.value;
         }),
-        deviceModes: modes,
+        deviceModes: modes.map(cur => (cur.split('-')[1])),
       };
-      changeStore({
-        dataIndex: params.name, // 下标
-        dataName: data.name, // 名称
-        selectStationCode: stationCodes, // 保存单选区域的信息
-      });
-      myChart.setOption(this.drawChart(groupCapacityInfo, dataIndex));
-      getGroupTrendInfo(paramsTrend);
-      getGroupLostGenHour(paramsHour);
+      //判断点击
+      if(params.name && params.name !== dataIndex) {
+        changeStore({
+          dataIndex: params.name, // 下标
+          dataName: data.name, // 名称
+          selectStationCode: stationCodes, // 保存单选区域的信息
+        });
+        myChart.setOption(this.drawChart(groupCapacityInfo, dataIndex));
+        getGroupTrendInfo(paramsTrend);
+        getGroupLostGenHour(paramsHour);
+      }
+
+      //判断点击
+      if(params.name && params.name === dataIndex) {
+        changeStore({
+          dataIndex: '', // 保存点击的下标
+          selectStationCode: [], // 保存单选区域的信息
+          selectTime: '', // 保存选择时间
+          dataName: '', // 保存选择区域名称
+        });
+        myChart.setOption(this.drawChart(groupCapacityInfo, ''));
+        this.props.queryParamsFunc(groupInfo);
+      }
     }
   };
 

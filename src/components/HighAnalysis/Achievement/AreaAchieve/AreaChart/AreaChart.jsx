@@ -19,6 +19,7 @@ export default class AreaChart extends Component {
     location: PropTypes.object,
     colorData: PropTypes.object,
     getDeviceType: PropTypes.func,
+    queryParamsFunc: PropTypes.func,
   };
 
   componentDidUpdate(prevProps) {
@@ -43,7 +44,7 @@ export default class AreaChart extends Component {
   }
 
   chartHandle = (params, capacityInfo, myChart) => {
-    const { changeStore, getTrendInfo, getLostGenHour, getDeviceType, location: { search }} = this.props;
+    const { changeStore, getTrendInfo, dataIndex, getLostGenHour, getDeviceType, location: { search }} = this.props;
     const { data } = params;
     const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
@@ -73,13 +74,14 @@ export default class AreaChart extends Component {
     const paramsHour = {
       startTime: groupInfo.dates[0],
       endTime: groupInfo.dates[1],
-      deviceModes: modes,
+      deviceModes: modes.map(cur => (cur.split('-')[1])),
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
       stationCodes,
     };
-    if(params.name) {
+    //判断点击
+    if(params.name && params.name !== dataIndex) {
       changeStore({
         dataIndex: params.name,
         dataName: data.name,
@@ -89,6 +91,17 @@ export default class AreaChart extends Component {
       getTrendInfo(paramsTrend);
       getLostGenHour(paramsHour);
       getDeviceType({stationCodes: stationCodes});
+    }
+    //判断再次点击
+    if(params.name && params.name === dataIndex) {
+      changeStore({
+        dataIndex: '', // 选中信息
+        selectStationCode: [], // 选中电站信息
+        selectTime: '', // 选中时间
+        dataName: '', // 保存选择区域名称
+      });
+      myChart.setOption(this.drawChart(capacityInfo, ''));
+      this.props.queryParamsFunc(groupInfo);
     }
   };
 
