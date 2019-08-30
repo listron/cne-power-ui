@@ -1,63 +1,83 @@
-
 //整体页面布局重置
-@import '/fonts/iconfont.css';
+@import "/fonts/iconfont.css";
 
 @font-face {
   font-family: digital-7mono;
-  src: url('/fonts/digital-7mono.ttf');
+  src: url("/fonts/digital-7mono.ttf");
 }
 
-*{
-  margin:0;
+* {
+  margin: 0;
   padding: 0;
   font-weight: normal; // for Mac , in Mac font weight is 500 default
 }
 
-html, body, #app{
+html,
+body,
+#app {
   // height: 100%;
   min-width: 1024px;
   // min-height: 600px;
   margin: 0;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, SimSun, sans-serif!important;
+  color: #666;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, SimSun, sans-serif !important;
 }
 
 #app {
   display: flex;
 }
 
-ol, ul, li {
+ol,
+ul,
+li {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-table { 
-  border-collapse: collapse; 
-  border-spacing: 0; 
-} 
-fieldset,img { 
-  border: 0; 
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
 }
-address,caption,cite,code,dfn,em,strong,th,var { 
-  font-weight: normal; 
-  font-style: normal; 
+fieldset,
+img {
+  border: 0;
 }
-h1,h2,h3,h4,h5,h6 { 
-  font-size: 100%; 
-} 
-q:before,q:after { 
-  content:”; 
-} 
-abbr,acronym { 
-  border: 0; 
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var {
+  font-weight: normal;
+  font-style: normal;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+}
+q:before,
+q:after {
+  content: ”;
+}
+abbr,
+acronym {
+  border: 0;
 }
 
-body{
+body {
   overflow: hidden;
   font-size: 14px;
 }
 
-.flex-center{
+.flex-center {
   display: flex;
   flex: 1;
   justify-content: center;
@@ -69,5 +89,5 @@ body{
   text-overflow: ellipsis;
   overflow: hidden;
   display: inline-block;
-  word-break:keep-all;
+  word-break: keep-all;
 }

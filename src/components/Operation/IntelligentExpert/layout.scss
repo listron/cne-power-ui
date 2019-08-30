@@ -1,6 +1,4 @@
 @import "../../../theme/theme";
-@import "./layout.scss";
-
 @mixin top {
   @include lineheight(64px);
   display: flex;
@@ -9,16 +7,63 @@
   border-bottom: 1px solid $promptColor;
 }
 
-.intelligentSearch.light {
+.intelligentSearch {
+  display: flex;
+  flex-direction: column;
+  .topSearch {
+    min-height: 80px;
+    height: auto;
+    padding: 0px 28px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    .filterBtn {
+      margin-right: 16px;
+    }
+    .text {
+      margin-right: 16px;
+    }
+  }
   .partSearch {
-    background-color: #f9f9f9;
+    display: flex;
+    height: 50px;
+    align-items: center;
+    padding: 0 28px;
+    .defectDescription,
+    .entryPerson {
+      width: 200px;
+      margin: 0 10px;
+    }
+    .text {
+      margin-left: 10px;
+    }
     .reset {
-      color: $themeColor;
+      font-size: 14px;
+      margin-left: 16px;
+      cursor: pointer;
     }
   }
 }
 
-.intelligentTable.light {
+.intelligentTable {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  .topHandler {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 28px 20px 28px;
+    .leftPart {
+      display: flex;
+      .deleteHandler,
+      .addHandler,
+      .importHandler,
+      .exportHandler {
+        margin-right: 10px;
+      }
+    }
+  }
   .intelligentList {
     display: flex;
     flex-direction: column;
@@ -28,7 +73,6 @@
     .deleteRole {
       cursor: pointer;
       margin-right: 5px;
-      color: $themeColor;
     }
     .faultName,
     .faultDescription,
@@ -184,27 +228,4 @@
       }
     }
   }
-}
-
-@import "../../../theme/darkTheme.scss";
-.intelligentSearch.dark {
-  color: $fontColor;
-  .wrap {
-    background: $light-background;
-    border: 1px solid $border-color;
-  }
-
-  .partSearch {
-    background: $light-background;
-    margin-top: 10px;
-    border: 1px solid $border-color;
-    .reset {
-      color: $themeColor;
-    }
-  }
-}
-.intelligentTable.dark {
-  background: $light-background;
-  margin-top: 10px;
-  border: 1px solid $border-color;
 }

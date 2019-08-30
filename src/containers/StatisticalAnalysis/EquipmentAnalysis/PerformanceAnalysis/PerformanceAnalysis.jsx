@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import styles from './performanceAnalysis.scss';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import PerformanceAnalysisFilter from '../../../../components/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysisFilter';
 import PerformanceAnalysisTabs from '../../../../components/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysisTabs';
 import Footer from '../../../../components/Common/Footer';
-import { performanceAnalysisAction } from "./performanceAnalysisAction";
+import { performanceAnalysisAction } from './performanceAnalysisAction';
 import Cookie from 'js-cookie';
 
 class PerformanceAnalysis extends Component {
@@ -18,6 +18,8 @@ class PerformanceAnalysis extends Component {
     getFaultContrast: PropTypes.func,
     getPerformance: PropTypes.func,
     getFault: PropTypes.func,
+    resetStore: PropTypes.func,
+    theme: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -31,31 +33,30 @@ class PerformanceAnalysis extends Component {
 
   queryData = (activeKey) => {
     const { contrastSwitch, stationCode, deviceTypeCode, endDate, startDate } = this.props;
-    this.props.changePerformanceAnalysisStore({ targetTabs: activeKey })
+    this.props.changePerformanceAnalysisStore({ targetTabs: activeKey });
     const prams = {
       stationCode,
       startDate,
       endDate,
-      deviceTypeCode
-    }
+      deviceTypeCode,
+    };
     if (contrastSwitch) {
       if (activeKey === '1') {
-        this.props.getPerformanceContrast({ ...prams })
+        this.props.getPerformanceContrast({ ...prams });
       } else {
-        this.props.getFaultContrast({ ...prams })
+        this.props.getFaultContrast({ ...prams });
       }
+    } else if (activeKey === '1') {
+      this.props.getPerformance({ ...prams });
     } else {
-      if (activeKey === '1') {
-        this.props.getPerformance({ ...prams })
-      } else {
-        this.props.getFault({ ...prams })
-      }
+      this.props.getFault({ ...prams });
     }
   }
   render() {
+    const { theme } = this.props;
     return (
-      <div className={styles.PerformanceAnalysisContainerBox}>
-        <CommonBreadcrumb breadData={[{ name: '性能分析' }]} style={{ marginLeft: '38px' }}></CommonBreadcrumb>
+      <div className={`${styles.PerformanceAnalysisContainerBox} ${styles[theme]}`}>
+        <CommonBreadcrumb breadData={[{ name: '性能分析' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.PerformanceAnalysisContainer}>
           <div className={styles.PerformanceAnalysisMain}>
             <PerformanceAnalysisFilter {...this.props} />
@@ -64,7 +65,7 @@ class PerformanceAnalysis extends Component {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 
@@ -72,8 +73,9 @@ const mapStateToProps = state => ({
   ...state.statisticalAnalysisReducer.performanceAnalysisReducer.toJS(),
   stations: state.common.get('stations').toJS(),
   stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
+  theme: state.common.get('theme'),
 
-})
+});
 
 const mapDispatchToProps = (dispatch) => ({
   changePerformanceAnalysisStore: payload => dispatch({ type: performanceAnalysisAction.CHANGE_PERFORMANCEANALYSIS_STORE, payload }),
@@ -87,6 +89,6 @@ const mapDispatchToProps = (dispatch) => ({
   getStationDeviceType: payload => dispatch({ type: commonAction.getStationDeviceType, payload }),
   resetStore: () => dispatch({ type: performanceAnalysisAction.resetStore }),
   getEleDeviceData: payload => dispatch({ type: performanceAnalysisAction.getEleDeviceData, payload }),
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(PerformanceAnalysis);

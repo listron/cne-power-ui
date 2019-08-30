@@ -59,8 +59,8 @@ const menuData = [
             name: '数据导出',
             path: 'dataExport',
             rightKey: 'dataAnalysis_dataExport',
-          }
-        ]
+          },
+        ],
       }, {
         name: '报表查询',
         iconStyle: 'icon-trends',
@@ -299,7 +299,8 @@ const menuData = [
           {
             name: '智能分析报告',
             path: 'intelligentAnalysis',
-            rightKey: 'statistics_report_report',
+            rightKey: 'statistics_report_general',
+            // rightKey: 'statistics_report_report',
           },
           {
             name: '智能报表',

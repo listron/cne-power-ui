@@ -120,7 +120,7 @@ class Main extends Component {
     Cookie.remove('auto');
     Cookie.remove('userRight');
     Cookie.remove('rightMenu');
-    Cookie.remove('theme');
+    // Cookie.remove('theme');
     this.props.resetMonitorData();
     this.props.resetCommonStore();
     this.props.changeLoginStore({ pageTab: 'login' });

@@ -165,6 +165,7 @@ class StationSelect extends Component {
     } || {};
     return (
       <div className={`${styles.stationSelect} ${styles[theme]}`} style={this.props.style}>
+        <span ref="part" />
         {multiple ? <Select
           mode="multiple"
           disabled={disabled}
@@ -174,6 +175,7 @@ class StationSelect extends Component {
           value={checkedStationName}
           className={styles.stationSelectMainInput}
           {...deviceShow}
+          getPopupContainer={() => this.refs.part}
         >
           {data.filter(e => !disabledStation.includes(e.stationCode)).map(e => (
             <Option key={e.stationName}>{e.stationName}</Option>
@@ -185,6 +187,7 @@ class StationSelect extends Component {
           onSelect={this.onSelect}
           value={checkedStationName}
           placeholder={holderText}
+          getPopupContainer={() => this.refs.part}
         >
             {filteredSelectedStation.map((e) => (<Option key={e.stationName}>{e.stationName}</Option>))}
           </AutoComplete>}

@@ -1,39 +1,77 @@
-.handle{
+.handle {
   display: flex;
   justify-content: center;
-  margin-left:44px ;
-  button{
+  margin-left: 44px;
+  button {
     margin-right: 16px;
   }
 }
-.stationTable{//table字体图表样式
-  :global{
-    .ant-table .ant-table-thead > tr > th{
+.stationTable {
+  //table字体图表样式
+  :global {
+    .ant-table .ant-table-thead > tr > th {
       padding: 0 24px;
     }
-    .ant-table .ant-table-tbody > tr > td{
+    .ant-table .ant-table-tbody > tr > td {
       padding: 0 24px;
     }
-    .ant-table-thead{
-      th>div{
+    .ant-table-thead {
+      th > div {
         height: 60px;
       }
     }
-    .ant-table-column-sorter{
+    .ant-table-column-sorter {
       top: 18px;
     }
-    .iconfont{
+    .iconfont {
       font-size: 20px;
-      &:hover{
-        color:#199475
+      &:hover {
+        color: #199475;
       }
     }
-    .icon-edit,.icon-del{
-      color:#199475;
+    .icon-edit,
+    .icon-del {
+      color: #199475;
     }
   }
 }
-.iconStyles{
+.iconStyles {
   display: flex;
   justify-content: center;
+}
+
+.light {
+  .stationTable {
+    :global {
+      .iconfont {
+        &:hover {
+          color: #199475;
+        }
+      }
+      .icon-edit,
+      .icon-del {
+        color: #199475;
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../../../theme/darkTheme.scss";
+  .stationTable {
+    :global {
+      .iconfont {
+        &:hover {
+          color: $fontColor-hover;
+        }
+      }
+      .icon-edit,
+      .icon-del {
+        color: $fontColor;
+      }
+      .ant-table .ant-table-tbody > tr > td {
+        padding: 0 12px;
+      }
+    }
+  }
 }

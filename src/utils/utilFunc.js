@@ -46,10 +46,10 @@ export const dataFormats = (data, placeholder = '--', pointLenth, hideZero = fal
     return placeholder;
   }
   if (!hideZero) { // 保留精度内的末尾0
-    resultString = (pointLenth > 0 || pointLenth===0) ? parseFloat(data).toFixed(pointLenth) : `${data}`;
+    resultString = (pointLenth > 0 || pointLenth === 0) ? parseFloat(data).toFixed(pointLenth) : `${data}`;
   } else { // 需去掉末尾0
     const numData = parseFloat(data);
-    const tmpResult = (pointLenth > 0 || pointLenth===0) ? parseFloat(numData.toFixed(pointLenth)) : numData;
+    const tmpResult = (pointLenth > 0 || pointLenth === 0) ? parseFloat(numData.toFixed(pointLenth)) : numData;
     resultString = `${tmpResult}`;
   }
   return resultString;
@@ -92,9 +92,9 @@ export const numWithComma = (data, placeholder = '--', joinText = ',', divisionN
 };
 
 export const getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示 针对图表的数据
-const length = data.length;
-let replaceData = [];
-for (let i = 0; i < length; i++) { replaceData.push('--') }
-let realData = data.some(e => e || e === 0) ? data : replaceData;
-return realData
+  const length = data.length;
+  let replaceData = [];
+  for (let i = 0; i < length; i++) { replaceData.push('--') }
+  let realData = data.some(e => e || e === 0) ? data : replaceData;
+  return realData;
 }
