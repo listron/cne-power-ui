@@ -48,25 +48,49 @@ class InspectOrbit extends Component {
   }
 
   handleUser = (e) => {
-    const { inspectTrackData, inspectUserData } = this.props;
-    const { users } = this.state;
-    let user = e.target.value;
+    const user = e.target.value;
     this.setState({
       users: user,
-    })
-
+    });
   }
+
+  uniq(array){
+    //var temp =  array;
+    var temp=[array[0]];
+    array.map((e,i) => {
+      if(e.username != temp[temp.length-1].username){
+        temp.push(e);
+      }
+    });
+
+    return temp;
+}
+
   selectUser() {
     const { inspectTrackData, inspectUserData } = this.props;
-    if (inspectUserData.length > 0) {
+    var uniqInspectTrackData = this.uniq(inspectTrackData);
+    const names = [];
+    if(uniqInspectTrackData){
+      uniqInspectTrackData.map((any) => {
+        //console.log(any);
+        for (var p in any){
+          if(p == 'username'){
+            names.push(any[p]);
+          }
+        }
+      });
+    }
+    console.log(names);
+    if (names.length > 0) {
       return (
         <Radio.Group defaultValue="all" buttonStyle="solid" style={{ position: 'absolute', left: '100px', top: '100px' }} onChange={this.handleUser} >
           <Radio.Button value="all" style={{ marginRight: '5px', zIndex: 1 }}>全部</Radio.Button>
-          {inspectUserData && inspectUserData.map((e, i) => (
-            <Radio.Button value={e.name} style={{ margin: '0 5px', zIndex: 1 }} key={i}>{e.name}</Radio.Button>
-          ))}
+          {names && names.map((e, index) => (
+            <Radio.Button value={e} style={{ margin: '0 5px', zIndex: 1 }} key={index}>{e}</Radio.Button> 
+          )
+            )}
         </Radio.Group>
-      )
+      );
     }
   }
 
@@ -77,24 +101,36 @@ class InspectOrbit extends Component {
     let data = [];
     let datas = [];
     let timeArray = [];
-    let name=[];
-    let pointArray2=[];
+  
     let userOrbit = inspectTrackData.filter(e => {
       if (users === 'all') {
-        return true
+        return true;
       } else {
-        return e.username === users
+        return e.username === users;
       }
-    })
-   
-    userOrbit.map((item, index) => {
+    });
+    let userOrbits = [];
+    userOrbits = userOrbit.map((item, index) => {
+      for (var i = 0; i < item.pointData.length - 1; i++) {
+        let value = item.pointData[i];
+        if(value.longitude == Number.MIN_VALUE){
+          item.pointData.splice(i, 1);
+          if(i > 1 || i< item.pointData.length - 1){
+            i--;
+          }
+          continue;
+        }
+
+      }
+      return item;
+    });
+    userOrbits.map((item, index) => {
       let startDate=item.pointData[0].trackDate
       let endDate=item.pointData[item.pointData.length-1].trackDate
     
       for (var i = 0; i < item.pointData.length - 1; i++) {
         let value = item.pointData[i]
         let value1 = item.pointData[i + 1]
-      
         data.push({
           // date: [value.trackDate, value1.trackDate],
            date: [`${startDate}-${endDate}`],
@@ -102,14 +138,12 @@ class InspectOrbit extends Component {
           name: item.username,
           lineStyle:{color:color[index]}
         })
+    
       }
     })
-  
-
-
 
     //开始时间和结束时间
-    userOrbit.forEach((e,i) => {
+    userOrbits.forEach((e,i) => {
       let startAndEndTime = e.pointData && e.pointData.map((e, i) => {
         return e.trackDate
       });
@@ -119,14 +153,7 @@ class InspectOrbit extends Component {
         let end = startAndEndTime[i + 1];
         timeArray.push([start, end])
       }
-     
-
-      //此处是
-      let test=(e.pointData).map((e, i) => {
-        return  { coord: [e.longitude, e.latitude] }
-      })
-      pointArray2.push(test)
-      // console.log(pointArray2,'1111');  
+      
       datas.push({
         ...e,
         name: e.username,
@@ -136,7 +163,7 @@ class InspectOrbit extends Component {
     });
     // console.log(datas, '对总数据进行筛选');
     //拿到所有轨迹（每个数组是一条轨迹），以及每条轨迹的各个点
-    let pointArray = userOrbit.map((e, i) => {
+    let pointArray = userOrbits.map((e, i) => {
       return e.pointData
     }).map((item, i) => {
       return (item.map((e, i) => {
@@ -144,6 +171,7 @@ class InspectOrbit extends Component {
       })
       )
     })
+    
     // console.log(pointArray, '轨迹线');
     //对每一条轨迹线，进行坐标的处理，起始点于结束点练成一条小线，先后线拼凑成轨迹
     let itemOrbits = pointArray.map((e, i) => {
@@ -159,6 +187,7 @@ class InspectOrbit extends Component {
       // console.log(itemLines);
       return itemLines
     })
+
     let itemOrbit = itemOrbits.length > 0 ? itemOrbits.reduce(function (prev, next) {
       return prev.concat(next);
     }) : [];

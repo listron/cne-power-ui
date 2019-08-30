@@ -76,18 +76,3 @@ body {
   overflow: hidden;
   font-size: 14px;
 }
-
-.flex-center {
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-}
-
-.hidden-text {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: inline-block;
-  word-break: keep-all;
-}

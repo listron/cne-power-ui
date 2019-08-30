@@ -1,0 +1,29 @@
+@import '../../../../../theme/theme.scss';
+
+.topSearch {
+  display: flex;
+  align-items: center;
+  padding: 28px 0 14px 24px;
+  flex-basis: 76px;
+  margin-bottom: 10px;
+  justify-content: space-between;
+
+  .leftPart {
+    display: flex;
+  }
+
+  .eachParts {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+
+    .text {
+      margin-right: 4px;
+    }
+  }
+}
+
+/*css样式*/
+.topSearch {
+  background-color: #fff;
+}

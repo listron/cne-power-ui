@@ -1,0 +1,256 @@
+@import '../../../../../theme/theme.scss';
+
+.runScatterChart {
+  width: 100%;
+  height: 900px;
+  position: relative;
+
+  .sequenceChart {
+    width: 100%;
+    height: 900px;
+
+    canvas {
+      z-index: 1;
+    }
+  }
+
+  .sequenceSidebar {
+    width: 170px;
+    height: 900px;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    .selectTitle {
+      width: 100%;
+      padding: 15px 0 54px;
+      text-align: center;
+    }
+
+    .paramsSelect {
+      width: 100%;
+      position: absolute;
+      z-index: 2;
+      padding: 12px 0 18px;
+      text-align: center;
+
+      .switchBox {
+        width: 100%;
+        margin-top: 10px;
+
+        > span {
+          margin-left: 10px;
+        }
+      }
+    }
+
+    .devicesSelect {
+      width: 100%;
+      height: 310px;
+      padding-top: 24px;
+      position: absolute;
+      top: 175px;
+      text-align: center;
+    }
+
+    .timeSelect {
+      width: 100%;
+      height: 415px;
+      padding-top: 22px;
+      position: absolute;
+      top: 485px;
+      z-index: 2;
+      text-align: center;
+
+      .checkBox {
+        width: 85px;
+        height: 250px;
+        margin: 10px auto 0;
+
+        :global {
+          .ant-checkbox-group {
+            height: 250px;
+            overflow-y: auto;
+
+            &::-webkit-scrollbar {
+              width: 0 !important
+            }
+          }
+        }
+
+        label {
+          margin: 0;
+        }
+      }
+
+      .allSwitch {
+        width: 100%;
+        margin-top: 20px;
+
+        > span {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  .firChartTitle {
+    font-size: 16px;
+    position: absolute;
+    top: 16px;
+    left: 3%;
+  }
+
+  .secChartTitle {
+    font-size: 16px;
+    position: absolute;
+    top: 16px;
+    left: 45%;
+  }
+
+  .thrChartTitle {
+    font-size: 16px;
+    position: absolute;
+    top: 440px;
+    left: 3%;
+  }
+
+  .fouChartTitle {
+    font-size: 16px;
+    position: absolute;
+    top: 440px;
+    left: 45%;
+  }
+
+  .firCoordinate {
+    position: absolute;
+    top: 42px;
+    z-index: 2;
+    left: 11%;
+
+    > i {
+      cursor: pointer;
+      margin: 0 5px;
+    }
+  }
+
+  .secCoordinate {
+    position: absolute;
+    top: 42px;
+    z-index: 2;
+    left: 54%;
+
+    > i {
+      cursor: pointer;
+      margin: 0 5px;
+    }
+  }
+
+  .thrCoordinate {
+    position: absolute;
+    top: 465px;
+    z-index: 2;
+    left: 11%;
+
+    > i {
+      cursor: pointer;
+      margin: 0 5px;
+    }
+  }
+
+  .fouCoordinate {
+    position: absolute;
+    top: 465px;
+    z-index: 2;
+    left: 54%;
+
+    > i {
+      cursor: pointer;
+      margin: 0 5px;
+    }
+  }
+
+  .xAxis {
+    margin-right: 5px;
+  }
+
+  .yAxis {
+    margin-right: 5px;
+  }
+}
+
+
+/*css样式*/
+.runScatterChart {
+  background-color: #ffffff;
+
+  .sequenceSidebar {
+    background-color: transparent;
+    border-left: 1px solid $borderColor;
+
+    .selectTitle {
+      border-bottom: 1px solid $borderColor;
+    }
+
+    .paramsSelect {
+      border-bottom: 1px solid $borderColor;
+    }
+
+    .devicesSelect {
+      border-bottom: 1px solid $borderColor;
+    }
+  }
+
+  .firChartTitle {
+    color: $blackColor;
+  }
+
+  .secChartTitle {
+    color: $blackColor;
+  }
+
+  .thrChartTitle {
+    color: $blackColor;
+  }
+
+  .fouChartTitle {
+    color: $blackColor;
+  }
+
+  .firCoordinate {
+
+    > i {
+      &:hover {
+        color: $themeColor;
+      }
+    }
+  }
+
+  .secCoordinate {
+
+    > i {
+      &:hover {
+        color: $themeColor;
+      }
+    }
+  }
+
+  .thrCoordinate {
+
+    > i {
+      &:hover {
+        color: $themeColor;
+      }
+    }
+  }
+
+  .fouCoordinate {
+
+    > i {
+      &:hover {
+        color: $themeColor;
+      }
+    }
+  }
+}
+

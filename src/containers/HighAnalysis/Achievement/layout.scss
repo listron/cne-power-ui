@@ -1,0 +1,65 @@
+
+@import '../../../theme/theme.scss';
+
+.layout{
+  min-height: 100%;
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  .tabs{
+    flex: 0 0 55px;
+    margin: 0 24px -1px 24px;
+    display: flex;
+    align-items: flex-end;
+    .eachTab{
+      flex: 0 0 126px;
+      margin-right: 10px;
+      position: relative;
+      // color: #a6e8ff;
+      // background-image:-webkit-linear-gradient(-90deg, #38FCF5 17%, #009CFF 83%);
+      // background-clip: text; 
+      // -webkit-background-clip: text; 
+      // -webkit-text-fill-color:transparent; 
+    }
+    .button{
+      display: flex;
+      height: 32px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .actievButton{
+      cursor: auto;
+    }
+    .close{
+      position: absolute;
+      font-size: 10px;
+      right: 2px;
+      top: 4px;
+      border-radius: 50%;
+    }
+  }
+  .contents{
+    display: flex;
+    flex: 1;
+    width: 100%;
+    padding:0 24px;
+  }
+}
+
+.layout{
+  background-color: #ececec;
+  .tabs .eachTab{
+    color: $darkColor;
+    background-color: #e1e2e2;
+    border-top: 2px solid transparent;
+  }
+  .tabs .actievButton{
+    color: $darkColor;
+    border-top: 2px solid $themeColor;
+    background-color: #fff;
+  }
+  .tabs .close{
+    border: 1px solid $themeColor;
+  }
+}

@@ -1,0 +1,66 @@
+
+.stopStatus{
+  position: relative;
+  .modes{
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 20px;
+    font-size: 12px;
+    .eachFault{
+      margin-right: 20px;
+    }
+    .rect{
+      margin-right: 4px;
+      border-radius:2px;
+      display: inline-block;
+      width: 15px;
+      height: 9px;
+    }
+    .modeText{
+      white-space: nowrap;
+    }
+  }
+  .stautsChart{
+    height: 600px;
+  }
+}
+
+
+
+
+.tooltip{
+  width: 290px;
+  .title{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    margin-bottom: 0;
+    line-height: 24px;
+  }
+  .info{
+    padding: 8px;
+  }
+  .eachItem{
+    display: flex;
+    line-height: 21px;
+    font-size: 12px;
+  }
+  .itemName{
+    margin-right: 8px;
+  }
+  .itemValue{
+    white-space: normal;
+  }
+}
+
+.tooltip{ // chart提示
+  background-color: #fff;
+  color: #666;
+  box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
+  .title{
+    border-bottom: 1px solid #dfdfdf;
+  }
+}
