@@ -106,15 +106,6 @@ class HandleSeachData extends React.Component {
         const firstData = pointNameList ? pointNameList[0] : [];
         const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = firstData;
         this.setState({ options: [...option, otherName], sequenceNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
-        changeSquenceStore({ pointCodeNameX, pointCodeNameY, pointY1: pointCodeX, pointY2: pointCodeY, deviceFullCode });
-        getxyLimitValue({
-          stationCode,
-          startTime,
-          endTime,
-          xPointCode: pointCodeX,
-          yPointCode: pointCodeY,
-        });
-
         this.setState({
           xName: pointCodeNameX,
           yName: pointCodeNameY,
@@ -123,14 +114,26 @@ class HandleSeachData extends React.Component {
           saveStartTime: startTime,
           saveEndTime: endTime,
         });
-        getSequenceData({
-          deviceFullCode,
+        getxyLimitValue({
+          stationCode,
           startTime,
           endTime,
-          pointY1: pointCodeX,
-          pointY2: pointCodeY,
+          xPointCode: pointCodeX,
+          yPointCode: pointCodeY,
+          deviceFullCode,
           interval: 60,
         });
+        changeSquenceStore({ pointCodeNameX, pointCodeNameY, pointY1: pointCodeX, pointY2: pointCodeY, deviceFullCode });
+
+
+        // getSequenceData({
+        //   deviceFullCode,
+        //   startTime,
+        //   endTime,
+        //   pointY1: pointCodeX,
+        //   pointY2: pointCodeY,
+        //   interval: 60,
+        // });
       }
     }
     if (JSON.stringify(xyValueLimit) !== JSON.stringify(this.props.xyValueLimit)) {
@@ -234,16 +237,6 @@ class HandleSeachData extends React.Component {
     const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
     const fristDevice = deviceList[0];
     const deviceFullCode = fristDevice.deviceFullCode;
-    if (xCode !== pointY1 || yCode !== pointY2 || saveStartTime !== startTime || saveEndTime !== endTime) {
-      getxyLimitValue({
-        stationCode,
-        startTime: saveStartTime,
-        endTime: saveEndTime,
-        xPointCode: xCode,
-        yPointCode: yCode,
-      });
-    }
-
     changeSquenceStore({
       sequenceData: {},
       pointCodeNameX: xName,
@@ -254,15 +247,36 @@ class HandleSeachData extends React.Component {
       startTime: saveStartTime,
       endTime: saveEndTime,
     });
+    if (xCode !== pointY1 || yCode !== pointY2 || saveStartTime !== startTime || saveEndTime !== endTime) {
+      getxyLimitValue({
+        stationCode,
+        startTime: saveStartTime,
+        endTime: saveEndTime,
+        xPointCode: xCode,
+        yPointCode: yCode,
+        deviceFullCode,
+        interval: 60,
+      });
+    } else {
+      getSequenceData({
+        deviceFullCode,
+        pointY1: xCode,
+        pointY2: yCode,
+        startTime: saveStartTime,
+        endTime: saveEndTime,
+        interval: 60,
+      });
+    }
+
     // this.props.getStationDevice({ stationCode });
-    getSequenceData({
-      deviceFullCode,
-      pointY1: xCode,
-      pointY2: yCode,
-      startTime: saveStartTime,
-      endTime: saveEndTime,
-      interval: 60,
-    });
+    // getSequenceData({
+    //   deviceFullCode,
+    //   pointY1: xCode,
+    //   pointY2: yCode,
+    //   startTime: saveStartTime,
+    //   endTime: saveEndTime,
+    //   interval: 60,
+    // });
   }
   //改变第一个y轴
   changeY1value = (value, option) => {

@@ -201,21 +201,28 @@ function* getBigSequenceData(action) {//获取
 }
 function* getxyLimitValue(action) {//获取
   const { payload } = action;
-  const { startTime, endTime } = payload;
+  const { startTime, endTime, xPointCode, yPointCode, stationCode, interval, deviceFullCode } = payload;
+  const limitParams = { startTime, endTime, xPointCode, yPointCode, stationCode };
+  const queryDataParams = { deviceFullCode, startTime, endTime, pointY1: xPointCode, pointY2: yPointCode, interval };
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getxyLimitValue}`;
   try {
     const response = yield call(axios.post, url, {
-      ...payload,
+      ...limitParams,
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).endOf('d').utc().format(),
     },
     );
     if (response.data.code === '10000') {
-
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           xyValueLimit: response.data.data || {},
+        },
+      });
+      yield put({
+        type: dataAnalysisSequenceAction.getSequenceData,
+        payload: {
+          ...queryDataParams,
 
         },
       });
