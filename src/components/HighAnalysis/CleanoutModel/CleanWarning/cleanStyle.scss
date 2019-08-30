@@ -67,13 +67,14 @@
       .ant-tabs-nav-container {
         background-color: #f8f8f8;
       }
+    }
   }
-  .weather{
+  .weather {
     padding-left: 24px;
     display: flex;
     align-items: center;
     width: 300px;
-    .eachWeather{
+    .eachWeather {
       margin-top: 6px;
       display: flex;
       flex: 1;
@@ -82,11 +83,11 @@
       font-size: 10px;
       color: $darkColor;
     }
-    img{
+    img {
       height: 24px;
       margin: 4px 0;
     }
-    .noWeather{
+    .noWeather {
       font-size: 12px;
     }
   }
