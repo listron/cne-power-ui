@@ -44,6 +44,7 @@ export default class AreaSearch extends Component {
       modesInfo: groupInfo.modesInfo || [],
       areaFlag: false, // 控制第一次进来，有数据的时候
       quotaFlag: false, // 控制第一次进来，有数据的时候
+      searchFlag: true, // 控制切换电站搜索
     };
   }
 
@@ -109,9 +110,9 @@ export default class AreaSearch extends Component {
   };
 
   propsModeDevicesChange = (modeDevices) => { // 得到电站下机型信息;
-    const { searchCode, dates, quota, stations } = this.state;
+    const { searchCode, dates, quota, stations, searchFlag } = this.state;
     const modes = this.getAllDeviceCodes(modeDevices);
-    if (quota.length > 0) { // 已有指标
+    if (quota.length > 0 && searchFlag) { // 已有指标
       this.historyChange(searchCode, modes, dates, quota, stations, modeDevices);
     } else { // 存入state, 得到quota时再请求
       this.setState({ modes, modesInfo: modeDevices});
@@ -163,6 +164,7 @@ export default class AreaSearch extends Component {
       stations: info,
       searchCode: stations,
       modes: [],
+      searchFlag: false,
     }, () => {
       changeStore({
         modesInfo: [],
@@ -195,15 +197,33 @@ export default class AreaSearch extends Component {
       selectTime: '', // 保存选择时间
       dataName: '', // 保存选择区域名称
     });
-    this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
+    this.setState({
+      searchFlag: true,
+    }, () => {
+      this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
+    });
   };
 
   resetCharts = () => {
-    const { groupInfoStr } = this.state;
+    const {
+      searchCode,
+      stations,
+      modes,
+      dates,
+      quota,
+      modesInfo,
+    } = this.state;
     const { dataName, queryParamsFunc, changeStore } = this.props;
     // 判断如果选中过区域或时间可以重置图表
     if(dataName !== '') {
-      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const groupInfo = {
+        searchCode,
+        stations,
+        modes,
+        dates,
+        quota,
+        modesInfo,
+      };
       changeStore({
         dataIndex: '', // 保存点击的下标
         selectStationCode: [], // 保存单选区域的信息
@@ -266,6 +286,7 @@ export default class AreaSearch extends Component {
           <Cascader
             allowClear={false}
             style={{width: '150px'}}
+            expandTrigger="hover"
             options={quotaInfo}
             placeholder="请选择"
             onChange={this.onQuotaChange}

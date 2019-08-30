@@ -8,21 +8,30 @@ function* getStationDevice(action) {//获取
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getStationDevice}/${payload.stationCode}`;
   try {
-    yield put({ type: dataAnalysisSequenceAction.changeSquenceStore });
+
+    yield put({
+      type: dataAnalysisSequenceAction.changeSquenceStore,
+      payload: {
+        stationCode: payload.stationCode,
+        sequenceData: {},
+        deviceList: [],
+      },
+    });
     const response = yield call(axios.get, url);// { params: payload }
     if (response.data.code === '10000') {
       const data = response.data.data || [];
       const deviceList = data.map((e, i) => ({ ...e, likeStatus: false }));
-      const deviceFullCodeArr = deviceList.map(e => e.deviceFullCode);//拿到设备型号数组
-      const deviceData = {};//存储设备型号数据
-      deviceFullCodeArr.forEach((e, i) => {
-        deviceData[e] = {};
-      });
+
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           deviceList,
-          ...deviceData,
+        },
+      });
+      yield put({
+        type: dataAnalysisSequenceAction.getSequenceName,
+        payload: {
+          stationCode: payload.stationCode,
         },
       });
     } else {
@@ -42,8 +51,8 @@ function* getStationDevice(action) {//获取
 
 function* getSequenceName(action) {//获取
   const { payload } = action;
-  const chartType = 1;//时序图是2
-  // const chartType = 2;
+  // const chartType = 1;//时序图是2
+  const chartType = 2;
   // const url = '/mock/api/v3/wind/analysis/scatterplot/names';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterName}/${payload.stationCode}/${chartType}`;
   try {
@@ -109,8 +118,7 @@ function* getSequenceData(action) {//获取
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).endOf('d').utc().format(),
     });
-    // const preSequenceData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('sequenceData').toJS()));
-    // const deviceList = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('deviceList').toJS()));
+
 
     if (response.data.code === '10000') {
       const curChartData = response.data.data || {};
@@ -121,9 +129,7 @@ function* getSequenceData(action) {//获取
           ...payload,
           sequenceData: curChartData,
           activeCode: deviceFullCode,
-          // sequenceData: [...preSequenceData, curChartData],
           chartLoading: false,
-          // ...deviceData,
         },
       });
       yield put({
@@ -195,21 +201,28 @@ function* getBigSequenceData(action) {//获取
 }
 function* getxyLimitValue(action) {//获取
   const { payload } = action;
-  const { startTime, endTime } = payload;
+  const { startTime, endTime, xPointCode, yPointCode, stationCode, interval, deviceFullCode } = payload;
+  const limitParams = { startTime, endTime, xPointCode, yPointCode, stationCode };
+  const queryDataParams = { deviceFullCode, startTime, endTime, pointY1: xPointCode, pointY2: yPointCode, interval };
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getxyLimitValue}`;
   try {
     const response = yield call(axios.post, url, {
-      ...payload,
+      ...limitParams,
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).endOf('d').utc().format(),
     },
     );
     if (response.data.code === '10000') {
-
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           xyValueLimit: response.data.data || {},
+        },
+      });
+      yield put({
+        type: dataAnalysisSequenceAction.getSequenceData,
+        payload: {
+          ...queryDataParams,
 
         },
       });
