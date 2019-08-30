@@ -1,0 +1,21 @@
+@import "../../../../../theme/theme";
+
+.stationSortBox{
+  width: 49%;
+  height: 530px;
+
+  .stationSortTitle{
+    width: 100%;
+    padding: 14px 0  25px 24px;
+  }
+
+  .stationSortChartCenter{
+    width: 100%;
+    height: 430px;
+  }
+}
+
+/*css样式*/
+.stationSortBox{
+  background-color: $slideFontColor;
+}

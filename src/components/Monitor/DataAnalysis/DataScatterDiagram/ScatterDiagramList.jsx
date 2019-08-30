@@ -52,6 +52,7 @@ class ScatterDiagramList extends Component{
     const yCurrentPoint = pointsInfo.find(e => {
       return e.devicePointCode === logPointY;
     }) || {};
+
     const dataSource = dataList.map((e,i) => {
       return  ({
         key: i,

@@ -69,6 +69,28 @@
       }
     }
   }
+  .weather {
+    padding-left: 24px;
+    display: flex;
+    align-items: center;
+    width: 300px;
+    .eachWeather {
+      margin-top: 6px;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      font-size: 10px;
+      color: $darkColor;
+    }
+    img {
+      height: 24px;
+      margin: 4px 0;
+    }
+    .noWeather {
+      font-size: 12px;
+    }
+  }
 }
 
 @import "../../../../theme/darkTheme.scss";
