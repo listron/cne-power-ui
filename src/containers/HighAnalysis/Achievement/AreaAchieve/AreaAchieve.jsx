@@ -280,10 +280,11 @@ class AreaAchieve extends Component {
         </div>
         <div className={styles.areaChartBox}>
           <div className={styles.areaTopChart}>
-            <AreaChart {...this.props} />
+            <AreaChart queryParamsFunc={this.queryParamsFunc} {...this.props} />
             <StationPBAChart
               unitName={this.unitName()}
               qutaName={this.qutaName()}
+              queryParamsFunc={this.queryParamsFunc}
               pointLength={this.pointLength()}
               {...this.props}
             />
