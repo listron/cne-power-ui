@@ -106,6 +106,7 @@ class HandleSeachData extends React.Component {
         const firstData = pointNameList ? pointNameList[0] : [];
         const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = firstData;
         this.setState({ options: [...option, otherName], sequenceNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
+        changeSquenceStore({ pointCodeNameX, pointCodeNameY, pointY1: pointCodeX, pointY2: pointCodeY, deviceFullCode });
         getxyLimitValue({
           stationCode,
           startTime,
@@ -113,7 +114,7 @@ class HandleSeachData extends React.Component {
           xPointCode: pointCodeX,
           yPointCode: pointCodeY,
         });
-        changeSquenceStore({ pointCodeNameX, pointCodeNameY, pointY1: pointCodeX, pointY2: pointCodeY });
+
         this.setState({
           xName: pointCodeNameX,
           yName: pointCodeNameY,
@@ -167,13 +168,8 @@ class HandleSeachData extends React.Component {
     this.setState({
       showOther: false,
     });
-    this.props.changeSquenceStore({
-      stationCode,
-      sequenceData: {},
-      deviceList: [],
-    });
+
     this.props.getStationDevice({ stationCode });
-    this.props.getSequenceName({ stationCode });
   }
   //改时间
   changeTime = (date, dateString) => {
