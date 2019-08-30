@@ -203,7 +203,6 @@ export default class StationPBAChart extends Component {
           type: 'value',
           name: `${qutaName}（${unitName}）`,
           min: 0,
-          max: unitName === '%' ? 100 : null,
           splitLine: {
             show: false,
           },

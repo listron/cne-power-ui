@@ -189,7 +189,6 @@ export default class GroupStationChart extends Component {
           type: 'value',
           name: `${titleFunc}（${unitName}）`,
           min: 0,
-          max: unitName === '%' ? 100 : null,
           splitLine: {
             show: false,
           },
