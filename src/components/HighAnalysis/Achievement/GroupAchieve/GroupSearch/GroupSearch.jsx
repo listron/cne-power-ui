@@ -205,11 +205,25 @@ export default class AreaSearch extends Component {
   };
 
   resetCharts = () => {
-    const { groupInfoStr } = this.state;
+    const {
+      searchCode,
+      stations,
+      modes,
+      dates,
+      quota,
+      modesInfo,
+    } = this.state;
     const { dataName, queryParamsFunc, changeStore } = this.props;
     // 判断如果选中过区域或时间可以重置图表
     if(dataName !== '') {
-      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const groupInfo = {
+        searchCode,
+        stations,
+        modes,
+        dates,
+        quota,
+        modesInfo,
+      };
       changeStore({
         dataIndex: '', // 保存点击的下标
         selectStationCode: [], // 保存单选区域的信息
