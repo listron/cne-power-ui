@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Icon, Modal, Select, Tooltip } from 'antd';
+import { Table, Icon, Modal, Select, Tooltip, Button } from 'antd';
 import { getStatus, getInspectSortField } from '../../../../../constants/ticket';
 import styles from './inspectTable.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
@@ -8,8 +8,8 @@ import CommonPagination from '../../../../Common/CommonPagination';
 const confirm = Modal.confirm;
 const Option = Select.Option;
 
-class InspectTable extends Component {  
-  static propTypes={
+class InspectTable extends Component {
+  static propTypes = {
     inspectList: PropTypes.object,
     inspectStatusStatistics: PropTypes.object,
     pageNum: PropTypes.number,
@@ -22,6 +22,7 @@ class InspectTable extends Component {
     onChangeFilter: PropTypes.func,
     changeInspectStore: PropTypes.func,
     onChangeShowContainer: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   // static defaultProps={
@@ -29,26 +30,26 @@ class InspectTable extends Component {
   //   pageNum: 1,
   // }
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       currentSelectedStatus: 5,
-    }
+    };
   }
 
   onAdd = () => {
-    this.props.onChangeShowContainer({container: 'create'});
+    this.props.onChangeShowContainer({ container: 'create' });
   }
 
   onChangeTable = (pagination, filter, sorter) => {
-    if(Object.keys(sorter).length>0){
+    if (Object.keys(sorter).length > 0) {
       const field = getInspectSortField(sorter.field);
       const order = sorter.order === 'ascend' ? '0' : '1';
       this.props.onChangeFilter({
-        sort: field+',' + order
-      }); 
+        sort: field + ',' + order,
+      });
     }
-     
+
   }
 
   onInspectCheck = () => {
@@ -56,7 +57,7 @@ class InspectTable extends Component {
       title: '确认全部验收吗？',
       onOk: () => {
         this.props.inspectCheckBatch({
-          inspectId: this.props.selectedRowKeys.join(',')
+          inspectId: this.props.selectedRowKeys.join(','),
         });
       },
     });
@@ -64,57 +65,57 @@ class InspectTable extends Component {
 
   onShowDetail = (inspectId) => {
     this.props.changeInspectStore({
-      inspectId
+      inspectId,
     });
-    this.props.onChangeShowContainer({container: 'detail'});
+    this.props.onChangeShowContainer({ container: 'detail' });
   }
 
   onSelectChange = (selectedRowKeys, selectedRows) => {
-    let status = this.getSelectedRowsStatus(selectedRows);
+    const status = this.getSelectedRowsStatus(selectedRows);
     this.setState({
-      currentSelectedStatus: status
+      currentSelectedStatus: status,
     });
-    this.props.changeInspectStore({selectedRowKeys});
+    this.props.changeInspectStore({ selectedRowKeys });
   }
 
-  onPaginationChange = ({currentPage, pageSize}) => {
+  onPaginationChange = ({ currentPage, pageSize }) => {
     this.props.onChangeFilter({
       pageNum: currentPage,
-      pageSize
+      pageSize,
     });
   }
 
   onHandle = (value) => {
-    if(value === 'check') {
+    if (value === 'check') {
       this.onInspectCheck();
     }
   }
 
   getSelectedRowsStatus(selectedRows) {
-    let map = {};
+    const map = {};
     let status;
-    for(var i = 0; i < selectedRows.length; i++) {
-      if(!map[selectedRows[i].inspectStatus]) {
+    for (var i = 0; i < selectedRows.length; i++) {
+      if (!map[selectedRows[i].inspectStatus]) {
         map[selectedRows[i].inspectStatus] = 1;
       } else {
         map[selectedRows[i].inspectStatus] += 1;
       }
     }
-    let values = [];
-    for(var k in map) {
+    const values = [];
+    for (var k in map) {
       values.push(map[k]);
       status = k;
     }
-    if(values.length === 1) {
+    if (values.length === 1) {
       return status;
-    } else {
-      return null;
     }
+    return null;
+
   }
 
   cancelRowSelect = () => {
     this.props.changeInspectStore({
-      selectedRowKeys: []
+      selectedRowKeys: [],
     });
   }
 
@@ -124,37 +125,37 @@ class InspectTable extends Component {
       dataIndex: 'inspectName',
       key: 'inspectName',
       sorter: true,
-    },{
+    }, {
       title: '电站名称',
       dataIndex: 'stationName',
       key: 'stationName',
       sorter: true,
-    },{
+    }, {
       title: '工单描述',
       dataIndex: 'deviceTypeName',
       key: 'deviceTypeName',
       render: (text, record) => {
-        return <div className={styles.inspectDesc} title={text}>{text}</div>
-      }
-    },{
+        return <div className={styles.inspectDesc} title={text}>{text}</div>;
+      },
+    }, {
       title: '异常数',
       dataIndex: 'abnormalNum',
       key: 'abnormalNum',
       // sorter: true,
-    },{
+    }, {
       title: '发生时间',
       dataIndex: 'startTime',
       key: 'startTime',
       sorter: true,
-    },{
+    }, {
       title: '完成时间',
       dataIndex: 'checkTime',
       key: 'checkTime',
       render: (text, record) => {
-        return text ? text : '--'
+        return text ? text : '--';
       },
       sorter: true,
-    },{
+    }, {
       title: '状态',
       dataIndex: 'inspectStatus',
       key: 'inspectStatus',
@@ -167,11 +168,11 @@ class InspectTable extends Component {
           </div>
         </div>
       ),
-    },{
+    }, {
       title: '查看',
       render: (text, record) => (
         <span>
-          <i className="iconfont icon-look" onClick={()=>{this.onShowDetail(record.inspectId)}} />
+          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record.inspectId); }} />
         </span>
       ),
     }];
@@ -181,60 +182,64 @@ class InspectTable extends Component {
   renderOperation() {
     const { selectedRowKeys } = this.props;
     const { currentSelectedStatus } = this.state;
-    const unselected = selectedRowKeys.length===0;
+    const unselected = selectedRowKeys.length === 0;
     const rightHandler = localStorage.getItem('rightHandler');
     const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
-    if(!checkInspectRight) {
+    if (!checkInspectRight) {
       return null;
     }
     return (
-      <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-        <Option value="check" disabled={unselected||currentSelectedStatus!=='3'}>
+      <Select
+        onChange={this.onHandle}
+        value="操作"
+        placeholder="操作"
+        getPopupContainer={() => this.refs.wrap}
+        dropdownMatchSelectWidth={false}
+        dropdownClassName={styles.handleDropdown}>
+        <Option value="check" disabled={unselected || currentSelectedStatus !== '3'}>
           <i className="iconfont icon-done"></i>验收</Option>
       </Select>
     );
   }
 
 
-  render(){
-    const { pageSize, pageNum, inspectList, selectedRowKeys, total, loading } = this.props;  
-    const columns = this.initColumn(); 
-  
+  render() {
+    const { pageSize, pageNum, inspectList, selectedRowKeys, total, loading, theme } = this.props;
+    const columns = this.initColumn();
+
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectChange
+      onChange: this.onSelectChange,
     };
 
-    return(
-      <div className={styles.inspectTable}>
+    return (
+      <div className={`${styles.inspectTable} ${styles[theme]}`}>
+        <span ref={'wrap'} />
         <div className={styles.action}>
           <div className={styles.buttonArea}>
-            <div className={styles.addInspect} onClick={this.onAdd}>
-              <Icon className={styles.add} type="plus" />
-              <span className={styles.text}>巡检</span>
-            </div>
-            <div className={styles.operation}>         
+            <Button type="add" onClick={this.onAdd} ><i>+</i> 巡检 </Button>
+            <div className={styles.operation}>
               {this.renderOperation()}
-              <Tooltip overlayStyle={{width:220,maxWidth:220,fontSize:'12px'}} placement="top" title="请选择同一状态下的列表项，进行操作">
+              <Tooltip overlayStyle={{ width: 220, maxWidth: 220, fontSize: '12px' }} placement="top" title="请选择同一状态下的列表项，进行操作">
                 <i className="iconfont icon-help" />
               </Tooltip>
-            </div> 
+            </div>
           </div>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
-        <Table 
-          rowKey={(record) => { return record.inspectId }}
+        <Table
+          rowKey={(record) => { return record.inspectId; }}
           dataSource={inspectList.toJS()}
-          columns= {columns}
+          columns={columns}
           rowSelection={rowSelection}
           onChange={this.onChangeTable}
           // loading={loading}
-          pagination= {false}
-          locale={{emptyText:<div className={styles.noData}><img src="/img/nodata.png" style={{width: 223,height:164}} /></div>}}
+          pagination={false}
+          locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
-        {inspectList.size>0&&<div className={styles.tableFooter}>
+        {inspectList.size > 0 && <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
-          {selectedRowKeys.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
+          {selectedRowKeys.length > 0 && <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
         </div>}
       </div>
     );

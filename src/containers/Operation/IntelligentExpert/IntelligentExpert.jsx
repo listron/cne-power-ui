@@ -22,7 +22,7 @@ class IntelligentExpert extends Component {
     getIntelligentTable: PropTypes.func,
     changeCommonStore: PropTypes.func,
     listParams: PropTypes.object,
-    theme: PropTypes.object,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
