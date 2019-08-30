@@ -77,10 +77,11 @@
     color: #199475;
     background-color: #fff;
     padding: 0;
-    width: 64px;
     line-height: 32px;
     margin: -1px;
     display: flex;
+    padding-right: 4px;
+    margin-right: 8px;
     i {
       width: 30px;
       height: 30px;
@@ -90,6 +91,7 @@
       align-items: center;
       justify-content: center;
       color: #fff;
+      margin-right: 4px;
     }
     &:hover,
     &:focus,

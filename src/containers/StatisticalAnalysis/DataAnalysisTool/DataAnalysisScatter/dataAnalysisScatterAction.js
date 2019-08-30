@@ -6,5 +6,6 @@ export const dataAnalysisScatterAction = {
   getScatterData: Symbol('getScatterData'),
   getBigScatterData: Symbol('getBigScatterData'),
   getStationDevice: Symbol('getStationDevice'),
+  getxyLimitValue: Symbol('getxyLimitValue'),
 }
   ;

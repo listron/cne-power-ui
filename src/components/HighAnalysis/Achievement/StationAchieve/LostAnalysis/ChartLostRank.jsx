@@ -25,6 +25,7 @@ class ChartLostRank extends Component {
 
   state= {
     sortType: 'name',
+    modeArr: [],
   }
 
   componentDidMount(){
@@ -141,7 +142,8 @@ class ChartLostRank extends Component {
       },
       data: secendBarData,
     });
-    return { dataAxis, series, modeArr, indicatorType };
+    this.setState({ modeArr });
+    return { dataAxis, series, indicatorType };
   }
 
   chartHandle = ({dataIndex}, sortedLostRank, chart) => {
@@ -195,12 +197,11 @@ class ChartLostRank extends Component {
     const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
     const selectedQuota = this.getQuota(quotaInfo, quota);
     const { label = '--', unit, pointLength } = selectedQuota;
-    const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank, lostChartDevice, unit);
+    const { dataAxis, series } = this.createSeries(sortedLostRank, lostChartDevice, unit);
     const baseOption = getBaseOption(dataAxis);
-    baseOption.yAxis.name = `${label || '--'}${unit ? `(${unit})` : ''}`;
+    baseOption.yAxis.name = `${label}${unit ? `(${unit})` : ''}`;
     const option = {
       ...baseOption,
-      legend: { data: modeArr },
       tooltip: {
         trigger: 'axis',
         padding: 0,
@@ -214,7 +215,7 @@ class ChartLostRank extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 1 ? '应发小时数' : `${label || '--'}`}</span>
+                  <span>${i === 1 ? '应发小时数' : `${label === '利用小时数' ? '实发小时数' : label}`}</span>
                   <span>${dataFormats(e.value, '--', pointLength, true)}${unit || ''}</span>
                 </span>`
               )).join('')}
@@ -248,7 +249,7 @@ class ChartLostRank extends Component {
 
   render() {
     const { quotaInfo, lostStringify } = this.props;
-    const { sortType } = this.state;
+    const { sortType, modeArr } = this.state;
     const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
     const selectedQuota = this.getQuota(quotaInfo, quota);
     return (
@@ -274,6 +275,16 @@ class ChartLostRank extends Component {
               </Select>
             </span>
           </span>
+        </div>
+        <div className={styles.modes}>
+          {modeArr.map((e, i) => (
+            <span key={e} className={styles.eachMode}>
+              <span className={styles.rect} style={{
+                backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
+                }} />
+              <span className={styles.modeText}>{e}</span>
+            </span>
+          ))}
         </div>
         <div className={styles.chart} ref={(ref)=> {this.rankRef = ref;}} />
       </div>

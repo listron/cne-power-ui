@@ -3,15 +3,18 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { getCurveBaseOption } from './curveBaseOption';
 import { dataFormats } from '../../../../../utils/utilFunc';
+import searchUtil from '../../../../../utils/searchUtil';
 import styles from './curve.scss';
 
 class MonthsChart extends Component {
 
   static propTypes = {
+    history: PropTypes.object,
     curveCheckedMonths: PropTypes.array,
     curveDeviceName: PropTypes.string,
     curveMonths: PropTypes.object,
     curveMonthsLoading: PropTypes.bool,
+    curveAllMonths: PropTypes.array,
   }
 
   componentDidMount(){
@@ -27,44 +30,60 @@ class MonthsChart extends Component {
     const preLoading = this.props.curveMonthsLoading;
     const preChecked = this.props.curveCheckedMonths;
     if (preLoading && !curveMonthsLoading) { // 请求完毕
-      this.renderChart(curveMonths);
+      this.renderChart(curveMonths, curveCheckedMonths);
     } else if (!preLoading && curveMonthsLoading) { // 请求中
       this.setChartLoading();
     }
-    if (preChecked.length > 0 && curveCheckedMonths.length !== preChecked.length) {
-      // const monthChart = echarts.getInstanceByDom(this.monthRef);
-      // const lastOption = monthChart.getOption();
-      // const selectedLegend = { '理论功率': true };
-      // curveCheckedMonths.forEach(e => { selectedLegend[e] = true; });
-      // const newOption = {
-      //   ...lastOption,
-      //   legend: {
-      //     ...lastOption.legend[0],
-      //     selected: selectedLegend,
-      //   },
-      // };
-      // console.log(newOption.legend);
-      // monthChart.dispose();
-      // monthChart.setOption(newOption);
+    if (curveCheckedMonths.length !== preChecked.length) {
+      this.renderChart(curveMonths, curveCheckedMonths);
     }
   }
+
+  monthColors = [
+    'rgb(80,227,194)', 'rgb(126,211,33)', 'rgb(184,233,134)', 'rgb(160,255,235)',
+    'rgb(255,108,238)', 'rgb(159,152,255)', 'rgb(255,120,120)', 'rgb(255,0,128)',
+    'rgb(255,0,0)', 'rgb(255,144,0)', 'rgb(255,197,129)', 'rgb(255,253,0)',
+  ]
 
   setChartLoading = () => {
     const monthChart = this.monthRef && echarts.getInstanceByDom(this.monthRef);
     monthChart && monthChart.showLoading();
   }
 
-  createSeires = (curveData = []) => curveData.map((e) => {
+  createSeires = (curveData = [], activeMonths = []) => curveData.map((e) => {
+    const { curveAllMonths } = this.props;
     const { devicePowerInfoVos = [], calcDate } = e || {};
+    const lineOpacity = activeMonths.includes(calcDate) || (calcDate === '理论功率') ? 1 : 0;
+    const monthIndex = curveAllMonths.indexOf(calcDate);
+    const lineColor = monthIndex % this.monthColors.length;
     return {
       type: 'line',
       smooth: true,
       name: calcDate,
+      silent: !lineOpacity,
+      itemStyle: { opacity: lineOpacity },
+      lineStyle: {
+        opacity: lineOpacity,
+        color: calcDate === '理论功率' ? 'rgb(194,53,49)' : this.monthColors[lineColor],
+      },
       data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]),
     };
   })
 
-  renderChart = (monthsData) => {
+  toStopPage = () => {
+    const { history } = this.props;
+    const { search } = history.location;
+    const { pages = '', station } = searchUtil(search).parse(); // 新的pages变化
+    const curPages = pages.split('_').filter(e => !!e);
+    const stopExist = curPages.includes('stop');
+    const nextPagesStr = (stopExist ? curPages : curPages.concat('stop')).join('_');
+    const { code, device, date } = JSON.parse(station); // 传入运行数据
+    const stationSearch = JSON.stringify({ code, device: device.join('_'), dates: date });
+    const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({stop: stationSearch}).stringify();
+    this.props.history.push(`/analysis/achievement/analysis/stop?${searchResult}`);
+  }
+
+  renderChart = (monthsData, checkedMonths) => {
     const monthChart = echarts.init(this.monthRef);
     const { actual = [], theory = [] } = monthsData;
     const modeName = theory[0] && theory[0].modeName || '--';
@@ -105,10 +124,12 @@ class MonthsChart extends Component {
           </section>`;
         },
       },
-      series: this.createSeires(totalMonthData),
+      series: this.createSeires(totalMonthData, checkedMonths),
     };
     monthChart.hideLoading();
+    monthChart.clear();
     monthChart.setOption(option);
+    monthChart.on('click', this.toStopPage);
   }
 
   render() {

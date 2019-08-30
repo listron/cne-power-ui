@@ -11,6 +11,10 @@ import SingleStationScatter from '../../../../components/StatisticalAnalysis/Dat
 
 class DataAnalysisScatter extends Component {
   static propTypes = {
+    resetStore: PropTypes.func,
+    showPage: PropTypes.string,
+    theme: PropTypes.string,
+
   }
   constructor(props, context) {
     super(props, context);
@@ -50,6 +54,7 @@ const mapDispatchToProps = (dispatch) => ({
   getScatterData: payload => dispatch({ type: dataAnalysisScatterAction.getScatterData, payload }),
   getStationDevice: payload => dispatch({ type: dataAnalysisScatterAction.getStationDevice, payload }),
   getBigScatterData: payload => dispatch({ type: dataAnalysisScatterAction.getBigScatterData, payload }),
+  getxyLimitValue: payload => dispatch({ type: dataAnalysisScatterAction.getxyLimitValue, payload }),
 
 
 });

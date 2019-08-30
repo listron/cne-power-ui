@@ -42,7 +42,8 @@ function* getStationDevice(action) {//获取
 
 function* getSequenceName(action) {//获取
   const { payload } = action;
-  const chartType = 1;
+  const chartType = 1;//时序图是2
+  // const chartType = 2;
   // const url = '/mock/api/v3/wind/analysis/scatterplot/names';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterName}/${payload.stationCode}/${chartType}`;
   try {
@@ -99,34 +100,36 @@ function* getSequenceData(action) {//获取
     yield put({
       type: dataAnalysisSequenceAction.changeSquenceStore,
       payload: {
-        ...payload,
+        // ...payload,
         chartLoading: true,
       },
     });
     const response = yield call(axios.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).utc().format(),
+      endTime: moment(endTime).endOf('d').utc().format(),
     });
-    const preSequenceData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('sequenceData').toJS()));
-    const deviceList = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('deviceList').toJS()));
+    // const preSequenceData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('sequenceData').toJS()));
+    // const deviceList = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('deviceList').toJS()));
 
     if (response.data.code === '10000') {
       const curChartData = response.data.data || {};
-      const deviceFullCodeArr = deviceList.map(e => e.deviceFullCode);//拿到设备型号数组
-      const deviceData = {};//存储设备型号数据
-      deviceFullCodeArr.forEach((e, i) => {
-        if (e === deviceFullCode) {
-          deviceData[e] = curChartData;
-        }
-      });
+
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           ...payload,
-          sequenceData: [...preSequenceData, curChartData],
+          sequenceData: curChartData,
+          activeCode: deviceFullCode,
+          // sequenceData: [...preSequenceData, curChartData],
           chartLoading: false,
-          ...deviceData,
+          // ...deviceData,
+        },
+      });
+      yield put({
+        type: dataAnalysisSequenceAction.changeSquenceStore,
+        payload: {
+          activeCode: deviceFullCode,
         },
       });
     } else {
@@ -134,8 +137,9 @@ function* getSequenceData(action) {//获取
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           chartLoading: false,
-          sequenceData: [...preSequenceData, { timeLine: [], point1Data: [], point2Data: [] }],
-          chartTime: moment().unix(),
+          activeCode: deviceFullCode,
+          sequenceData: {},
+
         },
       });
       message.error('请求失败');
@@ -162,7 +166,7 @@ function* getBigSequenceData(action) {//获取
     const response = yield call(axios.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).utc().format(),
+      endTime: moment(endTime).endOf('d').utc().format(),
     });
     if (response.data.code === '10000') {
       const curChartData = response.data.data || {};
@@ -178,7 +182,7 @@ function* getBigSequenceData(action) {//获取
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
-
+          bigchartLoading: false,
         },
       });
       message.error('请求失败');
@@ -187,6 +191,39 @@ function* getBigSequenceData(action) {//获取
   } catch (e) {
     console.log(e);
 
+  }
+}
+function* getxyLimitValue(action) {//获取
+  const { payload } = action;
+  const { startTime, endTime } = payload;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getxyLimitValue}`;
+  try {
+    const response = yield call(axios.post, url, {
+      ...payload,
+      startTime: moment(startTime).utc().format(),
+      endTime: moment(endTime).endOf('d').utc().format(),
+    },
+    );
+    if (response.data.code === '10000') {
+
+      yield put({
+        type: dataAnalysisSequenceAction.changeSquenceStore,
+        payload: {
+          xyValueLimit: response.data.data || {},
+
+        },
+      });
+    } else {
+      throw response.data.message;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: dataAnalysisSequenceAction.changeSquenceStore,
+      payload: {
+        xyValueLimit: {},
+      },
+    });
   }
 }
 
@@ -199,4 +236,5 @@ export function* watchDataAnalysisSequenceSaga() {
   yield takeLatest(dataAnalysisSequenceAction.getSequenceOtherName, getSequenceOtherName);
   yield takeLatest(dataAnalysisSequenceAction.getSequenceData, getSequenceData);
   yield takeLatest(dataAnalysisSequenceAction.getBigSequenceData, getBigSequenceData);
+  yield takeLatest(dataAnalysisSequenceAction.getxyLimitValue, getxyLimitValue);
 }

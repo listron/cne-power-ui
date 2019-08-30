@@ -122,7 +122,7 @@ class ChartLostTrend extends Component {
     }
     let faultInfo = {};
     if (stopChartTypes) {
-      faultInfo = { faultId: stopChartTypes.faultTypeId };
+      faultInfo = { faultId: stopChartTypes.faultId };
     }
     const param = {
       stationCodes: [searchParam.code],
@@ -164,10 +164,10 @@ class ChartLostTrend extends Component {
               <span class=${styles.titleText}>${axisValue}</span>
             </h3>
             <div class=${styles.info}>
-              ${param.map((e, i) => (
+              ${param.sort((a, b) => a.seriesIndex - b.seriesIndex).map(({seriesIndex, value}) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 0 ? '故障时长' : '故障次数'}</span>
-                  <span>${dataFormats(e.value, '--', 2, true)}</span>
+                  <span>${seriesIndex === 0 ? '故障时长' : '故障次数'}</span>
+                  <span>${dataFormats(value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
             </div>
@@ -182,9 +182,11 @@ class ChartLostTrend extends Component {
       bottom: 16,
       showDetail: false,
       height: 20,
+      xAxisIndex: [0, 1],
     }, {
       type: 'inside',
       filterMode: 'empty',
+      xAxisIndex: [0, 1],
     }]);
     trendChart.hideLoading();
     trendChart.setOption(option);

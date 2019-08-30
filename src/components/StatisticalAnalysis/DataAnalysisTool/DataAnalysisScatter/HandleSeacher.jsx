@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import StationSelect from '../../../Common/StationSelect';
 import { Button, DatePicker, Cascader, Icon, Select } from 'antd';
-import { downloadFile } from '../../../../utils/utilFunc';
 import moment from 'moment';
 
 const { RangePicker } = DatePicker;
@@ -60,13 +59,17 @@ class HandleSeacher extends React.Component {
     changeToolStore: PropTypes.func,
     getScatterName: PropTypes.func,
     getScatterOtherName: PropTypes.func,
-    pointCodeNameX: PropTypes.string,
-    pointCodeNameY: PropTypes.string,
+    getxyLimitValue: PropTypes.func,
     getScatterData: PropTypes.func,
-    pointCodeX: PropTypes.string,
-    pointCodeY: PropTypes.string,
-    // startTime: PropTypes.string,
-    // endTime: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    getStationDevice: PropTypes.func,
+    theme: PropTypes.string,
+    scatterotherNames: PropTypes.array,
+    deviceList: PropTypes.array,
+    isClick: PropTypes.bool,
+
+
   }
   constructor(props, context) {
     super(props, context);
@@ -81,16 +84,14 @@ class HandleSeacher extends React.Component {
       yCode: '',
       saveStartTime: '',
       saveEndTime: '',
-      point1Max: null,
-      point1Min: null,
-      point2Max: null,
-      point2Min: null,
+      xyValueLimit: {},
+      disableDateFun: (current) => current > moment(),
+
+
     };
   }
   componentWillReceiveProps(nextProp) {
-    const { scatterNames, getScatterData, stationCode, scatterNameTime, deviceList, startTime, endTime } = nextProp;
-
-    // const preScatterName = this.props.scatterNames;
+    const { scatterNames, getScatterData, stationCode, scatterNameTime, deviceList, startTime, endTime, getxyLimitValue, xyValueLimit } = nextProp;
     if (this.props.scatterNameTime !== scatterNameTime) {
       const { options } = this.state;
       const newscatterNames = this.formater(scatterNames);
@@ -105,9 +106,9 @@ class HandleSeacher extends React.Component {
         };
       });
       const otherName = {
-        // value: '其他',
-        // pointsUnionName: '其他',
-        // isLeaf: false,
+        value: '其他',
+        pointsUnionName: '其他',
+        isLeaf: false,
       };
       if (scatterNames[0] && deviceList.length) {
         const { pointNameList, pointType } = scatterNames[0];
@@ -116,6 +117,13 @@ class HandleSeacher extends React.Component {
         const deviceFullCode = fristDevice.deviceFullCode;
         const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = firstData;
         this.setState({ options: [...option, otherName], scatterNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
+        getxyLimitValue({
+          stationCode,
+          startTime,
+          endTime,
+          xPointCode: pointCodeX,
+          yPointCode: pointCodeY,
+        });
         this.props.changeToolStore({ pointCodeNameX, pointCodeNameY, xPointCode: pointCodeX, yPointCode: pointCodeY });
         this.setState({
           xName: pointCodeNameX,
@@ -134,6 +142,14 @@ class HandleSeacher extends React.Component {
           yPointCode: pointCodeY,
         });
       }
+
+
+    }
+    if (JSON.stringify(xyValueLimit) !== JSON.stringify(this.props.xyValueLimit)) {
+
+      this.setState({
+        xyValueLimit,
+      });
     }
 
   }
@@ -148,47 +164,49 @@ class HandleSeacher extends React.Component {
     }
     );
   }
-  clearoutLimit = () => {
-    this.setState({
-      point1Max: null,
-      point1Min: null,
-      point2Max: null,
-      point2Min: null,
-    });
-  }
+  // getLimitValue = (value) => {
+  //   const { getxyLimitValue, stationCode } = this.props;
+  //   const { xCode, yCode, saveStartTime, saveEndTime } = this.state;
+  //   getxyLimitValue({
+  //     stationCode,
+  //     startTime: saveStartTime,
+  //     endTime: saveEndTime,
+  //     xPointCode: xCode,
+  //     yPointCode: yCode,
+  //     ...value,
+  //   });
+  // }
   selectStationCode = (stationCodeArr) => {
     const { stationCode } = stationCodeArr[0];
     this.props.changeToolStore({
       stationCode,
-      scatterData: [],
-      point1Max: null,
-      point1Min: null,
-      point2Max: null,
-      point2Min: null,
-
+      scatterData: {},
     });
     this.props.getStationDevice({ stationCode });
     this.props.getScatterName({ stationCode });
   }
 
   changeTime = (date, dateString) => {
+
     this.setState({
       saveStartTime: dateString[0],
       saveEndTime: dateString[1],
     });
-    this.clearoutLimit();
+    // const value = { startTime: dateString[0], endTime: dateString[1] };
+    // this.getLimitValue(value);
+
   }
-  onChangeContrast = (value, selectedOptions) => {
+  onChangeContrast = (value, selectedOptions) => {//选择散点名称
+    const { stationCode, getScatterOtherName } = this.props;
     this.setState({
       isSwap: false,
     });
-    const { stationCode } = this.props;
     if (value[0] === '其他') {
       this.setState({
         showOther: true,
         scatterNameValue: ['其他'],
       });
-      this.props.getScatterOtherName({
+      getScatterOtherName({
         stationCode,
       });
     } else {
@@ -206,10 +224,10 @@ class HandleSeacher extends React.Component {
         scatterNameValue: value,
         showOther: false,
       });
+      // this.getLimitValue({ xPointCode: pointCodeX, yPointCode: pointCodeY });
     }
-
   }
-  changeSwap = () => {
+  changeSwap = () => {//交换xy轴
     const { xCode, yCode, xName, yName } = this.state;
     this.setState({
       isSwap: !this.state.isSwap,
@@ -218,46 +236,78 @@ class HandleSeacher extends React.Component {
       xCode: yCode,
       yCode: xCode,
     });
+    // const value = { xPointCode: yCode, yPointCode: xCode };
+    // this.getLimitValue(value);
 
   }
-  getScatterData = () => {
+  getScatterData = () => {//查询数据
     //请求数据
-    const { getScatterData, changeToolStore, stationCode, deviceList } = this.props;
-    const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, point1Max, point1Min, point2Max, point2Min } = this.state;
+    const { getScatterData, changeToolStore, stationCode, deviceList, getxyLimitValue } = this.props;
+    const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
     changeToolStore({
-      scatterData: [],
+      scatterData: {},
       pointCodeNameX: xName,
       pointCodeNameY: yName,
-      point1Max,
-      point1Min,
-      point2Max,
-      point2Min,
+      xyValueLimit,
+      deviceList: [],
     });
-    const fristDevice = deviceList[0];
-    const deviceFullCode = fristDevice.deviceFullCode;
-    getScatterData({
+    getxyLimitValue({
       stationCode,
-      deviceFullCode,
-      xPointCode: xCode,
-      yPointCode: yCode,
       startTime: saveStartTime,
       endTime: saveEndTime,
+      xPointCode: xCode,
+      yPointCode: yCode,
     });
+    this.props.getStationDevice({ stationCode });
+    setTimeout(() => {
+      const fristDevice = deviceList[0];
+      const deviceFullCode = fristDevice.deviceFullCode;
+      getScatterData({
+        stationCode,
+        deviceFullCode,
+        xPointCode: xCode,
+        yPointCode: yCode,
+        startTime: saveStartTime,
+        endTime: saveEndTime,
+      });
+    }, 100);
+
 
   }
-  changeXvalue = (value, option) => {
+  changeXvalue = (value, option) => {//改变其他项中的x轴
     const { props: { children } } = option;
     this.setState({
       xCode: value,
       xName: children,
     });
+
+    // this.getLimitValue({ xPointCode: value });
   }
-  changeYvalue = (value, option) => {
+  changeYvalue = (value, option) => {//改变其他项中的y轴
     const { props: { children } } = option;
     this.setState({
       yCode: value,
       yName: children,
     });
+
+    // this.getLimitValue({ yPointCode: value });
+  }
+
+
+  onCalendarChange = (dates, dateStrings) => {
+    if (dates.length === 1) {
+      this.setState({ //  时间跨度不超过1月
+        disableDateFun: (current) => {
+          const maxTime = moment(dates[0]).add(31, 'days');
+          const minTime = moment(dates[0]).subtract(31, 'days');
+          return current > moment() || current > maxTime || current < minTime;
+        },
+      });
+    } else {
+      this.setState({
+        disableDateFun: (current) => current > moment(),
+      });
+    }
   }
 
   downPic = () => {
@@ -267,10 +317,10 @@ class HandleSeacher extends React.Component {
     });
   }
   render() {
-    const { stationCode, stations, scatterotherNames, theme, startTime, endTime } = this.props;
-    const { isSwap, options, scatterNameValue, showOther, xName, yName,
-      point1Max, point1Min, point2Max, point2Min } = this.state;
+    const { stationCode, stations, scatterotherNames, theme, startTime, endTime, isClick } = this.props;
 
+    const { isSwap, options, scatterNameValue, showOther, xName, yName, xyValueLimit, disableDateFun } = this.state;
+    const { yMin, yMax, xMin, xMax } = xyValueLimit;
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
     return (
@@ -286,20 +336,24 @@ class HandleSeacher extends React.Component {
           <label className={styles.nameStyle}>时间</label>
           <RangePicker
             defaultValue={[moment(startTime, dateFormat), moment(endTime, dateFormat)]}
+            disabledDate={disableDateFun}
+            onCalendarChange={this.onCalendarChange}
             format={dateFormat}
             onChange={this.changeTime}
             style={{ width: '240px' }}
 
           />
+
         </div>
         <div className={styles.headBottom}>
           <label className={styles.nameStyle}>散点</label>
           <Cascader
+            placeholder=""
             options={options}
             value={scatterNameValue}
             fieldNames={{ label: 'pointsUnionName', value: 'value', children: 'pointNameList' }}
             onChange={this.onChangeContrast}
-            style={{ width: '400px' }}
+            style={showOther ? { width: '200px' } : { width: '400px' }}
           />
           {!showOther && <div className={styles.contrastValue}>
             <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} >{xName ? xName : '--'}</Button>
@@ -308,27 +362,27 @@ class HandleSeacher extends React.Component {
           </div>}
           {showOther && <div className={styles.contrastValue}>
             <Select
-              style={{ width: 120 }}
+              style={{ width: 160 }}
               onChange={this.changeXvalue}
-              value={this.props.pointCodeX}
+              value={this.state.xCode}
             >
               {scatterotherNames.map((e, i) => (
-                <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
+                <Option key={e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
               ))}
             </Select>
             <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
             <Select
-              style={{ width: 120 }}
+              style={{ width: 160 }}
               onChange={this.changeYvalue}
-              value={this.props.pointCodeY}
+              value={this.state.yCode}
             >
               {scatterotherNames.map((e, i) => (
-                <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
+                <Option key={e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
               ))}
             </Select>
           </div>}
           <Button className={styles.seachBtn} onClick={this.getScatterData}>查询</Button>
-          <Button className={styles.seachBtn} onClick={this.downPic}>图片下载</Button>
+          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!isClick} onClick={this.downPic}>图片下载</Button>
 
         </div>
       </div>

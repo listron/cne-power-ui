@@ -16,6 +16,7 @@ class Condition extends Component {
         commonQueryParams: PropTypes.object,
         listQueryParams: PropTypes.object,
         getFlowList: PropTypes.func,
+        theme: PropTypes.string,
     }
 
 
@@ -43,16 +44,17 @@ class Condition extends Component {
     }
 
     render() {
-        const { stations, statusList, username, commonQueryParams = {} } = this.props;
+        const { stations, statusList, username, commonQueryParams = {}, theme } = this.props;
         const { stateCode } = commonQueryParams;
         return (
-            <div className={styles.condition}>
+            <div className={`${styles.condition} ${styles[theme]}`}>
                 <FilterCondition
                     option={['stationName', 'time', 'myJoin']}
                     stations={stations}
                     username={username}
                     onChange={this.filterCondition}
                     myJoinText={'我的待办'}
+                    theme={theme}
                 />
                 <div className={styles.statusGroup}>
                     <div className={styles.text}><span>状</span><span>态</span></div>

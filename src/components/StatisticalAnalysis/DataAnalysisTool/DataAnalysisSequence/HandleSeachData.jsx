@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styles from './sequenceStyles.scss';
 import StationSelect from '../../../Common/StationSelect';
 import { Button, DatePicker, Cascader, Icon, Select, InputNumber } from 'antd';
-import { downloadFile } from '../../../../utils/utilFunc';
 import moment from 'moment';
 
 
@@ -51,10 +50,16 @@ class HandleSeachData extends React.Component {
     stationCode: PropTypes.number,
     stations: PropTypes.array,
     changeSquenceStore: PropTypes.func,
-    getScatterName: PropTypes.func,
     getSequenceOtherName: PropTypes.func,
+    getxyLimitValue: PropTypes.func,
     sequenceotherNames: PropTypes.array,
     getSequenceData: PropTypes.func,
+    getSequenceName: PropTypes.func,
+    getStationDevice: PropTypes.func,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    theme: PropTypes.string,
+    isClick: PropTypes.bool,
   }
   constructor(props, context) {
     super(props, context);
@@ -69,16 +74,12 @@ class HandleSeachData extends React.Component {
       yCode: '',
       saveStartTime: '',
       saveEndTime: '',
-      point1Max: null,
-      point1Min: null,
-      point2Max: null,
-      point2Min: null,
-
+      xyValueLimit: {},
+      disableDateFun: (current) => current > moment(),
     };
   }
   componentWillReceiveProps(nextProp) {
-    const { sequenceNames, getSequenceData, deviceList, sequenceNameTime, startTime, endTime, sequenceData } = nextProp;
-    const { point1Max } = this.state;
+    const { sequenceNames, getSequenceData, stationCode, deviceList, sequenceNameTime, startTime, endTime, sequenceData, getxyLimitValue, changeSquenceStore, xyValueLimit } = nextProp;
     if (this.props.sequenceNameTime !== sequenceNameTime) {//格式化测点数据
       const { options } = this.state;
       const newscatterNames = this.formater(sequenceNames);
@@ -98,13 +99,21 @@ class HandleSeachData extends React.Component {
         isLeaf: false,
       };
       if (sequenceNames[0] && deviceList.length) {//获取测点数据并且取第一项
+
         const { pointNameList, pointType } = sequenceNames[0];
         const fristDevice = deviceList[0];
         const deviceFullCode = fristDevice.deviceFullCode;
         const firstData = pointNameList ? pointNameList[0] : [];
         const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = firstData;
         this.setState({ options: [...option, otherName], sequenceNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
-        this.props.changeSquenceStore({ pointCodeNameX, pointCodeNameY, pointY1: pointCodeX, pointY2: pointCodeY });
+        getxyLimitValue({
+          stationCode,
+          startTime,
+          endTime,
+          xPointCode: pointCodeX,
+          yPointCode: pointCodeY,
+        });
+        changeSquenceStore({ pointCodeNameX, pointCodeNameY, pointY1: pointCodeX, pointY2: pointCodeY });
         this.setState({
           xName: pointCodeNameX,
           yName: pointCodeNameY,
@@ -112,36 +121,21 @@ class HandleSeachData extends React.Component {
           yCode: pointCodeY,
           saveStartTime: startTime,
           saveEndTime: endTime,
-
         });
         getSequenceData({
           deviceFullCode,
-          startTime: startTime,
-          endTime: endTime,
+          startTime,
+          endTime,
           pointY1: pointCodeX,
           pointY2: pointCodeY,
           interval: 60,
         });
       }
     }
+    if (JSON.stringify(xyValueLimit) !== JSON.stringify(this.props.xyValueLimit)) {
 
-    if (!point1Max && deviceList.length === sequenceData.length) {//当拿到所有图表数据，进行最大值最小值筛选
-      console.log('!point1Max && deviceList.length === sequenceData.length: ', !point1Max && deviceList.length === sequenceData.length);
-      const y1Max = sequenceData.map((e, i) => (e.point1Max ? e.point1Max : 0));
-      const y1Min = sequenceData.map((e, i) => (e.point1Min ? e.point1Min : 0));
-      const y2Max = sequenceData.map((e, i) => (e.point2Max ? e.point2Max : 0));
-      const y2Min = sequenceData.map((e, i) => (e.point2Min ? e.point2Min : 0));
       this.setState({
-        point1Max: Math.ceil(Math.max(...y1Max)),
-        point1Min: Math.floor(Math.min(...y1Min)),
-        point2Max: Math.ceil(Math.max(...y2Max)),
-        point2Min: Math.floor(Math.min(...y2Min)),
-      });
-      this.props.changeSquenceStore({
-        point1Max: Math.ceil(Math.max(...y1Max)),
-        point1Min: Math.floor(Math.min(...y1Min)),
-        point2Max: Math.ceil(Math.max(...y2Max)),
-        point2Min: Math.floor(Math.min(...y2Min)),
+        xyValueLimit,
       });
     }
   }
@@ -156,27 +150,27 @@ class HandleSeachData extends React.Component {
     }
     );
   }
-  clearoutLimit = () => {
-    this.setState({
-      point1Max: null,
-      point1Min: null,
-      point2Max: null,
-      point2Min: null,
-    });
-  }
+  // getLimitValue = (value) => {
+  //   const { getxyLimitValue, stationCode } = this.props;
+  //   const { xCode, yCode, saveStartTime, saveEndTime } = this.state;
+  //   getxyLimitValue({
+  //     stationCode,
+  //     startTime: saveStartTime,
+  //     endTime: saveEndTime,
+  //     xPointCode: xCode,
+  //     yPointCode: yCode,
+  //     ...value,
+  //   });
+  // }
   selectStationCode = (stationCodeArr) => {//电站选择
     const { stationCode } = stationCodeArr[0];
-    this.clearoutLimit();
     this.setState({
       showOther: false,
     });
     this.props.changeSquenceStore({
       stationCode,
-      sequenceData: [],
-      point1Max: null,
-      point1Min: null,
-      point2Max: null,
-      point2Min: null,
+      sequenceData: {},
+      deviceList: [],
     });
     this.props.getStationDevice({ stationCode });
     this.props.getSequenceName({ stationCode });
@@ -188,7 +182,8 @@ class HandleSeachData extends React.Component {
       saveStartTime: dateString[0],
       saveEndTime: dateString[1],
     });
-    this.clearoutLimit();
+    // const value = { startTime: dateString[0], endTime: dateString[1] };
+    // this.getLimitValue(value);
   }
   //改测点
   onChangeContrast = (value, selectedOptions) => {
@@ -204,7 +199,7 @@ class HandleSeachData extends React.Component {
     } else {
       const selectedOption = selectedOptions[1] ? selectedOptions[1] : [];
       const { pointCodeNameX, pointCodeNameY } = selectedOption;
-      const codeValue = value[value.length - 1];
+      const codeValue = value[1];
       const valueArr = codeValue.split('_');
       const pointCodeX = valueArr[0];
       const pointCodeY = valueArr[1];
@@ -217,8 +212,11 @@ class HandleSeachData extends React.Component {
         sequenceNameValue: value,
         showOther: false,
       });
-      this.clearoutLimit();
     }
+
+
+    // this.getLimitValue({ xPointCode: pointCodeX, yPointCode: pointCodeY });
+
   }
   //交换左右y轴
   changeSwap = () => {
@@ -230,22 +228,34 @@ class HandleSeachData extends React.Component {
       xCode: yCode,
       yCode: xCode,
     });
-
+    const value = { xPointCode: yCode, yPointCode: xCode };
+    // this.getLimitValue(value);
   }
   //查询图表数据
   getSequenceData = () => {
     //请求数据
-    const { getSequenceData, changeSquenceStore, deviceList } = this.props;
-    const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, point1Max, point1Min, point2Max, point2Min } = this.state;
+    const { getSequenceData, changeSquenceStore, deviceList, stationCode, getxyLimitValue } = this.props;
+    const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
+    getxyLimitValue({
+      stationCode,
+      startTime: saveStartTime,
+      endTime: saveEndTime,
+      xPointCode: xCode,
+      yPointCode: yCode,
+
+    });
     changeSquenceStore({
-      sequenceData: [],
+      sequenceData: {},
       pointCodeNameX: xName,
       pointCodeNameY: yName,
-      point1Max,
-      point1Min,
-      point2Max,
-      point2Min,
+      xyValueLimit,
+      deviceList: [],
+      activeCode: '',
+      startTime: saveStartTime,
+      endTime: saveEndTime,
     });
+
+    this.props.getStationDevice({ stationCode });
     const fristDevice = deviceList[0];
     const deviceFullCode = fristDevice.deviceFullCode;
     getSequenceData({
@@ -264,6 +274,7 @@ class HandleSeachData extends React.Component {
       xCode: value,
       xName: children,
     });
+    // this.getLimitValue({ xPointCode: value });
   }
   //改变第二个y轴
   changeY2value = (value, option) => {
@@ -272,6 +283,23 @@ class HandleSeachData extends React.Component {
       yCode: value,
       yName: children,
     });
+    // this.getLimitValue({ yPointCode: value });
+  }
+
+  onCalendarChange = (dates, dateStrings) => {
+    if (dates.length === 1) {
+      this.setState({ // 时间跨度不超过1年
+        disableDateFun: (current) => {
+          const maxTime = moment(dates[0]).add(366, 'days');
+          const minTime = moment(dates[0]).subtract(366, 'days');
+          return current > moment() || current > maxTime || current < minTime;
+        },
+      });
+    } else {
+      this.setState({
+        disableDateFun: (current) => current > moment(),
+      });
+    }
   }
 
   //下载
@@ -281,8 +309,9 @@ class HandleSeachData extends React.Component {
     });
   }
   render() {
-    const { stationCode, stations, sequenceotherNames, theme, startTime, endTime } = this.props;
-    const { isSwap, options, sequenceNameValue, showOther, xName, yName, point1Max, point1Min, point2Max, point2Min } = this.state;
+    const { stationCode, stations, sequenceotherNames, theme, startTime, endTime, isClick } = this.props;
+    const { isSwap, options, sequenceNameValue, showOther, xName, yName, xyValueLimit, disableDateFun } = this.state;
+    const { yMin, yMax, xMin, xMax } = xyValueLimit;
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
     return (
@@ -298,12 +327,15 @@ class HandleSeachData extends React.Component {
           <label className={styles.nameStyle}>时间</label>
           <RangePicker
             defaultValue={[moment(startTime, dateFormat), moment(endTime, dateFormat)]}
+            disabledDate={disableDateFun}
+            onCalendarChange={this.onCalendarChange}
             format={dateFormat}
             onChange={this.changeTime}
             style={{ width: '240px' }}
           />
           <label className={styles.nameStyle}>测点</label>
           <Cascader
+            placeholder=""
             options={options}
             value={sequenceNameValue}
             fieldNames={{ label: 'pointsUnionName', value: 'value', children: 'pointNameList' }}
@@ -337,48 +369,38 @@ class HandleSeachData extends React.Component {
           {<div className={styles.contrastValue}>
             <div className={styles.bottomLeft}>
               <span>{xName ? xName : '--'}</span>
-
               <InputNumber
-                // min={0}
-                // max={point1Max}
-                value={point1Max}
+                value={xMax}
                 formatter={value => `最大值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
-                onChange={(value) => this.setState({ point1Max: value })}
+                onChange={(value) => this.setState({ xyValueLimit: { ...xyValueLimit, xMax: value } })}
               />
-
               <InputNumber
-                // min={0}
-                // max={point1Max}
-                value={point1Min}
+                value={xMin}
                 formatter={value => `最小值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
-                onChange={(value) => this.setState({ point1Min: value })}
+                onChange={(value) => this.setState({ xyValueLimit: { ...xyValueLimit, xMin: value } })}
               />
             </div>
             <div className={styles.bottomLeft}>
-              {/* <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} /> */}
               <span className={styles.defaultStyle} >{yName ? yName : '--'}</span>
               <InputNumber
-                //  min={0}
-                //  max={point2Max}
-                value={point2Max}
+                value={yMax}
                 formatter={value => `最大值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
-                onChange={(value) => this.setState({ point2Max: value })}
+                onChange={(value) => this.setState({ xyValueLimit: { ...xyValueLimit, yMax: value } })}
               />
               <InputNumber
-                //  min={0}
-                //  max={point2Max}
-                value={point2Min}
+                value={yMin}
                 formatter={value => `最小值 ${value}`}
                 parser={value => value.replace(/\D/g, '')}
-                onChange={(value) => this.setState({ point2Min: value })}
+                onChange={(value) => this.setState({ xyValueLimit: { ...xyValueLimit, yMin: value } })}
               />
-              <Button className={styles.seachBtn} onClick={this.getSequenceData}>查询</Button>
+
             </div>
           </div>}
-          <Button className={styles.seachBtn} onClick={this.downPic}>图片下载</Button>
+          <Button className={styles.seachBtn} onClick={this.getSequenceData}>查询</Button>
+          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!this.props.isClick} onClick={this.downPic}>图片下载</Button>
         </div>
       </div>
     );

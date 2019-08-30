@@ -67,6 +67,17 @@
         height: 250px;
         margin: 10px auto 0;
 
+        :global {
+          .ant-checkbox-group {
+            height: 250px;
+            overflow-y: auto;
+
+            &::-webkit-scrollbar {
+              width: 0 !important
+            }
+          }
+        }
+
         label {
           margin: 0;
         }
@@ -83,84 +94,87 @@
     }
   }
 
-  .firChartTitle{
+  .firChartTitle {
     font-size: 16px;
     position: absolute;
     top: 16px;
     left: 3%;
   }
 
-  .secChartTitle{
+  .secChartTitle {
     font-size: 16px;
     position: absolute;
     top: 16px;
     left: 45%;
   }
 
-  .thrChartTitle{
+  .thrChartTitle {
     font-size: 16px;
     position: absolute;
     top: 440px;
     left: 3%;
   }
 
-  .fouChartTitle{
+  .fouChartTitle {
     font-size: 16px;
     position: absolute;
     top: 440px;
     left: 45%;
   }
 
-  .firCoordinate{
+  .firCoordinate {
     position: absolute;
     top: 42px;
     z-index: 2;
     left: 11%;
 
-    >i{
+    > i {
       cursor: pointer;
       margin: 0 5px;
     }
   }
-  .secCoordinate{
+
+  .secCoordinate {
     position: absolute;
     top: 42px;
     z-index: 2;
     left: 54%;
 
-    >i{
+    > i {
       cursor: pointer;
       margin: 0 5px;
     }
   }
-  .thrCoordinate{
+
+  .thrCoordinate {
     position: absolute;
     top: 465px;
     z-index: 2;
     left: 11%;
 
-    >i{
+    > i {
       cursor: pointer;
       margin: 0 5px;
     }
   }
-  .fouCoordinate{
+
+  .fouCoordinate {
     position: absolute;
     top: 465px;
     z-index: 2;
     left: 54%;
 
-    >i{
+    > i {
       cursor: pointer;
       margin: 0 5px;
     }
   }
 
-  .xAxis{
+  .xAxis {
     margin-right: 5px;
   }
 
-  .yAxis{
+  .yAxis {
     margin-right: 5px;
   }
 }
@@ -187,50 +201,53 @@
     }
   }
 
-  .firChartTitle{
+  .firChartTitle {
     color: $blackColor;
   }
 
-  .secChartTitle{
+  .secChartTitle {
     color: $blackColor;
   }
 
-  .thrChartTitle{
+  .thrChartTitle {
     color: $blackColor;
   }
 
-  .fouChartTitle{
+  .fouChartTitle {
     color: $blackColor;
   }
 
-  .firCoordinate{
+  .firCoordinate {
 
-    >i{
-      &:hover{
+    > i {
+      &:hover {
         color: $themeColor;
       }
     }
   }
-  .secCoordinate{
 
-    >i{
-      &:hover{
+  .secCoordinate {
+
+    > i {
+      &:hover {
         color: $themeColor;
       }
     }
   }
-  .thrCoordinate{
 
-    >i{
-      &:hover{
+  .thrCoordinate {
+
+    > i {
+      &:hover {
         color: $themeColor;
       }
     }
   }
-  .fouCoordinate{
 
-    >i{
-      &:hover{
+  .fouCoordinate {
+
+    > i {
+      &:hover {
         color: $themeColor;
       }
     }

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Icon } from 'antd';
 import styles from './sequenceStyles.scss';
-import SequenceChart from './SequenceChart';
 import BigSequenceChats from './BigSequenceChats';
 
 class SequenceModal extends React.Component {
@@ -13,7 +12,9 @@ class SequenceModal extends React.Component {
     isShowModal: PropTypes.bool,
     hideImg: PropTypes.func,
     onChange: PropTypes.func,
+    likeStatusChange: PropTypes.func,
     curBigChartData: PropTypes.object,
+    deviceList: PropTypes.array,
 
   }
   constructor(props, context) {
@@ -29,7 +30,6 @@ class SequenceModal extends React.Component {
 
   nextImg = () => {
     const { currentImgIndex, deviceList } = this.props;
-    // console.log('currentImgIndex: ', currentImgIndex);
     if (!deviceList || currentImgIndex >= deviceList.length - 1) {
       return;
     }
@@ -37,7 +37,7 @@ class SequenceModal extends React.Component {
   }
 
   render() {
-    const { isShowModal, hideImg, deviceList, curBigChartData, currentImgIndex, likeStatusChange } = this.props;
+    const { isShowModal, hideImg, deviceList, currentImgIndex, likeStatusChange } = this.props;
     const curChart = deviceList[currentImgIndex];
     const likeStatus = curChart ? curChart.likeStatus : false;
     const deviceName = curChart ? curChart.deviceName : '';
@@ -49,7 +49,7 @@ class SequenceModal extends React.Component {
           footer={null}
           visible={isShowModal}
           onCancel={hideImg}
-          width={1280}
+          width={1345}
           destroyOnClose={true}
           wrapClassName={styles.sequenceModal}
           getContainer={() => this.refs.date}
@@ -67,7 +67,7 @@ class SequenceModal extends React.Component {
                 id={`${deviceName}_${currentImgIndex}`}
                 index={currentImgIndex}
                 deviceName={deviceName}
-                allChartData={curBigChartData}
+                // chartData={curBigChartData}
                 likeStatusChange={likeStatusChange}
               />
             </div>

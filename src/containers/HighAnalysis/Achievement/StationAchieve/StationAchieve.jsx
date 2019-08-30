@@ -49,23 +49,24 @@ class StationAchieve extends Component {
   // f5刷新 => 有路径, 无reducer数据 => 路径数据重新写入reducer并发起对应的页面请求 didmount
   // 别的页面带参数进入该页面 => 有路径 路径参数写入reducer并发起对应请求 didmount
   // 别的页面不带参数直接点击目录处进入页面 => 无路径 等待数据得到后, 自动写入默认项, 当默认项齐全后, 发送页面请求 willprops
+  // 本页路径参数: station={code:stationCode,device:[deviceCodes],date:[startTime,endTime],quota:quotaCode}
   constructor(props){
     super(props);
-    const { search } = props.location;
+    const { search } = props.history.location;
     const stationInfoStr = searchUtil(search).getValue('station') || '';
     const {
       stationCodes = [],
       deviceFullcodes = [],
       startTime = moment().subtract(1, 'year').format('YYYY-MM-DD'),
       endTime = moment().format('YYYY-MM-DD'),
-      quota,
+      indicatorCode,
     } = stationInfoStr ? this.getSearchParam(stationInfoStr) : {};
     this.state = {
       stationInfoStr,
       searchCode: stationCodes[0] || null,
       searchDevice: deviceFullcodes,
       searchDates: [startTime, endTime],
-      searchQuota: quota,
+      searchQuota: indicatorCode,
     };
   }
 
@@ -80,9 +81,10 @@ class StationAchieve extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const { areaStation, modeDevices, pageName, quotaInfo, location } = nextProps;
+    const preDevices = this.props.modeDevices;
+    const { areaStation, modeDevices, pageName, quotaInfo, history } = nextProps;
     const { stationInfoStr, searchCode, searchDevice, searchQuota } = this.state;
-    const { search } = location;
+    const { search } = history.location;
     const newSearchPath = searchUtil(search).getValue('station') || '';
     const prePageName = this.props.pageName;
     if (areaStation.length > 0 && !searchCode) { // 电站数据获得 => 存默认电站并发起设备请求.
@@ -91,7 +93,7 @@ class StationAchieve extends Component {
       this.setState({ searchCode: firstStation.stationCode });
       this.props.getDevices({ stationCode: firstStation.stationCode });
     }
-    if (modeDevices.length > 0 && searchDevice.length === 0) { // 设备数据获得 => 存默认设备,若已有指标,发起路径变化
+    if (this.getIsDevicesChange(preDevices, modeDevices)) { // 得到设备数据, 存默认设备,若已有指标,发起路径变化
       const selectedDevice = [];
       modeDevices.forEach(e => {
         const { children = [] } = e || {};
@@ -134,6 +136,24 @@ class StationAchieve extends Component {
     }
   }
 
+  getIsDevicesChange = (pre, cur) => { // 判断设备是否发生改变
+    if(pre.length === 0 && cur.length > 0) {
+      return true;
+    }
+    if (pre.length > 0 && cur.length > 0) { // deviceFullCode唯一。进行比较。
+      let isDeviceChange = false;
+      const preMode = pre[0] || {};
+      const preChild = preMode.children || [];
+      const preDevice = preChild[0] || {};
+      const curMode = cur[0] || {};
+      const curChild = curMode.children || [];
+      const curDevice = curChild[0] || {};
+      (preMode.value !== curMode.value || preDevice.value !== curDevice.value) && (isDeviceChange = true);
+      return isDeviceChange;
+    }
+    return false;
+  }
+
   getSearchParam = (infoStr) => {
     let searchParam = {};
     try {
@@ -165,12 +185,14 @@ class StationAchieve extends Component {
     return selectedQuota;
   }
 
+  stationChange = (searchCode) => this.setState({searchCode})
+
   historyChange = (code, device = [], date = [
     moment().subtract(1, 'year').format('YYYY-MM-DD'),
     moment().format('YYYY-MM-DD'),
   ], quota) => { // 切换路径 => 托管外部进行请求
-    const { location, history } = this.props;
-    const { search } = location;
+    const { history } = this.props;
+    const { search } = history.location;
     const newSearch = searchUtil(search).replace({station: JSON.stringify({
       code, device, date, quota,
     })}).stringify();
@@ -256,7 +278,7 @@ class StationAchieve extends Component {
 
   render() {
     const { pageName, changeStore } = this.props;
-    const { searchCode, searchDevice, searchDates, searchQuota } = this.state;
+    const { searchCode, searchDevice, searchDates, searchQuota, stationInfoStr } = this.state;
     return (
       <div className={styles.stationAchieve} >
         <StationSearch
@@ -265,11 +287,29 @@ class StationAchieve extends Component {
           searchDevice={searchDevice}
           searchDates={searchDates}
           searchQuota={searchQuota}
+          stationInfoStr={stationInfoStr}
+          pageQuery={this.pageQuery}
+          stationChange={this.stationChange}
         />
         <AnimationBox changeStore={changeStore} pageName={pageName}>
-          <LostAnalysis {...this.props} active={pageName === 'lost'} />
-          <StopAnalysis {...this.props} active={pageName === 'stop'} />
-          <CurveAnalysis {...this.props} active={pageName === 'curve'} />
+          <LostAnalysis
+            {...this.props}
+            active={pageName === 'lost'}
+            pageQuery={this.pageQuery}
+            stationInfoStr={stationInfoStr}
+          />
+          <StopAnalysis
+            {...this.props}
+            active={pageName === 'stop'}
+            pageQuery={this.pageQuery}
+            stationInfoStr={stationInfoStr}
+          />
+          <CurveAnalysis
+            {...this.props}
+            active={pageName === 'curve'}
+            pageQuery={this.pageQuery}
+            stationInfoStr={stationInfoStr}
+          />
         </AnimationBox>
       </div>
     );

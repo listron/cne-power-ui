@@ -33,7 +33,10 @@ class GroupAchieve extends Component {
     const groupInfoStr = searchUtil(search).getValue('group');
     if(groupInfoStr) {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
-      this.queryParamsFunc(groupInfo);
+      // 判断如果电站为空不请求
+      if(groupInfo.searchCode && groupInfo.searchCode.length > 0) {
+        this.queryParamsFunc(groupInfo);
+      }
     }
     // 右键重置图表
     // 去掉默认的contextmenu事件，否则会和右键事件同时出现。
@@ -69,7 +72,10 @@ class GroupAchieve extends Component {
     // 发生变化
     if (groupNextInfoStr && groupNextInfoStr !== groupInfoStr) {
       const groupInfo = groupNextInfoStr ? JSON.parse(groupNextInfoStr) : {};
-      this.queryParamsFunc(groupInfo);
+      // 判断如果电站为空不请求
+      if(groupInfo.searchCode && groupInfo.searchCode.length > 0) {
+        this.queryParamsFunc(groupInfo);
+      }
     }
   }
 
@@ -86,7 +92,7 @@ class GroupAchieve extends Component {
     const quotaValue = quota[1] || quota[0];
     const paramsCapacity = {
       ...basicParams,
-      deviceModes: modes,
+      deviceModes: modes.map(cur => (cur.split('-')[1])),
       regionName: stations.map(cur => {return cur.regionName;}),
       manufactorIds: modesInfo.map(cur => {
         return cur.value;

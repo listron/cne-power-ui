@@ -48,6 +48,49 @@
       margin-right: 4px;
     }
   }
+  .modes{
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    right: 36px;
+    top: 112px;
+    font-size: 12px;
+    .eachMode{
+      margin-right: 20px;
+    }
+    .rect{
+      margin-right: 4px;
+      border-radius:2px;
+      display: inline-block;
+      width: 15px;
+      height: 9px;
+    }
+    .line{
+      display: inline-block;
+      width:5px;
+      margin: 0 10px 0 4px;
+      height:5px;
+      border-radius: 50%;
+      background:#ffffff;
+      border:1px solid #f9b600;
+      position: relative;
+      top: -1px;
+      &::before {
+        content: '';
+        position: absolute;
+        width: 15px;
+        height: 1px;
+        right: -6px;
+        top: 1px;
+        background-color: #f9b600;
+      }
+    }
+    .modeText{
+      white-space: nowrap;
+    }
+  }
   .stopRank, .stopTrend, .stopTypes{
     display: flex;
     flex-direction: column;
@@ -132,6 +175,14 @@
 
 .stopAnalysis{
   background-color: #ececec;
+  .modes{
+    .line{
+      border:1px solid #f9b600;
+      &::before {
+        background-color: #f9b600;
+      }
+    }
+  }
   .stopRank, .stopTrend, .stopTypes{
     background-color: #fff;
     .top .title{

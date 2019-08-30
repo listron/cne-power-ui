@@ -44,6 +44,7 @@ export default class AreaSearch extends Component {
       modesInfo: groupInfo.modesInfo || [],
       areaFlag: false, // 控制第一次进来，有数据的时候
       quotaFlag: false, // 控制第一次进来，有数据的时候
+      searchFlag: true, // 控制切换电站搜索
     };
   }
 
@@ -109,9 +110,9 @@ export default class AreaSearch extends Component {
   };
 
   propsModeDevicesChange = (modeDevices) => { // 得到电站下机型信息;
-    const { searchCode, dates, quota, stations } = this.state;
+    const { searchCode, dates, quota, stations, searchFlag } = this.state;
     const modes = this.getAllDeviceCodes(modeDevices);
-    if (quota.length > 0) { // 已有指标
+    if (quota.length > 0 && searchFlag) { // 已有指标
       this.historyChange(searchCode, modes, dates, quota, stations, modeDevices);
     } else { // 存入state, 得到quota时再请求
       this.setState({ modes, modesInfo: modeDevices});
@@ -163,6 +164,7 @@ export default class AreaSearch extends Component {
       stations: info,
       searchCode: stations,
       modes: [],
+      searchFlag: false,
     }, () => {
       changeStore({
         modesInfo: [],
@@ -195,7 +197,11 @@ export default class AreaSearch extends Component {
       selectTime: '', // 保存选择时间
       dataName: '', // 保存选择区域名称
     });
-    this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
+    this.setState({
+      searchFlag: true,
+    }, () => {
+      this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
+    });
   };
 
   resetCharts = () => {
@@ -222,7 +228,13 @@ export default class AreaSearch extends Component {
       dataName,
     } = this.props;
     const { modes, dates, quota, stations, searchCode } = this.state;
-    const searchFlag = searchCode && modes && modes.length !== 0 && quota && quota.length !== 0 && stations && stations.length !== 0 && modesInfo && modesInfo.length !== 0;
+    let stationsFlag = false;
+    stations && stations.forEach(cur => {
+      if(cur.stations.length > 0){
+        stationsFlag = true;
+      }
+    });
+    const searchFlag = searchCode && modes && modes.length !== 0 && quota && quota.length !== 0 && stationsFlag && stations && stations.length !== 0 && modesInfo && modesInfo.length !== 0;
 
     return (
       <div className={styles.topSearch}>
@@ -260,6 +272,7 @@ export default class AreaSearch extends Component {
           <Cascader
             allowClear={false}
             style={{width: '150px'}}
+            expandTrigger="hover"
             options={quotaInfo}
             placeholder="请选择"
             onChange={this.onQuotaChange}

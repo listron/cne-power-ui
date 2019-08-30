@@ -85,11 +85,18 @@
 
 .quotaList,.limitList,.faultList{
   flex: 1;
+  :global{
+    .ant-table{
+      .numberStyle{
+        text-align: right;
+      }
+    }
+  }
   .pagination{
     display: flex;
     justify-content: space-between;
     height: 50px;
-    .listExport{
+    .listExport,.disabledExport{
       width: 82px;
       margin: 10px 0 0 38px;
     }

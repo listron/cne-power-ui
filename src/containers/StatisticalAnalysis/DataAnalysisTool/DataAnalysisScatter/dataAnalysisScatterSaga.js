@@ -13,16 +13,12 @@ function* getStationDevice(action) {//获取
     if (response.data.code === '10000') {
       const data = response.data.data || [];
       const deviceList = data.map((e, i) => ({ ...e, likeStatus: false }));
-      const deviceFullCodeArr = deviceList.map(e => e.deviceFullCode);//拿到设备型号数组
-      const deviceData = {};//存储设备型号数据
-      deviceFullCodeArr.forEach((e, i) => {
-        deviceData[e] = [{}];
-      });
+
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
           deviceList,
-          ...deviceData,
+
         },
       });
     } else {
@@ -93,8 +89,6 @@ function* getScatterOtherName(action) {//获取
 function* getScatterData(action) {//获取
   const { payload } = action;
   const { startTime, endTime, deviceFullCode } = payload;
-  const preScatterData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisScatterReducer.get('scatterData').toJS()));
-  const deviceList = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisScatterReducer.get('deviceList').toJS()));
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
   try {
     yield put({
@@ -104,25 +98,21 @@ function* getScatterData(action) {//获取
         chartLoading: true,
       },
     });
-
     const response = yield call(axios.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).utc().format(),
+      endTime: moment(endTime).endOf('d').utc().format(),
     },
-
-    );// { params: payload }
+    );
     if (response.data.code === '10000') {
       const scatterArr = response.data.data || [];
-      // const scatterData = scatterArr.length ? scatterArr : [{ chartData: [] }];
+
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
           scatterData: scatterArr[0] || {},
-          activeCode: payload.deviceFullCode,
-          // scatterDataTime: moment().unix(),
+          activeCode: deviceFullCode,
           chartLoading: false,
-          // ...deviceData,
         },
       });
     } else {
@@ -133,9 +123,7 @@ function* getScatterData(action) {//获取
     yield put({
       type: dataAnalysisScatterAction.changeToolStore,
       payload: {
-        deviceFullCode: [{}],
         scatterData: [],
-        // scatterDataTime: moment().unix(),
         chartLoading: false,
       },
     });
@@ -143,9 +131,8 @@ function* getScatterData(action) {//获取
 }
 function* getBigScatterData(action) {//获取
   const { payload } = action;
-  const { startTime, endTime, deviceFullCode } = payload;
-  const preScatterData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisScatterReducer.get('scatterData').toJS()));
-  const deviceList = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisScatterReducer.get('deviceList').toJS()));
+  const { startTime, endTime } = payload;
+
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
   try {
     yield put({
@@ -159,12 +146,12 @@ function* getBigScatterData(action) {//获取
     const response = yield call(axios.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).utc().format(),
+      endTime: moment(endTime).endOf('d').utc().format(),
+
     },
     );
     if (response.data.code === '10000') {
       const bigscatterArr = response.data.data || [];
-      // const scatterData = scatterArr.length ? scatterArr : [{ chartData: [] }];
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
@@ -181,8 +168,41 @@ function* getBigScatterData(action) {//获取
       type: dataAnalysisScatterAction.changeToolStore,
       payload: {
         bigScatterData: {},
-        // scatterDataTime: moment().unix(),
         bigchartLoading: false,
+      },
+    });
+  }
+}
+function* getxyLimitValue(action) {//获取
+  const { payload } = action;
+  const { startTime, endTime } = payload;
+
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getxyLimitValue}`;
+  try {
+    const response = yield call(axios.post, url, {
+      ...payload,
+      startTime: moment(startTime).utc().format(),
+      endTime: moment(endTime).endOf('d').utc().format(),
+    },
+    );
+    if (response.data.code === '10000') {
+
+      yield put({
+        type: dataAnalysisScatterAction.changeToolStore,
+        payload: {
+          xyValueLimit: response.data.data || {},
+
+        },
+      });
+    } else {
+      throw response.data.message;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: dataAnalysisScatterAction.changeToolStore,
+      payload: {
+        xyValueLimit: {},
       },
     });
   }
@@ -196,4 +216,5 @@ export function* watchDataAnalysisScatterSaga() {
   yield takeLatest(dataAnalysisScatterAction.getScatterOtherName, getScatterOtherName);
   yield takeLatest(dataAnalysisScatterAction.getScatterData, getScatterData);
   yield takeLatest(dataAnalysisScatterAction.getBigScatterData, getBigScatterData);
+  yield takeLatest(dataAnalysisScatterAction.getxyLimitValue, getxyLimitValue);
 }

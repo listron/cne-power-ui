@@ -3,12 +3,23 @@ import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import echarts from 'echarts';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
-import { themeConfig, chartsLoading } from '../../../../utils/darkConfig';
+import { themeConfig } from '../../../../utils/darkConfig';
 import { dataFormat } from '../../../../utils/utilFunc';
 import moment from 'moment';
 
 
 class BigScattrChart extends React.Component {
+  static propTypes = {
+    pointCodeNameX: PropTypes.string,
+    pointCodeNameY: PropTypes.string,
+    theme: PropTypes.string,
+    bigScatterData: PropTypes.object,
+    deviceList: PropTypes.array,
+    index: PropTypes.number,
+    bigchartLoading: PropTypes.bool,
+    xyValueLimit: PropTypes.object,
+    likeChange: PropTypes.func,
+  }
   constructor(props, context) {
     super(props, context);
   }
@@ -25,8 +36,12 @@ class BigScattrChart extends React.Component {
     const saveBtn = curChart ? curChart.likeStatus : false;
     const title = curChart ? curChart.deviceName : '';
     const bigscatterChart = echarts.init(this.bigScattrchart, themeConfig[theme]);
+    const lightColor = {
+      maskColor: 'rgba(255, 255, 255, 0.8)',
+      color: '#199475',
+    };
     if (bigchartLoading) {
-      bigscatterChart.showLoading();
+      bigscatterChart.showLoading('default', lightColor);
     }
     if (!bigchartLoading) {
       bigscatterChart.hideLoading();
@@ -34,13 +49,16 @@ class BigScattrChart extends React.Component {
     this.drawChat(bigScatterData, saveBtn, title);
   }
   creatOption = (bigScatterData = {}, saveBtn, title) => {
-    const { pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
-    const { chartData = [] } = bigScatterData;
+    const { pointCodeNameX, pointCodeNameY, xyValueLimit } = this.props;
+    const { xMax, xMin, yMax, yMin } = xyValueLimit;
+    const { chartData = [], xUnit, yUnit } = bigScatterData;
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
+    const color = '#199475';
     const option = {
       graphic: inverterTenMinGraphic,
+      color: color,
       title: {
         text: [`${title}`, '{b|}'].join(''),
         left: '5%',
@@ -62,8 +80,7 @@ class BigScattrChart extends React.Component {
       grid: {
         right: '10%',
         top: '50px',
-        left: '20%',
-
+        left: '10%',
       },
       tooltip: {
         trigger: 'item',
@@ -77,9 +94,7 @@ class BigScattrChart extends React.Component {
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div>${moment(startTime).format('YYYY-MM-DD HH:mm:ss')}-${
-            moment(endTime).format('YYYY-MM-DD HH:mm:ss')
-            }</div>
+            <div class=${styles.lineStyle}>时间: ${info[2] ? moment(info[2]).format('YYYY-MM-DD HH:mm:ss') : '--'}</div>
             <div class=${styles.lineStyle}>${pointCodeNameX}: ${dataFormat(info[0], '--', 2)}</div>
             <div class=${styles.lineStyle}>${pointCodeNameY}: ${dataFormat(info[1], '--', 2)}</div>
           </div>`;
@@ -97,9 +112,11 @@ class BigScattrChart extends React.Component {
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
       },
-      xAxis: {
+      xAxis: [{
         type: 'value',
         nameGap: -40,
+        min: xMin,
+        max: xMax,
         name: pointCodeNameX,
         nameTextStyle: {
           fontSize: 18,
@@ -126,13 +143,17 @@ class BigScattrChart extends React.Component {
         splitLine: {
           show: false,
         },
-      },
+      }, {
+        name: xUnit,
+      }],
       yAxis: [
         {
           name: this.format(pointCodeNameY),
           nameRotate: 360,
           nameGap: 20,
           type: 'value',
+          min: yMin,
+          max: yMax,
           nameLocation: 'center',
           nameTextStyle: {
             fontSize: 18,
@@ -155,6 +176,12 @@ class BigScattrChart extends React.Component {
               type: 'dashed',
             },
           },
+        }, {
+          name: yUnit,
+          nameTextStyle: {
+            verticalAlign: 'bottom',
+            lineHeight: 5,
+          },
         },
       ],
       series: [{
@@ -164,7 +191,7 @@ class BigScattrChart extends React.Component {
         emphasis: {
           symbolSize: 8,
         },
-        data: chartData.map(e => [e.x, e.y]),
+        data: chartData.map(e => [e.x, e.y, e.time]),
       }],
     };
     return option;
@@ -176,8 +203,7 @@ class BigScattrChart extends React.Component {
     return val;
   }
   drawChat = (bigScatterData, saveBtn, title) => {
-    const { index, likeChange, theme, deviceList, stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
-
+    const { index, likeChange, theme } = this.props;
     const bigscatterChart = echarts.init(this.bigScattrchart, themeConfig[theme]);
     const option = this.creatOption(bigScatterData, saveBtn, title);
     bigscatterChart.off();

@@ -157,7 +157,7 @@ class StationSelect extends Component {
   }
 
   render() {
-    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly, stationShowNumber, theme = 'light' } = this.props;
+    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly, stationShowNumber, theme = 'dark' } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
     const deviceShow = checkedStations.length > 0 && stationShowNumber && {
       maxTagCount: 0,

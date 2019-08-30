@@ -20,12 +20,11 @@ var initState = Immutable.fromJS({
   scatterNameTime: null,
   deviceList: [],
   down: false,
+  isClick: false,
   bigScatterData: {},
   bigchartLoading: false,
-  point1Max: null,
-  point1Min: null,
-  point2Max: null,
-  point2Min: null,
+  xyValueLimit: {},
+
 });
 const dataAnalysisScatterReducer = (state = initState, action) => {
   switch (action.type) {

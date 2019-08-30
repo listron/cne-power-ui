@@ -4,12 +4,25 @@ import styles from './dataAnalysisStyle.scss';
 import SingleScatter from './SingleScatter';
 import SingleStationModal from './SingleStationModal';
 import toZip from '../../../../utils/js-zip';
+import { message } from 'antd';
+import moment from 'moment';
 class ScatterContainer extends React.PureComponent {
   static propTypes = {
     scatterData: PropTypes.object,
     newSrcUrl: PropTypes.array,
+    stations: PropTypes.array,
     srcObj: PropTypes.object,
     changeToolStore: PropTypes.func,
+    stationCode: PropTypes.number,
+    xPointCode: PropTypes.string,
+    yPointCode: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    down: PropTypes.bool,
+    deviceList: PropTypes.array,
+    pointCodeNameX: PropTypes.string,
+    pointCodeNameY: PropTypes.string,
+    getBigScatterData: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
@@ -21,22 +34,48 @@ class ScatterContainer extends React.PureComponent {
     };
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.stationCode !== this.props.stationCode) {//改变电站清空图片地址
+    const { stationCode, startTime, endTime, xPointCode, yPointCode } = nextProps;
+    const isChangeStationCode = stationCode !== this.props.stationCode;
+    const isChangeStartTime = startTime !== this.props.startTime;
+    const isChangeEndTime = endTime !== this.props.endTime;
+    const isChangeXcode = xPointCode !== this.props.xPointCode;
+    const isChangeYcode = yPointCode !== this.props.yPointCode;
+    if (isChangeStationCode || isChangeStartTime || isChangeEndTime || isChangeXcode || isChangeYcode) {//改变电站清空图片地址
       this.setState({
         newSrcUrl: [],
         srcObj: {},
       });
     }
+    if (this.state.newSrcUrl.length >= nextProps.deviceList.length - 1) {//控制是否可以下载图片
+      this.props.changeToolStore({
+        isClick: true,
+      });
+    } else {
+      this.props.changeToolStore({
+        isClick: false,
+      });
+    }
     if (nextProps.down && this.props.down !== nextProps.down) {
-      const { stations, stationCode, pointCodeNameX, pointCodeNameY } = this.props;
-      const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
-      const { stationName } = stationArr;
-      toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}vs${pointCodeNameY}`);
+      if (this.state.newSrcUrl.length === nextProps.deviceList.length) {
+        const { stations, stationCode, pointCodeNameX, pointCodeNameY, startTime, endTime } = this.props;
+        const sTime = moment(startTime).format('YYYY-MM-DD');
+        const eTime = moment(endTime).format('YYYY-MM-DD');
+        const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
+        const { stationName } = stationArr;
+        toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}vs${pointCodeNameY}-${sTime}_${eTime}`, `${pointCodeNameX}vs${pointCodeNameY}`);
+      } else {
+        message.warning('图片未全部加载完成');
+      }
       this.props.changeToolStore({ down: false });
+
+
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
     if ((nextState.newSrcUrl !== this.state.newSrcUrl) || (nextState.srcObj !== this.state.srcObj)) {
+      return false;
+    }
+    if (JSON.stringify(nextProps.xyValueLimit) !== JSON.stringify(this.props.xyValueLimit)) {
       return false;
     }
     return true;
@@ -86,9 +125,7 @@ class ScatterContainer extends React.PureComponent {
       ...params,
       deviceFullCode,
     });
-
   }
-
   likeChange = (index, bool, scatterData) => {
     const { deviceList, changeToolStore } = this.props;
     deviceList[index].likeStatus = bool;

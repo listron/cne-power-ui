@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Tooltip } from 'antd';
-import searchUtil from '../../../../../utils/searchUtil';
 import DevicesChart from './DevicesChart';
 import DevicesCheckTime from './DevicesCheckTime';
 import DevicesAep from './DevicesAep';

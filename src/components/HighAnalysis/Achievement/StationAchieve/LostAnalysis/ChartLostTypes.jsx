@@ -4,11 +4,13 @@ import { Button } from 'antd';
 import echarts from 'echarts';
 import { getBaseOption } from './chartBaseOption';
 import { dataFormats } from '../../../../../utils/utilFunc';
+import searchUtil from '../../../../../utils/searchUtil';
 import styles from './lost.scss';
 
 class ChartLostTypes extends Component {
 
   static propTypes = {
+    history: PropTypes.object,
     lostTypes: PropTypes.object, // 损失根源 - 指标排名
     lostTypesLoading: PropTypes.bool,
     lostChartDevice: PropTypes.object,
@@ -51,22 +53,36 @@ class ChartLostTypes extends Component {
 
   getBarValue = (lostTypes = {}) => {
     const { theoryGen, actualGen, detailList = [] } = lostTypes;
-    const hideBarData = [0];
+    const hideBarData = [dataFormats(theoryGen, '0')];
     const xAxisLabel = ['应发小时'];
-    const barData = [theoryGen ? dataFormats(theoryGen, '', 1) : 0];
+    const barData = [dataFormats(theoryGen, '0')];
     detailList && detailList.forEach((e, i) => {
-      hideBarData.push(e.value ? detailList[i] - dataFormats(e.value, '', 1) : detailList[i]);
+      barData.push(dataFormats(e.value, '0'));
+      hideBarData.push(hideBarData[i] - dataFormats(e.value, '0'));
       xAxisLabel.push(e.name || '--');
-      barData.push(e.value ? dataFormats(e.value, '', 1) : 0);
     });
     hideBarData.push(0);
+    hideBarData[0] = 0;
     xAxisLabel.push('实发小时');
-    barData.push(actualGen ? dataFormats(actualGen, '', 1) : 0);
-    return { hideBarData, barData, xAxisLabel };
+    barData.push(dataFormats(actualGen, '0'));
+    return {
+      hideBarData,
+      barData: barData.map(val => dataFormats(val, '', 1)),
+      xAxisLabel,
+    };
   }
 
-  toWorkDetail = () => {
-    console.log('去运行数据分析页');
+  toStopPage = () => {
+    const { history } = this.props;
+    const { search } = history.location;
+    const { pages = '', station } = searchUtil(search).parse(); // 新的pages变化
+    const curPages = pages.split('_').filter(e => !!e);
+    const stopExist = curPages.includes('stop');
+    const nextPagesStr = (stopExist ? curPages : curPages.concat('stop')).join('_');
+    const { code, device, date } = JSON.parse(station); // 传入运行数据
+    const stationSearch = JSON.stringify({ code, device: device.join('_'), dates: date });
+    const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({stop: stationSearch}).stringify();
+    this.props.history.push(`/analysis/achievement/analysis/stop?${searchResult}`);
   }
 
   renderChart = (lostTypes = {}) => {

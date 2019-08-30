@@ -132,25 +132,25 @@ class FaultList extends Component {
       title: () => <TableColumnTitle title="总时长" unit="h" style={{ maxWidth: '100%', height: '52px' }} />,
       width: 100,
       dataIndex: 'totalHours',
-      className: 'totalHours',
+      className: 'numberStyle',
       render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: () => <TableColumnTitle title="总损失电量" unit="kWh" style={{ maxWidth: '100%', height: '52px' }} />,
       width: 100,
       dataIndex: 'totalGen',
-      className: 'totalGen',
+      className: 'numberStyle',
       render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: () => <TableColumnTitle title="统计时长" unit="h" style={{ maxWidth: '100%', height: '52px' }} />,
       width: 100,
       dataIndex: 'statisticsHours',
-      className: 'statisticsHours',
+      className: 'numberStyle',
       render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: () => <TableColumnTitle title="统计损失电量" unit="kWh" style={{ maxWidth: '100%', height: '52px' }} />,
       width: 100,
       dataIndex: 'statisticsGen',
-      className: 'statisticsGen',
+      className: 'numberStyle',
       render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: '原因',
@@ -169,7 +169,7 @@ class FaultList extends Component {
     return (
       <div className={styles.faultList}>
         <div className={styles.pagination}>
-          <Button className={styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
+          <Button className={dataList.length === 0 ? styles.disabledExport : styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
