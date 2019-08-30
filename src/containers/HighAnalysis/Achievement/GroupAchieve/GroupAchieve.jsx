@@ -92,7 +92,7 @@ class GroupAchieve extends Component {
     const quotaValue = quota[1] || quota[0];
     const paramsCapacity = {
       ...basicParams,
-      deviceModes: modes,
+      deviceModes: modes.map(cur => (cur.split('-')[1])),
       regionName: stations.map(cur => {return cur.regionName;}),
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
