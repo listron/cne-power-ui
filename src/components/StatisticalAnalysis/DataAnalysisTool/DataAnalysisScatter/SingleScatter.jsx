@@ -260,7 +260,7 @@ class SingleScatter extends React.PureComponent {
         ...parms,
         deviceFullCode: deviceList[index + 1].deviceFullCode,
       });
-    }, 50);
+    }, 0);
 
     scatterChart.setOption(option, true);
 

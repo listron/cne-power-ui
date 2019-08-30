@@ -79,17 +79,24 @@
       line-height: 40px;
       align-items: center;
 
-      .contrastValue {
+
+
+      .contrastValue,
+      .swapContrast {
+        border-radius: 4px;
         margin: 0 24px;
+        background: #ceebe0;
 
         .defaultStyle {
-          width: 140px;
+          // width: 140px;
           background: #ceebe0;
           color: $themeColor;
-          border: none
+          border: none;
+          margin: 0 4px;
         }
 
         .nomalIcon {
+
           color: $themeColor;
         }
 
@@ -98,12 +105,18 @@
         }
 
         .swapStyle {
-          width: 140px;
+          // width: 140px;
           color: #f9b600;
           ;
           background: #fcffe5;
           border: none;
+          margin: 0 4px;
         }
+      }
+
+      .swapContrast {
+        margin: 0 24px;
+        background: #fcffe5;
       }
 
       .seachBtn {

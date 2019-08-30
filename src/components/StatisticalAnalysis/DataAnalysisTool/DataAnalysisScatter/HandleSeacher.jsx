@@ -117,6 +117,7 @@ class HandleSeacher extends React.Component {
         const deviceFullCode = fristDevice.deviceFullCode;
         const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = firstData;
         this.setState({ options: [...option, otherName], scatterNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
+        this.props.changeToolStore({ pointCodeNameX, pointCodeNameY, xPointCode: pointCodeX, yPointCode: pointCodeY, deviceFullCode });
         getxyLimitValue({
           stationCode,
           startTime,
@@ -124,7 +125,6 @@ class HandleSeacher extends React.Component {
           xPointCode: pointCodeX,
           yPointCode: pointCodeY,
         });
-        this.props.changeToolStore({ pointCodeNameX, pointCodeNameY, xPointCode: pointCodeX, yPointCode: pointCodeY });
         this.setState({
           xName: pointCodeNameX,
           yName: pointCodeNameY,
@@ -178,12 +178,9 @@ class HandleSeacher extends React.Component {
   // }
   selectStationCode = (stationCodeArr) => {
     const { stationCode } = stationCodeArr[0];
-    this.props.changeToolStore({
-      stationCode,
-      scatterData: {},
-    });
+
     this.props.getStationDevice({ stationCode });
-    this.props.getScatterName({ stationCode });
+
   }
 
   changeTime = (date, dateString) => {
@@ -355,10 +352,10 @@ class HandleSeacher extends React.Component {
             onChange={this.onChangeContrast}
             style={showOther ? { width: '200px' } : { width: '400px' }}
           />
-          {!showOther && <div className={styles.contrastValue}>
-            <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} >{xName ? xName : '--'}</Button>
-            <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
-            <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} >{yName ? yName : '--'}</Button>
+          {!showOther && <div className={isSwap ? styles.swapContrast : styles.contrastValue} onClick={this.changeSwap}>
+            <span className={isSwap ? styles.swapStyle : styles.defaultStyle} title={xName}>{xName ? xName : '--'}</span>
+            <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} />
+            <span className={isSwap ? styles.swapStyle : styles.defaultStyle} title={yName} >{yName ? yName : '--'}</span>
           </div>}
           {showOther && <div className={styles.contrastValue}>
             <Select
