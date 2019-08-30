@@ -230,30 +230,31 @@ class HandleSeachData extends React.Component {
   //查询图表数据
   getSequenceData = () => {
     //请求数据
-    const { getSequenceData, changeSquenceStore, deviceList, stationCode, getxyLimitValue } = this.props;
+    const { getSequenceData, changeSquenceStore, deviceList, stationCode, getxyLimitValue, pointY1, pointY2, startTime, endTime } = this.props;
     const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
-    getxyLimitValue({
-      stationCode,
-      startTime: saveStartTime,
-      endTime: saveEndTime,
-      xPointCode: xCode,
-      yPointCode: yCode,
+    const fristDevice = deviceList[0];
+    const deviceFullCode = fristDevice.deviceFullCode;
+    if (xCode !== pointY1 || yCode !== pointY2 || saveStartTime !== startTime || saveEndTime !== endTime) {
+      getxyLimitValue({
+        stationCode,
+        startTime: saveStartTime,
+        endTime: saveEndTime,
+        xPointCode: xCode,
+        yPointCode: yCode,
+      });
+    }
 
-    });
     changeSquenceStore({
       sequenceData: {},
       pointCodeNameX: xName,
       pointCodeNameY: yName,
       xyValueLimit,
-      deviceList: [],
+      // deviceList: [],
       activeCode: '',
       startTime: saveStartTime,
       endTime: saveEndTime,
     });
-
-    this.props.getStationDevice({ stationCode });
-    const fristDevice = deviceList[0];
-    const deviceFullCode = fristDevice.deviceFullCode;
+    // this.props.getStationDevice({ stationCode });
     getSequenceData({
       deviceFullCode,
       pointY1: xCode,

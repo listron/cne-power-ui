@@ -75,8 +75,7 @@ class SequenceChart extends React.Component {
     return activeCode === this.props.deviceFullCode || this.props.deviceFullCode !== deviceFullCode;
   }
   componentWillUnmount() {
-    const myChart = eCharts.init(this.sequenceChart, themeConfig[this.props.theme]);
-    myChart.dispose();
+    eCharts.init(this.sequenceChart, themeConfig[this.props.theme]).dispose();
   }
   creatOption = (sequenceData = {}, saveBtn, xyValueLimit) => {
     const { deviceName, pointCodeNameX, pointCodeNameY } = this.props;
