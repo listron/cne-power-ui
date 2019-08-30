@@ -41,9 +41,13 @@ class SequenceChart extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     const { activeCode, saveBtn, sequenceData, deviceList, startTime, endTime, pointY1, pointY2, xyValueLimit } = nextProps;
+    console.log('sequenceData: ', sequenceData);
 
     const requestParams = { startTime, endTime, pointY1, pointY2 };
     const prevCode = this.props.activeCode;
+    console.log('activeCode: ', activeCode);
+    console.log('prevCode: ', prevCode);
+    console.log('this.props.deviceFullCode: ', this.props.deviceFullCode);
 
     if (prevCode === this.props.deviceFullCode) {
       const myChart = eCharts.init(this.sequenceChart, themeConfig[nextProps.theme]);
@@ -75,8 +79,7 @@ class SequenceChart extends React.Component {
     return activeCode === this.props.deviceFullCode || this.props.deviceFullCode !== deviceFullCode;
   }
   componentWillUnmount() {
-    const myChart = eCharts.init(this.sequenceChart, themeConfig[this.props.theme]);
-    myChart.dispose();
+    eCharts.init(this.sequenceChart, themeConfig[this.props.theme]).dispose();
   }
   creatOption = (sequenceData = {}, saveBtn, xyValueLimit) => {
     const { deviceName, pointCodeNameX, pointCodeNameY } = this.props;
