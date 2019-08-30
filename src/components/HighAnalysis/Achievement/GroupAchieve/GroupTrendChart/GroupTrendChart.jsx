@@ -119,6 +119,7 @@ export default class GroupTrendChart extends Component {
       itemStyle: {
         color: '#f9b600',
       },
+      symbolSize: 8,
       data: data && data.map(cur => {
         return dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2);
       }),
@@ -131,6 +132,7 @@ export default class GroupTrendChart extends Component {
       itemStyle: {
         color: '#f9b600',
       },
+      symbolSize: 8,
       data: data && data.map(cur => {
         return dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2);
       }),
@@ -140,6 +142,7 @@ export default class GroupTrendChart extends Component {
       itemStyle: {
         color: '#f5d5bb',
       },
+      symbolSize: 8,
       data: data && data.map(cur => {
         return dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2);
       }),
