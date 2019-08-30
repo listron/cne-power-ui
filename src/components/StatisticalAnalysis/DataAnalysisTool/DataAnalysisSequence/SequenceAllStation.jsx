@@ -19,7 +19,7 @@ class SequenceAllStation extends React.Component {
     const { changeSquenceStore, getStationDevice, getSequenceName } = this.props;
     changeSquenceStore({ stationCode, showPage: 'singleStation' });
     getStationDevice({ stationCode });
-    getSequenceName({ stationCode });
+    // getSequenceName({ stationCode });
   }
   render() {
     const { stations, theme } = this.props;

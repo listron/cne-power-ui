@@ -16,9 +16,8 @@ class DataAnalysisAllStation extends React.Component {
     super(props, context);
   }
   selectStation = (stationCode) => {
-    const { changeToolStore, getScatterName, getStationDevice } = this.props;
+    const { changeToolStore, getStationDevice } = this.props;
     changeToolStore({ stationCode, showPage: 'singleStation' });
-    getScatterName({ stationCode });
     getStationDevice({ stationCode });
 
   }

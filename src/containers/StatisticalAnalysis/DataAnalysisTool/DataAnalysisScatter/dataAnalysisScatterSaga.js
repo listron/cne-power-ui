@@ -8,7 +8,14 @@ function* getStationDevice(action) {//获取
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getStationDevice}/${payload.stationCode}`;
   try {
-    yield put({ type: dataAnalysisScatterAction.changeToolStore });
+    yield put({
+      type: dataAnalysisScatterAction.changeToolStore,
+      payload: {
+        stationCode: payload.stationCode,
+        scatterData: {},
+        deviceList: [],
+      },
+    });
     const response = yield call(axios.get, url);// { params: payload }
     if (response.data.code === '10000') {
       const data = response.data.data || [];
@@ -18,9 +25,15 @@ function* getStationDevice(action) {//获取
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
           deviceList,
-
         },
       });
+      yield put({
+        type: dataAnalysisScatterAction.getScatterName,
+        payload: {
+          stationCode: payload.stationCode,
+        },
+      });
+
     } else {
       throw response.data.message;
     }
@@ -94,7 +107,7 @@ function* getScatterData(action) {//获取
     yield put({
       type: dataAnalysisScatterAction.changeToolStore,
       payload: {
-        ...payload,
+        // ...payload,
         chartLoading: true,
       },
     });
