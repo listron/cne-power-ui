@@ -251,6 +251,8 @@ class HandleSeacher extends React.Component {
         xyValueLimit,
         startTime: saveStartTime,
         endTime: saveEndTime,
+        xPointCode: xCode,
+        yPointCode: yCode,
       });
       getxyLimitValue({
         stationCode,
