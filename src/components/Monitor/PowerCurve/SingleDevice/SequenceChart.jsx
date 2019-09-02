@@ -19,11 +19,13 @@ class SequenceChart extends Component {
   }
   componentWillReceiveProps(nextProps) {
     const theoryPowers = nextProps.sequencechartData || [];
-    this.drawChart(theoryPowers);
+    const { sequenceLoadding } = nextProps;
+    this.drawChart(theoryPowers, sequenceLoadding);
   }
 
-  drawChart = (params) => {
+  drawChart = (params, sequenceLoadding) => {
     const sequenceChart = echarts.init(document.getElementById('sequenceChart'));
+    sequenceLoadding ? sequenceChart.showLoading('default', { color: '#199475' }) : sequenceChart.hideLoading();
     const lineColor = '#666';
     const { xAxisDate } = this.props;
     const color = ['#3e97d1', '#a42b2c', '#199475'];

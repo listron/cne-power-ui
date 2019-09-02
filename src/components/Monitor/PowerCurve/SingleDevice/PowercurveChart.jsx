@@ -23,15 +23,16 @@ class PowercurveChart extends Component {
     super(props, context);
   }
   componentDidMount() {
-    this.drawChart((this.props.singleDeviceCurveData || []));
+    this.drawChart((this.props.singleDeviceCurveData || []), this.props.curveChartLoadding);
   }
 
   componentWillReceiveProps(nextProps) {
     const { curveTime } = this.props;
+    const { curveChartLoadding, correct } = nextProps;
     const theoryPowers = nextProps.singleDeviceCurveData || [];
-    // this.drawChart(theoryPowers)
-    if (curveTime !== nextProps.curveTime) {
-      this.drawChart(theoryPowers);
+    if (this.props.curveChartLoadding !== nextProps.curveChartLoadding) {
+      console.log('2222');
+      this.drawChart(theoryPowers, curveChartLoadding, correct);
     }
   }
 
@@ -54,11 +55,12 @@ class PowercurveChart extends Component {
 
     };
   }
-  drawChart = (params) => {
+  drawChart = (params, curveChartLoadding, correct) => {
+    console.log('curveChartLoadding: ', curveChartLoadding);
     const singlePowerCurveChart = echarts.init(document.getElementById('singlePowerCurveChart'));
     //横坐标
+    curveChartLoadding ? singlePowerCurveChart.showLoading('default', { color: '#199475' }) : singlePowerCurveChart.hideLoading();
 
-    // let xData = (params.length&&params.length > 0) ? params[0].scatterPointData.sort(this.compare('windSpeedAvg')).map(e => (e.windSpeedAvg)) : [];
 
     const ishaveData = [];
     (params && params.length) && params.forEach((e, i) => {
@@ -98,17 +100,17 @@ class PowercurveChart extends Component {
           emphasis: {
             symbolSize: 8,
           },
-          progressive: 0,
+          progressive: 1000,
         },
         { type: 'line', name: `${e.deviceName}实际功率曲线`, data: actual[e.deviceName] },
 
       );
-      test.push({ type: 'line', name: `${e.deviceModelName}理论功率曲线`, data: theory[e.deviceName] });
+      test.push({ type: 'line', name: `${e.deviceModelName}理论功率曲线${correct ? '(标准空气密度)' : '(现场空气密度)'}`, data: theory[e.deviceName] });
       series = [...test1, ...test];
 
     });
     const lineColor = '#666';
-    const color = ['#e08031', '#a42b2c', '#199475', '#f9b600'];
+    const color = ['#e08031', '#f9b600', '#199475', '#a42b2c', '#3E97D1', '#9F98FF', '#50E3C2'];
     const option = {
       graphic: inverterTenMinGraphic,
       color: color,

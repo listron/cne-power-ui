@@ -21,7 +21,9 @@ class PowerSpeedChart extends Component {
   }
   componentWillReceiveProps(nextProps) {
     const theoryPowers = nextProps.chartData || [];
-    this.drawChart(theoryPowers);
+    const { chartId, speedLoadding, pitLoadding } = nextProps;
+    const loadding = nextProps.chartId === 'powerSpeedChart' ? nextProps.speedLoadding : nextProps.pitLoadding;
+    this.drawChart(theoryPowers, loadding);
   }
   getYaxisName = (title) => {
     let result = ' ';
@@ -41,21 +43,22 @@ class PowerSpeedChart extends Component {
     let color = '';
     switch (title) {
       case 'powerSpeedChart':
-        color = ['#199475', '#e08031', '#a42b2c'];
-        // color = ['#e08031', '#a42b2c', '#199475'];
+        // color = ['#199475', '#e08031', '#a42b2c'];
+        color = ['#e08031', '#199475', '#3E97D1'];
         break;
       case 'pitchange':
-        color = ['#3e97d1', '#bd10e0', '#199475'];
-        // color = ['#e08031', '#a42b2c', '#199475'];
+        // color = ['#3e97d1', '#bd10e0', '#199475'];
+        color = ['#e08031', '#199475', '#3E97D1'];
         break;
       default:
         color = ' ';
     }
     return color;
   }
-  drawChart = (params) => {
+  drawChart = (params, loadding) => {
     const { chartId } = this.props;
     const powercurveChart = echarts.init(document.getElementById(chartId));
+    loadding ? powercurveChart.showLoading('default', { color: '#199475' }) : powercurveChart.hideLoading();
     const filterDeviceName = params.map(e => e.deviceName);
     const filterYaxisData = [];
     const filterXaxisData = [];

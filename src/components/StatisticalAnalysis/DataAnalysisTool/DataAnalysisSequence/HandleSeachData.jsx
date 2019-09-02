@@ -125,16 +125,6 @@ class HandleSeachData extends React.Component {
           interval: 60,
         });
         changeSquenceStore({ pointCodeNameX, pointCodeNameY, pointY1: pointCodeX, pointY2: pointCodeY, deviceFullCode });
-
-
-        // getSequenceData({
-        //   deviceFullCode,
-        //   startTime,
-        //   endTime,
-        //   pointY1: pointCodeX,
-        //   pointY2: pointCodeY,
-        //   interval: 60,
-        // });
       }
     }
     if (JSON.stringify(xyValueLimit) !== JSON.stringify(this.props.xyValueLimit)) {
@@ -155,18 +145,7 @@ class HandleSeachData extends React.Component {
     }
     );
   }
-  // getLimitValue = (value) => {
-  //   const { getxyLimitValue, stationCode } = this.props;
-  //   const { xCode, yCode, saveStartTime, saveEndTime } = this.state;
-  //   getxyLimitValue({
-  //     stationCode,
-  //     startTime: saveStartTime,
-  //     endTime: saveEndTime,
-  //     xPointCode: xCode,
-  //     yPointCode: yCode,
-  //     ...value,
-  //   });
-  // }
+
   selectStationCode = (stationCodeArr) => {//电站选择
     const { stationCode } = stationCodeArr[0];
     this.setState({
@@ -182,8 +161,7 @@ class HandleSeachData extends React.Component {
       saveStartTime: dateString[0],
       saveEndTime: dateString[1],
     });
-    // const value = { startTime: dateString[0], endTime: dateString[1] };
-    // this.getLimitValue(value);
+
   }
   //改测点
   onChangeContrast = (value, selectedOptions) => {
@@ -215,7 +193,6 @@ class HandleSeachData extends React.Component {
     }
 
 
-    // this.getLimitValue({ xPointCode: pointCodeX, yPointCode: pointCodeY });
 
   }
   //交换左右y轴
@@ -228,8 +205,6 @@ class HandleSeachData extends React.Component {
       xCode: yCode,
       yCode: xCode,
     });
-    const value = { xPointCode: yCode, yPointCode: xCode };
-    // this.getLimitValue(value);
   }
   //查询图表数据
   getSequenceData = () => {
@@ -269,15 +244,7 @@ class HandleSeachData extends React.Component {
       });
     }
 
-    // this.props.getStationDevice({ stationCode });
-    // getSequenceData({
-    //   deviceFullCode,
-    //   pointY1: xCode,
-    //   pointY2: yCode,
-    //   startTime: saveStartTime,
-    //   endTime: saveEndTime,
-    //   interval: 60,
-    // });
+
   }
   //改变第一个y轴
   changeY1value = (value, option) => {
@@ -286,7 +253,6 @@ class HandleSeachData extends React.Component {
       xCode: value,
       xName: children,
     });
-    // this.getLimitValue({ xPointCode: value });
   }
   //改变第二个y轴
   changeY2value = (value, option) => {
@@ -295,7 +261,6 @@ class HandleSeachData extends React.Component {
       yCode: value,
       yName: children,
     });
-    // this.getLimitValue({ yPointCode: value });
   }
 
   onCalendarChange = (dates, dateStrings) => {
@@ -421,7 +386,7 @@ class HandleSeachData extends React.Component {
             </div>
           </div>}
           <Button className={styles.seachBtn} onClick={this.getSequenceData}>查询</Button>
-          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!this.props.isClick} onClick={this.downPic}>{downLoadding ? <span><Spin />图片下载</span> : '图片下载'}</Button>
+          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!this.props.isClick} onClick={this.downPic}>{downLoadding ? <span><Icon type="loading" style={{ fontSize: 16 }} spin />图片下载</span> : '图片下载'}</Button>
         </div>
       </div>
     );
