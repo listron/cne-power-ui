@@ -192,7 +192,7 @@ class ChartStopRank extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 0 ? '停机时长' : '故障次数'}</span>
+                  <span>${i === 0 ? '停机时长' : '停机次数'}</span>
                   <span>${dataFormats(e.value, '--', 2, true)}</span>
                 </span>`
               )).join('')}

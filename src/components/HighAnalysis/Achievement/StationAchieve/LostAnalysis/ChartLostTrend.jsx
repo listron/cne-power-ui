@@ -218,7 +218,7 @@ class ChartLostTrend extends Component {
       <div className={styles.lostTrend}>
         <div className={styles.top}>
           <span className={styles.title}>
-            {chartName}{selectedQuota.label || '--'}
+            {chartName}{selectedQuota.label || '--'}趋势图
           </span>
           <TimeSelect timeMode={lostChartTimeMode} timeModeChange={this.timeModeChange} />
         </div>

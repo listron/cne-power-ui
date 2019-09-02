@@ -46,6 +46,7 @@ class IndicateCascader extends Component {
       <Cascader
         allowClear={false}
         placeholder="请选择"
+        expandTrigger="hover"
         options={quotaInfo}
         className={styles.indicators}
         onChange={this.onQuotaChange}
