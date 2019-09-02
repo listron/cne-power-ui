@@ -86,7 +86,7 @@ class LimitList extends Component {
       render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '设备名称',
-      width: 110,
+      width: 100,
       dataIndex: 'deviceName',
       className: 'deviceName',
       render: (text) => <div title={text}>{text || '--'}</div>,
