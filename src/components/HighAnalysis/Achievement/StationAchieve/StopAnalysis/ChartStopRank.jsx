@@ -27,6 +27,7 @@ class ChartStopRank extends Component {
   state = {
     sortType: 'deviceName',
     modeArr: [],
+    zoomRange: [0, 100],
   }
 
   componentDidMount(){
@@ -141,11 +142,15 @@ class ChartStopRank extends Component {
     let endTime = searchParam.date[1];
     if (stopChartDevice && selectedDevice.deviceFullcode === stopChartDevice.deviceFullcode) { // 取消选中
       this.props.changeStore({ stopChartDevice: null });
-      this.renderChart(sortedStopRank, sortType, null);
+      this.setState({
+        zoomRange: this.getZoomRange(chart),
+      }, () => this.renderChart(sortedStopRank, sortType, null));
     } else {
       deviceFullcodes = [selectedDevice.deviceFullcode];
       this.props.changeStore({ stopChartDevice: selectedDevice });
-      this.renderChart(sortedStopRank, sortType, selectedDevice);
+      this.setState({
+        zoomRange: this.getZoomRange(chart),
+      }, () => this.renderChart(sortedStopRank, sortType, selectedDevice));
     }
     if (stopChartTime) { // 已有时间选择。
       const recordStart = moment(stopChartTime).startOf(stopChartTimeMode);
@@ -168,7 +173,15 @@ class ChartStopRank extends Component {
     this.props.getStopTypes({ ...param });
   }
 
+  getZoomRange = (chartInstance = {}) => { // 获取实例的zoom起止位置。
+    const { dataZoom = [] } = chartInstance.getOption && chartInstance.getOption() || {};
+    const zoomInfo = dataZoom[0] || {};
+    const { start = 0, end = 100 } = zoomInfo;
+    return [start, end];
+  }
+
   renderChart = (stopRank = [], sortType, stopChartDevice) => {
+    const { zoomRange } = this.state;
     const rankChart = echarts.init(this.rankRef);
     const sortedStopRank = this.sortRank(stopRank, sortType);
     const { dataAxis, series } = this.createSeries(sortedStopRank, stopChartDevice);
@@ -192,7 +205,7 @@ class ChartStopRank extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 0 ? '停机时长' : '故障次数'}</span>
+                  <span>${i === 0 ? '停机时长' : '停机次数'}</span>
                   <span>${dataFormats(e.value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
@@ -202,20 +215,20 @@ class ChartStopRank extends Component {
       },
       series,
     };
-    const endPosition = 30 / stopRank.length >= 1 ? 100 : 3000 / stopRank.length;
+    // const endPosition = 30 / stopRank.length >= 1 ? 100 : 3000 / stopRank.length;
     stopRank.length > 0 && (option.dataZoom = [{
       type: 'slider',
       filterMode: 'empty',
-      start: 0,
-      end: endPosition,
+      start: zoomRange[0],
+      end: zoomRange[1],
       showDetail: false,
       bottom: 15,
       height: 20,
     }, {
       type: 'inside',
       filterMode: 'empty',
-      start: 0,
-      end: endPosition,
+      start: zoomRange[0],
+      end: zoomRange[1],
     }]);
     rankChart.hideLoading();
     rankChart.setOption(option);

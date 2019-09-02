@@ -183,6 +183,8 @@ class DailySearch extends Component {
     });
   }
 
+
+
   onSearch = () => { // 查询
     const { tableType, queryParam, listParam, changeDailyQueryStore, getQuotaList, getFaultList, getLimitList } = this.props;
     const { stationCodes, quotaInfoData, faultIds, keyWord, powerInformation, dateValue } = this.state;
@@ -245,6 +247,9 @@ class DailySearch extends Component {
   }
 
   render(){
+    const disabledDate = (current) => { // 不可选未来日期
+      return current && current > moment().endOf('day');
+    };
     const { stationTypeCount, stationType, stations, tableType, quotaData, faultData } = this.props;
     const { keyWord, powerInformation, quotaInfoData, faultIds, selectStations, dateValue } = this.state;
     const quotaCode = quotaInfoData.map(e => {
@@ -328,7 +333,7 @@ class DailySearch extends Component {
 
             <div className={styles.timeSelect}>
               <span className={styles.text}>时间</span>
-              <RangePicker format="YYYY-MM-DD" onChange={this.timeChange} value={dateValue} />
+              <RangePicker format="YYYY-MM-DD" onChange={this.timeChange} value={dateValue} disabledDate={disabledDate} />
             </div>
 
             <Button className={styles.search} onClick={this.onSearch}>查询</Button>

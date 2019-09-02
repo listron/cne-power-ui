@@ -13,7 +13,7 @@ class StopAnalysis extends Component {
     stationInfoStr: PropTypes.string,
     pageName: PropTypes.string,
     stopChartDevice: PropTypes.object,
-    stopChartTime: PropTypes.object,
+    stopChartTime: PropTypes.string,
     stopChartTypes: PropTypes.object,
     pageQuery: PropTypes.func,
   }
