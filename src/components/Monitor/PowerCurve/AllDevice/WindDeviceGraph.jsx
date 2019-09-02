@@ -218,7 +218,7 @@ class WindDeviceGraph extends Component {
       yAxis: [
         {
           type: 'value',
-          name: '功率(KW)',
+          name: '功率(kW)',
           nameTextStyle: {
             color: lineColor,
           },
