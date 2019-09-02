@@ -149,9 +149,9 @@ class SingleScatter extends React.PureComponent {
         max: xMax,
         name: pointCodeNameX,
         nameTextStyle: {
-          fontSize: 18,
+          fontSize: 14,
           verticalAlign: 'bottom',
-          lineHeight: 40,
+          lineHeight: 30,
           padding: [60, 0, 0, 0],
         },
         nameLocation: 'center',
@@ -189,7 +189,7 @@ class SingleScatter extends React.PureComponent {
           max: yMax,
           nameLocation: 'center',
           nameTextStyle: {
-            fontSize: 18,
+            fontSize: 14,
             padding: [0, 20, 60, 20],
           },
           splitLine: {
