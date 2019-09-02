@@ -75,7 +75,7 @@
 }
 
 .tooltip{
-  width: 160px;
+  min-width: 160px;
   .title{
     display: flex;
     justify-content: space-between;

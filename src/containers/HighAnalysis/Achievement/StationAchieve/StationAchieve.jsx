@@ -57,8 +57,8 @@ class StationAchieve extends Component {
     const {
       stationCodes = [],
       deviceFullcodes = [],
-      startTime = moment().subtract(1, 'year').format('YYYY-MM-DD'),
-      endTime = moment().format('YYYY-MM-DD'),
+      startTime = moment().subtract(1, 'year').subtract(2, 'day').format('YYYY-MM-DD'),
+      endTime = moment().subtract(2, 'day').format('YYYY-MM-DD'),
       indicatorCode,
     } = stationInfoStr ? this.getSearchParam(stationInfoStr) : {};
     this.state = {
@@ -188,8 +188,8 @@ class StationAchieve extends Component {
   stationChange = (searchCode) => this.setState({searchCode})
 
   historyChange = (code, device = [], date = [
-    moment().subtract(1, 'year').format('YYYY-MM-DD'),
-    moment().format('YYYY-MM-DD'),
+    moment().subtract(1, 'year').subtract(2, 'day').format('YYYY-MM-DD'),
+    moment().subtract(2, 'day').format('YYYY-MM-DD'),
   ], quota) => { // 切换路径 => 托管外部进行请求
     const { history } = this.props;
     const { search } = history.location;

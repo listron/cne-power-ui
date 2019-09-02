@@ -124,7 +124,7 @@
 }
 
 .tooltip{
-  width: 206px;
+  min-width: 206px;
   border-radius:2px;
   .title{
     display: flex;

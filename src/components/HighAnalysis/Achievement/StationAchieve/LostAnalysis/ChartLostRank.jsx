@@ -21,6 +21,7 @@ class ChartLostRank extends Component {
     onQuotaChange: PropTypes.func,
     changeStore: PropTypes.func,
     getLostTrend: PropTypes.func,
+    getLostTypes: PropTypes.func,
   }
 
   state= {
@@ -154,7 +155,6 @@ class ChartLostRank extends Component {
       return;
     }
     const selectedInfo = sortedLostRank[dataIndex] || {};
-    const searchParam = JSON.parse(lostStringify) || {};
     let deviceFullcodes;
     if (lostChartDevice && lostChartDevice.deviceFullcode === selectedInfo.deviceFullcode) { // 取消当前选中项.
       deviceFullcodes = searchParam.device;
@@ -164,14 +164,21 @@ class ChartLostRank extends Component {
       this.props.changeStore({ lostChartDevice: selectedInfo });
     }
     this.renderChart(lostRank, sortType);
-    this.props.getLostTrend({
-      stationCodes: [searchParam.code],
+    const searchParam = JSON.parse(lostStringify) || {};
+    const { code, date = [], quota } = searchParam;
+    const [startTime, endTime] = date;
+    const params = {
+      stationCodes: [code],
+      startTime,
+      endTime,
       deviceFullcodes,
-      startTime: searchParam.date[0],
-      endTime: searchParam.date[1],
-      indicatorCode: searchParam.quota,
+    };
+    this.props.getLostTrend({
+      ...params,
+      indicatorCode: quota,
       type: lostChartTimeMode,
     });
+    this.props.getLostTypes({ ...params });
   }
 
   getQuota = (quotaList = [], quotaCode) => {
