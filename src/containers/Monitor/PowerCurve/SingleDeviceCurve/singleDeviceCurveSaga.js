@@ -10,6 +10,7 @@ const { monitor } = Path.APISubPaths;
 
 function* getSingleDeviceCurveData(action) { //功率曲线图表-功率曲线-单风机
   const { payload } = action;
+  const { correct } = payload;
   // const powercurveUrl = `/mock/wind/powercurve/fan/powercurvechart`;
   const powercurveUrl = `${APIBasePath}${monitor.getSingleDeviceCurveData}`;
   const response = yield call(axios.post, powercurveUrl, payload);
@@ -29,8 +30,13 @@ function* getSingleDeviceCurveData(action) { //功率曲线图表-功率曲线-�
       throw response.data;
     }
   } catch (error) {
-    message.error('获取功率曲线图表-功率曲线-单风机失败!');
-    console.log(error);
+    if (correct === 1) {
+      message.error('空气密度校正失败');
+    } else {
+      message.error('获取功率曲线图表-功率曲线-单风机失败!');
+      console.log(error);
+    }
+
   }
 }
 function* getSingleDeviceCurveList(action) { //功率曲线列表-单风机
