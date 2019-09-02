@@ -103,6 +103,14 @@
   }
 }
 
+.quotaList{
+  :global{
+    .ant-table-scroll table{
+      width: 2200px !important;
+    }
+  }
+}
+
 .quotaList,.faultList{
   :global{
     .ant-table-scroll{
@@ -129,6 +137,22 @@
       }
     }
   }
+}
+.limitList{
+  :global{
+    .ant-table{
+      .deviceName{
+        div{
+          width: 100px;
+        }
+      }
+      .startTime,.endTime{
+        div{
+          width: 120px;
+        }
+      }
+    }
+}
 }
 
 // 颜色
