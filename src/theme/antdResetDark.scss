@@ -1037,4 +1037,44 @@
     border-right-color: $select-border !important;
     border-bottom-color: $select-border !important;
   }
+
+  // ======ant-dropdown ========
+  .ant-dropdown {
+    $prefix: ant-dropdown;
+    &-menu {
+      background: #1e246e;
+      border: 1px solid rgba(83, 104, 241, 0.6);
+      box-shadow: 0 0 4px 2px #4d5fe2;
+      &-item,
+      &-submenu-title {
+        color: $fontColor;
+        > a {
+          color: $fontColor;
+        }
+        &-selected,
+        &-selected > a {
+          color: $fontColor-invert;
+          background-color: $themeColor;
+        }
+
+        &:hover {
+          background-color: $themeColor;
+          > a {
+            color: $fontColor-invert;
+          }
+        }
+
+        &-disabled {
+          color: $fontColor-disabled;
+          &:hover {
+            color: $fontColor-disabled;
+            background-color: $button-disabled;
+          }
+        }
+        &-divider {
+          background-color: $themeColor;
+        }
+      }
+    }
+  }
 }
