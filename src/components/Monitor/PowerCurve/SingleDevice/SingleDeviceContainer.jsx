@@ -129,7 +129,7 @@ class SingleDeviceContainer extends Component {
     const { stationCode, stations, downLoadFile } = this.props;
     startTime = moment(startTime).utc().format();
     endTime = moment(endTime).utc().format();
-    let timeZone = moment().utcOffset();
+    const timeZone = moment().utcOffset();
     const stationInfo = stations.filter((e, i) => e.stationCode)[0];
     downLoadFile({ // 
       url,
@@ -139,7 +139,7 @@ class SingleDeviceContainer extends Component {
         deviceFullCode: [deviceFullCode],
         startTime,
         endTime,
-        timeZone: timeZone / 60
+        timeZone: timeZone / 60,
       },
     });
   }
@@ -177,7 +177,7 @@ class SingleDeviceContainer extends Component {
 
             </div>}
             {deviceShowType === 'list' && <div>
-              <Switch onChange={this.onSwitchChange} />空气密度校验
+              <Switch onChange={this.onSwitchChange} />空气密度矫正
            </div>}
           </div>
           <div className={styles.right}>
