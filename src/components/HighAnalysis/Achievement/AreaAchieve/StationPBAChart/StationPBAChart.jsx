@@ -22,6 +22,7 @@ export default class StationPBAChart extends Component {
     colorData: PropTypes.object,
     unitName: PropTypes.string,
     pointLength: PropTypes.number,
+    queryParamsFunc: PropTypes.func,
   };
 
   componentDidUpdate(prevProps) {
@@ -46,7 +47,7 @@ export default class StationPBAChart extends Component {
   }
 
   chartHandle = (params, indicatorRankInfo, myChart) => {
-    const { changeStore, getTrendInfo, getLostGenHour, location: { search }} = this.props;
+    const { changeStore, dataIndex, getTrendInfo, getLostGenHour, location: { search }} = this.props;
     const { name } = params;
     const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
@@ -76,20 +77,34 @@ export default class StationPBAChart extends Component {
     const paramsHour = {
       startTime: groupInfo.dates[0],
       endTime: groupInfo.dates[1],
-      deviceModes: modes,
+      deviceModes: modes.map(cur => (cur.split('-')[1])),
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
       stationCodes,
     };
-    changeStore({
-      dataIndex: params.name,
-      dataName: name,
-      selectStationCode: stationCodes, // 保存单选区域的信息
-    });
-    myChart.setOption(this.drawChart(indicatorRankInfo, name));
-    getTrendInfo(paramsTrend);
-    getLostGenHour(paramsHour);
+    // 判断点击
+    if(params.name && params.name !== dataIndex) {
+      changeStore({
+        dataIndex: params.name,
+        dataName: name,
+        selectStationCode: stationCodes, // 保存单选区域的信息
+      });
+      myChart.setOption(this.drawChart(indicatorRankInfo, name));
+      getTrendInfo(paramsTrend);
+      getLostGenHour(paramsHour);
+    }
+    //判断再次点击
+    if (params.name && params.name === dataIndex) {
+      changeStore({
+        dataIndex: '', // 选中信息
+        selectStationCode: [], // 选中电站信息
+        selectTime: '', // 选中时间
+        dataName: '', // 保存选择区域名称
+      });
+      myChart.setOption(this.drawChart(indicatorRankInfo, ''));
+      this.props.queryParamsFunc(groupInfo);
+    }
   };
 
   drawChart = (data, dataIndex) => {
@@ -188,27 +203,33 @@ export default class StationPBAChart extends Component {
           type: 'value',
           name: `${qutaName}（${unitName}）`,
           min: 0,
-          max: unitName === '%' ? 100 : null,
           splitLine: {
             show: false,
           },
         },
       ],
-      dataZoom: [{
-        start: 0,
-        end: 100,
-        top: '400px',
-        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-        handleSize: '80%',
-        handleStyle: {
-          color: '#fff',
-          shadowBlur: 3,
-          shadowColor: 'rgba(0, 0, 0, 0.6)',
-          shadowOffsetX: 2,
-          shadowOffsetY: 2,
+      dataZoom: [
+        {
+          type: 'inside',
+          start: 0,
+          end: 100,
         },
-        textStyle: false,
-      }],
+        {
+          start: 0,
+          end: 100,
+          top: '400px',
+          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+          handleSize: '80%',
+          handleStyle: {
+            color: '#fff',
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.6)',
+            shadowOffsetX: 2,
+            shadowOffsetY: 2,
+          },
+          textStyle: false,
+        },
+      ],
       series: seriesData,
     };
   };

@@ -88,7 +88,7 @@ export default class GroupLossChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: '小时数（h）',
+          name: '利用小时数（h）',
           splitLine: {
             show: false,
           },
@@ -113,7 +113,7 @@ export default class GroupLossChart extends Component {
           data: [0, ...xAxisBaseValue, 0],
         },
         {
-          name: '小时数',
+          name: '利用小时数',
           type: 'bar',
           barWidth: 10,
           stack: '总量',

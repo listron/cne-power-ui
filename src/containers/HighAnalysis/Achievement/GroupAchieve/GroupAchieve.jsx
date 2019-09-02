@@ -219,11 +219,12 @@ class GroupAchieve extends Component {
         <GroupSearch queryParamsFunc={this.queryParamsFunc} {...this.props} />
         <div className={styles.groupChartBox}>
           <div className={styles.chartTop}>
-            <GroupAreaChart {...this.props} />
+            <GroupAreaChart queryParamsFunc={this.queryParamsFunc} {...this.props} />
             <GroupStationChart
               titleFunc={this.titleFunc()}
               unitName={this.unitName()}
               pointLength={this.pointLength()}
+              queryParamsFunc={this.queryParamsFunc}
               {...this.props} />
           </div>
           <div className={styles.chartBottom}>
