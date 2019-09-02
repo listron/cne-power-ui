@@ -104,7 +104,7 @@ class QuotaList extends Component {
     }];
 
     return (
-      <div className={styles.quotaList}>
+      <div className={otherCol.length > 9 ? styles.listFixed : styles.quotaList}>
         <div className={styles.pagination}>
           <Button className={dataList.length === 0 ? styles.disabledExport : styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
           <CommonPagination
