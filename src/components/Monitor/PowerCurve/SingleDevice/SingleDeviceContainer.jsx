@@ -92,10 +92,10 @@ class SingleDeviceContainer extends Component {
   onSwitchChange = (checked) => {
     const tableFullCode = this.props.match.params.deviceFullCode;
     const { stationCode, deviceFullCode, startTime, endTime, pageNum, pageSize } = this.props;
-    const params = { stationCode, deviceFullCode, startTime, endTime, pageNum, pageSize };
+    const params = { stationCode, deviceFullCode, startTime, endTime };
     this.props.changeSingleDeviceStore({ correct: checked ? 1 : 0 });
 
-    this.props.getSingleDeviceCurveList({ ...params, deviceFullCode: tableFullCode, pageNum, pageSize, correct: checked ? 1 : 0 });
+    this.props.getSingleDeviceCurveList({ ...params, deviceFullCode: tableFullCode, correct: checked ? 1 : 0 });
   }
   onChangeFilter = (value) => {
     const { stationCode, deviceFullCode, startTime, endTime } = this.props;
@@ -110,7 +110,7 @@ class SingleDeviceContainer extends Component {
     this.props.getsequencechart({ ...params, ...value });
     this.props.getpowerspeedchart({ ...params, ...value });
     this.props.getpitchanglespeedchart({ ...params, ...value });
-    this.props.getSingleDeviceCurveList({ ...params, ...value, deviceFullCode: tabledeviceFullCode, pageNum, pageSize, correct });
+    this.props.getSingleDeviceCurveList({ ...params, ...value, deviceFullCode: tabledeviceFullCode, correct });
   }
   selectShowType = (type) => { // 切换图表展示类型 'graph'图 / 'list'表格
     const { changeSingleDeviceStore } = this.props;
