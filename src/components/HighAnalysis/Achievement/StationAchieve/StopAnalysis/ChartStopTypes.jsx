@@ -165,9 +165,9 @@ class ChartStopTypes extends Component {
         { ...getBaseXAxis(dataAxis), gridIndex: 2 },
       ],
       yAxis: [
-        { ...getBaseYAxis('次数(h)'), gridIndex: 0, min: 0 },
+        { ...getBaseYAxis('停机次数(次)'), gridIndex: 0, min: 0 },
         { ...getBaseYAxis('时长(h)'), gridIndex: 1, min: 0 },
-        { ...getBaseYAxis('电量(万kWh)'), gridIndex: 2, min: 0 },
+        { ...getBaseYAxis('损失电量(万kWh)'), gridIndex: 2, min: 0 },
       ],
       axisPointer: {
         link: { xAxisIndex: 'all' },
@@ -222,7 +222,7 @@ class ChartStopTypes extends Component {
       <div className={styles.stopTrend}>
         <div className={styles.top}>
           <span className={styles.title}>
-            {stopDeviceText}{stopTimeText}各类停机次数及时长
+            {stopDeviceText}{stopTimeText}各类停机次数、时长及损失电量
           </span>
           <span className={styles.handle}>
             <span className={styles.eachHandle}>

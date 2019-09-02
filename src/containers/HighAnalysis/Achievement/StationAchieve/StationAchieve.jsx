@@ -216,26 +216,26 @@ class StationAchieve extends Component {
     }
     if (page === 'curve') {
       const { stationCodes, deviceFullcodes, startTime, endTime } = params;
-      const curveStartTime = moment(startTime).format('YYYY-MM');
+      const curveEndTime = moment(endTime).format('YYYY-MM');
       const defaultDeviceCode = deviceFullcodes[0];
       const rangeMonths = this.getAllMonths(startTime, endTime);
       const defaultDeviceName = this.getDeviceName(defaultDeviceCode);
       const monthParam = {
         stationCodes,
-        startTime: curveStartTime,
-        endTime: moment(endTime).format('YYYY-MM'),
+        startTime: moment(startTime).format('YYYY-MM'),
+        endTime: curveEndTime,
         deviceFullcodes: defaultDeviceCode ? [defaultDeviceCode] : [],
       };
       const deviceParam = {
         stationCodes,
         deviceFullcodes,
-        startTime: curveStartTime,
-        endTime: curveStartTime,
+        startTime: curveEndTime,
+        endTime: curveEndTime,
       };
       this.props.resetCurve({
         curveDeviceFullcode: defaultDeviceCode,
         curveDeviceName: defaultDeviceName,
-        curveDevicesTime: curveStartTime, // 邻比分析设备选中时间
+        curveDevicesTime: curveEndTime, // 邻比分析设备选中时间
         curveAllMonths: rangeMonths,
         curveCheckedMonths: rangeMonths,
         curveTopStringify: infoStr,
