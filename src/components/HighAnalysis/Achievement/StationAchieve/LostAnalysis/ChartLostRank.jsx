@@ -27,6 +27,7 @@ class ChartLostRank extends Component {
   state= {
     sortType: 'name',
     modeArr: [],
+    zoomRange: [0, 100],
   }
 
   componentDidMount(){
@@ -163,7 +164,6 @@ class ChartLostRank extends Component {
       deviceFullcodes = [selectedInfo.deviceFullcode];
       this.props.changeStore({ lostChartDevice: selectedInfo });
     }
-    this.renderChart(lostRank, sortType);
     const searchParam = JSON.parse(lostStringify) || {};
     const { code, date = [], quota } = searchParam;
     const [startTime, endTime] = date;
@@ -173,12 +173,22 @@ class ChartLostRank extends Component {
       endTime,
       deviceFullcodes,
     };
+    this.setState({
+      zoomRange: this.getZoomRange(chart),
+    }, () => this.renderChart(lostRank, sortType));
     this.props.getLostTrend({
       ...params,
       indicatorCode: quota,
       type: lostChartTimeMode,
     });
     this.props.getLostTypes({ ...params });
+  }
+
+  getZoomRange = (chartInstance = {}) => { // 获取实例的zoom起止位置。
+    const { dataZoom = [] } = chartInstance.getOption && chartInstance.getOption() || {};
+    const zoomInfo = dataZoom[0] || {};
+    const { start = 0, end = 100 } = zoomInfo;
+    return [start, end];
   }
 
   getQuota = (quotaList = [], quotaCode) => {
@@ -199,6 +209,7 @@ class ChartLostRank extends Component {
 
   renderChart = (lostRank = [], sortType) => {
     const { quotaInfo, lostStringify, lostChartDevice } = this.props;
+    const { zoomRange } = this.state;
     const rankChart = echarts.init(this.rankRef);
     const sortedLostRank = this.sortRank(lostRank, sortType);
     const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
@@ -232,20 +243,19 @@ class ChartLostRank extends Component {
       },
       series,
     };
-    const endPosition = 30 / lostRank.length >= 1 ? 100 : 3000 / lostRank.length;
     lostRank.length > 0 && (option.dataZoom = [{
       type: 'slider',
       filterMode: 'empty',
-      start: 0,
-      end: endPosition,
+      start: zoomRange[0],
+      end: zoomRange[1],
       showDetail: false,
       bottom: 15,
       height: 20,
     }, {
       type: 'inside',
       filterMode: 'empty',
-      start: 0,
-      end: endPosition,
+      start: zoomRange[0],
+      end: zoomRange[1],
     }]);
     rankChart.hideLoading();
     rankChart.clear();

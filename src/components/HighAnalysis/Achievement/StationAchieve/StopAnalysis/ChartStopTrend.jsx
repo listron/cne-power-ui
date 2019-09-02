@@ -24,6 +24,10 @@ class ChartLostTrend extends Component {
     getStopRank: PropTypes.func,
   }
 
+  state = {
+    zoomRange: [0, 100],
+  }
+
   componentDidMount(){
     const { stopTrend, stopChartTime } = this.props;
     stopTrend.length > 0 && this.renderChart(stopTrend, stopChartTime);
@@ -115,10 +119,14 @@ class ChartLostTrend extends Component {
       startTime = moment.max(recordStart, moment(startTime)).format('YYYY-MM-DD');
       endTime = moment.min(recordEnd, moment(endTime)).format('YYYY-MM-DD');
       this.props.changeStore({ stopChartTime: efficiencyDate });
-      this.renderChart(stopTrend, efficiencyDate);
+      this.setState({
+        zoomRange: this.getZoomRange(chart),
+      }, () => this.renderChart(stopTrend, efficiencyDate));
     } else { // 取消选择
       this.props.changeStore({ stopChartTime: null });
-      this.renderChart(stopTrend, null);
+      this.setState({
+        zoomRange: this.getZoomRange(chart),
+      }, () => this.renderChart(stopTrend, null));
     }
     let faultInfo = {};
     if (stopChartTypes) {
@@ -135,7 +143,15 @@ class ChartLostTrend extends Component {
     this.props.getStopTypes({ ...param });
   }
 
+  getZoomRange = (chartInstance = {}) => { // 获取实例的zoom起止位置。
+    const { dataZoom = [] } = chartInstance.getOption && chartInstance.getOption() || {};
+    const zoomInfo = dataZoom[0] || {};
+    const { start = 0, end = 100 } = zoomInfo;
+    return [start, end];
+  }
+
   renderChart = (stopTrend = [], stopChartTime) => {
+    const { zoomRange } = this.state;
     const trendChart = echarts.init(this.trendRef);
     const { dataAxis, series } = this.createSeries(stopTrend, stopChartTime);
     const option = {
@@ -182,10 +198,14 @@ class ChartLostTrend extends Component {
       bottom: 16,
       showDetail: false,
       height: 20,
+      start: zoomRange[0],
+      end: zoomRange[1],
       xAxisIndex: [0, 1],
     }, {
       type: 'inside',
       filterMode: 'empty',
+      start: zoomRange[0],
+      end: zoomRange[1],
       xAxisIndex: [0, 1],
     }]);
     trendChart.hideLoading();
