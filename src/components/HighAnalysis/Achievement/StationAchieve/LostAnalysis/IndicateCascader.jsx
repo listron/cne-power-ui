@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Cascader } from 'antd';
+import styles from './lost.scss';
 
 class IndicateCascader extends Component {
 
@@ -36,6 +37,8 @@ class IndicateCascader extends Component {
     this.props.onChange(codes, fullInfo);
   }
 
+  getCascaderText = (label) => label[label.length - 1]
+
   render() {
     const { quotaInfo, selectedQuota } = this.props;
     const { quotaResult } = this.getQuota( quotaInfo, selectedQuota);
@@ -43,9 +46,10 @@ class IndicateCascader extends Component {
       <Cascader
         allowClear={false}
         placeholder="请选择"
-        style={{width: '150px'}}
         options={quotaInfo}
+        className={styles.indicators}
         onChange={this.onQuotaChange}
+        displayRender={this.getCascaderText}
         value={(quotaInfo.length > 0 && quotaResult.length > 0) ? quotaResult : []}
       />
     );

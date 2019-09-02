@@ -202,7 +202,7 @@ class ChartLostTrend extends Component {
       <div className={styles.stopTrend}>
         <div className={styles.top}>
           <span className={styles.title}>
-            {stopDeviceText}{stopTypeText}停机时长及次数
+            {stopDeviceText}{stopTypeText}停机时长及次数趋势图
           </span>
           <TimeSelect timeMode={stopChartTimeMode} timeModeChange={this.timeModeChange} />
         </div>

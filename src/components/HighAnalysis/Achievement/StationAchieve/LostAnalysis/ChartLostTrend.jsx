@@ -165,6 +165,8 @@ class ChartLostTrend extends Component {
     const { dataAxis, series } = this.createSeries(lostTrend, lostChartTime, unit);
     const baseOption = getBaseOption(dataAxis);
     baseOption.yAxis.name = `${label}${unit ? `(${unit})` : ''}`;
+    baseOption.yAxis.nameTextStyle.padding = [0, -40, 0, 0];
+    baseOption.grid.left = 36;
     const option = {
       ...baseOption,
       tooltip: {

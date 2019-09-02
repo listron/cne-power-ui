@@ -207,6 +207,7 @@ class ChartStopTypes extends Component {
     }, {
       type: 'inside',
       filterMode: 'empty',
+      xAxisIndex: [0, 1, 2],
     }]);
     typesChart.setOption(option);
     typesChart.off('click');

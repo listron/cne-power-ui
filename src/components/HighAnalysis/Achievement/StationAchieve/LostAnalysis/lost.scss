@@ -65,6 +65,14 @@
     margin-right: 10px;
   }
 }
+.indicators{
+  width: 150px;
+  :global{
+    .ant-cascader-picker-label{
+      padding-right: 16px;
+    }
+  }
+}
 
 .tooltip{
   width: 160px;
