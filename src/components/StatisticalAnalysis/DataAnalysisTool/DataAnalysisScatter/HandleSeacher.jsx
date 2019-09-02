@@ -244,6 +244,14 @@ class HandleSeacher extends React.Component {
     const { getScatterData, changeToolStore, stationCode, deviceList, getxyLimitValue, xPointCode, yPointCode, startTime, endTime } = this.props;
     const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
     if (xPointCode !== xCode || yPointCode !== yCode || startTime !== saveStartTime || endTime !== saveEndTime) {
+      changeToolStore({
+        scatterData: {},
+        pointCodeNameX: xName,
+        pointCodeNameY: yName,
+        xyValueLimit,
+        startTime: saveStartTime,
+        endTime: saveEndTime,
+      });
       getxyLimitValue({
         stationCode,
         startTime: saveStartTime,
@@ -264,12 +272,7 @@ class HandleSeacher extends React.Component {
           endTime: saveEndTime,
         });
       }, 100);
-      changeToolStore({
-        scatterData: {},
-        pointCodeNameX: xName,
-        pointCodeNameY: yName,
-        xyValueLimit,
-      });
+
 
     }
 
