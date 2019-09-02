@@ -70,6 +70,7 @@ class StationCascader extends Component {
     return (
       <Cascader
         placeholder={holderText}
+        expandTrigger="hover"
         options={options}
         onChange={this.checkStation}
         value={[value[0], value[1]]}

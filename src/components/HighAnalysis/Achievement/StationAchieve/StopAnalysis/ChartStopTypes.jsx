@@ -26,6 +26,7 @@ class ChartStopTypes extends Component {
 
   state = {
     sortName: 'stopCount',
+    zoomRange: [0, 100],
   }
 
   componentDidMount(){
@@ -131,11 +132,15 @@ class ChartStopTypes extends Component {
     let faultInfo = {};
     if (stopChartTypes && stopChartTypes.faultId === curFaultInfo.faultId) { // 取消选中
       this.props.changeStore({ stopChartTypes: null });
-      this.renderChart(sortedTypes, sortName, null);
+      this.setState({
+        zoomRange: this.getZoomRange(chart),
+      }, () => this.renderChart(sortedTypes, sortName, null));
     } else {
       faultInfo = { faultId: curFaultInfo.faultId };
       this.props.changeStore({ stopChartTypes: curFaultInfo });
-      this.renderChart(sortedTypes, sortName, curFaultInfo);
+      this.setState({
+        zoomRange: this.getZoomRange(chart),
+      }, this.renderChart(sortedTypes, sortName, curFaultInfo));
     }
     const param = {
       stationCodes: [searchParam.code],
@@ -149,7 +154,15 @@ class ChartStopTypes extends Component {
     this.props.getStopTrend({ ...param });
   }
 
+  getZoomRange = (chartInstance = {}) => { // 获取实例的zoom起止位置。
+    const { dataZoom = [] } = chartInstance.getOption && chartInstance.getOption() || {};
+    const zoomInfo = dataZoom[0] || {};
+    const { start = 0, end = 100 } = zoomInfo;
+    return [start, end];
+  }
+
   renderChart = (stopTypes = [], sortName, stopChartTypes) => {
+    const { zoomRange } = this.state;
     const typesChart = echarts.init(this.typesRef);
     const sortedTypes = this.sortChart(stopTypes, sortName);
     const { dataAxis, series } = this.createSeries(sortedTypes, stopChartTypes);
@@ -165,9 +178,9 @@ class ChartStopTypes extends Component {
         { ...getBaseXAxis(dataAxis), gridIndex: 2 },
       ],
       yAxis: [
-        { ...getBaseYAxis('次数(h)'), gridIndex: 0, min: 0 },
+        { ...getBaseYAxis('停机次数(次)'), gridIndex: 0, min: 0 },
         { ...getBaseYAxis('时长(h)'), gridIndex: 1, min: 0 },
-        { ...getBaseYAxis('电量(万kWh)'), gridIndex: 2, min: 0 },
+        { ...getBaseYAxis('损失电量(万kWh)'), gridIndex: 2, min: 0 },
       ],
       axisPointer: {
         link: { xAxisIndex: 'all' },
@@ -203,10 +216,15 @@ class ChartStopTypes extends Component {
       filterMode: 'empty',
       bottom: 16,
       showDetail: false,
+      start: zoomRange[0],
+      end: zoomRange[1],
       height: 20,
     }, {
       type: 'inside',
       filterMode: 'empty',
+      start: zoomRange[0],
+      end: zoomRange[1],
+      xAxisIndex: [0, 1, 2],
     }]);
     typesChart.setOption(option);
     typesChart.off('click');
@@ -222,7 +240,7 @@ class ChartStopTypes extends Component {
       <div className={styles.stopTrend}>
         <div className={styles.top}>
           <span className={styles.title}>
-            {stopDeviceText}{stopTimeText}各类停机次数及时长
+            {stopDeviceText}{stopTimeText}各类停机次数、时长及损失电量
           </span>
           <span className={styles.handle}>
             <span className={styles.eachHandle}>

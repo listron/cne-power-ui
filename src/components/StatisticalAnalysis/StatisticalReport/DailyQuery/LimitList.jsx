@@ -71,24 +71,28 @@ class LimitList extends Component {
       width: 140,
       dataIndex: 'stationName',
       className: 'stationName',
+      fixed: 'left',
       render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '区域',
       width: 80,
       dataIndex: 'regionName',
       className: 'regionName',
+      fixed: 'left',
       render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '设备类型',
       width: 110,
       dataIndex: 'deviceTypeName',
       className: 'deviceTypeName',
+      fixed: 'left',
       render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '设备名称',
       width: 100,
       dataIndex: 'deviceName',
       className: 'deviceName',
+      fixed: 'left',
       render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '限功率',
@@ -157,6 +161,7 @@ class LimitList extends Component {
           dataSource={dataList && dataList.map((e, i) => ({ ...e, key: i }))}
           columns={columns}
           pagination={false}
+          scroll={{x: 'max-content' }}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
