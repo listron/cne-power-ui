@@ -111,7 +111,7 @@
   }
 }
 
-.listFixed,.quotaList,.faultList{
+.listFixed,.quotaList,.faultList,.limitList{
   :global{
     .ant-table-scroll{
       table{
@@ -138,27 +138,11 @@
     }
   }
 }
-.limitList{
-  :global{
-    .ant-table{
-      .deviceName,.deviceTypeName{
-        div{
-          width: 100px;
-        }
-      }
-      .startTime,.endTime{
-        div{
-          width: 120px;
-        }
-      }
-    }
-  }
-}
 
 .limitList{
   :global{
     .ant-table{
-      .stationName,.regionName,.deviceTypeName,.deviceName,.limitPower,.startTime,.endTime,.totalHours,.totalGen,.statisticsHours,.statisticsGen,.reason{
+      .stationName,.regionName,.deviceTypeName,.deviceName,.limitPower,.totalHours,.totalGen,.statisticsHours,.statisticsGen,.reason{
         div{
           width: 100px;
           white-space: nowrap;
@@ -166,6 +150,9 @@
           overflow: hidden;
           word-break: keep-all;
         }
+      }
+      .startTime,.endTime{
+        width: 150px;
       }
     }
   }
