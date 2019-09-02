@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './sequenceStyles.scss';
 import StationSelect from '../../../Common/StationSelect';
-import { Button, DatePicker, Cascader, Icon, Select, InputNumber } from 'antd';
+import { Button, DatePicker, Cascader, Icon, Select, InputNumber, Spin } from 'antd';
 import moment from 'moment';
 
 
@@ -75,6 +75,7 @@ class HandleSeachData extends React.Component {
       saveStartTime: '',
       saveEndTime: '',
       xyValueLimit: {},
+      downLoadding: false,
       disableDateFun: (current) => current > moment(),
     };
   }
@@ -318,10 +319,19 @@ class HandleSeachData extends React.Component {
     this.props.changeSquenceStore({
       down: true,
     });
+    this.setState({
+      downLoadding: true,
+    });
+    setTimeout(() => {
+      this.setState({
+        downLoadding: false,
+      });
+    }, 2000);
+
   }
   render() {
     const { stationCode, stations, sequenceotherNames, theme, startTime, endTime, isClick } = this.props;
-    const { isSwap, options, sequenceNameValue, showOther, xName, yName, xyValueLimit, disableDateFun } = this.state;
+    const { isSwap, options, sequenceNameValue, showOther, xName, yName, xyValueLimit, disableDateFun, downLoadding } = this.state;
     const { yMin, yMax, xMin, xMax } = xyValueLimit;
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
@@ -411,7 +421,7 @@ class HandleSeachData extends React.Component {
             </div>
           </div>}
           <Button className={styles.seachBtn} onClick={this.getSequenceData}>查询</Button>
-          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!this.props.isClick} onClick={this.downPic}>图片下载</Button>
+          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!this.props.isClick} onClick={this.downPic}>{downLoadding ? <span><Spin />图片下载</span> : '图片下载'}</Button>
         </div>
       </div>
     );
