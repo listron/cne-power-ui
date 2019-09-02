@@ -49,9 +49,9 @@ class PowercurveChart extends Component {
         return -1;
       } else if (+val1 > +val2) {
         return 1;
-      } 
-        return 0;
-      
+      }
+      return 0;
+
     };
   }
   drawChart = (params) => {
@@ -87,7 +87,7 @@ class PowercurveChart extends Component {
         actual[e.deviceName].push([item.windSpeedAvg, item.powerAvg, item.windSpeedInterval, e.deviceName], ...item, ...e);
       });
       sorttheoryPowerData.forEach((item, i) => {
-        theory[e.deviceName].push([item.windSpeedCenter, item.powerTheory, item.windSpeedInterval ], ...item);
+        theory[e.deviceName].push([item.windSpeedCenter, item.powerTheory, item.windSpeedInterval], ...item);
       });
       test1.push(
         {
@@ -123,7 +123,7 @@ class PowercurveChart extends Component {
       },
       legend: {
         show: true,
-        left: '10%',
+        left: '20%',
         top: 'bottom',
         width: '80%',
         // bottom: '75%',
@@ -136,8 +136,8 @@ class PowercurveChart extends Component {
       },
       grid: {
         right: '10%',
-        top: '70px',
-        bottom: '60px',
+        top: 70,
+        bottom: '20%',
       },
       tooltip: {
         trigger: 'item',
@@ -183,7 +183,7 @@ class PowercurveChart extends Component {
             backgroundColor: lineColor,
           },
         },
-       
+
         padding: 10,
         textStyle: {
           color: 'rgba(0, 0, 0, 0.65)',
@@ -226,13 +226,17 @@ class PowercurveChart extends Component {
       },
       yAxis: [
         {
-          name: '功率(KW)',
+          name: '功率(kW)',
+          nameLocation: 'end',
           nameTextStyle: {
             color: lineColor,
+            align: 'left',
+            padding: [0, 0, 0, -50],
           },
 
           axisLine: {
             lineStyle: {
+
               color: '#dfdfdf',
             },
           },
@@ -264,7 +268,7 @@ class PowercurveChart extends Component {
       <div className={styles.graphStyle}>
         <div id="singlePowerCurveChart" className={styles.singlePowerCurveChart}>
         </div>
-        <div className={styles.switchStyle}> <Switch onChange={this.onChange} />  空气密度校正</div>
+        <div className={styles.switchStyle}> <Switch onChange={this.onChange} />  空气密度矫正</div>
       </div>
     );
   }

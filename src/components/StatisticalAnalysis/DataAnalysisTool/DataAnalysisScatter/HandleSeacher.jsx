@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import StationSelect from '../../../Common/StationSelect';
-import { Button, DatePicker, Cascader, Icon, Select } from 'antd';
+import { Button, DatePicker, Cascader, Icon, Select, Spin } from 'antd';
 import moment from 'moment';
 
 const { RangePicker } = DatePicker;
@@ -85,6 +85,7 @@ class HandleSeacher extends React.Component {
       saveStartTime: '',
       saveEndTime: '',
       xyValueLimit: {},
+      downLoading: false,
       disableDateFun: (current) => current > moment(),
 
 
@@ -243,6 +244,16 @@ class HandleSeacher extends React.Component {
     const { getScatterData, changeToolStore, stationCode, deviceList, getxyLimitValue, xPointCode, yPointCode, startTime, endTime } = this.props;
     const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
     if (xPointCode !== xCode || yPointCode !== yCode || startTime !== saveStartTime || endTime !== saveEndTime) {
+      changeToolStore({
+        scatterData: {},
+        pointCodeNameX: xName,
+        pointCodeNameY: yName,
+        xyValueLimit,
+        startTime: saveStartTime,
+        endTime: saveEndTime,
+        xPointCode: xCode,
+        yPointCode: yCode,
+      });
       getxyLimitValue({
         stationCode,
         startTime: saveStartTime,
@@ -263,12 +274,7 @@ class HandleSeacher extends React.Component {
           endTime: saveEndTime,
         });
       }, 100);
-      changeToolStore({
-        scatterData: {},
-        pointCodeNameX: xName,
-        pointCodeNameY: yName,
-        xyValueLimit,
-      });
+
 
     }
 
@@ -316,11 +322,19 @@ class HandleSeacher extends React.Component {
     this.props.changeToolStore({
       down: true,
     });
+    this.setState({
+      downLoading: true,
+    });
+    setTimeout(() => {
+      this.setState({
+        downLoading: false,
+      });
+    }, 2000);
   }
   render() {
     const { stationCode, stations, scatterotherNames, theme, startTime, endTime, isClick } = this.props;
 
-    const { isSwap, options, scatterNameValue, showOther, xName, yName, xyValueLimit, disableDateFun } = this.state;
+    const { isSwap, options, scatterNameValue, showOther, xName, yName, xyValueLimit, disableDateFun, downLoading } = this.state;
     const { yMin, yMax, xMin, xMax } = xyValueLimit;
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
@@ -383,7 +397,7 @@ class HandleSeacher extends React.Component {
             </Select>
           </div>}
           <Button className={styles.seachBtn} onClick={this.getScatterData}>查询</Button>
-          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!isClick} onClick={this.downPic}>图片下载</Button>
+          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!isClick} onClick={this.downPic}>{downLoading ? <span> <Spin />图片下载</span> : '图片下载'}</Button>
 
         </div>
       </div>
