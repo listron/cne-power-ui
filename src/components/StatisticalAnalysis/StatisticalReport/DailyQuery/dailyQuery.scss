@@ -106,7 +106,7 @@
 .listFixed{
   :global{
     .ant-table-scroll table{
-      width: 2200px !important;
+      width: 2400px !important;
     }
   }
 }
@@ -134,6 +134,9 @@
           overflow: hidden;
           word-break: keep-all;
         }
+      }
+      td{
+        padding: 0 16px;
       }
     }
   }
