@@ -179,7 +179,7 @@ class HandleSeacher extends React.Component {
   selectStationCode = (stationCodeArr) => {
     const { stationCode } = stationCodeArr[0];
 
-    this.props.getStationDevice({ stationCode });
+    this.props.getStationDevice({ stationCode, queryName: true });
 
   }
 
@@ -239,35 +239,39 @@ class HandleSeacher extends React.Component {
   }
   getScatterData = () => {//查询数据
     //请求数据
-    const { getScatterData, changeToolStore, stationCode, deviceList, getxyLimitValue } = this.props;
+
+    const { getScatterData, changeToolStore, stationCode, deviceList, getxyLimitValue, xPointCode, yPointCode, startTime, endTime } = this.props;
     const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
-    changeToolStore({
-      scatterData: {},
-      pointCodeNameX: xName,
-      pointCodeNameY: yName,
-      xyValueLimit,
-      deviceList: [],
-    });
-    getxyLimitValue({
-      stationCode,
-      startTime: saveStartTime,
-      endTime: saveEndTime,
-      xPointCode: xCode,
-      yPointCode: yCode,
-    });
-    this.props.getStationDevice({ stationCode });
-    setTimeout(() => {
-      const fristDevice = deviceList[0];
-      const deviceFullCode = fristDevice.deviceFullCode;
-      getScatterData({
+    if (xPointCode !== xCode || yPointCode !== yCode || startTime !== saveStartTime || endTime !== saveEndTime) {
+      getxyLimitValue({
         stationCode,
-        deviceFullCode,
-        xPointCode: xCode,
-        yPointCode: yCode,
         startTime: saveStartTime,
         endTime: saveEndTime,
+        xPointCode: xCode,
+        yPointCode: yCode,
       });
-    }, 100);
+      this.props.getStationDevice({ stationCode, queryName: false });
+      setTimeout(() => {
+        const fristDevice = deviceList[0];
+        const deviceFullCode = fristDevice.deviceFullCode;
+        getScatterData({
+          stationCode,
+          deviceFullCode,
+          xPointCode: xCode,
+          yPointCode: yCode,
+          startTime: saveStartTime,
+          endTime: saveEndTime,
+        });
+      }, 100);
+      changeToolStore({
+        scatterData: {},
+        pointCodeNameX: xName,
+        pointCodeNameY: yName,
+        xyValueLimit,
+      });
+
+    }
+
 
 
   }
@@ -357,7 +361,7 @@ class HandleSeacher extends React.Component {
             <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} />
             <span className={isSwap ? styles.swapStyle : styles.defaultStyle} title={yName} >{yName ? yName : '--'}</span>
           </div>}
-          {showOther && <div className={styles.contrastValue}>
+          {showOther && <div className={styles.contrastValue2}>
             <Select
               style={{ width: 160 }}
               onChange={this.changeXvalue}
