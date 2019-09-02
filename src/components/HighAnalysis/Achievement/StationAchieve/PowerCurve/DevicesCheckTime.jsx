@@ -1,48 +1,52 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import { DatePicker } from 'antd';
+import { Select } from 'antd';
 import styles from './curve.scss';
-const { MonthPicker } = DatePicker;
+const { Option } = Select;
 
 class DevicesCheckTime extends Component {
 
   static propTypes = {
     curveTopStringify: PropTypes.string,
     curveDevicesTime: PropTypes.string,
+    curveAllMonths: PropTypes.array,
     getCurveDevices: PropTypes.func,
     getCurveDevicesAep: PropTypes.func,
     getCurveDevicesPsd: PropTypes.func,
     changeStore: PropTypes.func,
   }
 
-  checkMonth = (momentValue, stringValue) => {
+  selectMonth = (curveDevicesTime) => {
     const { curveTopStringify } = this.props;
     const searchParam = JSON.parse(curveTopStringify) || {};
     const param = {
       stationCodes: [searchParam.code],
-      startTime: stringValue,
-      endTime: stringValue,
+      startTime: curveDevicesTime,
+      endTime: curveDevicesTime,
       deviceFullcodes: searchParam.device,
     };
-    this.props.changeStore({ curveDevicesTime: stringValue });
+    this.props.changeStore({ curveDevicesTime });
     this.props.getCurveDevices(param);
     this.props.getCurveDevicesAep(param);
     this.props.getCurveDevicesPsd(param);
   }
 
   render() {
-    const { curveDevicesTime } = this.props;
+    const { curveDevicesTime, curveAllMonths } = this.props;
     return (
       <section className={styles.timeSelector}>
         <h3 className={styles.timeTitle}>切换月份</h3>
-        <MonthPicker
-          value={curveDevicesTime && moment(curveDevicesTime)}
-          onChange={this.checkMonth}
-          placeholder="请选择月份"
+        <Select
           allowClear={false}
+          onChange={this.selectMonth}
+          placeholder="请选择月份"
           style={{width: '120px'}}
-        />
+          value={curveDevicesTime}
+        >
+          {curveAllMonths.map(e => (
+            <Option key={e}>{e}</Option>
+          ))}
+        </Select>
       </section>
     );
   }
