@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Table } from 'antd';
+import { Button, Table, Icon } from 'antd';
 import path from '../../../../constants/path';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
@@ -20,6 +20,13 @@ class LimitList extends Component {
     getLimitList: PropTypes.func,
     downLoadFile: PropTypes.func,
     powerInformation: PropTypes.string,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      exportLoading: false,
+    };
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器
@@ -47,6 +54,16 @@ class LimitList extends Component {
     const { startDate, endDate, stationCodes } = queryParam;
     const { pageNum, pageSize } = listParam;
 
+    this.setState({
+      exportLoading: true,
+    });
+
+    setTimeout(() => {
+      this.setState({
+        exportLoading: false,
+      });
+    }, 1000);
+
     downLoadFile({
       url,
       fileName: '限电列表',
@@ -62,6 +79,7 @@ class LimitList extends Component {
   }
 
   render(){
+    const { exportLoading } = this.state;
     const { listParam, limitListData, tableLoading } = this.props;
     const { pageNum, pageSize } = listParam;
     const { total, dataList = [] } = limitListData;
@@ -147,7 +165,7 @@ class LimitList extends Component {
     return (
       <div className={styles.limitList}>
         <div className={styles.pagination}>
-          <Button className={dataList.length === 0 ? styles.disabledExport : styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
+          <Button className={dataList.length === 0 ? styles.disabledExport : styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>{exportLoading && <Icon type="loading" style={{ fontSize: 16 }} spin />}导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
