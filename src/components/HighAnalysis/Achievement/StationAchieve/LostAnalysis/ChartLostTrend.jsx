@@ -23,6 +23,10 @@ class ChartLostTrend extends Component {
     getLostTypes: PropTypes.func,
   }
 
+  state= {
+    zoomRange: [0, 100],
+  }
+
   componentDidMount(){
     const { lostTrend } = this.props;
     lostTrend.length > 0 && this.renderChart(lostTrend);
@@ -110,6 +114,13 @@ class ChartLostTrend extends Component {
     return selectedQuota;
   }
 
+  getZoomRange = (chartInstance = {}) => { // 获取实例的zoom起止位置。
+    const { dataZoom = [] } = chartInstance.getOption && chartInstance.getOption() || {};
+    const zoomInfo = dataZoom[0] || {};
+    const { start = 0, end = 100 } = zoomInfo;
+    return [start, end];
+  }
+
   timeModeChange = (lostChartTimeMode) => {
     const { changeStore, getLostTrend, lostStringify } = this.props;
     // 携带参数重新请求信息
@@ -147,7 +158,9 @@ class ChartLostTrend extends Component {
       startTime = moment.max(clickStart, moment(date[0])).format('YYYY-MM-DD');
       endTime = moment.min(clickEnd, moment(date[1])).format('YYYY-MM-DD');
     }
-    this.renderChart(lostTrend);
+    this.setState({
+      zoomRange: this.getZoomRange(chart),
+    }, () => this.renderChart(lostTrend));
     this.props.getLostTypes({
       startTime,
       endTime,
@@ -157,6 +170,7 @@ class ChartLostTrend extends Component {
   }
 
   renderChart = (lostTrend = []) => {
+    const { zoomRange } = this.state;
     const { lostChartTime, lostStringify, quotaInfo } = this.props;
     const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
     const selectedQuota = this.getQuota(quotaInfo, quota);
@@ -165,6 +179,8 @@ class ChartLostTrend extends Component {
     const { dataAxis, series } = this.createSeries(lostTrend, lostChartTime, unit);
     const baseOption = getBaseOption(dataAxis);
     baseOption.yAxis.name = `${label}${unit ? `(${unit})` : ''}`;
+    baseOption.yAxis.nameTextStyle.padding = [0, -40, 0, 0];
+    baseOption.grid.left = 36;
     const option = {
       ...baseOption,
       tooltip: {
@@ -195,10 +211,14 @@ class ChartLostTrend extends Component {
     lostTrend.length > 0 && (option.dataZoom = [{
       type: 'slider',
       filterMode: 'empty',
+      start: zoomRange[0],
+      end: zoomRange[1],
       bottom: 16,
       height: 20,
     }, {
       type: 'inside',
+      start: zoomRange[0],
+      end: zoomRange[1],
       filterMode: 'empty',
     }]);
     trendChart.clear();
@@ -216,7 +236,7 @@ class ChartLostTrend extends Component {
       <div className={styles.lostTrend}>
         <div className={styles.top}>
           <span className={styles.title}>
-            {chartName}{selectedQuota.label || '--'}
+            {chartName}{selectedQuota.label || '--'}趋势图
           </span>
           <TimeSelect timeMode={lostChartTimeMode} timeModeChange={this.timeModeChange} />
         </div>

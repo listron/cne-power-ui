@@ -57,8 +57,8 @@ class StationAchieve extends Component {
     const {
       stationCodes = [],
       deviceFullcodes = [],
-      startTime = moment().subtract(1, 'year').format('YYYY-MM-DD'),
-      endTime = moment().format('YYYY-MM-DD'),
+      startTime = moment().subtract(1, 'year').subtract(2, 'day').format('YYYY-MM-DD'),
+      endTime = moment().subtract(2, 'day').format('YYYY-MM-DD'),
       indicatorCode,
     } = stationInfoStr ? this.getSearchParam(stationInfoStr) : {};
     this.state = {
@@ -188,8 +188,8 @@ class StationAchieve extends Component {
   stationChange = (searchCode) => this.setState({searchCode})
 
   historyChange = (code, device = [], date = [
-    moment().subtract(1, 'year').format('YYYY-MM-DD'),
-    moment().format('YYYY-MM-DD'),
+    moment().subtract(1, 'year').subtract(2, 'day').format('YYYY-MM-DD'),
+    moment().subtract(2, 'day').format('YYYY-MM-DD'),
   ], quota) => { // 切换路径 => 托管外部进行请求
     const { history } = this.props;
     const { search } = history.location;
@@ -216,26 +216,26 @@ class StationAchieve extends Component {
     }
     if (page === 'curve') {
       const { stationCodes, deviceFullcodes, startTime, endTime } = params;
-      const curveStartTime = moment(startTime).format('YYYY-MM');
+      const curveEndTime = moment(endTime).format('YYYY-MM');
       const defaultDeviceCode = deviceFullcodes[0];
       const rangeMonths = this.getAllMonths(startTime, endTime);
       const defaultDeviceName = this.getDeviceName(defaultDeviceCode);
       const monthParam = {
         stationCodes,
-        startTime: curveStartTime,
-        endTime: moment(endTime).format('YYYY-MM'),
+        startTime: moment(startTime).format('YYYY-MM'),
+        endTime: curveEndTime,
         deviceFullcodes: defaultDeviceCode ? [defaultDeviceCode] : [],
       };
       const deviceParam = {
         stationCodes,
         deviceFullcodes,
-        startTime: curveStartTime,
-        endTime: curveStartTime,
+        startTime: curveEndTime,
+        endTime: curveEndTime,
       };
       this.props.resetCurve({
         curveDeviceFullcode: defaultDeviceCode,
         curveDeviceName: defaultDeviceName,
-        curveDevicesTime: curveStartTime, // 邻比分析设备选中时间
+        curveDevicesTime: curveEndTime, // 邻比分析设备选中时间
         curveAllMonths: rangeMonths,
         curveCheckedMonths: rangeMonths,
         curveTopStringify: infoStr,
