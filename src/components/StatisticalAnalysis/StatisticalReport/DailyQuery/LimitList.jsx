@@ -157,6 +157,7 @@ class LimitList extends Component {
           dataSource={dataList && dataList.map((e, i) => ({ ...e, key: i }))}
           columns={columns}
           pagination={false}
+          scroll={{x: 'max-content' }}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
