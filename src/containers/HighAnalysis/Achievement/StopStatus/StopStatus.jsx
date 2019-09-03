@@ -111,8 +111,8 @@ class StopStatus extends Component {
     this.historyChange(
       stationCode,
       deviceCodes.join('_'),
-      moment().subtract(1, 'year').format('YYYY-MM-DD'),
-      moment().format('YYYY-MM-DD'),
+      moment().subtract(1, 'year').subtract(2, 'day').format('YYYY-MM-DD'),
+      moment().subtract(2, 'day').format('YYYY-MM-DD'),
     );
   }
 
