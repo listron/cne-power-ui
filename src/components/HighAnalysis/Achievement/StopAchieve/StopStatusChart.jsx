@@ -64,7 +64,7 @@ class StopStatusChart extends Component {
   renderChart = (lists) => {
     const statusChart = echarts.init(this.statusRef);
     const yAxisLabels = [], statusResult = [], fualtNameSet = new Set();
-    lists.forEach((e, index) => {
+    lists.sort((b = {}, a = {}) => a.deviceName && a.deviceName.localeCompare(b.deviceName)).forEach((e, index) => { // 设备名排序
       const { deviceName, faultInfos = [] } = e || {};
       yAxisLabels.push(deviceName);
       faultInfos.forEach(m => {
@@ -123,7 +123,9 @@ class StopStatusChart extends Component {
               ${['开始时间', '结束时间', '停机类型', '停机原因'].map((e, index) => (`
               <span class=${styles.eachItem}>
                 <span class=${styles.itemName}>${e}</span>
-                <span class=${styles.itemValue}>${value[index + 1]}</span>
+                <span class=${styles.itemValue}>${
+                  index <= 1 ? moment(value[index + 1]).format('YYYY-MM-DD HH:mm:ss') : value[index + 1]
+                }</span>
               </span>
               `)).join('')}
             </div>
