@@ -18,16 +18,9 @@ class QuotaList extends Component {
     changeDailyQueryStore: PropTypes.func,
     getQuotaList: PropTypes.func,
     tableLoading: PropTypes.bool,
-    loading: PropTypes.bool,
+    exportLoading: PropTypes.bool,
     quotaInfoData: PropTypes.array,
     downLoadFile: PropTypes.func,
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      exportLoading: false,
-    };
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器
@@ -62,19 +55,10 @@ class QuotaList extends Component {
       return e.value;
     });
 
-    this.setState({
-      exportLoading: true,
-    });
-
-    setTimeout(() => {
-      this.setState({
-        exportLoading: false,
-      });
-    }, 1000);
-
     downLoadFile({
       url,
       fileName: '指标列表',
+      loadingName: 'exportLoading',
       params: {
         pageNum,
         pageSize,
@@ -87,8 +71,7 @@ class QuotaList extends Component {
   }
 
   render(){
-    const { exportLoading } = this.state;
-    const { listParam, quotaListData, tableLoading, quotaInfoData } = this.props;
+    const { listParam, quotaListData, tableLoading, quotaInfoData, exportLoading } = this.props;
     const { pageNum, pageSize } = listParam;
     const { total = 0, dataList = [] } = quotaListData;
 
@@ -125,7 +108,12 @@ class QuotaList extends Component {
     return (
       <div className={otherCol.length > 9 ? styles.listFixed : styles.quotaList}>
         <div className={styles.pagination}>
-          <Button className={dataList.length === 0 ? styles.disabledExport : styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>{exportLoading && <Icon type="loading" style={{ fontSize: 16 }} spin />}导出</Button>
+          <Button
+          className={dataList.length === 0 ? styles.disabledExport : styles.listExport}
+          onClick={this.onExport}
+          loading={exportLoading}
+          disabled={dataList.length === 0}
+          >导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
