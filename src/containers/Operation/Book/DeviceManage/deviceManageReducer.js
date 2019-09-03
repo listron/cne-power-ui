@@ -45,6 +45,7 @@ const initState = Immutable.fromJS({
     isOperator: 1,
     dataList: [],
   },
+  allMode: [],
   factorsDeviceModeData: [], //设备厂家下的型号
   addmanufactorId: '', //新增设备厂家的Id
   partInfoData: [], //部件信息table
