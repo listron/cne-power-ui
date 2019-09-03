@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import styles from "./deviceManage.scss";
-import StationSelect from "../../../Common/StationSelect";
-import { Select } from "antd";
+import React, { Component } from 'react';
+import styles from './deviceManage.scss';
+import StationSelect from '../../../Common/StationSelect';
+import { Select } from 'antd';
 const { Option } = Select;
 
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 class DeviceManageSearch extends Component {
   static propTypes = {
@@ -26,7 +26,7 @@ class DeviceManageSearch extends Component {
     manufactorId: PropTypes.string,
     deviceFactorsData: PropTypes.object,
     stationDevices: PropTypes.array,
-    factorsDeviceModeData: PropTypes.array
+    factorsDeviceModeData: PropTypes.array,
   };
   constructor(props) {
     super(props);
@@ -37,10 +37,10 @@ class DeviceManageSearch extends Component {
       getStationDeviceTypes,
       getDeviceList,
       queryParams,
-      changeDeviceManageStore
+      changeDeviceManageStore,
     } = this.props;
     getStationDeviceTypes({
-      stationCodes: stations[0].stationCode
+      stationCodes: stations[0].stationCode,
     });
 
     getDeviceList({
@@ -49,11 +49,11 @@ class DeviceManageSearch extends Component {
       deviceTypeCode: null,
       deviceModeCode: null,
       manufactorId: null,
-      pageNum: 1
+      pageNum: 1,
     });
     changeDeviceManageStore({
       factorsDeviceModeData: [],
-      deviceFactorsList: []
+      deviceFactorsList: [],
     });
   };
   selectDeviceType = value => {
@@ -61,12 +61,12 @@ class DeviceManageSearch extends Component {
       getDeviceModel,
       getDeviceList,
       queryParams,
-      changeDeviceManageStore
+      changeDeviceManageStore,
     } = this.props;
     this.props.getDeviceFactors({
       deviceTypeCode: value,
-      orderField: "1",
-      orderMethod: "desc"
+      orderField: '1',
+      orderMethod: 'desc',
     });
     // getDeviceModel({
     //   stationCode,
@@ -77,23 +77,23 @@ class DeviceManageSearch extends Component {
       deviceTypeCode: value,
       manufactorId: null,
       deviceModeCode: null,
-      pageNum: 1
+      pageNum: 1,
     });
     changeDeviceManageStore({
-      factorsDeviceModeData: []
+      factorsDeviceModeData: [],
     });
   };
   selectfactory = value => {
     const { getDeviceList, queryParams, getfactorsDeviceMode } = this.props;
     getfactorsDeviceMode({
       manufactorId: value,
-      assetsId: ""
+      assetsId: '',
     });
     getDeviceList({
       ...queryParams,
       manufactorId: value,
       deviceModeCode: null,
-      pageNum: 1
+      pageNum: 1,
     });
   };
   selectDeviceModel = value => {
@@ -101,7 +101,7 @@ class DeviceManageSearch extends Component {
     getDeviceList({
       ...queryParams,
       deviceModeCode: value,
-      pageNum: 1
+      pageNum: 1,
     });
   };
 
@@ -113,13 +113,12 @@ class DeviceManageSearch extends Component {
       deviceTypeCode,
       deviceModeCode,
       stationCode,
-      deviceFactorsData: {
-        dataList,
-      },
+      deviceFactorsData,
       manufactorId,
       factorsDeviceModeData,
 
     } = this.props;
+    const dataList = deviceFactorsData.dataList ? deviceFactorsData.dataList : [];
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = factorsDeviceModeData.length === 0;
     return (
@@ -139,7 +138,7 @@ class DeviceManageSearch extends Component {
           disabled={typeSelectDisable}
         >
           <Option key={null} value={null}>
-            {"全部设备类型"}
+            {'全部设备类型'}
           </Option>
           {stationDeviceTypes.map(e => {
 
@@ -158,10 +157,10 @@ class DeviceManageSearch extends Component {
           onChange={this.selectfactory}
           value={manufactorId}
           placeholder="请选择设备厂家"
-          disabled={dataList.length === 0}
+          disabled={!dataList || dataList.length === 0}
         >
           <Option key={null} value={null}>
-            {"全部厂家"}
+            {'全部厂家'}
           </Option>
           {dataList.map(e => {
             if (!e) {
@@ -182,7 +181,7 @@ class DeviceManageSearch extends Component {
           disabled={modelSelectDisable}
         >
           <Option key={null} value={null}>
-            {"全部设备型号"}
+            {'全部设备型号'}
           </Option>
           {factorsDeviceModeData.map(e => {
             if (!e) {

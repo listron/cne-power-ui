@@ -211,14 +211,13 @@ class AddDeviceForm extends Component {
       connectDevice,
       addDeviceTypeData,
       addDeviceModeData,
-      deviceFactorsData: {
-        dataList,
-        isOperator,
-      },
+      deviceFactorsData,
       factorsDeviceModeData,
       addmanufactorId,
       addmodeId,
     } = this.props;
+    const dataList = deviceFactorsData.dataList ? deviceFactorsData.dataList : [];
+    const { isOperator } = deviceFactorsData;
 
     const stationName = selectStation ? selectStation[0].stationName : '';
     const deviceTypeName = getFieldValue('deviceTypeCode');
