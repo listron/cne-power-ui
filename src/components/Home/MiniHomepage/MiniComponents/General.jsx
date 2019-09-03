@@ -3,7 +3,7 @@ import StationTypeTag from './StationTypeTag';
 import styles from './miniComponents.scss';
 import PropTypes from 'prop-types';
 
-class General extends Component {
+class General extends Component{
   static propTypes = {
     realTimeInfo: PropTypes.object,
     hasMultipleType: PropTypes.bool,
@@ -15,12 +15,12 @@ class General extends Component {
   }
 
   generalArr = [
-    { value: 'stationCapacity', name: '装机容量', unit: 'MW' },
-    { value: 'dayPower', name: '今日发电量', unit: '万kWh' },
-    { value: 'stationCount', name: '电站数', unit: '个' },
-    { value: 'monthPower', name: '月累计发电量', unit: '万kWh' },
-    { value: 'stationUnitCount', name: '装机台数', unit: '台' },
-    { value: 'yearPower', name: '年累计发电量', unit: '万kWh' },
+    {value: 'stationCapacity', name: '装机容量', unit: 'MW'},
+    {value: 'dayPower', name: '今日发电量', unit: '万kWh'},
+    {value: 'stationCount', name: '电站数', unit: '个'},
+    {value: 'monthPower', name: '月累计发电量', unit: '万kWh'},
+    {value: 'stationUnitCount', name: '装机台数', unit: '台'},
+    {value: 'yearPower', name: '年累计发电量', unit: '万kWh'},
   ];
 
   changeGeneralType = (generalType) => {
@@ -28,38 +28,29 @@ class General extends Component {
   }
 
   numFormat = (data, outputArr = []) => {
-    if (isNaN(data) || (data !== 0 && !data)) {
+    if(isNaN(data) || (data !== 0 && !data)){
       return [];
     }
-    if (data > 1000) {
+    if( data > 1000){
       const intPart = parseInt(data / 1000, 10);
       const demicalPart = `${data % 1000}`.padStart(3, 0);
       outputArr.unshift(demicalPart);
       this.numFormat(intPart, outputArr);
-    } else {
+    }else{
       outputArr.unshift(data);
     }
     return outputArr;
   }
 
-  render() {
+  render(){
     const { hasMultipleType, realTimeInfo } = this.props;
     const { generalType } = this.state;
     let dataSummary;
-    if (generalType === 'all') {
-      const { dayPower, monthPower, stationCapacity, stationCount, stationUnitCount, yearPower } = realTimeInfo.allSummary || {};
-      dataSummary = {
-        dayPower: dayPower * 90,
-        monthPower: monthPower * 100,
-        stationCapacity: 4224,
-        stationCount: 527,
-        stationUnitCount: 14176,
-        yearPower: yearPower * 23,
-      };
-    } else if (generalType === 'wind') {
+    if(generalType === 'all'){
+      dataSummary = realTimeInfo.allSummary || {};
+    }else if(generalType === 'wind'){
       dataSummary = realTimeInfo.windSummary || {};
-    } else if (generalType === 'pv') {
-
+    }else if(generalType === 'pv'){
       dataSummary = realTimeInfo.pvSummary || {};
     }
     return (
