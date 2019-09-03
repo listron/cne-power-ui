@@ -64,7 +64,7 @@ class StopStatusChart extends Component {
   renderChart = (lists) => {
     const statusChart = echarts.init(this.statusRef);
     const yAxisLabels = [], statusResult = [], fualtNameSet = new Set();
-    lists.forEach((e, index) => {
+    lists.sort((b = {}, a = {}) => a.deviceName && a.deviceName.localeCompare(b.deviceName)).forEach((e, index) => { // 设备名排序
       const { deviceName, faultInfos = [] } = e || {};
       yAxisLabels.push(deviceName);
       faultInfos.forEach(m => {
