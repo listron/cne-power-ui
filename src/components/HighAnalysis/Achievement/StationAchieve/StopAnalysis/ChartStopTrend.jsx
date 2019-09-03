@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
+import { message } from 'antd';
 import TimeSelect from '../../AchieveCommon/TimeSelect';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import { getBaseGrid, getBaseYAxis, getBaseXAxis } from './chartBaseOption';
@@ -14,6 +15,7 @@ class ChartLostTrend extends Component {
     stopChartTime: PropTypes.string,
     stopTopStringify: PropTypes.string,
     stopTrend: PropTypes.array,
+    stopHandleInfo: PropTypes.array,
     stopChartDevice: PropTypes.object,
     stopChartTypes: PropTypes.object,
     stopElecType: PropTypes.string,
@@ -21,7 +23,7 @@ class ChartLostTrend extends Component {
     changeStore: PropTypes.func,
     getStopTrend: PropTypes.func,
     getStopTypes: PropTypes.func,
-    // getStopRank: PropTypes.func,
+    getStopRank: PropTypes.func,
   }
 
   state = {
@@ -106,41 +108,70 @@ class ChartLostTrend extends Component {
     });
   }
 
-  chartHandle = ({dataIndex}, stopTrend, chart) => {
-    const { stopChartTime, stopChartTimeMode, stopElecType, /* stopChartTypes, */ stopChartDevice, stopTopStringify } = this.props;
+  chartHandle = ({ dataIndex }, stopTrend, chart) => { // 'device', 'time', 'types'
+    const { stopHandleInfo } = this.props;
+    const handleLength = stopHandleInfo.length;
+    const timeIndex = stopHandleInfo.indexOf('time');
+    const lastCheck = stopHandleInfo[handleLength - 1];
+    if (handleLength === 2 && timeIndex === -1) { // 已选别的两个指标， 直接返回。
+      return;
+    }
+
+    if (handleLength === 2 && timeIndex === 0) { // 已选两级指标, 设备为第一级
+      message.info( `请先取消${lastCheck === 'device' ? '设备' : '停机类型'}选择, 再选择时间` );
+      return;
+    }
+
+    const { stopChartTime, stopElecType, stopChartTypes, stopChartDevice, stopTopStringify } = this.props;
+    const searchParam = JSON.parse(stopTopStringify) || {};
     const selectedInfo = stopTrend[dataIndex] || {};
     const { efficiencyDate } = selectedInfo;
-    const searchParam = JSON.parse(stopTopStringify) || {};
-    const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.device;
-    let [startTime, endTime] = searchParam.date;
-    if (stopChartTime !== efficiencyDate) { // 非取消选择
-      const recordStart = moment(efficiencyDate).startOf(stopChartTimeMode);
-      const recordEnd = moment(efficiencyDate).endOf(stopChartTimeMode);
-      startTime = moment.max(recordStart, moment(startTime)).format('YYYY-MM-DD');
-      endTime = moment.min(recordEnd, moment(endTime)).format('YYYY-MM-DD');
-      this.props.changeStore({ stopChartTime: efficiencyDate });
-      this.setState({
-        zoomRange: this.getZoomRange(chart),
-      }, () => this.renderChart(stopTrend, efficiencyDate));
-    } else { // 取消选择
-      this.props.changeStore({ stopChartTime: null });
-      this.setState({
-        zoomRange: this.getZoomRange(chart),
-      }, () => this.renderChart(stopTrend, null));
-    }
-    // let faultInfo = {};
-    // if (stopChartTypes) {
-    //   faultInfo = { faultId: stopChartTypes.faultId };
-    // }
+    const cancelSelect = stopChartTime && stopChartTime === efficiencyDate;
+    const [startTime, endTime] = this.getTimeRange(searchParam.date, efficiencyDate, cancelSelect);
+    const tmpDateResult = cancelSelect ? null : efficiencyDate;
     const param = {
       stationCodes: [searchParam.code],
-      deviceFullcodes,
+      deviceFullcodes: stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.device,
       startTime,
       endTime,
       parentFaultId: stopElecType,
     };
-    // this.props.getStopRank({ ...param, ...faultInfo });
-    this.props.getStopTypes({ ...param });
+    this.setState({
+      zoomRange: this.getZoomRange(chart),
+    }, () => this.renderChart(stopTrend, tmpDateResult));
+
+    const timeBothEnd = handleLength === 2 && timeIndex === 1; // 两级指标: 二级为时间 => 切换
+    const timeAdd = handleLength === 1 && timeIndex === -1; // 一级指标: 非时间 => 添加
+    if (timeBothEnd || timeAdd) {
+      const newStopStore = { stopChartTime: tmpDateResult };
+      timeAdd && (newStopStore.stopHandleInfo = [...stopHandleInfo, 'time']); //  => 变两级指标, 请求受影响单图表。
+      this.props.changeStore({ ...newStopStore });
+      stopHandleInfo[0] === 'device' ? this.props.getStopTypes({
+        ...param,
+      }) : this.props.getStopRank({
+        ...param,
+        faultId: stopChartTypes.faultId,
+      });
+    }
+    const queryBoth = (handleLength === 1 && timeIndex === 0) || handleLength === 0;
+    if (queryBoth) { // 选中一个一级指标: 时间 或者 未选中任何指标 => 请求两个图表数据。
+      this.props.changeStore({ stopChartTime: tmpDateResult });
+      this.props.getStopTypes({ ...param });
+      this.props.getStopRank({ ...param, faultId: stopChartTypes.faultId });
+    }
+  }
+
+  getTimeRange = (date = [], efficiencyDate, cancelSelect) => { // 根据两个时间取交集
+    const { stopChartTimeMode } = this.props;
+    let [startTime, endTime] = date;
+    if (cancelSelect) {
+      return [startTime, endTime];
+    }
+    const recordStart = moment(efficiencyDate).startOf(stopChartTimeMode);
+    const recordEnd = moment(efficiencyDate).endOf(stopChartTimeMode);
+    startTime = moment.max(recordStart, moment(startTime)).format('YYYY-MM-DD');
+    endTime = moment.min(recordEnd, moment(endTime)).format('YYYY-MM-DD');
+    return [startTime, endTime];
   }
 
   getZoomRange = (chartInstance = {}) => { // 获取实例的zoom起止位置。
