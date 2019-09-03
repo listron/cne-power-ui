@@ -25,21 +25,21 @@ class planSearch extends Component {
     this.state = {
       stationCodes: [],
       selectStation: [],
-    }
+    };
   }
 
   stationSelected = (rest) => {
     const stationCodes = rest.map((item, index) => {
-      return item.stationCode
+      return item.stationCode;
     });
     this.setState({
       selectStation: rest,
-      stationCodes: stationCodes
+      stationCodes: stationCodes,
     });
   };
 
   selectValue = () => {
-    let { stationCodes } = this.state;
+    const { stationCodes } = this.state;
     const params = {
       year: this.props.planYear,
       stationCodes: stationCodes.length > 0 ? stationCodes : null,
@@ -48,7 +48,7 @@ class planSearch extends Component {
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     };
-    this.props.getPlanList(params)
+    this.props.getPlanList(params);
   };
 
   selectYear = (e) => {
@@ -64,7 +64,7 @@ class planSearch extends Component {
           <span className={styles.year}>年份选择</span>
           <Select style={{ width: 105 }} onChange={this.selectYear} placeholder="--" value={planYear}>
             {planYearList.map((year, index) => {
-              return <Option value={`${year}`} key={year} selected>{year}</Option>
+              return <Option value={`${year}`} key={year} selected>{year}</Option>;
             })}
           </Select>
         </div>
@@ -79,7 +79,7 @@ class planSearch extends Component {
         </div>
         <Button className={styles.searchButton} onClick={this.selectValue}>查询</Button>
       </div>
-    )
+    );
   }
 }
 
