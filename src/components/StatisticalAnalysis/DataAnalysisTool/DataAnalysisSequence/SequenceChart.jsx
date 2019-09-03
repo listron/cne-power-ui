@@ -148,6 +148,11 @@ class SequenceChart extends React.Component {
         {
           type: 'value',
           name: point1Unit,
+          nameGap: 10,
+          nameTextStyle: {
+            fontSize: 14,
+            // padding: [10, 0, 0, 0],
+          },
           min: xMin,
           max: xMax,
           position: 'left',
@@ -157,6 +162,11 @@ class SequenceChart extends React.Component {
         }, {
           type: 'value',
           name: point2Unit,
+          nameGap: 10,
+          nameTextStyle: {
+            fontSize: 14,
+            // padding: [10, 0, 0, 0],
+          },
           min: yMin,
           max: yMax,
 
@@ -228,7 +238,7 @@ class SequenceChart extends React.Component {
     return (
       //showImg不应该传第二个参数，会污染数据源
       <div className={styles.chartWrap}>
-        {showImg && <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalInco} />}
+        {showImg && <Icon type="zoom-in" onClick={() => showImg(index, sequenceData)} className={styles.showModalInco} />}
         <div ref={(ref) => { this.sequenceChart = ref; }} className={styles.sequenceChart}>
         </div>
       </div>

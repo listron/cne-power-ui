@@ -128,6 +128,7 @@ function* getScatterData(action) {//获取
           chartLoading: false,
         },
       });
+
     } else {
       throw response.data.message;
     }

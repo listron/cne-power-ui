@@ -24,6 +24,7 @@ var initState = Immutable.fromJS({
   bigScatterData: {},
   bigchartLoading: false,
   xyValueLimit: {},
+  curLikeStatusData: {},
 
 });
 const dataAnalysisScatterReducer = (state = initState, action) => {

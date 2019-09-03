@@ -36,17 +36,14 @@ class SingleStationModal extends React.Component {
     }
     this.props.changeCurrentImgIndex(currentImgIndex + 1);
   }
-  likeChange = (index, bool) => {
+  likeChange = (index, bool, bigScatterData) => {
 
     const { deviceList, changeToolStore } = this.props;
     deviceList[index].likeStatus = bool;
-    changeToolStore({ deviceList });
+    changeToolStore({ deviceList, scatterData: bigScatterData });
   };
   render() {
     const { imageListShow, hideImg, data, currentImgIndex } = this.props;
-
-
-
     return (
       <React.Fragment>
         <span ref={'date'}></span>
