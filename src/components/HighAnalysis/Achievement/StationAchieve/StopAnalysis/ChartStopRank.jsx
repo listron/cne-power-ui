@@ -238,14 +238,15 @@ class ChartStopRank extends Component {
 
   render() {
     const { sortType, modeArr } = this.state;
-    const { stopChartTypes, stopChartTime } = this.props;
-    const stopTimeText = stopChartTime ? `${stopChartTime}-` : '';
-    const stopTypeText = stopChartTypes ? `${stopChartTypes.faultName}-` : '';
+    // const { stopChartTypes, stopChartTime } = this.props;
+    // const stopTimeText = stopChartTime ? `${stopChartTime}-` : '';
+    // const stopTypeText = stopChartTypes ? `${stopChartTypes.faultName}-` : '';
     return (
       <div className={styles.stopRank}>
         <div className={styles.top}>
           <span className={styles.title}>
-            {stopTimeText}{stopTypeText}风机停机时长及次数
+            {/* {stopTimeText}{stopTypeText}风机停机时长及次数 */}
+            风机停机时长及次数
           </span>
           <span className={styles.handle}>
             <span className={styles.eachHandle}>

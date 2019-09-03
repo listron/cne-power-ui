@@ -128,10 +128,10 @@ class ChartLostTrend extends Component {
         zoomRange: this.getZoomRange(chart),
       }, () => this.renderChart(stopTrend, null));
     }
-    let faultInfo = {};
-    if (stopChartTypes) {
-      faultInfo = { faultId: stopChartTypes.faultId };
-    }
+    // let faultInfo = {};
+    // if (stopChartTypes) {
+    //   faultInfo = { faultId: stopChartTypes.faultId };
+    // }
     const param = {
       stationCodes: [searchParam.code],
       deviceFullcodes,
@@ -139,7 +139,7 @@ class ChartLostTrend extends Component {
       endTime,
       parentFaultId: stopElecType,
     };
-    this.props.getStopRank({ ...param, ...faultInfo });
+    // this.props.getStopRank({ ...param, ...faultInfo });
     this.props.getStopTypes({ ...param });
   }
 

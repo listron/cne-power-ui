@@ -150,7 +150,7 @@ class ChartStopTypes extends Component {
       parentFaultId: stopElecType,
       ...faultInfo,
     };
-    this.props.getStopRank({ ...param });
+    // this.props.getStopRank({ ...param });
     this.props.getStopTrend({ ...param });
   }
 
