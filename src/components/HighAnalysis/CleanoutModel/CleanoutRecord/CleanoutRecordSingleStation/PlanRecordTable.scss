@@ -1,13 +1,51 @@
-.stationTable{//table字体图表样式
-  :global{
-    .iconfont{
+.stationTable {
+  //table字体图表样式
+  :global {
+    .iconfont {
       font-size: 20px;
-      &:hover{
-        color:#199475
+      &:hover {
+        color: #199475;
       }
     }
-    .icon-edit,.icon-del{
-      color:#199475;
+    .icon-edit,
+    .icon-del {
+      color: #199475;
+    }
+  }
+}
+
+.light {
+  .stationTable {
+    :global {
+      .iconfont {
+        &:hover {
+          color: #199475;
+        }
+      }
+      .icon-edit,
+      .icon-del {
+        color: #199475;
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../../../theme/darkTheme.scss";
+  .stationTable {
+    :global {
+      .iconfont {
+        &:hover {
+          color: $fontColor-hover;
+        }
+      }
+      .icon-edit,
+      .icon-del {
+        color: $fontColor;
+      }
+      .ant-table .ant-table-tbody > tr > td {
+        padding: 0 12px;
+      }
     }
   }
 }

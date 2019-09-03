@@ -26,6 +26,21 @@ const Gradient2 = {
   }],
 };
 
+const gradient = (stratColor, endColor) => {
+  return {
+    type: 'linear',
+    x: 0,
+    y: 0,
+    x2: 0,
+    y2: 1,
+    colorStops: [{
+      offset: 0, color: stratColor, // 0% 处的颜色
+    }, {
+      offset: 1, color: endColor, // 100% 处的颜色
+    }],
+  }
+}
+
 const barRadius = {
   itemStyle: {
     barBorderRadius: [5, 5, 0, 0],
@@ -59,7 +74,7 @@ const themeConfig = { // 主题切换用于图表
 };
 
 
-export { Gradient1, Gradient2, barRadius, chartsLoading, themeConfig, chartsNodata };
+export { Gradient1, Gradient2, gradient, barRadius, chartsLoading, themeConfig, chartsNodata };
 
 
 

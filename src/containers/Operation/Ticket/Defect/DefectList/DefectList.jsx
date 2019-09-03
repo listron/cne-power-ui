@@ -54,7 +54,7 @@ class DefectList extends Component {
 
   componentDidMount() {
     const { stationType, stationCodes, defectSource, defectLevel, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
-    let filter = {
+    const filter = {
       stationType,
       stationCodes,
       defectSource,
@@ -68,19 +68,19 @@ class DefectList extends Component {
       defectTypeCode,
       sortField,
       sortMethod,
-      handleUser
-    }
+      handleUser,
+    };
     this.props.getDefectList({ ...filter });
     this.props.getDefectIdList({ ...filter }); // 获取道缺陷ID列表
     this.props.getLostGenType({ //获取所有损失缺陷类型
-      objectType: 1
-    })
+      objectType: 1,
+    });
   }
 
 
   filterCondition = (changeValue) => {
     const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
-    let filter = {
+    const filter = {
       stationType,
       stationCodes,
       defectSource,
@@ -95,38 +95,41 @@ class DefectList extends Component {
       defectTypeCode,
       sortField,
       sortMethod,
-      handleUser
-    }
+      handleUser,
+    };
     this.props.getDefectList({ ...filter, ...changeValue });
     this.props.getDefectIdList({ ...filter, ...changeValue }); // 获取道缺陷ID列表
   }
 
   render() {
     const { stations, defectTypes, defectList, username, deviceTypes, defectStatusStatistics,
-      createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, deviceTypeCode, defectTypeCode, defectSource, handleUser, status } = this.props;
+      createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, deviceTypeCode, defectTypeCode, defectSource, handleUser, status, theme } = this.props;
     return (
-      <div className={styles.defectList}>
-        <FilterCondition
-          option={["time", "stationType", "stationName", "deviceType", "defectLevel", "defectType", "defectSource", "myJoin"]}
-          stations={stations}
-          deviceTypes={deviceTypes}
-          defectList={defectList}
-          defectTypes={defectTypes}
-          username={username}
-          onChange={this.filterCondition}
-          defaultValue={{
-            createTimeStart: createTimeStart,
-            createTimeEnd: createTimeEnd,
-            stationType: stationType,
-            stationCodes: stationCodes,
-            defectSource: defectSource,
-            defectLevel: defectLevel,
-            deviceTypeCode: deviceTypeCode,
-            defectTypeCode: defectTypeCode,
-            handleUser: handleUser
-          }}
-        />
-        <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} defaultValue={status} />
+      <div className={`${styles.defectList} ${styles[theme]}`}>
+        <div className={styles.wrap}>
+          <FilterCondition
+            option={['time', 'stationType', 'stationName', 'deviceType', 'defectLevel', 'defectType', 'defectSource', 'myJoin']}
+            stations={stations}
+            deviceTypes={deviceTypes}
+            defectList={defectList}
+            defectTypes={defectTypes}
+            username={username}
+            onChange={this.filterCondition}
+            defaultValue={{
+              createTimeStart: createTimeStart,
+              createTimeEnd: createTimeEnd,
+              stationType: stationType,
+              stationCodes: stationCodes,
+              defectSource: defectSource,
+              defectLevel: defectLevel,
+              deviceTypeCode: deviceTypeCode,
+              defectTypeCode: defectTypeCode,
+              handleUser: handleUser,
+            }}
+            theme={theme}
+          />
+          <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} defaultValue={status} theme={theme} />
+        </div>
         <DefectTable {...this.props} onChangeFilter={this.filterCondition} />
       </div>
     );
@@ -138,6 +141,7 @@ const mapStateToProps = (state) => ({
   stations: state.common.get('stations').toJS(),
   deviceTypes: state.common.get('deviceTypes').toJS(),
   username: state.common.get('username'),
+  theme: state.common.get('theme'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -157,8 +161,8 @@ const mapDispatchToProps = (dispatch) => ({
     payload: {
       params,
       actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-      resultName: 'defectTypes'
-    }
+      resultName: 'defectTypes',
+    },
   }),
 });
 

@@ -4,9 +4,9 @@ import { Icon } from 'antd';
 import styles from './cleanStyle.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 
-export const DustEffectStation = ({...props}) => { // 清洗预警=> 详情电站选择及返回
+export const DustEffectStation = ({ ...props }) => { // 清洗预警=> 详情电站选择及返回
   const {
-    stations, changeStation, showStationList, dustEffectInfo, stationCheckActive, backToList
+    stations, changeStation, showStationList, dustEffectInfo, stationCheckActive, backToList,
   } = props;
   const { stationCode } = dustEffectInfo;
   const currentStation = stations.find(e => e.stationCode === stationCode) || {};
@@ -14,16 +14,16 @@ export const DustEffectStation = ({...props}) => { // 清洗预警=> 详情电�
   const provinceArr = [...provinceSet];
   let groupedStation = provinceArr.map(e => ({ // 将电站按所属省份分组
     provinceName: e,
-    innerStation: []
+    innerStation: [],
   }));
   stations.forEach(e => {
     groupedStation = groupedStation.map(info => {
       if (info.provinceName === e.provinceName) {
         info.innerStation.push(e);
       }
-      return info
-    })
-  })
+      return info;
+    });
+  });
   return (
     <div className={styles.topStations}>
       {stationCheckActive && <div className={styles.stationList}>
@@ -40,7 +40,7 @@ export const DustEffectStation = ({...props}) => { // 清洗预警=> 详情电�
                   <span
                     key={station.stationName}
                     className={styles.stationName}
-                    onClick={() => changeStation({stationCode: station.stationCode})}
+                    onClick={() => changeStation({ stationCode: station.stationCode })}
                   >
                     {station.stationName}
                   </span>
@@ -60,8 +60,8 @@ export const DustEffectStation = ({...props}) => { // 清洗预警=> 详情电�
         <Icon type="arrow-left" className={styles.backIcon} />
       </div>
     </div>
-  )
-}
+  );
+};
 
 DustEffectStation.propTypes = {
   stations: PropTypes.array,
@@ -70,9 +70,9 @@ DustEffectStation.propTypes = {
   changeStation: PropTypes.func,
   showStationList: PropTypes.func,
   backToList: PropTypes.func,
-}
+};
 
-export const DustBaseInfo = ({ weatherList = [], dustEffectInfo = {} }) => { // 清洗预警 => 详情 影响数据及天气
+export const DustBaseInfo = ({ weatherList = [], dustEffectInfo = {}, theme = 'light' }) => { // 清洗预警 => 详情 影响数据及天气
   const dateArr = ['今天', '明天', '后天'];
   const { influencePower, cleanDays } = dustEffectInfo;
   const value = dataFormat(influencePower, '--', 2);
@@ -80,7 +80,7 @@ export const DustBaseInfo = ({ weatherList = [], dustEffectInfo = {} }) => { // 
   if (value >= 0 || `${value}`.includes('.')) {
     showValue = `${value}`.split('.');
   }
-  const filterWeather = weatherList.filter((e, i)=> i < 3); // 只要前三天数据。
+  const filterWeather = weatherList.filter((e, i) => i < 3); // 只要前三天数据。
   return (
     <div className={styles.dustInfo}>
       <div className={styles.effectGen}>
@@ -96,23 +96,24 @@ export const DustBaseInfo = ({ weatherList = [], dustEffectInfo = {} }) => { // 
       </div>
       <div className={styles.weather}>
         {filterWeather.length > 0 ? filterWeather.map((e, i) => {
-          let weatherId = e.weatherId || '';
+          const weatherId = e.weatherId || '';
           return (
             <div className={styles.eachWeather} key={e.weatherDate}>
               <span>{dateArr[i]}</span>
-              <img src={`/img/weathercn/${weatherId.split(',')[0]}.png`} />
+              <img src={`/img/${theme === 'dark' ? 'darkWeathercn' : 'weathercn'}/${e.weatherId.split(',')[0]}.png`} />
               <span>{e.temperature || '--'}</span>
               <span>{e.weather || '--'}</span>
               <span>{e.wind || '--'}</span>
             </div>
-          )
+          );
         }) : <div className={styles.noWeather}>暂无天气数据</div>}
       </div>
     </div>
-  )
-}
+  );
+};
 
 DustBaseInfo.propTypes = {
   weatherList: PropTypes.array,
   dustEffectInfo: PropTypes.object,
-}
+  theme: PropTypes.string,
+};

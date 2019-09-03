@@ -16,13 +16,14 @@ class CleanWarningSide extends Component {
     getTotalDustEffect: PropTypes.func,
     getMatrixDustEffect: PropTypes.func,
     changeCleanWarningStore: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       stationCheckActive: false,
-    }
+    };
   }
 
   hiddenStationList = () => { // 隐藏电站切换框
@@ -38,35 +39,33 @@ class CleanWarningSide extends Component {
     });
   }
 
-  changeStation = ({stationCode}) => { // 切换电站并隐藏切换框
+  changeStation = ({ stationCode }) => { // 切换电站并隐藏切换框
     const { getCleanWarningDetail, getTotalDustEffect, getMatrixDustEffect, dustEffectInfo } = this.props;
     if (dustEffectInfo.stationCode === stationCode) {
       return;
     }
     const endDay = moment().format('YYYY-MM-DD');
-    const startDay = moment().subtract(30, 'day').format('YYYY-MM-DD'); 
+    const startDay = moment().subtract(30, 'day').format('YYYY-MM-DD');
     this.setState({
       stationCheckActive: false,
     });
     const effectParam = {
-      stationCode, endDay, startDay
-    }
+      stationCode, endDay, startDay,
+    };
     getCleanWarningDetail({ stationCode });
     getTotalDustEffect(effectParam);
     getMatrixDustEffect(effectParam);
   }
 
   backToList = () => { // 返回列表页
-    this.props.changeCleanWarningStore({showPage: 'list'});
+    this.props.changeCleanWarningStore({ showPage: 'list' });
   }
 
-  render(){
-    const {
-      stations, dustEffectInfo, weatherList,
-    } = this.props;
+  render() {
+    const { stations, dustEffectInfo, weatherList, theme } = this.props;
     const { stationCheckActive } = this.state;
     return (
-      <div className={styles.clearWarningSide} onClick={this.hiddenStationList}>
+      <div className={`${styles.clearWarningSide} ${styles[theme]}`} onClick={this.hiddenStationList}>
         <div className={styles.sideContent}>
           <DustEffectStation
             dustEffectInfo={dustEffectInfo}
@@ -79,12 +78,13 @@ class CleanWarningSide extends Component {
           <DustBaseInfo
             dustEffectInfo={dustEffectInfo}
             weatherList={weatherList}
+            theme={theme}
           />
           <DustEffectCharts {...this.props} />
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 

@@ -1,72 +1,87 @@
-.cleanoutRecordMain{
+.cleanoutRecordMain {
   display: flex;
-  flex:1 0 auto;
+  flex: 1 0 auto;
   width: 100%;
   flex-direction: column;
-  // background-color: #fff;
   padding: 24px 24px 0;
-  background:#ececec;
-
- .cleanoutcontainer{
-   display: flex;
-   flex:1;
-   flex-direction: column;
-   background-color: #fff;
- }
- 
-  .topFilter{
+  .cleanoutcontainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .topFilter {
     display: flex;
     flex-direction: column;
     align-content: center;
-   
-    
   }
-  
-  .paginationStyle{
+  .wrap {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .paginationStyle {
     display: flex;
     justify-content: flex-end;
     height: 48px;
   }
-  .iconStyles{
+  .iconStyles {
     display: flex;
     justify-content: center;
   }
- 
 }
-.handle{//modal的取消确认按钮样式
+.handle {
+  //modal的取消确认按钮样式
   display: flex;
   justify-content: center;
-  margin-left:44px ;
-  button{
+  margin-left: 44px;
+  button {
     margin-right: 16px;
   }
 }
-.radioStyle{
+.radioStyle {
   justify-content: center;
   display: flex;
   margin-bottom: 8px;
 }
-.stationTable{//table字体图表样式
-  :global{
-    .ant-table .ant-table-thead > tr > th{
+.stationTable {
+  //table字体图表样式
+  :global {
+    .ant-table .ant-table-thead > tr > th {
       padding: 0 24px;
     }
-    .ant-table .ant-table-tbody > tr > td{
+    .ant-table .ant-table-tbody > tr > td {
       padding: 0 24px;
     }
-    .ant-table-thead{
-      th>div{
+    .ant-table-thead {
+      th > div {
         height: 60px;
       }
     }
-    .ant-table-column-sorter{
+    .ant-table-column-sorter {
       top: 18px;
     }
-    .iconfont{
+    .iconfont {
       font-size: 20px;
-      &:hover{
-        color:#199475
+      &:hover {
+        color: #199475;
       }
     }
+  }
+}
+
+.cleanoutRecordMain.light {
+  background: #ececec;
+  .cleanoutcontainer {
+    background-color: #fff;
+  }
+}
+
+@import "../../../../../theme/darkTheme.scss";
+.cleanoutRecordMain.dark {
+  background: $background;
+  .wrap {
+    background: $light-background;
+    border: 1px solid $border-color;
+    margin-top: 10px;
   }
 }

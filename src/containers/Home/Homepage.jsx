@@ -15,7 +15,7 @@ class Homepage extends Component {
     homepageType: null,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getHomepageType();
   }
 
@@ -32,8 +32,9 @@ class Homepage extends Component {
     const { homepageType } = this.state;
     return ( // minipage: 精简版主页, fullpage完全版主页。
       <React.Fragment>
-        { homepageType === 'mini' && <MiniHomepage {...this.props} />}
-        { homepageType === 'full' && <FullHomepage {...this.props} />}
+        <MiniHomepage {...this.props} />
+        {/* { homepageType === 'mini' && <MiniHomepage {...this.props} />}
+        { homepageType === 'full' && <FullHomepage {...this.props} />} */}
       </React.Fragment>
     );
   }
@@ -49,21 +50,21 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
-  changeHomepageStore: payload => dispatch({type: homepageAction.changeHomepageStore, payload}),
-  homepageReset: payload => dispatch({type: homepageAction.homepageReset, payload}),
+  changeHomepageStore: payload => dispatch({ type: homepageAction.changeHomepageStore, payload }),
+  homepageReset: payload => dispatch({ type: homepageAction.homepageReset, payload }),
 
-  getRealTimeData: payload => dispatch({type: homepageAction.getRealTimeData, payload}),
-  getCompleteRate: payload => dispatch({type: homepageAction.getCompleteRate, payload}),
-  getEnergySaving: payload => dispatch({type: homepageAction.getEnergySaving, payload}),
-  getMonthPower: payload => dispatch({type: homepageAction.getMonthPower, payload}),
-  getEqpHours: payload => dispatch({type: homepageAction.getEqpHours, payload}),
-  getFaultNumber: payload => dispatch({type: homepageAction.getFaultNumber, payload}),
-  getMapStation: payload => dispatch({type: homepageAction.getMapStation, payload}),
-  getSingleStation: payload => dispatch({type: homepageAction.getSingleStation, payload}),
-  getAlarmList: payload => dispatch({type: homepageAction.getAlarmList, payload}),
-  getOutputDiagram: payload => dispatch({type: homepageAction.getOutputDiagram, payload}),
-  getOperationInfo: payload => dispatch({type: homepageAction.getOperationInfo, payload}),
-  getUnhandleList: () => dispatch({type: homepageAction.getUnhandleList}),
+  getRealTimeData: payload => dispatch({ type: homepageAction.getRealTimeData, payload }),
+  getCompleteRate: payload => dispatch({ type: homepageAction.getCompleteRate, payload }),
+  getEnergySaving: payload => dispatch({ type: homepageAction.getEnergySaving, payload }),
+  getMonthPower: payload => dispatch({ type: homepageAction.getMonthPower, payload }),
+  getEqpHours: payload => dispatch({ type: homepageAction.getEqpHours, payload }),
+  getFaultNumber: payload => dispatch({ type: homepageAction.getFaultNumber, payload }),
+  getMapStation: payload => dispatch({ type: homepageAction.getMapStation, payload }),
+  getSingleStation: payload => dispatch({ type: homepageAction.getSingleStation, payload }),
+  getAlarmList: payload => dispatch({ type: homepageAction.getAlarmList, payload }),
+  getOutputDiagram: payload => dispatch({ type: homepageAction.getOutputDiagram, payload }),
+  getOperationInfo: payload => dispatch({ type: homepageAction.getOperationInfo, payload }),
+  getUnhandleList: () => dispatch({ type: homepageAction.getUnhandleList }),
 
   resetMonitorData: params => dispatch({ type: allStationAction.resetMonitorData, params }),
   resetCommonStore: params => dispatch({ type: commonAction.resetCommonStore, params }),

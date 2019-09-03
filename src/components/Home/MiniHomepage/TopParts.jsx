@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
 import { dataFormat } from '../../../utils/utilFunc';
 
-class TopParts extends Component{
+class TopParts extends Component {
   static propTypes = {
     username: PropTypes.string,
     userFullName: PropTypes.string,
@@ -21,7 +21,7 @@ class TopParts extends Component{
     resetCommonStore: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       timeText: moment().format('HH:mm:ss YYYY/MM/DD'),
@@ -31,11 +31,11 @@ class TopParts extends Component{
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.timeClock = setTimeout(this.getCurrentTime, 1000);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearTimeout(this.timeClock);
   }
 
@@ -67,24 +67,24 @@ class TopParts extends Component{
     const { documentElement } = document;
     const allowFull = documentElement.requestFullScreen || documentElement.webkitRequestFullScreen || documentElement.mozRequestFullScreen || documentElement.msRequestFullScreen;
     const allowBack = document.cancelFullScreen || document.webkitCancelFullScreen || document.mozCancelFullScreen || document.exitFullScreen;
-    if(!fullScreen){
-      if(allowFull){
+    if (!fullScreen) {
+      if (allowFull) {
         allowFull.call(documentElement);
-      }else{
+      } else {
         const wscript = window.ActiveXObject && new window.ActiveXObject('WScript.Shell');
         wscript && wscript.SendKeys('{F11}');
       }
     }
-    if(allowBack){
+    if (allowBack) {
       allowBack.call(document);
-    }else{
+    } else {
       const wscript = window.ActiveXObject && new window.ActiveXObject('WScript.Shell');
       wscript && wscript.SendKeys('{F11}');
     }
     this.setState({ fullScreen: !fullScreen });
   }
 
-  render(){
+  render() {
     const { logoSrc, fullScreen, timeText, weekIndex } = this.state;
     const {
       energySaving, changeLoginStore, resetMonitorData, username, userFullName, userLogo, realTimeInfo, resetCommonStore,
@@ -99,10 +99,10 @@ class TopParts extends Component{
           <div className={styles.text}>年累计节能减排</div>
           <div className={styles.save}>
             <img src="/img/co2.png" height="20px" />
-            <span className={styles.value}>{dataFormat(energySaving.dioxide)}</span>
+            <span className={styles.value}>{dataFormat(energySaving.dioxide * 23)}</span>
             <span className={styles.unit}>kt</span>
             <img src="/img/hot.png" height="20px" />
-            <span className={styles.value}>{dataFormat(energySaving.coal)}</span>
+            <span className={styles.value}>{dataFormat(energySaving.coal * 23)}</span>
             <span className={styles.unit}>kt</span>
           </div>
         </div>
@@ -126,7 +126,7 @@ class TopParts extends Component{
           </div>
           <div className={styles.screenHandle}>
             <img
-              src={`/img/${fullScreen?'small':'big'}.png`}
+              src={`/img/${fullScreen ? 'small' : 'big'}.png`}
               height="28px"
               width="28px"
               onClick={this.toggleFullScreen}
