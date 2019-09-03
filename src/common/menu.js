@@ -463,6 +463,7 @@ const menuData = [
         name: '风电分析',
         path: 'achievement',
         rightKey: 'analysis_windPower',
+        iconStyle: 'icon-windany',
         children: [
           {
             name: '集团绩效分析',

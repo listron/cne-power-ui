@@ -20,6 +20,7 @@ class DevicesAep extends Component {
   }
 
   state = {
+    modeArr: [],
     sortName: 'deviceName', // windSpeed, aep;
   }
 
@@ -110,7 +111,8 @@ class DevicesAep extends Component {
         },
       },
     }];
-    return { series, xData, modeArr: [...modes] };
+    this.setState({ modeArr: [...modes] });
+    return { series, xData };
   }
 
   deviceHandle = ({ seriesIndex }, sortedAepData, chart) => {
@@ -195,7 +197,7 @@ class DevicesAep extends Component {
   }
 
   render() {
-    const { sortName } = this.state;
+    const { sortName, modeArr } = this.state;
     return (
       <section className={styles.aep}>
         <h3 className={styles.aepTop}>
@@ -213,6 +215,20 @@ class DevicesAep extends Component {
             </Select>
           </span>
         </h3>
+        <div className={styles.modes}>
+          {modeArr.map((e, i) => (
+            <span key={e} className={styles.eachMode}>
+              <span className={styles.rect} style={{
+                backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
+                }} />
+              <span className={styles.modeText}>{e}</span>
+            </span>
+          ))}
+          <span className={styles.eachMode}>
+            <span className={styles.line} />
+            <span className={styles.modeText}>停机次数</span>
+          </span>
+        </div>
         <div className={styles.aepChart} ref={(ref)=> {this.aepRef = ref;}} />
       </section>
     );

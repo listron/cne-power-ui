@@ -37,6 +37,7 @@ const initState = immutable.fromJS({
   stopTopStringify: '', // stop - 缓存字符串
   stopElecType: 'all', // all全部-faultGen风机故障-planShutdownGen计划停机-substationGen变电-courtGen场外-otherGen其他
   stopType: '', // 全部,....
+  stopHandleInfo: [], // 选中次序记录: 'device', 'time', 'types'
   stopChartDevice: null, // 图表设备选中 {}
   stopChartTime: null, // 图表时间选中 string
   stopChartTimeMode: 'month', // 图表时间格式选中
