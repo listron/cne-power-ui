@@ -237,7 +237,7 @@ class ChartStopRank extends Component {
       xAxis: getBaseXAxis(dataAxis),
       yAxis: [
         getBaseYAxis('停机时长(h)'),
-        getBaseYAxis('故障次数(次)'),
+        getBaseYAxis('停机次数(次)'),
       ],
       tooltip: {
         trigger: 'axis',

@@ -229,8 +229,8 @@ class ChartStopTypes extends Component {
       ],
       yAxis: [
         { ...getBaseYAxis('停机次数(次)'), gridIndex: 0, min: 0 },
-        { ...getBaseYAxis('时长(h)'), gridIndex: 1, min: 0 },
-        { ...getBaseYAxis('损失电量(万kWh)'), gridIndex: 2, min: 0 },
+        { ...getBaseYAxis('停机时长(h)'), gridIndex: 1, min: 0 },
+        { ...getBaseYAxis('停机电量(万kWh)'), gridIndex: 2, min: 0 },
       ],
       axisPointer: {
         link: { xAxisIndex: 'all' },

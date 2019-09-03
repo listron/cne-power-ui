@@ -217,8 +217,8 @@ class ChartLostTrend extends Component {
         { ...getBaseXAxis(dataAxis), gridIndex: 1 },
       ],
       yAxis: [
-        { ...getBaseYAxis('时长(h)'), gridIndex: 0 },
-        { ...getBaseYAxis('次数(次)'), gridIndex: 1 },
+        { ...getBaseYAxis('停机时长(h)'), gridIndex: 0 },
+        { ...getBaseYAxis('停机次数(次)'), gridIndex: 1 },
       ],
       axisPointer: {
         link: {xAxisIndex: 'all'},
@@ -235,7 +235,7 @@ class ChartLostTrend extends Component {
             <div class=${styles.info}>
               ${param.sort((a, b) => a.seriesIndex - b.seriesIndex).map(({seriesIndex, value}) => (
                 `<span class=${styles.eachItem}>
-                  <span>${seriesIndex === 0 ? '故障时长' : '故障次数'}</span>
+                  <span>${seriesIndex === 0 ? '停机时长' : '停机次数'}</span>
                   <span>${dataFormats(value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
