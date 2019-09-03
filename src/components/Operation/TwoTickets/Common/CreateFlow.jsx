@@ -115,8 +115,17 @@ class CreateFlow extends Component {
         <Form className={` ${reject && styles.rejectFlowForm || styles.flowForm}`}>
           <FormItem label="电站名称" colon={false}>
             {getFieldDecorator('stations', {
-              rules: [{ required: true, message: '请选择电站' }],
               initialValue: [{ stationCode: docketInfo.stationCode, stationName: docketInfo.stationName }],
+              rules: [{
+                required: true,
+                message: '请选择电站',
+                validator: (rule, value, callback) => {
+                  if (!(value.length > 0 && value[0].stationCode)) {
+                    callback('请选择电站');
+                  }
+                  callback();
+                },
+              }],
             })(
               <StationSelect
                 data={stations}

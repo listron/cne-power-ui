@@ -87,9 +87,8 @@ class ProvinceItem extends Component {
                   // onClick={()=>this.checkStation(m)} 
                   key={m.stationCode}
                   title={m.stationName}
-                  className={`${styles.eachStation} ${checked ? styles.checked : styles.disabled} `}>
+                  className={`${styles.eachStation} ${checked && styles.checked}  ${disableCheck && styles.disabled}`}>
                   <Checkbox
-                    // style={{ color: checked ? '#fff' : '#666' }}
                     onChange={() => this.checkStation(m)}
                     checked={checked}
                     disabled={disableCheck}
@@ -101,7 +100,7 @@ class ProvinceItem extends Component {
                   onClick={disableCheck ? null : () => this.checkStation(m)}
                   key={m.stationCode}
                   style={{ cursor: disableCheck ? 'not-allowed' : 'pointer' }}
-                  className={`${styles.eachStation} ${checked ? styles.checked : styles.disabled} `}>
+                  className={`${styles.eachStation} ${checked && styles.checked} ${disableCheck && styles.disabled}`}>
                   <span title={m.stationName} className={styles.eachStationName}>{m.stationName}</span>
                 </div>
             );
