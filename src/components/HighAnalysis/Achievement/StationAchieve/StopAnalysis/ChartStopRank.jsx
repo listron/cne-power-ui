@@ -167,10 +167,14 @@ class ChartStopRank extends Component {
     }, () => this.renderChart(sortedStopRank, sortType, tmpDeviceResult));
     const deviceBothEnd = handleLength === 2 && deviceIndex === 1; // 两级指标: 二级为设备
     const deviceAdd = handleLength === 1 && deviceIndex === -1; // 一级指标: 非设备
-    if (deviceBothEnd || deviceAdd) {
-      const newStopStore = { stopChartDevice: tmpDeviceResult };
-      deviceAdd && (newStopStore.stopHandleInfo = [...stopHandleInfo, 'device']); //  => 变两级指标, 请求受影响单图表。
-      this.props.changeStore({ ...newStopStore });
+    if (deviceBothEnd || deviceAdd) { //  => 变两级指标, 请求受影响单图表。
+      let tmpHandleInfo = [...stopHandleInfo];
+      deviceAdd && tmpHandleInfo.push('device');
+      cancelSelect && (tmpHandleInfo = tmpHandleInfo.filter(e => e!== 'device'));
+      this.props.changeStore({
+        stopChartDevice: tmpDeviceResult,
+        stopHandleInfo: tmpHandleInfo,
+      });
       stopHandleInfo[0] === 'time' ? this.props.getStopTypes({
         ...param,
       }) : this.props.getStopTrend({
@@ -180,9 +184,12 @@ class ChartStopRank extends Component {
     }
     const queryBoth = (handleLength === 1 && deviceIndex === 0) || handleLength === 0;
     if (queryBoth) { // 选中一个一级指标: 设备 或者 未选中任何指标 => 请求两个图表数据。
-      this.props.changeStore({ stopChartDevice: tmpDeviceResult });
+      this.props.changeStore({
+        stopChartDevice: tmpDeviceResult,
+        stopHandleInfo: cancelSelect ? [] : ['device'],
+      });
       this.props.getStopTypes({ ...param });
-      this.props.getStopTrend({ ...param, faultId: stopChartTypes.faultId });
+      this.props.getStopTrend({ ...param });
     }
   }
 
@@ -203,6 +210,21 @@ class ChartStopRank extends Component {
     const zoomInfo = dataZoom[0] || {};
     const { start = 0, end = 100 } = zoomInfo;
     return [start, end];
+  }
+
+  getTitle = () => {
+    const titleTexts = [];
+    const { stopChartTypes, stopChartTime, stopHandleInfo } = this.props;
+    const baseText = {
+      time: stopChartTime ? `${stopChartTime}-` : '',
+      types: stopChartTypes ? `${stopChartTypes.faultName}-` : '',
+    };
+    stopHandleInfo.find((e, i) => {
+      baseText[e] && titleTexts.push(baseText[e]);
+      return e === 'device';
+    });
+    titleTexts.push('风机停机时长及次数');
+    return titleTexts.join('');
   }
 
   renderChart = (stopRank = [], sortType, stopChartDevice) => {
@@ -263,15 +285,10 @@ class ChartStopRank extends Component {
 
   render() {
     const { sortType, modeArr } = this.state;
-    const { stopChartTypes, stopChartTime } = this.props;
-    const stopTimeText = stopChartTime ? `${stopChartTime}-` : '';
-    const stopTypeText = stopChartTypes ? `${stopChartTypes.faultName}-` : '';
     return (
       <div className={styles.stopRank}>
         <div className={styles.top}>
-          <span className={styles.title}>
-            {stopTimeText}{stopTypeText}风机停机时长及次数
-          </span>
+          <span className={styles.title}>{this.getTitle()}</span>
           <span className={styles.handle}>
             <span className={styles.eachHandle}>
               <span className={styles.text}>选择排序</span>

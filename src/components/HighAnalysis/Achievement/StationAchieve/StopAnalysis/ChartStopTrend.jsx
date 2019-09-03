@@ -142,10 +142,14 @@ class ChartLostTrend extends Component {
 
     const timeBothEnd = handleLength === 2 && timeIndex === 1; // 两级指标: 二级为时间 => 切换
     const timeAdd = handleLength === 1 && timeIndex === -1; // 一级指标: 非时间 => 添加
-    if (timeBothEnd || timeAdd) {
-      const newStopStore = { stopChartTime: tmpDateResult };
-      timeAdd && (newStopStore.stopHandleInfo = [...stopHandleInfo, 'time']); //  => 变两级指标, 请求受影响单图表。
-      this.props.changeStore({ ...newStopStore });
+    if (timeBothEnd || timeAdd) { //  => 变两级指标, 请求受影响单图表。
+      let tmpHandleInfo = [...stopHandleInfo];
+      timeAdd && tmpHandleInfo.push('time');
+      cancelSelect && (tmpHandleInfo = tmpHandleInfo.filter(e => e!== 'time'));
+      this.props.changeStore({
+        stopChartTime: tmpDateResult,
+        stopHandleInfo: tmpHandleInfo,
+      });
       stopHandleInfo[0] === 'device' ? this.props.getStopTypes({
         ...param,
       }) : this.props.getStopRank({
@@ -155,9 +159,12 @@ class ChartLostTrend extends Component {
     }
     const queryBoth = (handleLength === 1 && timeIndex === 0) || handleLength === 0;
     if (queryBoth) { // 选中一个一级指标: 时间 或者 未选中任何指标 => 请求两个图表数据。
-      this.props.changeStore({ stopChartTime: tmpDateResult });
+      this.props.changeStore({
+        stopChartTime: tmpDateResult,
+        stopHandleInfo: ['time'],
+      });
       this.props.getStopTypes({ ...param });
-      this.props.getStopRank({ ...param, faultId: stopChartTypes.faultId });
+      this.props.getStopRank({ ...param });
     }
   }
 
@@ -179,6 +186,21 @@ class ChartLostTrend extends Component {
     const zoomInfo = dataZoom[0] || {};
     const { start = 0, end = 100 } = zoomInfo;
     return [start, end];
+  }
+
+  getTitle = () => {
+    const titleTexts = [];
+    const { stopChartTypes, stopChartDevice, stopHandleInfo } = this.props;
+    const baseText = {
+      device: stopChartDevice ? `${stopChartDevice.deviceName}-` : '',
+      types: stopChartTypes ? `${stopChartTypes.faultName}-` : '',
+    };
+    stopHandleInfo.find((e, i) => {
+      baseText[e] && titleTexts.push(baseText[e]);
+      return e === 'time';
+    });
+    titleTexts.push('停机时长及次数趋势图');
+    return titleTexts.join('');
   }
 
   renderChart = (stopTrend = [], stopChartTime) => {
@@ -246,15 +268,11 @@ class ChartLostTrend extends Component {
   }
 
   render() {
-    const { stopChartTypes, stopChartDevice, stopChartTimeMode } = this.props;
-    const stopDeviceText = stopChartDevice ? `${stopChartDevice.deviceName}-` : '';
-    const stopTypeText = stopChartTypes ? `${stopChartTypes.faultName}-` : '';
+    const { stopChartTimeMode } = this.props;
     return (
       <div className={styles.stopTrend}>
         <div className={styles.top}>
-          <span className={styles.title}>
-            {stopDeviceText}{stopTypeText}停机时长及次数趋势图
-          </span>
+          <span className={styles.title}>{this.getTitle()}</span>
           <TimeSelect timeMode={stopChartTimeMode} timeModeChange={this.timeModeChange} />
         </div>
         <div className={styles.chart} ref={(ref)=> {this.trendRef = ref;}} />
