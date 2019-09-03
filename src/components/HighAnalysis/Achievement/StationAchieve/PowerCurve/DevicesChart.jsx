@@ -4,6 +4,7 @@ import echarts from 'echarts';
 import { getCurveBaseOption } from './curveBaseOption';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './curve.scss';
+import AutoModal from '../../../../Common/AutoSelect/AutoModal';
 
 class DevicesChart extends Component {
 
@@ -46,6 +47,9 @@ class DevicesChart extends Component {
       type: 'line',
       smooth: true,
       name: deviceName,
+      lineStyle: {
+        color: deviceName === '理论功率' ? 'red' : 'auto',
+      },
       data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]).sort((a, b) => a[0] - b[0]),
     };
   })
