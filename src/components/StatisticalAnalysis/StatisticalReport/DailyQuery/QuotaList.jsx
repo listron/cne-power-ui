@@ -106,7 +106,7 @@ class QuotaList extends Component {
     }];
 
     return (
-      <div className={otherCol.length > 9 ? styles.listFixed : styles.quotaList}>
+      <div className={styles.quotaList}>
         <div className={styles.pagination}>
           <Button
           className={dataList.length === 0 ? styles.disabledExport : styles.listExport}
@@ -127,7 +127,7 @@ class QuotaList extends Component {
           dataSource={dataList && dataList.map((e, i) => ({ ...e, key: i }))}
           columns={columns.concat(otherCol)}
           pagination={false}
-          scroll={(otherCol.length > 9) ? { x: 3500 } : {x: 0}}
+          scroll={(otherCol.length > 9) ? { x: 'max-content' } : {x: 0}}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
