@@ -20,7 +20,7 @@ class ChartStopTypes extends Component {
     stopElecType: PropTypes.string,
     stopTypesLoading: PropTypes.bool,
     changeStore: PropTypes.func,
-    getStopRank: PropTypes.func,
+    // getStopRank: PropTypes.func,
     getStopTrend: PropTypes.func,
   }
 

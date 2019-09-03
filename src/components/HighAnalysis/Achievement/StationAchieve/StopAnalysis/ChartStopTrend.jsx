@@ -21,7 +21,7 @@ class ChartLostTrend extends Component {
     changeStore: PropTypes.func,
     getStopTrend: PropTypes.func,
     getStopTypes: PropTypes.func,
-    getStopRank: PropTypes.func,
+    // getStopRank: PropTypes.func,
   }
 
   state = {
@@ -107,7 +107,7 @@ class ChartLostTrend extends Component {
   }
 
   chartHandle = ({dataIndex}, stopTrend, chart) => {
-    const { stopChartTime, stopChartTimeMode, stopElecType, stopChartTypes, stopChartDevice, stopTopStringify } = this.props;
+    const { stopChartTime, stopChartTimeMode, stopElecType, /* stopChartTypes, */ stopChartDevice, stopTopStringify } = this.props;
     const selectedInfo = stopTrend[dataIndex] || {};
     const { efficiencyDate } = selectedInfo;
     const searchParam = JSON.parse(stopTopStringify) || {};
