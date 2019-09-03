@@ -34,8 +34,17 @@ class AssetStructure extends React.Component {
     };
   }
   componentDidMount() {
-    const { stationType } = this.props;
-    this.props.getAssetTree({ stationType });
+    const { stationType, stationTypeCount } = this.props;
+    if (stationTypeCount === 'none') {
+      this.props.getAssetTree({ stationType: 0 });
+      setTimeout(() => { this.props.getAssetTree({ stationType: 1 }); }, 2000);
+    }
+    if (stationTypeCount === 'wind') {
+      this.props.getAssetTree({ stationType: 0 });
+    } else if (stationTypeCount === 'pv' || stationTypeCount === 'multiple') {
+      this.props.getAssetTree({ stationType: 1 });
+    }
+
     this.getTreeData();
   }
   onCancelWarningTip = () => {//信息提示栏隐藏
@@ -90,7 +99,6 @@ class AssetStructure extends React.Component {
     const { node } = e;
     const { props } = node;
     const tableData = props ? props.dataRef : {};
-    console.log('tableData: ', tableData);
     const assetsParentId = tableData.assetsId;
     const assetsName = tableData.assetsName;
     const assetsType = tableData.assetsType;

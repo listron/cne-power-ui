@@ -9,18 +9,18 @@ function* changeCleanoutRecordStore(action) { // 存储payload指定参数，替
   yield put({
     type: cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE,
     payload,
-  })
+  });
 }
 
 function* resetStore() {
   yield put({
-    type: cleanoutRecordAction.RESET_STORE
-  })
+    type: cleanoutRecordAction.RESET_STORE,
+  });
 }
 function* getStationDust(action) {//1.1.3.获取清洗预警—全站灰尘影响图表数据
   const { payload } = action;
 
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getStationDust}/${payload.stationCode}/${payload.startTime}/${payload.endTime}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getStationDust}/${payload.stationCode}/${payload.startTime}/${payload.endTime}`;
   //const url = '/mock/cleanWarning/totalEffect';
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -39,7 +39,7 @@ function* getStationDust(action) {//1.1.3.获取清洗预警—全站灰尘影�
 }
 function* getMatrixDust(action) {//1.1.4.方阵灰尘影响图表数据
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixDust}/${payload.stationCode}/${payload.startTime}/${payload.endTime}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixDust}/${payload.stationCode}/${payload.startTime}/${payload.endTime}`;
   //const url = '/mock/cleanWarning/totalEffect';
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -58,7 +58,7 @@ function* getMatrixDust(action) {//1.1.4.方阵灰尘影响图表数据
 }
 function* getMainList(action) {//1.1.5.获取各电站清洗计划汇总列表
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMainList}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMainList}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);
@@ -81,7 +81,7 @@ function* getMainList(action) {//1.1.5.获取各电站清洗计划汇总列表
         },
       });
     } else {
-      throw response.data.data
+      throw response.data.data;
     }
   } catch (e) {
     console.log(e);
@@ -90,7 +90,7 @@ function* getMainList(action) {//1.1.5.获取各电站清洗计划汇总列表
       payload: {
         total: 0,
         mainListData: [],
-        loading: false
+        loading: false,
       },
     });
   }
@@ -98,7 +98,7 @@ function* getMainList(action) {//1.1.5.获取各电站清洗计划汇总列表
 function* getDetailList(action) {//1.1.6.获取清洗计划记录列表
   const { payload } = action;
   const { planId } = payload;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getDetailList}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getDetailList}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);
@@ -128,7 +128,7 @@ function* getDetailList(action) {//1.1.6.获取清洗计划记录列表
         },
       });
     } else {
-      throw response.data.data
+      throw response.data.data;
     }
   } catch (e) {
     console.log(e);
@@ -151,7 +151,7 @@ function* getDetailList(action) {//1.1.6.获取清洗计划记录列表
 function* getAddCleanPlan(action) {//1.1.7.添加人工清洗计划
   const { payload } = action;
 
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getAddCleanPlan}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getAddCleanPlan}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);
@@ -166,8 +166,8 @@ function* getAddCleanPlan(action) {//1.1.7.添加人工清洗计划
       }));
       yield put({ // 请求请求详情页数据
         type: cleanoutRecordAction.getMainList,
-        payload: { ...params }
-      })
+        payload: { ...params },
+      });
     } else {
       message.error(`清洗计划添加失败!${response.data.message}`);
       yield put({
@@ -181,7 +181,7 @@ function* getAddCleanPlan(action) {//1.1.7.添加人工清洗计划
 }
 function* getEditCleanPlan(action) {//1.1.8.修改人工清洗计划
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getEditCleanPlan}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getEditCleanPlan}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.put, url, payload);
@@ -195,8 +195,8 @@ function* getEditCleanPlan(action) {//1.1.8.修改人工清洗计划
       }));
       yield put({ // 请求请求详情页数据
         type: cleanoutRecordAction.getDetailList,
-        payload: { ...params }
-      })
+        payload: { ...params },
+      });
     } else {
       message.error(`清洗计划详情编辑失败!${response.data.message}`);
       yield put({
@@ -210,7 +210,7 @@ function* getEditCleanPlan(action) {//1.1.8.修改人工清洗计划
 }
 function* getCleanPlanDetail(action) {//1.1.9.获取人工清洗计划详情
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getCleanPlanDetail}/${payload.planId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getCleanPlanDetail}/${payload.planId}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.get, url, payload);
@@ -218,7 +218,7 @@ function* getCleanPlanDetail(action) {//1.1.9.获取人工清洗计划详情
       yield put({
         type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
         payload: {
-          cleanPlandetail: response.data.data || {}
+          cleanPlandetail: response.data.data || {},
         },
       });
     }
@@ -228,7 +228,7 @@ function* getCleanPlanDetail(action) {//1.1.9.获取人工清洗计划详情
 }
 function* deleteCleanPlan(action) {//1.1.10.删除清洗计划详情,删除下雨记录也是此接口
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanPlan}/${payload.planId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanPlan}/${payload.planId}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.delete, url, payload);
@@ -242,7 +242,7 @@ function* deleteCleanPlan(action) {//1.1.10.删除清洗计划详情,删除下�
       yield put({
         type: cleanoutRecordAction.getDetailList,
         payload,
-      })
+      });
     } else {
       message.error(`清洗计划详情删除失败!${response.data.message}`);
       yield put({
@@ -256,15 +256,15 @@ function* deleteCleanPlan(action) {//1.1.10.删除清洗计划详情,删除下�
 }
 function* getAddRainPlan(action) {//1.1.11.添加下雨清洗计划
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getAddRainPlan}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getAddRainPlan}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-      if(response.data.message){//后台说添加失败message不为空，成功message为空
-        message.error(`降雨时间添加失败，已有该时间段的降雨记录！`);
-      }else{
-        message.success(`添加降雨记录成功!`);
+      if (response.data.message) {//后台说添加失败message不为空，成功message为空
+        message.error('降雨时间添加失败，已有该时间段的降雨记录！');
+      } else {
+        message.success('添加降雨记录成功!');
       }
       const params = yield select(state => ({
         stationCodes: state.highAanlysisReducer.cleanoutRecordReducer.get('stationCodes'),
@@ -275,8 +275,8 @@ function* getAddRainPlan(action) {//1.1.11.添加下雨清洗计划
       }));
       yield put({ // 请求请求详情页数据
         type: cleanoutRecordAction.getMainList,
-        payload: { ...params }
-      })
+        payload: { ...params },
+      });
     }
   } catch (e) {
     console.log(e);
@@ -284,12 +284,12 @@ function* getAddRainPlan(action) {//1.1.11.添加下雨清洗计划
 }
 function* getEditRainPlan(action) {//1.1.12.修改下雨清洗计划
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getEditRainPlan}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getEditRainPlan}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.put, url, payload);
     if (response.data.code === '10000') {// 编辑成功，重新请求列表，返回详情页，并重新请求列表
-   
+
       const params = yield select(state => ({
         stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('singleStationCode'),
         cleanType: state.highAanlysisReducer.cleanoutRecordReducer.get('cleanType'),
@@ -298,8 +298,8 @@ function* getEditRainPlan(action) {//1.1.12.修改下雨清洗计划
       }));
       yield put({ // 请求请求详情页数据
         type: cleanoutRecordAction.getDetailList,
-        payload: { ...params }
-      })
+        payload: { ...params },
+      });
     } else {
       message.error(`降雨时间编辑失败!${response.data.message}`);
       yield put({
@@ -314,7 +314,7 @@ function* getEditRainPlan(action) {//1.1.12.修改下雨清洗计划
 function* getRainPlanDetail(action) {//1.1.13.获取下雨清洗计划详情
   const { payload } = action;
 
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getRainPlanDetail}/${payload.planId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getRainPlanDetail}/${payload.planId}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.get, url, payload);
@@ -322,7 +322,7 @@ function* getRainPlanDetail(action) {//1.1.13.获取下雨清洗计划详情
       yield put({
         type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
         payload: {
-          rainPlandetail: response.data.data || {}
+          rainPlandetail: response.data.data || {},
         },
       });
     }
@@ -332,8 +332,8 @@ function* getRainPlanDetail(action) {//1.1.13.获取下雨清洗计划详情
 }
 function* getPlanRecordList(action) {//1.1.14.获取清洗记录列表
   const { payload } = action;
-  const { planId } = payload
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getPlanRecordList}`
+  const { planId } = payload;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getPlanRecordList}`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
@@ -359,7 +359,7 @@ function* getPlanRecordList(action) {//1.1.14.获取清洗记录列表
         },
       });
     } else {
-      throw response.data.data
+      throw response.data.data;
     }
   } catch (e) {
     console.log(e);
@@ -379,7 +379,7 @@ function* getPlanRecordList(action) {//1.1.14.获取清洗记录列表
 function* getAddCleanRecord(action) {//1.1.15.添加清洗记录
   const { payload } = action;
   const { planId } = payload;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getAddCleanRecord}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getAddCleanRecord}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);
@@ -398,12 +398,12 @@ function* getAddCleanRecord(action) {//1.1.15.添加清洗记录
       }));
       yield put({ // 请求请求单电站详情页数据
         type: cleanoutRecordAction.getDetailList,
-        payload: { ...params }
-      })
+        payload: { ...params },
+      });
       yield put({ // 请求计划记录页数据
         type: cleanoutRecordAction.getPlanRecordList,
-        payload: { planId, ...planRecordParams }
-      })
+        payload: { planId, ...planRecordParams },
+      });
     }
   } catch (e) {
     console.log(e);
@@ -411,7 +411,7 @@ function* getAddCleanRecord(action) {//1.1.15.添加清洗记录
 }
 function* editCleanRecord(action) {//1.1.16.修改清洗记录
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.editCleanRecord}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.editCleanRecord}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.put, url, payload);
@@ -423,8 +423,8 @@ function* editCleanRecord(action) {//1.1.16.修改清洗记录
       }));
       yield put({ // 请求请求详情页数据
         type: cleanoutRecordAction.getPlanRecordList,
-        payload: { ...params }
-      })
+        payload: { ...params },
+      });
     } else {
       message.error(`清洗记录详情编辑失败!${response.data.message}`);
       yield put({
@@ -438,7 +438,7 @@ function* editCleanRecord(action) {//1.1.16.修改清洗记录
 }
 function* getCleanRecordDetail(action) {//1.1.17.获取清洗记录详情
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getCleanRecordDetail}/${payload.planId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getCleanRecordDetail}/${payload.planId}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.get, url, payload);
@@ -446,7 +446,7 @@ function* getCleanRecordDetail(action) {//1.1.17.获取清洗记录详情
       yield put({
         type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
         payload: {
-          cleanRecorddetail: response.data.data || {}
+          cleanRecorddetail: response.data.data || {},
         },
       });
     }
@@ -456,7 +456,7 @@ function* getCleanRecordDetail(action) {//1.1.17.获取清洗记录详情
 }
 function* deleteCleanRecord(action) {//1.1.18.删除清洗记录
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanRecord}/${payload.planId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanRecord}/${payload.planId}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.delete, url, payload);
@@ -469,7 +469,7 @@ function* deleteCleanRecord(action) {//1.1.18.删除清洗记录
       yield put({
         type: cleanoutRecordAction.getPlanRecordList,
         payload,
-      })
+      });
     } else {
       message.error(`清洗计划详情删除失败!${response.data.message}`);
       yield put({
@@ -483,7 +483,7 @@ function* deleteCleanRecord(action) {//1.1.18.删除清洗记录
 }
 function* getMatrix(action) {//获取单电站方阵
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixList}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixList}`;
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);

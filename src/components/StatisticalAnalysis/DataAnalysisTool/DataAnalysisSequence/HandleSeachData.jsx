@@ -196,16 +196,16 @@ class HandleSeachData extends React.Component {
 
   }
   //交换左右y轴
-  changeSwap = () => {
-    const { xCode, yCode, xName, yName } = this.state;
-    this.setState({
-      isSwap: !this.state.isSwap,
-      xName: yName,
-      yName: xName,
-      xCode: yCode,
-      yCode: xCode,
-    });
-  }
+  // changeSwap = () => {
+  //   const { xCode, yCode, xName, yName } = this.state;
+  //   this.setState({
+  //     isSwap: !this.state.isSwap,
+  //     xName: yName,
+  //     yName: xName,
+  //     xCode: yCode,
+  //     yCode: xCode,
+  //   });
+  // }
   //查询图表数据
   getSequenceData = () => {
     //请求数据
@@ -338,7 +338,7 @@ class HandleSeachData extends React.Component {
                 <Option key={e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
               ))}
             </Select>
-            <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
+            <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} />
             <Select
               style={{ width: 160 }}
               onChange={this.changeY2value}
@@ -358,13 +358,13 @@ class HandleSeachData extends React.Component {
               <InputNumber
                 value={xMax}
                 formatter={value => `最大值 ${value}`}
-                parser={value => value.replace(/\D/g, '')}
+                parser={value => value.replace(/[^-.0-9]/g, '')}
                 onChange={(value) => this.setState({ xyValueLimit: { ...xyValueLimit, xMax: value } })}
               />
               <InputNumber
                 value={xMin}
                 formatter={value => `最小值 ${value}`}
-                parser={value => value.replace(/\D/g, '')}
+                parser={value => value.replace(/[^-.0-9]/g, '')}
                 onChange={(value) => this.setState({ xyValueLimit: { ...xyValueLimit, xMin: value } })}
               />
             </div>
@@ -373,13 +373,13 @@ class HandleSeachData extends React.Component {
               <InputNumber
                 value={yMax}
                 formatter={value => `最大值 ${value}`}
-                parser={value => value.replace(/\D/g, '')}
+                parser={value => value.replace(/[^-.0-9]/g, '')}
                 onChange={(value) => this.setState({ xyValueLimit: { ...xyValueLimit, yMax: value } })}
               />
               <InputNumber
                 value={yMin}
                 formatter={value => `最小值 ${value}`}
-                parser={value => value.replace(/\D/g, '')}
+                parser={value => value.replace(/[^-.0-9]/g, '')}
                 onChange={(value) => this.setState({ xyValueLimit: { ...xyValueLimit, yMin: value } })}
               />
 
