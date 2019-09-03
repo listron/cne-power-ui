@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { Button, Table, Icon } from 'antd';
+import moment from 'moment';
 import path from '../../../../constants/path';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
@@ -40,8 +41,8 @@ class QuotaList extends Component {
     getQuotaList({
       ...newParam,
       stationCodes,
-      startDate,
-      endDate,
+      startDate: moment(startDate).format('YYYY-MM-DD'),
+      endDate: moment(endDate).format('YYYY-MM-DD'),
       indexCodes,
     });
   }
@@ -63,8 +64,8 @@ class QuotaList extends Component {
         pageNum,
         pageSize,
         stationCodes,
-        startDate,
-        endDate,
+        startDate: moment(startDate).format('YYYY-MM-DD'),
+        endDate: moment(endDate).format('YYYY-MM-DD'),
         indexCodes,
       },
     });

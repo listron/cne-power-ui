@@ -167,10 +167,10 @@ class DailySearch extends Component {
   timeChange = (time) => { // 选择时间
     const { changeDailyQueryStore, queryParam } = this.props;
     const timeLength = time.length > 0;
-    let startDate = timeLength ? moment(time[0]).startOf('day').format('YYYY-MM-DD') : null;
-    let endDate = timeLength ? moment(time[1]).startOf('day').format('YYYY-MM-DD') : null;
+    let startDate = timeLength ? moment(time[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss') : null;
+    let endDate = timeLength ? moment(time[1]).startOf('day').format('YYYY-MM-DD HH:mm:ss') : null;
     const isToday = moment(endDate).isSame(moment(), 'd');
-    isToday ? endDate = moment().format('YYYY-MM-DD') : endDate;
+    isToday ? endDate = moment().format('YYYY-MM-DD HH:mm:ss') : endDate;
     changeDailyQueryStore({
       queryParam: {
         ...queryParam,
@@ -222,7 +222,7 @@ class DailySearch extends Component {
       return e.value;
     });
 
-    tableType === 'quotaList' && getQuotaList({ stationCodes, startDate, endDate, pageNum, pageSize, indexCodes });
+    tableType === 'quotaList' && getQuotaList({ stationCodes, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), pageNum, pageSize, indexCodes });
     tableType === 'faultList' && getFaultList({ stationCodes, startDate, endDate, pageNum, pageSize, faultIds, keyWord });
     tableType === 'limitList' && getLimitList({ stationCodes, startDate, endDate, pageNum, pageSize, keyWord: powerInformation });
   }
