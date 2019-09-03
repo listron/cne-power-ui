@@ -14,18 +14,14 @@ class DeviceManageSearch extends Component {
     stationDeviceTypes: PropTypes.array,
     deviceModels: PropTypes.array,
     deviceTypeCode: PropTypes.number,
-    deviceModeCode: PropTypes.number,
-    changeCommonStore: PropTypes.func,
+    deviceModeCode: PropTypes.string,
     getDeviceList: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
-    getStationDeviceType: PropTypes.func,
     getfactorsDeviceMode: PropTypes.func,
     getDeviceModel: PropTypes.func,
     changeDeviceManageStore: PropTypes.func,
-    getDeviceFactors: PropTypes.func,
     manufactorId: PropTypes.string,
     deviceFactorsData: PropTypes.object,
-    stationDevices: PropTypes.array,
     factorsDeviceModeData: PropTypes.array,
   };
   constructor(props) {
@@ -56,18 +52,28 @@ class DeviceManageSearch extends Component {
       deviceFactorsList: [],
     });
   };
-  selectDeviceType = value => {
+  selectDeviceType = value => {//获取厂家列表换接口1.2.10
     const {
+      stationCode,
       getDeviceModel,
       getDeviceList,
       queryParams,
+      getfactorsDeviceMode,
       changeDeviceManageStore,
     } = this.props;
-    this.props.getDeviceFactors({
+    getfactorsDeviceMode({
+      stationCode,
       deviceTypeCode: value,
-      orderField: '1',
-      orderMethod: 'desc',
+      isConnectDevice: 1,
+      manufactorId: 0,
+      assetsId: '',
     });
+    // this.props.getDeviceFactors({
+    //   stationCode,
+    //   deviceTypeCode: value,
+    //   orderField: '1',
+    //   orderMethod: 'desc',
+    // });
     // getDeviceModel({
     //   stationCode,
     //   deviceTypeCode: value,
@@ -84,10 +90,14 @@ class DeviceManageSearch extends Component {
     });
   };
   selectfactory = value => {
-    const { getDeviceList, queryParams, getfactorsDeviceMode } = this.props;
+    const { getDeviceList, queryParams, getfactorsDeviceMode, stationCode, deviceTypeCode } = this.props;
     getfactorsDeviceMode({
+      stationCode,
+      deviceTypeCode,
+      isConnectDevice: 1,
       manufactorId: value,
       assetsId: '',
+
     });
     getDeviceList({
       ...queryParams,
@@ -116,6 +126,7 @@ class DeviceManageSearch extends Component {
       deviceFactorsData,
       manufactorId,
       factorsDeviceModeData,
+      allMode,
 
     } = this.props;
     const dataList = deviceFactorsData.dataList ? deviceFactorsData.dataList : [];
@@ -157,12 +168,12 @@ class DeviceManageSearch extends Component {
           onChange={this.selectfactory}
           value={manufactorId}
           placeholder="请选择设备厂家"
-          disabled={!dataList || dataList.length === 0}
+          disabled={!allMode || allMode.length === 0}
         >
           <Option key={null} value={null}>
             {'全部厂家'}
           </Option>
-          {dataList.map(e => {
+          {allMode.map(e => {
             if (!e) {
               return null;
             }
