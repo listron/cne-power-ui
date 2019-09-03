@@ -33,7 +33,7 @@ class StopStatus extends Component {
     const { history, stopStringify, areaStation, modeDevices } = this.props;
     const { search } = history.location;
     const infoStr = searchUtil(search).getValue('stop');
-    if (infoStr && !stopStringify) { // 有search路径但无访问记录: 刷新进入。
+    if (infoStr && infoStr !== stopStringify) { // 有search路径但无访问记录: 刷新或其他页面路径改变进入。
       const { stationCode, deviceCodes, startTime, endTime } = this.getQueryParam(infoStr);
       this.props.changeStore({
         stopStringify: infoStr,
@@ -68,11 +68,14 @@ class StopStatus extends Component {
       });
       this.queryChart({ stationCode, deviceCodes, startTime, endTime });
     }
-    if (!stopStringify && areaStation.length === 0 && nextArea.length > 0) { // 刷新 得到电站数据
+    if (!infoStr && areaStation.length === 0 && nextArea.length > 0) { // 刷新 得到电站数据
       this.propsAreaStationChange(nextArea);
     }
-    if (this.getIsDevicesChange(modeDevices, nextDevices)) { // 第一次 得到设备信息
-      this.propsModeDevicesChange(nextDevices);
+    if (this.getIsDevicesChange(modeDevices, nextDevices)) { // 得到设备信息
+      !infoStr && this.propsModeDevicesChange(nextDevices); // 初始加载得到设备信息 => 自动请求
+      infoStr && this.props.changeStore({ // 数据，只是切换电站得到设备。
+        modeDevices: nextDevices,
+      });
     }
   }
 
@@ -103,13 +106,7 @@ class StopStatus extends Component {
 
   propsModeDevicesChange = (modeDevices) => { // 初始得到电站下设备信息;
     const { stationCode } = this.props;
-    const deviceCodes = [];
-    modeDevices.forEach(e => {
-      const { children = [] } = e || {};
-      if (children.length > 0) {
-        deviceCodes.push(...children.map(m => m.value));
-      }
-    });
+    const deviceCodes = this.getDevices(modeDevices);
     this.props.changeStore({ modeDevices, deviceCodes });
     this.historyChange(
       stationCode,
@@ -117,6 +114,17 @@ class StopStatus extends Component {
       moment().subtract(1, 'year').format('YYYY-MM-DD'),
       moment().format('YYYY-MM-DD'),
     );
+  }
+
+  getDevices = (modeInfo = []) => {
+    const codes = [];
+    modeInfo.forEach(e => {
+      const { children = [] } = e || {};
+      if (children.length > 0) {
+        codes.push(...(children.map(m => m.value)));
+      }
+    });
+    return codes;
   }
 
   historyChange = (code, device, startTime, endTime) => {
@@ -176,17 +184,6 @@ class StopStatus extends Component {
     const deviceChanged = deviceCodes.length !== device.length || deviceCodes.find(e => !device.includes(e));
     const timeChanged = startTime !== dates[0] || endTime !== dates[1];
     const searchForbidden = stopStatusLoading || searchInfoLost || (!timeChanged && !deviceChanged);
-    // const faultNames = ['风机故障', '计划停机', '变电故障', '场外因素', '其他损失'];
-    // const stopStatusList = [1, 2, 3, 4, 5, 6, 7].map(e => ({
-    //   deviceFullcode: `${e}M${e * e}MM${e * 2}`,
-    //   deviceName: `A${e}_FE${e * 2}`,
-    //   faultInfos: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(m => ({
-    //     startTime: moment('2018-01-01').add(m, 'month').format('YYYY-MM-DD'),
-    //     endTime: moment('2018-01-01').add(m, 'month').add(e + parseInt(10 * Math.random(), 10), 'day').format('YYYY-MM-DD'),
-    //     faultName: faultNames[m] || '风机故障',
-    //     reason: `${e}故障的描述啊，详情啊${m}, hahhahaha ${m + e * m + m ** m}`,
-    //   })),
-    // }));
     return (
       <div className={styles.stop}>
         <div className={styles.searchPart}>

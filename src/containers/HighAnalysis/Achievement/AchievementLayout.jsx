@@ -27,7 +27,7 @@ class AchievementLayout extends Component {
 
   constructor(props){
     super(props);
-    const { search } = props.location;
+    const { search } = props.history.location;
     const { pages } = searchUtil(search).parse();
     const { pathKey } = props.match.params || {};
     this.tabs = ['group', 'area', 'station', 'run', 'stop'];
@@ -45,13 +45,13 @@ class AchievementLayout extends Component {
 
   componentWillReceiveProps(nextProps){
     const { pages } = this.state;
-    const { match, location, history } = this.props;
-    const { search } = location; // 上次的search
+    const { match, history } = this.props;
+    const { search } = history.location; // 上次的search
     const { pathKey } = match.params || {};
     const { pages: nextPages } = searchUtil(search).parse(); // 新的pages变化
 
     const nextMatchParam = nextProps.match.params || {};
-    const nextLocation = nextProps.location;
+    const nextLocation = nextProps.history.location;
     const nextSearch = nextLocation.search;
     const nexPathKey = nextMatchParam.pathKey;
     const currentPages = pages.join('_'); // 当前pages变化
@@ -59,7 +59,7 @@ class AchievementLayout extends Component {
     const pageChange = pathKey !== nexPathKey; // 激活页变化
     if(pageChange && !pageExist && !nextSearch){ // 目录新开一个未开启页面: 切换至新页面, search信息中只添加入新的pages
       pages.push(nexPathKey);
-      this.setState({pages});
+      this.setState({ pages });
       const searchResult = searchUtil(search).add({pages: pages.join('_')}).stringify();
       history.push(`${nextLocation.pathname}?${searchResult}`);
     } else if (pageChange && pageExist && !nextSearch) {// 2. 目录处点击已开启页面 => 切换至页面, search信息不变
