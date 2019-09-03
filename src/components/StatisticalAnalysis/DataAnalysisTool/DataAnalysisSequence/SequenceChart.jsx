@@ -111,9 +111,9 @@ class SequenceChart extends React.Component {
       },
       tooltip: {
         trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-        },
+        // axisPointer: {
+        //   type: 'cross',
+        // },
         enterable: true,
         show: true,
         formatter: (payload) => {
