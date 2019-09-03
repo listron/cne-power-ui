@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { dataFormat } from '../../../../utils/utilFunc';
 
-class MonthGenChart extends Component{
+class MonthGenChart extends Component {
   static propTypes = {
     enterpriseId: PropTypes.string,
     hasMultipleType: PropTypes.bool,
@@ -13,14 +13,14 @@ class MonthGenChart extends Component{
     getMonthPower: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       monthType: 'wind',
     };
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { monthPower } = nextProps;
     this.setData(monthPower);
   }
@@ -31,11 +31,11 @@ class MonthGenChart extends Component{
     }
     const xAxisArr = [], yGenData = [], yRateData = [];
     let hasData = false;
-    monthPower.forEach(e=>{
+    monthPower.forEach(e => {
       xAxisArr.push(e.month);
-      yGenData.push(e.power);
+      yGenData.push(e.power * 100);
       yRateData.push(e.rate);
-      if(e.power || e.rate || e.power === 0 || e.rate === 0){
+      if (e.power || e.rate || e.power === 0 || e.rate === 0) {
         hasData = true;
       }
     });
@@ -148,30 +148,30 @@ class MonthGenChart extends Component{
         },
       ],
       series: [
-          {
-            name: '发电量',
-            type: 'bar',
-            data: yGenData,
+        {
+          name: '发电量',
+          type: 'bar',
+          data: yGenData,
+          itemStyle: {
+            barBorderRadius: 6,
+            color: '#6236ff',
+          },
+          emphasis: {
             itemStyle: {
-              barBorderRadius: 6,
-              color: '#6236ff',
+              color: '#fd6e8f',
             },
-            emphasis: {
-              itemStyle: {
-                color: '#fd6e8f',
-              },
-            },
-            barWidth: 6,
           },
-          {
-            name: '同比',
-            type: 'line',
-            yAxisIndex: 1,
-            showSymbol: false,
-            lineStyle: { color: '#f8e71c' },
-            data: yRateData,
-          },
-        ],
+          barWidth: 6,
+        },
+        {
+          name: '同比',
+          type: 'line',
+          yAxisIndex: 1,
+          showSymbol: false,
+          lineStyle: { color: '#f8e71c' },
+          data: yRateData,
+        },
+      ],
     };
     monthChart.setOption(option);
   }
@@ -184,7 +184,7 @@ class MonthGenChart extends Component{
   }
 
 
-  render(){
+  render() {
     const { monthType } = this.state;
     const { hasMultipleType } = this.props;
     return (

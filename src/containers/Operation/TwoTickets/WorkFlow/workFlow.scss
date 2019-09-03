@@ -1,30 +1,43 @@
 .workflow {
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+  flex-direction: column;
+  .contentBox {
     display: flex;
     flex: 1;
-    min-height: 100%;
-    flex-direction: column;
-    .contentBox {
-        display: flex;
-        flex: 1;
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 24px 24px 0 24px;
-        background-color: #ececec;
-        .container {
-            display: flex;
-            flex: 1;
-            flex-direction: row;
-            justify-content: space-between;
-            background: #fff;
-            overflow: hidden;
-        }
-        .workflowList {
-            display: flex;
-            flex: 1 0 auto;
-            width: 100%;
-            flex-direction: column;
-            background: #fff;
-        }
-       
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 24px 24px 0 24px;
+    .container {
+      display: flex;
+      flex: 1;
+      flex-direction: row;
+      justify-content: space-between;
+      overflow: hidden;
     }
+    .workflowList {
+      display: flex;
+      flex: 1 0 auto;
+      width: 100%;
+      flex-direction: column;
+    }
+  }
+}
+
+.light {
+  .contentBox {
+    background-color: #ececec;
+    .container {
+      background: #fff;
+    }
+    .workflowList {
+      background: #fff;
+    }
+  }
+}
+
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  background: $background;
 }

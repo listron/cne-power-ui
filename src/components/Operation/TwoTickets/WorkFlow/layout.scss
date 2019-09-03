@@ -1,0 +1,117 @@
+.flowTable {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  .tableTop {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 28px 20px 28px;
+    .selectCondition {
+      display: flex;
+      justify-content: space-between;
+    }
+    .commonButton {
+      cursor: pointer;
+      margin-right: 8px;
+      line-height: 32px;
+      border-radius: 4px;
+      text-align: center;
+      display: inline-block;
+      padding: 0 12px;
+    }
+
+    .disabled {
+      pointer-events: none;
+      text-shadow: none;
+      box-shadow: none;
+    }
+  }
+
+  .stationName {
+    @include overflowText();
+    max-width: 175px;
+    min-width: 100px;
+  }
+  .dealUserNames {
+    @include overflowText();
+    max-width: 150px;
+  }
+  .docketCode {
+    @include overflowText();
+    max-width: 100px;
+  }
+  .docketName {
+    @include overflowText();
+    max-width: 125px;
+  }
+  .createTime {
+    min-width: 134px;
+  }
+
+  :global {
+    .ant-table .ant-table-tbody > tr > td {
+      padding: 0 4px;
+    }
+    .ant-table-placeholder {
+      border: none;
+    }
+  }
+}
+
+.workflowDeatil {
+  display: flex;
+  flex: 1 0 auto;
+  width: 100%;
+  z-index: 1;
+  flex-direction: column;
+  background: #fff;
+  .header {
+    line-height: 64px;
+    display: flex;
+    padding-left: 32px;
+    align-items: center;
+    border-bottom: solid 1px #dfdfdf;
+    justify-content: space-between;
+    .text {
+      font-size: 18px;
+      color: #666;
+      letter-spacing: 4px;
+    }
+    .backIcon {
+      color: #666;
+      font-size: 20px;
+      border-left: 1px solid #dfdfdf;
+      height: 100%;
+      line-height: 64px;
+      width: 64px;
+      cursor: pointer;
+    }
+  }
+}
+
+.condition {
+  display: flex;
+  flex-direction: column;
+  .statusGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px 28px 20px;
+    .text {
+      display: flex;
+      flex-direction: row;
+      margin-right: 16px;
+      > span:first-child {
+        margin-right: 28px;
+      }
+    }
+
+    :global {
+      .ant-radio-button-wrapper {
+        padding: 0 8px;
+      }
+    }
+  }
+}

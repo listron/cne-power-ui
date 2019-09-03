@@ -10,7 +10,7 @@ import AddCleanoutRecord from './AddCleanoutRecord';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
 import InputLimit from '../../../../Common/InputLimit';
 import moment from 'moment';
-import { Table, Icon, Modal, Form, DatePicker, Input, Button,  } from 'antd';
+import { Table, Icon, Modal, Form, DatePicker, Input, Button } from 'antd';
 const FormItem = Form.Item;
 
 
@@ -37,16 +37,16 @@ class CleanoutPlanRecord extends Component {
       showWarningTip: false,
       warningTipText: '',
       showAddRecordModal: false,
-    }
+    };
   }
   onPaginationChange = ({ pageSize, currentPage }) => {//分页器
     const { changeCleanoutRecordStore, getPlanRecordList, planId, cleanType } = this.props;
-    changeCleanoutRecordStore({ cleanRecordPageNum: currentPage, cleanRecordPageSize: pageSize })
+    changeCleanoutRecordStore({ cleanRecordPageNum: currentPage, cleanRecordPageSize: pageSize });
     getPlanRecordList({
       planId,
       pageNum: currentPage,
       pageSize,
-    })
+    });
   }
   preStation = () => { // 上一个电站详情
     const { singleStationCode, cleanType, detailListData, selectedStationIndex, detailPageNum, detailPageSize, getDetailList, getPlanRecordList, cleanRecordPageNum, cleanRecordPageSize } = this.props;
@@ -55,7 +55,7 @@ class CleanoutPlanRecord extends Component {
       this.setState({
         showWarningTip: true,
         warningTipText: '这是第一个!',
-      })
+      });
     } else if (selectedStationIndex === 0 && detailPageNum > 1) { // 其他页向前翻页
       getDetailList({
         singleStationCode,
@@ -63,14 +63,14 @@ class CleanoutPlanRecord extends Component {
         pageNum: detailPageNum - 1,
         pageSize: detailPageSize,
         selectedStationIndex: detailPageSize - 1,
-      })
+      });
     } else {
       getPlanRecordList({ // 正常请求上一条电站详情数据
         planId: detailListData[selectedStationIndex - 1].planId,
         pageNum: cleanRecordPageNum,
         pageSize: cleanRecordPageSize,
         selectedStationIndex: selectedStationIndex - 1,
-      })
+      });
     }
   }
 
@@ -82,7 +82,7 @@ class CleanoutPlanRecord extends Component {
       this.setState({
         showWarningTip: true,
         warningTipText: '这是最后一个!',
-      })
+      });
     } else if (selectedStationIndex === detailPageSize - 1 && detailPageNum < maxPage) { // 向后翻页
       getDetailList({
         singleStationCode,
@@ -90,14 +90,14 @@ class CleanoutPlanRecord extends Component {
         pageNum: detailPageNum + 1,
         pageSize: detailPageSize,
         selectedStationIndex: 0,
-      })
+      });
     } else {
       getPlanRecordList({ // 请求下一条电站详情数据
-        planId: detailListData[selectedStationIndex+1].planId,
-        selectedStationIndex: selectedStationIndex+1,
+        planId: detailListData[selectedStationIndex + 1].planId,
+        selectedStationIndex: selectedStationIndex + 1,
         pageNum: cleanRecordPageNum,
         pageSize: cleanRecordPageSize,
-      })
+      });
     }
   }
 
@@ -105,30 +105,30 @@ class CleanoutPlanRecord extends Component {
     this.setState({
       showWarningTip: false,
       warningTipText: '',
-    })
+    });
   }
 
   backToList = () => { // 返回列表页
     this.props.changeCleanoutRecordStore({
       selectedStationIndex: null,
     });
-    this.props.onShowSideChange({ showSidePage: 'detail' })
+    this.props.onShowSideChange({ showSidePage: 'detail' });
   }
 
   addRecord = () => {
-    this.setState({ showAddRecordModal: true, })
+    this.setState({ showAddRecordModal: true });
   }
   cancelAddRecord = () => {
-    this.setState({ showAddRecordModal: false })
+    this.setState({ showAddRecordModal: false });
   }
 
 
   render() {
-    const { cleanRecordTotal, cleanRecordCost, cleanRecordProfit, cleanRecordTime, cleanRecordPageSize, cleanRecordPageNum, cleanRecordPlanTime, stationName, provinceName } = this.props;
+    const { cleanRecordTotal, cleanRecordCost, cleanRecordProfit, cleanRecordTime, cleanRecordPageSize, cleanRecordPageNum, cleanRecordPlanTime, stationName, provinceName, theme } = this.props;
     const { showWarningTip, warningTipText, showAddRecordModal } = this.state;
     // const record = { name: 'dali' }
     return (
-      <div className={styles.sidePage}>
+      <div className={`${styles.sidePage} ${styles[theme]}`}>
         <div className={styles.CleanoutPlanRecord}>
           <div className={styles.testBackground}>
             {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -158,21 +158,23 @@ class CleanoutPlanRecord extends Component {
               <div className={styles.statisticTarget}>
                 <div className={styles.numberColor}>{cleanRecordTime}</div>
                 <div>清洗用时(天)</div></div>
+            </div>
+            <div className={styles.wrap}>
+              <div className={styles.filterData}>
+                <Button type="add" onClick={this.addRecord} className={styles.plusButton}><i>+</i>添加</Button>
+                {showAddRecordModal ? <AddCleanoutRecord {...this.props} getAddOrEditCleanRecord={this.props.getAddCleanRecord} showAddRecordModal={showAddRecordModal} cancelAddRecord={this.cancelAddRecord} /> : ''}
+                <Pagination total={cleanRecordTotal} pageSize={cleanRecordPageSize} currentPage={cleanRecordPageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
+              </div>
+              <PlanRecordTable {...this.props} />
+            </div>
 
-            </div>
-            <div className={styles.filterData}>
-              <Button className={styles.plusButton} onClick={this.addRecord} icon="plus" >添加</Button>
-              {showAddRecordModal ? <AddCleanoutRecord {...this.props} getAddOrEditCleanRecord={this.props.getAddCleanRecord} showAddRecordModal={showAddRecordModal} cancelAddRecord={this.cancelAddRecord} /> : ''}
-              <Pagination total={cleanRecordTotal} pageSize={cleanRecordPageSize} currentPage={cleanRecordPageNum} onPaginationChange={this.onPaginationChange} />
-            </div>
-            <PlanRecordTable {...this.props} />
           </div>
 
 
         </div>
       </div>
 
-    )
+    );
   }
 }
 

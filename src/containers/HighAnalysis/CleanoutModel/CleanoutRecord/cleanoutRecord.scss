@@ -1,12 +1,14 @@
-.cleanoutRecordBox{
+.cleanoutRecordBox {
   min-height: 100%;
   display: flex;
-  flex:1;
+  flex: 1;
   flex-direction: column;
-  .cleanoutRecordContainer{
+  .cleanoutRecordContainer {
     display: flex;
     flex: 1;
-    //padding: 24px 24px 0;
-    // background-color: #ececec;                       
   }
+}
+
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
 }

@@ -17,26 +17,26 @@ class DeviceTypeFilter extends Component {
 
   onChange = (value) => {
     this.props.onChangeFilter({
-      deviceTypeCode: value.join(',')
+      deviceTypeCode: value.join(','),
     });
   }
 
   onReset = () => {
     this.props.onChangeFilter({
-      deviceTypeCode: ''
+      deviceTypeCode: '',
     });
   }
 
   render() {
-    const { deviceTypes, deviceTypeCode } = this.props;
-    const options = deviceTypes.map((item,i)=>({
+    const { deviceTypes, deviceTypeCode, theme } = this.props;
+    const options = deviceTypes.map((item, i) => ({
       label: item.get('deviceTypeName'),
-      value: item.get('deviceTypeCode').toString()
+      value: `${item.get('deviceTypeCode')}`,
     })).toJS();
     const devieceCodeArr = deviceTypeCode === '' ? [] : deviceTypeCode.split(',');
     return (
-      <div className={styles.deviceTypeFilter}>
-        <span onClick={this.onReset} className={deviceTypeCode===''?styles.selected:styles.all}>不限</span>
+      <div className={`${styles.filterItem} ${styles[theme]}`}>
+        <span onClick={this.onReset} className={deviceTypeCode === '' ? styles.selected : styles.all}>不限</span>
         <CheckboxGroup options={options} value={devieceCodeArr} onChange={this.onChange} />
       </div>
     );

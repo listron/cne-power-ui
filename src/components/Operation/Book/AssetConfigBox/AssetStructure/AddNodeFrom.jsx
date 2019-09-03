@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./assetStructure.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './assetStructure.scss';
 import WarningTip from '../../../../Common/WarningTip';
 
-import { Button, Input, Form, Icon, Select, InputLimit, TreeSelect,message } from 'antd';
+import { Button, Input, Form, Icon, Select, InputLimit, TreeSelect, message } from 'antd';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -22,56 +22,51 @@ class AddNodeFrom extends React.Component {
     assetList: PropTypes.array,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       showWarningTip: false,
       warningTipText: '',
-    }
+    };
   }
   onConfirmWarningTip = () => {
 
     this.setState({
       showWarningTip: false,
-      warningTipText: ''
+      warningTipText: '',
     });
     this.props.closeFrom();
   }
 
   onCancelWarningTip = () => {//信息提示栏隐藏
     this.setState({
-      showWarningTip: false
+      showWarningTip: false,
     });
   }
   submitForm = (e) => {
-    const{stationType,assetsId,childrenNum}=this.props;
+    const { stationType, assetsId, childrenNum } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
-      console.log('values: ', values);
-      const parentLeavel=values.assetsId.split('_')[0].split(',').length;
+      const parentLeavel = values.assetsId.split('_')[0].split(',').length;
       if (!err) {
-        parentLeavel+1<7? 
-      this.props.addAssetNode({...values,stationType}):message.error('超出6级，重新选择父节点')
-      this.props.closeFrom();
-      console.log('发送请求，并且刷新别的数据在saga里');
+        parentLeavel + 1 < 7 ?
+          this.props.addAssetNode({ ...values, stationType }) : message.error('超出6级，重新选择父节点');
+        this.props.closeFrom();
       }
     });
   }
   closeFrom = () => {
     this.setState({
       showWarningTip: true,
-      warningTipText: '确定关闭,关闭后数据不会被保存'
-    })
+      warningTipText: '确定关闭,关闭后数据不会被保存',
+    });
   }
- 
-  childrenFunc=(rule,value,callback)=>{
-    console.log('callback: ', callback);
-    console.log('value: ', value);
-    console.log('rule: ', rule);
-    if (value==='父级名称') {
-      rule.message='不能父级名称相同'
+
+  childrenFunc = (rule, value, callback) => {
+    if (value === '父级名称') {
+      rule.message = '不能父级名称相同';
       callback(rule.message);
       return;
-    }else if(value.length>30){
-      rule.message='不能超过30字';
+    } else if (value.length > 30) {
+      rule.message = '不能超过30字';
       callback(rule.message);
     }
     callback();
@@ -89,7 +84,7 @@ class AddNodeFrom extends React.Component {
   })
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { assetList,assetsId} = this.props;
+    const { assetList, assetsId } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.addNodeFrom}>
@@ -108,11 +103,11 @@ class AddNodeFrom extends React.Component {
             <Form className={styles.editPart}>
               <FormItem className={styles.formItemStyle} colon={false} label="父节点名称">
                 {getFieldDecorator('assetsId', {
-                  initialValue:assetsId,
+                  initialValue: assetsId,
                   rules: [{
                     required: true,
                     message: '请输入缺陷描述',
-                  
+
                   }],
                 })(
 
@@ -136,7 +131,7 @@ class AddNodeFrom extends React.Component {
 
               <FormItem label="节点名称" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('assetsName', {
-                  rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30,  validator:this.childrenFunc }],
+                  rules: [{ required: true, message: '请正确填写,不超过30字', type: 'string', max: 30, validator: this.childrenFunc }],
                 })(
                   <Input placeholder="30字以内" />
                 )}
@@ -144,18 +139,18 @@ class AddNodeFrom extends React.Component {
 
               <FormItem label="分类" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('assetsType', {
-                  rules: [{ required: true, message: '请选择分类', type: "string", max: 30, }],
+                  rules: [{ required: true, message: '请选择分类', type: 'string', max: 30 }],
                 })(
-                  <Select  style={{ width: 194 }}>
-                   <Option value="1">系统</Option>
-                   <Option value="2">设备</Option>
-                   <Option value="3">部件</Option>
-                   </Select>
+                  <Select style={{ width: 194 }}>
+                    <Option value="1">系统</Option>
+                    <Option value="2">设备</Option>
+                    <Option value="3">部件</Option>
+                  </Select>
                 )}
               </FormItem>
               <FormItem label="计量单位" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('assetsUnit', {
-                  rules: [{  message: '请填写正确的计量单位6字以内', type: "string", max: 6, }],
+                  rules: [{ message: '请填写正确的计量单位6字以内', type: 'string', max: 6 }],
                 })(
                   <Input placeholder="6字以内" />
                 )}
@@ -169,7 +164,7 @@ class AddNodeFrom extends React.Component {
 
       </div>
 
-    )
+    );
   }
 }
-export default Form.create()(AddNodeFrom)
+export default Form.create()(AddNodeFrom);

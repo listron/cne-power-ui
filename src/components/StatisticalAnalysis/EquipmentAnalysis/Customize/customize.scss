@@ -1,78 +1,135 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
 .customizeBox {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .search {
+    display: flex;
+    align-items: center;
+    height: 78px;
+    padding: 0 28px;
+    :global {
+      .ant-input {
+        width: 225px;
+      }
+    }
+  }
+  .table {
     display: flex;
     flex-direction: column;
+    border: 1px solid $promptColor;
+    border-radius: 4px;
+    margin: 0 102px;
+    .tHead {
+      display: flex;
+      flex-direction: row;
+      background: #f1f1f1;
+      .selectCondition:nth-child(3) {
+        border-right: none;
+      }
+    }
+    .tBody {
+      display: flex;
+      flex-direction: column;
+      > div {
+        display: flex;
+        flex-direction: row;
+        &:hover {
+          background: #f8f8f8;
+        }
+      }
+    }
+    .option {
+      display: flex;
+      flex: 0 0 12%;
+      height: 40px;
+      border-right: 1px solid $promptColor;
+      align-items: center;
+      padding-left: 28px;
+    }
+    .selectCondition {
+      display: flex;
+      flex-direction: row;
+      flex: 4 0 auto;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid $promptColor;
+      line-height: 42px;
+    }
+    .base {
+      display: flex;
+      flex-direction: row;
+      flex: 4 0 0;
+      align-items: center;
+      margin-left: 40px;
+      border-right: 1px solid $promptColor;
+      // justify-content: center;
+    }
+    .compare {
+      display: flex;
+      flex-direction: row;
+      flex: 4 0 0;
+      align-items: center;
+      margin-left: 40px;
+      // justify-content: center;
+    }
+  }
+}
+
+.light {
+  background: $pageGround;
+  .table {
+    border: 1px solid $promptColor;
+    .tHead {
+      background: #f1f1f1;
+    }
+    .tBody {
+      > div {
+        &:hover {
+          background: #f8f8f8;
+        }
+      }
+    }
+    .option,
+    .selectCondition,
+    .base {
+      border-right: 1px solid $promptColor;
+    }
+  }
+}
+
+.dark {
+  @import "../../../../theme/darkTheme.scss";
+  color: $fontColor;
+  .search {
+    background: $light-background;
+    border: 1px solid $border-color;
+  }
+  .wrap {
+    background: $light-background;
+    border: 1px solid $border-color;
+    margin-top: 10px;
+    display: flex;
     flex: 1;
-    background: $pageGround;
-    .search {
-        display: flex;
-        align-items: center;
-        height: 78px;
-        padding: 0 28px;
-        :global {
-            .ant-input {
-                width: 225px;
-            }
-        }
+    flex-direction: column;
+  }
+  .table {
+    border: 1px solid $border-color;
+    margin-top: 20px;
+    .tHead {
+      background: #1f246f;
     }
-    .table {
-        display: flex;
-        flex-direction: column;
-        border: 1px solid $promptColor;
-        border-radius: 4px;
-        margin: 0 102px;
-        .tHead {
-            display: flex;
-            flex-direction: row;
-            background: #f1f1f1;
-            .selectCondition:nth-child(3) {
-                border-right: none;
-            }
+    .tBody {
+      > div {
+        &:hover {
+          background: #212675;
         }
-        .tBody {
-            display: flex;
-            flex-direction: column;
-            >div {
-                display: flex;
-                flex-direction: row;
-                &:hover {
-                    background: #f8f8f8;
-                }
-            }
-        }
-        .option {
-            display: flex;
-            flex: 0 0 12%;
-            height: 40px;
-            border-right: 1px solid $promptColor;
-            align-items: center;
-            padding-left: 28px;
-        }
-        .selectCondition {
-            display: flex;
-            flex-direction: row;
-            flex: 4 0 auto;
-            align-items: center;
-            justify-content: center;
-            border-right: 1px solid $promptColor;
-            line-height: 42px;
-        }
-        .base {
-            display: flex;
-            flex-direction: row;
-            flex: 4 0 0;
-            align-items: center;
-            margin-left: 40px;
-            border-right: 1px solid $promptColor;
-            // justify-content: center;
-        }
-        .compare {
-            display: flex;
-            flex-direction: row;
-            flex: 4 0 0;
-            align-items: center;
-            margin-left: 40px;
-            // justify-content: center;
-        }
+      }
     }
+    .option,
+    .selectCondition,
+    .base {
+      border-right: 1px solid $border-color;
+    }
+  }
 }

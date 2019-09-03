@@ -17,11 +17,12 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
     pageSize: PropTypes.number,
     sortType: PropTypes.number,
     sortField: PropTypes.string,
+    theme: PropTypes.string,
   }
   constructor(props) {
     super(props);
     this.state = {
-    }
+    };
   }
   componentDidMount() {
     const { stationCodes, getMainList, pageNum, pageSize, sortField, sortType } = this.props;
@@ -30,18 +31,18 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
       pageNum,
       pageSize,
       sortField,
-      sortType
-    })
+      sortType,
+    });
   }
   componentWillReceiveProps(nextProps) {
     const { getMainList, stationCodes, pageNum, pageSize, sortField, sortType } = nextProps;
     if (pageNum !== this.props.pageNum || pageSize !== this.props.pageSize || sortField !== this.props.sortField || sortType !== this.props.sortType) {
-      getMainList({ stationCodes, pageNum, pageSize, sortField, sortType })
+      getMainList({ stationCodes, pageNum, pageSize, sortField, sortType });
     }
   }
   componentWillUnmount() {
-    const { changeCleanoutRecordStore, } = this.props;
-    changeCleanoutRecordStore({ mainListData: [] })
+    const { changeCleanoutRecordStore } = this.props;
+    changeCleanoutRecordStore({ mainListData: [] });
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => {
@@ -51,34 +52,37 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
       pageNum: currentPage,
       pageSize,
       sortField,
-      sortType
-    })
+      sortType,
+    });
   }
   filterCondition = (change) => {//选择电站
     const { changeCleanoutRecordStore, getMainList, pageNum, pageSize, sortField, sortType } = this.props;
-    changeCleanoutRecordStore({ stationCodes: change.stationCodes })
-    getMainList({ stationCodes: change.stationCodes, pageNum, pageSize, sortField, sortType })
+    changeCleanoutRecordStore({ stationCodes: change.stationCodes });
+    getMainList({ stationCodes: change.stationCodes, pageNum, pageSize, sortField, sortType });
   }
   render() {
-    const { stations, total, pageSize, pageNum } = this.props;
+    const { stations, total, pageSize, pageNum, theme } = this.props;
     return (
-      <div className={styles.cleanoutRecordMain}>
+      <div className={`${styles.cleanoutRecordMain} ${styles[theme]}`}>
         <div className={styles.cleanoutcontainer}>
           <div className={styles.topFilter}>
             <FilterCondition
-              option={['stationName',]}
+              option={['stationName']}
               stations={stations.filter(e => e.stationType === 1)}
               onChange={this.filterCondition}
+              theme={theme}
             />
           </div>
-          <div className={styles.paginationStyle}>
-            <Pagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} />
+          <div className={styles.wrap}>
+            <div className={styles.paginationStyle}>
+              <Pagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
+            </div>
+            <CleanoutRecordTable {...this.props} />
           </div>
-          <CleanoutRecordTable {...this.props} />
         </div>
 
       </div>
-    )
+    );
   }
 }
 
