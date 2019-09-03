@@ -3,6 +3,7 @@ import { dailyQueryAction } from './dailyQueryAction';
 
  const initState = immutable.fromJS({
   tableLoading: false,
+  exportLoading: false,
   stationType: 0, // 选中的电站类型
   tableType: 'quotaList', // 列表类别
   queryParam: { // 请求数据的集合
