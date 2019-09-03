@@ -4,8 +4,8 @@ import styles from './miniComponents.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 
 export const OperationInfo = ({ operationInfo }) => { // 运维情况
-  const completeNum = dataFormat(operationInfo.completeNum);
-  const handleNum = dataFormat(operationInfo.handleNum);
+  const completeNum = dataFormat(operationInfo.completeNum) * 6;
+  const handleNum = dataFormat(operationInfo.handleNum) * 6;
   return (
     <section className={styles.operationInfo}>
       <h3>运维情况</h3>

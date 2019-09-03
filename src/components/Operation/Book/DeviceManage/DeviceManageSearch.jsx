@@ -68,7 +68,7 @@ class DeviceManageSearch extends Component {
       manufactorId: 0,
       assetsId: '',
     });
-    // this.props.getDeviceFactors({
+    // this.props.getDeviceFactors({//原接口
     //   stationCode,
     //   deviceTypeCode: value,
     //   orderField: '1',
