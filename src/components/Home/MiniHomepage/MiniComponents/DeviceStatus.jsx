@@ -19,22 +19,16 @@ class DeviceStatus extends Component {
   }
 
   setData = (realTimeInfo) => {
-    if (!realTimeInfo) {
+    if (!realTimeInfo){
       return;
     }
     const { statusType } = this.state;
     let statusInfo = [];
     if (statusType === 'all') {
-      const { allDeviceStatus = [] } = realTimeInfo;
-      statusInfo = allDeviceStatus.map(e => {
-        return {
-          ...e,
-          deviceStatusNum: e.deviceStatusNum * 100,
-        };
-      });
-    } else if (statusType === 'wind') {
+      statusInfo = realTimeInfo.allDeviceStatus || [];
+    } else if(statusType === 'wind') {
       statusInfo = realTimeInfo.windDeviceStatus || [];
-    } else if (statusType === 'pv') {
+    } else if(statusType === 'pv') {
       statusInfo = realTimeInfo.pvDeviceStatus || [];
     }
     const hasData = statusInfo.some(e => e.deviceStatusName || e.deviceStatusName === 0);
@@ -67,33 +61,33 @@ class DeviceStatus extends Component {
       statusPieData.push({ value: 1, name: '' });
     }
     const option = {
-      color: this.colors,
-      title: {
-        show: false,
-      },
-      tooltip: {
-        extraCssText: 'background-color: rgba(0, 0, 0, 0.8)',
-        padding: 10,
-        formatter: tooltipFormatter,
-      },
-      legend: {
-        show: false,
-      },
-      grid: {
-        top: 10,
-        bottom: 30,
-      },
-      series: [
-        {
-          name: '设备状态',
-          type: 'pie',
-          label: {
-            show: false,
-          },
-          radius: ['35%', '80%'],
-          data: statusPieData,
+        color: this.colors,
+        title: {
+          show: false,
         },
-      ],
+        tooltip: {
+          extraCssText: 'background-color: rgba(0, 0, 0, 0.8)',
+          padding: 10,
+          formatter: tooltipFormatter,
+        },
+        legend: {
+          show: false,
+        },
+        grid: {
+          top: 10,
+          bottom: 30,
+        },
+        series: [
+          {
+            name: '设备状态',
+            type: 'pie',
+            label: {
+              show: false,
+            },
+            radius: ['35%', '80%'],
+            data: statusPieData,
+          },
+        ],
     };
     statusChart.setOption(option);
   }
@@ -113,21 +107,15 @@ class DeviceStatus extends Component {
     });
   }
 
-  render() {
+  render(){
     const { realTimeInfo, hasMultipleType } = this.props;
     const { statusType } = this.state;
     let statusInfo = [];
-    if (statusType === 'all') {
-      const { allDeviceStatus = [] } = realTimeInfo;
-      statusInfo = allDeviceStatus.map(e => {
-        return {
-          ...e,
-          deviceStatusNum: e.deviceStatusNum * 100,
-        };
-      });
-    } else if (statusType === 'wind') {
+    if(statusType === 'all'){
+      statusInfo = realTimeInfo.allDeviceStatus || [];
+    }else if(statusType === 'wind'){
       statusInfo = realTimeInfo.windDeviceStatus || [];
-    } else if (statusType === 'pv') {
+    }else if(statusType === 'pv'){
       statusInfo = realTimeInfo.pvDeviceStatus || [];
     }
     return (
@@ -142,15 +130,15 @@ class DeviceStatus extends Component {
             <span className={styles.noneText}>暂无数据</span>
           </div>
           <div className={styles.statusTotal}>
-            {statusInfo && statusInfo.length > 0 ? statusInfo.map((e, i) => (
-              <span className={styles.eachStatus} key={e.deviceStatus} >
-                <span className={styles.round} style={{ backgroundColor: this.colors[i] }}></span>
+            {statusInfo && statusInfo.length > 0 ? statusInfo.map((e, i)=> (
+              <span className={styles.eachStatus} key={e.deviceStatus}>
+                <span className={styles.round} style={{backgroundColor: this.colors[i]}}></span>
                 <span className={styles.text}>{e.deviceStatusName}</span>
                 <span className={styles.value}>{e.deviceStatusNum}</span>
               </span>
             )) : this.noDatasHolder.map(e => (
               <span className={styles.eachStatus} key={e.text}>
-                <span className={styles.round} style={{ backgroundColor: e.backgroundColor }}></span>
+                <span className={styles.round} style={{backgroundColor: e.backgroundColor}}></span>
                 <span className={styles.text}>{e.text}</span>
                 <span className={styles.value}>{e.value}</span>
               </span>
