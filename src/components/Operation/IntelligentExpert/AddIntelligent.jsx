@@ -31,27 +31,32 @@ class AddIntelligent extends Component {
   }
 
   onChangeDeviceType = (deviceTypeCode) => { // 选择设备类型
+    const { deviceTypes } = this.props;
+    const deviceTypeInfo = deviceTypes.find(e => {
+      return e.deviceTypeCode === deviceTypeCode;
+    });
     let params = { deviceTypeCode };
     this.setState({ deviceTypeCode: deviceTypeCode });
     this.props.changeCommonStore(params);
     this.props.form.setFieldsValue({ defectTypeCode: null, deviceCode: null });
     this.props.getLostGenType({
+      stationType: deviceTypeInfo.stationType,
       objectType: 1,
-      deviceTypeCode
-    })
+      deviceTypeCode,
+    });
   }
 
   onWarningTipShow = () => {
     this.setState({
       showWarningTip: true,
-    })
+    });
   }
 
   confirmWarningTip = () => {
     const { getIntelligentExpertStore } = this.props;
     this.setState({
       showWarningTip: false,
-    })
+    });
     getIntelligentExpertStore({
       showPage: 'list',
     });
