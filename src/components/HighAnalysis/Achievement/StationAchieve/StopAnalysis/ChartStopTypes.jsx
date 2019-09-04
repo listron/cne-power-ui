@@ -134,7 +134,10 @@ class ChartStopTypes extends Component {
     const { sortName } = this.state;
     const { stopElecType, stopChartTypes, stopChartDevice, stopTopStringify } = this.props;
     const curFaultInfo = sortedTypes[dataIndex] || {};
-    const searchParam = JSON.parse(stopTopStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(stopTopStringify);
+    } catch (error) { null; }
     const [startTime, endTime] = this.getTimeRange(searchParam.date);
     const cancelSelect = stopChartTypes && stopChartTypes.faultId === curFaultInfo.faultId;
     const tmpTypesResult = cancelSelect ? null : curFaultInfo;
@@ -251,7 +254,7 @@ class ChartStopTypes extends Component {
               ${param.sort((a, b) => a.seriesIndex - b.seriesIndex).map(({ seriesIndex, value }) => (
                 `<span class=${styles.eachItem}>
                   <span>${['停机次数', '停机时长', '停机电量'][seriesIndex]}</span>
-                  <span>${dataFormats(value / ([1, 1, 10000][seriesIndex]), '--', [0, 0, 4][seriesIndex], true)}</span>
+                  <span>${dataFormats(value / ([1, 1, 10000][seriesIndex]), '--', [0, 1, 4][seriesIndex], true)}</span>
                 </span>`
               )).join('')}
             </div>

@@ -4,7 +4,6 @@ import echarts from 'echarts';
 import { getCurveBaseOption } from './curveBaseOption';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './curve.scss';
-import AutoModal from '../../../../Common/AutoSelect/AutoModal';
 
 class DevicesChart extends Component {
 
@@ -58,7 +57,10 @@ class DevicesChart extends Component {
     const { deviceFullcode, deviceName } = totalCurveData[seriesIndex] || {};
     if (deviceFullcode) {
       const { curveTopStringify } = this.props;
-      const queryInfo = JSON.parse(curveTopStringify) || {};
+      let queryInfo = {};
+      try {
+        queryInfo = JSON.parse(curveTopStringify) || {};
+      } catch (error) { null; }
       const param = {
         stationCodes: [queryInfo.code],
         deviceFullcodes: [deviceFullcode],

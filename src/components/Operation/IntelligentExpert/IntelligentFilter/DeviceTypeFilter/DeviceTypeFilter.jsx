@@ -31,7 +31,7 @@ class DeviceTypeFilter extends Component {
 
   render() {
     const { deviceTypes, deviceTypeCode, theme } = this.props;
-    const options = deviceTypes.filter(e => e.stationType !== 0).map((item, i) => ({
+    const options = deviceTypes.map((item, i) => ({
       label: item.deviceTypeName,
       value: `${item.deviceTypeCode}`,
     }));
