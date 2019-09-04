@@ -159,7 +159,7 @@ class ChartLostRank extends Component {
     let searchParam = {};
     try {
       searchParam = JSON.parse(lostStringify) || {};
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     let deviceFullcodes;
     if (lostChartDevice && lostChartDevice.deviceFullcode === selectedInfo.deviceFullcode) { // 取消当前选中项.
       deviceFullcodes = searchParam.device;
@@ -218,7 +218,7 @@ class ChartLostRank extends Component {
     let quota;
     try {
       lostStringify && ({ quota } = JSON.parse(lostStringify));
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
     const { label = '--', unit, pointLength } = selectedQuota;
     const { dataAxis, series } = this.createSeries(sortedLostRank, lostChartDevice, unit);
@@ -276,7 +276,7 @@ class ChartLostRank extends Component {
     let quota;
     try {
       lostStringify && ({ quota } = JSON.parse(lostStringify));
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
     return (
       <div className={styles.lostRank}>

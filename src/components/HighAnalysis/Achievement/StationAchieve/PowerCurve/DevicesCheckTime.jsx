@@ -21,7 +21,7 @@ class DevicesCheckTime extends Component {
     let searchParam = {};
     try {
       searchParam = JSON.parse(curveTopStringify) || {};
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     const param = {
       stationCodes: [searchParam.code],
       startTime: curveDevicesTime,

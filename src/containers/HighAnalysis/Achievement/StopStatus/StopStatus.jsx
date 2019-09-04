@@ -146,7 +146,7 @@ class StopStatus extends Component {
     let searchParam = {};
     try {
       searchParam = JSON.parse(infoStr) || {};
-    } catch (err) { null; }
+    } catch (err) { console.log(err); }
     const { code, device = '', dates = [] } = searchParam;
     return {
       stationCode: code,
@@ -192,7 +192,7 @@ class StopStatus extends Component {
       const stopInfo = JSON.parse(stopStringify);
       device = stopInfo.device.split('_');
       dates = stopInfo.dates;
-    } catch(error){ null; } // 任性吞错误，嘎嘎。~
+    } catch(error){ console.log(error); } // 任性吞错误，嘎嘎。~
     const deviceChanged = deviceCodes.length !== device.length || deviceCodes.find(e => !device.includes(e));
     const timeChanged = startTime !== dates[0] || endTime !== dates[1];
     const searchForbidden = stopStatusLoading || searchInfoLost || (!timeChanged && !deviceChanged);

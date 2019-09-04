@@ -128,7 +128,7 @@ class ChartLostTrend extends Component {
     let searchParam = {};
     try {
       searchParam = JSON.parse(lostStringify) || {};
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     getLostTrend({
       stationCodes: [searchParam.code],
       deviceFullcodes: searchParam.device,
@@ -150,7 +150,7 @@ class ChartLostTrend extends Component {
     let searchParam = {};
     try {
       searchParam = JSON.parse(lostStringify) || {};
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     const { date } = searchParam;
     let startTime, endTime;
     if (efficiencyDate === lostChartTime) {
@@ -181,7 +181,7 @@ class ChartLostTrend extends Component {
     let quota;
     try {
       lostStringify && ({ quota } = JSON.parse(lostStringify));
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
     const { label = '--', unit, pointLength } = selectedQuota;
     const trendChart = echarts.init(this.trendRef);
@@ -242,7 +242,7 @@ class ChartLostTrend extends Component {
     let quota;
     try {
       lostStringify && ({ quota } = JSON.parse(lostStringify));
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
     return (
       <div className={styles.lostTrend}>
