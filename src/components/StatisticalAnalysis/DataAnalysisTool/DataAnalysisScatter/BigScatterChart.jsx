@@ -208,7 +208,7 @@ class BigScattrChart extends React.Component {
     const option = this.creatOption(bigScatterData, saveBtn, title);
     bigscatterChart.off();
     bigscatterChart.on('click', 'title', (params) => {
-      likeChange(index, !saveBtn);
+      likeChange(index, !saveBtn, bigScatterData);
     });
     bigscatterChart.setOption(option);
   }
