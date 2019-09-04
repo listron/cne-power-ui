@@ -47,6 +47,7 @@ const yAxis = {
   },
   nameTextStyle: {
     color: '#666666',
+    padding: [0, 0, 0, 30],
   },
 };
 

@@ -102,7 +102,9 @@ class StationAchieve extends Component {
         });
       });
       this.setState({ searchDevice: selectedDevice });
-      searchQuota && this.historyChange(searchCode, selectedDevice, undefined, searchQuota);
+      // preDevices === 0为初始加载 => 自动切换路径
+      // preDevices > 0为切换电站 => 选中默认设备即可
+      preDevices.length === 0 && searchQuota && this.historyChange(searchCode, selectedDevice, undefined, searchQuota);
     }
     if (quotaInfo.length > 0 && !searchQuota) { // 得到指标 => 存选中
       const firstType = quotaInfo[0] || {};
@@ -158,7 +160,7 @@ class StationAchieve extends Component {
     let searchParam = {};
     try {
       searchParam = JSON.parse(infoStr);
-    } catch(err){ null; }
+    } catch(err){ console.log(err); }
     const { code, device = [], date = [], quota } = searchParam;
     return {
       stationCodes: [code],

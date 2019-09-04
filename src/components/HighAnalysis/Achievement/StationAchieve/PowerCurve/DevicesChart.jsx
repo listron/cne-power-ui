@@ -42,15 +42,14 @@ class DevicesChart extends Component {
 
   createSeires = (curveData = []) => curveData.map((e) => {
     const { devicePowerInfoVos = [], deviceName } = e || {};
-    return {
+    const curveSeries = {
       type: 'line',
       smooth: true,
       name: deviceName,
-      lineStyle: {
-        color: deviceName === '理论功率' ? 'red' : 'auto',
-      },
       data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]).sort((a, b) => a[0] - b[0]),
     };
+    deviceName === '理论功率' && (curveSeries.lineStyle = {color: 'red'});
+    return curveSeries;
   })
 
   deviceHandle = ({ seriesIndex }, totalCurveData, devicesChart) => {
@@ -60,7 +59,7 @@ class DevicesChart extends Component {
       let queryInfo = {};
       try {
         queryInfo = JSON.parse(curveTopStringify) || {};
-      } catch (error) { null; }
+      } catch (error) { console.log(error); }
       const param = {
         stationCodes: [queryInfo.code],
         deviceFullcodes: [deviceFullcode],

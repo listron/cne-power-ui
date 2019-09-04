@@ -132,12 +132,12 @@ class ChartStopTypes extends Component {
     }
 
     const { sortName } = this.state;
-    const { stopElecType, stopChartTypes, stopChartDevice, stopTopStringify } = this.props;
+    const { stopElecType, stopChartTypes, stopChartDevice, stopTopStringify, stopChartTimeMode, } = this.props;
     const curFaultInfo = sortedTypes[dataIndex] || {};
     let searchParam = {};
     try {
       searchParam = JSON.parse(stopTopStringify);
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     const [startTime, endTime] = this.getTimeRange(searchParam.date);
     const cancelSelect = stopChartTypes && stopChartTypes.faultId === curFaultInfo.faultId;
     const tmpTypesResult = cancelSelect ? null : curFaultInfo;
@@ -167,6 +167,7 @@ class ChartStopTypes extends Component {
         ...param,
       }) : this.props.getStopTrend({
         ...param,
+        type: stopChartTimeMode,
       });
     }
     const queryBoth = (handleLength === 1 && typesIndex === 0) || handleLength === 0;
@@ -176,7 +177,7 @@ class ChartStopTypes extends Component {
         stopHandleInfo: ['types'],
       });
       this.props.getStopRank({ ...param });
-      this.props.getStopTrend({ ...param });
+      this.props.getStopTrend({ ...param, type: stopChartTimeMode });
     }
   }
 
