@@ -95,9 +95,9 @@ class SequenceChartContainer extends React.Component {
     changeSquenceStore({ deviceList, sequenceData });
   };
   likeStatusChange2 = (index, bool) => {
-    const { deviceList, changeSquenceStore } = this.props;
+    const { deviceList, changeSquenceStore, curLikeStatusData } = this.props;
     deviceList[index].likeStatus = bool;
-    changeSquenceStore({ deviceList });
+    changeSquenceStore({ deviceList, sequenceData: curLikeStatusData });
   };
 
   saveImgUrl = (title, src) => {
@@ -122,13 +122,13 @@ class SequenceChartContainer extends React.Component {
     });
   }
   //如果参数中有当前风机数据怕影响数据源
-  showImg = (index) => {
+  showImg = (index, data) => {
     const { deviceList } = this.props;
     this.setState({
       isShowModal: true,
       currentImgIndex: index,
     });
-    this.props.changeSquenceStore({ curBigChartData: {} });
+    this.props.changeSquenceStore({ curBigChartData: {}, curLikeStatusData: data });
     const deviceFullCode = deviceList[index].deviceFullCode;
     this.queryData(deviceFullCode);
 
