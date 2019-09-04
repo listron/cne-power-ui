@@ -149,6 +149,14 @@ class MonthsPsd extends Component {
             </Select>
           </span>
         </h3>
+        <div className={styles.modes}>
+          <span className={styles.eachMode}>
+            <span className={styles.rect} style={{
+              backgroundImage: 'linear-gradient(-180deg, #36c6ad 0%, #199475 100%)',
+            }} />
+            <span className={styles.modeText}>PSD</span>
+          </span>
+        </div>
         <div className={styles.aepChart} ref={(ref)=> {this.psdRef = ref;}} />
       </section>
     );
