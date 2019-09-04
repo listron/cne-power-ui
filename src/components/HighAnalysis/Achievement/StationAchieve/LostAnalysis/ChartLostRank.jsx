@@ -156,6 +156,10 @@ class ChartLostRank extends Component {
       return;
     }
     const selectedInfo = sortedLostRank[dataIndex] || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(lostStringify) || {};
+    } catch (error) { null; }
     let deviceFullcodes;
     if (lostChartDevice && lostChartDevice.deviceFullcode === selectedInfo.deviceFullcode) { // 取消当前选中项.
       deviceFullcodes = searchParam.device;
@@ -164,7 +168,6 @@ class ChartLostRank extends Component {
       deviceFullcodes = [selectedInfo.deviceFullcode];
       this.props.changeStore({ lostChartDevice: selectedInfo });
     }
-    const searchParam = JSON.parse(lostStringify) || {};
     const { code, date = [], quota } = searchParam;
     const [startTime, endTime] = date;
     const params = {
@@ -212,7 +215,10 @@ class ChartLostRank extends Component {
     const { zoomRange } = this.state;
     const rankChart = echarts.init(this.rankRef);
     const sortedLostRank = this.sortRank(lostRank, sortType);
-    const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
+    let quota;
+    try {
+      lostStringify && ({ quota } = JSON.parse(lostStringify));
+    } catch (error) { null; }
     const selectedQuota = this.getQuota(quotaInfo, quota);
     const { label = '--', unit, pointLength } = selectedQuota;
     const { dataAxis, series } = this.createSeries(sortedLostRank, lostChartDevice, unit);
@@ -267,7 +273,10 @@ class ChartLostRank extends Component {
   render() {
     const { quotaInfo, lostStringify } = this.props;
     const { sortType, modeArr } = this.state;
-    const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
+    let quota;
+    try {
+      lostStringify && ({ quota } = JSON.parse(lostStringify));
+    } catch (error) { null; }
     const selectedQuota = this.getQuota(quotaInfo, quota);
     return (
       <div className={styles.lostRank}>

@@ -95,7 +95,10 @@ class ChartLostTrend extends Component {
 
   timeModeChange = (stopChartTimeMode) => {
     const { stopElecType, stopChartDevice, stopTopStringify } = this.props;
-    const searchParam = JSON.parse(stopTopStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(stopTopStringify);
+    } catch (error) { null; }
     const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.searchDevice;
     this.props.changeStore({ stopChartTimeMode, stopChartTime: null });
     this.props.getStopTrend({
@@ -123,7 +126,10 @@ class ChartLostTrend extends Component {
     }
 
     const { stopChartTime, stopElecType, stopChartTypes, stopChartDevice, stopTopStringify } = this.props;
-    const searchParam = JSON.parse(stopTopStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(stopTopStringify);
+    } catch (error) { null; }
     const selectedInfo = stopTrend[dataIndex] || {};
     const { efficiencyDate } = selectedInfo;
     const cancelSelect = stopChartTime && stopChartTime === efficiencyDate;

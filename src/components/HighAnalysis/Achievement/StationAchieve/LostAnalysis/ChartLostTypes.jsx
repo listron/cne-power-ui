@@ -79,14 +79,16 @@ class ChartLostTypes extends Component {
     const curPages = pages.split('_').filter(e => !!e);
     const stopExist = curPages.includes('run');
     const nextPagesStr = (stopExist ? curPages : curPages.concat('run')).join('_');
-    const { code, device, date } = JSON.parse(station); // 传入运行数据
-    const stationSearch = JSON.stringify({
-      searchCode: code,
-      searchDevice: device,
-      searchDates: date,
-    });
-    const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({run: stationSearch}).stringify();
-    this.props.history.push(`/analysis/achievement/analysis/run?${searchResult}`);
+    try {
+      const { code, device, date } = JSON.parse(station); // 传入运行数据
+      const stationSearch = JSON.stringify({
+        searchCode: code,
+        searchDevice: device,
+        searchDates: date,
+      });
+      const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({run: stationSearch}).stringify();
+      this.props.history.push(`/analysis/achievement/analysis/run?${searchResult}`);
+    } catch (error) { null; }
   }
 
   renderChart = (lostTypes = {}) => {

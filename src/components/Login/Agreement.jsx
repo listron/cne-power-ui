@@ -16,7 +16,7 @@ function Agreement() {
               </div>
               <Link to="/login" className={styles.goBackLogin}>返回登录页面</Link>
               <div className={styles.footerTitle}>
-                {/* 京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司         */}
+                京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司
               </div>
             </div>
           </div>

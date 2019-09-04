@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import InfoModal from '../../components/Login/InfoModal';
+import  InfoModal from '../../components/Login/InfoModal';
 import { Link } from 'react-router-dom';
 import styles from './loginLayout.scss';
 import { loginAction } from './loginAction';
@@ -10,14 +10,14 @@ import Login from './Login';
 import JoinIn from './JoinIn';
 import Forget from './Forget';
 import ReactPlayer from 'react-player';
-import { apiUrlReal } from '../../config/apiConfig';
+import {apiUrlReal} from '../../config/apiConfig';
 
 class LoginLayout extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
     changeLoginStore: PropTypes.func,
     resetLoginState: PropTypes.func,
-    appDownload: PropTypes.bool,
+    appDownload:PropTypes.bool,
   }
 
   state = {
@@ -62,14 +62,14 @@ class LoginLayout extends Component {
   toAppDownload = (e) => {
     e.stopPropagation();
     this.setState({
-      appDownload: true
+      appDownload:true
     })
   }
 
   toDisableAppDownload = (e) => {
     e.stopPropagation();
     this.setState({
-      appDownload: false
+      appDownload:false
     })
   }
 
@@ -82,57 +82,57 @@ class LoginLayout extends Component {
 
   render() {
     const { pageTab, changeLoginStore } = this.props;
-    const { modalName, showModal, appDownload } = this.state;
+    const { modalName, showModal,appDownload} = this.state;
     const defaultLogo = `${apiUrlReal}/api/v3/images/app_download.png`;
     return (
       <div className={styles.loginLayout}>
-        <ReactPlayer
-          url="/video/01-1000.mp4"
-          id="videoPlayer"
-          muted
-          autoPlay
-          loop
-          playing={true}
-          className={styles.backgroundVideo}
-          onError={this.playerVideoError}
-          width="auto"
-          height="auto"
-        />
-        <div className={styles.right} onClick={(e) => this.toDisableAppDownload(e)}>
+          <ReactPlayer 
+            url="/video/01-1000.mp4" 
+            id="videoPlayer"
+            muted 
+            autoPlay 
+            loop
+            playing={true} 
+            className={styles.backgroundVideo}
+            onError={this.playerVideoError}
+            width="auto"
+            height="auto" 
+          />
+        <div className={styles.right} onClick={(e)=>this.toDisableAppDownload(e)}>
           <div className={styles.rightContent}>
             <div className={styles.mainBox} >
               {pageTab === 'login' && <Login changeLoginStore={changeLoginStore} pageTab={pageTab} />}
               {/* {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />} */}
               {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} toShowAgreement={this.toShowAgreement} />}
-              {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />}
-
-              {appDownload && pageTab === 'login' && <div className={styles.apk}>
-                <div className={styles.a}>
-                  手机扫一扫
+              {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore}/>}
+          
+              {appDownload  && pageTab === 'login' && <div className={styles.apk}> 
+                 <div className={styles.a}>
+                 手机扫一扫    
                  </div>
-                <img className={styles.b} src={defaultLogo} width="64px" height="64px" />
-                <div className={styles.c}>
-                  下载app安装包
+                 <img className={styles.b} src={defaultLogo} width="64px" height="64px" />
+                 <div className={styles.c}>
+                 下载app安装包        
                  </div>
               </div>}
               {pageTab === 'login' ? <div className={styles.bottomInfoAppDownload}>
                 <span className={styles.agreement} onClick={this.toShowAgreement}>用户协议</span>
                 <span className={styles.contact} onClick={this.toContact}>联系我们</span>
-                <span className={styles.appdownload} onClick={(e) => this.toAppDownload(e)}>移动端下载</span>
+                <span className={styles.appdownload} onClick={(e)=>this.toAppDownload(e)}>移动端下载</span>
               </div> : <div className={styles.bottomInfo}>
-                  <span className={styles.agreement} onClick={this.toShowAgreement}>用户协议</span>
-                  <span className={styles.contact} onClick={this.toContact}>联系我们</span>
-                </div>}
-
+                <span className={styles.agreement} onClick={this.toShowAgreement}>用户协议</span>
+                <span className={styles.contact} onClick={this.toContact}>联系我们</span>
+              </div>}
+              
               {/* <div className={styles.contactUs}>
                 <Link to="/userAgreement" >用户协议</Link>
                 <Link to="/contactUs" >联系我们</Link>
               </div> */}
               <div className={styles.footerTitle}>
-                {/* 京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司         */}
+              京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司        
               </div>
               <div className={styles.versionTitle}>
-                V3.4.0.20190111
+              V3.4.0.20190111        
               </div>
             </div>
             {showModal && <InfoModal

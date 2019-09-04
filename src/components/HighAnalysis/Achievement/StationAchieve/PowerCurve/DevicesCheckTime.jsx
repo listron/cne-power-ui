@@ -18,7 +18,10 @@ class DevicesCheckTime extends Component {
 
   selectMonth = (curveDevicesTime) => {
     const { curveTopStringify } = this.props;
-    const searchParam = JSON.parse(curveTopStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(curveTopStringify) || {};
+    } catch (error) { null; }
     const param = {
       stationCodes: [searchParam.code],
       startTime: curveDevicesTime,
