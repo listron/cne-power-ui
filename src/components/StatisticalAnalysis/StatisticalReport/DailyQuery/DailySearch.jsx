@@ -168,7 +168,7 @@ class DailySearch extends Component {
     const { changeDailyQueryStore, queryParam } = this.props;
     const timeLength = time.length > 0;
     let startDate = timeLength ? moment(time[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss') : null;
-    let endDate = timeLength ? moment(time[1]).startOf('day').format('YYYY-MM-DD HH:mm:ss') : null;
+    let endDate = timeLength ? moment(time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss') : null;
     const isToday = moment(endDate).isSame(moment(), 'd');
     isToday ? endDate = moment().format('YYYY-MM-DD HH:mm:ss') : endDate;
     changeDailyQueryStore({
