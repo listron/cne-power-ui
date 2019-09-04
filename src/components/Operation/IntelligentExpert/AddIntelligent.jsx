@@ -148,7 +148,7 @@ class AddIntelligent extends Component {
                 style={{ width: 360 }} 
                 placeholder="请选择" 
                 onChange={this.onChangeDeviceType}>
-                {deviceTypes.filter(e => e.stationType !== 0).map(e => (
+                {deviceTypes.map(e => (
                 <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>
                 {e.deviceTypeName}</Option>))}
               </Select>
