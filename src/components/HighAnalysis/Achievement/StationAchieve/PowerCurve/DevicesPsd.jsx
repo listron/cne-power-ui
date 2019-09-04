@@ -106,7 +106,7 @@ class DevicesPsd extends Component {
     let queryInfo = {};
     try {
       queryInfo = JSON.parse(curveTopStringify) || {};
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     const param = {
       stationCodes: [queryInfo.code],
       deviceFullcodes: [deviceFullcode],

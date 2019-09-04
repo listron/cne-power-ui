@@ -48,7 +48,7 @@ class StopElecTypes extends Component {
     let tmpParams = {};
     try {
       tmpParams = JSON.parse(stopTopStringify);
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     const params = {
       stationCodes: [tmpParams.code],
       deviceFullcodes: tmpParams.device,

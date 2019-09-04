@@ -39,7 +39,7 @@ class LostAnalysis extends Component {
     let searchParam = {};
     try {
       searchParam = JSON.parse(infoStr);
-    } catch(err){ null; }
+    } catch(err){ console.log(err); }
     const { code, device = [], date = [], quota } = searchParam;
     return {
       stationCodes: [code],

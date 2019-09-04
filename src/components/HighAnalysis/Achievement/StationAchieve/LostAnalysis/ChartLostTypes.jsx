@@ -73,22 +73,23 @@ class ChartLostTypes extends Component {
   }
 
   toRunPage = () => {
-    const { history } = this.props;
+    const { history, lostChartDevice } = this.props;
     const { search } = history.location;
     const { pages = '', station } = searchUtil(search).parse(); // 新的pages变化
     const curPages = pages.split('_').filter(e => !!e);
     const stopExist = curPages.includes('run');
     const nextPagesStr = (stopExist ? curPages : curPages.concat('run')).join('_');
+    let code, date;
     try {
-      const { code, device, date } = JSON.parse(station); // 传入运行数据
-      const stationSearch = JSON.stringify({
-        searchCode: code,
-        searchDevice: device,
-        searchDates: date,
-      });
-      const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({run: stationSearch}).stringify();
-      this.props.history.push(`/analysis/achievement/analysis/run?${searchResult}`);
+      ({ code, date } = JSON.parse(station)); // 传入运行数据
     } catch (error) { null; }
+    const stationSearch = JSON.stringify({
+      searchCode: code,
+      searchDevice: [lostChartDevice.deviceFullcode],
+      searchDates: date,
+    });
+    const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({run: stationSearch}).stringify();
+    this.props.history.push(`/analysis/achievement/analysis/run?${searchResult}`);
   }
 
   renderChart = (lostTypes = {}) => {
@@ -182,7 +183,7 @@ class ChartLostTypes extends Component {
             {chartName}{chartTime}损失电量分解图
           </span>
           <span className={styles.handle}>
-            <Button onClick={this.toRunPage}>运行数据</Button>
+            <Button disabled={!lostChartDevice} onClick={this.toRunPage}>运行数据</Button>
           </span>
         </div>
         <div className={styles.chart} ref={(ref)=> {this.typesRef = ref;}} />
