@@ -8,6 +8,7 @@ class StationTypeFilter extends Component {
   static propTypes = {
     stationType: PropTypes.string,
     onChangeFilter: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
@@ -16,15 +17,15 @@ class StationTypeFilter extends Component {
 
   onChange = (value) => {
     this.props.onChangeFilter({
-      stationType: value
+      stationType: value,
     });
   }
 
   render() {
     //	电站类型(0:风电，1光伏，2：全部)
-    const { stationType } = this.props;
+    const { stationType, theme } = this.props;
     return (
-      <div className={styles.filterItem}>
+      <div className={`${styles.filterItem} ${styles[theme]}`}>
         <Tabs activeKey={stationType} onChange={this.onChange}>
           <TabPane tab="不限" key="2"></TabPane>
           <TabPane tab="风电" key="0"></TabPane>

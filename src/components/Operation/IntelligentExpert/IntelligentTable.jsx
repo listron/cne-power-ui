@@ -24,6 +24,7 @@ class IntelligentTable extends Component {
     selectedRowKeys: PropTypes.array,
     allStationBaseInfo: PropTypes.array,
     selectedRowData: PropTypes.array,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
@@ -34,12 +35,12 @@ class IntelligentTable extends Component {
       warningTipText: '', // 删除提示语
       handleColumnDel: false, // 删除操作来源, false =>选中行后点击删除。true => 选中表格列中的直接删除
       handleColumnDelInfo: {}, // 选中表格列中直接删除记录的信息
-    }
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { getIntelligentTable, listParams } = this.props;
-    getIntelligentTable(listParams)
+    getIntelligentTable(listParams);
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器
@@ -47,21 +48,21 @@ class IntelligentTable extends Component {
     getIntelligentExpertStore({
       pageSize,
       pageNum: currentPage,
-    })
+    });
     getIntelligentTable({
       ...listParams,
       pageSize: pageSize,
       pageNum: currentPage,
       // orderField: 'like_count',
       // sortMethod: 'desc',
-    })
+    });
   }
 
   onSelectChange = (keys, record) => { // 选中行
     this.props.getIntelligentExpertStore({
       selectedRowData: record,
       selectedRowKeys: keys,
-    })
+    });
   }
 
   tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
@@ -74,38 +75,38 @@ class IntelligentTable extends Component {
       ...listParams,
       orderField: sortField,
       sortMethod,
-    })
+    });
   }
 
   sortField(sortField) {
-    let result = "";
+    let result = '';
     switch (sortField) {
       case 'updateTime': result = 'update_time'; break;
       case 'likeCount': result = 'like_count'; break;
-      default: result = ""; break;
+      default: result = ''; break;
     }
-    return result
+    return result;
   }
 
   showModal = () => { // 导入
     this.setState({
-      showModal: true
-    })
+      showModal: true,
+    });
   }
 
   cancelModal = () => {
-    this.setState({ showModal: false })
+    this.setState({ showModal: false });
   }
 
   deleteIntelligent = () => { // 批量删除
     this.setState({
       showDeleteWarning: true,
-      warningTipText: '确定要删除解决方案么?'
-    })
+      warningTipText: '确定要删除解决方案么?',
+    });
   }
 
   cancelWarningTip = () => { // 删除确认框
-    this.setState({ showDeleteWarning: false })
+    this.setState({ showDeleteWarning: false });
   }
 
   confirmWarningTip = () => { // 删除选中的行
@@ -113,66 +114,66 @@ class IntelligentTable extends Component {
     const { handleColumnDel, handleColumnDelInfo } = this.state;
     if (handleColumnDel) {
       deleteIntelligent({
-        knowledgeBaseIds: handleColumnDelInfo.knowledgeBaseId
-      })
-    }else{
+        knowledgeBaseIds: handleColumnDelInfo.knowledgeBaseId,
+      });
+    } else {
       deleteIntelligent({
         knowledgeBaseIds: selectedRowData.map((e, i) => {
-          return e.knowledgeBaseId
-        })
-      })
+          return e.knowledgeBaseId;
+        }),
+      });
     }
     this.setState({
       showDeleteWarning: false,
       handleColumnDel: false,
       handleColumnDelInfo: {},
-     })
+    });
 
-     getIntelligentTable(listParams) // 返回列表页面时重新请求列表数据
+    getIntelligentTable(listParams); // 返回列表页面时重新请求列表数据
   }
 
   singleDeleteIntelligent = (record) => { // 单独删除
     this.setState({
       showDeleteWarning: true,
-      warningTipText: '确定要删除解决方案么?' ,
+      warningTipText: '确定要删除解决方案么?',
       handleColumnDel: true,
-      handleColumnDelInfo: record
-    })
+      handleColumnDelInfo: record,
+    });
   }
 
-  addIntelligent = () =>{ // 添加
+  addIntelligent = () => { // 添加
     this.props.getIntelligentExpertStore({
-      showPage: 'add'
-    })
+      showPage: 'add',
+    });
   }
 
-  columnlook = (record,selectedIndex) => { // 查看详情
+  columnlook = (record, selectedIndex) => { // 查看详情
     const { getIntelligentExpertStore, getKnowledgebase } = this.props;
     getIntelligentExpertStore({
-      showPage: 'show'
-    })
+      showPage: 'show',
+    });
     getKnowledgebase({
       knowledgeBaseId: record.knowledgeBaseId,
-      selectedIndex
-    })
+      selectedIndex,
+    });
   }
 
   columnEdit = (record) => { // 编辑
     const { getIntelligentExpertStore, getKnowledgebase } = this.props;
     getIntelligentExpertStore({
       showPage: 'edit',
-    })
+    });
     getKnowledgebase({
       knowledgeBaseId: record.knowledgeBaseId,
       deviceTypeCode: record.deviceTypeCode,
       faultTypeId: record.faultTypeId,
-    })
+    });
   }
 
   render() {
     const { showModal, warningTipText, showDeleteWarning } = this.state;
-    const { intelligentTableData, tableLoading, listParams, selectedRowKeys, allStationBaseInfo } = this.props;
-    const { pageNum, pageSize, } = listParams;
+    const { intelligentTableData, tableLoading, listParams, selectedRowKeys, allStationBaseInfo, theme } = this.props;
+    const { pageNum, pageSize } = listParams;
     const { total, dataList = [] } = intelligentTableData;
     const rowSelection = {
       selectedRowKeys,
@@ -191,29 +192,29 @@ class IntelligentTable extends Component {
       dataIndex: 'faultName',
       className: 'faultName',
       render: (text) => {
-        return <div className={styles.faultName} title={text}>{text}</div>
-      }
+        return <div className={styles.faultName} title={text}>{text}</div>;
+      },
     }, {
       title: '缺陷描述',
       dataIndex: 'faultDescription',
       className: 'faultDescription',
       render: (text) => {
-        return <div className={styles.faultDescription} title={text}>{text}</div>
-      }
+        return <div className={styles.faultDescription} title={text}>{text}</div>;
+      },
     }, {
       title: '检查项目',
       dataIndex: 'checkItems',
       className: 'checkItems',
       render: (text) => {
-        return <div className={styles.checkItems} title={text}>{text}</div>
-      }
+        return <div className={styles.checkItems} title={text}>{text}</div>;
+      },
     }, {
       title: '处理方法',
       dataIndex: 'processingMethod',
       className: 'processingMethod',
       render: (text) => {
-        return <div className={styles.processingMethod} title={text}>{text}</div>
-      }
+        return <div className={styles.processingMethod} title={text}>{text}</div>;
+      },
     }, {
       title: '更新时间',
       dataIndex: 'updateTime',
@@ -230,54 +231,56 @@ class IntelligentTable extends Component {
       dataIndex: 'handler',
       className: 'handler',
       render: (text, record, index) => (
-      <span>
-        <i className={`${styles.lookRole} iconfont icon-look`}
-        onClick={()=>this.columnlook(record, index)}
-        />
-        {editRight && <i className={`${styles.editRole} iconfont icon-edit`}
-        onClick={() => this.columnEdit(record)}
-        />}
-        {editRight && <i className={`${styles.deleteRole} iconfont icon-del`}
-        onClick={() => this.singleDeleteIntelligent(record, index)}
-        />}
-      </span>
-    )
+        <span>
+          <i className={`${styles.lookRole} iconfont icon-look`}
+            onClick={() => this.columnlook(record, index)}
+          />
+          {editRight && <i className={`${styles.editRole} iconfont icon-edit`}
+            onClick={() => this.columnEdit(record)}
+          />}
+          {editRight && <i className={`${styles.deleteRole} iconfont icon-del`}
+            onClick={() => this.singleDeleteIntelligent(record, index)}
+          />}
+        </span>
+      ),
     }];
 
     return (
-      <div className={styles.intelligentTable}>
-       <div className={styles.topHandler}>
+      <div className={`${styles.intelligentTable} ${styles[theme]}`}>
+        <div className={styles.topHandler}>
           <div className={styles.leftPart}>
-           {editRight && <Button className={styles.addHandler} icon="plus" onClick={this.addIntelligent}>添加</Button>}
-           {editRight && <Button className={styles.deleteHandler} onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</Button>}
-           {editRight && <Button className={styles.importHandler} onClick={this.showModal}>导入</Button>}
-           {editRight && <Button className={styles.exportHandler} href={downloadTemplet} download={downloadTemplet} target="_blank">下载导入模板</Button>}
+            {/* {editRight && <Button className={styles.addHandler} icon="plus" onClick={this.addIntelligent}>添加</Button>} */}
+            {editRight && <Button className={styles.addHandler} type="add" onClick={this.addIntelligent}><i>+</i>添加</Button>}
+            {editRight && <Button className={styles.deleteHandler} type="reset" onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</Button>}
+            {editRight && <Button className={styles.importHandler} type="primary" onClick={this.showModal}>导入</Button>}
+            {editRight && <Button className={styles.exportHandler} type="primary" href={downloadTemplet} download={downloadTemplet} target="_blank">下载导入模板</Button>}
           </div>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
             total={total}
             onPaginationChange={this.onPaginationChange}
+            theme={theme}
           />
 
-          {showModal ? <ImportIntelligent {...this.props} showModal={showModal} cancelModal={this.cancelModal}  allStationBaseInfo={allStationBaseInfo} /> : ''}
+          {showModal ? <ImportIntelligent {...this.props} showModal={showModal} cancelModal={this.cancelModal} allStationBaseInfo={allStationBaseInfo} /> : ''}
           {showDeleteWarning && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
 
-       </div>
-       <Table
+        </div>
+        <Table
           loading={tableLoading}
           className={styles.intelligentList}
-          dataSource={ dataList.map((e, i) => ({...e, key: i})) }
+          dataSource={dataList.map((e, i) => ({ ...e, key: i }))}
           columns={columns}
           rowSelection={rowSelection}
           onChange={this.tableChange}
           pagination={false}
-          locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
-          rowKey={(record)=>{return record.knowledgeBaseId}}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          rowKey={(record) => { return record.knowledgeBaseId; }}
         />
       </div>
-      )
-    }
+    );
   }
+}
 
 export default IntelligentTable;

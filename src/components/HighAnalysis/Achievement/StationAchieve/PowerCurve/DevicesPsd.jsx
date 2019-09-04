@@ -20,6 +20,7 @@ class DevicesPsd extends Component {
   }
 
   state = {
+    modeArr: [],
     sortName: 'deviceName', // psd;
   }
 
@@ -95,7 +96,8 @@ class DevicesPsd extends Component {
       barWidth: '10px',
       data: psdData,
     }];
-    return { series, xData, modeArr: [...modes] };
+    this.setState({ modeArr: [...modes] });
+    return { series, xData };
   }
 
   deviceHandle = ({ seriesIndex }, sortedAepData, chart) => {
@@ -173,7 +175,7 @@ class DevicesPsd extends Component {
   }
 
   render() {
-    const { sortName } = this.state;
+    const { sortName, modeArr } = this.state;
     return (
       <section className={styles.aep}>
         <h3 className={styles.aepTop}>
@@ -190,6 +192,16 @@ class DevicesPsd extends Component {
             </Select>
           </span>
         </h3>
+        <div className={styles.modes}>
+          {modeArr.map((e, i) => (
+            <span key={e} className={styles.eachMode}>
+              <span className={styles.rect} style={{
+                backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
+                }} />
+              <span className={styles.modeText}>{e}</span>
+            </span>
+          ))}
+        </div>
         <div className={styles.aepChart} ref={(ref)=> {this.psdRef = ref;}} />
       </section>
     );

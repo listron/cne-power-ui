@@ -2,6 +2,19 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-color: #fff;
+  .wrap {
+    display: flex;
+    flex-direction: column;
+  }
+}
 
+.light {
+  background-color: #fff;
+}
+
+.dark {
+  @import "../../../../../theme/darkTheme.scss";
+  .wrap {
+    background: $background;
+  }
 }

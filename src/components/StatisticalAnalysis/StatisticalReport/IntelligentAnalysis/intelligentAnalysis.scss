@@ -1,97 +1,162 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
 
-.singleStationAnalysisSearch,.areaStationSearch,.areaAnalysisSearch{
-.searchPart{ // 搜索框
+.singleStationAnalysis,
+.areaStation,
+.areaAnalysis {
   display: flex;
-  align-items: center;
-  height: 71px;
-  line-height: 40px;
-  border-bottom: solid 1px $promptColor;
-  justify-content: space-between;
-  .leftLayout{
+  flex-direction: column;
+  flex: 1;
+}
+.singleStationAnalysisSearch,
+.areaStationSearch,
+.areaAnalysisSearch {
+  .searchPart {
+    // 搜索框
     display: flex;
     align-items: center;
-    .stationSelect,.regionStationSelect{
+    height: 71px;
+    line-height: 40px;
+    justify-content: space-between;
+    .leftLayout {
       display: flex;
       align-items: center;
-      .text{
-        color: $darkColor;
-        margin-left: 28px;
-        margin-right: 12px;
-      }
-    }
-    .regionStationSelect{
-      :global{
-        .ant-select{
-          width: 100px;
+      .stationSelect,
+      .regionStationSelect {
+        display: flex;
+        align-items: center;
+        .text {
+          margin-left: 28px;
+          margin-right: 12px;
         }
       }
-    }
-    .dateSelect{
-      display: flex;
-      align-items: center;
-      .text{
-        margin-left: 24px;
-        margin-right: -20px;
+      .regionStationSelect {
+        :global {
+          .ant-select {
+            width: 100px;
+          }
+        }
+      }
+      .dateSelect {
+        display: flex;
+        align-items: center;
+        .text {
+          margin-left: 24px;
+          margin-right: -20px;
+        }
+      }
+      .searchInfo {
+        margin-left: 14px;
       }
     }
-    .searchInfo{
-      margin-left: 14px;
-      background: $themeColor;
-      color: #fff;
+    .exportReport {
+      margin-right: 24px;
     }
   }
-  .exportReport{
-    margin-right: 24px;
-  }
-}
 }
 
-.analysisReport{ // 文档
+.analysisReport {
+  // 文档
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #000;
-  .monthReportContent,.yearReportContent{
+  .monthReportContent,
+  .yearReportContent {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 828px;
-    margin:30px 0;
-    border:1px solid #999;
-    .titleText{
+    margin: 30px 0;
+    .titleText {
       font-size: 20px;
       margin: 30px 0;
     }
-    .contentText{
+    .contentText {
       margin: 20px 30px;
-      .time{
+      .time {
         margin: 0 2px;
       }
-      .text{
+      .text {
         margin: 0 2px;
-        color: $themeColor;
       }
-      .paragraph{
-        text-indent:1.5em;
+      .paragraph {
+        text-indent: 1.5em;
       }
-      .distanceTop{
-        margin-top:30px;
+      .distanceTop {
+        margin-top: 30px;
       }
-      .distanceBottom{
-        margin-bottom:30px;
+      .distanceBottom {
+        margin-bottom: 30px;
       }
     }
   }
 }
 
-.nodata{
+.nodata {
   display: flex;
   align-items: center;
   text-align: center;
-  height: 400px;
-  img{
+  flex: 1;
+  img {
     margin: 0 auto;
+  }
+}
+
+.light {
+  color: $darkColor;
+  .searchPart {
+    // 搜索框
+    display: flex;
+    align-items: center;
+    height: 71px;
+    line-height: 40px;
+    border-bottom: solid 1px $promptColor;
+    justify-content: space-between;
+    .searchInfo {
+      background: $themeColor;
+      color: #fff;
+    }
+  }
+  .analysisReport {
+    color: #000;
+    .monthReportContent,
+    .yearReportContent {
+      border: 1px solid #999;
+      .text {
+        color: $themeColor;
+      }
+    }
+  }
+}
+
+@import "../../../../theme/darkTheme.scss";
+.dark {
+  color: $fontColor;
+  .searchPart {
+    background: $light-background;
+    border: 1px solid $border-color;
+    border-top: none;
+  }
+  .analysisReport {
+    background: $light-background;
+    border: 1px solid $border-color;
+    margin-top: 10px;
+  }
+  .nodata {
+    background: $light-background;
+    border: 1px solid $border-color;
+    margin-top: 10px;
+  }
+  .analysisReport {
+    .monthReportContent,
+    .yearReportContent {
+      h3 {
+        color: $fontColor;
+      }
+      border: 1px solid $border-color;
+      .text {
+        color: $fontColor-hover;
+      }
+    }
   }
 }

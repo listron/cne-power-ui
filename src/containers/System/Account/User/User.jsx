@@ -41,7 +41,7 @@ class User extends Component {
     super(props);
     this.state = {
       showSidePage: 'add',
-    }
+    };
   }
   componentDidMount() {
     if (this.props.enterpriseId) {
@@ -57,8 +57,8 @@ class User extends Component {
         order: '',
       };
       this.props.getUserList(params);
-      this.props.getRoleAllList({ enterpriseId: this.props.enterpriseId, roleType: "0" });
-      this.props.getRoleAllList({ enterpriseId: this.props.enterpriseId, roleType: "1" });
+      this.props.getRoleAllList({ enterpriseId: this.props.enterpriseId, roleType: '0' });
+      this.props.getRoleAllList({ enterpriseId: this.props.enterpriseId, roleType: '1' });
     }
   }
 
@@ -68,7 +68,7 @@ class User extends Component {
 
   onChangeSort = sort => {
     if (sort !== this.props.sort) {
-      let params = {
+      const params = {
         enterpriseId: this.props.enterpriseId,
         roleId: this.props.roleId,
         userStatus: this.props.userStatus,
@@ -85,7 +85,7 @@ class User extends Component {
 
   onChangeStatus = status => {
     if (Number(status) !== this.props.userStatus) {
-      let params = {
+      const params = {
         enterpriseId: this.props.enterpriseId,
         userStatus: Number(status),
         pageNum: 1,
@@ -107,7 +107,7 @@ class User extends Component {
   onToggleSide = () => {
     const { showPage } = this.props;
     this.setState({
-      showSidePage: showPage
+      showSidePage: showPage,
     });
   }
 
@@ -119,7 +119,7 @@ class User extends Component {
     };
     return (
       <div className={styles.userContainerBox}>
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.userContainer}>
           <UserMain
             {...this.props}
@@ -137,8 +137,8 @@ class User extends Component {
           </TransitionContainer>
           <div className={styles.userFooter}>
             <span className={styles.footerText}>
-              京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司
-          </span>
+              {/* 京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司 */}
+            </span>
           </div>
         </div>
       </div>
@@ -147,12 +147,12 @@ class User extends Component {
 }
 
 const mapStateToProps = state => {
-  let userProps = {};
+  const userProps = {};
   [...state.system.user].forEach(e => userProps[e[0]] = e[1]);
   userProps['roleData'] = state.system.role.get('roleData');
   userProps['enterpriseId'] = Cookie.get('enterpriseId');
   return userProps;
-}
+};
 
 const mapDispatchToProps = (dispatch) => ({
   changeUserStore: payload => dispatch({ type: userAction.CHANGE_USER_STORE_SAGA, payload }),
@@ -169,9 +169,9 @@ const mapDispatchToProps = (dispatch) => ({
     type: commonAction.downLoadFile,
     payload: {
       ...payload,
-      actionName: userAction.CHANGE_USER_STORE_SAGA
-    }
-  })
+      actionName: userAction.CHANGE_USER_STORE_SAGA,
+    },
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);

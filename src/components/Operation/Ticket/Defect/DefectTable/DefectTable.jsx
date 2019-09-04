@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Icon, Modal, Select, Tooltip } from 'antd';
+import { Table, Icon, Modal, Select, Tooltip, Button } from 'antd';
 import { getLevel, getStatus, getDefectSortField } from '../../../../../constants/ticket';
 import CommonPagination from '../../../../Common/CommonPagination';
 import styles from './defectTable.scss';
@@ -27,12 +27,13 @@ class DefectTable extends Component {
     selectedRowKeys: PropTypes.array,
     changeDefectStore: PropTypes.func,
     getDefectDetail: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      currentSelectedStatus: 5
+      currentSelectedStatus: 5,
     };
   }
 
@@ -45,7 +46,7 @@ class DefectTable extends Component {
       title: '确认删除此缺陷',
       onOk: () => {
         this.props.onBatchDelete({
-          defectId: this.props.selectedRowKeys.join(',')
+          defectId: this.props.selectedRowKeys.join(','),
         });
       },
     });
@@ -56,7 +57,7 @@ class DefectTable extends Component {
       title: '确认下发此缺陷',
       onOk: () => {
         this.props.onBatchSend({
-          defectId: this.props.selectedRowKeys.join(',')
+          defectId: this.props.selectedRowKeys.join(','),
         });
       },
     });
@@ -67,7 +68,7 @@ class DefectTable extends Component {
       title: '确认驳回此缺陷',
       onOk: () => {
         this.props.onBatchReject({
-          defectId: this.props.selectedRowKeys.join(',')
+          defectId: this.props.selectedRowKeys.join(','),
         });
       },
     });
@@ -78,7 +79,7 @@ class DefectTable extends Component {
       title: '确认关闭此缺陷',
       onOk: () => {
         this.props.onBatchClose({
-          defectId: this.props.selectedRowKeys.join(',')
+          defectId: this.props.selectedRowKeys.join(','),
         });
       },
     });
@@ -90,19 +91,19 @@ class DefectTable extends Component {
       onOk: () => {
         this.props.onBatchCheck({
           defectId: this.props.selectedRowKeys.join(','),
-          checkResult: '0'
+          checkResult: '0',
         });
       },
     });
   }
 
-  onNotOk = () => {  // 验收不合格
+  onNotOk = () => { // 验收不合格
     confirm({
       title: '确认验收此缺陷为不合格',
       onOk: () => {
         this.props.onBatchCheck({
           defectId: this.props.selectedRowKeys.join(','),
-          checkResult: '1'
+          checkResult: '1',
         });
       },
     });
@@ -110,20 +111,20 @@ class DefectTable extends Component {
 
   onShowDetail = (defect) => { // 查看此条缺陷的详细信息
     this.props.changeDefectStore({
-      defectId: defect.defectId
+      defectId: defect.defectId,
     });
     if (defect.defectStatus === '0') {
-      this.props.getDefectDetail({ defectId: defect.defectId, });
-      this.props.onChangeShowContainer({container: 'edit'});
+      this.props.getDefectDetail({ defectId: defect.defectId });
+      this.props.onChangeShowContainer({ container: 'edit' });
     } else {
       this.props.onChangeShowContainer({ container: 'detail' });
     }
   }
 
   onSelectChange = (selectedRowKeys, selectedRows) => {
-    let status = this.getSelectedRowsStatus(selectedRows);
+    const status = this.getSelectedRowsStatus(selectedRows);
     this.setState({
-      currentSelectedStatus: status
+      currentSelectedStatus: status,
     });
     this.props.changeDefectStore({ selectedRowKeys });
   }
@@ -131,7 +132,7 @@ class DefectTable extends Component {
   onPaginationChange = ({ currentPage, pageSize }) => {
     this.props.onChangeFilter({
       pageNum: currentPage,
-      pageSize
+      pageSize,
     });
   }
 
@@ -151,8 +152,8 @@ class DefectTable extends Component {
     }
   }
 
-  getSelectedRowsStatus = (selectedRows) => {  // 获取缺陷的列表
-    let map = {};
+  getSelectedRowsStatus = (selectedRows) => { // 获取缺陷的列表
+    const map = {};
     let status;
     for (var i = 0; i < selectedRows.length; i++) {
       if (!map[selectedRows[i].defectStatus]) {
@@ -161,47 +162,47 @@ class DefectTable extends Component {
         map[selectedRows[i].defectStatus] += 1;
       }
     }
-    let values = [];
+    const values = [];
     for (var k in map) {
       values.push(map[k]);
       status = k;
     }
     if (values.length === 1) {
       return status;
-    } else {
-      return null;
     }
+    return null;
+
   }
-  
+
   tableChange = (pagination, filter, sorter) => { // 进行排序的时候
     if (Object.keys(sorter).length !== 0) {
       const field = getDefectSortField(sorter.field);
       const order = sorter.order ? (sorter.order === 'ascend' ? 'asc' : 'desc ') : '';
       this.props.onChangeFilter({
-        sortField:field, 
-        sortMethod:order,
+        sortField: field,
+        sortMethod: order,
       });
     } else {
       this.props.onChangeFilter({
-        sortField:'', 
-        sortMethod:'',
+        sortField: '',
+        sortMethod: '',
       });
     }
   }
 
   cancelRowSelect = () => { // 取消选中
     this.props.changeDefectStore({
-      selectedRowKeys: []
+      selectedRowKeys: [],
     });
   }
 
   initColumn = () => { // 初始的列表头
-    let columns = [{
+    const columns = [{
       title: '缺陷级别',
       dataIndex: 'defectLevel',
       key: 'defectLevel',
       sorter: true,
-      render: (value, record, index) => (<span>{getLevel(value)}</span>)
+      render: (value, record, index) => (<span>{getLevel(value)}</span>),
     }, {
       title: '电站名称',
       dataIndex: 'stationName',
@@ -222,8 +223,8 @@ class DefectTable extends Component {
       dataIndex: 'defectDescribe',
       key: 'defectDescribe',
       render: (text, record) => {
-        return <div className={styles.defectDesc} title={text}>{text}</div>
-      }
+        return <div className={styles.defectDesc} title={text}>{text}</div>;
+      },
     }, {
       title: '发生时间',
       dataIndex: 'startTime',
@@ -233,7 +234,7 @@ class DefectTable extends Component {
       title: '完成时间',
       dataIndex: 'finishTime',
       key: 'finishTime',
-      render: (text, record) => { return text ? text : '--' },
+      render: (text, record) => { return text ? text : '--'; },
       sorter: true,
     }, {
       title: '状态',
@@ -253,22 +254,27 @@ class DefectTable extends Component {
       title: '查看',
       render: (text, record) => (
         <span>
-          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record) }} />
+          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record); }} />
         </span>
-      )
+      ),
     }];
     return columns;
   }
 
   renderOperation = () => { // 操作的内容
-    const { selectedRowKeys, } = this.props;
+    const { selectedRowKeys } = this.props;
     const { currentSelectedStatus } = this.state;
     const unselected = selectedRowKeys.length === 0;
     const rightHandler = localStorage.getItem('rightHandler');
     const reviewDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_review');
     const checkDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_check');
     return (
-      <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+      <Select
+        onChange={this.onHandle}
+        value="操作" placeholder="操作"
+        dropdownMatchSelectWidth={false}
+        getPopupContainer={() => this.refs.wrap}
+        dropdownClassName={styles.handleDropdown}>
         {reviewDefectRight && <Option value="send" disabled={unselected || currentSelectedStatus !== '1'}>
           <i className="iconfont icon-release"></i>下发</Option>}
         {reviewDefectRight && <Option value="close" disabled={unselected || currentSelectedStatus !== '1'}>
@@ -286,19 +292,17 @@ class DefectTable extends Component {
   }
 
   render() {
-    const { pageSize, pageNum, defectList, selectedRowKeys, total, loading } = this.props;
+    const { pageSize, pageNum, defectList, selectedRowKeys, total, loading, theme } = this.props;
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectChange
+      onChange: this.onSelectChange,
     };
     return (
-      <div className={styles.defectTable}>
+      <div className={`${styles.defectTable} ${styles[theme]}`}>
+        <span ref={'wrap'} />
         <div className={styles.action}>
           <div className={styles.buttonArea}>
-            <div className={styles.addDefect} onClick={this.onAdd}>
-              <Icon className={styles.add} type="plus" />
-              <span className={styles.text}>缺陷</span>
-            </div>
+            <Button className={styles.addDefect} type="add" onClick={this.onAdd} ><i>+</i> 缺陷 </Button>
             <div className={styles.operation}>
               {this.renderOperation()}
               <Tooltip overlayStyle={{ width: 220, maxWidth: 220, fontSize: '12px' }} placement="top" title="请选择同一状态下的列表项，进行操作">
@@ -306,7 +310,7 @@ class DefectTable extends Component {
               </Tooltip>
             </div>
           </div>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
         <Table
           rowSelection={rowSelection}

@@ -1,46 +1,56 @@
-@import '../../../../theme/theme.scss';
-.performanceSearch{
-  padding:30px 25px;
+@import "../../../../theme/theme.scss";
+.performanceSearch {
+  padding: 30px 25px;
   margin-bottom: 20px;
   display: flex;
-  background-color: #fff;
   flex-direction: column;
-  .conditionalQuery{
+  .conditionalQuery {
     margin-bottom: 15px;
     display: flex;
     align-items: center;
     line-height: 43px;
-    .searchText{
+    .searchText {
       margin-right: 10px;
       line-height: 30px;
     }
-    .switch{
+    .switch {
       margin-left: 40px;
       margin-top: 4px;
     }
-    .duration{
+    .duration {
       margin: 0 10px;
     }
-    .switchText{
+    .switchText {
       margin-left: 10px;
       line-height: 30px;
     }
   }
-  .equipmentSelection{
-    .equipmentText{
+  .equipmentSelection {
+    .equipmentText {
       margin-right: 10px;
     }
-    .modelSelect{
+    .modelSelect {
       width: 198px;
-      margin:0 12px;
+      margin: 0 12px;
     }
   }
-  
 }
+
+.performanceSearch.light {
+  background-color: #fff;
+}
+
+.performanceSearch.dark {
+  @import "../../../../theme/darkTheme.scss";
+  background: $light-background;
+  color: $fontColor;
+  border: 1px solid $border-color;
+}
+
 .filterBox {
   margin-top: -20px;
   margin-bottom: 10px;
-  
+
   .datePicker {
     margin-top: 10px;
     display: flex;
@@ -52,7 +62,8 @@
     align-items: center;
     padding: 5px 26px;
   }
-  :global {//filterBox
+  :global {
+    //filterBox
     .ant-tabs-bar {
       background-color: #f0f2f5;
       margin-bottom: 0px;
@@ -60,7 +71,7 @@
     .ant-input {
       width: 300px;
       &:hover {
-        border-color:$themeColor;
+        border-color: $themeColor;
       }
     }
     .ant-tabs-bar {
@@ -79,12 +90,12 @@
       transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       cursor: pointer;
       text-decoration: none;
-      width: 60px;       
+      width: 60px;
     }
     .ant-tabs-nav .ant-tabs-tab-active {
       color: $themeColor;
     }
-    .ant-tabs-nav-scroll{
+    .ant-tabs-nav-scroll {
       background: #f0f2f5;
     }
   }
