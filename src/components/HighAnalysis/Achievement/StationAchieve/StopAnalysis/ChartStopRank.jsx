@@ -148,7 +148,7 @@ class ChartStopRank extends Component {
     }
 
     const { sortType } = this.state;
-    const { stopElecType, stopChartDevice, stopChartTypes, stopTopStringify } = this.props;
+    const { stopElecType, stopChartDevice, stopChartTypes, stopTopStringify, stopChartTimeMode } = this.props;
     const selectedDevice = sortedStopRank[dataIndex] || {};
     let searchParam = {};
     try {
@@ -183,6 +183,7 @@ class ChartStopRank extends Component {
       }) : this.props.getStopTrend({
         ...param,
         faultId: stopChartTypes.faultId,
+        type: stopChartTimeMode,
       });
     }
     const queryBoth = (handleLength === 1 && deviceIndex === 0) || handleLength === 0;
@@ -192,7 +193,7 @@ class ChartStopRank extends Component {
         stopHandleInfo: cancelSelect ? [] : ['device'],
       });
       this.props.getStopTypes({ ...param });
-      this.props.getStopTrend({ ...param });
+      this.props.getStopTrend({ ...param, type: stopChartTimeMode });
     }
   }
 
