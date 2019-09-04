@@ -156,6 +156,7 @@ class ChartLostRank extends Component {
       return;
     }
     const selectedInfo = sortedLostRank[dataIndex] || {};
+    const searchParam = JSON.parse(lostStringify) || {};
     let deviceFullcodes;
     if (lostChartDevice && lostChartDevice.deviceFullcode === selectedInfo.deviceFullcode) { // 取消当前选中项.
       deviceFullcodes = searchParam.device;
@@ -164,7 +165,6 @@ class ChartLostRank extends Component {
       deviceFullcodes = [selectedInfo.deviceFullcode];
       this.props.changeStore({ lostChartDevice: selectedInfo });
     }
-    const searchParam = JSON.parse(lostStringify) || {};
     const { code, date = [], quota } = searchParam;
     const [startTime, endTime] = date;
     const params = {
