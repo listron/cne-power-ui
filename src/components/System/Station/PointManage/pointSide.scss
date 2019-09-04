@@ -1,0 +1,33 @@
+@import "../../../../theme/theme.scss";
+
+@mixin top {
+  @include lineheight(64px);
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: 1px solid $promptColor;
+}
+
+.deviceSide {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+  background: #ececec;
+  padding: 24px 24px 0;
+  z-index: 99;
+
+  :global {
+
+    .ant-select,
+    .ant-cascader-picker {
+      width: 198px;
+    }
+  }
+
+
+
+
+
+}
