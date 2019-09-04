@@ -75,7 +75,7 @@ class IntelligentExpert extends Component {
     const { showPage, theme } = this.props;
     return (
       <div className={`${styles.intelligentExpert} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '光伏智能专家库' }]} style={{ marginLeft: '40px' }} />
+        <CommonBreadcrumb breadData={[{ name: '智能专家库' }]} style={{ marginLeft: '40px' }} />
         <div className={styles.contentBox}>
           <div className={styles.container}>
             <div className={styles.intelligentContent}>
