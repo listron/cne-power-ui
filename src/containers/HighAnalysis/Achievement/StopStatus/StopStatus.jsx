@@ -143,7 +143,7 @@ class StopStatus extends Component {
   }
 
   getQueryParam = (infoStr) => {
-    let searchParam = {}
+    let searchParam = {};
     try {
       searchParam = JSON.parse(infoStr) || {};
     } catch (err) { null; }

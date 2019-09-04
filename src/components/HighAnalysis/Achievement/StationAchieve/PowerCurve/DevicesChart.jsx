@@ -4,7 +4,6 @@ import echarts from 'echarts';
 import { getCurveBaseOption } from './curveBaseOption';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './curve.scss';
-import AutoModal from '../../../../Common/AutoSelect/AutoModal';
 
 class DevicesChart extends Component {
 
