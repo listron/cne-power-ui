@@ -99,6 +99,7 @@
         flex-basis: 50%;
         display: flex;
         flex-direction: column;
+        position: relative;
       }
       .aepTop{
         display: flex;
@@ -111,6 +112,45 @@
         }
         .sorterText{
           margin-right: 4px;
+        }
+      }
+      .modes{
+        position: absolute;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 55px;
+        font-size: 12px;
+        .eachMode{
+          margin-right: 20px;
+        }
+        .rect{
+          margin-right: 4px;
+          border-radius:2px;
+          display: inline-block;
+          width: 15px;
+          height: 9px;
+        }
+        .line{
+          display: inline-block;
+          width:5px;
+          margin: 0 10px 0 4px;
+          height:5px;
+          border-radius: 50%;
+          position: relative;
+          top: -1px;
+          &::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 1px;
+            right: -6px;
+            top: 1px;
+          }
+        }
+        .modeText{
+          white-space: nowrap;
         }
       }
       .aepChart{
@@ -172,6 +212,14 @@
     }
     .monthList::-webkit-scrollbar-thumb {
       background: rgba(0, 0, 0, 0.5);
+    }
+  }
+  .modes{
+    .line{
+      border:1px solid #00cdff;
+      &::before {
+        background-color: #00cdff;
+      }
     }
   }
   // .lostRank, .lostTrend, .lostTypes{

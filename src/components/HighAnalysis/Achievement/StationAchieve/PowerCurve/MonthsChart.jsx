@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
+import moment from 'moment';
 import { getCurveBaseOption } from './curveBaseOption';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import searchUtil from '../../../../../utils/searchUtil';
@@ -18,10 +19,10 @@ class MonthsChart extends Component {
   }
 
   componentDidMount(){
-    const { curveMonths = {} } = this.props;
+    const { curveMonths = {}, curveCheckedMonths } = this.props;
     const { actual = [] } = curveMonths;
     if (actual.length > 0) {
-      this.renderChart(curveMonths);
+      this.renderChart(curveMonths, curveCheckedMonths);
     }
   }
 
@@ -70,17 +71,31 @@ class MonthsChart extends Component {
     };
   })
 
-  toStopPage = () => {
+  toStopPage = ({ seriesName }) => {
     const { history } = this.props;
     const { search } = history.location;
     const { pages = '', station } = searchUtil(search).parse(); // 新的pages变化
     const curPages = pages.split('_').filter(e => !!e);
-    const stopExist = curPages.includes('stop');
-    const nextPagesStr = (stopExist ? curPages : curPages.concat('stop')).join('_');
-    const { code, device, date } = JSON.parse(station); // 传入运行数据
-    const stationSearch = JSON.stringify({ code, device: device.join('_'), dates: date });
-    const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({stop: stationSearch}).stringify();
-    this.props.history.push(`/analysis/achievement/analysis/stop?${searchResult}`);
+    const stopExist = curPages.includes('run');
+    const nextPagesStr = (stopExist ? curPages : curPages.concat('run')).join('_');
+    let code, device = [], date = []; // 传入运行数据
+    try {
+      ({ code, device, date } = JSON.parse(station));
+    } catch (error) {
+      console.log(error);
+    }
+    let startTime = moment(seriesName).startOf('month').format('YYYY-MM-DD');
+    let endTime = moment(seriesName).endOf('month').format('YYYY-MM-DD');
+    if (seriesName === '理论功率') {
+      [startTime, endTime] = date;
+    }
+    const stationSearch = JSON.stringify({
+      searchCode: code,
+      searchDevice: device,
+      searchDates: [startTime, endTime],
+    });
+    const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({run: stationSearch}).stringify();
+    this.props.history.push(`/analysis/achievement/analysis/run?${searchResult}`);
   }
 
   renderChart = (monthsData, checkedMonths) => {

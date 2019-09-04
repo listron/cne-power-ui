@@ -125,7 +125,10 @@ class ChartLostTrend extends Component {
     const { changeStore, getLostTrend, lostStringify } = this.props;
     // 携带参数重新请求信息
     changeStore({ lostChartTimeMode });
-    const searchParam = JSON.parse(lostStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(lostStringify) || {};
+    } catch (error) { console.log(error); }
     getLostTrend({
       stationCodes: [searchParam.code],
       deviceFullcodes: searchParam.device,
@@ -144,7 +147,10 @@ class ChartLostTrend extends Component {
     }
     const chartTimeInfo = lostTrend[dataIndex] || {};
     const { efficiencyDate } = chartTimeInfo;
-    const searchParam = JSON.parse(lostStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(lostStringify) || {};
+    } catch (error) { console.log(error); }
     const { date } = searchParam;
     let startTime, endTime;
     if (efficiencyDate === lostChartTime) {
@@ -172,7 +178,10 @@ class ChartLostTrend extends Component {
   renderChart = (lostTrend = []) => {
     const { zoomRange } = this.state;
     const { lostChartTime, lostStringify, quotaInfo } = this.props;
-    const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
+    let quota;
+    try {
+      lostStringify && ({ quota } = JSON.parse(lostStringify));
+    } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
     const { label = '--', unit, pointLength } = selectedQuota;
     const trendChart = echarts.init(this.trendRef);
@@ -230,7 +239,10 @@ class ChartLostTrend extends Component {
   render() {
     const { lostChartTimeMode, lostChartDevice, quotaInfo, lostStringify } = this.props;
     const chartName = lostChartDevice && lostChartDevice.deviceName ? `${lostChartDevice.deviceName}-` : '';
-    const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
+    let quota;
+    try {
+      lostStringify && ({ quota } = JSON.parse(lostStringify));
+    } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
     return (
       <div className={styles.lostTrend}>

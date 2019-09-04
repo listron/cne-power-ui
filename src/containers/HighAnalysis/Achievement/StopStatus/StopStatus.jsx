@@ -33,7 +33,7 @@ class StopStatus extends Component {
     const { history, stopStringify, areaStation, modeDevices } = this.props;
     const { search } = history.location;
     const infoStr = searchUtil(search).getValue('stop');
-    if (infoStr && !stopStringify) { // 有search路径但无访问记录: 刷新进入。
+    if (infoStr && infoStr !== stopStringify) { // 有search路径但无访问记录: 刷新或其他页面路径改变进入。
       const { stationCode, deviceCodes, startTime, endTime } = this.getQueryParam(infoStr);
       this.props.changeStore({
         stopStringify: infoStr,
@@ -68,11 +68,11 @@ class StopStatus extends Component {
       });
       this.queryChart({ stationCode, deviceCodes, startTime, endTime });
     }
-    if (!stopStringify && areaStation.length === 0 && nextArea.length > 0) { // 刷新 得到电站数据
+    if (!infoStr && areaStation.length === 0 && nextArea.length > 0) { // 刷新 得到电站数据
       this.propsAreaStationChange(nextArea);
     }
-    if (this.getIsDevicesChange(modeDevices, nextDevices)) { // 第一次 得到设备信息
-      this.propsModeDevicesChange(nextDevices);
+    if (this.getIsDevicesChange(modeDevices, nextDevices)) { // 得到设备信息
+      this.propsModeDevicesChange(modeDevices, nextDevices, infoStr);
     }
   }
 
@@ -101,22 +101,36 @@ class StopStatus extends Component {
     this.props.getDevices({ stationCode });
   }
 
-  propsModeDevicesChange = (modeDevices) => { // 初始得到电站下设备信息;
-    const { stationCode } = this.props;
-    const deviceCodes = [];
-    modeDevices.forEach(e => {
+  propsModeDevicesChange = (preDevices, modeDevices, infoStr) => { // 设备信息获取
+    const deviceCodes = this.getDevices(modeDevices);
+    if (!infoStr && preDevices.length === 0) { // 路径中无设备, 初次得到设备信息(目录跳转)
+      // => 所有设备选中deviceCodes, 自动切换路径history, 设备信息存储modeDevices
+      const { stationCode } = this.props;
+      this.props.changeStore({ modeDevices, deviceCodes });
+      this.historyChange(
+        stationCode,
+        deviceCodes.join('_'),
+        moment().subtract(1, 'year').subtract(2, 'day').format('YYYY-MM-DD'),
+        moment().subtract(2, 'day').format('YYYY-MM-DD'),
+      );
+    }
+    if (infoStr && preDevices.length === 0) { // 路径中有设备, 初次得到设备信息(F5刷新) => 设备信息存储modeDevices
+      this.props.changeStore({ modeDevices });
+    }
+    if (infoStr && preDevices.length > 0 ) { // 路径中有设备, 用户切换电站 => 设备信息存储modeDevices, 所有设备选中deviceCodes
+      this.props.changeStore({ modeDevices, deviceCodes });
+    }
+  }
+
+  getDevices = (modeInfo = []) => {
+    const codes = [];
+    modeInfo.forEach(e => {
       const { children = [] } = e || {};
       if (children.length > 0) {
-        deviceCodes.push(...children.map(m => m.value));
+        codes.push(...(children.map(m => m.value)));
       }
     });
-    this.props.changeStore({ modeDevices, deviceCodes });
-    this.historyChange(
-      stationCode,
-      deviceCodes.join('_'),
-      moment().subtract(1, 'year').format('YYYY-MM-DD'),
-      moment().format('YYYY-MM-DD'),
-    );
+    return codes;
   }
 
   historyChange = (code, device, startTime, endTime) => {
@@ -129,7 +143,10 @@ class StopStatus extends Component {
   }
 
   getQueryParam = (infoStr) => {
-    const searchParam = JSON.parse(infoStr) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(infoStr) || {};
+    } catch (err) { console.log(err); }
     const { code, device = '', dates = [] } = searchParam;
     return {
       stationCode: code,
@@ -140,7 +157,10 @@ class StopStatus extends Component {
   }
 
   onStationChange = ([regionName, stationCode, stationName]) => {
-    this.props.changeStore({ stationCode, modeDevices: [] });
+    this.props.changeStore({
+      stationCode,
+      deviceCodes: [],
+    });
     this.props.getDevices({ stationCode });
   }
 
@@ -172,21 +192,10 @@ class StopStatus extends Component {
       const stopInfo = JSON.parse(stopStringify);
       device = stopInfo.device.split('_');
       dates = stopInfo.dates;
-    } catch(error){ null; } // 任性吞错误，嘎嘎。~
+    } catch(error){ console.log(error); } // 任性吞错误，嘎嘎。~
     const deviceChanged = deviceCodes.length !== device.length || deviceCodes.find(e => !device.includes(e));
     const timeChanged = startTime !== dates[0] || endTime !== dates[1];
     const searchForbidden = stopStatusLoading || searchInfoLost || (!timeChanged && !deviceChanged);
-    // const faultNames = ['风机故障', '计划停机', '变电故障', '场外因素', '其他损失'];
-    // const stopStatusList = [1, 2, 3, 4, 5, 6, 7].map(e => ({
-    //   deviceFullcode: `${e}M${e * e}MM${e * 2}`,
-    //   deviceName: `A${e}_FE${e * 2}`,
-    //   faultInfos: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(m => ({
-    //     startTime: moment('2018-01-01').add(m, 'month').format('YYYY-MM-DD'),
-    //     endTime: moment('2018-01-01').add(m, 'month').add(e + parseInt(10 * Math.random(), 10), 'day').format('YYYY-MM-DD'),
-    //     faultName: faultNames[m] || '风机故障',
-    //     reason: `${e}故障的描述啊，详情啊${m}, hahhahaha ${m + e * m + m ** m}`,
-    //   })),
-    // }));
     return (
       <div className={styles.stop}>
         <div className={styles.searchPart}>
