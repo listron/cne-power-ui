@@ -137,7 +137,7 @@ class ChartStopTypes extends Component {
     let searchParam = {};
     try {
       searchParam = JSON.parse(stopTopStringify);
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     const [startTime, endTime] = this.getTimeRange(searchParam.date);
     const cancelSelect = stopChartTypes && stopChartTypes.faultId === curFaultInfo.faultId;
     const tmpTypesResult = cancelSelect ? null : curFaultInfo;

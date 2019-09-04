@@ -153,7 +153,7 @@ class ChartStopRank extends Component {
     let searchParam = {};
     try {
       searchParam = JSON.parse(stopTopStringify);
-    } catch (error) { null; }
+    } catch (error) { console.log(error); }
     const [startTime, endTime] = this.getTimeRange(searchParam.date);
     const cancelSelect = stopChartDevice && selectedDevice.deviceFullcode === stopChartDevice.deviceFullcode;
     const tmpDeviceResult = cancelSelect ? null : selectedDevice;

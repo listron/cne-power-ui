@@ -52,7 +52,7 @@ class StationSearch extends Component {
       let searchParam = {};
       try {
         searchParam = JSON.parse(stationInfoStr);
-      } catch(err){ null; }
+      } catch(err){ console.log(err); }
       const { code, device = [], date = [], quota } = searchParam;
       this.setState({
         stationInfoStr,
