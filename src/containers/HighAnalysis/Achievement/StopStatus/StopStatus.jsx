@@ -102,10 +102,10 @@ class StopStatus extends Component {
   }
 
   propsModeDevicesChange = (preDevices, modeDevices, infoStr) => { // 设备信息获取
-    const { stationCode } = this.getQueryParam(infoStr);
     const deviceCodes = this.getDevices(modeDevices);
     if (!infoStr && preDevices.length === 0) { // 路径中无设备, 初次得到设备信息(目录跳转)
       // => 所有设备选中deviceCodes, 自动切换路径history, 设备信息存储modeDevices
+      const { stationCode } = this.props;
       this.props.changeStore({ modeDevices, deviceCodes });
       this.historyChange(
         stationCode,
@@ -143,7 +143,10 @@ class StopStatus extends Component {
   }
 
   getQueryParam = (infoStr) => {
-    const searchParam = JSON.parse(infoStr) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(infoStr) || {};
+    } catch (err) { null; }
     const { code, device = '', dates = [] } = searchParam;
     return {
       stationCode: code,

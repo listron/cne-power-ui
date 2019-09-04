@@ -118,7 +118,10 @@ class DevicesAep extends Component {
   deviceHandle = ({ seriesIndex }, sortedAepData, chart) => {
     const { deviceFullcode, deviceName } = sortedAepData[seriesIndex] || {};
     const { curveTopStringify } = this.props;
-    const queryInfo = JSON.parse(curveTopStringify) || {};
+    let queryInfo = {};
+    try {
+      queryInfo = JSON.parse(curveTopStringify) || {};
+    } catch (error) { null; }
     const param = {
       stationCodes: [queryInfo.code],
       deviceFullcodes: [deviceFullcode],

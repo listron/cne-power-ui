@@ -150,7 +150,10 @@ class ChartStopRank extends Component {
     const { sortType } = this.state;
     const { stopElecType, stopChartDevice, stopChartTypes, stopTopStringify } = this.props;
     const selectedDevice = sortedStopRank[dataIndex] || {};
-    const searchParam = JSON.parse(stopTopStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(stopTopStringify);
+    } catch (error) { null; }
     const [startTime, endTime] = this.getTimeRange(searchParam.date);
     const cancelSelect = stopChartDevice && selectedDevice.deviceFullcode === stopChartDevice.deviceFullcode;
     const tmpDeviceResult = cancelSelect ? null : selectedDevice;
