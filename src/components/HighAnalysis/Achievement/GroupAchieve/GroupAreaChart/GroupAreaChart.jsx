@@ -18,7 +18,7 @@ export default class GroupAreaChart extends Component {
     location: PropTypes.object,
     getGroupTrendInfo: PropTypes.func,
     getGroupLostGenHour: PropTypes.func,
-    colorData: PropTypes.object,
+    areaColorData: PropTypes.object,
     queryParamsFunc: PropTypes.func,
     selectTime: PropTypes.string,
   };
@@ -116,7 +116,7 @@ export default class GroupAreaChart extends Component {
   };
 
   drawChart = (data, dataIndex) => {
-    const { colorData } = this.props;
+    const { areaColorData } = this.props;
     // 保存选中的那条数据
     let obj = '';
     // 过滤掉选中的数据
@@ -184,7 +184,7 @@ export default class GroupAreaChart extends Component {
           itemStyle: {
             normal: {
               color: function(params) {//柱子颜色
-                return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
+                return dataIndex === '' ? areaColorData[params.name] : (dataIndex === params.name ? areaColorData[params.name] : '#cccccc');
               },
             },
             emphasis: {

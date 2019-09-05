@@ -18,7 +18,7 @@ export default class AreaChart extends Component {
     getTrendInfo: PropTypes.func,
     getLostGenHour: PropTypes.func,
     location: PropTypes.object,
-    colorData: PropTypes.object,
+    stationColorData: PropTypes.object,
     getDeviceType: PropTypes.func,
     queryParamsFunc: PropTypes.func,
     selectTime: PropTypes.string,
@@ -112,9 +112,9 @@ export default class AreaChart extends Component {
 
 
   drawChart = (data, dataIndex) => {
-    const { colorData } = this.props;
+    const { stationColorData } = this.props;
     function colorFunc(stationName) {
-      return dataIndex === '' ? colorData[stationName] : (dataIndex === stationName ? colorData[stationName] : '#cccccc');
+      return dataIndex === '' ? stationColorData[stationName] : (dataIndex === stationName ? stationColorData[stationName] : '#cccccc');
     }
     const childrenArr = data.map(cur => {
       const obj = {};

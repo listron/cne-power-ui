@@ -20,7 +20,7 @@ export default class StationPBAChart extends Component {
     dataIndex: PropTypes.string,
     location: PropTypes.object,
     qutaName: PropTypes.string,
-    colorData: PropTypes.object,
+    stationColorData: PropTypes.object,
     unitName: PropTypes.string,
     pointLength: PropTypes.number,
     queryParamsFunc: PropTypes.func,
@@ -113,7 +113,7 @@ export default class StationPBAChart extends Component {
   };
 
   drawChart = (data, dataIndex) => {
-    const { qutaName, colorData, unitName, pointLength } = this.props;
+    const { qutaName, stationColorData, unitName, pointLength } = this.props;
     const twoBar = [{ // 实发
       data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2))),
       type: 'bar',
@@ -121,7 +121,7 @@ export default class StationPBAChart extends Component {
       itemStyle: {
         normal: {
           color: function(params) {//柱子颜色
-            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
+            return dataIndex === '' ? stationColorData[params.name] : (dataIndex === params.name ? stationColorData[params.name] : '#cccccc');
           },
         },
         emphasis: {
@@ -151,7 +151,7 @@ export default class StationPBAChart extends Component {
         barBorderRadius: [5, 5, 0, 0],
         normal: {
           color: function(params) {//柱子颜色
-            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
+            return dataIndex === '' ? stationColorData[params.name] : (dataIndex === params.name ? stationColorData[params.name] : '#cccccc');
           },
         },
         emphasis: {

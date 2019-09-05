@@ -39,7 +39,6 @@ const initState = immutable.fromJS({
   selectStationCode: [], // 保存单选区域的信息
   selectTime: '', // 保存选择时间
   dataName: '', // 保存选择区域名称
-  colorData: {}, // color
 
 });
 

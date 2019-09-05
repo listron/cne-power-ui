@@ -19,7 +19,7 @@ export default class GroupStationChart extends Component {
     getGroupLostGenHour: PropTypes.func,
     location: PropTypes.object,
     titleFunc: PropTypes.string,
-    colorData: PropTypes.object,
+    areaColorData: PropTypes.object,
     unitName: PropTypes.string,
     pointLength: PropTypes.number,
     queryParamsFunc: PropTypes.func,
@@ -113,7 +113,7 @@ export default class GroupStationChart extends Component {
   };
 
   drawChart = (data, dataIndex) => {
-    const { titleFunc, colorData, unitName, pointLength } = this.props;
+    const { titleFunc, areaColorData, unitName, pointLength } = this.props;
     const twoBar = [{ // 实发
       data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2))),
       type: 'bar',
@@ -121,7 +121,7 @@ export default class GroupStationChart extends Component {
       itemStyle: {
         normal: {
           color: function(params) {//柱子颜色
-            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
+            return dataIndex === '' ? areaColorData[params.name] : (dataIndex === params.name ? areaColorData[params.name] : '#cccccc');
           },
         },
         emphasis: {
@@ -151,7 +151,7 @@ export default class GroupStationChart extends Component {
         barBorderRadius: [5, 5, 0, 0],
         normal: {
           color: function(params) {//柱子颜色
-            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
+            return dataIndex === '' ? areaColorData[params.name] : (dataIndex === params.name ? areaColorData[params.name] : '#cccccc');
           },
         },
         emphasis: {
