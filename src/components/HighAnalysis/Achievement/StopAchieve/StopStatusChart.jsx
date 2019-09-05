@@ -21,9 +21,19 @@ class StopStatusChart extends Component {
     stopStatusList.length > 0 && this.renderChart(stopStatusList);
   }
 
-  componentWillReceiveProps(nextProps){
-    const { stopStatusLoading, stopStatusList } = nextProps;
-    const preLoading = this.props.stopStatusLoading;
+  // componentWillReceiveProps(nextProps){
+  //   const { stopStatusLoading, stopStatusList } = nextProps;
+  //   const preLoading = this.props.stopStatusLoading;
+  //   if (preLoading && !stopStatusLoading) { // 请求完毕
+  //     this.renderChart(stopStatusList);
+  //   } else if (!preLoading && stopStatusLoading) { // 请求中
+  //     this.setChartLoading();
+  //   }
+  // }
+
+  componentDidUpdate(preProps){ // didupdate => 保证在dom高度动态更新后, 再基于新的dom进行渲染
+    const { stopStatusLoading, stopStatusList } = this.props;
+    const preLoading = preProps.stopStatusLoading;
     if (preLoading && !stopStatusLoading) { // 请求完毕
       this.renderChart(stopStatusList);
     } else if (!preLoading && stopStatusLoading) { // 请求中
@@ -62,9 +72,11 @@ class StopStatusChart extends Component {
   }
 
   renderChart = (lists) => {
+    const preChart = echarts.getInstanceByDom(this.statusRef);
+    preChart && preChart.dispose(); // 销毁，基于当前dom重新生成图表，保证自适应
     const statusChart = echarts.init(this.statusRef);
     const yAxisLabels = [], statusResult = [], fualtNameSet = new Set();
-    lists.forEach((e, index) => {
+    lists.sort((b = {}, a = {}) => a.deviceName && a.deviceName.localeCompare(b.deviceName)).forEach((e, index) => { // 设备名排序
       const { deviceName, faultInfos = [] } = e || {};
       yAxisLabels.push(deviceName);
       faultInfos.forEach(m => {
@@ -123,7 +135,9 @@ class StopStatusChart extends Component {
               ${['开始时间', '结束时间', '停机类型', '停机原因'].map((e, index) => (`
               <span class=${styles.eachItem}>
                 <span class=${styles.itemName}>${e}</span>
-                <span class=${styles.itemValue}>${value[index + 1]}</span>
+                <span class=${styles.itemValue}>${
+                  index <= 1 ? moment(value[index + 1]).format('YYYY-MM-DD HH:mm:ss') : value[index + 1]
+                }</span>
               </span>
               `)).join('')}
             </div>
@@ -140,12 +154,12 @@ class StopStatusChart extends Component {
         data: statusResult,
       }],
     };
-    const endPosition = 30 / lists.length >= 1 ? 100 : 3000 / lists.length;
+    // const endPosition = 30 / lists.length >= 1 ? 100 : 3000 / lists.length;
     lists.length > 0 && (option.dataZoom = [{
       type: 'slider',
       filterMode: 'empty',
       start: 0,
-      end: endPosition,
+      end: 100,
       showDetail: false,
       bottom: 15,
       height: 20,
@@ -153,7 +167,7 @@ class StopStatusChart extends Component {
       type: 'inside',
       filterMode: 'empty',
       start: 0,
-      end: endPosition,
+      end: 100,
     }]);
     statusChart.hideLoading();
     this.setState({ stopTypes: [...fualtNameSet] });
@@ -177,7 +191,7 @@ class StopStatusChart extends Component {
             </span>
           ))}
         </div>
-        <div className={styles.stautsChart} style={{height: '600px'}} ref={(ref)=> {this.statusRef = ref;}} />
+        <div className={styles.stautsChart} style={{height: `${height}px`}} ref={(ref)=> {this.statusRef = ref;}} />
       </div>
     );
   }

@@ -20,6 +20,7 @@ class DevicesPsd extends Component {
   }
 
   state = {
+    modeArr: [],
     sortName: 'deviceName', // psd;
   }
 
@@ -95,13 +96,17 @@ class DevicesPsd extends Component {
       barWidth: '10px',
       data: psdData,
     }];
-    return { series, xData, modeArr: [...modes] };
+    this.setState({ modeArr: [...modes] });
+    return { series, xData };
   }
 
   deviceHandle = ({ seriesIndex }, sortedAepData, chart) => {
     const { deviceFullcode, deviceName } = sortedAepData[seriesIndex] || {};
     const { curveTopStringify } = this.props;
-    const queryInfo = JSON.parse(curveTopStringify) || {};
+    let queryInfo = {};
+    try {
+      queryInfo = JSON.parse(curveTopStringify) || {};
+    } catch (error) { console.log(error); }
     const param = {
       stationCodes: [queryInfo.code],
       deviceFullcodes: [deviceFullcode],
@@ -173,7 +178,7 @@ class DevicesPsd extends Component {
   }
 
   render() {
-    const { sortName } = this.state;
+    const { sortName, modeArr } = this.state;
     return (
       <section className={styles.aep}>
         <h3 className={styles.aepTop}>
@@ -190,6 +195,16 @@ class DevicesPsd extends Component {
             </Select>
           </span>
         </h3>
+        <div className={styles.modes}>
+          {modeArr.map((e, i) => (
+            <span key={e} className={styles.eachMode}>
+              <span className={styles.rect} style={{
+                backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
+                }} />
+              <span className={styles.modeText}>{e}</span>
+            </span>
+          ))}
+        </div>
         <div className={styles.aepChart} ref={(ref)=> {this.psdRef = ref;}} />
       </section>
     );
