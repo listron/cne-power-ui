@@ -12,6 +12,7 @@
     align-items: center;
     .info{
       width: 860px;
+      flex-basis: calc(100% - 260px);
       display: flex;
       height: 32px;
       line-height: 32px;

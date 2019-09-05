@@ -286,7 +286,6 @@ class StationAchieve extends Component {
   render() {
     const { pageName, changeStore } = this.props;
     const { searchCode, searchDevice, searchDates, searchQuota, stationInfoStr } = this.state;
-    console.log(searchQuota)
     return (
       <div className={styles.stationAchieve} >
         <StationSearch
