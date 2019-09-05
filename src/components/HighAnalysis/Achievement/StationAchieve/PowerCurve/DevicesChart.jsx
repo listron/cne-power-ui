@@ -9,6 +9,8 @@ class DevicesChart extends Component {
 
   static propTypes = {
     curveTopStringify: PropTypes.string,
+    activeDevice: PropTypes.string,
+    curveDeviceFullcode: PropTypes.string,
     curveDevices: PropTypes.object,
     curveDevicesLoading: PropTypes.bool,
     changeStore: PropTypes.func,
@@ -18,18 +20,18 @@ class DevicesChart extends Component {
   }
 
   componentDidMount(){
-    const { curveDevices = {} } = this.props;
+    const { curveDevices = {}, activeDevice } = this.props;
     const { actual = [] } = curveDevices;
     if (actual.length > 0) {
-      this.renderChart(curveDevices);
+      this.renderChart(curveDevices, activeDevice);
     }
   }
 
   componentWillReceiveProps(nextProps){
-    const { curveDevicesLoading, curveDevices } = nextProps;
+    const { curveDevicesLoading, curveDevices, activeDevice } = nextProps;
     const preLoading = this.props.curveDevicesLoading;
     if (preLoading && !curveDevicesLoading) { // 请求完毕
-      this.renderChart(curveDevices);
+      this.renderChart(curveDevices, activeDevice);
     } else if (!preLoading && curveDevicesLoading) { // 请求中
       this.setChartLoading();
     }
@@ -40,13 +42,16 @@ class DevicesChart extends Component {
     devicesChart && devicesChart.showLoading();
   }
 
-  createSeires = (curveData = []) => curveData.map((e) => {
-    const { devicePowerInfoVos = [], deviceName } = e || {};
+  createSeires = (curveData = [], activeDevice) => curveData.map((e) => {
+    const { devicePowerInfoVos = [], deviceName, deviceFullcode } = e || {};
+    const opacity = (activeDevice && activeDevice !== deviceFullcode && deviceName !== '理论功率') ? 0.4 : 1;
     const curveSeries = {
       type: 'line',
       smooth: true,
       name: deviceName,
       data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]).sort((a, b) => a[0] - b[0]),
+      itemStyle: { opacity },
+      lineStyle: { opacity },
     };
     deviceName === '理论功率' && (curveSeries.lineStyle = {color: 'red'});
     return curveSeries;
@@ -55,7 +60,7 @@ class DevicesChart extends Component {
   deviceHandle = ({ seriesIndex }, totalCurveData, devicesChart) => {
     const { deviceFullcode, deviceName } = totalCurveData[seriesIndex] || {};
     if (deviceFullcode) {
-      const { curveTopStringify } = this.props;
+      const { curveTopStringify, activeDevice, curveDeviceFullcode } = this.props;
       let queryInfo = {};
       try {
         queryInfo = JSON.parse(curveTopStringify) || {};
@@ -66,17 +71,21 @@ class DevicesChart extends Component {
         startTime: queryInfo.date[0],
         endTime: queryInfo.date[1],
       };
+      const activeRenderCode = (activeDevice && activeDevice === deviceFullcode) ? null : deviceFullcode;
       this.props.changeStore({
         curveDeviceName: deviceName,
         curveDeviceFullcode: deviceFullcode,
+        activeDevice: activeRenderCode,
       });
-      this.props.getCurveMonths(param);
-      this.props.getCurveMonthAep(param);
-      this.props.getCurveMonthPsd(param);
+      (activeRenderCode && activeRenderCode !== curveDeviceFullcode) && ( // 改变设备时再请求
+        this.props.getCurveMonths(param),
+        this.props.getCurveMonthAep(param),
+        this.props.getCurveMonthPsd(param)
+      );
     }
   }
 
-  renderChart = (curveDevices) => {
+  renderChart = (curveDevices, activeDevice) => {
     const devicesChart = echarts.init(this.devicesRef);
     const { actual = [], theory = [] } = curveDevices;
     const totalCurveData = actual.concat(theory.map(e => ({
@@ -116,7 +125,7 @@ class DevicesChart extends Component {
           </section>`;
         },
       },
-      series: this.createSeires(totalCurveData),
+      series: this.createSeires(totalCurveData, activeDevice),
     };
     devicesChart.hideLoading();
     devicesChart.clear();
