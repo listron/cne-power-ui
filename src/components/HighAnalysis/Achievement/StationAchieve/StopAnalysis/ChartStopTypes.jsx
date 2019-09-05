@@ -47,6 +47,12 @@ class ChartStopTypes extends Component {
     }
   }
 
+  barColor = [
+    ['#e024f2', '#bd10e0'],
+    ['#df7789', '#bc4251'],
+    ['#f2b75f', '#e08031'],
+  ]
+
   setChartLoading = () => {
     const typesChart = this.typesRef && echarts.getInstanceByDom(this.typesRef);
     typesChart && typesChart.showLoading();
@@ -101,15 +107,15 @@ class ChartStopTypes extends Component {
     });
     series = [
       {
-        ...this.createBaseBar(countData, ['#e024f2', '#bd10e0']),
+        ...this.createBaseBar(countData, this.barColor[0]),
         xAxisIndex: 0,
         yAxisIndex: 0,
       }, {
-        ...this.createBaseBar(hourData, ['#df7789', '#bc4251']),
+        ...this.createBaseBar(hourData, this.barColor[1]),
         xAxisIndex: 1,
         yAxisIndex: 1,
       }, {
-        ...this.createBaseBar(genData, ['#f2b75f', '#e08031']),
+        ...this.createBaseBar(genData, this.barColor[2]),
         xAxisIndex: 2,
         yAxisIndex: 2,
       },
@@ -306,6 +312,16 @@ class ChartStopTypes extends Component {
             </span>
           </span>
         </div>
+        {['停机次数', '停机时长', '停机电量'].map((e, i) => (
+          <div key={e} className={styles.modes} style={{top: `${[55, 180, 300][i]}px`}}>
+            <span className={styles.eachMode}>
+              <span className={styles.rect} style={{
+                backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
+                }} />
+              <span className={styles.modeText}>{e}</span>
+            </span>
+          </div>
+        ))}
         <div className={styles.chart} ref={(ref)=> {this.typesRef = ref;}} />
       </div>
     );

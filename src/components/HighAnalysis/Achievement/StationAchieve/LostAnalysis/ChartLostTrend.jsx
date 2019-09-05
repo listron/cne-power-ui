@@ -188,7 +188,7 @@ class ChartLostTrend extends Component {
     const { dataAxis, series } = this.createSeries(lostTrend, lostChartTime, unit);
     const baseOption = getBaseOption(dataAxis);
     baseOption.yAxis.name = `${label}${unit ? `(${unit})` : ''}`;
-    baseOption.yAxis.nameTextStyle.padding = [0, -40, 0, 0];
+    baseOption.yAxis.nameTextStyle.padding = [0, -20, 0, 0];
     baseOption.grid.left = 36;
     const option = {
       ...baseOption,
@@ -207,7 +207,7 @@ class ChartLostTrend extends Component {
                   <span>
                     ${i === 1 ? '应发小时数' : `${label}`}
                   </span>
-                  <span>${dataFormats(e.value, '--', pointLength, true)}${unit || ''}</span>
+                  <span>${dataFormats(e.value, '--', pointLength, true)}</span>
                 </span>`
               )).join('')}
             </div>
