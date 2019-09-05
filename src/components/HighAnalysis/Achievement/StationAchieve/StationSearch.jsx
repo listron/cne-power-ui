@@ -46,22 +46,12 @@ class StationSearch extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps){
-    // 外部props的变化映射进入本地state;
-    // const { searchCode, searchDevice, searchDates, searchQuota } = nextProps;
-    // const preCode = this.props.searchCode;
-    // const preDevice = this.props.searchDevice;
-    // const preDates = this.props.searchDates;
-    // const preQuota = this.props.searchQuota;
+  componentWillReceiveProps(nextProps){ // 外部props的变化映射进入本地state;
     ['searchCode', 'searchDevice', 'searchDates', 'searchQuota'].find(e => { // 找到变化的那个即可。四个条件不会有同时变化。
-      const diffState = this.propsCompare(this.props[e], nextProps[e], e);
+      const diffState = this.propsCompare(!this.state[e] || this.props[e], nextProps[e], e);
       diffState && this.setState({ ...diffState });
       return diffState;
     });
-    // this.propsCompare(preCode, searchCode, 'searchCode');
-    // this.propsCompare(preDevice, searchDevice, 'searchDevice');
-    // this.propsCompare(preDates, searchDates, 'searchDates');
-    // this.propsCompare(preQuota, searchQuota, 'searchQuota');
   }
 
   propsCompare = (pre, cur, stateName) => {
