@@ -120,6 +120,8 @@ const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: pointManageAction.resetStore }),
 
   changeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload }),
+  getfactorsDeviceMode: payload =>
+    dispatch({ type: pointManageAction.getfactorsDeviceMode, payload }),
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,
     payload: {

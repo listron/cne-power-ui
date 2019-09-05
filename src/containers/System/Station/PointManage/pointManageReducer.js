@@ -22,6 +22,8 @@ var initState = Immutable.fromJS({
   allStationBaseInfo: [], // 用户所在企业下所有电站基本信息(与用户token无关)
   selectedRowKeys: [],
   selectedRowData: [],
+  allFactor: [], //所有厂家
+  factorsDeviceModeData: [], //厂家下的型号
 });
 
 const pointManageReducer = (state = initState, action) => {

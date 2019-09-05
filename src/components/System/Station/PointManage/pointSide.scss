@@ -67,4 +67,124 @@
 
   }
 
+  .pointDetail,
+  .pointAdd {
+    .pageContainer {
+      display: flex;
+      flex: 1;
+
+      .left {
+        display: flex;
+        flex: 2;
+        flex-direction: column;
+      }
+
+      .right {
+        display: flex;
+        flex: 3;
+        flex-direction: column;
+
+        .formPart {
+          display: flex;
+          flex-direction: column;
+
+          .formItemStyle {
+            display: flex;
+            // height: 60px;
+            line-height: 40px;
+          }
+
+          :global {
+
+            .ant-select,
+            .ant-cascader-picker {
+              width: 198px;
+            }
+
+            .ant-form-item-label {
+              width: 200px;
+            }
+
+            .ant-btn {
+              width: 200px;
+            }
+          }
+
+        }
+      }
+
+      .left,
+      .right {
+        padding-top: 20px;
+
+        .infoBox {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+
+          .infocontainer {
+            display: flex;
+            // margin-bottom: 20px;
+
+
+            .name {
+              width: 150px;
+              text-align: right;
+              line-height: 40px;
+            }
+
+            .value {
+              margin-left: 48px;
+              line-height: 40px;
+              text-align: left;
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+  .pointAdd {
+    .preStepBox {
+      padding: 40px 0 0 80px;
+
+      .preStepItem {
+        display: flex;
+        height: 60px;
+        line-height: 40px;
+
+
+        .titleText {
+          text-align: center;
+
+          &::after {
+            display: inline-block;
+            margin-right: 4px;
+            color: #f5222d;
+            font-size: 14px;
+            font-family: SimSun, sans-serif;
+            line-height: 1;
+            content: '*';
+          }
+        }
+
+        .nextBtn {
+          width: 198px;
+          margin-left: 66px;
+          background: $themeColor;
+          color: #fff;
+          cursor: pointer;
+        }
+
+        .disabledBtn {
+          width: 198px;
+          margin-left: 66px;
+        }
+
+
+      }
+    }
+  }
+
 }

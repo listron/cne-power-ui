@@ -3,6 +3,8 @@ import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { pointManageAction } from './pointManageAction';
+const APIBasePath = Path.basePaths.APIBasePath;
+const operation = Path.APISubPaths.operation;
 
 function* changePointManageStore(action) { // 存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
@@ -110,6 +112,44 @@ function* deletePointList(action) { // 清除测点列表
     });
   }
 }
+function* getfactorsDeviceMode(action) {
+  //获取某设备厂家下的设备型号
+  const { payload } = action;
+  const { manufactorId } = payload;
+  const url = `${APIBasePath}${operation.getfactorsDeviceMode}/${
+    payload.manufactorId
+    }`;
+  // const url = `/mock/v3/ledger/devicemodes/manufactorId`;
+  try {
+    const response = yield call(axios.get, url, { params: { ...payload } });
+    if (response.data.code === '10000') {
+      const allFactor = response.data.data || [];
+      const modaArr = [];
+      allFactor.forEach((e, i) => {
+        e.modeDatas &&
+          e.modeDatas.forEach((item, index) => {
+            modaArr.push(item);
+          });
+      });
+      yield put({
+        type: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
+        payload: {
+          // ...payload,
+          allFactor,
+          factorsDeviceModeData: manufactorId ? modaArr : [],
+        },
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: pointManageAction.CHANGE_POINT_MANAGE_STORE,
+      payload: { ...payload, loading: false },
+    });
+  }
+}
 
 export function* watchPointManage() {
   yield takeLatest(pointManageAction.CHANGE_POINT_MANAGE_STORE_SAGA, changePointManageStore);
@@ -117,5 +157,6 @@ export function* watchPointManage() {
   yield takeLatest(pointManageAction.GET_POINT_MANAGE_ALL_STATION, getStationPointStatusList);
   yield takeLatest(pointManageAction.GET_POINT_MANAGE_LIST, getPointList);
   yield takeLatest(pointManageAction.DELETE_POINT_MANAGE_LIST, deletePointList);
+  yield takeLatest(pointManageAction.getfactorsDeviceMode, getfactorsDeviceMode);
 }
 
