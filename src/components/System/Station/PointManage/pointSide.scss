@@ -2,13 +2,14 @@
 
 @mixin top {
   @include lineheight(64px);
+  // background: #fff;
   display: flex;
   padding-left: 32px;
   align-items: center;
   border-bottom: 1px solid $promptColor;
 }
 
-.deviceSide {
+.pointSide {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -26,8 +27,44 @@
     }
   }
 
+  .pointAdd,
+  .pointDetail,
+  .pointEdit {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    background: #fff;
 
+    .pageTop {
+      @include top;
+      justify-content: space-between;
 
+      .text {
+        font-size: 18px;
+        color: $darkColor;
+        letter-spacing: 4px;
+      }
 
+      .saveBtn {
+        margin-right: 16px;
+
+        &:hover {
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+
+      .backIcon {
+        color: $darkColor;
+        font-size: 20px;
+        border-left: 1px solid #dfdfdf;
+        height: 100%;
+        line-height: 64px;
+        width: 64px;
+        cursor: pointer;
+      }
+    }
+
+  }
 
 }

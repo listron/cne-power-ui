@@ -19,7 +19,7 @@ class PointSide extends Component {
   render() {
     const { showSidePage } = this.props;
     return (
-      <div className={styles.deviceSide}>
+      <div className={styles.pointSide}>
         {showSidePage === 'detail' && <DetailPoint {...this.props} />}
         {showSidePage === 'add' && <AddPoint {...this.props} />}
         {showSidePage === 'edit' && <EditPoint {...this.props} />}

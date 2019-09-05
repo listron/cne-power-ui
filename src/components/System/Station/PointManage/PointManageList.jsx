@@ -11,6 +11,7 @@ class PointManageList extends Component {
     queryParams: PropTypes.object,
     pointList: PropTypes.array,
     getPointList: PropTypes.func,
+    changePointManageStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
