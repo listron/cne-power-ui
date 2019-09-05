@@ -91,6 +91,9 @@ class MonthsPsd extends Component {
       ...baseOption,
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         padding: 0,
         formatter: (param) => {
           const { axisValue } = param && param[0] || {};

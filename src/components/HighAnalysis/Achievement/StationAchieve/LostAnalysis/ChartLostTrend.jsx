@@ -205,7 +205,7 @@ class ChartLostTrend extends Component {
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>
-                    ${i === 1 ? '应发小时数' : `${label}`}
+                    ${i === 1 ? '应发小时数' : `${label === '利用小时数' ? '实发小时数' : label}`}
                   </span>
                   <span>${dataFormats(e.value, '--', pointLength, true)}</span>
                 </span>`

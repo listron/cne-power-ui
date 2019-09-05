@@ -138,7 +138,7 @@ class ChartStopTypes extends Component {
     }
 
     const { sortName } = this.state;
-    const { stopElecType, stopChartTypes, stopChartDevice, stopTopStringify, stopChartTimeMode, } = this.props;
+    const { stopElecType, stopChartTypes, stopChartDevice, stopTopStringify, stopChartTimeMode } = this.props;
     const curFaultInfo = sortedTypes[dataIndex] || {};
     let searchParam = {};
     try {

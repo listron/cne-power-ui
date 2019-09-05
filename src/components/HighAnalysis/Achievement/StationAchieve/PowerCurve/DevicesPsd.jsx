@@ -136,6 +136,9 @@ class DevicesPsd extends Component {
       ...baseOption,
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         padding: 0,
         formatter: (param) => {
           const { name, axisValue } = param && param[0] || {};
