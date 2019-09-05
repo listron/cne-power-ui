@@ -43,6 +43,7 @@ class StationAchieve extends Component {
     getCurveMonths: PropTypes.func,
     getCurveMonthAep: PropTypes.func,
     getCurveMonthPsd: PropTypes.func,
+    resetStore: PropTypes.func,
   }
 
   // 数据获取方式: 
@@ -136,6 +137,10 @@ class StationAchieve extends Component {
         || (pageName === 'curve' && curveTopStringify !== newSearchPath);
       needQuery && this.pageQuery(newSearchPath, pageName);
     }
+  }
+
+  componentWillUnmount(){
+    this.props.resetStore();
   }
 
   getIsDevicesChange = (pre, cur) => { // 判断设备是否发生改变
@@ -281,6 +286,7 @@ class StationAchieve extends Component {
   render() {
     const { pageName, changeStore } = this.props;
     const { searchCode, searchDevice, searchDates, searchQuota, stationInfoStr } = this.state;
+    console.log(searchQuota)
     return (
       <div className={styles.stationAchieve} >
         <StationSearch
@@ -346,6 +352,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetLost: payload => dispatch({ type: stationAchieveAction.resetLost, payload }),
   resetStop: payload => dispatch({ type: stationAchieveAction.resetStop, payload }),
   resetCurve: payload => dispatch({ type: stationAchieveAction.resetCurve, payload }),
+  resetStore: () => dispatch({ type: stationAchieveAction.resetStore }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StationAchieve);
