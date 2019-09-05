@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import eCharts from 'echarts';
 import axios from 'axios';
+import {message} from 'antd';
 import PropTypes from 'prop-types';
 import searchUtil from '../../../../../utils/searchUtil';
 
@@ -17,8 +18,9 @@ export default class GroupAreaChart extends Component {
     location: PropTypes.object,
     getGroupTrendInfo: PropTypes.func,
     getGroupLostGenHour: PropTypes.func,
-    colorData: PropTypes.object,
+    areaColorData: PropTypes.object,
     queryParamsFunc: PropTypes.func,
+    selectTime: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
@@ -47,6 +49,10 @@ export default class GroupAreaChart extends Component {
 
   chartHandle = (params, groupCapacityInfo, myChart) => {
     const { data } = params;
+    const { selectTime } = this.props;
+    if(selectTime) {
+      return message.info('请先取消下方事件选择, 再选择区域');
+    }
     if(data) {
       const { changeStore, dataIndex, getGroupTrendInfo, getGroupLostGenHour, location: { search } } = this.props;
       const groupInfoStr = searchUtil(search).getValue('group');
@@ -90,7 +96,7 @@ export default class GroupAreaChart extends Component {
           dataName: data.name, // 名称
           selectStationCode: stationCodes, // 保存单选区域的信息
         });
-        myChart.setOption(this.drawChart(groupCapacityInfo, dataIndex));
+        myChart.setOption(this.drawChart(groupCapacityInfo, params.name));
         getGroupTrendInfo(paramsTrend);
         getGroupLostGenHour(paramsHour);
       }
@@ -110,8 +116,21 @@ export default class GroupAreaChart extends Component {
   };
 
   drawChart = (data, dataIndex) => {
-    const { colorData } = this.props;
-    const dataMap = data && data.map(cur => ({
+    const { areaColorData } = this.props;
+    // 保存选中的那条数据
+    let obj = '';
+    // 过滤掉选中的数据
+    const dataFilter = data && data.filter(cur => {
+      if(cur.regionName === dataIndex){
+        obj = cur;
+      }
+      return cur.regionName !== dataIndex;
+    });
+    // 如果不为空，push数据
+    if(obj) {
+      dataFilter.push(obj);
+    }
+    const dataMap = dataFilter && dataFilter.map(cur => ({
       name: cur.regionName,
       value: [cur.longitude, cur.latitude, cur.stationCapacity / 1000],
     }));
@@ -165,7 +184,7 @@ export default class GroupAreaChart extends Component {
           itemStyle: {
             normal: {
               color: function(params) {//柱子颜色
-                return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
+                return dataIndex === '' ? areaColorData[params.name] : (dataIndex === params.name ? areaColorData[params.name] : '#cccccc');
               },
             },
             emphasis: {
