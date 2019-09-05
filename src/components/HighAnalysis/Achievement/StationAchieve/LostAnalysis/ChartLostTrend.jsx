@@ -76,7 +76,7 @@ class ChartLostTrend extends Component {
       data: firstLineData,
       lineStyle: {
         opacity: lostChartTime ? 0.2 : 1,
-        color: '#2564cc',
+        color: '#f9b600',
         width: 2,
         shadowColor: 'rgba(0,0,0,0.20)',
         shadowBlur: 3,
@@ -88,7 +88,7 @@ class ChartLostTrend extends Component {
       data: secendLineData,
       lineStyle: {
         opacity: lostChartTime ? 0.2 : 1,
-        color: '#f9b600',
+        color: '#2564cc',
         width: 2,
         shadowColor: 'rgba(0,0,0,0.20)',
         shadowBlur: 3,
@@ -251,6 +251,16 @@ class ChartLostTrend extends Component {
             {chartName}{selectedQuota.label || '--'}趋势图
           </span>
           <TimeSelect timeMode={lostChartTimeMode} timeModeChange={this.timeModeChange} />
+        </div>
+        <div className={styles.modes}>
+          <span className={styles.eachMode}>
+            <span className={styles.line} />
+            <span className={styles.modeText}>{selectedQuota.label || '--'}</span>
+          </span>
+          {selectedQuota.label === '利用小时数' && <span className={styles.eachMode}>
+            <span className={styles.lineTheory} />
+            <span className={styles.modeText}>应发小时数</span>
+          </span>}
         </div>
         <div className={styles.chart} ref={(ref)=> {this.trendRef = ref;}} />
       </div>

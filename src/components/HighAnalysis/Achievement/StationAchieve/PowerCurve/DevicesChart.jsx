@@ -30,7 +30,9 @@ class DevicesChart extends Component {
   componentWillReceiveProps(nextProps){
     const { curveDevicesLoading, curveDevices, activeDevice } = nextProps;
     const preLoading = this.props.curveDevicesLoading;
-    if (preLoading && !curveDevicesLoading) { // 请求完毕
+    const getQueryData = preLoading && !curveDevicesLoading;
+    const activeChange = activeDevice !== this.props.activeDevice;
+    if (getQueryData || activeChange) { // 请求完毕
       this.renderChart(curveDevices, activeDevice);
     } else if (!preLoading && curveDevicesLoading) { // 请求中
       this.setChartLoading();
