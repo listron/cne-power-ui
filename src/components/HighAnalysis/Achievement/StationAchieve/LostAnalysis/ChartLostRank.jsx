@@ -228,6 +228,9 @@ class ChartLostRank extends Component {
       ...baseOption,
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         padding: 0,
         formatter: (param) => {
           const { name, axisValue } = param && param[0] || {};
@@ -240,7 +243,7 @@ class ChartLostRank extends Component {
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>${i === 1 ? '应发小时数' : `${label === '利用小时数' ? '实发小时数' : label}`}</span>
-                  <span>${dataFormats(e.value, '--', pointLength, true)}${unit || ''}</span>
+                  <span>${dataFormats(e.value, '--', pointLength, true)}</span>
                 </span>`
               )).join('')}
             </div>
@@ -278,6 +281,7 @@ class ChartLostRank extends Component {
       lostStringify && ({ quota } = JSON.parse(lostStringify));
     } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
+    const extraQuotaText = selectedQuota.label === '利用小时数' ? '实发小时数' : '';
     return (
       <div className={styles.lostRank}>
         <div className={styles.top}>
@@ -308,9 +312,13 @@ class ChartLostRank extends Component {
               <span className={styles.rect} style={{
                 backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
                 }} />
-              <span className={styles.modeText}>{e}</span>
+              <span className={styles.modeText}>{e}{extraQuotaText}</span>
             </span>
           ))}
+          {extraQuotaText && <span className={styles.eachMode}>
+            <span className={styles.rect} style={{ backgroundColor: '#c1c1c1' }} />
+            <span className={styles.modeText}>应发小时数</span>
+          </span>}
         </div>
         <div className={styles.chart} ref={(ref)=> {this.rankRef = ref;}} />
       </div>
