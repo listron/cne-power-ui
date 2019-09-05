@@ -31,6 +31,7 @@ export default class RunSearch extends Component {
     const stationInfo = stationInfoStr ? JSON.parse(stationInfoStr) : {};
     const defaultEndTime = moment().subtract(2, 'days').format('YYYY-MM-DD');
     const defaultStartTime = moment(defaultEndTime).subtract(1, 'year').format('YYYY-MM-DD');
+    console.log(stationInfo, 'stationInfo');
     this.state = {
       stationInfoStr,
       searchCode: stationInfo.searchCode,
