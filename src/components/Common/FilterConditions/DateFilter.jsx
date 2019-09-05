@@ -57,20 +57,24 @@ class DateFliter extends Component {
     const { checkedValue = [] } = option;
     const [startTime, endTime] = checkedValue;
     return (
-      <div className={styles.filterItem}>
+      <div className={`${styles.filterItem} ${styles.dateFilter}`} >
         <span onClick={this.resetTime} className={!startTime && !endTime ? styles.selected : styles.all}>不限</span>
-        <DatePicker
-          disabledDate={this.disabledStartDate}
-          value={startTime ? moment(startTime) : null}
-          placeholder="开始时间"
-          onChange={this.onStartChange}
-        />
-        <DatePicker
-          disabledDate={this.disabledEndDate}
-          value={endTime ? moment(endTime) : null}
-          placeholder="截止时间"
-          onChange={this.onEndChange}
-        />
+        <div>
+          <DatePicker
+            disabledDate={this.disabledStartDate}
+            value={startTime ? moment(startTime) : null}
+            placeholder="开始时间"
+            onChange={this.onStartChange}
+          />
+          <span className={styles.lines}>~</span>
+          <DatePicker
+            disabledDate={this.disabledEndDate}
+            value={endTime ? moment(endTime) : null}
+            placeholder="截止时间"
+            onChange={this.onEndChange}
+          />
+        </div>
+
       </div>
     );
   }

@@ -10,9 +10,23 @@
 .filterConditionTitle {
   display: flex;
   color: #00baff;
+
   .text {
     margin-right: 16px;
     line-height: 30px;
+    width: 56px;
+    flex-shrink: 0;
+  }
+  .filterlistBox {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .switch {
+    line-height: 32px;
+    span {
+      margin-left: 4px;
+    }
   }
   .filterlist {
     height: 32px;
@@ -25,12 +39,18 @@
     font-size: 14px;
     border-radius: 4px;
     margin-right: 16px;
+    margin-bottom: 4px;
     i {
-      // width: 30px;
-      // font-size: 12px;
       display: inline-block;
       margin-left: 8px;
     }
+  }
+  .disabled {
+    background: #f7f7f7;
+    border: 1px solid #d9d9d9;
+    color: #dfdfdf;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 }
 
@@ -80,7 +100,6 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  // align-items: center;
   flex-shrink: 0;
   padding: 12px 24px;
   min-height: 40px;
@@ -113,5 +132,17 @@
     border-bottom: 1px $themeColor solid;
     cursor: pointer;
     text-align: center;
+  }
+  .lines {
+    display: inline-block;
+    padding: 0 5px;
+  }
+}
+
+.dateFilter {
+  :global {
+    .ant-input {
+      width: 280px;
+    }
   }
 }

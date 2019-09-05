@@ -9,6 +9,7 @@ import DefectFilter from '../../../../../components/Operation/Ticket/Defect/Defe
 import DefectStatus from '../../../../../components/Operation/Ticket/Defect/DefectStatus/DefectStatus';
 import { commonAction } from '../../../../alphaRedux/commonAction';
 import FilterCondition from '../../../../../components/Common/FilterCondition/FilterCondition';
+import FilterConditions from '../../../../../components/Common/FilterConditions/FilterCondition';
 
 class DefectList extends Component {
   static propTypes = {
@@ -54,7 +55,7 @@ class DefectList extends Component {
 
   componentDidMount() {
     const { stationType, stationCodes, defectSource, defectLevel, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
-    let filter = {
+    const filter = {
       stationType,
       stationCodes,
       defectSource,
@@ -68,19 +69,19 @@ class DefectList extends Component {
       defectTypeCode,
       sortField,
       sortMethod,
-      handleUser
-    }
+      handleUser,
+    };
     this.props.getDefectList({ ...filter });
     this.props.getDefectIdList({ ...filter }); // 获取道缺陷ID列表
     this.props.getLostGenType({ //获取所有损失缺陷类型
-      objectType: 1
-    })
+      objectType: 1,
+    });
   }
 
 
   filterCondition = (changeValue) => {
     const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
-    let filter = {
+    const filter = {
       stationType,
       stationCodes,
       defectSource,
@@ -95,10 +96,14 @@ class DefectList extends Component {
       defectTypeCode,
       sortField,
       sortMethod,
-      handleUser
-    }
+      handleUser,
+    };
     this.props.getDefectList({ ...filter, ...changeValue });
     this.props.getDefectIdList({ ...filter, ...changeValue }); // 获取道缺陷ID列表
+  }
+
+  filterConditionChange = (value) => {
+    console.log('value', value);
   }
 
   render() {
@@ -107,7 +112,7 @@ class DefectList extends Component {
     return (
       <div className={styles.defectList}>
         <FilterCondition
-          option={["time", "stationType", "stationName", "deviceType", "defectLevel", "defectType", "defectSource", "myJoin"]}
+          option={['time', 'stationType', 'stationName', 'deviceType', 'defectLevel', 'defectType', 'defectSource', 'myJoin']}
           stations={stations}
           deviceTypes={deviceTypes}
           defectList={defectList}
@@ -123,9 +128,68 @@ class DefectList extends Component {
             defectLevel: defectLevel,
             deviceTypeCode: deviceTypeCode,
             defectTypeCode: defectTypeCode,
-            handleUser: handleUser
+            handleUser: handleUser,
           }}
         />
+        {/* <FilterConditions
+          onChange={this.filterConditionChange}
+          option={[
+            {
+              name: '告警级别',
+              type: 'level',
+              typeName: 'warnLevel',
+              belong: 'multipleSelect',
+            },
+            {
+              name: '缺陷类型',
+              type: 'defectSource',
+              typeName: 'defectSource',
+              belong: 'multipleSelect',
+            },
+            {
+              name: '电站类型',
+              type: 'stationType',
+              typeName: 'stationType',
+            },
+            // {
+            //   name: '电站名称',
+            //   type: 'stationName',
+            //   belong: 'multipleSelect',
+            //   typeName: 'stationCodes',
+            //   data: stations,
+            // },
+            // {
+            //   name: '电站名称',
+            //   type: 'stationName',
+            //   belong: 'multipleSelect',
+            //   typeName: 'stationCodes',
+            //   data: stations,
+            // },
+            {
+              name: '电站名称', // 目前为止就是这一个
+              type: 'parentCheckBox',
+              belong: 'multipleSelect',
+              typeName: 'stationCodes', // 0 1 2 全部  风电 光伏
+              rules: ['stationName', 'stationCode'],
+              parentName: 'provinceName',
+              data: stations,
+              combine: 'stationType',
+              disabled: true,
+            },
+            {
+              name: '测试单选',
+              type: 'radioSelect',
+              typeName: 'radioSelect',
+              data: [{ label: 123, value: 345 }, { label: 567, value: 789 }],
+            },
+            {
+              name: '我参与的',
+              type: 'switch',
+              typeName: 'join',
+            },
+          ]}
+          value={{ rangeTimes: ['2019-08-3', '2019-09-3'], rangeTime: ['2019-08-3', '2019-09-3'], join: true, stationCodes: [350, 56] }}
+        /> */}
         <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} defaultValue={status} />
         <DefectTable {...this.props} onChangeFilter={this.filterCondition} />
       </div>
@@ -157,8 +221,8 @@ const mapDispatchToProps = (dispatch) => ({
     payload: {
       params,
       actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-      resultName: 'defectTypes'
-    }
+      resultName: 'defectTypes',
+    },
   }),
 });
 
