@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
+import { message } from 'antd';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData.js';
 import searchUtil from '../../../../../utils/searchUtil';
 
@@ -17,9 +18,10 @@ export default class AreaChart extends Component {
     getTrendInfo: PropTypes.func,
     getLostGenHour: PropTypes.func,
     location: PropTypes.object,
-    colorData: PropTypes.object,
+    stationColorData: PropTypes.object,
     getDeviceType: PropTypes.func,
     queryParamsFunc: PropTypes.func,
+    selectTime: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
@@ -44,7 +46,10 @@ export default class AreaChart extends Component {
   }
 
   chartHandle = (params, capacityInfo, myChart) => {
-    const { changeStore, getTrendInfo, dataIndex, getLostGenHour, getDeviceType, location: { search }} = this.props;
+    const { selectTime, changeStore, getTrendInfo, dataIndex, getLostGenHour, getDeviceType, location: { search }} = this.props;
+    if(selectTime) {
+      return message.info('请先取消下方事件选择, 再选择电站');
+    }
     const { data } = params;
     const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
@@ -107,9 +112,9 @@ export default class AreaChart extends Component {
 
 
   drawChart = (data, dataIndex) => {
-    const { colorData } = this.props;
+    const { stationColorData } = this.props;
     function colorFunc(stationName) {
-      return dataIndex === '' ? colorData[stationName] : (dataIndex === stationName ? colorData[stationName] : '#cccccc');
+      return dataIndex === '' ? stationColorData[stationName] : (dataIndex === stationName ? stationColorData[stationName] : '#cccccc');
     }
     const childrenArr = data.map(cur => {
       const obj = {};

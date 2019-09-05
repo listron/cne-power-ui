@@ -11,6 +11,8 @@ export const achieveAction = {
 const initState = immutable.fromJS({
   areaStation: [],
   quotaInfo: [],
+  areaColorData: {}, // 区域color
+  stationColorData: {}, // 电站color
 });
 
 export const achieveLayout = (state = initState, action) => {
