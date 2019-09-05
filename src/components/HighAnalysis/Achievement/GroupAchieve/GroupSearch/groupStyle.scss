@@ -2,26 +2,41 @@
 
 .topSearch {
   display: flex;
-  padding-left: 24px;
+  padding: 0 24px;
   height: 76px;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-
-  > div {
-    @include lineheight(32px);
+  .leftSearch{
     display: flex;
-    span{
-      margin-right: 5px;
+    flex-wrap: wrap;
+
+    > div {
+      @include lineheight(32px);
+      display: flex;
+      span{
+        margin-right: 5px;
+      }
+    }
+    > div:not(:first-child){
+      margin-left: 20px;
+    }
+
+    > div:last-child{
+      margin-left: 10px;
     }
   }
-  > div:not(:first-child){
-    margin-left: 20px;
+  > button{
+    color: #fff;
+    background:#f9b600;
+    border:1px solid #f9b600;
+
+    &:hover{
+      color: #fff;
+      background:#f9b600;
+      border:1px solid #f9b600;
+    }
   }
 
-  > div:last-child{
-    margin-left: 10px;
-  }
 }
 
 .cascaderBox {
