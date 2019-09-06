@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Radio} from 'antd';
+import {message, Radio} from 'antd';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import moment from 'moment';
@@ -27,6 +27,13 @@ export default class GroupTrendChart extends Component {
     selectTime: PropTypes.string,
   };
 
+  constructor(props){
+    super(props);
+    // 初始化dataZoom位置
+    this.paramsStart = 0;
+    this.paramsend = 100;
+  }
+
   componentDidUpdate(prevProps) {
     const { groupTrendChart } = this;
     const { groupTrendTime, groupTrendLoading, groupTrendInfo, selectTime } = this.props;
@@ -40,17 +47,28 @@ export default class GroupTrendChart extends Component {
       myChart.hideLoading();
     }
     if(groupTrendTime && groupTrendTime !== trendTimePrev) {
+      // 初始化dataZoom位置
+      this.paramsStart = 0;
+      this.paramsend = 100;
       eCharts.init(groupTrendChart).clear();//清除
       const myChart = eCharts.init(groupTrendChart);
       myChart.setOption(this.drawChart(groupTrendInfo, selectTime));
       myChart.off('click');
       myChart.on('click', (param) => this.chartHandle(myChart, groupTrendInfo, param));
+      myChart.off('datazoom');
+      myChart.on('datazoom', (params) => {
+        this.paramsStart = params.start;
+        this.paramsend = params.end;
+      });
     }
   }
 
 
   chartHandle = (myChart, groupTrendInfo, params) => {
     const { selectTime, selectStationCode, changeStore, getGroupLostGenHour, groupTimeStatus } = this.props;
+    if(selectStationCode.length === 0) {
+      return message.info('先选择区域后，才能对时间进行操作');
+    }
     if(selectStationCode.length > 0) {
       const { search } = this.props.location;
       const groupInfoStr = searchUtil(search).getValue('group');
@@ -128,7 +146,6 @@ export default class GroupTrendChart extends Component {
 
   drawChart = (data, selectTime) => {
     const { titleFunc, unitName, pointLength } = this.props;
-    const color = selectTime ? '#f5d5bb' : '#f9b600';
     // 选中的颜色
     function colorFunc(time) {
       if(selectTime) {
@@ -140,8 +157,13 @@ export default class GroupTrendChart extends Component {
       name: titleFunc,
       type: 'line',
       barWidth: '10',
-      itemStyle: {
-        color,
+      lineStyle: {
+        opacity: selectTime ? 0.2 : 1,
+        color: '#f9b600',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
       data: data && data.map(cur => ({
         value: dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2),
@@ -156,8 +178,13 @@ export default class GroupTrendChart extends Component {
     const twoLine = [{
       name: titleFunc,
       type: 'line',
-      itemStyle: {
-        color,
+      lineStyle: {
+        opacity: selectTime ? 0.2 : 1,
+        color: '#f9b600',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
       data: data && data.map(cur => ({
         value: dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2),
@@ -169,8 +196,13 @@ export default class GroupTrendChart extends Component {
     }, {
       name: titleFunc,
       type: 'line',
-      itemStyle: {
-        color,
+      lineStyle: {
+        opacity: selectTime ? 0.2 : 1,
+        color: '#f5d5bb',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
       data: data && data.map(cur => ({
         value: dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2),
@@ -226,12 +258,12 @@ export default class GroupTrendChart extends Component {
       dataZoom: [
         {
           type: 'inside',
-          start: 0,
-          end: 100,
+          start: this.paramsStart,
+          end: this.paramsEnd,
         },
         {
-          start: 0,
-          end: 100,
+          start: this.paramsStart,
+          end: this.paramsEnd,
           handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
           handleSize: '80%',
           handleStyle: {
@@ -269,6 +301,9 @@ export default class GroupTrendChart extends Component {
         indicatorCode: quotaValue,
         type: e.target.value, // 默认按月
       };
+      // 初始化dataZoom位置
+      this.paramsStart = 0;
+      this.paramsend = 100;
       // 请求趋势数据
       getGroupTrendInfo(paramsTrend);
     }

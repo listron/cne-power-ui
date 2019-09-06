@@ -285,7 +285,7 @@ export default class AreaSearch extends Component {
               value={quota}
             />
           </div>
-          <div>
+          <div className={styles.leftSearchBox}>
             <Button disabled={!searchFlag} style={{marginRight: '20px'}} onClick={this.queryCharts}>查询</Button>
           </div>
         </div>

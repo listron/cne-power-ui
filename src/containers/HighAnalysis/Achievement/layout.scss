@@ -49,15 +49,19 @@
 
 .layout{
   background-color: #ececec;
-  .tabs .eachTab{
+  .tabs .button{
     color: $darkColor;
-    background-color: #e1e2e2;
-    border-top: 2px solid transparent;
+    background-image:linear-gradient(-180deg, #f2f3f3 0%, #e1e2e2 100%);
+    border:1px solid #e1e2e2;
+    border-top: 1px solid transparent;
+    border-bottom: none;
   }
   .tabs .actievButton{
     color: $darkColor;
+    border:1px solid #e1e2e2;
     border-top: 2px solid $themeColor;
-    background-color: #fff;
+    border-bottom: none;
+    background-image:linear-gradient(-180deg, #fff 0%, #fff 100%);
   }
   .tabs .close{
     border: 1px solid $themeColor;

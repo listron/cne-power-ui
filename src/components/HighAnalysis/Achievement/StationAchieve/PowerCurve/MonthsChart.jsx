@@ -13,6 +13,7 @@ class MonthsChart extends Component {
     history: PropTypes.object,
     curveCheckedMonths: PropTypes.array,
     curveDeviceName: PropTypes.string,
+    curveDeviceFullcode: PropTypes.string,
     curveMonths: PropTypes.object,
     curveMonthsLoading: PropTypes.bool,
     curveAllMonths: PropTypes.array,
@@ -72,15 +73,15 @@ class MonthsChart extends Component {
   })
 
   toStopPage = ({ seriesName }) => {
-    const { history } = this.props;
+    const { history, curveDeviceFullcode } = this.props;
     const { search } = history.location;
     const { pages = '', station } = searchUtil(search).parse(); // 新的pages变化
     const curPages = pages.split('_').filter(e => !!e);
     const stopExist = curPages.includes('run');
     const nextPagesStr = (stopExist ? curPages : curPages.concat('run')).join('_');
-    let code, device = [], date = []; // 传入运行数据
+    let code, date = []; // 传入运行数据
     try {
-      ({ code, device, date } = JSON.parse(station));
+      ({ code, date } = JSON.parse(station));
     } catch (error) {
       console.log(error);
     }
@@ -91,9 +92,10 @@ class MonthsChart extends Component {
     }
     const stationSearch = JSON.stringify({
       searchCode: code,
-      searchDevice: device,
+      searchDevice: [curveDeviceFullcode],
       searchDates: [startTime, endTime],
     });
+    console.log(stationSearch)
     const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({run: stationSearch}).stringify();
     this.props.history.push(`/analysis/achievement/analysis/run?${searchResult}`);
   }
@@ -141,6 +143,20 @@ class MonthsChart extends Component {
       },
       series: this.createSeires(totalMonthData, checkedMonths),
     };
+    totalMonthData.length > 0 && (option.dataZoom = [{
+      type: 'slider',
+      filterMode: 'empty',
+      start: 0,
+      end: 100,
+      showDetail: false,
+      height: 20,
+      bottom: 10,
+    }, {
+      type: 'inside',
+      filterMode: 'empty',
+      start: 0,
+      end: 100,
+    }]);
     monthChart.hideLoading();
     monthChart.clear();
     monthChart.setOption(option);
