@@ -121,17 +121,12 @@ class DefectList extends Component {
       createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, deviceTypeCode, defectTypeCode, defectSource, handleUser, status } = this.props;
     const defectTypeTab = [];
     defectTypes.forEach(e => { e.list && e.list.length > 0 && defectTypeTab.push(...e.list); });
-    const test = defectTypeTab.map(e => {
+    let defectTypeList = [];
+    defectTypeTab.map(e => {
       e.list && e.list.length > 0 && e.list.forEach((lastItem) => {
-        console.log('e.list', e.list);
-        e.list.parentName = e.name;
+        lastItem.parentName = e.name;
       });
-      return e.list;
-    });
-    console.log('test', test);
-    let test2 = [];
-    test.map(e => {
-      test2 = [...test2, ...e];
+      defectTypeList = [...defectTypeList, ...e.list];
     });
     return (
       <div className={styles.defectList}>
@@ -199,7 +194,7 @@ class DefectList extends Component {
               typeName: 'defectTypeCode',
               parentName: 'parentName',
               rules: ['name', 'id'],
-              data: test2,
+              data: defectTypeList,
             },
             {
               type: 'defectSource',
@@ -219,6 +214,7 @@ class DefectList extends Component {
             defectLevel: defectLevel,
             deviceTypeCode: deviceTypeCode,
             defectTypeCode: defectTypeCode,
+            rangeTimes: [createTimeStart, createTimeEnd]
           }}
         />
         <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} defaultValue={status} />
