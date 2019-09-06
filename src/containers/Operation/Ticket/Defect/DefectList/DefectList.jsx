@@ -122,21 +122,17 @@ class DefectList extends Component {
     const defectTypeTab = [];
     defectTypes.forEach(e => { e.list && e.list.length > 0 && defectTypeTab.push(...e.list); });
     const test = defectTypeTab.map(e => {
-      const options = [];
       e.list && e.list.length > 0 && e.list.forEach((lastItem) => {
-        options.push({
-          label: lastItem.name,
-          value: lastItem.id,
-          parentName: e.name,
-        });
+        console.log('e.list', e.list);
+        e.list.parentName = e.name;
       });
-      return options;
+      return e.list;
     });
+    console.log('test', test);
     let test2 = [];
     test.map(e => {
       test2 = [...test2, ...e];
     });
-    console.log('defectList', defectList);
     return (
       <div className={styles.defectList}>
         <FilterCondition
@@ -159,7 +155,7 @@ class DefectList extends Component {
             handleUser: handleUser,
           }}
         />
-        {/* <FilterConditions
+        <FilterConditions
           onChange={this.filterConditionChange}
           option={[
             {
@@ -202,6 +198,7 @@ class DefectList extends Component {
               belong: 'multipleSelect',
               typeName: 'defectTypeCode',
               parentName: 'parentName',
+              rules: ['name', 'id'],
               data: test2,
             },
             {
@@ -223,7 +220,7 @@ class DefectList extends Component {
             deviceTypeCode: deviceTypeCode,
             defectTypeCode: defectTypeCode,
           }}
-        /> */}
+        />
         <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} defaultValue={status} />
         <DefectTable {...this.props} onChangeFilter={this.filterCondition} />
       </div>

@@ -216,12 +216,10 @@ class FilterCondition extends Component {
       }
       optionList.push({ ...this.initOption(item.type), ...item });
     });
-    console.log('optionList', optionList);
     this.setState({ optionItem: optionList });
   }
 
   outPutData = (optionItem) => {
-    console.log('optionItem', optionItem);
     const obj = {};
     optionItem.forEach(item => { // 如果没有指定字段返回的是什么，则返回的是type 字段
       //  1typeName 存在  则显示 如果不存在 则不显示
