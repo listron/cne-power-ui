@@ -15,22 +15,22 @@ class DefectTypeFilter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeKey: 'all'
+      activeKey: 'all',
     };
   }
 
   onDefectTabChange = (key) => { // tab切换。
     if (key === 'all') {
       this.props.onChangeFilter({
-        defectTypeCode: []
+        defectTypeCode: [],
       });
     }
-    this.setState({ activeKey: key })
+    this.setState({ activeKey: key });
   }
 
   onCheckAll = (event, ids) => { // 选择tab中的全部
     const { defectTypeCode } = this.props;
-    let tmpTypeCodeArr = defectTypeCode.filter(e => {// 移除所有正在操作的同级子选项
+    const tmpTypeCodeArr = defectTypeCode.filter(e => {// 移除所有正在操作的同级子选项
       return !!e && !ids.includes(e);
     });
     let newTypeCodeArr = tmpTypeCodeArr;
@@ -38,27 +38,29 @@ class DefectTypeFilter extends Component {
       newTypeCodeArr = [...tmpTypeCodeArr, ...ids];
     }
     this.props.onChangeFilter({
-      defectTypeCode: newTypeCodeArr
-    })
+      defectTypeCode: newTypeCodeArr,
+    });
   }
 
   defectCheck = (values, ids) => { // 选中-取消某类型。
     const { defectTypeCode } = this.props;
-    let tmpTypeCodeArr = defectTypeCode.filter(e => {// 移除所有正在操作的同级子选项
+    const tmpTypeCodeArr = defectTypeCode.filter(e => {// 移除所有正在操作的同级子选项
       return !!e && !ids.includes(e);
     });
     const newTypeCodeArr = [...tmpTypeCodeArr, ...values];
     this.props.onChangeFilter({
-      defectTypeCode: newTypeCodeArr
-    })
+      defectTypeCode: newTypeCodeArr,
+    });
   }
 
   render() {
     const { defectTypes, defectTypeCode } = this.props; // defectTypeCode选中的缺陷类型字符串。
     const { activeKey } = this.state;
     const defectTypeTab = [];
-    defectTypes.forEach(e => { e.list && e.list.length > 0 && defectTypeTab.push(...e.list) })
+    defectTypes.forEach(e => { e.list && e.list.length > 0 && defectTypeTab.push(...e.list); });
     const selectDefectArr = defectTypeCode.filter(e => !!e);
+    // console.log('defectTypes', defectTypeTab);
+
     return (
       <div className={styles.stationFilter}>
         <Tabs onChange={this.onDefectTabChange} activeKey={activeKey} animated={false}>
@@ -71,8 +73,9 @@ class DefectTypeFilter extends Component {
               options.push({
                 label: lastItem.name,
                 value: lastItem.id,
-              })
-            })
+              });
+            });
+            // console.log('options', options);
             const allIds = options.map(e => e.value);
             const allChecked = allIds.every(id => selectDefectArr.includes(id));
             return (
@@ -91,7 +94,7 @@ class DefectTypeFilter extends Component {
                 >
                 </CheckboxGroup>
               </TabPane>
-            )
+            );
           })}
         </Tabs>
       </div>

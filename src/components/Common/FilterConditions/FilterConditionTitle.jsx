@@ -13,15 +13,16 @@ class FilterConditionTitle extends Component {
   constructor() {
     super();
     this.state = {
-      showFilter: '',
+      showFilter: {},
     };
   }
 
-  onFilterShowChange = (type) => { //筛选出应该展示哪一个
+  onFilterShowChange = (item) => { //筛选出应该展示哪一个
+    const { type, typeName } = item;
     const { showFilter } = this.state;
-    let showFilterType = type;
-    if (showFilter === type) {
-      showFilterType = '';
+    let showFilterType = { type, typeName };
+    if (showFilter.type === item.type && showFilter.typeName === item.typeName) {
+      showFilterType = { type: '', typeName: '' };
     }
     this.setState({ showFilter: showFilterType });
     this.props.onChange({ showFilter: showFilterType });
@@ -47,9 +48,9 @@ class FilterConditionTitle extends Component {
                 </div>);
               }
               return (
-                <div onClick={() => this.onFilterShowChange(item.type)} key={key} className={`${styles.filterlist} ${item.disabled && styles.disabled}`}>
+                <div onClick={() => this.onFilterShowChange(item)} key={key} className={`${styles.filterlist} ${item.disabled && styles.disabled}`}>
                   {item.name}
-                  {showFilter === item.type ? <Icon type="up" /> : <Icon type="down" />}
+                  {(showFilter.type === item.type && showFilter.typeName === item.typeName) ? <Icon type="up" /> : <Icon type="down" />}
                 </div>);
             })
           }

@@ -115,6 +115,10 @@ class FilterCondition extends Component {
     super(props);
     this.state = {
       optionItem: [],
+      showFilter: {
+        type: '',
+        typeName: '',
+      },
     };
   }
 
@@ -196,11 +200,13 @@ class FilterCondition extends Component {
     const { optionItem } = this.state;
     const optionList = [];
     option.forEach(item => {
-      const currentItem = optionItem.filter(e => e.type === item.type)[0] || {};
+      const currentItem = optionItem.filter(e => e.type === item.type && e.typeName === item.typeName)[0] || {};
       if (item.belong === 'multipleSelect' || item.belong === 'timeSelect') {
         item.checkedValue = value[item['typeName']] || [];
         if (currentItem.checkedValue && currentItem.checkedValue.length > 0) {
-          item.checkedValue = Array.from(new Set([...currentItem.checkedValue, ...value[item['typeName']]]));
+          const valueArray = value[item['typeName']] && value[item['typeName']] || [];
+          const checkedValue = currentItem.checkedValue && currentItem.checkedValue || [];
+          item.checkedValue = Array.from(new Set([...checkedValue, ...valueArray]));
         }
       } else {
         item.checkedValue = '';
@@ -210,10 +216,12 @@ class FilterCondition extends Component {
       }
       optionList.push({ ...this.initOption(item.type), ...item });
     });
+    console.log('optionList', optionList);
     this.setState({ optionItem: optionList });
   }
 
   outPutData = (optionItem) => {
+    console.log('optionItem', optionItem);
     const obj = {};
     optionItem.forEach(item => { // 如果没有指定字段返回的是什么，则返回的是type 字段
       //  1typeName 存在  则显示 如果不存在 则不显示
@@ -232,8 +240,8 @@ class FilterCondition extends Component {
 
   onChangeFilter = (value) => { // 改变其中一项的数据
     const { optionItem } = this.state;
-    const { type } = value;
-    optionItem.slice(optionItem.findIndex(e => e.type === type), 1, value);
+    const { type, typeName } = value;
+    optionItem.slice(optionItem.findIndex(e => (e.type === type && e.typeName === typeName)), 1, value);
     this.outPutData(optionItem);
     this.setState({ optionItem: optionItem });
   }
@@ -247,7 +255,8 @@ class FilterCondition extends Component {
   render() {
     const { theme = 'light' } = this.props;
     const { showFilter, optionItem } = this.state;
-    const selectData = optionItem.filter(e => e.type === showFilter);
+    const { type } = showFilter;
+    const selectData = optionItem.filter(e => e.type === showFilter.type && e.typeName === showFilter.typeName);
     const rangeTime = optionItem.filter(e => e.type === 'rangeTime');
     const time = optionItem.filter(e => e.type === 'time');
     const multipleArray = ['defectLevel', 'defectSource', 'level', 'warningStatus', 'multipleType'];
@@ -257,31 +266,31 @@ class FilterCondition extends Component {
       <div className={`${styles.filterCondition} ${styles[theme]}`}>
         <FilterConditionTitle options={optionItem} onChange={this.showFilterChange} onChangeFilter={this.onChangeFilter} />
         <div className={styles.filterBox}>
-          {parentMultipArray.includes(showFilter) && selectData.length > 0 &&
+          {parentMultipArray.includes(type) && selectData.length > 0 &&
             <ParentFilter
               onChangeFilter={this.onChangeFilter}
               option={selectData[0]}
             />
           }
-          {multipleArray.includes(showFilter) && selectData.length > 0 &&
+          {multipleArray.includes(type) && selectData.length > 0 &&
             <MultipleSelect
               onChangeFilter={this.onChangeFilter}
               option={selectData[0]}
             />
           }
-          {showFilter === 'rangeTime' && rangeTime.length > 0 &&
+          {type === 'rangeTime' && rangeTime.length > 0 &&
             <RangeDateFilter
               onChangeFilter={this.onChangeFilter}
               option={rangeTime[0]}
             />
           }
-          {showFilter === 'time' && time.length > 0 &&
+          {type === 'time' && time.length > 0 &&
             <DateFilter
               onChangeFilter={this.onChangeFilter}
               option={time[0]}
             />
           }
-          {radioArray.includes(showFilter) && selectData.length > 0 &&
+          {radioArray.includes(type) && selectData.length > 0 &&
             <RadioSelect
               onChangeFilter={this.onChangeFilter}
               option={selectData[0]}

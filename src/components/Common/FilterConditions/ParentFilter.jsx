@@ -27,8 +27,9 @@ class ParentFilter extends Component {
     const { option = {} } = this.props;
     const { checkedValue = [], rules = ['label', 'value'] } = option;
     const [label, value] = rules;
-    const eachOnce = item.map(e => e[value]);
-    option.checkedValue = [...new Set([...checkedValue.filter(e => !eachOnce.includes(e)), ...checkedValues])];
+    const allChecked = item.map(e => e[value]);
+    const test = checkedValue.filter(e => !allChecked.includes(e));
+    option.checkedValue = [...new Set([...test, ...checkedValues])];
     this.props.onChangeFilter({ option });
   }
 
@@ -77,7 +78,7 @@ class ParentFilter extends Component {
 
   renderOnceItme(grounByData) {
     const { option = {} } = this.props;
-    const { rules = ['label', 'value'], parentName = 'provinceName' } = option;
+    const { rules = ['label', 'value'], parentName = 'parentName', checkedValue } = option;
     const [label, value] = rules;
     return grounByData.map((item, index) => {
       const optionArr = item.map(e => {
@@ -96,7 +97,7 @@ class ParentFilter extends Component {
           </Checkbox>
           <CheckboxGroup
             options={optionArr}
-            // value={checkedValue}
+            value={checkedValue}
             onChange={(e) => this.onChangeEach(e, item)}>
           </CheckboxGroup>
         </TabPane>
@@ -108,7 +109,7 @@ class ParentFilter extends Component {
 
   render() {
     const { option = {} } = this.props;
-    const { data = [], parentName = 'provinceCode' } = option;
+    const { data = [], parentName = 'parentName', checkedValue } = option;
     const { activeKey } = this.state;
     const parentItem = [...new Set(data.map(e => e[parentName]))];
     const grounByData = parentItem.map(e => {

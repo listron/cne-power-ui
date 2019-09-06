@@ -104,11 +104,37 @@ class DefectList extends Component {
 
   filterConditionChange = (value) => {
     console.log('value', value);
+    const { username } = this.props;
+    const { rangeTimes, stationType, stationCodes, deviceTypeCode, defectLevel, defectTypeCode, defectSource, join } = value;
+    const [createTimeStart = '', createTimeEnd = ''] = rangeTimes;
+    const handleUser = join && username || '';
+    const params = {
+      stationType, stationCodes, defectSource, defectLevel, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, handleUser,
+    };
+    console.log('params', params);
   }
 
   render() {
     const { stations, defectTypes, defectList, username, deviceTypes, defectStatusStatistics,
       createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, deviceTypeCode, defectTypeCode, defectSource, handleUser, status } = this.props;
+    const defectTypeTab = [];
+    defectTypes.forEach(e => { e.list && e.list.length > 0 && defectTypeTab.push(...e.list); });
+    const test = defectTypeTab.map(e => {
+      const options = [];
+      e.list && e.list.length > 0 && e.list.forEach((lastItem) => {
+        options.push({
+          label: lastItem.name,
+          value: lastItem.id,
+          parentName: e.name,
+        });
+      });
+      return options;
+    });
+    let test2 = [];
+    test.map(e => {
+      test2 = [...test2, ...e];
+    });
+    console.log('defectList', defectList);
     return (
       <div className={styles.defectList}>
         <FilterCondition
@@ -131,56 +157,55 @@ class DefectList extends Component {
             handleUser: handleUser,
           }}
         />
-        {/* <FilterConditions
+        <FilterConditions
           onChange={this.filterConditionChange}
           option={[
             {
-              name: '告警级别',
-              type: 'level',
-              typeName: 'warnLevel',
-              belong: 'multipleSelect',
-            },
-            {
-              name: '缺陷类型',
-              type: 'defectSource',
-              typeName: 'defectSource',
-              belong: 'multipleSelect',
+              name: ' 发生时间',
+              type: 'time',
+              belong: 'timeSelect',
+              typeName: 'rangeTimes',
             },
             {
               name: '电站类型',
               type: 'stationType',
               typeName: 'stationType',
             },
-            // {
-            //   name: '电站名称',
-            //   type: 'stationName',
-            //   belong: 'multipleSelect',
-            //   typeName: 'stationCodes',
-            //   data: stations,
-            // },
-            // {
-            //   name: '电站名称',
-            //   type: 'stationName',
-            //   belong: 'multipleSelect',
-            //   typeName: 'stationCodes',
-            //   data: stations,
-            // },
             {
-              name: '电站名称', // 目前为止就是这一个
+              name: '电站名称',
               type: 'parentCheckBox',
               belong: 'multipleSelect',
-              typeName: 'stationCodes', // 0 1 2 全部  风电 光伏
+              typeName: 'stationCodes',
               rules: ['stationName', 'stationCode'],
               parentName: 'provinceName',
               data: stations,
-              combine: 'stationType',
-              disabled: true,
             },
             {
-              name: '测试单选',
-              type: 'radioSelect',
-              typeName: 'radioSelect',
-              data: [{ label: 123, value: 345 }, { label: 567, value: 789 }],
+              name: '设备类型',
+              type: 'multipleType',
+              belong: 'multipleSelect',
+              typeName: 'deviceTypeCode',
+              rules: ['deviceTypeName', 'deviceTypeCode'],
+              data: deviceTypes,
+            },
+            {
+              name: '缺陷级别',
+              type: 'defectLevel',
+              typeName: 'defectLevel',
+              belong: 'multipleSelect',
+            },
+            {
+              name: '缺陷类型',
+              type: 'parentCheckBox',
+              belong: 'multipleSelect',
+              typeName: 'defectTypeCode',
+              parentName: 'parentName',
+              data: test2,
+            },
+            {
+              type: 'defectSource',
+              belong: 'multipleSelect',
+              typeName: 'defectSource',
             },
             {
               name: '我参与的',
@@ -188,8 +213,15 @@ class DefectList extends Component {
               typeName: 'join',
             },
           ]}
-          value={{ rangeTimes: ['2019-08-3', '2019-09-3'], rangeTime: ['2019-08-3', '2019-09-3'], join: true, stationCodes: [350, 56] }}
-        /> */}
+          value={{
+            stationType: stationType,
+            stationCodes: stationCodes,
+            defectSource: defectSource,
+            defectLevel: defectLevel,
+            deviceTypeCode: deviceTypeCode,
+            defectTypeCode: defectTypeCode,
+          }}
+        />
         <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} defaultValue={status} />
         <DefectTable {...this.props} onChangeFilter={this.filterCondition} />
       </div>
