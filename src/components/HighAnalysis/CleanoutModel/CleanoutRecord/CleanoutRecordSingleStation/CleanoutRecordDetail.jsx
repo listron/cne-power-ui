@@ -79,6 +79,7 @@ class CleanoutRecordDetail extends Component {
   radioChange = (e) => {
     const cleanType = e.target.value;
     console.log('cleanType: ', cleanType);
+
     const { changeCleanoutRecordStore, getDetailList, singleStationCode, detailPageNum, detailPageSize } = this.props;
     changeCleanoutRecordStore({ cleanType: e.target.value });
     getDetailList({ stationCode: singleStationCode, cleanType: e.target.value, pageNum: detailPageNum, pageSize: detailPageSize });
