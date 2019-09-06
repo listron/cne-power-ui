@@ -255,7 +255,9 @@ class ChartLostTrend extends Component {
         <div className={styles.modes}>
           <span className={styles.eachMode}>
             <span className={styles.line} />
-            <span className={styles.modeText}>{selectedQuota.label || '--'}</span>
+            <span className={styles.modeText}>
+              {selectedQuota.label === '利用小时数' ? '实发小时数' : (selectedQuota.label || '--')}
+            </span>
           </span>
           {selectedQuota.label === '利用小时数' && <span className={styles.eachMode}>
             <span className={styles.lineTheory} />
