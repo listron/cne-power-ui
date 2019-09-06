@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Radio, Menu, Dropdown, Icon } from 'antd';
+import { Radio } from 'antd';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
 import axios from 'axios';
@@ -67,54 +67,26 @@ class IntelligentReport extends Component {
     const yearRegion = timeValue === 'month' && typeValue === 'region';
     const monthRegion = timeValue === 'year' && typeValue === 'region';
     const theme = Cookie.get('theme');
-    const baseLink = ' https://report.astronergy.com/webroot/auth.html?url=https://report.astronergy.com/webroot/decision/view/report?viewlet=HZ_EPower_Report/';
-    const linkListData = [
-      { name: '日发电电站报表', link: `${baseLink}ReportDayStation.cpt` },
-      { name: '月发电区域报表', link: `${baseLink}ReportMonthRegion.cpt` },
-      { name: '月发电电站报表', link: `${baseLink}ReportMonthStation.cpt` },
-      { name: '年发电区域报表', link: `${baseLink}ReportYearRegion.cpt` },
-      { name: '年发电电站报表', link: `${baseLink}ReportYearStation.cpt` },
-    ];
-    const linklist = (<Menu>
-      {linkListData.map(e => {
-        return (<Menu.Item key={e.link}>
-          <a target="_blank" rel="noopener noreferrer" href={e.link}> {e.name} </a>
-        </Menu.Item>);
-      })}
-    </Menu>);
-
     return (
       <div className={`${styles.intelligentReport} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '智能报表' }]} style={{ marginLeft: '40px' }} />
-        <span ref="menu" />
         <div className={styles.contentBox}>
           <div className={styles.reportContent}>
             <div className={styles.intelligentSearch}>
-              <div className={styles.searchWrap}>
-                <div className={styles.timeSearch}>
-                  <span className={styles.text}>选择时间维度：</span>
-                  <Radio.Group onChange={this.onTimeChange} value={this.state.timeValue} defaultValue="day" buttonStyle="solid">
-                    <Radio.Button value="day">按日</Radio.Button>
-                    <Radio.Button value="month">按月</Radio.Button>
-                    <Radio.Button value="year">按年</Radio.Button>
-                  </Radio.Group>
-                </div>
-                <div className={styles.typeSearch}>
-                  <span className={styles.text}>报表类型：</span>
-                  <Radio.Group onChange={this.onTypeChange} value={this.state.typeValue} defaultValue="station" buttonStyle="solid">
-                    <Radio.Button value={'station'}>电站报表</Radio.Button>
-                    <Radio.Button value={'region'}>区域报表</Radio.Button>
-                  </Radio.Group>
-                </div>
+              <div className={styles.timeSearch}>
+                <span className={styles.text}>选择时间维度：</span>
+                <Radio.Group onChange={this.onTimeChange} value={this.state.timeValue} defaultValue="day" buttonStyle="solid">
+                  <Radio.Button value="day">按日</Radio.Button>
+                  <Radio.Button value="month">按月</Radio.Button>
+                  <Radio.Button value="year">按年</Radio.Button>
+                </Radio.Group>
               </div>
-              <div>
-                <div className={styles.linkName}>
-                  <Dropdown overlay={linklist} getPopupContainer={() => this.refs.menu}>
-                    <span>
-                      自定义列表  <Icon type="down" />
-                    </span>
-                  </Dropdown>
-                </div>
+              <div className={styles.typeSearch}>
+                <span className={styles.text}>报表类型：</span>
+                <Radio.Group onChange={this.onTypeChange} value={this.state.typeValue} defaultValue="station" buttonStyle="solid">
+                  <Radio.Button value={'station'}>电站报表</Radio.Button>
+                  <Radio.Button value={'region'}>区域报表</Radio.Button>
+                </Radio.Group>
               </div>
             </div>
             <div className={styles.iframeContent}>
@@ -155,4 +127,3 @@ class IntelligentReport extends Component {
 }
 
 export default IntelligentReport;
-

@@ -241,52 +241,55 @@ export default class AreaSearch extends Component {
 
     return (
       <div className={styles.topSearch}>
-        <div>
-          <span>选择区域</span>
-          <AreaStation
-            mode="region"
-            data={areaStation}
-            value={stations}
-            onChange={this.onAreaChange}
-          />
+        <div className={styles.leftSearch}>
+          <div>
+            <span>选择区域</span>
+            <AreaStation
+              mode="region"
+              data={areaStation}
+              value={stations}
+              onChange={this.onAreaChange}
+            />
+          </div>
+          <div>
+            <span>选择机型</span>
+            <AutoSelect
+              style={{width: '150px'}}
+              data={modesInfo}
+              value={modes}
+              maxTagCount={0}
+              onChange={this.onModelChange}
+            />
+          </div>
+          <div>
+            <span>选择时间</span>
+            <RangePicker
+              allowClear={false}
+              value={[moment(dates[0]), moment(dates[1])]}
+              onChange={this.onDateChange}
+              style={{width: '220px'}}
+              disabledDate={disabledDate}
+            />
+          </div>
+          <div>
+            <span>选择指标</span>
+            <Cascader
+              allowClear={false}
+              expandTrigger="hover"
+              style={{width: '150px'}}
+              options={quotaInfo}
+              placeholder="请选择"
+              onChange={this.onQuotaChange}
+              displayRender={label => label[label.length - 1]}
+              popupClassName={styles.cascaderBox}
+              value={quota}
+            />
+          </div>
+          <div>
+            <Button disabled={!searchFlag} style={{marginRight: '20px'}} onClick={this.queryCharts}>查询</Button>
+          </div>
         </div>
-        <div>
-          <span>选择机型</span>
-          <AutoSelect
-            style={{width: '150px'}}
-            data={modesInfo}
-            value={modes}
-            maxTagCount={0}
-            onChange={this.onModelChange}
-          />
-        </div>
-        <div>
-          <span>选择时间</span>
-          <RangePicker
-            allowClear={false}
-            value={[moment(dates[0]), moment(dates[1])]}
-            onChange={this.onDateChange}
-            style={{width: '220px'}}
-            disabledDate={disabledDate}
-          />
-        </div>
-        <div>
-          <span>选择指标</span>
-          <Cascader
-            allowClear={false}
-            expandTrigger="hover"
-            style={{width: '150px'}}
-            options={quotaInfo}
-            placeholder="请选择"
-            onChange={this.onQuotaChange}
-            popupClassName={styles.cascaderBox}
-            value={quota}
-          />
-        </div>
-        <div>
-          <Button disabled={!searchFlag} style={{marginRight: '20px'}} onClick={this.queryCharts}>查询</Button>
-          <Button disabled={dataName === ''} onClick={this.resetCharts}>恢复图表</Button>
-        </div>
+        <Button disabled={dataName === ''} onClick={this.resetCharts}>恢复图表</Button>
       </div>
     );
   }

@@ -43,6 +43,7 @@ class StationAchieve extends Component {
     getCurveMonths: PropTypes.func,
     getCurveMonthAep: PropTypes.func,
     getCurveMonthPsd: PropTypes.func,
+    resetStore: PropTypes.func,
   }
 
   // 数据获取方式: 
@@ -102,7 +103,9 @@ class StationAchieve extends Component {
         });
       });
       this.setState({ searchDevice: selectedDevice });
-      searchQuota && this.historyChange(searchCode, selectedDevice, undefined, searchQuota);
+      // preDevices === 0为初始加载 => 自动切换路径
+      // preDevices > 0为切换电站 => 选中默认设备即可
+      preDevices.length === 0 && searchQuota && this.historyChange(searchCode, selectedDevice, undefined, searchQuota);
     }
     if (quotaInfo.length > 0 && !searchQuota) { // 得到指标 => 存选中
       const firstType = quotaInfo[0] || {};
@@ -136,6 +139,10 @@ class StationAchieve extends Component {
     }
   }
 
+  componentWillUnmount(){
+    this.props.resetStore();
+  }
+
   getIsDevicesChange = (pre, cur) => { // 判断设备是否发生改变
     if(pre.length === 0 && cur.length > 0) {
       return true;
@@ -158,7 +165,7 @@ class StationAchieve extends Component {
     let searchParam = {};
     try {
       searchParam = JSON.parse(infoStr);
-    } catch(err){ null; }
+    } catch(err){ console.log(err); }
     const { code, device = [], date = [], quota } = searchParam;
     return {
       stationCodes: [code],
@@ -344,6 +351,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetLost: payload => dispatch({ type: stationAchieveAction.resetLost, payload }),
   resetStop: payload => dispatch({ type: stationAchieveAction.resetStop, payload }),
   resetCurve: payload => dispatch({ type: stationAchieveAction.resetCurve, payload }),
+  resetStore: () => dispatch({ type: stationAchieveAction.resetStore }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StationAchieve);

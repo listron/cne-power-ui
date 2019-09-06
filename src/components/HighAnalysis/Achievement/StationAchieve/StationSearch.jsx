@@ -35,9 +35,9 @@ class StationSearch extends Component {
 
   constructor(props){
     super(props);
-    const { stationInfoStr, searchCode, searchDevice, searchDates, searchQuota } = props;
+    const { /* stationInfoStr,*/ searchCode, searchDevice, searchDates, searchQuota } = props;
     this.state = {
-      stationInfoStr,
+      // stationInfoStr,
       searchCode,
       searchDevice,
       searchDates,
@@ -46,22 +46,24 @@ class StationSearch extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps){
-    const { stationInfoStr } = nextProps;
-    if (stationInfoStr !== this.state.stationInfoStr ) { // 外界路径自动改变时进行数据同步映射。
-      let searchParam = {};
-      try {
-        searchParam = JSON.parse(stationInfoStr);
-      } catch(err){ null; }
-      const { code, device = [], date = [], quota } = searchParam;
-      this.setState({
-        stationInfoStr,
-        searchCode: code,
-        searchDevice: device,
-        searchDates: date,
-        searchQuota: quota,
-      });
-    }
+  componentWillReceiveProps(nextProps){ // 外部props的变化映射进入本地state;
+    ['searchCode', 'searchDevice', 'searchDates', 'searchQuota'].find(e => { // 找到变化的那个即可。四个条件不会有同时变化。
+      const diffState = this.propsCompare(!this.state[e] || this.props[e], nextProps[e], e);
+      diffState && this.setState({ ...diffState });
+      return diffState;
+    });
+  }
+
+  propsCompare = (pre, cur, stateName) => {
+    const valueDiff = ['searchCode', 'searchQuota'].includes(stateName) && (pre !== cur);
+    const arrDiff = ['searchDevice', 'searchDates'].includes(stateName) && (this.arrayDiff(pre, cur));
+    return (valueDiff || arrDiff) ? { [stateName]: cur } : null;
+  }
+
+  arrayDiff = (pre, cur) => {
+    const preSet = new Set(pre);
+    const curSet = new Set(cur);
+    return preSet.size !== curSet.size || [...curSet].find(e => !preSet.has(e));
   }
 
   historyChange = (code, device = [], date = [

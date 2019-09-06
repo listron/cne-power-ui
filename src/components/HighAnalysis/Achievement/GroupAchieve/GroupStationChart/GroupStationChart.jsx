@@ -5,6 +5,7 @@ import searchUtil from '../../../../../utils/searchUtil';
 import { dataFormat } from '../../../../../utils/utilFunc';
 
 import styles from './groupStationChart.scss';
+import {message} from "antd";
 
 export default class GroupStationChart extends Component {
 
@@ -18,10 +19,11 @@ export default class GroupStationChart extends Component {
     getGroupLostGenHour: PropTypes.func,
     location: PropTypes.object,
     titleFunc: PropTypes.string,
-    colorData: PropTypes.object,
+    areaColorData: PropTypes.object,
     unitName: PropTypes.string,
     pointLength: PropTypes.number,
     queryParamsFunc: PropTypes.func,
+    selectTime: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
@@ -47,7 +49,10 @@ export default class GroupStationChart extends Component {
 
   chartHandle = (params, groupRankInfo, myChart) => {
     const { name } = params;
-    const { changeStore, getGroupTrendInfo, dataIndex, getGroupLostGenHour, location: { search } } = this.props;
+    const { selectTime, changeStore, getGroupTrendInfo, dataIndex, getGroupLostGenHour, location: { search } } = this.props;
+    if(selectTime) {
+      return message.info('请先取消下方事件选择, 再选择区域');
+    }
     const groupInfoStr = searchUtil(search).getValue('group');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const {
@@ -94,7 +99,7 @@ export default class GroupStationChart extends Component {
       getGroupLostGenHour(paramsHour);
     }
 
-    //判断点击
+    //判断再次点击
     if(params.name && params.name === dataIndex) {
       changeStore({
         dataIndex: '', // 保存点击的下标
@@ -108,7 +113,7 @@ export default class GroupStationChart extends Component {
   };
 
   drawChart = (data, dataIndex) => {
-    const { titleFunc, colorData, unitName, pointLength } = this.props;
+    const { titleFunc, areaColorData, unitName, pointLength } = this.props;
     const twoBar = [{ // 实发
       data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2))),
       type: 'bar',
@@ -116,7 +121,7 @@ export default class GroupStationChart extends Component {
       itemStyle: {
         normal: {
           color: function(params) {//柱子颜色
-            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
+            return dataIndex === '' ? areaColorData[params.name] : (dataIndex === params.name ? areaColorData[params.name] : '#cccccc');
           },
         },
         emphasis: {
@@ -146,7 +151,7 @@ export default class GroupStationChart extends Component {
         barBorderRadius: [5, 5, 0, 0],
         normal: {
           color: function(params) {//柱子颜色
-            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
+            return dataIndex === '' ? areaColorData[params.name] : (dataIndex === params.name ? areaColorData[params.name] : '#cccccc');
           },
         },
         emphasis: {
@@ -165,11 +170,11 @@ export default class GroupStationChart extends Component {
         formatter: (params) => {
           if(titleFunc === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}${unitName}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}</span>
           </div>`;
           }
           return `<div>
-            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span>
+            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span>
           </div>`;
         },
       },

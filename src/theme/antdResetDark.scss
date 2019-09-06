@@ -724,37 +724,36 @@
 
   .ant-modal {
     color: $fontColor;
-    &-title {
-      color: $fontColor;
-    }
+  }
+  .ant-modal-wrap {
+  }
+  .ant-modal-title {
+    color: $fontColor;
+  }
+  .ant-modal-content {
+    background-color: $background;
+    box-shadow: inset 0 0 5px 2px $select-border-shadow;
+  }
+  .ant-modal-close {
+    color: $fontColor;
+  }
 
-    &-header {
-      background: transparent;
-      border-bottom: 1px solid $border-color;
-    }
+  .ant-modal-close:focus,
+  .ant-modal-close:hover {
+    color: $fontColor-hover;
+  }
 
-    &-content {
-      background-color: $background;
-      box-shadow: inset 0 0 5px 2px $select-border-shadow;
-    }
+  .ant-modal-header {
+    background: transparent;
+    border-bottom: 1px solid $border-color;
+  }
 
-    &-close {
-      color: $fontColor;
-      &:focus,
-      &:hover,
-      &:active {
-        color: $fontColor-hover;
-      }
-    }
-
-    &-body {
-    }
-
-    &-footer {
-      background: transparent;
-      border-top: 1px solid $border-color;
-      border-top: 0;
-    }
+  .ant-modal-body {
+  }
+  .ant-modal-footer {
+    background: transparent;
+    border-top: 1px solid $border-color;
+    border-top: 0;
   }
 
   //==========ant-radio-button  button-多组==============
@@ -879,6 +878,7 @@
     outline: 3px solid rgba(25, 148, 117, 0.06);
   }
 
+  // disabled  样式还没有出 基本上不会遇到这种情况
   .ant-radio-button-wrapper-disabled {
     color: #7088c3;
     background-color: transparent;
@@ -1036,45 +1036,5 @@
   .ant-popover-placement-topRight .ant-popover-arrow {
     border-right-color: $select-border !important;
     border-bottom-color: $select-border !important;
-  }
-
-  // ======ant-dropdown ========
-  .ant-dropdown {
-    $prefix: ant-dropdown;
-    &-menu {
-      background: #1e246e;
-      border: 1px solid rgba(83, 104, 241, 0.6);
-      box-shadow: 0 0 4px 2px #4d5fe2;
-      &-item,
-      &-submenu-title {
-        color: $fontColor;
-        > a {
-          color: $fontColor;
-        }
-        &-selected,
-        &-selected > a {
-          color: $fontColor-invert;
-          background-color: $themeColor;
-        }
-
-        &:hover {
-          background-color: $themeColor;
-          > a {
-            color: $fontColor-invert;
-          }
-        }
-
-        &-disabled {
-          color: $fontColor-disabled;
-          &:hover {
-            color: $fontColor-disabled;
-            background-color: $button-disabled;
-          }
-        }
-        &-divider {
-          background-color: $themeColor;
-        }
-      }
-    }
   }
 }

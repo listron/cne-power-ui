@@ -25,11 +25,12 @@ export default class AreaTrendChart extends Component {
     dataName: PropTypes.string,
     unitName: PropTypes.string,
     pointLength: PropTypes.number,
+    selectTime: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
     const { trendChart } = this;
-    const { trendTime, trendLoading, trendInfo } = this.props;
+    const { trendTime, trendLoading, trendInfo, selectTime } = this.props;
     const { trendTime: trendTimePrev } = prevProps;
     const myChart = eCharts.init(trendChart);
     if (trendLoading) { // loading态控制。
@@ -42,14 +43,14 @@ export default class AreaTrendChart extends Component {
     if(trendTime && trendTime !== trendTimePrev) {
       eCharts.init(trendChart).clear();//清除
       const myChart = eCharts.init(trendChart);
-      myChart.setOption(this.drawChart(trendInfo));
+      myChart.setOption(this.drawChart(trendInfo, selectTime));
       myChart.off('click');
-      myChart.on('click', (param) => this.chartHandle(param));
+      myChart.on('click', (param) => this.chartHandle(myChart, trendInfo, param));
     }
   }
 
-  chartHandle = (params) => {
-    const { selectStationCode, changeStore, getLostGenHour, timeStatus } = this.props;
+  chartHandle = (myChart, trendInfo, params) => {
+    const { selectTime, selectStationCode, changeStore, getLostGenHour, timeStatus } = this.props;
     if(selectStationCode.length > 0) {
       const { search } = this.props.location;
       const groupInfoStr = searchUtil(search).getValue('area');
@@ -69,10 +70,26 @@ export default class AreaTrendChart extends Component {
         }),
         deviceModes: modes.map(cur => (cur.split('-')[1])),
       };
-      changeStore({
-        selectTime: params.name,
-      });
-      getLostGenHour(paramsHour);
+      // 判断点击
+      if(params.name && params.name !== selectTime) {
+        changeStore({
+          selectTime: params.name,
+        });
+        myChart.setOption(this.drawChart(trendInfo, params.name));
+        getLostGenHour(paramsHour);
+      }
+      //判断再次点击
+      if(params.name && params.name === selectTime) {
+        changeStore({
+          selectTime: '',
+        });
+        getLostGenHour({
+          ...paramsHour,
+          startTime: dates[0],
+          endTime: dates[1],
+        });
+        myChart.setOption(this.drawChart(trendInfo, ''));
+      }
     }
   };
 
@@ -109,19 +126,31 @@ export default class AreaTrendChart extends Component {
     }
   };
 
-  drawChart = (data) => {
+  drawChart = (data, selectTime) => {
     const { qutaName, unitName, pointLength } = this.props;
+    const color = selectTime ? '#f5d5bb' : '#f9b600';
+    // 选中的颜色
+    function colorFunc(time) {
+      if(selectTime) {
+        return selectTime && selectTime === time ? '#f9b600' : '#f5d5bb';
+      }
+      return '#f9b600';
+    }
+
     const oneLine = [{
       name: qutaName,
       type: 'line',
       barWidth: '10',
       itemStyle: {
-        color: '#f9b600',
+        color,
       },
-      symbolSize: 8,
-      data: data && data.map(cur => {
-        return dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2);
-      }),
+      data: data && data.map(cur => ({
+        value: dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2),
+        symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
+        itemStyle: {
+          color: colorFunc(cur.efficiencyDate),
+        },
+      })),
     },
     ];
 
@@ -129,22 +158,28 @@ export default class AreaTrendChart extends Component {
       name: qutaName,
       type: 'line',
       itemStyle: {
-        color: '#f9b600',
+        color,
       },
-      symbolSize: 8,
-      data: data && data.map(cur => {
-        return dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2);
-      }),
+      data: data && data.map(cur => ({
+        value: dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2),
+        symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
+        itemStyle: {
+          color: colorFunc(cur.efficiencyDate),
+        },
+      })),
     }, {
       name: qutaName,
       type: 'line',
       itemStyle: {
-        color: '#f5d5bb',
+        color,
       },
-      symbolSize: 8,
-      data: data && data.map(cur => {
-        return dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2);
-      }),
+      data: data && data.map(cur => ({
+        value: dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2),
+        symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
+        itemStyle: {
+          color: colorFunc(cur.efficiencyDate),
+        },
+      })),
     }];
     const seriesData = qutaName === '利用小时数' ? twoLine : oneLine;
     return {
@@ -157,11 +192,11 @@ export default class AreaTrendChart extends Component {
         formatter: (params) => {
           if(qutaName === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}${unitName}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}</span>
           </div>`;
           }
           return `<div>
-            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span>
+            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span>
           </div>`;
         },
       },

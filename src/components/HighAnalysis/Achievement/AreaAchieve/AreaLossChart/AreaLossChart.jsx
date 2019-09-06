@@ -69,7 +69,7 @@ export default class AreaLossChart extends Component {
         },
         formatter: function (params) {
           var tar = params[1];
-          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormat(tar.value, '--', pointLength) + 'h';
+          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormat(tar.value, '--', pointLength);
         },
       },
       grid: {
