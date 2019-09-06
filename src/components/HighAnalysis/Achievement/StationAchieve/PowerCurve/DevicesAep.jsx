@@ -242,7 +242,7 @@ class DevicesAep extends Component {
           ))}
           <span className={styles.eachMode}>
             <span className={styles.line} />
-            <span className={styles.modeText}>停机次数</span>
+            <span className={styles.modeText}>风速</span>
           </span>
         </div>
         <div className={styles.aepChart} ref={(ref)=> {this.aepRef = ref;}} />

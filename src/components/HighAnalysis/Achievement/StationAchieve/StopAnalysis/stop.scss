@@ -56,7 +56,7 @@
     justify-content: flex-end;
     align-items: center;
     right: 36px;
-    top: 112px;
+    top: 114px;
     font-size: 12px;
     .eachMode{
       margin-right: 20px;
@@ -119,6 +119,10 @@
       .text{
         margin-right: 4px;
       }
+    }
+    .modes{
+      right: 0;
+      justify-content: center;
     }
   }
   .stopTrend, .stopTypes{

@@ -146,7 +146,6 @@ export default class AreaTrendChart extends Component {
 
   drawChart = (data, selectTime) => {
     const { qutaName, unitName, pointLength } = this.props;
-    const color = selectTime ? '#f5d5bb' : '#f9b600';
     // 选中的颜色
     function colorFunc(time) {
       if(selectTime) {
@@ -159,8 +158,13 @@ export default class AreaTrendChart extends Component {
       name: qutaName,
       type: 'line',
       barWidth: '10',
-      itemStyle: {
-        color,
+      lineStyle: {
+        opacity: selectTime ? 0.2 : 1,
+        color: '#f9b600',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
       data: data && data.map(cur => ({
         value: dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2),
@@ -175,8 +179,13 @@ export default class AreaTrendChart extends Component {
     const twoLine = [{
       name: qutaName,
       type: 'line',
-      itemStyle: {
-        color,
+      lineStyle: {
+        opacity: selectTime ? 0.2 : 1,
+        color: '#f9b600',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
       data: data && data.map(cur => ({
         value: dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2),
@@ -188,8 +197,13 @@ export default class AreaTrendChart extends Component {
     }, {
       name: qutaName,
       type: 'line',
-      itemStyle: {
-        color,
+      lineStyle: {
+        opacity: selectTime ? 0.2 : 1,
+        color: '#f5d5bb',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
       data: data && data.map(cur => ({
         value: dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2),

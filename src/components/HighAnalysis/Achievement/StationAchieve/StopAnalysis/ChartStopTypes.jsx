@@ -87,7 +87,7 @@ class ChartStopTypes extends Component {
       const { faultId, faultName } = e;
       dataAxis.push(faultName);
       genData.push({
-        value: e.stopLostGen,
+        value: dataFormats(e.stopLostGen) / 10000,
         itemStyle: {
           opacity: (stopChartTypes && faultId !== stopChartTypes.faultId) ? 0.4 : 1,
         },
@@ -153,7 +153,6 @@ class ChartStopTypes extends Component {
       startTime,
       endTime,
       parentFaultId: stopElecType,
-      faultId: cancelSelect ? null : tmpTypesResult.faultId,
     };
     cancelSelect && (param.faultId = curFaultInfo.faultId);
     this.setState({
@@ -179,7 +178,7 @@ class ChartStopTypes extends Component {
     const queryBoth = (handleLength === 1 && typesIndex === 0) || handleLength === 0;
     if (queryBoth) { // 选中一个一级指标: 设备 或者 未选中任何指标 => 请求两个图表数据。
       this.props.changeStore({
-        stopChartDevice: tmpTypesResult,
+        stopChartTypes: tmpTypesResult,
         stopHandleInfo: ['types'],
       });
       this.props.getStopRank({ ...param });
