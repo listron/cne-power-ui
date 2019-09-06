@@ -119,7 +119,9 @@
   }
 
   .pointCodeStyle {
-    text-decoration: underline;
+    // text-decoration: underline;
+    color: $themeColor;
+    cursor: pointer;
   }
 
   border-top: 1px solid $promptColor;

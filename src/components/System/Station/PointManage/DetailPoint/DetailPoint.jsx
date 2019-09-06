@@ -60,10 +60,13 @@ class DetailPoint extends React.Component {
       <div className={styles.pointDetail}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.pageTop}>
-          <span>
-            <Button className={styles.saveBtn} onClick={this.showEditPage}>编辑</Button>
-            <Button className={styles.saveBtn} onClick={this.deletePoint}>删除</Button>
-          </span>
+          <div className={styles.leftContainer}>
+            <span className={styles.text}>详情</span>
+            <span >
+              <Button className={styles.saveBtn} onClick={this.showEditPage}>编辑</Button>
+              <Button className={styles.saveBtn} onClick={this.deletePoint}>删除</Button>
+            </span>
+          </div>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
         </div>
         <div className={styles.pageContainer}>

@@ -15,7 +15,7 @@ class AddPoint extends React.Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
-      preStep: true,
+      preStep: false,
       addStationCode: null,
       addDeviceTypeCode: null,
       manufactorId: null,
@@ -90,14 +90,29 @@ class AddPoint extends React.Component {
       preStep: false,
     });
   }
+  showPre = () => {
+    this.setState({
+      preStep: true,
+    });
+  }
+  format = () => {
+    const { addStationCode, addDeviceTypeCode, manufactorId, deviceModeCode } = this.state;
+    const { stations } = this.props;
+    const stationName = stations.filter((e) => (e.stationCode === addStationCode))[0];
+    const data = { stationCode: addStationCode, deviceTypeCode: addDeviceTypeCode, manufactorId, deviceModeCode, stationName, deviceTypeName, deviceModeName, manufatorName };
+
+
+  }
   render() {
-    const { allStationBaseInfo, stationDeviceTypes, allFactor, factorsDeviceModeData } = this.props;
+    const { allStationBaseInfo, stationDeviceTypes, allFactor, factorsDeviceModeData, showPage } = this.props;
     const { showWarningTip, warningTipText, preStep, addStationCode, addDeviceTypeCode, manufactorId, deviceModeCode } = this.state;
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = factorsDeviceModeData.length === 0;
     const getSelectedStation = allStationBaseInfo.find(e => e.stationCode === addStationCode);
     const selectedStationInfo = getSelectedStation ? [getSelectedStation] : [];
     const isNextStep = (addStationCode && addDeviceTypeCode && manufactorId && deviceModeCode);
+
+    const payloadData = this.format();
     return (
       <div className={styles.pointAdd}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -174,7 +189,7 @@ class AddPoint extends React.Component {
             </div>
           </div>
         }
-        {!preStep && <AddNextStep />}
+        {!preStep && <AddNextStep showPage={showPage} showPre={this.showPre} />}
       </div>
     );
   }

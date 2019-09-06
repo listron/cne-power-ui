@@ -131,8 +131,8 @@ class PointManageList extends Component {
         render: (text, record) => {
           return (
             <div>
-              <span className={styles.editPoint} onClick={this.showEditPage}>编辑</span>
-              <span className={styles.editPoint} onClick={this.deletePoint}>删除</span>
+              <span className={`${styles.editPoint}  iconfont icon-edit`} onClick={this.showEditPage}></span>
+              <span className={`${styles.editPoint}  iconfont icon-del`} onClick={this.deletePoint}></span>
             </div>
           );
         },

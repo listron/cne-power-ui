@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon, Button } from 'antd';
 import WarningTip from '../../../../../components/Common/WarningTip';
 import styles from '../pointSide.scss';
+import AddNextStep from '../AddPoint/AddNextStep';
 
 class EditPoint extends React.Component {
   static propTypes = {
@@ -39,10 +40,11 @@ class EditPoint extends React.Component {
       <div className={styles.pointEdit}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.pageTop}>
-          <span> <Button className={styles.saveBtn}>保存</Button></span>
-
+          <span className={styles.text}>编辑 </span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
         </div>
+        <AddNextStep {...this.props} />
+
       </div>
     );
   }
