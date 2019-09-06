@@ -55,10 +55,9 @@ class StopElecTypes extends Component {
       startTime: tmpParams.date[0],
       endTime: tmpParams.date[1],
     };
-    this.props.getStopElec({ ...params });
     this.props.getStopRank({ ...params, parentFaultId: stopElecType });
     this.props.getStopTrend({ ...params, parentFaultId: stopElecType, type: stopChartTimeMode });
-    this.props.getStopTypes({ ...params });
+    this.props.getStopTypes({ ...params, parentFaultId: stopElecType });
   }
 
   toShowDetail = (detailInfo) => this.setState({
