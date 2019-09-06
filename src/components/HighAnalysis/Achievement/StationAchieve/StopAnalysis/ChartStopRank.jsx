@@ -108,7 +108,7 @@ class ChartStopRank extends Component {
           opacity: (stopChartDevice && deviceFullcode !== stopChartDevice.deviceFullcode) ? 0.4 : 1,
         },
       });
-      countData.push(stopCount);
+      countData.push({ value: stopCount });
     });
     series[0] = {
       type: 'bar',
@@ -240,7 +240,7 @@ class ChartStopRank extends Component {
       grid: {
         ...getBaseGrid(),
         top: 30,
-        bottom: 80,
+        bottom: 60,
       },
       xAxis: getBaseXAxis(dataAxis),
       yAxis: [
@@ -280,7 +280,7 @@ class ChartStopRank extends Component {
       start: zoomRange[0],
       end: zoomRange[1],
       showDetail: false,
-      bottom: 30,
+      bottom: 20,
       height: 20,
     }, {
       type: 'inside',

@@ -87,7 +87,7 @@ class ChartStopTypes extends Component {
       const { faultId, faultName } = e;
       dataAxis.push(faultName);
       genData.push({
-        value: e.stopLostGen,
+        value: dataFormats(e.stopLostGen) / 10000,
         itemStyle: {
           opacity: (stopChartTypes && faultId !== stopChartTypes.faultId) ? 0.4 : 1,
         },
