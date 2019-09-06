@@ -1,6 +1,6 @@
+
+
 import React, { Component } from 'react';
-
-
 import { Icon, Radio, Modal, Tabs, Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './cleanoutRecordDetail.scss';
@@ -11,7 +11,6 @@ import TransitionContainer from '../../../../../components/Common/TransitionCont
 import Pagination from '../../../../../components/Common/CommonPagination/index';
 // import DustCharts from '../../../CleanoutModel/CleanWarning/DustEffectCharts';
 import DustCharts from './DustCharts';
-
 import moment from 'moment';
 const TabPane = Tabs.TabPane;
 
@@ -26,6 +25,7 @@ class CleanoutRecordDetail extends Component {
     changeCleanoutRecordStore: PropTypes.func,
     getDetailList: PropTypes.func,
     history: PropTypes.object,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
@@ -36,12 +36,14 @@ class CleanoutRecordDetail extends Component {
       showSidePage: 'single',
     };
   }
+
   componentDidMount() {
     const main = document.getElementById('main');
     main && main.addEventListener('click', this.hideStationChange, true);
     const { getDetailList, singleStationCode, detailPageNum, detailPageSize, cleanType } = this.props;
     getDetailList({ stationCode: singleStationCode, cleanType, pageNum: detailPageNum, pageSize: detailPageSize });
   }
+
   componentWillReceiveProps(nextProps) {
     const { getDetailList, detailPageNum, detailPageSize, cleanType, changeCleanoutRecordStore, singleStationCode } = nextProps;
     if (this.props.singleStationCode !== singleStationCode) {
@@ -75,7 +77,8 @@ class CleanoutRecordDetail extends Component {
     });
   }
   radioChange = (e) => {
-    const { changeCleanoutRecordStore, getDetailList, singleStationCode, detailPageNum, detailPageSize } = this.props;
+    const { changeCleanoutRecordStore, getDetailList, singleStationCode, cleanType, detailPageNum, detailPageSize } = this.props;
+    console.log('cleanType:', cleanType);
     changeCleanoutRecordStore({ cleanType: e.target.value });
     getDetailList({ stationCode: singleStationCode, cleanType: e.target.value, pageNum: detailPageNum, pageSize: detailPageSize });
   }
@@ -86,7 +89,10 @@ class CleanoutRecordDetail extends Component {
     });
     this.props.history.push('/analysis/cleanout/record');
   }
-
+  editDetail = () => { // 编辑页
+    // this.props.onShowSideChange({ showSidePage: 'edit' });
+    // this.props.changeCleanoutRecordStore({ showPage: 'edit' });
+  }
   hideStationChange = () => {//选择电站的隐藏
     this.setState({
       showStationSelect: false,
@@ -114,15 +120,17 @@ class CleanoutRecordDetail extends Component {
       showDirtModal: false,
     });
   }
+  tabsChange = () => {//灰尘
 
+  }
 
   render() {
-    const { stations, singleStationCode, stationName, pageNum, pageSize, changeCleanoutRecordStore, detailPageNum, detailPageSize, detailtotal, handCleanNum, rainCleanNum, cleanProfit, cleanCycle, cleanTime } = this.props;
+    const { stationDetail, stations, showPage, singleStationCode, stationName, pageNum, pageSize, changeCleanoutRecordStore, detailPageNum, detailPageSize, detailtotal, handCleanNum, rainCleanNum, cleanPlanNum, cleanProfit, cleanCycle, cleanTime, detailListData, stationDustData, matrixDustData, theme } = this.props;
     const { stationCode } = this.props.match.params;
     if (stationCode !== singleStationCode) {
       changeCleanoutRecordStore({ singleStationCode: stationCode });
     }
-    const { showSidePage, showDirtModal } = this.state;
+    const { selectedRowKeys, showWarningTip, warningTipText, showSidePage, showDirtModal } = this.state;
     const stationItems = stations && stations;
 
     const { showStationSelect } = this.state;
@@ -134,10 +142,10 @@ class CleanoutRecordDetail extends Component {
       stationName, pageNum, pageSize,
     };
     return (
-      <div className={styles.container}>
+      <div className={`${styles.container} ${styles[theme]}`}>
         <div className={styles.CleanoutRecordDetail}>
-
           <div className={styles.detailMain}>
+            <span ref="wrap" />
             <div className={styles.detailTop}>
               {showStationSelect &&
                 <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/analysis/cleanout/record" hideStationChange={this.hideStationChange} />
@@ -164,6 +172,7 @@ class CleanoutRecordDetail extends Component {
                 onCancel={this.closeDirtModal}
                 wrapClassName={'dirtEffBox'}
                 style={{ height: 410 }}
+                getContainer={() => this.refs.wrap}
               >
                 <DustCharts {...this.props} />
               </Modal> : ''}
@@ -184,18 +193,19 @@ class CleanoutRecordDetail extends Component {
                 <div className={styles.numberColor}>{cleanTime}</div>
                 <div>平均清洗用时(天)</div></div>
             </div>
-            <div className={styles.filterData}>
-              <Radio.Group value={this.props.cleanType} buttonStyle="solid" onChange={this.radioChange}>
-                <Radio.Button value={0}>全部</Radio.Button>
-                <Radio.Button value={1}>人工{handCleanNum}</Radio.Button>
-                <Radio.Button value={2}>下雨{rainCleanNum}</Radio.Button>
-              </Radio.Group>
-              <Pagination total={detailtotal} pageSize={detailPageSize} currentPage={detailPageNum} onPaginationChange={this.onPaginationChange} />
+            <div className={styles.wrap}>
+              <div className={styles.filterData}>
+                <Radio.Group value={this.props.cleanType} buttonStyle="solid" onChange={this.radioChange}>
+                  <Radio.Button value={0}>全部</Radio.Button>
+                  <Radio.Button value={1}>人工{handCleanNum}</Radio.Button>
+                  <Radio.Button value={2}>下雨{rainCleanNum}</Radio.Button>
+                </Radio.Group>
+                <Pagination total={detailtotal} pageSize={detailPageSize} currentPage={detailPageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
+              </div>
+              <RecordDetailTable {...this.props} onShowSideChange={this.onShowSideChange} />
             </div>
-            <RecordDetailTable {...this.props} onShowSideChange={this.onShowSideChange} />
+
           </div>
-
-
         </div>
         <TransitionContainer
           show={showSidePage === 'recordPlan'}
@@ -218,4 +228,5 @@ class CleanoutRecordDetail extends Component {
   }
 }
 export default CleanoutRecordDetail;
+
 
