@@ -76,7 +76,7 @@ class ChartLostTrend extends Component {
       data: firstLineData,
       lineStyle: {
         opacity: lostChartTime ? 0.2 : 1,
-        color: '#2564cc',
+        color: '#f9b600',
         width: 2,
         shadowColor: 'rgba(0,0,0,0.20)',
         shadowBlur: 3,
@@ -88,7 +88,7 @@ class ChartLostTrend extends Component {
       data: secendLineData,
       lineStyle: {
         opacity: lostChartTime ? 0.2 : 1,
-        color: '#f9b600',
+        color: '#2564cc',
         width: 2,
         shadowColor: 'rgba(0,0,0,0.20)',
         shadowBlur: 3,
@@ -188,7 +188,7 @@ class ChartLostTrend extends Component {
     const { dataAxis, series } = this.createSeries(lostTrend, lostChartTime, unit);
     const baseOption = getBaseOption(dataAxis);
     baseOption.yAxis.name = `${label}${unit ? `(${unit})` : ''}`;
-    baseOption.yAxis.nameTextStyle.padding = [0, -40, 0, 0];
+    baseOption.yAxis.nameTextStyle.padding = [0, -20, 0, 0];
     baseOption.grid.left = 36;
     const option = {
       ...baseOption,
@@ -205,9 +205,9 @@ class ChartLostTrend extends Component {
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>
-                    ${i === 1 ? '应发小时数' : `${label}`}
+                    ${i === 1 ? '应发小时数' : `${label === '利用小时数' ? '实发小时数' : label}`}
                   </span>
-                  <span>${dataFormats(e.value, '--', pointLength, true)}${unit || ''}</span>
+                  <span>${dataFormats(e.value, '--', pointLength, true)}</span>
                 </span>`
               )).join('')}
             </div>
@@ -251,6 +251,16 @@ class ChartLostTrend extends Component {
             {chartName}{selectedQuota.label || '--'}趋势图
           </span>
           <TimeSelect timeMode={lostChartTimeMode} timeModeChange={this.timeModeChange} />
+        </div>
+        <div className={styles.modes}>
+          <span className={styles.eachMode}>
+            <span className={styles.line} />
+            <span className={styles.modeText}>{selectedQuota.label || '--'}</span>
+          </span>
+          {selectedQuota.label === '利用小时数' && <span className={styles.eachMode}>
+            <span className={styles.lineTheory} />
+            <span className={styles.modeText}>应发小时数</span>
+          </span>}
         </div>
         <div className={styles.chart} ref={(ref)=> {this.trendRef = ref;}} />
       </div>
