@@ -122,6 +122,9 @@ export default class RunScatterChart extends Component {
         FourthDataFilter = this.filterDataFunc(FourthDataFilter, checkedMonths);
       }
       myChart.setOption(this.drawChart(firstDataFilter, secondDataFilter, thirdDataFilter, FourthDataFilter));
+      myChart.dispatchAction((params) => {
+        console.log(params);
+      });
     }
   }
 
