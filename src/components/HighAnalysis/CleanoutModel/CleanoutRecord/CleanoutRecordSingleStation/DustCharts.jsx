@@ -14,7 +14,6 @@ const { RangePicker } = DatePicker;
 
 const SingleChart = ({ keyWord, data = [], id, theme }) => { // 灰尘影响charts图(全局 + 方阵特殊覆盖属性 )
   const chartBox = document.getElementById(id);
-  console.log('theme', theme);
   const getColor = {
     light: ['#199475', '#f9b600', '#3e97d1'],
     dark: ['#00f8ff', '#fd6e8f', '#f8e71c'],
