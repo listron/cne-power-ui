@@ -37,7 +37,6 @@ export default class GroupAreaChart extends Component {
     }
     if(groupCapacityTime && groupCapacityTime !== groupCapacityTimePrev || dataIndex !== '' && dataIndexPrev !== dataIndex) {
       eCharts.init(groupChart).clear();//清除
-      const myChart = eCharts.init(groupChart);
       axios.get('/mapJson/China.json').then(response => {
         eCharts.registerMap('China', response.data);
         myChart.setOption(this.drawChart(groupCapacityInfo, dataIndex));
@@ -145,8 +144,6 @@ export default class GroupAreaChart extends Component {
       },
       geo: {
         map: 'China',
-        layoutCenter: ['50%', '50%'],
-        layoutSize: '100%',
         label: {
           normal: {
             show: false,
@@ -155,6 +152,10 @@ export default class GroupAreaChart extends Component {
             show: false,
           },
         },
+        top: 0,
+        right: '20px',
+        bottom: '20px',
+        left: '20px',
         itemStyle: {
           normal: {
             areaColor: '#d8eef6',

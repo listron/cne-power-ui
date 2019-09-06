@@ -58,4 +58,21 @@
 .topSearch {
   background-color: #fff;
   border: 1px solid #e1e2e2;
+  .leftSearchBox{
+    button{
+      border: 1px solid $themeColor;
+      color: $themeColor;
+
+      &:hover {
+        background-color: $themeColor;
+        color: $pageGround;
+      }
+    }
+    :global{
+      .ant-btn[disabled]{
+        color: rgba(0, 0, 0, 0.25);
+        border-color: #d9d9d9;
+      }
+    }
+  }
 }
