@@ -252,7 +252,7 @@ export default class RunScatterChart extends Component {
           opacity: 1,
         },
         outOfBrush: {
-          color: '#cccccc',
+          opacity: 0.2,
         },
         throttleType: 'debounce',
         throttleDelay: 300,
