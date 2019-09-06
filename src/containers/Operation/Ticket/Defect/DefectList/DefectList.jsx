@@ -104,13 +104,15 @@ class DefectList extends Component {
 
   filterConditionChange = (value) => {
     console.log('value', value);
-    const { username } = this.props;
+    const { username, timeInterval, status, pageSize, sortField, sortMethod, pageNum } = this.props;
     const { rangeTimes, stationType, stationCodes, deviceTypeCode, defectLevel, defectTypeCode, defectSource, join } = value;
     const [createTimeStart = '', createTimeEnd = ''] = rangeTimes;
     const handleUser = join && username || '';
+    const tableParams = { timeInterval, status, pageSize, sortField, sortMethod, pageNum };
     const params = {
       stationType, stationCodes, defectSource, defectLevel, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, handleUser,
     };
+    this.props.getDefectList({ ...tableParams, ...params });
     console.log('params', params);
   }
 
@@ -157,7 +159,7 @@ class DefectList extends Component {
             handleUser: handleUser,
           }}
         />
-        <FilterConditions
+        {/* <FilterConditions
           onChange={this.filterConditionChange}
           option={[
             {
@@ -221,7 +223,7 @@ class DefectList extends Component {
             deviceTypeCode: deviceTypeCode,
             defectTypeCode: defectTypeCode,
           }}
-        />
+        /> */}
         <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} defaultValue={status} />
         <DefectTable {...this.props} onChangeFilter={this.filterCondition} />
       </div>
