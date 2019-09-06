@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import styles from './singleDevice.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
@@ -10,28 +10,30 @@ class WindRoseChart extends Component {
     rosedata: PropTypes.array,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   componentDidMount() {
-    this.drawChart((this.props.rosedata || []))
+    this.drawChart((this.props.rosedata || []));
   }
   componentWillReceiveProps(nextProps) {
     const rosedata = nextProps.rosedata || [];
-    this.drawChart(rosedata)
+    const { roseLoadding } = nextProps;
+    this.drawChart(rosedata, roseLoadding);
   }
 
-  drawChart = (params) => {
+  drawChart = (params, roseLoadding) => {
     const windrosechart = echarts.init(document.getElementById('windrosechart'));
+    roseLoadding ? windrosechart.showLoading('default', { color: '#199475' }) : windrosechart.hideLoading();
     let windDirection = [], avgWindSpeed = [], percent = [], XData = [];
     params && params.length > 0 && params.forEach((e, i) => {
       XData.push(i),
         windDirection.push(e.windDirection),
-        avgWindSpeed.push([dataFormat(e.avgWindSpeed,0), i, e.windDirection]),
-        percent.push([dataFormat(e.percent,0), i, e.windDirection])
-    })
+        avgWindSpeed.push([dataFormat(e.avgWindSpeed, 0), i, e.windDirection]),
+        percent.push([dataFormat(e.percent, 0), i, e.windDirection]);
+    });
     const hasData = (windDirection.length === 0 || avgWindSpeed.length === 0) ? showNoData : hiddenNoData;
     const lineColor = '#666';
-    let color = ['#199475', 'orange'];
+    const color = ['#199475', 'orange'];
     const option = {
       graphic: hasData,
       title: {
@@ -57,7 +59,7 @@ class WindRoseChart extends Component {
           color: lineColor,
           fontSize: 12,
         },
-        data: ['平均风速', '风向占比']
+        data: ['平均风速', '风向占比'],
       },
       polar: [{
         center: ['50%', '54%'],
@@ -71,7 +73,7 @@ class WindRoseChart extends Component {
         trigger: 'axis',
         axisPointer: {
           type: 'line',
-          snap: true
+          snap: true,
         },
         backgroundColor: '#fff',
         padding: 10,
@@ -81,8 +83,8 @@ class WindRoseChart extends Component {
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
         formatter: (params) => {
-          const speed=params[0].value[0]?params[0].value[0]:'--';
-          const percent=params[1].value[0]?params[1].value[0]:'--';
+          const speed = params[0].value[0] ? params[0].value[0] : '--';
+          const percent = params[1].value[0] ? params[1].value[0] : '--';
           return `<div class=${styles.formatStyle} >
           <div class=${styles.topStyle}>
             <div>风向:${params[0].value[2]}</div>
@@ -91,7 +93,7 @@ class WindRoseChart extends Component {
           width:100%;' ></div>
           <div class=${styles.lineStyle}>  <span class=${styles.itemStyle} style='color: ${color[0]}'>○</span>平均风速:  ${dataFormat(speed, '--', 2)}m/s</div>
           <div class=${styles.lineStyle}> <span class=${styles.itemStyle} style='color: ${color[1]}'>○</span>风向占比: ${dataFormat(percent, '--', 2)}%</div>
-        </div>`
+        </div>`;
         },
       },
       angleAxis: [{
@@ -102,56 +104,56 @@ class WindRoseChart extends Component {
         // data: XData,
         axisLabel: {
           formatter: (e) => {
-            return windDirection[e]
-          }
+            return windDirection[e];
+          },
         },
         axisTick: {
-          show: false
+          show: false,
         },
-      },{
+      }, {
         boundaryGap: false,
         startAngle: 90,
         polarIndex: 1,
         axisLine: {
-          show: false
+          show: false,
         },
         splitLine: {
-          show: false
+          show: false,
         },
         axisTick: {
-          show: false
+          show: false,
         },
         axisLabel: {
-          show: false
-        }
-      }
+          show: false,
+        },
+      },
       ],
       radiusAxis: [{
         min: 0,
         polarIndex: 0,
         max: 'dataMax',
         axisLabel: {
-          show: false
+          show: false,
         },
         axisTick: {
-          show: false
-        }
+          show: false,
+        },
       }, {
         min: 0,
         polarIndex: 1,
         max: 'dataMax',
         axisLine: {
-          show: false
+          show: false,
         },
         axisLabel: {
-          show: false
+          show: false,
         },
         splitLine: {
-          show: false
+          show: false,
         },
         axisTick: {
-          show: false
-        }
+          show: false,
+        },
       }],
       series: [{
         coordinateSystem: 'polar',
@@ -159,14 +161,14 @@ class WindRoseChart extends Component {
         name: '平均风速',
         type: 'line',
         showSymbol: false,
-        data: avgWindSpeed
+        data: avgWindSpeed,
       }, {
         coordinateSystem: 'polar',
         polarIndex: 1,
         name: '风向占比',
         type: 'line',
         showSymbol: false,
-        data: percent
+        data: percent,
       }],
 
     };
@@ -176,7 +178,7 @@ class WindRoseChart extends Component {
   render() {
     return (
       <div id="windrosechart" className={styles.windrosechart}></div>
-    )
+    );
   }
 }
-export default (WindRoseChart)
+export default (WindRoseChart);

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Button, Table } from 'antd';
+import { Button, Table, Icon } from 'antd';
 import path from '../../../../constants/path';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
@@ -18,6 +18,7 @@ class FaultList extends Component {
     changeDailyQueryStore: PropTypes.func,
     getFaultList: PropTypes.func,
     tableLoading: PropTypes.bool,
+    exportLoading: PropTypes.bool,
     faultIds: PropTypes.array,
     keyWord: PropTypes.string,
     downLoadFile: PropTypes.func,
@@ -44,7 +45,7 @@ class FaultList extends Component {
   }
 
   onExport = () => { // 列表导出
-    const { downLoadFile, queryParam, listParam, keyWord, faultIds } = this.props;
+    const { downLoadFile, queryParam, listParam, keyWord, faultIds} = this.props;
     const url = `${APIBasePath}${statisticalAnalysis.getExportFault}`;
     const { startDate, endDate, stationCodes } = queryParam;
     const { pageNum, pageSize } = listParam;
@@ -52,6 +53,7 @@ class FaultList extends Component {
     downLoadFile({
       url,
       fileName: '故障列表',
+      loadingName: 'exportLoading',
       params: {
         pageNum,
         pageSize,
@@ -65,7 +67,7 @@ class FaultList extends Component {
   }
 
   render(){
-    const { listParam, faultListData, tableLoading } = this.props;
+    const { listParam, faultListData, tableLoading, exportLoading  } = this.props;
     const { pageNum, pageSize } = listParam;
     const { total = 0, dataList = [] } = faultListData;
 
@@ -169,7 +171,12 @@ class FaultList extends Component {
     return (
       <div className={styles.faultList}>
         <div className={styles.pagination}>
-          <Button className={styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
+          <Button
+            className={dataList.length === 0 ? styles.disabledExport : styles.listExport}
+            onClick={this.onExport}
+            loading={exportLoading}
+            disabled={dataList.length === 0}
+          >导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}

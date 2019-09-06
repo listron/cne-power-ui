@@ -1,11 +1,12 @@
-@import '../../../../../theme/theme.scss';
+@import "../../../../../theme/theme.scss";
 .defectTable {
   display: flex;
   flex-direction: column;
   flex: 1;
   :global {
-    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
-      padding: 0;
+    .ant-table .ant-table-thead > tr > th,
+    .ant-table .ant-table-tbody > tr > td {
+      padding: 0 12px;
     }
     .icon-look {
       font-size: 18px;
@@ -19,14 +20,13 @@
     display: flex;
     justify-content: center;
     flex: 1;
-    background-color: #fff;
     margin-top: 48px;
   }
   .defectDesc {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    word-break:keep-all;
+    word-break: keep-all;
     max-width: 175px;
   }
   .action {
@@ -41,67 +41,30 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    .addDefect {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      width: 66px;
-      height: 32px;
-      border: 1px solid $themeColor;
-      border-radius: 4px;
-      margin-right: 12px;
-      color: $themeColor;
-      background-color: #fff;
-      &:hover {
-        background-color: $themeColor;
-        color: #fff;
-      }
-      cursor: pointer;
-      .add {
-        width: 30px;
-        height: 30px;
-        background-color: $themeColor;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-      }       
-      .text {         
-        margin-left: 2px;
-      }
-    }
     .operation {
       display: flex;
       flex-direction: row;
       align-items: flex-start;
-      :global {
-        .icon-help {
-          color: #dfdfdf;
-          font-size: 12px;
-          margin-left: 4px;
-          &:hover {
-            color: #e08031;
-          }
-        }
+    }
+    :global {
+      .icon-help {
+        font-size: 12px;
+        margin-left: 4px;
       }
     }
   }
 
-  .tableFooter{
-    background-color: #fff;
+  .tableFooter {
     height: 45px;
     line-height: 45px;
-    .info{
-      color: $darkColor;
+    .info {
       margin-right: 20px;
       margin-left: 24px;
-      .totalNum{
-        color: rgb(250,185,7);
+      .totalNum {
         margin: auto 4px;
       }
     }
-    .cancel{
-      color: $themeColor;
+    .cancel {
       cursor: pointer;
     }
   }
@@ -114,45 +77,119 @@
       flex-direction: row;
       font-size: 12px;
       align-items: center;
-      margin-left: 12px;
+      margin-left: 4px;
       .overTime {
         display: flex;
         align-items: center;
-        color: #a42b2c;
-        border: 1px #a42b2c solid;
         border-radius: 4px;
         width: 32px;
         height: 14px;
         margin-right: 4px;
+        justify-content: center;
       }
       .coordinate {
         display: flex;
         align-items: center;
-        color: #f9b600;
-        border: 1px #f9b600 solid;
         border-radius: 4px;
         width: 32px;
         height: 14px;
+        justify-content: center;
+      }
+    }
+  }
+  .handleDropdown {
+    :global {
+      i.iconfont {
+        margin-right: 7px;
       }
     }
   }
 }
 
-.handleDropdown{
-  :global{
-    i.iconfont{ 
-      margin-right: 7px; 
+.light {
+  .buttonArea {
+    :global {
+      .icon-help {
+        color: #dfdfdf;
+        &:hover {
+          color: #e08031;
+        }
+      }
     }
-    .ant-select-dropdown-menu-item:not(.ant-select-dropdown-menu-item-disabled){
+  }
+  .tableFooter {
+    background-color: #fff;
+    .info {
+      .totalNum {
+        color: rgb(250, 185, 7);
+      }
+    }
+    .cancel {
+      color: $themeColor;
+    }
+  }
+  .defectStatus {
+    .overTime {
+      color: #a42b2c;
+      border: 1px #a42b2c solid;
+    }
+    .coordinate {
+      color: #f9b600;
+      border: 1px #f9b600 solid;
+    }
+  }
+  :global {
+    .ant-select-dropdown-menu-item:not(.ant-select-dropdown-menu-item-disabled) {
       background-color: #fff;
-      color:$darkColor;
+      color: $darkColor;
       &:hover {
         background-color: #ceebe0;
         color: $themeColor;
       }
     }
-    .ant-select-dropdown-menu-item-disabled{
-      color:$promptColor;
+    .ant-select-dropdown-menu-item-disabled {
+      color: $promptColor;
+    }
+  }
+}
+
+.dark {
+  @import "../../../../../theme/darkTheme.scss";
+  background: $light-background;
+  border: 1px solid $border-color;
+  margin-top: 10px;
+  color: $fontColor;
+  .action {
+    margin: 10px 10px 10px 28px;
+  }
+  .buttonArea {
+    :global {
+      .icon-help {
+        color: $fontColor;
+        &:hover {
+          color: $fontColor-hover;
+        }
+      }
+    }
+  }
+  .tableFooter {
+    .info {
+      .totalNum {
+        color: #f9b600;
+      }
+    }
+    .cancel {
+      color: #f9b600;
+    }
+  }
+  .defectStatus {
+    .overTime {
+      color: $fontColor-invert;
+      background-image: linear-gradient(-180deg, #f95071 0%, #f47a37 98%);
+    }
+    .coordinate {
+      color: $fontColor-invert;
+      background-image: linear-gradient(-180deg, #6ebeff 0%, #2465c2 100%);
     }
   }
 }

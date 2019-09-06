@@ -44,6 +44,7 @@ export default class AreaSearch extends Component {
       modesInfo: groupInfo.modesInfo || [],
       areaFlag: false, // 控制第一次进来，有数据的时候
       quotaFlag: false, // 控制第一次进来，有数据的时候
+      searchFlag: true, // 控制切换电站搜索
     };
   }
 
@@ -109,9 +110,9 @@ export default class AreaSearch extends Component {
   };
 
   propsModeDevicesChange = (modeDevices) => { // 得到电站下机型信息;
-    const { searchCode, dates, quota, stations } = this.state;
+    const { searchCode, dates, quota, stations, searchFlag } = this.state;
     const modes = this.getAllDeviceCodes(modeDevices);
-    if (quota.length > 0) { // 已有指标
+    if (quota.length > 0 && searchFlag) { // 已有指标
       this.historyChange(searchCode, modes, dates, quota, stations, modeDevices);
     } else { // 存入state, 得到quota时再请求
       this.setState({ modes, modesInfo: modeDevices});
@@ -163,6 +164,7 @@ export default class AreaSearch extends Component {
       stations: info,
       searchCode: stations,
       modes: [],
+      searchFlag: false,
     }, () => {
       changeStore({
         modesInfo: [],
@@ -195,15 +197,33 @@ export default class AreaSearch extends Component {
       selectTime: '', // 保存选择时间
       dataName: '', // 保存选择区域名称
     });
-    this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
+    this.setState({
+      searchFlag: true,
+    }, () => {
+      this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
+    });
   };
 
   resetCharts = () => {
-    const { groupInfoStr } = this.state;
+    const {
+      searchCode,
+      stations,
+      modes,
+      dates,
+      quota,
+      modesInfo,
+    } = this.state;
     const { dataName, queryParamsFunc, changeStore } = this.props;
     // 判断如果选中过区域或时间可以重置图表
     if(dataName !== '') {
-      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const groupInfo = {
+        searchCode,
+        stations,
+        modes,
+        dates,
+        quota,
+        modesInfo,
+      };
       changeStore({
         dataIndex: '', // 保存点击的下标
         selectStationCode: [], // 保存单选区域的信息
@@ -232,51 +252,55 @@ export default class AreaSearch extends Component {
 
     return (
       <div className={styles.topSearch}>
-        <div>
-          <span>选择区域</span>
-          <AreaStation
-            mode="all"
-            data={areaStation}
-            value={stations}
-            onChange={this.onAreaChange}
-          />
+        <div className={styles.leftSearch}>
+          <div>
+            <span>选择区域</span>
+            <AreaStation
+              mode="all"
+              data={areaStation}
+              value={stations}
+              onChange={this.onAreaChange}
+            />
+          </div>
+          <div>
+            <span>选择机型</span>
+            <AutoSelect
+              style={{width: '150px'}}
+              data={modesInfo}
+              value={modes}
+              maxTagCount={0}
+              onChange={this.onModelChange}
+            />
+          </div>
+          <div>
+            <span>选择时间</span>
+            <RangePicker
+              allowClear={false}
+              value={[moment(dates[0]), moment(dates[1])]}
+              onChange={this.onDateChange}
+              style={{width: '220px'}}
+              disabledDate={disabledDate}
+            />
+          </div>
+          <div>
+            <span>选择指标</span>
+            <Cascader
+              allowClear={false}
+              style={{width: '150px'}}
+              expandTrigger="hover"
+              options={quotaInfo}
+              placeholder="请选择"
+              onChange={this.onQuotaChange}
+              value={quota}
+              displayRender={label => label[label.length - 1]}
+              popupClassName={styles.cascaderBox}
+            />
+          </div>
+          <div className={styles.leftSearchBox}>
+            <Button disabled={!searchFlag} style={{marginRight: '20px'}} onClick={this.queryCharts}>查询</Button>
+          </div>
         </div>
-        <div>
-          <span>选择机型</span>
-          <AutoSelect
-            style={{width: '150px'}}
-            data={modesInfo}
-            value={modes}
-            maxTagCount={0}
-            onChange={this.onModelChange}
-          />
-        </div>
-        <div>
-          <span>选择时间</span>
-          <RangePicker
-            allowClear={false}
-            value={[moment(dates[0]), moment(dates[1])]}
-            onChange={this.onDateChange}
-            style={{width: '220px'}}
-            disabledDate={disabledDate}
-          />
-        </div>
-        <div>
-          <span>选择指标</span>
-          <Cascader
-            allowClear={false}
-            style={{width: '150px'}}
-            options={quotaInfo}
-            placeholder="请选择"
-            onChange={this.onQuotaChange}
-            value={quota}
-            popupClassName={styles.cascaderBox}
-          />
-        </div>
-        <div>
-          <Button disabled={!searchFlag} style={{marginRight: '20px'}} onClick={this.queryCharts}>查询</Button>
-          <Button disabled={dataName === ''} onClick={this.resetCharts}>恢复图表</Button>
-        </div>
+        <Button disabled={dataName === ''} onClick={this.resetCharts}>恢复图表</Button>
       </div>
     );
   }

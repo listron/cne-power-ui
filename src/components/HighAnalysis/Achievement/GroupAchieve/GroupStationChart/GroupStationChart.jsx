@@ -5,6 +5,7 @@ import searchUtil from '../../../../../utils/searchUtil';
 import { dataFormat } from '../../../../../utils/utilFunc';
 
 import styles from './groupStationChart.scss';
+import {message} from "antd";
 
 export default class GroupStationChart extends Component {
 
@@ -18,9 +19,11 @@ export default class GroupStationChart extends Component {
     getGroupLostGenHour: PropTypes.func,
     location: PropTypes.object,
     titleFunc: PropTypes.string,
-    colorData: PropTypes.object,
+    areaColorData: PropTypes.object,
     unitName: PropTypes.string,
     pointLength: PropTypes.number,
+    queryParamsFunc: PropTypes.func,
+    selectTime: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
@@ -44,9 +47,12 @@ export default class GroupStationChart extends Component {
     }
   }
 
-  chartHandle = (params, groupCapacityInfo, myChart) => {
+  chartHandle = (params, groupRankInfo, myChart) => {
     const { name } = params;
-    const { changeStore, getGroupTrendInfo, getGroupLostGenHour, location: { search } } = this.props;
+    const { selectTime, changeStore, getGroupTrendInfo, dataIndex, getGroupLostGenHour, location: { search } } = this.props;
+    if(selectTime) {
+      return message.info('请先取消下方事件选择, 再选择区域');
+    }
     const groupInfoStr = searchUtil(search).getValue('group');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const {
@@ -79,20 +85,35 @@ export default class GroupStationChart extends Component {
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
-      deviceModes: modes,
+      deviceModes: modes.map(cur => (cur.split('-')[1])),
     };
-    changeStore({
-      dataIndex: name, // 下标
-      dataName: name, // 名称
-      selectStationCode: stationCodes, // 保存单选区域的信息
-    });
-    myChart.setOption(this.drawChart(groupCapacityInfo, name));
-    getGroupTrendInfo(paramsTrend);
-    getGroupLostGenHour(paramsHour);
+    //判断点击
+    if(params.name && params.name !== dataIndex) {
+      changeStore({
+        dataIndex: name, // 下标
+        dataName: name, // 名称
+        selectStationCode: stationCodes, // 保存单选区域的信息
+      });
+      myChart.setOption(this.drawChart(groupRankInfo, name));
+      getGroupTrendInfo(paramsTrend);
+      getGroupLostGenHour(paramsHour);
+    }
+
+    //判断再次点击
+    if(params.name && params.name === dataIndex) {
+      changeStore({
+        dataIndex: '', // 保存点击的下标
+        selectStationCode: [], // 保存单选区域的信息
+        selectTime: '', // 保存选择时间
+        dataName: '', // 保存选择区域名称
+      });
+      myChart.setOption(this.drawChart(groupRankInfo, ''));
+      this.props.queryParamsFunc(groupInfo);
+    }
   };
 
   drawChart = (data, dataIndex) => {
-    const { titleFunc, colorData, unitName, pointLength } = this.props;
+    const { titleFunc, areaColorData, unitName, pointLength } = this.props;
     const twoBar = [{ // 实发
       data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2))),
       type: 'bar',
@@ -100,7 +121,7 @@ export default class GroupStationChart extends Component {
       itemStyle: {
         normal: {
           color: function(params) {//柱子颜色
-            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
+            return dataIndex === '' ? areaColorData[params.name] : (dataIndex === params.name ? areaColorData[params.name] : '#cccccc');
           },
         },
         emphasis: {
@@ -130,7 +151,7 @@ export default class GroupStationChart extends Component {
         barBorderRadius: [5, 5, 0, 0],
         normal: {
           color: function(params) {//柱子颜色
-            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
+            return dataIndex === '' ? areaColorData[params.name] : (dataIndex === params.name ? areaColorData[params.name] : '#cccccc');
           },
         },
         emphasis: {
@@ -149,11 +170,11 @@ export default class GroupStationChart extends Component {
         formatter: (params) => {
           if(titleFunc === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}${unitName}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}</span>
           </div>`;
           }
           return `<div>
-            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span>
+            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span>
           </div>`;
         },
       },
@@ -173,26 +194,32 @@ export default class GroupStationChart extends Component {
           type: 'value',
           name: `${titleFunc}（${unitName}）`,
           min: 0,
-          max: unitName === '%' ? 100 : null,
           splitLine: {
             show: false,
           },
         },
       ],
-      dataZoom: [{
-        start: 0,
-        end: 100,
-        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-        handleSize: '80%',
-        handleStyle: {
-          color: '#fff',
-          shadowBlur: 3,
-          shadowColor: 'rgba(0, 0, 0, 0.6)',
-          shadowOffsetX: 2,
-          shadowOffsetY: 2,
+      dataZoom: [
+        {
+          type: 'inside',
+          start: 0,
+          end: 100,
         },
-        textStyle: false,
-      }],
+        {
+          start: 0,
+          end: 100,
+          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+          handleSize: '80%',
+          handleStyle: {
+            color: '#fff',
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.6)',
+            shadowOffsetX: 2,
+            shadowOffsetY: 2,
+          },
+          textStyle: false,
+        },
+      ],
       series: seriesData,
     };
   };

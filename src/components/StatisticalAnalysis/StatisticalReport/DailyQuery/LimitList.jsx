@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Table } from 'antd';
+import { Button, Table, Icon } from 'antd';
 import path from '../../../../constants/path';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
@@ -16,6 +16,7 @@ class LimitList extends Component {
     queryParam: PropTypes.object,
     limitListData: PropTypes.object,
     tableLoading: PropTypes.bool,
+    exportLoading: PropTypes.bool,
     changeDailyQueryStore: PropTypes.func,
     getLimitList: PropTypes.func,
     downLoadFile: PropTypes.func,
@@ -50,6 +51,7 @@ class LimitList extends Component {
     downLoadFile({
       url,
       fileName: '限电列表',
+      loadingName: 'exportLoading',
       params: {
         pageNum,
         pageSize,
@@ -62,7 +64,7 @@ class LimitList extends Component {
   }
 
   render(){
-    const { listParam, limitListData, tableLoading } = this.props;
+    const { listParam, limitListData, tableLoading, exportLoading } = this.props;
     const { pageNum, pageSize } = listParam;
     const { total, dataList = [] } = limitListData;
 
@@ -71,24 +73,28 @@ class LimitList extends Component {
       width: 140,
       dataIndex: 'stationName',
       className: 'stationName',
+      fixed: 'left',
       render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '区域',
       width: 80,
       dataIndex: 'regionName',
       className: 'regionName',
+      fixed: 'left',
       render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '设备类型',
       width: 110,
       dataIndex: 'deviceTypeName',
       className: 'deviceTypeName',
+      fixed: 'left',
       render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '设备名称',
-      width: 110,
+      width: 100,
       dataIndex: 'deviceName',
       className: 'deviceName',
+      fixed: 'left',
       render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '限功率',
@@ -143,7 +149,12 @@ class LimitList extends Component {
     return (
       <div className={styles.limitList}>
         <div className={styles.pagination}>
-          <Button className={styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
+          <Button
+            className={dataList.length === 0 ? styles.disabledExport : styles.listExport}
+            onClick={this.onExport}
+            loading={exportLoading}
+            disabled={dataList.length === 0}
+          >导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
@@ -157,6 +168,7 @@ class LimitList extends Component {
           dataSource={dataList && dataList.map((e, i) => ({ ...e, key: i }))}
           columns={columns}
           pagination={false}
+          scroll={{x: 'max-content' }}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>

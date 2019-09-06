@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import StationSelect from '../../../Common/StationSelect';
-import { Button, DatePicker, Cascader, Icon, Select } from 'antd';
+import { Button, DatePicker, Cascader, Icon, Select, Spin } from 'antd';
 import moment from 'moment';
 
 const { RangePicker } = DatePicker;
@@ -85,6 +85,7 @@ class HandleSeacher extends React.Component {
       saveStartTime: '',
       saveEndTime: '',
       xyValueLimit: {},
+      downLoading: false,
       disableDateFun: (current) => current > moment(),
 
 
@@ -117,6 +118,7 @@ class HandleSeacher extends React.Component {
         const deviceFullCode = fristDevice.deviceFullCode;
         const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = firstData;
         this.setState({ options: [...option, otherName], scatterNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
+        this.props.changeToolStore({ pointCodeNameX, pointCodeNameY, xPointCode: pointCodeX, yPointCode: pointCodeY, deviceFullCode });
         getxyLimitValue({
           stationCode,
           startTime,
@@ -124,7 +126,6 @@ class HandleSeacher extends React.Component {
           xPointCode: pointCodeX,
           yPointCode: pointCodeY,
         });
-        this.props.changeToolStore({ pointCodeNameX, pointCodeNameY, xPointCode: pointCodeX, yPointCode: pointCodeY });
         this.setState({
           xName: pointCodeNameX,
           yName: pointCodeNameY,
@@ -178,12 +179,9 @@ class HandleSeacher extends React.Component {
   // }
   selectStationCode = (stationCodeArr) => {
     const { stationCode } = stationCodeArr[0];
-    this.props.changeToolStore({
-      stationCode,
-      scatterData: {},
-    });
-    this.props.getStationDevice({ stationCode });
-    this.props.getScatterName({ stationCode });
+
+    this.props.getStationDevice({ stationCode, queryName: true });
+
   }
 
   changeTime = (date, dateString) => {
@@ -242,35 +240,44 @@ class HandleSeacher extends React.Component {
   }
   getScatterData = () => {//查询数据
     //请求数据
-    const { getScatterData, changeToolStore, stationCode, deviceList, getxyLimitValue } = this.props;
+
+    const { getScatterData, changeToolStore, stationCode, deviceList, getxyLimitValue, xPointCode, yPointCode, startTime, endTime } = this.props;
     const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
-    changeToolStore({
-      scatterData: {},
-      pointCodeNameX: xName,
-      pointCodeNameY: yName,
-      xyValueLimit,
-      deviceList: [],
-    });
-    getxyLimitValue({
-      stationCode,
-      startTime: saveStartTime,
-      endTime: saveEndTime,
-      xPointCode: xCode,
-      yPointCode: yCode,
-    });
-    this.props.getStationDevice({ stationCode });
-    setTimeout(() => {
-      const fristDevice = deviceList[0];
-      const deviceFullCode = fristDevice.deviceFullCode;
-      getScatterData({
-        stationCode,
-        deviceFullCode,
-        xPointCode: xCode,
-        yPointCode: yCode,
+    if (xPointCode !== xCode || yPointCode !== yCode || startTime !== saveStartTime || endTime !== saveEndTime) {
+      changeToolStore({
+        scatterData: {},
+        pointCodeNameX: xName,
+        pointCodeNameY: yName,
+        xyValueLimit,
         startTime: saveStartTime,
         endTime: saveEndTime,
+        xPointCode: xCode,
+        yPointCode: yCode,
       });
-    }, 100);
+      getxyLimitValue({
+        stationCode,
+        startTime: saveStartTime,
+        endTime: saveEndTime,
+        xPointCode: xCode,
+        yPointCode: yCode,
+      });
+      this.props.getStationDevice({ stationCode, queryName: false });
+      setTimeout(() => {
+        const fristDevice = deviceList[0];
+        const deviceFullCode = fristDevice.deviceFullCode;
+        getScatterData({
+          stationCode,
+          deviceFullCode,
+          xPointCode: xCode,
+          yPointCode: yCode,
+          startTime: saveStartTime,
+          endTime: saveEndTime,
+        });
+      }, 100);
+
+
+    }
+
 
 
   }
@@ -315,11 +322,19 @@ class HandleSeacher extends React.Component {
     this.props.changeToolStore({
       down: true,
     });
+    this.setState({
+      downLoading: true,
+    });
+    setTimeout(() => {
+      this.setState({
+        downLoading: false,
+      });
+    }, 2000);
   }
   render() {
     const { stationCode, stations, scatterotherNames, theme, startTime, endTime, isClick } = this.props;
 
-    const { isSwap, options, scatterNameValue, showOther, xName, yName, xyValueLimit, disableDateFun } = this.state;
+    const { isSwap, options, scatterNameValue, showOther, xName, yName, xyValueLimit, disableDateFun, downLoading } = this.state;
     const { yMin, yMax, xMin, xMax } = xyValueLimit;
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
@@ -355,12 +370,12 @@ class HandleSeacher extends React.Component {
             onChange={this.onChangeContrast}
             style={showOther ? { width: '200px' } : { width: '400px' }}
           />
-          {!showOther && <div className={styles.contrastValue}>
-            <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} >{xName ? xName : '--'}</Button>
-            <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
-            <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} >{yName ? yName : '--'}</Button>
+          {!showOther && <div className={isSwap ? styles.swapContrast : styles.contrastValue} onClick={this.changeSwap}>
+            <span className={isSwap ? styles.swapStyle : styles.defaultStyle} title={xName}>{xName ? xName : '--'}</span>
+            <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} />
+            <span className={isSwap ? styles.swapStyle : styles.defaultStyle} title={yName} >{yName ? yName : '--'}</span>
           </div>}
-          {showOther && <div className={styles.contrastValue}>
+          {showOther && <div className={styles.contrastValue2}>
             <Select
               style={{ width: 160 }}
               onChange={this.changeXvalue}
@@ -382,7 +397,7 @@ class HandleSeacher extends React.Component {
             </Select>
           </div>}
           <Button className={styles.seachBtn} onClick={this.getScatterData}>查询</Button>
-          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!isClick} onClick={this.downPic}>图片下载</Button>
+          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!isClick} onClick={this.downPic}>{downLoading ? <span> <Icon type="loading" style={{ fontSize: 16 }} spin />图片下载</span> : '图片下载'}</Button>
 
         </div>
       </div>

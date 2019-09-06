@@ -122,6 +122,9 @@ export default class RunScatterChart extends Component {
         FourthDataFilter = this.filterDataFunc(FourthDataFilter, checkedMonths);
       }
       myChart.setOption(this.drawChart(firstDataFilter, secondDataFilter, thirdDataFilter, FourthDataFilter));
+      myChart.dispatchAction((params) => {
+        console.log(params);
+      });
     }
   }
 
@@ -153,25 +156,45 @@ export default class RunScatterChart extends Component {
     const firstData = [];
       firstChartData.forEach(cur => {
         cur.dataList && cur.dataList.forEach(item => {
-          firstData.push([this.formatNumberFunc(item.xAxis), this.formatNumberFunc(item.yAxis), cur.deviceName]);
+          firstData.push([
+            this.formatNumberFunc(item.xAxis),
+            this.formatNumberFunc(item.yAxis),
+            moment(item.time).format('YYYY-MM-DD HH:mm:ss'),
+            cur.deviceName,
+          ]);
         });
     });
     const secondData = [];
     secondChartData.forEach(cur => {
       cur.dataList && cur.dataList.forEach(item => {
-        secondData.push([this.formatNumberFunc(item.xAxis), this.formatNumberFunc(item.yAxis), cur.deviceName]);
+        secondData.push([
+          this.formatNumberFunc(item.xAxis),
+          this.formatNumberFunc(item.yAxis),
+          moment(item.time).format('YYYY-MM-DD HH:mm:ss'),
+          cur.deviceName,
+        ]);
       });
     });
     const thirdData = [];
     thirdChartData.forEach(cur => {
       cur.dataList && cur.dataList.forEach(item => {
-        thirdData.push([this.formatNumberFunc(item.xAxis), this.formatNumberFunc(item.yAxis), cur.deviceName]);
+        thirdData.push([
+          this.formatNumberFunc(item.xAxis),
+          this.formatNumberFunc(item.yAxis),
+          moment(item.time).format('YYYY-MM-DD HH:mm:ss'),
+          cur.deviceName,
+        ]);
       });
     });
     const fourthData = [];
     fourthChartData.forEach(cur => {
       cur.dataList && cur.dataList.forEach(item => {
-        fourthData.push([this.formatNumberFunc(item.xAxis), this.formatNumberFunc(item.yAxis), cur.deviceName]);
+        fourthData.push([
+          this.formatNumberFunc(item.xAxis),
+          this.formatNumberFunc(item.yAxis),
+          moment(item.time).format('YYYY-MM-DD HH:mm:ss'),
+          cur.deviceName,
+        ]);
       });
     });
 
@@ -234,9 +257,14 @@ export default class RunScatterChart extends Component {
         throttleType: 'debounce',
         throttleDelay: 300,
       },
-      // tooltip: {
-      //   formatter: '{a}: ({c})',
-      // },
+      tooltip: {
+        formatter: (params) => {
+          const { seriesName, data } = params;
+          return `<div>
+              <span>${data[2] || '--'}</span><br /><span>${`${seriesName.split('VS')[0]}：${data[0] || '--'}`}</span><br /><span>${`${seriesName.split('VS')[1]}：${data[1] || '--'}`}</span>
+        </div>`;
+        },
+      },
       xAxis: [
         {name: `${firstXAxisName}（${firstXAxisUnit}）`, gridIndex: 0, min: minNum, splitLine: {show: false}},
         {name: `${secondXAxisName}（${secondXAxisUnit}）`, gridIndex: 1, min: minNum, splitLine: {show: false}},
@@ -251,36 +279,40 @@ export default class RunScatterChart extends Component {
       ],
       series: [
         {
-          name: 'I',
+          name: `${firstXAxisName}VS${firstYAxisName}`,
           type: 'scatter',
           xAxisIndex: 0,
           yAxisIndex: 0,
           data: firstData,
           progressive: 0,
+          symbolSize: 3,
         },
         {
-          name: 'II',
+          name: `${secondXAxisName}VS${secondYAxisName}`,
           type: 'scatter',
           xAxisIndex: 1,
           yAxisIndex: 1,
           data: secondData,
           progressive: 0,
+          symbolSize: 3,
         },
         {
-          name: 'III',
+          name: `${thirdXAxisName}VS${thirdYAxisName}`,
           type: 'scatter',
           xAxisIndex: 2,
           yAxisIndex: 2,
           data: thirdData,
           progressive: 0,
+          symbolSize: 3,
         },
         {
-          name: 'IV',
+          name: `${fourthXAxisName}VS${fourthYAxisName}`,
           type: 'scatter',
           xAxisIndex: 3,
           yAxisIndex: 3,
           data: fourthData,
           progressive: 0,
+          symbolSize: 3,
         },
       ],
     };

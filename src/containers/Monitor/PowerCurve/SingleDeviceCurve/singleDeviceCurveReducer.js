@@ -22,6 +22,13 @@ const initState = immutable.fromJS({
   pitchanglespeedchartData: [], //桨距角图
   winddistributionchartData: [], //风频图
   sequencechartData: [], //时序图
+  curveChartLoadding: false,
+  tableLoadding: false,
+  roseLoadding: false,
+  speedLoadding: false,
+  pitLoadding: false,
+  windLoadding: false,
+  sequenceLoadding: false,
 
 
 });

@@ -92,10 +92,10 @@ class SingleDeviceContainer extends Component {
   onSwitchChange = (checked) => {
     const tableFullCode = this.props.match.params.deviceFullCode;
     const { stationCode, deviceFullCode, startTime, endTime, pageNum, pageSize } = this.props;
-    const params = { stationCode, deviceFullCode, startTime, endTime, pageNum, pageSize };
+    const params = { stationCode, deviceFullCode, startTime, endTime };
     this.props.changeSingleDeviceStore({ correct: checked ? 1 : 0 });
 
-    this.props.getSingleDeviceCurveList({ ...params, deviceFullCode: tableFullCode, pageNum, pageSize, correct: checked ? 1 : 0 });
+    this.props.getSingleDeviceCurveList({ ...params, deviceFullCode: tableFullCode, correct: checked ? 1 : 0 });
   }
   onChangeFilter = (value) => {
     const { stationCode, deviceFullCode, startTime, endTime } = this.props;
@@ -110,7 +110,7 @@ class SingleDeviceContainer extends Component {
     this.props.getsequencechart({ ...params, ...value });
     this.props.getpowerspeedchart({ ...params, ...value });
     this.props.getpitchanglespeedchart({ ...params, ...value });
-    this.props.getSingleDeviceCurveList({ ...params, ...value, deviceFullCode: tabledeviceFullCode, pageNum, pageSize, correct });
+    this.props.getSingleDeviceCurveList({ ...params, ...value, deviceFullCode: tabledeviceFullCode, correct });
   }
   selectShowType = (type) => { // 切换图表展示类型 'graph'图 / 'list'表格
     const { changeSingleDeviceStore } = this.props;
@@ -129,7 +129,7 @@ class SingleDeviceContainer extends Component {
     const { stationCode, stations, downLoadFile } = this.props;
     startTime = moment(startTime).utc().format();
     endTime = moment(endTime).utc().format();
-    let timeZone = moment().utcOffset();
+    const timeZone = moment().utcOffset();
     const stationInfo = stations.filter((e, i) => e.stationCode)[0];
     downLoadFile({ // 
       url,
@@ -139,7 +139,7 @@ class SingleDeviceContainer extends Component {
         deviceFullCode: [deviceFullCode],
         startTime,
         endTime,
-        timeZone: timeZone / 60
+        timeZone: timeZone / 60,
       },
     });
   }
@@ -177,7 +177,7 @@ class SingleDeviceContainer extends Component {
 
             </div>}
             {deviceShowType === 'list' && <div>
-              <Switch onChange={this.onSwitchChange} />空气密度校验
+              <Switch onChange={this.onSwitchChange} />空气密度矫正
            </div>}
           </div>
           <div className={styles.right}>

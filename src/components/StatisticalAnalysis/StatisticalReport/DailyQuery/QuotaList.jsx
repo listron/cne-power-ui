@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Button, Table } from 'antd';
+import { Button, Table, Icon } from 'antd';
+import moment from 'moment';
 import path from '../../../../constants/path';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
@@ -18,6 +19,7 @@ class QuotaList extends Component {
     changeDailyQueryStore: PropTypes.func,
     getQuotaList: PropTypes.func,
     tableLoading: PropTypes.bool,
+    exportLoading: PropTypes.bool,
     quotaInfoData: PropTypes.array,
     downLoadFile: PropTypes.func,
   }
@@ -39,8 +41,8 @@ class QuotaList extends Component {
     getQuotaList({
       ...newParam,
       stationCodes,
-      startDate,
-      endDate,
+      startDate: moment(startDate).format('YYYY-MM-DD'),
+      endDate: moment(endDate).format('YYYY-MM-DD'),
       indexCodes,
     });
   }
@@ -57,19 +59,20 @@ class QuotaList extends Component {
     downLoadFile({
       url,
       fileName: '指标列表',
+      loadingName: 'exportLoading',
       params: {
         pageNum,
         pageSize,
         stationCodes,
-        startDate,
-        endDate,
+        startDate: moment(startDate).format('YYYY-MM-DD'),
+        endDate: moment(endDate).format('YYYY-MM-DD'),
         indexCodes,
       },
     });
   }
 
   render(){
-    const { listParam, quotaListData, tableLoading, quotaInfoData } = this.props;
+    const { listParam, quotaListData, tableLoading, quotaInfoData, exportLoading } = this.props;
     const { pageNum, pageSize } = listParam;
     const { total = 0, dataList = [] } = quotaListData;
 
@@ -106,7 +109,12 @@ class QuotaList extends Component {
     return (
       <div className={styles.quotaList}>
         <div className={styles.pagination}>
-          <Button className={dataList.length === 0 ? styles.disabledExport : styles.listExport} onClick={this.onExport} disabled={dataList.length === 0}>导出</Button>
+          <Button
+          className={dataList.length === 0 ? styles.disabledExport : styles.listExport}
+          onClick={this.onExport}
+          loading={exportLoading}
+          disabled={dataList.length === 0}
+          >导出</Button>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
@@ -120,7 +128,7 @@ class QuotaList extends Component {
           dataSource={dataList && dataList.map((e, i) => ({ ...e, key: i }))}
           columns={columns.concat(otherCol)}
           pagination={false}
-          scroll={(otherCol.length > 9) ? { x: 3500 } : {x: 0}}
+          scroll={(otherCol.length > 9) ? { x: 'max-content' } : {x: 0}}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>

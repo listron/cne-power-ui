@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Input, Button, Select, Icon} from 'antd';
+import { Input, Button, Select, Icon } from 'antd';
 import styles from './intelligentExpert.scss';
-import DeviceTypeFilter from "./IntelligentFilter/DeviceTypeFilter/DeviceTypeFilter";
-import DefectTypeFilter from "./IntelligentFilter/DefectTypeFilter/DefectTypeFilter";
-import FilteredItems from "./IntelligentFilter/FilteredItems/FilteredItems";
+import DeviceTypeFilter from './IntelligentFilter/DeviceTypeFilter/DeviceTypeFilter';
+import DefectTypeFilter from './IntelligentFilter/DefectTypeFilter/DefectTypeFilter';
+import FilteredItems from './IntelligentFilter/FilteredItems/FilteredItems';
 
 const { Option } = Select;
 
 function debounce(callback, delay) { // 录入人（防抖）
   let timerId = null;
   return function (args) {
-      let that = this;
-      clearTimeout(timerId);
-      timerId = setTimeout(function () {
-          callback.call(that, args);
-      }, delay);
-  }
+    const that = this;
+    clearTimeout(timerId);
+    timerId = setTimeout(function () {
+      callback.call(that, args);
+    }, delay);
+  };
 }
 
 class IntelligentSearch extends Component {
@@ -36,14 +36,15 @@ class IntelligentSearch extends Component {
     pageSize: PropTypes.number,
     orderField: PropTypes.string,
     sortMethod: PropTypes.string,
+    theme: PropTypes.string,
   }
 
-  constructor( props ) {
-    super( props );
+  constructor(props) {
+    super(props);
     this.state = {
       defectValue: '',
       personValue: '',
-      showFilter: ""
+      showFilter: '',
     };
     this.entryPerson = debounce(this.entryPerson, 800);
   }
@@ -53,9 +54,9 @@ class IntelligentSearch extends Component {
     const { deviceTypeCode: deviceTypeCodeNext } = nextProps;
     const { showFilter } = this.state;
     if (deviceTypeCodeCurrent !== deviceTypeCodeNext && deviceTypeCodeNext.length === 0) {
-      if (showFilter !== "") {
+      if (showFilter !== '') {
         this.setState({
-          showFilter: ""
+          showFilter: '',
         });
       }
     }
@@ -65,23 +66,23 @@ class IntelligentSearch extends Component {
     const { getIntelligentTable, listParams } = this.props;
     const { defectValue, personValue } = this.state;
     getIntelligentTable({
-        ...listParams,
-        faultDescription: defectValue,
-        recorder: personValue,
-        pageNum: 1,
-    })
+      ...listParams,
+      faultDescription: defectValue,
+      recorder: personValue,
+      pageNum: 1,
+    });
   }
 
   onFilterShowChange = (filterText) => {
     const { showFilter } = this.state;
-    if(showFilter === filterText){
+    if (showFilter === filterText) {
       this.setState({
-        showFilter: ''
-      })
-    }else{
+        showFilter: '',
+      });
+    } else {
       this.setState({
-        showFilter: filterText
-      })
+        showFilter: filterText,
+      });
     }
   };
 
@@ -90,97 +91,100 @@ class IntelligentSearch extends Component {
     this.setState({
       defectValue: '',
       personValue: '',
-    })
+    });
     getIntelligentTable({
       ...listParams,
       faultDescription: '',
       recorder: '',
       pageNum: 1,
-    })
+    });
   }
 
   onDefect = (e) => {// 改变缺陷描述
     this.setState({
       defectValue: e.target.value,
-    })
+    });
   }
 
   entryPerson = (value) => { // 输入录入人时触发
     const { getIntelligentExpertStore, listParams, getUserName } = this.props;
     this.setState({
-      personValue: value
+      personValue: value,
     });
     if (value) {
       getUserName({
         username: value,
-      })
+      });
       getIntelligentExpertStore({
         listParams: {
           ...listParams,
-          recorder: value
-        }
-      })
+          recorder: value,
+        },
+      });
     }
   }
 
   changePerson = (value) => { // 选择option
     this.setState({
-      personValue:value
-    })
+      personValue: value,
+    });
     const { getIntelligentExpertStore, listParams } = this.props;
     getIntelligentExpertStore({
       listParams: {
         ...listParams,
-        recorder: value
-      }
-    })
+        recorder: value,
+      },
+    });
   }
 
   render() {
     const { personValue, defectValue, showFilter } = this.state;
-    const { usernames = [], deviceTypeCode } = this.props;
+    const { usernames = [], deviceTypeCode, theme } = this.props;
     const showResetBtn = personValue || defectValue; // 控制“重置”按钮是否出现
     return (
-      <div className={styles.intelligentSearch}>
-        <div className={styles.topSearch}>
-          <span className={styles.text}>筛选条件</span>
-          <Button onClick={()=>this.onFilterShowChange('deviceTypes')} className={styles.filterBtn}>
-            设备类型<Icon type={showFilter ==='deviceTypes' ? "up" : "down"} />
-          </Button>
-          <Button disabled={!deviceTypeCode || deviceTypeCode.length === 0} onClick={()=>this.onFilterShowChange('defectTypes')}>
-            缺陷类型<Icon type={showFilter ==='defectTypes' ? "up" : "down"} />
-          </Button>
+      <div className={`${styles.intelligentSearch} ${styles[theme]}`}>
+        <div className={styles.wrap}>
+          <div className={styles.topSearch}>
+            <span className={styles.text}>筛选条件</span>
+            <Button onClick={() => this.onFilterShowChange('deviceTypes')} className={styles.filterBtn} >
+              设备类型<Icon type={showFilter === 'deviceTypes' ? 'up' : 'down'} />
+            </Button>
+            <Button disabled={!deviceTypeCode || deviceTypeCode.length === 0} onClick={() => this.onFilterShowChange('defectTypes')}>
+              缺陷类型<Icon type={showFilter === 'defectTypes' ? 'up' : 'down'} />
+            </Button>
+          </div>
+          <div className={styles.filterBox}>
+            {showFilter === 'deviceTypes' && <DeviceTypeFilter {...this.props} />}
+            {showFilter === 'defectTypes' && <DefectTypeFilter {...this.props} />}
+          </div>
+          <div className={styles.filterWrap}>
+            <FilteredItems {...this.props} />
+          </div>
         </div>
-        <div className={styles.filterBox}>
-          {showFilter==='deviceTypes' && <DeviceTypeFilter {...this.props} />}
-          {showFilter==='defectTypes' && <DefectTypeFilter {...this.props} />}
-        </div>
-        <div className={styles.filterWrap}>
-          <FilteredItems {...this.props} />
-        </div>
+
         <div className={styles.partSearch}>
-            <span>缺陷描述</span>
-            <Input className={styles.defectDescription} value={defectValue} placeholder="请输入..." onChange={this.onDefect} />
-            <span className={styles.text}>录入人</span>
-            <Select
-              showSearch
-              placeholder="请输入..."
-              className={styles.entryPerson}
-              value={personValue}
-              showArrow={false}
-              onSearch={this.entryPerson}
-              onChange={this.changePerson}
-            >
-              {usernames && usernames.map(e => {
-                  return <Option key={e} value={e}>{e}</Option>
-              })}
-            </Select>
-            <Button onClick={this.onSearch}>查询</Button>
-            {showResetBtn && <span className={styles.reset} onClick={this.onReset}>重置</span>}
+          <span>缺陷描述</span>
+          <Input className={styles.defectDescription} value={defectValue} placeholder="请输入..." onChange={this.onDefect} />
+          <span className={styles.text}>录入人</span>
+          <Select
+            showSearch
+            placeholder="请输入..."
+            className={styles.entryPerson}
+            value={personValue}
+            showArrow={false}
+            onSearch={this.entryPerson}
+            onChange={this.changePerson}
+          >
+            {usernames && usernames.map(e => {
+              return <Option key={e} value={e}>{e}</Option>;
+            })}
+          </Select>
+          <Button onClick={this.onSearch}>查询</Button>
+          {showResetBtn && <span className={styles.reset} onClick={this.onReset}>重置</span>}
         </div>
       </div>
-      )
-    }
+    );
   }
+}
 
 export default IntelligentSearch;

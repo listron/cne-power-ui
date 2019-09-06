@@ -1,167 +1,181 @@
-@import '../../../../../theme/theme.scss';
-    
-    .sidePage{
-      z-index: 2;
-      @include contentBoxStyle();
-    }
-    .CleanoutPlanRecord{
-      display: flex;
-      flex: 1 0 auto;
-      width: 100%;
-      flex-direction: column;
-      background-color: #ececec;
-      .testBackground{
-        background-color: #fff;
-        display: flex;
-        flex: 1 0 auto;
-        width: 100%;
-        flex-direction: column;
-      }
-     
-      .detailTop{
-        display: flex;
-        justify-content:space-between;
-        height: 60px;
-        border-bottom: 1px solid #ececec;
-        align-items: center;
-        .topInfoShow{
-          font-size: 20px;
-          padding-left: 16px;
-        }
-        .handleArea{ 
-          height: 100%;
-          display: flex;
-          align-items: center;
-          :global{
-            .iconfont{
-              font-size: 20px;
-              margin-right: 20px;
-              cursor: pointer;
-            }
-          }
-          .previous, .next, .backIcon{
-            font-size: 20px;
-            cursor: pointer;
-            color: $darkColor;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-          .previous,.next{
-            width: 40px;
-          }
-          .backIcon{
-            width: 60px;
-            border-left: solid 1px $promptColor;
-            margin-left: 20px;
-          }
-        }
-       .backIcon{
-         width: 60px;
-         border-left: 1px soild #ececec ;
-         font-size: 20px;
-       }
+@import "../../../../../theme/theme.scss";
 
-      }
-      .statisticData{
-        display: flex;
-        height: 116px;
-        padding: 20px;
-        border-bottom: 1px solid #ececec;
-        .statisticTarget{
-          display: flex;
-          border-right: 1px solid #ececec;
-          flex-direction: column;
-          justify-content: center;
-          padding: 0 20px 0 20px;
-          .numberColor{
-            color:#199475;
-            font-size: 24px;
-            line-height: 40px;
-          }
-        }
-      }
-      .filterData{
-        display: flex;
-        justify-content: space-between;
-        padding-left: 28px;
-        height: 60px;
-        line-height: 60px;
-        align-content: center;
-       
-        .plusButton { // 添加电站 
-          margin: 16px 12px 0 0;
-          padding: 0;
-          font-size: 0;
-          i{
-            vertical-align: top;
-            font-size: 14px;
-          }
-          span{
-            background-color: #fff;
-            color:#199475;
-            border-radius: 0 4px 4px 0;
-            display: inline-block;
-           font-size: 14px;
-            width: 40px;
-            line-height: 30px; 
-            margin: 0px;
-          }
-          &:hover{
-            span{
-              background-color: #199475;
-              color:#fff;
-            }
-          }
-        }
-        .plusButton:hover{
-          border-radius: 6px;
-        }
-        :global{
-          .anticon-plus{
-            color: #fff;
-            height: 100%;
-            border-radius: 4px 0 0 4px;
-            width: 28px;
-            text-align: center;
-            line-height: 30px;
-            background-color: #199475;
-          }
-          .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
-            margin-left: 0px;
-            width: 28px;
-            color: #666;
-          }
-        }
-      }
+.sidePage {
+  z-index: 2;
+  @include contentBoxStyle();
+}
+.CleanoutPlanRecord {
+  display: flex;
+  flex: 1 0 auto;
+  width: 100%;
+  flex-direction: column;
+  .testBackground {
+    display: flex;
+    flex: 1 0 auto;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .detailTop {
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+    align-items: center;
+    .topInfoShow {
+      font-size: 20px;
+      padding-left: 16px;
     }
-    .handle{
+    .handleArea {
+      height: 100%;
       display: flex;
+      align-items: center;
+      :global {
+        .iconfont {
+          font-size: 20px;
+          margin-right: 20px;
+          cursor: pointer;
+        }
+      }
+      .previous,
+      .next,
+      .backIcon {
+        font-size: 20px;
+        cursor: pointer;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .previous,
+      .next {
+        width: 40px;
+      }
+      .backIcon {
+        width: 60px;
+        margin-left: 20px;
+      }
+    }
+    .backIcon {
+      width: 60px;
+      font-size: 20px;
+    }
+  }
+  .statisticData {
+    display: flex;
+    height: 116px;
+    padding: 20px;
+    .statisticTarget {
+      display: flex;
+      flex-direction: column;
       justify-content: center;
-      margin-left:44px ;
-      button{
-        margin-right: 16px;
+      padding: 0 20px 0 20px;
+      .numberColor {
+        font-size: 24px;
+        line-height: 40px;
       }
     }
-    .treeDeviceTypes{
-      overflow-y: auto;
-      height: 130px;
-      :global{
-        .ant-select-tree{
-          padding: 0;
-        }
-        .ant-select-tree li {
-          margin: 4px 0;
-        }
-        .ant-select-tree li:hover{
-          background:#ceebe0;
-        }
-        .ant-select-tree li .ant-select-tree-node-content-wrapper:hover {
-          background-color: rgba(0, 0, 0, 0);
-        }
-        .ant-select-tree li span.ant-select-tree-switcher{
-          width: 6px;
+  }
+
+  .wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .filterData {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 28px;
+    height: 60px;
+    line-height: 60px;
+    align-content: center;
+
+    .plusButton {
+      margin: 16px 12px 0 0;
+    }
+  }
+}
+.handle {
+  display: flex;
+  justify-content: center;
+  margin-left: 44px;
+  button {
+    margin-right: 16px;
+  }
+}
+.treeDeviceTypes {
+  overflow-y: auto;
+  height: 130px;
+  :global {
+    .ant-select-tree {
+      padding: 0;
+    }
+    .ant-select-tree li {
+      margin: 4px 0;
+    }
+    // .ant-select-tree li:hover {
+    //   background: #ceebe0;
+    // }
+    .ant-select-tree li .ant-select-tree-node-content-wrapper:hover {
+      background-color: rgba(0, 0, 0, 0);
+    }
+    .ant-select-tree li span.ant-select-tree-switcher {
+      width: 6px;
+    }
+  }
+}
+
+.light {
+  color: $darkColor;
+  .CleanoutPlanRecord {
+    background-color: #ececec;
+    .testBackground {
+      background-color: #fff;
+    }
+    .detailTop {
+      border-bottom: 1px solid #ececec;
+      .backIcon {
+        border-left: solid 1px $promptColor;
+      }
+    }
+    .statisticData {
+      border-bottom: 1px solid #ececec;
+      .statisticTarget {
+        border-right: 1px solid #ececec;
+        .numberColor {
+          color: #199475;
         }
       }
     }
+  }
+}
+
+.dark {
+  @import "../../../../../theme/darkTheme.scss";
+  background: $background;
+  .CleanoutPlanRecord {
+    .detailTop {
+      border: 1px solid $border-color;
+      background: $light-background;
+      .backIcon {
+        border-left: solid 1px $border-color;
+        color: $fontColor-hover;
+      }
+    }
+    .statisticData {
+      border: 1px solid $border-color;
+      background: $light-background;
+      margin-top: 10px;
+      .statisticTarget {
+        border-right: 1px solid $border-color;
+        .numberColor {
+          color: $fontColor-hover;
+        }
+      }
+    }
+    .wrap {
+      border: 1px solid $border-color;
+      background: $light-background;
+      margin-top: 10px;
+    }
+  }
+}

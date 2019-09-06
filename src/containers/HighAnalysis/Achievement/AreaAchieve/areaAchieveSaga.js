@@ -19,7 +19,7 @@ function* getModesInfo(action) { // 可选机型
         value: parseInt(cur.manufactorId, 0),
         label: cur.manufactorName,
         children: (cur.deviceModesList && cur.deviceModesList.length > 0) ? cur.deviceModesList.map(m => ({
-          value: m.deviceModeCode,
+          value: `${cur.manufactorId}-${m.deviceModeCode}`,
           label: m.deviceModeName,
         })) : [],
       }));
@@ -62,40 +62,6 @@ function* getIndicatorRankTotal(action) { // 指标汇总数据
   }
 }
 
-const colorArr = [
-  '#8c0a3a',
-  '#8a086b',
-  '#8c0392',
-  '#735daf',
-  '#2d0085',
-  '#006497',
-  '#004f9f',
-  '#034753',
-  '#135600',
-  '#4c7400',
-  '#9a7d00',
-  '#9b4c00',
-  '#834e00',
-  '#9a1a03',
-  '#950027',
-  '#c50538',
-  '#e51c48',
-  '#b8002d',
-  '#bc2d00',
-  '#9f6705',
-  '#bc6900',
-  '#bca103',
-  '#729f00',
-];
-
-function colorCapacityFunc(data) {
-  const obj = {};
-  data && data.forEach((cur, index) => {
-    obj[cur.stationName] = colorArr[index];
-  });
-  return obj;
-}
-
 function* getStationCapacity(action) { // 各电站装机容量
   const {payload} = action;
   try {
@@ -113,7 +79,6 @@ function* getStationCapacity(action) { // 各电站装机容量
         type: areaAchieveAction.fetchSuccess,
         payload: {
           capacityInfo: response.data,
-          colorData: colorCapacityFunc(response.data),
           capacityTime: moment().unix(),
           capacityLoading: false,
         },
@@ -154,7 +119,6 @@ function* getIndicatorRank(action) { // 风电指标数据 PBA排名
         type: areaAchieveAction.fetchSuccess,
         payload: {
           indicatorRankInfo: response.data || [],
-          colorData: colorCapacityFunc(response.data),
           rankTime: moment().unix(),
           rankLoading: false,
         },

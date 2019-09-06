@@ -69,7 +69,7 @@ export default class AreaLossChart extends Component {
         },
         formatter: function (params) {
           var tar = params[1];
-          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormat(tar.value, '--', pointLength) + 'h';
+          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormat(tar.value, '--', pointLength);
         },
       },
       grid: {
@@ -90,7 +90,7 @@ export default class AreaLossChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: '小时数（h）',
+          name: '利用小时数（h）',
           splitLine: {
             show: false,
           },
@@ -115,7 +115,7 @@ export default class AreaLossChart extends Component {
           data: [0, ...xAxisBaseValue, 0],
         },
         {
-          name: '小时数',
+          name: '利用小时数',
           type: 'bar',
           barWidth: 10,
           stack: '总量',
@@ -125,7 +125,7 @@ export default class AreaLossChart extends Component {
               position: 'top',
             },
           },
-          data: [dataFormat(theoryGen, '--', pointLength), ...xAxisValue, dataFormat(theoryGen, '--', pointLength)].map((cur, i) => ({
+          data: [dataFormat(theoryGen, '--', pointLength), ...xAxisValue, dataFormat(actualGen, '--', pointLength)].map((cur, i) => ({
             value: cur,
             itemStyle: {
               color: new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [

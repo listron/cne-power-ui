@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import InputLimit from '../../../../Common/InputLimit';
 import styles from './cleanoutPlanRecord.scss';
@@ -17,26 +17,26 @@ class AddCleanoutRecord extends Component {
 
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   componentDidMount() {
     const { getMatrix, singleStationCode } = this.props;
-    getMatrix({ stationCodes: [singleStationCode] })
+    getMatrix({ stationCodes: [singleStationCode] });
   }
   cancelAddRecord = () => {
     //this.setState({ showAddRecordModal: false })
-    this.props.cancelAddRecord()
+    this.props.cancelAddRecord();
     this.props.changeCleanoutRecordStore({
-      cleanRecorddetail: {}
-    })
+      cleanRecorddetail: {},
+    });
   }
   confirmAddRecord = () => {
     // this.setState({ showAddRecordModal: false })
-   
+
     const { getFieldsValue } = this.props.form;
-    let recordValue = getFieldsValue(['cleanDate', 'matrix', 'remark']);
-    recordValue.startTime = moment(recordValue.cleanDate[0]).format('YYYY-MM-DD')
-    recordValue.endTime = moment(recordValue.cleanDate[1]).format('YYYY-MM-DD')
+    const recordValue = getFieldsValue(['cleanDate', 'matrix', 'remark']);
+    recordValue.startTime = moment(recordValue.cleanDate[0]).format('YYYY-MM-DD');
+    recordValue.endTime = moment(recordValue.cleanDate[1]).format('YYYY-MM-DD');
     const matrix = recordValue.matrix.toString();
     this.props.form.validateFieldsAndScroll((error, values) => {
       if (!error) {
@@ -45,22 +45,22 @@ class AddCleanoutRecord extends Component {
           planId: this.props.planId,
           recordId: this.props.recordId,
           stationCode: this.props.singleStationCode,
-          matrix
-        })
+          matrix,
+        });
         this.props.changeCleanoutRecordStore({
-          cleanRecorddetail: {}
-        })
-        this.props.cancelAddRecord()
+          cleanRecorddetail: {},
+        });
+        this.props.cancelAddRecord();
       }
-     
-    })
+
+    });
   }
   render() {
     const { getMatrixData, cleanRecorddetail } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 },
+        sm: { span: 5 },
       },
       wrapperCol: {
         xs: { span: 24 },
@@ -68,7 +68,7 @@ class AddCleanoutRecord extends Component {
       },
     };
     const { getFieldDecorator } = this.props.form;
-    const { stations, showAddRecordModal,singleStationCode } = this.props;//此处应该是方阵的数据，下面的不可选是由方阵的数据决定的
+    const { stations, showAddRecordModal, singleStationCode } = this.props;//此处应该是方阵的数据，下面的不可选是由方阵的数据决定的
     const stationItem = stations && stations.filter(e => (e.stationCode.toString() === singleStationCode))[0];
     const cleanStationName = stationItem && stationItem.stationName;
     const rangeConfig = {
@@ -80,7 +80,7 @@ class AddCleanoutRecord extends Component {
         title: e,
         key: i.toString(),
         value: e,
-      }
+      };
     });
     const treeProps = {
       treeData: tmpDeviceTypes,
@@ -94,62 +94,68 @@ class AddCleanoutRecord extends Component {
       disabled: stations.size === 0,
     };
     return (
-      <Modal
-        title={`${cleanStationName}-清洗记录`}
-        visible={showAddRecordModal}
-        onOk={this.confirmAddRecord}
-        footer={null}
-        onCancel={this.cancelAddRecord}
-        mask={false}
-        centered={true}
-        closable={false}
-        maskClosable={false}
-      >
-        <div className={styles.modalStyle}>
-          <Form onSubmit={this.handleSubmit}>
-            <FormItem
-              {...formItemLayout}
-              label="清洗时间"
-            >
-              {getFieldDecorator('cleanDate', rangeConfig)(
-                <RangePicker />
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="清洗方阵"
-            >
-              {getFieldDecorator('matrix', {
-                initialValue: cleanRecorddetail.matrix ? cleanRecorddetail.matrix.split(',') : null,
-                rules: [{ required: true, message: '请选择方阵' }],
-              })(
-                <TreeSelect {...treeProps} dropdownClassName={styles.treeDeviceTypes} />
-              )}
-            </FormItem>
+      <React.Fragment>
+        <span ref="wrap" />
+        <Modal
+          title={`${cleanStationName}-清洗记录`}
+          visible={showAddRecordModal}
+          onOk={this.confirmAddRecord}
+          footer={null}
+          onCancel={this.cancelAddRecord}
+          mask={false}
+          centered={true}
+          closable={false}
+          maskClosable={false}
+          getContainer={() => this.refs.wrap}
+        >
+          <div className={styles.modalStyle}>
+            <Form onSubmit={this.handleSubmit}>
+              <FormItem
+                {...formItemLayout}
+                label="清洗时间"
+              >
+                {getFieldDecorator('cleanDate', rangeConfig)(
+                  <RangePicker getCalendarContainer={() => this.refs.wrap} />
+                )}
+              </FormItem>
+              <FormItem
+                {...formItemLayout}
+                label="清洗方阵"
+              >
+                {getFieldDecorator('matrix', {
+                  initialValue: cleanRecorddetail.matrix ? cleanRecorddetail.matrix.split(',') : null,
+                  rules: [{ required: true, message: '请选择方阵' }],
+                })(
+                  <TreeSelect {...treeProps} dropdownClassName={styles.treeDeviceTypes} getPopupContainer={() => this.refs.wrap} />
+                )}
+              </FormItem>
 
-            <FormItem
-              {...formItemLayout}
-              label="清洗备注"
-            >
-              {getFieldDecorator('remark', {
-                initialValue: cleanRecorddetail.remark ? cleanRecorddetail.remark : '',
-                rules: [{  message: '请描述，不超过80个汉字', whitespace: true },],
-              })(
-                <InputLimit width={316} placeholder="请描述，不超过80个汉字" />
-              )}
-            </FormItem>
-          </Form>
-          <div className={styles.handle}>
-            <Button onClick={this.cancelAddRecord} >取消</Button>
-            <Button onClick={this.confirmAddRecord} className={styles.confirmExamine} >保存</Button>
+              <FormItem
+                {...formItemLayout}
+                label="清洗备注"
+              >
+                {getFieldDecorator('remark', {
+                  initialValue: cleanRecorddetail.remark ? cleanRecorddetail.remark : '',
+                  rules: [{ message: '请描述，不超过80个汉字', whitespace: true }],
+                })(
+                  <InputLimit width={316} placeholder="请描述，不超过80个汉字" />
+                )}
+              </FormItem>
+            </Form>
+            <div className={styles.handle}>
+              <Button onClick={this.cancelAddRecord} >取消</Button>
+              <Button onClick={this.confirmAddRecord} className={styles.confirmExamine} >保存</Button>
+            </div>
           </div>
-        </div>
-      </Modal>
-    )
+        </Modal>
+
+      </React.Fragment>
+
+    );
 
 
 
 
   }
 }
-export default Form.create()(AddCleanoutRecord)
+export default Form.create()(AddCleanoutRecord);

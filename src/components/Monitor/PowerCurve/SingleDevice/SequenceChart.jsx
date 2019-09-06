@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
 import styles from './singleDevice.scss';
@@ -12,31 +12,34 @@ class SequenceChart extends Component {
     sequencechartData: PropTypes.array,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   componentDidMount() {
-    this.drawChart((this.props.sequencechartData || []))
+    this.drawChart((this.props.sequencechartData || []));
   }
   componentWillReceiveProps(nextProps) {
     const theoryPowers = nextProps.sequencechartData || [];
-    this.drawChart(theoryPowers)
+    const { sequenceLoadding } = nextProps;
+    this.drawChart(theoryPowers, sequenceLoadding);
   }
 
-  drawChart = (params) => {
+  drawChart = (params, sequenceLoadding) => {
     const sequenceChart = echarts.init(document.getElementById('sequenceChart'));
+    sequenceLoadding ? sequenceChart.showLoading('default', { color: '#199475' }) : sequenceChart.hideLoading();
     const lineColor = '#666';
     const { xAxisDate } = this.props;
-    let color = ['#3e97d1', '#a42b2c', '#199475'];
-    let yData = params.map(e => (e.deviceName))
+    const color = ['#3e97d1', '#a42b2c', '#199475'];
+    const yData = params.map(e => (e.deviceName));
     const inverterTenMinGraphic = (xAxisDate.length === 0) ? showNoData : hiddenNoData;
     const option = {
       graphic: inverterTenMinGraphic,
       title: {
         text: '时序图',
-        x: 'left',
+        top: '5%',
+        left: '3%',
         textStyle: {
-          fontSize: 14
-        }
+          fontSize: 14,
+        },
       },
       color: color,
       legend: {
@@ -50,10 +53,12 @@ class SequenceChart extends Component {
         textStyle: {
           color: lineColor,
           fontSize: 12,
-        }
+        },
       },
       grid: {
         // right: '10%',
+        top: 70,
+        left: '6%',
         height: '190px',
       },
       tooltip: {
@@ -68,22 +73,22 @@ class SequenceChart extends Component {
               </div>
               <div  style='background:#dfdfdf;height:1px;
                 width:100%;' ></div>
-                ${params.map((e,i)=>{
-                  return `<div class=${styles.lineStyle}>
+                ${params.map((e, i) => {
+              return `<div class=${styles.lineStyle}>
                   <span class=${styles.itemStyle} style='color: ${e.color}'>○</span>
                    ${e.seriesName}风速: ${dataFormat(e.value, '--', 2)}
-                   </div>`
-                }).join('')}
-              </div>`)
+                   </div>`;
+            }).join('')}
+              </div>`);
         },
         backgroundColor: '#fff',
         axisPointer: {
           type: 'cross',
           label: {
             backgroundColor: lineColor,
-          }
+          },
         },
-        backgroundColor: '#fff',
+
         padding: 10,
         textStyle: {
           color: 'rgba(0, 0, 0, 0.65)',
@@ -113,7 +118,7 @@ class SequenceChart extends Component {
         axisPointer: {
           label: {
             show: false,
-          }
+          },
         },
       },
       yAxis: [
@@ -122,9 +127,11 @@ class SequenceChart extends Component {
           name: '风速(m/s)',
           nameTextStyle: {
             color: lineColor,
+            align: 'left',
+            padding: [0, 0, 0, -50],
           },
           splitLine: {
-            show: false
+            show: false,
           },
           axisLine: {
             lineStyle: {
@@ -137,19 +144,19 @@ class SequenceChart extends Component {
           axisTick: {
             show: false,
           },
-        }
+        },
       ],
       series: params.map((e, i) => {
-        let lineData = [];
+        const lineData = [];
         (e.sequenceChartData && e.sequenceChartData.length > 0) && e.sequenceChartData.forEach((item, i) => {
-          lineData.push(item.windSpeed)
+          lineData.push(item.windSpeed);
         }
-        )
+        );
         return {
           name: `${e.deviceName}`,
           type: 'line',
           data: lineData,
-        }
+        };
       }),
     };
     if (xAxisDate && xAxisDate.length > 0) {
@@ -174,10 +181,10 @@ class SequenceChart extends Component {
           shadowBlur: 3,
           shadowColor: 'rgba(0, 0, 0, 0.6)',
           shadowOffsetX: 2,
-          shadowOffsetY: 2
-        }
+          shadowOffsetY: 2,
+        },
       },
-      ]
+      ];
     }
 
     sequenceChart.setOption(option, 'notMerge');
@@ -188,10 +195,10 @@ class SequenceChart extends Component {
 
     return (
       <div id="sequenceChart" className={styles.sequenceChart}></div>
-    )
+    );
   }
 }
-export default (SequenceChart)
+export default (SequenceChart);
 // if (params.length > 0) {
 //   option.series = params.map((e, i) => {
 //     let lineData = [];

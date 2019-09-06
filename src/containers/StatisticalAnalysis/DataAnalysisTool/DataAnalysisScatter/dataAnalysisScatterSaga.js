@@ -6,21 +6,34 @@ import moment from 'moment';
 
 function* getStationDevice(action) {//获取
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getStationDevice}/${payload.stationCode}`;
+  const { stationCode, queryName } = payload;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getStationDevice}/${stationCode}`;
   try {
-    yield put({ type: dataAnalysisScatterAction.changeToolStore });
+    yield put({
+      type: dataAnalysisScatterAction.changeToolStore,
+      payload: {
+        stationCode: stationCode,
+        scatterData: {},
+        deviceList: [],
+      },
+    });
     const response = yield call(axios.get, url);// { params: payload }
     if (response.data.code === '10000') {
       const data = response.data.data || [];
       const deviceList = data.map((e, i) => ({ ...e, likeStatus: false }));
-
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
           deviceList,
-
         },
       });
+      queryName ? yield put({
+        type: dataAnalysisScatterAction.getScatterName,
+        payload: {
+          stationCode: payload.stationCode,
+        },
+      }) : '';
+
     } else {
       throw response.data.message;
     }
@@ -94,7 +107,7 @@ function* getScatterData(action) {//获取
     yield put({
       type: dataAnalysisScatterAction.changeToolStore,
       payload: {
-        ...payload,
+        // ...payload,
         chartLoading: true,
       },
     });
@@ -115,6 +128,7 @@ function* getScatterData(action) {//获取
           chartLoading: false,
         },
       });
+
     } else {
       throw response.data.message;
     }

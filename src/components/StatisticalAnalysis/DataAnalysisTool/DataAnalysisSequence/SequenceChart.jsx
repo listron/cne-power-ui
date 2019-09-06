@@ -41,10 +41,8 @@ class SequenceChart extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     const { activeCode, saveBtn, sequenceData, deviceList, startTime, endTime, pointY1, pointY2, xyValueLimit } = nextProps;
-
     const requestParams = { startTime, endTime, pointY1, pointY2 };
     const prevCode = this.props.activeCode;
-
     if (prevCode === this.props.deviceFullCode) {
       const myChart = eCharts.init(this.sequenceChart, themeConfig[nextProps.theme]);
       if (this.props.chartLoading) {
@@ -75,8 +73,7 @@ class SequenceChart extends React.Component {
     return activeCode === this.props.deviceFullCode || this.props.deviceFullCode !== deviceFullCode;
   }
   componentWillUnmount() {
-    const myChart = eCharts.init(this.sequenceChart, themeConfig[this.props.theme]);
-    myChart.dispose();
+    eCharts.init(this.sequenceChart, themeConfig[this.props.theme]).dispose();
   }
   creatOption = (sequenceData = {}, saveBtn, xyValueLimit) => {
     const { deviceName, pointCodeNameX, pointCodeNameY } = this.props;
@@ -114,9 +111,9 @@ class SequenceChart extends React.Component {
       },
       tooltip: {
         trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-        },
+        // axisPointer: {
+        //   type: 'cross',
+        // },
         enterable: true,
         show: true,
         formatter: (payload) => {
@@ -151,6 +148,11 @@ class SequenceChart extends React.Component {
         {
           type: 'value',
           name: point1Unit,
+          nameGap: 10,
+          nameTextStyle: {
+            fontSize: 14,
+            // padding: [10, 0, 0, 0],
+          },
           min: xMin,
           max: xMax,
           position: 'left',
@@ -160,6 +162,11 @@ class SequenceChart extends React.Component {
         }, {
           type: 'value',
           name: point2Unit,
+          nameGap: 10,
+          nameTextStyle: {
+            fontSize: 14,
+            // padding: [10, 0, 0, 0],
+          },
           min: yMin,
           max: yMax,
 
@@ -231,7 +238,7 @@ class SequenceChart extends React.Component {
     return (
       //showImg不应该传第二个参数，会污染数据源
       <div className={styles.chartWrap}>
-        {showImg && <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalInco} />}
+        {showImg && <Icon type="zoom-in" onClick={() => showImg(index, sequenceData)} className={styles.showModalInco} />}
         <div ref={(ref) => { this.sequenceChart = ref; }} className={styles.sequenceChart}>
         </div>
       </div>

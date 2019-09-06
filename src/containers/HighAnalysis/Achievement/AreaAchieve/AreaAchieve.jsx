@@ -106,7 +106,7 @@ class AreaAchieve extends Component {
     const quotaValue = quota[1] || quota[0];
     const paramsCapacity = {
       ...basicParams,
-      deviceModes: modes,
+      deviceModes: modes.map(cur => (cur.split('-')[1])),
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
@@ -280,10 +280,11 @@ class AreaAchieve extends Component {
         </div>
         <div className={styles.areaChartBox}>
           <div className={styles.areaTopChart}>
-            <AreaChart {...this.props} />
+            <AreaChart queryParamsFunc={this.queryParamsFunc} {...this.props} />
             <StationPBAChart
               unitName={this.unitName()}
               qutaName={this.qutaName()}
+              queryParamsFunc={this.queryParamsFunc}
               pointLength={this.pointLength()}
               {...this.props}
             />

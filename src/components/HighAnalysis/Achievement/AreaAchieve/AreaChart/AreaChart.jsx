@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
+import { message } from 'antd';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData.js';
 import searchUtil from '../../../../../utils/searchUtil';
 
@@ -17,8 +18,10 @@ export default class AreaChart extends Component {
     getTrendInfo: PropTypes.func,
     getLostGenHour: PropTypes.func,
     location: PropTypes.object,
-    colorData: PropTypes.object,
+    stationColorData: PropTypes.object,
     getDeviceType: PropTypes.func,
+    queryParamsFunc: PropTypes.func,
+    selectTime: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
@@ -43,7 +46,10 @@ export default class AreaChart extends Component {
   }
 
   chartHandle = (params, capacityInfo, myChart) => {
-    const { changeStore, getTrendInfo, getLostGenHour, getDeviceType, location: { search }} = this.props;
+    const { selectTime, changeStore, getTrendInfo, dataIndex, getLostGenHour, getDeviceType, location: { search }} = this.props;
+    if(selectTime) {
+      return message.info('请先取消下方事件选择, 再选择电站');
+    }
     const { data } = params;
     const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
@@ -73,13 +79,14 @@ export default class AreaChart extends Component {
     const paramsHour = {
       startTime: groupInfo.dates[0],
       endTime: groupInfo.dates[1],
-      deviceModes: modes,
+      deviceModes: modes.map(cur => (cur.split('-')[1])),
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
       stationCodes,
     };
-    if(params.name) {
+    //判断点击
+    if(params.name && params.name !== dataIndex) {
       changeStore({
         dataIndex: params.name,
         dataName: data.name,
@@ -90,13 +97,24 @@ export default class AreaChart extends Component {
       getLostGenHour(paramsHour);
       getDeviceType({stationCodes: stationCodes});
     }
+    //判断再次点击
+    if(params.name && params.name === dataIndex) {
+      changeStore({
+        dataIndex: '', // 选中信息
+        selectStationCode: [], // 选中电站信息
+        selectTime: '', // 选中时间
+        dataName: '', // 保存选择区域名称
+      });
+      myChart.setOption(this.drawChart(capacityInfo, ''));
+      this.props.queryParamsFunc(groupInfo);
+    }
   };
 
 
   drawChart = (data, dataIndex) => {
-    const { colorData } = this.props;
+    const { stationColorData } = this.props;
     function colorFunc(stationName) {
-      return dataIndex === '' ? colorData[stationName] : (dataIndex === stationName ? colorData[stationName] : '#cccccc');
+      return dataIndex === '' ? stationColorData[stationName] : (dataIndex === stationName ? stationColorData[stationName] : '#cccccc');
     }
     const childrenArr = data.map(cur => {
       const obj = {};

@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styles from "./cleanoutRecord.scss";
+import styles from './cleanoutRecord.scss';
 import { cleanoutRecordAction } from './cleanoutRecordAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
@@ -15,33 +15,27 @@ class CleanoutRecord extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     resetStore: PropTypes.func,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
-  componentWillUnmount(){
-   
+  componentWillUnmount() {
+
   }
 
   render() {
-    const { showPage } = this.props;
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '清洗计划与记录',
-        }
-      ],
-    };
+    const { showPage, theme } = this.props;
     return (
-      <div className={styles.cleanoutRecordBox} >
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+      <div className={`${styles.cleanoutRecordBox} ${styles[theme]}`} >
+        <CommonBreadcrumb breadData={[{ name: '清洗计划与记录' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.cleanoutRecordContainer}>
           {showPage === 'multiple' ? <CleanoutRecordMain {...this.props} /> : ''}
           {showPage === 'single' ? <CleanoutRecordDetail {...this.props} /> : ''}
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
@@ -49,8 +43,9 @@ const mapStateToProps = (state) => {
   return {
     ...state.highAanlysisReducer.cleanoutRecordReducer.toJS(),
     stations: state.common.get('stations').toJS(),
-  }
-}
+    theme: state.common.get('theme'),
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
   changeCleanoutRecordStore: payload => dispatch({ type: cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE_SAGA, payload }),
   resetStore: payload => dispatch({ type: cleanoutRecordAction.resetStore, payload }),
@@ -76,12 +71,12 @@ const mapDispatchToProps = (dispatch) => ({
   editCleanRecord: payload => dispatch({ type: cleanoutRecordAction.editCleanRecord, payload }),
   getCleanRecordDetail: payload => dispatch({ type: cleanoutRecordAction.getCleanRecordDetail, payload }),
   deleteCleanRecord: payload => dispatch({ type: cleanoutRecordAction.deleteCleanRecord, payload }),
-//获取电站下得方针
+  //获取电站下得方针
   getMatrix: payload => dispatch({ type: cleanoutRecordAction.getMatrix, payload }),
 
 
-})
-export default connect(mapStateToProps, mapDispatchToProps)(CleanoutRecord)
+});
+export default connect(mapStateToProps, mapDispatchToProps)(CleanoutRecord);
 
 
 

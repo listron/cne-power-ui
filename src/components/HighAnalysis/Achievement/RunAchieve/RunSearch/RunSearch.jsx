@@ -37,6 +37,7 @@ export default class RunSearch extends Component {
       searchDevice: stationInfo.searchDevice || [],
       searchDates: stationInfo.searchDates || [defaultStartTime, defaultEndTime],
       areaFlag: false, // 控制第一次进来，有数据的时候
+      searchFlag: true, // 控制切换电站搜索
     };
   }
 
@@ -59,7 +60,11 @@ export default class RunSearch extends Component {
     }
     // 路径有参数 更改电站 得到新的设备数据
     if(stationInfoStr && modeDevices.length > 0 && JSON.stringify(modeDevices) !== JSON.stringify(preDevice)){
-      const searchDevice = this.getAllDeviceCodes(modeDevices);
+      // 选数据前三个设备
+      const searchDeviceFilter = this.getAllDeviceCodes(modeDevices);
+      // 接受跳转过来的设备
+      const { searchDevice: stateSearchDevice } = this.state;
+      const searchDevice = stateSearchDevice.length === 0 ? searchDeviceFilter : stateSearchDevice;
       this.setState({searchDevice});
     }
     // 判断从别的页面头次进入页面，电站和指标分析数据是有的话，改变state值， 发送请求
@@ -84,10 +89,10 @@ export default class RunSearch extends Component {
   };
 
   propsModeDevicesChange = (modeDevices) => { // 得到电站下设备信息;
-    const { searchCode, searchDates } = this.state;
+    const { searchCode, searchDates, searchFlag } = this.state;
     const searchDevice = this.getAllDeviceCodes(modeDevices);
     this.setState({ searchDevice });
-    this.historyChange(searchCode, searchDevice, searchDates);
+    searchFlag && this.historyChange(searchCode, searchDevice, searchDates);
   };
 
   historyChange = (searchCode, searchDevice, searchDates) => { // 切换路径 => 托管外部进行请求
@@ -111,9 +116,14 @@ export default class RunSearch extends Component {
   };
 
   onStationChange = ([regionName, stationCode]) => {
-    this.setState({ searchCode: stationCode, searchDevice: [] });
-    this.props.getDevices({ stationCode });
-    this.props.changeStore({ modeDevices: [] });
+    this.setState({
+      searchCode: stationCode,
+      searchDevice: [],
+      searchFlag: false,
+    }, () => {
+      this.props.getDevices({ stationCode });
+      this.props.changeStore({ modeDevices: [] });
+    });
   };
 
   onDeviceChange = (devices) => this.setState({ searchDevice: devices.map(e => e.value) });
@@ -122,7 +132,11 @@ export default class RunSearch extends Component {
 
   queryCharts = () => {
     const { searchCode, searchDevice, searchDates } = this.state;
-    this.historyChange(searchCode, searchDevice, searchDates);
+    this.setState({
+      searchFlag: true,
+    }, () => {
+      this.historyChange(searchCode, searchDevice, searchDates);
+    });
   };
 
   render() {
@@ -156,6 +170,7 @@ export default class RunSearch extends Component {
           <div className={styles.eachParts}>
             <span className={styles.text}>选择时间</span>
             <RangePicker
+              allowClear={false}
               value={[moment(searchDates[0]), moment(searchDates[1])]}
               onChange={this.onDateChange}
               style={{width: '220px'}}

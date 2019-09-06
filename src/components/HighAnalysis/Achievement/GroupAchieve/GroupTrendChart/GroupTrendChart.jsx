@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Radio} from 'antd';
+import {message, Radio} from 'antd';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import moment from 'moment';
@@ -24,11 +24,19 @@ export default class GroupTrendChart extends Component {
     dataName: PropTypes.string,
     unitName: PropTypes.string,
     pointLength: PropTypes.number,
+    selectTime: PropTypes.string,
   };
+
+  constructor(props){
+    super(props);
+    // 初始化dataZoom位置
+    this.paramsStart = 0;
+    this.paramsend = 100;
+  }
 
   componentDidUpdate(prevProps) {
     const { groupTrendChart } = this;
-    const { groupTrendTime, groupTrendLoading, groupTrendInfo } = this.props;
+    const { groupTrendTime, groupTrendLoading, groupTrendInfo, selectTime } = this.props;
     const { groupTrendTime: trendTimePrev } = prevProps;
     const myChart = eCharts.init(groupTrendChart);
     if (groupTrendLoading) { // loading态控制。
@@ -39,17 +47,28 @@ export default class GroupTrendChart extends Component {
       myChart.hideLoading();
     }
     if(groupTrendTime && groupTrendTime !== trendTimePrev) {
+      // 初始化dataZoom位置
+      this.paramsStart = 0;
+      this.paramsend = 100;
       eCharts.init(groupTrendChart).clear();//清除
       const myChart = eCharts.init(groupTrendChart);
-      myChart.setOption(this.drawChart(groupTrendInfo));
+      myChart.setOption(this.drawChart(groupTrendInfo, selectTime));
       myChart.off('click');
-      myChart.on('click', (param) => this.chartHandle(param));
+      myChart.on('click', (param) => this.chartHandle(myChart, groupTrendInfo, param));
+      myChart.off('datazoom');
+      myChart.on('datazoom', (params) => {
+        this.paramsStart = params.start;
+        this.paramsend = params.end;
+      });
     }
   }
 
 
-  chartHandle = (params) => {
-    const { selectStationCode, changeStore, getGroupLostGenHour, groupTimeStatus } = this.props;
+  chartHandle = (myChart, groupTrendInfo, params) => {
+    const { selectTime, selectStationCode, changeStore, getGroupLostGenHour, groupTimeStatus } = this.props;
+    if(selectStationCode.length === 0) {
+      return message.info('先选择区域后，才能对时间进行操作');
+    }
     if(selectStationCode.length > 0) {
       const { search } = this.props.location;
       const groupInfoStr = searchUtil(search).getValue('group');
@@ -67,12 +86,28 @@ export default class GroupTrendChart extends Component {
         manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
-        deviceModes: modes,
+        deviceModes: modes.map(cur => (cur.split('-')[1])),
       };
-      changeStore({
-        selectTime: params.name,
-      });
-      getGroupLostGenHour(paramsHour);
+      // 判断点击
+      if(params.name && params.name !== selectTime) {
+        changeStore({
+          selectTime: params.name,
+        });
+        getGroupLostGenHour(paramsHour);
+        myChart.setOption(this.drawChart(groupTrendInfo, params.name));
+      }
+      //判断再次点击
+      if(params.name && params.name === selectTime) {
+        changeStore({
+          selectTime: '',
+        });
+        getGroupLostGenHour({
+          ...paramsHour,
+          startTime: dates[0],
+          endTime: dates[1],
+        });
+        myChart.setOption(this.drawChart(groupTrendInfo, ''));
+      }
     }
   };
 
@@ -109,40 +144,73 @@ export default class GroupTrendChart extends Component {
     }
   };
 
-  drawChart = (data) => {
+  drawChart = (data, selectTime) => {
     const { titleFunc, unitName, pointLength } = this.props;
-
+    // 选中的颜色
+    function colorFunc(time) {
+      if(selectTime) {
+        return selectTime && selectTime === time ? '#f9b600' : '#f5d5bb';
+      }
+      return '#f9b600';
+    }
     const oneLine = [{
       name: titleFunc,
       type: 'line',
       barWidth: '10',
-      itemStyle: {
+      lineStyle: {
+        opacity: selectTime ? 0.2 : 1,
         color: '#f9b600',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
-      data: data && data.map(cur => {
-        return dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2);
-      }),
+      data: data && data.map(cur => ({
+        value: dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2),
+        symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
+        itemStyle: {
+          color: colorFunc(cur.efficiencyDate),
+        },
+      })),
     },
   ];
 
     const twoLine = [{
       name: titleFunc,
       type: 'line',
-      itemStyle: {
+      lineStyle: {
+        opacity: selectTime ? 0.2 : 1,
         color: '#f9b600',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
-      data: data && data.map(cur => {
-        return dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2);
-      }),
+      data: data && data.map(cur => ({
+        value: dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2),
+        symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
+        itemStyle: {
+          color: colorFunc(cur.efficiencyDate),
+        },
+      })),
     }, {
       name: titleFunc,
       type: 'line',
-      itemStyle: {
+      lineStyle: {
+        opacity: selectTime ? 0.2 : 1,
         color: '#f5d5bb',
+        width: 2,
+        shadowColor: 'rgba(0,0,0,0.20)',
+        shadowBlur: 3,
+        shadowOffsetY: 3,
       },
-      data: data && data.map(cur => {
-        return dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2);
-      }),
+      data: data && data.map(cur => ({
+        value: dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2),
+        symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
+        itemStyle: {
+          color: colorFunc(cur.efficiencyDate),
+        },
+      })),
     }];
     const seriesData = titleFunc === '利用小时数' ? twoLine : oneLine;
     return {
@@ -154,11 +222,11 @@ export default class GroupTrendChart extends Component {
         formatter: (params) => {
           if(titleFunc === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}${unitName}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}</span>
           </div>`;
           }
           return `<div>
-            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span>
+            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span>
           </div>`;
         },
       },
@@ -187,19 +255,27 @@ export default class GroupTrendChart extends Component {
           },
         },
       ],
-      dataZoom: [{
-        start: 0,
-        end: 100,
-        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-        handleSize: '80%',
-        handleStyle: {
-          color: '#fff',
-          shadowBlur: 3,
-          shadowColor: 'rgba(0, 0, 0, 0.6)',
-          shadowOffsetX: 2,
-          shadowOffsetY: 2,
+      dataZoom: [
+        {
+          type: 'inside',
+          start: this.paramsStart,
+          end: this.paramsEnd,
         },
-      }],
+        {
+          start: this.paramsStart,
+          end: this.paramsEnd,
+          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+          handleSize: '80%',
+          handleStyle: {
+            color: '#fff',
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.6)',
+            shadowOffsetX: 2,
+            shadowOffsetY: 2,
+          },
+          textStyle: false,
+        },
+      ],
       series: seriesData,
     };
   };
@@ -225,6 +301,9 @@ export default class GroupTrendChart extends Component {
         indicatorCode: quotaValue,
         type: e.target.value, // 默认按月
       };
+      // 初始化dataZoom位置
+      this.paramsStart = 0;
+      this.paramsend = 100;
       // 请求趋势数据
       getGroupTrendInfo(paramsTrend);
     }

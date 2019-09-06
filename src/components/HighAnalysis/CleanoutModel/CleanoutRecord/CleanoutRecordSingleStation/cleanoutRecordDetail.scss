@@ -1,66 +1,61 @@
-@import '../../../../../theme/theme.scss';
-.container{
+@import "../../../../../theme/theme.scss";
+.container {
   display: flex;
-  flex:1 ;
+  flex: 1;
+  overflow: hidden;
   width: 100%;
-  background-color: #fff;
-  
 }
-.CleanoutRecordDetail{
+.CleanoutRecordDetail {
   @include contentBoxStyle();
-    .detailMain{
-      flex: 1;
-      background-color: #fff;
-    }
-  .detailTop{
+  .detailMain {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .detailTop {
     display: flex;
     justify-content: space-between;
-    align-items:center; 
+    align-items: center;
     position: relative;
     height: 60px;
-    border-bottom: 1px solid #ececec;
-    .topInfoShow{
+    .topInfoShow {
       display: flex;
       align-items: center;
       padding-left: 16px;
-      .icon{
-        margin: 0 15px 0 20px; 
+      .icon {
+        margin: 0 15px 0 20px;
         font-size: 18px;
-        color:#199475;
-        
       }
-      .status{
-       height: 38px;
-       line-height: 38px;
-        h3{
+      .status {
+        height: 38px;
+        line-height: 38px;
+        h3 {
           font-size: 18px;
-          color:#666;
         }
       }
-     
     }
-   
-
   }
-  .statisticData{
+  .statisticData {
     display: flex;
     height: 116px;
     padding: 20px;
-    border-bottom: 1px solid #ececec;
-    .statisticTarget{
+    .statisticTarget {
       display: flex;
-      border-right: 1px solid #ececec;
       flex-direction: column;
       justify-content: center;
       padding: 0 20px 0 20px;
-      .numberColor{
-        color:#199475;
+      .numberColor {
         font-size: 24px;
         line-height: 40px;
       }
     }
   }
-  .filterData{
+  .wrap {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .filterData {
     display: flex;
     justify-content: space-between;
     padding-left: 28px;
@@ -70,32 +65,31 @@
   }
 }
 
-.handleArea{ 
+.handleArea {
   height: 100%;
   display: flex;
   align-items: center;
-  :global{
-    .iconfont{
+  :global {
+    .iconfont {
       font-size: 20px;
       margin-right: 20px;
       cursor: pointer;
     }
-    
   }
-  .dirtEff{
+  .dirtEff {
     display: block;
     width: 120px;
     height: 32px;
     line-height: 32px;
     text-align: center;
-    color:#199475;
+    color: #199475;
     // background:rgba($color: #199475, $alpha: .6);
-    background:#ceebe0;
+    background: #ceebe0;
     cursor: pointer;
     border-radius: 24px;
     margin-right: 40px;
   }
-  .backIcon{
+  .backIcon {
     font-size: 20px;
     cursor: pointer;
     color: $darkColor;
@@ -107,98 +101,222 @@
     border-left: solid 1px $promptColor;
     margin-left: 20px;
   }
-  
- 
 }
-.dirtEffBox{
- height: 410px;
- display:flex;
- flex:1;
-}
-.dirtBox{
+.dirtEffBox {
+  height: 410px;
   display: flex;
-  flex:1;
+  flex: 1;
+}
+.dirtBox {
+  display: flex;
+  flex: 1;
   width: 100%;
   position: relative;
-  .buttonStyle{
-  position: absolute;
-  top:50px;
-  right:20px;
+  .buttonStyle {
+    position: absolute;
+    top: 50px;
+    right: 20px;
     // margin-top: 50px;
-    }
- .boxSize{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  
- }
- .effectChart{
-  height: 400px;
-  flex: 1;
- }
+  }
+  .boxSize {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .effectChart {
+    height: 400px;
+    flex: 1;
+  }
 }
 
-.effectCharts{
+.effectCharts {
   position: relative;
-  .eachChart{
+  .eachChart {
     width: 100%;
     display: flex;
     padding: 0 24px;
     justify-content: center;
   }
-  .effectChart{
+  .effectChart {
     height: 400px;
     flex: 1;
-    .chartTool{
+    .chartTool {
       display: flex;
       flex-direction: column;
       padding-bottom: 10px;
-      .title{
+      .title {
         display: flex;
         height: 14px;
         padding: 10px 10px 12px;
         font-size: 12px;
         align-items: center;
-        color: $darkColor;
-        border-bottom: 1px solid $promptColor;
         margin-bottom: 8px;
       }
-      .content{
+      .content {
         display: flex;
         height: 21px;
         padding: 0 10px;
         font-size: 12px;
-        color: $darkColor;
         align-items: center;
-        .darkRect, .lightRect, .round, .text, .value{
+        .darkRect,
+        .lightRect,
+        .round,
+        .text,
+        .value {
           margin-right: 4px;
         }
-        .darkRect, .lightRect, .round{
+        .darkRect,
+        .lightRect,
+        .round {
           width: 6px;
           height: 6px;
-          background-color: #199475,
         }
-        .lightRect {
-          background-color: #f9b600,
-        }
-        .round{
+        .round {
           border-radius: 50%;
-          border: 1px solid #3e97d1;
         }
       }
     }
   }
-  :global{
-    .ant-tabs-nav-container{
-      background-color: #f8f8f8;
-    }
-    .ant-calendar-picker{
+  :global {
+    .ant-calendar-picker {
       position: absolute;
       right: 24px;
       top: 56px;
       z-index: 99;
-      .ant-calendar-picker-input .anticon{
+      .ant-calendar-picker-input .anticon {
         right: 8px;
+      }
+    }
+  }
+}
+
+.light {
+  .CleanoutRecordDetail {
+    .detailMain {
+      background: #fff;
+    }
+    .detailTop {
+      border-bottom: 1px solid #ececec;
+      .icon {
+        color: #199475;
+      }
+      h3 {
+        color: #666;
+      }
+    }
+    .statisticData {
+      border-bottom: 1px solid #ececec;
+      .statisticTarget {
+        border-right: 1px solid #ececec;
+        .numberColor {
+          color: #199475;
+        }
+      }
+    }
+  }
+
+  .handleArea {
+    .dirtEff {
+      color: #199475;
+      background: #ceebe0;
+    }
+    .backIcon {
+      color: $darkColor;
+      border-left: solid 1px $promptColor;
+    }
+  }
+
+  .effectCharts {
+    .title {
+      border-bottom: 1px solid $promptColor;
+    }
+    .darkRect {
+      background-color: #199475;
+    }
+    .lightRect {
+      background-color: #f9b600;
+    }
+    .round {
+      border: 1px solid #3e97d1;
+    }
+    :global {
+      .ant-tabs-nav-container {
+        background-color: #f8f8f8;
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../../../theme/darkTheme.scss";
+  color: $fontColor;
+  .CleanoutRecordDetail {
+    background: $background;
+    .detailTop {
+      background: $light-background;
+      border: 1px solid $border-color;
+      .icon {
+        color: $themeColor;
+      }
+      h3 {
+        color: $fontColor-hover;
+      }
+    }
+    .statisticData {
+      background: $light-background;
+      border: 1px solid $border-color;
+      margin-top: 10px;
+      .statisticTarget {
+        border-right: 1px solid $border-color;
+        .numberColor {
+          color: $fontColor-hover;
+        }
+      }
+    }
+    .wrap {
+      background: $light-background;
+      border: 1px solid $border-color;
+      margin-top: 10px;
+    }
+  }
+  .handleArea {
+    .dirtEff {
+      color: $fontColor-invert;
+      background: $themeColor;
+    }
+    .backIcon {
+      color: $fontColor-hover;
+      border-left: solid 1px $border-color;
+    }
+  }
+  :global {
+    .ant-table .ant-table-tbody > tr > td {
+      padding: 0px 20px;
+    }
+  }
+
+  .effectCharts {
+    background: $light-background;
+    border: 1px solid $border-color;
+    margin-top: 10px;
+    .title {
+      border-bottom: 1px solid $border-color;
+    }
+    .darkRect {
+      background-color: #00f8ff;
+    }
+    .lightRect {
+      background-color: #fd6e8f;
+    }
+    .round {
+      border: 1px solid #f8e71c;
+    }
+    :global {
+      .ant-tabs-nav-container {
+        background-color: transparent;
+      }
+      .ant-tabs-bar {
+        border: none;
       }
     }
   }

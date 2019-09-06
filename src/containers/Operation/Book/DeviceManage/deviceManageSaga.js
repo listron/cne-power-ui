@@ -736,7 +736,8 @@ function* getfactorsDeviceMode(action) {
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
         payload: {
-          ...payload,
+          // ...payload,
+          allMode,
           factorsDeviceModeData: modaArr,
         },
       });

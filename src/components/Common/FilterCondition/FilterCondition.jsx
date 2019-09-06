@@ -171,7 +171,7 @@ class FilterCondition extends Component {
 
   render() {
     const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningStatus, warningConfigName, rangTime, handleUser, endTime, docketTypes } = this.state;
-    const { stations = [], option, deviceTypes = [], defectTypes = [], defectSourceName, defectLevelName, matrixList = [], username, warningLevelName, warningStatusName, docketTypeList = [], theme } = this.props;
+    const { stations = [], option, deviceTypes = [], defectTypes = [], defectSourceName, defectLevelName, matrixList = [], username, warningLevelName, warningStatusName, docketTypeList = [], theme = 'light' } = this.props;
     const windStations = stations.map(e => e.stationType === 0);
     const pvStations = stations.map(e => e.stationType === 1);
     const hasSelectStation = windStations.length > 0 && pvStations.length > 0;

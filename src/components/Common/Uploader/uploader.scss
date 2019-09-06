@@ -1,7 +1,6 @@
+@import "../../../theme/theme.scss";
 
-@import '../../../theme/theme.scss';
-
-.imgUploader{
+.imgUploader {
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -14,15 +13,15 @@
       color: $darkColor;
     }
   }
-  .loaderHandler{
-    :global{
+  .loaderHandler {
+    :global {
       .ant-upload-list-item {
         display: none;
       }
       .ant-upload-select {
         margin-bottom: 0;
       }
-      .ant-upload.ant-upload-select-picture-card{
+      .ant-upload.ant-upload-select-picture-card {
         width: 98px;
         height: 98px;
         &:hover {
@@ -31,7 +30,7 @@
       }
     }
   }
-  .uploadedImg{
+  .uploadedImg {
     position: relative;
     margin-right: 15px;
     width: 100px;
@@ -39,44 +38,82 @@
     max-width: 100px;
     display: flex;
     flex: 1;
-    .bottomHandler{
+    .bottomHandler {
       position: absolute;
-      background-color: rgba(0,0,0,0.2);
-      bottom:0;
+      background-color: rgba(0, 0, 0, 0.2);
+      bottom: 0;
       right: 0;
       width: 100%;
       font-size: 14px;
-      color:#fff;
+      color: #fff;
       height: 24px;
       line-height: 24px;
       display: none;
-      .eachHandler{
-        &:hover{
+      .eachHandler {
+        &:hover {
           cursor: pointer;
-          background-color: rgba(0,0,0,0.2);
+          background-color: rgba(0, 0, 0, 0.2);
         }
       }
     }
-    &:hover{
-      .bottomHandler{
+    &:hover {
+      .bottomHandler {
         display: flex;
         justify-content: space-around;
       }
     }
   }
 }
-.imgModal{
-  .imgTitle{
-    font-size:18px;
+
+.singleImgUploader {
+  .uploader {
+    .innerBox {
+      .plusIcon {
+        margin-top: 40px;
+        margin-bottom: 48px;
+        color: $darkColor;
+        font-size: 74px;
+        &::before {
+          font-size: 95px;
+        }
+      }
+      .uploadText {
+        color: $darkColor;
+      }
+    }
+    :hover {
+      .plusIcon {
+        color: $themeColor;
+      }
+    }
+    :global {
+      .ant-upload {
+        padding: 0;
+        border: 1px dashed #dfdfdf;
+        background-color: #fbfbfb;
+      }
+    }
+  }
+  :global {
+    .ant-upload-list-item-uploading,
+    .ant-upload-list-item-undefined,
+    .ant-upload-list-item-done,
+    .ant-upload-list-item-error {
+      display: none;
+    }
+  }
+}
+
+.imgModal {
+  .imgTitle {
+    font-size: 18px;
     text-align: center;
     line-height: 40px;
     position: relative;
-    .download{
-      background: #199475;
+    .download {
       border-radius: 3px;
       width: 98px;
       height: 32px;
-      color: #fff;
       position: absolute;
       top: 0;
       right: 67px;
@@ -84,60 +121,39 @@
       line-height: 32px;
     }
   }
-  .imgBox{
-  display: flex;
-  align-items: center;
-  .handleButton{
-    width:66px;
-    text-align: center;
-    button {
-      height: 60px;
-      padding: 0 10px;
-      font-size: 24px;
+  .imgBox {
+    display: flex;
+    align-items: center;
+    .handleButton {
+      width: 66px;
+      text-align: center;
+      button {
+        height: 60px;
+        padding: 0 10px;
+        font-size: 24px;
+      }
     }
-  }
-  .imgContainer{
-    overflow: hidden;
-    .imgList{
-      width: 100%;
-      display: flex;
+    .imgContainer {
+      overflow: hidden;
+      .imgList {
+        width: 100%;
+        display: flex;
+      }
     }
-  }
   }
 }
 
-.singleImgUploader{
-  .uploader{
-    .innerBox{
-      .plusIcon{
-        margin-top: 40px;
-        margin-bottom: 48px;
-        color:$darkColor;
-        font-size: 74px;
-        &::before{
-          font-size: 95px;
-        }
-      }
-      .uploadText{
-        color: $darkColor;
-      }
-    }
-    :hover{
-      .plusIcon{
-        color: $themeColor;
-      }
-    }
-    :global{
-      .ant-upload{
-        padding: 0;
-        border:1px dashed #dfdfdf;
-        background-color: #fbfbfb;
-      }
-    }
+.imgModal.light {
+  .download {
+    background: #199475;
+    color: #fff;
   }
-  :global{
-    .ant-upload-list-item-uploading,.ant-upload-list-item-undefined,.ant-upload-list-item-done,.ant-upload-list-item-error{
-      display: none;
-    }
+}
+
+.imgModal.dark {
+  @import "../../../theme/darkTheme.scss";
+  .download {
+    background: $themeColor;
+    color: #fff;
   }
 }

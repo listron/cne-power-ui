@@ -1,39 +1,80 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
 
-.intelligentAnalysis{
+.intelligentAnalysis {
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  .contentBox{
-    @include contentBoxStyle();
-    .intelligentAnalysisContent{
-      background-color: #fff;
+  .contentBox {
+    .intelligentAnalysisContent {
       display: flex;
       flex-direction: column;
       flex: 1;
-      .intelligentChoice{
-        background-color: #f8f8f8;
-        :global{
-          .ant-radio-button-wrapper{
+      .intelligentChoice {
+        :global {
+          .ant-radio-button-wrapper {
             width: 130px;
             height: 40px;
             text-align: center;
             line-height: 40px;
             border-radius: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.light {
+  .contentBox {
+    @include contentBoxStyle();
+    .intelligentAnalysisContent {
+      background-color: #fff;
+      .intelligentChoice {
+        background-color: #f8f8f8;
+        :global {
+          .ant-radio-button-wrapper {
             border-top: 2px solid #f8f8f8;
             background-color: #f8f8f8;
           }
-          .ant-radio-button-wrapper-checked{
+          .ant-radio-button-wrapper-checked {
             background-color: #fff;
-            color:#666;
-            border-top:2px solid $themeColor;
+            color: #666;
+            border-top: 2px solid $themeColor;
             border-left: 1px solid $promptColor;
             border-bottom: 0;
             border-right: 1px solid $promptColor;
             box-shadow: -1px 0 0 0 #fff;
           }
-          .ant-radio-button-wrapper-checked:hover{
+          .ant-radio-button-wrapper-checked:hover {
             box-shadow: 0 0 0 0 #fff;
+          }
+        }
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  .contentBox {
+    @include contentBoxStyle();
+    .intelligentAnalysisContent {
+      background-color: $background;
+      .intelligentChoice {
+        background-color: transparent;
+        :global {
+          .ant-radio-button-wrapper {
+            border: 1px solid #202470;
+            color: #7088c3;
+            background: #13134f;
+            margin-right: 4px;
+            border-radius: 8px 8px 0 0;
+          }
+          .ant-radio-button-wrapper-checked {
+            background: rgba(83, 104, 241, 0.15);
+            border: 1px solid rgba(83, 104, 241, 0.4);
+            color: #fff;
+            border-bottom: 1px solid rgba(12, 10, 62, 0.6);
           }
         }
       }

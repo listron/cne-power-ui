@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import eCharts from 'echarts';
 import PropTypes from 'prop-types';
+import { message } from 'antd';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
 import searchUtil from '../../../../../utils/searchUtil';
 import { dataFormat } from '../../../../../utils/utilFunc';
@@ -19,9 +20,11 @@ export default class StationPBAChart extends Component {
     dataIndex: PropTypes.string,
     location: PropTypes.object,
     qutaName: PropTypes.string,
-    colorData: PropTypes.object,
+    stationColorData: PropTypes.object,
     unitName: PropTypes.string,
     pointLength: PropTypes.number,
+    queryParamsFunc: PropTypes.func,
+    selectTime: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
@@ -46,7 +49,10 @@ export default class StationPBAChart extends Component {
   }
 
   chartHandle = (params, indicatorRankInfo, myChart) => {
-    const { changeStore, dataIndex, getTrendInfo, getLostGenHour, location: { search }} = this.props;
+    const { selectTime, changeStore, dataIndex, getTrendInfo, getLostGenHour, location: { search }} = this.props;
+    if(selectTime) {
+      return message.info('请先取消下方事件选择, 再选择电站');
+    }
     const { name } = params;
     const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
@@ -76,24 +82,38 @@ export default class StationPBAChart extends Component {
     const paramsHour = {
       startTime: groupInfo.dates[0],
       endTime: groupInfo.dates[1],
-      deviceModes: modes,
+      deviceModes: modes.map(cur => (cur.split('-')[1])),
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
       stationCodes,
     };
-    changeStore({
-      dataIndex: params.name,
-      dataName: name,
-      selectStationCode: stationCodes, // 保存单选区域的信息
-    });
-    myChart.setOption(this.drawChart(indicatorRankInfo, dataIndex));
-    getTrendInfo(paramsTrend);
-    getLostGenHour(paramsHour);
+    // 判断点击
+    if(params.name && params.name !== dataIndex) {
+      changeStore({
+        dataIndex: params.name,
+        dataName: name,
+        selectStationCode: stationCodes, // 保存单选区域的信息
+      });
+      myChart.setOption(this.drawChart(indicatorRankInfo, name));
+      getTrendInfo(paramsTrend);
+      getLostGenHour(paramsHour);
+    }
+    //判断再次点击
+    if (params.name && params.name === dataIndex) {
+      changeStore({
+        dataIndex: '', // 选中信息
+        selectStationCode: [], // 选中电站信息
+        selectTime: '', // 选中时间
+        dataName: '', // 保存选择区域名称
+      });
+      myChart.setOption(this.drawChart(indicatorRankInfo, ''));
+      this.props.queryParamsFunc(groupInfo);
+    }
   };
 
   drawChart = (data, dataIndex) => {
-    const { qutaName, colorData, unitName, pointLength } = this.props;
+    const { qutaName, stationColorData, unitName, pointLength } = this.props;
     const twoBar = [{ // 实发
       data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2))),
       type: 'bar',
@@ -101,7 +121,7 @@ export default class StationPBAChart extends Component {
       itemStyle: {
         normal: {
           color: function(params) {//柱子颜色
-            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
+            return dataIndex === '' ? stationColorData[params.name] : (dataIndex === params.name ? stationColorData[params.name] : '#cccccc');
           },
         },
         emphasis: {
@@ -131,7 +151,7 @@ export default class StationPBAChart extends Component {
         barBorderRadius: [5, 5, 0, 0],
         normal: {
           color: function(params) {//柱子颜色
-            return dataIndex === '' ? colorData[params.name] : (dataIndex === params.name ? colorData[params.name] : '#cccccc');
+            return dataIndex === '' ? stationColorData[params.name] : (dataIndex === params.name ? stationColorData[params.name] : '#cccccc');
           },
         },
         emphasis: {
@@ -148,17 +168,18 @@ export default class StationPBAChart extends Component {
       },
       tooltip: {
         trigger: 'axis',
+        triggerEvent: true,
         axisPointer: {
           type: 'shadow',
         },
         formatter: (params) => {
           if(qutaName === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}${unitName}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}</span>
           </div>`;
           }
           return `<div>
-            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}${unitName}</span>
+            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span>
           </div>`;
         },
       },
@@ -187,27 +208,33 @@ export default class StationPBAChart extends Component {
           type: 'value',
           name: `${qutaName}（${unitName}）`,
           min: 0,
-          max: unitName === '%' ? 100 : null,
           splitLine: {
             show: false,
           },
         },
       ],
-      dataZoom: [{
-        start: 0,
-        end: 100,
-        top: '400px',
-        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-        handleSize: '80%',
-        handleStyle: {
-          color: '#fff',
-          shadowBlur: 3,
-          shadowColor: 'rgba(0, 0, 0, 0.6)',
-          shadowOffsetX: 2,
-          shadowOffsetY: 2,
+      dataZoom: [
+        {
+          type: 'inside',
+          start: 0,
+          end: 100,
         },
-        textStyle: false,
-      }],
+        {
+          start: 0,
+          end: 100,
+          top: '400px',
+          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+          handleSize: '80%',
+          handleStyle: {
+            color: '#fff',
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.6)',
+            shadowOffsetX: 2,
+            shadowOffsetY: 2,
+          },
+          textStyle: false,
+        },
+      ],
       series: seriesData,
     };
   };

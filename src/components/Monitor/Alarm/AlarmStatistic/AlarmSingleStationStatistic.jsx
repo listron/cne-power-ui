@@ -241,30 +241,28 @@ class ALarmSingleStationStatistic extends React.Component {
 
   renderSummary() {
     const { singleStationCode, singleAlarmSummary, stations } = this.props;
-
-    singleAlarmSummary.transferWorkRate = null;
     const stationItem = stations.find(station => station.get('stationCode').toString() === singleStationCode).toJS();
     return (
       <div className={styles.alarmSummary}>
         <i className={stationItem.stationType === 0 ? 'iconfont icon-summary icon-windlogo' : 'iconfont icon-summary icon-pvlogo'} />
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary && dataFormat(singleAlarmSummary.alarmNum, '--')}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary ? dataFormat(singleAlarmSummary.alarmNum, '--') : '--'}</span>
           <span className={styles.alarmText}>告警数</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary && dataFormat(singleAlarmSummary.transferWorkAlarmNum, '--')}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary ? dataFormat(singleAlarmSummary.transferWorkAlarmNum, '--') : '--'}</span>
           <span className={styles.alarmText}>转工单告警数</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary && dataFormat(+singleAlarmSummary.transferWorkRate, '--') + '%'}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary ? dataFormat(+singleAlarmSummary.transferWorkRate, '--') + '%' : '--'}</span>
           <span className={styles.alarmText}>转工单率</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary && dataFormat(singleAlarmSummary.eliminateAlarmNum, '--')}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary ? dataFormat(singleAlarmSummary.eliminateAlarmNum, '--') : '--'}</span>
           <span className={styles.alarmText}>告警消除数</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary && singleAlarmSummary.eliminateAlarmAvgTime}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary ? singleAlarmSummary.eliminateAlarmAvgTime : '--'}</span>
           <span className={styles.alarmText}>平均处理时间</span>
         </div>
       </div>

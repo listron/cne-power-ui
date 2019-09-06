@@ -167,10 +167,10 @@ class DailySearch extends Component {
   timeChange = (time) => { // 选择时间
     const { changeDailyQueryStore, queryParam } = this.props;
     const timeLength = time.length > 0;
-    let startDate = timeLength ? moment(time[0]).startOf('day').format('YYYY-MM-DD') : null;
-    let endDate = timeLength ? moment(time[1]).startOf('day').format('YYYY-MM-DD') : null;
+    let startDate = timeLength ? moment(time[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss') : null;
+    let endDate = timeLength ? moment(time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss') : null;
     const isToday = moment(endDate).isSame(moment(), 'd');
-    isToday ? endDate = moment().format('YYYY-MM-DD') : endDate;
+    isToday ? endDate = moment().format('YYYY-MM-DD HH:mm:ss') : endDate;
     changeDailyQueryStore({
       queryParam: {
         ...queryParam,
@@ -182,6 +182,8 @@ class DailySearch extends Component {
       dateValue: time,
     });
   }
+
+
 
   onSearch = () => { // 查询
     const { tableType, queryParam, listParam, changeDailyQueryStore, getQuotaList, getFaultList, getLimitList } = this.props;
@@ -220,7 +222,7 @@ class DailySearch extends Component {
       return e.value;
     });
 
-    tableType === 'quotaList' && getQuotaList({ stationCodes, startDate, endDate, pageNum, pageSize, indexCodes });
+    tableType === 'quotaList' && getQuotaList({ stationCodes, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), pageNum, pageSize, indexCodes });
     tableType === 'faultList' && getFaultList({ stationCodes, startDate, endDate, pageNum, pageSize, faultIds, keyWord });
     tableType === 'limitList' && getLimitList({ stationCodes, startDate, endDate, pageNum, pageSize, keyWord: powerInformation });
   }
@@ -245,6 +247,9 @@ class DailySearch extends Component {
   }
 
   render(){
+    const disabledDate = (current) => { // 不可选未来日期
+      return current && current > moment().endOf('day');
+    };
     const { stationTypeCount, stationType, stations, tableType, quotaData, faultData } = this.props;
     const { keyWord, powerInformation, quotaInfoData, faultIds, selectStations, dateValue } = this.state;
     const quotaCode = quotaInfoData.map(e => {
@@ -328,7 +333,7 @@ class DailySearch extends Component {
 
             <div className={styles.timeSelect}>
               <span className={styles.text}>时间</span>
-              <RangePicker format="YYYY-MM-DD" onChange={this.timeChange} value={dateValue} />
+              <RangePicker format="YYYY-MM-DD" onChange={this.timeChange} value={dateValue} disabledDate={disabledDate} />
             </div>
 
             <Button className={styles.search} onClick={this.onSearch}>查询</Button>
