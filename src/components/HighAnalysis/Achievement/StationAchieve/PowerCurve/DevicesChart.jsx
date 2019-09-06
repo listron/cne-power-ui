@@ -129,6 +129,20 @@ class DevicesChart extends Component {
       },
       series: this.createSeires(totalCurveData, activeDevice),
     };
+    totalCurveData.length > 0 && (option.dataZoom = [{
+      type: 'slider',
+      filterMode: 'empty',
+      start: 0,
+      end: 100,
+      showDetail: false,
+      height: 20,
+      bottom: 10,
+    }, {
+      type: 'inside',
+      filterMode: 'empty',
+      start: 0,
+      end: 100,
+    }]);
     devicesChart.hideLoading();
     devicesChart.clear();
     devicesChart.setOption(option);
