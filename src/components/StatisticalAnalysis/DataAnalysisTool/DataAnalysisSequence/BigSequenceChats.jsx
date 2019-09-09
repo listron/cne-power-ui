@@ -104,7 +104,7 @@ class BigSequenceCharts extends React.Component {
       },
       grid: {
         right: '10%',
-        top: 50,
+        top: 60,
         bottom: '15%',
         left: '10%',
       },
@@ -144,12 +144,22 @@ class BigSequenceCharts extends React.Component {
         {
           type: 'value',
           name: point1Unit,
+          nameGap: 10,
+          nameTextStyle: {
+            fontSize: 14,
+
+          },
           min: xMin,
           max: xMax,
 
         }, {
           type: 'value',
           name: point2Unit,
+          nameGap: 10,
+          nameTextStyle: {
+            fontSize: 14,
+
+          },
           min: yMin,
           max: yMax,
           splitLine: false,

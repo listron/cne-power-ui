@@ -43,6 +43,7 @@ export const getBaseYAxis = (name) => ({
   },
   nameTextStyle: {
     color: '#666666',
+    padding: [0, -20, 0, 0],
   },
   name,
 });

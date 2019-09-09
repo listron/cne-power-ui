@@ -76,7 +76,7 @@ class ChartLostTrend extends Component {
       data: firstLineData,
       lineStyle: {
         opacity: lostChartTime ? 0.2 : 1,
-        color: '#2564cc',
+        color: '#f9b600',
         width: 2,
         shadowColor: 'rgba(0,0,0,0.20)',
         shadowBlur: 3,
@@ -88,7 +88,7 @@ class ChartLostTrend extends Component {
       data: secendLineData,
       lineStyle: {
         opacity: lostChartTime ? 0.2 : 1,
-        color: '#f9b600',
+        color: '#2564cc',
         width: 2,
         shadowColor: 'rgba(0,0,0,0.20)',
         shadowBlur: 3,
@@ -125,7 +125,10 @@ class ChartLostTrend extends Component {
     const { changeStore, getLostTrend, lostStringify } = this.props;
     // 携带参数重新请求信息
     changeStore({ lostChartTimeMode });
-    const searchParam = JSON.parse(lostStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(lostStringify) || {};
+    } catch (error) { console.log(error); }
     getLostTrend({
       stationCodes: [searchParam.code],
       deviceFullcodes: searchParam.device,
@@ -144,7 +147,10 @@ class ChartLostTrend extends Component {
     }
     const chartTimeInfo = lostTrend[dataIndex] || {};
     const { efficiencyDate } = chartTimeInfo;
-    const searchParam = JSON.parse(lostStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(lostStringify) || {};
+    } catch (error) { console.log(error); }
     const { date } = searchParam;
     let startTime, endTime;
     if (efficiencyDate === lostChartTime) {
@@ -172,14 +178,17 @@ class ChartLostTrend extends Component {
   renderChart = (lostTrend = []) => {
     const { zoomRange } = this.state;
     const { lostChartTime, lostStringify, quotaInfo } = this.props;
-    const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
+    let quota;
+    try {
+      lostStringify && ({ quota } = JSON.parse(lostStringify));
+    } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
     const { label = '--', unit, pointLength } = selectedQuota;
     const trendChart = echarts.init(this.trendRef);
     const { dataAxis, series } = this.createSeries(lostTrend, lostChartTime, unit);
     const baseOption = getBaseOption(dataAxis);
     baseOption.yAxis.name = `${label}${unit ? `(${unit})` : ''}`;
-    baseOption.yAxis.nameTextStyle.padding = [0, -40, 0, 0];
+    baseOption.yAxis.nameTextStyle.padding = [0, -20, 0, 0];
     baseOption.grid.left = 36;
     const option = {
       ...baseOption,
@@ -196,9 +205,9 @@ class ChartLostTrend extends Component {
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>
-                    ${i === 1 ? '应发小时数' : `${label}`}
+                    ${i === 1 ? '应发小时数' : `${label === '利用小时数' ? '实发小时数' : label}`}
                   </span>
-                  <span>${dataFormats(e.value, '--', pointLength, true)}${unit || ''}</span>
+                  <span>${dataFormats(e.value, '--', pointLength, true)}</span>
                 </span>`
               )).join('')}
             </div>
@@ -230,7 +239,10 @@ class ChartLostTrend extends Component {
   render() {
     const { lostChartTimeMode, lostChartDevice, quotaInfo, lostStringify } = this.props;
     const chartName = lostChartDevice && lostChartDevice.deviceName ? `${lostChartDevice.deviceName}-` : '';
-    const { quota } = lostStringify ? JSON.parse(lostStringify) :{};
+    let quota;
+    try {
+      lostStringify && ({ quota } = JSON.parse(lostStringify));
+    } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
     return (
       <div className={styles.lostTrend}>
@@ -239,6 +251,18 @@ class ChartLostTrend extends Component {
             {chartName}{selectedQuota.label || '--'}趋势图
           </span>
           <TimeSelect timeMode={lostChartTimeMode} timeModeChange={this.timeModeChange} />
+        </div>
+        <div className={styles.modes}>
+          <span className={styles.eachMode}>
+            <span className={styles.line} />
+            <span className={styles.modeText}>
+              {selectedQuota.label === '利用小时数' ? '实发小时数' : (selectedQuota.label || '--')}
+            </span>
+          </span>
+          {selectedQuota.label === '利用小时数' && <span className={styles.eachMode}>
+            <span className={styles.lineTheory} />
+            <span className={styles.modeText}>应发小时数</span>
+          </span>}
         </div>
         <div className={styles.chart} ref={(ref)=> {this.trendRef = ref;}} />
       </div>

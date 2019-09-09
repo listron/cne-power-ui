@@ -11,6 +11,8 @@ class DevicesPsd extends Component {
 
   static propTypes = {
     curveTopStringify: PropTypes.string,
+    activeDevice: PropTypes.string,
+    curveDeviceFullcode: PropTypes.string,
     curveDevicesPsd: PropTypes.array,
     curveDevicesPsdLoading: PropTypes.bool,
     changeStore: PropTypes.func,
@@ -20,21 +22,24 @@ class DevicesPsd extends Component {
   }
 
   state = {
+    modeArr: [],
     sortName: 'deviceName', // psd;
   }
 
   componentDidMount(){
-    const { curveDevicesPsd = [] } = this.props;
+    const { curveDevicesPsd = [], activeDevice } = this.props;
     const { sortName } = this.state;
-    curveDevicesPsd.length > 0 && this.renderChart(curveDevicesPsd, sortName);
+    curveDevicesPsd.length > 0 && this.renderChart(curveDevicesPsd, sortName, activeDevice);
   }
 
   componentWillReceiveProps(nextProps){
-    const { curveDevicesPsdLoading, curveDevicesPsd } = nextProps;
+    const { curveDevicesPsdLoading, curveDevicesPsd, activeDevice } = nextProps;
     const { sortName } = this.state;
     const preLoading = this.props.curveDevicesPsdLoading;
-    if (preLoading && !curveDevicesPsdLoading) { // 请求完毕
-      this.renderChart(curveDevicesPsd, sortName);
+    const getQueryData = preLoading && !curveDevicesPsdLoading;
+    const activeChange = activeDevice !== this.props.activeDevice;
+    if (getQueryData || activeChange) { // 请求完毕
+      this.renderChart(curveDevicesPsd, sortName, activeDevice);
     } else if (!preLoading && curveDevicesPsdLoading) { // 请求中
       this.setChartLoading();
     }
@@ -72,10 +77,10 @@ class DevicesPsd extends Component {
     this.renderChart(curveDevicesPsd, sortName);
   }
 
-  createSeires = (sortedPsdData) => {
+  createSeires = (sortedPsdData, activeDevice) => {
     const xData = [], psdData = [], modes = new Set();
     sortedPsdData.forEach(e => {
-      const { deviceName, deviceModeName, psd } = e || {};
+      const { deviceName, deviceModeName, psd, deviceFullcode } = e || {};
       modes.add(deviceModeName);
       xData.push(deviceName);
       const colorIndex = [...modes].indexOf(deviceModeName);
@@ -87,6 +92,7 @@ class DevicesPsd extends Component {
             {offset: 0, color: this.barColor[colorIndex][0] },
             {offset: 1, color: this.barColor[colorIndex][1] },
           ]),
+          opacity: (activeDevice && activeDevice !== deviceFullcode) ? 0.4 : 1,
         },
       });
     });
@@ -95,32 +101,40 @@ class DevicesPsd extends Component {
       barWidth: '10px',
       data: psdData,
     }];
-    return { series, xData, modeArr: [...modes] };
+    this.setState({ modeArr: [...modes] });
+    return { series, xData };
   }
 
-  deviceHandle = ({ seriesIndex }, sortedAepData, chart) => {
-    const { deviceFullcode, deviceName } = sortedAepData[seriesIndex] || {};
-    const { curveTopStringify } = this.props;
-    const queryInfo = JSON.parse(curveTopStringify) || {};
+  deviceHandle = ({ dataIndex }, sortedAepData, chart) => {
+    const { deviceFullcode, deviceName } = sortedAepData[dataIndex] || {};
+    const { curveTopStringify, activeDevice, curveDeviceFullcode } = this.props;
+    let queryInfo = {};
+    try {
+      queryInfo = JSON.parse(curveTopStringify) || {};
+    } catch (error) { console.log(error); }
     const param = {
       stationCodes: [queryInfo.code],
       deviceFullcodes: [deviceFullcode],
       startTime: queryInfo.date[0],
       endTime: queryInfo.date[1],
     };
+    const activeRenderCode = (activeDevice && activeDevice === deviceFullcode) ? null : deviceFullcode;
     this.props.changeStore({
       curveDeviceName: deviceName,
       curveDeviceFullcode: deviceFullcode,
+      activeDevice: activeRenderCode,
     });
-    this.props.getCurveMonths(param);
-    this.props.getCurveMonthAep(param);
-    this.props.getCurveMonthPsd(param);
+    (activeRenderCode && activeRenderCode !== curveDeviceFullcode) && ( // 改变设备时再请求
+      this.props.getCurveMonths(param),
+      this.props.getCurveMonthAep(param),
+      this.props.getCurveMonthPsd(param)
+    );
   }
 
-  renderChart = (curveDevicesPsd, sortName) => {
+  renderChart = (curveDevicesPsd, sortName, activeDevice) => {
     const psdChart = echarts.init(this.psdRef);
     const sortedPsdData = this.sortDevicePsd(curveDevicesPsd, sortName);
-    const { series, xData } = this.createSeires(sortedPsdData);
+    const { series, xData } = this.createSeires(sortedPsdData, activeDevice);
     const baseOption = getCurveBaseOption();
     baseOption.xAxis.data = xData;
     baseOption.yAxis.name = 'PSD(%)';
@@ -131,6 +145,9 @@ class DevicesPsd extends Component {
       ...baseOption,
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         padding: 0,
         formatter: (param) => {
           const { name, axisValue } = param && param[0] || {};
@@ -152,12 +169,12 @@ class DevicesPsd extends Component {
       },
       series,
     };
-    const endPosition = 30 / curveDevicesPsd.length >= 1 ? 100 : 3000 / curveDevicesPsd.length;
+    // const endPosition = 30 / curveDevicesPsd.length >= 1 ? 100 : 3000 / curveDevicesPsd.length;
     curveDevicesPsd.length > 0 && (option.dataZoom = [{
       type: 'slider',
       filterMode: 'empty',
       start: 0,
-      end: endPosition,
+      end: 100,
       showDetail: false,
       height: 20,
       bottom: 10,
@@ -165,15 +182,16 @@ class DevicesPsd extends Component {
       type: 'inside',
       filterMode: 'empty',
       start: 0,
-      end: endPosition,
+      end: 100,
     }]);
     psdChart.hideLoading();
     psdChart.setOption(option);
-    psdChart.on('click', (param) => this.deviceHandle(param, sortedPsdData, psdChart));
+    psdChart.off('click');
+    psdChart.on('click', (barInfo) => this.deviceHandle(barInfo, sortedPsdData, psdChart));
   }
 
   render() {
-    const { sortName } = this.state;
+    const { sortName, modeArr } = this.state;
     return (
       <section className={styles.aep}>
         <h3 className={styles.aepTop}>
@@ -190,6 +208,16 @@ class DevicesPsd extends Component {
             </Select>
           </span>
         </h3>
+        <div className={styles.modes}>
+          {modeArr.map((e, i) => (
+            <span key={e} className={styles.eachMode}>
+              <span className={styles.rect} style={{
+                backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
+                }} />
+              <span className={styles.modeText}>{e}</span>
+            </span>
+          ))}
+        </div>
         <div className={styles.aepChart} ref={(ref)=> {this.psdRef = ref;}} />
       </section>
     );

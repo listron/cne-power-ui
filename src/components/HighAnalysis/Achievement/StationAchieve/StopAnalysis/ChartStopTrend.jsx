@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
+import { message } from 'antd';
 import TimeSelect from '../../AchieveCommon/TimeSelect';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import { getBaseGrid, getBaseYAxis, getBaseXAxis } from './chartBaseOption';
@@ -14,6 +15,7 @@ class ChartLostTrend extends Component {
     stopChartTime: PropTypes.string,
     stopTopStringify: PropTypes.string,
     stopTrend: PropTypes.array,
+    stopHandleInfo: PropTypes.array,
     stopChartDevice: PropTypes.object,
     stopChartTypes: PropTypes.object,
     stopElecType: PropTypes.string,
@@ -61,6 +63,7 @@ class ChartLostTrend extends Component {
       countData.push({ value: e.stopCount, symbolSize});
     });
     series[0] = {
+      name: '停机时长',
       type: 'line',
       data: hourData,
       xAxisIndex: 0,
@@ -76,6 +79,7 @@ class ChartLostTrend extends Component {
     };
     series[1] = {
       type: 'line',
+      name: '停机次数',
       data: countData,
       xAxisIndex: 1,
       yAxisIndex: 1,
@@ -93,7 +97,10 @@ class ChartLostTrend extends Component {
 
   timeModeChange = (stopChartTimeMode) => {
     const { stopElecType, stopChartDevice, stopTopStringify } = this.props;
-    const searchParam = JSON.parse(stopTopStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(stopTopStringify);
+    } catch (error) { console.log(error); }
     const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.searchDevice;
     this.props.changeStore({ stopChartTimeMode, stopChartTime: null });
     this.props.getStopTrend({
@@ -106,41 +113,80 @@ class ChartLostTrend extends Component {
     });
   }
 
-  chartHandle = ({dataIndex}, stopTrend, chart) => {
-    const { stopChartTime, stopChartTimeMode, stopElecType, stopChartTypes, stopChartDevice, stopTopStringify } = this.props;
+  chartHandle = ({ dataIndex }, stopTrend, chart) => { // 'device', 'time', 'types'
+    const { stopHandleInfo } = this.props;
+    const handleLength = stopHandleInfo.length;
+    const timeIndex = stopHandleInfo.indexOf('time');
+    const lastCheck = stopHandleInfo[handleLength - 1];
+    if (handleLength === 2 && timeIndex === -1) { // 已选别的两个指标， 直接返回。
+      return;
+    }
+
+    if (handleLength === 2 && timeIndex === 0) { // 已选两级指标, 设备为第一级
+      message.info( `请先取消${lastCheck === 'device' ? '设备' : '停机类型'}选择, 再选择时间` );
+      return;
+    }
+
+    const { stopChartTime, stopElecType, stopChartTypes, stopChartDevice, stopTopStringify } = this.props;
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(stopTopStringify);
+    } catch (error) { console.log(error); }
     const selectedInfo = stopTrend[dataIndex] || {};
     const { efficiencyDate } = selectedInfo;
-    const searchParam = JSON.parse(stopTopStringify) || {};
-    const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.device;
-    let [startTime, endTime] = searchParam.date;
-    if (stopChartTime !== efficiencyDate) { // 非取消选择
-      const recordStart = moment(efficiencyDate).startOf(stopChartTimeMode);
-      const recordEnd = moment(efficiencyDate).endOf(stopChartTimeMode);
-      startTime = moment.max(recordStart, moment(startTime)).format('YYYY-MM-DD');
-      endTime = moment.min(recordEnd, moment(endTime)).format('YYYY-MM-DD');
-      this.props.changeStore({ stopChartTime: efficiencyDate });
-      this.setState({
-        zoomRange: this.getZoomRange(chart),
-      }, () => this.renderChart(stopTrend, efficiencyDate));
-    } else { // 取消选择
-      this.props.changeStore({ stopChartTime: null });
-      this.setState({
-        zoomRange: this.getZoomRange(chart),
-      }, () => this.renderChart(stopTrend, null));
-    }
-    let faultInfo = {};
-    if (stopChartTypes) {
-      faultInfo = { faultId: stopChartTypes.faultId };
-    }
+    const cancelSelect = stopChartTime && stopChartTime === efficiencyDate;
+    const [startTime, endTime] = this.getTimeRange(searchParam.date, efficiencyDate, cancelSelect);
+    const tmpDateResult = cancelSelect ? null : efficiencyDate;
     const param = {
       stationCodes: [searchParam.code],
-      deviceFullcodes,
+      deviceFullcodes: stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.device,
       startTime,
       endTime,
       parentFaultId: stopElecType,
     };
-    this.props.getStopRank({ ...param, ...faultInfo });
-    this.props.getStopTypes({ ...param });
+    this.setState({
+      zoomRange: this.getZoomRange(chart),
+    }, () => this.renderChart(stopTrend, tmpDateResult));
+
+    const timeBothEnd = handleLength === 2 && timeIndex === 1; // 两级指标: 二级为时间 => 切换
+    const timeAdd = handleLength === 1 && timeIndex === -1; // 一级指标: 非时间 => 添加
+    if (timeBothEnd || timeAdd) { //  => 变两级指标, 请求受影响单图表。
+      let tmpHandleInfo = [...stopHandleInfo];
+      timeAdd && tmpHandleInfo.push('time');
+      cancelSelect && (tmpHandleInfo = tmpHandleInfo.filter(e => e!== 'time'));
+      this.props.changeStore({
+        stopChartTime: tmpDateResult,
+        stopHandleInfo: tmpHandleInfo,
+      });
+      stopHandleInfo[0] === 'device' ? this.props.getStopTypes({
+        ...param,
+      }) : this.props.getStopRank({
+        ...param,
+        faultId: stopChartTypes.faultId,
+      });
+    }
+    const queryBoth = (handleLength === 1 && timeIndex === 0) || handleLength === 0;
+    if (queryBoth) { // 选中一个一级指标: 时间 或者 未选中任何指标 => 请求两个图表数据。
+      this.props.changeStore({
+        stopChartTime: tmpDateResult,
+        stopHandleInfo: ['time'],
+      });
+      this.props.getStopTypes({ ...param });
+      this.props.getStopRank({ ...param });
+    }
+  }
+
+  getTimeRange = (date = [], efficiencyDate, cancelSelect) => { // 根据两个时间取交集
+    const { stopChartTimeMode } = this.props;
+    let [startTime, endTime] = date;
+    if (cancelSelect) {
+      return [startTime, endTime];
+    }
+    const recordStart = moment(efficiencyDate).startOf(stopChartTimeMode);
+    const recordEnd = moment(efficiencyDate).endOf(stopChartTimeMode);
+    startTime = moment.max(recordStart, moment(startTime)).format('YYYY-MM-DD');
+    endTime = moment.min(recordEnd, moment(endTime)).format('YYYY-MM-DD');
+    return [startTime, endTime];
   }
 
   getZoomRange = (chartInstance = {}) => { // 获取实例的zoom起止位置。
@@ -148,6 +194,21 @@ class ChartLostTrend extends Component {
     const zoomInfo = dataZoom[0] || {};
     const { start = 0, end = 100 } = zoomInfo;
     return [start, end];
+  }
+
+  getTitle = () => {
+    const titleTexts = [];
+    const { stopChartTypes, stopChartDevice, stopHandleInfo } = this.props;
+    const baseText = {
+      device: stopChartDevice ? `${stopChartDevice.deviceName}-` : '',
+      types: stopChartTypes ? `${stopChartTypes.faultName}-` : '',
+    };
+    stopHandleInfo.find((e, i) => {
+      baseText[e] && titleTexts.push(baseText[e]);
+      return e === 'time';
+    });
+    titleTexts.push('停机时长及次数趋势图');
+    return titleTexts.join('');
   }
 
   renderChart = (stopTrend = [], stopChartTime) => {
@@ -164,8 +225,8 @@ class ChartLostTrend extends Component {
         { ...getBaseXAxis(dataAxis), gridIndex: 1 },
       ],
       yAxis: [
-        { ...getBaseYAxis('时长(h)'), gridIndex: 0 },
-        { ...getBaseYAxis('次数(次)'), gridIndex: 1 },
+        { ...getBaseYAxis('停机时长(h)'), gridIndex: 0 },
+        { ...getBaseYAxis('停机次数(次)'), gridIndex: 1 },
       ],
       axisPointer: {
         link: {xAxisIndex: 'all'},
@@ -182,7 +243,7 @@ class ChartLostTrend extends Component {
             <div class=${styles.info}>
               ${param.sort((a, b) => a.seriesIndex - b.seriesIndex).map(({seriesIndex, value}) => (
                 `<span class=${styles.eachItem}>
-                  <span>${seriesIndex === 0 ? '故障时长' : '故障次数'}</span>
+                  <span>${seriesIndex === 0 ? '停机时长' : '停机次数'}</span>
                   <span>${dataFormats(value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
@@ -215,16 +276,24 @@ class ChartLostTrend extends Component {
   }
 
   render() {
-    const { stopChartTypes, stopChartDevice, stopChartTimeMode } = this.props;
-    const stopDeviceText = stopChartDevice ? `${stopChartDevice.deviceName}-` : '';
-    const stopTypeText = stopChartTypes ? `${stopChartTypes.faultName}-` : '';
+    const { stopChartTimeMode } = this.props;
     return (
       <div className={styles.stopTrend}>
         <div className={styles.top}>
-          <span className={styles.title}>
-            {stopDeviceText}{stopTypeText}停机时长及次数趋势图
-          </span>
+          <span className={styles.title}>{this.getTitle()}</span>
           <TimeSelect timeMode={stopChartTimeMode} timeModeChange={this.timeModeChange} />
+        </div>
+        <div className={styles.modes} style={{top: '60px'}}>
+          <span className={styles.eachMode}>
+            <span className={styles.lineHour} />
+            <span className={styles.modeText}>停机时长</span>
+          </span>
+        </div>
+        <div className={styles.modes} style={{top: '250px'}}>
+          <span className={styles.eachMode}>
+            <span className={styles.lineCount} />
+            <span className={styles.modeText}>停机次数</span>
+          </span>
         </div>
         <div className={styles.chart} ref={(ref)=> {this.trendRef = ref;}} />
       </div>

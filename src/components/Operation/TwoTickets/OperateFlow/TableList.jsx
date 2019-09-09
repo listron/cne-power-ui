@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './operate.scss';
-import { connect } from 'react-redux';
-import { Table, Select, Icon, Modal } from 'antd';
+import { Table, Icon, Modal, Button } from 'antd';
 import ImgListModal from '../../../Common/Uploader/ImgListModal';
 import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
 import moment from 'moment';
 import path from '../../../../constants/path';
 import ReviewForm from '../Common/HandleForm/ReviewForm';
-import CheckForm from '../Common//HandleForm/CheckForm';
 import Obsolete from '../Common/HandleForm/Obsolete';
 import Cookie from 'js-cookie';
 
@@ -25,6 +23,7 @@ class TableList extends Component {
         stopBatch: PropTypes.func,
         delDocket: PropTypes.func,
         stopRight: PropTypes.array,
+        theme: PropTypes.string,
 
     }
 
@@ -272,7 +271,7 @@ class TableList extends Component {
 
 
     render() {
-        const { totalNum, loading, docketList, stopRight, newImg, listQueryParams, downLoadFile } = this.props;
+        const { totalNum, loading, docketList, stopRight, newImg, listQueryParams, downLoadFile, theme } = this.props;
         const { selectedRows, review, obsolete, currentImgIndex, showImgModal, downloadHref } = this.state;
         const { showWarningTip, warningTipText, operatType } = this.state;
         const { pageSize, pageNum } = listQueryParams;
@@ -293,17 +292,14 @@ class TableList extends Component {
             'obsolete': '作废',
         };
         return (
-            <div className={styles.flowTable}>
+            <div className={`${styles.flowTable} ${styles[theme]}`}>
                 {showWarningTip && <WarningTip
                     onCancel={() => { this.setState({ showWarningTip: false }); }}
                     onOK={this.onConfirmWarningTip}
                     value={warningTipText} />}
                 <div className={styles.tableTop}>
                     <div className={styles.selectCondition}>
-                        <div className={styles.addplus} onClick={this.addWorkFlow}>
-                            <Icon className={styles.add} type="plus" />
-                            <span className={styles.text}>操作票</span>
-                        </div>
+                        <Button type="add" onClick={this.addWorkFlow}> <i>+</i>工作票 </Button>
                         <div className={`${styles.commonButton} ${!review && styles.disabled}`}
                             onClick={() => { this.handleBatch('review'); }}>审核</div>
                         {stopRight.map((e) => {
@@ -318,7 +314,7 @@ class TableList extends Component {
                         })}
                     </div>
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-                        onPaginationChange={this.onPaginationChange} />
+                        onPaginationChange={this.onPaginationChange} theme={theme} />
                 </div>
                 <Table
                     loading={loading}
@@ -329,6 +325,7 @@ class TableList extends Component {
                     onChange={this.tableChange}
                     locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
                 />
+                <span ref="modal" />
                 <ImgListModal
                     data={images}
                     imageListShow={showImgModal}
@@ -336,7 +333,9 @@ class TableList extends Component {
                     currentImgIndex={currentImgIndex}
                     downloadHref={downloadHref}
                     downLoadFile={downLoadFile}
+                    theme={theme}
                     changeCurrentImgIndex={this.changeCurrentImgIndex} />
+                <span ref="modal" />
                 <Modal
                     title={titleText[this.state.operatType]}
                     visible={this.state.batchVisible}
@@ -346,6 +345,7 @@ class TableList extends Component {
                     maskClosable={false}
                     style={{ top: 120 }}
                     maskStyle={{ backgroundColor: 'rgba(153,153,153,0.2)' }}
+                    getContainer={() => this.refs.modal}
                 >
                     {operatType === 'review' && <ReviewForm onChange={this.batchChange} />}
                     {operatType === 'obsolete' && <Obsolete onChange={this.batchChange} />}

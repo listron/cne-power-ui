@@ -1,10 +1,20 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
 .manufacturersBox {
-    min-height: 100%;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    .manufacturersContainer {
-        @include contentBoxStyle();
-    }
+  min-height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.light {
+  .manufacturersContainer {
+    @include contentBoxStyle();
+  }
+}
+
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  .manufacturersContainer {
+    @include contentBoxStyle();
+  }
 }

@@ -27,7 +27,7 @@ class AchievementLayout extends Component {
 
   constructor(props){
     super(props);
-    const { search } = props.location;
+    const { search } = props.history.location;
     const { pages } = searchUtil(search).parse();
     const { pathKey } = props.match.params || {};
     this.tabs = ['group', 'area', 'station', 'run', 'stop'];
@@ -45,27 +45,26 @@ class AchievementLayout extends Component {
 
   componentWillReceiveProps(nextProps){
     const { pages } = this.state;
-    const { match, location, history } = this.props;
+    const { match, history, location } = this.props;
     const { search } = location; // 上次的search
     const { pathKey } = match.params || {};
-    const { pages: nextPages } = searchUtil(search).parse(); // 新的pages变化
 
     const nextMatchParam = nextProps.match.params || {};
     const nextLocation = nextProps.location;
     const nextSearch = nextLocation.search;
     const nexPathKey = nextMatchParam.pathKey;
-    const currentPages = pages.join('_'); // 当前pages变化
     const pageExist = pages.includes(nexPathKey); // 新页面
-    const pageChange = pathKey !== nexPathKey; // 激活页变化
+    const pageChange = pathKey !== nexPathKey; // 当前激活页变化 => 1. 新开页面, 2. 页面切换, 3. 关闭页面
     if(pageChange && !pageExist && !nextSearch){ // 目录新开一个未开启页面: 切换至新页面, search信息中只添加入新的pages
       pages.push(nexPathKey);
-      this.setState({pages});
+      this.setState({ pages });
       const searchResult = searchUtil(search).add({pages: pages.join('_')}).stringify();
       history.push(`${nextLocation.pathname}?${searchResult}`);
-    } else if (pageChange && pageExist && !nextSearch) {// 2. 目录处点击已开启页面 => 切换至页面, search信息不变
+    } else if (pageChange && pageExist) { // 2. 切换至页面, 3. 关闭页面, => search使用最新的覆盖一下-关闭页面需要,
       history.push(`${nextLocation.pathname}${search}`);
-    } else if(nextPages && nextPages !== currentPages) {
-      this.setState({pages: nextPages.split('_').filter(e => !!e)});
+      this.setState({
+        pages: (searchUtil(nextSearch).parse().pages || '').split('_').filter(e => !!e),
+      });
     }
   }
 

@@ -139,4 +139,3 @@ class TopParts extends Component{
 }
 
 export default TopParts;
-

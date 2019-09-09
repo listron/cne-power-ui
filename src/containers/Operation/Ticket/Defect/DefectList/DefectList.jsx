@@ -231,6 +231,7 @@ const mapStateToProps = (state) => ({
   stations: state.common.get('stations').toJS(),
   deviceTypes: state.common.get('deviceTypes').toJS(),
   username: state.common.get('username'),
+  theme: state.common.get('theme'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

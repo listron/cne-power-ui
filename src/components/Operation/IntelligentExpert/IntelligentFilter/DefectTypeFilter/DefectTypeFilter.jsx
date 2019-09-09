@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox, Tabs} from 'antd';
+import { Checkbox, Tabs } from 'antd';
 import styles from './../filterCondition.scss';
 
 const CheckboxGroup = Checkbox.Group;
-const {TabPane} = Tabs;
+const { TabPane } = Tabs;
 
 class DefectTypeFilter extends Component {
   static propTypes = {
@@ -26,11 +26,11 @@ class DefectTypeFilter extends Component {
         defectTypeCode: []
       });
     }
-    this.setState({activeKey: key})
+    this.setState({ activeKey: key })
   };
 
   onCheckAll = (event, ids) => { // 选择tab中的全部
-    const {defectTypeCode} = this.props;
+    const { defectTypeCode } = this.props;
     let tmpTypeCodeArr = defectTypeCode.filter(e => {// 移除所有正在操作的同级子选项
       return !!e && !ids.includes(e);
     });
@@ -44,7 +44,7 @@ class DefectTypeFilter extends Component {
   };
 
   defectCheck = (values, ids) => { // 选中-取消某类型。
-    const {defectTypeCode} = this.props;
+    const { defectTypeCode } = this.props;
     let tmpTypeCodeArr = defectTypeCode.filter(e => {// 移除所有正在操作的同级子选项
       return !!e && !ids.includes(e);
     });
@@ -55,20 +55,20 @@ class DefectTypeFilter extends Component {
   };
 
   render() {
-    const {defectTypes, defectTypeCode} = this.props; // defectTypeCode选中的缺陷类型字符串。
-    const {activeKey} = this.state;
+    const { defectTypes, defectTypeCode, theme } = this.props; // defectTypeCode选中的缺陷类型字符串。
+    const { activeKey } = this.state;
     const defectTypeTab = [];
     defectTypes.forEach(e => {
       e.list && e.list.length > 0 && defectTypeTab.push(...e.list)
     });
-    const selectDefectArr = defectTypeCode.filter(e => !!e); 
+    const selectDefectArr = defectTypeCode.filter(e => !!e);
     return (
-      <div className={styles.stationFilter}>
+      <div className={`${styles.stationFilter} ${styles[theme]}`}>
         <Tabs onChange={this.onDefectTabChange} activeKey={activeKey} animated={false}>
           <TabPane tab="不限" key={'all'}>
             {null}
           </TabPane>
-          {defectTypeTab.filter(e=>e.list && e.list.length>0).map(e => {
+          {defectTypeTab.filter(e => e.list && e.list.length > 0).map(e => {
             const options = [];
             e.list && e.list.length > 0 && e.list.forEach((lastItem) => {
               options.push({

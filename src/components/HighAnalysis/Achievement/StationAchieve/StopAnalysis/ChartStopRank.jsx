@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
-import { Select } from 'antd';
+import { Select, message } from 'antd';
 import moment from 'moment';
 import { getBaseGrid, getBaseYAxis, getBaseXAxis } from './chartBaseOption';
 import { dataFormats } from '../../../../../utils/utilFunc';
@@ -15,6 +15,7 @@ class ChartStopRank extends Component {
     stopChartTime: PropTypes.string,
     stopChartTimeMode: PropTypes.string,
     stopTopStringify: PropTypes.string,
+    stopHandleInfo: PropTypes.array,
     stopChartTypes: PropTypes.object,
     stopChartDevice: PropTypes.object,
     changeStore: PropTypes.func,
@@ -107,7 +108,7 @@ class ChartStopRank extends Component {
           opacity: (stopChartDevice && deviceFullcode !== stopChartDevice.deviceFullcode) ? 0.4 : 1,
         },
       });
-      countData.push(stopCount);
+      countData.push({ value: stopCount });
     });
     series[0] = {
       type: 'bar',
@@ -133,44 +134,79 @@ class ChartStopRank extends Component {
   }
 
   chartHandle = ({dataIndex}, sortedStopRank, chart) => {
-    const { sortType } = this.state;
-    const { stopElecType, stopChartTimeMode, stopChartTime, stopChartDevice, stopChartTypes, stopTopStringify } = this.props;
-    const selectedDevice = sortedStopRank[dataIndex] || {};
-    const searchParam = JSON.parse(stopTopStringify) || {};
-    let deviceFullcodes = searchParam.device;
-    let startTime = searchParam.date[0];
-    let endTime = searchParam.date[1];
-    if (stopChartDevice && selectedDevice.deviceFullcode === stopChartDevice.deviceFullcode) { // 取消选中
-      this.props.changeStore({ stopChartDevice: null });
-      this.setState({
-        zoomRange: this.getZoomRange(chart),
-      }, () => this.renderChart(sortedStopRank, sortType, null));
-    } else {
-      deviceFullcodes = [selectedDevice.deviceFullcode];
-      this.props.changeStore({ stopChartDevice: selectedDevice });
-      this.setState({
-        zoomRange: this.getZoomRange(chart),
-      }, () => this.renderChart(sortedStopRank, sortType, selectedDevice));
+    const { stopHandleInfo } = this.props;
+    const handleLength = stopHandleInfo.length;
+    const deviceIndex = stopHandleInfo.indexOf('device');
+    const lastCheck = stopHandleInfo[handleLength - 1];
+    if (handleLength === 2 && deviceIndex === -1) { // 已选别的两个指标， 直接返回。
+      return;
     }
+
+    if (handleLength === 2 && deviceIndex === 0) { // 已选两级指标, 设备为第一级
+      message.info( `请先取消${lastCheck === 'time' ? '时间' : '停机类型'}选择, 再选择设备` );
+      return;
+    }
+
+    const { sortType } = this.state;
+    const { stopElecType, stopChartDevice, stopChartTypes, stopTopStringify, stopChartTimeMode } = this.props;
+    const selectedDevice = sortedStopRank[dataIndex] || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(stopTopStringify);
+    } catch (error) { console.log(error); }
+    const [startTime, endTime] = this.getTimeRange(searchParam.date);
+    const cancelSelect = stopChartDevice && selectedDevice.deviceFullcode === stopChartDevice.deviceFullcode;
+    const tmpDeviceResult = cancelSelect ? null : selectedDevice;
+
+    const param = {
+      stationCodes: [searchParam.code],
+      deviceFullcodes: cancelSelect ? searchParam.device : [selectedDevice.deviceFullcode],
+      startTime,
+      endTime,
+      parentFaultId: stopElecType,
+    };
+    this.setState({
+      zoomRange: this.getZoomRange(chart),
+    }, () => this.renderChart(sortedStopRank, sortType, tmpDeviceResult));
+    const deviceBothEnd = handleLength === 2 && deviceIndex === 1; // 两级指标: 二级为设备
+    const deviceAdd = handleLength === 1 && deviceIndex === -1; // 一级指标: 非设备
+    if (deviceBothEnd || deviceAdd) { //  => 变两级指标, 请求受影响单图表。
+      let tmpHandleInfo = [...stopHandleInfo];
+      deviceAdd && tmpHandleInfo.push('device');
+      cancelSelect && (tmpHandleInfo = tmpHandleInfo.filter(e => e!== 'device'));
+      this.props.changeStore({
+        stopChartDevice: tmpDeviceResult,
+        stopHandleInfo: tmpHandleInfo,
+      });
+      stopHandleInfo[0] === 'time' ? this.props.getStopTypes({
+        ...param,
+      }) : this.props.getStopTrend({
+        ...param,
+        faultId: stopChartTypes.faultId,
+        type: stopChartTimeMode,
+      });
+    }
+    const queryBoth = (handleLength === 1 && deviceIndex === 0) || handleLength === 0;
+    if (queryBoth) { // 选中一个一级指标: 设备 或者 未选中任何指标 => 请求两个图表数据。
+      this.props.changeStore({
+        stopChartDevice: tmpDeviceResult,
+        stopHandleInfo: cancelSelect ? [] : ['device'],
+      });
+      this.props.getStopTypes({ ...param });
+      this.props.getStopTrend({ ...param, type: stopChartTimeMode });
+    }
+  }
+
+  getTimeRange = (date = []) => { // 根据两个时间取交集
+    const { stopChartTime, stopChartTimeMode } = this.props;
+    let [startTime, endTime] = date;
     if (stopChartTime) { // 已有时间选择。
       const recordStart = moment(stopChartTime).startOf(stopChartTimeMode);
       const recordEnd = moment(stopChartTime).endOf(stopChartTimeMode);
       startTime = moment.max(recordStart, moment(startTime)).format('YYYY-MM-DD');
       endTime = moment.min(recordEnd, moment(endTime)).format('YYYY-MM-DD');
     }
-    const param = {
-      stationCodes: [searchParam.code],
-      deviceFullcodes,
-      startTime,
-      endTime,
-      parentFaultId: stopElecType,
-    };
-    const trendParam = { ...param, type: stopChartTimeMode };
-    if (stopChartTypes) { // 选中了停机时长及次数中的故障内容。
-      trendParam.faultId = stopChartTypes.faultId;
-    }
-    this.props.getStopTrend({ ...trendParam });
-    this.props.getStopTypes({ ...param });
+    return [startTime, endTime];
   }
 
   getZoomRange = (chartInstance = {}) => { // 获取实例的zoom起止位置。
@@ -180,20 +216,42 @@ class ChartStopRank extends Component {
     return [start, end];
   }
 
+  getTitle = () => {
+    const titleTexts = [];
+    const { stopChartTypes, stopChartTime, stopHandleInfo } = this.props;
+    const baseText = {
+      time: stopChartTime ? `${stopChartTime}-` : '',
+      types: stopChartTypes ? `${stopChartTypes.faultName}-` : '',
+    };
+    stopHandleInfo.find((e, i) => {
+      baseText[e] && titleTexts.push(baseText[e]);
+      return e === 'device';
+    });
+    titleTexts.push('风机停机时长及次数');
+    return titleTexts.join('');
+  }
+
   renderChart = (stopRank = [], sortType, stopChartDevice) => {
     const { zoomRange } = this.state;
     const rankChart = echarts.init(this.rankRef);
     const sortedStopRank = this.sortRank(stopRank, sortType);
     const { dataAxis, series } = this.createSeries(sortedStopRank, stopChartDevice);
     const option = {
-      grid: getBaseGrid(),
+      grid: {
+        ...getBaseGrid(),
+        top: 30,
+        bottom: 60,
+      },
       xAxis: getBaseXAxis(dataAxis),
       yAxis: [
         getBaseYAxis('停机时长(h)'),
-        getBaseYAxis('故障次数(次)'),
+        getBaseYAxis('停机次数(次)'),
       ],
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         padding: 0,
         formatter: (param) => {
           const { name, axisValue } = param && param[0] || {};
@@ -222,7 +280,7 @@ class ChartStopRank extends Component {
       start: zoomRange[0],
       end: zoomRange[1],
       showDetail: false,
-      bottom: 15,
+      bottom: 20,
       height: 20,
     }, {
       type: 'inside',
@@ -238,15 +296,10 @@ class ChartStopRank extends Component {
 
   render() {
     const { sortType, modeArr } = this.state;
-    const { stopChartTypes, stopChartTime } = this.props;
-    const stopTimeText = stopChartTime ? `${stopChartTime}-` : '';
-    const stopTypeText = stopChartTypes ? `${stopChartTypes.faultName}-` : '';
     return (
       <div className={styles.stopRank}>
         <div className={styles.top}>
-          <span className={styles.title}>
-            {stopTimeText}{stopTypeText}风机停机时长及次数
-          </span>
+          <span className={styles.title}>{this.getTitle()}</span>
           <span className={styles.handle}>
             <span className={styles.eachHandle}>
               <span className={styles.text}>选择排序</span>

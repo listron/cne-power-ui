@@ -37,6 +37,7 @@ const initState = immutable.fromJS({
   stopTopStringify: '', // stop - 缓存字符串
   stopElecType: 'all', // all全部-faultGen风机故障-planShutdownGen计划停机-substationGen变电-courtGen场外-otherGen其他
   stopType: '', // 全部,....
+  stopHandleInfo: [], // 选中次序记录: 'device', 'time', 'types'
   stopChartDevice: null, // 图表设备选中 {}
   stopChartTime: null, // 图表时间选中 string
   stopChartTimeMode: 'month', // 图表时间格式选中
@@ -46,6 +47,7 @@ const initState = immutable.fromJS({
   curveDeviceFullcode: null, // 选中的设备code
   curveDeviceName: null, // 选中的设备name
   curveDevicesTime: null, // 邻比分析设备选中时间
+  activeDevice: null, // 设备选中柱状图/功率曲线图激活状态 => 其余0.4透明
   curveCheckedMonths: [], // 环比分析各月选中时间
   curveAllMonths: [], // 环比分析所有月
 

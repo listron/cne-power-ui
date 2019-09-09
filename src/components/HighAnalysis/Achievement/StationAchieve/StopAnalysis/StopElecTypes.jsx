@@ -45,17 +45,19 @@ class StopElecTypes extends Component {
   stopTypeChange = (stopElecType) => {
     const { stopChartTimeMode, stopTopStringify } = this.props;
     this.props.changeStore({ stopElecType });
-    const tmpParams = JSON.parse(stopTopStringify) || {};
+    let tmpParams = {};
+    try {
+      tmpParams = JSON.parse(stopTopStringify);
+    } catch (error) { console.log(error); }
     const params = {
       stationCodes: [tmpParams.code],
       deviceFullcodes: tmpParams.device,
       startTime: tmpParams.date[0],
       endTime: tmpParams.date[1],
     };
-    this.props.getStopElec({ ...params });
     this.props.getStopRank({ ...params, parentFaultId: stopElecType });
     this.props.getStopTrend({ ...params, parentFaultId: stopElecType, type: stopChartTimeMode });
-    this.props.getStopTypes({ ...params });
+    this.props.getStopTypes({ ...params, parentFaultId: stopElecType });
   }
 
   toShowDetail = (detailInfo) => this.setState({

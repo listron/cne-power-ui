@@ -83,7 +83,7 @@
   }
 }
 
-.listFixed,.quotaList,.limitList,.faultList{
+.quotaList,.limitList,.faultList{
   flex: 1;
   :global{
     .ant-table{
@@ -103,15 +103,7 @@
   }
 }
 
-.listFixed{
-  :global{
-    .ant-table-scroll table{
-      width: 3500px !important;
-    }
-  }
-}
-
-.listFixed,.quotaList,.faultList,.limitList{
+.quotaList,.faultList,.limitList{
   :global{
     .ant-table-scroll{
       table{
@@ -120,6 +112,14 @@
         }
       }
     }  
+  }
+}
+
+.quotaList{
+  :global{
+    .ant-table .ant-table-thead > tr > th{
+      padding: 0 16px;
+    }
   }
 }
 
@@ -191,7 +191,7 @@
   }
 }
 
-.listFixed,.quotaList,.limitList,.faultList{
+.quotaList,.limitList,.faultList{
   background-color: #fff;
   .listExport{
     color: $themeColor;

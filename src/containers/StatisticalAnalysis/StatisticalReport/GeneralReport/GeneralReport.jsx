@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Icon, DatePicker, Button, message } from "antd";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Icon, DatePicker, Button, message } from 'antd';
 import styles from './generalReport.scss';
-import CommonBreadcrumb from "../../../../components/Common/CommonBreadcrumb";
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationSelect from '../../../../components/Common/StationSelect';
-import Footer from "../../../../components/Common/Footer";
+import Footer from '../../../../components/Common/Footer';
 import moment from 'moment';
 import path from '../../../../constants/path';
 import axios from 'axios';
@@ -12,9 +12,7 @@ import Cookie from 'js-cookie';
 import { enterpriseKey } from '../../../../constants/enterpriseKey';
 
 const { APIBasePath } = path.basePaths;
-const {
-  dailyreport, faultReport, genReport, indicatorReport
-} = path.APISubPaths.statisticalAnalysis;
+const { dailyreport, faultReport, genReport, indicatorReport } = path.APISubPaths.statisticalAnalysis;
 const { MonthPicker } = DatePicker;
 
 class GeneralReport extends Component {
@@ -27,31 +25,31 @@ class GeneralReport extends Component {
       proOperationDate: moment().subtract(1, 'month'),
       selectedStation: [],
       typeDowning: '', // report  fault eleInfo proOperate
-    }
+    };
   }
 
   ChangeReportDate = value => { // 日报
     this.setState({
-      reportDate: value
-    })
+      reportDate: value,
+    });
   }
 
   ChangeFaultDate = value => { //故障日报
     this.setState({
-      faultDate: value
-    })
+      faultDate: value,
+    });
   }
 
   ChangeEleInfoDate = value => {//发电量信息汇总
     this.setState({
-      eleInfoDate: value
-    })
+      eleInfoDate: value,
+    });
   }
 
   ChangeProOperationDate = value => { // 生产指标运行
     this.setState({
-      proOperationDate: value
-    })
+      proOperationDate: value,
+    });
   }
 
 
@@ -68,7 +66,7 @@ class GeneralReport extends Component {
     reportDate = reportDate.format('YYYY-MM-DD');
     const downloadHref = `${APIBasePath}/${dailyreport}/${reportDate}`;
     const fileName = `${reportDate}日报.xlsx`;
-    this.setState({ typeDowning: 'report' })
+    this.setState({ typeDowning: 'report' });
     if (typeDowning !== 'report') {
       this.downLoadFun(downloadHref, fileName, reportDate);
     }
@@ -79,7 +77,7 @@ class GeneralReport extends Component {
     faultDate = faultDate.format('YYYY-MM-DD');
     const downloadHref = `${APIBasePath}/${faultReport}/${faultDate}`;
     const fileName = `${faultDate}故障日报.xlsx`;
-    this.setState({ typeDowning: 'fault' })
+    this.setState({ typeDowning: 'fault' });
     if (typeDowning !== 'fault') {
       this.downLoadFun(downloadHref, fileName, faultDate);
     }
@@ -90,20 +88,20 @@ class GeneralReport extends Component {
     eleInfoDate = eleInfoDate.format('YYYY-MM-DD');
     const downloadHref = `${APIBasePath}/${genReport}/${eleInfoDate}`;
     const fileName = `${eleInfoDate}发电量信息汇总.xlsx`;
-    this.setState({ typeDowning: 'eleInfo' })
+    this.setState({ typeDowning: 'eleInfo' });
     if (typeDowning !== 'eleInfo') {
       this.downLoadFun(downloadHref, fileName, eleInfoDate);
     }
   }
 
   downloadIndicator = () => { // 生产运营指标下载
-    let { proOperationDate, selectedStation,typeDowning } = this.state;
+    const { proOperationDate, selectedStation, typeDowning } = this.state;
     const { stationCode } = selectedStation[0];
     const indicatorYear = proOperationDate.format('YYYY');
     const indicatorMonth = proOperationDate.format('MM');
     const downloadHref = `${APIBasePath}/${indicatorReport}/${stationCode}/${indicatorYear}/${indicatorMonth}`;
     const fileName = `${proOperationDate}生产指标运行.xlsx`;
-    this.setState({ typeDowning: 'proOperate' })
+    this.setState({ typeDowning: 'proOperate' });
     if (typeDowning !== 'proOperate') {
       this.downLoadFun(downloadHref, fileName, proOperationDate);
     }
@@ -118,7 +116,7 @@ class GeneralReport extends Component {
         const fileString = fileNameInfo.split(';')[1];
         const fileNameCode = fileString ? fileString.split('=')[1] : '';
         const fileResult = fileNameCode ? decodeURIComponent(fileNameCode) : '';
-        fileResult && (newFileName = fileResult)
+        fileResult && (newFileName = fileResult);
       }
       if (fileContent) {
         const blob = new Blob([fileContent]);
@@ -131,28 +129,27 @@ class GeneralReport extends Component {
           elink.click();
           URL.revokeObjectURL(elink.href); // 释放URL 对象
           document.body.removeChild(elink);
-          this.setState({ typeDowning: '' })
+          this.setState({ typeDowning: '' });
         } else { // IE10+下载
           navigator.msSaveBlob(blob, newFileName);
         }
 
       }
     }).catch(warning => {
-      message.warning(`下载失败！请重新尝试`)
-      console.log(warning)
-    })
+      message.warning('下载失败！请重新尝试');
+      console.log(warning);
+    });
   }
 
   render() {
-    const {
-      reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation, typeDowning
-    } = this.state;
-    const { stations } = this.props;
+    const { reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation, typeDowning } = this.state;
+    const { stations, theme } = this.props;
     const enterpriseName = Cookie.get('enterpriseName');
     const reportInfo = enterpriseKey.find(e => e.enterpriseName === enterpriseName);
     return (
-      <div className={styles.generalReportBox}>
-        <CommonBreadcrumb breadData={{ name: '通用报表' }} style={{ marginLeft: '38px' }}></CommonBreadcrumb>
+      <div className={`${styles.generalReportBox} ${styles[theme]}`}>
+        <CommonBreadcrumb breadData={{ name: '通用报表' }} style={{ marginLeft: '38px' }} />
+        <span ref={'wrap'} />
         <div className={styles.generalReportContainer}>
           <div className={styles.generalReportMain}>
             <div className={styles.dailyBox}>
@@ -168,6 +165,7 @@ class GeneralReport extends Component {
                   placeholder={'选择时间'}
                   onChange={this.ChangeReportDate}
                   value={reportDate}
+                  getCalendarContainer={() => this.refs.wrap}
                 />
               </div>
               <div className={styles.downloadBtn}>
@@ -188,7 +186,8 @@ class GeneralReport extends Component {
                   placeholder={'选择时间'}
                   onChange={this.ChangeFaultDate}
                   value={faultDate}
-                /> 
+                  getCalendarContainer={() => this.refs.wrap}
+                />
               </div>
               <div className={styles.downloadBtn}>
                 <Button disabled={!faultDate} onClick={this.downloadFault} className={styles.text} loading={typeDowning === 'fault'}>下载</Button>
@@ -207,8 +206,9 @@ class GeneralReport extends Component {
                   placeholder={'选择时间'}
                   onChange={this.ChangeEleInfoDate}
                   value={eleInfoDate}
+                  getCalendarContainer={() => this.refs.wrap}
                 />
-              </div> 
+              </div>
               <div className={styles.downloadBtn}>
                 <Button disabled={!eleInfoDate} className={styles.text} onClick={this.downloadGenInfo} loading={typeDowning === 'eleInfo'}>下载</Button>
               </div>
@@ -226,6 +226,7 @@ class GeneralReport extends Component {
                   placeholder={'选择月份'}
                   onChange={this.ChangeProOperationDate}
                   value={proOperationDate}
+                  getCalendarContainer={() => this.refs.wrap}
                 />
               </div>
               <div className={styles.stationSearchs}>
@@ -234,6 +235,7 @@ class GeneralReport extends Component {
                   onOK={this.selectStation}
                   value={selectedStation}
                   holderText="请选择电站"
+                  theme={theme}
                 />
               </div>
               <div className={styles.downloadBtn}>
@@ -249,12 +251,13 @@ class GeneralReport extends Component {
           <Footer />
         </div>
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => ({
   stations: state.common.get('stations').toJS(),
+  theme: state.common.get('theme'),
 });
 
-export default connect(mapStateToProps)(GeneralReport)
+export default connect(mapStateToProps)(GeneralReport);
