@@ -120,7 +120,7 @@ class ParentFilter extends Component {
       });
     });
     return (
-      <div className={styles.stationFilter}>
+      <div className={styles.filterItem}>
         <Tabs onChange={this.onChangeParentItem} activeKey={activeKey} animated={false}>
           <TabPane tab="不限" key="all">
             {null}

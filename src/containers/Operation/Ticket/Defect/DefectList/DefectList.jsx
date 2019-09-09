@@ -5,7 +5,6 @@ import Cookie from 'js-cookie';
 import styles from './defectList.scss';
 import { ticketAction } from '../../ticketAction';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
-import DefectFilter from '../../../../../components/Operation/Ticket/Defect/DefectFilter/DefectFilter';
 import DefectStatus from '../../../../../components/Operation/Ticket/Defect/DefectStatus/DefectStatus';
 import { commonAction } from '../../../../alphaRedux/commonAction';
 import FilterCondition from '../../../../../components/Common/FilterCondition/FilterCondition';
@@ -79,28 +78,28 @@ class DefectList extends Component {
   }
 
 
-  filterCondition = (changeValue) => {
-    const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
-    const filter = {
-      stationType,
-      stationCodes,
-      defectSource,
-      defectLevel,
-      timeInterval,
-      status,
-      pageNum,
-      pageSize,
-      createTimeStart,
-      createTimeEnd,
-      deviceTypeCode,
-      defectTypeCode,
-      sortField,
-      sortMethod,
-      handleUser,
-    };
-    this.props.getDefectList({ ...filter, ...changeValue });
-    this.props.getDefectIdList({ ...filter, ...changeValue }); // 获取道缺陷ID列表
-  }
+  // filterCondition = (changeValue) => {
+  //   const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
+  //   const filter = {
+  //     stationType,
+  //     stationCodes,
+  //     defectSource,
+  //     defectLevel,
+  //     timeInterval,
+  //     status,
+  //     pageNum,
+  //     pageSize,
+  //     createTimeStart,
+  //     createTimeEnd,
+  //     deviceTypeCode,
+  //     defectTypeCode,
+  //     sortField,
+  //     sortMethod,
+  //     handleUser,
+  //   };
+  //   this.props.getDefectList({ ...filter, ...changeValue });
+  //   this.props.getDefectIdList({ ...filter, ...changeValue }); // 获取道缺陷ID列表
+  // }
 
   filterConditionChange = (value) => {
     const { username, timeInterval, status, pageSize, sortField, sortMethod, pageNum } = this.props;
@@ -111,6 +110,7 @@ class DefectList extends Component {
     const params = {
       stationType, stationCodes, defectSource, defectLevel, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, handleUser,
     };
+    this.props.changeDefectStore({ ...tableParams, ...params });
     this.props.getDefectList({ ...tableParams, ...params });
     this.props.getDefectIdList({ ...tableParams, ...params });
   }
@@ -199,11 +199,13 @@ class DefectList extends Component {
               type: 'defectSource',
               belong: 'multipleSelect',
               typeName: 'defectSource',
+              disabled: true,
             },
             {
               name: '我参与的',
               type: 'switch',
               typeName: 'join',
+              disabled: true,
             },
           ]}
           value={{
@@ -214,7 +216,7 @@ class DefectList extends Component {
             deviceTypeCode: deviceTypeCode,
             defectTypeCode: defectTypeCode,
             rangeTimes: (createTimeStart || createTimeEnd) && [createTimeStart, createTimeEnd] || [],
-            join: username && true || false,
+            join: handleUser,
           }}
         />
         <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} defaultValue={status} />

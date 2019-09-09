@@ -7,10 +7,9 @@
   flex-direction: column;
   padding: 26px 28px 20px;
 }
+
 .filterConditionTitle {
   display: flex;
-  color: #00baff;
-
   .text {
     margin-right: 16px;
     line-height: 30px;
@@ -30,7 +29,6 @@
   }
   .filterlist {
     height: 32px;
-    border: 1px solid #00baff;
     line-height: 32px;
     padding: 0 16px;
     white-space: nowrap;
@@ -46,55 +44,10 @@
     }
   }
   .disabled {
-    background: #f7f7f7;
-    border: 1px solid #d9d9d9;
-    color: #dfdfdf;
     cursor: not-allowed;
     pointer-events: none;
   }
 }
-
-.filteredItems {
-  display: flex;
-  .selectText {
-    line-height: 30px;
-    margin-right: 12px;
-    height: 30px;
-    width: 40px;
-  }
-  .tagWrap {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-    .tag {
-      border: 1px dashed #dfdfdf;
-      padding: 0 10px;
-      height: 30px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      margin-right: 16px;
-      margin-top: 5px;
-      cursor: pointer;
-      &:hover {
-        background: #199475;
-        color: #fff;
-        border: 1px dashed #199475;
-      }
-    }
-  }
-  .resetAll {
-    color: #199475;
-    font-size: 14px;
-    cursor: pointer;
-    font-style: normal;
-    display: inline-block;
-    line-height: 30px;
-  }
-}
-
 .filterItem {
   margin-top: 10px;
   display: flex;
@@ -104,21 +57,20 @@
   padding: 12px 24px;
   min-height: 40px;
   border-radius: 4px;
-  background-color: #f0f2f5;
+
   > span {
     margin-bottom: 8px;
   }
   :global {
     .ant-input {
-      width: 300px;
-      &:hover {
-        border-color: $themeColor;
-      }
+      width: 280px;
     }
+  }
+  .allCheck {
+    width: 100px;
   }
   .all {
     display: inline-block;
-    color: $darkColor;
     width: 29px;
     height: 19px;
     border-bottom: none;
@@ -126,10 +78,8 @@
   }
   .selected {
     display: inline-block;
-    color: $themeColor;
     width: 29px;
     height: 19px;
-    border-bottom: 1px $themeColor solid;
     cursor: pointer;
     text-align: center;
   }
@@ -138,11 +88,125 @@
     padding: 0 5px;
   }
 }
+.filteredItems {
+  display: flex;
+  .selectText {
+    line-height: 30px;
+    height: 30px;
+    width: 40px;
+    margin: 8px 8px 0 0;
+    flex: 0 0 40px;
+  }
+  .tagWrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    .tag {
+      padding: 0 10px;
+      height: 30px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      margin-right: 16px;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+  }
+  .resetAll {
+    font-size: 14px;
+    cursor: pointer;
+    font-style: normal;
+    display: inline-block;
+    line-height: 30px;
+  }
+}
 
-.dateFilter {
-  :global {
-    .ant-input {
-      width: 280px;
+.light {
+  .filterConditionTitle {
+    color: $themeColor;
+    .filterlist {
+      border: 1px solid $themeColor;
+    }
+    .disabled {
+      background: #f7f7f7;
+      border: 1px solid #d9d9d9;
+      color: #dfdfdf;
+    }
+  }
+  .filteredItems {
+    .tag {
+      border: 1px dashed #dfdfdf;
+      &:hover {
+        background: #199475;
+        color: #fff;
+        border: 1px dashed #199475;
+      }
+    }
+    .resetAll {
+      color: #199475;
+    }
+  }
+  .filterItem {
+    background-color: #f0f2f5;
+    :global {
+      .ant-input {
+        &:hover {
+          border-color: $themeColor;
+        }
+      }
+    }
+    .all {
+      color: $darkColor;
+    }
+    .selected {
+      color: $themeColor;
+      border-bottom: 1px $themeColor solid;
+    }
+  }
+}
+
+.dark {
+  .filterConditionTitle {
+    color: #00baff;
+    .filterlist {
+      border: 1px solid #00baff;
+    }
+    .disabled {
+      background: #f7f7f7;
+      border: 1px solid #d9d9d9;
+      color: #dfdfdf;
+    }
+  }
+  .filteredItems {
+    .tag {
+      border: 1px dashed #dfdfdf;
+      &:hover {
+        background: #199475;
+        color: #fff;
+        border: 1px dashed #199475;
+      }
+    }
+    .resetAll {
+      color: #199475;
+    }
+  }
+  .filterItem {
+    background-color: #f0f2f5;
+    :global {
+      .ant-input {
+        &:hover {
+          border-color: $themeColor;
+        }
+      }
+    }
+    .all {
+      color: $darkColor;
+    }
+    .selected {
+      color: $themeColor;
+      border-bottom: 1px $themeColor solid;
     }
   }
 }

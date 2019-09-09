@@ -255,7 +255,6 @@ class FilterCondition extends Component {
   render() {
     const { theme = 'light' } = this.props;
     const { showFilter, optionItem } = this.state;
-    console.log('optionItem', optionItem);
     const { type } = showFilter;
     const selectData = optionItem.filter(e => e.type === showFilter.type && e.typeName === showFilter.typeName);
     const rangeTime = optionItem.filter(e => e.type === 'rangeTime');
