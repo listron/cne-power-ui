@@ -58,6 +58,7 @@ class DateFliter extends Component {
     const [startTime, endTime] = checkedValue;
     return (
       <div className={`${styles.filterItem} ${styles.dateFilter}`} >
+        <span ref="datePicker" />
         <span onClick={this.resetTime} className={!startTime && !endTime ? styles.selected : styles.all}>不限</span>
         <div>
           <DatePicker
@@ -65,6 +66,7 @@ class DateFliter extends Component {
             value={startTime ? moment(startTime) : null}
             placeholder="开始时间"
             onChange={this.onStartChange}
+            getCalendarContainer={() => this.refs.datePicker}
           />
           <span className={styles.lines}>~</span>
           <DatePicker
@@ -72,6 +74,7 @@ class DateFliter extends Component {
             value={endTime ? moment(endTime) : null}
             placeholder="截止时间"
             onChange={this.onEndChange}
+            getCalendarContainer={() => this.refs.datePicker}
           />
         </div>
 

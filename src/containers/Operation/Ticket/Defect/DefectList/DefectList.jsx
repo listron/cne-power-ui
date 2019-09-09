@@ -78,45 +78,29 @@ class DefectList extends Component {
   }
 
 
-  // filterCondition = (changeValue) => {
-  //   const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
-  //   const filter = {
-  //     stationType,
-  //     stationCodes,
-  //     defectSource,
-  //     defectLevel,
-  //     timeInterval,
-  //     status,
-  //     pageNum,
-  //     pageSize,
-  //     createTimeStart,
-  //     createTimeEnd,
-  //     deviceTypeCode,
-  //     defectTypeCode,
-  //     sortField,
-  //     sortMethod,
-  //     handleUser,
-  //   };
-  //   this.props.getDefectList({ ...filter, ...changeValue });
-  //   this.props.getDefectIdList({ ...filter, ...changeValue }); // 获取道缺陷ID列表
-  // }
-
   filterConditionChange = (value) => {
-    const { username, timeInterval, status, pageSize, sortField, sortMethod, pageNum } = this.props;
-    const { rangeTimes, stationType, stationCodes, deviceTypeCode, defectLevel, defectTypeCode, defectSource, join } = value;
-    const [createTimeStart = '', createTimeEnd = ''] = rangeTimes;
-    const handleUser = join && username || '';
+    const { username, timeInterval, status, pageSize, sortField, sortMethod, pageNum,
+      stationType, stationCodes, defectSource, defectLevel, deviceTypeCode, defectTypeCode, handleUser } = this.props;
+    let { createTimeStart, createTimeEnd } = this.props;
+    const inithandleUser = value.join && username || handleUser;
+    if (value.rangeTimes) {
+      [createTimeStart, createTimeEnd] = value.rangeTimes;
+    }
     const tableParams = { timeInterval, status, pageSize, sortField, sortMethod, pageNum };
     const params = {
-      stationType, stationCodes, defectSource, defectLevel, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, handleUser,
+      stationType, stationCodes, defectSource, defectLevel, deviceTypeCode, defectTypeCode,
+      createTimeStart, createTimeEnd, handleUser: inithandleUser,
     };
-    this.props.changeDefectStore({ ...tableParams, ...params });
-    this.props.getDefectList({ ...tableParams, ...params });
-    this.props.getDefectIdList({ ...tableParams, ...params });
+    const questParams = { ...tableParams, ...params, ...value };
+    delete questParams['rangeTimes'];
+    delete questParams['join'];
+    this.props.changeDefectStore(questParams);
+    this.props.getDefectList(questParams);
+    this.props.getDefectIdList(questParams);
   }
 
   render() {
-    const { stations, defectTypes, defectList, username, deviceTypes, defectStatusStatistics,
+    const { stations, defectTypes, defectList, username, deviceTypes, defectStatusStatistics, theme,
       createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, deviceTypeCode, defectTypeCode, defectSource, handleUser, status } = this.props;
     const defectTypeTab = [];
     defectTypes.forEach(e => { e.list && e.list.length > 0 && defectTypeTab.push(...e.list); });
@@ -151,6 +135,7 @@ class DefectList extends Component {
         /> */}
         <FilterConditions
           onChange={this.filterConditionChange}
+          theme={theme}
           option={[
             {
               name: ' 发生时间',
@@ -199,28 +184,17 @@ class DefectList extends Component {
               type: 'defectSource',
               belong: 'multipleSelect',
               typeName: 'defectSource',
-              disabled: true,
             },
             {
               name: '我参与的',
               type: 'switch',
               typeName: 'join',
-              disabled: true,
             },
           ]}
-          value={{
-            stationType: stationType,
-            stationCodes: stationCodes,
-            defectSource: defectSource,
-            defectLevel: defectLevel,
-            deviceTypeCode: deviceTypeCode,
-            defectTypeCode: defectTypeCode,
-            rangeTimes: (createTimeStart || createTimeEnd) && [createTimeStart, createTimeEnd] || [],
-            join: handleUser,
-          }}
+          value={{ stationType, stationCodes, defectSource, defectLevel, deviceTypeCode, defectTypeCode, rangeTimes: [createTimeStart, createTimeEnd], join: handleUser }}
         />
-        <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} defaultValue={status} />
-        <DefectTable {...this.props} onChangeFilter={this.filterCondition} />
+        <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterConditionChange} defaultValue={status} theme={theme} />
+        <DefectTable {...this.props} onChangeFilter={this.filterConditionChange} />
       </div>
     );
   }

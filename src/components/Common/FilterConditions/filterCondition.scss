@@ -168,32 +168,37 @@
 }
 
 .dark {
+  @import "../../../theme/antdResetDark.scss";
+  background: $light-background;
+  border: 1px solid $border-color;
   .filterConditionTitle {
-    color: #00baff;
+    color: $fontColor;
     .filterlist {
-      border: 1px solid #00baff;
+      border: 1px solid $fontColor;
     }
     .disabled {
-      background: #f7f7f7;
-      border: 1px solid #d9d9d9;
-      color: #dfdfdf;
+      background: #405080;
+      border: 1px solid #7088c3;
+      color: #7088c3;
     }
   }
   .filteredItems {
+    color: $fontColor;
     .tag {
-      border: 1px dashed #dfdfdf;
+      border: 1px solid $border-color;
       &:hover {
-        background: #199475;
-        color: #fff;
-        border: 1px dashed #199475;
+        background: $fontColor;
+        color: $fontColor-invert;
+        border: 1px dashed $fontColor;
       }
     }
     .resetAll {
-      color: #199475;
+      color: #dca30b;
     }
   }
   .filterItem {
-    background-color: #f0f2f5;
+    color: $fontColor;
+    background-color: #1e246e;
     :global {
       .ant-input {
         &:hover {
@@ -202,11 +207,28 @@
       }
     }
     .all {
-      color: $darkColor;
+      color: $fontColor;
     }
     .selected {
       color: $themeColor;
       border-bottom: 1px $themeColor solid;
+    }
+  }
+  :global {
+    .ant-tabs-bar {
+      border-bottom: 1px solid $border-color;
+    }
+    .ant-tabs-tab-prev,
+    .ant-tabs-tab-next {
+      color: $fontColor;
+      &:hover {
+        color: $fontColor-hover;
+      }
+    }
+    .ant-tabs-nav .ant-tabs-tab {
+      &:hover {
+        color: $fontColor-hover;
+      }
     }
   }
 }

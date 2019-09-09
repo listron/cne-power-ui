@@ -38,16 +38,16 @@ class FilteredItems extends Component {
 
   render() {
     const { options = [] } = this.props;
-    const filterOptions = options.filter(item => item.checkedValue.length > 0);
     const multipleSelect = options.filter(item => item.belong === 'multipleSelect' && item.checkedValue.length > 0);
-    const rangeTime = options.filter(item => item.type === 'rangeTime' && item.checkedValue.length > 0);
-    const time = options.filter(item => item.type === 'time' && item.checkedValue.length > 0);
+    const rangeTime = options.filter(item => item.type === 'rangeTime' && item.checkedValue.filter(e => !!e).length > 0);
+    const time = options.filter(item => item.type === 'time' && item.checkedValue.filter(e => !!e).length > 0);
     const radioSelectType = ['stationType', 'radioSelect'];
-    const radioSelect = options.filter(item => radioSelectType.includes(item.type));
+    const radioSelect = options.filter(item => radioSelectType.includes(item.type) && item.checkedValue);
+    const hasData = multipleSelect.length > 0 || rangeTime.length > 0 || time.length > 0 || radioSelect.length > 0;
     return (
       <div className={styles.filteredItems}>
         {
-          filterOptions.length > 0 &&
+          hasData &&
           <React.Fragment>
             <p className={styles.selectText}> 已选 </p>
             <div className={styles.tagWrap}>
@@ -89,7 +89,6 @@ class FilteredItems extends Component {
               }
               <i onClick={this.resetAll} className={styles.resetAll}>清空条件</i>
             </div>
-
           </React.Fragment>
         }
       </div>
