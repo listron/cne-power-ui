@@ -33,7 +33,8 @@
     flex-wrap: wrap;
 
     .lastNode {
-      flex-basis: 33%;
+      flex: 0 0 50%;
+      overflow: hidden;
     }
   }
 }
