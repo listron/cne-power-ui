@@ -237,7 +237,7 @@ class DevicesAep extends Component {
               <span className={styles.rect} style={{
                 backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
                 }} />
-              <span className={styles.modeText}>{e}</span>
+              <span className={styles.modeText}>{e} AEP</span>
             </span>
           ))}
           <span className={styles.eachMode}>
