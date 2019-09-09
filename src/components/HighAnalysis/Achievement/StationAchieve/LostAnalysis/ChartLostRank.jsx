@@ -224,6 +224,7 @@ class ChartLostRank extends Component {
     const { dataAxis, series } = this.createSeries(sortedLostRank, lostChartDevice, unit);
     const baseOption = getBaseOption(dataAxis);
     baseOption.yAxis.name = `${label}${unit ? `(${unit})` : ''}`;
+    baseOption.yAxis.nameTextStyle.padding = label.length > 4 ? [0, (4 - label.length) * 15 - 10, 0, 0] : null;
     const option = {
       ...baseOption,
       tooltip: {
