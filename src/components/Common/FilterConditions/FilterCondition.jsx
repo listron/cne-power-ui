@@ -218,6 +218,8 @@ class FilterCondition extends Component {
           item.checkedValue = value[item['typeName']];
         }
       }
+
+
       optionList.push({ ...this.initOption(item.type), ...item });
     });
     this.setState({ optionItem: optionList });

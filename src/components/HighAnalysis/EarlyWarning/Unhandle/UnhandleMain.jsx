@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Select, Table, Modal, Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './unhandle.scss';
-import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+// import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
 import IgnoreModal from './IgnoreModal';
@@ -101,8 +102,10 @@ class Unhandle extends Component {
 
   filterCondition = (change) => { // 筛选条件
     this.getUnhandleList({ ...change });
-    change.stationCodes && this.props.getMatrixlist({ stationCodes: change.stationCodes });
+    this.props.getMatrixlist({ stationCodes: change.stationCodes });
   }
+
+
 
   selectChange = (wayChange) => { // 进行操作 转工单 忽略
     if (wayChange === 'transfer') {
@@ -185,15 +188,31 @@ class Unhandle extends Component {
       onChange: this.onSelectChange,
     };
     const dataSource = unhandleList.map((item, index) => ({ ...item, key: item.inefficiencyId }));
+    const initmatrixList = matrixList.map(e => ({ label: e, value: e }));
     return (
       <div className={styles.unhandleMain}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <FilterCondition
-          option={['stationName', 'belongMatrixs']}
-          stations={stations.filter(e => e.stationType === 1)}
-          matrixList={matrixList}
-          onChange={this.filterCondition}
           theme={theme}
+          onChange={this.filterCondition}
+          option={[
+            {
+              name: '电站名称',
+              type: 'stationName',
+              belong: 'multipleSelect',
+              typeName: 'stationCodes',
+              data: stations,
+            },
+            {
+              name: '所属方阵',
+              type: 'multipleType',
+              belong: 'multipleSelect',
+              typeName: 'belongMatrixs',
+              rules: ['label', 'value'],
+              data: initmatrixList,
+            },
+
+          ]}
         />
         <div className={styles.wrap}>
           <span ref={'select'} />

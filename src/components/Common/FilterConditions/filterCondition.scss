@@ -185,7 +185,7 @@
   .filteredItems {
     color: $fontColor;
     .tag {
-      border: 1px solid $border-color;
+      border: 1px dashed $fontColor;
       &:hover {
         background: $fontColor;
         color: $fontColor-invert;
