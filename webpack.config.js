@@ -15,7 +15,7 @@
   const { mockConfig } = require('./mock.config.js');
 
   module.exports = smp.wrap({
-    mode:'development',
+    mode: 'development',
     entry: {
       app: './src/app.js',
     },
@@ -27,35 +27,45 @@
       before(server) {
         mockConfig.forEach(e=>{
           server[e.method](`${e.api}`, (req, res) => {
-            setTimeout(()=>res.json(e.response),e.delay || 2000)
+            setTimeout(()=>res.json(e.response), e.delay || 2000);
           });
-        })
+        });
       },
     },
-    resolve:{
-      extensions: [".js", ".json", ".jsx"]
+    resolve: {
+      alias: {
+        '@common': path.resolve(__dirname, 'src/common'),
+        '@components': path.resolve(__dirname, 'src/components'),
+        '@config': path.resolve(__dirname, 'src/config'),
+        '@constants': path.resolve(__dirname, 'src/constants'),
+        '@path$': path.resolve(__dirname, 'src/constants/path.js'),
+        '@containers': path.resolve(__dirname, 'src/containers'),
+        '@theme': path.resolve(__dirname, 'src/theme'),
+        '@utils': path.resolve(__dirname, 'src/utils'),
+      },
+      extensions: ['.js', '.json', '.jsx'],
     },
     module: {
       rules: [{
         test: /\.(js|jsx)$/,
         // use: 'babel-loader',
         use: 'happypack/loader?id=happyBabel',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       }, {
         test: /\.css$/,
         exclude: /node_modules/,
         use: ExtractTextPlugin.extract({
           fallback: [{
-            loader:'style-loader'
+            loader: 'style-loader',
           }, {
-            loader:'css-loader',
+            loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: '[local]__[hash:base64:5]'
-            }
+              localIdentName: '[local]__[hash:base64:5]',
+            },
           }],
           use: 'happypack/loader?id=cssBabel',
-        })
+        }),
         // use: [{
         //   loader:'style-loader'
         // },{
@@ -66,14 +76,14 @@
         //   }
         // }]
       }, {//antd样式处理
-        test:/\.css$/,
-        exclude:/src/,
+        test: /\.css$/,
+        exclude: /src/,
         use: ExtractTextPlugin.extract({
           fallback: [
-            { loader: "style-loader" },
+            { loader: 'style-loader' },
             {
-              loader: "css-loader",
-              options:{
+              loader: 'css-loader',
+              options: {
                 importLoaders: 1
               }
             }
