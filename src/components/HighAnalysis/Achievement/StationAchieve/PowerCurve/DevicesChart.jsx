@@ -46,7 +46,7 @@ class DevicesChart extends Component {
 
   createSeires = (curveData = [], activeDevice) => curveData.map((e) => {
     const { devicePowerInfoVos = [], deviceName, deviceFullcode } = e || {};
-    const opacity = (activeDevice && activeDevice !== deviceFullcode && deviceName !== '理论功率') ? 0.4 : 1;
+    const opacity = (activeDevice && activeDevice !== deviceFullcode && deviceName !== '理论功率') ? 0.2 : 1;
     const curveSeries = {
       type: 'line',
       smooth: true,

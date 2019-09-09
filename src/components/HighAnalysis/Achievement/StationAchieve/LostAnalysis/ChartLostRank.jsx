@@ -282,7 +282,7 @@ class ChartLostRank extends Component {
       lostStringify && ({ quota } = JSON.parse(lostStringify));
     } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
-    const extraQuotaText = selectedQuota.label === '利用小时数' ? '实发小时数' : '';
+    const extraQuotaText = selectedQuota.label === '利用小时数' ? ' 实发小时数' : '';
     return (
       <div className={styles.lostRank}>
         <div className={styles.top}>
