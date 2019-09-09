@@ -154,7 +154,7 @@ class ChartStopTypes extends Component {
       endTime,
       parentFaultId: stopElecType,
     };
-    cancelSelect && (param.faultId = curFaultInfo.faultId);
+    cancelSelect || (param.faultId = curFaultInfo.faultId);
     this.setState({
       zoomRange: this.getZoomRange(chart),
     }, () => this.renderChart(sortedTypes, sortName, tmpTypesResult));
@@ -237,7 +237,17 @@ class ChartStopTypes extends Component {
         { ...getBaseXAxis(dataAxis), gridIndex: 2 },
       ],
       yAxis: [
-        { ...getBaseYAxis('停机次数(次)'), gridIndex: 0, min: 0 },
+        {
+          ...getBaseYAxis('停机次数(次)'),
+          gridIndex: 0,
+          min: 0,
+          axisLabel: {
+            textStyle: {
+              color: '#666666',
+            },
+            formatter: (value) => `${value}`.includes('.') ? '' : value,
+          },
+        },
         { ...getBaseYAxis('停机时长(h)'), gridIndex: 1, min: 0 },
         { ...getBaseYAxis('停机电量(万kWh)'), gridIndex: 2, min: 0 },
       ],
@@ -260,7 +270,7 @@ class ChartStopTypes extends Component {
               ${param.sort((a, b) => a.seriesIndex - b.seriesIndex).map(({ seriesIndex, value }) => (
                 `<span class=${styles.eachItem}>
                   <span>${['停机次数', '停机时长', '停机电量'][seriesIndex]}</span>
-                  <span>${dataFormats(value / ([1, 1, 10000][seriesIndex]), '--', [0, 1, 4][seriesIndex], true)}</span>
+                  <span>${dataFormats(value / ([1, 1, 10000][seriesIndex]), '--', [0, 2, 4][seriesIndex], true)}</span>
                 </span>`
               )).join('')}
             </div>
