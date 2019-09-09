@@ -79,6 +79,8 @@ class FilterCondition extends Component {
         typeName: 'rangeTimes',
         belong: 'timeSelect',
         },
+
+        设置时间的时候 如果其中两个值存在其中的一个，就可以写成[startTime,endTime] 否则需要写成 []
      
      
     
@@ -253,6 +255,7 @@ class FilterCondition extends Component {
   render() {
     const { theme = 'light' } = this.props;
     const { showFilter, optionItem } = this.state;
+    console.log('optionItem', optionItem);
     const { type } = showFilter;
     const selectData = optionItem.filter(e => e.type === showFilter.type && e.typeName === showFilter.typeName);
     const rangeTime = optionItem.filter(e => e.type === 'rangeTime');

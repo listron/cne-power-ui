@@ -43,14 +43,18 @@ class FilterConditionTitle extends Component {
           {
             options.map((item, key) => {
               if (item.type === 'switch') {
-                return (<div className={styles.switch} key={key}>
-                  <Switch onChange={(value) => this.switchChange(value, item)} defaultChecked={item.checkedValue} /><span>{item.name || '我参与的'}</span>
-                </div>);
+                return (
+                  <div className={styles.switch} key={key}>
+                    <Switch onChange={(value) => this.switchChange(value, item)} value={item.checkedValue && true || false} />
+                    <span>{item.name || '我参与的'}</span>
+                  </div>);
               }
               return (
-                <div onClick={() => this.onFilterShowChange(item)} key={key} className={`${styles.filterlist} ${item.disabled && styles.disabled}`}>
-                  {item.name}
-                  {(showFilter.type === item.type && showFilter.typeName === item.typeName) ? <Icon type="up" /> : <Icon type="down" />}
+                <div
+                  onClick={() => this.onFilterShowChange(item)}
+                  key={key}
+                  className={`${styles.filterlist} ${item.disabled && styles.disabled}`}>
+                  {item.name} {(showFilter.type === item.type && showFilter.typeName === item.typeName) ? <Icon type="up" /> : <Icon type="down" />}
                 </div>);
             })
           }

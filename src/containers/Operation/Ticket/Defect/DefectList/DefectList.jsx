@@ -103,7 +103,6 @@ class DefectList extends Component {
   }
 
   filterConditionChange = (value) => {
-    console.log('value', value);
     const { username, timeInterval, status, pageSize, sortField, sortMethod, pageNum } = this.props;
     const { rangeTimes, stationType, stationCodes, deviceTypeCode, defectLevel, defectTypeCode, defectSource, join } = value;
     const [createTimeStart = '', createTimeEnd = ''] = rangeTimes;
@@ -113,7 +112,7 @@ class DefectList extends Component {
       stationType, stationCodes, defectSource, defectLevel, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, handleUser,
     };
     this.props.getDefectList({ ...tableParams, ...params });
-    console.log('params', params);
+    this.props.getDefectIdList({ ...tableParams, ...params });
   }
 
   render() {
@@ -130,7 +129,7 @@ class DefectList extends Component {
     });
     return (
       <div className={styles.defectList}>
-        <FilterCondition
+        {/* <FilterCondition
           option={['time', 'stationType', 'stationName', 'deviceType', 'defectLevel', 'defectType', 'defectSource', 'myJoin']}
           stations={stations}
           deviceTypes={deviceTypes}
@@ -149,7 +148,7 @@ class DefectList extends Component {
             defectTypeCode: defectTypeCode,
             handleUser: handleUser,
           }}
-        />
+        /> */}
         <FilterConditions
           onChange={this.filterConditionChange}
           option={[
@@ -214,7 +213,8 @@ class DefectList extends Component {
             defectLevel: defectLevel,
             deviceTypeCode: deviceTypeCode,
             defectTypeCode: defectTypeCode,
-            rangeTimes: [createTimeStart, createTimeEnd]
+            rangeTimes: (createTimeStart || createTimeEnd) && [createTimeStart, createTimeEnd] || [],
+            join: username && true || false,
           }}
         />
         <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} defaultValue={status} />
