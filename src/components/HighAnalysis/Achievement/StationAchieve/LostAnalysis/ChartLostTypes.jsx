@@ -153,6 +153,7 @@ class ChartLostTypes extends Component {
           type: 'bar',
           stack: '总量',
           barWidth: '10px',
+          cursor: 'default',
           label: {
             normal: {
               show: true,
