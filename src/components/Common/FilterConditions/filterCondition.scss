@@ -218,6 +218,9 @@
     .ant-tabs-bar {
       border-bottom: 1px solid $border-color;
     }
+    .ant-tabs-nav-scroll {
+      background: transparent !important;
+    }
     .ant-tabs-tab-prev,
     .ant-tabs-tab-next {
       color: $fontColor;

@@ -181,8 +181,10 @@ class FilterCondition extends Component {
       }; break;
       case 'stationName': result = {
         type: 'stationName',
+        typeName: 'stationCodes',
         rules: ['stationName', 'stationCode'],
         parentName: 'provinceName',
+        name: '电站名称',
       }; break;
       case 'stationType': result = {
         type: 'stationType',
