@@ -15,11 +15,12 @@ class AddPoint extends React.Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
-      preStep: false,
+      preStep: true,
       addStationCode: null,
       addDeviceTypeCode: null,
       manufactorId: null,
       deviceModeCode: null,
+      payloadData: {},
     };
   }
   onWarningTipShow = () => {
@@ -89,30 +90,52 @@ class AddPoint extends React.Component {
     this.setState({
       preStep: false,
     });
+    this.format();
+
   }
   showPre = () => {
     this.setState({
       preStep: true,
     });
   }
+  dataFinder = (data, children, contrast) => {
+    const arr = data.filter((e) => e[children] === contrast);
+    return arr;
+  }
+  filterData = (dataArr, typeName) => {
+    const firstData = dataArr.length ? dataArr[0] : {};
+    const data = firstData[typeName];
+    return data;
+  }
+
+
   format = () => {
     const { addStationCode, addDeviceTypeCode, manufactorId, deviceModeCode } = this.state;
-    const { stations } = this.props;
-    const stationName = stations.filter((e) => (e.stationCode === addStationCode))[0];
+    const { allStationBaseInfo, stationDeviceTypes, factorsDeviceModeData, allFactor } = this.props;
+    const stationName = this.filterData(this.dataFinder(allStationBaseInfo, 'stationCode', addStationCode), 'stationName');
+    console.log('stationName: ', stationName);
+    const deviceTypeName = this.filterData(this.dataFinder(stationDeviceTypes, 'deviceTypeCode', addDeviceTypeCode), 'deviceTypeName');
+    console.log('deviceTypeName: ', deviceTypeName);
+    const manufatorName = this.filterData(this.dataFinder(allFactor, 'manufactorId', manufactorId), 'manufactorName');
+    console.log('manufatorName: ', manufatorName);
+    const deviceModeName = this.filterData(this.dataFinder(factorsDeviceModeData, 'deviceModeCode', deviceModeCode), 'modeName');
+    console.log('deviceModeName: ', deviceModeName);
     const data = { stationCode: addStationCode, deviceTypeCode: addDeviceTypeCode, manufactorId, deviceModeCode, stationName, deviceTypeName, deviceModeName, manufatorName };
-
+    this.setState({
+      payloadData: data,
+    });
 
   }
   render() {
-    const { allStationBaseInfo, stationDeviceTypes, allFactor, factorsDeviceModeData, showPage } = this.props;
-    const { showWarningTip, warningTipText, preStep, addStationCode, addDeviceTypeCode, manufactorId, deviceModeCode } = this.state;
-    const typeSelectDisable = stationDeviceTypes.length === 0;
+    const { allStationBaseInfo, stationDeviceTypes, allFactor, factorsDeviceModeData, showPage, addPoint, editPoints } = this.props;
+    const { showWarningTip, warningTipText, preStep, addStationCode, addDeviceTypeCode, manufactorId, deviceModeCode, payloadData } = this.state;
+    const typeSelectDisable = stationDeviceTypes.length === 0 || !addStationCode;
     const modelSelectDisable = factorsDeviceModeData.length === 0;
     const getSelectedStation = allStationBaseInfo.find(e => e.stationCode === addStationCode);
     const selectedStationInfo = getSelectedStation ? [getSelectedStation] : [];
     const isNextStep = (addStationCode && addDeviceTypeCode && manufactorId && deviceModeCode);
 
-    const payloadData = this.format();
+
     return (
       <div className={styles.pointAdd}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -189,7 +212,7 @@ class AddPoint extends React.Component {
             </div>
           </div>
         }
-        {!preStep && <AddNextStep showPage={showPage} showPre={this.showPre} />}
+        {!preStep && <AddNextStep editPoints={editPoints} addPoint={addPoint} showPage={showPage} showPre={this.showPre} payloadData={payloadData} />}
       </div>
     );
   }

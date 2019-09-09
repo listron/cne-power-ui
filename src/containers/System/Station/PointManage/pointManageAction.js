@@ -14,6 +14,11 @@ export const pointManageAction = {
 
   resetStore: Symbol('resetStore'), // 发起重置数据请求
   RESET_STORE: Symbol('RESET_STORE'), // 重置数据
+  deletePoints: Symbol('deletePoints'), // 删除测点
+  addPoint: Symbol('addPoint'), // 增加测点
+  detailPoints: Symbol('detailPoints'), // 测点详情
+  editPoints: Symbol('editPoints'), // 编辑测点
+
 };
 
 

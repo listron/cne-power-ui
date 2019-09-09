@@ -18,6 +18,7 @@ class PointManageList extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '确定要删除选中测点?',
+      currentPoint: {},
     };
   }
   cancelWarningTip = () => {
@@ -26,16 +27,22 @@ class PointManageList extends Component {
     });
   }
   confirmWarningTip = () => {
+    const { currentPoint } = this.state;
     this.setState({
       showWarningTip: false,
     });
     //发送删除测点请求
     // this.deletePointList();
+    this.props.deletePoints({
+      devicePointIds: [currentPoint.devicePointId],
+    });
 
   }
-  deletePoint = () => {
+  deletePoint = (record) => {
+    console.log('record: ', record);
     this.setState({
       showWarningTip: true,
+      currentPoint: record,
     });
   }
 
@@ -44,11 +51,17 @@ class PointManageList extends Component {
     this.props.changePointManageStore({
       showPage: 'detail',
     });
+    this.props.detailPoints({
+      devicePointId: record.devicePointId,
+    });
   }
-  showEditPage = () => {
+  showEditPage = (record) => {
     //展示编辑页
     this.props.changePointManageStore({
       showPage: 'edit',
+    });
+    this.props.detailPoints({
+      devicePointId: record.devicePointId,
     });
   }
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
@@ -128,11 +141,11 @@ class PointManageList extends Component {
       {
         title: '操作',
         key: 'caozuo',
-        render: (text, record) => {
+        render: (text, record, index) => {
           return (
             <div>
-              <span className={`${styles.editPoint}  iconfont icon-edit`} onClick={this.showEditPage}></span>
-              <span className={`${styles.editPoint}  iconfont icon-del`} onClick={this.deletePoint}></span>
+              <span className={`${styles.editPoint}  iconfont icon-edit`} onClick={() => this.showEditPage(record)}></span>
+              <span className={`${styles.editPoint}  iconfont icon-del`} onClick={() => this.deletePoint(record)}></span>
             </div>
           );
         },

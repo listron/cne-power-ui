@@ -19,6 +19,8 @@ class PointManageSearch extends Component {
     getStationDeviceTypes: PropTypes.func,
     getDeviceModel: PropTypes.func,
     changePointManageStore: PropTypes.func,
+    devicePointStandardCode: PropTypes.string,
+    devicePointName: PropTypes.string,
   }
 
   constructor(props) {
@@ -68,13 +70,24 @@ class PointManageSearch extends Component {
     });
   }
   changePointCode = (e) => {
-
+    this.props.changePointManageStore({
+      devicePointStandardCode: e.target.value,
+    });
   }
   changeDesc = (e) => {
-
+    this.props.changePointManageStore({
+      devicePointName: e.target.value,
+    });
   }
   searchData = () => {
     //查询数据
+    const { getPointList, queryParams, devicePointStandardCode, devicePointName } = this.props;
+    getPointList({
+      ...queryParams,
+      devicePointStandardCode,
+      devicePointName,
+      pageNum: 1,
+    });
   }
 
   render() {
@@ -105,9 +118,9 @@ class PointManageSearch extends Component {
         </div>
         <div className={styles.bottomSeach}>
           <span className={styles.titleText}>测点编号</span>
-          <Input className={styles.searchInput} onChange={this.changePointCode} />
+          <Input className={styles.searchInput} onChange={this.changePointCode} allowClear={true} />
           <span className={styles.titleText}>测点描述</span>
-          <Input className={styles.searchInput} onChange={this.changeDesc} />
+          <Input className={styles.searchInput} onChange={this.changeDesc} allowClear={true} />
           <Button onClick={this.searchData} className={styles.searchBtn}>查找</Button>
 
         </div>

@@ -116,6 +116,10 @@ const mapDispatchToProps = (dispatch) => ({
   changePointManageStore: payload => dispatch({ type: pointManageAction.CHANGE_POINT_MANAGE_STORE_SAGA, payload }),
   getPointList: payload => dispatch({ type: pointManageAction.GET_POINT_MANAGE_LIST, payload }),
   deletePointList: payload => dispatch({ type: pointManageAction.DELETE_POINT_MANAGE_LIST, payload }),
+  addPoint: payload => dispatch({ type: pointManageAction.addPoint, payload }),
+  detailPoints: payload => dispatch({ type: pointManageAction.detailPoints, payload }),
+  deletePoints: payload => dispatch({ type: pointManageAction.deletePoints, payload }),
+  editPoints: payload => dispatch({ type: pointManageAction.editPoints, payload }),
   getStationPointStatusList: payload => dispatch({ type: pointManageAction.GET_POINT_MANAGE_ALL_STATION, payload }),
   resetStore: () => dispatch({ type: pointManageAction.resetStore }),
 

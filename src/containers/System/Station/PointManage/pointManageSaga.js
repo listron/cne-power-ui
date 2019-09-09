@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
@@ -85,7 +85,7 @@ function* getPointList(action) { // 请求单个详细数据信息
 function* deletePointList(action) { // 清除测点列表
   const { payload } = action;
   // const url = '/mock/system/pointManage/deletePointList';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deletePoints}/${payload.stationCode}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deletePointList}/${payload.stationCode}`;
   yield put({ type: pointManageAction.POINT_MANAGE_FETCH });
   try {
     const response = yield call(axios.delete, url);
@@ -139,6 +139,7 @@ function* getfactorsDeviceMode(action) {
           factorsDeviceModeData: manufactorId ? modaArr : [],
         },
       });
+
     } else {
       throw response.data;
     }
@@ -150,6 +151,157 @@ function* getfactorsDeviceMode(action) {
     });
   }
 }
+function* addPoint(action) {
+  const { payload } = action;
+  console.log('payload: ', payload);
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addPoint}`;
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
+        payload: {
+          showPage: 'list',
+        },
+      });
+      const params = yield select(state => ({
+        stationCode: state.system.pointManage.stationCode.toJS(),
+        deviceTypeCode: state.system.pointManage.deviceTypeCode.toJS(),
+        deviceModeCode: state.system.pointManage.deviceModeCode.toJS(),
+        devicePointStandardCode: state.system.pointManage.devicePointStandardCode.toJS(),
+        devicePointName: state.system.pointManage.devicePointName.toJS(),
+        pageNum: state.system.pointManage.pageNum.toJS(),
+        pageSize: state.system.pointManage.pageSize.toJS(),
+        orderField: state.system.pointManage.orderField.toJS(),
+        orderType: state.system.pointManage.orderType.toJS(),
+      }));
+      console.log('params: ', params);
+      yield put({
+        type: pointManageAction.getPointList,
+        payload: params,
+      });
+
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: pointManageAction.CHANGE_POINT_MANAGE_STORE,
+      payload: { loading: false },
+    });
+  }
+
+}
+function* deletePoints(action) { // 清除测点列表
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deletePoints}`;
+  yield put({ type: pointManageAction.POINT_MANAGE_FETCH });
+  try {
+    const response = yield call(axios.delete, url, { data: payload });
+    if (response.data.code === '10000') { // 
+      yield put({
+        type: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
+        payload: {
+          selectedRowKeys: [],
+          selectedRowData: [],
+        },
+
+      });
+      const params = yield select(state => ({
+        stationCode: state.system.pointManage.stationCode.toJS(),
+        deviceTypeCode: state.system.pointManage.deviceTypeCode.toJS(),
+        deviceModeCode: state.system.pointManage.deviceModeCode.toJS(),
+        devicePointStandardCode: state.system.pointManage.devicePointStandardCode.toJS(),
+        devicePointName: state.system.pointManage.devicePointName.toJS(),
+        pageNum: state.system.pointManage.pageNum.toJS(),
+        pageSize: state.system.pointManage.pageSize.toJS(),
+        orderField: state.system.pointManage.orderField.toJS(),
+        orderType: state.system.pointManage.orderType.toJS(),
+      }));
+      console.log('params: ', params);
+      yield put({
+        type: pointManageAction.getPointList,
+        payload: params,
+      });
+    } else {
+      yield put({
+        type: pointManageAction.CHANGE_POINT_MANAGE_STORE,
+        payload: { loading: false },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: pointManageAction.CHANGE_POINT_MANAGE_STORE,
+      payload: { loading: false },
+    });
+  }
+}
+function* detailPoints(action) { // 测点详情
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.detailPoints}/${payload.devicePointId}`;
+  yield put({ type: pointManageAction.POINT_MANAGE_FETCH });
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
+        payload: {
+          pointDetail: response.data.data || {},
+        },
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: pointManageAction.CHANGE_POINT_MANAGE_STORE,
+      payload: { loading: false },
+    });
+  }
+}
+function* editPoints(action) { // 测点编辑
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.editPoints}`;
+  yield put({ type: pointManageAction.POINT_MANAGE_FETCH });
+  try {
+    const response = yield call(axios.put, url, payload);
+    if (response.data.code === '10000') { // 
+      yield put({
+        type: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
+        payload: {
+          showPage: 'list',
+        },
+      });
+      const params = yield select(state => ({
+        stationCode: state.system.pointManage.stationCode.toJS(),
+        deviceTypeCode: state.system.pointManage.deviceTypeCode.toJS(),
+        deviceModeCode: state.system.pointManage.deviceModeCode.toJS(),
+        devicePointStandardCode: state.system.pointManage.devicePointStandardCode.toJS(),
+        devicePointName: state.system.pointManage.devicePointName.toJS(),
+        pageNum: state.system.pointManage.pageNum.toJS(),
+        pageSize: state.system.pointManage.pageSize.toJS(),
+        orderField: state.system.pointManage.orderField.toJS(),
+        orderType: state.system.pointManage.orderType.toJS(),
+      }));
+      console.log('params: ', params);
+      yield put({
+        type: pointManageAction.getPointList,
+        payload: params,
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: pointManageAction.CHANGE_POINT_MANAGE_STORE,
+      payload: { loading: false },
+    });
+  }
+}
 
 export function* watchPointManage() {
   yield takeLatest(pointManageAction.CHANGE_POINT_MANAGE_STORE_SAGA, changePointManageStore);
@@ -158,5 +310,9 @@ export function* watchPointManage() {
   yield takeLatest(pointManageAction.GET_POINT_MANAGE_LIST, getPointList);
   yield takeLatest(pointManageAction.DELETE_POINT_MANAGE_LIST, deletePointList);
   yield takeLatest(pointManageAction.getfactorsDeviceMode, getfactorsDeviceMode);
+  yield takeLatest(pointManageAction.addPoint, addPoint);
+  yield takeLatest(pointManageAction.deletePoints, deletePoints);
+  yield takeLatest(pointManageAction.detailPoints, detailPoints);
+  yield takeLatest(pointManageAction.editPoints, editPoints);
 }
 

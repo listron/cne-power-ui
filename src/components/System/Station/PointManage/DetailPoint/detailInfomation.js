@@ -2,8 +2,8 @@ export const leftInfo = (data) => {
   const leftArray = [
     { name: '电站名称', value: data.stationName },
     { name: '设备类型', value: data.deviceTypeName },
-    { name: '设备型号', value: data.deviceModeName },
     { name: '生产厂家', value: data.manufatorName },
+    { name: '设备型号', value: data.deviceModeName },
     { name: '创建者', value: data.createName },
     { name: '创建时间', value: data.createTime },
     { name: '最后修改人', value: data.recentUpdatedName },
@@ -35,8 +35,9 @@ export const showleftInfo = (data) => {
   const leftArr = [
     { name: '电站名称', value: data.stationName },
     { name: '设备类型', value: data.deviceTypeName },
-    { name: '设备型号', value: data.deviceModeName },
     { name: '生产厂家', value: data.manufatorName },
+    { name: '设备型号', value: data.deviceModeName },
+
   ];
   return leftArr;
 };

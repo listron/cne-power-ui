@@ -5,6 +5,7 @@ import WarningTip from '../../../../../components/Common/WarningTip';
 import styles from '../pointSide.scss';
 import { leftInfo, rightInfo } from './detailInfomation';
 import AddPointInfoPart from '../AddPoint/AddPointInfoPart';
+import EditPoint from '../EditPoint/EditPoint';
 
 class DetailPoint extends React.Component {
   static propTypes = {
@@ -40,7 +41,9 @@ class DetailPoint extends React.Component {
     });
   }
   showEditPage = () => {
+    console.log('should-showEdit');
     this.props.changePointManageStore({
+      // showPage: 'list',
       showPage: 'edit',
     });
   }
@@ -53,36 +56,44 @@ class DetailPoint extends React.Component {
 
   render() {
     const { showWarningTip, warningTipText } = this.state;
-    const { pointDetailData = {} } = this.props;
+    const { pointDetailData = {}, showPage } = this.props;
     const leftData = leftInfo(pointDetailData);
     const rightData = rightInfo(pointDetailData);
-    return (
-      <div className={styles.pointDetail}>
-        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-        <div className={styles.pageTop}>
-          <div className={styles.leftContainer}>
-            <span className={styles.text}>详情</span>
-            <span >
-              <Button className={styles.saveBtn} onClick={this.showEditPage}>编辑</Button>
-              <Button className={styles.saveBtn} onClick={this.deletePoint}>删除</Button>
-            </span>
+    if (showPage === 'detail') {
+      return (
+        <div className={styles.pointDetail}>
+          {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+          <div className={styles.pageTop}>
+            <div className={styles.leftContainer}>
+              <span className={styles.text}>详情</span>
+              <span >
+                <Button className={styles.saveBtn} onClick={this.showEditPage}>编辑</Button>
+                <Button className={styles.saveBtn} onClick={this.deletePoint}>删除</Button>
+              </span>
+            </div>
+            <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
           </div>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
-        </div>
-        <div className={styles.pageContainer}>
-          <div className={styles.left}>
-            {/* {this.detailInfoPart(leftData)} */}
-            <AddPointInfoPart data={leftData} />
-          </div>
-          <div className={styles.right}>
-            <AddPointInfoPart data={rightData} />
-            {/* {this.detailInfoPart(rightData)} */}
+          <div className={styles.pageContainer}>
+            <div className={styles.left}>
+              {/* {this.detailInfoPart(leftData)} */}
+              <AddPointInfoPart data={leftData} />
+            </div>
+            <div className={styles.right}>
+              <AddPointInfoPart data={rightData} />
+              {/* {this.detailInfoPart(rightData)} */}
 
+            </div>
           </div>
-        </div>
 
-      </div>
-    );
+        </div>
+      );
+    } else if (showPage === 'edit') {
+      return (<EditPoint {...this.props} />);
+    }
+    return (<div></div>);
+
+
+
   }
 }
 export default (DetailPoint);

@@ -72,10 +72,14 @@ class PointManageHandle extends Component {
     });
   }
   confirmWarningTip = () => {
+    const { selectedRowData } = this.props;
     this.setState({
       showWarningTip: false,
     });
-    this.deletePointList();
+    // this.deletePointList();
+    this.props.deletePoints({
+      devicePointIds: selectedRowData.map(e => (e.devicePointId)),
+    });
   }
 
   toExport = () => {
@@ -97,9 +101,14 @@ class PointManageHandle extends Component {
       showPage: 'add',
     });
   }
+  deletePoints = () => {
+    this.setState({
+      showWarningTip: true,
+    });
+  }
 
   render() {
-    const { pageSize, pageNum, totalNum, pointList, allStationBaseInfo, stationPointStatusList, stationCode, exportLoading } = this.props;
+    const { pageSize, pageNum, totalNum, pointList, allStationBaseInfo, stationPointStatusList, stationCode, exportLoading, selectedRowKeys } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const selectedStationInfo = stationPointStatusList.find(e => e.stationCode === stationCode);
     const pointForbidClear = !selectedStationInfo || selectedStationInfo.alarmStatus === 1; // 未找到电站或电站已导入告警，不可清除
@@ -128,7 +137,8 @@ class PointManageHandle extends Component {
             onClick={this.toExport}
           >导出测点表</Button>
           {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
-          <Button disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePoint} className={styles.clearPoint}>清除测点</Button>
+          {/* <Button disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePoint} className={styles.clearPoint}>清除测点</Button> */}
+          <Button disabled={pointList.length === 0 || selectedRowKeys.length === 0} onClick={this.deletePoints}> 删除 </Button>
           <Button
             className={styles.downloadStyle}
             href={downloadTemplet}
