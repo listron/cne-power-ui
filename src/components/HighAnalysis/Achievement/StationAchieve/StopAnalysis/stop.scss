@@ -101,8 +101,13 @@
       align-items: center;
       justify-content: space-between;
     }
+    .toStop{
+      padding: 0 10px;
+      flex: 0 0 80px;
+    }
     .title{
       font-weight: 600;
+      @include overflowText();
     }
     .chart{
       flex: 1;
@@ -129,6 +134,9 @@
     height: 473px;
     width: calc(50% - 10px);
     position: relative;
+    .handle{
+      flex: 0 0 160px;
+    }
   }
   .stopTrend{
     margin-right: 10px;

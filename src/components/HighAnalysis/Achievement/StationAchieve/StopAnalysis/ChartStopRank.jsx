@@ -108,7 +108,7 @@ class ChartStopRank extends Component {
           opacity: (stopChartDevice && deviceFullcode !== stopChartDevice.deviceFullcode) ? 0.4 : 1,
         },
       });
-      countData.push({ value: stopCount });
+      countData.push({ value: stopCount || 0 });
     });
     series[0] = {
       type: 'bar',
@@ -245,7 +245,15 @@ class ChartStopRank extends Component {
       xAxis: getBaseXAxis(dataAxis),
       yAxis: [
         getBaseYAxis('停机时长(h)'),
-        getBaseYAxis('停机次数(次)'),
+        {
+          ...getBaseYAxis('停机次数(次)'),
+          axisLabel: {
+            textStyle: {
+              color: '#666666',
+            },
+            formatter: (value) => `${value}`.includes('.') ? '' : value,
+          },
+        },
       ],
       tooltip: {
         trigger: 'axis',

@@ -224,6 +224,7 @@ class ChartLostRank extends Component {
     const { dataAxis, series } = this.createSeries(sortedLostRank, lostChartDevice, unit);
     const baseOption = getBaseOption(dataAxis);
     baseOption.yAxis.name = `${label}${unit ? `(${unit})` : ''}`;
+    baseOption.yAxis.nameTextStyle.padding = label.length > 4 ? [0, (4 - label.length) * 15 - 10, 0, 0] : null;
     const option = {
       ...baseOption,
       tooltip: {
@@ -281,7 +282,7 @@ class ChartLostRank extends Component {
       lostStringify && ({ quota } = JSON.parse(lostStringify));
     } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
-    const extraQuotaText = selectedQuota.label === '利用小时数' ? '实发小时数' : '';
+    const extraQuotaText = selectedQuota.label === '利用小时数' ? ' 实发小时数' : '';
     return (
       <div className={styles.lostRank}>
         <div className={styles.top}>
