@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Button } from 'antd';
+import { Icon } from 'antd';
 import WarningTip from '../../../../../components/Common/WarningTip';
 import styles from '../pointSide.scss';
 import AddNextStep from '../AddPoint/AddNextStep';

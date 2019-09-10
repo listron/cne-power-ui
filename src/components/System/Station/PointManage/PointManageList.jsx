@@ -12,6 +12,9 @@ class PointManageList extends Component {
     pointList: PropTypes.array,
     getPointList: PropTypes.func,
     changePointManageStore: PropTypes.func,
+    deletePoints: PropTypes.func,
+    detailPoints: PropTypes.func,
+    selectedRowKeys: PropTypes.array,
   }
   constructor(props) {
     super(props);

@@ -18,6 +18,7 @@ import PointSide from '../../../../components/System/Station/PointManage/pointSi
 class PointManage extends Component {
   static propTypes = {
     enterpriseId: PropTypes.string,
+    showPage: PropTypes.string,
     stationCode: PropTypes.number,
     deviceTypeCode: PropTypes.number,
     deviceModeCode: PropTypes.number,

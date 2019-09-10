@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Form, Select, Icon } from 'antd';
+import { Button, Select, Icon } from 'antd';
 import WarningTip from '../../../../../components/Common/WarningTip';
 import StationSelect from '../../../../../components/Common/StationSelect';
 import AddNextStep from './AddNextStep';
@@ -9,6 +9,15 @@ const { Option } = Select;
 class AddPoint extends React.Component {
   static propTypes = {
     changePointManageStore: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
+    getfactorsDeviceMode: PropTypes.func,
+    allStationBaseInfo: PropTypes.array,
+    stationDeviceTypes: PropTypes.array,
+    factorsDeviceModeData: PropTypes.array,
+    allFactor: PropTypes.array,
+    showPage: PropTypes.string,
+    addPoint: PropTypes.func,
+    editPoints: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);

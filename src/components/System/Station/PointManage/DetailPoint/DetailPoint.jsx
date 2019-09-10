@@ -10,6 +10,9 @@ import EditPoint from '../EditPoint/EditPoint';
 class DetailPoint extends React.Component {
   static propTypes = {
     changePointManageStore: PropTypes.func,
+    deletePoints: PropTypes.func,
+    pointDetail: PropTypes.object,
+    showPage: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);

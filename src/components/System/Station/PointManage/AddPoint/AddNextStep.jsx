@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Form, Select, Icon } from 'antd';
+import { Button, Input, Form, Select } from 'antd';
 import { showleftInfo } from '../DetailPoint/detailInfomation';
 import AddPointInfoPart from './AddPointInfoPart';
 import styles from '../pointSide.scss';
@@ -11,6 +11,11 @@ class AddNextStep extends React.Component {
   static propTypes = {
     form: PropTypes.object,
     payloadData: PropTypes.object,
+    pointDetail: PropTypes.object,
+    showPre: PropTypes.func,
+    addPoint: PropTypes.func,
+    editPoints: PropTypes.func,
+    showPage: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -53,7 +58,7 @@ class AddNextStep extends React.Component {
     const { showPage, payloadData, pointDetail = {} } = this.props;
 
     const domData = showPage === 'add' ? showleftInfo(payloadData) : showleftInfo(pointDetail);
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
     return (
       <div className={styles.pageContainer}>
         <div className={styles.left}>
