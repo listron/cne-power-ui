@@ -13,7 +13,6 @@ class StopElecTypes extends Component {
     stopElec: PropTypes.array,
     stopTopStringify: PropTypes.string,
     changeStore: PropTypes.func,
-    getStopElec: PropTypes.func,
     getStopRank: PropTypes.func,
     getStopTrend: PropTypes.func,
     getStopTypes: PropTypes.func,
