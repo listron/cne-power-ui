@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from 'antd';
+import uiColors from '@constants/ui';
 import styles from './curve.scss';
 
 class MonthsSelector extends Component {
@@ -52,10 +53,11 @@ class MonthsSelector extends Component {
         <h3 className={styles.timeTitle}>显示月份</h3>
         <ul className={styles.monthList}>
           {actualMonths.map((e, index) => {
-            const colorIndex = index % this.monthColors.length;
+            const monthIndex = curveAllMonths.indexOf(e);
+            const monthColor = uiColors.outputColors[monthIndex];
             const active = curveCheckedMonths.includes(e);
-            const backgroundColor = active ? this.monthColors[colorIndex] : '#fff';
-            const border = active ? `1px solid ${this.monthColors[colorIndex]}` : '1px solid rgb(238,238,238)';
+            const backgroundColor = active ? monthColor : '#fff';
+            const border = active ? `1px solid ${monthColor}` : '1px solid rgb(238,238,238)';
             const color = active ? '#666' : '#dfdfdf';
             return (<li
               className={styles.month}
@@ -82,4 +84,3 @@ class MonthsSelector extends Component {
 }
 
 export default MonthsSelector;
-
