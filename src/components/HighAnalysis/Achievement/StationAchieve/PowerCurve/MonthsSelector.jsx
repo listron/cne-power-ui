@@ -8,6 +8,7 @@ class MonthsSelector extends Component {
   static propTypes = {
     changeStore: PropTypes.func,
     curveCheckedMonths: PropTypes.array, // 环比分析各月选中时间
+    curveMonths: PropTypes.object,
     curveAllMonths: PropTypes.array, // 环比分析所有月
   }
 
@@ -42,12 +43,15 @@ class MonthsSelector extends Component {
   }
 
   render() {
-    const { curveCheckedMonths, curveAllMonths } = this.props;
+    const { curveCheckedMonths, curveAllMonths, curveMonths } = this.props;
+    const { actual = [] } = curveMonths;
+    const actualMonths = curveAllMonths.filter(e => actual.find(item => item.calcDate === e));
+    const actualchecked = curveCheckedMonths.filter(e => actual.find(item => item.calcDate === e));
     return (
       <section className={styles.timeSelector}>
         <h3 className={styles.timeTitle}>显示月份</h3>
         <ul className={styles.monthList}>
-          {curveAllMonths.map((e, index) => {
+          {actualMonths.map((e, index) => {
             const colorIndex = index % this.monthColors.length;
             const active = curveCheckedMonths.includes(e);
             const backgroundColor = active ? this.monthColors[colorIndex] : '#fff';
@@ -64,8 +68,13 @@ class MonthsSelector extends Component {
           })}
         </ul>
         <div className={styles.allHandler}>
-          <Switch onChange={this.onAllChange} checked={curveCheckedMonths.length > 0} />
-          <span className={styles.allHandlerText}>全部{curveCheckedMonths.length === 0 ? '隐藏' : '显示'}</span>
+          <Switch
+            onChange={this.onAllChange}
+            checked={actualchecked.length > 0}
+          />
+          <span className={styles.allHandlerText}>
+            全部{actualchecked.length === 0 ? '隐藏' : '显示'}
+          </span>
         </div>
       </section>
     );

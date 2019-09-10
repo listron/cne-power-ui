@@ -66,6 +66,7 @@ class MonthsPsd extends Component {
     const series = [{
       type: 'bar',
       barWidth: '10px',
+      cursor: 'default',
       data: psdData,
       itemStyle: {
         color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
@@ -91,6 +92,9 @@ class MonthsPsd extends Component {
       ...baseOption,
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         padding: 0,
         formatter: (param) => {
           const { axisValue } = param && param[0] || {};

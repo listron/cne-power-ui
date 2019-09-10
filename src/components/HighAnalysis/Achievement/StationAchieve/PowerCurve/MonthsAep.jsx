@@ -73,12 +73,14 @@ class MonthsAep extends Component {
           {offset: 1, color: '#f47a37' },
         ]),
       },
+      cursor: 'default',
       data: aepData,
     }, {
       name: 'speed',
       type: 'line',
       data: speedData,
       yAxisIndex: 1,
+      cursor: 'default',
       lineStyle: {
         normal: {
           color: '#00cdff',
@@ -110,6 +112,9 @@ class MonthsAep extends Component {
       ],
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         padding: 0,
         formatter: (param) => {
           const { axisValue } = param && param[0] || {};

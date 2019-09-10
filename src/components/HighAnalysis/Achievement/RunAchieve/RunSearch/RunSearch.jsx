@@ -60,7 +60,11 @@ export default class RunSearch extends Component {
     }
     // 路径有参数 更改电站 得到新的设备数据
     if(stationInfoStr && modeDevices.length > 0 && JSON.stringify(modeDevices) !== JSON.stringify(preDevice)){
-      const searchDevice = this.getAllDeviceCodes(modeDevices);
+      // 选数据前三个设备
+      const searchDeviceFilter = this.getAllDeviceCodes(modeDevices);
+      // 接受跳转过来的设备
+      const { searchDevice: stateSearchDevice } = this.state;
+      const searchDevice = stateSearchDevice.length === 0 ? searchDeviceFilter : stateSearchDevice;
       this.setState({searchDevice});
     }
     // 判断从别的页面头次进入页面，电站和指标分析数据是有的话，改变state值， 发送请求
@@ -166,6 +170,7 @@ export default class RunSearch extends Component {
           <div className={styles.eachParts}>
             <span className={styles.text}>选择时间</span>
             <RangePicker
+              allowClear={false}
               value={[moment(searchDates[0]), moment(searchDates[1])]}
               onChange={this.onDateChange}
               style={{width: '220px'}}

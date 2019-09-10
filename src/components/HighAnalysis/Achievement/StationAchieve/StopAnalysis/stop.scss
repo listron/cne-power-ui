@@ -12,6 +12,7 @@
     align-items: center;
     .info{
       width: 860px;
+      flex-basis: calc(100% - 260px);
       display: flex;
       height: 32px;
       line-height: 32px;
@@ -55,7 +56,7 @@
     justify-content: flex-end;
     align-items: center;
     right: 36px;
-    top: 112px;
+    top: 114px;
     font-size: 12px;
     .eachMode{
       margin-right: 20px;
@@ -67,7 +68,7 @@
       width: 15px;
       height: 9px;
     }
-    .line{
+    .line, .lineHour, .lineCount{
       display: inline-block;
       width:5px;
       margin: 0 10px 0 4px;
@@ -100,8 +101,13 @@
       align-items: center;
       justify-content: space-between;
     }
+    .toStop{
+      padding: 0 10px;
+      flex: 0 0 80px;
+    }
     .title{
       font-weight: 600;
+      @include overflowText();
     }
     .chart{
       flex: 1;
@@ -119,10 +125,18 @@
         margin-right: 4px;
       }
     }
+    .modes{
+      right: 0;
+      justify-content: center;
+    }
   }
   .stopTrend, .stopTypes{
     height: 473px;
     width: calc(50% - 10px);
+    position: relative;
+    .handle{
+      flex: 0 0 160px;
+    }
   }
   .stopTrend{
     margin-right: 10px;
@@ -173,10 +187,16 @@
 .stopAnalysis{
   background-color: #ececec;
   .modes{
-    .line{
+    .line, .lineHour{
       border:1px solid #f9b600;
       &::before {
         background-color: #f9b600;
+      }
+    }
+    .lineCount{
+      border:1px solid #2564cc;
+      &::before {
+        background-color: #2564cc;
       }
     }
   }

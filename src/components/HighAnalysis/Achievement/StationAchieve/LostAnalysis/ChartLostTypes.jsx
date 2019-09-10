@@ -113,6 +113,9 @@ class ChartLostTypes extends Component {
       ...baseOption,
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         padding: 0,
         formatter: (param) => {
           const { axisValue } = param && param[0] || {};
@@ -150,6 +153,7 @@ class ChartLostTypes extends Component {
           type: 'bar',
           stack: '总量',
           barWidth: '10px',
+          cursor: 'default',
           label: {
             normal: {
               show: true,

@@ -11,6 +11,8 @@ class DevicesAep extends Component {
 
   static propTypes = {
     curveTopStringify: PropTypes.string,
+    curveDeviceFullcode: PropTypes.string,
+    activeDevice: PropTypes.string,
     curveDevicesAep: PropTypes.array,
     curveDevicesAepLoading: PropTypes.bool,
     changeStore: PropTypes.func,
@@ -25,17 +27,19 @@ class DevicesAep extends Component {
   }
 
   componentDidMount(){
-    const { curveDevicesAep = [] } = this.props;
+    const { curveDevicesAep = [], activeDevice } = this.props;
     const { sortName } = this.state;
-    curveDevicesAep.length > 0 && this.renderChart(curveDevicesAep, sortName);
+    curveDevicesAep.length > 0 && this.renderChart(curveDevicesAep, sortName, activeDevice);
   }
 
   componentWillReceiveProps(nextProps){
-    const { curveDevicesAepLoading, curveDevicesAep } = nextProps;
+    const { curveDevicesAepLoading, curveDevicesAep, activeDevice } = nextProps;
     const { sortName } = this.state;
     const preLoading = this.props.curveDevicesAepLoading;
-    if (preLoading && !curveDevicesAepLoading) { // 请求完毕
-      this.renderChart(curveDevicesAep, sortName);
+    const getQueryData = preLoading && !curveDevicesAepLoading;
+    const activeChange = activeDevice !== this.props.activeDevice;
+    if (getQueryData || activeChange) { // 请求完毕
+      this.renderChart(curveDevicesAep, sortName, activeDevice);
     } else if (!preLoading && curveDevicesAepLoading) { // 请求中
       this.setChartLoading();
     }
@@ -73,10 +77,10 @@ class DevicesAep extends Component {
     this.renderChart(curveDevicesAep, sortName);
   }
 
-  createSeires = (sortedAepData) => {
+  createSeires = (sortedAepData, activeDevice) => {
     const xData = [], aspData = [], speedData = [], modes = new Set();
     sortedAepData.forEach(e => {
-      const { deviceName, windSpeed, aep, deviceModeName } = e || {};
+      const { deviceName, windSpeed, aep, deviceModeName, deviceFullcode } = e || {};
       modes.add(deviceModeName);
       xData.push(deviceName);
       const colorIndex = [...modes].indexOf(deviceModeName);
@@ -88,6 +92,7 @@ class DevicesAep extends Component {
             {offset: 0, color: this.barColor[colorIndex][0] },
             {offset: 1, color: this.barColor[colorIndex][1] },
           ]),
+          opacity: (activeDevice && activeDevice !== deviceFullcode) ? 0.4 : 1,
         },
       });
       speedData.push(windSpeed);
@@ -115,9 +120,9 @@ class DevicesAep extends Component {
     return { series, xData };
   }
 
-  deviceHandle = ({ seriesIndex }, sortedAepData, chart) => {
-    const { deviceFullcode, deviceName } = sortedAepData[seriesIndex] || {};
-    const { curveTopStringify } = this.props;
+  deviceHandle = ({ dataIndex }, sortedAepData, chart) => {
+    const { deviceFullcode, deviceName } = sortedAepData[dataIndex] || {};
+    const { curveTopStringify, activeDevice, curveDeviceFullcode } = this.props;
     let queryInfo = {};
     try {
       queryInfo = JSON.parse(curveTopStringify) || {};
@@ -128,19 +133,23 @@ class DevicesAep extends Component {
       startTime: queryInfo.date[0],
       endTime: queryInfo.date[1],
     };
+    const activeRenderCode = (activeDevice && activeDevice === deviceFullcode) ? null : deviceFullcode;
     this.props.changeStore({
       curveDeviceName: deviceName,
       curveDeviceFullcode: deviceFullcode,
+      activeDevice: activeRenderCode,
     });
-    this.props.getCurveMonths(param);
-    this.props.getCurveMonthAep(param);
-    this.props.getCurveMonthPsd(param);
+    (activeRenderCode && activeRenderCode !== curveDeviceFullcode) && ( // 改变设备时再请求
+      this.props.getCurveMonths(param),
+      this.props.getCurveMonthAep(param),
+      this.props.getCurveMonthPsd(param)
+    );
   }
 
-  renderChart = (curveDevicesAep, sortName) => {
+  renderChart = (curveDevicesAep, sortName, activeDevice) => {
     const aepChart = echarts.init(this.aepRef);
     const sortedAepData = this.sortDeviceAes(curveDevicesAep, sortName);
-    const { series, xData } = this.createSeires(sortedAepData);
+    const { series, xData } = this.createSeires(sortedAepData, activeDevice);
     const option = {
       grid: {
         top: 30,
@@ -158,6 +167,9 @@ class DevicesAep extends Component {
       ],
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         padding: 0,
         formatter: (param) => {
           const { name, axisValue } = param && param[0] || {};
@@ -179,12 +191,12 @@ class DevicesAep extends Component {
       },
       series,
     };
-    const endPosition = 30 / curveDevicesAep.length >= 1 ? 100 : 3000 / curveDevicesAep.length;
+    // const endPosition = 30 / curveDevicesAep.length >= 1 ? 100 : 3000 / curveDevicesAep.length;
     curveDevicesAep.length > 0 && (option.dataZoom = [{
       type: 'slider',
       filterMode: 'empty',
       start: 0,
-      end: endPosition,
+      end: 100,
       showDetail: false,
       height: 20,
       bottom: 10,
@@ -192,10 +204,11 @@ class DevicesAep extends Component {
       type: 'inside',
       filterMode: 'empty',
       start: 0,
-      end: endPosition,
+      end: 100,
     }]);
     aepChart.hideLoading();
     aepChart.setOption(option);
+    aepChart.off('click');
     aepChart.on('click', (param) => this.deviceHandle(param, sortedAepData, aepChart));
   }
 
@@ -224,12 +237,12 @@ class DevicesAep extends Component {
               <span className={styles.rect} style={{
                 backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
                 }} />
-              <span className={styles.modeText}>{e}</span>
+              <span className={styles.modeText}>{e} AEP</span>
             </span>
           ))}
           <span className={styles.eachMode}>
             <span className={styles.line} />
-            <span className={styles.modeText}>停机次数</span>
+            <span className={styles.modeText}>风速</span>
           </span>
         </div>
         <div className={styles.aepChart} ref={(ref)=> {this.aepRef = ref;}} />
