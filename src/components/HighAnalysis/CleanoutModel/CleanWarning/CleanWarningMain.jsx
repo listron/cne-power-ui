@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Table } from 'antd';
 import moment from 'moment';
 import Footer from '../../../Common/Footer';
-import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
 import styles from './cleanStyle.scss';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
@@ -87,10 +87,16 @@ class CleanWarningMain extends Component { // 电站管理列表页
       <div className={`${styles.cleanWarningMain} ${styles[theme]}`}>
         <div className={styles.mainContent}>
           <FilterCondition
-            stations={stations.filter(e => e.stationType === 1)}
-            onChange={this.selectStation}
-            option={['stationName']}
             theme={theme}
+            onChange={this.selectStation}
+            option={[
+              {
+                name: '电站名称',
+                type: 'stationName',
+                typeName: 'stationCodes',
+                data: stations.filter(e => e.stationType === 1),
+              },
+            ]}
           />
           <div className={styles.wrap}>
             <div className={styles.pagination}>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styles from './historyWarnCon.scss';
 import { Table, Modal, DatePicker } from 'antd';
 import PropTypes from 'prop-types';
-import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
 import { SequenceChart } from '../CommonChart/SequenceChart';
 import moment from 'moment';
@@ -90,11 +90,13 @@ class HistoryWarnCon extends Component {
     return result;
   }
 
-  filterCondition = (change) => { // 筛选条件
-    const { stationCodes, belongMatrixs, inefficiencyStatus, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod } = this.props;
-    const param = { stationCodes, belongMatrixs, inefficiencyStatus, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod };
-    this.props.getHistoryWarnList({ ...param, ...change });
-    change.stationCodes && this.props.getHistoryWarnMatrixList({ stationCodes: change.stationCodes });
+  filterCondition = (value) => { // 筛选条件
+    const { inefficiencyStatus, pageNum, pageSize, sortField, sortMethod } = this.props;
+    const param = { inefficiencyStatus, pageNum, pageSize, sortField, sortMethod };
+    const { stationCodes, rangeTimes, belongMatrixs } = value;
+    const [startTime = '', endTime = ''] = rangeTimes;
+    this.props.getHistoryWarnList({ ...param, stationCodes, belongMatrixs, startTime, endTime });
+    this.props.getHistoryWarnMatrixList({ stationCodes: stationCodes });
   }
 
   handleCancel = () => { // 点击关闭按钮时
@@ -165,15 +167,33 @@ class HistoryWarnCon extends Component {
       key: index,
       happenTime: moment(item.happenTime).format('YYYY-MM-DD'),
     }));
-
+    const initmatrixList = matrixList.map(e => ({ label: e, value: e }));
     return (
       <div className={`${styles.historyWarnMain} ${styles[theme]}`}>
         <FilterCondition
-          option={['time', 'stationName', 'belongMatrixs']}
-          stations={stations.filter(e => e.stationType === 1)}
-          matrixList={matrixList}
-          onChange={this.filterCondition}
           theme={theme}
+          onChange={this.filterCondition}
+          option={[
+            {
+              name: ' 发生时间',
+              type: 'time',
+              typeName: 'rangeTimes',
+            },
+            {
+              name: '电站名称',
+              type: 'stationName',
+              typeName: 'stationCodes',
+              data: stations,
+            },
+            {
+              name: '所属方阵',
+              type: 'multipleType',
+              typeName: 'belongMatrixs',
+              rules: ['label', 'value'],
+              data: initmatrixList,
+            },
+
+          ]}
         />
         <div className={styles.wrap}>
           <div className={styles.selectCondition}>

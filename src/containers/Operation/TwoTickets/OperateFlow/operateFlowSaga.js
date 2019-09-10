@@ -9,10 +9,6 @@ function* getFlowList(action) {
     const flowListUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketList}`;
     const flowStatusUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketStatus}`;
     const { listQueryParams, commonQueryParams } = payload;
-    const { createTimeStart = null, createTimeEnd = null, handleUser, ...params } = commonQueryParams;
-    const startTime = createTimeStart;
-    const endTime = createTimeEnd;
-    const IsMy = handleUser ? 1 : 0;
     try {
         yield put({
             type: operateFlowAction.changeFlowStore,
@@ -21,9 +17,8 @@ function* getFlowList(action) {
             },
         });
         const [flowList, flowStatus] = yield all(
-            [call(axios.post, flowListUrl, { ...listQueryParams, ...params, startTime, endTime, IsMy }),
-            call(axios.post, flowStatusUrl, { ...params, startTime, endTime, IsMy }),
-            ]);
+            [call(axios.post, flowListUrl, { ...listQueryParams, ...commonQueryParams }),
+            call(axios.post, flowStatusUrl, commonQueryParams)]);
         if (flowList.data.code === '10000' && flowStatus.data.code === '10000') {
             const totalNum = flowList.data.data && flowList.data.data.pageDate.pageCount || 0;
             let { pageNum, pageSize } = payload.listQueryParams;

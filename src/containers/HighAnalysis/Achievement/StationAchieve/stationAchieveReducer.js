@@ -48,6 +48,8 @@ const initState = immutable.fromJS({
   curveDeviceName: null, // 选中的设备name
   curveDevicesTime: null, // 邻比分析设备选中时间
   activeDevice: null, // 设备选中柱状图/功率曲线图激活状态 => 其余0.4透明
+  curveAllDevice: [], // 所有机组+理论功率曲线名数组
+  curveCheckedDevice: [], // 各机组功率曲线图中展示的设备曲线
   curveCheckedMonths: [], // 环比分析各月选中时间
   curveAllMonths: [], // 环比分析所有月
 

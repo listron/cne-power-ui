@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Select, Table, Modal, Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './transfer.scss';
-import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
 import moment from 'moment';
@@ -26,8 +26,8 @@ class Transfer extends Component {
     totalNum: PropTypes.number,
     stations: PropTypes.array,
     matrixList: PropTypes.array,
-    createTimeStart: PropTypes.string,
-    createTimeEnd: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -76,11 +76,13 @@ class Transfer extends Component {
     return result;
   }
 
-  filterCondition = (change) => { // 筛选条件
-    const { stationCodes, belongMatrixs, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod } = this.props;
-    const param = { stationCodes, belongMatrixs, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod };
-    this.props.getTransferList({ ...param, ...change });
-    change.stationCodes && this.props.getMatrixlist({ stationCodes: change.stationCodes });
+  filterCondition = (value) => { // 筛选条件
+    const { stationCodes, rangeTimes, belongMatrixs } = value;
+    const [startTime = '', endTime = ''] = rangeTimes;
+    const { pageNum, pageSize, sortField, sortMethod } = this.props;
+    const param = { pageNum, pageSize, sortField, sortMethod };
+    this.props.getTransferList({ ...param, stationCodes, belongMatrixs, startTime, endTime });
+    this.props.getMatrixlist({ stationCodes });
   }
 
 
@@ -137,14 +139,31 @@ class Transfer extends Component {
       },
     ];
     const dataSource = transferList.map((item, index) => ({ ...item, key: item.defectId, happenTime: moment(item.happenTime).format('YYYY-MM-DD'), createTime: moment(item.createTime).format('YYYY-MM-DD') }));
+    const initmatrixList = matrixList.map(e => ({ label: e, value: e }));
     return (
       <div className={`${styles.transferMain} ${styles[theme]}`}>
         <FilterCondition
-          option={['time', 'stationName', 'belongMatrixs']}
-          stations={stations.filter(e => e.stationType === 1)}
-          matrixList={matrixList}
-          onChange={this.filterCondition}
           theme={theme}
+          onChange={this.filterCondition}
+          option={[
+            {
+              name: ' 发生时间',
+              type: 'time',
+              typeName: 'rangeTimes',
+            },
+            {
+              name: '电站名称',
+              type: 'stationName',
+              typeName: 'stationCodes',
+              data: stations,
+            },
+            {
+              name: '所属方阵',
+              type: 'multipleType',
+              typeName: 'belongMatrixs',
+              data: initmatrixList,
+            },
+          ]}
         />
         <div className={styles.wrap}>
           <div className={styles.selectCondition}>
