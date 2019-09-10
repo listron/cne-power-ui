@@ -91,7 +91,6 @@ class MonthsChart extends Component {
       searchDevice: [curveDeviceFullcode],
       searchDates: [startTime, endTime],
     });
-    console.log(stationSearch)
     const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({run: stationSearch}).stringify();
     this.props.history.push(`/analysis/achievement/analysis/run?${searchResult}`);
   }
@@ -109,7 +108,6 @@ class MonthsChart extends Component {
     baseOption.xAxis.name = '风速(m/s)';
     baseOption.yAxis.name = '功率(kW)';
     baseOption.xAxis.nameTextStyle.padding = [60, 0, 0, -60];
-    console.log(this.createSeires(totalMonthData, checkedMonths).map(e => e.lineStyle.color));
     const option = {
       ...baseOption,
       tooltip: {

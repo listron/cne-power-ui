@@ -196,16 +196,28 @@ function *getCurveDevices({ payload }) { // 获取各机组曲线
   try {
     yield call(easyPut, 'changeStore', { curveDevicesLoading: true });
     const response = yield call(request.post, url, payload);
+    const curveDevices = response.data || [];
+    const { actual = [], theory = [] } = curveDevices;
+    const curveCheckedDevice = [];
+    theory.forEach(e => {
+      e.modeName && curveCheckedDevice.push(`${e.modeName}理论功率曲线`);
+    });
+    actual.forEach(e => {
+      e.deviceName && curveCheckedDevice.push(e.deviceName);
+    });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
-        curveDevices: response.data || [],
+        curveDevices,
+        curveAllDevice: [...curveCheckedDevice],
         curveDevicesLoading: false,
+        curveCheckedDevice,
       });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
       curveDevices: [],
       curveDevicesLoading: false,
+      curveCheckedDevice: [],
     });
   }
 }
