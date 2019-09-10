@@ -11,19 +11,20 @@ class DefectStatus extends Component {
     onChange: PropTypes.func,
     defectStatusStatistics: PropTypes.object,
     defaultValue: PropTypes.string,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      status: props.defaultValue || ''
-    }
+      status: props.defaultValue || '',
+    };
   }
 
 
   onChangeTab = (e) => {
-    this.setState({ status: e.target.value })
-    this.props.onChange({ status: e.target.value })
+    this.setState({ status: e.target.value });
+    this.props.onChange({ status: e.target.value });
   }
 
   render() {
@@ -41,7 +42,7 @@ class DefectStatus extends Component {
           <RadioButton value="1">{`待审核  ${waitReviewNum}`}</RadioButton>
           <RadioButton value="2">{`执行中  ${inProcessNum}`}</RadioButton>
           <RadioButton value="3">{`待验收  ${waitCheckNum}`}</RadioButton>
-          <RadioButton value="4">{`已完成`}</RadioButton>
+          <RadioButton value="4">{'已完成'}</RadioButton>
         </RadioGroup>
       </div>
     );

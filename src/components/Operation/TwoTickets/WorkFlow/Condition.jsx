@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './workFlow.scss';
-import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import { Radio } from 'antd';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -19,6 +19,7 @@ class Condition extends Component {
         getFlowList: PropTypes.func,
         docketTypeList: PropTypes.array,
         theme: PropTypes.string,
+        changeFlowStore: PropTypes.func,
     }
 
 
@@ -42,23 +43,47 @@ class Condition extends Component {
 
 
     filterCondition = (value) => {
-        const { listQueryParams, commonQueryParams } = this.props;
-        this.props.getFlowList({ listQueryParams, commonQueryParams: { ...commonQueryParams, ...value } });
+        const { listQueryParams } = this.props;
+        const { rangeTimes, IsMy, docketTypes, stationCodes } = value;
+        const [startTime, endTime] = rangeTimes;
+        this.props.changeFlowStore({ commonQueryParams: { startTime, endTime, docketTypes, stationCodes, IsMy: +IsMy } });
+        this.props.getFlowList({ listQueryParams, commonQueryParams: { startTime, endTime, docketTypes, stationCodes, IsMy: +IsMy } });
     }
 
     render() {
-        const { stations, statusList, username, commonQueryParams = {}, docketTypeList = [], theme } = this.props;
-        const { stateCode } = commonQueryParams;
+        const { stations, statusList, commonQueryParams = {}, docketTypeList = [], theme } = this.props;
+        const { stateCode, stationCodes, docketTypes, IsMy, startTime, endTime } = commonQueryParams;
         return (
             <div className={`${styles.condition} ${styles[theme]}`}>
                 <FilterCondition
-                    option={['stationName', 'docketType', 'time', 'myJoin']}
-                    stations={stations}
-                    username={username}
-                    docketTypeList={docketTypeList}
                     onChange={this.filterCondition}
-                    myJoinText={'我的待办'}
                     theme={theme}
+                    option={[
+                        {
+                            name: ' 发生时间',
+                            type: 'time',
+                            typeName: 'rangeTimes',
+                        },
+                        {
+                            name: '电站名称',
+                            type: 'parentCheckBox',
+                            typeName: 'stationCodes',
+                            data: stations,
+                        },
+                        {
+                            name: '两票类型',
+                            type: 'multipleType',
+                            typeName: 'docketTypes',
+                            rules: ['name', 'id'],
+                            data: docketTypeList,
+                        },
+                        {
+                            name: '我的待办',
+                            type: 'switch',
+                            typeName: 'IsMy',
+                        },
+                    ]}
+                    value={{ stationCodes, docketTypes, IsMy, rangeTimes: [startTime, endTime] }}
                 />
                 <div className={styles.statusGroup}>
                     <div className={styles.text}><span>状</span><span>态</span></div>
