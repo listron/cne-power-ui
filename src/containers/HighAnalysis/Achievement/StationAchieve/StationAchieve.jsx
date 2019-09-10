@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import StationSearch from '../../../../components/HighAnalysis/Achievement/StationAchieve/StationSearch';
-import AnimationBox from '../../../../components/HighAnalysis/Achievement/StationAchieve/AnimationBox';
-import LostAnalysis from '../../../../components/HighAnalysis/Achievement/StationAchieve/LostAnalysis/LostAnalysis';
-import StopAnalysis from '../../../../components/HighAnalysis/Achievement/StationAchieve/StopAnalysis/StopAnalysis';
-import CurveAnalysis from '../../../../components/HighAnalysis/Achievement/StationAchieve/PowerCurve/CurveAnalysis';
+import StationSearch from '@components/HighAnalysis/Achievement/StationAchieve/StationSearch';
+import AnimationBox from '@components/HighAnalysis/Achievement/StationAchieve/AnimationBox';
+import LostAnalysis from '@components/HighAnalysis/Achievement/StationAchieve/LostAnalysis/LostAnalysis';
+import StopAnalysis from '@components/HighAnalysis/Achievement/StationAchieve/StopAnalysis/StopAnalysis';
+import CurveAnalysis from '@components/HighAnalysis/Achievement/StationAchieve/PowerCurve/CurveAnalysis';
 import { stationAchieveAction } from './stationAchieveReducer';
-import searchUtil from '../../../../utils/searchUtil';
+import searchUtil from '@utils/searchUtil';
 import styles from './station.scss';
 
 class StationAchieve extends Component {

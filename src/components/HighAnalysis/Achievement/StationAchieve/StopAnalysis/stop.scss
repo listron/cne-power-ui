@@ -31,6 +31,7 @@
       top: 32px;
       min-width: 150px;
       height: 76px;
+      z-index: 99;
       .title, .eachDetail{
         padding: 0 8px;
         height: 24px;
@@ -103,7 +104,8 @@
     }
     .toStop{
       padding: 0 10px;
-      flex: 0 0 80px;
+      height: 24px;
+      margin-right: 4px;
     }
     .title{
       font-weight: 600;
@@ -135,7 +137,7 @@
     width: calc(50% - 10px);
     position: relative;
     .handle{
-      flex: 0 0 160px;
+      flex: 0 0 240px;
     }
   }
   .stopTrend{
@@ -204,6 +206,9 @@
     background-color: #fff;
     .top .title{
       color: #000;
+    }
+    .toStop{
+      color: $themeColor;
     }
     .top .handle{
       color: #666;

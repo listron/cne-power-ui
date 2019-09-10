@@ -273,7 +273,15 @@ class ChartStopTypes extends Component {
           },
         },
         { ...getBaseYAxis('停机时长(h)'), gridIndex: 1, min: 0 },
-        { ...getBaseYAxis('停机电量(万kWh)'), gridIndex: 2, min: 0 },
+        {
+          ...getBaseYAxis('停机损失电量(万kWh)'),
+          nameTextStyle: {
+            color: '#666666',
+            padding: [0, -40, 0, 0],
+          },
+          gridIndex: 2,
+          min: 0,
+        },
       ],
       axisPointer: {
         link: { xAxisIndex: 'all' },
@@ -293,8 +301,8 @@ class ChartStopTypes extends Component {
             <div class=${styles.info}>
               ${param.sort((a, b) => a.seriesIndex - b.seriesIndex).map(({ seriesIndex, value }) => (
                 `<span class=${styles.eachItem}>
-                  <span>${['停机次数', '停机时长', '停机电量'][seriesIndex]}</span>
-                  <span>${dataFormats(value / ([1, 1, 10000][seriesIndex]), '--', [0, 2, 4][seriesIndex], true)}</span>
+                  <span>${['停机次数', '停机时长', '停机损失电量'][seriesIndex]}</span>
+                  <span>${dataFormats(value, '--', [0, 2, 4][seriesIndex], true)}</span>
                 </span>`
               )).join('')}
             </div>
@@ -331,12 +339,12 @@ class ChartStopTypes extends Component {
       <div className={styles.stopTrend}>
         <div className={styles.top}>
           <span className={styles.title}>{this.getTitle()}</span>
-          <Button
-            onClick={this.toStopPage}
-            disabled={!stopChartDevice}
-            className={styles.toStop}
-          >停机状态</Button>
           <span className={styles.handle}>
+            <Button
+              onClick={this.toStopPage}
+              disabled={!stopChartDevice}
+              className={styles.toStop}
+            >停机详情</Button>
             <span className={styles.eachHandle}>
               <span className={styles.text}>选择排序</span>
               <Select
