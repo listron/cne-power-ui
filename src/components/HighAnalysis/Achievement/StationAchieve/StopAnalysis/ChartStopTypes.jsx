@@ -339,12 +339,12 @@ class ChartStopTypes extends Component {
       <div className={styles.stopTrend}>
         <div className={styles.top}>
           <span className={styles.title}>{this.getTitle()}</span>
-          <Button
-            onClick={this.toStopPage}
-            disabled={!stopChartDevice}
-            className={styles.toStop}
-          >停机状态</Button>
           <span className={styles.handle}>
+            <Button
+              onClick={this.toStopPage}
+              disabled={!stopChartDevice}
+              className={styles.toStop}
+            >停机详情</Button>
             <span className={styles.eachHandle}>
               <span className={styles.text}>选择排序</span>
               <Select

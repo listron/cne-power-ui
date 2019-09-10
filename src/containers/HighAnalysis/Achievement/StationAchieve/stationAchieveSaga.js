@@ -320,6 +320,7 @@ function *resetStop({ payload = {} }){ // 停机重置。
     stopTopStringify: '',
     stopElecType: 'all',
     stopType: '',
+    stopHandleInfo: [],
     stopChartDevice: null,
     stopChartTime: null,
     stopChartTimeMode: 'month',
