@@ -11,17 +11,17 @@ const stationMonitor = [
     path: '/monitor/singleStation/:stationCode',
     component: lazy(() => import('../../containers/Monitor/StationMonitor/SingleStation/SingleStation')),
   },
-]
+];
 
 const powerCurve = [
    {//实时监控-功率曲线-多设备
-    path:'/monitor/powercurve',
-    exact:true,
-    component:lazy(() => import('../../containers/Monitor/PowerCurve/AllDeviceCurve/AllDeviceCurve')),
-  },{//实时监控-功率曲线-单设备
-    path:'/monitor/powercurve/:stationCode/:deviceFullCode/:time',
+    path: '/monitor/powercurve',
+    exact: true,
+    component: lazy(() => import('../../containers/Monitor/PowerCurve/AllDeviceCurve/AllDeviceCurve')),
+  }, {//实时监控-功率曲线-单设备
+    path: '/monitor/powercurve/:stationCode/:deviceFullCode/:time',
     // path:'/hidden/monitor/powercurve/:stationCode/:deviceCode/:time',
-    exact:true,
+    exact: true,
     component: lazy(() => import('../../containers/Monitor/PowerCurve/SingleDeviceCurve/SingleDeviceCurve')),
   },
 ];
@@ -52,7 +52,7 @@ const report = [
   { //实时监控-报表查询-电量报表
     path: '/monitor/report/powerReport',
     // component: lazy(() => import('../../components/Common/Building/Building')),
-    component:  lazy(() => import('../../containers/Monitor/Report/PowerReport/PowerReport')),
+    component: lazy(() => import('../../containers/Monitor/Report/PowerReport/PowerReport')),
   }, { //实时监控-报表查询-设备状态
     path: '/monitor/report/deviceStatus',
     // component: lazy(() => import('../../components/Common/Building/Building')),
@@ -64,7 +64,7 @@ const report = [
   }, { //实时监控-报表查询-损失电量
     path: '/monitor/report/powerLost',
     // component: lazy(() => import('../../components/Common/Building/Building')),
-    component:lazy(() => import('../../containers/Monitor/Report/PowerLost/PowerLost')),
+    component: lazy(() => import('../../containers/Monitor/Report/PowerLost/PowerLost')),
   },
 ];
 
@@ -73,6 +73,9 @@ const data = [
     path: '/monitor/data/history',
     component: lazy(() => import('../../containers/Monitor/DataAnalysis/DataHistory/DataHistory')),
   }, { //实时监控-数据分析-散点图
+    path: '/monitor/data/overview',
+    component: lazy(() => import('@containers/Monitor/DataAnalysis/Overview/Overview')),
+  }, { //实时监控-数据分析-数据概览
     path: '/monitor/data/scatterDiagram',
     component: lazy(() => import('../../containers/Monitor/DataAnalysis/DataScatterDiagram/DataScatterDiagram')),
   }, { //实时监控-数据分析-实时数据
