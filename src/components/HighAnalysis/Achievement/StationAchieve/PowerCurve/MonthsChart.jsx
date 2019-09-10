@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
+import { Tooltip } from 'antd';
 import { getCurveBaseOption } from './curveBaseOption';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import searchUtil from '../../../../../utils/searchUtil';
@@ -167,7 +168,12 @@ class MonthsChart extends Component {
     const { curveDeviceName } = this.props;
     return (
       <section className={styles.leftCurve}>
-        <h3>{curveDeviceName || '--'}各月功率曲线</h3>
+        <h3>
+          <span>{curveDeviceName || '--'}各月功率曲线</span>
+          <Tooltip title="功率曲线所用的均为清洗后的数据" placement="top">
+            <span className={styles.curveTip}>i</span>
+          </Tooltip>
+        </h3>
         <div className={styles.totalChart} ref={(ref)=> {this.monthRef = ref;}} />
       </section>
     );

@@ -35,12 +35,7 @@ class CurveAnalysis extends Component {
       <div className={`${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <div className={styles.curveAnalysis}>
           <section className={styles.curveAllDevice}>
-            <h3 className={styles.header}>
-              <span className={styles.headerText}>功率曲线邻比分析</span>
-              <Tooltip title="功率曲线所用的均为清洗后的数据" placement="topRight">
-                <span className={styles.headerTip}>i</span>
-              </Tooltip>
-            </h3>
+            <h3 className={styles.header}>功率曲线邻比分析</h3>
             <div className={styles.content}>
               <DevicesChart {...this.props} />
               <DevicesCheckTime {...this.props} />
@@ -51,12 +46,7 @@ class CurveAnalysis extends Component {
             </div>
           </section>
           <section className={styles.curveEachMonth}>
-            <h3 className={styles.header}>
-              <span className={styles.headerText}>功率曲线环比分析</span>
-              <Tooltip title="功率曲线所用的均为清洗后的数据" placement="topRight">
-                <span className={styles.headerTip}>i</span>
-              </Tooltip>
-            </h3>
+            <h3 className={styles.header}>功率曲线环比分析</h3>
             <div className={styles.content}>
               <MonthsChart {...this.props} />
               <MonthsSelector {...this.props} />
