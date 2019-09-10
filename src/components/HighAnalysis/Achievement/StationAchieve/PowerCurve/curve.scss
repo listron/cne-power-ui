@@ -73,8 +73,13 @@
         .round{
           border-radius: 50%;
           height: 16px;
+          flex: 0 0 16px;
           flex-basis: 16px;
           margin-right: 12px;
+        }
+        .deviceText{
+          flex: 0 0 72px;
+          @include overflowText();
         }
       }
       .allHandler{
