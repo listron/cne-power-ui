@@ -153,7 +153,6 @@ function* getfactorsDeviceMode(action) {
 }
 function* addPoint(action) {
   const { payload } = action;
-  console.log('payload: ', payload);
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addPoint}`;
   try {
     const response = yield call(axios.post, url, payload);
@@ -165,19 +164,18 @@ function* addPoint(action) {
         },
       });
       const params = yield select(state => ({
-        stationCode: state.system.pointManage.stationCode.toJS(),
-        deviceTypeCode: state.system.pointManage.deviceTypeCode.toJS(),
-        deviceModeCode: state.system.pointManage.deviceModeCode.toJS(),
-        devicePointStandardCode: state.system.pointManage.devicePointStandardCode.toJS(),
-        devicePointName: state.system.pointManage.devicePointName.toJS(),
-        pageNum: state.system.pointManage.pageNum.toJS(),
-        pageSize: state.system.pointManage.pageSize.toJS(),
-        orderField: state.system.pointManage.orderField.toJS(),
-        orderType: state.system.pointManage.orderType.toJS(),
+        stationCode: state.system.pointManage.get('stationCode'),
+        deviceTypeCode: state.system.pointManage.get('deviceTypeCode'),
+        deviceModeCode: state.system.pointManage.get('deviceModeCode'),
+        devicePointStandardCode: state.system.pointManage.get('devicePointStandardCode'),
+        devicePointName: state.system.pointManage.get('devicePointName'),
+        pageNum: state.system.pointManage.get('pageNum'),
+        pageSize: state.system.pointManage.get('pageSize'),
+        orderField: state.system.pointManage.get('orderField'),
+        orderType: state.system.pointManage.get('orderType'),
       }));
-      console.log('params: ', params);
       yield put({
-        type: pointManageAction.getPointList,
+        type: pointManageAction.GET_POINT_MANAGE_LIST,
         payload: params,
       });
 
@@ -209,19 +207,18 @@ function* deletePoints(action) { // 清除测点列表
 
       });
       const params = yield select(state => ({
-        stationCode: state.system.pointManage.stationCode.toJS(),
-        deviceTypeCode: state.system.pointManage.deviceTypeCode.toJS(),
-        deviceModeCode: state.system.pointManage.deviceModeCode.toJS(),
-        devicePointStandardCode: state.system.pointManage.devicePointStandardCode.toJS(),
-        devicePointName: state.system.pointManage.devicePointName.toJS(),
-        pageNum: state.system.pointManage.pageNum.toJS(),
-        pageSize: state.system.pointManage.pageSize.toJS(),
-        orderField: state.system.pointManage.orderField.toJS(),
-        orderType: state.system.pointManage.orderType.toJS(),
+        stationCode: state.system.pointManage.get('stationCode'),
+        deviceTypeCode: state.system.pointManage.get('deviceTypeCode'),
+        deviceModeCode: state.system.pointManage.get('deviceModeCode'),
+        devicePointStandardCode: state.system.pointManage.get('devicePointStandardCode'),
+        devicePointName: state.system.pointManage.get('devicePointName'),
+        pageNum: state.system.pointManage.get('pageNum'),
+        pageSize: state.system.pointManage.get('pageSize'),
+        orderField: state.system.pointManage.get('orderField'),
+        orderType: state.system.pointManage.get('orderType'),
       }));
-      console.log('params: ', params);
       yield put({
-        type: pointManageAction.getPointList,
+        type: pointManageAction.GET_POINT_MANAGE_LIST,
         payload: params,
       });
     } else {
@@ -276,19 +273,18 @@ function* editPoints(action) { // 测点编辑
         },
       });
       const params = yield select(state => ({
-        stationCode: state.system.pointManage.stationCode.toJS(),
-        deviceTypeCode: state.system.pointManage.deviceTypeCode.toJS(),
-        deviceModeCode: state.system.pointManage.deviceModeCode.toJS(),
-        devicePointStandardCode: state.system.pointManage.devicePointStandardCode.toJS(),
-        devicePointName: state.system.pointManage.devicePointName.toJS(),
-        pageNum: state.system.pointManage.pageNum.toJS(),
-        pageSize: state.system.pointManage.pageSize.toJS(),
-        orderField: state.system.pointManage.orderField.toJS(),
-        orderType: state.system.pointManage.orderType.toJS(),
+        stationCode: state.system.pointManage.get('stationCode'),
+        deviceTypeCode: state.system.pointManage.get('deviceTypeCode'),
+        deviceModeCode: state.system.pointManage.get('deviceModeCode'),
+        devicePointStandardCode: state.system.pointManage.get('devicePointStandardCode'),
+        devicePointName: state.system.pointManage.get('devicePointName'),
+        pageNum: state.system.pointManage.get('pageNum'),
+        pageSize: state.system.pointManage.get('pageSize'),
+        orderField: state.system.pointManage.get('orderField'),
+        orderType: state.system.pointManage.get('orderType'),
       }));
-      console.log('params: ', params);
       yield put({
-        type: pointManageAction.getPointList,
+        type: pointManageAction.GET_POINT_MANAGE_LIST,
         payload: params,
       });
     } else {

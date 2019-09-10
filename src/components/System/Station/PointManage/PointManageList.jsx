@@ -39,7 +39,6 @@ class PointManageList extends Component {
 
   }
   deletePoint = (record) => {
-    console.log('record: ', record);
     this.setState({
       showWarningTip: true,
       currentPoint: record,

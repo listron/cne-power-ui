@@ -40,6 +40,10 @@ class AddNextStep extends React.Component {
       }
     });
   }
+  setDevicePointDesc = () => {
+
+    this.props.form.setFieldsValue({ 'devicePointName': this.dealPointDetail('deviceStandardPointDesc') });
+  }
   dealPointDetail = (name) => {
     const { pointDetail = {} } = this.props;
     const data = (pointDetail[name] || pointDetail[name] === 0) ? pointDetail[name] : '';
@@ -59,8 +63,8 @@ class AddNextStep extends React.Component {
         <div className={styles.right}>
           <Form className={styles.formPart}>
             <FormItem label="测点编号" colon={false} className={styles.formItemStyle}>
-              {getFieldDecorator('manufacturer', {
-                initialValue: this.dealPointDetail('manufacturer'),
+              {getFieldDecorator('devicePointStandardCode', {
+                initialValue: this.dealPointDetail('devicePointStandardCode'),
                 rules: [{ required: true, message: '请正确填写', type: 'string', max: 30 }],
               })(
                 <Input placeholder="请输入" />
@@ -73,10 +77,10 @@ class AddNextStep extends React.Component {
               })(
                 <Input placeholder="请输入" />
               )}
-              {showPage === 'edit' && (
+              {(showPage === 'edit' && this.dealPointDetail('deviceStandardPointDesc')) && (
                 <span className={styles.usepoint}>
-                  <span> 标准点描述:{'xxxxxxxxxxx'}</span>
-                  <Button className={styles.useBtn}>使用</Button>
+                  <span> 标准点描述:{this.dealPointDetail('deviceStandardPointDesc')}</span>
+                  <Button className={styles.useBtn} onClick={this.setDevicePointDesc}>使用</Button>
                 </span>
 
               )}
@@ -186,8 +190,8 @@ class AddNextStep extends React.Component {
               )}
             </FormItem>
             <FormItem label="偏差值" colon={false} className={styles.formItemStyle}>
-              {getFieldDecorator('discrepancy', {
-                initialValue: this.dealPointDetail('discrepancy'),
+              {getFieldDecorator('offset', {
+                initialValue: this.dealPointDetail('offset'),
               }
 
               )(

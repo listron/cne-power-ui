@@ -24,15 +24,18 @@ class DetailPoint extends React.Component {
     });
   }
   confirmWarningTip = () => {
+    const { pointDetail } = this.props;
     this.setState({
       showWarningTip: false,
     });
     this.props.changePointManageStore({
       showPage: 'list',
     });
-    if (this.state.warningTipText !== '退出后信息无法保存!') {
+    if (this.state.warningTipText === '确定要删除改测点?') {
       //发送删除该测点的请求
-      console.log('删除该测点');
+      this.props.deletePoints({
+        devicePointIds: [pointDetail.devicePointId],
+      });
     }
   }
   cancelWarningTip = () => {
@@ -41,9 +44,7 @@ class DetailPoint extends React.Component {
     });
   }
   showEditPage = () => {
-    console.log('should-showEdit');
     this.props.changePointManageStore({
-      // showPage: 'list',
       showPage: 'edit',
     });
   }
@@ -56,9 +57,9 @@ class DetailPoint extends React.Component {
 
   render() {
     const { showWarningTip, warningTipText } = this.state;
-    const { pointDetailData = {}, showPage } = this.props;
-    const leftData = leftInfo(pointDetailData);
-    const rightData = rightInfo(pointDetailData);
+    const { pointDetail, showPage } = this.props;
+    const leftData = leftInfo(pointDetail);
+    const rightData = rightInfo(pointDetail);
     if (showPage === 'detail') {
       return (
         <div className={styles.pointDetail}>

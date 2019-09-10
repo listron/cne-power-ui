@@ -113,14 +113,10 @@ class AddPoint extends React.Component {
     const { addStationCode, addDeviceTypeCode, manufactorId, deviceModeCode } = this.state;
     const { allStationBaseInfo, stationDeviceTypes, factorsDeviceModeData, allFactor } = this.props;
     const stationName = this.filterData(this.dataFinder(allStationBaseInfo, 'stationCode', addStationCode), 'stationName');
-    console.log('stationName: ', stationName);
     const deviceTypeName = this.filterData(this.dataFinder(stationDeviceTypes, 'deviceTypeCode', addDeviceTypeCode), 'deviceTypeName');
-    console.log('deviceTypeName: ', deviceTypeName);
-    const manufatorName = this.filterData(this.dataFinder(allFactor, 'manufactorId', manufactorId), 'manufactorName');
-    console.log('manufatorName: ', manufatorName);
+    const manufactorName = this.filterData(this.dataFinder(allFactor, 'manufactorId', manufactorId), 'manufactorName');
     const deviceModeName = this.filterData(this.dataFinder(factorsDeviceModeData, 'deviceModeCode', deviceModeCode), 'modeName');
-    console.log('deviceModeName: ', deviceModeName);
-    const data = { stationCode: addStationCode, deviceTypeCode: addDeviceTypeCode, manufactorId, deviceModeCode, stationName, deviceTypeName, deviceModeName, manufatorName };
+    const data = { stationCode: addStationCode, deviceTypeCode: addDeviceTypeCode, manufactorId, deviceModeCode, stationName, deviceTypeName, deviceModeName, manufactorName };
     this.setState({
       payloadData: data,
     });
@@ -129,13 +125,11 @@ class AddPoint extends React.Component {
   render() {
     const { allStationBaseInfo, stationDeviceTypes, allFactor, factorsDeviceModeData, showPage, addPoint, editPoints } = this.props;
     const { showWarningTip, warningTipText, preStep, addStationCode, addDeviceTypeCode, manufactorId, deviceModeCode, payloadData } = this.state;
-    const typeSelectDisable = stationDeviceTypes.length === 0 || !addStationCode;
-    const modelSelectDisable = factorsDeviceModeData.length === 0;
+    const typeSelectDisable = !addStationCode || stationDeviceTypes.length === 0;
+    const modelSelectDisable = !addStationCode || factorsDeviceModeData.length === 0;
     const getSelectedStation = allStationBaseInfo.find(e => e.stationCode === addStationCode);
     const selectedStationInfo = getSelectedStation ? [getSelectedStation] : [];
     const isNextStep = (addStationCode && addDeviceTypeCode && manufactorId && deviceModeCode);
-
-
     return (
       <div className={styles.pointAdd}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -170,7 +164,7 @@ class AddPoint extends React.Component {
                 onChange={this.selectfactory}
                 value={manufactorId}
                 placeholder="请选择设备厂家"
-                disabled={!allFactor || allFactor.length === 0}
+                disabled={typeSelectDisable || !allFactor || allFactor.length === 0}
               >
                 <Option key={null} value={null}>{'全部厂家'}</Option>
                 {allFactor.map(e => {
