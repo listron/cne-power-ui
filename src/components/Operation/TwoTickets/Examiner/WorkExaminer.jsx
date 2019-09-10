@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
 import styles from './examinerComp.scss';
 
@@ -118,15 +118,21 @@ class WorkExaminer extends Component {
     this.props.getSettedInfo({ distributionId, modalType: 'detailModalShow' });
   }
 
-  render(){
+  render() {
     const { stations, listLoading, settingList, total, tableParams } = this.props;
     const { pageNum, pageSize } = tableParams;
     return (
       <div className={styles.workExaminer}>
         <FilterCondition
-          option={['stationName']}
-          stations={stations}
           onChange={this.checkStations}
+          option={[
+            {
+              name: '电站名称',
+              type: 'stationName',
+              typeName: 'stationCodes',
+              data: stations,
+            },
+          ]}
         />
         <div className={styles.paginationRow}>
           <CommonPagination

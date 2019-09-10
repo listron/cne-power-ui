@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import echarts from 'echarts';
 import { getBaseOption } from './chartBaseOption';
-import { dataFormats } from '../../../../../utils/utilFunc';
-import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormats } from '@utils/utilFunc';
+import searchUtil from '@utils/searchUtil';
+import uiColors from '@constants/ui';
 import styles from './lost.scss';
 
 class ChartLostTypes extends Component {
@@ -153,6 +154,7 @@ class ChartLostTypes extends Component {
           type: 'bar',
           stack: '总量',
           barWidth: '10px',
+          cursor: 'default',
           label: {
             normal: {
               show: true,
@@ -164,8 +166,8 @@ class ChartLostTypes extends Component {
             value: e,
             itemStyle: {
               color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
-                {offset: 0, color: this.barColor[i][0]},
-                {offset: 1, color: this.barColor[i][1]},
+                {offset: 0, color: this.barColor[i] ? this.barColor[i][0] : ((uiColors.outputColors[i]) || 'blue')},
+                {offset: 1, color: this.barColor[i] ? this.barColor[i][1] : ((uiColors.outputColors[i + 112]) || 'lightblue')},
               ]),
             },
           })),

@@ -31,6 +31,7 @@
       top: 32px;
       min-width: 150px;
       height: 76px;
+      z-index: 99;
       .title, .eachDetail{
         padding: 0 8px;
         height: 24px;
@@ -56,7 +57,7 @@
     justify-content: flex-end;
     align-items: center;
     right: 36px;
-    top: 112px;
+    top: 114px;
     font-size: 12px;
     .eachMode{
       margin-right: 20px;
@@ -101,8 +102,14 @@
       align-items: center;
       justify-content: space-between;
     }
+    .toStop{
+      padding: 0 10px;
+      height: 24px;
+      margin-right: 4px;
+    }
     .title{
       font-weight: 600;
+      @include overflowText();
     }
     .chart{
       flex: 1;
@@ -120,11 +127,18 @@
         margin-right: 4px;
       }
     }
+    .modes{
+      right: 0;
+      justify-content: center;
+    }
   }
   .stopTrend, .stopTypes{
     height: 473px;
     width: calc(50% - 10px);
     position: relative;
+    .handle{
+      flex: 0 0 240px;
+    }
   }
   .stopTrend{
     margin-right: 10px;
@@ -192,6 +206,9 @@
     background-color: #fff;
     .top .title{
       color: #000;
+    }
+    .toStop{
+      color: $themeColor;
     }
     .top .handle{
       color: #666;

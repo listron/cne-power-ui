@@ -226,7 +226,16 @@ class ChartLostTrend extends Component {
       ],
       yAxis: [
         { ...getBaseYAxis('停机时长(h)'), gridIndex: 0 },
-        { ...getBaseYAxis('停机次数(次)'), gridIndex: 1 },
+        {
+          ...getBaseYAxis('停机次数(次)'),
+          gridIndex: 1,
+          axisLabel: {
+            textStyle: {
+              color: '#666666',
+            },
+            formatter: (value) => `${value}`.includes('.') ? '' : value,
+          },
+        },
       ],
       axisPointer: {
         link: {xAxisIndex: 'all'},

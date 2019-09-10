@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
+import { Tooltip } from 'antd';
 import { getCurveBaseOption } from './curveBaseOption';
-import { dataFormats } from '../../../../../utils/utilFunc';
+import { dataFormats } from '@utils/utilFunc';
+import uiColors from '@constants/ui';
 import styles from './curve.scss';
 
 class DevicesChart extends Component {
 
   static propTypes = {
     curveTopStringify: PropTypes.string,
+    curveAllDevice: PropTypes.array,
+    curveCheckedDevice: PropTypes.array,
     activeDevice: PropTypes.string,
     curveDeviceFullcode: PropTypes.string,
     curveDevices: PropTypes.object,
@@ -20,22 +24,26 @@ class DevicesChart extends Component {
   }
 
   componentDidMount(){
-    const { curveDevices = {}, activeDevice } = this.props;
+    const { curveDevices = {} } = this.props;
     const { actual = [] } = curveDevices;
     if (actual.length > 0) {
-      this.renderChart(curveDevices, activeDevice);
+      this.renderChart();
     }
   }
 
-  componentWillReceiveProps(nextProps){
-    const { curveDevicesLoading, curveDevices, activeDevice } = nextProps;
-    const preLoading = this.props.curveDevicesLoading;
+  componentDidUpdate(preProps){
+    const { curveDevicesLoading, activeDevice, curveCheckedDevice } = this.props;
+    const preLoading = preProps.curveDevicesLoading;
+    const preChecked = preProps.curveCheckedDevice;
     const getQueryData = preLoading && !curveDevicesLoading;
-    const activeChange = activeDevice !== this.props.activeDevice;
+    const activeChange = activeDevice !== preProps.activeDevice;
     if (getQueryData || activeChange) { // 请求完毕
-      this.renderChart(curveDevices, activeDevice);
+      this.renderChart();
     } else if (!preLoading && curveDevicesLoading) { // 请求中
       this.setChartLoading();
+    }
+    if (curveCheckedDevice.length !== preChecked.length) {
+      this.renderChart();
     }
   }
 
@@ -44,16 +52,22 @@ class DevicesChart extends Component {
     devicesChart && devicesChart.showLoading();
   }
 
-  createSeires = (curveData = [], activeDevice) => curveData.map((e) => {
+  createSeires = (curveData = [], activeDevice, theoryDevice, actualDevice) => curveData.filter(e => { // 只展示选中的
+    const { curveCheckedDevice } = this.props;
+    return curveCheckedDevice.includes(e.deviceName);
+  }).map((e) => {
     const { devicePowerInfoVos = [], deviceName, deviceFullcode } = e || {};
-    const opacity = (activeDevice && activeDevice !== deviceFullcode && deviceName !== '理论功率') ? 0.4 : 1;
+    const isTheory = deviceName.includes('理论功率曲线');
+    const lineIndex = (isTheory ? theoryDevice : actualDevice).indexOf(deviceName);
+    const lineColor = uiColors[isTheory ? 'mainColors' : 'outputColors'][lineIndex];
+    const opacity = (activeDevice && activeDevice !== deviceFullcode && isTheory) ? 0.2 : 1; // 理论功率不弱化
     const curveSeries = {
       type: 'line',
       smooth: true,
       name: deviceName,
       data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]).sort((a, b) => a[0] - b[0]),
-      itemStyle: { opacity },
-      lineStyle: { opacity },
+      itemStyle: { opacity, color: lineColor },
+      lineStyle: { opacity, color: lineColor},
     };
     deviceName === '理论功率' && (curveSeries.lineStyle = {color: 'red'});
     return curveSeries;
@@ -87,13 +101,18 @@ class DevicesChart extends Component {
     }
   }
 
-  renderChart = (curveDevices, activeDevice) => {
+  renderChart = () => {
+    const { curveDevices, activeDevice, curveAllDevice } = this.props;
     const devicesChart = echarts.init(this.devicesRef);
     const { actual = [], theory = [] } = curveDevices;
     const totalCurveData = actual.concat(theory.map(e => ({
-      deviceName: '理论功率',
+      deviceName: `${e.modeName}理论功率曲线`,
       ...e,
     })));
+    const theoryDevice = [], actualDevice = [];
+    curveAllDevice.forEach(e => { // 将所有设备分拆未理论和实际， 用于颜色渲染
+      (e.includes('理论功率曲线') ? theoryDevice : actualDevice).push(e);
+    });
     const baseOption = getCurveBaseOption();
     baseOption.xAxis.type = 'value';
     baseOption.xAxis.name = '风速(m/s)';
@@ -127,8 +146,22 @@ class DevicesChart extends Component {
           </section>`;
         },
       },
-      series: this.createSeires(totalCurveData, activeDevice),
+      series: this.createSeires(totalCurveData, activeDevice, theoryDevice, actualDevice),
     };
+    totalCurveData.length > 0 && (option.dataZoom = [{
+      type: 'slider',
+      filterMode: 'empty',
+      start: 0,
+      end: 100,
+      showDetail: false,
+      height: 20,
+      bottom: 10,
+    }, {
+      type: 'inside',
+      filterMode: 'empty',
+      start: 0,
+      end: 100,
+    }]);
     devicesChart.hideLoading();
     devicesChart.clear();
     devicesChart.setOption(option);
@@ -139,7 +172,11 @@ class DevicesChart extends Component {
   render() {
     return (
       <section className={styles.leftCurve}>
-        <h3>各机组功率曲线</h3>
+        <h3>
+          <span>各机组功率曲线</span>
+          <Tooltip title="功率曲线所用的均为清洗后的数据" placement="top">
+            <span className={styles.curveTip}>i</span>
+          </Tooltip></h3>
         <div className={styles.totalChart} ref={(ref)=> {this.devicesRef = ref;}} />
       </section>
     );

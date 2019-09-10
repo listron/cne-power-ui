@@ -7,7 +7,7 @@ import axios from 'axios';
 import { dataFormat } from '../../../../utils/utilFunc';
 import { message } from 'antd';
 
-class CenterMap extends Component{
+class CenterMap extends Component {
   static propTypes = {
     mapStation: PropTypes.array,
     singleStation: PropTypes.object,
@@ -23,19 +23,19 @@ class CenterMap extends Component{
     mapCountInfo: {}, // 选中国家风电统计{name: '中国', wind: 21, pv: 11}
   };
 
-  componentDidMount(){
+  componentDidMount() {
     window.addEventListener('resize', this.onCountryChartResize);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { mapStation } = nextProps;
     const preStations = this.props.mapStation;
-    if(mapStation.length > 0 && preStations.length === 0){ // 第一次得到电站数据
+    if (mapStation.length > 0 && preStations.length === 0) { // 第一次得到电站数据
       const countriesInfo = []; // 国家信息
-      mapStation.forEach(station=>{ // 存储为[{国家，位置}...]结构，一个国家只保存一个坐标即可
-        const tmpName = station.country?station.country:'';
+      mapStation.forEach(station => { // 存储为[{国家，位置}...]结构，一个国家只保存一个坐标即可
+        const tmpName = station.country ? station.country : '';
         const hasCountry = countriesInfo.some(country => country && country.countryName === tmpName);
-        if(!hasCountry){
+        if (!hasCountry) {
           countriesInfo.push({
             countryName: tmpName,
             position: [station.longitude, station.latitude],
@@ -46,7 +46,7 @@ class CenterMap extends Component{
         echarts.registerMap('world', response.data);
         const activeInfo = countriesInfo.find(e => e.countryName === 'China') || countriesInfo[0] || {}; // 默认中国，或者第一个国家
         this.setWorldMap(countriesInfo, activeInfo);
-      }).catch(error=>{
+      }).catch(error => {
         console.log(error);
         // message.error('加载世界地图失败，请重试');
       });
@@ -55,14 +55,14 @@ class CenterMap extends Component{
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.clocker && clearTimeout(this.clocker);
     window.removeEventListener('resize', this.onCountryChartResize);
   }
 
   onCountryChartResize = () => {
     const countryBox = document.getElementById('homeCountryMap');
-    if (!countryBox){
+    if (!countryBox) {
       return;
     }
     if (this.resizeClocker) {
@@ -70,7 +70,7 @@ class CenterMap extends Component{
     }
     this.resizeClocker = setTimeout(() => {
       const coutryEharts = echarts.getInstanceByDom(countryBox);
-      if(coutryEharts && coutryEharts.resize) {
+      if (coutryEharts && coutryEharts.resize) {
         this.forceUpdate();
         coutryEharts.resize();
       }
@@ -80,11 +80,11 @@ class CenterMap extends Component{
   onCountryChange = (param) => { // 切换国家
     const { countriesInfo } = this.state;
     const { mapStation } = this.props;
-    if(param.seriesName === 'active'){ // 已选中国家点击无效
+    if (param.seriesName === 'active') { // 已选中国家点击无效
       return;
-    }else if(param.seriesName === 'inactive'){
+    } else if (param.seriesName === 'inactive') {
       const activePosition = param.value;
-      const activeInfo = countriesInfo.find(e=>{
+      const activeInfo = countriesInfo.find(e => {
         return e.position[0] === activePosition[0] && e.position[1] === activePosition[1];
       });
       activeInfo && this.setWorldMap(countriesInfo, activeInfo); // 切换世界激活项
@@ -98,7 +98,7 @@ class CenterMap extends Component{
     worldChart.on('click', this.onCountryChange);
     const activeName = activeInfo.countryName || '';
     const activeData = activeInfo.position || [];
-    const inactiveData = countriesInfo.filter(e=>e.countryName !== activeName).map(e => e.position);
+    const inactiveData = countriesInfo.filter(e => e.countryName !== activeName).map(e => e.position);
     worldChart.setOption({
       color: ['#48cf49', '#a6e8ff'],
       series: [{
@@ -137,17 +137,17 @@ class CenterMap extends Component{
     if (mapName === 'China') {
       countryStation = mapStation.filter(e => e.timeZone === 8);
     } else {
-      countryStation = mapStation.filter(e=>e.country && e.country === mapName);
+      countryStation = mapStation.filter(e => e.country && e.country === mapName);
     }
     // const countryStation = mapStation.filter(e=>e.country && e.country === mapName);
-    const pvStationData = countryStation.filter(e=>e.stationType === 1).map(e => {
+    const pvStationData = countryStation.filter(e => e.stationType === 1).map(e => {
       if (e.longitude > -178 && e.longitude < -154 && e.latitude > 18 && e.latitude < 28) { // 更变夏威夷光伏电站坐标
         e.longitude += 20;
         e.latitude += 20;
       }
       return [e.longitude, e.latitude];
     });
-    const windStationData = countryStation.filter(e=>e.stationType === 0).map(e=>[e.longitude, e.latitude]);
+    const windStationData = countryStation.filter(e => e.stationType === 0).map(e => [e.longitude, e.latitude]);
     this.setState({
       mapCountInfo: {
         name: countryStation[0] && countryStation[0].countryChineseName,
@@ -167,16 +167,17 @@ class CenterMap extends Component{
       countrySize = 650;
       layoutCenter = ['50%', '53%'];
       symbolSize = [15, 12];
-    } else if ( clientWidth >= 1920){
+    } else if (clientWidth >= 1920) {
       countrySize = 900;
       symbolSize = [18, 15];
     }
-    axios.get(`/mapJson/${mapName}.json`).then(response=>{
+    axios.get(`/mapJson/${mapName}.json`).then(response => {
       const countryBox = document.getElementById('homeCountryMap');
       const countryChart = echarts.init(countryBox);
       countryChart.clear();
       const { data } = response;
-      echarts.registerMap(mapName, data, {
+      const mapNameType = mapName === 'China' && 'china' || mapName;
+      echarts.registerMap(mapNameType, data, {
         Alaska: {
           left: -140,
           top: 48,
@@ -190,44 +191,44 @@ class CenterMap extends Component{
       });
       countryChart.setOption({
         series: [
-        // {
-        //   name: 'wind',
-        //   type: 'scatter',
-        //   coordinateSystem: 'geo',
-        //   data: windStationData,
-        //   symbol: 'image:///img/ico_wind.png',
-        //   symbolSize: [15, 18],
-        //   itemStyle: {
-        //     color: '#fff',
-        //   },
-        //   emphasis: {
-        //     itemStyle: {
-        //       color: '#fff35f',
-        //       opacity: 1,
-        //     },
-        //   },
-        // },
-        {
-          name: 'pv',
-          type: 'scatter',
-          coordinateSystem: 'geo',
-          data: pvStationData,
-          symbol: 'image:///img/ico_pv copy 21.png',
-          symbolRotate: 0,
-          symbolSize,
-          itemStyle: {
-            color: '#fff',
-          },
-          emphasis: {
+          // {
+          //   name: 'wind',
+          //   type: 'scatter',
+          //   coordinateSystem: 'geo',
+          //   data: windStationData,
+          //   symbol: 'image:///img/ico_wind.png',
+          //   symbolSize: [15, 18],
+          //   itemStyle: {
+          //     color: '#fff',
+          //   },
+          //   emphasis: {
+          //     itemStyle: {
+          //       color: '#fff35f',
+          //       opacity: 1,
+          //     },
+          //   },
+          // },
+          {
+            name: 'pv',
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            data: pvStationData,
+            symbol: 'image:///img/ico_pv copy 21.png',
+            symbolRotate: 0,
+            symbolSize,
             itemStyle: {
-              color: '#fff35f',
-              opacity: 1,
+              color: '#fff',
             },
-          },
-        }],
+            emphasis: {
+              itemStyle: {
+                color: '#fff35f',
+                opacity: 1,
+              },
+            },
+          }],
         geo: {
           silent: true,
-          map: mapName,
+          map: mapNameType,
           roam: true,
           layoutCenter,
           scaleLimit: {
@@ -242,18 +243,18 @@ class CenterMap extends Component{
           },
         },
       });
-      countryChart.on('mouseover', (param)=>{
+      countryChart.on('mouseover', (param) => {
         const checkedPosition = param.value;
-        const checkedStation = mapStation.find(e=>e.longitude === checkedPosition[0] && e.latitude === checkedPosition[1]);
+        const checkedStation = mapStation.find(e => e.longitude === checkedPosition[0] && e.latitude === checkedPosition[1]);
         if (!checkedStation) { return; }
         this.setState({ showStationInfo: true });
         this.props.getSingleStation(checkedStation);
       });
-      countryChart.on('mouseout', ()=>{
+      countryChart.on('mouseout', () => {
         this.props.changeHomepageStore({ singleStation: {} });
         this.setState({ showStationInfo: false });
       });
-    }).catch(error=>{
+    }).catch(error => {
       console.log(error);
       message.error('加载国家地图失败，请重试');
     });
@@ -261,11 +262,11 @@ class CenterMap extends Component{
 
   resizeClocker = null;
 
-  render(){
+  render() {
     const { mapStation, singleStation, realTimeInfo } = this.props;
     const { showStationInfo, mapCountInfo } = this.state;
     // const windStations = mapStation.filter(e=>e.stationType === 0);
-    const pvStations = mapStation.filter(e=>e.stationType === 1);
+    const pvStations = mapStation.filter(e => e.stationType === 1);
     // const windResource = windStations.length > 0 ? [
     //   {
     //     src: '/img/ico_wind.png', value: dataFormat(realTimeInfo.windReourse), unit: 'm/s', name: '风资源',
@@ -273,25 +274,25 @@ class CenterMap extends Component{
     //     src: null, value: dataFormat(realTimeInfo.windStationPower), unit: 'MW', name: '风电功率',
     //   },
     // ] : [];
-    const pvResource = pvStations.length > 0?[
+    const pvResource = pvStations.length > 0 ? [
       {
         src: '/img/ico_pv.png', value: dataFormat(realTimeInfo.pvResource), unit: 'W/㎡', name: '光资源',
       }, {
         src: null, value: dataFormat(realTimeInfo.pvStationPower), unit: 'MW', name: '光伏功率',
       },
-    ]:[];
+    ] : [];
     // const resourceArr = [...windResource, ...pvResource];
     const resourceArr = [...pvResource];
     const singleInfo = [
-      {name: '实时功率', value: dataFormat(singleStation.stationPower), unit: 'MW'},
-      {name: '装机容量', value: dataFormat(singleStation.stationCapacity), unit: 'MW'},
-      {name: '日累计发电量', value: dataFormat(singleStation.dayPower), unit: '万kWh'},
-      {name: '月累计发电量', value: dataFormat(singleStation.monthPower), unit: '万kWh'},
-      {name: '年累计发电量', value: dataFormat(singleStation.yearPower), unit: '万kWh'},
+      { name: '实时功率', value: dataFormat(singleStation.stationPower), unit: 'MW' },
+      { name: '装机容量', value: dataFormat(singleStation.stationCapacity), unit: 'MW' },
+      { name: '日累计发电量', value: dataFormat(singleStation.dayPower), unit: '万kWh' },
+      { name: '月累计发电量', value: dataFormat(singleStation.monthPower), unit: '万kWh' },
+      { name: '年累计发电量', value: dataFormat(singleStation.yearPower), unit: '万kWh' },
     ];
     const singleStatus = singleStation.stationStatus || {};
     let mapCountryName = mapCountInfo.name || '--';
-    if(mapCountryName === '中国'){
+    if (mapCountryName === '中国') {
       mapCountryName = '国内';
     }
     const countrySize = {
@@ -306,17 +307,17 @@ class CenterMap extends Component{
         {showStationInfo && <section className={styles.singleStation}>
           <h3 className={styles.title}>
             <span className={styles.titleLeft} >
-              <img src={`/img/ico_${singleStation.stationType === 1?'pv':'wind'}.png`} />
+              <img src={`/img/ico_${singleStation.stationType === 1 ? 'pv' : 'wind'}.png`} />
               <span className={styles.name}>{singleStation.stationName || '--'}</span>
               <span className={styles.arrow}></span>
             </span>
             <span className={styles.status}>{singleStatus.statusName || '--'}</span>
           </h3>
           <div className={styles.content}>
-            {singleInfo.map((e, i)=>(
+            {singleInfo.map((e, i) => (
               <div className={styles.info} key={e.name}>
                 <span className={styles.value}>{e.value}</span>
-                <span className={styles.text}>{e.name}{i>1?'':` ${e.unit}`}</span>
+                <span className={styles.text}>{e.name}{i > 1 ? '' : ` ${e.unit}`}</span>
                 {i > 1 && <span className={styles.text}>{e.unit}</span>}
               </div>
             ))}

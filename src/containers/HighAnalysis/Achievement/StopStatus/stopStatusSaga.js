@@ -43,7 +43,10 @@ function *getStopStatus({ payload }){ // 损失根源 - 指标排名
   const url = `${APIBasePath}${highAnalysis.getStopStatus}`;
   try {
     yield call(easyPut, 'changeStore', { stopStatusLoading: true });
-    const response = yield call(request.post, url, payload);
+    const response = yield call(request.post, url, {
+      ...payload,
+      deviceFullcodes: payload.deviceCodes,
+    });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         stopStatusList: response.data || [],

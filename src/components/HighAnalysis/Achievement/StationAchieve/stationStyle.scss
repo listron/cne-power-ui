@@ -22,15 +22,9 @@
 
 .animationBox{
   flex: 1;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   position: relative;
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-  &::-webkit-scrollbar-thumb{
-    border-radius: 3px;
-  }
+  
   .sideToggle{
     display: flex;
     z-index: 9999;
@@ -64,6 +58,13 @@
   left: 0;
   margin-right: 24px;
   transition: transform 0.5s;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb{
+    border-radius: 3px;
+  }
 }
 
 .eachPage.active{

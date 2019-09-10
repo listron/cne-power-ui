@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './index.scss';
-import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination/index';
 import { getLevel, getStatus, getDefectSortField } from '../../../../constants/ticket';
 import { Table, Modal, Button } from 'antd';
@@ -10,10 +10,11 @@ import { Table, Modal, Button } from 'antd';
 
 class DefectList extends Component {
   static propTypes = {
-    stations: PropTypes.array,
-    form: PropTypes.object,
     onChange: PropTypes.func,
     selectedData: PropTypes.object,
+    stationCode: PropTypes.number,
+    defeactData: PropTypes.object,
+    getDefectList: PropTypes.func,
 
   }
 
@@ -29,7 +30,6 @@ class DefectList extends Component {
   }
 
   componentDidMount() {
-    const { stationCode } = this.props;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -64,7 +64,7 @@ class DefectList extends Component {
     const { getDefectList, defeactData, stationCode } = this.props;
     const { createTimeStart, createTimeEnd } = this.state;
     const { pageSize } = defeactData;
-    const queryParma = {
+    const queryParma = { //默认
       'stationType': '',
       'defectSource': [],
       'defectLevel': [],
@@ -79,15 +79,13 @@ class DefectList extends Component {
       'sortField': 'create_time',
       'sortMethod': 'desc ',
     };
-    this.setState(value);
     const queryList = {
       ...queryParma,
+      pageSize,
       createTimeStart,
       createTimeEnd,
-      pageSize,
       ...value,
     };
-
     getDefectList({ queryList, defeactData });
 
   }
@@ -160,7 +158,9 @@ class DefectList extends Component {
   }
 
   filterCondition = (value) => { // 时间筛选
-    this.getDefectData({ ...value, pageNum: 1 });
+    const [createTimeStart = '', createTimeEnd = ''] = value.rangeTimes;
+    this.setState({ createTimeStart, createTimeEnd });
+    this.getDefectData({ createTimeStart, createTimeEnd, pageNum: 1 });
   }
 
   handleOk = () => { // 确定
@@ -204,7 +204,6 @@ class DefectList extends Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    console.log();
     return (
       <div className={styles.defectList}>
         <div>
@@ -260,10 +259,19 @@ class DefectList extends Component {
           style={{ top: 30 }}
           mask={false}
         >
-          <FilterCondition
+          {/* <FilterCondition
             option={['time']}
             onChange={this.filterCondition}
+          /> */}
+          <FilterCondition
+            option={[{
+              name: ' 发生时间',
+              type: 'time',
+              typeName: 'rangeTimes',
+            }]}
+            onChange={this.filterCondition}
           />
+
           <div className={styles.commonPagination}>
             <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total}
               onPaginationChange={this.onPaginationChange} />

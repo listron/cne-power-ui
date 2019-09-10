@@ -1,32 +1,40 @@
 @import '../../../theme/theme.scss';
 
-.autoSelect{
+.autoSelect {
   position: relative;
 }
-.autoModal{
+
+.autoModal {
   position: absolute;
   right: 5px;
-  top: 0px;
+  top: 0;
   height: 32px;
   cursor: pointer;
   line-height: 32px;
-  .handlIcon{
+
+  .handlIcon {
     font-size: 14px;
   }
 }
-.checkModal{
+
+.checkModal {
   height: 350px;
   overflow: auto;
 }
-.trees{
-  .lastNode{
+
+.trees {
+  .lastNode {
     width: 100%;
   }
-  .noneChild>ul{
+
+  .noneChild > ul {
     display: flex;
     align-items: center;
-    .lastNode{
-      flex-basis: 33%;
+    flex-wrap: wrap;
+
+    .lastNode {
+      flex: 0 0 50%;
+      overflow: hidden;
     }
   }
 }

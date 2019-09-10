@@ -31,7 +31,6 @@ export default class RunSearch extends Component {
     const stationInfo = stationInfoStr ? JSON.parse(stationInfoStr) : {};
     const defaultEndTime = moment().subtract(2, 'days').format('YYYY-MM-DD');
     const defaultStartTime = moment(defaultEndTime).subtract(1, 'year').format('YYYY-MM-DD');
-    console.log(stationInfo, 'stationInfo');
     this.state = {
       stationInfoStr,
       searchCode: stationInfo.searchCode,
@@ -171,6 +170,7 @@ export default class RunSearch extends Component {
           <div className={styles.eachParts}>
             <span className={styles.text}>选择时间</span>
             <RangePicker
+              allowClear={false}
               value={[moment(searchDates[0]), moment(searchDates[1])]}
               onChange={this.onDateChange}
               style={{width: '220px'}}

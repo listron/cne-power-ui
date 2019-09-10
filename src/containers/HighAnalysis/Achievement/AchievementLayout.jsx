@@ -45,27 +45,29 @@ class AchievementLayout extends Component {
 
   componentWillReceiveProps(nextProps){
     const { pages } = this.state;
-    const { match, history } = this.props;
-    const { search } = history.location; // 上次的search
+    const { match, history, location } = this.props;
+    const { search } = location; // 上次的search
     const { pathKey } = match.params || {};
-    const { pages: nextPages } = searchUtil(search).parse(); // 新的pages变化
 
     const nextMatchParam = nextProps.match.params || {};
-    const nextLocation = nextProps.history.location;
+    const nextLocation = nextProps.location;
     const nextSearch = nextLocation.search;
     const nexPathKey = nextMatchParam.pathKey;
-    const currentPages = pages.join('_'); // 当前pages变化
     const pageExist = pages.includes(nexPathKey); // 新页面
-    const pageChange = pathKey !== nexPathKey; // 激活页变化
+    const pageChange = pathKey !== nexPathKey; // 当前激活页变化 => 1. 新开页面, 2. 页面切换, 3. 关闭页面
     if(pageChange && !pageExist && !nextSearch){ // 目录新开一个未开启页面: 切换至新页面, search信息中只添加入新的pages
       pages.push(nexPathKey);
       this.setState({ pages });
       const searchResult = searchUtil(search).add({pages: pages.join('_')}).stringify();
       history.push(`${nextLocation.pathname}?${searchResult}`);
-    } else if (pageChange && pageExist && !nextSearch) {// 2. 目录处点击已开启页面 => 切换至页面, search信息不变
-      history.push(`${nextLocation.pathname}${search}`);
-    } else if(nextPages && nextPages !== currentPages) {
-      this.setState({pages: nextPages.split('_').filter(e => !!e)});
+    } else if (pageChange && pageExist) { // 2. 切换至页面, 3. 关闭页面
+      const nextPages = (searchUtil(nextSearch).parse().pages || '').split('_').filter(e => !!e);
+      const pageClosed = nextPages.length > 0 ? pages.filter(e => !nextPages.includes(e)) : []; // 查找需要被关闭的页面
+      pageClosed.length > 0 && (// 3. 关闭页面 最新的pages替换state的pages,并检查删除被关闭页面的search残余参数
+        this.setState({ pages: nextPages }),
+        history.push(`${nextLocation.pathname}?${searchUtil(search).delete(pageClosed).stringify()}`)
+      );
+      pageClosed.length === 0 && history.push(`${nextLocation.pathname}${search}`); // 2. 切换页面 pathkey切换即可
     }
   }
 
@@ -94,6 +96,7 @@ class AchievementLayout extends Component {
     const { match } = this.props;
     const { pathKey } = match.params;
     const { pages } = this.state;
+
     return (
       <div className={styles.layout}>
         <div className={styles.tabs}>
@@ -135,5 +138,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AchievementLayout);
-
-
