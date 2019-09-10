@@ -108,7 +108,8 @@ class ChartStopRank extends Component {
           opacity: (stopChartDevice && deviceFullcode !== stopChartDevice.deviceFullcode) ? 0.4 : 1,
         },
       });
-      countData.push({ value: stopCount || 0 });
+      // countData.push({ value: stopCount || 0 });
+      countData.push({ value: stopCount });
     });
     series[0] = {
       type: 'bar',
