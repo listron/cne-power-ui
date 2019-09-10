@@ -7,7 +7,6 @@ import { ticketAction } from '../../ticketAction';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 import DefectStatus from '../../../../../components/Operation/Ticket/Defect/DefectStatus/DefectStatus';
 import { commonAction } from '../../../../alphaRedux/commonAction';
-import FilterCondition from '../../../../../components/Common/FilterCondition/FilterCondition';
 import FilterConditions from '../../../../../components/Common/FilterConditions/FilterCondition';
 
 class DefectList extends Component {
@@ -113,26 +112,6 @@ class DefectList extends Component {
     });
     return (
       <div className={styles.defectList}>
-        {/* <FilterCondition
-          option={['time', 'stationType', 'stationName', 'deviceType', 'defectLevel', 'defectType', 'defectSource', 'myJoin']}
-          stations={stations}
-          deviceTypes={deviceTypes}
-          defectList={defectList}
-          defectTypes={defectTypes}
-          username={username}
-          onChange={this.filterCondition}
-          defaultValue={{
-            createTimeStart: createTimeStart,
-            createTimeEnd: createTimeEnd,
-            stationType: stationType,
-            stationCodes: stationCodes,
-            defectSource: defectSource,
-            defectLevel: defectLevel,
-            deviceTypeCode: deviceTypeCode,
-            defectTypeCode: defectTypeCode,
-            handleUser: handleUser,
-          }}
-        /> */}
         <FilterConditions
           onChange={this.filterConditionChange}
           theme={theme}
@@ -140,7 +119,6 @@ class DefectList extends Component {
             {
               name: ' 发生时间',
               type: 'time',
-              belong: 'timeSelect',
               typeName: 'rangeTimes',
             },
             {
@@ -151,7 +129,6 @@ class DefectList extends Component {
             {
               name: '电站名称',
               type: 'parentCheckBox',
-              belong: 'multipleSelect',
               typeName: 'stationCodes',
               rules: ['stationName', 'stationCode'],
               parentName: 'provinceName',
@@ -160,7 +137,6 @@ class DefectList extends Component {
             {
               name: '设备类型',
               type: 'multipleType',
-              belong: 'multipleSelect',
               typeName: 'deviceTypeCode',
               rules: ['deviceTypeName', 'deviceTypeCode'],
               data: deviceTypes,
@@ -169,12 +145,10 @@ class DefectList extends Component {
               name: '缺陷级别',
               type: 'defectLevel',
               typeName: 'defectLevel',
-              belong: 'multipleSelect',
             },
             {
               name: '缺陷类型',
               type: 'parentCheckBox',
-              belong: 'multipleSelect',
               typeName: 'defectTypeCode',
               parentName: 'parentName',
               rules: ['name', 'id'],
@@ -182,7 +156,6 @@ class DefectList extends Component {
             },
             {
               type: 'defectSource',
-              belong: 'multipleSelect',
               typeName: 'defectSource',
             },
             {

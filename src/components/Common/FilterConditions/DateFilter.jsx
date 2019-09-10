@@ -9,6 +9,7 @@ class DateFliter extends Component {
     createTimeStart: PropTypes.string,
     createTimeEnd: PropTypes.string,
     onChangeFilter: PropTypes.func,
+    option: PropTypes.object,
   }
 
   constructor(props) {

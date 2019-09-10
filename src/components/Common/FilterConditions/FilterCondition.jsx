@@ -22,93 +22,25 @@ class FilterCondition extends Component {
   /**
    * 
    * @param {*} props 
-   * 1 time 时间  开始时间-结束时间  单独的时间
-   * 2 带分类的 电站类型  缺陷类型  根据分类  
-   * 3 缺陷来源  缺陷级别  设备类型
-   *  
+   * 1 theme 主题 light  dark  默认为light
+   * 2 onChange  必填 回掉函数
+   * 3 value 选填 支持两种方式，一种是外界的value值，一种可以不传，使用内部选中的值 {stationCodes:[],stationType:[]} 必须和typeName保持一致
+   * 4 option array  []
+   *   {}
+   *   1 name: 选填 筛选的标题  默认的可以不写，但是新添加的需要自定义
+   *   2 type: 必填 类型  multipleType radioSelect rangeTime time switch parentCheckBox 六种方式
+   *     multipleType 多选类型  内置 defectLevel,defectSource,level,warningStatus
+   *     radioSelect  单选类型  内置 stationType
+   *     rangeTime    连续时间 
+   *     time         时间段  开始时间 结束时间
+   *     switch       开关 我参与的
+   *     parentCheckBox  带有分类的多选框   内置 stationCode
+   *   3  typeName 必填 必须是唯一的 返回的字段
+   *   4  data 传入的数据  multipleType radioSelect parentCheckBox 必填
+   *   5  rules 匹配的规则  rules=[stationName,stationCode]， 默认为label value
+   *   6  disabled 不能选泽 联动的时候使用 true false
+   *   7  parentName 根据什么分组 parentCheckBox 使用 默认为parentName
    * 
-   {
-       name: '多选类型',
-       type: 'multipleType',
-       belong: 'multipleSelect',
-       typeName: 'deviceTypeCode',
-       data: [{ deviceTypeName: 123, deviceTypeCode: 345 }],
-       rules: ['deviceTypeName', 'deviceTypeCode'],
-     },
-     name: 筛选的标题 默认的可以不写，但是新添加的需要自定义
-     type  类型  multipleType  多选框的 
-     belong  是否是支持多选  不填 默认是单选 multipleSelect 多选
-     typeName  最后返回的字段  value 中的字段和这个保持一致 必须是唯一的，否则会被替换
-     data []  array  数组  
-     rules  显示label的是那个字段，返回的value的字段   不填 默认的是label value 
-      stationCode
-    {
-      name: '电站名称',
-      type: 'stationName',
-      belong: 'multipleSelect',
-      typeName: 'stationCodes',
-      data: stations,
-    },
-
-    {
-     name: '测试单选',
-     type: 'radioSelect',
-     typeName: 'radioSelect',
-     data: [{ label: 123, value: 345 }, { label: 567, value: 789 }],
-     },
-    {
-     name: '电站类型',
-     type: 'stationType',
-     typeName: 'stationType',
-    },
-
-     type: 'radioSelect', 是单选的内容  内置的是电站类型 ，其他可以自定义
-     
-     rangTime 连续一个阶段的
-      {
-         name: '发生时间',
-         type: 'rangeTime',
-         typeName: 'rangeTime',
-         belong: 'timeSelect',
-      },
-
-      time 两个时间 开始时间  截止时间
-       {
-        name: ' 发生时间',
-        type: 'time',
-        typeName: 'rangeTimes',
-        belong: 'timeSelect',
-        },
-
-        设置时间的时候 如果其中两个值存在其中的一个，就可以写成[startTime,endTime] 否则需要写成 []
-     
-     
-    
-    少一个带父级的
-     onChange  回掉函数  你需要什么值 就会返回什么值   根据typeName的返回的值
-     如 {deviceTypeCode:[201,793],stationCodes:[56,350]}
-     disabled: true, 这个功能暂定
-   
-     3  switch 
-       {
-          name: '我参与的',
-          type: 'switch',
-          typeName: 'jionList', // isMay
-          value:0/1
-         },
-  
-
-     5  带父级   电站名称 缺陷类型  这两个都单独写  value  checkedValue 是可以接受的
-          {
-          name: '电站名称',  // 目前为止就是这一个
-          type: 'parentCheckBox',
-          typeName: 'stationCodes', // 0 1 2 全部  风电 光伏
-          rules:[stationName,stationCode]，
-          parentName:'provinceName'
-          data:stations
-          value:[350,360]
-         },
-
    */
 
 
@@ -203,9 +135,10 @@ class FilterCondition extends Component {
   changeDataType = (value = {}, option) => { // 切换数据，如果value 变化，或者是data 发生变化
     const { optionItem } = this.state;
     const optionList = [];
+    const singleType = ['radioSelect', 'stationType', 'switch'];
     option.forEach(item => {
       const currentItem = optionItem.filter(e => e.type === item.type && e.typeName === item.typeName)[0] || {};
-      if (item.belong === 'multipleSelect' || item.belong === 'timeSelect') {
+      if (!(singleType.includes(item.type))) {
         item.checkedValue = value[item['typeName']] || [];
         if (currentItem.checkedValue && currentItem.checkedValue.length > 0) {
           const valueArray = value[item['typeName']] && value[item['typeName']] || [];

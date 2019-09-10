@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './workFlow.scss';
 import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
-// import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 import { Radio } from 'antd';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -63,20 +62,17 @@ class Condition extends Component {
                         {
                             name: ' 发生时间',
                             type: 'time',
-                            belong: 'timeSelect',
                             typeName: 'rangeTimes',
                         },
                         {
                             name: '电站名称',
                             type: 'parentCheckBox',
-                            belong: 'stationName',
                             typeName: 'stationCodes',
                             data: stations,
                         },
                         {
                             name: '两票类型',
                             type: 'multipleType',
-                            belong: 'multipleSelect',
                             typeName: 'docketTypes',
                             rules: ['name', 'id'],
                             data: docketTypeList,

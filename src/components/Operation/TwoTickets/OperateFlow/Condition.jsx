@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './operate.scss';
-// import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import { Radio } from 'antd';
 const RadioButton = Radio.Button;
@@ -49,14 +48,6 @@ class Condition extends Component {
         const { stateCode, stationCodes, IsMy, startTime, endTime } = commonQueryParams;
         return (
             <div className={`${styles.condition} ${styles[theme]}`}>
-                {/* <FilterCondition
-                    option={['stationName', 'time', 'myJoin']}
-                    stations={stations}
-                    username={username}
-                    onChange={this.filterCondition}
-                    myJoinText={'我的待办'}
-                    theme={theme}
-                /> */}
                 <FilterCondition
                     onChange={this.filterCondition}
                     theme={theme}
@@ -64,14 +55,12 @@ class Condition extends Component {
                         {
                             name: '电站名称',
                             type: 'parentCheckBox',
-                            belong: 'stationName',
                             typeName: 'stationCodes',
                             data: stations,
                         },
                         {
                             name: ' 发生时间',
                             type: 'time',
-                            belong: 'timeSelect',
                             typeName: 'rangeTimes',
                         },
                         {

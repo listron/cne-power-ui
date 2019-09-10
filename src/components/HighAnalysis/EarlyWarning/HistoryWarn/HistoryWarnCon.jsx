@@ -177,20 +177,17 @@ class HistoryWarnCon extends Component {
             {
               name: ' 发生时间',
               type: 'time',
-              belong: 'timeSelect',
               typeName: 'rangeTimes',
             },
             {
               name: '电站名称',
               type: 'stationName',
-              belong: 'multipleSelect',
               typeName: 'stationCodes',
               data: stations,
             },
             {
               name: '所属方阵',
               type: 'multipleType',
-              belong: 'multipleSelect',
               typeName: 'belongMatrixs',
               rules: ['label', 'value'],
               data: initmatrixList,

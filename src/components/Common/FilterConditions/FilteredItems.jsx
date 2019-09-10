@@ -27,9 +27,10 @@ class FilteredItems extends Component {
 
   resetAll = () => {
     const { options = [] } = this.props;
+    const singleType = ['radioSelect', 'stationType', 'switch'];
     options.map(item => {
       item.checkedValue = '';
-      if (item.belong === 'multipleSelect' || item.belong === 'timeSelect') {
+      if (!singleType.includes(item.type)) {
         item.checkedValue = [];
       }
     });
@@ -38,7 +39,8 @@ class FilteredItems extends Component {
 
   render() {
     const { options = [] } = this.props;
-    const multipleSelect = options.filter(item => item.belong === 'multipleSelect' && item.checkedValue.length > 0);
+    const notMultipleSelect = ['radioSelect', 'stationType', 'switch', 'rangeTime', 'time'];
+    const multipleSelect = options.filter(item => !notMultipleSelect.includes(item.type) && item.checkedValue.length > 0);
     const rangeTime = options.filter(item => item.type === 'rangeTime' && item.checkedValue.filter(e => !!e).length > 0);
     const time = options.filter(item => item.type === 'time' && item.checkedValue.filter(e => !!e).length > 0);
     const radioSelectType = ['stationType', 'radioSelect'];

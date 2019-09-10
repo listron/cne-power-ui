@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Select, Table, Modal, Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './unhandle.scss';
-// import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
@@ -199,19 +198,15 @@ class Unhandle extends Component {
             {
               name: '电站名称',
               type: 'stationName',
-              belong: 'multipleSelect',
               typeName: 'stationCodes',
               data: stations,
             },
             {
               name: '所属方阵',
               type: 'multipleType',
-              belong: 'multipleSelect',
               typeName: 'belongMatrixs',
-              rules: ['label', 'value'],
               data: initmatrixList,
             },
-
           ]}
         />
         <div className={styles.wrap}>
