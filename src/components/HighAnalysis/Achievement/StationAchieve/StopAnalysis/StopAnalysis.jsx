@@ -29,11 +29,13 @@ class StopAnalysis extends Component {
   render() {
     const { active } = this.props;
     return (
-      <div onContextMenu={this.handleContextMenu} className={`${styles.stopAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
-        <StopElecTypes {...this.props} />
-        <ChartStopRank {...this.props} />
-        <ChartStopTrend {...this.props} />
-        <ChartStopTypes {...this.props} />
+      <div onContextMenu={this.handleContextMenu} className={`${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
+        <div className={styles.stopAnalysis}>
+          <StopElecTypes {...this.props} />
+          <ChartStopRank {...this.props} />
+          <ChartStopTrend {...this.props} />
+          <ChartStopTypes {...this.props} />
+        </div>
       </div>
     );
   }
