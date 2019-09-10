@@ -84,7 +84,7 @@ class StopElecTypes extends Component {
     return (
       <div className={styles.eleTypes}>
         <div className={styles.info}>
-          {formattedElecs.map(e => (
+          {formattedElecs.map((e, i) => (
             e.rate > 0 ? <span
               key={e.key}
               className={`${styles.eachInfo} ${stopElecType === e.key ? styles.active : null}`}
@@ -96,6 +96,7 @@ class StopElecTypes extends Component {
               }}
             >
               {e.label}
+              {i === 0 && ` ${dataFormats(dataFormats(e.value) / 10000, '--', 4, true)}万kWh ${e.rate}%`}
             </span> : null
           ))}
           {showDetail && <section className={styles.detail} style={{
@@ -105,7 +106,10 @@ class StopElecTypes extends Component {
             <div className={styles.lostContent}>
               <p className={styles.eachDetail}>
                 <span className={styles.detailText}>损失电量</span>
-                <span className={styles.detailText}>{dataFormats(dataFormats(detailInfo.value) / 10000, '--', 4, true)}万kWh</span>
+                <span className={styles.detailText}>
+                  {dataFormats(dataFormats(detailInfo.value) / 10000, '--', 4, true)}
+                  万kWh
+                </span>
               </p>
               <p className={styles.eachDetail}>
                 <span className={styles.detailText}>占比</span>
