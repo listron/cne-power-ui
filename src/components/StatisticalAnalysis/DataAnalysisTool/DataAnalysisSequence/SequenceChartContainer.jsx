@@ -46,13 +46,16 @@ class SequenceChartContainer extends React.Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-    const { stationCode, startTime, endTime, xPointCode, yPointCode } = nextProps;
+    const { stationCode, startTime, endTime, pointY1, pointY2, deviceList, xyValueLimit } = nextProps;
     const isChangeStationCode = stationCode !== this.props.stationCode;
     const isChangeStartTime = startTime !== this.props.startTime;
     const isChangeEndTime = endTime !== this.props.endTime;
-    const isChangeXcode = xPointCode !== this.props.xPointCode;
-    const isChangeYcode = yPointCode !== this.props.yPointCode;
-    if (isChangeStationCode || isChangeStartTime || isChangeEndTime || isChangeXcode || isChangeYcode) {//改变电站清空图片地址
+    const isChangeXcode = pointY1 !== this.props.pointY1;
+    const isChangeYcode = pointY2 !== this.props.pointY2;
+    const curLimitValue = JSON.stringify(Object.values(xyValueLimit).sort((a, b) => (a - b)));
+    const preLimitValue = JSON.stringify(Object.values(this.props.xyValueLimit).sort((a, b) => (a - b)));
+    const isChangeLimit = curLimitValue !== preLimitValue;
+    if (isChangeStationCode || isChangeStartTime || isChangeEndTime || isChangeXcode || isChangeYcode || isChangeLimit) {//改变电站清空图片地址
       this.setState({
         newSrcUrl: [],
         srcObj: {},
@@ -74,7 +77,9 @@ class SequenceChartContainer extends React.Component {
         const eTime = moment(endTime).format('YYYY-MM-DD');
         const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
         const { stationName } = stationArr;
-        toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}&${pointCodeNameY}-${sTime}_${eTime}`, `${pointCodeNameX}&${pointCodeNameY}`);
+        const fileName = `${stationName}-${pointCodeNameX}vs${pointCodeNameY}-${sTime}_${eTime}`;
+        const childFileName = `${pointCodeNameX}vs${pointCodeNameY}`;
+        toZip(this.state.newSrcUrl, fileName, childFileName, deviceList);
       } else {
         message.warning('图片未全部加载完成');
       }
