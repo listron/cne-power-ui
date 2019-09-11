@@ -1,9 +1,10 @@
 import immutable from 'immutable';
 
 const overviewAction = {
-  getStationData: Symbol('getStationData'), // 获取电站信息
-  getDevicesData: Symbol('getDevicesData'), // 获取设备信息
-  getPointsData: Symbol('getPointsData'), // 获取测点信息
+  getOverviewStation: Symbol('getOverviewStation'), // 获取电站信息
+  getOverviewDates: Symbol('getOverviewDates'), // 获取电站各日平均数据完整率
+  getOverviewDevices: Symbol('getOverviewDevices'), // 获取设备信息
+  getOverviewPoints: Symbol('getOverviewPoints'), // 获取测点信息
 
   GET_OVERVIEW_SUCCESS: Symbol('GET_OVERVIEW_SUCCESS'),
   CHANGE_OVERVIEW_STORE: Symbol('CHANGE_OVERVIEW_STORE'),

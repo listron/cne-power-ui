@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './overview.scss';
-// import { commonAction } from '../../../alphaRedux/commonAction';
-// import { scatterDiagramAction } from './scatterDiagramReducer';
+import { overviewAction } from './overviewReducer';
 // import ScatterDiagramSearch from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramSearch';
 // import ScatterDiagramDataType from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramDataType';
 // import ScatterDiagramChart from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramChart';
@@ -22,6 +21,7 @@ class Overview extends Component{
 
   render(){
     // const { scatterDiagramType } = this.props;
+    console.log(this.props);
     return(
       <div className={styles.overview}>
         <CommonBreadcrumb breadData={[{ name: '数据概览' }]} style={{ marginLeft: '40px' }} />
@@ -44,20 +44,15 @@ class Overview extends Component{
 }
 
 const mapStateToProps = state => ({
-  ...state.monitor.dataScatterDiagram.toJS(),
-  // stations: state.common.get('stations').toJS().filter(e => e.stationType === 0),
+  ...state.monitor.overview.toJS(),
+  stations: state.common.get('stations').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) =>({
-  // changeScatterDiagramStore: payload => dispatch({ type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE, payload }),
-  // resetScatterDiagramStore: () => dispatch({ type: scatterDiagramAction.RESETS_SCATTERDIAGRAM_STORE }),
-  // getPoints: payload => dispatch({ type: scatterDiagramAction.getPoints, payload }),
-  // getChartScatterDiagram: payload => dispatch({ type: scatterDiagramAction.getChartScatterDiagram, payload }),
-  // getListScatterDiagram: payload => dispatch({ type: scatterDiagramAction.getListScatterDiagram, payload }),
-  // downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload: {
-  //   ...payload,
-  //   actionName: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE
-  // } }),
+  getOverviewStation: payload => dispatch({ type: overviewAction.getOverviewStation, payload }),
+  getOverviewDates: payload => dispatch({ type: overviewAction.getOverviewDates, payload }),
+  getOverviewDevices: payload => dispatch({ type: overviewAction.getOverviewDevices, payload }),
+  getOverviewPoints: payload => dispatch({ type: overviewAction.getOverviewPoints, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);

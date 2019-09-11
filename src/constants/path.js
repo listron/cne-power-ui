@@ -421,6 +421,11 @@ export default {
       getPoints: '/v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
       getDataExport: '/v3/wind/analysis/export/task', // 数据导出
 
+      getOverviewStation: '/v3/dataoverriew/devicetype', // 获取电站信息
+      getOverviewDates: '/v3/dataoverriew/station', // 电站各日完整率
+      getOverviewDevices: '/v3/ dataoverriew/point', // 获取设备信息
+      getOverviewPoints: '/v3/ dataoverriew/device', // 获取测点信息
+
       getWindMonitorPower: '/v3/wind/monitor/stations/power', // 全部风电站的理论发电量图表
       getWindStation: '/v3/wind/monitor/stations', // 全部风电站
       getWindCapability: '/v3/wind/monitor/stations/capabilitydiagram', // 风电站出力图
@@ -542,7 +547,7 @@ export default {
       getScatterData: '/v3/wind/analysis/scatterplot/list', //散点图列表
       getStationDevice: '/v3/wind/analysis/windturbinelist', //电站风机列表
       getSequenceData: '/v3/wind/analysis/sequencechart', //时序图数据
-      getxyLimitValue: '/v3/wind/analysis/points/max',//获取xy轴最大值最小值
+      getxyLimitValue: '/v3/wind/analysis/points/max', //获取xy轴最大值最小值
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表

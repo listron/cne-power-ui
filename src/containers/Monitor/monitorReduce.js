@@ -19,6 +19,7 @@ import powerLostReducer from './Report/PowerLost/powerLostReducer';
 import alarmStatistic from './Alarm/AlarmStatic/alarmStatisticReducer';
 import alarmCount from './Alarm/AlarmCount/alarmCountReducer';
 
+import { overview } from './DataAnalysis/Overview/overviewReducer'; // 数据分析 - 数据概览
 import { dataHistory } from './DataAnalysis/DataHistory/historyReducer'; // 数据分析 - 历史趋势
 import { dataRealtime } from './DataAnalysis/DataRealtime/realtimeReducer'; // 数据分析 - 实时数据
 import { dataScatterDiagram } from './DataAnalysis/DataScatterDiagram/scatterDiagramReducer'; // 数据分析 - 散点图
@@ -32,13 +33,14 @@ const monitorReducer = combineReducers({
   transferFormReducer,
   alarmStatistic,
   handleRemoveReducer,
-  historyWarningReducer, 
+  historyWarningReducer,
   allDeviceCurveReducer,
   singleDeviceCurveReducer,
   powerReportReducer,
   deviceStatusReducer,
   malfunctionReducer,
   powerLostReducer,
+  overview,
   dataHistory,
   dataRealtime,
   dataScatterDiagram,
