@@ -52,8 +52,8 @@ class DeviceFilter extends Component {
     const params = { stationCode, deviceFullCode, startTime, endTime };
     // const params = { stationCode, deviceFullCode, startTime: moment(startTime).utc().format(), endTime: moment(endTime).utc().format() };
     if (startTime === moment().subtract(1, 'days').format('YYYY-MM-DD') && endTime === moment().format('YYYY-MM-DD')) {
-      const preDay = moment().startOf('day').subtract(1, 'days');
-      const curDay = moment().format('YYYY-MM-DD HH:mm:ss');
+      const preDay = moment().startOf('day').subtract(1, 'days').format('YYYY-MM-DD');
+      const curDay = moment().format('YYYY-MM-DD');
       params.startTime = preDay;
       params.endTime = curDay;
       // params.startTime = moment(preDay).utc().format();
@@ -96,7 +96,7 @@ class DeviceFilter extends Component {
     const { stationCode, deviceFullCode, stations, downLoadFile } = this.props;
     startTime = moment(startTime).utc().format();
     endTime = moment(endTime).utc().format();
-    let timeZone = moment().utcOffset();
+    const timeZone = moment().utcOffset();
     const stationInfo = stations.filter((e, i) => e.stationCode)[0];
     downLoadFile({ // 
       url,
@@ -106,7 +106,7 @@ class DeviceFilter extends Component {
         deviceFullCode,
         startTime,
         endTime,
-        timeZone: timeZone / 60
+        timeZone: timeZone / 60,
       },
     });
   }
