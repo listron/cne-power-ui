@@ -111,7 +111,7 @@ class DefectList extends Component {
       defectTypeList = [...defectTypeList, ...e.list];
     });
     return (
-      <div className={styles.defectList}>
+      <div className={`${styles.defectList} ${styles[theme]}`}>
         <FilterConditions
           onChange={this.filterConditionChange}
           theme={theme}
