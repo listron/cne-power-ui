@@ -1,1 +1,71 @@
 @import "../../../theme/theme";
+
+@mixin top {
+  @include lineheight(64px);
+  // background: #fff;
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: 1px solid $promptColor;
+}
+
+.pointSide {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+  background: #ececec;
+  padding: 24px 24px 0;
+  z-index: 99;
+
+  .caseAdd,
+  .caseDetail,
+  .caseEdit {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    background: #fff;
+
+    .pageTop {
+      @include top;
+      justify-content: space-between;
+
+      .leftContainer {
+        display: flex;
+        flex: 1;
+        justify-content: space-between;
+        margin-right: 14px;
+      }
+
+      .text {
+        font-size: 18px;
+        color: $darkColor;
+        letter-spacing: 4px;
+      }
+
+      .saveBtn {
+        margin-right: 16px;
+        height: 40px;
+        border-color: $themeColor;
+        color: $themeColor;
+
+        &:hover {
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+
+      .backIcon {
+        color: $darkColor;
+        font-size: 20px;
+        border-left: 1px solid #dfdfdf;
+        height: 100%;
+        line-height: 64px;
+        width: 64px;
+        cursor: pointer;
+      }
+    }
+
+  }
+}

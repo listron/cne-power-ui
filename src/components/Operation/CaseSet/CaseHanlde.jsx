@@ -16,6 +16,12 @@ class CaseHandle extends React.Component {
       showUpload: false,
     };
   }
+  showAddPage = () => {
+    this.props.changeCasePartStore({
+      showPage: 'detail',
+    });
+  }
+
   uploadFile = () => {
     this.setState({
       showUpload: true,
