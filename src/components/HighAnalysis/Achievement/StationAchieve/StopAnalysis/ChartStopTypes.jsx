@@ -223,7 +223,6 @@ class ChartStopTypes extends Component {
   }
 
   toStopPage = () => {
-    console.log('to stop page');
     const { stopTopStringify, stopChartDevice, history } = this.props;
     const { search } = history.location;
     let searchParam = {};
