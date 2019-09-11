@@ -79,6 +79,16 @@ class GroupAchieve extends Component {
     }
   }
 
+  componentWillUnmount() {
+    const { changeStore } = this.props;
+    changeStore({
+      dataIndex: '', // 保存点击的下标
+      selectStationCode: [], // 保存单选区域的信息
+      selectTime: '', // 保存选择时间
+      dataName: '', // 保存选择区域名称
+    });
+  }
+
   queryParamsFunc = (groupInfo) => {
     const { groupTimeStatus } = this.props;
     const basicParams = this.basicParams(groupInfo);

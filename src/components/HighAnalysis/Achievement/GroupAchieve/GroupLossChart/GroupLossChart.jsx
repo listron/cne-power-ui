@@ -18,6 +18,15 @@ const barColor = [
   ['#4c9de8', '#2564cc'],
   ['#058447', '#024d22'],
   ['#e024f2', '#bd10e0'],
+  ['#72c8ea', '#3e97d1'],
+  ['#36c6ad', '#199475'],
+  ['#ffb8c4', '#ff8291'],
+  ['#df7789', '#bc4251'],
+  ['#f2b75f', '#e08031'],
+  ['#ffeecc', '#ffd99d'],
+  ['#4c9de8', '#2564cc'],
+  ['#058447', '#024d22'],
+  ['#e024f2', '#bd10e0'],
 ];
 
 export default class GroupLossChart extends Component {
@@ -123,7 +132,7 @@ export default class GroupLossChart extends Component {
               position: 'top',
             },
           },
-          data: [dataFormat(theoryGen, '--', pointLength), ...xAxisValue, dataFormat(actualGen, '--', pointLength)].map((cur, i) => ({
+          data: [theoryGen, ...xAxisValue, actualGen].map((cur, i) => ({
             value: cur,
             itemStyle: {
               color: new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
@@ -154,6 +163,8 @@ export default class GroupLossChart extends Component {
         pages = `${pagesStr}_area`;
       }
     }
+    console.log(pagesStr, 'pagesStr');
+    console.log(pages, 'pages');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const resultStation = [];
     groupInfo.stations && groupInfo.stations.forEach(e => {
