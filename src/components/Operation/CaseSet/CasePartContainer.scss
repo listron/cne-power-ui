@@ -1,0 +1,117 @@
+@import "../../../theme/theme";
+
+.caseSearch {
+  display: flex;
+  flex-direction: column;
+
+  .partSearch {
+    display: flex;
+    background-color: #f9f9f9;
+    line-height: 50px;
+    text-align: center;
+    align-items: center;
+
+    .textDesc {
+      margin-left: 24px;
+    }
+
+    .searchBtn {
+      margin: 0 16px;
+    }
+
+    .entryPerson {
+      margin-left: 16px;
+    }
+
+    :global {
+      // .ant-input {
+      //   width: 198px;
+      // }
+
+      .ant-select-selection {
+        width: 160px;
+      }
+    }
+
+    .searchDesc {
+      width: 375px;
+      margin: 0 16px;
+    }
+
+    .searchFeedback {
+      width: 160px;
+      margin: 0 16px;
+    }
+
+    .reset {
+      color: $themeColor;
+    }
+  }
+
+}
+
+
+.caseHandle {
+  // 导出设备， 翻页器
+  display: flex;
+  justify-content: space-between;
+  height: 72px;
+  align-items: center;
+  padding-left: 28px;
+
+  .leftHandler {
+    display: flex;
+
+    .addButton {
+      margin-right: 12px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+
+      .plus {
+        background-color: $themeColor;
+        color: #fff;
+        border-radius: 2px 0 0 2px;
+        line-height: 30px;
+        width: 28px;
+        font-size: 18px;
+      }
+
+      .name {
+        border-radius: 0 2px 2px 0;
+        color: $themeColor;
+        padding: 0 5px;
+        // width: 40px;
+        line-height: 30px;
+      }
+
+      &:hover {
+        .name {
+          color: #fff;
+          background-color: $themeColor;
+        }
+      }
+    }
+
+    .importInfo {
+      margin-left: 36px;
+    }
+
+    .intoFile,
+    .downloadStyle {
+      margin-left: 12px;
+      border-color: $themeColor;
+      color: $themeColor;
+
+    }
+
+    .exportInfo {
+      margin: 0 12px;
+    }
+
+
+    .clearPoint {}
+  }
+}
+
+.caseList {}

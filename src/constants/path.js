@@ -228,6 +228,17 @@ export default {
       handleBatch: '/v3/docket/handleBatch', // 批量审核/执行/消票 票据
       stopBatch: '/v3/docket/stopBatch', // 批量终止票据（作废）
       delDocket: '/v3/docket/del', // 票据删除
+      //案例集
+      getDeviceMode: '/v3/ledeger/manufactormode',
+      getQuestionList: '/v3/casebase/questionType',
+      getCasePartList: '/v3/casebase/list',
+      getCasePartDetail: '/v3/casebase/get',
+      addCasePart: '/v3/casebase/add',
+      likeCase: '/v3/casebase/like',
+      editCasePart: '/v3/casebase/update',
+      deleteCasePart: '/v3/casebase/del',
+      queryUseName: '/v3/casebase/likequery',
+
 
     },
     system: {

@@ -105,6 +105,8 @@ import { watchStockRecords } from './Operation/Book/StockRecords/stockRecordsSag
 import { watchExaminer } from './Operation/TwoTickets/Examiner/examinerSaga';
 import { watchOperateFlow } from './Operation/TwoTickets/OperateFlow/operateFlowSaga';
 import { watchWorkFlow } from './Operation/TwoTickets/WorkFlow/workFlowSaga';
+import { watchCadePartSaga } from './Operation/CaseSet/casePartSaga';
+
 
 // root saga
 export default function* rootSaga() {
@@ -216,5 +218,7 @@ export default function* rootSaga() {
     watchExaminer(), // 两票 -审核人
     watchOperateFlow(), //两票 -操作票
     watchWorkFlow(), ////两票 -工作票
+    //案例集
+    watchCadePartSaga(), //案例集
   ]);
 }
