@@ -17,6 +17,16 @@ module.exports = {
     index: './src/app.js', 
   },
   resolve:{
+    alias: {
+      '@common': path.resolve(__dirname, 'src/common'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@config': path.resolve(__dirname, 'src/config'),
+      '@constants': path.resolve(__dirname, 'src/constants'),
+      '@path$': path.resolve(__dirname, 'src/constants/path.js'),
+      '@containers': path.resolve(__dirname, 'src/containers'),
+      '@theme': path.resolve(__dirname, 'src/theme'),
+      '@utils': path.resolve(__dirname, 'src/utils'),
+    },
     extensions: [".js", ".json", ".jsx"]
   },
   module: {

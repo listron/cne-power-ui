@@ -23,11 +23,7 @@ function* getIgnoreList(action) { // 忽略列表
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getIgnorelist}`
   try {
     yield put({ type: ignoreAction.ignoreFetch });
-    const response = yield call(axios.post, url, {
-      ...payload,
-      startTime: payload.createTimeStart,
-      endTime: payload.createTimeEnd,
-    });
+    const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       const totalNum = response.data.data && response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
@@ -52,7 +48,7 @@ function* getIgnoreList(action) { // 忽略列表
     // message.error('获取列表失败')
     yield put({
       type: ignoreAction.changeIgnoreStore,
-      payload: { ...payload, loading: false ,ignoreList:[]},
+      payload: { ...payload, loading: false, ignoreList: [] },
     })
   }
 }

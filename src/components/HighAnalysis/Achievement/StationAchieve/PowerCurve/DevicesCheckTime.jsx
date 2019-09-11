@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select } from 'antd';
+import { Select, Switch } from 'antd';
+import uiColors from '@constants/ui.js';
 import styles from './curve.scss';
 const { Option } = Select;
 
@@ -8,6 +9,9 @@ class DevicesCheckTime extends Component {
 
   static propTypes = {
     curveTopStringify: PropTypes.string,
+    curveAllDevice: PropTypes.array,
+    curveCheckedDevice: PropTypes.array,
+    curveDevices: PropTypes.object,
     curveDevicesTime: PropTypes.string,
     curveAllMonths: PropTypes.array,
     getCurveDevices: PropTypes.func,
@@ -34,8 +38,27 @@ class DevicesCheckTime extends Component {
     this.props.getCurveDevicesPsd(param);
   }
 
+  checkDevice = (device) => {
+    const { curveCheckedDevice } = this.props;
+    const isDeviceHide = curveCheckedDevice.includes(device);
+    if (isDeviceHide) {
+      this.props.changeStore({ curveCheckedDevice: curveCheckedDevice.filter(e => e !== device) });
+    } else {
+      this.props.changeStore({ curveCheckedDevice: [...curveCheckedDevice, device] });
+    }
+  }
+
+  onAllChange = (checked) => {
+    const { curveAllDevice } = this.props;
+    this.props.changeStore({ curveCheckedDevice: checked ? curveAllDevice : [] });
+  }
+
   render() {
-    const { curveDevicesTime, curveAllMonths } = this.props;
+    const { curveDevicesTime, curveAllMonths, curveAllDevice, curveCheckedDevice } = this.props;
+    const theoryDevice = [], actualDevice = [];
+    curveAllDevice.forEach(e => { // 将所有设备分拆未理论和实际， 用于颜色渲染
+      (e.includes('理论功率曲线') ? theoryDevice : actualDevice).push(e);
+    });
     return (
       <section className={styles.timeSelector}>
         <h3 className={styles.timeTitle}>切换月份</h3>
@@ -43,13 +66,43 @@ class DevicesCheckTime extends Component {
           allowClear={false}
           onChange={this.selectMonth}
           placeholder="请选择月份"
-          style={{width: '120px'}}
+          style={{width: '120px', marginBottom: '12px'}}
           value={curveDevicesTime}
         >
           {curveAllMonths.map(e => (
             <Option key={e}>{e}</Option>
           ))}
         </Select>
+        <ul className={styles.deviceList}>
+          {curveAllDevice.map((e) => {
+            const active = curveCheckedDevice.includes(e);
+            const isTheory = e.includes('理论功率曲线');
+            const lineIndex = (isTheory ? theoryDevice : actualDevice).indexOf(e);
+            const lineColor = uiColors[isTheory ? 'mainColors' : 'outputColors'][lineIndex];
+            const backgroundColor = active ? lineColor : '#fff';
+            const border = active ? `1px solid ${lineColor}` : '1px solid rgb(238,238,238)';
+            const color = active ? '#666' : '#dfdfdf';
+            return (
+              <li
+                className={styles.device}
+                key={e.deviceFullcode}
+                onClick={() => this.checkDevice(e)}
+              >
+                <span className={styles.round} style={{backgroundColor, border}} />
+                <span className={styles.deviceText} title={e} style={{color}}>{e}</span>
+              </li>
+            );
+          })}
+        </ul>
+        <div className={styles.allHandler}>
+          <Switch
+            onChange={this.onAllChange}
+            checked={curveCheckedDevice.length > 0}
+          />
+          <span className={styles.allHandlerText}>
+            全部{curveCheckedDevice.length === 0 ? '隐藏' : '显示'}
+          </span>
+        </div>
       </section>
     );
   }

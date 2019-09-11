@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './cleanoutRecordMain.scss';
 import CleanoutRecordTable from './CleanoutRecordTable';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
-import FilterCondition from '../../../../Common/FilterCondition/FilterCondition';
+import FilterCondition from '../../../../Common/FilterConditions/FilterCondition';
 
 class CleanoutRecordMain extends Component { // 电站管理列表页
   static propTypes = {
@@ -67,10 +67,16 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
         <div className={styles.cleanoutcontainer}>
           <div className={styles.topFilter}>
             <FilterCondition
-              option={['stationName']}
-              stations={stations.filter(e => e.stationType === 1)}
-              onChange={this.filterCondition}
               theme={theme}
+              onChange={this.filterCondition}
+              option={[
+                {
+                  name: '电站名称',
+                  type: 'stationName',
+                  typeName: 'stationCodes',
+                  data: stations.filter(e => e.stationType === 1),
+                },
+              ]}
             />
           </div>
           <div className={styles.wrap}>

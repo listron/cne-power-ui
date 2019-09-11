@@ -10,30 +10,24 @@ function* changeHistoryWarnStore(action) { // 存储payload指定参数，替换
   yield put({
     type: historyWarnAction.changeHistoryWarnStore,
     payload,
-  })
+  });
 }
 
 function* resetStore() {
   yield put({
-    type: historyWarnAction.RESET_STORE
-  })
+    type: historyWarnAction.RESET_STORE,
+  });
 }
 
 function* getHistoryWarnList(action) { // 列表
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getUnhandleList}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getUnhandleList}`;
   try {
     yield put({
       type: historyWarnAction.changeHistoryWarnStore,
-      payload: {
-        loading: true
-      }
+      payload: { loading: true },
     });
-    const response = yield call(axios.post, url, {
-      ...payload,
-      startTime: payload.createTimeStart,
-      endTime: payload.createTimeEnd
-    });
+    const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       const totalNum = response.data.data && response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
@@ -53,20 +47,20 @@ function* getHistoryWarnList(action) { // 列表
           loading: false,
         },
       });
-    } else { throw response.data }
+    } else { throw response.data; }
   } catch (e) {
     console.log(e);
     yield put({
       type: historyWarnAction.changeHistoryWarnStore,
       payload: { ...payload, loading: false, historyWarnList: [] },
-    })
+    });
   }
 }
 
 
-function* getHistoryWarnMatrixList(action) {  // 获取方阵下的列表
+function* getHistoryWarnMatrixList(action) { // 获取方阵下的列表
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixList}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixList}`;
   try {
     const response = yield call(axios.post, url, {
       ...payload,
@@ -79,13 +73,13 @@ function* getHistoryWarnMatrixList(action) {  // 获取方阵下的列表
           matrixList: response.data.data || [],
         },
       });
-    } else { throw response.data }
+    } else { throw response.data; }
   } catch (e) {
     console.log(e);
     yield put({
       type: historyWarnAction.changeHistoryWarnStore,
       payload: { ...payload, matrixList: [] },
-    })
+    });
   }
 }
 
@@ -93,7 +87,7 @@ function* getHistoryWarnMatrixList(action) {  // 获取方阵下的列表
 function* getSequencechart(action) {
   const { payload } = action;
   const { params, resultName } = payload;
-  const url = `${Path.basePaths.APIBasePath + Path.APISubPaths.highAnalysis.getSequencechart}`
+  const url = `${Path.basePaths.APIBasePath + Path.APISubPaths.highAnalysis.getSequencechart}`;
   try {
     const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
@@ -109,8 +103,8 @@ function* getSequencechart(action) {
     console.log(e);
     yield put({
       type: historyWarnAction.changeHistoryWarnStore,
-      [resultName]:[],
-    })
+      [resultName]: [],
+    });
   }
 }
 export function* watchHistory() {

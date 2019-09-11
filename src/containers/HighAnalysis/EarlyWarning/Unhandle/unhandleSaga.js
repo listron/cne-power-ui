@@ -9,24 +9,22 @@ function* changeUnhandleStore(action) { // 存储payload指定参数，替换red
   yield put({
     type: unhandleAction.changeUnhandleStore,
     payload,
-  })
+  });
 }
 
 function* resetStore() {
   yield put({
-    type: unhandleAction.RESET_STORE
-  })
+    type: unhandleAction.RESET_STORE,
+  });
 }
 
 
 function* getUnhandleList(action) {
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getUnhandleList}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getUnhandleList}`;
   try {
     yield put({ type: unhandleAction.unhadleFetch });
-    const response = yield call(axios.post, url, {
-      ...payload,
-    });
+    const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       const totalNum = response.data.data && response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
@@ -45,26 +43,26 @@ function* getUnhandleList(action) {
           pageNum,
         },
       });
-    }else{throw response.data}
+    } else { throw response.data; }
   } catch (e) {
     console.log(e);
     yield put({
       type: unhandleAction.changeUnhandleStore,
-      payload: { ...payload, loading: false ,unhandleList:[]},
-    })
+      payload: { ...payload, loading: false, unhandleList: [] },
+    });
   }
 }
 
 function* toorder(action) {
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.toorder}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.toorder}`;
   try {
     yield put({ type: unhandleAction.unhadleFetch });
     const response = yield call(axios.post, url, {
       ...payload,
     });
     if (response.data.code === '10000') {
-      message.success("转工单成功")
+      message.success('转工单成功');
       const params = yield select(state => ({
         stationCodes: state.highAanlysisReducer.unhandle.get('stationCodes'),
         belongMatrixs: state.highAanlysisReducer.unhandle.get('belongMatrixs'),
@@ -84,31 +82,31 @@ function* toorder(action) {
       yield put({
         type: unhandleAction.changeUnhandleStore,
         payload: {
-          dealSuccess:true,
+          dealSuccess: true,
         },
       });
-    }else{ throw response.data }
+    } else { throw response.data; }
   } catch (e) {
     console.log(e);
-    message.error("转工单失败")
+    message.error('转工单失败');
     yield put({
       type: unhandleAction.changeUnhandleStore,
       payload: { loading: false },
-    })
+    });
   }
 }
 
 
-function *ignoreList(action){
+function* ignoreList(action) {
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.ignore}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.ignore}`;
   try {
     yield put({ type: unhandleAction.unhadleFetch });
     const response = yield call(axios.post, url, {
       ...payload,
     });
     if (response.data.code === '10000') {
-      message.success("忽略成功")
+      message.success('忽略成功');
       const params = yield select(state => ({
         stationCodes: state.highAanlysisReducer.unhandle.get('stationCodes'),
         belongMatrixs: state.highAanlysisReducer.unhandle.get('belongMatrixs'),
@@ -128,24 +126,24 @@ function *ignoreList(action){
       yield put({
         type: unhandleAction.changeUnhandleStore,
         payload: {
-          dealSuccess:true,
+          dealSuccess: true,
         },
       });
-    }else{ throw response.data }
+    } else { throw response.data; }
   } catch (e) {
     console.log(e);
-    message.error("忽略失败")
+    message.error('忽略失败');
     yield put({
       type: unhandleAction.changeUnhandleStore,
       payload: { loading: false },
-    })
+    });
   }
 }
 
 
-function *getMatrixlist(action){
+function* getMatrixlist(action) {
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixList}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixList}`;
   try {
     yield put({ type: unhandleAction.unhadleFetch });
     const response = yield call(axios.post, url, {
@@ -159,19 +157,19 @@ function *getMatrixlist(action){
           matrixList: response.data.data || [],
         },
       });
-    }else{ throw response.data}
+    } else { throw response.data; }
   } catch (e) {
     console.log(e);
     yield put({
       type: unhandleAction.changeUnhandleStore,
-      payload: { ...payload, loading: false ,matrixList:[]},
-    })
+      payload: { ...payload, loading: false, matrixList: [] },
+    });
   }
 }
 
-function *getForewarningDetail(action){
+function* getForewarningDetail(action) {
   const { payload } = action;
-  const inefficiencyId=payload.inefficiencyId;
+  const inefficiencyId = payload.inefficiencyId;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.warnDetail}/${inefficiencyId}`;
   try {
     yield put({ type: unhandleAction.unhadleFetch });
@@ -190,17 +188,17 @@ function *getForewarningDetail(action){
     yield put({
       type: unhandleAction.changeUnhandleStore,
       payload: { loading: false },
-    })
+    });
   }
 }
 
 
-function *getSequencechart(action){
+function* getSequencechart(action) {
   const { payload } = action;
-  const url=`${Path.basePaths.APIBasePath + Path.APISubPaths.highAnalysis.getSequencechart}`
+  const url = `${Path.basePaths.APIBasePath + Path.APISubPaths.highAnalysis.getSequencechart}`;
   try {
     yield put({ type: unhandleAction.unhadleFetch });
-    const response = yield call(axios.get, url,{params: payload});
+    const response = yield call(axios.get, url, { params: payload });
     if (response.data.code === '10000') {
       yield put({
         type: unhandleAction.getUnhandleFetchSuccess,
@@ -215,7 +213,7 @@ function *getSequencechart(action){
     yield put({
       type: unhandleAction.changeUnhandleStore,
       payload: { loading: false },
-    })
+    });
   }
 }
 

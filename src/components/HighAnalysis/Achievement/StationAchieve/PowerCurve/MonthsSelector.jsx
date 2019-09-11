@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from 'antd';
+import uiColors from '@constants/ui';
 import styles from './curve.scss';
 
 class MonthsSelector extends Component {
@@ -8,6 +9,7 @@ class MonthsSelector extends Component {
   static propTypes = {
     changeStore: PropTypes.func,
     curveCheckedMonths: PropTypes.array, // 环比分析各月选中时间
+    curveMonths: PropTypes.object,
     curveAllMonths: PropTypes.array, // 环比分析所有月
   }
 
@@ -42,16 +44,20 @@ class MonthsSelector extends Component {
   }
 
   render() {
-    const { curveCheckedMonths, curveAllMonths } = this.props;
+    const { curveCheckedMonths, curveAllMonths, curveMonths } = this.props;
+    const { actual = [] } = curveMonths;
+    const actualMonths = curveAllMonths.filter(e => actual.find(item => item.calcDate === e));
+    const actualchecked = curveCheckedMonths.filter(e => actual.find(item => item.calcDate === e));
     return (
       <section className={styles.timeSelector}>
         <h3 className={styles.timeTitle}>显示月份</h3>
         <ul className={styles.monthList}>
-          {curveAllMonths.map((e, index) => {
-            const colorIndex = index % this.monthColors.length;
+          {actualMonths.map((e, index) => {
+            const monthIndex = curveAllMonths.indexOf(e);
+            const monthColor = uiColors.outputColors[monthIndex];
             const active = curveCheckedMonths.includes(e);
-            const backgroundColor = active ? this.monthColors[colorIndex] : '#fff';
-            const border = active ? `1px solid ${this.monthColors[colorIndex]}` : '1px solid rgb(238,238,238)';
+            const backgroundColor = active ? monthColor : '#fff';
+            const border = active ? `1px solid ${monthColor}` : '1px solid rgb(238,238,238)';
             const color = active ? '#666' : '#dfdfdf';
             return (<li
               className={styles.month}
@@ -64,8 +70,13 @@ class MonthsSelector extends Component {
           })}
         </ul>
         <div className={styles.allHandler}>
-          <Switch onChange={this.onAllChange} checked={curveCheckedMonths.length > 0} />
-          <span className={styles.allHandlerText}>全部{curveCheckedMonths.length === 0 ? '隐藏' : '显示'}</span>
+          <Switch
+            onChange={this.onAllChange}
+            checked={actualchecked.length > 0}
+          />
+          <span className={styles.allHandlerText}>
+            全部{actualchecked.length === 0 ? '隐藏' : '显示'}
+          </span>
         </div>
       </section>
     );
@@ -73,4 +84,3 @@ class MonthsSelector extends Component {
 }
 
 export default MonthsSelector;
-

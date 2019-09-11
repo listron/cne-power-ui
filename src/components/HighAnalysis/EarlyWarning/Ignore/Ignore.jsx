@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Select, Table, Modal, Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './ignore.scss';
-import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
 import moment from 'moment';
@@ -59,9 +59,9 @@ class Ignore extends Component {
   }
 
   getIgnoreList = (param) => { // 请求数据
-    const { stationCodes, belongMatrixs, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod } = this.props;
+    const { stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod } = this.props;
     this.props.getIgnoreList({
-      stationCodes, belongMatrixs, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod, ...param,
+      stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod, ...param,
     });
   }
 
@@ -85,9 +85,11 @@ class Ignore extends Component {
     return result;
   }
 
-  filterCondition = (change) => { // 筛选条件
-    this.getIgnoreList(change);
-    change.stationCodes && this.props.getMatrixlist({ stationCodes: change.stationCodes });
+  filterCondition = (value) => { // 筛选条件
+    const { stationCodes, rangeTimes, belongMatrixs } = value;
+    const [startTime = '', endTime = ''] = rangeTimes;
+    this.getIgnoreList({ stationCodes, belongMatrixs, startTime, endTime });
+    this.props.getMatrixlist({ stationCodes });
   }
 
   selectChange = (wayChange) => { // 进行操作 转工单 忽略
@@ -173,16 +175,33 @@ class Ignore extends Component {
       onChange: this.onSelectChange,
     };
     const dataSource = ignoreList.map((item, index) => ({ ...item, key: item.inefficiencyId, ignoreTime: moment(item.ignoreTime).format('YYYY-MM-DD') }));
+    const initmatrixList = matrixList.map(e => ({ label: e, value: e }));
     return (
       <div className={`${styles.ignoreBox} ${styles[theme]}`} >
         <div className={styles.ignoreMain}>
           {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
           <FilterCondition
-            option={['time', 'stationName', 'belongMatrixs']}
-            stations={stations.filter(e => e.stationType === 1)}
-            matrixList={matrixList}
-            onChange={this.filterCondition}
             theme={theme}
+            onChange={this.filterCondition}
+            option={[
+              {
+                name: ' 发生时间',
+                type: 'time',
+                typeName: 'rangeTimes',
+              },
+              {
+                name: '电站名称',
+                type: 'stationName',
+                typeName: 'stationCodes',
+                data: stations,
+              },
+              {
+                name: '所属方阵',
+                type: 'multipleType',
+                typeName: 'belongMatrixs',
+                data: initmatrixList,
+              },
+            ]}
           />
           <div className={styles.wrap}>
             <span ref={'select'} />
