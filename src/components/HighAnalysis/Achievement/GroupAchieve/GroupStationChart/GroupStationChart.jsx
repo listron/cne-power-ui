@@ -115,7 +115,7 @@ export default class GroupStationChart extends Component {
   drawChart = (data, dataIndex) => {
     const { titleFunc, areaColorData, unitName, pointLength } = this.props;
     const twoBar = [{ // 实发
-      data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2))),
+      data: data && data.map(cur => (unitName === '%' ? (cur.indicatorData.actualGen === null ? null :cur.indicatorData.actualGen * 100) : cur.indicatorData.actualGen)),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -130,7 +130,7 @@ export default class GroupStationChart extends Component {
         },
       },
     }, {// 应发
-      data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2))),
+      data: data && data.map(cur => (unitName === '%' ? (cur.indicatorData.theoryGen === null ? null : cur.indicatorData.theoryGen * 100) : cur.indicatorData.theoryGen)),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -144,7 +144,7 @@ export default class GroupStationChart extends Component {
       },
     }];
     const oneBar = [{
-      data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2))),
+      data: data && data.map(cur => (unitName === '%' ? (cur.indicatorData.value === null ? null : cur.indicatorData.value * 100) : cur.indicatorData.value)),
       type: 'bar',
       barWidth: 10,
       itemStyle: {

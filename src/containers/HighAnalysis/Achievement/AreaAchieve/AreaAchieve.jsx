@@ -94,6 +94,16 @@ class AreaAchieve extends Component {
     }
   }
 
+  componentWillUnmount() {
+    const {changeStore} = this.props;
+    changeStore({
+      dataIndex: '', // 选中信息
+      selectStationCode: [], // 选中电站信息
+      selectTime: '', // 选中时间
+      dataName: '', // 保存选择区域名称
+    });
+  }
+
   queryParamsFunc = (groupInfo) => {
     const { timeStatus } = this.props;
     const basicParams = this.basicParams(groupInfo);
