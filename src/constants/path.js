@@ -632,6 +632,10 @@ export default {
       getSecondChart: '/v3/fan/efficiency/speedangle', //获取第二个散点图
       getThirdChart: '/v3/fan/efficiency/layration', //获取第三个散点图
       getFourthChart: '/v3/fan/efficiency/speedration', //获取第四个散点图
+      getYawRank: '/v3/wind/analysis/agencys/yawrank', //执行机构偏航时长及次数
+      getReleaseRank: '/v3/wind/analysis/agencys/releaserank', //执行机构解缆时长及次数
+      getYawRend: '/v3/wind/analysis/agencys/yawrend', //执行机构偏航时长及次数趋势
+      getReleaseRend: '/v3/wind/analysis/agencys/releaserend', //执行机构解缆时长及次数折趋势
 
       getCurveDevices: '/v3/fan/efficiency/neighbor/analysis', // 功率曲线邻比分析
       getCurveDevicesAep: '/v3/fan/efficiency/device/aepandspeed', // 各机组AEP以及平均风速

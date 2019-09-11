@@ -18,6 +18,15 @@ const barColor = [
   ['#4c9de8', '#2564cc'],
   ['#058447', '#024d22'],
   ['#e024f2', '#bd10e0'],
+  ['#72c8ea', '#3e97d1'],
+  ['#36c6ad', '#199475'],
+  ['#ffb8c4', '#ff8291'],
+  ['#df7789', '#bc4251'],
+  ['#f2b75f', '#e08031'],
+  ['#ffeecc', '#ffd99d'],
+  ['#4c9de8', '#2564cc'],
+  ['#058447', '#024d22'],
+  ['#e024f2', '#bd10e0'],
 ];
 
 export default class AreaLossChart extends Component {

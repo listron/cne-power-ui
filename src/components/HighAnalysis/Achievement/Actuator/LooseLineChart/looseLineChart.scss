@@ -1,0 +1,125 @@
+@import "../../../../../theme/theme.scss";
+
+.looseLineChart{
+  width: 49%;
+  height: 430px;
+
+  .looseLineTitle{
+    width: 100%;
+    display: flex;
+    padding: 11px 12px 0 25px;
+    justify-content: space-between;
+
+    > span {
+      font-weight: bold;
+      line-height: 42px;
+    }
+  }
+
+  .chartBox {
+    width: 100%;
+    position: relative;
+
+    .modes {
+      position: absolute;
+      width: 100%;
+      padding-right: 7%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 12px;
+
+      .eachMode {
+        margin-right: 20px;
+      }
+
+      .lineCount, .lineHour {
+        display: inline-block;
+        width: 5px;
+        margin: 0 10px 0 4px;
+        height: 5px;
+        border-radius: 50%;
+        position: relative;
+        top: -1px;
+
+        &::before {
+          content: '';
+          position: absolute;
+          width: 15px;
+          height: 1px;
+          right: -6px;
+          top: 1px;
+        }
+      }
+
+      .modeText {
+        white-space: nowrap;
+      }
+    }
+
+    .looseLineCenter{
+      width: 100%;
+      height: 367px;
+    }
+  }
+}
+
+.tooltip {
+  min-width: 160px;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    margin-bottom: 0;
+    line-height: 21px;
+  }
+
+  .info {
+    padding: 8px;
+  }
+
+  .eachItem {
+    display: flex;
+    line-height: 21px;
+  }
+
+  .modeName {
+    @include overflowText();
+  }
+}
+
+
+/*css样式*/
+
+.looseLineChart{
+  background-color: $pageGround;
+
+  .modes {
+    .lineCount {
+      border: 1px solid #f9b600;
+
+      &::before {
+        background-color: #f9b600;
+      }
+    }
+
+    .lineHour {
+      border: 1px solid #2564cc;
+
+      &::before {
+        background-color: #2564cc;
+      }
+    }
+  }
+}
+
+.tooltip { // chart提示
+  background-color: #fff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
+  color: #666;
+
+  .title {
+    border-bottom: 1px solid #dfdfdf;
+  }
+}

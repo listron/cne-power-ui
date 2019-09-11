@@ -26,6 +26,7 @@ import { achieveArea } from './Achievement/AreaAchieve/areaAchieveReducer'; // �
 import { achieveStation } from './Achievement/StationAchieve/stationAchieveReducer'; // 风电绩效分析-电站
 import { achieveStop } from './Achievement/StopStatus/stopStatusReducer'; // 风电绩效分析 - 停机状态
 import { achieveRun } from './Achievement/RunAchieve/runAchieveReducer'; // 风电绩效分析-运行
+import { actuator } from './Achievement/Actuator/actuatorReducer'; // 风电绩效分析-执行机构
 
 
 const highAnalysisReducer = combineReducers({
@@ -55,6 +56,7 @@ const highAnalysisReducer = combineReducers({
   achieveStation,
   achieveStop,
   achieveRun,
+  actuator,
 });
 
 export default highAnalysisReducer;

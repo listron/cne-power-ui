@@ -9,6 +9,7 @@ import AreaAchieve from './AreaAchieve/AreaAchieve';
 import StationAchieve from './StationAchieve/StationAchieve';
 import StopStatus from './StopStatus/StopStatus';
 import RunAchieve from './RunAchieve/RunAchieve';
+import Actuator from './Actuator/Actuator';
 import Footer from '../../../components/Common/Footer';
 import styles from './layout.scss';
 
@@ -30,8 +31,8 @@ class AchievementLayout extends Component {
     const { search } = props.history.location;
     const { pages } = searchUtil(search).parse();
     const { pathKey } = props.match.params || {};
-    this.tabs = ['group', 'area', 'station', 'run', 'stop'];
-    this.tabNames = ['集团绩效分析', '区域绩效分析', '电站效能分析', '运行数据分析', '停机状态分析'];
+    this.tabs = ['group', 'area', 'station', 'run', 'stop', 'actuator'];
+    this.tabNames = ['集团绩效分析', '区域绩效分析', '电站效能分析', '运行数据分析', '停机状态分析', '执行机构分析'];
     this.state = {
       pages: pages ? pages.split('_').filter(e => !!e) : [pathKey], // 页面内开启的页面 => tab数量
     };
@@ -116,6 +117,7 @@ class AchievementLayout extends Component {
           {pathKey === 'station' && <StationAchieve {...this.props} />}
           {pathKey === 'stop' && <StopStatus {...this.props} />}
           {pathKey === 'run' && <RunAchieve {...this.props} />}
+          {pathKey === 'actuator' && <Actuator {...this.props} />}
         </div>
         <Footer />
       </div>
