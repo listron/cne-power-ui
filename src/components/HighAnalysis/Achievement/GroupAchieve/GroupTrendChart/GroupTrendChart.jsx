@@ -166,7 +166,7 @@ export default class GroupTrendChart extends Component {
         shadowOffsetY: 3,
       },
       data: data && data.map(cur => ({
-        value: dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2),
+        value: unitName === '%' ? (cur.indicatorData.value === null ? null : cur.indicatorData.value * 100) : cur.indicatorData.value,
         symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
         itemStyle: {
           color: colorFunc(cur.efficiencyDate),
@@ -187,7 +187,7 @@ export default class GroupTrendChart extends Component {
         shadowOffsetY: 3,
       },
       data: data && data.map(cur => ({
-        value: dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2),
+        value: unitName === '%' ? (cur.indicatorData.actualGen === null ? null : cur.indicatorData.actualGen * 100) : cur.indicatorData.actualGen,
         symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
         itemStyle: {
           color: colorFunc(cur.efficiencyDate),
@@ -205,7 +205,7 @@ export default class GroupTrendChart extends Component {
         shadowOffsetY: 3,
       },
       data: data && data.map(cur => ({
-        value: dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2),
+        value: unitName === '%' ? (cur.indicatorData.theoryGen === null ? null : cur.indicatorData.theoryGen * 100) : cur.indicatorData.theoryGen,
         symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
         itemStyle: {
           color: colorFunc(cur.efficiencyDate),
