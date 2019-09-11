@@ -1,10 +1,8 @@
-
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, DatePicker } from 'antd';
 import moment from 'moment';
-import styles from './runSearch.scss';
+import styles from './actuatorSearch.scss';
 import searchUtil from '../../../../../utils/searchUtil';
 import AreaStation from '../../../../Common/AreaStation';
 import AutoSelect from '../../../../Common/AutoSelect';
@@ -13,7 +11,7 @@ const { RangePicker } = DatePicker;
 // 禁止选择时间
 const disabledDate = current => current && current > moment().subtract(2, 'days');
 
-export default class RunSearch extends Component {
+export default class ActuatorSearch extends Component {
 
   static propTypes = {
     location: PropTypes.object,
@@ -27,55 +25,39 @@ export default class RunSearch extends Component {
   constructor(props){
     super(props);
     const { search } = props.history.location;
-    const stationInfoStr = searchUtil(search).getValue('run');
-    const stationInfo = stationInfoStr ? JSON.parse(stationInfoStr) : {};
+    const actuatorInfoStr = searchUtil(search).getValue('actuator');
+    const actuatorInfo = actuatorInfoStr ? JSON.parse(actuatorInfoStr) : {};
     const defaultEndTime = moment().subtract(2, 'days').format('YYYY-MM-DD');
     const defaultStartTime = moment(defaultEndTime).subtract(1, 'year').format('YYYY-MM-DD');
     this.state = {
-      stationInfoStr,
-      searchCode: stationInfo.searchCode,
-      searchDevice: stationInfo.searchDevice || [],
-      searchDates: stationInfo.searchDates || [defaultStartTime, defaultEndTime],
-      areaFlag: false, // 控制第一次进来，有数据的时候
+      actuatorInfoStr,
+      searchCode: actuatorInfo.searchCode,
+      searchDevice: actuatorInfo.searchDevice || [],
+      searchDates: actuatorInfo.searchDates || [defaultStartTime, defaultEndTime],
+      actuatorFlag: false, // 控制第一次进来，有数据的时候
       searchFlag: true, // 控制切换电站搜索
     };
   }
 
   componentDidMount(){
     const { searchCode } = this.state;
-    if(searchCode) {
-      const {
-        location: {
-          search,
-        },
-      } = this.props;
-      const runInfoStr = searchUtil(search).getValue('run');
-      if(runInfoStr) {
-        const runInfo = runInfoStr ? JSON.parse(runInfoStr) : {};
-        const { searchDates, searchCode} = runInfo;
-        const params = {
-          searchDates,
-          searchCode,
-        };
-        this.props.getDevices({ stationCode: searchCode, runInfo: params, runFlag: true });
-      }
-    }
+    searchCode && this.props.getDevices({ stationCode: searchCode });
   }
 
   componentWillReceiveProps(nextProps){
     // 得到区域数据 ==> 请求机型 areaStation
     const { areaStation, modeDevices } = nextProps;
-    const { stationInfoStr, areaFlag } = this.state;
+    const { actuatorInfoStr, actuatorFlag } = this.state;
     const preArea = this.props.areaStation;
     const preDevice = this.props.modeDevices;
-    if (!stationInfoStr && preArea.length === 0 && areaStation.length > 0) { // 路径无参数时 得到电站数据
+    if (!actuatorInfoStr && preArea.length === 0 && areaStation.length > 0) { // 路径无参数时 得到电站数据
       this.propsAreaStationChange(areaStation);
     }
-    if (!stationInfoStr && preDevice.length === 0 && modeDevices.length > 0 && !stationInfoStr) { // 路径无参数时  得到设备数据
+    if (!actuatorInfoStr && preDevice.length === 0 && modeDevices.length > 0 && !actuatorInfoStr) { // 路径无参数时  得到设备数据
       this.propsModeDevicesChange(modeDevices);
     }
     // 路径有参数 更改电站 得到新的设备数据
-    if(stationInfoStr && modeDevices.length > 0 && JSON.stringify(modeDevices) !== JSON.stringify(preDevice)){
+    if(actuatorInfoStr && modeDevices.length > 0 && JSON.stringify(modeDevices) !== JSON.stringify(preDevice)){
       // 选数据前三个设备
       const searchDeviceFilter = this.getAllDeviceCodes(modeDevices);
       // 接受跳转过来的设备
@@ -84,9 +66,9 @@ export default class RunSearch extends Component {
       this.setState({searchDevice});
     }
     // 判断从别的页面头次进入页面，电站和指标分析数据是有的话，改变state值， 发送请求
-    if(!stationInfoStr && !areaFlag && areaStation.length > 0) {
+    if(!actuatorInfoStr && !actuatorFlag && areaStation.length > 0) {
       this.setState({
-        areaFlag: true,
+        actuatorFlag: true,
       }, () => {
         this.propsAreaStationChange(areaStation);
       });
@@ -96,12 +78,7 @@ export default class RunSearch extends Component {
   propsAreaStationChange = (areaStation = []) => { // 得到电站信息.
     const { stations = [] } = areaStation[0] || {};
     const firstStation = stations[0] || {};
-    const { searchDates } = this.state;
-    const params = {
-      searchDates,
-      searchCode: firstStation.stationCode,
-    };
-    this.props.getDevices({ stationCode: firstStation.stationCode, runInfo: params, runFlag: true });
+    this.props.getDevices({ stationCode: firstStation.stationCode });
     if (!this.state.searchCode) { // 路径无数据 => 存入state待请求.
       this.setState({
         searchCode: firstStation.stationCode,
@@ -119,21 +96,22 @@ export default class RunSearch extends Component {
   historyChange = (searchCode, searchDevice, searchDates) => { // 切换路径 => 托管外部进行请求
     const { location, history } = this.props;
     const { search } = location;
-    const newSearch = searchUtil(search).replace({run: JSON.stringify({
+    const newSearch = searchUtil(search).replace({actuator: JSON.stringify({
         searchCode, searchDevice, searchDates,
       })}).stringify();
-    history.push(`/analysis/achievement/analysis/run?${newSearch}`);
+    history.push(`/analysis/achievement/analysis/actuator?${newSearch}`);
   };
 
   getAllDeviceCodes = (modeDevices = []) => { // 解析所有设备得到codes数组
-    const codes = [];
-    // 默认取第一个电站下的第一条数据的前三个
-    modeDevices[0] && modeDevices[0].children && modeDevices[0].children.forEach((e, i) => {
-      if(i < 3) { // 默认取前三个
-        codes.push(e.value);
-      }
+    // 默认取第一个电站下的所有设备
+    const arr = [];
+    modeDevices && modeDevices.forEach(cur => {
+      const { children } = cur || {};
+      children && children.forEach(item => {
+        arr.push(item.value);
+      });
     });
-    return codes;
+    return arr;
   };
 
   onStationChange = ([regionName, stationCode]) => {
@@ -142,21 +120,7 @@ export default class RunSearch extends Component {
       searchDevice: [],
       searchFlag: false,
     }, () => {
-      const {
-        location: {
-          search,
-        },
-      } = this.props;
-      const runInfoStr = searchUtil(search).getValue('run');
-      if(runInfoStr) {
-        const runInfo = runInfoStr ? JSON.parse(runInfoStr) : {};
-        const { searchDates, searchCode} = runInfo;
-        const params = {
-          searchDates,
-          searchCode,
-        };
-        this.props.getDevices({ stationCode, runInfo: params, runFlag: false });
-      }
+      this.props.getDevices({ stationCode });
       this.props.changeStore({ modeDevices: [] });
     });
   };
@@ -199,7 +163,6 @@ export default class RunSearch extends Component {
               onChange={this.onDeviceChange}
               style={{width: '150px'}}
               maxTagCount={0}
-              max={3}
             />
           </div>
           <div className={styles.eachParts}>

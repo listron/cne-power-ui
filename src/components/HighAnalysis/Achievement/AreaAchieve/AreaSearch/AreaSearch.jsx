@@ -155,7 +155,6 @@ export default class AreaSearch extends Component {
       const tmp = e.stations || [];
       tmp.forEach(m => stations.push(m.stationCode));
     });
-    console.log(stations, 'stations');
     this.setState({
       stations: info,
       searchCode: stations,
@@ -190,7 +189,6 @@ export default class AreaSearch extends Component {
       selectTime: '', // 选中时间
       dataName: '', // 保存选择区域名称
     });
-    console.log(searchCode, 'searchCode');
     this.setState({
       searchFlag: true,
       searchCode,
@@ -238,7 +236,6 @@ export default class AreaSearch extends Component {
     } = this.props;
     const { modes, dates, quota, stations, searchCode } = this.state;
     const searchFlag = searchCode && modes && modes.length !== 0 && quota && quota.length !== 0 && stations && stations.length !== 0 && modesInfo && modesInfo.length !== 0;
-
     return (
       <div className={styles.topSearch}>
         <div className={styles.leftSearch}>
