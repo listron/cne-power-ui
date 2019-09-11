@@ -55,17 +55,24 @@ class AchievementLayout extends Component {
     const nexPathKey = nextMatchParam.pathKey;
     const pageExist = pages.includes(nexPathKey); // 新页面
     const pageChange = pathKey !== nexPathKey; // 当前激活页变化 => 1. 新开页面, 2. 页面切换, 3. 关闭页面
-    if(pageChange && !pageExist && !nextSearch){ // 目录新开一个未开启页面: 切换至新页面, search信息中只添加入新的pages
+    if(pageChange && !pageExist){ // 新开页面
       pages.push(nexPathKey);
-      this.setState({ pages });
-      const searchResult = searchUtil(search).add({pages: pages.join('_')}).stringify();
-      history.push(`${nextLocation.pathname}?${searchResult}`);
+      this.setState({ pages }); // 存储页面
+      nextSearch ? history.push( // 有指定的目标路径, 目标路径参数继承, pages参数更新
+        `${nextLocation.pathname}?${searchUtil(nextSearch).add({pages: pages.join('_')}).stringify()}`
+      ) : history.push( // 无目标路径, 新开一个初始页 => pages变化, 其他参数携带。 
+        `${nextLocation.pathname}?${searchUtil(search).add({pages: pages.join('_')}).stringify()}`
+      );
     } else if (pageChange && pageExist) { // 2. 切换至页面, 3. 关闭页面
       const nextPages = (searchUtil(nextSearch).parse().pages || '').split('_').filter(e => !!e);
       const pageClosed = nextPages.length > 0 ? pages.filter(e => !nextPages.includes(e)) : []; // 查找需要被关闭的页面
       pageClosed.length > 0 && (// 3. 关闭页面 最新的pages替换state的pages,并检查删除被关闭页面的search残余参数
         this.setState({ pages: nextPages }),
-        history.push(`${nextLocation.pathname}?${searchUtil(search).delete(pageClosed).stringify()}`)
+        history.push(
+          `${nextLocation.pathname}?${searchUtil(search).replace({
+            pages: nextPages.join('_'),
+          }).delete(pageClosed).stringify()}`
+        )
       );
       pageClosed.length === 0 && history.push(`${nextLocation.pathname}${search}`); // 2. 切换页面 pathkey切换即可
     }
