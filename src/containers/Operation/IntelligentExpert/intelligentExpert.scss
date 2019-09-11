@@ -23,6 +23,28 @@
       }
     }
   }
+  .stationType {
+    display: flex;
+    line-height: 40px;
+    p {
+      width: 120px;
+      margin-bottom: 0;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: -2px;
+    }
+    .activeStation {
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 2px;
+        top: 0;
+        left: -1px;
+      }
+    }
+  }
 }
 
 .light {
@@ -32,12 +54,50 @@
       background-color: #fff;
     }
   }
+  .stationType {
+    background: #f8f8f8;
+    border-bottom: 1px solid $borderColor;
+    p {
+      border-right: 1px solid $borderColor;
+      color: $lightColor;
+    }
+    .activeStation {
+      background: $pageGround;
+      color: $darkColor;
+      &::before {
+        background: $themeColor;
+      }
+    }
+  }
 }
 
 .dark {
   @import "../../../theme/antdResetDark.scss";
   .contentBox {
     background-color: $background;
+  }
+  .stationType {
+    background: $background;
+    border-bottom: 1px solid $border-color;
+    height: 42px;
+    p {
+      border: 1px solid $tab-border-color;
+      color: #7088c3;
+      background: $tab-background;
+      margin-right: 4px;
+      border-radius: 8px 8px 0 0;
+      height: 40px;
+    }
+    .activeStation {
+      background: $light-background;
+      border: 1px solid $border-color;
+      color: $fontColor-invert;
+      border-bottom: 1px solid $tab-border-bottom;
+      height: 42px;
+      &::before {
+        display: none;
+      }
+    }
   }
   .intelligentContent {
     background-color: $background;

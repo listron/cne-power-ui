@@ -7,11 +7,9 @@ import { message } from 'antd';
 const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
 
-function* getIntelligentTable({ payload = {}}) { // 获取列表数据
+function* getIntelligentTable({ payload = {} }) { // 获取列表数据
   const url = `${APIBasePath}${operation.getIntelligentTable}`;
-
   const { deviceTypeCode, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod } = payload;
-
   const params = {
     deviceTypeCodes: deviceTypeCode,
     faultTypeIds: (!deviceTypeCode || deviceTypeCode.length === 0) ? [] : defectTypeCode,
@@ -20,17 +18,17 @@ function* getIntelligentTable({ payload = {}}) { // 获取列表数据
     pageNum,
     pageSize,
     orderField,
-    sortMethod
+    sortMethod,
   };
   try {
     yield put({
-      type: intelligentExpertAction.getIntelligentExpertStore,
+      type: intelligentExpertAction.changeIntelligentExpertStore,
       payload: {
         tableLoading: true,
         ...payload,
-      }
+      },
     });
-    const response = yield call(axios.post, url, {...params});
+    const response = yield call(axios.post, url, { ...params });
     const { total = 0 } = response.data.data;
     let { pageNum, pageSize } = params;
     const maxPage = Math.ceil(total / pageSize);
@@ -41,9 +39,9 @@ function* getIntelligentTable({ payload = {}}) { // 获取列表数据
     }
     if (response.data.code === '10000') {
       yield put({
-        type: intelligentExpertAction.GET_INTELLIGENTEXPERT_SUCCESS,
+        type: intelligentExpertAction.changeIntelligentExpertStore,
         payload: {
-          listParams:{
+          listParams: {
             ...payload,
             pageNum,
             pageSize,
@@ -54,17 +52,17 @@ function* getIntelligentTable({ payload = {}}) { // 获取列表数据
         },
       });
     } else {
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     message.error('获取列表数据失败！');
     yield put({
-      type: intelligentExpertAction.getIntelligentExpertStore,
+      type: intelligentExpertAction.changeIntelligentExpertStore,
       payload: {
         tableLoading: false,
         intelligentTableData: {},
-        ...params
-      }
+        ...params,
+      },
     });
     console.log(e);
   }
@@ -77,26 +75,26 @@ function* getImportIntelligent({ payload = {} }) { // 导入
       method: 'post',
       url,
       data: payload.formData,
-      processData: false,  // 不处理数据
-      contentType: false   // 不设置内容类型
+      processData: false, // 不处理数据
+      contentType: false, // 不设置内容类型
     });
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       message.success('恭喜！你所提交的内容已经导入成功，可在列表中查看');
       yield put({
-        type: intelligentExpertAction.GET_INTELLIGENTEXPERT_SUCCESS,
+        type: intelligentExpertAction.changeIntelligentExpertStore,
         payload: {
           selectedRowKeys: [],
-          selectedRowData: []
-        }
-      })
+          selectedRowData: [],
+        },
+      });
       const params = yield select(state => state.operation.intelligentExpert.get('listParams').toJS());// 继续请求智能专家库列表
       yield put({
         type: intelligentExpertAction.getIntelligentTable,
         payload: params,
       });
     } else {
-      message.config({ top: 200,  duration: 2,maxCount: 3 });
-      message.error(response.data.message)
+      message.config({ top: 200, duration: 2, maxCount: 3 });
+      message.error(response.data.message);
     }
   } catch (e) {
     console.log(e);
@@ -111,9 +109,9 @@ function* deleteIntelligent({ payload = {} }) { // 删除
     if (response.data.code === '10000') {
       message.success('删除成功');
       yield put({
-        type: intelligentExpertAction.GET_INTELLIGENTEXPERT_SUCCESS,
+        type: intelligentExpertAction.changeIntelligentExpertStore,
         payload,
-      })
+      });
       const params = yield select(state => state.operation.intelligentExpert.get('listParams').toJS());// 继续请求智能专家库列表
       yield put({
         type: intelligentExpertAction.getIntelligentTable,
@@ -126,25 +124,25 @@ function* deleteIntelligent({ payload = {} }) { // 删除
   }
 }
 
-function* getUserName({payload = {}}) { // 获取相关录入人
+function* getUserName({ payload = {} }) { // 获取相关录入人
   const { username } = payload;
   try {
     const url = `${APIBasePath}${operation.getUserName}/${username}`;
     yield put({ // 相关请求参数缓存，并保留选中的信息。
-      type: intelligentExpertAction.getIntelligentExpertStore,
+      type: intelligentExpertAction.changeIntelligentExpertStore,
       payload: {
         ...payload,
-      }
-    })
+      },
+    });
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
-        type: intelligentExpertAction.GET_INTELLIGENTEXPERT_SUCCESS,
+        type: intelligentExpertAction.changeIntelligentExpertStore,
         payload: {
           ...payload,
-          usernames: response.data.data || []
-        }
-      })
+          usernames: response.data.data || [],
+        },
+      });
     } else {
       throw response.data;
     }
@@ -154,56 +152,56 @@ function* getUserName({payload = {}}) { // 获取相关录入人
   }
 }
 
-function* addIntelligent({payload = {}}) { // 添加智能专家库
+function* addIntelligent({ payload = {} }) { // 添加智能专家库
   const { continueAdd } = payload;
   const url = `${APIBasePath}${operation.operationIntelligent}`;
-  const { deviceTypeCode, defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark} = payload;
-  const params = { deviceTypeCode, faultTypeId: defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark};
+  const { deviceTypeCode, defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark } = payload;
+  const params = { deviceTypeCode, faultTypeId: defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark };
   try {
     const response = yield call(axios.post, url, { ...params });
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       message.success('添加成功！');
       yield put({
-        type: intelligentExpertAction.GET_INTELLIGENTEXPERT_SUCCESS,
+        type: intelligentExpertAction.changeIntelligentExpertStore,
         payload: {
           ...params,
           showPage: continueAdd ? 'add' : 'list',
-          continueAdd
-        }
-      })
+          continueAdd,
+        },
+      });
       const params = yield select(state => state.operation.intelligentExpert.get('listParams').toJS());// 继续请求智能专家库列表
       yield put({
         type: intelligentExpertAction.getIntelligentTable,
         payload: params,
       });
     } else {
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
-      type: intelligentExpertAction.getIntelligentExpertStore,
-      payload
-    })
+      type: intelligentExpertAction.changeIntelligentExpertStore,
+      payload,
+    });
     message.error('添加失败，请重试');
   }
 }
 
-function* getKnowledgebase({payload = {}}) { // 查看智能专家库详情
+function* getKnowledgebase({ payload = {} }) { // 查看智能专家库详情
   const { knowledgeBaseId, selectedIndex, showPage = 'show' } = payload;
   const url = `${APIBasePath}${operation.operationIntelligent}/${knowledgeBaseId}`;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
-        type: intelligentExpertAction.GET_INTELLIGENTEXPERT_SUCCESS,
+        type: intelligentExpertAction.changeIntelligentExpertStore,
         payload: {
           selectedIndex,
           showPage,
           knowledgeBaseId,
           intelligentDetail: response.data.data || {},
-        }
-      })
+        },
+      });
     } else {
       throw response.data;
     }
@@ -223,18 +221,18 @@ function* getLike({ payload = {} }) { // 点赞
         duration: 2,
         maxCount: 2,
       });
-      message.success('点赞成功')
+      message.success('点赞成功');
       yield put({
-        type: intelligentExpertAction.GET_INTELLIGENTEXPERT_SUCCESS,
-        payload
-      })
+        type: intelligentExpertAction.changeIntelligentExpertStore,
+        payload,
+      });
       const payload = yield select(state => ({
         knowledgeBaseId: state.operation.intelligentExpert.get('knowledgeBaseId'),
       }));
       yield put({
         type: intelligentExpertAction.getKnowledgebase,
         payload,
-      })
+      });
     } else {
       throw response.data;
     }
@@ -243,13 +241,13 @@ function* getLike({ payload = {} }) { // 点赞
   }
 }
 
-function* editIntelligent({ payload = {} }){ // 编辑智能专家库详情
+function* editIntelligent({ payload = {} }) { // 编辑智能专家库详情
   const url = `${APIBasePath}${operation.operationIntelligent}`;
-  try{
-    const response = yield call(axios.put, url, {...payload});
-    if(response.data.code === '10000') {
+  try {
+    const response = yield call(axios.put, url, { ...payload });
+    if (response.data.code === '10000') {
       yield put({
-        type: intelligentExpertAction.GET_INTELLIGENTEXPERT_SUCCESS,
+        type: intelligentExpertAction.changeIntelligentExpertStore,
         payload: {
           showPage: 'list',
         },
@@ -262,7 +260,7 @@ function* editIntelligent({ payload = {} }){ // 编辑智能专家库详情
     } else {
       throw response.data;
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
     message.error('编辑电站详情失败，请重试');
   }

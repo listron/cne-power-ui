@@ -1,6 +1,5 @@
 export const intelligentExpertAction = {
-  GET_INTELLIGENTEXPERT_SUCCESS: Symbol('GET_INTELLIGENTEXPERT_SUCCESS'), // api请求成功
-  getIntelligentExpertStore: Symbol('getIntelligentExpertStore'), // 替换reducer参数
+  changeIntelligentExpertStore: Symbol('changeIntelligentExpertStore'), // 替换reducer参数
   resetStore: Symbol('resetStore'), // 发起重置数据请求
   RESET_STORE: Symbol('RESET_STORE'), // 重置数据
 
@@ -14,3 +13,4 @@ export const intelligentExpertAction = {
   getLike: Symbol('getLike'), // 点赞
   editIntelligent: Symbol('editIntelligent'), // 编辑
 }
+;

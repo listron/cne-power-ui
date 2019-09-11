@@ -142,8 +142,11 @@ class FilterCondition extends Component {
         item.checkedValue = value[item['typeName']] || [];
         if (currentItem.checkedValue && currentItem.checkedValue.length > 0) {
           const valueArray = value[item['typeName']] && value[item['typeName']] || [];
-          const checkedValue = currentItem.checkedValue && currentItem.checkedValue || [];
+          const checkedValue = currentItem.checkedValue;
           item.checkedValue = Array.from(new Set([...checkedValue, ...valueArray]));
+        }
+        if (item.disabled) {
+          item.checkedValue = [];
         }
       } else {
         item.checkedValue = '';
@@ -151,10 +154,9 @@ class FilterCondition extends Component {
           item.checkedValue = value[item['typeName']];
         }
       }
-
-
       optionList.push({ ...this.initOption(item.type), ...item });
     });
+    this.changeShowFilter(optionList);
     this.setState({ optionItem: optionList });
   }
 
@@ -186,7 +188,15 @@ class FilterCondition extends Component {
   onChangeFilterChecked = (value) => {
     this.outPutData(value.options);
     this.setState({ optionItem: value.options });
+  }
 
+  changeShowFilter = (value) => { //针对disabled 进行调整
+    const { showFilter } = this.state;
+    const { type, typeName } = showFilter;
+    const currentObj = value.filter(e => e.type === type && e.typeName === typeName);
+    if (currentObj.length > 0 && currentObj[0].disabled) {
+      this.setState({ showFilter: { type: '', typeName: '' } });
+    }
   }
 
   render() {

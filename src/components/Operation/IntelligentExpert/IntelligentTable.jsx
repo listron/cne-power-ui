@@ -15,14 +15,13 @@ class IntelligentTable extends Component {
     total: PropTypes.number,
     tableLoading: PropTypes.bool,
     intelligentTableData: PropTypes.object,
-    getIntelligentExpertStore: PropTypes.func,
+    changeIntelligentExpertStore: PropTypes.func,
     getIntelligentTable: PropTypes.func,
     deleteIntelligent: PropTypes.func,
     getKnowledgebase: PropTypes.func,
     editIntelligent: PropTypes.func,
     listParams: PropTypes.object,
     selectedRowKeys: PropTypes.array,
-    allStationBaseInfo: PropTypes.array,
     selectedRowData: PropTypes.array,
     theme: PropTypes.string,
   }
@@ -38,14 +37,9 @@ class IntelligentTable extends Component {
     };
   }
 
-  componentDidMount() {
-    const { getIntelligentTable, listParams } = this.props;
-    getIntelligentTable(listParams);
-  }
-
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器
-    const { getIntelligentExpertStore, getIntelligentTable, listParams } = this.props;
-    getIntelligentExpertStore({
+    const { changeIntelligentExpertStore, getIntelligentTable, listParams } = this.props;
+    changeIntelligentExpertStore({
       pageSize,
       pageNum: currentPage,
     });
@@ -59,7 +53,7 @@ class IntelligentTable extends Component {
   }
 
   onSelectChange = (keys, record) => { // 选中行
-    this.props.getIntelligentExpertStore({
+    this.props.changeIntelligentExpertStore({
       selectedRowData: record,
       selectedRowKeys: keys,
     });
@@ -142,14 +136,14 @@ class IntelligentTable extends Component {
   }
 
   addIntelligent = () => { // 添加
-    this.props.getIntelligentExpertStore({
+    this.props.changeIntelligentExpertStore({
       showPage: 'add',
     });
   }
 
   columnlook = (record, selectedIndex) => { // 查看详情
-    const { getIntelligentExpertStore, getKnowledgebase } = this.props;
-    getIntelligentExpertStore({
+    const { changeIntelligentExpertStore, getKnowledgebase } = this.props;
+    changeIntelligentExpertStore({
       showPage: 'show',
     });
     getKnowledgebase({
@@ -159,8 +153,8 @@ class IntelligentTable extends Component {
   }
 
   columnEdit = (record) => { // 编辑
-    const { getIntelligentExpertStore, getKnowledgebase } = this.props;
-    getIntelligentExpertStore({
+    const { changeIntelligentExpertStore, getKnowledgebase } = this.props;
+    changeIntelligentExpertStore({
       showPage: 'edit',
     });
     getKnowledgebase({
@@ -172,7 +166,7 @@ class IntelligentTable extends Component {
 
   render() {
     const { showModal, warningTipText, showDeleteWarning } = this.state;
-    const { intelligentTableData, tableLoading, listParams, selectedRowKeys, allStationBaseInfo, theme } = this.props;
+    const { intelligentTableData, tableLoading, listParams, selectedRowKeys, theme } = this.props;
     const { pageNum, pageSize } = listParams;
     const { total, dataList = [] } = intelligentTableData;
     const rowSelection = {
@@ -263,7 +257,7 @@ class IntelligentTable extends Component {
             theme={theme}
           />
 
-          {showModal ? <ImportIntelligent {...this.props} showModal={showModal} cancelModal={this.cancelModal} allStationBaseInfo={allStationBaseInfo} /> : ''}
+          {showModal ? <ImportIntelligent {...this.props} showModal={showModal} cancelModal={this.cancelModal} /> : ''}
           {showDeleteWarning && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
 
         </div>

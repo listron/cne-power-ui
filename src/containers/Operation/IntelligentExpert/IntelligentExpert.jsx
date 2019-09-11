@@ -7,78 +7,65 @@ import { intelligentExpertAction } from './intelligentExpertAction';
 import { commonAction } from '../../alphaRedux/commonAction';
 import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
 import TransitionContainer from '../../../components/Common/TransitionContainer';
-import IntelligentSearch from '../../../components/Operation/IntelligentExpert/IntelligentSearch';
-import IntelligentTable from '../../../components/Operation/IntelligentExpert/IntelligentTable';
+
 import IntelligentSide from '../../../components/Operation/IntelligentExpert/IntelligentSide';
 import Footer from '../../../components/Common/Footer';
+import InterlligentExpertMain from '../../../components/Operation/IntelligentExpert/InterlligentExpertMain';
 
 class IntelligentExpert extends Component {
   static propTypes = {
-    enterpriseId: PropTypes.string,
-    showPage: PropTypes.string,
     resetStore: PropTypes.func,
-    getStationOfEnterprise: PropTypes.func,
-    getLostGenType: PropTypes.func,
-    getIntelligentTable: PropTypes.func,
-    changeCommonStore: PropTypes.func,
     listParams: PropTypes.object,
     theme: PropTypes.string,
+    changeIntelligentExpertStore: PropTypes.func,
+    stationType: PropTypes.string,
+    stationTypeCount: PropTypes.string,
+    showPage: PropTypes.string,
+    getStationTypeDeviceTypes: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      showSidePage: 'list',
-    };
   }
+
   componentDidMount() {
-    const { enterpriseId, getStationOfEnterprise, getLostGenType } = this.props;
-    getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
-    getLostGenType({ // 获取所有损失缺陷类型
-        objectType: 1,
-    });
+    const { stationType } = this.props;
+    this.props.getStationTypeDeviceTypes({ type: stationType });
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.stationTypeCount === 'pv') {
+      this.props.changeIntelligentExpertStore({ stationType: '1' });
+      this.props.getStationTypeDeviceTypes({ type: '1' });
+    }
   }
 
   componentWillUnmount() {
     this.props.resetStore();
   }
 
-  onChangeFilter = (changeValue) => { // 设备类型、缺陷类型筛选栏
-    const { getIntelligentTable, listParams, getLostGenType } = this.props;
-    getIntelligentTable({
-      ...listParams,
-      ...changeValue,
-    });
-    if (changeValue.deviceTypeCode) {
-      getLostGenType({
-        objectType: 1,
-        deviceTypeCode: changeValue.deviceTypeCode.join(','),
-      });
-    }
-  };
-
-  onShowSideChange = (showSidePage) => {
-    this.setState({ showSidePage });
-  }
-
-  onToggleSide = () => {
-    const { showPage } = this.props;
-    this.setState({
-      showSidePage: showPage,
-    });
+  queryTargetData = (value) => { // 切换电站
+    const { getStationTypeDeviceTypes } = this.props;
+    this.props.changeIntelligentExpertStore({ stationType: value });
+    getStationTypeDeviceTypes({ type: value });
   }
 
   render() {
-    const { showSidePage } = this.state;
-    const { showPage, theme } = this.props;
+    const { showPage, theme, stationTypeCount, stationType } = this.props;
     return (
       <div className={`${styles.intelligentExpert} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '智能专家库' }]} style={{ marginLeft: '40px' }} />
         <div className={styles.contentBox}>
           <div className={styles.container}>
             <div className={styles.intelligentContent}>
-              <IntelligentSearch onChangeFilter={this.onChangeFilter} {...this.props} />
-              <IntelligentTable {...this.props} />
+              {stationTypeCount === 'multiple' &&
+                <div className={styles.stationType}>
+                  <p className={`${stationType === '0' && styles.activeStation} `} onClick={() => { this.queryTargetData('0'); }}>风电</p>
+                  <p className={`${stationType === '1' && styles.activeStation} `} onClick={() => { this.queryTargetData('1'); }}>光伏</p>
+                </div>
+              }
+              <InterlligentExpertMain {...this.props} />
             </div>
           </div>
           <TransitionContainer
@@ -88,7 +75,8 @@ class IntelligentExpert extends Component {
             timeout={500}
             effect="side"
           >
-            <IntelligentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+            <div>测试</div>
+            {/* <IntelligentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} /> */}
           </TransitionContainer>
         </div>
         <Footer />
@@ -102,14 +90,14 @@ const mapStateToProps = (state) => {
     ...state.operation.intelligentExpert.toJS(),
     enterpriseId: Cookie.get('enterpriseId'),
     stations: state.common.get('stations').toJS(),
-    deviceTypes: state.common.get('deviceTypes').toJS(),
+    // deviceTypes: state.common.get('deviceTypes').toJS(),
     theme: state.common.get('theme'),
+    stationTypeCount: state.common.get('stationTypeCount'),
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  changeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload }),
-  getIntelligentExpertStore: payload => dispatch({ type: intelligentExpertAction.getIntelligentExpertStore, payload }),
+  changeIntelligentExpertStore: payload => dispatch({ type: intelligentExpertAction.changeIntelligentExpertStore, payload }),
   getIntelligentTable: payload => dispatch({ type: intelligentExpertAction.getIntelligentTable, payload }),
   getImportIntelligent: payload => dispatch({ type: intelligentExpertAction.getImportIntelligent, payload }),
   deleteIntelligent: payload => dispatch({ type: intelligentExpertAction.deleteIntelligent, payload }),
@@ -119,20 +107,20 @@ const mapDispatchToProps = (dispatch) => ({
   getLike: payload => dispatch({ type: intelligentExpertAction.getLike, payload }),
   editIntelligent: payload => dispatch({ type: intelligentExpertAction.editIntelligent, payload }),
   resetStore: () => dispatch({ type: intelligentExpertAction.resetStore }),
-  getStationOfEnterprise: params => dispatch({
-    type: commonAction.getStationOfEnterprise,
-    payload: {
-      params,
-      actionName: intelligentExpertAction.GET_INTELLIGENTEXPERT_SUCCESS,
-      resultName: 'allStationBaseInfo',
-    },
-  }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
     payload: {
       params,
-      actionName: intelligentExpertAction.GET_INTELLIGENTEXPERT_SUCCESS,
+      actionName: intelligentExpertAction.changeIntelligentExpertStore,
       resultName: 'defectTypes',
+    },
+  }),
+  getStationTypeDeviceTypes: params => dispatch({
+    type: commonAction.getStationTypeDeviceTypes,
+    payload: {
+      params,
+      actionName: intelligentExpertAction.changeIntelligentExpertStore,
+      resultName: 'deviceTypes',
     },
   }),
 });

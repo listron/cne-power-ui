@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Button, Select, Icon } from 'antd';
 import styles from './intelligentExpert.scss';
-import DeviceTypeFilter from './IntelligentFilter/DeviceTypeFilter/DeviceTypeFilter';
-import DefectTypeFilter from './IntelligentFilter/DefectTypeFilter/DefectTypeFilter';
-import FilteredItems from './IntelligentFilter/FilteredItems/FilteredItems';
+import FilterCondition from '../../Common/FilterConditions/FilterCondition';
 
 const { Option } = Select;
 
@@ -23,7 +21,7 @@ class IntelligentSearch extends Component {
   static propTypes = {
     resetStore: PropTypes.func,
     getDefectType: PropTypes.func,
-    getIntelligentExpertStore: PropTypes.func,
+    changeIntelligentExpertStore: PropTypes.func,
     getIntelligentTable: PropTypes.func,
     getUserName: PropTypes.func,
     listParams: PropTypes.object,
@@ -37,6 +35,7 @@ class IntelligentSearch extends Component {
     orderField: PropTypes.string,
     sortMethod: PropTypes.string,
     theme: PropTypes.string,
+    getLostGenType: PropTypes.func,
   }
 
   constructor(props) {
@@ -44,21 +43,15 @@ class IntelligentSearch extends Component {
     this.state = {
       defectValue: '',
       personValue: '',
-      showFilter: '',
     };
     this.entryPerson = debounce(this.entryPerson, 800);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { deviceTypeCode: deviceTypeCodeCurrent } = this.props;
-    const { deviceTypeCode: deviceTypeCodeNext } = nextProps;
-    const { showFilter } = this.state;
-    if (deviceTypeCodeCurrent !== deviceTypeCodeNext && deviceTypeCodeNext.length === 0) {
-      if (showFilter !== '') {
-        this.setState({
-          showFilter: '',
-        });
-      }
+    const { stationType, listParams } = nextProps;
+    if (this.props.stationType !== stationType) {
+      const { stationType, listParams } = nextProps;
+      this.props.changeIntelligentExpertStore({ listParams: { ...listParams, deviceTypeCodes: [], defectTypeCode: [] } });
     }
   }
 
@@ -72,19 +65,6 @@ class IntelligentSearch extends Component {
       pageNum: 1,
     });
   }
-
-  onFilterShowChange = (filterText) => {
-    const { showFilter } = this.state;
-    if (showFilter === filterText) {
-      this.setState({
-        showFilter: '',
-      });
-    } else {
-      this.setState({
-        showFilter: filterText,
-      });
-    }
-  };
 
   onReset = () => { // 重置缺陷描述/录入人/表格
     const { getIntelligentTable, listParams } = this.props;
@@ -107,15 +87,13 @@ class IntelligentSearch extends Component {
   }
 
   entryPerson = (value) => { // 输入录入人时触发
-    const { getIntelligentExpertStore, listParams, getUserName } = this.props;
-    this.setState({
-      personValue: value,
-    });
+    const { changeIntelligentExpertStore, listParams, getUserName } = this.props;
+    this.setState({ personValue: value });
     if (value) {
       getUserName({
         username: value,
       });
-      getIntelligentExpertStore({
+      changeIntelligentExpertStore({
         listParams: {
           ...listParams,
           recorder: value,
@@ -128,8 +106,8 @@ class IntelligentSearch extends Component {
     this.setState({
       personValue: value,
     });
-    const { getIntelligentExpertStore, listParams } = this.props;
-    getIntelligentExpertStore({
+    const { changeIntelligentExpertStore, listParams } = this.props;
+    changeIntelligentExpertStore({
       listParams: {
         ...listParams,
         recorder: value,
@@ -137,33 +115,64 @@ class IntelligentSearch extends Component {
     });
   }
 
+
+  filterCondition = (value) => { // 设备类型、缺陷类型筛选栏
+    const { getIntelligentTable, listParams, getLostGenType } = this.props;
+    const { deviceTypeCodes } = value;
+    getLostGenType({
+      objectType: 1,
+      deviceTypeCode: deviceTypeCodes.join(','),
+    });
+    getIntelligentTable({
+      ...listParams,
+      ...value,
+    });
+
+  }
+
   render() {
-    const { personValue, defectValue, showFilter } = this.state;
-    const { usernames = [], deviceTypeCode, theme } = this.props;
+    const { personValue, defectValue } = this.state;
+    const { usernames = [], theme, deviceTypes, defectTypes, listParams } = this.props;
+    const { deviceTypeCodes, defectTypeCode } = listParams;
+    console.log('deviceTypeCodes', deviceTypeCodes, defectTypeCode);
     const showResetBtn = personValue || defectValue; // 控制“重置”按钮是否出现
+    const defectTypeTab = [];
+    defectTypes.forEach(e => { e.list && e.list.length > 0 && defectTypeTab.push(...e.list); });
+    let defectTypeList = [];
+    defectTypeTab.map(e => {
+      if (e.list && e.list.length > 0) {
+        e.list.forEach((lastItem) => { lastItem.parentName = e.name; });
+        defectTypeList = [...defectTypeList, ...e.list];
+      }
+    });
     return (
       <div className={`${styles.intelligentSearch} ${styles[theme]}`}>
-        <div className={styles.wrap}>
-          <div className={styles.topSearch}>
-            <span className={styles.text}>筛选条件</span>
-            <Button onClick={() => this.onFilterShowChange('deviceTypes')} className={styles.filterBtn} >
-              设备类型<Icon type={showFilter === 'deviceTypes' ? 'up' : 'down'} />
-            </Button>
-            <Button disabled={!deviceTypeCode || deviceTypeCode.length === 0} onClick={() => this.onFilterShowChange('defectTypes')}>
-              缺陷类型<Icon type={showFilter === 'defectTypes' ? 'up' : 'down'} />
-            </Button>
-          </div>
-          <div className={styles.filterBox}>
-            {showFilter === 'deviceTypes' && <DeviceTypeFilter {...this.props} />}
-            {showFilter === 'defectTypes' && <DefectTypeFilter {...this.props} />}
-          </div>
-          <div className={styles.filterWrap}>
-            <FilteredItems {...this.props} />
-          </div>
-        </div>
+        <FilterCondition
+          theme={theme}
+          onChange={this.filterCondition}
+          option={[
+            {
+              name: '设备类型',
+              type: 'multipleType',
+              typeName: 'deviceTypeCodes',
+              data: deviceTypes,
+              rules: ['deviceTypeName', 'deviceTypeCode'],
+            },
+            {
+              name: '缺陷类型',
+              type: 'parentCheckBox',
+              typeName: 'defectTypeCode',
+              parentName: 'parentName',
+              rules: ['name', 'id'],
+              data: defectTypeList,
+              disabled: !(deviceTypeCodes.length > 0),
+            },
+          ]}
+          value={{ deviceTypeCodes, defectTypeCode }}
+        />
 
         <div className={styles.partSearch}>
-          <span>缺陷描述</span>
+          <span>故障代码／故障描述</span>
           <Input className={styles.defectDescription} value={defectValue} placeholder="请输入..." onChange={this.onDefect} />
           <span className={styles.text}>录入人</span>
           <Select

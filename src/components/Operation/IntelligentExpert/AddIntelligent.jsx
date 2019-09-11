@@ -14,20 +14,20 @@ class AddIntelligent extends Component {
     defectTypes: PropTypes.array,
     listParams: PropTypes.object,
     form: PropTypes.object,
-    getIntelligentExpertStore: PropTypes.func,
+    changeIntelligentExpertStore: PropTypes.func,
     getIntelligentTable: PropTypes.func,
     addIntelligent: PropTypes.func,
     changeCommonStore: PropTypes.func,
     getLostGenType: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       showWarningTip: false,
       warningTipText: '退出后信息无法保存！',
       deviceTypeCode: '',
-    }
+    };
   }
 
   onChangeDeviceType = (deviceTypeCode) => { // 选择设备类型
@@ -35,7 +35,7 @@ class AddIntelligent extends Component {
     const deviceTypeInfo = deviceTypes.find(e => {
       return e.deviceTypeCode === deviceTypeCode;
     });
-    let params = { deviceTypeCode };
+    const params = { deviceTypeCode };
     this.setState({ deviceTypeCode: deviceTypeCode });
     this.props.changeCommonStore(params);
     this.props.form.setFieldsValue({ defectTypeCode: null, deviceCode: null });
@@ -53,11 +53,11 @@ class AddIntelligent extends Component {
   }
 
   confirmWarningTip = () => {
-    const { getIntelligentExpertStore } = this.props;
+    const { changeIntelligentExpertStore } = this.props;
     this.setState({
       showWarningTip: false,
     });
-    getIntelligentExpertStore({
+    changeIntelligentExpertStore({
       showPage: 'list',
     });
   }
@@ -65,13 +65,13 @@ class AddIntelligent extends Component {
   cancelWarningTip = () => {
     this.setState({
       showWarningTip: false,
-    })
+    });
   }
 
   saveHandler = () => { // 保存按钮
     const { form, addIntelligent, getIntelligentTable, listParams } = this.props;
     form.validateFieldsAndScroll((err, values) => {
-      if(!err) {
+      if (!err) {
         const { deviceTypeCode, defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark } = values;
         addIntelligent({
           deviceTypeCode: deviceTypeCode,
@@ -82,20 +82,20 @@ class AddIntelligent extends Component {
           requiredTools: requiredTools,
           remark: remark,
           continueAdd: false,
-        })
+        });
       }
     });
     getIntelligentTable({ // 返回列表页面时重新请求列表数据 && 改变排序字段和排序方式
       ...listParams,
-      orderField: "update_time", 
-      sortMethod: "desc",
-    })
+      orderField: 'update_time',
+      sortMethod: 'desc',
+    });
   }
 
   saveAndAddHandler = () => { // 保存并继续添加
     const { form, addIntelligent } = this.props;
     form.validateFieldsAndScroll((err, values) => {
-      if(!err) {
+      if (!err) {
         addIntelligent({
           deviceTypeCode: values.deviceTypeCode,
           defectTypeCode: values.defectTypeCode[1],
@@ -105,7 +105,7 @@ class AddIntelligent extends Component {
           requiredTools: values.requiredTools,
           remark: values.remark,
           continueAdd: true,
-        })
+        });
         form.resetFields();
       }
     });
@@ -113,17 +113,17 @@ class AddIntelligent extends Component {
 
 
 
-  render(){
-    const { showWarningTip, warningTipText } = this.state; 
+  render() {
+    const { showWarningTip, warningTipText } = this.state;
     const { deviceTypes, defectTypes } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const deviceTypeCode = getFieldValue('deviceTypeCode');  // 设备code
-    let tmpGenTypes = [];
+    const deviceTypeCode = getFieldValue('deviceTypeCode'); // 设备code
+    const tmpGenTypes = [];
     defectTypes.forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
     const groupedLostGenTypes = [];
     tmpGenTypes.map(ele => {
       if (ele && ele.list && ele.list.length > 0) {
-        let innerArr = { children: [] };
+        const innerArr = { children: [] };
         innerArr.label = ele.name;
         innerArr.value = ele.id;
         ele.list.forEach(innerInfo => {
@@ -131,10 +131,10 @@ class AddIntelligent extends Component {
             label: innerInfo.name,
             value: innerInfo.id,
           });
-        })
+        });
         groupedLostGenTypes.push(innerArr);
       }
-    })
+    });
 
     return (
       <div className={styles.addIntelligent}>
@@ -147,15 +147,15 @@ class AddIntelligent extends Component {
           <FormItem label="设备类型" colon={false}>
             {getFieldDecorator('deviceTypeCode', {
               rules: [{ required: true, message: '请选择' }],
-              initialValue: deviceTypes.deviceTypeCode || null
+              initialValue: deviceTypes.deviceTypeCode || null,
             })(
-              <Select 
-                style={{ width: 360 }} 
-                placeholder="请选择" 
+              <Select
+                style={{ width: 360 }}
+                placeholder="请选择"
                 onChange={this.onChangeDeviceType}>
                 {deviceTypes.map(e => (
-                <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>
-                {e.deviceTypeName}</Option>))}
+                  <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>
+                    {e.deviceTypeName}</Option>))}
               </Select>
             )}
           </FormItem>
@@ -174,7 +174,7 @@ class AddIntelligent extends Component {
           </FormItem>
           <FormItem className={styles.formItem} label="缺陷描述" colon={false}>
             {getFieldDecorator('faultDescription', {
-              rules: [{ required: true, message: '请输入缺陷描述'}],
+              rules: [{ required: true, message: '请输入缺陷描述' }],
             })(
               <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
             )}
@@ -204,10 +204,10 @@ class AddIntelligent extends Component {
           </FormItem>
           <FormItem className={styles.formItem} label="备注">
             {getFieldDecorator('remark', {
-              rules: [{ 
+              rules: [{
                 message: '请输入......',
-                conlon: false
-               }]
+                conlon: false,
+              }],
             })(
               <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
             )}
@@ -218,7 +218,7 @@ class AddIntelligent extends Component {
           </FormItem>
         </Form>
       </div>
-    )
+    );
   }
 }
 

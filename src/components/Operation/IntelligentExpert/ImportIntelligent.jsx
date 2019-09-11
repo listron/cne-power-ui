@@ -10,21 +10,20 @@ class ImportIntelligent extends Component {
     cancelModal: PropTypes.func,
     getImportIntelligent: PropTypes.func,
     getFieldDecorator: PropTypes.func,
-    allStationBaseInfo: PropTypes.array,
     showModal: PropTypes.bool,
     form: PropTypes.object,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      file:File,
+      file: File,
       fileList: [],
     }
   }
 
   beforeUploadStation = (file) => { // 上传前的校验
-    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'];
+    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
     const validFile = validType.includes(file.type);
     if (!validFile) {
       message.config({ top: 200, duration: 2, maxCount: 3, });
@@ -42,7 +41,7 @@ class ImportIntelligent extends Component {
     const { form, cancelModal, getImportIntelligent } = this.props;
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
-      if(!err) {
+      if (!err) {
         const { fileList } = this.state;
         const formData = new FormData();
         formData.append('file', fileList[0]);
@@ -72,13 +71,13 @@ class ImportIntelligent extends Component {
     });
   }
 
-  render(){
+  render() {
     const { fileList } = this.state;
-    const { showModal, allStationBaseInfo } = this.props;
-    
-    
+    const { showModal } = this.props;
+
+
     const { getFieldDecorator } = this.props.form;
-    
+
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -92,7 +91,7 @@ class ImportIntelligent extends Component {
 
     return (
       <div className={styles.importIntelligent}>
-      <Modal
+        <Modal
           title={`导入`}
           visible={showModal}
           destroyOnClose={true}
@@ -104,26 +103,26 @@ class ImportIntelligent extends Component {
           closable={true}
           centered={true}
         >
-        <Form>
-          <FormItem {...formItemLayout} label="附件">
-            {getFieldDecorator('upload', {
-              getValueFromEvent: this.normFile,
-              rules: [{ required: true, message: '选择文件' }],
-            })(
-              <Upload
-                onRemove={(file) => this.removeFile(file)}
-                beforeUpload={this.beforeUploadStation}
-                fileList={fileList}
-              >
-                <Button>选择文件</Button>
-                <span> 支持xls、xlsx文件</span>
-              </Upload>
-            )}
-          </FormItem>
-          <FormItem wrapperCol={{ span: 12, offset: 12 }} >
-            <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>导入</Button>
-          </FormItem>
-        </Form>
+          <Form>
+            <FormItem {...formItemLayout} label="附件">
+              {getFieldDecorator('upload', {
+                getValueFromEvent: this.normFile,
+                rules: [{ required: true, message: '选择文件' }],
+              })(
+                <Upload
+                  onRemove={(file) => this.removeFile(file)}
+                  beforeUpload={this.beforeUploadStation}
+                  fileList={fileList}
+                >
+                  <Button>选择文件</Button>
+                  <span> 支持xls、xlsx文件</span>
+                </Upload>
+              )}
+            </FormItem>
+            <FormItem wrapperCol={{ span: 12, offset: 12 }} >
+              <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>导入</Button>
+            </FormItem>
+          </Form>
         </Modal>
       </div>
     )
