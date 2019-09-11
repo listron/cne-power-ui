@@ -7,37 +7,6 @@ import axios from 'axios';
 import { dataFormat } from '../../../../utils/utilFunc';
 import { message } from 'antd';
 
-const testArr = [];
-const temporaryData = [];
-for (let i = 0; i < 60; i++) {
-  temporaryData.push([Math.random() * (90 - 80) + 80, Math.random() * (42.8 - 30) + 30]);
-}
-for (let i = 0; i < 60; i++) {
-  temporaryData.push([Math.random() * (100 - 90) + 90, Math.random() * (41 - 30) + 30]);
-}
-for (let i = 0; i < 60; i++) {
-  temporaryData.push([Math.random() * (110 - 100) + 100, Math.random() * (41 - 23) + 23]);
-}
-for (let i = 0; i < 90; i++) {
-  temporaryData.push([Math.random() * (120 - 110) + 110, Math.random() * (41 - 24) + 24]);
-}
-for (let i = 0; i < 30; i++) {
-  temporaryData.push([Math.random() * (130 - 120) + 120, Math.random() * (48 - 42.8) + 42.8]);
-}
-temporaryData.map((e, i) => {
-  testArr.push({
-    country: 'China',
-    countryChineseName: '中国',
-    longitude: e[0],
-    latitude: e[1],
-    regionCode: null,
-    regionName: null,
-    stationCode: i,
-    stationName: i,
-    stationType: 1,
-    timeZone: 8,
-  });
-});
 class CenterMap extends Component {
   static propTypes = {
     mapStation: PropTypes.array,
@@ -59,9 +28,7 @@ class CenterMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // const { mapStation } = nextProps;
-
-    const mapStation = [...nextProps.mapStation, ...testArr];
+    const { mapStation } = nextProps;
     const preStations = this.props.mapStation;
     if (mapStation.length > 0 && preStations.length === 0) { // 第一次得到电站数据
       const countriesInfo = []; // 国家信息
@@ -172,7 +139,6 @@ class CenterMap extends Component {
     } else {
       countryStation = mapStation.filter(e => e.country && e.country === mapName);
     }
-
     // const countryStation = mapStation.filter(e=>e.country && e.country === mapName);
     const pvStationData = countryStation.filter(e => e.stationType === 1).map(e => {
       if (e.longitude > -178 && e.longitude < -154 && e.latitude > 18 && e.latitude < 28) { // 更变夏威夷光伏电站坐标
@@ -210,7 +176,8 @@ class CenterMap extends Component {
       const countryChart = echarts.init(countryBox);
       countryChart.clear();
       const { data } = response;
-      echarts.registerMap(mapName, data, {
+      const mapNameType = mapName === 'China' && 'china' || mapName;
+      echarts.registerMap(mapNameType, data, {
         Alaska: {
           left: -140,
           top: 48,
@@ -261,7 +228,7 @@ class CenterMap extends Component {
           }],
         geo: {
           silent: true,
-          map: mapName,
+          map: mapNameType,
           roam: true,
           layoutCenter,
           scaleLimit: {
@@ -277,15 +244,15 @@ class CenterMap extends Component {
         },
       });
       countryChart.on('mouseover', (param) => {
-        // const checkedPosition = param.value;
-        // const checkedStation = mapStation.find(e => e.longitude === checkedPosition[0] && e.latitude === checkedPosition[1]);
-        // if (!checkedStation) { return; }
-        // this.setState({ showStationInfo: true });
-        // this.props.getSingleStation(checkedStation);
+        const checkedPosition = param.value;
+        const checkedStation = mapStation.find(e => e.longitude === checkedPosition[0] && e.latitude === checkedPosition[1]);
+        if (!checkedStation) { return; }
+        this.setState({ showStationInfo: true });
+        this.props.getSingleStation(checkedStation);
       });
       countryChart.on('mouseout', () => {
-        // this.props.changeHomepageStore({ singleStation: {} });
-        // this.setState({ showStationInfo: false });
+        this.props.changeHomepageStore({ singleStation: {} });
+        this.setState({ showStationInfo: false });
       });
     }).catch(error => {
       console.log(error);
@@ -332,7 +299,6 @@ class CenterMap extends Component {
       width: document.body.clientWidth,
       height: document.body.clientHeight,
     };
-
     return (
       <div className={styles.centerMap}>
         <div className={styles.topData}>
@@ -362,7 +328,7 @@ class CenterMap extends Component {
           <div className={styles.worldMap} id="homeWorldMap"></div>
           <div className={styles.static}>
             <span>{mapCountryName}</span>
-            {mapCountInfo.pv > 0 && <span className={styles.count} >{527}个</span>}
+            {mapCountInfo.pv > 0 && <span className={styles.count} >{mapCountInfo.pv}个</span>}
             {mapCountInfo.pv > 0 && <img src="/img/ico_pv.png" />}
             {/* {mapCountInfo.wind > 0 && <span className={styles.count}>{mapCountInfo.wind}个</span>} */}
             {/* {mapCountInfo.wind > 0 && <img src="/img/ico_wind.png" />} */}

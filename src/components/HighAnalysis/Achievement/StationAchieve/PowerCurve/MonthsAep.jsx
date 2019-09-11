@@ -73,12 +73,14 @@ class MonthsAep extends Component {
           {offset: 1, color: '#f47a37' },
         ]),
       },
+      cursor: 'default',
       data: aepData,
     }, {
       name: 'speed',
       type: 'line',
       data: speedData,
       yAxisIndex: 1,
+      cursor: 'default',
       lineStyle: {
         normal: {
           color: '#00cdff',
@@ -110,6 +112,9 @@ class MonthsAep extends Component {
       ],
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         padding: 0,
         formatter: (param) => {
           const { axisValue } = param && param[0] || {};
@@ -169,6 +174,18 @@ class MonthsAep extends Component {
             </Select>
           </span>
         </h3>
+        <div className={styles.modes}>
+          <span className={styles.eachMode}>
+            <span className={styles.rect} style={{
+              backgroundImage: 'linear-gradient(-180deg, #f95071 0%, #f47a37 98%)',
+            }} />
+            <span className={styles.modeText}>AEP</span>
+          </span>
+          <span className={styles.eachMode}>
+            <span className={styles.line} />
+            <span className={styles.modeText}>风速</span>
+          </span>
+        </div>
         <div className={styles.aepChart} ref={(ref)=> {this.aepRef = ref;}} />
       </section>
     );

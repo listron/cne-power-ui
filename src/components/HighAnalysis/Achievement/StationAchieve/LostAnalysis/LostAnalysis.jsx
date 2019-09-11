@@ -39,7 +39,7 @@ class LostAnalysis extends Component {
     let searchParam = {};
     try {
       searchParam = JSON.parse(infoStr);
-    } catch(err){ null; }
+    } catch(err){ console.log(err); }
     const { code, device = [], date = [], quota } = searchParam;
     return {
       stationCodes: [code],
@@ -68,11 +68,13 @@ class LostAnalysis extends Component {
     return (
       <div
         onContextMenu={this.handleContextMenu}
-        className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}
+        className={`${styles.eachPage} ${active ? styles.active : styles.inactive}`}
       >
-        <ChartLostRank {...this.props} onQuotaChange={this.onQuotaChange} />
-        <ChartLostTrend {...this.props} />
-        <ChartLostTypes {...this.props} />
+        <div className={styles.lostAnalysis}>
+          <ChartLostRank {...this.props} onQuotaChange={this.onQuotaChange} />
+          <ChartLostTrend {...this.props} />
+          <ChartLostTypes {...this.props} />
+        </div>
       </div>
     );
   }

@@ -10,24 +10,10 @@
     flex-direction: column;
     .header{
       flex-basis: 40px;
+      line-height: 40px;
       margin-bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .headerText{
-        font-weight: 600;
-        padding-left: 24px;
-      }
-      .headerTip{
-        border-radius: 50%;
-        width: 12px;
-        height: 12px;
-        margin-right: 12px;
-        cursor: pointer;
-        font-size: 10px;
-        line-height: 12px;
-        text-align: center;
-      }
+      font-weight: 600;
+      padding-left: 24px;
     }
     .content{
       display: flex;
@@ -44,6 +30,17 @@
         margin-bottom: 0;
         font-weight: 600;
       }
+      .curveTip{
+        display: inline-block;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        margin-left: 4px;
+        cursor: pointer;
+        font-size: 10px;
+        line-height: 12px;
+        text-align: center;
+      }
       .totalChart{
         width: 100%;
         flex: 1;
@@ -56,7 +53,7 @@
         margin-top: 52px;
         margin-bottom: 12px;
       }
-      .monthList{
+      .monthList, .deviceList{
         height: 288px;
         overflow: auto;
         &::-webkit-scrollbar {
@@ -66,7 +63,7 @@
           border-radius: 3px;
         }
       }
-      .monthList .month{
+      .monthList .month, .deviceList .device{
         display: flex;
         height: 24px;
         width: 100px;
@@ -76,8 +73,13 @@
         .round{
           border-radius: 50%;
           height: 16px;
+          flex: 0 0 16px;
           flex-basis: 16px;
           margin-right: 12px;
+        }
+        .deviceText{
+          flex: 0 0 72px;
+          @include overflowText();
         }
       }
       .allHandler{
@@ -195,10 +197,10 @@
       .headerText{
         color: #000;
       }
-      .headerTip{
-        color: #fff;
-        background:#f9b600;
-      }
+    }
+    .curveTip{
+      color: #fff;
+      background:#f9b600;
     }
     .content{
       background-color: #fff;
@@ -210,7 +212,7 @@
     .timeTitle{
       color: #666;
     }
-    .monthList::-webkit-scrollbar-thumb {
+    .monthList::-webkit-scrollbar-thumb, .curveAllDevice::-webkit-scrollbar-thumb {
       background: rgba(0, 0, 0, 0.5);
     }
   }

@@ -77,9 +77,8 @@ class CleanoutRecordDetail extends Component {
     });
   }
   radioChange = (e) => {
-    const cleanType = e.target.value;
-    console.log('cleanType: ', cleanType);
-    const { changeCleanoutRecordStore, getDetailList, singleStationCode, detailPageNum, detailPageSize } = this.props;
+    const { changeCleanoutRecordStore, getDetailList, singleStationCode, cleanType, detailPageNum, detailPageSize } = this.props;
+    console.log('cleanType:', cleanType);
     changeCleanoutRecordStore({ cleanType: e.target.value });
     getDetailList({ stationCode: singleStationCode, cleanType: e.target.value, pageNum: detailPageNum, pageSize: detailPageSize });
   }
@@ -94,7 +93,6 @@ class CleanoutRecordDetail extends Component {
     // this.props.onShowSideChange({ showSidePage: 'edit' });
     // this.props.changeCleanoutRecordStore({ showPage: 'edit' });
   }
-
   hideStationChange = () => {//选择电站的隐藏
     this.setState({
       showStationSelect: false,
@@ -122,7 +120,9 @@ class CleanoutRecordDetail extends Component {
       showDirtModal: false,
     });
   }
+  tabsChange = () => {//灰尘
 
+  }
 
   render() {
     const { stationDetail, stations, showPage, singleStationCode, stationName, pageNum, pageSize, changeCleanoutRecordStore, detailPageNum, detailPageSize, detailtotal, handCleanNum, rainCleanNum, cleanPlanNum, cleanProfit, cleanCycle, cleanTime, detailListData, stationDustData, matrixDustData, theme } = this.props;

@@ -9,25 +9,21 @@ function* changeTransferStore(action) { // 存储payload指定参数，替换red
   yield put({
     type: transferAction.changeTransferStore,
     payload,
-  })
+  });
 }
 
 function* resetStore() {
   yield put({
-    type: transferAction.RESET_STORE
-  })
+    type: transferAction.RESET_STORE,
+  });
 }
 
 function* getTransferList(action) { // 忽略列表
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getTransferlist}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getTransferlist}`;
   try {
     yield put({ type: transferAction.transferFetch });
-    const response = yield call(axios.post, url, {
-      ...payload,
-      startTime: payload.createTimeStart,
-      endTime: payload.createTimeEnd
-    });
+    const response = yield call(axios.post, url, { ...payload });
     if (response.data.code === '10000') {
       const totalNum = response.data.data && response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
@@ -46,19 +42,19 @@ function* getTransferList(action) { // 忽略列表
           pageNum,
         },
       });
-    } else {throw response.data}
+    } else { throw response.data; }
   } catch (e) {
     console.log(e);
     yield put({
       type: transferAction.changeTransferStore,
-      payload: { ...payload, loading: false ,transferList:[]},
-    })
+      payload: { ...payload, loading: false, transferList: [] },
+    });
   }
 }
 
-function* getMatrixlist(action) {  // 获取方阵下的列表
+function* getMatrixlist(action) { // 获取方阵下的列表
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixList}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixList}`;
   try {
     yield put({ type: transferAction.transferFetch });
     const response = yield call(axios.post, url, {
@@ -72,13 +68,13 @@ function* getMatrixlist(action) {  // 获取方阵下的列表
           matrixList: response.data.data || [],
         },
       });
-    } else {throw response.data }
+    } else { throw response.data; }
   } catch (e) {
     console.log(e);
     yield put({
       type: transferAction.changeTransferStore,
-      payload: { ...payload, loading: false , matrixList: []},
-    })
+      payload: { ...payload, loading: false, matrixList: [] },
+    });
   }
 }
 

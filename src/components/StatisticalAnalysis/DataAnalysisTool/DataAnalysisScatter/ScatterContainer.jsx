@@ -34,7 +34,7 @@ class ScatterContainer extends React.PureComponent {
     };
   }
   componentWillReceiveProps(nextProps) {
-    const { stationCode, startTime, endTime, xPointCode, yPointCode } = nextProps;
+    const { stationCode, startTime, endTime, xPointCode, yPointCode, deviceList } = nextProps;
     const isChangeStationCode = stationCode !== this.props.stationCode;
     const isChangeStartTime = startTime !== this.props.startTime;
     const isChangeEndTime = endTime !== this.props.endTime;
@@ -62,7 +62,9 @@ class ScatterContainer extends React.PureComponent {
         const eTime = moment(endTime).format('YYYY-MM-DD');
         const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
         const { stationName } = stationArr;
-        toZip(this.state.newSrcUrl, `${stationName}-${pointCodeNameX}vs${pointCodeNameY}-${sTime}_${eTime}`, `${pointCodeNameX}vs${pointCodeNameY}`);
+        const fileName = `${stationName}-${pointCodeNameX}vs${pointCodeNameY}-${sTime}_${eTime}`;
+        const childFileName = `${pointCodeNameX}vs${pointCodeNameY}`;
+        toZip(this.state.newSrcUrl, fileName, childFileName, deviceList);
       } else {
         message.warning('图片未全部加载完成');
       }

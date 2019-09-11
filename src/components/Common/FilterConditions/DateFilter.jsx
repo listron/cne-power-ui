@@ -9,6 +9,7 @@ class DateFliter extends Component {
     createTimeStart: PropTypes.string,
     createTimeEnd: PropTypes.string,
     onChangeFilter: PropTypes.func,
+    option: PropTypes.object,
   }
 
   constructor(props) {
@@ -57,20 +58,27 @@ class DateFliter extends Component {
     const { checkedValue = [] } = option;
     const [startTime, endTime] = checkedValue;
     return (
-      <div className={styles.filterItem}>
+      <div className={`${styles.filterItem} ${styles.dateFilter}`} >
+        <span ref="datePicker" />
         <span onClick={this.resetTime} className={!startTime && !endTime ? styles.selected : styles.all}>不限</span>
-        <DatePicker
-          disabledDate={this.disabledStartDate}
-          value={startTime ? moment(startTime) : null}
-          placeholder="开始时间"
-          onChange={this.onStartChange}
-        />
-        <DatePicker
-          disabledDate={this.disabledEndDate}
-          value={endTime ? moment(endTime) : null}
-          placeholder="截止时间"
-          onChange={this.onEndChange}
-        />
+        <div>
+          <DatePicker
+            disabledDate={this.disabledStartDate}
+            value={startTime ? moment(startTime) : null}
+            placeholder="开始时间"
+            onChange={this.onStartChange}
+            getCalendarContainer={() => this.refs.datePicker}
+          />
+          <span className={styles.lines}>~</span>
+          <DatePicker
+            disabledDate={this.disabledEndDate}
+            value={endTime ? moment(endTime) : null}
+            placeholder="截止时间"
+            onChange={this.onEndChange}
+            getCalendarContainer={() => this.refs.datePicker}
+          />
+        </div>
+
       </div>
     );
   }

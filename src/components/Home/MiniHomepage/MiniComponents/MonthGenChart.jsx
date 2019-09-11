@@ -3,197 +3,219 @@ import StationTypeTag from './StationTypeTag';
 import styles from './miniComponents.scss';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
+import moment from 'moment';
 import { dataFormat } from '../../../../utils/utilFunc';
 
-class MonthGenChart extends Component {
+class OutputPower extends Component{
   static propTypes = {
     enterpriseId: PropTypes.string,
+    outputPowerTime: PropTypes.string,
     hasMultipleType: PropTypes.bool,
-    monthPower: PropTypes.array,
-    getMonthPower: PropTypes.func,
+    mapStation: PropTypes.array,
+    outputPower: PropTypes.array,
+    getOutputDiagram: PropTypes.func,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      monthType: 'wind',
-    };
-  }
+  state = { outputType: 'wind' }
 
   componentWillReceiveProps(nextProps) {
-    const { monthPower } = nextProps;
-    this.setData(monthPower);
+    const { outputPower, outputPowerTime } = nextProps;
+    const preTime = this.props.outputPowerTime;
+    if(outputPowerTime !== preTime ){ // 出力图数据刷新
+      this.clocker && clearTimeout(this.clocker);
+      this.setData(outputPower);
+      this.clocker = setTimeout(this.refreshChart, 10 * 60 * 1000); // 十分钟后继续请求
+    }
   }
 
-  setData = (monthPower) => {
-    if (!monthPower || monthPower.length === 0) {
+  componentWillUnmount(){
+    this.clocker && clearTimeout(this.clocker);
+  }
+
+  setData = (outputPower) => {
+    if (!outputPower || outputPower.length === 0) {
       return;
     }
-    const xAxisArr = [], yGenData = [], yRateData = [];
+    const xAxisArr = [], yPowerData = [], yResourceData = [];
     let hasData = false;
-    monthPower.forEach(e => {
-      xAxisArr.push(e.month);
-      yGenData.push(e.power * 100);
-      yRateData.push(e.rate);
-      if (e.power || e.rate || e.power === 0 || e.rate === 0) {
+    outputPower.forEach(e=>{
+      const xTime = e.utc && moment(e.utc).format('HH:mm');
+      xAxisArr.push(xTime);
+      yPowerData.push(e.stationPower);
+      yResourceData.push(e.instantaneous);
+      if(e.stationPower || e.instantaneous || e.stationPower === 0 || e.instantaneous === 0){
         hasData = true;
       }
     });
-    hasData && this.setMonthChart(xAxisArr, yGenData, yRateData, monthPower);
+    hasData && this.setMonthChart(xAxisArr, yPowerData, yResourceData, outputPower);
   }
 
-  setMonthChart = (xAxisArr, yGenData, yRateData, monthPower) => {
-    const chartBox = document.getElementById('homeMonthElec');
-    const monthChart = echarts.init(chartBox);
+  setMonthChart = (xAxisArr, yPowerData, yResourceData, outputPower) => {
+    const chartBox = document.getElementById('homeOutputChart');
+    const outputChart = echarts.init(chartBox);
+    const { mapStation, hasMultipleType } = this.props;
+    const { outputType } = this.state;
+    let isWind = false;
+    if(hasMultipleType){
+      outputType === 'wind' && (isWind = true);
+    }else{
+      isWind = mapStation && mapStation.some(e=>e.stationType === 0);
+    }
     const option = {
-      title: {
-        show: false,
-      },
-      legend: {
-        show: false,
-      },
-      grid: {
-        left: 4,
-        right: 4,
-        top: 21,
-        bottom: 12,
-        containLabel: true,
-      },
-      tooltip: {
-        trigger: 'axis',
-        extraCssText: 'background-color: rgba(0,0,0,0.8)',
-        formatter: params => {
-          const currentInfo = params[0] || {};
-          const currentData = monthPower[currentInfo.dataIndex] || {};
-          return `<div class=${styles.monthTool}>
-            <div>${currentData.month}月发电量</div>
-            <div>${dataFormat(currentData.power)}</div>
-            <div>同比${dataFormat(currentData.rate)}%</div>
-          </div>`;
+        title: {
+          show: false,
         },
-        padding: 10,
-        textStyle: {
-          color: 'rgba(0, 0, 0, 0.8)',
-          fontSize: 14,
+        grid: {
+          left: 10,
+          right: 10,
+          top: 32,
+          bottom: 12,
+          containLabel: true,
         },
-      },
-      xAxis: [
-        {
-          type: 'category',
-          data: xAxisArr,
-          axisPointer: {
-            type: 'shadow',
-          },
-          axisTick: {
-            show: false,
-          },
-          axisLine: {
-            show: false,
-          },
-          axisLabel: {
-            show: false,
-          },
-        },
-      ],
-      yAxis: [
-        {
-          type: 'value',
-          name: '万kWh',
-          nameTextStyle: {
-            fontSize: 10,
+        color: ['#d0021b', '#00ffff'],
+        legend: {
+          textStyle: {
             color: '#06bdf4',
-            padding: [0, 0, 0, 0],
+            fontSize: 12,
           },
-          nameGap: 8,
-          axisLabel: {
-            color: '#06bdf4',
-            fontSize: 10,
+          icon: 'circle',
+          itemWidth: 5,
+          itemHeight: 5,
+        },
+        tooltip: {
+          trigger: 'axis',
+          extraCssText: 'background-color: rgba(0, 0, 0, 0.8)',
+          padding: 10,
+          formatter: params => {
+            const currentInfo = params[0] || {};
+            const currentData = outputPower[currentInfo.dataIndex] || {};
+            return `<div class=${styles.outputTool}>
+              <div class=${styles.time}>${currentInfo.name}</div>
+              <div class=${styles.text}>${isWind?'风电':'光伏'}功率: ${dataFormat(currentData.stationPower)}MW</div>
+              <div class=${styles.text}>${isWind?'风速: ':'辐射: '}${dataFormat(currentData.instantaneous)}${isWind?'m/s':'W/㎡'}</div>
+            </div>`;
           },
-          axisLine: {
-            show: false,
-          },
-          axisTick: {
-            show: false,
-          },
-          splitLine: {
-            lineStyle: {
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: xAxisArr,
+            axisPointer: {
+              type: 'shadow',
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#06bdf4',
+              },
+            },
+            axisTick: {
+              show: false,
+            },
+            axisLabel: {
               color: '#06bdf4',
-              type: 'dashed',
-              opacity: 0.3,
+              fontSize: 12,
             },
           },
-        },
-        {
-          type: 'value',
-          name: '同比',
-          nameTextStyle: {
-            fontSize: 10,
-            color: '#06bdf4',
-            padding: [0, 0, 0, 10],
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            name: '功率MW',
+            nameTextStyle: {
+              fontSize: 12,
+              color: '#06bdf4',
+              padding: [0, 0, 0, 0],
+            },
+            axisLabel: {
+              color: '#06bdf4',
+              fontSize: 12,
+            },
+            axisTick: {
+              show: false,
+            },
+            splitLine: {
+              show: false,
+            },
           },
-          nameGap: 8,
-          axisLabel: {
-            color: '#06bdf4',
-            formatter: '{value}%',
+          {
+            type: 'value',
+            name: isWind ? 'm/s' : 'W/㎡',
+            nameTextStyle: {
+              fontSize: 12,
+              color: '#06bdf4',
+              padding: [0, 0, 0, 10],
+            },
+            axisLabel: {
+              color: '#06bdf4',
+              fontSize: 12,
+            },
+            axisLine: {
+              show: false,
+            },
+            axisTick: {
+              show: false,
+            },
+            splitLine: {
+              show: false,
+            },
           },
-          axisLine: {
-            show: false,
-          },
-          axisTick: {
-            show: false,
-          },
-          splitLine: {
-            show: false,
-          },
-        },
-      ],
-      series: [
-        {
-          name: '发电量',
-          type: 'bar',
-          data: yGenData,
-          itemStyle: {
-            barBorderRadius: 6,
-            color: '#6236ff',
-          },
-          emphasis: {
-            itemStyle: {
+        ],
+        series: [
+          {
+            name: isWind ? '风电功率' : '光伏功率',
+            type: 'line',
+            data: yPowerData,
+            showSymbol: false,
+            lineStyle: {
+              width: 2,
+              color: '#00ffff',
+            },
+          }, {
+            name: isWind ? '风速' : '辐射',
+            type: 'line',
+            yAxisIndex: 1,
+            data: yResourceData,
+            showSymbol: false,
+            lineStyle: {
+              width: 2,
               color: '#fd6e8f',
             },
           },
-          barWidth: 6,
-        },
-        {
-          name: '同比',
-          type: 'line',
-          yAxisIndex: 1,
-          showSymbol: false,
-          lineStyle: { color: '#f8e71c' },
-          data: yRateData,
-        },
-      ],
+        ],
     };
-    monthChart.setOption(option);
+    outputChart.setOption(option);
   }
 
-  changeMonthType = (monthType) => {
-    const { enterpriseId, getMonthPower } = this.props;
-    this.setState({ monthType });
-    const stationType = monthType === 'pv' ? 1 : 0;
-    getMonthPower({ enterpriseId, stationType });
+  refreshChart = () => { // 刷新chart图表数据
+    const { outputPower } = this.props;
+    this.setMonthChart(outputPower);
+    this.clocker = setTimeout(this.refreshChart, 10 * 60 * 1000);
   }
 
+  changeOutputType = (outputType) => { // 切换电站类型，同时重新请求10min数据。
+    const { enterpriseId, getOutputDiagram } = this.props;
+    const stationType = outputType === 'wind' ? 0 : 1;
+    this.setState({ outputType });
+    this.clocker && clearTimeout(this.clocker);
+    getOutputDiagram({ enterpriseId, stationType });
+  }
 
-  render() {
-    const { monthType } = this.state;
-    const { hasMultipleType } = this.props;
+  render(){
+    const { outputType } = this.state;
+    const { hasMultipleType, mapStation } = this.props;
+    let isWind = false;
+    if(hasMultipleType){
+      outputType === 'wind' && (isWind = true);
+    }else{
+      isWind = mapStation && mapStation.some(e=>e.stationType === 0);
+    }
     return (
-      <section className={styles.monthGen}>
-        <h3>每月发电量</h3>
+      <section className={styles.outputPower}>
+        <h3>{isWind? '风' : '光伏'}电站出力</h3>
         {hasMultipleType && <div className={styles.checkTags}>
-          <StationTypeTag showTotal={false} activeType={monthType} onChange={this.changeMonthType} />
+          <StationTypeTag showTotal={false} activeType={outputType} onChange={this.changeOutputType} />
         </div>}
-        <div id="homeMonthElec" className={styles.monthChart} >
+        <div id="homeOutputChart" className={styles.outputChart}>
           <img src="/img/no data_icon.png" />
           <span className={styles.noneText}>暂无数据</span>
         </div>
@@ -202,4 +224,4 @@ class MonthGenChart extends Component {
   }
 }
 
-export default MonthGenChart;
+export default OutputPower;

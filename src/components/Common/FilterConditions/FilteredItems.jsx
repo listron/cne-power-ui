@@ -27,23 +27,29 @@ class FilteredItems extends Component {
 
   resetAll = () => {
     const { options = [] } = this.props;
-    options.map(e => {
-      e.checkedValue = [];
+    const singleType = ['radioSelect', 'stationType', 'switch'];
+    options.map(item => {
+      item.checkedValue = '';
+      if (!singleType.includes(item.type)) {
+        item.checkedValue = [];
+      }
     });
     this.props.onChangeFilterChecked({ options });
   }
 
   render() {
     const { options = [] } = this.props;
-    // belong: 'multipleSelect',
-    const filterOptions = options.filter(item => item.checkedValue.length > 0);
-    const multipleSelect = options.filter(item => item.belong === 'multipleSelect' && item.checkedValue.length > 0);
-    const rangeTime = options.filter(item => item.type === 'rangeTime' && item.checkedValue.length > 0);
-    const time = options.filter(item => item.type === 'time' && item.checkedValue.length > 0);
+    const notMultipleSelect = ['radioSelect', 'stationType', 'switch', 'rangeTime', 'time'];
+    const multipleSelect = options.filter(item => !notMultipleSelect.includes(item.type) && item.checkedValue.length > 0);
+    const rangeTime = options.filter(item => item.type === 'rangeTime' && item.checkedValue.filter(e => !!e).length > 0);
+    const time = options.filter(item => item.type === 'time' && item.checkedValue.filter(e => !!e).length > 0);
+    const radioSelectType = ['stationType', 'radioSelect'];
+    const radioSelect = options.filter(item => radioSelectType.includes(item.type) && item.checkedValue);
+    const hasData = multipleSelect.length > 0 || rangeTime.length > 0 || time.length > 0 || radioSelect.length > 0;
     return (
       <div className={styles.filteredItems}>
         {
-          filterOptions.length > 0 &&
+          hasData &&
           <React.Fragment>
             <p className={styles.selectText}> 已选 </p>
             <div className={styles.tagWrap}>
@@ -51,15 +57,22 @@ class FilteredItems extends Component {
                 multipleSelect.map(item => {
                   const { data = [], checkedValue = [], rules = ['label', 'value'] } = item;
                   const [label, value] = rules;
-                  const selectedDeviceType = data.filter(e => checkedValue.some(m => m === e[value]));
-                  return selectedDeviceType.map(e => <div className={styles.tag} onClick={() => this.cancleFilter(e[value], item)} key={e[value]}>{e[label]} <Icon type="close" /></div>);
+                  const selectData = data.filter(e => checkedValue.some(m => m === e[value]));
+                  return selectData.map(e => <div className={styles.tag} onClick={() => this.cancleFilter(e[value], item)} key={e[value]}>{e[label]} <Icon type="close" /></div>);
+                })
+              }
+              {
+                radioSelect.map(item => {
+                  const { data = [], checkedValue = '', rules = ['label', 'value'] } = item;
+                  const [label, value] = rules;
+                  const selectData = data.filter(e => `${e[value]}` === `${checkedValue}`);
+                  return selectData.map(e => <div className={styles.tag} onClick={() => this.cancleFilter('', item, 'allChange')} key={e[value]}>{e[label]} <Icon type="close" /></div>);
                 })
               }
               { // 时间阶段
                 rangeTime.map(item => {
                   const { checkedValue = [], name, typeName } = item;
                   const [startTime, endTime] = checkedValue;
-                  console.log(startTime, endTime);
                   return <div className={styles.tag} onClick={() => this.cancleFilter([], item, 'allChange')} key={typeName}>{name}{startTime} - {endTime} <Icon type="close" /></div>;
                 })
               }
@@ -78,7 +91,6 @@ class FilteredItems extends Component {
               }
               <i onClick={this.resetAll} className={styles.resetAll}>清空条件</i>
             </div>
-
           </React.Fragment>
         }
       </div>

@@ -108,7 +108,8 @@ class ChartStopRank extends Component {
           opacity: (stopChartDevice && deviceFullcode !== stopChartDevice.deviceFullcode) ? 0.4 : 1,
         },
       });
-      countData.push(stopCount);
+      // countData.push({ value: stopCount || 0 });
+      countData.push({ value: stopCount });
     });
     series[0] = {
       type: 'bar',
@@ -148,9 +149,12 @@ class ChartStopRank extends Component {
     }
 
     const { sortType } = this.state;
-    const { stopElecType, stopChartDevice, stopChartTypes, stopTopStringify } = this.props;
+    const { stopElecType, stopChartDevice, stopChartTypes, stopTopStringify, stopChartTimeMode } = this.props;
     const selectedDevice = sortedStopRank[dataIndex] || {};
-    const searchParam = JSON.parse(stopTopStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(stopTopStringify);
+    } catch (error) { console.log(error); }
     const [startTime, endTime] = this.getTimeRange(searchParam.date);
     const cancelSelect = stopChartDevice && selectedDevice.deviceFullcode === stopChartDevice.deviceFullcode;
     const tmpDeviceResult = cancelSelect ? null : selectedDevice;
@@ -180,6 +184,7 @@ class ChartStopRank extends Component {
       }) : this.props.getStopTrend({
         ...param,
         faultId: stopChartTypes.faultId,
+        type: stopChartTimeMode,
       });
     }
     const queryBoth = (handleLength === 1 && deviceIndex === 0) || handleLength === 0;
@@ -189,7 +194,7 @@ class ChartStopRank extends Component {
         stopHandleInfo: cancelSelect ? [] : ['device'],
       });
       this.props.getStopTypes({ ...param });
-      this.props.getStopTrend({ ...param });
+      this.props.getStopTrend({ ...param, type: stopChartTimeMode });
     }
   }
 
@@ -233,14 +238,29 @@ class ChartStopRank extends Component {
     const sortedStopRank = this.sortRank(stopRank, sortType);
     const { dataAxis, series } = this.createSeries(sortedStopRank, stopChartDevice);
     const option = {
-      grid: getBaseGrid(),
+      grid: {
+        ...getBaseGrid(),
+        top: 30,
+        bottom: 60,
+      },
       xAxis: getBaseXAxis(dataAxis),
       yAxis: [
         getBaseYAxis('停机时长(h)'),
-        getBaseYAxis('停机次数(次)'),
+        {
+          ...getBaseYAxis('停机次数(次)'),
+          axisLabel: {
+            textStyle: {
+              color: '#666666',
+            },
+            formatter: (value) => `${value}`.includes('.') ? '' : value,
+          },
+        },
       ],
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         padding: 0,
         formatter: (param) => {
           const { name, axisValue } = param && param[0] || {};
@@ -269,7 +289,7 @@ class ChartStopRank extends Component {
       start: zoomRange[0],
       end: zoomRange[1],
       showDetail: false,
-      bottom: 15,
+      bottom: 20,
       height: 20,
     }, {
       type: 'inside',
@@ -310,7 +330,7 @@ class ChartStopRank extends Component {
               <span className={styles.rect} style={{
                 backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
                 }} />
-              <span className={styles.modeText}>{e}</span>
+              <span className={styles.modeText}>{e} 停机时长</span>
             </span>
           ))}
           <span className={styles.eachMode}>

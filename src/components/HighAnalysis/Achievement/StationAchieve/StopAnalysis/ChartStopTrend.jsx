@@ -63,6 +63,7 @@ class ChartLostTrend extends Component {
       countData.push({ value: e.stopCount, symbolSize});
     });
     series[0] = {
+      name: '停机时长',
       type: 'line',
       data: hourData,
       xAxisIndex: 0,
@@ -78,6 +79,7 @@ class ChartLostTrend extends Component {
     };
     series[1] = {
       type: 'line',
+      name: '停机次数',
       data: countData,
       xAxisIndex: 1,
       yAxisIndex: 1,
@@ -95,7 +97,10 @@ class ChartLostTrend extends Component {
 
   timeModeChange = (stopChartTimeMode) => {
     const { stopElecType, stopChartDevice, stopTopStringify } = this.props;
-    const searchParam = JSON.parse(stopTopStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(stopTopStringify);
+    } catch (error) { console.log(error); }
     const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.searchDevice;
     this.props.changeStore({ stopChartTimeMode, stopChartTime: null });
     this.props.getStopTrend({
@@ -123,7 +128,10 @@ class ChartLostTrend extends Component {
     }
 
     const { stopChartTime, stopElecType, stopChartTypes, stopChartDevice, stopTopStringify } = this.props;
-    const searchParam = JSON.parse(stopTopStringify) || {};
+    let searchParam = {};
+    try {
+      searchParam = JSON.parse(stopTopStringify);
+    } catch (error) { console.log(error); }
     const selectedInfo = stopTrend[dataIndex] || {};
     const { efficiencyDate } = selectedInfo;
     const cancelSelect = stopChartTime && stopChartTime === efficiencyDate;
@@ -218,7 +226,16 @@ class ChartLostTrend extends Component {
       ],
       yAxis: [
         { ...getBaseYAxis('停机时长(h)'), gridIndex: 0 },
-        { ...getBaseYAxis('停机次数(次)'), gridIndex: 1 },
+        {
+          ...getBaseYAxis('停机次数(次)'),
+          gridIndex: 1,
+          axisLabel: {
+            textStyle: {
+              color: '#666666',
+            },
+            formatter: (value) => `${value}`.includes('.') ? '' : value,
+          },
+        },
       ],
       axisPointer: {
         link: {xAxisIndex: 'all'},
@@ -274,6 +291,18 @@ class ChartLostTrend extends Component {
         <div className={styles.top}>
           <span className={styles.title}>{this.getTitle()}</span>
           <TimeSelect timeMode={stopChartTimeMode} timeModeChange={this.timeModeChange} />
+        </div>
+        <div className={styles.modes} style={{top: '60px'}}>
+          <span className={styles.eachMode}>
+            <span className={styles.lineHour} />
+            <span className={styles.modeText}>停机时长</span>
+          </span>
+        </div>
+        <div className={styles.modes} style={{top: '250px'}}>
+          <span className={styles.eachMode}>
+            <span className={styles.lineCount} />
+            <span className={styles.modeText}>停机次数</span>
+          </span>
         </div>
         <div className={styles.chart} ref={(ref)=> {this.trendRef = ref;}} />
       </div>
