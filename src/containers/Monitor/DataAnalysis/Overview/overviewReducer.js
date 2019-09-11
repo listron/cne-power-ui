@@ -10,9 +10,10 @@ const overviewAction = {
   CHANGE_OVERVIEW_STORE: Symbol('CHANGE_OVERVIEW_STORE'),
   RESET_OVERVIEW: Symbol('RESET_OVERVIEW'),
 };
-
+// 路径携带信息如下: ?tab=station&pages=[staion,device,points]&station={stationCode:xxx,...}&device={stationCode:xxx,...}&point={stationCode:xxx,...}
 const initState = immutable.fromJS({
-  activePage: '', // 激活的tab页, station, device, points
+  tab: 'station', // 激活的tab页, station, device, points
+  pages: ['station'], // 开启的tab页面
   stationSearch: '', // stationCode, deviceTypeCode, month的jsonString
   deviceSearch: '', // stationCode, deviceTypeCode, dateType, date, pointCodes的jsonString
   pointSearch: '', // stationCode, deviceTypeCode, deviceFullcode, dateType, date, pointCodes测点的jsonString
