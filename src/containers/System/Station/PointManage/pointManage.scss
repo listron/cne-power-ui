@@ -1,31 +1,28 @@
-
-
-
-
-
-
-
 @import '../../../../theme/theme.scss';
 
-.pointManageContainer{
+.pointManageContainer {
   display: flex;
   flex: 1;
   min-height: 100%;
   flex-direction: column;
-  .pointManage{
-    padding: 24px 24px 0;
+
+  .pointManage {
+
     background-color: $pageBackground;
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     justify-content: space-between;
     flex: 1 0 auto;
     width: 100%;
-    padding: 24px 24px 0;
-    .pointManageMain{
+
+    .pointManageMain {
+      padding: 24px 24px 0;
       display: flex;
       flex-direction: column;
-      flex: 1;
-      .pointManageContent{
+      flex: 1 0 auto;
+      width: 100%;
+
+      .pointManageContent {
         background-color: #fff;
         display: flex;
         flex-direction: column;
