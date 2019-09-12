@@ -49,7 +49,7 @@ class SingleDeviceContainer extends Component {
     const singleDeviceFullCode = deviceFullCode ? [deviceFullCode] : [];
     const params = { stationCode, deviceFullCode: singleDeviceFullCode, startTime: moment(startTime).utc().format(), endTime: moment(endTime).utc().format() };
     if (endTime === moment().format('YYYY-MM-DD')) {
-      const curDay = moment().format('YYYY-MM-DD HH:mm:ss');
+      const curDay = moment().format('YYYY-MM-DD');
       params.endTime = moment(curDay).utc().format();
     }
     changeSingleDeviceStore({
@@ -129,7 +129,7 @@ class SingleDeviceContainer extends Component {
     const { stationCode, stations, downLoadFile } = this.props;
     startTime = moment(startTime).utc().format();
     endTime = moment(endTime).utc().format();
-    let timeZone = moment().utcOffset();
+    const timeZone = moment().utcOffset();
     const stationInfo = stations.filter((e, i) => e.stationCode)[0];
     downLoadFile({ // 
       url,
@@ -139,7 +139,7 @@ class SingleDeviceContainer extends Component {
         deviceFullCode: [deviceFullCode],
         startTime,
         endTime,
-        timeZone: timeZone / 60
+        timeZone: timeZone / 60,
       },
     });
   }
