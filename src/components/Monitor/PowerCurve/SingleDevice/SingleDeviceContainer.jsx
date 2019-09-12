@@ -49,7 +49,7 @@ class SingleDeviceContainer extends Component {
     const singleDeviceFullCode = deviceFullCode ? [deviceFullCode] : [];
     const params = { stationCode, deviceFullCode: singleDeviceFullCode, startTime: moment(startTime).utc().format(), endTime: moment(endTime).utc().format() };
     if (endTime === moment().format('YYYY-MM-DD')) {
-      const curDay = moment().format('YYYY-MM-DD HH:mm:ss');
+      const curDay = moment().format('YYYY-MM-DD');
       params.endTime = moment(curDay).utc().format();
     }
     changeSingleDeviceStore({
