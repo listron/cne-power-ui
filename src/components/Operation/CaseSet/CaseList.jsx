@@ -15,7 +15,7 @@ class CaseList extends React.Component {
     questionTypeCodes: PropTypes.array,
     deviceModeList: PropTypes.array,
     stationCodes: PropTypes.array,
-    tableLoading: PropTypes.boolean,
+    tableLoading: PropTypes.bool,
     casePartTableData: PropTypes.array,
     selectedRowKeys: PropTypes.array,
   }

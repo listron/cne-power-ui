@@ -4,6 +4,7 @@ import styles from './CasePartContainer.scss';
 import { Button } from 'antd';
 import CommonPagination from '../../../components/Common/CommonPagination';
 import WarningTip from '../../../components/Common/WarningTip';
+import Cookie from 'js-cookie';
 
 class CaseHandle extends React.Component {
   static propTypes = {
@@ -18,7 +19,7 @@ class CaseHandle extends React.Component {
   }
   showAddPage = () => {
     this.props.changeCasePartStore({
-      showPage: 'detail',
+      showPage: 'add',
     });
   }
 
@@ -31,9 +32,10 @@ class CaseHandle extends React.Component {
     const { showWarningTip, warningTipText, showUpload } = this.state;
     const { casePartTableData, selectedRowKeys, pageSize, pageNum, total } = this.props;
     const downloadTemplet = '';//当前没有链接
+    const rightkey = Cookie.get('userRight').includes('operation_case_operate');//操作权限
     return (
       <div className={styles.caseHandle}>
-        <div className={styles.leftHandler}>
+        {rightkey && <div className={styles.leftHandler}>
           {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
           <Button onClick={this.showAddPage} className={styles.addButton}>
             <span className={styles.plus}>+</span>
@@ -49,7 +51,7 @@ class CaseHandle extends React.Component {
           >模板下载
           </Button>
           {showUpload && '上传'}
-        </div>
+        </div>}
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
       </div>
     );
