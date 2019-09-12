@@ -32,7 +32,7 @@ export default class AreaTrendChart extends Component {
     super(props);
     // 初始化dataZoom位置
     this.paramsStart = 0;
-    this.paramsend = 100;
+    this.paramsEnd = 100;
   }
 
   componentDidUpdate(prevProps) {
@@ -50,7 +50,7 @@ export default class AreaTrendChart extends Component {
     if(trendTime && trendTime !== trendTimePrev) {
       // 初始化dataZoom位置
       this.paramsStart = 0;
-      this.paramsend = 100;
+      this.paramsEnd = 100;
       eCharts.init(trendChart).clear();//清除
       const myChart = eCharts.init(trendChart);
       myChart.setOption(this.drawChart(trendInfo, selectTime));
@@ -59,7 +59,7 @@ export default class AreaTrendChart extends Component {
       myChart.off('datazoom');
       myChart.on('datazoom', (params) => {
         this.paramsStart = params.start;
-        this.paramsend = params.end;
+        this.paramsEnd = params.end;
       });
     }
   }
@@ -167,7 +167,7 @@ export default class AreaTrendChart extends Component {
         shadowOffsetY: 3,
       },
       data: data && data.map(cur => ({
-        value: dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2),
+        value: unitName === '%' ? (cur.indicatorData.value === null ? null : cur.indicatorData.value * 100) : cur.indicatorData.value,
         symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
         itemStyle: {
           color: colorFunc(cur.efficiencyDate),
@@ -188,7 +188,7 @@ export default class AreaTrendChart extends Component {
         shadowOffsetY: 3,
       },
       data: data && data.map(cur => ({
-        value: dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2),
+        value: unitName === '%' ? (cur.indicatorData.actualGen === null ? null : cur.indicatorData.actualGen * 100) : cur.indicatorData.actualGen,
         symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
         itemStyle: {
           color: colorFunc(cur.efficiencyDate),
@@ -206,7 +206,7 @@ export default class AreaTrendChart extends Component {
         shadowOffsetY: 3,
       },
       data: data && data.map(cur => ({
-        value: dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2),
+        value: unitName === '%' ? (cur.indicatorData.theoryGen === null ? null : cur.indicatorData.theoryGen * 100) : cur.indicatorData.theoryGen,
         symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
         itemStyle: {
           color: colorFunc(cur.efficiencyDate),
@@ -306,7 +306,7 @@ export default class AreaTrendChart extends Component {
       };
       // 初始化dataZoom位置
       this.paramsStart = 0;
-      this.paramsend = 100;
+      this.paramsEnd = 100;
       // 请求趋势数据
       getTrendInfo(paramsTrend);
     }

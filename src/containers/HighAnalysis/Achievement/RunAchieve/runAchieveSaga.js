@@ -6,12 +6,12 @@ import path from '../../../../constants/path';
 import { runAchieveAction } from './runAchieveReducer';
 
 const { APIBasePath } = path.basePaths;
-const { highAnalysis } = path.APISubPaths;
+const { highAnalysis, monitor } = path.APISubPaths;
 
 function *getDevices({ payload }){
   const url = `${APIBasePath}${highAnalysis.getDevices}`;
   try {
-    const { stationCode } = payload || {};
+    const { stationCode, runInfo, runFlag } = payload || {};
     const response = yield call(request.post, url, {
       stationCodes: [stationCode],
       deviceTypeCode: 101,
@@ -24,8 +24,32 @@ function *getDevices({ payload }){
         children: (e.devices && e.devices.length > 0) ? e.devices.map(m => ({
           value: m.deviceFullcode,
           label: m.deviceName,
+          deviceId: m.deviceId,
         })) : [],
       }));
+      // 第一个电站下的设备列表
+      const dataArr = modeDevices[0] && modeDevices[0].children && modeDevices[0].children;
+      const deviceIds = [];
+      const deviceCode = [];
+      dataArr.forEach((cur, index) => {
+        if(index < 3) {
+          deviceIds.push(cur.deviceId);
+          deviceCode.push(cur.value);
+        }
+      });
+      // 获取指标
+      yield put({
+        type: runAchieveAction.getPointsInfo,
+        payload: {
+          deviceIds,
+          runInfo: {
+            startTime: moment(runInfo.searchDates[0]).utc().format(),
+            endTime: moment(runInfo.searchDates[1]).utc().format(),
+            deviceFullcodes: deviceCode,
+          },
+          runFlag,
+        },
+      });
       yield put({
         type: runAchieveAction.fetchSuccess,
         payload: {
@@ -40,19 +64,43 @@ function *getDevices({ payload }){
   }
 }
 
-function *getIndicatorsList(){
-  const url = `${APIBasePath}${highAnalysis.getIndicatorsList}`;
+function *getPointsInfo(action){
+  const { payload: { deviceIds, runInfo, runFlag } } = action;
+  const url = `${APIBasePath}${monitor.getPointsInfo}`;
   try {
     const response = yield call(request.post, url, {
-      type: 0,
+      deviceIds,
+      devicePointTypes: ['YC'],
     });
     if (response.code === '10000') {
+      // 判断有没有扭矩
+      const torqueFlag = response.data && response.data.map(cur => (cur.value)).includes('CV002');
       yield put({
         type: runAchieveAction.fetchSuccess,
         payload: {
-          indicatorsList: response.data,
+          pointsInfo: response.data && response.data.map(cur => ({
+            name: cur.devicePointName,
+            value: cur.devicePointCode,
+            unitName: cur.devicePointUnit,
+          })),
+          pointTime: moment().unix(),
+          thirdChartYAxis: torqueFlag ? 'CV002' : 'TR002', //第三个图表判断有没有扭矩，没有默认功率
+          thirdYAxisName: torqueFlag ? '扭矩' : '有功功率', //第三个图表判断有没有扭矩，没有默认功率
+          thirdYAxisUnit: torqueFlag ? 'Nm' : 'kw', //第三个图表判断有没有扭矩，没有默认功率
         },
       });
+      // 判断是否请求第三个图chart
+      if(runFlag) {
+        const params = {
+          ...runInfo,
+          codes: ['GN001-xAxis-1', `${torqueFlag ? 'CV002' : 'TR002'}-yAxis-1`],
+        };
+        // 获取指标
+        yield put({
+          type: runAchieveAction.getThirdChart,
+          payload: params,
+        });
+      }
     } else{
       throw response.data;
     }
@@ -264,10 +312,10 @@ function *getFourthChart(action){
 
 export function* watchRunAchieve() {
   yield takeLatest(runAchieveAction.getDevices, getDevices);
-  yield takeLatest(runAchieveAction.getIndicatorsList, getIndicatorsList);
   yield takeLatest(runAchieveAction.getSequenceChart, getSequenceChart);
   yield takeLatest(runAchieveAction.getFirstChart, getFirstChart);
   yield takeLatest(runAchieveAction.getSecondChart, getSecondChart);
   yield takeLatest(runAchieveAction.getThirdChart, getThirdChart);
   yield takeLatest(runAchieveAction.getFourthChart, getFourthChart);
+  yield takeLatest(runAchieveAction.getPointsInfo, getPointsInfo);
 }

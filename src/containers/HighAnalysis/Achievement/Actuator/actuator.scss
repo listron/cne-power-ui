@@ -1,0 +1,21 @@
+.actuatorBox {
+  width: 100%;
+
+  .actuatorCenter {
+    width: 100%;
+    margin-top: 10px;
+
+    .actuatorTop{
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .actuatorBottom {
+      width: 100%;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

@@ -485,6 +485,10 @@ const menuData = [
             name: '停机状态分析',
             path: 'analysis/stop',
             rightKey: 'analysis_windPower_stopStatus',
+          }, {
+            name: '执行机构分析',
+            path: 'analysis/actuator',
+            rightKey: 'analysis_windPower_stopStatus',
           },
         ],
       },

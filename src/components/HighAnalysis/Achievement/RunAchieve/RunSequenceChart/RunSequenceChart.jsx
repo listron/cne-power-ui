@@ -15,7 +15,7 @@ const { Option } = Select;
 export default class RunSequenceChart extends Component {
 
   static propTypes = {
-    indicatorsList: PropTypes.array,
+    pointsInfo: PropTypes.array,
     hourOptionValue: PropTypes.string,
     sequenceLoading: PropTypes.bool,
     sequenceData: PropTypes.array,
@@ -115,8 +115,8 @@ export default class RunSequenceChart extends Component {
   };
 
   handleChange = (value) => {
-    const {indicatorsList, changeStore, getSequenceChart} = this.props;
-    indicatorsList && indicatorsList.forEach(cur => {
+    const {pointsInfo, changeStore, getSequenceChart} = this.props;
+    pointsInfo && pointsInfo.forEach(cur => {
       if (value === cur.value) {
         changeStore({
           hourOptionName: cur.name,
@@ -149,8 +149,8 @@ export default class RunSequenceChart extends Component {
   };
 
   render() {
-    const { indicatorsList, hourOptionValue } = this.props;
-    const optionItem = indicatorsList && indicatorsList.map(cur => {
+    const { pointsInfo, hourOptionValue } = this.props;
+    const optionItem = pointsInfo && pointsInfo.map(cur => {
       return (
         <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
