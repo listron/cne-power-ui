@@ -290,9 +290,13 @@ export default {
       getStationDeviceType: '/v3/management/queryDevicesTypeByStation', //查询电站下的设备类型
 
       getPointList: '/v3/management/station/device/point/list', // 获取点表列表
-      deletePoints: '/v3/management/station/device/modes', // 删除点表信息
+      deletePointList: '/v3/management/station/device/modes', // 删除点表信息
       importPointsInfo: '/v3/management/station/device/points', //导入点表信息
       downloadPointInfo: '/v3/management/station/device/points', // 导出测点表
+      addPoint: '/v3/management/station/device/point',
+      deletePoints: '/v3/management/station/device/points',
+      detailPoints: '/v3/management/station/device/points',
+      editPoints: '/v3/management/station/device/points',
 
       importAlarmInfo: '/v3/management/alarmevent/import', //导入告警信息
       getAlarmList: '/v3/management/alarmevent/list', //获取告警列表
@@ -542,7 +546,7 @@ export default {
       getScatterData: '/v3/wind/analysis/scatterplot/list', //散点图列表
       getStationDevice: '/v3/wind/analysis/windturbinelist', //电站风机列表
       getSequenceData: '/v3/wind/analysis/sequencechart', //时序图数据
-      getxyLimitValue: '/v3/wind/analysis/points/max',//获取xy轴最大值最小值
+      getxyLimitValue: '/v3/wind/analysis/points/max', //获取xy轴最大值最小值
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表
