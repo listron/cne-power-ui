@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import searchUtil from '@utils/searchUtil';
 import { overviewAction } from './overviewReducer';
 import HearderTab from '@components/Monitor/DataAnalysis/Overview/HeaderTab/HearderTab';
-import StationList from '@components/Monitor/DataAnalysis/Overview/StationOverview/StationList';
+import StationOverview from '@components/Monitor/DataAnalysis/Overview/StationOverview/StationOverview';
 import CommonBreadcrumb from '@components/Common/CommonBreadcrumb';
 import Footer from '@components/Common/Footer/index';
 import styles from './overview.scss';
@@ -17,17 +17,18 @@ class Overview extends Component{
   };
 
   componentDidMount(){ // 路径有效信息: ?tab=station&pages=staion_device_point&station={...}&device={...}&point={...}
-    const { search } = this.props.history.location;
-    const { tab = '', pages = '', station = '', device = '', point = ''} = searchUtil(search).parse();
-    if (tab) { // 刷新 => 重新请求三个页面相关数据, 并存储路径信息映射reducer
+    const { history } = this.props;
+    const { search, pathname } = history.location;
+    const { tab = '', pages = '' } = searchUtil(search).parse();
+    if (tab) { // 刷新页面, 路径信息存入reducer即可
       const allPages = pages.split('_').filter(e => !!e); // 开启的tab页面
+      this.props.changeOverviewStore({ tab, pages: allPages });
+    } else { // 将默认激活页填入路径
       this.props.changeOverviewStore({
-        tab: '', // 激活的tab页, station, device, points
-        pages: allPages,
-        stationSearch: station,
-        deviceSearch: device,
-        pointSearch: point,
+        tab: 'station', // 默认激活的tab => station
+        pages: ['station'],
       });
+      history.push(`${pathname}?tab=station&pages=station`);
     }
   }
 
@@ -57,7 +58,7 @@ class Overview extends Component{
         <div className={styles.contentBox}>
           <HearderTab {...this.props} />
           <div className={styles.dataOverview}>
-            <StationList {...this.props} />
+            <StationOverview {...this.props} />
             数据概览页面
             {/* <ScatterDiagramSearch {...this.props} /> */}
             {/* <ScatterDiagramDataType {...this.props} /> */}
@@ -83,8 +84,8 @@ const mapDispatchToProps = (dispatch) =>({
   getOverviewDates: payload => dispatch({ type: overviewAction.getOverviewDates, payload }),
   getOverviewDevices: payload => dispatch({ type: overviewAction.getOverviewDevices, payload }),
   getOverviewPoints: payload => dispatch({ type: overviewAction.getOverviewPoints, payload }),
-  changeOverviewStore: payload => dispatch({ type: overviewAction.CHANGE_OVERVIEW_STORE, payload }),
-  resetOverview: () => dispatch({ type: overviewAction.RESET_OVERVIEW }),
+  changeOverviewStore: payload => dispatch({ type: overviewAction.changeStore, payload }),
+  resetOverview: () => dispatch({ type: overviewAction.reset }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);

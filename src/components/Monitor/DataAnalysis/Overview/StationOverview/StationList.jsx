@@ -7,14 +7,21 @@ class StationList extends PureComponent{
     // tab: PropTypes.string,
     // pages: PropTypes.array,
     // history: PropTypes.object,
-    // changeOverviewStore: PropTypes.func,
     stations: PropTypes.array,
+    changeOverviewStore: PropTypes.func,
+    getOverviewStation: PropTypes.func,
   }
 
   checkStation = (e) => {
     const { code } = e.target.dataset;
     if (code) {
-      console.log(code);
+      this.props.changeOverviewStore({
+        stationParam: { stationCode: parseInt(code, 10) },
+      });
+      this.props.getOverviewStation({ // 电站信息;
+        stationCode: code,
+        pageKey: 'station',
+      });
     }
   }
 
@@ -23,7 +30,7 @@ class StationList extends PureComponent{
     return(
       <div className={styles.list} onClick={this.checkStation}>
         {stations.map((e, i) => (
-          <span key={e.stationCode} data-code={e.stationName} className={styles.eachStation}>{e.stationName || '--'}</span>
+          <span key={e.stationCode} data-code={e.stationCode} className={styles.eachStation}>{e.stationName || '--'}</span>
         ))}
       </div>
     );

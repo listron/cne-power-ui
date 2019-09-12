@@ -6,31 +6,36 @@ const overviewAction = {
   getOverviewDevices: Symbol('getOverviewDevices'), // 获取设备信息
   getOverviewPoints: Symbol('getOverviewPoints'), // 获取测点信息
 
-  GET_OVERVIEW_SUCCESS: Symbol('GET_OVERVIEW_SUCCESS'),
-  CHANGE_OVERVIEW_STORE: Symbol('CHANGE_OVERVIEW_STORE'),
-  RESET_OVERVIEW: Symbol('RESET_OVERVIEW'),
+  fetchSuccess: Symbol('fetchSuccess'),
+  changeStore: Symbol('changeStore'),
+  reset: Symbol('reset'),
 };
 // 路径携带信息如下: ?tab=station&pages=[staion,device,points]&station={stationCode:xxx,...}&device={stationCode:xxx,...}&point={stationCode:xxx,...}
 const initState = immutable.fromJS({
   tab: 'station', // 激活的tab页, station, device, points
   pages: ['station'], // 开启的tab页面
-  stationSearch: '', // stationCode, deviceTypeCode, month的jsonString
-  deviceSearch: '', // stationCode, deviceTypeCode, dateType, date, pointCodes的jsonString
-  pointSearch: '', // stationCode, deviceTypeCode, deviceFullcode, dateType, date, pointCodes测点的jsonString
+  stationParam: {}, // stationCode, deviceTypeCode, month => search-station是该字段的jsonStr
+  deviceParam: {}, // stationCode, deviceTypeCode, dateType, date, pointCodes => search-device是该字段的jsonStr
+  pointParam: {}, // stationCode, deviceTypeCode, deviceFullcode, dateType, date, pointCodes => search-point是该字段的jsonStr
 
-  stationData: {}, // 选中电站基本数据质量信息
   stationDatesRate: [], // 电站各日数据平均完备信息
+  stationTopData: {}, // 电站页顶部信息
+  stationUnix: null, // 电站页请求时间
   devicesData: {}, // 各设备信息
+  deviceTopData: {}, // 设备页顶部信息
+  deviceUnix: null, // 电站页请求时间
   pointsData: [], // 各测点信息列表
+  pointTopData: {}, // 测点页顶部信息
+  pointUnix: null, // 电站页请求时间
 });
 
 const overview = (state = initState, action) => {
   switch (action.type) {
-    case overviewAction.GET_OVERVIEW_SUCCESS :
+    case overviewAction.fetchSuccess :
       return state.merge(immutable.fromJS(action.payload));
-    case overviewAction.CHANGE_OVERVIEW_STORE:
+    case overviewAction.changeStore:
       return state.merge(immutable.fromJS(action.payload));
-    case overviewAction.RESET_OVERVIEW:
+    case overviewAction.reset:
       return initState;
   }
   return state;
