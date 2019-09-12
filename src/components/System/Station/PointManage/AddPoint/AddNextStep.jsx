@@ -45,8 +45,10 @@ class AddNextStep extends React.Component {
       }
     });
   }
+  setDevicePointCodeValue = (e) => {
+    this.props.form.setFieldsValue({ 'devicePointCode': e.target.value });
+  }
   setDevicePointDesc = () => {
-
     this.props.form.setFieldsValue({ 'devicePointName': this.dealPointDetail('deviceStandardPointDesc') });
   }
   dealPointDetail = (name) => {
@@ -67,18 +69,18 @@ class AddNextStep extends React.Component {
         </div>
         <div className={styles.right}>
           <Form className={styles.formPart}>
-            <FormItem label="测点编号" colon={false} className={styles.formItemStyle}>
+            <FormItem label="测点编号" colon={false} className={styles.formItemStyle} >
               {getFieldDecorator('devicePointStandardCode', {
                 initialValue: this.dealPointDetail('devicePointStandardCode'),
-                rules: [{ required: true, message: '请正确填写', type: 'string', max: 30 }],
+                rules: [{ required: true, message: '请正确填写', type: 'string', max: 10 }],
               })(
-                <Input placeholder="请输入" />
+                <Input placeholder="请输入" onChange={this.setDevicePointCodeValue} />
               )}
             </FormItem>
             <FormItem label="测点描述" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('devicePointName', {
                 initialValue: this.dealPointDetail('devicePointName'),
-                rules: [{ required: true, message: '请正确填写', type: 'string', max: 30 }],
+                rules: [{ required: true, message: '请正确填写', type: 'string', max: 50 }],
               })(
                 <Input placeholder="请输入" />
               )}
@@ -102,6 +104,7 @@ class AddNextStep extends React.Component {
             <FormItem label="英文名称" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('devicePointIecname', {
                 initialValue: this.dealPointDetail('devicePointIecname'),
+                rules: [{ message: '名称超过50字符', type: 'string', max: 50 }],
               })(
                 <Input placeholder="请输入" />
               )}
@@ -137,6 +140,7 @@ class AddNextStep extends React.Component {
             <FormItem label="单位" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('devicePointUnit', {
                 initialValue: this.dealPointDetail('devicePointUnit'),
+                rules: [{ message: '名称超过10字符', type: 'string', max: 10 }],
               })(
                 <Input placeholder="请输入" />
               )}
