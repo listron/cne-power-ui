@@ -97,7 +97,7 @@ class ChartLostTypes extends Component {
     const typesChart = echarts.init(this.typesRef);
     const { hideBarData, barData, xAxisLabel } = this.getBarValue(lostTypes);
     const baseOption = getBaseOption(xAxisLabel);
-    baseOption.yAxis.name = '利用小时数(h)';
+    baseOption.yAxis.name = '等效小时数(h)';
     baseOption.yAxis.min = 0;
     baseOption.xAxis.axisLabel.interval = 0;
     baseOption.xAxis.axisLabel.formatter = (str) => {
@@ -127,7 +127,7 @@ class ChartLostTypes extends Component {
             <div class=${styles.info}>
               ${param && param[1] &&
               `<span class=${styles.eachItem}>
-                <span>小时数:</span>
+                <span>等效小时数:</span>
                 <span>${dataFormats(param[1].value, '--', 1)}</span>
               </span>`}
             </div>
