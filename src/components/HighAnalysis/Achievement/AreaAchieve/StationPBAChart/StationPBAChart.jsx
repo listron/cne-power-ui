@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { message } from 'antd';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
 import searchUtil from '../../../../../utils/searchUtil';
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { dataFormats } from '../../../../../utils/utilFunc';
 
 import styles from './stationPBAChart.scss';
 
@@ -175,11 +175,11 @@ export default class StationPBAChart extends Component {
         formatter: (params) => {
           if(qutaName === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormats(params[0].value, '--', pointLength, true)}</span><br /><span>应发小时数：</span><span>${dataFormats(params[1].value, '--', pointLength, true)}</span>
           </div>`;
           }
           return `<div>
-            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span>
+            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormats(params[0].value, '--', pointLength, true)}</span>
           </div>`;
         },
       },
