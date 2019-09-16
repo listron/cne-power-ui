@@ -5,6 +5,7 @@ import { Button } from 'antd';
 import CommonPagination from '../../../components/Common/CommonPagination';
 import WarningTip from '../../../components/Common/WarningTip';
 import Cookie from 'js-cookie';
+import UploadModal from './UploadModal';
 
 class CaseHandle extends React.Component {
   static propTypes = {
@@ -15,6 +16,7 @@ class CaseHandle extends React.Component {
       showWarningTip: false,
       warningTipText: '确认要删除?',
       showUpload: false,
+
     };
   }
   showAddPage = () => {
@@ -28,6 +30,18 @@ class CaseHandle extends React.Component {
       showUpload: true,
     });
   }
+  deleteCasePart = () => {
+    const { selectedRowData, deleteCasePart } = this.props;
+    deleteCasePart({
+      caseBaseIds: [selectedRowData.caseBaseId],
+    });
+  }
+  cancelModal = () => {
+    this.setState({
+      showUpload: false,
+    });
+  }
+
   render() {
     const { showWarningTip, warningTipText, showUpload } = this.state;
     const { casePartTableData, selectedRowKeys, pageSize, pageNum, total } = this.props;
@@ -37,12 +51,14 @@ class CaseHandle extends React.Component {
       <div className={styles.caseHandle}>
         {rightkey && <div className={styles.leftHandler}>
           {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+
           <Button onClick={this.showAddPage} className={styles.addButton}>
             <span className={styles.plus}>+</span>
             <span className={styles.name}>{'添加'}</span>
           </Button>
-          <Button disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deletePoints}> 批量删除 </Button>
+          <Button disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deleteCasePart}> 批量删除 </Button>
           <Button className={styles.intoFile} onClick={this.uploadFile}> 批量导入 </Button>
+          {showUpload && <UploadModal {...this.props} showModal={showUpload} cancelModal={this.cancelModal} />}
           <Button
             className={styles.downloadStyle}
             href={downloadTemplet}
@@ -50,9 +66,10 @@ class CaseHandle extends React.Component {
             target="_blank"
           >模板下载
           </Button>
-          {showUpload && '上传'}
+
         </div>}
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
+
       </div>
     );
   }

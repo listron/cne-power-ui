@@ -80,5 +80,6 @@ const mapDispatchToProps = (dispatch) => ({
   editCasePart: payload => dispatch({ type: casePartAction.editCasePart, payload }),
   deleteCasePart: payload => dispatch({ type: casePartAction.deleteCasePart, payload }),
   queryUseName: payload => dispatch({ type: casePartAction.queryUseName, payload }),
+  importCase: payload => dispatch({ type: casePartAction.importCase, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CasePart);

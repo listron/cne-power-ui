@@ -259,6 +259,58 @@ function* queryUseName(action) { // 获取填报人
     console.log(e);
   }
 }
+function* importCase(action) {
+  // 导入设备；
+  const { payload } = action;
+  const url = `${APIBasePath}${
+    operation.importCase
+    }`;
+
+  try {
+    yield put({ type: casePartAction.changeCasePartStore });
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      data: payload.formData,
+      processData: false, // 不处理数据
+      contentType: false, // 不设置内容类型
+    });
+    if (response.data.code === '10000') {
+      message.success('导入成功');
+      yield put({
+        type: casePartAction.changeCasePartStore,
+        payload: {
+          selectedRowKeys: [],
+          selectedRowData: [],
+        },
+      });
+      const params = yield select(state => ({
+        //继续请求table列表
+        questionTypeCodes: state.operation.casePartReducer.get('questionTypeCodes'),
+        pageNum: state.operation.casePartReducer.get('pageNum'),
+        pageSize: state.operation.casePartReducer.get('pageSize'),
+        deviceModeList: state.operation.casePartReducer.get('deviceModeList'),
+        faultDescription: state.operation.casePartReducer.get('faultDescription'),
+        orderFiled: state.operation.casePartReducer.get('orderFiled'),
+        orderType: state.operation.casePartReducer.get('orderType'),
+        stationCodes: state.operation.casePartReducer.get('stationCodes'),
+        userId: state.operation.casePartReducer.get('userId'),
+        userName: state.operation.casePartReducer.get('userName'),
+      }));
+      yield put({
+        type: casePartAction.getCasePartList,
+        payload: params,
+      });
+    } else {
+      message.config({ top: 200, duration: 2, maxCount: 3 });
+      message.error(response.data.message);
+      throw response.data.data;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({ type: casePartAction.changeCasePartStore, payload: { loading: false } });
+  }
+}
 export function* watchCadePartSaga() {
   yield takeLatest(casePartAction.getDeviceMode, getDeviceMode);
   yield takeLatest(casePartAction.getQuestionList, getQuestionList);
@@ -269,5 +321,6 @@ export function* watchCadePartSaga() {
   yield takeLatest(casePartAction.editCasePart, editCasePart);
   yield takeLatest(casePartAction.deleteCasePart, deleteCasePart);
   yield takeLatest(casePartAction.queryUseName, queryUseName);
+  yield takeLatest(casePartAction.importCase, importCase);
 
 }

@@ -60,7 +60,6 @@ class AddCaseForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { showPage, stations } = this.props;
-    console.log('stations: ', stations);
     return (
 
       <div className={styles.fromContainer}>

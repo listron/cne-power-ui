@@ -236,8 +236,9 @@ export default {
       addCasePart: '/v3/casebase/add',
       likeCase: '/v3/casebase/like',
       editCasePart: '/v3/casebase/update',
-      deleteCasePart: '/v3/casebase/del',
+      deleteCasePart: '/v3/casebase/batch/del',
       queryUseName: '/v3/casebase/likequery',
+      importCase: '/v3/casebase/import',
 
 
     },

@@ -10,6 +10,7 @@ export const casePartAction = {
   editCasePart: Symbol('editCasePart'),
   deleteCasePart: Symbol('deleteCasePart'),
   queryUseName: Symbol('queryUseName'),
+  importCase: Symbol('importCase'),
 
 
 };
