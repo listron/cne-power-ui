@@ -176,7 +176,8 @@ class DevicesChart extends Component {
           <span>各机组功率曲线</span>
           <Tooltip title="功率曲线所用的均为清洗后的数据" placement="top">
             <span className={styles.curveTip}>i</span>
-          </Tooltip></h3>
+          </Tooltip>
+        </h3>
         <div className={styles.totalChart} ref={(ref)=> {this.devicesRef = ref;}} />
       </section>
     );

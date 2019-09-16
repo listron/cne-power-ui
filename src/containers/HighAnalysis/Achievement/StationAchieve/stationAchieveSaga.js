@@ -267,13 +267,13 @@ function *getCurveMonths({ payload }){ // 某机组各月功率曲线
     const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
-        curveMonths: response.data || [],
+        curveMonths: response.data || {},
         curveMonthsLoading: false,
       });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
-      curveMonths: [],
+      curveMonths: {},
       curveMonthsLoading: false,
     });
   }
