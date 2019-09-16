@@ -4,6 +4,7 @@ import styles from '../CasePartSide.scss';
 import { Button, Input, Form, Select } from 'antd';
 import TextArea from '../../../Common/InputLimit/index';
 import StationSelect from '../../../Common/StationSelect/index';
+import AutoSelect from '../../../Common/AutoSelect';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -15,9 +16,15 @@ class AddCaseForm extends React.Component {
     form: PropTypes.object,
     caseDetail: PropTypes.object,
     showPage: PropTypes.string,
+    stations: PropTypes.array,
+    modesInfo: PropTypes.array,
+    questionTypeList: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context);
+    this.state = {
+
+    };
   }
   addsubmitForm = (e) => {
     // const {  } = this.props;
@@ -25,19 +32,24 @@ class AddCaseForm extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         //发送请求
-        this.props.addCasePart({ ...values });
+        const deviceModeList = values.deviceModeList.map((e) => ({ manufactorId: e.split('-')[0], deviceMode: e.split('-')[1] }));
+        const stationCodes = values.stationCodes.map(e => (e.stationCode));
+        this.props.addCasePart({ ...values, deviceModeList, stationCodes });
+        this.props.changeCasePartStore({
+          showPage: 'list',
+        });
       }
     });
-    this.props.changeCasePartStore({
-      showPage: 'list',
-    });
+
   }
   keepOnAdd = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         //发送请求
-        this.props.addCasePart({ ...values });
+        const deviceModeList = values.deviceModeList.map((e) => ({ manufactorId: e.split('-')[0], deviceMode: e.split('-')[1] }));
+        const stationCodes = values.stationCodes.map(e => (e.stationCode));
+        this.props.addCasePart({ ...values, deviceModeList, stationCodes });
       }
     });
     this.props.form.resetFields();
@@ -57,24 +69,36 @@ class AddCaseForm extends React.Component {
     const data = (caseDetail[name] || caseDetail[name] === 0) ? caseDetail[name] : '';
     return data;
   }
+  onModelChange = (value) => {
+    const deviceModeList = value.map(e => (e.value));
+    this.setState({}, () => {
+      this.props.form.setFieldsValue({ deviceModeList });
+    });
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { showPage, stations } = this.props;
+    const { showPage, stations, modesInfo, questionTypeList } = this.props;
     return (
 
       <div className={styles.fromContainer}>
         <Form className={styles.formPart}>
           <FormItem label="机型" colon={false} className={styles.formItemStyle} >
-            {getFieldDecorator('devicePointStandardCode', {
-              initialValue: this.dealPointDetail('devicePointStandardCode'),
-              rules: [{ required: true, message: '请正确填写', type: 'string', max: 10 }],
+            {getFieldDecorator('deviceModeList', {
+              initialValue: this.dealPointDetail('deviceModeList'),
+              rules: [{ required: true, message: '请正确填写' }],
             })(
-              <Input placeholder="请输入" />
+              <AutoSelect
+                style={{ width: '198px' }}
+                data={modesInfo}
+                multiple={true}
+                maxTagCount={0}
+                onChange={this.onModelChange}
+              />
             )}
           </FormItem>
           <FormItem label="风场" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('devicePointName', {
-              initialValue: this.dealPointDetail('devicePointName'),
+            {getFieldDecorator('stationCodes', {
+              initialValue: this.dealPointDetail('stationCodes'),
               rules: [{ required: true, message: '请正确填写' }],
             })(
               <StationSelect
@@ -86,16 +110,20 @@ class AddCaseForm extends React.Component {
 
           </FormItem>
           <FormItem label="问题类别" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('devicePointCode', {
-              initialValue: this.dealPointDetail('devicePointCode'),
-              rules: [{ required: true, message: '请正确填写', type: 'string', max: 10 }],
+            {getFieldDecorator('questionTypeCodes', {
+              initialValue: this.dealPointDetail('questionTypeCodes'),
+              // rules: [{ required: true, message: '请正确填写', type: 'string', max: 10 }],
             })(
-              <Input placeholder="请输入" />
+              <Select>
+                {questionTypeList.map(e => {
+                  return <Option key={e} value={e.userId}>{e.userName}</Option>;
+                })}
+              </Select>
             )}
           </FormItem>
           <FormItem label="相关故障代码" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('devicePointIecname', {
-              initialValue: this.dealPointDetail('devicePointIecname'),
+            {getFieldDecorator('faultCode', {
+              initialValue: this.dealPointDetail('faultCode'),
               rules: [{ required: true, message: '请正确填写', type: 'string', max: 10 }],
             })(
               <TextArea placeholder="请输入" size={999} width={570} height={34} end={true} />
@@ -103,8 +131,8 @@ class AddCaseForm extends React.Component {
           </FormItem>
 
           <FormItem label="问题描述" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('devicePointDatatype', {
-              initialValue: this.dealPointDetail('devicePointDatatype'),
+            {getFieldDecorator('faultDescription', {
+              initialValue: this.dealPointDetail('faultDescription'),
               rules: [{ required: true, message: '请正确填写', type: 'string', max: 10 }],
             })(
               <TextArea placeholder="请输入" size={999} width={570} height={72} end={true} />
@@ -112,8 +140,8 @@ class AddCaseForm extends React.Component {
           </FormItem>
 
           <FormItem label="问题分析" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('devicePointType', {
-              initialValue: this.dealPointDetail('devicePointType'),
+            {getFieldDecorator('faultAnalyse', {
+              initialValue: this.dealPointDetail('faultAnalyse'),
               rules: [{ required: true, message: '请正确填写', type: 'string', max: 10 }],
             })(
               <TextArea placeholder="请输入" size={999} width={570} height={72} end={true} />
@@ -121,8 +149,8 @@ class AddCaseForm extends React.Component {
           </FormItem>
 
           <FormItem label="处理措施" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('devicePointUnit', {
-              initialValue: this.dealPointDetail('devicePointUnit'),
+            {getFieldDecorator('processingMethod', {
+              initialValue: this.dealPointDetail('processingMethod'),
               rules: [{ required: true, message: '请正确填写', type: 'string', max: 10 }],
             })(
               <TextArea placeholder="请输入" size={999} width={570} height={72} end={true} />
@@ -130,32 +158,32 @@ class AddCaseForm extends React.Component {
           </FormItem>
 
           <FormItem label="所需工具" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('devicePointIndex', {
-              initialValue: this.dealPointDetail('devicePointIndex'),
+            {getFieldDecorator('requiredTools', {
+              initialValue: this.dealPointDetail('requiredTools'),
             })(
               <TextArea placeholder="请输入" size={999} width={570} height={72} end={true} />
             )}
           </FormItem>
 
           <FormItem label="反馈人" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('devicePointDecimalplace', {
-              initialValue: this.dealPointDetail('devicePointDecimalplace'),
+            {getFieldDecorator('feedbackUserName', {
+              initialValue: this.dealPointDetail('feedbackUserName'),
             })(
               <Input placeholder="请输入" />
             )}
           </FormItem>
 
           <FormItem label="联系方式" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('isTransfer', {
-              initialValue: this.dealPointDetail('isTransfer'),
+            {getFieldDecorator('feedbackUserPhone', {
+              initialValue: this.dealPointDetail('feedbackUserPhone'),
             })(
               <Input placeholder="请输入" />
             )}
           </FormItem>
 
           <FormItem label="上传附件" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('isShow', {
-              initialValue: this.dealPointDetail('isShow'),
+            {getFieldDecorator('annexs', {
+              initialValue: this.dealPointDetail('annexs'),
             })(
               <Input placeholder="请输入" />
             )}

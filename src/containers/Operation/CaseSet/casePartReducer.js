@@ -12,14 +12,18 @@ const initState = immutable.fromJS({
   total: 0,
   pageNum: 1,
   pageSize: 10,
+  orderFiled: '',
+  orderType: '',
   showPage: 'list',
-  deviceModeData: [],
+  deviceModeData: [], //筛选条件的机型数据
   casePartTableData: [],
   questionTypeList: [],
   caseDetail: {},
   userData: [],
   selectedRowKeys: [],
   selectedRowData: [],
+  modesInfo: [], //新增和编辑里的机型
+
 });
 
 const casePartReducer = (state = initState, action) => {

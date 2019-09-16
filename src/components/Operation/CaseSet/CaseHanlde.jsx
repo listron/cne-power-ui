@@ -32,8 +32,10 @@ class CaseHandle extends React.Component {
   }
   deleteCasePart = () => {
     const { selectedRowData, deleteCasePart } = this.props;
+    console.log('selectedRowData: ', selectedRowData);
+    const { caseBaseId } = selectedRowData[0];
     deleteCasePart({
-      caseBaseIds: [selectedRowData.caseBaseId],
+      caseBaseIds: [caseBaseId],
     });
   }
   cancelModal = () => {

@@ -146,4 +146,48 @@
       }
     }
   }
+
+  .caseDetail {
+    .detailBox {
+      padding-top: 20px;
+
+      .eachInfo {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+
+        .infoName {
+          display: flex;
+          flex: 3;
+          justify-content: flex-end;
+          text-align: right;
+          margin-right: 32px;
+          height: 40px;
+          line-height: 40px;
+
+        }
+
+        .infoValue,
+        .downHref {
+          display: flex;
+          flex: 5;
+          justify-content: flex-start;
+          height: 40px;
+          line-height: 40px;
+          text-align: left
+        }
+
+        .downHref {
+          a {
+            margin: 0 4px;
+          }
+        }
+
+        .likeBtn {
+          margin-left: 37.5%;
+        }
+      }
+    }
+
+  }
 }

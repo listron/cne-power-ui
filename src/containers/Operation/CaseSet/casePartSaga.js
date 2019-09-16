@@ -8,15 +8,30 @@ const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
 
 function* getDeviceMode(action) { // 获取机型
-  const { payload } = action;
+  const { payload = {} } = action;
   const url = `${APIBasePath}${operation.getDeviceMode}`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      const modesInfo = response.data && (response.data.data).map(e => ({
+        value: parseInt(e.manufactorId, 0),
+        label: e.manufactorName,
+        children: (e.deviceModesList && e.deviceModesList.length > 0) ? e.deviceModesList.map(m => ({
+          value: `${e.manufactorId}-${m.deviceModeCode}`,
+          label: m.deviceModeName,
+        })) : [],
+      }));
+      const deviceModeData = [];
+      response.data && (response.data.data).forEach((e) => {
+        e.deviceModesList.forEach((item, i) => {
+          deviceModeData.push({ ...item, ...e, deviceModeCode: `${e.manufactorId}-${item.deviceModeCode}` });
+        });
+      });
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
-          deviceModeData: response.data.data || [],
+          deviceModeData,
+          modesInfo,
         },
       });
     } else {
@@ -45,21 +60,23 @@ function* getCasePartList(action) { // 获取列表数据
       },
     });
     const response = yield call(axios.post, url, payload);
-    const { total = 0 } = response.data.data;
-    let { pageNum } = payload;
-    const { pageSize } = payload;
-    const maxPage = Math.ceil(total / pageSize);
-    if (total === 0) {
-      pageNum = 1;
-    } else if (maxPage < pageNum) {
-      pageNum = maxPage;
-    }
     if (response.data.code === '10000') {
+      const total = response.data.data.total || 0;
+      let { pageNum } = payload;
+      const { pageSize } = payload;
+      const maxPage = Math.ceil(total / pageSize);
+      if (total === 0) {
+        pageNum = 1;
+      } else if (maxPage < pageNum) {
+        pageNum = maxPage;
+      }
+
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
           tableLoading: false,
-          casePartTableData: response.data.data || [],
+          casePartTableData: response.data.data.dataList || [],
+          total,
         },
       });
     } else {
@@ -216,9 +233,28 @@ function* deleteCasePart(action) { // 删除案例
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
-
+          selectedRowKeys: [],
+          selectedRowData: [],
         },
       });
+      const params = yield select(state => ({
+        //继续请求table列表
+        questionTypeCodes: state.operation.casePartReducer.get('questionTypeCodes'),
+        pageNum: state.operation.casePartReducer.get('pageNum'),
+        pageSize: state.operation.casePartReducer.get('pageSize'),
+        deviceModeList: state.operation.casePartReducer.get('deviceModeList'),
+        faultDescription: state.operation.casePartReducer.get('faultDescription'),
+        orderFiled: state.operation.casePartReducer.get('orderFiled'),
+        orderType: state.operation.casePartReducer.get('orderType'),
+        stationCodes: state.operation.casePartReducer.get('stationCodes'),
+        userId: state.operation.casePartReducer.get('userId'),
+        userName: state.operation.casePartReducer.get('userName'),
+      }));
+      yield put({
+        type: casePartAction.getCasePartList,
+        payload: params,
+      });
+
     } else {
       throw response.data;
     }

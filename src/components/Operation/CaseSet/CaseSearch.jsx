@@ -24,26 +24,36 @@ class CaseSearch extends React.Component {
     super(props, context);
 
   }
-  filterCondition = (e) => {
-    console.log('e: ', e);
+  componentDidMount() {
+    this.props.getDeviceMode({
+      stationCodes: [],
+      regionName: [],
+      deviceTypeCode: 101,
+      stationType: 0,
+    });
+    this.props.getQuestionList();
+  }
+  filterCondition = (data) => {
+    const { deviceModeList, questionTypeCodes, stationCodes } = data;
+    const deviceModeData = deviceModeList.map((e) => ({
+      manufactorId: e.split('-')[0],
+      deviceMode: e.split('-')[1],
+    }));
     const { changeCasePartStore } = this.props;
-    changeCasePartStore(e);
-    this.getList(e);
+    changeCasePartStore({ ...data, deviceModeList: deviceModeData });
+    this.getList({ ...data, deviceModeList: deviceModeData });
   }
   searchDesc = (e) => {
-    console.log('e:', e.target.value);
     this.props.changeCasePartStore({
       faultDescription: e.target.value,
     });
   }
   searchFeedback = (e) => {
-    console.log('e:', e.target.value);
     this.props.changeCasePartStore({
       userName: e.target.value,
     });
   }
   entryPerson = (value) => {
-    console.log('value: ', value);
     this.props.queryUseName({
       userName: value,
     });
@@ -51,7 +61,6 @@ class CaseSearch extends React.Component {
   }
 
   changePerson = (value) => {
-    console.log('改变提交人');
     this.props.changeCasePartStore({
       userId: value,
     });
@@ -84,16 +93,17 @@ class CaseSearch extends React.Component {
             {
               //此处需要更换类型，变成厂家下的型号，需要处理数据结构
               name: ' 机型',
-              type: 'multipleType',
-              typeName: 'questionTypeCodes',
+              type: 'parentCheckBox',
+              typeName: 'deviceModeList',
               rules: ['deviceModeName', 'deviceModeCode'],
               data: deviceModeData,
+              parentName: 'manufactorName',
               // data: stations,
             },
             {
               name: '问题类别',
               type: 'multipleType',
-              typeName: 'deviceModeList',
+              typeName: 'questionTypeCodes',
               rules: ['questionTypeName', 'questionTypeCode'],
               data: questionTypeList,
               // data: stations,
