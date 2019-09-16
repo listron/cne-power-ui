@@ -93,7 +93,6 @@ class GroupAchieve extends Component {
     const { groupTimeStatus } = this.props;
     const basicParams = this.basicParams(groupInfo);
     const {
-      stations = [],
       modes = [],
       quota = [],
       modesInfo = [],
@@ -103,7 +102,6 @@ class GroupAchieve extends Component {
     const paramsCapacity = {
       ...basicParams,
       deviceModes: modes.map(cur => (cur.split('-')[1])),
-      regionName: stations.map(cur => {return cur.regionName;}),
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
@@ -114,7 +112,6 @@ class GroupAchieve extends Component {
     };
     const paramsTrend = {
       ...basicParams,
-      regionName: paramsCapacity.regionName,
       indicatorCode: quotaValue,
       type: groupTimeStatus, // 默认按月
     };
