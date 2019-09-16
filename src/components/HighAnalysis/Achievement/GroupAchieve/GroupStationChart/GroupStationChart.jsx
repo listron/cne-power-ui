@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
+import {message} from 'antd';
 import searchUtil from '../../../../../utils/searchUtil';
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { dataFormats } from '../../../../../utils/utilFunc';
 
 import styles from './groupStationChart.scss';
-import {message} from "antd";
 
 export default class GroupStationChart extends Component {
 
@@ -170,11 +170,11 @@ export default class GroupStationChart extends Component {
         formatter: (params) => {
           if(titleFunc === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormats(params[0].value, '--', pointLength, true)}</span><br /><span>应发小时数：</span><span>${dataFormats(params[1].value, '--', pointLength, true)}</span>
           </div>`;
           }
           return `<div>
-            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span>
+            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormats(params[0].value, '--', pointLength, true)}</span>
           </div>`;
         },
       },

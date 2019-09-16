@@ -11,7 +11,6 @@ class DevicesCheckTime extends Component {
     curveTopStringify: PropTypes.string,
     curveAllDevice: PropTypes.array,
     curveCheckedDevice: PropTypes.array,
-    curveDevices: PropTypes.object,
     curveDevicesTime: PropTypes.string,
     curveAllMonths: PropTypes.array,
     getCurveDevices: PropTypes.func,
@@ -85,7 +84,7 @@ class DevicesCheckTime extends Component {
             return (
               <li
                 className={styles.device}
-                key={e.deviceFullcode}
+                key={e}
                 onClick={() => this.checkDevice(e)}
               >
                 <span className={styles.round} style={{backgroundColor, border}} />

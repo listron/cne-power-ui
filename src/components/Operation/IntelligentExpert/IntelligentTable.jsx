@@ -276,7 +276,6 @@ class IntelligentTable extends Component {
           onChange={this.tableChange}
           pagination={false}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-          rowKey={(record) => { return record.knowledgeBaseId; }}
         />
       </div>
     );

@@ -183,7 +183,8 @@ class ChartLostTrend extends Component {
       lostStringify && ({ quota } = JSON.parse(lostStringify));
     } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
-    const { label = '--', unit, pointLength } = selectedQuota;
+    // const { label = '--', unit, pointLength } = selectedQuota;
+    const { label = '--', unit } = selectedQuota;
     const trendChart = echarts.init(this.trendRef);
     const { dataAxis, series } = this.createSeries(lostTrend, lostChartTime, unit);
     const baseOption = getBaseOption(dataAxis);
@@ -207,7 +208,7 @@ class ChartLostTrend extends Component {
                   <span>
                     ${i === 1 ? '应发小时数' : `${label === '利用小时数' ? '实发小时数' : label}`}
                   </span>
-                  <span>${dataFormats(e.value, '--', pointLength, true)}</span>
+                  <span>${dataFormats(e.value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
             </div>
