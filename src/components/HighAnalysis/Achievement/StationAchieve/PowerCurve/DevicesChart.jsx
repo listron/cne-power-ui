@@ -60,7 +60,7 @@ class DevicesChart extends Component {
     const isTheory = deviceName.includes('理论功率曲线');
     const lineIndex = (isTheory ? theoryDevice : actualDevice).indexOf(deviceName);
     const lineColor = uiColors[isTheory ? 'mainColors' : 'outputColors'][lineIndex];
-    const opacity = (activeDevice && activeDevice !== deviceFullcode && isTheory) ? 0.2 : 1; // 理论功率不弱化
+    const opacity = (activeDevice && activeDevice !== deviceFullcode && !isTheory) ? 0.1 : 1; // 理论功率不弱化
     const curveSeries = {
       type: 'line',
       smooth: true,
@@ -176,7 +176,8 @@ class DevicesChart extends Component {
           <span>各机组功率曲线</span>
           <Tooltip title="功率曲线所用的均为清洗后的数据" placement="top">
             <span className={styles.curveTip}>i</span>
-          </Tooltip></h3>
+          </Tooltip>
+        </h3>
         <div className={styles.totalChart} ref={(ref)=> {this.devicesRef = ref;}} />
       </section>
     );
