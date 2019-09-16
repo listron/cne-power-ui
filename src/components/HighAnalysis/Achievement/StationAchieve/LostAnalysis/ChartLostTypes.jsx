@@ -68,7 +68,7 @@ class ChartLostTypes extends Component {
     barData.push(dataFormats(actualGen, '0'));
     return {
       hideBarData,
-      barData: barData.map(val => dataFormats(val, '', 1)),
+      barData: barData.map(val => dataFormats(val, '', 2, true)),
       xAxisLabel,
     };
   }
@@ -128,7 +128,7 @@ class ChartLostTypes extends Component {
               ${param && param[1] &&
               `<span class=${styles.eachItem}>
                 <span>等效小时数:</span>
-                <span>${dataFormats(param[1].value, '--', 1)}</span>
+                <span>${dataFormats(param[1].value, '--', 2, true)}</span>
               </span>`}
             </div>
           </section>`;
