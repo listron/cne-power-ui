@@ -325,9 +325,9 @@ export default class LooseBarChart extends Component {
             </span>
             ))}
             <span className={styles.eachMode}>
-            <span className={styles.line} />
-            <span className={styles.modeText}>偏航次数</span>
-          </span>
+              <span className={styles.line} />
+              <span className={styles.modeText}>偏航次数</span>
+            </span>
           </div>
           <div ref={ref => {this.yawBarChart = ref;}} className={styles.yawBarCenter} />
         </div>
