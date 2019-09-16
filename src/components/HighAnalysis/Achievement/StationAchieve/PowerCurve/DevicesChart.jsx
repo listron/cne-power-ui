@@ -60,7 +60,7 @@ class DevicesChart extends Component {
     const isTheory = deviceName.includes('理论功率曲线');
     const lineIndex = (isTheory ? theoryDevice : actualDevice).indexOf(deviceName);
     const lineColor = uiColors[isTheory ? 'mainColors' : 'outputColors'][lineIndex];
-    const opacity = (activeDevice && activeDevice !== deviceFullcode && isTheory) ? 0.2 : 1; // 理论功率不弱化
+    const opacity = (activeDevice && activeDevice !== deviceFullcode && !isTheory) ? 0.2 : 1; // 理论功率不弱化
     const curveSeries = {
       type: 'line',
       smooth: true,
@@ -118,6 +118,8 @@ class DevicesChart extends Component {
     baseOption.xAxis.name = '风速(m/s)';
     baseOption.yAxis.name = '功率(kW)';
     baseOption.xAxis.nameTextStyle.padding = [60, 0, 0, -60];
+    console.log(activeDevice)
+    console.log(totalCurveData)
     const option = {
       ...baseOption,
       tooltip: {
