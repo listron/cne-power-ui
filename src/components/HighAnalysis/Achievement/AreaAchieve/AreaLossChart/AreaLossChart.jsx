@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import searchUtil from '../../../../../utils/searchUtil';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { dataFormats } from '../../../../../utils/utilFunc';
 
 import styles from './areaLossChart.scss';
 
@@ -67,7 +67,7 @@ export default class AreaLossChart extends Component {
     const { actualGen, theoryGen, detailList } = lostGenHourInfo;
     const xAxisName = detailList && detailList.map(cur => (cur.name)) || [];
     const xAxisBaseValue = detailList && detailList.map(cur => (cur.baseValue)) || [];
-    const xAxisValue = detailList && detailList.map(cur => (dataFormat(cur.value, '--', pointLength))) || [];
+    const xAxisValue = detailList && detailList.map(cur => (dataFormats(cur.value, '--', pointLength, true))) || [];
     return {
       graphic: !actualGen && !theoryGen && (!detailList || detailList.length === 0) ? showNoData : hiddenNoData,
       tooltip: {
@@ -77,7 +77,7 @@ export default class AreaLossChart extends Component {
         },
         formatter: function (params) {
           var tar = params[1];
-          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormat(tar.value, '--', pointLength);
+          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormats(tar.value, '--', pointLength, true);
         },
       },
       grid: {
@@ -133,7 +133,7 @@ export default class AreaLossChart extends Component {
               position: 'top',
             },
           },
-          data: [dataFormat(theoryGen, '--', pointLength), ...xAxisValue, dataFormat(actualGen, '--', pointLength)].map((cur, i) => ({
+          data: [dataFormats(theoryGen, '--', pointLength, true), ...xAxisValue, dataFormats(actualGen, '--', pointLength, true)].map((cur, i) => ({
             value: cur,
             itemStyle: {
               color: new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
