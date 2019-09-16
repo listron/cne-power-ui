@@ -74,7 +74,9 @@ class AchievementLayout extends Component {
           }).delete(pageClosed).stringify()}`
         )
       );
-      pageClosed.length === 0 && history.push(`${nextLocation.pathname}${search}`); // 2. 切换页面 pathkey切换即可
+      pageClosed.length === 0 && history.push( // 2. 切换页面，nextSearch不存在为单纯目录切换使用search, nextSearch存在指定跳转
+        `${nextLocation.pathname}${nextSearch || search}`
+      );
     }
   }
 
