@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import searchUtil from '../../../../../utils/searchUtil';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
-import {dataFormat} from '../../../../../utils/utilFunc';
+import {dataFormats} from '../../../../../utils/utilFunc';
 
 import styles from './groupLossChart.scss';
 
@@ -66,7 +66,7 @@ export default class GroupLossChart extends Component {
     const { actualGen, theoryGen, detailList } = groupLostGenHourInfo;
     const xAxisName = detailList && detailList.map(cur => (cur.name)) || [];
     const xAxisBaseValue = detailList && detailList.map(cur => (cur.baseValue)) || [];
-    const xAxisValue = detailList && detailList.map(cur => (dataFormat(cur.value, '--', pointLength))) || [];
+    const xAxisValue = detailList && detailList.map(cur => (dataFormats(cur.value, '--', pointLength, true))) || [];
     return {
       graphic: !actualGen && !theoryGen && (!detailList || detailList.length === 0) ? showNoData : hiddenNoData,
       tooltip: {
@@ -76,7 +76,7 @@ export default class GroupLossChart extends Component {
         },
         formatter: function (params) {
           var tar = params[1];
-          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormat(tar.value, '--', pointLength);
+          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormats(tar.value, '--', pointLength, true);
         },
       },
       grid: {

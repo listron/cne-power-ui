@@ -244,6 +244,7 @@ export default class RunScatterChart extends Component {
         },
         outOfBrush: {
           opacity: 0.2,
+          colorLightness: 0.8, // 颜色的明暗度
         },
         throttleType: 'debounce',
         throttleDelay: 300,
