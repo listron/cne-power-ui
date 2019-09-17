@@ -49,11 +49,12 @@ export default class LooseLineChart extends Component {
           const { axisValue } = param && param[0] || {};
           return `<section class=${styles.tooltip}>
             <h3 class=${styles.title}>
-              <span class=${styles.titleText}>${axisValue}</span>
+              <span>${axisValue}</span>
             </h3>
             <div class=${styles.info}>
               ${param.sort((a, b) => a.seriesIndex - b.seriesIndex).map(({seriesIndex, value}) => (
             `<span class=${styles.eachItem}>
+                  <span class=${seriesIndex === 0 ? styles.firLine : styles.secLine}></span>
                   <span>${seriesIndex === 0 ? '解缆时长：' : '解缆次数：'}</span>
                   <span>${dataFormats(value, '--', 2, true)}</span>
                 </span>`
@@ -93,7 +94,6 @@ export default class LooseLineChart extends Component {
       },
       series: [{
         type: 'line',
-        showSymbol: false,
         lineStyle: {
           color: '#2564cc',
           shadowColor: 'rgba(0,0,0,0.20)',
@@ -103,10 +103,9 @@ export default class LooseLineChart extends Component {
         itemStyle: {
           color: '#2564cc',
         },
-        data: releaseRendData && releaseRendData.map(cur => (cur.releaseDuration)),
+        data: releaseRendData && releaseRendData.map(cur => (dataFormats(cur.releaseDuration === null ? null : cur.releaseDuration / 3600, '--', 2))),
       }, {
         type: 'line',
-        showSymbol: false,
         lineStyle: {
           color: '#f9b600',
           shadowColor: 'rgba(0,0,0,0.20)',
@@ -158,7 +157,7 @@ export default class LooseLineChart extends Component {
       <div className={styles.looseLineChart}>
         <div className={styles.looseLineTitle}>
           <span>
-            {deviceName ? `${deviceName}-每月解缆时长及次数` : '每月解缆时长及次数'}
+            {deviceName ? `${deviceName}-解缆时长及次数趋势图` : '解缆时长及次数趋势图'}
           </span>
           <Radio.Group value={releaseType} buttonStyle="solid" onChange={this.handleStatusChange}>
             <Radio.Button value="1">按日</Radio.Button>

@@ -21,6 +21,8 @@ export default class LooseBarChart extends Component {
     queryParamsFunc: PropTypes.func,
     getYawRend: PropTypes.func,
     getReleaseRend: PropTypes.func,
+    releaseType: PropTypes.string,
+    yawType: PropTypes.string,
   };
 
   constructor(props) {
@@ -50,7 +52,7 @@ export default class LooseBarChart extends Component {
     const { yawBarChart } = this;
     const { selectValue } = this.state;
     const { yawRankTime, yawRankLoading, yawRankData, rankDevice } = this.props;
-    const { yawRankTime: yawRankTimePrev, rankDevice: rankDevicePrev } = prevProps;
+    const { yawRankTime: yawRankTimePrev } = prevProps;
     const myChart = eCharts.init(yawBarChart);
     if (yawRankLoading) { // loading态控制。
       myChart.showLoading();
@@ -59,7 +61,7 @@ export default class LooseBarChart extends Component {
     if (!yawRankLoading) {
       myChart.hideLoading();
     }
-    if(yawRankTime && yawRankTime !== yawRankTimePrev || rankDevice && rankDevice !== rankDevicePrev) {
+    if(yawRankTime && yawRankTime !== yawRankTimePrev) {
       // 初始化dataZoom位置
       this.paramsStart = 0;
       this.paramsEnd = 100;
@@ -86,6 +88,8 @@ export default class LooseBarChart extends Component {
       queryParamsFunc,
       getYawRend,
       getReleaseRend,
+      releaseType,
+      yawType,
     } = this.props;
     const actuatorInfoStr = searchUtil(search).getValue('actuator');
     const actuatorInfo = actuatorInfoStr ? JSON.parse(actuatorInfoStr) : {};
@@ -110,8 +114,8 @@ export default class LooseBarChart extends Component {
         deviceName,
       });
       myChart.setOption(this.drawChart(yawRankData, selectDevice));
-      getYawRend(paramsRank);
-      getReleaseRend(paramsRank);
+      getYawRend({...paramsRank, type: yawType});
+      getReleaseRend({...paramsRank, type: releaseType});
     }
     //判断再次点击
     if(selectDevice && selectDevice === rankDevice) {
@@ -144,7 +148,7 @@ export default class LooseBarChart extends Component {
       const colorIndex = modeArr.indexOf(deviceModeName);
       yawBarData.push({
         name: `${deviceModeName} ${deviceFullcode} ${deviceName}`,
-        value: yawDuration,
+        value: dataFormats(yawDuration / 3600, '--', 2),
         itemStyle: {
           color: new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
             {offset: 0, color: this.barColor[colorIndex][0]},

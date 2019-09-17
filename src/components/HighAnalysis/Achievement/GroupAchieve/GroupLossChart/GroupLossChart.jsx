@@ -81,7 +81,6 @@ export default class GroupLossChart extends Component {
       },
       grid: {
         top: '10%',
-        bottom: '10%',
       },
       xAxis: {
         type: 'category',
@@ -89,6 +88,18 @@ export default class GroupLossChart extends Component {
         data: ['应发小时', ...xAxisName, '实发小时'],
         axisLabel: {
           interval: 0,
+          formatter: (str = '') => { // 字段名称最少显示4个字
+            const strArr = str.split('');
+            const strLength = strArr.length;
+            if (strLength > 4 && strLength <= 8) {
+              strArr.splice(4, 0, '\n'); // 超过4个字折行
+            }
+            if (strLength > 8) { // 超过8个字则显示7个字，后跟…
+              strArr.splice(7);
+              strArr.push('...');
+            }
+            return strArr.join('');
+          },
         },
         axisTick: {
           alignWithLabel: true,
@@ -109,6 +120,7 @@ export default class GroupLossChart extends Component {
           type: 'bar',
           barWidth: 10,
           stack: '总量',
+          cursor: 'default',
           itemStyle: {
             normal: {
               barBorderColor: 'rgba(0,0,0,0)',
@@ -126,6 +138,7 @@ export default class GroupLossChart extends Component {
           type: 'bar',
           barWidth: 10,
           stack: '总量',
+          cursor: 'default',
           label: {
             normal: {
               show: true,
