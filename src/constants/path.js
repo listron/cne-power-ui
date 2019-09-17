@@ -292,7 +292,7 @@ export default {
       getPointList: '/v3/management/station/device/point/list', // 获取点表列表
       deletePointList: '/v3/management/station/device/modes', // 删除点表信息
       importPointsInfo: '/v3/management/station/device/points', //导入点表信息
-      downloadPointInfo: '/v3/management/station/device/points', // 导出测点表
+      downloadPointInfo: '/template/standard_point.xlsx', // 下载标准测点表
       addPoint: '/v3/management/station/device/point',
       deletePoints: '/v3/management/station/device/points',
       detailPoints: '/v3/management/station/device/points',
