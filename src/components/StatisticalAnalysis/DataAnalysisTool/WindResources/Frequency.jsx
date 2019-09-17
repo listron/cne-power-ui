@@ -59,13 +59,13 @@ class Frequency extends Component{
     });
   }
 
-  showImg = (index) => {
+  showImg = (index, data) => {
     const { deviceList } = this.props;
     this.setState({
       isShowModal: true,
       currentImgIndex: index,
     });
-    this.props.changeWindResourcesStore({ curBigChartData: [] });
+    this.props.changeWindResourcesStore({ curBigChartData: [], curLikeStatusData: data });
     const deviceFullCode = deviceList[index].deviceFullCode;
     this.queryData(deviceFullCode);
   }

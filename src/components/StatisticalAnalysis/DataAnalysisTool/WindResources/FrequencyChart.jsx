@@ -202,7 +202,6 @@ class FrequencyChart extends Component{
   }
 
   renderChart = (frequencyData, saveBtn, isRequest) => {
-    console.log('isRequest: ', isRequest);
     const { theme, likeStatusChange, index, saveImgUrl, deviceName, getFrequency, deviceList } = this.props;
     const parms = {
       ...isRequest,

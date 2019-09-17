@@ -28,6 +28,14 @@ class HandleSeach extends Component{
     };
   }
 
+  componentWillReceiveProps(nextProp) {
+    const { startTime, endTime } = nextProp;
+    this.setState({
+      saveStartTime: startTime,
+      saveEndTime: endTime,
+    });
+  }
+
   selectStationCode = (stationCodeArr) => {//电站选择
     const { stationCode } = stationCodeArr[0];
     this.props.getStationDevice({ stationCode });
@@ -59,7 +67,7 @@ class HandleSeach extends Component{
     }
 
   onSearch = () => {
-    const { deviceList, getFrequency, startTime, endTime, changeWindResourcesStore } = this.props;
+    const { deviceList, getFrequency, changeWindResourcesStore } = this.props;
     const { saveStartTime, saveEndTime } = this.state;
     const fristDevice = deviceList[0];
     const deviceFullCode = fristDevice.deviceFullCode;
@@ -69,8 +77,8 @@ class HandleSeach extends Component{
     });
 
     getFrequency({
-      startTime,
-      endTime,
+      startTime: saveStartTime,
+      endTime: saveEndTime,
       deviceFullCode,
     });
   }

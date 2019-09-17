@@ -59,7 +59,7 @@ function* getFrequency(action){ // 获取风能频率图
     const response = yield call(request.post, url, {...payload,
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).endOf('d').utc().format()});
-      
+
     if (response.code === '10000') {
       yield put({
         type: windResourcesAction.changeWindResourcesStore,
@@ -88,12 +88,6 @@ function* getFrequency(action){ // 获取风能频率图
     }
   }catch (e) {
     console.log(e);
-    // yield put({
-    //   type: windResourcesAction.changeWindResourcesStore,
-    //   payload: {
-    //     frequencyData: [],
-    //   },
-    // });
   }
 }
 

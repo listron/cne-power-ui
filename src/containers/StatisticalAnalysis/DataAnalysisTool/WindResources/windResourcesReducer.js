@@ -13,6 +13,7 @@ var initState = Immutable.fromJS({
   activeCode: '',
   stationCode: '',
   showPage: 'allStation', // allStation显示全部电站，singleStation,显示单电站
+  sequenceData: [],
 });
 const windResourcesReducer = (state = initState, action) => {
   switch (action.type) {
