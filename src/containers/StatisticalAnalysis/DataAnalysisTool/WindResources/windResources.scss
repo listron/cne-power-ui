@@ -1,0 +1,17 @@
+@import '../../../../theme/theme.scss';
+
+.windResources {
+  min-height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .resourcesMain {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    width: 100%;
+    padding: 24px 24px 0;
+    background: #ececec;
+  }
+}

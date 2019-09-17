@@ -546,7 +546,8 @@ export default {
       getScatterData: '/v3/wind/analysis/scatterplot/list', //散点图列表
       getStationDevice: '/v3/wind/analysis/windturbinelist', //电站风机列表
       getSequenceData: '/v3/wind/analysis/sequencechart', //时序图数据
-      getxyLimitValue: '/v3/wind/analysis/points/max', //获取xy轴最大值最小值
+      getxyLimitValue: '/v3/wind/analysis/points/max',//获取xy轴最大值最小值
+      getFrequency: '/v3/wind/analysis/frequency', // 获取风能频率图
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表
