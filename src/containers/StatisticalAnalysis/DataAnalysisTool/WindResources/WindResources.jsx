@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { windResourcesAction } from './windResourcesAction.js';
-// import Frequency from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/Frequency.jsx';
-import ResourcesTabs from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/ResourcesTabs.jsx';
 import HandleSeach from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/HandleSeach.jsx';
+import ResourcesTabs from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/ResourcesTabs.jsx';
 import Footer from '../../../../components/Common/Footer';
 import styles from './windResources.scss';
 
@@ -27,7 +26,6 @@ class WindResources extends Component{
         <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} theme={theme} />
         <div className={styles.resourcesMain}>
           <HandleSeach {...this.props} />
-          {/* <Frequency {...this.props} /> */}
           <ResourcesTabs {...this.props} />
         </div>
         <Footer theme={theme} />

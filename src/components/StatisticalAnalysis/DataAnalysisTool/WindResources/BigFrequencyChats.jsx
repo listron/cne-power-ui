@@ -37,7 +37,6 @@ class BigFrequencyChats extends Component{
     this.renderChart(curBigChartData, saveBtn, deviceName);
   }
 
-  
   componentWillReceiveProps(nextProps){
     const { curBigChartData, theme, index, deviceList } = nextProps;
     const { bigChart } = this;
@@ -201,6 +200,7 @@ class BigFrequencyChats extends Component{
   }
 
   renderChart(curBigChartData, saveBtn, deviceName) {
+    console.log('curBigChartData: ', curBigChartData);
     const { likeStatusChange, index } = this.props;
     const { bigChart } = this;
     const myChart = eCharts.init(bigChart, themeConfig[this.props.theme]);
