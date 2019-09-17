@@ -67,7 +67,7 @@ class CommonSearch extends PureComponent{
           <Select
             allowClear={false}
             onChange={this.checkDeviceType}
-            value={deviceTypeCode}
+            value={deviceTypes.length > 0 && deviceTypeCode ? deviceTypeCode : null}
             style={{width: '200px'}}
           >
             {deviceTypes.map(e => (

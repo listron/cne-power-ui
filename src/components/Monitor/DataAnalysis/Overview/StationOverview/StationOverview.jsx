@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from './station.scss';
 import StationList from './StationList';
+import StationDates from './StationDates';
 import CommonSearch from '../CommonSearch';
 import searchUtil from '@utils/searchUtil';
 
@@ -53,7 +54,7 @@ class StationOverview extends PureComponent{
         station: JSON.stringify(queryParam),
       }).stringify();
       history.push(`${pathname}?${newSearch}`); // 替换station信息
-      this.props.changeOverviewStore({ queryParam }); // 并将请求数据存入reducer
+      this.props.changeOverviewStore({ stationParam: queryParam }); // 并将请求数据存入reducer
       this.props.getOverviewDates(queryParam);
     }
   }
@@ -113,20 +114,23 @@ class StationOverview extends PureComponent{
   // }
 
   render(){
-    const { stationParam, stationTopData, stations } = this.props;
+    const { stationParam, stationTopData, stations, stationDatesRate } = this.props;
     const { stationCode, deviceTypeCode, month } = stationParam;
     return(
       <div className={styles.station}>
         { !stationCode && !deviceTypeCode && <StationList {...this.props} />}
         {
-          stationCode && <CommonSearch
-            stations={stations}
-            stationCode={stationCode}
-            topData={stationTopData}
-            deviceTypeCode={deviceTypeCode}
-            onStationChange={this.stationChanged}
-            onTypeChange={this.deviceTypeChanged}
-          />
+          stationCode && <div>
+            <CommonSearch
+              stations={stations}
+              stationCode={stationCode}
+              topData={stationTopData}
+              deviceTypeCode={deviceTypeCode}
+              onStationChange={this.stationChanged}
+              onTypeChange={this.deviceTypeChanged}
+            />
+            <StationDates month={month} stationDatesRate={stationDatesRate} />
+          </div>
         }
       </div>
     );
