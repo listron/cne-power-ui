@@ -202,10 +202,10 @@ class FrequencyChart extends Component{
   }
 
   renderChart = (frequencyData, saveBtn, isRequest) => {
+    console.log('isRequest: ', isRequest);
     const { theme, likeStatusChange, index, saveImgUrl, deviceName, getFrequency, deviceList } = this.props;
     const parms = {
       ...isRequest,
-      interval: 60,
     };
     const myChart = echarts.init(this.frequencyChart, themeConfig[theme]); //构建下一个实例
     myChart.clear();

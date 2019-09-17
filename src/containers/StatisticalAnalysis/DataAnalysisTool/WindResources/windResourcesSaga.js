@@ -59,12 +59,12 @@ function* getFrequency(action){ // 获取风能频率图
     const response = yield call(request.post, url, {...payload,
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).endOf('d').utc().format()});
+      
     if (response.code === '10000') {
       yield put({
         type: windResourcesAction.changeWindResourcesStore,
         payload: {
           frequencyData: response.data || [],
-          chartTime: moment().unix(),
           activeCode: deviceFullCode,
         },
       });
@@ -81,7 +81,6 @@ function* getFrequency(action){ // 获取风能频率图
           chartLoading: false,
           activeCode: deviceFullCode,
           frequencyData: [],
-
         },
       });
       message.error('请求失败');
@@ -117,7 +116,6 @@ function* getBigFrequency(action) {// 获取放大后的图
     });
     if (response.code === '10000') {
       const curChartData = response.data || [];
-      console.log('curChartData: ', curChartData);
       yield put({
         type: windResourcesAction.changeWindResourcesStore,
         payload: {

@@ -82,11 +82,10 @@ class Frequency extends Component{
   queryData = (value) => {
     const { getBigFrequency, startTime, endTime } = this.props;
     getBigFrequency({
-      deviceFullCode: value,
       startTime,
       endTime,
+      deviceFullCode: value,
     });
-
   }
 
   render(){

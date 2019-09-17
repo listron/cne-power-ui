@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { windResourcesAction } from './windResourcesAction.js';
+import AllStations from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/AllStations.jsx';
 import HandleSeach from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/HandleSeach.jsx';
 import ResourcesTabs from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/ResourcesTabs.jsx';
 import Footer from '../../../../components/Common/Footer';
@@ -12,6 +13,7 @@ class WindResources extends Component{
   static propTypes = {
     theme: PropTypes.string,
     resetStore: PropTypes.func,
+    showPage: PropTypes.string,
   }
 
   componentWillUnmount() {
@@ -20,13 +22,16 @@ class WindResources extends Component{
 
   render(){
     const breadCrumbData = { breadData: [{ name: '风资源' }] };
-    const { theme } = this.props;
+    const { theme, showPage } = this.props;
     return(
       <div className={styles.windResources}>
         <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} theme={theme} />
         <div className={styles.resourcesMain}>
-          <HandleSeach {...this.props} />
-          <ResourcesTabs {...this.props} />
+          {showPage === 'allStation' && <AllStations {...this.props} />}
+          {showPage === 'singleStation' && [
+            <HandleSeach key="HandleSearch" {...this.props} />,
+            <ResourcesTabs key="ResourcesTabs" {...this.props} />,
+            ]}
         </div>
         <Footer theme={theme} />
       </div>

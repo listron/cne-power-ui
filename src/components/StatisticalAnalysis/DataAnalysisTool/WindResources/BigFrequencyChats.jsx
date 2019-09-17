@@ -72,7 +72,6 @@ class BigFrequencyChats extends Component{
       windSpeedStartData.push(e.windSpeedStart);
       windSpeedEndData.push(e.windSpeedEnd);
     });
-    console.log(curBigChartData);
 
     const option = {
       color: ['#00cdff', '#ff9000'],
@@ -200,7 +199,6 @@ class BigFrequencyChats extends Component{
   }
 
   renderChart(curBigChartData, saveBtn, deviceName) {
-    console.log('curBigChartData: ', curBigChartData);
     const { likeStatusChange, index } = this.props;
     const { bigChart } = this;
     const myChart = eCharts.init(bigChart, themeConfig[this.props.theme]);
