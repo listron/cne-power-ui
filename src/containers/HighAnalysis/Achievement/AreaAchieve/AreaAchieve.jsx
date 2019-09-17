@@ -8,7 +8,7 @@ import StationPBAChart from '../../../../components/HighAnalysis/Achievement/Are
 import AreaTrendChart from '../../../../components/HighAnalysis/Achievement/AreaAchieve/AreaTrendChart/AreaTrendChart';
 import AreaLossChart from '../../../../components/HighAnalysis/Achievement/AreaAchieve/AreaLossChart/AreaLossChart';
 import searchUtil from '../../../../utils/searchUtil';
-import { dataFormat } from '../../../../utils/utilFunc';
+import { dataFormats } from '../../../../utils/utilFunc';
 
 import styles from './areaAchieve.scss';
 
@@ -92,6 +92,16 @@ class AreaAchieve extends Component {
         this.queryParamsFunc(groupInfo);
       }
     }
+  }
+
+  componentWillUnmount() {
+    const {changeStore} = this.props;
+    changeStore({
+      dataIndex: '', // 选中信息
+      selectStationCode: [], // 选中电站信息
+      selectTime: '', // 选中时间
+      dataName: '', // 保存选择区域名称
+    });
   }
 
   queryParamsFunc = (groupInfo) => {
@@ -178,9 +188,9 @@ class AreaAchieve extends Component {
       });
       // 等于PBA => 能量可利用率
       if(quotaValue === '100') {
-        return <span>{rankTotal.length > 0 && `${rankTotal[0].regionName || '--'}: ${qutaName.toString() || ''} ${dataFormat(unitName === '%' ? rankTotal[0].indicatorData.value * 100 : rankTotal[0].indicatorData.value, '--', pointLength)}${unitName || '--'}`}</span>;
+        return <span>{rankTotal.length > 0 && `${rankTotal[0].regionName || '--'}: ${qutaName.toString() || ''} ${dataFormats(unitName === '%' ? rankTotal[0].indicatorData.value * 100 : rankTotal[0].indicatorData.value, '--', pointLength, true)}${unitName || '--'}`}</span>;
       }
-      return <span>{`${rankTotal[0].regionName || '--'}: 实发小时数${dataFormat(unitName === '%' ? rankTotal[0].indicatorData.actualGen : rankTotal[0].indicatorData.actualGen, '--', pointLength)}${unitName || '--'} 应发小时数${dataFormat(unitName === '%' ? rankTotal[0].indicatorData.theoryGen * 100 : rankTotal[0].indicatorData.theoryGen, '--', pointLength)}${unitName || '--'}`}</span>;
+      return <span>{`${rankTotal[0].regionName || '--'}: 实发小时数${dataFormats(unitName === '%' ? rankTotal[0].indicatorData.actualGen : rankTotal[0].indicatorData.actualGen, '--', pointLength, true)}${unitName || '--'} 应发小时数${dataFormats(unitName === '%' ? rankTotal[0].indicatorData.theoryGen * 100 : rankTotal[0].indicatorData.theoryGen, '--', pointLength, true)}${unitName || '--'}`}</span>;
     }
     return <span>--:--</span>;
   };

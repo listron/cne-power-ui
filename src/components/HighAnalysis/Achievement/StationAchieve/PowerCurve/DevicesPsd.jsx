@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
-import { Select } from 'antd';
+import { Select, Tooltip } from 'antd';
 import { getCurveBaseOption } from './curveBaseOption';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './curve.scss';
@@ -195,7 +195,12 @@ class DevicesPsd extends Component {
     return (
       <section className={styles.aep}>
         <h3 className={styles.aepTop}>
-          <span className={styles.aepText}>功率曲线聚合度PSD</span>
+          <span>
+            <span className={styles.aepText}>功率曲线聚合度PSD</span>
+            <Tooltip title="PSD指功率散点离合度" placement="top">
+              <span className={styles.curveTip}>i</span>
+            </Tooltip>
+          </span>
           <span>
             <span className={styles.sorterText}>选择排序</span>
             <Select

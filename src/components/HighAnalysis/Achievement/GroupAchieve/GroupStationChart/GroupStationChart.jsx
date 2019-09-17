@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
+import {message} from 'antd';
 import searchUtil from '../../../../../utils/searchUtil';
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { dataFormats } from '../../../../../utils/utilFunc';
 
 import styles from './groupStationChart.scss';
-import {message} from "antd";
 
 export default class GroupStationChart extends Component {
 
@@ -115,7 +115,7 @@ export default class GroupStationChart extends Component {
   drawChart = (data, dataIndex) => {
     const { titleFunc, areaColorData, unitName, pointLength } = this.props;
     const twoBar = [{ // 实发
-      data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.actualGen * 100 : cur.indicatorData.actualGen, '--', 2))),
+      data: data && data.map(cur => (unitName === '%' ? (cur.indicatorData.actualGen === null ? null :cur.indicatorData.actualGen * 100) : cur.indicatorData.actualGen)),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -130,7 +130,7 @@ export default class GroupStationChart extends Component {
         },
       },
     }, {// 应发
-      data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.theoryGen * 100 : cur.indicatorData.theoryGen, '--', 2))),
+      data: data && data.map(cur => (unitName === '%' ? (cur.indicatorData.theoryGen === null ? null : cur.indicatorData.theoryGen * 100) : cur.indicatorData.theoryGen)),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -144,7 +144,7 @@ export default class GroupStationChart extends Component {
       },
     }];
     const oneBar = [{
-      data: data && data.map(cur => (dataFormat(unitName === '%' ? cur.indicatorData.value * 100 : cur.indicatorData.value, '--', 2))),
+      data: data && data.map(cur => (unitName === '%' ? (cur.indicatorData.value === null ? null : cur.indicatorData.value * 100) : cur.indicatorData.value)),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -170,11 +170,11 @@ export default class GroupStationChart extends Component {
         formatter: (params) => {
           if(titleFunc === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormats(params[0].value, '--', pointLength, true)}</span><br /><span>应发小时数：</span><span>${dataFormats(params[1].value, '--', pointLength, true)}</span>
           </div>`;
           }
           return `<div>
-            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span>
+            <span>${titleFunc || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormats(params[0].value, '--', pointLength, true)}</span>
           </div>`;
         },
       },

@@ -34,13 +34,14 @@ class RangeDateFilter extends Component {
     const { option = {} } = this.props;
     const { checkedValue = [] } = option;
     const [startTime, endTime] = checkedValue;
-    console.log('option', option);
     return (
       <div className={styles.filterItem}>
+        <span ref="datePicker" />
         <span onClick={this.onReset} className={checkedValue.length === 0 ? styles.selected : styles.all}>不限</span>
         <RangePicker
           value={[startTime ? moment(startTime) : null, endTime ? moment(endTime) : null]}
           onChange={this.onChange}
+          getCalendarContainer={() => this.refs.datePicker}
         />
       </div>
     );

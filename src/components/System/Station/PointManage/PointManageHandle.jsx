@@ -55,7 +55,7 @@ class PointManageHandle extends Component {
       stationCodes: selectedStation.stationCode,
     });
     changePointManageStore({
-      deviceModels: []
+      deviceModels: [],
     });
   }
 
@@ -72,10 +72,14 @@ class PointManageHandle extends Component {
     });
   }
   confirmWarningTip = () => {
+    const { selectedRowData } = this.props;
     this.setState({
       showWarningTip: false,
     });
-    this.deletePointList();
+    // this.deletePointList();
+    this.props.deletePoints({
+      devicePointIds: selectedRowData.map(e => (e.devicePointId)),
+    });
   }
 
   toExport = () => {
@@ -92,21 +96,37 @@ class PointManageHandle extends Component {
     const { deletePointList, stationCode } = this.props;
     deletePointList({ stationCode });
   }
+  showAddPage = () => {
+    this.props.changePointManageStore({
+      showPage: 'add',
+    });
+  }
+  deletePoints = () => {
+    this.setState({
+      showWarningTip: true,
+    });
+  }
 
   render() {
-    const { pageSize, pageNum, totalNum, pointList, allStationBaseInfo, stationPointStatusList, stationCode, exportLoading } = this.props;
-    const { showWarningTip, warningTipText, } = this.state;
+    const { pageSize, pageNum, totalNum, pointList, allStationBaseInfo, stationPointStatusList, stationCode, exportLoading, selectedRowKeys } = this.props;
+    const { showWarningTip, warningTipText } = this.state;
     const selectedStationInfo = stationPointStatusList.find(e => e.stationCode === stationCode);
     const pointForbidClear = !selectedStationInfo || selectedStationInfo.alarmStatus === 1; // 未找到电站或电站已导入告警，不可清除
     // const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`;
+    const downloadTemplet = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}`;
     return (
       <div className={styles.pointManageHandle}>
         <div className={styles.leftHandler}>
           {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+          <Button onClick={this.showAddPage} className={styles.addButton}>
+            <span className={styles.plus}>+</span>
+            <span className={styles.name}>{'测点'}</span>
+          </Button>
           <SingleStationImportFileModel
+            showPlusBtn={false}
             data={allStationBaseInfo}
             uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importPointsInfo}`}
-            uploaderName={'测点'}
+            uploaderName={'测点表'}
             uploadExtraData={['stationCode']}
             loadedCallback={this.getUpdatePointList}
           />
@@ -117,7 +137,15 @@ class PointManageHandle extends Component {
             onClick={this.toExport}
           >导出测点表</Button>
           {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
-          <Button disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePoint} className={styles.clearPoint}>清除测点</Button>
+          {/* <Button disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePoint} className={styles.clearPoint}>清除测点</Button> */}
+          <Button disabled={pointList.length === 0 || selectedRowKeys.length === 0} onClick={this.deletePoints}> 删除 </Button>
+          <Button
+            className={styles.downloadStyle}
+            href={downloadTemplet}
+            download={downloadTemplet}
+            target="_blank"
+          >下载标准点表
+          </Button>
         </div>
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
       </div>

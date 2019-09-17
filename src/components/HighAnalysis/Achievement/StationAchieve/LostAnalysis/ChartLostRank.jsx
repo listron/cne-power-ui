@@ -220,7 +220,8 @@ class ChartLostRank extends Component {
       lostStringify && ({ quota } = JSON.parse(lostStringify));
     } catch (error) { console.log(error); }
     const selectedQuota = this.getQuota(quotaInfo, quota);
-    const { label = '--', unit, pointLength } = selectedQuota;
+    // const { label = '--', unit, pointLength } = selectedQuota; // 原下方使用的数据格式化pointLength被改为统一2位小数。
+    const { label = '--', unit } = selectedQuota;
     const { dataAxis, series } = this.createSeries(sortedLostRank, lostChartDevice, unit);
     const baseOption = getBaseOption(dataAxis);
     baseOption.yAxis.name = `${label}${unit ? `(${unit})` : ''}`;
@@ -244,7 +245,7 @@ class ChartLostRank extends Component {
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
                   <span>${i === 1 ? '应发小时数' : `${label === '利用小时数' ? '实发小时数' : label}`}</span>
-                  <span>${dataFormats(e.value, '--', pointLength, true)}</span>
+                  <span>${dataFormats(e.value, '--', 2, true)}</span>
                 </span>`
               )).join('')}
             </div>

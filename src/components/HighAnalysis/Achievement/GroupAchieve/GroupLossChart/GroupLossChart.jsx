@@ -4,11 +4,20 @@ import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import searchUtil from '../../../../../utils/searchUtil';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
-import {dataFormat} from '../../../../../utils/utilFunc';
+import {dataFormats} from '../../../../../utils/utilFunc';
 
 import styles from './groupLossChart.scss';
 
 const barColor = [
+  ['#72c8ea', '#3e97d1'],
+  ['#36c6ad', '#199475'],
+  ['#ffb8c4', '#ff8291'],
+  ['#df7789', '#bc4251'],
+  ['#f2b75f', '#e08031'],
+  ['#ffeecc', '#ffd99d'],
+  ['#4c9de8', '#2564cc'],
+  ['#058447', '#024d22'],
+  ['#e024f2', '#bd10e0'],
   ['#72c8ea', '#3e97d1'],
   ['#36c6ad', '#199475'],
   ['#ffb8c4', '#ff8291'],
@@ -57,7 +66,7 @@ export default class GroupLossChart extends Component {
     const { actualGen, theoryGen, detailList } = groupLostGenHourInfo;
     const xAxisName = detailList && detailList.map(cur => (cur.name)) || [];
     const xAxisBaseValue = detailList && detailList.map(cur => (cur.baseValue)) || [];
-    const xAxisValue = detailList && detailList.map(cur => (dataFormat(cur.value, '--', pointLength))) || [];
+    const xAxisValue = detailList && detailList.map(cur => (dataFormats(cur.value, '--', pointLength, true))) || [];
     return {
       graphic: !actualGen && !theoryGen && (!detailList || detailList.length === 0) ? showNoData : hiddenNoData,
       tooltip: {
@@ -67,7 +76,7 @@ export default class GroupLossChart extends Component {
         },
         formatter: function (params) {
           var tar = params[1];
-          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormat(tar.value, '--', pointLength);
+          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormats(tar.value, '--', pointLength, true);
         },
       },
       grid: {
@@ -88,7 +97,7 @@ export default class GroupLossChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: '利用小时数（h）',
+          name: '小时数（h）',
           splitLine: {
             show: false,
           },
@@ -113,7 +122,7 @@ export default class GroupLossChart extends Component {
           data: [0, ...xAxisBaseValue, 0],
         },
         {
-          name: '利用小时数',
+          name: '小时数',
           type: 'bar',
           barWidth: 10,
           stack: '总量',
@@ -123,7 +132,7 @@ export default class GroupLossChart extends Component {
               position: 'top',
             },
           },
-          data: [dataFormat(theoryGen, '--', pointLength), ...xAxisValue, dataFormat(actualGen, '--', pointLength)].map((cur, i) => ({
+          data: [theoryGen, ...xAxisValue, actualGen].map((cur, i) => ({
             value: cur,
             itemStyle: {
               color: new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
@@ -154,6 +163,8 @@ export default class GroupLossChart extends Component {
         pages = `${pagesStr}_area`;
       }
     }
+    console.log(pagesStr, 'pagesStr');
+    console.log(pages, 'pages');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     const resultStation = [];
     groupInfo.stations && groupInfo.stations.forEach(e => {

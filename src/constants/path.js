@@ -290,9 +290,13 @@ export default {
       getStationDeviceType: '/v3/management/queryDevicesTypeByStation', //查询电站下的设备类型
 
       getPointList: '/v3/management/station/device/point/list', // 获取点表列表
-      deletePoints: '/v3/management/station/device/modes', // 删除点表信息
+      deletePointList: '/v3/management/station/device/modes', // 删除点表信息
       importPointsInfo: '/v3/management/station/device/points', //导入点表信息
       downloadPointInfo: '/v3/management/station/device/points', // 导出测点表
+      addPoint: '/v3/management/station/device/point',
+      deletePoints: '/v3/management/station/device/points',
+      detailPoints: '/v3/management/station/device/points',
+      editPoints: '/v3/management/station/device/points',
 
       importAlarmInfo: '/v3/management/alarmevent/import', //导入告警信息
       getAlarmList: '/v3/management/alarmevent/list', //获取告警列表
@@ -633,6 +637,10 @@ export default {
       getSecondChart: '/v3/fan/efficiency/speedangle', //获取第二个散点图
       getThirdChart: '/v3/fan/efficiency/layration', //获取第三个散点图
       getFourthChart: '/v3/fan/efficiency/speedration', //获取第四个散点图
+      getYawRank: '/v3/wind/analysis/agencys/yawrank', //执行机构偏航时长及次数
+      getReleaseRank: '/v3/wind/analysis/agencys/releaserank', //执行机构解缆时长及次数
+      getYawRend: '/v3/wind/analysis/agencys/yawrend', //执行机构偏航时长及次数趋势
+      getReleaseRend: '/v3/wind/analysis/agencys/releaserend', //执行机构解缆时长及次数折趋势
 
       getCurveDevices: '/v3/fan/efficiency/neighbor/analysis', // 功率曲线邻比分析
       getCurveDevicesAep: '/v3/fan/efficiency/device/aepandspeed', // 各机组AEP以及平均风速

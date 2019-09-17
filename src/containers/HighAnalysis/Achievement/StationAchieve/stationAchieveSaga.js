@@ -196,16 +196,28 @@ function *getCurveDevices({ payload }) { // 获取各机组曲线
   try {
     yield call(easyPut, 'changeStore', { curveDevicesLoading: true });
     const response = yield call(request.post, url, payload);
+    const curveDevices = response.data || [];
+    const { actual = [], theory = [] } = curveDevices;
+    const curveCheckedDevice = [];
+    theory.sort((a, b) => a.modeName && a.modeName.localeCompare(b.modeName)).forEach(e => {
+      e.modeName && curveCheckedDevice.push(`${e.modeName}理论功率曲线`);
+    });
+    actual.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName)).forEach(e => {
+      e.deviceName && curveCheckedDevice.push(e.deviceName);
+    });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
-        curveDevices: response.data || [],
+        curveDevices,
+        curveAllDevice: [...curveCheckedDevice],
         curveDevicesLoading: false,
+        curveCheckedDevice,
       });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
       curveDevices: [],
       curveDevicesLoading: false,
+      curveCheckedDevice: [],
     });
   }
 }
@@ -255,13 +267,13 @@ function *getCurveMonths({ payload }){ // 某机组各月功率曲线
     const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
-        curveMonths: response.data || [],
+        curveMonths: response.data || {},
         curveMonthsLoading: false,
       });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
-      curveMonths: [],
+      curveMonths: {},
       curveMonthsLoading: false,
     });
   }
@@ -320,6 +332,7 @@ function *resetStop({ payload = {} }){ // 停机重置。
     stopTopStringify: '',
     stopElecType: 'all',
     stopType: '',
+    stopHandleInfo: [],
     stopChartDevice: null,
     stopChartTime: null,
     stopChartTimeMode: 'month',

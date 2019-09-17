@@ -79,11 +79,20 @@ class GroupAchieve extends Component {
     }
   }
 
+  componentWillUnmount() {
+    const { changeStore } = this.props;
+    changeStore({
+      dataIndex: '', // 保存点击的下标
+      selectStationCode: [], // 保存单选区域的信息
+      selectTime: '', // 保存选择时间
+      dataName: '', // 保存选择区域名称
+    });
+  }
+
   queryParamsFunc = (groupInfo) => {
     const { groupTimeStatus } = this.props;
     const basicParams = this.basicParams(groupInfo);
     const {
-      stations = [],
       modes = [],
       quota = [],
       modesInfo = [],
@@ -93,7 +102,6 @@ class GroupAchieve extends Component {
     const paramsCapacity = {
       ...basicParams,
       deviceModes: modes.map(cur => (cur.split('-')[1])),
-      regionName: stations.map(cur => {return cur.regionName;}),
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
@@ -104,7 +112,6 @@ class GroupAchieve extends Component {
     };
     const paramsTrend = {
       ...basicParams,
-      regionName: paramsCapacity.regionName,
       indicatorCode: quotaValue,
       type: groupTimeStatus, // 默认按月
     };
