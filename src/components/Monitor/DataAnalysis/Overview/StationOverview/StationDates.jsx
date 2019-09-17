@@ -37,13 +37,24 @@ class StationDates extends PureComponent{
     return datesInfo;
   }
 
+  monthCheck = (monthMoment, monthStr) => { // 切换日期
+    console.log(monthMoment, monthStr);
+  }
+
+  clickDate = (e) => {
+    console.log(e.target)
+    console.log(e.target.dataset)
+    console.log(e.currentTarget)
+    console.log(e.currentTarget.dataset)
+  }
+
   render(){
     const { month = [], stationDatesRate = [] } = this.props;
     console.log(stationDatesRate)
     return(
       <div className={styles.dates}>
         <div className={styles.datesTopInfo}>
-          <MonthPicker />
+          <MonthPicker value={month ? moment(month) : null} onChange={this.monthCheck} />
           <span className={styles.ranges}>
             <span className={styles.text}>设备数据完成率平均值</span>
             {this.rateLevel.map(e => (
@@ -57,7 +68,7 @@ class StationDates extends PureComponent{
               <span className={styles.weekdayText} key={e}>{e}</span>
             ))}
           </div>
-          <div className={styles.datesList}>
+          <div className={styles.datesList} onClick={this.clickDate}>
             {this.getMonthDatesInfo(month).map(e => {
               const validDate = stationDatesRate.find(rate => moment(rate.date).isSame(e, 'd'));
               const { date, completeRate, stationCode, deviceTypeCode } = validDate || {};
@@ -71,9 +82,10 @@ class StationDates extends PureComponent{
               const dayStyle = validDate ? {
                 backgroundColor,
                 color: '#000',
+                cursor: 'pointer',
               } : {};
               return (
-                <div className={styles.eachDay} style={{ ...dayStyle }} key={e}>
+                <div className={styles.eachDay} style={{ ...dayStyle }} key={e} data-value={validDate}>
                   <span className={styles.monthDay}>{moment(e).format('D')}</span>
                   {validDate && <span className={styles.rateData}>
                     {dataFormats(rateStr * 100, '--', 2, true)}%

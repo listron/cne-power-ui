@@ -78,11 +78,13 @@
         flex: 0 0 60px;
         line-height: 60px;
         font-size: 30px;
+        pointer-events: none;
       }
       .rateData{
         flex: 1;
         font-size: 20px;
         line-height: 35px;
+        pointer-events: none;
       }
     }
   }
