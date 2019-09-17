@@ -100,15 +100,17 @@ class ChartLostTypes extends Component {
     baseOption.yAxis.name = '等效小时数(h)';
     baseOption.yAxis.min = 0;
     baseOption.xAxis.axisLabel.interval = 0;
-    baseOption.xAxis.axisLabel.formatter = (str) => {
-      const labelStr = [];
-      let index = 0;
-      while(str[index]){
-        labelStr.push(str[index]);
-        index % 4 === 3 && str[index + 1] && labelStr.push('\n');
-        index++;
+    baseOption.xAxis.axisLabel.formatter = (str = '') => { // 字段名称最少显示4个字
+      const strArr = str.split('');
+      const strLength = strArr.length;
+      if (strLength > 4 && strLength <= 8) {
+        strArr.splice(4, 0, '\n'); // 超过4个字折行
       }
-      return labelStr.join('');
+      if (strLength > 8) { // 超过8个字则显示7个字，后跟…
+        strArr.splice(7);
+        strArr.push('...');
+      }
+      return strArr.join('');
     };
     const option = {
       ...baseOption,

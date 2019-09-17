@@ -99,7 +99,7 @@ class StopStatus extends Component {
     const { stations = [] } = areaStation[0] || {};
     const { stationCode } = stations[0] || {};
     this.props.changeStore({ stationCode });
-    this.props.getDevices({ stationCode });
+    this.props.getDevices({ stationCode, saveDevice: true }); // 请求电站下设备并将得到的设备做为默认选中项
   }
 
   propsModeDevicesChange = (preDevices, modeDevices, infoStr) => { // 设备信息获取
@@ -117,9 +117,6 @@ class StopStatus extends Component {
     }
     if (infoStr && preDevices.length === 0) { // 路径中有设备, 初次得到设备信息(F5刷新) => 设备信息存储modeDevices
       this.props.changeStore({ modeDevices });
-    }
-    if (infoStr && preDevices.length > 0 ) { // 路径中有设备, 用户切换电站 => 设备信息存储modeDevices, 所有设备选中deviceCodes
-      this.props.changeStore({ modeDevices, deviceCodes });
     }
   }
 
@@ -162,7 +159,7 @@ class StopStatus extends Component {
       stationCode,
       deviceCodes: [],
     });
-    this.props.getDevices({ stationCode });
+    this.props.getDevices({ stationCode, saveDevice: true }); // 请求电站下设备并将得到的设备做为默认选中项
   }
 
   onDeviceChange = (deviceCodes) => {
