@@ -132,7 +132,7 @@ export default class GroupLossChart extends Component {
               position: 'top',
             },
           },
-          data: [theoryGen, ...xAxisValue, actualGen].map((cur, i) => ({
+          data: [dataFormats(theoryGen, '--', pointLength, true), ...xAxisValue, dataFormats(actualGen, '--', pointLength, true)].map((cur, i) => ({
             value: cur,
             itemStyle: {
               color: new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
