@@ -113,13 +113,11 @@ class AddNextStep extends React.Component {
             <FormItem label="数据类型" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('devicePointDatatype', {
                 initialValue: this.dealPointDetail('devicePointDatatype'),
-                rules: [{ required: true }],
+                rules: [{ required: true, message: '请选择数据类型' }],
               })(
                 <Select>
-                  <Option value={'float'}>浮点型</Option>
-                  <Option value={'int'}>整型</Option>
-                  <Option value={'text'}>文本型</Option>
-                  <Option value={'bit'}>布尔型</Option>
+                  <Option value={'double'}>double</Option>
+                  <Option value={'text'}>text</Option>
                 </Select>
               )}
             </FormItem>
@@ -127,12 +125,16 @@ class AddNextStep extends React.Component {
             <FormItem label="测点类型" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('devicePointType', {
                 initialValue: this.dealPointDetail('devicePointType'),
-                rules: [{ required: true }],
+                rules: [{ required: true, message: '请选择测点类型' }],
               })(
                 <Select>
+                  <Option value={'Detail'}>Detail</Option>
+                  <Option value={'Event'}>Event</Option>
                   <Option value={'YC'}>YC</Option>
+                  <Option value={'YCS'}>YCS</Option>
                   <Option value={'YM'}>YM</Option>
                   <Option value={'YX'}>YX</Option>
+                  <Option value={'YXS'}>YXS</Option>
                 </Select>
               )}
             </FormItem>

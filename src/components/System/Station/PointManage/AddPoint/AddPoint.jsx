@@ -55,6 +55,9 @@ class AddPoint extends React.Component {
     const addStationCode = stations[0] ? stations[0].stationCode : null;
     this.setState({
       addStationCode,
+      addDeviceTypeCode: null,
+      manufactorId: null,
+      deviceModeCode: null,
     });
     getStationDeviceTypes({
       stationCodes: addStationCode,
@@ -66,6 +69,8 @@ class AddPoint extends React.Component {
     const { addStationCode } = this.state;
     this.setState({
       addDeviceTypeCode: value,
+      manufactorId: null,
+      deviceModeCode: null,
     });
     getfactorsDeviceMode({
       stationCode: addStationCode,
@@ -80,6 +85,7 @@ class AddPoint extends React.Component {
     const { addStationCode, addDeviceTypeCode } = this.state;
     this.setState({
       manufactorId: value,
+      deviceModeCode: null,
     });
     getfactorsDeviceMode({
       stationCode: addStationCode,
