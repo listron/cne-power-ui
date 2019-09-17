@@ -175,6 +175,15 @@ export default class LooseBarChart extends Component {
       },
     };
     this.setState({ modeArr });
+    function contains(arrays, obj) {
+      let i = arrays.length;
+      while (i--) {
+        if (arrays[i] === obj) {
+          return i;
+        }
+      }
+      return false;
+    }
     return {
       tooltip: {
         trigger: 'axis',
@@ -183,25 +192,34 @@ export default class LooseBarChart extends Component {
         },
         padding: 0,
         formatter: (params) => {
-          console.log(params, 'params');
           const { name, axisValue } = params && params[0] || {};
+          // 查找下标
+          const indexNum = contains(modeArr, name.split(' ')[0]);
           return `<section class=${styles.tooltip}>
             <h3 class=${styles.title}>
               <span>${axisValue}</span>
               <span class=${styles.modeName}>${name.split(' ')[0]}</span>
             </h3>
             <div class=${styles.info}>
-              ${params.map((e, i) => (
-            `<span class=${styles.eachItem}>
+              ${params.map((e, i) => {
+                const firColor = this.barColor[indexNum][0];
+                const secColor = this.barColor[indexNum][1];
+            return `<span class=${styles.eachItem}>
+                  <span
+                    style="background-image: linear-gradient(-180deg, ${firColor} 0%, ${secColor} 100%)"
+                    class=${i === 0 ? styles.rectMode : styles.lineMode}
+                  ></span>
                   <span>${i === 0 ? '偏航时长：' : '偏航次数：'}</span>
                   <span>${dataFormats(e.value, '--', 2, true)}</span>
-                </span>`
-          )).join('')}
+                </span>`;
+          }).join('')}
             </div>
           </section>`;
         },
       },
       grid: {
+        left: '40px',
+        right: '40px',
         containLabel: true,
       },
       xAxis: [
