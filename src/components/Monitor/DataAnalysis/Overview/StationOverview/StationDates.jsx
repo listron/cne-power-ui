@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { DatePicker } from 'antd';
+import { dataFormats } from '@utils/utilFunc';
 import styles from './station.scss';
 const { MonthPicker } = DatePicker;
 
@@ -13,45 +14,74 @@ class StationDates extends PureComponent{
     changeOverviewStore: PropTypes.func,
   }
 
+  rateLevel = [
+    { text: '0% ~ 20%', color: '#3b85d5' },
+    { text: '20% ~ 40%', color: '#599fe7' },
+    { text: '40% ~ 60%', color: '#8fc6f6' },
+    { text: '60% ~ 80%', color: '#abd8fc' },
+    { text: '80% ~ 100%', color: '#e2f2fb' },
+  ]
+
   getMonthDatesInfo = (month) => {
-    console.log(moment('moment').isValid())
-    console.log(moment('2018-18-11').isValid())
-    console.log(moment('2018-10-11').isValid())
     if (!month || !moment(month).isValid()) {
       return [];
     }
     const datesInfo = [];
     const [monthStart, monthEnd] = [moment(month).startOf('M'), moment(month).endOf('M')];
-    console.log([monthStart.format('YYYY-MM-DD'), monthEnd.format('YYYY-MM-DD')])
-    let startDate = monthStart.day() === 1 ? monthStart : monthStart.day(1 - 7); // 月初非周一 => 找到上一个周一为开始
+    const startDate = monthStart.day() === 1 ? monthStart : monthStart.day(1 - 7); // 月初非周一 => 找到上一个周一为开始
     const endDate = monthEnd.day() === 0 ? monthEnd : monthEnd.day(0 + 7); // 月末非周日 => 找到下一个周日为结束
-    // let index = 0;
-    while(startDate.isBefore(endDate, 'd')){
+    while(!startDate.isAfter(endDate, 'd')){
       datesInfo.push(startDate.format('YYYY-MM-DD'));
       startDate.add(1, 'd');
     }
-    console.log(datesInfo);
     return datesInfo;
   }
 
   render(){
     const { month = [], stationDatesRate = [] } = this.props;
-    this.getMonthDatesInfo(month)
+    console.log(stationDatesRate)
     return(
       <div className={styles.dates}>
-        <div>
+        <div className={styles.datesTopInfo}>
           <MonthPicker />
-          <span>
-            <span>设备数据完成率平均值</span>
-            <span>0% ~ 20%</span>
-            <span>20% ~ 40%</span>
-            <span>40% ~ 60%</span>
-            <span>60% ~ 80%</span>
-            <span>80% ~ 100%</span>
+          <span className={styles.ranges}>
+            <span className={styles.text}>设备数据完成率平均值</span>
+            {this.rateLevel.map(e => (
+              <span key={e.text} className={styles.levels} style={{ backgroundColor: e.color }}>{e.text}</span>
+            ))}
           </span>
         </div>
-        <div>
-          各个日期啊
+        <div className={styles.calendar}>
+          <div className={styles.weekdays}>
+            {['一', '二', '三', '四', '五', '六', '日'].map(e => (
+              <span className={styles.weekdayText} key={e}>{e}</span>
+            ))}
+          </div>
+          <div className={styles.datesList}>
+            {this.getMonthDatesInfo(month).map(e => {
+              const validDate = stationDatesRate.find(rate => moment(rate.date).isSame(e, 'd'));
+              const { date, completeRate, stationCode, deviceTypeCode } = validDate || {};
+              const rateStr = dataFormats(date, '--', 2, true);
+              let backgroundColor = '#f8f8f8';
+              rateStr < 0.2 && rateStr >= 0 && (backgroundColor = '#3b85d5');
+              rateStr < 0.4 && rateStr >= 0.2 && (backgroundColor = '#599fe7');
+              rateStr < 0.6 && rateStr >= 0.4 && (backgroundColor = '#8fc6f6');
+              rateStr < 0.8 && rateStr >= 0.6 && (backgroundColor = '#abd8fc');
+              rateStr >= 0.8 && (backgroundColor = '#e2f2fb');
+              const dayStyle = validDate ? {
+                backgroundColor,
+                color: '#000',
+              } : {};
+              return (
+                <div className={styles.eachDay} style={{ ...dayStyle }} key={e}>
+                  <span className={styles.monthDay}>{moment(e).format('D')}</span>
+                  {validDate && <span className={styles.rateData}>
+                    {dataFormats(rateStr * 100, '--', 2, true)}%
+                  </span>}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     );

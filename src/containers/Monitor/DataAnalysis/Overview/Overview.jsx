@@ -59,7 +59,6 @@ class Overview extends Component{
           <HearderTab {...this.props} />
           <div className={styles.dataOverview}>
             <StationOverview {...this.props} />
-            数据概览页面
             {/* <ScatterDiagramSearch {...this.props} /> */}
             {/* <ScatterDiagramDataType {...this.props} /> */}
             {/* <div className={styles.dataCenter}>
