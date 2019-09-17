@@ -108,7 +108,6 @@ class AreaAchieve extends Component {
     const { timeStatus } = this.props;
     const basicParams = this.basicParams(groupInfo);
     const {
-      modes = [],
       quota = [],
       modesInfo = [],
     } = groupInfo;
@@ -116,7 +115,6 @@ class AreaAchieve extends Component {
     const quotaValue = quota[1] || quota[0];
     const paramsCapacity = {
       ...basicParams,
-      deviceModes: modes.map(cur => (cur.split('-')[1])),
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
@@ -124,7 +122,6 @@ class AreaAchieve extends Component {
     const paramsHour = {
       ...basicParams,
       manufactorIds: paramsCapacity.manufactorIds,
-      deviceModes: paramsCapacity.deviceModes,
     };
     const paramsTrend = {
       ...basicParams,
@@ -138,7 +135,6 @@ class AreaAchieve extends Component {
     };
     const paramsTotal = {
       ...basicParams,
-      deviceModes: paramsCapacity.deviceModes,
       regionName: paramsCapacity.regionName,
       indicatorCode: quotaValue,
       manufactorIds: paramsCapacity.manufactorIds,
@@ -156,6 +152,7 @@ class AreaAchieve extends Component {
       startTime: data.dates[0],
       endTime: data.dates[1],
       stationCodes: data.searchCode,
+      deviceModes: data.modes.map(cur => (cur.split('-')[1])),
     };
   };
 
