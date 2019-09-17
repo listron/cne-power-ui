@@ -64,6 +64,11 @@ const analysisTool = [
     ),
   },
   // {
+  //   path: '/statistical/analysisTool/resources',
+  //   component: lazy(() => import('../../containers/StatisticalAnalysis/DataAnalysisTool/WindResources/WindResources.jsx')
+  //   ),
+  // },
+  // {
   //   path: '/statistical/analysisTool/sequence',
   //   component: lazy(() => import('../../containers/StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/DataAnalysisScatter.jsx')
   //   ),
