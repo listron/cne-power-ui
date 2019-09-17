@@ -273,7 +273,7 @@ function* queryUseName(action) { // 获取填报人
   const { payload } = action;
   const url = `${APIBasePath}${operation.queryUseName}`;
   try {
-    const response = yield call(axios.put, url, payload);
+    const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield put({
         type: casePartAction.changeCasePartStore,

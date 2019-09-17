@@ -11,6 +11,8 @@ class CaseSearch extends React.Component {
     questionTypeList: PropTypes.array,
     userData: PropTypes.array,
     changeCasePartStore: PropTypes.func,
+    getQuestionList: PropTypes.func,
+    getDeviceMode: PropTypes.func,
     getCasePartList: PropTypes.func,
     queryUseName: PropTypes.func,
     faultDescription: PropTypes.string,
@@ -34,7 +36,7 @@ class CaseSearch extends React.Component {
     this.props.getQuestionList();
   }
   filterCondition = (data) => {
-    const { deviceModeList, questionTypeCodes, stationCodes } = data;
+    const { deviceModeList } = data;
     const deviceModeData = deviceModeList.map((e) => ({
       manufactorId: e.split('-')[0],
       deviceMode: e.split('-')[1],
@@ -64,13 +66,19 @@ class CaseSearch extends React.Component {
     this.props.changeCasePartStore({
       userId: value,
     });
+    this.getList({ userId: value });
   }
   onReset = () => {
-    this.props.changeCasePartStore({
+    const initValue = {
       faultDescription: '',
       userName: '',
       userId: null,
-    });
+    };
+    this.props.changeCasePartStore(initValue);
+    this.getList(initValue);
+  }
+  onSearch = () => {
+    this.getList();
   }
   getList = (value) => {
     const { getCasePartList, faultDescription, userName, userId, questionTypeCodes, deviceModeList, stationCodes } = this.props;
@@ -80,7 +88,6 @@ class CaseSearch extends React.Component {
       ...value,
     });
   }
-
 
   render() {
     const { stations, deviceModeData, questionTypeList, userData, faultDescription, userName, userId } = this.props;
@@ -126,12 +133,17 @@ class CaseSearch extends React.Component {
           <span className={styles.text}>填报人</span>
           <Select
             showSearch
+            allowClear
             placeholder="请输入..."
             className={styles.entryPerson}
             value={userId}
             showArrow={false}
+            optionFilterProp="children"
             onSearch={this.entryPerson}
             onChange={this.changePerson}
+            filterOption={(input, option) =>
+              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
           >
             {userData && userData.map(e => {
               return <Option key={e} value={e.userId}>{e.userName}</Option>;

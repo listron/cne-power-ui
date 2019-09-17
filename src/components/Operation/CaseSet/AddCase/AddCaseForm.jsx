@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../CasePartSide.scss';
-import { Button, Input, Form, Select } from 'antd';
+import { Button, Input, Form, Select, Upload, Icon } from 'antd';
 import TextArea from '../../../Common/InputLimit/index';
 import StationSelect from '../../../Common/StationSelect/index';
 import AutoSelect from '../../../Common/AutoSelect';
@@ -23,7 +23,8 @@ class AddCaseForm extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-
+      fileList: [],
+      file: File,
     };
   }
   addsubmitForm = (e) => {
@@ -69,6 +70,20 @@ class AddCaseForm extends React.Component {
     const data = (caseDetail[name] || caseDetail[name] === 0) ? caseDetail[name] : '';
     return data;
   }
+  beforeUploadStation = (file) => { // 上传前的校验
+    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
+    const validFile = validType.includes(file.type);
+    if (!validFile) {
+      message.config({ top: 200, duration: 2, maxCount: 3 });
+      message.error('只支持上传excel文件!', 2);
+    } else {
+      this.removeFile(file);
+      this.setState(state => ({
+        fileList: [...state.fileList, file],
+      }));
+    }
+    return false;
+  }
   onModelChange = (value) => {
     const deviceModeList = value.map(e => (e.value));
     this.setState({}, () => {
@@ -78,6 +93,7 @@ class AddCaseForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { showPage, stations, modesInfo, questionTypeList } = this.props;
+    const { fileList } = this.state;
     return (
 
       <div className={styles.fromContainer}>
@@ -184,8 +200,17 @@ class AddCaseForm extends React.Component {
           <FormItem label="上传附件" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('annexs', {
               initialValue: this.dealPointDetail('annexs'),
+              getValueFromEvent: this.normFile,
             })(
-              <Input placeholder="请输入" />
+              <Upload
+                onRemove={(file) => this.removeFile(file)}
+                beforeUpload={this.beforeUploadStation}
+                fileList={fileList}
+                showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
+              >
+                <Button className={styles.uploadBtn} >  <Icon type="upload" />选择文件上传</Button>
+                {/* <span> 支持xls、xlsx文件</span> */}
+              </Upload>
             )}
           </FormItem>
 

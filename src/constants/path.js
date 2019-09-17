@@ -239,6 +239,7 @@ export default {
       deleteCasePart: '/v3/casebase/batch/del',
       queryUseName: '/v3/casebase/likequery',
       importCase: '/v3/casebase/import',
+      downCaseTemplate: '/template/caseBase.xls',
 
 
     },

@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './CasePartContainer.scss';
+import path from '../../../constants/path';
 import { Button } from 'antd';
 import CommonPagination from '../../../components/Common/CommonPagination';
 import WarningTip from '../../../components/Common/WarningTip';
 import Cookie from 'js-cookie';
 import UploadModal from './UploadModal';
+const { APIBasePath } = path.basePaths;
+const { operation } = path.APISubPaths;
 
 class CaseHandle extends React.Component {
   static propTypes = {
@@ -32,10 +35,9 @@ class CaseHandle extends React.Component {
   }
   deleteCasePart = () => {
     const { selectedRowData, deleteCasePart } = this.props;
-    console.log('selectedRowData: ', selectedRowData);
-    const { caseBaseId } = selectedRowData[0];
+    const caseBaseIds = selectedRowData.map(e => (e.caseBaseId));
     deleteCasePart({
-      caseBaseIds: [caseBaseId],
+      caseBaseIds,
     });
   }
   cancelModal = () => {
@@ -47,7 +49,7 @@ class CaseHandle extends React.Component {
   render() {
     const { showWarningTip, warningTipText, showUpload } = this.state;
     const { casePartTableData, selectedRowKeys, pageSize, pageNum, total } = this.props;
-    const downloadTemplet = '';//当前没有链接
+    const downloadTemplet = `${APIBasePath}${operation.downCaseTemplate}`;//当前没有链接
     const rightkey = Cookie.get('userRight').includes('operation_case_operate');//操作权限
     return (
       <div className={styles.caseHandle}>
