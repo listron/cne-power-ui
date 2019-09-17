@@ -122,12 +122,11 @@ class DevicesChart extends Component {
       ...baseOption,
       tooltip: {
         padding: 0,
-        formatter: ({ seriesIndex, value = [] }) => {
-          const lineInfo = totalCurveData[seriesIndex] || {};
-          const { deviceName, modeName } = lineInfo;
+        formatter: ({ value = [], seriesName }) => {
+          const { modeName } = totalCurveData.find(e => e.deviceName === seriesName) || {};
           return `<section class=${styles.tooltip}>
             <h3 class=${styles.title}>
-              <span>${deviceName || ''}</span>
+              <span>${seriesName || ''}</span>
             </h3>
             <div class=${styles.info}>
               <span class=${styles.eachItem}>
