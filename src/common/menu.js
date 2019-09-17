@@ -329,6 +329,11 @@ const menuData = [
             rightKey: 'analysis_dataTool_sequence',
           },
           // {
+          //   name: '风资源',
+          //   path: 'resources',
+          //   rightKey: 'analysis_dataTool_sequence',
+          // },
+          // {
           //   name: '统计图',
           //   path: 'histogram',
           //   rightKey: 'analysis_dataTool_histogram',
@@ -484,6 +489,10 @@ const menuData = [
           }, {
             name: '停机状态分析',
             path: 'analysis/stop',
+            rightKey: 'analysis_windPower_stopStatus',
+          }, {
+            name: '执行机构分析',
+            path: 'analysis/actuator',
             rightKey: 'analysis_windPower_stopStatus',
           },
         ],

@@ -65,6 +65,7 @@ import { watchIntelligentAnalysis } from './StatisticalAnalysis/StatisticalRepor
 import { watchDataAnalysisScatterSaga } from './StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/dataAnalysisScatterSaga';
 import { watchDailyQuery } from './StatisticalAnalysis/StatisticalReport/DailyQuery/dailyQuerySaga';
 import { watchDataAnalysisSequenceSaga } from './StatisticalAnalysis/DataAnalysisTool/DataAnalysisSequence/dataAnalysisSequenceSaga';
+import { watchWindResourcesSaga } from './StatisticalAnalysis/DataAnalysisTool/WindResources/windResourcesSaga';
 
 
 
@@ -93,6 +94,7 @@ import { watchAreaAchieve } from './HighAnalysis/Achievement/AreaAchieve/areaAch
 import { watchStationAhieve } from './HighAnalysis/Achievement/StationAchieve/stationAchieveSaga'; // 高级分析-风电分析-电站
 import { watchRunAchieve } from './HighAnalysis/Achievement/RunAchieve/runAchieveSaga'; // 高级分析-风电分析-运行
 import { watchStopAhieve } from './HighAnalysis/Achievement/StopStatus/stopStatusSaga'; // 高级分析 - 风电分析 - 停机状态分析
+import { watchActuatorAchieve } from './HighAnalysis/Achievement/Actuator/actuatorSaga'; // 高级分析 - 风电分析 - 执行机构
 
 import { watchWorkOrder } from './Operation/Ticket/WorkOrder/workOrderSaga';
 import { watchBookAssetsConfig } from './Operation/Book/AssetsConfig/assetsConfigSaga';
@@ -177,6 +179,7 @@ export default function* rootSaga() {
     watchDataAnalysisScatterSaga(), //数据分析散点图
     watchDailyQuery(), // 日报查询
     watchDataAnalysisSequenceSaga(),
+    watchWindResourcesSaga(), // 数据分析工具-风资源-风能频率图
     //高级分析>清洗模型>清洗记录+清洗预警
     watchRealtimeWarning(),
     watchTransferForm(),
@@ -203,6 +206,7 @@ export default function* rootSaga() {
     watchStationAhieve(), // 高级分析 - 风电分析 - 电站
     watchStopAhieve(), // 高级分析 - 风电分析 - 停机状态分析
     watchRunAchieve(), // 高级分析 - 风电分析 - 运行
+    watchActuatorAchieve(), // 高级分析 - 风电分析 - 执行机构
     // 工单
     watchWorkOrder(),
     //operation_Book台账

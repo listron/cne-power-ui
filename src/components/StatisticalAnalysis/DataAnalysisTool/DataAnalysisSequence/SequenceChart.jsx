@@ -120,7 +120,7 @@ class SequenceChart extends React.Component {
           const y1 = payload[0];
           var data = '';
           payload.forEach(e => {
-            data += `<div class=${styles.lineStyle}>${e.seriesName}:${dataFormat(e.value, '--', 2)} </div>`;
+            data += `<div class=${styles.lineStyle}>${e.marker} ${e.seriesName}:${dataFormat(e.value, '--', 2)} </div>`;
           });
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
@@ -128,7 +128,7 @@ class SequenceChart extends React.Component {
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div>${moment(y1.axisValue).format('YYYY-MM-DD HH:mm:ss')}
+            <div> ${moment(y1.axisValue).format('YYYY-MM-DD HH:mm:ss')}
             </div>
             ${data}
           </div>`;

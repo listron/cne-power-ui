@@ -1,0 +1,55 @@
+@import '../../../../theme/theme.scss';
+
+.allStationBox {
+  padding: 24px 24px 24px 4px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .boxCard {
+    display: flex;
+    flex-wrap: wrap;
+
+    .stationCard {
+      margin-left: 20px;
+      margin-bottom: 12px;
+      font-size: 20px;
+      width: 208px;
+      height: 68px;
+      line-height: 68px;
+      text-align: center;
+      border: 4px solid;
+      border-radius: 4px;
+
+      &:hover {
+        // background: linear-gradient(green, $themeColor);
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        width: 208px;
+        height: 68px;
+      }
+    }
+  }
+}
+
+
+/*css样式*/
+
+.allStationBox {
+  background: $pageGround;
+
+  .boxCard {
+    .stationCard {
+      color: #3e97d1;
+      box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.30);
+      border-image: -webkit-linear-gradient(#6ebeff, #2465c2) 10 10;
+
+      &:hover {
+        color: #fff;
+        background-image: linear-gradient(-180deg, #6ebeff 0%, #2465c2 100%);
+        box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30), inset 0 0 4px 2px rgba(255, 255, 255, 0.50);
+      }
+    }
+  }
+}

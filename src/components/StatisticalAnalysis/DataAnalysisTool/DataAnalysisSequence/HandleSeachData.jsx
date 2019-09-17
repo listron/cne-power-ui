@@ -107,6 +107,7 @@ class HandleSeachData extends React.Component {
         const firstData = pointNameList ? pointNameList[0] : [];
         const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = firstData;
         this.setState({ options: [...option, otherName], sequenceNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
+        changeSquenceStore({ pointCodeNameX, pointCodeNameY, pointY1: pointCodeX, pointY2: pointCodeY, deviceFullCode });
         this.setState({
           xName: pointCodeNameX,
           yName: pointCodeNameY,
@@ -124,7 +125,7 @@ class HandleSeachData extends React.Component {
           deviceFullCode,
           interval: 60,
         });
-        changeSquenceStore({ pointCodeNameX, pointCodeNameY, pointY1: pointCodeX, pointY2: pointCodeY, deviceFullCode });
+
       }
     }
     if (JSON.stringify(xyValueLimit) !== JSON.stringify(this.props.xyValueLimit)) {
@@ -191,9 +192,6 @@ class HandleSeachData extends React.Component {
         showOther: false,
       });
     }
-
-
-
   }
   //交换左右y轴
   // changeSwap = () => {
@@ -211,12 +209,17 @@ class HandleSeachData extends React.Component {
     //请求数据
     const { getSequenceData, changeSquenceStore, deviceList, stationCode, getxyLimitValue, pointY1, pointY2, startTime, endTime } = this.props;
     const { saveStartTime, saveEndTime, xCode, yCode, xName, yName, xyValueLimit } = this.state;
+    const curLimitValue = JSON.stringify(Object.values(xyValueLimit).sort((a, b) => (a - b)));
+    const preLimitValue = JSON.stringify(Object.values(this.props.xyValueLimit).sort((a, b) => (a - b)));
+    const isChangeLimit = curLimitValue !== preLimitValue;
     const fristDevice = deviceList[0];
     const deviceFullCode = fristDevice.deviceFullCode;
     changeSquenceStore({
       sequenceData: {},
       pointCodeNameX: xName,
       pointCodeNameY: yName,
+      pointY1: xCode,
+      pointY2: yCode,
       xyValueLimit,
       // deviceList: [],
       activeCode: '',
@@ -233,7 +236,7 @@ class HandleSeachData extends React.Component {
         deviceFullCode,
         interval: 60,
       });
-    } else {
+    } else if (isChangeLimit) {
       getSequenceData({
         deviceFullCode,
         pointY1: xCode,
@@ -335,7 +338,7 @@ class HandleSeachData extends React.Component {
               value={this.state.xCode}
             >
               {sequenceotherNames.map((e, i) => (
-                <Option key={e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
+                <Option key={e.devicePointCode} disabled={this.state.yCode === e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
               ))}
             </Select>
             <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} />
@@ -345,7 +348,7 @@ class HandleSeachData extends React.Component {
               value={this.state.yCode}
             >
               {sequenceotherNames.map((e, i) => (
-                <Option key={e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
+                <Option key={e.devicePointCode} disabled={this.state.xCode === e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
               ))}
             </Select>
           </div>}

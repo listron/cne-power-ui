@@ -7,16 +7,28 @@
   flex-direction: column;
   padding: 26px 28px 20px;
 }
+
 .filterConditionTitle {
   display: flex;
-  color: #00baff;
   .text {
     margin-right: 16px;
     line-height: 30px;
+    width: 56px;
+    flex-shrink: 0;
+  }
+  .filterlistBox {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .switch {
+    line-height: 32px;
+    span {
+      margin-left: 4px;
+    }
   }
   .filterlist {
     height: 32px;
-    border: 1px solid #00baff;
     line-height: 32px;
     padding: 0 16px;
     white-space: nowrap;
@@ -25,22 +37,67 @@
     font-size: 14px;
     border-radius: 4px;
     margin-right: 16px;
+    margin-bottom: 4px;
     i {
-      // width: 30px;
-      // font-size: 12px;
       display: inline-block;
       margin-left: 8px;
     }
   }
+  .disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }
+.filterItem {
+  margin-top: 10px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 12px 24px;
+  min-height: 40px;
+  border-radius: 4px;
 
+  > span {
+    margin-bottom: 8px;
+  }
+  :global {
+    .ant-input {
+      width: 280px;
+    }
+  }
+  .allCheck {
+    width: 100px;
+    flex: 1;
+    display: flex;
+  }
+  .all {
+    display: inline-block;
+    width: 29px;
+    height: 19px;
+    border-bottom: none;
+    cursor: pointer;
+  }
+  .selected {
+    display: inline-block;
+    width: 29px;
+    height: 19px;
+    cursor: pointer;
+    text-align: center;
+  }
+  .lines {
+    display: inline-block;
+    padding: 0 5px;
+  }
+}
 .filteredItems {
   display: flex;
   .selectText {
     line-height: 30px;
-    margin-right: 12px;
     height: 30px;
     width: 40px;
+    margin: 8px 8px 0 0;
+    flex: 0 0 40px;
   }
   .tagWrap {
     display: flex;
@@ -48,7 +105,6 @@
     align-items: center;
     flex-wrap: wrap;
     .tag {
-      border: 1px dashed #dfdfdf;
       padding: 0 10px;
       height: 30px;
       border-radius: 4px;
@@ -58,15 +114,9 @@
       margin-right: 16px;
       margin-top: 5px;
       cursor: pointer;
-      &:hover {
-        background: #199475;
-        color: #fff;
-        border: 1px dashed #199475;
-      }
     }
   }
   .resetAll {
-    color: #199475;
     font-size: 14px;
     cursor: pointer;
     font-style: normal;
@@ -75,43 +125,115 @@
   }
 }
 
-.filterItem {
-  margin-top: 10px;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  // align-items: center;
-  flex-shrink: 0;
-  padding: 12px 24px;
-  min-height: 40px;
-  border-radius: 4px;
-  background-color: #f0f2f5;
-  > span {
-    margin-bottom: 8px;
-  }
-  :global {
-    .ant-input {
-      width: 300px;
-      &:hover {
-        border-color: $themeColor;
-      }
+.light {
+  .filterConditionTitle {
+    color: $themeColor;
+    .filterlist {
+      border: 1px solid $themeColor;
+    }
+    .disabled {
+      background: #f7f7f7;
+      border: 1px solid #d9d9d9;
+      color: #dfdfdf;
     }
   }
-  .all {
-    display: inline-block;
-    color: $darkColor;
-    width: 29px;
-    height: 19px;
-    border-bottom: none;
-    cursor: pointer;
+  .filteredItems {
+    .tag {
+      border: 1px dashed #dfdfdf;
+      &:hover {
+        background: #199475;
+        color: #fff;
+        border: 1px dashed #199475;
+      }
+    }
+    .resetAll {
+      color: #199475;
+    }
   }
-  .selected {
-    display: inline-block;
-    color: $themeColor;
-    width: 29px;
-    height: 19px;
-    border-bottom: 1px $themeColor solid;
-    cursor: pointer;
-    text-align: center;
+  .filterItem {
+    background-color: #f0f2f5;
+    :global {
+      .ant-input {
+        &:hover {
+          border-color: $themeColor;
+        }
+      }
+    }
+    .all {
+      color: $darkColor;
+    }
+    .selected {
+      color: $themeColor;
+      border-bottom: 1px $themeColor solid;
+    }
+  }
+}
+
+.dark {
+  @import "../../../theme/antdResetDark.scss";
+  background: $light-background;
+  border: 1px solid $border-color;
+  .filterConditionTitle {
+    color: $fontColor;
+    .filterlist {
+      border: 1px solid $fontColor;
+    }
+    .disabled {
+      background: #405080;
+      border: 1px solid #7088c3;
+      color: #7088c3;
+    }
+  }
+  .filteredItems {
+    color: $fontColor;
+    .tag {
+      border: 1px dashed $fontColor;
+      &:hover {
+        background: $fontColor;
+        color: $fontColor-invert;
+        border: 1px dashed $fontColor;
+      }
+    }
+    .resetAll {
+      color: #dca30b;
+    }
+  }
+  .filterItem {
+    color: $fontColor;
+    background-color: #1e246e;
+    :global {
+      .ant-input {
+        &:hover {
+          border-color: $themeColor;
+        }
+      }
+    }
+    .all {
+      color: $fontColor;
+    }
+    .selected {
+      color: $themeColor;
+      border-bottom: 1px $themeColor solid;
+    }
+  }
+  :global {
+    .ant-tabs-bar {
+      border-bottom: 1px solid $border-color;
+    }
+    .ant-tabs-nav-scroll {
+      background: transparent !important;
+    }
+    .ant-tabs-tab-prev,
+    .ant-tabs-tab-next {
+      color: $fontColor;
+      &:hover {
+        color: $fontColor-hover;
+      }
+    }
+    .ant-tabs-nav .ant-tabs-tab {
+      &:hover {
+        color: $fontColor-hover;
+      }
+    }
   }
 }
