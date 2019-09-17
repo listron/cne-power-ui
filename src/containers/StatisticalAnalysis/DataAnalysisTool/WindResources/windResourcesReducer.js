@@ -13,7 +13,7 @@ var initState = Immutable.fromJS({
   curBigChartData: [], // 放大频率图数据
   activeCode: '',
   stationCode: '',
-  showPage: 'allStation', // allStation显示全部电站，singleStation,显示单电站
+  showPage: 'singleStation', // allStation显示全部电站，singleStation,显示单电站
 });
 const windResourcesReducer = (state = initState, action) => {
   switch (action.type) {
