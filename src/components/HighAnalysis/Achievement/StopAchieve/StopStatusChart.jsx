@@ -8,6 +8,8 @@ import styles from './stopStatus.scss';
 class StopStatusChart extends Component {
 
   static propTypes = {
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
     stopStatusList: PropTypes.array,
     stopStatusLoading: PropTypes.bool,
   }
@@ -20,16 +22,6 @@ class StopStatusChart extends Component {
     const { stopStatusList = [] } = this.props;
     stopStatusList.length > 0 && this.renderChart(stopStatusList);
   }
-
-  // componentWillReceiveProps(nextProps){
-  //   const { stopStatusLoading, stopStatusList } = nextProps;
-  //   const preLoading = this.props.stopStatusLoading;
-  //   if (preLoading && !stopStatusLoading) { // 请求完毕
-  //     this.renderChart(stopStatusList);
-  //   } else if (!preLoading && stopStatusLoading) { // 请求中
-  //     this.setChartLoading();
-  //   }
-  // }
 
   componentDidUpdate(preProps){ // didupdate => 保证在dom高度动态更新后, 再基于新的dom进行渲染
     const { stopStatusLoading, stopStatusList } = this.props;
@@ -72,6 +64,7 @@ class StopStatusChart extends Component {
   }
 
   renderChart = (lists) => {
+    const { startTime, endTime } = this.props;
     const preChart = echarts.getInstanceByDom(this.statusRef);
     preChart && preChart.dispose(); // 销毁，基于当前dom重新生成图表，保证自适应
     const statusChart = echarts.init(this.statusRef);
@@ -80,11 +73,13 @@ class StopStatusChart extends Component {
       const { deviceName, faultInfos = [] } = e || {};
       yAxisLabels.push(deviceName);
       faultInfos.forEach(m => {
-        const {startTime, endTime, faultName, reason} = m || {};
+        const { faultName, reason } = m;
+        const startUnix = m.startTime || moment(startTime).startOf('d').format('YYYY-MM-DD HH:mm:ss');
+        const endUnix = m.endTime || moment(endTime).startOf('d').format('YYYY-MM-DD HH:mm:ss');
         fualtNameSet.add(faultName);
         statusResult.push({
           name: faultName,
-          value: [index, startTime, endTime, faultName, reason, deviceName],
+          value: [index, startUnix, endUnix, faultName, reason, deviceName, [!m.startTime, !m.endTime]],
           itemStyle: {
             color: this.stopColors[[...fualtNameSet].indexOf(faultName)],
           },
@@ -127,19 +122,30 @@ class StopStatusChart extends Component {
         formatter: (param) => {
           const { data } = param || {};
           const { value = [] } = data || {};
+          const [noneStart, noneEnd] = value[6];
           return `<section class=${styles.tooltip}>
             <h3 class=${styles.title}>
               <span>${value[5] || '--'}</span>
             </h3>
             <div class=${styles.info}>
-              ${['开始时间', '结束时间', '停机类型', '停机原因'].map((e, index) => (`
               <span class=${styles.eachItem}>
-                <span class=${styles.itemName}>${e}</span>
-                <span class=${styles.itemValue}>${
-                  index <= 1 ? moment(value[index + 1]).format('YYYY-MM-DD HH:mm:ss') : value[index + 1]
-                }</span>
+                <span class=${styles.itemName}>开始时间</span>
+                <span class=${styles.itemValue}>
+                ${noneStart ? '--' : moment(value[1]).format('YYYY-MM-DD HH:mm:ss')}</span>
               </span>
-              `)).join('')}
+              <span class=${styles.eachItem}>
+                <span class=${styles.itemName}>结束时间</span>
+                <span class=${styles.itemValue}>
+                ${noneEnd ? '--' : moment(value[2]).format('YYYY-MM-DD HH:mm:ss')}</span>
+              </span>
+              <span class=${styles.eachItem}>
+                <span class=${styles.itemName}>停机类型</span>
+                <span class=${styles.itemValue}>${value[3]}</span>
+              </span>
+              <span class=${styles.eachItem}>
+                <span class=${styles.itemName}>停机原因</span>
+                <span class=${styles.itemValue}>${value[4]}</span>
+              </span>
             </div>
           </section>`;
         },
