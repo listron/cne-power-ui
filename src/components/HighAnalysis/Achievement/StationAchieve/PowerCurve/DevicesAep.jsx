@@ -219,7 +219,7 @@ class DevicesAep extends Component {
         <h3 className={styles.aepTop}>
           <span>
             <span className={styles.aepText}>各机组AEP及平均风速</span>
-            <Tooltip title="AEP指利用率和功率曲线估算的风电机组年理论发电量" placement="top">
+            <Tooltip title="AEP指利用拟合功率曲线估算的风电机组年理论发电量" placement="top">
               <span className={styles.curveTip}>i</span>
             </Tooltip>
           </span>
