@@ -1,11 +1,12 @@
 @import '../../../../theme/theme.scss';
 
-.windResources{
+.windResources {
   min-height: 100%;
   display: flex;
   flex: 1;
   flex-direction: column;
-  .resourcesMain{
+
+  .resourcesMain {
     display: flex;
     flex: 1 0 auto;
     flex-direction: column;
