@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from '../CasePartSide.scss';
 import { Icon } from 'antd';
 import WarningTip from '../../../../components/Common/WarningTip';
+import AddCaseForm from '../AddCase/AddCaseForm';
 class EditCase extends React.Component {
   static propTypes = {
     changeCasePartStore: PropTypes.func,
@@ -37,6 +38,7 @@ class EditCase extends React.Component {
           <span className={styles.text}>编辑案例集</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
         </div>
+        <AddCaseForm {...this.props} />
       </div>
     );
   }

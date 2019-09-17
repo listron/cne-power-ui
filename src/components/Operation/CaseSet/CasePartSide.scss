@@ -78,7 +78,8 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding-top: 24px;
+
+      padding: 24px 100px 0 100px;
 
       :global {
 
@@ -121,12 +122,12 @@
       .formItemStyle {
         display: flex;
         // justify-content: center;
-        margin: 6px 18%;
+        margin: 6px 0 6px 15%;
 
       }
 
       .submitStyle {
-        margin: 20px 18%;
+        margin: 20px 0 20px 15%;
 
         .submitBtn,
         .keepOnAdd {

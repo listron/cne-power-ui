@@ -7,7 +7,7 @@ import CommonPagination from '../../../components/Common/CommonPagination';
 import WarningTip from '../../../components/Common/WarningTip';
 import Cookie from 'js-cookie';
 import UploadModal from './UploadModal';
-const { APIBasePath } = path.basePaths;
+const { originUri } = path.basePaths;
 const { operation } = path.APISubPaths;
 
 class CaseHandle extends React.Component {
@@ -24,6 +24,7 @@ class CaseHandle extends React.Component {
   }
   showAddPage = () => {
     this.props.changeCasePartStore({
+      caseDetail: {},
       showPage: 'add',
     });
   }
@@ -49,7 +50,7 @@ class CaseHandle extends React.Component {
   render() {
     const { showWarningTip, warningTipText, showUpload } = this.state;
     const { casePartTableData, selectedRowKeys, pageSize, pageNum, total } = this.props;
-    const downloadTemplet = `${APIBasePath}${operation.downCaseTemplate}`;//当前没有链接
+    const downloadTemplet = `${originUri}${operation.downCaseTemplate}`;//当前没有链接
     const rightkey = Cookie.get('userRight').includes('operation_case_operate');//操作权限
     return (
       <div className={styles.caseHandle}>

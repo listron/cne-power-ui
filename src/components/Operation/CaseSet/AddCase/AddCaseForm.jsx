@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../CasePartSide.scss';
-import { Button, Input, Form, Select, Upload, Icon } from 'antd';
+import { Button, Input, Form, Select, Upload, Icon, message } from 'antd';
 import TextArea from '../../../Common/InputLimit/index';
 import StationSelect from '../../../Common/StationSelect/index';
 import AutoSelect from '../../../Common/AutoSelect';
@@ -23,12 +23,9 @@ class AddCaseForm extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      fileList: [],
-      file: File,
     };
   }
   addsubmitForm = (e) => {
-    // const {  } = this.props;
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -68,21 +65,43 @@ class AddCaseForm extends React.Component {
   dealPointDetail = (name) => {
     const { caseDetail = {} } = this.props;
     const data = (caseDetail[name] || caseDetail[name] === 0) ? caseDetail[name] : '';
+    if (name === 'deviceModeList') {
+      const data = caseDetail['deviceModes'] ? caseDetail['deviceModes'] : '';
+      const value = data && data.map((e) => (`${e.manufactorId}-${e.deviceModeCode}`));
+      return value;
+    }
+    if (name === 'stationCodes') {
+      const data = caseDetail['stations'] ? caseDetail['stations'] : '';
+      const value = data && data.map((e) => (e));
+      return value;
+    }
+    if (name === 'questionTypeCodes') {
+      const data = caseDetail['questionTypes'] ? caseDetail['questionTypes'] : [];
+      const value = data && data.map((e) => (e.questionTypeCode));
+      return value;
+    }
+    if (name === 'annexs') {
+      const data = caseDetail['annexs'] ? caseDetail['annexs'] : [];
+      const value = data && data.map((e, i) => ({ name: `${e.annex}`, uid: `${i}` }));
+      return value;
+    }
     return data;
   }
   beforeUploadStation = (file) => { // 上传前的校验
-    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
-    const validFile = validType.includes(file.type);
-    if (!validFile) {
+
+    const limitSize = 1024 * 1024 * 100;
+    if (file.size > limitSize) {
       message.config({ top: 200, duration: 2, maxCount: 3 });
-      message.error('只支持上传excel文件!', 2);
-    } else {
-      this.removeFile(file);
-      this.setState(state => ({
-        fileList: [...state.fileList, file],
-      }));
+      message.error('上传文件不得大于100M', 2);
     }
+
     return false;
+  }
+  normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
   }
   onModelChange = (value) => {
     const deviceModeList = value.map(e => (e.value));
@@ -90,10 +109,10 @@ class AddCaseForm extends React.Component {
       this.props.form.setFieldsValue({ deviceModeList });
     });
   }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { showPage, stations, modesInfo, questionTypeList } = this.props;
-    const { fileList } = this.state;
     return (
 
       <div className={styles.fromContainer}>
@@ -128,11 +147,13 @@ class AddCaseForm extends React.Component {
           <FormItem label="问题类别" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('questionTypeCodes', {
               initialValue: this.dealPointDetail('questionTypeCodes'),
-              // rules: [{ required: true, message: '请正确填写', type: 'string', max: 10 }],
+              rules: [{ required: true, message: '请正确填写' }],
             })(
-              <Select>
+              <Select
+                mode="multiple"
+              >
                 {questionTypeList.map(e => {
-                  return <Option key={e} value={e.userId}>{e.userName}</Option>;
+                  return <Option key={e} value={e.questionTypeCode}>{e.questionTypeName}</Option>;
                 })}
               </Select>
             )}
@@ -200,16 +221,15 @@ class AddCaseForm extends React.Component {
           <FormItem label="上传附件" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('annexs', {
               initialValue: this.dealPointDetail('annexs'),
+              valuePropName: 'fileList',
               getValueFromEvent: this.normFile,
             })(
               <Upload
-                onRemove={(file) => this.removeFile(file)}
                 beforeUpload={this.beforeUploadStation}
-                fileList={fileList}
                 showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
               >
                 <Button className={styles.uploadBtn} >  <Icon type="upload" />选择文件上传</Button>
-                {/* <span> 支持xls、xlsx文件</span> */}
+                <span> 上传文件不得大于100M</span>
               </Upload>
             )}
           </FormItem>

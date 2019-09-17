@@ -124,5 +124,9 @@
   }
 }
 
-.caseList {}
-
+.caseList {
+  .editPoint {
+    padding: 0 4px;
+    color: $themeColor;
+  }
+}

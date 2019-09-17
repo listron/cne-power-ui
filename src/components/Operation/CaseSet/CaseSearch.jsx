@@ -33,7 +33,7 @@ class CaseSearch extends React.Component {
       deviceTypeCode: 101,
       stationType: 0,
     });
-    this.props.getQuestionList();
+    this.props.getQuestionList({});
   }
   filterCondition = (data) => {
     const { deviceModeList } = data;
@@ -66,7 +66,7 @@ class CaseSearch extends React.Component {
     this.props.changeCasePartStore({
       userId: value,
     });
-    this.getList({ userId: value });
+    // this.getList({ userId: value });
   }
   onReset = () => {
     const initValue = {
@@ -81,8 +81,8 @@ class CaseSearch extends React.Component {
     this.getList();
   }
   getList = (value) => {
-    const { getCasePartList, faultDescription, userName, userId, questionTypeCodes, deviceModeList, stationCodes } = this.props;
-    const params = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId };
+    const { getCasePartList, faultDescription, userName, userId, questionTypeCodes, deviceModeList, stationCodes, orderFiled, orderType } = this.props;
+    const params = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType };
     getCasePartList({
       ...params,
       ...value,

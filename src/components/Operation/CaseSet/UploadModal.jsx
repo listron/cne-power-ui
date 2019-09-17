@@ -9,11 +9,11 @@ class UploadModal extends React.Component {
     importCase: PropTypes.func,
     cancelModal: PropTypes.func,
     showModal: PropTypes.bool,
+    form: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context);
     this.state = {
-      file: File,
       fileList: [],
       uploading: false,
     };
