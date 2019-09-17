@@ -65,6 +65,7 @@ import { watchIntelligentAnalysis } from './StatisticalAnalysis/StatisticalRepor
 import { watchDataAnalysisScatterSaga } from './StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/dataAnalysisScatterSaga';
 import { watchDailyQuery } from './StatisticalAnalysis/StatisticalReport/DailyQuery/dailyQuerySaga';
 import { watchDataAnalysisSequenceSaga } from './StatisticalAnalysis/DataAnalysisTool/DataAnalysisSequence/dataAnalysisSequenceSaga';
+import { watchWindResourcesSaga } from './StatisticalAnalysis/DataAnalysisTool/WindResources/windResourcesSaga';
 
 
 
@@ -178,6 +179,7 @@ export default function* rootSaga() {
     watchDataAnalysisScatterSaga(), //数据分析散点图
     watchDailyQuery(), // 日报查询
     watchDataAnalysisSequenceSaga(),
+    watchWindResourcesSaga(), // 数据分析工具-风资源-风能频率图
     //高级分析>清洗模型>清洗记录+清洗预警
     watchRealtimeWarning(),
     watchTransferForm(),
