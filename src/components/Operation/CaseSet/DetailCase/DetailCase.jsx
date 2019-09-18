@@ -6,6 +6,8 @@ import WarningTip from '../../../../components/Common/WarningTip';
 class DetailCase extends React.Component {
   static propTypes = {
     changeCasePartStore: PropTypes.func,
+    likeCase: PropTypes.func,
+    caseDetail: PropTypes.object,
 
   }
   constructor(props, context) {
@@ -45,7 +47,7 @@ class DetailCase extends React.Component {
       { name: '问题分析', value: data.faultAnalyse },
       { name: '处理措施', value: data.processingMethod },
       { name: '所需工具', value: data.requiredTools },
-      { name: '反馈人', value: data.feedbackUser },
+      { name: '反馈人', value: data.feedbackUserName },
       { name: '联系方式', value: data.feedbackUserPhone },
       { name: '上传附件', value: data.annexs && data.annexs },
       // { name: '上传附件', value: data.annexs && data.annexs.map(e => (e.annex)) },

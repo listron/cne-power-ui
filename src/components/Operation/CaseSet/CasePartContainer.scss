@@ -100,11 +100,14 @@
     .uploadBtn {
       width: 150px;
       // margin: 24px 150px 0 150px;
+      color: $themeColor;
+      border-color: $themeColor;
     }
 
     .confireImport {
       width: 150px;
       margin: 0 150px 0 157px;
+
     }
 
     .intoFile,
@@ -128,5 +131,6 @@
   .editPoint {
     padding: 0 4px;
     color: $themeColor;
+    cursor: pointer;
   }
 }

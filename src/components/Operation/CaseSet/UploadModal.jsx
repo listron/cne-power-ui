@@ -15,7 +15,6 @@ class UploadModal extends React.Component {
     super(props, context);
     this.state = {
       fileList: [],
-      uploading: false,
     };
   }
   beforeUploadStation = (file) => { // 上传前的校验

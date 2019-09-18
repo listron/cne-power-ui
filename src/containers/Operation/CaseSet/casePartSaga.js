@@ -178,6 +178,7 @@ function* likeCase(action) { // 点赞
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      message.success('点赞成功');
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
