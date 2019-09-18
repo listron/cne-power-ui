@@ -199,10 +199,17 @@ function *getCurveDevices({ payload }) { // 获取各机组曲线
     const curveDevices = response.data || [];
     const { actual = [], theory = [] } = curveDevices;
     const curveCheckedDevice = [];
-    theory.sort((a, b) => a.modeName && a.modeName.localeCompare(b.modeName)).forEach(e => {
+    theory.sort((a, b) => {
+      return a.modeName && a.modeName.localeCompare(b.modeName);
+    }).forEach(e => {
       e.modeName && curveCheckedDevice.push(`${e.modeName}理论功率曲线`);
     });
-    actual.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName)).forEach(e => {
+    actual.sort((a, b) => {
+      if (a.deviceOrderName) { // 优先按照deviceOrderName排序
+        return a.deviceOrderName.localeCompare(b.deviceOrderName);
+      }
+      return a.deviceName && a.deviceName.localeCompare(b.deviceName);
+    }).forEach(e => {
       e.deviceName && curveCheckedDevice.push(e.deviceName);
     });
     if (response.code === '10000') {

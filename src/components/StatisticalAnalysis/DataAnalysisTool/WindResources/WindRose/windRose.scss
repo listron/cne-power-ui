@@ -1,0 +1,61 @@
+@import '../../../../../theme/theme.scss';
+
+.windRoseBox {
+  padding-top: 24px;
+  display: flex;
+  flex: 1;
+
+  .chartsContainer {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+
+    .chartStyle {
+      width: 50%;
+      height: 300px;
+
+      .windRoseChart {
+        width: 100%;
+        height: 300px;
+      }
+    }
+  }
+}
+
+.chartWrap {
+  position: relative;
+  width: 100%;
+  height: 300px;
+
+  .windRoseStyle {
+    width: 100%;
+    height: 300px;
+  }
+
+  .showModalIcon {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 3;
+  }
+}
+
+/*css样式*/
+
+.windRoseBox {
+  background: $pageGround;
+
+  .chartsContainer {
+    background: $pageGround;
+  }
+}
+
+.chartWrap {
+  .showModalIcon {
+    &:hover {
+      color: $themeColor;
+    }
+  }
+}

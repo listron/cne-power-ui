@@ -139,24 +139,56 @@ class FilterCondition extends Component {
     option.forEach(item => {
       const currentItem = optionItem.filter(e => e.type === item.type && e.typeName === item.typeName)[0] || {};
       if (!(singleType.includes(item.type))) {
-        item.checkedValue = value[item['typeName']] || [];
-        if (currentItem.checkedValue && currentItem.checkedValue.length > 0) {
-          const valueArray = value[item['typeName']] && value[item['typeName']] || [];
-          const checkedValue = currentItem.checkedValue && currentItem.checkedValue || [];
-          item.checkedValue = Array.from(new Set([...checkedValue, ...valueArray]));
+        item.checkedValue = [];
+        if (value[item['typeName']]) {
+          item.checkedValue = value[item['typeName']];
+        } else if (currentItem.checkedValue && currentItem.checkedValue.length > 0) {
+          item.checkedValue = currentItem.checkedValue;
+        }
+        if (item.disabled) {
+          item.checkedValue = [];
         }
       } else {
         item.checkedValue = '';
         if (value[item['typeName']]) {
           item.checkedValue = value[item['typeName']];
+        } else {
+          item.checkedValue = currentItem.checkedValue;
         }
       }
-
-
       optionList.push({ ...this.initOption(item.type), ...item });
     });
+    this.changeShowFilter(optionList);
     this.setState({ optionItem: optionList });
   }
+
+  // changeDataType = (value = {}, option) => { // 切换数据，如果value 变化，或者是data 发生变化
+  //   const { optionItem } = this.state;
+  //   const optionList = [];
+  //   const singleType = ['radioSelect', 'stationType', 'switch'];
+  //   option.forEach(item => {
+  //     const currentItem = optionItem.filter(e => e.type === item.type && e.typeName === item.typeName)[0] || {};
+  //     if (!(singleType.includes(item.type))) {
+  //       item.checkedValue = value[item['typeName']] || [];
+  //       if (currentItem.checkedValue && currentItem.checkedValue.length > 0) {
+  //         const valueArray = value[item['typeName']] && value[item['typeName']] || [];
+  //         const checkedValue = currentItem.checkedValue;
+  //         item.checkedValue = Array.from(new Set([...checkedValue, ...valueArray]));
+  //       }
+  //       if (item.disabled) {
+  //         item.checkedValue = [];
+  //       }
+  //     } else {
+  //       item.checkedValue = '';
+  //       if (value[item['typeName']]) {
+  //         item.checkedValue = value[item['typeName']];
+  //       }
+  //     }
+  //     optionList.push({ ...this.initOption(item.type), ...item });
+  //   });
+  //   this.changeShowFilter(optionList);
+  //   this.setState({ optionItem: optionList });
+  // }
 
   outPutData = (optionItem) => {
     const obj = {};
@@ -186,7 +218,15 @@ class FilterCondition extends Component {
   onChangeFilterChecked = (value) => {
     this.outPutData(value.options);
     this.setState({ optionItem: value.options });
+  }
 
+  changeShowFilter = (value) => { //针对disabled 进行调整
+    const { showFilter } = this.state;
+    const { type, typeName } = showFilter;
+    const currentObj = value.filter(e => e.type === type && e.typeName === typeName);
+    if (currentObj.length > 0 && currentObj[0].disabled) {
+      this.setState({ showFilter: { type: '', typeName: '' } });
+    }
   }
 
   render() {
