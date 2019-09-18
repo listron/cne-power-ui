@@ -38,24 +38,11 @@ class IntelligentTable extends Component {
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器
-    const { changeIntelligentExpertStore, getIntelligentTable, listParams } = this.props;
-    changeIntelligentExpertStore({
-      pageSize,
-      pageNum: currentPage,
-    });
+    const { getIntelligentTable, listParams } = this.props;
     getIntelligentTable({
       ...listParams,
       pageSize: pageSize,
       pageNum: currentPage,
-      // orderField: 'like_count',
-      // sortMethod: 'desc',
-    });
-  }
-
-  onSelectChange = (keys, record) => { // 选中行
-    this.props.changeIntelligentExpertStore({
-      selectedRowData: record,
-      selectedRowKeys: keys,
     });
   }
 
@@ -63,7 +50,7 @@ class IntelligentTable extends Component {
     const { getIntelligentTable, listParams } = this.props;
     const { order } = sorter;
     const initSorterField = 'like_count';
-    const sortMethod = order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : '';
+    const sortMethod = order === 'ascend' ? 'asc' : 'desc';
     const sortField = sorter.field ? this.sortField(sorter.field) : initSorterField;
     getIntelligentTable({
       ...listParams,
@@ -80,6 +67,13 @@ class IntelligentTable extends Component {
       default: result = ''; break;
     }
     return result;
+  }
+
+  onSelectChange = (keys, record) => { // 选中行
+    this.props.changeIntelligentExpertStore({
+      selectedRowData: record,
+      selectedRowKeys: keys,
+    });
   }
 
   showModal = () => { // 导入
@@ -142,13 +136,14 @@ class IntelligentTable extends Component {
   }
 
   columnlook = (record, selectedIndex) => { // 查看详情
+    console.log('record', record, selectedIndex);
     const { changeIntelligentExpertStore, getKnowledgebase } = this.props;
     changeIntelligentExpertStore({
-      showPage: 'show',
+      showPage: 'detail',
+      knowledgeBaseId: record.knowledgeBaseId,
     });
     getKnowledgebase({
       knowledgeBaseId: record.knowledgeBaseId,
-      selectedIndex,
     });
   }
 
@@ -156,17 +151,22 @@ class IntelligentTable extends Component {
     const { changeIntelligentExpertStore, getKnowledgebase } = this.props;
     changeIntelligentExpertStore({
       showPage: 'edit',
+      knowledgeBaseId: record.knowledgeBaseId,
     });
     getKnowledgebase({
       knowledgeBaseId: record.knowledgeBaseId,
-      deviceTypeCode: record.deviceTypeCode,
-      faultTypeId: record.faultTypeId,
+    });
+  }
+
+  cancelRowSelect = () => { // 取消选中
+    this.props.changeIntelligentExpertStore({
+      selectedRowKeys: [],
     });
   }
 
   render() {
     const { showModal, warningTipText, showDeleteWarning } = this.state;
-    const { intelligentTableData, tableLoading, listParams, selectedRowKeys, theme } = this.props;
+    const { intelligentTableData, tableLoading, listParams, selectedRowKeys, theme, stationType } = this.props;
     const { pageNum, pageSize } = listParams;
     const { total, dataList = [] } = intelligentTableData;
     const rowSelection = {
@@ -176,90 +176,85 @@ class IntelligentTable extends Component {
     const downloadTemplet = `${path.basePaths.originUri}${path.APISubPaths.operation.downloadIntelligentTemplet}`; // 下载导入模板
     const rightHandler = localStorage.getItem('rightHandler') || '';
     const editRight = rightHandler.split(',').includes('operation_experience_edit');
-
-    const columns = [{
-      title: '设备类型',
-      dataIndex: 'deviceTypeName',
-      className: 'deviceTypeName',
-    }, {
-      title: '缺陷类型',
-      dataIndex: 'faultName',
-      className: 'faultName',
-      render: (text) => {
-        return <div className={styles.faultName} title={text}>{text}</div>;
+    const checkItemsName = stationType === '0' && '故障原因' || '检查项目';
+    const columns = [
+      {
+        title: '设备类型',
+        dataIndex: 'deviceTypeName',
+      }, {
+        title: '缺陷类型',
+        dataIndex: 'faultName',
+        render: (text) => {
+          return <div className={styles.faultName} title={text}>{text}</div>;
+        },
       },
-    }, {
-      title: '缺陷描述',
-      dataIndex: 'faultDescription',
-      className: 'faultDescription',
-      render: (text) => {
-        return <div className={styles.faultDescription} title={text}>{text}</div>;
-      },
-    }, {
-      title: '检查项目',
-      dataIndex: 'checkItems',
-      className: 'checkItems',
-      render: (text) => {
-        return <div className={styles.checkItems} title={text}>{text}</div>;
-      },
-    }, {
-      title: '处理方法',
-      dataIndex: 'processingMethod',
-      className: 'processingMethod',
-      render: (text) => {
-        return <div className={styles.processingMethod} title={text}>{text}</div>;
-      },
-    }, {
-      title: '更新时间',
-      dataIndex: 'updateTime',
-      className: 'updateTime',
-      render: (text, record) => moment(text).format('YYYY-MM-DD'),
-      sorter: true,
-    }, {
-      title: '点赞数',
-      dataIndex: 'likeCount',
-      className: 'likeCount',
-      sorter: true,
-    }, {
-      title: '操作',
-      dataIndex: 'handler',
-      className: 'handler',
-      render: (text, record, index) => (
-        <span>
-          <i className={`${styles.lookRole} iconfont icon-look`}
-            onClick={() => this.columnlook(record, index)}
-          />
-          {editRight && <i className={`${styles.editRole} iconfont icon-edit`}
-            onClick={() => this.columnEdit(record)}
-          />}
-          {editRight && <i className={`${styles.deleteRole} iconfont icon-del`}
-            onClick={() => this.singleDeleteIntelligent(record, index)}
-          />}
-        </span>
-      ),
-    }];
+      {
+        title: '故障代码',
+        dataIndex: 'faultCode',
+        render: (text) => {
+          return <div className={styles.faultName} title={text}>{text || '--'}</div>;
+        },
+      }, {
+        title: '缺陷描述',
+        dataIndex: 'faultDescription',
+        render: (text) => {
+          return <div className={styles.faultDescription} title={text}>{text}</div>;
+        },
+      }, {
+        title: checkItemsName,
+        dataIndex: 'checkItems',
+        render: (text) => {
+          return <div className={styles.checkItems} title={text}>{text}</div>;
+        },
+      }, {
+        title: '处理方法',
+        dataIndex: 'processingMethod',
+        render: (text) => {
+          return <div className={styles.processingMethod} title={text}>{text}</div>;
+        },
+      }, {
+        title: '更新时间',
+        dataIndex: 'updateTime',
+        render: (text, record) => moment(text).format('YYYY-MM-DD'),
+        sorter: true,
+      }, {
+        title: '点赞数',
+        dataIndex: 'likeCount',
+        sorter: true,
+      }, {
+        title: '操作',
+        dataIndex: 'handler',
+        render: (text, record, index) => (
+          <span>
+            <i className={`${styles.icon} iconfont icon-look`}
+              onClick={() => this.columnlook(record, index)}
+            />
+            {editRight && <i className={`${styles.icon} iconfont icon-edit`}
+              onClick={() => this.columnEdit(record)}
+            />}
+            {editRight && <i className={`${styles.icon} iconfont icon-del`}
+              onClick={() => this.singleDeleteIntelligent(record, index)}
+            />}
+          </span>
+        ),
+      }];
 
     return (
       <div className={`${styles.intelligentTable} ${styles[theme]}`}>
+        {showDeleteWarning && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.topHandler}>
           <div className={styles.leftPart}>
-            {/* {editRight && <Button className={styles.addHandler} icon="plus" onClick={this.addIntelligent}>添加</Button>} */}
-            {editRight && <Button className={styles.addHandler} type="add" onClick={this.addIntelligent}><i>+</i>添加</Button>}
-            {editRight && <Button className={styles.deleteHandler} type="reset" onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</Button>}
-            {editRight && <Button className={styles.importHandler} type="primary" onClick={this.showModal}>导入</Button>}
-            {editRight && <Button className={styles.exportHandler} type="primary" href={downloadTemplet} download={downloadTemplet} target="_blank">下载导入模板</Button>}
+            {editRight &&
+              <React.Fragment>
+                <Button className={styles.addHandler} type="add" onClick={this.addIntelligent}><i>+</i>添加</Button>
+                <Button className={styles.deleteHandler} type="reset" onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</Button>
+                <Button className={styles.importHandler} type="primary" onClick={this.showModal}>导入</Button>
+                <Button className={styles.exportHandler} type="primary" href={downloadTemplet} download={downloadTemplet} target="_blank">下载导入模板</Button>
+              </React.Fragment>
+            }
           </div>
-          <CommonPagination
-            currentPage={pageNum}
-            pageSize={pageSize}
-            total={total}
-            onPaginationChange={this.onPaginationChange}
-            theme={theme}
-          />
-
+          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={total} onPaginationChange={this.onPaginationChange} theme={theme} />
           {showModal ? <ImportIntelligent {...this.props} showModal={showModal} cancelModal={this.cancelModal} /> : ''}
-          {showDeleteWarning && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-
         </div>
         <Table
           loading={tableLoading}
@@ -272,6 +267,11 @@ class IntelligentTable extends Component {
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           rowKey={(record) => { return record.knowledgeBaseId; }}
         />
+        {dataList.length > 0 &&
+          <div className={styles.tableFooter}>
+            <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
+            {selectedRowKeys.length > 0 && <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
+          </div>}
       </div>
     );
   }

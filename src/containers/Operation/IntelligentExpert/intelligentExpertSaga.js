@@ -9,28 +9,17 @@ const { operation } = path.APISubPaths;
 
 function* getIntelligentTable({ payload = {} }) { // 获取列表数据
   const url = `${APIBasePath}${operation.getIntelligentTable}`;
-  const { deviceTypeCode, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod } = payload;
-  const params = {
-    deviceTypeCodes: deviceTypeCode,
-    faultTypeIds: (!deviceTypeCode || deviceTypeCode.length === 0) ? [] : defectTypeCode,
-    faultDescription,
-    recorder,
-    pageNum,
-    pageSize,
-    orderField,
-    sortMethod,
-  };
   try {
     yield put({
       type: intelligentExpertAction.changeIntelligentExpertStore,
       payload: {
         tableLoading: true,
-        ...payload,
+        listParams: payload,
       },
     });
-    const response = yield call(axios.post, url, { ...params });
-    const { total = 0 } = response.data.data;
-    let { pageNum, pageSize } = params;
+    const response = yield call(axios.post, url, payload);
+    const { total = 0 } = response.data.data || {};
+    let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(total / pageSize);
     if (total === 0) {
       pageNum = 1;
@@ -44,8 +33,6 @@ function* getIntelligentTable({ payload = {} }) { // 获取列表数据
           listParams: {
             ...payload,
             pageNum,
-            pageSize,
-            defectTypeCode: (!deviceTypeCode || deviceTypeCode.length === 0) ? [] : defectTypeCode,
           },
           tableLoading: false,
           intelligentTableData: response.data.data || {},
@@ -61,7 +48,6 @@ function* getIntelligentTable({ payload = {} }) { // 获取列表数据
       payload: {
         tableLoading: false,
         intelligentTableData: {},
-        ...params,
       },
     });
     console.log(e);
@@ -153,10 +139,8 @@ function* getUserName({ payload = {} }) { // 获取相关录入人
 }
 
 function* addIntelligent({ payload = {} }) { // 添加智能专家库
-  const { continueAdd } = payload;
   const url = `${APIBasePath}${operation.operationIntelligent}`;
-  const { deviceTypeCode, defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark } = payload;
-  const params = { deviceTypeCode, faultTypeId: defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark };
+  const { continueAdd, ...params } = payload;
   try {
     const response = yield call(axios.post, url, { ...params });
     if (response.data.code === '10000') {
@@ -166,14 +150,15 @@ function* addIntelligent({ payload = {} }) { // 添加智能专家库
         payload: {
           ...params,
           showPage: continueAdd ? 'add' : 'list',
-          continueAdd,
         },
       });
-      const params = yield select(state => state.operation.intelligentExpert.get('listParams').toJS());// 继续请求智能专家库列表
-      yield put({
-        type: intelligentExpertAction.getIntelligentTable,
-        payload: params,
-      });
+      if (continueAdd) {
+        const params = yield select(state => state.operation.intelligentExpert.get('listParams').toJS());// 继续请求智能专家库列表
+        yield put({
+          type: intelligentExpertAction.getIntelligentTable,
+          payload: params,
+        });
+      }
     } else {
       throw response.data;
     }
@@ -188,7 +173,7 @@ function* addIntelligent({ payload = {} }) { // 添加智能专家库
 }
 
 function* getKnowledgebase({ payload = {} }) { // 查看智能专家库详情
-  const { knowledgeBaseId, selectedIndex, showPage = 'show' } = payload;
+  const { knowledgeBaseId, selectedIndex } = payload;
   const url = `${APIBasePath}${operation.operationIntelligent}/${knowledgeBaseId}`;
   try {
     const response = yield call(axios.get, url);
@@ -197,7 +182,6 @@ function* getKnowledgebase({ payload = {} }) { // 查看智能专家库详情
         type: intelligentExpertAction.changeIntelligentExpertStore,
         payload: {
           selectedIndex,
-          showPage,
           knowledgeBaseId,
           intelligentDetail: response.data.data || {},
         },
@@ -266,6 +250,81 @@ function* editIntelligent({ payload = {} }) { // 编辑智能专家库详情
   }
 }
 
+const dealData = (data) => {
+  const initData = data.map(e => {
+    e.children = e.modeDatas && e.modeDatas.map(item => {
+      return {
+        label: item.modeName,
+        value: item.modeId,
+      };
+    });
+    return {
+      label: e.manufactorName,
+      value: e.manufactorId,
+      children: e.children,
+    };
+  });
+  return initData;
+};
+
+function* getDevicemodes(action) { // 获取设备列表
+  const { payload } = action;
+  const { manufactorId } = payload;
+  const url = `${APIBasePath}${operation.deviceModeList}/${manufactorId}`;
+  try {
+    const response = yield call(axios.get, url, { params: payload });
+    if (response.data.code === '10000') {
+      yield put({
+        type: intelligentExpertAction.changeIntelligentExpertStore,
+        payload: {
+          deviceModeList: dealData(response.data.data) || [],
+        },
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: intelligentExpertAction.changeIntelligentExpertStore,
+      payload: {
+        deviceModeList: [],
+      },
+    });
+  }
+
+}
+
+function* getFaultCodeList(action) { // 获取设备列表
+  const { payload } = action;
+  const { faultCode } = payload;
+  console.log('faultCode', faultCode);
+  const url = `${APIBasePath}${operation.getFaultCode}/${faultCode}`;
+  try {
+    const response = yield call(axios.get, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: intelligentExpertAction.changeIntelligentExpertStore,
+        payload: {
+          faultCodeList: response.data.data || [],
+        },
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: intelligentExpertAction.changeIntelligentExpertStore,
+      payload: {
+        faultCodeList: [],
+      },
+    });
+  }
+
+}
+
+
 export function* watchIntelligentExper() {
   yield takeLatest(intelligentExpertAction.getIntelligentTable, getIntelligentTable);
   yield takeLatest(intelligentExpertAction.getImportIntelligent, getImportIntelligent);
@@ -275,4 +334,6 @@ export function* watchIntelligentExper() {
   yield takeLatest(intelligentExpertAction.getKnowledgebase, getKnowledgebase);
   yield takeLatest(intelligentExpertAction.getLike, getLike);
   yield takeLatest(intelligentExpertAction.editIntelligent, editIntelligent);
+  yield takeLatest(intelligentExpertAction.getDevicemodes, getDevicemodes);
+  yield takeLatest(intelligentExpertAction.getFaultCodeList, getFaultCodeList);
 }

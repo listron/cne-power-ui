@@ -12,5 +12,6 @@ export const intelligentExpertAction = {
   getKnowledgebase: Symbol('getKnowledgebase'), // 查看详情
   getLike: Symbol('getLike'), // 点赞
   editIntelligent: Symbol('editIntelligent'), // 编辑
-}
-;
+  getDevicemodes: Symbol('getDevicemodes'), // 获取设备列表
+  getFaultCodeList: Symbol('getFaultCodeList'), // 获取设备列表
+};

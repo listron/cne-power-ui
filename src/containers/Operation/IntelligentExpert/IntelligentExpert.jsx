@@ -8,7 +8,11 @@ import { commonAction } from '../../alphaRedux/commonAction';
 import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
 import TransitionContainer from '../../../components/Common/TransitionContainer';
 
+import AddIntelligent from '../../../components/Operation/IntelligentExpert/AddIntelligent';
+import EditIntelligent from '../../../components/Operation/IntelligentExpert/EditIntelligent';
+import ShowIntelligent from '../../../components/Operation/IntelligentExpert/ShowIntelligent';
 import IntelligentSide from '../../../components/Operation/IntelligentExpert/IntelligentSide';
+
 import Footer from '../../../components/Common/Footer';
 import InterlligentExpertMain from '../../../components/Operation/IntelligentExpert/InterlligentExpertMain';
 
@@ -26,6 +30,9 @@ class IntelligentExpert extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      sideTransform: 0,
+    };
   }
 
   componentDidMount() {
@@ -45,29 +52,25 @@ class IntelligentExpert extends Component {
     this.props.resetStore();
   }
 
-  queryTargetData = (value) => { // 切换电站
-    const { getStationTypeDeviceTypes } = this.props;
-    this.props.changeIntelligentExpertStore({ stationType: value });
-    getStationTypeDeviceTypes({ type: value });
+  showSide = (showPage) => {
+    this.setState({ sideTransform: 100 });
+    this.props.changeIntelligentExpertStore({ showPage });
   }
 
+  backList = () => {
+    this.setState({ sideTransform: 0 });
+    this.props.changeIntelligentExpertStore({ showPage: 'list' });
+  }
+
+
   render() {
-    const { showPage, theme, stationTypeCount, stationType } = this.props;
+    const { showPage, theme } = this.props;
+    const { sideTransform } = this.state;
     return (
       <div className={`${styles.intelligentExpert} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '智能专家库' }]} style={{ marginLeft: '40px' }} />
         <div className={styles.contentBox}>
-          <div className={styles.container}>
-            <div className={styles.intelligentContent}>
-              {stationTypeCount === 'multiple' &&
-                <div className={styles.stationType}>
-                  <p className={`${stationType === '0' && styles.activeStation} `} onClick={() => { this.queryTargetData('0'); }}>风电</p>
-                  <p className={`${stationType === '1' && styles.activeStation} `} onClick={() => { this.queryTargetData('1'); }}>光伏</p>
-                </div>
-              }
-              <InterlligentExpertMain {...this.props} />
-            </div>
-          </div>
+          <InterlligentExpertMain {...this.props} />
           <TransitionContainer
             show={showPage !== 'list'}
             onEnter={this.onToggleSide}
@@ -75,9 +78,15 @@ class IntelligentExpert extends Component {
             timeout={500}
             effect="side"
           >
-            <div>测试</div>
-            {/* <IntelligentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} /> */}
+            <IntelligentSide {...this.props} showPage={showPage} onShowSideChange={this.onShowSideChange} />
           </TransitionContainer>
+          {/* <div className={styles.sidePage} style={{ 'transition': 'all 500ms ease', transform: `translateX(-${sideTransform}%)` }}>
+            {{
+              'add': <AddIntelligent {...this.props} backList={this.backList} showSide={this.showSide} />,
+              'edit': <EditIntelligent {...this.props} backList={this.backList} showSide={this.showSide} />,
+              'detail': <ShowIntelligent {...this.props} backList={this.backList} showSide={this.showSide} />,
+            }[showPage]}
+          </div> */}
         </div>
         <Footer />
       </div>
@@ -90,7 +99,6 @@ const mapStateToProps = (state) => {
     ...state.operation.intelligentExpert.toJS(),
     enterpriseId: Cookie.get('enterpriseId'),
     stations: state.common.get('stations').toJS(),
-    // deviceTypes: state.common.get('deviceTypes').toJS(),
     theme: state.common.get('theme'),
     stationTypeCount: state.common.get('stationTypeCount'),
   };
@@ -106,6 +114,8 @@ const mapDispatchToProps = (dispatch) => ({
   getKnowledgebase: payload => dispatch({ type: intelligentExpertAction.getKnowledgebase, payload }),
   getLike: payload => dispatch({ type: intelligentExpertAction.getLike, payload }),
   editIntelligent: payload => dispatch({ type: intelligentExpertAction.editIntelligent, payload }),
+  getDevicemodes: payload => dispatch({ type: intelligentExpertAction.getDevicemodes, payload }),
+  getFaultCodeList: payload => dispatch({ type: intelligentExpertAction.getFaultCodeList, payload }),
   resetStore: () => dispatch({ type: intelligentExpertAction.resetStore }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,

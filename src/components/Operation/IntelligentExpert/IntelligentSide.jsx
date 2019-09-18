@@ -7,19 +7,19 @@ import ShowIntelligent from './ShowIntelligent';
 
 class IntelligentSide extends Component {
   static propTypes = {
-    showSidePage: PropTypes.string,
+    showPage: PropTypes.string,
   }
 
   render() {
-    const { showSidePage } = this.props;
+    const { showPage } = this.props;
     return (
       <div className={styles.intelligentSide}>
-        {showSidePage === 'add' && <AddIntelligent {...this.props} /> }
-        {showSidePage === 'edit' && <EditIntelligent {...this.props} /> }
-        {showSidePage === 'show' && <ShowIntelligent {...this.props} />}
+        {showPage === 'add' && <AddIntelligent {...this.props} />}
+        {showPage === 'edit' && <EditIntelligent {...this.props} />}
+        {showPage === 'detail' && <ShowIntelligent {...this.props} />}
       </div>
-      )
-    }
+    );
   }
+}
 
-  export default IntelligentSide;
+export default IntelligentSide;

@@ -126,6 +126,7 @@ export default {
       downloadIntelligentTemplet: '/template/knowledgeBase.zip', // 下载导入模板
       operationIntelligent: '/v3/knowledgebase', // 删除、添加、编辑智能专家库
       getUserName: '/v3/user/related', // 获取相关用户名
+      getFaultCode: '/v3/knowledgebase/faultCode/like', //	故障代码列表
 
       getAssetTree: '/v3/ledger/assetslist', //台账生产资产树
       getNodeDetail: '/v3/ledger/assets/detail', //台账生产资产树
