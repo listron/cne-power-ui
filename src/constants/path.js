@@ -240,6 +240,8 @@ export default {
       queryUseName: '/v3/casebase/likequery',
       importCase: '/v3/casebase/import',
       downCaseTemplate: '/template/caseBase.xls',
+      uploadCaseFile: '/v3/file/manage/upload',
+      deleteCaseFile: '/v3/file/manage/delete',
 
 
     },

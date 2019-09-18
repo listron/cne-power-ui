@@ -11,6 +11,9 @@ export const casePartAction = {
   deleteCasePart: Symbol('deleteCasePart'),
   queryUseName: Symbol('queryUseName'),
   importCase: Symbol('importCase'),
+  uploadCaseFile: Symbol('uploadCaseFile'),
+  deleteCaseFile: Symbol('deleteCaseFile'),
+
 
 
 };

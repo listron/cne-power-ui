@@ -348,6 +348,61 @@ function* importCase(action) {
     yield put({ type: casePartAction.changeCasePartStore, payload: { loading: false } });
   }
 }
+function* uploadCaseFile(action) {
+  //上传附件
+  const { payload } = action;
+  const url = `${APIBasePath}${operation.uploadCaseFile}`;
+
+  try {
+    yield put({ type: casePartAction.changeCasePartStore });
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      data: payload.formData,
+      processData: false, // 不处理数据
+      contentType: false, // 不设置内容类型
+    });
+    if (response.data.code === '10000') {
+      yield put({
+        type: casePartAction.changeCasePartStore,
+        payload: {
+        },
+      });
+
+    } else {
+      message.config({ top: 200, duration: 2, maxCount: 3 });
+      message.error(response.data.message);
+      throw response.data.data;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({ type: casePartAction.changeCasePartStore, payload: { loading: false } });
+  }
+}
+function* deleteCaseFile(action) {
+  //上传附件
+  const { payload } = action;
+  const url = `${APIBasePath}${operation.deleteCaseFile}`;
+  try {
+    yield put({ type: casePartAction.changeCasePartStore });
+    const response = yield call(axios.delete, url, { data: payload });
+    if (response.data.code === '10000') {
+      yield put({
+        type: casePartAction.changeCasePartStore,
+        payload: {
+        },
+      });
+    } else {
+      message.config({ top: 200, duration: 2, maxCount: 3 });
+      message.error(response.data.message);
+      throw response.data.data;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({ type: casePartAction.changeCasePartStore, payload: { loading: false } });
+  }
+}
+
 export function* watchCadePartSaga() {
   yield takeLatest(casePartAction.getDeviceMode, getDeviceMode);
   yield takeLatest(casePartAction.getQuestionList, getQuestionList);
@@ -359,5 +414,7 @@ export function* watchCadePartSaga() {
   yield takeLatest(casePartAction.deleteCasePart, deleteCasePart);
   yield takeLatest(casePartAction.queryUseName, queryUseName);
   yield takeLatest(casePartAction.importCase, importCase);
+  yield takeLatest(casePartAction.uploadCaseFile, uploadCaseFile);
+  yield takeLatest(casePartAction.deleteCaseFile, deleteCaseFile);
 
 }
