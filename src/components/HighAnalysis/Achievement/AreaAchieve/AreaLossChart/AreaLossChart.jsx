@@ -63,7 +63,7 @@ export default class AreaLossChart extends Component {
   }
 
   drawChart = (lostGenHourInfo) => {
-    const pointLength = 1;
+    const pointLength = 2;
     const { actualGen, theoryGen, detailList } = lostGenHourInfo;
     const xAxisName = detailList && detailList.map(cur => (cur.name)) || [];
     const xAxisBaseValue = detailList && detailList.map(cur => (cur.baseValue)) || [];
