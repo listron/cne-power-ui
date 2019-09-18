@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
+import { Tooltip } from 'antd';
 import { getCurveBaseOption } from './curveBaseOption';
-import { dataFormats } from '../../../../../utils/utilFunc';
-import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormats } from '@utils/utilFunc';
+import searchUtil from '@utils/searchUtil';
+import uiColors from '@constants/ui';
 import styles from './curve.scss';
 
 class MonthsChart extends Component {
@@ -41,12 +43,6 @@ class MonthsChart extends Component {
     }
   }
 
-  monthColors = [
-    'rgb(80,227,194)', 'rgb(126,211,33)', 'rgb(184,233,134)', 'rgb(160,255,235)',
-    'rgb(255,108,238)', 'rgb(159,152,255)', 'rgb(255,120,120)', 'rgb(255,0,128)',
-    'rgb(255,0,0)', 'rgb(255,144,0)', 'rgb(255,197,129)', 'rgb(255,253,0)',
-  ]
-
   setChartLoading = () => {
     const monthChart = this.monthRef && echarts.getInstanceByDom(this.monthRef);
     monthChart && monthChart.showLoading();
@@ -57,7 +53,7 @@ class MonthsChart extends Component {
     const { devicePowerInfoVos = [], calcDate } = e || {};
     const lineOpacity = activeMonths.includes(calcDate) || (calcDate === '理论功率') ? 1 : 0;
     const monthIndex = curveAllMonths.indexOf(calcDate);
-    const lineColor = monthIndex % this.monthColors.length;
+    const lineColor = uiColors.outputColors[monthIndex];
     return {
       type: 'line',
       smooth: true,
@@ -66,7 +62,7 @@ class MonthsChart extends Component {
       itemStyle: { opacity: lineOpacity },
       lineStyle: {
         opacity: lineOpacity,
-        color: calcDate === '理论功率' ? 'rgb(194,53,49)' : this.monthColors[lineColor],
+        color: calcDate === '理论功率' ? 'rgb(194,53,49)' : lineColor,
       },
       data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]),
     };
@@ -95,7 +91,6 @@ class MonthsChart extends Component {
       searchDevice: [curveDeviceFullcode],
       searchDates: [startTime, endTime],
     });
-    console.log(stationSearch)
     const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({run: stationSearch}).stringify();
     this.props.history.push(`/analysis/achievement/analysis/run?${searchResult}`);
   }
@@ -167,7 +162,12 @@ class MonthsChart extends Component {
     const { curveDeviceName } = this.props;
     return (
       <section className={styles.leftCurve}>
-        <h3>{curveDeviceName || '--'}各月功率曲线</h3>
+        <h3>
+          <span>{curveDeviceName || '--'}各月功率曲线</span>
+          <Tooltip title="功率曲线所用的均为清洗后的数据" placement="top">
+            <span className={styles.curveTip}>i</span>
+          </Tooltip>
+        </h3>
         <div className={styles.totalChart} ref={(ref)=> {this.monthRef = ref;}} />
       </section>
     );

@@ -13,7 +13,6 @@ class StopElecTypes extends Component {
     stopElec: PropTypes.array,
     stopTopStringify: PropTypes.string,
     changeStore: PropTypes.func,
-    getStopElec: PropTypes.func,
     getStopRank: PropTypes.func,
     getStopTrend: PropTypes.func,
     getStopTypes: PropTypes.func,
@@ -37,7 +36,7 @@ class StopElecTypes extends Component {
       value: e.value,
       label: e.name,
       key: e.name,
-      rate: (e.value / sumValue * 100).toFixed(1),
+      rate: dataFormats((e.value / sumValue * 100), '--', 2, true),
       color: colors[i % colors.length],
     })).sort((a, b) => b.value - a.value);
   }
@@ -96,7 +95,7 @@ class StopElecTypes extends Component {
               }}
             >
               {e.label}
-              {i === 0 && ` ${dataFormats(dataFormats(e.value) / 10000, '--', 4, true)}万kWh ${e.rate}%`}
+              {i === 0 && ` ${dataFormats(dataFormats(e.value) / 10000, '--', 2, true)}万kWh ${e.rate}%`}
             </span> : null
           ))}
           {showDetail && <section className={styles.detail} style={{
@@ -107,7 +106,7 @@ class StopElecTypes extends Component {
               <p className={styles.eachDetail}>
                 <span className={styles.detailText}>损失电量</span>
                 <span className={styles.detailText}>
-                  {dataFormats(dataFormats(detailInfo.value) / 10000, '--', 4, true)}
+                  {dataFormats(dataFormats(detailInfo.value) / 10000, '--', 2, true)}
                   万kWh
                 </span>
               </p>

@@ -382,7 +382,7 @@ class HandleSeacher extends React.Component {
               value={this.state.xCode}
             >
               {scatterotherNames.map((e, i) => (
-                <Option key={e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
+                <Option key={e.devicePointCode} disabled={this.state.yCode === e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
               ))}
             </Select>
             <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
@@ -392,7 +392,7 @@ class HandleSeacher extends React.Component {
               value={this.state.yCode}
             >
               {scatterotherNames.map((e, i) => (
-                <Option key={e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
+                <Option key={e.devicePointCode} disabled={this.state.xCode === e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
               ))}
             </Select>
           </div>}

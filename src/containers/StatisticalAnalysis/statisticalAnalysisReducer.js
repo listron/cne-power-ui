@@ -13,6 +13,7 @@ import intelligentAnalysisReducer from './StatisticalReport/IntelligentAnalysis/
 import dataAnalysisScatterReducer from './DataAnalysisTool/DataAnalysisScatter/dataAnalysisScatterReducer';
 import dailyQueryReducer from './StatisticalReport/DailyQuery/dailyQueryReducer';
 import dataAnalysisSequenceReducer from './DataAnalysisTool/DataAnalysisSequence/dataAnalysisSequenceReducer';
+import windResourcesReducer from './DataAnalysisTool/WindResources/windResourcesReducer';
 
 const statisticalAnalysisReducer = combineReducers({
   allStationAnalysis,
@@ -28,6 +29,7 @@ const statisticalAnalysisReducer = combineReducers({
   dataAnalysisScatterReducer,
   dailyQueryReducer,
   dataAnalysisSequenceReducer,
+  windResourcesReducer,
 });
 
 export default statisticalAnalysisReducer;

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import echarts from 'echarts';
 import { getBaseOption } from './chartBaseOption';
-import { dataFormats } from '../../../../../utils/utilFunc';
-import searchUtil from '../../../../../utils/searchUtil';
+import { dataFormats } from '@utils/utilFunc';
+import searchUtil from '@utils/searchUtil';
+import uiColors from '@constants/ui';
 import styles from './lost.scss';
 
 class ChartLostTypes extends Component {
@@ -67,7 +68,7 @@ class ChartLostTypes extends Component {
     barData.push(dataFormats(actualGen, '0'));
     return {
       hideBarData,
-      barData: barData.map(val => dataFormats(val, '', 1)),
+      barData: barData.map(val => dataFormats(val, '', 2, true)),
       xAxisLabel,
     };
   }
@@ -96,18 +97,20 @@ class ChartLostTypes extends Component {
     const typesChart = echarts.init(this.typesRef);
     const { hideBarData, barData, xAxisLabel } = this.getBarValue(lostTypes);
     const baseOption = getBaseOption(xAxisLabel);
-    baseOption.yAxis.name = '利用小时数(h)';
+    baseOption.yAxis.name = '等效小时数(h)';
     baseOption.yAxis.min = 0;
     baseOption.xAxis.axisLabel.interval = 0;
-    baseOption.xAxis.axisLabel.formatter = (str) => {
-      const labelStr = [];
-      let index = 0;
-      while(str[index]){
-        labelStr.push(str[index]);
-        index % 4 === 3 && str[index + 1] && labelStr.push('\n');
-        index++;
+    baseOption.xAxis.axisLabel.formatter = (str = '') => { // 字段名称最少显示4个字
+      const strArr = str.split('');
+      const strLength = strArr.length;
+      if (strLength > 4 && strLength <= 8) {
+        strArr.splice(4, 0, '\n'); // 超过4个字折行
       }
-      return labelStr.join('');
+      if (strLength > 8) { // 超过8个字则显示7个字，后跟…
+        strArr.splice(7);
+        strArr.push('...');
+      }
+      return strArr.join('');
     };
     const option = {
       ...baseOption,
@@ -126,8 +129,8 @@ class ChartLostTypes extends Component {
             <div class=${styles.info}>
               ${param && param[1] &&
               `<span class=${styles.eachItem}>
-                <span>小时数:</span>
-                <span>${dataFormats(param[1].value, '--', 1)}</span>
+                <span>等效小时数:</span>
+                <span>${dataFormats(param[1].value, '--', 2, true)}</span>
               </span>`}
             </div>
           </section>`;
@@ -165,8 +168,8 @@ class ChartLostTypes extends Component {
             value: e,
             itemStyle: {
               color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
-                {offset: 0, color: this.barColor[i][0]},
-                {offset: 1, color: this.barColor[i][1]},
+                {offset: 0, color: this.barColor[i] ? this.barColor[i][0] : ((uiColors.outputColors[i]) || 'blue')},
+                {offset: 1, color: this.barColor[i] ? this.barColor[i][1] : ((uiColors.outputColors[i + 112]) || 'lightblue')},
               ]),
             },
           })),

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './pointManage.scss';
 import StationSelect from '../../../Common/StationSelect';
-import { Select } from 'antd';
+import { Select, Button, Input } from 'antd';
 import PropTypes from 'prop-types';
 const { Option } = Select;
 
@@ -11,7 +11,6 @@ class PointManageSearch extends Component {
     allStationBaseInfo: PropTypes.array,
     queryParams: PropTypes.object,
     stationDeviceTypes: PropTypes.array,
-    allStationBaseInfo: PropTypes.array,
     deviceModels: PropTypes.array,
     deviceTypeCode: PropTypes.number,
     deviceModeCode: PropTypes.number,
@@ -20,13 +19,15 @@ class PointManageSearch extends Component {
     getStationDeviceTypes: PropTypes.func,
     getDeviceModel: PropTypes.func,
     changePointManageStore: PropTypes.func,
+    devicePointStandardCode: PropTypes.string,
+    devicePointName: PropTypes.string,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      
-    }
+
+    };
   }
 
   selectStation = (stations) => {
@@ -40,10 +41,10 @@ class PointManageSearch extends Component {
       deviceTypeCode: null,
       deviceModeCode: null,
       pageNum: 1,
-    })
+    });
     changePointManageStore({
-      deviceModels: []
-    })
+      deviceModels: [],
+    });
   }
 
   selectDeviceType = (value) => {
@@ -57,7 +58,7 @@ class PointManageSearch extends Component {
       deviceTypeCode: value,
       deviceModeCode: null,
       pageNum: 1,
-    })
+    });
   }
 
   selectDeviceModel = (value) => {
@@ -66,33 +67,64 @@ class PointManageSearch extends Component {
       ...queryParams,
       deviceModeCode: value,
       pageNum: 1,
-    })
+    });
+  }
+  changePointCode = (e) => {
+    this.props.changePointManageStore({
+      devicePointStandardCode: e.target.value,
+    });
+  }
+  changeDesc = (e) => {
+    this.props.changePointManageStore({
+      devicePointName: e.target.value,
+    });
+  }
+  searchData = () => {
+    //查询数据
+    const { getPointList, queryParams, devicePointStandardCode, devicePointName } = this.props;
+    getPointList({
+      ...queryParams,
+      devicePointStandardCode,
+      devicePointName,
+      pageNum: 1,
+    });
   }
 
   render() {
     const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode } = this.props;
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = deviceModels.length === 0;
-    const getSelectedStation = allStationBaseInfo.find(e=> e.stationCode === stationCode);
-    const selectedStationInfo = getSelectedStation? [getSelectedStation] : []; 
+    const getSelectedStation = allStationBaseInfo.find(e => e.stationCode === stationCode);
+    const selectedStationInfo = getSelectedStation ? [getSelectedStation] : [];
     return (
       <div className={styles.pointManageSearch}>
-        <span className={styles.titleText}>条件查询</span>
-        <StationSelect data={allStationBaseInfo} onOK={this.selectStation} value={selectedStationInfo}  holderText="请输入电站名称" />
-        <Select className={styles.typeSelect} onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
-          <Option key={null} value={null}>{'全部设备类型'}</Option>
-          {stationDeviceTypes.map(e=>{
-            if(!e){ return null; }
-            return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
-          })}
-        </Select>
-        <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModeCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
-          <Option key={null} value={null}>{'全部设备型号'}</Option>
-          {deviceModels.map(e=>{
-            if(!e){ return null; }
-            return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
-          })}
-        </Select>
+        <div className={styles.topSearch}>
+          <span className={styles.titleText}>条件查询</span>
+          <StationSelect data={allStationBaseInfo} onOK={this.selectStation} value={selectedStationInfo} holderText="请输入电站名称" />
+          <Select className={styles.typeSelect} onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
+            <Option key={null} value={null}>{'全部设备类型'}</Option>
+            {stationDeviceTypes.map(e => {
+              if (!e) { return null; }
+              return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>;
+            })}
+          </Select>
+          <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModeCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
+            <Option key={null} value={null}>{'全部设备型号'}</Option>
+            {deviceModels.map(e => {
+              if (!e) { return null; }
+              return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>;
+            })}
+          </Select>
+        </div>
+        <div className={styles.bottomSeach}>
+          <span className={styles.titleText}>测点编号</span>
+          <Input className={styles.searchInput} onChange={this.changePointCode} allowClear={true} />
+          <span className={styles.titleText}>测点描述</span>
+          <Input className={styles.searchInput} onChange={this.changeDesc} allowClear={true} />
+          <Button onClick={this.searchData} className={styles.searchBtn}>查找</Button>
+
+        </div>
+
       </div>
     );
   }

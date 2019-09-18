@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'antd';
-import StationSelectModal from './StationSelectModal'
+import StationSelectModal from './StationSelectModal';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 
@@ -50,57 +50,65 @@ class SingleStationImportFileModel extends Component {
     uploadPath: PropTypes.string,
     uploaderName: PropTypes.string,
     loadedCallback: PropTypes.func,
-    upLoadOutExtraData:PropTypes.object,
-    hasExistedJudge:PropTypes.bool,
+    upLoadOutExtraData: PropTypes.object,
+    hasExistedJudge: PropTypes.bool,
   }
   static defaultProps = {
     data: [],
     disableStation: [],
     uploadExtraData: [],
     uploadPath: '',
+    showPlusBtn: true,
   }
   constructor(props) {
     super(props);
     this.state = {
       modalShow: false,
-    }
+    };
   }
-  
+
   showStationModal = () => {
     this.setState({
       modalShow: true,
-    })
+    });
   }
 
   hideStationModal = () => {
     this.setState({
       modalShow: false,
-    })
+    });
   }
 
   render() {
-    const { data, uploaderName, uploadPath, disableStation, uploadExtraData, loadedCallback ,upLoadOutExtraData,hasExistedJudge } = this.props;
+    const { data, uploaderName, uploadPath, disableStation, uploadExtraData, loadedCallback, upLoadOutExtraData, hasExistedJudge, showPlusBtn } = this.props;
     const { modalShow } = this.state;
-    const initHasExistedJudge=hasExistedJudge?hasExistedJudge:false
+    const initHasExistedJudge = hasExistedJudge ? hasExistedJudge : false;
     return (
       <span className={styles.singleStationImportFileModel}>
-        <Button onClick={this.showStationModal} className={styles.addButton}>
+        {showPlusBtn && <Button onClick={this.showStationModal} className={styles.addButton}>
           <span className={styles.plus}>+</span>
           <span className={styles.name}>{uploaderName}</span>
-        </Button>
-        {modalShow && <StationSelectModal 
+        </Button>}
+        {!showPlusBtn &&
+          <Button
+            className={styles.intoInfo}
+            onClick={this.showStationModal}
+          >导入测点表
+       </Button>
+        }
+        {modalShow && <StationSelectModal
           uploaderName={uploaderName}
           data={data}
           uploadPath={uploadPath}
           disableStation={disableStation}
           uploadExtraData={uploadExtraData}
           upLoadOutExtraData={upLoadOutExtraData}
-          hideStationModal={this.hideStationModal} 
+          hideStationModal={this.hideStationModal}
           loadedCallback={loadedCallback}
           hasExistedJudge={initHasExistedJudge}
         />}
       </span>
-    )
+    );
   }
 }
 export default SingleStationImportFileModel;
