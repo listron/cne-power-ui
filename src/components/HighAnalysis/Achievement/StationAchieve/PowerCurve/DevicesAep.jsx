@@ -23,7 +23,7 @@ class DevicesAep extends Component {
 
   state = {
     modeArr: [],
-    sortName: 'deviceName', // windSpeed, aep;
+    sortName: 'deviceOrderName', // windSpeed, aep;
   }
 
   componentDidMount(){
@@ -64,7 +64,7 @@ class DevicesAep extends Component {
 
   sortDeviceAes = (data = [], sorter) => {
     return [...data].sort((a, b) => {
-      if(sorter === 'deviceName') {
+      if(sorter === 'deviceOrderName') {
         return a[sorter] && b[sorter] && a[sorter].localeCompare(b[sorter]);
       }
       return b[sorter] - a[sorter];
@@ -230,7 +230,7 @@ class DevicesAep extends Component {
               style={{width: '200px'}}
               value={sortName}
             >
-              <Option value="deviceName">风机名称</Option>
+              <Option value="deviceOrderName">风机名称</Option>
               <Option value="aep">AEP</Option>
               <Option value="windSpeed">风速</Option>
             </Select>
