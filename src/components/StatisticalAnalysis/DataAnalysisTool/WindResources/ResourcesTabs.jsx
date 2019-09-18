@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Frequency from './Frequency.jsx';
-import WindRose from './WindRose.jsx';
+import WindRose from './WindRose/WindRose.jsx';
 import styles from './resources.scss';
 
 class ResourcesTabs extends Component{
