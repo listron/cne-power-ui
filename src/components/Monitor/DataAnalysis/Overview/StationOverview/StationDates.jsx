@@ -17,6 +17,7 @@ class StationDates extends PureComponent{
     getOverviewDevices: PropTypes.func,
     getOverviewDates: PropTypes.func,
     getOverviewStation: PropTypes.func,
+    getPoints: PropTypes.func,
   }
 
   rateLevel = [
@@ -76,8 +77,12 @@ class StationDates extends PureComponent{
         deviceTopData: stationTopData,
         deviceParam, // 请求参数保存
       });
-      // this.props.getOverviewDevices(deviceParam); // 请求设备页测点列表.
-
+      this.props.getPoints({
+        params: {
+          stationCode, deviceTypeCode, require: 'yc,ym',
+        },
+        resultName: 'devicePointsList',
+      });
       const { pages = '' } = searchUtil(search).parse();
       const allPages = pages.split('_').filter(e => !!e); // 开启的tab页面
       !allPages.includes('device') && allPages.push('device');

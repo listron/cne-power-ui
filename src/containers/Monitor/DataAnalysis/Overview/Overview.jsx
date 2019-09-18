@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import searchUtil from '@utils/searchUtil';
 import { overviewAction } from './overviewReducer';
+import { commonAction } from '../../../../containers/alphaRedux/commonAction';
 import HearderTab from '@components/Monitor/DataAnalysis/Overview/HeaderTab/HearderTab';
 import StationOverview from '@components/Monitor/DataAnalysis/Overview/StationOverview/StationOverview';
 import CommonBreadcrumb from '@components/Common/CommonBreadcrumb';
@@ -42,29 +43,25 @@ class Overview extends Component{
   //   allPages.includes('point') && this.props.getOverviewPoints();
   // }
 
-  // jsonStrFormat = (jsonStr = '') => {
-  //   let jsonRes = {};
-  //   try {
-  //     jsonRes = JSON.parse(jsonStr) || {};
-  //   } catch(error){ console.log(error); }
-  //   return jsonRes;
-  // }
+  getSearchTab = () => {
+    const { history } = this.props;
+    const { search } = history.location;
+    const { tab = '' } = searchUtil(search).parse();
+    return tab;
+  }
 
   render(){
-    // const { scatterDiagramType } = this.props;
+    const tab = this.getSearchTab()
     return(
       <div className={styles.overview}>
         <CommonBreadcrumb breadData={[{ name: '数据概览' }]} style={{ paddingLeft: '40px' }} />
         <div className={styles.contentBox}>
           <HearderTab {...this.props} />
           <div className={styles.dataOverview}>
-            <StationOverview {...this.props} />
-            {/* <ScatterDiagramSearch {...this.props} /> */}
-            {/* <ScatterDiagramDataType {...this.props} /> */}
-            {/* <div className={styles.dataCenter}>
-              {scatterDiagramType === 'chart' && <ScatterDiagramChart {...this.props} />}
-              {scatterDiagramType === 'list' && <ScatterDiagramList {...this.props} />}
-            </div> */}
+            {tab === 'station' && <StationOverview {...this.props} />}
+            {tab === 'device' && <div>
+              这个就是设备页面
+            </div>}
           </div>
         </div>
         <Footer />
@@ -82,9 +79,17 @@ const mapDispatchToProps = (dispatch) =>({
   getOverviewStation: payload => dispatch({ type: overviewAction.getOverviewStation, payload }),
   getOverviewDates: payload => dispatch({ type: overviewAction.getOverviewDates, payload }),
   getOverviewDevices: payload => dispatch({ type: overviewAction.getOverviewDevices, payload }),
+  // afterDeviceTypePointGet: payload => dispatch({ type: overviewAction.afterDeviceTypePointGet, payload }),
   getOverviewPoints: payload => dispatch({ type: overviewAction.getOverviewPoints, payload }),
   changeOverviewStore: payload => dispatch({ type: overviewAction.changeStore, payload }),
   resetOverview: () => dispatch({ type: overviewAction.reset }),
+  getPoints: params => dispatch({
+    type: commonAction.getPoints,
+    payload: {
+      actionName: overviewAction[params.actionName || 'changeStore'], // 默认执行changeStore, 此处可选择指定saga函数执行
+      ...params,
+    },
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);

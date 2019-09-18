@@ -100,19 +100,6 @@ class StationOverview extends PureComponent{
     this.props.getOverviewDates({ ...queryParam });
   }
 
-  // monthChange = () => { // 月份变化
-  //   const { stationParam } = this.props;
-  //   const queryParam = {
-  //     ...stationParam,
-  //     deviceTypeCode,
-  //   };
-  //   this.props.changeOverviewStore({
-  //     stationParam: { ...queryParam },
-  //     stationDatesRate: [], // 清空日期数据
-  //   });
-  //   this.props.getOverviewDates({ ...queryParam });
-  // }
-
   render(){
     const { stationParam, stationTopData, stations } = this.props;
     const { stationCode, deviceTypeCode } = stationParam;

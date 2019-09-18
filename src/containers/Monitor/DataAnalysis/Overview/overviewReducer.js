@@ -15,15 +15,18 @@ const initState = immutable.fromJS({
   tab: 'station', // 激活的tab页, station, device, points
   pages: ['station'], // 开启的tab页面
   stationParam: {}, // stationCode, deviceTypeCode, month => search-station是该字段的jsonStr
-  deviceParam: {}, // stationCode, deviceTypeCode, dateType(1日2月), date, pointCodes => search-device是该字段的jsonStr
-  pointParam: {}, // stationCode, deviceTypeCode, deviceFullcode, dateType, date, pointCodes => search-point是该字段的jsonStr
+  deviceParam: {}, // stationCode, deviceTypeCode, dateType(1日2月), date, pointCodes => search的device不含pointCodes
+  pointParam: {}, // stationCode, deviceTypeCode, deviceFullcode, dateType, date, pointCodes => search的point不含pointCodes
 
   stationDatesRate: [], // 电站各日数据平均完备信息
   stationTopData: {}, // 电站页顶部信息
   stationUnix: null, // 电站页请求时间
+
   devicesData: {}, // 各设备信息
   deviceTopData: {}, // 设备页顶部信息
+  devicePointsList: [], // 设备页测点列表
   deviceUnix: null, // 电站页请求时间
+
   pointsData: [], // 各测点信息列表
   pointTopData: {}, // 测点页顶部信息
   pointUnix: null, // 电站页请求时间

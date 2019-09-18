@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import request from '@utils/request';
 import { message } from 'antd';
 import moment from 'moment';
@@ -19,7 +19,6 @@ function* easyPut(actionName, payload){
     payload,
   });
 }
-
 
 function *getOverviewStation({ payload }){ // 电站基础数据信息 - 各页面单独存储一份
   try {
@@ -54,6 +53,12 @@ function *getOverviewDates({ payload }){ // 电站各日完整率
       stationDatesRate: [],
     });
   }
+}
+
+function *afterDeviceTypePointGet({ payload }) { // 设备页 获得测点数据后触发
+  const states = yield select(state => state.monitor.overview);
+  console.log(states);
+  console.log(payload);
 }
 
 function *getOverviewDevices({ payload }){ // 获取所有设备数据信息
@@ -94,6 +99,7 @@ export function* watchMonitorDataOverview() {
   yield takeLatest(overviewAction.getOverviewStation, getOverviewStation);
   yield takeLatest(overviewAction.getOverviewDates, getOverviewDates);
   yield takeLatest(overviewAction.getOverviewDevices, getOverviewDevices);
+  yield takeLatest(overviewAction.afterDeviceTypePointGet, afterDeviceTypePointGet);
   yield takeLatest(overviewAction.getOverviewPoints, getOverviewPoints);
 }
 
