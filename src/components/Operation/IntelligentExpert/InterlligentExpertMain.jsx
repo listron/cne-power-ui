@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Button, Select, Icon } from 'antd';
 import styles from './intelligentExpert.scss';
 import IntelligentSearch from './IntelligentSearch';
 import IntelligentTable from './IntelligentTable';
@@ -8,6 +7,13 @@ import IntelligentTable from './IntelligentTable';
 class InterlligentExpertMain extends Component {
   static propTypes = {
     theme: PropTypes.string,
+    stationType: PropTypes.string,
+    stationTypeCount: PropTypes.string,
+    listParams: PropTypes.object,
+    getStationTypeDeviceTypes: PropTypes.func,
+    resetStore: PropTypes.func,
+    changeIntelligentExpertStore: PropTypes.func,
+    getIntelligentTable: PropTypes.func,
   }
 
   constructor(props) {
@@ -22,7 +28,7 @@ class InterlligentExpertMain extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    const { getStationTypeDeviceTypes, stationType, listParams, getIntelligentTable } = nextProps;
+    const { stationType, listParams, getIntelligentTable } = nextProps;
     if (this.props.stationType !== nextProps.stationType) {
       getIntelligentTable({ ...listParams, type: stationType });
     }
@@ -31,7 +37,11 @@ class InterlligentExpertMain extends Component {
 
   queryTargetData = (value) => { // 切换电站
     const { getStationTypeDeviceTypes, listParams } = this.props;
-    this.props.changeIntelligentExpertStore({ stationType: value, listParams: { ...listParams, deviceTypeCodes: [], defectTypeCode: [] } });
+    this.props.changeIntelligentExpertStore({
+      stationType: value,
+      selectedRowKeys: [],
+      listParams: { ...listParams, deviceTypeCodes: [], defectTypeCode: [] },
+    });
     getStationTypeDeviceTypes({ type: value });
   }
 
@@ -46,8 +56,19 @@ class InterlligentExpertMain extends Component {
             <p className={`${stationType === '1' && styles.activeStation} `} onClick={() => { this.queryTargetData('1'); }}>光伏</p>
           </div>
         }
-        <IntelligentSearch {...this.props} />
-        <IntelligentTable {...this.props} />
+        {stationType === '0' &&
+          <React.Fragment>
+            <IntelligentSearch {...this.props} />
+            <IntelligentTable {...this.props} />
+          </React.Fragment>
+        }
+        {stationType === '1' &&
+          <React.Fragment>
+            <IntelligentSearch {...this.props} />
+            <IntelligentTable {...this.props} />
+          </React.Fragment>
+        }
+
       </div>
     );
   }

@@ -24,6 +24,8 @@ class IntelligentTable extends Component {
     selectedRowKeys: PropTypes.array,
     selectedRowData: PropTypes.array,
     theme: PropTypes.string,
+    stationType: PropTypes.string,
+    downLoadFile: PropTypes.func,
   }
 
   constructor(props) {
@@ -31,9 +33,9 @@ class IntelligentTable extends Component {
     this.state = {
       showModal: false, // 是否显示导入模态框
       showDeleteWarning: false, // 是否显示删除提示框
-      warningTipText: '', // 删除提示语
-      handleColumnDel: false, // 删除操作来源, false =>选中行后点击删除。true => 选中表格列中的直接删除
-      handleColumnDelInfo: {}, // 选中表格列中直接删除记录的信息
+      warningTipText: '确定要删除解决方案么', // 删除提示语
+      deleteKnowledgeId: '', //删除的ID
+      handleColumnDel: false, // 是否是单独删除解决方案
     };
   }
 
@@ -51,7 +53,7 @@ class IntelligentTable extends Component {
     const { order } = sorter;
     const initSorterField = 'like_count';
     const sortMethod = order === 'ascend' ? 'asc' : 'desc';
-    const sortField = sorter.field ? this.sortField(sorter.field) : initSorterField;
+    const sortField = sorter.field ? this.toLine(sorter.field) : initSorterField;
     getIntelligentTable({
       ...listParams,
       orderField: sortField,
@@ -59,14 +61,8 @@ class IntelligentTable extends Component {
     });
   }
 
-  sortField(sortField) {
-    let result = '';
-    switch (sortField) {
-      case 'updateTime': result = 'update_time'; break;
-      case 'likeCount': result = 'like_count'; break;
-      default: result = ''; break;
-    }
-    return result;
+  toLine = (name) => {
+    return name.replace(/([A-Z])/g, '_$1').toLowerCase();
   }
 
   onSelectChange = (keys, record) => { // 选中行
@@ -89,43 +85,33 @@ class IntelligentTable extends Component {
   deleteIntelligent = () => { // 批量删除
     this.setState({
       showDeleteWarning: true,
-      warningTipText: '确定要删除解决方案么?',
     });
   }
 
   cancelWarningTip = () => { // 删除确认框
-    this.setState({ showDeleteWarning: false });
+    this.setState({
+      showDeleteWarning: false,
+      deleteKnowledgeId: '',
+      handleColumnDel: false,
+    });
   }
 
   confirmWarningTip = () => { // 删除选中的行
-    const { selectedRowData, deleteIntelligent, listParams, getIntelligentTable } = this.props;
-    const { handleColumnDel, handleColumnDelInfo } = this.state;
+    const { selectedRowData, deleteIntelligent } = this.props;
+    const { handleColumnDel, deleteKnowledgeId } = this.state;
     if (handleColumnDel) {
       deleteIntelligent({
-        knowledgeBaseIds: handleColumnDelInfo.knowledgeBaseId,
+        knowledgeBaseIds: [deleteKnowledgeId],
       });
     } else {
       deleteIntelligent({
-        knowledgeBaseIds: selectedRowData.map((e, i) => {
-          return e.knowledgeBaseId;
-        }),
+        knowledgeBaseIds: selectedRowData.map(e => e.knowledgeBaseId),
       });
     }
     this.setState({
       showDeleteWarning: false,
       handleColumnDel: false,
-      handleColumnDelInfo: {},
-    });
-
-    getIntelligentTable(listParams); // 返回列表页面时重新请求列表数据
-  }
-
-  singleDeleteIntelligent = (record) => { // 单独删除
-    this.setState({
-      showDeleteWarning: true,
-      warningTipText: '确定要删除解决方案么?',
-      handleColumnDel: true,
-      handleColumnDelInfo: record,
+      deleteKnowledgeId: '',
     });
   }
 
@@ -135,8 +121,15 @@ class IntelligentTable extends Component {
     });
   }
 
+  singleDeleteIntelligent = (record) => { // 单独删除
+    this.setState({
+      showDeleteWarning: true,
+      deleteKnowledgeId: record.knowledgeBaseId,
+      handleColumnDel: true,
+    });
+  }
+
   columnlook = (record, selectedIndex) => { // 查看详情
-    console.log('record', record, selectedIndex);
     const { changeIntelligentExpertStore, getKnowledgebase } = this.props;
     changeIntelligentExpertStore({
       showPage: 'detail',
@@ -164,6 +157,15 @@ class IntelligentTable extends Component {
     });
   }
 
+  downLoad = () => {
+    const { downLoadFile, stationType } = this.props;
+    const downloadTemplet = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadIntelligentTemplet}/${stationType}`; // 下载导入模板
+    downLoadFile({
+      url: downloadTemplet,
+      method: 'get',
+    });
+  }
+
   render() {
     const { showModal, warningTipText, showDeleteWarning } = this.state;
     const { intelligentTableData, tableLoading, listParams, selectedRowKeys, theme, stationType } = this.props;
@@ -173,7 +175,7 @@ class IntelligentTable extends Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    const downloadTemplet = `${path.basePaths.originUri}${path.APISubPaths.operation.downloadIntelligentTemplet}`; // 下载导入模板
+
     const rightHandler = localStorage.getItem('rightHandler') || '';
     const editRight = rightHandler.split(',').includes('operation_experience_edit');
     const checkItemsName = stationType === '0' && '故障原因' || '检查项目';
@@ -249,7 +251,7 @@ class IntelligentTable extends Component {
                 <Button className={styles.addHandler} type="add" onClick={this.addIntelligent}><i>+</i>添加</Button>
                 <Button className={styles.deleteHandler} type="reset" onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</Button>
                 <Button className={styles.importHandler} type="primary" onClick={this.showModal}>导入</Button>
-                <Button className={styles.exportHandler} type="primary" href={downloadTemplet} download={downloadTemplet} target="_blank">下载导入模板</Button>
+                <Button className={styles.exportHandler} type="primary" onClick={this.downLoad}>下载导入模板</Button>
               </React.Fragment>
             }
           </div>
@@ -259,13 +261,12 @@ class IntelligentTable extends Component {
         <Table
           loading={tableLoading}
           className={styles.intelligentList}
-          dataSource={dataList.map((e, i) => ({ ...e, key: i }))}
+          dataSource={dataList.map((e, i) => ({ ...e, key: e.knowledgeBaseId }))}
           columns={columns}
           rowSelection={rowSelection}
           onChange={this.tableChange}
           pagination={false}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-          rowKey={(record) => { return record.knowledgeBaseId; }}
         />
         {dataList.length > 0 &&
           <div className={styles.tableFooter}>

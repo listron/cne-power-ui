@@ -324,10 +324,9 @@ class AddIntelligent extends Component {
               )}
             </Form.Item>
             <div className={styles.actionBtn}>
-              <Button onClick={() => this.saveHandler(false)} className={styles.saveBtn}>保存</Button>
+              <Button onClick={() => this.saveHandler(false)} className={styles.saveBtn} type="primary">保存</Button>
               <Button onClick={() => this.saveHandler(true)} className={styles.saveAndAddHandler}>保存并继续添加</Button>
             </div>
-
           </Form>
         </div>
       </div >

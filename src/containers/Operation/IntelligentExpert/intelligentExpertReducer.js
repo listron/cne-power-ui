@@ -21,6 +21,7 @@ const initState = immutable.fromJS({
   intelligentTableData: {}, // 列表数据
   intelligentDetail: {}, // 查看详情页面数据
   usernames: [], // 获取录入人
+  selectedRowKeys: [],
   stationType: '0',
   deviceModeList: [], // 设备型号的列表
   faultCodeList: [], // 故障代码的列表

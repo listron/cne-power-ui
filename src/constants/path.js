@@ -123,7 +123,8 @@ export default {
       getIntelligentTable: '/v3/knowledgebase/list', // 智能专家库列表
       // getKnowledgebase: '/v3/knowledgebase', // 智能专家库详情
       getLike: '/v3/knowledgebase/like', // 智能专家库点赞
-      downloadIntelligentTemplet: '/template/knowledgeBase.zip', // 下载导入模板
+      downloadIntelligentTemplet: '/v3/knowledgebase/downLoad', // 下载导入模板
+
       operationIntelligent: '/v3/knowledgebase', // 删除、添加、编辑智能专家库
       getUserName: '/v3/user/related', // 获取相关用户名
       getFaultCode: '/v3/knowledgebase/faultCode/like', //	故障代码列表

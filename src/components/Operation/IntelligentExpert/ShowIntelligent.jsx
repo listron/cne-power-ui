@@ -8,10 +8,8 @@ class ShowIntelligent extends Component {
   static propTypes = {
     changeIntelligentExpertStore: PropTypes.func,
     getIntelligentTable: PropTypes.func,
-    onShowSideChange: PropTypes.func,
     getLike: PropTypes.func,
     intelligentDetail: PropTypes.object,
-    knowledgeBaseId: PropTypes.string,
     listParams: PropTypes.object,
   }
 
@@ -24,14 +22,13 @@ class ShowIntelligent extends Component {
   }
 
   likeBtn = () => { // 点赞
-    const { getLike, knowledgeBaseId } = this.props;
-    getLike({ knowledgeBaseId });
+    const { getLike, intelligentDetail } = this.props;
+    getLike({ knowledgeBaseId: intelligentDetail.knowledgeBaseId });
   }
 
   editBtn = () => { // 编辑按钮
-    const { changeIntelligentExpertStore, onShowSideChange } = this.props;
+    const { changeIntelligentExpertStore } = this.props;
     changeIntelligentExpertStore({ showPage: 'edit' });
-    // onShowSideChange('edit'); // 跳转到编辑页面
   }
 
   render() {

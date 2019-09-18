@@ -16,7 +16,6 @@ class EditIntelligent extends Component {
     changeIntelligentExpertStore: PropTypes.func,
     listParams: PropTypes.object,
     getIntelligentTable: PropTypes.func,
-    knowledgeBaseId: PropTypes.string,
   }
 
   constructor(props) {

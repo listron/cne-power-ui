@@ -30,9 +30,6 @@ class IntelligentExpert extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      sideTransform: 0,
-    };
   }
 
   componentDidMount() {
@@ -52,20 +49,9 @@ class IntelligentExpert extends Component {
     this.props.resetStore();
   }
 
-  showSide = (showPage) => {
-    this.setState({ sideTransform: 100 });
-    this.props.changeIntelligentExpertStore({ showPage });
-  }
-
-  backList = () => {
-    this.setState({ sideTransform: 0 });
-    this.props.changeIntelligentExpertStore({ showPage: 'list' });
-  }
-
 
   render() {
     const { showPage, theme } = this.props;
-    const { sideTransform } = this.state;
     return (
       <div className={`${styles.intelligentExpert} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '智能专家库' }]} style={{ marginLeft: '40px' }} />
@@ -80,13 +66,6 @@ class IntelligentExpert extends Component {
           >
             <IntelligentSide {...this.props} showPage={showPage} onShowSideChange={this.onShowSideChange} />
           </TransitionContainer>
-          {/* <div className={styles.sidePage} style={{ 'transition': 'all 500ms ease', transform: `translateX(-${sideTransform}%)` }}>
-            {{
-              'add': <AddIntelligent {...this.props} backList={this.backList} showSide={this.showSide} />,
-              'edit': <EditIntelligent {...this.props} backList={this.backList} showSide={this.showSide} />,
-              'detail': <ShowIntelligent {...this.props} backList={this.backList} showSide={this.showSide} />,
-            }[showPage]}
-          </div> */}
         </div>
         <Footer />
       </div>
@@ -131,6 +110,13 @@ const mapDispatchToProps = (dispatch) => ({
       params,
       actionName: intelligentExpertAction.changeIntelligentExpertStore,
       resultName: 'deviceTypes',
+    },
+  }),
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: intelligentExpertAction.changeIntelligentExpertStore,
     },
   }),
 });
