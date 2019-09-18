@@ -27,7 +27,7 @@ export const rightInfo = (data) => {
     { name: '是否显示', value: data.isShow ? '是' : '否' },
     { name: '理论最大值', value: data.maxTheory },
     { name: '理论最小值', value: data.minTheory },
-    { name: '偏差值', value: data.discrepancy },
+    { name: '偏差值', value: data.offset },
   ];
   return rightArray;
 };
