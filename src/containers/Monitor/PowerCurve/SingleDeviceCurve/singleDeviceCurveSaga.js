@@ -15,16 +15,16 @@ function* getSingleDeviceCurveData(action) { //功率曲线图表-功率曲线-�
   const { correct } = payload;
   // const powercurveUrl = `/mock/wind/powercurve/fan/powercurvechart`;
   const powercurveUrl = `${APIBasePath}${monitor.getSingleDeviceCurveData}`;
-  const response = yield call(axios.post, powercurveUrl, payload);
   try {
     yield put({
       type: singleDeviceCurveAction.changeSingleDeviceStore,
       payload: {
         correct,
         curveChartLoadding: true,
-        // curveTime: moment().unix(), //时间戳
+        curveTime: moment().unix(), //时间戳
       },
     });
+    const response = yield call(axios.post, powercurveUrl, payload);
     if (response.data.code === '10000') {
       yield put({
         type: singleDeviceCurveAction.GET_SINGLE_DEVICECURVE_SUCCESS,
