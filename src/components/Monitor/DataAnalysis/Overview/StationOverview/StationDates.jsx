@@ -9,6 +9,8 @@ const { MonthPicker } = DatePicker;
 class StationDates extends PureComponent{
   static propTypes = {
     month: PropTypes.string,
+    // stationCode={stationCode}
+    // deviceTypeCode={deviceTypeCode}
     stationDatesRate: PropTypes.array,
     // history: PropTypes.object,
     changeOverviewStore: PropTypes.func,
@@ -42,15 +44,19 @@ class StationDates extends PureComponent{
   }
 
   clickDate = (e) => {
-    console.log(e.target)
-    console.log(e.target.dataset)
-    console.log(e.currentTarget)
-    console.log(e.currentTarget.dataset)
+    const { } = this.props;
+    console.log(this.props);
+    const { dataset } = e.target;
+    const { date } = dataset;
+    if (date) {
+
+    }
+    console.log(dataset)
+    console.log(date)
   }
 
   render(){
     const { month = [], stationDatesRate = [] } = this.props;
-    console.log(stationDatesRate)
     return(
       <div className={styles.dates}>
         <div className={styles.datesTopInfo}>
@@ -71,21 +77,21 @@ class StationDates extends PureComponent{
           <div className={styles.datesList} onClick={this.clickDate}>
             {this.getMonthDatesInfo(month).map(e => {
               const validDate = stationDatesRate.find(rate => moment(rate.date).isSame(e, 'd'));
-              const { date, completeRate, stationCode, deviceTypeCode } = validDate || {};
-              const rateStr = dataFormats(date, '--', 2, true);
+              const { date, completeRate } = validDate || {};
+              const rateStr = dataFormats(completeRate, '--', 2, true);
               let backgroundColor = '#f8f8f8';
               rateStr < 0.2 && rateStr >= 0 && (backgroundColor = '#3b85d5');
               rateStr < 0.4 && rateStr >= 0.2 && (backgroundColor = '#599fe7');
               rateStr < 0.6 && rateStr >= 0.4 && (backgroundColor = '#8fc6f6');
               rateStr < 0.8 && rateStr >= 0.6 && (backgroundColor = '#abd8fc');
               rateStr >= 0.8 && (backgroundColor = '#e2f2fb');
-              const dayStyle = validDate ? {
+              const dayStyle = moment(e).isSame(month, 'M') ? {
                 backgroundColor,
                 color: '#000',
                 cursor: 'pointer',
               } : {};
               return (
-                <div className={styles.eachDay} style={{ ...dayStyle }} key={e} data-value={validDate}>
+                <div className={styles.eachDay} style={{ ...dayStyle }} key={e} data-date={date}>
                   <span className={styles.monthDay}>{moment(e).format('D')}</span>
                   {validDate && <span className={styles.rateData}>
                     {dataFormats(rateStr * 100, '--', 2, true)}%

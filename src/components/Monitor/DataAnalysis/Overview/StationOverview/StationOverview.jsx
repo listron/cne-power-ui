@@ -129,7 +129,12 @@ class StationOverview extends PureComponent{
               onStationChange={this.stationChanged}
               onTypeChange={this.deviceTypeChanged}
             />
-            <StationDates month={month} stationDatesRate={stationDatesRate} />
+            <StationDates
+              month={month}
+              stationDatesRate={stationDatesRate}
+              stationCode={stationCode}
+              deviceTypeCode={deviceTypeCode}
+            />
           </div>
         }
       </div>
