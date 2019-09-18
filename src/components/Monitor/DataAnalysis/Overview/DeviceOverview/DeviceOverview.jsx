@@ -44,15 +44,6 @@ class DeviceOverview extends PureComponent{
         resultName: 'devicePointsList',
       });
     }
-    // if (stationCode && deviceTypeCode && stationDatesRate.length === 0) { 
-    //   const stationParam = { stationCode, deviceTypeCode, month };
-    //   this.props.changeOverviewStore({ stationParam });
-    //   this.props.getOverviewStation({ // 电站信息;
-    //     stationCode,
-    //     pageKey: 'station',
-    //   });
-    //   this.props.getOverviewDates(stationParam);
-    // }
   }
 
   componentWillReceiveProps(nextProps){
@@ -69,18 +60,16 @@ class DeviceOverview extends PureComponent{
         actionName: 'afterDeviceTypePointGet',
         resultName: 'devicePointsList',
       });
-      // const queryParam = {
-        // stationCode: stationParam.stationCode,
-        // deviceTypeCode, // 按默认设备类型进自动填入进行数据请求,
-    //     month: stationParam.month || moment().subtract(1, 'day').format('YYYY-MM'), // 默认昨天所属月
-      // };
-    //   const { pathname, search } = history.location;
-    //   const newSearch = searchUtil(search).replace({
-    //     station: JSON.stringify(queryParam),
-    //   }).stringify();
-    //   history.push(`${pathname}?${newSearch}`); // 替换station信息
-    //   this.props.changeOverviewStore({ stationParam: queryParam }); // 并将请求数据存入reducer
-    //   this.props.getOverviewDates(queryParam);
+      const queryParam = {
+        ...deviceParam,
+        deviceTypeCode,
+      };
+      this.props.changeOverviewStore({ deviceParam: queryParam }); // 并将请求数据存入reducer
+      const { pathname, search } = history.location;
+      const newSearch = searchUtil(search).replace({ // 路径自动修改
+        device: JSON.stringify(queryParam),
+      }).stringify();
+      history.push(`${pathname}?${newSearch}`);
     }
   }
 
