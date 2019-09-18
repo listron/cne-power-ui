@@ -187,7 +187,12 @@ class AreaAchieve extends Component {
       if(quotaValue === '100') {
         return <span>{rankTotal.length > 0 && `${rankTotal[0].regionName || '--'}: ${qutaName.toString() || ''} ${dataFormats(unitName === '%' ? rankTotal[0].indicatorData.value * 100 : rankTotal[0].indicatorData.value, '--', pointLength, true)}${unitName || '--'}`}</span>;
       }
-      return <span>{`${rankTotal[0].regionName || '--'}: 实发小时数${dataFormats(unitName === '%' ? rankTotal[0].indicatorData.actualGen : rankTotal[0].indicatorData.actualGen, '--', pointLength, true)}${unitName || '--'} 应发小时数${dataFormats(unitName === '%' ? rankTotal[0].indicatorData.theoryGen * 100 : rankTotal[0].indicatorData.theoryGen, '--', pointLength, true)}${unitName || '--'}`}</span>;
+      // 等效小时数
+      if(quotaValue === '200') {
+        return <span>{`${rankTotal[0].regionName || '--'}: 实发小时数${dataFormats(unitName === '%' ? rankTotal[0].indicatorData.actualGen * 100 : rankTotal[0].indicatorData.actualGen, '--', pointLength, true)}${unitName || '--'} 应发小时数${dataFormats(unitName === '%' ? rankTotal[0].indicatorData.theoryGen * 100 : rankTotal[0].indicatorData.theoryGen, '--', pointLength, true)}${unitName || '--'}`}</span>;
+      }
+      // 其他
+      return <span>{`${rankTotal[0].regionName || '--'}: ${qutaName.toString() || ''} ${dataFormats(unitName === '%' ? rankTotal[0].indicatorData.value * 100 : rankTotal[0].indicatorData.value, '--', pointLength, true)}${unitName || '--'}`}</span>;
     }
     return <span>--:--</span>;
   };
