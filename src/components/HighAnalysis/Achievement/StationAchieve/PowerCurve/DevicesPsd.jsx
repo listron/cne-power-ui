@@ -23,7 +23,7 @@ class DevicesPsd extends Component {
 
   state = {
     modeArr: [],
-    sortName: 'deviceName', // psd;
+    sortName: 'deviceOrderName', // psd;
   }
 
   componentDidMount(){
@@ -64,7 +64,7 @@ class DevicesPsd extends Component {
 
   sortDevicePsd = (data = [], sorter) => {
     return [...data].sort((a, b) => {
-      if(sorter === 'deviceName') {
+      if(sorter === 'deviceOrderName') {
         return a[sorter] && b[sorter] && a[sorter].localeCompare(b[sorter]);
       }
       return b[sorter] - a[sorter];
@@ -208,7 +208,7 @@ class DevicesPsd extends Component {
               style={{width: '200px'}}
               value={sortName}
             >
-              <Option value="deviceName">风机名称</Option>
+              <Option value="deviceOrderName">风机名称</Option>
               <Option value="psd">PSD</Option>
             </Select>
           </span>
