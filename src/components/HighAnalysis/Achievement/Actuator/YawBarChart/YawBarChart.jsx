@@ -29,7 +29,7 @@ export default class LooseBarChart extends Component {
     super(props);
     this.state = {
       modeArr: [],
-      selectValue: 'deviceName', // 默认选择排序字段
+      selectValue: 'deviceOrderName', // 默认选择排序字段
     };
     // 颜色
     this.barColor = [
@@ -298,7 +298,7 @@ export default class LooseBarChart extends Component {
 
   filterDataFunc = (data, sortName) => {
     return [...data].sort((a, b) => {
-      if (sortName === 'deviceName') {
+      if (sortName === 'deviceOrderName') {
         return a[sortName] && b[sortName] && a[sortName].localeCompare(b[sortName]);
       }
       return b[sortName] - a[sortName];
@@ -330,7 +330,7 @@ export default class LooseBarChart extends Component {
           <div className={styles.yawBarSort}>
             <span>选择排序</span>
             <Select value={selectValue} style={{ width: 200 }} onChange={this.handleChange}>
-              <Option value="deviceName">设备名称</Option>
+              <Option value="deviceOrderName">设备名称</Option>
               <Option value="yawDuration">偏航时长</Option>
               <Option value="yawNum">偏航次数</Option>
             </Select>
