@@ -200,7 +200,7 @@ function *getCurveDevices({ payload }) { // 获取各机组曲线
     const { actual = [], theory = [] } = curveDevices;
     const curveCheckedDevice = [];
     theory.sort((a, b) => {
-      return a.modeName && a.modeName.localeCompare(b.modeName)
+      return a.modeName && a.modeName.localeCompare(b.modeName);
     }).forEach(e => {
       e.modeName && curveCheckedDevice.push(`${e.modeName}理论功率曲线`);
     });
