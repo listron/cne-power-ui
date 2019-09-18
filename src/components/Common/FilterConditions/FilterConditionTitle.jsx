@@ -54,7 +54,7 @@ class FilterConditionTitle extends Component {
                   onClick={() => this.onFilterShowChange(item)}
                   key={key}
                   className={`${styles.filterlist} ${item.disabled && styles.disabled}`}>
-                  {item.name} {(showFilter.type === item.type && showFilter.typeName === item.typeName) ? <Icon type="up" /> : <Icon type="down" />}
+                  {item.name} {(showFilter.type === item.type && showFilter.typeName === item.typeName && !item.disabled) ? <Icon type="up" /> : <Icon type="down" />}
                 </div>);
             })
           }
