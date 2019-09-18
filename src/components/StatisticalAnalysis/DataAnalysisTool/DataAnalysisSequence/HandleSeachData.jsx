@@ -26,17 +26,19 @@ const options = [{
   value: '振动相关',
   pointsUnionName: '振动相关',
   isLeaf: false,
+  index: 3,
 }, {
   value: '温度相关',
   pointsUnionName: '温度相关',
   isLeaf: false,
 }, {
-  value: '震动相关',
-  pointsUnionName: '震动相关',
+  value: '振动相关',
+  pointsUnionName: '振动相关',
   isLeaf: false,
+  index: 5,
 }, {
-  value: '相控相关',
-  pointsUnionName: '相控相关',
+  value: '控制相关',
+  pointsUnionName: '控制相关',
   isLeaf: false,
 }, {
   value: '其他',
