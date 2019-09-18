@@ -73,11 +73,11 @@ class CaseList extends React.Component {
     const { getCasePartList, questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId } = this.props;
     const queryParams = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId };
     const { field, order } = sorter;
+    const orderField = field === 'likeCount' ? 'like' : field;
     getCasePartList({
       ...queryParams,
-      orderField: field ? field : '',
-      //sortField: field ? field === 'warningLevel' ? '1' : '2' : '',
-      orderType: order ? (sorter.order === 'ascend' ? 0 : 1) : null,
+      orderField: orderField,
+      orderType: order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : null,
     });
   }
   onSelectChange = (keys, record) => {
