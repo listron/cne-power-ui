@@ -25,7 +25,7 @@ class ChartLostRank extends Component {
   }
 
   state= {
-    sortType: 'name',
+    sortType: 'deviceOrderName',
     modeArr: [],
     zoomRange: [0, 100],
   }
@@ -47,10 +47,10 @@ class ChartLostRank extends Component {
     }
   }
 
-  sortRank = (rankList, sortType = 'name') => {
+  sortRank = (rankList, sortType = 'deviceOrderName') => {
     const sortedList = [...rankList].sort((a, b) => {
-      if (sortType === 'name' && a.deviceName) {
-        return a.deviceName.localeCompare(b.deviceName);
+      if (sortType === 'deviceOrderName' && a.deviceOrderName) {
+        return a.deviceOrderName.localeCompare(b.deviceOrderName);
       }
       const sortName = Object.keys(a.indicatorData).includes('value') ? 'value' : 'actualGen';
       return b.indicatorData[sortName] - a.indicatorData[sortName];
@@ -302,7 +302,7 @@ class ChartLostRank extends Component {
                 style={{width: '150px'}}
                 value={sortType}
               >
-                <Option value="name">风机名称</Option>
+                <Option value="deviceOrderName">风机名称</Option>
                 <Option value="quota">{selectedQuota.label}</Option>
               </Select>
             </span>
