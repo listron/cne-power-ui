@@ -102,20 +102,12 @@ class HandleSeachData extends React.Component {
       if (sequenceNames[0] && deviceList.length) {//获取测点数据并且取第一项
 
         const { pointNameList, pointType } = sequenceNames[0];
+        const firstData = pointNameList ? pointNameList[0] : [];
         const fristDevice = deviceList[0];
         const deviceFullCode = fristDevice.deviceFullCode;
-        const firstData = pointNameList ? pointNameList[0] : [];
         const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = firstData;
         this.setState({ options: [...option, otherName], sequenceNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
         changeSquenceStore({ pointCodeNameX, pointCodeNameY, pointY1: pointCodeX, pointY2: pointCodeY, deviceFullCode });
-        this.setState({
-          xName: pointCodeNameX,
-          yName: pointCodeNameY,
-          xCode: pointCodeX,
-          yCode: pointCodeY,
-          saveStartTime: startTime,
-          saveEndTime: endTime,
-        });
         getxyLimitValue({
           stationCode,
           startTime,
@@ -125,6 +117,15 @@ class HandleSeachData extends React.Component {
           deviceFullCode,
           interval: 60,
         });
+        this.setState({
+          xName: pointCodeNameX,
+          yName: pointCodeNameY,
+          xCode: pointCodeX,
+          yCode: pointCodeY,
+          saveStartTime: startTime,
+          saveEndTime: endTime,
+        });
+
 
       }
     }
@@ -153,7 +154,7 @@ class HandleSeachData extends React.Component {
       showOther: false,
     });
 
-    this.props.getStationDevice({ stationCode });
+    this.props.getStationDevice({ stationCode, queryName: true });
   }
   //改时间
   changeTime = (date, dateString) => {
@@ -214,28 +215,35 @@ class HandleSeachData extends React.Component {
     const isChangeLimit = curLimitValue !== preLimitValue;
     const fristDevice = deviceList[0];
     const deviceFullCode = fristDevice.deviceFullCode;
-    changeSquenceStore({
-      sequenceData: {},
-      pointCodeNameX: xName,
-      pointCodeNameY: yName,
-      pointY1: xCode,
-      pointY2: yCode,
-      xyValueLimit,
-      // deviceList: [],
-      activeCode: '',
-      startTime: saveStartTime,
-      endTime: saveEndTime,
-    });
+
     if (xCode !== pointY1 || yCode !== pointY2 || saveStartTime !== startTime || saveEndTime !== endTime) {
-      getxyLimitValue({
-        stationCode,
+      changeSquenceStore({
+        sequenceData: {},
+        pointCodeNameX: xName,
+        pointCodeNameY: yName,
+        pointY1: xCode,
+        pointY2: yCode,
+        xyValueLimit,
+        // deviceList: [],
+        // activeCode: '',
         startTime: saveStartTime,
         endTime: saveEndTime,
-        xPointCode: xCode,
-        yPointCode: yCode,
-        deviceFullCode,
-        interval: 60,
       });
+      this.props.getStationDevice({ stationCode, queryName: false });
+      setTimeout(() => {
+        getxyLimitValue({
+          stationCode,
+          startTime: saveStartTime,
+          endTime: saveEndTime,
+          xPointCode: xCode,
+          yPointCode: yCode,
+          deviceFullCode,
+          interval: 60,
+        });
+
+      }, 200);
+
+
     } else if (isChangeLimit) {
       getSequenceData({
         deviceFullCode,
