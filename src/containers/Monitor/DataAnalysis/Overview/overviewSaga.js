@@ -56,9 +56,20 @@ function *getOverviewDates({ payload }){ // 电站各日完整率
 }
 
 function *afterDeviceTypePointGet({ payload }) { // 设备页 获得测点数据后触发
-  const states = yield select(state => state.monitor.overview);
-  console.log(states);
-  console.log(payload);
+  const { devicePointsList = [] } = payload || {};
+  const { deviceParam = {} } = yield select(state => state.monitor.overview.toJS());
+  // devicePointsList 
+  // devicePointName: "1#水冷加热器动作"
+  // devicePointStandardCode: "AM751"
+  // devicePointUnit: null
+  const pointCodes = devicePointsList.map(e => e.devicePointStandardCode);
+  yield call(easyPut, 'fetchSuccess', { // 默认选中所有测点
+    deviceCheckedList: pointCodes,
+    devicePointsList,
+  });
+  yield call(getOverviewDevices, { // 默认所有测点请求设备数据
+    payload: { ...deviceParam, pointCodes },
+  });
 }
 
 function *getOverviewDevices({ payload }){ // 获取所有设备数据信息

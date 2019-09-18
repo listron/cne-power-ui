@@ -6,6 +6,7 @@ import { overviewAction } from './overviewReducer';
 import { commonAction } from '../../../../containers/alphaRedux/commonAction';
 import HearderTab from '@components/Monitor/DataAnalysis/Overview/HeaderTab/HearderTab';
 import StationOverview from '@components/Monitor/DataAnalysis/Overview/StationOverview/StationOverview';
+import DeviceOverview from '@components/Monitor/DataAnalysis/Overview/DeviceOverview/DeviceOverview';
 import CommonBreadcrumb from '@components/Common/CommonBreadcrumb';
 import Footer from '@components/Common/Footer/index';
 import styles from './overview.scss';
@@ -37,12 +38,6 @@ class Overview extends Component{
     this.props.resetOverview();
   }
 
-  // initQuery(allPages, stationStr, deviceStr, pointStr){
-  //   allPages.includes('station') && this.props.getOverviewDates();
-  //   allPages.includes('device') && this.props.getOverviewDevices();
-  //   allPages.includes('point') && this.props.getOverviewPoints();
-  // }
-
   getSearchTab = () => {
     const { history } = this.props;
     const { search } = history.location;
@@ -59,9 +54,7 @@ class Overview extends Component{
           <HearderTab {...this.props} />
           <div className={styles.dataOverview}>
             {tab === 'station' && <StationOverview {...this.props} />}
-            {tab === 'device' && <div>
-              这个就是设备页面
-            </div>}
+            {tab === 'device' && <DeviceOverview {...this.props} />}
           </div>
         </div>
         <Footer />
@@ -83,13 +76,16 @@ const mapDispatchToProps = (dispatch) =>({
   getOverviewPoints: payload => dispatch({ type: overviewAction.getOverviewPoints, payload }),
   changeOverviewStore: payload => dispatch({ type: overviewAction.changeStore, payload }),
   resetOverview: () => dispatch({ type: overviewAction.reset }),
-  getPoints: params => dispatch({
-    type: commonAction.getPoints,
-    payload: {
-      actionName: overviewAction[params.actionName || 'changeStore'], // 默认执行changeStore, 此处可选择指定saga函数执行
-      ...params,
-    },
-  }),
+  getPoints: params => {
+    console.log(params);
+    dispatch({
+      type: commonAction.getPoints,
+      payload: {
+        ...params,
+        actionName: overviewAction[params.actionName || 'changeStore'], // 默认执行changeStore, 此处可选择指定saga函数执行
+      },
+    })
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);
