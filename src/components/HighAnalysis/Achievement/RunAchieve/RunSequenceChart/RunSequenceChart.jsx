@@ -83,7 +83,7 @@ export default class RunSequenceChart extends Component {
         },
       },
       yAxis: {
-        name: `${hourOptionName}${hourUnitName}`,
+        name: `${hourOptionName}${hourUnitName || ''}`,
         type: 'value',
         splitLine: {
           show: false,
@@ -149,19 +149,22 @@ export default class RunSequenceChart extends Component {
   };
 
   render() {
-    const { pointsInfo, hourOptionValue } = this.props;
+    const { pointsInfo, hourOptionValue, hourOptionName } = this.props;
     const optionItem = pointsInfo && pointsInfo.map(cur => {
       return (
         <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
+    // 判断是否存在测点
+    const valueFlag = pointsInfo.map(cur => (cur.name)).includes(hourOptionName);
+    const valueStr = valueFlag ? hourOptionValue : hourOptionName;
     return (
       <div className={styles.runSequenceChart}>
         <div className={styles.sequenceTop}>
           <div className={styles.topTitle}>时序图</div>
           <div className={styles.topSelect}>
             <span>时序图指标</span>
-            <Select value={hourOptionValue} style={{ width: 120 }} onChange={this.handleChange}>
+            <Select value={valueStr} style={{ width: 120 }} onChange={this.handleChange}>
               {optionItem}
             </Select>
           </div>
