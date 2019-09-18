@@ -21,7 +21,7 @@ function* easyPut(actionName, payload){
 }
 
 
-function *getOverviewStation({ payload }){ // 电站相关数据信息
+function *getOverviewStation({ payload }){ // 电站基础数据信息 - 各页面单独存储一份
   try {
     const { stationCode, pageKey } = payload || {};
     const url = `${APIBasePath}${monitor.getOverviewStation}/${stationCode}`;
@@ -61,7 +61,7 @@ function *getOverviewDevices({ payload }){ // 获取所有设备数据信息
   //post /api/v3/ dataoverriew/point
   // params: stationCode, deviceTypeCode, dateType, date, pointCodes
   try {
-    const response = yield call(request.post, url);
+    const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         devicesData: response.data || {},

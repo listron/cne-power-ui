@@ -2,18 +2,21 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { DatePicker } from 'antd';
+import searchUtil from '@utils/searchUtil';
 import { dataFormats } from '@utils/utilFunc';
 import styles from './station.scss';
 const { MonthPicker } = DatePicker;
 
 class StationDates extends PureComponent{
   static propTypes = {
-    month: PropTypes.string,
-    // stationCode={stationCode}
-    // deviceTypeCode={deviceTypeCode}
+    stationParam: PropTypes.object,
+    stationTopData: PropTypes.object,
     stationDatesRate: PropTypes.array,
-    // history: PropTypes.object,
+    history: PropTypes.object,
     changeOverviewStore: PropTypes.func,
+    getOverviewDevices: PropTypes.func,
+    getOverviewDates: PropTypes.func,
+    getOverviewStation: PropTypes.func,
   }
 
   rateLevel = [
@@ -29,9 +32,9 @@ class StationDates extends PureComponent{
       return [];
     }
     const datesInfo = [];
-    const [monthStart, monthEnd] = [moment(month).startOf('M'), moment(month).endOf('M')];
-    const startDate = monthStart.day() === 1 ? monthStart : monthStart.day(1 - 7); // 月初非周一 => 找到上一个周一为开始
-    const endDate = monthEnd.day() === 0 ? monthEnd : monthEnd.day(0 + 7); // 月末非周日 => 找到下一个周日为结束
+    const [monthStart, monthEnd] = [moment(month).startOf('month'), moment(month).endOf('month')];
+    const startDate = monthStart.day() === 0 ? monthStart.day(1 - 7) : monthStart.day(1); // 月初周日 => 找上周一, 否则本周一
+    const endDate = monthEnd.day() === 0 ? monthEnd : monthEnd.day(0 + 7); // 月末非周日 => 下一个周日为结束
     while(!startDate.isAfter(endDate, 'd')){
       datesInfo.push(startDate.format('YYYY-MM-DD'));
       startDate.add(1, 'd');
@@ -39,28 +42,65 @@ class StationDates extends PureComponent{
     return datesInfo;
   }
 
-  monthCheck = (monthMoment, monthStr) => { // 切换日期
-    console.log(monthMoment, monthStr);
+  monthCheck = (monthMoment, monthStr) => { // 切换日期 => 替换stationParam, 重新getOverviewDates, 替换路径
+    const { stationParam, history } = this.props;
+    const { stationCode, deviceTypeCode } = stationParam;
+    const { pathname, search } = history.location;
+    const newParam = {
+      stationCode, deviceTypeCode, month: monthStr,
+    };
+    const newSearch = searchUtil(search).replace({
+      station: JSON.stringify(newParam),
+    }).stringify();
+
+    this.props.changeOverviewStore({ stationParam: newParam });
+    this.props.getOverviewDates(newParam);
+    history.push(`${pathname}?${newSearch}`); // 替换station信息
   }
 
   clickDate = (e) => {
-    const { } = this.props;
-    console.log(this.props);
     const { dataset } = e.target;
     const { date } = dataset;
     if (date) {
+      const { stationParam, history, stationTopData } = this.props;
+      const { stationCode, deviceTypeCode } = stationParam;
+      const { pathname, search } = history.location;
+      const deviceParam = { // 请求参数
+        stationCode,
+        deviceTypeCode,
+        dateType: 1,
+        date,
+        pointCodes: [], // 默认所有
+      };
+      this.props.changeOverviewStore({ // 已经得到的电站基础信息传入设备页 - 减少一次不必要请求
+        deviceTopData: stationTopData,
+        deviceParam, // 请求参数保存
+      });
+      // this.props.getOverviewDevices(deviceParam); // 请求设备页测点列表.
 
+      const { pages = '' } = searchUtil(search).parse();
+      const allPages = pages.split('_').filter(e => !!e); // 开启的tab页面
+      !allPages.includes('device') && allPages.push('device');
+      const newSearch = searchUtil(search).replace({ // 路径 替换/添加 device信息
+        device: JSON.stringify(deviceParam),
+        pages: allPages.join('_'), // 激活项添加
+        tab: 'device', // 激活页切换
+      }).stringify();
+      history.push(`${pathname}?${newSearch}`); // 替换station信息
     }
-    console.log(dataset)
-    console.log(date)
   }
 
   render(){
-    const { month = [], stationDatesRate = [] } = this.props;
+    const { stationParam = {}, stationDatesRate = [] } = this.props;
+    const { month } = stationParam;
     return(
       <div className={styles.dates}>
         <div className={styles.datesTopInfo}>
-          <MonthPicker value={month ? moment(month) : null} onChange={this.monthCheck} />
+          <MonthPicker
+            allowClear={false}
+            value={month ? moment(month) : null}
+            onChange={this.monthCheck}
+          />
           <span className={styles.ranges}>
             <span className={styles.text}>设备数据完成率平均值</span>
             {this.rateLevel.map(e => (

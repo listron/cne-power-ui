@@ -10,12 +10,12 @@ const overviewAction = {
   changeStore: Symbol('changeStore'),
   reset: Symbol('reset'),
 };
-// 路径携带信息如下: ?tab=station&pages=[staion,device,points]&station={stationCode:xxx,...}&device={stationCode:xxx,...}&point={stationCode:xxx,...}
+// 路径携带信息如下: ?tab=station&pages=staion_device_points&station={stationCode:xxx,...}&device={stationCode:xxx,...}&point={stationCode:xxx,...}
 const initState = immutable.fromJS({
   tab: 'station', // 激活的tab页, station, device, points
   pages: ['station'], // 开启的tab页面
   stationParam: {}, // stationCode, deviceTypeCode, month => search-station是该字段的jsonStr
-  deviceParam: {}, // stationCode, deviceTypeCode, dateType, date, pointCodes => search-device是该字段的jsonStr
+  deviceParam: {}, // stationCode, deviceTypeCode, dateType(1日2月), date, pointCodes => search-device是该字段的jsonStr
   pointParam: {}, // stationCode, deviceTypeCode, deviceFullcode, dateType, date, pointCodes => search-point是该字段的jsonStr
 
   stationDatesRate: [], // 电站各日数据平均完备信息

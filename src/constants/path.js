@@ -423,7 +423,7 @@ export default {
 
       getOverviewStation: '/v3/dataoverview/devicetype', // 获取电站信息
       getOverviewDates: '/v3/dataoverview/station', // 电站各日完整率
-      getOverviewDevices: '/v3/ dataoverview/point', // 获取设备信息
+      getOverviewDevices: '/v3/dataoverview/point', // 获取设备信息
       getOverviewPoints: '/v3/ dataoverview/device', // 获取测点信息
 
       getWindMonitorPower: '/v3/wind/monitor/stations/power', // 全部风电站的理论发电量图表

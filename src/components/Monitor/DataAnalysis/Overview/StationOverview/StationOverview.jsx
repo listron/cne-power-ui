@@ -114,8 +114,8 @@ class StationOverview extends PureComponent{
   // }
 
   render(){
-    const { stationParam, stationTopData, stations, stationDatesRate } = this.props;
-    const { stationCode, deviceTypeCode, month } = stationParam;
+    const { stationParam, stationTopData, stations } = this.props;
+    const { stationCode, deviceTypeCode } = stationParam;
     return(
       <div className={styles.station}>
         { !stationCode && !deviceTypeCode && <StationList {...this.props} />}
@@ -129,12 +129,7 @@ class StationOverview extends PureComponent{
               onStationChange={this.stationChanged}
               onTypeChange={this.deviceTypeChanged}
             />
-            <StationDates
-              month={month}
-              stationDatesRate={stationDatesRate}
-              stationCode={stationCode}
-              deviceTypeCode={deviceTypeCode}
-            />
+            <StationDates {...this.props} />
           </div>
         }
       </div>
