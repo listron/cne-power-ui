@@ -3,16 +3,22 @@ import PropTypes from 'prop-types';
 import styles from './resources.scss';
 import FrequencyChart from './FrequencyChart';
 import FrequencyModal from './FrequencyModal';
+import toZip from '../../../../utils/js-zip';
+import { message } from 'antd';
+import moment from 'moment';
 
 class Frequency extends Component{
   static propTypes = {
-    getFrequency: PropTypes.func,
     changeWindResourcesStore: PropTypes.func,
     getBigFrequency: PropTypes.func,
     frequencyData: PropTypes.array,
     deviceList: PropTypes.array,
+    stations: PropTypes.array,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
+    deviceName: PropTypes.string,
+    stationCode: PropTypes.number,
+    down: PropTypes.bool,
   }
   constructor(props) {
     super(props);
@@ -23,11 +29,54 @@ class Frequency extends Component{
       currentImgIndex: 0,
     };
   }
+  componentWillReceiveProps(nextProps) {
+    const { stationCode, startTime, endTime } = nextProps;
+    const isChangeStationCode = stationCode !== this.props.stationCode;
+    const isChangeStartTime = startTime !== this.props.startTime;
+    const isChangeEndTime = endTime !== this.props.endTime;
+    if (isChangeStationCode || isChangeStartTime || isChangeEndTime) {//改变电站清空图片地址
+      this.setState({
+        newSrcUrl: [],
+        srcObj: {},
+      });
+    }
+    if (this.state.newSrcUrl.length >= nextProps.deviceList.length - 1) {//控制是否可以下载图片
+      this.props.changeWindResourcesStore({
+        isClick: true,
+      });
+    } else {
+      this.props.changeWindResourcesStore({
+        isClick: false,
+      });
+    }
+    if (nextProps.down && this.props.down !== nextProps.down) {
+      if (this.state.newSrcUrl.length === nextProps.deviceList.length) {
+        const { stations, stationCode, startTime, endTime, deviceList } = this.props;
+        const sTime = moment(startTime).format('YYYY-MM-DD');
+        const eTime = moment(endTime).format('YYYY-MM-DD');
+        const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
+        const { stationName } = stationArr;
+        const fileName = `【${stationName}】风速&风能频率图【${sTime}】_【${eTime}】`;
+        const childFileName = `风速&风能频率图`;
+        toZip(this.state.newSrcUrl, fileName, childFileName, deviceList);
+      } else {
+        message.warning('图片未全部加载完成');
+      }
+      this.props.changeWindResourcesStore({ down: false });
+    }
+  }
 
-  likeStatusChange = (index, bool) => {
+  shouldComponentUpdate(nextProps, nextState) {
+    if ((nextState.newSrcUrl !== this.state.newSrcUrl) || (nextState.srcObj !== this.state.srcObj)) {
+      return false;
+    }
+    return true;
+  }
+
+  likeStatusChange = (index, bool, frequencyData) => {
     const { deviceList, changeWindResourcesStore } = this.props;
     deviceList[index].likeStatus = bool;
-    changeWindResourcesStore({ deviceList });
+    changeWindResourcesStore({ deviceList, frequencyData });
   };
 
   likeStatusChange2 = (index, bool) => {
@@ -59,13 +108,13 @@ class Frequency extends Component{
     });
   }
 
-  showImg = (index, data) => {
+  showImg = (index) => {
     const { deviceList } = this.props;
     this.setState({
       isShowModal: true,
       currentImgIndex: index,
     });
-    this.props.changeWindResourcesStore({ curBigChartData: [], curLikeStatusData: data });
+    this.props.changeWindResourcesStore({ curBigChartData: [] });
     const deviceFullCode = deviceList[index].deviceFullCode;
     this.queryData(deviceFullCode);
   }

@@ -5,7 +5,7 @@ import { windResourcesAction } from './windResourcesAction';
 var initState = Immutable.fromJS({
   bigchartLoading: false,
   chartLoading: false,
-  startTime: moment().startOf('year').format(),
+  startTime: moment().subtract(2, 'months').format(),
   endTime: moment().format(),
   deviceList: [], // 电站下的设备
   frequencyData: [], // 频率图数据
@@ -13,7 +13,8 @@ var initState = Immutable.fromJS({
   activeCode: '',
   stationCode: '',
   showPage: 'allStation', // allStation显示全部电站，singleStation,显示单电站
-  sequenceData: [],
+  down: false,
+  isClick: false,
 });
 const windResourcesReducer = (state = initState, action) => {
   switch (action.type) {

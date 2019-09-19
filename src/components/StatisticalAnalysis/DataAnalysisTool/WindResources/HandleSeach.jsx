@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import StationSelect from '../../../Common/StationSelect';
-import { Button, DatePicker, Cascader, Icon, Select, InputNumber, Spin } from 'antd';
+import { Button, DatePicker, Icon } from 'antd';
 import moment from 'moment';
 import styles from './resources.scss';
 
@@ -17,6 +17,7 @@ class HandleSeach extends Component{
     changeWindResourcesStore: PropTypes.func,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
+    isClick: PropTypes.bool,
   }
 
   constructor(props) {
@@ -25,6 +26,7 @@ class HandleSeach extends Component{
       disableDateFun: (current) => current > moment(),
       saveStartTime: '',
       saveEndTime: '',
+      downLoadding: false,
     };
   }
 
@@ -83,9 +85,23 @@ class HandleSeach extends Component{
     });
   }
 
+  downPic = () => { // 下载图片
+    this.props.changeWindResourcesStore({
+      down: true,
+    });
+    this.setState({
+      downLoadding: true,
+    });
+    setTimeout(() => {
+      this.setState({
+        downLoadding: false,
+      });
+    }, 2000);
+  }
+
   render(){
-    const { stationCode, stations, startTime, endTime } = this.props;
-    const { disableDateFun } = this.state;
+    const { stationCode, stations, startTime, endTime, isClick } = this.props;
+    const { disableDateFun, downLoadding } = this.state;
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
     return(
@@ -108,6 +124,9 @@ class HandleSeach extends Component{
           />
           <Button className={styles.seachBtn} onClick={this.onSearch}>查询</Button>
         </div>
+        <Button className={!isClick ? styles.disabledDownload : styles.download} disabled={!isClick} onClick={this.downPic}>
+          {downLoadding ? <span><Icon type="loading" style={{ fontSize: 16 }} spin />图片下载</span> : '图片下载'}
+        </Button>
       </div>
     );
   }

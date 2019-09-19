@@ -1,4 +1,4 @@
-import { call, put, takeLatest, all, select, message } from 'redux-saga/effects';
+import { call, put, takeLatest, select, message } from 'redux-saga/effects';
 import request from '../../../../utils/request';
 import Path from '../../../../constants/path';
 import { windResourcesAction } from './windResourcesAction';
@@ -25,12 +25,11 @@ function* getStationDevice(action) {//获取电站设备
           deviceList,
         },
       });
-      yield put({
-        type: windResourcesAction.getSequenceName,
-        payload: {
-          stationCode: payload.stationCode,
-        },
-      });
+      // const params = yield select(state => state.statisticalAnalysisReducer.windResourcesReducer.get('activeCode').toJS());
+      // yield put({
+      //   type: windResourcesAction.getFrequency,
+      //   payload: params,
+      // });
     } else {
       throw response;
     }
@@ -59,7 +58,6 @@ function* getFrequency(action){ // 获取风能频率图
     const response = yield call(request.post, url, {...payload,
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).endOf('d').utc().format()});
-
     if (response.code === '10000') {
       yield put({
         type: windResourcesAction.changeWindResourcesStore,
