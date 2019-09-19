@@ -7,11 +7,13 @@ export default class AllStations extends Component{
     stations: PropTypes.array,
     theme: PropTypes.string,
     changeWindResourcesStore: PropTypes.func,
+    getStationDevice: PropTypes.func,
   };
 
   selectStation = (stationCode) => {
-    const { changeWindResourcesStore } = this.props;
+    const { changeWindResourcesStore, getStationDevice } = this.props;
     changeWindResourcesStore({ stationCode, showPage: 'singleStation' });
+    getStationDevice({ stationCode });
   };
 
   render(){

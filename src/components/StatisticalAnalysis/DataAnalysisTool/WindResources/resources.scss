@@ -7,7 +7,7 @@
   flex-wrap: wrap;
 
   .chartStyle {
-    width: 50%;
+    width: 48%;
     height: 280px;
 
     .frequencyBox {
@@ -33,28 +33,29 @@
       color: $themeColor;
     }
   }
+}
 
-  .frequencyCharts { // echarts多图
-    width: 620px;
-    height: 230px;
-
-    .tipBox {
-      width: 140px;
-      height: 76px;
-      padding: 3px;
-
-      .speedBox, .eneryBox {
-        .speed, .enery {
-          width: 16px;
-          height: 10px;
-          display: inline-block;
-          margin-right: 3px;
-          border-radius: 2px;
-        }
-
-        .text {
-          margin-right: 5px;
-        }
+.frequencyCharts { // echarts多图
+  width: 620px;
+  height: 230px;
+  .tipBox {
+    width: 140px;
+    height: 62px;
+    padding: 3px;
+    .title{
+      border-bottom: 1px solid #666;
+      padding-bottom: 2px;
+    }
+    .speedBox, .eneryBox {
+      .speed, .enery {
+        width: 16px;
+        height: 10px;
+        display: inline-block;
+        margin-right: 3px;
+        border-radius: 2px;
+      }
+      .text {
+        margin-right: 5px;
       }
     }
   }
@@ -66,11 +67,13 @@
   display: flex;
   align-items: center;
   margin-bottom: 11px;
+  justify-content: space-between;
 
   .headTop {
     display: flex;
     flex: 1;
     line-height: 40px;
+    align-items: center;
 
     .nameStyle {
       margin: 0 8px 0 24px;
@@ -85,6 +88,29 @@
         background: $themeColor;
         color: #fff;
       }
+    }
+  }
+
+  .download{
+    margin-right: 31px;
+    border: 1px solid $themeColor;
+    color: $themeColor;
+
+    &:hover{
+      background: $themeColor;
+      color: #fff;
+    }
+  }
+
+  .disabledDownload {
+    margin-right: 31px;
+    border: none;
+    background: #f5f5f5;
+    color: #BFBFBF;
+
+    &:hover {
+      background: #f5f5f5;
+      color: #BFBFBF;
     }
   }
 }
@@ -141,12 +167,11 @@
   }
 }
 
-
 //颜色
 .tipBox {
-  background-color: #fff;
-  box-shadow: 1px 1px 9px #888888;
-  color: #666;
+  // background-color: #fff;
+  // box-shadow: 1px 1px 9px #888888;
+  // color: #666;
 }
 
 .speed {
