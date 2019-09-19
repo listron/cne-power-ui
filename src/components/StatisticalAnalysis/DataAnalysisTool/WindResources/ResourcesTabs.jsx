@@ -25,10 +25,10 @@ class ResourcesTabs extends Component{
     return(
       <div className={styles.resourcesTabs}>
         <div className={styles.tabsBox}>
-          <button className={activeKey === 1 ? styles.activeBtn : ''} onClick={() => {this.checkType(1);}}>风向&nbsp;&&nbsp;风能玫瑰图</button>
+          {/*<button className={activeKey === 1 ? styles.activeBtn : ''} onClick={() => {this.checkType(1);}}>风向&nbsp;&&nbsp;风能玫瑰图</button>*/}
           <button className={activeKey === 2 ? styles.activeBtn : ''} onClick={() => {this.checkType(2);}}>风速&nbsp;&&nbsp;风能频率图</button>
         </div>
-        {activeKey === 1 && <WindRose {...this.props} />}
+        {/*{activeKey === 1 && <WindRose {...this.props} />}*/}
         {activeKey === 2 && <Frequency {...this.props} />}
       </div>
     );
