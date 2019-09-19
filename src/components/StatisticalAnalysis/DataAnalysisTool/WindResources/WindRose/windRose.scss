@@ -34,11 +34,40 @@
 
   .showModalIcon {
     position: absolute;
-    top: 5%;
+    top: 1%;
     right: 5%;
     font-size: 18px;
     cursor: pointer;
     z-index: 3;
+  }
+
+  > span {
+    position: absolute;
+    font-weight: bold;
+    top: 10%;
+  }
+
+  .windDirection{
+    left: 23%;
+  }
+
+  .windPower{
+    left: 73%;
+  }
+}
+
+.tooltip {
+  min-width: 90px;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    margin-bottom: 0;
+    line-height: 21px;
+  }
+  .info {
+    padding: 0 8px;
   }
 }
 
@@ -57,5 +86,15 @@
     &:hover {
       color: $themeColor;
     }
+  }
+}
+
+.tooltip { // chart提示
+  background-color: #fff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
+  color: #666;
+
+  .title {
+    border-bottom: 1px solid #dfdfdf;
   }
 }

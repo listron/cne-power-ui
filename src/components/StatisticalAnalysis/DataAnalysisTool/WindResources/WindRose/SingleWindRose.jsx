@@ -13,18 +13,28 @@ export default class SingleWindRose extends Component{
 
   drawChart = () => {
     const saveBtn = true;
+    const textColor = '#999999';
+    const directionData = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    const axisLineColor = {
+      axisLabel: {
+        formatter: '{value}%',
+      },
+      axisTick: {
+        show: false,
+      },
+    };
     return {
       title: {
         text: [1, '{b|}'].join(''),
-        left: '5%',
-        textStyle: {
+          left: '5%',
+          textStyle: {
           fontSize: 14,
-          rich: {
+            rich: {
             b: {
               height: 20,
-              width: 20,
-              align: 'center',
-              backgroundColor: {
+                width: 20,
+                align: 'center',
+                backgroundColor: {
                 image: saveBtn ? '/img/mark.png' : '/img/unmark.png',
               },
             },
@@ -32,41 +42,67 @@ export default class SingleWindRose extends Component{
         },
         triggerEvent: true,
       },
+      tooltip: {
+        show: true,
+          padding: 0,
+          formatter: function (params) {
+          return `<div class=${styles.tooltip}>
+              <span class=${styles.title}>${params.name}</span>
+              <div class=${styles.info}>
+                <span>占比：</span><span>${params.data}</span><span>%</span>
+              </div>
+            </div>`;
+        },
+      },
       angleAxis: [{
         polarIndex: 0,
         type: 'category',
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-        z: 10,
+        data: directionData,
+        axisLabel: {
+          color: textColor,
+        },
+        boundaryGap: false,
       }, {
         polarIndex: 1,
         type: 'category',
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-        z: 10,
+        data: directionData,
+        axisLabel: {
+          color: textColor,
+        },
+        boundaryGap: false,
       }],
       radiusAxis: [{
         polarIndex: 0,
         min: 0,
+        z: 2,
+        ...axisLineColor,
       }, {
         polarIndex: 1,
         min: 0,
+        z: 2,
+        ...axisLineColor,
       }],
       polar: [{
-        center: ['25%', '60%'],
+        center: ['25%', '50%'],
         radius: '50%',
       }, {
-        center: ['75%', '60%'],
+        center: ['75%', '50%'],
         radius: '50%',
       }],
       series: [{
         polarIndex: 0,
         type: 'bar',
-        data: [1, 2, 3, 4, 3, 5, 1],
+        color: '#3e97d1',
+        barWidth: 20,
+        data: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
         coordinateSystem: 'polar',
         name: '风向',
       }, {
         polarIndex: 1,
         type: 'bar',
-        data: [2, 4, 6, 1, 3, 2, 1],
+        color: '#f9b600',
+        barWidth: 20,
+        data: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
         coordinateSystem: 'polar',
         name: '风能',
       }],
@@ -77,6 +113,8 @@ export default class SingleWindRose extends Component{
     return(
       <div className={styles.chartWrap}>
         <Icon type="zoom-in" className={styles.showModalIcon} />
+        <span className={styles.windDirection}>风向</span>
+        <span className={styles.windPower}>风能</span>
         <div ref={ref => { this.chartId = ref;}} className={styles.windRoseStyle} />
       </div>
     );
