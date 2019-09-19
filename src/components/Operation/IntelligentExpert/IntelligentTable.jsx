@@ -169,6 +169,7 @@ class IntelligentTable extends Component {
   render() {
     const { showModal, warningTipText, showDeleteWarning } = this.state;
     const { intelligentTableData, tableLoading, listParams, selectedRowKeys, theme, stationType } = this.props;
+    console.log('listParams', listParams);
     const { pageNum, pageSize } = listParams;
     const { total, dataList = [] } = intelligentTableData;
     const rowSelection = {

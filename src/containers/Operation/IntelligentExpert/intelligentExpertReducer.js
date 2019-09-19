@@ -7,7 +7,7 @@ const initState = immutable.fromJS({
     type: '0',
     deviceTypeCodes: [],	// 选中的设备类型编码
     faultTypeIds: [],
-    faultDescription: '', // 缺陷描述
+    faultDescription: '', // 故障／缺陷描述
     recorder: '', // 录入人
     pageNum: 1, // 当前页（第一页）
     pageSize: 10, // 每页条数

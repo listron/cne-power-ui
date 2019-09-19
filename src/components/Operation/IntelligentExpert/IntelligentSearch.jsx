@@ -65,9 +65,8 @@ class IntelligentSearch extends Component {
   }
 
   onDefect = (e) => {// 改变缺陷描述
-    this.setState({
-      defectValue: e.target.value,
-    });
+    const { listParams } = this.props;
+    this.props.changeIntelligentExpertStore({ listParams: { ...listParams, faultDescription: e.target.value } });
   }
 
   entryPerson = (value) => { // 输入录入人时触发
@@ -118,7 +117,7 @@ class IntelligentSearch extends Component {
   render() {
     const { personValue, defectValue } = this.state;
     const { usernames = [], theme, deviceTypes, defectTypes, listParams } = this.props;
-    const { deviceTypeCodes, defectTypeCode } = listParams;
+    const { deviceTypeCodes, faultTypeIds, faultDescription, recorder } = listParams;
     const showResetBtn = personValue || defectValue; // 控制“重置”按钮是否出现
     const defectTypeTab = [];
     defectTypes.forEach(e => { e.list && e.list.length > 0 && defectTypeTab.push(...e.list); });
@@ -129,6 +128,7 @@ class IntelligentSearch extends Component {
         defectTypeList = [...defectTypeList, ...e.list];
       }
     });
+    console.log('deviceTypeCodes', deviceTypeCodes, faultTypeIds);
     return (
       <div className={`${styles.intelligentSearch} ${styles[theme]}`}>
         <FilterCondition
@@ -152,17 +152,17 @@ class IntelligentSearch extends Component {
               disabled: !(deviceTypeCodes.length > 0),
             },
           ]}
-          value={{ deviceTypeCodes, defectTypeCode }}
+          value={{ deviceTypeCodes, faultTypeIds }}
         />
         <div className={styles.partSearch}>
           <span>故障代码／故障描述</span>
-          <Input className={styles.defectDescription} value={defectValue} placeholder="请输入..." onChange={this.onDefect} />
+          <Input className={styles.defectDescription} value={faultDescription} placeholder="请输入..." onChange={this.onDefect} />
           <span className={styles.text}>录入人</span>
           <Select
             showSearch
             placeholder="请输入..."
             className={styles.entryPerson}
-            value={personValue}
+            value={recorder}
             showArrow={false}
             onSearch={this.entryPerson}
             onChange={this.changePerson}

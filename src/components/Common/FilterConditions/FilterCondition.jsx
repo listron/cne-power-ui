@@ -40,8 +40,9 @@ class FilterCondition extends Component {
    *   5  rules 匹配的规则  rules=[stationName,stationCode]， 默认为label value
    *   6  disabled 不能选泽 联动的时候使用 true false
    *   7  parentName 根据什么分组 parentCheckBox 使用 默认为parentName
-   * 
+   *   注意：要不使用传入的value,要不使用自己内部的机制
    */
+
 
 
 
@@ -139,11 +140,10 @@ class FilterCondition extends Component {
     option.forEach(item => {
       const currentItem = optionItem.filter(e => e.type === item.type && e.typeName === item.typeName)[0] || {};
       if (!(singleType.includes(item.type))) {
-        item.checkedValue = value[item['typeName']] || [];
-        if (currentItem.checkedValue && currentItem.checkedValue.length > 0) {
-          const valueArray = value[item['typeName']] && value[item['typeName']] || [];
-          const checkedValue = currentItem.checkedValue;
-          item.checkedValue = Array.from(new Set([...checkedValue, ...valueArray]));
+        if (value && value[item['typeName']] && Object.getOwnPropertyNames(value).length > 0) {
+          item.checkedValue = value[item['typeName']] || [];
+        } else {
+          item.checkedValue = currentItem.checkedValue;
         }
         if (item.disabled) {
           item.checkedValue = [];
@@ -152,6 +152,8 @@ class FilterCondition extends Component {
         item.checkedValue = '';
         if (value[item['typeName']]) {
           item.checkedValue = value[item['typeName']];
+        } else {
+          item.checkedValue = currentItem.checkedValue;
         }
       }
       optionList.push({ ...this.initOption(item.type), ...item });

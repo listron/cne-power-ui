@@ -36,11 +36,21 @@ class InterlligentExpertMain extends Component {
 
 
   queryTargetData = (value) => { // 切换电站
-    const { getStationTypeDeviceTypes, listParams } = this.props;
+    const { getStationTypeDeviceTypes } = this.props;
+    const initlistParams = { // 切换电站类型的时候 请求图表的数据恢复最初
+      deviceTypeCodes: [],
+      faultTypeIds: [],
+      faultDescription: '',
+      recorder: '',
+      pageNum: 1,
+      pageSize: 10,
+      orderField: 'like_count',
+      sortMethod: 'desc',
+    };
     this.props.changeIntelligentExpertStore({
       stationType: value,
       selectedRowKeys: [],
-      listParams: { ...listParams, deviceTypeCodes: [], defectTypeCode: [] },
+      listParams: { ...initlistParams, type: value },
     });
     getStationTypeDeviceTypes({ type: value });
   }
@@ -56,19 +66,8 @@ class InterlligentExpertMain extends Component {
             <p className={`${stationType === '1' && styles.activeStation} `} onClick={() => { this.queryTargetData('1'); }}>光伏</p>
           </div>
         }
-        {stationType === '0' &&
-          <React.Fragment>
-            <IntelligentSearch {...this.props} />
-            <IntelligentTable {...this.props} />
-          </React.Fragment>
-        }
-        {stationType === '1' &&
-          <React.Fragment>
-            <IntelligentSearch {...this.props} />
-            <IntelligentTable {...this.props} />
-          </React.Fragment>
-        }
-
+        <IntelligentSearch {...this.props} />
+        <IntelligentTable {...this.props} />
       </div>
     );
   }
