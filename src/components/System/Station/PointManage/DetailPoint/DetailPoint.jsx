@@ -24,6 +24,7 @@ class DetailPoint extends React.Component {
   onWarningTipShow = () => {
     this.setState({
       showWarningTip: true,
+      warningTipText: '退出后信息无法保存!',
     });
   }
   confirmWarningTip = () => {
@@ -34,7 +35,7 @@ class DetailPoint extends React.Component {
     this.props.changePointManageStore({
       showPage: 'list',
     });
-    if (this.state.warningTipText === '确定要删除改测点?') {
+    if (this.state.warningTipText === '确定要删除此测点吗?') {
       //发送删除该测点的请求
       this.props.deletePoints({
         devicePointIds: [pointDetail.devicePointId],
@@ -54,7 +55,7 @@ class DetailPoint extends React.Component {
   deletePoint = () => {
     this.setState({
       showWarningTip: true,
-      warningTipText: '确定要删除改测点?',
+      warningTipText: '确定要删除此测点吗?',
     });
   }
 
