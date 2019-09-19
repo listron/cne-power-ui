@@ -220,13 +220,13 @@ function* getxyLimitValue(action) {//获取
           xyValueLimit: response.data.data || {},
         },
       });
-      yield put({
-        type: dataAnalysisSequenceAction.getSequenceData,
-        payload: {
-          ...queryDataParams,
+      // yield put({
+      //   type: dataAnalysisSequenceAction.getSequenceData,
+      //   payload: {
+      //     ...queryDataParams,
 
-        },
-      });
+      //   },
+      // });
     } else {
       throw response.data.message;
     }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Frequency from './Frequency.jsx';
 import WindRose from './WindRose/WindRose.jsx';
 import styles from './resources.scss';
@@ -7,7 +8,7 @@ class ResourcesTabs extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      activeKey: 1,
+      activeKey: 2,
     };
   }
 
@@ -17,9 +18,10 @@ class ResourcesTabs extends Component{
     });
   };
 
+
+
   render(){
     const { activeKey } = this.state;
-    console.log(activeKey, 'activeKey');
     return(
       <div className={styles.resourcesTabs}>
         <div className={styles.tabsBox}>

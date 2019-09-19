@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
-import { dataFormat } from '../../../../utils/utilFunc';
 import { themeConfig } from '../../../../utils/darkConfig';
 import styles from './resources.scss';
 
@@ -37,7 +36,6 @@ class BigFrequencyChats extends Component{
     this.renderChart(curBigChartData, saveBtn, deviceName);
   }
 
-  
   componentWillReceiveProps(nextProps){
     const { curBigChartData, theme, index, deviceList } = nextProps;
     const { bigChart } = this;
@@ -49,7 +47,7 @@ class BigFrequencyChats extends Component{
       maskColor: 'rgba(255, 255, 255, 0.8)',
       color: '#199475',
     };
-    if(this.props.curBigChartData.length === curBigChartData.length){
+    if(this.props.curBigChartData.length !== curBigChartData.length){
       myChart.showLoading('default', lightColor);
       this.renderChart(curBigChartData, saveBtn, deviceName);
     }
@@ -65,17 +63,22 @@ class BigFrequencyChats extends Component{
   }
 
   creatOption = (curBigChartData = [], saveBtn, deviceName) => {
-    const windSpeedNameData = [], speedFrequencyData = [], eneryFrequencyData = [], windSpeedStartData = [], windSpeedEndData = [];
+    const windSpeedNameData = [], speedFrequencyData = [], eneryFrequencyData = [];
     curBigChartData.forEach(e => {
       windSpeedNameData.push(e.windSpeedName);
       speedFrequencyData.push(e.speedFrequency);
       eneryFrequencyData.push(e.eneryFrequency);
-      windSpeedStartData.push(e.windSpeedStart);
-      windSpeedEndData.push(e.windSpeedEnd);
     });
-    console.log(curBigChartData);
+
+    const speedLength = speedFrequencyData.filter(e => {
+      return e !== null;
+    });
+    const eneryLength = eneryFrequencyData.filter(e => {
+      return e !== null;
+    });
 
     const option = {
+      graphic: (speedLength.length && eneryLength.length) ? hiddenNoData : showNoData,
       color: ['#00cdff', '#ff9000'],
       title: {
         text: [`${deviceName}`, '{b|}'].join(''),
