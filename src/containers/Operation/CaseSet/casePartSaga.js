@@ -126,10 +126,20 @@ function* getCasePartDetail(action) { // 详情
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      const caseDetailData = response.data.data || {};
+      const uploadUrlArr = caseDetailData.annexs ? caseDetailData.annexs.map(e => {
+        const queryName = e.annex.split('/');
+        const name = queryName[queryName.length - 1];
+        return { 'urlName': name, 'url': e.annex, 'name': name, uid: e.annex };
+      }) : [];
+      const caseDetail = { ...caseDetailData, annexs: uploadUrlArr };
+
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
-          caseDetail: response.data.data || {},
+          caseDetail,
+          uploadUrlArr,
+          editFileList: uploadUrlArr,
         },
       });
     } else {
@@ -205,17 +215,35 @@ function* editCasePart(action) { // 编辑案例
   try {
     const response = yield call(axios.put, url, payload);
     if (response.data.code === '10000') {
+      message.success('编辑成功');
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
-
+          showPage: 'list',
         },
+      });
+      const params = yield select(state => ({
+        //继续请求table列表
+        questionTypeCodes: state.operation.casePartReducer.get('questionTypeCodes'),
+        pageNum: state.operation.casePartReducer.get('pageNum'),
+        pageSize: state.operation.casePartReducer.get('pageSize'),
+        deviceModeList: state.operation.casePartReducer.get('deviceModeList'),
+        faultDescription: state.operation.casePartReducer.get('faultDescription'),
+        orderFiled: state.operation.casePartReducer.get('orderFiled'),
+        orderType: state.operation.casePartReducer.get('orderType'),
+        stationCodes: state.operation.casePartReducer.get('stationCodes'),
+        userId: state.operation.casePartReducer.get('userId'),
+        userName: state.operation.casePartReducer.get('userName'),
+      }));
+      yield put({
+        type: casePartAction.getCasePartList,
+        payload: params,
       });
     } else {
       throw response.data;
     }
   } catch (e) {
-    message.error('编辑案列失败');
+    message.error('编辑案例失败');
     yield put({
       type: casePartAction.changeCasePartStore,
       payload: {
@@ -352,9 +380,8 @@ function* uploadCaseFile(action) {
   //上传附件
   const { payload } = action;
   const url = `${APIBasePath}${operation.uploadCaseFile}`;
-
+  const uploadUrlArr = yield select(state => (state.operation.casePartReducer.get('uploadUrlArr').toJS()));
   try {
-    yield put({ type: casePartAction.changeCasePartStore });
     const response = yield call(axios, {
       method: 'post',
       url,
@@ -363,9 +390,13 @@ function* uploadCaseFile(action) {
       contentType: false, // 不设置内容类型
     });
     if (response.data.code === '10000') {
+      const uploadInfoData = response.data.data || {};
+      uploadUrlArr.push(uploadInfoData);
+
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
+          uploadUrlArr,
         },
       });
 
@@ -376,7 +407,7 @@ function* uploadCaseFile(action) {
     }
   } catch (e) {
     console.log(e);
-    yield put({ type: casePartAction.changeCasePartStore, payload: { loading: false } });
+    yield put({ type: casePartAction.changeCasePartStore, payload: { loading: false, uploadUrlArr: [...uploadUrlArr, { url: '', urlName: '' }] } });
   }
 }
 function* deleteCaseFile(action) {

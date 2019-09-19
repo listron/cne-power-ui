@@ -123,26 +123,30 @@
         display: flex;
         // justify-content: center;
         margin: 6px 0 6px 15%;
+        color: #000;
 
       }
 
       .submitStyle {
         margin: 20px 0 20px 15%;
 
-        .submitBtn,
-        .keepOnAdd {
-          border-color: $themeColor;
-          color: $themeColor;
 
-          &:hover {
-            background: $themeColor;
-            color: #fff;
-          }
-        }
 
         .submitBtn {
           margin: 0 20px 0 200px;
 
+        }
+      }
+
+      .uploadBtn,
+      .submitBtn,
+      .keepOnAdd {
+        border-color: $themeColor;
+        color: $themeColor;
+
+        &:hover {
+          background: $themeColor;
+          color: #fff;
         }
       }
     }
@@ -165,6 +169,7 @@
           margin-right: 32px;
           height: 40px;
           line-height: 40px;
+          color: #000;
 
         }
 

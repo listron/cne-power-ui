@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styles from '../CasePartSide.scss';
 import { Icon, Button } from 'antd';
 import WarningTip from '../../../../components/Common/WarningTip';
+import path from '../../../../constants/path';
+const { originUri } = path.basePaths;
 class DetailCase extends React.Component {
   static propTypes = {
     changeCasePartStore: PropTypes.func,
@@ -61,9 +63,7 @@ class DetailCase extends React.Component {
   render() {
     const { showWarningTip, warningTipText } = this.state;
     const { caseDetail } = this.props;
-    console.log('caseDetail: ', caseDetail);
     const dataDom = this.detailInfo(caseDetail);
-    console.log('dataDom: ', dataDom);
     const { likeCount } = caseDetail;
 
     return (
@@ -86,7 +86,7 @@ class DetailCase extends React.Component {
               <div key={e.name} className={styles.eachInfo}>
                 <div className={styles.infoName}>{e.name}</div>
                 {e.name === '上传附件' ? <div className={styles.downHref}>
-                  {e.value && e.value.map((item, i) => (<a href={item.annex} download={item.annex} target="_blank"><span>附件{i + 1}点击下载</span></a>))}
+                  {e.value && e.value.map((item, i) => (<a href={`${originUri}${item.url}`} download={`${originUri}${item.url}`} target="_blank"><span>{`${item.name}`}_点击下载</span></a>))}
                 </div> : <div
                   className={styles.infoValue}
                   title={`${value}${e.unit || ''}`}

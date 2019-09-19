@@ -23,6 +23,8 @@ const initState = immutable.fromJS({
   selectedRowKeys: [],
   selectedRowData: [],
   modesInfo: [], //新增和编辑里的机型
+  uploadUrlArr: [], //上传的文件返回的地址
+  editFileList: [],//编辑页面中的文件列表
 
 });
 

@@ -12,12 +12,20 @@ const { operation } = path.APISubPaths;
 
 class CaseHandle extends React.Component {
   static propTypes = {
+    changeCasePartStore: PropTypes.func,
+    selectedRowData: PropTypes.array,
+    deleteCasePart: PropTypes.func,
+    casePartTableData: PropTypes.array,
+    selectedRowKeys: PropTypes.array,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    total: PropTypes.number,
   }
   constructor(props, context) {
     super(props, context);
     this.state = {
       showWarningTip: false,
-      warningTipText: '确认要删除?',
+      warningTipText: '确认要删除选中的案例?',
       showUpload: false,
 
     };
@@ -25,6 +33,7 @@ class CaseHandle extends React.Component {
   showAddPage = () => {
     this.props.changeCasePartStore({
       caseDetail: {},
+      uploadUrlArr: [],
       showPage: 'add',
     });
   }
