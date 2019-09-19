@@ -26,6 +26,7 @@ const initState = immutable.fromJS({
   stationUnix: null, // 电站页请求时间
 
   devicesData: {}, // 各设备信息
+  deveiceLoading: false, // 设备信息loading
   deviceTopData: {}, // 设备页顶部信息
   devicePointsList: [], // 设备页测点列表
   deviceUnix: null, // 电站页请求时间

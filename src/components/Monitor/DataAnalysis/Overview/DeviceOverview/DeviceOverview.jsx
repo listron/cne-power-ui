@@ -21,6 +21,7 @@ class DeviceOverview extends PureComponent{
     deviceUnix: PropTypes.number,
     deviceParam: PropTypes.object,
     devicesData: PropTypes.object,
+    deveiceLoading: PropTypes.bool,
     deviceCheckedList: PropTypes.array,
     changeOverviewStore: PropTypes.func,
     getOverviewStation: PropTypes.func,
@@ -165,7 +166,7 @@ class DeviceOverview extends PureComponent{
   }
 
   render(){
-    const { deviceParam, deviceTopData, stations, devicesData } = this.props;
+    const { deviceParam, deviceTopData, stations, devicesData, deveiceLoading } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = deviceParam;
     return(
       <div className={styles.device}>
@@ -188,7 +189,7 @@ class DeviceOverview extends PureComponent{
             onTypeChange={this.deviceTypeChanged}
           />
         </div>
-        <DeviceRateChart devicesData={devicesData} />
+        <DeviceRateChart devicesData={devicesData} deveiceLoading={deveiceLoading} />
         <div className={styles.devicePoints}>
           <div className={styles.pointHandle}>
             <span>测点</span>

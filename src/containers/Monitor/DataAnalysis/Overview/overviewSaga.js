@@ -74,14 +74,15 @@ function *afterDeviceTypePointGet({ payload }) { // 设备页 获得测点数据
 
 function *getOverviewDevices({ payload }){ // 获取所有设备数据信息
   const url = `${APIBasePath}${monitor.getOverviewDevices}`;
-  //post /api/v3/ dataoverriew/point
-  // params: stationCode, deviceTypeCode, dateType, date, pointCodes
   try {
+    yield call(easyPut, 'changeStore', {
+      deveiceLoading: true,
+    });
     const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
       const mockData = {
         total: 0.1247, // null
-        deviceData: [23, 22, 14, 45, 88].map(e => ({
+        deviceData: [12, 13, 14, 15, 16, 17, 18, 23, 22, 14, 45, 88, 90, 91, 92, 93, 71, 73, 72, 74, 75, 78, 63, 62, 64, 65, 68].map(e => ({
           deviceFullcode: `M${e}M${e * e}M101`,
           deviceName: `mock数据设备${e}`,
           completeRate: e * e,
@@ -97,10 +98,12 @@ function *getOverviewDevices({ payload }){ // 获取所有设备数据信息
       yield call(easyPut, 'fetchSuccess', {
         // devicesData: response.data || {},
         devicesData: mockData,
+        deveiceLoading: false,
       });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
+      deveiceLoading: false,
       devicesData: {},
     });
   }
