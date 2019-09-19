@@ -19,21 +19,22 @@ function* getStationDevice(action) {//获取电站设备
     if (response.code === '10000') {
       const data = response.data || [];
       const deviceList = data.map((e, i) => ({ ...e, likeStatus: false }));
+      const fristDevice = deviceList[0];
+      const deviceFullCode = fristDevice.deviceFullCode;
       yield put({
         type: windResourcesAction.changeWindResourcesStore,
         payload: {
           deviceList,
         },
       });
-      // const params = yield select(state =>({
-      //    test:state.statisticalAnalysisReducer.windResourcesReducer.get('activeCode').toJS(),
-      //    test2:state.statisticalAnalysisReducer.windResourcesReducer.get('activeCode').toJS(),
-      //    test3:state.statisticalAnalysisReducer.windResourcesReducer.get('activeCode').toJS(),
-      // }));
-      // yield put({
-      //   type: windResourcesAction.getFrequency,
-      //   payload: params,
-      // });
+      yield put({
+        type: windResourcesAction.getFrequency,
+        payload: {
+          deviceFullCode,
+          startTime: moment().subtract(2, 'months').format(),
+          endTime: moment().format(),
+        },
+      });
     } else {
       throw response;
     }

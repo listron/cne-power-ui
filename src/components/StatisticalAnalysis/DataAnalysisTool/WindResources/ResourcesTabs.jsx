@@ -18,6 +18,8 @@ class ResourcesTabs extends Component{
     });
   };
 
+
+
   render(){
     const { activeKey } = this.state;
     return(

@@ -32,16 +32,18 @@ class HandleSeach extends Component{
 
   componentWillReceiveProps(nextProp) {
     const { startTime, endTime, deviceList, changeWindResourcesStore, getFrequency } = nextProp;
+    // console.log('deviceList: ', deviceList);
     this.setState({
       saveStartTime: startTime,
       saveEndTime: endTime,
     });
-    if (deviceList.length) {
-      const fristDevice = deviceList[0];
-      const deviceFullCode = fristDevice.deviceFullCode;
-      changeWindResourcesStore({deviceFullCode});
-      getFrequency({ deviceFullCode, startTime, endTime });
-    }
+    // if (deviceList.length) {
+      // console.log(deviceList.length);
+      // const fristDevice = deviceList[0];
+      // const deviceFullCode = fristDevice.deviceFullCode;
+      // changeWindResourcesStore({deviceFullCode});
+      // getFrequency({ deviceFullCode, startTime, endTime });
+    // }
   }
 
   selectStationCode = (stationCodeArr) => {//电站选择
