@@ -23,6 +23,7 @@ class AddCaseForm extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      fileList: [],
     };
   }
   addsubmitForm = (e) => {
@@ -93,6 +94,20 @@ class AddCaseForm extends React.Component {
     if (file.size > limitSize) {
       message.config({ top: 200, duration: 2, maxCount: 3 });
       message.error('上传文件不得大于100M', 2);
+    } else {
+      this.setState({
+        fileList: [...this.state.fileList, file],
+      }, () => {
+        console.log('fileList: ', this.state.fileList);
+        const formData = new FormData();
+        formData.append('file', this.state.fileList[0]);
+        // this.props.uploadCaseFile({
+        //   formData,
+        // });
+      });
+
+
+
     }
 
     return false;
@@ -103,6 +118,17 @@ class AddCaseForm extends React.Component {
     }
     return e && e.fileList;
   }
+  // uploadFile = () => {
+  //   const file = this.props.form.getFieldsValue(['annexs']);
+  //   const fileList = file.annexs;
+  //   const tets = this.state.fileList;
+  //   console.log('tets: ', tets);
+  //   const formData = new FormData();
+  //   formData.append('file', fileList[0]);
+  //   // this.props.uploadCaseFile({
+  //   //   formData,
+  //   // });
+  // }
   onModelChange = (value) => {
     const deviceModeList = value.map(e => (e.value));
     this.setState({}, () => {
@@ -227,6 +253,7 @@ class AddCaseForm extends React.Component {
               <Upload
                 beforeUpload={this.beforeUploadStation}
                 showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
+                onChange={this.uploadFile}
               >
                 <Button className={styles.uploadBtn} >  <Icon type="upload" />选择文件上传</Button>
                 <span> 上传文件不得大于100M</span>
