@@ -69,7 +69,12 @@ class StopStatusChart extends Component {
     preChart && preChart.dispose(); // 销毁，基于当前dom重新生成图表，保证自适应
     const statusChart = echarts.init(this.statusRef);
     const yAxisLabels = [], statusResult = [], fualtNameSet = new Set();
-    lists.sort((b = {}, a = {}) => a.deviceName && a.deviceName.localeCompare(b.deviceName)).forEach((e, index) => { // 设备名排序
+    lists.sort((b = {}, a = {}) => {
+      if (a.deviceOrderName) {
+        return a.deviceOrderName.localeCompare(b.deviceOrderName);
+      }
+      return a.deviceName && a.deviceName.localeCompare(b.deviceName);
+    }).forEach((e, index) => { // 设备名排序
       const { deviceName, faultInfos = [] } = e || {};
       yAxisLabels.push(deviceName);
       faultInfos.forEach(m => {
