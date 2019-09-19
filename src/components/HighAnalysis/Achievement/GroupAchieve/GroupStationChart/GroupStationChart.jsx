@@ -112,10 +112,26 @@ export default class GroupStationChart extends Component {
     }
   };
 
+  // 处理数值
+  dataFormatFunc = (unitName, indicatorData, paramStr) => {
+    // 1.是否是百分比显示
+    // 2.判断字段是否有值
+    if(!indicatorData) {
+      return null;
+    }
+    if(unitName === '%') {
+      if(indicatorData[paramStr] === null){
+        return null;
+      }
+      return indicatorData[paramStr] * 100;
+    }
+    return indicatorData[paramStr];
+  };
+
   drawChart = (data, dataIndex) => {
     const { titleFunc, areaColorData, unitName, pointLength } = this.props;
     const twoBar = [{ // 实发
-      data: data && data.map(cur => (unitName === '%' ? (cur.indicatorData.actualGen === null ? null :cur.indicatorData.actualGen * 100) : cur.indicatorData.actualGen)),
+      data: data && data.map(cur => (this.dataFormatFunc(unitName, cur.indicatorData, 'actualGen'))),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -130,7 +146,7 @@ export default class GroupStationChart extends Component {
         },
       },
     }, {// 应发
-      data: data && data.map(cur => (unitName === '%' ? (cur.indicatorData.theoryGen === null ? null : cur.indicatorData.theoryGen * 100) : cur.indicatorData.theoryGen)),
+      data: data && data.map(cur => (this.dataFormatFunc(unitName, cur.indicatorData, 'theoryGen'))),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -144,7 +160,7 @@ export default class GroupStationChart extends Component {
       },
     }];
     const oneBar = [{
-      data: data && data.map(cur => (unitName === '%' ? (cur.indicatorData.value === null ? null : cur.indicatorData.value * 100) : cur.indicatorData.value)),
+      data: data && data.map(cur => (this.dataFormatFunc(unitName, cur.indicatorData, 'value'))),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
