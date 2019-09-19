@@ -48,7 +48,7 @@ class DeviceRateChart extends PureComponent{
     const { deviceData } = devicesData;
     const sortResult = value === sortType ? null : value; // 连击取消排序, 否则正常排序
     this.setState({ sortType: sortResult });
-    this.drawChart(value, deviceData);
+    this.drawChart(sortResult, deviceData);
   }
 
   drawChart = (sortType, deviceData) => {
