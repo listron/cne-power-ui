@@ -25,7 +25,11 @@ function* getStationDevice(action) {//获取电站设备
           deviceList,
         },
       });
-      // const params = yield select(state => state.statisticalAnalysisReducer.windResourcesReducer.get('activeCode').toJS());
+      // const params = yield select(state =>({
+      //    test:state.statisticalAnalysisReducer.windResourcesReducer.get('activeCode').toJS(),
+      //    test2:state.statisticalAnalysisReducer.windResourcesReducer.get('activeCode').toJS(),
+      //    test3:state.statisticalAnalysisReducer.windResourcesReducer.get('activeCode').toJS(),
+      // }));
       // yield put({
       //   type: windResourcesAction.getFrequency,
       //   payload: params,
