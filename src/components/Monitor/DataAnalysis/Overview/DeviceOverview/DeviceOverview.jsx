@@ -6,10 +6,9 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Radio, DatePicker } from 'antd';
 import styles from './device.scss';
-// import StationList from './StationList';
-// import StationDates from './StationDates';
 import CommonSearch from '../CommonSearch';
 import DeviceRateChart from './DeviceRateChart';
+import DeviceTable from './DeviceTable';
 import searchUtil from '@utils/searchUtil';
 const { MonthPicker } = DatePicker;
 
@@ -26,7 +25,6 @@ class DeviceOverview extends PureComponent{
     changeOverviewStore: PropTypes.func,
     getOverviewStation: PropTypes.func,
     getOverviewDevices: PropTypes.func,
-    // getOverviewDates: PropTypes.func,
     getPoints: PropTypes.func,
   }
 
@@ -78,7 +76,6 @@ class DeviceOverview extends PureComponent{
       this.historySearchChange(queryParam);
     }
   }
-    // deviceParam: {}, // stationCode, deviceTypeCode, dateType(1日2月), date, pointCodes => search-device是该字段的jsonStr
 
   getDeviceInfo = () => { // 路径信息中获取设备页信息
     const { history } = this.props;
@@ -166,7 +163,7 @@ class DeviceOverview extends PureComponent{
   }
 
   render(){
-    const { deviceParam, deviceTopData, stations, devicesData, deveiceLoading } = this.props;
+    const { deviceParam, deviceTopData, stations } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = deviceParam;
     return(
       <div className={styles.device}>
@@ -189,18 +186,8 @@ class DeviceOverview extends PureComponent{
             onTypeChange={this.deviceTypeChanged}
           />
         </div>
-        <DeviceRateChart devicesData={devicesData} deveiceLoading={deveiceLoading} />
-        <div className={styles.devicePoints}>
-          <div className={styles.pointHandle}>
-            <span>测点</span>
-            <span>测点选择弹框</span>
-            <span>指标名称</span>
-            <span>指标选择</span>
-          </div>
-          <div className={styles.pointTable}>
-            测点详情表格
-          </div>
-        </div>
+        <DeviceRateChart {...this.props} />
+        <DeviceTable {...this.props} />
       </div>
     );
   }

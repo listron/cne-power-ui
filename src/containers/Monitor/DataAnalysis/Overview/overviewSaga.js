@@ -58,10 +58,19 @@ function *getOverviewDates({ payload }){ // 电站各日完整率
 function *afterDeviceTypePointGet({ payload }) { // 设备页 获得测点数据后触发
   const { devicePointsList = [] } = payload || {};
   const { deviceParam = {} } = yield select(state => state.monitor.overview.toJS());
-  const pointCodes = devicePointsList.map(e => e.devicePointStandardCode);
+  const pointCodes = [];
+  const tmpList = [];
+  devicePointsList.forEach(e => {
+    const { devicePointStandardCode, devicePointName } = e;
+    pointCodes.push(devicePointStandardCode);
+    tmpList.push({
+      value: devicePointStandardCode,
+      label: devicePointName,
+    });
+  });
   yield call(easyPut, 'fetchSuccess', { // 默认选中所有测点
     deviceCheckedList: pointCodes,
-    devicePointsList,
+    devicePointsList: tmpList,
   });
   yield call(getOverviewDevices, { // 默认所有测点请求设备数据
     payload: { ...deviceParam, pointCodes },

@@ -1,14 +1,7 @@
 @import '../../../../../theme/theme.scss';
 
 .device{
-  .devicePoints{
-    .pointHandle{
-
-    }
-    .pointTable{
-
-    }
-  }
+  
 }
 .topSearch{
   margin-bottom: 10px;
@@ -83,6 +76,27 @@
     margin-right: 16px;
   }
 }
+.devicePoints{
+  .pointHandle{
+    height: 60px;
+    display: flex;
+    padding-left: 24px;
+    align-items: center;
+    .text{
+      margin-right: 8px;
+    }
+    .eachType{
+      :global{
+        .ant-select-selection__choice{
+          padding: 0 16px 0 8px;
+        }
+      }
+    }
+  }
+  .pointTable{
+    
+  }
+}
 
 // 颜色
 .topSearch .dateCheck{
@@ -111,5 +125,8 @@
   .round{
     background-color: $themeColor;
   }
+}
+.devicePoints{
+  background-color: #fff;
 }
 
