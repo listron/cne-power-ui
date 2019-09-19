@@ -58,10 +58,6 @@ function *getOverviewDates({ payload }){ // 电站各日完整率
 function *afterDeviceTypePointGet({ payload }) { // 设备页 获得测点数据后触发
   const { devicePointsList = [] } = payload || {};
   const { deviceParam = {} } = yield select(state => state.monitor.overview.toJS());
-  // devicePointsList 
-  // devicePointName: "1#水冷加热器动作"
-  // devicePointStandardCode: "AM751"
-  // devicePointUnit: null
   const pointCodes = devicePointsList.map(e => e.devicePointStandardCode);
   yield call(easyPut, 'fetchSuccess', { // 默认选中所有测点
     deviceCheckedList: pointCodes,

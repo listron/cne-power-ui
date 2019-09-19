@@ -66,6 +66,9 @@ class StationDates extends PureComponent{
       const { stationParam, history, stationTopData } = this.props;
       const { stationCode, deviceTypeCode } = stationParam;
       const { pathname, search } = history.location;
+      const { pages = '' } = searchUtil(search).parse();
+      const allPages = pages.split('_').filter(e => !!e); // 开启的tab页面
+      !allPages.includes('device') && allPages.push('device');
       const deviceParam = { // 请求参数
         stationCode,
         deviceTypeCode,
@@ -74,6 +77,8 @@ class StationDates extends PureComponent{
         pointCodes: [], // 默认所有
       };
       this.props.changeOverviewStore({ // 已经得到的电站基础信息传入设备页 - 减少一次不必要请求
+        tab: 'device', // 激活的tab页, station, device, points
+        pages: allPages, // 开启的tab页面
         deviceTopData: stationTopData,
         deviceParam, // 请求参数保存
       });
@@ -81,11 +86,9 @@ class StationDates extends PureComponent{
         params: {
           stationCode, deviceTypeCode, pointTypes: 'YC,YM',
         },
+        actionName: 'afterDeviceTypePointGet',
         resultName: 'devicePointsList',
       });
-      const { pages = '' } = searchUtil(search).parse();
-      const allPages = pages.split('_').filter(e => !!e); // 开启的tab页面
-      !allPages.includes('device') && allPages.push('device');
       const newSearch = searchUtil(search).replace({ // 路径 替换/添加 device信息
         device: JSON.stringify(deviceParam),
         pages: allPages.join('_'), // 激活项添加

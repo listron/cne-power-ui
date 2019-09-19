@@ -46,7 +46,7 @@ class Overview extends Component{
   }
 
   render(){
-    const tab = this.getSearchTab()
+    const tab = this.getSearchTab();
     return(
       <div className={styles.overview}>
         <CommonBreadcrumb breadData={[{ name: '数据概览' }]} style={{ paddingLeft: '40px' }} />
