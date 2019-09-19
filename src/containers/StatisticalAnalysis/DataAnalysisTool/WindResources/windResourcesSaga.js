@@ -1,4 +1,4 @@
-import { call, put, takeLatest, all, select, message } from 'redux-saga/effects';
+import { call, put, takeLatest, select, message } from 'redux-saga/effects';
 import request from '../../../../utils/request';
 import Path from '../../../../constants/path';
 import { windResourcesAction } from './windResourcesAction';
@@ -19,6 +19,8 @@ function* getStationDevice(action) {//获取电站设备
     if (response.code === '10000') {
       const data = response.data || [];
       const deviceList = data.map((e, i) => ({ ...e, likeStatus: false }));
+      const fristDevice = deviceList[0];
+      const deviceFullCode = fristDevice.deviceFullCode;
       yield put({
         type: windResourcesAction.changeWindResourcesStore,
         payload: {
@@ -26,9 +28,11 @@ function* getStationDevice(action) {//获取电站设备
         },
       });
       yield put({
-        type: windResourcesAction.getSequenceName,
+        type: windResourcesAction.getFrequency,
         payload: {
-          stationCode: payload.stationCode,
+          deviceFullCode,
+          startTime: moment().subtract(2, 'months').format(),
+          endTime: moment().format(),
         },
       });
     } else {
@@ -64,7 +68,6 @@ function* getFrequency(action){ // 获取风能频率图
         type: windResourcesAction.changeWindResourcesStore,
         payload: {
           frequencyData: response.data || [],
-          chartTime: moment().unix(),
           activeCode: deviceFullCode,
         },
       });
@@ -81,7 +84,6 @@ function* getFrequency(action){ // 获取风能频率图
           chartLoading: false,
           activeCode: deviceFullCode,
           frequencyData: [],
-
         },
       });
       message.error('请求失败');
@@ -89,12 +91,6 @@ function* getFrequency(action){ // 获取风能频率图
     }
   }catch (e) {
     console.log(e);
-    // yield put({
-    //   type: windResourcesAction.changeWindResourcesStore,
-    //   payload: {
-    //     frequencyData: [],
-    //   },
-    // });
   }
 }
 
@@ -117,7 +113,6 @@ function* getBigFrequency(action) {// 获取放大后的图
     });
     if (response.code === '10000') {
       const curChartData = response.data || [];
-      console.log('curChartData: ', curChartData);
       yield put({
         type: windResourcesAction.changeWindResourcesStore,
         payload: {

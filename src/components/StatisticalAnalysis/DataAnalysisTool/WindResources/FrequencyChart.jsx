@@ -4,6 +4,7 @@ import styles from './resources.scss';
 import echarts from 'echarts';
 import { Icon } from 'antd';
 import { themeConfig } from '../../../../utils/darkConfig';
+import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class FrequencyChart extends Component{
   static propTypes = {
@@ -54,7 +55,6 @@ class FrequencyChart extends Component{
         myChart.hideLoading();
       }
     }
-
     if (saveBtn !== this.props.saveBtn) {
       this.renderChart(frequencyData, saveBtn, false);
     }
@@ -65,18 +65,28 @@ class FrequencyChart extends Component{
     return activeCode === this.props.deviceFullCode || this.props.deviceFullCode !== deviceFullCode;
   }
 
+  componentWillUnmount() {
+    echarts.init(this.frequencyChart, themeConfig[this.props.theme]).dispose();
+  }
+
   creatOption = (frequencyData = [], saveBtn) => {
     const { deviceName } = this.props;
-    const windSpeedNameData = [], speedFrequencyData = [], eneryFrequencyData = [], windSpeedStartData = [], windSpeedEndData = [];
+    const windSpeedNameData = [], speedFrequencyData = [], eneryFrequencyData = [];
     frequencyData.forEach(e => {
       windSpeedNameData.push(e.windSpeedName);
       speedFrequencyData.push(e.speedFrequency);
       eneryFrequencyData.push(e.eneryFrequency);
-      windSpeedStartData.push(e.windSpeedStart);
-      windSpeedEndData.push(e.windSpeedEnd);
+    });
+
+    const speedLength = speedFrequencyData.filter(e => {
+      return e !== null;
+    });    
+    const eneryLength = eneryFrequencyData.filter(e => {
+      return e !== null;
     });
 
     const option = {
+      graphic: (speedLength.length && eneryLength.length) ? hiddenNoData : showNoData,
       color: ['#00cdff', '#ff9000'],
       title: {
         text: [`${deviceName}`, '{b|}'].join(''),
@@ -112,6 +122,9 @@ class FrequencyChart extends Component{
           const tmpSpeed = speedObject && !isNaN(speedObject.value);
           const tmpEnery = eneryObject && !isNaN(eneryObject.value);
           let speed = '', enery = '';
+          const speendStart = frequencyData[param[0].dataIndex].windSpeedStart;
+          const speendEnd = frequencyData[param[0].dataIndex].windSpeedEnd;
+
           if (tmpSpeed) {
             speed = `<div class=${styles.speedBox}>
               <span class=${styles.speed}></span>
@@ -127,6 +140,7 @@ class FrequencyChart extends Component{
             </div>`;
           }
           return `<div class=${styles.tipBox}>
+            <div class=${styles.title}>风速区间${speendStart}~${speendEnd}</div>
             ${speed}${enery}
           </div>`;
         },
@@ -205,14 +219,13 @@ class FrequencyChart extends Component{
     const { theme, likeStatusChange, index, saveImgUrl, deviceName, getFrequency, deviceList } = this.props;
     const parms = {
       ...isRequest,
-      interval: 60,
     };
     const myChart = echarts.init(this.frequencyChart, themeConfig[theme]); //构建下一个实例
     myChart.clear();
     const option = this.creatOption(frequencyData, saveBtn );
     myChart.off();
     myChart.on('click', 'title', (payload) => {
-      likeStatusChange(index, !saveBtn);
+      likeStatusChange(index, !saveBtn, frequencyData);
     });
 
     myChart.on('rendered', () => {
