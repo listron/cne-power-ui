@@ -20,7 +20,7 @@ class PointManageList extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
-      warningTipText: '确定要删除选中测点?',
+      warningTipText: '确定要删除选中的测点吗?',
       currentPoint: {},
     };
   }

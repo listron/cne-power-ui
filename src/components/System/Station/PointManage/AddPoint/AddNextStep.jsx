@@ -72,7 +72,10 @@ class AddNextStep extends React.Component {
             <FormItem label="测点编号" colon={false} className={styles.formItemStyle} >
               {getFieldDecorator('devicePointStandardCode', {
                 initialValue: this.dealPointDetail('devicePointStandardCode'),
-                rules: [{ required: true, message: '请正确填写', type: 'string', max: 10 }],
+                rules: [{ required: true, message: '请输入数字和字符的组合,且不超过30个字符', type: 'string', max: 30, pattern: /^(?![0-9]+$).{0,30}$/ }],
+                //要求不能纯数字,(?![0-9]+$)反向预查，不能是纯数字
+                //这是数字字母特殊字符[0-9A-Za-z`~!@#$%^&*()_+-=[][]\|;:'"",<>.?]，用了.代表任意字符
+
               })(
                 <Input placeholder="请输入" onChange={this.setDevicePointCodeValue} />
               )}
@@ -80,7 +83,7 @@ class AddNextStep extends React.Component {
             <FormItem label="测点描述" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('devicePointName', {
                 initialValue: this.dealPointDetail('devicePointName'),
-                rules: [{ required: true, message: '请正确填写', type: 'string', max: 50 }],
+                rules: [{ required: true, message: '不超过50个字符', type: 'string', max: 50 }],
               })(
                 <Input placeholder="请输入" />
               )}
@@ -96,7 +99,7 @@ class AddNextStep extends React.Component {
             <FormItem label="第三方测点名称" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('devicePointCode', {
                 initialValue: this.dealPointDetail('devicePointCode'),
-                rules: [{ required: true, message: '请正确填写', type: 'string', max: 10 }],
+                rules: [{ required: true, message: '请输入数字和字符的组合,且不超过30个字符', type: 'string', max: 30, pattern: /^(?![0-9]+$).{0,30}$/ }],
               })(
                 <Input placeholder="请输入" />
               )}
@@ -104,7 +107,7 @@ class AddNextStep extends React.Component {
             <FormItem label="英文名称" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('devicePointIecname', {
                 initialValue: this.dealPointDetail('devicePointIecname'),
-                rules: [{ message: '名称超过50字符', type: 'string', max: 50 }],
+                rules: [{ message: '不超过50个字符', type: 'string', max: 50 }],
               })(
                 <Input placeholder="请输入" />
               )}
@@ -142,7 +145,7 @@ class AddNextStep extends React.Component {
             <FormItem label="单位" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('devicePointUnit', {
                 initialValue: this.dealPointDetail('devicePointUnit'),
-                rules: [{ message: '名称超过10字符', type: 'string', max: 10 }],
+                rules: [{ message: '不超过10个字符', type: 'string', max: 10 }],
               })(
                 <Input placeholder="请输入" />
               )}
@@ -159,6 +162,7 @@ class AddNextStep extends React.Component {
             <FormItem label="小数点位数" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('devicePointDecimalplace', {
                 initialValue: this.dealPointDetail('devicePointDecimalplace'),
+                rules: [{ message: '请输入正整数', pattern: /^\d*$/ }],
               })(
                 <Input placeholder="请输入" />
               )}

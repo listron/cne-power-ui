@@ -29,7 +29,7 @@ class PointManageHandle extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
-      warningTipText: '确定要删除?',
+      warningTipText: '确定要删除选中的测点吗?',
     };
   }
 
