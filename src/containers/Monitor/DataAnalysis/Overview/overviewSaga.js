@@ -79,8 +79,24 @@ function *getOverviewDevices({ payload }){ // 获取所有设备数据信息
   try {
     const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
+      const mockData = {
+        total: 0.1247, // null
+        deviceData: [23, 22, 14, 45, 88].map(e => ({
+          deviceFullcode: `M${e}M${e * e}M101`,
+          deviceName: `mock数据设备${e}`,
+          completeRate: e * e,
+          pointData: ['TR002', 'TR003', 'TR017'].map(p => ({
+            pointCode: p,
+            pointName: p,
+            validCount: e * Math.random() * 100,
+            invalidCount: e * Math.random() * 100,
+            lostCount: e * Math.random() * 100,
+          })),
+        })),
+      };
       yield call(easyPut, 'fetchSuccess', {
-        devicesData: response.data || {},
+        // devicesData: response.data || {},
+        devicesData: mockData,
       });
     } else { throw response; }
   } catch (error) {

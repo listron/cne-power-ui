@@ -79,7 +79,7 @@ class StationDates extends PureComponent{
       });
       this.props.getPoints({
         params: {
-          stationCode, deviceTypeCode, require: 'yc,ym',
+          stationCode, deviceTypeCode, pointTypes: 'YC,YM',
         },
         resultName: 'devicePointsList',
       });

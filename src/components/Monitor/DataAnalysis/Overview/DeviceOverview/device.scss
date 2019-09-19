@@ -1,1 +1,58 @@
 @import '../../../../../theme/theme.scss';
+
+.device{
+  .devicePoints{
+    .pointHandle{
+
+    }
+    .pointTable{
+
+    }
+  }
+}
+.topSearch{
+  margin-bottom: 10px;
+  .dateCheck{
+    display: flex;
+    height: 56px; 
+    align-items: center;
+    
+  }
+  .checkText{
+    text-align: center;
+    flex: 0 0 80px;
+    margin-right: 4px;
+  }
+  :global{
+    .ant-radio-group{
+      margin-right: 8px;
+    }
+  }
+}
+.deviceRate{
+  margin-bottom: 10px;
+  display: flex;
+  .total{
+    flex: 0 0 16.5%;
+  }
+  .chart{
+    flex: 0 0 80%;
+  }
+  .sorter{
+    flex: 1;
+  }
+}
+
+// 颜色
+.device{
+  .topSearch .dateCheck{
+    background-color: #fff;
+    :global{
+      .ant-radio-button-wrapper-checked{
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
+  }
+}
+

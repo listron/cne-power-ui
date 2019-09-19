@@ -76,16 +76,13 @@ const mapDispatchToProps = (dispatch) =>({
   getOverviewPoints: payload => dispatch({ type: overviewAction.getOverviewPoints, payload }),
   changeOverviewStore: payload => dispatch({ type: overviewAction.changeStore, payload }),
   resetOverview: () => dispatch({ type: overviewAction.reset }),
-  getPoints: params => {
-    console.log(params);
-    dispatch({
-      type: commonAction.getPoints,
-      payload: {
-        ...params,
-        actionName: overviewAction[params.actionName || 'changeStore'], // 默认执行changeStore, 此处可选择指定saga函数执行
-      },
-    })
-  },
+  getPoints: params => dispatch({ // 默认执行changeStore, 此处可选择指定saga函数执行
+    type: commonAction.getPoints,
+    payload: {
+      ...params,
+      actionName: overviewAction[params.actionName || 'changeStore'],
+    },
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);
