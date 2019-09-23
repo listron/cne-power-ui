@@ -41,7 +41,12 @@
     }
 
     .searchBtn {
-      margin-left: 28px;
+      margin: 0 28px;
+    }
+
+    .reset {
+      color: $themeColor;
+      cursor: pointer;
     }
 
     border-bottom: solid 1px $promptColor;

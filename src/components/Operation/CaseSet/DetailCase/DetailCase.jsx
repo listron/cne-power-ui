@@ -8,6 +8,7 @@ const { originUri } = path.basePaths;
 class DetailCase extends React.Component {
   static propTypes = {
     changeCasePartStore: PropTypes.func,
+    downLoadFile: PropTypes.func,
     likeCase: PropTypes.func,
     caseDetail: PropTypes.object,
 
@@ -37,6 +38,16 @@ class DetailCase extends React.Component {
     const { caseBaseId } = caseDetail;
     this.props.likeCase({
       caseBaseId,
+    });
+  }
+  downFile = (file, fileName) => {
+    const { downLoadFile } = this.props;
+    const downloadTemplet = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadFile}`; // 下载文件
+    downLoadFile({
+      url: downloadTemplet,
+      method: 'post',
+      params: { filePath: file },
+      fileName: fileName,
     });
   }
   detailInfo = (data) => {

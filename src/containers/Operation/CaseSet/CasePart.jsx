@@ -10,6 +10,7 @@ import CasePartSide from '../../../components/Operation/CaseSet/CasePartSide';
 import CaseSearch from '../../../components/Operation/CaseSet/CaseSearch';
 import CaseHanlde from '../../../components/Operation/CaseSet/CaseHanlde';
 import CaseList from '../../../components/Operation/CaseSet/CaseList';
+import { commonAction } from '../../../containers/alphaRedux/commonAction';
 
 class CasePart extends Component {
   static propTypes = {
@@ -83,5 +84,12 @@ const mapDispatchToProps = (dispatch) => ({
   importCase: payload => dispatch({ type: casePartAction.importCase, payload }),
   uploadCaseFile: payload => dispatch({ type: casePartAction.uploadCaseFile, payload }),
   deleteCaseFile: payload => dispatch({ type: casePartAction.deleteCaseFile, payload }),
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: casePartAction.changeCasePartStore,
+    },
+  }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CasePart);

@@ -21,6 +21,8 @@ class CaseSearch extends React.Component {
     questionTypeCodes: PropTypes.array,
     deviceModeList: PropTypes.array,
     stationCodes: PropTypes.array,
+    orderFiled: PropTypes.string,
+    orderType: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
