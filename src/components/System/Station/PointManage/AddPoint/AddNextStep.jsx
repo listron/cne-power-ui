@@ -119,7 +119,7 @@ class AddNextStep extends React.Component {
               {(showDesc) && (
                 <span className={styles.usepoint}>
                   {/* <span> 标准点描述:{this.dealPointDetail('deviceStandardPointDesc')}</span> */}
-                  <span> 标准点描述:{showDesc}</span>
+                  <span className={styles.descStyle} title={showDesc}> 标准点描述:{showDesc}</span>
                   <Button className={styles.useBtn} onClick={this.setDevicePointDesc}>使用</Button>
                 </span>
 
