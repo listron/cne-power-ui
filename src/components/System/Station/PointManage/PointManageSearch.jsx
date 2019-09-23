@@ -129,10 +129,10 @@ class PointManageSearch extends Component {
         </div>
         <div className={styles.bottomSeach}>
           <span className={styles.titleText}>测点编号</span>
-          <Input className={styles.searchInput} onChange={this.changePointCode} allowClear={true} value={devicePointStandardCode} />
+          <Input placeholder="请输入..." className={styles.searchInput} onChange={this.changePointCode} allowClear={true} value={devicePointStandardCode} />
           <span className={styles.titleText}>测点描述</span>
-          <Input className={styles.searchInput} onChange={this.changeDesc} allowClear={true} value={devicePointName} />
-          <Button onClick={this.searchData} className={styles.searchBtn}>查找</Button>
+          <Input placeholder="请输入..." className={styles.searchInput} onChange={this.changeDesc} allowClear={true} value={devicePointName} />
+          <Button onClick={this.searchData} className={styles.searchBtn}>查询</Button>
           {showResetBtn && <span className={styles.reset} onClick={this.onReset}>重置</span>}
 
         </div>

@@ -16,9 +16,23 @@ class AddNextStep extends React.Component {
     addPoint: PropTypes.func,
     editPoints: PropTypes.func,
     showPage: PropTypes.string,
+    detailTime: PropTypes.string,
+    standardDesc: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      showDesc: '',
+    };
+  }
+  componentWillReceiveProps(nextProps) {
+    const { detailTime, pointDetail } = nextProps;
+
+    if (detailTime !== this.props.detailTime) {
+      this.setState({
+        showDesc: pointDetail.deviceStandardPointDesc,
+      });
+    }
   }
   gobackPre = () => {
     this.props.showPre();
@@ -37,19 +51,28 @@ class AddNextStep extends React.Component {
   }
   editsubmitForm = (e) => {
     const { pointDetail } = this.props;
+    console.log('pointDetail: ', pointDetail);
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
+      console.log('values: ', values);
       if (!err) {
         //发送请求
-        this.props.editPoints({ ...pointDetail, ...values });
+        this.props.editPoints({ ...values });
       }
     });
   }
   setDevicePointCodeValue = (e) => {
-    this.props.form.setFieldsValue({ 'devicePointCode': e.target.value });
+    const { standardDesc } = this.props;
+    const value = e.target.value;
+    this.props.form.setFieldsValue({ 'devicePointCode': value });
+    const findDesc = standardDesc.find(item => item.devicePointStandardCode === value);
+    this.setState({
+      showDesc: findDesc ? findDesc.devicePointName : '',
+    });
   }
   setDevicePointDesc = () => {
-    this.props.form.setFieldsValue({ 'devicePointName': this.dealPointDetail('deviceStandardPointDesc') });
+    const { showDesc } = this.state;
+    this.props.form.setFieldsValue({ 'devicePointName': showDesc });
   }
   dealPointDetail = (name) => {
     const { pointDetail = {} } = this.props;
@@ -58,6 +81,7 @@ class AddNextStep extends React.Component {
   }
   render() {
     const { showPage, payloadData, pointDetail = {} } = this.props;
+    const { showDesc } = this.state;
 
     const domData = showPage === 'add' ? showleftInfo(payloadData) : showleftInfo(pointDetail);
     const { getFieldDecorator } = this.props.form;
@@ -72,9 +96,13 @@ class AddNextStep extends React.Component {
             <FormItem label="测点编号" colon={false} className={styles.formItemStyle} >
               {getFieldDecorator('devicePointStandardCode', {
                 initialValue: this.dealPointDetail('devicePointStandardCode'),
-                rules: [{ required: true, message: '请输入数字和字符的组合,且不超过30个字符', type: 'string', max: 30, pattern: /^(?![0-9]+$).{0,30}$/ }],
+                rules: [{
+                  required: true, message: '请输入数字和字符的组合,且不超过30个字符', type: 'string', max: 30,
+                  pattern: /^(?![0-9]+$).{0,30}$/,
+                }],
                 //要求不能纯数字,(?![0-9]+$)反向预查，不能是纯数字
                 //这是数字字母特殊字符[0-9A-Za-z`~!@#$%^&*()_+-=[][]\|;:'"",<>.?]，用了.代表任意字符
+
 
               })(
                 <Input placeholder="请输入" onChange={this.setDevicePointCodeValue} />
@@ -87,9 +115,11 @@ class AddNextStep extends React.Component {
               })(
                 <Input placeholder="请输入" />
               )}
-              {(showPage === 'edit' && this.dealPointDetail('deviceStandardPointDesc')) && (
+              {/* {(showPage === 'edit' && this.dealPointDetail('deviceStandardPointDesc')) && ( */}
+              {(showDesc) && (
                 <span className={styles.usepoint}>
-                  <span> 标准点描述:{this.dealPointDetail('deviceStandardPointDesc')}</span>
+                  {/* <span> 标准点描述:{this.dealPointDetail('deviceStandardPointDesc')}</span> */}
+                  <span> 标准点描述:{showDesc}</span>
                   <Button className={styles.useBtn} onClick={this.setDevicePointDesc}>使用</Button>
                 </span>
 
@@ -170,7 +200,7 @@ class AddNextStep extends React.Component {
 
             <FormItem label="是否上传" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('isTransfer', {
-                initialValue: this.dealPointDetail('isTransfer'),
+                initialValue: showPage === 'add' ? 1 : this.dealPointDetail('isTransfer'),
               })(
                 <Select>
                   <Option value={1}>是</Option>
@@ -181,7 +211,7 @@ class AddNextStep extends React.Component {
 
             <FormItem label="是否显示" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('isShow', {
-                initialValue: this.dealPointDetail('isShow'),
+                initialValue: showPage === 'add' ? 1 : this.dealPointDetail('isShow'),
               })(
                 <Select>
                   <Option value={1}>是</Option>

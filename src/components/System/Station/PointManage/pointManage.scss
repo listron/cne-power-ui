@@ -115,6 +115,28 @@
 }
 
 .pointManageList {
+  @mixin textOverflow() {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: keep-all;
+    cursor: pointer;
+
+
+  }
+
+  .pointCodeStyle {
+    width: 200px;
+    color: $themeColor;
+    @include textOverflow();
+  }
+
+  .descStyle {
+    width: 200px;
+    @include textOverflow();
+
+  }
+
 
   // 测点表格区
   .editPoint {
@@ -123,11 +145,7 @@
     color: #199475;
   }
 
-  .pointCodeStyle {
-    // text-decoration: underline;
-    color: $themeColor;
-    cursor: pointer;
-  }
+
 
   border-top: 1px solid $promptColor;
 

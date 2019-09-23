@@ -313,6 +313,7 @@ export default {
       deletePoints: '/v3/management/station/device/points',
       detailPoints: '/v3/management/station/device/points',
       editPoints: '/v3/management/station/device/points',
+      getStandardDesc: '/v3/management/station/device/standard/points',
 
       importAlarmInfo: '/v3/management/alarmevent/import', //导入告警信息
       getAlarmList: '/v3/management/alarmevent/list', //获取告警列表
