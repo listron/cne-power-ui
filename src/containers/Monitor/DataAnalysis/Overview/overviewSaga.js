@@ -87,23 +87,28 @@ function *getOverviewDevices({ payload }){ // 获取所有设备数据信息
     if (response.code === '10000') {
       const mockData = {
         total: 0.1247, // null
-        deviceData: [12, 13, 14, 15, 16, 17, 18, 23, 22, 14, 45, 88, 90, 91, 92, 93, 71, 73, 72, 74, 75, 78, 63, 62, 64, 65, 68].map(e => ({
+        deviceData: [12, 13, 14, 15, 16, 17, 18, 23, 22, 45, 88, 90, 91, 92, 93, 71, 73, 72, 74, 75, 78, 63, 62, 64, 65, 68].map(e => ({
           deviceFullcode: `M${e}M${e * e}M101`,
           deviceName: `mock数据设备${e}`,
           completeRate: e * e,
+          key: `M${e}M${e * e}M101`,
           pointData: ['TR002', 'TR003', 'TR017'].map(p => ({
             pointCode: p,
             pointName: p,
-            validCount: e * Math.random() * 100,
-            invalidCount: e * Math.random() * 100,
-            lostCount: e * Math.random() * 100,
+            validCount: parseInt(e * Math.random() * 100, 10),
+            invalidCount: parseInt(e * Math.random() * 100, 10),
+            lostCount: parseInt(e * Math.random() * 100, 10),
           })),
         })),
       };
+      const { total = 0, deviceData = []} = response.data || {};
       yield call(easyPut, 'fetchSuccess', {
-        // devicesData: response.data || {},
         devicesData: mockData,
         deveiceLoading: false,
+        // devicesData: {
+        //   total,
+        //   deviceData: deviceData.map(e => ({ ...e, key: e.deviceFullcode })),
+        // }
       });
     } else { throw response; }
   } catch (error) {

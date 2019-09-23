@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Select, Table } from 'antd';
 import AutoSelect from '@components/Common/AutoSelect';
+import searchUtil from '@utils/searchUtil';
 import styles from './device.scss';
 const { Option } = Select;
 
@@ -55,6 +56,9 @@ class DeviceTable extends PureComponent{
     console.log(code);
     if (code) {
       // 跳转 => pages, tab, search
+      // const newSearch = searchUtil(search).replace({
+      //   station: JSON.stringify(newParam),
+      // }).stringify();
     }
   }
 
@@ -94,9 +98,9 @@ class DeviceTable extends PureComponent{
         key: `${e.pointCode}.${t}`,
         dataIndex: `pointData[${i}].${t}`, // huohuohuohuo这个方法倒是有点意思
         sorter: true,
-        width: 90,
+        width: 96,
       })),
-      width: 270,
+      width: 288,
     }));
     return baseColumn.concat(extraColum);
   }

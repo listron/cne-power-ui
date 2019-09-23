@@ -14,9 +14,7 @@ class StationDates extends PureComponent{
     stationDatesRate: PropTypes.array,
     history: PropTypes.object,
     changeOverviewStore: PropTypes.func,
-    getOverviewDevices: PropTypes.func,
     getOverviewDates: PropTypes.func,
-    getOverviewStation: PropTypes.func,
     getPoints: PropTypes.func,
   }
 
