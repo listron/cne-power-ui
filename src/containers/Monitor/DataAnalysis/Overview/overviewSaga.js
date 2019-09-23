@@ -135,11 +135,28 @@ function *getOverviewPoints({ payload }){ // 获取各测点详情
   }
 }
 
+function *getConnectedDevices({ payload }){ // 测点页获取可用的设备列表
+  const url = `${APIBasePath}${monitor.getOverviewConnectedDevices}`;
+  try {
+    const response = yield call(request.get, url, { params: payload });
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        pointConnectedDevices: response.data || [],
+      });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      pointConnectedDevices: [],
+    });
+  }
+}
+
 export function* watchMonitorDataOverview() {
   yield takeLatest(overviewAction.getOverviewStation, getOverviewStation);
   yield takeLatest(overviewAction.getOverviewDates, getOverviewDates);
   yield takeLatest(overviewAction.getOverviewDevices, getOverviewDevices);
   yield takeLatest(overviewAction.afterDeviceTypePointGet, afterDeviceTypePointGet);
   yield takeLatest(overviewAction.getOverviewPoints, getOverviewPoints);
+  yield takeLatest(overviewAction.getConnectedDevices, getConnectedDevices);
 }
 

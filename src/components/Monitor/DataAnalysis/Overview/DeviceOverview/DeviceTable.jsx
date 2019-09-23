@@ -10,8 +10,12 @@ class DeviceTable extends PureComponent{
   static propTypes = {
     deveiceLoading: PropTypes.bool,
     devicesData: PropTypes.object,
+    deviceTopData: PropTypes.object,
+    deviceParam: PropTypes.object,
+    history: PropTypes.object,
     devicePointsList: PropTypes.array,
     deviceCheckedList: PropTypes.array,
+    changeOverviewStore: PropTypes.func,
   }
 
   state = {
@@ -35,9 +39,17 @@ class DeviceTable extends PureComponent{
     {
       title: '设备名称',
       dataIndex: 'deviceName',
-      width: 126,
       sorter: (a, b) => (a.deviceName) && a.deviceName.localeCompare(b.deviceName),
-      render: (text, record) => <span data-code={record.deviceFullcode} onClick={this.checkDevice}>{text}</span>,
+      width: 126,
+      // className: styles.deviceName,
+      render: (text, record) => (
+        <span
+          className={styles.deviceLink}
+          data-code={record.deviceFullcode}
+          onClick={this.checkDevice}
+          title={text}
+        >{text}</span>
+      ),
     }, {
       title: '真实数据量',
       dataIndex: 'actualNum',
@@ -53,12 +65,29 @@ class DeviceTable extends PureComponent{
 
   checkDevice = ({ target = {} }) => {
     const { code } = target.dataset || {};
-    console.log(code);
     if (code) {
-      // 跳转 => pages, tab, search
-      // const newSearch = searchUtil(search).replace({
-      //   station: JSON.stringify(newParam),
-      // }).stringify();
+      const { history, deviceTopData, deviceParam, devicePointsList } = this.props;
+      const { pathname, search } = history.location;
+      const { pages = '' } = searchUtil(search).parse();
+      const allPages = pages.split('_').filter(e => !!e); // 开启的tab页面
+      !allPages.includes('point') && allPages.push('point');
+      const pointParam = { // 请求参数
+        ...deviceParam,
+        deviceFullcode: code,
+      };
+      this.props.changeOverviewStore({ // 已得基础信息传入设备页 - 减少不必要请求
+        tab: 'point', // 激活的tab页, station, device, point
+        pages: allPages, // 开启的tab页面
+        pointTopData: deviceTopData,
+        pointParam, // 请求参数保存
+        pointList: devicePointsList,
+      });
+      const newSearch = searchUtil(search).replace({ // 路径 替换/添加 device信息
+        point: JSON.stringify(pointParam),
+        pages: allPages.join('_'), // 激活项添加
+        tab: 'point', // 激活页切换
+      }).stringify();
+      history.push(`${pathname}?${newSearch}`); // 路径保存
     }
   }
 

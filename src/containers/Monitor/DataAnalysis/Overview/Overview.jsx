@@ -7,6 +7,7 @@ import { commonAction } from '../../../../containers/alphaRedux/commonAction';
 import HearderTab from '@components/Monitor/DataAnalysis/Overview/HeaderTab/HearderTab';
 import StationOverview from '@components/Monitor/DataAnalysis/Overview/StationOverview/StationOverview';
 import DeviceOverview from '@components/Monitor/DataAnalysis/Overview/DeviceOverview/DeviceOverview';
+import PointsOverview from '@components/Monitor/DataAnalysis/Overview/PointsOverview/PointsOverview';
 import CommonBreadcrumb from '@components/Common/CommonBreadcrumb';
 import Footer from '@components/Common/Footer/index';
 import styles from './overview.scss';
@@ -55,6 +56,7 @@ class Overview extends Component{
           <div className={styles.dataOverview}>
             {tab === 'station' && <StationOverview {...this.props} />}
             {tab === 'device' && <DeviceOverview {...this.props} />}
+            {tab === 'point' && <PointsOverview {...this.props} />}
           </div>
         </div>
         <Footer />
@@ -72,7 +74,7 @@ const mapDispatchToProps = (dispatch) =>({
   getOverviewStation: payload => dispatch({ type: overviewAction.getOverviewStation, payload }),
   getOverviewDates: payload => dispatch({ type: overviewAction.getOverviewDates, payload }),
   getOverviewDevices: payload => dispatch({ type: overviewAction.getOverviewDevices, payload }),
-  // afterDeviceTypePointGet: payload => dispatch({ type: overviewAction.afterDeviceTypePointGet, payload }),
+  getConnectedDevices: payload => dispatch({ type: overviewAction.getConnectedDevices, payload }),
   getOverviewPoints: payload => dispatch({ type: overviewAction.getOverviewPoints, payload }),
   changeOverviewStore: payload => dispatch({ type: overviewAction.changeStore, payload }),
   resetOverview: () => dispatch({ type: overviewAction.reset }),

@@ -6,6 +6,7 @@ const overviewAction = {
   getOverviewDevices: Symbol('getOverviewDevices'), // 获取设备信息
   afterDeviceTypePointGet: Symbol('afterDeviceTypePointGet'), // 测点列表获取后执行函数
   getOverviewPoints: Symbol('getOverviewPoints'), // 获取测点信息
+  getConnectedDevices: Symbol('getConnectedDevices'), // 测点页获取可用的设备列表
 
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
@@ -13,12 +14,12 @@ const overviewAction = {
 };
 // 路径携带信息如下: ?tab=station&pages=staion_device_points&station={stationCode:xxx,...}&device={stationCode:xxx,...}&point={stationCode:xxx,...}
 const initState = immutable.fromJS({
-  tab: 'station', // 激活的tab页, station, device, points
+  tab: 'station', // 激活的tab页, station, device, point
   pages: ['station'], // 开启的tab页面
   stationParam: {}, // stationCode, deviceTypeCode, month => search-station是该字段的jsonStr
   deviceParam: {}, // stationCode, deviceTypeCode, dateType(1日2月), date => 会转为字符串写入search的device
   deviceCheckedList: [], // 设备页选中的测点
-  pointParam: {}, // stationCode, deviceTypeCode, deviceFullcode, dateType, date, pointCodes => 会转为字符串写入search的point
+  pointParam: {}, // stationCode, deviceTypeCode, deviceFullcode, dateType, date => 会转为字符串写入search的point
   pointsCheckedList: [], // 测点页选中的测点
 
   stationDatesRate: [], // 电站各日数据平均完备信息
@@ -33,6 +34,8 @@ const initState = immutable.fromJS({
 
   pointsData: [], // 各测点信息列表
   pointTopData: {}, // 测点页顶部信息
+  pointConnectedDevices: [], // 测点页可用测点列表
+  pointList: [], // 测点页测点列表
   pointUnix: null, // 电站页请求时间
 });
 

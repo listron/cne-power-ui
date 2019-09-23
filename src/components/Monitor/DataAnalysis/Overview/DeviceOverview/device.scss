@@ -94,7 +94,13 @@
     }
   }
   .pointTable{
-    
+  //   .deviceName{
+  //     width: 126px;
+  //     @include overflowText();
+  //   }
+    .deviceLink{
+      cursor: pointer;
+    }
   }
 }
 
@@ -128,5 +134,11 @@
 }
 .devicePoints{
   background-color: #fff;
+}
+.pointTable{
+  .deviceLink{
+    color: $themeColor;
+    text-decoration: $themeColor underline;
+  }
 }
 
