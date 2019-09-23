@@ -473,6 +473,7 @@ const menuData = [
           {
             name: '集团绩效分析',
             path: 'analysis/group',
+            defaultPath: true,
             rightKey: 'analysis_windPower_groupPerformance',
           }, {
             name: '区域绩效分析',
@@ -493,7 +494,7 @@ const menuData = [
           }, {
             name: '执行机构分析',
             path: 'analysis/actuator',
-            rightKey: 'analysis_windPower_stopStatus',
+            rightKey: 'analysis_windPower_running',
           },
         ],
       },
