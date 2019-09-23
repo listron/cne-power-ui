@@ -63,6 +63,7 @@ class AutoSelect extends Component {
     onChange: PropTypes.func,
     holderText: PropTypes.string,
     max: PropTypes.number,
+    disabled: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -70,12 +71,12 @@ class AutoSelect extends Component {
     value: [],
     style: {},
     max: 0,
-    onChange: () => {},
+    onChange: () => { },
     holderText: '请选择',
     data: [],
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     const { value, data } = props;
     const infoLists = getRoots(data) || [];
@@ -86,10 +87,10 @@ class AutoSelect extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { value, data } = this.props;
     const { infoLists } = this.state;
-    const nextValue = nextProps.value;
+    const nextValue = nextProps.value || [];
     const nextData = nextProps.data;
     const nextInfoList = getRoots(nextData);
     const dataChange = nextData.length !== data.length || isSetDiff(
@@ -120,15 +121,16 @@ class AutoSelect extends Component {
   }
 
   render() {
-    const { style } = this.props;
+    const { style, disabled } = this.props;
     const { checkedList, infoLists } = this.state;
     return (
-      <div className={styles.autoSelect} style={{...style}}>
+      <div className={styles.autoSelect} style={{ ...style }}>
         <DropDownSelects
           {...this.props}
           infoLists={infoLists}
           checkedList={checkedList}
           onValueCheck={this.onValueCheck}
+          disabled={disabled}
         />
         <AutoModal
           {...this.props}

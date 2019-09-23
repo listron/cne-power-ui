@@ -10,36 +10,26 @@
     justify-content: space-between;
     flex: 1 0 auto;
     width: 100%;
-    .container {
-      padding: 24px 24px 0;
-      display: flex;
-      flex-direction: column;
-      flex: 1 0 auto;
-      width: 100%;
-      .intelligentContent {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-      }
-    }
+    padding: 24px 24px 0;
+    overflow: hidden;
+  }
+  .sidePage {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    width: 100%;
   }
 }
 
 .light {
   .contentBox {
     background-color: #ececec;
-    .intelligentContent {
-      background-color: #fff;
-    }
   }
 }
 
 .dark {
   @import "../../../theme/antdResetDark.scss";
   .contentBox {
-    background-color: $background;
-  }
-  .intelligentContent {
     background-color: $background;
   }
 }
