@@ -178,6 +178,16 @@ function* addIntelligent({ payload = {} }) { // 添加智能专家库
   }
 }
 
+const changeAnnexsform = (annexs) => {
+  return annexs.map(e => {
+    const arr = e.split('/');
+    return {
+      url: e,
+      urlName: arr[arr.length - 1],
+    };
+  });
+};
+
 function* getKnowledgebase({ payload = {} }) { // 查看智能专家库详情
   const { knowledgeBaseId } = payload;
   const url = `${APIBasePath}${operation.operationIntelligent}/${knowledgeBaseId}`;
@@ -189,6 +199,7 @@ function* getKnowledgebase({ payload = {} }) { // 查看智能专家库详情
         payload: {
           knowledgeBaseId,
           intelligentDetail: response.data.data || {},
+          uploadFileList: changeAnnexsform(response.data.data.annexs || []),
         },
       });
     } else {
@@ -240,6 +251,7 @@ function* editIntelligent({ payload = {} }) { // 编辑智能专家库详情
         type: intelligentExpertAction.changeIntelligentExpertStore,
         payload: {
           showPage: 'list',
+          uploadFileList: [],
         },
       });
       const params = yield select(state => state.operation.intelligentExpert.get('listParams').toJS()); // 继续请求智能专家库列表
@@ -330,6 +342,54 @@ function* getFaultCodeList(action) { // 获取设备列表
 
 }
 
+function* uploadFile({ payload = {} }) { // 上传附件  不限制文件类型
+  const url = `${APIBasePath}${operation.uploadFile}`;
+  try {
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      data: payload.formData,
+      processData: false, // 不处理数据
+      contentType: false, // 不设置内容类型
+    });
+    if (response.data.code === '10000') {
+      const params = yield select(state => state.operation.intelligentExpert.get('uploadFileList'));
+      console.log('params', params);
+      yield put({
+        type: intelligentExpertAction.changeIntelligentExpertStore,
+        payload: {
+          uploadFileList: [...params, response.data.data],
+        },
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    message.error('上传失败，请检查文件后重试！');
+  }
+}
+
+function* deleteFile({ payload = {} }) { // 附件删除
+  const url = `${APIBasePath}${operation.deleteFile}`;
+  try {
+    const response = yield call(axios.delete, url, { data: payload });
+    if (response.data.code === '10000') {
+      yield put({
+        type: intelligentExpertAction.changeIntelligentExpertStore,
+        payload: {
+          uploadFile: response.data.data || [],
+        },
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    message.error('上传失败，请检查文件后重试！');
+  }
+}
+
 
 export function* watchIntelligentExper() {
   yield takeLatest(intelligentExpertAction.getIntelligentTable, getIntelligentTable);
@@ -342,4 +402,6 @@ export function* watchIntelligentExper() {
   yield takeLatest(intelligentExpertAction.editIntelligent, editIntelligent);
   yield takeLatest(intelligentExpertAction.getDevicemodes, getDevicemodes);
   yield takeLatest(intelligentExpertAction.getFaultCodeList, getFaultCodeList);
+  yield takeLatest(intelligentExpertAction.uploadFile, uploadFile);
+  yield takeLatest(intelligentExpertAction.deleteFile, deleteFile);
 }

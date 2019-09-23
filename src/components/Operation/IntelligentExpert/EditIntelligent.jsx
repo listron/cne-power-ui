@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Icon, Upload } from 'antd';
+import { Button, Form, Icon, Upload, message } from 'antd';
 import moment from 'moment';
 import styles from './intelligentExpert.scss';
 import InputLimit from '../../Common/InputLimit';
 import WarningTip from '../../Common/WarningTip';
+import path from '../../../constants/path';
 
 const FormItem = Form.Item;
 
@@ -15,66 +16,59 @@ class EditIntelligent extends Component {
     editIntelligent: PropTypes.func,
     changeIntelligentExpertStore: PropTypes.func,
     listParams: PropTypes.object,
-    getIntelligentTable: PropTypes.func,
+    uploadFileList: PropTypes.array,
+    deleteFile: PropTypes.func,
+    stationType: PropTypes.string,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       showWarningTip: false,
-      warningTipText: '退出后信息无法保存！',
-      inputEdited: false,
+      tooltipName: 'back', // 提示框的类型 back返回 delete 删除
+      deleteFileId: '', //删除附件ID，
     };
   }
 
-  onWarningTipShow = () => {
-    const { inputEdited } = this.state;
-    const { changeIntelligentExpertStore, getIntelligentTable, listParams } = this.props;
 
-    if (inputEdited) {
-      this.setState({
-        showWarningTip: true,
-      });
-    } else {
-      changeIntelligentExpertStore({
-        showPage: 'list',
-      });
-      getIntelligentTable(listParams);
+  confirmWarningTip = () => { // 确认返回列表页面
+    const { tooltipName, deleteFileId } = this.state;
+    const { changeIntelligentExpertStore, uploadFileList, deleteFile } = this.props;
+    if (tooltipName === 'back') {
+      changeIntelligentExpertStore({ showPage: 'list' });
     }
-  }
-
-  confirmWarningTip = () => {
-    const { changeIntelligentExpertStore } = this.props;
+    if (tooltipName === 'delete') {
+      const newUploadFileList = uploadFileList.filter(e => !(e.url === deleteFileId));
+      deleteFile({ url: deleteFileId });
+      changeIntelligentExpertStore({ uploadFileList: newUploadFileList });
+      this.setState({ deleteFileId: '' });
+    }
     this.setState({
       showWarningTip: false,
+      tooltipName: '',
     });
-    changeIntelligentExpertStore({
-      showPage: 'list',
-    });
+
   }
 
-  cancelWarningTip = () => {
+  cancelWarningTip = () => { // 取消
     this.setState({
       showWarningTip: false,
+      tooltipName: '',
+      deleteFileId: '',
     });
   }
-
-  changeInput = () => { // 内容改变时弹出提示框
-    const { inputEdited } = this.state;
-    if (!inputEdited) {
-      this.setState({
-        inputEdited: true,
-      });
-    }
-  }
-
 
   saveHandler = () => { // 保存按钮
-    const { form, editIntelligent, listParams, stationType } = this.props;
+    const { form, editIntelligent, listParams, uploadFileList, intelligentDetail } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('values', values);
-        editIntelligent(values);
+        editIntelligent({
+          faultDescription: intelligentDetail.faultDescription,
+          ...values,
+          knowledgeBaseId: intelligentDetail.knowledgeBaseId,
+          annexs: uploadFileList.map(e => e.url),
+        });
         this.props.changeIntelligentExpertStore({
           listParams: {
             ...listParams, orderField: 'update_time',
@@ -85,18 +79,62 @@ class EditIntelligent extends Component {
     });
   }
 
+  beforeUploadStation = (file) => { // 上传前的校验
+    if (file.size > 100 * 1024 * 1024) {
+      message.config({ top: 200, duration: 2, maxCount: 3 });
+      message.error('上传文件不得大于100M', 2);
+    } else {
+      this.uploadFile(file);
+    }
+    return false;
+  }
+
+
+  uploadFile = (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('originFlag', 0);
+    this.props.uploadFile({ formData });
+  }
+
+
+  changeFileList = (fileList) => { // 转化格式
+    return fileList.map(item => {
+      return {
+        name: item.urlName,
+        status: 'done',
+        url: `${path.basePaths.originUri}${item.url}`,
+        uid: item.url,
+      };
+    });
+  }
+
+  onPreview = (a, b, c) => { // 点击文件下载
+    return false;
+  }
+
+  removeFile = (file) => {
+    const { uid } = file;
+    this.setState({ showWarningTip: true, tooltipName: 'delete', deleteFileId: uid });
+  }
+
+
   render() {
-    const { showWarningTip, warningTipText } = this.state;
+    const { showWarningTip, tooltipName } = this.state;
     const { getFieldDecorator } = this.props.form;
-    const { intelligentDetail = {}, stationType } = this.props;
-    const { recorder, updateTime, likeCount } = intelligentDetail;
+    const { intelligentDetail = {}, stationType, uploadFileList } = this.props;
     const checkItemsName = stationType === '0' && '故障原因' || '检查项目';
+    const initFileList = this.changeFileList(uploadFileList);
+    const warningTipText = {
+      'back': '退出后信息无法保存！',
+      'delete': '确定要删除该附件吗？',
+    }[tooltipName];
     return (
       <div className={styles.editIntelligent}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.titleTop}>
           <span className={styles.text}>解决方案编辑</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
+          <Icon type="arrow-left" className={styles.backIcon} onClick={() => this.setState({ showWarningTip: true, tooltipName: 'back' })} />
         </div>
         <div className={styles.editmiddle}>
           <Form className={styles.preFormStyle}>
@@ -163,13 +201,17 @@ class EditIntelligent extends Component {
                 <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
-            <Form.Item label="上传附件" >
+            <Form.Item label="上传附件" colon={false}>
               {getFieldDecorator('annexs', {
-                valuePropName: 'fileList',
-                getValueFromEvent: this.normFile,
               })(
-                <Upload multiple={true} >
-                  <Button> <Icon type="upload" /> 选择文件上传</Button>
+                <Upload
+                  multiple={true}
+                  onRemove={(file) => this.removeFile(file)}
+                  beforeUpload={this.beforeUploadStation}
+                  fileList={initFileList}
+                  onPreview={this.onPreview}
+                >
+                  <Button> <Icon type="upload" /> 选择文件上传</Button>  <span> 上传文件不得大于100M</span>
                 </Upload>
               )}
             </Form.Item>

@@ -124,11 +124,14 @@ export default {
       // getKnowledgebase: '/v3/knowledgebase', // 智能专家库详情
       getLike: '/v3/knowledgebase/like', // 智能专家库点赞
       downloadIntelligentTemplet: '/v3/knowledgebase/downLoad', // 下载导入模板
+      downloadFile: '/v3/file/manage/download', // 下载导入模板
+
 
       operationIntelligent: '/v3/knowledgebase', // 删除、添加、编辑智能专家库
       getUserName: '/v3/user/related', // 获取相关用户名
       getFaultCode: '/v3/knowledgebase/faultCode/like', //	故障代码列表
-
+      uploadFile: '/v3/file/manage/upload', //上传附件
+      deleteFile: '/v3/file/manage/delete', //删除附件
       getAssetTree: '/v3/ledger/assetslist', //台账生产资产树
       getNodeDetail: '/v3/ledger/assets/detail', //台账生产资产树
       addAssetNode: '/v3/ledger/assets/add', //台账增加生产资产节点

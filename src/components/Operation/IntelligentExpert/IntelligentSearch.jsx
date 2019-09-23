@@ -128,7 +128,6 @@ class IntelligentSearch extends Component {
         defectTypeList = [...defectTypeList, ...e.list];
       }
     });
-    console.log('deviceTypeCodes', deviceTypeCodes, faultTypeIds);
     return (
       <div className={`${styles.intelligentSearch} ${styles[theme]}`}>
         <FilterCondition

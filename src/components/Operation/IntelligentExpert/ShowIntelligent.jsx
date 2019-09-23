@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon, Button, message } from 'antd';
 import moment from 'moment';
 import styles from './intelligentExpert.scss';
+import path from '../../../constants/path';
 
 class ShowIntelligent extends Component {
   static propTypes = {
@@ -11,6 +12,7 @@ class ShowIntelligent extends Component {
     getLike: PropTypes.func,
     intelligentDetail: PropTypes.object,
     listParams: PropTypes.object,
+    downLoadFile: PropTypes.func,
   }
 
   onWarningTipShow = () => {
@@ -31,10 +33,33 @@ class ShowIntelligent extends Component {
     changeIntelligentExpertStore({ showPage: 'edit' });
   }
 
+  changeAnnexsform = (annexs = []) => {
+    const test = annexs.map(e => {
+      const arr = e.split('/');
+      return {
+        url: `${e}`,
+        urlName: arr[arr.length - 1],
+      };
+    });
+    return test;
+  };
+
+  downFile = (file, fileName) => {
+    const { downLoadFile } = this.props;
+    const downloadTemplet = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadFile}`; // 下载文件
+    downLoadFile({
+      url: downloadTemplet,
+      method: 'post',
+      params: { filePath: file },
+      fileName: fileName,
+    });
+  }
+
   render() {
     const { intelligentDetail = {} } = this.props;
     const rightHandler = localStorage.getItem('rightHandler') || '';
     const editRight = rightHandler.split(',').includes('operation_experience_edit');
+    const href = this.changeAnnexsform(intelligentDetail.annexs).map(e => <div className={styles.link} onClick={() => this.downFile(e.url, e.urlName)}>{e.urlName}</div>);
     return (
       <div className={styles.showIntelligent}>
         <div className={styles.titleTop}>
@@ -90,7 +115,8 @@ class ShowIntelligent extends Component {
           </div>
           <div className={styles.detailText}>
             <div className={styles.title}>附件</div>
-            <div>{intelligentDetail.annexs || '无'}</div>
+            <div>{href || '无'}</div>
+
           </div>
           <div className={styles.detailText}>
             <div className={styles.title}>录入人</div>

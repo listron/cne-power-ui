@@ -260,6 +260,12 @@
           flex: 0 0 90px;
         }
       }
+      .link {
+        display: block;
+        cursor: pointer;
+        text-decoration: underline;
+        color: $themeColor;
+      }
       .required {
         color: #a42b2c;
         margin-right: 8px;

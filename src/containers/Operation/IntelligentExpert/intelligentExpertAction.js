@@ -14,4 +14,7 @@ export const intelligentExpertAction = {
   editIntelligent: Symbol('editIntelligent'), // 编辑
   getDevicemodes: Symbol('getDevicemodes'), // 获取设备列表
   getFaultCodeList: Symbol('getFaultCodeList'), // 获取设备列表
+  uploadFile: Symbol('uploadFile'), // 上传文件
+  deleteFile: Symbol('deleteFile'), // 删除附件
+  // downloadFile: Symbol('downloadFile'), // 删除附件
 };

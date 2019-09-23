@@ -95,6 +95,9 @@ const mapDispatchToProps = (dispatch) => ({
   editIntelligent: payload => dispatch({ type: intelligentExpertAction.editIntelligent, payload }),
   getDevicemodes: payload => dispatch({ type: intelligentExpertAction.getDevicemodes, payload }),
   getFaultCodeList: payload => dispatch({ type: intelligentExpertAction.getFaultCodeList, payload }),
+  deleteFile: payload => dispatch({ type: intelligentExpertAction.deleteFile, payload }),
+  uploadFile: payload => dispatch({ type: intelligentExpertAction.uploadFile, payload }),
+  // downloadFile: payload => dispatch({ type: intelligentExpertAction.downloadFile, payload }),
   resetStore: () => dispatch({ type: intelligentExpertAction.resetStore }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,

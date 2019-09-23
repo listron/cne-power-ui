@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Form, Select, Cascader, Button, Upload } from 'antd';
+import { Icon, Form, Select, Cascader, Button, Upload, message } from 'antd';
 import styles from './intelligentExpert.scss';
 import WarningTip from '../../Common/WarningTip';
 import InputLimit from '../../Common/InputLimit';
 import AutoSelect from '../../Common/AutoSelect';
+import path from '../../../constants/path';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -34,16 +35,22 @@ class AddIntelligent extends Component {
     getDevicemodes: PropTypes.func,
     stationType: PropTypes.string,
     getFaultCodeList: PropTypes.func,
+    uploadFileList: PropTypes.array,
+    deleteFile: PropTypes.func,
+    uploadFile: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       showWarningTip: false,
-      warningTipText: '退出后信息无法保存！',
       selectDevice: [],
       initFaultCode: '',
       faultDescripDis: true,
+      fileList: [], //上传附件
+      tooltipName: 'back', // 提示框的类型 back返回 delete 删除
+      deleteFileId: '', //删除附件ID，
+
     };
   }
 
@@ -52,18 +59,29 @@ class AddIntelligent extends Component {
   }
 
   confirmWarningTip = () => { // 确认返回列表页面
-    const { changeIntelligentExpertStore } = this.props;
+    const { tooltipName, deleteFileId } = this.state;
+    const { changeIntelligentExpertStore, uploadFileList, deleteFile } = this.props;
+    if (tooltipName === 'back') {
+      changeIntelligentExpertStore({ showPage: 'list' });
+    }
+    if (tooltipName === 'delete') {
+      const newUploadFileList = uploadFileList.filter(e => !(e.url === deleteFileId));
+      deleteFile({ url: deleteFileId });
+      changeIntelligentExpertStore({ uploadFileList: newUploadFileList });
+      this.setState({ deleteFileId: '' });
+    }
     this.setState({
       showWarningTip: false,
+      tooltipName: '',
     });
-    changeIntelligentExpertStore({
-      showPage: 'list',
-    });
+
   }
 
   cancelWarningTip = () => { // 取消
     this.setState({
       showWarningTip: false,
+      tooltipName: '',
+      deleteFileId: '',
     });
   }
 
@@ -119,17 +137,8 @@ class AddIntelligent extends Component {
     }
   }
 
-  normFile = e => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    console.log('tets', e.fileList);
-    return e && e.fileList;
-  };
-
   saveHandler = (continueAdd) => { // 保存按钮
-    const { form, addIntelligent, listParams, stationType } = this.props;
+    const { form, addIntelligent, listParams, stationType, uploadFileList } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const { faultTypeId, modeId } = values;
@@ -139,12 +148,14 @@ class AddIntelligent extends Component {
           modeId: modeId.length > 0 && modeId[0] || '',
           continueAdd,
           type: stationType,
+          annexs: uploadFileList.map(e => e.url),
         });
         this.props.changeIntelligentExpertStore({
           listParams: {
             ...listParams, orderField: 'update_time',
             sortMethod: 'desc',
           },
+          uploadFileList: [],
         });
         if (continueAdd) {
           form.resetFields();
@@ -153,11 +164,50 @@ class AddIntelligent extends Component {
     });
   }
 
+  beforeUploadStation = (file) => { // 上传前的校验
+    if (file.size > 100 * 1024 * 1024) {
+      message.config({ top: 200, duration: 2, maxCount: 3 });
+      message.error('上传文件不得大于100M', 2);
+    } else {
+      this.uploadFile(file);
+    }
+    return false;
+  }
+
+
+  uploadFile = (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('originFlag', 0);
+    this.props.uploadFile({ formData });
+  }
+
+
+  changeFileList = (fileList) => { // 转化格式
+    return fileList.map(item => {
+      return {
+        name: item.urlName,
+        status: 'done',
+        url: `${path.basePaths.originUri}${item.url}`,
+        uid: item.url,
+      };
+    });
+  }
+
+  onPreview = (a, b, c) => { // 点击文件下载
+    return false;
+  }
+
+  removeFile = (file) => {
+    const { uid } = file;
+    this.setState({ showWarningTip: true, tooltipName: 'delete', deleteFileId: uid });
+  }
+
 
 
   render() {
-    const { showWarningTip, warningTipText, faultDescripDis, initFaultCode } = this.state;
-    const { deviceTypes, defectTypes, deviceModeList, stationType, faultCodeList } = this.props;
+    const { showWarningTip, tooltipName, faultDescripDis, initFaultCode } = this.state;
+    const { deviceTypes, defectTypes, deviceModeList, stationType, faultCodeList, uploadFileList } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const deviceTypeCode = getFieldValue('deviceTypeCode'); // 设备code
     const option = faultCodeList.map(e => <Option key={e.id} value={e.faultCode} desc={e.faultCodeDesc}>{e.faultCode}</Option>);
@@ -179,12 +229,17 @@ class AddIntelligent extends Component {
       }
     });
     const checkItemsName = stationType === '0' && '故障原因' || '检查项目';
+    const initFileList = this.changeFileList(uploadFileList);
+    const warningTipText = {
+      'back': '退出后信息无法保存！',
+      'delete': '确定要删除该附件吗？',
+    }[tooltipName];
     return (
       <div className={styles.addIntelligent}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.titleTop}>
           <span className={styles.text}>解决方案添加</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={() => this.setState({ showWarningTip: true })} />
+          <Icon type="arrow-left" className={styles.backIcon} onClick={() => this.setState({ showWarningTip: true, tooltipName: 'back' })} />
         </div>
         <span ref={'wrap'} />
         <div className={styles.formBox}>
@@ -269,7 +324,7 @@ class AddIntelligent extends Component {
                       </Select>
                     )}
                   </FormItem>
-                  {(faultCodeList.length === 0 && !!initFaultCode) && <Icon type="check" onClick={this.addFaultCode} />}
+                  {(faultCodeList.length === 0 && !!initFaultCode) && <i className="iconfont iocn-done" onClick={this.addFaultCode} />}
                 </div>
                 <FormItem className={styles.formItem} label="故障描述" colon={false}>
                   {getFieldDecorator('faultDescription', {
@@ -303,7 +358,7 @@ class AddIntelligent extends Component {
                 <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
-            <FormItem className={styles.formItem} label="备注">
+            <FormItem className={styles.formItem} label="备注" colon={false}>
               {getFieldDecorator('remark', {
                 rules: [{
                   message: '请输入......',
@@ -313,13 +368,17 @@ class AddIntelligent extends Component {
                 <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
-            <Form.Item label="上传附件" >
+            <Form.Item label="上传附件" colon={false}>
               {getFieldDecorator('annexs', {
-                valuePropName: 'fileList',
-                getValueFromEvent: this.normFile,
               })(
-                <Upload multiple={true} >
-                  <Button> <Icon type="upload" /> 选择文件上传</Button>
+                <Upload
+                  multiple={true}
+                  onRemove={(file) => this.removeFile(file)}
+                  beforeUpload={this.beforeUploadStation}
+                  fileList={initFileList}
+                  onPreview={this.onPreview}
+                >
+                  <Button> <Icon type="upload" /> 选择文件上传</Button>  <span> 上传文件不得大于100M</span>
                 </Upload>
               )}
             </Form.Item>
