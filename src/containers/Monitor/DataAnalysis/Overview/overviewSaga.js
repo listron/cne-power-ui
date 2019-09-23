@@ -77,6 +77,29 @@ function *afterDeviceTypePointGet({ payload }) { // 设备页 获得测点数据
   });
 }
 
+function *afterPointPagePointsGet({ payload }){ // 测点页 获得测点数据后触发
+  const { pointPageList = [] } = payload || {};
+  const { pointParam = {} } = yield select(state => state.monitor.overview.toJS());
+  const { deviceFullcode } = pointParam;
+  const pointCodes = [];
+  const tmpList = [];
+  pointPageList.forEach(e => {
+    const { devicePointStandardCode, devicePointName } = e;
+    pointCodes.push(devicePointStandardCode);
+    tmpList.push({
+      value: devicePointStandardCode,
+      label: devicePointName,
+    });
+  });
+  yield call(easyPut, 'fetchSuccess', { // 默认选中所有测点
+    pointsCheckedList: pointCodes,
+    pointList: tmpList,
+  });
+  deviceFullcode && (yield call(getOverviewPoints, { // 已有选中设备, 再执行请求
+    payload: { ...pointParam, pointCodes },
+  }));
+}
+
 function *getOverviewDevices({ payload }){ // 获取所有设备数据信息
   const url = `${APIBasePath}${monitor.getOverviewDevices}`;
   try {
@@ -135,13 +158,14 @@ function *getOverviewPoints({ payload }){ // 获取各测点详情
   }
 }
 
-function *getConnectedDevices({ payload }){ // 测点页获取可用的设备列表
+function *getConnectedDevices({ payload }){ // 测点页获取可用的设备列表{ stationCode, deviceTypeCode, isConnected: 1,}
   const url = `${APIBasePath}${monitor.getOverviewConnectedDevices}`;
   try {
     const response = yield call(request.get, url, { params: payload });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         pointConnectedDevices: response.data || [],
+        deviceListUnix: moment().unix(), // 记录得到设备列表时间
       });
     } else { throw response; }
   } catch (error) {
@@ -156,6 +180,8 @@ export function* watchMonitorDataOverview() {
   yield takeLatest(overviewAction.getOverviewDates, getOverviewDates);
   yield takeLatest(overviewAction.getOverviewDevices, getOverviewDevices);
   yield takeLatest(overviewAction.afterDeviceTypePointGet, afterDeviceTypePointGet);
+  yield takeLatest(overviewAction.afterPointPagePointsGet, afterPointPagePointsGet);
+
   yield takeLatest(overviewAction.getOverviewPoints, getOverviewPoints);
   yield takeLatest(overviewAction.getConnectedDevices, getConnectedDevices);
 }

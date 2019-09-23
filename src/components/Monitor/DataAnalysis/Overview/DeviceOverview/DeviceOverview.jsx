@@ -101,9 +101,9 @@ class DeviceOverview extends PureComponent{
     this.historySearchChange(newParams);
   }
 
-  monthCheck = (month, monthStr) => this.dayCheck(monthStr); // 换月
+  monthCheck = (month, monthStr) => this.datesChange(monthStr); // 换月
 
-  dayCheck = (day, dayStr) => this.dayCheck(dayStr); // 换日
+  dayCheck = (day, dayStr) => this.datesChange(dayStr); // 换日
 
   datesChange = (date) => { // 日期改变
     const { deviceParam, deviceCheckedList } = this.props;

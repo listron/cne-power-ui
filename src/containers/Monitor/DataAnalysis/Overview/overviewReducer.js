@@ -4,7 +4,8 @@ const overviewAction = {
   getOverviewStation: Symbol('getOverviewStation'), // 获取电站信息
   getOverviewDates: Symbol('getOverviewDates'), // 获取电站各日平均数据完整率
   getOverviewDevices: Symbol('getOverviewDevices'), // 获取设备信息
-  afterDeviceTypePointGet: Symbol('afterDeviceTypePointGet'), // 测点列表获取后执行函数
+  afterDeviceTypePointGet: Symbol('afterDeviceTypePointGet'), // 设备页, 测点列表获取后执行函数
+  afterPointPagePointsGet: Symbol('afterPointPagePointsGet'), // 测点页, 测点列表获取后执行函数
   getOverviewPoints: Symbol('getOverviewPoints'), // 获取测点信息
   getConnectedDevices: Symbol('getConnectedDevices'), // 测点页获取可用的设备列表
 
@@ -36,6 +37,7 @@ const initState = immutable.fromJS({
   pointTopData: {}, // 测点页顶部信息
   pointConnectedDevices: [], // 测点页可用测点列表
   pointList: [], // 测点页测点列表
+  deviceListUnix: null, // 测点页设备列表获取的时间
   pointUnix: null, // 电站页请求时间
 });
 
