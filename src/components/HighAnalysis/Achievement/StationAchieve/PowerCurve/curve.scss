@@ -10,28 +10,25 @@
     flex-direction: column;
     .header{
       flex-basis: 40px;
+      line-height: 40px;
       margin-bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .headerText{
-        font-weight: 600;
-        padding-left: 24px;
-      }
-      .headerTip{
-        border-radius: 50%;
-        width: 12px;
-        height: 12px;
-        margin-right: 12px;
-        cursor: pointer;
-        font-size: 10px;
-        line-height: 12px;
-        text-align: center;
-      }
+      font-weight: 600;
+      padding-left: 24px;
     }
     .content{
       display: flex;
       flex: 1;
+    }
+    .leftCurve .curveTip, .indicatorDetails .curveTip{
+      display: inline-block;
+      border-radius: 50%;
+      width: 12px;
+      height: 12px;
+      margin-left: 4px;
+      cursor: pointer;
+      font-size: 10px;
+      line-height: 12px;
+      text-align: center;
     }
     .leftCurve{
       flex-basis: calc(50% - 170px);
@@ -76,8 +73,13 @@
         .round{
           border-radius: 50%;
           height: 16px;
+          flex: 0 0 16px;
           flex-basis: 16px;
           margin-right: 12px;
+        }
+        .deviceText{
+          flex: 0 0 72px;
+          @include overflowText();
         }
       }
       .allHandler{
@@ -195,13 +197,13 @@
       .headerText{
         color: #000;
       }
-      .headerTip{
-        color: #fff;
-        background:#f9b600;
-      }
     }
     .content{
       background-color: #fff;
+    }
+    .curveTip{
+      color: #fff;
+      background:#f9b600;
     }
   }
   .timeSelector{
@@ -210,7 +212,7 @@
     .timeTitle{
       color: #666;
     }
-    .monthList::-webkit-scrollbar-thumb, .curveAllDevice::-webkit-scrollbar-thumb {
+    .monthList::-webkit-scrollbar-thumb, .deviceList::-webkit-scrollbar-thumb {
       background: rgba(0, 0, 0, 0.5);
     }
   }

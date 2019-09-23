@@ -16,8 +16,10 @@ function* easyPut(actionName, payload){
 
 function *getDevices({ payload }){
   const url = `${APIBasePath}${highAnalysis.getDevices}`;
+  // payload.saveDevice = true, 需把电站下的所有设备作为默认deviceCodes选中
   try {
-    const { stationCode } = payload || {};
+    const { stationCode, saveDevice } = payload || {};
+    const deviceCodes = [];
     const response = yield call(request.post, url, {
       stationCodes: [stationCode],
       deviceTypeCode: 101,
@@ -27,12 +29,17 @@ function *getDevices({ payload }){
       const modeDevices = originData.map(e => ({
         value: e.deviceModeCode,
         label: e.deviceModeName,
-        children: (e.devices && e.devices.length > 0) ? e.devices.map(m => ({
-          value: m.deviceFullcode,
-          label: m.deviceName,
-        })) : [],
+        children: (e.devices && e.devices.length > 0) ? e.devices.map(m => {
+          deviceCodes.push(m.deviceFullcode);
+          return {
+            value: m.deviceFullcode,
+            label: m.deviceName,
+          };
+        }) : [],
       }));
-      yield call(easyPut, 'fetchSuccess', { modeDevices });
+      yield call(easyPut, 'fetchSuccess', saveDevice ? {
+        modeDevices, deviceCodes,
+      } : { modeDevices });
     }
   } catch (error) {
     message.error('获取设备失败, 请刷新重试');
@@ -43,7 +50,10 @@ function *getStopStatus({ payload }){ // 损失根源 - 指标排名
   const url = `${APIBasePath}${highAnalysis.getStopStatus}`;
   try {
     yield call(easyPut, 'changeStore', { stopStatusLoading: true });
-    const response = yield call(request.post, url, payload);
+    const response = yield call(request.post, url, {
+      ...payload,
+      deviceFullcodes: payload.deviceCodes,
+    });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         stopStatusList: response.data || [],

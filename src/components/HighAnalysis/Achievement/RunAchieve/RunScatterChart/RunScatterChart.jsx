@@ -14,11 +14,13 @@ const { Option } = Select;
 export default class RunScatterChart extends Component {
 
   static propTypes = {
-    indicatorsList: PropTypes.array,
     checkedMonths: PropTypes.array,
     allMonths: PropTypes.array,
+    pointsInfo: PropTypes.array,
     changeStore: PropTypes.func,
     location: PropTypes.object,
+    queryParamsFunc: PropTypes.func,
+    thirdChartFunc: PropTypes.func,
     firstChartLoading: PropTypes.bool,
     firstChartTime: PropTypes.number,
     firstChartData: PropTypes.array,
@@ -77,7 +79,6 @@ export default class RunScatterChart extends Component {
 
   componentDidUpdate(prevProps) {
     const { scatterChart } = this;
-    const { minNum } = this.state;
     const {
       firstChartTime,
       secondChartTime,
@@ -110,21 +111,11 @@ export default class RunScatterChart extends Component {
     if(firstChartTime && firstChartTime !== firstChartTimePrev || secondChartTime && secondChartTime !== secondChartTimePrev || thirdChartTime && thirdChartTime !== thirdChartTimePrev || fourthChartTime && fourthChartTime !== fourthChartTimePrev) {
       eCharts.init(scatterChart).clear();//清除
       const myChart = eCharts.init(scatterChart);
-      let firstDataFilter = this.filterTimeFunc(firstChartData, checkedMonths);
-      let secondDataFilter = this.filterTimeFunc(secondChartData, checkedMonths);
-      let thirdDataFilter = this.filterTimeFunc(thirdChartData, checkedMonths);
-      let FourthDataFilter = this.filterTimeFunc(fourthChartData, checkedMonths);
-      // 过滤小于0的数据 且选中的时间
-      if(minNum === 0) {
-        firstDataFilter = this.filterDataFunc(firstDataFilter, checkedMonths);
-        secondDataFilter = this.filterDataFunc(secondDataFilter, checkedMonths);
-        thirdDataFilter = this.filterDataFunc(thirdDataFilter, checkedMonths);
-        FourthDataFilter = this.filterDataFunc(FourthDataFilter, checkedMonths);
-      }
+      const firstDataFilter = this.filterTimeFunc(firstChartData, checkedMonths);
+      const secondDataFilter = this.filterTimeFunc(secondChartData, checkedMonths);
+      const thirdDataFilter = this.filterTimeFunc(thirdChartData, checkedMonths);
+      const FourthDataFilter = this.filterTimeFunc(fourthChartData, checkedMonths);
       myChart.setOption(this.drawChart(firstDataFilter, secondDataFilter, thirdDataFilter, FourthDataFilter));
-      myChart.dispatchAction((params) => {
-        console.log(params);
-      });
     }
   }
 
@@ -253,6 +244,7 @@ export default class RunScatterChart extends Component {
         },
         outOfBrush: {
           opacity: 0.2,
+          colorLightness: 0.8, // 颜色的明暗度
         },
         throttleType: 'debounce',
         throttleDelay: 300,
@@ -266,16 +258,16 @@ export default class RunScatterChart extends Component {
         },
       },
       xAxis: [
-        {name: `${firstXAxisName}（${firstXAxisUnit}）`, gridIndex: 0, min: minNum, splitLine: {show: false}},
-        {name: `${secondXAxisName}（${secondXAxisUnit}）`, gridIndex: 1, min: minNum, splitLine: {show: false}},
-        {name: `${thirdXAxisName}（${thirdXAxisUnit}）`, gridIndex: 2, min: minNum, splitLine: {show: false}},
-        {name: `${fourthXAxisName}（${fourthXAxisUnit}）`, gridIndex: 3, min: minNum, splitLine: {show: false}},
+        {name: `${firstXAxisName}（${firstXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 0, min: minNum, splitLine: {show: false}},
+        {name: `${secondXAxisName}（${secondXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 1, min: minNum, splitLine: {show: false}},
+        {name: `${thirdXAxisName}（${thirdXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 2, min: minNum, splitLine: {show: false}},
+        {name: `${fourthXAxisName}（${fourthXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 3, min: minNum, splitLine: {show: false}},
       ],
       yAxis: [
-        {name: `${firstYAxisName}（${firstYAxisUnit}）`, gridIndex: 0, min: minNum, splitLine: {show: false}},
-        {name: `${secondYAxisName}（${secondYAxisUnit}）`, gridIndex: 1, min: minNum, splitLine: {show: false}},
-        {name: `${thirdYAxisName}（${thirdYAxisUnit}）`, gridIndex: 2, min: minNum, splitLine: {show: false}},
-        {name: `${fourthYAxisName}（${fourthYAxisUnit}）`, gridIndex: 3, min: minNum, splitLine: {show: false}},
+        {name: `${firstYAxisName}（${firstYAxisUnit || ''}）`, gridIndex: 0, min: minNum, splitLine: {show: false}},
+        {name: `${secondYAxisName}（${secondYAxisUnit || ''}）`, gridIndex: 1, min: minNum, splitLine: {show: false}},
+        {name: `${thirdYAxisName}（${thirdYAxisUnit || ''}）`, gridIndex: 2, min: minNum, splitLine: {show: false}},
+        {name: `${fourthYAxisName}（${fourthYAxisUnit || ''}）`, gridIndex: 3, min: minNum, splitLine: {show: false}},
       ],
       series: [
         {
@@ -327,7 +319,7 @@ export default class RunScatterChart extends Component {
       },
       firstChartYAxis,
       changeStore,
-      indicatorsList,
+      pointsInfo,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -338,7 +330,7 @@ export default class RunScatterChart extends Component {
         ...basisParams,
         codes: [`${value}-xAxis`, `${firstChartYAxis}-yAxis`],
       };
-      indicatorsList && indicatorsList.forEach(cur => {
+      pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
           changeStore({
             firstXAxisName: cur.name,
@@ -360,7 +352,7 @@ export default class RunScatterChart extends Component {
       },
       firstChartXAxis,
       changeStore,
-      indicatorsList,
+      pointsInfo,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -371,7 +363,7 @@ export default class RunScatterChart extends Component {
         ...basisParams,
         codes: [`${firstChartXAxis}-xAxis`, `${value}-yAxis`],
       };
-      indicatorsList && indicatorsList.forEach(cur => {
+      pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
           changeStore({
             firstYAxisName: cur.name,
@@ -393,7 +385,7 @@ export default class RunScatterChart extends Component {
       },
       secondChartYAxis,
       changeStore,
-      indicatorsList,
+      pointsInfo,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -404,7 +396,7 @@ export default class RunScatterChart extends Component {
         ...basisParams,
         codes: [`${value}-xAxis`, `${secondChartYAxis}-yAxis`],
       };
-      indicatorsList && indicatorsList.forEach(cur => {
+      pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
           changeStore({
             secondXAxisName: cur.name,
@@ -426,7 +418,7 @@ export default class RunScatterChart extends Component {
       },
       secondChartXAxis,
       changeStore,
-      indicatorsList,
+      pointsInfo,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -437,7 +429,7 @@ export default class RunScatterChart extends Component {
         ...basisParams,
         codes: [`${secondChartXAxis}-xAxis`, `${value}-yAxis`],
       };
-      indicatorsList && indicatorsList.forEach(cur => {
+      pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
           changeStore({
             secondYAxisName: cur.name,
@@ -459,7 +451,7 @@ export default class RunScatterChart extends Component {
       },
       thirdChartYAxis,
       changeStore,
-      indicatorsList,
+      pointsInfo,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -470,7 +462,7 @@ export default class RunScatterChart extends Component {
         ...basisParams,
         codes: [`${value}-xAxis`, `${thirdChartYAxis}-yAxis`],
       };
-      indicatorsList && indicatorsList.forEach(cur => {
+      pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
           changeStore({
             thirdXAxisName: cur.name,
@@ -492,7 +484,7 @@ export default class RunScatterChart extends Component {
       },
       thirdChartXAxis,
       changeStore,
-      indicatorsList,
+      pointsInfo,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -503,7 +495,7 @@ export default class RunScatterChart extends Component {
         ...basisParams,
         codes: [`${thirdChartXAxis}-xAxis`, `${value}-yAxis`],
       };
-      indicatorsList && indicatorsList.forEach(cur => {
+      pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
           changeStore({
             thirdYAxisName: cur.name,
@@ -525,7 +517,7 @@ export default class RunScatterChart extends Component {
       },
       fourthChartYAxis,
       changeStore,
-      indicatorsList,
+      pointsInfo,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -536,7 +528,7 @@ export default class RunScatterChart extends Component {
         ...basisParams,
         codes: [`${value}-xAxis`, `${fourthChartYAxis}-yAxis`],
       };
-      indicatorsList && indicatorsList.forEach(cur => {
+      pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
           changeStore({
             fourthXAxisName: cur.name,
@@ -558,7 +550,7 @@ export default class RunScatterChart extends Component {
       },
       fourthChartXAxis,
       changeStore,
-      indicatorsList,
+      pointsInfo,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -569,7 +561,7 @@ export default class RunScatterChart extends Component {
         ...basisParams,
         codes: [`${fourthChartXAxis}-xAxis`, `${value}-yAxis`],
       };
-      indicatorsList && indicatorsList.forEach(cur => {
+      pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
           changeStore({
             fourthYAxisName: cur.name,
@@ -730,15 +722,6 @@ export default class RunScatterChart extends Component {
     }
   };
 
-  filterDataFunc = (data, timeArr) => {
-    return data.map(cur => ({
-      deviceName: cur.deviceName,
-      dataList: cur.dataList.filter(item => {
-        return item.xAxis > 0 && item.yAxis > 0 && timeArr.includes(moment(item.time).format('YYYY-MM'));
-      }),
-    }));
-  };
-
   filterTimeFunc = (data, timeArr) => {
     return data.map(cur => ({
       deviceName: cur.deviceName,
@@ -751,36 +734,32 @@ export default class RunScatterChart extends Component {
 
   onChangeSwitch = (checked) => {
     const {
-      firstChartData,
-      secondChartData,
-      thirdChartData,
-      fourthChartData,
-      checkedMonths,
+      changeStore,
+      queryParamsFunc,
+      thirdChartFunc,
+      location: {search},
     } = this.props;
-    let firstDataFilter = this.filterTimeFunc(firstChartData, checkedMonths);
-    let secondDataFilter = this.filterTimeFunc(secondChartData, checkedMonths);
-    let thirdDataFilter = this.filterTimeFunc(thirdChartData, checkedMonths);
-    let FourthDataFilter = this.filterTimeFunc(fourthChartData, checkedMonths);
-    // 过滤小于0的数据 且选中的时间
-    if(!checked) {
-      firstDataFilter = this.filterDataFunc(firstDataFilter, checkedMonths);
-      secondDataFilter = this.filterDataFunc(secondDataFilter, checkedMonths);
-      thirdDataFilter = this.filterDataFunc(thirdDataFilter, checkedMonths);
-      FourthDataFilter = this.filterDataFunc(FourthDataFilter, checkedMonths);
-    }
+    changeStore({
+      firstHideZero: checked ? 0 : 1,
+      secondHideZero: checked ? 0 : 1,
+      thirdHideZero: checked ? 0 : 1,
+      fourthHideZero: checked ? 0 : 1,
+    });
     this.setState({
       minNum: checked ? null : 0,
     }, () => {
-      const { scatterChart } = this;
-      eCharts.init(scatterChart).clear();//清除
-      const myChart = eCharts.init(scatterChart);
-      myChart.setOption(this.drawChart(firstDataFilter, secondDataFilter, thirdDataFilter, FourthDataFilter));
+      const groupInfoStr = searchUtil(search).getValue('run');
+      if (groupInfoStr) {
+        // 请求接口
+        const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+        queryParamsFunc(groupInfo);
+        thirdChartFunc(groupInfo);
+      }
     });
   };
 
   onChangeGroup = (checkedList) => {
     const { scatterChart } = this;
-    const { minNum } = this.state;
     const {
       changeStore,
       firstChartData,
@@ -788,17 +767,10 @@ export default class RunScatterChart extends Component {
       thirdChartData,
       fourthChartData,
     } = this.props;
-    let firstDataFilter = this.filterTimeFunc(firstChartData, checkedList);
-    let secondDataFilter = this.filterTimeFunc(secondChartData, checkedList);
-    let thirdDataFilter = this.filterTimeFunc(thirdChartData, checkedList);
-    let FourthDataFilter = this.filterTimeFunc(fourthChartData, checkedList);
-    // 过滤小于0的数据 且选中的时间
-    if(minNum === 0) {
-      firstDataFilter = this.filterDataFunc(firstDataFilter, checkedList);
-      secondDataFilter = this.filterDataFunc(secondDataFilter, checkedList);
-      thirdDataFilter = this.filterDataFunc(thirdDataFilter, checkedList);
-      FourthDataFilter = this.filterDataFunc(FourthDataFilter, checkedList);
-    }
+    const firstDataFilter = this.filterTimeFunc(firstChartData, checkedList);
+    const secondDataFilter = this.filterTimeFunc(secondChartData, checkedList);
+    const thirdDataFilter = this.filterTimeFunc(thirdChartData, checkedList);
+    const FourthDataFilter = this.filterTimeFunc(fourthChartData, checkedList);
     changeStore({
       checkedMonths: checkedList,
     });
@@ -809,7 +781,6 @@ export default class RunScatterChart extends Component {
 
   onAllSwitch = (checked) => {
     const { scatterChart } = this;
-    const { minNum } = this.state;
     const {
       changeStore,
       firstChartData,
@@ -818,17 +789,10 @@ export default class RunScatterChart extends Component {
       fourthChartData,
       allMonths,
     } = this.props;
-    let firstDataFilter = this.filterTimeFunc(firstChartData, checked ? allMonths : []);
-    let secondDataFilter = this.filterTimeFunc(secondChartData, checked ? allMonths : []);
-    let thirdDataFilter = this.filterTimeFunc(thirdChartData, checked ? allMonths : []);
-    let FourthDataFilter = this.filterTimeFunc(fourthChartData, checked ? allMonths : []);
-    // 过滤小于0的数据 且选中的时间
-    if(minNum === 0) {
-      firstDataFilter = this.filterDataFunc(firstDataFilter, checked ? allMonths : []);
-      secondDataFilter = this.filterDataFunc(secondDataFilter, checked ? allMonths : []);
-      thirdDataFilter = this.filterDataFunc(thirdDataFilter, checked ? allMonths : []);
-      FourthDataFilter = this.filterDataFunc(FourthDataFilter, checked ? allMonths : []);
-    }
+    const firstDataFilter = this.filterTimeFunc(firstChartData, checked ? allMonths : []);
+    const secondDataFilter = this.filterTimeFunc(secondChartData, checked ? allMonths : []);
+    const thirdDataFilter = this.filterTimeFunc(thirdChartData, checked ? allMonths : []);
+    const FourthDataFilter = this.filterTimeFunc(fourthChartData, checked ? allMonths : []);
     changeStore({
       checkedMonths: checked ? allMonths : [],
     });
@@ -849,11 +813,18 @@ export default class RunScatterChart extends Component {
       deviceFullcodes: searchDevice,
     };
   };
+  // 处理option没有value，直接显示name
+  valueFlagFunc = (value, name) => {
+    const { pointsInfo } = this.props;
+    // 判断是否存在测点
+    const valueFlag = pointsInfo.map(cur => (cur.name)).includes(value);
+    return valueFlag ? value : name;
+  };
 
   render() {
     const { minNum } = this.state;
     const {
-      indicatorsList,
+      pointsInfo,
       checkedMonths,
       allMonths,
       // 第一个散点图坐标
@@ -877,42 +848,42 @@ export default class RunScatterChart extends Component {
       fourthXAxisName,
       fourthYAxisName,
     } = this.props;
-    const firstXAxisOption = indicatorsList && indicatorsList.map(cur => {
+    const firstXAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
         <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
-    const firstYAxisOption = indicatorsList && indicatorsList.map(cur => {
+    const firstYAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
         <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
-    const secondXAxisOption = indicatorsList && indicatorsList.map(cur => {
+    const secondXAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
         <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
-    const secondYAxisOption = indicatorsList && indicatorsList.map(cur => {
+    const secondYAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
         <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
-    const thirdXAxisOption = indicatorsList && indicatorsList.map(cur => {
+    const thirdXAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
         <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
-    const thirdYAxisOption = indicatorsList && indicatorsList.map(cur => {
+    const thirdYAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
         <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
-    const fourthXAxisOption = indicatorsList && indicatorsList.map(cur => {
+    const fourthXAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
         <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
-    const fourthYAxisOption = indicatorsList && indicatorsList.map(cur => {
+    const fourthYAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
         <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
@@ -963,45 +934,45 @@ export default class RunScatterChart extends Component {
         </div>
         <div className={styles.firCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select value={firstChartXAxis} style={{ width: 120 }} onChange={this.firstXAxisChange}>
+          <Select value={this.valueFlagFunc(firstChartXAxis, firstXAxisName)} style={{ width: 120 }} onChange={this.firstXAxisChange}>
             {firstXAxisOption}
           </Select>
           <Icon type="swap" onClick={this.firstChartExchange} />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select value={firstChartYAxis} style={{ width: 120 }} onChange={this.firstYAxisChange}>
+          <Select value={this.valueFlagFunc(firstChartYAxis, firstYAxisName)} style={{ width: 120 }} onChange={this.firstYAxisChange}>
             {firstYAxisOption}
           </Select>
         </div>
         <div className={styles.secCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select value={secondChartXAxis} style={{ width: 120 }} onChange={this.secondXAxisChange}>
+          <Select value={this.valueFlagFunc(secondChartXAxis, secondXAxisName)} style={{ width: 120 }} onChange={this.secondXAxisChange}>
             {secondXAxisOption}
           </Select>
           <Icon type="swap" onClick={this.secondChartExchange} />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select value={secondChartYAxis} style={{ width: 120 }} onChange={this.secondYAxisChange}>
+          <Select value={this.valueFlagFunc(secondChartYAxis, secondYAxisName)} style={{ width: 120 }} onChange={this.secondYAxisChange}>
             {secondYAxisOption}
           </Select>
         </div>
         <div className={styles.thrCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select value={thirdChartXAxis} style={{ width: 120 }} onChange={this.thirdXAxisChange}>
+          <Select value={this.valueFlagFunc(thirdChartXAxis, thirdXAxisName)} style={{ width: 120 }} onChange={this.thirdXAxisChange}>
             {thirdXAxisOption}
           </Select>
           <Icon type="swap" onClick={this.thirdChartExchange} />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select value={thirdChartYAxis} style={{ width: 120 }} onChange={this.thirdYAxisChange}>
+          <Select value={this.valueFlagFunc(thirdChartYAxis, thirdYAxisName)} style={{ width: 120 }} onChange={this.thirdYAxisChange}>
             {thirdYAxisOption}
           </Select>
         </div>
         <div className={styles.fouCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select value={fourthChartXAxis} style={{ width: 120 }} onChange={this.fourthXAxisChange}>
+          <Select value={this.valueFlagFunc(fourthChartXAxis, fourthXAxisName)} style={{ width: 120 }} onChange={this.fourthXAxisChange}>
             {fourthXAxisOption}
           </Select>
           <Icon type="swap" onClick={this.fourthChartExchange} />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select value={fourthChartYAxis} style={{ width: 120 }} onChange={this.fourthYAxisChange}>
+          <Select value={this.valueFlagFunc(fourthChartYAxis, fourthYAxisName)} style={{ width: 120 }} onChange={this.fourthYAxisChange}>
             {fourthYAxisOption}
           </Select>
         </div>

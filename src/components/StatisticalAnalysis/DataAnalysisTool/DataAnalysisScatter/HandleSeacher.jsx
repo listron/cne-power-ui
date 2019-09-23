@@ -35,13 +35,13 @@ const options = [{
   isLeaf: false,
   key: 5,
 }, {
-  value: '震动相关',
-  pointsUnionName: '震动相关',
+  value: '振动相关',
+  pointsUnionName: '振动相关',
   isLeaf: false,
   key: 6,
 }, {
-  value: '相控相关',
-  pointsUnionName: '相控相关',
+  value: '控制相关',
+  pointsUnionName: '控制相关',
   isLeaf: false,
   key: 7,
 }, {
@@ -94,14 +94,13 @@ class HandleSeacher extends React.Component {
   componentWillReceiveProps(nextProp) {
     const { scatterNames, getScatterData, stationCode, scatterNameTime, deviceList, startTime, endTime, getxyLimitValue, xyValueLimit } = nextProp;
     if (this.props.scatterNameTime !== scatterNameTime) {
-      const { options } = this.state;
       const newscatterNames = this.formater(scatterNames);
-      const arr = options.map(e => e.pointsUnionName);
+      const arr = options.map(e => (e.pointsUnionName));
       const option = newscatterNames.map((e, i) => {
         return {
           key: i,
           value: e.pointType,
-          pointsUnionName: arr[i],
+          pointsUnionName: arr[e.pointType - 1],
           isLeaf: false,
           pointNameList: e.pointNameList,
         };
@@ -382,7 +381,7 @@ class HandleSeacher extends React.Component {
               value={this.state.xCode}
             >
               {scatterotherNames.map((e, i) => (
-                <Option key={e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
+                <Option key={e.devicePointCode} disabled={this.state.yCode === e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
               ))}
             </Select>
             <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
@@ -392,7 +391,7 @@ class HandleSeacher extends React.Component {
               value={this.state.yCode}
             >
               {scatterotherNames.map((e, i) => (
-                <Option key={e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
+                <Option key={e.devicePointCode} disabled={this.state.xCode === e.devicePointCode} value={e.devicePointCode} title={e.devicePointName}>{e.devicePointName}</Option>
               ))}
             </Select>
           </div>}

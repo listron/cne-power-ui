@@ -26,7 +26,7 @@ class ChartStopRank extends Component {
   }
 
   state = {
-    sortType: 'deviceName',
+    sortType: 'deviceOrderName',
     modeArr: [],
     zoomRange: [0, 100],
   }
@@ -55,9 +55,9 @@ class ChartStopRank extends Component {
     });
   }
 
-  sortRank = (rankList, sortType = 'deviceName') => {
+  sortRank = (rankList, sortType = 'deviceOrderName') => {
     const sortedList = [...rankList].sort((a, b) => {
-      if (sortType === 'deviceName') {
+      if (sortType === 'deviceOrderName') {
         return a[sortType] && b[sortType] && a[sortType].localeCompare(b[sortType]);
       }
       return b[sortType] - a[sortType];
@@ -108,7 +108,8 @@ class ChartStopRank extends Component {
           opacity: (stopChartDevice && deviceFullcode !== stopChartDevice.deviceFullcode) ? 0.4 : 1,
         },
       });
-      countData.push({ value: stopCount || 0 });
+      // countData.push({ value: stopCount || 0 });
+      countData.push({ value: stopCount });
     });
     series[0] = {
       type: 'bar',
@@ -316,7 +317,7 @@ class ChartStopRank extends Component {
                 style={{width: '150px'}}
                 value={sortType}
               >
-                <Option value="deviceName">风机名称</Option>
+                <Option value="deviceOrderName">风机名称</Option>
                 <Option value="stopHour">停机时长</Option>
                 <Option value="stopCount">停机次数</Option>
               </Select>
@@ -329,7 +330,7 @@ class ChartStopRank extends Component {
               <span className={styles.rect} style={{
                 backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
                 }} />
-              <span className={styles.modeText}>{e}</span>
+              <span className={styles.modeText}>{e} 停机时长</span>
             </span>
           ))}
           <span className={styles.eachMode}>

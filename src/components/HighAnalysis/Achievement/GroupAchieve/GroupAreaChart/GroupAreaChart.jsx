@@ -152,10 +152,7 @@ export default class GroupAreaChart extends Component {
             show: false,
           },
         },
-        top: 0,
-        right: '20px',
-        bottom: '20px',
-        left: '20px',
+        layoutCenter: ['100%', '100%'],
         itemStyle: {
           normal: {
             areaColor: '#d8eef6',
