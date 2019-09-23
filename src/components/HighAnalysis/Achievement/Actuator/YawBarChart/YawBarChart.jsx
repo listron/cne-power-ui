@@ -21,13 +21,15 @@ export default class LooseBarChart extends Component {
     queryParamsFunc: PropTypes.func,
     getYawRend: PropTypes.func,
     getReleaseRend: PropTypes.func,
+    releaseType: PropTypes.string,
+    yawType: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       modeArr: [],
-      selectValue: 'deviceName', // 默认选择排序字段
+      selectValue: 'deviceOrderName', // 默认选择排序字段
     };
     // 颜色
     this.barColor = [
@@ -50,7 +52,7 @@ export default class LooseBarChart extends Component {
     const { yawBarChart } = this;
     const { selectValue } = this.state;
     const { yawRankTime, yawRankLoading, yawRankData, rankDevice } = this.props;
-    const { yawRankTime: yawRankTimePrev, rankDevice: rankDevicePrev } = prevProps;
+    const { yawRankTime: yawRankTimePrev } = prevProps;
     const myChart = eCharts.init(yawBarChart);
     if (yawRankLoading) { // loading态控制。
       myChart.showLoading();
@@ -59,7 +61,7 @@ export default class LooseBarChart extends Component {
     if (!yawRankLoading) {
       myChart.hideLoading();
     }
-    if(yawRankTime && yawRankTime !== yawRankTimePrev || rankDevice && rankDevice !== rankDevicePrev) {
+    if(yawRankTime && yawRankTime !== yawRankTimePrev) {
       // 初始化dataZoom位置
       this.paramsStart = 0;
       this.paramsEnd = 100;
@@ -86,6 +88,8 @@ export default class LooseBarChart extends Component {
       queryParamsFunc,
       getYawRend,
       getReleaseRend,
+      releaseType,
+      yawType,
     } = this.props;
     const actuatorInfoStr = searchUtil(search).getValue('actuator');
     const actuatorInfo = actuatorInfoStr ? JSON.parse(actuatorInfoStr) : {};
@@ -110,8 +114,8 @@ export default class LooseBarChart extends Component {
         deviceName,
       });
       myChart.setOption(this.drawChart(yawRankData, selectDevice));
-      getYawRend(paramsRank);
-      getReleaseRend(paramsRank);
+      getYawRend({...paramsRank, type: yawType});
+      getReleaseRend({...paramsRank, type: releaseType});
     }
     //判断再次点击
     if(selectDevice && selectDevice === rankDevice) {
@@ -144,7 +148,7 @@ export default class LooseBarChart extends Component {
       const colorIndex = modeArr.indexOf(deviceModeName);
       yawBarData.push({
         name: `${deviceModeName} ${deviceFullcode} ${deviceName}`,
-        value: yawDuration,
+        value: dataFormats(yawDuration / 3600, '--', 2),
         itemStyle: {
           color: new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
             {offset: 0, color: this.barColor[colorIndex][0]},
@@ -175,6 +179,15 @@ export default class LooseBarChart extends Component {
       },
     };
     this.setState({ modeArr });
+    function contains(arrays, obj) {
+      let i = arrays.length;
+      while (i--) {
+        if (arrays[i] === obj) {
+          return i;
+        }
+      }
+      return false;
+    }
     return {
       tooltip: {
         trigger: 'axis',
@@ -183,25 +196,34 @@ export default class LooseBarChart extends Component {
         },
         padding: 0,
         formatter: (params) => {
-          console.log(params, 'params');
           const { name, axisValue } = params && params[0] || {};
+          // 查找下标
+          const indexNum = contains(modeArr, name.split(' ')[0]);
           return `<section class=${styles.tooltip}>
             <h3 class=${styles.title}>
               <span>${axisValue}</span>
               <span class=${styles.modeName}>${name.split(' ')[0]}</span>
             </h3>
             <div class=${styles.info}>
-              ${params.map((e, i) => (
-            `<span class=${styles.eachItem}>
+              ${params.map((e, i) => {
+                const firColor = this.barColor[indexNum][0];
+                const secColor = this.barColor[indexNum][1];
+            return `<span class=${styles.eachItem}>
+                  <span
+                    style="background-image: linear-gradient(-180deg, ${firColor} 0%, ${secColor} 100%)"
+                    class=${i === 0 ? styles.rectMode : styles.lineMode}
+                  ></span>
                   <span>${i === 0 ? '偏航时长：' : '偏航次数：'}</span>
                   <span>${dataFormats(e.value, '--', 2, true)}</span>
-                </span>`
-          )).join('')}
+                </span>`;
+          }).join('')}
             </div>
           </section>`;
         },
       },
       grid: {
+        left: '40px',
+        right: '40px',
         containLabel: true,
       },
       xAxis: [
@@ -276,7 +298,7 @@ export default class LooseBarChart extends Component {
 
   filterDataFunc = (data, sortName) => {
     return [...data].sort((a, b) => {
-      if (sortName === 'deviceName') {
+      if (sortName === 'deviceOrderName') {
         return a[sortName] && b[sortName] && a[sortName].localeCompare(b[sortName]);
       }
       return b[sortName] - a[sortName];
@@ -308,7 +330,7 @@ export default class LooseBarChart extends Component {
           <div className={styles.yawBarSort}>
             <span>选择排序</span>
             <Select value={selectValue} style={{ width: 200 }} onChange={this.handleChange}>
-              <Option value="deviceName">设备名称</Option>
+              <Option value="deviceOrderName">设备名称</Option>
               <Option value="yawDuration">偏航时长</Option>
               <Option value="yawNum">偏航次数</Option>
             </Select>
@@ -325,9 +347,9 @@ export default class LooseBarChart extends Component {
             </span>
             ))}
             <span className={styles.eachMode}>
-            <span className={styles.line} />
-            <span className={styles.modeText}>偏航次数</span>
-          </span>
+              <span className={styles.line} />
+              <span className={styles.modeText}>偏航次数</span>
+            </span>
           </div>
           <div ref={ref => {this.yawBarChart = ref;}} className={styles.yawBarCenter} />
         </div>

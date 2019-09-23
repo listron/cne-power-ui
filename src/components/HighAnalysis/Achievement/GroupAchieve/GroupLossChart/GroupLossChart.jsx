@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import searchUtil from '../../../../../utils/searchUtil';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
-import {dataFormat} from '../../../../../utils/utilFunc';
+import {dataFormats} from '../../../../../utils/utilFunc';
 
 import styles from './groupLossChart.scss';
 
@@ -62,11 +62,11 @@ export default class GroupLossChart extends Component {
   }
 
   drawChart = (groupLostGenHourInfo) => {
-    const pointLength = 1;
+    const pointLength = 2;
     const { actualGen, theoryGen, detailList } = groupLostGenHourInfo;
     const xAxisName = detailList && detailList.map(cur => (cur.name)) || [];
     const xAxisBaseValue = detailList && detailList.map(cur => (cur.baseValue)) || [];
-    const xAxisValue = detailList && detailList.map(cur => (dataFormat(cur.value, '--', pointLength))) || [];
+    const xAxisValue = detailList && detailList.map(cur => (dataFormats(cur.value, '--', pointLength, true))) || [];
     return {
       graphic: !actualGen && !theoryGen && (!detailList || detailList.length === 0) ? showNoData : hiddenNoData,
       tooltip: {
@@ -76,12 +76,11 @@ export default class GroupLossChart extends Component {
         },
         formatter: function (params) {
           var tar = params[1];
-          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormat(tar.value, '--', pointLength);
+          return tar.name + '<br/>' + tar.seriesName + ' : ' + dataFormats(tar.value, '--', pointLength, true);
         },
       },
       grid: {
         top: '10%',
-        bottom: '10%',
       },
       xAxis: {
         type: 'category',
@@ -89,6 +88,18 @@ export default class GroupLossChart extends Component {
         data: ['应发小时', ...xAxisName, '实发小时'],
         axisLabel: {
           interval: 0,
+          formatter: (str = '') => { // 字段名称最少显示4个字
+            const strArr = str.split('');
+            const strLength = strArr.length;
+            if (strLength > 4 && strLength <= 8) {
+              strArr.splice(4, 0, '\n'); // 超过4个字折行
+            }
+            if (strLength > 8) { // 超过8个字则显示7个字，后跟…
+              strArr.splice(7);
+              strArr.push('...');
+            }
+            return strArr.join('');
+          },
         },
         axisTick: {
           alignWithLabel: true,
@@ -97,7 +108,7 @@ export default class GroupLossChart extends Component {
       yAxis: [
         {
           type: 'value',
-          name: '利用小时数（h）',
+          name: '等效小时数（h）',
           splitLine: {
             show: false,
           },
@@ -109,6 +120,7 @@ export default class GroupLossChart extends Component {
           type: 'bar',
           barWidth: 10,
           stack: '总量',
+          cursor: 'default',
           itemStyle: {
             normal: {
               barBorderColor: 'rgba(0,0,0,0)',
@@ -122,17 +134,18 @@ export default class GroupLossChart extends Component {
           data: [0, ...xAxisBaseValue, 0],
         },
         {
-          name: '利用小时数',
+          name: '等效小时数',
           type: 'bar',
           barWidth: 10,
           stack: '总量',
+          cursor: 'default',
           label: {
             normal: {
               show: true,
               position: 'top',
             },
           },
-          data: [theoryGen, ...xAxisValue, actualGen].map((cur, i) => ({
+          data: [dataFormats(theoryGen, '--', pointLength, true), ...xAxisValue, dataFormats(actualGen, '--', pointLength, true)].map((cur, i) => ({
             value: cur,
             itemStyle: {
               color: new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [

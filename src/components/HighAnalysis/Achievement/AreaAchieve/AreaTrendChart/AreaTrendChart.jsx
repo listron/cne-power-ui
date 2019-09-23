@@ -5,7 +5,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
 import searchUtil from '../../../../../utils/searchUtil';
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { dataFormats } from '../../../../../utils/utilFunc';
 
 import styles from './areaTrendChart.scss';
 
@@ -30,6 +30,9 @@ export default class AreaTrendChart extends Component {
 
   constructor(props){
     super(props);
+    this.state = {
+      modeArr: [],
+    };
     // 初始化dataZoom位置
     this.paramsStart = 0;
     this.paramsEnd = 100;
@@ -147,11 +150,11 @@ export default class AreaTrendChart extends Component {
   drawChart = (data, selectTime) => {
     const { qutaName, unitName, pointLength } = this.props;
     // 选中的颜色
-    function colorFunc(time) {
+    function colorFunc(time, normalColor = '#f9b600', activeColor = '#f5d5bb') {
       if(selectTime) {
-        return selectTime && selectTime === time ? '#f9b600' : '#f5d5bb';
+        return selectTime && selectTime === time ? normalColor : activeColor;
       }
-      return '#f9b600';
+      return normalColor;
     }
 
     const oneLine = [{
@@ -199,7 +202,7 @@ export default class AreaTrendChart extends Component {
       type: 'line',
       lineStyle: {
         opacity: selectTime ? 0.2 : 1,
-        color: '#f5d5bb',
+        color: '#2564cc',
         width: 2,
         shadowColor: 'rgba(0,0,0,0.20)',
         shadowBlur: 3,
@@ -209,11 +212,14 @@ export default class AreaTrendChart extends Component {
         value: unitName === '%' ? (cur.indicatorData.theoryGen === null ? null : cur.indicatorData.theoryGen * 100) : cur.indicatorData.theoryGen,
         symbolSize: selectTime && cur.efficiencyDate === selectTime ? 12 : 8,
         itemStyle: {
-          color: colorFunc(cur.efficiencyDate),
+          color: colorFunc(cur.efficiencyDate, '#2564cc', '#cbdff3'),
         },
       })),
     }];
     const seriesData = qutaName === '利用小时数' ? twoLine : oneLine;
+    this.setState({
+      modeArr: qutaName === '利用小时数' ? ['实发小时数', '应发小时数'] : [`${qutaName}`],
+    });
     return {
       graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
       tooltip: {
@@ -224,11 +230,11 @@ export default class AreaTrendChart extends Component {
         formatter: (params) => {
           if(qutaName === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormats(params[0].value, '--', pointLength, true)}</span><br /><span>应发小时数：</span><span>${dataFormats(params[1].value, '--', pointLength, true)}</span>
           </div>`;
           }
           return `<div>
-            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span>
+            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormats(params[0].value, '--', pointLength, true)}</span>
           </div>`;
         },
       },
@@ -313,6 +319,7 @@ export default class AreaTrendChart extends Component {
   };
 
   render() {
+    const { modeArr } = this.state;
     const { timeStatus, dataName, qutaName } = this.props;
     return (
       <div className={styles.areaTrendBox}>
@@ -324,7 +331,19 @@ export default class AreaTrendChart extends Component {
             <Radio.Button value="3">按年</Radio.Button>
           </Radio.Group>
         </div>
-        <div className={styles.trendCenter} ref={ref => {this.trendChart = ref;}} />
+        <div className={styles.trendChartBox}>
+          <div className={styles.modes}>
+            {modeArr && modeArr.map((cur, index) => {
+              return (
+                <span key={index.toString()}>
+                  <span className={styles.line} />
+                  <span className={styles.modeText}>{cur}</span>
+                </span>
+              );
+            })}
+          </div>
+          <div className={styles.trendCenter} ref={ref => {this.trendChart = ref;}} />
+        </div>
       </div>
     );
   }

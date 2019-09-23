@@ -333,6 +333,11 @@ const menuData = [
             path: 'sequence',
             rightKey: 'analysis_dataTool_sequence',
           },
+          {
+            name: '风资源',
+            path: 'resources',
+            rightKey: 'analysis_dataTool_sequence',
+          },
           // {
           //   name: '统计图',
           //   path: 'histogram',

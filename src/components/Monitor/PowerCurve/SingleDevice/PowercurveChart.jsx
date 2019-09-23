@@ -30,8 +30,7 @@ class PowercurveChart extends Component {
     const { curveTime } = this.props;
     const { curveChartLoadding, correct } = nextProps;
     const theoryPowers = nextProps.singleDeviceCurveData || [];
-    if (this.props.curveChartLoadding !== nextProps.curveChartLoadding) {
-      console.log('2222');
+    if (curveTime !== nextProps.curveTime) {
       this.drawChart(theoryPowers, curveChartLoadding, correct);
     }
   }
@@ -56,12 +55,8 @@ class PowercurveChart extends Component {
     };
   }
   drawChart = (params, curveChartLoadding, correct) => {
-    console.log('curveChartLoadding: ', curveChartLoadding);
     const singlePowerCurveChart = echarts.init(document.getElementById('singlePowerCurveChart'));
-    //横坐标
     curveChartLoadding ? singlePowerCurveChart.showLoading('default', { color: '#199475' }) : singlePowerCurveChart.hideLoading();
-
-
     const ishaveData = [];
     (params && params.length) && params.forEach((e, i) => {
       if (e.scatterPointData && e.scatterPointData.length > 0) {

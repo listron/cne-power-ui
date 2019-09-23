@@ -244,6 +244,7 @@ export default class RunScatterChart extends Component {
         },
         outOfBrush: {
           opacity: 0.2,
+          colorLightness: 0.8, // 颜色的明暗度
         },
         throttleType: 'debounce',
         throttleDelay: 300,
@@ -257,16 +258,16 @@ export default class RunScatterChart extends Component {
         },
       },
       xAxis: [
-        {name: `${firstXAxisName}（${firstXAxisUnit}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 0, min: minNum, splitLine: {show: false}},
-        {name: `${secondXAxisName}（${secondXAxisUnit}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 1, min: minNum, splitLine: {show: false}},
-        {name: `${thirdXAxisName}（${thirdXAxisUnit}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 2, min: minNum, splitLine: {show: false}},
-        {name: `${fourthXAxisName}（${fourthXAxisUnit}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 3, min: minNum, splitLine: {show: false}},
+        {name: `${firstXAxisName}（${firstXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 0, min: minNum, splitLine: {show: false}},
+        {name: `${secondXAxisName}（${secondXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 1, min: minNum, splitLine: {show: false}},
+        {name: `${thirdXAxisName}（${thirdXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 2, min: minNum, splitLine: {show: false}},
+        {name: `${fourthXAxisName}（${fourthXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 3, min: minNum, splitLine: {show: false}},
       ],
       yAxis: [
-        {name: `${firstYAxisName}（${firstYAxisUnit}）`, gridIndex: 0, min: minNum, splitLine: {show: false}},
-        {name: `${secondYAxisName}（${secondYAxisUnit}）`, gridIndex: 1, min: minNum, splitLine: {show: false}},
-        {name: `${thirdYAxisName}（${thirdYAxisUnit}）`, gridIndex: 2, min: minNum, splitLine: {show: false}},
-        {name: `${fourthYAxisName}（${fourthYAxisUnit}）`, gridIndex: 3, min: minNum, splitLine: {show: false}},
+        {name: `${firstYAxisName}（${firstYAxisUnit || ''}）`, gridIndex: 0, min: minNum, splitLine: {show: false}},
+        {name: `${secondYAxisName}（${secondYAxisUnit || ''}）`, gridIndex: 1, min: minNum, splitLine: {show: false}},
+        {name: `${thirdYAxisName}（${thirdYAxisUnit || ''}）`, gridIndex: 2, min: minNum, splitLine: {show: false}},
+        {name: `${fourthYAxisName}（${fourthYAxisUnit || ''}）`, gridIndex: 3, min: minNum, splitLine: {show: false}},
       ],
       series: [
         {
@@ -812,6 +813,13 @@ export default class RunScatterChart extends Component {
       deviceFullcodes: searchDevice,
     };
   };
+  // 处理option没有value，直接显示name
+  valueFlagFunc = (value, name) => {
+    const { pointsInfo } = this.props;
+    // 判断是否存在测点
+    const valueFlag = pointsInfo.map(cur => (cur.name)).includes(value);
+    return valueFlag ? value : name;
+  };
 
   render() {
     const { minNum } = this.state;
@@ -926,45 +934,45 @@ export default class RunScatterChart extends Component {
         </div>
         <div className={styles.firCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select value={firstChartXAxis} style={{ width: 120 }} onChange={this.firstXAxisChange}>
+          <Select value={this.valueFlagFunc(firstChartXAxis, firstXAxisName)} style={{ width: 120 }} onChange={this.firstXAxisChange}>
             {firstXAxisOption}
           </Select>
           <Icon type="swap" onClick={this.firstChartExchange} />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select value={firstChartYAxis} style={{ width: 120 }} onChange={this.firstYAxisChange}>
+          <Select value={this.valueFlagFunc(firstChartYAxis, firstYAxisName)} style={{ width: 120 }} onChange={this.firstYAxisChange}>
             {firstYAxisOption}
           </Select>
         </div>
         <div className={styles.secCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select value={secondChartXAxis} style={{ width: 120 }} onChange={this.secondXAxisChange}>
+          <Select value={this.valueFlagFunc(secondChartXAxis, secondXAxisName)} style={{ width: 120 }} onChange={this.secondXAxisChange}>
             {secondXAxisOption}
           </Select>
           <Icon type="swap" onClick={this.secondChartExchange} />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select value={secondChartYAxis} style={{ width: 120 }} onChange={this.secondYAxisChange}>
+          <Select value={this.valueFlagFunc(secondChartYAxis, secondYAxisName)} style={{ width: 120 }} onChange={this.secondYAxisChange}>
             {secondYAxisOption}
           </Select>
         </div>
         <div className={styles.thrCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select value={thirdChartXAxis} style={{ width: 120 }} onChange={this.thirdXAxisChange}>
+          <Select value={this.valueFlagFunc(thirdChartXAxis, thirdXAxisName)} style={{ width: 120 }} onChange={this.thirdXAxisChange}>
             {thirdXAxisOption}
           </Select>
           <Icon type="swap" onClick={this.thirdChartExchange} />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select value={thirdChartYAxis} style={{ width: 120 }} onChange={this.thirdYAxisChange}>
+          <Select value={this.valueFlagFunc(thirdChartYAxis, thirdYAxisName)} style={{ width: 120 }} onChange={this.thirdYAxisChange}>
             {thirdYAxisOption}
           </Select>
         </div>
         <div className={styles.fouCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select value={fourthChartXAxis} style={{ width: 120 }} onChange={this.fourthXAxisChange}>
+          <Select value={this.valueFlagFunc(fourthChartXAxis, fourthXAxisName)} style={{ width: 120 }} onChange={this.fourthXAxisChange}>
             {fourthXAxisOption}
           </Select>
           <Icon type="swap" onClick={this.fourthChartExchange} />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select value={fourthChartYAxis} style={{ width: 120 }} onChange={this.fourthYAxisChange}>
+          <Select value={this.valueFlagFunc(fourthChartYAxis, fourthYAxisName)} style={{ width: 120 }} onChange={this.fourthYAxisChange}>
             {fourthYAxisOption}
           </Select>
         </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
-import { Select } from 'antd';
+import { Select, Tooltip } from 'antd';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import { getPartsOption } from './curveBaseOption';
 import styles from './curve.scss';
@@ -23,7 +23,7 @@ class DevicesAep extends Component {
 
   state = {
     modeArr: [],
-    sortName: 'deviceName', // windSpeed, aep;
+    sortName: 'deviceOrderName', // windSpeed, aep;
   }
 
   componentDidMount(){
@@ -64,7 +64,7 @@ class DevicesAep extends Component {
 
   sortDeviceAes = (data = [], sorter) => {
     return [...data].sort((a, b) => {
-      if(sorter === 'deviceName') {
+      if(sorter === 'deviceOrderName') {
         return a[sorter] && b[sorter] && a[sorter].localeCompare(b[sorter]);
       }
       return b[sorter] - a[sorter];
@@ -217,7 +217,12 @@ class DevicesAep extends Component {
     return (
       <section className={styles.aep}>
         <h3 className={styles.aepTop}>
-          <span className={styles.aepText}>各机组AEP及平均风速</span>
+          <span>
+            <span className={styles.aepText}>各机组AEP及平均风速</span>
+            <Tooltip title="AEP指利用拟合功率曲线估算的风电机组年理论发电量" placement="top">
+              <span className={styles.curveTip}>i</span>
+            </Tooltip>
+          </span>
           <span>
             <span className={styles.sorterText}>选择排序</span>
             <Select
@@ -225,7 +230,7 @@ class DevicesAep extends Component {
               style={{width: '200px'}}
               value={sortName}
             >
-              <Option value="deviceName">风机名称</Option>
+              <Option value="deviceOrderName">风机名称</Option>
               <Option value="aep">AEP</Option>
               <Option value="windSpeed">风速</Option>
             </Select>

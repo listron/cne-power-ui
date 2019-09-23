@@ -205,10 +205,12 @@
               width: 150px;
               text-align: right;
               line-height: 40px;
+              color: #000000;
+              font-family: MicrosoftYaHei;
             }
 
             .value {
-              margin-left: 48px;
+              margin-left: 16px;
               line-height: 40px;
               text-align: left;
             }
@@ -231,6 +233,7 @@
 
         .titleText {
           text-align: center;
+          color: #000;
 
           &::after {
             display: inline-block;

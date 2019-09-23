@@ -157,6 +157,7 @@ function* addPoint(action) {
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      message.success('测点已添加');
       yield put({
         type: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
         payload: {
@@ -265,7 +266,8 @@ function* editPoints(action) { // 测点编辑
   yield put({ type: pointManageAction.POINT_MANAGE_FETCH });
   try {
     const response = yield call(axios.put, url, payload);
-    if (response.data.code === '10000') { // 
+    if (response.data.code === '10000') {
+      message.success('测点已保存');
       yield put({
         type: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
         payload: {

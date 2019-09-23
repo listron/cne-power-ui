@@ -29,7 +29,7 @@ class PointManageHandle extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
-      warningTipText: '确定要删除?',
+      warningTipText: '确定要删除选中的测点吗?',
     };
   }
 
@@ -113,7 +113,7 @@ class PointManageHandle extends Component {
     const selectedStationInfo = stationPointStatusList.find(e => e.stationCode === stationCode);
     const pointForbidClear = !selectedStationInfo || selectedStationInfo.alarmStatus === 1; // 未找到电站或电站已导入告警，不可清除
     // const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`;
-    const downloadTemplet = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}`;
+    const downloadTemplet = `${path.basePaths.originUri}${path.APISubPaths.system.downloadPointExcel}`;
     return (
       <div className={styles.pointManageHandle}>
         <div className={styles.leftHandler}>

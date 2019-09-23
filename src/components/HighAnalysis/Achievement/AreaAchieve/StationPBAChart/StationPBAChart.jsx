@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { message } from 'antd';
 import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
 import searchUtil from '../../../../../utils/searchUtil';
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { dataFormats } from '../../../../../utils/utilFunc';
 
 import styles from './stationPBAChart.scss';
 
@@ -112,10 +112,26 @@ export default class StationPBAChart extends Component {
     }
   };
 
+  // 处理数值
+  dataFormatFunc = (unitName, indicatorData, paramStr) => {
+    // 1.是否是百分比显示
+    // 2.判断字段是否有值
+    if(!indicatorData) {
+      return null;
+    }
+    if(unitName === '%') {
+      if(indicatorData[paramStr] === null){
+        return null;
+      }
+      return indicatorData[paramStr] * 100;
+    }
+    return indicatorData[paramStr];
+  };
+
   drawChart = (data, dataIndex) => {
     const { qutaName, stationColorData, unitName, pointLength } = this.props;
     const twoBar = [{ // 实发
-      data: data && data.map(cur => (unitName === '%' ? (cur.indicatorData.actualGen === null ? null : cur.indicatorData.actualGen * 100) : cur.indicatorData.actualGen)),
+      data: data && data.map(cur => (this.dataFormatFunc(unitName, cur.indicatorData, 'actualGen'))),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -130,7 +146,7 @@ export default class StationPBAChart extends Component {
         },
       },
     }, {// 应发
-      data: data && data.map(cur => (unitName === '%' ? (cur.indicatorData.theoryGen === null ? null : cur.indicatorData.theoryGen * 100) : cur.indicatorData.theoryGen)),
+      data: data && data.map(cur => (this.dataFormatFunc(unitName, cur.indicatorData, 'theoryGen'))),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -144,7 +160,7 @@ export default class StationPBAChart extends Component {
       },
     }];
     const oneBar = [{
-      data: data && data.map(cur => (unitName === '%' ? (cur.indicatorData.value === null ? null : cur.indicatorData.value * 100) : cur.indicatorData.value)),
+      data: data && data.map(cur => (this.dataFormatFunc(unitName, cur.indicatorData, 'value'))),
       type: 'bar',
       barWidth: 10,
       itemStyle: {
@@ -175,11 +191,11 @@ export default class StationPBAChart extends Component {
         formatter: (params) => {
           if(qutaName === '利用小时数') {
             return `<div>
-            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span><br /><span>应发小时数：</span><span>${dataFormat(params[1].value, '--', pointLength)}</span>
+            <span>${params[0].name}</span><br /><span>实发小时数：</span><span>${dataFormats(params[0].value, '--', pointLength, true)}</span><br /><span>应发小时数：</span><span>${dataFormats(params[1].value, '--', pointLength, true)}</span>
           </div>`;
           }
           return `<div>
-            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormat(params[0].value, '--', pointLength)}</span>
+            <span>${qutaName || '--'}</span><br /><span>${params[0].name}：</span><span>${dataFormats(params[0].value, '--', pointLength, true)}</span>
           </div>`;
         },
       },

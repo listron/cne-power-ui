@@ -77,11 +77,34 @@
 
   .info {
     padding: 8px;
+
+    >span {
+      display: block;
+    }
   }
 
   .eachItem {
-    display: flex;
+    position: relative;
     line-height: 21px;
+
+    .firLine, .secLine {
+      display: inline-block;
+      width: 5px;
+      margin: 0 10px 0 4px;
+      height: 5px;
+      border-radius: 50%;
+      position: relative;
+      top: -1px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 15px;
+        height: 1px;
+        right: -6px;
+        top: 1px;
+      }
+    }
   }
 
   .modeName {
@@ -121,5 +144,23 @@
 
   .title {
     border-bottom: 1px solid #dfdfdf;
+  }
+
+  .eachItem {
+    .firLine {
+      border: 1px solid #2564cc;
+
+      &::before {
+        background-color: #2564cc;
+      }
+    }
+
+    .secLine{
+      border: 1px solid #f9b600;
+
+      &::before {
+        background-color: #f9b600;
+      }
+    }
   }
 }

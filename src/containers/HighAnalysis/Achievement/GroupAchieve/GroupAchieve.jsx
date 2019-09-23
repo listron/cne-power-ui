@@ -93,8 +93,6 @@ class GroupAchieve extends Component {
     const { groupTimeStatus } = this.props;
     const basicParams = this.basicParams(groupInfo);
     const {
-      stations = [],
-      modes = [],
       quota = [],
       modesInfo = [],
     } = groupInfo;
@@ -102,8 +100,6 @@ class GroupAchieve extends Component {
     const quotaValue = quota[1] || quota[0];
     const paramsCapacity = {
       ...basicParams,
-      deviceModes: modes.map(cur => (cur.split('-')[1])),
-      regionName: stations.map(cur => {return cur.regionName;}),
       manufactorIds: modesInfo.map(cur => {
         return cur.value;
       }),
@@ -114,14 +110,12 @@ class GroupAchieve extends Component {
     };
     const paramsTrend = {
       ...basicParams,
-      regionName: paramsCapacity.regionName,
       indicatorCode: quotaValue,
       type: groupTimeStatus, // 默认按月
     };
     const paramsHour = {
       ...basicParams,
       manufactorIds: paramsCapacity.manufactorIds,
-      deviceModes: paramsCapacity.deviceModes,
     };
     this.props.getGroupCapacity(paramsCapacity);
     this.props.getGroupRank(paramsRank);
@@ -135,6 +129,7 @@ class GroupAchieve extends Component {
       startTime: data.dates[0],
       endTime: data.dates[1],
       stationCodes: data.searchCode,
+      deviceModes: data.modes.map(cur => (cur.split('-')[1])),
     };
   };
 
@@ -148,17 +143,20 @@ class GroupAchieve extends Component {
       // 默认指标分析
       let qutaName = ''; //  根据quota的value值遍历名称
       quotaInfo.forEach(cur => {
-        // 有没有子集
-        if(quota[1] === cur.value) {
-          cur.children.forEach(item => {
-            if(quota[0] === item.value) {
-              qutaName = item.label;
-            }
-          });
-          return false;
-        }
+        // 判断父级相等
         if(quota[0] === cur.value) {
-          qutaName = cur.label;
+          if(cur.children && cur.children.length > 0) {
+            cur.children.forEach(item => {
+              if(quota[1] === item.value) {
+                qutaName = item.label;
+              }
+            });
+            return qutaName;
+          }
+          if(!cur.children || cur.children.length === 0) {
+            qutaName = cur.label;
+          }
+          return qutaName;
         }
       });
       return qutaName;

@@ -84,7 +84,7 @@ class StationAchieve extends Component {
   componentWillReceiveProps(nextProps){
     const preDevices = this.props.modeDevices;
     const { areaStation, modeDevices, pageName, quotaInfo, history } = nextProps;
-    const { stationInfoStr, searchCode, searchDevice, searchQuota } = this.state;
+    const { stationInfoStr, searchCode, searchDevice, searchQuota, searchDates } = this.state;
     const { search } = history.location;
     const newSearchPath = searchUtil(search).getValue('station') || '';
     const prePageName = this.props.pageName;
@@ -105,7 +105,7 @@ class StationAchieve extends Component {
       this.setState({ searchDevice: selectedDevice });
       // preDevices === 0为初始加载 => 自动切换路径
       // preDevices > 0为切换电站 => 选中默认设备即可
-      preDevices.length === 0 && searchQuota && this.historyChange(searchCode, selectedDevice, undefined, searchQuota);
+      preDevices.length === 0 && searchQuota && this.historyChange(searchCode, selectedDevice, searchDates, searchQuota);
     }
     if (quotaInfo.length > 0 && !searchQuota) { // 得到指标 => 存选中
       const firstType = quotaInfo[0] || {};
@@ -117,7 +117,7 @@ class StationAchieve extends Component {
         selectedQuota = firstType;
       }
       this.setState({ searchQuota: selectedQuota.value });
-      searchDevice.length > 0 && this.historyChange(searchCode, searchDevice, undefined, selectedQuota.value);
+      searchDevice.length > 0 && this.historyChange(searchCode, searchDevice, searchDates, selectedQuota.value);
     }
     if (newSearchPath !== stationInfoStr) { // 页面路径发生变化 => 直接重新请求当前模块的所有图表数据, 并重置页面内选中信息。
       const params = this.getSearchParam(newSearchPath);
