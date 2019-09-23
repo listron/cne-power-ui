@@ -144,7 +144,6 @@
   flex: 1 0 auto;
   width: 100%;
   z-index: 99;
-  // margin: 24px 24px 0;
   :global {
     .ant-select,
     .ant-cascader-picker {
@@ -157,19 +156,15 @@
     display: flex;
     flex: 1 0 auto;
     flex-direction: column;
-    background: #fff;
     .titleTop {
       @include top;
       justify-content: space-between;
       .text {
         font-size: 18px;
-        color: $darkColor;
         letter-spacing: 4px;
       }
       .backIcon {
-        color: $darkColor;
         font-size: 20px;
-        border-left: 1px solid #dfdfdf;
         height: 100%;
         line-height: 64px;
         width: 64px;
@@ -184,6 +179,9 @@
     .selctWrap {
       display: flex;
       line-height: 40px;
+      i {
+        margin-left: 8px;
+      }
     }
     .preFormStyle {
       width: 750px;
@@ -216,14 +214,12 @@
       line-height: 30px;
       margin-bottom: 12px;
       .label {
-        color: rgba(0, 0, 0, 0.85);
         width: 71px;
         text-align: right;
         margin-right: 24px;
         span {
           display: inline-block;
           margin-right: 4px;
-          color: #f5222d;
           font-size: 14px;
           line-height: 1;
         }
@@ -242,8 +238,6 @@
   }
   .showIntelligent {
     .editBtn {
-      color: $themeColor;
-      border-color: $themeColor;
       margin-right: 12px;
     }
     .detailContent {
@@ -264,18 +258,14 @@
         display: block;
         cursor: pointer;
         text-decoration: underline;
-        color: $themeColor;
       }
       .required {
-        color: #a42b2c;
         margin-right: 8px;
       }
       .likeBtn,
       .likedBtn {
         margin-left: 112px;
         width: 204px;
-        color: $themeColor;
-        border-color: $themeColor;
       }
     }
   }

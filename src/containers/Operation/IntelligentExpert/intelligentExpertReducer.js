@@ -26,6 +26,7 @@ const initState = immutable.fromJS({
   deviceModeList: [], // 设备型号的列表
   faultCodeList: [], // 故障代码的列表
   uploadFileList: [], // 上传附件之后列表
+  templateLoading: false,//下载模版的loading
 });
 
 const intelligentExpert = (state = initState, action) => {

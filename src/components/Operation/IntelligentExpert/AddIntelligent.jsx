@@ -324,7 +324,7 @@ class AddIntelligent extends Component {
                       </Select>
                     )}
                   </FormItem>
-                  {(faultCodeList.length === 0 && !!initFaultCode) && <i className="iconfont iocn-done" onClick={this.addFaultCode} />}
+                  {(faultCodeList.length === 0 && !!initFaultCode) && <i className="iconfont icon-done" onClick={this.addFaultCode} />}
                 </div>
                 <FormItem className={styles.formItem} label="故障描述" colon={false}>
                   {getFieldDecorator('faultDescription', {

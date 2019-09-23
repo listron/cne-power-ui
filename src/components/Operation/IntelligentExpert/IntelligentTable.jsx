@@ -26,6 +26,7 @@ class IntelligentTable extends Component {
     theme: PropTypes.string,
     stationType: PropTypes.string,
     downLoadFile: PropTypes.func,
+    templateLoading: PropTypes.bool,
   }
 
   constructor(props) {
@@ -163,12 +164,13 @@ class IntelligentTable extends Component {
     downLoadFile({
       url: downloadTemplet,
       method: 'get',
+      loadingName: 'templateLoading',
     });
   }
 
   render() {
     const { showModal, warningTipText, showDeleteWarning } = this.state;
-    const { intelligentTableData, tableLoading, listParams, selectedRowKeys, theme, stationType } = this.props;
+    const { intelligentTableData, tableLoading, listParams, selectedRowKeys, theme, stationType, templateLoading } = this.props;
     const { pageNum, pageSize } = listParams;
     const { total, dataList = [] } = intelligentTableData;
     const rowSelection = {
@@ -251,7 +253,7 @@ class IntelligentTable extends Component {
                 <Button className={styles.addHandler} type="add" onClick={this.addIntelligent}><i>+</i>添加</Button>
                 <Button className={styles.deleteHandler} type="reset" onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</Button>
                 <Button className={styles.importHandler} type="primary" onClick={this.showModal}>导入</Button>
-                <Button className={styles.exportHandler} type="primary" onClick={this.downLoad}>下载导入模板</Button>
+                <Button className={styles.exportHandler} type="primary" onClick={this.downLoad} loading={templateLoading}>下载导入模板</Button>
               </React.Fragment>
             }
           </div>

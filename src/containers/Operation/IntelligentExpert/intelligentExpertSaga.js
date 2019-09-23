@@ -354,7 +354,6 @@ function* uploadFile({ payload = {} }) { // 上传附件  不限制文件类型
     });
     if (response.data.code === '10000') {
       const params = yield select(state => state.operation.intelligentExpert.get('uploadFileList'));
-      console.log('params', params);
       yield put({
         type: intelligentExpertAction.changeIntelligentExpertStore,
         payload: {
