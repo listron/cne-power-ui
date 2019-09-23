@@ -134,7 +134,7 @@ class PointsOverview extends PureComponent{
     return pointInfo;
   }
 
-  // dateTypeCheck = ({ target }) => { // 日期模式改变 => 按照默认时间 + 日期类型进行选中
+  dateTypeCheck = ({ target }) => { // 日期模式改变 => 按照默认时间 + 日期类型进行选中
   //   const { deviceParam, deviceCheckedList } = this.props;
   //   const { value } = target;
   //   const date = moment().subtract(1, 'd').format(value === 2 ? 'YYYY-MM' : 'YYYY-MM-DD'); // 2按月, 1按日
@@ -145,7 +145,7 @@ class PointsOverview extends PureComponent{
   //   });
   //   this.props.getOverviewDevices({ ...newParams, pointCodes: deviceCheckedList }); // 请求测点数据
   //   this.historySearchChange(newParams);
-  // }
+  }
 
   monthCheck = (month, monthStr) => this.datesChange(monthStr); // 换月
 
