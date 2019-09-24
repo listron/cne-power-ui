@@ -33,6 +33,7 @@ class StopStatus extends Component {
     const { history, stopStringify, areaStation, modeDevices } = this.props;
     const { search } = history.location;
     const infoStr = searchUtil(search).getValue('stop');
+
     if (infoStr && infoStr !== stopStringify) { // 有search路径但无访问记录: 刷新或其他页面路径改变进入。
       const { stationCode, deviceCodes, startTime, endTime } = this.getQueryParam(infoStr);
       this.props.changeStore({
@@ -98,7 +99,7 @@ class StopStatus extends Component {
     const { stations = [] } = areaStation[0] || {};
     const { stationCode } = stations[0] || {};
     this.props.changeStore({ stationCode });
-    this.props.getDevices({ stationCode });
+    this.props.getDevices({ stationCode, saveDevice: true }); // 请求电站下设备并将得到的设备做为默认选中项
   }
 
   propsModeDevicesChange = (preDevices, modeDevices, infoStr) => { // 设备信息获取
@@ -116,9 +117,6 @@ class StopStatus extends Component {
     }
     if (infoStr && preDevices.length === 0) { // 路径中有设备, 初次得到设备信息(F5刷新) => 设备信息存储modeDevices
       this.props.changeStore({ modeDevices });
-    }
-    if (infoStr && preDevices.length > 0 ) { // 路径中有设备, 用户切换电站 => 设备信息存储modeDevices, 所有设备选中deviceCodes
-      this.props.changeStore({ modeDevices, deviceCodes });
     }
   }
 
@@ -161,7 +159,7 @@ class StopStatus extends Component {
       stationCode,
       deviceCodes: [],
     });
-    this.props.getDevices({ stationCode });
+    this.props.getDevices({ stationCode, saveDevice: true }); // 请求电站下设备并将得到的设备做为默认选中项
   }
 
   onDeviceChange = (deviceCodes) => {
@@ -192,7 +190,7 @@ class StopStatus extends Component {
       const stopInfo = JSON.parse(stopStringify);
       device = stopInfo.device.split('_');
       dates = stopInfo.dates;
-    } catch(error){ console.log(error); } // 任性吞错误，嘎嘎。~
+    } catch(error){ console.log(error); }
     const deviceChanged = deviceCodes.length !== device.length || deviceCodes.find(e => !device.includes(e));
     const timeChanged = startTime !== dates[0] || endTime !== dates[1];
     const searchForbidden = stopStatusLoading || searchInfoLost || (!timeChanged && !deviceChanged);

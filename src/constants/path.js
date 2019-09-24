@@ -228,6 +228,21 @@ export default {
       handleBatch: '/v3/docket/handleBatch', // 批量审核/执行/消票 票据
       stopBatch: '/v3/docket/stopBatch', // 批量终止票据（作废）
       delDocket: '/v3/docket/del', // 票据删除
+      //案例集
+      getDeviceMode: '/v3/ledeger/manufactormode',
+      getQuestionList: '/v3/casebase/questionType',
+      getCasePartList: '/v3/casebase/list',
+      getCasePartDetail: '/v3/casebase/get',
+      addCasePart: '/v3/casebase/add',
+      likeCase: '/v3/casebase/like',
+      editCasePart: '/v3/casebase/update',
+      deleteCasePart: '/v3/casebase/batch/del',
+      queryUseName: '/v3/casebase/likequery',
+      importCase: '/v3/casebase/import',
+      downCaseTemplate: '/template/caseBase.xls',
+      uploadCaseFile: '/v3/file/manage/upload',
+      deleteCaseFile: '/v3/file/manage/delete',
+
 
     },
     system: {
@@ -290,9 +305,15 @@ export default {
       getStationDeviceType: '/v3/management/queryDevicesTypeByStation', //查询电站下的设备类型
 
       getPointList: '/v3/management/station/device/point/list', // 获取点表列表
-      deletePoints: '/v3/management/station/device/modes', // 删除点表信息
+      deletePointList: '/v3/management/station/device/modes', // 删除点表信息
       importPointsInfo: '/v3/management/station/device/points', //导入点表信息
-      downloadPointInfo: '/v3/management/station/device/points', // 导出测点表
+      downloadPointInfo: '/v3/management/station/device/points', //导出点表信息
+      downloadPointExcel: '/template/standard_point.xlsx', // 下载标准测点表
+      addPoint: '/v3/management/station/device/point',
+      deletePoints: '/v3/management/station/device/points',
+      detailPoints: '/v3/management/station/device/points',
+      editPoints: '/v3/management/station/device/points',
+      getStandardDesc: '/v3/management/station/device/standard/points',
 
       importAlarmInfo: '/v3/management/alarmevent/import', //导入告警信息
       getAlarmList: '/v3/management/alarmevent/list', //获取告警列表
@@ -549,6 +570,8 @@ export default {
       getStationDevice: '/v3/wind/analysis/windturbinelist', //电站风机列表
       getSequenceData: '/v3/wind/analysis/sequencechart', //时序图数据
       getxyLimitValue: '/v3/wind/analysis/points/max', //获取xy轴最大值最小值
+      getFrequency: '/v3/wind/analysis/frequency', // 获取风能频率图
+      getDirections: '/v3/wind/analysis/directions', // 获取风能玫瑰图
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表
@@ -638,6 +661,10 @@ export default {
       getSecondChart: '/v3/fan/efficiency/speedangle', //获取第二个散点图
       getThirdChart: '/v3/fan/efficiency/layration', //获取第三个散点图
       getFourthChart: '/v3/fan/efficiency/speedration', //获取第四个散点图
+      getYawRank: '/v3/wind/analysis/agencys/yawrank', //执行机构偏航时长及次数
+      getReleaseRank: '/v3/wind/analysis/agencys/releaserank', //执行机构解缆时长及次数
+      getYawRend: '/v3/wind/analysis/agencys/yawrend', //执行机构偏航时长及次数趋势
+      getReleaseRend: '/v3/wind/analysis/agencys/releaserend', //执行机构解缆时长及次数折趋势
 
       getCurveDevices: '/v3/fan/efficiency/neighbor/analysis', // 功率曲线邻比分析
       getCurveDevicesAep: '/v3/fan/efficiency/device/aepandspeed', // 各机组AEP以及平均风速

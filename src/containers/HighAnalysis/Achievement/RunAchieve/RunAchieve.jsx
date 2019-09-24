@@ -15,7 +15,6 @@ class RunAchieve extends Component {
   static propTypes = {
     history: PropTypes.object,
     location: PropTypes.object,
-    getIndicatorsList: PropTypes.func,
     hourOptionValue: PropTypes.string,
     getSequenceChart: PropTypes.func,
     getFirstChart: PropTypes.func,
@@ -23,21 +22,26 @@ class RunAchieve extends Component {
     getThirdChart: PropTypes.func,
     getFourthChart: PropTypes.func,
     changeStore: PropTypes.func,
+    pointTime: PropTypes.number,
     // 第一个散点图坐标
     firstChartXAxis: PropTypes.string,
     firstChartYAxis: PropTypes.string,
+    firstHideZero: PropTypes.number,
 
     // 第二个散点图坐标
     secondChartXAxis: PropTypes.string,
     secondChartYAxis: PropTypes.string,
+    secondHideZero: PropTypes.number,
 
     // 第三个散点图坐标
     thirdChartXAxis: PropTypes.string,
     thirdChartYAxis: PropTypes.string,
+    thirdHideZero: PropTypes.number,
 
     // 第四个散点图坐标
     fourthChartXAxis: PropTypes.string,
     fourthChartYAxis: PropTypes.string,
+    fourthHideZero: PropTypes.number,
   };
 
   componentDidMount() {
@@ -45,26 +49,38 @@ class RunAchieve extends Component {
       location: {
         search,
       },
-      getIndicatorsList,
     } = this.props;
     const groupInfoStr = searchUtil(search).getValue('run');
     if(groupInfoStr) {
       const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
       this.queryParamsFunc(groupInfo);
     }
-    // 获取指标接口
-    getIndicatorsList();
   }
 
   componentWillReceiveProps (nextProps) {
-    const nextSearch = nextProps.location.search;
-    const { search } = this.props.location;
+    const {
+      location: {
+        search: nextSearch,
+      },
+      pointTime: nextPointTime,
+    } = nextProps;
+    const {
+      location: {
+        search,
+      },
+      pointTime,
+    } = this.props;
     const groupNextInfoStr = searchUtil(nextSearch).getValue('run');
     const groupInfoStr = searchUtil(search).getValue('run');
-    // 发生变化
-    if (groupNextInfoStr && groupNextInfoStr !== groupInfoStr) {
+    // 判断地址栏发生变化
+    const infoStrFlag = groupNextInfoStr && groupNextInfoStr !== groupInfoStr;
+    if (infoStrFlag) {
       const groupInfo = groupNextInfoStr ? JSON.parse(groupNextInfoStr) : {};
       this.queryParamsFunc(groupInfo);
+      if(nextPointTime && nextPointTime === pointTime) {
+        // 第三个图表
+        this.thirdChartFunc(groupInfo);
+      }
     }
   }
 
@@ -75,21 +91,20 @@ class RunAchieve extends Component {
       getSequenceChart,
       getFirstChart,
       getSecondChart,
-      getThirdChart,
       getFourthChart,
       changeStore,
       // 第一个散点图坐标
       firstChartXAxis,
       firstChartYAxis,
+      firstHideZero,
       // 第二个散点图坐标
       secondChartXAxis,
       secondChartYAxis,
-      // 第三个散点图坐标
-      thirdChartXAxis,
-      thirdChartYAxis,
+      secondHideZero,
       // 第四个散点图坐标
       fourthChartXAxis,
       fourthChartYAxis,
+      fourthHideZero,
     } = this.props;
     const {
       searchDevice,
@@ -109,22 +124,17 @@ class RunAchieve extends Component {
     // 第一个散点图
     const firstParams = {
       ...basisParams,
-      codes: [`${firstChartXAxis}-xAxis`, `${firstChartYAxis}-yAxis`],
+      codes: [`${firstChartXAxis}-xAxis-${firstHideZero}`, `${firstChartYAxis}-yAxis-${firstHideZero}`],
     };
     // 第二个散点图
     const secondParams = {
       ...basisParams,
-      codes: [`${secondChartXAxis}-xAxis`, `${secondChartYAxis}-yAxis`],
-    };
-    // 第三个散点图
-    const thirdParams = {
-      ...basisParams,
-      codes: [`${thirdChartXAxis}-xAxis`, `${thirdChartYAxis}-yAxis`],
+      codes: [`${secondChartXAxis}-xAxis-${secondHideZero}`, `${secondChartYAxis}-yAxis${secondHideZero}`],
     };
     // 第四个散点图
     const fourthParams = {
       ...basisParams,
-      codes: [`${fourthChartXAxis}-xAxis`, `${fourthChartYAxis}-yAxis`],
+      codes: [`${fourthChartXAxis}-xAxis-${fourthHideZero}`, `${fourthChartYAxis}-yAxis-${fourthHideZero}`],
     };
     const startTime = moment(searchDates[0]).format('YYYY-MM');
     const endTime = searchDates[1];
@@ -138,8 +148,32 @@ class RunAchieve extends Component {
     getSequenceChart(hourParams);
     getFirstChart(firstParams);
     getSecondChart(secondParams);
-    getThirdChart(thirdParams);
     getFourthChart(fourthParams);
+  };
+
+  thirdChartFunc = (groupInfo) => {
+    const {
+      getThirdChart,
+      // 第三个散点图坐标
+      thirdChartXAxis,
+      thirdChartYAxis,
+    } = this.props;
+    const {
+      searchDevice,
+      searchDates,
+    } = groupInfo;
+    // 基础参数
+    const basisParams = {
+      startTime: moment(searchDates[0]).utc().format(),
+      endTime: moment(searchDates[1]).utc().format(),
+      deviceFullcodes: searchDevice,
+    };
+    // 第三个散点图
+    const thirdParams = {
+      ...basisParams,
+      codes: [`${thirdChartXAxis}-xAxis`, `${thirdChartYAxis}-yAxis`],
+    };
+    getThirdChart(thirdParams);
   };
 
   getAllMonths = (startTime, endTime) => {
@@ -158,9 +192,16 @@ class RunAchieve extends Component {
   render() {
     return (
       <div className={styles.runAchieve}>
-        <RunSearch {...this.props} />
+        <RunSearch
+          thirdChartFunc={this.thirdChartFunc}
+          {...this.props}
+        />
         <RunSequenceChart {...this.props} />
-        <RunScatterChart {...this.props} />
+        <RunScatterChart
+          thirdChartFunc={this.thirdChartFunc}
+          queryParamsFunc={this.queryParamsFunc}
+          {...this.props}
+        />
       </div>
     );
   }
@@ -172,13 +213,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getDevices: payload => dispatch({ type: runAchieveAction.getDevices, payload }),
-  getIndicatorsList: payload => dispatch({ type: runAchieveAction.getIndicatorsList, payload }),
   getSequenceChart: payload => dispatch({ type: runAchieveAction.getSequenceChart, payload }),
   getFirstChart: payload => dispatch({ type: runAchieveAction.getFirstChart, payload }),
   getSecondChart: payload => dispatch({ type: runAchieveAction.getSecondChart, payload }),
   getThirdChart: payload => dispatch({ type: runAchieveAction.getThirdChart, payload }),
   getFourthChart: payload => dispatch({ type: runAchieveAction.getFourthChart, payload }),
   changeStore: payload => dispatch({ type: runAchieveAction.changeStore, payload }),
+  getPointsInfo: payload => dispatch({ type: runAchieveAction.getPointsInfo, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RunAchieve);

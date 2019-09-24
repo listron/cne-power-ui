@@ -1,0 +1,280 @@
+@import "../../../../theme/theme.scss";
+
+@mixin top {
+  @include lineheight(64px);
+  // background: #fff;
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: 1px solid $promptColor;
+}
+
+.pointSide {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+  background: #ececec;
+  padding: 24px 24px 0;
+  z-index: 99;
+
+  :global {
+
+    .ant-select,
+    .ant-cascader-picker {
+      width: 198px;
+    }
+  }
+
+  .pointAdd,
+  .pointDetail,
+  .pointEdit {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    background: #fff;
+
+    .pageTop {
+      @include top;
+      justify-content: space-between;
+
+      .leftContainer {
+        display: flex;
+        flex: 1;
+        justify-content: space-between;
+        margin-right: 14px;
+      }
+
+      .text {
+        font-size: 18px;
+        color: $darkColor;
+        letter-spacing: 4px;
+      }
+
+      .saveBtn {
+        margin-right: 16px;
+        height: 40px;
+        border-color: $themeColor;
+        color: $themeColor;
+
+        &:hover {
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+
+      .backIcon {
+        color: $darkColor;
+        font-size: 20px;
+        border-left: 1px solid #dfdfdf;
+        height: 100%;
+        line-height: 64px;
+        width: 64px;
+        cursor: pointer;
+      }
+    }
+
+  }
+
+  .pointEdit,
+  .pointDetail,
+  .pointAdd {
+    .pageContainer {
+      display: flex;
+      flex: 1;
+
+      .left {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+      }
+
+      .right {
+        display: flex;
+        flex: 2;
+        flex-direction: column;
+
+        .formPart {
+          display: flex;
+          flex-direction: column;
+
+          :global {
+
+            .ant-select,
+            .ant-cascader-picker {
+              width: 198px;
+            }
+
+            .ant-form-item-required::before {
+              display: none;
+            }
+
+            .ant-form-item-required::after {
+              display: inline-block;
+              margin-right: 4px;
+              color: #f5222d;
+              font-size: 14px;
+              font-family: SimSun, sans-serif;
+              line-height: 1;
+              content: '*';
+            }
+
+            .ant-form-item {
+              margin-bottom: 8px;
+
+              .ant-form-item-children {
+                display: flex;
+              }
+
+              .ant-input {
+                width: 200px;
+              }
+            }
+
+            .ant-form-item-label {
+              width: 200px;
+            }
+
+            // .ant-btn {
+            //   width: 200px;
+            // }
+          }
+
+          .formItemStyle {
+            display: flex;
+            // height: 60px;
+            line-height: 40px;
+          }
+
+          .usepoint {
+            display: flex;
+            // line-height: 40px;
+            align-items: center;
+
+            .descStyle {
+              margin: 0 4px;
+              max-width: 300px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              cursor: pointer;
+            }
+
+            .useBtn {
+              text-align: center;
+              border-color: $themeColor;
+              color: $themeColor;
+
+
+              &:hover {
+                background: $themeColor;
+                color: #fff;
+              }
+            }
+
+          }
+
+          .submitStyle {
+            margin: 20px 0 50px 200px;
+
+
+            .preStyles,
+            .submitBtn {
+              border-color: $themeColor;
+              color: $themeColor;
+
+              &:hover {
+                background: $themeColor;
+                color: #fff;
+              }
+            }
+
+            .preStyles {
+              margin-right: 40px;
+            }
+          }
+
+
+
+        }
+      }
+
+      .left,
+      .right {
+        padding-top: 20px;
+
+        .infoBox {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+
+          .infocontainer {
+            display: flex;
+            // margin-bottom: 20px;
+
+
+            .name {
+              width: 150px;
+              text-align: right;
+              line-height: 40px;
+              color: #000000;
+              font-family: MicrosoftYaHei;
+            }
+
+            .value {
+              margin-left: 16px;
+              line-height: 40px;
+              text-align: left;
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+  .pointAdd {
+    .preStepBox {
+      padding: 40px 0 0 80px;
+
+      .preStepItem {
+        display: flex;
+        height: 60px;
+        line-height: 40px;
+
+
+        .titleText {
+          text-align: center;
+          color: #000;
+
+          &::after {
+            display: inline-block;
+            margin-right: 4px;
+            color: #f5222d;
+            font-size: 14px;
+            font-family: SimSun, sans-serif;
+            line-height: 1;
+            content: '*';
+          }
+        }
+
+        .nextBtn {
+          width: 198px;
+          margin-left: 66px;
+          background: $themeColor;
+          color: #fff;
+          cursor: pointer;
+        }
+
+        .disabledBtn {
+          width: 198px;
+          margin-left: 66px;
+        }
+
+
+      }
+    }
+  }
+
+}

@@ -43,7 +43,23 @@ export default class RunSearch extends Component {
 
   componentDidMount(){
     const { searchCode } = this.state;
-    searchCode && this.props.getDevices({ stationCode: searchCode });
+    if(searchCode) {
+      const {
+        location: {
+          search,
+        },
+      } = this.props;
+      const runInfoStr = searchUtil(search).getValue('run');
+      if(runInfoStr) {
+        const runInfo = runInfoStr ? JSON.parse(runInfoStr) : {};
+        const { searchDates, searchCode} = runInfo;
+        const params = {
+          searchDates,
+          searchCode,
+        };
+        this.props.getDevices({ stationCode: searchCode, runInfo: params, runFlag: true });
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps){
@@ -80,7 +96,12 @@ export default class RunSearch extends Component {
   propsAreaStationChange = (areaStation = []) => { // 得到电站信息.
     const { stations = [] } = areaStation[0] || {};
     const firstStation = stations[0] || {};
-    this.props.getDevices({ stationCode: firstStation.stationCode });
+    const { searchDates } = this.state;
+    const params = {
+      searchDates,
+      searchCode: firstStation.stationCode,
+    };
+    this.props.getDevices({ stationCode: firstStation.stationCode, runInfo: params, runFlag: true });
     if (!this.state.searchCode) { // 路径无数据 => 存入state待请求.
       this.setState({
         searchCode: firstStation.stationCode,
@@ -121,7 +142,21 @@ export default class RunSearch extends Component {
       searchDevice: [],
       searchFlag: false,
     }, () => {
-      this.props.getDevices({ stationCode });
+      const {
+        location: {
+          search,
+        },
+      } = this.props;
+      const runInfoStr = searchUtil(search).getValue('run');
+      if(runInfoStr) {
+        const runInfo = runInfoStr ? JSON.parse(runInfoStr) : {};
+        const { searchDates, searchCode} = runInfo;
+        const params = {
+          searchDates,
+          searchCode,
+        };
+        this.props.getDevices({ stationCode, runInfo: params, runFlag: false });
+      }
       this.props.changeStore({ modeDevices: [] });
     });
   };

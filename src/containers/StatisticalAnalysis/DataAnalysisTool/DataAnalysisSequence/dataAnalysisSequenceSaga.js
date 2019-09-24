@@ -6,19 +6,20 @@ import moment from 'moment';
 
 function* getStationDevice(action) {//获取
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getStationDevice}/${payload.stationCode}`;
+  const { queryName, stationCode } = payload;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getStationDevice}/${stationCode}`;
   try {
 
-    yield put({
-      type: dataAnalysisSequenceAction.changeSquenceStore,
-      payload: {
-        stationCode: payload.stationCode,
-        sequenceData: {},
-        deviceList: [],
-      },
-    });
     const response = yield call(axios.get, url);// { params: payload }
     if (response.data.code === '10000') {
+      yield put({
+        type: dataAnalysisSequenceAction.changeSquenceStore,
+        payload: {
+          stationCode: stationCode,
+          sequenceData: {},
+          deviceList: [],
+        },
+      });
       const data = response.data.data || [];
       const deviceList = data.map((e, i) => ({ ...e, likeStatus: false }));
 
@@ -28,12 +29,12 @@ function* getStationDevice(action) {//获取
           deviceList,
         },
       });
-      yield put({
+      queryName ? yield put({
         type: dataAnalysisSequenceAction.getSequenceName,
         payload: {
           stationCode: payload.stationCode,
         },
-      });
+      }) : '';
     } else {
       throw response.data.message;
     }
@@ -126,18 +127,18 @@ function* getSequenceData(action) {//获取
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
-          ...payload,
+          // ...payload,
           sequenceData: curChartData,
           activeCode: deviceFullCode,
           chartLoading: false,
         },
       });
-      yield put({
-        type: dataAnalysisSequenceAction.changeSquenceStore,
-        payload: {
-          activeCode: deviceFullCode,
-        },
-      });
+      // yield put({
+      //   type: dataAnalysisSequenceAction.changeSquenceStore,
+      //   payload: {
+      //     activeCode: deviceFullCode,
+      //   },
+      // });
     } else {
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
@@ -219,13 +220,13 @@ function* getxyLimitValue(action) {//获取
           xyValueLimit: response.data.data || {},
         },
       });
-      yield put({
-        type: dataAnalysisSequenceAction.getSequenceData,
-        payload: {
-          ...queryDataParams,
+      // yield put({
+      //   type: dataAnalysisSequenceAction.getSequenceData,
+      //   payload: {
+      //     ...queryDataParams,
 
-        },
-      });
+      //   },
+      // });
     } else {
       throw response.data.message;
     }

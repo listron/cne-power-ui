@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './filterCondition.scss';
 import FilterConditionTitle from './FilterConditionTitle';
-import StationFilter from './StationFilter';
+import ParentFilter from './ParentFilter';
 import MultipleSelect from './MultipleSelect';
 import FilteredItems from './FilteredItems';
 import RangeDateFilter from './RangeDateFilter';
 import DateFilter from './DateFilter';
+import RadioSelect from './RadioSelect';
 
 
 class FilterCondition extends Component {
@@ -14,151 +15,45 @@ class FilterCondition extends Component {
     onChange: PropTypes.func,
     value: PropTypes.object,
     option: PropTypes.array,
+    theme: PropTypes.string,
   }
 
 
   /**
    * 
    * @param {*} props 
-   * 1 time 时间  开始时间-结束时间  单独的时间
-   * 2 带分类的 电站类型  缺陷类型  根据分类  
-   * 3 缺陷来源  缺陷级别  设备类型
-   *   
-    rules  label  value   选择框  默认是label  value 
-
-     onChange  回掉函数  你需要什么值 就会返回什么值   根据typeName的返回的值
-     如 {deviceTypeCode:[201,793],stationCodes:[56,350]}
-
-     typeName 必须是唯一的，否则会被替换
-
-
-     disabled: true, 这个功能暂定
-     1  time   
-        rangTime [2019.7.12,2019,9.12]
-        {
-          name:'发生时间'，
-          type:'rangTime',
-          typeName:'rangTimes',
-          belong:'multipleSelect',
-          value:[2019.7.12,2019,9.12] 暂定
-        }
-        startTime:2019.7.12,
-         {
-          name:'开始时间'，
-          type:'startTime',
-          typeName:'startTime',
-          value:2019.7.12
-        }
-        endTime:2019.9.12
-        {
-          name:'结束时间'，
-          type:'endTime',
-          typeName:'enDTimes',
-          value:2019.7.12
-        }
-
-        
-     2  复选框 
-        {
-          name: '设备类型',
-          type: 'checkBox',
-          typeName: 'deviceTypeCode',
-          data: deviceTypes,
-          rules: ['deviceTypeName', 'deviceTypeCode'],
-         },
-
-     3  switch 
-       {
-          name: '我参与的',
-          type: 'switch',
-          typeName: 'jionList', // isMay
-          value:0/1
-         },
-     4  单选框  stationType 
-        {
-          name: '电站类型',  // 目前为止就是这一个
-          type: 'radio',
-          typeName: 'stationType', // 0 1 2 全部  风电 光伏
-          value: 0 1 2
-         },
-
-     5  带父级   电站名称 缺陷类型  这两个都单独写  value  checkedValue 是可以接受的
-          {
-          name: '电站名称',  // 目前为止就是这一个
-          type: 'parentCheckBox',
-          typeName: 'stationCodes', // 0 1 2 全部  风电 光伏
-          rules:[stationName,stationCode]，
-          parentName:'provinceName'
-          data:stations
-          value:[350,360]
-         },
-
+   * 1 theme 主题 light  dark  默认为light
+   * 2 onChange  必填 回掉函数
+   * 3 value 选填 支持两种方式，一种是外界的value值，一种可以不传，使用内部选中的值 {stationCodes:[],stationType:[]} 必须和typeName保持一致
+   * 4 option array  []
+   *   {}
+   *   1 name: 选填 筛选的标题  默认的可以不写，但是新添加的需要自定义
+   *   2 type: 必填 类型  multipleType radioSelect rangeTime time switch parentCheckBox 六种方式
+   *     multipleType 多选类型  内置 defectLevel,defectSource,level,warningStatus
+   *     radioSelect  单选类型  内置 stationType
+   *     rangeTime    连续时间 
+   *     time         时间段  开始时间 结束时间
+   *     switch       开关 我参与的
+   *     parentCheckBox  带有分类的多选框   内置 stationCode
+   *   3  typeName 必填 必须是唯一的 返回的字段
+   *   4  data 传入的数据  multipleType radioSelect parentCheckBox 必填
+   *   5  rules 匹配的规则  rules=[stationName,stationCode]， 默认为label value
+   *   6  disabled 不能选泽 联动的时候使用 true false
+   *   7  parentName 根据什么分组 parentCheckBox 使用 默认为parentName
+   *   注意：要不使用传入的value,要不使用自己内部的机制
    */
 
-  /** 
-   
-    option={[
-            {
-              name: '告警级别',
-              type: 'level',
-              typeName: 'warnLevel',
-              belong: 'multipleSelect',
-            },
-            {
-              name: '缺陷类型',
-              type: 'defectSource',
-              typeName: 'defectSource',
-              belong: 'multipleSelect',
-            },
-            {
-              name: '工单类型',
-              type: 'warningStatus',
-              typeName: 'defectSource',
-              belong: 'multipleSelect',
-            },
-            {
-              name: '电站类型',
-              type: 'stationType',
-              typeName: 'stationType',
-              belong: 'multipleSelect',
-            },
-            {
-              name: '电站名称',
-              type: 'stationName',
-              belong: 'multipleSelect',
-              typeName: 'stationCodes',
-              data: stations,
-            },
-            {
-              name: '设备类型',
-              type: 'deviceType',
-              belong: 'multipleSelect',
-              typeName: 'deviceTypeCode',
-              data: deviceTypes,
-              disabled: true,
-              rules: ['deviceTypeName', 'deviceTypeCode'],
-            },
-            {
-              name: '发生时间',
-              type: 'rangeTime',
-              typeName: 'rangeTime',
-              belong: 'timeSelect',
-            },
-            {
-              name: ' 发生时间',
-              type: 'time',
-              typeName: 'rangeTimes',
-              belong: 'timeSelect',
-            },
-          ]}
-  */
 
 
 
   constructor(props) {
-    super(props); // 这个props.[paramsName] && .... 这个写法有点差啊····反复读取props还做两次计算~
+    super(props);
     this.state = {
       optionItem: [],
+      showFilter: {
+        type: '',
+        typeName: '',
+      },
     };
   }
 
@@ -181,6 +76,7 @@ class FilterCondition extends Component {
     switch (type) {
       case 'defectLevel': result = {
         type: 'defectLevel',
+        name: '缺陷级别',
         data: [
           { label: 'A级', value: 1 },
           { label: 'B级', value: 2 },
@@ -189,6 +85,7 @@ class FilterCondition extends Component {
       }; break;
       case 'defectSource': result = {
         type: 'defectSource',
+        name: '缺陷来源',
         data: [
           { label: '告警', value: 0 },
           { label: '上报', value: 1 },
@@ -198,6 +95,7 @@ class FilterCondition extends Component {
       }; break;
       case 'level': result = {
         type: 'level',
+        name: '级别',
         data: [
           { label: '一级', value: 1 },
           { label: '二级', value: 2 },
@@ -207,6 +105,7 @@ class FilterCondition extends Component {
       }; break;
       case 'warningStatus': result = {
         type: 'warningStatus',
+        name: '告警状态',
         data: [
           { label: '自动解除', value: 0 },
           { label: '手动解除', value: 2 },
@@ -215,7 +114,18 @@ class FilterCondition extends Component {
       }; break;
       case 'stationName': result = {
         type: 'stationName',
+        typeName: 'stationCodes',
         rules: ['stationName', 'stationCode'],
+        parentName: 'provinceName',
+        name: '电站名称',
+      }; break;
+      case 'stationType': result = {
+        type: 'stationType',
+        name: '电站类型',
+        data: [
+          { label: '风电', value: 0 },
+          { label: '光伏', value: 1 },
+        ],
       }; break;
       default: result = {}; break;
     }
@@ -226,49 +136,31 @@ class FilterCondition extends Component {
   changeDataType = (value = {}, option) => { // 切换数据，如果value 变化，或者是data 发生变化
     const { optionItem } = this.state;
     const optionList = [];
+    const singleType = ['radioSelect', 'stationType', 'switch'];
     option.forEach(item => {
-      const currentItem = optionItem.filter(e => e.type === item.type)[0] || {};
-      if (item.belong === 'multipleSelect' || item.belong === 'timeSelect') {
-        item.checkedValue = value[item['typeName']] || [];
-        if (currentItem.checkedValue && currentItem.checkedValue.length > 0) {
-          item.checkedValue = Array.from(new Set([...currentItem.checkedValue, ...value[item['typeName']]]));
+      const currentItem = optionItem.filter(e => e.type === item.type && e.typeName === item.typeName)[0] || {};
+      if (!(singleType.includes(item.type))) {
+        if (value && value[item['typeName']] && Object.getOwnPropertyNames(value).length > 0) {
+          item.checkedValue = value[item['typeName']] || [];
+        } else {
+          item.checkedValue = currentItem.checkedValue;
+        }
+        if (item.disabled) {
+          item.checkedValue = [];
         }
       } else {
+        item.checkedValue = '';
         if (value[item['typeName']]) {
           item.checkedValue = value[item['typeName']];
+        } else {
+          item.checkedValue = currentItem.checkedValue;
         }
-        item.checkedValue = '';
       }
       optionList.push({ ...this.initOption(item.type), ...item });
     });
-    console.log('item', optionList);
+    this.changeShowFilter(optionList);
     this.setState({ optionItem: optionList });
   }
-
-  getDefaultName = (type) => { //匹配
-    let result = '';
-    switch (type) {
-      case 'time': result = '发生时间'; break;
-      case 'stationType': result = '电站类型'; break;
-      case 'stationName': result = '电站名称'; break;
-      case 'deviceType': result = '设备类型'; break;
-      case 'defectLevel': result = '缺陷级别'; break;
-      case 'defectType': result = '缺陷类型'; break;
-      case 'defectSource': result = '缺陷来源'; break;
-      case 'belongMatrixs': result = '所属方阵'; break;
-      case 'alarmLevel': result = '告警级别'; break;
-      case 'warningLevel': result = '预警级别'; break;
-      case 'warningStatus': result = '处理结果'; break;
-      case 'alarmType': result = '告警类型'; break;
-      case 'myJoin': result = '参与的'; break;
-      case 'rangeTime': result = '发生时间'; break;
-      case 'endTime': result = '结束时间'; break;
-      case 'docketType': result = '两票类型'; break;
-      default: result = ''; break;
-    }
-    return result;
-  }
-
 
   outPutData = (optionItem) => {
     const obj = {};
@@ -289,64 +181,71 @@ class FilterCondition extends Component {
 
   onChangeFilter = (value) => { // 改变其中一项的数据
     const { optionItem } = this.state;
-    const { type } = value;
-    optionItem.slice(optionItem.findIndex(e => e.type === type), 1, value);
-    console.log('value', value, optionItem);
+    const { type, typeName } = value;
+    optionItem.slice(optionItem.findIndex(e => (e.type === type && e.typeName === typeName)), 1, value);
     this.outPutData(optionItem);
     this.setState({ optionItem: optionItem });
-
   }
 
   onChangeFilterChecked = (value) => {
     this.outPutData(value.options);
     this.setState({ optionItem: value.options });
+  }
 
+  changeShowFilter = (value) => { //针对disabled 进行调整
+    const { showFilter } = this.state;
+    const { type, typeName } = showFilter;
+    const currentObj = value.filter(e => e.type === type && e.typeName === typeName);
+    if (currentObj.length > 0 && currentObj[0].disabled) {
+      this.setState({ showFilter: { type: '', typeName: '' } });
+    }
   }
 
   render() {
-    const { theme = 'light', option } = this.props;
+    const { theme = 'light' } = this.props;
     const { showFilter, optionItem } = this.state;
-    const stationName = optionItem.filter(e => e.type === 'stationName').length > 0 && optionItem.filter(e => e.type === 'stationName')[0] || {};
-    const deviceType = optionItem.filter(e => e.type === showFilter);
+    const { type } = showFilter;
+    const selectData = optionItem.filter(e => e.type === showFilter.type && e.typeName === showFilter.typeName);
     const rangeTime = optionItem.filter(e => e.type === 'rangeTime');
     const time = optionItem.filter(e => e.type === 'time');
-    console.log('deviceType', deviceType, optionItem);
+    const multipleArray = ['defectLevel', 'defectSource', 'level', 'warningStatus', 'multipleType'];
+    const radioArray = ['stationType', 'radioSelect'];
+    const parentMultipArray = ['stationName', 'parentCheckBox'];
     return (
       <div className={`${styles.filterCondition} ${styles[theme]}`}>
-        <FilterConditionTitle options={optionItem} onChange={this.showFilterChange} />
+        <FilterConditionTitle options={optionItem} onChange={this.showFilterChange} onChangeFilter={this.onChangeFilter} />
         <div className={styles.filterBox}>
-          {showFilter === 'stationName' &&
-            <StationFilter
+          {parentMultipArray.includes(type) && selectData.length > 0 &&
+            <ParentFilter
               onChangeFilter={this.onChangeFilter}
-              option={stationName}
+              option={selectData[0]}
             />
           }
-          {/* {deviceType.length > 0 &&
+          {multipleArray.includes(type) && selectData.length > 0 &&
             <MultipleSelect
               onChangeFilter={this.onChangeFilter}
-              option={deviceType[0]}
+              option={selectData[0]}
             />
-          } */}
-          {/* {
-            rangeTime.length > 0 &&
+          }
+          {type === 'rangeTime' && rangeTime.length > 0 &&
             <RangeDateFilter
               onChangeFilter={this.onChangeFilter}
               option={rangeTime[0]}
             />
-          } */}
-          {
-            time.length > 0 &&
+          }
+          {type === 'time' && time.length > 0 &&
             <DateFilter
               onChangeFilter={this.onChangeFilter}
               option={time[0]}
             />
           }
-
-
-
-
+          {radioArray.includes(type) && selectData.length > 0 &&
+            <RadioSelect
+              onChangeFilter={this.onChangeFilter}
+              option={selectData[0]}
+            />
+          }
         </div>
-        {/* 删选条件 */}
         <FilteredItems options={optionItem} onChangeFilterChecked={this.onChangeFilterChecked} />
       </div>
     );

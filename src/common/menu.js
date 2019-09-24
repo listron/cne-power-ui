@@ -226,6 +226,11 @@ const menuData = [
         path: 'intelligentExpert',
         iconStyle: 'icon-gd4',
         rightKey: 'operation_experience',
+      }, {
+        name: '案例集',
+        path: 'caseSet',
+        iconStyle: 'icon-gd4',
+        rightKey: 'operation_case',
       },
     ],
   },
@@ -332,6 +337,11 @@ const menuData = [
             path: 'sequence',
             rightKey: 'analysis_dataTool_sequence',
           },
+          {
+            name: '风资源',
+            path: 'resources',
+            rightKey: 'analysis_dataTool_sequence',
+          },
           // {
           //   name: '统计图',
           //   path: 'histogram',
@@ -389,13 +399,12 @@ const menuData = [
             name: '清洗预警',
             path: 'warning',
             // defaultPath: true,
-            rightKey: 'monitor',
             defaultPath: true,
-            // rightKey: 'analysis_cleanModel',
+            rightKey: 'analysis_cleanModel_pending',
           }, {
             name: '清洗计划与记录',
             path: 'record',
-            rightKey: 'analysis_cleanModel',
+            rightKey: 'analysis_cleanModel_planRecord',
           },
         ],
       },
@@ -408,19 +417,19 @@ const menuData = [
           {
             name: '待处理预警',
             path: 'unhandle',
-            rightKey: 'analysis_inefficientDetect',
+            rightKey: 'analysis_inefficientDetect_pending',
           }, {
             name: '已忽略',
             path: 'ignore',
-            rightKey: 'analysis_inefficientDetect',
+            rightKey: 'analysis_inefficientDetect_remove',
           }, {
             name: '已转工单',
             path: 'transfer',
-            rightKey: 'analysis_inefficientDetect',
+            rightKey: 'analysis_inefficientDetect_worklist',
           }, {
             name: '历史预警',
             path: 'history',
-            rightKey: 'analysis_inefficientDetect',
+            rightKey: 'analysis_inefficientDetect_history',
           },
         ],
       },
@@ -472,6 +481,7 @@ const menuData = [
           {
             name: '集团绩效分析',
             path: 'analysis/group',
+            defaultPath: true,
             rightKey: 'analysis_windPower_groupPerformance',
           }, {
             name: '区域绩效分析',
@@ -489,6 +499,10 @@ const menuData = [
             name: '停机状态分析',
             path: 'analysis/stop',
             rightKey: 'analysis_windPower_stopStatus',
+          }, {
+            name: '执行机构分析',
+            path: 'analysis/actuator',
+            rightKey: 'analysis_windPower_running',
           },
         ],
       },

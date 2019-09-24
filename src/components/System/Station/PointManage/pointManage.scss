@@ -1,50 +1,157 @@
-
 @import '../../../../theme/theme.scss';
 
-.pointManageSearch{ // 条件查询
+.pointManageSearch {
+  // 条件查询
   display: flex;
-  align-items: center;
-  height: 71px;
-  line-height: 40px;
-  border-bottom: solid 1px $promptColor;
-  .titleText{
-    color: $darkColor;
-    margin-left: 28px;
-    margin-right: 12px;
+  flex-direction: column;
+  // height: 141px;
+
+  .topSearch,
+  .bottomSeach {
+    display: flex;
+    align-items: center;
+    height: 70px;
+    line-height: 40px;
+
+
+    .titleText {
+      color: $darkColor;
+      margin-left: 28px;
+      margin-right: 12px;
+    }
+
+    .typeSelect,
+    .modelSelect {
+      width: 198px;
+    }
+
+    .typeSelect {
+      margin: 0 12px;
+    }
   }
-  .typeSelect,.modelSelect{
-    width: 198px;
+
+  .bottomSeach {
+    height: 50px;
+    align-items: top;
+    padding-bottom: 15px;
+
+
+    .searchInput {
+      width: 198px;
+    }
+
+    .searchBtn {
+      margin: 0 28px;
+    }
+
+    .reset {
+      color: $themeColor;
+      cursor: pointer;
+    }
+
+    border-bottom: solid 1px $promptColor;
   }
-  .typeSelect{
-    margin: 0 12px;
-  }
+
 }
 
-.pointManageHandle{ // 导出设备， 翻页器
-  display:flex;
+.pointManageHandle {
+  // 导出设备， 翻页器
+
+  display: flex;
   justify-content: space-between;
   height: 72px;
   align-items: center;
   padding-left: 28px;
-  .leftHandler{
+
+  .leftHandler {
     display: flex;
-    .importInfo{
+
+    .addButton {
+      padding: 0;
+      display: flex;
+      align-items: center;
+
+      .plus {
+        background-color: $themeColor;
+        color: #fff;
+        border-radius: 2px 0 0 2px;
+        line-height: 30px;
+        width: 28px;
+        font-size: 18px;
+      }
+
+      .name {
+        border-radius: 0 2px 2px 0;
+        color: $themeColor;
+        padding: 0 5px;
+        // width: 40px;
+        line-height: 30px;
+      }
+
+      &:hover {
+        .name {
+          color: #fff;
+          background-color: $themeColor;
+        }
+      }
+    }
+
+    .importInfo {
       margin-left: 36px;
     }
-    .exportInfo{
+
+    .intoInfo,
+    .downloadStyle {
+      margin-left: 12px;
+    }
+
+    .exportInfo {
       margin: 0 12px;
     }
-    .clearPoint{
 
-    }
+
+    .clearPoint {}
   }
 }
 
-.pointManageList{ // 测点表格区
+.pointManageList {
+  @mixin textOverflow() {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: keep-all;
+    cursor: pointer;
+
+
+  }
+
+  .pointCodeStyle {
+    width: 200px;
+    color: $themeColor;
+    @include textOverflow();
+  }
+
+  .descStyle {
+    width: 200px;
+    @include textOverflow();
+
+  }
+
+
+  // 测点表格区
+  .editPoint {
+    margin: 0 8px;
+    cursor: pointer;
+    color: #199475;
+  }
+
+
+
   border-top: 1px solid $promptColor;
-  :global{
-    .ant-table{
-      .ant-table-placeholder{
+
+  :global {
+    .ant-table {
+      .ant-table-placeholder {
         border-bottom: none;
       }
     }

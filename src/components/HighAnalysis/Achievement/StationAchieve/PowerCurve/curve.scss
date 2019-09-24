@@ -19,6 +19,17 @@
       display: flex;
       flex: 1;
     }
+    .leftCurve .curveTip, .indicatorDetails .curveTip{
+      display: inline-block;
+      border-radius: 50%;
+      width: 12px;
+      height: 12px;
+      margin-left: 4px;
+      cursor: pointer;
+      font-size: 10px;
+      line-height: 12px;
+      text-align: center;
+    }
     .leftCurve{
       flex-basis: calc(50% - 170px);
       display: flex;
@@ -29,17 +40,6 @@
         padding-left: 24px;
         margin-bottom: 0;
         font-weight: 600;
-      }
-      .curveTip{
-        display: inline-block;
-        border-radius: 50%;
-        width: 12px;
-        height: 12px;
-        margin-left: 4px;
-        cursor: pointer;
-        font-size: 10px;
-        line-height: 12px;
-        text-align: center;
       }
       .totalChart{
         width: 100%;
@@ -198,12 +198,12 @@
         color: #000;
       }
     }
+    .content{
+      background-color: #fff;
+    }
     .curveTip{
       color: #fff;
       background:#f9b600;
-    }
-    .content{
-      background-color: #fff;
     }
   }
   .timeSelector{
@@ -212,7 +212,7 @@
     .timeTitle{
       color: #666;
     }
-    .monthList::-webkit-scrollbar-thumb, .curveAllDevice::-webkit-scrollbar-thumb {
+    .monthList::-webkit-scrollbar-thumb, .deviceList::-webkit-scrollbar-thumb {
       background: rgba(0, 0, 0, 0.5);
     }
   }
