@@ -40,7 +40,7 @@ class FilteredItems extends Component {
   render() {
     const { options = [] } = this.props;
     const notMultipleSelect = ['radioSelect', 'stationType', 'switch', 'rangeTime', 'time'];
-    const multipleSelect = options.filter(item => !notMultipleSelect.includes(item.type) && item.checkedValue.length > 0);
+    const multipleSelect = options.filter(item => !notMultipleSelect.includes(item.type) && item.checkedValue && item.checkedValue.length > 0);
     const rangeTime = options.filter(item => item.type === 'rangeTime' && item.checkedValue.filter(e => !!e).length > 0);
     const time = options.filter(item => item.type === 'time' && item.checkedValue.filter(e => !!e).length > 0);
     const radioSelectType = ['stationType', 'radioSelect'];
