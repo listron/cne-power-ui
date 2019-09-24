@@ -6,12 +6,12 @@ import styles from './point.scss';
 class PointChart extends PureComponent{
   static propTypes = {
     pointsLoading: PropTypes.bool,
-    histogramList: PropTypes.string,
+    histogramList: PropTypes.array,
   }
 
   componentDidMount(){
     const { histogramList } = this.props;
-    histogramList.length > 0 && this.drawChart(histogramList);
+    histogramList && histogramList.length > 0 && this.drawChart(histogramList);
   }
 
   componentWillReceiveProps(nextProps){
