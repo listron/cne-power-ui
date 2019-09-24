@@ -141,7 +141,7 @@ class HistoryWarnCon extends Component {
         key: 'deviceName',
         render: text => text ? text : '--',
       }, {
-        title: '发生时间',
+        title: '预警时间',
         dataIndex: 'happenTime',
         key: 'happenTime',
         sorter: true,
@@ -175,7 +175,7 @@ class HistoryWarnCon extends Component {
           onChange={this.filterCondition}
           option={[
             {
-              name: ' 发生时间',
+              name: '预警时间',
               type: 'time',
               typeName: 'rangeTimes',
             },
