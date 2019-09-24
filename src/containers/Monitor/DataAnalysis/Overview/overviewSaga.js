@@ -8,11 +8,6 @@ import { overviewAction } from './overviewReducer';
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
 
-const dateType = {
-  day: 1,
-  month: 2,
-};
-
 function* easyPut(actionName, payload){
   yield put({
     type: overviewAction[actionName],
@@ -108,31 +103,31 @@ function *getOverviewDevices({ payload }){ // 获取所有设备数据信息
     });
     const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
-      const mockData = {
-        total: 0.1247, // null
-        deviceData: [12, 13, 14, 15, 16, 17, 18, 23, 22, 45, 88, 90, 91, 92, 93, 71, 73, 72, 74, 75, 78, 63, 62, 64, 65, 68].map(e => ({
-          deviceFullcode: `M${e}M${e * e}M101`,
-          deviceName: `mock数据设备${e}`,
-          completeRate: e * e,
-          realCount: e * e + e,
-          key: `M${e}M${e * e}M101`,
-          pointData: ['TR002', 'TR003', 'TR017'].map(p => ({
-            pointCode: p,
-            pointName: p,
-            validCount: parseInt(e * Math.random() * 100, 10),
-            invalidCount: parseInt(e * Math.random() * 100, 10),
-            lostCount: parseInt(e * Math.random() * 100, 10),
-          })),
-        })),
-      };
+      // const mockData = {
+      //   total: 0.1247, // null
+      //   deviceData: [12, 13, 14, 15, 16, 17, 18, 23, 22, 45, 88, 90, 91, 92, 93, 71, 73, 72, 74, 75, 78, 63, 62, 64, 65, 68].map(e => ({
+      //     deviceFullcode: `M${e}M${e * e}M101`,
+      //     deviceName: `mock数据设备${e}`,
+      //     completeRate: e * e,
+      //     realCount: e * e + e,
+      //     key: `M${e}M${e * e}M101`,
+      //     pointData: ['TR002', 'TR003', 'TR017'].map(p => ({
+      //       pointCode: p,
+      //       pointName: p,
+      //       validCount: parseInt(e * Math.random() * 100, 10),
+      //       invalidCount: parseInt(e * Math.random() * 100, 10),
+      //       lostCount: parseInt(e * Math.random() * 100, 10),
+      //     })),
+      //   })),
+      // };
       const { total = 0, deviceData = []} = response.data || {};
       yield call(easyPut, 'fetchSuccess', {
-        devicesData: mockData,
+        // devicesData: mockData,
         deveiceLoading: false,
-        // devicesData: {
-        //   total,
-        //   deviceData: deviceData.map(e => ({ ...e, key: e.deviceFullcode })),
-        // }
+        devicesData: {
+          total,
+          deviceData: deviceData.map(e => ({ ...e, key: e.deviceFullcode })),
+        }
       });
     } else { throw response; }
   } catch (error) {

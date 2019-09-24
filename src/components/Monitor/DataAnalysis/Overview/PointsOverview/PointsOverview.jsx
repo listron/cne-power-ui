@@ -1,6 +1,3 @@
-
-
-
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -23,9 +20,6 @@ class PointsOverview extends PureComponent{
     pointUnix: PropTypes.number,
     pointParam: PropTypes.object,
     pointsCheckedList: PropTypes.array,
-    // devicesData: PropTypes.object,
-    // deveiceLoading: PropTypes.bool,
-    // deviceCheckedList: PropTypes.array,
     changeOverviewStore: PropTypes.func,
     getOverviewStation: PropTypes.func,
     getConnectedDevices: PropTypes.func,

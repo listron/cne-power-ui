@@ -37,8 +37,8 @@ class HearderTab extends Component{
     });
     const newSearch = searchUtil(search).replace({
       tab: newTab,
-      pages: newPages,
-    }).stringify();
+      pages: newPages.join('_'),
+    }).delete([value]).stringify();
     history.push(`/monitor/data/overview?${newSearch}`);
   }
 
