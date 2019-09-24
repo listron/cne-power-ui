@@ -493,6 +493,7 @@ export default {
       getSingleStationYearPvCompare: '/v3/performance/comprehensive/light/year',
       getSingleStationPowerEffective:
         '/v3/performance/comprehensive/efficiencygen',
+      exportAllstationTableData: '/v3/performance/comprehensive/statistics/export',
       // 电站对比
       getStationContrast: '/v3/performance/stationcontrast',
       getStationContrastDetail: '/v3/performance/stationcontrast/list',
