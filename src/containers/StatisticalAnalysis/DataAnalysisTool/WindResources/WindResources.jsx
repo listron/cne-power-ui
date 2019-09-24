@@ -51,8 +51,10 @@ const mapDispatchToProps = (dispatch) => ({
   changeWindResourcesStore: payload => dispatch({ type: windResourcesAction.changeWindResourcesStore, payload }),
   resetStore: payload => dispatch({ type: windResourcesAction.resetStore, payload }),
   getFrequency: payload => dispatch({ type: windResourcesAction.getFrequency, payload }),
+  getDirections: payload => dispatch({ type: windResourcesAction.getDirections, payload }),
   getStationDevice: payload => dispatch({ type: windResourcesAction.getStationDevice, payload }),
   getBigFrequency: payload => dispatch({ type: windResourcesAction.getBigFrequency, payload }),
+  getBigDirections: payload => dispatch({ type: windResourcesAction.getBigDirections, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WindResources);
