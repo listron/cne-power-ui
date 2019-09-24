@@ -41,9 +41,10 @@ class PointChart extends PureComponent{
     const option = {
       grid: {
         top: 20,
-        bottom: 50,
-        left: 50,
-        right: 0,
+        bottom: 20,
+        left: 30,
+        right: 5,
+        // containLabel: true,
       },
       xAxis: {
         data: dataAxis,
@@ -101,7 +102,10 @@ class PointChart extends PureComponent{
         barWidth: '8px',
         cursor: 'default',
         itemStyle: {
-          color: '#199475',
+          color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
+            {offset: 0, color: '#1cfcf4' },
+            {offset: 1, color: '#009cff' },
+          ]),
         },
         data: rateData,
       }],
