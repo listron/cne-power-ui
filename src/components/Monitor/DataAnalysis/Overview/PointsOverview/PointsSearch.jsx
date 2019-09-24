@@ -21,15 +21,13 @@ class PointsSearch extends PureComponent{
     this.props.deviceChanged(deviceCode);
   }
 
-  pointsCheck = (points) => {
-    console.log(points);
-    this.props.pointsChanged(points);
+  pointsCheck = (points = []) => {
+    this.props.pointsChanged(points.map(e => e.value));
   }
 
   render(){
     const { pointConnectedDevices, pointList, pointsCheckedList, pointParam } = this.props;
     const { deviceFullcode } = pointParam;
-    console.log(pointList)
     return(
       <div className={styles.middleSearch}>
         <span className={styles.deviceText}>设备名称</span>

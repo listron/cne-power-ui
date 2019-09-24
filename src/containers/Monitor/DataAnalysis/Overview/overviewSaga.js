@@ -60,7 +60,6 @@ function *afterDeviceTypePointGet({ payload }) { // 设备页 获得测点数据
   const { deviceParam = {} } = yield select(state => state.monitor.overview.toJS());
   const pointCodes = [];
   const tmpList = [];
-  console.log('is here bye after   DEVICES WRONG')
   devicePointsList.forEach(e => {
     const { devicePointStandardCode, devicePointName } = e;
     pointCodes.push(devicePointStandardCode);
@@ -84,7 +83,6 @@ function *afterPointPagePointsGet({ payload }){ // 测点页 获得测点数据�
   const { deviceFullcode } = pointParam;
   const pointCodes = [];
   const tmpList = [];
-  console.log('is here bye afterpoints')
   pointPageList.forEach(e => {
     const { devicePointStandardCode, devicePointName } = e;
     pointCodes.push(devicePointStandardCode);

@@ -8,7 +8,7 @@ import { Radio, DatePicker } from 'antd';
 import styles from './point.scss';
 import CommonSearch from '../CommonSearch';
 import PointsSearch from './PointsSearch';
-// import DeviceTable from './DeviceTable';
+import PointsList from './PointsList';
 import searchUtil from '@utils/searchUtil';
 const { MonthPicker } = DatePicker;
 
@@ -217,8 +217,6 @@ class PointsOverview extends PureComponent{
   }
 
   pointsChanged = (pointCodes) => { // 测点选择
-    console.log(pointCodes)
-    return;
     const { pointParam } = this.props;
     this.props.changeOverviewStore({ pointsCheckedList: pointCodes });
     this.props.getOverviewPoints({
@@ -265,7 +263,7 @@ class PointsOverview extends PureComponent{
           deviceChanged={this.deviceChanged}
           pointsChanged={this.pointsChanged}
         />
-        {/* <PointsList {...this.props} /> */}
+        <PointsList {...this.props} />
       </div>
     );
   }
