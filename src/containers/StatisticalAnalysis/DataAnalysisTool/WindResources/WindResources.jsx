@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { windResourcesAction } from './windResourcesAction.js';
 import AllStations from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/AllStations.jsx';
-import HandleSeach from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/HandleSeach.jsx';
+import HandleSearch from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/HandleSearch.jsx';
 import ResourcesTabs from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/ResourcesTabs.jsx';
 import Footer from '../../../../components/Common/Footer';
 import styles from './windResources.scss';
@@ -29,7 +29,7 @@ class WindResources extends Component{
         <div className={styles.resourcesMain}>
           {showPage === 'allStation' && <AllStations {...this.props} />}
           {showPage === 'singleStation' && [
-            <HandleSeach key="HandleSearch" {...this.props} />,
+            <HandleSearch key="HandleSearch" {...this.props} />,
             <ResourcesTabs key="ResourcesTabs" {...this.props} />,
             ]}
         </div>
