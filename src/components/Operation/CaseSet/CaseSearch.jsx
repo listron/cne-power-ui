@@ -93,6 +93,7 @@ class CaseSearch extends React.Component {
 
   render() {
     const { stations, deviceModeData, questionTypeList, userData, faultDescription, userName, userId } = this.props;
+    const stationsData = stations ? stations.filter(e => (e.stationType === 0)) : [];
     const showResetBtn = faultDescription || userName;
     return (
       <div className={styles.caseSearch}>
@@ -107,7 +108,6 @@ class CaseSearch extends React.Component {
               rules: ['deviceModeName', 'deviceModeCode'],
               data: deviceModeData,
               parentName: 'manufactorName',
-              // data: stations,
             },
             {
               name: '问题类别',
@@ -115,14 +115,13 @@ class CaseSearch extends React.Component {
               typeName: 'questionTypeCodes',
               rules: ['questionTypeName', 'questionTypeCode'],
               data: questionTypeList,
-              // data: stations,
             },
             {
               name: '风场',
               type: 'multipleType',
               typeName: 'stationCodes',
               rules: ['stationName', 'stationCode'],
-              data: stations.filter((e) => (e.stationType === 0)),
+              data: stationsData,
             },
 
           ]}
