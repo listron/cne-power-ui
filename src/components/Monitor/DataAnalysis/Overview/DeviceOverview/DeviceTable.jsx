@@ -16,6 +16,7 @@ class DeviceTable extends PureComponent{
     devicePointsList: PropTypes.array,
     deviceCheckedList: PropTypes.array,
     changeOverviewStore: PropTypes.func,
+    getConnectedDevices: PropTypes.func,
   }
 
   state = {
@@ -66,7 +67,8 @@ class DeviceTable extends PureComponent{
   checkDevice = ({ target = {} }) => {
     const { code } = target.dataset || {};
     if (code) {
-      const { history, deviceTopData, deviceParam, devicePointsList } = this.props;
+      const { history, deviceTopData, deviceParam, devicePointsList, deviceCheckedList } = this.props;
+      const { stationCode, deviceTypeCode } = deviceParam;
       const { pathname, search } = history.location;
       const { pages = '' } = searchUtil(search).parse();
       const allPages = pages.split('_').filter(e => !!e); // 开启的tab页面
@@ -81,6 +83,12 @@ class DeviceTable extends PureComponent{
         pointTopData: deviceTopData,
         pointParam, // 请求参数保存
         pointList: devicePointsList,
+        pointsCheckedList: deviceCheckedList,
+      });
+      this.props.getConnectedDevices({ // 电站,设备类型下可用的设备列表
+        stationCode,
+        deviceTypeCode,
+        isConnected: 1,
       });
       const newSearch = searchUtil(search).replace({ // 路径 替换/添加 device信息
         point: JSON.stringify(pointParam),

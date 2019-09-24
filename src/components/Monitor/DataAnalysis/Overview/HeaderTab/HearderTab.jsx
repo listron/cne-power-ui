@@ -31,9 +31,30 @@ class HearderTab extends Component{
     const { search } = history.location;
     const newPages = pages.filter(e => e !== value);
     const newTab = value === tab ? newPages[newPages.length - 1] : tab; // 关闭当前页, tab变化
+    const clearData = {// 需要清空关闭页的相关数据
+      device: {
+        deviceParam: {},
+        deviceCheckedList: [],
+        devicesData: {}, // 各设备信息
+        deviceTopData: {}, // 设备页顶部信息
+        devicePointsList: [], // 设备页测点列表
+        deviceUnix: null, // 电站页请求时间
+      },
+      point: {
+        pointParam: {}, // stationCode, deviceTypeCode, deviceFullcode, dateType, date => 会转为字符串写入search的point
+        pointsCheckedList: [], // 测点页选中的测点
+        pointsData: [], // 各测点信息列表
+        pointTopData: {}, // 测点页顶部信息
+        pointConnectedDevices: [], // 测点页可用测点列表
+        pointList: [], // 测点页测点列表
+        deviceListUnix: null, // 测点页设备列表获取的时间
+        pointUnix: null, // 电站页请求时间
+      },
+    };
     this.props.changeOverviewStore({
       tab: newTab,
       pages: newPages,
+      ...clearData[value],
     });
     const newSearch = searchUtil(search).replace({
       tab: newTab,

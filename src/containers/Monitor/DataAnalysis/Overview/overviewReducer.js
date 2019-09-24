@@ -33,6 +33,7 @@ const initState = immutable.fromJS({
   devicePointsList: [], // 设备页测点列表
   deviceUnix: null, // 电站页请求时间
 
+  pointsLoading: false, // 所有测点详情请求loading
   pointsData: [], // 各测点信息列表
   pointTopData: {}, // 测点页顶部信息
   pointConnectedDevices: [], // 测点页可用测点列表
