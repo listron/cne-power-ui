@@ -13,7 +13,8 @@ function* getDeviceMode(action) { // 获取机型
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-      const modesInfo = response.data && (response.data.data).map(e => ({
+      const data = response.data.data || [];
+      const modesInfo = data.map(e => ({
         value: parseInt(e.manufactorId, 0),
         label: e.manufactorName,
         children: (e.deviceModesList && e.deviceModesList.length > 0) ? e.deviceModesList.map(m => ({
@@ -22,7 +23,7 @@ function* getDeviceMode(action) { // 获取机型
         })) : [],
       }));
       const deviceModeData = [];
-      response.data && (response.data.data).forEach((e) => {
+      data.forEach((e) => {
         e.deviceModesList.forEach((item, i) => {
           deviceModeData.push({ ...item, ...e, deviceModeCode: `${e.manufactorId}-${item.deviceModeCode}` });
         });

@@ -51,13 +51,12 @@ class AddNextStep extends React.Component {
   }
   editsubmitForm = (e) => {
     const { pointDetail } = this.props;
-    console.log('pointDetail: ', pointDetail);
+    const { devicePointId } = pointDetail;
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
-      console.log('values: ', values);
       if (!err) {
         //发送请求
-        this.props.editPoints({ ...values });
+        this.props.editPoints({ devicePointId, ...values });
       }
     });
   }

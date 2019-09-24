@@ -182,6 +182,7 @@ function* addPoint(action) {
       });
 
     } else {
+      message.error(response.data.message);
       throw response.data;
     }
   } catch (e) {
@@ -292,6 +293,7 @@ function* editPoints(action) { // 测点编辑
         payload: params,
       });
     } else {
+      message.error(response.data.message);
       throw response.data;
     }
   } catch (e) {
