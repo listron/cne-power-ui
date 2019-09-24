@@ -146,15 +146,20 @@ function *getOverviewDevices({ payload }){ // 获取所有设备数据信息
 function *getOverviewPoints({ payload }){ // 获取各测点详情
   const url = `${APIBasePath}${monitor.getOverviewPoints}`;
   try {
+    yield call(easyPut, 'changeStore', {
+      pointsLoading: true,
+    });
     const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         pointsData: response.data || [],
+        pointsLoading: false,
       });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
       pointsData: [],
+      pointsLoading: false,
     });
   }
 }

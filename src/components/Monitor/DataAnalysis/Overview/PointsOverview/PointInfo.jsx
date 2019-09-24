@@ -10,7 +10,7 @@ const BaseInfo = ({ pointType, pointName, theoryCount, validCount, invalidCount,
         <span>{pointType}</span>
         <span>{pointName}</span>
       </h3>
-      <div>
+      <div className={styles.baseBox}>
         <div className={styles.baseRate}>
           <span style={{flexBasis: `${validCount / theoryCount * 100}%`}} className={styles.valid}></span>
           <span style={{flexBasis: `${invalidCount / theoryCount * 100}%`}} className={styles.invalid}></span>

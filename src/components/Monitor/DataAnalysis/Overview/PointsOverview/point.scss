@@ -37,6 +37,7 @@
   overflow-x: auto;
   display: flex;
   flex-wrap: nowrap;
+  padding: 0 24px;
   .pointColumn{
     flex: 0 0 277px;
     margin-right: 20px;
@@ -49,6 +50,7 @@
       margin-bottom: 6px;
       display: flex;
       align-items: center;
+      padding: 0 8px;
     }
     .baseRate{
       display: flex;
@@ -57,27 +59,55 @@
         flex: 0 0 auto;
       }
     }
+    .baseBox{
+      margin-bottom: 12px;
+    }
     .baseDetail{
       display: flex;
+      padding: 0 8px;
       justify-content: space-between;
+    }
+  }
+  .histogramChart{
+    height: 160px;
+    h3{
+      padding-left: 24px;
+      height: 30px;
+      margin-bottom: 0px;
+    }
+    .chart{
+      height: 130px;
+      width: 277px;
     }
   }
   .valueInfo{
     .valuePart{
       display: flex;
       flex-direction: column;
-      
     }
     .eachIndicate{
       display: flex;
+      padding: 0 8px;
       justify-content: space-between;
     }
   }
 }
-
-
-
-
+.tooltip{
+  min-width: 160px;
+  .title, .info{
+    padding: 0 8px;
+    margin-bottom: 0;
+    line-height: 21px;
+  }
+  .info{
+    display: flex;
+    height: 36px;
+    align-items: center;
+  }
+  .infoText{
+    margin-right: 16px;
+  }
+}
 
 .topSearch .dateCheck{
   background-color: #fff;
@@ -109,13 +139,32 @@
         background:#dfdfdf;
       }
     }
+    .baseBox{
+      border: 1px solid #dfdfdf;
+    }
     // .baseDetail{
 
     // }
   }
-  // .valueInfo{
-  //   .valuePart{
-      
-  //   }
-  // }
+  .histogramChart{
+    h3{
+      color: #000;
+    }
+  }
+  .valueInfo{
+    border: 1px solid #dfdfdf;
+    border-bottom: none;
+    .valuePart{
+      border-bottom: 1px solid #dfdfdf;
+    }
+  }
+}
+.tooltip{ // chart提示
+  background-color: #fff;
+  color: #666;
+  box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
+  .title{
+    color: #666;
+    border-bottom: 1px solid #dfdfdf;
+  }
 }
