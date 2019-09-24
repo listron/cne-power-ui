@@ -8,12 +8,13 @@ import ShowIntelligent from './ShowIntelligent';
 class IntelligentSide extends Component {
   static propTypes = {
     showPage: PropTypes.string,
+    theme: PropTypes.string,
   }
 
   render() {
-    const { showPage } = this.props;
+    const { showPage, theme } = this.props;
     return (
-      <div className={styles.intelligentSide}>
+      <div className={`${styles.intelligentSide} ${styles[theme]}`} >
         {showPage === 'add' && <AddIntelligent {...this.props} />}
         {showPage === 'edit' && <EditIntelligent {...this.props} />}
         {showPage === 'detail' && <ShowIntelligent {...this.props} />}
