@@ -51,7 +51,6 @@ class StationStatisticList extends React.Component {
       dateType,
       sort,
       sortType,
-      stationType,
     };
     getAllStationStatisticTableData(prams);
     this.props.changeAllStationStore({ sort, sortType });
@@ -315,7 +314,6 @@ class StationStatisticList extends React.Component {
   }
   //导出table
   exportTable = () => {
-    console.log('2111');
     const { stationType, year, month, powerSelectYear, dateType, pageSize, pageNum, sort, sortType } = this.props;
     const prams = {
       pageNum,
