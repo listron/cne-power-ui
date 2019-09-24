@@ -7,7 +7,7 @@ import moment from 'moment';
 import { Radio, DatePicker } from 'antd';
 import styles from './point.scss';
 import CommonSearch from '../CommonSearch';
-// import DeviceRateChart from './DeviceRateChart';
+import PointsSearch from './PointsSearch';
 // import DeviceTable from './DeviceTable';
 import searchUtil from '@utils/searchUtil';
 const { MonthPicker } = DatePicker;
@@ -48,7 +48,7 @@ class PointsOverview extends PureComponent{
     if (stationCode && paramChange) { // 路径新参数, 与之前不同 => F5或电站页带路径跳转
       const { deviceTypes = [] } = pointTopData || {};
       this.props.changeOverviewStore({ // 存储最新参数
-        deviceParam: { stationCode, deviceTypeCode, dateType, date, deviceFullcode },
+        pointParam: { stationCode, deviceTypeCode, dateType, date, deviceFullcode },
       });
       deviceTypes.length === 0 && this.props.getOverviewStation({ // 无电站信息 => 请求;
         stationCode,
@@ -63,7 +63,7 @@ class PointsOverview extends PureComponent{
         params: {
           stationCode, deviceTypeCode, pointTypes: 'YC,YM',
         },
-        actionName: 'afterDeviceTypePointGet',
+        actionName: 'afterPointPagePointsGet',
         resultName: 'pointPageList',
       });
     }
@@ -118,7 +118,7 @@ class PointsOverview extends PureComponent{
       params: {
         stationCode, deviceTypeCode, pointTypes: 'YC,YM',
       },
-      actionName: 'afterDeviceTypePointGet',
+      actionName: 'afterPointPagePointsGet',
       resultName: 'pointPageList',
     });
   }
@@ -135,16 +135,19 @@ class PointsOverview extends PureComponent{
   }
 
   dateTypeCheck = ({ target }) => { // 日期模式改变 => 按照默认时间 + 日期类型进行选中
-  //   const { deviceParam, deviceCheckedList } = this.props;
-  //   const { value } = target;
-  //   const date = moment().subtract(1, 'd').format(value === 2 ? 'YYYY-MM' : 'YYYY-MM-DD'); // 2按月, 1按日
-  //   const newParams = { ...deviceParam, dateType: value, date };
-  //   this.props.changeOverviewStore({
-  //     deviceParam: newParams,
-  //     devicesData: {}, // 清空设备信息
-  //   });
-  //   this.props.getOverviewDevices({ ...newParams, pointCodes: deviceCheckedList }); // 请求测点数据
-  //   this.historySearchChange(newParams);
+    const { pointParam, pointsCheckedList } = this.props;
+    const { value } = target;
+    const date = moment().subtract(1, 'd').format(value === 2 ? 'YYYY-MM' : 'YYYY-MM-DD'); // 2按月, 1按日
+    const newParams = { ...pointParam, dateType: value, date };
+    this.props.changeOverviewStore({
+      pointParam: newParams,
+      pointsData: [], // 清空设备信息
+    });
+    this.props.getOverviewPoints({
+      ...newParams,
+      pointCodes: pointsCheckedList,
+    }); // 请求测点数据
+    this.historySearchChange(newParams);
   }
 
   monthCheck = (month, monthStr) => this.datesChange(monthStr); // 换月
@@ -152,56 +155,76 @@ class PointsOverview extends PureComponent{
   dayCheck = (day, dayStr) => this.datesChange(dayStr); // 换日
 
   datesChange = (date) => { // 日期改变
-  //   const { deviceParam, deviceCheckedList } = this.props;
-  //   const newParams = { ...deviceParam, date };
-  //   this.props.changeOverviewStore({
-  //     deviceParam: newParams,
-  //     devicesData: {}, // 清空设备信息
-  //   });
-  //   this.props.getOverviewDevices({ ...newParams, pointCodes: deviceCheckedList }); // 请求测点数据
-  //   this.historySearchChange(newParams);
+    const { pointParam, pointsCheckedList } = this.props;
+    const newParams = { ...pointParam, date };
+    this.props.changeOverviewStore({
+      pointParam: newParams,
+      pointsData: [], // 清空测点信息
+    });
+    this.props.getOverviewPoints({
+      ...newParams,
+      pointCodes: pointsCheckedList,
+    }); // 请求测点数据
+    this.historySearchChange(newParams);
   }
 
   stationChanged = ({ stationCode }) => { // 电站切换 => 请求电站信息
-    console.log(stationCode)
     const { deviceAuto } = this.state;
     !deviceAuto && this.setState({ deviceAuto: true });
-  //   const { deviceParam } = this.props;
-  //   const newParam = {
-  //     ...deviceParam,
-  //     stationCode,
-  //     deviceTypeCode: null, // 取消设备类型选择
-  //   };
-  //   this.props.changeOverviewStore({
-  //     deviceParam: newParam,
-  //     devicesData: {}, // 清空设备信息
-  //     devicePointsList: [], // 清空测点列表
-  //   });
-  //   this.props.getOverviewStation({
-  //     stationCode,
-  //     pageKey: 'device',
-  //   });
+    const { pointParam } = this.props;
+    const newParam = {
+      ...pointParam,
+      stationCode,
+      deviceTypeCode: null, // 取消设备类型选择
+    };
+    this.props.changeOverviewStore({
+      pointParam: newParam,
+      pointsData: [], // 清空设备信息
+      pointsCheckedList: [],
+      pointList: [],
+      pointConnectedDevices: [],
+    });
+    this.props.getOverviewStation({
+      stationCode,
+      pageKey: 'point',
+    });
   }
 
   deviceTypeChanged = (deviceTypeCode) => { // 设备类型切换 => 请求测点列表
-    console.log(deviceTypeCode)
+    const { deviceAuto } = this.state;
     !deviceAuto && this.setState({ deviceAuto: true });
-  //   const { deviceParam } = this.props;
-  //   const { stationCode } = deviceParam;
-  //   const newParams = { ...deviceParam, deviceTypeCode };
-  //   this.props.changeOverviewStore({
-  //     deviceParam: newParams,
-  //     devicesData: {}, // 清空设备信息
-  //     devicePointsList: [], // 清空测点列表
-  //   });
-  //   this.props.getPoints({ // 请求新的测点列表 
-  //     params: {
-  //       stationCode, deviceTypeCode, pointTypes: 'YC,YM',
-  //     },
-  //     actionName: 'afterDeviceTypePointGet',
-  //     resultName: 'devicePointsList',
-  //   });
-  //   this.historySearchChange(newParams);
+    const { pointParam } = this.props;
+    const newParam = { ...pointParam, deviceTypeCode };
+    this.props.changeOverviewStore({
+      pointParam: newParam,
+      pointsData: [], // 清空设备信息
+      pointsCheckedList: [],
+      pointList: [],
+      pointConnectedDevices: [],
+    });
+    this.queryDeviceAndPoints(pointParam.stationCode, deviceTypeCode);
+  }
+
+  deviceChanged = (deviceFullcode) => { // 设备选择
+    const { pointParam, pointsCheckedList } = this.props;
+    const newParams = { ...pointParam, deviceFullcode };
+    this.props.changeOverviewStore({ pointParam: newParams });
+    this.props.getOverviewPoints({
+      ...newParams,
+      pointCodes: pointsCheckedList,
+    }); // 请求测点数据
+    this.historySearchChange(newParams);
+  }
+
+  pointsChanged = (pointCodes) => { // 测点选择
+    console.log(pointCodes)
+    return;
+    const { pointParam } = this.props;
+    this.props.changeOverviewStore({ pointsCheckedList: pointCodes });
+    this.props.getOverviewPoints({
+      ...pointParam,
+      pointCodes,
+    });
   }
 
   historySearchChange = (pointParam) => { // 将参数映射入路径
@@ -237,8 +260,12 @@ class PointsOverview extends PureComponent{
             onTypeChange={this.deviceTypeChanged}
           />
         </div>
-        {/* <DeviceRateChart {...this.props} /> */}
-        {/* <DeviceTable {...this.props} /> */}
+        <PointsSearch
+          {...this.props}
+          deviceChanged={this.deviceChanged}
+          pointsChanged={this.pointsChanged}
+        />
+        {/* <PointsList {...this.props} /> */}
       </div>
     );
   }

@@ -60,6 +60,7 @@ function *afterDeviceTypePointGet({ payload }) { // 设备页 获得测点数据
   const { deviceParam = {} } = yield select(state => state.monitor.overview.toJS());
   const pointCodes = [];
   const tmpList = [];
+  console.log('is here bye after   DEVICES WRONG')
   devicePointsList.forEach(e => {
     const { devicePointStandardCode, devicePointName } = e;
     pointCodes.push(devicePointStandardCode);
@@ -83,6 +84,7 @@ function *afterPointPagePointsGet({ payload }){ // 测点页 获得测点数据�
   const { deviceFullcode } = pointParam;
   const pointCodes = [];
   const tmpList = [];
+  console.log('is here bye afterpoints')
   pointPageList.forEach(e => {
     const { devicePointStandardCode, devicePointName } = e;
     pointCodes.push(devicePointStandardCode);
@@ -114,6 +116,7 @@ function *getOverviewDevices({ payload }){ // 获取所有设备数据信息
           deviceFullcode: `M${e}M${e * e}M101`,
           deviceName: `mock数据设备${e}`,
           completeRate: e * e,
+          realCount: e * e + e,
           key: `M${e}M${e * e}M101`,
           pointData: ['TR002', 'TR003', 'TR017'].map(p => ({
             pointCode: p,
@@ -162,9 +165,15 @@ function *getConnectedDevices({ payload }){ // 测点页获取可用的设备列
   const url = `${APIBasePath}${monitor.getOverviewConnectedDevices}`;
   try {
     const response = yield call(request.get, url, { params: payload });
+    const tmpDevices = response.data || [];
+    const pointConnectedDevices = tmpDevices.map(e => ({ // 重组设备结构
+      ...e,
+      value: e.deviceCode,
+      label: e.deviceName,
+    }));
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
-        pointConnectedDevices: response.data || [],
+        pointConnectedDevices,
         deviceListUnix: moment().unix(), // 记录得到设备列表时间
       });
     } else { throw response; }

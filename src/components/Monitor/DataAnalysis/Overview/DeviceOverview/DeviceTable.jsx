@@ -40,7 +40,7 @@ class DeviceTable extends PureComponent{
       title: '设备名称',
       dataIndex: 'deviceName',
       sorter: (a, b) => (a.deviceName) && a.deviceName.localeCompare(b.deviceName),
-      width: 126,
+      width: 125,
       // className: styles.deviceName,
       render: (text, record) => (
         <span
@@ -52,13 +52,13 @@ class DeviceTable extends PureComponent{
       ),
     }, {
       title: '真实数据量',
-      dataIndex: 'actualNum',
-      width: 120,
-      sorter: (a, b) => a.actualNum - b.actualNum,
+      dataIndex: 'realCount',
+      width: 130,
+      sorter: (a, b) => a.realCount - b.realCount,
     }, {
       title: '设备数据完整率',
       dataIndex: 'completeRate',
-      width: 140,
+      width: 155,
       sorter: (a, b) => a.completeRate - b.completeRate,
     },
   ]
@@ -127,16 +127,19 @@ class DeviceTable extends PureComponent{
         key: `${e.pointCode}.${t}`,
         dataIndex: `pointData[${i}].${t}`, // huohuohuohuo这个方法倒是有点意思
         sorter: true,
-        width: 96,
+        width: 110,
       })),
-      width: 288,
+      width: 330,
     }));
     return baseColumn.concat(extraColum);
   }
 
   render(){
-    const { devicePointsList, deviceCheckedList, devicesData } = this.props;
+    const { devicePointsList, deviceCheckedList, devicesData, deveiceLoading } = this.props;
     const { indicators, tableColumn } = this.state;
+    const { deviceData = [] } = devicesData;
+    const { pointData = []} = deviceData[0] || {};
+    const tableWidth = 410 + pointData.length * 330;
     return(
       <div className={styles.devicePoints}>
         <div className={styles.pointHandle}>
@@ -169,11 +172,11 @@ class DeviceTable extends PureComponent{
         <Table
           className={styles.pointTable}
           columns={tableColumn}
-          dataSource={devicesData.deviceData}
+          dataSource={deviceData}
           bordered
           pagination={false}
-          size="middle"
-          scroll={{ x: '100%' }}
+          loading={deveiceLoading}
+          scroll={{ x: tableWidth }}
         />
       </div>
     );
