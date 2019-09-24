@@ -222,6 +222,11 @@ const menuData = [
         path: 'intelligentExpert',
         iconStyle: 'icon-gd4',
         rightKey: 'operation_experience',
+      }, {
+        name: '案例集',
+        path: 'caseSet',
+        iconStyle: 'icon-gd4',
+        rightKey: 'operation_case',
       },
     ],
   },

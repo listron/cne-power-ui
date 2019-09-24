@@ -15,6 +15,7 @@ import warehouse from './Book/Warehouse/warehouseReducer';
 import stockRecords from './Book/StockRecords/stockRecordsReducer';
 import { warehouseManage } from './Book/WarehouseManage/warehouseManageReducer';
 import intelligentExpert from './IntelligentExpert/intelligentExpertReducer';
+import casePartReducer from './CaseSet/casePartReducer';
 
 import { examiner } from './TwoTickets/Examiner/examinerReducer'; // 两票 - 审核人
 import workFlow from './TwoTickets/WorkFlow/workFlowReducer'; // 两票 - 工作票
@@ -38,6 +39,7 @@ const operationReducer = combineReducers({
   examiner,
   workFlow,
   operateFlow,
+  casePartReducer,
 });
 
 

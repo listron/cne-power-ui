@@ -3,6 +3,7 @@ import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { pointManageAction } from './pointManageAction';
+import moment from 'moment';
 const APIBasePath = Path.basePaths.APIBasePath;
 const operation = Path.APISubPaths.operation;
 
@@ -247,6 +248,7 @@ function* detailPoints(action) { // 测点详情
         type: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
         payload: {
           pointDetail: response.data.data || {},
+          detailTime: moment().unix(),
         },
       });
     } else {
@@ -300,6 +302,29 @@ function* editPoints(action) { // 测点编辑
     });
   }
 }
+function* getStandardDesc(action) { // 测点详情
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStandardDesc}`;
+  try {
+    const response = yield call(axios.get, url, { params: payload });
+    if (response.data.code === '10000') {
+      yield put({
+        type: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
+        payload: {
+          standardDesc: response.data.data || [],
+        },
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: pointManageAction.CHANGE_POINT_MANAGE_STORE,
+      payload: { loading: false },
+    });
+  }
+}
 
 export function* watchPointManage() {
   yield takeLatest(pointManageAction.CHANGE_POINT_MANAGE_STORE_SAGA, changePointManageStore);
@@ -312,5 +337,6 @@ export function* watchPointManage() {
   yield takeLatest(pointManageAction.deletePoints, deletePoints);
   yield takeLatest(pointManageAction.detailPoints, detailPoints);
   yield takeLatest(pointManageAction.editPoints, editPoints);
+  yield takeLatest(pointManageAction.getStandardDesc, getStandardDesc);
 }
 
