@@ -1,0 +1,199 @@
+@import "../../../theme/theme";
+
+@mixin top {
+  @include lineheight(64px);
+  // background: #fff;
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: 1px solid $promptColor;
+}
+
+.pointSide {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+  background: #ececec;
+  padding: 24px 24px 0;
+  z-index: 99;
+
+  .caseAdd,
+  .caseDetail,
+  .caseEdit {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    background: #fff;
+
+    .pageTop {
+      @include top;
+      justify-content: space-between;
+
+      .leftContainer {
+        display: flex;
+        flex: 1;
+        justify-content: space-between;
+        margin-right: 14px;
+      }
+
+      .text {
+        font-size: 18px;
+        color: $darkColor;
+        letter-spacing: 4px;
+      }
+
+      .saveBtn {
+        margin-right: 16px;
+        height: 40px;
+        border-color: $themeColor;
+        color: $themeColor;
+
+        &:hover {
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+
+      .backIcon {
+        color: $darkColor;
+        font-size: 20px;
+        border-left: 1px solid #dfdfdf;
+        height: 100%;
+        line-height: 64px;
+        width: 64px;
+        cursor: pointer;
+      }
+    }
+
+  }
+
+  .fromContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .formPart {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      padding: 24px 100px 0 100px;
+
+      :global {
+
+        .ant-select,
+        .ant-cascader-picker {
+          width: 198px;
+        }
+
+        .ant-form-item-required::before {
+          display: none;
+        }
+
+        .ant-form-item-required::after {
+          display: inline-block;
+          margin-right: 4px;
+          color: #f5222d;
+          font-size: 14px;
+          font-family: SimSun, sans-serif;
+          line-height: 1;
+          content: '*';
+        }
+
+        .ant-form-item {
+          margin-bottom: 8px;
+
+          .ant-form-item-children {
+            display: flex;
+          }
+
+          .ant-input {
+            width: 200px;
+          }
+        }
+
+        .ant-form-item-label {
+          width: 200px;
+        }
+      }
+
+      .formItemStyle {
+        display: flex;
+        // justify-content: center;
+        margin: 6px 0 6px 15%;
+        color: #000;
+
+      }
+
+      .submitStyle {
+        margin: 20px 0 20px 15%;
+
+
+
+        .submitBtn {
+          margin: 0 20px 0 200px;
+
+        }
+      }
+
+      .uploadBtn,
+      .submitBtn,
+      .keepOnAdd {
+        border-color: $themeColor;
+        color: $themeColor;
+
+        &:hover {
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .caseDetail {
+    .detailBox {
+      padding-top: 20px;
+
+      .eachInfo {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+
+        .infoName {
+          display: flex;
+          flex: 3;
+          justify-content: flex-end;
+          text-align: right;
+          margin-right: 32px;
+          height: 40px;
+          line-height: 40px;
+          color: #000;
+
+        }
+
+        .infoValue,
+        .downHref {
+          display: flex;
+          flex: 5;
+          justify-content: flex-start;
+          height: 40px;
+          line-height: 40px;
+          text-align: left
+        }
+
+        .downHref {
+          a {
+            margin: 0 4px;
+          }
+        }
+
+        .likeBtn {
+          margin-left: 37.5%;
+        }
+      }
+    }
+
+  }
+}

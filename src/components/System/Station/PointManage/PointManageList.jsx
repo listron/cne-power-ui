@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import WarningTip from '../../../../components/Common/WarningTip';
 
 
+
 class PointManageList extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -65,6 +66,9 @@ class PointManageList extends Component {
     this.props.detailPoints({
       devicePointId: record.devicePointId,
     });
+    this.props.getStandardDesc({
+      deviceTypeCode: record.deviceTypeCode,
+    });
   }
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
     const { getPointList, queryParams } = this.props;
@@ -94,22 +98,26 @@ class PointManageList extends Component {
         title: '测点编号',
         dataIndex: 'devicePointStandardCode',
         key: 'devicePointStandardCode',
-        render: (text, record) => (<span className={styles.pointCodeStyle} onClick={() => this.showPointDetail(record)} >{text}</span>),
+        render: (text, record) => (<div className={styles.pointCodeStyle} title={text} onClick={() => this.showPointDetail(record)} >{text}</div>),
       }, {
         title: '测点描述',
         dataIndex: 'devicePointName',
         key: 'devicePointName',
+        render: (text, record) => (<div className={styles.descStyle} title={text} >{text}</div>),
         sorter: true,
+
       }, {
         title: '第三方测点名称',
         dataIndex: 'devicePointCode',
         key: 'devicePointCode',
         sorter: true,
+        render: (text, record) => (<div className={styles.descStyle} title={text} >{text}</div>),
       }, {
         title: '英文名称',
         dataIndex: 'devicePointIecname',
         key: 'devicePointIecname',
         sorter: true,
+        render: (text, record) => (<div className={styles.descStyle} title={text}>{text}</div>),
       },
       // {
       //   title: '分组名称',
@@ -169,6 +177,7 @@ class PointManageList extends Component {
           onChange={this.tableChange}
           columns={pointListColumn}
           dataSource={pointList.map((e, i) => ({ key: i, ...e }))}
+          className={styles.tableStyles}
           pagination={false}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />

@@ -6,7 +6,6 @@ var initState = Immutable.fromJS({
   showPage: 'list',
   loading: false,
   exportLoading: false, // 导出测电表loading 
-
   stationCode: null, // 选中的电站
   deviceTypeCode: null, // 选中的设备类型
   deviceModeCode: null, // 选中的设备型号
@@ -16,7 +15,6 @@ var initState = Immutable.fromJS({
   pageSize: 10,
   orderField: '', // 排序字段
   orderType: null, // 排序方式0正序   1倒序
-
   totalNum: 0, // 设备总数
   stationDeviceTypes: [], // 电站下设备类型。
   deviceModels: [], // 电站设备类型下设备型号
@@ -28,6 +26,8 @@ var initState = Immutable.fromJS({
   allFactor: [], //所有厂家
   factorsDeviceModeData: [], //厂家下的型号
   pointDetail: {},
+  standardDesc: [], //标准点描述
+  detailTime: null,
 });
 
 const pointManageReducer = (state = initState, action) => {
