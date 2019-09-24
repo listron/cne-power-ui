@@ -89,13 +89,24 @@ class PointManageSearch extends Component {
       pageNum: 1,
     });
   }
+  onReset = () => {
+    const initValue = {
+      devicePointStandardCode: '',
+      devicePointName: '',
+    };
+    const { getPointList, queryParams } = this.props;
+    this.props.changePointManageStore(initValue);
+    getPointList({ ...queryParams, ...initValue, pageNum: 1 });
+
+  }
 
   render() {
-    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode } = this.props;
+    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, devicePointStandardCode, devicePointName } = this.props;
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = deviceModels.length === 0;
     const getSelectedStation = allStationBaseInfo.find(e => e.stationCode === stationCode);
     const selectedStationInfo = getSelectedStation ? [getSelectedStation] : [];
+    const showResetBtn = devicePointStandardCode || devicePointName;
     return (
       <div className={styles.pointManageSearch}>
         <div className={styles.topSearch}>
@@ -118,10 +129,11 @@ class PointManageSearch extends Component {
         </div>
         <div className={styles.bottomSeach}>
           <span className={styles.titleText}>测点编号</span>
-          <Input className={styles.searchInput} onChange={this.changePointCode} allowClear={true} />
+          <Input placeholder="请输入..." className={styles.searchInput} onChange={this.changePointCode} allowClear={true} value={devicePointStandardCode} />
           <span className={styles.titleText}>测点描述</span>
-          <Input className={styles.searchInput} onChange={this.changeDesc} allowClear={true} />
-          <Button onClick={this.searchData} className={styles.searchBtn}>查找</Button>
+          <Input placeholder="请输入..." className={styles.searchInput} onChange={this.changeDesc} allowClear={true} value={devicePointName} />
+          <Button onClick={this.searchData} className={styles.searchBtn}>查询</Button>
+          {showResetBtn && <span className={styles.reset} onClick={this.onReset}>重置</span>}
 
         </div>
 
