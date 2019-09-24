@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { windResourcesAction } from './windResourcesAction.js';
 import AllStations from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/AllStations.jsx';
-import HandleSeach from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/HandleSeach.jsx';
+import HandleSearch from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/HandleSearch.jsx';
 import ResourcesTabs from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/ResourcesTabs.jsx';
 import Footer from '../../../../components/Common/Footer';
 import styles from './windResources.scss';
@@ -29,7 +29,7 @@ class WindResources extends Component{
         <div className={styles.resourcesMain}>
           {showPage === 'allStation' && <AllStations {...this.props} />}
           {showPage === 'singleStation' && [
-            <HandleSeach key="HandleSearch" {...this.props} />,
+            <HandleSearch key="HandleSearch" {...this.props} />,
             <ResourcesTabs key="ResourcesTabs" {...this.props} />,
             ]}
         </div>
@@ -51,8 +51,10 @@ const mapDispatchToProps = (dispatch) => ({
   changeWindResourcesStore: payload => dispatch({ type: windResourcesAction.changeWindResourcesStore, payload }),
   resetStore: payload => dispatch({ type: windResourcesAction.resetStore, payload }),
   getFrequency: payload => dispatch({ type: windResourcesAction.getFrequency, payload }),
+  getDirections: payload => dispatch({ type: windResourcesAction.getDirections, payload }),
   getStationDevice: payload => dispatch({ type: windResourcesAction.getStationDevice, payload }),
   getBigFrequency: payload => dispatch({ type: windResourcesAction.getBigFrequency, payload }),
+  getBigDirections: payload => dispatch({ type: windResourcesAction.getBigDirections, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WindResources);
