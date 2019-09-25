@@ -63,25 +63,24 @@ class CaseHandle extends React.Component {
     const rightkey = Cookie.get('userRight').includes('operation_case_operate');//操作权限
     return (
       <div className={styles.caseHandle}>
-        {rightkey && <div className={styles.leftHandler}>
-          {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-
-          <Button onClick={this.showAddPage} className={styles.addButton}>
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+        <div className={styles.leftHandler}>
+          {rightkey && <Button onClick={this.showAddPage} className={styles.addButton}>
             <span className={styles.plus}>+</span>
             <span className={styles.name}>{'添加'}</span>
-          </Button>
-          <Button disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deleteCasePart}> 批量删除 </Button>
-          <Button className={styles.intoFile} onClick={this.uploadFile}> 批量导入 </Button>
+          </Button>}
+          {rightkey && <Button disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deleteCasePart}> 批量删除 </Button>}
+          {rightkey && <Button className={styles.intoFile} onClick={this.uploadFile}> 批量导入 </Button>}
           {showUpload && <UploadModal {...this.props} showModal={showUpload} cancelModal={this.cancelModal} />}
-          <Button
+          {rightkey && <Button
             className={styles.downloadStyle}
             href={downloadTemplet}
             download={downloadTemplet}
             target="_blank"
           >模板下载
-          </Button>
+          </Button>}
 
-        </div>}
+        </div>
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
 
       </div>
