@@ -22,9 +22,12 @@ class DetailPoint extends React.Component {
     };
   }
   onWarningTipShow = () => {
-    this.setState({
-      showWarningTip: true,
-      warningTipText: '退出后信息无法保存!',
+    // this.setState({
+    //   showWarningTip: true,
+    //   warningTipText: '退出后信息无法保存!',
+    // });
+    this.props.changePointManageStore({
+      showPage: 'list',
     });
   }
   confirmWarningTip = () => {

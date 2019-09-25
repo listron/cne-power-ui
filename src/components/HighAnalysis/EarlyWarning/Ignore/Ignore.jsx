@@ -185,7 +185,7 @@ class Ignore extends Component {
             onChange={this.filterCondition}
             option={[
               {
-                name: ' 发生时间',
+                name: '预警时间',
                 type: 'time',
                 typeName: 'rangeTimes',
               },

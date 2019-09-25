@@ -161,7 +161,7 @@ class Unhandle extends Component {
         key: 'deviceName',
         render: text => (text || text === 0) ? text : '--',
       }, {
-        title: '发生时间',
+        title: '预警时间',
         dataIndex: 'happenTime',
         key: 'happenTime',
         sorter: true,
