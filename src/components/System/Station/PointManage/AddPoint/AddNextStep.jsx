@@ -78,6 +78,28 @@ class AddNextStep extends React.Component {
     const data = (pointDetail[name] || pointDetail[name] === 0) ? pointDetail[name] : '';
     return data;
   }
+  validatorMax = (rule, value, callback) => {
+    const minTheoryValue = this.props.form.getFieldValue('minTheory');
+    rule.pattern = /^(-?\d+)(\.\d+)?$/;
+    if (!rule.pattern.test(value)) {
+      callback(rule.message);
+    }
+    if (+value < +minTheoryValue) {
+      rule.message = '不能小于最小偏差值';
+      callback(rule.message);
+    }
+  }
+  validatormin = (rule, value, callback) => {
+    const maxTheoryValue = this.props.form.getFieldValue('maxTheory');
+    rule.pattern = /^(-?\d+)(\.\d+)?$/;
+    if (!rule.pattern.test(value)) {
+      callback(rule.message);
+    }
+    if (+value > +maxTheoryValue) {
+      rule.message = '不能大于最大偏差值';
+      callback(rule.message);
+    }
+  }
   render() {
     const { showPage, payloadData, pointDetail = {} } = this.props;
     const { showDesc } = this.state;
@@ -222,6 +244,10 @@ class AddNextStep extends React.Component {
             <FormItem label="理论最大值" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('maxTheory', {
                 initialValue: this.dealPointDetail('maxTheory'),
+                rules: [
+                  { message: '请输入浮点数', pattern: /^(-?\d+)(\.\d+)?$/ },
+                  { validator: this.validatorMax },
+                ],
               })(
                 <Input placeholder="请输入" />
               )}
@@ -229,6 +255,9 @@ class AddNextStep extends React.Component {
             <FormItem label="理论最小值" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('minTheory', {
                 initialValue: this.dealPointDetail('minTheory'),
+                rules: [{ message: '请输入浮点数', pattern: /^(-?\d+)(\.\d+)?$/ },
+                { validator: this.validatormin },
+                ],
               })(
                 <Input placeholder="请输入" />
               )}
@@ -236,6 +265,7 @@ class AddNextStep extends React.Component {
             <FormItem label="偏差值" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('offset', {
                 initialValue: this.dealPointDetail('offset'),
+                rules: [{ message: '请输入正浮点数', pattern: /^\d+(\.\d+)?$/ }],
               }
 
               )(
