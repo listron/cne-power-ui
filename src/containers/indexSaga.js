@@ -36,6 +36,7 @@ import { watchMonitorRealtimeWarning } from './Monitor/Alarm/RealTimeWarning/rea
 import { watchMonitorTransferForm } from './Monitor/Alarm/Transfer/transferFormSaga';
 import { watchMonitorHandleWarning } from './Monitor/Alarm/HandleRemove/handleRemoveSaga';
 import { watchMonitorHistoryWarning } from './Monitor/Alarm/HistoryWarning/historyWarningSaga';
+import { watchMonitorDataOverview } from './Monitor/DataAnalysis/Overview/overviewSaga'; // 数据概览
 import { watchDataHistoryMonitor } from './Monitor/DataAnalysis/DataHistory/historySaga'; // 数据分析 - 历史趋势
 import { watchDataRealtimeMonitor } from './Monitor/DataAnalysis/DataRealtime/realtimeSaga'; // 数据分析 - 实时数据
 import { watchDataExport } from './Monitor/DataAnalysis/DataExport/dataExportSaga'; // 数据分析 - 数据导出
@@ -150,6 +151,7 @@ export default function* rootSaga() {
     watchMonitorTransferForm(),
     watchMonitorHandleWarning(),
     watchMonitorHistoryWarning(),
+    watchMonitorDataOverview(), // 数据分析 - 数据概览
     watchDataHistoryMonitor(), // 数据分析 - 历史趋势
     watchDataRealtimeMonitor(), // 数据分析 - 实时数据
     watchDataExport(), // 数据分析 - 数据导出
