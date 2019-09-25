@@ -17,6 +17,7 @@ class DeviceTable extends PureComponent{
     deviceCheckedList: PropTypes.array,
     changeOverviewStore: PropTypes.func,
     getConnectedDevices: PropTypes.func,
+    getOverviewPoints: PropTypes.func,
   }
 
   state = {
@@ -27,7 +28,7 @@ class DeviceTable extends PureComponent{
   componentWillReceiveProps(nextProps){
     const { deveiceLoading, devicesData } = nextProps;
     const preLoading = this.props.deveiceLoading;
-    if (deveiceLoading && !preLoading) { // 请求数据得到
+    if (!deveiceLoading && preLoading) { // 请求数据得到
       const { indicators } = this.state;
       const { deviceData = [] } = devicesData;
       this.setState({ // 基于返回的测点数据生成表头
@@ -40,6 +41,7 @@ class DeviceTable extends PureComponent{
     {
       title: '设备名称',
       dataIndex: 'deviceName',
+      fixed: 'left',
       sorter: (a, b) => (a.deviceName) && a.deviceName.localeCompare(b.deviceName),
       width: 125,
       // className: styles.deviceName,
@@ -54,11 +56,13 @@ class DeviceTable extends PureComponent{
     }, {
       title: '真实数据量',
       dataIndex: 'realCount',
+      fixed: 'left',
       width: 130,
       sorter: (a, b) => a.realCount - b.realCount,
     }, {
       title: '设备数据完整率',
       dataIndex: 'completeRate',
+      fixed: 'left',
       width: 155,
       sorter: (a, b) => a.completeRate - b.completeRate,
     },
@@ -79,6 +83,7 @@ class DeviceTable extends PureComponent{
       };
       this.props.changeOverviewStore({ // 已得基础信息传入设备页 - 减少不必要请求
         tab: 'point', // 激活的tab页, station, device, point
+        autoDevice: false, // 按指定传入项处理选中设备 - 拒绝默认
         pages: allPages, // 开启的tab页面
         pointTopData: deviceTopData,
         pointParam, // 请求参数保存
@@ -89,6 +94,10 @@ class DeviceTable extends PureComponent{
         stationCode,
         deviceTypeCode,
         isConnected: 1,
+      });
+      this.props.getOverviewPoints({ // 基于已有数据重新请求测点数据
+        ...pointParam,
+        pointCodes: deviceCheckedList,
       });
       const newSearch = searchUtil(search).replace({ // 路径 替换/添加 device信息
         point: JSON.stringify(pointParam),
@@ -148,7 +157,6 @@ class DeviceTable extends PureComponent{
     const { deviceData = [] } = devicesData;
     const { pointData = []} = deviceData[0] || {};
     const tableWidth = 410 + pointData.length * 330;
-    console.log(tableWidth, tableColumn)
     return(
       <div className={styles.devicePoints}>
         <div className={styles.pointHandle}>

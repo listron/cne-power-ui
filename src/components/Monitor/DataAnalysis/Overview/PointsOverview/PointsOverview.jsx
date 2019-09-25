@@ -12,6 +12,7 @@ const { MonthPicker } = DatePicker;
 class PointsOverview extends PureComponent{
   static propTypes = {
     history: PropTypes.object,
+    autoDevice: PropTypes.bool, // 未手动选择电站名称, 设备类型时false, 手动选择需自动设置选中device
     stations: PropTypes.array,
     pointTopData: PropTypes.object,
     pointConnectedDevices: PropTypes.array,
@@ -27,52 +28,32 @@ class PointsOverview extends PureComponent{
     getPoints: PropTypes.func,
   }
 
-  state = {
-    deviceAuto: false, // 未手动选择电站名称, 设备类型时false, 手动选择需自动设置选中device
-  }
-
-  componentDidMount(){
-    const { pointParam, pointTopData, pointConnectedDevices, pointList } = this.props;
-    const paramCode = pointParam.stationCode;
-    const paramTypeCode = pointParam.deviceTypeCode;
-    const paramDate = pointParam.date;
-    const paramDeviceFullcode = pointParam.deviceFullcode;
-    const { stationCode, deviceTypeCode, dateType, date, deviceFullcode } = this.getPointInfo();
-    const paramChange = paramCode !== stationCode || paramTypeCode !== deviceTypeCode || paramDate !== date || paramDeviceFullcode !== deviceFullcode; // F5或带参数跳转
-    if (stationCode && paramChange) { // 路径新参数, 与之前不同 => F5或电站页带路径跳转
-      const { deviceTypes = [] } = pointTopData || {};
+  componentDidMount(){ // 判断是否f5刷新 => 请求相关信息, (从设备数据质量页新开传输过来的逻辑以在device页面进行处理)
+    const { pointParam } = this.props;
+    const isRefresh = Object.keys(pointParam).length === 0; // 是否F5刷新
+    if (isRefresh) {
+      const { stationCode, deviceTypeCode, dateType, date, deviceFullcode } = this.getPointInfo();
       this.props.changeOverviewStore({ // 存储最新参数
         pointParam: { stationCode, deviceTypeCode, dateType, date, deviceFullcode },
       });
-      deviceTypes.length === 0 && this.props.getOverviewStation({ // 无电站信息 => 请求;
+      this.props.getOverviewStation({ // 请求电站信息
         stationCode,
         pageKey: 'point',
       });
-      pointConnectedDevices.length === 0 && this.props.getConnectedDevices({ // 电站,设备类型下可用的设备列表
-        stationCode,
-        deviceTypeCode,
-        isConnected: 1,
-      });
-      pointList.length === 0 && this.props.getPoints({ // 请求测点列表 
-        params: {
-          stationCode, deviceTypeCode, pointTypes: 'YC,YM',
-        },
-        actionName: 'afterPointPagePointsGet',
-        resultName: 'pointPageList',
-      });
+      this.queryDeviceAndPoints(stationCode, deviceTypeCode); // 继续请求设备，测点列表
     }
   }
 
   componentWillReceiveProps(nextProps){
-    const { pointTopData, pointUnix, pointParam, deviceListUnix, pointsCheckedList, pointConnectedDevices } = nextProps;
+    const { pointTopData, pointUnix, pointParam, deviceListUnix, pointsCheckedList, pointConnectedDevices, autoDevice } = nextProps;
     const { stationCode } = pointParam;
     const preUnix = this.props.pointUnix;
     const preDeviceUnix = this.props.deviceListUnix;
-    if (pointUnix !== preUnix) { // topData改变 => 请求设备列表和测点列表
+    if (pointUnix !== preUnix && autoDevice) { // 非F5而是手动修改获取电站topData, 需替换param, 请求设备与测点, 重置默认数据信息
       const { deviceTypes = [] } = pointTopData || {};
       const { deviceTypeCode = 101 } = deviceTypes.find(e => [101, 201, 206].includes(e.deviceTypeCode)) || {};
       this.queryDeviceAndPoints(stationCode, deviceTypeCode);
-      this.props.changeOverviewStore({ // 替换param并清空数据信息
+      autoDevice && this.props.changeOverviewStore({
         pointParam: {
           ...pointParam,
           deviceTypeCode,
@@ -84,8 +65,8 @@ class PointsOverview extends PureComponent{
         pointsData: [],
       });
     }
-    const { deviceAuto } = this.state; // true需要默认数据, false为页面刷新时的初始设备列表
-    if (preDeviceUnix !== deviceListUnix && deviceAuto) { // 得到设备列表, 且需默认设备
+    if (preDeviceUnix !== deviceListUnix && autoDevice) { // 得到设备列表, 且需默认设备
+      // console.log('now im getting devices')
       const { deviceCode } = pointConnectedDevices[0] || {};
       const newParam = { // 写入路径, 存入store
         ...pointParam,
@@ -95,7 +76,7 @@ class PointsOverview extends PureComponent{
         pointParam: newParam,
       });
       this.historySearchChange(newParam);
-      pointsCheckedList.length > 0 && this.props.getOverviewPoints({ // 此时已有选中设备, 请求列表
+      pointsCheckedList.length > 0 && this.props.getOverviewPoints({ // 此时已有选中测点, 请求测点详细数据
         ...newParam,
         pointCodes: pointsCheckedList,
       });

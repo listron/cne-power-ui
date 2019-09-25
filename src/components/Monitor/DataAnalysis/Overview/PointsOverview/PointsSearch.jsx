@@ -42,7 +42,7 @@ class PointsSearch extends PureComponent{
             label: '设备',
             children: pointConnectedDevices,
           }]}
-          value={pointsCheckedList}
+          value={[deviceFullcode]}
           onChange={this.deviceCheck}
           style={{width: '200px', marginRight: '8px'}}
           maxTagCount={0}
@@ -54,7 +54,7 @@ class PointsSearch extends PureComponent{
             label: '测点',
             children: pointList,
           }]}
-          value={[deviceFullcode]}
+          value={pointsCheckedList}
           onChange={this.pointsCheck}
           style={{width: '200px', marginRight: '8px'}}
           maxTagCount={0}

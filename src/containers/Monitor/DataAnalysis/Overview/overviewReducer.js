@@ -34,6 +34,7 @@ const initState = immutable.fromJS({
   deviceUnix: null, // 电站页请求时间
 
   pointsLoading: false, // 所有测点详情请求loading
+  autoDevice: false, // 是否自动选中默认设备
   pointsData: [], // 各测点信息列表
   pointTopData: {}, // 测点页顶部信息
   pointConnectedDevices: [], // 测点页可用测点列表
