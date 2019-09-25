@@ -13,6 +13,7 @@ import searchUtil from '@utils/searchUtil';
 
 class StationOverview extends PureComponent{
   static propTypes = {
+    theme: PropTypes.string,
     history: PropTypes.object,
     stations: PropTypes.array,
     stationDatesRate: PropTypes.array,
@@ -101,10 +102,10 @@ class StationOverview extends PureComponent{
   }
 
   render(){
-    const { stationParam, stationTopData, stations } = this.props;
+    const { stationParam, stationTopData, stations, theme } = this.props;
     const { stationCode, deviceTypeCode } = stationParam;
     return(
-      <div className={styles.station}>
+      <div className={`${styles.station} ${styles[theme]}`}>
         { !stationCode && !deviceTypeCode && <StationList {...this.props} />}
         {
           stationCode && <div>
@@ -115,6 +116,7 @@ class StationOverview extends PureComponent{
               deviceTypeCode={deviceTypeCode}
               onStationChange={this.stationChanged}
               onTypeChange={this.deviceTypeChanged}
+              theme={theme}
             />
             <StationDates {...this.props} />
           </div>

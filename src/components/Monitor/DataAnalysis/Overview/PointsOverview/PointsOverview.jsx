@@ -11,6 +11,7 @@ const { MonthPicker } = DatePicker;
 
 class PointsOverview extends PureComponent{
   static propTypes = {
+    theme: PropTypes.string,
     history: PropTypes.object,
     autoDevice: PropTypes.bool, // 未手动选择电站名称, 设备类型时false, 手动选择需自动设置选中device
     stations: PropTypes.array,
@@ -210,10 +211,10 @@ class PointsOverview extends PureComponent{
   }
 
   render(){
-    const { pointParam, pointTopData, stations } = this.props;
+    const { pointParam, pointTopData, stations, theme } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = pointParam;
     return(
-      <div className={styles.device}>
+      <div className={styles.point}>
         <div className={styles.topSearch}>
           <div className={styles.dateCheck}>
             <span className={styles.checkText}>时间范围</span>
@@ -231,6 +232,7 @@ class PointsOverview extends PureComponent{
             deviceTypeCode={deviceTypeCode}
             onStationChange={this.stationChanged}
             onTypeChange={this.deviceTypeChanged}
+            theme={theme}
           />
         </div>
         <PointsSearch
