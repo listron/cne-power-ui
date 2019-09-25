@@ -209,7 +209,7 @@ function* importFile(action) {
         },
       });
       const params = yield select(state => ({//继续请求生产计划列表
-        year: state.system.plan.get('year'),
+        year: state.system.plan.get('planYear'),
         stationCodes: state.system.plan.get('stationCodes'),
         sortField: state.system.plan.get('sortField'),
         sortMethod: state.system.plan.get('sortMethod'),

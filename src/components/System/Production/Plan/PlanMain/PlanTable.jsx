@@ -331,23 +331,21 @@ class PlanTable extends Component {
     this.setState({ importVisible: true });
   }
 
-  importYearSelct = (value) => {
+  importYearSelct = (value) => { // 导入文件选择的年份
     this.setState({ importYear: value });
   }
 
-  importFile = () => {
+  importFile = () => { // 添加导入文件
     const { importYear, fileList } = this.state;
-    console.log('importYear', importYear, fileList);
     const formData = new FormData();
     formData.append('file', fileList[0]);
     formData.append('year', importYear);
     this.props.importFile({ formData });
   }
 
-  removeFile = (file) => {
+  removeFile = (file) => { //  删除导入文件
     const { fileList } = this.state;
-    console.log('11', fileList, file);
-    const newFile = fileList.filter(e.lastModified !== file.lastModified);
+    const newFile = fileList.filter(e => e.lastModified !== file.lastModified);
     this.setState({ fileList: newFile });
   }
 
@@ -379,11 +377,8 @@ class PlanTable extends Component {
               <Icon type="plus" />
               <span className={styles.text}>添加</span>
             </Button>
-            {/* <Upload {...uploadProps} className={styles.importUser}>
-              <Button type={'default'} loading={this.state.importLoading} >批量导入</Button>
-            </Upload> */}
             <Button type={'default'} onClick={this.batchImport} >批量导入</Button>
-            <Button href={downloadHref} download={downloadHref} target="_blank" >导入下载模版</Button>
+            <Button href={downloadHref} download={downloadHref} >导入下载模版</Button>
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
@@ -406,16 +401,16 @@ class PlanTable extends Component {
           getContainer={() => this.refs.modal}
           centered={true}
         >
-          <div>
-            <div> <span>*</span> 年份填写</div>
+          <div className={styles.importFile}>
+            <div className={styles.label}> <span>*</span> 年份填写</div>
             <Select defaultValue={moment().year()} onChange={this.importYearSelct}>
               {importYear.map(e => {
                 return <Option key={e}>{e}</Option>;
               })}
             </Select>
           </div>
-          <div>
-            <div> <span>*</span> 附件</div>
+          <div className={styles.importFile}>
+            <div className={styles.label}> <span>*</span> 附件</div>
             <Upload
               beforeUpload={this.beforeUpload}
               fileList={fileList}
