@@ -184,7 +184,11 @@ class Main extends Component {
           </div>}
           <div className={styles.appMain}>
             {!isHomePage && <SideMenu />}
-            <main className={styles.content} style={{ height: isHomePage ? '100vh' : 'calc(100vh - 59px)' }} id="main" >
+            <main
+              className={`${styles.content} ${styles[theme]}`}
+              style={{ height: isHomePage ? '100vh' : 'calc(100vh - 59px)' }}
+              id="main"
+            >
               <Switch>
                 {routerConfig}
                 <Redirect to="/monitor/station" />
