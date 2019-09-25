@@ -41,7 +41,7 @@ class PointChart extends PureComponent{
     const option = {
       grid: {
         top: 20,
-        bottom: 20,
+        bottom: 24,
         left: 30,
         right: 5,
         // containLabel: true,
