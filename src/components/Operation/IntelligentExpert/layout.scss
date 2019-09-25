@@ -108,17 +108,9 @@
       max-width: 140px;
     }
     :global {
-      .ant-table {
-        .updateTime,
-        .deviceTypeName,
-        .faultName,
-        .faultDescription,
-        .checkItems,
-        .processingMethod,
-        .likeCount,
-        .handler {
-          flex: 0 0 220px;
-        }
+      .ant-table .ant-table-thead > tr > th,
+      .ant-table .ant-table-tbody > tr > td {
+        padding: 0 8px;
       }
     }
   }
@@ -171,6 +163,18 @@
         cursor: pointer;
       }
     }
+    .extraSpan {
+      display: inline-block;
+      width: 440px;
+    }
+    :global {
+      .ant-form-item-label > label::after {
+        margin: 0;
+      }
+      .ant-form-item-control {
+        line-height: unset;
+      }
+    }
   }
   .addIntelligent {
     .formBox {
@@ -216,7 +220,8 @@
       .label {
         width: 71px;
         text-align: right;
-        margin-right: 24px;
+        margin-right: 16px;
+        flex: 0 0 71px;
         span {
           display: inline-block;
           margin-right: 4px;

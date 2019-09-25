@@ -56,16 +56,18 @@ class IntelligentExpert extends Component {
       <div className={`${styles.intelligentExpert} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '智能专家库' }]} style={{ marginLeft: '40px' }} />
         <div className={styles.contentBox}>
-          <InterlligentExpertMain {...this.props} />
-          <TransitionContainer
-            show={showPage !== 'list'}
-            onEnter={this.onToggleSide}
-            onExited={this.onToggleSide}
-            timeout={500}
-            effect="side"
-          >
-            <IntelligentSide {...this.props} showPage={showPage} onShowSideChange={this.onShowSideChange} />
-          </TransitionContainer>
+          <div className={styles.warp}>
+            <InterlligentExpertMain {...this.props} />
+            <TransitionContainer
+              show={showPage !== 'list'}
+              onEnter={this.onToggleSide}
+              onExited={this.onToggleSide}
+              timeout={500}
+              effect="side"
+            >
+              <IntelligentSide {...this.props} showPage={showPage} onShowSideChange={this.onShowSideChange} />
+            </TransitionContainer>
+          </div>
         </div>
         <Footer />
       </div>

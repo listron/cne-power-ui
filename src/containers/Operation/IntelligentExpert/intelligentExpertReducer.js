@@ -21,12 +21,12 @@ const initState = immutable.fromJS({
   intelligentTableData: {}, // 列表数据
   intelligentDetail: {}, // 查看详情页面数据
   usernames: [], // 获取录入人
-  selectedRowKeys: [],
-  stationType: '0',
+  selectedRowKeys: [], // 当前选中的
+  stationType: '0', // 电站类型
   deviceModeList: [], // 设备型号的列表
   faultCodeList: [], // 故障代码的列表
   uploadFileList: [], // 上传附件之后列表
-  templateLoading: false,//下载模版的loading
+  templateLoading: false, //下载模版的loading
 });
 
 const intelligentExpert = (state = initState, action) => {
