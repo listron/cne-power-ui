@@ -186,7 +186,9 @@ function* getDeviceModel(action) { // 新共用接口，获取电站设备类型
   }
 }
 
-function* getPoints(action) { // 新-获取电站下测点数据
+function* getPoints(action) { // 新-获取电站下测点数据 - YC/YM/YX均含。
+  // payload: { stationCode(必填), deviceTypeCode(选填), deviceModeCode(选填), require(选填)}
+  // payload.require: 不传时返回YC/YX/YM, require=yc,ym返回遥测和遥脉
   const url = `${APIBasePath}${commonPaths.getStationPoints}`;
   const { payload } = action;
   try {

@@ -1,0 +1,132 @@
+
+@import '../../../../../theme/theme.scss';
+
+.station{
+
+}
+
+.list{
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 16px;
+  .eachStation{
+    text-align: center;
+    font-size: 18px;
+    flex: 0 0 18%;
+    height: 72px;
+    line-height: 72px;
+    cursor: pointer;
+    border-radius:4px;
+    width:212px;
+    margin-left: 1.66%;
+    margin-bottom: 20px;
+  }
+  .eachStation:nth-child(5n) {
+    margin-right: 1.66%;
+  }
+}
+
+.dates{
+  padding-bottom: 40px;
+  .datesTopInfo{
+    display: flex;
+    justify-content: space-between;
+    height: 56px;
+    align-items: center;
+    padding: 0 16px 0 20px;
+    .ranges{
+      display: flex;
+      flex: 0 0 620px;
+    }
+    .text{
+      flex: 0 0 150px;
+      text-align: center;
+    }
+    .levels{
+      flex: 0 0 82px;
+      margin-left: 12px;
+      text-align: center;
+      height: 22px;
+      line-height: 21px;
+    }
+  }
+  .calendar{
+    padding: 0 48px;
+    .weekdays{
+      display: flex;
+      height: 46px;
+      align-items: flex-end;
+      margin-bottom: 4px;
+    }
+    .weekdayText{
+      flex: 0 0 14.28%;
+      text-align: right;
+      padding-right: 12px;
+    }
+    .datesList{
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .eachDay{
+      flex: 0 0 14.28%;
+      height: 95px;
+      display: flex;
+      flex-direction: column;
+      padding-right: 12px;
+      align-items: flex-end;
+      .monthDay{
+        flex: 0 0 60px;
+        line-height: 60px;
+        font-size: 30px;
+        pointer-events: none;
+      }
+      .rateData{
+        flex: 1;
+        font-size: 20px;
+        line-height: 35px;
+        pointer-events: none;
+      }
+    }
+  }
+
+}
+
+.list{
+  background-color: #fff;
+  .eachStation{
+    border: 4px solid $themeColor;
+    color: $themeColor;
+    background:#ffffff;
+    box-shadow:0 2px 4px 1px rgba(0,0,0,0.30);
+  }
+  .eachStation:hover{
+    border: none;
+    color: #fff;
+    background-image:linear-gradient(-180deg, #36c6ad 0%, #199475 100%);
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.30), inset 0 0 4px 2px rgba(255,255,255,0.50);
+  }
+}
+
+.dates{
+  background-color: #fff;
+  .datesTopInfo{
+    .text{
+      color: $darkColor;
+    }
+    .levels{
+      color:#000;
+    }
+  }
+  .calendar{
+    .eachDay{
+      border-bottom: 2px solid #fff;
+      border-right: 2px solid #fff;
+      background-color:#f8f8f8;
+      color: #dfdfdf;
+      &:hover{
+        z-index: 99;
+        box-shadow:0 0 4px 2px rgba(0,0,0,0.30);
+      }
+    }
+  }
+}

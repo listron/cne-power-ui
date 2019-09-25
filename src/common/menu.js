@@ -48,6 +48,10 @@ const menuData = [
             path: 'scatterDiagram',
             rightKey: 'dataAnalysis_scatterPlot',
           }, {
+            name: '数据概览',
+            path: 'overview',
+            rightKey: 'dataAnalysis_historyTrend',
+          }, {
             name: '历史趋势',
             path: 'history',
             rightKey: 'dataAnalysis_historyTrend',
