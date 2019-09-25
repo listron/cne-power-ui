@@ -14,6 +14,7 @@ import styles from './overview.scss';
 
 class Overview extends Component{
   static propTypes = {
+    theme: PropTypes.string,
     history: PropTypes.object,
     changeOverviewStore: PropTypes.func,
     resetOverview: PropTypes.func,
@@ -48,8 +49,11 @@ class Overview extends Component{
 
   render(){
     const tab = this.getSearchTab();
+    // const { theme } = this.props;
+    const theme = 'dark';
+    // lightTheme + darkTheme
     return(
-      <div className={styles.overview}>
+      <div className={`${styles.overview} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '数据概览' }]} style={{ paddingLeft: '40px' }} />
         <div className={styles.contentBox}>
           <HearderTab {...this.props} />
@@ -68,6 +72,7 @@ class Overview extends Component{
 const mapStateToProps = state => ({
   ...state.monitor.overview.toJS(),
   stations: state.common.get('stations').toJS(),
+  theme: state.common.get('theme'),
 });
 
 const mapDispatchToProps = (dispatch) =>({
