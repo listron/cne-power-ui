@@ -88,6 +88,7 @@ class AddNextStep extends React.Component {
       rule.message = '不能小于最小偏差值';
       callback(rule.message);
     }
+    callback();
   }
   validatormin = (rule, value, callback) => {
     const maxTheoryValue = this.props.form.getFieldValue('maxTheory');
@@ -99,6 +100,7 @@ class AddNextStep extends React.Component {
       rule.message = '不能大于最大偏差值';
       callback(rule.message);
     }
+    callback();
   }
   render() {
     const { showPage, payloadData, pointDetail = {} } = this.props;
