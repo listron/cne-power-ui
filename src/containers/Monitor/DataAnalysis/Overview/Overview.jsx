@@ -49,9 +49,7 @@ class Overview extends Component{
 
   render(){
     const tab = this.getSearchTab();
-    // const { theme } = this.props;
-    const theme = 'dark';
-    // lightTheme + darkTheme
+    const { theme } = this.props;
     return(
       <div className={`${styles.overview} ${styles[theme]}`}>
         <CommonBreadcrumb breadData={[{ name: '数据概览' }]} style={{ paddingLeft: '40px' }} />

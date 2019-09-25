@@ -28,22 +28,44 @@
       border-radius: 50%;
     }
   }
+  
+  .light.tabs{
+    .button{
+      color: var(--themeColor);
+      background-image:linear-gradient(-180deg, #f2f3f3 0%, #e1e2e2 100%);
+      border:1px solid #e1e2e2;
+      border-top: 1px solid transparent;
+      border-bottom: none;
+    }
+    .actievButton{
+      border:1px solid #e1e2e2;
+      border-top: 2px solid var(--themeColor);
+      border-bottom: none;
+      background-image:linear-gradient(-180deg, #fff 0%, #fff 100%);
+    }
+    .close{
+      color: var(--themeColor);
+      border: 1px solid var(--themeColor);
+    }
+  }
 
-  .tabs .button{
-    color: $darkColor;
-    background-image:linear-gradient(-180deg, #f2f3f3 0%, #e1e2e2 100%);
-    border:1px solid #e1e2e2;
-    border-top: 1px solid transparent;
-    border-bottom: none;
-  }
-  .tabs .actievButton{
-    color: $darkColor;
-    border:1px solid #e1e2e2;
-    border-top: 2px solid $themeColor;
-    border-bottom: none;
-    background-image:linear-gradient(-180deg, #fff 0%, #fff 100%);
-  }
-  .tabs .close{
-    color: $themeColor;
-    border: 1px solid $themeColor;
-  }
+  .dark.tabs{
+    .button{
+      color: #69b8fb;
+      background-image:linear-gradient(-180deg, #5472c0 0%, #2a3e8c 100%);
+      border-top: 2px solid transparent;
+    }
+    .actievButton{
+      color: linear-gradient(-180deg, #1CFCF4 5%, #009CFF 98%);
+      border:1px solid #4288b5;
+      border-bottom: none;
+      border-top: 2px solid #00ffd8;
+      background:rgba(20,33,101,0.40);
+    }
+    .close{
+      color: #13def7;
+      border: 1px solid #13def7;
+    }
+  } 
+
+  
