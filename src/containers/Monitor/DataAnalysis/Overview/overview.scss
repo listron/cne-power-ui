@@ -1,0 +1,26 @@
+
+@import '../../../../theme/theme.scss';
+
+
+.overview{
+  min-height: 100%;
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  .contentBox{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    padding:0 24px;
+  }
+}
+
+.light.overview{
+  background-color: #ececec;
+}
+
+.dark.overview{
+  background-image:linear-gradient(-118deg, #3b55aa 0%, #132267 96%);
+  @import '../../../../theme/antdResetDark.scss';
+}

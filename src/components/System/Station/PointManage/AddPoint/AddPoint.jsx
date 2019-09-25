@@ -18,6 +18,7 @@ class AddPoint extends React.Component {
     showPage: PropTypes.string,
     addPoint: PropTypes.func,
     editPoints: PropTypes.func,
+    getStandardDesc: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
@@ -65,12 +66,15 @@ class AddPoint extends React.Component {
   }
 
   selectDeviceType = (value) => {
-    const { getfactorsDeviceMode } = this.props;
+    const { getfactorsDeviceMode, getStandardDesc } = this.props;
     const { addStationCode } = this.state;
     this.setState({
       addDeviceTypeCode: value,
       manufactorId: null,
       deviceModeCode: null,
+    });
+    getStandardDesc({
+      deviceTypeCode: value,
     });
     getfactorsDeviceMode({
       stationCode: addStationCode,
@@ -138,7 +142,7 @@ class AddPoint extends React.Component {
 
   }
   render() {
-    const { allStationBaseInfo, stationDeviceTypes, allFactor, factorsDeviceModeData, showPage, addPoint, editPoints } = this.props;
+    const { allStationBaseInfo, stationDeviceTypes, allFactor, factorsDeviceModeData, showPage, addPoint, editPoints, standardDesc } = this.props;
     const { showWarningTip, warningTipText, preStep, addStationCode, addDeviceTypeCode, manufactorId, deviceModeCode, payloadData } = this.state;
     const typeSelectDisable = !addStationCode || stationDeviceTypes.length === 0;
     const modelSelectDisable = !addStationCode || factorsDeviceModeData.length === 0;
@@ -221,7 +225,7 @@ class AddPoint extends React.Component {
             </div>
           </div>
         }
-        {!preStep && <AddNextStep editPoints={editPoints} addPoint={addPoint} showPage={showPage} showPre={this.showPre} payloadData={payloadData} />}
+        {!preStep && <AddNextStep editPoints={editPoints} addPoint={addPoint} showPage={showPage} showPre={this.showPre} payloadData={payloadData} standardDesc={standardDesc} />}
       </div>
     );
   }

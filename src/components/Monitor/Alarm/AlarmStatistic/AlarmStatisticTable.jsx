@@ -13,7 +13,7 @@ class AlarmStatisticTable extends React.Component {
     orderField: PropTypes.string,
     orderCommand: PropTypes.string,
     stationDataList: PropTypes.array,
-    alarmStatistic:PropTypes.array,
+    alarmStatistic: PropTypes.array,
     onTableChange: PropTypes.func,
   }
   constructor(props) {
@@ -23,32 +23,36 @@ class AlarmStatisticTable extends React.Component {
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
     this.props.onTableChange({
       pageNum: currentPage,
-      pageSize
+      pageSize,
     });
   }
 
   onChangeTable = (pagination, filters, sorter) => {
     const field = sorter.field;
-    const arr = ['stationName', 'alarmNum', 'oneWarningNum', 'twoWarningNum', 'threeWarningNum', 'fourWarningNum', 'handleAvgTime', 'oneHandleAvgTime', 'twoHandleAvgTime', 'threeWarningNum', 'fourHandleAvgTime']
+    const arr = ['stationName', 'alarmNum', 'oneWarningNum', 'twoWarningNum', 'threeWarningNum', 'fourWarningNum', 'handleAvgTime', 'oneHandleAvgTime', 'twoHandleAvgTime', 'threeWarningNum', 'fourHandleAvgTime'];
     this.props.onTableChange({
-      orderField: (arr.indexOf(field)+1).toString(),
-      orderCommand: sorter.order === 'ascend' ? '1' : '2'
+      orderField: (arr.indexOf(field) + 1).toString(),
+      orderCommand: sorter.order === 'ascend' ? '1' : '2',
     });
   }
 
   getDuration(seconds) {
-    const milliseconds = seconds * 1000;
-    const minuteNum = seconds/60;
-    const duration = moment.duration(milliseconds);
-    const day = parseInt(minuteNum/(60*24)) > 99 ? 99 : parseInt(minuteNum/(60*24));
-    const displayDay = (day < 10 && day!==0) ? "0" + day : day;
-    const hour = duration.hours();
-    const displayHour = hour < 10 ? "0" + hour : hour;
-    const minute = duration.minutes();
-    const displayMiute = minute < 10 ? "0" + minute : minute;
-    return `${displayDay}天${displayHour}小时${displayMiute}分钟`;
+    // console.log('seconds: ', seconds);
+    // const milliseconds = seconds * 1000;
+    // const minuteNum = seconds / 60;
+    // const duration = moment.duration(milliseconds);
+    // const day = parseInt(minuteNum / (60 * 24)) > 99 ? 99 : parseInt(minuteNum / (60 * 24));
+    // const displayDay = (day < 10 && day !== 0) ? '0' + day : day;
+    // const hour = duration.hours();
+    // const displayHour = hour < 10 ? '0' + hour : hour;
+    // const minute = duration.minutes();
+    // const displayMiute = minute < 10 ? '0' + minute : minute; 
+    // return `${displayDay}天${displayHour}小时${displayMiute}分钟`;
+    const date = (+seconds / 60 / 60).toFixed(2);
+    return `${date}h`;
+
   }
- 
+
   renderColumn() {
     const columns = [
       {
@@ -127,18 +131,18 @@ class AlarmStatisticTable extends React.Component {
         },
         sorter: true,
       },
-    ];    
+    ];
 
     return columns;
   }
   render() {
     const { alarmStatistic, pageNum, pageSize } = this.props;
     const totalNum = alarmStatistic.length;
-    let startRow = (pageNum - 1) * pageSize;
+    const startRow = (pageNum - 1) * pageSize;
     let endRow = pageNum * pageSize;
     endRow = (endRow > totalNum) ? totalNum : endRow;
-    let data = alarmStatistic.slice(startRow, endRow).map((item,index)=>{
-      item.key=index;
+    const data = alarmStatistic.slice(startRow, endRow).map((item, index) => {
+      item.key = index;
       return item;
     });
     return (
@@ -146,13 +150,13 @@ class AlarmStatisticTable extends React.Component {
         <div className={styles.pagination}>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table 
-          columns={this.renderColumn()} 
-          dataSource={data} 
-          onChange={this.onChangeTable} 
-          pagination={false} 
-          locale={{emptyText:<div className={styles.noData}><img src="/img/nodata.png" style={{width: 223,height:164}} /></div>}}
-          />
+        <Table
+          columns={this.renderColumn()}
+          dataSource={data}
+          onChange={this.onChangeTable}
+          pagination={false}
+          locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
+        />
       </div>
     );
   }

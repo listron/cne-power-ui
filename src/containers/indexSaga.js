@@ -36,6 +36,7 @@ import { watchMonitorRealtimeWarning } from './Monitor/Alarm/RealTimeWarning/rea
 import { watchMonitorTransferForm } from './Monitor/Alarm/Transfer/transferFormSaga';
 import { watchMonitorHandleWarning } from './Monitor/Alarm/HandleRemove/handleRemoveSaga';
 import { watchMonitorHistoryWarning } from './Monitor/Alarm/HistoryWarning/historyWarningSaga';
+import { watchMonitorDataOverview } from './Monitor/DataAnalysis/Overview/overviewSaga'; // 数据概览
 import { watchDataHistoryMonitor } from './Monitor/DataAnalysis/DataHistory/historySaga'; // 数据分析 - 历史趋势
 import { watchDataRealtimeMonitor } from './Monitor/DataAnalysis/DataRealtime/realtimeSaga'; // 数据分析 - 实时数据
 import { watchDataExport } from './Monitor/DataAnalysis/DataExport/dataExportSaga'; // 数据分析 - 数据导出
@@ -107,6 +108,8 @@ import { watchStockRecords } from './Operation/Book/StockRecords/stockRecordsSag
 import { watchExaminer } from './Operation/TwoTickets/Examiner/examinerSaga';
 import { watchOperateFlow } from './Operation/TwoTickets/OperateFlow/operateFlowSaga';
 import { watchWorkFlow } from './Operation/TwoTickets/WorkFlow/workFlowSaga';
+import { watchCadePartSaga } from './Operation/CaseSet/casePartSaga';
+
 
 // root saga
 export default function* rootSaga() {
@@ -148,6 +151,7 @@ export default function* rootSaga() {
     watchMonitorTransferForm(),
     watchMonitorHandleWarning(),
     watchMonitorHistoryWarning(),
+    watchMonitorDataOverview(), // 数据分析 - 数据概览
     watchDataHistoryMonitor(), // 数据分析 - 历史趋势
     watchDataRealtimeMonitor(), // 数据分析 - 实时数据
     watchDataExport(), // 数据分析 - 数据导出
@@ -220,5 +224,7 @@ export default function* rootSaga() {
     watchExaminer(), // 两票 -审核人
     watchOperateFlow(), //两票 -操作票
     watchWorkFlow(), ////两票 -工作票
+    //案例集
+    watchCadePartSaga(), //案例集
   ]);
 }
