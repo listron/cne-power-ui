@@ -1,6 +1,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { dataFormats } from '@utils/utilFunc';
 import styles from './point.scss';
 
 const BaseInfo = ({ pointType, pointName, theoryCount, validCount, invalidCount, lostCount }) => {
@@ -18,19 +19,19 @@ const BaseInfo = ({ pointType, pointName, theoryCount, validCount, invalidCount,
         </div>
         <div className={styles.baseDetail}>
           <span>理论数据值</span>
-          <span>{theoryCount}</span>
+          <span>{dataFormats(theoryCount, '--', 2, true)}</span>
         </div>
         <div className={styles.baseDetail}>
           <span>有效值数</span>
-          <span>{validCount}</span>
+          <span>{dataFormats(validCount, '--', 2, true)}</span>
         </div>
         <div className={styles.baseDetail}>
           <span>无效值数</span>
-          <span>{invalidCount}</span>
+          <span>{dataFormats(invalidCount, '--', 2, true)}</span>
         </div>
         <div className={styles.baseDetail}>
           <span>缺失值数</span>
-          <span>{lostCount}</span>
+          <span>{dataFormats(lostCount, '--', 2, true)}</span>
         </div>
       </div>
     </section>
@@ -50,19 +51,19 @@ const ValueInfo = ({
   minValue, lowerQuartile, medianValue, upperQuartile, maxValue, maxTheory, minTheory, averageValue, standardDeviation,
 }) => {
   const tmpValueArr = [
-    { value: minValue, label: '最小值' },
-    { value: lowerQuartile, label: '下四分位数' },
-    { value: medianValue, label: '中位数' },
-    { value: upperQuartile, label: '上四分位数' },
-    { value: maxValue, label: '最大数' },
+    { value: dataFormats(minValue, '--', 2, true), label: '最小值' },
+    { value: dataFormats(lowerQuartile, '--', 2, true), label: '下四分位数' },
+    { value: dataFormats(medianValue, '--', 2, true), label: '中位数' },
+    { value: dataFormats(upperQuartile, '--', 2, true), label: '上四分位数' },
+    { value: dataFormats(maxValue, '--', 2, true), label: '最大数' },
   ];
   const tmpTheoryArr = [
-    { value: maxTheory, label: '理论最大值' },
-    { value: minTheory, label: '理论最小值' },
+    { value: dataFormats(maxTheory, '--', 2, true), label: '理论最大值' },
+    { value: dataFormats(minTheory, '--', 2, true), label: '理论最小值' },
   ];
   const tmpAvgArr = [
-    { value: averageValue, label: '平均值' },
-    { value: standardDeviation, label: '标准差' },
+    { value: dataFormats(averageValue, '--', 2, true), label: '平均值' },
+    { value: dataFormats(standardDeviation, '--', 2, true), label: '标准差' },
   ];
   return (
     <div className={styles.valueInfo}>
