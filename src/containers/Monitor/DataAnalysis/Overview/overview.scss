@@ -1,6 +1,7 @@
 
 @import '../../../../theme/theme.scss';
 
+
 .overview{
   min-height: 100%;
   display: flex;
@@ -15,7 +16,11 @@
   }
 }
 
-
-.overview{
+.light.overview{
   background-color: #ececec;
+}
+
+.dark.overview{
+  background-image:linear-gradient(-118deg, #3b55aa 0%, #132267 96%);
+  @import '../../../../theme/antdResetDark.scss';
 }

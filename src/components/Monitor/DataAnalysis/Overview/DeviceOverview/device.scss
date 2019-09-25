@@ -104,41 +104,85 @@
   }
 }
 
-// 颜色
-.topSearch .dateCheck{
-  background-color: #fff;
-  :global{
-    .ant-radio-button-wrapper-checked{
-      background-color: $themeColor;
-      color: #fff;
+.device.light{
+  .topSearch .dateCheck{
+    background-color: #fff;
+    :global{
+      .ant-radio-button-wrapper-checked{
+        background-color: var(--themeColor);
+        color: #fff;
+      }
+    }
+  }
+  .deviceRate{
+    background-color: #fff;
+    .total, .num{
+      color: var(--themeColor);
+    }
+  }
+  .tooltip{ // chart提示
+    background-color: #fff;
+    color: #666;
+    box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
+    .title{
+      color: #666;
+      border-bottom: 1px solid #dfdfdf;
+    }
+    .round{
+      background-color: var(--themeColor);
+    }
+  }
+  .devicePoints{
+    background-color: #fff;
+  }
+  .pointTable{
+    .deviceLink{
+      color: var(--themeColor);
+      text-decoration: var(--themeColor) underline;
     }
   }
 }
-.deviceRate{
-  background-color: #fff;
-  .total .num{
-    color: $themeColor;
+
+.device.dark{
+  .topSearch .dateCheck{
+    color:#9cd1ff;
+    background:rgba(20,33,101,0.40);
+    :global{
+      .ant-radio-button-wrapper-checked{
+        background-image:linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+        color: #fff;
+      }
+    }
+  }
+  .deviceRate{
+    background:rgba(20,33,101,0.40);
+    .total, .num{
+      color: #00f0ff;
+    }
+  }
+  .tooltip{ // chart提示
+    color: #00f0ff;
+    box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
+    background:#1f2a4e;
+    box-shadow:0 0 4px 1px rgba(255,255,255,0.20);
+    .title{
+      color: #00f0ff;
+      border-bottom: 1px solid #dfdfdf;
+    }
+    .round{
+      background-image:linear-gradient(-180deg, #c9e861 0%, #99cc32 100%);
+    }
+  }
+  .devicePoints{
+    color:#9cd1ff;
+    background:rgba(20,33,101,0.40);
+  }
+  .pointTable{
+    .deviceLink{
+      color: #00f0ff;
+      text-decoration: #00f0ff underline;
+    }
   }
 }
-.tooltip{ // chart提示
-  background-color: #fff;
-  color: #666;
-  box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
-  .title{
-    color: #666;
-    border-bottom: 1px solid #dfdfdf;
-  }
-  .round{
-    background-color: $themeColor;
-  }
-}
-.devicePoints{
-  background-color: #fff;
-}
-.pointTable{
-  .deviceLink{
-    color: $themeColor;
-    text-decoration: $themeColor underline;
-  }
-}
+
 

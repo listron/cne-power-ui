@@ -11,7 +11,6 @@
     display: flex;
     align-items: center;
     line-height: 55px;
-    color: $darkColor;
     .text{
       text-align: right;
       margin-right: 4px;
@@ -38,6 +37,12 @@
   }
 }
 
-.search{
+.light.search{
+  color: var(--darkColor);
   background-color: #fff;
+}
+
+.dark.search{
+  color: var(--darkColor);
+  background:rgba(20,33,101,0.40);
 }
