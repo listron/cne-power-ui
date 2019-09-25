@@ -171,7 +171,7 @@ class IntelligentTable extends Component {
   render() {
     const { showModal, warningTipText, showDeleteWarning } = this.state;
     const { intelligentTableData, tableLoading, listParams, selectedRowKeys, theme, stationType, templateLoading } = this.props;
-    const { pageNum, pageSize } = listParams;
+    const { pageNum, pageSize, orderField, sortMethod } = listParams;
     const { total, dataList = [] } = intelligentTableData;
     const rowSelection = {
       selectedRowKeys,
@@ -180,7 +180,6 @@ class IntelligentTable extends Component {
 
     const rightHandler = localStorage.getItem('rightHandler') || '';
     const editRight = rightHandler.split(',').includes('operation_experience_edit');
-    const checkItemsName = stationType === '0' && '故障原因' || '检查项目';
     const columns = [
       {
         title: '设备类型',
@@ -205,7 +204,7 @@ class IntelligentTable extends Component {
           return <div className={styles.faultDescription} title={text}>{text}</div>;
         },
       }, {
-        title: checkItemsName,
+        title: '故障原因',
         dataIndex: 'checkItems',
         render: (text) => {
           return <div className={styles.checkItems} title={text}>{text}</div>;
@@ -221,10 +220,12 @@ class IntelligentTable extends Component {
         dataIndex: 'updateTime',
         render: (text, record) => moment(text).format('YYYY-MM-DD'),
         sorter: true,
+        sortOrder: orderField === 'update_time' ? sortMethod === 'asc' && 'ascend' || 'descend' : false,
       }, {
         title: '点赞数',
         dataIndex: 'likeCount',
         sorter: true,
+        sortOrder: orderField === 'like_count' ? sortMethod === 'asc' && 'ascend' || 'descend' : false,
       }, {
         title: '操作',
         dataIndex: 'handler',

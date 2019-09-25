@@ -58,6 +58,12 @@ class AddIntelligent extends Component {
     this.serchFaultCode = debounce(this.serchFaultCode, 400);
   }
 
+  componentWillUnmount() {
+    this.setState({
+      fileList: [],
+    });
+  }
+
   confirmWarningTip = () => { // 确认返回列表页面
     const { tooltipName, deleteFileId } = this.state;
     const { changeIntelligentExpertStore, uploadFileList, deleteFile } = this.props;
@@ -228,7 +234,6 @@ class AddIntelligent extends Component {
         groupedLostGenTypes.push(innerArr);
       }
     });
-    const checkItemsName = stationType === '0' && '故障原因' || '检查项目';
     const initFileList = this.changeFileList(uploadFileList);
     const warningTipText = {
       'back': '退出后信息无法保存！',
@@ -291,7 +296,7 @@ class AddIntelligent extends Component {
               <React.Fragment>
                 <FormItem className={styles.formItem} label="故障代码" colon={false}>
                   {getFieldDecorator('faultCode', {
-                    rules: [{ required: true, message: '请输入缺陷描述' }],
+                    rules: [{ required: false, message: '请输入故障代码' }],
                   })(
                     <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
                   )}
@@ -310,7 +315,7 @@ class AddIntelligent extends Component {
                 <div className={styles.selctWrap}>
                   <FormItem className={styles.formItem} label="故障代码" colon={false}>
                     {getFieldDecorator('faultCode', {
-                      rules: [{ required: true, message: '请输入缺陷描述' }],
+                      rules: [{ required: true, message: '请输入故障代码' }],
                     })(
                       <Select
                         showSearch
@@ -335,9 +340,9 @@ class AddIntelligent extends Component {
                 </FormItem>
               </React.Fragment>
             }
-            <FormItem className={styles.formItem} label={checkItemsName} colon={false}>
+            <FormItem className={styles.formItem} label={'故障原因'} colon={false}>
               {getFieldDecorator('checkItems', {
-                rules: [{ required: true, message: `请输入${checkItemsName}` }],
+                rules: [{ required: stationType === '0', message: `请输入${'故障原因'}` }],
               })(
                 <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
               )}
@@ -378,7 +383,7 @@ class AddIntelligent extends Component {
                   fileList={initFileList}
                   onPreview={this.onPreview}
                 >
-                  <Button> <Icon type="upload" /> 选择文件上传</Button>  <span> 上传文件不得大于100M</span>
+                  <Button> <Icon type="upload" /> 选择文件上传</Button>  <span className={styles.extraSpan}> 上传文件不得大于100M</span>
                 </Upload>
               )}
             </Form.Item>

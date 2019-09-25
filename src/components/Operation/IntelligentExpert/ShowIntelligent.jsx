@@ -95,10 +95,7 @@ class ShowIntelligent extends Component {
             <div>{intelligentDetail.faultDescription || '无'}</div>
           </div>
           <div className={styles.detailText}>
-            <div className={styles.title}>
-              <span className={styles.required}>*</span>
-              {intelligentDetail.type === '0' ? '故障原因' : '检查项目'}
-            </div>
+            <div className={styles.title}> <span className={styles.required}>*</span>故障原因</div>
             <div>{intelligentDetail.checkItems || '无'}</div>
           </div>
           <div className={styles.detailText}>
