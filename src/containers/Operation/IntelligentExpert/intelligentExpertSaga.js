@@ -158,10 +158,10 @@ function* addIntelligent({ payload = {} }) { // 添加智能专家库
           showPage: continueAdd ? 'add' : 'list',
         },
       });
-      if (continueAdd) {
+      if (!continueAdd) {
         const params = yield select(state => state.operation.intelligentExpert.get('listParams').toJS());// 继续请求智能专家库列表
         yield put({
-          type: intelligentExpertAction.getIntelligentTable,
+          type: intelligentExpertAction.changeIntelligentExpertStore,
           payload: params,
         });
       }

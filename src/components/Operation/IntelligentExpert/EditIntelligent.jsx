@@ -62,7 +62,6 @@ class EditIntelligent extends Component {
     const { form, editIntelligent, listParams, uploadFileList, intelligentDetail } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('values', values);
         editIntelligent({
           faultDescription: intelligentDetail.faultDescription,
           ...values,
@@ -123,7 +122,6 @@ class EditIntelligent extends Component {
     const { showWarningTip, tooltipName } = this.state;
     const { getFieldDecorator } = this.props.form;
     const { intelligentDetail = {}, stationType, uploadFileList } = this.props;
-    const checkItemsName = stationType === '0' && '故障原因' || '检查项目';
     const initFileList = this.changeFileList(uploadFileList);
     const warningTipText = {
       'back': '退出后信息无法保存！',
@@ -169,9 +167,9 @@ class EditIntelligent extends Component {
                 )}
               </FormItem>
             }
-            <FormItem className={styles.formItem} label={checkItemsName} colon={false}>
+            <FormItem className={styles.formItem} label={'故障原因'} colon={false}>
               {getFieldDecorator('checkItems', {
-                rules: [{ required: true, message: `请输入${checkItemsName}` }],
+                rules: [{ required: true, message: `请输入${'故障原因'}` }],
                 initialValue: intelligentDetail.checkItems,
               })(
                 <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
@@ -182,7 +180,7 @@ class EditIntelligent extends Component {
                 rules: [{ required: true, message: '请输入处理方法' }],
                 initialValue: intelligentDetail.processingMethod,
               })(
-                <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
+                <InputLimit style={{ marginLeft: -80 }} size={999} end={true} width={590} placeholder="请输入..." />
               )}
             </FormItem>
             <FormItem className={styles.formItem} label="所需工具" colon={false}>
@@ -190,7 +188,7 @@ class EditIntelligent extends Component {
                 rules: [{ message: '请输入...' }],
                 initialValue: intelligentDetail.requiredTools,
               })(
-                <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
+                <InputLimit style={{ marginLeft: -80 }} end={true} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
             <FormItem className={styles.formItem} label="备注" colon={false}>
@@ -198,7 +196,7 @@ class EditIntelligent extends Component {
                 rules: [{ message: '请输入......' }],
                 initialValue: intelligentDetail.remark,
               })(
-                <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
+                <InputLimit style={{ marginLeft: -80 }} end={true} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
             <Form.Item label="上传附件" colon={false}>
@@ -211,7 +209,7 @@ class EditIntelligent extends Component {
                   fileList={initFileList}
                   onPreview={this.onPreview}
                 >
-                  <Button> <Icon type="upload" /> 选择文件上传</Button>  <span> 上传文件不得大于100M</span>
+                  <Button> <Icon type="upload" /> 选择文件上传</Button>  <span className={styles.extraSpan}> 上传文件不得大于100M</span>
                 </Upload>
               )}
             </Form.Item>
