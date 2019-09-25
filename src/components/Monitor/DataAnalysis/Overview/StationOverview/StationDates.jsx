@@ -126,11 +126,11 @@ class StationDates extends PureComponent{
               const { date, completeRate } = validDate || {};
               const rateStr = dataFormats(completeRate, '--', 2, true);
               let backgroundColor = '#f8f8f8';
-              rateStr < 0.2 && rateStr >= 0 && (backgroundColor = '#3b85d5');
-              rateStr < 0.4 && rateStr >= 0.2 && (backgroundColor = '#599fe7');
-              rateStr < 0.6 && rateStr >= 0.4 && (backgroundColor = '#8fc6f6');
-              rateStr < 0.8 && rateStr >= 0.6 && (backgroundColor = '#abd8fc');
-              rateStr >= 0.8 && (backgroundColor = '#e2f2fb');
+              rateStr < 20 && rateStr >= 0 && (backgroundColor = '#3b85d5');
+              rateStr < 40 && rateStr >= 20 && (backgroundColor = '#599fe7');
+              rateStr < 60 && rateStr >= 40 && (backgroundColor = '#8fc6f6');
+              rateStr < 80 && rateStr >= 60 && (backgroundColor = '#abd8fc');
+              rateStr >= 80 && (backgroundColor = '#e2f2fb');
               const dayStyle = moment(e).isSame(month, 'M') ? {
                 backgroundColor,
                 color: '#000',
@@ -140,7 +140,7 @@ class StationDates extends PureComponent{
                 <div className={styles.eachDay} style={{ ...dayStyle }} key={e} data-date={date}>
                   <span className={styles.monthDay}>{moment(e).format('D')}</span>
                   {validDate && <span className={styles.rateData}>
-                    {dataFormats(rateStr * 100, '--', 2, true)}%
+                    {dataFormats(rateStr, '--', 2, true)}%
                   </span>}
                 </div>
               );

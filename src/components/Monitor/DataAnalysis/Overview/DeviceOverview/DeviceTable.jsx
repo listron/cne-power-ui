@@ -148,6 +148,7 @@ class DeviceTable extends PureComponent{
     const { deviceData = [] } = devicesData;
     const { pointData = []} = deviceData[0] || {};
     const tableWidth = 410 + pointData.length * 330;
+    console.log(tableWidth, tableColumn)
     return(
       <div className={styles.devicePoints}>
         <div className={styles.pointHandle}>

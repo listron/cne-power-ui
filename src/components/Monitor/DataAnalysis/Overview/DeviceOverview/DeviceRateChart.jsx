@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Icon } from 'antd';
+import { dataFormats } from '@utils/utilFunc';
 import styles from './device.scss';
 
 class DeviceRateChart extends PureComponent{
@@ -121,7 +122,7 @@ class DeviceRateChart extends PureComponent{
             <div class=${styles.info}>
               <span class=${styles.round}></span>
               <span class=${styles.infoText}>设备数据完整率</span>
-              <span>${value}%</span>
+              <span>${dataFormats(value, '--', 2, true)}%</span>
             </div>
           </section>`;
         },
@@ -165,7 +166,7 @@ class DeviceRateChart extends PureComponent{
     return(
       <div className={styles.deviceRate}>
         <div className={styles.total}>
-          <div className={styles.num}>{total}%</div>
+          <div className={styles.num}>{dataFormats(total, '--', 2, true)}%</div>
           <div className={styles.text}>设备数据完整率平均值</div>
         </div>
         <div className={styles.chart} ref={(ref) => { this.rateRef = ref; }} />

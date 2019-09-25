@@ -7,6 +7,7 @@ import moment from 'moment';
 import { Select } from 'antd';
 import styles from './common.scss';
 import StationSelect from '@components/Common/StationSelect';
+import { dataFormats } from '@utils/utilFunc';
 const { Option } = Select;
 
 class CommonSearch extends PureComponent{
@@ -33,7 +34,7 @@ class CommonSearch extends PureComponent{
   render(){
     const { topData, stationCode, deviceTypeCode, stations } = this.props;
     const { dataStartTime, deviceTypes = [] } = topData;
-    const { deviceCount = 0 } = deviceTypes.find(e => e.deviceTypeCode === deviceTypeCode) || {};
+    const { deviceCount } = deviceTypes.find(e => e.deviceTypeCode === deviceTypeCode) || {};
     return(
       <div className={styles.search}>
         <div className={styles.station}>
@@ -77,7 +78,7 @@ class CommonSearch extends PureComponent{
         </div>
         <div className={styles.count}>
           <span className={styles.text}>设备数量 : </span>
-          <span>{deviceCount}</span>
+          <span>{dataFormats(deviceCount)}</span>
         </div>
       </div>
     );
