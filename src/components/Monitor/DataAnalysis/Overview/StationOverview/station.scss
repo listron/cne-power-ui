@@ -91,42 +91,87 @@
 
 }
 
-.list{
-  background-color: #fff;
-  .eachStation{
-    border: 4px solid $themeColor;
-    color: $themeColor;
-    background:#ffffff;
-    box-shadow:0 2px 4px 1px rgba(0,0,0,0.30);
-  }
-  .eachStation:hover{
-    border: none;
-    color: #fff;
-    background-image:linear-gradient(-180deg, #36c6ad 0%, #199475 100%);
-    box-shadow:0 2px 4px 2px rgba(0,0,0,0.30), inset 0 0 4px 2px rgba(255,255,255,0.50);
-  }
-}
-
-.dates{
-  background-color: #fff;
-  .datesTopInfo{
-    .text{
-      color: $darkColor;
+.light.station{
+  .list{
+    background-color: #fff;
+    .eachStation{
+      border: 4px solid $themeColor;
+      color: $themeColor;
+      background:#ffffff;
+      box-shadow:0 2px 4px 1px rgba(0,0,0,0.30);
     }
-    .levels{
-      color:#000;
+    .eachStation:hover{
+      border: none;
+      color: #fff;
+      background-image:linear-gradient(-180deg, #36c6ad 0%, #199475 100%);
+      box-shadow:0 2px 4px 2px rgba(0,0,0,0.30), inset 0 0 4px 2px rgba(255,255,255,0.50);
     }
   }
-  .calendar{
-    .eachDay{
-      border-bottom: 2px solid #fff;
-      border-right: 2px solid #fff;
-      background-color:#f8f8f8;
-      color: #dfdfdf;
-      &:hover{
-        z-index: 99;
-        box-shadow:0 0 4px 2px rgba(0,0,0,0.30);
+  
+  .dates{
+    background-color: #fff;
+    .datesTopInfo{
+      .text{
+        color: $darkColor;
+      }
+      .levels{
+        color:#000;
+      }
+    }
+    .calendar{
+      .eachDay{
+        border-bottom: 2px solid #fff;
+        border-right: 2px solid #fff;
+        background-color:#f8f8f8;
+        color: #dfdfdf;
+        &:hover{
+          z-index: 99;
+          box-shadow:0 0 4px 2px rgba(0,0,0,0.30);
+        }
       }
     }
   }
 }
+.dark.station{
+  .list{
+    background-color: rgba(20,33,101,0.40);
+    .eachStation{
+      border: 4px solid rgb(83, 247, 202);
+      color: #9cd1ff;
+      border-radius:4px;
+      background:transparent;
+      box-shadow:0 2px 4px 1px rgba(255,255,255,0.30);
+    }
+    .eachStation:hover{
+      border: none;
+      color: #fff;
+      background-image:linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+      box-shadow:0 2px 4px 2px rgba(255,255,255,0.30), inset 0 0 4px 2px rgba(255,255,255,0.50);
+    }
+  }
+  
+  .dates{
+    background:rgba(20,33,101,0.40);
+    .datesTopInfo{
+      .text{
+        color: var(--darkColor);
+      }
+      .levels{
+        color:#303c62;
+      }
+    }
+    .calendar{
+      .eachDay{
+        border-bottom: 2px solid #1f2a4e;
+        border-right: 2px solid #1f2a4e;
+        background-color:#4a5988;
+        color:#1f2a4e;
+        &:hover{
+          z-index: 99;
+          box-shadow:0 0 4px 2px rgba(0,0,0,0.30);
+        }
+      }
+    }
+  }
+}
+

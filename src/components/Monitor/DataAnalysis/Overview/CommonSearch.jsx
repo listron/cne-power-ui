@@ -12,6 +12,7 @@ const { Option } = Select;
 
 class CommonSearch extends PureComponent{
   static propTypes = {
+    theme: PropTypes.string,
     stations: PropTypes.array,
     topData: PropTypes.object,
     stationCode: PropTypes.number,
@@ -32,11 +33,11 @@ class CommonSearch extends PureComponent{
   }
 
   render(){
-    const { topData, stationCode, deviceTypeCode, stations } = this.props;
+    const { topData, stationCode, deviceTypeCode, stations, theme } = this.props;
     const { dataStartTime, deviceTypes = [] } = topData;
     const { deviceCount } = deviceTypes.find(e => e.deviceTypeCode === deviceTypeCode) || {};
     return(
-      <div className={styles.search}>
+      <div className={`${styles.search} ${styles[theme]}`}>
         <div className={styles.station}>
           <span className={styles.text}>电站名称</span>
           <StationSelect

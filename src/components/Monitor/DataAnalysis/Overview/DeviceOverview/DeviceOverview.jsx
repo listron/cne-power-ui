@@ -14,6 +14,7 @@ const { MonthPicker } = DatePicker;
 
 class DeviceOverview extends PureComponent{
   static propTypes = {
+    theme: PropTypes.string,
     history: PropTypes.object,
     stations: PropTypes.array,
     deviceTopData: PropTypes.object,
@@ -163,7 +164,7 @@ class DeviceOverview extends PureComponent{
   }
 
   render(){
-    const { deviceParam, deviceTopData, stations } = this.props;
+    const { deviceParam, deviceTopData, stations, theme } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = deviceParam;
     return(
       <div className={styles.device}>
@@ -184,6 +185,7 @@ class DeviceOverview extends PureComponent{
             deviceTypeCode={deviceTypeCode}
             onStationChange={this.stationChanged}
             onTypeChange={this.deviceTypeChanged}
+            theme={theme}
           />
         </div>
         <DeviceRateChart {...this.props} />
