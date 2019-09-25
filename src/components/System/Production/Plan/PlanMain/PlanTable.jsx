@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import { Table, Button, Icon, Input, Form, message, Upload } from 'antd';
-import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
-import styles from './planMain.scss';
-import { getDefectSortField, getDefaultMonth } from '../plan';
+import CommonPagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
-import EditableCell from './EditableCell';
+import { Table, Button, Icon, Input, Form, message, Upload, Modal, Select } from 'antd';
+import { getDefectSortField, getDefaultMonth } from '../plan';
+import path from '../../../../../constants/path';
+import styles from './planMain.scss';
 import moment from 'moment';
+import EditableCell from './EditableCell';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../../utils/utilFunc';
-import path from '../../../../../constants/path';
+
 const { APIBasePath, originUri } = path.basePaths;
 const { system } = path.APISubPaths;
 const EditableContext = React.createContext();
+const { Option } = Select;
 
 const EditableRow = ({ form, index, ...props }) => {
   return (<EditableContext.Provider value={form}>
@@ -33,11 +35,12 @@ class PlanTable extends Component {
     pageSize: PropTypes.number,
     stationCodes: PropTypes.array,
     sortField: PropTypes.string,
-    sort: PropTypes.string,
+    sortMethod: PropTypes.string,
     totalNum: PropTypes.number,
     downloading: PropTypes.bool,
     downLoadFile: PropTypes.func,
-    planYear: PropTypes.string,
+    planYear: PropTypes.any,
+    importFile: PropTypes.func,
   };
 
   constructor(props) {
@@ -50,6 +53,9 @@ class PlanTable extends Component {
       showWarningTip: false,
       currentClickKey: '',
       importLoading: false,
+      importVisible: false, // 批量导入显示
+      fileList: [], // 导入文件
+      importYear: moment().year(), // 批量导入的年份
     };
   }
 
@@ -66,8 +72,8 @@ class PlanTable extends Component {
   };
 
   getPlanList = (value) => {
-    const { planYear, stationCodes, sortField, sort, pageNum, pageSize } = this.props;
-    this.props.getPlanList({ planYear, stationCodes, sortField, sort, pageNum, pageSize, ...value });
+    const { planYear, stationCodes, sortField, sortMethod, pageNum, pageSize } = this.props;
+    this.props.getPlanList({ yaer: planYear, stationCodes, sortField, sortMethod, pageNum, pageSize, ...value });
   }
 
 
@@ -315,13 +321,39 @@ class PlanTable extends Component {
     const validFile = validType.includes(file.type);
     if (!validFile) {
       message.error('只支持上传excel文件!');
+    } else {
+      this.setState({ fileList: [file] });
     }
-    return !!validFile;
+    return false;
+  }
+
+  batchImport = () => { // 批量导入
+    this.setState({ importVisible: true });
+  }
+
+  importYearSelct = (value) => {
+    this.setState({ importYear: value });
+  }
+
+  importFile = () => {
+    const { importYear, fileList } = this.state;
+    console.log('importYear', importYear, fileList);
+    const formData = new FormData();
+    formData.append('file', fileList[0]);
+    formData.append('year', importYear);
+    this.props.importFile({ formData });
+  }
+
+  removeFile = (file) => {
+    const { fileList } = this.state;
+    console.log('11', fileList, file);
+    const newFile = fileList.filter(e.lastModified !== file.lastModified);
+    this.setState({ fileList: newFile });
   }
 
   render() {
-    const { pageSize, pageNum, totalNum, loading, planYear } = this.props;
-    const { showWarningTip, warningTipText, data } = this.state;
+    const { pageSize, pageNum, totalNum, loading, planYear, importLoading } = this.props;
+    const { showWarningTip, warningTipText, data, importVisible, fileList } = this.state;
     const components = {
       body: {
         row: EditableFormRow,
@@ -334,34 +366,9 @@ class PlanTable extends Component {
         },
       },
     };
-    const authData = localStorage.getItem('authData') || '';
-    const uploadProps = {
-      name: 'file',
-      action: `${APIBasePath}${system.importPlan}`,
-      headers: { 'Authorization': 'bearer ' + authData },
-      beforeUpload: this.beforeUpload,
-      data: { year: planYear },
-      showUploadList: false,
-      onChange: (info) => {
-        if (info.file.status === 'uploading') {
-          this.setState({ importLoading: true });
-        }
-        if (info.file.status === 'done') {
-          if (info.file.response.code === '10000') {
-            message.success(`${info.file.name} 导入完成`);
-            this.getPlanList();
-          } else {
-            message.error(`${info.file.name} 导入失败，请重新导入.`);
-          }
-          this.setState({ importLoading: false });
-        }
-        if (info.file.status === 'error') {
-          message.error(`${info.file.name} 导入失败，请重新导入.`);
-          this.setState({ importLoading: false });
-        }
-      },
-    };
     const downloadHref = `${originUri}/template/proplan.xlsx`;
+
+    const importYear = [moment().year(), moment().add(1, 'year').year()];
     return (
       <div className={styles.planList}>
         {showWarningTip &&
@@ -374,9 +381,9 @@ class PlanTable extends Component {
             </Button>
             {/* <Upload {...uploadProps} className={styles.importUser}>
               <Button type={'default'} loading={this.state.importLoading} >批量导入</Button>
-            </Upload>
-             <Button href={downloadHref} download={downloadHref} target="_blank" >导入下载模版</Button>
-            */}
+            </Upload> */}
+            <Button type={'default'} onClick={this.batchImport} >批量导入</Button>
+            <Button href={downloadHref} download={downloadHref} target="_blank" >导入下载模版</Button>
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
@@ -390,6 +397,36 @@ class PlanTable extends Component {
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           columns={this._createTableColumn()}
         />
+        <span ref={'modal'} />
+        <Modal
+          visible={importVisible}
+          title="批量导入计划发电量"
+          onCancel={() => this.setState({ importVisible: false })}
+          footer={null}
+          getContainer={() => this.refs.modal}
+          centered={true}
+        >
+          <div>
+            <div> <span>*</span> 年份填写</div>
+            <Select defaultValue={moment().year()} onChange={this.importYearSelct}>
+              {importYear.map(e => {
+                return <Option key={e}>{e}</Option>;
+              })}
+            </Select>
+          </div>
+          <div>
+            <div> <span>*</span> 附件</div>
+            <Upload
+              beforeUpload={this.beforeUpload}
+              fileList={fileList}
+              onRemove={this.removeFile}
+              className={styles.importUser}>
+              <Button type={'default'} >选择文件</Button>
+              <span> 支持xls、xlsx文件</span>
+            </Upload>
+          </div>
+          <Button type={'primary'} onClick={this.importFile} disabled={fileList.length === 0} loading={importLoading}>导入</Button>
+        </Modal>
       </div>
     );
   }
