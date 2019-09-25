@@ -5,23 +5,29 @@ import styles from './point.scss';
 
 class PointChart extends PureComponent{
   static propTypes = {
+    theme: PropTypes.string,
     pointsLoading: PropTypes.bool,
     histogramList: PropTypes.array,
   }
 
   componentDidMount(){
-    const { histogramList } = this.props;
-    histogramList && histogramList.length > 0 && this.drawChart(histogramList);
+    const { histogramList, theme } = this.props;
+    histogramList && histogramList.length > 0 && this.drawChart(histogramList, theme);
   }
 
   componentWillReceiveProps(nextProps){
-    const { histogramList, pointsLoading } = nextProps;
+    const { histogramList, pointsLoading, theme } = nextProps;
     const preLoading = this.props.pointsLoading;
     if (preLoading && !pointsLoading) { // 请求完毕
-      this.drawChart(histogramList);
+      this.drawChart(histogramList, theme);
     } else if (!preLoading && pointsLoading) { // 请求中
       this.setChartLoading();
     }
+  }
+
+  barColor = {
+    light: ['#1cfcf4', '#009cff'],
+    dark: ['#1cfcf4', '#009cff'],
   }
 
   setChartLoading = () => {
@@ -29,7 +35,7 @@ class PointChart extends PureComponent{
     histogramChart && histogramChart.showLoading();
   }
 
-  drawChart = (histogramList) => {
+  drawChart = (histogramList, theme) => {
     const histogramChart = echarts.init(this.histogramRef);
     const dataAxis = [], rateData = [];
     // histogram: [[0.0, 15.0, 0.1034], [15.0, 30.0, 0.1034], [30.0, 45.0, 0.1034], [45.0, 60.0, 0.0], [60.0, 75.0, 0.0517], [75.0, 90.0, 0.1034], [90.0, 105.0, 0.1552], [105.0, 120.0, 0.069], [120.0, 135.0, 0.0345], [135.0, 150.0, 0.0], [150.0, 165.0, 0.0], [165.0, 180.0, 0.0], [180.0, 195.0, 0.0172], [195.0, 210.0, 0.0172], [210.0, 225.0, 0.2414]]
@@ -38,6 +44,7 @@ class PointChart extends PureComponent{
       dataAxis.push(`${startNum}~${endNum}`);
       rateData.push(rate * 100);
     });
+    const barColor = this.barColor[theme] || ['#1cfcf4', '#009cff'];
     const option = {
       grid: {
         top: 20,
@@ -48,39 +55,16 @@ class PointChart extends PureComponent{
       },
       xAxis: {
         data: dataAxis,
-        axisLabel: {
-          textStyle: {
-            color: '#666',
-          },
-        },
         axisTick: {
           show: false,
         },
-        axisLine: {
-          lineStyle: {
-            color: '#dfdfdf',
-          },
-        },
       },
       yAxis: {
-        axisLine: {
-          lineStyle: {
-            color: '#dfdfdf',
-          },
-        },
         splitLine: {
           show: false,
         },
         axisTick: {
           show: false,
-        },
-        axisLabel: {
-          textStyle: {
-            color: '#666666',
-          },
-        },
-        nameTextStyle: {
-          color: '#666666',
         },
       },
       tooltip: {
@@ -103,8 +87,8 @@ class PointChart extends PureComponent{
         cursor: 'default',
         itemStyle: {
           color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
-            {offset: 0, color: '#1cfcf4' },
-            {offset: 1, color: '#009cff' },
+            {offset: 0, color: barColor[0] },
+            {offset: 1, color: barColor[1] },
           ]),
         },
         data: rateData,

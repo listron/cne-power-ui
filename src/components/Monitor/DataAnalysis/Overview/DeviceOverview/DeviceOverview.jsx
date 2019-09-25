@@ -167,7 +167,7 @@ class DeviceOverview extends PureComponent{
     const { deviceParam, deviceTopData, stations, theme } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = deviceParam;
     return(
-      <div className={styles.device}>
+      <div className={`${styles.device} ${styles[theme]}`}>
         <div className={styles.topSearch}>
           <div className={styles.dateCheck}>
             <span className={styles.checkText}>时间范围</span>

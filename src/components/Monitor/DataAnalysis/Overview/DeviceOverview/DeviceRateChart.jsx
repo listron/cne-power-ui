@@ -7,6 +7,7 @@ import styles from './device.scss';
 
 class DeviceRateChart extends PureComponent{
   static propTypes = {
+    theme: PropTypes.string,
     devicesData: PropTypes.object,
     deveiceLoading: PropTypes.bool,
   }
@@ -17,21 +18,26 @@ class DeviceRateChart extends PureComponent{
 
   componentDidMount(){
     const { sortType } = this.state;
-    const { devicesData } = this.props;
+    const { devicesData, theme } = this.props;
     const { deviceData = [] } = devicesData;
-    deviceData.length > 0 && this.drawChart(sortType, deviceData);
+    deviceData.length > 0 && this.drawChart(sortType, deviceData, theme);
   }
 
   componentWillReceiveProps(nextProps){
     const { sortType } = this.state;
-    const { devicesData, deveiceLoading } = nextProps;
+    const { devicesData, deveiceLoading, theme } = nextProps;
     const preLoading = this.props.deveiceLoading;
     if (preLoading && !deveiceLoading) { // 请求完毕
       const { deviceData = [] } = devicesData;
-      this.drawChart(sortType, deviceData);
+      this.drawChart(sortType, deviceData, theme);
     } else if (!preLoading && deveiceLoading) { // 请求中
       this.setChartLoading();
     }
+  }
+
+  chartBarColor = {
+    light: '#199475',
+    dark: '#99cc32',
   }
 
   setChartLoading = () => {
@@ -45,15 +51,15 @@ class DeviceRateChart extends PureComponent{
 
   sortChart = (value) => {
     const { sortType } = this.state;
-    const { devicesData } = this.props;
+    const { devicesData, theme } = this.props;
     const { deviceData } = devicesData;
     const sortResult = value === sortType ? null : value; // 连击取消排序, 否则正常排序
     this.setState({ sortType: sortResult });
-    this.drawChart(sortResult, deviceData);
+    this.drawChart(sortResult, deviceData, theme);
   }
 
-  drawChart = (sortType, deviceData) => {
-    const rateChart = echarts.init(this.rateRef);
+  drawChart = (sortType, deviceData, theme) => {
+    const rateChart = echarts.init(this.rateRef, `${theme}Config`);
     const sortedData = sortType ? [...deviceData].sort((a, b) => {
       const sortSign = sortType === 'up' ? 1 : -1;
       return (a.completeRate - b.completeRate) * sortSign;
@@ -73,40 +79,17 @@ class DeviceRateChart extends PureComponent{
       },
       xAxis: {
         data: dataAxis,
-        axisLabel: {
-          textStyle: {
-            color: '#666',
-          },
-        },
         axisTick: {
           show: false,
-        },
-        axisLine: {
-          lineStyle: {
-            color: '#dfdfdf',
-          },
         },
       },
       yAxis: {
         splitNumber: 2,
-        axisLine: {
-          lineStyle: {
-            color: '#dfdfdf',
-          },
-        },
         splitLine: {
           show: false,
         },
         axisTick: {
           show: false,
-        },
-        axisLabel: {
-          textStyle: {
-            color: '#666666',
-          },
-        },
-        nameTextStyle: {
-          color: '#666666',
         },
       },
       tooltip: {
@@ -132,7 +115,7 @@ class DeviceRateChart extends PureComponent{
         barWidth: '10px',
         cursor: 'default',
         itemStyle: {
-          color: '#199475',
+          color: this.chartBarColor[theme],
         },
         data: rateData,
       }],
