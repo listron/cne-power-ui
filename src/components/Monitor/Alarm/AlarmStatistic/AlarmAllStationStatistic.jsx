@@ -30,13 +30,15 @@ class ALarmAllStationStatistic extends React.Component {
   }
   componentDidMount() {
     if (this.props.showPage === 'multiple') {
-      const { stationCode, stations, orderField, orderCommand, pageSize, pageNum } = this.props;
+      const { stationCode, stations, orderField, orderCommand, pageSize, pageNum, startTime, endTime } = this.props;
       let stationType = this.props.stationType;
       const stationTypeOne = this.stationIsOneType();
       if (stationTypeOne) {
         stationType = stations.getIn([0, 'stationType']);
       }
       this.props.getStationsAlarmStatistic({
+        startTime,
+        endTime,
         stationType,
         stationCode,
         pageSize,

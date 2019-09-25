@@ -1,0 +1,49 @@
+@import '../../../../../theme/theme.scss';
+
+
+  .tabs{
+    flex: 0 0 36px;
+    margin: 32px 0 0 0;
+    display: flex;
+    .eachTab{
+      flex: 0 0 126px;
+      margin-right: 10px;
+      position: relative;
+    }
+    .button{
+      display: flex;
+      height: 36px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .actievButton{
+      cursor: auto;
+    }
+    .close{
+      position: absolute;
+      font-size: 10px;
+      right: 2px;
+      top: 4px;
+      border-radius: 50%;
+    }
+  }
+
+  .tabs .button{
+    color: $darkColor;
+    background-image:linear-gradient(-180deg, #f2f3f3 0%, #e1e2e2 100%);
+    border:1px solid #e1e2e2;
+    border-top: 1px solid transparent;
+    border-bottom: none;
+  }
+  .tabs .actievButton{
+    color: $darkColor;
+    border:1px solid #e1e2e2;
+    border-top: 2px solid $themeColor;
+    border-bottom: none;
+    background-image:linear-gradient(-180deg, #fff 0%, #fff 100%);
+  }
+  .tabs .close{
+    color: $themeColor;
+    border: 1px solid $themeColor;
+  }

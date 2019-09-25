@@ -442,6 +442,12 @@ export default {
       getPoints: '/v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
       getDataExport: '/v3/wind/analysis/export/task', // 数据导出
 
+      getOverviewStation: '/v3/dataoverview/devicetype', // 获取电站信息
+      getOverviewDates: '/v3/dataoverview/station', // 电站各日完整率
+      getOverviewDevices: '/v3/dataoverview/point', // 获取设备信息
+      getOverviewPoints: '/v3/dataoverview/device', // 获取测点信息
+      getOverviewConnectedDevices: '/v3/station/puredevices', // 测点页获取可用的设备列表
+
       getWindMonitorPower: '/v3/wind/monitor/stations/power', // 全部风电站的理论发电量图表
       getWindStation: '/v3/wind/monitor/stations', // 全部风电站
       getWindCapability: '/v3/wind/monitor/stations/capabilitydiagram', // 风电站出力图
@@ -493,6 +499,7 @@ export default {
       getSingleStationYearPvCompare: '/v3/performance/comprehensive/light/year',
       getSingleStationPowerEffective:
         '/v3/performance/comprehensive/efficiencygen',
+      exportAllstationTableData: '/v3/performance/comprehensive/statistics/export',
       // 电站对比
       getStationContrast: '/v3/performance/stationcontrast',
       getStationContrastDetail: '/v3/performance/stationcontrast/list',

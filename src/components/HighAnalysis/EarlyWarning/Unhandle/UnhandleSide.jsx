@@ -116,7 +116,7 @@ class UnhandleSide extends Component {
             <p>所属方阵：{warnDetail.belongMatrix || '--'}</p>
             <p>设备名称：{warnDetail.parentDeviceName || '--'}</p>
             <p>电流偏低支路：{warnDetail.deviceName || '--'}</p>
-            <p>发生时间：{warnDetail.happenTime || '--'}</p>
+            <p>预警时间：{warnDetail.happenTime || '--'}</p>
             <p>电量损失比：{warnDetail.lostGenPercent || '--'}%</p>
           </div>
           <div className={styles.chartTop} ref="time">

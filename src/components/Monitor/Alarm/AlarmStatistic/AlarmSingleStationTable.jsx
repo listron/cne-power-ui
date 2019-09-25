@@ -20,10 +20,10 @@ class AlarmSingleStationTable extends React.Component {
 
   onChangeTable = (pagination, filters, sorter) => {
     const field = sorter.field;
-    const arr = ['time', 'alarmNum', 'transferWorkAlarmNum', 'noTransferWorkAlarmNum', 'transferWorkRate']
+    const arr = ['time', 'alarmNum', 'transferWorkAlarmNum', 'noTransferWorkAlarmNum', 'transferWorkRate'];
     this.props.onChangeFilter({
-      orderField: (arr.indexOf(field)+1).toString(),
-      orderCommand: sorter.order === 'ascend' ? '1' : '2'
+      orderField: (arr.indexOf(field) + 1).toString(),
+      orderCommand: sorter.order === 'ascend' ? '1' : '2',
     });
   }
 
@@ -34,7 +34,7 @@ class AlarmSingleStationTable extends React.Component {
         dataIndex: 'time',
         key: 'time',
         sorter: true,
-        render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
+        render: (text, record) => moment(text).format('YYYY-MM-DD'),
       },
       {
         title: '告警总数',
@@ -62,7 +62,7 @@ class AlarmSingleStationTable extends React.Component {
         dataIndex: 'transferWorkRate',
         render: value => numWithComma(value),
         sorter: true,
-      }
+      },
     ];
     return columns;
   }
@@ -70,11 +70,11 @@ class AlarmSingleStationTable extends React.Component {
   render() {
     const { singleAlarmStatistic, pageNum, pageSize, onPaginationChange } = this.props;
     const totalNum = singleAlarmStatistic && singleAlarmStatistic.length;
-    let startRow = (pageNum - 1) * pageSize;
+    const startRow = (pageNum - 1) * pageSize;
     let endRow = pageNum * pageSize;
     endRow = (endRow > totalNum) ? totalNum : endRow;
-    let data = singleAlarmStatistic && singleAlarmStatistic.slice(startRow, endRow).map((item,index)=>{
-      item.key=index;
+    const data = singleAlarmStatistic && singleAlarmStatistic.slice(startRow, endRow).map((item, index) => {
+      item.key = index;
       return item;
     });
     return (
@@ -82,12 +82,12 @@ class AlarmSingleStationTable extends React.Component {
         <div className={styles.pagination}>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={onPaginationChange} />
         </div>
-        <Table 
-          columns={this.renderColumn()} 
-          dataSource={data} 
-          onChange={this.onChangeTable} 
-          pagination={false} 
-          locale={{emptyText:<div className={styles.noData}><img src="/img/nodata.png" style={{width: 223,height:164}} /></div>}} />
+        <Table
+          columns={this.renderColumn()}
+          dataSource={data}
+          onChange={this.onChangeTable}
+          pagination={false}
+          locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }} />
       </div>
     );
   }
