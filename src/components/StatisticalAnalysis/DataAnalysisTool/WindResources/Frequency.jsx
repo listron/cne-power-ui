@@ -79,10 +79,10 @@ class Frequency extends Component{
     changeWindResourcesStore({ deviceList, frequencyData });
   };
 
-  likeStatusChange2 = (index, bool) => {
+  likeStatusChange2 = (index, bool, frequencyData) => {
     const { deviceList, changeWindResourcesStore } = this.props;
     deviceList[index].likeStatus = bool;
-    changeWindResourcesStore({ deviceList });
+    changeWindResourcesStore({ deviceList, frequencyData });
   };
 
   saveImgUrl = (title, src) => {
@@ -120,11 +120,13 @@ class Frequency extends Component{
   }
 
   changeCurrentImgIndex = (index) => {
-    const { deviceList } = this.props;
+    const { deviceList, changeWindResourcesStore } = this.props;
     const deviceFullCode = deviceList[index].deviceFullCode;
     this.setState({
       currentImgIndex: index,
     });
+    // 清空放大频率图数据
+    changeWindResourcesStore({ curBigChartData: [] });
     this.queryData(deviceFullCode);
   }
 

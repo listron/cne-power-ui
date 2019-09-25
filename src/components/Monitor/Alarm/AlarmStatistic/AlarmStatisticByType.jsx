@@ -30,48 +30,48 @@ class AlarmStatisticByType extends Component {
     this.state = {
       showFilter: '',
       key: 'graph',
-    }
+    };
   }
   //点击插入要显示内容
   onFilterShowChange = (filterText) => {
     const { showFilter } = this.state;
     if (showFilter === filterText) {
       this.setState({
-        showFilter: ''
-      })
+        showFilter: '',
+      });
     } else {
       this.setState({
-        showFilter: filterText
-      })
+        showFilter: filterText,
+      });
     }
   }
 
   //改变时间的
   onChangeTime = (value, dateString) => {
-    let startTime = dateString[0];
-    let endTime = dateString[1];
+    const startTime = dateString[0];
+    const endTime = dateString[1];
     this.props.onChangeFilter({
       startTime,
       endTime,
     });
   }
-  
+
   //设置tabs按钮的
   onChangeTab = (key) => {
     const { pageSize, pageNum, orderField, orderCommand } = this.props;
-    if(key === 'graph') {
+    if (key === 'graph') {
       this.props.onChangeFilter({
         pageSize: null,
         pageNum: null,
         orderField: '',
-        orderCommand: ''
+        orderCommand: '',
       });
-    } else if(key === 'table'){
+    } else if (key === 'table') {
       this.props.onChangeFilter({
-        pageSize: pageSize!==null?pageSize:10,
-        pageNum: pageNum!==null?pageNum:1,
-        orderField: orderField!==''?orderField:'',
-        orderCommand: orderField!==''?orderCommand:''
+        pageSize: pageSize !== null ? pageSize : 10,
+        pageNum: pageNum !== null ? pageNum : 1,
+        orderField: orderField !== '' ? orderField : '',
+        orderCommand: orderField !== '' ? orderCommand : '',
       });
     }
     this.setState({ key });
@@ -81,25 +81,25 @@ class AlarmStatisticByType extends Component {
   //筛选时间，出现日期框
   onChangeDuration = (value) => {
     let startTime, endTime;
-    if(value === 'other') {
+    if (value === 'other') {
       this.onFilterShowChange('timeSelect');
     } else {
-      if(value === 'today') {
+      if (value === 'today') {
         startTime = moment().hour(0).minute(0).second(0).utc().format();
         endTime = moment().utc().format();
-      } else if(value === 'yesterday') {
+      } else if (value === 'yesterday') {
         startTime = moment().subtract(1, 'days').hour(0).minute(0).second(0).utc().format();
         endTime = moment().subtract(1, 'days').hour(23).minute(59).second(59).utc().format();
-      } else if(value === 'last7') {
+      } else if (value === 'last7') {
         startTime = moment().subtract(7, 'days').hour(0).minute(0).second(0).utc().format();
         endTime = moment().utc().format();
-      } else if(value === 'last30') {
+      } else if (value === 'last30') {
         startTime = moment().subtract(30, 'days').hour(0).minute(0).second(0).utc().format();
         endTime = moment().utc().format();
       }
       this.props.onChangeFilter({
         startTime,
-        endTime
+        endTime,
       });
     }
   }
@@ -112,20 +112,20 @@ class AlarmStatisticByType extends Component {
   }
   exportAlarm = () => {
     const { stationCode, startTime, endTime, stationType } = this.props;
-    this.props.exportAlarm({
+    this.props.exportAlarm({//导出
       stationCode,
       startTime,
       endTime,
-      stationType
+      stationType,
     });
   }
   disabledDate = (current) => {
-    if(this.start) {
+    if (this.start) {
       const end = moment(this.start).add(30, 'days');
       return current > moment.min(moment().endOf('day'), end);
-    } else {
-      return current && current > moment().endOf('day')
     }
+    return current && current > moment().endOf('day');
+
   }
   render() {
     const { showFilter, key } = this.state;
@@ -143,7 +143,7 @@ class AlarmStatisticByType extends Component {
           <Button className={styles.stationType} onClick={() => this.onFilterShowChange('stationSelect')}>
             选择电站{showFilter === 'stationSelect' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>
-          <Select placeholder="统计时间" style={{ width: 120 }} onChange={this.onChangeDuration}>
+          <Select placeholder="统计时间" style={{ width: 120 }} onChange={this.onChangeDuration} defaultValue={'last30'}>
             <Option value="today">今天</Option>
             <Option value="yesterday">昨天</Option>
             <Option value="last7">最近7天</Option>
@@ -170,7 +170,7 @@ class AlarmStatisticByType extends Component {
             tab={<i className="iconfont icon-drawing"></i>}
             key="graph"
           >
-            <AlarmStatisticGraph  {...this.props} />
+            <AlarmStatisticGraph {...this.props} />
           </TabPane>
           <TabPane
             tab={<i className="iconfont icon-table"></i>}

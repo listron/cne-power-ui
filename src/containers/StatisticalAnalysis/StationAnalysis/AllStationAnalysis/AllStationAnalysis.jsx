@@ -70,6 +70,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSingleStationYearPvCompareData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationYearPvCompareData, payload }),
   getSingleStationPowerEffectiveData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPowerEffectiveData, payload }),
   resetStore: payload => dispatch({ type: allStationAnalysisAction.resetStore, payload }),
+  exportAllstationTableData: payload => dispatch({ type: allStationAnalysisAction.exportAllstationTableData, payload }),
 
 
 });

@@ -39,7 +39,7 @@ const menuData = [
         rightKey: 'monitor_powerCurve',
       }, {
         name: '数据分析',
-        iconStyle: 'icon-da',
+        iconStyle: 'icon-sand',
         path: 'data',
         rightKey: 'monitor_dataAnalysis',
         children: [
@@ -47,6 +47,10 @@ const menuData = [
             name: '散点图',
             path: 'scatterDiagram',
             rightKey: 'dataAnalysis_scatterPlot',
+          }, {
+            name: '数据概览',
+            path: 'overview',
+            rightKey: 'dataAnalysis_historyTrend',
           }, {
             name: '历史趋势',
             path: 'history',
@@ -320,7 +324,7 @@ const menuData = [
       }, {
         name: '数据分析工具',
         path: 'analysisTool',
-        iconStyle: 'icon-device-data',
+        iconStyle: 'icon-sand',
         rightKey: 'analysis_dataTool',
         children: [
           {
