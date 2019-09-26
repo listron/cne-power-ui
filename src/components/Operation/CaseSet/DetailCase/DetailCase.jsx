@@ -21,8 +21,11 @@ class DetailCase extends React.Component {
     };
   }
   onWarningTipShow = () => {
-    this.setState({
-      showWarningTip: true,
+    // this.setState({
+    //   showWarningTip: true,
+    // });
+    this.props.changeCasePartStore({
+      showPage: 'list',
     });
   }
   confirmWarningTip = () => {
