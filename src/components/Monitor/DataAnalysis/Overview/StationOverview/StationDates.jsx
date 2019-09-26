@@ -103,11 +103,14 @@ class StationDates extends PureComponent{
     return(
       <div className={styles.dates}>
         <div className={styles.datesTopInfo}>
-          <MonthPicker
-            allowClear={false}
-            value={month ? moment(month) : null}
-            onChange={this.monthCheck}
-          />
+          <span ref={(ref) => { this.monthRef = ref; }}>
+            <MonthPicker
+              getCalendarContainer={() => this.monthRef}
+              allowClear={false}
+              value={month ? moment(month) : null}
+              onChange={this.monthCheck}
+            />
+          </span>
           <span className={styles.ranges}>
             <span className={styles.text}>设备数据完成率平均值</span>
             {this.rateLevel.map(e => (
