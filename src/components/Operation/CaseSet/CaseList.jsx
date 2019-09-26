@@ -23,7 +23,7 @@ class CaseList extends React.Component {
     super(props, context);
     this.state = {
       showWarningTip: false,
-      warningTipText: '确定要删除选中测点?',
+      warningTipText: '确定要删除解决方案吗?',
       currentPoint: {},
     };
   }
@@ -67,6 +67,11 @@ class CaseList extends React.Component {
     });
     this.props.getCasePartDetail({
       caseBaseId: record.caseBaseId,
+    });
+  }
+  cancelSelect = () => {
+    this.props.changeCasePartStore({
+      selectedRowKeys: [],
     });
   }
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
@@ -158,6 +163,7 @@ class CaseList extends React.Component {
           pagination={false}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
+        <div> 当前选中<span className={styles.num}>{selectedRowKeys.length}</span> 项 <span className={styles.cancelSelect} onClick={this.cancelSelect}>{selectedRowKeys.length ? '取消选择' : ''}</span></div>
       </div>
     );
   }

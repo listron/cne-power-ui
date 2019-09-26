@@ -166,8 +166,25 @@ function* addCasePart(action) { // 添加
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
-
+          showPage: 'list',
         },
+      });
+      const params = yield select(state => ({
+        //继续请求table列表
+        questionTypeCodes: state.operation.casePartReducer.get('questionTypeCodes'),
+        pageNum: state.operation.casePartReducer.get('pageNum'),
+        pageSize: state.operation.casePartReducer.get('pageSize'),
+        deviceModeList: state.operation.casePartReducer.get('deviceModeList'),
+        faultDescription: state.operation.casePartReducer.get('faultDescription'),
+        orderFiled: state.operation.casePartReducer.get('orderFiled'),
+        orderType: state.operation.casePartReducer.get('orderType'),
+        stationCodes: state.operation.casePartReducer.get('stationCodes'),
+        userId: state.operation.casePartReducer.get('userId'),
+        userName: state.operation.casePartReducer.get('userName'),
+      }));
+      yield put({
+        type: casePartAction.getCasePartList,
+        payload: params,
       });
     } else {
       throw response.data;
@@ -193,9 +210,15 @@ function* likeCase(action) { // 点赞
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
-
         },
       });
+      yield put({
+        type: casePartAction.getCasePartDetail,
+        payload: {
+          ...payload,
+        },
+      });
+
     } else {
       throw response.data;
     }

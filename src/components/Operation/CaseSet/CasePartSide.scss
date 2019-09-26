@@ -127,6 +127,24 @@
 
       }
 
+      .autoSelect {
+        :global {
+          .ant-form-item-control {
+            line-height: 0
+          }
+        }
+      }
+
+      .detailStyle {
+        display: flex;
+        flex-direction: column;
+
+        .name {
+          width: 200px;
+          text-align: right;
+        }
+      }
+
       .submitStyle {
         margin: 20px 0 20px 15%;
 

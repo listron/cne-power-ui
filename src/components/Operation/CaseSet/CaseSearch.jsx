@@ -29,6 +29,7 @@ class CaseSearch extends React.Component {
 
   }
   componentDidMount() {
+    this.getList();
     this.props.getDeviceMode({
       stationCodes: [],
       regionName: [],
