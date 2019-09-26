@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './CasePartContainer.scss';
 import { Table } from 'antd';
 import WarningTip from '../../../components/Common/WarningTip';
+import TableColumnTitle from '../../../components/Common/TableColumnTitle';
 class CaseList extends React.Component {
   static propTypes = {
     changeCasePartStore: PropTypes.func,
@@ -173,6 +174,7 @@ class CaseList extends React.Component {
       {
         title: '操作',
         key: 'caozuo',
+        className: styles.titleStyle,
         render: (text, record, index) => {
           return (
             <div>
@@ -197,7 +199,7 @@ class CaseList extends React.Component {
           pagination={false}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
-        <div> 当前选中<span className={styles.num}>{selectedRowKeys.length}</span> 项 <span className={styles.cancelSelect} onClick={this.cancelSelect}>{selectedRowKeys.length ? '取消选择' : ''}</span></div>
+        <div className={styles.selectKeyText}> 当前选中<span className={styles.num}>{selectedRowKeys.length}</span> 项 <span className={styles.cancelSelect} onClick={this.cancelSelect}>{selectedRowKeys.length ? '取消选择' : ''}</span></div>
       </div>
     );
   }
