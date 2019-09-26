@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
+import { dataFormats } from '@utils/utilFunc';
 import styles from './point.scss';
 
 class PointChart extends PureComponent{
@@ -38,11 +39,6 @@ class PointChart extends PureComponent{
     },
   }
 
-  barColor = {
-    light: ['#1cfcf4', '#009cff'],
-    dark: ['#1cfcf4', '#009cff'],
-  }
-
   setChartLoading = () => {
     const histogramChart = this.histogramRef && echarts.getInstanceByDom(this.histogramRef);
     histogramChart && histogramChart.showLoading();
@@ -57,8 +53,7 @@ class PointChart extends PureComponent{
       dataAxis.push(`${startNum}~${endNum}`);
       rateData.push(rate * 100);
     });
-    const barColor = this.barColor[theme] || ['#1cfcf4', '#009cff'];
-    
+    const { font = '#666', axis = '#dfdfdf', bar = ['#1cfcf4', '#009cff'] } = this.chartColors[theme] || {};
     const option = {
       grid: {
         top: 20,
@@ -71,7 +66,7 @@ class PointChart extends PureComponent{
         data: dataAxis,
         axisLabel: {
           textStyle: {
-            color: '#666',
+            color: font,
           },
         },
         axisTick: {
@@ -79,14 +74,14 @@ class PointChart extends PureComponent{
         },
         axisLine: {
           lineStyle: {
-            color: '#dfdfdf',
+            color: axis,
           },
         },
       },
       yAxis: {
         axisLine: {
           lineStyle: {
-            color: '#dfdfdf',
+            color: axis,
           },
         },
         splitLine: {
@@ -97,11 +92,11 @@ class PointChart extends PureComponent{
         },
         axisLabel: {
           textStyle: {
-            color: '#666666',
+            color: font,
           },
         },
         nameTextStyle: {
-          color: '#666666',
+          color: font,
         },
       },
       tooltip: {
@@ -113,7 +108,7 @@ class PointChart extends PureComponent{
             <h3 class=${styles.title}>${name}</h3>
             <div class=${styles.info}>
               <span class=${styles.infoText}>占比</span>
-              <span>${value}%</span>
+              <span>${dataFormats(value, '--', 2, true)}%</span>
             </div>
           </section>`;
         },
@@ -124,8 +119,8 @@ class PointChart extends PureComponent{
         cursor: 'default',
         itemStyle: {
           color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
-            {offset: 0, color: barColor[0] },
-            {offset: 1, color: barColor[1] },
+            {offset: 0, color: bar[0] },
+            {offset: 1, color: bar[1] },
           ]),
         },
         data: rateData,
