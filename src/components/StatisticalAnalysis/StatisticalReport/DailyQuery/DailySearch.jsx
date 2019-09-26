@@ -49,6 +49,58 @@ class DailySearch extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps){
+    const { quotaData, faultData, queryParam } = nextProps;
+    const preQueryParam = this.props.queryParam;
+
+    if (JSON.stringify(preQueryParam.stationCodes) !== JSON.stringify(queryParam.stationCodes)) { // 当选择的电站前后不一致时，‘类型’和‘指标’就需要重新全部选中
+      if(this.props.tableType === 'quotaList'){
+        const quotaInfoData = this.getAllQuotaCode(quotaData);
+        this.setState({
+          quotaInfoData,
+        });
+      }
+      if(this.props.tableType === 'faultList'){
+        const faultIds = this.getAllfaultId(faultData);
+        this.setState({
+          faultIds,
+        });
+      }
+    }
+  }
+
+  getAllQuotaCode(quotas = []){ // 选中全部指标
+    const codes = [];
+    quotas.forEach(e => {
+      const {children = []} = e || {};
+      codes.push(e);
+      children.forEach(m => {
+        codes.push(m);
+      });
+    });
+    return codes;
+  }
+
+  getAllfaultId(faults = []){ // 选中全部故障信息类型
+    const codes = [];
+    faults.forEach(e => {
+      const {children = []} = e || {};
+      codes.push(e);
+      if (children) {
+        children.forEach(m => {
+          const {children = []} = m || {};
+          codes.push(m);
+          if (children) { // 故障类型的层级是三层
+            children.forEach(n => {
+              codes.push(n);
+            });
+          }
+        });
+      }
+    });
+    return codes;
+  }
+
   onStationTypeChange = (stationType) => { // 切换风/光tab页
     const { changeDailyQueryStore, getQuota, getFault, queryParam } = this.props;
     this.setState({
@@ -90,6 +142,16 @@ class DailySearch extends Component {
   onCategory = (e) => { // 切换查询类别
     const { changeDailyQueryStore, queryParam, listParam } = this.props;
     const tableType = e.target.value;
+    this.setState({
+      stationCodes: [],
+      selectStations: [],
+      keyWord: '',
+      powerInformation: '',
+      quotaInfoData: [],
+      faultIds: [],
+      dateValue: [],
+    });
+
     changeDailyQueryStore({
       tableType,
       keyWord: '',
@@ -107,25 +169,29 @@ class DailySearch extends Component {
       faultListData: {},
       limitListData: {},
       quotaInfoData: [],
-    });
-    this.setState({
-      stationCodes: [],
-      selectStations: [],
-      keyWord: '',
-      powerInformation: '',
-      quotaInfoData: [],
       faultIds: [],
-      dateValue: [],
     });
   }
 
   selectStation = (selectedStationInfo) => { // 选择电站
+    const { getQuota, getFault, stationType, changeDailyQueryStore, queryParam } = this.props;
     const stationCodes = selectedStationInfo.map(cur => {
       return cur.stationCode;
     });
     this.setState({
       stationCodes,
       selectStations: selectedStationInfo,
+    });
+    changeDailyQueryStore({
+      queryParam: {
+        ...queryParam,
+        stationCodes,
+      }});
+    getQuota({ // 请求指标树
+      stationType,
+    });
+    getFault({ // 请求故障类型树
+      stationType,
     });
   }
 
@@ -136,11 +202,11 @@ class DailySearch extends Component {
   }
 
   onfaultChange =(fault) => { // 故障信息 - 类型
-    const faultIds = fault.map(e => {
-      return e.value;
-    });
+    // const faultIds = fault.map(e => {
+    //   return e.value;
+    // });
     this.setState({
-      faultIds,
+      faultIds: fault,
     });
   }
 
@@ -183,8 +249,6 @@ class DailySearch extends Component {
     });
   }
 
-
-
   onSearch = () => { // 查询
     const { tableType, queryParam, listParam, changeDailyQueryStore, getQuotaList, getFaultList, getLimitList } = this.props;
     const { stationCodes, quotaInfoData, faultIds, keyWord, powerInformation, dateValue } = this.state;
@@ -222,8 +286,12 @@ class DailySearch extends Component {
       return e.value;
     });
 
+    const faults = faultIds.map(e => {
+      return e.value;
+    });
+
     tableType === 'quotaList' && getQuotaList({ stationCodes, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), pageNum, pageSize, indexCodes });
-    tableType === 'faultList' && getFaultList({ stationCodes, startDate, endDate, pageNum, pageSize, faultIds, keyWord });
+    tableType === 'faultList' && getFaultList({ stationCodes, startDate, endDate, pageNum, pageSize, faultIds: faults, keyWord });
     tableType === 'limitList' && getLimitList({ stationCodes, startDate, endDate, pageNum, pageSize, keyWord: powerInformation });
   }
 
@@ -243,6 +311,7 @@ class DailySearch extends Component {
       faultListData: {},
       limitListData: {},
       quotaInfoData: [],
+      faultIds: [],
     });
   }
 
@@ -253,6 +322,10 @@ class DailySearch extends Component {
     const { stationTypeCount, stationType, stations, tableType, quotaData, faultData } = this.props;
     const { keyWord, powerInformation, quotaInfoData, faultIds, selectStations, dateValue } = this.state;
     const quotaCode = quotaInfoData.map(e => {
+      return e.value;
+    });
+
+    const faultId = faultIds.map(e => {
       return e.value;
     });
     const searchInfo = !!keyWord || !!powerInformation || faultIds.length !== 0 || quotaInfoData.length !== 0 || selectStations.length !== 0 || dateValue.length !== 0;
@@ -310,7 +383,7 @@ class DailySearch extends Component {
                     style={{width: '150px'}}
                     holderText="请选择"
                     data={faultData}
-                    value={faultIds}
+                    value={faultId}
                     maxTagCount={0}
                     multiple={true}
                     onChange={this.onfaultChange}
