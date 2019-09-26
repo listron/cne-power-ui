@@ -13,8 +13,9 @@ export const planAction = {
   getOwnStations: Symbol('getOwnStations'),//查看电站信息
   getYearList: Symbol('getYearList'),// 生产计划的年份
 
-  RESET_STORE:Symbol('RESET_STORE'),
-  resetStore:Symbol('resetStore'), // 重置
+  RESET_STORE: Symbol('RESET_STORE'),
+  resetStore: Symbol('resetStore'), // 重置
+  importFile: Symbol('importFile'), // 重置
 };
 
 
