@@ -234,6 +234,21 @@ export default {
       handleBatch: '/v3/docket/handleBatch', // 批量审核/执行/消票 票据
       stopBatch: '/v3/docket/stopBatch', // 批量终止票据（作废）
       delDocket: '/v3/docket/del', // 票据删除
+      //案例集
+      getDeviceMode: '/v3/ledeger/manufactormode',
+      getQuestionList: '/v3/casebase/questionType',
+      getCasePartList: '/v3/casebase/list',
+      getCasePartDetail: '/v3/casebase/get',
+      addCasePart: '/v3/casebase/add',
+      likeCase: '/v3/casebase/like',
+      editCasePart: '/v3/casebase/update',
+      deleteCasePart: '/v3/casebase/batch/del',
+      queryUseName: '/v3/casebase/likequery',
+      importCase: '/v3/casebase/import',
+      downCaseTemplate: '/template/caseBase.xls',
+      uploadCaseFile: '/v3/file/manage/upload',
+      deleteCaseFile: '/v3/file/manage/delete',
+
 
     },
     system: {
@@ -304,6 +319,7 @@ export default {
       deletePoints: '/v3/management/station/device/points',
       detailPoints: '/v3/management/station/device/points',
       editPoints: '/v3/management/station/device/points',
+      getStandardDesc: '/v3/management/station/device/standard/points',
 
       importAlarmInfo: '/v3/management/alarmevent/import', //导入告警信息
       getAlarmList: '/v3/management/alarmevent/list', //获取告警列表
@@ -432,6 +448,12 @@ export default {
       getPoints: '/v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
       getDataExport: '/v3/wind/analysis/export/task', // 数据导出
 
+      getOverviewStation: '/v3/dataoverview/devicetype', // 获取电站信息
+      getOverviewDates: '/v3/dataoverview/station', // 电站各日完整率
+      getOverviewDevices: '/v3/dataoverview/point', // 获取设备信息
+      getOverviewPoints: '/v3/dataoverview/device', // 获取测点信息
+      getOverviewConnectedDevices: '/v3/station/puredevices', // 测点页获取可用的设备列表
+
       getWindMonitorPower: '/v3/wind/monitor/stations/power', // 全部风电站的理论发电量图表
       getWindStation: '/v3/wind/monitor/stations', // 全部风电站
       getWindCapability: '/v3/wind/monitor/stations/capabilitydiagram', // 风电站出力图
@@ -483,6 +505,7 @@ export default {
       getSingleStationYearPvCompare: '/v3/performance/comprehensive/light/year',
       getSingleStationPowerEffective:
         '/v3/performance/comprehensive/efficiencygen',
+      exportAllstationTableData: '/v3/performance/comprehensive/statistics/export',
       // 电站对比
       getStationContrast: '/v3/performance/stationcontrast',
       getStationContrastDetail: '/v3/performance/stationcontrast/list',
@@ -555,6 +578,7 @@ export default {
       getSequenceData: '/v3/wind/analysis/sequencechart', //时序图数据
       getxyLimitValue: '/v3/wind/analysis/points/max', //获取xy轴最大值最小值
       getFrequency: '/v3/wind/analysis/frequency', // 获取风能频率图
+      getDirections: '/v3/wind/analysis/directions', // 获取风能玫瑰图
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表

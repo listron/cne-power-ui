@@ -40,6 +40,9 @@ class PointManageHandle extends Component {
       pageNum: currentPage,
       pageSize,
     });
+    this.props.changePointManageStore({
+      selectedRowKeys: [],
+    });
   }
 
   getUpdatePointList = ({ file, selectedStation }) => { // 上传成功后重新请求列表

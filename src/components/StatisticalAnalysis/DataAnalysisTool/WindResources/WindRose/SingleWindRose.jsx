@@ -1,20 +1,92 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {Icon} from 'antd';
 import eCharts from 'echarts';
+import {themeConfig} from '@utils/darkConfig';
+import {hiddenNoData, showNoData} from '@constants/echartsNoData';
+
 import styles from './windRose.scss';
+
 
 export default class SingleWindRose extends Component{
 
+  static propTypes = {
+    directionsData: PropTypes.array,
+    saveBtn: PropTypes.bool,
+    theme: PropTypes.string,
+    deviceName: PropTypes.string,
+    deviceList: PropTypes.array,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    directionsLoading: PropTypes.bool,
+    deviceFullCode: PropTypes.string,
+    directionsCode: PropTypes.string,
+    getDirections: PropTypes.func,
+    index: PropTypes.number,
+    likeStatusChange: PropTypes.func,
+    saveImgUrl: PropTypes.func,
+    showImg: PropTypes.func,
+  };
+
   componentDidMount() {
-    const { chartId } = this;
-    const myChart = eCharts.init(chartId);
-    myChart.setOption(this.drawChart());
+    const { directionChart } = this;
+    const { directionsData, saveBtn, theme } = this.props;
+    const myChart = eCharts.init(directionChart, themeConfig[theme]); //构建下一个实例
+    const option = this.drawChart(directionsData, saveBtn);
+    myChart.setOption(option, true);
   }
 
-  drawChart = () => {
-    const saveBtn = true;
+  componentWillReceiveProps(nextProps){
+    const { directionChart } = this;
+    const { saveBtn, directionsData, directionsCode, deviceList, startTime, endTime } = nextProps;
+    const requestParams = { startTime, endTime };
+    const prevCode = this.props.directionsCode;
+    const prevFullCode = this.props.deviceFullCode;
+    if (prevCode === prevFullCode) {
+      const myChart = eCharts.init(directionChart, themeConfig[nextProps.theme]);
+      if (this.props.directionsLoading) {
+        myChart.hideLoading();
+      }
+    }
+    if ((directionsCode !== prevCode && directionsCode === prevFullCode)) {
+      this.renderChart(directionsData, saveBtn, requestParams);
+      const myChart = eCharts.init(directionChart, themeConfig[nextProps.theme]);
+      const lightColor = {
+        maskColor: 'rgba(255, 255, 255, 0.8)',
+        color: '#199475',
+      };
+      if (this.props.directionsLoading) {
+        myChart.showLoading('default', lightColor);
+      }
+      if (prevFullCode === deviceList[deviceList.length - 1].deviceFullCode) {//最后一项取消loading
+        myChart.hideLoading();
+      }
+    }
+    if (saveBtn !== this.props.saveBtn) {
+      this.renderChart(directionsData, saveBtn, false);
+    }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const { directionsCode, deviceFullCode } = nextProps;
+    return directionsCode === this.props.deviceFullCode || this.props.deviceFullCode !== deviceFullCode;
+  }
+
+  componentWillUnmount() {
+    const { directionChart } = this;
+    const { theme } = this.props;
+    eCharts.init(directionChart, themeConfig[theme]).dispose();
+  }
+
+  drawChart = (directionsData = [], saveBtn) => {
+    const { deviceName } = this.props;
     const textColor = '#999999';
-    const directionData = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    // 坐标
+    const coordinatesData = directionsData && directionsData.map(cur => (cur.rangName));
+    // 风向value
+    const directionArr = directionsData && directionsData.map(cur => (cur.directionPercent));
+    // 风能value
+    const energyArr = directionsData && directionsData.map(cur => (cur.energyPercent));
     const axisLineColor = {
       axisLabel: {
         formatter: '{value}%',
@@ -24,8 +96,9 @@ export default class SingleWindRose extends Component{
       },
     };
     return {
+      graphic: (directionArr.length && energyArr.length) ? hiddenNoData : showNoData,
       title: {
-        text: [1, '{b|}'].join(''),
+        text: [`${deviceName} `, '{b|}'].join(''),
           left: '5%',
           textStyle: {
           fontSize: 14,
@@ -46,10 +119,11 @@ export default class SingleWindRose extends Component{
         show: true,
           padding: 0,
           formatter: function (params) {
+          const { name, data } = params[0];
           return `<div class=${styles.tooltip}>
-              <span class=${styles.title}>${params.name}</span>
+              <span class=${styles.title}>${name}</span>
               <div class=${styles.info}>
-                <span>占比：</span><span>${params.data}</span><span>%</span>
+                <span>占比：</span><span>${data}</span><span>%</span>
               </div>
             </div>`;
         },
@@ -57,7 +131,7 @@ export default class SingleWindRose extends Component{
       angleAxis: [{
         polarIndex: 0,
         type: 'category',
-        data: directionData,
+        data: coordinatesData,
         axisLabel: {
           color: textColor,
         },
@@ -65,7 +139,7 @@ export default class SingleWindRose extends Component{
       }, {
         polarIndex: 1,
         type: 'category',
-        data: directionData,
+        data: coordinatesData,
         axisLabel: {
           color: textColor,
         },
@@ -94,7 +168,7 @@ export default class SingleWindRose extends Component{
         type: 'bar',
         color: '#3e97d1',
         barWidth: 20,
-        data: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
+        data: directionArr,
         coordinateSystem: 'polar',
         name: '风向',
       }, {
@@ -102,20 +176,54 @@ export default class SingleWindRose extends Component{
         type: 'bar',
         color: '#f9b600',
         barWidth: 20,
-        data: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
+        data: energyArr,
         coordinateSystem: 'polar',
         name: '风能',
       }],
     };
   };
 
+  renderChart = (directionsData, saveBtn, isRequest) => {
+    const { theme, likeStatusChange, index, saveImgUrl, deviceName, getDirections, deviceList } = this.props;
+    const params = {
+      ...isRequest,
+    };
+    const { directionChart } = this;
+    const myChart = eCharts.init(directionChart, themeConfig[theme]); //构建下一个实例
+    myChart.clear();
+    const option = this.drawChart(directionsData, saveBtn );
+    myChart.off();
+    myChart.on('click', 'title', () => {
+      likeStatusChange(index, !saveBtn, directionsData);
+    });
+
+    myChart.on('rendered', () => {
+      const imgUrl = myChart.getDataURL({
+        pixelRatio: 2,
+        backgroundColor: '#fff',
+      });
+      saveImgUrl && saveImgUrl(deviceName, imgUrl);
+    });
+
+    isRequest && setTimeout(() => {
+      const continueQuery = index < deviceList.length - 1;
+      continueQuery && getDirections({
+        ...params,
+        deviceFullCode: deviceList[index + 1].deviceFullCode,
+      });
+    }, 50);
+
+    myChart.setOption(option, true);
+  };
+
   render(){
+    const { index, showImg } = this.props;
     return(
       <div className={styles.chartWrap}>
-        <Icon type="zoom-in" className={styles.showModalIcon} />
+        <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalIcon} />
         <span className={styles.windDirection}>风向</span>
         <span className={styles.windPower}>风能</span>
-        <div ref={ref => { this.chartId = ref;}} className={styles.windRoseStyle} />
+        <div ref={ref => { this.directionChart = ref;}} className={styles.windRoseStyle} />
       </div>
     );
   }

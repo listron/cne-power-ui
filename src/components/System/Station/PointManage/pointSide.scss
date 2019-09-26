@@ -149,10 +149,23 @@
 
           .usepoint {
             display: flex;
+            // line-height: 40px;
+            align-items: center;
+
+            .descStyle {
+              margin: 0 4px;
+              max-width: 300px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              cursor: pointer;
+            }
 
             .useBtn {
+              text-align: center;
               border-color: $themeColor;
               color: $themeColor;
+
 
               &:hover {
                 background: $themeColor;

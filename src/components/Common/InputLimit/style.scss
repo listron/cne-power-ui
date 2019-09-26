@@ -1,31 +1,50 @@
-@import '../../../theme/theme.scss';
-.inputLimit {
+@import "../../../theme/theme.scss";
+
+.inputLimit,
+.endInputLimit {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
   margin-left: -80px;
-  TextArea{
+
+  textarea {
     color: $darkColor;
   }
+
   .inputCount {
     display: flex;
     height: 16px;
     line-height: 16px;
     width: 80px;
     justify-content: center;
-    color:#dfdfdf;
-    font-family:MicrosoftYaHei;
+    color: #dfdfdf;
+    font-family: MicrosoftYaHei;
     font-size: 14px;
   }
+
   :global {
-    input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
+    input::-webkit-input-placeholder,
+    textarea::-webkit-input-placeholder {
       color: $promptColor;
     }
-    input:-moz-placeholder, textarea:-moz-placeholder { 
-      color: $promptColor; 
+
+    input:-moz-placeholder,
+    textarea:-moz-placeholder {
+      color: $promptColor;
     }
-    input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
-      color: $promptColor; 
-    } 
+
+    input:-ms-input-placeholder,
+    textarea:-ms-input-placeholder {
+      color: $promptColor;
+    }
+  }
+}
+
+.endInputLimit {
+  margin-left: 0;
+  .inputCount {
+    //数字放后面有一定的问题
+    width: inherit;
+    margin-left: 8px;
   }
 }

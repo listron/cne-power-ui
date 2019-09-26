@@ -298,14 +298,14 @@ class AddIntelligent extends Component {
                   {getFieldDecorator('faultCode', {
                     rules: [{ required: false, message: '请输入故障代码' }],
                   })(
-                    <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
+                    <InputLimit end={true} size={999} width={590} placeholder="请输入..." />
                   )}
                 </FormItem>
                 <FormItem className={styles.formItem} label="故障描述" colon={false}>
                   {getFieldDecorator('faultDescription', {
                     rules: [{ required: true, message: '请输入故障描述' }],
                   })(
-                    <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
+                    <InputLimit end={true} size={999} width={590} placeholder="请输入..." />
                   )}
                 </FormItem>
               </React.Fragment>
@@ -335,7 +335,7 @@ class AddIntelligent extends Component {
                   {getFieldDecorator('faultDescription', {
                     rules: [{ required: true, message: '请输入故障描述' }],
                   })(
-                    <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." disabled={faultDescripDis} />
+                    <InputLimit end={true} size={999} width={590} placeholder="请输入..." disabled={faultDescripDis} />
                   )}
                 </FormItem>
               </React.Fragment>
@@ -344,14 +344,14 @@ class AddIntelligent extends Component {
               {getFieldDecorator('checkItems', {
                 rules: [{ required: stationType === '0', message: `请输入${'故障原因'}` }],
               })(
-                <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
+                <InputLimit end={true} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
             <FormItem className={styles.formItem} label="处理方法" colon={false}>
               {getFieldDecorator('processingMethod', {
                 rules: [{ required: true, message: '请输入处理方法' }],
               })(
-                <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
+                <InputLimit end={true} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
             <FormItem className={styles.formItem} label="所需工具" colon={false}>
@@ -360,7 +360,7 @@ class AddIntelligent extends Component {
                   message: '请输入...',
                 }],
               })(
-                <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
+                <InputLimit end={true} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
             <FormItem className={styles.formItem} label="备注" colon={false}>
@@ -370,7 +370,7 @@ class AddIntelligent extends Component {
                   conlon: false,
                 }],
               })(
-                <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
+                <InputLimit end={true} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
             <Form.Item label="上传附件" colon={false}>

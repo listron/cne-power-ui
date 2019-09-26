@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './stationStatisticList.scss';
 import CommonPagination from '../../../Common/CommonPagination';
-import { Table, Radio } from 'antd';
+import { Table, Radio, Button } from 'antd';
 import moment from 'moment';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../utils/utilFunc';
@@ -11,7 +11,6 @@ class StationStatisticList extends React.Component {
   static propTypes = {
     allStationAvalibaData: PropTypes.array,
     dateType: PropTypes.string,
-    showPage: PropTypes.string,
     sortType: PropTypes.string,
     sort: PropTypes.string,
     allStationStatisticTableData: PropTypes.array,
@@ -20,7 +19,7 @@ class StationStatisticList extends React.Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
-    allStationAvalibaData: PropTypes.array,
+    exportAllstationTableData: PropTypes.func,
     history: PropTypes.object,
   }
 
@@ -52,7 +51,6 @@ class StationStatisticList extends React.Component {
       dateType,
       sort,
       sortType,
-      stationType,
     };
     getAllStationStatisticTableData(prams);
     this.props.changeAllStationStore({ sort, sortType });
@@ -314,6 +312,21 @@ class StationStatisticList extends React.Component {
     ];
     return columns;
   }
+  //导出table
+  exportTable = () => {
+    const { stationType, year, month, powerSelectYear, dateType, pageSize, pageNum, sort, sortType } = this.props;
+    const prams = {
+      pageNum,
+      pageSize,
+      year: dateType === 'month' ? year[0] : powerSelectYear,
+      stationType,
+      month,
+      dateType,
+      sort,
+      sortType,
+    };
+    this.props.exportAllstationTableData(prams);
+  }
 
   render() {
     const { dateType, allStationStatisticTableData, totalNum, pageSize, pageNum, theme } = this.props;
@@ -325,6 +338,7 @@ class StationStatisticList extends React.Component {
           <div className={styles.leftTime}>
             <div className={styles.gradient}>综合指标统计表</div>
             {this.selectYear()}
+            <Button type="primary" className={styles.exportBtn} onClick={this.exportTable} >导出</Button>
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>

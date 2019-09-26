@@ -13,7 +13,7 @@ export default class AllStations extends Component{
   selectStation = (stationCode) => {
     const { changeWindResourcesStore, getStationDevice } = this.props;
     changeWindResourcesStore({ stationCode, showPage: 'singleStation' });
-    getStationDevice({ stationCode });
+    getStationDevice({ stationCode, type: 1 });
   };
 
   render(){

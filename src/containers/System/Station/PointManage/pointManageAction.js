@@ -18,6 +18,7 @@ export const pointManageAction = {
   addPoint: Symbol('addPoint'), // 增加测点
   detailPoints: Symbol('detailPoints'), // 测点详情
   editPoints: Symbol('editPoints'), // 编辑测点
+  getStandardDesc: Symbol('getStandardDesc'), // 获取标准点描述
 
 };
 

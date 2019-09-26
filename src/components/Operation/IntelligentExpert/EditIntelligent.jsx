@@ -163,7 +163,7 @@ class EditIntelligent extends Component {
                   rules: [{ required: true, message: '请输入故障描述' }],
                   initialValue: intelligentDetail.faultDescription,
                 })(
-                  <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
+                  <InputLimit size={999} end={true} width={590} placeholder="请输入..." />
                 )}
               </FormItem>
             }
@@ -172,7 +172,7 @@ class EditIntelligent extends Component {
                 rules: [{ required: true, message: `请输入${'故障原因'}` }],
                 initialValue: intelligentDetail.checkItems,
               })(
-                <InputLimit style={{ marginLeft: -80 }} size={999} width={590} placeholder="请输入..." />
+                <InputLimit size={999} end={true} width={590} placeholder="请输入..." />
               )}
             </FormItem>
             <FormItem className={styles.formItem} label="处理方法" colon={false}>
@@ -180,7 +180,7 @@ class EditIntelligent extends Component {
                 rules: [{ required: true, message: '请输入处理方法' }],
                 initialValue: intelligentDetail.processingMethod,
               })(
-                <InputLimit style={{ marginLeft: -80 }} size={999} end={true} width={590} placeholder="请输入..." />
+                <InputLimit size={999} end={true} width={590} placeholder="请输入..." />
               )}
             </FormItem>
             <FormItem className={styles.formItem} label="所需工具" colon={false}>
@@ -188,7 +188,7 @@ class EditIntelligent extends Component {
                 rules: [{ message: '请输入...' }],
                 initialValue: intelligentDetail.requiredTools,
               })(
-                <InputLimit style={{ marginLeft: -80 }} end={true} size={999} width={590} placeholder="请输入..." />
+                <InputLimit end={true} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
             <FormItem className={styles.formItem} label="备注" colon={false}>
@@ -196,7 +196,7 @@ class EditIntelligent extends Component {
                 rules: [{ message: '请输入......' }],
                 initialValue: intelligentDetail.remark,
               })(
-                <InputLimit style={{ marginLeft: -80 }} end={true} size={999} width={590} placeholder="请输入..." />
+                <InputLimit end={true} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
             <Form.Item label="上传附件" colon={false}>
