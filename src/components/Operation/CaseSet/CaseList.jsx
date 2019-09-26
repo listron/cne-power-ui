@@ -108,23 +108,52 @@ class CaseList extends React.Component {
         title: '机型',
         dataIndex: 'deviceName',
         key: 'deviceName',
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{text}</div>
+          );
+        },
 
       }, {
         title: '问题类别',
         dataIndex: 'questionTypeCodeName',
         key: 'questionTypeCodeName',
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{text}</div>
+          );
+        },
+
       }, {
         title: '相关故障代码',
         dataIndex: 'faultCode',
         key: 'faultCode',
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{text}</div>
+          );
+        },
+
       }, {
         title: '问题描述',
         dataIndex: 'faultDescription',
         key: 'faultDescription',
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{text}</div>
+          );
+        },
+
       }, {
         title: '处理措施',
         dataIndex: 'processingMethod',
         key: 'processingMethod',
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{text}</div>
+          );
+        },
+
       }, {
         title: '更新时间',
         dataIndex: 'updateTime',
