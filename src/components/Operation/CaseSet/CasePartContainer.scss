@@ -135,6 +135,13 @@
     cursor: pointer;
   }
 
+  .tableWidth {
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .num {
     color: #fab907;
     margin: 0 4px;
