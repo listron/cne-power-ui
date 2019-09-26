@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './CasePartContainer.scss';
 import { Table } from 'antd';
 import WarningTip from '../../../components/Common/WarningTip';
-import TableColumnTitle from '../../../components/Common/TableColumnTitle';
+import Cookie from 'js-cookie';
 class CaseList extends React.Component {
   static propTypes = {
     changeCasePartStore: PropTypes.func,
@@ -94,6 +94,8 @@ class CaseList extends React.Component {
   };
   render() {
     const { tableLoading, casePartTableData, selectedRowKeys } = this.props;
+    const rightkey = Cookie.get('userRight').includes('operation_case_operate');//操作权限
+
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -179,8 +181,8 @@ class CaseList extends React.Component {
           return (
             <div>
               <span className={`${styles.editPoint}  iconfont icon-look`} onClick={() => this.showCaseDetail(record)}></span>
-              <span className={`${styles.editPoint}  iconfont icon-edit`} onClick={() => this.showEditPage(record)}></span>
-              <span className={`${styles.editPoint}  iconfont icon-del`} onClick={() => this.deleteCasePart(record)}></span>
+              {rightkey && <span className={`${styles.editPoint}  iconfont icon-edit`} onClick={() => this.showEditPage(record)}></span>}
+              {rightkey && <span className={`${styles.editPoint}  iconfont icon-del`} onClick={() => this.deleteCasePart(record)}></span>}
             </div>
           );
         },

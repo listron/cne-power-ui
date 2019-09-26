@@ -238,7 +238,7 @@ class AddCaseForm extends React.Component {
           <FormItem label="相关故障代码" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('faultCode', {
               initialValue: this.dealPointDetail('faultCode'),
-              rules: [{ required: true, message: '请填写相关故障代码不能超过999个字符', type: 'string', max: 999 }],
+              rules: [{ required: true, message: '请输入相关故障代码', type: 'string', max: 999 }],
             })(
               <TextArea placeholder="请输入..." size={999} width={570} height={34} end={true} />
             )}
@@ -247,7 +247,7 @@ class AddCaseForm extends React.Component {
           <FormItem label="问题描述" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('faultDescription', {
               initialValue: this.dealPointDetail('faultDescription'),
-              rules: [{ required: true, message: '不能超过999个字符', type: 'string', max: 999 }],
+              rules: [{ required: true, message: '请输入问题描述', type: 'string', max: 999 }],
             })(
               <TextArea placeholder="请输入..." size={999} width={570} height={72} end={true} />
             )}
@@ -256,7 +256,7 @@ class AddCaseForm extends React.Component {
           <FormItem label="问题分析" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('faultAnalyse', {
               initialValue: this.dealPointDetail('faultAnalyse'),
-              rules: [{ required: true, message: '不能超过999个字符', type: 'string', max: 999 }],
+              rules: [{ required: true, message: '请输入问题分析', type: 'string', max: 999 }],
             })(
               <TextArea placeholder="请输入..." size={999} width={570} height={72} end={true} />
             )}
@@ -265,7 +265,7 @@ class AddCaseForm extends React.Component {
           <FormItem label="处理措施" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('processingMethod', {
               initialValue: this.dealPointDetail('processingMethod'),
-              rules: [{ required: true, message: '不能超过999个字符', type: 'string', max: 999 }],
+              rules: [{ required: true, message: '请输入处理措施', type: 'string', max: 999 }],
             })(
               <TextArea placeholder="请输入..." size={999} width={570} height={72} end={true} />
             )}
