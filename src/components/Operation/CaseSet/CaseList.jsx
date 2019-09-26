@@ -103,6 +103,11 @@ class CaseList extends React.Component {
         title: '风场',
         dataIndex: 'stationNames',
         key: 'stationNames',
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{text}</div>
+          );
+        },
       },
       {
         title: '机型',
