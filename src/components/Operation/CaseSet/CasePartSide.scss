@@ -117,6 +117,10 @@
         .ant-form-item-label {
           width: 200px;
         }
+
+        .ant-form-item-label>label {
+          color: #000;
+        }
       }
 
       .formItemStyle {
