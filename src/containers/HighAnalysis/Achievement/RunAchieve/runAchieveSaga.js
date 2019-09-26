@@ -75,6 +75,49 @@ function *getPointsInfo(action){
     if (response.code === '10000') {
       // 判断有没有扭矩
       const torqueFlag = response.data && response.data.map(cur => (cur.value)).includes('CV002');
+      const thirdChartYAxis = torqueFlag ? 'CV002' : 'TR002'; //第三个图表判断有没有扭矩，没有默认功率
+      // 第一个图
+      let firstXAxisName = '';
+      let firstYAxisName = '';
+      // 第二个图
+      let secondXAxisName = '';
+      let secondYAxisName = '';
+      // 第三个图
+      let thirdXAxisName = '';
+      let thirdYAxisName = '';
+      // 第四个图
+      let fourthXAxisName = '';
+      let fourthYAxisName = '';
+      response.data && response.data.forEach(cur => {
+        // 第一个图
+        if('NC001' === cur.devicePointCode) {
+          firstXAxisName = cur.devicePointName;
+        }
+        if('TR002' === cur.devicePointCode) {
+          firstYAxisName = cur.devicePointName;
+        }
+        // 第二个图
+        if('NC001' === cur.devicePointCode) {
+          secondXAxisName = cur.devicePointName;
+        }
+        if('RT101' === cur.devicePointCode) {
+          secondYAxisName = cur.devicePointName;
+        }
+        // 第三个图
+        if('GN001' === cur.devicePointCode) {
+          thirdXAxisName = cur.devicePointName;
+        }
+        if(thirdChartYAxis === cur.devicePointCode){
+          thirdYAxisName = cur.devicePointName;
+        }
+        // 第四个图
+        if('NC001' === cur.devicePointCode) {
+          fourthXAxisName = cur.devicePointName;
+        }
+        if('GN001' === cur.devicePointCode) {
+          fourthYAxisName = cur.devicePointName;
+        }
+      });
       yield put({
         type: runAchieveAction.fetchSuccess,
         payload: {
@@ -84,8 +127,15 @@ function *getPointsInfo(action){
             unitName: cur.devicePointUnit,
           })),
           pointTime: moment().unix(),
-          thirdChartYAxis: torqueFlag ? 'CV002' : 'TR002', //第三个图表判断有没有扭矩，没有默认功率
-          thirdYAxisName: torqueFlag ? '扭矩' : '有功功率', //第三个图表判断有没有扭矩，没有默认功率
+          firstXAxisName: firstXAxisName || '机舱外风速实时值',
+          firstYAxisName: firstYAxisName || '有功功率',
+          secondXAxisName: secondXAxisName || '机舱外风速实时值',
+          secondYAxisName: secondYAxisName || '桨叶1角度',
+          thirdXAxisName: thirdXAxisName || '发电机转速',
+          fourthXAxisName: fourthXAxisName || '机舱外风速实时值',
+          fourthYAxisName: fourthYAxisName || '发电机转速',
+          thirdChartYAxis: thirdChartYAxis, //第三个图表判断有没有扭矩，没有默认功率
+          thirdYAxisName: thirdYAxisName, //第三个图表判断有没有扭矩，没有默认功率
           thirdYAxisUnit: torqueFlag ? 'Nm' : 'kw', //第三个图表判断有没有扭矩，没有默认功率
         },
       });
