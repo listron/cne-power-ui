@@ -50,7 +50,7 @@ const menuData = [
           }, {
             name: '数据概览',
             path: 'overview',
-            rightKey: 'dataAnalysis_historyTrend',
+            rightKey: 'dataAnalysis_dataQuality',
           }, {
             name: '历史趋势',
             path: 'history',
