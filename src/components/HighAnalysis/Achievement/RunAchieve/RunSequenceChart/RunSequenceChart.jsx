@@ -152,7 +152,7 @@ export default class RunSequenceChart extends Component {
     const { pointsInfo, hourOptionValue, hourOptionName } = this.props;
     const optionItem = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
     // 判断是否存在测点
@@ -164,7 +164,7 @@ export default class RunSequenceChart extends Component {
           <div className={styles.topTitle}>时序图</div>
           <div className={styles.topSelect}>
             <span>时序图指标</span>
-            <Select value={valueStr} style={{ width: 120 }} onChange={this.handleChange}>
+            <Select value={valueStr} style={{ width: 212 }} onChange={this.handleChange}>
               {optionItem}
             </Select>
           </div>
