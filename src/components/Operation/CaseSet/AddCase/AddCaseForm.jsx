@@ -315,7 +315,7 @@ class AddCaseForm extends React.Component {
           {showPage === 'edit' &&
             <div className={styles.detailStyle}>
               {detailArr.map((e, i) => (
-                <div className={styles.formItemStyle}>
+                <div className={styles.formItemStyle} key={e.name}>
                   <div className={styles.name}>{e.name}</div>
                   <div className={styles.value}>{e.value}</div>
                 </div>
