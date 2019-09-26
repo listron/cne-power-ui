@@ -20,8 +20,8 @@ class Schematic extends Component {
         super(props);
         this.state = {
             activeCarousel: 0,
-            activeInvertType: '201'
-        }
+            activeInvertType: '201',
+        };
     }
 
     componentDidMount() {
@@ -52,7 +52,7 @@ class Schematic extends Component {
 
     getEveryData = (deviceTypeCode) => {
         const { sketchmapData } = this.props;
-        return sketchmapData[deviceTypeCode] && sketchmapData[deviceTypeCode]['summaryInfo'] || {}
+        return sketchmapData[deviceTypeCode] && sketchmapData[deviceTypeCode]['summaryInfo'] || {};
     }
 
 
@@ -61,34 +61,34 @@ class Schematic extends Component {
         const listData = sketchmapData[deviceTypeCode] && sketchmapData[deviceTypeCode].summaryInfo;
         if (listData) {
             if (listData instanceof Array) {
-                return listData.length > 0 && listData[0].summaryInfo && dataFormats(listData[0].summaryInfo[id], '--', point, true) || '--'
+                return listData.length > 0 && listData[0].summaryInfo && dataFormats(listData[0].summaryInfo[id], '--', point, true) || '--';
             }
-            return dataFormats(listData[id], '--', point, true)
+            return dataFormats(listData[id], '--', point, true);
         }
-        return '--'
+        return '--';
     }
 
     prev = (e) => { // 集电线路向前
         e.stopPropagation();
         const { activeCarousel } = this.state;
         this.setState({
-            activeCarousel: activeCarousel - 1
-        })
+            activeCarousel: activeCarousel - 1,
+        });
     }
 
     next = (e) => { // 集电线路向后
         e.stopPropagation();
         const { activeCarousel } = this.state;
         this.setState({
-            activeCarousel: activeCarousel + 1
-        })
+            activeCarousel: activeCarousel + 1,
+        });
     }
 
     changeInverType = (e, value) => { // 改变组串式还是集中式
         e.stopPropagation();
         this.setState({
-            activeInvertType: value
-        })
+            activeInvertType: value,
+        });
     }
 
     changeTypeCode = (value) => {
@@ -102,70 +102,70 @@ class Schematic extends Component {
         const commonList = {
             '509': {
                 summaryInfo: [
-                    { 'id': 'totalSize', name: '支路总数', unit: '个', point: 2, },
+                    { 'id': 'totalSize', name: '支路总数', unit: '个', point: 2, allNumber: true },
                     { 'id': 'normalSize', name: '支路-正常数', unit: '个', point: 2 },
                     { 'id': 'smallerSize', name: '支路-偏低数', unit: '个', point: 2, hot: true },
                     { 'id': 'exceptionSize', name: '支路-异常数', unit: '个', point: 2, hot: true },
                     { 'id': 'largerSize', name: '支路-偏高数', unit: '个', point: 2, hot: true },
-                ]
+                ],
             },
-            "202": {
+            '202': {
                 summaryInfo: [
-                    { 'id': 'totalSize', name: '汇流箱总数', unit: '台', point: 0, },
+                    { 'id': 'totalSize', name: '汇流箱总数', unit: '台', point: 0, allNumber: true },
                     { 'id': 'normalSize', name: '正常数', unit: '台', point: 2 },
                     { 'id': 'smallerSize', name: '离散率≥10%数', unit: '台', point: 0, hot: true },
                     { 'id': 'largerSize', name: '离散率≥20%数', unit: '台', point: 0, hot: true },
                     { 'id': 'breakSize', name: '无通讯数', unit: '台', point: 0, hot: true },
-                ]
+                ],
             },
-            "304": {
+            '304': {
                 summaryInfo: [
-                    { 'id': 'totalSize', name: '箱变总数', unit: '台', point: 0, },
+                    { 'id': 'totalSize', name: '箱变总数', unit: '台', point: 0, allNumber: true },
                     { 'id': 'normalSize', name: '正常数', unit: '台', point: 2 },
                     { 'id': 'breakSize', name: '通讯中断', unit: '台', point: 0, hot: true },
-                ]
+                ],
             },
-            "301": {
+            '301': {
                 high: {
                     summaryInfo: [
-                        { 'id': 'HP', name: 'P', unit: 'MW', point: 2, },
+                        { 'id': 'HP', name: 'P', unit: 'MW', point: 2 },
                         { 'id': 'HQ', name: 'Q', unit: 'MVar', point: 2 },
                         { 'id': 'HCos', name: 'Cos', unit: '', point: 2 },
                         { 'id': 'HUab', name: 'Uab', unit: 'kV', point: 2 },
-                    ]
+                    ],
                 },
                 low: {
                     summaryInfo: [
-                        { 'id': 'LP', name: 'P', unit: 'MW', point: 2, },
+                        { 'id': 'LP', name: 'P', unit: 'MW', point: 2 },
                         { 'id': 'LQ', name: 'Q', unit: 'MVar', point: 2 },
                         { 'id': 'LCos', name: 'Cos', unit: '', point: 2 },
                         { 'id': 'LUab', name: 'Uab', unit: 'kV', point: 2 },
-                    ]
-                }
+                    ],
+                },
 
             },
-            "201": {
+            '201': {
                 summaryInfo: [
-                    { 'id': 'totalSize', name: '逆变器总数', unit: '台', point: 0, },
+                    { 'id': 'totalSize', name: '逆变器总数', unit: '台', point: 0, allNumber: true },
                     { 'id': 'normalSize', name: '正常运行数', unit: '台', point: 0 },
                     { 'id': 'limitSize', name: '限电运行数', unit: '台', point: 0, hot: true },
-                    { 'id': 'stopSize', name: '正常停机数', unit: '台', point: 0, },
+                    { 'id': 'stopSize', name: '正常停机数', unit: '台', point: 0 },
                     { 'id': 'exceptionSize', name: '故障停机数', unit: '台', point: 0, hot: true },
                     { 'id': 'breakSize', name: '通讯中断数', unit: '台', point: 0, hot: true },
                     { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true, single: true },
-                ]
+                ],
             },
-            "all": {
+            'all': {
                 summaryInfo: [
-                    { 'id': 'totalSize', name: '逆变器数', unit: '台', point: 0, },
+                    { 'id': 'totalSize', name: '逆变器数', unit: '台', point: 0, allNumber: true },
                     { 'id': 'normalSize', name: '正常运行数', unit: '台', point: 0 },
                     { 'id': 'limitSize', name: '限电运行数', unit: '台', point: 0, hot: true },
-                    { 'id': 'stopSize', name: '正常停机数', unit: '台', point: 0, },
+                    { 'id': 'stopSize', name: '正常停机数', unit: '台', point: 0 },
                     { 'id': 'exceptionSize', name: '故障停机数', unit: '台', point: 0, hot: true },
                     { 'id': 'breakSize', name: '通讯中断数', unit: '台', point: 0, hot: true },
                     { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true, single: true },
-                ]
-            }
+                ],
+            },
         };
         const { activeCarousel, activeInvertType } = this.state;
         const invertType = deviceTypeArr.includes('206') && deviceTypeArr.includes('201');
@@ -210,69 +210,74 @@ class Schematic extends Component {
                     </div>
                     <div className={styles.detailBox}>
                         {deviceTypeArr.includes('509') && // 光伏组件
-                            <div className={styles.pvmodule} onClick={() => { this.changeTypeCode('509') }}>
+                            <div className={styles.pvmodule} onClick={() => { this.changeTypeCode('509'); }}>
                                 <div className={styles.title}>支路电流</div>
                                 {commonList['509'].summaryInfo.map((e, index) => {
-                                    return (<div className={`${styles.column} ${e.hot && styles.hot}`} key={index}>
+                                    const number = this.dealData('509', e.id, e.point);
+                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot}`} key={index}>
                                         <div>{e.name} </div>
-                                        <div> {this.dealData('509', e.id, e.point)} <span> {e.unit}</span></div>
-                                    </div>)
+                                        <div> {number} <span> {e.unit}</span></div>
+                                    </div>);
                                 })}
                             </div>
                         }
                         {deviceTypeArr.includes('202') && // 汇流箱
-                            <div className={styles.confluence} onClick={() => { this.changeTypeCode('202') }}>
+                            <div className={styles.confluence} onClick={() => { this.changeTypeCode('202'); }}>
                                 <div className={styles.title}>汇流箱状态</div>
                                 {commonList['202'].summaryInfo.map((e, index) => {
-                                    return (<div className={`${styles.column} ${e.hot && styles.hot}`} key={index}>
+                                    const number = this.dealData('202', e.id, e.point);
+                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot}`} key={index}>
                                         <div>{e.name} </div>
-                                        <div> {this.dealData('202', e.id, e.point)} <span> {e.unit}</span></div>
-                                    </div>)
+                                        <div> {number} <span> {e.unit}</span></div>
+                                    </div>);
                                 })}
                             </div>
                         }
                         {!invertType && (deviceTypeArr.includes('201') || deviceTypeArr.includes('206')) &&// 集中式逆变器／组合式逆变器
-                            <div className={styles.inverter} onClick={() => { this.changeTypeCode(invertTypeCode) }}>
+                            <div className={styles.inverter} onClick={() => { this.changeTypeCode(invertTypeCode); }}>
                                 <div className={styles.title}>{deviceTypeArr.includes('201') ? '集中式逆变器' : '组串式逆变器'}</div>
                                 {commonList['201'].summaryInfo.map((e, index) => {
-                                    return (<div className={`${styles.column} ${e.hot && styles.hot} ${e.single && styles.singleLine}`} key={index}>
+                                    const number = this.dealData(invertTypeCode, e.id, e.point);
+                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot} ${e.single && styles.singleLine}`} key={index}>
                                         <div>{e.name} </div>
-                                        <div> {this.dealData(invertTypeCode, e.id, e.point)} <span> {e.unit}</span></div>
-                                    </div>)
+                                        <div> {number} <span> {e.unit}</span></div>
+                                    </div>);
                                 })}
                             </div>
                         }
                         {invertType && // 分布式
-                            <div className={styles.inverter} onClick={() => { this.changeTypeCode(activeInvertType) }}>
+                            <div className={styles.inverter} onClick={() => { this.changeTypeCode(activeInvertType); }}>
                                 <div className={`${styles.column}`}>
                                     <div>逆变器总数 </div>
                                     <div> {+this.getEveryData('201').totalSize + +this.getEveryData('206').totalSize} <span> 台</span></div>
                                 </div>
                                 <div className={`${styles.inverterButton}`}>
-                                    <span className={`${activeInvertType === '201' && styles.activeButton}`} onClick={(e) => { this.changeInverType(e, '201') }}>集中式</span>
-                                    <span className={`${activeInvertType === '206' && styles.activeButton}`} onClick={(e) => { this.changeInverType(e, '206') }}>组串式</span>
+                                    <span className={`${activeInvertType === '201' && styles.activeButton}`} onClick={(e) => { this.changeInverType(e, '201'); }}>集中式</span>
+                                    <span className={`${activeInvertType === '206' && styles.activeButton}`} onClick={(e) => { this.changeInverType(e, '206'); }}>组串式</span>
                                 </div>
                                 {commonList['all'].summaryInfo.map((e, index) => {
-                                    return (<div className={`${styles.column} ${e.hot && styles.hot} ${e.single && styles.singleLine}`} key={index}>
+                                    const number = this.dealData(activeInvertType, e.id, e.point);
+                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot} ${e.single && styles.singleLine}`} key={index}>
                                         <div>{e.name} </div>
-                                        <div> {this.dealData(activeInvertType, e.id, e.point)} <span> {e.unit}</span></div>
-                                    </div>)
+                                        <div> {number} <span> {e.unit}</span></div>
+                                    </div>);
                                 })}
                             </div>
                         }
                         {deviceTypeArr.includes('304') && // 箱变
-                            <div className={styles.boxtransformer} onClick={() => { this.changeTypeCode('304') }}>
+                            <div className={styles.boxtransformer} onClick={() => { this.changeTypeCode('304'); }}>
                                 <div className={styles.title}>箱变状态</div>
                                 {commonList['304'].summaryInfo.map((e, index) => {
-                                    return (<div className={`${styles.column} ${e.hot && styles.hot}`} key={index}>
+                                    const number = this.dealData('304', e.id, e.point);
+                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot}`} key={index}>
                                         <div>{e.name} </div>
-                                        <div> {this.dealData('304', e.id, e.point)} <span> {e.unit}</span></div>
-                                    </div>)
+                                        <div> {number} <span> {e.unit}</span></div>
+                                    </div>);
                                 })}
                             </div>
                         }
                         {deviceTypeArr.includes('302') && // 集电线路
-                            <div className={styles.integrateLine} onClick={() => { this.changeTypeCode('302') }}>
+                            <div className={styles.integrateLine} onClick={() => { this.changeTypeCode('302'); }}>
                                 <div className={styles.title}> 集电线路 </div>
                                 <div className={`${styles.column}`}>
                                     <div> 集电线路数</div>
@@ -305,7 +310,7 @@ class Schematic extends Component {
                                                     <div> Uab </div>
                                                     <div> {dataFormats(e['summaryInfo']['Uab'], '--', 2, true)} kV</div>
                                                 </div>
-                                            </div>)
+                                            </div>);
                                         })}
                                     </div>
                                     <i className={`${'iconfont icon-content'} ${styles.next}  ${sketchmapData['302'] && activeCarousel === sketchmapData['302'].summaryInfo.length - 1 && styles.disabled}`} onClick={this.next} />
@@ -314,33 +319,35 @@ class Schematic extends Component {
                             </div>
                         }
                         {deviceTypeArr.includes('301') && // 升压站
-                            <div className={styles.boosterStation} onClick={() => { this.changeTypeCode('301') }}>
+                            <div className={styles.boosterStation} onClick={() => { this.changeTypeCode('301'); }}>
                                 <div className={styles.highPressure}>
                                     <div className={styles.title}>主变高压侧</div>
                                     {commonList['301']['high'].summaryInfo.map((e, index) => {
-                                        return (<div className={`${styles.column} ${e.hot && styles.hot}`} key={index}>
+                                        const number = this.dealData('301', e.id, e.point);
+                                        return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot}`} key={index}>
                                             <div>{e.name} </div>
-                                            <div> {this.dealData('301', e.id, e.point)} <span> {e.unit}</span></div>
-                                        </div>)
+                                            <div> {number} <span> {e.unit}</span></div>
+                                        </div>);
                                     })}
                                 </div>
                                 <div className={styles.lowPressure}>
                                     <div className={styles.title}>主变低压侧</div>
                                     {commonList['301']['low'].summaryInfo.map((e, index) => {
-                                        return (<div className={`${styles.column} ${e.hot && styles.hot}`} key={index}>
+                                        const number = this.dealData('301', e.id, e.point);
+                                        return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot}`} key={index}>
                                             <div>{e.name} </div>
-                                            <div> {this.dealData('301', e.id, e.point)} <span> {e.unit}</span></div>
-                                        </div>)
+                                            <div> {number} <span> {e.unit}</span></div>
+                                        </div>);
                                     })}</div>
                             </div>
                         }
-                        <div className={styles.meter} onClick={() => { this.changeTypeCode('0') }}></div>
-                        <div className={styles.weather} onClick={() => { this.changeTypeCode('203') }}></div>
+                        <div className={styles.meter} onClick={() => { this.changeTypeCode('0'); }}></div>
+                        <div className={styles.weather} onClick={() => { this.changeTypeCode('203'); }}></div>
                     </div>
 
                 </div>
             </div>
-        )
+        );
     }
 }
 

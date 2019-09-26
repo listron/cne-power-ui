@@ -20,6 +20,22 @@ class CaseHandle extends React.Component {
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
     total: PropTypes.number,
+    stations: PropTypes.array,
+    deviceModeData: PropTypes.array,
+    questionTypeList: PropTypes.array,
+    userData: PropTypes.array,
+    getQuestionList: PropTypes.func,
+    getDeviceMode: PropTypes.func,
+    getCasePartList: PropTypes.func,
+    queryUseName: PropTypes.func,
+    faultDescription: PropTypes.string,
+    userName: PropTypes.string,
+    userId: PropTypes.number,
+    questionTypeCodes: PropTypes.array,
+    deviceModeList: PropTypes.array,
+    stationCodes: PropTypes.array,
+    orderFiled: PropTypes.string,
+    orderType: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -53,6 +69,18 @@ class CaseHandle extends React.Component {
   cancelModal = () => {
     this.setState({
       showUpload: false,
+    });
+  }
+  onPaginationChange = ({ pageSize, currentPage }) => {
+    const { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType, getCasePartList } = this.props;
+    const queryParams = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType };
+    getCasePartList({
+      ...queryParams,
+      pageNum: currentPage,
+      pageSize,
+    });
+    this.props.changeCasePartStore({
+      selectedRowKeys: [],
     });
   }
 

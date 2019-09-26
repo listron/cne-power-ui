@@ -75,7 +75,7 @@ class PvStationItem extends React.Component {
 
   changeStationData = ({ stationDataList = [], areaChecked = false, noChange = false }) => { // 处理数据 排序规则
     const { sortStatusName, ascend, selectStation } = this.state;
-    const filterStationList = selectStation ? stationDataList.filter(e => e.stationCode === selectStation) : stationDataList;
+    const filterStationList = selectStation ? stationDataList.filter(e => selectStation.includes(e.stationCode)) : stationDataList;
     const sortType = ascend ? 1 : -1;
     const stationSortList = filterStationList.sort((a, b) => { // 排序
       return sortType * (a[sortStatusName] - b[sortStatusName]);
@@ -194,6 +194,7 @@ class PvStationItem extends React.Component {
         <div className={styles.filterCondition}>
           <Select
             showSearch
+            mode="multiple"
             style={{ width: 200 }}
             placeholder="请选择电站"
             optionFilterProp="children"

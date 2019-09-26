@@ -129,7 +129,7 @@ class RunAchieve extends Component {
     // 第二个散点图
     const secondParams = {
       ...basisParams,
-      codes: [`${secondChartXAxis}-xAxis-${secondHideZero}`, `${secondChartYAxis}-yAxis${secondHideZero}`],
+      codes: [`${secondChartXAxis}-xAxis-${secondHideZero}`, `${secondChartYAxis}-yAxis-${secondHideZero}`],
     };
     // 第四个散点图
     const fourthParams = {
@@ -157,6 +157,7 @@ class RunAchieve extends Component {
       // 第三个散点图坐标
       thirdChartXAxis,
       thirdChartYAxis,
+      thirdHideZero,
     } = this.props;
     const {
       searchDevice,
@@ -171,7 +172,7 @@ class RunAchieve extends Component {
     // 第三个散点图
     const thirdParams = {
       ...basisParams,
-      codes: [`${thirdChartXAxis}-xAxis`, `${thirdChartYAxis}-yAxis`],
+      codes: [`${thirdChartXAxis}-xAxis-${thirdHideZero}`, `${thirdChartYAxis}-yAxis-${thirdHideZero}`],
     };
     getThirdChart(thirdParams);
   };

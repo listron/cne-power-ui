@@ -48,22 +48,26 @@ class DropDownSelects extends Component {
       maxTagPlaceholder: `已选${checkedList.length}/${infoLists.length}个`,
     } : {};
     return (
-      <Select
-        mode={multiple ? 'multiple' : ''}
-        style={{ width: '100%' }}
-        placeholder={holderText}
-        showSearch={true}
-        onChange={this.handleChange}
-        onSearch={this.searching}
-        filterOption={this.searchFilter}
-        disabled={disabled}
-        value={checkedList.map(e => e.value)}
-        {...maxTagInfo}
-      >
-        {infoLists.map(e => (
-          <Option key={e.value} value={e.value}>{e.label}</Option>
-        ))}
-      </Select>
+      <span ref={(ref) => { this.dropRef = ref; }}>
+        <Select
+          mode={multiple ? 'multiple' : ''}
+          style={{ width: '100%' }}
+          placeholder={holderText}
+          showSearch={true}
+          onChange={this.handleChange}
+          onSearch={this.searching}
+          filterOption={this.searchFilter}
+          value={checkedList.map(e => e.value)}
+          getPopupContainer={() => this.dropRef}
+          {...maxTagInfo}
+        >
+          {infoLists.map(e => (
+            <Option key={e.value} value={e.value}>{e.label}</Option>
+          ))}
+        </Select>
+      </span>
+
+
     );
   }
 }

@@ -48,7 +48,6 @@
       cursor: pointer;
     }
   }
-
 }
 
 
@@ -58,7 +57,7 @@
   justify-content: space-between;
   height: 72px;
   align-items: center;
-  padding-left: 28px;
+  padding-left: 20px;
 
   .leftHandler {
     display: flex;
@@ -129,9 +128,44 @@
 }
 
 .caseList {
+  margin-bottom: 24px;
+
+  .titleStyle {
+    text-align: center;
+  }
+
+  .selectKeyText {
+    margin-top: 16px;
+    margin-left: 20px;
+
+    .num {
+      color: #fab907;
+      margin: 0 4px;
+    }
+
+    .cancelSelect {
+      color: $themeColor;
+      margin-left: 4px;
+      cursor: pointer;
+    }
+  }
+
   .editPoint {
     padding: 0 4px;
-    color: $themeColor;
     cursor: pointer;
+
+    &:hover {
+      color: $themeColor;
+      font-weight: 400;
+    }
   }
+
+  .tableWidth {
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+
 }
