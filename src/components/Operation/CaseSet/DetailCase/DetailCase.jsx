@@ -21,8 +21,11 @@ class DetailCase extends React.Component {
     };
   }
   onWarningTipShow = () => {
-    this.setState({
-      showWarningTip: true,
+    // this.setState({
+    //   showWarningTip: true,
+    // });
+    this.props.changeCasePartStore({
+      showPage: 'list',
     });
   }
   confirmWarningTip = () => {
@@ -91,7 +94,7 @@ class DetailCase extends React.Component {
             if (e.value || e.value === 0) {
               value = e.value;
             } else {
-              value = '--';
+              value = '无';
             }
             return (
               <div key={e.name} className={styles.eachInfo}>

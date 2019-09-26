@@ -23,7 +23,7 @@ class CaseList extends React.Component {
     super(props, context);
     this.state = {
       showWarningTip: false,
-      warningTipText: '确定要删除选中测点?',
+      warningTipText: '确定要删除解决方案吗?',
       currentPoint: {},
     };
   }
@@ -69,6 +69,11 @@ class CaseList extends React.Component {
       caseBaseId: record.caseBaseId,
     });
   }
+  cancelSelect = () => {
+    this.props.changeCasePartStore({
+      selectedRowKeys: [],
+    });
+  }
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
     const { getCasePartList, questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId } = this.props;
     const queryParams = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId };
@@ -98,28 +103,62 @@ class CaseList extends React.Component {
         title: '风场',
         dataIndex: 'stationNames',
         key: 'stationNames',
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{text}</div>
+          );
+        },
       },
       {
         title: '机型',
         dataIndex: 'deviceName',
         key: 'deviceName',
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{text}</div>
+          );
+        },
 
       }, {
         title: '问题类别',
         dataIndex: 'questionTypeCodeName',
         key: 'questionTypeCodeName',
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{text}</div>
+          );
+        },
+
       }, {
         title: '相关故障代码',
         dataIndex: 'faultCode',
         key: 'faultCode',
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{text}</div>
+          );
+        },
+
       }, {
         title: '问题描述',
         dataIndex: 'faultDescription',
         key: 'faultDescription',
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{text}</div>
+          );
+        },
+
       }, {
         title: '处理措施',
         dataIndex: 'processingMethod',
         key: 'processingMethod',
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{text}</div>
+          );
+        },
+
       }, {
         title: '更新时间',
         dataIndex: 'updateTime',
@@ -158,6 +197,7 @@ class CaseList extends React.Component {
           pagination={false}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
+        <div> 当前选中<span className={styles.num}>{selectedRowKeys.length}</span> 项 <span className={styles.cancelSelect} onClick={this.cancelSelect}>{selectedRowKeys.length ? '取消选择' : ''}</span></div>
       </div>
     );
   }
