@@ -19,9 +19,9 @@ class StopAnalysis extends Component {
   }
 
   handleContextMenu = () => {
-    event.preventDefault();
     const { stationInfoStr, pageName, stopChartDevice, stopChartTime, stopChartTypes } = this.props;
     if (stopChartDevice || stopChartTime || stopChartTypes) {
+      event.preventDefault();
       this.props.pageQuery(stationInfoStr, pageName);
     }
   }
