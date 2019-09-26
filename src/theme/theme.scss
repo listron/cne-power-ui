@@ -81,3 +81,18 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
     }
   }
 }
+
+.light{
+  --lightColor: #999; // 浅色文字-非凸显
+  --darkColor: #666; // 主要使用文字色
+  --themeColor: #199475; // 高亮, 选中, 主体色
+  --promptColor: #dfdfdf; // 边框/禁用/input+placehodler颜色
+}
+
+.dark{
+  --lightColor: #1f2a4e;; // 浅色文字-非凸显
+  --darkColor: #9cd1ff; // 主要使用文字色
+  --themeColor:#00cdff; // 高亮, 选中, 主体色
+  --promptColor: #3d7bac; // 边框/禁用/input+placehodler颜色
+}
+

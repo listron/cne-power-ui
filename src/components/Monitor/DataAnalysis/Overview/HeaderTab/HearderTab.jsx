@@ -7,6 +7,7 @@ import styles from './header.scss';
 class HearderTab extends Component{
   static propTypes = {
     tab: PropTypes.string,
+    theme: PropTypes.string,
     pages: PropTypes.array,
     history: PropTypes.object,
     changeOverviewStore: PropTypes.func,
@@ -64,9 +65,9 @@ class HearderTab extends Component{
   }
 
   render(){
-    const { tab, pages } = this.props;
+    const { tab, pages, theme } = this.props;
     return(
-      <div className={styles.tabs}>
+      <div className={`${styles.tabs} ${styles[theme]}`}>
         {this.tabs.map((e, i) => (
           <div
             key={e}
