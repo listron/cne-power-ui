@@ -28,9 +28,9 @@ class LostAnalysis extends Component {
   }
 
   handleContextMenu = () => {
-    event.preventDefault();
     const { stationInfoStr, pageName, lostChartDevice } = this.props;
     if (lostChartDevice) {
+      event.preventDefault();
       this.props.pageQuery(stationInfoStr, pageName);
     }
   }
