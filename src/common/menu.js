@@ -39,7 +39,7 @@ const menuData = [
         rightKey: 'monitor_powerCurve',
       }, {
         name: '数据分析',
-        iconStyle: 'icon-da',
+        iconStyle: 'icon-sand',
         path: 'data',
         rightKey: 'monitor_dataAnalysis',
         children: [
@@ -47,6 +47,10 @@ const menuData = [
             name: '散点图',
             path: 'scatterDiagram',
             rightKey: 'dataAnalysis_scatterPlot',
+          }, {
+            name: '数据概览',
+            path: 'overview',
+            rightKey: 'dataAnalysis_historyTrend',
           }, {
             name: '历史趋势',
             path: 'history',
@@ -222,6 +226,11 @@ const menuData = [
         path: 'intelligentExpert',
         iconStyle: 'icon-gd4',
         rightKey: 'operation_experience',
+      }, {
+        name: '案例集',
+        path: 'caseSet',
+        iconStyle: 'icon-gd4',
+        rightKey: 'operation_case',
       },
     ],
   },
@@ -315,7 +324,7 @@ const menuData = [
       }, {
         name: '数据分析工具',
         path: 'analysisTool',
-        iconStyle: 'icon-device-data',
+        iconStyle: 'icon-sand',
         rightKey: 'analysis_dataTool',
         children: [
           {
@@ -331,7 +340,7 @@ const menuData = [
           {
             name: '风资源',
             path: 'resources',
-            rightKey: 'analysis_dataTool_sequence',
+            rightKey: 'analysis_dataTool_windSource',
           },
           // {
           //   name: '统计图',
@@ -493,7 +502,7 @@ const menuData = [
           }, {
             name: '执行机构分析',
             path: 'analysis/actuator',
-            rightKey: 'analysis_windPower_running',
+            rightKey: 'analysis_windPower_actuator',
           },
         ],
       },

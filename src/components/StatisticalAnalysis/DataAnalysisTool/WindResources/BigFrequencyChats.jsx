@@ -209,8 +209,8 @@ class BigFrequencyChats extends Component{
     const myChart = eCharts.init(bigChart, themeConfig[this.props.theme]);
     const option = this.creatOption(curBigChartData, saveBtn, deviceName);
     myChart.off();
-    myChart.on('click', 'title', (payload)=>{
-      likeStatusChange(index, !saveBtn);
+    myChart.on('click', 'title', ()=>{
+      likeStatusChange(index, !saveBtn, curBigChartData);
     });
     myChart.setOption(option);
   }

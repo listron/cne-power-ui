@@ -1,6 +1,6 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
-import moment from 'moment'
+import moment from 'moment';
 import Path from '../../../../constants/path';
 import { alarmAction } from './alarmAction';
 
@@ -26,7 +26,7 @@ function* resetAlarm(action) {//恢复reducer为默认初始值。
   });
 }
 
-function* getRealtimeAlarm(action) {  // 请求实时告警
+function* getRealtimeAlarm(action) { // 请求实时告警
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getRealtimeAlarm;
   try {
@@ -42,7 +42,7 @@ function* getRealtimeAlarm(action) {  // 请求实时告警
         payload: {
           realtimeAlarm: response.data.data,
           lastUpdateTime: moment().format('YYYY-MM-DD HH:mm'),
-          ...payload
+          ...payload,
         },
       });
     }
@@ -52,39 +52,39 @@ function* getRealtimeAlarm(action) {  // 请求实时告警
 }
 
 
-function *getTransferAlarm(action) {  // 请求已转工单告警
+function* getTransferAlarm(action) { // 请求已转工单告警
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getRealtimeAlarm;
-  try{
-    yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.post,url,{
+  try {
+    yield put({ type: alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post, url, {
       ...payload,
-      stationCode:payload.stationCodes,
-      startTime:payload.rangTime,
+      stationCode: payload.stationCodes,
+      startTime: payload.rangTime,
     });
-    if(response.data.code === '10000') {
+    if (response.data.code === '10000') {
       yield put({
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,
         payload: {
           realtimeAlarm: response.data.data,
-          ...payload
+          ...payload,
         },
       });
-    } else{throw response.data}
-  }catch(e){
+    } else { throw response.data; }
+  } catch (e) {
     console.log(e);
     yield put({
       type: alarmAction.GET_ALARM_FETCH_SUCCESS,
       payload: {
         realtimeAlarm: [],
-        ...payload
+        ...payload,
       },
     });
   }
 }
 
 
-function* getHistoryAlarm(action) {  // 请求历史告警
+function* getHistoryAlarm(action) { // 请求历史告警
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getHistoryAlarm;
   try {
@@ -95,7 +95,7 @@ function* getHistoryAlarm(action) {  // 请求历史告警
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,
         payload: {
           historyAlarm: response.data.data,
-          ...payload
+          ...payload,
         },
       });
     }
@@ -104,17 +104,20 @@ function* getHistoryAlarm(action) {  // 请求历史告警
   }
 }
 
-function* getStationsAlarmStatistic(action) {  // 请求多电站告警统计
+function* getStationsAlarmStatistic(action) { // 请求多电站告警统计
   const { payload } = action;
   const startTime = payload.startTime ? moment(payload.startTime).startOf('day').utc().format() : null;
   const endTime = payload.endTime ? moment(payload.endTime).endOf('day').utc().format() : null;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationsAlarmStatistic;
   try {
-    yield put({ type: alarmAction.ALARM_FETCH });
+    yield put({
+      type: alarmAction.CHANGE_ALARM_STATISTIC_STORE_SAGA,
+      payload: { ...payload },
+    });
     const response = yield call(axios.post, url, {
       ...payload,
       startTime,
-      endTime
+      endTime,
     });
     if (response.data.code === '10000') {
       yield put({
@@ -122,7 +125,7 @@ function* getStationsAlarmStatistic(action) {  // 请求多电站告警统计
         payload: {
           alarmStatistic: response.data.data,
           ...payload,
-        }
+        },
       });
     }
   } catch (e) {
@@ -130,7 +133,7 @@ function* getStationsAlarmStatistic(action) {  // 请求多电站告警统计
   }
 }
 
-function* getSingleStationAlarmStatistic(action) {  // 请求单电站告警统计
+function* getSingleStationAlarmStatistic(action) { // 请求单电站告警统计
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getSingleStationAlarmStatistic;
   try {
@@ -145,7 +148,7 @@ function* getSingleStationAlarmStatistic(action) {  // 请求单电站告警统�
           startTime: payload.startTime,
           endTime: payload.endTime,
           singleStationCode: payload.stationCode,
-          summaryType: payload.summaryType
+          summaryType: payload.summaryType,
         },
       });
     }
@@ -154,12 +157,12 @@ function* getSingleStationAlarmStatistic(action) {  // 请求单电站告警统�
   }
 }
 
-function* getAlarmNum(action) {  // 请求告警个数
+function* getAlarmNum(action) { // 请求告警个数
   const { payload } = action;
   // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmNum;
   const APIBasePath = Path.basePaths.APIBasePath;
-  const monitor = Path.APISubPaths.monitor
-  const url = `${APIBasePath}${monitor.getAlarmNum}/${payload.warningStatus}/${'事件告警'}`
+  const monitor = Path.APISubPaths.monitor;
+  const url = `${APIBasePath}${monitor.getAlarmNum}/${payload.warningStatus}/${'事件告警'}`;
   try {
     yield put({ type: alarmAction.ALARM_FETCH });
     const response = yield call(axios.get, url, payload);
@@ -167,7 +170,7 @@ function* getAlarmNum(action) {  // 请求告警个数
       yield put({
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,
         payload: {
-          alarmNum: response.data.data
+          alarmNum: response.data.data,
         },
       });
     }
@@ -176,7 +179,7 @@ function* getAlarmNum(action) {  // 请求告警个数
   }
 }
 
-function* getTicketInfo(action) {  // 请求工单详情
+function* getTicketInfo(action) { // 请求工单详情
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getTicketInfo}/${payload.workOrderId}`;
   try {
@@ -186,7 +189,7 @@ function* getTicketInfo(action) {  // 请求工单详情
       yield put({
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,
         payload: {
-          ticketInfo: response.data.data
+          ticketInfo: response.data.data,
         },
       });
     }
@@ -195,7 +198,7 @@ function* getTicketInfo(action) {  // 请求工单详情
   }
 }
 
-function* getRelieveInfo(action) {  // 请求屏蔽详情
+function* getRelieveInfo(action) { // 请求屏蔽详情
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getRelieveInfo}/${payload.operateId}`;
   try {
@@ -205,7 +208,7 @@ function* getRelieveInfo(action) {  // 请求屏蔽详情
       yield put({
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,
         payload: {
-          relieveInfo: response.data.data
+          relieveInfo: response.data.data,
         },
       });
     }
@@ -214,7 +217,7 @@ function* getRelieveInfo(action) {  // 请求屏蔽详情
   }
 }
 
-function* transferAlarm(action) {  // 转工单
+function* transferAlarm(action) { // 转工单
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.transferAlarm;
   try {
@@ -224,8 +227,8 @@ function* transferAlarm(action) {  // 转工单
       yield put({
         type: alarmAction.CHANGE_ALARM_STORE_SAGA,
         payload: {
-          selectedRowKeys: []
-        }
+          selectedRowKeys: [],
+        },
       });
       const params = yield select(state => ({//继续请求实时告警
         warningLevel: state.monitor.alarm.get('warningLevel'),
@@ -236,11 +239,11 @@ function* transferAlarm(action) {  // 转工单
         startTime: state.monitor.alarm.get('startTime'),
         deviceName: state.monitor.alarm.get('deviceName'),
         isTransferWork: state.monitor.alarm.get('isTransferWork'),
-        isRelieveAlarm: state.monitor.alarm.get('isRelieveAlarm')
+        isRelieveAlarm: state.monitor.alarm.get('isRelieveAlarm'),
       }));
       yield put({
         type: alarmAction.GET_REALTIME_ALARM_SAGA,
-        payload: params
+        payload: params,
       });
     }
   } catch (e) {
@@ -248,7 +251,7 @@ function* transferAlarm(action) {  // 转工单
   }
 }
 
-function* relieveAlarm(action) {  // 屏蔽告警
+function* relieveAlarm(action) { // 屏蔽告警
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.relieveAlarm;
   try {
@@ -258,8 +261,8 @@ function* relieveAlarm(action) {  // 屏蔽告警
       yield put({
         type: alarmAction.CHANGE_ALARM_STORE_SAGA,
         payload: {
-          selectedRowKeys: []
-        }
+          selectedRowKeys: [],
+        },
       });
       const params = yield select(state => ({//继续请求实时告警
         warningLevel: state.monitor.alarm.get('warningLevel'),
@@ -270,11 +273,11 @@ function* relieveAlarm(action) {  // 屏蔽告警
         startTime: state.monitor.alarm.get('startTime'),
         deviceName: state.monitor.alarm.get('deviceName'),
         isTransferWork: state.monitor.alarm.get('isTransferWork'),
-        isRelieveAlarm: state.monitor.alarm.get('isRelieveAlarm')
+        isRelieveAlarm: state.monitor.alarm.get('isRelieveAlarm'),
       }));
       yield put({
         type: alarmAction.GET_REALTIME_ALARM_SAGA,
-        payload: params
+        payload: params,
       });
     }
   } catch (e) {
@@ -282,7 +285,7 @@ function* relieveAlarm(action) {  // 屏蔽告警
   }
 }
 
-function* resetRelieveAlarm(action) {  // 取消屏蔽告警
+function* resetRelieveAlarm(action) { // 取消屏蔽告警
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.resetRelieveAlarm;
   try {
@@ -292,8 +295,8 @@ function* resetRelieveAlarm(action) {  // 取消屏蔽告警
       yield put({
         type: alarmAction.CHANGE_ALARM_STORE_SAGA,
         payload: {
-          selectedRowKeys: []
-        }
+          selectedRowKeys: [],
+        },
       });
       const params = yield select(state => ({//继续请求实时告警
         warningLevel: state.monitor.alarm.get('warningLevel'),
@@ -304,11 +307,11 @@ function* resetRelieveAlarm(action) {  // 取消屏蔽告警
         startTime: state.monitor.alarm.get('startTime'),
         deviceName: state.monitor.alarm.get('deviceName'),
         isTransferWork: state.monitor.alarm.get('isTransferWork'),
-        isRelieveAlarm: state.monitor.alarm.get('isRelieveAlarm')
+        isRelieveAlarm: state.monitor.alarm.get('isRelieveAlarm'),
       }));
       yield put({
         type: alarmAction.GET_REALTIME_ALARM_SAGA,
-        payload: params
+        payload: params,
       });
     }
   } catch (e) {
@@ -316,7 +319,7 @@ function* resetRelieveAlarm(action) {  // 取消屏蔽告警
   }
 }
 
-function* exportAlarmStatistic(action) {  // 导出告警统计
+function* exportAlarmStatistic(action) { // 导出告警统计
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.exportAlarmStatistic;
   try {
@@ -325,7 +328,7 @@ function* exportAlarmStatistic(action) {  // 导出告警统计
       method: 'post',
       url,
       data: payload,
-      responseType: 'blob'
+      responseType: 'blob',
     });
     if (response.data) {
       const content = response.data;
