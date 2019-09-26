@@ -25,6 +25,19 @@ class PointChart extends PureComponent{
     }
   }
 
+  chartColors = {
+    light: {
+      font: '#666',
+      axis: '#dfdfdf',
+      bar: ['#1cfcf4', '#009cff'],
+    },
+    dark: {
+      font: '#00f0ff',
+      axis: '#3b55aa',
+      bar: ['#1cfcf4', '#009cff'],
+    },
+  }
+
   barColor = {
     light: ['#1cfcf4', '#009cff'],
     dark: ['#1cfcf4', '#009cff'],
@@ -45,6 +58,7 @@ class PointChart extends PureComponent{
       rateData.push(rate * 100);
     });
     const barColor = this.barColor[theme] || ['#1cfcf4', '#009cff'];
+    
     const option = {
       grid: {
         top: 20,
@@ -55,16 +69,39 @@ class PointChart extends PureComponent{
       },
       xAxis: {
         data: dataAxis,
+        axisLabel: {
+          textStyle: {
+            color: '#666',
+          },
+        },
         axisTick: {
           show: false,
         },
+        axisLine: {
+          lineStyle: {
+            color: '#dfdfdf',
+          },
+        },
       },
       yAxis: {
+        axisLine: {
+          lineStyle: {
+            color: '#dfdfdf',
+          },
+        },
         splitLine: {
           show: false,
         },
         axisTick: {
           show: false,
+        },
+        axisLabel: {
+          textStyle: {
+            color: '#666666',
+          },
+        },
+        nameTextStyle: {
+          color: '#666666',
         },
       },
       tooltip: {
