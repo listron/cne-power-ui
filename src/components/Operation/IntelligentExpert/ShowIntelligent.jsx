@@ -125,11 +125,11 @@ class ShowIntelligent extends Component {
           </div>
           <div className={styles.detailText}>
             <div className={styles.title}>点赞数</div>
-            <div>{intelligentDetail.likeCount || '无'}</div>
+            <div>{intelligentDetail.likeCount || 0}</div>
           </div>
           <div className={styles.detailText}>
             {intelligentDetail.liked === 0 &&
-              <Button className={styles.likeBtn} onClick={this.likeBtn}>点赞<Icon type="like" /></Button> ||
+              <Button className={styles.likeBtn} onClick={this.likeBtn} type="primary">点赞<Icon type="like" /></Button> ||
               <Button className={styles.likedBtn} disabled>已点赞</Button>}
           </div>
         </div>
