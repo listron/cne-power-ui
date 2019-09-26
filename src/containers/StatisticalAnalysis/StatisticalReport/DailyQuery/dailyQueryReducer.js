@@ -22,7 +22,7 @@ import { dailyQueryAction } from './dailyQueryAction';
   quotaListData: {}, // 关键指标列表信息
 
   powerInformation: '', // 限电原因 
-  faultIds: [], // 故障信息的Ids
+  faultIds: [], // 选中的故障信息的Ids
   faultData: [], // 获取故障类型
   faultListData: {}, //获取故障信息列表
 
