@@ -22,7 +22,7 @@ const initState = immutable.fromJS({
   pointTime: 0,
 
   hourOptionValue: 'TR002', // 功率
-  hourOptionName: '有功功率有功功率有功功率',
+  hourOptionName: '有功功率',
   hourUnitName: 'kw',
   sequenceTime: 0,
   sequenceLoading: false,
