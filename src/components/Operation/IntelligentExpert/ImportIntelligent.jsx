@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Form, Button, Upload, message } from 'antd';
+import { Modal, Form, Button, Upload, message, Icon } from 'antd';
 import styles from './intelligentExpert.scss';
 
 const FormItem = Form.Item;
@@ -23,11 +23,11 @@ class ImportIntelligent extends Component {
   }
 
   beforeUploadStation = (file) => { // 上传前的校验
-    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
+    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
     const validFile = validType.includes(file.type);
     if (!validFile) {
       message.config({ top: 200, duration: 2, maxCount: 3 });
-      message.error('只支持上传excel文件!', 2);
+      message.error('只支持上传excel文件!(支持xlsx文件)', 2);
     } else {
       this.removeFile(file);
       this.setState(state => ({
@@ -97,25 +97,26 @@ class ImportIntelligent extends Component {
           maskClosable={false}
           closable={true}
           centered={true}
+          title={null}
         >
           <Form>
-            <FormItem {...formItemLayout} label="附件">
+            <FormItem {...formItemLayout} label="批量导入">
               {getFieldDecorator('upload', {
                 getValueFromEvent: this.normFile,
-                rules: [{ required: true, message: '选择文件' }],
+                rules: [{ required: true, message: '请上传文件' }],
               })(
                 <Upload
                   onRemove={(file) => this.removeFile(file)}
                   beforeUpload={this.beforeUploadStation}
                   fileList={fileList}
                 >
-                  <Button>选择文件</Button>
-                  <span> 支持xls、xlsx文件</span>
+                  <Button type="primary"><Icon type="upload" />选择文件上传</Button>
+                  <span> 支持xlsx文件</span>
                 </Upload>
               )}
             </FormItem>
-            <FormItem wrapperCol={{ span: 12, offset: 12 }} >
-              <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>导入</Button>
+            <FormItem wrapperCol={{ offset: 8 }} >
+              <Button type="primary" htmlType="submit" onClick={this.handleSubmit} disabled={fileList.length === 0}>确认导入</Button>
             </FormItem>
           </Form>
         </Modal>
