@@ -130,6 +130,10 @@ export default class StationPBAChart extends Component {
 
   drawChart = (data, dataIndex) => {
     const { qutaName, stationColorData, unitName, pointLength } = this.props;
+    // 颜色为空
+    if(JSON.stringify(stationColorData) === '{}') {
+      return {};
+    }
     const twoBar = [{ // 实发
       data: data && data.map(cur => (this.dataFormatFunc(unitName, cur.indicatorData, 'actualGen'))),
       type: 'bar',
@@ -137,7 +141,13 @@ export default class StationPBAChart extends Component {
       itemStyle: {
         normal: {
           color: function(params) {//柱子颜色
-            return dataIndex === '' ? stationColorData[params.name] : (dataIndex === params.name ? stationColorData[params.name] : '#cccccc');
+            return dataIndex === '' ? new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
+              {offset: 0, color: stationColorData[params.name] && stationColorData[params.name][0]},
+              {offset: 1, color: stationColorData[params.name] && stationColorData[params.name][1]},
+            ]) : (dataIndex === params.name ? new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
+              {offset: 0, color: stationColorData[params.name] && stationColorData[params.name][0]},
+              {offset: 1, color: stationColorData[params.name] && stationColorData[params.name][1]},
+            ]) : '#cccccc');
           },
         },
         emphasis: {
@@ -167,7 +177,13 @@ export default class StationPBAChart extends Component {
         barBorderRadius: [5, 5, 0, 0],
         normal: {
           color: function(params) {//柱子颜色
-            return dataIndex === '' ? stationColorData[params.name] : (dataIndex === params.name ? stationColorData[params.name] : '#cccccc');
+            return dataIndex === '' ? new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
+              {offset: 0, color: stationColorData[params.name] && stationColorData[params.name][0]},
+              {offset: 1, color: stationColorData[params.name] && stationColorData[params.name][1]},
+            ]) : (dataIndex === params.name ? new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
+              {offset: 0, color: stationColorData[params.name] && stationColorData[params.name][0]},
+              {offset: 1, color: stationColorData[params.name] && stationColorData[params.name][1]},
+            ]) : '#cccccc');
           },
         },
         emphasis: {
