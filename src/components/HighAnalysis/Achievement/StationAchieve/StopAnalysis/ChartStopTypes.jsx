@@ -50,9 +50,9 @@ class ChartStopTypes extends Component {
   }
 
   barColor = [
-    ['#e024f2', '#bd10e0'],
-    ['#df7789', '#bc4251'],
-    ['#f2b75f', '#e08031'],
+    ['#4c9de8', '#2564cc'], // ['#e024f2', '#bd10e0'],
+    ['#fddc00', '#f9b600'], // ['#df7789', '#bc4251'],
+    ['#36c6ad', '#199475'], // ['#f2b75f', '#e08031'],
   ]
 
   setChartLoading = () => {
