@@ -81,6 +81,24 @@
     background: transparent;
     border: 0 !important;
   }
+  .ant-table-thread > tr.ant-table-row-hover,
+  .ant-table-tbody > tr.ant-table-row-hover,
+  .ant-table-thread > tr:hover,
+  .ant-table-tbody > tr:hover {
+    &:not(.ant-table-expanded-row) > td {
+      background: rgba(83, 104, 241, 0.15);
+    }
+  }
+  // &-thead > tr,
+  // &-tbody > tr {
+  //   transition: all 0.3s, height 0s;
+  //   &.@{table-prefix-cls}-row-hover,
+  //   &:hover {
+  //     &:not(.@{table-prefix-cls}-expanded-row) > td {
+  //       background: @table-row-hover-bg;
+  //     }
+  //   }
+  // }
 
   .ant-tree {
     // 对antd tree控件的初始化： 高两色调整。
