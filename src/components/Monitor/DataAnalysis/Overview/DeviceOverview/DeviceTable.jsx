@@ -9,6 +9,7 @@ const { Option } = Select;
 class DeviceTable extends PureComponent{
   static propTypes = {
     deveiceLoading: PropTypes.bool,
+    theme: PropTypes.string,
     devicesData: PropTypes.object,
     deviceTopData: PropTypes.object,
     deviceParam: PropTypes.object,
@@ -152,7 +153,7 @@ class DeviceTable extends PureComponent{
   }
 
   render(){
-    const { devicePointsList, deviceCheckedList, devicesData, deveiceLoading } = this.props;
+    const { devicePointsList, deviceCheckedList, devicesData, deveiceLoading, theme } = this.props;
     const { indicators, tableColumn } = this.state;
     const { deviceData = [] } = devicesData;
     const { pointData = []} = deviceData[0] || {};
@@ -162,6 +163,7 @@ class DeviceTable extends PureComponent{
         <div className={styles.pointHandle}>
           <span className={styles.text}>测点</span>
           <AutoSelect
+            theme={theme}
             data={[{
               value: 'points',
               label: '测点',
@@ -173,6 +175,7 @@ class DeviceTable extends PureComponent{
             maxTagCount={0}
           />
           <span className={styles.text}>指标名称</span>
+          <span ref={(ref) => { this.pointRef = ref; }} />
           <Select
             onChange={this.changeNumType}
             placeholder="请选择"
@@ -180,6 +183,7 @@ class DeviceTable extends PureComponent{
             style={{width: '288px'}}
             className={styles.eachType}
             value={indicators}
+            getPopupContainer={() => this.pointRef}
           >
             <Option value="validCount">有效值数</Option>
             <Option value="invalidCount">无效值数</Option>
