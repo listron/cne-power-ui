@@ -76,13 +76,13 @@ class CaseList extends React.Component {
     });
   }
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
-    const { getCasePartList, questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId } = this.props;
-    const queryParams = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId };
+    const { getCasePartList, questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, pageSize, pageNum } = this.props;
+    const queryParams = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, pageSize, pageNum };
     const { field, order } = sorter;
-    const orderField = field === 'likeCount' ? 'like' : field;
+    const orderFiled = field === 'likeCount' ? 'like' : field;
     getCasePartList({
       ...queryParams,
-      orderField: orderField,
+      orderFiled: orderFiled,
       orderType: order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : null,
     });
   }

@@ -242,6 +242,7 @@ export default {
       downCaseTemplate: '/template/caseBase.xls',
       uploadCaseFile: '/v3/file/manage/upload',
       deleteCaseFile: '/v3/file/manage/delete',
+      downloadCaseFile: '/v3/file/manage/download', // 下载导入模板
 
 
     },
