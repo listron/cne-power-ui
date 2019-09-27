@@ -83,7 +83,11 @@ function* getImportIntelligent({ payload = {} }) { // 导入
       const params = yield select(state => state.operation.intelligentExpert.get('listParams').toJS());// 继续请求智能专家库列表
       yield put({
         type: intelligentExpertAction.getIntelligentTable,
-        payload: params,
+        payload: {
+          ...params,
+          orderField: 'like_count',
+          sortMethod: 'desc',
+        },
       });
     } else {
       throw response.data;
