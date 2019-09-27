@@ -1,10 +1,6 @@
 
 @import '../../../../../theme/theme.scss';
 
-.station{
-
-}
-
 .list{
   display: flex;
   flex-wrap: wrap;
@@ -110,6 +106,7 @@
   
   .dates{
     background-color: #fff;
+    border:1px solid #e1e2e2;
     .datesTopInfo{
       .text{
         color: $darkColor;
@@ -151,6 +148,7 @@
   }
   
   .dates{
+    border:1px solid #3d7bac;
     background:rgba(20,33,101,0.40);
     .datesTopInfo{
       .text{
