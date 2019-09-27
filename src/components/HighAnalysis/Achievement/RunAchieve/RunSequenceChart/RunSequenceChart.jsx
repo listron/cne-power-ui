@@ -56,6 +56,7 @@ export default class RunSequenceChart extends Component {
       name: cur.deviceName,
       type: 'line',
       symbol: 'none',
+      z: 2 - index,
       data: cur.dataList && cur.dataList.map(item => (dataFormat(item.value, '--', pointLength))),
     }));
     return {
