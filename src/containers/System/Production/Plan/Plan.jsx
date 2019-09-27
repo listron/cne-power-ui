@@ -1,13 +1,13 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import styles from "./plan.scss";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import CommonBreadcrumb from "../../../../components/Common/CommonBreadcrumb";
 import PlanMain from '../../../../components/System/Production/Plan/PlanMain/PlanMain';
 import PlanSide from '../../../../components/System/Production/Plan/PlanSide/PlanSide';
 import PropTypes from 'prop-types';
-import {planAction} from './planAction';
-import {commonAction} from "../../../alphaRedux/commonAction";
+import { planAction } from './planAction';
+import { commonAction } from "../../../alphaRedux/commonAction";
 
 
 class Plan extends Component {
@@ -17,11 +17,11 @@ class Plan extends Component {
     sort: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    stationCodes:PropTypes.array,
-    sortField:PropTypes.string,
-    planYear:PropTypes.any,
-    sortMethod:PropTypes.string,
-    changePlanStore:PropTypes.func,
+    stationCodes: PropTypes.array,
+    sortField: PropTypes.string,
+    planYear: PropTypes.any,
+    sortMethod: PropTypes.string,
+    changePlanStore: PropTypes.func,
     getPlanList: PropTypes.func,
     editPlanInfo: PropTypes.func,
     getStations: PropTypes.func,
@@ -36,7 +36,7 @@ class Plan extends Component {
     }
   }
 
-  componentWillMount(){
+  componentWillMount() {
     this.props.getYearList();
   }
 
@@ -61,11 +61,11 @@ class Plan extends Component {
     const { showSidePage } = this.state;
     return (
       <div className={styles.planContainerBox}>
-        <CommonBreadcrumb  breadData={ [{name: '生产计划',}]} style={{marginLeft: '38px'}} />
+        <CommonBreadcrumb breadData={[{ name: '生产计划', }]} style={{ marginLeft: '38px' }} />
         <div className={styles.planContainer}>
           <PlanMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
           <TransitionContainer
-            show={showPage  !== 'list'}
+            show={showPage !== 'list'}
             onEnter={this.onToggleSide}
             onExited={this.onToggleSide}
             timeout={500}
@@ -85,14 +85,15 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changePlanStore: payload => dispatch({type: planAction.changePlanStore, payload}),
+  changePlanStore: payload => dispatch({ type: planAction.changePlanStore, payload }),
   getYearList: payload => dispatch({ type: planAction.getYearList, payload }),
-  getPlanList: payload => dispatch({type: planAction.getPlanList, payload}),
-  editPlanInfo: payload => dispatch({type: planAction.editPlanInfo, payload}),
+  getPlanList: payload => dispatch({ type: planAction.getPlanList, payload }),
+  editPlanInfo: payload => dispatch({ type: planAction.editPlanInfo, payload }),
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
   getOwnStations: payload => dispatch({ type: planAction.getOwnStations, payload }),
   addPlanInfo: payload => dispatch({ type: planAction.addPlanInfo, payload }),
-  resetStore: payload => dispatch({ type: planAction.resetStore, payload }), 
+  resetStore: payload => dispatch({ type: planAction.resetStore, payload }),
+  importFile: payload => dispatch({ type: planAction.importFile, payload }),
   downLoadFile: payload => dispatch({
     type: commonAction.downLoadFile, payload: {
       ...payload,

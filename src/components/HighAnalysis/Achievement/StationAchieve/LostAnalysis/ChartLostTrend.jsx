@@ -122,7 +122,7 @@ class ChartLostTrend extends Component {
   }
 
   timeModeChange = (lostChartTimeMode) => {
-    const { changeStore, getLostTrend, lostStringify } = this.props;
+    const { changeStore, getLostTrend, lostStringify, lostChartDevice } = this.props;
     // 携带参数重新请求信息
     changeStore({ lostChartTimeMode });
     let searchParam = {};
@@ -131,7 +131,7 @@ class ChartLostTrend extends Component {
     } catch (error) { console.log(error); }
     getLostTrend({
       stationCodes: [searchParam.code],
-      deviceFullcodes: searchParam.device,
+      deviceFullcodes: lostChartDevice ? [lostChartDevice.deviceFullcode] : searchParam.device,
       startTime: searchParam.date[0],
       endTime: searchParam.date[1],
       indicatorCode: searchParam.quota,

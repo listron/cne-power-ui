@@ -103,11 +103,14 @@ class StationDates extends PureComponent{
     return(
       <div className={styles.dates}>
         <div className={styles.datesTopInfo}>
-          <MonthPicker
-            allowClear={false}
-            value={month ? moment(month) : null}
-            onChange={this.monthCheck}
-          />
+          <span ref={(ref) => { this.monthRef = ref; }}>
+            <MonthPicker
+              getCalendarContainer={() => this.monthRef}
+              allowClear={false}
+              value={month ? moment(month) : null}
+              onChange={this.monthCheck}
+            />
+          </span>
           <span className={styles.ranges}>
             <span className={styles.text}>设备数据完成率平均值</span>
             {this.rateLevel.map(e => (
@@ -126,7 +129,7 @@ class StationDates extends PureComponent{
               const validDate = stationDatesRate.find(rate => moment(rate.date).isSame(e, 'd'));
               const { date, completeRate } = validDate || {};
               const rateStr = dataFormats(completeRate, '--', 2, true);
-              const colorInfo = this.rateLevel[Math.floor(rateStr / 20)];
+              const colorInfo = rateStr >= 100 ? this.rateLevel[4] : this.rateLevel[Math.floor(rateStr / 20)];
               const holderColor = theme === 'light' ? '#f8f8f8' : '#f8f8f8';
               const backgroundColor = colorInfo ? colorInfo.color : holderColor;
               // rateStr < 20 && rateStr >= 0 && (backgroundColor = this.rateLevel[0]'#3b85d5');

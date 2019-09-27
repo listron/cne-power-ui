@@ -14,10 +14,9 @@ class planSearch extends Component {
     getPlanList: PropTypes.func,
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
-    stationCodes: PropTypes.array,
     planYearList: PropTypes.array,
     changePlanStore: PropTypes.func,
-    planYear: PropTypes.any,
+    year: PropTypes.any,
   };
 
   constructor(props) {
@@ -41,7 +40,7 @@ class planSearch extends Component {
   selectValue = () => {
     const { stationCodes } = this.state;
     const params = {
-      year: this.props.planYear,
+      year: this.props.year,
       stationCodes: stationCodes.length > 0 ? stationCodes : null,
       sortField: this.props.sortField,
       sortMethod: this.props.sortMethod,
@@ -52,17 +51,17 @@ class planSearch extends Component {
   };
 
   selectYear = (e) => {
-    this.props.changePlanStore({ planYear: e });
+    this.props.changePlanStore({ year: e });
   };
 
   render() {
-    const { stations, planYearList, planYear } = this.props;
+    const { stations, planYearList, year } = this.props;
     const { selectStation } = this.state;
     return (
       <div className={styles.planSearch}>
         <div>
           <span className={styles.year}>年份选择</span>
-          <Select style={{ width: 105 }} onChange={this.selectYear} placeholder="--" value={planYear}>
+          <Select style={{ width: 105 }} onChange={this.selectYear} placeholder="--" value={year}>
             {planYearList.map((year, index) => {
               return <Option value={`${year}`} key={year} selected>{year}</Option>;
             })}

@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../CasePartSide.scss';
+import EditCase from '../EditCase/EditCase';
 import { Icon, Button } from 'antd';
 import WarningTip from '../../../../components/Common/WarningTip';
 import path from '../../../../constants/path';
+import Cookie from 'js-cookie';
 const { originUri } = path.basePaths;
 class DetailCase extends React.Component {
   static propTypes = {
@@ -11,6 +13,17 @@ class DetailCase extends React.Component {
     downLoadFile: PropTypes.func,
     likeCase: PropTypes.func,
     caseDetail: PropTypes.object,
+    showPage: PropTypes.string,
+    getCasePartList: PropTypes.func,
+    faultDescription: PropTypes.string,
+    orderFiled: PropTypes.string,
+    orderType: PropTypes.string,
+    userName: PropTypes.string,
+    userId: PropTypes.number,
+    questionTypeCodes: PropTypes.array,
+    deviceModeList: PropTypes.array,
+    stationCodes: PropTypes.array,
+    tableLoading: PropTypes.bool,
 
   }
   constructor(props, context) {
@@ -20,12 +33,25 @@ class DetailCase extends React.Component {
       warningTipText: '退出后信息无法保存!',
     };
   }
+  componentDidMount() {
+    const main = document.getElementById('main');
+    main && main.scroll(0, 0);
+
+  }
   onWarningTipShow = () => {
-    // this.setState({
-    //   showWarningTip: true,
-    // });
-    this.props.changeCasePartStore({
+    const { changeCasePartStore, getCasePartList, questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType, pageSize, pageNum } = this.props;
+    changeCasePartStore({
       showPage: 'list',
+    });
+    const queryParams = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType, pageSize, pageNum };
+
+    getCasePartList({
+      ...queryParams,
+    });
+  }
+  showEditPage = () => {
+    this.props.changeCasePartStore({
+      showPage: 'edit',
     });
   }
   confirmWarningTip = () => {
@@ -41,16 +67,6 @@ class DetailCase extends React.Component {
     const { caseBaseId } = caseDetail;
     this.props.likeCase({
       caseBaseId,
-    });
-  }
-  downFile = (file, fileName) => {
-    const { downLoadFile } = this.props;
-    const downloadTemplet = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadFile}`; // 下载文件
-    downLoadFile({
-      url: downloadTemplet,
-      method: 'post',
-      params: { filePath: file },
-      fileName: fileName,
     });
   }
   detailInfo = (data) => {
@@ -74,56 +90,80 @@ class DetailCase extends React.Component {
     ];
     return detailArr;
   }
+  downFile = (file, fileName) => {
+    const { downLoadFile } = this.props;
+    const downloadTemplet = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadCaseFile}`; // 下载文件
+    downLoadFile({
+      url: downloadTemplet,
+      method: 'post',
+      params: { filePath: file },
+      fileName: fileName,
+    });
+  }
   render() {
     const { showWarningTip, warningTipText } = this.state;
-    const { caseDetail } = this.props;
+    const { caseDetail, showPage } = this.props;
     const dataDom = this.detailInfo(caseDetail);
     const { likeCount } = caseDetail;
+    const rightkey = Cookie.get('userRight').includes('operation_case_operate');//操作权限
+    if (showPage === 'detail') {
+      return (
+        <div className={styles.caseDetail}>
+          {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+          <div className={styles.pageTop}>
+            <div className={styles.pageTopLeft}>
+              <span className={styles.text}>查看案例集</span>
+              {rightkey && <Button type="primary" onClick={this.showEditPage} >编辑</Button>}
+            </div>
+            <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
+          </div>
+          <div className={styles.detailBox}>
 
-    return (
-      <div className={styles.caseDetail}>
-        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-        <div className={styles.pageTop}>
-          <span className={styles.text}>查看案例集</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
-        </div>
-        <div className={styles.detailBox}>
-
-          {dataDom.map((e, i) => {
-            let value;
-            if (e.value || e.value === 0) {
-              value = e.value;
-            } else {
-              value = '无';
-            }
-            return (
-              <div key={e.name} className={styles.eachInfo}>
-                <div className={styles.infoName}>{e.name}</div>
-                {e.name === '上传附件' ? <div className={styles.downHref}>
-                  {e.value && e.value.map((item, i) => (<a href={`${originUri}${item.url}`} download={`${originUri}${item.url}`} target="_blank"><span>{`${item.name}`}_点击下载</span></a>))}
-                </div> : <div
-                  className={styles.infoValue}
-                  title={`${value}${e.unit || ''}`}
-                >{`${value}${e.unit || ''}`}
-                  </div>
+            {dataDom.map((e, i) => {
+              let value;
+              if (e.value || e.value === 0) {
+                value = e.value;
+              } else {
+                value = '无';
+              }
+              return (
+                <div key={e.name} className={styles.eachInfo} key={`${e.name}${i}`} >
+                  <div className={styles.infoName}>{e.name}</div>
+                  {e.name === '上传附件' ? <div className={styles.downHref}>
+                    {e.value && e.value.map((item, i) => (<a
+                      // href={`${originUri}${item.url}`} download={`${originUri}${item.url}`} 
+                      onClick={() => this.downFile(item.url, item.name)}
+                      target="_blank"
+                      key={i}
+                    ><span>{`${item.name}`} 【点击下载】</span></a>))}
+                  </div> : <div
+                    className={styles.infoValue}
+                    title={`${value}${e.unit || ''}`}
+                  >{`${value}${e.unit || ''}`}
+                    </div>
+                  }
+                </div>
+              );
+            })}
+            <div className={styles.eachInfo}>
+              <div className={styles.infoName}></div>
+              <div className={styles.infoValue} >
+                {likeCount === 0 ?
+                  <Button type="primary" style={{ width: '200px' }} onClick={this.likeBtn}>点赞<Icon type="like" /></Button>
+                  :
+                  <Button style={{ width: '200px' }} disabled>已点赞<Icon type="like" /></Button>
                 }
               </div>
-            );
-          })}
-          <div className={styles.eachInfo}>
-            <div className={styles.infoName}></div>
-            <div className={styles.infoValue} >
-              {likeCount === 0 ?
-                <Button type="primary" style={{ width: '200px' }} onClick={this.likeBtn}>点赞<Icon type="like" /></Button>
-                :
-                <Button style={{ width: '200px' }} disabled>已点赞<Icon type="like" /></Button>
-              }
             </div>
           </div>
         </div>
-      </div>
 
-    );
+      );
+    } else if (showPage === 'edit') {
+      return (<EditCase {...this.props} />);
+    }
+    return (<div></div>);
+
   }
 }
 export default (DetailCase);
