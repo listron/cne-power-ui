@@ -56,7 +56,7 @@ class ShowIntelligent extends Component {
       url: downloadTemplet,
       method: 'post',
       params: { filePath: file },
-      // fileName: fileName,
+      fileName: fileName,
     });
   }
 

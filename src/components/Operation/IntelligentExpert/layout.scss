@@ -101,11 +101,14 @@
       margin-right: 5px;
     }
     .faultName,
-    .faultDescription,
     .checkItems,
     .processingMethod {
       @include overflowText();
       max-width: 140px;
+    }
+    .faultDescription {
+      @include overflowText();
+      max-width: 180px;
     }
     .handler {
       text-align: center;
