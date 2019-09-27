@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
+import uiColors from '@constants/ui';
 import styles from './stopStatus.scss';
 
 class StopStatusChart extends Component {
@@ -32,8 +33,7 @@ class StopStatusChart extends Component {
       this.setChartLoading();
     }
   }
-
-  stopColors = ['#a42b2c', '#ff6cee', '#f8e71c', '#2564cc', '#b8e986']
+  stopColors = ['#a42b2c', '#ff6cee', '#f8e71c', '#2564cc', '#b8e986', ...uiColors.outputColors]
 
   setChartLoading = () => {
     const statusChart = this.statusRef && echarts.getInstanceByDom(this.statusRef);
@@ -68,7 +68,7 @@ class StopStatusChart extends Component {
     const preChart = echarts.getInstanceByDom(this.statusRef);
     preChart && preChart.dispose(); // 销毁，基于当前dom重新生成图表，保证自适应
     const statusChart = echarts.init(this.statusRef);
-    const yAxisLabels = [], statusResult = [], fualtNameSet = new Set();
+    const yAxisLabels = [], statusResult = [], faultNameSet = new Set();
     lists.sort((b = {}, a = {}) => {
       if (a.deviceOrderName) {
         return a.deviceOrderName.localeCompare(b.deviceOrderName);
@@ -78,15 +78,15 @@ class StopStatusChart extends Component {
       const { deviceName, faultInfos = [] } = e || {};
       yAxisLabels.push(deviceName);
       faultInfos.forEach(m => {
-        const { faultName, reason } = m;
+        const { faultName, reason, parentFaultName } = m;
         const startUnix = m.startTime || moment(startTime).startOf('d').format('YYYY-MM-DD HH:mm:ss');
         const endUnix = m.endTime || moment(endTime).startOf('d').format('YYYY-MM-DD HH:mm:ss');
-        fualtNameSet.add(faultName);
+        faultNameSet.add(parentFaultName);
         statusResult.push({
           name: faultName,
-          value: [index, startUnix, endUnix, faultName, reason, deviceName, [!m.startTime, !m.endTime]],
+          value: [index, startUnix, endUnix, `${parentFaultName}-${faultName}`, reason, deviceName, [!m.startTime, !m.endTime]],
           itemStyle: {
-            color: this.stopColors[[...fualtNameSet].indexOf(faultName)],
+            color: this.stopColors[[...faultNameSet].indexOf(parentFaultName)],
           },
         });
       });
@@ -181,7 +181,7 @@ class StopStatusChart extends Component {
       end: 100,
     }]);
     statusChart.hideLoading();
-    this.setState({ stopTypes: [...fualtNameSet] });
+    this.setState({ stopTypes: [...faultNameSet] });
     statusChart.clear();
     statusChart.setOption(option);
   }

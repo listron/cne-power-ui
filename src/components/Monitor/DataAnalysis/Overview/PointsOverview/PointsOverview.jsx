@@ -214,7 +214,7 @@ class PointsOverview extends PureComponent{
     const { pointParam, pointTopData, stations, theme } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = pointParam;
     return(
-      <div className={styles.point}>
+      <div className={`${styles.point} ${styles[theme]}`}>
         <div className={styles.topSearch}>
           <div className={styles.dateCheck}>
             <span className={styles.checkText}>时间范围</span>

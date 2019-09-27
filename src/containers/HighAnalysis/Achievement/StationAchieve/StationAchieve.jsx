@@ -20,6 +20,7 @@ class StationAchieve extends Component {
     lostStringify: PropTypes.string,
     stopTopStringify: PropTypes.string,
     curveTopStringify: PropTypes.string,
+    curveDevicesTime: PropTypes.string,
     location: PropTypes.object,
     history: PropTypes.object,
     areaStation: PropTypes.array,
@@ -222,6 +223,7 @@ class StationAchieve extends Component {
       this.props.getStopTypes({ ...params });
     }
     if (page === 'curve') {
+      const { curveDevicesTime } = this.props; // 功率曲线页面，需保持设备月份不变。
       const { stationCodes, deviceFullcodes, startTime, endTime } = params;
       const curveEndTime = moment(endTime).format('YYYY-MM');
       const defaultDeviceCode = deviceFullcodes[0];
@@ -236,13 +238,14 @@ class StationAchieve extends Component {
       const deviceParam = {
         stationCodes,
         deviceFullcodes,
-        startTime: curveEndTime,
-        endTime: curveEndTime,
+        startTime: curveDevicesTime || curveEndTime,
+        endTime: curveDevicesTime || curveEndTime,
       };
       this.props.resetCurve({
+        activeDevice: null,
         curveDeviceFullcode: defaultDeviceCode,
         curveDeviceName: defaultDeviceName,
-        curveDevicesTime: curveEndTime, // 邻比分析设备选中时间
+        curveDevicesTime: curveDevicesTime || curveEndTime, // 邻比分析设备选中时间
         curveAllMonths: rangeMonths,
         curveCheckedMonths: rangeMonths,
         curveTopStringify: infoStr,

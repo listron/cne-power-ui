@@ -13,6 +13,7 @@ class AutoModal extends Component {
     checkedList: PropTypes.array,
     onValueCheck: PropTypes.func,
     max: PropTypes.number,
+    theme: PropTypes.string,
   }
 
   state = {
@@ -56,7 +57,7 @@ class AutoModal extends Component {
   }
 
   render() {
-    const { data, disabled } = this.props;
+    const { data, theme, disabled } = this.props;
     const { isShow, checkedTrees } = this.state;
     return (
       <div className={styles.autoModal}>
@@ -69,9 +70,9 @@ class AutoModal extends Component {
           okText="确定"
           title="请选择"
           width={625}
-        // wrapClassName={styles.stationModal}
+          wrapClassName={`${styles.autoWrap} ${styles[theme]}`}
         >
-          <section className={styles.checkModal}>
+          <section className={`${styles.checkModal} ${styles[theme]}`}>
             <h3></h3>
             <CheckTree data={data} checkedTrees={checkedTrees} onTreeCheck={this.onTreeCheck} />
           </section>

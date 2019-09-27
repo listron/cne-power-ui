@@ -16,6 +16,7 @@ class CurveAnalysis extends Component {
     pageName: PropTypes.string,
     curveTopStringify: PropTypes.string,
     curveDeviceFullcode: PropTypes.string,
+    stationInfoStr: PropTypes.string,
     active: PropTypes.bool,
     modeDevices: PropTypes.array,
     location: PropTypes.object,
@@ -26,12 +27,33 @@ class CurveAnalysis extends Component {
     getCurveMonthAep: PropTypes.func,
     getCurveMonthPsd: PropTypes.func,
     changeStore: PropTypes.func,
+    pageQuery: PropTypes.func,
+
+    curveAllDevice: PropTypes.array,
+    curveCheckedDevice: PropTypes.array,
+    activeDevice: PropTypes.string,
+    curveAllMonths: PropTypes.array,
+    curveCheckedMonths: PropTypes.array,
+  }
+
+  handleContextMenu = () => {
+    const {
+      stationInfoStr, pageName, curveAllDevice, curveCheckedDevice, activeDevice, curveAllMonths, curveCheckedMonths,
+    } = this.props;
+    if (curveAllDevice.length !== curveCheckedDevice.length || activeDevice || curveAllMonths.length !== curveCheckedMonths.length) {
+      event.preventDefault();
+      this.props.pageQuery(stationInfoStr, pageName);
+    }
   }
 
   render() {
     const { active } = this.props;
     return (
-      <div className={`${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
+      <div
+        onContextMenu={this.handleContextMenu}
+        className={`${styles.eachPage}
+        ${active ? styles.active : styles.inactive}`}
+      >
         <div className={styles.curveAnalysis}>
           <section className={styles.curveAllDevice}>
             <h3 className={styles.header}>功率曲线邻比分析</h3>

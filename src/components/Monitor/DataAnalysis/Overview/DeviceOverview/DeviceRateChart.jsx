@@ -35,9 +35,17 @@ class DeviceRateChart extends PureComponent{
     }
   }
 
-  chartBarColor = {
-    light: '#199475',
-    dark: '#99cc32',
+  chartColors = {
+    light: {
+      font: '#666',
+      axis: '#dfdfdf',
+      bar: '#199475',
+    },
+    dark: {
+      font: '#00f0ff',
+      axis: '#3b55aa',
+      bar: '#99cc32',
+    },
   }
 
   setChartLoading = () => {
@@ -59,7 +67,7 @@ class DeviceRateChart extends PureComponent{
   }
 
   drawChart = (sortType, deviceData, theme) => {
-    const rateChart = echarts.init(this.rateRef, `${theme}Config`);
+    const rateChart = echarts.init(this.rateRef);
     const sortedData = sortType ? [...deviceData].sort((a, b) => {
       const sortSign = sortType === 'up' ? 1 : -1;
       return (a.completeRate - b.completeRate) * sortSign;
@@ -70,6 +78,7 @@ class DeviceRateChart extends PureComponent{
       dataAxis.push(deviceName);
       rateData.push(completeRate);
     });
+    const { font = '#666', axis = '#dfdfdf', bar = '#199475' } = this.chartColors[theme] || {};
     const option = {
       grid: {
         top: 20,
@@ -79,17 +88,40 @@ class DeviceRateChart extends PureComponent{
       },
       xAxis: {
         data: dataAxis,
+        axisLabel: {
+          textStyle: {
+            color: font,
+          },
+        },
         axisTick: {
           show: false,
+        },
+        axisLine: {
+          lineStyle: {
+            color: axis,
+          },
         },
       },
       yAxis: {
         splitNumber: 2,
+        axisLine: {
+          lineStyle: {
+            color: axis,
+          },
+        },
         splitLine: {
           show: false,
         },
         axisTick: {
           show: false,
+        },
+        axisLabel: {
+          textStyle: {
+            color: font,
+          },
+        },
+        nameTextStyle: {
+          color: font,
         },
       },
       tooltip: {
@@ -115,7 +147,7 @@ class DeviceRateChart extends PureComponent{
         barWidth: '10px',
         cursor: 'default',
         itemStyle: {
-          color: this.chartBarColor[theme],
+          color: bar,
         },
         data: rateData,
       }],

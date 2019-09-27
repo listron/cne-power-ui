@@ -143,7 +143,7 @@ class FilterCondition extends Component {
         if (value && value[item['typeName']] && Object.getOwnPropertyNames(value).length > 0) {
           item.checkedValue = value[item['typeName']] || [];
         } else {
-          item.checkedValue = currentItem.checkedValue;
+          item.checkedValue = currentItem.checkedValue || [];
         }
         if (item.disabled) {
           item.checkedValue = [];

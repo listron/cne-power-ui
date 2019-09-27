@@ -45,6 +45,7 @@ class CommonSearch extends PureComponent{
             data={stations}
             style={{width: '200px', lineHeight: '40px'}}
             onChange={this.checkStation}
+            theme={theme}
           />
         </div>
         <div className={styles.startTime}>
@@ -53,10 +54,11 @@ class CommonSearch extends PureComponent{
         </div>
         <div className={styles.space}>
           <span className={styles.text}>数据时间间隔</span>
+          <span ref={(ref) => { this.timeRef = ref; }} />
           <Select
-            disabled
             allowClear={false}
             value="10分钟"
+            getPopupContainer={() => this.timeRef}
             style={{width: '110px'}}
           >
             {this.timeSpace.map(e => (
@@ -66,11 +68,13 @@ class CommonSearch extends PureComponent{
         </div>
         <div className={styles.types}>
           <span className={styles.text}>设备类型</span>
+          <span ref={(ref) => { this.typesRef = ref; }} />
           <Select
             allowClear={false}
             onChange={this.checkDeviceType}
             value={deviceTypes.length > 0 && deviceTypeCode ? deviceTypeCode : null}
             style={{width: '200px'}}
+            getPopupContainer={() => this.typesRef}
           >
             {deviceTypes.map(e => (
               <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>

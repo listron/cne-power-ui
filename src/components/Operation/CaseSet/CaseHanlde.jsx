@@ -20,15 +20,48 @@ class CaseHandle extends React.Component {
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
     total: PropTypes.number,
+    stations: PropTypes.array,
+    deviceModeData: PropTypes.array,
+    questionTypeList: PropTypes.array,
+    userData: PropTypes.array,
+    getQuestionList: PropTypes.func,
+    getDeviceMode: PropTypes.func,
+    getCasePartList: PropTypes.func,
+    queryUseName: PropTypes.func,
+    faultDescription: PropTypes.string,
+    userName: PropTypes.string,
+    userId: PropTypes.number,
+    questionTypeCodes: PropTypes.array,
+    deviceModeList: PropTypes.array,
+    stationCodes: PropTypes.array,
+    orderFiled: PropTypes.string,
+    orderType: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
     this.state = {
       showWarningTip: false,
-      warningTipText: '确认要删除选中的案例?',
+      warningTipText: '确定要删除解决方案吗?',
       showUpload: false,
 
     };
+  }
+  cancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  }
+  confirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+    const { selectedRowData, deleteCasePart } = this.props;
+    const caseBaseIds = selectedRowData.map(e => (e.caseBaseId));
+    deleteCasePart({
+      caseBaseIds,
+    });
+
+
   }
   showAddPage = () => {
     this.props.changeCasePartStore({
@@ -44,15 +77,30 @@ class CaseHandle extends React.Component {
     });
   }
   deleteCasePart = () => {
-    const { selectedRowData, deleteCasePart } = this.props;
-    const caseBaseIds = selectedRowData.map(e => (e.caseBaseId));
-    deleteCasePart({
-      caseBaseIds,
+    // const { selectedRowData, deleteCasePart } = this.props;
+    // const caseBaseIds = selectedRowData.map(e => (e.caseBaseId));
+    // deleteCasePart({
+    //   caseBaseIds,
+    // });
+    this.setState({
+      showWarningTip: true,
     });
   }
   cancelModal = () => {
     this.setState({
       showUpload: false,
+    });
+  }
+  onPaginationChange = ({ pageSize, currentPage }) => {
+    const { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType, getCasePartList } = this.props;
+    const queryParams = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType };
+    getCasePartList({
+      ...queryParams,
+      pageNum: currentPage,
+      pageSize,
+    });
+    this.props.changeCasePartStore({
+      selectedRowKeys: [],
     });
   }
 

@@ -15,6 +15,11 @@ class ShowIntelligent extends Component {
     downLoadFile: PropTypes.func,
   }
 
+  componentDidMount() {
+    const main = document.getElementById('main');
+    main && main.scroll(0, 0);
+  }
+
   onWarningTipShow = () => {
     const { changeIntelligentExpertStore, getIntelligentTable, listParams } = this.props;
     changeIntelligentExpertStore({
@@ -51,7 +56,7 @@ class ShowIntelligent extends Component {
       url: downloadTemplet,
       method: 'post',
       params: { filePath: file },
-      fileName: fileName,
+      // fileName: fileName,
     });
   }
 
@@ -76,7 +81,7 @@ class ShowIntelligent extends Component {
           </div>
           <div className={styles.detailText}>
             <div className={styles.title}>
-              {intelligentDetail.type === '0' && <span className={styles.required}>*</span>}设备型号
+              {`${intelligentDetail.type}` === '0' && <span className={styles.required}>*</span>}设备型号
             </div>
             <div>{intelligentDetail.modeName || '无'}</div>
           </div>
@@ -86,7 +91,7 @@ class ShowIntelligent extends Component {
           </div>
           <div className={styles.detailText}>
             <div className={styles.title}>
-              {intelligentDetail.type === '0' && <span className={styles.required}>*</span>}故障代码
+              {`${intelligentDetail.type}` === '0' && <span className={styles.required}>*</span>}故障代码
             </div>
             <div>{intelligentDetail.faultCode || '无'}</div>
           </div>
@@ -95,7 +100,7 @@ class ShowIntelligent extends Component {
             <div>{intelligentDetail.faultDescription || '无'}</div>
           </div>
           <div className={styles.detailText}>
-            <div className={styles.title}> <span className={styles.required}>*</span>故障原因</div>
+            <div className={styles.title}>   {`${intelligentDetail.type}` === '0' && <span className={styles.required}>*</span>}故障原因</div>
             <div>{intelligentDetail.checkItems || '无'}</div>
           </div>
           <div className={styles.detailText}>
