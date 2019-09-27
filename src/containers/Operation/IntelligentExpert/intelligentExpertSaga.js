@@ -85,7 +85,7 @@ function* getImportIntelligent({ payload = {} }) { // 导入
         type: intelligentExpertAction.getIntelligentTable,
         payload: {
           ...params,
-          orderField: 'like_count',
+          orderField: 'update_time',
           sortMethod: 'desc',
         },
       });
