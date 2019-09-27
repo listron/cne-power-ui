@@ -63,7 +63,7 @@ class AutoSelect extends Component {
     onChange: PropTypes.func,
     holderText: PropTypes.string,
     max: PropTypes.number,
-    disabled: PropTypes.bool,
+    theme: PropTypes.string,
   }
 
   static defaultProps = {
@@ -74,6 +74,7 @@ class AutoSelect extends Component {
     onChange: () => { },
     holderText: '请选择',
     data: [],
+    theme: 'light',
   }
 
   constructor(props) {
