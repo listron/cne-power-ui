@@ -11,7 +11,7 @@ const initState = immutable.fromJS({
     recorder: '', // 录入人
     pageNum: 1, // 当前页（第一页）
     pageSize: 10, // 每页条数
-    orderField: 'like_count', // 排序字段
+    orderField: 'like_count', // 排序字段 默认点赞数排序
     sortMethod: 'desc', // 排序方式 asc升序; desc 降序
   },
   showPage: 'list', // list 展示的页面：add添加，edit编辑，detail详情

@@ -57,7 +57,7 @@ class AutoModal extends Component {
   }
 
   render() {
-    const { data, theme } = this.props;
+    const { data, theme, disabled } = this.props;
     const { isShow, checkedTrees } = this.state;
     return (
       <div className={styles.autoModal}>

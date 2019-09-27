@@ -107,6 +107,12 @@
       @include overflowText();
       max-width: 140px;
     }
+    .handler {
+      text-align: center;
+    }
+    .likeCount {
+      text-align: right;
+    }
     :global {
       .ant-table .ant-table-thead > tr > th,
       .ant-table .ant-table-tbody > tr > td {
@@ -226,6 +232,7 @@
           display: inline-block;
           margin-right: 4px;
           font-size: 14px;
+          font-family: SimSun, sans-serif;
           line-height: 1;
         }
       }
@@ -246,7 +253,7 @@
       margin-right: 12px;
     }
     .detailContent {
-      margin: 20px 0 0 88px;
+      margin: 20px 0 20px 88px;
       .detailText {
         line-height: 36px;
         width: 800px;
@@ -265,7 +272,11 @@
         text-decoration: underline;
       }
       .required {
-        margin-right: 8px;
+        display: inline-block;
+        margin-right: 4px;
+        font-size: 14px;
+        font-family: SimSun, sans-serif;
+        line-height: 1;
       }
       .likeBtn,
       .likedBtn {

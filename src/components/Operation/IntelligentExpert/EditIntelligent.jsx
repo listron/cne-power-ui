@@ -30,6 +30,11 @@ class EditIntelligent extends Component {
     };
   }
 
+  componentDidMount() {
+    const main = document.getElementById('main');
+    main && main.scroll(0, 0);
+  }
+
 
   confirmWarningTip = () => { // 确认返回列表页面
     const { tooltipName, deleteFileId } = this.state;
@@ -137,25 +142,25 @@ class EditIntelligent extends Component {
         <div className={styles.editmiddle}>
           <Form className={styles.preFormStyle}>
             <div className={styles.formItem}>
-              <div className={styles.label}> <span>*</span> 设备类型</div>
+              <div className={styles.label}> <span>*</span>设备类型</div>
               <div className={styles.value}>{intelligentDetail.deviceTypeName}</div>
             </div>
             <div className={styles.formItem}>
-              <div className={styles.label}> <span>*</span> 设备型号</div>
+              <div className={styles.label}> <span>*</span>设备型号</div>
               <div className={styles.value}>{intelligentDetail.modeName}</div>
             </div>
             <div className={styles.formItem}>
-              <div className={styles.label}> <span>*</span> 缺陷类型</div>
+              <div className={styles.label}> <span>*</span>缺陷类型</div>
               <div className={styles.value}>{intelligentDetail.faultName}</div>
             </div>
             <div className={styles.formItem}>
-              <div className={styles.label}> <span>*</span> 故障代码</div>
+              <div className={styles.label}> <span>*</span>故障代码</div>
               <div className={styles.value}>{intelligentDetail.faultCode}</div>
             </div>
             {
               `${intelligentDetail.type}` === '0' &&
               <div className={styles.formItem}>
-                <div className={styles.label}> <span>*</span> 故障描述</div>
+                <div className={styles.label}> <span>*</span>故障描述</div>
                 <div className={styles.value}>{intelligentDetail.faultDescription}</div>
               </div> ||
               <FormItem className={styles.formItem} label="故障描述" colon={false}>
