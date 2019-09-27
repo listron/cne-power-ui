@@ -186,7 +186,7 @@ class IntelligentTable extends Component {
         title: '缺陷类型',
         dataIndex: 'faultName',
         render: (text) => {
-          return <div className={styles.faultName} title={text}>{text}</div>;
+          return <div className={styles.faultName} title={text}>{text || '--'}</div>;
         },
       },
       {
@@ -199,19 +199,19 @@ class IntelligentTable extends Component {
         title: '缺陷描述',
         dataIndex: 'faultDescription',
         render: (text) => {
-          return <div className={styles.faultDescription} title={text}>{text}</div>;
+          return <div className={styles.faultDescription} title={text}>{text || '--'}</div>;
         },
       }, {
         title: '故障原因',
         dataIndex: 'checkItems',
         render: (text) => {
-          return <div className={styles.checkItems} title={text}>{text}</div>;
+          return <div className={styles.checkItems} title={text}>{text || '--'}</div>;
         },
       }, {
         title: '处理方法',
         dataIndex: 'processingMethod',
         render: (text) => {
-          return <div className={styles.processingMethod} title={text}>{text}</div>;
+          return <div className={styles.processingMethod} title={text}>{text || '--'}</div>;
         },
       }, {
         title: '更新时间',
