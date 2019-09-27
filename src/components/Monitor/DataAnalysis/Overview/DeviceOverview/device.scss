@@ -12,7 +12,7 @@
     
   }
   .checkText{
-    text-align: center;
+    text-align: right;
     flex: 0 0 80px;
     margin-right: 4px;
   }
@@ -181,6 +181,14 @@
     .deviceLink{
       color: #00f0ff;
       text-decoration: #00f0ff underline;
+    }
+    :global{
+      .ant-table .ant-table-thead > tr > th{
+        border:1px solid #3d7bac;
+      }
+      th.ant-table-column-has-actions.ant-table-column-has-sorters{
+        border:1px solid #3d7bac;
+      }
     }
   }
 }
