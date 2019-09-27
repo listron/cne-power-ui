@@ -258,16 +258,16 @@ export default class RunScatterChart extends Component {
         },
       },
       xAxis: [
-        {name: `${firstXAxisName}（${firstXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 0, min: minNum, splitLine: {show: false}},
-        {name: `${secondXAxisName}（${secondXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 1, min: minNum, splitLine: {show: false}},
-        {name: `${thirdXAxisName}（${thirdXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 2, min: minNum, splitLine: {show: false}},
-        {name: `${fourthXAxisName}（${fourthXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 3, min: minNum, splitLine: {show: false}},
+        {name: `${firstXAxisName}（${firstXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 0, min: minNum, splitLine: {show: false}, axisLine: {onZero: false}},
+        {name: `${secondXAxisName}（${secondXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 1, min: minNum, splitLine: {show: false}, axisLine: {onZero: false}},
+        {name: `${thirdXAxisName}（${thirdXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 2, min: minNum, splitLine: {show: false}, axisLine: {onZero: false}},
+        {name: `${fourthXAxisName}（${fourthXAxisUnit || ''}）`.replace(/(.{6})/g, '$1'+'\n'), gridIndex: 3, min: minNum, splitLine: {show: false}, axisLine: {onZero: false}},
       ],
       yAxis: [
-        {name: `${firstYAxisName}（${firstYAxisUnit || ''}）`, gridIndex: 0, min: minNum, splitLine: {show: false}},
-        {name: `${secondYAxisName}（${secondYAxisUnit || ''}）`, gridIndex: 1, min: minNum, splitLine: {show: false}},
-        {name: `${thirdYAxisName}（${thirdYAxisUnit || ''}）`, gridIndex: 2, min: minNum, splitLine: {show: false}},
-        {name: `${fourthYAxisName}（${fourthYAxisUnit || ''}）`, gridIndex: 3, min: minNum, splitLine: {show: false}},
+        {name: `${firstYAxisName}（${firstYAxisUnit || ''}）`, gridIndex: 0, min: minNum, splitLine: {show: false}, axisLine: {onZero: false}},
+        {name: `${secondYAxisName}（${secondYAxisUnit || ''}）`, gridIndex: 1, min: minNum, splitLine: {show: false}, axisLine: {onZero: false}},
+        {name: `${thirdYAxisName}（${thirdYAxisUnit || ''}）`, gridIndex: 2, min: minNum, splitLine: {show: false}, axisLine: {onZero: false}},
+        {name: `${fourthYAxisName}（${fourthYAxisUnit || ''}）`, gridIndex: 3, min: minNum, splitLine: {show: false}, axisLine: {onZero: false}},
       ],
       series: [
         {
@@ -275,7 +275,7 @@ export default class RunScatterChart extends Component {
           type: 'scatter',
           xAxisIndex: 0,
           yAxisIndex: 0,
-          data: firstData,
+          data: firstData.reverse(),
           progressive: 0,
           symbolSize: 3,
         },
@@ -284,7 +284,7 @@ export default class RunScatterChart extends Component {
           type: 'scatter',
           xAxisIndex: 1,
           yAxisIndex: 1,
-          data: secondData,
+          data: secondData.reverse(),
           progressive: 0,
           symbolSize: 3,
         },
@@ -293,7 +293,7 @@ export default class RunScatterChart extends Component {
           type: 'scatter',
           xAxisIndex: 2,
           yAxisIndex: 2,
-          data: thirdData,
+          data: thirdData.reverse(),
           progressive: 0,
           symbolSize: 3,
         },
@@ -302,7 +302,7 @@ export default class RunScatterChart extends Component {
           type: 'scatter',
           xAxisIndex: 3,
           yAxisIndex: 3,
-          data: fourthData,
+          data: fourthData.reverse(),
           progressive: 0,
           symbolSize: 3,
         },
@@ -320,6 +320,7 @@ export default class RunScatterChart extends Component {
       firstChartYAxis,
       changeStore,
       pointsInfo,
+      firstHideZero,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -328,7 +329,7 @@ export default class RunScatterChart extends Component {
       const basisParams = this.basisParamsFunc(groupInfo);
       const params = {
         ...basisParams,
-        codes: [`${value}-xAxis`, `${firstChartYAxis}-yAxis`],
+        codes: [`${value}-xAxis-${firstHideZero}`, `${firstChartYAxis}-yAxis-${firstHideZero}`],
       };
       pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
@@ -353,6 +354,7 @@ export default class RunScatterChart extends Component {
       firstChartXAxis,
       changeStore,
       pointsInfo,
+      firstHideZero,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -361,7 +363,7 @@ export default class RunScatterChart extends Component {
       const basisParams = this.basisParamsFunc(groupInfo);
       const params = {
         ...basisParams,
-        codes: [`${firstChartXAxis}-xAxis`, `${value}-yAxis`],
+        codes: [`${firstChartXAxis}-xAxis-${firstHideZero}`, `${value}-yAxis-${firstHideZero}`],
       };
       pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
@@ -386,6 +388,7 @@ export default class RunScatterChart extends Component {
       secondChartYAxis,
       changeStore,
       pointsInfo,
+      secondHideZero,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -394,7 +397,7 @@ export default class RunScatterChart extends Component {
       const basisParams = this.basisParamsFunc(groupInfo);
       const params = {
         ...basisParams,
-        codes: [`${value}-xAxis`, `${secondChartYAxis}-yAxis`],
+        codes: [`${value}-xAxis-${secondHideZero}`, `${secondChartYAxis}-yAxis-${secondHideZero}`],
       };
       pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
@@ -419,6 +422,7 @@ export default class RunScatterChart extends Component {
       secondChartXAxis,
       changeStore,
       pointsInfo,
+      secondHideZero,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -427,7 +431,7 @@ export default class RunScatterChart extends Component {
       const basisParams = this.basisParamsFunc(groupInfo);
       const params = {
         ...basisParams,
-        codes: [`${secondChartXAxis}-xAxis`, `${value}-yAxis`],
+        codes: [`${secondChartXAxis}-xAxis-${secondHideZero}`, `${value}-yAxis-${secondHideZero}`],
       };
       pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
@@ -452,6 +456,7 @@ export default class RunScatterChart extends Component {
       thirdChartYAxis,
       changeStore,
       pointsInfo,
+      thirdHideZero,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -460,7 +465,7 @@ export default class RunScatterChart extends Component {
       const basisParams = this.basisParamsFunc(groupInfo);
       const params = {
         ...basisParams,
-        codes: [`${value}-xAxis`, `${thirdChartYAxis}-yAxis`],
+        codes: [`${value}-xAxis-${thirdHideZero}`, `${thirdChartYAxis}-yAxis-${thirdHideZero}`],
       };
       pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
@@ -485,6 +490,7 @@ export default class RunScatterChart extends Component {
       thirdChartXAxis,
       changeStore,
       pointsInfo,
+      thirdHideZero,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -493,7 +499,7 @@ export default class RunScatterChart extends Component {
       const basisParams = this.basisParamsFunc(groupInfo);
       const params = {
         ...basisParams,
-        codes: [`${thirdChartXAxis}-xAxis`, `${value}-yAxis`],
+        codes: [`${thirdChartXAxis}-xAxis-${thirdHideZero}`, `${value}-yAxis-${thirdHideZero}`],
       };
       pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
@@ -518,6 +524,7 @@ export default class RunScatterChart extends Component {
       fourthChartYAxis,
       changeStore,
       pointsInfo,
+      fourthHideZero,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -526,7 +533,7 @@ export default class RunScatterChart extends Component {
       const basisParams = this.basisParamsFunc(groupInfo);
       const params = {
         ...basisParams,
-        codes: [`${value}-xAxis`, `${fourthChartYAxis}-yAxis`],
+        codes: [`${value}-xAxis-${fourthHideZero}`, `${fourthChartYAxis}-yAxis-${fourthHideZero}`],
       };
       pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
@@ -551,6 +558,7 @@ export default class RunScatterChart extends Component {
       fourthChartXAxis,
       changeStore,
       pointsInfo,
+      fourthHideZero,
     } = this.props;
     // 发送请求
     const groupInfoStr = searchUtil(search).getValue('run');
@@ -559,7 +567,7 @@ export default class RunScatterChart extends Component {
       const basisParams = this.basisParamsFunc(groupInfo);
       const params = {
         ...basisParams,
-        codes: [`${fourthChartXAxis}-xAxis`, `${value}-yAxis`],
+        codes: [`${fourthChartXAxis}-xAxis-${fourthHideZero}`, `${value}-yAxis-${fourthHideZero}`],
       };
       pointsInfo && pointsInfo.forEach(cur => {
         if (value === cur.value) {
@@ -850,42 +858,42 @@ export default class RunScatterChart extends Component {
     } = this.props;
     const firstXAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
     const firstYAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
     const secondXAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
     const secondYAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
     const thirdXAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
     const thirdYAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
     const fourthXAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
     const fourthYAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
       );
     });
     return (
@@ -899,7 +907,7 @@ export default class RunScatterChart extends Component {
             <span>参数选择</span>
             <div className={styles.switchBox}>
               <Switch checked={minNum === null} onChange={this.onChangeSwitch} />
-              <span>{minNum === null ? '显示' : '隐藏'}停机</span>
+              <span>显示停机</span>
             </div>
           </div>
           <div className={styles.devicesSelect}>

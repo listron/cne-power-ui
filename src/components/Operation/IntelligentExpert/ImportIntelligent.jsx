@@ -10,46 +10,43 @@ class ImportIntelligent extends Component {
     cancelModal: PropTypes.func,
     getImportIntelligent: PropTypes.func,
     getFieldDecorator: PropTypes.func,
-    allStationBaseInfo: PropTypes.array,
     showModal: PropTypes.bool,
     form: PropTypes.object,
+    stationType: PropTypes.string,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      file:File,
       fileList: [],
-    }
+    };
   }
 
   beforeUploadStation = (file) => { // 上传前的校验
-    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'];
+    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
     const validFile = validType.includes(file.type);
     if (!validFile) {
-      message.config({ top: 200, duration: 2, maxCount: 3, });
+      message.config({ top: 200, duration: 2, maxCount: 3 });
       message.error('只支持上传excel文件!', 2);
     } else {
-      this.removeFile(file)
+      this.removeFile(file);
       this.setState(state => ({
         fileList: [...state.fileList, file],
       }));
     }
-    return false
+    return false;
   }
 
   handleSubmit = (e) => { // 导入按钮
-    const { form, cancelModal, getImportIntelligent } = this.props;
+    const { form, cancelModal, getImportIntelligent, stationType } = this.props;
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
-      if(!err) {
+      if (!err) {
         const { fileList } = this.state;
         const formData = new FormData();
         formData.append('file', fileList[0]);
-        getImportIntelligent({
-          formData
-        })
-        cancelModal()
+        formData.append('type', stationType);
+        getImportIntelligent({ formData, cancelModal });
       }
     });
   }
@@ -72,13 +69,10 @@ class ImportIntelligent extends Component {
     });
   }
 
-  render(){
+  render() {
     const { fileList } = this.state;
-    const { showModal, allStationBaseInfo } = this.props;
-    
-    
+    const { showModal } = this.props;
     const { getFieldDecorator } = this.props.form;
-    
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -92,41 +86,41 @@ class ImportIntelligent extends Component {
 
     return (
       <div className={styles.importIntelligent}>
-      <Modal
-          title={`导入`}
+        <Modal
+          title={'导入'}
           visible={showModal}
           destroyOnClose={true}
           onOk={this.confirmModal}
           footer={null}
-          onCancel={() => { this.props.cancelModal() }}
+          onCancel={() => { this.props.cancelModal(); }}
           mask={false}
           maskClosable={false}
           closable={true}
           centered={true}
         >
-        <Form>
-          <FormItem {...formItemLayout} label="附件">
-            {getFieldDecorator('upload', {
-              getValueFromEvent: this.normFile,
-              rules: [{ required: true, message: '选择文件' }],
-            })(
-              <Upload
-                onRemove={(file) => this.removeFile(file)}
-                beforeUpload={this.beforeUploadStation}
-                fileList={fileList}
-              >
-                <Button>选择文件</Button>
-                <span> 支持xls、xlsx文件</span>
-              </Upload>
-            )}
-          </FormItem>
-          <FormItem wrapperCol={{ span: 12, offset: 12 }} >
-            <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>导入</Button>
-          </FormItem>
-        </Form>
+          <Form>
+            <FormItem {...formItemLayout} label="附件">
+              {getFieldDecorator('upload', {
+                getValueFromEvent: this.normFile,
+                rules: [{ required: true, message: '选择文件' }],
+              })(
+                <Upload
+                  onRemove={(file) => this.removeFile(file)}
+                  beforeUpload={this.beforeUploadStation}
+                  fileList={fileList}
+                >
+                  <Button>选择文件</Button>
+                  <span> 支持xls、xlsx文件</span>
+                </Upload>
+              )}
+            </FormItem>
+            <FormItem wrapperCol={{ span: 12, offset: 12 }} >
+              <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>导入</Button>
+            </FormItem>
+          </Form>
         </Modal>
       </div>
-    )
+    );
   }
 }
 

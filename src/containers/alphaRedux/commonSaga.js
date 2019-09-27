@@ -35,7 +35,7 @@ function* getStations(action) { // 通用：获取所有电站信息
         payload: {
           stations: response.data.data,
           stationTypeCount,
-        }
+        },
       });
     }
   } catch (e) {
@@ -53,13 +53,14 @@ function* getDeviceTypes(action) { // 通用： 获取用户权限范围内所�
         type: commonAction.GET_COMMON_FETCH_SUCCESS,
         payload: {
           deviceTypes: response.data.data,
-        }
+        },
       });
     }
   } catch (e) {
     console.log(e);
   }
 }
+
 function* getMonitorDataUnit(action) { // 通用： 获取用户权限范围内所有设备类型信息
   // const url = `/mock/v3/station/monitor/conf`;
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getMonitorDataUnit}`;
@@ -67,7 +68,7 @@ function* getMonitorDataUnit(action) { // 通用： 获取用户权限范围内�
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
-      let monitorDataUnit = response.data.data || {};
+      const monitorDataUnit = response.data.data || {};
       const [realTimePowerUnit = 'MW', realTimePowerPoint = 0] = monitorDataUnit.realTimePower;
       const [realCapacityUnit = 'MW', realCapacityPoint = 0] = monitorDataUnit.realCapacity;
       const [powerUnit = '万kWh', powerPoint = 0] = monitorDataUnit.power;
@@ -87,8 +88,8 @@ function* getMonitorDataUnit(action) { // 通用： 获取用户权限范围内�
             realCapacityPoint,
             powerUnit,
             powerPoint,
-          }
-        }
+          },
+        },
       });
     }
   } catch (e) {
@@ -107,7 +108,7 @@ function* getStationOfEnterprise(action) { // 根据企业id获取下面所有�
         type: actionName,
         payload: {
           [resultName]: response.data.data || [],
-        }
+        },
       });
     }
   } catch (e) {
@@ -126,7 +127,7 @@ function* getStationDeviceTypes(action) { // 新共用接口，获取电站下�
         type: deviceTypeAction,
         payload: {
           [resultName]: response.data.data || [],
-        }
+        },
       });
     } else { throw response.data; }
   } catch (e) {
@@ -135,7 +136,33 @@ function* getStationDeviceTypes(action) { // 新共用接口，获取电站下�
       type: deviceTypeAction,
       payload: {
         [resultName]: [],
-      }
+      },
+    });
+  }
+}
+
+
+function* getStationTypeDeviceTypes(action) { // 通用： 根据电站类型获取设备类型信息
+  const { payload } = action;
+  const { params, actionName, resultName } = payload;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStationTypeDevicetypes}/${params.type}/devicetype`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: actionName,
+        payload: {
+          [resultName]: response.data.data || [],
+        },
+      });
+    } else { throw response.data; }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: actionName,
+      payload: {
+        [resultName]: [],
+      },
     });
   }
 }
@@ -151,7 +178,7 @@ function* getDeviceModel(action) { // 新共用接口，获取电站设备类型
         type: actionName,
         payload: {
           [resultName]: response.data.data || [],
-        }
+        },
       });
     }
   } catch (e) {
@@ -173,7 +200,7 @@ function* getPoints(action) { // 新-获取电站下测点数据 - YC/YM/YX均�
         type: actionName,
         payload: {
           [resultName]: response.data.data || [],
-        }
+        },
       });
     }
   } catch (e) {
@@ -192,7 +219,7 @@ function* getDevices(action) { // 新-获取设备信息列表
         type: actionName,
         payload: {
           [resultName]: response.data.data || [],
-        }
+        },
       });
     }
   } catch (e) {
@@ -201,7 +228,7 @@ function* getDevices(action) { // 新-获取设备信息列表
 }
 
 function* getPartition(action) { //新-获取方阵列表
-  let url = `${APIBasePath}${commonPaths.getPartitions}`;
+  const url = `${APIBasePath}${commonPaths.getPartitions}`;
   const { payload } = action;
   try {
     const { params, actionName, resultName } = payload;
@@ -211,7 +238,7 @@ function* getPartition(action) { //新-获取方阵列表
         type: actionName,
         payload: {
           [resultName]: response.data.data.partitions || [],
-        }
+        },
       });
     }
   } catch (e) {
@@ -230,7 +257,7 @@ function* getMatrixDevices(action) { // 2018-12-24新增，预期删除下面get
       const partitionCode = response.data.data.partitions[0].deviceCode; // 第一分区code   
       const [matrixDevices, devices] = yield all([
         call(axios.get, getDevicesUrl, { params: { ...params, partitionCode } }),
-        call(axios.get, getDevicesUrl, { params })
+        call(axios.get, getDevicesUrl, { params }),
       ]);
       if (matrixDevices.data.code === '10000' && devices.data.code === '10000') {
         yield put({
@@ -239,7 +266,7 @@ function* getMatrixDevices(action) { // 2018-12-24新增，预期删除下面get
             devices: devices.data.data || [], // 所有设备
             filterDevices: matrixDevices.data.data || [],
             partitions: response.data.data.partitions || [],
-          }
+          },
         });
       }
     }
@@ -249,8 +276,8 @@ function* getMatrixDevices(action) { // 2018-12-24新增，预期删除下面get
 }
 
 function* getSliceDevices(action) { // 新-获取第一个分区光伏组件设备+所有光伏组件信息
-  let getPartitionsUrl = `${APIBasePath}${commonPaths.getPartitions}`;
-  let getDevicesUrl = `${APIBasePath}${commonPaths.getDevices}`;
+  const getPartitionsUrl = `${APIBasePath}${commonPaths.getPartitions}`;
+  const getDevicesUrl = `${APIBasePath}${commonPaths.getDevices}`;
   const { payload } = action;
   try {
     const { params, actionName } = payload;
@@ -259,7 +286,7 @@ function* getSliceDevices(action) { // 新-获取第一个分区光伏组件设�
       const partitionCode = response.data.data.partitions[0].deviceCode; // 第一分区code   
       const [devices, allSeries] = yield all([
         call(axios.get, getDevicesUrl, { params: { ...params, partitionCode } }),
-        call(axios.get, getDevicesUrl, { params })
+        call(axios.get, getDevicesUrl, { params }),
       ]);
       if (devices.data.code === '10000' && allSeries.data.code === '10000') {
         yield put({
@@ -269,7 +296,7 @@ function* getSliceDevices(action) { // 新-获取第一个分区光伏组件设�
             devices: devices.data.data || [],
             firstPartitionCode: partitionCode,
             partitions: response.data.data.partitions || [],
-          }
+          },
         });
       }
     }
@@ -285,7 +312,7 @@ function* getAllDepartment(action) {//获取所有部门基础信息
     const { params, actionName, resultName } = payload;
     const url = `${APIBasePath}${APISubPaths.system.getAllDepartment}/${params.enterpriseId}`;
     const response = yield call(axios.get, url);
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: actionName,
         payload: {
@@ -310,12 +337,12 @@ function* findDeviceExist(action) { // 查询设备是否存在
       payload: {
         [resultName]: {
           existLoading: true,
-        }
-      }
+        },
+      },
     });
     const response = yield call(axios.post, url, params);
 
-    if (response.data.code === "20022") { // 设备不存在
+    if (response.data.code === '20022') { // 设备不存在
       yield put({
         type: actionName,
         payload: {
@@ -324,8 +351,8 @@ function* findDeviceExist(action) { // 查询设备是否存在
             existError: true,
             existErrorData: response.data.data || '',
             existErroMessage: response.data.message,
-          }
-        }
+          },
+        },
       });
     } else {
       yield put({
@@ -335,8 +362,8 @@ function* findDeviceExist(action) { // 查询设备是否存在
             existLoading: false,
             existErrorData: response.data.data || '',
             existError: false,
-          }
-        }
+          },
+        },
       });
     }
   } catch (e) {
@@ -347,8 +374,8 @@ function* findDeviceExist(action) { // 查询设备是否存在
       payload: {
         [resultName]: {
           existLoading: false,
-        }
-      }
+        },
+      },
     });
     console.log(e);
   }
@@ -362,7 +389,7 @@ function* getLostGenType(action) { // 根据电站类型等指标查询电站故
     const response = yield call(axios.get, url, { params });
     yield put({
       type: actionName,
-      payload: { [resultName]: response.data.data || [] }
+      payload: { [resultName]: response.data.data || [] },
     });
   } catch (error) {
     message.error('获取故障类型失败!');
@@ -377,7 +404,7 @@ function* getStationBelongTypes(action) { // 获取电站可能的所属的各�
     const response = yield call(axios.get, url);
     yield put({
       type: actionName,
-      payload: { [resultName]: response.data.data || {} }
+      payload: { [resultName]: response.data.data || {} },
     });
   } catch (error) {
     message.error('获取电站分类信息失败!');
@@ -392,7 +419,7 @@ function* getStationTargetInfo(action) { // 获取电站指定分类信息(省,�
     const response = yield call(axios.get, url, { params });
     yield put({
       type: actionName,
-      payload: { [resultName]: response.data.data || [] }
+      payload: { [resultName]: response.data.data || [] },
     });
   } catch (error) {
     message.error('获取数据失败!');
@@ -406,10 +433,10 @@ function* getDictionaryInfo(action) { // 获取覆盖类型、并网电压等级
   try {
     const { actionName, resultName, params } = payload;
     const response = yield call(axios.post, url, params);
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: actionName,
-        payload: { [resultName]: response.data.data || [] }
+        payload: { [resultName]: response.data.data || [] },
       });
     }
 
@@ -428,8 +455,8 @@ function* getWeather(action) { // 获取电站天气
       yield put({
         type: actionName,
         payload: {
-          [resultName]: response.data.data || []
-        }
+          [resultName]: response.data.data || [],
+        },
       });
     } else { throw '天气数据获取失败'; }
   } catch (error) {
@@ -443,7 +470,7 @@ function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件
   try {
     yield put({
       type: actionName,
-      payload: { [loadingName]: true }
+      payload: { [loadingName]: true },
     });
     const response = yield call(axios, {
       method,
@@ -453,8 +480,8 @@ function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件
     });
     yield put({
       type: actionName,
-      payload: { [loadingName]: false }
-    })
+      payload: { [loadingName]: false },
+    });
     if (response.data) {
       const fileContent = response.data;
       const fileNameInfo = response.headers['content-disposition'];
@@ -486,7 +513,7 @@ function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件
     yield put({
       type: actionName,
       payload: { [loadingName]: false },
-    })
+    });
     message.warning('下载失败！请重新尝试');
     console.log(error);
   }
@@ -504,7 +531,7 @@ function* getRegion(action) { // //获取用户权限的电站区域
         type: actionName,
         payload: {
           [resultName]: response.data.data || [],
-        }
+        },
       });
     }
   } catch (e) {
@@ -524,7 +551,7 @@ function* getRegionStation(action) { // //获取用户权限的电站
         type: actionName,
         payload: {
           [resultName]: response.data.data || [],
-        }
+        },
       });
     }
   } catch (e) {
@@ -544,7 +571,7 @@ function* getStationDevicemode(action) { // //获取用户权限的型号
         type: actionName,
         payload: {
           [resultName]: response.data.data || [],
-        }
+        },
       });
     }
   } catch (e) {
@@ -564,7 +591,7 @@ function* getRegionStationDevice(action) { // //获取用户权限的风机
         type: actionName,
         payload: {
           [resultName]: response.data.data || [],
-        }
+        },
       });
     }
   } catch (e) {
@@ -599,7 +626,6 @@ function* getRegionStationDevice(action) { // //获取用户权限的风机
     }
   }
 */
-
 export function* watchCommon() {
   yield takeLatest(commonAction.changeCommonStore, changeCommonStore);
   // yield takeLatest(commonAction.REFRESHTOKEN_SAGA, refreshToken);
@@ -609,6 +635,7 @@ export function* watchCommon() {
 
   yield takeLatest(commonAction.getStationOfEnterprise, getStationOfEnterprise);
   yield takeLatest(commonAction.getDeviceTypes, getDeviceTypes);
+  yield takeLatest(commonAction.getStationTypeDeviceTypes, getStationTypeDeviceTypes);
 
   yield takeLatest(commonAction.getPartition, getPartition);
   yield takeLatest(commonAction.getSliceDevices, getSliceDevices);

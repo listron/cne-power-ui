@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Button, Select, Icon } from 'antd';
 import styles from './intelligentExpert.scss';
-import DeviceTypeFilter from './IntelligentFilter/DeviceTypeFilter/DeviceTypeFilter';
-import DefectTypeFilter from './IntelligentFilter/DefectTypeFilter/DefectTypeFilter';
-import FilteredItems from './IntelligentFilter/FilteredItems/FilteredItems';
+import FilterCondition from '../../Common/FilterConditions/FilterCondition';
 
 const { Option } = Select;
 
-function debounce(callback, delay) { // 录入人（防抖）
+function debounce(callback, delay) { //（防抖）
   let timerId = null;
   return function (args) {
     const that = this;
@@ -21,22 +19,14 @@ function debounce(callback, delay) { // 录入人（防抖）
 
 class IntelligentSearch extends Component {
   static propTypes = {
-    resetStore: PropTypes.func,
-    getDefectType: PropTypes.func,
-    getIntelligentExpertStore: PropTypes.func,
+    changeIntelligentExpertStore: PropTypes.func,
     getIntelligentTable: PropTypes.func,
     getUserName: PropTypes.func,
     listParams: PropTypes.object,
-    deviceTypeCode: PropTypes.array,
-    defectTypeCode: PropTypes.array,
     usernames: PropTypes.array,
-    defectValue: PropTypes.string,
-    personValue: PropTypes.string,
-    pageNum: PropTypes.number,
-    pageSize: PropTypes.number,
-    orderField: PropTypes.string,
-    sortMethod: PropTypes.string,
     theme: PropTypes.string,
+    getLostGenType: PropTypes.func,
+    stationType: PropTypes.string,
   }
 
   constructor(props) {
@@ -44,23 +34,21 @@ class IntelligentSearch extends Component {
     this.state = {
       defectValue: '',
       personValue: '',
-      showFilter: '',
     };
     this.entryPerson = debounce(this.entryPerson, 800);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { deviceTypeCode: deviceTypeCodeCurrent } = this.props;
-    const { deviceTypeCode: deviceTypeCodeNext } = nextProps;
-    const { showFilter } = this.state;
-    if (deviceTypeCodeCurrent !== deviceTypeCodeNext && deviceTypeCodeNext.length === 0) {
-      if (showFilter !== '') {
-        this.setState({
-          showFilter: '',
-        });
-      }
+    const { stationType } = nextProps;
+    if (stationType !== this.props.stationType) { // 重置信息
+      this.setState({
+        defectValue: '',
+        personValue: '',
+      });
     }
   }
+
+
 
   onSearch = () => { // 查询缺陷描述/录入人
     const { getIntelligentTable, listParams } = this.props;
@@ -72,19 +60,6 @@ class IntelligentSearch extends Component {
       pageNum: 1,
     });
   }
-
-  onFilterShowChange = (filterText) => {
-    const { showFilter } = this.state;
-    if (showFilter === filterText) {
-      this.setState({
-        showFilter: '',
-      });
-    } else {
-      this.setState({
-        showFilter: filterText,
-      });
-    }
-  };
 
   onReset = () => { // 重置缺陷描述/录入人/表格
     const { getIntelligentTable, listParams } = this.props;
@@ -101,69 +76,81 @@ class IntelligentSearch extends Component {
   }
 
   onDefect = (e) => {// 改变缺陷描述
-    this.setState({
-      defectValue: e.target.value,
-    });
+    this.setState({ defectValue: e.target.value });
   }
 
   entryPerson = (value) => { // 输入录入人时触发
-    const { getIntelligentExpertStore, listParams, getUserName } = this.props;
-    this.setState({
-      personValue: value,
-    });
+    const { getUserName } = this.props;
+    this.setState({ personValue: value });
     if (value) {
       getUserName({
         username: value,
-      });
-      getIntelligentExpertStore({
-        listParams: {
-          ...listParams,
-          recorder: value,
-        },
       });
     }
   }
 
   changePerson = (value) => { // 选择option
-    this.setState({
-      personValue: value,
+    this.setState({ personValue: value });
+  }
+
+
+  filterCondition = (value) => { // 设备类型、缺陷类型筛选栏
+    const { getIntelligentTable, listParams, getLostGenType, changeIntelligentExpertStore } = this.props;
+    const { deviceTypeCodes } = value;
+    changeIntelligentExpertStore({ listParams: { ...listParams, ...value } });
+    getLostGenType({ // 缺陷类型
+      objectType: 1,
+      deviceTypeCode: deviceTypeCodes.join(','),
+      stationType: listParams.type,
     });
-    const { getIntelligentExpertStore, listParams } = this.props;
-    getIntelligentExpertStore({
-      listParams: {
-        ...listParams,
-        recorder: value,
-      },
+    getIntelligentTable({
+      ...listParams,
+      ...value,
     });
+
   }
 
   render() {
-    const { personValue, defectValue, showFilter } = this.state;
-    const { usernames = [], deviceTypeCode, theme } = this.props;
+    const { personValue, defectValue } = this.state;
+    const { usernames = [], theme, deviceTypes, defectTypes, listParams } = this.props;
+    const { deviceTypeCodes, faultTypeIds } = listParams;
     const showResetBtn = personValue || defectValue; // 控制“重置”按钮是否出现
+    const defectTypeTab = [];
+    defectTypes.forEach(e => { e.list && e.list.length > 0 && defectTypeTab.push(...e.list); });
+    let defectTypeList = [];
+    defectTypeTab.map(e => {
+      if (e.list && e.list.length > 0) {
+        e.list.forEach((lastItem) => { lastItem.parentName = e.name; });
+        defectTypeList = [...defectTypeList, ...e.list];
+      }
+    });
     return (
       <div className={`${styles.intelligentSearch} ${styles[theme]}`}>
-        <div className={styles.wrap}>
-          <div className={styles.topSearch}>
-            <span className={styles.text}>筛选条件</span>
-            <Button onClick={() => this.onFilterShowChange('deviceTypes')} className={styles.filterBtn} >
-              设备类型<Icon type={showFilter === 'deviceTypes' ? 'up' : 'down'} />
-            </Button>
-            <Button disabled={!deviceTypeCode || deviceTypeCode.length === 0} onClick={() => this.onFilterShowChange('defectTypes')}>
-              缺陷类型<Icon type={showFilter === 'defectTypes' ? 'up' : 'down'} />
-            </Button>
-          </div>
-          <div className={styles.filterBox}>
-            {showFilter === 'deviceTypes' && <DeviceTypeFilter {...this.props} />}
-            {showFilter === 'defectTypes' && <DefectTypeFilter {...this.props} />}
-          </div>
-          <div className={styles.filterWrap}>
-            <FilteredItems {...this.props} />
-          </div>
-        </div>
-
+        <FilterCondition
+          theme={theme}
+          onChange={this.filterCondition}
+          option={[
+            {
+              name: '设备类型',
+              type: 'multipleType',
+              typeName: 'deviceTypeCodes',
+              data: deviceTypes,
+              rules: ['deviceTypeName', 'deviceTypeCode'],
+            },
+            {
+              name: '缺陷类型',
+              type: 'parentCheckBox',
+              typeName: 'faultTypeIds',
+              parentName: 'parentName',
+              rules: ['name', 'id'],
+              data: defectTypeList,
+              disabled: !(deviceTypeCodes.length > 0),
+            },
+          ]}
+          value={{ deviceTypeCodes, faultTypeIds }}
+        />
         <div className={styles.partSearch}>
-          <span>缺陷描述</span>
+          <span>故障代码／故障描述</span>
           <Input className={styles.defectDescription} value={defectValue} placeholder="请输入..." onChange={this.onDefect} />
           <span className={styles.text}>录入人</span>
           <Select
@@ -175,9 +162,7 @@ class IntelligentSearch extends Component {
             onSearch={this.entryPerson}
             onChange={this.changePerson}
           >
-            {usernames && usernames.map(e => {
-              return <Option key={e} value={e}>{e}</Option>;
-            })}
+            {usernames && usernames.map(e => <Option key={e} value={e}>{e}</Option>)}
           </Select>
           <Button onClick={this.onSearch}>查询</Button>
           {showResetBtn && <span className={styles.reset} onClick={this.onReset}>重置</span>}

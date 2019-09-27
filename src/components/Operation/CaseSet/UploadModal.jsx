@@ -102,8 +102,8 @@ class UploadModal extends React.Component {
                   fileList={fileList}
                   showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
                 >
-                  <Button className={styles.uploadBtn} >  <Icon type="upload" />选择文件上传</Button>
-                  {/* <span> 支持xls、xlsx文件</span> */}
+                  <Button type="primary" className={styles.uploadBtn} >  <Icon type="upload" />选择文件上传</Button>
+                  <span> 支持xls文件 </span>
                 </Upload>
               )}
             </FormItem>

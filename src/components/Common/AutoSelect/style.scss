@@ -1,4 +1,4 @@
-@import '../../../theme/theme.scss';
+@import "../../../theme/theme.scss";
 
 .autoSelect {
   position: relative;
@@ -14,6 +14,9 @@
 
   .handlIcon {
     font-size: 14px;
+  }
+  .disabled {
+    pointer-events: none;
   }
 }
 

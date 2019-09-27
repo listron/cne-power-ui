@@ -6,7 +6,35 @@
   align-items: center;
   border-bottom: 1px solid $promptColor;
 }
-
+.intelligentContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  width: 100%;
+  // margin: 24px 24px 0;
+}
+.stationType {
+  display: flex;
+  line-height: 40px;
+  p {
+    width: 120px;
+    margin-bottom: 0;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: -2px;
+  }
+  .activeStation {
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      width: 120px;
+      height: 2px;
+      top: 0;
+      left: -1px;
+    }
+  }
+}
 .intelligentSearch {
   display: flex;
   flex-direction: column;
@@ -68,9 +96,7 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    .lookRole,
-    .editRole,
-    .deleteRole {
+    .icon {
       cursor: pointer;
       margin-right: 5px;
     }
@@ -78,37 +104,37 @@
     .faultDescription,
     .checkItems,
     .processingMethod {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      word-break: keep-all;
+      @include overflowText();
       max-width: 140px;
     }
     :global {
-      .ant-table {
-        .updateTime,
-        .deviceTypeName,
-        .faultName,
-        .faultDescription,
-        .checkItems,
-        .processingMethod,
-        .likeCount,
-        .handler {
-          flex: 0 0 220px;
-        }
+      .ant-table .ant-table-thead > tr > th,
+      .ant-table .ant-table-tbody > tr > td {
+        padding: 0 8px;
       }
     }
   }
 }
-
+.tableFooter {
+  height: 45px;
+  line-height: 45px;
+  .info {
+    margin-right: 20px;
+    margin-left: 24px;
+    .totalNum {
+      margin: auto 4px;
+    }
+  }
+  .cancel {
+    cursor: pointer;
+  }
+}
 .intelligentSide {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 1 0 auto;
   width: 100%;
-  background: #ececec;
-  padding: 24px 24px 0;
   z-index: 99;
   :global {
     .ant-select,
@@ -118,106 +144,133 @@
   }
   .addIntelligent,
   .showIntelligent,
-  .editContent {
+  .editIntelligent {
     display: flex;
     flex: 1 0 auto;
     flex-direction: column;
-    background: #fff;
     .titleTop {
       @include top;
       justify-content: space-between;
       .text {
         font-size: 18px;
-        color: $darkColor;
         letter-spacing: 4px;
       }
       .backIcon {
-        color: $darkColor;
         font-size: 20px;
-        border-left: 1px solid #dfdfdf;
         height: 100%;
         line-height: 64px;
         width: 64px;
         cursor: pointer;
       }
     }
-    .editmiddle {
-      margin: 10px 0 0 88px;
+    .extraSpan {
+      display: inline-block;
+      width: 440px;
     }
-    .saveBtn {
-      width: 100px;
-    }
-    .saveBtn,
-    .saveAndAddHandler {
-      color: $themeColor;
-      border-color: $themeColor;
+    :global {
+      .ant-form-item-label > label::after {
+        margin: 0;
+      }
+      .ant-form-item-control {
+        line-height: unset;
+      }
     }
   }
   .addIntelligent {
+    .formBox {
+      margin-top: 24px;
+    }
+    .selctWrap {
+      display: flex;
+      line-height: 40px;
+      i {
+        margin-left: 8px;
+      }
+    }
     .preFormStyle {
-      margin: 10px 0 0 88px;
+      width: 750px;
+      margin: 20px auto;
       :global {
-        .ant-form-item .ant-form-item-label {
+        .ant-form-item-label {
           width: 71px;
-          color: #666;
           text-align: right;
-          margin-right: 24px;
+          margin-right: 12px;
+        }
+        .ant-form-item {
+          // margin-bottom: 16px;
         }
       }
       .actionBtn {
-        margin-left: 815px;
+        margin-left: 80px;
       }
       .saveBtn {
         margin-right: 10px;
       }
     }
   }
-  .editContent {
-    :global {
-      .ant-form-item .ant-form-item-label {
+  .editIntelligent {
+    .preFormStyle {
+      width: 780px;
+      margin: 20px auto;
+    }
+    .formItem {
+      display: flex;
+      line-height: 30px;
+      margin-bottom: 12px;
+      .label {
         width: 71px;
-        color: #666;
         text-align: right;
-        margin-right: 24px;
+        margin-right: 16px;
+        flex: 0 0 71px;
+        span {
+          display: inline-block;
+          margin-right: 4px;
+          font-size: 14px;
+          line-height: 1;
+        }
       }
     }
-    .intelligentBottom {
-      margin: 0 0 24px 100px;
-      line-height: 35px;
-      .otherInformation {
-        color: #999;
-        display: flex;
-        justify-content: space-between;
-        width: 960px;
-        .text {
-          margin-right: 25px;
-        }
+    .saveBtn {
+      margin-left: 100px;
+    }
+    :global {
+      .ant-form-item-label {
+        width: 71px;
+        text-align: right;
+        margin-right: 12px;
       }
     }
   }
   .showIntelligent {
     .editBtn {
-      color: $themeColor;
-      border-color: $themeColor;
+      margin-right: 12px;
     }
     .detailContent {
       margin: 20px 0 0 88px;
       .detailText {
-        line-height: 30px;
+        line-height: 36px;
+        width: 800px;
+        margin: 0 auto;
+        display: flex;
         .title {
           font-weight: bold;
           margin-right: 24px;
-          display: inline-block;
           text-align: right;
-          width: 90px;
+          flex: 0 0 90px;
         }
+      }
+      .link {
+        display: block;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      .required {
+        margin-right: 8px;
       }
       .likeBtn,
       .likedBtn {
         margin-left: 112px;
         width: 204px;
-        color: $themeColor;
-        border-color: $themeColor;
       }
     }
   }

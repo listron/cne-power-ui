@@ -41,10 +41,27 @@ class CaseHandle extends React.Component {
     super(props, context);
     this.state = {
       showWarningTip: false,
-      warningTipText: '确认要删除选中的案例?',
+      warningTipText: '确定要删除解决方案吗?',
       showUpload: false,
 
     };
+  }
+  cancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  }
+  confirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+    const { selectedRowData, deleteCasePart } = this.props;
+    const caseBaseIds = selectedRowData.map(e => (e.caseBaseId));
+    deleteCasePart({
+      caseBaseIds,
+    });
+
+
   }
   showAddPage = () => {
     this.props.changeCasePartStore({
@@ -60,10 +77,13 @@ class CaseHandle extends React.Component {
     });
   }
   deleteCasePart = () => {
-    const { selectedRowData, deleteCasePart } = this.props;
-    const caseBaseIds = selectedRowData.map(e => (e.caseBaseId));
-    deleteCasePart({
-      caseBaseIds,
+    // const { selectedRowData, deleteCasePart } = this.props;
+    // const caseBaseIds = selectedRowData.map(e => (e.caseBaseId));
+    // deleteCasePart({
+    //   caseBaseIds,
+    // });
+    this.setState({
+      showWarningTip: true,
     });
   }
   cancelModal = () => {

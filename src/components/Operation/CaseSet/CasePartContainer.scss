@@ -48,7 +48,6 @@
       cursor: pointer;
     }
   }
-
 }
 
 
@@ -58,7 +57,7 @@
   justify-content: space-between;
   height: 72px;
   align-items: center;
-  padding-left: 28px;
+  padding-left: 20px;
 
   .leftHandler {
     display: flex;
@@ -99,14 +98,14 @@
     }
 
     .uploadBtn {
-      width: 150px;
+      // width: 150px;
       // margin: 24px 150px 0 150px;
-      color: $themeColor;
-      border-color: $themeColor;
+      // color: $themeColor;
+      // border-color: $themeColor;
     }
 
     .confireImport {
-      width: 150px;
+      // width: 150px;
       margin: 0 150px 0 157px;
 
     }
@@ -129,20 +128,59 @@
 }
 
 .caseList {
+  margin-bottom: 24px;
+
+  .titleStyle {
+    text-align: center;
+  }
+
+  .selectKeyText {
+    margin-top: 16px;
+    margin-left: 20px;
+
+    .num {
+      color: #fab907;
+      margin: 0 4px;
+    }
+
+    .cancelSelect {
+      color: $themeColor;
+      margin-left: 4px;
+      cursor: pointer;
+    }
+  }
+
   .editPoint {
     padding: 0 4px;
-    color: $themeColor;
     cursor: pointer;
+
+    &:hover {
+      color: $themeColor;
+      font-weight: 400;
+    }
   }
 
-  .num {
-    color: #fab907;
-    margin: 0 4px;
+  .stationWidth,
+  .tableWidth,
+  .questionDes {
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .cancelSelect {
-    color: $themeColor;
-    margin-left: 4px;
-    cursor: pointer;
+  .questionDes {
+    width: 160px;
   }
+
+  .stationWidth {
+    width: 80px;
+  }
+
+  .likeWidth {
+    margin-right: 8px;
+    text-align: right;
+  }
+
+
 }
