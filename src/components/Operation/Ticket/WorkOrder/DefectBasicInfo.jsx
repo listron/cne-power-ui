@@ -29,8 +29,8 @@ class DefectBasicInfo extends Component {
     const prevDefectId = prevProps.basicInfo.defectId || '';
     const defectId = this.props.basicInfo.defectId || '';
     if (defectId !== prevDefectId) {
-      const { defectTypeCode, deviceTypeCode } = this.props.basicInfo;
-      this.props.getKnowledgebase({ deviceTypeCodes: [deviceTypeCode], faultTypeIds: [defectTypeCode] });
+      const { defectTypeCode, deviceTypeCode, stationType } = this.props.basicInfo;
+      this.props.getKnowledgebase({ deviceTypeCodes: [deviceTypeCode], faultTypeIds: [defectTypeCode], type: +stationType });
     }
   }
 
@@ -122,13 +122,10 @@ class DefectBasicInfo extends Component {
                   <div className={styles.text}>点赞数</div>  <div> {list.likeCount}</div>
                 </div>
                 {list.liked ?
-                  <div className={styles.liked} disabled>
-                    已点赞 <Icon type="like" />
-                  </div>
-                  :
-                  <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId)}}>
+                  <div className={styles.disabled} >  已点赞  </div> :
+                  <div className={styles.like} onClick={() => { this.knowledegeBask(list.knowledgeBaseId); }}>
                     点赞 <Icon type="like" />
-                  </div> 
+                  </div>
                 }
               </div>
               );

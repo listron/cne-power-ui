@@ -57,7 +57,7 @@
     display: flex;
     height: 50px;
     align-items: center;
-    padding: 0 28px;
+    padding: 0 20px;
     .defectDescription,
     .entryPerson {
       width: 200px;
@@ -81,7 +81,7 @@
   .topHandler {
     display: flex;
     justify-content: space-between;
-    padding: 30px 28px 20px 28px;
+    padding: 30px 0 20px 20px;
     .leftPart {
       display: flex;
       .deleteHandler,
@@ -183,6 +183,22 @@
       .ant-form-item-control {
         line-height: unset;
       }
+      .ant-form-item-label {
+        width: 71px;
+        text-align: right;
+        margin-right: 12px;
+      }
+      .ant-form-item-required::before {
+        content: "";
+      }
+      .ant-form-item-required::after {
+        display: inline-block;
+        margin-left: 4px;
+        font-size: 14px;
+        font-family: SimSun, sans-serif;
+        line-height: 1;
+        content: "*";
+      }
     }
   }
   .addIntelligent {
@@ -227,28 +243,24 @@
       line-height: 30px;
       margin-bottom: 12px;
       .label {
+        margin-left: 4px;
+        margin-right: 12px;
         width: 71px;
-        text-align: right;
-        margin-right: 16px;
-        flex: 0 0 71px;
-        span {
+        .required {
           display: inline-block;
-          margin-right: 4px;
           font-size: 14px;
           font-family: SimSun, sans-serif;
           line-height: 1;
+        }
+        .name {
+          display: inline-block;
+          width: 60px;
+          text-align: right;
         }
       }
     }
     .saveBtn {
       margin-left: 100px;
-    }
-    :global {
-      .ant-form-item-label {
-        width: 71px;
-        text-align: right;
-        margin-right: 12px;
-      }
     }
   }
   .showIntelligent {
@@ -263,10 +275,14 @@
         margin: 0 auto;
         display: flex;
         .title {
-          font-weight: bold;
-          margin-right: 24px;
-          text-align: right;
-          flex: 0 0 90px;
+          margin-right: 12px;
+          // text-align: right;
+          flex: 0 0 85px;
+          .name {
+            text-align: right;
+            width: 70px;
+            display: inline-block;
+          }
         }
       }
       .link {
@@ -276,7 +292,7 @@
       }
       .required {
         display: inline-block;
-        margin-right: 4px;
+        margin-left: 4px;
         font-size: 14px;
         font-family: SimSun, sans-serif;
         line-height: 1;
