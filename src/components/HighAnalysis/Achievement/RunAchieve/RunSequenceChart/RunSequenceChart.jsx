@@ -50,14 +50,16 @@ export default class RunSequenceChart extends Component {
   drawChart = (sequenceData) => {
     const pointLength = 2;
     const { hourOptionName, hourUnitName } = this.props;
+    const colorArr = ['#00CDFF', '#FF6CEE', '#F9B600'];
     // 数据
-    const seriesData = sequenceData && sequenceData.map(cur => ({
+    const seriesData = sequenceData && sequenceData.map((cur, index) => ({
       name: cur.deviceName,
       type: 'line',
       symbol: 'none',
       data: cur.dataList && cur.dataList.map(item => (dataFormat(item.value, '--', pointLength))),
     }));
     return {
+      color: colorArr,
       tooltip: {
         trigger: 'axis',
       },
@@ -157,7 +159,9 @@ export default class RunSequenceChart extends Component {
     });
     // 判断是否存在测点
     const valueFlag = pointsInfo.map(cur => (cur.name)).includes(hourOptionName);
-    const valueStr = valueFlag ? hourOptionValue : hourOptionName;
+    // 超出10个字，显示9个字...
+    const nameFormat = hourOptionName.length > 10 ? hourOptionName.substring(0, 9) + '...' : hourOptionName;
+    const valueStr = valueFlag ? hourOptionValue : nameFormat;
     return (
       <div className={styles.runSequenceChart}>
         <div className={styles.sequenceTop}>
