@@ -14,6 +14,7 @@ class AutoModal extends Component {
     onValueCheck: PropTypes.func,
     max: PropTypes.number,
     theme: PropTypes.string,
+    disabled: PropTypes.bool,
   }
 
   state = {

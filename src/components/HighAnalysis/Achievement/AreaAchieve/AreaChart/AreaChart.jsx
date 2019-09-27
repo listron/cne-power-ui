@@ -26,7 +26,7 @@ export default class AreaChart extends Component {
 
   componentDidUpdate(prevProps) {
     const { areaChart } = this;
-    const { capacityTime, capacityLoading, capacityInfo, dataIndex } = this.props;
+    const { capacityTime, capacityLoading, capacityInfo, dataIndex, stationColorData } = this.props;
     const { capacityTime: capacityTimePrev, dataIndex: dataIndexPrev } = prevProps;
     const myChart = eCharts.init(areaChart);
     if (capacityLoading) { // loading态控制。
@@ -36,7 +36,7 @@ export default class AreaChart extends Component {
     if (!capacityLoading) {
       myChart.hideLoading();
     }
-    if(capacityTime && capacityTime !== capacityTimePrev || dataIndex !== '' && dataIndexPrev !== dataIndex) {
+    if(capacityTime && capacityTime !== capacityTimePrev || dataIndex !== '' && dataIndexPrev !== dataIndex || JSON.stringify(stationColorData) !== '{}') {
       eCharts.init(areaChart).clear();//清除
       const myChart = eCharts.init(areaChart);
       myChart.setOption(this.drawChart(capacityInfo, dataIndex));
@@ -113,8 +113,18 @@ export default class AreaChart extends Component {
 
   drawChart = (data, dataIndex) => {
     const { stationColorData } = this.props;
+    // 颜色为空
+    if(JSON.stringify(stationColorData) === '{}') {
+      return {};
+    }
     function colorFunc(stationName) {
-      return dataIndex === '' ? stationColorData[stationName] : (dataIndex === stationName ? stationColorData[stationName] : '#cccccc');
+      return dataIndex === '' ? new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
+        {offset: 0, color: stationColorData[stationName] && stationColorData[stationName][0]},
+        {offset: 1, color: stationColorData[stationName] && stationColorData[stationName][1]},
+      ]) : (dataIndex === stationName ? new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
+        {offset: 0, color: stationColorData[stationName] && stationColorData[stationName][0]},
+        {offset: 1, color: stationColorData[stationName] && stationColorData[stationName][1]},
+      ]) : '#cccccc');
     }
     const childrenArr = data.map(cur => {
       const obj = {};

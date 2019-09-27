@@ -116,6 +116,10 @@ export default class GroupAreaChart extends Component {
 
   drawChart = (data, dataIndex) => {
     const { areaColorData } = this.props;
+    // 颜色为空
+    if(JSON.stringify(areaColorData) === '{}') {
+      return {};
+    }
     // 保存选中的那条数据
     let obj = '';
     // 过滤掉选中的数据
@@ -182,7 +186,13 @@ export default class GroupAreaChart extends Component {
           itemStyle: {
             normal: {
               color: function(params) {//柱子颜色
-                return dataIndex === '' ? areaColorData[params.name] : (dataIndex === params.name ? areaColorData[params.name] : '#cccccc');
+                return dataIndex === '' ? new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
+                  {offset: 0, color: areaColorData[params.name][0]},
+                  {offset: 1, color: areaColorData[params.name][1]},
+                ]) : (dataIndex === params.name ? new eCharts.graphic.LinearGradient( 0, 0, 0, 1, [
+                  {offset: 0, color: areaColorData[params.name][0]},
+                  {offset: 1, color: areaColorData[params.name][1]},
+                ]) : '#cccccc');
               },
             },
             emphasis: {
