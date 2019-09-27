@@ -16,7 +16,7 @@ class DetailCase extends React.Component {
     showPage: PropTypes.string,
     getCasePartList: PropTypes.func,
     faultDescription: PropTypes.string,
-    orderField: PropTypes.string,
+    orderFiled: PropTypes.string,
     orderType: PropTypes.string,
     userName: PropTypes.string,
     userId: PropTypes.number,
@@ -33,12 +33,17 @@ class DetailCase extends React.Component {
       warningTipText: '退出后信息无法保存!',
     };
   }
+  componentDidMount() {
+    const main = document.getElementById('main');
+    main && main.scroll(0, 0);
+
+  }
   onWarningTipShow = () => {
-    const { changeCasePartStore, getCasePartList, questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderField, orderType } = this.props;
+    const { changeCasePartStore, getCasePartList, questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType, pageSize, pageNum } = this.props;
     changeCasePartStore({
       showPage: 'list',
     });
-    const queryParams = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderField, orderType };
+    const queryParams = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType, pageSize, pageNum };
 
     getCasePartList({
       ...queryParams,
@@ -64,16 +69,6 @@ class DetailCase extends React.Component {
       caseBaseId,
     });
   }
-  downFile = (file, fileName) => {
-    const { downLoadFile } = this.props;
-    const downloadTemplet = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadFile}`; // 下载文件
-    downLoadFile({
-      url: downloadTemplet,
-      method: 'post',
-      params: { filePath: file },
-      fileName: fileName,
-    });
-  }
   detailInfo = (data) => {
     const detailArr = [
       { name: '机型', value: data.deviceModes && data.deviceModes.map(e => (e.deviceModeName)) },
@@ -94,6 +89,16 @@ class DetailCase extends React.Component {
       { name: '点赞数', value: data.likeCount },
     ];
     return detailArr;
+  }
+  downFile = (file, fileName) => {
+    const { downLoadFile } = this.props;
+    const downloadTemplet = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadCaseFile}`; // 下载文件
+    downLoadFile({
+      url: downloadTemplet,
+      method: 'post',
+      params: { filePath: file },
+      fileName: fileName,
+    });
   }
   render() {
     const { showWarningTip, warningTipText } = this.state;
@@ -125,7 +130,12 @@ class DetailCase extends React.Component {
                 <div key={e.name} className={styles.eachInfo} key={`${e.name}${i}`} >
                   <div className={styles.infoName}>{e.name}</div>
                   {e.name === '上传附件' ? <div className={styles.downHref}>
-                    {e.value && e.value.map((item, i) => (<a href={`${originUri}${item.url}`} download={`${originUri}${item.url}`} target="_blank" key={i} ><span>{`${item.name}`} 【点击下载】</span></a>))}
+                    {e.value && e.value.map((item, i) => (<a
+                      // href={`${originUri}${item.url}`} download={`${originUri}${item.url}`} 
+                      onClick={() => this.downFile(item.url, item.name)}
+                      target="_blank"
+                      key={i}
+                    ><span>{`${item.name}`} 【点击下载】</span></a>))}
                   </div> : <div
                     className={styles.infoValue}
                     title={`${value}${e.unit || ''}`}

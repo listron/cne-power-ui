@@ -128,8 +128,18 @@
 .light {
   .filterConditionTitle {
     color: $themeColor;
+    .text {
+      color: $darkColor;
+    }
     .filterlist {
-      border: 1px solid $themeColor;
+      border: 1px solid #dfdfdf;
+      color: #666666;
+      &:hover,
+      &:active,
+      &:focus {
+        border: 1px solid $themeColor;
+        color: $themeColor;
+      }
     }
     .disabled {
       background: #f7f7f7;
