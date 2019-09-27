@@ -8,54 +8,26 @@ const {APIBasePath} = path.basePaths;
 const {highAnalysis} = path.APISubPaths;
 
 const colorArr = [
-  '#8c0a3a',
-  '#8a086b',
-  '#8c0392',
-  '#735daf',
-  '#2d0085',
-  '#006497',
-  '#004f9f',
-  '#034753',
-  '#135600',
-  '#4c7400',
-  '#9a7d00',
-  '#9b4c00',
-  '#834e00',
-  '#9a1a03',
-  '#950027',
-  '#c50538',
-  '#e51c48',
-  '#b8002d',
-  '#bc2d00',
-  '#9f6705',
-  '#bc6900',
-  '#bca103',
-  '#729f00',
-  '#298a00',
-  '#007d87',
-  '#036cc0',
-  '#0074b6',
-  '#471397',
-  '#8669be',
-  '#a808ab',
-  '#b01188',
-  '#a42f4e',
-  '#ab4a5f',
-  '#cd27a1',
-  '#b41cb3',
-  '#9986c7',
-  '#6b27bb',
-  '#0078cd',
-  '#0088da',
-  '#00a7ae',
-  '#4ab00c',
-  '#95c005',
-  '#d6bf03',
-  '#d68603',
-  '#ae7e08',
-  '#d64703',
-  '#d31338',
-  '#fa0333',
+  ['#61bcae', '#167e65'],
+  ['#90cce3', '#3d9cd9'],
+  ['#dfb082', '#d0672f'],
+  ['#c895d2', '#9445ab'],
+  ['#80c6d4', '#2e91af'],
+  ['#e38e8f', '#db4849'],
+  ['#c8b9a8', '#94765b'],
+  ['#91d1c7', '#3eaa91'],
+  ['#e1cb40', '#d39b02'],
+  ['#8e89cc', '#3d369a'],
+  ['#b8d876', '#69a920'],
+  ['#d89a84', '#c05740'],
+  ['#e07ea6', '#d73c66'],
+  ['#bbc214', '#9aa812'],
+  ['#b3afd4', '#54509e'],
+  ['#cfbb58', '#aa851e'],
+  ['#b694df', '#7d4fd5'],
+  ['#d490d8', '#b142c0'],
+  ['#e5a9b7', '#d55367'],
+  ['#8ebad9', '#4a82c3'],
 ];
 
 function areaNameColor(data) {
@@ -68,15 +40,11 @@ function areaNameColor(data) {
 
 function stationNameColor(data) {
   const obj = {};
-  const arr = [];// 保存电站名称
   data && data.forEach(cur => {
-    cur.stations && cur.stations.forEach(item => {
-      arr.push(item.stationName);
+    const { stations = [] } = cur;
+    stations.forEach((item, index) => {
+      obj[item.stationName] = colorArr[index];
     });
-  });
-  //遍历电站名称
-  arr && arr.forEach((cur, index) => {
-    obj[cur] = colorArr[index];
   });
   return obj;
 }

@@ -4,6 +4,7 @@ import styles from './CasePartContainer.scss';
 import { Table } from 'antd';
 import WarningTip from '../../../components/Common/WarningTip';
 import Cookie from 'js-cookie';
+import moment from 'moment';
 class CaseList extends React.Component {
   static propTypes = {
     changeCasePartStore: PropTypes.func,
@@ -76,13 +77,13 @@ class CaseList extends React.Component {
     });
   }
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
-    const { getCasePartList, questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId } = this.props;
-    const queryParams = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId };
+    const { getCasePartList, questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, pageSize, pageNum } = this.props;
+    const queryParams = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, pageSize, pageNum };
     const { field, order } = sorter;
-    const orderField = field === 'likeCount' ? 'like' : field;
+    const orderFiled = field === 'likeCount' ? 'like' : field;
     getCasePartList({
       ...queryParams,
-      orderField: orderField,
+      orderFiled: orderFiled,
       orderType: order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : null,
     });
   }
@@ -95,7 +96,6 @@ class CaseList extends React.Component {
   render() {
     const { tableLoading, casePartTableData, selectedRowKeys } = this.props;
     const rightkey = Cookie.get('userRight').includes('operation_case_operate');//操作权限
-
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -108,7 +108,7 @@ class CaseList extends React.Component {
         key: 'stationNames',
         render: (text, record, index) => {
           return (
-            <div className={styles.tableWidth} title={text} >{text}</div>
+            <div className={styles.stationWidth} title={text} >{text}</div>
           );
         },
       },
@@ -128,7 +128,7 @@ class CaseList extends React.Component {
         key: 'questionTypeCodeName',
         render: (text, record, index) => {
           return (
-            <div className={styles.tableWidth} title={text} >{text}</div>
+            <div className={styles.questionType} title={text} >{text}</div>
           );
         },
 
@@ -148,7 +148,7 @@ class CaseList extends React.Component {
         key: 'faultDescription',
         render: (text, record, index) => {
           return (
-            <div className={styles.tableWidth} title={text} >{text}</div>
+            <div className={styles.questionDes} title={text} >{text}</div>
           );
         },
 
@@ -167,11 +167,22 @@ class CaseList extends React.Component {
         dataIndex: 'updateTime',
         key: 'updateTime',
         sorter: true,
+        render: (text, record, index) => {
+          return (
+            <div className={styles.tableWidth} title={text} >{moment(text).format()}</div>
+          );
+        },
+
       }, {
         title: '点赞数',
         dataIndex: 'likeCount',
         key: 'likeCount',
         sorter: true,
+        render: (text, record, index) => {
+          return (
+            <div className={styles.likeWidth} title={text} >{text}</div>
+          );
+        },
       },
       {
         title: '操作',

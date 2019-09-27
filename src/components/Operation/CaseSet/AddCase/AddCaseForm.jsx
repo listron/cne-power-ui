@@ -5,6 +5,7 @@ import { Button, Input, Form, Select, Upload, Icon, message } from 'antd';
 import TextArea from '../../../Common/InputLimit/index';
 import StationSelect from '../../../Common/StationSelect/index';
 import AutoSelect from '../../../Common/AutoSelect';
+import WarningTip from '../../../Common/WarningTip';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -30,6 +31,9 @@ class AddCaseForm extends React.Component {
     this.state = {
       savefileList: [],
       curfileList: [],
+      showWarningTip: false,
+      fileListArr: [],
+      warningTipText: '确定要删除附件吗?',
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -62,6 +66,21 @@ class AddCaseForm extends React.Component {
         });
       }
     }
+
+  }
+  cancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  }
+  confirmWarningTip = () => {
+    const { fileListArr } = this.state;
+    this.setState({
+      showWarningTip: false,
+    });
+    this.props.changeCasePartStore({
+      editFileList: fileListArr,
+    });
 
   }
 
@@ -158,8 +177,9 @@ class AddCaseForm extends React.Component {
         const name = queryName[queryName.length - 1];
         return { name, url: e.name };
       });
-      this.props.changeCasePartStore({
-        editFileList: fileListArr,
+      this.setState({
+        showWarningTip: true,
+        fileListArr,
       });
     }
     if (Array.isArray(e)) {
@@ -187,10 +207,12 @@ class AddCaseForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { showPage, stations, modesInfo, questionTypeList } = this.props;
+    const { showWarningTip, warningTipText } = this.state;
     const detailArr = this.detailInfo();
     return (
 
       <div className={styles.fromContainer}>
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <Form className={styles.formPart}>
           <FormItem label="机型" colon={false} className={`${styles.formItemStyle} ${styles.autoSelect}`} >
             {getFieldDecorator('deviceModeList', {

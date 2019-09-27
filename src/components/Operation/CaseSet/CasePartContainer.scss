@@ -98,14 +98,14 @@
     }
 
     .uploadBtn {
-      width: 150px;
+      // width: 150px;
       // margin: 24px 150px 0 150px;
-      color: $themeColor;
-      border-color: $themeColor;
+      // color: $themeColor;
+      // border-color: $themeColor;
     }
 
     .confireImport {
-      width: 150px;
+      // width: 150px;
       margin: 0 150px 0 157px;
 
     }
@@ -115,6 +115,11 @@
       margin-left: 12px;
       border-color: $themeColor;
       color: $themeColor;
+
+      &:hover {
+        color: #fff;
+        background: $themeColor;
+      }
 
     }
 
@@ -160,11 +165,30 @@
     }
   }
 
-  .tableWidth {
+  .stationWidth,
+  .tableWidth,
+  .questionDes {
     width: 100px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .questionType {
+    width: 100px;
+  }
+
+  .questionDes {
+    width: 150px;
+  }
+
+  .stationWidth {
+    width: 80px;
+  }
+
+  .likeWidth {
+    width: 70px;
+    text-align: right;
   }
 
 
