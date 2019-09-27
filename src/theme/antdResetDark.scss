@@ -10,6 +10,7 @@
     .ant-table-thead > tr > th .ant-table-column-sorter-down.on {
       color: #fd6e8f !important;
     }
+    
     .ant-table-thead > tr > th .ant-table-column-sorter-up,
     .ant-table-thead > tr > th .ant-table-column-sorter-down {
       color: $button-active;
@@ -72,6 +73,9 @@
     .ant-table-tbody > tr > td {
       border: 1px solid $border-color;
     }
+  }
+  .ant-table-fixed-left table, .ant-table-fixed-right table{
+    background: transparent;
   }
   .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
     background: transparent;
