@@ -108,7 +108,7 @@ class CaseList extends React.Component {
         key: 'stationNames',
         render: (text, record, index) => {
           return (
-            <div className={styles.tableWidth} title={text} >{text}</div>
+            <div className={styles.stationWidth} title={text} >{text}</div>
           );
         },
       },
@@ -126,11 +126,7 @@ class CaseList extends React.Component {
         title: '问题类别',
         dataIndex: 'questionTypeCodeName',
         key: 'questionTypeCodeName',
-        render: (text, record, index) => {
-          return (
-            <div className={styles.tableWidth} title={text} >{text}</div>
-          );
-        },
+
 
       }, {
         title: '相关故障代码',
@@ -148,7 +144,7 @@ class CaseList extends React.Component {
         key: 'faultDescription',
         render: (text, record, index) => {
           return (
-            <div className={styles.tableWidth} title={text} >{text}</div>
+            <div className={styles.questionDes} title={text} >{text}</div>
           );
         },
 
@@ -167,11 +163,17 @@ class CaseList extends React.Component {
         dataIndex: 'updateTime',
         key: 'updateTime',
         sorter: true,
+
       }, {
         title: '点赞数',
         dataIndex: 'likeCount',
         key: 'likeCount',
         sorter: true,
+        render: (text, record, index) => {
+          return (
+            <div className={styles.likeWidth} title={text} >{text}</div>
+          );
+        },
       },
       {
         title: '操作',

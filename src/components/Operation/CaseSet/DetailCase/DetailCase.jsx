@@ -97,7 +97,7 @@ class DetailCase extends React.Component {
       url: downloadTemplet,
       method: 'post',
       params: { filePath: file },
-      // fileName: fileName,
+      fileName: fileName,
     });
   }
   render() {
