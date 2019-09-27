@@ -31,6 +31,12 @@ class StationSearch extends Component {
     searchDevice: PropTypes.array,
     searchDates: PropTypes.array,
     searchQuota: PropTypes.string,
+
+    curveAllDevice: PropTypes.array,
+    curveCheckedDevice: PropTypes.array,
+    activeDevice: PropTypes.string,
+    curveAllMonths: PropTypes.array,
+    curveCheckedMonths: PropTypes.array,
   }
 
   constructor(props){
@@ -118,16 +124,20 @@ class StationSearch extends Component {
   }
 
   getResetDisable = () => { // 恢复图表按钮
-    const { pageName, lostChartDevice, stopChartDevice, stopChartTime, stopChartTypes } = this.props;
+    const { pageName } = this.props;
     let resetDisable = false;
     if (pageName === 'lost') {
+      const { lostChartDevice } = this.props;
       !lostChartDevice && (resetDisable = true);
     }
     if (pageName === 'stop') {
+      const { stopChartDevice, stopChartTime, stopChartTypes } = this.props;
       !(stopChartDevice || stopChartTime || stopChartTypes) && (resetDisable = true);
     }
     if (pageName === 'curve') {
-      resetDisable = true;
+      const { curveAllDevice, curveCheckedDevice, activeDevice, curveAllMonths, curveCheckedMonths } = this.props;
+      (curveAllDevice.length === curveCheckedDevice.length && !activeDevice && curveAllMonths.length === curveCheckedMonths.length) &&
+      (resetDisable = true);
     }
     return resetDisable;
   }

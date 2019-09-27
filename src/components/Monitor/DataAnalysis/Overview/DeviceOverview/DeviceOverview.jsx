@@ -175,8 +175,20 @@ class DeviceOverview extends PureComponent{
               <Radio.Button value={2}>按月</Radio.Button>
               <Radio.Button value={1}>按日</Radio.Button>
             </Radio.Group>
-            {dateType === 2 && <MonthPicker value={moment(date)} allowClear={false} onChange={this.monthCheck} />}
-            {dateType === 1 && <DatePicker value={moment(date)} allowClear={false} onChange={this.dayCheck} />}
+            <span ref={(ref) => { this.datesRef = ref; }}>
+              {dateType === 2 && <MonthPicker
+                getCalendarContainer={() => this.datesRef}
+                value={moment(date)}
+                allowClear={false}
+                onChange={this.monthCheck}
+              />}
+              {dateType === 1 && <DatePicker
+                getCalendarContainer={() => this.datesRef}
+                value={moment(date)}
+                allowClear={false}
+                onChange={this.dayCheck}
+              />}
+            </span>
           </div>
           <CommonSearch
             stations={stations}

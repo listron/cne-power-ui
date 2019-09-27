@@ -50,7 +50,7 @@ const menuData = [
           }, {
             name: '数据概览',
             path: 'overview',
-            rightKey: 'dataAnalysis_historyTrend',
+            rightKey: 'dataAnalysis_dataQuality',
           }, {
             name: '历史趋势',
             path: 'history',
@@ -340,7 +340,7 @@ const menuData = [
           {
             name: '风资源',
             path: 'resources',
-            rightKey: 'analysis_dataTool_sequence',
+            rightKey: 'analysis_dataTool_windSource',
           },
           // {
           //   name: '统计图',
@@ -502,7 +502,7 @@ const menuData = [
           }, {
             name: '执行机构分析',
             path: 'analysis/actuator',
-            rightKey: 'analysis_windPower_running',
+            rightKey: 'analysis_windPower_actuator',
           },
         ],
       },

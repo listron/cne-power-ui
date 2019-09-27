@@ -47,6 +47,9 @@ class AddCaseForm extends React.Component {
         this.props.deleteCaseFile({
           url: url,
         });
+        this.props.changeCasePartStore({
+          uploadUrlArr: newUrlArr,
+        });
       }
     }
     if (showPage === 'add') {
@@ -54,11 +57,12 @@ class AddCaseForm extends React.Component {
         this.props.deleteCaseFile({
           url: url,
         });
+        this.props.changeCasePartStore({
+          uploadUrlArr: newUrlArr,
+        });
       }
     }
-    this.props.changeCasePartStore({
-      uploadUrlArr: newUrlArr,
-    });
+
   }
 
   sendRequire = () => {
@@ -76,9 +80,9 @@ class AddCaseForm extends React.Component {
   addsubmitForm = (e) => {
     e.preventDefault();
     this.sendRequire();
-    this.props.changeCasePartStore({
-      showPage: 'list',
-    });
+    // this.props.changeCasePartStore({
+    //   showPage: 'list',
+    // });
   }
   keepOnAdd = (e) => {
     e.preventDefault();
@@ -170,20 +174,31 @@ class AddCaseForm extends React.Component {
       this.props.form.setFieldsValue({ deviceModeList });
     });
   }
+  detailInfo = () => {
+    const detailArr = [
+      { name: '填报人', value: this.dealPointDetail('createUserName') },
+      { name: '联系方式', value: this.dealPointDetail('createUserPhone') },
+      { name: '更新时间', value: this.dealPointDetail('updateTime') },
+      { name: '点赞数', value: this.dealPointDetail('likeCount') },
+    ];
+    return detailArr;
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
     const { showPage, stations, modesInfo, questionTypeList } = this.props;
+    const detailArr = this.detailInfo();
     return (
 
       <div className={styles.fromContainer}>
         <Form className={styles.formPart}>
-          <FormItem label="机型" colon={false} className={styles.formItemStyle} >
+          <FormItem label="机型" colon={false} className={`${styles.formItemStyle} ${styles.autoSelect}`} >
             {getFieldDecorator('deviceModeList', {
               initialValue: this.dealPointDetail('deviceModeList'),
               rules: [{ required: true, message: '请选择机型' }],
             })(
               <AutoSelect
+                holderText="输入关键字快速查询"
                 style={{ width: '198px' }}
                 data={modesInfo}
                 multiple={true}
@@ -212,6 +227,7 @@ class AddCaseForm extends React.Component {
             })(
               <Select
                 mode="multiple"
+                placeholder="请输入关键字快速查询"
               >
                 {questionTypeList.map(e => {
                   return <Option key={e} value={e.questionTypeCode}>{e.questionTypeName}</Option>;
@@ -222,36 +238,36 @@ class AddCaseForm extends React.Component {
           <FormItem label="相关故障代码" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('faultCode', {
               initialValue: this.dealPointDetail('faultCode'),
-              rules: [{ required: true, message: '请填写相关故障代码不能超过999个字符', type: 'string', max: 999 }],
+              rules: [{ required: true, message: '请输入相关故障代码', type: 'string', max: 999 }],
             })(
-              <TextArea placeholder="请输入" size={999} width={570} height={34} end={true} />
+              <TextArea placeholder="请输入..." size={999} width={570} height={34} end={true} />
             )}
           </FormItem>
 
           <FormItem label="问题描述" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('faultDescription', {
               initialValue: this.dealPointDetail('faultDescription'),
-              rules: [{ required: true, message: '不能超过999个字符', type: 'string', max: 999 }],
+              rules: [{ required: true, message: '请输入问题描述', type: 'string', max: 999 }],
             })(
-              <TextArea placeholder="请输入" size={999} width={570} height={72} end={true} />
+              <TextArea placeholder="请输入..." size={999} width={570} height={72} end={true} />
             )}
           </FormItem>
 
           <FormItem label="问题分析" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('faultAnalyse', {
               initialValue: this.dealPointDetail('faultAnalyse'),
-              rules: [{ required: true, message: '不能超过999个字符', type: 'string', max: 999 }],
+              rules: [{ required: true, message: '请输入问题分析', type: 'string', max: 999 }],
             })(
-              <TextArea placeholder="请输入" size={999} width={570} height={72} end={true} />
+              <TextArea placeholder="请输入..." size={999} width={570} height={72} end={true} />
             )}
           </FormItem>
 
           <FormItem label="处理措施" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('processingMethod', {
               initialValue: this.dealPointDetail('processingMethod'),
-              rules: [{ required: true, message: '不能超过999个字符', type: 'string', max: 999 }],
+              rules: [{ required: true, message: '请输入处理措施', type: 'string', max: 999 }],
             })(
-              <TextArea placeholder="请输入" size={999} width={570} height={72} end={true} />
+              <TextArea placeholder="请输入..." size={999} width={570} height={72} end={true} />
             )}
           </FormItem>
 
@@ -259,7 +275,7 @@ class AddCaseForm extends React.Component {
             {getFieldDecorator('requiredTools', {
               initialValue: this.dealPointDetail('requiredTools'),
             })(
-              <TextArea placeholder="请输入" size={999} width={570} height={72} end={true} />
+              <TextArea placeholder="请输入..." size={999} width={570} height={72} end={true} />
             )}
           </FormItem>
 
@@ -267,7 +283,7 @@ class AddCaseForm extends React.Component {
             {getFieldDecorator('feedbackUserName', {
               initialValue: this.dealPointDetail('feedbackUserName'),
             })(
-              <Input placeholder="请输入" />
+              <Input placeholder="请输入..." />
             )}
           </FormItem>
 
@@ -277,7 +293,7 @@ class AddCaseForm extends React.Component {
               rules: [{ message: '请输入正确的手机号码', type: 'string', pattern: /^\d*$/ }],
 
             })(
-              <Input placeholder="请输入" />
+              <Input placeholder="请输入..." />
             )}
           </FormItem>
 
@@ -296,6 +312,18 @@ class AddCaseForm extends React.Component {
               </Upload>
             )}
           </FormItem>
+          {showPage === 'edit' &&
+            <div className={styles.detailStyle}>
+              {detailArr.map((e, i) => (
+                <div className={styles.formItemStyle} key={e.name}>
+                  <div className={styles.name}>{e.name}</div>
+                  <div className={styles.value}>{e.value}</div>
+                </div>
+
+              ))}
+
+            </div>
+          }
 
           {showPage === 'add' && <div className={styles.submitStyle}>
             <Button onClick={this.addsubmitForm} className={styles.submitBtn}>保存</Button>
