@@ -216,7 +216,7 @@ class IntelligentTable extends Component {
       }, {
         title: '更新时间',
         dataIndex: 'updateTime',
-        render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+        render: (text, record) => moment(text).format('YYYY-MM-DD'),
         sorter: true,
         sortOrder: orderField === 'update_time' ? sortMethod === 'asc' && 'ascend' || 'descend' : false,
       }, {
