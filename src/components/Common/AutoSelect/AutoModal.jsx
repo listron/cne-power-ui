@@ -14,6 +14,7 @@ class AutoModal extends Component {
     onValueCheck: PropTypes.func,
     max: PropTypes.number,
     theme: PropTypes.string,
+    disabled: PropTypes.bool,
   }
 
   state = {
@@ -57,7 +58,7 @@ class AutoModal extends Component {
   }
 
   render() {
-    const { data, theme } = this.props;
+    const { data, theme, disabled } = this.props;
     const { isShow, checkedTrees } = this.state;
     return (
       <div className={styles.autoModal}>
