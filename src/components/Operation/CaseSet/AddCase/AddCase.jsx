@@ -29,6 +29,11 @@ class AddCase extends React.Component {
       showPage: 'list',
     });
   }
+  cancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  }
   render() {
     const { showWarningTip, warningTipText } = this.state;
     return (
