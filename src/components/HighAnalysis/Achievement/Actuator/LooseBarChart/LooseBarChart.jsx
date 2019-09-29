@@ -53,7 +53,7 @@ export default class LooseBarChart extends Component {
     const { looseBarChart } = this;
     const { selectValue } = this.state;
     const { releaseRankTime, releaseRankLoading, releaseRankData, rankDevice } = this.props;
-    const { releaseRankTime: releaseRankTimePrev } = prevProps;
+    const { releaseRankTime: releaseRankTimePrev, rankDevice: rankDevicePrev } = prevProps;
     const myChart = eCharts.init(looseBarChart);
     if (releaseRankLoading) { // loading态控制。
       myChart.showLoading();
@@ -62,7 +62,7 @@ export default class LooseBarChart extends Component {
     if (!releaseRankLoading) {
       myChart.hideLoading();
     }
-    if(releaseRankTime && releaseRankTime !== releaseRankTimePrev) {
+    if(releaseRankTime && releaseRankTime !== releaseRankTimePrev || rankDevice && rankDevice !== rankDevicePrev) {
       // 初始化dataZoom位置
       this.paramsStart = 0;
       this.paramsEnd = 100;
