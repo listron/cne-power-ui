@@ -23,6 +23,8 @@ class CaseSearch extends React.Component {
     stationCodes: PropTypes.array,
     orderFiled: PropTypes.string,
     orderType: PropTypes.string,
+    pageSize: PropTypes.string,
+    pageNum: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -84,8 +86,8 @@ class CaseSearch extends React.Component {
     this.getList();
   }
   getList = (value) => {
-    const { getCasePartList, faultDescription, userName, userId, questionTypeCodes, deviceModeList, stationCodes, orderFiled, orderType } = this.props;
-    const params = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType };
+    const { getCasePartList, faultDescription, userName, userId, questionTypeCodes, deviceModeList, stationCodes, orderFiled, orderType, pageSize, pageNum } = this.props;
+    const params = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType, pageSize, pageNum };
     getCasePartList({
       ...params,
       ...value,

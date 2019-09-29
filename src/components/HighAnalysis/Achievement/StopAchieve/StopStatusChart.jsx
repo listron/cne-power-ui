@@ -33,7 +33,8 @@ class StopStatusChart extends Component {
       this.setChartLoading();
     }
   }
-  stopColors = ['#a42b2c', '#ff6cee', '#f8e71c', '#2564cc', '#b8e986', ...uiColors.outputColors]
+  // stopColors = ['#a42b2c', '#ff6cee', '#f8e71c', '#2564cc', '#b8e986', ...uiColors.outputColors]
+  stopColors = ['#d42829', '#9f98ff', '#f8e71c', '#2564cc', '#b8e986', '#00cdff', '#f5a623', '#ff3f57', '#199475', '#df45ff', '#50e3c2', '#bc9b7e', ...uiColors.outputColors]
 
   setChartLoading = () => {
     const statusChart = this.statusRef && echarts.getInstanceByDom(this.statusRef);
@@ -96,6 +97,8 @@ class StopStatusChart extends Component {
         containLabel: true,
         left: 48,
         right: 48,
+        show: true,
+        backgroundColor: '#F0F2F5',
       },
       legend: {
         data: ['风机故障', '计划停机', '变电故障', '场外因素', '其他损失'].map(e => ({

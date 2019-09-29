@@ -33,8 +33,8 @@ class PointChart extends PureComponent{
       bar: ['#1cfcf4', '#009cff'],
     },
     dark: {
-      font: '#00f0ff',
-      axis: '#3b55aa',
+      font: '#9cd1ff',
+      axis: 'transparent',
       bar: ['#1cfcf4', '#009cff'],
     },
   }
@@ -65,24 +65,18 @@ class PointChart extends PureComponent{
       xAxis: {
         data: dataAxis,
         axisLabel: {
-          textStyle: {
-            color: font,
-          },
+          show: false,
         },
         axisTick: {
           show: false,
         },
         axisLine: {
-          lineStyle: {
-            color: axis,
-          },
+          show: false,
         },
       },
       yAxis: {
         axisLine: {
-          lineStyle: {
-            color: axis,
-          },
+          show: false,
         },
         splitLine: {
           show: false,
@@ -91,11 +85,6 @@ class PointChart extends PureComponent{
           show: false,
         },
         axisLabel: {
-          textStyle: {
-            color: font,
-          },
-        },
-        nameTextStyle: {
           color: font,
         },
       },

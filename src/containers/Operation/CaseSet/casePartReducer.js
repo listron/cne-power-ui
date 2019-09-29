@@ -12,8 +12,8 @@ const initState = immutable.fromJS({
   total: 0,
   pageNum: 1,
   pageSize: 10,
-  orderFiled: 'updateTime',
-  orderType: 'asc',
+  orderFiled: 'like',
+  orderType: 'desc',
   showPage: 'list',
   deviceModeData: [], //筛选条件的机型数据
   casePartTableData: [],
@@ -24,7 +24,7 @@ const initState = immutable.fromJS({
   selectedRowData: [],
   modesInfo: [], //新增和编辑里的机型
   uploadUrlArr: [], //上传的文件返回的地址
-  editFileList: [],//编辑页面中的文件列表
+  editFileList: [], //编辑页面中的文件列表
 
 });
 
