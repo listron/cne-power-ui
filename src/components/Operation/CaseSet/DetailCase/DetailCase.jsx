@@ -94,6 +94,7 @@ class DetailCase extends React.Component {
     const { downLoadFile } = this.props;
     const downloadTemplet = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadCaseFile}`; // 下载文件
     downLoadFile({
+      defineOriginName: true,
       url: downloadTemplet,
       method: 'post',
       params: { filePath: file },
