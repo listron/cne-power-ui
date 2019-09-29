@@ -52,7 +52,7 @@ export default class LooseBarChart extends Component {
     const { yawBarChart } = this;
     const { selectValue } = this.state;
     const { yawRankTime, yawRankLoading, yawRankData, rankDevice } = this.props;
-    const { yawRankTime: yawRankTimePrev } = prevProps;
+    const { yawRankTime: yawRankTimePrev, rankDevice: rankDevicePrev } = prevProps;
     const myChart = eCharts.init(yawBarChart);
     if (yawRankLoading) { // loading态控制。
       myChart.showLoading();
@@ -61,7 +61,7 @@ export default class LooseBarChart extends Component {
     if (!yawRankLoading) {
       myChart.hideLoading();
     }
-    if(yawRankTime && yawRankTime !== yawRankTimePrev) {
+    if(yawRankTime && yawRankTime !== yawRankTimePrev || rankDevice && rankDevice !== rankDevicePrev) {
       // 初始化dataZoom位置
       this.paramsStart = 0;
       this.paramsEnd = 100;
