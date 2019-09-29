@@ -167,7 +167,8 @@ function* addCasePart(action) { // 添加
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
-          showPage: 'list',
+          // showPage: 'list',
+          uploadUrlArr: [],
         },
       });
       const params = yield select(state => ({
