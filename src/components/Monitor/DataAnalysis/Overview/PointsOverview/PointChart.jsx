@@ -53,7 +53,7 @@ class PointChart extends PureComponent{
       dataAxis.push(`${startNum}~${endNum}`);
       rateData.push(rate * 100);
     });
-    const { font = '#666', axis = '#dfdfdf', bar = ['#1cfcf4', '#009cff'] } = this.chartColors[theme] || {};
+    const { font = '#666', bar = ['#1cfcf4', '#009cff'] } = this.chartColors[theme] || {};
     const option = {
       grid: {
         top: 20,
