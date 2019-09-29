@@ -169,7 +169,7 @@ class CaseList extends React.Component {
         sorter: true,
         render: (text, record, index) => {
           return (
-            <div className={styles.tableWidth} title={text} >{moment(text).format()}</div>
+            <div className={styles.tableWidth} title={text} >{moment(text).format('YYYY-MM-DD')}</div>
           );
         },
 

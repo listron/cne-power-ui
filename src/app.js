@@ -14,6 +14,7 @@ import './theme/antdReset.scss';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import { darkTheme, lightTheme } from './utils/echartsTheme';
 import echarts from 'echarts';
+import 'default-passive-events';
 echarts.registerTheme('darkTheme', darkTheme());
 echarts.registerTheme('lightTheme', lightTheme());
 const sagaMiddleware = createSagaMiddleware();
