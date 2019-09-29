@@ -104,10 +104,10 @@ class DefectBasicInfo extends Component {
             {knowledgebaseList.map(list => {
               return (<div key={list.faultTypeId} className={styles.dealBox}>
                 <div className={styles.column}>
-                  <div className={styles.text}>缺陷描述</div>  <div> {list.faultDescription}</div>
+                  <div className={styles.text}>故障描述</div>  <div> {list.faultDescription}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>检查项目</div>  <div> {list.checkItems}</div>
+                  <div className={styles.text}>故障原因</div>  <div> {list.checkItems}</div>
                 </div>
                 <div className={styles.column}>
                   <div className={styles.text}>处理方法</div>  <div> {list.processingMethod}</div>
