@@ -59,6 +59,7 @@ class ShowIntelligent extends Component {
       method: 'post',
       params: { filePath: file },
       fileName: fileName,
+      defineOriginName: true,
     });
   }
 

@@ -86,6 +86,7 @@ class ImportIntelligent extends Component {
 
     return (
       <div className={styles.importIntelligent}>
+        <span ref={'modal'} />
         <Modal
           title={'导入'}
           visible={showModal}
@@ -98,6 +99,7 @@ class ImportIntelligent extends Component {
           closable={true}
           centered={true}
           title={null}
+          getContainer={() => this.refs.modal}
         >
           <Form>
             <FormItem {...formItemLayout} label="批量导入">
