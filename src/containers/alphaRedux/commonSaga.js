@@ -465,7 +465,7 @@ function* getWeather(action) { // 获取电站天气
 }
 
 function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件。(默认post请求), resultName会指定action去标识download的loading状态。
-  const { url, fileName, method = 'post', params, actionName, loadingName = 'downloading', defineOriginName = 'false' } = payload;
+  const { url, fileName, method = 'post', params, actionName, loadingName = 'downloading', defineOriginName = false } = payload;
   let newFileName = fileName;
   try {
     yield put({
