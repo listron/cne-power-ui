@@ -214,7 +214,7 @@ class Schematic extends Component {
                                 <div className={styles.title}>支路电流</div>
                                 {commonList['509'].summaryInfo.map((e, index) => {
                                     const number = this.dealData('509', e.id, e.point);
-                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot}`} key={index}>
+                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot} ${e.allNumber && styles.allNumber}`} key={index}>
                                         <div>{e.name} </div>
                                         <div> {number} <span> {e.unit}</span></div>
                                     </div>);
@@ -226,7 +226,7 @@ class Schematic extends Component {
                                 <div className={styles.title}>汇流箱状态</div>
                                 {commonList['202'].summaryInfo.map((e, index) => {
                                     const number = this.dealData('202', e.id, e.point);
-                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot}`} key={index}>
+                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot} ${e.allNumber && styles.allNumber}`} key={index}>
                                         <div>{e.name} </div>
                                         <div> {number} <span> {e.unit}</span></div>
                                     </div>);
@@ -238,7 +238,7 @@ class Schematic extends Component {
                                 <div className={styles.title}>{deviceTypeArr.includes('201') ? '集中式逆变器' : '组串式逆变器'}</div>
                                 {commonList['201'].summaryInfo.map((e, index) => {
                                     const number = this.dealData(invertTypeCode, e.id, e.point);
-                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot} ${e.single && styles.singleLine}`} key={index}>
+                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot} ${e.single && styles.singleLine} ${e.allNumber && styles.allNumber}`} key={index}>
                                         <div>{e.name} </div>
                                         <div> {number} <span> {e.unit}</span></div>
                                     </div>);
@@ -247,6 +247,7 @@ class Schematic extends Component {
                         }
                         {invertType && // 分布式
                             <div className={styles.inverter} onClick={() => { this.changeTypeCode(activeInvertType); }}>
+                                <div className={styles.title}> 逆变器状态 </div>
                                 <div className={`${styles.column}`}>
                                     <div>逆变器总数 </div>
                                     <div> {+this.getEveryData('201').totalSize + +this.getEveryData('206').totalSize} <span> 台</span></div>
@@ -269,7 +270,7 @@ class Schematic extends Component {
                                 <div className={styles.title}>箱变状态</div>
                                 {commonList['304'].summaryInfo.map((e, index) => {
                                     const number = this.dealData('304', e.id, e.point);
-                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot}`} key={index}>
+                                    return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot} ${e.allNumber && styles.allNumber}`} key={index}>
                                         <div>{e.name} </div>
                                         <div> {number} <span> {e.unit}</span></div>
                                     </div>);
