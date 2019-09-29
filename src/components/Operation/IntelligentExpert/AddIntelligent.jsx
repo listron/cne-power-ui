@@ -44,10 +44,8 @@ class AddIntelligent extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
-      selectDevice: [],
       initFaultCode: '',
       faultDescripDis: true,
-      fileList: [], //上传附件
       tooltipName: 'back', // 提示框的类型 back返回 delete 删除
       deleteFileId: '', //删除附件ID，
 
@@ -56,12 +54,7 @@ class AddIntelligent extends Component {
 
   componentDidMount() {
     this.serchFaultCode = debounce(this.serchFaultCode, 400);
-  }
-
-  componentWillUnmount() {
-    this.setState({
-      fileList: [],
-    });
+    this.props.changeIntelligentExpertStore({ uploadFileList: [] }); // 因为上传 添加 编辑的时候采用的一个字段，所以进来先清除一次
   }
 
   confirmWarningTip = () => { // 确认返回列表页面

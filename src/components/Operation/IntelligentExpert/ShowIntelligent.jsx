@@ -20,6 +20,9 @@ class ShowIntelligent extends Component {
     main && main.scroll(0, 0);
   }
 
+  componentWillUnmount() {
+    this.props.changeIntelligentExpertStore({})
+  }
 
 
   onWarningTipShow = () => {
