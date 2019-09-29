@@ -94,7 +94,7 @@ function* getImportIntelligent({ payload = {} }) { // 导入
     }
   } catch (e) {
     console.log(e);
-    message.error('导入失败，请检查文件后重试！');
+    message.error(e.message);
   }
 }
 

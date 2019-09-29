@@ -260,8 +260,8 @@ class IntelligentTable extends Component {
             }
           </div>
           <CommonPagination currentPage={pageNum} pageSize={pageSize} total={total} onPaginationChange={this.onPaginationChange} theme={theme} />
-          {showModal ? <ImportIntelligent {...this.props} showModal={showModal} cancelModal={this.cancelModal} /> : ''}
         </div>
+        {showModal ? <ImportIntelligent {...this.props} showModal={showModal} cancelModal={this.cancelModal} /> : ''}
         <Table
           loading={tableLoading}
           className={styles.intelligentList}
