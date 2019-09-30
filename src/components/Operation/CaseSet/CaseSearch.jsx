@@ -29,7 +29,7 @@ class CaseSearch extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      userValue: '',
+      // userValue: '',
     };
   }
   componentDidMount() {
@@ -71,9 +71,9 @@ class CaseSearch extends React.Component {
   }
   changePerson = (value) => {
     if (value) {
-      this.setState({
-        userValue: value,
-      });
+      // this.setState({
+      //   userValue: value,
+      // });
       const userId = value.split('__')[1];
       this.props.changeCasePartStore({
         userId,
@@ -103,7 +103,7 @@ class CaseSearch extends React.Component {
 
   render() {
     const { stations, deviceModeData, questionTypeList, userData, faultDescription, userName, userId } = this.props;
-    const { userValue } = this.state;
+    // const { userValue } = this.state;
     const stationsData = stations ? stations.filter(e => (e.stationType === 0)) : [];
     const showResetBtn = faultDescription || userName;
     return (
@@ -148,7 +148,7 @@ class CaseSearch extends React.Component {
             allowClear
             placeholder="请输入..."
             className={styles.entryPerson}
-            value={userValue}
+            // value={userValue}
             showArrow={false}
             optionFilterProp="children"
             onSearch={this.entryPerson}
