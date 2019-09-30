@@ -61,9 +61,12 @@ class CaseSearch extends React.Component {
     });
   }
   entryPerson = (value) => {
-    this.props.queryUseName({
-      userName: value,
-    });
+    if (value) {
+      this.props.queryUseName({
+        userName: value,
+      });
+    }
+
 
   }
 
