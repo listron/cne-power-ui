@@ -330,10 +330,17 @@ function* queryUseName(action) { // 获取填报人
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      const data = response.data.data || [];
+      const userData = data.map((e, i) => (
+        {
+          ...e,
+          userId: `${e.userName}__${e.userId}`,
+        }
+      ));
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
-          userData: response.data.data || [],
+          userData,
         },
       });
     } else {
