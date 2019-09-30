@@ -28,7 +28,9 @@ class CaseSearch extends React.Component {
   }
   constructor(props, context) {
     super(props, context);
-
+    this.state = {
+      userValue: '',
+    };
   }
   componentDidMount() {
     this.getList();
@@ -66,15 +68,17 @@ class CaseSearch extends React.Component {
         userName: value,
       });
     }
-
-
   }
-
   changePerson = (value) => {
-    this.props.changeCasePartStore({
-      userId: value,
-    });
-    // this.getList({ userId: value });
+    if (value) {
+      this.setState({
+        userValue: value,
+      });
+      const userId = value.split('__')[1];
+      this.props.changeCasePartStore({
+        userId,
+      });
+    }
   }
   onReset = () => {
     const initValue = {
@@ -99,6 +103,7 @@ class CaseSearch extends React.Component {
 
   render() {
     const { stations, deviceModeData, questionTypeList, userData, faultDescription, userName, userId } = this.props;
+    const { userValue } = this.state;
     const stationsData = stations ? stations.filter(e => (e.stationType === 0)) : [];
     const showResetBtn = faultDescription || userName;
     return (
@@ -143,7 +148,7 @@ class CaseSearch extends React.Component {
             allowClear
             placeholder="请输入..."
             className={styles.entryPerson}
-            value={userId}
+            value={userValue}
             showArrow={false}
             optionFilterProp="children"
             onSearch={this.entryPerson}
@@ -153,7 +158,7 @@ class CaseSearch extends React.Component {
             }
           >
             {userData && userData.map(e => {
-              return <Option key={e} value={e.userId}>{e.userName}</Option>;
+              return <Option key={e.userId} value={e.userId}>{e.userName}</Option>;
             })}
           </Select>
           <Button className={styles.searchBtn} onClick={this.onSearch}>查询</Button>
