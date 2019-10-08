@@ -43,7 +43,7 @@ class inspectAddAbnormal extends Component {
       abnormalIds: Immutable.fromJS([]),
       showAddAbnormal: false,
       deviceAreaCode: '',
-    }
+    };
   }
   onTransformDefect = () => {
     const { abnormalIds } = this.state;
@@ -55,12 +55,12 @@ class inspectAddAbnormal extends Component {
           this.props.transformDefect({
             inspectId: inspectId,
             abnormalIds: abnormalIds.toJS().join(','),
-          })
+          });
           this.setState({
             abnormalIds: Immutable.fromJS([]),
-          })
-        }
-      })
+          });
+        },
+      });
     }
   }
   onSelectItem = (abnormalId, checked) => {
@@ -68,36 +68,36 @@ class inspectAddAbnormal extends Component {
     if (checked) {
       abnormalIds = abnormalIds.push(abnormalId);
     } else {
-      let index = abnormalIds.findIndex((item) => {
+      const index = abnormalIds.findIndex((item) => {
         return item === abnormalId;
       });
       abnormalIds = abnormalIds.delete(index);
     }
     this.setState({
-      abnormalIds: abnormalIds
+      abnormalIds: abnormalIds,
     });
   }
 
   onFinishInspect = () => {
-    let inspectId = this.props.inspectDetail.get('inspectId');
+    const inspectId = this.props.inspectDetail.get('inspectId');
     var that = this;
     confirm({
       title: '确定此工单全部完成?',
       onOk() {
         that.props.finishInspect({
           inspectId: inspectId,
-        })
+        });
       },
       onCancel() {
       },
-    })
+    });
   }
 
   onHandleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        let params = {
+        const params = {
           inspectId: this.props.inspectDetail.get('inspectId'),
           deviceTypeCode: values.deviceTypeCode,
           deviceCode: values.deviceCode,
@@ -105,55 +105,55 @@ class inspectAddAbnormal extends Component {
           photoAddress: values.photoData.map((item) => (item.response)).join(','),
           rotatePhoto: values.photoData.map((item) => (item.response + ',' + item.rotate)).join(';'),
           abnormalDescribe: values.abnormalDescribe,
-        }
+        };
         this.props.addInspectAbnormal(params);
         this.setState({
           showAddAbnormal: false,
-        })
+        });
       }
-    })
+    });
   }
 
   onChangeDeviceType = (deviceTypeCode) => {
     this.props.form.setFieldsValue({
-      deviceCode: ''
+      deviceCode: '',
     });
     this.setState({
-      deviceAreaCode: ''
+      deviceAreaCode: '',
     });
     const stationType = this.props.inspectDetail.get('stationType');
-    let params = {
+    const params = {
       stationCode: this.props.inspectDetail.get('stationCode'),
-      deviceTypeCode
+      deviceTypeCode,
     };
     if (deviceTypeCode === 509) { //组串时，请求调整
       this.props.getSliceDevices(params);
       this.props.getLostGenType({
         objectType: 1,
         stationType,
-        deviceTypeCode
-      })
+        deviceTypeCode,
+      });
     } else {
       this.props.loadDeviceList(params);
       this.props.loadDeviceAreaList(params);
       this.props.getLostGenType({
         objectType: 1,
         stationType,
-        deviceTypeCode
-      })
+        deviceTypeCode,
+      });
     }
   }
 
   onChangeArea = (value) => {
     this.setState({
-      deviceAreaCode: value
+      deviceAreaCode: value,
     });
   }
 
   getDeviceType(code) {
-    let deviceType = ''
-    let index = this.props.deviceTypeItems.findIndex((item) => {
-      return item.get('deviceTypeCode') === code
+    let deviceType = '';
+    const index = this.props.deviceTypeItems.findIndex((item) => {
+      return item.get('deviceTypeCode') === code;
     });
     if (index !== -1) {
       deviceType = this.props.deviceTypeItems.getIn([index, 'deviceTypeName']);
@@ -174,7 +174,7 @@ class inspectAddAbnormal extends Component {
   loadDeviceList = (areaCode) => {
     const { form, getSliceDevices } = this.props;
     const deviceTypeCode = form.getFieldValue('deviceTypeCode');
-    let params = {
+    const params = {
       stationCode: this.props.inspectDetail.get('stationCode'),
       deviceTypeCode,
     };
@@ -189,9 +189,9 @@ class inspectAddAbnormal extends Component {
   showAdd = () => {
     this.setState({
       showAddAbnormal: true,
-    })
-    let stationCode = this.props.inspectDetail.get('stationCode');
-    let stationType = this.props.inspectDetail.get('stationType');
+    });
+    const stationCode = this.props.inspectDetail.get('stationCode');
+    const stationType = this.props.inspectDetail.get('stationType');
     this.props.getStationDeviceTypes({ stationCodes: stationCode });
     this.props.getDefectTypes({ stationType: stationType });
     this.props.getLostGenType({ objectType: 1, stationType });
@@ -200,7 +200,7 @@ class inspectAddAbnormal extends Component {
   hideAdd = () => {
     this.setState({
       showAddAbnormal: false,
-    })
+    });
   }
 
   render() {
@@ -210,12 +210,12 @@ class inspectAddAbnormal extends Component {
     const rightHandler = localStorage.getItem('rightHandler');
     const inspectAdmin = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
     // const abnormalIds = this.state.abnormalIds;
-    let tmpGenTypes = [];
+    const tmpGenTypes = [];
     defectTypes.toJS().forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
-    const groupedLostGenTypes = []
+    const groupedLostGenTypes = [];
     tmpGenTypes.map(ele => {
       if (ele && ele.list && ele.list.length > 0) {
-        let innerArr = { children: [] };
+        const innerArr = { children: [] };
         innerArr.label = ele.name;
         innerArr.value = ele.id;
         ele.list.forEach(innerInfo => {
@@ -223,10 +223,10 @@ class inspectAddAbnormal extends Component {
             label: innerInfo.name,
             value: innerInfo.id,
           });
-        })
+        });
         groupedLostGenTypes.push(innerArr);
       }
-    })
+    });
 
     return (
       <div className={styles.inspectHandleForm}>
@@ -240,7 +240,7 @@ class inspectAddAbnormal extends Component {
           <Button onClick={this.onFinishInspect} className={styles.finishInspect}>完成巡检</Button>
         </div>
         <div>
-          {inspectAdmin ? <Button onClick={onTransformDefect} className={styles.toInspect} disabled={abnormalIds.size === 0}>转工单</Button> : ''}
+          <Button onClick={onTransformDefect} className={styles.toInspect} disabled={abnormalIds.size === 0}>转工单</Button>
         </div>
         {this.state.showAddAbnormal &&
           <div className={styles.addAbnormalForm}>
@@ -249,7 +249,7 @@ class inspectAddAbnormal extends Component {
                 {getFieldDecorator('deviceTypeCode', {
                   rules: [{
                     required: true,
-                  }]
+                  }],
                 })(
                   <Select
                     placeholder="请选择"
@@ -270,7 +270,7 @@ class inspectAddAbnormal extends Component {
                 {getFieldDecorator('deviceCode', {
                   rules: [{
                     required: true,
-                  }]
+                  }],
                 })(
                   <DeviceName
                     disabled={deviceItems.size === 0}
@@ -293,7 +293,7 @@ class inspectAddAbnormal extends Component {
                 {getFieldDecorator('defectTypeCode', {
                   rules: [{
                     required: true,
-                  }]
+                  }],
                 })(
                   <Cascader
                     disabled={groupedLostGenTypes.length === 0}
@@ -334,7 +334,7 @@ class inspectAddAbnormal extends Component {
 
         </div>
       </div>
-    )
+    );
 
   }
 }
