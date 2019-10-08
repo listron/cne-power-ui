@@ -23,13 +23,14 @@ class CaseSearch extends React.Component {
     stationCodes: PropTypes.array,
     orderFiled: PropTypes.string,
     orderType: PropTypes.string,
-    pageSize: PropTypes.string,
-    pageNum: PropTypes.string,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
   }
   constructor(props, context) {
     super(props, context);
     this.state = {
       // userValue: '',
+      userId: null,
     };
   }
   componentDidMount() {
@@ -70,13 +71,21 @@ class CaseSearch extends React.Component {
     }
   }
   changePerson = (value) => {
+    console.log('value: ', value);
     if (value) {
       // this.setState({
       //   userValue: value,
       // });
       const userId = value.split('__')[1];
-      this.props.changeCasePartStore({
+      this.setState({
         userId,
+      });
+      // this.props.changeCasePartStore({
+      //   userId,
+      // });
+    } else {
+      this.props.changeCasePartStore({
+        userId: null,
       });
     }
   }
@@ -90,13 +99,19 @@ class CaseSearch extends React.Component {
     this.getList(initValue);
   }
   onSearch = () => {
-    this.getList();
+    const { userId } = this.state;
+    this.props.changeCasePartStore({
+      userId,
+    });
+    this.getList({ userId });
   }
   getList = (value) => {
     const { getCasePartList, faultDescription, userName, userId, questionTypeCodes, deviceModeList, stationCodes, orderFiled, orderType, pageSize, pageNum } = this.props;
     const params = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType, pageSize, pageNum };
     getCasePartList({
       ...params,
+      pageSize: 10,
+      pageNum: 1,
       ...value,
     });
   }
@@ -105,7 +120,7 @@ class CaseSearch extends React.Component {
     const { stations, deviceModeData, questionTypeList, userData, faultDescription, userName, userId } = this.props;
     // const { userValue } = this.state;
     const stationsData = stations ? stations.filter(e => (e.stationType === 0)) : [];
-    const showResetBtn = faultDescription || userName;
+    const showResetBtn = faultDescription || userName || userId;
     return (
       <div className={styles.caseSearch}>
         <FilterCondition
