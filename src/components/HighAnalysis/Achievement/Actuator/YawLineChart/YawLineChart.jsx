@@ -97,6 +97,7 @@ export default class YawLineChart extends Component {
           type: 'inside',
           start: 0,
           end: 100,
+          xAxisIndex: [0, 1],
         },
         {
           start: 0,
@@ -110,6 +111,7 @@ export default class YawLineChart extends Component {
             shadowOffsetX: 2,
             shadowOffsetY: 2,
           },
+          xAxisIndex: [0, 1],
           textStyle: false,
         },
       ],
