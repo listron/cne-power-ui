@@ -14,6 +14,8 @@
   const smp = new SpeedMeasurePlugin();
   const { mockConfig } = require('./mock.config.js');
 
+  // console.log(process.env.NODE_ENV)
+
   module.exports = smp.wrap({
     mode: 'development',
     entry: {
@@ -145,6 +147,11 @@
     },
     plugins: [
       new ProgressBarPlugin(),
+      // new webpack.DefinePlugin({
+      //   ENV: '"test"',
+      //   DEV: '"development"',
+      //   PRO: '"production"',
+      // }),
       new CopyWebpackPlugin([{
         from: __dirname + '/assets',
         to:__dirname + '/dist'
