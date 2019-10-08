@@ -122,9 +122,13 @@
   }
   .middleSearch{
     background-color: #fff;
+    border:1px solid #e1e2e2;
+    border-bottom: none;
   }
   .pointsList{
     background-color: #fff;
+    border:1px solid #e1e2e2;
+    border-top: none;
     .pointBase{
       .baseTitle{
         background-color: #f4f4f4;
@@ -184,9 +188,13 @@
   .middleSearch{
     color:#9cd1ff;
     background:rgba(20,33,101,0.40);
+    border:1px solid #3d7bac;
+    border-bottom: none;
   }
   .pointsList{
     color:#9cd1ff;
+    border:1px solid #3d7bac;
+    border-top: none;
     background:rgba(20,33,101,0.40);
     .pointBase{
       .baseTitle{
