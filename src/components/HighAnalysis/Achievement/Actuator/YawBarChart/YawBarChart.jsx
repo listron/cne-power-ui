@@ -28,7 +28,6 @@ export default class LooseBarChart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modeArr: [],
       selectValue: 'deviceOrderName', // 默认选择排序字段
     };
     // 颜色
@@ -43,6 +42,8 @@ export default class LooseBarChart extends Component {
       ['#058447', '#024d22'],
       ['#e024f2', '#bd10e0'],
     ];
+    // 保存最一开始的颜色，选择排序之后不变
+    this.constantMode = [];
     // 初始化dataZoom位置
     this.paramsStart = 0;
     this.paramsEnd = 100;
@@ -145,9 +146,13 @@ export default class LooseBarChart extends Component {
       modeSet.add(deviceModeName);
     });
     const modeArr = [...modeSet];
+    // 数据为空的时候添加
+    if(this.constantMode.length === 0) {
+      this.constantMode = modeArr;
+    }
     yawRankData && yawRankData.forEach(e => {
       const { deviceModeName, yawDuration, yawNum, deviceName, deviceFullcode } = e || {};
-      const colorIndex = modeArr.indexOf(deviceModeName);
+      const colorIndex = this.constantMode.indexOf(deviceModeName);
       yawBarData.push({
         name: `${deviceModeName} ${deviceFullcode} ${deviceName}`,
         value: dataFormats(yawDuration / 3600, '--', 2),
@@ -180,7 +185,6 @@ export default class LooseBarChart extends Component {
         },
       },
     };
-    this.setState({ modeArr });
     function contains(arrays, obj) {
       let i = arrays.length;
       while (i--) {
@@ -308,7 +312,7 @@ export default class LooseBarChart extends Component {
   };
 
   handleChange = (value) => {
-    const { yawRankData } = this.props;
+    const { yawRankData, rankDevice } = this.props;
     // 初始化dataZoom位置
     this.paramsStart = 0;
     this.paramsEnd = 100;
@@ -319,12 +323,12 @@ export default class LooseBarChart extends Component {
       eCharts.init(yawBarChart).clear();//清除
       const myChart = eCharts.init(yawBarChart);
       const filterData = this.filterDataFunc(yawRankData, value);
-      myChart.setOption(this.drawChart(filterData, ''));
+      myChart.setOption(this.drawChart(filterData, rankDevice));
     });
   };
 
   render() {
-    const { modeArr, selectValue } = this.state;
+    const { selectValue } = this.state;
     return (
       <div className={styles.yawBarChart}>
         <div className={styles.yawBarTop}>
@@ -340,7 +344,7 @@ export default class LooseBarChart extends Component {
         </div>
         <div className={styles.chartBox}>
           <div className={styles.modes}>
-            {modeArr.map((e, i) => (
+            {this.constantMode.map((e, i) => (
               <span key={e} className={styles.eachMode}>
               <span className={styles.rect} style={{
                 backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,

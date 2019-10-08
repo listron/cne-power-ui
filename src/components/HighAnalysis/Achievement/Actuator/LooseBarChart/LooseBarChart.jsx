@@ -29,7 +29,6 @@ export default class LooseBarChart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modeArr: [],
       selectValue: 'deviceOrderName', // 默认选择排序字段
     };
     // 颜色
@@ -44,6 +43,8 @@ export default class LooseBarChart extends Component {
       ['#058447', '#024d22'],
       ['#e024f2', '#bd10e0'],
     ];
+    // 保存最一开始的颜色，选择排序之后不变
+    this.constantMode = [];
     // 初始化dataZoom位置
     this.paramsStart = 0;
     this.paramsEnd = 100;
@@ -146,9 +147,13 @@ export default class LooseBarChart extends Component {
       modeSet.add(deviceModeName);
     });
     const modeArr = [...modeSet];
+    // 数据为空的时候添加
+    if(this.constantMode.length === 0) {
+      this.constantMode = modeArr;
+    }
     releaseRankData && releaseRankData.forEach(e => {
       const { deviceModeName, releaseDuration, releaseNum, deviceName, deviceFullcode } = e || {};
-      const colorIndex = modeArr.indexOf(deviceModeName);
+      const colorIndex = this.constantMode.indexOf(deviceModeName);
       releaseBarData.push({
         name: `${deviceModeName} ${deviceFullcode} ${deviceName}`,
         value: dataFormats(releaseDuration / 3600, '--', 2),
@@ -309,7 +314,7 @@ export default class LooseBarChart extends Component {
   };
 
   handleChange = (value) => {
-    const { releaseRankData } = this.props;
+    const { releaseRankData, rankDevice } = this.props;
     // 初始化dataZoom位置
     this.paramsStart = 0;
     this.paramsEnd = 100;
@@ -320,12 +325,12 @@ export default class LooseBarChart extends Component {
       eCharts.init(looseBarChart).clear();//清除
       const myChart = eCharts.init(looseBarChart);
       const filterData = this.filterDataFunc(releaseRankData, value);
-      myChart.setOption(this.drawChart(filterData, ''));
+      myChart.setOption(this.drawChart(filterData, rankDevice));
     });
   };
 
   render() {
-    const { modeArr, selectValue } = this.state;
+    const { selectValue } = this.state;
     return (
       <div className={styles.looseBarChart}>
         <div className={styles.looseBarTop}>
@@ -341,7 +346,7 @@ export default class LooseBarChart extends Component {
         </div>
         <div className={styles.chartBox}>
           <div className={styles.modes}>
-            {modeArr.map((e, i) => (
+            {this.constantMode.map((e, i) => (
               <span key={e} className={styles.eachMode}>
               <span className={styles.rect} style={{
                 backgroundImage: `linear-gradient(-180deg, ${this.barColor[i][0]} 0%, ${this.barColor[i][1]} 100%)`,
