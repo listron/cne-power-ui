@@ -63,9 +63,11 @@ export default class LooseBarChart extends Component {
       myChart.hideLoading();
     }
     if(releaseRankTime && releaseRankTime !== releaseRankTimePrev || rankDevice && rankDevice !== rankDevicePrev) {
-      // 初始化dataZoom位置
-      this.paramsStart = 0;
-      this.paramsEnd = 100;
+      if(releaseRankTime && releaseRankTime !== releaseRankTimePrev) {
+        // 初始化dataZoom位置
+        this.paramsStart = 0;
+        this.paramsEnd = 100;
+      }
       eCharts.init(looseBarChart).clear();//清除
       const myChart = eCharts.init(looseBarChart);
       const filterData = this.filterDataFunc(releaseRankData, selectValue);
@@ -74,8 +76,8 @@ export default class LooseBarChart extends Component {
       myChart.on('click', (param) => this.chartHandle(myChart, filterData, param));
       myChart.off('datazoom');
       myChart.on('datazoom', (params) => {
-        this.paramsStart = params.start;
-        this.paramsEnd = params.end;
+        this.paramsStart = params.start || params.batch[0].start;
+        this.paramsEnd = params.end || params.batch[0].end;
       });
     }
   }

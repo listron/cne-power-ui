@@ -62,9 +62,11 @@ export default class LooseBarChart extends Component {
       myChart.hideLoading();
     }
     if(yawRankTime && yawRankTime !== yawRankTimePrev || rankDevice && rankDevice !== rankDevicePrev) {
-      // 初始化dataZoom位置
-      this.paramsStart = 0;
-      this.paramsEnd = 100;
+      if(yawRankTime && yawRankTime !== yawRankTimePrev) {
+        // 初始化dataZoom位置
+        this.paramsStart = 0;
+        this.paramsEnd = 100;
+      }
       eCharts.init(yawBarChart).clear();//清除
       const myChart = eCharts.init(yawBarChart);
       const filterData = this.filterDataFunc(yawRankData, selectValue);
@@ -73,8 +75,8 @@ export default class LooseBarChart extends Component {
       myChart.on('click', (param) => this.chartHandle(myChart, filterData, param));
       myChart.off('datazoom');
       myChart.on('datazoom', (params) => {
-        this.paramsStart = params.start;
-        this.paramsEnd = params.end;
+        this.paramsStart = params.start || params.batch[0].start;
+        this.paramsEnd = params.end || params.batch[0].end;
       });
     }
   }
