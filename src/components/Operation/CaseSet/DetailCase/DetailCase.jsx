@@ -136,7 +136,8 @@ class DetailCase extends React.Component {
                       onClick={() => this.downFile(item.url, item.name)}
                       target="_blank"
                       key={i}
-                    ><span>{`${item.name}`} 【点击下载】</span></a>))}
+                    ><span>{`${item.name}`} 【点击下载】{i === (e.value.length - 1) ? '' : '、'}</span>
+                    </a>))}
                   </div> : <div
                     className={styles.infoValue}
                     title={`${value}${e.unit || ''}`}
