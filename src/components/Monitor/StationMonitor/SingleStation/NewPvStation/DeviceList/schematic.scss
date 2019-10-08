@@ -17,6 +17,7 @@
                   width:28px;
                 }
             }
+            
             .pvmodule{
                width: 176px;
                height: 168px; 
@@ -51,7 +52,7 @@
                     border-radius: 4px;
                     overflow: hidden;
                     display: flex;
-                    margin: 10px 0 4px;
+                    margin: 4px 0 4px;
                     span{
                         display: inline-block;
                         flex: 1;
@@ -273,6 +274,9 @@
     $themeColor:#199475;
      .schematicBox{
         color: $themeColor;
+        .allNumber{
+                border-bottom: 2px solid $themeColor;
+            }
         .detailBox{
             .hot{
                 color:#e08031;
@@ -357,6 +361,9 @@
     $buttonColor:#00baff;
      .schematicBox{
         color: $themeColor;
+          .allNumber{
+                border-bottom: 2px solid $themeColor;
+            }
         .detailBox{
             .hot{
                 color:#f8b14e;
@@ -384,7 +391,6 @@
             .inverter{
                 .inverterButton{
                     border:1px solid $themeColor;
-                    
                     span{
                         border-right:1px solid $themeColor;
                         &:hover{
