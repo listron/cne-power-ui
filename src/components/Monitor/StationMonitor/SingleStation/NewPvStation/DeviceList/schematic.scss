@@ -361,6 +361,9 @@
     $buttonColor:#00baff;
      .schematicBox{
         color: $themeColor;
+          .allNumber{
+                border-bottom: 2px solid $themeColor;
+            }
         .detailBox{
             .hot{
                 color:#f8b14e;
