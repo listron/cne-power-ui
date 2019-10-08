@@ -36,8 +36,8 @@ class InspectDetailForm extends Component {
     this.state = {
       abnormalIds: Immutable.fromJS([]),
       showWarningTip: false,
-      warningTipText: ''
-    }
+      warningTipText: '',
+    };
   }
 
   onTransformDefect = () => {
@@ -50,12 +50,12 @@ class InspectDetailForm extends Component {
           this.props.transformDefect({
             inspectId: inspectId,
             abnormalIds: abnormalIds.toJS().join(','),
-          })
+          });
           this.setState({
             abnormalIds: Immutable.fromJS([]),
-          })
-        }
-      })
+          });
+        },
+      });
     }
   }
 
@@ -64,32 +64,32 @@ class InspectDetailForm extends Component {
     if (checked) {
       abnormalIds = abnormalIds.push(abnormalId);
     } else {
-      let index = abnormalIds.findIndex((item) => {
+      const index = abnormalIds.findIndex((item) => {
         return item === abnormalId;
       });
       abnormalIds = abnormalIds.delete(index);
     }
     this.setState({
-      abnormalIds: abnormalIds
+      abnormalIds: abnormalIds,
     });
   }
 
   onInspectCheck = () => {
-    let inspectId = this.props.inspectDetail.get('inspectId');
+    const inspectId = this.props.inspectDetail.get('inspectId');
     confirm({
       title: '确定验收此巡检工单?',
       onOk: () => {
         this.props.setInspectCheck({
           inspectId: inspectId,
-        })
-      }
-    })
+        });
+      },
+    });
   }
 
   onCancelEdit = () => {
     this.setState({
       showWarningTip: true,
-      warningTipText: '退出后信息无法保存!'
+      warningTipText: '退出后信息无法保存!',
     });
   }
 
@@ -115,7 +115,7 @@ class InspectDetailForm extends Component {
       return (
         <InspectAddAbnormal {...this.props} onSelectItem={this.onSelectItem} onTransformDefect={this.onTransformDefect} abnormalIds={this.state.abnormalIds} />
       )
-    } else if (status === "3" && checkInspectRight) {
+    } else if (status === "3") {
       return (
         <div className={styles.checkInspect}>
           <div className={styles.title}>
@@ -125,15 +125,15 @@ class InspectDetailForm extends Component {
           </div>
           <Button className={styles.transferBtn} onClick={this.onTransformDefect} disabled={abnormalIds.size === 0}>转工单</Button>
           <div style={{ color: '#666' }}>
-            
+
           </div>
-          <Button className={styles.checkBtn} onClick={this.onInspectCheck}>验收</Button>
+          {checkInspectRight && <Button className={styles.checkBtn} onClick={this.onInspectCheck}>验收</Button>}
           <div style={{ color: '#666' }}></div>
         </div>
       )
-    } else {
+    } 
       return null;
-    }
+    
   }
 
   renderTitle() {
@@ -142,19 +142,19 @@ class InspectDetailForm extends Component {
       return '执行巡检';
     } else if (status === '3') {
       return '验收巡检';
-    } else {
+    } 
       return '缺陷详情';
-    }
+    
   }
-  
+
   render() {
-    const { inspectDetail, onChangeShowContainer, changeInspectStore,getInspectDetailRecord,getInspectUsers,getInspectOrbit,getStationDeviceTypes } = this.props;
+    const { inspectDetail, onChangeShowContainer, changeInspectStore, getInspectDetailRecord, getInspectUsers, getInspectOrbit, getStationDeviceTypes } = this.props;
     //console.log(inspectDetail.toJS());
     const progressData = inspectDetail.get('processData');
     const inspectId = inspectDetail.get('inspectId');
-    const stationCode=inspectDetail.get('stationCode');
-    const trackCount=inspectDetail.get('trackCount');
-    const recordCount=inspectDetail.get('recordCount');
+    const stationCode = inspectDetail.get('stationCode');
+    const trackCount = inspectDetail.get('trackCount');
+    const recordCount = inspectDetail.get('recordCount');
     // console.log(stationCode);
     // //是为了把此工单里的设备名以及设备code进行组装，传到巡检记录详情里供筛选框使用
     // const deviceTypeCodes = inspectDetail.get('deviceTypeCodes') && inspectDetail.get('deviceTypeCodes').split(',');
@@ -165,23 +165,23 @@ class InspectDetailForm extends Component {
     //     inspectDeviceType.push({ "deviceTypeCodes": deviceTypeCodes[i], "deviceTypeNames": deviceTypeNames[i] })
     //   }
     // }
-    
+
     const status = inspectDetail.get('inspectStatus');
     const { showWarningTip, warningTipText } = this.state;
 
     return (
-        <div className={styles.detailWrap}>
-          {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
-          <div className={styles.inspectDetail}>
-            <div className={styles.header}>
-              <div className={styles.text}>{this.renderTitle()}</div>
-              <div className={styles.action}>
-                <i className="iconfont icon-last" onClick={this.props.onPrev} />
-                <i className="iconfont icon-next" onClick={this.props.onNext} />
-                <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
-              </div>
+      <div className={styles.detailWrap}>
+        {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        <div className={styles.inspectDetail}>
+          <div className={styles.header}>
+            <div className={styles.text}>{this.renderTitle()}</div>
+            <div className={styles.action}>
+              <i className="iconfont icon-last" onClick={this.props.onPrev} />
+              <i className="iconfont icon-next" onClick={this.props.onNext} />
+              <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
             </div>
-            <div className={styles.content} >
+          </div>
+          <div className={styles.content} >
             <div className={styles.left} >
               <div className={styles.basic} >
                 <InspectBasicInfo basicInfo={inspectDetail} />
@@ -189,7 +189,7 @@ class InspectDetailForm extends Component {
               <div className={styles.abnormal} >
                 <InspectAbnormal
                   abnormalItems={inspectDetail.get('abnormalData')}
-                  status={inspectDetail.get("inspectStatus")}
+                  status={inspectDetail.get('inspectStatus')}
                   onDeleteAbnormal={this.props.onDeleteAbnormal}
                   getInspectStandard={this.props.getInspectStandard}
                   inspectDetail={this.props.inspectDetail}
@@ -226,8 +226,8 @@ class InspectDetailForm extends Component {
         </div>
 
 
-        </div>
-        
+      </div>
+
     );
   }
 }
