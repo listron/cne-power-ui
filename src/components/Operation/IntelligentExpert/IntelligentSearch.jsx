@@ -58,6 +58,7 @@ class IntelligentSearch extends Component {
       faultDescription: defectValue,
       recorder: personValue,
       pageNum: 1,
+      pageSize: 10,
     });
   }
 
@@ -72,6 +73,7 @@ class IntelligentSearch extends Component {
       faultDescription: '',
       recorder: '',
       pageNum: 1,
+      pageSize: 10,
     });
   }
 
@@ -105,6 +107,8 @@ class IntelligentSearch extends Component {
     });
     getIntelligentTable({
       ...listParams,
+      pageNum: 1,
+      pageSize: 10,
       ...value,
     });
 
