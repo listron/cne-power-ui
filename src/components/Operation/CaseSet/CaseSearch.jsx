@@ -29,7 +29,7 @@ class CaseSearch extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      // userValue: '',
+      userValue: '',
       userId: null,
     };
   }
@@ -71,11 +71,10 @@ class CaseSearch extends React.Component {
     }
   }
   changePerson = (value) => {
-    console.log('value: ', value);
+    this.setState({
+      userValue: value,
+    });
     if (value) {
-      // this.setState({
-      //   userValue: value,
-      // });
       const userId = value.split('__')[1];
       this.setState({
         userId,
@@ -96,6 +95,9 @@ class CaseSearch extends React.Component {
       userId: null,
     };
     this.props.changeCasePartStore(initValue);
+    this.setState({
+      userValue: null,
+    });
     this.getList(initValue);
   }
   onSearch = () => {
@@ -118,9 +120,9 @@ class CaseSearch extends React.Component {
 
   render() {
     const { stations, deviceModeData, questionTypeList, userData, faultDescription, userName, userId } = this.props;
-    // const { userValue } = this.state;
+    const { userValue } = this.state;
     const stationsData = stations ? stations.filter(e => (e.stationType === 0)) : [];
-    const showResetBtn = faultDescription || userName || userId;
+    const showResetBtn = faultDescription || userName || userValue;
     return (
       <div className={styles.caseSearch}>
         <FilterCondition
@@ -163,7 +165,7 @@ class CaseSearch extends React.Component {
             allowClear
             placeholder="请输入..."
             className={styles.entryPerson}
-            // value={userValue}
+            value={userValue}
             showArrow={false}
             optionFilterProp="children"
             onSearch={this.entryPerson}
