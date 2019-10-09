@@ -1,8 +1,5 @@
 @import '../../../../../theme/theme.scss';
 
-.device{
-  
-}
 .topSearch{
   margin-bottom: 10px;
   .dateCheck{
@@ -116,6 +113,7 @@
   }
   .deviceRate{
     background-color: #fff;
+    border:1px solid #e1e2e2;
     .total, .num{
       color: var(--themeColor);
     }
@@ -134,8 +132,12 @@
   }
   .devicePoints{
     background-color: #fff;
+    border:1px solid #e1e2e2;
+    border-bottom: none;
   }
   .pointTable{
+    border:1px solid #e1e2e2;
+    border-top: none;
     .deviceLink{
       color: var(--themeColor);
       text-decoration: var(--themeColor) underline;
@@ -156,6 +158,7 @@
   }
   .deviceRate{
     background:rgba(20,33,101,0.40);
+    border:1px solid #3d7bac;
     .total, .num{
       color: #00f0ff;
     }
@@ -175,9 +178,13 @@
   }
   .devicePoints{
     color:#9cd1ff;
+    border:1px solid #3d7bac;
+    border-bottom: none;
     background:rgba(20,33,101,0.40);
   }
   .pointTable{
+    border:1px solid #3d7bac;
+    border-top: none;
     .deviceLink{
       color: #00f0ff;
       text-decoration: #00f0ff underline;

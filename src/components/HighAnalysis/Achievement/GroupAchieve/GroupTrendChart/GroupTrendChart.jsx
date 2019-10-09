@@ -34,7 +34,7 @@ export default class GroupTrendChart extends Component {
     };
     // 初始化dataZoom位置
     this.paramsStart = 0;
-    this.paramsend = 100;
+    this.paramsEnd = 100;
   }
 
   componentDidUpdate(prevProps) {
@@ -52,7 +52,7 @@ export default class GroupTrendChart extends Component {
     if(groupTrendTime && groupTrendTime !== trendTimePrev) {
       // 初始化dataZoom位置
       this.paramsStart = 0;
-      this.paramsend = 100;
+      this.paramsEnd = 100;
       eCharts.init(groupTrendChart).clear();//清除
       const myChart = eCharts.init(groupTrendChart);
       myChart.setOption(this.drawChart(groupTrendInfo, selectTime));
@@ -60,8 +60,8 @@ export default class GroupTrendChart extends Component {
       myChart.on('click', (param) => this.chartHandle(myChart, groupTrendInfo, param));
       myChart.off('datazoom');
       myChart.on('datazoom', (params) => {
-        this.paramsStart = params.start;
-        this.paramsend = params.end;
+        this.paramsStart = typeof(params.start) === 'number' ? params.start : params.batch[0].start;
+        this.paramsEnd = typeof(params.end) === 'number' ? params.end : params.batch[0].end;
       });
     }
   }
@@ -309,7 +309,7 @@ export default class GroupTrendChart extends Component {
       };
       // 初始化dataZoom位置
       this.paramsStart = 0;
-      this.paramsend = 100;
+      this.paramsEnd = 100;
       // 请求趋势数据
       getGroupTrendInfo(paramsTrend);
     }

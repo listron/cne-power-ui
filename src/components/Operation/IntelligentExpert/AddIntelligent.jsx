@@ -187,6 +187,7 @@ class AddIntelligent extends Component {
 
 
   changeFileList = (fileList) => { // 转化格式
+    console.log('fileList: ', fileList);
     return fileList.map(item => {
       return {
         name: item.urlName,

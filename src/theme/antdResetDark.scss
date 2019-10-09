@@ -317,9 +317,6 @@
           background: $button-active;
           color: $fontColor-invert;
         }
-
-        &-divider {
-        }
       }
     }
 
@@ -360,9 +357,6 @@
           background: $themeColor;
           color: $fontColor-invert;
         }
-      }
-
-      span {
       }
     }
     .#{$prefix}-checkbox-inner {
@@ -747,8 +741,6 @@
   .ant-modal {
     color: $fontColor;
   }
-  .ant-modal-wrap {
-  }
   .ant-modal-title {
     color: $fontColor;
   }
@@ -768,9 +760,6 @@
   .ant-modal-header {
     background: transparent;
     border-bottom: 1px solid $border-color;
-  }
-
-  .ant-modal-body {
   }
   .ant-modal-footer {
     background: transparent;
