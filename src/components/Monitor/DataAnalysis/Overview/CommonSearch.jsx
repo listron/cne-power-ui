@@ -42,7 +42,7 @@ class CommonSearch extends PureComponent{
           <span className={styles.text}>电站名称</span>
           <StationSelect
             value={stations.filter(e => e.stationCode === stationCode)}
-            data={stations}
+            data={stations.filter(e => e.stationType === 0)}
             style={{width: '200px', lineHeight: '40px'}}
             onChange={this.checkStation}
             theme={theme}
@@ -50,7 +50,7 @@ class CommonSearch extends PureComponent{
         </div>
         <div className={styles.startTime}>
           <span className={styles.text}>数据起始时间 : </span>
-          <span>{dataStartTime ? moment(dataStartTime).format('YYYY-MM-DD HH:mm:ss') : '--'}</span>
+          <span>{dataStartTime ? moment(dataStartTime).format('YYYY-MM-DD') : '--'}</span>
         </div>
         <div className={styles.space}>
           <span className={styles.text}>数据时间间隔</span>
