@@ -6,6 +6,11 @@ import moment from 'moment';
 import styles from './resources.scss';
 
 const {RangePicker} = DatePicker;
+const dateFormat = 'YYYY.MM';
+
+let startDate = '';
+let endDate = '';
+let modeCode = '';
 
 export default class HandleSearch extends Component {
   static propTypes = {
@@ -25,9 +30,22 @@ export default class HandleSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      disableDateFun: (current) => current > moment(),
+      disableDateFun: (current) => {
+        const nextMonth = moment(moment().add(1, 'months').format(moment().format('YYYY-MM')), moment().format('YYYY-MM'))
+        return !!current ? current >= nextMonth : false;
+      },
       downLoadding: false,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const prevParamsFlag = startDate === '' && endDate === '' && modeCode === '';
+    const currentParamsFlag = nextProps.startTime && nextProps.endTime && nextProps.deviceList !== 0;
+    if(prevParamsFlag && currentParamsFlag) {
+      startDate = moment(nextProps.startTime).format('YYYY-MM');
+      endDate = moment(nextProps.endTime).format('YYYY-MM');
+      modeCode = nextProps.deviceList[0].deviceFullCode;
+    }
   }
 
   selectStationCode = (stationCodeArr) => {//电站选择
@@ -36,11 +54,13 @@ export default class HandleSearch extends Component {
   };
 
   onCalendarChange = (dates) => {
+    console.log('1111111');
+    console.log(dates, 'dates');
     if (dates.length === 1) {
-      this.setState({ // 时间跨度不超过1年
+      this.setState({ // 时间跨度不超过12个月
         disableDateFun: (current) => {
-          const maxTime = moment(dates[0]).add(366, 'days');
-          const minTime = moment(dates[0]).subtract(366, 'days');
+          const maxTime = moment(dates[0]).add(12, 'months');
+          const minTime = moment(dates[0]).subtract(12, 'months');
           return current > moment() || current > maxTime || current < minTime;
         },
       });
@@ -52,12 +72,12 @@ export default class HandleSearch extends Component {
   };
 
   //改时间
-  changeTime = (date, dateString) => {
-    //暂存时间
+  handlePanelChange = value => {
+    console.log(value, 'value');
     const { changeWindResourcesStore } = this.props;
     changeWindResourcesStore({
-      startTime: dateString[0],
-      endTime: dateString[1],
+      startTime: moment(value[0]).format(dateFormat),
+      endTime: moment(value[1]).format(dateFormat),
     });
   };
 
@@ -72,6 +92,15 @@ export default class HandleSearch extends Component {
     } = this.props;
     const firstDevice = deviceList[0];
     const deviceFullCode = firstDevice.deviceFullCode;
+    // 判断有没有变化
+    if(moment(startTime).format('YYYY-MM') === startDate && moment(endTime).format('YYYY-MM') === endDate && deviceFullCode === modeCode) {
+      return false;
+    }
+    // 重新赋值变量
+    startDate = moment(startTime).format('YYYY-MM');
+    endDate = moment(endTime).format('YYYY-MM');
+    modeCode = deviceFullCode;
+
     // 风能玫瑰图
     if(activeKey === 1) {
       return getDirections({
@@ -105,7 +134,6 @@ export default class HandleSearch extends Component {
   render() {
     const {stationCode, stations, startTime, endTime, isClick} = this.props;
     const {disableDateFun, downLoadding} = this.state;
-    const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
     return (
       <div className={styles.handleSeach}>
@@ -118,18 +146,20 @@ export default class HandleSearch extends Component {
           />
           <label className={styles.nameStyle}>时间</label>
           <RangePicker
-            defaultValue={[moment(startTime, dateFormat), moment(endTime, dateFormat)]}
-            disabledDate={disableDateFun}
+            mode={['month', 'month']}
+            allowClear={false}
+            value={[moment(startTime, dateFormat), moment(endTime, dateFormat)]}
+            disabledMonth={disableDateFun}
             onCalendarChange={this.onCalendarChange}
             format={dateFormat}
-            onChange={this.changeTime}
+            onPanelChange={this.handlePanelChange}
             style={{width: '240px'}}
           />
           <Button className={styles.seachBtn} onClick={this.onSearch}>查询</Button>
         </div>
         <Button className={!isClick ? styles.disabledDownload : styles.download} disabled={!isClick}
                 onClick={this.downPic}>
-          {downLoadding ? <span><Icon type="loading" style={{fontSize: 16}} spin/>图片下载</span> : '图片下载'}
+          {downLoadding ? <span><Icon type="loading" style={{fontSize: 16}} spin />图片下载</span> : '图片下载'}
         </Button>
       </div>
     );

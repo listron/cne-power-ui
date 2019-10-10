@@ -89,7 +89,9 @@ class CommonPagination extends Component {
           <Select
             onChange={this.onPageSizeChange}
             getPopupContainer={() => this.refs.pageNumber}
-            defaultValue={pageSize}>
+            // defaultValue={pageSize}
+            value={pageSize}
+          >
             {pageSizeArray.map(e => (<Option value={e} key={e}>{e}</Option>))}
           </Select>
         </div>
