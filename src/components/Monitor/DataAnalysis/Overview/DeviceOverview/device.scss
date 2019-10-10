@@ -98,10 +98,15 @@
     }
   }
   .pointTable{
-  //   .deviceName{
-  //     width: 126px;
-  //     @include overflowText();
-  //   }
+    .deviceName{
+      width: 125px;
+    }
+    .realCount{
+      width: 130px;
+    }
+    .completeRate{
+      width: 155px;
+    }
     .deviceLink{
       cursor: pointer;
     }
