@@ -20,6 +20,7 @@ class PointChart extends PureComponent{
     const { histogramList, pointsLoading, theme } = nextProps;
     const preLoading = this.props.pointsLoading;
     if (preLoading && !pointsLoading) { // 请求完毕
+      console.log(histogramList)
       this.drawChart(histogramList, theme);
     } else if (!preLoading && pointsLoading) { // 请求中
       this.setChartLoading();
