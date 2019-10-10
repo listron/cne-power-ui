@@ -73,7 +73,7 @@ function dateFormat(time) {
   let endTime = moment(time).endOf('months').utc().format();
   // 相等月份
   if(currentEndDate === endDate) {
-    endTime = moment().add('1', 'days').utc().format();
+    endTime = moment().utc().format();
   }
   return endTime;
 }

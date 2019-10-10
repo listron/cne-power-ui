@@ -149,7 +149,7 @@ export default class HandleSearch extends Component {
             mode={['month', 'month']}
             allowClear={false}
             value={[moment(startTime, dateFormat), moment(endTime, dateFormat)]}
-            disabledDate={disableDateFun}
+            disabledMonth={disableDateFun}
             onCalendarChange={this.onCalendarChange}
             format={dateFormat}
             onPanelChange={this.handlePanelChange}

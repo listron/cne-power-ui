@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {Icon} from 'antd';
 import eCharts from 'echarts';
 import {themeConfig} from '@utils/darkConfig';
-import {hiddenNoData, showNoData} from '@constants/echartsNoData';
 
 import styles from './windRose.scss';
 
@@ -97,7 +96,6 @@ export default class SingleWindRose extends Component{
     };
     return {
       animation: false,
-      graphic: (directionArr.length && energyArr.length) ? hiddenNoData : showNoData,
       title: {
         text: [`${deviceName} `, '{b|}'].join(''),
           left: '5%',
@@ -226,18 +224,26 @@ export default class SingleWindRose extends Component{
         ...params,
         deviceFullCode: deviceList[index + 1].deviceFullCode,
       });
-    }, 50);
+    }, 100);
 
     myChart.setOption(option, true);
   };
 
   render(){
-    const { index, showImg } = this.props;
+    const { index, showImg, directionsData, directionsLoading } = this.props;
+    // 风向value
+    const directionArr = directionsData && directionsData.map(cur => (cur.directionPercent));
+    const directionFlag = directionArr.every((cur) => {return cur === null;});
+    // 风能value
+    const energyArr = directionsData && directionsData.map(cur => (cur.energyPercent));
+    const energyFlag = energyArr.every((cur) => {return cur === null;});
     return(
       <div className={styles.chartWrap}>
         <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalIcon} />
         <span className={styles.windDirection}>风向</span>
         <span className={styles.windPower}>风能</span>
+        {(directionsLoading && directionFlag) && <div className={styles.firstInfo}>暂无数据</div>}
+        {(directionsLoading && energyFlag) && <div className={styles.secondInfo}>暂无数据</div>}
         <div ref={ref => { this.directionChart = ref;}} className={styles.windRoseStyle} />
       </div>
     );
