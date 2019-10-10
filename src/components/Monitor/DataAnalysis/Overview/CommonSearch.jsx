@@ -49,7 +49,7 @@ class CommonSearch extends PureComponent{
           />
         </div>
         <div className={styles.startTime}>
-          <span className={styles.text}>数据起始时间 : </span>
+          <span className={styles.text}>数据起始日期 : </span>
           <span>{dataStartTime ? moment(dataStartTime).format('YYYY-MM-DD') : '--'}</span>
         </div>
         <div className={styles.space}>
