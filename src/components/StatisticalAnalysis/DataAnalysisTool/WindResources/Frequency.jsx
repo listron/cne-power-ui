@@ -56,8 +56,8 @@ class Frequency extends Component{
         const eTime = moment(endTime).format('YYYY-MM-DD');
         const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
         const { stationName } = stationArr;
-        const fileName = `【${stationName}】风速&风能频率图【${sTime}】_【${eTime}】`;
-        const childFileName = `风速&风能频率图`;
+        const fileName = `${stationName}风速风能频率图${sTime.split('-').join('')}_${eTime.split('-').join('')}`;
+        const childFileName = '风速&风能频率图';
         toZip(this.state.newSrcUrl, fileName, childFileName, deviceList);
       } else {
         message.warning('图片未全部加载完成');

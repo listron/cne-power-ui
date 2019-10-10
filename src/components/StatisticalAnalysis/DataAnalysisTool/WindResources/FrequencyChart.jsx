@@ -80,12 +80,13 @@ class FrequencyChart extends Component{
 
     const speedLength = speedFrequencyData.filter(e => {
       return e !== null;
-    });    
+    });
     const eneryLength = eneryFrequencyData.filter(e => {
       return e !== null;
     });
 
     const option = {
+      animation: false,
       graphic: (speedLength.length && eneryLength.length) ? hiddenNoData : showNoData,
       color: ['#00cdff', '#ff9000'],
       title: {
@@ -108,6 +109,7 @@ class FrequencyChart extends Component{
       },
       legend: {
         data: ['风速频率', '风能频率'],
+        selectedMode: false,
       },
       tooltip: {
         trigger: 'axis',

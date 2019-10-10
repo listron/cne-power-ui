@@ -79,6 +79,7 @@ export default class BigWindRose extends Component{
       },
     };
     return {
+      animation: false,
       graphic: (directionArr.length && energyArr.length) ? hiddenNoData : showNoData,
       title: {
         text: [`${deviceName} `, '{b|}'].join(''),
@@ -151,6 +152,13 @@ export default class BigWindRose extends Component{
         type: 'bar',
         color: '#3e97d1',
         barWidth: 20,
+        emphasis: {
+          itemStyle: {
+            color: '#00cdff',
+            shadowColor: '#ccc',
+            shadowOffsetY: 1,
+          },
+        },
         data: directionArr,
         coordinateSystem: 'polar',
         name: '风向',
@@ -159,6 +167,13 @@ export default class BigWindRose extends Component{
         type: 'bar',
         color: '#f9b600',
         barWidth: 20,
+        emphasis: {
+          itemStyle: {
+            color: '#ff8f2a',
+            shadowColor: '#ccc',
+            shadowOffsetY: 1,
+          },
+        },
         data: energyArr,
         coordinateSystem: 'polar',
         name: '风能',

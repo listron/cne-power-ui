@@ -78,6 +78,7 @@ class BigFrequencyChats extends Component{
     });
 
     const option = {
+      animation: false,
       graphic: (speedLength.length && eneryLength.length) ? hiddenNoData : showNoData,
       color: ['#00cdff', '#ff9000'],
       title: {
@@ -100,6 +101,7 @@ class BigFrequencyChats extends Component{
       },
       legend: {
         data: ['风速频率', '风能频率'],
+        selectedMode: false,
       },
       tooltip: {
         trigger: 'axis',
