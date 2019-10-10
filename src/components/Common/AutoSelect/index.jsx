@@ -37,7 +37,7 @@ import styles from './style.scss';
     }]
   }]
   2. 必填 - this.props.onChange输出函数: 输出参数为最底层级的value数组[value1, value2, value3];
-  3. 选填 - 选择模式: multiple, 选填，默认为单选(false)。
+  3. 选填 - 选择模式: multiple, 选填，默认为多选(true)。
   4. 选填 - 手动指定选中项(value)为最底层级的value数组[value1, value2, value3];
   5. 选填todo - 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
   6. 选填 - holderText: string, 可选填，占位提示文字。
@@ -63,6 +63,7 @@ class AutoSelect extends Component {
     onChange: PropTypes.func,
     holderText: PropTypes.string,
     max: PropTypes.number,
+    disabled: PropTypes.bool,
     theme: PropTypes.string,
   }
 
