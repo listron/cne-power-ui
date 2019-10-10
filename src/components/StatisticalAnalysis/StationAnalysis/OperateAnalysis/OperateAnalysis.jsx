@@ -8,7 +8,7 @@ import BarGraph from '../CommonGraphs/BarGraph';
 import TableGraph from '../CommonGraphs/TableGraph';
 import PowerEfficency from '../CommonGraphs/ThreeYaxis';
 import UsageRate from './Chart/UsageRate';
-import LostPowerType from '../CommonGraphs/barStack';
+import LostPowerType from './Chart/LostPowerType';
 import LostPowerTypeRate from './Chart/LostPowerTypeRate';
 import LimitPowerRate from './Chart/LimitPowerRate';
 import LimitPowerRateTable from './Table/LimitPowerRateTable';
@@ -215,8 +215,6 @@ class OperateAnalysis extends React.Component {
     this.props.changeOperateStationStore({ selectYear: year });
   }
 
-
-
   render() {
     const { stations, dateType, stationCode, year, month, operateAvalibaData, operatePlanCompleteData, powerData, lostPowerData, efficiencyData, usageData, lostPowerTypeDatas, limitPowerData,
       yearLimitPowerData, plantPowerData, selectYear, startTime, endTime, theme } = this.props;
@@ -261,22 +259,6 @@ class OperateAnalysis extends React.Component {
     const barGraphYearOnYear = lostPowerData && lostPowerData.map((e, i) => (e.yearOnYear)) || [];
     const barGraphRingRatio = lostPowerData && lostPowerData.map((e, i) => (e.ringRatio)) || [];
     const lostPowerHasData = barGraphThatYear.some(e => e || e === 0) || barGraphLastYear.some(e => e || e === 0) || barGraphYearOnYear.some(e => e || e === 0) || barGraphRingRatio.some(e => e || e === 0);
-
-
-    //损失电站类型
-    const lostPowerTypeData = lostPowerTypeDatas && lostPowerTypeDatas.lostpower;
-    const limit = lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.limit)) || [];
-    const eletric = lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.eletric)) || [];
-    const plane = lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.plane)) || [];
-    const system = lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.system)) || [];
-    const other = lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.other)) || [];
-    const lostpower = {
-      date: lostPowerTypeData && lostPowerTypeData.map((e, i) => { return this.addXaixsName(e.date, dateType); }),
-      limit, eletric, plane, system, other,
-    };
-    const summary = lostPowerTypeDatas && lostPowerTypeDatas.summary;
-    const lostPowerTypeHasData = (limit.some(e => e || e === 0) || eletric.some(e => e || e === 0) || plane.some(e => e || e === 0) || system.some(e => e || e === 0) || other.some(e => e || e === 0));
-
 
     // 限电率同比
     const thatYearLostPowerRate = limitPowerData && limitPowerData.map((e, i) => (e.thatYearLostPowerRate));
@@ -344,8 +326,6 @@ class OperateAnalysis extends React.Component {
       ],
     };
     const useLostHasData = sendLine.some(e => e || e === 0) || plantLoss.some(e => e || e === 0);
-
-
     return (
       <div className={`${styles.singleStationType} ${styles[theme]}`}>
         <div className={styles.stationTimeFilter}>
@@ -465,7 +445,6 @@ class OperateAnalysis extends React.Component {
               </div>
             </div>
           </div>
-
           <div className={styles.targetGraphContainer}>
             <div className={styles.chartWrap}>
               <div className={styles.bgStyle}>
@@ -544,13 +523,12 @@ class OperateAnalysis extends React.Component {
               <div className={styles.tabContainer}>
                 <div className={styles.dataGraph}>
                   <LostPowerType
-                    graphId={'lostPowerType'}
                     yAxisName={'损失电量 (万kWh)'}
                     title={'电量损失类型'}
                     xAxisName={'损失电量'}
                     dateType={dateType}
-                    data={lostpower}
-                    hasData={lostPowerTypeHasData}
+                    data={lostPowerTypeDatas.lostpower}
+                    hasData={false}
                     theme={theme}
                   />
                   <div className={styles.LostPowerTypeRate}>
@@ -565,10 +543,7 @@ class OperateAnalysis extends React.Component {
                       <div>损失电量:万kWh</div>
                     </div>
                     <LostPowerTypeRate
-                      graphId={'lostPowerTypeRate'}
-                      data={summary}
-                      yAxisName={'光伏发电系统故障'}
-                      xAxisName={'损失电量'}
+                      data={lostPowerTypeDatas.summary}
                       hasData={false}
                       theme={theme}
                     />
@@ -608,7 +583,6 @@ class OperateAnalysis extends React.Component {
                 </div>
               </div>
             </div>
-
             <div className={styles.chartWrap}>
               <div className={styles.bgStyle}>
                 <div className={styles.fontStyle}>能耗分析</div>

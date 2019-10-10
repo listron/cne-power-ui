@@ -31,9 +31,8 @@ class OutputTenMin extends Component {
     this.drawChart(nextProps);
   }
 
-
   drawChart = (param) => {
-    const { capabilityData, yAxisUnit, stationCode, theme } = param;
+    const { capabilityData = [], yAxisUnit, stationCode, theme } = param;
     const yAxisType = `功率(${yAxisUnit})`;
     let capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'), themeConfig[theme]);
     if (capabilityDiagram) {
@@ -42,9 +41,42 @@ class OutputTenMin extends Component {
     }
     const capabilityPower = capabilityData.map(e => dataFormats(divideFormarts(e.stationPower, yAxisUnit), '--', 2, true));
     const capabilityRadiation = capabilityData.map(e => dataFormats(e.instantaneous, '--', 2, true));
+    const templatePower = capabilityData.map(e => dataFormats(e.templatePower, '--', 2, true)); // 样板逆变器功率 无样板机逆变器时没有
+    const theoreticalPower = capabilityData.map(e => dataFormats(e.theoreticalPower, '--', 2, true)); // 理论功率 无气象站时没有
+    const templatePowerSeries = capabilityData.length > 0 && capabilityData[0].templatePower !== undefined && {
+      name: '样板机逆变器功率',
+      type: 'line',
+      smooth: true,
+      data: templatePower,
+      yAxisIndex: 0,
+      axisTick: {
+        show: false,
+      },
+      color: '#3e97d1',
+      lineStyle: {
+        color: '#3e97d1',
+      },
+    } || { type: 'line' };
+    const theoreticalPowerSeries = capabilityData.length > 0 && capabilityData[0].theoreticalPower !== undefined &&
+      {
+        name: '理论功率',
+        type: 'line',
+        smooth: true,
+        data: theoreticalPower,
+        yAxisIndex: 0,
+        axisTick: {
+          show: false,
+        },
+        color: '#199475',
+        lineStyle: {
+          color: '#199475',
+        },
+      } || { type: 'line' };
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
-    const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0);
+    const filterTemplatePower = capabilityData.filter(e => e.templatePower);
+    const filterTheoreticalPower = capabilityData.filter(e => e.hasTheoreticalPower);
+    const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0 && filterTemplatePower.length === 0 && filterTheoreticalPower.length === 0);
     const graphic = chartsNodata(!capabilityGraphic, theme);
     const minPower = Math.min(...capabilityPower);
     const minRadiation = Math.min(...capabilityRadiation);
@@ -76,7 +108,7 @@ class OutputTenMin extends Component {
         formatter: (params) => {
           let paramsItem = '';
           params.forEach(item => {
-            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
+            paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
                 ${item.seriesName} :  ${item.value}${item.seriesName === '完成率' && '%' || ''}</div>`;
           });
           return (
@@ -87,7 +119,6 @@ class OutputTenMin extends Component {
           );
         },
       },
-      color: ['#a42b2c', '#f9b600'],
       xAxis: {
         type: 'category',
         boundaryGap: false,
@@ -139,23 +170,28 @@ class OutputTenMin extends Component {
           smooth: true,
           data: capabilityPower,
           yAxisIndex: 0,
-          areaStyle: {
-            color: '#fff2f2',
-          },
+          color: '#a42b2c',
           axisTick: {
             show: false,
           },
+          lineStyle: {
+            color: '#a42b2c',
+          },
         },
+        theoreticalPowerSeries,
+        templatePowerSeries,
         {
           name: '辐射',
           type: 'line',
           data: capabilityRadiation,
           yAxisIndex: 1,
+          color: '#f9b600',
+          lineStyle: {
+            color: '#f9b600',
+            type: 'dotted',
+          },
           axisTick: {
             show: false,
-          },
-          lineStyle: {
-            type: 'dotted',
           },
         },
       ],
