@@ -11,7 +11,7 @@ import DeviceRateChart from './DeviceRateChart';
 import DeviceTable from './DeviceTable';
 import searchUtil from '@utils/searchUtil';
 const { MonthPicker } = DatePicker;
-
+    
 class DeviceOverview extends PureComponent{
   static propTypes = {
     theme: PropTypes.string,
@@ -163,6 +163,14 @@ class DeviceOverview extends PureComponent{
     history.push(`${pathname}?${newSearch}`);
   }
 
+  disableFun = (type) => { // type: 'month' / 'date'
+    return (cur) => {
+      const { deviceTopData } = this.props;
+      const { dataStartTime } = deviceTopData;
+      return moment().isBefore(cur, type) || moment(dataStartTime).isAfter(cur, type);
+    };
+  }
+
   render(){
     const { deviceParam, deviceTopData, stations, theme } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = deviceParam;
@@ -181,12 +189,14 @@ class DeviceOverview extends PureComponent{
                 value={moment(date)}
                 allowClear={false}
                 onChange={this.monthCheck}
+                disabledDate={this.disableFun('month')}
               />}
               {dateType === 1 && <DatePicker
                 getCalendarContainer={() => this.datesRef}
                 value={moment(date)}
                 allowClear={false}
                 onChange={this.dayCheck}
+                disabledDate={this.disableFun('date')}
               />}
             </span>
           </div>

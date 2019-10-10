@@ -210,6 +210,14 @@ class PointsOverview extends PureComponent{
     history.push(`${pathname}?${newSearch}`);
   }
 
+  disableFun = (type) => { // type: 'month' / 'date'
+    return (cur) => {
+      const { pointTopData } = this.props;
+      const { dataStartTime } = pointTopData;
+      return moment().isBefore(cur, type) || moment(dataStartTime).isAfter(cur, type);
+    };
+  }
+
   render(){
     const { pointParam, pointTopData, stations, theme } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = pointParam;
@@ -228,12 +236,14 @@ class PointsOverview extends PureComponent{
                 value={moment(date)}
                 allowClear={false}
                 onChange={this.monthCheck}
+                disabledDate={this.disableFun('month')}
               />}
               {dateType === 1 && <DatePicker
                 getCalendarContainer={() => this.datesRef}
                 value={moment(date)}
                 allowClear={false}
                 onChange={this.dayCheck}
+                disabledDate={this.disableFun('date')}
               />}
             </span>
           </div>

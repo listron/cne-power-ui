@@ -42,7 +42,7 @@ class CommonSearch extends PureComponent{
           <span className={styles.text}>电站名称</span>
           <StationSelect
             value={stations.filter(e => e.stationCode === stationCode)}
-            data={stations.filter(e => e.stationType === 0)}
+            data={stations.filter(e => e.stationType === 0 && e.isConnected === 1)}
             style={{width: '200px', lineHeight: '40px'}}
             onChange={this.checkStation}
             theme={theme}

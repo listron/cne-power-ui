@@ -29,7 +29,7 @@ class StationList extends PureComponent{
     const { stations } = this.props;
     return(
       <div className={styles.list} onClick={this.checkStation}>
-        {stations.filter(e => e.stationType === 0).map((e, i) => (
+        {stations.filter(e => e.stationType === 0 && e.isConnected === 1).map((e, i) => (
           <span key={e.stationCode} data-code={e.stationCode} className={styles.eachStation}>{e.stationName || '--'}</span>
         ))}
       </div>
