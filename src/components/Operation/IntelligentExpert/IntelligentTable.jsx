@@ -52,9 +52,8 @@ class IntelligentTable extends Component {
   tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
     const { getIntelligentTable, listParams } = this.props;
     const { order } = sorter;
-    const initSorterField = 'like_count';
-    const sortMethod = order === 'ascend' ? 'asc' : 'desc';
-    const sortField = sorter.field ? this.toLine(sorter.field) : initSorterField;
+    const sortMethod = order && (order === 'ascend' ? 'asc' : 'desc') || '';
+    const sortField = sorter.field ? this.toLine(sorter.field) : '';
     getIntelligentTable({
       ...listParams,
       orderField: sortField,
@@ -177,7 +176,6 @@ class IntelligentTable extends Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-
     const rightHandler = localStorage.getItem('rightHandler') || '';
     const editRight = rightHandler.split(',').includes('operation_experience_edit');
     const columns = [
@@ -188,7 +186,7 @@ class IntelligentTable extends Component {
         title: '缺陷类型',
         dataIndex: 'faultName',
         render: (text) => {
-          return <div className={styles.faultName} title={text}>{text}</div>;
+          return <div className={styles.faultName} title={text}>{text || '--'}</div>;
         },
       },
       {
@@ -201,19 +199,19 @@ class IntelligentTable extends Component {
         title: '缺陷描述',
         dataIndex: 'faultDescription',
         render: (text) => {
-          return <div className={styles.faultDescription} title={text}>{text}</div>;
+          return <div className={styles.faultDescription} title={text}>{text || '--'}</div>;
         },
       }, {
         title: '故障原因',
         dataIndex: 'checkItems',
         render: (text) => {
-          return <div className={styles.checkItems} title={text}>{text}</div>;
+          return <div className={styles.checkItems} title={text}>{text || '--'}</div>;
         },
       }, {
         title: '处理方法',
         dataIndex: 'processingMethod',
         render: (text) => {
-          return <div className={styles.processingMethod} title={text}>{text}</div>;
+          return <div className={styles.processingMethod} title={text}>{text || '--'}</div>;
         },
       }, {
         title: '更新时间',
@@ -225,10 +223,13 @@ class IntelligentTable extends Component {
         title: '点赞数',
         dataIndex: 'likeCount',
         sorter: true,
-        sortOrder: orderField === 'like_count' ? sortMethod === 'asc' && 'ascend' || 'descend' : false,
+        className: styles.likeCount,
+        defaultSortOrder: 'descend',
+        sortOrder: orderField === 'like_count' ? (sortMethod && (sortMethod === 'asc' ? 'ascend' : 'descend') || false) : false,
       }, {
         title: '操作',
         dataIndex: 'handler',
+        className: styles.handler,
         render: (text, record, index) => (
           <span>
             <i className={`${styles.icon} iconfont icon-look`}
@@ -253,14 +254,14 @@ class IntelligentTable extends Component {
               <React.Fragment>
                 <Button className={styles.addHandler} type="add" onClick={this.addIntelligent}><i>+</i>添加</Button>
                 <Button className={styles.deleteHandler} type="reset" onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</Button>
-                <Button className={styles.importHandler} type="primary" onClick={this.showModal}>导入</Button>
+                <Button className={styles.importHandler} type="primary" onClick={this.showModal}>批量导入</Button>
                 <Button className={styles.exportHandler} type="primary" onClick={this.downLoad} loading={templateLoading}>下载导入模板</Button>
               </React.Fragment>
             }
           </div>
           <CommonPagination currentPage={pageNum} pageSize={pageSize} total={total} onPaginationChange={this.onPaginationChange} theme={theme} />
-          {showModal ? <ImportIntelligent {...this.props} showModal={showModal} cancelModal={this.cancelModal} /> : ''}
         </div>
+        {showModal ? <ImportIntelligent {...this.props} showModal={showModal} cancelModal={this.cancelModal} /> : ''}
         <Table
           loading={tableLoading}
           className={styles.intelligentList}

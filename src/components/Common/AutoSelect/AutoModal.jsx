@@ -44,7 +44,7 @@ class AutoModal extends Component {
     // 因为这里checkedTrees，会包含父节点的value，所以length会出现错误，所以过滤一下
     const checkedArr = infoLists.filter(e => checkedTrees.map(cur => (cur.toString())).includes(`${e.value}`));
     if (checkedArr.length > max) {
-      return message.error(`最多选择${max}个设备`);
+      return message.error(`最多选择${max}项`);
     }
     this.setState({ checkedTrees });
   }

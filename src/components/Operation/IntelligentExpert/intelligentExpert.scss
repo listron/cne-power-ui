@@ -13,7 +13,9 @@
   background-color: #fff;
   .intelligentList {
     .icon {
-      color: $themeColor;
+      &:hover {
+        color: $themeColor;
+      }
     }
   }
   .partSearch {
@@ -64,6 +66,14 @@
         border-left: 1px solid #dfdfdf;
       }
     }
+    :global {
+      .ant-form-item-label > label {
+        color: #000;
+      }
+      .ant-form-item-required::after {
+        color: #a42b2c;
+      }
+    }
   }
   .addIntelligent {
     .selctWrap {
@@ -75,14 +85,20 @@
   .editIntelligent {
     .formItem {
       .label {
-        color: rgba(0, 0, 0, 0.85);
-        span {
-          color: #f5222d;
+        color: #000;
+        .required {
+          color: #a42b2c;
         }
       }
     }
   }
   .showIntelligent {
+    .detailText {
+      color: $lightColor;
+    }
+    .title {
+      color: #000;
+    }
     .editBtn {
       color: $themeColor;
       border-color: $themeColor;
@@ -93,11 +109,6 @@
       }
       .required {
         color: #a42b2c;
-      }
-      .likeBtn,
-      .likedBtn {
-        // color: $themeColor;
-        // border-color: $themeColor;
       }
     }
   }
