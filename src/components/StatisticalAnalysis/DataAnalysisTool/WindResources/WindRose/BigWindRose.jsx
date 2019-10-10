@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
-import { showNoData, hiddenNoData } from '@constants/echartsNoData';
 import { themeConfig } from '@utils/darkConfig';
 import styles from './windRose.scss';
 
@@ -80,7 +79,6 @@ export default class BigWindRose extends Component{
     };
     return {
       animation: false,
-      graphic: (directionArr.length && energyArr.length) ? hiddenNoData : showNoData,
       title: {
         text: [`${deviceName} `, '{b|}'].join(''),
         left: '5%',
@@ -193,10 +191,19 @@ export default class BigWindRose extends Component{
     myChart.setOption(option);
   }
   render(){
+    const { bigWindRoseData, bigWindRoseLoading } = this.props;
+    // 风向value
+    const directionArr = bigWindRoseData && bigWindRoseData.map(cur => (cur.directionPercent));
+    const directionFlag = directionArr.every((cur) => {return cur === null;});
+    // 风能value
+    const energyArr = bigWindRoseData && bigWindRoseData.map(cur => (cur.energyPercent));
+    const energyFlag = energyArr.every((cur) => {return cur === null;});
     return (
       <div className={styles.bigWindRoseBox}>
         <span className={styles.windDirectionTitle}>风向</span>
         <span className={styles.windPowerTitle}>风能</span>
+        {(!bigWindRoseLoading && directionFlag) && <div className={styles.firstBigInfo}>暂无数据</div>}
+        {(!bigWindRoseLoading && energyFlag) && <div className={styles.secondBigInfo}>暂无数据</div>}
         <div ref={(ref) => { this.bigChart = ref; }} className={styles.bigWindRose} />
       </div>
     );
