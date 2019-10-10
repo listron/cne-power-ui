@@ -20,7 +20,6 @@ class PointChart extends PureComponent{
     const { histogramList, pointsLoading, theme } = nextProps;
     const preLoading = this.props.pointsLoading;
     if (preLoading && !pointsLoading) { // 请求完毕
-      console.log(histogramList)
       this.drawChart(histogramList, theme);
     } else if (!preLoading && pointsLoading) { // 请求中
       this.setChartLoading();
@@ -123,7 +122,7 @@ class PointChart extends PureComponent{
   render(){
     return(
       <section className={styles.histogramChart}>
-        <h3>有效值分布图</h3>
+        <h3 className={styles.chartTitle}>有效值分布图</h3>
         <div className={styles.chart} ref={(ref) => { this.histogramRef = ref; }} />
       </section>
     );
