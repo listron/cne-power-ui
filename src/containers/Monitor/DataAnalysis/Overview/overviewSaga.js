@@ -126,8 +126,10 @@ function *getOverviewDevices({ payload }){ // 获取所有设备数据信息
         deveiceLoading: false,
         devicesData: {
           total,
-          deviceData: deviceData.map(e => ({ ...e, key: e.deviceFullcode })),
-        }
+          deviceData: deviceData.map(e => ({
+            ...e, key: e.deviceFullcode,
+          })).sort((a, b) => (a.deviceSortName) && a.deviceSortName.localeCompare(b.deviceSortName)), // 默认排序
+        },
       });
     } else { throw response; }
   } catch (error) {

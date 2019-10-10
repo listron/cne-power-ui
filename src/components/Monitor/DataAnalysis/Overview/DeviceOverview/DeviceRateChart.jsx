@@ -50,6 +50,7 @@ class DeviceRateChart extends PureComponent{
 
   setChartLoading = () => {
     const rateChart = this.rateRef && echarts.getInstanceByDom(this.rateRef);
+    rateChart && rateChart.clear();
     rateChart && rateChart.showLoading();
   }
 
@@ -144,7 +145,7 @@ class DeviceRateChart extends PureComponent{
             <div class=${styles.info}>
               <span class=${styles.round}></span>
               <span class=${styles.infoText}>设备数据完整率</span>
-              <span>${dataFormats(value, '--', 2, true)}%</span>
+              <span class=${styles.rateValue}>${dataFormats(value, '--', 2, true)}%</span>
             </div>
           </section>`;
         },

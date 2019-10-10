@@ -41,7 +41,7 @@ class DropDownSelects extends Component {
   }
 
   render() {
-    const { multiple, holderText, checkedList, infoLists, maxTagCount } = this.props;
+    const { multiple, holderText, checkedList, infoLists, maxTagCount, disabled } = this.props;
     const maxTagInfo = (typeof maxTagCount === 'number') ? {
       maxTagCount,
       maxTagPlaceholder: `已选${checkedList.length}/${infoLists.length}个`,
@@ -60,6 +60,7 @@ class DropDownSelects extends Component {
           getPopupContainer={() => this.dropRef}
           showArrow={false}
           {...maxTagInfo}
+          disabled={disabled}
         >
           {infoLists.map(e => (
             <Option key={e.value} value={e.value}>{e.label}</Option>

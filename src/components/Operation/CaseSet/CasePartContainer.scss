@@ -67,6 +67,8 @@
       padding: 0;
       display: flex;
       align-items: center;
+      border: 1px solid $themeColor;
+
 
       .plus {
         background-color: $themeColor;
@@ -133,7 +135,7 @@
 }
 
 .caseList {
-  margin-bottom: 24px;
+  // margin-bottom: 24px;
 
   .titleStyle {
     text-align: center;
@@ -176,7 +178,7 @@
   }
 
   .questionDes {
-    width: 150px;
+    width: 136px;
   }
 
   .stationWidth {
@@ -184,7 +186,7 @@
   }
 
   .likeWidth {
-    width: 70px;
+    width: 68px;
     text-align: right;
   }
 

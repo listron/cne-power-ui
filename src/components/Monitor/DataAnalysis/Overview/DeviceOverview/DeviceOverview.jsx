@@ -11,7 +11,7 @@ import DeviceRateChart from './DeviceRateChart';
 import DeviceTable from './DeviceTable';
 import searchUtil from '@utils/searchUtil';
 const { MonthPicker } = DatePicker;
-
+    
 class DeviceOverview extends PureComponent{
   static propTypes = {
     theme: PropTypes.string,
@@ -21,6 +21,7 @@ class DeviceOverview extends PureComponent{
     deviceUnix: PropTypes.number,
     deviceParam: PropTypes.object,
     devicesData: PropTypes.object,
+    deviceRecord: PropTypes.object,
     deveiceLoading: PropTypes.bool,
     deviceCheckedList: PropTypes.array,
     changeOverviewStore: PropTypes.func,
@@ -90,13 +91,25 @@ class DeviceOverview extends PureComponent{
   }
 
   dateTypeCheck = ({ target }) => { // 日期模式改变 => 按照默认时间 + 日期类型进行选中
-    const { deviceParam, deviceCheckedList } = this.props;
+    const { deviceParam, deviceCheckedList, deviceRecord } = this.props;
     const { value } = target;
-    const date = moment().subtract(1, 'd').format(value === 2 ? 'YYYY-MM' : 'YYYY-MM-DD'); // 2按月, 1按日
-    const newParams = { ...deviceParam, dateType: value, date };
+    const { month, day } = deviceRecord; // 切换模式时候，将对应格式的日期存入record以便读取。
+    const { date } = deviceParam; // 请求的时间参数
+    let newDate;
+    if(value === 1){ // 从月切换至按日: 若有记录, 使用记录的日, 若没有, 使用该月第一天
+      newDate = day ? day : moment(date).format('YYYY-MM-DD');
+    } else { // 从日切换至月: 若有记录，使用记录的月，若没有，使用当前日对应的月
+      newDate = month ? month : moment(date).format('YYYY-MM');
+    }
+    // const date = moment().subtract(1, 'd').format(value === 2 ? 'YYYY-MM' : 'YYYY-MM-DD'); // 2按月, 1按日
+    const newParams = { ...deviceParam, dateType: value, date: newDate };
     this.props.changeOverviewStore({
       deviceParam: newParams,
       devicesData: {}, // 清空设备信息
+      deviceRecord: {
+        ...deviceRecord,
+        [value === 1 ? 'month' : 'day']: date, // 将上次请求的参数存入记录
+      },
     });
     this.props.getOverviewDevices({ ...newParams, pointCodes: deviceCheckedList }); // 请求测点数据
     this.historySearchChange(newParams);
@@ -163,6 +176,14 @@ class DeviceOverview extends PureComponent{
     history.push(`${pathname}?${newSearch}`);
   }
 
+  disableFun = (type) => { // type: 'month' / 'date'
+    return (cur) => {
+      const { deviceTopData } = this.props;
+      const { dataStartTime } = deviceTopData;
+      return moment().isBefore(cur, type) || moment(dataStartTime).isAfter(cur, type);
+    };
+  }
+
   render(){
     const { deviceParam, deviceTopData, stations, theme } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = deviceParam;
@@ -181,12 +202,14 @@ class DeviceOverview extends PureComponent{
                 value={moment(date)}
                 allowClear={false}
                 onChange={this.monthCheck}
+                disabledDate={this.disableFun('month')}
               />}
               {dateType === 1 && <DatePicker
                 getCalendarContainer={() => this.datesRef}
                 value={moment(date)}
                 allowClear={false}
                 onChange={this.dayCheck}
+                disabledDate={this.disableFun('date')}
               />}
             </span>
           </div>
