@@ -96,6 +96,7 @@ export default class SingleWindRose extends Component{
       },
     };
     return {
+      animation: false,
       graphic: (directionArr.length && energyArr.length) ? hiddenNoData : showNoData,
       title: {
         text: [`${deviceName} `, '{b|}'].join(''),
@@ -169,6 +170,13 @@ export default class SingleWindRose extends Component{
         color: '#3e97d1',
         barWidth: 20,
         data: directionArr,
+        emphasis: {
+          itemStyle: {
+            color: '#00cdff',
+            shadowColor: '#ccc',
+            shadowOffsetY: 1,
+          },
+        },
         coordinateSystem: 'polar',
         name: '风向',
       }, {
@@ -177,6 +185,13 @@ export default class SingleWindRose extends Component{
         color: '#f9b600',
         barWidth: 20,
         data: energyArr,
+        emphasis: {
+          itemStyle: {
+            color: '#ff8f2a',
+            shadowColor: '#ccc',
+            shadowOffsetY: 1,
+          },
+        },
         coordinateSystem: 'polar',
         name: '风能',
       }],
