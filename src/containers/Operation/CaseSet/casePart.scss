@@ -7,18 +7,15 @@
   flex-direction: column;
 
   .casePartBox {
-
     background-color: $pageBackground;
     display: flex;
-    // flex-direction: column;
     justify-content: space-between;
-    flex: 1 0 auto;
-    width: 100%;
+    flex: 1;
 
     .casePartMain {
       padding: 24px 24px 0;
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       flex: 1 0 auto;
       width: 100%;
 
@@ -26,6 +23,7 @@
         background-color: #fff;
         display: flex;
         flex-direction: column;
+        // flex: 1 0 auto;
         flex: 1;
       }
     }
