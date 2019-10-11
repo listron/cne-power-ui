@@ -159,19 +159,22 @@ class DeviceTable extends PureComponent{
       validCount: '有效值数',
       invalidCount: '无效值数',
       lostCount: '缺失值数',
-    }; // 0 116 28 // 28 0 116
-    // console.log(deviceData);
+    };
     const { pointData = [] } = deviceData[0] || {};
     const extraColum = pointData.map((e, i) => ({
       title: e.pointName,
       dataIndex: `${e.pointCode}`,
-      children: indicators.map(t => ({
-        title: indicatorNames[t],
-        key: `${e.pointCode}.${t}`,
-        dataIndex: `pointData[${i}].${t}`, // huohuohuohuo这个方法倒是有点意思
+      children: indicators.map(indicate => ({
+        title: indicatorNames[indicate],
+        key: `${e.pointCode}.${indicate}`,
+        dataIndex: 'pointData',
         sorter: true,
         width: 110,
-        // render: () => 
+        render: (text, record) => {
+          const { pointData = [] } = record;
+          const pointInfo = pointData.find(point => point.pointCode === e.pointCode) || {};
+          return pointInfo[indicate];
+        },
       })),
       width: 330,
     }));
@@ -184,10 +187,15 @@ class DeviceTable extends PureComponent{
     const { deviceData = [] } = devicesData;
     const { pointData = []} = deviceData[0] || {};
     const actualPoints = pointData.filter(e => deviceCheckedList.includes(e.pointCode)); // 选中测点与实际测点数据的交集才是实际数据列
-    const tableWidth = 410 + actualPoints.length * deviceIndicators.length * 110;
+    const scrollWidth = 410 + actualPoints.length * deviceIndicators.length * 110;
     const dataSource = deviceFilterName ? [deviceData.find(e => e.deviceName === deviceFilterName)] : deviceData; // 图表筛选
+    let tableWidth = '100%', scrollable = { x: scrollWidth };
+    if (this.tableRef && scrollWidth < this.tableRef.offsetWidth) {
+      tableWidth = `${scrollWidth}px`;
+      scrollable = false; // 取消横向滚动
+    }
     return(
-      <div className={styles.devicePoints}>
+      <div className={styles.devicePoints} ref={(ref) => { this.tableRef = ref; }}>
         <div className={styles.pointHandle}>
           <span className={styles.text}>测点</span>
           <AutoSelect
@@ -224,11 +232,12 @@ class DeviceTable extends PureComponent{
           dataSource={dataSource}
           bordered
           pagination={false}
+          style={{ width: tableWidth }}
           loading={{
             spinning: deveiceLoading,
             delay: 300,
           }}
-          scroll={{ x: tableWidth }}
+          scroll={scrollable}
         />
       </div>
     );
