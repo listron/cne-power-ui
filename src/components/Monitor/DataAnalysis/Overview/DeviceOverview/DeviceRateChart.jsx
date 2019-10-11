@@ -10,6 +10,8 @@ class DeviceRateChart extends PureComponent{
     theme: PropTypes.string,
     devicesData: PropTypes.object,
     deveiceLoading: PropTypes.bool,
+    deviceFilterName: PropTypes.string,
+    changeOverviewStore: PropTypes.func,
   }
 
   state = {
@@ -51,7 +53,7 @@ class DeviceRateChart extends PureComponent{
   setChartLoading = () => {
     const rateChart = this.rateRef && echarts.getInstanceByDom(this.rateRef);
     rateChart && rateChart.clear();
-    rateChart && rateChart.showLoading();
+    // rateChart && rateChart.showLoading();
   }
 
   upSorter = () => this.sortChart('up')
@@ -153,7 +155,7 @@ class DeviceRateChart extends PureComponent{
       series: [{
         type: 'bar',
         barWidth: '10px',
-        cursor: 'default',
+        // cursor: 'default',
         itemStyle: {
           color: bar,
         },
@@ -177,8 +179,16 @@ class DeviceRateChart extends PureComponent{
       start: zoomStart,
       end: zoomEnd,
     }]);
-    rateChart.hideLoading();
+    // rateChart.hideLoading();
     rateChart.setOption(option);
+    rateChart.on('click', ({ name }) => {
+      const { deviceFilterName } = this.props;
+      let result = name;
+      if (deviceFilterName === name) {
+        result = null;
+      }
+      this.props.changeOverviewStore({ deviceFilterName: result });
+    });
   }
 
   render(){

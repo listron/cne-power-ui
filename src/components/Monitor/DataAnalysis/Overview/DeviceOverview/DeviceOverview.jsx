@@ -4,14 +4,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Radio, DatePicker } from 'antd';
+import { Radio, DatePicker, Spin } from 'antd';
 import styles from './device.scss';
 import CommonSearch from '../CommonSearch';
 import DeviceRateChart from './DeviceRateChart';
 import DeviceTable from './DeviceTable';
 import searchUtil from '@utils/searchUtil';
 const { MonthPicker } = DatePicker;
-    
+
 class DeviceOverview extends PureComponent{
   static propTypes = {
     theme: PropTypes.string,
@@ -42,17 +42,20 @@ class DeviceOverview extends PureComponent{
       this.props.changeOverviewStore({ // 存储最新参数
         deviceParam: { stationCode, deviceTypeCode, dateType, date },
       });
-      deviceTypes.length === 0 && this.props.getOverviewStation({ // 无电站信息 => 请求;
-        stationCode,
-        pageKey: 'device',
-      });
-      this.props.getPoints({ // 请求测点列表 
-        params: {
-          stationCode, deviceTypeCode, pointTypes: 'YC,YM',
-        },
-        actionName: 'afterDeviceTypePointGet',
-        resultName: 'devicePointsList',
-      });
+      if (deviceTypes.length === 0) { // 无电站信息 => 请求 电站信息后，自动再receiveprops下一步请求;
+        this.props.getOverviewStation({
+          stationCode,
+          pageKey: 'device',
+        });
+      } else { // 加载时就有电站信息 带路径跳转, 直接请求相关测点信息即可
+        this.props.getPoints({ // 请求测点列表 
+          params: {
+            stationCode, deviceTypeCode, pointTypes: 'YC,YM',
+          },
+          actionName: 'afterDeviceTypePointGet',
+          resultName: 'devicePointsList',
+        });
+      }
     }
   }
 
@@ -185,7 +188,7 @@ class DeviceOverview extends PureComponent{
   }
 
   render(){
-    const { deviceParam, deviceTopData, stations, theme } = this.props;
+    const { deviceParam, deviceTopData, stations, theme, deveiceLoading } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = deviceParam;
     return(
       <div className={`${styles.device} ${styles[theme]}`}>
@@ -223,7 +226,9 @@ class DeviceOverview extends PureComponent{
             theme={theme}
           />
         </div>
-        <DeviceRateChart {...this.props} />
+        <Spin spinning={deveiceLoading} size="large" delay={300}>
+          <DeviceRateChart {...this.props} />
+        </Spin>
         <DeviceTable {...this.props} />
       </div>
     );

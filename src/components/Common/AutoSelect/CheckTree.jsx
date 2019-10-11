@@ -33,6 +33,7 @@ export default class CheckTree extends Component{
           key={item.value}
           dataRef={item}
           className={!hasSubChild ? styles.noneChild : null}
+          disabled={!this.props.multiple}
         >
           {this.renderTreeNodes(children)}
         </TreeNode>

@@ -49,7 +49,7 @@ BaseInfo.propTypes = {
 };
 
 const ValueInfo = ({
-  minValue, lowerQuartile, medianValue, upperQuartile, maxValue, maxTheory, minTheory, averageValue, standardDeviation,
+  minValue, lowerQuartile, medianValue, upperQuartile, maxValue, maxTheory, minTheory, averageValue, standardDeviation, pointType
 }) => {
   const tmpValueArr = [
     { value: dataFormats(minValue, '--', 2, true), label: '最小值' },
@@ -76,22 +76,22 @@ const ValueInfo = ({
           </span>
         ))}
       </div>
-      <div className={styles.valuePart}>
+      {pointType === 'YC' && <div className={styles.valuePart}>
         {tmpTheoryArr.map(e => (
           <span key={e.label} className={styles.eachIndicate}>
             <span>{e.label}</span>
             <span>{e.value}</span>
           </span>
         ))}
-      </div>
-      <div className={styles.valuePart}>
+      </div>}
+      {pointType === 'YC' && <div className={styles.valuePart}>
         {tmpAvgArr.map(e => (
           <span key={e.label} className={styles.eachIndicate}>
             <span>{e.label}</span>
             <span>{e.value}</span>
           </span>
         ))}
-      </div>
+      </div>}
     </div>
   );
 };
@@ -106,6 +106,7 @@ ValueInfo.propTypes = {
   minTheory: PropTypes.number,
   averageValue: PropTypes.number,
   standardDeviation: PropTypes.number,
+  pointType: PropTypes.string,
 };
 
 export { BaseInfo, ValueInfo };
