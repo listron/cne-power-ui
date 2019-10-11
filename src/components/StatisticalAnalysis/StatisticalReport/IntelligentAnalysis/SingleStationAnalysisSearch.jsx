@@ -29,8 +29,7 @@ class SingleStationAnalysisSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startTime: moment().subtract(0, 'months').format('YYYY-MM-DD'),
-      stationCode: '',
+      startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
       year: '',
       month: '',
       dateType: '',
@@ -56,14 +55,14 @@ class SingleStationAnalysisSearch extends Component {
   }
 
   selectStation = (selectedStationInfo) => { // 选择电站
-    this.setState({
+    this.props.changeIntelligentAnalysisStore({
       stationCode: selectedStationInfo[0].stationCode,
     });
   }
 
   searchInfo = () => { // 查询
-    const { getSingleStationAnalysis, changeIntelligentAnalysisStore } = this.props;
-    const { dateType, month, year, stationCode } = this.state;
+    const { getSingleStationAnalysis, changeIntelligentAnalysisStore, stationCode } = this.props;
+    const { dateType, month, year } = this.state;
     if (!stationCode) {
       message.error('请选择电站名称！');
       return;
@@ -98,10 +97,11 @@ class SingleStationAnalysisSearch extends Component {
   }
 
   render() {
-    const { stations, reportShow, theme } = this.props;
-    const { stationCode } = this.state;
-    // let station = '';
-    // stationCode ? station = stations.toJS().filter(e => e.stationCode === stationCode) : '';
+    const { stations, stationCode, reportShow, theme } = this.props;
+    let station = '';
+    stationCode ? station = stations.toJS().filter(e => e.stationCode === stationCode) : '';
+    const initStations = stations.toJS().filter(e => e.stationType === 1);
+    console.log(initStations);
     return (
       <div className={`${styles.singleStationAnalysisSearch}`}>
         <div className={styles.searchPart}>
@@ -125,7 +125,8 @@ class SingleStationAnalysisSearch extends Component {
                 refuseDefault={true}
                 value={{
                   timeStyle: 'day',
-                  startTime: null,
+                  startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+                  endTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
                 }}
                 theme={theme}
               />

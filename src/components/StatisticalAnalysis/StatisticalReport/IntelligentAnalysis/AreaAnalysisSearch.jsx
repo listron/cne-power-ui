@@ -93,7 +93,8 @@ class AreaAnalysisSearch extends Component{
                 refuseDefault={true}
                 value={{
                  timeStyle: 'day',
-                 startTime: null,
+                 startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+                 endTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
                 }}
               />
             </div>

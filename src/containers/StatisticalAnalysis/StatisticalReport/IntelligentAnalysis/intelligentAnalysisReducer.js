@@ -7,7 +7,6 @@ const initState = immutable.fromJS({
   dateType: 1, // 时间类型
   reportShow: false, // 显示报告
   stationCode: null, // 选中的电站code
-  stationName:'', // 选中的电站名称
   areaName: null, // 选中的区域
   startTime:null, 
   month: moment().subtract(0, 'months').format('MM'), // 选中的月份 
