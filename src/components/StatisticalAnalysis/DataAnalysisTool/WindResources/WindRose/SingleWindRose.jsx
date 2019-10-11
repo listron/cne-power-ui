@@ -116,8 +116,11 @@ export default class SingleWindRose extends Component{
       },
       tooltip: {
         show: true,
-          padding: 0,
-          formatter: function (params) {
+        padding: 0,
+        axisPointer: { //去掉移动的指示线
+          type: 'none',
+        },
+        formatter: function (params) {
           const { name, data } = params[0];
           return `<div class=${styles.tooltip}>
               <span class=${styles.title}>${name}</span>

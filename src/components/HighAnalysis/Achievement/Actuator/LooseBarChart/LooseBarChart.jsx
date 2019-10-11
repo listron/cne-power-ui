@@ -42,6 +42,16 @@ export default class LooseBarChart extends Component {
       ['#4c9de8', '#2564cc'],
       ['#058447', '#024d22'],
       ['#e024f2', '#bd10e0'],
+      ['#8e89cc', '#3d369a'],
+      ['#b8d876', '#69a920'],
+      ['#d89a84', '#c05740'],
+      ['#e07ea6', '#d73c66'],
+      ['#bbc214', '#9aa812'],
+      ['#b3afd4', '#54509e'],
+      ['#cfbb58', '#aa851e'],
+      ['#b694df', '#7d4fd5'],
+      ['#d490d8', '#b142c0'],
+      ['#e5a9b7', '#d55367'],
     ];
     // 保存最一开始的颜色，选择排序之后不变
     this.constantMode = [];
@@ -69,6 +79,8 @@ export default class LooseBarChart extends Component {
         this.paramsStart = 0;
         this.paramsEnd = 100;
       }
+      // 初始化数组
+      this.constantMode = [];
       eCharts.init(looseBarChart).clear();//清除
       const myChart = eCharts.init(looseBarChart);
       const filterData = this.filterDataFunc(releaseRankData, selectValue);
