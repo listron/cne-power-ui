@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
-import { Icon } from 'antd';
+import { Icon, Spin } from 'antd';
 import { dataFormats } from '@utils/utilFunc';
 import styles from './device.scss';
 
@@ -10,10 +10,12 @@ class DeviceRateChart extends PureComponent{
     theme: PropTypes.string,
     devicesData: PropTypes.object,
     deveiceLoading: PropTypes.bool,
+    deviceFilterName: PropTypes.string,
+    changeOverviewStore: PropTypes.func,
   }
 
   state = {
-    sortType: null, // null未排序, up升序, down降序
+    sortType: 'up', // up升序, down降序 默认设备名称升序排列
   }
 
   componentDidMount(){
@@ -50,8 +52,21 @@ class DeviceRateChart extends PureComponent{
 
   setChartLoading = () => {
     const rateChart = this.rateRef && echarts.getInstanceByDom(this.rateRef);
-    rateChart && rateChart.showLoading();
+    if (rateChart) {
+      this.timerStart = new Date();
+      rateChart.clear();
+      rateChart.showLoading();
+      // setTimeout(() => this.chartLoading(), 200);
+    }
   }
+
+  // chartLoading = () => {
+  //   const { deveiceLoading } = this.props;
+  //   this.timerEnd = new Date();
+  //   console.log(this.timerEnd - this.timerStart);
+  //   console.log(deveiceLoading)
+  //   deveiceLoading && echarts.getInstanceByDom(this.rateRef).showLoading();
+  // }
 
   upSorter = () => this.sortChart('up')
 
@@ -59,19 +74,26 @@ class DeviceRateChart extends PureComponent{
 
   sortChart = (value) => {
     const { sortType } = this.state;
+    if (sortType === value) { // 相同不处理
+      return;
+    }
     const { devicesData, theme } = this.props;
     const { deviceData } = devicesData;
-    const sortResult = value === sortType ? null : value; // 连击取消排序, 否则正常排序
-    this.setState({ sortType: sortResult });
-    this.drawChart(sortResult, deviceData, theme);
+    // const sortResult = value === sortType ? null : value; // 连击取消排序, 否则正常排序
+    this.setState({ sortType: value });
+    this.drawChart(value, deviceData, theme);
   }
 
   drawChart = (sortType, deviceData, theme) => {
     const rateChart = echarts.init(this.rateRef);
-    const sortedData = sortType ? [...deviceData].sort((a, b) => {
+    // const sortedData = sortType ? [...deviceData].sort((a, b) => {
+    //   const sortSign = sortType === 'up' ? 1 : -1;
+    //   return (a.completeRate - b.completeRate) * sortSign;
+    // }) : deviceData;
+    const sortedData = [...deviceData].sort((a, b) => {
       const sortSign = sortType === 'up' ? 1 : -1;
-      return (a.completeRate - b.completeRate) * sortSign;
-    }) : deviceData;
+      return a.deviceSortName && a.deviceSortName.localeCompare(b.deviceSortName) * sortSign;
+    });
     const dataAxis = [], rateData = [];
     sortedData.forEach(e => {
       const { deviceName, completeRate } = e;
@@ -137,15 +159,15 @@ class DeviceRateChart extends PureComponent{
             <div class=${styles.info}>
               <span class=${styles.round}></span>
               <span class=${styles.infoText}>设备数据完整率</span>
-              <span>${dataFormats(value, '--', 2, true)}%</span>
+              <span class=${styles.rateValue}>${dataFormats(value, '--', 2, true)}%</span>
             </div>
           </section>`;
         },
       },
       series: [{
         type: 'bar',
-        barWidth: '10px',
-        cursor: 'default',
+        barWidth: '14px',
+        // cursor: 'default',
         itemStyle: {
           color: bar,
         },
@@ -171,6 +193,14 @@ class DeviceRateChart extends PureComponent{
     }]);
     rateChart.hideLoading();
     rateChart.setOption(option);
+    rateChart.on('click', ({ name }) => {
+      const { deviceFilterName } = this.props;
+      let result = name;
+      if (deviceFilterName === name) {
+        result = null;
+      }
+      this.props.changeOverviewStore({ deviceFilterName: result });
+    });
   }
 
   render(){
@@ -184,6 +214,7 @@ class DeviceRateChart extends PureComponent{
           <div className={styles.num}>{dataFormats(total, '--', 2, true)}%</div>
           <div className={styles.text}>设备数据完整率平均值</div>
         </div>
+        {/* <Spin spinning={true} size="large" delay={400} className={styles.spinStyle} /> */}
         <div className={styles.chart} ref={(ref) => { this.rateRef = ref; }} />
         <div className={styles.sorter}>
           <Icon type="caret-up" style={{color: sortType === 'up' ? activeIcon : '#999' }} onClick={this.upSorter} />

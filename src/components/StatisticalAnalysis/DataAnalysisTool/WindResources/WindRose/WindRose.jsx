@@ -56,7 +56,7 @@ export default class WindRose extends Component{
         const eTime = moment(endTime).format('YYYY-MM-DD');
         const stationArr = stations.filter(e => e.stationCode === stationCode)[0];
         const { stationName } = stationArr;
-        const fileName = `【${stationName}】风向&风能玫瑰图【${sTime}】_【${eTime}】`;
+        const fileName = `${stationName}风向风能玫瑰图${sTime.split('-').join('')}_${eTime.split('-').join('')}`;
         const childFileName = '风向&风能玫瑰图';
         toZip(this.state.newSrcUrl, fileName, childFileName, deviceList);
       } else {

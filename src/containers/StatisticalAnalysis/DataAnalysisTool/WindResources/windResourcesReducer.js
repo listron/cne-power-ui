@@ -7,7 +7,7 @@ var initState = Immutable.fromJS({
   bigWindRoseLoading: false,
   chartLoading: false,
   directionsLoading: false,
-  startTime: moment().subtract(2, 'months').format(),
+  startTime: moment().subtract(1, 'months').startOf('month').format(),
   endTime: moment().format(),
   deviceList: [], // 电站下的设备
   frequencyData: [], // 频率图数据

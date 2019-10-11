@@ -14,6 +14,7 @@ class AutoModal extends Component {
     onValueCheck: PropTypes.func,
     max: PropTypes.number,
     theme: PropTypes.string,
+    multiple: PropTypes.bool,
     disabled: PropTypes.bool,
   }
 
@@ -43,7 +44,7 @@ class AutoModal extends Component {
     // 因为这里checkedTrees，会包含父节点的value，所以length会出现错误，所以过滤一下
     const checkedArr = infoLists.filter(e => checkedTrees.map(cur => (cur.toString())).includes(`${e.value}`));
     if (checkedArr.length > max) {
-      return message.error(`最多选择${max}个设备`);
+      return message.error(`最多选择${max}项`);
     }
     this.setState({ checkedTrees });
   }
@@ -58,7 +59,7 @@ class AutoModal extends Component {
   }
 
   render() {
-    const { data, theme, disabled } = this.props;
+    const { data, theme, disabled, multiple } = this.props;
     const { isShow, checkedTrees } = this.state;
     return (
       <div className={styles.autoModal}>
@@ -75,7 +76,7 @@ class AutoModal extends Component {
         >
           <section className={`${styles.checkModal} ${styles[theme]}`}>
             <h3></h3>
-            <CheckTree data={data} checkedTrees={checkedTrees} onTreeCheck={this.onTreeCheck} />
+            <CheckTree multiple={multiple} data={data} checkedTrees={checkedTrees} onTreeCheck={this.onTreeCheck} />
           </section>
         </Modal>
       </div>

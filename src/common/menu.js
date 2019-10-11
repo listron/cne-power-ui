@@ -224,7 +224,7 @@ const menuData = [
       }, {
         name: '智能专家库',
         path: 'intelligentExpert',
-        iconStyle: 'icon-gd4',
+        iconStyle: 'icon-pro',
         rightKey: 'operation_experience',
       }, {
         name: '案例集',

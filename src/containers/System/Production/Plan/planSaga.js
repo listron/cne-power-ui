@@ -202,12 +202,14 @@ function* importFile(action) {
     });
     const response = yield call(axios.post, url, payload.formData);
     if (response.data.code === '10000') {
+      message.success('批量导入成功');
       yield put({
         type: planAction.GET_PLAN_FETCH_SUCCESS,
         payload: {
           importLoading: false,
         },
       });
+      payload.fn();
       const params = yield select(state => ({//继续请求生产计划列表
         year: state.system.plan.get('planYear'),
         stationCodes: state.system.plan.get('stationCodes'),

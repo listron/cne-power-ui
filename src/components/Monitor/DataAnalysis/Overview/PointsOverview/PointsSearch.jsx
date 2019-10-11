@@ -42,6 +42,7 @@ class PointsSearch extends PureComponent{
             label: '设备',
             children: pointConnectedDevices,
           }]}
+          multiple={false}
           value={[deviceFullcode]}
           onChange={this.deviceCheck}
           style={{width: '200px', marginRight: '8px'}}

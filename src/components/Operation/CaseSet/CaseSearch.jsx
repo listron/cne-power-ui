@@ -23,12 +23,15 @@ class CaseSearch extends React.Component {
     stationCodes: PropTypes.array,
     orderFiled: PropTypes.string,
     orderType: PropTypes.string,
-    pageSize: PropTypes.string,
-    pageNum: PropTypes.string,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
   }
   constructor(props, context) {
     super(props, context);
-
+    this.state = {
+      userValue: '',
+      userId: null,
+    };
   }
   componentDidMount() {
     this.getList();
@@ -66,15 +69,24 @@ class CaseSearch extends React.Component {
         userName: value,
       });
     }
-
-
   }
-
   changePerson = (value) => {
-    this.props.changeCasePartStore({
-      userId: value,
+    this.setState({
+      userValue: value,
     });
-    // this.getList({ userId: value });
+    if (value) {
+      const userId = value.split('__')[1];
+      this.setState({
+        userId,
+      });
+      // this.props.changeCasePartStore({
+      //   userId,
+      // });
+    } else {
+      this.props.changeCasePartStore({
+        userId: null,
+      });
+    }
   }
   onReset = () => {
     const initValue = {
@@ -83,24 +95,34 @@ class CaseSearch extends React.Component {
       userId: null,
     };
     this.props.changeCasePartStore(initValue);
+    this.setState({
+      userValue: null,
+    });
     this.getList(initValue);
   }
   onSearch = () => {
-    this.getList();
+    const { userId } = this.state;
+    this.props.changeCasePartStore({
+      userId,
+    });
+    this.getList({ userId });
   }
   getList = (value) => {
     const { getCasePartList, faultDescription, userName, userId, questionTypeCodes, deviceModeList, stationCodes, orderFiled, orderType, pageSize, pageNum } = this.props;
     const params = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, orderFiled, orderType, pageSize, pageNum };
     getCasePartList({
       ...params,
+      pageSize: 10,
+      pageNum: 1,
       ...value,
     });
   }
 
   render() {
     const { stations, deviceModeData, questionTypeList, userData, faultDescription, userName, userId } = this.props;
+    const { userValue } = this.state;
     const stationsData = stations ? stations.filter(e => (e.stationType === 0)) : [];
-    const showResetBtn = faultDescription || userName;
+    const showResetBtn = faultDescription || userName || userValue;
     return (
       <div className={styles.caseSearch}>
         <FilterCondition
@@ -143,7 +165,7 @@ class CaseSearch extends React.Component {
             allowClear
             placeholder="请输入..."
             className={styles.entryPerson}
-            value={userId}
+            value={userValue}
             showArrow={false}
             optionFilterProp="children"
             onSearch={this.entryPerson}
@@ -153,7 +175,7 @@ class CaseSearch extends React.Component {
             }
           >
             {userData && userData.map(e => {
-              return <Option key={e} value={e.userId}>{e.userName}</Option>;
+              return <Option key={e.userId} value={e.userId}>{e.userName}</Option>;
             })}
           </Select>
           <Button className={styles.searchBtn} onClick={this.onSearch}>查询</Button>

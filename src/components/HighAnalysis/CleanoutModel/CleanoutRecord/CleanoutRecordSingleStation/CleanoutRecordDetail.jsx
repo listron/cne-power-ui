@@ -76,9 +76,9 @@ class CleanoutRecordDetail extends Component {
 
     });
   }
-  radioChange = (e) => {
+  changeCleanType = (e) => {
     const { changeCleanoutRecordStore, getDetailList, singleStationCode, cleanType, detailPageNum, detailPageSize } = this.props;
-    console.log('cleanType:', cleanType);
+    console.log('cleanType: ', cleanType);
     changeCleanoutRecordStore({ cleanType: e.target.value });
     getDetailList({ stationCode: singleStationCode, cleanType: e.target.value, pageNum: detailPageNum, pageSize: detailPageSize });
   }
@@ -195,7 +195,7 @@ class CleanoutRecordDetail extends Component {
             </div>
             <div className={styles.wrap}>
               <div className={styles.filterData}>
-                <Radio.Group value={this.props.cleanType} buttonStyle="solid" onChange={this.radioChange}>
+                <Radio.Group value={this.props.cleanType} buttonStyle="solid" onChange={this.changeCleanType}>
                   <Radio.Button value={0}>全部</Radio.Button>
                   <Radio.Button value={1}>人工{handCleanNum}</Radio.Button>
                   <Radio.Button value={2}>下雨{rainCleanNum}</Radio.Button>

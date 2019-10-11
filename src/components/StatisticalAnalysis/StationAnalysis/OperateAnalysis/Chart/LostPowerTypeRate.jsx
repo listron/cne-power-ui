@@ -13,55 +13,34 @@ class LostPowerTypeRate extends React.Component {
     this.drawCharts(nextProps);
   }
 
-  getName = (type) => { // 根据类型，匹配name
-    let name = '';
-    switch (type) {
-      case 'limit': name = '限电'; break;
-      case 'eletric': name = '变电故障'; break;
-      case 'plane': name = '计划停机'; break;
-      case 'system': name = '光伏发电系统故障'; break;
-      case 'other': name = '场外因素'; break;
-    }
-    return name;
-  }
+  // getName = (type) => { // 根据类型，匹配name
+  //   let name = '';
+  //   switch (type) {
+  //     case 'limit': name = '限电'; break;
+  //     case 'eletric': name = '变电故障'; break;
+  //     case 'plane': name = '计划停机'; break;
+  //     case 'system': name = '光伏发电系统故障'; break;
+  //     case 'other': name = '场外因素'; break;
+  //   }
+  //   return name;
+  // }
 
-  getColor = {
-    'light': {
-      'limit': '#f9b600',
-      'eletric': '#999999',
-      'plane': '#199475',
-      'system': '#c7ceb2',
-      'other': '#a42b2c',
-    },
-    'dark': {
-      'limit': '#f8b14e',
-      'eletric': '#f8e71c',
-      'plane': '#ff73f4',
-      'system': '#ff7878',
-      'other': '#00f0ff',
-    },
-  }
 
   drawCharts = (params) => {
-    const { graphId, data, hasData, theme } = params;
-    let targetPieChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    const { data = [], hasData, theme } = params;
+    let targetPieChart = echarts.init(this.chart, themeConfig[theme]);
     if (targetPieChart) {
       targetPieChart.dispose();
-      targetPieChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+      targetPieChart = echarts.init(this.chart, themeConfig[theme]);
     }
     const color = ['#f9b600', '#999999', '#199475', '#c7ceb2', '#a42b2c', '#ceebe0'];
-    const seriesData = [];
-    for (var type in data) {
-      if (type !== 'date') {
-        seriesData.push({
-          name: this.getName(type),
-          value: +data[type] === 0 ? '' : data[type],
-          itemStyle: {
-            color: type && this.getColor[theme][type] || '#ceebe0',
-          },
-        });
-      }
-    }
+    const darkColor = ['#f8b14e', '#f8e71c', '#ff73f4', '#ff7878', '#00f0ff'];
+    const seriesData = data.map(e => {
+      return {
+        name: e.faultName,
+        value: +e.lostGen === 0 ? '' : e.lostGen,
+      };
+    });
     const graphic = chartsNodata(hasData, theme);
     const targetPieOption = {
       graphic: graphic,
@@ -79,7 +58,7 @@ class LostPowerTypeRate extends React.Component {
           );
         },
       },
-      color: color,
+      color: theme === 'dark' ? darkColor : color,
       series: [
         {
           name: '发电量',
@@ -109,9 +88,8 @@ class LostPowerTypeRate extends React.Component {
   }
 
   render() {
-    const { graphId } = this.props;
     return (
-      <div id={graphId} style={{ height: 260 }}> </div>
+      <div style={{ height: 260 }} ref={ref => { this.chart = ref; }} />
     );
   }
 }

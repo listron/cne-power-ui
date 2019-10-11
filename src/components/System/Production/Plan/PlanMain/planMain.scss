@@ -221,6 +221,11 @@
         font-size: 14px;
       }
     }
+    :global {
+      .ant-upload-list-item {
+        text-align: left;
+      }
+    }
   }
   :global {
     .ant-modal-body {

@@ -55,6 +55,30 @@
   .windPower{
     left: 73%;
   }
+
+  .firstInfo, .secondInfo{
+    width: 50%;
+    height: 44px;
+    position: absolute;
+    top: 128px;
+    z-index: 1;
+    @include lineheight(44px);
+    display: flex;
+    justify-content: center;
+    div{
+      width: 128px;
+      border-radius: 4px;
+      text-align: center;
+    }
+  }
+
+  .firstInfo{
+    left: 0;
+  }
+
+  .secondInfo{
+    right: 0;
+  }
 }
 
 .tooltip {
@@ -117,6 +141,25 @@
           width: 100%;
           height: 580px;
         }
+
+        .firstBigInfo, .secondBigInfo{
+          border-radius: 4px;
+          width: 128px;
+          height: 44px;
+          text-align: center;
+          position: absolute;
+          top: 266px;
+          z-index: 1;
+          @include lineheight(44px);
+        }
+
+        .firstBigInfo{
+          left: 232px;
+        }
+
+        .secondBigInfo{
+          right: 232px;
+        }
       }
 
       .chartWrap {
@@ -140,10 +183,25 @@
 }
 
 .chartWrap {
+
+  .firstInfo, .secondInfo{
+    div{
+      background: rgba(0,0,0,0.50);
+      color: #fff;
+    }
+  }
+
   .showModalIcon {
     &:hover {
       color: $themeColor;
     }
+  }
+}
+
+.bigWindRoseBox{
+  .firstBigInfo, .secondBigInfo{
+    background: rgba(0,0,0,0.50);
+    color: #fff;
   }
 }
 

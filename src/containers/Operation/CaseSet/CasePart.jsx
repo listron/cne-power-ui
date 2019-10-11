@@ -20,7 +20,7 @@ class CasePart extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      showSidePage: 'add',
+      showSidePage: '',
     };
   }
   componentWillUnmount() {
@@ -45,6 +45,8 @@ class CasePart extends Component {
               <CaseHanlde {...this.props} />
               <CaseList {...this.props} />
             </div>
+
+
           </div>
           <TransitionContainer
             show={showPage !== 'list'}
@@ -55,6 +57,8 @@ class CasePart extends Component {
           >
             <CasePartSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
           </TransitionContainer>
+
+
 
         </div>
         <Footer />

@@ -79,15 +79,17 @@ class AddNextStep extends React.Component {
     return data;
   }
   validatorMax = (rule, value, callback) => {
+
     const minTheoryValue = this.props.form.getFieldValue('minTheory');
     rule.pattern = /^(-?\d+)(\.\d+)?$/;
     if (!rule.pattern.test(value)) {
       callback(rule.message);
     }
-    if (+value < +minTheoryValue) {
-      rule.message = '不能小于最小偏差值';
+    if (+minTheoryValue && +value < +minTheoryValue) {
+      rule.message = '不能小于最小理论值';
       callback(rule.message);
     }
+    this.props.form.setFieldsValue({ 'minTheory': minTheoryValue });
     callback();
   }
   validatormin = (rule, value, callback) => {
@@ -96,16 +98,16 @@ class AddNextStep extends React.Component {
     if (!rule.pattern.test(value)) {
       callback(rule.message);
     }
-    if (+value > +maxTheoryValue) {
-      rule.message = '不能大于最大偏差值';
+    if (+maxTheoryValue && +value > +maxTheoryValue) {
+      rule.message = '不能大于最大理论值';
       callback(rule.message);
     }
+    this.props.form.setFieldsValue({ 'maxTheory': maxTheoryValue });
     callback();
   }
   render() {
     const { showPage, payloadData, pointDetail = {} } = this.props;
     const { showDesc } = this.state;
-
     const domData = showPage === 'add' ? showleftInfo(payloadData) : showleftInfo(pointDetail);
     const { getFieldDecorator } = this.props.form;
     return (

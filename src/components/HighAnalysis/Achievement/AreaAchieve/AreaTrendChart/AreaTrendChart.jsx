@@ -61,8 +61,8 @@ export default class AreaTrendChart extends Component {
       myChart.on('click', (param) => this.chartHandle(myChart, trendInfo, param));
       myChart.off('datazoom');
       myChart.on('datazoom', (params) => {
-        this.paramsStart = params.start;
-        this.paramsEnd = params.end;
+        this.paramsStart = typeof(params.start) === 'number' ? params.start : params.batch[0].start;
+        this.paramsEnd = typeof(params.end) === 'number' ? params.end : params.batch[0].end;
       });
     }
   }

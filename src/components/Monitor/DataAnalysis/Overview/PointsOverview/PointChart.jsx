@@ -122,7 +122,7 @@ class PointChart extends PureComponent{
   render(){
     return(
       <section className={styles.histogramChart}>
-        <h3>有效值分布图</h3>
+        <h3 className={styles.chartTitle}>有效值分布图</h3>
         <div className={styles.chart} ref={(ref) => { this.histogramRef = ref; }} />
       </section>
     );

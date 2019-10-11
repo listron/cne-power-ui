@@ -21,6 +21,7 @@ export default class AllStations extends Component{
     const dataList = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
     return(
       <div className={`${styles.allStationBox}  ${styles[theme]} `}>
+        <div className={styles.boxTitle}>风电站列表<span>(点击查看风资源)</span></div>
         <div className={styles.boxCard}>
           {dataList.map((e, i) => (
             <div className={styles.stationCard} key={i.toString()} onClick={(() => this.selectStation(e.stationCode))}>{e.stationName}</div>

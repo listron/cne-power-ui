@@ -108,7 +108,7 @@ class DefectList extends Component {
       e.list && e.list.length > 0 && e.list.forEach((lastItem) => {
         lastItem.parentName = e.name;
       });
-      defectTypeList = [...defectTypeList, ...e.list];
+      defectTypeList = e.list && [...defectTypeList, ...e.list] || [...defectTypeList];
     });
     return (
       <div className={`${styles.defectList} ${styles[theme]}`}>

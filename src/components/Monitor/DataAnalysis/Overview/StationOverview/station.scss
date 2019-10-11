@@ -48,6 +48,12 @@
   }
   .calendar{
     padding: 0 48px;
+    .loadingSpin{
+      display: flex;
+      height: 525px;
+      align-items: center;
+      justify-content: center;
+    }
     .weekdays{
       display: flex;
       height: 46px;
@@ -71,10 +77,23 @@
       padding-right: 12px;
       align-items: flex-end;
       .monthDay{
+        width: 100%;
         flex: 0 0 60px;
         line-height: 60px;
         font-size: 30px;
         pointer-events: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .today{
+        border-radius:2px;
+        flex-basis:38px;
+        height: 21px;
+        line-height: 21px;
+        text-align: center;
+        font-size: 14px;
+        margin-left: 20px;
       }
       .rateData{
         flex: 1;
@@ -117,13 +136,16 @@
     }
     .calendar{
       .eachDay{
-        border-bottom: 2px solid #fff;
-        border-right: 2px solid #fff;
+        border: 1px solid #fff;
         background-color:#f8f8f8;
         color: #dfdfdf;
         &:hover{
           z-index: 99;
           box-shadow:0 0 4px 2px rgba(0,0,0,0.30);
+        }
+        .today{
+          background:#f9b600;
+          color: #fff;
         }
       }
     }
@@ -167,6 +189,10 @@
         &:hover{
           z-index: 99;
           box-shadow:0 0 4px 2px rgba(0,0,0,0.30);
+        }
+        .today{
+          background:#f9b600;
+          color: #fff;
         }
       }
     }

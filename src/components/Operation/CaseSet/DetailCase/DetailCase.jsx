@@ -81,7 +81,7 @@ class DetailCase extends React.Component {
       { name: '所需工具', value: data.requiredTools },
       { name: '反馈人', value: data.feedbackUserName },
       { name: '联系方式', value: data.feedbackUserPhone },
-      { name: '上传附件', value: data.annexs && data.annexs },
+      { name: '上传附件', value: data.annexs ? data.annexs : [] },
       // { name: '上传附件', value: data.annexs && data.annexs.map(e => (e.annex)) },
       { name: '填报人', value: data.createUserName },
       { name: '联系方式', value: data.createUserPhone },
@@ -131,12 +131,13 @@ class DetailCase extends React.Component {
                 <div key={e.name} className={styles.eachInfo} key={`${e.name}${i}`} >
                   <div className={styles.infoName}>{e.name}</div>
                   {e.name === '上传附件' ? <div className={styles.downHref}>
-                    {e.value && e.value.map((item, i) => (<a
+                    {(e.value && e.value.length) ? e.value.map((item, i) => (<a
                       // href={`${originUri}${item.url}`} download={`${originUri}${item.url}`} 
                       onClick={() => this.downFile(item.url, item.name)}
                       target="_blank"
                       key={i}
-                    ><span>{`${item.name}`} 【点击下载】</span></a>))}
+                    ><span>{`${item.name}`} 【点击下载】{i === (e.value.length - 1) ? '' : '、'}</span>
+                    </a>)) : '无'}
                   </div> : <div
                     className={styles.infoValue}
                     title={`${value}${e.unit || ''}`}
