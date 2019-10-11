@@ -29,6 +29,11 @@ class SingleStationAnalysisSearch extends Component {
     super(props);
     this.state = {
       startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+      stationCode: '',
+      stationName: '',
+      year: '',
+      month: '',
+      dateType: '',
     };
   }
 
@@ -50,6 +55,9 @@ class SingleStationAnalysisSearch extends Component {
       month: moment(startTime).format('M'),
       year: moment(startTime).format('YYYY'),
     };
+    this.setState({
+      ...prams,
+    });
     changeIntelligentAnalysisStore({
       ...prams,
     });
@@ -66,12 +74,12 @@ class SingleStationAnalysisSearch extends Component {
     const { startTime, timeStyle } = value;
     changeIntelligentAnalysisStore({ startTime });
     if (timeStyle === 'month') {
-      changeIntelligentAnalysisStore({
+      this.setState({
         dateType: 2,
         year: moment(startTime).format('YYYY'),
       });
     } else if (timeStyle === 'day') {
-      changeIntelligentAnalysisStore({
+      this.setState({
         dateType: 1,
         year: moment(startTime).format('YYYY'),
         month: moment(startTime).format('M'),
@@ -80,14 +88,15 @@ class SingleStationAnalysisSearch extends Component {
   }
 
   selectStation = (selectedStationInfo) => { // 选择电站
-    this.props.changeIntelligentAnalysisStore({
+    this.setState({
       stationCode: selectedStationInfo[0].stationCode,
       stationName: selectedStationInfo[0].stationName,
     });
   }
 
   searchInfo = () => { // 查询
-    const { getSingleStationAnalysis, changeIntelligentAnalysisStore, stationCode, stationName, year, month, dateType } = this.props;
+    const { getSingleStationAnalysis, changeIntelligentAnalysisStore } = this.props;
+    const { dateType, month, year, stationCode, stationName } = this.state;
     if (!stationCode) {
       message.error('请选择电站名称！');
       return;
@@ -123,7 +132,8 @@ class SingleStationAnalysisSearch extends Component {
   }
 
   render() {
-    const { stations, stationCode, reportShow, theme } = this.props;
+    const { stations, reportShow, theme } = this.props;
+    const { stationCode } = this.state;
     let station = '';
     stationCode ? station = stations.filter(e => e.stationCode === stationCode) : '';
     return (

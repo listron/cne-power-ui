@@ -22,7 +22,7 @@
 	},
 	"test": {
 		"htUrl": "http://10.10.11.3",
-		"apiUrlReal": "http://10.10.15.83",
+		"apiUrlReal": "https://epower.astronergy.com",
 		"signalrReal": "http://dev-api.cnecloud.cn"
 	},
 	"official": {

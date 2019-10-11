@@ -77,7 +77,7 @@ class AreaAnalysisReport extends Component{
                 <span>计划完成率最低的三个区域为</span>
                 <span className={styles.text}>{genRegionNameList.map(e => e).join('、')}</span>
                 <span>。</span>
-              </p> 
+              </p>
 
               <GenRegionDataList genRegionDataList={genRegionDataList} />
 

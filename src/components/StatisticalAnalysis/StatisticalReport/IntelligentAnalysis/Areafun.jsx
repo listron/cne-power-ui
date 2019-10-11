@@ -95,8 +95,8 @@ export const GenRegionDataList = ({genRegionDataList}) => {
   return(
     <div>
       {genRegionDataList.map((e, i) => (
-        <p className={styles.bigText}>
-          <p>
+        <p>
+          <p className={styles.bigText}>
             <span>（{i + 1}）</span>
             <span className={styles.text}>{e.regionName || '--'}</span>
             <span>区域完成率低的三个电站及原因说明：</span>
@@ -165,73 +165,24 @@ export const LostRegionDataList = ({lostRegionDataList}) => {
 
             <div className={styles.electricitys}>
               <p className={styles.titlesText}>损失电量等效小时数</p>
-              <p className={styles.text}>{dataFormats(e.faultData.courtLostHours, '--', 2, true) || '--'}</p>
-              <p className={styles.text}>{dataFormats(e.faultData.lowVoltageLostHours, '--', 2, true) || '--'}</p>
-              <p className={styles.text}>{dataFormats(e.faultData.substationLostHours, '--', 2, true) || '--'}</p>
-              <p className={styles.text}>{dataFormats(e.faultData.outPutLostHours, '--', 2, true) || '--'}</p>
-              <p className={styles.text}>{dataFormats(e.faultData.twiceLostHours, '--', 2, true) || '--'}</p>
-              <p className={styles.text}>{dataFormats(e.faultData.otherLostHours, '--', 2, true) || '--'}</p>
+              <p>{dataFormats(e.faultData.courtLostHours, '--', 2, true) || '--'}</p>
+              <p>{dataFormats(e.faultData.lowVoltageLostHours, '--', 2, true) || '--'}</p>
+              <p>{dataFormats(e.faultData.substationLostHours, '--', 2, true) || '--'}</p>
+              <p>{dataFormats(e.faultData.outPutLostHours, '--', 2, true) || '--'}</p>
+              <p>{dataFormats(e.faultData.twiceLostHours, '--', 2, true) || '--'}</p>
+              <p>{dataFormats(e.faultData.otherLostHours, '--', 2, true) || '--'}</p>
             </div>
 
             <div className={styles.ratios}>
               <p className={styles.titlesText}>占比</p>
-              <p className={styles.text}>{dataFormats(e.faultData.courtLostHoursRate, '--', 2,true) || '--'}</p>
-              <p className={styles.text}>{dataFormats(e.faultData.lowVoltageLostHoursRate, '--', 2, true) || '--'}</p>
-              <p className={styles.text}>{dataFormats(e.faultData.substationLostHoursRate, '--', 2, true) || '--'}</p>
-              <p className={styles.text}>{dataFormats(e.faultData.outPutLostHoursRate, '--', 2, true) || '--'}</p>
-              <p className={styles.text}>{dataFormats(e.faultData.twiceLostHoursRate, '--', 2, true) || '--'}</p>
-              <p className={styles.text}>{dataFormats(e.faultData.otherLostHoursRate, '--', 2, true) || '--'}</p>
+              <p>{dataFormats(e.faultData.courtLostHoursRate, '--', 2,true) || '--'}</p>
+              <p>{dataFormats(e.faultData.lowVoltageLostHoursRate, '--', 2, true) || '--'}</p>
+              <p>{dataFormats(e.faultData.substationLostHoursRate, '--', 2, true) || '--'}</p>
+              <p>{dataFormats(e.faultData.outPutLostHoursRate, '--', 2, true) || '--'}</p>
+              <p>{dataFormats(e.faultData.twiceLostHoursRate, '--', 2, true) || '--'}</p>
+              <p>{dataFormats(e.faultData.otherLostHoursRate, '--', 2, true) || '--'}</p>
             </div>
           </div>
-
-          {/* <p className={styles.distanceBottom}>
-            <p>
-              <span>1）外部故障损失电量等效时为</span>
-              <span className={styles.text}>{dataFormats(e.faultData.courtLostHours, '--', 2, true) || '--'}</span>
-              <span>h，占比</span>
-              <span className={styles.text}>{dataFormats(e.faultData.courtLostHoursRate, '--', 2,true) || '--'}</span>
-              <span>%，其中</span>
-              <span className={styles.text}>{e.faultData.maxFaultName || '--'}</span>
-              <span>占比最高，为</span>
-              <span className={styles.text}>{dataFormats(e.faultData.maxLostHoursRate, '--', 2, true) || '--'}</span>
-              <span>%；</span>
-            </p>
-            <p>
-              <span>2）低压直流故障损失电量等效时为</span>
-              <span className={styles.text}>{dataFormats(e.faultData.lowVoltageLostHours, '--', 2, true) || '--'}</span>
-              <span>h，占比</span>
-              <span className={styles.text}>{dataFormats(e.faultData.lowVoltageLostHoursRate, '--', 2, true) || '--'}</span>
-              <span>%；</span>
-            </p>
-            <p>
-              <span>3）变电系统故障损失电量等效时为</span>
-              <span className={styles.text}>{dataFormats(e.faultData.substationLostHours, '--', 2, true) || '--'}</span>
-              <span>h，占比</span>
-              <span className={styles.text}>{dataFormats(e.faultData.substationLostHoursRate, '--', 2, true) || '--'}</span>
-              <span>%；</span>
-            </p>
-            <p>
-              <span>4）输电系统故障损失电量等效时为</span>
-              <span className={styles.text}>{dataFormats(e.faultData.outPutLostHours, '--', 2, true) || '--'}</span>
-              <span>h，占比</span>
-              <span className={styles.text}>{dataFormats(e.faultData.outPutLostHoursRate, '--', 2, true) || '--'}</span>
-              <span>%；</span>
-            </p>
-            <p>
-              <span>5）二次及有功无功控制系统故障损失电量等效时为</span>
-              <span className={styles.text}>{dataFormats(e.faultData.twiceLostHours, '--', 2, true) || '--'}</span>
-              <span>h，占比</span>
-              <span className={styles.text}>{dataFormats(e.faultData.twiceLostHoursRate, '--', 2, true) || '--'}</span>
-              <span>%；</span>
-            </p>
-            <p>
-              <span>6）其他故障损失电量等效时为</span>
-              <span className={styles.text}>{dataFormats(e.faultData.otherLostHours, '--', 2, true) || '--'}</span>
-              <span>h，占比</span>
-              <span className={styles.text}>{dataFormats(e.faultData.otherLostHoursRate, '--', 2, true) || '--'}</span>
-              <span>%。</span>
-            </p>
-          </p> */}
         </p>
       ))}
     </div>

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './intelligentAnalysis.scss';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
@@ -15,8 +15,6 @@ class AreaStationSearch extends Component {
 
   static propTypes = {
     stations: PropTypes.array,
-    regionName: PropTypes.string,
-    startTime: PropTypes.string,
     changeIntelligentAnalysisStore: PropTypes.func,
     getAreaStation: PropTypes.func,
     downLoadFile: PropTypes.func,
@@ -30,7 +28,7 @@ class AreaStationSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      regionName: '',
+      areaName: '',
       year: '',
       month: '',
       dateType: '',
@@ -56,6 +54,9 @@ class AreaStationSearch extends Component {
       month: moment(startTime).format('M'),
       year: moment(startTime).format('YYYY'),
     };
+    this.setState({
+      ...prams,
+    });
     changeIntelligentAnalysisStore({
       ...prams,
     });
@@ -69,12 +70,12 @@ class AreaStationSearch extends Component {
     const { startTime, timeStyle } = value;
     changeIntelligentAnalysisStore({ startTime });
     if (timeStyle === 'month') {
-      changeIntelligentAnalysisStore({
+      this.setState({
         dateType: 2,
         year: moment(startTime).format('YYYY'),
       });
     } else if (timeStyle === 'day') {
-      changeIntelligentAnalysisStore({
+      this.setState({
         dateType: 1,
         year: moment(startTime).format('YYYY'),
         month: moment(startTime).format('M'),
@@ -83,15 +84,14 @@ class AreaStationSearch extends Component {
   }
 
   selectArea = (selectAreaName) => { // 选择区域
-    console.log('selectAreaName: ', selectAreaName);
-    this.props.changeIntelligentAnalysisStore({
+    this.setState({
       areaName: selectAreaName,
     });
   }
 
   searchInfo = () => { // 查询
-    const { getAreaStation, changeIntelligentAnalysisStore, year, month, dateType, areaName } = this.props;
-    console.log('areaName: ', areaName);
+    const { getAreaStation, changeIntelligentAnalysisStore } = this.props;
+    const { year, month, dateType, areaName } = this.state;
     if (!areaName) {
       message.error('请选择区域名称！');
       return;
@@ -126,7 +126,8 @@ class AreaStationSearch extends Component {
   }
 
   render() {
-    const { stations, reportShow, areaName } = this.props;
+    const { stations, reportShow } = this.props;
+    const { areaName } = this.state;
     let areaNames = '';
     areaName ? areaNames = areaName : '';
 

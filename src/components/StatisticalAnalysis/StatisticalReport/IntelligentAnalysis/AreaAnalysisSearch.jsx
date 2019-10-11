@@ -1,4 +1,4 @@
-import React,{ Component } from "react";
+import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import path from '../../../../constants/path';
 import styles from './intelligentAnalysis.scss';
@@ -25,6 +25,9 @@ class AreaAnalysisSearch extends Component{
     super(props);
     this.state = {
       startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+      year: '',
+      month: '',
+      dateType: '',
     };
   }
 
@@ -40,6 +43,9 @@ class AreaAnalysisSearch extends Component{
       month: moment(startTime).format('M'),
       year: moment(startTime).format('YYYY'),
     };
+    this.setState({
+      ...prams,
+    });
     changeIntelligentAnalysisStore({
       ...prams,
     });
@@ -55,12 +61,12 @@ class AreaAnalysisSearch extends Component{
     const { startTime, timeStyle } = value;
     changeIntelligentAnalysisStore({ startTime });
     if(timeStyle === 'month'){
-      changeIntelligentAnalysisStore({
+      this.setState({
         dateType: 2,
         year: moment(startTime).format('YYYY'),
       });
     }else if(timeStyle === 'day'){
-      changeIntelligentAnalysisStore({
+      this.setState({
         dateType: 1,
         year: moment(startTime).format('YYYY'),
         month: moment(startTime).format('M'),
@@ -69,7 +75,8 @@ class AreaAnalysisSearch extends Component{
   }
 
   searchInfo = () => { // 查询
-    const { getArea, changeIntelligentAnalysisStore, year, month, dateType } = this.props;
+    const { getArea, changeIntelligentAnalysisStore } = this.props;
+    const { year, month, dateType } = this.state;
     if (!moment(year).isValid()) {
       message.error('请选择统计时间！');
       return;
@@ -91,9 +98,9 @@ class AreaAnalysisSearch extends Component{
       url,
       fileName: `区域对比分析报告`,
       params: {
-        dateType, year, month
+        dateType, year, month,
       },
-    })
+    });
   }
 
   render(){
