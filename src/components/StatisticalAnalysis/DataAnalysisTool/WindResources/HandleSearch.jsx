@@ -34,6 +34,7 @@ export default class HandleSearch extends Component {
         return current && current > moment().subtract(1, 'month');
       },
       downLoadding: false,
+      timeInfoFlag: false,
     };
   }
 
@@ -53,8 +54,6 @@ export default class HandleSearch extends Component {
   };
 
   onCalendarChange = (dates) => {
-    console.log('1111111');
-    console.log(dates, 'dates');
     if (dates.length === 1) {
       this.setState({ // 时间跨度不超过12个月
         disableDateFun: (current) => {
@@ -72,16 +71,35 @@ export default class HandleSearch extends Component {
 
   //改时间
   handlePanelChange = value => {
-    console.log(value, 'value');
-    const { changeWindResourcesStore } = this.props;
-    changeWindResourcesStore({
-      startTime: moment(value[0]).format(dateFormat),
-      endTime: moment(value[1]).format(dateFormat),
+    const { changeWindResourcesStore, startTime, endTime } = this.props;
+    const startValueTime = moment(value[0]).format(dateFormat);
+    const endValueTime = moment(value[1]).format(dateFormat);
+    const propsStartTime = moment(startTime).format(dateFormat);
+    const propsEndTime = moment(endTime).format(dateFormat);
+    // 时间差
+    const timeDiff = moment(endValueTime).diff(moment(startValueTime), 'month');
+    // 判断开始时间发生改变，结束时间没变
+    if(startValueTime !== propsStartTime && propsEndTime === endValueTime && timeDiff > 12) {
+      return this.setState({timeInfoFlag: true});
+    }
+    // 判断结束时间发生改变，开始时间没变
+    if(startValueTime === propsStartTime && propsEndTime !== endValueTime && timeDiff > 12) {
+      return this.setState({timeInfoFlag: true});
+    }
+    // 判断时间都发生改变
+    if(startValueTime !== propsStartTime && propsEndTime !== endValueTime && timeDiff > 12){
+      return this.setState({timeInfoFlag: true});
+    }
+    this.setState({timeInfoFlag: false}, () => {
+      changeWindResourcesStore({
+        startTime: startValueTime,
+        endTime: endValueTime,
+      });
     });
   };
 
-  handleOpenChange = (status) => {
-    console.log(status, 'status');
+  handleOpenChange = () => {
+    this.setState({timeInfoFlag: false});
   };
 
   onSearch = () => {
@@ -136,7 +154,7 @@ export default class HandleSearch extends Component {
 
   render() {
     const {stationCode, stations, startTime, endTime, isClick} = this.props;
-    const {disableDateFun, downLoadding} = this.state;
+    const {disableDateFun, downLoadding, timeInfoFlag} = this.state;
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
     return (
       <div className={styles.handleSeach}>
@@ -158,6 +176,11 @@ export default class HandleSearch extends Component {
             onOpenChange={this.handleOpenChange}
             onPanelChange={this.handlePanelChange}
             style={{width: '240px'}}
+            renderExtraFooter={() => (
+              <span className={styles.infoTip}>
+                {timeInfoFlag && '时间选择范围不可超过12个月'}
+              </span>
+            )}
           />
           <Button className={styles.seachBtn} onClick={this.onSearch}>查询</Button>
         </div>
