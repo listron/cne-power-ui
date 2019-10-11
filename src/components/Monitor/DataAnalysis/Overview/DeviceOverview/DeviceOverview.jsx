@@ -4,7 +4,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Radio, DatePicker, Spin } from 'antd';
+import { Radio, DatePicker } from 'antd';
 import styles from './device.scss';
 import CommonSearch from '../CommonSearch';
 import DeviceRateChart from './DeviceRateChart';
@@ -188,7 +188,7 @@ class DeviceOverview extends PureComponent{
   }
 
   render(){
-    const { deviceParam, deviceTopData, stations, theme, deveiceLoading } = this.props;
+    const { deviceParam, deviceTopData, stations, theme } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = deviceParam;
     return(
       <div className={`${styles.device} ${styles[theme]}`}>
@@ -226,9 +226,7 @@ class DeviceOverview extends PureComponent{
             theme={theme}
           />
         </div>
-        <Spin spinning={deveiceLoading} size="large" delay={300}>
-          <DeviceRateChart {...this.props} />
-        </Spin>
+        <DeviceRateChart {...this.props} />
         <DeviceTable {...this.props} />
       </div>
     );
