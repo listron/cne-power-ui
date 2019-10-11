@@ -11,7 +11,7 @@ class AreaAnalysisReport extends Component{
     dateType: PropTypes.number,
     month: PropTypes.string,
     year: PropTypes.string,
-    areaInfo:PropTypes.object
+    areaInfo: PropTypes.object,
   };
 
   render(){
@@ -26,33 +26,33 @@ class AreaAnalysisReport extends Component{
 
     return(
       <div className={styles.analysisReport}>
-        {dateType === 1 ? 
+        {dateType === 1 ?
           <div className={styles.monthReportContent}>
             <div className={styles.titleText}>
               <h3>集团区域对比分析({month}月)</h3>
             </div>
             <div className={styles.contentText}>
-              <p>
+              <p className={styles.bigText}>
                 <span>1、集团电站平均计划完成率为</span>
                 <span className={styles.text}>{dataFormats(enterpriseGenData.rate,'--',2,true) || '--'}</span>
                 <span>%。</span>
               </p>
 
-              <p className={styles.paragraph}>
+              <p className={styles.bigText}>
                 <span>计划完成率最低的三个区域为</span>
                 <span className={styles.text}>{genRegionNameList.map(e => e).join('、')}</span>
                 <span>。</span>
-              </p> 
+              </p>
 
               <GenRegionDataList genRegionDataList={genRegionDataList} />
 
-              <p>
+              <p className={styles.bigText}>
                 <span>2、集团电站总损失电量等效时为</span>
                 <span className={styles.text}>{dataFormats(enterpriseHoursData.value,'--',2,true) || '--'}</span>
                 <span>h。</span>
               </p>
 
-              <p className={styles.paragraph}>
+              <p className={styles.paragraph + ' ' + styles.bigText}>
                 <span>损失电量等效时最高的三个区域为</span>
                 <span className={styles.text}>{lostRegionNameList.map(e => e).join('、')}</span>
                 <span>。</span>
@@ -61,7 +61,7 @@ class AreaAnalysisReport extends Component{
               <LostRegionDataList lostRegionDataList={lostRegionDataList} />
             </div>
           </div>
-          : 
+          :
           <div className={styles.yearReportContent}>
             <div className={styles.titleText}>
               <h3>集团区域对比分析({year}年)</h3>

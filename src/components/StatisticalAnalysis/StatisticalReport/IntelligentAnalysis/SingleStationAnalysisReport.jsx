@@ -27,13 +27,13 @@ class SingleStationAnalysisReport extends Component {
     const completionRate = singleStationInfo.completionRate || []; // 发电完成率信息及原因
     const lossOfElectricity = singleStationInfo.lossOfElectricity || []; // 损失电量信息及原因
 
-    const { genValid, genValidCompared, resourceValueCompared, lostPowerCompared, limitPowerRate, limitPowerRateCompared } = generatinCapacity;
+    const { genValid, genValidCompared, resourceValueCompared, lostPowerCompared, limitPowerRate, limitPowerRateCompared, lowMonth } = generatinCapacity;
     const generatinMonth = generatinCapacity.month;
 
-    const { prs, pr, lostPower } = systematicStatistics;
+    const { prs, pr, lostPower, prsCompared } = systematicStatistics;
     const bMonth = systematicStatistics.month;
 
-    const { planComplateRate, monthPlanComplateRate, limitPowerCompared } = completionRate;
+    const { planComplateRate, monthPlanComplateRate, limitPowerCompared, planComplateRateCompared } = completionRate;
 
     const cMonth = completionRate.month;
     const cResourceValueCompared = completionRate.resourceValueCompared;
@@ -44,6 +44,7 @@ class SingleStationAnalysisReport extends Component {
     const dLostPowerCompared = lossOfElectricity.lostPowerCompared;
 
     const { lowVoltageDCFaultLostPower, lowVoltageDCFaultProportion, lowVoltageDCFaultCompared, substationSystemFaultLostPower, substationSystemFaultProportion, substationSystemFaultCompared, transmissionSystemFaultLostPower, transmissionSystemFaultProportion, transmissionSystemFaultCompared, secondaryAndHaveNotPowerFaultLostPower, secondaryAndHaveNotPowerFaultProportion, secondaryAndHaveNotPowerFaultCompared, otherFaultLostPower, otherFaultProportion, otherFaultCompared, externalFaultLostPower, externalFaultProportion, externalFaultCompared } = lossOfElectricity;
+    console.log('externalFaultLostPower: ', externalFaultLostPower);
 
     return (
       <div className={`${styles.analysisReport}`}>
@@ -53,158 +54,139 @@ class SingleStationAnalysisReport extends Component {
               <h3>{stationName}电站分析报告({month}月)</h3>
             </div>
             <div className={styles.contentText}>
-              <p>
+              <p className={styles.bigText}>
                 <span>1、今年</span>
-                <span className={styles.time}>{generatinMonth || '--'}</span>
+                <span className={styles.time + ' ' + styles.text}>{generatinMonth || '--'}</span>
                 <span>月份的发电量为</span>
                 <span className={styles.text}>{dataFormats(genValid, '--', 4, true) || '--'}</span>
-                <span>万kWh，同比</span>
-                {(genValidCompared >= 0) && <span>提高</span>}
-                {(genValidCompared < 0) && <span>降低</span>}
-                <span className={styles.text}>{dataFormats(Math.abs(genValidCompared), '--', 2, true) || '--'}</span>
-                <span>%。</span>
-              </p>
-
-              <p className={styles.paragraph}>
-                <span>其原因在于：该月辐照度同比</span>
-                {(resourceValueCompared >= 0) && <span>提高</span>}
-                {(resourceValueCompared < 0) && <span>降低</span>}
-                <span className={styles.text}>{dataFormats(Math.abs(resourceValueCompared), '--', 2, true) || '--'}</span>
-                <span>%；损失电量同比</span>
-                {(lostPowerCompared >= 0) && <span>提高</span>}
-                {(lostPowerCompared < 0) && <span>降低</span>}
-                <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared), '--', 2, true) || '--'}</span>
-                <span>%。</span>
-                {(limitPowerRate || limitPowerRate === 0) &&
-                  <span>
-                    <span>限电率</span>
-                    <span className={styles.text}>{dataFormats(limitPowerRate, '--', 2, true) || '--'}</span>
-                    <span>%，同比</span>
-                    {(limitPowerRateCompared >= 0) && <span>提高</span>}
-                    {(limitPowerRateCompared < 0) && <span>降低</span>}
-                    <span className={styles.text}>{dataFormats(Math.abs(limitPowerRateCompared), '--', 2, true) || '--'}</span>
-                    <span>%。</span>
-                  </span>
-                }
-              </p>
-
-              <p className={styles.distanceTop}>
-                <span>2、今年</span>
-                <span className={styles.text}>{cMonth || '--'}</span>
+                <span>万kWh，今年</span>
+                <span className={styles.time + ' ' + styles.text}>{generatinMonth || '--'}</span>
                 <span>月份的计划完成率为</span>
                 <span className={styles.text}>{dataFormats(planComplateRate, '--', 2, true) || '--'}</span>
-                <span>%。</span>
+                <span>%。详细情况说明：</span>
               </p>
 
-              {(!(95 < planComplateRate && 105 > planComplateRate)) &&
-                <p className={styles.paragraph}>
-                  <span>该电站
-                    {(95 > planComplateRate) && <span>未完成计划</span>}
-                    {(105 < planComplateRate) && <span>超出计划</span>}
-                    的主要原因在于：实际辐照度比历史辐照度</span>
-                  {(cResourceValueCompared >= 0) && <span>高</span>}
-                  {(cResourceValueCompared < 0) && <span>低</span>}
-                  <span className={styles.text}>{dataFormats(Math.abs(cResourceValueCompared), '--', 2, true) || '--'}</span>
-                  <span>%，损失电量同比</span>
-                  {(cLostPowerCompared >= 0) && <span>提高</span>}
-                  {(cLostPowerCompared < 0) && <span>降低</span>}
-                  <span className={styles.text}>{dataFormats(Math.abs(cLostPowerCompared), '--', 2, true) || '--'}</span>
-                  <span>%；</span>
-                  {(limitPowerRate || limitPowerRate === 0) &&
-                    <span>
-                      <span>限电损失电量同比</span>
-                      {(cLimitPowerRate >= 0) && <span>提高</span>}
-                      {(cLimitPowerRate < 0) && <span>降低</span>}
-                      <span className={styles.text}>{dataFormats(Math.abs(cLimitPowerRate), '--', 2, true) || '--'}</span>
-                      <span>%。</span>
-                    </span>
-                  }
-                </p>
-              }
+              <div className={styles.fileBox}>
+                <div className={styles.quota}>
+                  <p className={styles.titlesText}>指标</p>
+                  <p className={styles.texts}>发电量</p>
+                  <p className={styles.texts}>计划完成率</p>
+                </div>
 
-              <p className={styles.distanceTop}>
-                <span>3、今年</span>
+                <div className={styles.data}>
+                  <p className={styles.titlesText}>数据</p>
+                  <p className={styles.texts}>{dataFormats(genValid, '--', 4, true) || '--'}</p>
+                  <p className={styles.texts}>{dataFormats(planComplateRate, '--', 2, true) || '--'}</p>
+                </div>
+
+                <div className={styles.compares}>
+                  <p className={styles.titlesText + ' ' + styles.compare}>同比降低/提高（%）</p>
+                  <p className={styles.texts}>{dataFormats(Math.abs(genValidCompared), '--', 2, true) || '--'}</p>
+                  <p className={styles.texts}>{dataFormats(Math.abs(planComplateRateCompared), '--', 2, true) || '--'}</p>
+                </div>
+
+                <div className={styles.reasons}>
+                  <p className={styles.titlesText}>原因分析</p>
+                  <p className={styles.texts + ' ' + styles.paragraph}>
+                    <span>该月辐照度同比</span>
+                    {(resourceValueCompared >= 0) && <span>提高</span>}
+                    {(resourceValueCompared < 0) && <span>降低</span>}
+                    <span className={styles.text}>{dataFormats(Math.abs(resourceValueCompared), '--', 2, true) || '--'}</span>
+                    <span>%；损失电量同比</span>
+                    {(lostPowerCompared >= 0) && <span>提高</span>}
+                    {(lostPowerCompared < 0) && <span>降低</span>}
+                    <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared), '--', 2, true) || '--'}</span>
+                    <span>%;</span>
+                    {(limitPowerRate || limitPowerRate === 0) &&
+                      <span>
+                        <span>限电率</span>
+                        <span className={styles.text}>{dataFormats(limitPowerRate, '--', 2, true) || '--'}</span>
+                        <span>%，同比</span>
+                        {(limitPowerRateCompared >= 0) && <span>提高</span>}
+                        {(limitPowerRateCompared < 0) && <span>降低</span>}
+                        <span className={styles.text}>{dataFormats(Math.abs(limitPowerRateCompared), '--', 2, true) || '--'}</span>
+                        <span>%。</span>
+                      </span>
+                    }
+                  </p>
+                  <p className={styles.texts + ' ' + styles.paragraph}>
+                    <span>该电站
+                      {(95 > planComplateRate) && <span>未完成计划</span>}
+                      {(105 < planComplateRate) && <span>超出计划</span>}
+                      的主要原因在于：实际辐照度比历史辐照度</span>
+                    {(cResourceValueCompared >= 0) && <span>高</span>}
+                    {(cResourceValueCompared < 0) && <span>低</span>}
+                    <span className={styles.text}>{dataFormats(Math.abs(cResourceValueCompared), '--', 2, true) || '--'}</span>
+                    <span>%，损失电量同比</span>
+                    {(cLostPowerCompared >= 0) && <span>提高</span>}
+                    {(cLostPowerCompared < 0) && <span>降低</span>}
+                    <span className={styles.text}>{dataFormats(Math.abs(cLostPowerCompared), '--', 2, true) || '--'}</span>
+                    <span>%；</span>
+                    {(limitPowerRate || limitPowerRate === 0) &&
+                      <span>
+                        <span>限电损失电量同比</span>
+                        {(cLimitPowerRate >= 0) && <span>提高</span>}
+                        {(cLimitPowerRate < 0) && <span>降低</span>}
+                        <span className={styles.text}>{dataFormats(Math.abs(cLimitPowerRate), '--', 2, true) || '--'}</span>
+                        <span>%。</span>
+                      </span>
+                    }
+                  </p>
+                </div>
+              </div>
+
+              <p className={styles.distanceTop + ' ' + styles.bigText}>
+                <span>2、今年</span>
                 <span className={styles.text}>{dMonth || '--'}</span>
                 <span>月份的故障损失电量同比</span>
                 {(dLostPowerCompared >= 0) && <span>提高</span>}
                 {(dLostPowerCompared < 0) && <span>降低</span>}
                 <span className={styles.text}>{dataFormats(Math.abs(dLostPowerCompared), '--', 2, true) || '--'}</span>
-                <span>%。</span>
+                <span>%。详细情况说明：</span>
               </p>
 
-              <p className={styles.paragraph}>详细情况说明：</p>
 
-              <p className={styles.paragraph}>
-                <span>1）外部故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(externalFaultLostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(externalFaultProportion, '--', 2, true) || '--'}</span>
-                <span>%，同比</span>
-                {(externalFaultCompared >= 0) && <span>提高</span>}
-                {(externalFaultCompared < 0) && <span>降低</span>}
-                {!externalFaultCompared ? <span className={styles.text}>{dataFormats(externalFaultCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(externalFaultCompared), '--', 2, true) || '--'}</span>}
-                <span>%；</span>
-              </p>
+              <div className={styles.fileBox}>
+                <div className={styles.faultType}>
+                  <p className={styles.titlesText}>故障类型</p>
+                  <p>外部故障</p>
+                  <p>低压直流故障</p>
+                  <p>变电系统故障</p>
+                  <p>输电系统故障</p>
+                  <p>二次及有功无功控制系统故障</p>
+                  <p>其他故障</p>
+                </div>
 
-              <p className={styles.paragraph}>
-                <span>2）低压直流故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(lowVoltageDCFaultLostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(lowVoltageDCFaultProportion, '--', 2, true) || '--'}</span>
-                <span>%，同比</span>
-                {(lowVoltageDCFaultCompared >= 0) && <span>提高</span>}
-                {(lowVoltageDCFaultCompared < 0) && <span>降低</span>}
-                {!lowVoltageDCFaultCompared ? <span className={styles.text}>{dataFormats(lowVoltageDCFaultCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(lowVoltageDCFaultCompared), '--', 2, true) || '--'}</span>}
-                <span>%；</span>
-              </p>
+                <div className={styles.LossElectricity}>
+                  <p className={styles.titlesText}>损失电量</p>
+                  <p className={styles.text}>{dataFormats(externalFaultLostPower, '--', 4, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(lowVoltageDCFaultLostPower, '--', 4, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(substationSystemFaultLostPower, '--', 4, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(transmissionSystemFaultLostPower, '--', 4, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(secondaryAndHaveNotPowerFaultLostPower, '--', 4, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(otherFaultLostPower, '--', 4, true) || '--'}</p>
+                </div>
 
-              <p className={styles.paragraph}>
-                <span>3）变电系统故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(substationSystemFaultLostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(substationSystemFaultProportion, '--', 2, true) || '--'}</span>
-                <span>%，同比</span>
-                {(substationSystemFaultCompared >= 0) && <span>提高</span>}
-                {(substationSystemFaultCompared < 0) && <span>降低</span>}
-                {!substationSystemFaultCompared ? <span className={styles.text}>{dataFormats(substationSystemFaultCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(substationSystemFaultCompared), '--', 2, true) || '--'}</span>}
-                <span>%；</span>
-              </p>
+                <div className={styles.proportion}>
+                  <p className={styles.titlesText}>占比（%）</p>
+                  <p className={styles.text}>{dataFormats(externalFaultProportion, '--', 2, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(lowVoltageDCFaultProportion, '--', 2, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(substationSystemFaultProportion, '--', 2, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(transmissionSystemFaultProportion, '--', 2, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(secondaryAndHaveNotPowerFaultProportion, '--', 2, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(otherFaultProportion, '--', 2, true) || '--'}</p>
+                </div>
 
-              <p className={styles.paragraph}>
-                <span>4）输电系统故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(transmissionSystemFaultLostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(transmissionSystemFaultProportion, '--', 2, true) || '--'}</span>
-                <span>%，同比</span>
-                {(transmissionSystemFaultCompared >= 0) && <span>提高</span>}
-                {(transmissionSystemFaultCompared < 0) && <span>降低</span>}
-                {!transmissionSystemFaultCompared ? <span className={styles.text}>{dataFormats(transmissionSystemFaultCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(transmissionSystemFaultCompared), '--', 2, true) || '--'}</span>}
-                <span>%；</span>
-              </p>
-
-              <p className={styles.paragraph}>
-                <span>5）二次及有功无功控制系统故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(secondaryAndHaveNotPowerFaultLostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(secondaryAndHaveNotPowerFaultProportion, '--', 2, true) || '--'}</span>
-                <span>%，同比</span>
-                {(secondaryAndHaveNotPowerFaultCompared >= 0) && <span>提高</span>}
-                {(secondaryAndHaveNotPowerFaultCompared < 0) && <span>降低</span>}
-                {!secondaryAndHaveNotPowerFaultCompared ? <span className={styles.text}>{dataFormats(secondaryAndHaveNotPowerFaultCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(secondaryAndHaveNotPowerFaultCompared), '--', 2, true) || '--'}</span>}
-                <span>%；</span>
-              </p>
-
-              <p className={styles.paragraph}>
-                <span>6）其他故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(otherFaultLostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(otherFaultProportion, '--', 2, true) || '--'}</span>
-                <span>%，同比</span>
-                {(otherFaultCompared >= 0) && <span>提高</span>}
-                {(otherFaultCompared < 0) && <span>降低</span>}
-                {!otherFaultCompared ? <span className={styles.text}>{dataFormats(otherFaultCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(otherFaultCompared), '--', 2, true) || '--'}</span>}
-                <span>%。</span>
-              </p>
+                <div className={styles.Comparisons}>
+                  <p className={styles.titlesText}>同比提高/降低（%）</p>
+                  {!externalFaultCompared && <p className={styles.text}>{dataFormats(externalFaultCompared, '--', 2, true) || '--'}</p>}
+                  {!lowVoltageDCFaultCompared && <p className={styles.text}>{dataFormats(lowVoltageDCFaultCompared, '--', 2, true) || '--'}</p>}
+                  {!substationSystemFaultCompared && <p className={styles.text}>{dataFormats(substationSystemFaultCompared, '--', 2, true) || '--'}</p>}
+                  {!transmissionSystemFaultCompared && <p className={styles.text}>{dataFormats(transmissionSystemFaultCompared, '--', 2, true) || '--'}</p>}
+                  {!secondaryAndHaveNotPowerFaultCompared && <p className={styles.text}>{dataFormats(secondaryAndHaveNotPowerFaultCompared, '--', 2, true) || '--'}</p>}
+                  {!otherFaultCompared && <p className={styles.text}>{dataFormats(otherFaultCompared, '--', 2, true) || '--'}</p>}
+                </div>
+              </div>
             </div>
           </div>
           :
@@ -213,163 +195,150 @@ class SingleStationAnalysisReport extends Component {
               <h3>{stationName}电站分析报告({year}年)</h3>
             </div>
             <div className={styles.contentText}>
-              <p>
+              <p className={styles.bigText}>
                 <span>1、今年累计发电量为</span>
                 <span className={styles.text}>{dataFormats(genValid, '--', 4, true) || '--'}</span>
-                <span>万kWh，环比</span>
-                {(genValidCompared >= 0) && <span>提高</span>}
-                {(genValidCompared < 0) && <span>降低</span>}
-                <span className={styles.text}>{dataFormats(Math.abs(genValidCompared), '--', 2, true) || '--'}</span>
-                <span>%。</span>
-              </p>
-              <p className={styles.paragraph}>
-                <span>其原因在于：该年辐照度环比</span>
-                {(resourceValueCompared >= 0) && <span>提高</span>}
-                {(resourceValueCompared < 0) && <span>降低</span>}
-                {!resourceValueCompared ? <span className={styles.text}>{dataFormats(resourceValueCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(resourceValueCompared), '--', 2, true) || '--'}</span>}
-                <span>%；损失电量环比</span>
-                {(lostPowerCompared >= 0) && <span>提高</span>}
-                {(lostPowerCompared < 0) && <span>降低</span>}
-                {!lostPowerCompared ? <span className={styles.text}>{dataFormats(lostPowerCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared), '--', 2, true) || '--'}</span>}
-                <span>%；</span>
-                {(limitPowerRateCompared || (limitPowerRateCompared === 0)) &&
-                  <span>
-                    <span>限电率环比</span>
-                    {(limitPowerRateCompared >= 0) && <span>提高</span>}
-                    {(limitPowerRateCompared < 0) && <span>降低</span>}
-                    {!limitPowerRateCompared ? <span className={styles.text}>{dataFormats(limitPowerRateCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(limitPowerRateCompared), '--', 2, true) || '--'}</span>}
-                    <span>%。</span>
-                  </span>
-                }
-              </p>
-
-              <p className={styles.distanceTop}>
-                <span>2、年系统效率为</span>
+                <span>万kWh，年系统效率为</span>
                 <span className={styles.text}>{dataFormats(prs, '--', 2, true) || '--'}</span>
-                <span> %，其中</span>
-                <span className={styles.text}>{bMonth || '--'}</span>
-                <span>月份的系统效率最低，为</span>
-                <span className={styles.text}>{dataFormats(pr, '--', 2, true) || '--'}</span>
-                <span>%。</span>
-              </p>
-              <p className={styles.paragraph}>
-                <span>原因为：该月份故障损失电量和限电损失电量总和最高，为</span>
-                <span className={styles.text}>{dataFormats(lostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh。</span>
-              </p>
-
-              <p className={styles.distanceTop}>
-                <span>3、年发电计划完成率为</span>
+                <span>%，年发电计划完成率为</span>
                 <span className={styles.text}>{dataFormats(planComplateRate, '--', 2, true) || '--'}</span>
-                <span>%。其中</span>
-                <span className={styles.text}>{cMonth || '--'}</span>
-                <span>月份的计划完成率最低，为</span>
-                <span className={styles.text}>{dataFormats(monthPlanComplateRate, '--', 2, true) || '--'}</span>
-                <span>%。</span>
-              </p>
-              <p className={styles.paragraph}>
-                {((cResourceValueCompared > 0) || (cLostPowerCompared > 0) || (limitPowerCompared > 0)) && <span>原因为：</span>}
-                {(cResourceValueCompared > 0) &&
-                  <span>
-                    <span>年实际辐照度比历史辐照度低</span>
-                    <span className={styles.text}>{dataFormats(cResourceValueCompared, '--', 2, true) || '--'}</span>
-                    <span>%；</span>
-                  </span>}
-                {(cLostPowerCompared > 0) &&
-                  <span>
-                    <span>年损失电量环比提高</span>
-                    <span className={styles.text}>{dataFormats(cLostPowerCompared, '--', 2, true) || '--'}</span>
-                    <span>%；</span>
-                  </span>}
-                {(limitPowerCompared && (limitPowerCompared > 0)) &&
-                  <span>
-                    <span>年限电率环比提高</span>
-                    <span className={styles.text}>{dataFormats(limitPowerCompared, '--', 2, true) || '--'}</span>
-                    <span>%；</span>
-                  </span>}
+                <span>%。详细情况说明：</span>
               </p>
 
-              <p className={styles.distanceTop}>
-                <span>4、年总损失电量环比</span>
+              <div className={styles.fileBox}>
+
+                <div className={styles.firstColumn}>
+                  <p className={styles.titlesText}>指标</p>
+                  <p className={styles.secondLine}>年累计发电量</p>
+                  <p className={styles.thirdLine}>年系统效率</p>
+                  <p className={styles.fourthLine}>年发电计划完成率</p>
+                </div>
+
+                <div className={styles.secondColumn}>
+                  <p className={styles.titlesText}>数据</p>
+                  <p className={styles.secondLine}>{dataFormats(genValid, '--', 4, true) || '--'}</p>
+                  <p className={styles.thirdLine}>{dataFormats(prs, '--', 2, true) || '--'}</p>
+                  <p className={styles.fourthLine}>{dataFormats(planComplateRate, '--', 2, true) || '--'}</p>
+                </div>
+
+                <div className={styles.thirdColumn}>
+                  <p className={styles.titlesText}>环比降低/提高（%）</p>
+                  <p className={styles.secondLine}>{dataFormats(resourceValueCompared, '--', 2, true) || '--'}</p>
+                  <p className={styles.thirdLine}>{dataFormats(prsCompared, '--', 2, true) || '--'}</p>
+                  <p className={styles.texts + ' ' + styles.fourthLine}>{dataFormats(planComplateRateCompared, '--', 2, true) || '--'}</p>
+                </div>
+
+                <div className={styles.fourthColumn}>
+                  <p className={styles.titlesText}>最低月份</p>
+                  <p className={styles.secondLine}>{lowMonth || '--'}</p>
+                  <p className={styles.thirdLine}>{bMonth || '--'}</p>
+                  <p className={styles.fourthLine}>{cMonth || '--'}</p>
+                </div>
+
+                <div className={styles.fifthColumn}>
+                  <p className={styles.titlesText}>原因分析</p>
+                  <p className={styles.secondLine}>
+                    <span>该年辐照度环比</span>
+                    {(resourceValueCompared >= 0) && <span>提高</span>}
+                    {(resourceValueCompared < 0) && <span>降低</span>}
+                    {!resourceValueCompared ? <span className={styles.text}>{dataFormats(resourceValueCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(resourceValueCompared), '--', 2, true) || '--'}</span>}
+                    <span>%；损失电量环比</span>
+                    {(lostPowerCompared >= 0) && <span>提高</span>}
+                    {(lostPowerCompared < 0) && <span>降低</span>}
+                    {!lostPowerCompared ? <span className={styles.text}>{dataFormats(lostPowerCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared), '--', 2, true) || '--'}</span>}
+                    <span>%；</span>
+                    {(limitPowerRateCompared || (limitPowerRateCompared === 0)) &&
+                      <span>
+                        <span>限电率环比</span>
+                        {(limitPowerRateCompared >= 0) && <span>提高</span>}
+                        {(limitPowerRateCompared < 0) && <span>降低</span>}
+                        {!limitPowerRateCompared ? <span className={styles.text}>{dataFormats(limitPowerRateCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(limitPowerRateCompared), '--', 2, true) || '--'}</span>}
+                        <span>%。</span>
+                      </span>
+                    }
+                  </p>
+
+                  <p className={styles.paragraph + ' ' + styles.thirdLine}>
+                    <span>该月份损失电量最高，为</span>
+                    <span className={styles.text}>{dataFormats(lostPower, '--', 4, true) || '--'}</span>
+                    <span>万kWh。限电率最高。</span>
+                  </p>
+
+                  <p className={styles.fourthLine}>
+                  {((cResourceValueCompared > 0) || (cLostPowerCompared > 0) || (limitPowerCompared > 0)) ?
+                    <div>
+                      {(cResourceValueCompared > 0) &&
+                        <span>
+                          <span>年实际辐照度比历史辐照度低</span>
+                          <span className={styles.text}>{dataFormats(cResourceValueCompared, '--', 2, true) || '--'}</span>
+                          <span>%；</span>
+                        </span>}
+                      {(cLostPowerCompared > 0) &&
+                        <span>
+                          <span>年损失电量环比提高</span>
+                          <span className={styles.text}>{dataFormats(cLostPowerCompared, '--', 2, true) || '--'}</span>
+                          <span>%；</span>
+                        </span>}
+                      {(limitPowerCompared && (limitPowerCompared > 0)) &&
+                        <span>
+                          <span>年限电率环比提高</span>
+                          <span className={styles.text}>{dataFormats(limitPowerCompared, '--', 2, true) || '--'}</span>
+                          <span>%。</span>
+                        </span>}
+                    </div> : '--'}
+                  </p>
+                </div>
+              </div>
+
+              <p className={styles.distanceTop + ' ' + styles.bigText}>
+                <span>2、年总损失电量环比</span>
                 {(dLostPowerCompared >= 0) && <span>提高</span>}
                 {(dLostPowerCompared < 0) && <span>降低</span>}
                 <span className={styles.text}>{dataFormats(Math.abs(dLostPowerCompared), '--', 2, true) || '--'}</span>
-                <span>%</span>
+                <span>%。详细情况说明：</span>
               </p>
 
-              <p className={styles.paragraph}>详细情况说明：</p>
+              <div className={styles.fileBox}>
+                <div className={styles.fault}>
+                  <p className={styles.titlesText}>故障类型</p>
+                  <p className={styles.text}>外部故障</p>
+                  <p className={styles.text}>低压直流故障</p>
+                  <p className={styles.text}>变电系统故障</p>
+                  <p className={styles.text}>输电系统故障</p>
+                  <p className={styles.text}>二次及有功无功控制系统故障损失电量为</p>
+                  <p className={styles.text}>其他故障损失电量为</p>
+                </div>
 
-              <p className={styles.paragraph}>
-                <span>1）外部故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(externalFaultLostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(externalFaultProportion, '--', 2, true) || '--'}</span>
-                <span>%，同比</span>
-                {(externalFaultCompared >= 0) && <span>提高</span>}
-                {(externalFaultCompared < 0) && <span>降低</span>}
-                {!externalFaultCompared ? <span className={styles.text}>{dataFormats(externalFaultCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(externalFaultCompared), '--', 2, true) || '--'}</span>}
-                <span>%；</span>
-              </p>
+                <div className={styles.electricity}>
+                  <p className={styles.titlesText}>损失电量</p>
+                  <p className={styles.text}>{dataFormats(externalFaultLostPower, '--', 4, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(lowVoltageDCFaultLostPower, '--', 4, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(substationSystemFaultLostPower, '--', 4, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(transmissionSystemFaultLostPower, '--', 4, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(secondaryAndHaveNotPowerFaultLostPower, '--', 4, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(otherFaultLostPower, '--', 4, true) || '--'}</p>
+                </div>
 
-              <p className={styles.paragraph}>
-                <span>2）低压直流故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(lowVoltageDCFaultLostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(lowVoltageDCFaultProportion, '--', 2, true) || '--'}</span>
-                <span>%，同比</span>
-                {(lowVoltageDCFaultCompared >= 0) && <span>提高</span>}
-                {(lowVoltageDCFaultCompared < 0) && <span>降低</span>}
-                {!lowVoltageDCFaultCompared ? <span className={styles.text}>{dataFormats(lowVoltageDCFaultCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(lowVoltageDCFaultCompared), '--', 2, true) || '--'}</span>}
-                <span>%；</span>
-              </p>
+                <div className={styles.ratio}>
+                  <p className={styles.titlesText}>占比（%）</p>
+                  <p className={styles.text}>{dataFormats(externalFaultProportion, '--', 2, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(lowVoltageDCFaultProportion, '--', 2, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(substationSystemFaultProportion, '--', 2, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(transmissionSystemFaultProportion, '--', 2, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(secondaryAndHaveNotPowerFaultProportion, '--', 2, true) || '--'}</p>
+                  <p className={styles.text}>{dataFormats(otherFaultProportion, '--', 2, true) || '--'}</p>
+                </div>
 
-              <p className={styles.paragraph}>
-                <span>3）变电系统故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(substationSystemFaultLostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(substationSystemFaultProportion, '--', 2, true) || '--'}</span>
-                <span>%，同比</span>
-                {(substationSystemFaultCompared >= 0) && <span>提高</span>}
-                {(substationSystemFaultCompared < 0) && <span>降低</span>}
-                {!substationSystemFaultCompared ? <span className={styles.text}>{dataFormats(substationSystemFaultCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(substationSystemFaultCompared), '--', 2, true) || '--'}</span>}
-                <span>%；</span>
-              </p>
-
-              <p className={styles.paragraph}>
-                <span>4）输电系统故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(transmissionSystemFaultLostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(transmissionSystemFaultProportion, '--', 2, true) || '--'}</span>
-                <span>%，同比</span>
-                {(transmissionSystemFaultCompared >= 0) && <span>提高</span>}
-                {(transmissionSystemFaultCompared < 0) && <span>降低</span>}
-                {!transmissionSystemFaultCompared ? <span className={styles.text}>{dataFormats(transmissionSystemFaultCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(transmissionSystemFaultCompared), '--', 2, true) || '--'}</span>}
-                <span>%；</span>
-              </p>
-
-              <p className={styles.paragraph}>
-                <span>5）二次及有功无功控制系统故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(secondaryAndHaveNotPowerFaultLostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(secondaryAndHaveNotPowerFaultProportion, '--', 2, true) || '--'}</span>
-                <span>%，同比</span>
-                {(secondaryAndHaveNotPowerFaultCompared >= 0) && <span>提高</span>}
-                {(secondaryAndHaveNotPowerFaultCompared < 0) && <span>降低</span>}
-                {!secondaryAndHaveNotPowerFaultCompared ? <span className={styles.text}>{dataFormats(secondaryAndHaveNotPowerFaultCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(secondaryAndHaveNotPowerFaultCompared), '--', 2, true) || '--'}</span>}
-                <span>%；</span>
-              </p>
-
-              <p className={styles.paragraph}>
-                <span>6）其他故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(otherFaultLostPower, '--', 4, true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(otherFaultProportion, '--', 2, true) || '--'}</span>
-                <span>%，同比</span>
-                {(otherFaultCompared >= 0) && <span>提高</span>}
-                {(otherFaultCompared < 0) && <span>降低</span>}
-                {!otherFaultCompared ? <span className={styles.text}>{dataFormats(otherFaultCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(otherFaultCompared), '--', 2, true) || '--'}</span>}
-                <span>%。</span>
-              </p>
+                <div className={styles.rateCompared}>
+                  <p className={styles.titlesText}>环比提高/降低（%）</p>
+                  {!externalFaultCompared && <p className={styles.text}>{dataFormats(externalFaultCompared, '--', 2, true) || '--'}</p>}
+                  {!lowVoltageDCFaultCompared && <p className={styles.text}>{dataFormats(lowVoltageDCFaultCompared, '--', 2, true) || '--'}</p>}
+                  {!substationSystemFaultCompared && <p className={styles.text}>{dataFormats(substationSystemFaultCompared, '--', 2, true) || '--'}</p>}
+                  {!transmissionSystemFaultCompared && <p className={styles.text}>{dataFormats(transmissionSystemFaultCompared, '--', 2, true) || '--'}</p>}
+                  {!secondaryAndHaveNotPowerFaultCompared && <p className={styles.text}>{dataFormats(secondaryAndHaveNotPowerFaultCompared, '--', 2, true) || '--'}</p>}
+                  {!otherFaultCompared && <p className={styles.text}>{dataFormats(otherFaultCompared, '--', 2, true) || '--'}</p>}
+                </div>
+              </div>
             </div>
           </div>
         }

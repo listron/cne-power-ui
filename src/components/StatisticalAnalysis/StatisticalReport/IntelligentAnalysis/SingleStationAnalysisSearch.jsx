@@ -31,7 +31,6 @@ class SingleStationAnalysisSearch extends Component {
     this.state = {
       startTime: moment().subtract(0, 'months').format('YYYY-MM-DD'),
       stationCode: '',
-      stationName: '',
       year: '',
       month: '',
       dateType: '',
@@ -59,13 +58,12 @@ class SingleStationAnalysisSearch extends Component {
   selectStation = (selectedStationInfo) => { // 选择电站
     this.setState({
       stationCode: selectedStationInfo[0].stationCode,
-      stationName: selectedStationInfo[0].stationName,
     });
   }
 
   searchInfo = () => { // 查询
     const { getSingleStationAnalysis, changeIntelligentAnalysisStore } = this.props;
-    const { dateType, month, year, stationCode, stationName } = this.state;
+    const { dateType, month, year, stationCode } = this.state;
     if (!stationCode) {
       message.error('请选择电站名称！');
       return;
@@ -74,7 +72,7 @@ class SingleStationAnalysisSearch extends Component {
       message.error('请选择统计时间！');
       return;
     }
-    const params = { dateType, year, stationCode, stationName };
+    const params = { dateType, year, stationCode };
     dateType === 1 && (params.month = month);
     getSingleStationAnalysis({
       ...params,
@@ -102,6 +100,8 @@ class SingleStationAnalysisSearch extends Component {
   render() {
     const { stations, reportShow, theme } = this.props;
     const { stationCode } = this.state;
+    // let station = '';
+    // stationCode ? station = stations.toJS().filter(e => e.stationCode === stationCode) : '';
     return (
       <div className={`${styles.singleStationAnalysisSearch}`}>
         <div className={styles.searchPart}>
