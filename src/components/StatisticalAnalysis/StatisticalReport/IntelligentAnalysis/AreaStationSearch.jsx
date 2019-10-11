@@ -145,7 +145,7 @@ class AreaStationSearch extends Component {
             <div className={styles.regionStationSelect}>
               <span className={styles.text}>区域选择</span>
               <Select
-                disabled={areaArray.length < 2}
+                disabled={areaArray.length === 1}
                 className={styles.searchInput}
                 placeholder="请选择"
                 value={areaNames}
