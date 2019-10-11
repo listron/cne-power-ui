@@ -11,7 +11,7 @@ import DeviceRateChart from './DeviceRateChart';
 import DeviceTable from './DeviceTable';
 import searchUtil from '@utils/searchUtil';
 const { MonthPicker } = DatePicker;
-    
+
 class DeviceOverview extends PureComponent{
   static propTypes = {
     theme: PropTypes.string,
