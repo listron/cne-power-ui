@@ -8,6 +8,7 @@ const { Option } = Select;
 
 class DeviceTable extends PureComponent{
   static propTypes = {
+    deviceFilterName: PropTypes.string,
     deveiceLoading: PropTypes.bool,
     theme: PropTypes.string,
     devicesData: PropTypes.object,
@@ -158,7 +159,8 @@ class DeviceTable extends PureComponent{
       validCount: '有效值数',
       invalidCount: '无效值数',
       lostCount: '缺失值数',
-    };
+    }; // 0 116 28 // 28 0 116
+    // console.log(deviceData);
     const { pointData = [] } = deviceData[0] || {};
     const extraColum = pointData.map((e, i) => ({
       title: e.pointName,
@@ -169,6 +171,7 @@ class DeviceTable extends PureComponent{
         dataIndex: `pointData[${i}].${t}`, // huohuohuohuo这个方法倒是有点意思
         sorter: true,
         width: 110,
+        // render: () => 
       })),
       width: 330,
     }));
@@ -176,12 +179,13 @@ class DeviceTable extends PureComponent{
   }
 
   render(){
-    const { devicePointsList, deviceCheckedList, devicesData, deveiceLoading, theme, deviceIndicators } = this.props;
+    const { devicePointsList, deviceCheckedList, devicesData, theme, deviceIndicators, deveiceLoading, deviceFilterName } = this.props;
     const { tableColumn } = this.state;
     const { deviceData = [] } = devicesData;
     const { pointData = []} = deviceData[0] || {};
     const actualPoints = pointData.filter(e => deviceCheckedList.includes(e.pointCode)); // 选中测点与实际测点数据的交集才是实际数据列
     const tableWidth = 410 + actualPoints.length * deviceIndicators.length * 110;
+    const dataSource = deviceFilterName ? [deviceData.find(e => e.deviceName === deviceFilterName)] : deviceData; // 图表筛选
     return(
       <div className={styles.devicePoints}>
         <div className={styles.pointHandle}>
@@ -217,10 +221,13 @@ class DeviceTable extends PureComponent{
         <Table
           className={styles.pointTable}
           columns={tableColumn}
-          dataSource={deviceData}
+          dataSource={dataSource}
           bordered
           pagination={false}
-          loading={deveiceLoading}
+          loading={{
+            spinning: deveiceLoading,
+            delay: 300,
+          }}
           scroll={{ x: tableWidth }}
         />
       </div>

@@ -18,10 +18,13 @@ const initState = immutable.fromJS({
   tab: 'station', // 激活的tab页, station, device, point
   pages: ['station'], // 开启的tab页面
   stationParam: {}, // stationCode, deviceTypeCode, month => search-station是该字段的jsonStr
+
   deviceParam: {}, // stationCode, deviceTypeCode, dateType(1日2月), date => 会转为字符串写入search的device
   deviceRecord: {}, // day, month记录的上一次选中的月，日
   deviceCheckedList: [], // 设备页选中的测点
   deviceIndicators: ['validCount', 'invalidCount', 'lostCount'], // 设备数据质量选中的指标项
+  deviceFilterName: null, // 筛选的设备name, table只展示某一个设备。
+
   pointParam: {}, // stationCode, deviceTypeCode, deviceFullcode, dateType, date => 会转为字符串写入search的point
   pointRecord: {}, // day, month记录的上一次选中的日月
   pointsCheckedList: [], // 测点页选中的测点

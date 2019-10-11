@@ -158,8 +158,6 @@ class PointsOverview extends PureComponent{
   }
 
   stationChanged = ({ stationCode }) => { // 电站切换 => 请求电站信息
-    const { deviceAuto } = this.state;
-    !deviceAuto && this.setState({ deviceAuto: true });
     const { pointParam } = this.props;
     const newParam = {
       ...pointParam,
@@ -172,6 +170,7 @@ class PointsOverview extends PureComponent{
       pointsCheckedList: [],
       pointList: [],
       pointConnectedDevices: [],
+      autoDevice: true,
     });
     this.props.getOverviewStation({
       stationCode,
@@ -180,8 +179,6 @@ class PointsOverview extends PureComponent{
   }
 
   deviceTypeChanged = (deviceTypeCode) => { // 设备类型切换 => 请求测点列表
-    const { deviceAuto } = this.state;
-    !deviceAuto && this.setState({ deviceAuto: true });
     const { pointParam } = this.props;
     const newParam = { ...pointParam, deviceTypeCode };
     this.props.changeOverviewStore({
@@ -190,6 +187,7 @@ class PointsOverview extends PureComponent{
       pointsCheckedList: [],
       pointList: [],
       pointConnectedDevices: [],
+      deviceAuto: true,
     });
     this.queryDeviceAndPoints(pointParam.stationCode, deviceTypeCode);
   }
