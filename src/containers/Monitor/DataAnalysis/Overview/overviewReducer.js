@@ -21,6 +21,7 @@ const initState = immutable.fromJS({
   deviceParam: {}, // stationCode, deviceTypeCode, dateType(1日2月), date => 会转为字符串写入search的device
   deviceRecord: {}, // day, month记录的上一次选中的月，日
   deviceCheckedList: [], // 设备页选中的测点
+  deviceIndicators: ['validCount', 'invalidCount', 'lostCount'], // 设备数据质量选中的指标项
   pointParam: {}, // stationCode, deviceTypeCode, deviceFullcode, dateType, date => 会转为字符串写入search的point
   pointRecord: {}, // day, month记录的上一次选中的日月
   pointsCheckedList: [], // 测点页选中的测点
@@ -28,6 +29,7 @@ const initState = immutable.fromJS({
   stationDatesRate: [], // 电站各日数据平均完备信息
   stationTopData: {}, // 电站页顶部信息
   stationUnix: null, // 电站页请求时间
+  stationLoading: false, // loading状态
 
   devicesData: {}, // 各设备信息
   deveiceLoading: false, // 设备信息loading

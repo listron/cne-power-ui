@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Radio, DatePicker } from 'antd';
+import { Radio, DatePicker, Spin } from 'antd';
 import styles from './point.scss';
 import CommonSearch from '../CommonSearch';
 import PointsSearch from './PointsSearch';
@@ -15,6 +15,7 @@ class PointsOverview extends PureComponent{
     history: PropTypes.object,
     pointRecord: PropTypes.object,
     autoDevice: PropTypes.bool, // 未手动选择电站名称, 设备类型时false, 手动选择需自动设置选中device
+    pointsLoading: PropTypes.bool,
     stations: PropTypes.array,
     pointTopData: PropTypes.object,
     pointConnectedDevices: PropTypes.array,
@@ -68,7 +69,6 @@ class PointsOverview extends PureComponent{
       });
     }
     if (preDeviceUnix !== deviceListUnix && autoDevice) { // 得到设备列表, 且需默认设备
-      // console.log('now im getting devices')
       const { deviceCode } = pointConnectedDevices[0] || {};
       const newParam = { // 写入路径, 存入store
         ...pointParam,
@@ -232,7 +232,7 @@ class PointsOverview extends PureComponent{
   }
 
   render(){
-    const { pointParam, pointTopData, stations, theme } = this.props;
+    const { pointParam, pointTopData, stations, theme, pointsLoading } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = pointParam;
     return(
       <div className={`${styles.point} ${styles[theme]}`}>
@@ -275,7 +275,9 @@ class PointsOverview extends PureComponent{
           deviceChanged={this.deviceChanged}
           pointsChanged={this.pointsChanged}
         />
-        <PointsList {...this.props} />
+        <Spin spinning={pointsLoading} size="large" delay={300}>
+          <PointsList {...this.props} />
+        </Spin>
       </div>
     );
   }

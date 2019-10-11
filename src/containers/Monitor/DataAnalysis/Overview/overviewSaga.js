@@ -34,12 +34,16 @@ function *getOverviewStation({ payload }){ // 电站基础数据信息 - 各页�
 
 function *getOverviewDates({ payload }){ // 电站各日完整率
   try {
+    yield call(easyPut, 'changeStore', {
+      stationLoading: true,
+    });
     const { stationCode, deviceTypeCode, month } = payload;
     const url = `${APIBasePath}${monitor.getOverviewDates}/${stationCode}/${deviceTypeCode}/${month}`;
     const response = yield call(request.get, url);
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         stationDatesRate: response.data || [],
+        stationLoading: false,
       });
     } else { throw response; }
   } catch (error) {

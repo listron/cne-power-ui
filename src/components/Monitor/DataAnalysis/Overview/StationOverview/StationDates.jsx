@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { DatePicker } from 'antd';
+import { DatePicker, Spin } from 'antd';
 import searchUtil from '@utils/searchUtil';
 import { dataFormats } from '@utils/utilFunc';
 import styles from './station.scss';
@@ -10,6 +10,7 @@ const { MonthPicker } = DatePicker;
 class StationDates extends PureComponent{
   static propTypes = {
     theme: PropTypes.string,
+    stationLoading: PropTypes.bool,
     stationParam: PropTypes.object,
     stationTopData: PropTypes.object,
     stationDatesRate: PropTypes.array,
@@ -104,7 +105,7 @@ class StationDates extends PureComponent{
   }
 
   render(){
-    const { stationParam = {}, stationDatesRate = [], theme } = this.props;
+    const { stationParam = {}, stationDatesRate = [], theme, stationLoading } = this.props;
     const { month } = stationParam;
     return(
       <div className={styles.dates}>
@@ -125,44 +126,46 @@ class StationDates extends PureComponent{
             ))}
           </span>
         </div>
-        <div className={styles.calendar}>
-          <div className={styles.weekdays}>
-            {['一', '二', '三', '四', '五', '六', '日'].map(e => (
-              <span className={styles.weekdayText} key={e}>{e}</span>
-            ))}
+        <Spin spinning={stationLoading} size="large" delay={300}>
+          <div className={styles.calendar}>
+            <div className={styles.weekdays}>
+              {['一', '二', '三', '四', '五', '六', '日'].map(e => (
+                <span className={styles.weekdayText} key={e}>{e}</span>
+              ))}
+            </div>
+            <div className={styles.datesList} onClick={this.clickDate}>
+              {this.getMonthDatesInfo(month).map(e => {
+                const validDate = stationDatesRate.find(rate => moment(rate.date).isSame(e, 'd'));
+                const { date, completeRate } = validDate || {};
+                const rateStr = dataFormats(completeRate, '--', 2, true);
+                const colorInfo = rateStr >= 100 ? this.rateLevel[4] : this.rateLevel[Math.floor(rateStr / 20)];
+                const holderColor = theme === 'light' ? '#f8f8f8' : '#f8f8f8';
+                const backgroundColor = colorInfo ? colorInfo.color : holderColor;
+                // rateStr < 20 && rateStr >= 0 && (backgroundColor = this.rateLevel[0]'#3b85d5');
+                // rateStr < 40 && rateStr >= 20 && (backgroundColor = '#599fe7');
+                // rateStr < 60 && rateStr >= 40 && (backgroundColor = '#8fc6f6');
+                // rateStr < 80 && rateStr >= 60 && (backgroundColor = '#abd8fc');
+                // rateStr >= 80 && (backgroundColor = '#e2f2fb');
+                const dayStyle = moment(e).isSame(month, 'M') ? {
+                  backgroundColor,
+                  color: '#000',
+                  cursor: 'pointer',
+                } : {};
+                return (
+                  <div className={styles.eachDay} style={{ ...dayStyle }} key={e} data-date={date}>
+                    <span className={styles.monthDay}>
+                      {moment(e).isSame(moment(), 'D') ? <span className={styles.today}>今日</span> : <span />}
+                      <span>{moment(e).format('D')}</span>
+                    </span>
+                    {validDate && <span className={styles.rateData}>
+                      {dataFormats(rateStr, '--', 2, true)}%
+                    </span>}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className={styles.datesList} onClick={this.clickDate}>
-            {this.getMonthDatesInfo(month).map(e => {
-              const validDate = stationDatesRate.find(rate => moment(rate.date).isSame(e, 'd'));
-              const { date, completeRate } = validDate || {};
-              const rateStr = dataFormats(completeRate, '--', 2, true);
-              const colorInfo = rateStr >= 100 ? this.rateLevel[4] : this.rateLevel[Math.floor(rateStr / 20)];
-              const holderColor = theme === 'light' ? '#f8f8f8' : '#f8f8f8';
-              const backgroundColor = colorInfo ? colorInfo.color : holderColor;
-              // rateStr < 20 && rateStr >= 0 && (backgroundColor = this.rateLevel[0]'#3b85d5');
-              // rateStr < 40 && rateStr >= 20 && (backgroundColor = '#599fe7');
-              // rateStr < 60 && rateStr >= 40 && (backgroundColor = '#8fc6f6');
-              // rateStr < 80 && rateStr >= 60 && (backgroundColor = '#abd8fc');
-              // rateStr >= 80 && (backgroundColor = '#e2f2fb');
-              const dayStyle = moment(e).isSame(month, 'M') ? {
-                backgroundColor,
-                color: '#000',
-                cursor: 'pointer',
-              } : {};
-              return (
-                <div className={styles.eachDay} style={{ ...dayStyle }} key={e} data-date={date}>
-                  <span className={styles.monthDay}>
-                    {moment(e).isSame(moment(), 'D') ? <span className={styles.today}>今日</span> : <span />}
-                    <span>{moment(e).format('D')}</span>
-                  </span>
-                  {validDate && <span className={styles.rateData}>
-                    {dataFormats(rateStr, '--', 2, true)}%
-                  </span>}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        </Spin>
       </div>
     );
   }
