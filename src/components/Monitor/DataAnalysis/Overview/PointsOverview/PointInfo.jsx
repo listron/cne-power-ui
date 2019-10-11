@@ -8,8 +8,9 @@ const BaseInfo = ({ pointType, pointName, theoryCount, validCount, invalidCount,
   return (
     <section className={styles.pointBase}>
       <h3 className={styles.baseTitle}>
-        <span>{pointType}</span>
-        <span>{pointName}</span>
+        <span className={styles.titlePointType}>{pointType}</span>
+        <span className={styles.titlePointName}>{pointName}</span>
+        <span className={styles.totleholder} />
       </h3>
       <div className={styles.baseBox}>
         <div className={styles.baseRate}>
@@ -19,19 +20,19 @@ const BaseInfo = ({ pointType, pointName, theoryCount, validCount, invalidCount,
         </div>
         <div className={styles.baseDetail}>
           <span>理论数据值</span>
-          <span>{dataFormats(theoryCount, '--', 2, true)}</span>
+          <span className={styles.theoryCount}>{dataFormats(theoryCount, '--', 2, true)}</span>
         </div>
         <div className={styles.baseDetail}>
           <span>有效值数</span>
-          <span>{dataFormats(validCount, '--', 2, true)}</span>
+          <span className={styles.theoryCount}>{dataFormats(validCount, '--', 2, true)}</span>
         </div>
         <div className={styles.baseDetail}>
           <span>无效值数</span>
-          <span>{dataFormats(invalidCount, '--', 2, true)}</span>
+          <span className={styles.invalidCount}>{dataFormats(invalidCount, '--', 2, true)}</span>
         </div>
         <div className={styles.baseDetail}>
           <span>缺失值数</span>
-          <span>{dataFormats(lostCount, '--', 2, true)}</span>
+          <span className={styles.lostCount}>{dataFormats(lostCount, '--', 2, true)}</span>
         </div>
       </div>
     </section>

@@ -21,10 +21,22 @@ class DeviceTable extends PureComponent{
     getOverviewPoints: PropTypes.func,
   }
 
-  state = {
-    indicators: ['validCount', 'invalidCount', 'lostCount'], // validCount	有效值数;invalidCount	无效值数;lostCount	缺失值数
-    tableColumn: this.baseColumn,
+  constructor(props){
+    super(props);
+    const { devicesData } = this.props;
+    const { deviceData = [] } = devicesData;
+    const indicators = ['validCount', 'invalidCount', 'lostCount']; // validCount	有效值数;invalidCount	无效值数;lostCount	缺失值数
+    let tableColumn = this.baseColumn;
+    if (deviceData.length > 0) { // 有数据, 直接渲染。
+      tableColumn = this.createColumn(this.baseColumn, deviceData, indicators);
+    }
+    this.state = { indicators, tableColumn };
   }
+
+  // state = {
+  //   indicators: ['validCount', 'invalidCount', 'lostCount'], // validCount	有效值数;invalidCount	无效值数;lostCount	缺失值数
+  //   tableColumn: this.baseColumn,
+  // }
 
   componentWillReceiveProps(nextProps){
     const { deveiceLoading, devicesData } = nextProps;
@@ -43,7 +55,7 @@ class DeviceTable extends PureComponent{
       title: '设备名称',
       dataIndex: 'deviceName',
       fixed: 'left',
-      sorter: (a, b) => (a.deviceName) && a.deviceName.localeCompare(b.deviceName),
+      sorter: (a, b) => (a.deviceSortName) && a.deviceSortName.localeCompare(b.deviceSortName),
       width: 125,
       // className: styles.deviceName,
       render: (text, record) => (
@@ -59,12 +71,14 @@ class DeviceTable extends PureComponent{
       dataIndex: 'realCount',
       fixed: 'left',
       width: 130,
+      // className: styles.realCount,
       sorter: (a, b) => a.realCount - b.realCount,
     }, {
       title: '设备数据完整率',
       dataIndex: 'completeRate',
       fixed: 'left',
       width: 155,
+      // className: styles.completeRate,
       sorter: (a, b) => a.completeRate - b.completeRate,
     },
   ]
@@ -121,12 +135,19 @@ class DeviceTable extends PureComponent{
     this.setState({
       tableColumn: this.createColumn(this.baseColumn, filteredDevice, indicators),
     });
+    this.props.changeOverviewStore({
+      deviceCheckedList: pointsChecked.map(e => e.value),
+    });
   }
 
   changeNumType = (indicators) => { // 指标类型筛选
-    const { devicesData } = this.props;
+    const { devicesData, deviceCheckedList } = this.props;
     const { deviceData = [] } = devicesData;
-    const tableColumn = this.createColumn(this.baseColumn, deviceData, indicators);
+    const filteredDevice = deviceData.map(e => ({ //测点筛选
+      ...e,
+      pointData: e.pointData.filter(m => deviceCheckedList.includes(m.pointCode)),
+    }));
+    const tableColumn = this.createColumn(this.baseColumn, filteredDevice, indicators);
     this.setState({ indicators, tableColumn });
   }
 
@@ -157,7 +178,8 @@ class DeviceTable extends PureComponent{
     const { indicators, tableColumn } = this.state;
     const { deviceData = [] } = devicesData;
     const { pointData = []} = deviceData[0] || {};
-    const tableWidth = 410 + pointData.length * 330;
+    const actualPoints = pointData.filter(e => deviceCheckedList.includes(e.pointCode)); // 选中测点与实际测点数据的交集才是实际数据列
+    const tableWidth = 410 + actualPoints.length * indicators.length * 110;
     return(
       <div className={styles.devicePoints}>
         <div className={styles.pointHandle}>
