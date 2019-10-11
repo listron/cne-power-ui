@@ -97,6 +97,12 @@ class StationDates extends PureComponent{
     }
   }
 
+  disableMonth = (cur) => {
+    const { stationTopData } = this.props;
+    const { dataStartTime } = stationTopData;
+    return moment().isBefore(cur, 'month') || moment(dataStartTime).isAfter(cur, 'month');
+  }
+
   render(){
     const { stationParam = {}, stationDatesRate = [], theme } = this.props;
     const { month } = stationParam;
@@ -109,6 +115,7 @@ class StationDates extends PureComponent{
               allowClear={false}
               value={month ? moment(month) : null}
               onChange={this.monthCheck}
+              disabledDate={this.disableMonth}
             />
           </span>
           <span className={styles.ranges}>
