@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import { dataFormats } from '@utils/utilFunc';
 import styles from './point.scss';
 
-const BaseInfo = ({ pointType, pointName, theoryCount, validCount, invalidCount, lostCount }) => {
+const BaseInfo = ({ pointType, pointName, theoryCount, validCount, invalidCount, lostCount, unit }) => {
   return (
     <section className={styles.pointBase}>
       <h3 className={styles.baseTitle}>
         <span className={styles.titlePointType}>{pointType}</span>
         <span className={styles.titlePointName}>{pointName}</span>
-        <span className={styles.totleholder} />
+        <span className={styles.titleUnit}>{unit}</span>
       </h3>
       <div className={styles.baseBox}>
         <div className={styles.baseRate}>
@@ -45,6 +45,7 @@ BaseInfo.propTypes = {
   theoryCount: PropTypes.number,
   validCount: PropTypes.number,
   invalidCount: PropTypes.number,
+  unit: PropTypes.string,
   lostCount: PropTypes.number,
 };
 
