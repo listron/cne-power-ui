@@ -25,10 +25,15 @@
 .chartWrap {
   position: relative;
   width: 100%;
+  max-width: 610px;
+  margin: 0 auto;
+
   height: 300px;
 
   .windRoseStyle {
     width: 100%;
+    //max-width: 606px;
+    //margin: 0 auto;
     height: 300px;
   }
 
@@ -68,11 +73,11 @@
   }
 
   .firstInfo{
-    left: 143px;
+    left: 14%;
   }
 
   .secondInfo{
-    right: 143px;
+    right: 14%;
   }
 }
 
