@@ -25,15 +25,10 @@
 .chartWrap {
   position: relative;
   width: 100%;
-  max-width: 610px;
-  margin: 0 auto;
-
   height: 300px;
 
   .windRoseStyle {
     width: 100%;
-    //max-width: 606px;
-    //margin: 0 auto;
     height: 300px;
   }
 
@@ -62,22 +57,27 @@
   }
 
   .firstInfo, .secondInfo{
-    border-radius: 4px;
-    width: 128px;
+    width: 50%;
     height: 44px;
-    text-align: center;
     position: absolute;
     top: 128px;
     z-index: 1;
     @include lineheight(44px);
+    display: flex;
+    justify-content: center;
+    div{
+      width: 128px;
+      border-radius: 4px;
+      text-align: center;
+    }
   }
 
   .firstInfo{
-    left: 14%;
+    left: 0;
   }
 
   .secondInfo{
-    right: 14%;
+    right: 0;
   }
 }
 
@@ -185,8 +185,10 @@
 .chartWrap {
 
   .firstInfo, .secondInfo{
-    background: rgba(0,0,0,0.50);
-    color: #fff;
+    div{
+      background: rgba(0,0,0,0.50);
+      color: #fff;
+    }
   }
 
   .showModalIcon {
