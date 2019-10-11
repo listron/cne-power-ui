@@ -34,7 +34,7 @@ function* getStationDevice(action) {//获取电站设备
           type: windResourcesAction.getDirections,
           payload: {
             deviceFullCode,
-            startTime: moment().subtract(2, 'months').format(),
+            startTime: moment().subtract(1, 'months').startOf('month').format(),
             endTime: moment().format(),
           },
         });
@@ -45,7 +45,7 @@ function* getStationDevice(action) {//获取电站设备
           type: windResourcesAction.getFrequency,
           payload: {
             deviceFullCode,
-            startTime: moment().subtract(2, 'months').format(),
+            startTime: moment().subtract(1, 'months').startOf('month').format(),
             endTime: moment().format(),
           },
         });
@@ -64,6 +64,20 @@ function* getStationDevice(action) {//获取电站设备
   }
 }
 
+// 处理时间，当前月和非当前月的日期格式处理
+function dateFormat(time) {
+  // 当前月份
+  const currentEndDate = moment().format('YYYY-MM');
+  // 选择结束月份
+  const endDate = moment(time).format('YYYY-MM');
+  let endTime = moment(time).endOf('months').utc().format();
+  // 相等月份
+  if(currentEndDate === endDate) {
+    endTime = moment().utc().format();
+  }
+  return endTime;
+}
+
 function* getDirections(action){ // 获取风能玫瑰图
   const { payload } = action;
   const { deviceFullCode, startTime, endTime } = payload;
@@ -77,7 +91,8 @@ function* getDirections(action){ // 获取风能玫瑰图
     });
     const response = yield call(request.post, url, {...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).endOf('d').utc().format()});
+      endTime: dateFormat(endTime)
+    });
     if (response.code === '10000') {
       yield put({
         type: windResourcesAction.changeWindResourcesStore,
@@ -124,7 +139,7 @@ function* getBigDirections(action) {// 获取放大后的玫瑰图
     const response = yield call(request.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).endOf('d').utc().format(),
+      endTime: dateFormat(endTime),
     });
     if (response.code === '10000') {
       const curChartData = response.data || [];
@@ -164,7 +179,8 @@ function* getFrequency(action){ // 获取风能频率图
     });
     const response = yield call(request.post, url, {...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).endOf('d').utc().format()});
+      endTime: dateFormat(endTime)
+    });
     if (response.code === '10000') {
       yield put({
         type: windResourcesAction.changeWindResourcesStore,
@@ -211,7 +227,7 @@ function* getBigFrequency(action) {// 获取放大后的图
     const response = yield call(request.post, url, {
       ...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: moment(endTime).endOf('d').utc().format(),
+      endTime: dateFormat(endTime),
     });
     if (response.code === '10000') {
       const curChartData = response.data || [];

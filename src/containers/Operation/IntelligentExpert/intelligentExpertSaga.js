@@ -7,9 +7,14 @@ import { message } from 'antd';
 const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
 message.config({ top: 200, duration: 2, maxCount: 3 });
-
 function* getIntelligentTable({ payload = {} }) { // 获取列表数据
   const url = `${APIBasePath}${operation.getIntelligentTable}`;
+  const { orderField, sortMethod } = payload;
+  const params = {
+    ...payload,
+    orderField: orderField && orderField || 'like_count',
+    sortMethod: sortMethod && sortMethod || 'desc',
+  };
   try {
     yield put({
       type: intelligentExpertAction.changeIntelligentExpertStore,
@@ -18,7 +23,7 @@ function* getIntelligentTable({ payload = {} }) { // 获取列表数据
         listParams: payload,
       },
     });
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
     const { total = 0 } = response.data.data || {};
     let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(total / pageSize);
@@ -78,14 +83,18 @@ function* getImportIntelligent({ payload = {} }) { // 导入
       const params = yield select(state => state.operation.intelligentExpert.get('listParams').toJS());// 继续请求智能专家库列表
       yield put({
         type: intelligentExpertAction.getIntelligentTable,
-        payload: params,
+        payload: {
+          ...params,
+          orderField: 'update_time',
+          sortMethod: 'desc',
+        },
       });
     } else {
       throw response.data;
     }
   } catch (e) {
     console.log(e);
-    message.error('导入失败，请检查文件后重试！');
+    message.error(e.message);
   }
 }
 
@@ -159,9 +168,10 @@ function* addIntelligent({ payload = {} }) { // 添加智能专家库
         },
       });
       if (!continueAdd) {
+        console.log('进来了');
         const params = yield select(state => state.operation.intelligentExpert.get('listParams').toJS());// 继续请求智能专家库列表
         yield put({
-          type: intelligentExpertAction.changeIntelligentExpertStore,
+          type: intelligentExpertAction.getIntelligentTable,
           payload: params,
         });
       }

@@ -22,7 +22,7 @@ class PointsList extends PureComponent{
           const { histogram } = e;
           let histogramList = [];
           try {
-            histogramList = JSON.parse(histogram);
+            histogramList = JSON.parse(histogram) || [];
           } catch(err){
             console.log(err);
           }

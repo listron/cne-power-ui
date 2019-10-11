@@ -59,15 +59,15 @@ class DropDownSelects extends Component {
           filterOption={this.searchFilter}
           value={checkedList.map(e => e.value)}
           getPopupContainer={() => this.dropRef}
+          showArrow={false}
           {...maxTagInfo}
+          disabled={disabled}
         >
           {infoLists.map(e => (
             <Option key={e.value} value={e.value}>{e.label}</Option>
           ))}
         </Select>
       </span>
-
-      
     );
   }
 }

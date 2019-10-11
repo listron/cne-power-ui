@@ -19,8 +19,10 @@ const initState = immutable.fromJS({
   pages: ['station'], // 开启的tab页面
   stationParam: {}, // stationCode, deviceTypeCode, month => search-station是该字段的jsonStr
   deviceParam: {}, // stationCode, deviceTypeCode, dateType(1日2月), date => 会转为字符串写入search的device
+  deviceRecord: {}, // day, month记录的上一次选中的月，日
   deviceCheckedList: [], // 设备页选中的测点
   pointParam: {}, // stationCode, deviceTypeCode, deviceFullcode, dateType, date => 会转为字符串写入search的point
+  pointRecord: {}, // day, month记录的上一次选中的日月
   pointsCheckedList: [], // 测点页选中的测点
 
   stationDatesRate: [], // 电站各日数据平均完备信息

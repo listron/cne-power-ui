@@ -144,7 +144,10 @@ class StationDates extends PureComponent{
               } : {};
               return (
                 <div className={styles.eachDay} style={{ ...dayStyle }} key={e} data-date={date}>
-                  <span className={styles.monthDay}>{moment(e).format('D')}</span>
+                  <span className={styles.monthDay}>
+                    {moment(e).isSame(moment(), 'D') ? <span className={styles.today}>今日</span> : <span />}
+                    <span>{moment(e).format('D')}</span>
+                  </span>
                   {validDate && <span className={styles.rateData}>
                     {dataFormats(rateStr, '--', 2, true)}%
                   </span>}

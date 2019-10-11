@@ -13,7 +13,7 @@ class DeviceRateChart extends PureComponent{
   }
 
   state = {
-    sortType: null, // null未排序, up升序, down降序
+    sortType: 'up', // up升序, down降序 默认设备名称升序排列
   }
 
   componentDidMount(){
@@ -50,6 +50,7 @@ class DeviceRateChart extends PureComponent{
 
   setChartLoading = () => {
     const rateChart = this.rateRef && echarts.getInstanceByDom(this.rateRef);
+    rateChart && rateChart.clear();
     rateChart && rateChart.showLoading();
   }
 
@@ -59,19 +60,26 @@ class DeviceRateChart extends PureComponent{
 
   sortChart = (value) => {
     const { sortType } = this.state;
+    if (sortType === value) { // 相同不处理
+      return;
+    }
     const { devicesData, theme } = this.props;
     const { deviceData } = devicesData;
-    const sortResult = value === sortType ? null : value; // 连击取消排序, 否则正常排序
-    this.setState({ sortType: sortResult });
-    this.drawChart(sortResult, deviceData, theme);
+    // const sortResult = value === sortType ? null : value; // 连击取消排序, 否则正常排序
+    this.setState({ sortType: value });
+    this.drawChart(value, deviceData, theme);
   }
 
   drawChart = (sortType, deviceData, theme) => {
     const rateChart = echarts.init(this.rateRef);
-    const sortedData = sortType ? [...deviceData].sort((a, b) => {
+    // const sortedData = sortType ? [...deviceData].sort((a, b) => {
+    //   const sortSign = sortType === 'up' ? 1 : -1;
+    //   return (a.completeRate - b.completeRate) * sortSign;
+    // }) : deviceData;
+    const sortedData = [...deviceData].sort((a, b) => {
       const sortSign = sortType === 'up' ? 1 : -1;
-      return (a.completeRate - b.completeRate) * sortSign;
-    }) : deviceData;
+      return a.deviceSortName && a.deviceSortName.localeCompare(b.deviceSortName) * sortSign;
+    });
     const dataAxis = [], rateData = [];
     sortedData.forEach(e => {
       const { deviceName, completeRate } = e;
@@ -137,7 +145,7 @@ class DeviceRateChart extends PureComponent{
             <div class=${styles.info}>
               <span class=${styles.round}></span>
               <span class=${styles.infoText}>设备数据完整率</span>
-              <span>${dataFormats(value, '--', 2, true)}%</span>
+              <span class=${styles.rateValue}>${dataFormats(value, '--', 2, true)}%</span>
             </div>
           </section>`;
         },

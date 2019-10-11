@@ -8,12 +8,19 @@ export default class CheckTree extends Component{
 
   static propTypes = {
     data: PropTypes.array,
+    multiple: PropTypes.bool,
     checkedTrees: PropTypes.array,
     onTreeCheck: PropTypes.func,
   }
 
-  onCheck = checkedTrees => {
-    this.props.onTreeCheck(checkedTrees);
+  onCheck = values => {
+    const { multiple, checkedTrees } = this.props;
+    if (!multiple && values.length > 1) { // 单选模式
+      const singleValue = values.filter(e => !checkedTrees.includes(e));
+      this.props.onTreeCheck(singleValue);
+    } else { // 多选模式 或 values长度不超出1个。
+      this.props.onTreeCheck(values);
+    }
   };
 
   renderTreeNodes = data => data.map(item => {

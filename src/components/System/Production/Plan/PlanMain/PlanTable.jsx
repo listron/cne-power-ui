@@ -73,7 +73,7 @@ class PlanTable extends Component {
 
   getPlanList = (value) => {
     const { planYear, stationCodes, sortField, sortMethod, pageNum, pageSize } = this.props;
-    this.props.getPlanList({ yaer: planYear, stationCodes, sortField, sortMethod, pageNum, pageSize, ...value });
+    this.props.getPlanList({ year: planYear, stationCodes, sortField, sortMethod, pageNum, pageSize, ...value });
   }
 
 
@@ -340,7 +340,11 @@ class PlanTable extends Component {
     const formData = new FormData();
     formData.append('file', fileList[0]);
     formData.append('year', importYear);
-    this.props.importFile({ formData });
+    this.props.importFile({ formData, fn: this.cancelAdd });
+  }
+
+  cancelAdd = () => {
+    this.setState({ importVisible: false });
   }
 
   removeFile = (file) => { //  删除导入文件
@@ -396,7 +400,7 @@ class PlanTable extends Component {
         <Modal
           visible={importVisible}
           title="批量导入计划发电量"
-          onCancel={() => this.setState({ importVisible: false })}
+          onCancel={this.cancelAdd}
           footer={null}
           getContainer={() => this.refs.modal}
           centered={true}

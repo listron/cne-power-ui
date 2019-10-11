@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {Icon} from 'antd';
 import eCharts from 'echarts';
 import {themeConfig} from '@utils/darkConfig';
-import {hiddenNoData, showNoData} from '@constants/echartsNoData';
 
 import styles from './windRose.scss';
 
@@ -96,7 +95,7 @@ export default class SingleWindRose extends Component{
       },
     };
     return {
-      graphic: (directionArr.length && energyArr.length) ? hiddenNoData : showNoData,
+      animation: false,
       title: {
         text: [`${deviceName} `, '{b|}'].join(''),
           left: '5%',
@@ -117,8 +116,11 @@ export default class SingleWindRose extends Component{
       },
       tooltip: {
         show: true,
-          padding: 0,
-          formatter: function (params) {
+        padding: 0,
+        axisPointer: { //去掉移动的指示线
+          type: 'none',
+        },
+        formatter: function (params) {
           const { name, data } = params[0];
           return `<div class=${styles.tooltip}>
               <span class=${styles.title}>${name}</span>
@@ -169,6 +171,13 @@ export default class SingleWindRose extends Component{
         color: '#3e97d1',
         barWidth: 20,
         data: directionArr,
+        emphasis: {
+          itemStyle: {
+            color: '#00cdff',
+            shadowColor: '#ccc',
+            shadowOffsetY: 1,
+          },
+        },
         coordinateSystem: 'polar',
         name: '风向',
       }, {
@@ -177,6 +186,13 @@ export default class SingleWindRose extends Component{
         color: '#f9b600',
         barWidth: 20,
         data: energyArr,
+        emphasis: {
+          itemStyle: {
+            color: '#ff8f2a',
+            shadowColor: '#ccc',
+            shadowOffsetY: 1,
+          },
+        },
         coordinateSystem: 'polar',
         name: '风能',
       }],
@@ -211,18 +227,26 @@ export default class SingleWindRose extends Component{
         ...params,
         deviceFullCode: deviceList[index + 1].deviceFullCode,
       });
-    }, 50);
+    }, 100);
 
     myChart.setOption(option, true);
   };
 
   render(){
-    const { index, showImg } = this.props;
+    const { index, showImg, directionsData, directionsLoading } = this.props;
+    // 风向value
+    const directionArr = directionsData && directionsData.map(cur => (cur.directionPercent));
+    const directionFlag = directionArr.every((cur) => {return cur === null;});
+    // 风能value
+    const energyArr = directionsData && directionsData.map(cur => (cur.energyPercent));
+    const energyFlag = energyArr.every((cur) => {return cur === null;});
     return(
       <div className={styles.chartWrap}>
         <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalIcon} />
         <span className={styles.windDirection}>风向</span>
         <span className={styles.windPower}>风能</span>
+        {(directionsLoading && directionFlag) && <div className={styles.firstInfo}>暂无数据</div>}
+        {(directionsLoading && energyFlag) && <div className={styles.secondInfo}>暂无数据</div>}
         <div ref={ref => { this.directionChart = ref;}} className={styles.windRoseStyle} />
       </div>
     );
