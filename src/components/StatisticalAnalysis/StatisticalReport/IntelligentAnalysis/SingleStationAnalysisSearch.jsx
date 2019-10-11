@@ -22,7 +22,6 @@ class SingleStationAnalysisSearch extends Component {
     month: PropTypes.string,
     year: PropTypes.string,
     downLoadFile: PropTypes.func,
-    startTime: PropTypes.string,
     reportShow: PropTypes.bool,
   };
 
@@ -30,23 +29,49 @@ class SingleStationAnalysisSearch extends Component {
     super(props);
     this.state = {
       startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
-      year: '',
-      month: '',
-      dateType: '',
     };
   }
 
+  componentDidMount(){
+    const { stations } = this.props;
+    if (stations.length > 0) {
+      this.getStationData(this.props);
+    }
+  }
+
+  getStationData = (props) => {
+    const { dateType, stations, stationCode, stationName, changeIntelligentAnalysisStore, getSingleStationAnalysis } = props;
+    const { startTime } = this.state;
+    const initStations = stations.filter(e => e.stationType === 1);
+    const prams = {
+      stationCode: stationCode ? stationCode : initStations[0].stationCode,
+      stationName: stationName ? stationName : initStations[0].stationName,
+      dateType,
+      month: moment(startTime).format('M'),
+      year: moment(startTime).format('YYYY'),
+    };
+    changeIntelligentAnalysisStore({
+      ...prams,
+    });
+    getSingleStationAnalysis({
+      dateType,
+      month: moment(startTime).format('M'),
+      year: moment(startTime).format('YYYY'),
+      stationCode: stationCode ? stationCode : initStations[0].stationCode,
+    });
+  }
+
   onTimeChange = (value) => { // 选择时间
+    const { changeIntelligentAnalysisStore } = this.props;
     const { startTime, timeStyle } = value;
-    this.props.changeIntelligentAnalysisStore({ startTime });
-    const dateType = timeStyle === 'month' ? 2 : 1;
+    changeIntelligentAnalysisStore({ startTime });
     if (timeStyle === 'month') {
-      this.setState({
+      changeIntelligentAnalysisStore({
         dateType: 2,
         year: moment(startTime).format('YYYY'),
       });
     } else if (timeStyle === 'day') {
-      this.setState({
+      changeIntelligentAnalysisStore({
         dateType: 1,
         year: moment(startTime).format('YYYY'),
         month: moment(startTime).format('M'),
@@ -57,12 +82,12 @@ class SingleStationAnalysisSearch extends Component {
   selectStation = (selectedStationInfo) => { // 选择电站
     this.props.changeIntelligentAnalysisStore({
       stationCode: selectedStationInfo[0].stationCode,
+      stationName: selectedStationInfo[0].stationName,
     });
   }
 
   searchInfo = () => { // 查询
-    const { getSingleStationAnalysis, changeIntelligentAnalysisStore, stationCode } = this.props;
-    const { dateType, month, year } = this.state;
+    const { getSingleStationAnalysis, changeIntelligentAnalysisStore, stationCode, stationName, year, month, dateType } = this.props;
     if (!stationCode) {
       message.error('请选择电站名称！');
       return;
@@ -78,6 +103,7 @@ class SingleStationAnalysisSearch extends Component {
     });
     changeIntelligentAnalysisStore({
       ...params,
+      stationName,
     });
   }
 
@@ -99,9 +125,7 @@ class SingleStationAnalysisSearch extends Component {
   render() {
     const { stations, stationCode, reportShow, theme } = this.props;
     let station = '';
-    stationCode ? station = stations.toJS().filter(e => e.stationCode === stationCode) : '';
-    const initStations = stations.toJS().filter(e => e.stationType === 1);
-    console.log(initStations);
+    stationCode ? station = stations.filter(e => e.stationCode === stationCode) : '';
     return (
       <div className={`${styles.singleStationAnalysisSearch}`}>
         <div className={styles.searchPart}>
@@ -109,10 +133,11 @@ class SingleStationAnalysisSearch extends Component {
             <div className={styles.stationSelect}>
               <span className={styles.text}>电站选择</span>
               <StationSelect
+                disabled={stations.length === 1}
                 holderText={'请输入关键字快速查询'}
                 data={stations.filter(e => e.stationType === 1)}
                 onOK={this.selectStation}
-                value={stationCode}
+                value={station}
                 theme={theme}
               />
             </div>

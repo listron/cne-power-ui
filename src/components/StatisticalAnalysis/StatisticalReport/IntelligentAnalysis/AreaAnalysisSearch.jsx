@@ -24,44 +24,63 @@ class AreaAnalysisSearch extends Component{
   constructor(props){
     super(props);
     this.state = {
-      year:'',
-      month:'', 
-      dateType:'',
-      startTime: moment().subtract(0, 'months').format('YYYY-MM-DD'),
-    }
+      startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+    };
+  }
+
+  componentDidMount(){
+    this.getStationData(this.props);
+  }
+
+  getStationData = (props) => {
+    const { dateType, changeIntelligentAnalysisStore, getArea } = props;
+    const { startTime } = this.state;
+    const prams = {
+      dateType,
+      month: moment(startTime).format('M'),
+      year: moment(startTime).format('YYYY'),
+    };
+    changeIntelligentAnalysisStore({
+      ...prams,
+    });
+    getArea({
+      dateType,
+      month: moment(startTime).format('M'),
+      year: moment(startTime).format('YYYY'),
+    });
   }
 
   onTimeChange = (value) => { // 选择时间
+    const { changeIntelligentAnalysisStore } = this.props;
     const { startTime, timeStyle } = value;
-    let dateType = timeStyle === 'month' ? 2 : 1;
+    changeIntelligentAnalysisStore({ startTime });
     if(timeStyle === 'month'){
-      this.setState({
+      changeIntelligentAnalysisStore({
         dateType: 2,
-        year : moment(startTime).format('YYYY'),
-      })
+        year: moment(startTime).format('YYYY'),
+      });
     }else if(timeStyle === 'day'){
-      this.setState({
+      changeIntelligentAnalysisStore({
         dateType: 1,
         year: moment(startTime).format('YYYY'),
         month: moment(startTime).format('M'),
-      })
+      });
     }
   }
-  
+
   searchInfo = () => { // 查询
-    const { getArea, changeIntelligentAnalysisStore } = this.props;
-    const { year, month, dateType } = this.state;
+    const { getArea, changeIntelligentAnalysisStore, year, month, dateType } = this.props;
     if (!moment(year).isValid()) {
-      message.error("请选择统计时间！");
+      message.error('请选择统计时间！');
       return;
     }
     const params = { year, dateType };
     dateType === 1 && (params.month = month);
     getArea({
-      ...params
+      ...params,
     });
     changeIntelligentAnalysisStore({
-      ...params
+      ...params,
     });
   }
 

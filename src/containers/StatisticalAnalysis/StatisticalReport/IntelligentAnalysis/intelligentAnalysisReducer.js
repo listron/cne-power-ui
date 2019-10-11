@@ -7,10 +7,11 @@ const initState = immutable.fromJS({
   dateType: 1, // 时间类型
   reportShow: false, // 显示报告
   stationCode: null, // 选中的电站code
+  stationName: '', // 选中的电站名称
   areaName: null, // 选中的区域
-  startTime:null, 
-  month: moment().subtract(0, 'months').format('MM'), // 选中的月份 
-  year: moment().subtract(0, 'years').format('YYYY'), // 选中的年份
+  startTime: null,
+  month: moment().subtract(1, 'months').format('MM'), // 选中的月份 
+  year: moment().subtract(1, 'years').format('YYYY'), // 选中的年份
   singleStationInfo: {}, // 单电站分析数据
   areaStationInfo: {}, // 同区域电站对比分析数据
   areaInfo: {}, // 区域对比分析数据

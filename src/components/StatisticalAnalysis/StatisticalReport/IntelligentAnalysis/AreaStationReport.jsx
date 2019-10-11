@@ -78,18 +78,6 @@ class AreaStationReport extends Component{
                 </div>
               </div>
 
-              {/* {highEquUsehourStations.map((e) => (
-                <p className={styles.paragraph}>
-                  <span className={styles.text}>{e.stationName || '--'}</span>
-                  <span className={styles.text}>{dataFormats(e.hours, '--', 2, true) || '--'}</span>
-                  <span>h;晴天天数</span>
-                  <span className={styles.text}>{dataFormats(e.sunnyDays, '--', 2, true) || '--'}</span>
-                  <span>天，占比</span>
-                  <span className={styles.text}>{dataFormats(e.proportion, '--', 2, true) || '--'}</span>
-                  <span>%；</span>
-                </p>
-              ))} */}
-
               <div>
                 <p className={styles.distanceTop + ' ' + styles.bigText}>
                   <span>（2）该区域等效利用小时数最低的三个电站为</span>
@@ -129,21 +117,6 @@ class AreaStationReport extends Component{
 
               </div>
 
-
-              {/* <p className={styles.paragraph}>原因说明：</p> */}
-              {/* 
-              {lowEquUsehourStations.map((e) => (
-                <p className={styles.paragraph}>
-                  <span className={styles.text}>{e.stationName || '--'}</span>
-                  <span>电站损失等效小时数较高，为</span>
-                  <span className={styles.text}>{dataFormats(e.hours, '--', 2, true) || '--'}</span>
-                  <span>h;晴天天数</span>
-                  <span className={styles.text}>{dataFormats(e.sunnyDays, '--', 2, true) || '--'}</span>
-                  <span>天，占比</span>
-                  <span className={styles.text}>{dataFormats(e.proportion, '--', 2, true) || '--'}</span>
-                  <span>%；</span>
-                </p>
-              ))} */}
               <p className={styles.distanceTop + ' ' + styles.bigText}>
                 <span>2、区域内电站平均计划完成率为</span>
                 <span className={styles.text}>{dataFormats(areaStationInfo.aveComplateRate, '--', 2, true) || '--'}</span>
@@ -188,25 +161,11 @@ class AreaStationReport extends Component{
                   </div>
                 </div>
 
-              {/* {highComplateRateStations.map((e) => (
-                <p className={styles.paragraph}>
-                  <span className={styles.text}>{e.stationName || '--'}</span>
-                  <span>电站损失电量较低，损失率为</span>
-                  <span className={styles.text}>{dataFormats(e.lossRate,'--',2,true) || '--'}</span>
-                  <span>%;晴天天数</span>
-                  <span className={styles.text}>{dataFormats(e.sunnyDays,'--',2,true) || '--'}</span>
-                  <span>天，占比</span>
-                  <span className={styles.text}>{dataFormats(e.proportion,'--',2,true) || '--'}</span>
-                  <span>%；</span>
-                </p>
-              ))}  */}
               <p className={styles.bigText + ' ' + styles.distanceTop}>
                 <span>（2）该区域计划完成率最低的三个电站为</span>
                 <span className={styles.text}>{lowComplateRateStations.map(e=>e.stationName).join('、')}</span>
                 <span>。原因说明：</span>
               </p>
-              
-              {/* <p className={styles.paragraph}>原因说明：</p>  */}
 
                 <div className={styles.fileBox}>
                   <div className={styles.stationName}>
@@ -237,19 +196,7 @@ class AreaStationReport extends Component{
                     ))}
                   </div>
                 </div>
-              
-              {/* {lowComplateRateStations.map((e) => (
-                <p className={styles.paragraph}>
-                  <span className={styles.text}>{e.stationName || '--'}</span>
-                  <span>电站损失电量较高，损失率为</span>
-                  <span className={styles.text}>{dataFormats(e.lossRate,'--',2,true) || '--'}</span>
-                  <span>%;晴天天数</span>
-                  <span className={styles.text}>{dataFormats(e.sunnyDays,'--',2,true) || '--'}</span>
-                  <span>天，占比</span>
-                  <span className={styles.text}>{dataFormats(e.proportion,'--',2,true) || '--'}</span>
-                  <span>%；</span>
-                </p>
-              ))}    */}
+
               <p className={styles.distanceTop + ' ' + styles.bigText}>
                 <span>3、区域内电站总损失电量为</span>
                 <span className={styles.text}>{dataFormats(areaStationInfo.totalLossPower,'--',4,true) || '--'}</span>
@@ -358,38 +305,11 @@ class AreaStationReport extends Component{
                 </div>
               </div>
 
-              {/* {highEquUsehourStations.map((e) => (
-                <p className={styles.paragraph}>
-                  <span className={styles.text}>{e.stationName || '--'}</span>
-                  <span>电站损失等效小时数较低，为</span>
-                  <span className={styles.text}>{dataFormats(e.hours,'--',2,true) || '--'}</span>
-                  <span>h;晴天天数</span>
-                  <span className={styles.text}>{dataFormats(e.sunnyDays,'--',2,true) || '--'}</span>
-                  <span>天，占比</span>
-                  <span className={styles.text}>{dataFormats(e.proportion,'--',2,true) || '--'}</span>
-                  <span>%；</span>
-                </p>
-              ))}  */}
               <p className={styles.distanceTop}>
                 <span>（2）该区域等效利用小时数最低的三个电站为</span>
                 <span className={styles.text}>{lowEquUsehourStations.map(e=>e.stationName).join('、')}</span>
                 <span>。原因说明：</span>
               </p>
-
-              {/* <p className={styles.paragraph}>原因说明：</p> */}
-
-              {/* {lowEquUsehourStations.map((e) => (
-                <p className={styles.paragraph}>
-                  <span className={styles.text}>{e.stationName || '--'}</span>
-                  <span>电站损失等效小时数较低，为</span>
-                  <span className={styles.text}>{dataFormats(e.hours,'--',2,true) || '--'}</span>
-                  <span>h;晴天天数</span>
-                  <span className={styles.text}>{dataFormats(e.sunnyDays,'--',2,true) || '--'}</span>
-                  <span>天，占比</span>
-                  <span className={styles.text}>{dataFormats(e.proportion,'--',2,true) || '--'}</span>
-                  <span>%；</span>
-                </p>
-              ))} */}
 
                 <div className={styles.fileBox}>
                   <div className={styles.stationName}>
@@ -433,21 +353,6 @@ class AreaStationReport extends Component{
                 <span>。原因说明：</span>
               </p>
 
-              {/* <p className={styles.paragraph}>原因说明：</p>  */}
-
-              {/* {highComplateRateStations.map((e) => (
-                <p className={styles.paragraph}>
-                  <span className={styles.text}>{e.stationName || '--'}</span>
-                  <span>电站损失电量较低，损失率为</span>
-                  <span className={styles.text}>{dataFormats(e.lossRate,'--',2,true) || '--'}</span>
-                  <span>%;晴天天数</span>
-                  <span className={styles.text}>{dataFormats(e.sunnyDays,'--',2,true) || '--'}</span>
-                  <span>天，占比</span>
-                  <span className={styles.text}>{dataFormats(e.proportion,'--',2,true) || '--'}</span>
-                  <span>%；</span>
-                </p>
-              ))} */}
-
                 <div className={styles.fileBox}>
                   <div className={styles.stationName}>
                     <p className={styles.titlesText}>电站名称</p>
@@ -483,21 +388,6 @@ class AreaStationReport extends Component{
                 <span className={styles.text}>{lowComplateRateStations.map(e=>e.stationName).join('、')}</span>
                 <span>。原因说明：</span>
               </p>
-
-              {/* <p className={styles.paragraph}>原因说明：</p>   */}
-
-              {/* {lowComplateRateStations.map((e) => (
-                <p className={styles.paragraph}>
-                  <span className={styles.text}>{e.stationName || '--'}</span>
-                  <span>电站损失电量较高，损失率为</span>
-                  <span className={styles.text}>{dataFormats(e.lossRate,'--',2,true) || '--'}</span>
-                  <span>%;晴天天数</span>
-                  <span className={styles.text}>{dataFormats(e.sunnyDays,'--',2,true) || '--'}</span>
-                  <span>天，占比</span>
-                  <span className={styles.text}>{dataFormats(e.proportion,'--',2,true) || '--'}</span>
-                  <span>%；</span>
-                </p>
-              ))}    */}
 
                 <div className={styles.fileBox}>
                   <div className={styles.stationName}>
@@ -568,59 +458,6 @@ class AreaStationReport extends Component{
                   <p className={styles.text}>{dataFormats(totalLossPowerDesc.otherFaultProportion, '--', 2, true) || '--'}</p>
                 </div>
               </div>
-{/* 
-              <p className={styles.paragraph}>详细情况说明：</p>
-              <p className={styles.paragraph}>
-                <span>1）外部故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.externalFaultLostPower,'--',4,true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.externalFaultProportion,'--',2,true) || '--'}</span>
-                <span>%，其中</span>
-                <span className={styles.text}>{totalLossPowerDesc.highExternalFaultName || '--'}</span>
-                <span>占比最高，为</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.highExternalFaultProportion,'--',2,true) || '--'}</span>
-                <span>%；</span>
-              </p>
- 
-              <p className={styles.paragraph}>
-                <span>2）低压直流故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.lowVoltageDCFaultLostPower,'--',4,true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.lowVoltageDCFaultProportion,'--',2,true) || '--'}</span>
-                <span>%；</span>
-              </p>
-
-              <p className={styles.paragraph}>
-                <span>3）变电系统故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.substationSystemFaultLostPower,'--',4,true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.substationSystemFaultProportion,'--',2,true) || '--'}</span>
-                <span>%；</span>
-              </p>
-
-              <p className={styles.paragraph}>
-                <span>4）输电系统故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.transmissionSystemFaultLostPower,'--',4,true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.transmissionSystemFaultProportion,'--',2,true) || '--'}</span>
-                <span>%；</span>
-              </p>
-
-              <p className={styles.paragraph}>
-                <span>5）二次及有功无功控制系统故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.secondaryAndHaveNotPowerFaultLostPower,'--',4,true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.secondaryAndHaveNotPowerFaultProportion,'--',2,true) || '--'}</span>
-                <span>%；</span>
-              </p>
-
-              <p className={styles.paragraph}>
-                <span>6）其他故障损失电量为</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.otherFaultLostPower,'--',4,true) || '--'}</span>
-                <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.otherFaultProportion,'--',2,true) || '--'}</span>
-                <span>%。</span>
-              </p> */}
 
               <p className={styles.distanceTop + ' ' + styles.bigText}>
                 <span> 4、区域内电站平均的得分为</span>
@@ -639,7 +476,7 @@ class AreaStationReport extends Component{
           </div>
         }
       </div>
-    )
+    );
   }
 }
 

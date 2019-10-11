@@ -44,7 +44,6 @@ class SingleStationAnalysisReport extends Component {
     const dLostPowerCompared = lossOfElectricity.lostPowerCompared;
 
     const { lowVoltageDCFaultLostPower, lowVoltageDCFaultProportion, lowVoltageDCFaultCompared, substationSystemFaultLostPower, substationSystemFaultProportion, substationSystemFaultCompared, transmissionSystemFaultLostPower, transmissionSystemFaultProportion, transmissionSystemFaultCompared, secondaryAndHaveNotPowerFaultLostPower, secondaryAndHaveNotPowerFaultProportion, secondaryAndHaveNotPowerFaultCompared, otherFaultLostPower, otherFaultProportion, otherFaultCompared, externalFaultLostPower, externalFaultProportion, externalFaultCompared } = lossOfElectricity;
-    console.log('externalFaultLostPower: ', externalFaultLostPower);
 
     return (
       <div className={`${styles.analysisReport}`}>
