@@ -31,8 +31,7 @@ export default class HandleSearch extends Component {
     super(props);
     this.state = {
       disableDateFun: (current) => {
-        const nextMonth = moment(moment().add(1, 'months').format(moment().format('YYYY-MM')), moment().format('YYYY-MM'))
-        return !!current ? current >= nextMonth : false;
+        return current && current > moment().subtract(1, 'month');
       },
       downLoadding: false,
     };
@@ -79,6 +78,10 @@ export default class HandleSearch extends Component {
       startTime: moment(value[0]).format(dateFormat),
       endTime: moment(value[1]).format(dateFormat),
     });
+  };
+
+  handleOpenChange = (status) => {
+    console.log(status, 'status');
   };
 
   onSearch = () => {
@@ -149,9 +152,10 @@ export default class HandleSearch extends Component {
             mode={['month', 'month']}
             allowClear={false}
             value={[moment(startTime, dateFormat), moment(endTime, dateFormat)]}
-            disabledMonth={disableDateFun}
+            disabledDate={disableDateFun}
             onCalendarChange={this.onCalendarChange}
             format={dateFormat}
+            onOpenChange={this.handleOpenChange}
             onPanelChange={this.handlePanelChange}
             style={{width: '240px'}}
           />
