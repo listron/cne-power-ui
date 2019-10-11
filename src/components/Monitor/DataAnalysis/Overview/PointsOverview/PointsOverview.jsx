@@ -273,7 +273,7 @@ class PointsOverview extends PureComponent{
           deviceChanged={this.deviceChanged}
           pointsChanged={this.pointsChanged}
         />
-        <Spin spinning={pointsLoading} size="large" delay={300}>
+        <Spin spinning={pointsLoading} size="large" delay={200}>
           <PointsList {...this.props} />
         </Spin>
       </div>

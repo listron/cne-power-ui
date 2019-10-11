@@ -192,7 +192,7 @@ class DeviceTable extends PureComponent{
     let tableWidth = '100%', scrollable = { x: scrollWidth };
     if (this.tableRef && scrollWidth < this.tableRef.offsetWidth) {
       tableWidth = `${scrollWidth}px`;
-      scrollable = false; // 取消横向滚动
+      scrollable = {}; // 取消横向滚动
     }
     return(
       <div className={styles.devicePoints} ref={(ref) => { this.tableRef = ref; }}>
