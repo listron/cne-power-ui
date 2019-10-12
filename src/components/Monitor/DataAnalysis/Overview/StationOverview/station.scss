@@ -48,6 +48,12 @@
   }
   .calendar{
     padding: 0 48px;
+    .loadingSpin{
+      display: flex;
+      height: 525px;
+      align-items: center;
+      justify-content: center;
+    }
     .weekdays{
       display: flex;
       height: 46px;
@@ -130,8 +136,7 @@
     }
     .calendar{
       .eachDay{
-        border-bottom: 2px solid #fff;
-        border-right: 2px solid #fff;
+        border: 1px solid #fff;
         background-color:#f8f8f8;
         color: #dfdfdf;
         &:hover{

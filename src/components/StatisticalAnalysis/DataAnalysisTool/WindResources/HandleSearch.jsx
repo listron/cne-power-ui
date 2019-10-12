@@ -31,10 +31,11 @@ export default class HandleSearch extends Component {
     super(props);
     this.state = {
       disableDateFun: (current) => {
-        const nextMonth = moment(moment().add(1, 'months').format(moment().format('YYYY-MM')), moment().format('YYYY-MM'))
-        return !!current ? current >= nextMonth : false;
+        return current && current > moment().subtract(1, 'month');
       },
       downLoadding: false,
+      timeInfoFlag: false,
+      timeInfoText: '时间选择范围不可超过12个月',
     };
   }
 
@@ -54,8 +55,6 @@ export default class HandleSearch extends Component {
   };
 
   onCalendarChange = (dates) => {
-    console.log('1111111');
-    console.log(dates, 'dates');
     if (dates.length === 1) {
       this.setState({ // 时间跨度不超过12个月
         disableDateFun: (current) => {
@@ -71,14 +70,53 @@ export default class HandleSearch extends Component {
     }
   };
 
+  setStateFn = (flag = true, text = '时间选择范围不可超过12个月') => {
+    this.setState({
+      timeInfoFlag: flag,
+      timeInfoText: text,
+    });
+  };
+
   //改时间
   handlePanelChange = value => {
-    console.log(value, 'value');
-    const { changeWindResourcesStore } = this.props;
-    changeWindResourcesStore({
-      startTime: moment(value[0]).format(dateFormat),
-      endTime: moment(value[1]).format(dateFormat),
+    const { changeWindResourcesStore, startTime, endTime } = this.props;
+    // 选择的时间
+    const startValueTime = moment(value[0]).format(dateFormat);
+    const endValueTime = moment(value[1]).format(dateFormat);
+    // props 时间
+    const propsStartTime = moment(startTime).format(dateFormat);
+    const propsEndTime = moment(endTime).format(dateFormat);
+    // 当前时间
+    const currentTime = moment().format(dateFormat);
+
+    // 时间差
+    const timeDiff = moment(endValueTime).diff(moment(startValueTime), 'month');
+    // 判断开始时间发生改变，结束时间没变
+    if(startValueTime !== propsStartTime && propsEndTime === endValueTime && timeDiff > 12) {
+      return this.setStateFn();
+    }
+    // 判断结束时间发生改变，开始时间没变
+    if(startValueTime === propsStartTime && propsEndTime !== endValueTime && timeDiff > 12) {
+      return this.setStateFn();
+    }
+    // 判断时间都发生改变
+    if(startValueTime !== propsStartTime && propsEndTime !== endValueTime && timeDiff > 12){
+      return this.setStateFn();
+    }
+    // 如果选择的时间大于当前时间
+    if(startValueTime > currentTime || endValueTime > currentTime) {
+      return this.setStateFn(true, '当前月以后的月份不可以选择');
+    }
+    this.setState({timeInfoFlag: false}, () => {
+      changeWindResourcesStore({
+        startTime: startValueTime,
+        endTime: endValueTime,
+      });
     });
+  };
+
+  handleOpenChange = () => {
+    this.setState({timeInfoFlag: false});
   };
 
   onSearch = () => {
@@ -133,7 +171,7 @@ export default class HandleSearch extends Component {
 
   render() {
     const {stationCode, stations, startTime, endTime, isClick} = this.props;
-    const {disableDateFun, downLoadding} = this.state;
+    const {disableDateFun, downLoadding, timeInfoFlag, timeInfoText} = this.state;
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
     return (
       <div className={styles.handleSeach}>
@@ -149,11 +187,17 @@ export default class HandleSearch extends Component {
             mode={['month', 'month']}
             allowClear={false}
             value={[moment(startTime, dateFormat), moment(endTime, dateFormat)]}
-            disabledMonth={disableDateFun}
+            disabledDate={disableDateFun}
             onCalendarChange={this.onCalendarChange}
             format={dateFormat}
+            onOpenChange={this.handleOpenChange}
             onPanelChange={this.handlePanelChange}
             style={{width: '240px'}}
+            renderExtraFooter={() => (
+              <span className={styles.infoTip}>
+                {timeInfoFlag && timeInfoText}
+              </span>
+            )}
           />
           <Button className={styles.seachBtn} onClick={this.onSearch}>查询</Button>
         </div>

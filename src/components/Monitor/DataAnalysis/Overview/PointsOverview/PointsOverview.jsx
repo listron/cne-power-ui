@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Radio, DatePicker } from 'antd';
+import { Radio, DatePicker, Spin } from 'antd';
 import styles from './point.scss';
 import CommonSearch from '../CommonSearch';
 import PointsSearch from './PointsSearch';
@@ -13,7 +13,9 @@ class PointsOverview extends PureComponent{
   static propTypes = {
     theme: PropTypes.string,
     history: PropTypes.object,
+    pointRecord: PropTypes.object,
     autoDevice: PropTypes.bool, // 未手动选择电站名称, 设备类型时false, 手动选择需自动设置选中device
+    pointsLoading: PropTypes.bool,
     stations: PropTypes.array,
     pointTopData: PropTypes.object,
     pointConnectedDevices: PropTypes.array,
@@ -67,7 +69,6 @@ class PointsOverview extends PureComponent{
       });
     }
     if (preDeviceUnix !== deviceListUnix && autoDevice) { // 得到设备列表, 且需默认设备
-      // console.log('now im getting devices')
       const { deviceCode } = pointConnectedDevices[0] || {};
       const newParam = { // 写入路径, 存入store
         ...pointParam,
@@ -111,13 +112,25 @@ class PointsOverview extends PureComponent{
   }
 
   dateTypeCheck = ({ target }) => { // 日期模式改变 => 按照默认时间 + 日期类型进行选中
-    const { pointParam, pointsCheckedList } = this.props;
+    const { pointParam, pointsCheckedList, pointRecord } = this.props;
     const { value } = target;
-    const date = moment().subtract(1, 'd').format(value === 2 ? 'YYYY-MM' : 'YYYY-MM-DD'); // 2按月, 1按日
-    const newParams = { ...pointParam, dateType: value, date };
+    const { month, day } = pointRecord; // 切换模式时候，将对应格式的日期存入record以便读取。
+    const { date } = pointParam; // 请求的时间参数
+    let newDate;
+    if(value === 1){ // 从月切换至按日: 若有记录, 使用记录的日, 若没有, 使用该月第一天
+      newDate = day ? day : moment(date).format('YYYY-MM-DD');
+    } else { // 从日切换至月: 若有记录，使用记录的月，若没有，使用当前日对应的月
+      newDate = month ? month : moment(date).format('YYYY-MM');
+    }
+    // const date = moment().subtract(1, 'd').format(value === 2 ? 'YYYY-MM' : 'YYYY-MM-DD'); // 2按月, 1按日
+    const newParams = { ...pointParam, dateType: value, date: newDate };
     this.props.changeOverviewStore({
       pointParam: newParams,
       pointsData: [], // 清空设备信息
+      pointRecord: {
+        ...pointRecord,
+        [value === 1 ? 'month' : 'day']: date, // 将上次请求的参数存入记录
+      },
     });
     this.props.getOverviewPoints({
       ...newParams,
@@ -145,8 +158,6 @@ class PointsOverview extends PureComponent{
   }
 
   stationChanged = ({ stationCode }) => { // 电站切换 => 请求电站信息
-    const { deviceAuto } = this.state;
-    !deviceAuto && this.setState({ deviceAuto: true });
     const { pointParam } = this.props;
     const newParam = {
       ...pointParam,
@@ -159,6 +170,7 @@ class PointsOverview extends PureComponent{
       pointsCheckedList: [],
       pointList: [],
       pointConnectedDevices: [],
+      autoDevice: true,
     });
     this.props.getOverviewStation({
       stationCode,
@@ -167,8 +179,6 @@ class PointsOverview extends PureComponent{
   }
 
   deviceTypeChanged = (deviceTypeCode) => { // 设备类型切换 => 请求测点列表
-    const { deviceAuto } = this.state;
-    !deviceAuto && this.setState({ deviceAuto: true });
     const { pointParam } = this.props;
     const newParam = { ...pointParam, deviceTypeCode };
     this.props.changeOverviewStore({
@@ -177,6 +187,7 @@ class PointsOverview extends PureComponent{
       pointsCheckedList: [],
       pointList: [],
       pointConnectedDevices: [],
+      deviceAuto: true,
     });
     this.queryDeviceAndPoints(pointParam.stationCode, deviceTypeCode);
   }
@@ -210,8 +221,16 @@ class PointsOverview extends PureComponent{
     history.push(`${pathname}?${newSearch}`);
   }
 
+  disableFun = (type) => { // type: 'month' / 'date'
+    return (cur) => {
+      const { pointTopData } = this.props;
+      const { dataStartTime } = pointTopData;
+      return moment().isBefore(cur, type) || moment(dataStartTime).isAfter(cur, type);
+    };
+  }
+
   render(){
-    const { pointParam, pointTopData, stations, theme } = this.props;
+    const { pointParam, pointTopData, stations, theme, pointsLoading } = this.props;
     const { stationCode, deviceTypeCode, dateType, date } = pointParam;
     return(
       <div className={`${styles.point} ${styles[theme]}`}>
@@ -228,12 +247,14 @@ class PointsOverview extends PureComponent{
                 value={moment(date)}
                 allowClear={false}
                 onChange={this.monthCheck}
+                disabledDate={this.disableFun('month')}
               />}
               {dateType === 1 && <DatePicker
                 getCalendarContainer={() => this.datesRef}
                 value={moment(date)}
                 allowClear={false}
                 onChange={this.dayCheck}
+                disabledDate={this.disableFun('date')}
               />}
             </span>
           </div>
@@ -252,7 +273,9 @@ class PointsOverview extends PureComponent{
           deviceChanged={this.deviceChanged}
           pointsChanged={this.pointsChanged}
         />
-        <PointsList {...this.props} />
+        <Spin spinning={pointsLoading} size="large" delay={200}>
+          <PointsList {...this.props} />
+        </Spin>
       </div>
     );
   }

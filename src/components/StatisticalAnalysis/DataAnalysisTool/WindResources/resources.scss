@@ -20,11 +20,13 @@
 .frequencyChart {
   position: relative;
   width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
 
   .showModalInco {
     position: absolute;
-    top: 5%;
-    left: 75%;
+    top: 2%;
+    right: 5%;
     font-size: 18px;
     cursor: pointer;
     z-index: 3;
@@ -38,6 +40,7 @@
 .frequencyCharts { // echarts多图
   width: 620px;
   height: 230px;
+  margin: 0 auto;
   .tipBox {
     width: 140px;
     height: 62px;
@@ -180,6 +183,10 @@
 
 .enery {
   background-color: #ff9000;
+}
+
+.infoTip {
+  color: $themeColor;
 }
 
 .resourcesTabs{

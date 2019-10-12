@@ -2,12 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Select, Table } from 'antd';
 import AutoSelect from '@components/Common/AutoSelect';
+import TableColumnTitle from '@components/Common/TableColumnTitle';
 import searchUtil from '@utils/searchUtil';
 import styles from './device.scss';
 const { Option } = Select;
 
 class DeviceTable extends PureComponent{
   static propTypes = {
+    deviceFilterName: PropTypes.string,
     deveiceLoading: PropTypes.bool,
     theme: PropTypes.string,
     devicesData: PropTypes.object,
@@ -16,34 +18,47 @@ class DeviceTable extends PureComponent{
     history: PropTypes.object,
     devicePointsList: PropTypes.array,
     deviceCheckedList: PropTypes.array,
+    deviceIndicators: PropTypes.array,
     changeOverviewStore: PropTypes.func,
     getConnectedDevices: PropTypes.func,
     getOverviewPoints: PropTypes.func,
   }
 
-  state = {
-    indicators: ['validCount', 'invalidCount', 'lostCount'], // validCount	有效值数;invalidCount	无效值数;lostCount	缺失值数
-    tableColumn: this.baseColumn,
+  constructor(props){
+    super(props);
+    const { devicesData, deviceIndicators, deviceCheckedList } = this.props;
+    const { deviceData = [] } = devicesData;
+    // const indicators = ['validCount', 'invalidCount', 'lostCount']; // validCount	有效值数;invalidCount	无效值数;lostCount	缺失值数
+    let tableColumn = this.baseColumn.map(e => ({ ...e, fixed: false, width: undefined })); // 取消定位和指定宽度
+    if (deviceData.length > 0) { // 有数据, 直接渲染。
+      const filteredDevice = deviceData.map(e => ({ //测点筛选
+        ...e,
+        pointData: e.pointData.filter(m => deviceCheckedList.includes(m.pointCode)),
+      }));
+      tableColumn = this.createColumn(this.baseColumn, filteredDevice, deviceIndicators);
+    }
+    this.state = { tableColumn };
   }
 
   componentWillReceiveProps(nextProps){
-    const { deveiceLoading, devicesData } = nextProps;
+    const { deveiceLoading, devicesData, deviceIndicators } = nextProps;
     const preLoading = this.props.deveiceLoading;
     if (!deveiceLoading && preLoading) { // 请求数据得到
-      const { indicators } = this.state;
       const { deviceData = [] } = devicesData;
       this.setState({ // 基于返回的测点数据生成表头
-        tableColumn: this.createColumn(this.baseColumn, deviceData, indicators),
+        tableColumn: this.createColumn(this.baseColumn, deviceData, deviceIndicators),
       });
     }
   }
+
+  indicators = ['validCount', 'invalidCount', 'lostCount']
 
   baseColumn = [
     {
       title: '设备名称',
       dataIndex: 'deviceName',
       fixed: 'left',
-      sorter: (a, b) => (a.deviceName) && a.deviceName.localeCompare(b.deviceName),
+      sorter: (a, b) => (a.deviceSortName) && a.deviceSortName.localeCompare(b.deviceSortName),
       width: 125,
       // className: styles.deviceName,
       render: (text, record) => (
@@ -59,12 +74,14 @@ class DeviceTable extends PureComponent{
       dataIndex: 'realCount',
       fixed: 'left',
       width: 130,
+      // className: styles.realCount,
       sorter: (a, b) => a.realCount - b.realCount,
     }, {
       title: '设备数据完整率',
       dataIndex: 'completeRate',
       fixed: 'left',
       width: 155,
+      // className: styles.completeRate,
       sorter: (a, b) => a.completeRate - b.completeRate,
     },
   ]
@@ -90,6 +107,7 @@ class DeviceTable extends PureComponent{
         pointParam, // 请求参数保存
         pointList: devicePointsList,
         pointsCheckedList: deviceCheckedList,
+        pointsData: [], // 清空原数据
       });
       this.props.getConnectedDevices({ // 电站,设备类型下可用的设备列表
         stationCode,
@@ -111,23 +129,31 @@ class DeviceTable extends PureComponent{
 
   pointsCheck = (pointsChecked) => { // 测点筛选
     const pointsCode = pointsChecked.map(e => e.value);
-    const { devicesData } = this.props;
+    const { devicesData, deviceIndicators } = this.props;
     const { deviceData = [] } = devicesData;
-    const { indicators } = this.state;
+    // const { indicators } = this.state;
     const filteredDevice = deviceData.map(e => ({ //测点筛选
       ...e,
       pointData: e.pointData.filter(m => pointsCode.includes(m.pointCode)),
     }));
     this.setState({
-      tableColumn: this.createColumn(this.baseColumn, filteredDevice, indicators),
+      tableColumn: this.createColumn(this.baseColumn, filteredDevice, deviceIndicators),
+    });
+    this.props.changeOverviewStore({
+      deviceCheckedList: pointsChecked.map(e => e.value),
     });
   }
 
-  changeNumType = (indicators) => { // 指标类型筛选
-    const { devicesData } = this.props;
+  changeNumType = (deviceIndicators) => { // 指标类型筛选
+    const { devicesData, deviceCheckedList } = this.props;
     const { deviceData = [] } = devicesData;
-    const tableColumn = this.createColumn(this.baseColumn, deviceData, indicators);
-    this.setState({ indicators, tableColumn });
+    const filteredDevice = deviceData.map(e => ({ //测点筛选
+      ...e,
+      pointData: e.pointData.filter(m => deviceCheckedList.includes(m.pointCode)),
+    }));
+    const tableColumn = this.createColumn(this.baseColumn, filteredDevice, deviceIndicators);
+    this.props.changeOverviewStore({ deviceIndicators });
+    this.setState({ tableColumn });
   }
 
   createColumn = (baseColumn, deviceData = [], indicators) => {
@@ -138,28 +164,52 @@ class DeviceTable extends PureComponent{
     };
     const { pointData = [] } = deviceData[0] || {};
     const extraColum = pointData.map((e, i) => ({
-      title: e.pointName,
+      title: () => (
+        <div
+          title={e.pointName}
+          className={styles.eachIndicateTitle}
+          style={{width: `${indicators.length * 110 - 32}px`}}
+        >{e.pointName}</div>
+      ),
       dataIndex: `${e.pointCode}`,
-      children: indicators.map(t => ({
-        title: indicatorNames[t],
-        key: `${e.pointCode}.${t}`,
-        dataIndex: `pointData[${i}].${t}`, // huohuohuohuo这个方法倒是有点意思
+      className: styles.eachIndicate,
+      children: indicators.map(indicate => ({
+        title: indicatorNames[indicate],
+        key: `${e.pointCode}.${indicate}`,
+        dataIndex: 'pointData',
         sorter: true,
         width: 110,
+        render: (text, record) => {
+          const { pointData = [] } = record;
+          const pointInfo = pointData.find(point => point.pointCode === e.pointCode) || {};
+          return pointInfo[indicate];
+        },
       })),
-      width: 330,
     }));
+    // const newBaseColumn = [...baseColumn]
+    // let tableWidth = '100%', scrollable = { x: scrollWidth };
+    const scrollWidth = 410 + pointData.length * indicators.length * 110; // 计算的长度
+    if ((this.tableRef && scrollWidth < this.tableRef.offsetWidth) || !this.tableRef) {
+      return baseColumn.map(e => ({ ...e, fixed: false, width: undefined })).concat(extraColum);
+    }
     return baseColumn.concat(extraColum);
   }
 
   render(){
-    const { devicePointsList, deviceCheckedList, devicesData, deveiceLoading, theme } = this.props;
-    const { indicators, tableColumn } = this.state;
+    const { devicePointsList, deviceCheckedList, devicesData, theme, deviceIndicators, deveiceLoading, deviceFilterName } = this.props;
+    const { tableColumn } = this.state;
     const { deviceData = [] } = devicesData;
     const { pointData = []} = deviceData[0] || {};
-    const tableWidth = 410 + pointData.length * 330;
+    // const actualPoints = pointData.filter(e => deviceCheckedList.includes(e.pointCode)); // 选中测点与实际测点数据的交集才是实际数据列
+    // const scrollWidth = 410 + actualPoints.length * deviceIndicators.length * 110;
+    const scrollWidth = 410 + deviceCheckedList.length * deviceIndicators.length * 110; // 经讨论, 选中测点即是表格的测点列。
+    const dataSource = deviceFilterName ? [deviceData.find(e => e.deviceName === deviceFilterName)] : deviceData; // 图表筛选
+    // if (this.tableRef && scrollWidth < this.tableRef.offsetWidth) {
+    // //   tableWidth = `${scrollWidth}px`;
+    //   scrollable = {x: this.tableRef.offsetWidth}; // 横向铺满
+    // }
     return(
-      <div className={styles.devicePoints}>
+      <div className={styles.devicePoints} ref={(ref) => { this.tableRef = ref; }}>
         <div className={styles.pointHandle}>
           <span className={styles.text}>测点</span>
           <AutoSelect
@@ -182,7 +232,7 @@ class DeviceTable extends PureComponent{
             mode="tags"
             style={{width: '288px'}}
             className={styles.eachType}
-            value={indicators}
+            value={deviceIndicators}
             getPopupContainer={() => this.pointRef}
           >
             <Option value="validCount">有效值数</Option>
@@ -193,11 +243,15 @@ class DeviceTable extends PureComponent{
         <Table
           className={styles.pointTable}
           columns={tableColumn}
-          dataSource={deviceData}
+          dataSource={dataSource}
           bordered
           pagination={false}
-          loading={deveiceLoading}
-          scroll={{ x: tableWidth }}
+          // style={{ width: tableWidth }}
+          loading={{
+            spinning: deveiceLoading,
+            delay: 200,
+          }}
+          scroll={{ x: dataSource.length > 0 ? scrollWidth : true }}
         />
       </div>
     );

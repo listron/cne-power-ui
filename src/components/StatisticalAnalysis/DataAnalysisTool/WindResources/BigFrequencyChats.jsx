@@ -65,9 +65,15 @@ class BigFrequencyChats extends Component{
   creatOption = (curBigChartData = [], saveBtn, deviceName) => {
     const windSpeedNameData = [], speedFrequencyData = [], eneryFrequencyData = [];
     curBigChartData.forEach(e => {
-      windSpeedNameData.push(e.windSpeedName);
-      speedFrequencyData.push(e.speedFrequency);
-      eneryFrequencyData.push(e.eneryFrequency);
+      if(e.speedFrequency !== null && e.eneryFrequency !== null) {
+        windSpeedNameData.push(e.windSpeedName);
+      }
+      if(e.speedFrequency !== null) {
+        speedFrequencyData.push(e.speedFrequency);
+      }
+      if(e.eneryFrequency !== null) {
+        eneryFrequencyData.push(e.eneryFrequency);
+      }
     });
 
     const speedLength = speedFrequencyData.filter(e => {
@@ -82,7 +88,7 @@ class BigFrequencyChats extends Component{
       graphic: (speedLength.length && eneryLength.length) ? hiddenNoData : showNoData,
       color: ['#00cdff', '#ff9000'],
       title: {
-        text: [`${deviceName}`, '{b|}'].join(''),
+        text: [`${deviceName} `, '{b|}'].join(''),
         left: '5%',
         textStyle: {
           fontSize: 14,
@@ -137,7 +143,7 @@ class BigFrequencyChats extends Component{
       },
       grid: {
         left: '3%',
-        right: '4%',
+        right: '5%',
         bottom: '3%',
         containLabel: true,
       },
@@ -192,12 +198,10 @@ class BigFrequencyChats extends Component{
         {
           name: '风速频率',
           type: 'bar',
-          barWidth: '50%',
           data: speedFrequencyData,
         }, {
           name: '风能频率',
           type: 'bar',
-          barWidth: '50%',
           data: eneryFrequencyData,
         },
       ],

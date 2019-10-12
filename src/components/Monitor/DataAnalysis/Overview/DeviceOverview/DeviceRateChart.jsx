@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
-import { Icon } from 'antd';
+import { Icon, Spin } from 'antd';
 import { dataFormats } from '@utils/utilFunc';
 import styles from './device.scss';
 
@@ -10,6 +10,8 @@ class DeviceRateChart extends PureComponent{
     theme: PropTypes.string,
     devicesData: PropTypes.object,
     deveiceLoading: PropTypes.bool,
+    deviceFilterName: PropTypes.string,
+    changeOverviewStore: PropTypes.func,
   }
 
   state = {
@@ -50,8 +52,21 @@ class DeviceRateChart extends PureComponent{
 
   setChartLoading = () => {
     const rateChart = this.rateRef && echarts.getInstanceByDom(this.rateRef);
-    rateChart && rateChart.showLoading();
+    if (rateChart) {
+      // this.timerStart = new Date();
+      rateChart.clear();
+      rateChart.showLoading();
+      // setTimeout(() => this.chartLoading(), 200);
+    }
   }
+
+  // chartLoading = () => {
+  //   const { deveiceLoading } = this.props;
+  //   this.timerEnd = new Date();
+  //   console.log(this.timerEnd - this.timerStart);
+  //   console.log(deveiceLoading)
+  //   deveiceLoading && echarts.getInstanceByDom(this.rateRef).showLoading();
+  // }
 
   upSorter = () => this.sortChart('up')
 
@@ -144,15 +159,15 @@ class DeviceRateChart extends PureComponent{
             <div class=${styles.info}>
               <span class=${styles.round}></span>
               <span class=${styles.infoText}>设备数据完整率</span>
-              <span>${dataFormats(value, '--', 2, true)}%</span>
+              <span class=${styles.rateValue}>${dataFormats(value, '--', 2, true)}%</span>
             </div>
           </section>`;
         },
       },
       series: [{
         type: 'bar',
-        barWidth: '10px',
-        cursor: 'default',
+        barWidth: '14px',
+        // cursor: 'default',
         itemStyle: {
           color: bar,
         },
@@ -178,6 +193,14 @@ class DeviceRateChart extends PureComponent{
     }]);
     rateChart.hideLoading();
     rateChart.setOption(option);
+    rateChart.on('click', ({ name }) => {
+      const { deviceFilterName } = this.props;
+      let result = name;
+      if (deviceFilterName === name) {
+        result = null;
+      }
+      this.props.changeOverviewStore({ deviceFilterName: result });
+    });
   }
 
   render(){
@@ -191,6 +214,7 @@ class DeviceRateChart extends PureComponent{
           <div className={styles.num}>{dataFormats(total, '--', 2, true)}%</div>
           <div className={styles.text}>设备数据完整率平均值</div>
         </div>
+        {/* <Spin spinning={true} size="large" delay={400} className={styles.spinStyle} /> */}
         <div className={styles.chart} ref={(ref) => { this.rateRef = ref; }} />
         <div className={styles.sorter}>
           <Icon type="caret-up" style={{color: sortType === 'up' ? activeIcon : '#999' }} onClick={this.upSorter} />
