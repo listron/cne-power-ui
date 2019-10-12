@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Select, Table } from 'antd';
 import AutoSelect from '@components/Common/AutoSelect';
-import TableColumnTitle from '@components/Common/TableColumnTitle';
 import searchUtil from '@utils/searchUtil';
 import styles from './device.scss';
 const { Option } = Select;

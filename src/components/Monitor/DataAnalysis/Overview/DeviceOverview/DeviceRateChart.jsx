@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
-import { Icon, Spin } from 'antd';
+import { Icon } from 'antd';
 import { dataFormats } from '@utils/utilFunc';
+import { hiddenNoData, showNoData } from '@constants/echartsNoData';
 import styles from './device.scss';
 
 class DeviceRateChart extends PureComponent{
@@ -102,6 +103,7 @@ class DeviceRateChart extends PureComponent{
     });
     const { font = '#666', axis = '#dfdfdf', bar = '#199475' } = this.chartColors[theme] || {};
     const option = {
+      graphic: !deviceData || deviceData.length === 0 ? showNoData : hiddenNoData,
       grid: {
         top: 20,
         bottom: 50,
