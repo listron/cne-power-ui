@@ -120,10 +120,14 @@ class PointChart extends PureComponent{
   }
 
   render(){
+    const { histogramList } = this.props;
     return(
       <section className={styles.histogramChart}>
         <h3 className={styles.chartTitle}>有效值分布图</h3>
         <div className={styles.chart} ref={(ref) => { this.histogramRef = ref; }} />
+        {histogramList.length === 0 && <div className={styles.emptyData}>
+          <span className={styles.tipText}>无足够有效值绘制</span>
+        </div>}
       </section>
     );
   }
