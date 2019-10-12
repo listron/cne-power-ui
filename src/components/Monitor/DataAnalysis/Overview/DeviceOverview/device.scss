@@ -169,6 +169,9 @@
       color: var(--themeColor);
       text-decoration: var(--themeColor) underline;
     }
+    .eachIndicateTitle{
+      @include overflowText();
+    }
   }
 }
 

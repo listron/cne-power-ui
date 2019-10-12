@@ -412,22 +412,22 @@ class TmpForm extends Component {
             {knowledgebaseList.map(list => {
               return (<div key={list.faultTypeId} className={styles.dealBox}>
                 <div className={styles.column}>
-                  <div className={styles.text}>故障描述</div>  <div> {list.faultDescription}</div>
+                  <div className={styles.text}>故障描述</div>  <div> {list.faultDescription || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>故障原因</div>  <div> {list.checkItems}</div>
+                  <div className={styles.text}>故障原因</div>  <div> {list.checkItems || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>处理方法</div>  <div> {list.processingMethod}</div>
+                  <div className={styles.text}>处理方法</div>  <div> {list.processingMethod || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>所需工具</div>  <div> {list.requiredTools}</div>
+                  <div className={styles.text}>所需工具</div>  <div> {list.requiredTools || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>备注</div>  <div> {list.remark}</div>
+                  <div className={styles.text}>备注</div>  <div> {list.remark || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>点赞数</div>  <div> {list.likeCount}</div>
+                  <div className={styles.text}>点赞数</div>  <div> {list.likeCount || 0}</div>
                 </div>
                 {list.liked ?
                   <div className={`${styles.disabled}`} >已点赞</div> :

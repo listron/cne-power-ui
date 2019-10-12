@@ -108,6 +108,7 @@ export default {
       getInspectOrbit: '/v3/inspect/track', //获取巡航轨迹
       getKnowledgebase: '/v3/knowledgebase/list', // 获取智能专家库列表
       likeKnowledgebase: '/v3/knowledgebase/like/', // 点赞智能专家
+      getParticipant: '/v3/defect/handleuser/like', // 获取参与者列表
     },
     operation: {
       // 运维管理

@@ -60,11 +60,12 @@ function *afterDeviceTypePointGet({ payload }) { // 设备页 获得测点数据
   const pointCodes = [];
   const tmpList = [];
   devicePointsList.forEach(e => {
-    const { devicePointStandardCode, devicePointName } = e;
+    const { devicePointStandardCode, devicePointName, devicePointUnit } = e;
     pointCodes.push(devicePointStandardCode);
     tmpList.push({
       value: devicePointStandardCode,
       label: devicePointName,
+      unit: devicePointUnit,
     });
   });
   yield call(easyPut, 'fetchSuccess', { // 默认选中所有测点

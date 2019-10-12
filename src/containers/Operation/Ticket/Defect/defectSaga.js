@@ -3,6 +3,9 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { ticketAction } from '../ticketAction';
 import { message } from 'antd';
+const { basePaths = {}, APISubPaths = {} } = Path;
+const { APIBasePath = '' } = basePaths;
+const { ticket = {} } = APISubPaths;
 
 function* changeDefectStore(action) {//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
@@ -756,6 +759,23 @@ function* likeKnowledgebase(action) { // 点赞智能专家
   } catch (e) {
     console.log(e);
   }
+}
+
+function* getParticipant({ payload }){ // 获取参与人所有列表
+  // const { } = payload;
+  const url = `${APIBasePath}${ticket.getParticipant}`;
+  try{
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+
+      });
+    } else { throw response.data; }
+  } catch(error) {
+    console.log(error);
+  }
+//   const { APIBasePath = '' } = basePaths;
+// const { ticket = {} } = APISubPaths;
 }
 
 
