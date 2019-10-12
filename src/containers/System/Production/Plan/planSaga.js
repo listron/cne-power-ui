@@ -203,8 +203,7 @@ function* importFile(action) { // 批量导入
     });
     const response = yield call(axios.post, url, payload.formData);
     if (response.data.code === '10000') {
-      const messageText = response.data.message ? response.data.message : '批量导入成功';
-      message.success(messageText);
+      response.data.message ? message.warn(response.data.message) : message.success('批量导入成功');
       yield put({
         type: planAction.GET_PLAN_FETCH_SUCCESS,
         payload: {
