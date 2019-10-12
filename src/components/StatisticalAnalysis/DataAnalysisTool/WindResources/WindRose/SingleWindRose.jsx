@@ -245,8 +245,16 @@ export default class SingleWindRose extends Component{
         <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalIcon} />
         <span className={styles.windDirection}>风向</span>
         <span className={styles.windPower}>风能</span>
-        {(directionsLoading && directionFlag) && <div className={styles.firstInfo}>暂无数据</div>}
-        {(directionsLoading && energyFlag) && <div className={styles.secondInfo}>暂无数据</div>}
+        {(directionsLoading && directionFlag) && <div className={styles.firstInfo}>
+          <div>
+            暂无数据
+          </div>
+        </div>}
+        {(directionsLoading && energyFlag) && <div className={styles.secondInfo}>
+          <div>
+            暂无数据
+          </div>
+        </div>}
         <div ref={ref => { this.directionChart = ref;}} className={styles.windRoseStyle} />
       </div>
     );

@@ -34,12 +34,16 @@ function *getOverviewStation({ payload }){ // 电站基础数据信息 - 各页�
 
 function *getOverviewDates({ payload }){ // 电站各日完整率
   try {
+    yield call(easyPut, 'changeStore', {
+      stationLoading: true,
+    });
     const { stationCode, deviceTypeCode, month } = payload;
     const url = `${APIBasePath}${monitor.getOverviewDates}/${stationCode}/${deviceTypeCode}/${month}`;
     const response = yield call(request.get, url);
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         stationDatesRate: response.data || [],
+        stationLoading: false,
       });
     } else { throw response; }
   } catch (error) {
@@ -79,11 +83,12 @@ function *afterPointPagePointsGet({ payload }){ // 测点页 获得测点数据�
   const pointCodes = [];
   const tmpList = [];
   pointPageList.forEach(e => {
-    const { devicePointStandardCode, devicePointName } = e;
+    const { devicePointStandardCode, devicePointName, devicePointUnit } = e;
     pointCodes.push(devicePointStandardCode);
     tmpList.push({
       value: devicePointStandardCode,
       label: devicePointName,
+      unit: devicePointUnit,
     });
   });
   yield call(easyPut, 'fetchSuccess', { // 默认选中所有测点

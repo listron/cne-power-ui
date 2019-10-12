@@ -16,6 +16,7 @@ class Overview extends Component{
   static propTypes = {
     theme: PropTypes.string,
     history: PropTypes.object,
+    location: PropTypes.object,
     changeOverviewStore: PropTypes.func,
     resetOverview: PropTypes.func,
   };
@@ -34,6 +35,18 @@ class Overview extends Component{
       });
       history.push(`${pathname}?tab=station&pages=station`);
     }
+  }
+
+  shouldComponentUpdate(nextProps){
+    const { location, history } = nextProps;
+    const preLocation = this.props.location;
+    const { pathname, search } = preLocation;
+    const preSearch = preLocation.search;
+    if (!location.search && preSearch) { // 点击目录菜单 => 页面维持不改, 路径维持不变。
+      history.push(`${pathname}${search}`);
+      return false;
+    }
+    return true;
   }
 
   componentWillUnmount() {
