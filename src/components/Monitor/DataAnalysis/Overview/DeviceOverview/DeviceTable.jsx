@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Select, Table } from 'antd';
 import AutoSelect from '@components/Common/AutoSelect';
+import TableColumnTitle from '@components/Common/TableColumnTitle';
 import searchUtil from '@utils/searchUtil';
 import styles from './device.scss';
 const { Option } = Select;
@@ -28,7 +29,7 @@ class DeviceTable extends PureComponent{
     const { devicesData, deviceIndicators, deviceCheckedList } = this.props;
     const { deviceData = [] } = devicesData;
     // const indicators = ['validCount', 'invalidCount', 'lostCount']; // validCount	有效值数;invalidCount	无效值数;lostCount	缺失值数
-    let tableColumn = this.baseColumn;
+    let tableColumn = this.baseColumn.map(e => ({ ...e, fixed: false, width: undefined })); // 取消定位和指定宽度
     if (deviceData.length > 0) { // 有数据, 直接渲染。
       const filteredDevice = deviceData.map(e => ({ //测点筛选
         ...e,
@@ -106,6 +107,7 @@ class DeviceTable extends PureComponent{
         pointParam, // 请求参数保存
         pointList: devicePointsList,
         pointsCheckedList: deviceCheckedList,
+        pointsData: [], // 清空原数据
       });
       this.props.getConnectedDevices({ // 电站,设备类型下可用的设备列表
         stationCode,
@@ -162,8 +164,15 @@ class DeviceTable extends PureComponent{
     };
     const { pointData = [] } = deviceData[0] || {};
     const extraColum = pointData.map((e, i) => ({
-      title: e.pointName,
+      title: () => (
+        <div
+          title={e.pointName}
+          className={styles.eachIndicateTitle}
+          style={{width: `${indicators.length * 110 - 32}px`}}
+        >{e.pointName}</div>
+      ),
       dataIndex: `${e.pointCode}`,
+      className: styles.eachIndicate,
       children: indicators.map(indicate => ({
         title: indicatorNames[indicate],
         key: `${e.pointCode}.${indicate}`,
@@ -176,8 +185,13 @@ class DeviceTable extends PureComponent{
           return pointInfo[indicate];
         },
       })),
-      width: 330,
     }));
+    // const newBaseColumn = [...baseColumn]
+    // let tableWidth = '100%', scrollable = { x: scrollWidth };
+    const scrollWidth = 410 + pointData.length * indicators.length * 110; // 计算的长度
+    if ((this.tableRef && scrollWidth < this.tableRef.offsetWidth) || !this.tableRef) {
+      return baseColumn.map(e => ({ ...e, fixed: false, width: undefined })).concat(extraColum);
+    }
     return baseColumn.concat(extraColum);
   }
 
@@ -186,14 +200,14 @@ class DeviceTable extends PureComponent{
     const { tableColumn } = this.state;
     const { deviceData = [] } = devicesData;
     const { pointData = []} = deviceData[0] || {};
-    const actualPoints = pointData.filter(e => deviceCheckedList.includes(e.pointCode)); // 选中测点与实际测点数据的交集才是实际数据列
-    const scrollWidth = 410 + actualPoints.length * deviceIndicators.length * 110;
+    // const actualPoints = pointData.filter(e => deviceCheckedList.includes(e.pointCode)); // 选中测点与实际测点数据的交集才是实际数据列
+    // const scrollWidth = 410 + actualPoints.length * deviceIndicators.length * 110;
+    const scrollWidth = 410 + deviceCheckedList.length * deviceIndicators.length * 110; // 经讨论, 选中测点即是表格的测点列。
     const dataSource = deviceFilterName ? [deviceData.find(e => e.deviceName === deviceFilterName)] : deviceData; // 图表筛选
-    let tableWidth = '100%', scrollable = { x: scrollWidth };
-    if (this.tableRef && scrollWidth < this.tableRef.offsetWidth) {
-      tableWidth = `${scrollWidth}px`;
-      scrollable = {}; // 取消横向滚动
-    }
+    // if (this.tableRef && scrollWidth < this.tableRef.offsetWidth) {
+    // //   tableWidth = `${scrollWidth}px`;
+    //   scrollable = {x: this.tableRef.offsetWidth}; // 横向铺满
+    // }
     return(
       <div className={styles.devicePoints} ref={(ref) => { this.tableRef = ref; }}>
         <div className={styles.pointHandle}>
@@ -232,12 +246,12 @@ class DeviceTable extends PureComponent{
           dataSource={dataSource}
           bordered
           pagination={false}
-          style={{ width: tableWidth }}
+          // style={{ width: tableWidth }}
           loading={{
             spinning: deveiceLoading,
-            delay: 300,
+            delay: 200,
           }}
-          scroll={scrollable}
+          scroll={{ x: dataSource.length > 0 ? scrollWidth : true }}
         />
       </div>
     );
