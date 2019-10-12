@@ -1,4 +1,4 @@
-import React,{ Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './intelligentAnalysis.scss';
 import { ScoreStations } from './Areafun';
@@ -45,8 +45,6 @@ class AreaStationReport extends Component{
                 <span className={styles.text}>{highEquUsehourStations.map(e=>e.stationName).join('、')}</span>
                 <span>。</span>
               </p>
-
-              {/* <p className={styles.paragraph}>原因说明：</p> */}
 
               <div className={styles.fileBox}>
                 <div className={styles.stationName}>
@@ -129,7 +127,6 @@ class AreaStationReport extends Component{
                 <span>。原因说明：</span>
               </p>
 
-              {/* <p className={styles.paragraph}>原因说明：</p>  */}
 
                 <div className={styles.fileBox}>
                   <div className={styles.stationName}>
@@ -205,7 +202,6 @@ class AreaStationReport extends Component{
                 <span>（故障系统）占比最高，详细情况说明：</span>
               </p>
               
-              {/* <p className={styles.paragraph}>详细情况说明：</p> */}
               <div className={styles.fileBox}>
                 <div className={styles.faults}>
                   <p className={styles.titlesText}>故障类型</p>

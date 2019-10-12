@@ -50,7 +50,7 @@ export const ScoreStations = ({scoreStations}) => { // 同区域电站分析报�
                         <span>{dataFormats(e.highComPlantPowerRate, '--', 2, true) || '--'}</span>
                         <span>%；</span>
                       </span>}
-                    {(e.lowDefectFinishRate) &&
+                      {(scoreStations[0].lowDefectFinishRate || scoreStations[0].lowDefectFinishRate === 0) &&
                       <span>
                         <span>消缺率较低，为</span>
                         <span>{dataFormats(e.lowDefectFinishRate, '--', 2, true) || '--'}</span>

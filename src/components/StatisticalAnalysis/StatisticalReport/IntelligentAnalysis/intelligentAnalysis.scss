@@ -292,7 +292,7 @@
     }
     .cause{
       width: 469px;
-      border-left: 1px solid #dfdfdf;
+      border-right: 1px solid #dfdfdf;
       p{
         height: 73px;
         padding: 2px 0 2px 18px;
@@ -300,7 +300,6 @@
       }
       .causeAnalysis{
         display: flex;
-        border-right: 1px solid #dfdfdf;
         .causeContent{
           padding-left: 0;
           border-bottom: 0px;
