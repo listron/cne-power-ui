@@ -21,7 +21,7 @@ class ShowIntelligent extends Component {
   }
 
   componentWillUnmount() {
-    this.props.changeIntelligentExpertStore({})
+    this.props.changeIntelligentExpertStore({});
   }
 
 
@@ -129,7 +129,7 @@ class ShowIntelligent extends Component {
           </div>
           <div className={styles.detailText}>
             <div className={styles.title}><span className={styles.name}>附件</span></div>
-            <div>{href || '无'}</div>
+            <div>{href.length > 0 ? href : '无'}</div>
 
           </div>
           <div className={styles.detailText}>
