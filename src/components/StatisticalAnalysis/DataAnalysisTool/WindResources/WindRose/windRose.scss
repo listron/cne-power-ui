@@ -25,6 +25,8 @@
 .chartWrap {
   position: relative;
   width: 100%;
+  max-width: 606px;
+  margin: 0 auto;
   height: 300px;
 
   .windRoseStyle {
