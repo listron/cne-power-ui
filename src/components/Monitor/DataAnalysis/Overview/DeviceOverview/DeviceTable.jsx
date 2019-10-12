@@ -58,7 +58,7 @@ class DeviceTable extends PureComponent{
       fixed: 'left',
       sorter: (a, b) => (a.deviceSortName) && a.deviceSortName.localeCompare(b.deviceSortName),
       width: 125,
-      // className: styles.deviceName,
+      className: styles.deviceName,
       render: (text, record) => (
         <span
           className={styles.deviceLink}
