@@ -26,7 +26,7 @@ class PvStationItem extends React.Component {
     this.state = {
       sortStatusName: 'sort',
       ascend: true,
-      selectStation: null,
+      selectStation: [],
       renderList: [],
       spliceLength: 12, // 100条数据一渲染。
       topHeight: 400, // 假设的列表上方高度
@@ -75,7 +75,7 @@ class PvStationItem extends React.Component {
 
   changeStationData = ({ stationDataList = [], areaChecked = false, noChange = false }) => { // 处理数据 排序规则
     const { sortStatusName, ascend, selectStation } = this.state;
-    const filterStationList = selectStation ? stationDataList.filter(e => selectStation.includes(e.stationCode)) : stationDataList;
+    const filterStationList = selectStation.length > 0 ? stationDataList.filter(e => selectStation.includes(e.stationCode)) : stationDataList;
     const sortType = ascend ? 1 : -1;
     const stationSortList = filterStationList.sort((a, b) => { // 排序
       return sortType * (a[sortStatusName] - b[sortStatusName]);
@@ -202,7 +202,7 @@ class PvStationItem extends React.Component {
             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             getPopupContainer={() => this.refs.selectBody}
           >
-            <Option value={''} key={''}>{'全部电站'}</Option>
+            {/* <Option value={''} key={''}>{'全部电站'}</Option> */}
             {stationDataList.map(list => {
               return <Option key={list.stationCode} value={list.stationCode}>{list.stationName}</Option>;
             })}
@@ -219,7 +219,7 @@ class PvStationItem extends React.Component {
           </div>
         </div>
 
-        <div className={styles.staionsListBox} ref={ref => this.newPinterest = ref} >
+        <div className={styles.staionsListBox} ref={ref => (this.newPinterest = ref)} >
           {stationDataList.length > 0 &&
             <React.Fragment>
               {filteredStation.map((list, key) => {
@@ -238,7 +238,8 @@ class PvStationItem extends React.Component {
                   </div>
                 </div>);
               })}
-              {(renderList.length < stationDataList.length && !selectStation) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
+              {/* 在筛选条件下不显示loading */}
+              {(renderList.length < stationDataList.length && selectStation.length === 0) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
             </React.Fragment>
             || <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>
           }
@@ -246,7 +247,7 @@ class PvStationItem extends React.Component {
           </div>
         </div>
 
-      </div>
+      </div >
     );
   }
 }
