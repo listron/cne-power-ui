@@ -73,9 +73,15 @@ class FrequencyChart extends Component{
     const { deviceName } = this.props;
     const windSpeedNameData = [], speedFrequencyData = [], eneryFrequencyData = [];
     frequencyData.forEach(e => {
-      windSpeedNameData.push(e.windSpeedName);
-      speedFrequencyData.push(e.speedFrequency);
-      eneryFrequencyData.push(e.eneryFrequency);
+      if(e.speedFrequency !== null && e.eneryFrequency !== null) {
+        windSpeedNameData.push(e.windSpeedName);
+      }
+      if(e.speedFrequency !== null) {
+        speedFrequencyData.push(e.speedFrequency);
+      }
+      if(e.eneryFrequency !== null) {
+        eneryFrequencyData.push(e.eneryFrequency);
+      }
     });
 
     const speedLength = speedFrequencyData.filter(e => {
@@ -90,7 +96,7 @@ class FrequencyChart extends Component{
       graphic: (speedLength.length && eneryLength.length) ? hiddenNoData : showNoData,
       color: ['#00cdff', '#ff9000'],
       title: {
-        text: [`${deviceName}`, '{b|}'].join(''),
+        text: [`${deviceName} `, '{b|}'].join(''),
         left: '5%',
         textStyle: {
           fontSize: 14,
@@ -149,7 +155,7 @@ class FrequencyChart extends Component{
       },
       grid: {
         left: '3%',
-        right: '4%',
+        right: '5%',
         bottom: '3%',
         containLabel: true,
       },
@@ -176,8 +182,6 @@ class FrequencyChart extends Component{
         {
           type: 'value',
           min: 0,
-          max: 20,
-          interval: 4, // y轴每个数字之间的间隔
           splitLine: {
             show: true,
             lineStyle: {
@@ -204,12 +208,10 @@ class FrequencyChart extends Component{
         {
           name: '风速频率',
           type: 'bar',
-          barWidth: '50%',
           data: speedFrequencyData,
         }, {
           name: '风能频率',
           type: 'bar',
-          barWidth: '50%',
           data: eneryFrequencyData,
         },
       ],
