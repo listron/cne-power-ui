@@ -7,82 +7,80 @@ export const ScoreStations = ({scoreStations}) => { // 同区域电站分析报�
   return(
     <div>
       {scoreStations.length > 0 &&
-        <div className={styles.fileBox}>
-          <div className={styles.stationNames}>
-            <p className={styles.titlesText}>电站名称</p>
-            {scoreStations.map((e, i) => (
-              <p>{e.stationName || '--'}</p>
-            ))}
-          </div>
-
-          <div className={styles.score}>
-            <p className={styles.titlesText}>得分</p>
-            {scoreStations.map((e, i) => (
-              <p>{dataFormats(e.score, '--', 2, true) || '--'}</p>
-            ))}
-          </div>
-          <div className={styles.cause}>
-            <p className={styles.titlesText}>原因分析</p>
-            {scoreStations.map((e, i) => (
-              <p className={styles.causeAnalysis}>
-              {e.exceedLimit ? <p className={styles.causeContent}>
-                {(e.lowPlanFinishRate) &&
-                      <span>
-                        <span>发电量计划完成率较低，为</span>
-                        <span>{dataFormats(e.lowPlanFinishRate, '--', 2, true) || '--'}</span>
-                        <span>%；</span>
-                      </span>}
-                    {(e.lowPrFinishRate) &&
-                      <span>
-                        <span>PR计划完成率较低，为</span>
-                        <span>{dataFormats(e.lowPrFinishRate, '--', 2, true) || '--'}</span>
-                        <span>%；</span>
-                      </span>}
-                    {(e.highLostPowerEquivalentHours || e.highLostPowerEquivalentHours === 0) &&
-                      <span>
-                        <span>损失电量等效时较高，为</span>
-                        <span>{dataFormats(e.highLostPowerEquivalentHours, '--', 2, true) || '--'}</span>
-                        <span>h。</span>
-                      </span>}
-                    {(e.highComPlantPowerRate) &&
-                      <span>
-                        <span>用电率较高，为</span>
-                        <span>{dataFormats(e.highComPlantPowerRate, '--', 2, true) || '--'}</span>
-                        <span>%；</span>
-                      </span>}
-                      {(scoreStations[0].lowDefectFinishRate || scoreStations[0].lowDefectFinishRate === 0) &&
-                      <span>
-                        <span>消缺率较低，为</span>
-                        <span>{dataFormats(e.lowDefectFinishRate, '--', 2, true) || '--'}</span>
-                        <span>%；</span>
-                      </span>}
-                    {
-                      (e.aLevelDefectFinishRate || e.bLevelDefectFinishRate || e.cLevelDefectFinishRate) && <span>消缺及时性较差，</span>
-                    }
-                    {(e.aLevelDefectFinishRate) &&
-                      <span>
-                        <span>一级故障平均处理时长</span>
-                        <span>{dataFormats(e.aLevelDefectFinishRate, '--', 2, true) || '--'}</span>
-                        <span>h，</span>
-                      </span>}
-                    {(e.bLevelDefectFinishRate) &&
-                      <span>
-                        <span>二级故障平均处理时长</span>
-                        <span>{dataFormats(e.bLevelDefectFinishRate, '--', 2, true) || '--'}</span>
-                        <span>h，</span>
-                      </span>}
-                    {(e.cLevelDefectFinishRate) &&
-                      <span>
-                        <span>三级故障平均处理时长</span>
-                        <span>{dataFormats(e.cLevelDefectFinishRate, '--', 2, true) || '--'}</span>
-                        <span>h。</span>
-                      </span>}
-              </p> : '--'}
-              </p>
-            ))}
-          </div>
-        </div> }
-      </div>
+        <div>
+        <div className={styles.coumnTiTle}>
+          <div className={styles.stationName + ' ' + styles.stations}>电站名称</div>
+          <div className={styles.score + ' ' + styles.scores}>得分</div>
+          <div className={styles.cause + ' ' + styles.causes}>原因分析</div>
+        </div>
+        {scoreStations.map(e=>{
+          return (
+            <div className={styles.column}>
+                <div className={styles.stationName}>{e.stationName || '--'}</div>
+                <div className={styles.score}>{dataFormats(e.score, '--', 2)}</div>
+                <div className={styles.titlesText}>{
+                  <div className={styles.cause}>
+                    <div>
+                      {(e.lowPlanFinishRate) &&
+                        <span>
+                          <span>发电量计划完成率较低，为</span>
+                          <span>{dataFormats(e.lowPlanFinishRate, '--', 2, true) || '--'}</span>
+                          <span>%；</span>
+                        </span>}
+                      {(e.lowPrFinishRate) &&
+                        <span>
+                          <span>PR计划完成率较低，为</span>
+                          <span>{dataFormats(e.lowPrFinishRate, '--', 2, true) || '--'}</span>
+                          <span>%；</span>
+                        </span>}
+                      {(e.highLostPowerEquivalentHours || e.highLostPowerEquivalentHours === 0) &&
+                        <span>
+                          <span>损失电量等效时较高，为</span>
+                          <span>{dataFormats(e.highLostPowerEquivalentHours, '--', 2, true) || '--'}</span>
+                          <span>h。</span>
+                        </span>}
+                      {(e.highComPlantPowerRate) &&
+                        <span>
+                          <span>用电率较高，为</span>
+                          <span>{dataFormats(e.highComPlantPowerRate, '--', 2, true) || '--'}</span>
+                          <span>%；</span>
+                        </span>}
+                        {(e.lowDefectFinishRate || e.lowDefectFinishRate === 0) &&
+                        <span>
+                          <span>消缺率较低，为</span>
+                          <span>{dataFormats(e.lowDefectFinishRate, '--', 2, true) || '--'}</span>
+                          <span>%；</span>
+                        </span>}
+                      {
+                        (e.aLevelDefectFinishRate || e.bLevelDefectFinishRate || e.cLevelDefectFinishRate) && <span>消缺及时性较差，</span>
+                      }
+                      {(e.aLevelDefectFinishRate) &&
+                        <span>
+                          <span>一级故障平均处理时长</span>
+                          <span>{dataFormats(e.aLevelDefectFinishRate, '--', 2, true) || '--'}</span>
+                          <span>h，</span>
+                        </span>}
+                      {(e.bLevelDefectFinishRate) &&
+                        <span>
+                          <span>二级故障平均处理时长</span>
+                          <span>{dataFormats(e.bLevelDefectFinishRate, '--', 2, true) || '--'}</span>
+                          <span>h，</span>
+                        </span>}
+                      {(e.cLevelDefectFinishRate) &&
+                        <span>
+                          <span>三级故障平均处理时长</span>
+                          <span>{dataFormats(e.cLevelDefectFinishRate, '--', 2, true) || '--'}</span>
+                          <span>h。</span>
+                        </span>}
+                    </div>
+                  </div>
+                }</div>
+            </div>
+          );
+        })}
+    </div>  
+  }
+    </div>
   );
 };
 

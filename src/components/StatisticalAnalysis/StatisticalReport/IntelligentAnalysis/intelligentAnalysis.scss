@@ -321,7 +321,44 @@
     }
 
   }
-}
+  // 区域电站 -- 平均得分
+    .coumnTiTle,.column{
+      display: flex;
+      .stationName{
+        width: 380px;
+        display: flex;
+        align-items: center;
+        padding-left: 20px;
+        padding-right: 12px;
+      }
+      .score{
+        width: 200px;
+        display: flex;
+        align-items: center;
+        padding-left: 20px;
+        padding-right: 12px;
+      }
+      .cause{
+        width: 470px;
+        display: flex;
+        align-items: center;
+        padding: 10px 12px 10px 20px;
+      }
+      .stations,.scores,.causes{
+        background: #f4f4f4;
+        padding-left: 20px;
+        padding-right: 12px;
+        height: 40px;
+        line-height: 40px;
+        border-top: 2px solid #dfdfdf;
+        border-bottom: 2px solid #dfdfdf;
+      }
+    }
+    .column{
+      border-bottom: 1px solid #dfdfdf;
+    }
+  }
+
 
 .nodata {
   display: flex;
