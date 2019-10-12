@@ -53,7 +53,7 @@ class DeviceRateChart extends PureComponent{
   setChartLoading = () => {
     const rateChart = this.rateRef && echarts.getInstanceByDom(this.rateRef);
     if (rateChart) {
-      this.timerStart = new Date();
+      // this.timerStart = new Date();
       rateChart.clear();
       rateChart.showLoading();
       // setTimeout(() => this.chartLoading(), 200);
