@@ -234,6 +234,21 @@ const menuData = [
       },
     ],
   },
+  // {
+  //   name: '报表管理',
+  //   path: 'report',
+  //   rightKey: 'operation',
+  //   children: [
+  //     {
+  //       name: '电站报表',
+  //       path: 'station',
+  //       iconStyle: 'icon-trends',
+  //       rightKey: 'operation_locate',
+  //       defaultPath: true,
+  //     },
+
+  //   ],
+  // },
   {
     name: '统计分析',
     path: 'statistical',

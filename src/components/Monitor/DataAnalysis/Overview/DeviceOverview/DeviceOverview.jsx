@@ -11,7 +11,7 @@ import DeviceRateChart from './DeviceRateChart';
 import DeviceTable from './DeviceTable';
 import searchUtil from '@utils/searchUtil';
 const { MonthPicker } = DatePicker;
-    
+
 class DeviceOverview extends PureComponent{
   static propTypes = {
     theme: PropTypes.string,
@@ -42,17 +42,20 @@ class DeviceOverview extends PureComponent{
       this.props.changeOverviewStore({ // 存储最新参数
         deviceParam: { stationCode, deviceTypeCode, dateType, date },
       });
-      deviceTypes.length === 0 && this.props.getOverviewStation({ // 无电站信息 => 请求;
-        stationCode,
-        pageKey: 'device',
-      });
-      this.props.getPoints({ // 请求测点列表 
-        params: {
-          stationCode, deviceTypeCode, pointTypes: 'YC,YM',
-        },
-        actionName: 'afterDeviceTypePointGet',
-        resultName: 'devicePointsList',
-      });
+      if (deviceTypes.length === 0) { // 无电站信息 => 请求 电站信息后，自动再receiveprops下一步请求;
+        this.props.getOverviewStation({
+          stationCode,
+          pageKey: 'device',
+        });
+      } else { // 加载时就有电站信息 带路径跳转, 直接请求相关测点信息即可
+        this.props.getPoints({ // 请求测点列表 
+          params: {
+            stationCode, deviceTypeCode, pointTypes: 'YC,YM',
+          },
+          actionName: 'afterDeviceTypePointGet',
+          resultName: 'devicePointsList',
+        });
+      }
     }
   }
 

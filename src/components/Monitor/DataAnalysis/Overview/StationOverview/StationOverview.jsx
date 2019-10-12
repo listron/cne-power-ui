@@ -35,7 +35,7 @@ class StationOverview extends PureComponent{
         stationCode,
         pageKey: 'station',
       });
-      this.props.getOverviewDates(stationParam);
+      // this.props.getOverviewDates(stationParam);
     }
   }
 
