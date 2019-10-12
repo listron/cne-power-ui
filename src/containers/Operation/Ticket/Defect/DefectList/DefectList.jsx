@@ -6,12 +6,15 @@ import styles from './defectList.scss';
 import { ticketAction } from '../../ticketAction';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 import DefectStatus from '../../../../../components/Operation/Ticket/Defect/DefectStatus/DefectStatus';
+import ParticipantSearch from '../../../../../components/Operation/Ticket/Defect/ParticipantSearch/ParticipantSearch';
 import { commonAction } from '../../../../alphaRedux/commonAction';
 import FilterConditions from '../../../../../components/Common/FilterConditions/FilterCondition';
 
 class DefectList extends Component {
   static propTypes = {
     stationType: PropTypes.string,
+    participantList: PropTypes.array,
+    handleUserList: PropTypes.array,
     stationCodes: PropTypes.array,
     defectSource: PropTypes.array,
     defectLevel: PropTypes.array,
@@ -45,7 +48,9 @@ class DefectList extends Component {
     getDefectDetail: PropTypes.func,
     changeDefectStore: PropTypes.func,
     getLostGenType: PropTypes.func,
+    getParticipant: PropTypes.func,
   };
+
   constructor(props, context) {
     super(props);
     this.state = {};
@@ -69,6 +74,7 @@ class DefectList extends Component {
       sortMethod,
       handleUser,
     };
+    this.props.getParticipant(); //  获取所有参与者。
     this.props.getDefectList({ ...filter });
     this.props.getDefectIdList({ ...filter }); // 获取道缺陷ID列表
     this.props.getLostGenType({ //获取所有损失缺陷类型
@@ -79,7 +85,7 @@ class DefectList extends Component {
 
   filterConditionChange = (value) => {
     const { username, timeInterval, status, pageSize, sortField, sortMethod, pageNum,
-      stationType, stationCodes, defectSource, defectLevel, deviceTypeCode, defectTypeCode, handleUser } = this.props;
+      stationType, stationCodes, defectSource, defectLevel, deviceTypeCode, defectTypeCode, handleUser, handleUserList } = this.props;
     let { createTimeStart, createTimeEnd } = this.props;
     const inithandleUser = value.join && username || handleUser;
     if (value.rangeTimes) {
@@ -88,7 +94,7 @@ class DefectList extends Component {
     const tableParams = { timeInterval, status, pageSize, sortField, sortMethod, pageNum };
     const params = {
       stationType, stationCodes, defectSource, defectLevel, deviceTypeCode, defectTypeCode,
-      createTimeStart, createTimeEnd, handleUser: inithandleUser,
+      createTimeStart, createTimeEnd, handleUser: inithandleUser, handleUserList,
     };
     const questParams = { ...tableParams, ...params, ...value };
     delete questParams['rangeTimes'];
@@ -100,7 +106,7 @@ class DefectList extends Component {
 
   render() {
     const { stations, defectTypes, defectList, username, deviceTypes, defectStatusStatistics, theme,
-      createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, deviceTypeCode, defectTypeCode, defectSource, handleUser, status } = this.props;
+      createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, deviceTypeCode, defectTypeCode, defectSource, handleUser, status, participantList, handleUserList } = this.props;
     const defectTypeTab = [];
     defectTypes.forEach(e => { e.list && e.list.length > 0 && defectTypeTab.push(...e.list); });
     let defectTypeList = [];
@@ -167,6 +173,11 @@ class DefectList extends Component {
           value={{ stationType, stationCodes, defectSource, defectLevel, deviceTypeCode, defectTypeCode, rangeTimes: [createTimeStart, createTimeEnd], join: handleUser }}
         />
         <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterConditionChange} defaultValue={status} theme={theme} />
+        <ParticipantSearch
+          participantList={participantList}
+          onChange={this.filterConditionChange}
+          handleUserList={handleUserList}
+        />
         <DefectTable {...this.props} onChangeFilter={this.filterConditionChange} />
       </div>
     );
@@ -192,6 +203,8 @@ const mapDispatchToProps = (dispatch) => ({
   onBatchClose: payload => dispatch({ type: ticketAction.CLOSE_BATCH_DEFECT_SAGA, payload }),
   onBatchCheck: payload => dispatch({ type: ticketAction.CHECK_BATCH_DEFECT_SAGA, payload }),
   getDefectDetail: payload => dispatch({ type: ticketAction.GET_DEFECT_DETAIL_SAGA, payload }),
+
+  getParticipant: payload => dispatch({ type: ticketAction.getParticipant, payload }),
 
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,

@@ -1,0 +1,16 @@
+@import "../../../../../theme/theme.scss";
+
+
+.participantSearch{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 28px 20px;
+  .participantTip{
+    flex: 0 0 56px;
+    margin-right: 16px;
+  }
+  .search{
+    margin-left: 36px;
+  }
+}

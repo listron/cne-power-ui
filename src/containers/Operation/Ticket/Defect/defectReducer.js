@@ -23,9 +23,10 @@ var initState = Immutable.fromJS({
   sortMethod: 'desc ',
   handleUser: '', //处理人
   deviceTypes: [], // 电站下设备类型
-
+  handleUserList: [], // 选中的属于participantList的参与人列表
 
   defectList: [], //渲染为table的缺陷列表
+  participantList: [], // 搜索区参与人列表
   defectIdList: [], //所有巡检Id
   commonList: [], //获取缺陷常用语列表
   selectedRowKeys: [],

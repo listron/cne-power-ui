@@ -762,20 +762,27 @@ function* likeKnowledgebase(action) { // 点赞智能专家
 }
 
 function* getParticipant({ payload }){ // 获取参与人所有列表
-  // const { } = payload;
   const url = `${APIBasePath}${ticket.getParticipant}`;
   try{
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield put({
-
+        type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
+        payload: {
+          participantList: response.data.data || [],
+        },
       });
     } else { throw response.data; }
   } catch(error) {
     console.log(error);
+    yield put({
+      type: ticketAction.CHANGE_DEFECT_STORE,
+      payload: {
+        participantList: [],
+        // participantList: [],
+      },
+    });
   }
-//   const { APIBasePath = '' } = basePaths;
-// const { ticket = {} } = APISubPaths;
 }
 
 
@@ -801,6 +808,8 @@ export function* watchDefect() {
   yield takeLatest(ticketAction.CLEAR_DEFECT_STATE_SAGA, clearDefect);
   yield takeLatest(ticketAction.getKnowledgebase, getKnowledgebase);
   yield takeLatest(ticketAction.likeKnowledgebase, likeKnowledgebase);
+  yield takeLatest(ticketAction.getParticipant, getParticipant);
+
 }
 
 
