@@ -20,17 +20,12 @@ function* getStationDevice(action) {//获取电站设备
     if (response.code === '10000') {
       const data = response.data || [];
       const deviceList = data.map((e, i) => ({ ...e, likeStatus: false }));
-      // // 按名称排序
-      const sortList = [...deviceList].sort((a, b) => {
-        const sortName = 'deviceName';
-        return a[sortName] && b[sortName] && a[sortName].localeCompare(b[sortName]);
-      });
-      const fristDevice = sortList[0];
+      const fristDevice = deviceList[0];
       const deviceFullCode = fristDevice.deviceFullCode;
       yield put({
         type: windResourcesAction.changeWindResourcesStore,
         payload: {
-          deviceList: sortList,
+          deviceList,
         },
       });
       // 获取风能玫瑰图
