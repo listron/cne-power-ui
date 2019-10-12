@@ -79,6 +79,7 @@ class StationDates extends PureComponent{
       this.props.changeOverviewStore({ // 已经得到的电站基础信息传入设备页 - 减少一次不必要请求
         tab: 'device', // 激活的tab页, station, device, points
         pages: allPages, // 开启的tab页面
+        devicesData: {}, // 清空占位数据
         deviceTopData: stationTopData,
         deviceParam, // 请求参数保存
       });
@@ -126,7 +127,7 @@ class StationDates extends PureComponent{
             ))}
           </span>
         </div>
-        <Spin spinning={stationLoading} size="large" delay={300}>
+        <Spin spinning={stationLoading} size="large" delay={100}>
           <div className={styles.calendar}>
             <div className={styles.weekdays}>
               {['一', '二', '三', '四', '五', '六', '日'].map(e => (
