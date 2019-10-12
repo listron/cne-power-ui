@@ -19,7 +19,7 @@ export const ticketAction = {
     DEFECT_CREATE_SAGA: Symbol('DEFECT_CREATE_SAGA'),
     SUBMIT_DEFECT_SAGA: Symbol('SUBMIT_DEFECT_SAGA'),
     SET_DEFECT_FAIL: Symbol('SET_DEFECT_FAIL'),
-   
+
     //Batch operation
     DELETE_BATCH_DEFECT_SAGA: Symbol('DELETE_BATCH_DEFECT_SAGA'),
     SEND_BATCH_DEFECT_SAGA: Symbol('SEND_BATCH_DEFECT_SAGA'),
@@ -32,7 +32,7 @@ export const ticketAction = {
     CLOSE_DEFECT_SAGA: Symbol('CLOSE_DEFECT_SAGA'),
     HANDLE_DEFECT_SAGA: Symbol('HANDLE_DEFECT_SAGA'),
     CHECK_DEFECT_SAGA: Symbol('CHECK_DEFECT_SAGA'),
-    
+
     //Inspaect
     CHANGE_INSPECT_STORE: Symbol('CHANGE_INSPECT_STORE'),
     CHANGE_INSPECT_STORE_SAGA: Symbol('CHANGE_INSPECT_STORE_SAGA'),
@@ -55,7 +55,9 @@ export const ticketAction = {
     getInspectDetailRecord: Symbol('getInspectDetailRecord'),//巡检记录的table列表数据
     getInspectUsers: Symbol('getInspectUsers'),//巡检人员
     getInspectOrbit: Symbol('getInspectOrbit'),//巡检人员轨迹
-    
+
     getKnowledgebase: Symbol('getKnowledgebase'), // 专家库列表
     likeKnowledgebase: Symbol('likeKnowledgebase'), // 点赞专家库
+
+    getParticipant: Symbol('getParticipant'), // 获取 参与者 人员列表
 };

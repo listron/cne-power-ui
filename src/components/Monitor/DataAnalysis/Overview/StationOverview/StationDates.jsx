@@ -81,6 +81,7 @@ class StationDates extends PureComponent{
         pages: allPages, // 开启的tab页面
         devicesData: {}, // 清空占位数据
         deviceTopData: stationTopData,
+        deviceIndicators: ['validCount', 'invalidCount', 'lostCount'], // 默认所有
         deviceParam, // 请求参数保存
       });
       this.props.getPoints({
