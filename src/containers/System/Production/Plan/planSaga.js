@@ -36,7 +36,7 @@ function* getPlanList(action) {//请求生产计划列表数据
         pageNum = maxPage;
       }
       yield put({
-        type: planAction.GET_PLAN_FETCH_SUCCESS,
+        type: planAction.CHANGE_PLAN_STORE,
         payload: {
           ...payload,
           planData: response.data.data.planData || [],
@@ -54,6 +54,7 @@ function* getPlanList(action) {//请求生产计划列表数据
       payload: {
         totalNum: 0,
         showPage: 'list',
+        planData: [],
         loading: false,
       },
     });
@@ -145,26 +146,14 @@ function* addPlanInfo(action) {// 添加生产计划列表
 }
 
 function* getYearList(action) { // 获取已经计划的年份列表
-  const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getYearList}`;
   try {
     yield put({ type: planAction.PLAN_FETCH });
     const response = yield call(axios.get, url);
-    const planYearList = response.data.data.yearPlan;
-    const currentYear = moment().year();
-    const selectYear = planYearList.findIndex(e => +e === currentYear) >= 0 ? currentYear : planYearList[0];
-    const params = yield select(state => {
-      return ({//继续请求生产计划列表
-        year: state.system.plan.get('planYear') || selectYear,
-        stationCodes: state.system.plan.get('stationCodes'),
-        sortField: state.system.plan.get('sortField'),
-        sortMethod: state.system.plan.get('sortMethod'),
-        pageSize: state.system.plan.get('pageSize'),
-        pageNum: state.system.plan.get('pageNum'),
-      });
-    });
     if (response.data.code === '10000') {
-      yield put({ type: planAction.GET_PLAN_FETCH_SUCCESS });
+      const planYearList = response.data.data.yearPlan;
+      const currentYear = moment().year();
+      const selectYear = planYearList.includes(`${currentYear}`) ? currentYear : planYearList[0];
       yield put({
         type: planAction.CHANGE_PLAN_STORE,
         payload: {
@@ -172,25 +161,37 @@ function* getYearList(action) { // 获取已经计划的年份列表
           planYear: selectYear,
         },
       });
+      const params = yield select(state => {
+        return ({//继续请求生产计划列表
+          year: state.system.plan.get('planYear') || selectYear, //初始状态
+          stationCodes: state.system.plan.get('stationCodes'),
+          sortField: state.system.plan.get('sortField'),
+          sortMethod: state.system.plan.get('sortMethod'),
+          pageSize: state.system.plan.get('pageSize'),
+          pageNum: state.system.plan.get('pageNum'),
+        });
+      });
       yield put({
         type: planAction.getPlanList,
         payload: {
           ...params,
         },
       });
+    } else {
+      throw response.data;
     }
   } catch (e) {
     yield put({
       type: planAction.CHANGE_PLAN_STORE,
       payload: {
-        loading: false,
+        planYearList: [],
+        planYear: moment().year(),
       },
     });
   }
 }
 
-
-function* importFile(action) {
+function* importFile(action) { // 批量导入
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.importPlan}`;
   try {
@@ -202,7 +203,8 @@ function* importFile(action) {
     });
     const response = yield call(axios.post, url, payload.formData);
     if (response.data.code === '10000') {
-      message.success('批量导入成功');
+      const messageText = response.data.message ? response.data.message : '批量导入成功';
+      message.success(messageText);
       yield put({
         type: planAction.GET_PLAN_FETCH_SUCCESS,
         payload: {
@@ -225,7 +227,7 @@ function* importFile(action) {
 
     } else { throw response.data; }
   } catch (e) {
-    message.error('获取列表失败！');
+    message.error(e.message);
     yield put({
       type: planAction.CHANGE_PLAN_STORE,
       payload: {
