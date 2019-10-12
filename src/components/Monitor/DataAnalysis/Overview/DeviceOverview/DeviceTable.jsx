@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Select, Table } from 'antd';
 import AutoSelect from '@components/Common/AutoSelect';
+import TableColumnTitle from '@components/Common/TableColumnTitle';
 import searchUtil from '@utils/searchUtil';
 import styles from './device.scss';
 const { Option } = Select;
@@ -163,8 +164,15 @@ class DeviceTable extends PureComponent{
     };
     const { pointData = [] } = deviceData[0] || {};
     const extraColum = pointData.map((e, i) => ({
-      title: e.pointName,
+      title: () => (
+        <div
+          title={e.pointName}
+          className={styles.eachIndicateTitle}
+          style={{width: `${indicators.length * 110 - 32}px`}}
+        >{e.pointName}</div>
+      ),
       dataIndex: `${e.pointCode}`,
+      className: styles.eachIndicate,
       children: indicators.map(indicate => ({
         title: indicatorNames[indicate],
         key: `${e.pointCode}.${indicate}`,
@@ -177,7 +185,6 @@ class DeviceTable extends PureComponent{
           return pointInfo[indicate];
         },
       })),
-      width: 330,
     }));
     // const newBaseColumn = [...baseColumn]
     // let tableWidth = '100%', scrollable = { x: scrollWidth };
@@ -195,7 +202,7 @@ class DeviceTable extends PureComponent{
     const { pointData = []} = deviceData[0] || {};
     // const actualPoints = pointData.filter(e => deviceCheckedList.includes(e.pointCode)); // 选中测点与实际测点数据的交集才是实际数据列
     // const scrollWidth = 410 + actualPoints.length * deviceIndicators.length * 110;
-    const scrollWidth = 410 + pointData.length * deviceIndicators.length * 110; // 经讨论, 选中测点即是表格的测点列。
+    const scrollWidth = 410 + deviceCheckedList.length * deviceIndicators.length * 110; // 经讨论, 选中测点即是表格的测点列。
     const dataSource = deviceFilterName ? [deviceData.find(e => e.deviceName === deviceFilterName)] : deviceData; // 图表筛选
     // if (this.tableRef && scrollWidth < this.tableRef.offsetWidth) {
     // //   tableWidth = `${scrollWidth}px`;
@@ -244,7 +251,7 @@ class DeviceTable extends PureComponent{
             spinning: deveiceLoading,
             delay: 200,
           }}
-          scroll={{ x: scrollWidth }}
+          scroll={{ x: dataSource.length > 0 ? scrollWidth : true }}
         />
       </div>
     );
