@@ -110,6 +110,9 @@ import { watchOperateFlow } from './Operation/TwoTickets/OperateFlow/operateFlow
 import { watchWorkFlow } from './Operation/TwoTickets/WorkFlow/workFlowSaga';
 import { watchCadePartSaga } from './Operation/CaseSet/casePartSaga';
 
+//报表管理
+import { watchReportStation } from './ReportManage/ReportStation/reportStationSaga';
+
 
 // root saga
 export default function* rootSaga() {
@@ -226,5 +229,6 @@ export default function* rootSaga() {
     watchWorkFlow(), ////两票 -工作票
     //案例集
     watchCadePartSaga(), //案例集
+    watchReportStation(),//电站报表
   ]);
 }

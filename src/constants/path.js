@@ -682,6 +682,11 @@ export default {
       getCurveMonthPsd: '/v3/fan/efficiency/date/psd', // 停机 - 各类停机时长及次数
       getStopStatus: '/v3/fan/efficiency/stopstatustrend', // 风电分析 - 停机状态分析
     },
+    reportManage: {
+      getReportStationList: '/v3/sun/report/station/list',
+      exportReportStationList: '/v3/sun/report/station/export',
+
+    }
   },
 };
 
