@@ -182,9 +182,7 @@ class DeviceTable extends PureComponent{
     // const newBaseColumn = [...baseColumn]
     // let tableWidth = '100%', scrollable = { x: scrollWidth };
     const scrollWidth = 410 + pointData.length * indicators.length * 110; // 计算的长度
-    console.log(scrollWidth, this.tableRef.offsetWidth);
     if ((this.tableRef && scrollWidth < this.tableRef.offsetWidth) || !this.tableRef) {
-      // console.log(scrollWidth, this.tableRef.offsetWidth);
       return baseColumn.map(e => ({ ...e, fixed: false, width: undefined })).concat(extraColum);
     }
     return baseColumn.concat(extraColum);
@@ -199,9 +197,6 @@ class DeviceTable extends PureComponent{
     // const scrollWidth = 410 + actualPoints.length * deviceIndicators.length * 110;
     const scrollWidth = 410 + pointData.length * deviceIndicators.length * 110; // 经讨论, 选中测点即是表格的测点列。
     const dataSource = deviceFilterName ? [deviceData.find(e => e.deviceName === deviceFilterName)] : deviceData; // 图表筛选
-    let scrollable = { x: scrollWidth };
-    // console.log(scrollWidth)
-    // console.log(tableColumn.slice(0, 3))
     // if (this.tableRef && scrollWidth < this.tableRef.offsetWidth) {
     // //   tableWidth = `${scrollWidth}px`;
     //   scrollable = {x: this.tableRef.offsetWidth}; // 横向铺满
@@ -249,7 +244,7 @@ class DeviceTable extends PureComponent{
             spinning: deveiceLoading,
             delay: 200,
           }}
-          scroll={scrollable}
+          scroll={{ x: scrollWidth }}
         />
       </div>
     );
