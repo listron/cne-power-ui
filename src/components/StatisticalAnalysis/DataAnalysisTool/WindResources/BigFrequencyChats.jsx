@@ -5,6 +5,10 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import { themeConfig } from '../../../../utils/darkConfig';
 import styles from './resources.scss';
 
+// 设置下标
+let firstIndex = null;
+let lastIndex = null;
+
 class BigFrequencyChats extends Component{
   static propTypes = {
     index: PropTypes.number,
@@ -58,22 +62,30 @@ class BigFrequencyChats extends Component{
       myChart.hideLoading();
     }
     if ((this.props.saveBtn !== saveBtn) || (nextProps.id !== this.props.id)) {
+      // 重置下标
+      firstIndex = null;
+      lastIndex = null;
       this.renderChart(curBigChartData, saveBtn, deviceName);
     }
   }
 
   creatOption = (curBigChartData = [], saveBtn, deviceName) => {
     const windSpeedNameData = [], speedFrequencyData = [], eneryFrequencyData = [];
-    curBigChartData.forEach(e => {
+    curBigChartData.forEach((e, index) => {
+      if(e.speedFrequency !== null && e.eneryFrequency !== null && firstIndex === null) {
+        firstIndex = index;
+      }
       if(e.speedFrequency !== null && e.eneryFrequency !== null) {
-        windSpeedNameData.push(e.windSpeedName);
+        lastIndex = index;
       }
-      if(e.speedFrequency !== null) {
-        speedFrequencyData.push(e.speedFrequency);
-      }
-      if(e.eneryFrequency !== null) {
-        eneryFrequencyData.push(e.eneryFrequency);
-      }
+    });
+    // 截取数据
+    const sliceArr = curBigChartData.slice(firstIndex, lastIndex);
+    // 遍历数据
+    sliceArr.forEach(cur => {
+      windSpeedNameData.push(cur.windSpeedName);
+      speedFrequencyData.push(cur.speedFrequency);
+      eneryFrequencyData.push(cur.eneryFrequency);
     });
 
     const speedLength = speedFrequencyData.filter(e => {
@@ -108,6 +120,7 @@ class BigFrequencyChats extends Component{
       legend: {
         data: ['风速频率', '风能频率'],
         selectedMode: false,
+        top: '5%',
       },
       tooltip: {
         trigger: 'axis',
@@ -145,6 +158,7 @@ class BigFrequencyChats extends Component{
         left: '3%',
         right: '5%',
         bottom: '3%',
+        top: '15%',
         containLabel: true,
       },
       xAxis: [
