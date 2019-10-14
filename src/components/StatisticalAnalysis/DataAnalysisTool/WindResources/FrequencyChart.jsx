@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './resources.scss';
 import echarts from 'echarts';
-import { Icon } from 'antd';
 import { dataFormats } from '@utils/utilFunc';
 import { themeConfig } from '../../../../utils/darkConfig';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
@@ -269,7 +268,10 @@ class FrequencyChart extends Component{
     const { index, showImg } = this.props;
     return(
       <div className={styles.frequencyChart}>
-        {showImg && <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalInco} />}
+        {showImg && <div className={styles.showModalIcon} onClick={() => showImg(index)}>
+          <i className="iconfont icon-enlarge2"></i>
+          <i className="iconfont icon-enlarge1"></i>
+        </div>}
         <div ref={(ref) => { this.frequencyChart = ref; }} className={styles.frequencyCharts}></div>
       </div>
     );
