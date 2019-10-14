@@ -124,6 +124,8 @@ class BigFrequencyChats extends Component{
       },
       tooltip: {
         trigger: 'axis',
+        padding: 0,
+        borderWidth: 0,
         axisPointer: {
           type: 'shadow',
         },
@@ -135,6 +137,8 @@ class BigFrequencyChats extends Component{
           const tmpSpeed = speedObject && !isNaN(speedObject.value);
           const tmpEnery = eneryObject && !isNaN(eneryObject.value);
           let speed = '', enery = '';
+          const speendStart = curBigChartData[param[0].dataIndex].windSpeedStart;
+          const speendEnd = curBigChartData[param[0].dataIndex].windSpeedEnd;
           if (tmpSpeed) {
             speed = `<div class=${styles.speedBox}>
               <span class=${styles.speed}></span>
@@ -150,6 +154,7 @@ class BigFrequencyChats extends Component{
             </div>`;
           }
           return `<div class=${styles.tipBox}>
+            <div class=${styles.title}>风速区间${speendStart}~${speendEnd}</div>
             ${speed}${enery}
           </div>`;
         },
