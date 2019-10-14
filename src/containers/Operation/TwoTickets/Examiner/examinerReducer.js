@@ -28,6 +28,7 @@ const initState = Immutable.fromJS({
   handleDistributionId: null, // 正在处理的id 新增, 编辑, 查看
   editModalShow: false, // 编辑弹框
   detailModalShow: false, // 详情查看弹框
+  modalStationName: '', // 编辑-详情弹框顶部电站
   settedDetail: null, // 电站审核人配置详情
   editLoading: 'normal', // 电站审核人配置按钮loading态,  normal, loading ,success
   userGather: {}, // 可选人员列表集合

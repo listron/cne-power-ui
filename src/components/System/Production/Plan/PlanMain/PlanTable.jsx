@@ -78,7 +78,7 @@ class PlanTable extends Component {
 
   tableChange = (pagination, filter, sorter) => {//计划排序 排序还有误
     const sortField = getDefectSortField(sorter.field);
-    const ascend = sorter.order === 'ascend' ? '0' : '1' || '';
+    const ascend = sorter.order === 'ascend' ? '1' : '2' || '';
     this.getPlanList({ sortField, sortMethod: ascend });
   };
 
