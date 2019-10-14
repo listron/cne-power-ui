@@ -54,7 +54,7 @@ class WorkExaminer extends Component {
   checkStations = ({ stationCodes }) => { // 电站选择
     const { tableParams, changeStore, getSettingList } = this.props;
     const newParams = {
-      tableParams,
+      ...tableParams,
       stationCodes,
       pageNum: 1, // 回到第一页。
     };
