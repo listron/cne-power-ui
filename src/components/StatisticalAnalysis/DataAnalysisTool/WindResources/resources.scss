@@ -43,13 +43,13 @@
   margin: 0 auto;
   .tipBox {
     width: 140px;
-    height: 62px;
-    padding: 3px;
+    height: 75px;
     .title{
       border-bottom: 1px solid #666;
-      padding-bottom: 2px;
+      padding: 6px 0px 2px 8px;
     }
     .speedBox, .eneryBox {
+      padding: 2px 0px 0px 8px;
       .speed, .enery {
         width: 16px;
         height: 10px;
@@ -172,9 +172,7 @@
 
 //颜色
 .tipBox {
-  // background-color: #fff;
-  // box-shadow: 1px 1px 9px #888888;
-  // color: #666;
+  color: #666;
 }
 
 .speed {

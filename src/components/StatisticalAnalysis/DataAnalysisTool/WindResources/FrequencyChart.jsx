@@ -133,6 +133,8 @@ class FrequencyChart extends Component{
       },
       tooltip: {
         trigger: 'axis',
+        padding: 0,
+        borderWidth: 0,
         axisPointer: {
           type: 'shadow',
         },
