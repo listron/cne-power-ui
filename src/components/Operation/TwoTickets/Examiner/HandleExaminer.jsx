@@ -100,21 +100,26 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
     },
   ])
 
-  showEdit = ({ distributionId, stationCode, stationName }) => { // 展示编辑弹框
+  showEdit = (modalRecord) => { // 展示编辑弹框
     const { settableNodes, getSettedInfo, getSettableUsers } = this.props;
+    const { distributionId, stationCode } = modalRecord;
     getSettableUsers({ settableNodes, stationCode });
     getSettedInfo({ distributionId, modalType: 'editModalShow' });
-    this.props.changeStore({ modalStationName: stationName });
+    this.props.changeStore({ modalRecord });
   }
 
-  showCreate = ({ distributionId, stationCode, stationName }) => { // 展示新设置弹框
-    const { settableNodes, changeStore, getSettableUsers } = this.props;
+  showCreate = (modalRecord) => { // 展示新设置弹框
+    const { distributionId, stationCode } = modalRecord;
+    const { settableNodes, getSettableUsers } = this.props;
+    console.log(modalRecord)
     getSettableUsers({ settableNodes, stationCode });
-    changeStore({ editModalShow: true, handleDistributionId: distributionId, modalStationName: stationName });
+    this.props.changeStore({ editModalShow: true, handleDistributionId: distributionId, modalRecord });
   }
 
-  showDetail = ({ distributionId }) => { // 展示详情弹框
+  showDetail = (modalRecord) => { // 展示详情弹框
+    const { distributionId } = modalRecord;
     this.props.getSettedInfo({ distributionId, modalType: 'detailModalShow' });
+    this.props.changeStore({ modalRecord });
   }
 
   render() {

@@ -56,12 +56,12 @@ function* getSettableNodes() { // 获取可配置属性节点
 function* createSettedInfo({ payload }){ // 保存 电站审核人设置
   const url = `${APIBasePath}${operation.createSettedInfo}`;
   try {
-    const { templateType, tableParam } = yield select(state => state.operation.examiner.toJS());
+    const { templateType, tableParams } = yield select(state => state.operation.examiner.toJS());
     yield call(easyPut, 'changeStore', { editLoading: 'loading' });
     const response = yield call(axios.post, url, { ...payload, templateType });
     if (response.data.code === '10000') { // 重新请求
       yield call(easyPut, 'changeStore', { editLoading: 'success' });
-      yield fork(getSettingList, { ...tableParam });
+      yield fork(getSettingList, { payload: { ...tableParams }});
     } else { throw response.data; }
   } catch (error) {
     yield call(easyPut, 'changeStore', { editLoading: 'normal' });
@@ -72,12 +72,12 @@ function* createSettedInfo({ payload }){ // 保存 电站审核人设置
 function* editSettedInfo({ payload }){ // 编辑 电站审核人信息
   const url = `${APIBasePath}${operation.editSettedInfo}`;
   try {
-    const { tableParam } = yield select(state => state.operation.examiner.toJS());
+    const { tableParams } = yield select(state => state.operation.examiner.toJS());
     yield call(easyPut, 'changeStore', { editLoading: 'loading' });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') { // 重新请求
       yield call(easyPut, 'changeStore', { editLoading: 'success' });
-      yield fork(getSettingList, { ...tableParam });
+      yield fork(getSettingList, { payload: { ...tableParams }});
     } else { throw response.data; }
   } catch (error) {
     yield call(easyPut, 'changeStore', { editLoading: 'normal' });
