@@ -113,7 +113,7 @@ class WorkExaminer extends Component {
     this.props.changeStore({ editModalShow: true, handleDistributionId: distributionId, modalStationName: stationName });
   }
 
-  showDetail = (distributionId) => { // 展示详情弹框
+  showDetail = ({ distributionId }) => { // 展示详情弹框
     this.props.getSettedInfo({ distributionId, modalType: 'detailModalShow' });
   }
 

@@ -113,7 +113,7 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
     changeStore({ editModalShow: true, handleDistributionId: distributionId, modalStationName: stationName });
   }
 
-  showDetail = (distributionId) => { // 展示详情弹框
+  showDetail = ({ distributionId }) => { // 展示详情弹框
     this.props.getSettedInfo({ distributionId, modalType: 'detailModalShow' });
   }
 
