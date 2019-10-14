@@ -11,6 +11,7 @@ class EditModal extends Component {
   static propTypes = {
     settedDetail: PropTypes.array,
     editLoading: PropTypes.string,
+    modalStationName: PropTypes.string,
     form: PropTypes.object,
     handleDistributionId: PropTypes.number,
     editModalShow: PropTypes.bool,
@@ -54,7 +55,7 @@ class EditModal extends Component {
       if (!err){
         const { createSettedInfo, editSettedInfo, settedDetail, handleDistributionId, settingList } = this.props;
         const valueArr = Object.entries(values);
-        const nodeDatas = valueArr.map(e => ({
+        const nodeDatas = valueArr.filter(e => !!e[1]).map(e => ({ // filter 保证e[1]存在
           nodeCode: e[0],
           dealUsers: e[1].join(','),
         }));
@@ -75,13 +76,13 @@ class EditModal extends Component {
   }
 
   render(){
-    const { editModalShow, settableNodes, handleDistributionId, settingList, form, userGather, editLoading } = this.props;
+    const { editModalShow, settableNodes, form, userGather, editLoading, modalStationName } = this.props;
     const { getFieldDecorator } = form;
-    const currentInfo = settingList.find(e => e.distributionId === handleDistributionId) || {};
+    // const currentInfo = settingList.find(e => e.distributionId === handleDistributionId) || {};
     return (
       <Modal
         visible={editModalShow}
-        title={`${currentInfo.stationName || ''}电站——审核人设置`}
+        title={`${modalStationName || ''}电站——审核人设置`}
         onCancel={this.cancelEdit}
         footer={null}
       >
