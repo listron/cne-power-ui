@@ -5,7 +5,7 @@ import { Tooltip } from 'antd';
 import CommonProgress from '../../../Common/CommonProgress';
 import { ValueFormat, DeviceValueFormat } from '../../../Common/UtilComponent';
 import { monitordataFormat, dataFormat } from '../../../../utils/utilFunc';
-
+import { deviceValueFormat } from '../PvCommon/PvDataformat';
 
 
 class AllStationHeader extends React.Component {
@@ -46,13 +46,15 @@ class AllStationHeader extends React.Component {
           <div className={styles.stationCollect}>
             <div className={styles.dayStation}>
               <div className={styles.dataValue}>
-                <ValueFormat value={monitordataFormat(dayPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                {/* <ValueFormat value={deviceValueFormat(dayPower, '--', 2)} points={powerPoint} valueunit={powerUnit} /> */}
+                {deviceValueFormat(dayPower, '--', 2)}
               </div>
               <div className={styles.dataName}>日发电量 ({powerUnit})</div>
             </div>
             <div className={styles.monthStation}>
               <div className={styles.dataValue}>
-                <ValueFormat value={monitordataFormat(monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                {/* <ValueFormat value={monitordataFormat(monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} /> */}
+                {deviceValueFormat(monthPower, '--', 2)}
               </div>
               <div className={styles.dataName}>月累计发电量 ({powerUnit})</div>
             </div>
@@ -64,13 +66,15 @@ class AllStationHeader extends React.Component {
               <React.Fragment>
                 <div className={styles.yearStation}>
                   <div className={styles.dataValue}>
-                    <ValueFormat value={monitordataFormat(yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                    {/* <ValueFormat value={monitordataFormat(yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} /> */}
+                    {deviceValueFormat(yearPower, '--', 2)}
                   </div>
                   <div className={styles.dataName}>年累计发电量 ({powerUnit})</div>
                 </div>
                 <div className={styles.yearStationRate}>
                   <div className={styles.dataValue}>
-                    <DeviceValueFormat value={monitordataFormat(yearPlanRate.split('%')[0], '--')} />{'%'}
+                    {/* <DeviceValueFormat value={monitordataFormat(yearPlanRate.split('%')[0], '--')} />{'%'} */}
+                    {deviceValueFormat(yearPlanRate.split('%')[0], '--', 2)}{'%'}
                   </div>
                   <div className={styles.dataName}>计划完成率</div>
                   <div className={styles.tooltipName}>
@@ -85,7 +89,8 @@ class AllStationHeader extends React.Component {
               planStatus === 0 &&
               <div className={styles.yearStation}>
                 <div className={styles.dataValue}>
-                  <ValueFormat value={monitordataFormat(yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                  {/* <ValueFormat value={monitordataFormat(yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} /> */}
+                  {deviceValueFormat(yearPower, '--', 2)}
                 </div>
                 <div className={styles.dataName}>年累计发电量 ({powerUnit})</div>
               </div>
