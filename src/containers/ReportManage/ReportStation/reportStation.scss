@@ -1,0 +1,15 @@
+@import '../../../theme/theme.scss';
+
+.reportstation {
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+  flex-direction: column;
+
+  .reportbox {
+    display: flex;
+    flex: 1;
+    padding: 24px 24px 0;
+    background: $pageBackground;
+  }
+}
