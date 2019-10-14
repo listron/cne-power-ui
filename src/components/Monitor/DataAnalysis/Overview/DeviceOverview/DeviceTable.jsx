@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Select, Table } from 'antd';
 import AutoSelect from '@components/Common/AutoSelect';
-import TableColumnTitle from '@components/Common/TableColumnTitle';
 import searchUtil from '@utils/searchUtil';
 import styles from './device.scss';
 const { Option } = Select;
@@ -28,7 +27,6 @@ class DeviceTable extends PureComponent{
     super(props);
     const { devicesData, deviceIndicators, deviceCheckedList } = this.props;
     const { deviceData = [] } = devicesData;
-    // const indicators = ['validCount', 'invalidCount', 'lostCount']; // validCount	有效值数;invalidCount	无效值数;lostCount	缺失值数
     let tableColumn = this.baseColumn.map(e => ({ ...e, fixed: false, width: undefined })); // 取消定位和指定宽度
     if (deviceData.length > 0) { // 有数据, 直接渲染。
       const filteredDevice = deviceData.map(e => ({ //测点筛选
@@ -60,7 +58,7 @@ class DeviceTable extends PureComponent{
       fixed: 'left',
       sorter: (a, b) => (a.deviceSortName) && a.deviceSortName.localeCompare(b.deviceSortName),
       width: 125,
-      // className: styles.deviceName,
+      className: styles.deviceName,
       render: (text, record) => (
         <span
           className={styles.deviceLink}
@@ -199,10 +197,10 @@ class DeviceTable extends PureComponent{
     const { devicePointsList, deviceCheckedList, devicesData, theme, deviceIndicators, deveiceLoading, deviceFilterName } = this.props;
     const { tableColumn } = this.state;
     const { deviceData = [] } = devicesData;
-    const { pointData = []} = deviceData[0] || {};
+    // const { pointData = []} = deviceData[0] || {};
     // const actualPoints = pointData.filter(e => deviceCheckedList.includes(e.pointCode)); // 选中测点与实际测点数据的交集才是实际数据列
     // const scrollWidth = 410 + actualPoints.length * deviceIndicators.length * 110;
-    const scrollWidth = 410 + deviceCheckedList.length * deviceIndicators.length * 110; // 经讨论, 选中测点即是表格的测点列。
+    const scrollWidth = 410 + deviceCheckedList.length * (deviceIndicators.length * 110 + 1); // 经讨论, 选中测点即是表格的测点列。 +1 是为了适配多余的border宽度
     const dataSource = deviceFilterName ? [deviceData.find(e => e.deviceName === deviceFilterName)] : deviceData; // 图表筛选
     // if (this.tableRef && scrollWidth < this.tableRef.offsetWidth) {
     // //   tableWidth = `${scrollWidth}px`;

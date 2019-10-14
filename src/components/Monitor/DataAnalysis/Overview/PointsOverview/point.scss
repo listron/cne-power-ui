@@ -85,15 +85,30 @@
   .histogramChart{
     height: 160px;
     margin-bottom: 10px;
+    position: relative;
     .chartTitle{
       padding-left: 8px;
       height: 30px;
       line-height: 30px;
       margin-bottom: 0px;
     }
-    .chart{
+    .chart, .emptyData{
       height: 130px;
       width: 277px;
+    }
+    .emptyData{
+      position: absolute;
+      top: 30px;
+      text-align: center;
+      line-height: 130px;
+      .tipText{
+        border-radius:4px;
+        display: inline-block;
+        width:132px;
+        font-size:12px;
+        line-height: 42px;
+        height:42px;
+      }
     }
   }
   .valueInfo{
@@ -192,6 +207,10 @@
       .chart{
         border: 1px solid #dfdfdf;
       }
+      .emptyData .tipText{
+        background:rgba(0,0,0,0.50);
+        color:#f8f8f8;
+      }
     }
     .valueInfo{
       border: 1px solid #dfdfdf;
@@ -275,6 +294,10 @@
       }
       .chart{
         border: 1px solid #3d7bac;
+      }
+      .emptyData .tipText{
+        background:rgba(0,0,0,0.50);
+        color:#9cd1ff;
       }
     }
     .valueInfo{
