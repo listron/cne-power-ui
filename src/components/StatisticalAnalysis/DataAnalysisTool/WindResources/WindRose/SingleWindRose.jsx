@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Icon} from 'antd';
 import eCharts from 'echarts';
 import {themeConfig} from '@utils/darkConfig';
 
@@ -117,6 +116,7 @@ export default class SingleWindRose extends Component{
       tooltip: {
         show: true,
         padding: 0,
+        borderWidth: 0,
         axisPointer: { //去掉移动的指示线
           type: 'none',
         },
@@ -242,7 +242,10 @@ export default class SingleWindRose extends Component{
     const energyFlag = energyArr.every((cur) => {return cur === null;});
     return(
       <div className={styles.chartWrap}>
-        <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalIcon} />
+        <div className={styles.showModalIcon} onClick={() => showImg(index)}>
+          <i className="iconfont icon-enlarge2"></i>
+          <i className="iconfont icon-enlarge1"></i>
+        </div>
         <span className={styles.windDirection}>风向</span>
         <span className={styles.windPower}>风能</span>
         {(directionsLoading && directionFlag) && <div className={styles.firstInfo}>

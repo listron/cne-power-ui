@@ -41,6 +41,16 @@
     font-size: 18px;
     cursor: pointer;
     z-index: 3;
+
+    :global{
+      .icon-enlarge1{
+        display: block;
+      }
+
+      .icon-enlarge2{
+        display: none;
+      }
+    }
   }
 
   > span {
@@ -194,8 +204,18 @@
   }
 
   .showModalIcon {
+    color: $themeColor;
+
     &:hover {
-      color: $themeColor;
+      :global{
+        .icon-enlarge1{
+          display: none;
+        }
+
+        .icon-enlarge2{
+          display: block;
+        }
+      }
     }
   }
 }

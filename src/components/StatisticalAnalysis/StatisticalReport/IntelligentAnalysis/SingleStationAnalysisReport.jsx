@@ -95,7 +95,7 @@ class SingleStationAnalysisReport extends Component {
                     {(lostPowerCompared >= 0) && <span>提高</span>}
                     {(lostPowerCompared < 0) && <span>降低</span>}
                     <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared), '--', 2, true) || '--'}</span>
-                    <span>%;</span>
+                    <span>%；</span>
                     {(limitPowerRate || limitPowerRate === 0) &&
                       <span>
                         <span>限电率</span>
