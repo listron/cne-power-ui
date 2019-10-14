@@ -100,6 +100,7 @@ export default class BigWindRose extends Component{
       tooltip: {
         show: true,
         padding: 0,
+        borderWidth: 0,
         axisPointer: { //去掉移动的指示线
           type: 'none',
         },
