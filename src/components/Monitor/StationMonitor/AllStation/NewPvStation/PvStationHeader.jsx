@@ -47,7 +47,7 @@ class pvStationHeader extends React.Component {
           <div >  装机台数 <span className={styles.dataValue}>{deviceValueFormat(stationUnitCount, '--', 0)} </span> 台</div>
         </div>
         <div className={styles.dataColumn}>
-          <div>日发电量  <span className={styles.dataValue}>{deviceValueFormat(dayPower, '--', 2, true)}</span> {powerUnit}  </div>
+          <div>日发电量  <span className={styles.dataValue}>{deviceValueFormat(dayPower, '--', 2)}</span> {powerUnit}  </div>
           <div> 日利用小时 <span className={styles.dataValue}>{deviceValueFormat(equivalentHours, '--', 2)}</span> h</div>
         </div>
         <div className={styles.dataColumn}>
