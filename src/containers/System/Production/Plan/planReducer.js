@@ -6,7 +6,7 @@ const initState = Immutable.fromJS({
   // buttonLoading: false,//普通按钮交互loading
   showPage: 'list', //默认展示列表页list,可展示新建add,编辑edit
   planYear: null, // 年份选择，默认是当前年
-  sortMethod: '', //排序 => 'field,0/1'field代表排序字段，0升序,1降序
+  sortMethod: '', //排序 => 'field,0/1'field代表排序字段，1升序,2降序
   stationCodes: null, // 电站编码
   sortField: '', // 1:区域 2：电站名称 3:装机容量 4:年份 5: 年计划发电量
   totalNum: 0, //生产计划总数
