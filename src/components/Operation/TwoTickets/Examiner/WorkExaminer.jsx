@@ -54,7 +54,7 @@ class WorkExaminer extends Component {
   checkStations = ({ stationCodes }) => { // 电站选择
     const { tableParams, changeStore, getSettingList } = this.props;
     const newParams = {
-      tableParams,
+      ...tableParams,
       stationCodes,
       pageNum: 1, // 回到第一页。
     };
@@ -81,7 +81,7 @@ class WorkExaminer extends Component {
       title: '操作',
       dataIndex: 'handle',
       render: (text, record) => {
-        const { state, distributionId } = record;
+        const { state } = record;
         return (
           <div className={styles.handler}>
             <span
@@ -92,7 +92,7 @@ class WorkExaminer extends Component {
             />
             {state > 0 && <span
               className="iconfont icon-look"
-              onClick={() => this.showDetail(distributionId)}
+              onClick={() => this.showDetail(record)}
             />}
           </div>
         );
@@ -100,18 +100,17 @@ class WorkExaminer extends Component {
     },
   ])
 
-  showEdit = (record) => { // 展示编辑弹框
+  showEdit = ({ distributionId, stationCode, stationName }) => { // 展示编辑弹框
     const { settableNodes, getSettedInfo, getSettableUsers } = this.props;
-    const { distributionId, stationCode } = record;
     getSettableUsers({ settableNodes, stationCode });
     getSettedInfo({ distributionId, modalType: 'editModalShow' });
+    this.props.changeStore({ modalStationName: stationName });
   }
 
-  showCreate = (record, handleDistributionId) => { // 展示新设置弹框
-    const { settableNodes, changeStore, getSettableUsers } = this.props;
-    const { distributionId, stationCode } = record;
+  showCreate = ({ distributionId, stationCode, stationName }) => { // 展示新设置弹框
+    const { settableNodes, getSettableUsers } = this.props;
     getSettableUsers({ settableNodes, stationCode });
-    changeStore({ editModalShow: true, handleDistributionId: distributionId });
+    this.props.changeStore({ editModalShow: true, handleDistributionId: distributionId, modalStationName: stationName });
   }
 
   showDetail = (distributionId) => { // 展示详情弹框
