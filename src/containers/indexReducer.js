@@ -10,6 +10,7 @@ import othersReducer from './alphaRedux/othersReducer';
 // import otherReducer from './alphaRedux/otherReducer';
 import statisticalAnalysisReducer from './StatisticalAnalysis/statisticalAnalysisReducer';
 import highAanlysisReducer from './HighAnalysis/highAanlysisReducer';
+import reportManageReducer from './ReportManage/reportManageReducer';
 
 const appReducer = combineReducers({
   common,
@@ -22,6 +23,7 @@ const appReducer = combineReducers({
   // otherReducer,
   statisticalAnalysisReducer,
   highAanlysisReducer,
+  reportManageReducer,
 });
 
 

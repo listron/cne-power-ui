@@ -6,10 +6,11 @@ import styles from './examinerComp.scss';
 export default class DetailModal extends Component {
 
   static propTypes = {
-    handleDistributionId: PropTypes.number,
+    // handleDistributionId: PropTypes.number,
     detailModalShow: PropTypes.bool,
     settedDetail: PropTypes.array,
-    settingList: PropTypes.array,
+    // settingList: PropTypes.array,
+    modalRecord: PropTypes.object,
     changeStore: PropTypes.func,
   }
 
@@ -20,12 +21,13 @@ export default class DetailModal extends Component {
   });
 
   render(){
-    const { detailModalShow, settedDetail, handleDistributionId, settingList } = this.props;
-    const currentInfo = settingList.find(e => e.distributionId === handleDistributionId) || {};
+    const { detailModalShow, settedDetail, modalRecord } = this.props;
+    const { stationName } = modalRecord;
+    // const currentInfo = settingList.find(e => e.distributionId === handleDistributionId) || {};
     return (
       <Modal
         visible={detailModalShow}
-        title={`${currentInfo.stationName || ''}电站——审核人设置`}
+        title={`${stationName || ''}电站——审核人设置`}
         onCancel={this.hideDetail}
         footer={null}
       >

@@ -1,0 +1,61 @@
+@import '../../../theme/theme';
+
+.reportContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .topSearch {
+    background: #fff;
+    display: flex;
+    height: 60px;
+    margin-bottom: 10px;
+
+    .timeStyle {
+      display: flex;
+      align-items: center;
+      padding-left: 40px;
+
+    }
+  }
+
+  .reportList {
+    background: #fff;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 350px;
+
+    :global {
+      .ant-table .ant-table-thead>tr>th {
+        padding: 0 8px;
+      }
+
+      .ant-table-body {
+        &::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          border-radius: 3px;
+          background: rgba(0, 0, 0, 0.5);
+        }
+      }
+
+    }
+
+    .handlePage {
+      display: flex;
+      justify-content: space-between;
+      height: 56px;
+      align-items: center;
+      padding-left: 40px;
+    }
+
+    .rightStyle {
+      text-align: right;
+    }
+  }
+
+}

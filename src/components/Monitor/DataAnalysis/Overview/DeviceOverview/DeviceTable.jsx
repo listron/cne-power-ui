@@ -187,8 +187,16 @@ class DeviceTable extends PureComponent{
     // const newBaseColumn = [...baseColumn]
     // let tableWidth = '100%', scrollable = { x: scrollWidth };
     const scrollWidth = 410 + pointData.length * indicators.length * 110; // 计算的长度
-    if ((this.tableRef && scrollWidth < this.tableRef.offsetWidth) || !this.tableRef) {
-      return baseColumn.map(e => ({ ...e, fixed: false, width: undefined })).concat(extraColum);
+    if ((this.tableRef && scrollWidth < this.tableRef.offsetWidth)) { // 表格宽度小于可视区宽度。
+      const extraWidth = (this.tableRef.offsetWidth - scrollWidth) / (pointData.length + 3);// 均分多余的自适应宽度。
+      const lessColumn = extraColum.map(e => ({
+        ...e,
+        children: e.children.map(child => ({
+          ...child,
+          width: 110 + parseInt(extraWidth / indicators.length, 10), // 原设计高度110 + 均分的多余宽度
+        })),
+      }));
+      return baseColumn.map(e => ({ ...e, width: e.width + extraWidth })).concat(lessColumn);
     }
     return baseColumn.concat(extraColum);
   }
@@ -212,11 +220,7 @@ class DeviceTable extends PureComponent{
           <span className={styles.text}>测点</span>
           <AutoSelect
             theme={theme}
-            data={[{
-              value: 'points',
-              label: '测点',
-              children: devicePointsList,
-            }]}
+            data={devicePointsList}
             value={deviceCheckedList}
             onChange={this.pointsCheck}
             style={{width: '200px', marginRight: '8px'}}
@@ -244,12 +248,12 @@ class DeviceTable extends PureComponent{
           dataSource={dataSource}
           bordered
           pagination={false}
-          // style={{ width: tableWidth }}
+          // style={{ height: '80px', overflow: 'hidden' }}
           loading={{
             spinning: deveiceLoading,
             delay: 200,
           }}
-          scroll={{ x: dataSource.length > 0 ? scrollWidth : true }}
+          scroll={{ x: scrollWidth }}
         />
       </div>
     );

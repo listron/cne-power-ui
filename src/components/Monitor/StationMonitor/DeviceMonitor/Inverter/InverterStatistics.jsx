@@ -4,13 +4,13 @@ import PowerProgress from '../DeviceMonitorCommon/PowerProgress';
 import styles from '../eachDeviceMonitor.scss';
 import inverterStyles from './inverter.scss';
 import { DeviceValueFormat } from '../../../../Common/UtilComponent';
-import { monitordataFormat, dataFormat } from '../../../../../utils/utilFunc';
+import { monitordataFormat, dataFormat, dataFormats } from '../../../../../utils/utilFunc';
 
 function InverterStatistics({ deviceDetail, subDeviceList, theme }) {
   let { devicePower, deviceCapacity, powerDay, powerMonth, powerYear, deviceTypeCode } = deviceDetail;
-  powerDay = isNaN(parseFloat(powerDay)) ? ' -- ' : parseFloat(powerDay);
-  powerMonth = isNaN(parseFloat(powerMonth)) ? ' -- ' : parseFloat(powerMonth);
-  powerYear = isNaN(parseFloat(powerYear)) ? ' -- ' : parseFloat(powerYear);
+  // powerDay = isNaN(parseFloat(powerDay)) ? ' -- ' : parseFloat(powerDay);
+  // powerMonth = isNaN(parseFloat(powerMonth)) ? ' -- ' : parseFloat(powerMonth);
+  // powerYear = isNaN(parseFloat(powerYear)) ? ' -- ' : parseFloat(powerYear);
   // deviceTypeCode === '201' 集中式逆变器 206 组串式逆变器
   if (!subDeviceList.length && subDeviceList.electricityList) {
     subDeviceList = subDeviceList.electricityList || []; // 取出子集组串接口优化后删。
@@ -45,21 +45,21 @@ function InverterStatistics({ deviceDetail, subDeviceList, theme }) {
         <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} theme={theme} />
         <div className={styles.timerDayGen}>
           <div className={styles.genNum}>
-            <DeviceValueFormat value={monitordataFormat(powerDay, '--')} />
+            <DeviceValueFormat value={dataFormats(powerDay, '--', 2)} />
           </div>
           <div className={styles.empty} />
           <div className={styles.genText}>日发电量 (kWh)</div>
         </div>
         <div className={styles.timerGen}>
           <div className={styles.genNum}>
-            <DeviceValueFormat value={monitordataFormat(powerMonth, '--')} />
+            <DeviceValueFormat value={dataFormats(powerMonth, '--', 2)} />
           </div>
           <div className={styles.empty} />
           <div className={styles.genText}>月累计发电量 (kWh)</div>
         </div>
         <div className={styles.timerGen}>
           <div className={styles.genNum}>
-            <DeviceValueFormat value={monitordataFormat(powerYear, '--')} />
+            <DeviceValueFormat value={dataFormats(powerYear, '--', 2)} />
           </div>
           <div className={styles.empty} />
           <div className={styles.genText}>年累计发电量 (kWh)</div>
