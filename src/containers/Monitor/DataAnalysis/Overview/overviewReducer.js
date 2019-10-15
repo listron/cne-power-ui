@@ -4,6 +4,7 @@ const overviewAction = {
   getOverviewStation: Symbol('getOverviewStation'), // 获取电站信息
   getOverviewDates: Symbol('getOverviewDates'), // 获取电站各日平均数据完整率
   getOverviewDevices: Symbol('getOverviewDevices'), // 获取设备信息
+  getPointInfo: Symbol('getPointInfo'), // 请求测点
   afterDeviceTypePointGet: Symbol('afterDeviceTypePointGet'), // 设备页, 测点列表获取后执行函数
   afterPointPagePointsGet: Symbol('afterPointPagePointsGet'), // 测点页, 测点列表获取后执行函数
   getOverviewPoints: Symbol('getOverviewPoints'), // 获取测点信息

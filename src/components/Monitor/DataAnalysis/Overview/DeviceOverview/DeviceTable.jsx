@@ -220,11 +220,7 @@ class DeviceTable extends PureComponent{
           <span className={styles.text}>测点</span>
           <AutoSelect
             theme={theme}
-            data={[{
-              value: 'points',
-              label: '测点',
-              children: devicePointsList,
-            }]}
+            data={devicePointsList}
             value={deviceCheckedList}
             onChange={this.pointsCheck}
             style={{width: '200px', marginRight: '8px'}}

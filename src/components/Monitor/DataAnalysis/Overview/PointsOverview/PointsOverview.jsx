@@ -93,7 +93,7 @@ class PointsOverview extends PureComponent{
     });
     this.props.getPoints({
       params: {
-        stationCode, deviceTypeCode, pointTypes: 'YC,YM',
+        stationCode, deviceTypeCode, devicePointTypes: ['YM', 'YC'],
       },
       actionName: 'afterPointPagePointsGet',
       resultName: 'pointPageList',
