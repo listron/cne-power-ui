@@ -7,4 +7,5 @@ export const windResourcesAction = {
   getStationDevice: Symbol('getStationDevice'), // 获取电站下的风机列表
   getBigFrequency: Symbol('getBigFrequency'), // 获取放大频率图
   getBigDirections: Symbol('getBigDirections'), // 获取放大玫瑰图
+  getFrequencyMax: Symbol('getFrequencyMax'), // 获取风能频率图最大值
 };
