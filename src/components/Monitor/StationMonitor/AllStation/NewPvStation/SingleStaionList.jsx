@@ -70,11 +70,11 @@ class SingleStaionList extends React.Component {
             <div className={styles.staionCenterLeft}>
               <div className={styles.column}>
                 <span className={styles.dataName}> 实时功率</span>
-                <div> <span className={styles.changeNum}> {dataFormats(stationPower, '--', 2, true)}</span> {realTimePowerUnit} </div>
+                <div> <span className={styles.changeNum}> {dataFormats(stationPower, '--', 2)}</span> {realTimePowerUnit} </div>
               </div>
               <div className={styles.column}>
                 <span className={styles.dataName}> 瞬时辐射</span>
-                <div> <span className={styles.changeNum}> {dataFormats(instantaneous, '--', 2, true)}</span> W/m² </div>
+                <div> <span className={styles.changeNum}> {dataFormats(instantaneous, '--', 2)}</span> W/m² </div>
               </div>
             </div>
             <div className={styles.staionCenterRight}>
@@ -84,7 +84,7 @@ class SingleStaionList extends React.Component {
               </div>
               <div className={styles.column}>
                 <span className={styles.dataName}> 日利用小时</span>
-                <div> <span className={styles.changeNum}> {dataFormats(equivalentHours, '--', 2, true)}</span> h </div>
+                <div> <span className={styles.changeNum}> {dataFormats(equivalentHours, '--', 2)}</span> h </div>
               </div>
             </div>
           </div>
