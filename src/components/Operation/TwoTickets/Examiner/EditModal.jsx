@@ -11,7 +11,7 @@ class EditModal extends Component {
   static propTypes = {
     settedDetail: PropTypes.array,
     editLoading: PropTypes.string,
-    modalStationName: PropTypes.string,
+    modalRecord: PropTypes.object,
     form: PropTypes.object,
     handleDistributionId: PropTypes.number,
     editModalShow: PropTypes.bool,
@@ -53,18 +53,20 @@ class EditModal extends Component {
     const { form } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err){
-        const { createSettedInfo, editSettedInfo, settedDetail, handleDistributionId, settingList } = this.props;
+        const { createSettedInfo, editSettedInfo, settedDetail, modalRecord } = this.props;
         const valueArr = Object.entries(values);
         const nodeDatas = valueArr.filter(e => !!e[1]).map(e => ({ // filter 保证e[1]存在
           nodeCode: e[0],
           dealUsers: e[1].join(','),
         }));
-        const currentInfo = settingList.find(e => e.distributionId === handleDistributionId) || {};
+        // console.log(modalRecord)
+        const { distributionId, stationCode } = modalRecord;
+        // const currentInfo = settingList.find(e => e.distributionId === handleDistributionId) || {};
         settedDetail ? editSettedInfo({ // 编辑
-          distributionId: handleDistributionId,
+          distributionId,
           nodeDatas,
         }) : createSettedInfo({ // 新增
-          stationCode: currentInfo.stationCode,
+          stationCode,
           nodeDatas,
         });
       }
@@ -76,13 +78,14 @@ class EditModal extends Component {
   }
 
   render(){
-    const { editModalShow, settableNodes, form, userGather, editLoading, modalStationName } = this.props;
+    const { editModalShow, settableNodes, form, userGather, editLoading, modalRecord } = this.props;
+    const { stationName } = modalRecord;
     const { getFieldDecorator } = form;
     // const currentInfo = settingList.find(e => e.distributionId === handleDistributionId) || {};
     return (
       <Modal
         visible={editModalShow}
-        title={`${modalStationName || ''}电站——审核人设置`}
+        title={`${stationName || ''}电站——审核人设置`}
         onCancel={this.cancelEdit}
         footer={null}
       >
