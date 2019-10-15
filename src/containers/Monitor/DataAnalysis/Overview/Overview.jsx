@@ -95,7 +95,7 @@ const mapDispatchToProps = (dispatch) =>({
   changeOverviewStore: payload => dispatch({ type: overviewAction.changeStore, payload }),
   resetOverview: () => dispatch({ type: overviewAction.reset }),
   getPoints: params => dispatch({ // 默认执行changeStore, 此处可选择指定saga函数执行
-    type: commonAction.getPoints,
+    type: overviewAction.getPointInfo,
     payload: {
       ...params,
       actionName: overviewAction[params.actionName || 'changeStore'],

@@ -50,11 +50,7 @@ class PointsSearch extends PureComponent{
         />
         <span className={styles.pointText}>测点</span>
         <AutoSelect
-          data={[{
-            value: 'points',
-            label: '测点',
-            children: pointList,
-          }]}
+          data={pointList}
           value={pointsCheckedList}
           onChange={this.pointsCheck}
           style={{width: '200px', marginRight: '8px'}}
