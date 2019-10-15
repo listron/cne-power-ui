@@ -45,12 +45,10 @@ class CommonProgress extends Component {
               {/** <div>{value}</div> */}
               <div>
                 <ValueFormat value={monitordataFormat(value, '--', realTimePoint)} points={realTimePoint} valueunit={realTimeUnit} />
-                {/* {deviceValueFormat(value, '--', 2)} */}
               </div>
               {/*<div className={styles.planOutput}>{total}</div> */}
               <div className={styles.planOutput}>
                 <ValueFormat value={monitordataFormat(total, '--', points)} points={points} valueunit={valueunit} />
-                {/* {deviceValueFormat(total, '--', 2)} */}
               </div>
             </div>
             <div className={styles.progressBar}>
