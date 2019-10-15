@@ -9,12 +9,21 @@
     background: #fff;
     display: flex;
     height: 60px;
+    line-height: 40px;
     margin-bottom: 10px;
 
     .timeStyle {
       display: flex;
       align-items: center;
       padding-left: 40px;
+
+      .yearWidth {
+        margin: 0 8px;
+      }
+
+      .btnStyle {
+        margin-left: 24px;
+      }
 
     }
   }

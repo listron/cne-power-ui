@@ -7,11 +7,31 @@ import { Button, Table } from 'antd';
 
 class ReportTable extends React.Component {
   static propTypes = {
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    total: PropTypes.number,
+    loading: PropTypes.bool,
+    getReportStationList: PropTypes.func,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    stationCodes: PropTypes.array,
+    orderFiled: PropTypes.string,
+    orderType: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
   }
-  tableChange = () => {
+  tableChange = (pagination, filter, sorter) => {
+    const { field, order } = sorter;
+    const { getReportStationList, startTime, endTime, stationCodes, dateType, pageNum, pageSize } = this.props;
+    const params = { startTime, endTime, stationCodes, dateType, pageNum, pageSize };
+    const orderFiled = field === 'stationName' ? 'station_name' : 'report_time';
+    const orderType = order === 'ascend' ? 'asc' : 'desc';
+    getReportStationList({
+      ...params,
+      orderFiled,
+      orderType,
+    });
 
   }
   planWidth = (length, paddingSize = 16, width = 20) => {
@@ -29,7 +49,7 @@ class ReportTable extends React.Component {
     ));
   }
   render() {
-    const { pageNum, pageSize, total } = this.props;
+    const { pageNum, pageSize, total, loading } = this.props;
     const data = Array(30).fill({ '理论发电量': '22222' });
     const power = [
       { name: '理论发电量', unit: '万kWh', dataIndex: '理论发电量' },
@@ -60,8 +80,8 @@ class ReportTable extends React.Component {
     const sportArr = this.tableChildren(sport);
 
     const jianpai = [
-      { name: '节省标准煤', unit: 'h', dataIndex: '节省标准煤' },
-      { name: '减排二氧化碳', unit: 'h', dataIndex: '减排二氧化碳' },
+      { name: '节省标准煤', unit: '吨', dataIndex: '节省标准煤' },
+      { name: '减排二氧化碳', unit: '吨', dataIndex: '减排二氧化碳' },
     ];
     const columns = [
       {
@@ -150,13 +170,14 @@ class ReportTable extends React.Component {
     return (
       <div className={styles.reportList}>
         <div className={styles.handlePage}>
-          <div><Button type="primary">导出</Button></div>
+          <div><Button type="primary" disabled={!data.length}>导出</Button></div>
           <div>
             <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} />
           </div>
 
         </div>
         <Table
+          loading={loading}
           columns={columns}
           onChange={this.tableChange}
           dataSource={data}
@@ -170,43 +191,3 @@ class ReportTable extends React.Component {
   }
 }
 export default (ReportTable);
-/**
- [
-          {
-            title: () => <TableColumnTitle title="理论发电量" unit="万kWh" />,
-            dataIndex: '理论发电量',
-            key: '理论发电量',
-            width: 120,
-          },
-          {
-            title: () => <TableColumnTitle title="峰值日照时数" unit="h" />,
-            dataIndex: '峰值日照时数',
-            key: '峰值日照时数',
-            width: 120,
-          },
-          {
-            title: () => <TableColumnTitle title="集电线路发电量" unit="万kWh" />,
-            dataIndex: '集电线路发电量',
-            key: '集电线路发电量',
-            width: 160,
-          },
-          {
-            title: () => <TableColumnTitle title="上网电量" unit="万kWh" />,
-            dataIndex: '上网电量',
-            key: '上网电量',
-            width: 120,
-          },
-          {
-            title: () => <TableColumnTitle title="购网电量" unit="万kWh" />,
-            dataIndex: '购网电量',
-            key: '购网电量',
-            width: 220,
-          },
-          {
-            title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
-            dataIndex: '等效利用小时数',
-            key: '等效利用小时数',
-            width: 120,
-          },
-        ],
- */
