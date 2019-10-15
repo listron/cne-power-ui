@@ -144,6 +144,7 @@ class DeviceOverview extends PureComponent{
       deviceParam: newParam,
       devicesData: {}, // 清空设备信息
       devicePointsList: [], // 清空测点列表
+      deviceCheckedList: [], // 清空选中测点
     });
     this.props.getOverviewStation({
       stationCode,
@@ -159,6 +160,7 @@ class DeviceOverview extends PureComponent{
       deviceParam: newParams,
       devicesData: {}, // 清空设备信息
       devicePointsList: [], // 清空测点列表
+      deviceCheckedList: [], // 清空选中测点
     });
     this.props.getPoints({ // 请求新的测点列表 
       params: {
