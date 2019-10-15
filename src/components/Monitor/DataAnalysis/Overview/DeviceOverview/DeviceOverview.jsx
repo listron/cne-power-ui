@@ -50,7 +50,7 @@ class DeviceOverview extends PureComponent{
       } else { // 加载时就有电站信息 带路径跳转, 直接请求相关测点信息即可
         this.props.getPoints({ // 请求测点列表 
           params: {
-            stationCode, deviceTypeCode, pointTypes: 'YC,YM',
+            stationCode, deviceTypeCode, devicePointTypes: ['YM', 'YC'],
           },
           actionName: 'afterDeviceTypePointGet',
           resultName: 'devicePointsList',
@@ -68,7 +68,7 @@ class DeviceOverview extends PureComponent{
       const { deviceTypeCode = 101 } = deviceTypes.find(e => [101, 201, 206].includes(e.deviceTypeCode)) || {};
       this.props.getPoints({ // 请求测点列表 
         params: {
-          stationCode, deviceTypeCode, pointTypes: 'YC,YM',
+          stationCode, deviceTypeCode, devicePointTypes: ['YM', 'YC'],
         },
         actionName: 'afterDeviceTypePointGet',
         resultName: 'devicePointsList',
@@ -144,6 +144,7 @@ class DeviceOverview extends PureComponent{
       deviceParam: newParam,
       devicesData: {}, // 清空设备信息
       devicePointsList: [], // 清空测点列表
+      deviceCheckedList: [], // 清空选中测点
     });
     this.props.getOverviewStation({
       stationCode,
@@ -159,10 +160,11 @@ class DeviceOverview extends PureComponent{
       deviceParam: newParams,
       devicesData: {}, // 清空设备信息
       devicePointsList: [], // 清空测点列表
+      deviceCheckedList: [], // 清空选中测点
     });
     this.props.getPoints({ // 请求新的测点列表 
       params: {
-        stationCode, deviceTypeCode, pointTypes: 'YC,YM',
+        stationCode, deviceTypeCode, devicePointTypes: ['YM', 'YC'],
       },
       actionName: 'afterDeviceTypePointGet',
       resultName: 'devicePointsList',
