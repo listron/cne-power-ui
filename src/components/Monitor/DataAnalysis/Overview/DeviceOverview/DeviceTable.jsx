@@ -252,12 +252,12 @@ class DeviceTable extends PureComponent{
           dataSource={dataSource}
           bordered
           pagination={false}
-          // style={{ width: tableWidth }}
+          // style={{ height: '80px', overflow: 'hidden' }}
           loading={{
             spinning: deveiceLoading,
             delay: 200,
           }}
-          scroll={{ x: dataSource.length > 0 ? scrollWidth : true }}
+          scroll={{ x: scrollWidth }}
         />
       </div>
     );
