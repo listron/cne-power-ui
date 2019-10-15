@@ -120,9 +120,9 @@ class PlanCompleteRateAnalysisBar extends React.Component {
       legend: {
         top: title ? 0 : 20,
         left: 'center',
+        width: 430,
         itemWidth: 8,
         itemHeight: 5,
-        width: 430,
       },
       xAxis: [
         {

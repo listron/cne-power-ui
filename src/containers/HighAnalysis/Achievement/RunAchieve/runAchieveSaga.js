@@ -44,7 +44,7 @@ function *getDevices({ payload }){
           deviceIds,
           runInfo: {
             startTime: moment(runInfo.searchDates[0]).utc().format(),
-            endTime: moment(runInfo.searchDates[1]).utc().format(),
+            endTime: moment(runInfo.searchDates[1]).add(1, 'days').utc().format(),
             deviceFullcodes: deviceCode,
           },
           runFlag,

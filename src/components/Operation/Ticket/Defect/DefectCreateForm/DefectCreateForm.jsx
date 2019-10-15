@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import StationSelect from '../../../../Common/StationSelect';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
-import { Form, Input, Button, Select, Switch, Radio, Cascader,Modal, Icon } from 'antd';
+import { Form, Input, Button, Select, Switch, Radio, Cascader, Modal, Icon } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import styles from './defectCreateForm.scss';
 import InputLimit from '../../../../Common/InputLimit';
@@ -16,7 +16,7 @@ const RadioGroup = Radio.Group;
 class TmpForm extends Component {
   static propTypes = {
     form: PropTypes.object,
-    stationName: PropTypes.string,//电站名称
+    stationName: PropTypes.string, //电站名称
     stations: PropTypes.array,
     deviceTypes: PropTypes.array,
     devices: PropTypes.array,
@@ -48,23 +48,23 @@ class TmpForm extends Component {
       checked: false,
       deviceAreaCode: '',
       deviceTypeCode: '',
-      dealVisible:false,
-    }
-  }
-
-  
-  componentWillReceiveProps(nextProps){
-    const {defectId,stationCode,deviceTypeCode,defectTypeCode}=nextProps.defectDetail;
-    const prevDefectId=this.props.defectDetail.defectId;
-    if(defectId!==prevDefectId){
-      this.props.getStationDeviceTypes({ stationCodes:stationCode });
-      this.props.getKnowledgebase({faultTypeIds:[defectTypeCode],deviceTypeCodes:[deviceTypeCode]})
-    }
+      dealVisible: false,
+    };
   }
 
 
-  componentWillUnmount(){
-    this.props.changeDefectStore({defectDetail:{},knowledgebaseList:[]})
+  componentWillReceiveProps(nextProps) {
+    const { defectId, stationCode, deviceTypeCode, defectTypeCode } = nextProps.defectDetail;
+    const prevDefectId = this.props.defectDetail.defectId;
+    if (defectId !== prevDefectId) {
+      this.props.getStationDeviceTypes({ stationCodes: stationCode });
+      this.props.getKnowledgebase({ faultTypeIds: [defectTypeCode], deviceTypeCodes: [deviceTypeCode], type: '' });
+    }
+  }
+
+
+  componentWillUnmount() {
+    this.props.changeDefectStore({ defectDetail: {}, knowledgebaseList: [] });
   }
 
   onChangeReplace = (checked) => { // 更换部件
@@ -85,19 +85,19 @@ class TmpForm extends Component {
     const { form } = this.props;
     const selectStation = form.getFieldValue('stations')[0];
     const stationCode = selectStation.stationCode; // 电站编码
-    const stationType = selectStation.stationType;  // 电站类型
-    let params = {
+    const stationType = selectStation.stationType; // 电站类型
+    const params = {
       stationCode,
-      deviceTypeCode
+      deviceTypeCode,
     };
-    this.setState({ deviceTypeCode: deviceTypeCode })
-    this.props.changeCommonStore(params)
+    this.setState({ deviceTypeCode: deviceTypeCode });
+    this.props.changeCommonStore(params);
     this.props.form.setFieldsValue({ defectTypeCode: null, deviceCode: null });
     this.props.getLostGenType({
       stationType,
       objectType: 1,
-      deviceTypeCode
-    })
+      deviceTypeCode,
+    });
   }
 
   onDefectCreate = (isContinueAdd) => { // 保存的状态
@@ -105,13 +105,13 @@ class TmpForm extends Component {
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         // 电站类型(0:风电，1光伏，2：全部)
-        let { stationCode, stationType } = values.stations[0];
-        let deviceCode = values.deviceCode[0].deviceCode;
-        let partitionCode = values.stations[0].zoneCode;
-        let partitionName = values.stations[0].zoneName;
-        let rotatePhotoArray = [];
+        const { stationCode, stationType } = values.stations[0];
+        const deviceCode = values.deviceCode[0].deviceCode;
+        const partitionCode = values.stations[0].zoneCode;
+        const partitionName = values.stations[0].zoneName;
+        const rotatePhotoArray = [];
         let photoAddress = [];
-        let reasonDesc = values.reasonDesc || '';
+        const reasonDesc = values.reasonDesc || '';
         if (container === 'create') {
           photoAddress = values.imgDescribe.map(e => {
             rotatePhotoArray.push(`${e.response},${e.rotate}`);
@@ -124,15 +124,15 @@ class TmpForm extends Component {
             return e.thumbUrl;
           }).join(',');
         }
-        let photoSolveAddress = values.imgHandle && values.imgHandle.map(e => {
+        const photoSolveAddress = values.imgHandle && values.imgHandle.map(e => {
           rotatePhotoArray.push(`${e.response},${e.rotate}`);
-          return e.response
+          return e.response;
         }).join(',');
-        let rotatePhoto = rotatePhotoArray.join(';');
+        const rotatePhoto = rotatePhotoArray.join(';');
         delete values.stations;
         delete values.imgDescribe;
         delete values.imgHandle;
-        let params = {
+        const params = {
           ...values,
           defectTypeCode: values.defectTypeCode[1],
           isContinueAdd,
@@ -151,7 +151,7 @@ class TmpForm extends Component {
           changeCommonStore({
             stationDeviceTypes: [],
             devices: [],
-          })
+          });
         }
         if (container === 'edit') {
           params.defectId = defectDetail.defectId;
@@ -168,32 +168,34 @@ class TmpForm extends Component {
     this.props.form.setFieldsValue({ deviceCode: value });
   }
 
-  defectTypeChange=(value)=>{ // 选择缺陷类型 deviceTypeCode  faultTypeId
+  defectTypeChange = (value) => { // 选择缺陷类型 deviceTypeCode  faultTypeId
     const { getFieldValue } = this.props.form;
-    const faultTypeId=value.length>0 && value[1] || '';
-    const deviceTypeCode = getFieldValue('deviceTypeCode');  // 设备code
-    this.props.getKnowledgebase({faultTypeIds:[faultTypeId],deviceTypeCodes:[deviceTypeCode]});
+    const faultTypeId = value.length > 0 && value[1] || '';
+    const deviceTypeCode = getFieldValue('deviceTypeCode'); // 设备code
+    const selectStation = getFieldValue('stations')[0] || {};
+    const stationType = selectStation.stationType; // 电站类型
+    this.props.getKnowledgebase({ faultTypeIds: [faultTypeId], deviceTypeCodes: [deviceTypeCode], type: stationType });
   }
 
   showModal = () => { // 查看解决方案
-    this.setState({ dealVisible: true })
+    this.setState({ dealVisible: true });
   }
 
   modalCancle = () => { // 关闭解决方案
-    this.setState({ dealVisible: false })
+    this.setState({ dealVisible: false });
   }
 
-  knowledegeBask=(knowledgeBaseId)=>{  // 点赞智能专家库
-    this.props.likeKnowledgebase({knowledgeBaseId})
+  knowledegeBask = (knowledgeBaseId) => { // 点赞智能专家库
+    this.props.likeKnowledgebase({ knowledgeBaseId });
   }
 
 
   render() {
-    let { stations, deviceTypes, defectTypes, defectDetail, container, commonList, knowledgebaseList} = this.props;
+    const { stations, deviceTypes, defectTypes, defectDetail, container, commonList, knowledgebaseList } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const currentStations = getFieldValue('stations'); // 电站
     const stationCode = currentStations && currentStations[0] && currentStations[0].stationCode || null;
-    const deviceTypeCode = getFieldValue('deviceTypeCode');  // 设备code
+    const deviceTypeCode = getFieldValue('deviceTypeCode'); // 设备code
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = container === 'edit';
     const defaultStations = editDefect ? stations.filter(e => e.stationCode === defectDetail.stationCode) : [];
@@ -204,13 +206,13 @@ class TmpForm extends Component {
       thumbUrl: e,
     }));
     // 缺陷类型
-    let tmpGenTypes = [];
+    const tmpGenTypes = [];
     let defaultDefectType = [];
     defectTypes.forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
-    const groupedLostGenTypes=[];
+    const groupedLostGenTypes = [];
     tmpGenTypes.forEach(ele => {
       if (ele && ele.list && ele.list.length > 0) {
-        let innerArr = { children: [] };
+        const innerArr = { children: [] };
         innerArr.label = ele.name;
         innerArr.value = ele.id;
         ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
@@ -221,12 +223,12 @@ class TmpForm extends Component {
             label: innerInfo.name,
             value: innerInfo.id,
           });
-        })
-        groupedLostGenTypes.push(innerArr)
+        });
+        groupedLostGenTypes.push(innerArr);
       }
-    })
+    });
     const canSelectDefectType = currentStations && deviceTypeCode;
-    const {handleData={}}=defectDetail;
+    const { handleData = {} } = defectDetail;
     return (
       <Form className={styles.defectCreateForm}>
         <div className={styles.basicInfo}>
@@ -246,7 +248,7 @@ class TmpForm extends Component {
           <FormItem label="设备类型" colon={false}>
             {getFieldDecorator('deviceTypeCode', {
               rules: [{ required: true, message: '请选择设备类型' }],
-              initialValue: defectDetail.deviceTypeCode || null
+              initialValue: defectDetail.deviceTypeCode || null,
             })(
               <Select style={{ width: 198 }} placeholder="请选择" disabled={deviceTypes.length === 0} onChange={this.onChangeDeviceType}>
                 {deviceTypes.map(e => (<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
@@ -284,7 +286,7 @@ class TmpForm extends Component {
                 onChange={this.defectTypeChange}
               />
             )}
-           {knowledgebaseList.length>0 &&  <Button type="default" onClick={this.showModal} className={styles.dealMethod}>查看解决方案</Button>}
+            {knowledgebaseList.length > 0 && <Button type="default" onClick={this.showModal} className={styles.dealMethod}>查看解决方案</Button>}
           </FormItem>
           <FormItem label="缺陷级别" colon={false}>
             {getFieldDecorator('defectLevel', {
@@ -348,7 +350,7 @@ class TmpForm extends Component {
               <FormItem label="产生原因" colon={false}>
                 {getFieldDecorator('reasonDesc', {
                   rules: [{ required: true, message: '请输入产生原因' }],
-                  initialValue: ''
+                  initialValue: '',
                 })(
                   <InputLimit placeholder="请描述，不超过80个汉字" />
                 )}
@@ -356,7 +358,7 @@ class TmpForm extends Component {
               <FormItem label="处理过程" colon={false}>
                 {getFieldDecorator('defectSolveInfo', {
                   rules: [{ required: true, message: '请输入处理过程' }],
-                  initialValue: editDefect && handleData.defectSolveInfo || ''
+                  initialValue: editDefect && handleData.defectSolveInfo || '',
                 })(
                   <CommonInput commonList={commonList} placeholder="请描述，不超过80个汉字" />
                 )}
@@ -379,7 +381,7 @@ class TmpForm extends Component {
                   {this.state.checked && getFieldDecorator('replaceParts', {
                     rules: [{
                       required: true,
-                      message: '请输入更换备件'
+                      message: '请输入更换备件',
                     }],
                   })(
                     <Input style={{ marginLeft: 20 }} placeholder="备件名称+型号" />
@@ -410,34 +412,31 @@ class TmpForm extends Component {
             {knowledgebaseList.map(list => {
               return (<div key={list.faultTypeId} className={styles.dealBox}>
                 <div className={styles.column}>
-                  <div className={styles.text}>缺陷描述</div>  <div> {list.faultDescription}</div>
+                  <div className={styles.text}>故障描述</div>  <div> {list.faultDescription || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>检查项目</div>  <div> {list.checkItems}</div>
+                  <div className={styles.text}>故障原因</div>  <div> {list.checkItems || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>处理方法</div>  <div> {list.processingMethod}</div>
+                  <div className={styles.text}>处理方法</div>  <div> {list.processingMethod || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>所需工具</div>  <div> {list.requiredTools}</div>
+                  <div className={styles.text}>所需工具</div>  <div> {list.requiredTools || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>备注</div>  <div> {list.remark}</div>
+                  <div className={styles.text}>备注</div>  <div> {list.remark || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>点赞数</div>  <div> {list.likeCount}</div>
+                  <div className={styles.text}>点赞数</div>  <div> {list.likeCount || 0}</div>
                 </div>
                 {list.liked ?
-                 <div className={styles.liked} disabled>
-                 已点赞 <Icon type="like" />
-               </div>
-                   :
-                  <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId);}}>
-                  点赞 <Icon type="like" />
-                </div>
+                  <div className={`${styles.disabled}`} >已点赞</div> :
+                  <div className={styles.like} onClick={() => { this.knowledegeBask(list.knowledgeBaseId); }}>
+                    点赞 <Icon type="like" />
+                  </div>
                 }
               </div>
-              )
+              );
             })}
           </div>
 

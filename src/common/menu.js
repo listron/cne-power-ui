@@ -224,7 +224,7 @@ const menuData = [
       }, {
         name: '智能专家库',
         path: 'intelligentExpert',
-        iconStyle: 'icon-gd4',
+        iconStyle: 'icon-pro',
         rightKey: 'operation_experience',
       }, {
         name: '案例集',
@@ -234,6 +234,21 @@ const menuData = [
       },
     ],
   },
+  // {
+  //   name: '报表管理',
+  //   path: 'report',
+  //   rightKey: 'operation',
+  //   children: [
+  //     {
+  //       name: '电站报表',
+  //       path: 'station',
+  //       iconStyle: 'icon-trends',
+  //       rightKey: 'operation_locate',
+  //       defaultPath: true,
+  //     },
+
+  //   ],
+  // },
   {
     name: '统计分析',
     path: 'statistical',

@@ -103,7 +103,7 @@
         .ant-form-item-required::after {
           display: inline-block;
           margin-right: 4px;
-          color: #f5222d;
+          color: #a42b2c;
           font-size: 14px;
           font-family: SimSun, sans-serif;
           line-height: 1;
@@ -124,6 +124,7 @@
 
         .ant-form-item-label {
           width: 200px;
+          margin-right: 8px;
         }
 
         .ant-form-item-label>label {

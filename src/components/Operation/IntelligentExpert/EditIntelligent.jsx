@@ -30,6 +30,11 @@ class EditIntelligent extends Component {
     };
   }
 
+  componentDidMount() {
+    const main = document.getElementById('main');
+    main && main.scroll(0, 0);
+  }
+
 
   confirmWarningTip = () => { // 确认返回列表页面
     const { tooltipName, deleteFileId } = this.state;
@@ -131,31 +136,33 @@ class EditIntelligent extends Component {
       <div className={styles.editIntelligent}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.titleTop}>
-          <span className={styles.text}>解决方案编辑</span>
+          <span className={styles.text}>编辑解决方案</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={() => this.setState({ showWarningTip: true, tooltipName: 'back' })} />
         </div>
         <div className={styles.editmiddle}>
           <Form className={styles.preFormStyle}>
             <div className={styles.formItem}>
-              <div className={styles.label}> <span>*</span> 设备类型</div>
+              <div className={styles.label}> <span className={styles.name}>设备类型</span><span className={styles.required}>*</span></div>
               <div className={styles.value}>{intelligentDetail.deviceTypeName}</div>
             </div>
             <div className={styles.formItem}>
-              <div className={styles.label}> <span>*</span> 设备型号</div>
+              <div className={styles.label}><span className={styles.name}>设备型号</span>
+                {`${intelligentDetail.type}` === '0' && <span className={styles.required}>*</span>}</div>
               <div className={styles.value}>{intelligentDetail.modeName}</div>
             </div>
             <div className={styles.formItem}>
-              <div className={styles.label}> <span>*</span> 缺陷类型</div>
+              <div className={styles.label}> <span className={styles.name}>缺陷类型</span><span className={styles.required}>*</span></div>
               <div className={styles.value}>{intelligentDetail.faultName}</div>
             </div>
             <div className={styles.formItem}>
-              <div className={styles.label}> <span>*</span> 故障代码</div>
+              <div className={styles.label}><span className={styles.name}>故障代码</span>
+                {`${intelligentDetail.type}` === '0' && <span className={styles.required}>*</span>}</div>
               <div className={styles.value}>{intelligentDetail.faultCode}</div>
             </div>
             {
               `${intelligentDetail.type}` === '0' &&
               <div className={styles.formItem}>
-                <div className={styles.label}> <span>*</span> 故障描述</div>
+                <div className={styles.label}> <span className={styles.name}>故障描述</span><span className={styles.required}>*</span></div>
                 <div className={styles.value}>{intelligentDetail.faultDescription}</div>
               </div> ||
               <FormItem className={styles.formItem} label="故障描述" colon={false}>
@@ -169,7 +176,7 @@ class EditIntelligent extends Component {
             }
             <FormItem className={styles.formItem} label={'故障原因'} colon={false}>
               {getFieldDecorator('checkItems', {
-                rules: [{ required: true, message: `请输入${'故障原因'}` }],
+                rules: [{ required: `${intelligentDetail.type}` === '0', message: `请输入${'故障原因'}` }],
                 initialValue: intelligentDetail.checkItems,
               })(
                 <InputLimit size={999} end={true} width={590} placeholder="请输入..." />
@@ -214,15 +221,15 @@ class EditIntelligent extends Component {
               )}
             </Form.Item>
             <div className={styles.formItem}>
-              <div className={styles.label}>  录入人</div>
+              <div className={styles.label}><span className={styles.name}>录入人</span></div>
               <div className={styles.value}>{intelligentDetail.recorder || '无'}</div>
             </div>
             <div className={styles.formItem}>
-              <div className={styles.label}> 更新时间</div>
+              <div className={styles.label}><span className={styles.name}>更新时间</span></div>
               <div className={styles.value}>{moment(intelligentDetail.updateTime).format('YYYY-MM-DD HH:mm:ss') || '无'}</div>
             </div>
             <div className={styles.formItem}>
-              <div className={styles.label}> 点赞数</div>
+              <div className={styles.label}><span className={styles.name}>点赞数</span></div>
               <div className={styles.value}>{intelligentDetail.likeCount || 0}</div>
             </div>
             <div className={styles.formItem}>

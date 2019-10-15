@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './intelligentAnalysis.scss';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
@@ -15,8 +15,6 @@ class AreaStationSearch extends Component {
 
   static propTypes = {
     stations: PropTypes.array,
-    regionName: PropTypes.string,
-    startTime: PropTypes.string,
     changeIntelligentAnalysisStore: PropTypes.func,
     getAreaStation: PropTypes.func,
     downLoadFile: PropTypes.func,
@@ -30,57 +28,86 @@ class AreaStationSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      regionName: '',
+      areaName: '',
       year: '',
       month: '',
       dateType: '',
-      startTime: moment().subtract(0, 'months').format('YYYY-MM-DD'),
+      startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+    };
+  }
+
+  componentDidMount(){
+    const { stations } = this.props;
+    if (stations.length > 0) {
+      this.getStationData(this.props);
     }
   }
 
+  getStationData = (props) => {
+    const { dateType, stations, changeIntelligentAnalysisStore, getAreaStation, areaName } = props;
+    const { startTime } = this.state;
+    const initStations = stations.filter(e => e.stationType === 1);
+    const zhArea = initStations.filter(e => e.regionName === '浙沪区域');
+    const prams = {
+      areaName: areaName ? areaName : (zhArea.length > 0 ? zhArea[0].regionName : initStations[0].regionName),
+      dateType,
+      month: moment(startTime).format('M'),
+      year: moment(startTime).format('YYYY'),
+    };
+    this.setState({
+      ...prams,
+    });
+    changeIntelligentAnalysisStore({
+      ...prams,
+    });
+    getAreaStation({
+      ...prams,
+    });
+  }
+
   onTimeChange = (value) => { // 选择时间
+    const { changeIntelligentAnalysisStore } = this.props;
     const { startTime, timeStyle } = value;
-    let dateType = timeStyle === 'month' ? 2 : 1;
+    changeIntelligentAnalysisStore({ startTime });
     if (timeStyle === 'month') {
       this.setState({
         dateType: 2,
         year: moment(startTime).format('YYYY'),
-      })
+      });
     } else if (timeStyle === 'day') {
       this.setState({
         dateType: 1,
         year: moment(startTime).format('YYYY'),
         month: moment(startTime).format('M'),
-      })
+      });
     }
   }
 
   selectArea = (selectAreaName) => { // 选择区域
     this.setState({
-      regionName: selectAreaName
-    })
+      areaName: selectAreaName,
+    });
   }
 
   searchInfo = () => { // 查询
-    const { getAreaStation, changeIntelligentAnalysisStore, areaName } = this.props;
-    const { year, month, dateType, regionName } = this.state;
-    if (!regionName) {
-      message.error("请选择区域名称！");
+    const { getAreaStation, changeIntelligentAnalysisStore } = this.props;
+    const { year, month, dateType, areaName } = this.state;
+    if (!areaName) {
+      message.error('请选择区域名称！');
       return;
     }
     if (!moment(year).isValid()) {
-      message.error("请选择统计时间！");
+      message.error('请选择统计时间！');
       return;
     }
     const params = { areaName, year, dateType };
     dateType === 1 && (params.month = month);
     getAreaStation({
       ...params,
-      areaName: regionName
-    })
+    });
     changeIntelligentAnalysisStore({
-      ...params
-    })
+      ...params,
+    });
   }
 
   exportReport = () => { // 下载
@@ -93,19 +120,22 @@ class AreaStationSearch extends Component {
         areaName,
         dateType,
         year,
-        month
+        month,
       },
-    })
+    });
   }
 
   render() {
     const { stations, reportShow } = this.props;
-    const { regionName } = this.state;
+    const { areaName } = this.state;
+    let areaNames = '';
+    areaName ? areaNames = areaName : '';
 
     let regionSet = new Set();
     stations.forEach(e => {
       e.regionName && regionSet.add(e.regionName);
     });
+    const areaArray = Array.from(regionSet);
 
     return (
       <div className={styles.areaStationSearch}>
@@ -115,13 +145,14 @@ class AreaStationSearch extends Component {
             <div className={styles.regionStationSelect}>
               <span className={styles.text}>区域选择</span>
               <Select
+                disabled={areaArray.length === 1}
                 className={styles.searchInput}
                 placeholder="请选择"
-                value={!regionName ? undefined : regionName}
+                value={areaNames}
                 getPopupContainer={() => this.refs.wrap}
                 onChange={this.selectArea}>
                 <Option value={null}>请选择</Option>
-                {[...regionSet].map(e => (
+                {areaArray && areaArray.map(e => (
                   <Option value={e} key={e}>{e}</Option>
                 ))}
               </Select>
@@ -135,7 +166,8 @@ class AreaStationSearch extends Component {
                 refuseDefault={true}
                 value={{
                   timeStyle: 'day',
-                  startTime: null
+                  startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+                  endTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
                 }}
               />
             </div>

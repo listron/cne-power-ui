@@ -63,6 +63,7 @@
     color: $themeColor;
     border-color: $themeColor;
     background: transparent;
+    text-shadow: initial;
     &:active,
     &:focus,
     &:hover {

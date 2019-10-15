@@ -44,10 +44,8 @@ class AddIntelligent extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
-      selectDevice: [],
       initFaultCode: '',
       faultDescripDis: true,
-      fileList: [], //上传附件
       tooltipName: 'back', // 提示框的类型 back返回 delete 删除
       deleteFileId: '', //删除附件ID，
 
@@ -56,12 +54,7 @@ class AddIntelligent extends Component {
 
   componentDidMount() {
     this.serchFaultCode = debounce(this.serchFaultCode, 400);
-  }
-
-  componentWillUnmount() {
-    this.setState({
-      fileList: [],
-    });
+    this.props.changeIntelligentExpertStore({ uploadFileList: [] }); // 因为上传 添加 编辑的时候采用的一个字段，所以进来先清除一次
   }
 
   confirmWarningTip = () => { // 确认返回列表页面
@@ -126,19 +119,23 @@ class AddIntelligent extends Component {
 
   changeFaultCode = (value, item) => {
     const { desc } = item.props;
-    this.setState({ faultDescripDis: true });
+    this.setState({ faultDescripDis: true, initFaultCode: '' });
     if (desc) {
       this.props.form.setFieldsValue({ faultDescription: desc });
     }
   }
 
 
-  addFaultCode = () => {
+  addFaultCode = () => { // 添加 添加之后不显示
     const { initFaultCode } = this.state;
-    const { changeIntelligentExpertStore } = this.props;
-    if (initFaultCode) {
+    const { changeIntelligentExpertStore, faultCodeList } = this.props;
+    const filterFaultCode = faultCodeList.filter(e => e.faultCode === initFaultCode);
+    if (filterFaultCode.length > 0) {
+      this.props.form.setFieldsValue({ 'faultCode': initFaultCode, faultDescription: filterFaultCode[0].faultCodeDesc });
+      this.setState({ faultDescripDis: true, initFaultCode: '' });
+    } else {
       this.props.form.setFieldsValue({ 'faultCode': initFaultCode, faultDescription: '' });
-      this.setState({ faultDescripDis: false });
+      this.setState({ faultDescripDis: false, initFaultCode: '' });
       changeIntelligentExpertStore({ faultCodeList: [] });
     }
   }
@@ -190,6 +187,7 @@ class AddIntelligent extends Component {
 
 
   changeFileList = (fileList) => { // 转化格式
+    console.log('fileList: ', fileList);
     return fileList.map(item => {
       return {
         name: item.urlName,
@@ -208,7 +206,6 @@ class AddIntelligent extends Component {
     const { uid } = file;
     this.setState({ showWarningTip: true, tooltipName: 'delete', deleteFileId: uid });
   }
-
 
 
   render() {
@@ -243,7 +240,7 @@ class AddIntelligent extends Component {
       <div className={styles.addIntelligent}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.titleTop}>
-          <span className={styles.text}>解决方案添加</span>
+          <span className={styles.text}>添加解决方案</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={() => this.setState({ showWarningTip: true, tooltipName: 'back' })} />
         </div>
         <span ref={'wrap'} />
@@ -329,9 +326,10 @@ class AddIntelligent extends Component {
                       </Select>
                     )}
                   </FormItem>
-                  {(faultCodeList.length === 0 && !!initFaultCode) && <i className="iconfont icon-done" onClick={this.addFaultCode} />}
+                  {initFaultCode && <i className="iconfont icon-done" onClick={this.addFaultCode} />}
+                  <span style={{ marginLeft: 4, fontSize: 12 }}> (注:故障代码与故障描述为联动条目，需等待系统查验是否已存在)</span>
                 </div>
-                <FormItem className={styles.formItem} label="故障描述" colon={false}>
+                <FormItem classsName={styles.formItem} label="故障描述" colon={false}>
                   {getFieldDecorator('faultDescription', {
                     rules: [{ required: true, message: '请输入故障描述' }],
                   })(

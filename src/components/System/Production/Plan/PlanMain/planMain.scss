@@ -221,10 +221,23 @@
         font-size: 14px;
       }
     }
+
+    :global {
+      .ant-upload-list-item-info {
+        // max-width: 260px;
+        width: 260px;
+      }
+      .ant-upload-list-item {
+        text-align: left;
+      }
+    }
+  }
+  .import {
+    text-align: center;
   }
   :global {
     .ant-modal-body {
-      text-align: center;
+      // text-align: center;
     }
   }
 }

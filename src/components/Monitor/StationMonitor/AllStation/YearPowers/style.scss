@@ -1,0 +1,67 @@
+@import '../../../../../theme/theme.scss';
+
+.commonProgress {
+  color: $darkColor;
+  :global{
+    .ant-progress-inner{
+      vertical-align: -3px;
+      background: #dfdfdf;
+    }
+  }
+  .progressInfo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .progressData{
+      width: 230px;
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      .stationValue{
+        flex: 1;
+        height: 24px;
+        display: flex;
+        color:$themeColor;
+        font-size: 24px;
+        font-weight: initial;
+        font-family:STHeitiSC-Light;
+        text-align:left;
+        justify-content: space-between;
+        padding-top: 20px;
+        .planOutput{
+          margin-left: 10px;
+        }
+      }
+      .progressBar{
+        flex: 1;
+        height: 8px; 
+        width: 220px;
+        display: block;
+        margin-top: 10px;
+      }
+      .stationType{
+        flex: 1;
+        height: 19px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-bottom: 20px;
+        margin-top: 10px;
+      }
+    }
+    .showInfo{
+      font-size: 18px;
+      background:#ffffff;
+      box-shadow:0 1px 2px 0 rgba(0,0,0,0.20);
+      border-radius:25px;
+      width:80px;
+      height:25px;
+      text-align: center;
+      line-height: 25px;
+      color:$themeColor;
+      margin-top: 20px;
+    }
+  }
+  
+}

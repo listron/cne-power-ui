@@ -113,7 +113,7 @@ class RunAchieve extends Component {
     // 基础参数
     const basisParams = {
       startTime: moment(searchDates[0]).utc().format(),
-      endTime: moment(searchDates[1]).utc().format(),
+      endTime: moment(searchDates[1]).add(1, 'days').utc().format(),
       deviceFullcodes: searchDevice,
     };
     // 时序图
@@ -166,7 +166,7 @@ class RunAchieve extends Component {
     // 基础参数
     const basisParams = {
       startTime: moment(searchDates[0]).utc().format(),
-      endTime: moment(searchDates[1]).utc().format(),
+      endTime: moment(searchDates[1]).add(1, 'days').utc().format(),
       deviceFullcodes: searchDevice,
     };
     // 第三个散点图

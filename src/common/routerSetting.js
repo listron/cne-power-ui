@@ -8,6 +8,7 @@ import { operationRoute } from './routes/operationRoute';
 import { statisticalRoute } from './routes/statisticalRoute';
 import { systemRoute } from './routes/systemRoute';
 import { highAnalysisRoute } from './routes/highAnalysisRoute';
+import { reportManageRoute } from './routes/reportManageRoute';
 import Cookie from 'js-cookie';
 
 /*
@@ -21,6 +22,7 @@ const routers = [
   },
   ...monitorRoute,
   ...operationRoute,
+  ...reportManageRoute,
   ...statisticalRoute,
   ...highAnalysisRoute,
   ...systemRoute,

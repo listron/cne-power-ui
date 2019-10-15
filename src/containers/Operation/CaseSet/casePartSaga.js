@@ -163,10 +163,12 @@ function* addCasePart(action) { // 添加
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      message.success('恭喜!你所提交的信息已经保存成功,可在列表中查看');
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
-          showPage: 'list',
+          // showPage: 'list',
+          uploadUrlArr: [],
         },
       });
       const params = yield select(state => ({
@@ -239,7 +241,7 @@ function* editCasePart(action) { // 编辑案例
   try {
     const response = yield call(axios.put, url, payload);
     if (response.data.code === '10000') {
-      message.success('编辑成功');
+      message.success('恭喜!你所提交的信息已经保存成功,可在列表中查看');
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
@@ -328,10 +330,17 @@ function* queryUseName(action) { // 获取填报人
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      const data = response.data.data || [];
+      const userData = data.map((e, i) => (
+        {
+          ...e,
+          userId: `${e.userName}__${e.userId}`,
+        }
+      ));
       yield put({
         type: casePartAction.changeCasePartStore,
         payload: {
-          userData: response.data.data || [],
+          userData,
         },
       });
     } else {
@@ -380,8 +389,8 @@ function* importCase(action) {
         pageSize: state.operation.casePartReducer.get('pageSize'),
         deviceModeList: state.operation.casePartReducer.get('deviceModeList'),
         faultDescription: state.operation.casePartReducer.get('faultDescription'),
-        orderFiled: state.operation.casePartReducer.get('orderFiled'),
-        orderType: state.operation.casePartReducer.get('orderType'),
+        orderFiled: 'updateTime',
+        orderType: 'desc',
         stationCodes: state.operation.casePartReducer.get('stationCodes'),
         userId: state.operation.casePartReducer.get('userId'),
         userName: state.operation.casePartReducer.get('userName'),

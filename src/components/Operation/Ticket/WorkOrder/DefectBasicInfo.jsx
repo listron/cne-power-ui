@@ -29,8 +29,8 @@ class DefectBasicInfo extends Component {
     const prevDefectId = prevProps.basicInfo.defectId || '';
     const defectId = this.props.basicInfo.defectId || '';
     if (defectId !== prevDefectId) {
-      const { defectTypeCode, deviceTypeCode } = this.props.basicInfo;
-      this.props.getKnowledgebase({ deviceTypeCodes: [deviceTypeCode], faultTypeIds: [defectTypeCode] });
+      const { defectTypeCode, deviceTypeCode, stationType } = this.props.basicInfo;
+      this.props.getKnowledgebase({ deviceTypeCodes: [deviceTypeCode], faultTypeIds: [defectTypeCode], type: +stationType });
     }
   }
 
@@ -104,31 +104,28 @@ class DefectBasicInfo extends Component {
             {knowledgebaseList.map(list => {
               return (<div key={list.faultTypeId} className={styles.dealBox}>
                 <div className={styles.column}>
-                  <div className={styles.text}>缺陷描述</div>  <div> {list.faultDescription}</div>
+                  <div className={styles.text}>故障描述</div>  <div> {list.faultDescription || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>检查项目</div>  <div> {list.checkItems}</div>
+                  <div className={styles.text}>故障原因</div>  <div> {list.checkItems || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>处理方法</div>  <div> {list.processingMethod}</div>
+                  <div className={styles.text}>处理方法</div>  <div> {list.processingMethod || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>所需工具</div>  <div> {list.requiredTools}</div>
+                  <div className={styles.text}>所需工具</div>  <div> {list.requiredTools || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>备注</div>  <div> {list.remark}</div>
+                  <div className={styles.text}>备注</div>  <div> {list.remark || '无'}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>点赞数</div>  <div> {list.likeCount}</div>
+                  <div className={styles.text}>点赞数</div>  <div> {list.likeCount || '无'}</div>
                 </div>
                 {list.liked ?
-                  <div className={styles.liked} disabled>
-                    已点赞 <Icon type="like" />
-                  </div>
-                  :
-                  <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId)}}>
+                  <div className={styles.disabled} >  已点赞  </div> :
+                  <div className={styles.like} onClick={() => { this.knowledegeBask(list.knowledgeBaseId); }}>
                     点赞 <Icon type="like" />
-                  </div> 
+                  </div>
                 }
               </div>
               );

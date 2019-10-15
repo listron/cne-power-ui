@@ -5,6 +5,8 @@ import { Button, Input, Form, Select, Upload, Icon, message } from 'antd';
 import TextArea from '../../../Common/InputLimit/index';
 import StationSelect from '../../../Common/StationSelect/index';
 import AutoSelect from '../../../Common/AutoSelect';
+import WarningTip from '../../../Common/WarningTip';
+import path from '../../../../constants/path';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -28,43 +30,35 @@ class AddCaseForm extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      savefileList: [],
-      curfileList: [],
+      // savefileList: [],
+      deleteFileId: '',
+      // curfileList: [],
+      showWarningTip: false,
+      fileListArr: [],
+      warningTipText: '确定要删除附件吗?',
     };
   }
-  componentWillReceiveProps(nextProps) {
-    const { curfileList } = this.state;
-    const { uploadUrlArr, editFileList, showPage } = nextProps;
-    const fileNameList = showPage === 'add' ? curfileList.map(e => (e.name)) : editFileList.map(e => (e.name));//页面中所有的文件名
-    const deleteItem = uploadUrlArr.filter(e => (!fileNameList.includes(e.urlName)));//删除的那一项
-    const deleteObj = deleteItem[0] ? deleteItem[0] : {};
-    const name = showPage === 'add' ? deleteObj.urlName : deleteObj.name;
-    const newUrlArr = uploadUrlArr.filter(e => (fileNameList.includes(e.urlName)));
-    const filterDeleteItem = uploadUrlArr.filter(e => (e.urlName === name));
-    const { url } = filterDeleteItem[0] ? filterDeleteItem[0] : {};
-    if (showPage === 'edit') {
-      if (editFileList.length < uploadUrlArr.length) {
-        this.props.deleteCaseFile({
-          url: url,
-        });
-        this.props.changeCasePartStore({
-          uploadUrlArr: newUrlArr,
-        });
-      }
-    }
-    if (showPage === 'add') {
-      if (uploadUrlArr.length && uploadUrlArr.length > curfileList.length) {
-        this.props.deleteCaseFile({
-          url: url,
-        });
-        this.props.changeCasePartStore({
-          uploadUrlArr: newUrlArr,
-        });
-      }
-    }
 
+  cancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
   }
-
+  confirmWarningTip = () => {
+    const { deleteFileId } = this.state;
+    const { uploadUrlArr } = this.props;
+    const newUrlArr = uploadUrlArr.filter(e => !(e.url === deleteFileId));
+    this.props.deleteCaseFile({
+      url: deleteFileId,
+    });
+    this.props.changeCasePartStore({
+      uploadUrlArr: newUrlArr,
+    });
+    this.setState({
+      showWarningTip: false,
+      deleteFileId: '',
+    });
+  }
   sendRequire = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -80,9 +74,9 @@ class AddCaseForm extends React.Component {
   addsubmitForm = (e) => {
     e.preventDefault();
     this.sendRequire();
-    // this.props.changeCasePartStore({
-    //   showPage: 'list',
-    // });
+    this.props.changeCasePartStore({
+      showPage: 'list',
+    });
   }
   keepOnAdd = (e) => {
     e.preventDefault();
@@ -135,38 +129,17 @@ class AddCaseForm extends React.Component {
       message.config({ top: 200, duration: 2, maxCount: 3 });
       message.error('上传文件不得大于100M', 2);
     } else {
-      this.setState({
-        savefileList: [...this.state.savefileList, file],
-      }, () => {
-        const formData = new FormData();
-        formData.append('file', file);
-        this.props.uploadCaseFile({
-          formData,
-        });
+
+      const formData = new FormData();
+      formData.append('file', file);
+      this.props.uploadCaseFile({
+        formData,
       });
+
     }
     return false;
   }
-  normFile = (e) => {
-    this.setState({
-      curfileList: e.fileList,
-    });
-    if (this.props.showPage === 'edit') {
-      const fileList = e.fileList;
-      const fileListArr = fileList.map(e => {
-        const queryName = e.name.split('/');
-        const name = queryName[queryName.length - 1];
-        return { name, url: e.name };
-      });
-      this.props.changeCasePartStore({
-        editFileList: fileListArr,
-      });
-    }
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  }
+
 
   onModelChange = (value) => {
     const deviceModeList = value.map(e => (e.value));
@@ -183,14 +156,32 @@ class AddCaseForm extends React.Component {
     ];
     return detailArr;
   }
-
+  removeFile = (file) => {
+    const { uid } = file;
+    this.setState({ showWarningTip: true, deleteFileId: uid });
+  }
+  changeFileList = (fileList) => { // 转化格式
+    return fileList.map(item => {
+      return {
+        name: item.urlName,
+        status: 'done',
+        url: `${path.basePaths.originUri}${item.url}`,
+        uid: item.url,
+      };
+    });
+  }
+  onPreview = (a, b, c) => { // 点击文件下载
+    return false;
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { showPage, stations, modesInfo, questionTypeList } = this.props;
+    const { showPage, stations, modesInfo, questionTypeList, uploadUrlArr } = this.props;
+    const { showWarningTip, warningTipText } = this.state;
+    const initFileList = showPage === 'add' ? this.changeFileList(uploadUrlArr) : this.changeFileList(uploadUrlArr);
     const detailArr = this.detailInfo();
     return (
-
       <div className={styles.fromContainer}>
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <Form className={styles.formPart}>
           <FormItem label="机型" colon={false} className={`${styles.formItemStyle} ${styles.autoSelect}`} >
             {getFieldDecorator('deviceModeList', {
@@ -209,7 +200,7 @@ class AddCaseForm extends React.Component {
           </FormItem>
           <FormItem label="风场" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('stationCodes', {
-              initialValue: this.dealPointDetail('stationCodes'),
+              initialValue: showPage === 'edit' ? this.dealPointDetail('stationCodes') : [],
               rules: [{ required: true, message: '请选择风场' }],
             })(
               <StationSelect
@@ -299,16 +290,16 @@ class AddCaseForm extends React.Component {
 
           <FormItem label="上传附件" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('annexs', {
-              initialValue: this.dealPointDetail('annexs'),
-              valuePropName: 'fileList',
-              getValueFromEvent: this.normFile,
+
             })(
               <Upload
+                multiple={true}
+                onRemove={(file) => this.removeFile(file)}
                 beforeUpload={this.beforeUploadStation}
-                showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
+                fileList={initFileList}
+                onPreview={this.onPreview}
               >
-                <Button className={styles.uploadBtn} >  <Icon type="upload" />选择文件上传</Button>
-                <span> 上传文件不得大于100M</span>
+                <Button> <Icon type="upload" /> 选择文件上传</Button>  <span className={styles.extraSpan}> 上传文件不得大于100M</span>
               </Upload>
             )}
           </FormItem>
@@ -319,12 +310,9 @@ class AddCaseForm extends React.Component {
                   <div className={styles.name}>{e.name}</div>
                   <div className={styles.value}>{e.value}</div>
                 </div>
-
               ))}
-
             </div>
           }
-
           {showPage === 'add' && <div className={styles.submitStyle}>
             <Button onClick={this.addsubmitForm} className={styles.submitBtn}>保存</Button>
             <Button onClick={this.keepOnAdd} className={styles.keepOnAdd} >保存并继续添加</Button>
