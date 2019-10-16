@@ -29,6 +29,11 @@ class ParticipantSearch extends Component {
     this.props.onChange({ handleUserList: users });
   }
 
+  toReset = () => {
+    this.setState({ users: [] });
+    this.props.onChange({ handleUserList: [] });
+  }
+
   render() {
     const { users } = this.state;
     const { participantList } = this.props;
@@ -46,6 +51,7 @@ class ParticipantSearch extends Component {
           mode="multiple"
           style={{ width: '240px' }}
           placeholder="请选择"
+          value={users}
           onChange={this.handleParticipant}
           {...tagInfo}
           getPopupContainer={() => this.userRef}
@@ -55,6 +61,7 @@ class ParticipantSearch extends Component {
           ))}
         </Select>
         <Button onClick={this.toSearch} className={styles.search}>查询</Button>
+        <Button onClick={this.toReset} className={styles.search}>重置</Button>
       </div>
     );
   }

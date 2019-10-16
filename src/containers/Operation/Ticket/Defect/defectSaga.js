@@ -761,10 +761,12 @@ function* likeKnowledgebase(action) { // 点赞智能专家
   }
 }
 
-function* getParticipant({ payload }){ // 获取参与人所有列表
+function* getParticipant(){ // 获取参与人所有列表
   const url = `${APIBasePath}${ticket.getParticipant}`;
   try{
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.get, url, {
+      params: { username: '张'},
+    });
     if (response.data.code === '10000') {
       yield put({
         type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
@@ -779,7 +781,6 @@ function* getParticipant({ payload }){ // 获取参与人所有列表
       type: ticketAction.CHANGE_DEFECT_STORE,
       payload: {
         participantList: [],
-        // participantList: [],
       },
     });
   }

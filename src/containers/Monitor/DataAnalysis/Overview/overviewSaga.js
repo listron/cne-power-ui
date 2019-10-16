@@ -8,6 +8,28 @@ import { overviewAction } from './overviewReducer';
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
 
+const sortNames = [
+  '整机系统', '变桨系统', '传动系统', '发电机', '变频器', '机舱系统', '偏航系统', '塔筒系统', '箱变系统', '事件信息', '逆变器', '汇流箱', '气象站', '汇流箱电流', '集电线路', '箱变', '主变', '站用变', '主进线', '母线分段', '馈线', '功率预测系统', '能量管理', 'SVG', '电能采集', '站内木箱', '全场信息汇', '其他',
+];
+
+const sortNameFun = (typesNames) => typesNames.sort((a, b) => {
+  const sortIndexA = sortNames.indexOf(a.value);
+  const sortIndexB = sortNames.indexOf(b.value);
+  if (sortIndexA === sortNames.length - 1) { // '其他'
+    return 1;
+  }
+  if (sortIndexB === sortNames.length - 1) {
+    return -1;
+  }
+  if (sortIndexA === -1) {
+    return 1;
+  }
+  if (sortIndexB === -1) {
+    return -1;
+  }
+  return (sortIndexA - sortIndexB);
+});
+
 function* easyPut(actionName, payload){
   yield put({
     type: overviewAction[actionName],
@@ -111,11 +133,11 @@ function *afterDeviceTypePointGet({ payload }) { // 设备页 获得测点数据
     }
   });
   for(const [devicePointIecName, children] of pointsMap){
-    devicePointIecName ? tmpList.push({ // devicePointIecName可能为null
-      value: devicePointIecName,
-      label: devicePointIecName,
+    tmpList.push({ // devicePointIecName可能为null
+      value: devicePointIecName || '其他',
+      label: devicePointIecName || '其他',
       children,
-    }) : tmpList.push(...children);
+    });
   }
   // devicePointsList.forEach(e => {
   //   const { devicePointCode, devicePointName, devicePointUnit } = e;
@@ -128,7 +150,7 @@ function *afterDeviceTypePointGet({ payload }) { // 设备页 获得测点数据
   // });
   yield call(easyPut, 'fetchSuccess', { // 默认选中所有测点
     deviceCheckedList: pointCodes,
-    devicePointsList: tmpList,
+    devicePointsList: sortNameFun(tmpList),
   });
   yield call(getOverviewDevices, { // 默认所有测点请求设备数据
     payload: { ...deviceParam, pointCodes },
@@ -178,7 +200,7 @@ function *afterPointPagePointsGet({ payload }){ // 测点页 获得测点数据�
   // });
   yield call(easyPut, 'fetchSuccess', { // 默认选中所有测点
     pointsCheckedList: pointCodes,
-    pointList: tmpList,
+    pointList: sortNameFun(tmpList),
   });
   deviceFullcode && (yield call(getOverviewPoints, { // 已有选中设备, 再执行请求
     payload: { ...pointParam, pointCodes },
