@@ -37,7 +37,7 @@ function* getDefectList(action) {
           ...payload,
           total,
           pageNum,
-          defectList: response.data.data.defectList,
+          defectList: response.data.data.defectList || [],
           selectedRowKeys: [],
           defectStatusStatistics: response.data.data.defectStatusStatistics,
         }
@@ -765,7 +765,7 @@ function* getParticipant(){ // 获取参与人所有列表
   const url = `${APIBasePath}${ticket.getParticipant}`;
   try{
     const response = yield call(axios.get, url, {
-      params: { username: '张'},
+      // params: { username: '张'},
     });
     if (response.data.code === '10000') {
       yield put({
