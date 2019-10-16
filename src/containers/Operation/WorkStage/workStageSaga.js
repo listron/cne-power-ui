@@ -9,12 +9,14 @@ const { APIBasePath } = basePaths;
 const { operation } = APISubPaths;
 
 
-function* easyPut(actionName, payload){ //
+function* easyPut(actionName, payload){
   yield put({
-    type: examinerAction[actionName],
+    type: workStageAction[actionName],
     payload,
   });
 }
+
+
 
 // /api/v3/service/workbench/list 	工作台-今日工作
 // /api/v3/service/workbench/run 	工作台-运行记录

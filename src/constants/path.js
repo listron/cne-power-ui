@@ -114,10 +114,8 @@ export default {
       // 工作台 工作计划管理
       getWorkList: '/v3/service/workbench/list', //	工作台-今日工作列表
       getRecords: '/v3/service/workbench/run', // 工作台-运行记录
-      getTickets: '', // 工作台 - 两票三制记录
-      // /api 	工作台-运行记录
-      // /api/v3/service/workbench/work 	工作台-运行记录
-      // /api/v3/service/workbench/calendar  工作台-计划日历
+      getTickets: '/v3/service/workbench/work', // 工作台 - 两票三制记录
+      getPlanList: '/v3/service/workbench/calendar', // 工作台 - 计划日历
       // /api/v3/service/task/complete  工作记事 => 操作任务为已完成
       // /api/v3/service/task/{taskId}   工作记事 => 查看任务详情
       // /api/v3/service/task/future  工作台日历任务批量下发/删除
