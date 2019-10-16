@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import { workStageAction } from './workStageReducer';
 import request from '@utils/request';
 import path from '@path';
@@ -16,20 +16,35 @@ function* easyPut(actionName, payload){
   });
 }
 
+// 工作台 工作计划管理
+// getTaskList: '/v3/service/workbench/list', //	工作台-今日工作列表
+// getRecords: '/v3/service/workbench/run', // 工作台-运行记录
+// getTickets: '/v3/service/workbench/work', // 工作台 - 两票三制记录
+// setRecordComplete: '/v3/service/task/complete', //  工作记事 => 操作任务为已完成
+// getRecordDetail: '/v3/service/task', // 工作记事 => 查看详情
+// addNewRecord: '/v3/service/workbench/inspect/defect', // 新增工作记事
+// handleRecord: '/v3/service/worknote', // 编辑, 删除, 详情工作记事
 
+// getPlanList: '/v3/service/workbench/calendar', // 工作台 - 计划日历
+// handlePlanStatus: '/v3/service/task/future', // 工作台日历任务批量下发/删除
+// addPlan: '/v3/service/inspect/plan', // 新增新增工作计划
 
-// /api/v3/service/workbench/list 	工作台-今日工作
-// /api/v3/service/workbench/run 	工作台-运行记录
-// /api/v3/service/workbench/work 	工作台-两票三制记录
-// /api/v3/service/workbench/calendar  工作台-计划日历
-// /api/v3/service/task/complete  工作记事 => 操作任务为已完成
-// /api/v3/service/task/{taskId}   工作记事 => 查看任务详情
-// /api/v3/service/task/future  工作台日历任务批量下发/删除
-// /api/v3/service/workbench/inspect/defect  新增工作记事
-// /api/v3/service/worknote 编辑工作记事
-// /api/v3/service/worknote/{noteId} 删除工作记事
-// /api/v3/service/worknote/{noteId} 工作记事详情
-// /api/v3/service/inspect/plan 新增工作计划
+function *getTaskList(){
+  try {
+    // const { stationCode, pageKey } = payload || {};
+    const url = `${APIBasePath}${operation.getTaskList}`;
+    const response = yield call(request.post, url);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        // [`${pageKey}TopData`]: response.data || {}, // 根据不同页面，生成: stationTopData, deviceTopData, pointTopData
+        // [`${pageKey}Unix`]: moment().unix(),
+      });
+    } else { throw response; }
+  } catch (error) {
+    console.log(error);
+    message.error('获取今日工作列表, 请刷新重试');
+  }
+}
 
 // function *getOverviewStation({ payload }){ // 电站基础数据信息 - 各页面单独存储一份
 //   try {
@@ -49,6 +64,6 @@ function* easyPut(actionName, payload){
 // }
 
 export function* watchWorkStage() {
-  // yield takeLatest(examinerAction.getSettingList, getSettingList);
+  yield takeLatest(workStageAction.getTaskList, getTaskList);
 }
 

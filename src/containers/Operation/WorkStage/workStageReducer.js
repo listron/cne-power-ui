@@ -1,7 +1,7 @@
 import immutable from 'immutable';
 
 const workStageAction = {
-  // getSettingList: Symbol('getSettingList'),
+  getTaskList: Symbol('getTaskList'),
   // getSettableNodes: Symbol('getSettableNodes'),
   // getSettedInfo: Symbol('getSettedInfo'),
   // getSettableUsers: Symbol('getSettableUsers'),

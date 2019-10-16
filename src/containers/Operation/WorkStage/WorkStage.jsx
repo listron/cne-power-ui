@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 // import EditModal from '../../../../components/Operation/TwoTickets/Examiner/EditModal';
 // import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 // import Footer from '../../../../components/Common/Footer';
-// import { examinerAction } from './examinerReducer';
+import { workStageAction } from './workStageReducer';
 import styles from './workStage.scss';
 
 class WorkStage extends Component {
@@ -17,7 +17,7 @@ class WorkStage extends Component {
   };
 
   componentDidMount(){
-    
+    this.props.getTaskList();
   }
 
   componentWillUnmount(){
@@ -47,7 +47,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   // resetStore: () => dispatch({ type: examinerAction.resetStore }),
   // changeStore: payload => dispatch({ type: examinerAction.changeStore, payload }),
-  // getSettingList: payload => dispatch({ type: examinerAction.getSettingList, payload }),
+  getTaskList: payload => dispatch({ type: workStageAction.getTaskList, payload }),
   // getSettedInfo: payload => dispatch({ type: examinerAction.getSettedInfo, payload }),
   // getSettableNodes: () => dispatch({ type: examinerAction.getSettableNodes }),
   // getSettableUsers: payload => dispatch({ type: examinerAction.getSettableUsers, payload }),
