@@ -829,6 +829,11 @@ export default class RunScatterChart extends Component {
     return valueFlag ? value : name;
   };
 
+  nameFormatFunc = (name) => {
+    // 超出10个字，显示9个字...
+    return name.length > 10 ? name.substring(0, 9) + '...' : name;
+  };
+
   render() {
     const { minNum } = this.state;
     const {
@@ -858,42 +863,42 @@ export default class RunScatterChart extends Component {
     } = this.props;
     const firstXAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{this.nameFormatFunc(cur.name)}</Option>
       );
     });
     const firstYAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{this.nameFormatFunc(cur.name)}</Option>
       );
     });
     const secondXAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{this.nameFormatFunc(cur.name)}</Option>
       );
     });
     const secondYAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{this.nameFormatFunc(cur.name)}</Option>
       );
     });
     const thirdXAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{this.nameFormatFunc(cur.name)}</Option>
       );
     });
     const thirdYAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{this.nameFormatFunc(cur.name)}</Option>
       );
     });
     const fourthXAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{this.nameFormatFunc(cur.name)}</Option>
       );
     });
     const fourthYAxisOption = pointsInfo && pointsInfo.map(cur => {
       return (
-        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{cur.name}</Option>
+        <Option title={cur.name} key={`${cur.value}-${cur.name}`} value={cur.value}>{this.nameFormatFunc(cur.name)}</Option>
       );
     });
     return (
@@ -942,45 +947,45 @@ export default class RunScatterChart extends Component {
         </div>
         <div className={styles.firCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select value={this.valueFlagFunc(firstChartXAxis, firstXAxisName)} style={{ width: 120 }} onChange={this.firstXAxisChange}>
+          <Select dropdownMatchSelectWidth={false} value={this.valueFlagFunc(firstChartXAxis, firstXAxisName)} style={{ width: 120 }} onChange={this.firstXAxisChange}>
             {firstXAxisOption}
           </Select>
           <Icon type="swap" onClick={this.firstChartExchange} />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select value={this.valueFlagFunc(firstChartYAxis, firstYAxisName)} style={{ width: 120 }} onChange={this.firstYAxisChange}>
+          <Select dropdownMatchSelectWidth={false} value={this.valueFlagFunc(firstChartYAxis, firstYAxisName)} style={{ width: 120 }} onChange={this.firstYAxisChange}>
             {firstYAxisOption}
           </Select>
         </div>
         <div className={styles.secCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select value={this.valueFlagFunc(secondChartXAxis, secondXAxisName)} style={{ width: 120 }} onChange={this.secondXAxisChange}>
+          <Select dropdownMatchSelectWidth={false} value={this.valueFlagFunc(secondChartXAxis, secondXAxisName)} style={{ width: 120 }} onChange={this.secondXAxisChange}>
             {secondXAxisOption}
           </Select>
           <Icon type="swap" onClick={this.secondChartExchange} />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select value={this.valueFlagFunc(secondChartYAxis, secondYAxisName)} style={{ width: 120 }} onChange={this.secondYAxisChange}>
+          <Select dropdownMatchSelectWidth={false} value={this.valueFlagFunc(secondChartYAxis, secondYAxisName)} style={{ width: 120 }} onChange={this.secondYAxisChange}>
             {secondYAxisOption}
           </Select>
         </div>
         <div className={styles.thrCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select value={this.valueFlagFunc(thirdChartXAxis, thirdXAxisName)} style={{ width: 120 }} onChange={this.thirdXAxisChange}>
+          <Select dropdownMatchSelectWidth={false} value={this.valueFlagFunc(thirdChartXAxis, thirdXAxisName)} style={{ width: 120 }} onChange={this.thirdXAxisChange}>
             {thirdXAxisOption}
           </Select>
           <Icon type="swap" onClick={this.thirdChartExchange} />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select value={this.valueFlagFunc(thirdChartYAxis, thirdYAxisName)} style={{ width: 120 }} onChange={this.thirdYAxisChange}>
+          <Select dropdownMatchSelectWidth={false} value={this.valueFlagFunc(thirdChartYAxis, thirdYAxisName)} style={{ width: 120 }} onChange={this.thirdYAxisChange}>
             {thirdYAxisOption}
           </Select>
         </div>
         <div className={styles.fouCoordinate}>
           <span className={styles.xAxis}>横坐标</span>
-          <Select value={this.valueFlagFunc(fourthChartXAxis, fourthXAxisName)} style={{ width: 120 }} onChange={this.fourthXAxisChange}>
+          <Select dropdownMatchSelectWidth={false} value={this.valueFlagFunc(fourthChartXAxis, fourthXAxisName)} style={{ width: 120 }} onChange={this.fourthXAxisChange}>
             {fourthXAxisOption}
           </Select>
           <Icon type="swap" onClick={this.fourthChartExchange} />
           <span className={styles.yAxis}>纵坐标</span>
-          <Select value={this.valueFlagFunc(fourthChartYAxis, fourthYAxisName)} style={{ width: 120 }} onChange={this.fourthYAxisChange}>
+          <Select dropdownMatchSelectWidth={false} value={this.valueFlagFunc(fourthChartYAxis, fourthYAxisName)} style={{ width: 120 }} onChange={this.fourthYAxisChange}>
             {fourthYAxisOption}
           </Select>
         </div>

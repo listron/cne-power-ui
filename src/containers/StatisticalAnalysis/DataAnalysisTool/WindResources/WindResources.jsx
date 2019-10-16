@@ -55,6 +55,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationDevice: payload => dispatch({ type: windResourcesAction.getStationDevice, payload }),
   getBigFrequency: payload => dispatch({ type: windResourcesAction.getBigFrequency, payload }),
   getBigDirections: payload => dispatch({ type: windResourcesAction.getBigDirections, payload }),
+  getFrequencyMax: payload => dispatch({ type: windResourcesAction.getFrequencyMax, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WindResources);

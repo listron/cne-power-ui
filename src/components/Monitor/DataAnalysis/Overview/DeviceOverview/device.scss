@@ -102,8 +102,14 @@
     }
   }
   .pointTable{
+    min-height: 360px;
     .deviceName{
       padding-left: 24px;
+    }
+    .eachIndicateTitle, .eachIndicate{
+      // height: 40px;
+      // line-height: 40px;
+      @include overflowText();
     }
     .deviceLink{
       cursor: pointer;
@@ -162,9 +168,6 @@
     .deviceLink{
       color: var(--themeColor);
       text-decoration: var(--themeColor) underline;
-    }
-    .eachIndicateTitle{
-      @include overflowText();
     }
   }
 }
