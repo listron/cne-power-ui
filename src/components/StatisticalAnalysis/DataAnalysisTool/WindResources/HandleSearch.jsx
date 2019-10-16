@@ -25,6 +25,7 @@ export default class HandleSearch extends Component {
     isClick: PropTypes.bool,
     activeKey: PropTypes.number,
     getDirections: PropTypes.func,
+    getFrequencyMax: PropTypes.func,
   };
 
   constructor(props) {
@@ -122,11 +123,12 @@ export default class HandleSearch extends Component {
   onSearch = () => {
     const {
       deviceList,
-      getFrequency,
+      getFrequencyMax,
       activeKey,
       getDirections,
       startTime,
       endTime,
+      stationCode,
     } = this.props;
     const firstDevice = deviceList[0];
     const deviceFullCode = firstDevice.deviceFullCode;
@@ -148,10 +150,12 @@ export default class HandleSearch extends Component {
       });
     }
     // 风能频率图
-    return getFrequency({
+    // 现请求风能频率最大值
+    return getFrequencyMax({
       startTime,
       endTime,
       deviceFullCode,
+      stationCode,
     });
   };
 

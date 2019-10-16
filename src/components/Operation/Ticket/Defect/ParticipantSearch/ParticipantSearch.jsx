@@ -7,6 +7,7 @@ const { Option } = Select;
 
 class ParticipantSearch extends Component {
   static propTypes = {
+    theme: PropTypes.string,
     participantList: PropTypes.array,
     onChange: PropTypes.func,
     handleUserList: PropTypes.array,
@@ -29,9 +30,14 @@ class ParticipantSearch extends Component {
     this.props.onChange({ handleUserList: users });
   }
 
+  toReset = () => {
+    this.setState({ users: [] });
+    this.props.onChange({ handleUserList: [] });
+  }
+
   render() {
     const { users } = this.state;
-    const { participantList } = this.props;
+    const { participantList, handleUserList, theme } = this.props;
     const tagInfo = users.length > 2 ? {
       maxTagCount: 0,
       maxTagPlaceholder: () => (
@@ -39,13 +45,14 @@ class ParticipantSearch extends Component {
       ),
     } : {};
     return (
-      <div className={styles.participantSearch}>
+      <div className={`${styles.participantSearch} ${styles[theme]}`}>
         <span className={styles.participantTip}>参与人</span>
         <span ref={(ref) => { this.userRef = ref; }} />
         <Select
           mode="multiple"
           style={{ width: '240px' }}
           placeholder="请选择"
+          value={users}
           onChange={this.handleParticipant}
           {...tagInfo}
           getPopupContainer={() => this.userRef}
@@ -55,6 +62,7 @@ class ParticipantSearch extends Component {
           ))}
         </Select>
         <Button onClick={this.toSearch} className={styles.search}>查询</Button>
+        {handleUserList.length > 0 && <Button onClick={this.toReset} className={styles.search}>重置</Button>}
       </div>
     );
   }

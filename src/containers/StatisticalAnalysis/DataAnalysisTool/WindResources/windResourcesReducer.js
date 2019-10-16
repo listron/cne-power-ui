@@ -14,6 +14,11 @@ var initState = Immutable.fromJS({
   directionsData: [], // 玫瑰图数据
   curBigChartData: [], // 放大频率图数据
   bigWindRoseData: [], // 放大玫瑰图数据
+  frequencyMaxData: {
+    eneryFrequency: 0,
+    speedFrequency: 0,
+    windSpeedConfId: 0,
+  }, // 频率图的最大值
   activeCode: '',
   directionsCode: '',
   stationCode: '',

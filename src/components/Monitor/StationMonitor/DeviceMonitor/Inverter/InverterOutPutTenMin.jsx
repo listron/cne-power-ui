@@ -123,7 +123,7 @@ class InverterOutPutTenMin extends Component {
         }, {
           name: '交流侧功率',
           type: 'line',
-          yAxisIndex: 1,
+          yAxisIndex: 0,
           data: acPowerData,
         }, {
           name: '瞬时辐照',

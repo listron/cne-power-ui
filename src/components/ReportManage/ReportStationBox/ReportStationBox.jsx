@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from './reportStationBox.scss';
+import ReportSeach from './ReportSeach';
+import ReportTable from './ReportTable';
 
 class ReportStationBox extends React.Component {
   static propTypes = {
@@ -10,7 +13,9 @@ class ReportStationBox extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className={styles.reportContainer}>
+        <ReportSeach {...this.props} />
+        <ReportTable {...this.props} />
 
       </div>
     );
