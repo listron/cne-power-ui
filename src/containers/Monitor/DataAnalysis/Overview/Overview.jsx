@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import searchUtil from '@utils/searchUtil';
 import { overviewAction } from './overviewReducer';
-import { commonAction } from '../../../../containers/alphaRedux/commonAction';
 import HearderTab from '@components/Monitor/DataAnalysis/Overview/HeaderTab/HearderTab';
 import StationOverview from '@components/Monitor/DataAnalysis/Overview/StationOverview/StationOverview';
 import DeviceOverview from '@components/Monitor/DataAnalysis/Overview/DeviceOverview/DeviceOverview';

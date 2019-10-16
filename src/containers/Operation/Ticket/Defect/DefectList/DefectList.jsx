@@ -177,6 +177,7 @@ class DefectList extends Component {
           participantList={participantList}
           onChange={this.filterConditionChange}
           handleUserList={handleUserList}
+          theme={theme}
         />
         <DefectTable {...this.props} onChangeFilter={this.filterConditionChange} />
       </div>
