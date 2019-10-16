@@ -54,6 +54,13 @@
 
     }
 
+    .stationName {
+      width: 120px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
     .handlePage {
       display: flex;
       justify-content: space-between;

@@ -4,7 +4,7 @@ import moment from 'moment';
 const initState = immutable.fromJS({
   loading: false,
   pageSize: 10,
-  pageNum: 0,
+  pageNum: 1,
   total: 0,
   stationCodes: [],
   dateType: 'day',

@@ -4,9 +4,8 @@ import styles from './reportStationBox.scss';
 import { Radio, DatePicker, Button } from 'antd';
 import StationSelect from '../../Common/StationSelect';
 import moment from 'moment';
-
 const { RangePicker } = DatePicker;
-
+const dateFormat = 'YYYY-MM';
 class ReportSeach extends React.Component {
   static propTypes = {
     changeStore: PropTypes.func,
@@ -23,6 +22,9 @@ class ReportSeach extends React.Component {
   }
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      open: false,
+    };
   }
   setDefaultTime = (type) => {
     const date = [
@@ -41,7 +43,57 @@ class ReportSeach extends React.Component {
       dateType: value,
       ...defaultTime,
     });
+  }
+  changeDay = (dates, dateStrings) => {
+    console.log('dates: ', dates);
+    console.log('dateStrings: ', dateStrings);
+    this.props.changeStore({
+      startTime: dateStrings[0],
+      endTime: dateStrings[1],
+    });
+  }
+  //改月时间
+  onCalendarChange = (dates, dateString) => {
+    console.log('dateString: ', dateString);
+    this.props.changeStore({
+      startTime: dateString[0],
+      endTime: dateString[1],
+    });
+  };
+  handlePanelChange = (value, mode) => {
 
+    const { changeStore, startTime, endTime } = this.props;
+    const startValueTime = moment(value[0]).format(dateFormat);
+    const endValueTime = moment(value[1]).format(dateFormat);
+    const propsStartTime = moment(startTime).format(dateFormat);
+    const propsEndTime = moment(endTime).format(dateFormat);
+    changeStore({
+      startTime: startValueTime,
+      endTime: endValueTime,
+    });
+    if (startValueTime === propsStartTime && propsEndTime !== endValueTime) {
+      return this.setState({
+        open: false,
+      });
+    }
+  };
+
+  handleOpenChange = (status) => {
+    const open = status ? true : false;
+    this.setState({
+      open,
+    });
+  };
+
+  changeStartTime = (moment, dateString) => {
+    this.props.changeStore({
+      startTime: dateString,
+    });
+  }
+  changeEndTime = (moment, dateString) => {
+    this.props.changeStore({
+      endTime: dateString,
+    });
   }
   searchReportData = () => {
     //发送请求以及防抖
@@ -49,16 +101,22 @@ class ReportSeach extends React.Component {
     const params = { startTime, endTime, stationCodes, dateType, orderFiled, orderType, pageNum, pageSize };
     this.props.getReportStationList({
       ...params,
+
     });
   }
   disabledDate = (current) => {
     return current > moment();
   }
+  changeStation = (value) => {
+    const stationCodes = value.map(e => e.stationCode);
+    this.props.changeStore({
+      stationCodes,
+    });
+
+  }
   render() {
     const { dateType, stations, startTime, endTime } = this.props;
-    console.log('dateType: ', dateType);
-    console.log('endTime: ', endTime);
-    console.log('startTime: ', startTime);
+    const { open } = this.state;
     return (
       <div className={styles.topSearch}>
         <div className={styles.timeStyle}>
@@ -80,8 +138,12 @@ class ReportSeach extends React.Component {
             <RangePicker
               format="YYYY-MM"
               mode={['month', 'month']}
-              value={[moment(startTime), moment(endTime)]}
-              onChange={this.changeMonth}
+              open={open}
+              // disabledDate={disableDateFun}
+              onCalendarChange={this.onCalendarChange}
+              value={[moment(startTime, dateFormat), moment(endTime, dateFormat)]}
+              onOpenChange={this.handleOpenChange}
+              onPanelChange={this.handlePanelChange}
             />
           )}
           {dateType === 'year' && (
@@ -107,7 +169,7 @@ class ReportSeach extends React.Component {
             multiple={true}
             disabledStation={[360]}
             onChange={this.changeStation} />
-          <Button type="primary" className={styles.btnStyle} onChange={this.searchReportData} >查询</Button>
+          <Button type="primary" className={styles.btnStyle} onClick={this.searchReportData} >查询</Button>
         </div>
 
 

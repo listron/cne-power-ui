@@ -9,14 +9,25 @@ const { reportManage } = path.APISubPaths;
 
 function* getReportStationList(action) {
   const { payload } = action;
-  const url = `${APIBasePath}${reportManage.getReportStationList}`;
+  // const url = `${APIBasePath}${reportManage.getReportStationList}`;
+  const url = '/mock/v3/sun/report/station/list';
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      const total = response.data.data.pageCount || 0;
+      let { pageNum } = payload;
+      const { pageSize } = payload;
+      const maxPage = Math.ceil(total / pageSize);
+      if (total === 0) {
+        pageNum = 1;
+      } else if (maxPage < pageNum) {
+        pageNum = maxPage;
+      }
       yield put({
         type: reportStationAction.changeStore,
         payload: {
-          reportStationList: response.data.data || []
+          total,
+          reportStationList: response.data.data.dataList || [],
         },
       });
     } else {
@@ -27,7 +38,8 @@ function* getReportStationList(action) {
     yield put({
       type: reportStationAction.changeStore,
       payload: {
-        reportStationList: []
+        total: 0,
+        reportStationList: [],
       },
     });
     console.log(e);
