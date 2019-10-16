@@ -13,6 +13,7 @@ class Operator extends Component {
   constructor(props) {
     super(props);
     this.scrollTimer = null; // 定时器
+    this.scrollTimeout = null; // 延时定时器
     this.spanHeight = 30;// 滚动距离 目前等于单条信息高度
     this.speed = 50;// 滚动速度
     this.delay = 5000;// 滚动的间歇时间
@@ -34,20 +35,24 @@ class Operator extends Component {
     // 没有数据停止定时器
     if(prevOperatorList.length === 0 && currentOperatorList.length === 0) {
       clearInterval(this.scrollTimer);
+      clearTimeout(this.scrollTimeout);
     }
 
   };
 
   componentWillUnmount() {
     clearInterval(this.scrollTimer);
+    clearTimeout(this.scrollTimeout);
   }
 
   slideFunc = () => {
     const { box, childBoxFirst, childBoxSecond } = this;
+    clearInterval(this.scrollTimer);
+    clearTimeout(this.scrollTimeout);
     // 赋值
     childBoxSecond.innerHTML = childBoxFirst.innerHTML;
     // 初始化
-    setTimeout(() => this.startMove(box), this.delay);
+    this.scrollTimeout = setTimeout(() => this.startMove(box), this.delay);
   };
 
   startMove = (dom) => {
@@ -59,19 +64,21 @@ class Operator extends Component {
     if (dom.scrollTop % this.spanHeight === 0) {
       //如果滚动高度等于信息高度的整数倍
       clearInterval(this.scrollTimer);
-      setTimeout(() => this.startMove(dom), this.delay);
+      clearTimeout(this.scrollTimeout);
+      this.scrollTimeout = setTimeout(() => this.startMove(dom), this.delay);
     } else {
       dom.scrollTop ++;
       if (dom.scrollTop >= dom.scrollHeight / 2) {
-        //area.scrollHeight/2的值等于con1.offsetHeight
+        //dom.scrollHeight/2的值等于第一个childBoxFirst.offsetHeight
         dom.scrollTop = 0;
       }
     }
   };
 
-  onMouseEnter = () => {
+  onMouseOver = () => {
     // 清除定时器
     clearInterval(this.scrollTimer);
+    clearTimeout(this.scrollTimeout);
   };
 
   onMouseLeave = () => {
@@ -84,11 +91,14 @@ class Operator extends Component {
     const {operatorList = [], theme = 'light'} = this.props;
     return (
       <div className={`${styles.operator} ${styles[theme]}`}>
-        {operatorList.length > 0 && <div className={styles.newOperatorList} ref={(ref) => (this.box = ref)} onMouseEnter={() => {this.onMouseEnter();}} onMouseLeave={() => {this.onMouseLeave();}}>
+        {operatorList.length > 0 && <div className={styles.newOperatorList} ref={(ref) => (this.box = ref)} onMouseOver={() => {this.onMouseOver();}} onMouseLeave={() => {this.onMouseLeave();}}>
           <div className={styles.scrollAnmiate} ref={(ref) => (this.childBoxFirst = ref)}>
             {operatorList && operatorList.map((item, index) => {
-              return <span key={index}
-                           className={styles.spanLine}>{item.roleDesc} {item.userFullName || item.userName} {item.phoneNum}   </span>;
+              return (
+                <span key={index}
+                      className={styles.spanLine}>{item.roleDesc} {item.userFullName || item.userName} {item.phoneNum}
+                </span>
+              );
             })}
           </div>
           <div className={styles.scrollOtherAnimate} ref={(ref) => (this.childBoxSecond = ref)} />

@@ -114,8 +114,8 @@ class AlarmStatisticByType extends Component {
     const { stationCode, startTime, endTime, stationType } = this.props;
     this.props.exportAlarm({//导出
       stationCode,
-      startTime,
-      endTime,
+      startTime: moment(startTime).utc().format(),
+      endTime: moment(endTime).utc().format(),
       stationType,
     });
   }
