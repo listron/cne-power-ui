@@ -25,17 +25,16 @@ class DeviceTable extends PureComponent{
 
   constructor(props){
     super(props);
+    const tableColumn = this.baseColumn.map(e => ({ ...e, fixed: false, width: undefined })); // 初始 - 必无数据 - 取消定位和指定宽度
+    this.state = { tableColumn };
+  }
+
+  componentDidMount(){
     const { devicesData, deviceIndicators, deviceCheckedList } = this.props;
     const { deviceData = [] } = devicesData;
-    let tableColumn = this.baseColumn.map(e => ({ ...e, fixed: false, width: undefined })); // 取消定位和指定宽度
     if (deviceData.length > 0) { // 有数据, 直接渲染。
-      const filteredDevice = deviceData.map(e => ({ //测点筛选
-        ...e,
-        pointData: e.pointData.filter(m => deviceCheckedList.includes(m.pointCode)),
-      }));
-      tableColumn = this.createColumn(this.baseColumn, filteredDevice, deviceIndicators);
+      this.initColumn(deviceData, deviceCheckedList, deviceIndicators);
     }
-    this.state = { tableColumn };
   }
 
   componentWillReceiveProps(nextProps){
@@ -51,6 +50,15 @@ class DeviceTable extends PureComponent{
         tableColumn: this.createColumn(this.baseColumn, filteredDevice, deviceIndicators),
       });
     }
+  }
+
+  initColumn = (deviceData, deviceCheckedList, deviceIndicators) => {
+    const filteredDevice = deviceData.map(e => ({ //测点筛选
+      ...e,
+      pointData: e.pointData.filter(m => deviceCheckedList.includes(m.pointCode)),
+    }));
+    const tableColumn = this.createColumn(this.baseColumn, filteredDevice, deviceIndicators);
+    this.setState({ tableColumn });
   }
 
   indicators = ['validCount', 'invalidCount', 'lostCount']
@@ -188,15 +196,9 @@ class DeviceTable extends PureComponent{
         },
       })),
     }));
-    // const newBaseColumn = [...baseColumn]
-    // let tableWidth = '100%', scrollable = { x: scrollWidth };
     const scrollWidth = 410 + pointData.length * (indicators.length * 110); // 计算的长度
     if ((this.tableRef && scrollWidth < this.tableRef.offsetWidth)) { // 表格宽度小于可视区宽度。
-      // const totalHeight = document.getElementById('main').clientHeight;
-      // const isTableScroll = totalHeight - 584 - deviceData.length * 40; // 留给表格数据的高度。> 0不滚动，<0滚动
-      // const tmpExtraWidth = (this.tableRef.offsetWidth - scrollWidth) / (pointData.length + 3);
       const extraWidth = (this.tableRef.offsetWidth - scrollWidth) / (pointData.length + 3);
-      // extraWidth均分多余的自适应宽度。但当此时为刚得到数据，可能导致右侧有滚动条(宽度24), 需要挤压去掉可能的滚动条宽度到前三列)
       const lessColumn = extraColum.map(e => ({
         ...e,
         children: e.children.map(child => ({
@@ -206,8 +208,7 @@ class DeviceTable extends PureComponent{
       }));
       return baseColumn.map(e => ({
         ...e,
-        width: e.width + extraWidth, // 前三列额外宽度 > 8时, 可以挤压出滚动条，
-        // width: extraWidth > 8 ? e.width + extraWidth - 8 : e.width, // 前三列额外宽度 > 8时, 可以挤压出滚动条，
+        width: e.width + extraWidth,
       })).concat(lessColumn);
     }
     return baseColumn.concat(extraColum);
@@ -217,15 +218,8 @@ class DeviceTable extends PureComponent{
     const { devicePointsList, deviceCheckedList, devicesData, theme, deviceIndicators, deveiceLoading, deviceFilterName } = this.props;
     const { tableColumn } = this.state;
     const { deviceData = [] } = devicesData;
-    // const { pointData = []} = deviceData[0] || {};
-    // const actualPoints = pointData.filter(e => deviceCheckedList.includes(e.pointCode)); // 选中测点与实际测点数据的交集才是实际数据列
-    // const scrollWidth = 410 + actualPoints.length * deviceIndicators.length * 110;
     const scrollWidth = 410 + deviceCheckedList.length * (deviceIndicators.length * 110 + 1); // 经讨论, 选中测点即是表格的测点列。 +1 是为了适配多余的border宽度
     const dataSource = deviceFilterName ? [deviceData.find(e => e.deviceName === deviceFilterName)] : deviceData; // 图表筛选
-    // if (this.tableRef && scrollWidth < this.tableRef.offsetWidth) {
-    // //   tableWidth = `${scrollWidth}px`;
-    //   scrollable = {x: this.tableRef.offsetWidth}; // 横向铺满
-    // }
     return(
       <div className={styles.devicePoints} ref={(ref) => { this.tableRef = ref; }}>
         <div className={styles.pointHandle}>
