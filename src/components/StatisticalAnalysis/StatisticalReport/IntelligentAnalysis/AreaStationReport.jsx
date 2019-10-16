@@ -242,7 +242,7 @@ class AreaStationReport extends Component{
 
               <p className={styles.paragraph + ' ' + styles.bigText}>
                 <span>该区域内得分最低5个电站为</span>
-                {!scoreStations ? <span className={styles.text}>{scoreStations.map(e=>e.stationName).join('、')}</span> : '--'}
+                {scoreStations.length > 0 ? <span className={styles.text}>{scoreStations.map(e=>e.stationName).join('、')}</span> : '--'}
                 <span>。</span>
               </p>
 
@@ -268,8 +268,6 @@ class AreaStationReport extends Component{
                 <span className={styles.text}>{highEquUsehourStations.map(e=>e.stationName).join('、')}</span>
                 <span>。原因说明：</span>
               </p>
-
-              {/* <p className={styles.paragraph}>原因说明：</p> */}
 
               <div className={styles.fileBox}>
                 <div className={styles.stationName}>
