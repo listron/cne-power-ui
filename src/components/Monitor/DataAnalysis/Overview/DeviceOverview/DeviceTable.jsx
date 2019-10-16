@@ -40,6 +40,12 @@ class DeviceTable extends PureComponent{
   componentWillReceiveProps(nextProps){
     const { deveiceLoading, devicesData, deviceIndicators, deviceCheckedList } = nextProps;
     const preLoading = this.props.deveiceLoading;
+    const preCheckedList = this.props.deviceCheckedList;
+    if (deviceCheckedList.length === 0 && preCheckedList.length > 0) { // 测点清除
+      this.setState({ // 基于返回的测点数据生成表头
+        tableColumn: this.createColumn(this.baseColumn, [], deviceIndicators),
+      });
+    }
     if (!deveiceLoading && preLoading) { // 请求数据得到
       const { deviceData = [] } = devicesData;
       const filteredDevice = deviceData.map(e => ({ //测点筛选
@@ -220,6 +226,7 @@ class DeviceTable extends PureComponent{
     const { deviceData = [] } = devicesData;
     const scrollWidth = 410 + deviceCheckedList.length * (deviceIndicators.length * 110 + 1); // 经讨论, 选中测点即是表格的测点列。 +1 是为了适配多余的border宽度
     const dataSource = deviceFilterName ? [deviceData.find(e => e.deviceName === deviceFilterName)] : deviceData; // 图表筛选
+    console.log(scrollWidth, tableColumn);
     return(
       <div className={styles.devicePoints} ref={(ref) => { this.tableRef = ref; }}>
         <div className={styles.pointHandle}>
