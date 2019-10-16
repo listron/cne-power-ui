@@ -39,12 +39,16 @@ class DeviceTable extends PureComponent{
   }
 
   componentWillReceiveProps(nextProps){
-    const { deveiceLoading, devicesData, deviceIndicators } = nextProps;
+    const { deveiceLoading, devicesData, deviceIndicators, deviceCheckedList } = nextProps;
     const preLoading = this.props.deveiceLoading;
     if (!deveiceLoading && preLoading) { // 请求数据得到
       const { deviceData = [] } = devicesData;
+      const filteredDevice = deviceData.map(e => ({ //测点筛选
+        ...e,
+        pointData: e.pointData.filter(m => deviceCheckedList.includes(m.pointCode)),
+      }));
       this.setState({ // 基于返回的测点数据生成表头
-        tableColumn: this.createColumn(this.baseColumn, deviceData, deviceIndicators),
+        tableColumn: this.createColumn(this.baseColumn, filteredDevice, deviceIndicators),
       });
     }
   }
@@ -134,11 +138,11 @@ class DeviceTable extends PureComponent{
       ...e,
       pointData: e.pointData.filter(m => pointsCode.includes(m.pointCode)),
     }));
-    this.setState({
-      tableColumn: this.createColumn(this.baseColumn, filteredDevice, deviceIndicators),
-    });
     this.props.changeOverviewStore({
       deviceCheckedList: pointsChecked.map(e => e.value),
+    });
+    this.setState({
+      tableColumn: this.createColumn(this.baseColumn, filteredDevice, deviceIndicators),
     });
   }
 
@@ -186,17 +190,25 @@ class DeviceTable extends PureComponent{
     }));
     // const newBaseColumn = [...baseColumn]
     // let tableWidth = '100%', scrollable = { x: scrollWidth };
-    const scrollWidth = 410 + pointData.length * indicators.length * 110; // 计算的长度
+    const scrollWidth = 410 + pointData.length * (indicators.length * 110); // 计算的长度
     if ((this.tableRef && scrollWidth < this.tableRef.offsetWidth)) { // 表格宽度小于可视区宽度。
-      const extraWidth = (this.tableRef.offsetWidth - scrollWidth) / (pointData.length + 3);// 均分多余的自适应宽度。
+      // const totalHeight = document.getElementById('main').clientHeight;
+      // const isTableScroll = totalHeight - 584 - deviceData.length * 40; // 留给表格数据的高度。> 0不滚动，<0滚动
+      // const tmpExtraWidth = (this.tableRef.offsetWidth - scrollWidth) / (pointData.length + 3);
+      const extraWidth = (this.tableRef.offsetWidth - scrollWidth) / (pointData.length + 3);
+      // extraWidth均分多余的自适应宽度。但当此时为刚得到数据，可能导致右侧有滚动条(宽度24), 需要挤压去掉可能的滚动条宽度到前三列)
       const lessColumn = extraColum.map(e => ({
         ...e,
         children: e.children.map(child => ({
           ...child,
-          width: 110 + parseInt(extraWidth / indicators.length, 10), // 原设计高度110 + 均分的多余宽度
+          width: 110 + extraWidth / indicators.length, // 原设计高度110 + 均分的多余宽度
         })),
       }));
-      return baseColumn.map(e => ({ ...e, width: e.width + extraWidth })).concat(lessColumn);
+      return baseColumn.map(e => ({
+        ...e,
+        width: e.width + extraWidth, // 前三列额外宽度 > 8时, 可以挤压出滚动条，
+        // width: extraWidth > 8 ? e.width + extraWidth - 8 : e.width, // 前三列额外宽度 > 8时, 可以挤压出滚动条，
+      })).concat(lessColumn);
     }
     return baseColumn.concat(extraColum);
   }
@@ -248,7 +260,6 @@ class DeviceTable extends PureComponent{
           dataSource={dataSource}
           bordered
           pagination={false}
-          // style={{ height: '80px', overflow: 'hidden' }}
           loading={{
             spinning: deveiceLoading,
             delay: 200,
