@@ -40,6 +40,12 @@ class DeviceTable extends PureComponent{
   componentWillReceiveProps(nextProps){
     const { deveiceLoading, devicesData, deviceIndicators, deviceCheckedList } = nextProps;
     const preLoading = this.props.deveiceLoading;
+    const preCheckedList = this.props.deviceCheckedList;
+    if (deviceCheckedList.length === 0 && preCheckedList.length > 0) { // 测点清除 防止表格column生成时掉行
+      this.setState({ // 基于返回的测点数据生成表头
+        tableColumn: this.createColumn(this.baseColumn, [], deviceIndicators),
+      });
+    }
     if (!deveiceLoading && preLoading) { // 请求数据得到
       const { deviceData = [] } = devicesData;
       const filteredDevice = deviceData.map(e => ({ //测点筛选
