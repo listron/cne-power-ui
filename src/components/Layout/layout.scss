@@ -107,6 +107,9 @@
         border-radius: 2px;
       }
       :global {
+        li.ant-menu-item, li.ant-menu-submenu{
+          flex: 0 0 auto;
+        }
         .iconfont {
           font-size: 16px;
           font-style: normal;
