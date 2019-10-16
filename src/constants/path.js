@@ -111,6 +111,21 @@ export default {
       getParticipant: '/v3/defect/handleuser/like', // 获取参与者列表
     },
     operation: {
+      // 工作台 工作计划管理
+      getWorkList: '/v3/service/workbench/list', //	工作台-今日工作列表
+      getRecords: '/v3/service/workbench/run', // 工作台-运行记录
+      getTickets: '', // 工作台 - 两票三制记录
+      // /api 	工作台-运行记录
+      // /api/v3/service/workbench/work 	工作台-运行记录
+      // /api/v3/service/workbench/calendar  工作台-计划日历
+      // /api/v3/service/task/complete  工作记事 => 操作任务为已完成
+      // /api/v3/service/task/{taskId}   工作记事 => 查看任务详情
+      // /api/v3/service/task/future  工作台日历任务批量下发/删除
+      // /api/v3/service/workbench/inspect/defect  新增工作记事
+      // /api/v3/service/worknote 编辑工作记事
+      // /api/v3/service/worknote/{noteId} 删除工作记事
+      // /api/v3/service/worknote/{noteId} 工作记事详情
+      // /api/v3/service/inspect/plan 新增工作计划
       // 运维管理
       getDayReportList: '/v3/performance/dailyreportlist', //获取各电站日报统计列表
       getDayReportConfig: '/v3/performance/conf', // 获取日报上报必填项配置
@@ -686,8 +701,7 @@ export default {
     reportManage: {
       getReportStationList: '/v3/sun/report/station/list',
       exportReportStationList: '/v3/sun/report/station/export',
-
-    }
+    },
   },
 };
 

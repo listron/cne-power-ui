@@ -130,6 +130,16 @@ const menuData = [
     rightKey: 'operation',
     children: [
       {
+        name: '工作台',
+        path: 'workStage',
+        iconStyle: 'icon-gzt',
+        rightKey: 'operation_locate',
+      }, {
+        name: '工作计划管理',
+        path: 'workPlan',
+        iconStyle: 'icon-gzjh',
+        rightKey: 'operation_locate',
+      }, {
         name: '员工定位',
         path: 'gps',
         iconStyle: 'icon-mapman',
