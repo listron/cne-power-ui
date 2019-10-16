@@ -170,8 +170,8 @@ class DustEffectCharts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startDay: moment().subtract(30, 'day'),
-      endDay: moment(),
+      startDay: moment().subtract(1, 'months').add(-1, 'days'),
+      endDay: moment().subtract(1, 'days'),
     };
   }
 
@@ -193,13 +193,17 @@ class DustEffectCharts extends Component {
   render() {
     const { startDay, endDay } = this.state;
     const { totalEffects, matrixEffects, theme } = this.props;
+
+    const disabledDate = (current) => { // 不可选未来日期
+      return current && current > moment().subtract(1, 'days');
+    };
     return (
       <div className={styles.effectCharts}>
         <span ref="wrap" />
         <RangePicker
           defaultValue={[startDay, endDay]}
           onChange={this.timeSelect}
-          disabledDate={() => false}
+          disabledDate={disabledDate}
           getCalendarContainer={() => this.refs.wrap}
         />
         <Tabs defaultActiveKey="1">
