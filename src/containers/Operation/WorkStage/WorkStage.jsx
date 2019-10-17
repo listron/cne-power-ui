@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import StationLists from '../../../components/Operation/WorkStage/StationLists';
 import RecordsList from '../../../components/Operation/WorkStage/RecordsList';
+import { RunningLog, TicketsLog } from '../../../components/Operation/WorkStage/RunLogTickets';
 // import DetailModal from '../../../../components/Operation/TwoTickets/Examiner/DetailModal';
 // import EditModal from '../../../../components/Operation/TwoTickets/Examiner/EditModal';
 import ContentLayout from '@components/Common/ContentLayout';
@@ -17,6 +18,8 @@ class WorkStage extends Component {
     resetStore: PropTypes.func,
     changeStore: PropTypes.func,
     getTaskList: PropTypes.func,
+    getRunningLog: PropTypes.func,
+    getTickets: PropTypes.func,
   };
 
   componentDidMount(){
@@ -41,6 +44,16 @@ class WorkStage extends Component {
       startDate: '2019-10-17 00:00:00',
       endDate: '2019-10-17 23:59:59',
     });
+    this.props.getRunningLog({
+      stationCodes: stageStations.map(e => e.stationCode),
+      startDate: '2019-10-17 00:00:00',
+      endDate: '2019-10-17 23:59:59',
+    });
+    this.props.getTickets({
+      stationCodes: stageStations.map(e => e.stationCode),
+      startDate: '2019-10-17 00:00:00',
+      endDate: '2019-10-17 23:59:59',
+    });
   }
 
   render(){
@@ -60,9 +73,9 @@ class WorkStage extends Component {
         <RecordsList
           {...this.props}
         />
-        <div>
-          <div>运行记录</div>
-          <div>两票三制</div>
+        <div className={styles.allDetailLogs}>
+          <RunningLog {...this.props} />
+          <TicketsLog {...this.props} />
           <div>日历计划</div>
         </div>
         <div>统一弹框组件</div>
@@ -86,6 +99,8 @@ const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: workStageAction.resetStore }),
   changeStore: payload => dispatch({ type: workStageAction.changeStore, payload }),
   getTaskList: payload => dispatch({ type: workStageAction.getTaskList, payload }),
+  getRunningLog: payload => dispatch({ type: workStageAction.getRunningLog, payload }),
+  getTickets: payload => dispatch({ type: workStageAction.getTickets, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkStage);

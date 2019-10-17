@@ -52,32 +52,48 @@ function *getTaskList({ payload }){ //	工作台-今日工作列表
 function *getRunningLog({ payload }) {
   try {
     const url = `${APIBasePath}${operation.getRunningLog}`;
-    yield call(easyPut, 'changeStore', { stageLoading: true });
+    yield call(easyPut, 'changeStore', { runLogLoading: true });
     const response = yield call(request.post, url, { ...payload });
     if (response.code === '10000') {
-      const { list = [], nums = {}} = response.data || {};
-      const { allNums } = nums;
       yield call(easyPut, 'fetchSuccess', {
-        stageList: list.map(e => ({ ...e, key: e.taskId })),
-        stageNumInfo: allNums,
-        stageLoading: false,
+        runLogInfo: response.data || {},
+        runLogLoading: false,
       });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
-      stageList: [],
-      stageNumInfo: {},
-      stageLoading: false,
+      runLogInfo: {},
+      runLogLoading: false,
     });
-    message.error('获取今日工作列表失败, 请刷新重试');
+    message.error('获取运行记录失败, 请刷新重试');
   }
 }
 
-// getRecords: '/v3/service/workbench/run', // 工作台-运行记录
+function *getTickets({ payload }) {
+  try {
+    const url = `${APIBasePath}${operation.getTickets}`;
+    yield call(easyPut, 'changeStore', { ticketsLoading: true });
+    const response = yield call(request.post, url, { ...payload });
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        ticketsInfo: response.data || {},
+        ticketsLoading: false,
+      });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      ticketsInfo: {},
+      ticketsLoading: false,
+    });
+    message.error('获取运行记录失败, 请刷新重试');
+  }
+}
+
 // getTickets: '/v3/service/workbench/work', // 工作台 - 两票三制记录
 
 export function* watchWorkStage() {
   yield takeLatest(workStageAction.getTaskList, getTaskList);
   yield takeLatest(workStageAction.getRunningLog, getRunningLog);
+  yield takeLatest(workStageAction.getTickets, getTickets);
 }
 

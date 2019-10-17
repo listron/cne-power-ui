@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Button, Radio, Table } from 'antd';
 import styles from './workPage.scss';
+import { dataFormats } from '@utils/utilFunc';
 
 class RecordsList extends PureComponent {
 
@@ -115,7 +116,7 @@ class RecordsList extends PureComponent {
     const recordSource = recordType === 'allNum' ? stageList : stageList.filter( // 是否按照类型筛选查看
       e => e.taskTypeCode === this.recordAllTypes.indexOf(recordType)
     );
-    const { allNum = '--', planNum = '--', defectNum = '--', inspectNum = '--', noteNum = '--' } = stageNumInfo;
+    const { allNum, planNum, defectNum, inspectNum, noteNum } = stageNumInfo;
     return (
       <div className={`${styles.recordsList} ${styles[theme]}`} ref={(ref) => { this.recordsRef = ref; }}>
         <div className={styles.recordFilter}>
@@ -128,11 +129,11 @@ class RecordsList extends PureComponent {
             <span>筛选查看</span>
             <span>
             <Radio.Group value={recordType} onChange={this.recordTypeFilter}>
-              <Radio.Button value="allNum">全部{allNum}</Radio.Button>
-              <Radio.Button value="planNum">计划{planNum}</Radio.Button>
-              <Radio.Button value="defectNum">消缺{defectNum}</Radio.Button>
-              <Radio.Button value="inspectNum">巡检{inspectNum}</Radio.Button>
-              <Radio.Button value="noteNum">记事{noteNum}</Radio.Button>
+              <Radio.Button value="allNum">全部{dataFormats(allNum)}</Radio.Button>
+              <Radio.Button value="planNum">计划{dataFormats(planNum)}</Radio.Button>
+              <Radio.Button value="defectNum">消缺{dataFormats(defectNum)}</Radio.Button>
+              <Radio.Button value="inspectNum">巡检{dataFormats(inspectNum)}</Radio.Button>
+              <Radio.Button value="noteNum">记事{dataFormats(noteNum)}</Radio.Button>
             </Radio.Group>
             </span>
           </span>
