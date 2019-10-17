@@ -17,7 +17,6 @@ function* easyPut(actionName, payload){
 }
 
 // 工作台 工作计划管理
-// getTaskList: '/v3/service/workbench/list', //	工作台-今日工作列表
 // getRecords: '/v3/service/workbench/run', // 工作台-运行记录
 // getTickets: '/v3/service/workbench/work', // 工作台 - 两票三制记录
 // setRecordComplete: '/v3/service/task/complete', //  工作记事 => 操作任务为已完成
@@ -29,39 +28,25 @@ function* easyPut(actionName, payload){
 // handlePlanStatus: '/v3/service/task/future', // 工作台日历任务批量下发/删除
 // addPlan: '/v3/service/inspect/plan', // 新增新增工作计划
 
-function *getTaskList(){
+function *getTaskList({ payload }){ //	工作台-今日工作列表
   try {
-    // const { stationCode, pageKey } = payload || {};
     const url = `${APIBasePath}${operation.getTaskList}`;
-    const response = yield call(request.post, url);
+    const response = yield call(request.post, url, { ...payload });
     if (response.code === '10000') {
+      const { list = [], nums = {}} = response.data || {};
       yield call(easyPut, 'fetchSuccess', {
-        // [`${pageKey}TopData`]: response.data || {}, // 根据不同页面，生成: stationTopData, deviceTopData, pointTopData
-        // [`${pageKey}Unix`]: moment().unix(),
+        stageList: list,
+        stageNumInfo: nums,
       });
     } else { throw response; }
   } catch (error) {
-    console.log(error);
+    yield call(easyPut, 'fetchSuccess', {
+      stageList: [],
+      stageNumInfo: {},
+    });
     message.error('获取今日工作列表, 请刷新重试');
   }
 }
-
-// function *getOverviewStation({ payload }){ // 电站基础数据信息 - 各页面单独存储一份
-//   try {
-//     const { stationCode, pageKey } = payload || {};
-//     const url = `${APIBasePath}${monitor.getOverviewStation}/${stationCode}`;
-//     const response = yield call(request.get, url);
-//     if (response.code === '10000') {
-//       yield call(easyPut, 'fetchSuccess', {
-//         [`${pageKey}TopData`]: response.data || {}, // 根据不同页面，生成: stationTopData, deviceTopData, pointTopData
-//         [`${pageKey}Unix`]: moment().unix(),
-//       });
-//     } else { throw response; }
-//   } catch (error) {
-//     console.log(error);
-//     message.error('获取电站基础信息失败, 请刷新重试');
-//   }
-// }
 
 export function* watchWorkStage() {
   yield takeLatest(workStageAction.getTaskList, getTaskList);
