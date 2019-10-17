@@ -6,7 +6,7 @@
   width: 100%;
 
   .topSearch {
-    background: #fff;
+    // background: #fff;
     display: flex;
     height: 60px;
     line-height: 40px;
@@ -16,6 +16,15 @@
       display: flex;
       align-items: center;
       padding-left: 40px;
+
+      .yearSelectStyle {
+        :global {
+          .ant-input {
+            width: 115px;
+          }
+        }
+      }
+
 
       .yearWidth {
         margin: 0 8px;
@@ -29,7 +38,7 @@
   }
 
   .reportList {
-    background: #fff;
+    // background: #fff;
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -75,3 +84,17 @@
   }
 
 }
+
+.light {
+  .topSearch {
+    background: #fff;
+  }
+
+  .reportList {
+    background: #fff;
+  }
+}
+
+.dark {}
+
+.zt {}

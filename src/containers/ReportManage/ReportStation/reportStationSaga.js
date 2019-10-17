@@ -26,6 +26,7 @@ function* getReportStationList(action) {
       yield put({
         type: reportStationAction.changeStore,
         payload: {
+          ...payload,
           total,
           reportStationList: response.data.data.dataList || [],
         },
@@ -46,7 +47,43 @@ function* getReportStationList(action) {
   }
 
 }
+function* exportReportStationList(action) {
+  const { payload } = action;
+  const url = `${APIBasePath}${reportManage.exportReportStationList}`;
+  try {
+    yield put({
+      type: reportStationAction.changeStore,
+      payload: {
+        exportLoading: true,
+      },
+    });
+    const response = yield call(axios.post, url, payload);
+
+    if (response.data.code === '10000') {
+      message.success('电站报表导出成功');
+      yield put({
+        type: reportStationAction.changeStore,
+        payload: {
+          exportLoading: false,
+        },
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    message.error('电站报表导出失败！');
+    yield put({
+      type: reportStationAction.changeStore,
+      payload: {
+        exportLoading: false,
+      },
+    });
+    console.log(e);
+  }
+
+}
 export function* watchReportStation() {
   yield takeLatest(reportStationAction.getReportStationList, getReportStationList);
+  yield takeLatest(reportStationAction.exportReportStationList, exportReportStationList);
 
 }

@@ -9,6 +9,8 @@ import { reportStationAction } from './reportStationAction';
 
 class ReportStation extends Component {
   static propTypes = {
+    theme: PropTypes.string,
+    resetStore: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
@@ -17,9 +19,9 @@ class ReportStation extends Component {
     this.props.resetStore();
   }
   render() {
-
+    const { theme } = this.props;
     return (
-      <div className={styles.reportstation} >
+      <div className={`${styles.reportstation} ${styles[theme]}`} >
         <CommonBreadcrumb breadData={[{ name: '电站报表' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.reportbox}>
           <ReportStationBox {...this.props} />
@@ -33,7 +35,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.reportManageReducer.reportStationReducer.toJS(),
     stations: state.common.get('stations').toJS(),
-
+    theme: state.common.get('theme'),
   };
 };
 const mapDispatchToProps = (dispatch) => ({

@@ -12,12 +12,15 @@ class ReportTable extends React.Component {
     pageSize: PropTypes.number,
     total: PropTypes.number,
     loading: PropTypes.bool,
+    exportLoading: PropTypes.bool,
     getReportStationList: PropTypes.func,
+    exportReportStationList: PropTypes.func,
     changeStore: PropTypes.func,
     startTime: PropTypes.string,
     dateType: PropTypes.string,
     endTime: PropTypes.string,
     stationCodes: PropTypes.array,
+    reportStationList: PropTypes.array,
     orderFiled: PropTypes.string,
     orderType: PropTypes.string,
   }
@@ -25,8 +28,6 @@ class ReportTable extends React.Component {
     super(props, context);
   }
   changePage = (currentPage, pageSize) => {
-    console.log('pageSize: ', pageSize);
-    console.log('currentPage: ', currentPage);
     this.props.changeStore({
       pageSize,
       pageNum: currentPage,
@@ -71,10 +72,16 @@ class ReportTable extends React.Component {
       }
     ));
   }
+  exportReportStation = () => {
+    const { startTime, endTime, stationCodes, dateType, orderFiled, orderType } = this.props;
+    const params = { startTime, endTime, stationCodes, dateType, orderFiled, orderType };
+    this.props.exportReportStationList({
+      ...params,
+    });
+  }
   render() {
-    const { pageNum, pageSize, total, loading, reportStationList } = this.props;
-    const data = Array(30).fill({ 'theoryPower': '22222' });
-    const reportStationList2 = [...reportStationList, ...reportStationList];
+    const { pageNum, pageSize, total, loading, reportStationList, exportLoading } = this.props;
+    // const reportStationList2 = [...reportStationList];
     const power = [
       { name: '理论发电量', unit: '万kWh', dataIndex: 'theoryPower', key: 'theoryPower' },
       { name: '逆变器发电量', unit: '万kWh', dataIndex: 'genInverter', key: 'genInverter' },
@@ -195,7 +202,7 @@ class ReportTable extends React.Component {
     return (
       <div className={styles.reportList}>
         <div className={styles.handlePage}>
-          <div><Button type="primary" disabled={!data.length}>导出</Button></div>
+          <div><Button type="primary" onClick={this.exportReportStation} loading={exportLoading} disabled={!reportStationList.length}>导出</Button></div>
           <div>
             <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onChange={this.changePage} />
           </div>
@@ -205,7 +212,7 @@ class ReportTable extends React.Component {
           loading={loading}
           columns={columns}
           onChange={this.tableChange}
-          dataSource={reportStationList2}
+          dataSource={reportStationList.map((e, i) => ({ ...e, key: i }))}
           bordered
           scroll={{ x: 3480, y: 460 }}
           pagination={false}
