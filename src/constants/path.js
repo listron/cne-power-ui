@@ -113,7 +113,7 @@ export default {
     operation: {
       // 工作台 工作计划管理
       getTaskList: '/v3/service/workbench/list', //	工作台-今日工作列表
-      getRecords: '/v3/service/workbench/run', // 工作台-运行记录
+      getRunningLog: '/v3/service/workbench/run', // 工作台-运行记录
       getTickets: '/v3/service/workbench/work', // 工作台 - 两票三制记录
       setRecordComplete: '/v3/service/task/complete', //  工作记事 => 操作任务为已完成
       getRecordDetail: '/v3/service/task', // 工作记事 => 查看详情

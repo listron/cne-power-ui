@@ -1,0 +1,58 @@
+
+.stationLists{
+  display: flex;
+  height: 42px;
+  align-items: center;
+  .stationHandler{
+    cursor: pointer;
+    flex: 0 0 133px;
+  }
+  .stationNames{
+    
+  }
+}
+
+.recordsList{
+  .taskTypeName {
+    // width: calc((100% - 385px) * 0.27);
+    width: 10%;
+  }
+  .taskDesc {
+    // width: calc((100% - 385px) * 0.41);
+    width: 10%;
+  }
+  .stationName {
+    // width: calc((100% - 385px) * 0.41);
+    width: 10%;
+  }
+  .completeTime {
+    // width: calc((100% - 385px) * 0.41);
+    width: 10%;
+  }
+  .handleUser {
+    // width: calc((100% - 385px) * 0.41);
+    width: 10%;
+  }
+  .completeStatus {
+    // width: calc((100% - 385px) * 0.41);
+    width: 10%;
+  }
+  .handle {
+    // width: calc((100% - 385px) * 0.41);
+    width: 10%;
+  }
+  .taskTypeName, .taskDesc, .stationName, .completeTime, .handleUser, .completeStatus, .handle {
+    div{
+      
+    }
+  }
+
+}
+
+.light.stationLists{
+  border:1px solid #e1e3e4;
+  .stationHandler{
+    color: #fff;
+    background:#199475;
+  }
+}

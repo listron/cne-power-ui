@@ -16,9 +16,6 @@ function* easyPut(actionName, payload){
   });
 }
 
-// 工作台 工作计划管理
-// getRecords: '/v3/service/workbench/run', // 工作台-运行记录
-// getTickets: '/v3/service/workbench/work', // 工作台 - 两票三制记录
 // setRecordComplete: '/v3/service/task/complete', //  工作记事 => 操作任务为已完成
 // getRecordDetail: '/v3/service/task', // 工作记事 => 查看详情
 // addNewRecord: '/v3/service/workbench/inspect/defect', // 新增工作记事
@@ -31,24 +28,56 @@ function* easyPut(actionName, payload){
 function *getTaskList({ payload }){ //	工作台-今日工作列表
   try {
     const url = `${APIBasePath}${operation.getTaskList}`;
+    yield call(easyPut, 'changeStore', { stageLoading: true });
     const response = yield call(request.post, url, { ...payload });
     if (response.code === '10000') {
       const { list = [], nums = {}} = response.data || {};
+      const { allNums } = nums;
       yield call(easyPut, 'fetchSuccess', {
-        stageList: list,
-        stageNumInfo: nums,
+        stageList: list.map(e => ({ ...e, key: e.taskId })),
+        stageNumInfo: allNums,
+        stageLoading: false,
       });
     } else { throw response; }
   } catch (error) {
-    yield call(easyPut, 'fetchSuccess', {
+    yield call(easyPut, 'changeStore', {
       stageList: [],
       stageNumInfo: {},
+      stageLoading: false,
     });
-    message.error('获取今日工作列表, 请刷新重试');
+    message.error('获取今日工作列表失败, 请刷新重试');
   }
 }
 
+function *getRunningLog({ payload }) {
+  try {
+    const url = `${APIBasePath}${operation.getRunningLog}`;
+    yield call(easyPut, 'changeStore', { stageLoading: true });
+    const response = yield call(request.post, url, { ...payload });
+    if (response.code === '10000') {
+      const { list = [], nums = {}} = response.data || {};
+      const { allNums } = nums;
+      yield call(easyPut, 'fetchSuccess', {
+        stageList: list.map(e => ({ ...e, key: e.taskId })),
+        stageNumInfo: allNums,
+        stageLoading: false,
+      });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      stageList: [],
+      stageNumInfo: {},
+      stageLoading: false,
+    });
+    message.error('获取今日工作列表失败, 请刷新重试');
+  }
+}
+
+// getRecords: '/v3/service/workbench/run', // 工作台-运行记录
+// getTickets: '/v3/service/workbench/work', // 工作台 - 两票三制记录
+
 export function* watchWorkStage() {
   yield takeLatest(workStageAction.getTaskList, getTaskList);
+  yield takeLatest(workStageAction.getRunningLog, getRunningLog);
 }
 
