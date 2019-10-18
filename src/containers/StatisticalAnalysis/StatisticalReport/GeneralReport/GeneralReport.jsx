@@ -9,13 +9,19 @@ import moment from 'moment';
 import path from '../../../../constants/path';
 import axios from 'axios';
 import Cookie from 'js-cookie';
+import PropTypes from 'prop-types';
 import { enterpriseKey } from '../../../../constants/enterpriseKey';
 
 const { APIBasePath } = path.basePaths;
-const { dailyreport, faultReport, genReport, indicatorReport } = path.APISubPaths.statisticalAnalysis;
+const { dailyreport, faultReport, genReport, indicatorReport, preViewXlsx } = path.APISubPaths.statisticalAnalysis;
 const { MonthPicker } = DatePicker;
 
 class GeneralReport extends Component {
+  static propTypes = {
+    theme: PropTypes.string,
+    stations: PropTypes.array,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,43 +32,53 @@ class GeneralReport extends Component {
       selectedStation: [],
       typeDowning: '', // report  fault eleInfo proOperate
     };
+    this.authData = localStorage.getItem('authData');
   }
 
   ChangeReportDate = value => { // 日报
     this.setState({
       reportDate: value,
     });
-  }
+  };
 
   ChangeFaultDate = value => { //故障日报
     this.setState({
       faultDate: value,
     });
-  }
+  };
 
   ChangeEleInfoDate = value => {//发电量信息汇总
     this.setState({
       eleInfoDate: value,
     });
-  }
+  };
 
   ChangeProOperationDate = value => { // 生产指标运行
     this.setState({
       proOperationDate: value,
     });
-  }
+  };
 
 
   disabledDate = (current) => { //日期不可选
     return current && current > moment().startOf('day');
-  }
+  };
 
   selectStation = selectedStation => {
     this.setState({ selectedStation });
   };
 
+  preViewReport = () => {
+    const { reportDate } = this.state;
+    const time = reportDate.format('YYYY-MM-DD');
+    const fileName = `${time}日报.xlsx`;
+    const url = `${APIBasePath}/${dailyreport}/${time}`;
+    this.previewFunc(fileName, url);
+  };
+
   downloadReport = () => { // 日报下载
-    let { reportDate, typeDowning } = this.state;
+    const { typeDowning } = this.state;
+    let { reportDate } = this.state;
     reportDate = reportDate.format('YYYY-MM-DD');
     const downloadHref = `${APIBasePath}/${dailyreport}/${reportDate}`;
     const fileName = `${reportDate}日报.xlsx`;
@@ -70,10 +86,19 @@ class GeneralReport extends Component {
     if (typeDowning !== 'report') {
       this.downLoadFun(downloadHref, fileName, reportDate);
     }
-  }
+  };
+
+  preViewFault = () => {
+    const { faultDate } = this.state;
+    const time = faultDate.format('YYYY-MM-DD');
+    const fileName = `${time}故障日报.xlsx`;
+    const url = `${APIBasePath}/${faultReport}/${time}`;
+    this.previewFunc(fileName, url);
+  };
 
   downloadFault = () => { // 故障日报
-    let { faultDate, typeDowning } = this.state;
+    const { typeDowning } = this.state;
+    let { faultDate } = this.state;
     faultDate = faultDate.format('YYYY-MM-DD');
     const downloadHref = `${APIBasePath}/${faultReport}/${faultDate}`;
     const fileName = `${faultDate}故障日报.xlsx`;
@@ -81,10 +106,19 @@ class GeneralReport extends Component {
     if (typeDowning !== 'fault') {
       this.downLoadFun(downloadHref, fileName, faultDate);
     }
-  }
+  };
+
+  preViewGenInfo = () => {
+    const { eleInfoDate } = this.state;
+    const time = eleInfoDate.format('YYYY-MM-DD');
+    const fileName = `${time}发电量信息汇总.xlsx`;
+    const url = `${APIBasePath}/${genReport}/${time}`;
+    this.previewFunc(fileName, url);
+  };
 
   downloadGenInfo = () => { // 发电量信息下载
-    let { eleInfoDate, typeDowning } = this.state;
+    const { typeDowning } = this.state;
+    let { eleInfoDate } = this.state;
     eleInfoDate = eleInfoDate.format('YYYY-MM-DD');
     const downloadHref = `${APIBasePath}/${genReport}/${eleInfoDate}`;
     const fileName = `${eleInfoDate}发电量信息汇总.xlsx`;
@@ -92,7 +126,17 @@ class GeneralReport extends Component {
     if (typeDowning !== 'eleInfo') {
       this.downLoadFun(downloadHref, fileName, eleInfoDate);
     }
-  }
+  };
+
+  preViewIndicator = () => {
+    const { proOperationDate, selectedStation } = this.state;
+    const { stationCode } = selectedStation[0];
+    const indicatorYear = proOperationDate.format('YYYY');
+    const indicatorMonth = proOperationDate.format('MM');
+    const fileName = `${proOperationDate}生产指标运行.xlsx`;
+    const url = `${APIBasePath}/${indicatorReport}/${stationCode}/${indicatorYear}/${indicatorMonth}`;
+    this.previewFunc(fileName, url);
+  };
 
   downloadIndicator = () => { // 生产运营指标下载
     const { proOperationDate, selectedStation, typeDowning } = this.state;
@@ -105,7 +149,17 @@ class GeneralReport extends Component {
     if (typeDowning !== 'proOperate') {
       this.downLoadFun(downloadHref, fileName, proOperationDate);
     }
-  }
+  };
+
+  previewFunc = (fileName, resUrl) => {
+    // 不需要/api的预览地址
+    const prevBaseUrl = `${APIBasePath.split('/api')[0]}${preViewXlsx}`;
+    // 要查看的预览地址
+    const baseUrl = `${resUrl}?fullfilename=${fileName}&method=POST&auth=bearer ${this.authData}`;
+    // 新页面打开
+    window.open(`http://10.10.15.81:9999/onlinePreview?url=${encodeURIComponent(baseUrl)}`, '_blank');
+    // window.open(`${prevBaseUrl}?url=${encodeURIComponent(baseUrl)}`, '_blank');
+  };
 
   downLoadFun = (url, fileName, date) => { // 根据路径，名称，日期，通用下载函数。
     axios.post(url, {}, { responseType: 'blob' }).then(response => {
@@ -139,7 +193,7 @@ class GeneralReport extends Component {
       message.warning('下载失败！请重新尝试');
       console.log(warning);
     });
-  }
+  };
 
   render() {
     const { reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation, typeDowning } = this.state;
@@ -169,6 +223,8 @@ class GeneralReport extends Component {
                 />
               </div>
               <div className={styles.downloadBtn}>
+                <Button className={styles.text} onClick={this.preViewReport} disabled={!reportDate}>预览</Button>
+                <span className={styles.line} />
                 <Button className={styles.text} onClick={this.downloadReport} disabled={!reportDate}
                   loading={typeDowning === 'report'}>下载</Button>
               </div>
@@ -190,6 +246,8 @@ class GeneralReport extends Component {
                 />
               </div>
               <div className={styles.downloadBtn}>
+                <Button disabled={!faultDate} onClick={this.preViewFault} className={styles.text}>预览</Button>
+                <span className={styles.line} />
                 <Button disabled={!faultDate} onClick={this.downloadFault} className={styles.text} loading={typeDowning === 'fault'}>下载</Button>
               </div>
             </div>}
@@ -210,6 +268,8 @@ class GeneralReport extends Component {
                 />
               </div>
               <div className={styles.downloadBtn}>
+                <Button disabled={!eleInfoDate} className={styles.text} onClick={this.preViewGenInfo}>预览</Button>
+                <span className={styles.line} />
                 <Button disabled={!eleInfoDate} className={styles.text} onClick={this.downloadGenInfo} loading={typeDowning === 'eleInfo'}>下载</Button>
               </div>
             </div>}
@@ -239,6 +299,12 @@ class GeneralReport extends Component {
                 />
               </div>
               <div className={styles.downloadBtn}>
+                <Button
+                  disabled={selectedStation.length === 0 || !proOperationDate}
+                  className={styles.text}
+                  onClick={this.preViewIndicator}
+                >预览</Button>
+                <span className={styles.line} />
                 <Button
                   disabled={selectedStation.length === 0 || !proOperationDate}
                   className={styles.text}
