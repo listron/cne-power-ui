@@ -318,7 +318,7 @@ class TableList extends Component {
                     value={warningTipText} />}
                 <div className={styles.tableTop}>
                     <div className={styles.selectCondition}>
-                        <Button type="add" onClick={this.addWorkFlow}> <i>+</i>工作票 </Button>
+                        <Button type="add" onClick={this.addWorkFlow}><i>+</i>工作票 </Button>
                         <div className={`${styles.commonButton} ${!review && styles.disabled}`}
                             onClick={() => { this.handleBatch('review'); }}>审核</div>
                         <div className={`${styles.commonButton} ${!complete && styles.disabled}`}
