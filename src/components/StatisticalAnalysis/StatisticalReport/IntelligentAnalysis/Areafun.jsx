@@ -21,65 +21,65 @@ export const ScoreStations = ({scoreStations}) => { // 同区域电站分析报�
                 <div className={styles.titlesText}>{
                   <div className={styles.cause}>
                     <div>
-                      {(e.lowPlanFinishRate) &&
+                      {(e.lowPlanFinishRate || e.lowPlanFinishRate === 0) &&
                         <span>
                           <span>发电量计划完成率较低，为</span>
-                          <span>{dataFormats(e.lowPlanFinishRate, '--', 2, true) || '--'}</span>
+                          <span>{dataFormats(e.lowPlanFinishRate, '--', 2, true)}</span>
                           <span>%；</span>
                         </span>}
-                      {(e.lowPrFinishRate) &&
+                      {(e.lowPrFinishRate || e.lowPrFinishRate === 0) &&
                         <span>
                           <span>PR计划完成率较低，为</span>
-                          <span>{dataFormats(e.lowPrFinishRate, '--', 2, true) || '--'}</span>
+                          <span>{dataFormats(e.lowPrFinishRate, '--', 2, true)}</span>
                           <span>%；</span>
                         </span>}
                       {(e.highLostPowerEquivalentHours || e.highLostPowerEquivalentHours === 0) &&
                         <span>
                           <span>损失电量等效时较高，为</span>
-                          <span>{dataFormats(e.highLostPowerEquivalentHours, '--', 2, true) || '--'}</span>
+                          <span>{dataFormats(e.highLostPowerEquivalentHours, '--', 2, true)}</span>
                           <span>h。</span>
                         </span>}
-                      {(e.highComPlantPowerRate) &&
+                      {(e.highComPlantPowerRate || e.highComPlantPowerRate === 0) &&
                         <span>
                           <span>用电率较高，为</span>
-                          <span>{dataFormats(e.highComPlantPowerRate, '--', 2, true) || '--'}</span>
+                          <span>{dataFormats(e.highComPlantPowerRate, '--', 2, true)}</span>
                           <span>%；</span>
                         </span>}
                         {(e.lowDefectFinishRate || e.lowDefectFinishRate === 0) &&
                         <span>
                           <span>消缺率较低，为</span>
-                          <span>{dataFormats(e.lowDefectFinishRate, '--', 2, true) || '--'}</span>
+                          <span>{dataFormats(e.lowDefectFinishRate, '--', 2, true)}</span>
                           <span>%；</span>
                         </span>}
                       {
                         (e.aLevelDefectFinishRate || e.bLevelDefectFinishRate || e.cLevelDefectFinishRate) && <span>消缺及时性较差，</span>
                       }
-                      {(e.aLevelDefectFinishRate) &&
+                      {(e.aLevelDefectFinishRate || e.aLevelDefectFinishRate === 0) &&
                         <span>
                           <span>一级故障平均处理时长</span>
-                          <span>{dataFormats(e.aLevelDefectFinishRate, '--', 2, true) || '--'}</span>
+                          <span>{dataFormats(e.aLevelDefectFinishRate, '--', 2, true)}</span>
                           <span>h，</span>
                         </span>}
-                      {(e.bLevelDefectFinishRate) &&
+                      {(e.bLevelDefectFinishRate || e.bLevelDefectFinishRate === 0) &&
                         <span>
                           <span>二级故障平均处理时长</span>
-                          <span>{dataFormats(e.bLevelDefectFinishRate, '--', 2, true) || '--'}</span>
+                          <span>{dataFormats(e.bLevelDefectFinishRate, '--', 2, true)}</span>
                           <span>h，</span>
                         </span>}
-                      {(e.cLevelDefectFinishRate) &&
+                      {(e.cLevelDefectFinishRate || e.cLevelDefectFinishRate) &&
                         <span>
                           <span>三级故障平均处理时长</span>
-                          <span>{dataFormats(e.cLevelDefectFinishRate, '--', 2, true) || '--'}</span>
+                          <span>{dataFormats(e.cLevelDefectFinishRate, '--', 2, true)}</span>
                           <span>h。</span>
                         </span>}
                     </div>
                   </div>
                 }</div>
-            </div>
-          );
-        })}
-    </div>  
-  }
+              </div>
+            );
+          })}
+      </div>
+      }
     </div>
   );
 };

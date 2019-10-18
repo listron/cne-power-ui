@@ -246,6 +246,33 @@ const menuData = [
   //       rightKey: 'operation_locate',
   //       defaultPath: true,
   //     },
+  //     {
+  //       name: '设备报表',
+  //       path: 'device',
+  //       iconStyle: 'icon-trends',
+  //       rightKey: 'operation_locate',
+  //       children: [
+  //         {
+  //           name: '集中式逆变器',
+  //           path: 'centerInvert',
+  //           rightKey: 'operation_experience',
+  //         }, {
+  //           name: '组串式逆变器',
+  //           path: 'combineInvert',
+  //           rightKey: 'operation_experience',
+  //         },
+  //         {
+  //           name: '汇流箱',
+  //           path: 'confluenceBox',
+  //           rightKey: 'operation_experience',
+  //         },
+  //         {
+  //           name: '气象站',
+  //           path: 'weatherStation',
+  //           rightKey: 'operation_experience',
+  //         },
+  //       ],
+  //     },
 
   //   ],
   // },
