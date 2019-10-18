@@ -112,6 +112,7 @@ import { watchCadePartSaga } from './Operation/CaseSet/casePartSaga';
 
 //报表管理
 import { watchReportStation } from './ReportManage/ReportStation/reportStationSaga';
+import { watchCenterInvert } from './ReportManage/ReportDevice/CenterInvert/centerInvertSaga';
 
 
 // root saga
@@ -229,6 +230,8 @@ export default function* rootSaga() {
     watchWorkFlow(), ////两票 -工作票
     //案例集
     watchCadePartSaga(), //案例集
-    watchReportStation(),//电站报表
+    // 报表管理
+    watchReportStation(), //电站报表
+    watchCenterInvert(), //设备报表
   ]);
 }

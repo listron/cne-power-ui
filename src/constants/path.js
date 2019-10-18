@@ -552,6 +552,7 @@ export default {
       faultReport: 'v3/performance/generalreport/fault',
       genReport: 'v3/performance/generalreport/gen',
       indicatorReport: 'v3/performance/generalreport/indicator',
+      preViewXlsx: '/onlinePreview',
       // 日报查询
       getQuotaList: '/v3/performance/report/index/list', // 关键指标列表
       getFaultList: '/v3/performance/report/fault/list', // 故障信息列表
@@ -687,8 +688,12 @@ export default {
     reportManage: {
       getReportStationList: '/v3/sun/report/station/list',
       exportReportStationList: '/v3/sun/report/station/export',
-
-    }
+      getDayCenterInvert: '/v3/sun/report/jznb/list/min',
+      getCenterInvert: '/v3/sun/report/jznb/list/day',
+      exportDayCenterInvert: '/api/v3/sun/report/jznb/export/min',
+      exportCenterInvert: '/api/v3/sun/report/jznb/export/day',
+      disabledStations: '/api/v3/api/v3/station/hasspecil',
+    },
   },
 };
 
