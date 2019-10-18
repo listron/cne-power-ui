@@ -110,8 +110,9 @@ class ReportSeach extends React.Component {
     });
   }
   render() {
-    const { dateType, startTime, endTime } = this.state;
+    const { dateType, startTime, endTime, stationCodes } = this.state;
     const { stations } = this.props;
+    const disabledBtn = !stationCodes.length;
     return (
       <div className={styles.topSearch}>
         <div className={styles.timeStyle}>
@@ -124,6 +125,7 @@ class ReportSeach extends React.Component {
           &nbsp;&nbsp;
           {dateType === 'day' && (
             <RangePicker
+              allowClear={false}
               value={[moment(startTime), moment(endTime)]}
               disabledDate={this.disabledDate}
               onChange={this.changeDay}
@@ -133,6 +135,7 @@ class ReportSeach extends React.Component {
             <RangePicker
               format="YYYY-MM"
               mode={['month', 'month']}
+              allowClear={false}
               // disabledDate={disableDateFun}
               onCalendarChange={this.onCalendarChange}
               value={[moment(startTime, dateFormat), moment(endTime, dateFormat)]}
@@ -156,9 +159,8 @@ class ReportSeach extends React.Component {
           <StationSelect
             data={stations.filter(e => e.stationType === 1)}
             multiple={true}
-            disabledStation={[360]}
             onChange={this.changeStation} />
-          <Button type="primary" className={styles.btnStyle} onClick={this.searchReportData} >查询</Button>
+          <Button type="primary" className={styles.btnStyle} disabled={disabledBtn} onClick={this.searchReportData} >查询</Button>
         </div>
       </div>
     );
