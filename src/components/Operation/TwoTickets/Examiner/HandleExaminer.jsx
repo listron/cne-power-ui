@@ -54,7 +54,7 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
   checkStations = ({ stationCodes }) => { // 电站选择
     const { tableParams, changeStore, getSettingList } = this.props;
     const newParams = {
-      tableParams,
+      ...tableParams,
       stationCodes,
       pageNum: 1, // 回到第一页。
     };
@@ -81,7 +81,7 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
       title: '操作',
       dataIndex: 'handle',
       render: (text, record) => {
-        const { state, distributionId } = record;
+        const { state } = record;
         return (
           <div className={styles.handler}>
             <span
@@ -92,7 +92,7 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
             />
             {state > 0 && <span
               className="iconfont icon-look"
-              onClick={() => this.showDetail(distributionId)}
+              onClick={() => this.showDetail(record)}
             />}
           </div>
         );
@@ -100,22 +100,26 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
     },
   ])
 
-  showEdit = (record) => { // 展示编辑弹框
+  showEdit = (modalRecord) => { // 展示编辑弹框
     const { settableNodes, getSettedInfo, getSettableUsers } = this.props;
-    const { distributionId, stationCode } = record;
+    const { distributionId, stationCode } = modalRecord;
     getSettableUsers({ settableNodes, stationCode });
     getSettedInfo({ distributionId, modalType: 'editModalShow' });
+    this.props.changeStore({ modalRecord });
   }
 
-  showCreate = (record, handleDistributionId) => { // 展示新设置弹框
-    const { settableNodes, changeStore, getSettableUsers } = this.props;
-    const { distributionId, stationCode } = record;
+  showCreate = (modalRecord) => { // 展示新设置弹框
+    const { distributionId, stationCode } = modalRecord;
+    const { settableNodes, getSettableUsers } = this.props;
+    console.log(modalRecord)
     getSettableUsers({ settableNodes, stationCode });
-    changeStore({ editModalShow: true, handleDistributionId: distributionId });
+    this.props.changeStore({ editModalShow: true, handleDistributionId: distributionId, modalRecord });
   }
 
-  showDetail = (distributionId) => { // 展示详情弹框
+  showDetail = (modalRecord) => { // 展示详情弹框
+    const { distributionId } = modalRecord;
     this.props.getSettedInfo({ distributionId, modalType: 'detailModalShow' });
+    this.props.changeStore({ modalRecord });
   }
 
   render() {

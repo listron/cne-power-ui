@@ -15,6 +15,7 @@ class BigFrequencyChats extends Component{
     bigchartLoading: PropTypes.bool,
     saveBtn: PropTypes.bool,
     id: PropTypes.string,
+    frequencyMaxData: PropTypes.object,
   }
 
   componentDidMount(){
@@ -63,12 +64,24 @@ class BigFrequencyChats extends Component{
   }
 
   creatOption = (curBigChartData = [], saveBtn, deviceName) => {
+    const {
+      frequencyMaxData: {
+        eneryFrequency,
+        speedFrequency,
+        windSpeedConfId,
+      }
+    } = this.props;
     const windSpeedNameData = [], speedFrequencyData = [], eneryFrequencyData = [];
     curBigChartData.forEach(e => {
-      windSpeedNameData.push(e.windSpeedName);
-      speedFrequencyData.push(e.speedFrequency);
-      eneryFrequencyData.push(e.eneryFrequency);
+      // 小于等于最大值
+      if(e.windSpeedConfId <= windSpeedConfId) {
+        windSpeedNameData.push(e.windSpeedName);
+        speedFrequencyData.push(e.speedFrequency);
+        eneryFrequencyData.push(e.eneryFrequency);
+      }
     });
+    // 取y轴最大值 * 100
+    const maxYAxis = eneryFrequency > speedFrequency ? Math.ceil(eneryFrequency * 100) : Math.ceil(speedFrequency * 100);
 
     const speedLength = speedFrequencyData.filter(e => {
       return e !== null;
@@ -82,7 +95,7 @@ class BigFrequencyChats extends Component{
       graphic: (speedLength.length && eneryLength.length) ? hiddenNoData : showNoData,
       color: ['#00cdff', '#ff9000'],
       title: {
-        text: [`${deviceName}`, '{b|}'].join(''),
+        text: [`${deviceName} `, '{b|}'].join(''),
         left: '5%',
         textStyle: {
           fontSize: 14,
@@ -102,9 +115,12 @@ class BigFrequencyChats extends Component{
       legend: {
         data: ['风速频率', '风能频率'],
         selectedMode: false,
+        top: '5%',
       },
       tooltip: {
         trigger: 'axis',
+        padding: 0,
+        borderWidth: 0,
         axisPointer: {
           type: 'shadow',
         },
@@ -116,6 +132,8 @@ class BigFrequencyChats extends Component{
           const tmpSpeed = speedObject && !isNaN(speedObject.value);
           const tmpEnery = eneryObject && !isNaN(eneryObject.value);
           let speed = '', enery = '';
+          const speendStart = curBigChartData[param[0].dataIndex].windSpeedStart;
+          const speendEnd = curBigChartData[param[0].dataIndex].windSpeedEnd;
           if (tmpSpeed) {
             speed = `<div class=${styles.speedBox}>
               <span class=${styles.speed}></span>
@@ -131,14 +149,16 @@ class BigFrequencyChats extends Component{
             </div>`;
           }
           return `<div class=${styles.tipBox}>
+            <div class=${styles.title}>风速区间${speendStart}~${speendEnd}</div>
             ${speed}${enery}
           </div>`;
         },
       },
       grid: {
         left: '3%',
-        right: '4%',
+        right: '5%',
         bottom: '3%',
+        top: '15%',
         containLabel: true,
       },
       xAxis: [
@@ -164,8 +184,7 @@ class BigFrequencyChats extends Component{
         {
           type: 'value',
           min: 0,
-          max: 20,
-          interval: 4, // y轴每个数字之间的间隔
+          max: maxYAxis,
           splitLine: {
             show: true,
             lineStyle: {
@@ -192,12 +211,10 @@ class BigFrequencyChats extends Component{
         {
           name: '风速频率',
           type: 'bar',
-          barWidth: '50%',
           data: speedFrequencyData,
         }, {
           name: '风能频率',
           type: 'bar',
-          barWidth: '50%',
           data: eneryFrequencyData,
         },
       ],

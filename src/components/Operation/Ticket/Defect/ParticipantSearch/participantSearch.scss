@@ -1,0 +1,29 @@
+@import "../../../../../theme/theme.scss";
+
+
+.participantSearch{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 28px 20px;
+  .participantTip{
+    flex: 0 0 60px;
+    letter-spacing: 6px;
+    margin-right: 12px;
+  }
+  .search{
+    margin-left: 36px;
+  }
+}
+
+.participantSearch.light{
+
+}
+
+.participantSearch.dark{
+  background: rgba(83, 104, 241, 0.15);
+  color: #00baff;
+  border: 1px solid rgba(83, 104, 241, 0.4);
+  margin-top: 10px;
+  padding: 20px 28px;
+}

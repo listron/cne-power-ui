@@ -41,6 +41,7 @@ class PlanTable extends Component {
     downLoadFile: PropTypes.func,
     planYear: PropTypes.any,
     importFile: PropTypes.func,
+    importLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -48,11 +49,9 @@ class PlanTable extends Component {
     this.state = {
       data: [],
       editingKey: '',
-      monthPowers: {},
       warningTipText: '是否放弃当前修改',
       showWarningTip: false,
       currentClickKey: '',
-      importLoading: false,
       importVisible: false, // 批量导入显示
       fileList: [], // 导入文件
       importYear: moment().year(), // 批量导入的年份
@@ -79,10 +78,7 @@ class PlanTable extends Component {
 
   tableChange = (pagination, filter, sorter) => {//计划排序 排序还有误
     const sortField = getDefectSortField(sorter.field);
-    const ascend = sorter.order === 'ascend' ? '0' : '1' || '';
-    if (sortField === '4') {
-      return false;
-    }
+    const ascend = sorter.order === 'ascend' ? '1' : '2' || '';
     this.getPlanList({ sortField, sortMethod: ascend });
   };
 
@@ -199,7 +195,7 @@ class PlanTable extends Component {
         title: '年份',
         dataIndex: 'planYear',
         key: 'planYear',
-        sorter: false, // 暂时不排序了
+        // sorter: false, // 暂时不排序了
         className: styles.planYear,
       }, {
         title: () => <TableColumnTitle title="年计划发电量" unit="万kWh" />,
@@ -344,7 +340,7 @@ class PlanTable extends Component {
   }
 
   cancelAdd = () => {
-    this.setState({ importVisible: false });
+    this.setState({ importVisible: false, fileList: [] });
   }
 
   removeFile = (file) => { //  删除导入文件
@@ -354,7 +350,7 @@ class PlanTable extends Component {
   }
 
   render() {
-    const { pageSize, pageNum, totalNum, loading, planYear, importLoading } = this.props;
+    const { pageSize, pageNum, totalNum, loading, importLoading } = this.props;
     const { showWarningTip, warningTipText, data, importVisible, fileList } = this.state;
     const components = {
       body: {
@@ -400,7 +396,7 @@ class PlanTable extends Component {
         <Modal
           visible={importVisible}
           title="批量导入计划发电量"
-          onCancel={this.cancelAdd}
+          onCancel={() => { this.setState({ importVisible: false }); }}
           footer={null}
           getContainer={() => this.refs.modal}
           centered={true}
@@ -424,7 +420,9 @@ class PlanTable extends Component {
               <span> 支持xls、xlsx文件</span>
             </Upload>
           </div>
-          <Button type={'primary'} onClick={this.importFile} disabled={fileList.length === 0} loading={importLoading}>导入</Button>
+          <div className={styles.import}>
+            <Button type={'primary'} onClick={this.importFile} disabled={fileList.length === 0} loading={importLoading}>导入</Button>
+          </div>
         </Modal>
       </div>
     );

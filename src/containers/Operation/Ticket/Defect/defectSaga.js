@@ -3,6 +3,9 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { ticketAction } from '../ticketAction';
 import { message } from 'antd';
+const { basePaths = {}, APISubPaths = {} } = Path;
+const { APIBasePath = '' } = basePaths;
+const { ticket = {} } = APISubPaths;
 
 function* changeDefectStore(action) {//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
@@ -34,7 +37,7 @@ function* getDefectList(action) {
           ...payload,
           total,
           pageNum,
-          defectList: response.data.data.defectList,
+          defectList: response.data.data.defectList || [],
           selectedRowKeys: [],
           defectStatusStatistics: response.data.data.defectStatusStatistics,
         }
@@ -758,6 +761,31 @@ function* likeKnowledgebase(action) { // 点赞智能专家
   }
 }
 
+function* getParticipant(){ // 获取参与人所有列表
+  const url = `${APIBasePath}${ticket.getParticipant}`;
+  try{
+    const response = yield call(axios.get, url, {
+      // params: { username: '张'},
+    });
+    if (response.data.code === '10000') {
+      yield put({
+        type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
+        payload: {
+          participantList: response.data.data || [],
+        },
+      });
+    } else { throw response.data; }
+  } catch(error) {
+    console.log(error);
+    yield put({
+      type: ticketAction.CHANGE_DEFECT_STORE,
+      payload: {
+        participantList: [],
+      },
+    });
+  }
+}
+
 
 export function* watchDefect() {
   yield takeLatest(ticketAction.GET_DEFECT_LIST_SAGA, getDefectList);
@@ -781,6 +809,8 @@ export function* watchDefect() {
   yield takeLatest(ticketAction.CLEAR_DEFECT_STATE_SAGA, clearDefect);
   yield takeLatest(ticketAction.getKnowledgebase, getKnowledgebase);
   yield takeLatest(ticketAction.likeKnowledgebase, likeKnowledgebase);
+  yield takeLatest(ticketAction.getParticipant, getParticipant);
+
 }
 
 

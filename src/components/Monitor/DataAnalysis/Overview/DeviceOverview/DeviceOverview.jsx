@@ -17,6 +17,7 @@ class DeviceOverview extends PureComponent{
     theme: PropTypes.string,
     history: PropTypes.object,
     stations: PropTypes.array,
+    devicePointsList: PropTypes.array,
     deviceTopData: PropTypes.object,
     deviceUnix: PropTypes.number,
     deviceParam: PropTypes.object,
@@ -50,7 +51,7 @@ class DeviceOverview extends PureComponent{
       } else { // 加载时就有电站信息 带路径跳转, 直接请求相关测点信息即可
         this.props.getPoints({ // 请求测点列表 
           params: {
-            stationCode, deviceTypeCode, pointTypes: 'YC,YM',
+            stationCode, deviceTypeCode, devicePointTypes: ['YM', 'YC'],
           },
           actionName: 'afterDeviceTypePointGet',
           resultName: 'devicePointsList',
@@ -68,7 +69,7 @@ class DeviceOverview extends PureComponent{
       const { deviceTypeCode = 101 } = deviceTypes.find(e => [101, 201, 206].includes(e.deviceTypeCode)) || {};
       this.props.getPoints({ // 请求测点列表 
         params: {
-          stationCode, deviceTypeCode, pointTypes: 'YC,YM',
+          stationCode, deviceTypeCode, devicePointTypes: ['YM', 'YC'],
         },
         actionName: 'afterDeviceTypePointGet',
         resultName: 'devicePointsList',
@@ -94,7 +95,7 @@ class DeviceOverview extends PureComponent{
   }
 
   dateTypeCheck = ({ target }) => { // 日期模式改变 => 按照默认时间 + 日期类型进行选中
-    const { deviceParam, deviceCheckedList, deviceRecord } = this.props;
+    const { deviceParam, devicePointsList, deviceRecord } = this.props;
     const { value } = target;
     const { month, day } = deviceRecord; // 切换模式时候，将对应格式的日期存入record以便读取。
     const { date } = deviceParam; // 请求的时间参数
@@ -114,7 +115,10 @@ class DeviceOverview extends PureComponent{
         [value === 1 ? 'month' : 'day']: date, // 将上次请求的参数存入记录
       },
     });
-    this.props.getOverviewDevices({ ...newParams, pointCodes: deviceCheckedList }); // 请求测点数据
+    this.props.getOverviewDevices({
+      ...newParams,
+      pointCodes: this.reducePoints(devicePointsList),
+    }); // 请求测点数据
     this.historySearchChange(newParams);
   }
 
@@ -123,15 +127,20 @@ class DeviceOverview extends PureComponent{
   dayCheck = (day, dayStr) => this.datesChange(dayStr); // 换日
 
   datesChange = (date) => { // 日期改变
-    const { deviceParam, deviceCheckedList } = this.props;
+    const { deviceParam, devicePointsList } = this.props;
     const newParams = { ...deviceParam, date };
     this.props.changeOverviewStore({
       deviceParam: newParams,
       devicesData: {}, // 清空设备信息
     });
-    this.props.getOverviewDevices({ ...newParams, pointCodes: deviceCheckedList }); // 请求测点数据
+    this.props.getOverviewDevices({
+      ...newParams,
+      pointCodes: this.reducePoints(devicePointsList),
+    }); // 基于所有测点, 再次请求测点数据
     this.historySearchChange(newParams);
   }
+
+  reducePoints = (devicePointsList) => devicePointsList.reduce((a, b) => a.concat(b.children), []).map(e => e.value); // 测点codes 
 
   stationChanged = ({ stationCode }) => { // 电站切换 => 请求电站信息
     const { deviceParam } = this.props;
@@ -144,6 +153,7 @@ class DeviceOverview extends PureComponent{
       deviceParam: newParam,
       devicesData: {}, // 清空设备信息
       devicePointsList: [], // 清空测点列表
+      deviceCheckedList: [], // 清空选中测点
     });
     this.props.getOverviewStation({
       stationCode,
@@ -159,10 +169,11 @@ class DeviceOverview extends PureComponent{
       deviceParam: newParams,
       devicesData: {}, // 清空设备信息
       devicePointsList: [], // 清空测点列表
+      deviceCheckedList: [], // 清空选中测点
     });
     this.props.getPoints({ // 请求新的测点列表 
       params: {
-        stationCode, deviceTypeCode, pointTypes: 'YC,YM',
+        stationCode, deviceTypeCode, devicePointTypes: ['YM', 'YC'],
       },
       actionName: 'afterDeviceTypePointGet',
       resultName: 'devicePointsList',

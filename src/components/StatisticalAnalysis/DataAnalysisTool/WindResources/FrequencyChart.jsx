@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './resources.scss';
 import echarts from 'echarts';
-import { Icon } from 'antd';
+import { dataFormats } from '@utils/utilFunc';
 import { themeConfig } from '../../../../utils/darkConfig';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
@@ -23,6 +23,7 @@ class FrequencyChart extends Component{
     showImg: PropTypes.func,
     getFrequency: PropTypes.func,
     index: PropTypes.number,
+    frequencyMaxData: PropTypes.object,
   }
   componentDidMount() {
     const { frequencyData, saveBtn } = this.props;
@@ -70,13 +71,24 @@ class FrequencyChart extends Component{
   }
 
   creatOption = (frequencyData = [], saveBtn) => {
-    const { deviceName } = this.props;
+    const {
+      deviceName,
+      frequencyMaxData: {
+        eneryFrequency,
+        speedFrequency,
+        windSpeedConfId,
+      }} = this.props;
     const windSpeedNameData = [], speedFrequencyData = [], eneryFrequencyData = [];
     frequencyData.forEach(e => {
-      windSpeedNameData.push(e.windSpeedName);
-      speedFrequencyData.push(e.speedFrequency);
-      eneryFrequencyData.push(e.eneryFrequency);
+      // 小于等于最大值
+      if(e.windSpeedConfId <= windSpeedConfId) {
+        windSpeedNameData.push(e.windSpeedName);
+        speedFrequencyData.push(e.speedFrequency);
+        eneryFrequencyData.push(e.eneryFrequency);
+      }
     });
+    // 取y轴最大值 * 100
+    const maxYAxis = eneryFrequency > speedFrequency ? Math.ceil(eneryFrequency * 100) : Math.ceil(speedFrequency * 100);
 
     const speedLength = speedFrequencyData.filter(e => {
       return e !== null;
@@ -90,7 +102,7 @@ class FrequencyChart extends Component{
       graphic: (speedLength.length && eneryLength.length) ? hiddenNoData : showNoData,
       color: ['#00cdff', '#ff9000'],
       title: {
-        text: [`${deviceName}`, '{b|}'].join(''),
+        text: [`${deviceName} `, '{b|}'].join(''),
         left: '5%',
         textStyle: {
           fontSize: 14,
@@ -110,9 +122,12 @@ class FrequencyChart extends Component{
       legend: {
         data: ['风速频率', '风能频率'],
         selectedMode: false,
+        top: '10%',
       },
       tooltip: {
         trigger: 'axis',
+        padding: 0,
+        borderWidth: 0,
         axisPointer: {
           type: 'shadow',
         },
@@ -131,14 +146,14 @@ class FrequencyChart extends Component{
             speed = `<div class=${styles.speedBox}>
               <span class=${styles.speed}></span>
               <span class=${styles.text}>风速频率</span>
-              ${speedObject.value}%
+              ${dataFormats(speedObject.value, '--', 2)}%
             </div>`;
           }
           if (tmpEnery) {
             enery = `<div class=${styles.eneryBox}>
               <span class=${styles.enery}></span>
               <span class=${styles.text}>风能频率</span>
-              ${eneryObject.value}%
+              ${dataFormats(eneryObject.value, '--', 2)}%
             </div>`;
           }
           return `<div class=${styles.tipBox}>
@@ -149,8 +164,9 @@ class FrequencyChart extends Component{
       },
       grid: {
         left: '3%',
-        right: '4%',
+        right: '5%',
         bottom: '3%',
+        top: '25%',
         containLabel: true,
       },
       xAxis: [
@@ -176,8 +192,7 @@ class FrequencyChart extends Component{
         {
           type: 'value',
           min: 0,
-          max: 20,
-          interval: 4, // y轴每个数字之间的间隔
+          max: maxYAxis,
           splitLine: {
             show: true,
             lineStyle: {
@@ -204,12 +219,10 @@ class FrequencyChart extends Component{
         {
           name: '风速频率',
           type: 'bar',
-          barWidth: '50%',
           data: speedFrequencyData,
         }, {
           name: '风能频率',
           type: 'bar',
-          barWidth: '50%',
           data: eneryFrequencyData,
         },
       ],
@@ -253,7 +266,10 @@ class FrequencyChart extends Component{
     const { index, showImg } = this.props;
     return(
       <div className={styles.frequencyChart}>
-        {showImg && <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalInco} />}
+        {showImg && <div className={styles.showModalIcon} onClick={() => showImg(index)}>
+          <i className="iconfont icon-enlarge2"></i>
+          <i className="iconfont icon-enlarge1"></i>
+        </div>}
         <div ref={(ref) => { this.frequencyChart = ref; }} className={styles.frequencyCharts}></div>
       </div>
     );

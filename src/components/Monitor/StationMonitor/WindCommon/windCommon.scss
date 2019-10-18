@@ -100,17 +100,18 @@
     width: 290px;
     border-radius: 100px;
     line-height: 30px;
+    height: 30px;
     overflow: hidden;
-    .scrollAnmiate {
+    .scrollAnmiate, .scrollOtherAnimate {
       display: inline-block;
       line-height: 30px;
-      -webkit-animation: ant-progress-active 40s cubic-bezier(0, 0, 1, 1) infinite;
-      animation: progress_active 40s cubic-bezier(0, 0, 1, 1) infinite;
-      &:hover {
-        animation-play-state: paused;
-        -webkit-animation-play-state: paused;
-      }
+      height: 30px;
+      width: 100%;
       .spanLine {
+        text-align: center;
+        display: block;
+        height: 30px;
+        width: 100%;
         white-space: nowrap;
         // display: inline-block;
       }
@@ -139,7 +140,7 @@
     // color: $fontColor-hover;
     color: $fontColor-invert;
     background: #205bac;
-    .scrollAnmiate {
+    .scrollAnmiate,.scrollOtherAnimate {
       background: #205bac;
     }
   }

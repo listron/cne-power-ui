@@ -22,14 +22,13 @@ class SingleStationAnalysisSearch extends Component {
     month: PropTypes.string,
     year: PropTypes.string,
     downLoadFile: PropTypes.func,
-    startTime: PropTypes.string,
     reportShow: PropTypes.bool,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      startTime: moment().subtract(0, 'months').format('YYYY-MM-DD'),
+      startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
       stationCode: '',
       stationName: '',
       year: '',
@@ -38,10 +37,42 @@ class SingleStationAnalysisSearch extends Component {
     };
   }
 
+  componentDidMount(){
+    const { stations } = this.props;
+    if (stations.length > 0) {
+      this.getStationData(this.props);
+    }
+  }
+
+  getStationData = (props) => {
+    const { dateType, stations, stationCode, stationName, changeIntelligentAnalysisStore, getSingleStationAnalysis } = props;
+    const { startTime } = this.state;
+    const initStations = stations.filter(e => e.stationType === 1);
+    const prams = {
+      stationCode: stationCode ? stationCode : initStations[0].stationCode,
+      stationName: stationName ? stationName : initStations[0].stationName,
+      dateType,
+      month: moment(startTime).format('M'),
+      year: moment(startTime).format('YYYY'),
+    };
+    this.setState({
+      ...prams,
+    });
+    changeIntelligentAnalysisStore({
+      ...prams,
+    });
+    getSingleStationAnalysis({
+      dateType,
+      month: moment(startTime).format('M'),
+      year: moment(startTime).format('YYYY'),
+      stationCode: stationCode ? stationCode : initStations[0].stationCode,
+    });
+  }
+
   onTimeChange = (value) => { // 选择时间
+    const { changeIntelligentAnalysisStore } = this.props;
     const { startTime, timeStyle } = value;
-    this.props.changeIntelligentAnalysisStore({ startTime });
-    const dateType = timeStyle === 'month' ? 2 : 1;
+    changeIntelligentAnalysisStore({ startTime });
     if (timeStyle === 'month') {
       this.setState({
         dateType: 2,
@@ -74,13 +105,14 @@ class SingleStationAnalysisSearch extends Component {
       message.error('请选择统计时间！');
       return;
     }
-    const params = { dateType, year, stationCode, stationName };
+    const params = { dateType, year, stationCode };
     dateType === 1 && (params.month = month);
     getSingleStationAnalysis({
       ...params,
     });
     changeIntelligentAnalysisStore({
       ...params,
+      stationName,
     });
   }
 
@@ -102,6 +134,8 @@ class SingleStationAnalysisSearch extends Component {
   render() {
     const { stations, reportShow, theme } = this.props;
     const { stationCode } = this.state;
+    let station = '';
+    stationCode ? station = stations.filter(e => e.stationCode === stationCode) : '';
     return (
       <div className={`${styles.singleStationAnalysisSearch}`}>
         <div className={styles.searchPart}>
@@ -109,10 +143,11 @@ class SingleStationAnalysisSearch extends Component {
             <div className={styles.stationSelect}>
               <span className={styles.text}>电站选择</span>
               <StationSelect
+                disabled={stations.length === 1}
                 holderText={'请输入关键字快速查询'}
                 data={stations.filter(e => e.stationType === 1)}
                 onOK={this.selectStation}
-                value={stationCode}
+                value={station}
                 theme={theme}
               />
             </div>
@@ -125,7 +160,8 @@ class SingleStationAnalysisSearch extends Component {
                 refuseDefault={true}
                 value={{
                   timeStyle: 'day',
-                  startTime: null,
+                  startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+                  endTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
                 }}
                 theme={theme}
               />

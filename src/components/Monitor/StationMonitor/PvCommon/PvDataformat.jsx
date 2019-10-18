@@ -8,7 +8,7 @@ const deviceValueFormat = (data, placeholder = '--', pointLength, special = fals
     if (data > 1) point = 2;
     if (data <= 1) point = 4;
   }
-  const showData = dataFormats(data, placeholder, point, true);
+  const showData = dataFormats(data, placeholder, point);
   if (showData !== '--') {
     const valueArr = showData.split('.');
     const intNum = valueArr[0];
@@ -52,7 +52,7 @@ const powerPoint = (data) => { // 根据光伏电站特殊的需求
   let point = 2;
   if (data > 1) point = 2;
   if (data <= 1) point = 4;
-  const showData = dataFormats(data, '--', point, true);
+  const showData = dataFormats(data, '--', point);
   if (showData !== '--') {
     const valueArr = `${showData}`.split('.');
     const intNum = valueArr[0];
@@ -67,7 +67,7 @@ const chartPowerPoint = (data) => { // 根据光伏电站特殊的需求
   let point = 2;
   if (data > 1) point = 2;
   if (data <= 1) point = 4;
-  const showData = dataFormats(data, '--', point, true);
+  const showData = dataFormats(data, '--', point);
   return showData;
 };
 
