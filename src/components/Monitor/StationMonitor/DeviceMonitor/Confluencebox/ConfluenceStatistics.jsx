@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PowerProgress from '../DeviceMonitorCommon/PowerProgress';
 import { DeviceValueFormat } from '../../../../Common/UtilComponent';
-import { monitordataFormat, dataFormat } from '../../../../../utils/utilFunc';
+import { monitordataFormat, dataFormat, dataFormats } from '../../../../../utils/utilFunc';
 import styles from './confluencebox.scss';
 
 const EachRecord = ({ text, value, unit }) => (
@@ -53,13 +53,13 @@ function ConfluenceStatistics({ deviceDetail, subDeviceList = [], theme = 'light
         <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} theme={theme} />
         <div className={styles.line} />
         <div className={styles.elecInfo}>
-          <EachRecord text="电压" value={monitordataFormat(voltage, '--')} unit="V" />
-          <EachRecord text="电流" value={monitordataFormat(electricity, '--')} unit="A" />
+          <EachRecord text="电压" value={dataFormats(voltage, '--', 2)} unit="V" />
+          <EachRecord text="电流" value={dataFormats(electricity, '--', 2)} unit="A" />
         </div>
         <div className={styles.line} />
         <div className={styles.statisticsInfo}>
-          <EachRecord text="温度" value={monitordataFormat(temperature, '--')} unit="℃" />
-          <EachRecord text="离散率" value={monitordataFormat(dispersionRatio, '--')} unit="%" />
+          <EachRecord text="温度" value={dataFormats(temperature, '--', 2)} unit="℃" />
+          <EachRecord text="离散率" value={dataFormats(dispersionRatio, '--', 2)} unit="%" />
         </div>
       </div>
       <div className={styles.seriesCurrent}>

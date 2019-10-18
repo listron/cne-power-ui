@@ -580,6 +580,7 @@ export default {
       getSequenceData: '/v3/wind/analysis/sequencechart', //时序图数据
       getxyLimitValue: '/v3/wind/analysis/points/max', //获取xy轴最大值最小值
       getFrequency: '/v3/wind/analysis/frequency', // 获取风能频率图
+      getFrequencyMax: '/v3/wind/analysis/frequencyMax', // 获取风能频率图最大值
       getDirections: '/v3/wind/analysis/directions', // 获取风能玫瑰图
     },
     highAnalysis: {

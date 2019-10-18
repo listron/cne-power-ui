@@ -57,21 +57,20 @@ class OutputTenMin extends Component {
         color: '#3e97d1',
       },
     } || { type: 'line' };
-    const theoreticalPowerSeries = capabilityData.length > 0 && capabilityData[0].theoreticalPower !== undefined &&
-      {
-        name: '理论功率',
-        type: 'line',
-        smooth: true,
-        data: theoreticalPower,
-        yAxisIndex: 0,
-        axisTick: {
-          show: false,
-        },
+    const theoreticalPowerSeries = capabilityData.length > 0 && capabilityData[0].theoreticalPower !== undefined && {
+      name: '理论功率',
+      type: 'line',
+      smooth: true,
+      data: theoreticalPower,
+      yAxisIndex: 0,
+      axisTick: {
+        show: false,
+      },
+      color: '#199475',
+      lineStyle: {
         color: '#199475',
-        lineStyle: {
-          color: '#199475',
-        },
-      } || { type: 'line' };
+      },
+    } || { type: 'line' };
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
     const filterTemplatePower = capabilityData.filter(e => e.templatePower);
@@ -165,7 +164,7 @@ class OutputTenMin extends Component {
       ],
       series: [
         {
-          name: '功率',
+          name: '交流侧功率',
           type: 'line',
           smooth: true,
           data: capabilityPower,

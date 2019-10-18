@@ -33,10 +33,6 @@ class Examiner extends Component {
     this.props.resetStore();
   }
 
-  sideTransformChange = (sideTransform) => {
-    this.setState({ sideTransform });
-  }
-
   tabChange = (e) => { // 工作票 < = > 操作票
     const { innerHTML } = e.target;
     const { changeStore, getSettableNodes, getSettingList } = this.props;
