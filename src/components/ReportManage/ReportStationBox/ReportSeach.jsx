@@ -29,6 +29,7 @@ class ReportSeach extends React.Component {
       startTime: moment().startOf('year').format('YYYY-MM-DD'),
       endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
     };
+    this.loop = true;
   }
   setDefaultTime = (type) => {
     const date = [
@@ -41,15 +42,16 @@ class ReportSeach extends React.Component {
     return defaultTime;
   }
   timeChange = (e) => {
+    this.loop = true;
     const value = e.target.value;
     const defaultTime = this.setDefaultTime(value);
     this.setState({
       dateType: value,
       ...defaultTime,
     });
-
   }
   changeDay = (dates, dateStrings) => {
+    this.loop = true;
     this.setState({
       startTime: dateStrings[0],
       endTime: dateStrings[1],
@@ -58,6 +60,7 @@ class ReportSeach extends React.Component {
   }
   //改月时间
   onCalendarChange = (dates, dateString) => {
+    this.loop = true;
     this.setState({
       startTime: dateString[0],
       endTime: dateString[1],
@@ -65,28 +68,25 @@ class ReportSeach extends React.Component {
 
   };
   handlePanelChange = (value, mode) => {
-    const { changeStore, startTime, endTime } = this.props;
+    this.loop = true;
+    const { startTime, endTime } = this.props;
     const startValueTime = moment(value[0]).format(dateFormat);
     const endValueTime = moment(value[1]).format(dateFormat);
-    const propsStartTime = moment(startTime).format(dateFormat);
-    const propsEndTime = moment(endTime).format(dateFormat);
-
-
+    // const propsStartTime = moment(startTime).format(dateFormat);
+    // const propsEndTime = moment(endTime).format(dateFormat);
     this.setState({
       startTime: startValueTime,
       endTime: endValueTime,
     });
-
   };
-
-
-
   changeStartTime = (value) => {
+    this.loop = true;
     this.setState({
       startTime: value,
     });
   }
   changeEndTime = (value) => {
+    this.loop = true;
     this.setState({
       endTime: value,
     });
@@ -96,14 +96,21 @@ class ReportSeach extends React.Component {
     const { startTime, endTime, stationCodes, dateType } = this.state;
     const { orderFiled, orderType, pageNum, pageSize } = this.props;
     const params = { startTime, endTime, stationCodes, dateType, orderFiled, orderType, pageNum, pageSize };
-    this.props.getReportStationList({
-      ...params,
-    });
+    if (this.loop) {
+      this.loop = false;
+      this.props.getReportStationList({
+        ...params,
+      });
+      setTimeout(() => {
+        this.loop = true;
+      }, 3000);
+    }
   }
   disabledDate = (current) => {
     return current > moment();
   }
   changeStation = (value) => {
+    this.loop = true;
     const stationCodes = value.map(e => e.stationCode);
     this.setState({
       stationCodes,

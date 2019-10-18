@@ -4,8 +4,8 @@ import { lazy } from 'react';
 const reportStation = [ // 电站报表
   {
     path: '/report/station',
-    // component: lazy(() => import('../../containers/ReportManage/ReportStation/ReportStation.jsx')),
-    component: lazy(() => import('../../components/Common/Building/Building.jsx')),
+    component: lazy(() => import('../../containers/ReportManage/ReportStation/ReportStation.jsx')),
+    // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
 ];
 
