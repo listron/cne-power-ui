@@ -27,14 +27,13 @@ class SingleStationAnalysisReport extends Component {
     const completionRate = singleStationInfo.completionRate || []; // 发电完成率信息及原因
     const lossOfElectricity = singleStationInfo.lossOfElectricity || []; // 损失电量信息及原因
 
-    const { genValid, genValidCompared, resourceValueCompared, lostPowerCompared, limitPowerRate, limitPowerRateCompared, lowMonth } = generatinCapacity;
+    const { genValid, genValidCompared, resourceValueCompared, lostPowerCompared, lowMonth, limitPowerRate, limitPowerRateCompared } = generatinCapacity;
     const generatinMonth = generatinCapacity.month;
 
     const { prs, pr, lostPower, prsCompared } = systematicStatistics;
     const bMonth = systematicStatistics.month;
 
     const { planComplateRate, monthPlanComplateRate, limitPowerCompared, planComplateRateCompared } = completionRate;
-
     const cMonth = completionRate.month;
     const cResourceValueCompared = completionRate.resourceValueCompared;
     const cLostPowerCompared = completionRate.lostPowerCompared;
@@ -86,51 +85,64 @@ class SingleStationAnalysisReport extends Component {
 
                 <div className={styles.reasons}>
                   <p className={styles.titlesText}>原因分析</p>
-                  <p className={styles.texts + ' ' + styles.paragraph}>
-                    <span>该月辐照度同比</span>
-                    {(resourceValueCompared >= 0) && <span>提高</span>}
-                    {(resourceValueCompared < 0) && <span>降低</span>}
-                    <span className={styles.text}>{dataFormats(Math.abs(resourceValueCompared), '--', 2, true) || '--'}</span>
-                    <span>%；损失电量同比</span>
-                    {(lostPowerCompared >= 0) && <span>提高</span>}
-                    {(lostPowerCompared < 0) && <span>降低</span>}
-                    <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared), '--', 2, true) || '--'}</span>
-                    <span>%；</span>
-                    {(limitPowerRate || limitPowerRate === 0) &&
+                  {(resourceValueCompared || lostPowerCompared || limitPowerRate) ?
+                  <p className={styles.texts}>
+                    {(resourceValueCompared || resourceValueCompared === 0) &&
+                    <span>
+                      <span>该月辐照度同比</span>
+                      {(resourceValueCompared >= 0) && <span>提高</span>}
+                      {(resourceValueCompared < 0) && <span>降低</span>}
+                      <span className={styles.text}>{dataFormats(Math.abs(resourceValueCompared), '--', 2, true)}</span>
+                      <span>%；</span>
+                    </span>}
+
+                    {(lostPowerCompared || lostPowerCompared === 0) &&
+                    <span>
+                      <span>损失电量同比</span>
+                      {(lostPowerCompared >= 0) && <span>提高</span>}
+                      {(lostPowerCompared < 0) && <span>降低</span>}
+                      <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared), '--', 2, true)}</span>
+                      <span>%；</span>
+                    </span>}
+
+                    {(limitPowerRate || (limitPowerRate === 0)) &&
                       <span>
                         <span>限电率</span>
-                        <span className={styles.text}>{dataFormats(limitPowerRate, '--', 2, true) || '--'}</span>
+                        <span className={styles.text}>{dataFormats(limitPowerRate, '--', 2, true)}</span>
                         <span>%，同比</span>
                         {(limitPowerRateCompared >= 0) && <span>提高</span>}
                         {(limitPowerRateCompared < 0) && <span>降低</span>}
                         <span className={styles.text}>{dataFormats(Math.abs(limitPowerRateCompared), '--', 2, true) || '--'}</span>
                         <span>%。</span>
-                      </span>
-                    }
-                  </p>
-                  <p className={styles.texts + ' ' + styles.paragraph}>
-                    <span>该电站
-                      {(95 > planComplateRate) && <span>未完成计划</span>}
-                      {(105 < planComplateRate) && <span>超出计划</span>}
-                      的主要原因在于：实际辐照度比历史辐照度</span>
-                    {(cResourceValueCompared >= 0) && <span>高</span>}
-                    {(cResourceValueCompared < 0) && <span>低</span>}
-                    <span className={styles.text}>{dataFormats(Math.abs(cResourceValueCompared), '--', 2, true) || '--'}</span>
-                    <span>%，损失电量同比</span>
-                    {(cLostPowerCompared >= 0) && <span>提高</span>}
-                    {(cLostPowerCompared < 0) && <span>降低</span>}
-                    <span className={styles.text}>{dataFormats(Math.abs(cLostPowerCompared), '--', 2, true) || '--'}</span>
-                    <span>%；</span>
-                    {(limitPowerRate || limitPowerRate === 0) &&
-                      <span>
-                        <span>限电损失电量同比</span>
-                        {(cLimitPowerRate >= 0) && <span>提高</span>}
-                        {(cLimitPowerRate < 0) && <span>降低</span>}
-                        <span className={styles.text}>{dataFormats(Math.abs(cLimitPowerRate), '--', 2, true) || '--'}</span>
-                        <span>%。</span>
-                      </span>
-                    }
-                  </p>
+                      </span>}
+
+                  </p> : <p className={styles.texts}></p>}
+
+                  {((95 < planComplateRate) && (planComplateRate < 105)) ?
+                    <p className={styles.texts}>--</p> :
+                    <p className={styles.texts}>
+                      <span>该电站
+                        {(95 > planComplateRate) && <span>未完成计划</span>}
+                        {(105 < planComplateRate) && <span>超出计划</span>}
+                        的主要原因在于：实际辐照度比历史辐照度</span>
+                      {(cResourceValueCompared >= 0) && <span>高</span>}
+                      {(cResourceValueCompared < 0) && <span>低</span>}
+                      <span className={styles.text}>{dataFormats(Math.abs(cResourceValueCompared), '--', 2, true) || '--'}</span>
+                      <span>%，损失电量同比</span>
+                      {(cLostPowerCompared >= 0) && <span>提高</span>}
+                      {(cLostPowerCompared < 0) && <span>降低</span>}
+                      <span className={styles.text}>{dataFormats(Math.abs(cLostPowerCompared), '--', 2, true) || '--'}</span>
+                      <span>%；</span>
+                      {(limitPowerRate || limitPowerRate === 0) &&
+                        <span>
+                          <span>限电损失电量同比</span>
+                          {(cLimitPowerRate >= 0) && <span>提高</span>}
+                          {(cLimitPowerRate < 0) && <span>降低</span>}
+                          <span className={styles.text}>{dataFormats(Math.abs(cLimitPowerRate), '--', 2, true) || '--'}</span>
+                          <span>%。</span>
+                        </span>
+                      }
+                    </p>}
                 </div>
               </div>
 
@@ -222,7 +234,7 @@ class SingleStationAnalysisReport extends Component {
 
                 <div className={styles.thirdColumn}>
                   <p className={styles.titlesText}>环比降低/提高（%）</p>
-                  <p className={styles.secondLine}>{dataFormats(resourceValueCompared, '--', 2, true) || '--'}</p>
+                  <p className={styles.secondLine}>{dataFormats(genValidCompared, '--', 2, true) || '--'}</p>
                   <p className={styles.thirdLine}>{dataFormats(prsCompared, '--', 2, true) || '--'}</p>
                   <p className={styles.texts + ' ' + styles.fourthLine}>{dataFormats(planComplateRateCompared, '--', 2, true) || '--'}</p>
                 </div>
@@ -236,52 +248,62 @@ class SingleStationAnalysisReport extends Component {
 
                 <div className={styles.fifthColumn}>
                   <p className={styles.titlesText}>原因分析</p>
+                  {(resourceValueCompared || lostPowerCompared || limitPowerRateCompared) ?
                   <p className={styles.secondLine}>
-                    <span>该年辐照度环比</span>
-                    {(resourceValueCompared >= 0) && <span>提高</span>}
-                    {(resourceValueCompared < 0) && <span>降低</span>}
-                    {!resourceValueCompared ? <span className={styles.text}>{dataFormats(resourceValueCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(resourceValueCompared), '--', 2, true) || '--'}</span>}
-                    <span>%；损失电量环比</span>
-                    {(lostPowerCompared >= 0) && <span>提高</span>}
-                    {(lostPowerCompared < 0) && <span>降低</span>}
-                    {!lostPowerCompared ? <span className={styles.text}>{dataFormats(lostPowerCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared), '--', 2, true) || '--'}</span>}
-                    <span>%；</span>
-                    {(limitPowerRateCompared || (limitPowerRateCompared === 0)) &&
+                    {(resourceValueCompared || lostPowerCompared === 0) &&
+                    <span>
+                      <span>该年辐照度环比</span>
+                      {(resourceValueCompared >= 0) && <span>提高</span>}
+                      {(resourceValueCompared < 0) && <span>降低</span>}
+                      <span className={styles.text}>{dataFormats(Math.abs(resourceValueCompared), '--', 2, true)}</span>
+                      <span>%；</span>
+                    </span>}
+
+                    {(lostPowerCompared || lostPowerCompared === 0) &&
+                      <span>
+                        <span>损失电量环比</span>
+                        {(lostPowerCompared >= 0) && <span>提高</span>}
+                        {(lostPowerCompared < 0) && <span>降低</span>}
+                        <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared), '--', 2, true)}</span>
+                        <span>%；</span>
+                      </span>}
+
+
+                    {(limitPowerRateCompared || limitPowerRateCompared === 0) &&
                       <span>
                         <span>限电率环比</span>
                         {(limitPowerRateCompared >= 0) && <span>提高</span>}
                         {(limitPowerRateCompared < 0) && <span>降低</span>}
-                        {!limitPowerRateCompared ? <span className={styles.text}>{dataFormats(limitPowerRateCompared, '--', 2, true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(limitPowerRateCompared), '--', 2, true) || '--'}</span>}
-                        <span>%。</span>
-                      </span>
-                    }
-                  </p>
+                        <span className={styles.text}>{dataFormats(Math.abs(limitPowerRateCompared), '--', 2, true)}</span>
+                        <span>。%</span>
+                      </span>}
+                    </p> : <p className={styles.secondLine}>--</p>}
 
-                  <p className={styles.paragraph + ' ' + styles.thirdLine}>
+                  <p className={styles.thirdLine}>
                     <span>该月份损失电量最高，为</span>
-                    <span className={styles.text}>{dataFormats(lostPower, '--', 4, true) || '--'}</span>
+                    <span className={styles.text}>{dataFormats(lostPower, '--', 4, true)}</span>
                     <span>万kWh。限电率最高。</span>
                   </p>
 
                   <p className={styles.fourthLine}>
-                  {((cResourceValueCompared > 0) || (cLostPowerCompared > 0) || (limitPowerCompared > 0)) ?
+                  {(cResourceValueCompared || cLostPowerCompared || limitPowerCompared) ?
                     <div>
-                      {(cResourceValueCompared > 0) &&
+                      {(cResourceValueCompared || cResourceValueCompared === 0) &&
                         <span>
                           <span>年实际辐照度比历史辐照度低</span>
-                          <span className={styles.text}>{dataFormats(cResourceValueCompared, '--', 2, true) || '--'}</span>
+                          <span className={styles.text}>{dataFormats(cResourceValueCompared, '--', 2, true)}</span>
                           <span>%；</span>
                         </span>}
-                      {(cLostPowerCompared > 0) &&
+                      {(cLostPowerCompared || cLostPowerCompared === 0) &&
                         <span>
                           <span>年损失电量环比提高</span>
-                          <span className={styles.text}>{dataFormats(cLostPowerCompared, '--', 2, true) || '--'}</span>
+                          <span className={styles.text}>{dataFormats(cLostPowerCompared, '--', 2, true)}</span>
                           <span>%；</span>
                         </span>}
-                      {(limitPowerCompared && (limitPowerCompared > 0)) &&
+                      {(limitPowerCompared || limitPowerCompared === 0) &&
                         <span>
                           <span>年限电率环比提高</span>
-                          <span className={styles.text}>{dataFormats(limitPowerCompared, '--', 2, true) || '--'}</span>
+                          <span className={styles.text}>{dataFormats(limitPowerCompared, '--', 2, true)}</span>
                           <span>%。</span>
                         </span>}
                     </div> : '--'}
