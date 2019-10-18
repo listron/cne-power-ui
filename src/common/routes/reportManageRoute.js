@@ -27,8 +27,8 @@ export const reportDevice = [ //设备报表
   },
   {
     path: '/report/device/weatherStation', // 气象站
-    // component: lazy(() => import('../../containers/ReportManage/ReportStation/ReportStation.jsx')),
-    component: lazy(() => import('../../components/Common/Building/Building.jsx')),
+    component: lazy(() => import('../../containers/ReportManage/ReportDevice/WeatherStation/WeatherStation')),
+    // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
 ];
 
