@@ -9,38 +9,47 @@ import { centerInvertAction } from './centerInvertReducer';
 import { commonAction } from '@containers/alphaRedux/commonAction';
 import ReportSearch from '../../../../components//ReportManage/ReportDevice/CenterInvert/Search';
 import ReportTable from '../../../../components/ReportManage/ReportDevice/CenterInvert/Table';
-import ReportDayTable from '../../../../components/ReportManage/ReportDevice/CenterInvert/DayTable';
+import ReportHourTable from '../../../../components/ReportManage/ReportDevice/CenterInvert/HourTable';
 
 class CenterInvert extends Component {
   static propTypes = {
     resetStore: PropTypes.func,
+    dateType: PropTypes.string,
+    getDisabledStation: PropTypes.func,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
   }
+
+  componentDidMount() { // 获取当前用户下没有该设备的电站
+    this.props.getDisabledStation();
+  }
+
   componentWillUnmount() {
     this.props.resetStore();
   }
-  render() {
 
+  render() {
+    const { dateType, theme } = this.props;
     return (
-      <div className={styles.centerInvert} >
+      <div className={`${styles.centerInvert} ${styles[theme]}`} >
         <CommonBreadcrumb breadData={[{ name: '集中式逆变器' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.reportbox}>
           <ReportSearch {...this.props} />
-          {/* <ReportTable {...this.props} /> */}
-          <ReportDayTable {...this.props} />
-          {/* <ReportStationBox {...this.props} /> */}
+          {dateType === 'hour' && <ReportHourTable {...this.props} /> || <ReportTable {...this.props} />}
         </div>
         <Footer />
       </div>
     );
   }
 }
+
 const mapStateToProps = (state) => {
   return {
     ...state.reportManageReducer.centerInvert.toJS(),
     stations: state.common.get('stations').toJS(),
+    theme: state.common.get('theme'),
   };
 };
 
@@ -48,13 +57,20 @@ const mapDispatchToProps = (dispatch) => ({
   changeStore: payload => dispatch({ type: centerInvertAction.changeStore, payload }),
   resetStore: payload => dispatch({ type: centerInvertAction.resetStore, payload }),
   getCenterInverList: payload => dispatch({ type: centerInvertAction.getCenterInverList, payload }),
-  exportCenterInvert: payload => dispatch({ type: centerInvertAction.exportCenterInvert, payload }),
+  getDisabledStation: payload => dispatch({ type: centerInvertAction.getDisabledStation, payload }),
   getStationDeviceTypes: params => dispatch({ //  获取某一个电站下的设备
     type: commonAction.getStationDeviceTypes,
     payload: {
       params,
       deviceTypeAction: centerInvertAction.changeStore,
       resultName: 'deviceTypes',
+    },
+  }),
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: centerInvertAction.changeStore,
     },
   }),
 });

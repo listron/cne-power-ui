@@ -6,17 +6,21 @@ import moment from 'moment';
 import { dataFormat } from '../../../../utils/utilFunc';
 import CommonPagination from '@components/Common/CommonPagination';
 import TableColumnTitle from '@components/Common/TableColumnTitle';
+import path from '@constants/path';
+const { APIBasePath } = path.basePaths;
 
 class ReportSearch extends React.PureComponent {
   static propTypes = {
     parmas: PropType.object,
-    startTime: PropType.string,
-    endTime: PropType.string,
-    dateType: PropType.string,
     getCenterInverList: PropType.func,
-    exportCenterInvert: PropType.func,
     total: PropType.number,
     listLoading: PropType.bool,
+    changeStore: PropType.func,
+    reportTime: PropType.string,
+    downLoadFile: PropType.func,
+    downloading: PropType.bool,
+    reportList: PropType.array,
+    theme: PropType.string,
   }
 
   constructor() {
@@ -71,6 +75,7 @@ class ReportSearch extends React.PureComponent {
         fixed: 'left',
         sorter: true,
         render: value => moment(value).format('HH:mm'),
+        defaultSortOrder: 'ascend',
       },
       {
         title: () => <TableColumnTitle title="当日发电量" unit="kWh" />,
@@ -135,7 +140,7 @@ class ReportSearch extends React.PureComponent {
       {
         title: '功率因数COS',
         dataIndex: 'powerFactorAvg',
-        width: 100,
+        width: 120,
         className: styles.rightText,
         render: value => dataFormat(value, '--', 2),
       },
@@ -157,76 +162,85 @@ class ReportSearch extends React.PureComponent {
   }
 
   exportFile = () => { // 导出文件
-    const { parmas, startTime, endTime, dateType } = this.props;
-    this.props.exportCenterInvert({ ...parmas, startTime, endTime, dateType });
+    const { parmas, reportTime } = this.props;
+    this.props.downLoadFile({
+      url: `${APIBasePath}${path.APISubPaths.reportManage.getDayCenterInvert}`,
+      params: { ...parmas, reportTime },
+    });
   }
 
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变  
+    this.props.changeStore({ parmas: { ...this.props.parmas, pageSize, pageNum: currentPage } });
     this.changeTableList({ pageSize, pageNum: currentPage });
   }
 
   tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
     const { order } = sorter;
-    const sortMethod = order === 'ascend' ? 'asc' : 'desc';
-    const sortField = sorter.field ? this.toLine(sorter.field) : '';
-    this.changeTableList({ sortMethod, sortField });
+    const orderType = order === 'ascend' ? 'asc' : 'desc';
+    const orderFiled = this.getSortField[sorter.field] || 'report_time';
+    this.props.changeStore({ parmas: { ...this.props.parmas, orderType, orderFiled } });
+    this.changeTableList({ orderType, orderFiled });
   }
 
   toLine = (name) => { // 驼峰转下划线
     return name.replace(/([A-Z])/g, '_$1').toLowerCase();
   }
 
+  getSortField = {
+    'deviceName': 'device_name',
+    'date': 'report_time',
+  }
+
   changeTableList = (value) => {
-    const { parmas, startTime, endTime, dateType } = this.props;
-    this.props.getCenterInverList({ ...parmas, startTime, endTime, dateType, ...value });
+    const { parmas, reportTime } = this.props;
+    this.props.getCenterInverList({ ...parmas, reportTime, ...value });
   }
 
 
 
   render() {
-    const { dateType = 'day', total = 30, parmas, listLoading } = this.props;
-    const { pageSize = 1, pageNum = 10 } = parmas;
-    const reportList = [];
-    for (var i = 30; i > 0; i--) {
-      reportList.push({
-        key: i,
-        deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
-        date: moment().format('YYYY-MM'),
-        inverterActualPower: (Math.random() + 1) * 10000,
-        resourceValue: (Math.random() + 1) * 10000,
-        invertEff: (Math.random() + 1) * 10000,
-        inverterDcPower: (Math.random() + 1) * 100,
-        acPower: (Math.random() + 1) * 10000,
-        acReactivePower: (Math.random() + 1) * 10000,
-        dcVoltage: (Math.random() + 1) * 10000,
-        dcCurrent: (Math.random() + 1) * 10000,
-        Uab: (Math.random() + 1) * 1000,
-        Ubc: (Math.random() + 1) * 1000,
-        Uca: (Math.random() + 1) * 1000,
-        Ua: (Math.random() + 1) * 1000,
-        Ub: (Math.random() + 1) * 1000,
-        Uc: (Math.random() + 1) * 1000,
-        Ia: (Math.random() + 1) * 1000,
-        Ib: (Math.random() + 1) * 1000,
-        Ic: (Math.random() + 1) * 1000,
-        powerFactorAvg: (Math.random() + 1) * 10000,
-        powerFu: (Math.random() + 1) * 10000,
-        temperature: (Math.random() + 1) * 10000,
-      });
-    }
-    // 确实出现错行的情况
+    const { total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
+    const { pageSize = 1, pageNum = 10, deviceFullcodes } = parmas;
+    // const reportList = [];
+    // for (var i = 30; i > 0; i--) {
+    //   reportList.push({
+    //     key: i,
+    //     deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
+    //     date: moment().format('YYYY-MM'),
+    //     inverterActualPower: (Math.random() + 1) * 10000,
+    //     resourceValue: (Math.random() + 1) * 10000,
+    //     invertEff: (Math.random() + 1) * 10000,
+    //     inverterDcPower: (Math.random() + 1) * 100,
+    //     acPower: (Math.random() + 1) * 10000,
+    //     acReactivePower: (Math.random() + 1) * 10000,
+    //     dcVoltage: (Math.random() + 1) * 10000,
+    //     dcCurrent: (Math.random() + 1) * 10000,
+    //     Uab: (Math.random() + 1) * 1000,
+    //     Ubc: (Math.random() + 1) * 1000,
+    //     Uca: (Math.random() + 1) * 1000,
+    //     Ua: (Math.random() + 1) * 1000,
+    //     Ub: (Math.random() + 1) * 1000,
+    //     Uc: (Math.random() + 1) * 1000,
+    //     Ia: (Math.random() + 1) * 1000,
+    //     Ib: (Math.random() + 1) * 1000,
+    //     Ic: (Math.random() + 1) * 1000,
+    //     powerFactorAvg: (Math.random() + 1) * 10000,
+    //     powerFu: (Math.random() + 1) * 10000,
+    //     temperature: (Math.random() + 1) * 10000,
+    //   });
+    // }
     return (
-      <div className={styles.reporeTable}>
+      <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
-          <Button type={'primary'} onClick={this.exportFile}>导出</Button>
-          <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={'light'} />
+          <Button type={'primary'} onClick={this.exportFile} disabled={deviceFullcodes.length === 0} loading={downloading}> 导出</Button>
+          <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={'theme'} />
         </div>
         <Table
-          columns={this.initColumn(dateType)}
+          columns={this.initColumn()}
           dataSource={reportList}
           bordered
-          scroll={{ x: 2270, y: 500 }}
+          scroll={{ x: 2290, y: 500 }}
           pagination={false}
           showHeader={true}
           loading={listLoading}

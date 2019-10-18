@@ -44,31 +44,25 @@ function* getCenterInverList(action) {
   }
 }
 
-function* exportCenterInvert(action) {
-  const { payload } = action;
-  const { dateType } = payload;
-  const dateTypeArr = ['day', 'month'];
-  const url = dateTypeArr.includes[dateType] ? `${APIBasePath}${reportManage.getCenterInvert}` : `${APIBasePath}${reportManage.getDayCenterInvert}`;
+function* getDisabledStation(action) {
+  const url = `${APIBasePath}${reportManage.disabledStations}`;
   try {
-    yield put({
-      type: centerInvertAction.changeStore,
-      payload: {
-        exportLoading: true,
-      },
-    });
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, { deviceTypeCode: 201 });
     if (response.data.code === '10000') {
-      message.info('导出成功');
+      yield put({
+        type: centerInvertAction.changeStore,
+        payload: {
+          disabledStation: response.data.data || [],
+        },
+      });
     } else {
       throw response.data;
     }
   } catch (e) {
-    message.error('导出失败');
     yield put({
       type: centerInvertAction.changeStore,
       payload: {
-        reportList: [],
-        exportLoading: false,
+        disabledStation: [],
       },
     });
     console.log(e);
@@ -76,8 +70,8 @@ function* exportCenterInvert(action) {
 }
 
 
+
 export function* watchCenterInvert() {
   yield takeLatest(centerInvertAction.getCenterInverList, getCenterInverList);
-  yield takeLatest(centerInvertAction.exportCenterInvert, exportCenterInvert);
-
+  yield takeLatest(centerInvertAction.getDisabledStation, getDisabledStation);
 }

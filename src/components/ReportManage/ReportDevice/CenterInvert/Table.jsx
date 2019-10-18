@@ -5,6 +5,8 @@ import { Table, Button } from 'antd';
 import moment from 'moment';
 import { dataFormat } from '../../../../utils/utilFunc';
 import CommonPagination from '@components/Common/CommonPagination';
+import path from '@constants/path';
+const { APIBasePath } = path.basePaths;
 
 class ReportSearch extends React.PureComponent {
   static propTypes = {
@@ -13,9 +15,13 @@ class ReportSearch extends React.PureComponent {
     endTime: PropType.string,
     dateType: PropType.string,
     getCenterInverList: PropType.func,
-    exportCenterInvert: PropType.func,
     total: PropType.number,
     listLoading: PropType.bool,
+    changeStore: PropType.func,
+    downLoadFile: PropType.func,
+    downloading: PropType.bool,
+    reportList: PropType.array,
+    theme: PropType.string,
   }
 
   constructor() {
@@ -66,6 +72,8 @@ class ReportSearch extends React.PureComponent {
         width: 120,
         fixed: 'left',
         sorter: true,
+        defaultSortOrder: 'ascend',
+
       },
       {
         title: '运行参数',
@@ -116,63 +124,74 @@ class ReportSearch extends React.PureComponent {
     return columns;
   }
 
+
   exportFile = () => { // 导出文件
     const { parmas, startTime, endTime, dateType } = this.props;
-    this.props.exportCenterInvert({ ...parmas, startTime, endTime, dateType });
+    // `${APIBasePath}${reportManage.getCenterInvert}` : ;
+    this.props.downLoadFile({
+      url: `${APIBasePath}${path.APISubPaths.reportManage.getCenterInvert}`,
+      params: { ...parmas, startTime, endTime, dateType },
+    });
   }
 
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变  
     this.changeTableList({ pageSize, pageNum: currentPage });
+    this.props.changeStore({ parmas: { ...this.props.parmas, pageSize, pageNum: currentPage } });
   }
 
   tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
     const { order } = sorter;
-    const sortMethod = order === 'ascend' ? 'asc' : 'desc';
-    const sortField = sorter.field ? this.toLine(sorter.field) : '';
-    this.changeTableList({ sortMethod, sortField });
+    const orderType = order === 'ascend' ? 'asc' : 'desc';
+    const orderFiled = this.getSortField[sorter.field] || 'report_time';
+    this.props.changeStore({ parmas: { ...this.props.parmas, orderType, orderFiled } });
+    this.changeTableList({ orderType, orderFiled });
   }
 
-  toLine = (name) => { // 驼峰转下划线
-    return name.replace(/([A-Z])/g, '_$1').toLowerCase();
+  // toLine = (name) => { // 驼峰转下划线
+  //   return name.replace(/([A-Z])/g, '_$1').toLowerCase();
+  // }
+
+  getSortField = {
+    'deviceName': 'device_name',
+    'date': 'report_time',
   }
 
   changeTableList = (value) => {
     const { parmas, startTime, endTime, dateType } = this.props;
-    this.props.getCenterInverList({ ...parmas, startTime, endTime, dateType, ...value });
+    this.props.getCenterInverList({ ...parmas, startTime, dateType, endTime, ...value });
   }
 
   render() {
-    const { dateType = 'day', total = 30, parmas, listLoading } = this.props;
-    const { pageSize = 1, pageNum = 10 } = parmas;
-    const reportList = [];
-    for (var i = 30; i > 0; i--) {
-      reportList.push({
-        key: i,
-        deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
-        date: moment().format('YYYY-MM'),
-        inverterAactualPower: (Math.random() + 1) * 1000000,
-        resourceValue: (Math.random() + 1) * 10000,
-        invertEff: (Math.random() + 1) * 10000,
-        equivalentHours: (Math.random() + 1) * 100,
-        usefulRate: (Math.random() + 1) * 10000,
-        powerFactorAvg: (Math.random() + 1) * 10000,
-        normalOperationTime: (Math.random() + 1) * 10000,
-        limitOperationTime: (Math.random() + 1) * 10000,
-        normalShutdownTime: (Math.random() + 1) * 10000,
-        plannedShutdownTime: (Math.random() + 1) * 10000,
-        falutShutdownTime: (Math.random() + 1) * 10000,
-        comlossTime: (Math.random() + 1) * 10000,
-        acPowerMax: (Math.random() + 1) * 10000,
-        acPowerTime: moment('2019-12-23').format('YYYY-MM-DD HH:mm:ss'),
-      });
-    }
-    // 确实出现错行的情况
+    const { dateType = 'day', total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
+    const { pageSize, pageNum, deviceFullcodes } = parmas;
+    // const reportList = [];
+    // for (var i = 30; i > 0; i--) {
+    //   reportList.push({
+    //     key: i,
+    //     deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
+    //     date: moment().format('YYYY-MM'),
+    //     inverterAactualPower: (Math.random() + 1) * 1000000,
+    //     resourceValue: (Math.random() + 1) * 10000,
+    //     invertEff: (Math.random() + 1) * 10000,
+    //     equivalentHours: (Math.random() + 1) * 100,
+    //     usefulRate: (Math.random() + 1) * 10000,
+    //     powerFactorAvg: (Math.random() + 1) * 10000,
+    //     normalOperationTime: (Math.random() + 1) * 10000,
+    //     limitOperationTime: (Math.random() + 1) * 10000,
+    //     normalShutdownTime: (Math.random() + 1) * 10000,
+    //     plannedShutdownTime: (Math.random() + 1) * 10000,
+    //     falutShutdownTime: (Math.random() + 1) * 10000,
+    //     comlossTime: (Math.random() + 1) * 10000,
+    //     acPowerMax: (Math.random() + 1) * 10000,
+    //     acPowerTime: moment('2019-12-23').format('YYYY-MM-DD HH:mm:ss'),
+    //   });
+    // }
     return (
-      <div className={styles.reporeTable}>
+      <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
-          <Button type={'primary'} onClick={this.exportFile}>导出</Button>
-          <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={'light'} />
+          <Button type={'primary'} onClick={this.exportFile} disabled={deviceFullcodes.length === 0} loading={downloading}>导出</Button>
+          <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
         <Table
           columns={this.initColumn(dateType)}
