@@ -2,6 +2,7 @@ import { put, call, takeLatest } from 'redux-saga/effects';
 import { workStageAction } from './workStageReducer';
 import request from '@utils/request';
 import path from '@path';
+import moment from 'moment';
 
 import { message } from 'antd';
 const { basePaths, APISubPaths } = path;
@@ -29,7 +30,11 @@ function *getTaskList({ payload }){ //	工作台-今日工作列表
   try {
     const url = `${APIBasePath}${operation.getTaskList}`;
     yield call(easyPut, 'changeStore', { stageLoading: true });
-    const response = yield call(request.post, url, { ...payload });
+    const response = yield call(request.post, url, {
+      ...payload,
+      startDate: moment().startOf('day').format('YYYY-MM-DD HH:mm:ss'),
+      endDate: moment().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
+    });
     if (response.code === '10000') {
       const { list = [], nums = {}} = response.data || {};
       const { allNums } = nums;
@@ -53,7 +58,11 @@ function *getRunningLog({ payload }) {
   try {
     const url = `${APIBasePath}${operation.getRunningLog}`;
     yield call(easyPut, 'changeStore', { runLogLoading: true });
-    const response = yield call(request.post, url, { ...payload });
+    const response = yield call(request.post, url, {
+      ...payload,
+      startDate: moment().startOf('month').format('YYYY-MM-DD HH:mm:ss'),
+      endDate: moment().endOf('month').format('YYYY-MM-DD HH:mm:ss'),
+    });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         runLogInfo: response.data || {},
@@ -73,7 +82,11 @@ function *getTickets({ payload }) {
   try {
     const url = `${APIBasePath}${operation.getTickets}`;
     yield call(easyPut, 'changeStore', { ticketsLoading: true });
-    const response = yield call(request.post, url, { ...payload });
+    const response = yield call(request.post, url, {
+      ...payload,
+      startDate: moment().startOf('day').format('YYYY-MM-DD HH:mm:ss'),
+      endDate: moment().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
+    });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         ticketsInfo: response.data || {},
@@ -88,8 +101,6 @@ function *getTickets({ payload }) {
     message.error('获取运行记录失败, 请刷新重试');
   }
 }
-
-// getTickets: '/v3/service/workbench/work', // 工作台 - 两票三制记录
 
 export function* watchWorkStage() {
   yield takeLatest(workStageAction.getTaskList, getTaskList);

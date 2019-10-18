@@ -38,7 +38,7 @@ class StationLists extends PureComponent {
     const { stationModalShow } = this.state;
     const { stageStations, stations, theme } = this.props;
     const stationNamesTotal = stageStations.map(e => e.stationName).join(', ');
-    const stationNamePartString = stageStations.length > 6 ? `${stageStations.splice(0, 6).map(e => e.stationName).join(', ')}...` : stationNamesTotal;
+    const stationNamePartString = stageStations.length > 6 ? `${stageStations.slice(0, 6).map(e => e.stationName).join(', ')}...` : stationNamesTotal;
     return (
       <div className={`${styles.stationLists} ${styles[theme]}`}>
         <span className={styles.stationHandler} onClick={this.showStationModal}>
@@ -46,7 +46,12 @@ class StationLists extends PureComponent {
           <Icon type="setting" />
         </span>
         <span ref={(ref) => { this.stationRef = ref; }} />
-        <span className={styles.stationNames} title={stationNamesTotal}>{stationNamePartString}</span>
+        <span
+          className={styles.stationNames}
+          title={stationNamesTotal}
+        >
+          电站: {stationNamePartString || '未选择电站'}
+        </span>
         <StationModal
           multiple={true}
           oneStyleOnly={false}

@@ -1,45 +1,78 @@
 
-.stationLists{
+@import '../../../theme/theme.scss';
+
+
+.stationLists{ // 顶部工作台电站选择
   display: flex;
   height: 42px;
+  margin-bottom: 10px;
   align-items: center;
   .stationHandler{
     cursor: pointer;
     flex: 0 0 133px;
+    line-height: 42px;
+    padding-left: 24px;
+    svg{
+      margin-left: 12px;
+    }
   }
   .stationNames{
-    
+    margin-left: 12px;
   }
 }
 
-.recordsList{
+.recordsList{ // 今日工作列表
+  .recordFilter{
+    display: flex;
+    align-items: center;
+    padding: 0 16px 0 24px;
+    justify-content: space-between;
+    .filterParts{
+      height: 52px;
+      align-items: center;
+      display: flex;
+      .btnText{
+        padding: 0 16px;
+      }
+      .filterTips{
+        margin: 0 8px 0 24px;
+      }
+      .filterTypeBtn{
+        padding: 0 8px;
+      }
+      .filterTypeText{
+        margin-right: 4px;
+      }
+    }
+  }
+  
   .taskTypeName {
     // width: calc((100% - 385px) * 0.27);
-    width: 10%;
+    // width: 10%;
   }
   .taskDesc {
     // width: calc((100% - 385px) * 0.41);
-    width: 10%;
+    // width: 10%;
   }
   .stationName {
     // width: calc((100% - 385px) * 0.41);
-    width: 10%;
+    // width: 10%;
   }
   .completeTime {
     // width: calc((100% - 385px) * 0.41);
-    width: 10%;
+    // width: 10%;
   }
   .handleUser {
     // width: calc((100% - 385px) * 0.41);
-    width: 10%;
+    // width: 10%;
   }
   .completeStatus {
     // width: calc((100% - 385px) * 0.41);
-    width: 10%;
+    // width: 10%;
   }
   .handle {
     // width: calc((100% - 385px) * 0.41);
-    width: 10%;
+    // width: 10%;
   }
   .taskTypeName, .taskDesc, .stationName, .completeTime, .handleUser, .completeStatus, .handle {
     div{
@@ -51,8 +84,35 @@
 
 .light.stationLists{
   border:1px solid #e1e3e4;
+  background-color: #fff;
   .stationHandler{
     color: #fff;
-    background:#199475;
+    background:var(--themeColor);
+  }
+  .stationNames{
+    color: var(--darkColor);
   }
 }
+
+.light.recordsList{
+  background-color: #fff;
+  .recordFilter{
+    .todayWorkTitle{
+      color: var(--themeColor);
+    }
+    .filterParts{
+      .filterTypeBtn.active{
+        background-color: var(--themeColor);
+        color: #fff;
+      }
+      .btnText{
+        color: var(--themeColor);
+      }
+      .addRecord:hover .btnText{
+        color: #fff;
+      }
+    }
+  }
+}
+
+

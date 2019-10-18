@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Modal } from 'antd';
 import StationLists from '../../../components/Operation/WorkStage/StationLists';
 import RecordsList from '../../../components/Operation/WorkStage/RecordsList';
 import { RunningLog, TicketsLog } from '../../../components/Operation/WorkStage/RunLogTickets';
+import PlanList from '../../../components/Operation/WorkStage/PlanList';
 // import DetailModal from '../../../../components/Operation/TwoTickets/Examiner/DetailModal';
 // import EditModal from '../../../../components/Operation/TwoTickets/Examiner/EditModal';
 import ContentLayout from '@components/Common/ContentLayout';
@@ -15,6 +17,8 @@ class WorkStage extends Component {
   static propTypes = {
     theme: PropTypes.string,
     stations: PropTypes.array,
+    showModal: PropTypes.bool,
+    modalKey: PropTypes.string,
     resetStore: PropTypes.func,
     changeStore: PropTypes.func,
     getTaskList: PropTypes.func,
@@ -37,27 +41,24 @@ class WorkStage extends Component {
     this.props.resetStore();
   }
 
-  stageQuery = (stageStations) => { // 页面整体数据请求及记录
+  stageQuery = (stageStations) => { // 页面整体数据请求及记录 => f5 或 选择电站触发.
+    const stationCodes = stageStations.map(e => e.stationCode);
     this.props.changeStore({ stageStations }); // 默认当前用户所有电站
-    this.props.getTaskList({ // 记事列表
-      stationCodes: stageStations.map(e => e.stationCode),
-      startDate: '2019-10-17 00:00:00',
-      endDate: '2019-10-17 23:59:59',
-    });
-    this.props.getRunningLog({
-      stationCodes: stageStations.map(e => e.stationCode),
-      startDate: '2019-10-17 00:00:00',
-      endDate: '2019-10-17 23:59:59',
-    });
-    this.props.getTickets({
-      stationCodes: stageStations.map(e => e.stationCode),
-      startDate: '2019-10-17 00:00:00',
-      endDate: '2019-10-17 23:59:59',
+    this.props.getTaskList({ stationCodes }); // 记事列表
+    this.props.getRunningLog({ stationCodes }); // 运行记录
+    this.props.getTickets({ stationCodes }); // 两票三制
+  }
+
+  handleCancel = () => {
+    this.props.changeStore({
+      showModal: false,
+      modalKey: null,
     });
   }
 
   render(){
-    const { theme = 'light', stageStations, stations, stageLoading, stageNumInfo, stageList } = this.props;
+    const { theme = 'light', showModal } = this.props;
+    //  modalKey 各类型弹框对应的key: addRecord增记事 editRecord改记事, recordDetail记事详情, addPlan添加计划, handlePlan下发删除计划 
     return (
       <ContentLayout
         breadcrumb={{
@@ -76,8 +77,18 @@ class WorkStage extends Component {
         <div className={styles.allDetailLogs}>
           <RunningLog {...this.props} />
           <TicketsLog {...this.props} />
-          <div>日历计划</div>
+          <PlanList {...this.props} />
         </div>
+        <Modal
+          title="弹框组件哈"
+          visible={showModal}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
         <div>统一弹框组件</div>
         {/* <div>添加工作记事弹框</div>
         <div>查看工作记事弹框</div>
