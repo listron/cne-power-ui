@@ -89,7 +89,6 @@ class WorkStage extends Component {
           <p>Some contents...</p>
           <p>Some contents...</p>
         </Modal>
-        <div>统一弹框组件</div>
         {/* <div>添加工作记事弹框</div>
         <div>查看工作记事弹框</div>
         <div>编辑工作记事弹框</div>

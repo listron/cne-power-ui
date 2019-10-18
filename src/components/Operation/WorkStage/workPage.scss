@@ -22,6 +22,7 @@
 }
 
 .recordsList{ // 今日工作列表
+  margin-bottom: 10px;
   .recordFilter{
     display: flex;
     align-items: center;
@@ -45,42 +46,120 @@
       }
     }
   }
-  
-  .taskTypeName {
-    // width: calc((100% - 385px) * 0.27);
-    // width: 10%;
+  .recordTable{
+    min-height: 370px;
+    .taskTypeName, .taskDesc, .stationName, .completeTime, .handleUser, .completeStatus, .handle{
+      @include overflowText();
+    }
+    :global{
+      .ant-table-scroll .ant-table-body{
+        overflow-x: hidden;
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 3px;
+        }
+      }
+    }
   }
-  .taskDesc {
-    // width: calc((100% - 385px) * 0.41);
-    // width: 10%;
+}
+
+.runningLog, .ticketsLog, .planList{
+  display: flex;
+  flex-direction: column;
+  height: 275px;
+}
+
+.runningLog, .ticketsLog{
+  padding: 0 20px 0 24px;
+  h3{
+    height: 40px;
+    margin-bottom: 0;
+    line-height: 40px;
   }
-  .stationName {
-    // width: calc((100% - 385px) * 0.41);
-    // width: 10%;
+  .infoList{
+
   }
-  .completeTime {
-    // width: calc((100% - 385px) * 0.41);
-    // width: 10%;
-  }
-  .handleUser {
-    // width: calc((100% - 385px) * 0.41);
-    // width: 10%;
-  }
-  .completeStatus {
-    // width: calc((100% - 385px) * 0.41);
-    // width: 10%;
-  }
-  .handle {
-    // width: calc((100% - 385px) * 0.41);
-    // width: 10%;
-  }
-  .taskTypeName, .taskDesc, .stationName, .completeTime, .handleUser, .completeStatus, .handle {
-    div{
-      
+  .eachInfo{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0;
+    .infoName{
+      line-height: 27px;
+    }
+    .infoDetail{
+      display: flex;
+      height: 27px;
+      align-items: center;
+      justify-content: space-around;
+      cursor: pointer;
+    }
+    .infoValue{
+      flex: 0 0 32px;
+      text-align: right;
+      @include overflowText();
     }
   }
 
 }
+
+.runningLog{ // 运行记录
+  flex: 0 0 25%;
+  margin-right: 10px; 
+  .infoDetail{
+    width: 145px;
+  }
+}
+
+.ticketsLog{ // 两票三制
+  flex: 0 0 25%;
+  margin-right: 10px;
+  .infoDetail{
+    width: 205px;
+  }
+}
+
+.planList{ // 日历计划
+  flex: 1;
+  .topPlanHandle{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px 0 16px;
+    height: 56px;
+    align-items: center;
+    .addPlanBtnText{
+      padding: 0 8px;
+    }
+    .monthHandler .monthIcon{
+      cursor: pointer;
+    }
+    .monthText{
+      margin: 0 32px;
+    }
+  }
+  .datesList{
+    .weekTop{
+      display: flex;
+      .eachWeekdays{
+        flex: 0 0 14%;
+        padding-right: 8px;
+        text-align: right;
+      }
+    }
+    .datesBottom{
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .eachDate{
+      flex: 0 0 14%;
+      padding-right: 8px;
+      text-align: right;
+    }
+  }
+}
+
+
 
 .light.stationLists{
   border:1px solid #e1e3e4;
@@ -105,12 +184,34 @@
         background-color: var(--themeColor);
         color: #fff;
       }
-      .btnText{
-        color: var(--themeColor);
+    }
+  }
+  .recordTable{
+    :global{
+      .ant-table-scroll .ant-table-body{
+        &::-webkit-scrollbar-thumb {
+          background: rgba(0, 0, 0, 0.5);
+        }
       }
-      .addRecord:hover .btnText{
-        color: #fff;
-      }
+    }
+  }
+}
+
+.light.runningLog, .light.ticketsLog{
+  background-color: #fff;
+  h3{
+    color: var(--themeColor);
+  }
+  .eachInfo .infoValue{
+    color: var(--themeColor);
+  }
+}
+
+.light.planList {
+  background-color: #fff;
+  .topPlanHandle{
+    .monthText{
+      color:#000000;
     }
   }
 }

@@ -42,31 +42,55 @@ class PlanList extends PureComponent {
     return datesInfo;
   }
 
+  checkPreMonth = () => {
+    console.log('上一个月');
+  }
+
+  checkNextMonth = () => {
+    console.log('下一个月');
+  }
+
   render(){
-    const {  } = this.props;
+    const { theme } = this.props;
     const { planMonth, datesInfo } = this.state;
+    const monthReduceUnable = moment(planMonth).isSame(moment(), 'M'); // 当前月不可往前选月
+    // console.log(planMonth, monthReduceUnable)
+    // 不属于本月的日期: 禁止选择灰色不触发, 本月日期: hover浅色, 选中深色, 默认无色
     return (
-      <div>
-        <div>
-          <Button className={styles.addPlan} type="add" onClick={this.onAdd} >
+      <div className={`${styles.planList} ${styles[theme]}`}>
+        <div className={styles.topPlanHandle}>
+          <Button className={styles.addPlanBtn} type="add" onClick={this.onAdd} >
             <i>+</i>
-            <span>添加工作记事</span>
+            <span className={styles.addPlanBtnText}>添加计划</span>
           </Button>
-          <span>
-            <Icon type="left" />
-            <span>{planMonth}</span>
-            <Icon type="right" />
+          <span className={styles.monthHandler}>
+            <Icon
+              type="left" className={styles.monthIcon}
+              style={monthReduceUnable && {
+                cursor: 'not-allowed',
+                color: '#999',
+              }}
+              onClick={!monthReduceUnable ? this.checkPreMonth : null}
+            />
+            <span className={styles.monthText}>{moment(planMonth).format('YYYY年M月')}</span>
+            <Icon className={styles.monthIcon} type="right" onClick={this.checkNextMonth} />
           </span>
         </div>
-        <div>
-          <div>
+        <div className={styles.datesList}>
+          <div className={styles.weekTop}>
             {this.weekdays.map(e => (
-              <span key={e}>{e}</span>
+              <span className={styles.eachWeekdays} key={e}>{e}</span>
             ))}
           </div>
-          <div style={{display: 'flex', flexWrap: 'wrap'}}>
+          <div className={styles.datesBottom}>
             {datesInfo.map(e => (
-              <span key={e} style={{flexBasis: '14%'}}>{e}</span>
+              <span
+                className={styles.eachDate}
+                key={e}
+                style={{flexBasis: '14%'}}
+              >
+                {moment(e).format('D')}
+              </span>
             ))}
           </div>
         </div>

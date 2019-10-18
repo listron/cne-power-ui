@@ -1,9 +1,10 @@
 import React from 'react';
 import { Icon } from 'antd';
 import PropTypes from 'prop-types';
+import styles from './workPage.scss';
 import { dataFormats } from '@utils/utilFunc';
 
-function RunningLog({ runLogInfo = {} }){
+function RunningLog({ runLogInfo = {}, theme = 'light' }){
   const { inWarehouseNum, outWarehouseNum, reportNum } = runLogInfo;
   const logsArr = [
     {
@@ -18,17 +19,17 @@ function RunningLog({ runLogInfo = {} }){
     },
   ];
   return (
-    <section>
+    <section className={`${styles.runningLog} ${styles[theme]}`}>
       <h3>运行记录</h3>
-      <div>
+      <div className={styles.infoList}>
         {logsArr.map(e => {
           const { title, value } = e;
           return (
-            <p key={title}>
-              <span>{title}</span>
-              <span>
+            <p key={title} className={styles.eachInfo}>
+              <span className={styles.infoName}>{title}</span>
+              <span className={styles.infoDetail}>
                 <span>当月记录条数</span>
-                <span>{value}</span>
+                <span className={styles.infoValue}>{value}</span>
                 <Icon type="right" />
               </span>
             </p>
@@ -36,14 +37,15 @@ function RunningLog({ runLogInfo = {} }){
         })}
       </div>
     </section>
-  )
+  );
 }
 
 RunningLog.propTypes = {
   runLogInfo: PropTypes.object,
+  theme: PropTypes.string,
 };
 
-function TicketsLog({ ticketsInfo = {} }){
+function TicketsLog({ ticketsInfo = {}, theme = 'light' }){
   const { finish = {}, unfinish = {} } = ticketsInfo;
   const ticketArr = [
     {
@@ -65,20 +67,21 @@ function TicketsLog({ ticketsInfo = {} }){
     },
   ];
   return (
-    <section>
+    <section className={`${styles.ticketsLog} ${styles[theme]}`}>
       <h3>运行记录</h3>
-      <div>
+      <div className={styles.infoList}>
         {ticketArr.map(e => {
           const { title, finishValue, unfinishValue } = e;
           return (
-            <p key={title}>
-              <span>{title}</span>
-              <span>
+            <p key={title} className={styles.eachInfo}>
+              <span className={styles.infoName}>{title}</span>
+              <span className={styles.infoDetail}>
                 <span>今日未完成</span>
-                <span>{finishValue}</span>
+                <span className={styles.infoValue}>{finishValue}</span>
                 <span>|</span>
                 <span>已完成</span>
-                <span>{unfinishValue}</span>
+                <span className={styles.infoValue}>{unfinishValue}</span>
+                <Icon type="right" />
               </span>
             </p>
           );
@@ -90,6 +93,7 @@ function TicketsLog({ ticketsInfo = {} }){
 
 TicketsLog.propTypes = {
   ticketsInfo: PropTypes.object,
+  theme: PropTypes.string,
 };
 
 export {
