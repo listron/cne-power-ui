@@ -157,8 +157,7 @@ class GeneralReport extends Component {
     // 要查看的预览地址
     const baseUrl = `${resUrl}?fullfilename=${fileName}&method=POST&auth=bearer ${this.authData}`;
     // 新页面打开
-    window.open(`http://10.10.15.81:9999/onlinePreview?url=${encodeURIComponent(baseUrl)}`, '_blank');
-    // window.open(`${prevBaseUrl}?url=${encodeURIComponent(baseUrl)}`, '_blank');
+    window.open(`${prevBaseUrl}?url=${encodeURIComponent(baseUrl)}`, '_blank');
   };
 
   downLoadFun = (url, fileName, date) => { // 根据路径，名称，日期，通用下载函数。
