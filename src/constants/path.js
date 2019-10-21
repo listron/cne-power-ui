@@ -117,8 +117,7 @@ export default {
       getTickets: '/v3/service/workbench/work', // 工作台 - 两票三制记录
       setRecordComplete: '/v3/service/task/complete', //  工作记事 => 操作任务为已完成
       getRecordDetail: '/v3/service/task', // 工作记事 => 查看详情
-      addNewRecord: '/v3/service/workbench/inspect/defect', // 新增工作记事
-      handleRecord: '/v3/service/worknote', // 编辑, 删除, 详情工作记事
+      handleRecord: '/v3/service/worknote', // 增, 编辑, 删除, 详情工作记事
 
       getPlanList: '/v3/service/workbench/calendar', // 工作台 - 计划日历
       handlePlanStatus: '/v3/service/task/future', // 工作台日历任务批量下发/删除

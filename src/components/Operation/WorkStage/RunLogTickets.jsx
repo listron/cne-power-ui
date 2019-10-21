@@ -68,7 +68,7 @@ function TicketsLog({ ticketsInfo = {}, theme = 'light' }){
   ];
   return (
     <section className={`${styles.ticketsLog} ${styles[theme]}`}>
-      <h3>运行记录</h3>
+      <h3>两票三制</h3>
       <div className={styles.infoList}>
         {ticketArr.map(e => {
           const { title, finishValue, unfinishValue } = e;

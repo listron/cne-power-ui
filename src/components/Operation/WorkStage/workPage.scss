@@ -23,7 +23,7 @@
 
 .recordsList{ // 今日工作列表
   margin-bottom: 10px;
-  .recordFilter{
+  .recordFilter{ // 今日工作顶部搜索
     display: flex;
     align-items: center;
     padding: 0 16px 0 24px;
@@ -46,26 +46,67 @@
       }
     }
   }
-  .recordTable{
+  .recordTable{ // 工作列表
     min-height: 370px;
-    .taskTypeName, .taskDesc, .stationName, .completeTime, .handleUser, .completeStatus, .handle{
+    .taskTypeName, .taskDesc, .taskDescText, .stationName, .stationNameText, .completeTime, .handleUser, .handleUserText, .completeStatus, .handle{
       @include overflowText();
+    }
+    .taskTypeName{
+      width: calc((100vw - 635px) * 0.27);
+    }
+    .taskTypeNameText{
+      max-width: calc((100vw - 635px) * 0.27 - 32px);
+    }
+    .taskDesc{
+      width: calc((100vw - 635px) * 0.41);
+    }
+    .taskDescText{
+      max-width: calc((100vw - 635px) * 0.41 - 32px);
+    }
+    .stationName{
+      width: calc((100vw - 635px) * 0.16);
+    }
+    .stationNameText{
+      max-width: calc((100vw - 635px) * 0.16 - 32px);
+    }
+    .completeTime{
+      width: 175px;
+    }
+    .handleUser{
+      width: calc((100vw - 635px) * 0.15);
+    }
+    .handleUserText{
+      max-width: calc((100vw - 635px) * 0.15 - 32px);
+    }
+    .completeStatus{
+      width: 100px;
+    }
+    .handle{
+      width: 110px;
+    }
+    .handleRow{
+      :global{
+        .iconfont{
+          cursor: pointer;
+          margin-right: 8px;
+        }
+      }
     }
     :global{
       .ant-table-scroll .ant-table-body{
         overflow-x: hidden;
-        &::-webkit-scrollbar {
-          width: 6px;
-        }
-        &::-webkit-scrollbar-thumb {
-          border-radius: 3px;
-        }
+        // &::-webkit-scrollbar {
+        //   width: 6px;
+        // }
+        // &::-webkit-scrollbar-thumb {
+        //   border-radius: 3px;
+        // }
       }
     }
   }
 }
 
-.runningLog, .ticketsLog, .planList{
+.runningLog, .ticketsLog, .planList{ // 运行记录, 两票三制, 计划列表
   display: flex;
   flex-direction: column;
   height: 275px;
@@ -187,6 +228,9 @@
     }
   }
   .recordTable{
+    .taskNameHighlight{
+      color:#000000;
+    }
     :global{
       .ant-table-scroll .ant-table-body{
         &::-webkit-scrollbar-thumb {

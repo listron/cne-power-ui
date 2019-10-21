@@ -3,6 +3,8 @@ import immutable from 'immutable';
 const workStageAction = {
   getTaskList: Symbol('getTaskList'),
   addNewRecord: Symbol('addNewRecord'),
+  setRecordComplete: Symbol('setRecordComplete'),
+  editRecord: Symbol('editRecord'),
   getRunningLog: Symbol('getRunningLog'),
   getTickets: Symbol('getTickets'),
 
@@ -18,6 +20,7 @@ const initState = immutable.fromJS({
 
   recordDetailInfo: null, // 记事详情 {} => 增 / 编辑 / 查看
   saveRecordLoading: false, // 添加 + 编辑记事详情loading状态
+  deleteRecordLoading: false, // 删除详情loading状态
 
   stageLoading: false, // 记事列表loading
   stageList: [], // 记事列表信息

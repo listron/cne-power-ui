@@ -105,6 +105,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeStore: payload => dispatch({ type: workStageAction.changeStore, payload }),
   getTaskList: payload => dispatch({ type: workStageAction.getTaskList, payload }),
   addNewRecord: payload => dispatch({ type: workStageAction.addNewRecord, payload }),
+  setRecordComplete: payload => dispatch({ type: workStageAction.setRecordComplete, payload }),
   getRunningLog: payload => dispatch({ type: workStageAction.getRunningLog, payload }),
   getTickets: payload => dispatch({ type: workStageAction.getTickets, payload }),
 });
