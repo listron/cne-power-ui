@@ -7,11 +7,14 @@ import { message } from 'antd';
 const { APIBasePath } = path.basePaths;
 const { reportManage } = path.APISubPaths;
 
-function* getCenterInverList(action) {
+function* getWeatherStationList(action) {
   const { payload } = action;
   const { dateType } = payload;
   const dateTypeArr = ['day', 'month'];
-  const url = dateTypeArr.includes[dateType] ? `${APIBasePath}${reportManage.getCenterInvert}` : `${APIBasePath}${reportManage.getDayCenterInvert}`;
+  //当dateTypeArr包含日或月的时候发送getWeatherStationList
+  // const url = dateTypeArr.includes[dateType] ? `${APIBasePath}${reportManage.getWeatherStationList}` : `${APIBasePath}${reportManage.getHourWeatherStationList}`;
+  console.log('1111111111', dateTypeArr.includes[dateType]);
+  const url = dateTypeArr.includes(dateType) ? 'mock/v3/sun/report/weather/list/day' : 'mock/v3/sun/report/weather/list/min';
   try {
     yield put({
       type: weatherStationAction.changeStore,
@@ -21,10 +24,20 @@ function* getCenterInverList(action) {
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      const total = response.data.data.pageCount || 0;
+      let { pageNum } = payload;
+      const { pageSize } = payload;
+      const maxPage = Math.ceil(total / pageSize);
+      if (total === 0) {
+        pageNum = 1;
+      } else if (maxPage < pageNum) {
+        pageNum = maxPage;
+      }
       yield put({
         type: weatherStationAction.changeStore,
         payload: {
-          reportList: response.data.data || [],
+          reportList: response.data.data.dataList || [],
+          total,
           listLoading: false,
         },
       });
@@ -47,7 +60,7 @@ function* getCenterInverList(action) {
 function* getDisabledStation(action) {
   const url = `${APIBasePath}${reportManage.disabledStations}`;
   try {
-    const response = yield call(axios.post, url, { deviceTypeCode: 201 });
+    const response = yield call(axios.post, url, { deviceTypeCode: 203 });
     if (response.data.code === '10000') {
       yield put({
         type: weatherStationAction.changeStore,
@@ -72,6 +85,6 @@ function* getDisabledStation(action) {
 
 
 export function* watchWeatherStationReport() {
-  yield takeLatest(weatherStationAction.getCenterInverList, getCenterInverList);
+  yield takeLatest(weatherStationAction.getWeatherStationList, getWeatherStationList);
   yield takeLatest(weatherStationAction.getDisabledStation, getDisabledStation);
 }

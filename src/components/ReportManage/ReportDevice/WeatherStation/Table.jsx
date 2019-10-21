@@ -15,7 +15,7 @@ class ReportSearch extends React.PureComponent {
     startTime: PropType.string,
     endTime: PropType.string,
     dateType: PropType.string,
-    getCenterInverList: PropType.func,
+    getWeatherStationList: PropType.func,
     total: PropType.number,
     listLoading: PropType.bool,
     changeStore: PropType.func,
@@ -40,13 +40,13 @@ class ReportSearch extends React.PureComponent {
     return (str.length + unit.length) * 14 + (2 * padding) + 20;
   }
 
-  initColumn = (type) => { // 表头的数据
-    const params = [
+  initColumn = () => { // 表头的数据
+    const temperature = [
       { name: '环境温度Avg', unit: '℃', dataIndex: 'temperatureAvg', point: 2 },
       { name: '环境温度Max', unit: '℃', dataIndex: 'temperatureMax', point: 2 },
       { name: '环境温度Min', unit: '℃', dataIndex: 'temperatureMin', point: 2 },
     ];
-    const status = [
+    const radiation = [
       { name: '水平总累计辐射', unit: 'MJ/m2', dataIndex: 'accRadiationMax', point: 2 },
       { name: '斜面总累计辐射', unit: 'MJ/m2', dataIndex: 'slopeAccRadiationSum', point: 2 },
     ];
@@ -66,11 +66,9 @@ class ReportSearch extends React.PureComponent {
         fixed: 'left',
         sorter: true,
         defaultSortOrder: 'ascend',
-      },
-      {
+      }, {
         title: '环境温度',
-        // dataIndex: 'operateParams',
-        children: params.map(item => {
+        children: temperature.map(item => {
           return {
             title: `${item.name}${item.unit ? `(${item.unit})` : ''}`,
             dataIndex: item.dataIndex,
@@ -79,23 +77,20 @@ class ReportSearch extends React.PureComponent {
             render: value => dataFormat(value, '--', item.point),
           };
         }),
-      },
-      {
+      }, {
         title: () => <TableColumnTitle title="环境湿度Avg" unit="m/s" />,
         dataIndex: 'humidityAvg',
         width: 150,
         render: (text) => <div className={styles.deviceName} title={text}>{text}</div>,
-      },
-      {
+      }, {
         title: () => <TableColumnTitle title="瞬时斜面辐射Max" unit="W/m2" />,
         width: 150,
         dataIndex: 'slopeRadiationMax',
         render: (text) => <div className={styles.deviceName} title={text}>{text}</div>,
-      },
-      {
+      }, {
         title: '累计辐射强度',
-        // dataIndex: 'operateStatus',
-        children: status.map(item => {
+        dataIndex: 'operateStatus',
+        children: radiation.map(item => {
           return {
             title: `${item.name}${item.unit ? `(${item.unit})` : ''}`,
             dataIndex: item.dataIndex,
@@ -126,6 +121,8 @@ class ReportSearch extends React.PureComponent {
         render: value => dataFormat(value, '--', 2),
       },
     ];
+    console.log('columns: ', columns);
+
     return columns;
   }
 
@@ -164,31 +161,33 @@ class ReportSearch extends React.PureComponent {
 
   changeTableList = (value) => {
     const { parmas, startTime, endTime, dateType } = this.props;
-    this.props.getCenterInverList({ ...parmas, startTime, dateType, endTime, ...value });
+    this.props.getWeatherStationList({ ...parmas, startTime, dateType, endTime, ...value });
   }
 
   render() {
     const { dateType = 'day', total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
+    console.log('dateType: ', dateType);
+    console.log('reportList: ', reportList);
     const { pageSize, pageNum, deviceFullcodes } = parmas;
-    const reportList2 = [];
-    for (var i = 30; i > 0; i--) {
-      reportList2.push({
-        key: i,
-        deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
-        date: moment().format('YYYY-MM'),
-        temperatureAvg: (Math.random() + 1) * 10000,
-        temperatureMax: (Math.random() + 1) * 10000,
-        temperatureMin: (Math.random() + 1) * 10000,
-        humidityAvg: (Math.random() + 1) * 10000,
-        slopeRadiationMax: (Math.random() + 1) * 10000,
-        accRadiationMax: (Math.random() + 1) * 10000,
-        slopeAccRadiationSum: (Math.random() + 1) * 10000,
-        sunshineHours: (Math.random() + 1) * 10000,
-        windSpeedMax: (Math.random() + 1) * 10000,
-        pressureAvg: (Math.random() + 1) * 10000,
-
-      });
-    }
+    // const reportList2 = [];
+    // for (var i = 30; i > 0; i--) {
+    //   reportList2.push({
+    //     key: i,
+    //     deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
+    //     date: moment().format('YYYY-MM'),
+    //     temperatureAvg: (Math.random() + 1) * 10000,
+    //     temperatureMax: (Math.random() + 1) * 10000,
+    //     temperatureMin: (Math.random() + 1) * 10000,
+    //     humidityAvg: (Math.random() + 1) * 10000,
+    //     slopeRadiationMax: (Math.random() + 1) * 10000,
+    //     accRadiationMax: (Math.random() + 1) * 10000,
+    //     slopeAccRadiationSum: (Math.random() + 1) * 10000,
+    //     sunshineHours: (Math.random() + 1) * 10000,
+    //     windSpeedMax: (Math.random() + 1) * 10000,
+    //     pressureAvg: (Math.random() + 1) * 10000,
+    //   });
+    // }
+    // console.log('reportList2: ', reportList2);
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
@@ -196,8 +195,8 @@ class ReportSearch extends React.PureComponent {
           <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
         <Table
-          columns={this.initColumn(dateType)}
-          dataSource={reportList2}
+          columns={this.initColumn()}
+          dataSource={reportList.map((e, i) => ({ ...e, key: i }))}
           bordered
           scroll={{ x: 1800, y: 500 }}
           pagination={false}

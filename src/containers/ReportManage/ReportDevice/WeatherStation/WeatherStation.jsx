@@ -31,7 +31,8 @@ class WeatherStation extends Component {
   }
 
   render() {
-    const { dateType, theme } = this.props;
+    const { dateType, theme, disabledStation } = this.props;
+    console.log('disabledStation: ', disabledStation);
     return (
       <div className={`${styles.weatherStation} ${styles[theme]}`} >
         <CommonBreadcrumb breadData={[{ name: '气象站' }]} style={{ marginLeft: '38px' }} />
@@ -56,7 +57,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   changeStore: payload => dispatch({ type: weatherStationAction.changeStore, payload }),
   resetStore: payload => dispatch({ type: weatherStationAction.resetStore, payload }),
-  getCenterInverList: payload => dispatch({ type: weatherStationAction.getCenterInverList, payload }),
+  getWeatherStationList: payload => dispatch({ type: weatherStationAction.getWeatherStationList, payload }),
   getDisabledStation: payload => dispatch({ type: weatherStationAction.getDisabledStation, payload }),
   getStationDeviceTypes: params => dispatch({ //  获取某一个电站下的设备
     type: commonAction.getStationDeviceTypes,

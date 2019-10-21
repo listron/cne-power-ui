@@ -5,6 +5,9 @@ import CommonPagination from '../../Common/CommonPagination';
 import TableColumnTitle from '../../Common/TableColumnTitle';
 import { Button, Table } from 'antd';
 import { dataFormat } from '../../../utils/utilFunc';
+import path from '../../../constants/path';
+const { APIBasePath } = path.basePaths;
+const { reportManage } = path.APISubPaths;
 
 class ReportTable extends React.Component {
   static propTypes = {
@@ -15,6 +18,7 @@ class ReportTable extends React.Component {
     exportLoading: PropTypes.bool,
     getReportStationList: PropTypes.func,
     exportReportStationList: PropTypes.func,
+    downLoadFile: PropTypes.func,
     changeStore: PropTypes.func,
     startTime: PropTypes.string,
     dateType: PropTypes.string,
@@ -75,8 +79,12 @@ class ReportTable extends React.Component {
   exportReportStation = () => {
     const { startTime, endTime, stationCodes, dateType, orderFiled, orderType } = this.props;
     const params = { startTime, endTime, stationCodes, dateType, orderFiled, orderType };
-    this.props.exportReportStationList({
-      ...params,
+    // this.props.exportReportStationList({
+    //   ...params,
+    // });
+    this.props.downLoadFile({
+      url: `${APIBasePath}${reportManage.exportReportStationList}`,
+      params: { ...params },
     });
   }
   render() {

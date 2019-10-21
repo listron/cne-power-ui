@@ -12,7 +12,7 @@ const { APIBasePath } = path.basePaths;
 class ReportSearch extends React.PureComponent {
   static propTypes = {
     parmas: PropType.object,
-    getCenterInverList: PropType.func,
+    getWeatherStationList: PropType.func,
     total: PropType.number,
     listLoading: PropType.bool,
     changeStore: PropType.func,
@@ -38,7 +38,7 @@ class ReportSearch extends React.PureComponent {
     return (str.length + unit.length) * 14 + (2 * padding) + 20;
   }
 
-  initColumn = (type) => { // 表头的数据
+  initColumn = () => { // 表头的数据
     const power = [//组件温度
       { name: '温度1', unit: '℃', dataIndex: 'part1Temperature', point: 2 },
       { name: '温度2', unit: '℃', dataIndex: 'part2Temperature', point: 2 },
@@ -181,7 +181,7 @@ class ReportSearch extends React.PureComponent {
 
   changeTableList = (value) => {
     const { parmas, reportTime } = this.props;
-    this.props.getCenterInverList({ ...parmas, reportTime, ...value });
+    this.props.getWeatherStationList({ ...parmas, reportTime, ...value });
   }
 
 
@@ -189,25 +189,25 @@ class ReportSearch extends React.PureComponent {
   render() {
     const { total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
     const { pageSize = 1, pageNum = 10, deviceFullcodes } = parmas;
-    const reportList2 = [];
-    for (var i = 30; i > 0; i--) {
-      reportList2.push({
-        key: i,
-        deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
-        date: moment().format('YYYY-MM'),
-        temperature: (Math.random() + 1) * 10000,
-        humidity: (Math.random() + 1) * 10000,
-        part1Temperature: (Math.random() + 1) * 10000,
-        part2Temperature: (Math.random() + 1) * 100,
-        accRadiationMax: (Math.random() + 1) * 10000,
-        slopeRadiationMax: (Math.random() + 1) * 10000,
-        accRadiation: (Math.random() + 1) * 10000,
-        slopeRadiation: (Math.random() + 1) * 10000,
-        windSpeed: (Math.random() + 1) * 10000,
-        windDirector: (Math.random() + 1) * 10000,
-        pressure: (Math.random() + 1) * 10000,
-      });
-    }
+    // const reportList2 = [];
+    // for (var i = 30; i > 0; i--) {
+    //   reportList2.push({
+    //     key: i,
+    //     deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
+    //     date: moment().format('YYYY-MM'),
+    //     temperature: (Math.random() + 1) * 10000,
+    //     humidity: (Math.random() + 1) * 10000,
+    //     part1Temperature: (Math.random() + 1) * 10000,
+    //     part2Temperature: (Math.random() + 1) * 100,
+    //     accRadiationMax: (Math.random() + 1) * 10000,
+    //     slopeRadiationMax: (Math.random() + 1) * 10000,
+    //     accRadiation: (Math.random() + 1) * 10000,
+    //     slopeRadiation: (Math.random() + 1) * 10000,
+    //     windSpeed: (Math.random() + 1) * 10000,
+    //     windDirector: (Math.random() + 1) * 10000,
+    //     pressure: (Math.random() + 1) * 10000,
+    //   });
+    // }
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
@@ -216,7 +216,7 @@ class ReportSearch extends React.PureComponent {
         </div>
         <Table
           columns={this.initColumn()}
-          dataSource={reportList2}
+          dataSource={reportList}
           bordered
           scroll={{ x: 1660, y: 500 }}
           pagination={false}

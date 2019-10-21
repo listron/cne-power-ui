@@ -692,6 +692,9 @@ export default {
       exportDayCenterInvert: '/api/v3/sun/report/jznb/export/min',
       exportCenterInvert: '/api/v3/sun/report/jznb/export/day',
       disabledStations: '/api/v3/api/v3/station/hasspecil',
+      getWeatherStationList: '/v3/sun/report/weather/list/day',
+      getHourWeatherStationList: '/v3/sun/report/weather/list/min',
+
     },
   },
 };

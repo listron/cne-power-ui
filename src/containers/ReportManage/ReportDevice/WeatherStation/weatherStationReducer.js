@@ -4,7 +4,7 @@ import moment from 'moment';
 const weatherStationAction = {
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
-  getCenterInverList: Symbol('getCenterInverList'),
+  getWeatherStationList: Symbol('getWeatherStationList'),
   getDisabledStation: Symbol('getDisabledStation'),
 };
 

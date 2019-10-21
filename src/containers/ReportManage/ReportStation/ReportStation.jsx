@@ -6,6 +6,7 @@ import ReportStationBox from '../../../components/ReportManage/ReportStationBox/
 import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../components/Common/Footer';
 import { reportStationAction } from './reportStationAction';
+import { commonAction } from '../../../containers/alphaRedux/commonAction';
 
 class ReportStation extends Component {
   static propTypes = {
@@ -43,6 +44,13 @@ const mapDispatchToProps = (dispatch) => ({
   resetStore: payload => dispatch({ type: reportStationAction.resetStore, payload }),
   getReportStationList: payload => dispatch({ type: reportStationAction.getReportStationList, payload }),
   exportReportStationList: payload => dispatch({ type: reportStationAction.exportReportStationList, payload }),
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: reportStationAction.changeStore,
+    },
+  }),
 
 
 });

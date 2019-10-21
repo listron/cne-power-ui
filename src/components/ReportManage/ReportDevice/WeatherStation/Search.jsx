@@ -16,7 +16,7 @@ class ReportSearch extends React.PureComponent {
     reportTime: PropType.string,
     endTime: PropType.string,
     dateType: PropType.string,
-    getCenterInverList: PropType.func,
+    getWeatherStationList: PropType.func,
     changeStore: PropType.func,
     disabledStation: PropType.array,
     theme: PropType.string,
@@ -56,7 +56,7 @@ class ReportSearch extends React.PureComponent {
   }
 
   queryList = () => {
-    const { parmas, getCenterInverList, changeStore } = this.props;
+    const { parmas, getWeatherStationList, changeStore } = this.props;
     const { selectStationCode, selectedDevice, selectTime } = this.state;
     const tempStationCode = selectStationCode.length > 0 && selectStationCode[0].stationCode || null;
     const tempDeviceCode = selectedDevice.map(e => e.deviceCode);
@@ -71,10 +71,10 @@ class ReportSearch extends React.PureComponent {
     if (this.loop) {
       this.loop = false;
       if (dateType === 'hour') {
-        getCenterInverList({ ...tmpParmas, reportTime: startTime });
+        getWeatherStationList({ ...tmpParmas, reportTime: startTime });
         changeStore({ parmas: { ...tmpParmas }, reportTime: selectTime.startTime, dateType });
       } else {
-        getCenterInverList({ ...tmpParmas, startTime, endTime, dateType });
+        getWeatherStationList({ ...tmpParmas, startTime, endTime, dateType });
         changeStore({ parmas: { ...tmpParmas }, startTime, endTime, dateType });
       }
       this.time = setTimeout(() => {
@@ -88,7 +88,7 @@ class ReportSearch extends React.PureComponent {
 
   render() {
     const { stations, disabledStation, theme } = this.props;
-    const { selectStationCode, selectedDevice, selectTime } = this.state;
+    const { selectStationCode, selectedDevice } = this.state;
     return (
       <div className={`${styles.reportSearch} ${styles[theme]}`}>
         <div className={styles.column}>
