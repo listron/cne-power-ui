@@ -689,9 +689,9 @@ export default {
       exportReportStationList: '/v3/sun/report/station/export',
       getDayCenterInvert: '/v3/sun/report/jznb/list/min',
       getCenterInvert: '/v3/sun/report/jznb/list/day',
-      exportDayCenterInvert: '/api/v3/sun/report/jznb/export/min',
-      exportCenterInvert: '/api/v3/sun/report/jznb/export/day',
       disabledStations: '/api/v3/api/v3/station/hasspecil',
+      getDayCombineInvert: '/v3/sun/report/jznb/list/min',
+      getCombineInvert: '/v3/sun/report/jznb/list/day',
     },
   },
 };
