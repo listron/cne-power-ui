@@ -1,4 +1,4 @@
-import { put, call, takeLatest } from 'redux-saga/effects';
+import { put, call, takeLatest, select } from 'redux-saga/effects';
 import { workStageAction } from './workStageReducer';
 import request from '@utils/request';
 import path from '@path';
@@ -19,7 +19,7 @@ function* easyPut(actionName, payload){
 
 // setRecordComplete: '/v3/service/task/complete', //  工作记事 => 操作任务为已完成
 // getRecordDetail: '/v3/service/task', // 工作记事 => 查看详情
-// addNewRecord: '/v3/service/workbench/inspect/defect', // 新增工作记事
+
 // handleRecord: '/v3/service/worknote', // 编辑, 删除, 详情工作记事
 
 // getPlanList: '/v3/service/workbench/calendar', // 工作台 - 计划日历
@@ -27,6 +27,7 @@ function* easyPut(actionName, payload){
 // addPlan: '/v3/service/inspect/plan', // 新增新增工作计划
 
 function *getTaskList({ payload }){ //	工作台-今日工作列表
+  // payload = { stationCodes: [56, 12] }
   try {
     const url = `${APIBasePath}${operation.getTaskList}`;
     yield call(easyPut, 'changeStore', { stageLoading: true });
@@ -49,6 +50,36 @@ function *getTaskList({ payload }){ //	工作台-今日工作列表
       stageList: [],
       stageNumInfo: {},
       stageLoading: false,
+    });
+    message.error('获取今日工作列表失败, 请刷新重试');
+  }
+}
+
+function *addNewRecord({ payload }){ // 新增工作记事
+  // payload = { stationList, completeTime, handleUser, noteContent }
+  try {
+    const url = `${APIBasePath}${operation.addNewRecord}`;
+    yield call(easyPut, 'changeStore', { saveRecordLoading: true });
+    const { stationList, completeTime, handleUser, noteContent } = payload || {};
+    const response = yield call(request.post, url, {
+      stationCodes: stationList.map(e => e.stationCode),
+      completeTime: moment(completeTime).format('YYYY/MM/DD HH:mm:ss'),
+      handleUser,
+      noteContent,
+    });
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        saveRecordLoading: false,
+        recordDetailInfo: null, // 请求成功删除相关信息 => 继续或关闭
+      });
+      // 再次请求getTaskList列表
+      const { stageStations } = yield select(state => state.operation.workStage.toJS());
+      yield call(getTaskList, { payload: stageStations.map(e => e.stationCode) });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      saveRecordLoading: false,
+      recordDetailInfo: payload, // 请求失败需要暂存数据进行重新请求
     });
     message.error('获取今日工作列表失败, 请刷新重试');
   }
@@ -104,6 +135,7 @@ function *getTickets({ payload }) {
 
 export function* watchWorkStage() {
   yield takeLatest(workStageAction.getTaskList, getTaskList);
+  yield takeLatest(workStageAction.addNewRecord, addNewRecord);
   yield takeLatest(workStageAction.getRunningLog, getRunningLog);
   yield takeLatest(workStageAction.getTickets, getTickets);
 }

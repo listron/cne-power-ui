@@ -6,7 +6,7 @@ import StationLists from '../../../components/Operation/WorkStage/StationLists';
 import RecordsList from '../../../components/Operation/WorkStage/RecordsList';
 import { RunningLog, TicketsLog } from '../../../components/Operation/WorkStage/RunLogTickets';
 import PlanList from '../../../components/Operation/WorkStage/PlanList';
-// import DetailModal from '../../../../components/Operation/TwoTickets/Examiner/DetailModal';
+import AddRecord from '../../../components/Operation/WorkStage/RecordModals/AddRecord';
 // import EditModal from '../../../../components/Operation/TwoTickets/Examiner/EditModal';
 import ContentLayout from '@components/Common/ContentLayout';
 import { workStageAction } from './workStageReducer';
@@ -56,8 +56,17 @@ class WorkStage extends Component {
     });
   }
 
+  modalTitleInfo = { // 各弹框key: addRecord增记事 editRecord改记事, recordDetail记事详情, addPlan添加计划, handlePlan下发删除计划 
+    addRecord: '添加工作记事',
+    editRecord: '编辑工作记事',
+    recordDetail: '工作记事详情',
+    planDetail: '工作计划详情',
+    addPlan: '添加计划',
+    // handlePlan: ''
+  }
+
   render(){
-    const { theme = 'light', showModal } = this.props;
+    const { theme = 'light', showModal, modalKey } = this.props;
     //  modalKey 各类型弹框对应的key: addRecord增记事 editRecord改记事, recordDetail记事详情, addPlan添加计划, handlePlan下发删除计划 
     return (
       <ContentLayout
@@ -67,28 +76,14 @@ class WorkStage extends Component {
         }}
         // contentClassName={styles.workStage}
       >
-        <StationLists
-          {...this.props}
-          stageQuery={this.stageQuery}
-        />
-        <RecordsList
-          {...this.props}
-        />
+        <StationLists {...this.props} stageQuery={this.stageQuery} />
+        <RecordsList {...this.props} />
         <div className={styles.allDetailLogs}>
           <RunningLog {...this.props} />
           <TicketsLog {...this.props} />
           <PlanList {...this.props} />
         </div>
-        <Modal
-          title="弹框组件哈"
-          visible={showModal}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-        >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-        </Modal>
+        <AddRecord {...this.props} />
         {/* <div>添加工作记事弹框</div>
         <div>查看工作记事弹框</div>
         <div>编辑工作记事弹框</div>
@@ -109,6 +104,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: workStageAction.resetStore }),
   changeStore: payload => dispatch({ type: workStageAction.changeStore, payload }),
   getTaskList: payload => dispatch({ type: workStageAction.getTaskList, payload }),
+  addNewRecord: payload => dispatch({ type: workStageAction.addNewRecord, payload }),
   getRunningLog: payload => dispatch({ type: workStageAction.getRunningLog, payload }),
   getTickets: payload => dispatch({ type: workStageAction.getTickets, payload }),
 });

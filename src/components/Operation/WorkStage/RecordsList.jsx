@@ -104,7 +104,7 @@ class RecordsList extends PureComponent {
     },
   ]
 
-  onAdd = () => { // 添加工作记事
+  onAddRecord = () => { // 添加工作记事
     this.props.changeStore({
       showModal: true, // 弹框
       modalKey: 'addRecord',
@@ -127,7 +127,7 @@ class RecordsList extends PureComponent {
         <div className={styles.recordFilter} ref={(ref) => { this.recordsRef = ref; }}>
           <span className={styles.todayWorkTitle}>今日工作</span>
           <span className={styles.filterParts}>
-            <Button className={styles.addRecord} type="add" onClick={this.onAdd} >
+            <Button className={styles.addRecord} type="add" onClick={this.onAddRecord} >
               <i>+</i>
               <span className={styles.btnText}>添加工作记事</span>
             </Button>
