@@ -56,9 +56,15 @@
           width: 100%;
           height: 40px;
           line-height: 40px;
+          display: flex;
+          justify-content: space-between;
           text-align: center;
+          .line{
+            width: 1px;
+            height: 40px;
+          }
           .text {
-            width: 100%;
+            width: 50%;
             height: 40px;
             line-height: 40px;
             border: none;
@@ -108,6 +114,9 @@
       }
       .downloadBtn {
         border-top: 1px solid $promptColor;
+        .line{
+          background-color: $promptColor;
+        }
         .text {
           color: #999;
           background-color: #fff;
@@ -146,6 +155,9 @@
     }
     .downloadBtn {
       border-top: 1px solid $border-color;
+      .line{
+        background-color: $border-color;
+      }
     }
   }
 }
