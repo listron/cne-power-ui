@@ -7,9 +7,9 @@ import CommonBreadcrumb from '@components/Common/CommonBreadcrumb';
 import Footer from '@components/Common/Footer';
 import { weatherStationAction } from './weatherStationReducer';
 import { commonAction } from '@containers/alphaRedux/commonAction';
-import ReportSearch from '../../../../components//ReportManage/ReportDevice/CenterInvert/Search';
-import ReportTable from '../../../../components/ReportManage/ReportDevice/CenterInvert/Table';
-import ReportHourTable from '../../../../components/ReportManage/ReportDevice/CenterInvert/HourTable';
+import ReportSearch from '../../../../components//ReportManage/ReportDevice/WeatherStation/Search';
+import ReportTable from '../../../../components/ReportManage/ReportDevice/WeatherStation/Table';
+import ReportHourTable from '../../../../components/ReportManage/ReportDevice/WeatherStation/HourTable';
 
 class WeatherStation extends Component {
   static propTypes = {
@@ -34,7 +34,7 @@ class WeatherStation extends Component {
     const { dateType, theme } = this.props;
     return (
       <div className={`${styles.weatherStation} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '集中式逆变器' }]} style={{ marginLeft: '38px' }} />
+        <CommonBreadcrumb breadData={[{ name: '气象站' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.reportbox}>
           <ReportSearch {...this.props} />
           {dateType === 'hour' && <ReportHourTable {...this.props} /> || <ReportTable {...this.props} />}
