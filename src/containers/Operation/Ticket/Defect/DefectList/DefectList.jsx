@@ -57,7 +57,7 @@ class DefectList extends Component {
   }
 
   componentDidMount() {
-    const { stationType, stationCodes, defectSource, defectLevel, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
+    const { stationType, stationCodes, defectSource, defectLevel, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum, handleUserList } = this.props;
     const filter = {
       stationType,
       stationCodes,
@@ -73,6 +73,7 @@ class DefectList extends Component {
       sortField,
       sortMethod,
       handleUser,
+      handleUserList,
     };
     this.props.getParticipant(); //  获取所有参与者。
     this.props.getDefectList({ ...filter });
