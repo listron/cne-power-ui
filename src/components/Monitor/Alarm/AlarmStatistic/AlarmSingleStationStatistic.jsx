@@ -100,8 +100,8 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   onChangeTime = (value, dateString) => {
-    const startTime = value[0].utc().format();
-    const endTime = value[1].utc().format();
+    const startTime = moment(dateString[0]).utc().format();
+    const endTime = moment(dateString[1]).utc().format();
     this.onChangeFilter({
       startTime,
       endTime,
