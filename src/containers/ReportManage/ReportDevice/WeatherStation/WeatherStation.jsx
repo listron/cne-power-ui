@@ -31,7 +31,7 @@ class WeatherStation extends Component {
   }
 
   render() {
-    const { dateType, theme, disabledStation } = this.props;
+    const { dateType, disabledStation, theme } = this.props;
     console.log('disabledStation: ', disabledStation);
     return (
       <div className={`${styles.weatherStation} ${styles[theme]}`} >

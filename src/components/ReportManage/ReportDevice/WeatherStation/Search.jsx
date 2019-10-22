@@ -110,7 +110,7 @@ class ReportSearch extends React.PureComponent {
           <DeviceSelect
             disabled={selectStationCode.length === 0}
             stationCode={selectStationCode.length > 0 && selectStationCode[0].stationCode || null}
-            deviceTypeCode={201}
+            deviceTypeCode={203}
             style={{ width: 'auto', minWidth: '198px' }}
             onChange={this.selectedDevice}
             holderText={'请选择'}
