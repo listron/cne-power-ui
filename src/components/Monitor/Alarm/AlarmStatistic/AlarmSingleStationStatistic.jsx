@@ -100,8 +100,8 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   onChangeTime = (value, dateString) => {
-    const startTime = value[0].utc().format();
-    const endTime = value[1].utc().format();
+    const startTime = moment(dateString[0]).utc().format();
+    const endTime = moment(dateString[1]).utc().format();
     this.onChangeFilter({
       startTime,
       endTime,
@@ -262,7 +262,7 @@ class ALarmSingleStationStatistic extends React.Component {
           <span className={styles.alarmText}>告警消除数</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary ? singleAlarmSummary.eliminateAlarmAvgTime : '--'}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary ? (singleAlarmSummary.eliminateAlarmAvgTime || singleAlarmSummary.eliminateAlarmAvgTime === '0' ? singleAlarmSummary.eliminateAlarmAvgTime : '--') : '--'}</span>
           <span className={styles.alarmText}>平均处理时间</span>
         </div>
       </div>
