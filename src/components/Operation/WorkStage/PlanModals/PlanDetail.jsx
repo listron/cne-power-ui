@@ -8,8 +8,6 @@ class RecordDetail extends PureComponent {
 
   static propTypes = {
     theme: PropTypes.string,
-    saveRecordLoading: PropTypes.bool,
-    deleteRecordLoading: PropTypes.bool,
     recordDetailInfo: PropTypes.object,
     changeStore: PropTypes.func,
     deletRecord: PropTypes.func,
@@ -49,7 +47,7 @@ class RecordDetail extends PureComponent {
 
 
   render(){
-    const { recordDetailInfo, theme, saveRecordLoading, deleteRecordLoading } = this.props;
+    const { recordDetailInfo, theme } = this.props;
     return (
       <div className={`${styles.recordDetail} ${styles[theme]}`}>
         {this.recordBase.map(e => {
@@ -62,14 +60,14 @@ class RecordDetail extends PureComponent {
           );
         })}
         <div className={styles.detailHandle}>
-          <Button onClick={this.toEdit} loading={saveRecordLoading}>编辑</Button>
+          <Button onClick={this.toEdit}>编辑</Button>
           <Popconfirm
             title="是否确认删除记事?"
             onConfirm={this.toRemove}
             okText="确定"
             cancelText="取消"
           >
-            <Button loading={deleteRecordLoading}>删除</Button>
+            <Button>删除</Button>
           </Popconfirm>
         </div>
       </div>

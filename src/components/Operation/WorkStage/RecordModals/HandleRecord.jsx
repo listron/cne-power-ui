@@ -4,6 +4,7 @@ import { Modal } from 'antd';
 // import styles from './recordModals.scss';
 import RecordForm from './RecordForm';
 import RecordDetail from './RecordDetail';
+import PlanDetail from './PlanDetail';
 
 class HandleRecord extends PureComponent {
 
@@ -25,15 +26,16 @@ class HandleRecord extends PureComponent {
     addRecord: '添加工作记事',
     editRecord: '编辑工作记事',
     recordDetail: '工作记事详情',
+    planDetail: '工作计划详情',
   }
 
   render(){
     const { showModal, modalKey } = this.props;
-    // modalKey: addRecord增记事 editRecord改记事, recordDetail记事详情
+    // modalKey: addRecord增记事 editRecord改记事, recordDetail记事详情, planDetail工作计划详情,
     return (
       <Modal
         title={this.modalTitle[modalKey]}
-        visible={showModal && ['addRecord', 'editRecord', 'recordDetail'].includes(modalKey)}
+        visible={showModal && ['addRecord', 'editRecord', 'recordDetail', 'planDetail'].includes(modalKey)}
         onCancel={this.cancelHandle}
         footer={null}
         width={625}
@@ -43,6 +45,10 @@ class HandleRecord extends PureComponent {
           cancelHandle={this.cancelHandle}
         />}
         { modalKey === 'recordDetail' && <RecordDetail
+          {...this.props}
+          cancelHandle={this.cancelHandle}
+        />}
+        { modalKey === 'planDetail' && <PlanDetail
           {...this.props}
           cancelHandle={this.cancelHandle}
         />}

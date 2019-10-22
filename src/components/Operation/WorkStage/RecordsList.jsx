@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Button, Radio, Table, Checkbox, Popconfirm } from 'antd';
+import { Button, Radio, Table, Checkbox, Popconfirm } from 'antd';
 import styles from './workPage.scss';
 import moment from 'moment';
 import { dataFormats } from '@utils/utilFunc';
@@ -13,8 +13,10 @@ class RecordsList extends PureComponent {
     stageNumInfo: PropTypes.object,
     stageList: PropTypes.array,
     changeStore: PropTypes.func,
-    setRecordComplete: PropTypes.func,
+    setPlanComplete: PropTypes.func,
+    getPlanDetail: PropTypes.func,
     getRecordDetail: PropTypes.func,
+    deletRecord: PropTypes.func,
   };
 
   state = {
@@ -23,7 +25,7 @@ class RecordsList extends PureComponent {
       {
         title: '工作类型',
         dataIndex: 'taskTypeName', // taskTypeCode	Int	工作类型编码 1 计划 2 缺陷 3 巡检 4 记事 taskTypeName	String	工作类型名字
-        sorter: true,
+        sorter: (a, b) => a.taskTypeCode - b.taskTypeCode,
         className: styles.taskTypeName,
         render: (text, record) => {
           const { taskTypeCode } = record;
@@ -38,42 +40,44 @@ class RecordsList extends PureComponent {
       }, {
         title: '工作描述',
         dataIndex: 'taskDesc',
-        className: styles.taskDesc, //  className={styles.taskDesc}
+        className: styles.taskDesc,
         render: (text = '') => (<div title={text} className={styles.taskDescText}>{text}</div>),
       }, {
         title: '电站',
         dataIndex: 'stationName',
-        sorter: true,
-        className: styles.stationName, //  className={styles.stationName}
+        sorter: (a, b) => a.stationName && a.stationName.localeCompare(b.stationName),
+        className: styles.stationName,
         render: (text = '') => (<div title={text} className={styles.stationNameText}>{text}</div>),
       }, {
         title: '完成时间',
-        dataIndex: 'completeTime', // 完成时间yyyy-MM-dd HH:mm:ss(Web)
-        className: styles.completeTime, //  className={styles.completeTime}
+        dataIndex: 'completeTime',
+        sorter: (a, b) => (moment(a) - moment(b)),
+        className: styles.completeTime,
         render: (text) => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--',
       }, {
         title: '执行人',
         dataIndex: 'handleUser',
-        className: styles.handleUser, //  className={styles.handleUser}
+        sorter: (a, b) => a.handleUser && a.handleUser.localeCompare(b.handleUser),
+        className: styles.handleUser,
         render: (text = '') => (<div title={text} className={styles.handleUserText}>{text}</div>),
       }, {
         title: '完成情况', // completeStatus	Int	完成情况  0未完成  1已完成
         dataIndex: 'completeStatus',
-        className: styles.completeStatus, //  className={styles.completeStatus}
-        // render: (text = '') => (<div className={styles.completeStatusText}>{text}</div>),
+        sorter: (a, b) => a.completeStatus - b.completeStatus,
+        className: styles.completeStatus,
         render: (text = '') => ['未完成', '已完成'][text] || '--',
       }, {
         title: '操作',
         dataIndex: 'handle',
-        className: styles.handle, //  className={styles.handle}
+        className: styles.handle,
         render: (text, record) => {
           const { taskTypeCode, completeStatus } = record;
           // 工作类型编码 1 计划 2 缺陷 3 巡检 4 记事 taskTypeName	String	工作类型名字
-          // 所有都有详情, 巡检 有完成(1)未完成(0)状态, 记事 有编辑删除功能;
+          // 所有都有详情, 计划 有完成(1)未完成(0)状态, 记事 有编辑删除功能;
           return (
             <span className={styles.handleRow}>
               <span className="iconfont icon-look" onClick={() => this.toDetail(record)} />
-              {taskTypeCode === 3 && <Popconfirm
+              {taskTypeCode === 1 && <Popconfirm
                 title="是否标记为已完成?"
                 onConfirm={() => this.confirmComplete(record)}
                 okText="确定"
@@ -98,57 +102,28 @@ class RecordsList extends PureComponent {
     ],
   }
 
+
   confirmComplete = ({ taskId }) => {
-    this.props.setRecordComplete({ taskIds: [taskId] });
+    this.props.setPlanComplete({ taskIds: [taskId] });
   }
 
-  toDetail = (record) => { // 详情
-    const { taskTypeCode, completeStatus, taskId } = record;
+  toDetail = ({ taskTypeCode, taskId }) => { // 详情
     if (taskTypeCode === 4 ) { // 记事 => 弹框展示记事详情
       this.props.getRecordDetail({ noteId: taskId });
     } else if (taskTypeCode === 1) { // 计划 => 弹框展示计划详情
-
+      this.props.getPlanDetail({ noteId: taskId });
     } else { // 巡检 + 消缺 => 新开页面且跳转至对应的界面
-      console.log('巡检 + 消缺');
+      window.open('#/operation/ticket/list');
     }
   }
 
-  toEdit = (record) => {
-    console.log(record);
+  toEdit = ({ taskId }) => { // 请求详情并指定展示编辑弹框
+    this.props.getRecordDetail({ noteId: taskId, modalKey: 'editRecord' });
   }
 
-  toRemove = (record) => {
-    console.log(record);
+  toRemove = ({ taskId }) => { // 删除
+    this.props.deletRecord({ noteId: taskId });
   }
-
-  // componentWillReceiveProps(nextProps){
-  //   const { stageList } = nextProps;
-  //   const preStageList = this.props.stageList;
-  //   if (stageList.length > 0 && preStageList.length === 0) { // 第一次有数据后将计算宽度注入column
-  //     const { column } = this.state;
-  //     const tableWidth = this.recordsRef.offsetWidth - 6; // 预减去可能的滚动条宽度;
-  //     const columnWidthMap = {
-  //       totalWidth: tableWidth,
-  //       taskTypeName: (tableWidth - 385) * 0.27,
-  //       taskDesc: (tableWidth - 385) * 0.41,
-  //       stationName: (tableWidth - 385) * 0.16,
-  //       completeTime: 175,
-  //       handleUser: (tableWidth - 385) * 0.15,
-  //       completeStatus: 100,
-  //       handle: 110,
-  //     };
-  //     const newColumn = column.map(e => {
-  //       const { dataIndex } = e;
-  //       const eachWidth = columnWidthMap[dataIndex];
-  //       return {
-  //         ...e,
-  //         width: eachWidth,
-  //         render: e.render(eachWidth - 32), // 2 * 16预留padding需要减去
-  //       };
-  //     });
-  //     this.setState({ column: newColumn });
-  //   }
-  // }
 
   recordTypesInfo = [
     {

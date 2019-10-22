@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Input, DatePicker } from 'antd';
+import moment from 'moment';
 import styles from './recordModals.scss';
 import InputLimit from '@components/Common/InputLimit';
 import StationSelect from '@components/Common/StationSelect';
@@ -17,6 +18,7 @@ class AddRecord extends PureComponent {
     saveRecordLoading: PropTypes.bool,
     addNewRecord: PropTypes.func,
     cancelHandle: PropTypes.func,
+    editRecord: PropTypes.func,
   };
 
   state = {
@@ -51,10 +53,12 @@ class AddRecord extends PureComponent {
     });
   }
 
-  editRecordInfo = () => {
+  editRecordInfo = () => { // 编辑
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
+        const { recordDetailInfo } = this.props;
+        const { noteId } = recordDetailInfo;
+        this.props.editRecord({ ...values, noteId });
       }
     });
   }
@@ -67,13 +71,13 @@ class AddRecord extends PureComponent {
     const { theme, form, stageStations, recordDetailInfo, modalKey, saveRecordLoading } = this.props;
     const { saveMode } = this.state;
     const { getFieldDecorator } = form;
-    const { stationList = [], completeTime = null, handleUser = '', noteContent = ''} = recordDetailInfo || {};
+    const { stations = [], completeTime = null, handleUser = '', noteContent = ''} = recordDetailInfo || {};
     return (
       <Form className={`${styles.addRecord} ${styles[theme]}`}>
         <FormItem label="电站" colon={false} className={styles.eachRecordForm}>
           {getFieldDecorator('stationList', {
             rules: [{ required: true, message: '请选择电站' }],
-            initialValue: stationList,
+            initialValue: stageStations.filter(e => stations.map(m => m.stationCode).includes(e.stationCode)),
           })(
             <StationSelect
               data={stageStations}
@@ -85,7 +89,7 @@ class AddRecord extends PureComponent {
         <FormItem label="完成时间" colon={false} className={styles.eachRecordForm} >
           {getFieldDecorator('completeTime', {
             rules: [{ required: true, message: '请选择完成时间' }],
-            initialValue: completeTime,
+            initialValue: completeTime ? moment(completeTime) : null,
           })(
             <DatePicker showTime placeholder="请选择时间" style={{width: '200px'}} allowClear={false} />
           )}

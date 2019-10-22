@@ -17,10 +17,6 @@ function* easyPut(actionName, payload){
   });
 }
 
-// setRecordComplete: '/v3/service/task/complete', //  工作记事 
-// getRecordDetail: '/v3/service/task', // 工作记事 => 查看详情
-
-// handleRecord: '/v3/service/worknote', // 编辑, 删除, 详情工作记事
 
 // getPlanList: '/v3/service/workbench/calendar', // 工作台 - 计划日历
 // handlePlanStatus: '/v3/service/task/future', // 工作台日历任务批量下发/删除
@@ -88,12 +84,19 @@ function *addNewRecord({ payload }){ // 新增工作记事
   }
 }
 
-function *setRecordComplete({ payload }) { // => 操作任务为已完成
+function *setPlanComplete({ payload }) { // => 操作计划为已完成
   // payload = { taskIds: ['1123232323'] }	任务ID
   try {
-    const url = `${APIBasePath}${operation.setRecordComplete}`;
+    yield call(easyPut, 'changeStore', { saveRecordLoading: true });
+    const url = `${APIBasePath}${operation.setPlanComplete}`;
     const response = yield call(request.put, url, { ...payload, taskStatus: 2 });
-    if (response.code === '10000') { // 重新请求列表 + 若处于详情状态 同时请求详情信息
+    if (response.code === '10000') { // 回到列表页 + 重新请求列表
+      yield call(easyPut, 'fetchSuccess', { // 弹框展示详情
+        showModal: false,
+        modalKey: null,
+        saveRecordLoading: false,
+        recordDetailInfo: null,
+      });
       const { stageStations } = yield select(state => state.operation.workStage.toJS());
       yield call(getTaskList, { // 再次请求getTaskList列表
         payload: {
@@ -102,19 +105,20 @@ function *setRecordComplete({ payload }) { // => 操作任务为已完成
       });
     } else { throw response; }
   } catch (error) {
+    yield call(easyPut, 'changeStore', { saveRecordLoading: false });
     message.error('任务状态修改失败, 请重试');
   }
 }
 
 function *getRecordDetail({ payload }){ // 获取记事详情 payload: { noteId: '452868891774976' }
   try {
-    const { noteId } = payload;
+    const { noteId, modalKey = 'recordDetail' } = payload; // 默认展示modalKey详情页, 传入参数可修改
     const url = `${APIBasePath}${operation.handleRecord}/${noteId}`;
     const response = yield call(request.get, url);
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', { // 弹框展示详情
         showModal: true,
-        modalKey: 'recordDetail',
+        modalKey,
         recordDetailInfo: response.data || {},
       });
     } else { throw response; }
@@ -124,24 +128,42 @@ function *getRecordDetail({ payload }){ // 获取记事详情 payload: { noteId:
 }
 
 function *getPlanDetail({ payload }){ // 获取计划详情
-
+  try {
+    const { noteId } = payload;
+    const url = `${APIBasePath}${operation.getPlanDetail}/${noteId}`;
+    const response = yield call(request.get, url);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', { // 弹框展示详情
+        showModal: true,
+        modalKey: 'planDetail',
+        recordDetailInfo: response.data ? { ...response.data, noteId } : {},
+      });
+    } else { throw response; }
+  } catch (error) {
+    message.error('获取计划详情失败, 请重试');
+  }
 }
 
 function *editRecord({ payload }){ // 编辑工作记事
   try {
+    yield call(easyPut, 'changeStore', { saveRecordLoading: true });
     const url = `${APIBasePath}${operation.handleRecord}`;
-    const { stationList, completeTime, handleUser, noteContent } = payload || {};
+    const { stationList, completeTime, handleUser, noteContent, noteId } = payload || {};
     const response = yield call(request.put, url, {
       stationCodes: stationList.map(e => e.stationCode),
       completeTime: moment(completeTime).format('YYYY/MM/DD HH:mm:ss'),
       handleUser,
       noteContent,
+      noteId,
     });
     if (response.code === '10000') {
-      yield call(easyPut, 'fetchSuccess', {
+      yield call(easyPut, 'fetchSuccess', { // 修改成功 关闭弹框
         saveRecordLoading: false,
-        recordDetailInfo: null, // 请求成功删除相关信息并关闭弹框
+        showModal: false,
+        modalKey: null,
+        recordDetailInfo: null,
       });
+      // yield call(getRecordDetail, { payload: { noteId } });// 修改成功 直接查看详情
       const { stageStations } = yield select(state => state.operation.workStage.toJS());
       yield call(getTaskList, { // 再次请求getTaskList列表
         payload: {
@@ -158,7 +180,29 @@ function *editRecord({ payload }){ // 编辑工作记事
 }
 
 function *deletRecord({ payload }){ // 删除记事
-
+  try {
+    const { noteId } = payload;
+    const url = `${APIBasePath}${operation.handleRecord}/${noteId}`;
+    yield call(easyPut, 'changeStore', { deleteRecordLoading: true });
+    const response = yield call(request.delete, url);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', { // 弹框展示详情
+        showModal: false,
+        modalKey: null,
+        deleteRecordLoading: false,
+        recordDetailInfo: null,
+      });
+      const { stageStations } = yield select(state => state.operation.workStage.toJS());
+      yield call(getTaskList, { //删除成功 => 再次请求getTaskList列表
+        payload: {
+          stationCodes: stageStations.map(e => e.stationCode),
+        },
+      });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', { deleteRecordLoading: false });
+    message.error('删除记事详情失败, 请重试');
+  }
 }
 
 function *getRunningLog({ payload }) {
@@ -212,8 +256,10 @@ function *getTickets({ payload }) {
 export function* watchWorkStage() {
   yield takeLatest(workStageAction.getTaskList, getTaskList);
   yield takeLatest(workStageAction.addNewRecord, addNewRecord);
-  yield takeLatest(workStageAction.setRecordComplete, setRecordComplete);
+  yield takeLatest(workStageAction.setPlanComplete, setPlanComplete);
+  yield takeLatest(workStageAction.getPlanDetail, getPlanDetail);
   yield takeLatest(workStageAction.editRecord, editRecord);
+  yield takeLatest(workStageAction.deletRecord, deletRecord);
   yield takeLatest(workStageAction.getRecordDetail, getRecordDetail);
   yield takeLatest(workStageAction.getRunningLog, getRunningLog);
   yield takeLatest(workStageAction.getTickets, getTickets);

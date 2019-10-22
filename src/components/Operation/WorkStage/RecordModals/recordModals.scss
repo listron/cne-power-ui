@@ -1,5 +1,5 @@
 
-
+@import '../../../../theme/theme.scss';
 
 .addRecord{
   .eachRecordForm{
@@ -26,17 +26,41 @@
   }
 }
 
-.recordDetail{
+.recordDetail{ // 记事 + 计划详情
   .eachRecord{
     display: flex;
+    margin-bottom: 8px;
     .recordTitle{
-
+      flex: 0 0 140px;
+      text-align: right;
+      margin-right: 24px;
     }
     .recordValue{
-
+      flex: 1;
+      @include overflowText();
     }
   }
-  .detailHandle{
+  .detailHandle{ // 记事详情 底部操作
+    padding-left: 164px;
+    button{
+      width: 98px;
+      margin-right: 12px;
+    }
+  }
+  .handleComplete{ // 计划详情 标记已完成
+    padding-left: 164px;
+    button{
+      :global{
+        .iconfont.icon-markdone{
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+}
 
+.light.recordDetail{
+  .recordTitle{
+    color: #000;
   }
 }
