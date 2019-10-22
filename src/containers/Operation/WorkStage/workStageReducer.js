@@ -5,6 +5,7 @@ const workStageAction = {
   addNewRecord: Symbol('addNewRecord'),
   setRecordComplete: Symbol('setRecordComplete'),
   editRecord: Symbol('editRecord'),
+  getRecordDetail: Symbol('getRecordDetail'),
   getRunningLog: Symbol('getRunningLog'),
   getTickets: Symbol('getTickets'),
 

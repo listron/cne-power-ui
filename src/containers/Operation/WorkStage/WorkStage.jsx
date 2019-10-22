@@ -6,7 +6,7 @@ import StationLists from '../../../components/Operation/WorkStage/StationLists';
 import RecordsList from '../../../components/Operation/WorkStage/RecordsList';
 import { RunningLog, TicketsLog } from '../../../components/Operation/WorkStage/RunLogTickets';
 import PlanList from '../../../components/Operation/WorkStage/PlanList';
-import AddRecord from '../../../components/Operation/WorkStage/RecordModals/AddRecord';
+import HandleRecord from '../../../components/Operation/WorkStage/RecordModals/HandleRecord';
 // import EditModal from '../../../../components/Operation/TwoTickets/Examiner/EditModal';
 import ContentLayout from '@components/Common/ContentLayout';
 import { workStageAction } from './workStageReducer';
@@ -83,7 +83,7 @@ class WorkStage extends Component {
           <TicketsLog {...this.props} />
           <PlanList {...this.props} />
         </div>
-        <AddRecord {...this.props} />
+        <HandleRecord {...this.props} />
         {/* <div>添加工作记事弹框</div>
         <div>查看工作记事弹框</div>
         <div>编辑工作记事弹框</div>
@@ -105,6 +105,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeStore: payload => dispatch({ type: workStageAction.changeStore, payload }),
   getTaskList: payload => dispatch({ type: workStageAction.getTaskList, payload }),
   addNewRecord: payload => dispatch({ type: workStageAction.addNewRecord, payload }),
+  getRecordDetail: payload => dispatch({ type: workStageAction.getRecordDetail, payload }),
   setRecordComplete: payload => dispatch({ type: workStageAction.setRecordComplete, payload }),
   getRunningLog: payload => dispatch({ type: workStageAction.getRunningLog, payload }),
   getTickets: payload => dispatch({ type: workStageAction.getTickets, payload }),

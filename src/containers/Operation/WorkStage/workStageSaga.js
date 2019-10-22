@@ -107,11 +107,24 @@ function *setRecordComplete({ payload }) { // => 操作任务为已完成
 }
 
 function *getRecordDetail({ payload }){ // 获取记事详情 payload: { noteId: '452868891774976' }
-  // try {
-  //   const url = `${APIBasePath}${operation.handleRecord}`;
-  //   const { noteId } = payload;
-  //   const response = yield call()
-  // }
+  try {
+    const { noteId } = payload;
+    const url = `${APIBasePath}${operation.handleRecord}/${noteId}`;
+    const response = yield call(request.get, url);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', { // 弹框展示详情
+        showModal: true,
+        modalKey: 'recordDetail',
+        recordDetailInfo: response.data || {},
+      });
+    } else { throw response; }
+  } catch (error) {
+    message.error('获取记事详情失败, 请重试');
+  }
+}
+
+function *getPlanDetail({ payload }){ // 获取计划详情
+
 }
 
 function *editRecord({ payload }){ // 编辑工作记事
@@ -142,6 +155,10 @@ function *editRecord({ payload }){ // 编辑工作记事
     });
     message.error('添加工作记事失败, 请刷新重试');
   }
+}
+
+function *deletRecord({ payload }){ // 删除记事
+
 }
 
 function *getRunningLog({ payload }) {
@@ -197,6 +214,7 @@ export function* watchWorkStage() {
   yield takeLatest(workStageAction.addNewRecord, addNewRecord);
   yield takeLatest(workStageAction.setRecordComplete, setRecordComplete);
   yield takeLatest(workStageAction.editRecord, editRecord);
+  yield takeLatest(workStageAction.getRecordDetail, getRecordDetail);
   yield takeLatest(workStageAction.getRunningLog, getRunningLog);
   yield takeLatest(workStageAction.getTickets, getTickets);
 }

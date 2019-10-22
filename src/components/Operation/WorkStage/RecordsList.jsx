@@ -14,6 +14,7 @@ class RecordsList extends PureComponent {
     stageList: PropTypes.array,
     changeStore: PropTypes.func,
     setRecordComplete: PropTypes.func,
+    getRecordDetail: PropTypes.func,
   };
 
   state = {
@@ -101,8 +102,15 @@ class RecordsList extends PureComponent {
     this.props.setRecordComplete({ taskIds: [taskId] });
   }
 
-  toDetail = (record) => { // 详情 => 缺陷, 计划
-    console.log(record);
+  toDetail = (record) => { // 详情
+    const { taskTypeCode, completeStatus, taskId } = record;
+    if (taskTypeCode === 4 ) { // 记事 => 弹框展示记事详情
+      this.props.getRecordDetail({ noteId: taskId });
+    } else if (taskTypeCode === 1) { // 计划 => 弹框展示计划详情
+
+    } else { // 巡检 + 消缺 => 新开页面且跳转至对应的界面
+      console.log('巡检 + 消缺');
+    }
   }
 
   toEdit = (record) => {
