@@ -281,17 +281,16 @@ function *getPlanList({ payload }) { // 计划日历 payload: {stationCodes, sta
   try {
     const url = `${APIBasePath}${operation.getPlanList}`;
     yield call(easyPut, 'changeStore', { planListLoading: true });
-    const { stationCodes, planMonth = moment() } = payload;
+    const { stationCodes, planMonth = moment().format('YYYY-MM') } = payload;
     const response = yield call(request.post, url, {
       stationCodes,
-      startDate: planMonth.startOf('month').format('YYYY-MM-DD HH:mm:ss'),
-      endDate: planMonth.endOf('month').format('YYYY-MM-DD HH:mm:ss'),
+      startDate: moment(planMonth).startOf('month').format('YYYY-MM-DD HH:mm:ss'),
+      endDate: moment(planMonth).endOf('month').format('YYYY-MM-DD HH:mm:ss'),
     });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         planList: response.data || [],
         planListLoading: false,
-        planMonth,
       });
     } else { throw response; }
   } catch (error) {

@@ -1,22 +1,24 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Icon, Button, Radio, Table } from 'antd';
+import { Icon, Button } from 'antd';
 import styles from './workPage.scss';
-import { dataFormats } from '@utils/utilFunc';
+// import { dataFormats } from '@utils/utilFunc';
 
 class PlanList extends PureComponent {
 
   static propTypes = {
+    planMonth: PropTypes.string,
     theme: PropTypes.string,
+    stageStations: PropTypes.array,
     changeStore: PropTypes.func,
+    getPlanList: PropTypes.func,
   };
 
   constructor(props){
     super(props);
     const planMonth = moment().format('YYYY-MM');
     this.state = {
-      planMonth,
       datesInfo: this.getMonthDatesInfo(planMonth),
     };
   }
@@ -45,19 +47,32 @@ class PlanList extends PureComponent {
     return datesInfo;
   }
 
-  checkPreMonth = () => {
-    console.log('上一个月');
+  checkPreMonth = () => { // 上个月
+    const { stageStations, planMonth } = this.props;
+    const prePlanMonth = moment(planMonth).subtract(1, 'month').format('YYYY-MM');
+    this.setState({ datesInfo: this.getMonthDatesInfo(prePlanMonth) });
+    this.props.changeStore({ planMonth: prePlanMonth });
+    this.props.getPlanList({
+      stationCodes: stageStations.map(e => e.stationCode),
+      planMonth: prePlanMonth,
+    }); // 计划日历
   }
 
-  checkNextMonth = () => {
-    console.log('下一个月');
+  checkNextMonth = () => { // 下个月
+    const { stageStations, planMonth } = this.props;
+    const nextPlanMonth = moment(planMonth).add(1, 'month').format('YYYY-MM');
+    this.setState({ datesInfo: this.getMonthDatesInfo(nextPlanMonth) });
+    this.props.changeStore({ planMonth: nextPlanMonth });
+    this.props.getPlanList({
+      stationCodes: stageStations.map(e => e.stationCode),
+      planMonth: nextPlanMonth,
+    }); // 计划日历
   }
 
   render(){
-    const { theme } = this.props;
-    const { planMonth, datesInfo } = this.state;
+    const { theme, planMonth } = this.props;
+    const { datesInfo } = this.state;
     const monthReduceUnable = moment(planMonth).isSame(moment(), 'M'); // 当前月不可往前选月
-    // console.log(planMonth, monthReduceUnable)
     // 不属于本月的日期: 禁止选择灰色不触发, 本月日期: hover浅色, 选中深色, 默认无色
     return (
       <div className={`${styles.planList} ${styles[theme]}`}>
@@ -69,10 +84,10 @@ class PlanList extends PureComponent {
           <span className={styles.monthHandler}>
             <Icon
               type="left" className={styles.monthIcon}
-              style={monthReduceUnable && {
+              style={monthReduceUnable ? {
                 cursor: 'not-allowed',
                 color: '#999',
-              }}
+              } : {}}
               onClick={!monthReduceUnable ? this.checkPreMonth : null}
             />
             <span className={styles.monthText}>{moment(planMonth).format('YYYY年M月')}</span>
