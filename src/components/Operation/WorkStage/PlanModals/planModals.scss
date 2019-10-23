@@ -3,3 +3,38 @@
 
 
 
+.addPlanForm{
+  .planFormBox{
+    max-height: 500px;
+  }
+  .eachPlanForm{
+    display: flex;
+    margin-bottom: 14px;
+    .addFormTips{
+      margin-left: 12px;
+    }
+    :global{
+      .ant-form-item-label{
+        flex: 0 0 175px;
+      }
+      .ant-form-item-control-wrapper{
+        flex: 1;
+      }
+      .ant-form-explain{
+        position: absolute;
+      }
+    }
+  }
+  .saveRow{
+    display: flex;
+    padding-left: 175px;
+    margin-top: 12px;
+    button{
+      margin-right: 12px;
+    }
+  }
+}
+
+.addFormTips{
+  color: $lightColor;
+}

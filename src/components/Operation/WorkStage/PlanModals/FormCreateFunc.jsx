@@ -7,6 +7,8 @@ import styles from './planModals.scss';
 const FormItem = Form.Item;
 const { Option } = Select;
 
+// form创建的尝试而已。未引入项目。
+
 
 const formItemCreate = ({Item, label, colon = false, className = styles.eachRecordForm }) => { // formItem工厂
   return (

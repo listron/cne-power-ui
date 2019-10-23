@@ -8,6 +8,8 @@ const workStageAction = {
   editRecord: Symbol('editRecord'),
   deletRecord: Symbol('deletRecord'),
   getRecordDetail: Symbol('getRecordDetail'),
+  getPlanList: Symbol('getPlanList'),
+  addPlan: Symbol('addPlan'),
   getRunningLog: Symbol('getRunningLog'),
   getTickets: Symbol('getTickets'),
 
@@ -30,12 +32,12 @@ const initState = immutable.fromJS({
   stageNumInfo: {}, // 记事列表各类型统计信息 - 全部, 计划, 消缺, 巡检, 记事
 
   planList: [], // 日历列表
-  addPlanLoading: false, // 添加计划
 
   runLogLoading: false, // 运行记录loading
   runLogInfo: {}, // 运行记录信息
   ticketsLoading: false, // 两票三制loading
   ticketsInfo: {}, // 两票三制信息
+  stationDeviceTypes: [], // 添加计划时, 电站对应的设备类型
 });
 
 const workStage = (state = initState, action) => {

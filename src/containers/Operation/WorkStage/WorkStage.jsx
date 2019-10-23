@@ -9,6 +9,7 @@ import HandleRecord from '../../../components/Operation/WorkStage/RecordModals/H
 import AddPlan from '../../../components/Operation/WorkStage/PlanModals/AddPlan';
 import ContentLayout from '@components/Common/ContentLayout';
 import { workStageAction } from './workStageReducer';
+import { commonAction } from '../../alphaRedux/commonAction';
 import styles from './workStage.scss';
 
 class WorkStage extends Component {
@@ -110,8 +111,18 @@ const mapDispatchToProps = (dispatch) => ({
   getRecordDetail: payload => dispatch({ type: workStageAction.getRecordDetail, payload }),
   setPlanComplete: payload => dispatch({ type: workStageAction.setPlanComplete, payload }),
   getPlanDetail: payload => dispatch({ type: workStageAction.getPlanDetail, payload }),
+  addPlan: payload => dispatch({ type: workStageAction.addPlan, payload }),
   getRunningLog: payload => dispatch({ type: workStageAction.getRunningLog, payload }),
   getTickets: payload => dispatch({ type: workStageAction.getTickets, payload }),
+
+  getStationDeviceTypes: params => dispatch({
+    type: commonAction.getStationDeviceTypes,
+    payload: {
+      params,
+      deviceTypeAction: workStageAction.fetchSuccess,
+      resultName: 'stationDeviceTypes',
+    },
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkStage);

@@ -17,7 +17,6 @@ function* easyPut(actionName, payload){
   });
 }
 
-
 // getPlanList: '/v3/service/workbench/calendar', // 工作台 - 计划日历
 // handlePlanStatus: '/v3/service/task/future', // 工作台日历任务批量下发/删除
 // addPlan: '/v3/service/inspect/plan', // 新增新增工作计划
@@ -205,7 +204,33 @@ function *deletRecord({ payload }){ // 删除记事
   }
 }
 
-function *getRunningLog({ payload }) {
+function *addPlan({ payload }){ // 添加工作计划
+  try {
+    const url = `${APIBasePath}${operation.addPlan}`;
+    yield call(easyPut, 'changeStore', { saveRecordLoading: true });
+    const response = yield call(request.post, url, { ...payload });
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        saveRecordLoading: false,
+        recordDetailInfo: null, // 请求成功删除相关信息 => 继续或关闭
+      });
+      // const { stageStations } = yield select(state => state.operation.workStage.toJS());
+      // yield call(getTaskList, { // 再次请求getTaskList列表
+      //   payload: {
+      //     stationCodes: stageStations.map(e => e.stationCode),
+      //   },
+      // });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      saveRecordLoading: false,
+      recordDetailInfo: payload, // 请求失败需要暂存数据进行重新请求
+    });
+    message.error('添加工作记事失败, 请刷新重试');
+  }
+}
+
+function *getRunningLog({ payload }) { // 运行记录
   try {
     const url = `${APIBasePath}${operation.getRunningLog}`;
     yield call(easyPut, 'changeStore', { runLogLoading: true });
@@ -229,7 +254,7 @@ function *getRunningLog({ payload }) {
   }
 }
 
-function *getTickets({ payload }) {
+function *getTickets({ payload }) { // 两票三制记录
   try {
     const url = `${APIBasePath}${operation.getTickets}`;
     yield call(easyPut, 'changeStore', { ticketsLoading: true });
@@ -253,6 +278,10 @@ function *getTickets({ payload }) {
   }
 }
 
+function *getPlanList({ payload }) {
+
+}
+
 export function* watchWorkStage() {
   yield takeLatest(workStageAction.getTaskList, getTaskList);
   yield takeLatest(workStageAction.addNewRecord, addNewRecord);
@@ -261,6 +290,7 @@ export function* watchWorkStage() {
   yield takeLatest(workStageAction.editRecord, editRecord);
   yield takeLatest(workStageAction.deletRecord, deletRecord);
   yield takeLatest(workStageAction.getRecordDetail, getRecordDetail);
+  yield takeLatest(workStageAction.addPlan, addPlan);
   yield takeLatest(workStageAction.getRunningLog, getRunningLog);
   yield takeLatest(workStageAction.getTickets, getTickets);
 }
