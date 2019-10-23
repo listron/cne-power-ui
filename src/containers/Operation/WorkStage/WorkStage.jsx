@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Modal } from 'antd';
 import StationLists from '../../../components/Operation/WorkStage/StationLists';
 import RecordsList from '../../../components/Operation/WorkStage/RecordsList';
 import { RunningLog, TicketsLog } from '../../../components/Operation/WorkStage/RunLogTickets';
 import PlanList from '../../../components/Operation/WorkStage/PlanList';
 import HandleRecord from '../../../components/Operation/WorkStage/RecordModals/HandleRecord';
-// import EditModal from '../../../../components/Operation/TwoTickets/Examiner/EditModal';
+import AddPlan from '../../../components/Operation/WorkStage/PlanModals/AddPlan';
 import ContentLayout from '@components/Common/ContentLayout';
 import { workStageAction } from './workStageReducer';
 import styles from './workStage.scss';
@@ -66,7 +65,7 @@ class WorkStage extends Component {
   }
 
   render(){
-    const { theme = 'light', showModal, modalKey } = this.props;
+    // const { theme = 'light', showModal, modalKey } = this.props;
     //  modalKey 各类型弹框对应的key: addRecord增记事 editRecord改记事, recordDetail记事详情, addPlan添加计划, handlePlan下发删除计划 
     return (
       <ContentLayout
@@ -84,6 +83,7 @@ class WorkStage extends Component {
           <PlanList {...this.props} />
         </div>
         <HandleRecord {...this.props} />
+        <AddPlan {...this.props} />
         {/* <div>添加工作记事弹框</div>
         <div>查看工作记事弹框</div>
         <div>编辑工作记事弹框</div>

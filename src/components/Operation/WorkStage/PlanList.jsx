@@ -9,7 +9,7 @@ class PlanList extends PureComponent {
 
   static propTypes = {
     theme: PropTypes.string,
-
+    changeStore: PropTypes.func,
   };
 
   constructor(props){
@@ -24,7 +24,10 @@ class PlanList extends PureComponent {
   weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 
   onAdd = () => {
-    console.log('add plan');
+    this.props.changeStore({
+      showModal: true, // 弹框
+      modalKey: 'addPlan',
+    });
   }
 
   getMonthDatesInfo = (month) => { // weekdays中, 周日为一周的起始
