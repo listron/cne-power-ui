@@ -163,8 +163,9 @@ class ReportSearch extends React.PureComponent {
 
   exportFile = () => { // 导出文件
     const { parmas, reportTime } = this.props;
+    console.log('url', `${APIBasePath}${path.APISubPaths.reportManage.exportDayCenterInvert}`);
     this.props.downLoadFile({
-      url: `${APIBasePath}${path.APISubPaths.reportManage.getDayCenterInvert}`,
+      url: `${APIBasePath}${path.APISubPaths.reportManage.exportDayCenterInvert}`,
       params: { ...parmas, reportTime },
     });
   }

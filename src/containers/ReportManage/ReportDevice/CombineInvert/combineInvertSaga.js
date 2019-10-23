@@ -11,7 +11,7 @@ function* getCombineInvertList(action) {
   const { payload } = action;
   const { dateType } = payload;
   const dateTypeArr = ['day', 'month'];
-  const url = dateTypeArr.includes[dateType] ? `${APIBasePath}${reportManage.getCombineInvert}` : `${APIBasePath}${reportManage.getDayCombineInvert}`;
+  const url = dateTypeArr.includes(dateType) ? `${APIBasePath}${reportManage.getCombineInvert}` : `${APIBasePath}${reportManage.getDayCombineInvert}`;
   try {
     yield put({
       type: combineInvertAction.changeStore,
@@ -21,11 +21,28 @@ function* getCombineInvertList(action) {
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      console.log('cunchu', response.data.data);
+      const totalNum = response.data.data.pageCount || 0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(totalNum / pageSize);
+      if (totalNum === 0) { // 总数为0时，展示0页
+        pageNum = 1;
+      } else if (maxPage < pageNum) { // 当前页已超出
+        pageNum = maxPage;
+      }
+      const tmpParmas = yield select((state) => {
+        return state.reportManageReducer.centerInvert.get('parmas').toJS();
+      });
       yield put({
         type: combineInvertAction.changeStore,
         payload: {
-          reportList: response.data.data || [],
+          total: totalNum,
+          reportList: response.data.data.dataList || [],
           listLoading: false,
+          parmas: {
+            ...tmpParmas,
+            pageNum,
+          },
         },
       });
     } else {

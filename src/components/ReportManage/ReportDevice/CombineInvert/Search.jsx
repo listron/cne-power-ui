@@ -71,11 +71,11 @@ class ReportSearch extends React.PureComponent {
     if (this.loop) {
       this.loop = false;
       if (dateType === 'hour') {
-        getCombineInvertList({ ...tmpParmas, reportTime: startTime });
         changeStore({ parmas: { ...tmpParmas }, reportTime: selectTime.startTime, dateType });
+        getCombineInvertList({ ...tmpParmas, reportTime: startTime });
       } else {
-        getCombineInvertList({ ...tmpParmas, startTime, endTime, dateType });
         changeStore({ parmas: { ...tmpParmas }, startTime, endTime, dateType });
+        getCombineInvertList({ ...tmpParmas, startTime, endTime, dateType });
       }
       this.time = setTimeout(() => {
         this.loop = true;

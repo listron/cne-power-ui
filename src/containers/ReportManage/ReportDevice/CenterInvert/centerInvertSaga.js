@@ -11,7 +11,8 @@ function* getCenterInverList(action) {
   const { payload } = action;
   const { dateType } = payload;
   const dateTypeArr = ['day', 'month'];
-  const url = dateTypeArr.includes[dateType] ? `${APIBasePath}${reportManage.getCenterInvert}` : `${APIBasePath}${reportManage.getDayCenterInvert}`;
+  const url = dateTypeArr.includes(dateType) ? `${APIBasePath}${reportManage.getCenterInvert}` : `${APIBasePath}${reportManage.getDayCenterInvert}`;
+  console.log('dateType', dateType, url);
   try {
     yield put({
       type: centerInvertAction.changeStore,
@@ -21,18 +22,35 @@ function* getCenterInverList(action) {
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      console.log('cunchu', response.data.data);
+      const totalNum = response.data.data.pageCount || 0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(totalNum / pageSize);
+      if (totalNum === 0) { // 总数为0时，展示0页
+        pageNum = 1;
+      } else if (maxPage < pageNum) { // 当前页已超出
+        pageNum = maxPage;
+      }
+      const tmpParmas = yield select((state) => {
+        return state.reportManageReducer.centerInvert.get('parmas').toJS();
+      });
       yield put({
         type: centerInvertAction.changeStore,
         payload: {
-          reportList: response.data.data || [],
+          total: totalNum,
+          reportList: response.data.data.dataList || [],
           listLoading: false,
+          parmas: {
+            ...tmpParmas,
+            pageNum,
+          },
         },
       });
     } else {
       throw response.data;
     }
   } catch (e) {
-    message.error('获取电站报表列表数据失败！');
+    // message.error('获取电站报表列表数据失败！');
     yield put({
       type: centerInvertAction.changeStore,
       payload: {
@@ -46,6 +64,7 @@ function* getCenterInverList(action) {
 
 function* getDisabledStation(action) {
   const url = `${APIBasePath}${reportManage.disabledStations}`;
+  console.log('url', url);
   try {
     const response = yield call(axios.post, url, { deviceTypeCode: 201 });
     if (response.data.code === '10000') {

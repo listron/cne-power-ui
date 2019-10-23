@@ -116,7 +116,7 @@ class ReportSearch extends React.PureComponent {
             dataIndex: 'acPowerTime',
             // className: styles.rightText,
             width: 180,
-            render: value => moment(value).format('YYYY-MM-DD HH:mm:ss'),
+            render: value => value && moment(value).format('YYYY-MM-DD HH:mm:ss') || '--',
           },
         ],
       },
@@ -127,9 +127,9 @@ class ReportSearch extends React.PureComponent {
 
   exportFile = () => { // 导出文件
     const { parmas, startTime, endTime, dateType } = this.props;
-    // `${APIBasePath}${reportManage.getCenterInvert}` : ;
+    console.log('downLoadFile', `${APIBasePath}${path.APISubPaths.reportManage.exportCenterInvert}`);
     this.props.downLoadFile({
-      url: `${APIBasePath}${path.APISubPaths.reportManage.getCenterInvert}`,
+      url: `${APIBasePath}${path.APISubPaths.reportManage.exportCenterInvert}`,
       params: { ...parmas, startTime, endTime, dateType },
     });
   }

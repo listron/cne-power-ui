@@ -116,7 +116,7 @@ class ReportSearch extends React.PureComponent {
             dataIndex: 'acPowerTime',
             // className: styles.rightText,
             width: 180,
-            render: value => moment(value).format('YYYY-MM-DD HH:mm:ss'),
+            render: value => value && moment(value).format('YYYY-MM-DD HH:mm:ss') || '--',
           },
         ],
       },
@@ -165,6 +165,7 @@ class ReportSearch extends React.PureComponent {
   render() {
     const { dateType = 'day', total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
     const { pageSize, pageNum, deviceFullcodes } = parmas;
+    console.log('deviceFullcodes', deviceFullcodes);
     // const reportList = [];
     // for (var i = 30; i > 0; i--) {
     //   reportList.push({
