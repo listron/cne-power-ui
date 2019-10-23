@@ -318,8 +318,8 @@ class StationStatisticList extends React.Component {
   exportTable = () => {
     const { stationType, year, month, powerSelectYear, dateType, pageSize, pageNum, sort, sortType, downLoadFile } = this.props;
     const prams = {
-      pageNum,
-      pageSize,
+      // pageNum,
+      // pageSize,
       year: dateType === 'month' ? year[0] : powerSelectYear,
       stationType,
       month,

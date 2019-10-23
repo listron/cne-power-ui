@@ -231,7 +231,7 @@ class ALarmSingleStationStatistic extends React.Component {
             onCalendarChange={this.onCalendarChange}
             format="YYYY-MM-DD"
             format="YYYY-MM-DD"
-            placeholder={['Start Time', 'End Time']}
+            placeholder={['开始时间', '结束时间']}
             onChange={this.onChangeTime}
           />
         }
