@@ -17,10 +17,6 @@ function* easyPut(actionName, payload){
   });
 }
 
-// getPlanList: '/v3/service/workbench/calendar', // 工作台 - 计划日历
-// handlePlanStatus: '/v3/service/task/future', // 工作台日历任务批量下发/删除
-// addPlan: '/v3/service/inspect/plan', // 新增新增工作计划
-
 function *getTaskList({ payload }){ //	工作台-今日工作列表
   // payload = { stationCodes: [56, 12] }
   try {
@@ -214,19 +210,22 @@ function *addPlan({ payload }){ // 添加工作计划
         saveRecordLoading: false,
         recordDetailInfo: null, // 请求成功删除相关信息 => 继续或关闭
       });
-      // const { stageStations } = yield select(state => state.operation.workStage.toJS());
-      // yield call(getTaskList, { // 再次请求getTaskList列表
-      //   payload: {
-      //     stationCodes: stageStations.map(e => e.stationCode),
-      //   },
-      // });
+      // 再次请求今日工作列表 + 计划列表
+      const { stageStations, planMonth } = yield select(state => state.operation.workStage.toJS());
+      const stationCodes = stageStations.map(e => e.stationCode);
+      yield call(getTaskList, { // 再次请求今日工作列表
+        payload: { stationCodes },
+      });
+      yield call(getPlanList, { // 再次请求日历计划列表
+        payload: { stationCodes, planMonth },
+      });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
       saveRecordLoading: false,
       recordDetailInfo: payload, // 请求失败需要暂存数据进行重新请求
     });
-    message.error('添加工作记事失败, 请刷新重试');
+    message.error('添加计划失败, 请重试');
   }
 }
 
@@ -278,9 +277,33 @@ function *getTickets({ payload }) { // 两票三制记录
   }
 }
 
-function *getPlanList({ payload }) {
-
+function *getPlanList({ payload }) { // 计划日历 payload: {stationCodes, startDate, endDate}
+  try {
+    const url = `${APIBasePath}${operation.getPlanList}`;
+    yield call(easyPut, 'changeStore', { planListLoading: true });
+    const { stationCodes, planMonth = moment() } = payload;
+    const response = yield call(request.post, url, {
+      stationCodes,
+      startDate: planMonth.startOf('month').format('YYYY-MM-DD HH:mm:ss'),
+      endDate: planMonth.endOf('month').format('YYYY-MM-DD HH:mm:ss'),
+    });
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        planList: response.data || [],
+        planListLoading: false,
+        planMonth,
+      });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      planList: [],
+      planListLoading: false,
+    });
+    message.error('获取计划日历失败, 请刷新重试');
+  }
 }
+// handlePlanStatus: '/v3/service/task/future', // 工作台日历任务批量下发/删除
+
 
 export function* watchWorkStage() {
   yield takeLatest(workStageAction.getTaskList, getTaskList);
@@ -293,5 +316,6 @@ export function* watchWorkStage() {
   yield takeLatest(workStageAction.addPlan, addPlan);
   yield takeLatest(workStageAction.getRunningLog, getRunningLog);
   yield takeLatest(workStageAction.getTickets, getTickets);
+  yield takeLatest(workStageAction.getPlanList, getPlanList);
 }
 

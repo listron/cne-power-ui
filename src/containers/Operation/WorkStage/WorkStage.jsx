@@ -24,6 +24,7 @@ class WorkStage extends Component {
     getTaskList: PropTypes.func,
     getRunningLog: PropTypes.func,
     getTickets: PropTypes.func,
+    getPlanList: PropTypes.func,
   };
 
   componentDidMount(){
@@ -47,6 +48,7 @@ class WorkStage extends Component {
     this.props.getTaskList({ stationCodes }); // 记事列表
     this.props.getRunningLog({ stationCodes }); // 运行记录
     this.props.getTickets({ stationCodes }); // 两票三制
+    this.props.getPlanList({ stationCodes }); // 计划日历
   }
 
   handleCancel = () => {
@@ -114,6 +116,7 @@ const mapDispatchToProps = (dispatch) => ({
   addPlan: payload => dispatch({ type: workStageAction.addPlan, payload }),
   getRunningLog: payload => dispatch({ type: workStageAction.getRunningLog, payload }),
   getTickets: payload => dispatch({ type: workStageAction.getTickets, payload }),
+  getPlanList: payload => dispatch({ type: workStageAction.getPlanList, payload }),
 
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,
