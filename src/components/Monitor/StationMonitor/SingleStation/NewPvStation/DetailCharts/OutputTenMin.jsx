@@ -13,7 +13,7 @@ import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat'
 import { Gradient1, Gradient2, chartsLoading, themeConfig, chartsNodata } from '../../../../../../utils/darkConfig';
 class OutputTenMin extends Component {
   static propTypes = {
-    capabilityData: PropTypes.array,
+    capabilityData: PropTypes.object,
     yXaisName: PropTypes.string,
     // stationCode: PropTypes.number,
     yAxisUnit: PropTypes.string,
@@ -32,18 +32,19 @@ class OutputTenMin extends Component {
   }
 
   drawChart = (param) => {
-    const { capabilityData = [], yAxisUnit, stationCode, theme } = param;
+    const { capabilityData = {}, yAxisUnit, theme } = param;
+    const { chartDatas = [], showTemplate } = capabilityData; // showTemplate 0 不显示 1 显示
     const yAxisType = `功率(${yAxisUnit})`;
     let capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'), themeConfig[theme]);
     if (capabilityDiagram) {
       capabilityDiagram.dispose();
       capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'), themeConfig[theme]);
     }
-    const capabilityPower = capabilityData.map(e => dataFormats(divideFormarts(e.stationPower, yAxisUnit), '--', 2, true));
-    const capabilityRadiation = capabilityData.map(e => dataFormats(e.instantaneous, '--', 2, true));
-    const templatePower = capabilityData.map(e => dataFormats(e.templatePower, '--', 2, true)); // 样板逆变器功率 无样板机逆变器时没有
-    const theoreticalPower = capabilityData.map(e => dataFormats(e.theoreticalPower, '--', 2, true)); // 理论功率 无气象站时没有
-    const templatePowerSeries = capabilityData.length > 0 && capabilityData[0].templatePower !== undefined && {
+    const capabilityPower = chartDatas.map(e => dataFormats(divideFormarts(e.stationPower, yAxisUnit), '--', 2, true));
+    const capabilityRadiation = chartDatas.map(e => dataFormats(e.instantaneous, '--', 2, true));
+    const templatePower = chartDatas.map(e => dataFormats(e.templatePower, '--', 2, true)); // 样板逆变器功率 无样板机逆变器时没有
+    const theoreticalPower = chartDatas.map(e => dataFormats(e.theoreticalPower, '--', 2, true)); // 理论功率 无气象站时没有
+    const templatePowerSeries = showTemplate && chartDatas.length > 0 && chartDatas[0].templatePower !== undefined && {
       name: '样板机逆变器功率',
       type: 'line',
       smooth: true,
@@ -57,7 +58,7 @@ class OutputTenMin extends Component {
         color: '#3e97d1',
       },
     } || { type: 'line' };
-    const theoreticalPowerSeries = capabilityData.length > 0 && capabilityData[0].theoreticalPower !== undefined && {
+    const theoreticalPowerSeries = chartDatas.length > 0 && chartDatas[0].theoreticalPower !== undefined && {
       name: '理论功率',
       type: 'line',
       smooth: true,
@@ -71,10 +72,10 @@ class OutputTenMin extends Component {
         color: '#199475',
       },
     } || { type: 'line' };
-    const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
-    const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
-    const filterTemplatePower = capabilityData.filter(e => e.templatePower);
-    const filterTheoreticalPower = capabilityData.filter(e => e.hasTheoreticalPower);
+    const filterCapabilityPower = chartDatas.filter(e => e.stationPower);
+    const filterCapabilityRadiation = chartDatas.filter(e => e.instantaneous);
+    const filterTemplatePower = chartDatas.filter(e => e.templatePower);
+    const filterTheoreticalPower = chartDatas.filter(e => e.hasTheoreticalPower);
     const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0 && filterTemplatePower.length === 0 && filterTheoreticalPower.length === 0);
     const graphic = chartsNodata(!capabilityGraphic, theme);
     const minPower = Math.min(...capabilityPower);
@@ -121,7 +122,7 @@ class OutputTenMin extends Component {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: capabilityData && capabilityData.map(e => {
+        data: chartDatas && chartDatas.map(e => {
           return moment(moment.utc(e.utc).toDate()).format('MM-DD HH:mm');
         }),
         axisLabel: {
