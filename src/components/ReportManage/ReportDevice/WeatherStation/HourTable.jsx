@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './centerInvert.scss';
+import styles from './weatherStationBox.scss';
 import PropType from 'prop-types';
 import { Table, Button } from 'antd';
 import moment from 'moment';
@@ -12,7 +12,7 @@ const { APIBasePath } = path.basePaths;
 class ReportSearch extends React.PureComponent {
   static propTypes = {
     parmas: PropType.object,
-    getCenterInverList: PropType.func,
+    getWeatherStationList: PropType.func,
     total: PropType.number,
     listLoading: PropType.bool,
     changeStore: PropType.func,
@@ -21,6 +21,8 @@ class ReportSearch extends React.PureComponent {
     downloading: PropType.bool,
     reportList: PropType.array,
     theme: PropType.string,
+    stationName: PropType.string,
+    deviceNames: PropType.array,
   }
 
   constructor() {
@@ -38,26 +40,19 @@ class ReportSearch extends React.PureComponent {
     return (str.length + unit.length) * 14 + (2 * padding) + 20;
   }
 
-  initColumn = (type) => { // 表头的数据
-    const power = [
-      { name: '直流输入功率', unit: 'kW', dataIndex: 'inverterDcPower', point: 2 },
-      { name: '交流有功功率', unit: 'kW', dataIndex: 'acPower', point: 2 },
-      { name: '交流无功功率', unit: 'kW', dataIndex: 'acReactivePower', point: 2 },
+  initColumn = () => { // 表头的数据
+    const power = [//组件温度
+      { name: '温度1', unit: '℃', dataIndex: 'part1Temperature', point: 2 },
+      { name: '温度2', unit: '℃', dataIndex: 'part2Temperature', point: 2 },
     ];
-    const DcPower = [ // 直流
-      { name: '直流电压', unit: 'V', dataIndex: 'dcVoltage', point: 2 },
-      { name: '直流电流', unit: 'A', dataIndex: 'dcCurrent', point: 2 },
+    const DcPower = [ // 瞬时辐射强度
+      { name: '水平辐射', unit: 'W/m2', dataIndex: 'accRadiationMax', point: 2 },
+      { name: '斜面辐射', unit: 'W/m2', dataIndex: 'slopeRadiationMax', point: 2 },
     ];
-    const AcPower = [ // 交流
-      { name: 'Uab', unit: 'V', dataIndex: 'Uab', point: 2 },
-      { name: 'Ubc', unit: 'V', dataIndex: 'Ubc', point: 2 },
-      { name: 'Uca', unit: 'V', dataIndex: 'Uca', point: 2 },
-      { name: 'Ua', unit: 'V', dataIndex: 'Ua', point: 2 },
-      { name: 'Ub', unit: 'V', dataIndex: 'Ub', point: 2 },
-      { name: 'Uc', unit: 'V', dataIndex: 'Uc', point: 2 },
-      { name: 'Ia', unit: 'V', dataIndex: 'Ia', point: 2 },
-      { name: 'Ib', unit: 'V', dataIndex: 'Ib', point: 2 },
-      { name: 'Ic', unit: 'V', dataIndex: 'Ic', point: 2 },
+    const AcPower = [ // 累计辐射强度
+      { name: '水平总辐射', unit: 'MJ/m2', dataIndex: 'accRadiation', point: 2 },
+      { name: '斜面总辐射', unit: 'MJ/m2', dataIndex: 'slopeRadiation', point: 2 },
+
     ];
     const columns = [
       {
@@ -74,33 +69,27 @@ class ReportSearch extends React.PureComponent {
         width: 110,
         fixed: 'left',
         sorter: true,
-        // render: value => moment(value).format('HH:mm'),
+        render: value => moment(value).format('HH:mm'),
         defaultSortOrder: 'ascend',
       },
       {
-        title: () => <TableColumnTitle title="当日发电量" unit="kWh" />,
-        dataIndex: 'inverterActualPower',
+        title: () => <TableColumnTitle title="环境温度" unit="℃" />,
+        dataIndex: 'temperature',
         width: 120,
         className: styles.rightText,
         render: value => dataFormat(value, '--', 2),
       },
       {
-        title: () => <TableColumnTitle title="瞬时辐射" unit="W/m²" />,
-        dataIndex: 'resourceValue',
+        title: () => <TableColumnTitle title="环境湿度" unit="%RH" />,
+        dataIndex: 'humidity',
         width: 100,
         className: styles.rightText,
         render: value => dataFormat(value, '--', 2),
       },
+
       {
-        title: () => <TableColumnTitle title="逆变器效率" unit="%" />,
-        dataIndex: 'invertEff',
-        width: 100,
-        className: styles.rightText,
-        render: value => dataFormat(value, '--', 2),
-      },
-      {
-        title: '运行功率',
-        dataIndex: 'powerData',
+        title: '组件温度',
+        // dataIndex: 'powerData',
         children: power.map(item => {
           return {
             title: `${item.name}${item.unit ? `(${item.unit})` : ''}`,
@@ -112,8 +101,8 @@ class ReportSearch extends React.PureComponent {
         }),
       },
       {
-        title: '直流侧数据',
-        dataIndex: 'DcPowerData',
+        title: '瞬时辐射强度',
+        // dataIndex: 'DcPowerData',
         children: DcPower.map(item => {
           return {
             title: `${item.name}${item.unit ? `(${item.unit})` : ''}`,
@@ -125,8 +114,8 @@ class ReportSearch extends React.PureComponent {
         }),
       },
       {
-        title: '交流侧数据',
-        dataIndex: 'AcPowerData',
+        title: '累计辐射强度',
+        // dataIndex: 'AcPowerData',
         children: AcPower.map(item => {
           return {
             title: `${item.name}${item.unit ? `(${item.unit})` : ''}`,
@@ -138,22 +127,22 @@ class ReportSearch extends React.PureComponent {
         }),
       },
       {
-        title: '功率因数COS',
-        dataIndex: 'powerFactorAvg',
+        title: () => <TableColumnTitle title="风速" unit="m/s" />,
+        dataIndex: 'windSpeed',
         width: 120,
         className: styles.rightText,
         render: value => dataFormat(value, '--', 2),
       },
       {
-        title: () => <TableColumnTitle title="电网频率" unit="Hz" />,
-        dataIndex: 'powerFu',
+        title: () => <TableColumnTitle title="风向" unit="°" />,
+        dataIndex: 'windDirector',
         width: 100,
         className: styles.rightText,
         render: value => dataFormat(value, '--', 2),
       },
       {
-        title: () => <TableColumnTitle title="机内温度" unit="℃" />,
-        dataIndex: 'temperature',
+        title: () => <TableColumnTitle title="气压" unit="Pa" />,
+        dataIndex: 'pressure',
         className: styles.rightText,
         render: value => dataFormat(value, '--', 2),
       },
@@ -162,10 +151,10 @@ class ReportSearch extends React.PureComponent {
   }
 
   exportFile = () => { // 导出文件
-    const { parmas, reportTime } = this.props;
+    const { parmas, reportTime, stationName, deviceNames } = this.props;
     this.props.downLoadFile({
-      url: `${APIBasePath}${path.APISubPaths.reportManage.exportDayCenterInvert}`,
-      params: { ...parmas, reportTime },
+      url: `${APIBasePath}${path.APISubPaths.reportManage.exportWeatherList}`,
+      params: { ...parmas, reportTime, stationName, deviceNames },
     });
   }
 
@@ -194,7 +183,7 @@ class ReportSearch extends React.PureComponent {
 
   changeTableList = (value) => {
     const { parmas, reportTime } = this.props;
-    this.props.getCenterInverList({ ...parmas, reportTime, ...value });
+    this.props.getWeatherStationList({ ...parmas, reportTime, ...value });
   }
 
 
@@ -202,32 +191,23 @@ class ReportSearch extends React.PureComponent {
   render() {
     const { total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
     const { pageSize = 1, pageNum = 10, deviceFullcodes } = parmas;
-    // const reportList = [];
+    // const reportList2 = [];
     // for (var i = 30; i > 0; i--) {
-    //   reportList.push({
+    //   reportList2.push({
     //     key: i,
     //     deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
     //     date: moment().format('YYYY-MM'),
-    //     inverterActualPower: (Math.random() + 1) * 10000,
-    //     resourceValue: (Math.random() + 1) * 10000,
-    //     invertEff: (Math.random() + 1) * 10000,
-    //     inverterDcPower: (Math.random() + 1) * 100,
-    //     acPower: (Math.random() + 1) * 10000,
-    //     acReactivePower: (Math.random() + 1) * 10000,
-    //     dcVoltage: (Math.random() + 1) * 10000,
-    //     dcCurrent: (Math.random() + 1) * 10000,
-    //     Uab: (Math.random() + 1) * 1000,
-    //     Ubc: (Math.random() + 1) * 1000,
-    //     Uca: (Math.random() + 1) * 1000,
-    //     Ua: (Math.random() + 1) * 1000,
-    //     Ub: (Math.random() + 1) * 1000,
-    //     Uc: (Math.random() + 1) * 1000,
-    //     Ia: (Math.random() + 1) * 1000,
-    //     Ib: (Math.random() + 1) * 1000,
-    //     Ic: (Math.random() + 1) * 1000,
-    //     powerFactorAvg: (Math.random() + 1) * 10000,
-    //     powerFu: (Math.random() + 1) * 10000,
     //     temperature: (Math.random() + 1) * 10000,
+    //     humidity: (Math.random() + 1) * 10000,
+    //     part1Temperature: (Math.random() + 1) * 10000,
+    //     part2Temperature: (Math.random() + 1) * 100,
+    //     accRadiationMax: (Math.random() + 1) * 10000,
+    //     slopeRadiationMax: (Math.random() + 1) * 10000,
+    //     accRadiation: (Math.random() + 1) * 10000,
+    //     slopeRadiation: (Math.random() + 1) * 10000,
+    //     windSpeed: (Math.random() + 1) * 10000,
+    //     windDirector: (Math.random() + 1) * 10000,
+    //     pressure: (Math.random() + 1) * 10000,
     //   });
     // }
     return (
@@ -238,9 +218,9 @@ class ReportSearch extends React.PureComponent {
         </div>
         <Table
           columns={this.initColumn()}
-          dataSource={reportList.map((e, index) => { return { ...e, key: index }; })}
+          dataSource={reportList}
           bordered
-          scroll={{ x: 2290, y: 500 }}
+          scroll={{ x: 1660, y: 500 }}
           pagination={false}
           showHeader={true}
           loading={listLoading}

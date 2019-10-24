@@ -113,6 +113,7 @@ import { watchCadePartSaga } from './Operation/CaseSet/casePartSaga';
 //报表管理
 import { watchReportStation } from './ReportManage/ReportStation/reportStationSaga';
 import { watchCenterInvert } from './ReportManage/ReportDevice/CenterInvert/centerInvertSaga';
+import { watchWeatherStationReport } from './ReportManage/ReportDevice/WeatherStation/weatherStationSaga';
 import { watchCombineInvert } from './ReportManage/ReportDevice/CombineInvert/combineInvertSaga';
 
 
@@ -234,6 +235,7 @@ export default function* rootSaga() {
     // 报表管理
     watchReportStation(), //电站报表
     watchCenterInvert(), //设备报表
+    watchWeatherStationReport(), //气象站报表
     watchCombineInvert(), //组串式逆变器
   ]);
 }
