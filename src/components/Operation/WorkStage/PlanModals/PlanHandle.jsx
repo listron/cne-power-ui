@@ -163,7 +163,7 @@ class PlanHandle extends PureComponent {
             onCancel={this.cancelHandle}
             onOK={this.confirmHandle}
             value={warningTipText}
-            style={{ width: '220px' }}
+            style={{ width: '220px', height: '88px' }}
           />}
         </div>
       </Modal>

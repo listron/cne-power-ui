@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from 'antd';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import styles from './workPage.scss';
 import { dataFormats } from '@utils/utilFunc';
 
@@ -10,12 +11,15 @@ function RunningLog({ runLogInfo = {}, theme = 'light' }){
     {
       title: '日报上报',
       value: dataFormats(reportNum),
+      path: '/operation/running/dayReport',
     }, {
       title: '入库记录',
       value: dataFormats(inWarehouseNum),
+      path: '/operation/book/stockRecords',
     }, {
       title: '出库记录',
       value: dataFormats(outWarehouseNum),
+      path: '/operation/book/stockRecords',
     },
   ];
   return (
@@ -27,11 +31,11 @@ function RunningLog({ runLogInfo = {}, theme = 'light' }){
           return (
             <p key={title} className={styles.eachInfo}>
               <span className={styles.infoName}>{title}</span>
-              <span className={styles.infoDetail}>
+              <Link to={e.path} target="_blank" className={styles.infoDetail}>
                 <span>当月记录条数</span>
                 <span className={styles.infoValue}>{value}</span>
                 <Icon type="right" />
-              </span>
+              </Link>
             </p>
           );
         })}
@@ -52,18 +56,22 @@ function TicketsLog({ ticketsInfo = {}, theme = 'light' }){
       title: '消缺',
       finishValue: dataFormats(finish.defectNum),
       unfinishValue: dataFormats(unfinish.defectNum),
+      path: '/operation/ticket/list',
     }, {
       title: '巡检',
       finishValue: dataFormats(finish.defectNum),
       unfinishValue: dataFormats(unfinish.defectNum),
+      path: '/operation/ticket/list',
     }, {
       title: '工作票',
       finishValue: dataFormats(finish.defectNum),
       unfinishValue: dataFormats(unfinish.defectNum),
+      path: '/operation/twoTickets/workflow',
     }, {
       title: '操作票',
       finishValue: dataFormats(finish.defectNum),
       unfinishValue: dataFormats(unfinish.defectNum),
+      path: '/operation/twoTickets/operateflow',
     },
   ];
   return (
@@ -75,14 +83,14 @@ function TicketsLog({ ticketsInfo = {}, theme = 'light' }){
           return (
             <p key={title} className={styles.eachInfo}>
               <span className={styles.infoName}>{title}</span>
-              <span className={styles.infoDetail}>
+              <Link to={e.path} target="_blank" className={styles.infoDetail}>
                 <span>今日未完成</span>
                 <span className={styles.infoValue}>{finishValue}</span>
                 <span>|</span>
                 <span>已完成</span>
                 <span className={styles.infoValue}>{unfinishValue}</span>
                 <Icon type="right" />
-              </span>
+              </Link>
             </p>
           );
         })}
