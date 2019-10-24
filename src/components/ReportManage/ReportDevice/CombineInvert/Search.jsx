@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './centerInvert.scss';
+import styles from './combineInvert.scss';
 import PropType from 'prop-types';
 import StationSelect from '../../../Common/StationSelect';
 import DeviceSelect from '../../../Common/DeviceSelect/';
@@ -16,7 +16,7 @@ class ReportSearch extends React.PureComponent {
     reportTime: PropType.string,
     endTime: PropType.string,
     dateType: PropType.string,
-    getCenterInverList: PropType.func,
+    getCombineInvertList: PropType.func,
     changeStore: PropType.func,
     disabledStation: PropType.array,
     theme: PropType.string,
@@ -56,10 +56,11 @@ class ReportSearch extends React.PureComponent {
   }
 
   queryList = () => {
-    const { parmas, getCenterInverList, changeStore } = this.props;
+    const { parmas, getCombineInvertList, changeStore } = this.props;
     const { selectStationCode, selectedDevice, selectTime } = this.state;
     const tempStationCode = selectStationCode.length > 0 && selectStationCode[0].stationCode || null;
     const tempDeviceCode = selectedDevice.map(e => e.deviceCode);
+    console.log('tempDeviceCode', tempDeviceCode);
     const { dateType, startTime, endTime } = selectTime;
     const tmpParmas = {
       ...parmas,
@@ -71,11 +72,11 @@ class ReportSearch extends React.PureComponent {
     if (this.loop) {
       this.loop = false;
       if (dateType === 'hour') {
-        getCenterInverList({ ...tmpParmas, reportTime: startTime });
         changeStore({ parmas: { ...tmpParmas }, reportTime: selectTime.startTime, dateType });
+        getCombineInvertList({ ...tmpParmas, reportTime: startTime });
       } else {
-        getCenterInverList({ ...tmpParmas, startTime, endTime, dateType });
         changeStore({ parmas: { ...tmpParmas }, startTime, endTime, dateType });
+        getCombineInvertList({ ...tmpParmas, startTime, endTime, dateType });
       }
       this.time = setTimeout(() => {
         this.loop = true;
@@ -110,7 +111,7 @@ class ReportSearch extends React.PureComponent {
           <DeviceSelect
             disabled={selectStationCode.length === 0}
             stationCode={selectStationCode.length > 0 && selectStationCode[0].stationCode || null}
-            deviceTypeCode={201}
+            deviceTypeCode={206}
             style={{ width: 'auto', minWidth: '198px' }}
             onChange={this.selectedDevice}
             holderText={'请选择'}

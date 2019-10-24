@@ -1,20 +1,20 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import path from '@constants/path';
-import { centerInvertAction } from './centerInvertReducer';
+import { combineInvertAction } from './combineInvertReducer';
 import { message } from 'antd';
 
 const { APIBasePath } = path.basePaths;
 const { reportManage } = path.APISubPaths;
 
-function* getCenterInverList(action) {
+function* getCombineInvertList(action) {
   const { payload } = action;
   const { dateType } = payload;
   const dateTypeArr = ['day', 'month'];
-  const url = dateTypeArr.includes(dateType) ? `${APIBasePath}${reportManage.getCenterInvert}` : `${APIBasePath}${reportManage.getDayCenterInvert}`;
+  const url = dateTypeArr.includes(dateType) ? `${APIBasePath}${reportManage.getCombineInvert}` : `${APIBasePath}${reportManage.getDayCombineInvert}`;
   try {
     yield put({
-      type: centerInvertAction.changeStore,
+      type: combineInvertAction.changeStore,
       payload: {
         listLoading: true,
       },
@@ -30,10 +30,10 @@ function* getCenterInverList(action) {
         pageNum = maxPage;
       }
       const tmpParmas = yield select((state) => {
-        return state.reportManageReducer.centerInvert.get('parmas').toJS();
+        return state.reportManageReducer.combineInvert.get('parmas').toJS();
       });
       yield put({
-        type: centerInvertAction.changeStore,
+        type: combineInvertAction.changeStore,
         payload: {
           total: totalNum,
           reportList: response.data.data.dataList || [],
@@ -48,9 +48,9 @@ function* getCenterInverList(action) {
       throw response.data;
     }
   } catch (e) {
-    // message.error('获取电站报表列表数据失败！');
+    message.error('获取电站报表列表数据失败！');
     yield put({
-      type: centerInvertAction.changeStore,
+      type: combineInvertAction.changeStore,
       payload: {
         reportList: [],
         listLoading: false,
@@ -63,10 +63,10 @@ function* getCenterInverList(action) {
 function* getDisabledStation(action) {
   const url = `${APIBasePath}${reportManage.disabledStations}`;
   try {
-    const response = yield call(axios.post, url, { deviceTypeCode: 201 });
+    const response = yield call(axios.post, url, { deviceTypeCode: 206 });
     if (response.data.code === '10000') {
       yield put({
-        type: centerInvertAction.changeStore,
+        type: combineInvertAction.changeStore,
         payload: {
           disabledStation: response.data.data || [],
         },
@@ -76,7 +76,7 @@ function* getDisabledStation(action) {
     }
   } catch (e) {
     yield put({
-      type: centerInvertAction.changeStore,
+      type: combineInvertAction.changeStore,
       payload: {
         disabledStation: [],
       },
@@ -87,7 +87,7 @@ function* getDisabledStation(action) {
 
 
 
-export function* watchCenterInvert() {
-  yield takeLatest(centerInvertAction.getCenterInverList, getCenterInverList);
-  yield takeLatest(centerInvertAction.getDisabledStation, getDisabledStation);
+export function* watchCombineInvert() {
+  yield takeLatest(combineInvertAction.getCombineInvertList, getCombineInvertList);
+  yield takeLatest(combineInvertAction.getDisabledStation, getDisabledStation);
 }

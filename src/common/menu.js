@@ -234,48 +234,48 @@ const menuData = [
       },
     ],
   },
-  // {
-  //   name: '报表管理',
-  //   path: 'report',
-  //   rightKey: 'operation',
-  //   children: [
-  //     {
-  //       name: '电站报表',
-  //       path: 'station',
-  //       iconStyle: 'icon-trends',
-  //       rightKey: 'operation_locate',
-  //       defaultPath: true,
-  //     },
-  //     {
-  //       name: '设备报表',
-  //       path: 'device',
-  //       iconStyle: 'icon-trends',
-  //       rightKey: 'operation_locate',
-  //       children: [
-  //         {
-  //           name: '集中式逆变器',
-  //           path: 'centerInvert',
-  //           rightKey: 'operation_experience',
-  //         }, {
-  //           name: '组串式逆变器',
-  //           path: 'combineInvert',
-  //           rightKey: 'operation_experience',
-  //         },
-  //         {
-  //           name: '汇流箱',
-  //           path: 'confluenceBox',
-  //           rightKey: 'operation_experience',
-  //         },
-  //         {
-  //           name: '气象站',
-  //           path: 'weatherStation',
-  //           rightKey: 'operation_experience',
-  //         },
-  //       ],
-  //     },
+  {
+    name: '报表管理',
+    path: 'report',
+    rightKey: 'operation',
+    children: [
+      {
+        name: '电站报表',
+        path: 'station',
+        iconStyle: 'icon-trends',
+        rightKey: 'operation_locate',
+        defaultPath: true,
+      },
+      {
+        name: '设备报表',
+        path: 'device',
+        iconStyle: 'icon-trends',
+        rightKey: 'operation_locate',
+        children: [
+          {
+            name: '集中式逆变器',
+            path: 'centerInvert',
+            rightKey: 'operation_experience',
+          }, {
+            name: '组串式逆变器',
+            path: 'combineInvert',
+            rightKey: 'operation_experience',
+          },
+          {
+            name: '汇流箱',
+            path: 'confluenceBox',
+            rightKey: 'operation_experience',
+          },
+          {
+            name: '气象站',
+            path: 'weatherStation',
+            rightKey: 'operation_experience',
+          },
+        ],
+      },
 
-  //   ],
-  // },
+    ],
+  },
   {
     name: '统计分析',
     path: 'statistical',

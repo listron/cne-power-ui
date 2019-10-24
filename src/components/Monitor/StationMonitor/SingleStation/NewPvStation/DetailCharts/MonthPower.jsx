@@ -174,7 +174,7 @@ class MonthPower extends Component {
                     params.forEach(item => {
                         const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
                         paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"></span>
-                        ${item.seriesName} :  ${item.value}${item.seriesName === '完成率' && '%' || ''}</div>`;
+                        ${item.seriesName}:${item.value}${item.seriesName === '完成率' && '%' || ''}</div>`;
                     });
                     return (
                         `<div class=${styles.tooltipBox}>
