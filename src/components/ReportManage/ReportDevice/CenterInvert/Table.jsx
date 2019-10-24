@@ -127,7 +127,6 @@ class ReportSearch extends React.PureComponent {
 
   exportFile = () => { // 导出文件
     const { parmas, startTime, endTime, dateType } = this.props;
-    console.log('downLoadFile', `${APIBasePath}${path.APISubPaths.reportManage.exportCenterInvert}`);
     this.props.downLoadFile({
       url: `${APIBasePath}${path.APISubPaths.reportManage.exportCenterInvert}`,
       params: { ...parmas, startTime, endTime, dateType },
@@ -195,7 +194,7 @@ class ReportSearch extends React.PureComponent {
         </div>
         <Table
           columns={this.initColumn(dateType)}
-          dataSource={reportList}
+          dataSource={reportList.map(e => { return { ...e, key: e.date }; })}
           bordered
           scroll={{ x: 2200, y: 500 }}
           pagination={false}

@@ -21,7 +21,6 @@ function* getCombineInvertList(action) {
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-      console.log('cunchu', response.data.data);
       const totalNum = response.data.data.pageCount || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(totalNum / pageSize);
@@ -31,7 +30,7 @@ function* getCombineInvertList(action) {
         pageNum = maxPage;
       }
       const tmpParmas = yield select((state) => {
-        return state.reportManageReducer.centerInvert.get('parmas').toJS();
+        return state.reportManageReducer.combineInvert.get('parmas').toJS();
       });
       yield put({
         type: combineInvertAction.changeStore,

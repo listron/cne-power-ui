@@ -88,7 +88,7 @@ class ReportSearch extends React.PureComponent {
         width: 110,
         fixed: 'left',
         sorter: true,
-        render: value => moment(value).format('HH:mm'),
+        // render: value => moment(value).format('HH:mm'),
         defaultSortOrder: 'ascend',
       },
       {
@@ -178,7 +178,7 @@ class ReportSearch extends React.PureComponent {
   exportFile = () => { // 导出文件
     const { parmas, reportTime } = this.props;
     this.props.downLoadFile({
-      url: `${APIBasePath}${path.APISubPaths.reportManage.getDayCenterInvert}`,
+      url: `${APIBasePath}${path.APISubPaths.reportManage.exportHourCombineInvert}`,
       params: { ...parmas, reportTime },
     });
   }
@@ -266,7 +266,7 @@ class ReportSearch extends React.PureComponent {
         </div>
         <Table
           columns={this.initColumn()}
-          dataSource={reportList}
+          dataSource={reportList.map(e => { return { ...e, key: e.date }; })}
           bordered
           scroll={{ x: 3700, y: 500 }}
           pagination={false}

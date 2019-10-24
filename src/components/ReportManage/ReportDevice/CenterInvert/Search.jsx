@@ -101,7 +101,7 @@ class ReportSearch extends React.PureComponent {
             data={stations.filter(e => e.stationType === 1)}
             onChange={this.changeStation}
             value={selectStationCode}
-            disabledStation={disabledStation.filter(e => !e.hasDevice).map(e => e.stationCode)}
+            disabledStation={disabledStation.filter(e => !e.hasDevice).map(e => +e.stationCode)}
             theme={theme}
           />
         </div>

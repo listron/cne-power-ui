@@ -60,6 +60,7 @@ class ReportSearch extends React.PureComponent {
     const { selectStationCode, selectedDevice, selectTime } = this.state;
     const tempStationCode = selectStationCode.length > 0 && selectStationCode[0].stationCode || null;
     const tempDeviceCode = selectedDevice.map(e => e.deviceCode);
+    console.log('tempDeviceCode', tempDeviceCode);
     const { dateType, startTime, endTime } = selectTime;
     const tmpParmas = {
       ...parmas,
@@ -101,7 +102,7 @@ class ReportSearch extends React.PureComponent {
             data={stations.filter(e => e.stationType === 1)}
             onChange={this.changeStation}
             value={selectStationCode}
-            disabledStation={disabledStation.filter(e => !e.hasDevice).map(e => e.stationCode)}
+            disabledStation={disabledStation.filter(e => !e.hasDevice).map(e => +e.stationCode)}
             theme={theme}
           />
         </div>
