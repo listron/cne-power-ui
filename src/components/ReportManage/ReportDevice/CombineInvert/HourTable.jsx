@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './centerInvert.scss';
+import styles from './combineInvert.scss';
 import PropType from 'prop-types';
 import { Table, Button } from 'antd';
 import moment from 'moment';
@@ -12,7 +12,7 @@ const { APIBasePath } = path.basePaths;
 class ReportSearch extends React.PureComponent {
   static propTypes = {
     parmas: PropType.object,
-    getCenterInverList: PropType.func,
+    getCombineInvertList: PropType.func,
     total: PropType.number,
     listLoading: PropType.bool,
     changeStore: PropType.func,
@@ -35,7 +35,7 @@ class ReportSearch extends React.PureComponent {
 
   calcWidth = (str, unit) => {
     const padding = 8;
-    return (str.length + unit.length) * 14 + (2 * padding) + 20;
+    return (str.length + unit.length) * 14 + (2 * padding) + 10;
   }
 
   initColumn = (type) => { // 表头的数据
@@ -45,8 +45,22 @@ class ReportSearch extends React.PureComponent {
       { name: '交流无功功率', unit: 'kW', dataIndex: 'acReactivePower', point: 2 },
     ];
     const DcPower = [ // 直流
-      { name: '直流电压', unit: 'V', dataIndex: 'dcVoltage', point: 2 },
-      { name: '直流电流', unit: 'A', dataIndex: 'dcCurrent', point: 2 },
+      { name: 'PV1电压', unit: 'V', dataIndex: 'voltagePv1', point: 2 },
+      { name: 'PV1电流', unit: 'A', dataIndex: 'currentPv1', point: 2 },
+      { name: 'PV2电压', unit: 'V', dataIndex: 'voltagePv2', point: 2 },
+      { name: 'PV2电流', unit: 'A', dataIndex: 'currentPv2', point: 2 },
+      { name: 'PV3电压', unit: 'V', dataIndex: 'voltagePv3', point: 2 },
+      { name: 'PV3电流', unit: 'A', dataIndex: 'currentPv3', point: 2 },
+      { name: 'PV4电压', unit: 'V', dataIndex: 'voltagePv4', point: 2 },
+      { name: 'PV4电流', unit: 'A', dataIndex: 'currentPv4', point: 2 },
+      { name: 'PV5电压', unit: 'V', dataIndex: 'voltagePv5', point: 2 },
+      { name: 'PV5电流', unit: 'A', dataIndex: 'currentPv5', point: 2 },
+      { name: 'PV6电压', unit: 'V', dataIndex: 'voltagePv6', point: 2 },
+      { name: 'PV6电流', unit: 'A', dataIndex: 'currentPv6', point: 2 },
+      { name: 'PV7电压', unit: 'V', dataIndex: 'voltagePv7', point: 2 },
+      { name: 'PV7电流', unit: 'A', dataIndex: 'currentPv7', point: 2 },
+      { name: 'PV8电压', unit: 'V', dataIndex: 'voltagePv8', point: 2 },
+      { name: 'PV8电流', unit: 'A', dataIndex: 'currentPv8', point: 2 },
     ];
     const AcPower = [ // 交流
       { name: 'Uab', unit: 'V', dataIndex: 'Uab', point: 2 },
@@ -164,7 +178,7 @@ class ReportSearch extends React.PureComponent {
   exportFile = () => { // 导出文件
     const { parmas, reportTime } = this.props;
     this.props.downLoadFile({
-      url: `${APIBasePath}${path.APISubPaths.reportManage.exportDayCenterInvert}`,
+      url: `${APIBasePath}${path.APISubPaths.reportManage.exportHourCombineInvert}`,
       params: { ...parmas, reportTime },
     });
   }
@@ -194,13 +208,13 @@ class ReportSearch extends React.PureComponent {
 
   changeTableList = (value) => {
     const { parmas, reportTime } = this.props;
-    this.props.getCenterInverList({ ...parmas, reportTime, ...value });
+    this.props.getCombineInvertList({ ...parmas, reportTime, ...value });
   }
 
 
 
   render() {
-    const { total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
+    const { total = 30, parmas, listLoading, downloading, theme, reportList } = this.props;
     const { pageSize = 1, pageNum = 10, deviceFullcodes } = parmas;
     // const reportList = [];
     // for (var i = 30; i > 0; i--) {
@@ -214,8 +228,22 @@ class ReportSearch extends React.PureComponent {
     //     inverterDcPower: (Math.random() + 1) * 100,
     //     acPower: (Math.random() + 1) * 10000,
     //     acReactivePower: (Math.random() + 1) * 10000,
-    //     dcVoltage: (Math.random() + 1) * 10000,
-    //     dcCurrent: (Math.random() + 1) * 10000,
+    //     voltagePv1: (Math.random() + 1) * 100,
+    //     currentPv1: (Math.random() + 1) * 100,
+    //     voltagePv2: (Math.random() + 1) * 100,
+    //     currentPv2: (Math.random() + 1) * 100,
+    //     voltagePv3: (Math.random() + 1) * 100,
+    //     currentPv3: (Math.random() + 1) * 100,
+    //     voltagePv4: (Math.random() + 1) * 100,
+    //     currentPv4: (Math.random() + 1) * 100,
+    //     voltagePv5: (Math.random() + 1) * 100,
+    //     currentPv5: (Math.random() + 1) * 100,
+    //     voltagePv6: (Math.random() + 1) * 100,
+    //     currentPv6: (Math.random() + 1) * 100,
+    //     voltagePv7: (Math.random() + 1) * 100,
+    //     currentPv7: (Math.random() + 1) * 100,
+    //     voltagePv8: (Math.random() + 1) * 100,
+    //     currentPv8: (Math.random() + 1) * 100,
     //     Uab: (Math.random() + 1) * 1000,
     //     Ubc: (Math.random() + 1) * 1000,
     //     Uca: (Math.random() + 1) * 1000,
@@ -240,7 +268,7 @@ class ReportSearch extends React.PureComponent {
           columns={this.initColumn()}
           dataSource={reportList.map(e => { return { ...e, key: e.date }; })}
           bordered
-          scroll={{ x: 2290, y: 500 }}
+          scroll={{ x: 3700, y: 500 }}
           pagination={false}
           showHeader={true}
           loading={listLoading}
