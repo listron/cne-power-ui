@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Table } from 'antd';
+import moment from 'moment';
 import HandlePart from './HandlePart';
 import WarningTip from '@components/Common/WarningTip';
 import styles from './planModals.scss';
@@ -10,9 +11,11 @@ class PlanHandle extends PureComponent {
   static propTypes = {
     showModal: PropTypes.bool,
     handlePlanLoading: PropTypes.bool,
+    planListLoading: PropTypes.bool,
     handleError: PropTypes.bool,
     modalKey: PropTypes.string,
     datePlans: PropTypes.array,
+    planList: PropTypes.array,
     activePlanDate: PropTypes.string,
     changeStore: PropTypes.func,
     handlePlanStatus: PropTypes.func,
@@ -47,17 +50,29 @@ class PlanHandle extends PureComponent {
         render: (text, record) => <HandlePart record={record} publishOnce={this.publishOnce} deleteOnce={this.deleteOnce} />,
       },
     ],
-    handleType: 'publish', // publish, delete
+    handleType: '', // publish, delete
     selectedRowKeys: [], // 选中项
     handleParams: null,
     warningTipText: '',
   }
 
   componentWillReceiveProps(nextProps){
-    const { handlePlanLoading, handleError } = nextProps;
+    const { handlePlanLoading, handleError, planListLoading, planList, activePlanDate } = nextProps;
     const preLoading = this.props.handlePlanLoading;
+    const preListLoading = this.props.planListLoading;
     if (!handlePlanLoading && preLoading && !handleError) { // 操作请求 成功
-      this.setState({ selectedRowKeys: [] });
+      this.setState({
+        selectedRowKeys: [],
+        handleParams: null,
+        warningTipText: '',
+        handleType: '',
+      });
+    }
+    if(!planListLoading && preListLoading){ // 日历列表数据返回
+      const curPlan = planList.find(e => moment(e.reportDate).isSame(activePlanDate, 'day')) || {};
+      this.props.changeStore({
+        datePlans: curPlan.list || [],
+      });
     }
   }
 
@@ -65,7 +80,7 @@ class PlanHandle extends PureComponent {
     this.setState({ selectedRowKeys });
   }
 
-  cancelSelect = () => { // 取消所有选中
+  hideModal = () => { // 取消所有选中
     this.setState({ selectedRowKeys: [] });
   }
 
@@ -77,26 +92,26 @@ class PlanHandle extends PureComponent {
     });
   }
 
-  publishAll = () => this.handleStatusChange(this.state.selectedRowKeys, 1, '确定要立即下发该工作计划么?')
+  publishAll = () => this.handleStatusChange(this.state.selectedRowKeys, 1, '确定要立即下发该工作计划么?', 'publish')
 
-  publishOnce = ({ planDetailId }) => this.handleStatusChange([planDetailId], 1, '确定要立即下发该工作计划么?')
+  publishOnce = ({ planDetailId }) => this.handleStatusChange([planDetailId], 1, '确定要立即下发该工作计划么?', '')
 
-  deleteAll = () => this.handleStatusChange(this.state.selectedRowKeys, 3, '确定要立即删除该工作计划么?')
+  deleteAll = () => this.handleStatusChange(this.state.selectedRowKeys, 3, '确定要立即删除该工作计划么?', 'delete')
 
-  deleteOnce = ({ planDetailId }) => this.handleStatusChange([planDetailId], 3, '确定要立即删除该工作计划么?')
+  deleteOnce = ({ planDetailId }) => this.handleStatusChange([planDetailId], 3, '确定要立即删除该工作计划么?', '')
 
-  handleStatusChange = (planDetailIds, taskStatus, warningTipText) => {
+  handleStatusChange = (planDetailIds, taskStatus, warningTipText, handleType) => {
     this.setState({
       handleParams: {
         planDetailIds,
         taskStatus,
       },
-      handleType: taskStatus === 1 ? 'publish' : 'delete',
+      handleType,
       warningTipText,
     });
   }
 
-  cancelHande = () => { // 取消发布/删除
+  cancelHandle = () => { // 取消发布/删除
     this.setState({
       handleParams: null,
       warningTipText: '',
@@ -113,13 +128,13 @@ class PlanHandle extends PureComponent {
   }
 
   render(){
-    const { showModal, modalKey, activePlanDate, datePlans, handlePlanLoading } = this.props;
+    const { showModal, modalKey, activePlanDate, datePlans, handlePlanLoading, planListLoading } = this.props;
     const { planColumn, handleType, selectedRowKeys, handleParams, warningTipText } = this.state;
     return (
       <Modal
         title={`工作计划 ${activePlanDate}`}
         visible={showModal && modalKey === 'handlePlan'}
-        onCancel={this.cancelHandle}
+        onCancel={this.hideModal}
         footer={null}
         width={1240}
       >
@@ -132,7 +147,7 @@ class PlanHandle extends PureComponent {
             dataSource={datePlans}
             columns={planColumn}
             pagination={false}
-            loading={handlePlanLoading}
+            loading={planListLoading}
             scroll={{ y: 330 }}
             className={styles.planTable}
             rowSelection={{
@@ -144,7 +159,12 @@ class PlanHandle extends PureComponent {
             已选择<span className={styles.selectNum}>{selectedRowKeys.length}</span>项
             <span onClick={this.cancelSelect} className={styles.cancelSelect}>取消选择</span>
           </div>
-          {handleParams && <WarningTip onCancel={this.cancelHandle} onOK={this.confirmHandle} value={warningTipText} />}
+          {handleParams && <WarningTip
+            onCancel={this.cancelHandle}
+            onOK={this.confirmHandle}
+            value={warningTipText}
+            style={{ width: '220px' }}
+          />}
         </div>
       </Modal>
     );

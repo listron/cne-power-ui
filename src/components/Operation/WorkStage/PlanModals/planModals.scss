@@ -90,7 +90,7 @@
 .planHandle{ // 计划下发, 删除
   .handle{
     padding-left: 12px;
-    height: 56px;
+    height: 48px;
     margin-left: 20px;
     button{
       margin-right: 12px;
@@ -138,6 +138,7 @@
     }
   }
   .planFooter{
+    margin-top: 4px;
     margin-left: 20px;
     .selectNum{
       margin: 8px;
