@@ -7,6 +7,8 @@ import { RunningLog, TicketsLog } from '../../../components/Operation/WorkStage/
 import PlanList from '../../../components/Operation/WorkStage/PlanList';
 import HandleRecord from '../../../components/Operation/WorkStage/RecordModals/HandleRecord';
 import AddPlan from '../../../components/Operation/WorkStage/PlanModals/AddPlan';
+import PlanHandle from '../../../components/Operation/WorkStage/PlanModals/PlanHandle';
+
 import ContentLayout from '@components/Common/ContentLayout';
 import { workStageAction } from './workStageReducer';
 import { commonAction } from '../../alphaRedux/commonAction';
@@ -87,11 +89,7 @@ class WorkStage extends Component {
         </div>
         <HandleRecord {...this.props} />
         <AddPlan {...this.props} />
-        {/* <div>添加工作记事弹框</div>
-        <div>查看工作记事弹框</div>
-        <div>编辑工作记事弹框</div>
-        <div>添加计划弹框</div>
-        <div>批量查看计划弹框</div> */}
+        <PlanHandle {...this.props} />
       </ContentLayout>
     );
   }
@@ -117,6 +115,7 @@ const mapDispatchToProps = (dispatch) => ({
   getRunningLog: payload => dispatch({ type: workStageAction.getRunningLog, payload }),
   getTickets: payload => dispatch({ type: workStageAction.getTickets, payload }),
   getPlanList: payload => dispatch({ type: workStageAction.getPlanList, payload }),
+  handlePlanStatus: payload => dispatch({ type: workStageAction.handlePlanStatus, payload }),
 
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,

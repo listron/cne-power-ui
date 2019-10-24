@@ -301,8 +301,35 @@ function *getPlanList({ payload }) { // 计划日历 payload: {stationCodes, sta
     message.error('获取计划日历失败, 请刷新重试');
   }
 }
-// handlePlanStatus: '/v3/service/task/future', // 工作台日历任务批量下发/删除
 
+function *handlePlanStatus({ payload }) { // 工作台日历任务批量下发/删除{planDetailIds, taskStatus(1下发3删除), taskTime}
+  try {
+    const url = `${APIBasePath}${operation.handlePlanStatus}`;
+    yield call(easyPut, 'changeStore', { handlePlanLoading: true });
+    const response = yield call(request.post, url, { ...payload });
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        handlePlanLoading: false,
+        handleError: false,
+      });
+      // 再次请求今日工作列表 + 计划列表
+      const { stageStations, planMonth } = yield select(state => state.operation.workStage.toJS());
+      const stationCodes = stageStations.map(e => e.stationCode);
+      yield call(getTaskList, { // 再次请求今日工作列表
+        payload: { stationCodes },
+      });
+      yield call(getPlanList, { // 再次请求日历计划列表
+        payload: { stationCodes, planMonth },
+      });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      handlePlanLoading: false,
+      handleError: true,
+    });
+    message.error('计划操作失败, 请重试');
+  }
+}
 
 export function* watchWorkStage() {
   yield takeLatest(workStageAction.getTaskList, getTaskList);
@@ -316,5 +343,6 @@ export function* watchWorkStage() {
   yield takeLatest(workStageAction.getRunningLog, getRunningLog);
   yield takeLatest(workStageAction.getTickets, getTickets);
   yield takeLatest(workStageAction.getPlanList, getPlanList);
+  yield takeLatest(workStageAction.handlePlanStatus, handlePlanStatus);
 }
 

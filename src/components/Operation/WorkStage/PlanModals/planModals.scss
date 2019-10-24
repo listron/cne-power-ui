@@ -3,7 +3,7 @@
 
 
 
-.addPlanForm{
+.addPlanForm{ // 添加计划
   .planFormBox{
     max-height: 500px;
   }
@@ -36,7 +36,7 @@
 }
 
 
-.eachDate{
+.eachDate{ // 计划日历 - 每一天
   flex: 0 0 14%;
   text-align: right;
   height: 36px;
@@ -87,7 +87,69 @@
   cursor: default;
 }
 
+.planHandle{ // 计划下发, 删除
+  .handle{
+    padding-left: 12px;
+    height: 56px;
+    margin-left: 20px;
+    button{
+      margin-right: 12px;
+    }
+  }
+  .planTable{
+    .planTypeName{
+      width: 160px;
+    }
+    .planTypeNameText{
+      max-width: 128px;
+      @include overflowText();
+    }
+    .inspectContent{
+      width: calc(700px * 0.66);
+    }
+    .inspectContentText{
+      max-width: calc(700px * 0.66 - 32px);
+      @include overflowText();
+    }
+    .stationName{
+      width: calc(700px * 0.33);
+    }
+    .stationNameText{
+      max-width: calc(700px * 0.66 - 32px);
+      @include overflowText();
+    }
+    .validPeriod{
+      width: 90px;
+    }
+    .validPeriodText{
+      text-align: right;
+    }
+    .handle{
+      width: 150px;
+    }
+    .handleText{
+      .publishPlan{
+        margin-right: 20px;
+        cursor: pointer;
+      }
+      .deletePlan{
+        cursor: pointer;
+      }
+    }
+  }
+  .planFooter{
+    margin-left: 20px;
+    .selectNum{
+      margin: 8px;
+    }
+    .cancelSelect{
+      margin-left: 16px;
+      cursor: pointer;
+    }
+  }
+}
 
+//          颜色部分
 .addFormTips{
   color: $lightColor;
 }
@@ -134,4 +196,33 @@
 }
 .noPlanDate{
   cursor: default;
+}
+
+.planHandle{ // 计划下发, 删除
+  .handle{
+    padding-left: 12px;
+    height: 56px;
+    margin-left: 20px;
+    button{
+      margin-right: 12px;
+    }
+  }
+  .planTable{
+    .handleText{
+      .publishPlan{
+        color: $themeColor;
+      }
+      .deletePlan{
+        
+      }
+    }
+  }
+  .planFooter{
+    .selectNum{
+      color:#f9b600;
+    }
+    .cancelSelect{
+      color: $themeColor;
+    }
+  }
 }

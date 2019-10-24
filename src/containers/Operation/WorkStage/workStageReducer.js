@@ -13,6 +13,7 @@ const workStageAction = {
   addPlan: Symbol('addPlan'),
   getRunningLog: Symbol('getRunningLog'),
   getTickets: Symbol('getTickets'),
+  handlePlanStatus: Symbol('handlePlanStatus'),
 
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
@@ -37,6 +38,7 @@ const initState = immutable.fromJS({
   datePlans: [], // 属于planList，某一日的任务计划
   planListLoading: false, // 日历列表loading
   handlePlanLoading: false, // 日历列表发布=删除loading
+  handleError: false, // 发布+删除 操作结果
 
   runLogLoading: false, // 运行记录loading
   runLogInfo: {}, // 运行记录信息
