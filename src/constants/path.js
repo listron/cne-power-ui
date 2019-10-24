@@ -552,6 +552,7 @@ export default {
       faultReport: 'v3/performance/generalreport/fault',
       genReport: 'v3/performance/generalreport/gen',
       indicatorReport: 'v3/performance/generalreport/indicator',
+      preViewXlsx: '/onlinePreview',
       // 日报查询
       getQuotaList: '/v3/performance/report/index/list', // 关键指标列表
       getFaultList: '/v3/performance/report/fault/list', // 故障信息列表

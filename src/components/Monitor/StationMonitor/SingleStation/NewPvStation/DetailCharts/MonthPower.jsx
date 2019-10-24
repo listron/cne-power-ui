@@ -80,7 +80,7 @@ class MonthPower extends Component {
         },
         light: {
             actualPower: '#3e97d1',
-            theoryPower: '#fbe6e3',
+            theoryPower: '#FF9000',
             completeRate: '#199475',
             instantaneous: '#f9b600',
         },
