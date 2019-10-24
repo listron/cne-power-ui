@@ -80,8 +80,11 @@ class PlanHandle extends PureComponent {
     this.setState({ selectedRowKeys });
   }
 
-  hideModal = () => { // 取消所有选中
-    this.setState({ selectedRowKeys: [] });
+  hideModal = () => { // 取消退出弹框
+    this.props.changeStore({
+      showModal: false,
+      modalKey: null,
+    });
   }
 
   cancelHandle = () => { // 关闭弹框
@@ -125,6 +128,10 @@ class PlanHandle extends PureComponent {
       ...handleParams,
       taskTime: activePlanDate,
     });
+  }
+
+  cancelSelect = () => {
+    this.setState({ selectedRowKeys: [] });
   }
 
   render(){

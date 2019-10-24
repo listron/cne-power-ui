@@ -93,14 +93,14 @@
       }
     }
     :global{
-      .ant-table-scroll .ant-table-body{
+      .ant-table-scroll .ant-table-body, .ant-table-scroll .ant-table-header{
         overflow-x: hidden;
-        // &::-webkit-scrollbar {
-        //   width: 6px;
-        // }
-        // &::-webkit-scrollbar-thumb {
-        //   border-radius: 3px;
-        // }
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 3px;
+        }
       }
     }
   }
@@ -195,7 +195,7 @@
 }
 
 
-
+//            颜色部分
 .light.stationLists{
   border:1px solid #e1e3e4;
   background-color: #fff;

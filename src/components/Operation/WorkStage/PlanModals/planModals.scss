@@ -136,6 +136,17 @@
         cursor: pointer;
       }
     }
+    :global{
+      .ant-table-scroll .ant-table-body, .ant-table-scroll .ant-table-header{
+        overflow-x: hidden;
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 3px;
+        }
+      }
+    }
   }
   .planFooter{
     margin-top: 4px;
