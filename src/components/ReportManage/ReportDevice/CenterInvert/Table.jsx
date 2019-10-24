@@ -194,7 +194,7 @@ class ReportSearch extends React.PureComponent {
         </div>
         <Table
           columns={this.initColumn(dateType)}
-          dataSource={reportList.map(e => { return { ...e, key: e.date }; })}
+          dataSource={reportList.map((e, index) => { return { ...e, key: index }; })}
           bordered
           scroll={{ x: 2200, y: 500 }}
           pagination={false}
