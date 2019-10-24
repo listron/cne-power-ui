@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Icon, Button } from 'antd';
 import styles from './workPage.scss';
-// import { dataFormats } from '@utils/utilFunc';
 
 class PlanList extends PureComponent {
 
   static propTypes = {
     planMonth: PropTypes.string,
+    activePlanDate: PropTypes.string,
     theme: PropTypes.string,
     stageStations: PropTypes.array,
     changeStore: PropTypes.func,
@@ -70,7 +70,7 @@ class PlanList extends PureComponent {
   }
 
   render(){
-    const { theme, planMonth } = this.props;
+    const { theme, planMonth, activePlanDate } = this.props;
     const { datesInfo } = this.state;
     const monthReduceUnable = moment(planMonth).isSame(moment(), 'M'); // 当前月不可往前选月
     // 不属于本月的日期: 禁止选择灰色不触发, 本月日期: hover浅色, 选中深色, 默认无色
@@ -101,15 +101,29 @@ class PlanList extends PureComponent {
             ))}
           </div>
           <div className={styles.datesBottom}>
-            {datesInfo.map(e => (
-              <span
-                className={styles.eachDate}
-                key={e}
-                style={{flexBasis: '14%'}}
-              >
-                {moment(e).format('D')}
-              </span>
-            ))}
+            {datesInfo.map(e => {
+              const dateClassNames = [
+                `${styles.eachDate}`,
+                `${moment(planMonth).isSame(e, 'month') ? '' : styles.limitedDates}`,
+                `${moment(activePlanDate).isSame(e, 'day') ? styles.activeDate : ''}`,
+                `${styles.noPlanDate}`,
+              ];
+              return (
+                <span
+                  className={dateClassNames.join(' ')}
+                  key={e}
+                >
+                  <div className={styles.datesTips}>
+                    <span className={styles.momentDate}>{moment(e).format('D')}</span>
+                    {moment().isSame(e, 'day') && <span className={styles.today}>今天</span>}
+                  </div>
+                  <div className={styles.datesPlan}>
+                    <span className="iconfont icon-jxjh" />
+                    <span className={styles.planNumber}>{moment(e).format('D')}</span>
+                  </div>
+                </span>
+              );
+            })}
           </div>
         </div>
       </div>

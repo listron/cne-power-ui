@@ -24,6 +24,7 @@ const initState = immutable.fromJS({
   showModal: false, // 弹框
   modalKey: null, // 各弹框key: addRecord增记事 editRecord改记事, recordDetail记事详情, planDetail,addPlan添加计划, handlePlan下发删除计划 
   planMonth: moment().format('YYYY-MM'), // 计划日历对应月
+  activePlanDate: moment().format('YYYY-MM-DD'), // 激活的日期
   recordDetailInfo: null, // 记事 | 计划详情 {} => 增 / 编辑 / 查看
   saveRecordLoading: false, // 添加 + 编辑记事详情loading状态
   deleteRecordLoading: false, // 删除详情loading状态
