@@ -6,9 +6,10 @@
   width: 100%;
 
   .topSearch {
-    background: #fff;
+    // background: #fff;
     display: flex;
     height: 60px;
+    line-height: 40px;
     margin-bottom: 10px;
 
     .timeStyle {
@@ -16,11 +17,28 @@
       align-items: center;
       padding-left: 40px;
 
+      .yearSelectStyle {
+        :global {
+          .ant-input {
+            width: 115px;
+          }
+        }
+      }
+
+
+      .yearWidth {
+        margin: 0 8px;
+      }
+
+      .btnStyle {
+        margin-left: 24px;
+      }
+
     }
   }
 
   .reportList {
-    background: #fff;
+    // background: #fff;
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -45,6 +63,13 @@
 
     }
 
+    .stationName {
+      width: 120px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
     .handlePage {
       display: flex;
       justify-content: space-between;
@@ -59,3 +84,17 @@
   }
 
 }
+
+.light {
+  .topSearch {
+    background: #fff;
+  }
+
+  .reportList {
+    background: #fff;
+  }
+}
+
+.dark {}
+
+.zt {}

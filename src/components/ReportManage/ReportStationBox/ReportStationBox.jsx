@@ -6,14 +6,15 @@ import ReportTable from './ReportTable';
 
 class ReportStationBox extends React.Component {
   static propTypes = {
-
+    theme: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
   }
   render() {
+    const { theme } = this.props;
     return (
-      <div className={styles.reportContainer}>
+      <div className={`${styles.reportContainer} ${styles[theme]}`}>
         <ReportSeach {...this.props} />
         <ReportTable {...this.props} />
 
