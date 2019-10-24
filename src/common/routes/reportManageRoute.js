@@ -17,8 +17,8 @@ export const reportDevice = [ //设备报表
   },
   {
     path: '/report/device/combineInvert', // 组串式逆变器
-    // component: lazy(() => import('../../containers/ReportManage/ReportStation/ReportStation.jsx')),
-    component: lazy(() => import('../../components/Common/Building/Building.jsx')),
+    component: lazy(() => import('../../containers/ReportManage/ReportDevice/CombineInvert/CombineInvert.jsx')),
+    // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
   {
     path: '/report/device/confluenceBox', // 汇流箱

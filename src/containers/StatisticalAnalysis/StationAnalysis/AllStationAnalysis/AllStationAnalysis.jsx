@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './allStationAnalysis.scss';
 import { allStationAnalysisAction } from './allStationAnalysisAction.js';
+import { commonAction } from '../../../alphaRedux/commonAction';
 // import { getCookie } from '../../../../utils/index.js';
 import Cookie from 'js-cookie';
 import PropTypes from 'prop-types';
@@ -71,6 +72,13 @@ const mapDispatchToProps = (dispatch) => ({
   getSingleStationPowerEffectiveData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPowerEffectiveData, payload }),
   resetStore: payload => dispatch({ type: allStationAnalysisAction.resetStore, payload }),
   exportAllstationTableData: payload => dispatch({ type: allStationAnalysisAction.exportAllstationTableData, payload }),
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: allStationAnalysisAction.CHANGE_ALLSTATIONDATA_STORE_SAGA,
+    },
+  }),
 
 
 });

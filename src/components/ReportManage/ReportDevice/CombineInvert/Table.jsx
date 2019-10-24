@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './centerInvert.scss';
+import styles from './combineInvert.scss';
 import PropType from 'prop-types';
 import { Table, Button } from 'antd';
 import moment from 'moment';
@@ -14,7 +14,7 @@ class ReportSearch extends React.PureComponent {
     startTime: PropType.string,
     endTime: PropType.string,
     dateType: PropType.string,
-    getCenterInverList: PropType.func,
+    getCombineInvertList: PropType.func,
     total: PropType.number,
     listLoading: PropType.bool,
     changeStore: PropType.func,
@@ -128,7 +128,7 @@ class ReportSearch extends React.PureComponent {
   exportFile = () => { // 导出文件
     const { parmas, startTime, endTime, dateType } = this.props;
     this.props.downLoadFile({
-      url: `${APIBasePath}${path.APISubPaths.reportManage.exportCenterInvert}`,
+      url: `${APIBasePath}${path.APISubPaths.reportManage.exportCombineInvert}`,
       params: { ...parmas, startTime, endTime, dateType },
     });
   }
@@ -158,12 +158,13 @@ class ReportSearch extends React.PureComponent {
 
   changeTableList = (value) => {
     const { parmas, startTime, endTime, dateType } = this.props;
-    this.props.getCenterInverList({ ...parmas, startTime, dateType, endTime, ...value });
+    this.props.getCombineInvertList({ ...parmas, startTime, dateType, endTime, ...value });
   }
 
   render() {
     const { dateType = 'day', total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
     const { pageSize, pageNum, deviceFullcodes } = parmas;
+    console.log('deviceFullcodes', deviceFullcodes);
     // const reportList = [];
     // for (var i = 30; i > 0; i--) {
     //   reportList.push({

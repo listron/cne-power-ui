@@ -552,6 +552,7 @@ export default {
       faultReport: 'v3/performance/generalreport/fault',
       genReport: 'v3/performance/generalreport/gen',
       indicatorReport: 'v3/performance/generalreport/indicator',
+      preViewXlsx: '/onlinePreview',
       // 日报查询
       getQuotaList: '/v3/performance/report/index/list', // 关键指标列表
       getFaultList: '/v3/performance/report/fault/list', // 故障信息列表
@@ -696,8 +697,10 @@ export default {
       getHourWeatherStationList: '/v3/sun/report/weather/list/min',
       exportWeatherList: '/v3/sun/report/weather/export/min',
       exportWeatherdayList: '/v3/sun/report/weather/export/day',
-
-
+      getDayCombineInvert: '/v3/sun/report/zcnb/list/min',
+      getCombineInvert: '/v3/sun/report/zcnb/list/day',
+      exportHourCombineInvert: '/v3/sun/report/zcnb/export/min',
+      exportCombineInvert: '/v3/sun/report/zcnb/export/day',
     },
   },
 };
