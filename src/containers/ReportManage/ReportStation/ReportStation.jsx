@@ -51,7 +51,5 @@ const mapDispatchToProps = (dispatch) => ({
       actionName: reportStationAction.changeStore,
     },
   }),
-
-
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ReportStation);

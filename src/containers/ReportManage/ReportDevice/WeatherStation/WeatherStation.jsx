@@ -31,8 +31,7 @@ class WeatherStation extends Component {
   }
 
   render() {
-    const { dateType, disabledStation, theme } = this.props;
-    console.log('disabledStation: ', disabledStation);
+    const { dateType, theme } = this.props;
     return (
       <div className={`${styles.weatherStation} ${styles[theme]}`} >
         <CommonBreadcrumb breadData={[{ name: '气象站' }]} style={{ marginLeft: '38px' }} />

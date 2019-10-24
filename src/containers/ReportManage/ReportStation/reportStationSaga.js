@@ -9,8 +9,8 @@ const { reportManage } = path.APISubPaths;
 
 function* getReportStationList(action) {
   const { payload } = action;
-  // const url = `${APIBasePath}${reportManage.getReportStationList}`;
-  const url = '/mock/v3/sun/report/station/list';
+  const url = `${APIBasePath}${reportManage.getReportStationList}`;
+  // const url = '/mock/v3/sun/report/station/list';
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {

@@ -46,13 +46,22 @@ class ReportSearch extends React.PureComponent {
   }
 
   changeStation = (value) => { //电站选择
+    const { changeStore } = this.props;
     this.loop = true;
     this.setState({ selectStationCode: value, selectedDevice: [] });
+    const stationNameObj = value[0];
+    const stationName = stationNameObj && stationNameObj.stationName;
+    changeStore({
+      stationName,
+    });
   }
-
   selectedDevice = (value) => { // 设备选择
     this.loop = true;
     this.setState({ selectedDevice: value });
+    const deviceNames = value.map(e => (e.deviceName));
+    this.props.changeStore({
+      deviceNames,
+    });
   }
 
   queryList = () => {
@@ -71,7 +80,7 @@ class ReportSearch extends React.PureComponent {
     if (this.loop) {
       this.loop = false;
       if (dateType === 'hour') {
-        getWeatherStationList({ ...tmpParmas, reportTime: startTime });
+        getWeatherStationList({ ...tmpParmas, reportTime: startTime });//stationCode: 506, deviceFullcodes: []
         changeStore({ parmas: { ...tmpParmas }, reportTime: selectTime.startTime, dateType });
       } else {
         getWeatherStationList({ ...tmpParmas, startTime, endTime, dateType });
@@ -101,7 +110,7 @@ class ReportSearch extends React.PureComponent {
             data={stations.filter(e => e.stationType === 1)}
             onChange={this.changeStation}
             value={selectStationCode}
-            disabledStation={disabledStation.filter(e => !e.hasDevice).map(e => e.stationCode)}
+            disabledStation={disabledStation.filter(e => !e.hasDevice).map(e => +e.stationCode)}
             theme={theme}
           />
         </div>

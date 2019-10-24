@@ -12,9 +12,8 @@ function* getWeatherStationList(action) {
   const { dateType } = payload;
   const dateTypeArr = ['day', 'month'];
   //当dateTypeArr包含日或月的时候发送getWeatherStationList
-  // const url = dateTypeArr.includes[dateType] ? `${APIBasePath}${reportManage.getWeatherStationList}` : `${APIBasePath}${reportManage.getHourWeatherStationList}`;
-  console.log('1111111111', dateTypeArr.includes[dateType]);
-  const url = dateTypeArr.includes(dateType) ? 'mock/v3/sun/report/weather/list/day' : 'mock/v3/sun/report/weather/list/min';
+  const url = dateTypeArr.includes(dateType) ? `${APIBasePath}${reportManage.getWeatherStationList}` : `${APIBasePath}${reportManage.getHourWeatherStationList}`;
+  // const url = dateTypeArr.includes(dateType) ? 'mock/v3/sun/report/weather/list/day' : 'mock/v3/sun/report/weather/list/min';
   try {
     yield put({
       type: weatherStationAction.changeStore,

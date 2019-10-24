@@ -16,9 +16,11 @@ const initState = immutable.fromJS({
     pageNum: 1,
     stationCode: null, //电站编码 单电站
     deviceFullcodes: [], //设备全编码
-    orderFiled: 'report_time',
-    orderType: 'asc', //"asc"：正序 "desc"：倒序
+    sortField: 'report_time',
+    sortMethod: 'asc', //"asc"：正序 "desc"：倒序
   },
+  stationName: '',
+  deviceNames: [],
   total: 0,
   startTime: moment().startOf('year').format('YYYY-MM-DD'), // 开始时间
   endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'), // 结束时间

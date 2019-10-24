@@ -153,6 +153,7 @@ class ReportTable extends React.Component {
                 key: 'resourceValue',
                 width: 120,
                 className: styles.rightStyle,
+                render: (text) => (<span className={styles.stationName} title={text}>{text ? text : '--'}</span>),
               },
               {
                 title: '倾斜面',
@@ -160,6 +161,7 @@ class ReportTable extends React.Component {
                 key: 'slopeAccRadiationSum',
                 width: 120,
                 className: styles.rightStyle,
+                render: (text) => (<span className={styles.stationName} title={text}>{text ? text : '--'}</span>),
               },
             ],
           },
@@ -169,6 +171,8 @@ class ReportTable extends React.Component {
             key: 'topSunshineHours',
             width: 120,
             className: styles.rightStyle,
+            render: (text) => (<span className={styles.stationName} title={text}>{text ? text : '--'}</span>),
+
           },
         ],
       }, {
@@ -191,12 +195,16 @@ class ReportTable extends React.Component {
               key: 'outputPowerMax',
               // width: 120,
               className: styles.rightStyle,
+              render: (text) => (<span className={styles.stationName} title={text}>{text ? text : '--'}</span>),
+
             }, {
               title: '对应时间',
               dataIndex: 'dayPowerMaxTime',
               key: 'dayPowerMaxTime',
               width: 180,
               className: styles.rightStyle,
+              render: (text) => (<span className={styles.stationName} title={text}>{text ? text : '--'}</span>),
+
             },
           ],
         },

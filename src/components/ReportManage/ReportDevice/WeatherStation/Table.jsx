@@ -23,6 +23,8 @@ class ReportSearch extends React.PureComponent {
     downloading: PropType.bool,
     reportList: PropType.array,
     theme: PropType.string,
+    stationName: PropType.string,
+    deviceNames: PropType.array,
   }
 
   constructor() {
@@ -57,7 +59,7 @@ class ReportSearch extends React.PureComponent {
         width: 140,
         fixed: 'left',
         sorter: true,
-        render: (text) => <div className={styles.deviceName} title={text}>{text}</div>,
+        render: (text) => <div className={styles.deviceName} title={text}>{text ? text : '--'}</div>,
       },
       {
         title: '统计时段',
@@ -66,6 +68,7 @@ class ReportSearch extends React.PureComponent {
         fixed: 'left',
         sorter: true,
         defaultSortOrder: 'ascend',
+        render: (text) => <div className={styles.deviceName} title={text}>{text ? text : '--'}</div>,
       }, {
         title: '环境温度',
         children: temperature.map(item => {
@@ -81,12 +84,12 @@ class ReportSearch extends React.PureComponent {
         title: () => <TableColumnTitle title="环境湿度Avg" unit="m/s" />,
         dataIndex: 'humidityAvg',
         width: 150,
-        render: (text) => <div className={styles.deviceName} title={text}>{text}</div>,
+        render: (text) => <div className={styles.deviceName} title={text}>{text ? text : '--'}</div>,
       }, {
         title: () => <TableColumnTitle title="瞬时斜面辐射Max" unit="W/m2" />,
         width: 150,
         dataIndex: 'slopeRadiationMax',
-        render: (text) => <div className={styles.deviceName} title={text}>{text}</div>,
+        render: (text) => <div className={styles.deviceName} title={text}>{text ? text : '--'}</div>,
       }, {
         title: '累计辐射强度',
         dataIndex: 'operateStatus',
@@ -128,11 +131,11 @@ class ReportSearch extends React.PureComponent {
 
 
   exportFile = () => { // 导出文件
-    const { parmas, startTime, endTime, dateType } = this.props;
+    const { parmas, startTime, endTime, dateType, stationName, deviceNames } = this.props;
     // `${APIBasePath}${reportManage.getCenterInvert}` : ;
     this.props.downLoadFile({
-      url: `${APIBasePath}${path.APISubPaths.reportManage.getCenterInvert}`,
-      params: { ...parmas, startTime, endTime, dateType },
+      url: `${APIBasePath}${path.APISubPaths.reportManage.exportWeatherdayList}`,
+      params: { ...parmas, startTime, endTime, dateType, stationName, deviceNames },
     });
   }
 
@@ -144,10 +147,12 @@ class ReportSearch extends React.PureComponent {
 
   tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
     const { order } = sorter;
-    const orderType = order === 'ascend' ? 'asc' : 'desc';
-    const orderFiled = this.getSortField[sorter.field] || 'report_time';
-    this.props.changeStore({ parmas: { ...this.props.parmas, orderType, orderFiled } });
-    this.changeTableList({ orderType, orderFiled });
+    // const orderType = order === 'ascend' ? 'asc' : 'desc';
+    const sortMethod = order === 'ascend' ? 'asc' : 'desc';
+    // const orderFiled = this.getSortField[sorter.field] || 'report_time';
+    const sortField = this.getSortField[sorter.field] || 'report_time';
+    this.props.changeStore({ parmas: { ...this.props.parmas, sortField, sortMethod } });
+    this.changeTableList({ sortField, sortMethod });
   }
 
   // toLine = (name) => { // 驼峰转下划线
@@ -165,29 +170,8 @@ class ReportSearch extends React.PureComponent {
   }
 
   render() {
-    const { dateType = 'day', total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
-    console.log('dateType: ', dateType);
-    console.log('reportList: ', reportList);
+    const { dateType = 'day', total, parmas, listLoading, downloading, reportList, theme } = this.props;
     const { pageSize, pageNum, deviceFullcodes } = parmas;
-    // const reportList2 = [];
-    // for (var i = 30; i > 0; i--) {
-    //   reportList2.push({
-    //     key: i,
-    //     deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
-    //     date: moment().format('YYYY-MM'),
-    //     temperatureAvg: (Math.random() + 1) * 10000,
-    //     temperatureMax: (Math.random() + 1) * 10000,
-    //     temperatureMin: (Math.random() + 1) * 10000,
-    //     humidityAvg: (Math.random() + 1) * 10000,
-    //     slopeRadiationMax: (Math.random() + 1) * 10000,
-    //     accRadiationMax: (Math.random() + 1) * 10000,
-    //     slopeAccRadiationSum: (Math.random() + 1) * 10000,
-    //     sunshineHours: (Math.random() + 1) * 10000,
-    //     windSpeedMax: (Math.random() + 1) * 10000,
-    //     pressureAvg: (Math.random() + 1) * 10000,
-    //   });
-    // }
-    // console.log('reportList2: ', reportList2);
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>

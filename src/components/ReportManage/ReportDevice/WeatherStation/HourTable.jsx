@@ -21,6 +21,8 @@ class ReportSearch extends React.PureComponent {
     downloading: PropType.bool,
     reportList: PropType.array,
     theme: PropType.string,
+    stationName: PropType.string,
+    deviceNames: PropType.array,
   }
 
   constructor() {
@@ -149,10 +151,10 @@ class ReportSearch extends React.PureComponent {
   }
 
   exportFile = () => { // 导出文件
-    const { parmas, reportTime } = this.props;
+    const { parmas, reportTime, stationName, deviceNames } = this.props;
     this.props.downLoadFile({
-      url: `${APIBasePath}${path.APISubPaths.reportManage.getDayCenterInvert}`,
-      params: { ...parmas, reportTime },
+      url: `${APIBasePath}${path.APISubPaths.reportManage.exportWeatherList}`,
+      params: { ...parmas, reportTime, stationName, deviceNames },
     });
   }
 
