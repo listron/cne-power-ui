@@ -34,7 +34,9 @@ const initState = immutable.fromJS({
   stageNumInfo: {}, // 记事列表各类型统计信息 - 全部, 计划, 消缺, 巡检, 记事
 
   planList: [], // 日历列表
+  datePlans: [], // 属于planList，某一日的任务计划
   planListLoading: false, // 日历列表loading
+  handlePlanLoading: false, // 日历列表发布=删除loading
 
   runLogLoading: false, // 运行记录loading
   runLogInfo: {}, // 运行记录信息

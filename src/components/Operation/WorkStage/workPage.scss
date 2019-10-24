@@ -191,56 +191,6 @@
       display: flex;
       flex-wrap: wrap;
     }
-    .eachDate{
-      flex: 0 0 14%;
-      text-align: right;
-      height: 36px;
-      cursor: pointer;
-    }
-    .limitedDates{
-      cursor: not-allowed;
-    }
-    .activeDate{
-
-    }
-    // .noPlanDate{
-    //   cursor: default;
-    // }
-    .datesTips, .datesPlan{
-      height: 18px;
-      line-height: 18px;
-      padding: 0 8px; 
-    }
-    .datesTips{
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row-reverse;
-      align-items: center;
-      .today{
-        line-height: 12px;
-        font-size: 10px;
-      }
-      .momentDate{
-
-      }
-    }
-    .datesPlan{
-      text-align: left;
-      font-size: 14px;
-      .planNumber{
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        text-align: center;
-        line-height: 16px;
-        border-radius: 50%;
-        position: relative;
-        font-size: 10px;
-        left: -3px;
-        top: -6px;
-        transform: scale(0.9);
-      }
-    }
   }
 }
 
@@ -303,49 +253,7 @@
     }
   }
   .datesList{ // 日历
-    .eachDate{
-      border-top: 1px solid $promptColor;
-      border-right: 1px solid $promptColor;
-      &:nth-of-type(7n) {
-        border-right: none;
-      }
-      .datesTips{
-        .today{
-          color: $themeColor;
-          border: 1px solid $themeColor;
-        }
-        .momentDate{
-          color: $themeColor;
-        }
-      }
-      .datesPlan .planNumber{
-        background-color: #f9b600;
-        color: #fff;
-      }
-    }
-    .limitedDates{
-      background: #f8f8f8;
-      color: $promptColor;
-      .momentDate{
-        color: $promptColor;
-      }
-    }
-    .activeDate{
-      background: $themeColor;
-      color:#ffffff;
-      .datesTips{
-        .today{
-          color: #fff;
-          border: 1px solid #fff;
-        }
-        .momentDate{
-          color: #fff;
-        }
-      }
-    }
-    .noPlanDate{
-      cursor: default;
-    }
+    
   }
 }
 
