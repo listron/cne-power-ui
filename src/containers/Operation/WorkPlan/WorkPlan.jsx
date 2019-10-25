@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import WorkExaminer from '../../../../components/Operation/TwoTickets/Examiner/WorkExaminer';
-// import HandleExaminer from '../../../../components/Operation/TwoTickets/Examiner/HandleExaminer';
-// import DetailModal from '../../../../components/Operation/TwoTickets/Examiner/DetailModal';
-// import EditModal from '../../../../components/Operation/TwoTickets/Examiner/EditModal';
-// import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-// import Footer from '../../../../components/Common/Footer';
+import WorkPlanList from '../../../components/Operation/WorkPlan/WorkPlanList';
+import HandleWorkPlan from '../../../components/Operation/WorkPlan/HandleWorkPlan';
+import PlanDetail from '../../../components/Operation/WorkPlan/PlanDetail';
 import { workPlanAction } from './workPlanReducer';
 import ContentLayout from '@components/Common/ContentLayout';
 import styles from './workPlan.scss';
@@ -26,6 +23,9 @@ class WorkPlan extends Component {
   }
 
   render(){
+//     import WorkPlanList from '../../../components/Operation/WorkPlan/WorkPlanList';
+// import HandleWorkPlan from '../../../components/Operation/WorkPlan/HandleWorkPlan';
+// import PlanDetail from '../../../components/Operation/WorkPlan/PlanDetail';
     console.log(this.props);
     return (
       <ContentLayout
@@ -35,12 +35,9 @@ class WorkPlan extends Component {
         }}
         contentClassName={styles.planContent}
       >
-        <div className={styles.workPlanAnimationBox}>
-          <div>工作计划列表主页面</div>
-          <div>添加计划页面</div>
-          <div>编辑计划页面</div>
-          <div>查看计划详情</div>
-        </div>
+        <WorkPlanList {...this.props} />
+        <HandleWorkPlan {...this.props} />
+        <PlanDetail {...this.props} />
       </ContentLayout>
     );
   }
@@ -54,13 +51,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: workPlanAction.resetStore }),
-  // changeStore: payload => dispatch({ type: examinerAction.changeStore, payload }),
-  // getSettingList: payload => dispatch({ type: examinerAction.getSettingList, payload }),
-  // getSettedInfo: payload => dispatch({ type: examinerAction.getSettedInfo, payload }),
-  // getSettableNodes: () => dispatch({ type: examinerAction.getSettableNodes }),
-  // getSettableUsers: payload => dispatch({ type: examinerAction.getSettableUsers, payload }),
-  // createSettedInfo: payload => dispatch({ type: examinerAction.createSettedInfo, payload }),
-  // editSettedInfo: payload => dispatch({ type: examinerAction.editSettedInfo, payload }),
+  changeStore: payload => dispatch({ type: workPlanAction.changeStore, payload }),
+
+  getWorkPlanList: payload => dispatch({ type: workPlanAction.getWorkPlanList, payload }),
+  getWorkPlanDetail: payload => dispatch({ type: workPlanAction.getWorkPlanDetail, payload }),
+  addWorkPlan: payload => dispatch({ type: workPlanAction.addWorkPlan, payload }),
+  editWorkPlan: payload => dispatch({ type: workPlanAction.editWorkPlan, payload }),
+  deleteWorkPlan: payload => dispatch({ type: workPlanAction.deleteWorkPlan, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkPlan);

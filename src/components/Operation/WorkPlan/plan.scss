@@ -1,8 +1,24 @@
 
-.workPlan{
 
+.workPlanList, .handleWorkPlan, .planDetail{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  padding: 24px 24px 0;
+  transition: all 500ms;
 }
 
-.planContent{
-
+.workPlanList{
+  // transform: translateX(0);
 }
+
+.handleWorkPlan{
+  // transform: translateX(100%);
+}
+
+.planDetail{
+  // transform: translateX(100%);
+}
+
+// 颜色

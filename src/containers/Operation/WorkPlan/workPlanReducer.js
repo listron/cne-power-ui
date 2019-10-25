@@ -4,11 +4,18 @@ const workPlanAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
+
+  getWorkPlanList: Symbol('getWorkPlanList'),
+  getWorkPlanDetail: Symbol('getWorkPlanDetail'),
+  addWorkPlan: Symbol('addWorkPlan'),
+  editWorkPlan: Symbol('editWorkPlan'),
+  deleteWorkPlan: Symbol('deleteWorkPlan'),
 };
 
 const initState = immutable.fromJS({
   planParams: {},
   planListPageParams: {},
+  planPageKey: 'list', // list列表页, edit编辑, add新增, detail详情
 
   planListLoading: false, // 计划列表loading
   addPlanLoading: false, // 新增计划loading
