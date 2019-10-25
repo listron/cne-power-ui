@@ -3,30 +3,47 @@ import { lazy } from 'react';
 
 const reportStation = [ // 电站报表
   {
-    path: '/report/station',
-    component: lazy(() => import('../../containers/ReportManage/ReportStation/ReportStation.jsx')),
+    path: '/report/windstation/powerReport',
+    component: lazy(() => import('../../containers/Monitor/Report/PowerReport/PowerReport')),
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
+  },
+  {
+    path: '/report/windstation/deviceStatus',
+    component: lazy(() => import('../../containers/Monitor/Report/DeviceStatus/DeviceStatus')),
+  },
+  {
+    path: '/report/windstation/malfunction',
+    component: lazy(() => import('../../containers/Monitor/Report/Malfunction/Malfunction')),
+  },
+  {
+    path: '/report/windstation/powerLost',
+    component: lazy(() => import('../../containers/Monitor/Report/PowerLost/PowerLost')),
   },
 ];
 
 export const reportDevice = [ //设备报表
   {
-    path: '/report/device/centerInvert', // 集中式逆变器
+    path: '/report/pvstation/station',
+    component: lazy(() => import('../../containers/ReportManage/ReportStation/ReportStation.jsx')),
+    // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
+  },
+  {
+    path: '/report/pvstation/centerInvert', // 集中式逆变器
     component: lazy(() => import('../../containers/ReportManage/ReportDevice/CenterInvert/CenterInvert.jsx')),
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
   {
-    path: '/report/device/combineInvert', // 组串式逆变器
+    path: '/report/pvstation/combineInvert', // 组串式逆变器
     component: lazy(() => import('../../containers/ReportManage/ReportDevice/CombineInvert/CombineInvert.jsx')),
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
   {
-    path: '/report/device/confluenceBox', // 汇流箱
+    path: '/report/pvstation/confluenceBox', // 汇流箱
     // component: lazy(() => import('../../containers/ReportManage/ReportStation/ReportStation.jsx')),
     component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
   {
-    path: '/report/device/weatherStation', // 气象站
+    path: '/report/pvstation/weatherStation', // 气象站
     component: lazy(() => import('../../containers/ReportManage/ReportDevice/WeatherStation/WeatherStation')),
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
