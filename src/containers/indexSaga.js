@@ -3,6 +3,8 @@ import { watchCommon } from './alphaRedux/commonSaga';
 import { watchLogin } from './Login/loginSaga';
 import { watchHomepage } from './Home/homepageSaga';
 
+import { watchWorkStage } from './Operation/WorkStage/workStageSaga';
+import { watchWorkPlan } from './Operation/WorkPlan/workPlanSaga';
 import { watchChangeShowContainer } from './Operation/Ticket/ticketSaga';
 import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
 import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
@@ -124,6 +126,8 @@ export default function* rootSaga() {
     watchLogin(), // 登录注册
     watchHomepage(), // 主页
     //ticket
+    watchWorkStage(), // 工作台
+    watchWorkPlan(), // 工作计划管理
     watchChangeShowContainer(),
     watchDefect(), //Defect
     watchInspect(), // 巡检

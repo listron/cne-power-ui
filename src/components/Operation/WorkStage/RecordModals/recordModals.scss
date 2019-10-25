@@ -1,0 +1,100 @@
+
+@import '../../../../theme/theme.scss';
+
+.addRecord{
+  .eachRecordForm{
+    display: flex;
+    margin-bottom: 14px;
+    :global{
+      .ant-form-item-label{
+        flex: 0 0 165px;
+      }
+      .ant-form-item-control-wrapper{
+        flex: 1;
+      }
+      .ant-form-explain{
+        position: absolute;
+      }
+    }
+  }
+  .saveRow{
+    display: flex;
+    padding-left: 165px;
+    button{
+      margin-right: 12px;
+    }
+  }
+}
+
+.recordDetail{ // 记事 + 计划详情
+  .eachRecord{
+    display: flex;
+    margin-bottom: 8px;
+    .recordTitle{
+      flex: 0 0 140px;
+      text-align: right;
+      margin-right: 24px;
+    }
+    .recordValue{
+      flex: 1;
+      @include overflowText();
+    }
+  }
+  .detailHandle{ // 记事详情 底部操作
+    padding-left: 164px;
+    button{
+      width: 98px;
+      margin-right: 12px;
+    }
+  }
+  .handleComplete{ // 计划详情 标记已完成
+    padding-left: 164px;
+    button{
+      :global{
+        .iconfont.icon-markdone{
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+}
+
+.light.addRecord{
+  .eachRecordForm{
+    :global{
+      .ant-form-item-label{
+        color: #000;
+      }
+    }
+  }
+  .saveRow{
+    .saveBtn{
+      background-color: $themeColor;
+      color: #fff;
+    }
+    .continueSaveBtn{
+      border: 1px solid $themeColor;
+      color: $themeColor;
+    }
+    .cancelSaveBtn{
+      border: 1px solid $promptColor;
+      color: $lightColor;
+    }
+  }
+  
+}
+.light.recordDetail{
+  .recordTitle{
+    color: #000;
+  }
+  .detailHandle{ // 记事详情 底部操作
+    .editBtn{
+      background-color: $themeColor;
+      color: #fff;
+    }
+    .deleteBtn{
+      border: 1px solid $themeColor;
+      color: $themeColor;
+    }
+  }
+}
