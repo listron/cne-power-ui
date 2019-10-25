@@ -7,45 +7,53 @@ import PropTypes from 'prop-types';
 // import EditModal from '../../../../components/Operation/TwoTickets/Examiner/EditModal';
 // import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 // import Footer from '../../../../components/Common/Footer';
-// import { examinerAction } from './examinerReducer';
+import { workPlanAction } from './workPlanReducer';
+import ContentLayout from '@components/Common/ContentLayout';
 import styles from './workPlan.scss';
 
 class WorkPlan extends Component {
 
   static propTypes = {
-    // editModalShow: PropTypes.bool,
+    resetStore: PropTypes.func,
   };
 
   componentDidMount(){
-    
+
   }
 
   componentWillUnmount(){
-    // this.props.resetStore();
+    this.props.resetStore();
   }
 
   render(){
+    console.log(this.props);
     return (
-      <div className={styles.workPlan}>
-        {/* <CommonBreadcrumb breadData={[{name: '审核人设置'}]} style={{ marginLeft: '38px' }} /> */}
-        <div>
-          <div className={styles.planContent}>
-            工作计划管理，建设中。
-          </div>
-          {/* <Footer /> */}
+      <ContentLayout
+        breadcrumb={{
+          breadData: [{ name: '工作计划管理' }],
+          style: { paddingLeft: '40px' },
+        }}
+        contentClassName={styles.planContent}
+      >
+        <div className={styles.workPlanAnimationBox}>
+          <div>工作计划列表主页面</div>
+          <div>添加计划页面</div>
+          <div>编辑计划页面</div>
+          <div>查看计划详情</div>
         </div>
-      </div>
+      </ContentLayout>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  // ...state.operation.examiner.toJS(),
-  // stations: state.common.get('stations').toJS(),
+  ...state.operation.workPlan.toJS(),
+  stations: state.common.get('stations').toJS(),
+  theme: state.common.get('theme'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // resetStore: () => dispatch({ type: examinerAction.resetStore }),
+  resetStore: () => dispatch({ type: workPlanAction.resetStore }),
   // changeStore: payload => dispatch({ type: examinerAction.changeStore, payload }),
   // getSettingList: payload => dispatch({ type: examinerAction.getSettingList, payload }),
   // getSettedInfo: payload => dispatch({ type: examinerAction.getSettedInfo, payload }),

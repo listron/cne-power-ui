@@ -22,7 +22,7 @@ export default function ContentLayout ({
 }
 
 ContentLayout.propTypes = {
-  children: PropTypes.array,
+  children: PropTypes.any,
   breadcrumb: PropTypes.object, // 可写 面包屑内容
   theme: PropTypes.string, // 可写: 主体关键字, 默认浅色主体
   layoutClassName: PropTypes.string, // 可写 页面外部layout单独的样式, 默认无
