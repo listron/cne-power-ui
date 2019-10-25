@@ -325,6 +325,11 @@ class HistorySearch extends Component {
     }
   }
 
+  stationTypeInfo = {
+    pv: 1,
+    wind: 0,
+  }
+
   render(){
     const {
       queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount, intervalInfo
@@ -341,7 +346,12 @@ class HistorySearch extends Component {
           <div className={styles.stationSelect}>
             <span className={styles.text}>电站名称</span>
             <StationSelect
-              data={typeof(selectStationType) === 'number' ? stations.filter(e => e.stationType === selectStationType) : stations}
+              data={typeof(selectStationType) === 'number' ? stations.filter(e => {
+                if (stationTypeCount !== 'multiple') { // 单种
+                  return e.stationType === this.stationTypeInfo[stationTypeCount];
+                }
+                return e.stationType === selectStationType; // 多种类型时才有顶部区别
+              }) : stations}
               onOK={this.selectStation}
               value={stations.filter(e => e.stationCode === stationCode)}
               disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}

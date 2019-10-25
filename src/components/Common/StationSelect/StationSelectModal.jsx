@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Radio } from 'antd';
+import { Icon, Modal, Radio, Checkbox } from 'antd';
 import ProvinceItem from './ProvinceItem';
 import WarningTip from '../WarningTip';
 import styles from './style.scss';
@@ -17,17 +17,17 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
     multiple: PropTypes.bool,
     hideStationModal: PropTypes.func,
     showStationModal: PropTypes.func,
-    handleOK: PropTypes.func
+    handleOK: PropTypes.func,
   }
   constructor(props) {
     super(props);
     this.state = {
-      filterStationType: 2,//选中电站类型
-      stationType: [2, 0, 1],//2所有,0风电，1光伏
+      filterStationType: 2, //选中电站类型
+      stationType: [2, 0, 1], //2所有,0风电，1光伏
       selectedStation: props.checkedStations, //暂存选中的电站数组
       showWarningTip: false,
-      warningTipText: ''
-    }
+      warningTipText: '',
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -35,24 +35,24 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
     const { checkedStations } = nextProps;
     const tmpCodes = tmpCheckedStations.map(e => e.stationCode);
     const newCodes = checkedStations.map(e => e.stationCode);
-    const isCodesSame = (tmpCodes.length === newCodes.length) && newCodes.every(e => tmpCodes.includes(e))
+    const isCodesSame = (tmpCodes.length === newCodes.length) && newCodes.every(e => tmpCodes.includes(e));
     if (!isCodesSame) { // 电站数据不同。
       this.setState({
         selectedStation: checkedStations,
-      })
+      });
     }
   }
 
   onSelectStationType = (e) => {
     this.setState({
-      filterStationType: e.target.value
-    })
+      filterStationType: e.target.value,
+    });
   }
 
   onClearSelected = () => {
     this.setState({
       showWarningTip: true,
-      warningTipText: '确认取消所有已选电站么'
+      warningTipText: '确认取消所有已选电站么',
     });
   }
 
@@ -67,25 +67,25 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
       showWarningTip: false,
     });
     this.setState({
-      selectedStation: []
+      selectedStation: [],
     });
   }
   onDeleteOneStation = (stationInfor) => {
     const { selectedStation } = this.state;
     const tmpSelectedStation = selectedStation.filter(e => e.stationCode !== stationInfor.stationCode);
     this.setState({
-      selectedStation: tmpSelectedStation
-    })
+      selectedStation: tmpSelectedStation,
+    });
   }
 
   handleOK = () => {
-    this.props.handleOK(this.state.selectedStation)
+    this.props.handleOK(this.state.selectedStation);
   }
 
   checkStation = (selectedStation) => {
     this.setState({
-      selectedStation
-    })
+      selectedStation,
+    });
   }
 
 
@@ -93,7 +93,7 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
     const { data, multiple, disabledStation, oneStyleOnly } = this.props;
     const { filterStationType, selectedStation } = this.state;
     const tmpStations = filterStationType === 2 ? data : data.filter(e => (e.stationType === filterStationType));
-    let filteredStation = [];
+    const filteredStation = [];
     tmpStations && tmpStations.length > 0 && tmpStations.forEach(e => {
       let findExactStation = false;
       filteredStation.forEach(m => {
@@ -101,15 +101,15 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
           findExactStation = true;
           m.stations.push(e);
         }
-      })
+      });
       if (!findExactStation) {
         filteredStation.push({
           provinceCode: e.provinceCode,
           provinceName: e.provinceName,
-          stations: [e]
-        })
+          stations: [e],
+        });
       }
-    })
+    });
     return filteredStation.map(e => (
       <ProvinceItem
         key={e.provinceCode}
@@ -120,7 +120,7 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
         provinceInfo={{ ...e }}
         selectedStation={selectedStation}
       />
-    ))
+    ));
   }
   _selectedStation = () => {
     const { selectedStation } = this.state;
@@ -132,18 +132,32 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
         </div>
         <div className={styles.innerStationList}>
           {selectedStation.map(e => {
-            return <div key={e.stationCode} title={e.stationName} className={styles.eachSelectedStation} > <span>{e.stationName}</span> <Icon type="close" className={styles.deleteIcon} onClick={() => this.onDeleteOneStation(e)} /> </div>
+            return <div key={e.stationCode} title={e.stationName} className={styles.eachSelectedStation} > <span>{e.stationName}</span> <Icon type="close" className={styles.deleteIcon} onClick={() => this.onDeleteOneStation(e)} /> </div>;
           })}
         </div>
       </div>
-    )
+    );
   }
-
+  changeAllStation = (e) => {
+    const { data, disabledStation } = this.props;
+    const tmpStations = data.filter(e => (!disabledStation.includes(e.stationCode)));
+    const { checked } = e.target;
+    if (checked) {
+      this.setState({
+        selectedStation: tmpStations,
+      });
+    } else {
+      this.setState({
+        selectedStation: [],
+      });
+    }
+  }
   render() {
-    const { stationModalShow, hideStationModal, showStationModal, multiple, data } = this.props;
-    const { filterStationType, stationType, showWarningTip, warningTipText } = this.state;
+    const { stationModalShow, hideStationModal, showStationModal, multiple, data, oneStyleOnly, disabledStation } = this.props;
+    const { filterStationType, stationType, showWarningTip, warningTipText, selectedStation } = this.state;
     const tmpStationSet = new Set(data.map(e => e.stationType));
     const hasMultipleType = tmpStationSet.size > 1;
+    const checked = selectedStation.length + disabledStation.length === data.length;
     return (
       <div className={styles.stationSelectModal}>
         {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
@@ -166,7 +180,15 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
                 {stationType.map(e => (<RadioButton key={e} value={e} >{e === 2 ? '全部' : e === 1 ? '光伏' : '风电'}</RadioButton>))}
               </RadioGroup>
             </div>}
+
             <div className={styles.provinceList}>
+              {(multiple && !hasMultipleType) && <Checkbox
+                style={{ marginBottom: 10 }}
+                checked={checked}
+                onChange={this.changeAllStation}
+              >
+                全部
+          </Checkbox>}
               {this._filterStation()}
             </div>
             <div className={styles.selectStations}>
@@ -175,7 +197,7 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
           </div>
         </Modal>
       </div>
-    )
+    );
 
   }
 }

@@ -41,12 +41,14 @@ function* getStationDevice(action) {//获取电站设备
       }
       // 获取风能频率图
       if(payload.type === 2) {
+        // 首先获取风能频率图最大值
         yield put({
-          type: windResourcesAction.getFrequency,
+          type: windResourcesAction.getFrequencyMax,
           payload: {
-            deviceFullCode,
+            stationCode: payload.stationCode,
             startTime: moment().subtract(1, 'months').startOf('month').format(),
             endTime: moment().format(),
+            deviceFullCode,
           },
         });
       }
@@ -78,6 +80,44 @@ function dateFormat(time) {
   return endTime;
 }
 
+function* getFrequencyMax(action) {// 获取风能频率图最大值
+  const { payload: {
+    deviceFullCode,
+    stationCode,
+    startTime,
+    endTime,
+  } } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getFrequencyMax}`;
+  try {
+    const response = yield call(request.post, url, {
+      stationCode,
+      startTime: moment(startTime).utc().format(),
+      endTime: dateFormat(endTime),
+    });
+    if (response.code === '10000') {
+      yield put({
+        type: windResourcesAction.changeWindResourcesStore,
+        payload: {
+          frequencyMaxData: response.data,
+        },
+      });
+      yield put({
+        type: windResourcesAction.getFrequency,
+        payload: {
+          deviceFullCode,
+          startTime,
+          endTime,
+        },
+      });
+    } else {
+      message.error('请求失败');
+      throw response;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 function* getDirections(action){ // 获取风能玫瑰图
   const { payload } = action;
   const { deviceFullCode, startTime, endTime } = payload;
@@ -91,7 +131,7 @@ function* getDirections(action){ // 获取风能玫瑰图
     });
     const response = yield call(request.post, url, {...payload,
       startTime: moment(startTime).utc().format(),
-      endTime: dateFormat(endTime)
+      endTime: dateFormat(endTime),
     });
     if (response.code === '10000') {
       yield put({
@@ -260,4 +300,5 @@ export function* watchWindResourcesSaga() {
   yield takeLatest(windResourcesAction.getBigFrequency, getBigFrequency);
   yield takeLatest(windResourcesAction.getDirections, getDirections);
   yield takeLatest(windResourcesAction.getBigDirections, getBigDirections);
+  yield takeLatest(windResourcesAction.getFrequencyMax, getFrequencyMax);
 }

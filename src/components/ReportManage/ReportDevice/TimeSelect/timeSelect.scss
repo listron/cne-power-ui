@@ -1,0 +1,15 @@
+.timeSelectWrap {
+  display: flex;
+  align-items: center;
+  .timeModal {
+    margin-left: 8px;
+  }
+  :global {
+    .ant-radio-button-wrapper {
+      padding: 0 8px;
+    }
+    .ant-input {
+      width: 200px;
+    }
+  }
+}

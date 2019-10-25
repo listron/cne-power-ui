@@ -30,7 +30,7 @@ class AlarmSingleStationTable extends React.Component {
   renderColumn() {
     const columns = [
       {
-        title: '时间',
+        title: '日期',
         dataIndex: 'time',
         key: 'time',
         sorter: true,

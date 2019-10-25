@@ -6,6 +6,7 @@ import { Table, Radio, Button } from 'antd';
 import moment from 'moment';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../utils/utilFunc';
+import Path from '../../../../constants/path';
 
 class StationStatisticList extends React.Component {
   static propTypes = {
@@ -20,6 +21,7 @@ class StationStatisticList extends React.Component {
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
     exportAllstationTableData: PropTypes.func,
+    downLoadFile: PropTypes.func,
     history: PropTypes.object,
   }
 
@@ -314,10 +316,10 @@ class StationStatisticList extends React.Component {
   }
   //导出table
   exportTable = () => {
-    const { stationType, year, month, powerSelectYear, dateType, pageSize, pageNum, sort, sortType } = this.props;
+    const { stationType, year, month, powerSelectYear, dateType, pageSize, pageNum, sort, sortType, downLoadFile } = this.props;
     const prams = {
-      pageNum,
-      pageSize,
+      // pageNum,
+      // pageSize,
       year: dateType === 'month' ? year[0] : powerSelectYear,
       stationType,
       month,
@@ -325,7 +327,14 @@ class StationStatisticList extends React.Component {
       sort,
       sortType,
     };
-    this.props.exportAllstationTableData(prams);
+    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.exportAllstationTableData}`; // 下载文件
+    downLoadFile({
+      url,
+      method: 'post',
+      params: prams,
+      defineOriginName: false,
+
+    });
   }
 
   render() {

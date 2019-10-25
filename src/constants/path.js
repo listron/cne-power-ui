@@ -566,6 +566,7 @@ export default {
       faultReport: 'v3/performance/generalreport/fault',
       genReport: 'v3/performance/generalreport/gen',
       indicatorReport: 'v3/performance/generalreport/indicator',
+      preViewXlsx: '/onlinePreview',
       // 日报查询
       getQuotaList: '/v3/performance/report/index/list', // 关键指标列表
       getFaultList: '/v3/performance/report/fault/list', // 故障信息列表
@@ -594,6 +595,7 @@ export default {
       getSequenceData: '/v3/wind/analysis/sequencechart', //时序图数据
       getxyLimitValue: '/v3/wind/analysis/points/max', //获取xy轴最大值最小值
       getFrequency: '/v3/wind/analysis/frequency', // 获取风能频率图
+      getFrequencyMax: '/v3/wind/analysis/frequencyMax', // 获取风能频率图最大值
       getDirections: '/v3/wind/analysis/directions', // 获取风能玫瑰图
     },
     highAnalysis: {
@@ -700,6 +702,19 @@ export default {
     reportManage: {
       getReportStationList: '/v3/sun/report/station/list',
       exportReportStationList: '/v3/sun/report/station/export',
+      getDayCenterInvert: '/v3/sun/report/jznb/list/min',
+      getCenterInvert: '/v3/sun/report/jznb/list/day',
+      exportDayCenterInvert: '/v3/sun/report/jznb/export/min',
+      exportCenterInvert: '/v3/sun/report/jznb/export/day',
+      disabledStations: '/v3/station/hasspecil',
+      getWeatherStationList: '/v3/sun/report/weather/list/day',
+      getHourWeatherStationList: '/v3/sun/report/weather/list/min',
+      exportWeatherList: '/v3/sun/report/weather/export/min',
+      exportWeatherdayList: '/v3/sun/report/weather/export/day',
+      getDayCombineInvert: '/v3/sun/report/zcnb/list/min',
+      getCombineInvert: '/v3/sun/report/zcnb/list/day',
+      exportHourCombineInvert: '/v3/sun/report/zcnb/export/min',
+      exportCombineInvert: '/v3/sun/report/zcnb/export/day',
     },
   },
 };

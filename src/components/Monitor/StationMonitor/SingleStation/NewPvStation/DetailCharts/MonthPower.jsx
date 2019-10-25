@@ -80,7 +80,7 @@ class MonthPower extends Component {
         },
         light: {
             actualPower: '#3e97d1',
-            theoryPower: '#fbe6e3',
+            theoryPower: '#FF9000',
             completeRate: '#199475',
             instantaneous: '#f9b600',
         },
@@ -173,8 +173,8 @@ class MonthPower extends Component {
                     let paramsItem = '';
                     params.forEach(item => {
                         const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
-                        paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"/>
-                        ${item.seriesName} :  ${item.value}${item.seriesName === '完成率' && '%' || ''}</div>`;
+                        paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"></span>
+                        ${item.seriesName}:${item.value}${item.seriesName === '完成率' && '%' || ''}</div>`;
                     });
                     return (
                         `<div class=${styles.tooltipBox}>

@@ -378,7 +378,7 @@ class PlanTable extends Component {
               <span className={styles.text}>添加</span>
             </Button>
             <Button type={'default'} onClick={this.batchImport} >批量导入</Button>
-            <Button href={downloadHref} download={downloadHref} >导入下载模版</Button>
+            <Button href={downloadHref} download={downloadHref} >导入模板下载</Button>
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>

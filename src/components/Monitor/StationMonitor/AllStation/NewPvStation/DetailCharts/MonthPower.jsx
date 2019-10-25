@@ -103,9 +103,27 @@ class MonthPower extends Component {
         return chartType === 'monthPower' ? monthPowerObj : equipmentHoursObj;
     }
 
+    themeColor = {
+        dark: {
+            monthPower: Gradient1,
+            monthPlanPower: Gradient2,
+            completeRate: '#4d5fe2',
+            equipmentHours: Gradient2,
+        },
+        light: {
+            monthPower: '#3e97d1',
+            monthPlanPower: '#FF9000', //#e08031 #fbe6e3  #f5c8c1
+            completeRate: '#199475',
+            equipmentHours: '#c7ceb2',
+        },
+
+    }
+    // monthPlanPower: '',
+
     seriesType = ({ monthPower, monthPlanPower, completeRate, equipmentHours }) => { // 根据不同的类型，series不同
         const { chartType } = this.state;
         const { theme = 'light' } = this.props;
+        console.log('test', this.themeColor[theme].monthPlanPower);
         const monthPowerObj = [{
             name: '月发电量',
             type: 'bar',
@@ -119,6 +137,9 @@ class MonthPower extends Component {
             type: 'bar',
             color: this.themeColor[theme].monthPlanPower,
             data: getDefaultData(monthPlanPower),
+            itemStyle: {
+                color: this.themeColor[theme].monthPlanPower,
+            },
             yAxisIndex: 0,
             barWidth: 6,
             ...barRadius,
@@ -140,21 +161,7 @@ class MonthPower extends Component {
         return chartType === 'monthPower' ? monthPowerObj : equipmentHoursObj;
     }
 
-    themeColor = {
-        dark: {
-            monthPower: Gradient1,
-            monthPlanPower: Gradient2,
-            completeRate: '#4d5fe2',
-            equipmentHours: Gradient2,
-        },
-        light: {
-            monthPower: '#3e97d1',
-            monthPlanPower: '#fbe6e3',
-            completeRate: '#199475',
-            equipmentHours: '#c7ceb2',
-        },
 
-    }
 
 
     drawCharts = (params, themeChange) => {
@@ -205,6 +212,7 @@ class MonthPower extends Component {
                     let paramsItem = '';
                     params.forEach(item => {
                         const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
+                        console.log('color', color);
                         paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
                         ${item.seriesName} :  ${item.value}${item.seriesName === '完成率' && '%' || ''}</div>`;
                     });
