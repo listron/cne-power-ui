@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
 
+import { workStage } from './WorkStage/workStageReducer';
+import { workPlan } from './WorkPlan/workPlanReducer';
+
 import defect from './Ticket/Defect/defectReducer';
 import inspect from './Ticket/Inspect/inspectReducer';
 import ticket from './Ticket/ticketReducer';
@@ -22,6 +25,8 @@ import workFlow from './TwoTickets/WorkFlow/workFlowReducer'; // 两票 - 工作
 import operateFlow from './TwoTickets/OperateFlow/operateFlowReducer'; // 两票 - 操作票
 
 const operationReducer = combineReducers({
+  workStage, // 工作台
+  workPlan, // 工作管理计划
   defect,
   inspect,
   ticket,
