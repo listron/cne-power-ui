@@ -96,7 +96,7 @@ class AddRecord extends PureComponent {
         </FormItem>
         <FormItem label="执行人" colon={false} className={styles.eachRecordForm} >
           {getFieldDecorator('handleUser', {
-            rules: [{ required: true, message: '请输入执行人' }],
+            // rules: [{ required: true, message: '请输入执行人' }],
             initialValue: handleUser,
           })(
             <Input style={{width: '200px'}} placeholder="请输入..." />
@@ -114,16 +114,19 @@ class AddRecord extends PureComponent {
           {modalKey === 'addRecord' && <Button
             onClick={this.saveAddRecord}
             loading={saveMode === 'normal' && saveRecordLoading}
+            className={styles.saveBtn}
           >保存</Button>}
           {modalKey === 'addRecord' && <Button
             onClick={this.continueAddRecord}
             loading={saveMode === 'continue' && saveRecordLoading}
+            className={styles.continueSaveBtn}
           >保存并继续添加</Button>}
           {modalKey === 'editRecord' && <Button
             onClick={this.editRecordInfo}
             loading={saveRecordLoading}
+            className={styles.saveBtn}
           >保存</Button>}
-          <Button onClick={this.cancelAdd}>取消</Button>
+          <Button onClick={this.cancelAdd} className={styles.cancelSaveBtn}>取消</Button>
         </div>
       </Form>
     );

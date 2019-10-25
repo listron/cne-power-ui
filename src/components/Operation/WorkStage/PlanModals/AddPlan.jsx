@@ -225,9 +225,17 @@ class AddPlan extends PureComponent {
             </FormItem>}
           </div>
           <div className={styles.saveRow}>
-            <Button onClick={this.saveAddRecord} loading={saveMode === 'normal' && saveRecordLoading}>保存</Button>
-            <Button onClick={this.continueAddRecord} loading={saveMode === 'continue' && saveRecordLoading}>保存并继续添加</Button>
-            <Button onClick={this.cancelHandle}>取消</Button>
+            <Button
+              onClick={this.saveAddRecord}
+              loading={saveMode === 'normal' && saveRecordLoading}
+              className={styles.saveBtn}
+            >保存</Button>
+            <Button
+              onClick={this.continueAddRecord}
+              loading={saveMode === 'continue' && saveRecordLoading}
+              className={styles.continueSaveBtn}
+            >保存并继续添加</Button>
+            <Button onClick={this.cancelHandle} className={styles.cancelSaveBtn}>取消</Button>
           </div>
         </Form>
       </Modal>

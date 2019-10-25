@@ -163,9 +163,34 @@
 
 //          颜色部分
 .addFormTips{
-  color: $lightColor;
+  
 }
-
+.addPlanForm{ // 添加计划
+  .eachPlanForm{
+    .addFormTips{
+      color: $lightColor;
+    }
+    :global{
+      .ant-form-item-label{
+        color: #000;
+      }
+    }
+  }
+  .saveRow{
+    .saveBtn{
+      background-color: $themeColor;
+      color: #fff;
+    }
+    .continueSaveBtn{
+      border: 1px solid $themeColor;
+      color: $themeColor;
+    }
+    .cancelSaveBtn{
+      border: 1px solid $promptColor;
+      color: $lightColor;
+    }
+  }
+}
 .eachDate{
   border-top: 1px solid $promptColor;
   border-right: 1px solid $promptColor;
@@ -213,7 +238,6 @@
 .noPlanDate{
   cursor: default;
 }
-
 .planHandle{ // 计划下发, 删除
   .handle{
     padding-left: 12px;

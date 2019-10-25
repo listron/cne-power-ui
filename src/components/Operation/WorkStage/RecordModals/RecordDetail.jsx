@@ -62,14 +62,14 @@ class RecordDetail extends PureComponent {
           );
         })}
         <div className={styles.detailHandle}>
-          <Button onClick={this.toEdit} loading={saveRecordLoading}>编辑</Button>
+          <Button onClick={this.toEdit} loading={saveRecordLoading} className={styles.editBtn}>编辑</Button>
           <Popconfirm
             title="是否确认删除记事?"
             onConfirm={this.toRemove}
             okText="确定"
             cancelText="取消"
           >
-            <Button loading={deleteRecordLoading}>删除</Button>
+            <Button loading={deleteRecordLoading} className={styles.deleteBtn}>删除</Button>
           </Popconfirm>
         </div>
       </div>

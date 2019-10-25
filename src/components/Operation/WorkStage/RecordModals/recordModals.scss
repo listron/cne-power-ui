@@ -59,8 +59,42 @@
   }
 }
 
+.light.addRecord{
+  .eachRecordForm{
+    :global{
+      .ant-form-item-label{
+        color: #000;
+      }
+    }
+  }
+  .saveRow{
+    .saveBtn{
+      background-color: $themeColor;
+      color: #fff;
+    }
+    .continueSaveBtn{
+      border: 1px solid $themeColor;
+      color: $themeColor;
+    }
+    .cancelSaveBtn{
+      border: 1px solid $promptColor;
+      color: $lightColor;
+    }
+  }
+  
+}
 .light.recordDetail{
   .recordTitle{
     color: #000;
+  }
+  .detailHandle{ // 记事详情 底部操作
+    .editBtn{
+      background-color: $themeColor;
+      color: #fff;
+    }
+    .deleteBtn{
+      border: 1px solid $themeColor;
+      color: $themeColor;
+    }
   }
 }

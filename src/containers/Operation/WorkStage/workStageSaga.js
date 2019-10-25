@@ -75,7 +75,7 @@ function *addNewRecord({ payload }){ // 新增工作记事
       saveRecordLoading: false,
       recordDetailInfo: payload, // 请求失败需要暂存数据进行重新请求
     });
-    message.error('添加工作记事失败, 请刷新重试');
+    message.error(`添加工作记事失败 ${error.message}, 请重试`);
   }
 }
 
@@ -170,7 +170,7 @@ function *editRecord({ payload }){ // 编辑工作记事
     yield call(easyPut, 'changeStore', {
       saveRecordLoading: false,
     });
-    message.error('添加工作记事失败, 请刷新重试');
+    message.error(`编辑工作记事失败 ${error.message}, 请重试`);
   }
 }
 
@@ -196,7 +196,7 @@ function *deletRecord({ payload }){ // 删除记事
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', { deleteRecordLoading: false });
-    message.error('删除记事详情失败, 请重试');
+    message.error(`删除工作记事失败 ${error.message}, 请重试`);
   }
 }
 
@@ -206,6 +206,7 @@ function *addPlan({ payload }){ // 添加工作计划
     yield call(easyPut, 'changeStore', { saveRecordLoading: true });
     const response = yield call(request.post, url, { ...payload });
     if (response.code === '10000') {
+      message.success('恭喜！你所提交的信息已经保存成功，可在日历及计划管理中查看。');
       yield call(easyPut, 'fetchSuccess', {
         saveRecordLoading: false,
         recordDetailInfo: null, // 请求成功删除相关信息 => 继续或关闭
@@ -225,7 +226,7 @@ function *addPlan({ payload }){ // 添加工作计划
       saveRecordLoading: false,
       recordDetailInfo: payload, // 请求失败需要暂存数据进行重新请求
     });
-    message.error('添加计划失败, 请重试');
+    message.error(`添加计划失败 ${error.message}, 请重试`);
   }
 }
 
@@ -327,7 +328,7 @@ function *handlePlanStatus({ payload }) { // 工作台日历任务批量下发/�
       handlePlanLoading: false,
       handleError: true,
     });
-    message.error('计划操作失败, 请重试');
+    message.error(`计划操作失败 ${error.message}, 请重试`);
   }
 }
 
