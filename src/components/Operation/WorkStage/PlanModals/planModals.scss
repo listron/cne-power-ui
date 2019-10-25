@@ -55,9 +55,6 @@
       line-height: 12px;
       font-size: 10px;
     }
-    .momentDate{
-  
-    }
   }
   .datesPlan{
     text-align: left;
@@ -79,9 +76,6 @@
 }
 .limitedDates{
   cursor: not-allowed;
-}
-.activeDate{
-
 }
 .noPlanDate{
   cursor: default;
@@ -162,9 +156,6 @@
 }
 
 //          颜色部分
-.addFormTips{
-  
-}
 .addPlanForm{ // 添加计划
   .eachPlanForm{
     .addFormTips{
@@ -251,9 +242,6 @@
     .handleText{
       .publishPlan{
         color: $themeColor;
-      }
-      .deletePlan{
-        
       }
     }
   }
