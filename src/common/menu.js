@@ -133,12 +133,12 @@ const menuData = [
         name: '工作台',
         path: 'workStage',
         iconStyle: 'icon-gzt',
-        rightKey: 'operation_locate',
+        rightKey: 'operation_workStation',
       }, {
         name: '工作计划管理',
         path: 'workPlan',
         iconStyle: 'icon-gzjh',
-        rightKey: 'operation_locate',
+        rightKey: 'operation_planManage',
       }, {
         name: '员工定位',
         path: 'gps',
