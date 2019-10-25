@@ -1,0 +1,23 @@
+
+
+
+.stationFilter {
+  margin-top: 10px;
+  display: flex;
+  flex: 1;
+  flex-shrink: 0;
+  max-height: 190px;
+  min-height: 40px;
+  overflow-y: auto;
+  border-radius: 4px;
+  padding: 10px 16px;
+  padding-bottom: 24px;
+}
+
+.light .stationFilter {
+  background-color: #f0f2f5;
+}
+
+.dark .stationFilter {
+  background-color: #1e246e;
+}

@@ -1,20 +1,17 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Switch, Tabs, Checkbox } from 'antd';
+import { Checkbox } from 'antd';
 import styles from './planFilter.scss';
-
-const TabPane = Tabs.TabPane;
 
 class PlanTypeFilter extends PureComponent {
 
   static propTypes = {
-    checkCondition: PropTypes.func,
+    onConditionChange: PropTypes.func,
   };
 
   checkPlanType = (planTypeCode) => {
-    console.log(planTypeCode)
-    this.props.checkCondition({ planTypeCode });
+    this.props.onConditionChange({ planTypeCode });
   }
 
   planTypes = [

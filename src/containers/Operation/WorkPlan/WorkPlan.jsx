@@ -23,10 +23,6 @@ class WorkPlan extends Component {
   }
 
   render(){
-//     import WorkPlanList from '../../../components/Operation/WorkPlan/WorkPlanList';
-// import HandleWorkPlan from '../../../components/Operation/WorkPlan/HandleWorkPlan';
-// import PlanDetail from '../../../components/Operation/WorkPlan/PlanDetail';
-    console.log(this.props);
     return (
       <ContentLayout
         breadcrumb={{

@@ -9,7 +9,7 @@ class TitleHandle extends PureComponent {
   static propTypes = {
     seletedTitle: PropTypes.string,
     changeTitle: PropTypes.func,
-    checkCondition: PropTypes.func,
+    onConditionChange: PropTypes.func,
   };
 
   filterInfo = [
@@ -33,11 +33,11 @@ class TitleHandle extends PureComponent {
   }
 
   checkMine = (isMined) => {
-    this.props.checkCondition({ isMined });
+    this.props.onConditionChange({ isMined });
   }
 
   checkNotEfficacy = (isOverTime) => {
-    this.props.checkCondition({ isOverTime });
+    this.props.onConditionChange({ isOverTime });
   }
 
   render(){

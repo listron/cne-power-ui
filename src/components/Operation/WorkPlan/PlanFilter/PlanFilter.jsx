@@ -3,11 +3,16 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Switch } from 'antd';
 import TitleHandle from './TitleHandle';
+import PlanTypeFilter from './PlanTypeFilter';
+import PlanStations from './PlanStations';
+
+
 import styles from './planFilter.scss';
 
 class PlanFilter extends PureComponent {
 
   static propTypes = {
+    stations: PropTypes.array,
     planParams: PropTypes.object,
   };
 
@@ -20,21 +25,22 @@ class PlanFilter extends PureComponent {
     this.setState({ seletedTitle: seletedTitle === conditionName ? '' : conditionName });
   }
 
-  checkCondition = (values) => {
+  onConditionChange = (values) => {
     console.log(values);
   }
 
   render(){
-    const { planParams } = this.props;
+    const { planParams, stations } = this.props;
     const { seletedTitle } = this.state;
     return (
       <div>
         <TitleHandle
           seletedTitle={seletedTitle}
           changeTitle={this.changeTitle}
-          checkCondition={this.checkCondition}
+          onConditionChange={this.onConditionChange}
         />
-
+        <PlanTypeFilter onConditionChange={this.onConditionChange} />
+        <PlanStations stationCodes={[]} stations={stations} onConditionChange={this.onConditionChange} />
       </div>
     );
   }
