@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import PlanFilter from './PlanFilter/PlanFilter';
+import PlanTypeFilter from './PlanFilter/PlanTypeFilter';
 import styles from './plan.scss';
 
 class WorkPlanList extends PureComponent {
@@ -23,7 +25,8 @@ class WorkPlanList extends PureComponent {
   render(){
     return (
       <div className={styles.workPlanList}>
-        <div>筛选区域</div>
+        <PlanFilter />
+        <PlanTypeFilter />
         <div>内容制定人选择</div>
         <div>添加计划 批量删除 分页器</div>
         <div>表格</div>
