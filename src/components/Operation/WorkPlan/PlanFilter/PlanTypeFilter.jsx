@@ -7,6 +7,7 @@ import styles from './planFilter.scss';
 class PlanTypeFilter extends PureComponent {
 
   static propTypes = {
+    planTypeCode: PropTypes.array,
     onConditionChange: PropTypes.func,
   };
 
@@ -19,10 +20,11 @@ class PlanTypeFilter extends PureComponent {
   ]
 
   render(){
+    const { planTypeCode } = this.props;
     return (
       <div>
         <span>不限</span>
-        <Checkbox.Group options={this.planTypes} onChange={this.checkPlanType} />
+        <Checkbox.Group value={planTypeCode} options={this.planTypes} onChange={this.checkPlanType} />
       </div>
     );
   }

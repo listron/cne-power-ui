@@ -13,8 +13,20 @@ const workPlanAction = {
 };
 
 const initState = immutable.fromJS({
-  planParams: {},
-  planListPageParams: {},
+  planParams: {
+    planTypeCode: [],
+    stationCodes: [],
+    cycleTypeCode: [],
+    planStatus: [],
+    isMined: true,
+    isOverTime: false,
+  },
+  planListPageParams: {
+    pageNum: 1,
+    pageSize: 10,
+    orderField: '',
+    orderMethod: '',
+  },
   planPageKey: 'list', // list列表页, edit编辑, add新增, detail详情
 
   planListLoading: false, // 计划列表loading

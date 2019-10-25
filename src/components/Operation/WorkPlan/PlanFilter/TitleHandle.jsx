@@ -7,6 +7,8 @@ import styles from './planFilter.scss';
 class TitleHandle extends PureComponent {
 
   static propTypes = {
+    isMined: PropTypes.bool,
+    isOverTime: PropTypes.bool,
     seletedTitle: PropTypes.string,
     changeTitle: PropTypes.func,
     onConditionChange: PropTypes.func,
@@ -41,7 +43,7 @@ class TitleHandle extends PureComponent {
   }
 
   render(){
-    const { seletedTitle } = this.props;
+    const { seletedTitle, isMined, isOverTime } = this.props;
     return (
       <div>
         <span>筛选条件</span>
@@ -52,11 +54,11 @@ class TitleHandle extends PureComponent {
           </span>
         ))}
         <span>
-          <Switch onChange={this.checkMine} />
+          <Switch onChange={this.checkMine} checked={isMined} />
           <span>我制定的</span>
         </span>
         <span>
-          <Switch onChange={this.checkNotEfficacy} />
+          <Switch onChange={this.checkNotEfficacy} checked={isOverTime} />
           <span>已失效计划</span>
         </span>
       </div>
