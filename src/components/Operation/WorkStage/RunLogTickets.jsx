@@ -86,7 +86,7 @@ function TicketsLog({ ticketsInfo = {}, theme = 'light' }){
               <Link to={e.path} target="_blank" className={styles.infoDetail}>
                 <span>今日未完成</span>
                 <span className={styles.infoValue}>{finishValue}</span>
-                <span>|</span>
+                <span className={styles.linkAndTip}>|</span>
                 <span>已完成</span>
                 <span className={styles.infoValue}>{unfinishValue}</span>
                 <Icon type="right" />

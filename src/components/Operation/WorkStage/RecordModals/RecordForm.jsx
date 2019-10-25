@@ -67,6 +67,8 @@ class AddRecord extends PureComponent {
     this.props.cancelHandle();
   }
 
+  disableRecordTime = (cur) => cur.isAfter(moment(), 'day')
+
   render(){
     const { theme, form, stageStations, recordDetailInfo, modalKey, saveRecordLoading } = this.props;
     const { saveMode } = this.state;
@@ -91,7 +93,13 @@ class AddRecord extends PureComponent {
             rules: [{ required: true, message: '请选择完成时间' }],
             initialValue: completeTime ? moment(completeTime) : null,
           })(
-            <DatePicker showTime placeholder="请选择时间" style={{width: '200px'}} allowClear={false} />
+            <DatePicker
+              showTime
+              placeholder="请选择时间"
+              style={{width: '200px'}}
+              allowClear={false}
+              disabledDate={this.disableRecordTime}
+            />
           )}
         </FormItem>
         <FormItem label="执行人" colon={false} className={styles.eachRecordForm} >
