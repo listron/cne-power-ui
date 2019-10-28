@@ -64,9 +64,9 @@ function *getWorkPlanDetail({ payload }){ // 获取计划详情 { planId }
     const url = `${APIBasePath}${operation.handleWorkPlan}/${planId}`;
     const response = yield call(request.get, url);
     if (response.code === '10000') {
-      console.log(response.data);
-      yield call(easyPut, 'fetchSuccess', { // 弹框展示详情
-
+      yield call(easyPut, 'fetchSuccess', { // 详情
+        planPageKey: 'detail',
+        planDetail: response.data || {},
       });
     } else { throw response; }
   } catch (error) {

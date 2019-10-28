@@ -16,6 +16,7 @@ class Lists extends PureComponent {
     changeStore: PropTypes.func,
     getWorkPlanList: PropTypes.func,
     deleteWorkPlan: PropTypes.func,
+    getWorkPlanDetail: PropTypes.func,
   };
 
   state = {
@@ -90,9 +91,21 @@ class Lists extends PureComponent {
     ],
   }
 
-  toAddPlan = () => {
-    this.props.changeStore({ planPageKey: 'detail' });
+  orderFieldBase = ['', 'planTypeName', 'inspectContent', 'firstStartTime', 'nextSendTime', 'validPeriod', 'cycleTypeName', 'planStatus']
+
+  toDetail = ({ planId }) => { // 查看详情
+    this.props.getWorkPlanDetail({ planId });
   }
+
+  toEdit = (record) => this.props.changeStore({
+    planPageKey: 'edit', // list列表页, edit编辑, add新增, detail详情
+    planDetail: record,
+  })
+
+  toAddPlan = () => this.props.changeStore({
+    planPageKey: 'add', // list列表页, edit编辑, add新增, detail详情
+    planDetail: {},
+  })
 
   deletePlan = ({ planId }) => this.props.deleteWorkPlan({ planIds: [planId] }) // 删除一条计划
 
@@ -121,8 +134,25 @@ class Lists extends PureComponent {
     });
   }
 
-  tableSortChange = (a, b, c, d) => {
-    console.log(a, b, c, d);
+  tableSortChange = (pagination, filter, { field, order }) => { // 排序
+    let orderField = 1, orderMethod = 'asc';
+    if (field) {
+      orderField = this.orderFieldBase.indexOf(field);
+      orderMethod = order === 'ascend' ? 'asc' : 'des';
+    }
+    const { planParams, planListPageParams } = this.props;
+    const newPageParams = {
+      ...planListPageParams,
+      orderField,
+      orderMethod,
+    };
+    this.props.changeStore({ // 修改参数
+      planListPageParams: newPageParams,
+    });
+    this.props.getWorkPlanList({ // 请求列表
+      ...planParams,
+      ...newPageParams,
+    });
   }
 
   planSelects = (selectedRowKeys) => this.setState({ selectedRowKeys }) // 行选中
@@ -171,7 +201,7 @@ class Lists extends PureComponent {
           />
         <div className={styles.tableFoot}>
           当前选中<span className={styles.selectedNum}>{selectedRowKeys.length}</span>项
-          <span className={styles.cancelSelects}>取消选择</span>
+          <span onClick={this.cancelSelects} className={styles.cancelSelects}>取消选择</span>
         </div>
       </div>
     );

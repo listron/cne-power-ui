@@ -27,8 +27,8 @@ const initState = immutable.fromJS({
   planListPageParams: {
     pageNum: 1,
     pageSize: 10,
-    orderField: '',
-    orderMethod: '',
+    orderField: 1,
+    orderMethod: 'asc',
   },
   planPageKey: 'list', // list列表页, edit编辑, add新增, detail详情
 
