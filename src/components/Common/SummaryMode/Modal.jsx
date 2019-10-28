@@ -33,22 +33,24 @@ class SelectModal extends Component {
     this.state = {
       checkedKeys: [...props.list],
       children: props.sourceData,
-      tree: [
-        {
-          title: '全部',
-          key: '-999999',
-          children: props.sourceData
-        }
-      ]
-    }
+      // tree: [
+      //   {
+      //     title: '全部',
+      //     key: '-999999',
+      //     children: props.sourceData,
+      //   },
+      // ],
+    };
 
   }
   componentWillReceiveProps(nextProps) {
     this.setState({ checkedKeys: nextProps.list });
   }
   onCheck = (checkedKeys) => {
-    
+
     this.setState({ checkedKeys });
+    this.delParentNode(this.props.sourceData, checkedKeys);
+
   }
   showModal = () => {
     this.props.showModal();
@@ -57,25 +59,25 @@ class SelectModal extends Component {
     });
   }
   handleOK = () => {
-    let keys = this.delParentNode(this.props.sourceData, [...this.state.checkedKeys]);
-    
+    const keys = this.delParentNode(this.props.sourceData, [...this.state.checkedKeys]);
+
     this.props.handleOK(keys);
   }
   //去除选中节点中的父节点 需要递归
   delParentNode = (data, keys) => {
-    
+
     data.forEach(e => {
       if (e.children) {
-        this.delParentNode(e.children, keys)
+        this.delParentNode(e.children, keys);
         if (keys.indexOf(String(e.key)) !== -1) {
-          keys.splice(keys.indexOf(String(e.key)), 1)
+          keys.splice(keys.indexOf(String(e.key)), 1);
         }
-       
-        
+
+
       }
-     
-    })
-    return keys
+
+    });
+    return keys;
   }
   hideModal = () => {
     this.props.hideModal();
@@ -85,28 +87,28 @@ class SelectModal extends Component {
   checkAllStation = (e) => {
     if (!e.target.checked) { // 取消全选时清空。
       this.setState({ checkedKeys: [] });
-      return
+      return;
     }
     const { sourceData } = this.props;
     const getSelectCode = (data) => {
-      let selectArray = [];let selectStation=[];
+      const selectArray = []; const selectStation = [];
       data && data.length > 0 && data.forEach(e => {
         if (e && e.children && e.children.length > 0) {
           selectArray.push(...getSelectCode(e.children));//递归
         }
         if (e && e.stationCode) {//拿到电站code
-          selectStation.push(e.stationCode)
+          selectStation.push(e.stationCode);
         }
         if (e && e.deviceCode) {
-          selectArray.push(e.key)
-            // selectArray.push(`${e.deviceCode}_${e.deviceCode}`)
+          selectArray.push(e.key);
+          // selectArray.push(`${e.deviceCode}_${e.deviceCode}`)
         } else if (e && e.deviceModeCode) {
-           selectArray.push(`${e.key}`)
+          selectArray.push(`${e.key}`);
           //  selectArray.push(e.deviceModeCode)
-        } 
-      })
-      return selectArray.length>0?selectArray:selectStation;
-    }
+        }
+      });
+      return selectArray.length > 0 ? selectArray : selectStation;
+    };
     const selectDepartment = getSelectCode(sourceData);
     this.setState({ checkedKeys: selectDepartment });
   }
@@ -124,7 +126,9 @@ class SelectModal extends Component {
 
 
   render() {
-    const { visiable } = this.props;
+    const { visiable, sourceData, dataNum } = this.props;
+    const { checkedKeys } = this.state;
+    const checked = dataNum && checkedKeys.length === dataNum;
     return (
       <div className={styles.deviceSelectModal}>
         <i className="iconfont icon-filter" onClick={this.showModal} />
@@ -139,7 +143,7 @@ class SelectModal extends Component {
           wrapClassName={styles.deviceModal}
         >
           <div className={styles.deviceContent}>
-            <Checkbox onChange={this.checkAllStation}>全选</Checkbox>
+            <Checkbox onChange={this.checkAllStation} checked={checked} >全选</Checkbox>
             <Tree
               checkable
               autoExpandParent={true}
@@ -153,7 +157,7 @@ class SelectModal extends Component {
           </div>
         </Modal>
       </div>
-    )
+    );
 
   }
 }
