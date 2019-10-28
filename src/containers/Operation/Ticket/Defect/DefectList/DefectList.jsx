@@ -106,7 +106,7 @@ class DefectList extends Component {
   }
 
   render() {
-    const { stations, defectTypes, defectList, username, deviceTypes, defectStatusStatistics, theme,
+    const { showTab, stations, defectTypes, defectList, username, deviceTypes, defectStatusStatistics, theme,
       createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, deviceTypeCode, defectTypeCode, defectSource, handleUser, status, participantList, handleUserList } = this.props;
     const defectTypeTab = [];
     defectTypes.forEach(e => { e.list && e.list.length > 0 && defectTypeTab.push(...e.list); });
@@ -175,6 +175,7 @@ class DefectList extends Component {
         />
         <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterConditionChange} defaultValue={status} theme={theme} />
         <ParticipantSearch
+          tab={showTab}
           participantList={participantList}
           onChange={this.filterConditionChange}
           handleUserList={handleUserList}
