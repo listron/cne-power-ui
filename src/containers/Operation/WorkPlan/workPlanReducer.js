@@ -19,7 +19,7 @@ const initState = immutable.fromJS({
     stationCodes: [],
     cycleTypeCode: [],
     planStatus: undefined,
-    isMined: true,
+    isMined: false,
     isOverTime: false,
     planContent: '',
     createUser: '',
@@ -38,6 +38,7 @@ const initState = immutable.fromJS({
 
   inspectUserList: [], // 制定人列表
   planList: [], // 计划列表
+  planCount: 0, // 计划总数
   planDetail: {}, // 某条计划详情
 });
 

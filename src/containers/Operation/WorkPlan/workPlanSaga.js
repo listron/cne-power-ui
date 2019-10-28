@@ -19,13 +19,26 @@ function* easyPut(actionName, payload){
 
 function *getWorkPlanList({ payload }){ // 获取计划列表
   try {
-    console.log(payload);
     const url = `${APIBasePath}${operation.getWorkPlanList}`;
-    const response = yield call(request.post, url, {...payload});
-    // if (response.code === '10000') {
-    //   console.log(response.data);
-    // } else { throw response; }
+    yield call(easyPut, 'changeStore', { planListLoading: true });
+    const response = yield call(request.post, url, {
+      ...payload,
+      nowDate: moment().format('YYYY/MM/DD'),
+    });
+    if (response.code === '10000') {
+      const { pageCount, planData = [] } = response.data || {};
+      yield call(easyPut, 'fetchSuccess', { // 弹框展示详情
+        planList: planData.map(e => ({ ...e, key: e.planId })),
+        planCount: pageCount || 0,
+        planListLoading: false,
+      });
+    } else { throw response; }
   } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      planList: [],
+      planCount: 0,
+      planListLoading: false,
+    });
     message.error(`获取计划列表失败 ${error.message}, 请重试`);
   }
 }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import PlanFilter from './PlanFilter/PlanFilter';
 import ContentSearch from './PlanList/ContentSearch';
 import styles from './plan.scss';
+import Lists from './PlanList/Lists';
 
 class WorkPlanList extends PureComponent {
 
@@ -35,9 +36,7 @@ class WorkPlanList extends PureComponent {
       <div className={styles.workPlanList}>
         <PlanFilter {...this.props} />
         <ContentSearch {...this.props} />
-        <div>添加计划 批量删除 分页器</div>
-        <div>表格</div>
-        <div>当前选中项 取消选择</div>
+        <Lists {...this.props} />
         <button onClick={this.seeDetail}>查看详情</button>
         <button onClick={this.addNewPlan}>添加新计划</button>
         <button onClick={this.editPlan}>编辑计划</button>
