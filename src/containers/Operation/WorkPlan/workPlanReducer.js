@@ -20,6 +20,8 @@ const initState = immutable.fromJS({
     planStatus: [],
     isMined: true,
     isOverTime: false,
+    planContent: '',
+    createUser: '',
   },
   planListPageParams: {
     pageNum: 1,

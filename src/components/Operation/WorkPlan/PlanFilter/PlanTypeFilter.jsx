@@ -19,11 +19,15 @@ class PlanTypeFilter extends PureComponent {
     { label: '巡视计划', value: 100 },
   ]
 
+  onReset = () => {
+    this.props.onConditionChange({ planTypeCode: [] });
+  }
+
   render(){
     const { planTypeCode } = this.props;
     return (
-      <div>
-        <span>不限</span>
+      <div className={styles.filterItem}>
+        <span onClick={this.onReset} className={planTypeCode.length === 0 ? styles.selected : styles.all}>不限</span>
         <Checkbox.Group value={planTypeCode} options={this.planTypes} onChange={this.checkPlanType} />
       </div>
     );

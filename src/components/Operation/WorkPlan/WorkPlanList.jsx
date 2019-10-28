@@ -29,6 +29,7 @@ class WorkPlanList extends PureComponent {
     return (
       <div className={styles.workPlanList}>
         <PlanFilter {...this.props} onConditionChange={this.onConditionChange} />
+        
         <div>内容制定人选择</div>
         <div>添加计划 批量删除 分页器</div>
         <div>表格</div>

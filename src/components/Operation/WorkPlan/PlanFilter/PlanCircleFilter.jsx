@@ -15,6 +15,10 @@ class PlanCircleFilter extends PureComponent {
     this.props.onConditionChange({ cycleTypeCode });
   }
 
+  onReset = () => {
+    this.props.onConditionChange({ cycleTypeCode: [] });
+  }
+
   circleTypes = [
     { label: '每天', value: 152 },
     { label: '每周', value: 153 },
@@ -29,7 +33,7 @@ class PlanCircleFilter extends PureComponent {
     const { cycleTypeCode } = this.props;
     return (
       <div className={styles.filterItem}>
-        <span>不限</span>
+        <span onClick={this.onReset} className={cycleTypeCode.length === 0 ? styles.selected : styles.all}>不限</span>
         <Checkbox.Group value={cycleTypeCode} options={this.circleTypes} onChange={this.checkCircleType} />
       </div>
     );

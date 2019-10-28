@@ -45,19 +45,19 @@ class TitleHandle extends PureComponent {
   render(){
     const { seletedTitle, isMined, isOverTime } = this.props;
     return (
-      <div>
+      <div className={styles.titleHandle}>
         <span>筛选条件</span>
         {this.filterInfo.map(e => (
-          <span key={e.key} onClick={() => this.clickCondition(e.key)}>
-            <span>{e.title}</span>
-            {seletedTitle === e.key ? <Icon type="up" /> : <Icon type="down" />}
+          <span key={e.key} onClick={() => this.clickCondition(e.key)} className={styles.eachHandlerTitle}>
+            <span className={styles.titleTip}>{e.title}</span>
+            <Icon className={styles.titleIcon} type={seletedTitle === e.key ? 'up' : 'down'} />
           </span>
         ))}
-        <span>
+        <span className={styles.eachSwtich}>
           <Switch onChange={this.checkMine} checked={isMined} />
           <span>我制定的</span>
         </span>
-        <span>
+        <span className={styles.eachSwtich}>
           <Switch onChange={this.checkNotEfficacy} checked={isOverTime} />
           <span>已失效计划</span>
         </span>

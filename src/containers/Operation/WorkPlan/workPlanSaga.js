@@ -19,11 +19,12 @@ function* easyPut(actionName, payload){
 
 function *getWorkPlanList({ payload }){ // 获取计划列表
   try {
+    console.log(payload);
     const url = `${APIBasePath}${operation.getWorkPlanList}`;
-    const response = yield call(request.post, url, {...payload});
-    if (response.code === '10000') {
-      console.log(response.data);
-    } else { throw response; }
+    // const response = yield call(request.post, url, {...payload});
+    // if (response.code === '10000') {
+    //   console.log(response.data);
+    // } else { throw response; }
   } catch (error) {
     message.error(`获取计划列表失败 ${error.message}, 请重试`);
   }

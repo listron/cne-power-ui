@@ -7,6 +7,7 @@ import PlanTypeFilter from './PlanTypeFilter';
 import PlanStations from './PlanStations';
 import PlanCircleFilter from './PlanCircleFilter';
 import PlanEnable from './PlanEnable';
+import CheckedConditionHandler from './CheckedConditionHandler';
 import styles from './planFilter.scss';
 
 class PlanFilter extends PureComponent {
@@ -15,8 +16,8 @@ class PlanFilter extends PureComponent {
     stations: PropTypes.array,
     planParams: PropTypes.object,
     planListPageParams: PropTypes.object,
-    changeStore: PropTypes.object,
-    getWorkPlanList: PropTypes.object,
+    changeStore: PropTypes.func,
+    getWorkPlanList: PropTypes.func,
   };
 
   state = {
@@ -47,11 +48,11 @@ class PlanFilter extends PureComponent {
   }
 
   render(){
-    const { planParams, stations } = this.props;
+    const { planParams, stations, planListPageParams } = this.props;
     const { seletedTitle } = this.state;
     const { planTypeCode = [], stationCodes = [], cycleTypeCode = [], planStatus = [], isMined = true, isOverTime = false} = planParams;
     return (
-      <div>
+      <div className={styles.planFilter}>
         <TitleHandle
           isMined={isMined}
           isOverTime={isOverTime}
@@ -59,22 +60,29 @@ class PlanFilter extends PureComponent {
           changeTitle={this.changeTitle}
           onConditionChange={this.onConditionChange}
         />
-        <PlanTypeFilter
+        {seletedTitle === 'planTypeCode' && <PlanTypeFilter
           onConditionChange={this.onConditionChange}
           planTypeCode={planTypeCode}
-        />
-        <PlanStations
+        />}
+        {seletedTitle === 'stationCodes' && <PlanStations
           stationCodes={stationCodes}
           stations={stations}
           onConditionChange={this.onConditionChange}
-        />
-        <PlanCircleFilter
+        />}
+        {seletedTitle === 'cycleTypeCode' && <PlanCircleFilter
           cycleTypeCode={cycleTypeCode}
           onConditionChange={this.onConditionChange}
-        />
-        <PlanEnable
+        />}
+        {seletedTitle === 'planStatus' && <PlanEnable
           planStatus={planStatus}
           onConditionChange={this.onConditionChange}
+        />}
+        <CheckedConditionHandler
+          stations={stations}
+          planParams={planParams}
+          planListPageParams={planListPageParams}
+          changeStore={this.props.changeStore}
+          getWorkPlanList={this.props.getWorkPlanList}
         />
       </div>
     );
