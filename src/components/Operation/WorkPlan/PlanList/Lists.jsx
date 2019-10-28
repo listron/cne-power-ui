@@ -15,6 +15,7 @@ class Lists extends PureComponent {
     planListLoading: PropTypes.bool,
     changeStore: PropTypes.func,
     getWorkPlanList: PropTypes.func,
+    deleteWorkPlan: PropTypes.func,
   };
 
   state = {
@@ -69,7 +70,6 @@ class Lists extends PureComponent {
       }, {
         title: '操作',
         dataIndex: 'handle',
-        // className: styles.handle,
         render: (text, record) => {
           return (
             <span className={styles.handleRow}>
@@ -94,12 +94,15 @@ class Lists extends PureComponent {
     this.props.changeStore({ planPageKey: 'detail' });
   }
 
-  deletePlan = () => { // 删除一条计划
-    console.log('删除一条');
-  }
+  deletePlan = ({ planId }) => this.props.deleteWorkPlan({ planIds: [planId] }) // 删除一条计划
 
   deletePlans = () => { // 删除所有选中计划
-    console.log('要删除所有选中计划');
+    const { selectedRowKeys } = this.state;
+    this.setState({ selectedRowKeys: [] });
+    this.props.deleteWorkPlan({
+      planIds: selectedRowKeys,
+      deletePlansLoading: true,
+    });
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => { //分页器
@@ -122,9 +125,9 @@ class Lists extends PureComponent {
     console.log(a, b, c, d);
   }
 
-  planSelects = (selectedRowKeys) => { // 行选中
-    this.setState({ selectedRowKeys });
-  }
+  planSelects = (selectedRowKeys) => this.setState({ selectedRowKeys }) // 行选中
+
+  cancelSelects = () => this.setState({ selectedRowKeys: [] })
 
   render(){
     const { column, selectedRowKeys } = this.state;
@@ -138,7 +141,14 @@ class Lists extends PureComponent {
               <i>+</i>
               <span>添加计划</span>
             </Button>
-            <Button onClick={this.deletePlans}>批量删除</Button>
+            <Popconfirm
+                title="是否确认批量删除选中计划?"
+                onConfirm={() => this.deletePlans()}
+                okText="确定"
+                cancelText="取消"
+              >
+                <Button>批量删除</Button>
+              </Popconfirm>
           </span>
           <CommonPagination
             pageSize={pageSize}
@@ -160,8 +170,8 @@ class Lists extends PureComponent {
             }}
           />
         <div className={styles.tableFoot}>
-          当前选中<span>{selectedRowKeys.length}</span>项
-          <span>取消选择</span>
+          当前选中<span className={styles.selectedNum}>{selectedRowKeys.length}</span>项
+          <span className={styles.cancelSelects}>取消选择</span>
         </div>
       </div>
     );

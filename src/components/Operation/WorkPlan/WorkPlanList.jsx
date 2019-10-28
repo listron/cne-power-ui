@@ -37,9 +37,6 @@ class WorkPlanList extends PureComponent {
         <PlanFilter {...this.props} />
         <ContentSearch {...this.props} />
         <Lists {...this.props} />
-        <button onClick={this.seeDetail}>查看详情</button>
-        <button onClick={this.addNewPlan}>添加新计划</button>
-        <button onClick={this.editPlan}>编辑计划</button>
       </div>
     );
   }

@@ -136,31 +136,30 @@ function *editWorkPlan({ payload }){ // 编辑工作计划
 
 function *deleteWorkPlan({ payload }){ // 删除工作计划 - {planIds: string[]}
   try {
-    const url = `${APIBasePath}${operation.handleWorkPlan}`;
-    // yield call(easyPut, 'changeStore', { saveRecordLoading: true });
-    const response = yield call(request.delete, url, { ...payload });
+    const { planIds, deletePlansLoading = false } = payload;
+    yield call(easyPut, 'changeStore', { deletePlansLoading });
+    const url = `${APIBasePath}${operation.handleWorkPlan}?planIds=${planIds.join(',')}`;
+    const response = yield call(request.delete, url);
     if (response.code === '10000') {
-      console.log(response.data);
-      // yield call(easyPut, 'fetchSuccess', {
-      //   saveRecordLoading: false,
-      //   recordDetailInfo: null, // 请求成功删除相关信息 => 继续或关闭
-      // });
-      // 再次请求今日工作列表 + 计划列表
-      // const { stageStations, planMonth } = yield select(state => state.operation.workStage.toJS());
-      // const stationCodes = stageStations.map(e => e.stationCode);
-      // yield call(getTaskList, { // 再次请求今日工作列表
-      //   payload: { stationCodes },
-      // });
-      // yield call(getPlanList, { // 再次请求日历计划列表
-      //   payload: { stationCodes, planMonth },
-      // });
+      yield call(easyPut, 'fetchSuccess', {
+        deletePlansLoading: false,
+      });
+      // 再次请求列表
+      const { planParams, planListPageParams } = yield select(state => state.operation.workPlan.toJS());
+      yield call(getWorkPlanList, { // 再次请求日历计划列表
+        payload: {
+          ...planParams,
+          ...planListPageParams,
+          pageNum: 1,
+          pageSize: 10,
+        },
+      });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
-      // saveRecordLoading: false,
-      // recordDetailInfo: payload, // 请求失败需要暂存数据进行重新请求
+      saveRecordLoading: false,
     });
-    message.error(`修改计划失败${error.message}, 请重试`);
+    message.error(`删除失败${error.message}, 请重试`);
   }
 }
 
