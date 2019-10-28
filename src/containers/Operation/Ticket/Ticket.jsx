@@ -29,6 +29,7 @@ class Ticket extends Component {
     getDefectIdList: PropTypes.func,
     getInspectList: PropTypes.func,
     getInspectIdList: PropTypes.func,
+    getParticipant: PropTypes.func,
     history: PropTypes.object,
     theme: PropTypes.string,
   };
@@ -85,6 +86,7 @@ class Ticket extends Component {
         sortMethod: 'desc ',
         handleUser: '', //处理人
       };
+      this.props.getParticipant(); //  获取所有参与者。
       this.props.getDefectList(params);//获取缺陷列表
       this.props.getDefectIdList(params); // 获取缺陷ID
     }
@@ -155,6 +157,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDefectIdList: payload => dispatch({ type: ticketAction.GET_DEFECT_ID_LIST_SAGA, payload }),
   getInspectList: payload => dispatch({ type: ticketAction.GET_INSPECT_LIST_SAGA, payload }),
   getInspectIdList: payload => dispatch({ type: ticketAction.GET_INSPECT_ID_LIST_SAGA, payload }),
+  getParticipant: payload => dispatch({ type: ticketAction.getParticipant, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Ticket);
