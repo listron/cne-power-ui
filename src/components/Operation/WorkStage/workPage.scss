@@ -1,0 +1,269 @@
+
+@import '../../../theme/theme.scss';
+
+
+.stationLists{ // 顶部工作台电站选择
+  display: flex;
+  height: 42px;
+  margin-bottom: 10px;
+  align-items: center;
+  .stationHandler{
+    cursor: pointer;
+    flex: 0 0 133px;
+    line-height: 42px;
+    padding-left: 24px;
+    svg{
+      margin-left: 12px;
+    }
+  }
+  .stationNames{
+    margin-left: 12px;
+  }
+}
+
+.recordsList{ // 今日工作列表
+  margin-bottom: 10px;
+  .recordFilter{ // 今日工作顶部搜索
+    display: flex;
+    align-items: center;
+    padding: 0 16px 0 24px;
+    justify-content: space-between;
+    .filterParts{
+      height: 52px;
+      align-items: center;
+      display: flex;
+      .btnText{
+        padding: 0 16px;
+      }
+      .filterTips{
+        margin: 0 8px 0 24px;
+      }
+      .filterTypeBtn{
+        padding: 0 8px;
+      }
+      .filterTypeText{
+        margin-right: 4px;
+      }
+    }
+  }
+  .recordTable{ // 工作列表
+    min-height: 370px;
+    .taskTypeName, .taskDesc, .taskDescText, .stationName, .stationNameText, .handleUser, .handleUserText{
+      @include overflowText();
+    }
+    .taskTypeName{
+      padding-left: 24px;
+      width: calc((100vw - 635px) * 0.27);
+    }
+    .taskTypeNameText{
+      max-width: calc((100vw - 635px) * 0.27 - 32px);
+    }
+    .taskDesc{
+      width: calc((100vw - 635px) * 0.42);
+    }
+    .taskDescText{
+      max-width: calc((100vw - 635px) * 0.42 - 32px);
+    }
+    .stationName{
+      width: calc((100vw - 635px) * 0.16);
+    }
+    .stationNameText{
+      max-width: calc((100vw - 635px) * 0.16 - 32px);
+    }
+    .completeTime{
+      width: 175px;
+    }
+    .handleUser{
+      width: calc((100vw - 635px) * 0.15);
+    }
+    .handleUserText{
+      max-width: calc((100vw - 635px) * 0.15 - 32px);
+    }
+    .completeStatus{
+      width: 110px;
+    }
+    // .handle{
+    //   width: 90px;
+    // }
+    .handleRow{
+      :global{
+        .iconfont{
+          cursor: pointer;
+          margin-right: 8px;
+        }
+      }
+    }
+    :global{
+      .ant-table-scroll .ant-table-body{
+        overflow-x: hidden;
+      }
+      .ant-table-scroll .ant-table-body, .ant-table-scroll .ant-table-header{
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 3px;
+        }
+      }
+    }
+  }
+}
+
+.runningLog, .ticketsLog, .planList{ // 运行记录, 两票三制, 计划列表
+  display: flex;
+  flex-direction: column;
+}
+
+.runningLog, .ticketsLog{
+  padding: 0 20px 0 24px;
+  h3{
+    height: 40px;
+    margin-bottom: 0;
+    line-height: 40px;
+  }
+  .eachInfo{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0;
+    .infoName{
+      line-height: 27px;
+    }
+    .infoDetail{
+      display: flex;
+      height: 27px;
+      align-items: center;
+      justify-content: space-around;
+      cursor: pointer;
+    }
+    .infoValue{
+      flex: 0 0 32px;
+      text-align: right;
+      @include overflowText();
+    }
+  }
+
+}
+
+.runningLog{ // 运行记录
+  flex: 0 0 25%;
+  margin-right: 10px; 
+  .infoDetail{
+    width: 145px;
+  }
+}
+
+.ticketsLog{ // 两票三制
+  flex: 0 0 25%;
+  margin-right: 10px;
+  .infoDetail{
+    width: 205px;
+  }
+}
+
+.planList{ // 日历计划
+  flex: 1;
+  .topPlanHandle{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px 0 16px;
+    height: 56px;
+    align-items: center;
+    .addPlanBtnText{
+      padding: 0 8px;
+    }
+    .monthHandler .monthIcon{
+      cursor: pointer;
+    }
+    .monthText{
+      margin: 0 32px;
+    }
+  }
+  .datesList{
+    margin-bottom: 12px;
+    .weekTop{
+      display: flex;
+      .eachWeekdays{
+        flex: 0 0 14.28%;
+        padding-right: 8px;
+        text-align: right;
+      }
+    }
+    .datesBottom{
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+}
+
+
+//            颜色部分
+.light.stationLists{
+  border:1px solid #e1e3e4;
+  background-color: #fff;
+  .stationHandler{
+    color: #fff;
+    background:var(--themeColor);
+  }
+  .stationNames{
+    color: var(--darkColor);
+  }
+}
+
+.light.recordsList{
+  background-color: #fff;
+  .recordFilter{
+    .todayWorkTitle{
+      color: var(--themeColor);
+    }
+    .filterParts{
+      .filterTypeBtn.active{
+        background-color: var(--themeColor);
+        color: #fff;
+      }
+    }
+  }
+  .recordTable{
+    .taskNameHighlight{
+      color:#000000;
+    }
+    :global{
+      .ant-table-scroll .ant-table-body{
+        &::-webkit-scrollbar-thumb {
+          background: rgba(0, 0, 0, 0.5);
+        }
+      }
+    }
+  }
+}
+
+.light.runningLog, .light.ticketsLog{
+  background-color: #fff;
+  h3{
+    color: var(--themeColor);
+  }
+  .eachInfo{
+    .infoDetail{
+      color: var(--darkColor);
+    }
+    .infoValue{
+      color: var(--themeColor);
+    }
+    svg, .linkAndTip{
+      color: var(--lightColor);
+    }
+  } 
+}
+
+.light.planList { // 日历计划组件
+  background-color: #fff;
+  .topPlanHandle{
+    .monthText{
+      color:#000000;
+    }
+  }
+  .datesList{
+    border-bottom: 1px solid var(--promptColor);
+  }
+}
+
+

@@ -254,21 +254,36 @@ function* getMatrixDevices(action) { // 2018-12-24新增，预期删除下面get
     const { params, actionName } = payload;
     const response = yield call(axios.get, getMatrixUrl, { params }); // 所有分区信息
     if (response.data.code === '10000') {
-      const partitionCode = response.data.data.partitions[0].deviceCode; // 第一分区code   
-      const [matrixDevices, devices] = yield all([
-        call(axios.get, getDevicesUrl, { params: { ...params, partitionCode } }),
-        call(axios.get, getDevicesUrl, { params }),
-      ]);
-      if (matrixDevices.data.code === '10000' && devices.data.code === '10000') {
-        yield put({
-          type: actionName,
-          payload: {
-            devices: devices.data.data || [], // 所有设备
-            filterDevices: matrixDevices.data.data || [],
-            partitions: response.data.data.partitions || [],
-          },
-        });
+      if(response.data.data.partitions){
+        const partitionCode = response.data.data.partitions[0].deviceCode; // 第一分区code   
+        const [matrixDevices, devices] = yield all([
+          call(axios.get, getDevicesUrl, { params: { ...params, partitionCode } }),
+          call(axios.get, getDevicesUrl, { params }),
+        ]);
+        if (matrixDevices.data.code === '10000' && devices.data.code === '10000') {
+          yield put({
+            type: actionName,
+            payload: {
+              devices: devices.data.data || [], // 所有设备
+              filterDevices: matrixDevices.data.data || [],
+              partitions: response.data.data.partitions || [],
+            },
+          });
+        }
+      }else{
+        const response = yield call(axios.get, getDevicesUrl, { params });
+        if (response.data.code === '10000') {
+          const data = response.data.data;
+          yield put({
+            type: actionName,
+            payload: {
+              devices: data || [], // 所有设备
+              filterDevices: data || [],
+            },
+          });
+        }
       }
+      
     }
   } catch (e) {
     console.log(e);

@@ -1,0 +1,256 @@
+
+@import '../../../../theme/theme.scss';
+
+
+
+.addPlanForm{ // 添加计划
+  .planFormBox{
+    max-height: 500px;
+  }
+  .eachPlanForm{
+    display: flex;
+    margin-bottom: 14px;
+    .addFormTips{
+      margin-left: 12px;
+    }
+    :global{
+      .ant-form-item-label{
+        flex: 0 0 175px;
+      }
+      .ant-form-item-control-wrapper{
+        flex: 1;
+      }
+      .ant-form-explain{
+        position: absolute;
+      }
+    }
+  }
+  .saveRow{
+    display: flex;
+    padding-left: 175px;
+    margin-top: 12px;
+    button{
+      margin-right: 12px;
+    }
+  }
+}
+
+
+.eachDate{ // 计划日历 - 每一天
+  flex: 0 0 14.28%;
+  text-align: right;
+  height: 36px;
+  cursor: pointer;
+  .datesTips, .datesPlan{
+    height: 18px;
+    line-height: 18px;
+    padding: 0 8px; 
+  }
+  .datesTips{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    align-items: center;
+    .today{
+      line-height: 12px;
+      font-size: 10px;
+    }
+  }
+  .datesPlan{
+    text-align: left;
+    font-size: 14px;
+    .planNumber{
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      text-align: center;
+      line-height: 16px;
+      border-radius: 50%;
+      position: relative;
+      font-size: 10px;
+      left: -3px;
+      top: -6px;
+      transform: scale(0.9);
+    }
+  }
+}
+.limitedDates{
+  cursor: not-allowed;
+}
+.noPlanDate{
+  cursor: default;
+}
+
+.planHandle{ // 计划下发, 删除
+  .handle{
+    padding-left: 12px;
+    height: 48px;
+    margin-left: 20px;
+    button{
+      margin-right: 12px;
+    }
+  }
+  .planTable{
+    .planTypeName{
+      width: 160px;
+    }
+    .planTypeNameText{
+      max-width: 128px;
+      @include overflowText();
+    }
+    .inspectContent{
+      width: calc(700px * 0.66);
+    }
+    .inspectContentText{
+      max-width: calc(700px * 0.66 - 32px);
+      @include overflowText();
+    }
+    .stationName{
+      width: calc(700px * 0.33);
+    }
+    .stationNameText{
+      max-width: calc(700px * 0.66 - 32px);
+      @include overflowText();
+    }
+    .validPeriod{
+      width: 90px;
+    }
+    .validPeriodText{
+      text-align: right;
+    }
+    .handle{
+      width: 150px;
+    }
+    .handleText{
+      .publishPlan{
+        margin-right: 20px;
+        cursor: pointer;
+      }
+      .deletePlan{
+        cursor: pointer;
+      }
+    }
+    :global{
+      .ant-table-scroll .ant-table-body, .ant-table-scroll .ant-table-header{
+        overflow-x: hidden;
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 3px;
+        }
+      }
+    }
+  }
+  .planFooter{
+    margin-top: 4px;
+    margin-left: 20px;
+    .selectNum{
+      margin: 8px;
+    }
+    .cancelSelect{
+      margin-left: 16px;
+      cursor: pointer;
+    }
+  }
+}
+
+//          颜色部分
+.addPlanForm{ // 添加计划
+  .eachPlanForm{
+    .addFormTips{
+      color: $lightColor;
+    }
+    :global{
+      .ant-form-item-label{
+        color: #000;
+      }
+    }
+  }
+  .saveRow{
+    .saveBtn{
+      background-color: $themeColor;
+      color: #fff;
+    }
+    .continueSaveBtn{
+      border: 1px solid $themeColor;
+      color: $themeColor;
+    }
+    .cancelSaveBtn{
+      border: 1px solid $promptColor;
+      color: $lightColor;
+    }
+  }
+}
+.eachDate{
+  border-top: 1px solid $promptColor;
+  border-right: 1px solid $promptColor;
+  &:nth-of-type(7n) {
+    border-right: none;
+  }
+  .datesTips{
+    .today{
+      color: $themeColor;
+      border: 1px solid $themeColor;
+    }
+    .momentDate{
+      color: $themeColor;
+    }
+  }
+  .datesPlan .planNumber{
+    background-color: #f9b600;
+    color: #fff;
+  }
+  &:not(.limitedDates):not(.activeDate):not(.activeDate):not(.noPlanDate):hover{
+    background:#ceebe0;
+    box-shadow:0 0 4px 2px rgba(0,0,0,0.30);
+  }
+}
+.limitedDates{
+  background: #f8f8f8;
+  color: $promptColor;
+  .datesTips .momentDate{
+    color: $promptColor;
+  }
+}
+.activeDate{
+  background: $themeColor;
+  color:#ffffff;
+  .datesTips{
+    .today{
+      color: #fff;
+      border: 1px solid #fff;
+    }
+    .momentDate{
+      color: #fff;
+    }
+  }
+}
+.noPlanDate{
+  cursor: default;
+}
+.planHandle{ // 计划下发, 删除
+  .handle{
+    padding-left: 12px;
+    height: 56px;
+    margin-left: 20px;
+    button{
+      margin-right: 12px;
+    }
+  }
+  .planTable{
+    .handleText{
+      .publishPlan{
+        color: $themeColor;
+      }
+    }
+  }
+  .planFooter{
+    .selectNum{
+      color:#f9b600;
+    }
+    .cancelSelect{
+      color: $themeColor;
+    }
+  }
+}

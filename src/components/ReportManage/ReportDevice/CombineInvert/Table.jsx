@@ -164,7 +164,6 @@ class ReportSearch extends React.PureComponent {
   render() {
     const { dateType = 'day', total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
     const { pageSize, pageNum, deviceFullcodes } = parmas;
-    console.log('deviceFullcodes', deviceFullcodes);
     // const reportList = [];
     // for (var i = 30; i > 0; i--) {
     //   reportList.push({
@@ -195,7 +194,7 @@ class ReportSearch extends React.PureComponent {
         </div>
         <Table
           columns={this.initColumn(dateType)}
-          dataSource={reportList.map(e => { return { ...e, key: e.date }; })}
+          dataSource={reportList.map((e, index) => { return { ...e, key: index }; })}
           bordered
           scroll={{ x: 2200, y: 500 }}
           pagination={false}
