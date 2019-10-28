@@ -15,7 +15,7 @@ class WorkPlan extends Component {
   };
 
   componentDidMount(){
-
+    
   }
 
   componentWillUnmount(){
@@ -49,6 +49,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: workPlanAction.resetStore }),
   changeStore: payload => dispatch({ type: workPlanAction.changeStore, payload }),
 
+  getInspectUsers: payload => dispatch({ type: workPlanAction.getInspectUsers, payload }),
   getWorkPlanList: payload => dispatch({ type: workPlanAction.getWorkPlanList, payload }),
   getWorkPlanDetail: payload => dispatch({ type: workPlanAction.getWorkPlanDetail, payload }),
   addWorkPlan: payload => dispatch({ type: workPlanAction.addWorkPlan, payload }),

@@ -10,6 +10,7 @@ const workPlanAction = {
   addWorkPlan: Symbol('addWorkPlan'),
   editWorkPlan: Symbol('editWorkPlan'),
   deleteWorkPlan: Symbol('deleteWorkPlan'),
+  getInspectUsers: Symbol('getInspectUsers'),
 };
 
 const initState = immutable.fromJS({
@@ -17,7 +18,7 @@ const initState = immutable.fromJS({
     planTypeCode: [],
     stationCodes: [],
     cycleTypeCode: [],
-    planStatus: [],
+    planStatus: undefined,
     isMined: true,
     isOverTime: false,
     planContent: '',
@@ -35,6 +36,7 @@ const initState = immutable.fromJS({
   addPlanLoading: false, // 新增计划loading
   deletePlansLoading: false, // 批量删除计划loading
 
+  inspectUserList: [], // 制定人列表
   planList: [], // 计划列表
   planDetail: {}, // 某条计划详情
 });

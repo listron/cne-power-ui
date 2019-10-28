@@ -1,13 +1,22 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import PlanFilter from './PlanFilter/PlanFilter';
+import ContentSearch from './PlanList/ContentSearch';
 import styles from './plan.scss';
 
 class WorkPlanList extends PureComponent {
 
   static propTypes = {
+    planParams: PropTypes.object,
+    planListPageParams: PropTypes.object,
     changeStore: PropTypes.func,
+    getWorkPlanList: PropTypes.func,
   };
+
+  componentDidMount(){
+    const { planParams, planListPageParams } = this.props;
+    this.props.getWorkPlanList({ ...planParams, ...planListPageParams });
+  }
 
   seeDetail = () => { // 查看详情
     this.props.changeStore({ planPageKey: 'detail' });
@@ -21,16 +30,11 @@ class WorkPlanList extends PureComponent {
     this.props.changeStore({ planPageKey: 'edit' });
   }
 
-  onConditionChange = (values) => {
-    console.log(values);
-  }
-
   render(){
     return (
       <div className={styles.workPlanList}>
-        <PlanFilter {...this.props} onConditionChange={this.onConditionChange} />
-        
-        <div>内容制定人选择</div>
+        <PlanFilter {...this.props} />
+        <ContentSearch {...this.props} />
         <div>添加计划 批量删除 分页器</div>
         <div>表格</div>
         <div>当前选中项 取消选择</div>

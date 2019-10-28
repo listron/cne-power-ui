@@ -21,12 +21,27 @@ function *getWorkPlanList({ payload }){ // 获取计划列表
   try {
     console.log(payload);
     const url = `${APIBasePath}${operation.getWorkPlanList}`;
-    // const response = yield call(request.post, url, {...payload});
+    const response = yield call(request.post, url, {...payload});
     // if (response.code === '10000') {
     //   console.log(response.data);
     // } else { throw response; }
   } catch (error) {
     message.error(`获取计划列表失败 ${error.message}, 请重试`);
+  }
+}
+
+function *getInspectUsers({ payload }){ // 获取制定人 => 不传参数所有
+  try {
+    // const { planId } = payload;
+    const url = `${APIBasePath}${operation.getInspectUsers}`;
+    const response = yield call(request.get, url); // {params: {createUser: ''}}
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', { // 弹框展示详情
+        inspectUserList: response.data || [],
+      });
+    } else { throw response; }
+  } catch (error) {
+    message.error(`获取制定人列表失败 ${error.message}`);
   }
 }
 
@@ -142,5 +157,6 @@ export function* watchWorkPlan() {
   yield takeLatest(workPlanAction.addWorkPlan, addWorkPlan);
   yield takeLatest(workPlanAction.editWorkPlan, editWorkPlan);
   yield takeLatest(workPlanAction.deleteWorkPlan, deleteWorkPlan);
+  yield takeLatest(workPlanAction.getInspectUsers, getInspectUsers);
 }
 
