@@ -7,6 +7,7 @@ const { Option } = Select;
 
 class ParticipantSearch extends Component {
   static propTypes = {
+    tab: PropTypes.string,
     theme: PropTypes.string,
     participantList: PropTypes.array,
     onChange: PropTypes.func,
@@ -19,6 +20,14 @@ class ParticipantSearch extends Component {
     this.state = {
       users: handleUserList.length > 0 ? handleUserList : [],
     };
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { tab } = nextProps;
+    const preTab = this.props.tab;
+    if (tab !== 'defect' && preTab === 'defect') { // tab切换 => 选中参与人重置
+      this.setState({ users: [] });
+    }
   }
 
   handleParticipant = (users) => {
