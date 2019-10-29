@@ -1,0 +1,78 @@
+
+@import '../../../../theme/theme.scss';
+
+
+.planDetail{
+  height: 100%;
+  .detailTop{
+    margin-bottom: 0;
+    display: flex;
+    font-size: 18px;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 40px;
+    height: 60px;
+    .topHandle{
+      height: 60px;
+      display: flex;
+      flex: 0 0 150px;
+      justify-content: flex-end;
+      align-items: center;
+      button{
+        margin-right: 12px;
+      }
+      .backIcon{
+        cursor: pointer;
+        flex: 0 0 60px;
+        line-height: 60px;
+      }
+    }
+  }
+  .detailContent{
+    padding: 16px 40px 24px 40px;
+    .eachContent{
+      display: flex;
+      line-height: 30px;
+    }
+    .detailTitle{
+      flex: 0 0 400px;
+      text-align: right;
+      margin-right: 16px;
+    }
+    .detailValue{
+      flex: 1;
+      .logTip{
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+
+
+
+
+.planDetail{
+  background-color: #fff;
+  .detailTop{
+    color: var(--darkColor);
+    border-bottom: 1px solid var(--promptColor);
+    .topHandle{
+      .backIcon{
+        border-left: 1px solid var(--promptColor);
+      }
+    }
+  }
+  .detailContent{
+    .detailTitle{
+      color: #000;
+    }
+    .detailValue{
+      
+    }
+  }
+}
+
+
+
+

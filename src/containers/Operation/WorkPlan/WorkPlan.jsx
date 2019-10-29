@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import WorkPlanList from '../../../components/Operation/WorkPlan/WorkPlanList';
-import HandleWorkPlan from '../../../components/Operation/WorkPlan/HandleWorkPlan';
-import PlanDetail from '../../../components/Operation/WorkPlan/PlanDetail';
+import WorkPlanSide from '../../../components/Operation/WorkPlan/WorkPlanSide';
 import { workPlanAction } from './workPlanReducer';
 import ContentLayout from '@components/Common/ContentLayout';
 import styles from './workPlan.scss';
@@ -32,8 +31,7 @@ class WorkPlan extends Component {
         contentClassName={styles.planContent}
       >
         <WorkPlanList {...this.props} />
-        <HandleWorkPlan {...this.props} />
-        <PlanDetail {...this.props} />
+        <WorkPlanSide {...this.props} />
       </ContentLayout>
     );
   }
