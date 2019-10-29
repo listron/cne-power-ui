@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import PlanDetail from './Detail/PlanDetail';
-// import PlanDetail from './Detail/PlanDetail';
+import AddEditPlan from './AddEdit/AddEditPlan';
 import styles from './plan.scss';
 
 class WorkPlanSide extends PureComponent {
@@ -23,8 +23,8 @@ class WorkPlanSide extends PureComponent {
         className={styles.workPlanSide}
         style={{ transform: ['add', 'edit', 'detail'].includes(planPageKey) ? 'translateX(0)' : 'translateX(100%)' }}
       >
-        <PlanDetail {...this.props} />
-        {/* <PlanDetail {...this.props} /> */}
+        {planPageKey === 'detail' && <PlanDetail {...this.props} />}
+        {['add', 'edit'].includes(planPageKey) && <AddEditPlan {...this.props} />}
       </div>
     );
   }

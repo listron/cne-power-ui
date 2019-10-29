@@ -99,11 +99,11 @@ class PlanDetail extends PureComponent {
               return (
                 <div key={createTime}>
                   <span className={styles.logTip}>【操作人】</span>
-                  <span className={styles.logTip}>{createName}</span>
+                  <span className={styles.logValue}>{createName}</span>
                   <span className={styles.logTip}>【操作时间】</span>
-                  <span className={styles.logTip}>{createTime}</span>
-                  <span className={styles.logTip}>操作类型</span>
-                  <span className={styles.logTip}>{operateInfo[operateType] || '--'}</span>
+                  <span className={styles.logValue}>{createTime}</span>
+                  <span className={styles.logTip}>【操作类型】</span>
+                  <span className={styles.logValue}>{operateInfo[operateType] || '--'}</span>
                 </div>
               );
             })}
