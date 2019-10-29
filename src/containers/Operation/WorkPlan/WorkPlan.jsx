@@ -11,11 +11,16 @@ import styles from './workPlan.scss';
 class WorkPlan extends Component {
 
   static propTypes = {
+    planParams: PropTypes.object,
+    planListPageParams: PropTypes.object,
+    getWorkPlanList: PropTypes.func,
     resetStore: PropTypes.func,
+    getInspectUsers: PropTypes.func,
   };
 
   componentDidMount(){
-    
+    const { planParams, planListPageParams } = this.props;
+    this.props.getWorkPlanList({ ...planParams, ...planListPageParams });
   }
 
   componentWillUnmount(){

@@ -9,12 +9,7 @@ class WorkPlanSide extends PureComponent {
 
   static propTypes = {
     planPageKey: PropTypes.string,
-    changeStore: PropTypes.func,
   };
-
-  backToList = () => { // 返回主列表页
-    this.props.changeStore({ planPageKey: 'list' });
-  }
 
   render(){
     const { planPageKey } = this.props;
