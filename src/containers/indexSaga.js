@@ -117,6 +117,7 @@ import { watchReportStation } from './ReportManage/ReportStation/reportStationSa
 import { watchCenterInvert } from './ReportManage/ReportDevice/CenterInvert/centerInvertSaga';
 import { watchWeatherStationReport } from './ReportManage/ReportDevice/WeatherStation/weatherStationSaga';
 import { watchCombineInvert } from './ReportManage/ReportDevice/CombineInvert/combineInvertSaga';
+import { watchConfluenceBox } from './ReportManage/ReportDevice/ConfluenceBox/confluenceBoxSaga';
 
 
 // root saga
@@ -241,5 +242,6 @@ export default function* rootSaga() {
     watchCenterInvert(), //设备报表
     watchWeatherStationReport(), //气象站报表
     watchCombineInvert(), //组串式逆变器
+    watchConfluenceBox(), //汇流箱
   ]);
 }

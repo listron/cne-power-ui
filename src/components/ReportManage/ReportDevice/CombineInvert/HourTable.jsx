@@ -216,48 +216,6 @@ class ReportSearch extends React.PureComponent {
   render() {
     const { total = 30, parmas, listLoading, downloading, theme, reportList } = this.props;
     const { pageSize = 1, pageNum = 10, deviceFullcodes } = parmas;
-    // const reportList = [];
-    // for (var i = 30; i > 0; i--) {
-    //   reportList.push({
-    //     key: i,
-    //     deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
-    //     date: moment().format('YYYY-MM'),
-    //     inverterActualPower: (Math.random() + 1) * 10000,
-    //     resourceValue: (Math.random() + 1) * 10000,
-    //     invertEff: (Math.random() + 1) * 10000,
-    //     inverterDcPower: (Math.random() + 1) * 100,
-    //     acPower: (Math.random() + 1) * 10000,
-    //     acReactivePower: (Math.random() + 1) * 10000,
-    //     voltagePv1: (Math.random() + 1) * 100,
-    //     currentPv1: (Math.random() + 1) * 100,
-    //     voltagePv2: (Math.random() + 1) * 100,
-    //     currentPv2: (Math.random() + 1) * 100,
-    //     voltagePv3: (Math.random() + 1) * 100,
-    //     currentPv3: (Math.random() + 1) * 100,
-    //     voltagePv4: (Math.random() + 1) * 100,
-    //     currentPv4: (Math.random() + 1) * 100,
-    //     voltagePv5: (Math.random() + 1) * 100,
-    //     currentPv5: (Math.random() + 1) * 100,
-    //     voltagePv6: (Math.random() + 1) * 100,
-    //     currentPv6: (Math.random() + 1) * 100,
-    //     voltagePv7: (Math.random() + 1) * 100,
-    //     currentPv7: (Math.random() + 1) * 100,
-    //     voltagePv8: (Math.random() + 1) * 100,
-    //     currentPv8: (Math.random() + 1) * 100,
-    //     Uab: (Math.random() + 1) * 1000,
-    //     Ubc: (Math.random() + 1) * 1000,
-    //     Uca: (Math.random() + 1) * 1000,
-    //     Ua: (Math.random() + 1) * 1000,
-    //     Ub: (Math.random() + 1) * 1000,
-    //     Uc: (Math.random() + 1) * 1000,
-    //     Ia: (Math.random() + 1) * 1000,
-    //     Ib: (Math.random() + 1) * 1000,
-    //     Ic: (Math.random() + 1) * 1000,
-    //     powerFactorAvg: (Math.random() + 1) * 10000,
-    //     powerFu: (Math.random() + 1) * 10000,
-    //     temperature: (Math.random() + 1) * 10000,
-    //   });
-    // }
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
