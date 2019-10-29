@@ -715,6 +715,8 @@ export default {
       getCombineInvert: '/v3/sun/report/zcnb/list/day',
       exportHourCombineInvert: '/v3/sun/report/zcnb/export/min',
       exportCombineInvert: '/v3/sun/report/zcnb/export/day',
+      exportConfluenceBox: '/v3/sun/report/box/export',
+      getConfluenceBoxList: '/v3/sun/report/box/list',
     },
   },
 };

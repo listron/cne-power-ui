@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './combineInvert.scss';
+import styles from './confluenceBox.scss';
 import PropType from 'prop-types';
 import StationSelect from '../../../Common/StationSelect';
 import DeviceSelect from '../../../Common/DeviceSelect/';
@@ -16,7 +16,7 @@ class ReportSearch extends React.PureComponent {
     reportTime: PropType.string,
     endTime: PropType.string,
     dateType: PropType.string,
-    getCombineInvertList: PropType.func,
+    getConfluenceBoxList: PropType.func,
     changeStore: PropType.func,
     disabledStation: PropType.array,
     theme: PropType.string,
@@ -40,7 +40,6 @@ class ReportSearch extends React.PureComponent {
   componentWillUnmount() {
     clearTimeout(this.time);
   }
-
   timeChange = (value) => { // 时间选择
     this.setState({ selectTime: value });
     this.loop = true;
@@ -57,11 +56,12 @@ class ReportSearch extends React.PureComponent {
   }
 
   queryList = () => {
-    const { parmas, getCombineInvertList, changeStore } = this.props;
+    const { parmas, getConfluenceBoxList, changeStore, reportTime } = this.props;
     const { selectStationCode, selectedDevice, selectTime } = this.state;
     const tempStationCode = selectStationCode.length > 0 && selectStationCode[0].stationCode || null;
+    const tempStationName = selectStationCode.length > 0 && selectStationCode[0].stationName || '';
     const tempDeviceCode = selectedDevice.map(e => e.deviceCode);
-    const { dateType, startTime, endTime } = selectTime;
+    const { startTime } = selectTime;
     const tmpParmas = {
       ...parmas,
       stationCode: tempStationCode,
@@ -71,13 +71,8 @@ class ReportSearch extends React.PureComponent {
     };
     if (this.loop) {
       this.loop = false;
-      if (dateType === 'hour') {
-        changeStore({ parmas: { ...tmpParmas }, reportTime: selectTime.startTime, dateType });
-        getCombineInvertList({ ...tmpParmas, reportTime: startTime });
-      } else {
-        changeStore({ parmas: { ...tmpParmas }, startTime, endTime, dateType });
-        getCombineInvertList({ ...tmpParmas, startTime, endTime, dateType });
-      }
+      changeStore({ parmas: { ...tmpParmas }, reportTime: startTime || reportTime, stationName: tempStationName });
+      getConfluenceBoxList({ ...tmpParmas, reportTime: startTime || reportTime });
       this.time = setTimeout(() => {
         this.loop = true;
       }, 3000);
@@ -89,13 +84,12 @@ class ReportSearch extends React.PureComponent {
 
   render() {
     const { stations, disabledStation, theme } = this.props;
-    const { selectStationCode, selectedDevice, selectTime } = this.state;
-    const { dateType = 'hour' } = selectTime;
+    const { selectStationCode, selectedDevice } = this.state;
     return (
       <div className={`${styles.reportSearch} ${styles[theme]}`}>
         <div className={styles.column}>
           <div className={styles.lable}>时间范围</div>
-          <TimeSelect onChange={this.timeChange} theme={theme} />
+          <TimeSelect onChange={this.timeChange} showLable={false} theme={theme} />
         </div>
         <div className={styles.column}>
           <div className={styles.lable}>电站名称</div>
@@ -112,7 +106,7 @@ class ReportSearch extends React.PureComponent {
           <DeviceSelect
             disabled={selectStationCode.length === 0}
             stationCode={selectStationCode.length > 0 && selectStationCode[0].stationCode || null}
-            deviceTypeCode={206}
+            deviceTypeCode={202}
             style={{ width: 'auto', minWidth: '198px' }}
             onChange={this.selectedDevice}
             holderText={'请选择'}
@@ -120,7 +114,7 @@ class ReportSearch extends React.PureComponent {
             multiple={true}
             value={selectedDevice}
             theme={theme}
-            max={dateType === 'hour' ? 100 : null}
+            max={100}
             deviceShowNumber={true}
           />
         </div>

@@ -1,9 +1,9 @@
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Radio, Select, Icon, } from 'antd';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Radio, Select, Icon } from 'antd';
 import styles from './styles.scss';
-import SelectModal from './Modal'
+import SelectModal from './Modal';
 // import { stationsByArea } from '../../../utils/utilFunc';
 // import { commonAction } from '../../../containers/alphaRedux/commonAction';
 
@@ -74,7 +74,7 @@ class TimeSelectReport extends React.Component {
       stationDevicemode: props.stationDevicemode,
       regionStation: props.regionStation,
       region: props.region,
-    }
+    };
   }
   onModeChange = (e) => {//选择查询类型
     const modeStyle = e.target.value;
@@ -85,35 +85,43 @@ class TimeSelectReport extends React.Component {
   onModalHandelOK = (v) => {
     this.setState({
       visiableModal: false,
-      list: v
-    })
+      list: v,
+    });
     this.props.onChange({ modeStyle: this.state.modeStyle, list: v });
   }
   hideModal = () => {
-    this.setState({ visiableModal: false })
+    this.setState({ visiableModal: false });
   }
 
   showModal = () => {
     this.setState({ visiableModal: true });
   }
   datanum = (data, deviceDataType) => {//必传，三级总数据，用于计算型号和风机设备的总个数
-    let deviceDataName = deviceDataType === 'mode' ? 'deviceModeData' : 'deviceData';
+    const deviceDataName = deviceDataType === 'mode' ? 'deviceModeData' : 'deviceData';
     let num = 0;
     data.forEach((e, i) => {
       e.stationData.forEach((item, index) => {
         num += item[deviceDataName].length;
-      })
-    })
-    return num
+      });
+    });
+    return num;
+  }
+  stationNum = (data = []) => {
+    let stationNum = 0;
+    data.forEach((e, i) => {
+      stationNum += e.stationData.length;
+    });
+    return stationNum;
   }
   maxTagPlaceholder = () => {
-    const { regionStationDevice = [], stationDevicemode = [], regionStation = [], region = [], } = this.props;
+    const { regionStationDevice = [], stationDevicemode = [], regionStation = [], region = [] } = this.props;
     const modeNum = this.datanum(stationDevicemode, 'mode');
     const deviceNum = this.datanum(regionStationDevice, 'device');
-    let stationNum = 0;
-    regionStation.forEach((e, i) => {
-      stationNum += e.stationData.length;
-    })
+    // let stationNum = 0;
+    // regionStation.forEach((e, i) => {
+    //   stationNum += e.stationData.length;
+    // });
+    const stationNum = this.stationNum(regionStation);
     let count = 0;
     if (this.state.modeStyle === 'status') {
       count = modeNum;
@@ -122,16 +130,19 @@ class TimeSelectReport extends React.Component {
     } else if (this.state.modeStyle === 'modal') {
       count = modeNum;
     } else if (this.state.modeStyle === 'area') {
-      count = this.props.region.length
+      count = this.props.region.length;
     } else if (this.state.modeStyle === 'wind') {
       count = deviceNum;
     } else if (this.state.modeStyle === 'fault') {
       count = deviceNum;
     }
-    return <div>已选{this.state.list.length}/{count}<span onClick={this.clearList}><Icon type="close" /></span></div>
+    return (<div>已选{this.state.list.length}/{count}
+      <span onClick={this.clearList}><Icon type="close" /></span>
+    </div>);
   }
   clearList = () => {
     this.setState({ list: [] });
+    this.props.onChange({ modeStyle: this.state.modeStyle, list: [] });
   }
   handleChange = (v) => {
     const { region } = this.props;
@@ -141,73 +152,76 @@ class TimeSelectReport extends React.Component {
     if (isAll) {
       if (checkedLength) {
         this.setState({ list: regionName });
-        this.props.onChange({ modeStyle: this.state.modeStyle, list: regionName })
+        this.props.onChange({ modeStyle: this.state.modeStyle, list: regionName });
       } else {
         this.setState({ list: [] });
-        this.props.onChange({ modeStyle: this.state.modeStyle, list: [] })
+        this.props.onChange({ modeStyle: this.state.modeStyle, list: [] });
       }
     } else {
       this.setState({ list: v });
-      this.props.onChange({ modeStyle: this.state.modeStyle, list: v })
-    };
+      this.props.onChange({ modeStyle: this.state.modeStyle, list: v });
+    }
 
   }
   dataFormater = (data, deviceDataType) => {//必传，三级总数据，是要选择的最底层的code,name
-    let test2 = [];
+    const test2 = [];
     let deviceDataName = deviceDataType === 'mode' ? 'deviceModeData' : 'deviceData',
       selectCode = deviceDataType === 'mode' ? 'deviceModeCode' : 'deviceCode',
       selectName = deviceDataType === 'mode' ? 'deviceModeName' : 'deviceName';
     data.forEach((e, i) => {
-      let test3 = [];
+      const test3 = [];
       e.stationData.forEach((item, index) => {
-        let test4 = [];
+        const test4 = [];
         item[deviceDataName].forEach((value, key) => {
           test4.push({
             ...value,
             key: `${value[selectCode]}_${item.stationCode}`,
             title: value[selectName],
-          })
-        })
+          });
+        });
         test3.push({
           ...item,
           key: item.stationCode,
           title: item.stationName,
           children: test4,
-        })
-      })
+        });
+      });
       test2.push({
         ...e,
         key: e.regionName,
         title: e.regionName,
-        children: test3
-      })
-    })
-    return test2
+        children: test3,
+      });
+    });
+    return test2;
   }
   render() {
-    const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault, regionStationDevice, stationDevicemode, regionStation, region, } = this.props;
-    const { modeStyle, list, visiableModal, areaList, } = this.state;
-    let modeData = this.dataFormater(stationDevicemode, 'mode');
-    let windDeviceData = this.dataFormater(regionStationDevice, 'device');
-    let stationData = [];
+    const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault, regionStationDevice, stationDevicemode, regionStation, region } = this.props;
+    const { modeStyle, list, visiableModal, areaList } = this.state;
+    const modeData = this.dataFormater(stationDevicemode, 'mode');
+    const windDeviceData = this.dataFormater(regionStationDevice, 'device');
+    const modeNum = this.datanum(stationDevicemode, 'mode');
+    const deviceNum = this.datanum(regionStationDevice, 'device');
+    const stationNum = this.stationNum(regionStation);
+    const stationData = [];
     regionStation.forEach((e, i) => {
-      let stationChild = [];
+      const stationChild = [];
       e.stationData.forEach((item, index) => {
         stationChild.push({
           ...item,
           key: item.stationCode,
           title: item.stationName,
-        })
-      })
+        });
+      });
       stationData.push({
         ...e,
         key: e.regionName,
         title: e.regionName,
-        children: stationChild
-      })
-    })
-    let stationArr = regionStation.map((e, i) => e.stationData);
-    let stationList = stationArr.length && stationArr.reduce((p, c) => (p.concat(c)));
+        children: stationChild,
+      });
+    });
+    const stationArr = regionStation.map((e, i) => e.stationData);
+    const stationList = stationArr.length && stationArr.reduce((p, c) => (p.concat(c)));
     const filterOption = (input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     return (
       <div className={styles.timeSelect} style={style}>
@@ -251,6 +265,7 @@ class TimeSelectReport extends React.Component {
               visiable={visiableModal}
               hideModal={this.hideModal}
               showModal={this.showModal}
+              dataNum={modeNum}
             />
           </div>
         }
@@ -273,7 +288,7 @@ class TimeSelectReport extends React.Component {
             <Option key={'all'}>全部区域</Option>
             {
               region && region.map((e, i) => {
-                return <Option key={e.regionName}>{e.regionName}</Option>
+                return <Option key={e.regionName}>{e.regionName}</Option>;
               })
             }
           </Select>
@@ -291,7 +306,7 @@ class TimeSelectReport extends React.Component {
               filterOption={filterOption}
             >
               {stationList && stationList.map((e) => {
-                return <Option key={e.stationCode}>{e.stationName}</Option>
+                return <Option key={e.stationCode}>{e.stationName}</Option>;
               })}
             </Select>
             <SelectModal
@@ -302,11 +317,12 @@ class TimeSelectReport extends React.Component {
               visiable={visiableModal}
               hideModal={this.hideModal}
               showModal={this.showModal}
+              dataNum={stationNum}
             />
           </div>
         }
         {
-          modeStyle === 'modal' && <div style={{ position: 'relative' }}  >
+          modeStyle === 'modal' && <div style={{ position: 'relative' }} >
 
             <span onClick={this.showModal}>
               <Select
@@ -336,6 +352,7 @@ class TimeSelectReport extends React.Component {
               visiable={visiableModal}
               hideModal={this.hideModal}
               showModal={this.showModal}
+              dataNum={modeNum}
             />
           </div>
         }
@@ -368,6 +385,7 @@ class TimeSelectReport extends React.Component {
               visiable={visiableModal}
               hideModal={this.hideModal}
               showModal={this.showModal}
+              dataNum={deviceNum}
             />
           </div>
         }
@@ -386,7 +404,7 @@ class TimeSelectReport extends React.Component {
                 open={false}
               >
                 {areaList && areaList.map((e) => {
-                  return <Option key={e.key}>{e.title}</Option>
+                  return <Option key={e.key}>{e.title}</Option>;
                 })}
               </Select>
             </span>
@@ -398,15 +416,16 @@ class TimeSelectReport extends React.Component {
               visiable={visiableModal}
               hideModal={this.hideModal}
               showModal={this.showModal}
+              dataNum={deviceNum}
             />
           </div>
         }
       </div >
-    )
+    );
   }
 
 }
 
 
-export default (TimeSelectReport)
+export default (TimeSelectReport);
 

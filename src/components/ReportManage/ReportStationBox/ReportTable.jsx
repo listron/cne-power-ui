@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styles from './reportStationBox.scss';
 import CommonPagination from '../../Common/CommonPagination';
 import TableColumnTitle from '../../Common/TableColumnTitle';
-import { Button, Table } from 'antd';
+import { Button, Table, message } from 'antd';
 import { dataFormat } from '../../../utils/utilFunc';
 import path from '../../../constants/path';
+import moment from 'moment';
 const { APIBasePath } = path.basePaths;
 const { reportManage } = path.APISubPaths;
 
@@ -31,7 +32,7 @@ class ReportTable extends React.Component {
   constructor(props, context) {
     super(props, context);
   }
-  changePage = (currentPage, pageSize) => {
+  changePage = ({ currentPage, pageSize }) => {
     this.props.changeStore({
       pageSize,
       pageNum: currentPage,
@@ -78,18 +79,24 @@ class ReportTable extends React.Component {
   }
   exportReportStation = () => {
     const { startTime, endTime, stationCodes, dateType, orderFiled, orderType } = this.props;
-    const params = { startTime, endTime, stationCodes, dateType, orderFiled, orderType };
-    // this.props.exportReportStationList({
-    //   ...params,
-    // });
-    this.props.downLoadFile({
-      url: `${APIBasePath}${reportManage.exportReportStationList}`,
-      params: { ...params },
-    });
+    const timeLength = moment(endTime).diff(startTime, 'day') + 1;
+    const limitMax = stationCodes.length * timeLength > 200000;
+    if (limitMax) {
+      message.warning('数据量过大，请减少电站数量或缩短时间范围的选择');
+    } else {
+      const params = { startTime, endTime, stationCodes, dateType, orderFiled, orderType };
+      this.props.downLoadFile({
+        url: `${APIBasePath}${reportManage.exportReportStationList}`,
+        params: { ...params },
+      });
+    }
+
   }
   render() {
     const { pageNum, pageSize, total, loading, reportStationList, exportLoading } = this.props;
-    // const reportStationList2 = [...reportStationList];
+
+
+    const disabledExport = !reportStationList.length;
     const power = [
       { name: '理论发电量', unit: '万kWh', dataIndex: 'theoryPower', key: 'theoryPower' },
       { name: '逆变器发电量', unit: '万kWh', dataIndex: 'genInverter', key: 'genInverter' },
@@ -130,7 +137,7 @@ class ReportTable extends React.Component {
         width: 120,
         fixed: 'left',
         sorter: true,
-        render: (text) => (<span className={styles.stationName} title={text}>{text ? text : '--'}</span>),
+        render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
       },
       {
         title: '统计时段',
@@ -139,7 +146,7 @@ class ReportTable extends React.Component {
         width: 125,
         fixed: 'left',
         sorter: true,
-        render: (text) => (<span className={styles.stationName} title={text}>{text ? text : '--'}</span>),
+        render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
       },
       {
         title: '资源指标',
@@ -153,7 +160,7 @@ class ReportTable extends React.Component {
                 key: 'resourceValue',
                 width: 120,
                 className: styles.rightStyle,
-                render: (text) => (<span className={styles.stationName} title={text}>{text ? text : '--'}</span>),
+                render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
               },
               {
                 title: '倾斜面',
@@ -161,7 +168,7 @@ class ReportTable extends React.Component {
                 key: 'slopeAccRadiationSum',
                 width: 120,
                 className: styles.rightStyle,
-                render: (text) => (<span className={styles.stationName} title={text}>{text ? text : '--'}</span>),
+                render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
               },
             ],
           },
@@ -171,7 +178,7 @@ class ReportTable extends React.Component {
             key: 'topSunshineHours',
             width: 120,
             className: styles.rightStyle,
-            render: (text) => (<span className={styles.stationName} title={text}>{text ? text : '--'}</span>),
+            render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
 
           },
         ],
@@ -195,7 +202,7 @@ class ReportTable extends React.Component {
               key: 'outputPowerMax',
               // width: 120,
               className: styles.rightStyle,
-              render: (text) => (<span className={styles.stationName} title={text}>{text ? text : '--'}</span>),
+              render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
 
             }, {
               title: '对应时间',
@@ -203,7 +210,7 @@ class ReportTable extends React.Component {
               key: 'dayPowerMaxTime',
               width: 180,
               className: styles.rightStyle,
-              render: (text) => (<span className={styles.stationName} title={text}>{text ? text : '--'}</span>),
+              render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
 
             },
           ],
@@ -218,9 +225,9 @@ class ReportTable extends React.Component {
     return (
       <div className={styles.reportList}>
         <div className={styles.handlePage}>
-          <div><Button type="primary" onClick={this.exportReportStation} loading={exportLoading} disabled={!reportStationList.length}>导出</Button></div>
+          <div><Button type="primary" onClick={this.exportReportStation} loading={exportLoading} disabled={disabledExport}>导出</Button></div>
           <div>
-            <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onChange={this.changePage} />
+            <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.changePage} />
           </div>
 
         </div>
