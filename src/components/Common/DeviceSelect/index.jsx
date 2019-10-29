@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Select, AutoComplete, message } from 'antd';
 import { commonAction } from '../../../containers/alphaRedux/commonAction';
-import DeviceSelectModal from './DeviceSelectModal'
+import DeviceSelectModal from './DeviceSelectModal';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 const Option = Select.Option;
@@ -84,14 +84,14 @@ class DeviceSelect extends Component {
       checkedDevice: props.value || [], // 存储当前选中设备。
       autoCompleteDevice: [], // 自动搜索框的提示内容
       autoCompleteText: props.value && props.value[0] && props.value[0].deviceName || '', // 自动补全框展示内容
-    }
+    };
   }
   componentDidMount() {
-    const { stationCode, deviceTypeCode, } = this.props;
+    const { stationCode, deviceTypeCode } = this.props;
 
     const { getDevices, getPartition, getMatrixDevices } = this.props;
     if (stationCode && deviceTypeCode) {
-      getMatrixDevices({ stationCode, deviceTypeCode });  // 分区数据
+      getMatrixDevices({ stationCode, deviceTypeCode }); // 分区数据
       getDevices({ stationCode, deviceTypeCode }, 'devices');
       getDevices({ stationCode, deviceTypeCode }, 'filterDevices');
       getPartition({ stationCode, deviceTypeCode });
@@ -107,12 +107,12 @@ class DeviceSelect extends Component {
     if (this.compareValue(checkedDevice, value)) { // value发生变化。
       this.setState({
         checkedDevice,
-        autoCompleteText: checkedDevice[0] && checkedDevice[0].deviceName || ''
+        autoCompleteText: checkedDevice[0] && checkedDevice[0].deviceName || '',
       });
     }
     if (stationCode && deviceTypeCode && (stationCode !== preStation || deviceTypeCode !== preDeviceType)) { // 请求设备。
       if (filterKey.includes(deviceTypeCode)) { // 需要直接根据分区直接请求处理数据
-        getMatrixDevices({ stationCode, deviceTypeCode });  // 分区数据
+        getMatrixDevices({ stationCode, deviceTypeCode }); // 分区数据
       } else { // 直接获取所有数据。
         getDevices({ stationCode, deviceTypeCode }, 'devices');
         getDevices({ stationCode, deviceTypeCode }, 'filterDevices');
@@ -127,11 +127,11 @@ class DeviceSelect extends Component {
       devices: [],
       partitions: [],
       filterDevices: [],
-    })
+    });
   }
 
   onOK = devices => { // 输出选中的设备数组。
-    const { onChange, onOK } = this.props
+    const { onChange, onOK } = this.props;
     onOK && onOK(devices);
     onChange && onChange(devices);
   }
@@ -139,24 +139,24 @@ class DeviceSelect extends Component {
   onModalHandelOK = checkedDevices => { // 保存弹框中选中的设备
     this.setState({
       deviceModalShow: false,
-    })
-    this.onOK(checkedDevices)
+    });
+    this.onOK(checkedDevices);
   }
 
   onSelect = deviceCode => { // 自动完成框单选中。
     const { devices } = this.props;
     const checkedDevices = devices.filter(e => e.deviceCode === deviceCode);
-    this.onOK(checkedDevices)
+    this.onOK(checkedDevices);
   }
 
   handleSearch = autoCompleteText => { // 自动完成框接收到搜索变化。
     const { devices, disabledDevice } = this.props;
     const autoCompleteDevice = devices.filter(
       e => !disabledDevice.includes(e.deviceCode)// 剔除禁选设备
-      ).filter(e => e.deviceName.indexOf(autoCompleteText) >= 0);
+    ).filter(e => e.deviceName.indexOf(autoCompleteText) >= 0);
     this.setState({
       autoCompleteDevice,
-      autoCompleteText
+      autoCompleteText,
     });
   }
 
@@ -167,11 +167,11 @@ class DeviceSelect extends Component {
       return;
     }
     const outputDevices = devices.filter(e => checkedDevices.includes(e.deviceCode));
-    this.onOK(outputDevices)
+    this.onOK(outputDevices);
   }
 
   hideModal = () => {
-    this.setState({ deviceModalShow: false })
+    this.setState({ deviceModalShow: false });
   }
 
   showModal = () => {
@@ -181,22 +181,22 @@ class DeviceSelect extends Component {
 
   compareValue = (value, preValue) => { // 比较value数组。返回值true/得到新value需重置, false/不需重置时表示
     if (!value || !preValue) { //其中有一个不存在数据,或者两个都不存在的时候
-      return true
+      return true;
     }
     if (value.length !== preValue.length) { // 当两个都有数据
-      return true
+      return true;
     } else if (value.length === preValue.length) {
-      return preValue.find(e => value.every(curDevice => curDevice.deviceCode !== e.deviceCode)) // 找到一个不同设备。
+      return preValue.find(e => value.every(curDevice => curDevice.deviceCode !== e.deviceCode)); // 找到一个不同设备。
     }
   }
 
   render() {
-    const { multiple, holderText, disabled, style, devices, deviceShowNumber,disabledDevice } = this.props;
+    const { multiple, holderText, disabled, style, devices, deviceShowNumber, disabledDevice } = this.props;
     const { deviceModalShow, autoCompleteDevice, checkedDevice, autoCompleteText } = this.state;
     const checkedDeviceCodes = checkedDevice.map(e => e.deviceCode);
     const deviceShow = checkedDeviceCodes.length > 0 && deviceShowNumber && {
       maxTagCount: 0,
-      maxTagPlaceholder: `已选设备${checkedDeviceCodes.length}/${devices.length}`
+      maxTagPlaceholder: `已选设备${checkedDeviceCodes.length}/${devices.length}`,
     } || {};
     return (
       <div className={styles.deviceSelect} style={style}>
@@ -213,7 +213,7 @@ class DeviceSelect extends Component {
         >
           {devices.filter(
             e => !disabledDevice.includes(e.deviceCode)
-            ).map((e, i) => (
+          ).map((e, i) => (
             <Option key={e.deviceCode} style={{ display: (i > 19 ? 'none' : 'block') }}>{e.deviceName}</Option>
           ))}
           {devices.length > 20 && <Option disabled key="showAll" className={styles.showAll}>点击图标查看所有设备</Option>}
@@ -240,7 +240,7 @@ class DeviceSelect extends Component {
           disabledDevice={disabledDevice}
         />
       </div>
-    )
+    );
   }
 }
 
@@ -259,7 +259,7 @@ const mapDispatchToProps = (dispatch) => ({
       params,
       actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
       resultName, // : 'devices',
-    }
+    },
   }),
   getPartition: params => dispatch({ // 获取分区信息
     type: commonAction.getPartition,
@@ -267,14 +267,14 @@ const mapDispatchToProps = (dispatch) => ({
       params,
       actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
       resultName: 'partitions',
-    }
+    },
   }),
   getMatrixDevices: params => dispatch({ // 获取筛选后的设备
     type: commonAction.getMatrixDevices,
     payload: {
       params,
       actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
-    }
+    },
   }),
 });
 

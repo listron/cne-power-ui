@@ -31,13 +31,13 @@ class DeviceSelectModal extends Component {
       checkedDevice: [...props.checkedDevice], // 选中的设备。
       checkedMatrix: null, // 默认选中的方阵
       checkAll: false,
-    }
+    };
   }
 
   componentWillReceiveProps(nextProps) {
     const { filterDevices, deviceTypeCode, filterKey, partitions } = nextProps;
     const prePartitions = this.props.partitions;
-    let newState = { modalDevices: [...filterDevices] };
+    const newState = { modalDevices: [...filterDevices] };
     if (filterKey.includes(deviceTypeCode) && (partitions.length > 0 && prePartitions.length === 0)) {
       newState.checkedMatrix = partitions[0].deviceCode;
     }
@@ -56,7 +56,7 @@ class DeviceSelectModal extends Component {
   handleOK = () => {
     const { devices, deviceTypeCode, filterKey, changeCommonStore } = this.props;
     if (!filterKey.includes(deviceTypeCode)) { // 非必须分区展示的设备类型,弹框内数据需重置。
-      changeCommonStore({ filterDevices: devices }); // 筛选后数据还原为原始所有设备
+      changeCommonStore({ filterDevices: devices }); //  筛选后数据还原为原始所有设备
       this.setState({ checkedMatrix: null });
     }
     this.props.handleOK(this.state.checkedDevice);
@@ -79,13 +79,12 @@ class DeviceSelectModal extends Component {
 
   checkDevice = device => { // 点击选中设备
     const { multiple, max } = this.props;
-    const { checkedDevice } = this.state;
-
+    const { checkedDevice = [], modalDevices = [] } = this.state;
     if (multiple) { // 多选
       if (checkedDevice.find(e => e.deviceCode === device.deviceCode)) { // 已选中删除
         this.setState({
-          checkedDevice: checkedDevice.filter(e => e.deviceCode !== device.deviceCode)
-        })
+          checkedDevice: checkedDevice.filter(e => e.deviceCode !== device.deviceCode),
+        });
       } else { // 添加选中
         if (max > 0 && checkedDevice.length === max) {
           message.error(`所选设备不得超过${max}个`);
@@ -93,6 +92,12 @@ class DeviceSelectModal extends Component {
         }
         checkedDevice.push(device);
         this.setState({ checkedDevice });
+        // 所选设备的全部
+        const checkedDeviceCode = checkedDevice.map(e => e.deviceId);
+        const modalDeviceCode = modalDevices.map(e => e.deviceId);
+        if (modalDeviceCode.length > 0 && checkedDeviceCode.length > 0 && modalDeviceCode.length === checkedDeviceCode.length) {
+          this.setState({ checkAll: true });
+        }
       }
     } else { // 单选
       this.setState({ checkedDevice: [device] });
@@ -106,16 +111,21 @@ class DeviceSelectModal extends Component {
   cancelChecked = (deviceCode) => { // 取消单个选中设备。
     const { checkedDevice } = this.state;
     const newDevices = checkedDevice.filter(e => e.deviceCode !== deviceCode);
-    this.setState({ checkedDevice: newDevices });
+    this.setState({ checkedDevice: newDevices, checkAll: false });
   }
 
   allCheckDevice = (e) => { //全部选择
     const checked = e.target.checked;
     const { modalDevices } = this.state;
+    const { max } = this.props;
+    if (max > 0 && modalDevices.length >= max) {
+      message.error(`所选设备不得超过${max}个`);
+      return;
+    }
     if (checked) {
-      this.setState({ checkedDevice: modalDevices, checkAll: true })
+      this.setState({ checkedDevice: modalDevices, checkAll: true });
     } else {
-      this.setState({ checkedDevice: [], checkAll: false })
+      this.setState({ checkedDevice: [], checkAll: false });
     }
   }
 
@@ -152,7 +162,8 @@ class DeviceSelectModal extends Component {
                 </Option>))}
               </Select>
             </div>
-            {multiple && needAllCheck && <div className={styles.allCheckDevice}>
+            {/*  多选 需要全选字段 无分区 */}
+            {multiple && needAllCheck && !checkedMatrix && <div className={styles.allCheckDevice}>
               <Checkbox onChange={this.allCheckDevice} checked={this.state.checkAll}>全选</Checkbox>
             </div>}
             <div className={styles.deviceList}>
@@ -160,21 +171,23 @@ class DeviceSelectModal extends Component {
                 const activeDevice = checkedDevice.some(info => info.deviceCode === e.deviceCode);
                 const disableCheck = disabledDevice.includes(e.deviceCode);
                 return multiple ?
-                  (<div
-                    // onClick={()=>this.checkStation(m)} 
-                    key={e.deviceCode}
-                    title={e.stationName}
-                    style={{ 'backgroundColor': activeDevice ? '#199475' : '#f1f1f1' }}
-                    className={styles.eachDevice}>
-                    <Checkbox
-                      style={{ color: activeDevice ? '#fff' : '#666' }}
-                      onChange={() => this.checkDevice(e)}
-                      checked={activeDevice}
-                      disabled={disableCheck}
-                    >
-                      {e.deviceName}
-                    </Checkbox>
-                  </div>) :
+                  (<React.Fragment>
+                    <div
+                      // onClick={()=>this.checkStation(m)} 
+                      key={e.deviceCode}
+                      title={e.stationName}
+                      style={{ 'backgroundColor': activeDevice ? '#199475' : '#f1f1f1' }}
+                      className={styles.eachDevice}>
+                      <Checkbox
+                        style={{ color: activeDevice ? '#fff' : '#666' }}
+                        onChange={() => this.checkDevice(e)}
+                        checked={activeDevice}
+                        disabled={disableCheck}
+                      >
+                        {e.deviceName}
+                      </Checkbox>
+                    </div>
+                  </React.Fragment>) :
                   (<div
                     key={e.deviceCode}
                     onClick={disableCheck ? null : () => this.checkDevice(e)}
@@ -185,7 +198,7 @@ class DeviceSelectModal extends Component {
                         (disableCheck ? '#dfdfdf' : '#666'),
                       cursor: disableCheck ? 'not-allowed' : 'pointer',
                     }}
-                  >{e.deviceName}</div>)
+                  >{e.deviceName}</div>);
               })}
             </div>
             <div className={styles.checkedList}>
@@ -205,7 +218,7 @@ class DeviceSelectModal extends Component {
           </div>
         </Modal>
       </div>
-    )
+    );
 
   }
 }
