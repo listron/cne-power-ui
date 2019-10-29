@@ -40,6 +40,7 @@ const initState = immutable.fromJS({
   planList: [], // 计划列表
   planCount: 0, // 计划总数
   planDetail: {}, // 某条计划详情
+  stationDeviceTypes: [], // 添加计划时, 电站对应的设备类型
 });
 
 const workPlan = (state = initState, action) => {

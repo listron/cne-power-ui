@@ -2,9 +2,9 @@
 @import '../../../../theme/theme.scss';
 
 
-.planDetail{
+.addEditPlan{
   height: 100%;
-  .detailTop{
+  .top{
     margin-bottom: 0;
     display: flex;
     font-size: 18px;
@@ -12,66 +12,81 @@
     justify-content: space-between;
     padding-left: 40px;
     height: 60px;
-    .topHandle{
-      height: 60px;
-      display: flex;
-      flex: 0 0 150px;
-      justify-content: flex-end;
-      align-items: center;
-      button{
-        margin-right: 12px;
-      }
-      .backIcon{
-        cursor: pointer;
-        flex: 0 0 60px;
-        line-height: 60px;
-      }
+    .backIcon{
+      cursor: pointer;
+      flex: 0 0 60px;
+      line-height: 60px;
     }
   }
-  .detailContent{
-    padding: 16px 40px 24px 40px;
-    .eachContent{
+  .addEditPlanForm{ // 添加计划
+    padding: 20px 40px;
+    .formBox{
+      max-height: 500px;
+    }
+    .eachPlanForm{
       display: flex;
-      line-height: 30px;
-    }
-    .detailTitle{
-      flex: 0 0 400px;
-      text-align: right;
-      margin-right: 16px;
-    }
-    .detailValue{
-      flex: 1;
-      .logTip{
-        margin-right: 4px;
+      margin-bottom: 14px;
+      .addFormTips{
+        margin-left: 12px;
       }
-      .logValue{
-        margin-right: 8px;
+      :global{
+        .ant-form-item-label{
+          flex: 0 0 410px;
+        }
+        .ant-form-item-control-wrapper{
+          flex: 1;
+        }
+        .ant-form-explain{
+          position: absolute;
+        }
+      }
+    }
+    .saveRow{
+      display: flex;
+      padding-left: 410px;
+      margin-top: 12px;
+      button{
+        margin-right: 12px;
       }
     }
   }
 }
 
 
-
-
-
-.planDetail{
+//      颜色部分
+.addEditPlan{
   background-color: #fff;
-  .detailTop{
+  .top{
     color: var(--darkColor);
     border-bottom: 1px solid var(--promptColor);
-    .topHandle{
-      .backIcon{
-        border-left: 1px solid var(--promptColor);
-      }
+    .backIcon{
+      border-left: 1px solid var(--promptColor);
     }
   }
-  .detailContent{
-    .detailTitle{
-      color: #000;
+  .addEditPlanForm{ // 添加计划
+    .eachPlanForm{
+      .addFormTips{
+        color: var(--lightColor);
+      }
+      :global{
+        .ant-form-item-label{
+          color: #000;
+        }
+      }
     }
-    .detailValue{
-      
+    .saveRow{
+      .saveBtn{
+        background-color: var(--themeColor);
+        color: #fff;
+      }
+      .continueSaveBtn{
+        border: 1px solid var(--themeColor);
+        color: var(--themeColor);
+      }
+      .cancelSaveBtn{
+        border: 1px solid var(--promptColor);
+        color: var(--lightColor);
+      }
     }
   }
 }

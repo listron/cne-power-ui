@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import WorkPlanList from '../../../components/Operation/WorkPlan/WorkPlanList';
 import WorkPlanSide from '../../../components/Operation/WorkPlan/WorkPlanSide';
 import { workPlanAction } from './workPlanReducer';
+import { commonAction } from '../../alphaRedux/commonAction';
 import ContentLayout from '@components/Common/ContentLayout';
 import styles from './workPlan.scss';
 
@@ -53,6 +54,15 @@ const mapDispatchToProps = (dispatch) => ({
   addWorkPlan: payload => dispatch({ type: workPlanAction.addWorkPlan, payload }),
   editWorkPlan: payload => dispatch({ type: workPlanAction.editWorkPlan, payload }),
   deleteWorkPlan: payload => dispatch({ type: workPlanAction.deleteWorkPlan, payload }),
+
+  getStationDeviceTypes: params => dispatch({
+    type: commonAction.getStationDeviceTypes,
+    payload: {
+      params,
+      deviceTypeAction: workPlanAction.fetchSuccess,
+      resultName: 'stationDeviceTypes',
+    },
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkPlan);

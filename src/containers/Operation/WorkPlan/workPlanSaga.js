@@ -77,28 +77,28 @@ function *getWorkPlanDetail({ payload }){ // 获取计划详情 { planId }
 function *addWorkPlan({ payload }){ // 添加工作计划
   try {
     const url = `${APIBasePath}${operation.handleWorkPlan}`;
-    // yield call(easyPut, 'changeStore', { saveRecordLoading: true });
+    yield call(easyPut, 'changeStore', { addPlanLoading: true });
     const response = yield call(request.post, url, { ...payload });
     if (response.code === '10000') {
-      console.log(response.data);
-      // yield call(easyPut, 'fetchSuccess', {
-      //   saveRecordLoading: false,
-      //   recordDetailInfo: null, // 请求成功删除相关信息 => 继续或关闭
-      // });
-      // 再次请求今日工作列表 + 计划列表
-      // const { stageStations, planMonth } = yield select(state => state.operation.workStage.toJS());
-      // const stationCodes = stageStations.map(e => e.stationCode);
-      // yield call(getTaskList, { // 再次请求今日工作列表
-      //   payload: { stationCodes },
-      // });
-      // yield call(getPlanList, { // 再次请求日历计划列表
-      //   payload: { stationCodes, planMonth },
-      // });
+      message.success('恭喜！你所提交的信息已经保存成功，可在日历及计划管理中查看。');
+      yield call(easyPut, 'fetchSuccess', {
+        addPlanLoading: false,
+        planDetail: {},
+      });
+      const { planParams, planListPageParams } = yield select(state => state.operation.workPlan.toJS()); // 再次请求列表
+      yield call(getWorkPlanList, { // 再次请求日历计划列表
+        payload: {
+          ...planParams,
+          ...planListPageParams,
+          pageNum: 1,
+          pageSize: 10,
+        },
+      });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
-      // saveRecordLoading: false,
-      // recordDetailInfo: payload, // 请求失败需要暂存数据进行重新请求
+      addPlanLoading: false,
+      planDetail: payload,
     });
     message.error(`添加计划失败${error.message}, 请重试`);
   }
@@ -107,28 +107,28 @@ function *addWorkPlan({ payload }){ // 添加工作计划
 function *editWorkPlan({ payload }){ // 编辑工作计划
   try {
     const url = `${APIBasePath}${operation.handleWorkPlan}`;
-    // yield call(easyPut, 'changeStore', { saveRecordLoading: true });
+    yield call(easyPut, 'changeStore', { addPlanLoading: true });
     const response = yield call(request.put, url, { ...payload });
     if (response.code === '10000') {
-      console.log(response.data);
-      // yield call(easyPut, 'fetchSuccess', {
-      //   saveRecordLoading: false,
-      //   recordDetailInfo: null, // 请求成功删除相关信息 => 继续或关闭
-      // });
-      // 再次请求今日工作列表 + 计划列表
-      // const { stageStations, planMonth } = yield select(state => state.operation.workStage.toJS());
-      // const stationCodes = stageStations.map(e => e.stationCode);
-      // yield call(getTaskList, { // 再次请求今日工作列表
-      //   payload: { stationCodes },
-      // });
-      // yield call(getPlanList, { // 再次请求日历计划列表
-      //   payload: { stationCodes, planMonth },
-      // });
+      message.success('恭喜！你所提交的信息已经保存成功，可在日历及计划管理中查看。');
+      yield call(easyPut, 'fetchSuccess', {
+        addPlanLoading: false,
+        planDetail: {},
+      });
+      const { planParams, planListPageParams } = yield select(state => state.operation.workPlan.toJS()); // 再次请求列表
+      yield call(getWorkPlanList, { // 再次请求日历计划列表
+        payload: {
+          ...planParams,
+          ...planListPageParams,
+          pageNum: 1,
+          pageSize: 10,
+        },
+      });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
-      // saveRecordLoading: false,
-      // recordDetailInfo: payload, // 请求失败需要暂存数据进行重新请求
+      addPlanLoading: false,
+      planDetail: payload,
     });
     message.error(`修改计划失败${error.message}, 请重试`);
   }

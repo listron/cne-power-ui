@@ -192,7 +192,7 @@ class AddPlan extends PureComponent {
                 rules: [{ required: true, message: '请选择设备类型' }],
                 initialValue: [],
               })(
-                <Select style={{width: '200px'}}>
+                <Select style={{width: '200px'}} mode="multiple">
                   {stationDeviceTypes.map(e => (
                     <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
                   ))}
@@ -247,10 +247,11 @@ export default Form.create({
   onValuesChange: (props, changedValues, allFields) => {
     const { stationList = [], inspectTypeCode } = changedValues || {};
     if (// 巡视巡检 + 选择电站 => 请求设备类型列表
-      (inspectTypeCode === 100002 && allFields.stationList) > 0
+      (inspectTypeCode === 100002 && allFields.stationList.length > 0)
         || (stationList.length > 0 && allFields.inspectTypeCode === 100002)
     ) {
-        props.getStationDeviceTypes({ stationCodes: stationList.map(e => e.stationCode).join(',') });
+      const tmpStationArr = stationList.length > 0 ? stationList : allFields.stationList;
+      props.getStationDeviceTypes({ stationCodes: tmpStationArr.map(e => e.stationCode).join(',') });
     }
   },
 })(AddPlan);
