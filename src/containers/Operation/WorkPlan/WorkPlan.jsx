@@ -20,6 +20,7 @@ class WorkPlan extends Component {
 
   componentDidMount(){
     const { planParams, planListPageParams } = this.props;
+    this.props.getInspectUsers({ createUser: '' });
     this.props.getWorkPlanList({ ...planParams, ...planListPageParams });
   }
 

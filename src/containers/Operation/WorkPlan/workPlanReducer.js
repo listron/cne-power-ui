@@ -18,7 +18,7 @@ const initState = immutable.fromJS({
     planTypeCode: [],
     stationCodes: [],
     cycleTypeCode: [],
-    planStatus: undefined,
+    planStatus: [],
     isMined: false,
     isOverTime: false,
     planContent: '',

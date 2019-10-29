@@ -21,8 +21,11 @@ function *getWorkPlanList({ payload }){ // 获取计划列表
   try {
     const url = `${APIBasePath}${operation.getWorkPlanList}`;
     yield call(easyPut, 'changeStore', { planListLoading: true });
+    const { planStatus = [] } = payload;
+    const statusCode = planStatus.length === 1 ? planStatus[0] : undefined;
     const response = yield call(request.post, url, {
       ...payload,
+      planStatus: statusCode, // 原planStatus数组值改为单值 [], [1], [2], [1, 2] => undefined, 1, 2
       nowDate: moment().format('YYYY/MM/DD'),
     });
     if (response.code === '10000') {
@@ -45,9 +48,9 @@ function *getWorkPlanList({ payload }){ // 获取计划列表
 
 function *getInspectUsers({ payload }){ // 获取制定人 => 不传参数所有
   try {
-    // const { planId } = payload;
+    const { createUser } = payload;
     const url = `${APIBasePath}${operation.getInspectUsers}`;
-    const response = yield call(request.get, url); // {params: {createUser: ''}}
+    const response = yield call(request.get, url, { params: { createUser }});
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', { // 弹框展示详情
         inspectUserList: response.data || [],

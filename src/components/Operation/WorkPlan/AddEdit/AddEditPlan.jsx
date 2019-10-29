@@ -125,7 +125,9 @@ class AddEditPlan extends PureComponent {
                 rules: [{ required: true, message: '请选择计划类型' }],
                 initialValue: initialPlanTypeCode,
               })(
-                planPageKey === 'edit' ? <span>巡视计划</span> : <Select style={{width: '200px'}}>
+                planPageKey === 'edit' ? <span
+                  style={{width: '200px', display: 'inline-block'}}
+                >巡视计划</span> : <Select style={{width: '200px'}}>
                   <Option value={100}>巡视计划</Option>
                 </Select>
               )}
@@ -135,7 +137,11 @@ class AddEditPlan extends PureComponent {
                 rules: [{ required: true, message: '请选择巡视类型' }],
                 initialValue: initialInspectTypeCode,
               })(
-                planPageKey === 'edit' ? <span>{planDetail.inspectTypeName}</span> : <Select style={{width: '200px'}}>
+                planPageKey === 'edit' ? <span
+                  style={{width: '200px', display: 'inline-block'}}
+                >{planDetail.inspectTypeName}</span> : <Select
+                  style={{width: '200px'}}
+                >
                   <Option value={100001}>日常巡检</Option>
                   <Option value={100002}>巡视巡检</Option>
                 </Select>
@@ -225,7 +231,7 @@ class AddEditPlan extends PureComponent {
                   placeholder="选择时间"
                   style={{width: '200px'}}
                   allowClear={false}
-                  disabled={!firstStartTime}
+                  disabled={planPageKey === 'add' && !firstStartTime}
                   disabledDate={this.disbleEndDate}
                 />
               )}

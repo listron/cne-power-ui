@@ -22,7 +22,6 @@ class PlanEnable extends PureComponent {
   statusInfo = [
     { label: '启用', value: 1 },
     { label: '停用', value: 2 },
-    { label: '删除', value: 3 },
   ]
 
   render(){
