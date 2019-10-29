@@ -49,22 +49,26 @@
         padding: 0 8px;
       }
 
-      .ant-table-body {
-        &::-webkit-scrollbar {
-          width: 6px;
-          height: 6px;
-        }
+      .ant-table .ant-table-tbody>tr>td {
+        padding: 0 5px;
+      }
 
-        &::-webkit-scrollbar-thumb {
-          border-radius: 3px;
-          background: rgba(0, 0, 0, 0.5);
-        }
+      .ant-table-body {
+        // &::-webkit-scrollbar {
+        //   width: 6px;
+        //   height: 6px;
+        // }
+
+        // &::-webkit-scrollbar-thumb {
+        //   border-radius: 3px;
+        //   background: rgba(0, 0, 0, 0.5);
+        // }
       }
 
     }
 
     .stationName {
-      width: 120px;
+      width: 108px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;

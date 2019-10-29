@@ -166,6 +166,7 @@ class ReportSeach extends React.Component {
           <StationSelect
             data={stations.filter(e => e.stationType === 1)}
             multiple={true}
+            stationShowNumber={true}
             onChange={this.changeStation} />
           <Button type="primary" className={styles.btnStyle} disabled={disabledBtn} onClick={this.searchReportData} >查询</Button>
         </div>
