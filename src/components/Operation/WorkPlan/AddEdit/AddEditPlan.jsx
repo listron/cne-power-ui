@@ -89,11 +89,6 @@ class AddEditPlan extends PureComponent {
     const { planPageKey, form, stations, stationDeviceTypes, addPlanLoading, planDetail } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const {
-      firstStartTime,
-      inspectTypeCode,
-      deviceTypeCodes,
-    } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes']);
-    const {
       stations: initialStation = [],
       planTypeCode: initialPlanTypeCode = 100,
       inspectTypeCode: initialInspectTypeCode = 100001,
@@ -105,6 +100,11 @@ class AddEditPlan extends PureComponent {
       deadLine: initialDeadLine = null,
       inspectContent: initialInspectContent = '',
     } = (planPageKey === 'edit' ? planDetail : {}); // 默认值设置;
+    const {
+      firstStartTime = initialFirstStartTime,
+      inspectTypeCode = initialInspectTypeCode,
+      deviceTypeCodes = initialDeviceTypeCodes,
+    } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes']);
     return (
       <section className={styles.addEditPlan}>
         <h3 className={styles.top}>
@@ -206,7 +206,7 @@ class AddEditPlan extends PureComponent {
                 </Select>
               )}
             </FormItem>
-            {inspectTypeCode === 100002 && <FormItem label="巡视名称" colon={false} className={styles.eachPlanForm} >
+            {parseInt(inspectTypeCode, 10) === 100002 && <FormItem label="巡视名称" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('planName', {
                 rules: [{ required: true, max: 10, message: '请输入不超过10个字的巡视名称' }],
                 initialValue: initialPlanName,
@@ -215,7 +215,7 @@ class AddEditPlan extends PureComponent {
               )}
               <span className={styles.addFormTips}>注：10个字以内</span>
             </FormItem>}
-            {inspectTypeCode === 100002 && <FormItem label="设备类型" colon={false} className={styles.eachPlanForm} >
+            {parseInt(inspectTypeCode, 10) === 100002 && <FormItem label="设备类型" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('deviceTypeCodes', {
                 rules: [{ required: true, message: '请选择设备类型' }],
                 initialValue: initialDeviceTypeCodes,
@@ -223,7 +223,7 @@ class AddEditPlan extends PureComponent {
                 <Select
                   style={{width: '200px'}}
                   mode="multiple"
-                  {...(deviceTypeCodes.length > 0 ? {
+                  {...(deviceTypeCodes && deviceTypeCodes.length > 0 ? {
                     maxTagCount: 0,
                     maxTagPlaceholder: `已选${deviceTypeCodes.length}/${stationDeviceTypes.length}`,
                   } : {})}
@@ -250,7 +250,7 @@ class AddEditPlan extends PureComponent {
               )}
               <span className={styles.addFormTips}>注：该时间为计划整体结束时间，不针对单次。</span>
             </FormItem>
-            {inspectTypeCode === 100001 && <FormItem label="巡视内容" colon={false} className={styles.eachPlanForm} >
+            {parseInt(inspectTypeCode, 10) === 100001 && <FormItem label="巡视内容" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('inspectContent', {
                 rules: [{ required: true, message: '请输入巡视内容' }],
                 initialValue: initialInspectContent,
