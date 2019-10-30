@@ -6,7 +6,7 @@ import styles from './detail.scss';
 class PlanDetail extends PureComponent {
 
   static propTypes = {
-    planPageKey: PropTypes.string,
+    theme: PropTypes.string,
     planDetail: PropTypes.object,
     changeStore: PropTypes.func,
   };
@@ -118,7 +118,7 @@ class PlanDetail extends PureComponent {
   backList = () => this.props.changeStore({ planPageKey: 'list', planDetail: {} })
 
   render(){
-    const { planDetail } = this.props;
+    const { planDetail, theme } = this.props;
     const { inspectTypeCode = 100001 } = planDetail || {}; // 巡检计划类型 日常：100001；巡视巡检：100002
     const detailBaseInfo = [
       ...this.detailBase,
@@ -126,7 +126,7 @@ class PlanDetail extends PureComponent {
       ...this.baseEnd,
     ];
     return (
-      <section className={styles.planDetail}>
+      <section className={`${styles.planDetail} ${styles[theme]}`}>
         <h3 className={styles.detailTop}>
           <span>查看计划</span>
           <span className={styles.topHandle}>

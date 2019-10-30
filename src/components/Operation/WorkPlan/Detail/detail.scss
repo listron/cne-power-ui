@@ -4,6 +4,8 @@
 
 .planDetail{
   height: 100%;
+  display: flex;
+  flex-direction: column;
   .detailTop{
     margin-bottom: 0;
     display: flex;
@@ -11,7 +13,7 @@
     align-items: center;
     justify-content: space-between;
     padding-left: 40px;
-    height: 60px;
+    flex: 0 0 60px;
     .topHandle{
       height: 60px;
       display: flex;
@@ -29,6 +31,7 @@
     }
   }
   .detailContent{
+    flex: 1 0;
     padding: 16px 40px 24px 40px;
     .eachContent{
       display: flex;
@@ -52,10 +55,7 @@
 }
 
 
-
-
-
-.planDetail{
+.light.planDetail{
   background-color: #fff;
   .detailTop{
     color: var(--darkColor);
@@ -72,6 +72,30 @@
     }
     .detailValue{
       
+    }
+  }
+}
+
+.dark.planDetail{
+  background-image: linear-gradient(-118deg, #3b55aa 0%, #132267 96%);
+  .detailTop{
+    background:rgba(20,33,101,0.40);
+    border:1px solid #4288b5;
+    color:#9cd1ff;
+    margin-bottom: 10px;
+    .topHandle{
+      .backIcon{
+        border-left: 1px solid #4288b5;
+      }
+    }
+  }
+  .detailContent{
+    background:rgba(20,33,101,0.40);
+    .detailTitle{
+      color: #00f0ff;
+    }
+    .detailValue{
+      color: #9cd1ff;
     }
   }
 }

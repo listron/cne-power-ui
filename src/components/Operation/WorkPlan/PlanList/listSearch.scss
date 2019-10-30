@@ -67,12 +67,11 @@
 }
 
 
-
-.contentSearch{
+.light.contentSearch{
   background-color: #f9f9f9;
 }
 
-.lists{
+.light.lists{
   background-color: #fff;
   .tableFoot{
     .selectedNum{
@@ -83,3 +82,25 @@
     }
   }
 }
+
+.dark.contentSearch{
+  margin: 12px 0;
+  background:rgba(20,33,101,0.40);
+  border:1px solid #4288b5;
+  color:#9cd1ff;
+}
+
+.dark.lists{
+  background:rgba(20,33,101,0.40);
+  border:1px solid #4288b5;
+  .tableFoot{
+    color: #00f0ff;
+    .selectedNum{
+      color: #ffc581;
+    }
+    .cancelSelects{
+      color: #00f0ff;
+    }
+  }
+}
+
