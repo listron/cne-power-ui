@@ -48,9 +48,10 @@ class AreaAnalysisSearch extends Component{
     });
     changeIntelligentAnalysisStore({
       ...prams,
+      dateType: 1,
     });
     getArea({
-      dateType,
+      dateType: 1,
       month: moment(startTime).format('M'),
       year: moment(startTime).format('YYYY'),
     });

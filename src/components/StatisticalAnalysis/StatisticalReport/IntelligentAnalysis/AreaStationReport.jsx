@@ -299,7 +299,7 @@ class AreaStationReport extends Component{
                 </div>
               </div>
 
-              <p className={styles.distanceTop}>
+              <p className={styles.distanceTop + ' ' + styles.bigText}>
                 <span>（2）该区域等效利用小时数最低的三个电站为</span>
                 <span className={styles.text}>{lowEquUsehourStations.map(e=>e.stationName).join('、')}</span>
                 <span>。原因说明：</span>
@@ -377,7 +377,7 @@ class AreaStationReport extends Component{
                   </div>
                 </div>
 
-              <p className={styles.distanceTop}>
+              <p className={styles.distanceTop + ' ' + styles.bigText}>
                 <span>（2）该区域计划完成率最低的三个电站为</span>
                 <span className={styles.text}>{lowComplateRateStations.map(e=>e.stationName).join('、')}</span>
                 <span>。原因说明：</span>
