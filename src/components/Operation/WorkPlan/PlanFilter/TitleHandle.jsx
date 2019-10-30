@@ -8,7 +8,7 @@ class TitleHandle extends PureComponent {
 
   static propTypes = {
     isMined: PropTypes.bool,
-    isOverTime: PropTypes.bool,
+    isOverTime: PropTypes.number,
     seletedTitle: PropTypes.string,
     changeTitle: PropTypes.func,
     onConditionChange: PropTypes.func,
@@ -39,7 +39,7 @@ class TitleHandle extends PureComponent {
   }
 
   checkNotEfficacy = (isOverTime) => {
-    this.props.onConditionChange({ isOverTime });
+    this.props.onConditionChange({ isOverTime: isOverTime ? 0 : 1 });
   }
 
   render(){
@@ -58,7 +58,7 @@ class TitleHandle extends PureComponent {
           <span>我制定的</span>
         </span>
         <span className={styles.eachSwtich}>
-          <Switch onChange={this.checkNotEfficacy} checked={isOverTime} />
+          <Switch onChange={this.checkNotEfficacy} checked={!isOverTime} />
           <span>已失效计划</span>
         </span>
       </div>

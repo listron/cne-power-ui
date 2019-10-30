@@ -20,7 +20,7 @@ const initState = immutable.fromJS({
     cycleTypeCode: [],
     planStatus: [],
     isMined: false,
-    isOverTime: false,
+    isOverTime: 1,
     planContent: '',
     createUser: '',
   },
