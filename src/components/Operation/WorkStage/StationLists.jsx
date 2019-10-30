@@ -18,7 +18,7 @@ class StationLists extends PureComponent {
   }
 
   handleOK = (stations) => {
-    this.props.stageQuery(stations);
+    this.props.stageQuery(stations, true); // 第二个参数, 控制页面进行整体loading的展示
     this.setState({ stationModalShow: false });
   }
 

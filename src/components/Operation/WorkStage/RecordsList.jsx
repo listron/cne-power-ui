@@ -10,6 +10,7 @@ class RecordsList extends PureComponent {
   static propTypes = {
     theme: PropTypes.string,
     stageLoading: PropTypes.bool,
+    pageLoading: PropTypes.bool,
     stageNumInfo: PropTypes.object,
     stageList: PropTypes.array,
     changeStore: PropTypes.func,
@@ -24,12 +25,12 @@ class RecordsList extends PureComponent {
     column: [
       {
         title: '工作类型',
-        dataIndex: 'taskTypeName', // taskTypeCode	Int	工作类型编码 1 计划 2 缺陷 3 巡检 4 记事 taskTypeName	String	工作类型名字
+        dataIndex: 'taskTypeName', // taskTypeCode	Int	工作类型编码 1 计划 2 消缺 3 巡检 4 记事 taskTypeName	String	工作类型名字
         sorter: (a, b) => a.taskTypeCode - b.taskTypeCode,
         className: styles.taskTypeName,
         render: (text, record) => {
           const { taskTypeCode } = record;
-          const taskTypes = ['--', '计划', '缺陷', '巡检', '记事'];
+          const taskTypes = ['--', '计划', '消缺', '巡检', '记事'];
           return ( // className={styles.taskTypeName}
             <div className={styles.taskTypeNameText} title={`【${taskTypes[taskTypeCode] || '--'}】${text}`}>
               <span className={styles.taskNameHighlight}>【{taskTypes[taskTypeCode] || '--'}】</span>
@@ -162,7 +163,7 @@ class RecordsList extends PureComponent {
   }
 
   render(){
-    const { theme, stageNumInfo = {}, stageList = [], stageLoading } = this.props;
+    const { theme, stageNumInfo = {}, stageList = [], stageLoading, pageLoading } = this.props;
     const { column, recordFilterCode } = this.state;
     const recordSource = recordFilterCode === 0 ? stageList : stageList.filter( // 是否按照类型筛选查看
       e => e.taskTypeCode === recordFilterCode
@@ -201,7 +202,7 @@ class RecordsList extends PureComponent {
           dataSource={recordSource}
           columns={column}
           pagination={false}
-          loading={stageLoading}
+          loading={stageLoading && !pageLoading}
           scroll={{ y: 330 }}
           className={styles.recordTable}
         />

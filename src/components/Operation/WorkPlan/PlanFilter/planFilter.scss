@@ -1,0 +1,131 @@
+
+@import '../../../../theme/theme.scss';
+
+.planFilter{
+  flex: 0 0 56px;
+}
+
+.titleHandle{ // 顶部筛选条件
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  .eachHandlerTitle{ // 顶部操作筛选展示
+    padding-left: 12px;
+    border-radius:4px;
+    display: flex;
+    flex: 0 0 114px;
+    height: 32px;
+    align-items: center;
+    margin-left: 12px;
+    cursor: pointer;
+    .titleTip{
+      line-height: 30px;
+      flex: 0 0 70px;
+    }
+    .titleIcon{
+      flex: 1;
+    }
+  }
+  .eachSwtich{ // 顶部操作 开关
+    margin-left: 12px;
+  }
+}
+
+.filterItem, .stationFilter { // 筛选条件展开栏
+  display: flex;
+  padding: 12px 24px;
+  margin: 0 24px 12px;
+  .all, .selected{
+    margin-right: 24px;
+    cursor: pointer;
+  }
+  .selected{
+    text-decoration: underline;
+  }
+}
+
+.checkedConditionHandler{
+  padding: 0 24px;
+  display: flex;
+  .checkedHandlerTip{
+    margin-top: 5px;
+    margin-right: 20px;
+    line-height: 30px;
+    flex: 0 0 40px;
+  }
+  .checkedTagBox{
+    display: flex;
+    flex-wrap: wrap;
+    .eachTag, .clearAll{
+      margin-top: 5px;
+      padding: 0 10px;
+      height: 30px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      margin-right: 16px;
+      cursor: pointer;
+    }
+  }
+}
+
+.stationFilter {
+  margin-top: 10px;
+  display: flex;
+  flex: 1;
+  flex-shrink: 0;
+  max-height: 190px;
+  min-height: 40px;
+  overflow-y: auto;
+  border-radius: 4px;
+  padding: 10px 16px;
+  padding-bottom: 24px;
+}
+
+// 颜色部分
+.planFilter{
+  background-color: #fff;
+}
+
+.titleHandle{
+  .eachHandlerTitle{
+    border: 1px solid var(--promptColor);
+    .titleTip{
+      border-right: 1px solid var(--promptColor);
+    }
+  }
+}
+
+.filterItem, .stationFilter {
+  background-color: #f0f2f5;
+  .all, .selected{
+    color: var(--themeColor);
+  }
+}
+
+.checkedConditionHandler{
+  .checkedHandlerTip{
+    
+  }
+  .checkedTagBox{
+    .eachTag{
+      border: 1px dashed var(--promptColor);
+      &:hover{
+        color: #fff;
+        background-color: var(--themeColor);
+      }
+    }
+    .clearAll{
+      color: var(--themeColor);
+    }
+  }
+}
+
+.light .stationFilter {
+  background-color: #f0f2f5;
+}
+
+.dark .stationFilter {
+  background-color: #1e246e;
+}

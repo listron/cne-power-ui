@@ -1,25 +1,26 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, Form, Input, DatePicker, Select } from 'antd';
+import { Button, Icon, Form, Input, DatePicker, Select } from 'antd';
 import moment from 'moment';
 import InputLimit from '@components/Common/InputLimit';
 import StationSelect from '@components/Common/StationSelect';
-import styles from './planModals.scss';
+import styles from './addEdit.scss';
+
 const FormItem = Form.Item;
 const { Option } = Select;
 
-class AddPlan extends PureComponent {
+class AddEditPlan extends PureComponent {
 
   static propTypes = {
-    modalKey: PropTypes.string,
-    saveRecordLoading: PropTypes.bool,
-    showModal: PropTypes.bool,
-    stageStations: PropTypes.array,
-    stationDeviceTypes: PropTypes.array,
+    addPlanLoading: PropTypes.bool,
     form: PropTypes.object,
-    recordDetailInfo: PropTypes.object,
+    stations: PropTypes.array,
+    stationDeviceTypes: PropTypes.array,
+    planPageKey: PropTypes.string,
+    planDetail: PropTypes.object,
     changeStore: PropTypes.func,
-    addPlan: PropTypes.func,
+    addWorkPlan: PropTypes.func,
+    editWorkPlan: PropTypes.func,
   };
 
   state = {
@@ -27,9 +28,9 @@ class AddPlan extends PureComponent {
   }
 
   componentDidUpdate(preProps){ // 保存完成, 清除信息并关闭弹框;
-    const { saveRecordLoading, recordDetailInfo } = this.props;
-    const preLoading = preProps.saveRecordLoading;
-    if (!saveRecordLoading && preLoading && !recordDetailInfo) {
+    const { addPlanLoading, planDetail } = this.props;
+    const preLoading = preProps.addPlanLoading;
+    if (!addPlanLoading && preLoading && Object.keys(planDetail).length === 0) {
       // 新增页 保存请求完毕 && 上次数据被清除 => 请求成功
       const { saveMode } = this.state;
       saveMode === 'normal' ? this.cancelHandle() : this.props.form.resetFields(); // normal正常关闭 / continue重置继续添加
@@ -40,13 +41,39 @@ class AddPlan extends PureComponent {
     this.props.form.resetFields();
   }
 
-  cancelHandle = () => { // 关闭
-    this.props.changeStore({
-      showModal: false,
-      modalKey: null,
-      recordDetailInfo: null,
+  backToList = () => { // 返回主列表页
+    this.props.changeStore({ planPageKey: 'list' });
+  }
+
+  backList = () => this.props.changeStore({ planPageKey: 'list', planDetail: {} })
+
+  saveAdd = () => this.onAddSave('normal');
+
+  continueAdd = () => this.onAddSave('continue');
+
+  editSave = () => {
+    this.props.form.validateFields(this.formInfoQuery(this.props.editWorkPlan));
+  }
+
+  onAddSave = (saveMode) => {
+    this.setState({ saveMode }, () => {
+      this.props.form.validateFields(this.formInfoQuery(this.props.addWorkPlan));
     });
   }
+
+  formInfoQuery = (queryMethod = () => {}) => (err, values) => {
+    if (!err) {
+      const { stationList, firstStartTime, deadLine, ...rest} = values;
+      queryMethod({
+        ...rest,
+        stationCodes: stationList.map(e => e.stationCode),
+        firstStartTime: firstStartTime.format('YYYY/MM/DD'),
+        deadLine: deadLine && deadLine.format('YYYY/MM/DD'),
+      });
+    }
+  }
+
+  cancelHandle = () => this.props.changeStore({ planPageKey: 'list', planDetail: {} })
 
   disabledStartDate = (cur) => cur.isBefore(moment(), 'day')
 
@@ -57,52 +84,42 @@ class AddPlan extends PureComponent {
     return !startTime || cur.isBefore(startTime, 'day') || cur.isAfter(moment().add(5, 'year'), 'day');
   }
 
-  saveAddRecord = () => this.onAddSave('normal');
-
-  continueAddRecord = () => this.onAddSave('continue');
-
-  onAddSave = (saveMode) => {
-    this.setState({ saveMode }, () => {
-      this.props.form.validateFields((err, values) => {
-        if (!err) {
-          const { stationList, firstStartTime, deadLine, ...rest} = values;
-          this.props.addPlan({
-            ...rest,
-            stationCodes: stationList.map(e => e.stationCode),
-            firstStartTime: firstStartTime.format('YYYY/MM/DD'),
-            deadLine: deadLine && deadLine.format('YYYY/MM/DD'),
-          });
-        }
-      });
-    });
-  }
-
   render(){
     const { saveMode } = this.state;
-    const { showModal, modalKey, form, stageStations, stationDeviceTypes, saveRecordLoading } = this.props;
+    const { planPageKey, form, stations, stationDeviceTypes, addPlanLoading, planDetail } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const {
-      firstStartTime,
-      inspectTypeCode,
-      deviceTypeCodes = [],
+      stations: initialStation = [],
+      planTypeCode: initialPlanTypeCode = 100,
+      inspectTypeCode: initialInspectTypeCode = 100001,
+      firstStartTime: initialFirstStartTime = null,
+      validPeriod: initialValidPeriod = null,
+      cycleTypeCode: initialCycleTypeCode = null,
+      planName: initialPlanName = '',
+      deviceTypeCodes: initialDeviceTypeCodes = [],
+      deadLine: initialDeadLine = null,
+      inspectContent: initialInspectContent = '',
+    } = (planPageKey === 'edit' ? planDetail : {}); // 默认值设置;
+    const {
+      firstStartTime = initialFirstStartTime,
+      inspectTypeCode = initialInspectTypeCode,
+      deviceTypeCodes = initialDeviceTypeCodes,
     } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes']);
     return (
-      <Modal
-        title="添加计划"
-        visible={showModal && modalKey === 'addPlan'}
-        onCancel={this.cancelHandle}
-        footer={null}
-        width={800}
-      >
-        <Form className={styles.addPlanForm}>
-          <div className={styles.planFormBox}>
+      <section className={styles.addEditPlan}>
+        <h3 className={styles.top}>
+          <span>添加计划</span>
+          <Icon onClick={this.backList} type="arrow-left" className={styles.backIcon} />
+        </h3>
+        <Form className={styles.addEditPlanForm}>
+          <div className={styles.formBox}>
             <FormItem label="适用电站" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('stationList', {
                 rules: [{ required: true, message: '请选择电站' }],
-                initialValue: [],
+                initialValue: initialStation,
               })(
                 <StationSelect
-                  data={stageStations}
+                  data={stations}
                   multiple={true}
                   style={{ width: '200px' }}
                   stationShowNumber={true}
@@ -112,9 +129,11 @@ class AddPlan extends PureComponent {
             <FormItem label="计划类型" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('planTypeCode', {
                 rules: [{ required: true, message: '请选择计划类型' }],
-                initialValue: 100,
+                initialValue: initialPlanTypeCode,
               })(
-                <Select style={{width: '200px'}}>
+                planPageKey === 'edit' ? <span
+                  style={{width: '200px', display: 'inline-block'}}
+                >巡视计划</span> : <Select style={{width: '200px'}}>
                   <Option value={100}>巡视计划</Option>
                 </Select>
               )}
@@ -122,9 +141,13 @@ class AddPlan extends PureComponent {
             <FormItem label="巡视类型" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('inspectTypeCode', {
                 rules: [{ required: true, message: '请选择巡视类型' }],
-                initialValue: 100001,
+                initialValue: initialInspectTypeCode,
               })(
-                <Select style={{width: '200px'}}>
+                planPageKey === 'edit' ? <span
+                  style={{width: '200px', display: 'inline-block'}}
+                >{planDetail.inspectTypeName}</span> : <Select
+                  style={{width: '200px'}}
+                >
                   <Option value={100001}>日常巡检</Option>
                   <Option value={100002}>巡视巡检</Option>
                 </Select>
@@ -134,7 +157,7 @@ class AddPlan extends PureComponent {
             <FormItem label="首次下发时间" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('firstStartTime', {
                 rules: [{ required: true, message: '请选择首次下发时间' }],
-                initialValue: moment(),
+                initialValue: initialFirstStartTime ? moment(initialFirstStartTime) : moment(),
               })(
                 <DatePicker
                   showTime
@@ -161,7 +184,7 @@ class AddPlan extends PureComponent {
                     callback();
                   },
                 }],
-                initialValue: null,
+                initialValue: initialValidPeriod,
               })(
                 <Input style={{width: '200px'}} placeholder="请输入..." />
               )}
@@ -170,7 +193,7 @@ class AddPlan extends PureComponent {
             <FormItem label="循环周期" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('cycleTypeCode', {
                 rules: [{ required: true, message: '请选择循环周期' }],
-                initialValue: null,
+                initialValue: initialCycleTypeCode,
               })(
                 <Select style={{width: '200px'}}>
                   <Option value={152}>每天</Option>
@@ -183,24 +206,24 @@ class AddPlan extends PureComponent {
                 </Select>
               )}
             </FormItem>
-            {inspectTypeCode === 100002 && <FormItem label="巡视名称" colon={false} className={styles.eachPlanForm} >
+            {parseInt(inspectTypeCode, 10) === 100002 && <FormItem label="巡视名称" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('planName', {
                 rules: [{ required: true, max: 10, message: '请输入不超过10个字的巡视名称' }],
-                initialValue: '',
+                initialValue: initialPlanName,
               })(
                 <Input style={{width: '200px'}} placeholder="请输入..." />
               )}
-               <span className={styles.addFormTips}>注：10个字以内</span>
+              <span className={styles.addFormTips}>注：10个字以内</span>
             </FormItem>}
-            {inspectTypeCode === 100002 && <FormItem label="设备类型" colon={false} className={styles.eachPlanForm} >
+            {parseInt(inspectTypeCode, 10) === 100002 && <FormItem label="设备类型" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('deviceTypeCodes', {
                 rules: [{ required: true, message: '请选择设备类型' }],
-                initialValue: [],
+                initialValue: initialDeviceTypeCodes,
               })(
                 <Select
                   style={{width: '200px'}}
                   mode="multiple"
-                  {...(deviceTypeCodes.length > 0 ? {
+                  {...(deviceTypeCodes && deviceTypeCodes.length > 0 ? {
                     maxTagCount: 0,
                     maxTagPlaceholder: `已选${deviceTypeCodes.length}/${stationDeviceTypes.length}`,
                   } : {})}
@@ -214,23 +237,23 @@ class AddPlan extends PureComponent {
             <FormItem label="计划失效时间" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('deadLine', {
                 rules: [{ required: true, message: '请选择计划失效时间' }],
-                initialValue: null,
+                initialValue: initialDeadLine ? moment(initialDeadLine) : null,
               })(
                 <DatePicker
                   showTime
                   placeholder="选择时间"
                   style={{width: '200px'}}
                   allowClear={false}
-                  disabled={!firstStartTime}
+                  disabled={planPageKey === 'add' && !firstStartTime}
                   disabledDate={this.disbleEndDate}
                 />
               )}
               <span className={styles.addFormTips}>注：该时间为计划整体结束时间，不针对单次。</span>
             </FormItem>
-            {inspectTypeCode === 100001 && <FormItem label="巡视内容" colon={false} className={styles.eachPlanForm} >
+            {parseInt(inspectTypeCode, 10) === 100001 && <FormItem label="巡视内容" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('inspectContent', {
                 rules: [{ required: true, message: '请输入巡视内容' }],
-                initialValue: '',
+                initialValue: initialInspectContent,
               })(
                 <InputLimit width={400} size={999} placeholder="请输入..." />
               )}
@@ -238,19 +261,19 @@ class AddPlan extends PureComponent {
           </div>
           <div className={styles.saveRow}>
             <Button
-              onClick={this.saveAddRecord}
-              loading={saveMode === 'normal' && saveRecordLoading}
+              onClick={planPageKey === 'add' ? this.saveAdd : this.editSave}
+              loading={saveMode === 'normal' && addPlanLoading}
               className={styles.saveBtn}
             >保存</Button>
-            <Button
-              onClick={this.continueAddRecord}
-              loading={saveMode === 'continue' && saveRecordLoading}
+            {planPageKey === 'add' && <Button
+              onClick={this.continueAdd}
+              loading={saveMode === 'continue' && addPlanLoading}
               className={styles.continueSaveBtn}
-            >保存并继续添加</Button>
-            <Button onClick={this.cancelHandle} className={styles.cancelSaveBtn}>取消</Button>
+            >保存并继续添加</Button>}
+            {planPageKey === 'add' && <Button onClick={this.cancelHandle} className={styles.cancelSaveBtn}>取消</Button>}
           </div>
         </Form>
-      </Modal>
+      </section>
     );
   }
 }
@@ -266,4 +289,4 @@ export default Form.create({
       props.getStationDeviceTypes({ stationCodes: tmpStationArr.map(e => e.stationCode).join(',') });
     }
   },
-})(AddPlan);
+})(AddEditPlan);

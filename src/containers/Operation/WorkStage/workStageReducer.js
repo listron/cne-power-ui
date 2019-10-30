@@ -27,9 +27,10 @@ const initState = immutable.fromJS({
   planMonth: moment().format('YYYY-MM'), // 计划日历对应月
   activePlanDate: moment().format('YYYY-MM-DD'), // 激活的日期
   recordDetailInfo: null, // 记事 | 计划详情 {} => 增 / 编辑 / 查看
+
+  pageLoading: false, // 页面整体loading, 选电站后时候触发。
   saveRecordLoading: false, // 添加 + 编辑记事详情loading状态
   deleteRecordLoading: false, // 删除详情loading状态
-
   stageLoading: false, // 记事列表loading
   stageList: [], // 记事列表信息
   stageNumInfo: {}, // 记事列表各类型统计信息 - 全部, 计划, 消缺, 巡检, 记事
