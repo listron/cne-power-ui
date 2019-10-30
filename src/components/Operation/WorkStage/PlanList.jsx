@@ -1,13 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Icon, Button } from 'antd';
+import { Icon, Button, Spin } from 'antd';
 import EachDate from './PlanModals/EachDate';
 import styles from './workPage.scss';
 
 class PlanList extends PureComponent {
 
   static propTypes = {
+    pageLoading: PropTypes.bool,
+    planListLoading: PropTypes.bool,
     planMonth: PropTypes.string,
     activePlanDate: PropTypes.string,
     theme: PropTypes.string,
@@ -82,7 +84,7 @@ class PlanList extends PureComponent {
   }
 
   render(){
-    const { theme, planMonth, planList } = this.props;
+    const { theme, planMonth, planList, pageLoading, planListLoading } = this.props;
     const { datesInfo } = this.state;
     const monthReduceUnable = moment(planMonth).isSame(moment(), 'M'); // 当前月不可往前选月
     // 不属于本月的日期: 禁止选择灰色不触发, 本月日期: hover浅色, 选中深色, 默认无色
@@ -112,14 +114,16 @@ class PlanList extends PureComponent {
               <span className={styles.eachWeekdays} key={e}>{e}</span>
             ))}
           </div>
-          <div className={styles.datesBottom}>
-            {datesInfo.map(e => {
-              const curPlan = planList.find(m => moment(m.reportDate).isSame(e, 'day'));
-              return (
-                <EachDate key={e} {...this.props} curPlan={curPlan} curDate={e} showDatePlanList={this.showDatePlanList} />
-              );
-            })}
-          </div>
+          <Spin tip="数据加载中..." spinning={planListLoading && !pageLoading}>
+            <div className={styles.datesBottom}>
+              {datesInfo.map(e => {
+                const curPlan = planList.find(m => moment(m.reportDate).isSame(e, 'day'));
+                return (
+                  <EachDate key={e} {...this.props} curPlan={curPlan} curDate={e} showDatePlanList={this.showDatePlanList} />
+                );
+              })}
+            </div>
+          </Spin>
         </div>
       </div>
     );
