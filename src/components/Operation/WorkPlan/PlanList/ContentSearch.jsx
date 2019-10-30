@@ -9,6 +9,7 @@ const { Option } = Select;
 class ContentSearch extends PureComponent {
 
   static propTypes = {
+    theme: PropTypes.string,
     planParams: PropTypes.object,
     planListPageParams: PropTypes.object,
     inspectUserList: PropTypes.array,
@@ -68,10 +69,10 @@ class ContentSearch extends PureComponent {
 
   render(){
     const { content, user } = this.state;
-    const { inspectUserList, planParams } = this.props;
+    const { inspectUserList, planParams, theme } = this.props;
     const { planContent, createUser } = planParams;
     return (
-      <div className={styles.contentSearch}>
+      <div className={`${styles.contentSearch} ${styles[theme]}`}>
         <span className={styles.searchText}>内容</span>
         <Input
           value={content}

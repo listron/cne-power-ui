@@ -8,6 +8,7 @@ import styles from './listSearch.scss';
 class Lists extends PureComponent {
 
   static propTypes = {
+    theme: PropTypes.string,
     planParams: PropTypes.object,
     planListPageParams: PropTypes.object,
     planCount: PropTypes.number,
@@ -161,10 +162,10 @@ class Lists extends PureComponent {
 
   render(){
     const { column, selectedRowKeys } = this.state;
-    const { planListPageParams, planCount, planList, planListLoading } = this.props;
+    const { planListPageParams, planCount, planList, planListLoading, theme } = this.props;
     const { pageNum, pageSize } = planListPageParams;
     return (
-      <div className={styles.lists}>
+      <div className={`${styles.lists} ${styles[theme]}`}>
         <div className={styles.listPageRow} >
           <span className={styles.listBtns}>
             <Button className={styles.addPlanBtn} type="add" onClick={this.toAddPlan} >
@@ -185,6 +186,7 @@ class Lists extends PureComponent {
             currentPage={pageNum}
             total={planCount}
             onPaginationChange={this.onPaginationChange}
+            theme={theme}
           />
         </div>
         <Table
