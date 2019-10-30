@@ -21,7 +21,8 @@
   .addEditPlanForm{ // 添加计划
     padding: 20px 40px;
     .formBox{
-      max-height: 500px;
+      max-height: 550px;
+      overflow: auto;
     }
     .eachPlanForm{
       display: flex;
@@ -54,7 +55,7 @@
 
 
 //      颜色部分
-.addEditPlan{
+.light.addEditPlan{
   background-color: #fff;
   .top{
     color: var(--darkColor);
@@ -91,6 +92,44 @@
   }
 }
 
+.dark.addEditPlan{
+  background-image: linear-gradient(-118deg, #3b55aa 0%, #132267 96%);
+  .top{
+    background:rgba(20,33,101,0.40);
+    border:1px solid #4288b5;
+    color:#9cd1ff;
+    margin-bottom: 10px;
+    .backIcon{
+      border-left: 1px solid #4288b5;
+    }
+  }
+  .addEditPlanForm{ // 添加计划
+    .eachPlanForm{
+      .addFormTips{
+        color: #9cd1ff;
+      }
+      :global{
+        .ant-form-item-label{
+          color: #00f0ff;
+        }
+      }
+    }
+    // .saveRow{
+    //   .saveBtn{
+    //     background-color: var(--themeColor);
+    //     color: #fff;
+    //   }
+    //   .continueSaveBtn{
+    //     border: 1px solid var(--themeColor);
+    //     color: var(--themeColor);
+    //   }
+    //   .cancelSaveBtn{
+    //     border: 1px solid var(--promptColor);
+    //     color: var(--lightColor);
+    //   }
+    // }
+  }
+}
 
 
 
