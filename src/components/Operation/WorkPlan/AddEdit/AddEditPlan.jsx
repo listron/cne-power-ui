@@ -20,6 +20,7 @@ class AddEditPlan extends PureComponent {
     planDetail: PropTypes.object,
     changeStore: PropTypes.func,
     addWorkPlan: PropTypes.func,
+    editWorkPlan: PropTypes.func,
   };
 
   state = {
@@ -51,19 +52,19 @@ class AddEditPlan extends PureComponent {
   continueAdd = () => this.onAddSave('continue');
 
   editSave = () => {
-    this.props.form.validateFields(this.formInfoQuery);
+    this.props.form.validateFields(this.formInfoQuery(this.props.editWorkPlan));
   }
 
   onAddSave = (saveMode) => {
     this.setState({ saveMode }, () => {
-      this.props.form.validateFields(this.formInfoQuery);
+      this.props.form.validateFields(this.formInfoQuery(this.props.addWorkPlan));
     });
   }
 
-  formInfoQuery = (err, values) => {
+  formInfoQuery = (queryMethod = () => {}) => (err, values) => {
     if (!err) {
       const { stationList, firstStartTime, deadLine, ...rest} = values;
-      this.props.addWorkPlan({
+      queryMethod({
         ...rest,
         stationCodes: stationList.map(e => e.stationCode),
         firstStartTime: firstStartTime.format('YYYY/MM/DD'),
@@ -87,7 +88,11 @@ class AddEditPlan extends PureComponent {
     const { saveMode } = this.state;
     const { planPageKey, form, stations, stationDeviceTypes, addPlanLoading, planDetail } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
-    const { firstStartTime, inspectTypeCode } = getFieldsValue(['inspectTypeCode', 'firstStartTime']);
+    const {
+      firstStartTime,
+      inspectTypeCode,
+      deviceTypeCodes,
+    } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes']);
     const {
       stations: initialStation = [],
       planTypeCode: initialPlanTypeCode = 100,
@@ -117,6 +122,7 @@ class AddEditPlan extends PureComponent {
                   data={stations}
                   multiple={true}
                   style={{ width: '200px' }}
+                  stationShowNumber={true}
                 />
               )}
             </FormItem>
@@ -214,7 +220,14 @@ class AddEditPlan extends PureComponent {
                 rules: [{ required: true, message: '请选择设备类型' }],
                 initialValue: initialDeviceTypeCodes,
               })(
-                <Select style={{width: '200px'}} mode="multiple">
+                <Select
+                  style={{width: '200px'}}
+                  mode="multiple"
+                  {...(deviceTypeCodes.length > 0 ? {
+                    maxTagCount: 0,
+                    maxTagPlaceholder: `已选${deviceTypeCodes.length}/${stationDeviceTypes.length}`,
+                  } : {})}
+                >
                   {stationDeviceTypes.map(e => (
                     <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
                   ))}

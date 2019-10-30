@@ -91,7 +91,7 @@ class Lists extends PureComponent {
     ],
   }
 
-  orderFieldBase = ['', 'planTypeName', 'inspectContent', 'firstStartTime', 'nextSendTime', 'validPeriod', 'cycleTypeName', 'planStatus']
+  orderFieldBase = ['', 'planTypeName', 'inspectContent', 'firstStartTime', 'nextSendTime', 'validPeriod', 'cycleTypeName', 'planStatus', 'lastHandleTime']
 
   toDetail = ({ planId }) => { // 查看详情
     this.props.getWorkPlanDetail({ planId });
@@ -135,10 +135,10 @@ class Lists extends PureComponent {
   }
 
   tableSortChange = (pagination, filter, { field, order }) => { // 排序
-    let orderField = 1, orderMethod = 'asc';
+    let orderField = 3, orderMethod = 'asc';
     if (field) {
       orderField = this.orderFieldBase.indexOf(field);
-      orderMethod = order === 'ascend' ? 'asc' : 'des';
+      orderMethod = order === 'ascend' ? 'asc' : 'desc';
     }
     const { planParams, planListPageParams } = this.props;
     const newPageParams = {

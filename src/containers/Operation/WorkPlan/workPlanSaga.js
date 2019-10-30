@@ -84,18 +84,21 @@ function *addWorkPlan({ payload }){ // 添加工作计划
     const response = yield call(request.post, url, { ...payload });
     if (response.code === '10000') {
       message.success('恭喜！你所提交的信息已经保存成功，可在日历及计划管理中查看。');
+      const { planParams, planListPageParams } = yield select(state => state.operation.workPlan.toJS()); // 再次请求列表
+      const newPagePrams = {
+        ...planListPageParams,
+        pageNum: 1,
+        pageSize: 10,
+        orderField: 8, // planTypeName inspectContent firstStartTime nextSendTime validPeriod cycleTypeName planStatus lastHandleTime
+        orderMethod: 'desc', // 新增后, 将按照最新更新时间排序展示
+      };
       yield call(easyPut, 'fetchSuccess', {
         addPlanLoading: false,
         planDetail: {},
+        planListPageParams: newPagePrams,
       });
-      const { planParams, planListPageParams } = yield select(state => state.operation.workPlan.toJS()); // 再次请求列表
       yield call(getWorkPlanList, { // 再次请求日历计划列表
-        payload: {
-          ...planParams,
-          ...planListPageParams,
-          pageNum: 1,
-          pageSize: 10,
-        },
+        payload: { ...planParams, ...newPagePrams },
       });
     } else { throw response; }
   } catch (error) {
@@ -114,18 +117,21 @@ function *editWorkPlan({ payload }){ // 编辑工作计划
     const response = yield call(request.put, url, { ...payload });
     if (response.code === '10000') {
       message.success('恭喜！你所提交的信息已经保存成功，可在日历及计划管理中查看。');
+      const { planParams, planListPageParams } = yield select(state => state.operation.workPlan.toJS()); // 再次请求列表
+      const newPagePrams = {
+        ...planListPageParams,
+        pageNum: 1,
+        pageSize: 10,
+        orderField: 8, // planTypeName inspectContent firstStartTime nextSendTime validPeriod cycleTypeName planStatus lastHandleTime
+        orderMethod: 'desc', // 新增后, 将按照最新更新时间排序展示
+      };
       yield call(easyPut, 'fetchSuccess', {
         addPlanLoading: false,
         planDetail: {},
+        planListPageParams: newPagePrams,
       });
-      const { planParams, planListPageParams } = yield select(state => state.operation.workPlan.toJS()); // 再次请求列表
       yield call(getWorkPlanList, { // 再次请求日历计划列表
-        payload: {
-          ...planParams,
-          ...planListPageParams,
-          pageNum: 1,
-          pageSize: 10,
-        },
+        payload: { ...planParams, ...newPagePrams },
       });
     } else { throw response; }
   } catch (error) {
@@ -144,18 +150,15 @@ function *deleteWorkPlan({ payload }){ // 删除工作计划 - {planIds: string[
     const url = `${APIBasePath}${operation.handleWorkPlan}?planIds=${planIds.join(',')}`;
     const response = yield call(request.delete, url);
     if (response.code === '10000') {
+      const { planParams, planListPageParams } = yield select(state => state.operation.workPlan.toJS());
+      const newPagePrams = { ...planListPageParams, pageNum: 1, pageSize: 10 };
       yield call(easyPut, 'fetchSuccess', {
         deletePlansLoading: false,
+        planListPageParams: newPagePrams,
       });
       // 再次请求列表
-      const { planParams, planListPageParams } = yield select(state => state.operation.workPlan.toJS());
       yield call(getWorkPlanList, { // 再次请求日历计划列表
-        payload: {
-          ...planParams,
-          ...planListPageParams,
-          pageNum: 1,
-          pageSize: 10,
-        },
+        payload: { ...planParams, ...newPagePrams },
       });
     } else { throw response; }
   } catch (error) {

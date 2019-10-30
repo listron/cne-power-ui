@@ -81,7 +81,11 @@ class AddPlan extends PureComponent {
     const { saveMode } = this.state;
     const { showModal, modalKey, form, stageStations, stationDeviceTypes, saveRecordLoading } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
-    const { firstStartTime, inspectTypeCode } = getFieldsValue(['inspectTypeCode', 'firstStartTime']);
+    const {
+      firstStartTime,
+      inspectTypeCode,
+      deviceTypeCodes = [],
+    } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes']);
     return (
       <Modal
         title="添加计划"
@@ -101,6 +105,7 @@ class AddPlan extends PureComponent {
                   data={stageStations}
                   multiple={true}
                   style={{ width: '200px' }}
+                  stationShowNumber={true}
                 />
               )}
             </FormItem>
@@ -192,7 +197,14 @@ class AddPlan extends PureComponent {
                 rules: [{ required: true, message: '请选择设备类型' }],
                 initialValue: [],
               })(
-                <Select style={{width: '200px'}} mode="multiple">
+                <Select
+                  style={{width: '200px'}}
+                  mode="multiple"
+                  {...(deviceTypeCodes.length > 0 ? {
+                    maxTagCount: 0,
+                    maxTagPlaceholder: `已选${deviceTypeCodes.length}/${stationDeviceTypes.length}`,
+                  } : {})}
+                >
                   {stationDeviceTypes.map(e => (
                     <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
                   ))}
