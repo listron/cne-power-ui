@@ -1,7 +1,6 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Switch } from 'antd';
 import TitleHandle from './TitleHandle';
 import PlanTypeFilter from './PlanTypeFilter';
 import PlanStations from './PlanStations';
@@ -13,6 +12,7 @@ import styles from './planFilter.scss';
 class PlanFilter extends PureComponent {
 
   static propTypes = {
+    theme: PropTypes.string,
     stations: PropTypes.array,
     planParams: PropTypes.object,
     planListPageParams: PropTypes.object,
@@ -48,11 +48,11 @@ class PlanFilter extends PureComponent {
   }
 
   render(){
-    const { planParams, stations, planListPageParams } = this.props;
+    const { planParams, stations, planListPageParams, theme } = this.props;
     const { seletedTitle } = this.state;
     const { planTypeCode = [], stationCodes = [], cycleTypeCode = [], planStatus = [], isMined = true, isOverTime = false} = planParams;
     return (
-      <div className={styles.planFilter}>
+      <div className={`${styles.planFilter} ${styles[theme]}`}>
         <TitleHandle
           isMined={isMined}
           isOverTime={isOverTime}

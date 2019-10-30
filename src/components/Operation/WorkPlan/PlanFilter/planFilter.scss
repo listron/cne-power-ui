@@ -36,6 +36,7 @@
   display: flex;
   padding: 12px 24px;
   margin: 0 24px 12px;
+  border-radius: 4px;
   .all, .selected{
     margin-right: 24px;
     cursor: pointer;
@@ -48,6 +49,7 @@
 .checkedConditionHandler{
   padding: 0 24px;
   display: flex;
+  margin-bottom: 12px;
   .checkedHandlerTip{
     margin-top: 5px;
     margin-right: 20px;
@@ -83,12 +85,12 @@
   padding-bottom: 24px;
 }
 
-// 颜色部分
-.planFilter{
+// 浅色 部分
+.light.planFilter{
   background-color: #fff;
 }
 
-.titleHandle{
+.light .titleHandle{
   .eachHandlerTitle{
     border: 1px solid var(--promptColor);
     .titleTip{
@@ -97,17 +99,14 @@
   }
 }
 
-.filterItem, .stationFilter {
+.light .filterItem, .light .stationFilter {
   background-color: #f0f2f5;
   .all, .selected{
     color: var(--themeColor);
   }
 }
 
-.checkedConditionHandler{
-  .checkedHandlerTip{
-    
-  }
+.light .checkedConditionHandler{
   .checkedTagBox{
     .eachTag{
       border: 1px dashed var(--promptColor);
@@ -126,6 +125,54 @@
   background-color: #f0f2f5;
 }
 
+// 深色 主题
+.dark.planFilter{
+  background:rgba(20,33,101,0.40);
+  border:1px solid #4288b5;
+}
+
+.dark .titleHandle{
+  color:#9cd1ff;
+  .eachHandlerTitle{
+    border: none;
+    background:#3a4e9e;
+    .titleTip{
+      border-right: 1px solid #9cd1ff;
+    }
+  }
+}
+
+.dark .filterItem, .dark .stationFilter {
+  background:#3a4e9e;
+  .all, .selected{
+    color: #9cd1ff;
+  }
+}
+
+.dark .checkedConditionHandler{
+  color:#9cd1ff;
+  .checkedTagBox{
+    .eachTag{
+      border: 1px dashed #9cd1ff;;
+      &:hover{
+        color:#ffc581;
+        background-color: #fcffe5;
+      }
+    }
+    .clearAll{
+      color: #00f0ff;
+    }
+  }
+}
+
 .dark .stationFilter {
   background-color: #1e246e;
+  :global{
+    .ant-tabs-tab-prev-icon, .ant-tabs-tab-next-icon {
+      color: #9cd1ff;
+    }
+    .ant-tabs-bar.ant-tabs-top-bar{
+      border-bottom-color: #9cd1ff;
+    }
+  }
 }

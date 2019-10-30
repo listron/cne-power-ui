@@ -11,6 +11,7 @@ import styles from './workPlan.scss';
 class WorkPlan extends Component {
 
   static propTypes = {
+    theme: PropTypes.string,
     planParams: PropTypes.object,
     planListPageParams: PropTypes.object,
     getWorkPlanList: PropTypes.func,
@@ -29,12 +30,14 @@ class WorkPlan extends Component {
   }
 
   render(){
+    const { theme } = this.props;
     return (
       <ContentLayout
         breadcrumb={{
           breadData: [{ name: '工作计划管理' }],
           style: { paddingLeft: '40px' },
         }}
+        theme={theme}
         contentClassName={styles.planContent}
       >
         <WorkPlanList {...this.props} />
