@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Spin } from 'antd';
 import StationLists from '../../../components/Operation/WorkStage/StationLists';
 import RecordsList from '../../../components/Operation/WorkStage/RecordsList';
 import { RunningLog, TicketsLog } from '../../../components/Operation/WorkStage/RunLogTickets';
@@ -19,6 +20,7 @@ class WorkStage extends Component {
   static propTypes = {
     theme: PropTypes.string,
     stations: PropTypes.array,
+    pageLoading: PropTypes.bool,
     showModal: PropTypes.bool,
     modalKey: PropTypes.string,
     resetStore: PropTypes.func,
@@ -31,22 +33,22 @@ class WorkStage extends Component {
 
   componentDidMount(){
     const { stations } = this.props;
-    stations.length > 0 && this.stageQuery(stations);
+    stations.length > 0 && this.stageQuery(stations, true);
   }
 
   componentDidUpdate(preProps){
     const preStations = preProps.stations;
     const { stations } = this.props;
-    stations.length > 0 && preStations.length === 0 && this.stageQuery(stations); // 刷新 | 得到电站数据
+    stations.length > 0 && preStations.length === 0 && this.stageQuery(stations, true); // 刷新 | 得到电站数据
   }
 
   componentWillUnmount(){
     this.props.resetStore();
   }
 
-  stageQuery = (stageStations) => { // 页面整体数据请求及记录 => f5 或 选择电站触发.
+  stageQuery = (stageStations, pageLoading = false) => { // 页面整体数据请求及记录 => f5 或 选择电站触发.
     const stationCodes = stageStations.map(e => e.stationCode);
-    this.props.changeStore({ stageStations }); // 默认当前用户所有电站
+    this.props.changeStore({ stageStations, pageLoading }); // 默认当前用户所有电站
     this.props.getTaskList({ stationCodes }); // 记事列表
     this.props.getRunningLog({ stationCodes }); // 运行记录
     this.props.getTickets({ stationCodes }); // 两票三制
@@ -72,6 +74,7 @@ class WorkStage extends Component {
   render(){
     // const { theme = 'light', showModal, modalKey } = this.props;
     //  modalKey 各类型弹框对应的key: addRecord增记事 editRecord改记事, recordDetail记事详情, addPlan添加计划, handlePlan下发删除计划 
+    const { pageLoading } = this.props;
     return (
       <ContentLayout
         breadcrumb={{
@@ -81,15 +84,17 @@ class WorkStage extends Component {
         // contentClassName={styles.workStage}
       >
         <StationLists {...this.props} stageQuery={this.stageQuery} />
-        <RecordsList {...this.props} />
-        <div className={styles.allDetailLogs}>
-          <RunningLog {...this.props} />
-          <TicketsLog {...this.props} />
-          <PlanList {...this.props} />
-        </div>
-        <HandleRecord {...this.props} />
-        <AddPlan {...this.props} />
-        <PlanHandle {...this.props} />
+        <Spin tip="数据加载中..." spinning={pageLoading}>
+          <RecordsList {...this.props} />
+          <div className={styles.allDetailLogs}>
+            <RunningLog {...this.props} />
+            <TicketsLog {...this.props} />
+            <PlanList {...this.props} />
+          </div>
+          <HandleRecord {...this.props} />
+          <AddPlan {...this.props} />
+          <PlanHandle {...this.props} />
+        </Spin>
       </ContentLayout>
     );
   }

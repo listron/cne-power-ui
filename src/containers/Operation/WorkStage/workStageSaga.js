@@ -1,4 +1,4 @@
-import { put, call, takeLatest, select } from 'redux-saga/effects';
+import { put, call, takeLatest, select, fork } from 'redux-saga/effects';
 import { workStageAction } from './workStageReducer';
 import request from '@utils/request';
 import path from '@path';
@@ -34,6 +34,7 @@ function *getTaskList({ payload }){ //	工作台-今日工作列表
         stageList: list.map(e => ({ ...e, key: e.taskId })),
         stageNumInfo: allNums,
         stageLoading: false,
+        pageLoading: false,
       });
     } else { throw response; }
   } catch (error) {
@@ -41,6 +42,7 @@ function *getTaskList({ payload }){ //	工作台-今日工作列表
       stageList: [],
       stageNumInfo: {},
       stageLoading: false,
+      pageLoading: false,
     });
     message.error('获取今日工作列表失败, 请刷新重试');
   }
@@ -214,10 +216,10 @@ function *addPlan({ payload }){ // 添加工作计划
       // 再次请求今日工作列表 + 计划列表
       const { stageStations, planMonth } = yield select(state => state.operation.workStage.toJS());
       const stationCodes = stageStations.map(e => e.stationCode);
-      yield call(getTaskList, { // 再次请求今日工作列表
+      yield fork(getTaskList, { // 再次请求今日工作列表
         payload: { stationCodes },
       });
-      yield call(getPlanList, { // 再次请求日历计划列表
+      yield fork(getPlanList, { // 再次请求日历计划列表
         payload: { stationCodes, planMonth },
       });
     } else { throw response; }
@@ -243,12 +245,14 @@ function *getRunningLog({ payload }) { // 运行记录
       yield call(easyPut, 'fetchSuccess', {
         runLogInfo: response.data || {},
         runLogLoading: false,
+        pageLoading: false,
       });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
       runLogInfo: {},
       runLogLoading: false,
+      pageLoading: false,
     });
     message.error('获取运行记录失败, 请刷新重试');
   }
@@ -267,6 +271,7 @@ function *getTickets({ payload }) { // 两票三制记录
       yield call(easyPut, 'fetchSuccess', {
         ticketsInfo: response.data || {},
         ticketsLoading: false,
+        pageLoading: false,
       });
     } else { throw response; }
   } catch (error) {
@@ -292,12 +297,14 @@ function *getPlanList({ payload }) { // 计划日历 payload: {stationCodes, sta
       yield call(easyPut, 'fetchSuccess', {
         planList: response.data || [],
         planListLoading: false,
+        pageLoading: false,
       });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
       planList: [],
       planListLoading: false,
+      pageLoading: false,
     });
     message.error('获取计划日历失败, 请刷新重试');
   }
@@ -316,10 +323,10 @@ function *handlePlanStatus({ payload }) { // 工作台日历任务批量下发/�
       // 再次请求今日工作列表 + 计划列表
       const { stageStations, planMonth } = yield select(state => state.operation.workStage.toJS());
       const stationCodes = stageStations.map(e => e.stationCode);
-      yield call(getTaskList, { // 再次请求今日工作列表
+      yield fork(getTaskList, { // 再次请求今日工作列表
         payload: { stationCodes },
       });
-      yield call(getPlanList, { // 再次请求日历计划列表
+      yield fork(getPlanList, { // 再次请求日历计划列表
         payload: { stationCodes, planMonth },
       });
     } else { throw response; }

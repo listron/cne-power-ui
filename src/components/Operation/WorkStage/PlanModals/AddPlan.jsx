@@ -54,7 +54,7 @@ class AddPlan extends PureComponent {
     const { form } = this.props;
     const { getFieldValue } = form;
     const startTime = getFieldValue('firstStartTime');
-    return !startTime || cur.isBefore(startTime, 'day');
+    return !startTime || cur.isBefore(startTime, 'day') || cur.isAfter(moment().add(5, 'year'), 'day');
   }
 
   saveAddRecord = () => this.onAddSave('normal');
@@ -131,10 +131,10 @@ class AddPlan extends PureComponent {
               )}
               <span className={styles.addFormTips}>注：巡视巡检将直接作为定期巡检，下发为巡检工单。</span>
             </FormItem>
-            <FormItem label="首次计划开始时间" colon={false} className={styles.eachPlanForm} >
+            <FormItem label="首次下发时间" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('firstStartTime', {
-                rules: [{ required: true, message: '请选择开始时间' }],
-                initialValue: null,
+                rules: [{ required: true, message: '请选择首次下发时间' }],
+                initialValue: moment(),
               })(
                 <DatePicker
                   showTime
@@ -211,9 +211,9 @@ class AddPlan extends PureComponent {
                 </Select>
               )}
             </FormItem>}
-            <FormItem label="计划截止时间" colon={false} className={styles.eachPlanForm} >
+            <FormItem label="计划失效时间" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('deadLine', {
-                rules: [{ required: true, message: '请选择计划截止时间' }],
+                rules: [{ required: true, message: '请选择计划失效时间' }],
                 initialValue: null,
               })(
                 <DatePicker
