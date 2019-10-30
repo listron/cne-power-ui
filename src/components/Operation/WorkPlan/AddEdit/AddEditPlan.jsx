@@ -52,7 +52,9 @@ class AddEditPlan extends PureComponent {
   continueAdd = () => this.onAddSave('continue');
 
   editSave = () => {
-    this.props.form.validateFields(this.formInfoQuery(this.props.editWorkPlan));
+    const { form, editWorkPlan, planDetail } = this.props;
+    const { planId } = planDetail;
+    form.validateFields(this.formInfoQuery(editWorkPlan, planId));
   }
 
   onAddSave = (saveMode) => {
@@ -61,11 +63,12 @@ class AddEditPlan extends PureComponent {
     });
   }
 
-  formInfoQuery = (queryMethod = () => {}) => (err, values) => {
+  formInfoQuery = (queryMethod = () => {}, planId) => (err, values) => {
     if (!err) {
       const { stationList, firstStartTime, deadLine, ...rest} = values;
       queryMethod({
         ...rest,
+        planId,
         stationCodes: stationList.map(e => e.stationCode),
         firstStartTime: firstStartTime.format('YYYY/MM/DD'),
         deadLine: deadLine && deadLine.format('YYYY/MM/DD'),
