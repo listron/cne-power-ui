@@ -12,6 +12,7 @@ import { isUrl } from '../utils';
   5. iconStyle: 菜单附加的icon图标
   6. defaultPath: 每个一级菜单下，必须有且仅有一个true，代表该一级目录(模块)下默认立刻展示的页面
   7. rightKey: 权限控制关键字
+  8.renderKey:此模块只有对应得电站才会渲染， 值只有pv或 wind,比如当renderkey：wind，就是只有风电站才会呈现此模块，如果用户只有光电站则不显示
 */
 
 const menuData = [
@@ -47,6 +48,7 @@ const menuData = [
             name: '散点图',
             path: 'scatterDiagram',
             rightKey: 'dataAnalysis_scatterPlot',
+            renderKey: 'wind',
           }, {
             name: '数据概览',
             path: 'overview',
