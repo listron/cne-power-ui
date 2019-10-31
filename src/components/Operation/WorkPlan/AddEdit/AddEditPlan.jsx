@@ -250,7 +250,7 @@ class AddEditPlan extends PureComponent {
             <FormItem label="计划失效时间" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('deadLine', {
                 rules: [{ required: true, message: '请选择计划失效时间' }],
-                initialValue: initialDeadLine ? moment(initialDeadLine) : null,
+                initialValue: initialDeadLine ? moment(initialDeadLine) : moment().add(5, 'year'),
               })(
                 <DatePicker
                   showTime

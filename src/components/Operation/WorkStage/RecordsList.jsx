@@ -29,12 +29,17 @@ class RecordsList extends PureComponent {
         sorter: (a, b) => a.taskTypeCode - b.taskTypeCode,
         className: styles.taskTypeName,
         render: (text, record) => {
-          const { taskTypeCode } = record;
-          const taskTypes = ['--', '计划', '消缺', '巡检', '记事'];
+          const { taskTypeName, taskTypeCode, deviceTypeName, taskName } = record;
+          // const taskTypes = ['--', '计划', '消缺', '巡检', '记事'];
+          // 消缺 2=> 设备类型； 巡检 3=> 巡检名称； 计划 1=> 巡检计划； 记事 4=> 工作记事
+          const recordText = ['--', '巡检计划', deviceTypeName, taskName, '工作记事'];
           return ( // className={styles.taskTypeName}
-            <div className={styles.taskTypeNameText} title={`【${taskTypes[taskTypeCode] || '--'}】${text}`}>
-              <span className={styles.taskNameHighlight}>【{taskTypes[taskTypeCode] || '--'}】</span>
-              {text}
+            <div
+              className={styles.taskTypeNameText}
+              title={`【${taskTypeName || '--'}】${recordText[taskTypeCode] || '--'}`}
+            >
+              <span className={styles.taskNameHighlight}>【{taskTypeName || '--'}】</span>
+              {recordText[taskTypeCode] || '--'}
             </div>
           );
         },

@@ -38,7 +38,7 @@ class WorkPlan extends Component {
           style: { paddingLeft: '40px' },
         }}
         theme={theme}
-        contentClassName={styles.planContent}
+        contentClassName={`${styles.planContent} ${styles[theme]}`}
       >
         <WorkPlanList {...this.props} />
         <WorkPlanSide {...this.props} />
