@@ -72,7 +72,7 @@ class WorkStage extends Component {
   }
 
   render(){
-    // const { theme = 'light', showModal, modalKey } = this.props;
+    const { theme = 'light' } = this.props;
     //  modalKey 各类型弹框对应的key: addRecord增记事 editRecord改记事, recordDetail记事详情, addPlan添加计划, handlePlan下发删除计划 
     const { pageLoading } = this.props;
     return (
@@ -81,7 +81,7 @@ class WorkStage extends Component {
           breadData: [{ name: '工作台' }],
           style: { paddingLeft: '40px' },
         }}
-        // contentClassName={styles.workStage}
+        layoutClassName={`${styles.workStage} ${styles[theme]}`}
       >
         <StationLists {...this.props} stageQuery={this.stageQuery} />
         <Spin tip="数据加载中..." spinning={pageLoading}>

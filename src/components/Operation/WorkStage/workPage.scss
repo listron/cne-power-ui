@@ -266,4 +266,77 @@
   }
 }
 
+// 深色主题部分
 
+.dark.stationLists{
+  border:1px solid #4288b5;
+  background:rgba(20,33,101,0.40);
+  .stationHandler{
+    color: #fff;
+    background:#00cdff;
+  }
+  .stationNames{
+    color:#9cd1ff;
+  }
+}
+
+.dark.recordsList{
+  background:rgba(20,33,101,0.40);
+  .recordFilter{
+    .todayWorkTitle, .filterTips{
+      color:#9cd1ff;
+    }
+    .filterParts{
+      .filterTypeBtn.active{
+        background-image:linear-gradient(-180deg, #1cfcf4 0%, #009cff 100%);
+        color: #fff;
+      }
+    }
+  }
+  .recordTable{
+    :global{
+      .ant-table-scroll .ant-table-body{
+        &::-webkit-scrollbar-thumb {
+          background: rgba(0, 0, 0, 0.5);
+        }
+      }
+      .ant-table-scroll .ant-table-header{
+        background-color: transparent;
+      }
+    }
+  }
+}
+
+.dark.runningLog, .dark.ticketsLog{
+  background:rgba(20,33,101,0.40);
+  border:1px solid #4288b5;
+  h3{
+    color: #9cd1ff;
+  }
+  .eachInfo{
+    color: #9cd1ff;
+    .infoDetail{
+      color: #9cd1ff;
+    }
+    .infoValue{
+      color: #9cd1ff;
+    }
+    svg, .linkAndTip{
+      color: #9cd1ff;
+    }
+  } 
+}
+
+.dark.planList { // 日历计划组件
+  background:rgba(20,33,101,0.40);
+  border:1px solid #4288b5;
+  .topPlanHandle{
+    .monthText{
+      color:#00cdff;
+    }
+  }
+  .datesList{
+    color:#9cd1ff;
+    border-bottom: 1px solid #4288b5;
+  }
+}

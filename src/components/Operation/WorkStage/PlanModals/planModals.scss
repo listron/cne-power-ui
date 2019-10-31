@@ -182,7 +182,8 @@
     }
   }
 }
-.eachDate{
+
+.light.eachDate{
   border-top: 1px solid $promptColor;
   border-right: 1px solid $promptColor;
   &:nth-of-type(7n) {
@@ -206,14 +207,14 @@
     box-shadow:0 0 4px 2px rgba(0,0,0,0.30);
   }
 }
-.limitedDates{
+.light.limitedDates{
   background: #f8f8f8;
   color: $promptColor;
   .datesTips .momentDate{
     color: $promptColor;
   }
 }
-.activeDate{
+.light.activeDate{
   background: $themeColor;
   color:#ffffff;
   .datesTips{
@@ -226,9 +227,13 @@
     }
   }
 }
-.noPlanDate{
+.light.noPlanDate{
   cursor: default;
 }
+
+
+
+
 .planHandle{ // 计划下发, 删除
   .handle{
     padding-left: 12px;
@@ -251,6 +256,51 @@
     }
     .cancelSelect{
       color: $themeColor;
+    }
+  }
+}
+
+
+
+
+.dark.eachDate{
+  border-top: 1px solid #4288b5;
+  border-right: 1px solid #4288b5;
+  .datesTips{
+    .today{
+      color: #fff;
+      border: 1px solid #fff;
+    }
+    .momentDate{
+      color: #9cd1ff;
+    }
+  }
+  .datesPlan .planNumber{
+    background-color: #f9b600;
+    color: #fff;
+  }
+  &:not(.limitedDates):not(.activeDate):not(.activeDate):not(.noPlanDate):hover{
+    background:#9cd1ff;
+    box-shadow:0 0 4px 2px rgba(0,240,255,0.40);
+  }
+}
+.dark.limitedDates{
+  background: #4a5988;
+  color: #303c62;
+  .datesTips .momentDate{
+    color: #303c62;
+  }
+}
+.dark.activeDate{
+  background:#00cdff;
+  color:#ffffff;
+  .datesTips{
+    .today{
+      color: #fff;
+      border: 1px solid #fff;
+    }
+    .momentDate{
+      color: #fff;
     }
   }
 }
