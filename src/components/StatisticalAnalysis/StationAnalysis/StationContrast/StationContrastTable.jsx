@@ -58,6 +58,10 @@ class StationContrastTable extends React.Component {
 
   render() {
     const { stationContrastDetail, theme, stationContrastList } = this.props;
+    console.log('stationContrastDetail: ', stationContrastDetail);
+    console.log('stationContrastList: ', stationContrastList);
+    const test = Object.entries(stationContrastDataInfo);
+    console.log('test: ', test);
     const content = (
       <div>
         <StationContrastDetail
@@ -82,27 +86,38 @@ class StationContrastTable extends React.Component {
             </Row>);
           })}
         </Col>
-        {stationContrastList && stationContrastList.length === 2 &&
+        {stationContrastList &&
+          // {stationContrastList && stationContrastList.length === 2 &&
           (<Col className={styles.stationOne} span={18} >
             <div>
-              <div className={styles.baseInfoBg} >{stationContrastList[0].stationName || '--'}</div>
+              {stationContrastList.map((e, i) => (<div key={i} className={styles.baseInfoBg} >{e.stationName || '--'}</div>))}
+              {/* <div className={styles.baseInfoBg} >{stationContrastList[0].stationName || '--'}</div>
               <div className={styles.baseInfoBg} >{stationContrastList[1].stationName || '--'}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[2].stationName || '--'}</div> */}
             </div>
             <div>
-              <div className={styles.baseInfoBg} >{stationContrastList[0].ongridTime || '--'}</div>
+              {stationContrastList.map((e, i) => (<div key={i} className={styles.baseInfoBg} >{e.ongridTime || '--'}</div>))}
+              {/* <div className={styles.baseInfoBg} >{stationContrastList[0].ongridTime || '--'}</div>
               <div className={styles.baseInfoBg} >{stationContrastList[1].ongridTime || '--'}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[2].ongridTime || '--'}</div> */}
             </div>
             <div>
-              <div className={styles.baseInfoBg} >{stationContrastList[0].capacity || '--'}</div>
+              {stationContrastList.map((e, i) => (<div key={i} className={styles.baseInfoBg} >{e.capacity || '--'}</div>))}
+              {/* <div className={styles.baseInfoBg} >{stationContrastList[0].capacity || '--'}</div>
               <div className={styles.baseInfoBg} >{stationContrastList[1].capacity || '--'}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[2].capacity || '--'}</div> */}
             </div>
             <div>
-              <div className={styles.baseInfoBg} >{stationContrastList[0].regionName || '--'}</div>
+              {stationContrastList.map((e, i) => (<div key={i} className={styles.baseInfoBg} >{e.regionName || '--'}</div>))}
+              {/* <div className={styles.baseInfoBg} >{stationContrastList[0].regionName || '--'}</div>
               <div className={styles.baseInfoBg} >{stationContrastList[1].regionName || '--'}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[2].regionName || '--'}</div> */}
             </div>
             <div>
-              <div className={styles.baseInfoBg} >{stationContrastList[0].unitCount || '--'}</div>
+              {stationContrastList.map((e, i) => (<div key={i} className={styles.baseInfoBg} >{e.unitCount || '--'}</div>))}
+              {/* <div className={styles.baseInfoBg} >{stationContrastList[0].unitCount || '--'}</div>
               <div className={styles.baseInfoBg} >{stationContrastList[1].unitCount || '--'}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[2].unitCount || '--'}</div> */}
             </div>
             <span ref="popover" />
             {Object.entries(stationContrastDataInfo).map((item, index) => {
@@ -128,8 +143,10 @@ class StationContrastTable extends React.Component {
                     className={highLightColumn.includes(item[0]) ? (differHighLight ? styles.differHighLight : styles.contrastDetailPopover) : styles.contrastDetailPopover}
                     placement="bottom"
                     overlayClassName={styles.contrastOverlayClassName} >
-                    <div className={styles.stationContrastOne} >{stationContrastList[0][item[0]] || '--'}</div>
+                    {stationContrastList.map((e, i) => (<div key={i} className={styles.stationContrastOne} >{e[item[0]] || '--'}</div>))}
+                    {/* <div className={styles.stationContrastOne} >{stationContrastList[0][item[0]] || '--'}</div>
                     <div className={styles.stationContrastTwo} >{stationContrastList[1][item[0]] || '--'}</div>
+                    <div className={styles.stationContrastTwo} >{stationContrastList[2][item[0]] || '--'}</div> */}
                   </Popover>
                 </div>
               );
