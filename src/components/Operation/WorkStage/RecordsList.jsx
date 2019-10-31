@@ -32,14 +32,15 @@ class RecordsList extends PureComponent {
           const { taskTypeName, taskTypeCode, deviceTypeName, taskName } = record;
           // const taskTypes = ['--', '计划', '消缺', '巡检', '记事'];
           // 消缺 2=> 设备类型； 巡检 3=> 巡检名称； 计划 1=> 巡检计划； 记事 4=> 工作记事
-          const recordText = ['--', '巡检计划', deviceTypeName, taskName, '工作记事'];
+          const recordKey = ['--', '巡检计划', deviceTypeName, taskName, '工作记事'];
+          const recordText = recordKey[taskTypeCode] || '--';
           return ( // className={styles.taskTypeName}
             <div
               className={styles.taskTypeNameText}
-              title={`【${taskTypeName || '--'}】${recordText[taskTypeCode] || '--'}`}
+              title={`【${taskTypeName || '--'}】${recordText}`}
             >
               <span className={styles.taskNameHighlight}>【{taskTypeName || '--'}】</span>
-              {recordText[taskTypeCode] || '--'}
+              {recordText}
             </div>
           );
         },
@@ -47,7 +48,14 @@ class RecordsList extends PureComponent {
         title: '工作描述',
         dataIndex: 'taskDesc',
         className: styles.taskDesc,
-        render: (text = '') => (<div title={text} className={styles.taskDescText}>{text}</div>),
+        render: (text = '', record) => {
+          const { taskTypeCode, taskName, taskDesc } = record; // taskTypeCode === 3时候为巡检，工作描述展示巡检名称
+          const recordKey = ['--', taskDesc, taskDesc, taskName, taskDesc];
+          const recordText = recordKey[taskTypeCode] || '--';
+          return (
+            <div title={recordText} className={styles.taskDescText}>{recordText}</div>
+          );
+        },
       }, {
         title: '电站',
         dataIndex: 'stationName',
