@@ -98,3 +98,19 @@
     }
   }
 }
+
+.dark.recordDetail{
+  .recordTitle{
+    color: #000;
+  }
+  .detailHandle{ // 记事详情 底部操作
+    .editBtn{
+      background-image:linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+      color: #fff;
+    }
+    .deleteBtn{
+      background-image:linear-gradient(-180deg, #fad961 0%, #f76b1c 100%);
+      color: #fff;
+    }
+  }
+}

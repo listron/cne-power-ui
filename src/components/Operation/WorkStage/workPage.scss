@@ -196,7 +196,7 @@
 }
 
 
-//            颜色部分
+//  颜色部分 浅色主题
 .light.stationLists{
   border:1px solid #e1e3e4;
   background-color: #fff;
@@ -267,7 +267,6 @@
 }
 
 // 深色主题部分
-
 .dark.stationLists{
   border:1px solid #4288b5;
   background:rgba(20,33,101,0.40);
@@ -333,6 +332,9 @@
   .topPlanHandle{
     .monthText{
       color:#00cdff;
+    }
+    .monthHandler .monthIcon{
+      color: #69b8fb;
     }
   }
   .datesList{

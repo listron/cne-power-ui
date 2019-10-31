@@ -100,7 +100,7 @@ class PlanList extends PureComponent {
               type="left" className={styles.monthIcon}
               style={monthReduceUnable ? {
                 cursor: 'not-allowed',
-                color: theme === 'light' ? '#999' : '#69b8fb',
+                color: '#999',
               } : {}}
               onClick={!monthReduceUnable ? this.checkPreMonth : null}
             />
