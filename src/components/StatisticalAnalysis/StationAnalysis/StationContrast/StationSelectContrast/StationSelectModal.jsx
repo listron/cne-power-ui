@@ -81,7 +81,7 @@ class StationSelectModal extends Component {
     const { selectedStation } = this.state;
     const tmpStationType = new Set(selectedStation.map(e => e.stationType));
     if (selectedStation.length > 10 || selectedStation.length === 1 || tmpStationType.size !== 1) {
-      message.warning('请选择两个同一类型的电站进行对比!');
+      message.warning('请选择同一类型的电站进行对比,最多选择10个电站!!');
     } else {
       this.props.handleOK(selectedStation);
     }
