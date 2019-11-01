@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './stationContrast.scss';
 import StationSelectContrast from './StationSelectContrast';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
@@ -27,7 +27,7 @@ class StationContrast extends React.Component {
     };
   }
   componentDidMount() {
-    this.props.toChangeStationContrastStore({ year: [moment().format('YYYY')] })
+    this.props.toChangeStationContrastStore({ year: [moment().format('YYYY')] });
   }
 
   componentWillUnmount() {
@@ -37,23 +37,23 @@ class StationContrast extends React.Component {
 
     const { stationCode, year, month, toChangeStationContrastStore } = this.props;
     if (timeObj.timeStyle === 'year') {
-      toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] })
+      toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] });
       if (stationCode.length === 2) {
         this.props.getStationContrast({
           stationCode: stationCode,
           dateType: timeObj.timeStyle,
-          year: [timeObj.startTime, timeObj.endTime]
+          year: [timeObj.startTime, timeObj.endTime],
         });
       }
 
     }
     if (timeObj.timeStyle === 'month') {
-      toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
+      toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] });
       if (stationCode.length === 2) {
         this.props.getStationContrast({
           stationCode: stationCode,
           dateType: timeObj.timeStyle,
-          year: [timeObj.startTime]
+          year: [timeObj.startTime],
         });
       }
 
@@ -61,13 +61,13 @@ class StationContrast extends React.Component {
     if (timeObj.timeStyle === 'day') {
       const currentYear = [moment(timeObj.startTime).format('YYYY')];
       const currentMonth = +moment(timeObj.startTime).format('MM');
-      toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: currentYear, month: currentMonth })
+      toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: currentYear, month: currentMonth });
       if (stationCode.length === 2) {
         this.props.getStationContrast({
           stationCode: stationCode,
           dateType: timeObj.timeStyle,
           year: currentYear,
-          month: currentMonth
+          month: currentMonth,
         });
       }
 
@@ -86,7 +86,7 @@ class StationContrast extends React.Component {
         stationCode: stations.map(e => e.stationCode),
         dateType,
         year,
-        month
+        month,
       });
     } else {
       this.props.getStationContrast({
@@ -123,9 +123,9 @@ class StationContrast extends React.Component {
         <div className={styles.componentContainer}>
           <div className={styles.componentContainerTip} >
             <span>电站数据</span>
-            {stationContrastList && stationContrastList.length === 2 && <span>点击表格数据，可查看详细</span>}
+            {(stationContrastList && stationContrastList.length) ? <span>点击表格数据，可查看详细</span> : ''}
           </div>
-          {stationContrastList && stationContrastList.length !== 2 ?
+          {stationContrastList && stationContrastList.length === 0 ?
             <div className={styles.nodata} ><img src="/img/nodata.png" /></div>
             : <StationContrastTable {...this.props} />
           }
