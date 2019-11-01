@@ -61,6 +61,7 @@ const mapDispatchToProps = (dispatch) => ({
   getWorkPlanList: payload => dispatch({ type: workPlanAction.getWorkPlanList, payload }),
   getWorkPlanDetail: payload => dispatch({ type: workPlanAction.getWorkPlanDetail, payload }),
   addWorkPlan: payload => dispatch({ type: workPlanAction.addWorkPlan, payload }),
+  setWorkPlanStatus: payload => dispatch({ type: workPlanAction.setWorkPlanStatus, payload }),
   editWorkPlan: payload => dispatch({ type: workPlanAction.editWorkPlan, payload }),
   deleteWorkPlan: payload => dispatch({ type: workPlanAction.deleteWorkPlan, payload }),
 

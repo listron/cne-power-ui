@@ -1,13 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Switch } from 'antd';
+import { Button, Icon, Switch, Popconfirm, Spin } from 'antd';
 import styles from './detail.scss';
 
 class PlanDetail extends PureComponent {
 
   static propTypes = {
     theme: PropTypes.string,
+    planDetailHandleLoading: PropTypes.bool,
     planDetail: PropTypes.object,
+    setWorkPlanStatus: PropTypes.func,
     changeStore: PropTypes.func,
   };
 
@@ -85,7 +87,16 @@ class PlanDetail extends PureComponent {
     }, {
       title: '启用开关',
       dataIndex: 'planStatus', // 1 启用 2 停用
-      render: ({ planStatus }) => <Switch disabled checked={planStatus === 1} />,
+      render: ({ planStatus }) => (
+        <Popconfirm
+          title="是否确认删除计划?"
+          onConfirm={() => this.onPlanStatusCheck({ planStatus: planStatus === 1 ? 2 : 1 })}
+          okText="确定"
+          cancelText="取消"
+        >
+          <Switch checked={planStatus === 1} />
+        </Popconfirm>
+      ),
     }, {
       title: '操作日志',
       dataIndex: 'planLogs',
@@ -113,12 +124,18 @@ class PlanDetail extends PureComponent {
     },
   ]
 
+  onPlanStatusCheck = ({ planStatus }) => {
+    const { planDetail } = this.props;
+    const { planId } = planDetail || {};
+    this.props.setWorkPlanStatus({ planId, planStatus });
+  }
+
   toEdit = () => this.props.changeStore({ planPageKey: 'edit' })
 
   backList = () => this.props.changeStore({ planPageKey: 'list', planDetail: {} })
 
   render(){
-    const { planDetail, theme } = this.props;
+    const { planDetail, theme, planDetailHandleLoading } = this.props;
     const { inspectTypeCode = 100001 } = planDetail || {}; // 巡检计划类型 日常：100001；巡视巡检：100002
     const detailBaseInfo = [
       ...this.detailBase,
@@ -135,12 +152,14 @@ class PlanDetail extends PureComponent {
           </span>
         </h3>
         <div className={styles.detailContent}>
-          {detailBaseInfo.map(e => (
-            <div className={styles.eachContent} key={e.title}>
-              <span className={styles.detailTitle}>{e.title}</span>
-              <span className={styles.detailValue}>{e.render ? e.render(planDetail) : (planDetail[e.dataIndex] || '--')}</span>
-            </div>
-          ))}
+          <Spin tip="数据加载中..." spinning={planDetailHandleLoading}>
+            {detailBaseInfo.map(e => (
+              <div className={styles.eachContent} key={e.title}>
+                <span className={styles.detailTitle}>{e.title}</span>
+                <span className={styles.detailValue}>{e.render ? e.render(planDetail) : (planDetail[e.dataIndex] || '--')}</span>
+              </div>
+            ))}
+          </Spin>
         </div>
       </section>
     );

@@ -1,4 +1,4 @@
-import { put, call, takeLatest, select } from 'redux-saga/effects';
+import { put, call, takeLatest, select, fork } from 'redux-saga/effects';
 import { workPlanAction } from './workPlanReducer';
 import request from '@utils/request';
 import path from '@path';
@@ -70,9 +70,13 @@ function *getWorkPlanDetail({ payload }){ // 获取计划详情 { planId }
       yield call(easyPut, 'fetchSuccess', { // 详情
         planPageKey: 'detail',
         planDetail: response.data || {},
+        planDetailHandleLoading: false, // 将计划完成的loading状态 变为可操作
       });
     } else { throw response; }
   } catch (error) {
+    yield call(easyPut, 'fetchSuccess', { // 详情
+      planDetailHandleLoading: false,
+    });
     message.error(`获取计划详情失败${error.message}, 请重试`);
   }
 }
@@ -110,6 +114,27 @@ function *addWorkPlan({ payload }){ // 添加工作计划
   }
 }
 
+function *setWorkPlanStatus({ payload }) { // 工作计划详情 启用开关编辑
+  try {
+    const { planId } = payload; // 原工作详情的信息拷贝 + 编辑后的status
+    const url = `${APIBasePath}${operation.handleWorkPlan}`;
+    yield call(easyPut, 'changeStore', { planDetailHandleLoading: true });
+    const response = yield call(request.put, url, { ...payload });
+    if (response.code === '10000') {
+      const { planParams, planListPageParams } = yield select(state => state.operation.workPlan.toJS()); // 再次请求当前列表
+      yield fork(getWorkPlanList, { // 再次请求日历计划列表
+        payload: { ...planParams, ...planListPageParams },
+      });
+      yield fork(getWorkPlanDetail, {payload: { planId }});
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      planDetailHandleLoading: false,
+    });
+    message.error(`修改启用状态失败${error.message}, 请重试`);
+  }
+}
+
 function *editWorkPlan({ payload }){ // 编辑工作计划
   try {
     const url = `${APIBasePath}${operation.handleWorkPlan}`;
@@ -118,20 +143,12 @@ function *editWorkPlan({ payload }){ // 编辑工作计划
     if (response.code === '10000') {
       message.success('恭喜！你所提交的信息已经保存成功，可在日历及计划管理中查看。');
       const { planParams, planListPageParams } = yield select(state => state.operation.workPlan.toJS()); // 再次请求列表
-      const newPagePrams = {
-        ...planListPageParams,
-        pageNum: 1,
-        pageSize: 10,
-        orderField: 8, // planTypeName inspectContent firstStartTime nextSendTime validPeriod cycleTypeName planStatus lastHandleTime
-        orderMethod: 'desc', // 新增后, 将按照最新更新时间排序展示
-      };
       yield call(easyPut, 'fetchSuccess', {
         addPlanLoading: false,
         planDetail: {},
-        planListPageParams: newPagePrams,
       });
       yield call(getWorkPlanList, { // 再次请求日历计划列表
-        payload: { ...planParams, ...newPagePrams },
+        payload: { ...planParams, ...planListPageParams },
       });
     } else { throw response; }
   } catch (error) {
@@ -174,6 +191,7 @@ export function* watchWorkPlan() {
   yield takeLatest(workPlanAction.getWorkPlanDetail, getWorkPlanDetail);
   yield takeLatest(workPlanAction.addWorkPlan, addWorkPlan);
   yield takeLatest(workPlanAction.editWorkPlan, editWorkPlan);
+  yield takeLatest(workPlanAction.setWorkPlanStatus, setWorkPlanStatus);
   yield takeLatest(workPlanAction.deleteWorkPlan, deleteWorkPlan);
   yield takeLatest(workPlanAction.getInspectUsers, getInspectUsers);
 }
