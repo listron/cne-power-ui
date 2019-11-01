@@ -53,6 +53,7 @@ class StationLists extends PureComponent {
           电站: {stationNamePartString || '未选择电站'}
         </span>
         <StationModal
+          theme={theme}
           multiple={true}
           oneStyleOnly={false}
           checkedStations={stageStations}
