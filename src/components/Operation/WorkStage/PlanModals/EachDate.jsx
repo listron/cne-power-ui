@@ -33,13 +33,13 @@ class EachDate extends PureComponent {
     return (
       <span
         className={dateClassNames.join(' ')}
-        onClick={curPlan ? this.showHandleList : null}
+        onClick={(curPlan && list.length > 0) ? this.showHandleList : null}
       >
         <div className={styles.datesTips}>
           <span className={styles.momentDate}>{moment(curDate).format('D')}</span>
           {moment().isSame(curDate, 'day') && <span className={styles.today}>今天</span>}
         </div>
-        {curPlan && <div className={styles.datesPlan}>
+        {(curPlan && list.length > 0) && <div className={styles.datesPlan}>
           <span className="iconfont icon-jxjh" />
           <span className={styles.planNumber}>{list.length}</span>
         </div>}
