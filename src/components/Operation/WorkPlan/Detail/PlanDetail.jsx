@@ -17,10 +17,40 @@ class PlanDetail extends PureComponent {
     this.props.changeStore({ planPageKey: 'list' });
   }
 
+  compareKeys = [ // 日志比较参考项
+    {
+      title: '适用电站',
+      dataIndex: 'stations',
+      render: (stations = []) => stations.map(e => e.stationName).join(','),
+    }, {
+      title: '首次下发时间',
+      dataIndex: 'firstStartTime',
+    }, {
+      title: '循环周期',
+      dataIndex: 'cycleTypeName',
+    }, {
+      title: '执行工时',
+      dataIndex: 'cycleTypeName',
+    }, {
+      title: '巡检名称',
+      dataIndex: 'planName',
+    }, {
+      title: '设备类型',
+      dataIndex: 'deviceTypes',
+      render: (deviceTypes = []) => deviceTypes.map(e => e.deviceTypeName).join(','),
+    }, {
+      title: '计划失效时间',
+      dataIndex: 'deadLine',
+    }, {
+      title: '巡视内容',
+      dataIndex: 'inspectContent',
+    },
+  ]
+
   detailBase = [
     {
       title: '适用电站',
-      key: 'stations',
+      dataIndex: 'stations',
       render: ({ stations = [] }) => {
         const stationStr = stations.map(e => e.stationName).join(',');
         return (<span title={stationStr}>{stationStr || '--'}</span>);
@@ -100,35 +130,50 @@ class PlanDetail extends PureComponent {
     }, {
       title: '操作日志',
       dataIndex: 'planLogs',
-      render: ({ planLogs = [] }) => {
-        const operateInfo = ['--', '新增', '编辑', '删除', '其他'];
+      render: ({ planLogs = [] }) => planLogs.filter(e => e.before).map(e => { // e.before需要存在
+        const { createTime = '--', before, after } = e || {};
+        const { createName = '--' } = after;
+        const eachDiff = this.compareDiff(before, (after || {})); // 比较前后日志不同信息 输出为数组
         return (
-          <div>
-            {planLogs.map(e => {
-              const { createTime = '--', operateType, after = {} } = e || {};
-              const { createName = '--' } = after;
-              return (
-                <div key={createTime}>
-                  <span className={styles.logTip}>【操作人】</span>
-                  <span className={styles.logValue}>{createName}</span>
-                  <span className={styles.logTip}>【操作时间】</span>
-                  <span className={styles.logValue}>{createTime}</span>
-                  <span className={styles.logTip}>【操作类型】</span>
-                  <span className={styles.logValue}>{operateInfo[operateType] || '--'}</span>
-                </div>
-              );
-            })}
+          <div key={createTime} className={styles.looger}>
+            <div className={styles.diffLeft}>
+              <span className={styles.logTip}>【操作人】</span>
+              <span title={createName} className={`${styles.logValue} ${styles.loggerName}`}>{createName}</span>
+              <span className={styles.logTip}>【操作时间】</span>
+              <span className={styles.logValue}>{createTime}</span>
+            </div>
+            <div>
+              {eachDiff.map(difftexts => (
+                difftexts ? <div key={difftexts[0]} className={styles.diffPart}>
+                  <span className={styles.logTip}>【{difftexts[0]}】</span>
+                  <span className={styles.logValue}>{difftexts[1]}</span>
+                  <span className={styles.logTip}> 改为 </span>
+                  <span className={styles.logValue}>{difftexts[2]}</span>
+                </div> : null
+              ))}
+            </div>
           </div>
         );
-      },
+      }),
     },
   ]
+
+  compareDiff = (before = {}, after = {}) => this.compareKeys.map(detail => { // 比较前后日志不同信息 输出为数组
+    const { render, dataIndex, title } = detail;
+    const preText = render ? render(before[dataIndex]) : before[dataIndex];
+    const nextText = render ? render(after[dataIndex]) : after[dataIndex];
+    if (preText !== nextText) {
+      return [title, preText, nextText];
+    }
+    return;
+  });
 
   onPlanStatusCheck = ({ planStatus }) => {
     const { planDetail } = this.props;
     const { planId } = planDetail || {};
     this.props.setWorkPlanStatus({ planId, planStatus });
   }
+
 
   toEdit = () => this.props.changeStore({ planPageKey: 'edit' })
 
@@ -155,8 +200,8 @@ class PlanDetail extends PureComponent {
           <Spin tip="数据加载中..." spinning={planDetailHandleLoading}>
             {detailBaseInfo.map(e => (
               <div className={styles.eachContent} key={e.title}>
-                <span className={styles.detailTitle}>{e.title}</span>
-                <span className={styles.detailValue}>{e.render ? e.render(planDetail) : (planDetail[e.dataIndex] || '--')}</span>
+                <div className={styles.detailTitle}>{e.title}</div>
+                <div className={styles.detailValue}>{e.render ? e.render(planDetail) : (planDetail[e.dataIndex] || '--')}</div>
               </div>
             ))}
           </Spin>
