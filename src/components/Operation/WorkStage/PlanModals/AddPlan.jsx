@@ -78,6 +78,16 @@ class AddPlan extends PureComponent {
     });
   }
 
+  validPeriodDays = {
+    152: 1,
+    153: 7,
+    154: 30,
+    155: 90,
+    156: 365,
+    151: 100,
+    157: 180,
+  }
+
   render(){
     const { saveMode } = this.state;
     const { showModal, modalKey, form, stageStations, stationDeviceTypes, saveRecordLoading, theme } = this.props;
@@ -86,7 +96,8 @@ class AddPlan extends PureComponent {
       firstStartTime,
       inspectTypeCode,
       deviceTypeCodes = [],
-    } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes']);
+      cycleTypeCode,
+    } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes', 'cycleTypeCode']);
     return (
       <Modal
         title="添加计划"
@@ -162,8 +173,10 @@ class AddPlan extends PureComponent {
                     } else {
                       const notNumber = isNaN(value);
                       const hasDemical = value.split('.')[1];
-                      const wrongNumber = value < 0 || value > 999;
-                      (notNumber || hasDemical || wrongNumber) && callback('计划天数需为不大于999的整数');
+                      const wrongNumber = value < 0 || value > this.validPeriodDays[cycleTypeCode];
+                      (notNumber || hasDemical || wrongNumber) && callback(
+                        `计划天数需为不超过${this.validPeriodDays[cycleTypeCode] || 999}的整数`
+                      );
                     }
                     callback();
                   },
@@ -173,6 +186,7 @@ class AddPlan extends PureComponent {
                 <Input style={{width: '200px'}} placeholder="请输入..." />
               )}
               天
+              {cycleTypeCode && <span className={styles.addFormTips}>注：不超过{this.validPeriodDays[cycleTypeCode]}天</span>}
             </FormItem>
             <FormItem label="循环周期" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('cycleTypeCode', {
