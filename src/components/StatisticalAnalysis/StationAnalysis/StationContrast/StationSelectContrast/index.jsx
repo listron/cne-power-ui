@@ -139,6 +139,10 @@ class StationSelectContrast extends Component {
       stationModalShow: true,
     });
   }
+  maxTagPlaceholder = (omittedValues) => {
+    const { data } = this.props;
+    return <div title={omittedValues.join(',')} >已选电站{omittedValues.length}/{data.length}</div>;
+  }
 
   render() {
     const { data, multiple, holderText, disabledStation, disabled, theme = 'light' } = this.props;
@@ -152,6 +156,8 @@ class StationSelectContrast extends Component {
           placeholder={holderText}
           onChange={this.selectStation}
           value={checkedStationName}
+          maxTagCount={0}
+          maxTagPlaceholder={this.maxTagPlaceholder}
           className={styles.stationSelectMainInput}
         >
 
