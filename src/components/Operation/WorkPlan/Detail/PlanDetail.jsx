@@ -1,13 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Switch } from 'antd';
+import { Button, Icon, Switch, Popconfirm, Spin } from 'antd';
 import styles from './detail.scss';
 
 class PlanDetail extends PureComponent {
 
   static propTypes = {
     theme: PropTypes.string,
+    planDetailHandleLoading: PropTypes.bool,
     planDetail: PropTypes.object,
+    setWorkPlanStatus: PropTypes.func,
     changeStore: PropTypes.func,
   };
 
@@ -15,10 +17,40 @@ class PlanDetail extends PureComponent {
     this.props.changeStore({ planPageKey: 'list' });
   }
 
+  compareKeys = [ // 日志比较参考项
+    {
+      title: '适用电站',
+      dataIndex: 'stations',
+      render: (stations = []) => stations.map(e => e.stationName).join(','),
+    }, {
+      title: '首次下发时间',
+      dataIndex: 'firstStartTime',
+    }, {
+      title: '循环周期',
+      dataIndex: 'cycleTypeName',
+    }, {
+      title: '执行工时',
+      dataIndex: 'cycleTypeName',
+    }, {
+      title: '巡检名称',
+      dataIndex: 'planName',
+    }, {
+      title: '设备类型',
+      dataIndex: 'deviceTypes',
+      render: (deviceTypes = []) => deviceTypes.map(e => e.deviceTypeName).join(','),
+    }, {
+      title: '计划失效时间',
+      dataIndex: 'deadLine',
+    }, {
+      title: '巡视内容',
+      dataIndex: 'inspectContent',
+    },
+  ]
+
   detailBase = [
     {
       title: '适用电站',
-      key: 'stations',
+      dataIndex: 'stations',
       render: ({ stations = [] }) => {
         const stationStr = stations.map(e => e.stationName).join(',');
         return (<span title={stationStr}>{stationStr || '--'}</span>);
@@ -85,40 +117,70 @@ class PlanDetail extends PureComponent {
     }, {
       title: '启用开关',
       dataIndex: 'planStatus', // 1 启用 2 停用
-      render: ({ planStatus }) => <Switch disabled checked={planStatus === 1} />,
+      render: ({ planStatus }) => (
+        <Popconfirm
+          title="是否确认删除计划?"
+          onConfirm={() => this.onPlanStatusCheck({ planStatus: planStatus === 1 ? 2 : 1 })}
+          okText="确定"
+          cancelText="取消"
+        >
+          <Switch checked={planStatus === 1} />
+        </Popconfirm>
+      ),
     }, {
       title: '操作日志',
       dataIndex: 'planLogs',
-      render: ({ planLogs = [] }) => {
-        const operateInfo = ['--', '新增', '编辑', '删除', '其他'];
+      render: ({ planLogs = [] }) => planLogs.filter(e => e.before).map(e => { // e.before需要存在
+        const { createTime = '--', before, after } = e || {};
+        const { createName = '--' } = after;
+        const eachDiff = this.compareDiff(before, (after || {})); // 比较前后日志不同信息 输出为数组
         return (
-          <div>
-            {planLogs.map(e => {
-              const { createTime = '--', operateType, after = {} } = e || {};
-              const { createName = '--' } = after;
-              return (
-                <div key={createTime}>
-                  <span className={styles.logTip}>【操作人】</span>
-                  <span className={styles.logValue}>{createName}</span>
-                  <span className={styles.logTip}>【操作时间】</span>
-                  <span className={styles.logValue}>{createTime}</span>
-                  <span className={styles.logTip}>【操作类型】</span>
-                  <span className={styles.logValue}>{operateInfo[operateType] || '--'}</span>
-                </div>
-              );
-            })}
+          <div key={createTime} className={styles.looger}>
+            <div className={styles.diffLeft}>
+              <span className={styles.logTip}>【操作人】</span>
+              <span title={createName} className={`${styles.logValue} ${styles.loggerName}`}>{createName}</span>
+              <span className={styles.logTip}>【操作时间】</span>
+              <span className={styles.logValue}>{createTime}</span>
+            </div>
+            <div>
+              {eachDiff.map(difftexts => (
+                difftexts ? <div key={difftexts[0]} className={styles.diffPart}>
+                  <span className={styles.logTip}>【{difftexts[0]}】</span>
+                  <span className={styles.logValue}>{difftexts[1]}</span>
+                  <span className={styles.logTip}> 改为 </span>
+                  <span className={styles.logValue}>{difftexts[2]}</span>
+                </div> : null
+              ))}
+            </div>
           </div>
         );
-      },
+      }),
     },
   ]
+
+  compareDiff = (before = {}, after = {}) => this.compareKeys.map(detail => { // 比较前后日志不同信息 输出为数组
+    const { render, dataIndex, title } = detail;
+    const preText = render ? render(before[dataIndex]) : before[dataIndex];
+    const nextText = render ? render(after[dataIndex]) : after[dataIndex];
+    if (preText !== nextText) {
+      return [title, preText, nextText];
+    }
+    return;
+  });
+
+  onPlanStatusCheck = ({ planStatus }) => {
+    const { planDetail } = this.props;
+    const { planId } = planDetail || {};
+    this.props.setWorkPlanStatus({ planId, planStatus });
+  }
+
 
   toEdit = () => this.props.changeStore({ planPageKey: 'edit' })
 
   backList = () => this.props.changeStore({ planPageKey: 'list', planDetail: {} })
 
   render(){
-    const { planDetail, theme } = this.props;
+    const { planDetail, theme, planDetailHandleLoading } = this.props;
     const { inspectTypeCode = 100001 } = planDetail || {}; // 巡检计划类型 日常：100001；巡视巡检：100002
     const detailBaseInfo = [
       ...this.detailBase,
@@ -135,12 +197,14 @@ class PlanDetail extends PureComponent {
           </span>
         </h3>
         <div className={styles.detailContent}>
-          {detailBaseInfo.map(e => (
-            <div className={styles.eachContent} key={e.title}>
-              <span className={styles.detailTitle}>{e.title}</span>
-              <span className={styles.detailValue}>{e.render ? e.render(planDetail) : (planDetail[e.dataIndex] || '--')}</span>
-            </div>
-          ))}
+          <Spin tip="数据加载中..." spinning={planDetailHandleLoading}>
+            {detailBaseInfo.map(e => (
+              <div className={styles.eachContent} key={e.title}>
+                <div className={styles.detailTitle}>{e.title}</div>
+                <div className={styles.detailValue}>{e.render ? e.render(planDetail) : (planDetail[e.dataIndex] || '--')}</div>
+              </div>
+            ))}
+          </Spin>
         </div>
       </section>
     );

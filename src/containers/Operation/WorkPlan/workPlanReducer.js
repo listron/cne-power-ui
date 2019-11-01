@@ -9,6 +9,7 @@ const workPlanAction = {
   getWorkPlanDetail: Symbol('getWorkPlanDetail'),
   addWorkPlan: Symbol('addWorkPlan'),
   editWorkPlan: Symbol('editWorkPlan'),
+  setWorkPlanStatus: Symbol('setWorkPlanStatus'),
   deleteWorkPlan: Symbol('deleteWorkPlan'),
   getInspectUsers: Symbol('getInspectUsers'),
 };
@@ -35,6 +36,7 @@ const initState = immutable.fromJS({
   planListLoading: false, // 计划列表loading
   addPlanLoading: false, // 新增计划loading
   deletePlansLoading: false, // 批量删除计划loading
+  planDetailHandleLoading: false, // 计划详情编辑启用状态时候的loading
 
   inspectUserList: [], // 制定人列表
   planList: [], // 计划列表
