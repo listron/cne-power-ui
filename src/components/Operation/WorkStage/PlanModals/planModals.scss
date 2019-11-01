@@ -3,9 +3,9 @@
 
 
 
-.addPlanForm{ // 添加计划
+.addPlanFormModal .addPlanForm{ // 添加计划
   .planFormBox{
-    max-height: 500px;
+    max-height: 550px;
   }
   .eachPlanForm{
     display: flex;
@@ -155,11 +155,11 @@
   }
 }
 
-//          颜色部分
-.addPlanForm{ // 添加计划
+//          颜色部分  浅色主题
+.addPlanFormModal.light .addPlanForm{ // 添加计划
   .eachPlanForm{
     .addFormTips{
-      color: $lightColor;
+      color: var(--lightColor);
     }
     :global{
       .ant-form-item-label{
@@ -169,20 +169,21 @@
   }
   .saveRow{
     .saveBtn{
-      background-color: $themeColor;
+      background-color: var(--themeColor);
       color: #fff;
     }
     .continueSaveBtn{
-      border: 1px solid $themeColor;
-      color: $themeColor;
+      border: 1px solid var(--themeColor);
+      color: var(--themeColor);
     }
     .cancelSaveBtn{
-      border: 1px solid $promptColor;
-      color: $lightColor;
+      border: 1px solid var(--promptColor);
+      color: var(--lightColor);
     }
   }
 }
-.eachDate{
+
+.light.eachDate{
   border-top: 1px solid $promptColor;
   border-right: 1px solid $promptColor;
   &:nth-of-type(7n) {
@@ -206,14 +207,14 @@
     box-shadow:0 0 4px 2px rgba(0,0,0,0.30);
   }
 }
-.limitedDates{
+.light.limitedDates{
   background: #f8f8f8;
   color: $promptColor;
   .datesTips .momentDate{
     color: $promptColor;
   }
 }
-.activeDate{
+.light.activeDate{
   background: $themeColor;
   color:#ffffff;
   .datesTips{
@@ -226,9 +227,10 @@
     }
   }
 }
-.noPlanDate{
+.light.noPlanDate{
   cursor: default;
 }
+
 .planHandle{ // 计划下发, 删除
   .handle{
     padding-left: 12px;
@@ -251,6 +253,78 @@
     }
     .cancelSelect{
       color: $themeColor;
+    }
+  }
+}
+
+
+// 深色 主题
+.addPlanFormModal.dark{ // 添加计划
+  .eachPlanForm{
+    .addFormTips{
+      color: #00f0ff;
+    }
+    :global{
+      .ant-form-item-label, label{
+        color: #00f0ff;
+      }
+    }
+  }
+  .saveRow{
+    .saveBtn{
+      background-image:linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+      color: #fff;
+    }
+    .continueSaveBtn{
+      border: 1px solid #00cdff;
+      color: #00cdff;
+      background-color: transparent;
+    }
+    .cancelSaveBtn{
+      border: 1px solid #00cdff;
+      color: #00cdff;
+      background-color: transparent;
+    }
+  }
+}
+.dark.eachDate{
+  border-top: 1px solid #4288b5;
+  border-right: 1px solid #4288b5;
+  .datesTips{
+    .today{
+      color: #fff;
+      border: 1px solid #fff;
+    }
+    .momentDate{
+      color: #9cd1ff;
+    }
+  }
+  .datesPlan .planNumber{
+    background-color: #f9b600;
+    color: #fff;
+  }
+  &:not(.limitedDates):not(.activeDate):not(.activeDate):not(.noPlanDate):hover{
+    background:#9cd1ff;
+    box-shadow:0 0 4px 2px rgba(0,240,255,0.40);
+  }
+}
+.dark.limitedDates{
+  background: #4a5988;
+  color: #303c62;
+  .datesTips .momentDate{
+    color: #303c62;
+  }
+}
+.dark.activeDate{
+  background:#00cdff;
+  color:#ffffff;
+  .datesTips{
+    .today{
+      color: #fff;
+      border: 1px solid #fff;
+    }
+    .momentDate{
+      color: #fff;
     }
   }
 }

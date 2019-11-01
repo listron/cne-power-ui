@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
-// import styles from './recordModals.scss';
 import RecordForm from './RecordForm';
 import RecordDetail from './RecordDetail';
 import PlanDetail from './PlanDetail';
+import styles from './recordModals.scss';
 
 class HandleRecord extends PureComponent {
 
   static propTypes = {
+    theme: PropTypes.string,
     modalKey: PropTypes.string,
     showModal: PropTypes.bool,
     changeStore: PropTypes.func,
@@ -30,7 +31,7 @@ class HandleRecord extends PureComponent {
   }
 
   render(){
-    const { showModal, modalKey } = this.props;
+    const { showModal, modalKey, theme } = this.props;
     // modalKey: addRecord增记事 editRecord改记事, recordDetail记事详情, planDetail工作计划详情,
     return (
       <Modal
@@ -39,6 +40,7 @@ class HandleRecord extends PureComponent {
         onCancel={this.cancelHandle}
         footer={null}
         width={625}
+        wrapClassName={styles[theme]}
       >
         { ['addRecord', 'editRecord'].includes(modalKey) && <RecordForm
           {...this.props}

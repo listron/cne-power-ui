@@ -59,42 +59,87 @@
   }
 }
 
-.light.addRecord{
-  .eachRecordForm{
-    :global{
-      .ant-form-item-label{
-        color: #000;
+.light{
+  .addRecord{
+    .eachRecordForm{
+      :global{
+        .ant-form-item-label{
+          color: #000;
+        }
+      }
+    }
+    .saveRow{
+      .saveBtn{
+        background-color: var(--themeColor);
+        color: #fff;
+      }
+      .continueSaveBtn{
+        border: 1px solid var(--themeColor);
+        color: var(--themeColor);
+      }
+      .cancelSaveBtn{
+        border: 1px solid var(--promptColor);
+        color: var(--lightColor);
+      }
+    }
+    
+  }
+  .recordDetail{
+    .recordTitle{
+      color: #000;
+    }
+    .detailHandle{ // 记事详情 底部操作
+      .editBtn{
+        background-color: $themeColor;
+        color: #fff;
+      }
+      .deleteBtn{
+        border: 1px solid $themeColor;
+        color: $themeColor;
       }
     }
   }
-  .saveRow{
-    .saveBtn{
-      background-color: $themeColor;
-      color: #fff;
-    }
-    .continueSaveBtn{
-      border: 1px solid $themeColor;
-      color: $themeColor;
-    }
-    .cancelSaveBtn{
-      border: 1px solid $promptColor;
-      color: $lightColor;
-    }
-  }
-  
 }
-.light.recordDetail{
-  .recordTitle{
-    color: #000;
-  }
-  .detailHandle{ // 记事详情 底部操作
-    .editBtn{
-      background-color: $themeColor;
-      color: #fff;
+
+
+.dark{
+  .addRecord{
+    .eachRecordForm{
+      :global{
+        .ant-form-item-label{
+          color: #000;
+        }
+      }
     }
-    .deleteBtn{
-      border: 1px solid $themeColor;
-      color: $themeColor;
+    .saveRow{
+      .saveBtn{
+        background-image:linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+        color: #fff;
+      }
+      .continueSaveBtn{
+        border: 1px solid #9cd1ff;
+        color: #9cd1ff;
+      }
+      .cancelSaveBtn{
+        border: 1px solid #9cd1ff;
+        color: #9cd1ff;
+      }
+    }
+    
+  }
+  .recordDetail{
+    .recordTitle{
+      color: #000;
+    }
+    .detailHandle{ // 记事详情 底部操作
+      .editBtn{
+        background-image:linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+        color: #fff;
+      }
+      .deleteBtn{
+        background-image:linear-gradient(-180deg, #fad961 0%, #f76b1c 100%);
+        color: #fff;
+      }
     }
   }
 }

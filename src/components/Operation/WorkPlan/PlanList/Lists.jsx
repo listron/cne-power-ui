@@ -31,7 +31,13 @@ class Lists extends PureComponent {
         title: '内容',
         dataIndex: 'inspectContent',
         sorter: true,
-        render: (text = '') => (<div title={text} className={styles.inspectContentText}>{text || '--'}</div>),
+        render: (text = '', record) => {
+          const { inspectTypeCode, inspectContent, planName } = record;
+          const contentText = parseFloat(inspectTypeCode) === 100002 ? planName: inspectContent;
+          return (
+            <div title={contentText} className={styles.inspectContentText}>{contentText || '--'}</div>
+          );
+        },
       }, {
         title: '适用电站',
         dataIndex: 'stations', //  stationCode + stationName 对象数组
