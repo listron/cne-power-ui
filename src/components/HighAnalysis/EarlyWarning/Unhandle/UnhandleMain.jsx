@@ -199,7 +199,7 @@ class Unhandle extends Component {
               name: '电站名称',
               type: 'stationName',
               typeName: 'stationCodes',
-              data: stations,
+              data: stations.filter(e => e.stationType === 1),
             },
             {
               name: '所属方阵',

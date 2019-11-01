@@ -124,6 +124,7 @@ export default {
       // 工作管理计划页
       getWorkPlanList: '/v3/service/inspect/allplans', // 工作管理计划表格
       handleWorkPlan: '/v3/service/inspect/plan', // 添加 + 编辑工作管理计划
+      getInspectUsers: '/v3/service/inspect/plan/users', // 获取制定人列表
 
       // 运维管理
       getDayReportList: '/v3/performance/dailyreportlist', //获取各电站日报统计列表
@@ -715,6 +716,8 @@ export default {
       getCombineInvert: '/v3/sun/report/zcnb/list/day',
       exportHourCombineInvert: '/v3/sun/report/zcnb/export/min',
       exportCombineInvert: '/v3/sun/report/zcnb/export/day',
+      exportConfluenceBox: '/v3/sun/report/box/export',
+      getConfluenceBoxList: '/v3/sun/report/box/list',
     },
   },
 };

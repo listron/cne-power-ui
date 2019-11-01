@@ -18,7 +18,7 @@ class StationLists extends PureComponent {
   }
 
   handleOK = (stations) => {
-    this.props.stageQuery(stations);
+    this.props.stageQuery(stations, true); // 第二个参数, 控制页面进行整体loading的展示
     this.setState({ stationModalShow: false });
   }
 
@@ -53,6 +53,7 @@ class StationLists extends PureComponent {
           电站: {stationNamePartString || '未选择电站'}
         </span>
         <StationModal
+          theme={theme}
           multiple={true}
           oneStyleOnly={false}
           checkedStations={stageStations}

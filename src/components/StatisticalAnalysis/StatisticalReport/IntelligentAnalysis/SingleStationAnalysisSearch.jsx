@@ -60,9 +60,10 @@ class SingleStationAnalysisSearch extends Component {
     });
     changeIntelligentAnalysisStore({
       ...prams,
+      dateType: 1,
     });
     getSingleStationAnalysis({
-      dateType,
+      dateType: 1,
       month: moment(startTime).format('M'),
       year: moment(startTime).format('YYYY'),
       stationCode: stationCode ? stationCode : initStations[0].stationCode,

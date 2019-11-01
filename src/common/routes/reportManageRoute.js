@@ -39,8 +39,8 @@ export const reportDevice = [ //设备报表
   },
   {
     path: '/report/pvstation/confluenceBox', // 汇流箱
-    // component: lazy(() => import('../../containers/ReportManage/ReportStation/ReportStation.jsx')),
-    component: lazy(() => import('../../components/Common/Building/Building.jsx')),
+    component: lazy(() => import('../../containers/ReportManage/ReportDevice/ConfluenceBox/ConfluenceBox.jsx')),
+    // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
   {
     path: '/report/pvstation/weatherStation', // 气象站

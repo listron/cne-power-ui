@@ -202,34 +202,6 @@ class ReportSearch extends React.PureComponent {
   render() {
     const { total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
     const { pageSize = 1, pageNum = 10, deviceFullcodes } = parmas;
-    // const reportList = [];
-    // for (var i = 30; i > 0; i--) {
-    //   reportList.push({
-    //     key: i,
-    //     deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
-    //     date: moment().format('YYYY-MM'),
-    //     inverterActualPower: (Math.random() + 1) * 10000,
-    //     resourceValue: (Math.random() + 1) * 10000,
-    //     invertEff: (Math.random() + 1) * 10000,
-    //     inverterDcPower: (Math.random() + 1) * 100,
-    //     acPower: (Math.random() + 1) * 10000,
-    //     acReactivePower: (Math.random() + 1) * 10000,
-    //     dcVoltage: (Math.random() + 1) * 10000,
-    //     dcCurrent: (Math.random() + 1) * 10000,
-    //     Uab: (Math.random() + 1) * 1000,
-    //     Ubc: (Math.random() + 1) * 1000,
-    //     Uca: (Math.random() + 1) * 1000,
-    //     Ua: (Math.random() + 1) * 1000,
-    //     Ub: (Math.random() + 1) * 1000,
-    //     Uc: (Math.random() + 1) * 1000,
-    //     Ia: (Math.random() + 1) * 1000,
-    //     Ib: (Math.random() + 1) * 1000,
-    //     Ic: (Math.random() + 1) * 1000,
-    //     powerFactorAvg: (Math.random() + 1) * 10000,
-    //     powerFu: (Math.random() + 1) * 10000,
-    //     temperature: (Math.random() + 1) * 10000,
-    //   });
-    // }
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>

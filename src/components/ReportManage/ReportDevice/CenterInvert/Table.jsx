@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './centerInvert.scss';
 import PropType from 'prop-types';
-import { Table, Button } from 'antd';
+import { Table, Button, message } from 'antd';
 import moment from 'moment';
 import { dataFormat } from '../../../../utils/utilFunc';
 import CommonPagination from '@components/Common/CommonPagination';
@@ -127,6 +127,13 @@ class ReportSearch extends React.PureComponent {
 
   exportFile = () => { // 导出文件
     const { parmas, startTime, endTime, dateType } = this.props;
+    const { deviceFullcodes } = parmas;
+    const type = dateType === 'day' ? 'days' : 'month'; // 按月 月的长度 按日 日的天数
+    const diffDays = Math.abs(moment(startTime).diff(moment(endTime), type));
+    if (diffDays * deviceFullcodes.length > 200000) {
+      message.warn('数据量过大，请减少电站数量或缩短时间范围的选择!');
+      return;
+    }
     this.props.downLoadFile({
       url: `${APIBasePath}${path.APISubPaths.reportManage.exportCenterInvert}`,
       params: { ...parmas, startTime, endTime, dateType },
@@ -164,28 +171,6 @@ class ReportSearch extends React.PureComponent {
   render() {
     const { dateType = 'day', total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
     const { pageSize, pageNum, deviceFullcodes } = parmas;
-    // const reportList = [];
-    // for (var i = 30; i > 0; i--) {
-    //   reportList.push({
-    //     key: i,
-    //     deviceName: '电站电站电站电站电站电站电站电站电站电站电站电站电站' + i,
-    //     date: moment().format('YYYY-MM'),
-    //     inverterAactualPower: (Math.random() + 1) * 1000000,
-    //     resourceValue: (Math.random() + 1) * 10000,
-    //     invertEff: (Math.random() + 1) * 10000,
-    //     equivalentHours: (Math.random() + 1) * 100,
-    //     usefulRate: (Math.random() + 1) * 10000,
-    //     powerFactorAvg: (Math.random() + 1) * 10000,
-    //     normalOperationTime: (Math.random() + 1) * 10000,
-    //     limitOperationTime: (Math.random() + 1) * 10000,
-    //     normalShutdownTime: (Math.random() + 1) * 10000,
-    //     plannedShutdownTime: (Math.random() + 1) * 10000,
-    //     falutShutdownTime: (Math.random() + 1) * 10000,
-    //     comlossTime: (Math.random() + 1) * 10000,
-    //     acPowerMax: (Math.random() + 1) * 10000,
-    //     acPowerTime: moment('2019-12-23').format('YYYY-MM-DD HH:mm:ss'),
-    //   });
-    // }
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>

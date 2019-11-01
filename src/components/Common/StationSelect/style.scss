@@ -69,8 +69,6 @@
 
 .dark {
   @import "../../../theme/antdResetDark.scss";
-  position: relative;
-  width: 198px;
   .stationSelectModal {
     :global {
       .icon-filter {

@@ -40,6 +40,7 @@ class ReportSearch extends React.PureComponent {
   componentWillUnmount() {
     clearTimeout(this.time);
   }
+
   timeChange = (value) => { // 时间选择
     this.setState({ selectTime: value });
     this.loop = true;
@@ -81,14 +82,12 @@ class ReportSearch extends React.PureComponent {
         this.loop = true;
       }, 3000);
     }
-
   }
-
-
 
   render() {
     const { stations, disabledStation, theme } = this.props;
-    const { selectStationCode, selectedDevice } = this.state;
+    const { selectStationCode, selectedDevice, selectTime } = this.state;
+    const { dateType = 'hour' } = selectTime;
     return (
       <div className={`${styles.reportSearch} ${styles[theme]}`}>
         <div className={styles.column}>
@@ -118,10 +117,11 @@ class ReportSearch extends React.PureComponent {
             multiple={true}
             value={selectedDevice}
             theme={theme}
+            deviceShowNumber={true}
+            max={dateType === 'hour' ? 100 : null}
           />
         </div>
         <Button type={'primary'} onClick={this.queryList} disabled={selectedDevice.length === 0}> 查询</Button>
-
       </div>
     );
   }

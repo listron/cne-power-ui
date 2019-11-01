@@ -1,0 +1,106 @@
+
+@import '../../../../theme/theme.scss';
+
+.contentSearch{
+  flex: 0 0 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 50px;
+  .searchText{
+    margin-right: 12px;
+  }
+  .search{
+    margin-right: 12px;
+  }
+  .reset{
+    cursor: pointer;
+  }
+}
+
+.lists{
+  flex: 1 0 auto;
+  .listPageRow{
+    display: flex;
+    height: 54px;
+    align-items: center;
+    padding-left: 24px;
+    justify-content: space-between;
+    .listBtns{
+      display: flex;
+      align-items: center;
+    }
+    .addPlanBtn{
+      margin-right: 12px;
+    }
+  }
+  .listsTable{
+    .inspectContentText, .stationsText{
+      @include overflowText();
+    }
+    .inspectContentText{
+      max-width: calc((100vw - 1180px) * 0.5);
+    }
+    .stationsText{
+      max-width: calc((100vw - 1180px) * 0.5);
+    }
+    .handleRow{
+      :global{
+        .iconfont{
+          margin-right: 12px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .tableFoot{
+    height: 56px;
+    padding-left: 24px;
+    line-height: 31px;
+    .selectedNum{
+      margin: 0 4px;
+    }
+    .cancelSelects{
+      margin-left: 20px;
+      cursor: pointer;
+    }
+  }
+}
+
+
+.light.contentSearch{
+  background-color: #f9f9f9;
+}
+
+.light.lists{
+  background-color: #fff;
+  .tableFoot{
+    .selectedNum{
+      color: #f9b600;
+    }
+    .cancelSelects{
+      color: var(--themeColor);
+    }
+  }
+}
+
+.dark.contentSearch{
+  margin: 12px 0;
+  background:rgba(20,33,101,0.40);
+  border:1px solid #4288b5;
+  color:#9cd1ff;
+}
+
+.dark.lists{
+  background:rgba(20,33,101,0.40);
+  border:1px solid #4288b5;
+  .tableFoot{
+    color: #00f0ff;
+    .selectedNum{
+      color: #ffc581;
+    }
+    .cancelSelects{
+      color: #00f0ff;
+    }
+  }
+}
+

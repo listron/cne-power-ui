@@ -85,6 +85,7 @@ class AddRecord extends PureComponent {
               data={stageStations}
               multiple={true}
               style={{ width: '200px' }}
+              theme={theme}
             />
           )}
         </FormItem>
@@ -99,8 +100,10 @@ class AddRecord extends PureComponent {
               style={{width: '200px'}}
               allowClear={false}
               disabledDate={this.disableRecordTime}
+              getCalendarContainer={() => this.completeRef}
             />
           )}
+          <span ref={(ref) => { this.completeRef = ref; }} />
         </FormItem>
         <FormItem label="执行人" colon={false} className={styles.eachRecordForm} >
           {getFieldDecorator('handleUser', {

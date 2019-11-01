@@ -11,6 +11,7 @@ const { Option } = Select;
 class AddPlan extends PureComponent {
 
   static propTypes = {
+    theme: PropTypes.string,
     modalKey: PropTypes.string,
     saveRecordLoading: PropTypes.bool,
     showModal: PropTypes.bool,
@@ -54,7 +55,7 @@ class AddPlan extends PureComponent {
     const { form } = this.props;
     const { getFieldValue } = form;
     const startTime = getFieldValue('firstStartTime');
-    return !startTime || cur.isBefore(startTime, 'day');
+    return !startTime || cur.isBefore(startTime, 'day') || cur.isAfter(moment().add(5, 'year'), 'day');
   }
 
   saveAddRecord = () => this.onAddSave('normal');
@@ -79,9 +80,13 @@ class AddPlan extends PureComponent {
 
   render(){
     const { saveMode } = this.state;
-    const { showModal, modalKey, form, stageStations, stationDeviceTypes, saveRecordLoading } = this.props;
+    const { showModal, modalKey, form, stageStations, stationDeviceTypes, saveRecordLoading, theme } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
-    const { firstStartTime, inspectTypeCode } = getFieldsValue(['inspectTypeCode', 'firstStartTime']);
+    const {
+      firstStartTime,
+      inspectTypeCode,
+      deviceTypeCodes = [],
+    } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes']);
     return (
       <Modal
         title="添加计划"
@@ -89,6 +94,7 @@ class AddPlan extends PureComponent {
         onCancel={this.cancelHandle}
         footer={null}
         width={800}
+        wrapClassName={`${styles.addPlanFormModal} ${styles[theme]}`}
       >
         <Form className={styles.addPlanForm}>
           <div className={styles.planFormBox}>
@@ -101,6 +107,8 @@ class AddPlan extends PureComponent {
                   data={stageStations}
                   multiple={true}
                   style={{ width: '200px' }}
+                  stationShowNumber={true}
+                  theme={theme}
                 />
               )}
             </FormItem>
@@ -109,27 +117,29 @@ class AddPlan extends PureComponent {
                 rules: [{ required: true, message: '请选择计划类型' }],
                 initialValue: 100,
               })(
-                <Select style={{width: '200px'}}>
+                <Select style={{width: '200px'}} getPopupContainer={() => this.planTypeRef}>
                   <Option value={100}>巡视计划</Option>
                 </Select>
               )}
+              <span ref={(ref) => { this.planTypeRef = ref; }} />
             </FormItem>
             <FormItem label="巡视类型" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('inspectTypeCode', {
                 rules: [{ required: true, message: '请选择巡视类型' }],
                 initialValue: 100001,
               })(
-                <Select style={{width: '200px'}}>
+                <Select style={{width: '200px'}} getPopupContainer={() => this.respectTypeRef}>
                   <Option value={100001}>日常巡检</Option>
                   <Option value={100002}>巡视巡检</Option>
                 </Select>
               )}
+              <span ref={(ref) => { this.respectTypeRef = ref; }} />
               <span className={styles.addFormTips}>注：巡视巡检将直接作为定期巡检，下发为巡检工单。</span>
             </FormItem>
-            <FormItem label="首次计划开始时间" colon={false} className={styles.eachPlanForm} >
+            <FormItem label="首次下发时间" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('firstStartTime', {
-                rules: [{ required: true, message: '请选择开始时间' }],
-                initialValue: null,
+                rules: [{ required: true, message: '请选择首次下发时间' }],
+                initialValue: moment(),
               })(
                 <DatePicker
                   showTime
@@ -137,8 +147,10 @@ class AddPlan extends PureComponent {
                   style={{width: '200px'}}
                   allowClear={false}
                   disabledDate={this.disabledStartDate}
+                  getCalendarContainer={() => this.firstStartRef}
                 />
               )}
+              <span ref={(ref) => { this.firstStartRef = ref; }} />
             </FormItem>
             <FormItem label="计划天数" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('validPeriod', {
@@ -167,7 +179,7 @@ class AddPlan extends PureComponent {
                 rules: [{ required: true, message: '请选择循环周期' }],
                 initialValue: null,
               })(
-                <Select style={{width: '200px'}}>
+                <Select style={{width: '200px'}} getPopupContainer={() => this.cycleTypeRef}>
                   <Option value={152}>每天</Option>
                   <Option value={153}>每周</Option>
                   <Option value={154}>每月</Option>
@@ -177,6 +189,7 @@ class AddPlan extends PureComponent {
                   <Option value={157}>半年</Option>
                 </Select>
               )}
+              <span ref={(ref) => { this.cycleTypeRef = ref; }} />
             </FormItem>
             {inspectTypeCode === 100002 && <FormItem label="巡视名称" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('planName', {
@@ -192,17 +205,26 @@ class AddPlan extends PureComponent {
                 rules: [{ required: true, message: '请选择设备类型' }],
                 initialValue: [],
               })(
-                <Select style={{width: '200px'}}>
+                <Select
+                  style={{width: '200px'}}
+                  mode="multiple"
+                  getPopupContainer={() => this.deviceTypeRef}
+                  {...(deviceTypeCodes.length > 0 ? {
+                    maxTagCount: 0,
+                    maxTagPlaceholder: `已选${deviceTypeCodes.length}/${stationDeviceTypes.length}`,
+                  } : {})}
+                >
                   {stationDeviceTypes.map(e => (
                     <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
                   ))}
                 </Select>
               )}
+              <span ref={(ref) => { this.deviceTypeRef = ref; }} />
             </FormItem>}
-            <FormItem label="计划截止时间" colon={false} className={styles.eachPlanForm} >
+            <FormItem label="计划失效时间" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('deadLine', {
-                rules: [{ required: true, message: '请选择计划截止时间' }],
-                initialValue: null,
+                rules: [{ required: true, message: '请选择计划失效时间' }],
+                initialValue: moment().add(5, 'year'),
               })(
                 <DatePicker
                   showTime
@@ -211,8 +233,10 @@ class AddPlan extends PureComponent {
                   allowClear={false}
                   disabled={!firstStartTime}
                   disabledDate={this.disbleEndDate}
+                  getCalendarContainer={() => this.deadLineRef}
                 />
               )}
+              <span ref={(ref) => { this.deadLineRef = ref; }} />
               <span className={styles.addFormTips}>注：该时间为计划整体结束时间，不针对单次。</span>
             </FormItem>
             {inspectTypeCode === 100001 && <FormItem label="巡视内容" colon={false} className={styles.eachPlanForm} >
@@ -247,10 +271,11 @@ export default Form.create({
   onValuesChange: (props, changedValues, allFields) => {
     const { stationList = [], inspectTypeCode } = changedValues || {};
     if (// 巡视巡检 + 选择电站 => 请求设备类型列表
-      (inspectTypeCode === 100002 && allFields.stationList) > 0
+      (inspectTypeCode === 100002 && allFields.stationList.length > 0)
         || (stationList.length > 0 && allFields.inspectTypeCode === 100002)
     ) {
-        props.getStationDeviceTypes({ stationCodes: stationList.map(e => e.stationCode).join(',') });
+      const tmpStationArr = stationList.length > 0 ? stationList : allFields.stationList;
+      props.getStationDeviceTypes({ stationCodes: tmpStationArr.map(e => e.stationCode).join(',') });
     }
   },
 })(AddPlan);

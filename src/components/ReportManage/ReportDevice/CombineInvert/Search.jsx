@@ -40,6 +40,7 @@ class ReportSearch extends React.PureComponent {
   componentWillUnmount() {
     clearTimeout(this.time);
   }
+
   timeChange = (value) => { // 时间选择
     this.setState({ selectTime: value });
     this.loop = true;
@@ -60,7 +61,6 @@ class ReportSearch extends React.PureComponent {
     const { selectStationCode, selectedDevice, selectTime } = this.state;
     const tempStationCode = selectStationCode.length > 0 && selectStationCode[0].stationCode || null;
     const tempDeviceCode = selectedDevice.map(e => e.deviceCode);
-    console.log('tempDeviceCode', tempDeviceCode);
     const { dateType, startTime, endTime } = selectTime;
     const tmpParmas = {
       ...parmas,
@@ -89,7 +89,8 @@ class ReportSearch extends React.PureComponent {
 
   render() {
     const { stations, disabledStation, theme } = this.props;
-    const { selectStationCode, selectedDevice } = this.state;
+    const { selectStationCode, selectedDevice, selectTime } = this.state;
+    const { dateType = 'hour' } = selectTime;
     return (
       <div className={`${styles.reportSearch} ${styles[theme]}`}>
         <div className={styles.column}>
@@ -119,6 +120,8 @@ class ReportSearch extends React.PureComponent {
             multiple={true}
             value={selectedDevice}
             theme={theme}
+            max={dateType === 'hour' ? 100 : null}
+            deviceShowNumber={true}
           />
         </div>
         <Button type={'primary'} onClick={this.queryList} disabled={selectedDevice.length === 0}> 查询</Button>
