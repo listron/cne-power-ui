@@ -124,7 +124,7 @@
     color: $fontColor;
     border: 1px solid $fontColor;
     &:hover,
-    &:focus,
+    // &:focus,
     &:active {
       color: #fff;
       background: #00baff;
@@ -136,7 +136,7 @@
       border: 1px solid #7088c3;
       color: #7088c3;
       &:hover,
-      &:focus,
+      // &:focus,
       &:active {
         background: #405080;
         border: 1px solid #7088c3;
@@ -149,7 +149,7 @@
     background: #0fcefa;
     color: #fff;
     &:hover,
-    &:focus,
+    // &:focus,
     &:active {
       color: #fff;
       background: #00baff;
@@ -161,7 +161,7 @@
     background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
     color: #fff;
     &:hover,
-    &:focus,
+    // &:focus,
     &:active {
       background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
       box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.6);
@@ -187,7 +187,7 @@
       line-height: 12px;
     }
     &:hover,
-    &:focus,
+    // &:focus,
     &:active {
       background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
       box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.6);
@@ -210,7 +210,7 @@
     color: #fff;
     border: 1px solid #f8b14e;
     &:hover,
-    &:focus,
+    // &:focus,
     &:active {
       background-image: linear-gradient(-180deg, #fad961 0%, #f76b1c 100%);
       box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.6);
@@ -219,7 +219,7 @@
 
   /*ant-btn-dashed:hover ant-btn-dashed:focus颜色*/
   .ant-btn-dashed:hover,
-  .ant-btn-dashed:focus,
+  // .ant-btn-dashed:focus,
   .ant-btn-dashed::selection {
     color: $darkColor;
   }
