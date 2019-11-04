@@ -10,6 +10,7 @@ class RecordsList extends PureComponent {
   static propTypes = {
     theme: PropTypes.string,
     stageLoading: PropTypes.bool,
+    pageLoading: PropTypes.bool,
     stageNumInfo: PropTypes.object,
     stageList: PropTypes.array,
     changeStore: PropTypes.func,
@@ -24,16 +25,22 @@ class RecordsList extends PureComponent {
     column: [
       {
         title: '工作类型',
-        dataIndex: 'taskTypeName', // taskTypeCode	Int	工作类型编码 1 计划 2 缺陷 3 巡检 4 记事 taskTypeName	String	工作类型名字
+        dataIndex: 'taskTypeName', // taskTypeCode	Int	工作类型编码 1 计划 2 消缺 3 巡检 4 记事 taskTypeName	String	工作类型名字
         sorter: (a, b) => a.taskTypeCode - b.taskTypeCode,
         className: styles.taskTypeName,
         render: (text, record) => {
-          const { taskTypeCode } = record;
-          const taskTypes = ['--', '计划', '缺陷', '巡检', '记事'];
+          const { taskTypeName, taskTypeCode, deviceTypeName, taskName } = record;
+          // const taskTypes = ['--', '计划', '消缺', '巡检', '记事'];
+          // 消缺 2=> 设备类型； 巡检 3=> 巡检名称； 计划 1=> 巡检计划； 记事 4=> 工作记事
+          const recordKey = ['--', '巡检计划', deviceTypeName, taskName, '工作记事'];
+          const recordText = recordKey[taskTypeCode] || '--';
           return ( // className={styles.taskTypeName}
-            <div className={styles.taskTypeNameText} title={`【${taskTypes[taskTypeCode] || '--'}】${text}`}>
-              <span className={styles.taskNameHighlight}>【{taskTypes[taskTypeCode] || '--'}】</span>
-              {text}
+            <div
+              className={styles.taskTypeNameText}
+              title={`【${taskTypeName || '--'}】${recordText}`}
+            >
+              <span className={styles.taskNameHighlight}>【{taskTypeName || '--'}】</span>
+              {recordText}
             </div>
           );
         },
@@ -41,7 +48,14 @@ class RecordsList extends PureComponent {
         title: '工作描述',
         dataIndex: 'taskDesc',
         className: styles.taskDesc,
-        render: (text = '') => (<div title={text} className={styles.taskDescText}>{text}</div>),
+        render: (text = '', record) => {
+          const { taskTypeCode, taskName, taskDesc } = record; // taskTypeCode === 3时候为巡检，工作描述展示巡检名称
+          const recordKey = ['--', taskDesc, taskDesc, taskName, taskDesc];
+          const recordText = recordKey[taskTypeCode] || '--';
+          return (
+            <div title={recordText} className={styles.taskDescText}>{recordText}</div>
+          );
+        },
       }, {
         title: '电站',
         dataIndex: 'stationName',
@@ -162,7 +176,7 @@ class RecordsList extends PureComponent {
   }
 
   render(){
-    const { theme, stageNumInfo = {}, stageList = [], stageLoading } = this.props;
+    const { theme, stageNumInfo = {}, stageList = [], stageLoading, pageLoading } = this.props;
     const { column, recordFilterCode } = this.state;
     const recordSource = recordFilterCode === 0 ? stageList : stageList.filter( // 是否按照类型筛选查看
       e => e.taskTypeCode === recordFilterCode
@@ -201,7 +215,7 @@ class RecordsList extends PureComponent {
           dataSource={recordSource}
           columns={column}
           pagination={false}
-          loading={stageLoading}
+          loading={stageLoading && !pageLoading}
           scroll={{ y: 330 }}
           className={styles.recordTable}
         />

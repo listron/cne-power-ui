@@ -10,7 +10,7 @@ class EachDate extends PureComponent {
     curDate: PropTypes.string,
     planMonth: PropTypes.string,
     activePlanDate: PropTypes.string,
-    // theme: PropTypes.string,
+    theme: PropTypes.string,
     showDatePlanList: PropTypes.func,
   };
 
@@ -20,7 +20,7 @@ class EachDate extends PureComponent {
   }
 
   render(){
-    const { planMonth, activePlanDate, curPlan, curDate } = this.props;
+    const { planMonth, activePlanDate, curPlan, curDate, theme } = this.props;
     // 不属于本月的日期: 禁止选择灰色不触发, 本月日期: hover浅色, 选中深色, 默认无色
     const { list = [] } = curPlan || {};
     const dateClassNames = [
@@ -28,17 +28,18 @@ class EachDate extends PureComponent {
       `${moment(planMonth).isSame(curDate, 'month') ? '' : styles.limitedDates}`,
       `${moment(activePlanDate).isSame(curDate, 'day') ? styles.activeDate : ''}`,
       `${list.length > 0 ? '' : styles.noPlanDate}`,
+      `${styles[theme]}`,
     ];
     return (
       <span
         className={dateClassNames.join(' ')}
-        onClick={curPlan ? this.showHandleList : null}
+        onClick={(curPlan && list.length > 0) ? this.showHandleList : null}
       >
         <div className={styles.datesTips}>
           <span className={styles.momentDate}>{moment(curDate).format('D')}</span>
           {moment().isSame(curDate, 'day') && <span className={styles.today}>今天</span>}
         </div>
-        {curPlan && <div className={styles.datesPlan}>
+        {(curPlan && list.length > 0) && <div className={styles.datesPlan}>
           <span className="iconfont icon-jxjh" />
           <span className={styles.planNumber}>{list.length}</span>
         </div>}

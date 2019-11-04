@@ -71,6 +71,8 @@ class SideMenu extends Component {
   _createSideMenu = (sideMenuData, theme) => {
     const { collapsed, openKeys } = this.state;
     const { pathname } = this.props.location;
+    const { stationTypeCount } = this.props;
+    //multiple
     if (sideMenuData.length > 0) {//至少拥有二级目录
       return (
         <div className={styles.sideLayout}>
@@ -100,18 +102,21 @@ class SideMenu extends Component {
 
   renderSideMenu(sideMenuData) {
     const { collapsed } = this.state;
+    const { stationTypeCount } = this.props;
     const rightMenu = localStorage.getItem('rightMenu');
     return sideMenuData.map(e => {
+      const { renderKey } = e;
       const hasNoSubMenu = e && (!e.children || e.children.length === 0) && rightMenu && rightMenu.split(',').includes(e.rightKey);
-      if (hasNoSubMenu) {//只有二级目录
+      const renderStationTypeKey = (!renderKey || stationTypeCount === 'multiple' || stationTypeCount === renderKey);
+      if (hasNoSubMenu && renderStationTypeKey) {//只有二级目录
         return (
           <Item key={e.path}>
             <Link to={e.path}>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}{collapsed ? null : e.name}</Link>
           </Item>
         );
-      } else if (e && e.children && e.children.length > 0 && rightMenu && rightMenu.split(',').includes(e.rightKey)) { // 有三级目录
+      } else if (e && e.children && e.children.length > 0 && rightMenu && rightMenu.split(',').includes(e.rightKey) && renderStationTypeKey) { // 有三级目录
         const menuTitle = <span>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}<span>{collapsed ? null : e.name}</span></span>;
-        const filteredMenu = e.children.filter(subItem => rightMenu && rightMenu.split(',').includes(subItem.rightKey));
+        const filteredMenu = e.children.filter(subItem => rightMenu && rightMenu.split(',').includes(subItem.rightKey)).filter(item => !item.renderKey || stationTypeCount === 'multiple' || stationTypeCount === item.renderKey);
         return (
           <SubMenu title={menuTitle} key={e.path} className={styles.subMenu}>
             {filteredMenu.map(m => {

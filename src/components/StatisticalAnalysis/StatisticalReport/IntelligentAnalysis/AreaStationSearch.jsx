@@ -59,9 +59,11 @@ class AreaStationSearch extends Component {
     });
     changeIntelligentAnalysisStore({
       ...prams,
+      dateType: 1,
     });
     getAreaStation({
       ...prams,
+      dateType: 1,
     });
   }
 

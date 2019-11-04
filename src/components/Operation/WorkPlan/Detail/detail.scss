@@ -1,0 +1,115 @@
+
+@import '../../../../theme/theme.scss';
+
+
+.planDetail{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .detailTop{
+    margin-bottom: 0;
+    display: flex;
+    font-size: 18px;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 40px;
+    flex: 0 0 60px;
+    .topHandle{
+      height: 60px;
+      display: flex;
+      flex: 0 0 150px;
+      justify-content: flex-end;
+      align-items: center;
+      button{
+        margin-right: 12px;
+      }
+      .backIcon{
+        cursor: pointer;
+        flex: 0 0 60px;
+        line-height: 60px;
+      }
+    }
+  }
+  .detailContent{
+    flex: 1 0;
+    padding: 16px 40px 24px 40px;
+    .eachContent{
+      display: flex;
+      line-height: 30px;
+    }
+    .detailTitle{
+      flex: 0 0 400px;
+      text-align: right;
+      margin-right: 16px;
+    }
+    .detailValue{
+      flex: 1;
+      .logTip{
+        margin-right: 4px;
+      }
+      .logValue{
+        margin-right: 8px;
+      }
+    }
+    .looger{
+      display: flex;
+      align-items: flex-start;
+      .diffLeft{
+        flex: 0 0 370px;
+        display: flex;
+        align-items: center;
+      }
+      .loggerName{
+        flex: 0 0 60px;
+        @include overflowText();
+      }
+    }
+  }
+}
+
+
+.light.planDetail{
+  background-color: #fff;
+  .detailTop{
+    color: var(--darkColor);
+    border-bottom: 1px solid var(--promptColor);
+    .topHandle{
+      .backIcon{
+        border-left: 1px solid var(--promptColor);
+      }
+    }
+  }
+  .detailContent{
+    .detailTitle{
+      color: #000;
+    }
+  }
+}
+
+.dark.planDetail{
+  background-image: linear-gradient(-118deg, #3b55aa 0%, #132267 96%);
+  .detailTop{
+    background:rgba(20,33,101,0.40);
+    border:1px solid #4288b5;
+    color:#9cd1ff;
+    margin-bottom: 10px;
+    .topHandle{
+      .backIcon{
+        border-left: 1px solid #4288b5;
+      }
+    }
+  }
+  .detailContent{
+    background:rgba(20,33,101,0.40);
+    .detailTitle{
+      color: #00f0ff;
+    }
+    .detailValue{
+      color: #9cd1ff;
+    }
+  }
+}
+
+
+
+
