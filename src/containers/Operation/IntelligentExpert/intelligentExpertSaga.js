@@ -168,7 +168,6 @@ function* addIntelligent({ payload = {} }) { // 添加智能专家库
         },
       });
       if (!continueAdd) {
-        console.log('进来了');
         const params = yield select(state => state.operation.intelligentExpert.get('listParams').toJS());// 继续请求智能专家库列表
         yield put({
           type: intelligentExpertAction.getIntelligentTable,
@@ -326,7 +325,6 @@ function* getDevicemodes(action) { // 获取设备列表
 function* getFaultCodeList(action) { // 获取设备列表
   const { payload } = action;
   const { faultCode } = payload;
-  console.log('faultCode', faultCode);
   const url = `${APIBasePath}${operation.getFaultCode}/${faultCode}`;
   try {
     const response = yield call(axios.get, url, payload);
