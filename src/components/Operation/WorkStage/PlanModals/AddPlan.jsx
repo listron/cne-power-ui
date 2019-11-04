@@ -47,6 +47,7 @@ class AddPlan extends PureComponent {
       modalKey: null,
       recordDetailInfo: null,
     });
+    this.props.form.resetFields();
   }
 
   disabledStartDate = (cur) => cur.isBefore(moment(), 'day')
