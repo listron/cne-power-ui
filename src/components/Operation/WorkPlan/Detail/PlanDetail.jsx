@@ -26,10 +26,10 @@ class PlanDetail extends PureComponent {
       title: '首次下发时间',
       dataIndex: 'firstStartTime',
     }, {
-      title: '循环周期',
+      title: '执行工时',
       dataIndex: 'cycleTypeName',
     }, {
-      title: '执行工时',
+      title: '循环周期',
       dataIndex: 'cycleTypeName',
     }, {
       title: '巡检名称',
@@ -62,18 +62,18 @@ class PlanDetail extends PureComponent {
       title: '巡视类型',
       dataIndex: 'inspectTypeName',
     }, {
-      title: '首次计划开始时间',
+      title: '首次下发时间',
       dataIndex: 'firstStartTime',
       render: ({ firstStartTime, firstStartWeek }) => {
         return <span>{firstStartTime || '--'} {firstStartWeek}</span>;
       },
     }, {
-      title: '循环周期',
-      dataIndex: 'cycleTypeName',
-    }, {
       title: '执行工时',
       dataIndex: 'validPeriod',
       render: ({ validPeriod }) => `${validPeriod || '--'}天`,
+    }, {
+      title: '循环周期',
+      dataIndex: 'cycleTypeName',
     },
   ]
 
@@ -184,7 +184,7 @@ class PlanDetail extends PureComponent {
     const { inspectTypeCode = 100001 } = planDetail || {}; // 巡检计划类型 日常：100001；巡视巡检：100002
     const detailBaseInfo = [
       ...this.detailBase,
-      ...(inspectTypeCode === 100001 ? this.baseDaily : this.baseInspect),
+      ...(parseFloat(inspectTypeCode) === 100001 ? this.baseDaily : this.baseInspect),
       ...this.baseEnd,
     ];
     return (

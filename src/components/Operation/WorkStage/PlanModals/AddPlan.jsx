@@ -163,31 +163,6 @@ class AddPlan extends PureComponent {
               )}
               <span ref={(ref) => { this.firstStartRef = ref; }} />
             </FormItem>
-            <FormItem label="计划天数" colon={false} className={styles.eachPlanForm} >
-              {getFieldDecorator('validPeriod', {
-                rules: [{
-                  required: true,
-                  validator: (rule, value, callback)=>{
-                    if (!value) {
-                      callback('请输入计划天数');
-                    } else {
-                      const notNumber = isNaN(value);
-                      const hasDemical = value.split('.')[1];
-                      const wrongNumber = value < 0 || value > this.validPeriodDays[cycleTypeCode];
-                      (notNumber || hasDemical || wrongNumber) && callback(
-                        `计划天数需为不超过${this.validPeriodDays[cycleTypeCode] || 999}的整数`
-                      );
-                    }
-                    callback();
-                  },
-                }],
-                initialValue: null,
-              })(
-                <Input style={{width: '200px'}} placeholder="请输入..." />
-              )}
-              天
-              {cycleTypeCode && <span className={styles.addFormTips}>注：不超过{this.validPeriodDays[cycleTypeCode]}天</span>}
-            </FormItem>
             <FormItem label="循环周期" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('cycleTypeCode', {
                 rules: [{ required: true, message: '请选择循环周期' }],
@@ -204,6 +179,31 @@ class AddPlan extends PureComponent {
                 </Select>
               )}
               <span ref={(ref) => { this.cycleTypeRef = ref; }} />
+            </FormItem>
+            <FormItem label="执行工时" colon={false} className={styles.eachPlanForm} >
+              {getFieldDecorator('validPeriod', {
+                rules: [{
+                  required: true,
+                  validator: (rule, value, callback)=>{
+                    if (!value) {
+                      callback('请输入执行工时');
+                    } else {
+                      const notNumber = isNaN(value);
+                      const hasDemical = value.split('.')[1];
+                      const wrongNumber = value < 0 || value > this.validPeriodDays[cycleTypeCode];
+                      (notNumber || hasDemical || wrongNumber) && callback(
+                        `执行工时需为不超过${this.validPeriodDays[cycleTypeCode] || 999}的整数`
+                      );
+                    }
+                    callback();
+                  },
+                }],
+                initialValue: null,
+              })(
+                <Input style={{width: '200px'}} placeholder="请输入..." />
+              )}
+              天
+              {cycleTypeCode && <span className={styles.addFormTips}>注：不超过{this.validPeriodDays[cycleTypeCode]}天</span>}
             </FormItem>
             {inspectTypeCode === 100002 && <FormItem label="巡视名称" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('planName', {
