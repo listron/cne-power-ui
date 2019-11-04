@@ -195,13 +195,13 @@ class AddEditPlan extends PureComponent {
                 initialValue: initialCycleTypeCode,
               })(
                 <Select style={{width: '200px'}} getPopupContainer={() => this.cycleTypeRef}>
+                  <Option value={151}>一次</Option>
                   <Option value={152}>每天</Option>
                   <Option value={153}>每周</Option>
                   <Option value={154}>每月</Option>
                   <Option value={155}>每季度</Option>
-                  <Option value={156}>每年</Option>
-                  <Option value={151}>一次</Option>
                   <Option value={157}>半年</Option>
+                  <Option value={156}>每年</Option>
                 </Select>
               )}
               <span ref={(ref) => { this.cycleTypeRef = ref; }} />
@@ -215,7 +215,7 @@ class AddEditPlan extends PureComponent {
                       callback('请输入执行工时');
                     } else {
                       const notNumber = isNaN(value);
-                      const hasDemical = value.split('.')[1];
+                      const hasDemical = `${value}`.split('.')[1];
                       const wrongNumber = value < 0 || value > this.validPeriodDays[cycleTypeCode];
                       (notNumber || hasDemical || wrongNumber) && callback(
                         `执行工时需为不超过${this.validPeriodDays[cycleTypeCode] || 999}的整数`

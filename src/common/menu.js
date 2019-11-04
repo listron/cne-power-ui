@@ -136,6 +136,7 @@ const menuData = [
         path: 'workStage',
         iconStyle: 'icon-gzt',
         rightKey: 'operation_workStation',
+        defaultPath: true,
       }, {
         name: '工作计划管理',
         path: 'workPlan',
