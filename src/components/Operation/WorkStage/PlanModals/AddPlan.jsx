@@ -80,13 +80,13 @@ class AddPlan extends PureComponent {
   }
 
   validPeriodDays = {
+    151: 100,
     152: 1,
     153: 7,
     154: 30,
     155: 90,
-    156: 365,
-    151: 100,
-    157: 180,
+    156: 180,
+    157: 365,
   }
 
   render(){
@@ -174,8 +174,8 @@ class AddPlan extends PureComponent {
                   <Option value={153}>每周</Option>
                   <Option value={154}>每月</Option>
                   <Option value={155}>每季度</Option>
-                  <Option value={157}>半年</Option>
-                  <Option value={156}>每年</Option>
+                  <Option value={156}>半年</Option>
+                  <Option value={157}>每年</Option>
                 </Select>
               )}
               <span ref={(ref) => { this.cycleTypeRef = ref; }} />
