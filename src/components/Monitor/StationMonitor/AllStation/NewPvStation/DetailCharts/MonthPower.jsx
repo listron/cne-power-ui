@@ -123,7 +123,6 @@ class MonthPower extends Component {
     seriesType = ({ monthPower, monthPlanPower, completeRate, equipmentHours }) => { // 根据不同的类型，series不同
         const { chartType } = this.state;
         const { theme = 'light' } = this.props;
-        console.log('test', this.themeColor[theme].monthPlanPower);
         const monthPowerObj = [{
             name: '月发电量',
             type: 'bar',
@@ -212,7 +211,6 @@ class MonthPower extends Component {
                     let paramsItem = '';
                     params.forEach(item => {
                         const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
-                        console.log('color', color);
                         paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
                         ${item.seriesName} :  ${item.value}${item.seriesName === '完成率' && '%' || ''}</div>`;
                     });

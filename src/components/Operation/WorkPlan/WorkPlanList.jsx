@@ -1,32 +1,18 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import PlanFilter from './PlanFilter/PlanFilter';
+import ContentSearch from './PlanList/ContentSearch';
 import styles from './plan.scss';
+import Lists from './PlanList/Lists';
 
 class WorkPlanList extends PureComponent {
-
-  static propTypes = {
-    // editModalShow: PropTypes.bool,
-  };
-
-  seeDetail = () => { // 查看详情
-
-  }
-
-  addNewPlan = () => { // 添加新计划
-
-  }
-
-  editPlan = () => { // 编辑计划
-    
-  }
 
   render(){
     return (
       <div className={styles.workPlanList}>
-        这个是传说中的工作列表页面
-        <button onClick={this.seeDetail}>查看详情</button>
-        <button onClick={this.addNewPlan}>添加新计划</button>
-        <button onClick={this.editPlan}>编辑计划</button>
+        <PlanFilter {...this.props} />
+        <ContentSearch {...this.props} />
+        <Lists {...this.props} />
       </div>
     );
   }

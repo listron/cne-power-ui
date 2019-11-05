@@ -33,7 +33,7 @@ class OutputTenMin extends Component {
 
   drawChart = (param) => {
     const { capabilityData = {}, yAxisUnit, theme } = param;
-    const { chartDatas = [], showTemplate } = capabilityData; // showTemplate 0 不显示 1 显示
+    const { chartDatas = [], showTemplate } = capabilityData; // showTemplate  样板逆变器功率 0 不显示 1 显示
     const yAxisType = `功率(${yAxisUnit})`;
     let capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'), themeConfig[theme]);
     if (capabilityDiagram) {
@@ -42,8 +42,8 @@ class OutputTenMin extends Component {
     }
     const capabilityPower = chartDatas.map(e => dataFormats(divideFormarts(e.stationPower, yAxisUnit), '--', 2, true));
     const capabilityRadiation = chartDatas.map(e => dataFormats(e.instantaneous, '--', 2, true));
-    const templatePower = chartDatas.map(e => dataFormats(e.templatePower, '--', 2, true)); // 样板逆变器功率 无样板机逆变器时没有
-    const theoreticalPower = chartDatas.map(e => dataFormats(e.theoreticalPower, '--', 2, true)); // 理论功率 无气象站时没有
+    const templatePower = chartDatas.map(e => dataFormats(divideFormarts(e.templatePower, yAxisUnit), '--', 2, true)); // 样板逆变器功率 无样板机逆变器时没有
+    const theoreticalPower = chartDatas.map(e => dataFormats(divideFormarts(e.theoreticalPower, yAxisUnit), '--', 2, true)); // 理论功率 无气象站时没有
     const templatePowerSeries = showTemplate && chartDatas.length > 0 && chartDatas[0].templatePower !== undefined && {
       name: '样板机逆变器功率',
       type: 'line',

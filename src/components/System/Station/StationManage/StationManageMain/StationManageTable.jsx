@@ -83,19 +83,20 @@ class StationManageTable extends Component {
   }
 
   beforeUploadStation = (file) => { // 上传前的校验
+    console.log(file.type);
     const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']; // 暂时不兼容xls : 'application/vnd.ms-excel'
     const validFile = validType.includes(file.type);
     if (!validFile) {
       message.error('只支持上传excel文件!');
     }
-    return !!validFile
+    return !!validFile;
   }
 
-  toStationDetail = (record,selectedStationIndex) => { // 查看详情
+  toStationDetail = (record, selectedStationIndex) => { // 查看详情
     this.props.getStationDetail({
       stationCode: record.stationCode,
       selectedStationIndex,
-    })
+    });
   }
 
   tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据

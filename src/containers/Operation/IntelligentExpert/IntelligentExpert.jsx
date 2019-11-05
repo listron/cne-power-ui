@@ -39,7 +39,9 @@ class IntelligentExpert extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.stationTypeCount === 'pv') {
+    const { stationTypeCount, stationType } = nextProps;
+    const stationTypeArr = ['wind', 'pv'];
+    if (stationTypeArr[stationType] !== stationTypeCount && stationTypeCount === 'pv') { // 默认是风电，如果是光伏的时候，需要切换一下
       this.props.changeIntelligentExpertStore({ stationType: '1' });
       this.props.getStationTypeDeviceTypes({ type: '1' });
     }

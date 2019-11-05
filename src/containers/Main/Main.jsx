@@ -128,7 +128,7 @@ class Main extends Component {
   }
 
   render() {
-    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore, theme } = this.props;
+    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore, theme, stationTypeCount } = this.props;
     const authData = localStorage.getItem('authData') || '';
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
@@ -183,7 +183,7 @@ class Main extends Component {
             </div>
           </div>}
           <div className={styles.appMain}>
-            {!isHomePage && <SideMenu />}
+            {!isHomePage && <SideMenu stationTypeCount={stationTypeCount} />}
             <main
               className={`${styles.content} ${styles[theme]}`}
               style={{ height: isHomePage ? '100vh' : 'calc(100vh - 59px)' }}
@@ -232,6 +232,7 @@ const mapStateToProps = (state) => {
     enterpriseId: state.login.get('enterpriseId'),
     ...state.common.toJS(),
     theme: state.common.get('theme'),
+    // stations: state.common.get('stations').toJS(),
     // username: state.common.get('username'),
     // userFullName: state.common.get('userFullName'),
     // userLogo: state.common.get('userLogo'),

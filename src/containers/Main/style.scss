@@ -1,10 +1,14 @@
 @import "../../theme/theme.scss";
 
 main.dark{
-  div[class*="dark__"]{
+  div[class*="dark__"], section[class*="dark__"]{
     @import '../../theme/antdResetDark.scss';
   }
 }
+div[class*="ant-modal-wrap"][class*="dark__"]{
+  @import '../../theme/antdResetDark.scss';
+}
+
 .app {
   display: flex;
   flex: 1;

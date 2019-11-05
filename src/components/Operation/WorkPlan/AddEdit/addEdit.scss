@@ -1,0 +1,147 @@
+
+@import '../../../../theme/theme.scss';
+
+
+.addEditPlan{
+  height: 100%;
+  .top{
+    margin-bottom: 0;
+    display: flex;
+    font-size: 18px;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 40px;
+    height: 60px;
+    .backIcon{
+      cursor: pointer;
+      flex: 0 0 60px;
+      line-height: 60px;
+    }
+  }
+  .addEditPlanForm{ // 添加计划
+    padding: 20px 40px;
+    .formBox{
+      max-height: 550px;
+      overflow: auto;
+    }
+    .eachPlanForm{
+      display: flex;
+      margin-bottom: 14px;
+      .addFormTips{
+        margin-left: 12px;
+      }
+      :global{
+        .ant-form-item-label{
+          flex: 0 0 410px;
+          label::before{
+            display: none;
+          }
+          label::after{
+            display: inline-block;
+            margin: 0 10px 0 6px;
+            color: #f5222d;
+            font-size: 14px;
+            font-family: SimSun, sans-serif;
+            line-height: 1;
+            content: '*';
+          }
+        }
+        .ant-form-item-control-wrapper{
+          flex: 1;
+        }
+        .ant-form-explain{
+          position: absolute;
+        }
+      }
+    }
+    .saveRow{
+      display: flex;
+      padding-left: 410px;
+      margin-top: 12px;
+      button{
+        margin-right: 12px;
+      }
+    }
+  }
+}
+
+
+//      颜色部分
+.light.addEditPlan{
+  background-color: #fff;
+  .top{
+    color: var(--darkColor);
+    border-bottom: 1px solid var(--promptColor);
+    .backIcon{
+      border-left: 1px solid var(--promptColor);
+    }
+  }
+  .addEditPlanForm{ // 添加计划
+    .eachPlanForm{
+      .addFormTips{
+        color: var(--lightColor);
+      }
+      :global{
+        .ant-form-item-label{
+          color: #000;
+        }
+      }
+    }
+    .saveRow{
+      .saveBtn{
+        background-color: var(--themeColor);
+        color: #fff;
+      }
+      .continueSaveBtn{
+        border: 1px solid var(--themeColor);
+        color: var(--themeColor);
+      }
+      .cancelSaveBtn{
+        border: 1px solid var(--promptColor);
+        color: var(--lightColor);
+      }
+    }
+  }
+}
+
+.dark.addEditPlan{
+  background-image: linear-gradient(-118deg, #3b55aa 0%, #132267 96%);
+  .top{
+    background:rgba(20,33,101,0.40);
+    border:1px solid #4288b5;
+    color:#9cd1ff;
+    margin-bottom: 10px;
+    .backIcon{
+      border-left: 1px solid #4288b5;
+    }
+  }
+  .addEditPlanForm{ // 添加计划
+    .eachPlanForm{
+      .addFormTips{
+        color: #9cd1ff;
+      }
+      :global{
+        .ant-form-item-label{
+          color: #00f0ff;
+        }
+      }
+    }
+    // .saveRow{
+    //   .saveBtn{
+    //     background-color: var(--themeColor);
+    //     color: #fff;
+    //   }
+    //   .continueSaveBtn{
+    //     border: 1px solid var(--themeColor);
+    //     color: var(--themeColor);
+    //   }
+    //   .cancelSaveBtn{
+    //     border: 1px solid var(--promptColor);
+    //     color: var(--lightColor);
+    //   }
+    // }
+  }
+}
+
+
+

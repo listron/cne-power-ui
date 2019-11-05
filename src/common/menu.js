@@ -12,6 +12,7 @@ import { isUrl } from '../utils';
   5. iconStyle: 菜单附加的icon图标
   6. defaultPath: 每个一级菜单下，必须有且仅有一个true，代表该一级目录(模块)下默认立刻展示的页面
   7. rightKey: 权限控制关键字
+  8.renderKey:此模块只有对应得电站才会渲染， 值只有pv或 wind,比如当renderkey：wind，就是只有风电站才会呈现此模块，如果用户只有光电站则不显示
 */
 
 const menuData = [
@@ -47,6 +48,7 @@ const menuData = [
             name: '散点图',
             path: 'scatterDiagram',
             rightKey: 'dataAnalysis_scatterPlot',
+            renderKey: 'wind',
           }, {
             name: '数据概览',
             path: 'overview',
@@ -126,7 +128,8 @@ const menuData = [
         ],
       },
     ],
-  }, {
+  },
+  {
     name: '运维管理',
     path: 'operation',
     rightKey: 'operation',
@@ -136,6 +139,7 @@ const menuData = [
         path: 'workStage',
         iconStyle: 'icon-gzt',
         rightKey: 'operation_workStation',
+        defaultPath: true,
       }, {
         name: '工作计划管理',
         path: 'workPlan',
@@ -246,75 +250,7 @@ const menuData = [
       },
     ],
   },
-  {
-    name: '报表管理',
-    path: 'report',
-    rightKey: 'operation',
-    // rightKey: 'reportManage',
-    children: [
-      {
-        name: '风电报表',
-        path: 'windstation',
-        iconStyle: 'icon-trends',
-        rightKey: 'monitor_reportQuery',
-        children: [
-          {
-            name: '电量报表',
-            path: 'powerReport',
-            rightKey: 'reportQuery_powerReport',
-            defaultPath: true,
-          }, {
-            name: '设备状态',
-            path: 'deviceStatus',
-            rightKey: 'reportQuery_deviceStatus',
-          }, {
-            name: '故障报表',
-            path: 'malfunction',
-            rightKey: 'reportQuery_malfunction',
-          }, {
-            name: '损失电量',
-            path: 'powerLost',
-            rightKey: 'reportQuery_powerLost',
-          },
-        ],
-      },
-      {
-        name: '光伏报表',
-        path: 'pvstation',
-        iconStyle: 'icon-trends',
-        rightKey: 'reportManage_pvReport',
-        children: [
-          {
-            name: '电站报表',
-            path: 'station',
-            iconStyle: 'icon-trends',
-            rightKey: 'pvReport_station',
-            defaultPath: true,
-          },
-          {
-            name: '集中式逆变器',
-            path: 'centerInvert',
-            rightKey: 'pvReport_centralizedInverter',
-          }, {
-            name: '组串式逆变器',
-            path: 'combineInvert',
-            rightKey: 'pvReport_stringInverter',
-          },
-          {
-            name: '汇流箱',
-            path: 'confluenceBox',
-            rightKey: 'pvReport_combinerBox',
-          },
-          {
-            name: '气象站',
-            path: 'weatherStation',
-            rightKey: 'pvReport_weather',
-          },
-        ],
-      },
 
-    ],
-  },
   {
     name: '统计分析',
     path: 'statistical',
@@ -588,7 +524,76 @@ const menuData = [
         ],
       },
     ],
-  }, {
+  },
+  {
+    name: '报表管理',
+    path: 'report',
+    rightKey: 'operation',
+    // rightKey: 'reportManage',
+    children: [
+      {
+        name: '风电报表',
+        path: 'windstation',
+        iconStyle: 'icon-trends',
+        rightKey: 'monitor_reportQuery',
+        children: [
+          {
+            name: '电量报表',
+            path: 'powerReport',
+            rightKey: 'reportQuery_powerReport',
+            defaultPath: true,
+          }, {
+            name: '设备状态',
+            path: 'deviceStatus',
+            rightKey: 'reportQuery_deviceStatus',
+          }, {
+            name: '故障报表',
+            path: 'malfunction',
+            rightKey: 'reportQuery_malfunction',
+          }, {
+            name: '损失电量',
+            path: 'powerLost',
+            rightKey: 'reportQuery_powerLost',
+          },
+        ],
+      },
+      {
+        name: '光伏报表',
+        path: 'pvstation',
+        iconStyle: 'icon-trends',
+        rightKey: 'reportManage_pvReport',
+        children: [
+          {
+            name: '电站报表',
+            path: 'station',
+            iconStyle: 'icon-trends',
+            rightKey: 'pvReport_station',
+            defaultPath: true,
+          },
+          {
+            name: '集中式逆变器',
+            path: 'centerInvert',
+            rightKey: 'pvReport_centralizedInverter',
+          }, {
+            name: '组串式逆变器',
+            path: 'combineInvert',
+            rightKey: 'pvReport_stringInverter',
+          },
+          {
+            name: '汇流箱',
+            path: 'confluenceBox',
+            rightKey: 'pvReport_combinerBox',
+          },
+          {
+            name: '气象站',
+            path: 'weatherStation',
+            rightKey: 'pvReport_weather',
+          },
+        ],
+      },
+    ],
+  },
+  {
     name: '系统管理',
     path: 'system',
     rightKey: 'system',
