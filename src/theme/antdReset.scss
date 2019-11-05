@@ -65,7 +65,7 @@
     background: transparent;
     text-shadow: initial;
     &:active,
-    &:focus,
+    // &:focus,
     &:hover {
       background-color: $themeColor;
       color: #fff;
@@ -95,7 +95,7 @@
       margin-right: 4px;
     }
     &:hover,
-    &:focus,
+    // &:focus,
     &:active {
       background: #199475;
       color: #fff;
@@ -109,7 +109,7 @@
     color: $themeColor;
     border-color: $themeColor;
     &:active,
-    &:focus,
+    // &:focus,
     &:hover {
       background-color: $themeColor;
       color: #fff;
@@ -276,7 +276,7 @@
   }
   /*ant-btn-dashed:hover ant-btn-dashed:focus颜色*/
   .ant-btn-dashed:hover,
-  .ant-btn-dashed:focus,
+  // .ant-btn-dashed:focus,
   .ant-btn-dashed::selection {
     color: $darkColor;
   }

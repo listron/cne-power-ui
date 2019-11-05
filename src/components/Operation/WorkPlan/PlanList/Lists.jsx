@@ -18,6 +18,7 @@ class Lists extends PureComponent {
     getWorkPlanList: PropTypes.func,
     deleteWorkPlan: PropTypes.func,
     getWorkPlanDetail: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
   };
 
   state = {
@@ -63,7 +64,7 @@ class Lists extends PureComponent {
           return <span>{nextSendTime || '--'} {nextSendWeek}</span>;
         },
       }, {
-        title: '计划天数',
+        title: '执行工时',
         dataIndex: 'validPeriod',
         sorter: true,
       }, {
@@ -104,10 +105,19 @@ class Lists extends PureComponent {
     this.props.getWorkPlanDetail({ planId });
   }
 
-  toEdit = (record) => this.props.changeStore({
-    planPageKey: 'edit', // list列表页, edit编辑, add新增, detail详情
-    planDetail: record,
-  })
+  toEdit = (record) => {
+    const { stations, inspectTypeCode } = record || {};
+    // 若是巡视巡检, 请求对应的设备类型列表;
+    if (parseFloat(inspectTypeCode) === 100002) {
+      this.props.getStationDeviceTypes({
+        stationCodes: stations.map(e => e.stationCode).join(','),
+      });
+    }
+    this.props.changeStore({
+      planPageKey: 'edit', // list列表页, edit编辑, add新增, detail详情
+      planDetail: record,
+    });
+  }
 
   toAddPlan = () => this.props.changeStore({
     planPageKey: 'add', // list列表页, edit编辑, add新增, detail详情

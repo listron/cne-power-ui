@@ -47,6 +47,7 @@ class AddPlan extends PureComponent {
       modalKey: null,
       recordDetailInfo: null,
     });
+    this.props.form.resetFields();
   }
 
   disabledStartDate = (cur) => cur.isBefore(moment(), 'day')
@@ -163,19 +164,36 @@ class AddPlan extends PureComponent {
               )}
               <span ref={(ref) => { this.firstStartRef = ref; }} />
             </FormItem>
-            <FormItem label="计划天数" colon={false} className={styles.eachPlanForm} >
+            <FormItem label="循环周期" colon={false} className={styles.eachPlanForm} >
+              {getFieldDecorator('cycleTypeCode', {
+                rules: [{ required: true, message: '请选择循环周期' }],
+                initialValue: null,
+              })(
+                <Select style={{width: '200px'}} getPopupContainer={() => this.cycleTypeRef}>
+                  <Option value={151}>一次</Option>
+                  <Option value={152}>每天</Option>
+                  <Option value={153}>每周</Option>
+                  <Option value={154}>每月</Option>
+                  <Option value={155}>每季度</Option>
+                  <Option value={157}>半年</Option>
+                  <Option value={156}>每年</Option>
+                </Select>
+              )}
+              <span ref={(ref) => { this.cycleTypeRef = ref; }} />
+            </FormItem>
+            <FormItem label="执行工时" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('validPeriod', {
                 rules: [{
                   required: true,
                   validator: (rule, value, callback)=>{
                     if (!value) {
-                      callback('请输入计划天数');
+                      callback('请输入执行工时');
                     } else {
                       const notNumber = isNaN(value);
                       const hasDemical = value.split('.')[1];
                       const wrongNumber = value < 0 || value > this.validPeriodDays[cycleTypeCode];
                       (notNumber || hasDemical || wrongNumber) && callback(
-                        `计划天数需为不超过${this.validPeriodDays[cycleTypeCode] || 999}的整数`
+                        `执行工时需为不超过${this.validPeriodDays[cycleTypeCode] || 999}的整数`
                       );
                     }
                     callback();
@@ -187,23 +205,6 @@ class AddPlan extends PureComponent {
               )}
               天
               {cycleTypeCode && <span className={styles.addFormTips}>注：不超过{this.validPeriodDays[cycleTypeCode]}天</span>}
-            </FormItem>
-            <FormItem label="循环周期" colon={false} className={styles.eachPlanForm} >
-              {getFieldDecorator('cycleTypeCode', {
-                rules: [{ required: true, message: '请选择循环周期' }],
-                initialValue: null,
-              })(
-                <Select style={{width: '200px'}} getPopupContainer={() => this.cycleTypeRef}>
-                  <Option value={152}>每天</Option>
-                  <Option value={153}>每周</Option>
-                  <Option value={154}>每月</Option>
-                  <Option value={155}>每季度</Option>
-                  <Option value={156}>每年</Option>
-                  <Option value={151}>一次</Option>
-                  <Option value={157}>半年</Option>
-                </Select>
-              )}
-              <span ref={(ref) => { this.cycleTypeRef = ref; }} />
             </FormItem>
             {inspectTypeCode === 100002 && <FormItem label="巡视名称" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('planName', {
