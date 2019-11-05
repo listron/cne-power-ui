@@ -42,8 +42,13 @@ class ReportSearch extends React.PureComponent {
   }
 
   timeChange = (value) => { // 时间选择
-    this.setState({ selectTime: value });
     this.loop = true;
+    const { selectTime } = this.state;
+    this.setState({ selectTime: value });
+    if (selectTime.dateType !== value.dateType && value.dateType === 'hour') { // 由于分时需要做设备限制100，所以当选择分时时，清空设备
+      this.setState({ selectedDevice: [] });
+    }
+
   }
 
   changeStation = (value) => { //电站选择
