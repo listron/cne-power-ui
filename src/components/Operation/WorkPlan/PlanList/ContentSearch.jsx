@@ -20,6 +20,7 @@ class ContentSearch extends PureComponent {
   state = {
     content: '',
     user: '',
+    // userId: '',
   }
 
   contentChange = ({ target = {} }) => {
@@ -28,6 +29,7 @@ class ContentSearch extends PureComponent {
 
   userChange = (user) => {
     this.setState({ user });
+    // this.setState({ userId });
   }
 
   toSearch = () => { // 执行搜索
@@ -97,6 +99,12 @@ class ContentSearch extends PureComponent {
           {inspectUserList.map(e => (
             <Option key={e} value={e}>{e}</Option>
           ))}
+          {/* {inspectUserList.map(e => {
+            const { userId, username, userFullname } = e || {};
+            // 同时存在两个名字以 里昂(liang) 方式展示, 否则展示存在项;
+            const userText = (username && userFullname) ? `${userFullname}(${username})` : (username || userFullname);
+            return <Option key={e.userId} value={e.userId}>{userText}</Option>;
+          })} */}
         </Select>
         <Button onClick={this.toSearch} className={styles.search}>查询</Button>
         {(planContent || createUser) && <span onClick={this.toReset} className={styles.reset}>重置</span>}

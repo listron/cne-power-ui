@@ -21,8 +21,7 @@ class PlanDetail extends PureComponent {
   compareKeys = [ // 日志比较参考项
     {
       title: '适用电站',
-      dataIndex: 'stations',
-      render: (stations = []) => stations.map(e => e.stationName).join(','),
+      dataIndex: 'stationNames',
     }, {
       title: '首次下发时间',
       dataIndex: 'firstStartTime',
@@ -168,7 +167,7 @@ class PlanDetail extends PureComponent {
       return [title, preText, nextText];
     }
     return;
-  });
+  }).filter(e => !!e);
 
   onPlanStatusCheck = ({ planStatus }) => {
     const { planDetail } = this.props;
