@@ -9,6 +9,7 @@ import { stationContrastBaseInfo, stationContrastDataInfo } from '../../../../co
 import { Gradient1, Gradient2, barRadius, chartsLoading, themeConfig, chartsNodata } from '../../../../utils/darkConfig';
 import { dataFormats } from '../../../../utils/utilFunc';
 
+
 class StationContrastDetail extends Component {
   static propTypes = {
     stationContrastDetail: PropTypes.array,
@@ -34,7 +35,6 @@ class StationContrastDetail extends Component {
       this.drawChart(stationContrastDetail, column, theme);
     }
   }
-
   getColor = {
     'light': ['#199475', '#c7ceb2'],
     'dark': [Gradient1, Gradient2],
@@ -128,9 +128,6 @@ class StationContrastDetail extends Component {
     };
     stationContrastDiagram.setOption(stationContrastOption);
   }
-
-
-
   render() {
     return (
       <div ref={(ref) => { this.charts = ref; }} className={styles.stationContrastDetailBox} />

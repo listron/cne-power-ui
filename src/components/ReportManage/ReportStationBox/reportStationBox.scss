@@ -67,11 +67,16 @@
 
     }
 
-    .stationName {
+    .stationName,
+    .timeStyle {
       width: 108px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+
+    .timeStyle {
+      width: 140px;
     }
 
     .handlePage {

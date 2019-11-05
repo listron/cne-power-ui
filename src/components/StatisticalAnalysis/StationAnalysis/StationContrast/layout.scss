@@ -122,24 +122,6 @@
       flex: 1;
       justify-content: center;
     }
-
-    // .differHighLight {
-    //   display: flex;
-    //   flex-direction: row;
-
-    //   .stationContrastOne {
-    //     display: flex;
-    //     flex: 1;
-    //     justify-content: center;
-    //     min-width: 150px;
-    //   }
-
-    //   .stationContrastTwo {
-    //     display: flex;
-    //     flex: 1;
-    //     justify-content: center;
-    //   }
-    // }
   }
 
   .baseNameBox {
@@ -155,10 +137,6 @@
         justify-content: center;
         align-items: center;
         writing-mode: tb-rl;
-
-        span {
-          // writing-mode: vertical-rl;
-        }
       }
 
       .rowName {
@@ -178,8 +156,7 @@
 .contrastOverlayClassName {
   :global {
     .ant-popover-content {
-      // width: 848px;
-      // height: 360px;
+
       width: 948px;
       height: 564px;
 
@@ -188,7 +165,6 @@
         height: 100%;
 
         .ant-popover-inner-content {
-          // line-height: 360px;
           line-height: 560px;
           text-align: left;
           padding: 0px;
@@ -199,13 +175,23 @@
 }
 
 .stationContrastDetailBox {
-  // width: 848px;
-  // height: 364px;
-
+  z-index: 9;
   width: 948px;
   height: 564px;
   border-radius: 4px;
   padding-top: 20px;
-  // line-height: 360px;
   line-height: 560px;
+  // position: relative;
+
+}
+
+.closeStyle {
+  position: absolute;
+  top: 16px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  z-index: 99;
+  cursor: pointer;
+
 }
