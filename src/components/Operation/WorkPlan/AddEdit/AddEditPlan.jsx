@@ -110,14 +110,14 @@ class AddEditPlan extends PureComponent {
       validPeriod: initialValidPeriod = null,
       cycleTypeCode: initialCycleTypeCode = null,
       planName: initialPlanName = '',
-      deviceTypeCodes: initialDeviceTypeCodes = [],
+      deviceTypes: initialDeviceTypes = [],
       deadLine: initialDeadLine = null,
       inspectContent: initialInspectContent = '',
     } = (planPageKey === 'edit' ? planDetail : {}); // 默认值设置;
     const {
       firstStartTime = initialFirstStartTime,
       inspectTypeCode = initialInspectTypeCode,
-      deviceTypeCodes = initialDeviceTypeCodes,
+      deviceTypeCodes = initialDeviceTypes,
       cycleTypeCode = initialCycleTypeCode,
     } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes', 'cycleTypeCode']);
     return (
@@ -242,7 +242,7 @@ class AddEditPlan extends PureComponent {
             {parseInt(inspectTypeCode, 10) === 100002 && <FormItem label="设备类型" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('deviceTypeCodes', {
                 rules: [{ required: true, message: '请选择设备类型' }],
-                initialValue: initialDeviceTypeCodes,
+                initialValue: initialDeviceTypes.map(e => parseFloat(e.deviceTypeCode)),
               })(
                 <Select
                   style={{width: '200px'}}

@@ -10,6 +10,7 @@ class PlanDetail extends PureComponent {
     planDetailHandleLoading: PropTypes.bool,
     planDetail: PropTypes.object,
     setWorkPlanStatus: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
     changeStore: PropTypes.func,
   };
 
@@ -27,7 +28,8 @@ class PlanDetail extends PureComponent {
       dataIndex: 'firstStartTime',
     }, {
       title: '执行工时',
-      dataIndex: 'cycleTypeName',
+      dataIndex: 'validPeriod',
+      render: (validPeriod) => `${validPeriod}天`,
     }, {
       title: '循环周期',
       dataIndex: 'cycleTypeName',
@@ -119,7 +121,7 @@ class PlanDetail extends PureComponent {
       dataIndex: 'planStatus', // 1 启用 2 停用
       render: ({ planStatus }) => (
         <Popconfirm
-          title="是否确认删除计划?"
+          title={planStatus === 1 ? '确认停用该计划？该计划会在停用后停止自动下发！' : '确认启用该计划？该计划会在启用后自动开始下发！'}
           onConfirm={() => this.onPlanStatusCheck({ planStatus: planStatus === 1 ? 2 : 1 })}
           okText="确定"
           cancelText="取消"
@@ -175,7 +177,17 @@ class PlanDetail extends PureComponent {
   }
 
 
-  toEdit = () => this.props.changeStore({ planPageKey: 'edit' })
+  toEdit = () => {
+    const { planDetail } = this.props;
+    const { stations = [], inspectTypeCode } = planDetail || {};
+    // // 若是巡视巡检, 请求对应的设备类型列表;
+    if (parseFloat(inspectTypeCode) === 100002) {
+      this.props.getStationDeviceTypes({
+        stationCodes: stations.map(e => e.stationCode).join(','),
+      });
+    }
+    this.props.changeStore({ planPageKey: 'edit' });
+  }
 
   backList = () => this.props.changeStore({ planPageKey: 'list', planDetail: {} })
 
