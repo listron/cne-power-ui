@@ -16,6 +16,18 @@
     :global{
       .ant-form-item-label{
         flex: 0 0 175px;
+        label::before{
+          display: none;
+        }
+        label::after{
+          display: inline-block;
+          margin: 0 10px 0 6px;
+          color: #f5222d;
+          font-size: 14px;
+          font-family: SimSun, sans-serif;
+          line-height: 1;
+          content: '*';
+        }
       }
       .ant-form-item-control-wrapper{
         flex: 1;
@@ -82,6 +94,7 @@
 }
 
 .planHandle{ // 计划下发, 删除
+  min-height: 300px;
   .handle{
     padding-left: 12px;
     height: 48px;
@@ -131,8 +144,10 @@
       }
     }
     :global{
-      .ant-table-scroll .ant-table-body, .ant-table-scroll .ant-table-header{
+      .ant-table-scroll .ant-table-body{
         overflow-x: hidden;
+      }
+      .ant-table-scroll .ant-table-body, .ant-table-scroll .ant-table-header{
         &::-webkit-scrollbar {
           width: 6px;
         }

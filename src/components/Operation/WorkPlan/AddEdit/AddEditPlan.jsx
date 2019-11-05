@@ -89,13 +89,13 @@ class AddEditPlan extends PureComponent {
   }
 
   validPeriodDays = {
+    151: 100,
     152: 1,
     153: 7,
     154: 30,
     155: 90,
-    156: 365,
-    151: 100,
-    157: 180,
+    156: 180,
+    157: 365,
   }
 
   render(){
@@ -110,14 +110,14 @@ class AddEditPlan extends PureComponent {
       validPeriod: initialValidPeriod = null,
       cycleTypeCode: initialCycleTypeCode = null,
       planName: initialPlanName = '',
-      deviceTypeCodes: initialDeviceTypeCodes = [],
+      deviceTypes: initialDeviceTypes = [],
       deadLine: initialDeadLine = null,
       inspectContent: initialInspectContent = '',
     } = (planPageKey === 'edit' ? planDetail : {}); // 默认值设置;
     const {
       firstStartTime = initialFirstStartTime,
       inspectTypeCode = initialInspectTypeCode,
-      deviceTypeCodes = initialDeviceTypeCodes,
+      deviceTypeCodes = initialDeviceTypes,
       cycleTypeCode = initialCycleTypeCode,
     } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes', 'cycleTypeCode']);
     return (
@@ -179,7 +179,6 @@ class AddEditPlan extends PureComponent {
                 initialValue: initialFirstStartTime ? moment(initialFirstStartTime) : moment(),
               })(
                 <DatePicker
-                  showTime
                   placeholder="选择时间"
                   style={{width: '200px'}}
                   allowClear={false}
@@ -200,8 +199,8 @@ class AddEditPlan extends PureComponent {
                   <Option value={153}>每周</Option>
                   <Option value={154}>每月</Option>
                   <Option value={155}>每季度</Option>
-                  <Option value={157}>半年</Option>
-                  <Option value={156}>每年</Option>
+                  <Option value={156}>半年</Option>
+                  <Option value={157}>每年</Option>
                 </Select>
               )}
               <span ref={(ref) => { this.cycleTypeRef = ref; }} />
@@ -243,7 +242,7 @@ class AddEditPlan extends PureComponent {
             {parseInt(inspectTypeCode, 10) === 100002 && <FormItem label="设备类型" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('deviceTypeCodes', {
                 rules: [{ required: true, message: '请选择设备类型' }],
-                initialValue: initialDeviceTypeCodes,
+                initialValue: initialDeviceTypes.map(e => parseFloat(e.deviceTypeCode)),
               })(
                 <Select
                   style={{width: '200px'}}
@@ -267,7 +266,6 @@ class AddEditPlan extends PureComponent {
                 initialValue: initialDeadLine ? moment(initialDeadLine) : moment().add(5, 'year'),
               })(
                 <DatePicker
-                  showTime
                   placeholder="选择时间"
                   style={{width: '200px'}}
                   allowClear={false}

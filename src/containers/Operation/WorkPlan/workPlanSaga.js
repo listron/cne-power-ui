@@ -143,12 +143,20 @@ function *editWorkPlan({ payload }){ // 编辑工作计划
     if (response.code === '10000') {
       message.success('恭喜！你所提交的信息已经保存成功，可在日历及计划管理中查看。');
       const { planParams, planListPageParams } = yield select(state => state.operation.workPlan.toJS()); // 再次请求列表
+      const newPagePrams = {
+        ...planListPageParams,
+        pageNum: 1,
+        pageSize: 10,
+        orderField: 8, // planTypeName inspectContent firstStartTime nextSendTime validPeriod cycleTypeName planStatus lastHandleTime
+        orderMethod: 'desc', // 新增后, 将按照最新更新时间排序展示
+      };
       yield call(easyPut, 'fetchSuccess', {
         addPlanLoading: false,
+        planListPageParams: newPagePrams,
         planDetail: {},
       });
       yield call(getWorkPlanList, { // 再次请求日历计划列表
-        payload: { ...planParams, ...planListPageParams },
+        payload: { ...planParams, ...newPagePrams },
       });
     } else { throw response; }
   } catch (error) {

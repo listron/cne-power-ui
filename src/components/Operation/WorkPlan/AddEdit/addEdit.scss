@@ -33,6 +33,18 @@
       :global{
         .ant-form-item-label{
           flex: 0 0 410px;
+          label::before{
+            display: none;
+          }
+          label::after{
+            display: inline-block;
+            margin: 0 10px 0 6px;
+            color: #f5222d;
+            font-size: 14px;
+            font-family: SimSun, sans-serif;
+            line-height: 1;
+            content: '*';
+          }
         }
         .ant-form-item-control-wrapper{
           flex: 1;
