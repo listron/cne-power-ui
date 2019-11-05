@@ -179,7 +179,6 @@ class AddEditPlan extends PureComponent {
                 initialValue: initialFirstStartTime ? moment(initialFirstStartTime) : moment(),
               })(
                 <DatePicker
-                  showTime
                   placeholder="选择时间"
                   style={{width: '200px'}}
                   allowClear={false}
@@ -267,7 +266,6 @@ class AddEditPlan extends PureComponent {
                 initialValue: initialDeadLine ? moment(initialDeadLine) : moment().add(5, 'year'),
               })(
                 <DatePicker
-                  showTime
                   placeholder="选择时间"
                   style={{width: '200px'}}
                   allowClear={false}

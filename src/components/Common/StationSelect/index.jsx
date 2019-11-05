@@ -42,7 +42,8 @@ const Option = Select.Option;
   8. 选填 - disabled: bool; 默认false， 传入true值时组件为禁用状态。
   9. 选填 - oneStyleOnly : bool; 默认为false，用于控制用户是否只能选一种类型的电站(默认都可以)。
   10. 选填- stationShowNumber:bool; 默认是false，展示具体的电站名称  传入为true时，显示: 已选电站 已选电站数量/所有电站数量
-  11.当电站类型为风或光这种单一电站数据类型，（就是没有头部的电站类型选择时）并且电站选择模式为多选时会有全选功能
+  11. 选填 - stationShowNumber为true时, selectsStationText 对stationShowNumber的补充,用于手动自定义展示已选电站文本 - todo
+  12.当电站类型为风或光这种单一电站数据类型，（就是没有头部的电站类型选择时）并且电站选择模式为多选时会有全选功能
 */
 
 class StationSelect extends Component {

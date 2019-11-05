@@ -154,7 +154,6 @@ class AddPlan extends PureComponent {
                 initialValue: moment(),
               })(
                 <DatePicker
-                  showTime
                   placeholder="选择时间"
                   style={{width: '200px'}}
                   allowClear={false}
@@ -242,7 +241,6 @@ class AddPlan extends PureComponent {
                 initialValue: moment().add(5, 'year'),
               })(
                 <DatePicker
-                  showTime
                   placeholder="选择时间"
                   style={{width: '200px'}}
                   allowClear={false}

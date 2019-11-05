@@ -82,6 +82,7 @@
 }
 
 .planHandle{ // 计划下发, 删除
+  min-height: 300px;
   .handle{
     padding-left: 12px;
     height: 48px;
@@ -131,8 +132,10 @@
       }
     }
     :global{
-      .ant-table-scroll .ant-table-body, .ant-table-scroll .ant-table-header{
+      .ant-table-scroll .ant-table-body{
         overflow-x: hidden;
+      }
+      .ant-table-scroll .ant-table-body, .ant-table-scroll .ant-table-header{
         &::-webkit-scrollbar {
           width: 6px;
         }
