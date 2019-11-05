@@ -33,6 +33,7 @@
   .detailContent{
     flex: 1 0;
     padding: 16px 40px 24px 40px;
+    overflow: auto;
     .eachContent{
       display: flex;
       line-height: 30px;
