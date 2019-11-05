@@ -242,7 +242,7 @@ class AddEditPlan extends PureComponent {
             {parseInt(inspectTypeCode, 10) === 100002 && <FormItem label="设备类型" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('deviceTypeCodes', {
                 rules: [{ required: true, message: '请选择设备类型' }],
-                initialValue: initialDeviceTypes.map(e => parseFloat(e.deviceTypeCode)),
+                initialValue: initialDeviceTypes ? initialDeviceTypes.map(e => parseFloat(e.deviceTypeCode)) : [],
               })(
                 <Select
                   style={{width: '200px'}}
