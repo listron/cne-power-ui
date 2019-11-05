@@ -42,6 +42,9 @@ class DeviceSelectModal extends Component {
       newState.checkedMatrix = partitions[0].deviceCode;
     }
     this.setState({ ...newState });
+    if (nextProps.checkedDevice.length !== nextProps.devices.length) { //所选设备不是全部 全选功能关闭
+      this.setState({ checkAll: false });
+    }
   }
 
   showModal = () => {
