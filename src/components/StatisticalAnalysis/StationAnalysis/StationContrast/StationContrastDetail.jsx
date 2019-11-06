@@ -53,6 +53,8 @@ class StationContrastDetail extends Component {
     const stationContrastOption = {
       graphic: graphic,
       legend: {
+        width: 560,
+        left: 'center',
         itemWidth: 8,
         itemHeight: 5,
       },
