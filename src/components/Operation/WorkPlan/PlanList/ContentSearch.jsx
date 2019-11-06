@@ -19,29 +19,29 @@ class ContentSearch extends PureComponent {
 
   state = {
     content: '',
-    user: '',
-    // userId: '',
+    // user: '',
+    userId: null,
   }
 
   contentChange = ({ target = {} }) => {
     this.setState({ content: target.value });
   }
 
-  userChange = (user) => {
-    this.setState({ user });
-    // this.setState({ userId });
+  userChange = (userId) => {
+    // this.setState({ user });
+    this.setState({ userId });
   }
 
   toSearch = () => { // 执行搜索
-    const { content, user } = this.state;
+    const { content, userId } = this.state;
     this.planListQuery({ // 重置
       planContent: content,
-      createUser: user,
+      createUser: userId,
     });
   }
 
   toReset = () => {
-    this.setState({ content: '', user: '' });
+    this.setState({ content: '', userId: null });
     this.planListQuery({ // 重置
       planContent: '',
       createUser: '',
@@ -70,7 +70,7 @@ class ContentSearch extends PureComponent {
   }
 
   render(){
-    const { content, user } = this.state;
+    const { content, userId } = this.state;
     const { inspectUserList, planParams, theme } = this.props;
     const { planContent, createUser } = planParams;
     return (
@@ -87,7 +87,7 @@ class ContentSearch extends PureComponent {
         <Select
           style={{ width: '160px', marginRight: '12px' }}
           placeholder="请输入..."
-          value={user}
+          value={userId}
           onChange={this.userChange}
           getPopupContainer={() => this.userRef}
           showSearch
@@ -96,15 +96,15 @@ class ContentSearch extends PureComponent {
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
         >
-          {inspectUserList.map(e => (
+          {/* {inspectUserList.map(e => (
             <Option key={e} value={e}>{e}</Option>
-          ))}
-          {/* {inspectUserList.map(e => {
-            const { userId, username, userFullname } = e || {};
+          ))} */}
+          {inspectUserList.map(e => {
+            const { username, userFullname } = e || {};
             // 同时存在两个名字以 里昂(liang) 方式展示, 否则展示存在项;
             const userText = (username && userFullname) ? `${userFullname}(${username})` : (username || userFullname);
-            return <Option key={e.userId} value={e.userId}>{userText}</Option>;
-          })} */}
+            return <Option key={`${e.userId}`} value={`${e.userId}`}>{userText}</Option>;
+          })}
         </Select>
         <Button onClick={this.toSearch} className={styles.search}>查询</Button>
         {(planContent || createUser) && <span onClick={this.toReset} className={styles.reset}>重置</span>}
