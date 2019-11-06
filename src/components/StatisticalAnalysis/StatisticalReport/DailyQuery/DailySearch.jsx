@@ -284,6 +284,8 @@ class DailySearch extends Component {
 
     const indexCodes = quotaInfoData.map(e => {
       return e.value;
+    }).filter(e => {
+      return e > 1000;
     });
 
     const faults = faultIds.map(e => {
