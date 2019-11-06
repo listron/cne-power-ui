@@ -65,6 +65,18 @@
       :global{
         .ant-form-item-label{
           color: #000;
+          label::before{
+            display: none;
+          }
+          label::after{
+            display: inline-block;
+            margin: 0 10px 0 6px;
+            color: #f5222d;
+            font-size: 14px;
+            font-family: SimSun, sans-serif;
+            line-height: 1;
+            content: '*';
+          }
         }
       }
     }

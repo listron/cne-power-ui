@@ -24,7 +24,7 @@ class HandlePart extends PureComponent {
     return (
       <div className={styles.handleText}>
         <span className={styles.publishPlan} onClick={this.handlePublish}>立即下发</span>
-        <span className={styles.deletePlan} onClick={this.handleDelete} className="iconfont icon-del" />
+        <span className={`iconfont icon-del ${styles.deletePlan}`} onClick={this.handleDelete} />
       </div>
     );
   }

@@ -128,7 +128,8 @@ const menuData = [
         ],
       },
     ],
-  }, {
+  },
+  {
     name: '运维管理',
     path: 'operation',
     rightKey: 'operation',
@@ -138,6 +139,7 @@ const menuData = [
         path: 'workStage',
         iconStyle: 'icon-gzt',
         rightKey: 'operation_workStation',
+        defaultPath: true,
       }, {
         name: '工作计划管理',
         path: 'workPlan',
@@ -248,75 +250,7 @@ const menuData = [
       },
     ],
   },
-  {
-    name: '报表管理',
-    path: 'report',
-    rightKey: 'operation',
-    // rightKey: 'reportManage',
-    children: [
-      {
-        name: '风电报表',
-        path: 'windstation',
-        iconStyle: 'icon-trends',
-        rightKey: 'monitor_reportQuery',
-        children: [
-          {
-            name: '电量报表',
-            path: 'powerReport',
-            rightKey: 'reportQuery_powerReport',
-            defaultPath: true,
-          }, {
-            name: '设备状态',
-            path: 'deviceStatus',
-            rightKey: 'reportQuery_deviceStatus',
-          }, {
-            name: '故障报表',
-            path: 'malfunction',
-            rightKey: 'reportQuery_malfunction',
-          }, {
-            name: '损失电量',
-            path: 'powerLost',
-            rightKey: 'reportQuery_powerLost',
-          },
-        ],
-      },
-      {
-        name: '光伏报表',
-        path: 'pvstation',
-        iconStyle: 'icon-trends',
-        rightKey: 'reportManage_pvReport',
-        children: [
-          {
-            name: '电站报表',
-            path: 'station',
-            iconStyle: 'icon-trends',
-            rightKey: 'pvReport_station',
-            defaultPath: true,
-          },
-          {
-            name: '集中式逆变器',
-            path: 'centerInvert',
-            rightKey: 'pvReport_centralizedInverter',
-          }, {
-            name: '组串式逆变器',
-            path: 'combineInvert',
-            rightKey: 'pvReport_stringInverter',
-          },
-          {
-            name: '汇流箱',
-            path: 'confluenceBox',
-            rightKey: 'pvReport_combinerBox',
-          },
-          {
-            name: '气象站',
-            path: 'weatherStation',
-            rightKey: 'pvReport_weather',
-          },
-        ],
-      },
 
-    ],
-  },
   {
     name: '统计分析',
     path: 'statistical',
@@ -590,7 +524,76 @@ const menuData = [
         ],
       },
     ],
-  }, {
+  },
+  {
+    name: '报表管理',
+    path: 'report',
+    rightKey: 'operation',
+    // rightKey: 'reportManage',
+    children: [
+      {
+        name: '风电报表',
+        path: 'windstation',
+        iconStyle: 'icon-trends',
+        rightKey: 'monitor_reportQuery',
+        children: [
+          {
+            name: '电量报表',
+            path: 'powerReport',
+            rightKey: 'reportQuery_powerReport',
+            defaultPath: true,
+          }, {
+            name: '设备状态',
+            path: 'deviceStatus',
+            rightKey: 'reportQuery_deviceStatus',
+          }, {
+            name: '故障报表',
+            path: 'malfunction',
+            rightKey: 'reportQuery_malfunction',
+          }, {
+            name: '损失电量',
+            path: 'powerLost',
+            rightKey: 'reportQuery_powerLost',
+          },
+        ],
+      },
+      {
+        name: '光伏报表',
+        path: 'pvstation',
+        iconStyle: 'icon-trends',
+        rightKey: 'reportManage_pvReport',
+        children: [
+          {
+            name: '电站报表',
+            path: 'station',
+            iconStyle: 'icon-trends',
+            rightKey: 'pvReport_station',
+            defaultPath: true,
+          },
+          {
+            name: '集中式逆变器',
+            path: 'centerInvert',
+            rightKey: 'pvReport_centralizedInverter',
+          }, {
+            name: '组串式逆变器',
+            path: 'combineInvert',
+            rightKey: 'pvReport_stringInverter',
+          },
+          {
+            name: '汇流箱',
+            path: 'confluenceBox',
+            rightKey: 'pvReport_combinerBox',
+          },
+          {
+            name: '气象站',
+            path: 'weatherStation',
+            rightKey: 'pvReport_weather',
+          },
+        ],
+      },
+    ],
+  },
+  {
     name: '系统管理',
     path: 'system',
     rightKey: 'system',

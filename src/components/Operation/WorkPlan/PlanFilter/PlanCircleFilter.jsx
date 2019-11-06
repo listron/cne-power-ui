@@ -20,13 +20,13 @@ class PlanCircleFilter extends PureComponent {
   }
 
   circleTypes = [
+    { label: '一次', value: 151 },
     { label: '每天', value: 152 },
     { label: '每周', value: 153 },
     { label: '每月', value: 154 },
     { label: '每季度', value: 155 },
-    { label: '每年', value: 156 },
-    { label: '一次', value: 151 },
-    { label: '半年', value: 157 },
+    { label: '半年', value: 156 },
+    { label: '每年', value: 157 },
   ]
 
   render(){

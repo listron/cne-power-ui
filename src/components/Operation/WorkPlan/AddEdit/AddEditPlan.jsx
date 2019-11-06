@@ -88,6 +88,16 @@ class AddEditPlan extends PureComponent {
     return !startTime || cur.isBefore(startTime, 'day') || cur.isAfter(moment().add(5, 'year'), 'day');
   }
 
+  validPeriodDays = {
+    151: 100,
+    152: 1,
+    153: 7,
+    154: 30,
+    155: 90,
+    156: 180,
+    157: 365,
+  }
+
   render(){
     const { saveMode } = this.state;
     const { planPageKey, form, stations, stationDeviceTypes, addPlanLoading, planDetail, theme } = this.props;
@@ -100,15 +110,16 @@ class AddEditPlan extends PureComponent {
       validPeriod: initialValidPeriod = null,
       cycleTypeCode: initialCycleTypeCode = null,
       planName: initialPlanName = '',
-      deviceTypeCodes: initialDeviceTypeCodes = [],
+      deviceTypes: initialDeviceTypes = [],
       deadLine: initialDeadLine = null,
       inspectContent: initialInspectContent = '',
     } = (planPageKey === 'edit' ? planDetail : {}); // 默认值设置;
     const {
       firstStartTime = initialFirstStartTime,
       inspectTypeCode = initialInspectTypeCode,
-      deviceTypeCodes = initialDeviceTypeCodes,
-    } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes']);
+      deviceTypeCodes = initialDeviceTypes,
+      cycleTypeCode = initialCycleTypeCode,
+    } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes', 'cycleTypeCode']);
     return (
       <section className={`${styles.addEditPlan} ${styles[theme]}`}>
         <h3 className={styles.top}>
@@ -168,7 +179,6 @@ class AddEditPlan extends PureComponent {
                 initialValue: initialFirstStartTime ? moment(initialFirstStartTime) : moment(),
               })(
                 <DatePicker
-                  showTime
                   placeholder="选择时间"
                   style={{width: '200px'}}
                   allowClear={false}
@@ -178,18 +188,37 @@ class AddEditPlan extends PureComponent {
               )}
               <span ref={(ref) => { this.firstStartRef = ref; }} />
             </FormItem>
-            <FormItem label="计划天数" colon={false} className={styles.eachPlanForm} >
+            <FormItem label="循环周期" colon={false} className={styles.eachPlanForm} >
+              {getFieldDecorator('cycleTypeCode', {
+                rules: [{ required: true, message: '请选择循环周期' }],
+                initialValue: initialCycleTypeCode,
+              })(
+                <Select style={{width: '200px'}} getPopupContainer={() => this.cycleTypeRef}>
+                  <Option value={151}>一次</Option>
+                  <Option value={152}>每天</Option>
+                  <Option value={153}>每周</Option>
+                  <Option value={154}>每月</Option>
+                  <Option value={155}>每季度</Option>
+                  <Option value={156}>半年</Option>
+                  <Option value={157}>每年</Option>
+                </Select>
+              )}
+              <span ref={(ref) => { this.cycleTypeRef = ref; }} />
+            </FormItem>
+            <FormItem label="执行工时" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('validPeriod', {
                 rules: [{
                   required: true,
                   validator: (rule, value, callback)=>{
                     if (!value) {
-                      callback('请输入计划天数');
+                      callback('请输入执行工时');
                     } else {
                       const notNumber = isNaN(value);
-                      const hasDemical = value.split('.')[1];
-                      const wrongNumber = value < 0 || value > 999;
-                      (notNumber || hasDemical || wrongNumber) && callback('计划天数需为不大于999的整数');
+                      const hasDemical = `${value}`.split('.')[1];
+                      const wrongNumber = value < 0 || value > this.validPeriodDays[cycleTypeCode];
+                      (notNumber || hasDemical || wrongNumber) && callback(
+                        `执行工时需为不超过${this.validPeriodDays[cycleTypeCode] || 999}的整数`
+                      );
                     }
                     callback();
                   },
@@ -199,23 +228,7 @@ class AddEditPlan extends PureComponent {
                 <Input style={{width: '200px'}} placeholder="请输入..." />
               )}
               天
-            </FormItem>
-            <FormItem label="循环周期" colon={false} className={styles.eachPlanForm} >
-              {getFieldDecorator('cycleTypeCode', {
-                rules: [{ required: true, message: '请选择循环周期' }],
-                initialValue: initialCycleTypeCode,
-              })(
-                <Select style={{width: '200px'}} getPopupContainer={() => this.cycleTypeRef}>
-                  <Option value={152}>每天</Option>
-                  <Option value={153}>每周</Option>
-                  <Option value={154}>每月</Option>
-                  <Option value={155}>每季度</Option>
-                  <Option value={156}>每年</Option>
-                  <Option value={151}>一次</Option>
-                  <Option value={157}>半年</Option>
-                </Select>
-              )}
-              <span ref={(ref) => { this.cycleTypeRef = ref; }} />
+              {cycleTypeCode && <span className={styles.addFormTips}>注：不超过{this.validPeriodDays[cycleTypeCode]}天</span>}
             </FormItem>
             {parseInt(inspectTypeCode, 10) === 100002 && <FormItem label="巡视名称" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('planName', {
@@ -229,7 +242,7 @@ class AddEditPlan extends PureComponent {
             {parseInt(inspectTypeCode, 10) === 100002 && <FormItem label="设备类型" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('deviceTypeCodes', {
                 rules: [{ required: true, message: '请选择设备类型' }],
-                initialValue: initialDeviceTypeCodes,
+                initialValue: initialDeviceTypes ? initialDeviceTypes.map(e => parseFloat(e.deviceTypeCode)) : [],
               })(
                 <Select
                   style={{width: '200px'}}
@@ -253,7 +266,6 @@ class AddEditPlan extends PureComponent {
                 initialValue: initialDeadLine ? moment(initialDeadLine) : moment().add(5, 'year'),
               })(
                 <DatePicker
-                  showTime
                   placeholder="选择时间"
                   style={{width: '200px'}}
                   allowClear={false}
