@@ -16,9 +16,9 @@ const MapChart = ({ ...data }) => {
     message.destroy();
     message.config({ top: 225, maxCount: 1 });
     message.warning('电站未接入,无法查看详情', 2);
-  }
+  };
 
-  axios.get(`/mapJson/China.json`).then(response => {
+  axios.get('/mapJson/China.json').then(response => {
     const countryBox = document.getElementById('allStationMap');
     if (countryBox) {
       const countryChart = echarts.init(countryBox);
@@ -43,7 +43,7 @@ const MapChart = ({ ...data }) => {
             emphasis: {
               show: false,
 
-            }
+            },
           },
           itemStyle: {
             normal: {
@@ -52,7 +52,7 @@ const MapChart = ({ ...data }) => {
             },
             emphasis: {
               areaColor: '#b2e8fa',
-            }
+            },
           },
         },
         tooltip: {
@@ -66,9 +66,9 @@ const MapChart = ({ ...data }) => {
             const stationStatus = item.stationStatus || {};
             const currentStatus = stationStatus.stationStatus;
             if (currentStatus === '900') {
-              return null
+              return null;
             }
-            let needData = [
+            const needData = [
               { name: '实时功率', value: 'stationPower', point: 2, unit: 'MW', quantity: 1000 },
               { name: '平均风速', value: 'instantaneous', point: 2, unit: 'm/s' },
               { name: '出力比', value: 'capabilityRate', point: 2, unit: '%' },
@@ -83,11 +83,11 @@ const MapChart = ({ ...data }) => {
               { name: '通讯中断台数', value: 'interruptNum', point: 0, unit: '台' },
               { name: '未接入台数', value: 'noAccessNum', point: 0, unit: '台' },
               { name: '告警数量', value: 'alarmNum', point: 0, unit: '个' },
-            ]
+            ];
             let paramsItem = '';
             needData.forEach((e, index) => {
               const value = e.quantity ? dataFormats(item[e.value], '--') / e.quantity : item[e.value];
-              return paramsItem += (
+              paramsItem += (
                 `<div class=${styles.popColumn} key=${index}>
                   <div>${e.name}</div>
                   <div>
@@ -95,8 +95,8 @@ const MapChart = ({ ...data }) => {
                     <span class=${styles.unit}>${e.unit}</span>
                   </div>
                 </div>`
-              )
-            })
+              );
+            });
             return `<div class=${styles.popover}>
               <div class=${styles.name}>${item.stationName} </div>
               <div class=${currentStatus === '400' && styles.poNomal || styles.poInterrupt}>
@@ -105,8 +105,8 @@ const MapChart = ({ ...data }) => {
               <div class=${styles.popContainer}>
                   ${paramsItem}
               </div>
-           </div>`
-          }
+           </div>`;
+          },
         },
         series: [{
           name: '通讯正常',
@@ -119,10 +119,10 @@ const MapChart = ({ ...data }) => {
               key: index,
               name: dataItem.stationName,
               value: [dataItem.longitude, dataItem.latitude, 10],
-              symbol: dataItem.alarmNum > 0 ? `image:///img/wind02.png` : `image:///img/wind01.png`
-            }
+              symbol: dataItem.alarmNum > 0 ? 'image:///img/wind02.png' : 'image:///img/wind01.png',
+            };
           }),
-          symbol: `image:///img/wind01.png`,
+          symbol: 'image:///img/wind01.png',
           symbolSize: [21, 28],
         },
         {
@@ -136,11 +136,11 @@ const MapChart = ({ ...data }) => {
               key: index,
               name: dataItem.stationName,
               value: [dataItem.longitude, dataItem.latitude, 10],
-              symbol: dataItem.alarmNum > 0 ? `image:///img/windcutdown2.png` : `image:///img/cutdown.png`,
-            }
+              symbol: dataItem.alarmNum > 0 ? 'image:///img/windcutdown2.png' : 'image:///img/cutdown.png',
+            };
           }),
-          symbol: `image:///img/cutdown.png`,
-          rotation: () => { let rotation = 0; (rotation += Math.PI / 360) % (Math.PI * 2) },
+          symbol: 'image:///img/cutdown.png',
+          rotation: () => { let rotation = 0; (rotation += Math.PI / 360) % (Math.PI * 2); },
           symbolSize: [21, 28],
         },
         {
@@ -153,31 +153,31 @@ const MapChart = ({ ...data }) => {
               ...dataItem,
               key: index,
               name: dataItem.stationName,
-              value: [dataItem.longitude, dataItem.latitude, 10]
-            }
+              value: [dataItem.longitude, dataItem.latitude, 10],
+            };
           }),
-          symbol: `image:///img/wind04.png`,
+          symbol: 'image:///img/wind04.png',
           symbolSize: [21, 28],
         }],
 
-      }
+      };
       countryChart.resize();
       countryChart.setOption(option, 'notMerge');
       countryChart.on('click', (params) => {
-        if (!params.seriesType) { return false }
+        if (!params.seriesType) { return false; }
         if (params.data.stationStatus.stationStatus !== '900') {
-          return history.push(`/monitor/singleStation/${params.data.stationCode}`)
-        } else {
-          showTip();
+          return history.push(`/monitor/singleStation/${params.data.stationCode}`);
         }
-      })
+        showTip();
+
+      });
     }
-  })
+  });
 
 
 
 
   return (<div id={'allStationMap'} className={styles.mapChart} > </div>);
-}
+};
 
-export { MapChart }
+export { MapChart };
