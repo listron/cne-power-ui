@@ -53,38 +53,29 @@
     }
     .taskTypeName{
       padding-left: 24px;
-      width: calc((100vw - 635px) * 0.27);
+      width: calc((100vw - 640px) * 0.27);
     }
     .taskTypeNameText{
-      max-width: calc((100vw - 635px) * 0.27 - 32px);
+      max-width: calc((100vw - 640px) * 0.27 - 40px);
     }
     .taskDesc{
-      width: calc((100vw - 635px) * 0.42);
+      width: calc((100vw - 640px) * 0.42);
     }
     .taskDescText{
-      max-width: calc((100vw - 635px) * 0.42 - 32px);
+      max-width: calc((100vw - 640px) * 0.42 - 32px);
     }
     .stationName{
-      width: calc((100vw - 635px) * 0.16);
+      width: calc((100vw - 640px) * 0.16);
     }
     .stationNameText{
-      max-width: calc((100vw - 635px) * 0.16 - 32px);
-    }
-    .completeTime{
-      width: 175px;
+      max-width: calc((100vw - 640px) * 0.16 - 32px);
     }
     .handleUser{
-      width: calc((100vw - 635px) * 0.15);
+      width: calc((100vw - 640px) * 0.15);
     }
     .handleUserText{
-      max-width: calc((100vw - 635px) * 0.15 - 32px);
+      max-width: calc((100vw - 640px) * 0.15 - 32px);
     }
-    .completeStatus{
-      width: 110px;
-    }
-    // .handle{
-    //   width: 90px;
-    // }
     .handleRow{
       :global{
         .iconfont{
@@ -296,11 +287,16 @@
     :global{
       .ant-table-scroll .ant-table-body{
         &::-webkit-scrollbar-thumb {
-          background: rgba(0, 0, 0, 0.5);
+          background: #3b55aa;
         }
       }
       .ant-table-scroll .ant-table-header{
+        overflow-x: hidden!important;
+        margin-bottom: 0!important;
         background-color: transparent;
+        &::-webkit-scrollbar-track-piece{
+          background-color: #1f246f;
+        }
       }
     }
   }

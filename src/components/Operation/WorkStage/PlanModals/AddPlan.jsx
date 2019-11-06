@@ -169,7 +169,7 @@ class AddPlan extends PureComponent {
                 initialValue: null,
               })(
                 <Select style={{width: '200px'}} getPopupContainer={() => this.cycleTypeRef}>
-                  <Option value={151}>一次</Option>
+                  <Option value={151}>单次</Option>
                   <Option value={152}>每天</Option>
                   <Option value={153}>每周</Option>
                   <Option value={154}>每月</Option>
