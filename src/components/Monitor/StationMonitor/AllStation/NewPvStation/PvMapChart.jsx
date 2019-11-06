@@ -22,8 +22,8 @@ class PvMapChart extends Component {
     super();
     this.state = {
       mapType: 'China',
-      mapTypeName: "",
-    }
+      mapTypeName: '',
+    };
   }
 
   componentDidMount() {
@@ -32,17 +32,17 @@ class PvMapChart extends Component {
     if (provinceType.length === 1) {
       const province = provinceListArray.filter(e => provinceType[0].includes(e.name));
       this.setState({
-        mapType: province.length > 0 && province[0].id || 'China'
+        mapType: province.length > 0 && province[0].id || 'China',
       }, () => {
-        this.drawCharts(this.props)
-      })
+        this.drawCharts(this.props);
+      });
     } else {
-      this.drawCharts(this.props)
+      this.drawCharts(this.props);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    this.drawCharts(nextProps)
+    this.drawCharts(nextProps);
   }
 
   showTip = (e) => {
@@ -73,9 +73,9 @@ class PvMapChart extends Component {
           const item = params.data;
           const currentStatus = `${item.stationStatus}`;
           if (currentStatus === '900') {
-            return null
+            return null;
           }
-          let needData = [
+          const needData = [
             { name: '实时功率', value: 'stationPower', point: 2, unit: realTimePowerUnit, unitChange: true },
             { name: '瞬时辐射', value: 'instantaneous', point: 2, unit: 'W/m²' },
             { name: '负荷率', value: 'loadRate', point: 2, unit: '%' },
@@ -84,18 +84,18 @@ class PvMapChart extends Component {
             { name: '异常支路数', value: 'anomalousBranchNum', point: 0, unit: '个' },
             { name: '低效逆变器', value: 'lowEfficiencyInverterNum', point: 0, unit: '台' },
             { name: '告警数量', value: 'alarmNum', point: 0, unit: '个' },
-          ]
+          ];
           let paramsItem = '';
           needData.forEach((e, index) => {
-            let value = dataFormats(item[e['value']], '--', e.point, true)
+            let value = dataFormats(item[e['value']], '--', e.point, true);
             if (e.value === 'stationPower') {
               const stationPowerNum = divideFormarts(item.stationPower, realTimePowerUnit);
-              value = dataFormats(stationPowerNum, '--', e.point, true)
+              value = dataFormats(stationPowerNum, '--', e.point, true);
             }
             if (e.value === 'dayPower') {
-              value = powerPoint(divideFormarts(item.dayPower, powerUnit))
+              value = powerPoint(divideFormarts(item.dayPower, powerUnit));
             }
-            return paramsItem += (
+            paramsItem += (
               `<div class=${styles.popColumn} key=${index}>
                 <div>${e.name}</div>
                 <div>
@@ -103,8 +103,8 @@ class PvMapChart extends Component {
                   <span class=${styles.unit}>${e.unit}</span>
                 </div>
               </div>`
-            )
-          })
+            );
+          });
           return `<div class=${styles.popover}>
             <div class=${styles.name}>${item.stationName} </div>
             <div class=${`${currentStatus}` === '400' && styles.poNomal || styles.poInterrupt}>
@@ -113,11 +113,11 @@ class PvMapChart extends Component {
             <div class=${styles.popContainer}>
                 ${paramsItem}
             </div>
-         </div>`
-        }
+         </div>`;
+        },
       },
-    }
-    return option
+    };
+    return option;
   }
 
 
@@ -126,9 +126,10 @@ class PvMapChart extends Component {
     const interrupt = stationDataList.filter(e => `${e.stationStatus}` === '500');
     const notConnected = stationDataList.filter(e => `${e.stationStatus}` === '900');
     const { mapType } = this.state;
+    const mapNameType = mapType === 'China' && 'china' || mapType;
     const option = {
       geo: {
-        map: mapType,
+        map: mapNameType,
         layoutCenter: ['50%', '50%'],
         layoutSize: mapType === 'China' ? '100%' : '70%',
         label: {
@@ -137,17 +138,16 @@ class PvMapChart extends Component {
           },
           emphasis: {
             show: false,
-          }
+          },
         },
         itemStyle: {
           normal: {
             areaColor: '#d8eef6',
             borderColor: '#fff',
-            borderWidth: 2,
           },
           emphasis: {
             areaColor: '#b2e8fa',
-          }
+          },
         },
       },
       series: [{
@@ -161,10 +161,10 @@ class PvMapChart extends Component {
             key: index,
             name: dataItem.stationName,
             value: [dataItem.longitude, dataItem.latitude, 10],
-            symbol: dataItem.alarmNum > 0 ? `image:///img/pv02.png` : `image:///img/pv01.png`
-          }
+            symbol: dataItem.alarmNum > 0 ? 'image:///img/pv02.png' : 'image:///img/pv01.png',
+          };
         }),
-        symbol: `image:///img/pv01.png`,
+        symbol: 'image:///img/pv01.png',
         symbolSize: [24, 17],
       },
       {
@@ -178,10 +178,10 @@ class PvMapChart extends Component {
             key: index,
             name: dataItem.stationName,
             value: [dataItem.longitude, dataItem.latitude, 10],
-            symbol: dataItem.alarmNum > 0 ? `image:///img/wrong2.png` : `image:///img/pvcutdown.png`,
-          }
+            symbol: dataItem.alarmNum > 0 ? 'image:///img/wrong2.png' : 'image:///img/pvcutdown.png',
+          };
         }),
-        symbol: `image:///img/pvcutdown.png`,
+        symbol: 'image:///img/pvcutdown.png',
         symbolSize: [24, 17],
       },
       {
@@ -194,14 +194,14 @@ class PvMapChart extends Component {
             ...dataItem,
             key: index,
             name: dataItem.stationName,
-            value: [dataItem.longitude, dataItem.latitude, 10]
-          }
+            value: [dataItem.longitude, dataItem.latitude, 10],
+          };
         }),
-        symbol: `image:///img/wrong.png`,
+        symbol: 'image:///img/wrong.png',
         symbolSize: [24, 17],
       }],
-    }
-    return option
+    };
+    return option;
   }
 
 
@@ -214,7 +214,8 @@ class PvMapChart extends Component {
     const countryBox = document.getElementById('pvStationMap');
     if (mapType) {
       axios.get(`/mapJson/${mapType}.json`).then(response => {
-        echarts.registerMap(mapType, response.data);
+        const mapNameType = mapType === 'China' && 'china' || mapType;
+        echarts.registerMap(mapNameType, response.data);
         const option = {
           ...initOption,
           ...changOption,
@@ -226,26 +227,26 @@ class PvMapChart extends Component {
           if (!params.seriesType) {
             setTimeout(this.setState({
               mapType: provinceList[params.name],
-              mapTypeName: params.name
+              mapTypeName: params.name,
             }), 0);
-            this.drawCharts(this.props)
+            this.drawCharts(this.props);
           } else {
             if (`${params.data.stationStatus}` !== '900') {
-              return history.push(`/monitor/singleStation/${params.data.stationCode}`)
-            } else {
-              this.showTip();
+              return history.push(`/monitor/singleStation/${params.data.stationCode}`);
             }
+            this.showTip();
+
           }
-        })
-      })
+        });
+      });
     }
 
   }
 
   showBack = () => {
-    this.setState({ mapType: 'China', mapTypeName: '' },()=>{
-      this.drawCharts(this.props)
-    })
+    this.setState({ mapType: 'China', mapTypeName: '' }, () => {
+      this.drawCharts(this.props);
+    });
   }
 
   render() {
@@ -260,4 +261,4 @@ class PvMapChart extends Component {
 }
 
 
-export default PvMapChart
+export default PvMapChart;
