@@ -291,7 +291,12 @@
         }
       }
       .ant-table-scroll .ant-table-header{
+        overflow-x: hidden!important;
+        margin-bottom: 0!important;
         background-color: transparent;
+        &::-webkit-scrollbar-track-piece{
+          background-color: #1f246f;
+        }
       }
     }
   }
