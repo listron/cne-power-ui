@@ -9,6 +9,7 @@ import styles from './planModals.scss';
 class PlanHandle extends PureComponent {
 
   static propTypes = {
+    theme: PropTypes.string,
     showModal: PropTypes.bool,
     handlePlanLoading: PropTypes.bool,
     planListLoading: PropTypes.bool,
@@ -26,7 +27,7 @@ class PlanHandle extends PureComponent {
       {
         title: '计划类型',
         dataIndex: 'planTypeName',
-        className: styles.planTypeName,
+        width: 160,
         render: (text = '') => (<div title={text} className={styles.planTypeNameText}>{text}</div>),
       }, {
         title: '内容',
@@ -39,14 +40,14 @@ class PlanHandle extends PureComponent {
         className: styles.stationName,
         render: (text = '') => (<div title={text} className={styles.stationNameText}>{text}</div>),
       }, {
-        title: '计划天数',
+        title: '执行工时',
         dataIndex: 'validPeriod',
-        className: styles.validPeriod,
+        width: 90,
         render: (text = '') => (<div title={text} className={styles.validPeriodText}>{text}</div>),
       }, {
         title: '操作',
         dataIndex: 'handle',
-        className: styles.handle,
+        width: 150,
         render: (text, record) => <HandlePart record={record} publishOnce={this.publishOnce} deleteOnce={this.deleteOnce} />,
       },
     ],
@@ -135,7 +136,7 @@ class PlanHandle extends PureComponent {
   }
 
   render(){
-    const { showModal, modalKey, activePlanDate, datePlans, handlePlanLoading, planListLoading } = this.props;
+    const { showModal, modalKey, activePlanDate, datePlans, handlePlanLoading, planListLoading, theme } = this.props;
     const { planColumn, handleType, selectedRowKeys, handleParams, warningTipText } = this.state;
     return (
       <Modal
@@ -144,6 +145,7 @@ class PlanHandle extends PureComponent {
         onCancel={this.hideModal}
         footer={null}
         width={1240}
+        wrapClassName={styles[theme]}
       >
         <div className={styles.planHandle}>
           <div className={styles.handle}>

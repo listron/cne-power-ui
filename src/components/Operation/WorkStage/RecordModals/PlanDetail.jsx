@@ -24,9 +24,12 @@ class PlanDetail extends PureComponent {
       title: '巡视类型',
       key: 'inspectTypeName',
     }, {
-      title: '计划天数',
+      title: '执行工时',
       key: 'validPeriod',
       render: (validPeriod) => (validPeriod === 0 || validPeriod > 0) ? `${validPeriod}天` : '--',
+    }, {
+      title: '截止时间',
+      key: 'deadline',
     }, {
       title: '电站',
       key: 'stations',

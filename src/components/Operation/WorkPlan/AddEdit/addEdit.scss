@@ -20,6 +20,7 @@
   }
   .addEditPlanForm{ // 添加计划
     padding: 20px 40px;
+    overflow: auto;
     .formBox{
       max-height: 550px;
       overflow: auto;
