@@ -66,7 +66,7 @@ class RecordsList extends PureComponent {
         title: '完成时间',
         dataIndex: 'completeTime',
         sorter: (a, b) => (moment(a) - moment(b)),
-        className: styles.completeTime,
+        width: 175,
         render: (text) => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--',
       }, {
         title: '执行人',
@@ -78,12 +78,12 @@ class RecordsList extends PureComponent {
         title: '完成情况', // completeStatus	Int	完成情况  0未完成  1已完成
         dataIndex: 'completeStatus',
         sorter: (a, b) => a.completeStatus - b.completeStatus,
-        className: styles.completeStatus,
+        width: 110,
         render: (text = '') => ['未完成', '已完成'][text] || '--',
       }, {
         title: '操作',
         dataIndex: 'handle',
-        className: styles.handle,
+        width: 90,
         render: (text, record) => {
           const { taskTypeCode, completeStatus } = record;
           // 工作类型编码 1 计划 2 缺陷 3 巡检 4 记事 taskTypeName	String	工作类型名字
