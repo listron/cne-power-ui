@@ -69,6 +69,12 @@ class ParticipantSearch extends Component {
           {participantList.map(e => (
             <Option key={e} value={e}>{e}</Option>
           ))}
+          {/* {participantList.map(e => {
+            const { userId, username, userFullname } = e || {};
+            // 同时存在两个名字以 里昂(liang) 方式展示, 否则展示存在项;
+            const userText = (username && userFullname) ? `${userFullname}(${username})` : (username || userFullname);
+            return <Option key={`${userId}`} value={`${userId}`}>{userText}</Option>;
+          })} */}
         </Select>
         <Button onClick={this.toSearch} className={styles.search}>查询</Button>
         {handleUserList.length > 0 && <Button onClick={this.toReset} className={styles.search}>重置</Button>}
@@ -79,3 +85,23 @@ class ParticipantSearch extends Component {
 }
 
 export default ParticipantSearch;
+
+// {/* <Select
+//   style={{ width: '160px', marginRight: '12px' }}
+//   placeholder="请输入..."
+//   value={userId}
+//   onChange={this.userChange}
+//   getPopupContainer={() => this.userRef}
+//   showSearch
+//   optionFilterProp="children"
+//   filterOption={(input, option) =>
+//     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+//   }
+// >
+//   {inspectUserList.map(e => {
+//     const { username, userFullname } = e || {};
+//     // 同时存在两个名字以 里昂(liang) 方式展示, 否则展示存在项;
+//     const userText = (username && userFullname) ? `${userFullname}(${username})` : (username || userFullname);
+//     return <Option key={`${e.userId}`} value={`${e.userId}`}>{userText}</Option>;
+//   })}
+// </Select> */}

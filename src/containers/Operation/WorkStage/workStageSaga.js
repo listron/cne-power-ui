@@ -24,8 +24,8 @@ function *getTaskList({ payload }){ //	工作台-今日工作列表
     yield call(easyPut, 'changeStore', { stageLoading: true });
     const response = yield call(request.post, url, {
       ...payload,
-      startDate: moment().startOf('day').format('YYYY-MM-DD HH:mm:ss'),
-      endDate: moment().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
+      startTime: moment().startOf('day').format('YYYY-MM-DD HH:mm:ss'),
+      endTime: moment().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
     });
     if (response.code === '10000') {
       const { list = [], nums = {}} = response.data || {};
@@ -238,8 +238,8 @@ function *getRunningLog({ payload }) { // 运行记录
     yield call(easyPut, 'changeStore', { runLogLoading: true });
     const response = yield call(request.post, url, {
       ...payload,
-      startDate: moment().startOf('month').format('YYYY-MM-DD HH:mm:ss'),
-      endDate: moment().endOf('month').format('YYYY-MM-DD HH:mm:ss'),
+      startTime: moment().startOf('month').format('YYYY-MM-DD HH:mm:ss'),
+      endTime: moment().endOf('month').format('YYYY-MM-DD HH:mm:ss'),
     });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
@@ -264,8 +264,8 @@ function *getTickets({ payload }) { // 两票三制记录
     yield call(easyPut, 'changeStore', { ticketsLoading: true });
     const response = yield call(request.post, url, {
       ...payload,
-      startDate: moment().startOf('day').format('YYYY-MM-DD HH:mm:ss'),
-      endDate: moment().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
+      startTime: moment().startOf('day').format('YYYY-MM-DD HH:mm:ss'),
+      endTime: moment().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
     });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
@@ -283,15 +283,15 @@ function *getTickets({ payload }) { // 两票三制记录
   }
 }
 
-function *getPlanList({ payload }) { // 计划日历 payload: {stationCodes, startDate, endDate}
+function *getPlanList({ payload }) { // 计划日历 payload: {stationCodes, planMonth}
   try {
     const url = `${APIBasePath}${operation.getPlanList}`;
     yield call(easyPut, 'changeStore', { planListLoading: true });
     const { stationCodes, planMonth = moment().format('YYYY-MM') } = payload;
     const response = yield call(request.post, url, {
       stationCodes,
-      startDate: moment(planMonth).startOf('month').format('YYYY-MM-DD HH:mm:ss'),
-      endDate: moment(planMonth).endOf('month').format('YYYY-MM-DD HH:mm:ss'),
+      startTime: moment(planMonth).startOf('month').format('YYYY-MM-DD HH:mm:ss'),
+      endTime: moment(planMonth).endOf('month').format('YYYY-MM-DD HH:mm:ss'),
     });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
