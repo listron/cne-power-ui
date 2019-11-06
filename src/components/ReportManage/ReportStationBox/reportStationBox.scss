@@ -53,25 +53,30 @@
         padding: 0 5px;
       }
 
-      .ant-table-body {
-        // &::-webkit-scrollbar {
-        //   width: 6px;
-        //   height: 6px;
-        // }
+      // .ant-table-body {
+      // &::-webkit-scrollbar {
+      //   width: 6px;
+      //   height: 6px;
+      // }
 
-        // &::-webkit-scrollbar-thumb {
-        //   border-radius: 3px;
-        //   background: rgba(0, 0, 0, 0.5);
-        // }
-      }
+      // &::-webkit-scrollbar-thumb {
+      //   border-radius: 3px;
+      //   background: rgba(0, 0, 0, 0.5);
+      // }
+      // }
 
     }
 
-    .stationName {
+    .stationName,
+    .timeStyle {
       width: 108px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+
+    .timeStyle {
+      width: 150px;
     }
 
     .handlePage {
