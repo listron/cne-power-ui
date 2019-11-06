@@ -2,9 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Row, Col } from 'antd';
 
-const ElecPart = ({ title = '', eachText = [] ,required = false, extraStyle = {} }) => (
+const ElecPart = ({ title = '', eachText = [], required = false, extraStyle = {} }) => (
   <div className={styles.eachElecPart} style={extraStyle}>
     <div className={styles.elecTop}>
       <span>{title}</span>
@@ -15,7 +14,14 @@ const ElecPart = ({ title = '', eachText = [] ,required = false, extraStyle = {}
       <span>{eachText[1]}</span>
     </div>
   </div>
-)
+);
+
+ElecPart.propTypes = {
+  title: PropTypes.string,
+  eachText: PropTypes.string,
+  required: PropTypes.bool,
+  extraStyle: PropTypes.object,
+};
 
 function StationReportColumn({ dayReportConfig, stationType }){
   // stationType === 0 : 风电站； // stationType === 1 :光伏电站
@@ -60,34 +66,39 @@ function StationReportColumn({ dayReportConfig, stationType }){
         {requiredTargetObj.resourceValue && <span className={styles.valueRequired}>*</span>}
       </div>
     </div>
-    <ElecPart 
+    <ElecPart
       title={`${stationType > 0 ? '逆变器' : '风电机组'}发电量(${genUtil})`}
       eachText={['年', '日']}
       required={requiredTargetObj.yearGenInverter}
     />
-    <ElecPart 
+    <ElecPart
       title={`集电线路发电量(${genUtil})`}
       eachText={['年', '日']}
       required={requiredTargetObj.yearGenIntegrated}
     />
-    <ElecPart 
+    <ElecPart
       title={`上网电量(${genUtil})`}
       eachText={['年', '日']}
       required={requiredTargetObj.yearGenInternet}
     />
-    <ElecPart 
+    <ElecPart
       title={`购网电量(${genUtil})`}
       eachText={['年', '日']}
       required={requiredTargetObj.buyPower}
     />
-    <ElecPart 
+    <ElecPart
       title="样板机"
       eachText={['容量(MW)', `日发电量(${genUtil})`]}
       required={requiredTargetObj.modelInverterPowerGen || requiredTargetObj.modelInverterCapacity}
       extraStyle={{flexBasis: '16%'}}
     />
     <div className={styles.handle}>操作</div>
-  </div>)
+  </div>);
 }
+
+StationReportColumn.propTypes = {
+  dayReportConfig: PropTypes.array,
+  stationType: PropTypes.number,
+};
 
 export default StationReportColumn;
