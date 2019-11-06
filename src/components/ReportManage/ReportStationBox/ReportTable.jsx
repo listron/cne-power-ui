@@ -210,7 +210,7 @@ class ReportTable extends React.Component {
               key: 'dayPowerMaxTime',
               width: 180,
               className: styles.rightStyle,
-              render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
+              render: (text) => (<div className={styles.timeStyle} title={text}>{text ? text : '--'}</div>),
 
             },
           ],
