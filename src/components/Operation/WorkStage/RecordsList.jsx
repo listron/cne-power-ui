@@ -91,23 +91,28 @@ class RecordsList extends PureComponent {
           return (
             <span className={styles.handleRow}>
               <span className="iconfont icon-look" onClick={() => this.toDetail(record)} />
-              {taskTypeCode === 1 && <Popconfirm
+              {taskTypeCode === 1 && !!completeStatus && <span title="已标记完成">
+                <Checkbox checked={true} />
+              </span>}
+              {taskTypeCode === 1 && !completeStatus && <Popconfirm
                 title="是否标记为已完成?"
                 onConfirm={() => this.confirmComplete(record)}
                 okText="确定"
                 cancelText="取消"
-                disabled={completeStatus > 0}
+                // disabled={completeStatus > 0}
               >
-                <Checkbox checked={!!completeStatus} />
+                <span title="标记为已完成">
+                  <Checkbox checked={false} />
+                </span>
               </Popconfirm>}
-              {taskTypeCode === 4 && <span className="iconfont icon-edit" onClick={() => this.toEdit(record)} />}
+              {taskTypeCode === 4 && <span title="编辑" className="iconfont icon-edit" onClick={() => this.toEdit(record)} />}
               {taskTypeCode === 4 && <Popconfirm
                 title="是否确认删除记事?"
                 onConfirm={() => this.toRemove(record)}
                 okText="确定"
                 cancelText="取消"
               >
-                <span className="iconfont icon-del" />
+                <span title="删除" className="iconfont icon-del" />
               </Popconfirm> }
             </span>
           );
