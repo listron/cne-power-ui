@@ -84,7 +84,7 @@ class WorkStage extends Component {
         contentClassName={`${styles.workStage} ${styles[theme]}`}
       >
         <StationLists {...this.props} stageQuery={this.stageQuery} />
-        <Spin tip="数据加载中..." spinning={pageLoading}>
+        <Spin spinning={pageLoading}>
           <RecordsList {...this.props} />
           <div className={styles.allDetailLogs}>
             <RunningLog {...this.props} />
