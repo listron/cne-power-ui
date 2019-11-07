@@ -85,7 +85,7 @@ class AddEditPlan extends PureComponent {
     const { form } = this.props;
     const { getFieldValue } = form;
     const startTime = getFieldValue('firstStartTime');
-    return !startTime || cur.isBefore(startTime, 'day') || cur.isAfter(moment().add(5, 'year'), 'day');
+    return !startTime || cur.isBefore(startTime, 'day'); // || cur.isAfter(moment().add(5, 'year'), 'day');
   }
 
   validPeriodDays = {
@@ -225,7 +225,7 @@ class AddEditPlan extends PureComponent {
                 }],
                 initialValue: initialValidPeriod,
               })(
-                <Input style={{width: '200px'}} placeholder="请输入..." />
+                <Input style={{width: '200px', marginRight: '4px'}} placeholder="请输入..." />
               )}
               天
               {cycleTypeCode && <span className={styles.addFormTips}>注：不超过{this.validPeriodDays[cycleTypeCode]}天</span>}
