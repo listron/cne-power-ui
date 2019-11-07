@@ -101,7 +101,8 @@ export default ParticipantSearch;
 //   {inspectUserList.map(e => {
 //     const { username, userFullname } = e || {};
 //     // 同时存在两个名字以 里昂(liang) 方式展示, 否则展示存在项;
-//     const userText = (username && userFullname) ? `${userFullname}(${username})` : (username || userFullname);
-//     return <Option key={`${e.userId}`} value={`${e.userId}`}>{userText}</Option>;
+//     const userText = (username && userFullname) ? `${userFullname}(${username})` : username;
+//     return <Option key={`${username}`} value={`${username}`}>{userText}</Option>;
 //   })}
 // </Select> */}
+
