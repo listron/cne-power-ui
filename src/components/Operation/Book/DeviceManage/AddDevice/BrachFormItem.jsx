@@ -34,9 +34,14 @@ class BrachFormItem extends Component {
     branchNum: PropTypes.number,
   };
 
+  state = {
+    branchInfo: {}
+  }
+
   render(){
+    const { branchInfo } = this.state;
     const { value, onChange, branchNum } = this.props;
-    console.log(value, onChange, branchNum);
+    console.log(branchInfo, value, onChange, branchNum);
     return (
       <div className={styles.brachFormItem}>
         {branchNum.map((e, i) => (
