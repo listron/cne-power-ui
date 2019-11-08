@@ -11,6 +11,16 @@
     letter-spacing: 6px;
     margin-right: 12px;
   }
+  .searchSelect{
+    :global{
+      .ant-select-selection__rendered{
+        height: 30px;
+      }
+      .ant-select-selection__rendered > ul {
+        display: flex;
+      }
+    }
+  }
   .search{
     margin-left: 36px;
   }
