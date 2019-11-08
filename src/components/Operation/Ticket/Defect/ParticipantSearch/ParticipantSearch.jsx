@@ -47,7 +47,7 @@ class ParticipantSearch extends Component {
   render() {
     const { users } = this.state;
     const { participantList, handleUserList, theme } = this.props;
-    const tagInfo = users.length > 2 ? {
+    const tagInfo = users.length > 1 ? {
       maxTagCount: 0,
       maxTagPlaceholder: () => (
         <span>已选{users.length} / {participantList.length}</span>
@@ -65,16 +65,19 @@ class ParticipantSearch extends Component {
           onChange={this.handleParticipant}
           {...tagInfo}
           getPopupContainer={() => this.userRef}
+          filterOption={(input, option) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          className={styles.searchSelect}
         >
-          {participantList.map(e => (
+          {/* {participantList.map(e => (
             <Option key={e} value={e}>{e}</Option>
-          ))}
-          {/* {participantList.map(e => {
-            const { userId, username, userFullname } = e || {};
-            // 同时存在两个名字以 里昂(liang) 方式展示, 否则展示存在项;
+          ))} */}
+          {participantList.map(e => {
+            const { username, userFullname } = e || {};
             const userText = (username && userFullname) ? `${userFullname}(${username})` : (username || userFullname);
-            return <Option key={`${userId}`} value={`${userId}`}>{userText}</Option>;
-          })} */}
+            return <Option key={`${username}`} value={`${username}`}>{userText}</Option>;
+          })}
         </Select>
         <Button onClick={this.toSearch} className={styles.search}>查询</Button>
         {handleUserList.length > 0 && <Button onClick={this.toReset} className={styles.search}>重置</Button>}
