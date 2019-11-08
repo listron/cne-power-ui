@@ -64,7 +64,7 @@ class ReportSearch extends React.PureComponent {
       {
         title: '统计时段',
         dataIndex: 'date',
-        width: 120,
+        width: 140,
         fixed: 'left',
         sorter: true,
         defaultSortOrder: 'ascend',
@@ -81,15 +81,15 @@ class ReportSearch extends React.PureComponent {
           };
         }),
       }, {
-        title: () => <TableColumnTitle title="环境湿度Avg" unit="m/s" />,
+        title: () => <TableColumnTitle title="环境湿度Avg" unit="%RH" />,
         dataIndex: 'humidityAvg',
         width: 150,
-        render: (text) => <div className={styles.deviceName} title={text}>{text ? text : '--'}</div>,
+        render: (text) => <div className={styles.deviceName} title={text}>{text ? text.toFixed(2) : '--'}</div>,
       }, {
         title: () => <TableColumnTitle title="瞬时斜面辐射Max" unit="W/m2" />,
         width: 150,
         dataIndex: 'slopeRadiationMax',
-        render: (text) => <div className={styles.deviceName} title={text}>{text ? text : '--'}</div>,
+        render: (text) => <div className={styles.deviceName} title={text}>{text ? text.toFixed(2) : '--'}</div>,
       }, {
         title: '累计辐射强度',
         dataIndex: 'operateStatus',
@@ -182,7 +182,7 @@ class ReportSearch extends React.PureComponent {
           columns={this.initColumn()}
           dataSource={reportList.map((e, i) => ({ ...e, key: i }))}
           bordered
-          scroll={{ x: 1800, y: 500 }}
+          scroll={{ x: 1756, y: 500 }}
           pagination={false}
           showHeader={true}
           loading={listLoading}
