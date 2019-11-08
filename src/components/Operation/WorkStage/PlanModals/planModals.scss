@@ -104,9 +104,6 @@
     }
   }
   .planTable{
-    .planTypeName{
-      width: 160px;
-    }
     .planTypeNameText{
       max-width: 128px;
       @include overflowText();
@@ -125,14 +122,8 @@
       max-width: calc(700px * 0.66 - 32px);
       @include overflowText();
     }
-    .validPeriod{
-      width: 90px;
-    }
     .validPeriodText{
       text-align: right;
-    }
-    .handle{
-      width: 150px;
     }
     .handleText{
       .publishPlan{
@@ -246,19 +237,18 @@
   cursor: default;
 }
 
-.planHandle{ // 计划下发, 删除
-  .handle{
-    padding-left: 12px;
-    height: 56px;
-    margin-left: 20px;
-    button{
-      margin-right: 12px;
-    }
-  }
+.light .planHandle{ // 计划下发, 删除
   .planTable{
     .handleText{
       .publishPlan{
         color: $themeColor;
+      }
+    }
+    :global{
+      .ant-table-scroll .ant-table-body{
+        &::-webkit-scrollbar-thumb {
+          background: rgba(0, 0, 0, 0.5);
+        }
       }
     }
   }
@@ -340,6 +330,34 @@
     }
     .momentDate{
       color: #fff;
+    }
+  }
+}
+
+.dark .planHandle{ // 计划下发, 删除
+  .planTable{
+    :global{
+      .ant-table-scroll .ant-table-body{
+        &::-webkit-scrollbar-thumb {
+          background: #3b55aa;
+        }
+      }
+      .ant-table-scroll .ant-table-header{
+        overflow-x: hidden!important;
+        margin-bottom: 0!important;
+        background-color: transparent;
+        &::-webkit-scrollbar-track-piece{
+          background-color: #1f246f;
+        }
+      }
+    }
+  }
+  .planFooter{
+    .selectNum{
+      color:#f9b600;
+    }
+    .cancelSelect{
+      color: #00f0ff;
     }
   }
 }

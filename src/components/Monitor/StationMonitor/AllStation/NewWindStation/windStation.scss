@@ -461,6 +461,8 @@
   .mapChart {
     display: flex;
     flex: 1;
+    min-height: 800px;
+    // height: 500px;
     @include propContainer();
     .popover {
       width: 235px;

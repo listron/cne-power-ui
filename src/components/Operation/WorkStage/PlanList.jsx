@@ -114,7 +114,7 @@ class PlanList extends PureComponent {
               <span className={styles.eachWeekdays} key={e}>{e}</span>
             ))}
           </div>
-          <Spin tip="数据加载中..." spinning={planListLoading && !pageLoading}>
+          <Spin spinning={planListLoading && !pageLoading}>
             <div className={styles.datesBottom}>
               {datesInfo.map(e => {
                 const curPlan = planList.find(m => moment(m.reportDate).isSame(e, 'day'));

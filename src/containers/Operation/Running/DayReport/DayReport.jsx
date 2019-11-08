@@ -15,7 +15,7 @@ class DayReport extends Component {
     showPage: PropTypes.string,
     startTime: PropTypes.string, // 日报查询月,
     enterpriseId: PropTypes.string,
-    pageSize: PropTypes.number, 
+    pageSize: PropTypes.number,
     pageNum: PropTypes.number,
     stationType: PropTypes.number, // 筛选的电站类型
     stationNameSort: PropTypes.number, // 排序方式
@@ -28,22 +28,22 @@ class DayReport extends Component {
     super(props);
     this.state = {
       sidePage: 'report',
-    }
+    };
   }
 
   componentDidMount(){
     this.props.getDayReportList({
       startTime: moment().format('YYYY-MM'),
-      pageSize: 10, 
+      pageSize: 10,
       pageNum: 1,
       stationType: 2, // 筛选的电站类型
       stationNameSort: 0, // 排序方式
     });
     this.props.getDayReportConfig({ // 请求上报日报配置信息
-      enterpriseId: this.props.enterpriseId, 
-      module: 'report', 
-      type: '-1'
-    })
+      enterpriseId: this.props.enterpriseId,
+      module: 'report',
+      type: '-1',
+    });
   }
 
   componentWillUnmount(){
@@ -56,9 +56,7 @@ class DayReport extends Component {
 
   onToggleSide = () => {
     const { showPage } = this.props;
-    this.setState({
-      sidePage: showPage
-    });
+    this.setState({ sidePage: showPage });
   }
 
   render() {
@@ -103,26 +101,26 @@ const mapDispatchToProps = (dispatch) => ({
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,
     payload: {
-      params, 
+      params,
       deviceTypeAction: dayReportAction.dayReportFetchSuccess,
-      resultName: 'stationDeviceTypes'
-    }
+      resultName: 'stationDeviceTypes',
+    },
   }),
   findDeviceExist: params => dispatch({
     type: commonAction.findDeviceExist,
     payload: {
-      params, 
+      params,
       actionName: dayReportAction.changeDayReportStore,
-      resultName: 'deviceExistInfo'
-    }
+      resultName: 'deviceExistInfo',
+    },
   }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
     payload: {
-      params, 
+      params,
       actionName: dayReportAction.dayReportFetchSuccess,
-      resultName: 'lostGenTypes'
-    }
+      resultName: 'lostGenTypes',
+    },
   }),
 });
 

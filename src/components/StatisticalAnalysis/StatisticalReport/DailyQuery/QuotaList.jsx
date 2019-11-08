@@ -29,6 +29,8 @@ class QuotaList extends Component {
     const { startDate, endDate, stationCodes } = queryParam;
     const indexCodes = quotaInfoData.map(e => {
       return e.value;
+    }).filter(e => {
+      return e > 1000;
     });
     const newParam = {
       ...listParam,

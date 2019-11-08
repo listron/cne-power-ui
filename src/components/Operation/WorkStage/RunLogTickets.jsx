@@ -59,18 +59,18 @@ function TicketsLog({ ticketsInfo = {}, theme = 'light' }){
       path: '/operation/ticket/list',
     }, {
       title: '巡检',
-      finishValue: dataFormats(finish.defectNum),
-      unfinishValue: dataFormats(unfinish.defectNum),
+      finishValue: dataFormats(finish.inspectNum),
+      unfinishValue: dataFormats(unfinish.inspectNum),
       path: '/operation/ticket/list',
     }, {
       title: '工作票',
-      finishValue: dataFormats(finish.defectNum),
-      unfinishValue: dataFormats(unfinish.defectNum),
+      finishValue: dataFormats(finish.workDocketNum),
+      unfinishValue: dataFormats(unfinish.workDocketNum),
       path: '/operation/twoTickets/workflow',
     }, {
       title: '操作票',
-      finishValue: dataFormats(finish.defectNum),
-      unfinishValue: dataFormats(unfinish.defectNum),
+      finishValue: dataFormats(finish.operateDocketNum),
+      unfinishValue: dataFormats(unfinish.operateDocketNum),
       path: '/operation/twoTickets/operateflow',
     },
   ];
