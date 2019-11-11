@@ -10,9 +10,10 @@ import DefectDetail from '../DefectDetail/DefectDetail';
 
 
 /**
- *  params 
+ *  params  url
  *   page=list&tab=defect 列表缺陷页面 teb inspect 巡检页面
- * 
+ *   page=defectDetail&defectId=123 缺陷详情页面 缺陷ID
+ *   page=inspectDetail&inspectId=123 巡检详情页面 巡检ID
  */
 class Overview extends Component {
 
