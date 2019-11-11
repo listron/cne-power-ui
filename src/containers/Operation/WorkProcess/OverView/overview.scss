@@ -1,0 +1,60 @@
+@import "../../../../theme/theme.scss";
+
+.overview {
+  .container {
+    // background: #fff;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .tabTitle {
+    display: flex;
+    line-height: 40px;
+    // overflow: hidden;
+    p {
+      width: 120px;
+      margin-bottom: 0;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: -2px;
+    }
+    .activeKey {
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 2px;
+        top: 0;
+        left: -1px;
+      }
+    }
+  }
+}
+.light.overview {
+  background-color: #ececec;
+  .tabTitle {
+    background: #f8f8f8;
+    border-bottom: 1px solid $borderColor;
+    p {
+      border-right: 1px solid $borderColor;
+      color: $lightColor;
+    }
+    .activeKey {
+      background: $pageGround;
+      color: $darkColor;
+      &::before {
+        background: $themeColor;
+      }
+    }
+  }
+}
+
+.dark.overview {
+  background-image: linear-gradient(-118deg, #3b55aa 0%, #132267 96%);
+}

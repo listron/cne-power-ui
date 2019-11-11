@@ -57,6 +57,7 @@ class WorkFlow extends Component {
 
 
 const mapStateToProps = (state) => {
+    console.log(state.operation.defectList.toJS());
     return {
         ...state.operation.workFlow.toJS(),
         stations: state.common.get('stations').toJS(),
