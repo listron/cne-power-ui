@@ -23,7 +23,7 @@ class DefectSearch extends Component {
     const { theme, stations } = this.props;
     return (
       <div className={`${styles.seacrchCont} ${styles[theme]}`}>
-        <FilterConditions
+        {/* <FilterConditions
           onChange={this.filterConditionChange}
           theme={theme}
           option={[
@@ -76,7 +76,7 @@ class DefectSearch extends Component {
             },
           ]}
           value={{ stationType, stationCodes, defectSource, defectLevel, deviceTypeCode, defectTypeCode, rangeTimes: [createTimeStart, createTimeEnd], join: handleUser }}
-        />
+        /> */}
       </div>
     );
   }

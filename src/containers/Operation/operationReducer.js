@@ -24,7 +24,7 @@ import { examiner } from './TwoTickets/Examiner/examinerReducer'; // 两票 - �
 import workFlow from './TwoTickets/WorkFlow/workFlowReducer'; // 两票 - 工作票
 import operateFlow from './TwoTickets/OperateFlow/operateFlowReducer'; // 两票 - 操作票
 
-import { defectList } from './WorkProcess/DefectList/DefectListReducer'; // 缺陷列表
+import { defectList } from './WorkProcess/DefectList/defectListReducer'; // 缺陷列表
 import { defectDetail } from './WorkProcess/DefectDetail/defectDetailReducer'; //缺陷详情
 import { inspectList } from './WorkProcess/InspectList/inspectListReducer'; // 巡检列表
 import { inspectDetail } from './WorkProcess/InspectDetail/inspectDetailReducer'; //巡检详情
