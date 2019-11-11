@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from '../deviceSide.scss';
 import ShowAddComponentMode from './ShowAddComponentMode';
+import BrachFormItem from './BrachFormItem';
 import { Input, Form,  Select, Checkbox,  } from 'antd';
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -42,16 +43,28 @@ class Confluence extends Component {
     })
   }
 
+  changeBranchCount = ({ target }) => { // 支路数据改变时的逻辑 => 改变支路数据 + 渲染每个支路默认信息
+    const { value } = target || {};
+    if (value > 0 && !isNaN(value) && !value.includes('.')) { // value 大于零 数字
+      const brachNum = parseInt(value.trim(), 10); // 支路数
+      const connectedBranches = this.props.form.getFieldValue('connectedBranches') || [];
+      const newBranchesInfo = [];
+      for(let i = 0; i < brachNum; i++){
+        const eachSubNum = connectedBranches[i];
+        newBranchesInfo.push(eachSubNum === undefined ? '1' : eachSubNum);
+      }
+      this.props.form.setFieldsValue({
+        branchCount: `${brachNum}`,
+        connectedBranches: newBranchesInfo,
+      });
+    }
+  }
+
   render() {
     const { showAddComponentMode,checkStyle } = this.state;
     const { pvDeviceModels, addPvDeviceModeData } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const branchCount = getFieldValue("branchCount");
-    let branchCountArr = [];
-    for (let i = 0; i < branchCount; i++) {
-      branchCountArr.push(i + 1)
-    }
-
     const initComponentMode = addPvDeviceModeData.data ? +addPvDeviceModeData.data : null;
     const filterComponentModeId = pvDeviceModels.filter((e, i) => (e.deviceModeCode === initComponentMode))[0];
     const initValue = filterComponentModeId ? filterComponentModeId.deviceModeId : null;
@@ -78,29 +91,27 @@ class Confluence extends Component {
               { message: '1~20之间的整数', required: true, pattern: /^(0|1\d?|20?|[3-9])$/ },
             ]
           })(
-            <Input placeholder="1~20之间的整数" />
+            <Input placeholder="1~20之间的整数" onChange={this.changeBranchCount} />
           )}
         </FormItem>
         <FormItem label="所用支路" colon={false} className={styles.formItemStyle}>
           {getFieldDecorator('connectedBranches', {
-            rules: [
-              { message: '选择所用支路', required: true, },
-            ]
+            rules: [{
+              required: true,
+              validator: (rule, value, callback) => {
+                const noData = !value;
+                const hasEmpty = value && value.find(e => !e && e !== 0); // 支路数未填全
+                if (noData) {
+                  callback('请填写支路信息');
+                } else if (hasEmpty !== undefined) { // 某个支路信息不全
+                  callback('请完善支路信息');
+                }
+                callback();
+              },
+            }],
           })(
-            <Checkbox.Group className={styles.checkboxStyle} onChange={this.checkstyle}>
-            
-              {branchCountArr.map((e, i) => {
-                return (
-                  <div className={styles.itemStyle} key={i}>
-                    <div className={checkStyle.includes(e)?styles.checkedTopName:styles.topName}>第{e}支路</div>
-                    <Checkbox className={styles.bottomSelect} value={e}  key={i}></Checkbox>
-                  </div>
-                )
-              })}
-           
-            </Checkbox.Group>,
+            <BrachFormItem branchCount={branchCount} />
           )}
-          <div className={styles.linestyle}>(  点击后变<span className={styles.selectRingStyle}></span>，表示接入;<span className={styles.ringStyle}></span>表示未接入 )</div>
         </FormItem>
         {showAddComponentMode && <ShowAddComponentMode {...this.props} showAddComponentMode={showAddComponentMode} cancleDeviceModeModal={this.cancleDeviceModeModal} saveFormState={this.saveFormState} />}
       </div>
