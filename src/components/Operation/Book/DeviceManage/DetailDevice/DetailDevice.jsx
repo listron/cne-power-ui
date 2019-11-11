@@ -156,18 +156,15 @@ class DetailDevice extends Component {
                 <div className={styles.infoName}>所用支路</div>
                 <div className={styles.checkGroup} >
                   <div className={styles.checkItem}>
-                    {connectedBranches.map((e, i) => {
-                      return (
-                        <div className={styles.itemStyle} key={i}>
-                          <div className={(!!e) ? styles.checkedTopName : styles.topName}>第{i + 1}支路</div>
-                          <Checkbox className={styles.bottomSelect} checked={!!e} key={i}></Checkbox>
-                        </div>
-                      );
-                    })}
+                    {connectedBranches.map((e, i) => (
+                      <span className={styles.branchItem} key={i}>
+                        <span title={`第${i + 1}支路`} className={styles.itemName}>第{i + 1}支路</span>
+                        <span>[{e}]</span>
+                      </span>
+                    ))}
                   </div>
-                  <div className={styles.linestyle}>
-                    <div className={styles.box}>( <span className={styles.selectRingStyle}></span>接入<span className={styles.ringStyle}></span>未接入 )
-                </div>
+                  <div className={styles.brachTip}>
+                    (数值代表接入组传数, 0代表未接入)
                   </div>
                 </div>
               </div>
