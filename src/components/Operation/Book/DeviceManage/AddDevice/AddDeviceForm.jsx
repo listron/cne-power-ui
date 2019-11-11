@@ -39,22 +39,21 @@ class AddDeviceForm extends Component {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           if (values.deviceTypeCode === 202 || values.deviceTypeCode === 206) {
-            const branchCountArr = [];
-            for (let i = 0; i < values.branchCount; i++) {
-              branchCountArr.push(i + 1);
-            }
-            if (values.branchCount) {
-              values.connectedBranches = branchCountArr.map((e, i) => {
-                return values.connectedBranches.includes(e) ? 1 : 0;
-              });
-            }
-
+            // const branchCountArr = [];
+            // for (let i = 0; i < values.branchCount; i++) {
+            //   branchCountArr.push(i + 1);
+            // }
+            // if (values.branchCount) {
+            //   values.connectedBranches = branchCountArr.map((e, i) => {
+            //     return values.connectedBranches.includes(e) ? 1 : 0;
+            //   });
+            // }
             values.map = {
               componentMode: addPvDeviceModeData.deviceModeCode
                 ? addPvDeviceModeData.deviceModeCode
                 : values.componentMode,
               branchCount: +values.branchCount,
-              connectedBranches: values.connectedBranches,
+              // connectedBranches: values.connectedBranches,
             };
           }
           if (values.deviceTypeCode === 304) {

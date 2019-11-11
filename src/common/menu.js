@@ -168,7 +168,22 @@ const menuData = [
             rightKey: 'operation_worklist_statistics',
           },
         ],
-      }, {
+      },
+      // {
+      //   name: '新工单',
+      //   iconStyle: 'icon-gd2',
+      //   path: 'workProcess',
+      //   rightKey: 'operation_worklist',
+      //   children: [
+      //     {
+      //       name: '工单列表',
+      //       path: 'view',
+      //       defaultPath: true,
+      //       rightKey: 'operation_worklist_work',
+      //     },
+      //   ],
+      // },
+      {
         name: '两票管理',
         path: 'twoTickets',
         iconStyle: 'icon-gd1',

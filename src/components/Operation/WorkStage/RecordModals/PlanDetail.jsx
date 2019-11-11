@@ -60,7 +60,7 @@ class PlanDetail extends PureComponent {
   handleComplete = () => {
     const { recordDetailInfo } = this.props;
     const { noteId } = recordDetailInfo;
-    this.props.setPlanComplete({ noteId });
+    this.props.setPlanComplete({ taskIds: [noteId] });
   }
 
   render(){
