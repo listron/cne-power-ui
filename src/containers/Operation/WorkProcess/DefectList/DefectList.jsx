@@ -66,7 +66,14 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: defectListAction.resetStore }),
   changeStore: payload => dispatch({ type: defectListAction.changeStore, payload }),
-
+  getLostGenType: params => dispatch({ // 获取缺陷类型
+    type: commonAction.getLostGenType,
+    payload: {
+      params,
+      actionName: defectListAction.changeStore,
+      resultName: 'defectTypes',
+    },
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);

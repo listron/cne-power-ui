@@ -8,7 +8,7 @@ const defectListAction = {
 };
 
 const initState = immutable.fromJS({
-  params: {
+  listParams: {
     createTimeStart: '',
     createTimeEnd: '',
     stationType: '',
@@ -25,6 +25,7 @@ const initState = immutable.fromJS({
     pageNum: 1,
   },
   defectListData: [], //渲染为table的缺陷列表
+  defectTypes: [], //缺陷类型
 });
 
 const defectList = (state = initState, action) => {

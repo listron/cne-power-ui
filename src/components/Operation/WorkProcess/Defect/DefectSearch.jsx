@@ -8,6 +8,8 @@ import FilterCondition from '@components/Common/FilterConditions/FilterCondition
 class DefectSearch extends Component {
   static propTypes = {
     theme: PropTypes.string,
+    listParams: PropTypes.object,
+    stations: PropTypes.array,
   };
 
   constructor(props, context) {
@@ -19,8 +21,13 @@ class DefectSearch extends Component {
 
   }
 
+  filterConditionChange = () => {
+
+  }
+
   render() {
-    const { theme, stations } = this.props;
+    const { theme, stations, listParams, deviceTypes } = this.props;
+    const { stationType, stationCodes, defectSource, defectLevel, deviceTypeCode, defectTypeCode, createTimeStart, createTimeEnd, handleUser } = listParams;
     return (
       <div className={`${styles.seacrchCont} ${styles[theme]}`}>
         <FilterConditions
