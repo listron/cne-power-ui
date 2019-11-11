@@ -15,10 +15,12 @@ class ProvinceItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      provinceChecked: false,
     };
   }
   checkStation = (station) => {
-    const { selectedStation, multiple } = this.props;
+    const { selectedStation, multiple, provinceInfo, disabledStation } = this.props;
+    const disabledLength = provinceInfo.stations.filter(e => disabledStation.includes(e.stationCode));
     const cancelCheck = selectedStation.some(e => e.stationCode === station.stationCode);
     let newStations = [];
     if (cancelCheck) {
@@ -26,29 +28,53 @@ class ProvinceItem extends Component {
     } else {
       newStations = multiple ? [station, ...selectedStation] : [station];
     }
+
+    const curProStation = newStations.filter(e => e.provinceCode === provinceInfo.provinceCode);
+    if (curProStation.length && curProStation.length + disabledLength.length === provinceInfo.stations.length) {
+      this.setState({
+        provinceChecked: true,
+      });
+    } else {
+      this.setState({
+        provinceChecked: false,
+      });
+    }
     this.props.checkStation(newStations);
   }
   checkProvince = (e) => {
     const { checked } = e.target;
-    const { selectedStation, provinceInfo } = this.props;
+    const { selectedStation, provinceInfo, disabledStation } = this.props;
+
     let newSelectedStation = [];
     if (checked) {
       const tmpStations = selectedStation.filter(e => e.provinceCode !== provinceInfo.provinceCode);
-      newSelectedStation = [...tmpStations, ...provinceInfo.stations];
+      const filterabledStation = provinceInfo.stations.filter(item => !disabledStation.includes(item.stationCode));
+      // newSelectedStation = [...tmpStations, ...provinceInfo.stations];
+      if (filterabledStation.length) {
+        this.setState({
+          provinceChecked: true,
+        });
+      }
+      newSelectedStation = [...tmpStations, ...filterabledStation];
+
     } else {
+      this.setState({
+        provinceChecked: false,
+      });
       newSelectedStation = selectedStation.filter(e => e.provinceCode !== provinceInfo.provinceCode);
     }
+
+
     this.props.checkStation(newSelectedStation);
   }
 
   render() {
     const { provinceInfo, selectedStation, multiple, disabledStation } = this.props;
+    const { provinceChecked } = this.state;
     const filterdStations = selectedStation.filter(e => e.provinceCode === provinceInfo.provinceCode);
-    let provinceChecked = false, indeterminate = false;
+    let indeterminate = false;
     if (filterdStations.length > 0 && filterdStations.length < provinceInfo.stations.length) {
       indeterminate = true;
-    } else if (filterdStations.length === provinceInfo.stations.length) {
-      provinceChecked = true;
     }
     return (
       <div className={styles.provinceItem}>

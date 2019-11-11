@@ -103,6 +103,9 @@ class StationContrastTable extends React.Component {
               <Col className={styles.baseClassifyName} span={5}><span>{e.baseClassifyName}</span></Col>
               <Col className={styles.rowName} span={19}>
                 {e.rowName.map((item, index) => {
+                  if (item === '电站名称') {
+                    return (<div className={styles.stationnameBg} key={index}>{item}</div>);
+                  }
                   return (<div key={index}>{item}</div>);
                 })}
               </Col>
@@ -113,7 +116,7 @@ class StationContrastTable extends React.Component {
           // {stationContrastList && stationContrastList.length === 2 &&
           (<Col className={styles.stationOne} span={20} >
             <div>
-              {stationContrastList.map((e, i) => (<div key={i} className={styles.baseInfoBg} >{e.stationName || '--'}</div>))}
+              {stationContrastList.map((e, i) => (<div key={i} className={`${styles.baseInfoBg} ${styles.stationnameBg}`} >{e.stationName || '--'}</div>))}
             </div>
             <div>
               {stationContrastList.map((e, i) => (<div key={i} className={styles.baseInfoBg} >{e.ongridTime || '--'}</div>))}
