@@ -164,7 +164,7 @@ class DetailDevice extends Component {
                     ))}
                   </div>
                   <div className={styles.brachTip}>
-                    (数值代表接入组传数, 0代表未接入)
+                    (数值代表接入组串数, 0代表未接入)
                   </div>
                 </div>
               </div>
