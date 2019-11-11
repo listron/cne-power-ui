@@ -114,50 +114,95 @@
   }
 }
 
-.dark {
-  @import "../../../theme/darkTheme.scss";
-  background-color: $background;
-  .intelligentSearch {
-    color: $fontColor;
-    .wrap {
-      background: $light-background;
-      border: 1px solid $border-color;
-    }
 
-    .partSearch {
-      background: $light-background;
-      margin-top: 10px;
-      border: 1px solid $border-color;
-      .reset {
-        color: $themeColor;
-      }
-    }
-  }
-  .intelligentTable {
-    background: $light-background;
-    margin-top: 10px;
-    border: 1px solid $border-color;
-  }
+
+.dark.intelligentContent{
   .stationType {
-    background: $background;
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid rgba(83, 104, 241, 0.4);
     height: 42px;
     p {
-      border: 1px solid $tab-border-color;
+      border: 1px solid #202470;
       color: #7088c3;
-      background: $tab-background;
+      background: #13134f;
       margin-right: 4px;
       border-radius: 8px 8px 0 0;
       height: 40px;
     }
     .activeStation {
-      background: $light-background;
-      border: 1px solid $border-color;
-      color: $fontColor-invert;
-      border-bottom: 1px solid $tab-border-bottom;
+      background: rgba(83, 104, 241, 0.15);
+      border: 1px solid rgba(83, 104, 241, 0.4);
+      color: #fff;
+      border-bottom: 1px solid rgba(12, 10, 62, 0.6);
       height: 42px;
       &::before {
         display: none;
+      }
+    }
+  }
+  :global {
+    .ant-upload {
+      color: #00baff;
+    }
+    a {
+      color: #00baff;
+    }
+    .ant-upload-list-item-info .anticon-paper-clip {
+      color: #00baff;
+    }
+  }
+}
+
+.dark.intelligentSearch {
+  color: #00baff;
+  .wrap {
+    background: rgba(83, 104, 241, 0.15);
+    border: 1px solid rgba(83, 104, 241, 0.4);
+  }
+  div[class*="filterCondition__"]{
+    background:rgba(20,33,101,0.40);
+  }
+  .partSearch {
+    background:rgba(20,33,101,0.40);
+    margin-top: 10px;
+    border: 1px solid rgba(83, 104, 241, 0.4);
+    .reset {
+      color: #00baff;
+    }
+  }
+}
+
+.dark.intelligentTable{
+  background:rgba(20,33,101,0.40);
+  margin-top: 10px;
+  border: 1px solid rgba(83, 104, 241, 0.4);
+  .importIntelligent{
+    :global{
+      .ant-modal-content{
+        background:#205bac;
+        border:1px solid #303a99;
+        box-shadow:inset 0 0 5px 2px #00baff;
+        border-radius:4px;
+      }
+      .ant-form-item {
+        color:#9cd1ff;
+        .ant-upload .ant-btn{
+          background-image:linear-gradient(-180deg, #b4ec51 0%, #74bb36 56%, #429321 100%);
+          color: #fff;
+        }
+        .ant-upload-list-item{
+          color:#00f0ff;
+          .anticon.anticon-close{
+            color: #00f0ff;
+          }
+          &:hover{
+            .ant-upload-list-item-info{
+              background-color: transparent;
+            }
+          }
+        }
+        .ant-upload-list-item-name{
+          color:#00f0ff;
+        }
       }
     }
   }
@@ -171,35 +216,40 @@
       color: #f9b600;
     }
   }
+}
+
+.dark.intelligentSide{
+  background-image:linear-gradient(-118deg, #3b55aa 0%, #132267 96%);
   .addIntelligent,
   .showIntelligent,
   .editIntelligent {
-    background: $light-background;
-    border: 1px solid $border-color;
-    color: $fontColor;
+    background:rgba(20,33,101,0.40);
+    border:1px solid #4288b5;
+    color: #00baff;
     .titleTop {
       @include top;
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid #4288b5;;
       .text {
-        color: $fontColor;
+        color: #00f0ff;
       }
       .backIcon {
-        color: $fontColor-hover;
-        border-left: 1px solid $border-color;
+        color: #00f0ff;
+        border-left: 1px solid #4288b5;;
       }
     }
+    
   }
   .addIntelligent {
     .selctWrap {
       i {
-        color: $fontColor-hover;
+        color: #00f8ff;
       }
     }
   }
   .editIntelligent {
     .formItem {
       .label {
-        color: $fontColor;
+        color: #00baff;
         span {
           display: inline-block;
           margin-right: 4px;
@@ -213,30 +263,15 @@
   }
   .showIntelligent {
     .editBtn {
-      border-color: $themeColor;
+      border-color: #00baff;
     }
     .detailContent {
       .link {
-        color: $themeColor;
+        color: #00baff;
       }
       .required {
-        color: $warnColor;
+        color: #fd6e8f;
       }
-      .likeBtn,
-      .likedBtn {
-        // border-color: $themeColor;
-      }
-    }
-  }
-  :global {
-    .ant-upload {
-      color: $fontColor;
-    }
-    a {
-      color: $fontColor;
-    }
-    .ant-upload-list-item-info .anticon-paper-clip {
-      color: $fontColor;
     }
   }
 }
