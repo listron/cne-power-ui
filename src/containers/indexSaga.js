@@ -11,6 +11,11 @@ import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
 import { watchPersonnelGps } from './Operation/PersonnelGps/personnelGpsSaga';
 import { watchDayReport } from './Operation/Running/DayReport/dayReportSaga';
 import { watchIntelligentExper } from './Operation/IntelligentExpert/intelligentExpertSaga';
+// 工单
+import { watchDefectList } from './Operation/WorkProcess/DefectList/defectListSaga';
+import { watchDefectDetail } from './Operation/WorkProcess/DefectDetail/defectDetailSaga';
+import { watchInspectList } from './Operation/WorkProcess/InspectList/inspectListSaga';
+import { watchInspectDetail } from './Operation/WorkProcess/InspectDetail/inspectDetailSaga';
 
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
 import { watchDepartment } from './System/Account/Department/departmentSaga';
@@ -120,6 +125,10 @@ import { watchCombineInvert } from './ReportManage/ReportDevice/CombineInvert/co
 import { watchConfluenceBox } from './ReportManage/ReportDevice/ConfluenceBox/confluenceBoxSaga';
 
 
+
+
+
+
 // root saga
 export default function* rootSaga() {
   yield all([
@@ -135,6 +144,11 @@ export default function* rootSaga() {
     watchPersonnelGps(), //员工定位
     watchDayReport(), // operation- 日报
     watchIntelligentExper(), // 光伏智能专家库
+
+    watchDefectList(), // 缺陷列表
+    watchDefectDetail(), // 缺陷详情
+    watchInspectList(), // 巡检列表
+    watchInspectDetail(), // 巡检详情
 
     //system-enterprise
     watchEnterprise(),
