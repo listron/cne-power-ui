@@ -12,11 +12,8 @@ class ShowAddComponentMode extends Component {
   }
   componentWillReceiveProps(nextProps) {
     const { checkDeviceModeOk, addDeviceTypeData,selectStation } = nextProps;
-    console.log('selectStation: ', selectStation);
-    console.log('addDeviceTypeData: ', addDeviceTypeData);
     if (checkDeviceModeOk !== this.props.checkDeviceModeOk && checkDeviceModeOk === true) {
       this.props.form.validateFieldsAndScroll(["addComponentMode", "addmanufacturerCom", "deviceTypeCode"], (err, values) => {
-        console.log('values: ', values);
         if (!err) {
           this.props.addPvDeviceMode({
             // deviceTypeCode:addDeviceTypeData.deviceTypeCode?`${addDeviceTypeData.deviceTypeCode}`:`${values.deviceTypeCode}`,

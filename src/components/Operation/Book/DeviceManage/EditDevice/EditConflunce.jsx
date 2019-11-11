@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import styles from '../deviceSide.scss';
 
 import { Input, Form, DatePicker, Select, Checkbox, Row, Col } from 'antd';
+import BrachFormItem from '../AddDevice/BrachFormItem';
 const FormItem = Form.Item;
 const { Option } = Select;
 
@@ -45,22 +46,24 @@ class EditConflunce extends Component {
 
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const detailMap = stationDeviceDetail ? stationDeviceDetail.map : {};
-    const branchCount = detailMap ? detailMap.connectedBranches : [];
-    const componentCount = getFieldValue("branchCount");
-    let branchCountArr = [];
-    for (let i = 0; i < componentCount; i++) {
-      branchCountArr.push(i + 1)
-    }
+    // const connectedBranches = detailMap ? detailMap.connectedBranches : [];
+    const { componentCount, connectedBranches } = detailMap;
+    // const branchCount = detailMap ? detailMap.connectedBranches : [];
+    // const componentCount = getFieldValue("branchCount");
+    // let branchCountArr = [];
+    // for (let i = 0; i < componentCount; i++) {
+    //   branchCountArr.push(i + 1)
+    // }
     // const branchCountArr=branchCount.map((e,i)=>{
     // return e===1?i+1:null
     // })
-    let initChecked = [];
-    branchCount.forEach((e, i) => {
-      if (e) {
-        initChecked.push(i + 1)
+    // let initChecked = [];
+    // branchCount.forEach((e, i) => {
+    //   if (e) {
+    //     initChecked.push(i + 1)
       
-      }
-    })
+    //   }
+    // })
     return (
       <div className={styles.rightStyles}>
         <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
@@ -77,7 +80,7 @@ class EditConflunce extends Component {
         </FormItem>
         <FormItem label="支路个数" colon={false} className={styles.formItemStyle}>
           {getFieldDecorator('branchCount', {
-            initialValue: ((stationDeviceDetail.map.componentCount || +stationDeviceDetail.map.componentCount === 0) ? stationDeviceDetail.map.componentCount : ''), rules: [
+            initialValue: ((componentCount || componentCount === 0) ? componentCount : ''), rules: [
               { message: '1~20之间的整数', required: true, pattern: /^(0|1\d?|20?|[3-9])$/ },
             ]
           })(
@@ -86,23 +89,25 @@ class EditConflunce extends Component {
           )}
         </FormItem>
         <FormItem label="所用支路" colon={false} className={styles.formItemStyle}>
-          {getFieldDecorator('connectedBranches', { initialValue: initChecked, })(
-            <Checkbox.Group className={styles.checkboxStyle} onChange={this.checkstyle} >
-             
-                {(branchCountArr).map((e, i) => {
-                  let filterStyle=checkStyle.length>0?(checkStyle.includes(i+1)):(initChecked.includes(i+1))
-                  return (
-                    <div className={styles.itemStyle} key={i}>
-                    <div className={filterStyle?styles.checkedTopName:styles.topName}>第{i + 1}支路</div>
-                    <Checkbox className={styles.bottomSelect} value={e} key={i}></Checkbox>
-                  </div>)
-                })}
-             
-            </Checkbox.Group>
+          {getFieldDecorator('connectedBranches', {
+            initialValue: connectedBranches,
+            rules: [{
+              required: true,
+              validator: (rule, value, callback) => {
+                const noData = !value;
+                const hasEmpty = value && value.find(e => !e && e !== 0); // 支路数未填全
+                if (noData) {
+                  callback('请填写支路信息');
+                } else if (hasEmpty !== undefined) { // 某个支路信息不全
+                  callback('请完善支路信息');
+                }
+                callback();
+              },
+            }],
+          })(
+            <BrachFormItem branchCount={componentCount || 0} />
           )}
-          <div className={styles.linestyle}>(  点击后变<span className={styles.selectRingStyle}></span>，表示接入;<span className={styles.ringStyle}></span>表示未接入 )</div>
         </FormItem>
-
       </div>
     )
   }

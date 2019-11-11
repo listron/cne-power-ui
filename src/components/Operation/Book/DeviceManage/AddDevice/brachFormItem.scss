@@ -1,0 +1,59 @@
+
+.brachFormContent{
+  display: flex;
+  flex-direction: column;
+  width: 450px;
+  .branchBox{
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.brachFormContent .branchBox .eachBranch{ // 外面的某样式层级实在太高····烦躁。嵌套这么深还部分全局捕捉····
+  flex: 0 0 180px;
+  margin-right: 50px;
+  .branchName{
+    margin-right: 10px;
+  }
+  .branchNumInput{
+    width: 103px;
+    :global{
+      input.ant-input{
+        width: 66px;
+      }
+    }
+  }
+  :global{
+    .ant-input-group-addon{
+      display: inline-block;
+      width: 34px;
+      height: 32px;
+      padding: 0;
+    }
+  }
+  .inputIconGroup{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+  }
+  &:nth-of-type(1), &:nth-of-type(2){
+    margin-top: 40px;
+  }
+  &:nth-of-type(2n){
+    margin-right: 0;
+  }
+}
+
+.inputIconGroup{
+  color: #999;
+  :global{
+    .anticon.anticon-up{
+      border-bottom: 1px solid #dfdfdf;
+    }
+  }
+}
+
+
+
+
+

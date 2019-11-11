@@ -1,52 +1,91 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Input } from 'antd';
-import styles from './deviceSide.scss';
+import { Input, Icon } from 'antd';
+import styles from './brachFormItem.scss';
 
-class EachBranch extends Component {
+  /*
+ *该组件, 复用至EditDevice, 若有变更，请注意同时考虑edit的情况。 
+ */
+
+ class EachBranch extends Component {
 
   static propTypes = {
+    branchArr: PropTypes.array,
     index: PropTypes.number,
+    onChange: PropTypes.func,
   };
 
-  changeBranchSubNumber = (e) => {
-    console.log(this.props.index);
-    console.log(e, e.target, e.target.value);
+  changeBranchSubNumber = ({ target }) => {
+    const { value } = target || {};
+    if ((value && !isNaN(value) && !value.includes('.')) || !value) { // value不存在 或 value为数字
+      this.changeValue(() => value ? value.trim() : '');
+    }
+  }
+
+  addBranch = () => {
+    this.changeValue(value => `${value ? ++value : 1}`);
+  }
+
+  reduceBranch = () => {
+    this.changeValue(value => `${(value && value > 1) ? --value : 0}`);
+  }
+
+  changeValue = callback => {
+    const { branchArr, index } = this.props;
+    const preValue = branchArr[index];
+    const newBranch = [...branchArr];
+    newBranch[index] = callback(preValue);
+    if (preValue !== newBranch[index]) { // 数据变化再触发, 降低render次数。
+      this.props.onChange(newBranch);
+    }
   }
 
   render(){
-    const { index } = this.props;
+    const { index, branchArr } = this.props;
     return (
-      <span>
-        <span>第{index}支路</span>
-        <Input type="number" onChange={this.changeBranchSubNumber} />
+      <span className={styles.eachBranch}>
+        <span className={styles.branchName}>第{index + 1}支路</span>
+        <Input
+          value={branchArr[index]}
+          placeholder="请输入..."
+          onChange={this.changeBranchSubNumber}
+          className={styles.branchNumInput}
+          addonAfter={<span className={styles.inputIconGroup}>
+            <Icon type="up" onClick={this.addBranch} />
+            <Icon type="down" onClick={this.reduceBranch} />
+          </span>}
+        />
       </span>
     );
   }
 }
 
-
+// 接收参数: value: 各支路信息数组[0, 1, 2, 3, 2, 1, 0], 支路个数branchCount, onChange修改各支路信息 
 class BrachFormItem extends Component {
   static propTypes = {
-    value: PropTypes.string,
+    value: PropTypes.array,
     onChange: PropTypes.func,
-    branchNum: PropTypes.number,
+    branchCount: PropTypes.string,
   };
 
-  state = {
-    branchInfo: {}
+  branchChange = (branchesResult) => {
+    this.props.onChange(branchesResult);
   }
 
   render(){
-    const { branchInfo } = this.state;
-    const { value, onChange, branchNum } = this.props;
-    console.log(branchInfo, value, onChange, branchNum);
+    const { value = [], branchCount } = this.props;
+    const branchArr = [];
+    for (let i = 0; i < parseInt(branchCount, 10); i ++ ) {
+      branchArr.push(value[i] === undefined ? '1' : value[i]);
+    }
     return (
-      <div className={styles.brachFormItem}>
-        {branchNum.map((e, i) => (
-          <EachBranch key={i} index={i} />
-        ))}
+      <div className={styles.brachFormContent}>
+        {branchArr.length > 0 && <div className={styles.branchBox}>
+          {branchArr.map((e, i) => (
+            <EachBranch key={i} index={i} branchArr={branchArr} onChange={this.branchChange} />
+          ))}
+        </div>}
         <span>(数值代表接入串数, 0代表未接入)</span>
       </div>
     );
