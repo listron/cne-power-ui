@@ -71,9 +71,9 @@ class PlanHandle extends PureComponent {
     }
     if(!planListLoading && preListLoading){ // 日历列表数据返回
       const curPlan = planList.find(e => moment(e.reportDate).isSame(activePlanDate, 'day')) || {};
-      this.props.changeStore({
-        datePlans: curPlan.list || [],
-      });
+      const list = curPlan.list || [];
+      const datePlans = list.map(e => ({ ...e, key: e.planDetailId }));
+      this.props.changeStore({ datePlans });
     }
   }
 
