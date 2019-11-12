@@ -329,6 +329,9 @@ function *handlePlanStatus({ payload }) { // 工作台日历任务批量下发/�
       yield fork(getPlanList, { // 再次请求日历计划列表
         payload: { stationCodes, planMonth },
       });
+      yield fork(getTickets, { // 再次请求 两票三制数据
+        payload: { stationCodes },
+      });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
