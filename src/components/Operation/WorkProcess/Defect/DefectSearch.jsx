@@ -14,6 +14,7 @@ class DefectSearch extends Component {
     stations: PropTypes.array,
     defectTypes: PropTypes.array,
     deviceTypes: PropTypes.array,
+    getDefectList: PropTypes.func,
   };
 
   constructor(props, context) {
@@ -25,15 +26,15 @@ class DefectSearch extends Component {
 
   }
 
-  filterConditionChange = () => {
-
+  filterConditionChange = (value) => {
+    console.log('value', value);
   }
 
 
   onChangeStatus = (e) => {
-    console.log(e.target.value);
-    // this.setState({ status: e.target.value });
-    // this.props.onChange({ status: e.target.value });
+    const { listParams } = this.props;
+    const status = e.target.value;
+    this.props.getDefectList({ ...listParams, status });
   }
 
   render() {

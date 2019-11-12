@@ -18,10 +18,14 @@ class DefectList extends Component {
     resetStore: PropTypes.func,
     getLostGenType: PropTypes.func,
     getDeviceTypes: PropTypes.func,
+    getDefectList: PropTypes.func,
+    listParams: PropTypes.object,
   };
 
   componentDidMount() {
     this.props.getLostGenType({ objectType: 1 }); //获取所有损失缺陷类型
+    const { listParams, getDefectList } = this.props;
+    getDefectList(listParams);
   }
 
   componentWillReceiveProps() {
@@ -70,6 +74,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: defectListAction.resetStore }),
   changeStore: payload => dispatch({ type: defectListAction.changeStore, payload }),
+  getDefectList: payload => dispatch({ type: defectListAction.getDefectList, payload }),
   getLostGenType: params => dispatch({ // 获取缺陷类型
     type: commonAction.getLostGenType,
     payload: {
