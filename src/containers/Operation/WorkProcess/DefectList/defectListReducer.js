@@ -26,6 +26,7 @@ const initState = immutable.fromJS({
   },
   defectListData: [], //渲染为table的缺陷列表
   defectTypes: [], //缺陷类型
+  deviceTypes: [], //电站下的设备类型
 });
 
 const defectList = (state = initState, action) => {

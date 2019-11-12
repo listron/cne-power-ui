@@ -51,7 +51,7 @@ class FilteredItems extends Component {
         {
           hasData &&
           <React.Fragment>
-            <p className={styles.selectText}> 已选 </p>
+            <p className={styles.selectText}> 已选条件 </p>
             <div className={styles.tagWrap}>
               {
                 multipleSelect.map(item => {

@@ -1,0 +1,15 @@
+.statusGroup {
+  display: flex;
+  padding: 0px 28px 20px;
+  align-items: center;
+  .text {
+    text-align-last: justify;
+    margin-right: 16px;
+    width: 56px;
+  }
+  :global {
+    .ant-radio-button-wrapper {
+      padding: 0 8px;
+    }
+  }
+}

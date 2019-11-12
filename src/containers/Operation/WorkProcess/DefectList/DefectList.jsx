@@ -16,9 +16,12 @@ class DefectList extends Component {
     location: PropTypes.object,
     history: PropTypes.object,
     resetStore: PropTypes.func,
+    getLostGenType: PropTypes.func,
+    getDeviceTypes: PropTypes.func,
   };
 
   componentDidMount() {
+    this.props.getLostGenType({ objectType: 1 }); //获取所有损失缺陷类型
   }
 
   componentWillReceiveProps() {
@@ -46,10 +49,9 @@ class DefectList extends Component {
     const { pageLoading, theme = 'light' } = this.props;
     return (
       <div className={styles.cont}>
-        缺陷页面
         <DefectSearch {...this.props} />
         <DefectTableList {...this.props} />
-        <Button onClick={this.detail}> 进入详情页面</Button>
+        {/* <Button onClick={this.detail}> 进入详情页面</Button> */}
       </div>
     );
   }
@@ -59,6 +61,8 @@ const mapStateToProps = (state) => {
   return ({
     ...state.operation.defectList.toJS(),
     stations: state.common.get('stations').toJS(),
+    deviceTypes: state.common.get('deviceTypes').toJS(),
+    username: state.common.get('username'),
     theme: state.common.get('theme'),
   });
 };
