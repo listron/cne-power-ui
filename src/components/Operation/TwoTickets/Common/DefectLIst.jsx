@@ -259,16 +259,8 @@ class DefectList extends Component {
           style={{ top: 30 }}
           mask={false}
         >
-          {/* <FilterCondition
-            option={['time']}
-            onChange={this.filterCondition}
-          /> */}
           <FilterCondition
-            option={[{
-              name: ' 发生时间',
-              type: 'time',
-              typeName: 'rangeTimes',
-            }]}
+            option={[{ name: ' 发生时间', type: 'time', typeName: 'rangeTimes' }]}
             onChange={this.filterCondition}
           />
 
@@ -278,7 +270,7 @@ class DefectList extends Component {
           </div>
           <Table
             rowSelection={rowSelection}
-            dataSource={defectList.map((e, i) => ({ ...e, key: e.defectId }))}
+            dataSource={defectList && defectList.map((e, i) => ({ ...e, key: e.defectId })) || []}
             columns={this.initColumn()}
             pagination={false}
             loading={defectLoading}
