@@ -8,7 +8,7 @@ const defectListAction = {
 };
 
 const initState = immutable.fromJS({
-  name: 'hjl',
+
 });
 
 const defectList = (state = initState, action) => {
