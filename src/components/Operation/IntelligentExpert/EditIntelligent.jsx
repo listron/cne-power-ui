@@ -206,7 +206,7 @@ class EditIntelligent extends Component {
                 <InputLimit end={true} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
-            <Form.Item label="上传附件" colon={false}>
+            <Form.Item label="上传附件" className={styles.formItem} colon={false}>
               {getFieldDecorator('annexs', {
               })(
                 <Upload
@@ -216,7 +216,10 @@ class EditIntelligent extends Component {
                   fileList={initFileList}
                   onPreview={this.onPreview}
                 >
-                  <Button> <Icon type="upload" /> 选择文件上传</Button>  <span className={styles.extraSpan}> 上传文件不得大于100M</span>
+                  <Button className={styles.uploaderBtn}>
+                    <Icon type="upload" /> 选择文件上传
+                  </Button>
+                  <span className={styles.extraSpan}> 上传文件不得大于100M</span>
                 </Upload>
               )}
             </Form.Item>

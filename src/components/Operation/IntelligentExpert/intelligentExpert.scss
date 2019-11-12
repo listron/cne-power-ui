@@ -191,7 +191,7 @@
         }
         .ant-upload-list-item{
           color:#00f0ff;
-          .anticon.anticon-close{
+          .anticon{
             color: #00f0ff;
           }
           &:hover{
@@ -237,7 +237,64 @@
         border-left: 1px solid #4288b5;;
       }
     }
-    
+  }
+  .addIntelligent, .editIntelligent{
+    .preFormStyle .formItem {
+      .label .name {
+        color:#00f0ff;
+      }
+      .label .required {
+        display: inline-block;
+        margin-right: 4px;
+        color: #f5222d;
+        font-size: 14px;
+        font-family: SimSun, sans-serif;
+        line-height: 1;
+      }
+      .uploaderBtn{
+        background-image:linear-gradient(-180deg, #b4ec51 0%, #74bb36 56%, #429321 100%);
+        color: #fff;
+        &:hover{
+          background-image:linear-gradient(-180deg, #b4ec51 0%, #74bb36 56%, #429321 100%);
+          color: #fff;
+        }
+      }
+      .extraSpan{
+        color:#9cd1ff;
+      }
+      :global{
+        .ant-form-item-label label{
+          color:#00f0ff;
+          &::after{
+            color: #f5222d;
+          }
+        }
+        .ant-form-item-control-wrapper{
+          input, textarea{
+            &::-webkit-input-placeholder{
+              color:#9cd1ff;
+            }
+          }
+          [class*=inputCount]{
+            color:#9cd1ff;
+          }
+        }
+        .ant-upload-list-item{
+          color:#00f0ff;
+          .anticon{
+            color: #00f0ff;
+          }
+          &:hover{
+            .ant-upload-list-item-info{
+              background-color: transparent;
+            }
+          }
+        }
+        .ant-upload-list-item-name{
+          color:#00f0ff;
+        }
+      }
+    }
   }
   .addIntelligent {
     .selctWrap {
@@ -246,32 +303,21 @@
       }
     }
   }
-  .editIntelligent {
-    .formItem {
-      .label {
-        color: #00baff;
-        span {
-          display: inline-block;
-          margin-right: 4px;
-          color: #f5222d;
-          font-size: 14px;
-          font-family: SimSun, sans-serif;
-          line-height: 1;
-        }
-      }
-    }
-  }
   .showIntelligent {
-    .editBtn {
-      border-color: #00baff;
-    }
-    .detailContent {
-      .link {
-        color: #00baff;
+    .detailText {
+      color:#9cd1ff;
+      .link{
+        color:#ff7878;
       }
-      .required {
+      .title .required {
         color: #fd6e8f;
       }
+      .title .name {
+        color:#00f0ff;
+      }
+    }
+    .editBtn {
+      border-color: #00baff;
     }
   }
 }

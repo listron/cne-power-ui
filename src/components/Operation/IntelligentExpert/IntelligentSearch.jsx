@@ -157,6 +157,7 @@ class IntelligentSearch extends Component {
           <span>故障代码／故障描述</span>
           <Input className={styles.defectDescription} value={defectValue} placeholder="请输入..." onChange={this.onDefect} />
           <span className={styles.text}>录入人</span>
+          <span ref={(ref)=> { this.userRef = ref; }} />
           <Select
             showSearch
             placeholder="请输入..."
@@ -165,6 +166,7 @@ class IntelligentSearch extends Component {
             showArrow={false}
             onSearch={this.entryPerson}
             onChange={this.changePerson}
+            getPopupContainer={() => this.userRef}
           >
             {usernames && usernames.map(e => <Option key={e} value={e}>{e}</Option>)}
           </Select>
