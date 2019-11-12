@@ -86,9 +86,9 @@ class DefectList extends Component {
 
   filterConditionChange = (value) => {
     const { username, timeInterval, status, pageSize, sortField, sortMethod, pageNum,
-      stationType, stationCodes, defectSource, defectLevel, deviceTypeCode, defectTypeCode, handleUser, handleUserList } = this.props;
+      stationType, stationCodes, defectSource, defectLevel, deviceTypeCode, defectTypeCode, handleUserList } = this.props;
     let { createTimeStart, createTimeEnd } = this.props;
-    const inithandleUser = value.join && username || handleUser;
+    const inithandleUser = value.join ? username : '';
     if (value.rangeTimes) {
       [createTimeStart, createTimeEnd] = value.rangeTimes;
     }

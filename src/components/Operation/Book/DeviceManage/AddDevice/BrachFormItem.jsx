@@ -79,7 +79,6 @@ class BrachFormItem extends Component {
     for (let i = 0; i < parseInt(branchCount, 10); i ++ ) {
       branchArr.push(value[i] === undefined ? '1' : value[i]);
     }
-    console.log(value, branchCount);
     return (
       <div className={styles.brachFormContent}>
         {branchArr.length > 0 && <div className={styles.branchBox}>
