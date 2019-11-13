@@ -48,7 +48,7 @@ class InspectDetail extends Component {
     }
   }
 
-  onConfirmWarningTip = () => {
+  onCancelEdit = () => {
     history.go(-1);
   }
 
