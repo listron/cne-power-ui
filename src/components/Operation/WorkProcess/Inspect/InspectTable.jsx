@@ -16,7 +16,11 @@ class InspectTable extends React.Component {
     theme: PropTypes.string,
     tableLoading: PropTypes.bool,
     params: PropTypes.object,
+    inspectStatusStatistics: PropTypes.object,
     selectedRowKeys: PropTypes.array,
+    inspectList: PropTypes.array,
+    location: PropTypes.object,
+    history: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context);
@@ -50,13 +54,10 @@ class InspectTable extends React.Component {
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {
-
-
     this.getListData({
       pageSize,
       pageNum: currentPage,
     });
-
   }
 
   onChangeTable = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
@@ -105,6 +106,11 @@ class InspectTable extends React.Component {
       ...value,
     });
   }
+  onShowDetail = (inspectId) => {
+    const { location, history } = this.props;
+    const { pathname } = location;
+    history.push(`${pathname}?page=inspectDeatail&inspectId=${inspectId}`);
+  }
 
   render() {
     const { selectedRowKeys = [], params, total, tableLoading, theme, inspectList, inspectStatusStatistics } = this.props;
@@ -133,7 +139,7 @@ class InspectTable extends React.Component {
         return <div className={styles.inspectDesc} title={text}>{text}</div>;
       },
     }, {
-      title: '异常数',
+      title: '缺陷数目',
       dataIndex: 'abnormalNum',
       key: 'abnormalNum',
       // sorter: true,
@@ -181,8 +187,8 @@ class InspectTable extends React.Component {
           <div className={styles.text}><span>状</span><span>态</span></div>
           <RadioGroup onChange={this.onChangeTab} defaultValue="" value={this.state.status}>
             <RadioButton value="">全部</RadioButton>
-            <RadioButton value="2">{`执行中  ${executeNum}`}</RadioButton>
-            <RadioButton value="3">{`待验收  ${checkNum}`}</RadioButton>
+            <RadioButton value="2">{`执行中  ${(executeNum || executeNum === 0) ? executeNum : ''}`}</RadioButton>
+            <RadioButton value="3">{`待验收  ${(checkNum || checkNum === 0) ? checkNum : ''}`}</RadioButton>
             <RadioButton value="4">{'已完成'}</RadioButton>
           </RadioGroup>
         </div>

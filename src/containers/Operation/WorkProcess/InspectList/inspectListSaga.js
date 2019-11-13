@@ -10,7 +10,6 @@ const { APIBasePath } = basePaths;
 const { ticket } = APISubPaths;
 function* getInspectList(action) { // 获取巡检列表数据
   const { payload } = action;
-  console.log('payload: ', payload);
   const url = `${APIBasePath}${ticket.getInspectList}`;
   try {
     yield put({

@@ -27,12 +27,12 @@ class InspectSearch extends React.Component {
   render() {
     const { stations, deviceTypes } = this.props;
     return (
-      <div>
+      <div className={styles.searchStyle}>
         <FilterCondition
           onChange={this.filterCondition}
           option={[
             {
-              name: ' 开始时间',
+              name: '创建时间',
               type: 'time',
               typeName: 'rangeTime',
             },

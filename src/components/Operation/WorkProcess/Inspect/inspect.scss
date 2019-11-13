@@ -1,5 +1,9 @@
-// 我就是给大力写一下
 @import "../../../../theme/theme.scss";
+
+.searchStyle {
+  margin-left: -6px;
+
+}
 
 .inspectTable {
   display: flex;
@@ -55,7 +59,7 @@
         }
       }
 
-     
+
     }
 
 
@@ -72,7 +76,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0px 28px 20px;
+    padding: 0px 28px 20px 22px;
 
     .text {
       display: flex;
@@ -99,9 +103,26 @@
     }
   }
 
+  // .tableFooter {
+  //   margin-top: 8px;
+  //   margin-left: 20px;
+  // }
   .tableFooter {
-    margin-top: 8px;
-    margin-left: 20px;
+    height: 45px;
+    line-height: 45px;
+
+    .info {
+      margin-right: 22px;
+      margin-left: 22px;
+
+      .totalNum {
+        margin: auto 4px;
+      }
+    }
+
+    .cancel {
+      cursor: pointer;
+    }
   }
 }
 
