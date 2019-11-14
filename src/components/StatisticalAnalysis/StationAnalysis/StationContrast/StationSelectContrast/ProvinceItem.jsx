@@ -73,8 +73,11 @@ class ProvinceItem extends Component {
     const { provinceChecked } = this.state;
     const filterdStations = selectedStation.filter(e => e.provinceCode === provinceInfo.provinceCode);
     let indeterminate = false;
+    let checkProvice = false;
     if (filterdStations.length > 0 && filterdStations.length < provinceInfo.stations.length) {
       indeterminate = true;
+    } else if (filterdStations.length === provinceInfo.stations.length) {
+      checkProvice = true;
     }
     return (
       <div className={styles.provinceItem}>
@@ -82,7 +85,7 @@ class ProvinceItem extends Component {
           <Checkbox
             style={{ marginBottom: 10 }}
             onChange={this.checkProvince}
-            checked={provinceChecked}
+            checked={provinceChecked && checkProvice}
             indeterminate={indeterminate}>
             {provinceInfo.provinceName}
           </Checkbox> :
