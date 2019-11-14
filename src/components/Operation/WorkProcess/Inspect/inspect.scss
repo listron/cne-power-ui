@@ -9,12 +9,33 @@
   display: flex;
   flex-direction: column;
 
+  :global {
+    .ant-table .ant-table-tbody>tr>td {
+      padding: 0 8px;
+    }
+  }
+
+  .nameWidth,
+  .textWidth,
   .inspectDesc {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     word-break: keep-all;
-    max-width: 225px;
+    max-width: 300px;
+  }
+
+  .nameWidth {
+    max-width: 120px;
+  }
+
+
+  .cursorStyle {
+    cursor: pointer;
+
+    &:hover {
+      color: #199475;
+    }
   }
 
   .inspectStatus {

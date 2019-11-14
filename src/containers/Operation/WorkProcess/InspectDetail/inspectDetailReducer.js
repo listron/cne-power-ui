@@ -12,7 +12,8 @@ const inspectDetailAction = {
 const initState = immutable.fromJS({
   loading: false,
   inspectDetail: {},
-  inspectFlows: {},
+  inspectDeviceInfo: {},
+  inspectFlows: [],
 
 });
 

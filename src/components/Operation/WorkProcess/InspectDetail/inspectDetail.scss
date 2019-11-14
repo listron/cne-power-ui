@@ -105,7 +105,12 @@
           }
 
           .overinspect {
-            border-right: 1px dashed $darkColor;
+            border-right: 1px dashed $themeColor;
+
+          }
+
+          .noinspect {
+            margin-left: 8px;
           }
 
         }
@@ -115,4 +120,49 @@
 
     }
   }
+}
+
+.rightContent {
+  .checkinspect {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 24px;
+
+    .title {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 24px;
+      align-items: flex-start;
+
+      .border {
+        display: flex;
+        flex: 1;
+        height: 16px;
+        border-bottom: 1px #f1f1f1 solid;
+      }
+
+      .text {
+        background-color: #f8f8f8;
+        color: rgba(0, 0, 0, 0.85);
+        border: 1px solid #f1f1f1;
+        border-radius: 4px;
+        font-weight: 700;
+        width: 95px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .checkBtn {
+      margin: 0 auto;
+      width: 120px;
+      color: #f9b600;
+    }
+  }
+
+
+
 }

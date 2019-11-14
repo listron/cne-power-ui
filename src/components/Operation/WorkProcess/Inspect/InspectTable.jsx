@@ -126,11 +126,17 @@ class InspectTable extends React.Component {
       dataIndex: 'inspectName',
       key: 'inspectName',
       sorter: true,
+      render: (text, record) => {
+        return <div className={styles.nameWidth} title={text}>{text}</div>;
+      },
     }, {
       title: '电站名称',
       dataIndex: 'stationName',
       key: 'stationName',
       sorter: true,
+      render: (text, record) => {
+        return <div className={styles.nameWidth} title={text}>{text}</div>;
+      },
     }, {
       title: '工单描述',
       dataIndex: 'deviceTypeName',
@@ -148,12 +154,15 @@ class InspectTable extends React.Component {
       dataIndex: 'startTime',
       key: 'startTime',
       sorter: true,
+      render: (text, record) => {
+        return <div className={styles.textWidth} title={text}>{text}</div>;
+      },
     }, {
       title: '完成时间',
       dataIndex: 'checkTime',
       key: 'checkTime',
       render: (text, record) => {
-        return text ? text : '--';
+        return <div className={styles.textWidth} title={text}>{text}</div>;
       },
       sorter: true,
     }, {
@@ -172,7 +181,7 @@ class InspectTable extends React.Component {
     }, {
       title: '查看',
       render: (text, record) => (
-        <span>
+        <span className={styles.cursorStyle}>
           <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record.inspectId); }} />
         </span>
       ),

@@ -237,7 +237,7 @@ class ReportTable extends React.Component {
           onChange={this.tableChange}
           dataSource={reportStationList.map((e, i) => ({ ...e, key: i }))}
           bordered
-          scroll={{ x: 3480, y: 460 }}
+          scroll={{ x: 3480, y: 450 }}
           pagination={false}
         />
 

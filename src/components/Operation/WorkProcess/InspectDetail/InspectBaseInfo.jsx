@@ -10,18 +10,19 @@ class InspectBaseInfo extends React.Component {
   }
 
   renderbaseInfo = (data) => {
-    const { stationName, stationType, inspectName, startTime, endTime, deviceTypeName } = data;
+    const { stationName, stationType, inspectName, createTime, deadLine, deviceTypeNames } = data;
     const baseInfo = [
       { name: '电站名称', value: `${stationName}`, icon: `${stationType}` },
       { name: '巡检名称', value: `${inspectName}` },
-      { name: '巡检时间', value: `${startTime}至${endTime}` },
-      { name: '设备类型', value: `${deviceTypeName}` },
+      { name: '巡检时间', value: `${createTime}至${deadLine}` },
+      { name: '设备类型', value: `${deviceTypeNames}` },
     ];
     return baseInfo;
   }
   render() {
-    const { inspectDetail = {}, inspectFlows = {} } = this.props;
-    const { stationName, stationType, startTime, endTime, isOvertime, deviceTypeName } = inspectDetail;
+    const { inspectDetail, inspectDeviceInfo } = this.props;
+    const { matrixes, deviceTypes } = inspectDeviceInfo;
+    const { stationName, stationType, createTime, deadLine, isOverTime, deviceTypeNames } = inspectDetail;
 
     const baseInfo = this.renderbaseInfo(inspectDetail);
     return (
@@ -32,7 +33,7 @@ class InspectBaseInfo extends React.Component {
             <i className="iconfont icon-content" />
           </div>
           <div className={styles.warning}>
-            {isOvertime ? <div className={styles.overTime}>超时</div> : null}
+            {isOverTime ? <div className={styles.overTime}>超时</div> : null}
           </div>
         </div>
         <div className={styles.basicContent}>
@@ -43,24 +44,30 @@ class InspectBaseInfo extends React.Component {
               {e.icon ? <i className="iconfont icon-pvs" /> : e.icon === '0' ? <i className="iconfont icon-windlogo" /> : ''}
             </div>
           ))}
-
-
-
           <div className={styles.progressStyele}>
             <div className={styles.nameStyle}>巡检进度</div>
             <div className={styles.processContent}>
               <div className={styles.processDetail}>
                 <div className={styles.overinspect}>
                   <span className={styles.totalNum}>已巡检</span>
-                  <span className={styles.totalNum}>已巡检</span>
-                  <span className={styles.totalNum}>已巡检</span>
-                  <span className={styles.totalNum}>已巡检</span>
-                  <span className={styles.totalNum}>已巡检</span>
-                  <span className={styles.totalNum}>已巡检</span>
+                  {matrixes && matrixes.filter((e, i) => e.status === 0).map((item, index) => (
+                    <span key={index}>{item.belongMatrix}</span>
+                  ))}
+                  {
+                    deviceTypes && deviceTypes.filter(e => e.unknownNum === 0).map((item, index) => {
+                      return item.devices.map((device, id) => (
+                        <span key={`${index}-${id}`}>{item.deviceTypeName}-{device.deviceName}</span>
+                      ));
+                    })
+                  }
+
 
                 </div>
                 <div className={styles.noinspect}>
                   <span className={styles.totalNum}>未巡检</span>
+                  {matrixes && matrixes.filter((e, i) => e.status === 1).map((item, index) => (
+                    <span key={index}>{item.belongMatrix}</span>
+                  ))}
                 </div>
               </div>
 
