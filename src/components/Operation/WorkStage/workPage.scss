@@ -81,11 +81,16 @@
         .iconfont{
           cursor: pointer;
           margin-right: 8px;
+          font-size: 18px;
         }
       }
     }
     :global{
       .ant-table-scroll .ant-table-body{
+        overflow-x: hidden;
+      }
+      .ant-table-scroll .ant-table-header{
+        margin-bottom: 0!important;
         overflow-x: hidden;
       }
       .ant-table-scroll .ant-table-body, .ant-table-scroll .ant-table-header{
@@ -123,13 +128,12 @@
       display: flex;
       height: 27px;
       align-items: center;
-      justify-content: space-around;
+      justify-content: flex-end;
       cursor: pointer;
     }
     .infoValue{
-      flex: 0 0 32px;
+      margin: 0 4px;
       text-align: right;
-      @include overflowText();
     }
   }
 
@@ -218,11 +222,17 @@
       color:#000000;
     }
     :global{
+      .ant-table-scroll .ant-table-header{
+        &::-webkit-scrollbar-track-piece{
+          background: #f4f4f4;
+        }
+      }
       .ant-table-scroll .ant-table-body{
         &::-webkit-scrollbar-thumb {
           background: rgba(0, 0, 0, 0.5);
         }
       }
+      
     }
   }
 }
@@ -292,7 +302,6 @@
       }
       .ant-table-scroll .ant-table-header{
         overflow-x: hidden!important;
-        margin-bottom: 0!important;
         background-color: transparent;
         &::-webkit-scrollbar-track-piece{
           background-color: #1f246f;
