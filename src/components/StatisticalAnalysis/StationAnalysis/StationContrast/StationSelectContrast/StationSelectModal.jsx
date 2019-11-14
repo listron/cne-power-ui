@@ -67,6 +67,7 @@ class StationSelectModal extends Component {
     });
     this.setState({
       selectedStation: [],
+
     });
   }
   onDeleteOneStation = (stationInfor) => {
