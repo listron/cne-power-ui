@@ -67,7 +67,6 @@ function TicketsLog({ ticketsInfo = {}, theme = 'light' }){
   const tmpFinishWidth = getNumberLength(tmpFinishMaxValue);
   const tmpUnfinishMaxValue = getMaxValue([unfinish.defectNum, unfinish.inspectNum, unfinish.workDocketNum, unfinish.operateDocketNum]);
   const tmpUnfinishWidth = getNumberLength(tmpUnfinishMaxValue);
-  console.log(tmpFinishMaxValue, tmpUnfinishMaxValue);
   const ticketArr = [
     {
       title: '消缺',
