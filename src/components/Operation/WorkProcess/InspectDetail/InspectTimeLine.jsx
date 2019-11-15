@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Timeline, Button } from 'antd';
+import { Timeline, Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './inspectTimeLine.scss';
 import moment from 'moment';
+import ImgUploader from '../../../Common/Uploader/ImgUploader';
 
 /*
   时间线组件：
@@ -26,10 +27,35 @@ class InspectTimeLine extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+
+      openOther: false,
+      curOther: '',
+      openMatri: {},
+    };
+    // this.
   }
 
+  openMatrixe = (m) => {
+    const { openMatri } = this.state;
+    if (openMatri[m]) {
+      this.setState({
+        openMatri: { ...openMatri, [m]: !openMatri[m] },
+      });
+    } else {
+      this.setState({
+        openMatri: { ...openMatri, [m]: true },
 
-
+      });
+    }
+  }
+  openOther = (i) => {
+    const { openOther } = this.state;
+    this.setState({
+      openOther: !openOther,
+      curOther: i,
+    });
+  }
   renderIcon(flowType) {
     // 2 创建巡检
     // 3 提交验收
@@ -49,65 +75,30 @@ class InspectTimeLine extends Component {
     }
   }
 
+  renderDeviceTypeDetail = (deviceTypes = []) => {
 
-  // renderItem(item, isLast) {
-  //   const { trackCount, recordCount } = this.props;
-  //   const flowName = item.get('flowName');
-  //   if (!isLast) {
-  //     return (
-  //       <div className={styles.processItem}>
-  //         <div className={styles.basic}>
-  //           <div className={styles.flowName}>{item.get('flowName') ? item.get('flowName') : ''}</div>
-  //           <div className={styles.operateTime}>{item.get('operateTime') ? moment(item.get('operateTime')).format('YYYY-MM-DD HH:mm') : ''}</div>
-  //           <div className={styles.operateUser}>{item.get('operateUser') ? item.get('operateUser') : ''}</div>
+    return deviceTypes.length && deviceTypes.map((deviceType, index) => (
+      <div className={styles.deviceTypes}>
+        <div>
+          <div>{deviceType.deviceTypeName}:</div>
+          {deviceType.devices.map((device, id) => (
+            <div key={`${index}-${id}`}>
+              <span>{device.deviceName}</span>
+              <span className={styles.numStyle}>{device.defectIds.length ? `缺陷${device.defectIds.length}` : '正常'}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ));
 
-  //         </div>
-  //         {this.renderDetail(item)}
-  //       </div>
-  //     );
-  //   }
-  //   return (
-  //     <div className={styles.processItem}>
-  //       <div className={styles.lastFlowName}>{item.get('flowName')}</div>
-  //     </div>
-  //   );
 
-  // }
-
-  // renderDetail(item) {
-  //   const flowName = item.get('flowName');
-  //   const { deviceTypeName, abnormalItems } = this.props;
-  //   const abnormalNum = abnormalItems.size;
-  //   const transformNum = abnormalItems.filter(item => item.get('isTransform') === '1').size;
-  //   if (flowName === '创建巡检') {
-  //     return (
-  //       <div className={styles.inspectDesc}>
-  //         <div className={styles.text}>巡检描述</div>
-  //         <div className={styles.content}>{deviceTypeName}</div>
-  //       </div>
-  //     );
-  //   } else if (flowName === '执行工单') {
-  //     return (
-  //       <div className={styles.inspectDesc}>
-  //         <div className={styles.text}>异常设备</div>
-  //         <div className={styles.content}>{`${abnormalNum}个`}</div>
-  //       </div>
-  //     );
-  //   } else if (flowName === '验收工单') {
-  //     return (
-  //       <div className={styles.inspectDesc}>
-  //         <div className={styles.text}>已转工单</div>
-  //         <div className={styles.content}>{`${transformNum}个`}</div>
-  //       </div>
-  //     );
-  //   }
-  // }
-
+  }
   render() {
-    const { processData, status } = this.props;
+
+    const { processData, status, inspectdescribe } = this.props;
+    const { openOther, curOther, openMatri } = this.state;
     const flowName = { 2: '创建巡检', 3: '提交验收', 4: '验收工单', 5: '执行工单' };
     //status==='4'，代表着已完成状态
-
     return (
       <div className={styles.timeLineWrap}>
         <div className={styles.title}>
@@ -120,6 +111,7 @@ class InspectTimeLine extends Component {
             <Timeline.Item
               dot={<i className="iconfont icon-doned" />}
               key={'已完成'}>
+              <div className={styles.flowName}>已完成</div>
             </Timeline.Item>
           }
           {status === '3' &&
@@ -131,19 +123,79 @@ class InspectTimeLine extends Component {
             </Timeline.Item>
           }
           {processData.map((item, index) => {
+            const matrixes = item.flowItem ? item.flowItem.matrixes : [];
+            const deviceTypes = item.flowItem ? item.flowItem.deviceTypes : [];
+            const otherDefectIds = item.flowItem ? item.flowItem.otherDefectIds : [];
+            const images = item.images ? item.images : [];
             return (
               <Timeline.Item
                 dot={this.renderIcon(item.flowType)}
                 key={'timeline' + index}>
-                {/* {this.renderItem(item, index === processData.size)} */}
+
                 <div className={styles.processItem}>
                   <div className={styles.basic}>
                     <div className={styles.flowName}>{flowName[item.flowType]}</div>
                     <div className={styles.operateTime}>{item.startTime}--{item.endTime}</div>
                     <div className={styles.operateUser}>{item.userName}</div>
-
                   </div>
-                  {/* {this.renderDetail(item)} */}
+                  {item.flowType === 2 &&
+                    (<div className={styles.descStyle}>
+                      <div className={styles.flowName}>巡检描述</div>
+                      <span>{inspectdescribe}</span>
+                    </div>)}
+                  {item.flowType === 5 && (
+                    <div className={styles.descStyle}>
+                      <div className={styles.flowName}>巡检内容</div>
+                      <div className={styles.inspectTypedetail}>
+                        {/* //方阵详情 */}
+                        {matrixes.length && matrixes.map((m, i) => {
+                          const deviceTypeData = m.deviceTypes ? m.deviceTypes : [];
+                          return (
+                            <div className={styles.matrixeBox}>
+                              <div className={styles.matrixe}>
+                                <div>{m.belongMatrix}</div>
+                                <div className={styles.rightCont}>
+                                  <span>缺陷<span className={styles.numStyle}>{3}</span></span>
+                                  <span onClick={() => this.openMatrixe(m.belongMatrix)}>{(openMatri[m.belongMatrix]) ? <Icon type="caret-down" /> : <Icon type="caret-right" />}</span>
+                                </div>
+                              </div>
+                              {(openMatri[m.belongMatrix]) &&
+                                <div>
+                                  {this.renderDeviceTypeDetail(deviceTypeData)}
+                                </div>
+                              }
+                            </div>
+                          );
+                        })}
+                        {/* //设备类型详情 */}
+                        {this.renderDeviceTypeDetail(deviceTypes)}
+                        {/* //其他缺陷详情 */}
+                        {otherDefectIds.length &&
+                          <div className={styles.matrixeBox}>
+                            <div className={styles.matrixe}>
+                              <div>其他缺陷</div>
+                              <div className={styles.rightCont}>
+                                <span>缺陷<span className={styles.numStyle}>{otherDefectIds.length}</span></span>
+                                <span onClick={() => this.openOther(index)}>{(openOther && curOther === index) ? <Icon type="caret-down" /> : <Icon type="caret-right" />}</span>
+                              </div>
+                            </div>
+                            {(openOther && curOther === index) &&
+                              <div>{otherDefectIds.map((other, i) => (
+                                <div>缺陷描述：<span style={{ whiteSpace: 'pre-wrap' }}>{other}</span></div>
+                              ))}</div>
+                            }
+                          </div>
+                        }
+                        <ImgUploader editable={false} data={images.map(item => ({
+                          uid: item,
+                          rotate: 0,
+                          thumbUrl: `${item}?${Math.random()}`,
+                        }))}
+                        />
+                      </div>
+
+                    </div>
+                  )}
                 </div>
               </Timeline.Item>
             );

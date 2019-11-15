@@ -99,8 +99,14 @@
             flex: 1;
             flex-direction: column;
 
+            .bgStyle {
+              background: #eee;
+            }
+
             .totalNum {
               color: #199475;
+
+
             }
           }
 

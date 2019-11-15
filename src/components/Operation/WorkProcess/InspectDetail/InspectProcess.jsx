@@ -24,8 +24,8 @@ class InspectProcess extends React.Component {
   }
   render() {
     const { inspectFlows, inspectDetail } = this.props;
-    const { inspectStatus } = inspectDetail;
-    // const {}=inspectFlows;
+    const { inspectStatus, deviceTypeNames } = inspectDetail;
+
     return (
       <div className={styles.rightContent}>
         {inspectStatus === '2' && <div className={styles.checkinspect}>
@@ -36,7 +36,7 @@ class InspectProcess extends React.Component {
           </div>
           <Button className={styles.checkBtn} onClick={this.checkInspect} > 验收</Button>
         </div>}
-        <InspectTimeLine processData={inspectFlows} status={inspectStatus} />
+        <InspectTimeLine processData={inspectFlows} status={inspectStatus} inspectdescribe={deviceTypeNames} />
 
       </div>
     );

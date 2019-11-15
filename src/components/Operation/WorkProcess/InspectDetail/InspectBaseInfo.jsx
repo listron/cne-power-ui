@@ -4,6 +4,7 @@ import styles from './inspectDetail.scss';
 
 class InspectBaseInfo extends React.Component {
   static propTypes = {
+    inspectDetail: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context);
@@ -20,9 +21,9 @@ class InspectBaseInfo extends React.Component {
     return baseInfo;
   }
   render() {
-    const { inspectDetail, inspectDeviceInfo } = this.props;
-    const { matrixes, deviceTypes } = inspectDeviceInfo;
-    const { stationName, stationType, createTime, deadLine, isOverTime, deviceTypeNames } = inspectDetail;
+    const { inspectDetail } = this.props;
+
+    const { isOverTime, inspectedItems, unInpsectedItems } = inspectDetail;
 
     const baseInfo = this.renderbaseInfo(inspectDetail);
     return (
@@ -50,23 +51,14 @@ class InspectBaseInfo extends React.Component {
               <div className={styles.processDetail}>
                 <div className={styles.overinspect}>
                   <span className={styles.totalNum}>已巡检</span>
-                  {matrixes && matrixes.filter((e, i) => e.status === 0).map((item, index) => (
-                    <span key={index}>{item.belongMatrix}</span>
+                  {inspectedItems && inspectedItems.map((e, i) => (
+                    <span className={i % 2 === 0 ? styles.bgStyle : styles.nobgStyle} key={e}>{e}</span>
                   ))}
-                  {
-                    deviceTypes && deviceTypes.filter(e => e.unknownNum === 0).map((item, index) => {
-                      return item.devices.map((device, id) => (
-                        <span key={`${index}-${id}`}>{item.deviceTypeName}-{device.deviceName}</span>
-                      ));
-                    })
-                  }
-
-
                 </div>
                 <div className={styles.noinspect}>
                   <span className={styles.totalNum}>未巡检</span>
-                  {matrixes && matrixes.filter((e, i) => e.status === 1).map((item, index) => (
-                    <span key={index}>{item.belongMatrix}</span>
+                  {unInpsectedItems && unInpsectedItems.map((e, i) => (
+                    <span className={i % 2 === 0 ? styles.bgStyle : styles.nobgStyle} key={e}>{e}</span>
                   ))}
                 </div>
               </div>
@@ -82,3 +74,15 @@ class InspectBaseInfo extends React.Component {
   }
 }
 export default (InspectBaseInfo);
+/**
+  {matrixes && matrixes.filter((e, i) => e.status === 0).map((item, index) => (
+                    <span key={index}>{item.belongMatrix}</span>
+                  ))}
+                  {
+                    deviceTypes && deviceTypes.filter(e => e.unknownNum === 0).map((item, index) => {
+                      return item.devices.map((device, id) => (
+                        <span key={`${index}-${id}`}>{item.deviceTypeName}-{device.deviceName}</span>
+                      ));
+                    })
+                  }
+ */

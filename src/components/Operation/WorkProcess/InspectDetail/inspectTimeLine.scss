@@ -46,8 +46,10 @@
         margin-bottom: 12px;
 
         .flowName {
-          color: $darkColor;
+          // color: $darkColor;
+          color: rgba(0, 0, 0, 0.85);
           margin-right: 24px;
+          width: 56px;
         }
 
         .operateTime {
@@ -71,6 +73,65 @@
             background-color: $themeColor;
           }
         }
+      }
+
+      .descStyle {
+        display: flex;
+
+        .flowName {
+          // color: $darkColor;
+          color: rgba(0, 0, 0, 0.85);
+          margin-right: 24px;
+          width: 56px;
+        }
+
+        .inspectTypedetail {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+
+          .matrixeBox {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+
+            .matrixe {
+              display: flex;
+              background: #eee;
+              justify-content: space-between;
+              height: 24px;
+              line-height: 24px;
+              border-radius: 4px;
+              margin-bottom: 4px;
+
+              .rightCont {
+                width: 80px;
+                margin-right: 8px;
+                display: flex;
+                justify-content: space-between;
+
+                .numStyle {
+                  color: #199475
+                }
+              }
+
+
+            }
+          }
+
+
+          .deviceTypes {
+            display: flex;
+            flex-direction: column;
+
+            .numStyle {
+              margin-left: 12px;
+              color: #199475
+            }
+          }
+
+        }
+
       }
 
       .inspectDesc {
