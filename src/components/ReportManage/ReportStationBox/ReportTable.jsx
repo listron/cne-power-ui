@@ -18,7 +18,6 @@ class ReportTable extends React.Component {
     loading: PropTypes.bool,
     exportLoading: PropTypes.bool,
     getReportStationList: PropTypes.func,
-    exportReportStationList: PropTypes.func,
     downLoadFile: PropTypes.func,
     changeStore: PropTypes.func,
     startTime: PropTypes.string,
@@ -237,7 +236,7 @@ class ReportTable extends React.Component {
           onChange={this.tableChange}
           dataSource={reportStationList.map((e, i) => ({ ...e, key: i }))}
           bordered
-          scroll={{ x: 3480, y: 460 }}
+          scroll={{ x: 3480, y: 450 }}
           pagination={false}
         />
 
