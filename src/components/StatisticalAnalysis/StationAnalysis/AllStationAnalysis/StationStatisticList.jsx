@@ -150,7 +150,7 @@ class StationStatisticList extends React.Component {
 
   initMonthColumn = () => { // 月table表
     const enterpriseId = Cookie.get('enterpriseId');
-    const columns = [
+    const columns1 = [
       {
         title: '电站名称',
         dataIndex: 'stationName',
@@ -158,18 +158,11 @@ class StationStatisticList extends React.Component {
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
         sorter: true,
         render: (value, record, index) => {
-          if(enterpriseId !== '451436467886592') {
-            return {
-              children: (
-                <a onClick={() => this.selectStation(record)}>
-                  <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
-                </a>
-              ),
-            };
-          }
           return {
             children: (
-              <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
+              <a onClick={() => this.selectStation(record)}>
+                <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
+              </a>
             ),
           };
         },
@@ -237,11 +230,85 @@ class StationStatisticList extends React.Component {
         render(text) { return numWithComma(text); },
       },
     ];
-    return columns;
+    const columns2 = [
+      {
+        title: '电站名称',
+        dataIndex: 'stationName',
+        className: styles.stationName,
+        onFilter: (value, record) => record.stationName.indexOf(value) === 0,
+        sorter: true,
+        render: (value, record, index) => {
+          return {
+            children: (
+              <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
+            ),
+          };
+        },
+      }, {
+        title: '区域',
+        dataIndex: 'region',
+        sorter: true,
+        render: (value, record, index) => {
+          return {
+            children: (
+              <div className={styles.region}>{record.region}</div>
+            ),
+          };
+        },
+      }, {
+        title: () => <TableColumnTitle title="月发电量" unit="万kWh" />,
+        dataIndex: 'genValid',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="月计划" unit="万kWh" />,
+        dataIndex: 'planGen',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="计划完成率" unit="%" />,
+        dataIndex: 'planGenRate',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+        defaultSortOrder: 'ascend',
+      }, {
+        title: () => <TableColumnTitle title="发电量同比" unit="%" />,
+        dataIndex: 'powerRate',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
+        dataIndex: 'resourceValue',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="资源同比" unit="%" />,
+        dataIndex: 'resourceRate',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="PR" unit="%" />,
+        dataIndex: 'pr',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
+        dataIndex: 'lostPower',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
+        dataIndex: 'limitPowerHours',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      },
+    ];
+    return enterpriseId !== '451436467886592' ? columns1 : columns2;
   }
   //年table表
   initYearColumn = () => {
-    const columns = [
+    const enterpriseId = Cookie.get('enterpriseId');
+    const columns1 = [
       {
         title: '电站名称',
         dataIndex: 'stationName',
@@ -321,7 +388,7 @@ class StationStatisticList extends React.Component {
         sorter: true,
       },
     ];
-    return columns;
+    return enterpriseId !== '' ? columns1 : columns2;
   }
   //导出table
   exportTable = () => {
