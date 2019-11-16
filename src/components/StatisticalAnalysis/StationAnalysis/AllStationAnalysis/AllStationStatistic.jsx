@@ -70,7 +70,7 @@ class AllStationStatistic extends React.Component {
 
   componentWillUnmount() {
     this.props.changeAllStationStore({
-      //stationTypes: null,   
+      //stationTypes: null,
       dateType: 'month',
       year: [],
       month: '',
@@ -228,6 +228,7 @@ class AllStationStatistic extends React.Component {
   render() {
     const { stationType, stations, dateType, year, allStationAvalibaData, allStationStatisticData = {}, getAllStationStatisticData, selectYear, changeAllStationStore, theme, stationTypeCount } = this.props;
     const { showStationSelect } = this.state;
+    const enterpriseId = Cookie.get('enterpriseId');
     const operations = (
       <div className={styles.operation} onClick={this.showStationSelect}>
         查看单电站
@@ -258,7 +259,12 @@ class AllStationStatistic extends React.Component {
             </div>
           </div>
           :
-          <Tabs type="card" tabBarExtraContent={operations} activeKey={stationType} onChange={this.queryTargetData} >
+          <Tabs
+            type="card"
+            tabBarExtraContent={enterpriseId !== '451436467886592' ? operations : null}
+            activeKey={stationType}
+            onChange={this.queryTargetData}
+          >
             <TabPane tab="风电" key={'0'}>
               <div className={styles.windContainer} />
             </TabPane>

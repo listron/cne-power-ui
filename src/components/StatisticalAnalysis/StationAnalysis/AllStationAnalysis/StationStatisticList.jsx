@@ -7,6 +7,7 @@ import moment from 'moment';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../utils/utilFunc';
 import Path from '../../../../constants/path';
+import Cookie from 'js-cookie';
 
 class StationStatisticList extends React.Component {
   static propTypes = {
@@ -148,6 +149,7 @@ class StationStatisticList extends React.Component {
   }
 
   initMonthColumn = () => { // 月table表
+    const enterpriseId = Cookie.get('enterpriseId');
     const columns = [
       {
         title: '电站名称',
@@ -156,11 +158,18 @@ class StationStatisticList extends React.Component {
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
         sorter: true,
         render: (value, record, index) => {
+          if(enterpriseId !== '451436467886592') {
+            return {
+              children: (
+                <a onClick={() => this.selectStation(record)}>
+                  <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
+                </a>
+              ),
+            };
+          }
           return {
             children: (
-              <a onClick={() => this.selectStation(record)}>
-                <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
-              </a>
+              <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
             ),
           };
         },

@@ -74,14 +74,14 @@ class TargetTabs extends React.Component {
         xAxisName: '辐射总量',
         pieGraphId: 'radiationPie',
       },
-      {
-        tab: '等效利用小时数',
-        key: 'EqpWorkedHour',
-        graphId: 'userTime',
-        yAxisName: '等效利用小时数(h)',
-        xAxisName: '等效利用小时数',
-        pieGraphId: 'userTimePie',
-      },
+      // {
+      //   tab: '等效利用小时数',
+      //   key: 'EqpWorkedHour',
+      //   graphId: 'userTime',
+      //   yAxisName: '等效利用小时数(h)',
+      //   xAxisName: '等效利用小时数',
+      //   pieGraphId: 'userTimePie',
+      // },
       {
         tab: 'PR',
         key: 'pr',
