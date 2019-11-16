@@ -241,7 +241,7 @@ class AllStationStatistic extends React.Component {
 
         {(stationTypeCount === 'pv' || stationTypeCount === 'wind') ?
           <div className={styles.AlarmStatisticByTypeBox} >
-            <div className={styles.singleAlarmFilter} >{operations}</div>
+            {enterpriseId !== '451436467886592' && (<div className={styles.singleAlarmFilter} >{operations}</div>)}
             <div className={styles.componentContainer}>
               <div className={styles.timeSelect}> <TimeSelect showDayPick={false} onChange={this.onTimeChange} theme={theme} /></div>
               <PlanCompletionRate
