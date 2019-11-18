@@ -6,7 +6,7 @@ import { personnelManageAction } from './personnelManageReducer';
 import ContentLayout from '@components/Common/ContentLayout';
 // import { commonAction } from '../../../alphaRedux/commonAction';
 // import TransitionContainer from '../../../../components/Common/TransitionContainer';
-import PersonnelLists from '../../../../components/System/Account/PersonnelManage/PersonnelManageLists/PersonnelLists';
+import PersonnelMain from '../../../../components/System/Account/PersonnelManage/PersonnelMain/PersonnelMain';
 import PersonnelManageSides from '../../../../components/System/Account/PersonnelManage/PersonnelManageSides/PersonnelManageSides';
 
 class PersonnelManage extends Component {
@@ -16,11 +16,11 @@ class PersonnelManage extends Component {
 
   componentDidMount(){
     this.props.getUserList({});
+    // 初入页面 请求部门列表树 + 请求默认未分配部门用户信息 + 
   }
 
   render() {
     const { theme } = this.props;
-    console.log(this.props);
     return (
       <ContentLayout
         breadcrumb={{
@@ -30,7 +30,7 @@ class PersonnelManage extends Component {
         theme={theme}
         contentClassName={`${styles.personnelManage} ${styles[theme]}`}
       >
-        <PersonnelLists {...this.props} />
+        <PersonnelMain {...this.props} />
         <PersonnelManageSides {...this.props} />
       </ContentLayout>
     );
@@ -40,6 +40,7 @@ class PersonnelManage extends Component {
 const mapStateToProps = state => ({
   ...state.system.personnelManage,
   theme: state.common.get('theme'),
+  stations: state.common.get('stations').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

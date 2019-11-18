@@ -12,6 +12,14 @@ function *getUserList({ payload }) {
   console.log(payload);
 }
 
+function *downloadTemplate(){ // 模板下载
+
+}
+
+// function *import(){ // 模板下载
+
+// }
+
 export function* watchPersonnelManage() {
   yield takeLatest(personnelManageAction.getUserList, getUserList);
 }

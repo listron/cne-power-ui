@@ -7,7 +7,8 @@ const personnelManageAction = {
 };
 
 const initState = {
-  pageKey: 'list', // list列表-addUser添加人员-editUser编辑人员-detailUser人员信息详情
+  pageKey: 'list', // list列表-addPersonnel添加人员-editPersonnel编辑人员-detailPersonnel人员信息详情
+
   selectedDepartment: '', // 选中的部门id信息; => 右侧用户页面展示依据。
   userListParams: {}, // 展示用户列表请求信息
   userListPageInfo: {}, // 展示用户列表页面信息
@@ -15,6 +16,7 @@ const initState = {
   showPersonnelDrawer: false, // 用户审核 抽屉
   showDepartmentDrawer: false, // 添加部门 + 编辑部门 抽屉
   showLogoutModal: false, // 注销弹框
+  importTemplateLoading: false, // 导入模板下载
   addUserLoading: false, // 添加人员loading状态
   addDepartmentLoading: false, // 添加部门loading状态
   userListLoading: false, // 页面部门loading状态
