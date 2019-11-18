@@ -5,6 +5,9 @@ const account = [
     path: '/system/account/enterprise',
     component: lazy(() => import('../../containers/System/Account/Enterprise/Enterprise')),
   }, { // 系统管理-账户管理-部门
+    path: '/system/account/personnelManage',
+    component: lazy(() => import('../../containers/System/Account/PersonnelManage/PersonnelManage')),
+  }, { // 系统管理-账户管理-部门
     path: '/system/account/department',
     component: lazy(() => import('../../containers/System/Account/Department/Department')),
   }, { // 系统管理-账户管理-用户
@@ -13,7 +16,7 @@ const account = [
   }, { // 系统管理-账户管理-角色
     path: '/system/account/role',
     component: lazy(() => import('../../containers/System/Account/Role/Role')),
-  }
+  },
 ];
 
 const station = [
@@ -36,7 +39,7 @@ const station = [
   }, { // 系统管理-电站管理-气象站配置
     path: '/system/station/weatherStation',
     component: lazy(() => import('../../containers/System/Station/WeatherStationConf/WeatherStationConf')),
-  }
+  },
 ];
 
 const config = [
@@ -49,7 +52,7 @@ const config = [
   }, { // 系统管理-预警配置
     path: '/system/config/performanceScore',
     component: lazy(() => import('../../containers/System/Production/Score/Score')),
-  }
+  },
 ];
 
 export const systemRoute = [

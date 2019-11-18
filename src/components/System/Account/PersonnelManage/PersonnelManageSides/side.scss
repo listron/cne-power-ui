@@ -1,0 +1,12 @@
+
+.personnelManageSides{
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  padding: 24px 24px 0;
+  transition: all 500ms;
+  z-index: 99;
+  overflow-y: auto;
+}
