@@ -8,7 +8,7 @@ import moment from 'moment';
 import { message } from 'antd';
 const { basePaths, APISubPaths } = path;
 const { APIBasePath } = basePaths;
-const { operation } = APISubPaths;
+const { ticket } = APISubPaths;
 
 
 
@@ -22,8 +22,7 @@ function* easyPut(actionName, payload) {
 //获取缺陷工单列表
 function* getDefectList(action) {
   const { payload } = action;
-  const url = `${APIBasePath}${operation.ticket.getDefectList}`;
-  console.log('payload', payload);
+  const url = `${APIBasePath}${ticket.getDefectList}`;
   try {
     yield call(easyPut, 'changeStore', {
       listLoading: true,
@@ -42,7 +41,7 @@ function* getDefectList(action) {
       yield call(easyPut, 'changeStore', {
         listParams: { ...payload, pageNum },
         total,
-        defectList: response.data.data.defectList || [],
+        defectListData: response.data.data.defectList || [],
         defectStatusStatistics: response.data.data.defectStatusStatistics || {},
         listLoading: false,
         selectedRowKeys: [],
@@ -55,14 +54,35 @@ function* getDefectList(action) {
     yield call(easyPut, 'changeStore', {
       total: 0,
       selectedRowKeys: [],
-      defectList: [],
+      defectListData: [],
       defectStatusStatistics: {},
       listLoading: false,
     });
   }
 }
 
+function* getParticipant() { // 获取参与人所有列表
+  const url = `${APIBasePath}${ticket.getParticipant}`;
+  try {
+    const response = yield call(axios.get, url, {
+      // params: { username: '张'}
+    });
+    if (response.data.code === '10000') {
+      yield call(easyPut, 'changeStore', {
+        participantList: response.data.data || [],
+      });
+    } else { throw response.data; }
+  } catch (error) {
+    console.log(error);
+    yield call(easyPut, 'changeStore', {
+      participantList: [],
+    });
+  }
+}
+
+
 export function* watchDefectList() {
   yield takeLatest(defectListAction.getDefectList, getDefectList);
+  yield takeLatest(defectListAction.getParticipant, getParticipant);
 }
 

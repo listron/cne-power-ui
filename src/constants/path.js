@@ -74,6 +74,7 @@ export default {
     ticket: {
       // 工单
       getDefectList: '/v3/defect/worklist/pc', // 3.12
+      getDockerDetail: '/v3/defect/relevancedocket', // 3.12
       getDefectIdList: '/v3/defect/worklist/getallid',
       batchDeleteDefect: '/v3/defect/delete/batch',
       getInspectList: '/v3/inspect/worklist/pc',

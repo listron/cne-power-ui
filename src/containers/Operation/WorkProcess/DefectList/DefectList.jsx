@@ -5,7 +5,7 @@ import { defectListAction } from './defectListReducer';
 import { commonAction } from '@containers/alphaRedux/commonAction';
 import styles from './defectList.scss';
 import { Button } from 'antd';
-
+import searchUtil from '@utils/searchUtil';
 import DefectSearch from '@components/Operation/WorkProcess/Defect/DefectSearch';
 import DefectTableList from '@components/Operation/WorkProcess/Defect/DefectTableList';
 
@@ -19,16 +19,25 @@ class DefectList extends Component {
     getLostGenType: PropTypes.func,
     getDeviceTypes: PropTypes.func,
     getDefectList: PropTypes.func,
+    getParticipant: PropTypes.func,
     listParams: PropTypes.object,
   };
 
+
   componentDidMount() {
-    this.props.getLostGenType({ objectType: 1 }); //获取所有损失缺陷类型
-    const { listParams, getDefectList } = this.props;
-    getDefectList(listParams);
+    const { getDefectList, getParticipant, getLostGenType, listParams } = this.props;
+    const { history } = this.props;
+    const { search, pathname } = history.location;
+    const urlParams = searchUtil(search).parse(); //默认为缺陷列表页
+    const urlParamsSerch = urlParams.listSearch && JSON.parse(urlParams.listSearch) || {}; // 判断从路由中过来的筛选条件
+    getLostGenType({ objectType: 1 }); //获取所有损失缺陷类型
+    getDefectList({ ...listParams, ...urlParamsSerch }); // 获取消缺列表
+    getParticipant(); //  获取所有参与者。
   }
 
+
   componentWillReceiveProps() {
+
   }
 
 
@@ -44,7 +53,6 @@ class DefectList extends Component {
   detail = () => { // 进入详情页面
     const { location, history } = this.props;
     const { pathname } = location;
-    this.props.changeStore({ name: 'tcl' });
     history.push(`${pathname}?page=defectDetail`);
   }
 
@@ -75,6 +83,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: defectListAction.resetStore }),
   changeStore: payload => dispatch({ type: defectListAction.changeStore, payload }),
   getDefectList: payload => dispatch({ type: defectListAction.getDefectList, payload }),
+  getParticipant: payload => dispatch({ type: defectListAction.getParticipant, payload }),
   getLostGenType: params => dispatch({ // 获取缺陷类型
     type: commonAction.getLostGenType,
     payload: {
