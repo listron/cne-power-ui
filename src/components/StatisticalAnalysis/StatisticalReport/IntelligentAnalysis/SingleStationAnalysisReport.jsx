@@ -25,7 +25,6 @@ class SingleStationAnalysisReport extends Component {
     const generatinCapacity = singleStationInfo.generatinCapacity || []; // 累计发电量信息及原因
     const systematicStatistics = singleStationInfo.systematicStatistics || []; // 年系统效率(PR)信息及原因(仅年查询此项)
     const completionRate = singleStationInfo.completionRate || []; // 发电完成率信息及原因
-    console.log('completionRate: ', completionRate);
     const lossOfElectricity = singleStationInfo.lossOfElectricity || []; // 损失电量信息及原因
 
     const { genValid, genValidCompared, resourceValueCompared, lostPowerCompared, lowMonth, limitPowerRate, limitPowerRateCompared } = generatinCapacity;
