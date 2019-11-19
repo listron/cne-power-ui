@@ -74,6 +74,10 @@ class StationContrastDetail extends Component {
       ['#e5a9b7', '#d55367'],
       ['#8ebad9', '#4a82c3'],
     ];
+    const xlength = contrastYears && contrastYears[0];
+    const stationLength = stationContrastDetail.length;
+    const end = (xlength && stationLength) ? 5600 / xlength.length / stationLength : 100;
+    // const end = xlength ? xlength.length > 6 ? 550 / xlength.length : 100 : 100;
     const stationContrastOption = {
       graphic: graphic,
       grid: {
@@ -150,7 +154,7 @@ class StationContrastDetail extends Component {
         type: 'slider',
         show: true,
         start: 0,
-        end: 45,
+        end: end,
         zoomLock: true,
         filterMode: 'empty',
         bottom: 55,

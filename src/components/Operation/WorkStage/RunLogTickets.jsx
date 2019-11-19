@@ -5,8 +5,19 @@ import { Link } from 'react-router-dom';
 import styles from './workPage.scss';
 import { dataFormats } from '@utils/utilFunc';
 
+const getMaxValue = (arr, defaultResult = 10) => { // 获取数组最大值
+  const tmpArr = arr.filter(e => e > 0 || e === 0 || e === '0');
+  return arr.length > 0 ? Math.max(...tmpArr) : defaultResult;
+};
+
+const getNumberLength = (valueNumber, baseWidth = 8) => { // 根据数据大小自动判断宽度
+  return valueNumber === 0 ? baseWidth : (`${parseInt(valueNumber, 10)}`).length * baseWidth;
+};
+
 function RunningLog({ runLogInfo = {}, theme = 'light' }){
   const { inWarehouseNum, outWarehouseNum, reportNum } = runLogInfo;
+  const tmpMaxValue = getMaxValue([inWarehouseNum, outWarehouseNum, reportNum]);
+  const tmpWidth = getNumberLength(tmpMaxValue);
   const logsArr = [
     {
       title: '日报上报',
@@ -33,7 +44,7 @@ function RunningLog({ runLogInfo = {}, theme = 'light' }){
               <span className={styles.infoName}>{title}</span>
               <Link to={e.path} target="_blank" className={styles.infoDetail}>
                 <span>当月记录条数</span>
-                <span className={styles.infoValue}>{value}</span>
+                <span className={styles.infoValue} style={{flexBasis: `${tmpWidth}px`}}>{value}</span>
                 <Icon type="right" />
               </Link>
             </p>
@@ -51,6 +62,11 @@ RunningLog.propTypes = {
 
 function TicketsLog({ ticketsInfo = {}, theme = 'light' }){
   const { finish = {}, unfinish = {} } = ticketsInfo;
+
+  const tmpFinishMaxValue = getMaxValue([finish.defectNum, finish.inspectNum, finish.workDocketNum, finish.operateDocketNum]);
+  const tmpFinishWidth = getNumberLength(tmpFinishMaxValue);
+  const tmpUnfinishMaxValue = getMaxValue([unfinish.defectNum, unfinish.inspectNum, unfinish.workDocketNum, unfinish.operateDocketNum]);
+  const tmpUnfinishWidth = getNumberLength(tmpUnfinishMaxValue);
   const ticketArr = [
     {
       title: '消缺',
@@ -85,10 +101,10 @@ function TicketsLog({ ticketsInfo = {}, theme = 'light' }){
               <span className={styles.infoName}>{title}</span>
               <Link to={e.path} target="_blank" className={styles.infoDetail}>
                 <span>今日未完成</span>
-                <span className={styles.infoValue}>{unfinishValue}</span>
+                <span className={styles.infoValue} style={{flexBasis: `${tmpUnfinishWidth}px`}}>{unfinishValue}</span>
                 <span className={styles.linkAndTip}>|</span>
                 <span>已完成</span>
-                <span className={styles.infoValue}>{finishValue}</span>
+                <span className={styles.infoValue} style={{flexBasis: `${tmpFinishWidth}px`}}>{finishValue}</span>
                 <Icon type="right" />
               </Link>
             </p>

@@ -71,6 +71,8 @@
   .datesPlan{
     text-align: left;
     font-size: 14px;
+    position: relative;
+    bottom: 2px;
     .planNumber{
       display: inline-block;
       width: 16px;
@@ -204,9 +206,16 @@
       color: $themeColor;
     }
   }
-  .datesPlan .planNumber{
-    background-color: #f9b600;
-    color: #fff;
+  .datesPlan{
+    .planNumber{
+      background-color: #f9b600;
+      color: #fff;
+    }
+    :global{
+      .iconfont.icon-jxjh{
+        color: var(--themeColor);
+      }
+    }
   }
   &:not(.limitedDates):not(.activeDate):not(.activeDate):not(.noPlanDate):hover{
     background:#ceebe0;
@@ -304,9 +313,16 @@
       color: #9cd1ff;
     }
   }
-  .datesPlan .planNumber{
-    background-color: #f9b600;
-    color: #fff;
+  .datesPlan{
+    .planNumber{
+      background-color: #ff9000;
+      color: #fff;
+    }
+    :global{
+      .iconfont.icon-jxjh{
+        color: #2564cc;
+      }
+    }
   }
   &:not(.limitedDates):not(.activeDate):not(.activeDate):not(.noPlanDate):hover{
     background:#9cd1ff;

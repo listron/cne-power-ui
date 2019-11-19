@@ -42,7 +42,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    height: 350px;
+
 
     :global {
       .ant-table .ant-table-thead>tr>th {
@@ -104,6 +104,6 @@
   }
 }
 
-.dark {}
+// .dark {}
 
-.zt {}
+// .zt {}
