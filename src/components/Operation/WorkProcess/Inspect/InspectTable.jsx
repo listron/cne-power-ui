@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspect.scss';
-import { Table, Select, Tooltip, Radio, Modal } from 'antd';
+import { Table, Select, Tooltip, Radio } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination/index';
+import WarningTip from '../../../Common/WarningTip/index';
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-const confirm = Modal.confirm;
 class InspectTable extends React.Component {
   static propTypes = {
     getInspectList: PropTypes.func,
@@ -27,22 +27,33 @@ class InspectTable extends React.Component {
     this.state = {
       status: '',
       currentSelectedStatus: 5,
+      showWarningTip: false,
+      warningTipText: '确认全部验收吗?',
     };
   }
   onHandle = (value) => {
-    const { params } = this.props;
     if (value === 'check') {
-      confirm({
-        title: '确认全部验收吗？',
-        onOk: () => {
-          this.props.setInspectCheck({
-            inspectId: this.props.selectedRowKeys.join(','),
-            params,
-          });
-        },
+      this.setState({
+        showWarningTip: true,
       });
-
     }
+  }
+  cancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  }
+  confirmWarningTip = () => {
+    const { params } = this.props;
+    this.setState({
+      showWarningTip: false,
+    });
+
+    this.props.setInspectCheck({
+      inspectId: this.props.selectedRowKeys.join(','),
+      params,
+    });
+
   }
   onChangeTab = (e) => {
     this.setState({ status: e.target.value });
@@ -113,10 +124,10 @@ class InspectTable extends React.Component {
   }
 
   render() {
-    const { selectedRowKeys = [], params, total, tableLoading, theme, inspectList, inspectStatusStatistics } = this.props;
-    const { pageSize, pageNum } = params;
+    const { selectedRowKeys = [], params = {}, total, tableLoading, theme, inspectList, inspectStatusStatistics } = this.props;
+    const { pageSize = 10, pageNum = 1 } = params;
     const { executeNum, checkNum } = inspectStatusStatistics;
-    const { currentSelectedStatus } = this.state;
+    const { currentSelectedStatus, showWarningTip, warningTipText } = this.state;
     const curInspectStatus = { '0': '待提交', '1': '待审核', '2': '执行中', '3': '待验收', '4': '已完成' };
     const unselected = selectedRowKeys.length === 0;
     const rightHandler = localStorage.getItem('rightHandler');
@@ -192,6 +203,7 @@ class InspectTable extends React.Component {
     };
     return (
       <div className={`${styles.inspectTable} ${styles[theme]}`}>
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={`${styles.statusGroup}`}>
           <div className={styles.text}><span>状</span><span>态</span></div>
           <RadioGroup onChange={this.onChangeTab} defaultValue="" value={this.state.status}>

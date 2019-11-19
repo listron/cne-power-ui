@@ -11,11 +11,11 @@ class InspectBaseInfo extends React.Component {
   }
 
   renderbaseInfo = (data) => {
-    const { stationName, stationType, inspectName, createTime, deadLine, deviceTypeNames } = data;
+    const { stationName = '', stationType, inspectName = '', createTime = '', deadLine = '', deviceTypeNames = '--' } = data;
     const baseInfo = [
       { name: '电站名称', value: `${stationName}`, icon: `${stationType}` },
       { name: '巡检名称', value: `${inspectName}` },
-      { name: '巡检时间', value: `${createTime}至${deadLine}` },
+      { name: '巡检时间', value: `${createTime}${deadLine ? '至' : ''}${deadLine}` },
       { name: '设备类型', value: `${deviceTypeNames}` },
     ];
     return baseInfo;
@@ -42,7 +42,7 @@ class InspectBaseInfo extends React.Component {
             <div className={styles.basicItem} key={e.name}>
               <div className={styles.nameStyle}>{e.name}</div>
               <span>{e.value}</span>
-              {e.icon ? <i className="iconfont icon-pvs" /> : e.icon === '0' ? <i className="iconfont icon-windlogo" /> : ''}
+              {+(e.icon) ? <i className="iconfont icon-pvs" /> : e.icon === '0' ? <i className="iconfont icon-windlogo" /> : ''}
             </div>
           ))}
           <div className={styles.progressStyele}>

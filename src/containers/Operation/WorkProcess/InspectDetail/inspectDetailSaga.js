@@ -1,8 +1,8 @@
-import { put, call, takeLatest, select, fork } from 'redux-saga/effects';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import { inspectDetailAction } from './inspectDetailReducer';
 import axios from 'axios';
 import path from '@path';
-import moment from 'moment';
+// import moment from 'moment';
 
 import { message } from 'antd';
 const { basePaths, APISubPaths } = path;
@@ -26,28 +26,26 @@ function* getInspectDetail(action) { // 获取工单详情数据
       type: inspectDetailAction.changeStore,
       payload: {
         loading: false,
-        // inspectDetail: response.data.data || {},
-        inspectDetail: {
-          inspectId: '448853351629312',
-          inspectName: '巡检名称xxxx',
-          inspectStatus: '4',
-          deviceTypeCodes: '201，202，203',
-          deviceTypeNames: '设备类型1,设备类型2,设备类型3,设备类型4,设备类型5,设备类型6,',
-          isOverTime: 1,
-          stationCode: '360',
-          stationName: '洱源',
-          stationType: '1',
-          startTime: '2019-10-11',
-          createTime: '2019-11-11',
-          deadLine: '2019-11-12',
-          flowStatus: 1,
-          inspectedItems: ['方阵1', '方阵2', '组串式逆变器:设备1', '逆变器:设备2'],
-          unInpsectedItems: ['方阵3', '方阵4', '组串式逆变器:设备3', '逆变器:设备4'],
-          flows: [],
+        inspectDetail: response.data.data || {},
+        // inspectDetail: {
+        //   inspectId: '448853351629312',
+        //   inspectName: '巡检名称xxxx',
+        //   inspectStatus: '4',
+        //   deviceTypeCodes: '201，202，203',
+        //   deviceTypeNames: '设备类型1,设备类型2,设备类型3,设备类型4,设备类型5,设备类型6,',
+        //   isOverTime: 1,
+        //   stationCode: '360',
+        //   stationName: '洱源',
+        //   stationType: '1',
+        //   startTime: '2019-10-11',
+        //   createTime: '2019-11-11',
+        //   deadLine: '2019-11-12',
+        //   flowStatus: 1,
+        //   inspectedItems: ['方阵1', '方阵2', '组串式逆变器:设备1', '逆变器:设备2'],
+        //   unInpsectedItems: ['方阵3', '方阵4', '组串式逆变器:设备3', '逆变器:设备4'],
+        //   flows: [],
 
-        },
-
-
+        // },
         // inspectFlows: response.data.data.flows || [],
         inspectFlows: [
           {

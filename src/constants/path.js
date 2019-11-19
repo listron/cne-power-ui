@@ -85,7 +85,7 @@ export default {
       getInspectionList: '/v3/inspect/worklist/pc',
       getDefectDetail: '/v3/defect',
       getInspectDetail: '/v3/inspect',
-      getNewInspectDetail: '/v3/service/workbench/inspect',
+      getNewInspectDetail: '/v3/service/workorder/inspect',
       getCommonList: '/v3/language',
       addInspectAbnormal: '/v3/inspect/abnormal',
       sendDefect: '/v3/defect/distribute',

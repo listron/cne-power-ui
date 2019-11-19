@@ -6,6 +6,9 @@ import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 class InspectSearch extends React.Component {
   static propTypes = {
     getInspectList: PropTypes.func,
+    params: PropTypes.object,
+    stations: PropTypes.array,
+    deviceTypes: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context);
@@ -22,6 +25,7 @@ class InspectSearch extends React.Component {
       stationType: stationType ? stationType : '2',
       stationCodes: stationCodes.length ? stationCodes.join(',') : '',
       deviceTypeCode: deviceTypeCode.length ? deviceTypeCode.join(',') : '',
+      pageNum: 1,
     });
   }
   render() {

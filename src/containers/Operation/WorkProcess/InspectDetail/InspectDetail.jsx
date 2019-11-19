@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { inspectDetailAction } from './inspectDetailReducer';
-import { commonAction } from '@containers/alphaRedux/commonAction';
 
 import InspectBaseInfo from '../../../../components/Operation/WorkProcess/InspectDetail/InspectBaseInfo';
 import InspectProcess from '../../../../components/Operation/WorkProcess/InspectDetail/InspectProcess';
-import { Icon, Button, Modal } from 'antd';
+import { Icon } from 'antd';
 import searchUtil from '@utils/searchUtil';
 import styles from './inspectDetail.scss';
 
@@ -21,40 +20,40 @@ class InspectDetail extends Component {
   };
   constructor() {
     super();
-    this.state = {
-    };
+
   }
 
   componentDidMount() {
-    const { history } = this.props;
-    const { search, pathname } = history.location;
-    console.log('search: ', search);
-    const test = searchUtil(search).parse();
-    console.log('test: ', test);
+    const { history, getInspectDetail } = this.props;
+    const { search } = history.location;
     const { page = 'inspectDetail', inspectId } = searchUtil(search).parse(); //默认为缺陷列表页
-    console.log('page', page, inspectId);
-    this.props.getInspectDetail({
+    getInspectDetail({
       inspectId,
     });
   }
 
 
   componentWillUnmount() {
-    const { history, location } = this.props;
+    const { history, location, resetStore } = this.props;
     const { pathname } = history.location;
     const historyPathname = location.pathname;
     if (pathname !== historyPathname) { // 判断如果 从当前的页面跳到其他页面 则需要清空路由
-      this.props.resetStore();
+      resetStore();
     }
   }
 
   onCancelEdit = () => {
-    history.go(-1);
+    const { location, history } = this.props;
+    const { pathname } = location;
+    history.push(`${pathname}?page=list&tab=inspect`);
+    // history.go(-1);
   }
+
 
 
   render() {
     const { theme = 'light' } = this.props;
+
     return (
       <div className={`${styles.inspectDetailBox} ${theme}`}>
         <div className={styles.header}>

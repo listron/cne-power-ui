@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Timeline, Button, Icon } from 'antd';
+import { Timeline, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './inspectTimeLine.scss';
-import moment from 'moment';
 import ImgUploader from '../../../Common/Uploader/ImgUploader';
 
 /*
@@ -14,26 +13,25 @@ import ImgUploader from '../../../Common/Uploader/ImgUploader';
 class InspectTimeLine extends Component {
   static propTypes = {
     status: PropTypes.string,
-    processData: PropTypes.object,
-    inspectDeviceType: PropTypes.array,
-    deviceTypeName: PropTypes.string,
-    inspectId: PropTypes.string,
-    abnormalItems: PropTypes.object,
-    onChangeShowContainer: PropTypes.func,
-    getInspectUsers: PropTypes.func,
-    getInspectDetailRecord: PropTypes.func,
-    changeInspectStore: PropTypes.func,
+    processData: PropTypes.array,
+    inspectdescribe: PropTypes.string,
+    // inspectDeviceType: PropTypes.array,
+    // deviceTypeName: PropTypes.string,
+    // inspectId: PropTypes.string,
+    // abnormalItems: PropTypes.object,
+    // onChangeShowContainer: PropTypes.func,
+    // getInspectUsers: PropTypes.func,
+    // getInspectDetailRecord: PropTypes.func,
+    // changeInspectStore: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-
       openOther: false,
       curOther: '',
       openMatri: {},
     };
-    // this.
   }
 
   openMatrixe = (m) => {
@@ -45,7 +43,6 @@ class InspectTimeLine extends Component {
     } else {
       this.setState({
         openMatri: { ...openMatri, [m]: true },
-
       });
     }
   }
@@ -61,7 +58,6 @@ class InspectTimeLine extends Component {
     // 3 提交验收
     // 4 验收工单
     // 5 执行工单
-
     switch (flowType) {
       case 2:
         return <i className="iconfont icon-begin" />;
@@ -69,16 +65,14 @@ class InspectTimeLine extends Component {
         return <i className="iconfont icon-review" />;
       case 5:
         return <i className="iconfont icon-doing" />;
-
       default:
         return;
     }
   }
 
   renderDeviceTypeDetail = (deviceTypes = []) => {
-
-    return deviceTypes.length && deviceTypes.map((deviceType, index) => (
-      <div className={styles.deviceTypes}>
+    return deviceTypes.length > 0 && deviceTypes.map((deviceType, index) => (
+      <div className={styles.deviceTypes} key={'设备类型' + index}>
         <div>
           <div>{deviceType.deviceTypeName}:</div>
           {deviceType.devices.map((device, id) => (
@@ -90,8 +84,6 @@ class InspectTimeLine extends Component {
         </div>
       </div>
     ));
-
-
   }
   render() {
 
@@ -135,7 +127,7 @@ class InspectTimeLine extends Component {
                 <div className={styles.processItem}>
                   <div className={styles.basic}>
                     <div className={styles.flowName}>{flowName[item.flowType]}</div>
-                    <div className={styles.operateTime}>{item.startTime}--{item.endTime}</div>
+                    <div className={styles.operateTime}>{item.startTime}{item.endTime ? '--' : ''}{item.endTime}</div>
                     <div className={styles.operateUser}>{item.userName}</div>
                   </div>
                   {item.flowType === 2 &&
@@ -148,10 +140,10 @@ class InspectTimeLine extends Component {
                       <div className={styles.flowName}>巡检内容</div>
                       <div className={styles.inspectTypedetail}>
                         {/* //方阵详情 */}
-                        {matrixes.length && matrixes.map((m, i) => {
+                        {matrixes.length > 0 && matrixes.map((m, i) => {
                           const deviceTypeData = m.deviceTypes ? m.deviceTypes : [];
                           return (
-                            <div className={styles.matrixeBox}>
+                            <div className={styles.matrixeBox} key={'方阵' + i} >
                               <div className={styles.matrixe}>
                                 <div>{m.belongMatrix}</div>
                                 <div className={styles.rightCont}>
@@ -170,7 +162,7 @@ class InspectTimeLine extends Component {
                         {/* //设备类型详情 */}
                         {this.renderDeviceTypeDetail(deviceTypes)}
                         {/* //其他缺陷详情 */}
-                        {otherDefectIds.length &&
+                        {otherDefectIds.length > 0 &&
                           <div className={styles.matrixeBox}>
                             <div className={styles.matrixe}>
                               <div>其他缺陷</div>
