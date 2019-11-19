@@ -25,6 +25,7 @@ class SingleStationAnalysisReport extends Component {
     const generatinCapacity = singleStationInfo.generatinCapacity || []; // 累计发电量信息及原因
     const systematicStatistics = singleStationInfo.systematicStatistics || []; // 年系统效率(PR)信息及原因(仅年查询此项)
     const completionRate = singleStationInfo.completionRate || []; // 发电完成率信息及原因
+    console.log('completionRate: ', completionRate);
     const lossOfElectricity = singleStationInfo.lossOfElectricity || []; // 损失电量信息及原因
 
     const { genValid, genValidCompared, resourceValueCompared, lostPowerCompared, lowMonth, limitPowerRate, limitPowerRateCompared } = generatinCapacity;
@@ -105,20 +106,25 @@ class SingleStationAnalysisReport extends Component {
                       <span>%；</span>
                     </span>}
 
-                    {(limitPowerRate || (limitPowerRate === 0)) &&
+                    {(limitPowerRate || limitPowerRate === 0) &&
                       <span>
                         <span>限电率</span>
                         <span className={styles.text}>{dataFormats(limitPowerRate, '--', 2, true)}</span>
-                        <span>%，同比</span>
-                        {(limitPowerRateCompared >= 0) && <span>提高</span>}
-                        {(limitPowerRateCompared < 0) && <span>降低</span>}
-                        <span className={styles.text}>{dataFormats(Math.abs(limitPowerRateCompared), '--', 2, true) || '--'}</span>
-                        <span>%。</span>
+                        <span>%</span>
+                        {limitPowerRateCompared ? ',' : '。'}
+                        {limitPowerRateCompared &&
+                        <span>
+                          <span>限电率同比</span>
+                          {(limitPowerRateCompared >= 0) && <span>提高</span>}
+                          {(limitPowerRateCompared < 0) && <span>降低</span>}
+                          <span className={styles.text}>{dataFormats(Math.abs(limitPowerRateCompared), '--', 2, true)}</span>
+                          <span>%。</span>
+                        </span>}
                       </span>}
 
                   </p> : <p className={styles.texts}>--</p>}
 
-                  {completionRate ?
+                  {(cResourceValueCompared || cLostPowerCompared || cLimitPowerRate) ?
                     <p className={styles.texts}>
                       <span>该电站
                         {(95 > planComplateRate) && <span>未完成计划</span>}
@@ -145,7 +151,7 @@ class SingleStationAnalysisReport extends Component {
                       </span>
                       }
 
-                      {completionRate &&
+                      {(cLimitPowerRate || (cLimitPowerRate === 0)) &&
                         <span>
                           <span>限电损失电量同比</span>
                           {(cLimitPowerRate >= 0) && <span>提高</span>}
