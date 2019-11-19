@@ -4,20 +4,23 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import Uploader from './Uploader';
-import styles from './list.scss';
+import styles from './main.scss';
 
 class DepartmentTree extends Component {
   static propTypes = {
     enterpriseId: PropTypes.string,
-    importTemplateLoading: PropTypes.bool,
+    templateLoading: PropTypes.bool,
+    selectedDepartment: PropTypes.object,
+    downloadTemplate: PropTypes.func,
+    changeStore: PropTypes.func,
   }
 
   downloadTemplate = () => {
-    console.log('导入模板下载中');
+    this.props.downloadTemplate();
   }
 
   addDepartment = () => {
-    console.log('点击添加部门了');
+    this.props.changeStore({ showDepartmentDrawer: 'add' });
   }
 
   assignPersonnel = () => {
@@ -26,20 +29,25 @@ class DepartmentTree extends Component {
 
   render(){
     // todo 批量导入成功后, 回归默认状态请求 未分配部门人员页面
-    const { enterpriseId, importTemplateLoading } = this.props;
+    // todo 当处于未分配部门时，分配人员选项不能点击
+    const { enterpriseId, templateLoading, selectedDepartment } = this.props;
+    const { departmentId } = selectedDepartment || {};
     return (
       <div className={styles.departmentTree}>
-        <h3>
-          <Button className={styles.templateDown} onClick={this.downloadTemplate} loading={importTemplateLoading}>导入模板下载</Button>
+        <h3 className={styles.treeTop}>
+          <Button className={styles.templateDown} onClick={this.downloadTemplate} loading={templateLoading}>导入模板下载</Button>
           <Uploader enterpriseId={enterpriseId} />
         </h3>
         <section>
-          <h4>
-            <span>部门列表</span>
-            <span>
-              <span onClick={this.addDepartment}>添加部门</span>
-              <span>|</span>
-              <span onClick={this.assignPersonnel}>分配人员</span>
+          <h4 className={styles.treeTitle}>
+            <span className={styles.treeName}>部门列表</span>
+            <span className={styles.titleHandle}>
+              <span className={styles.addTip} onClick={this.addDepartment}>添加部门</span>
+              <span className={styles.tipHolder}>|</span>
+              <span
+                className={`${styles.assignTip} ${departmentId === '1' ? styles.forbidAssign : ''}`}
+                onClick={departmentId === '1' ? null : this.assignPersonnel}
+              >分配人员</span>
             </span>
           </h4>
           <div>

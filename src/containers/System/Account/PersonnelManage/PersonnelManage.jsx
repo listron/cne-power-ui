@@ -12,19 +12,24 @@ import PersonnelManageSides from '../../../../components/System/Account/Personne
 class PersonnelManage extends Component {
   static propTypes = {
     theme: PropTypes.string,
+    getAllUserBase: PropTypes.func,
+    getDepartmentTreeData: PropTypes.func,
   };
 
   componentDidMount(){
     this.props.getUserList({});
+    this.props.getAllUserBase();
+    this.props.getDepartmentTreeData();
     // 初入页面 请求部门列表树 + 请求默认未分配部门用户信息 + 
   }
 
   render() {
     const { theme } = this.props;
+    console.log(this.props.departmentTree);
     return (
       <ContentLayout
         breadcrumb={{
-          breadData: [{ name: '工作计划管理' }],
+          breadData: [{ name: '人员管理' }],
           style: { paddingLeft: '40px' },
         }}
         theme={theme}
@@ -46,6 +51,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: personnelManageAction.resetStore }),
   changeStore: payload => dispatch({ type: personnelManageAction.changeStore, payload }),
+  getAllUserBase: payload => dispatch({ type: personnelManageAction.getAllUserBase, payload }),
+  downloadTemplate: () => dispatch({ type: personnelManageAction.downloadTemplate }),
+  getDepartmentTreeData: () => dispatch({ type: personnelManageAction.getDepartmentTreeData }),
   getUserList: payload => dispatch({ type: personnelManageAction.getUserList, payload }),
 });
 

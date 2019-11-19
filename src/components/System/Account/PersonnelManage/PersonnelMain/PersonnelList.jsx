@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './list.scss';
+import styles from './main.scss';
 
 class PersonnelList extends Component {
   static propTypes = {
