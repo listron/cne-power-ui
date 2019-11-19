@@ -169,8 +169,11 @@
         }
         .fifthColumn{
           width: 504px;
+          p:last-child{
+            border-right: 0px solid #dfdfdf;
+          }
         }
-        .firstColumn,.secondColumn,.thirdColumn,.fourthColumn,.fifthColumn{
+        .firstColumn,.secondColumn,.thirdColumn,.fourthColumn{
           border-right: 1px solid #dfdfdf;
           p:first-child{
             border-bottom: 2px solid #dfdfdf;
