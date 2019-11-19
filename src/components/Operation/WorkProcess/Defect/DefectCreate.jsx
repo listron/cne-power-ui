@@ -26,6 +26,7 @@ class DefectCreate extends Component {
     commonList: PropTypes.array,
     deviceTypes: PropTypes.array,
     defectTypes: PropTypes.array,
+    getLostGenType: PropTypes.func,
 
   };
 
@@ -40,14 +41,16 @@ class DefectCreate extends Component {
   }
 
 
-
   componentWillReceiveProps(nextProps) {
-    const { stationCode, defectTypeCode, deviceTypeCode, stationType } = nextProps.defectDetail;
-    if (stationCode) {
-      this.props.getKnowledgebase({ deviceTypeCodes: [deviceTypeCode], faultTypeIds: [defectTypeCode], type: +stationType });
-      this.props.getStationDeviceTypes({ stationCodes: stationCode });
+    const { defectId, stationCode, deviceTypeCode, defectTypeCode, stationType } = nextProps.defectDetail;
+    const prevDefectId = this.props.defectDetail.defectId;
+    if (defectId !== prevDefectId) {
+      this.props.getStationDeviceTypes({ stationCodes: stationCode }); // 设备类型
+      this.props.getKnowledgebase({ faultTypeIds: [defectTypeCode], deviceTypeCodes: [deviceTypeCode], type: +stationType });
+      this.props.getLostGenType({ stationType, objectType: 1, deviceTypeCode }); // 缺陷类型
     }
   }
+
 
 
   componentWillUnmount() {
@@ -58,28 +61,23 @@ class DefectCreate extends Component {
   onStationSelected = (stations) => { // 电站的选择
     const selectedStation = stations && stations[0] || {};
     const stationCodes = selectedStation.stationCode || null;
-    this.props.getStationDeviceTypes({ stationCodes });
-    this.props.changeStore({ devices: [] });
+    if (stationCodes) {
+      this.props.getStationDeviceTypes({ stationCodes }); // 获取设备类型
+      this.props.changeStore({ devices: [] });
+    }
     this.props.form.setFieldsValue({ stations: stations, deviceTypeCode: null, defectTypeCode: null, deviceCode: null });
   }
 
   onChangeDeviceType = (deviceTypeCode) => { // 选择设备类型
     const { form } = this.props;
     const selectStation = form.getFieldValue('stations')[0];
-    const stationCode = selectStation.stationCode; // 电站编码
-    const stationType = selectStation.stationType; // 电站类型
-    const params = {
-      stationCode,
-      deviceTypeCode,
-    };
-    this.setState({ deviceTypeCode: deviceTypeCode });
-    this.props.changeStore(params);
-    this.props.form.setFieldsValue({ defectTypeCode: null, deviceCode: null });
-    this.props.getLostGenType({
-      stationType,
-      objectType: 1,
-      deviceTypeCode,
-    });
+    const { stationCode, stationType } = selectStation; // 电站编码 电站类型
+    this.props.form.setFieldsValue({ defectTypeCode: null, deviceCode: null }); // 设备名称和缺陷类型置空
+
+    this.setState({ deviceTypeCode });
+    this.props.changeStore({ stationCode, deviceTypeCode });
+
+    this.props.getLostGenType({ stationType, objectType: 1, deviceTypeCode }); // 获取缺陷类型 设备名称组件内部调取
   }
 
   selectedDevice = (value) => { // 选择设备
@@ -172,7 +170,7 @@ class DefectCreate extends Component {
 
   render() {
     const { stations, deviceTypes, defectTypes, defectDetail, commonList, knowledgebaseList, form, editDefect = false, theme = 'light' } = this.props;
-    const { stationCode } = defectDetail;
+    const { stationCode, deviceCode, deviceName } = defectDetail;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const defectCategory = getFieldValue('defectCategory'); // 缺陷分类
     const currentStations = getFieldValue('stations'); // 电站
@@ -187,6 +185,7 @@ class DefectCreate extends Component {
     const tmpGenTypes = [];
     let defaultDefectType = [];
     defectTypes.forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
+    console.log('defectTypes', defectTypes);
     const groupedLostGenTypes = [];
     tmpGenTypes.forEach(ele => {
       if (ele && ele.list && ele.list.length > 0) {
@@ -250,7 +249,7 @@ class DefectCreate extends Component {
               <FormItem label="设备名称" colon={false}>
                 {getFieldDecorator('deviceCode', {
                   rules: [{ required: true, message: '请选择设备名称' }],
-                  initialValue: defectDetail.deviceName && [{ deviceCode: defectDetail.deviceCode, deviceName: defectDetail.deviceName }] || null,
+                  initialValue: defectDetail.deviceName && [{ deviceCode: deviceCode, deviceName: deviceName }] || null,
                 })(
                   <DeviceSelect
                     disabled={deviceTypeCode ? false : true}

@@ -131,11 +131,10 @@ const mapDispatchToProps = (dispatch) => ({
     type: commonAction.getLostGenType,
     payload: {
       params,
-      deviceTypeAction: defectDetailAction.changeStore,
+      actionName: defectDetailAction.changeStore,
       resultName: 'defectTypes',
     },
   }),
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectDetail);

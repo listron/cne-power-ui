@@ -54,8 +54,7 @@ class DetailContiner extends Component {
 
   callBackTableList = () => { // 返回列表页
     const { history } = this.props;
-    const { pathname } = history.location;
-    history.push(`${pathname}?page=list&tab=defect`);
+    history.push('/operation/workProcess/view?page=list&tab=defect');
   }
 
   getSubmitIamges(images) { // 照片提交
@@ -106,9 +105,8 @@ class DetailContiner extends Component {
     const rightHandler = localStorage.getItem('rightHandler');
     const reviewDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_review');
     const checkDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_check');
-    console.log('defectStatus', defectStatus);
     return (
-      <div className={styles.baseInfoCont}>
+      <div className={`${styles.baseInfoCont} ${styles[theme]}`}>
         <BasicInfo {...this.props} />
         <div className={styles.rightCont}>
           <div className={styles.process}>

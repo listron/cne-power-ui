@@ -35,7 +35,6 @@ class DefectSearch extends Component {
     const [createTimeStart, createTimeEnd] = rangeTimes;
     // const initDefectTypeCode = defectCategory.length > 0 && defectCategory.includes('device') ? defectTypeCode : ['0'];
     this.props.getDefectList({ ...listParams, ...restValue, createTimeStart, createTimeEnd, handleUser: join && username || '' });
-    console.log('value', value);
   }
 
 
