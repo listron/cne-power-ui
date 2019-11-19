@@ -17,7 +17,7 @@ const initState = {
   userListPageInfo: {}, // 展示用户列表页面信息
 
   showPersonnelDrawer: false, // 用户审核 抽屉
-  departmentDrawer: 'hide', // 添加部门 add + 编辑部门 edit + 隐藏抽屉 hide
+  departmentDrawerKey: 'hide', // 添加部门 add + 编辑部门 edit + 隐藏抽屉 hide
   showLogoutModal: false, // 注销弹框
 
   templateLoading: false, // 导入模板下载

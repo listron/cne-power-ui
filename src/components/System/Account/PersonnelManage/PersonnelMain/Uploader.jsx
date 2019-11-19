@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Upload, Button, message } from 'antd';
 import path from '@path';
-// import styles from './list.scss';
 
 class Uploader extends Component {
   static propTypes = {
@@ -23,7 +22,7 @@ class Uploader extends Component {
     if (info.file.status === 'done') {
       if (info.file.response.code === '10000') {
         message.success(`${info.file.name} 导入完成`);
-        // todo 批量导入成功后, 回归默认状态请求 未分配部门人员页面
+        // todo 批量导入成功后, 重新请求用户页数据
         // const params = {
         //   enterpriseId: this.props.enterpriseId,
         //   userStatus: this.props.userStatus,

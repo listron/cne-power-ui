@@ -20,7 +20,7 @@ class DepartmentTree extends Component {
   }
 
   addDepartment = () => {
-    this.props.changeStore({ showDepartmentDrawer: 'add' });
+    this.props.changeStore({ departmentDrawerKey: 'add' });
   }
 
   assignPersonnel = () => {
@@ -28,8 +28,7 @@ class DepartmentTree extends Component {
   }
 
   render(){
-    // todo 批量导入成功后, 回归默认状态请求 未分配部门人员页面
-    // todo 当处于未分配部门时，分配人员选项不能点击
+    // todo 批量导入成功后, 重新请求列表页数据信息
     const { enterpriseId, templateLoading, selectedDepartment } = this.props;
     const { departmentId } = selectedDepartment || {};
     return (

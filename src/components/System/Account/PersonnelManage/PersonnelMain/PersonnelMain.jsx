@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Drawer } from 'antd';
 import DepartmentTree from './DepartmentTree';
+import DepartmentDrawer from './Drawers/DepartmentDrawer';
 // import UserList from './UserList';
 // import Footer from '../../../../Common/Footer';
 import styles from './main.scss';
@@ -11,7 +12,7 @@ import styles from './main.scss';
 class PersonnelMain extends Component {
   static propTypes = {
     showPersonnelDrawer: PropTypes.bool,
-    departmentDrawer: PropTypes.string,
+    departmentDrawerKey: PropTypes.string,
     changeStore: PropTypes.func,
   }
 
@@ -30,18 +31,17 @@ class PersonnelMain extends Component {
   toExamine = () => {
     this.props.changeStore({ showPersonnelDrawer: true });
   }
-  toHandleDepartment = () => {
-    this.props.changeStore({ departmentDrawer: true });
-  }
   testCloseUserExamine = () => {
     this.props.changeStore({ showPersonnelDrawer: false });
   }
-  testCloseHandleDepartment = () => {
-    this.props.changeStore({ departmentDrawer: false });
+
+
+  hideDepartmentDrawer = () => {
+    this.props.changeStore({ departmentDrawerKey: 'hide' });
   }
 
   render(){
-    const { showPersonnelDrawer, departmentDrawer } = this.props;
+    const { showPersonnelDrawer, departmentDrawerKey, changeStore } = this.props;
     return (
       <div className={styles.personnelMain}>
         <div className={styles.mainContent}>
@@ -56,12 +56,10 @@ class PersonnelMain extends Component {
             <div>用户列表表格</div>
             <div>当前选中项 取消选择 请选择同意状态下的列表项，进行操作</div>
             <button onClick={this.toExamine}>用户审核抽屉</button>
-            <button onClick={this.toHandleDepartment}>部门处理抽屉</button>
           </div>
           <Drawer
             title="用户审核抽屉"
             placement="right"
-            closable={false}
             onClose={this.testCloseUserExamine}
             visible={showPersonnelDrawer}
             getContainer={false}
@@ -69,17 +67,7 @@ class PersonnelMain extends Component {
           >
             <p>用户审核的相关表单内容</p>
           </Drawer>
-          <Drawer
-            title="部门"
-            placement="right"
-            closable={false}
-            onClose={this.testCloseHandleDepartment}
-            visible={departmentDrawer !== 'hide'}
-            getContainer={false}
-            style={{ position: 'absolute' }}
-          >
-            <p>新增部门或者编辑部门</p>
-          </Drawer>
+          <DepartmentDrawer departmentDrawerKey={departmentDrawerKey} changeStore={changeStore} />
         </div>
       </div>
     );
