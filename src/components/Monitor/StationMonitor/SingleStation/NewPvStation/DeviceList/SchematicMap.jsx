@@ -102,7 +102,7 @@ class Schematic extends Component {
         const commonList = {
             '509': {
                 summaryInfo: [
-                    { 'id': 'totalSize', name: '支路接入数', unit: '个', point: 2, allNumber: true },
+                    { 'id': 'connectedSize', name: '支路接入数', unit: '个', point: 2, allNumber: true }, // totalSize 接入总数
                     { 'id': 'normalSize', name: '支路-正常数', unit: '个', point: 2 },
                     { 'id': 'smallerSize', name: '支路-偏低数', unit: '个', point: 2, hot: true },
                     { 'id': 'exceptionSize', name: '支路-异常数', unit: '个', point: 2, hot: true },
