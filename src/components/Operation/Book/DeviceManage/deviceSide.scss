@@ -1,4 +1,5 @@
 @import "../../../../theme/theme.scss";
+
 @mixin top {
   @include lineheight(64px);
   display: flex;
@@ -11,6 +12,22 @@
   margin-left: 156px;
   width: 200px;
 }
+
+.contentBox {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: #fff;
+
+  .loadingStyle {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .deviceSide {
   display: flex;
   flex-direction: column;
@@ -20,12 +37,15 @@
   background: #ececec;
   padding: 24px 24px 0;
   z-index: 99;
+
   :global {
+
     .ant-select,
     .ant-cascader-picker {
       width: 198px;
     }
   }
+
   .unitStyle {
     margin-left: 8px;
   }
@@ -37,40 +57,51 @@
     flex: 1 0 auto;
     flex-direction: column;
     background: #fff;
+
     .preFormStyle {
       margin-top: 20px;
       display: flex;
       flex-direction: column;
+
       .formItemStyle {
         display: flex;
       }
+
       .fontColor {
         color: #199475;
       }
+
       .nextButton {
         margin-left: 200px;
       }
+
       :global {
+
         .ant-select,
         .ant-cascader-picker {
           width: 198px;
         }
+
         .ant-form-item-label {
           width: 200px;
         }
+
         .ant-btn {
           width: 200px;
         }
       }
     }
+
     .editTop {
       @include top;
       justify-content: space-between;
+
       .text {
         font-size: 18px;
         color: $darkColor;
         letter-spacing: 4px;
       }
+
       .backIcon {
         color: $darkColor;
         font-size: 20px;
@@ -81,83 +112,104 @@
         cursor: pointer;
       }
     }
+
     .colStyles {
       .editPart {
         display: flex;
+
         .formItemStyle {
           display: flex;
         }
+
         .leftlayout {
           display: flex;
           flex-direction: column;
           flex: 1;
           justify-content: center;
+
           :global {
             .ant-form-item-label {
               width: 200px;
             }
           }
+
           .defaultConfigStyles {
             .formItemStyle {
               display: flex;
             }
+
             .fontColor {
               margin-left: 4px;
               color: #199475;
-              i{
+
+              i {
                 font-size: 20px
               }
             }
           }
+
           .submitStyle {
             padding: 0 0 20px 250px;
           }
-          .systermStyle{
+
+          .systermStyle {
             .leftsubmitStyle {
               padding: 20px 0 20px 200px;
             }
+
             .leftpreStyles {
               margin-right: 40px;
             }
           }
-         
+
         }
+
         .rightContainer {
           display: flex;
           flex: 1;
           flex-direction: column;
+
           .rightStyles {
             margin-top: 12px;
             display: flex;
             flex-direction: column;
+
             .formItemStyle {
               display: flex;
             }
+
             .fontColor {
               color: #199475;
             }
+
             :global {
               .ant-form-item-label {
                 width: 100px;
               }
+
               .ant-checkbox-inner {
                 border-radius: 8px;
               }
+
               .ant-checkbox-checked .ant-checkbox-inner {
                 background: #ceebe0;
               }
+
               .ant-checkbox-checked .ant-checkbox-inner:after {
                 display: none;
               }
             }
+
             .checkboxStyle {
               display: flex;
               flex-wrap: wrap;
               width: 500px;
+
               .itemStyle {
                 display: flex;
                 width: 60px;
                 flex-direction: column;
+
                 .checkedTopName {
                   color: #199475;
                   display: flex;
@@ -166,6 +218,7 @@
                   height: 30px;
                   line-height: 30px;
                 }
+
                 .topName {
                   display: flex;
                   flex: 1;
@@ -173,6 +226,7 @@
                   height: 30px;
                   line-height: 30px;
                 }
+
                 .bottomSelect {
                   display: flex;
                   flex: 1;
@@ -184,6 +238,7 @@
 
             .linestyle {
               margin: 0 4px;
+
               .selectRingStyle,
               .ringStyle {
                 display: inline-block;
@@ -195,41 +250,51 @@
                 background: #ceebe0;
                 vertical-align: -3px;
               }
+
               .ringStyle {
                 border: 1px solid #dfdfdf;
                 background: #fff;
               }
             }
           }
+
           .submitStyle {
             margin: 40px 0 0 100px;
+
             .preStyles {
               margin-right: 40px;
             }
           }
         }
+
         :global {
+
           .ant-form-item,
           .ant-form-horizontal {
             margin-bottom: 4px;
           }
+
           .ant-select,
           .ant-cascader-picker {
             width: 198px;
           }
+
           .ant-input {
             width: 198px;
           }
         }
+
         .defaultConfigStyles {
           margin: 12px 0;
         }
+
         .unitStyle {
           margin-left: 8px;
         }
       }
     }
   }
+
   .detailDevice {
     .detailTop {
       // 顶部详情及操作
@@ -238,6 +303,7 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: solid 1px $promptColor;
+
       .topInfoShow {
         .title {
           font-size: 16px;
@@ -245,6 +311,7 @@
           margin-left: 36px;
           margin-right: 28px;
         }
+
         .departmentInfo {
           margin-left: 8px;
           max-width: 740px;
@@ -255,10 +322,12 @@
           white-space: nowrap;
         }
       }
+
       .handleArea {
         height: 100%;
         display: flex;
         align-items: center;
+
         :global {
           .iconfont {
             font-size: 20px;
@@ -266,6 +335,7 @@
             cursor: pointer;
           }
         }
+
         .previous,
         .next,
         .backIcon {
@@ -277,10 +347,12 @@
           align-items: center;
           justify-content: center;
         }
+
         .previous,
         .next {
           width: 40px;
         }
+
         .backIcon {
           width: 60px;
           border-left: solid 1px $promptColor;
@@ -288,33 +360,42 @@
         }
       }
     }
+
     .detailPart {
       display: flex;
       flex: 3;
+
       .rightPart {
         display: flex;
         flex-direction: column;
         flex: 2;
+
         :global {
+
           // .ant-form-item-label{
           //   width: 100px;
           // }
           .ant-checkbox-inner {
             border-radius: 8px;
           }
+
           .ant-checkbox-checked .ant-checkbox-inner {
             background: #ceebe0;
           }
+
           .ant-checkbox-checked .ant-checkbox-inner:after {
             display: none;
           }
         }
+
         .linestyle {
           margin: 0 4px;
           text-align: end;
+
           .box {
             display: inline-block;
           }
+
           .selectRingStyle,
           .ringStyle {
             display: inline-block;
@@ -326,14 +407,17 @@
             background: #ceebe0;
             vertical-align: -3px;
           }
+
           .ringStyle {
             border: 1px solid #dfdfdf;
             background: #fff;
           }
         }
       }
+
       .eachInfo {
         display: flex;
+
         .infoName {
           width: 150px;
           height: 36px;
@@ -341,6 +425,7 @@
           margin-right: 12px;
           color: $darkColor;
         }
+
         .infoValue {
           flex: 1;
           color: $darkColor;
@@ -348,41 +433,50 @@
           text-overflow: ellipsis;
           overflow: hidden;
         }
+
         .checkGroup {
           display: flex;
           flex-direction: column;
-          .brachTip{
+
+          .brachTip {
             margin-top: 16px;
             line-height: 30px;
             height: 30px;
           }
         }
+
         .checkItem {
           display: flex;
           flex-wrap: wrap;
           width: 400px;
           margin-top: 30px;
-          .branchItem{
+
+          .branchItem {
             display: flex;
             height: 30px;
             align-items: center;
-            .itemName{
+
+            .itemName {
               margin-right: 4px;
               text-align: right;
               flex: 0 0 65px;
               @include overflowText();
             }
-            &:nth-of-type(2n + 1){
+
+            &:nth-of-type(2n + 1) {
               flex: 0 0 150px;
             }
-            &:nth-of-type(2n){
+
+            &:nth-of-type(2n) {
               flex: 0 0 200px;
             }
           }
+
           .itemStyle {
             display: flex;
             width: 60px;
             flex-direction: column;
+
             .checkedTopName {
               color: #199475;
               display: flex;
@@ -391,6 +485,7 @@
               height: 30px;
               line-height: 30px;
             }
+
             .topName {
               display: flex;
               flex: 1;
@@ -398,6 +493,7 @@
               height: 30px;
               line-height: 30px;
             }
+
             .bottomSelect {
               display: flex;
               flex: 1;
@@ -408,24 +504,30 @@
         }
       }
     }
-    .tableFilter{
+
+    .tableFilter {
       margin: 0 40px;
-      .radioStyle{
+
+      .radioStyle {
         margin-bottom: 12px;
       }
     }
   }
+
   .infoBox {
     display: flex;
     flex-direction: column;
     flex: 1;
     margin: 20px 0 0 40px;
+
     .infoPart {
       display: flex;
       flex-direction: column;
       flex: 1;
+
       .eachInfo {
         display: flex;
+
         .infoName {
           width: 150px;
           height: 36px;
@@ -433,6 +535,7 @@
           margin-right: 12px;
           color: $darkColor;
         }
+
         .infoValue {
           flex: 1;
           color: $darkColor;
@@ -440,6 +543,7 @@
           text-overflow: ellipsis;
           overflow: hidden;
         }
+
         .checkGroup {
           display: flex;
           flex-direction: column;
