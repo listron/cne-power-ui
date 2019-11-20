@@ -175,7 +175,6 @@ class PlanDetail extends PureComponent {
     this.props.setWorkPlanStatus({ planId, planStatus });
   }
 
-
   toEdit = () => {
     const { planDetail } = this.props;
     const { stations = [], inspectTypeCode } = planDetail || {};
@@ -190,12 +189,18 @@ class PlanDetail extends PureComponent {
 
   backList = () => this.props.changeStore({ planPageKey: 'list', planDetail: {} })
 
+  detailBaseCompose = (inspectTypeCode, cycleTypeCode) => {
+    const curBase = (parseFloat(inspectTypeCode) === 100001 ? this.baseDaily : this.baseInspect);
+    // cycleTypeCode为单次151时, 不展示计划失效时间
+    return parseFloat(cycleTypeCode) === 151 ? curBase.filter(e => e.dataIndex !== 'deadLine') : curBase;
+  }
+
   render(){
     const { planDetail, theme, planDetailHandleLoading } = this.props;
-    const { inspectTypeCode = 100001 } = planDetail || {}; // 巡检计划类型 日常：100001；设备巡检：100002
+    const { inspectTypeCode = 100001, cycleTypeCode } = planDetail || {}; // 巡检计划类型 日常：100001；设备巡检：100002
     const detailBaseInfo = [
       ...this.detailBase,
-      ...(parseFloat(inspectTypeCode) === 100001 ? this.baseDaily : this.baseInspect),
+      ...this.detailBaseCompose(inspectTypeCode, cycleTypeCode),
       ...this.baseEnd,
     ];
     return (

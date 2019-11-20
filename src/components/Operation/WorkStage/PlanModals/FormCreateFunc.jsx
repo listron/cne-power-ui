@@ -55,10 +55,10 @@ const InspectTypeForm = ({ getFieldDecorator }) => formItemCreate({
   label: '巡视类型',
   Item: getFieldDecorator('inspectType', {
     rules: [{ required: true, message: '请选择巡视类型' }],
-    initialValue: '日常巡检',
+    initialValue: '日常巡视',
   })(
     <Select>
-      <Option value="日常巡检">日常巡检</Option>
+      <Option value="日常巡视">日常巡视</Option>
       <Option value="设备巡检">设备巡检</Option>
     </Select>
   ),
