@@ -2,15 +2,36 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
+import { Button, Tree } from 'antd';
 import Uploader from './Uploader';
 import styles from './main.scss';
+
+const { TreeNode, DirectoryTree } = Tree;
+
+const DepartMentTitle = ({ className, edit, remove, departmentName, departmentId}) => (
+  <span className={className}>
+    <span title={departmentName} className={styles.departmentName}>{departmentName}</span>
+    <span>
+      <span data-code={departmentId} onClick={edit} className="iconfont icon-edit" />
+      <span data-code={departmentId} onClick={remove} className="iconfont icon-del" />
+    </span>
+  </span>
+);
+
+DepartMentTitle.propTypes = {
+  className: PropTypes.string,
+  departmentName: PropTypes.string,
+  departmentId: PropTypes.string,
+  remove: PropTypes.func,
+  edit: PropTypes.func,
+};
 
 class DepartmentTree extends Component {
   static propTypes = {
     enterpriseId: PropTypes.string,
     templateLoading: PropTypes.bool,
     selectedDepartment: PropTypes.object,
+    departmentTree: PropTypes.array,
     downloadTemplate: PropTypes.func,
     changeStore: PropTypes.func,
   }
@@ -27,9 +48,54 @@ class DepartmentTree extends Component {
     console.log('点击分配人员中');
   }
 
+  editDepartment = (e) => {
+    e.stopPropagation();
+    const { target } = e;
+    const { dataset } = target || {};
+    console.log(target);
+    console.log(target.dataset);
+  }
+
+  removeDepartment = (e) => {
+    e.stopPropagation();
+    console.log(target)
+    console.log(target.dataset)
+  }
+
+  renderTreeNodes = (data, level = 'fatherDepartmentTitle') => data.map(item => {
+    const { departmentName, departmentId, list } = item;
+    const titleProps = {
+      className: styles[level],
+      edit: this.editDepartment,
+      remove: this.removeDepartment,
+      departmentName,
+      departmentId: departmentId,
+    };
+    if (list && list.length > 0) {
+      return (
+        <TreeNode
+          title={<DepartMentTitle {...titleProps} />}
+          key={departmentId}
+          className={styles.eachDepartment}
+          selectable={false}
+        >
+          {this.renderTreeNodes(list, 'subDepartmentTitle')}
+        </TreeNode>
+      );
+    }
+    return (
+      <TreeNode
+        key={departmentId}
+        selectable={false}
+        title={<DepartMentTitle {...titleProps} className={styles[level]} />}
+        className={styles.eachDepartment}
+      />
+    );
+  });
+
   render(){
     // todo 批量导入成功后, 重新请求列表页数据信息
-    const { enterpriseId, templateLoading, selectedDepartment } = this.props;
+    const { enterpriseId, templateLoading, selectedDepartment, departmentTree } = this.props;
     const { departmentId } = selectedDepartment || {};
     return (
       <div className={styles.departmentTree}>
@@ -49,9 +115,9 @@ class DepartmentTree extends Component {
               >分配人员</span>
             </span>
           </h4>
-          <div>
-            部门的树形结构
-          </div>
+          <DirectoryTree blockNode className={styles.treeContent}>
+            {this.renderTreeNodes(departmentTree)}
+          </DirectoryTree>
         </section>
       </div>
     );

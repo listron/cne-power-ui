@@ -42,6 +42,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
     .treeName{
       margin-left: 20px;
     }
@@ -56,6 +57,60 @@
     }
     .tipHolder{
       margin: 0 4px;
+    }
+    &::after{
+      content: '';
+      position: absolute;
+      left: 24px;
+      bottom: -7px;
+      width: 0px;
+      height: 0px;
+    }
+  }
+  .treeContent{
+    padding: 0 10px 0 10px;
+    margin-top: 10px;
+    li.eachDepartment{
+      padding: 0;
+      .fatherDepartmentTitle, .subDepartmentTitle{
+        display: flex;
+        height: 30px;
+        line-height: 30px;
+        justify-content: space-between;
+        :global{
+          .icon-edit{
+            margin-right: 12px;
+          }
+        }
+      }
+      .fatherDepartmentTitle{
+        width: 190px;
+        .departmentName{
+          flex: 0 0 126px;
+          @include overflowText();
+        }
+      }
+      .subDepartmentTitle{
+        width: 171px;
+        .departmentName{
+          flex: 0 0 107px;
+          @include overflowText();
+        }
+      }
+      
+      :global{
+        .ant-tree-node-content-wrapper::before{
+          height: 30px!important;
+          line-height: 30px!important;
+        }
+        .ant-tree-node-content-wrapper, .ant-tree-switcher{
+          height: 30px;
+          line-height: 30px;
+        }
+        .ant-tree-node-content-wrapper .ant-tree-iconEle{
+          display: none;
+        }
+      }
     }
   }
 }
@@ -78,6 +133,13 @@
     }
     .titleHandle{
       color:#ceebe0;
+    }
+    &::after{
+      // 14宽 高7
+      border-top: solid var(--themeColor) 7px;
+      border-bottom: none;
+      border-left: solid transparent 7px;
+      border-right: solid transparent 7px;
     }
   }
 }

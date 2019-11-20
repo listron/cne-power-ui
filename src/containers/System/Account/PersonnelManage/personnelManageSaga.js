@@ -11,10 +11,6 @@ const { APIBasePath } = basePaths;
 const { system } = APISubPaths;
 // const { operation } = APISubPaths;
 
-function *getUserList({ payload }) {
-  console.log(payload);
-}
-
 function* easyPut(actionName, payload){
   yield put({
     type: personnelManageAction[actionName],
@@ -35,6 +31,7 @@ function *getAllUserBase(){ // 接口1 所有用户基础信息 => 用于分配�
     yield call(easyPut, 'fetchSuccess', {
       allBaseUserData: [{
         name: '李大庆',
+        id: '12345',
         call: '183',
         depart: '1,2,3,4组',
       }],
@@ -62,7 +59,7 @@ function *downloadTemplate(){ // 下载导入模板
 
 function *getDepartmentTreeData() { // 获取部门树结构
   try {
-    // const url = '';
+    // const url = ''; GET /api/v3/department/tree
     // const response = yield call(request.get, url, {});
     // if (response.code === '10000') {
     //   yield call(easyPut, 'fetchSuccess', {
@@ -87,7 +84,7 @@ function *getDepartmentTreeData() { // 获取部门树结构
         parentDepartmentId: '0',
         list: [{
           departmentId: '4',
-          departmentName: '子',
+          departmentName: '子部门4-1',
           parentDepartmentId: '3',
         }],
       }],
@@ -108,6 +105,9 @@ function *getDepartmentTreeData() { // 获取部门树结构
 // 获取部门的电站
 // 获取部门的用户名/真实姓名
 // 获取部门的用户表格信息
+function *getUserList({ payload }) {
+  console.log(payload);
+}
 
 // 用户注销预请求
 // 用户注销
