@@ -167,11 +167,11 @@ class AddEditPlan extends PureComponent {
                   getPopupContainer={() => this.inspectTypeRef}
                 >
                   <Option value={100001}>日常巡检</Option>
-                  <Option value={100002}>巡视巡检</Option>
+                  <Option value={100002}>设备巡检</Option>
                 </Select>
               )}
               <span ref={(ref) => { this.inspectTypeRef = ref; }} />
-              <span className={styles.addFormTips}>注：巡视巡检将直接作为定期巡检，下发为巡检工单。</span>
+              <span className={styles.addFormTips}>注：设备巡检将直接作为定期巡检，下发为巡检工单。</span>
             </FormItem>
             <FormItem label="首次下发时间" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('firstStartTime', {
@@ -308,7 +308,7 @@ class AddEditPlan extends PureComponent {
 export default Form.create({
   onValuesChange: (props, changedValues, allFields) => {
     const { stationList = [], inspectTypeCode } = changedValues || {};
-    if (// 巡视巡检 + 选择电站 => 请求设备类型列表
+    if (// 设备巡检 + 选择电站 => 请求设备类型列表
       (inspectTypeCode === 100002 && allFields.stationList.length > 0)
         || (stationList.length > 0 && allFields.inspectTypeCode === 100002)
     ) {

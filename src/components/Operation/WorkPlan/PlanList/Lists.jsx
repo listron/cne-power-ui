@@ -107,7 +107,7 @@ class Lists extends PureComponent {
 
   toEdit = (record) => {
     const { stations, inspectTypeCode } = record || {};
-    // 若是巡视巡检, 请求对应的设备类型列表;
+    // 若是设备巡检, 请求对应的设备类型列表;
     if (parseFloat(inspectTypeCode) === 100002) {
       this.props.getStationDeviceTypes({
         stationCodes: stations.map(e => e.stationCode).join(','),
