@@ -148,10 +148,7 @@ class EditDeviceForm extends Component {
       map,
     } = stationDeviceDetail;
     const madeName = map ? map.madeName : '';
-    console.log('madeName: ', madeName);
     const supplierName = map ? map.supplierName : '';
-    console.log('supplierName: ', supplierName);
-    console.log('stationDeviceDetail: ', stationDeviceDetail);
     const selectDeviceTypeName =
       typeof selectdeviceType === 'number'
         ? stationDeviceTypes.filter(
