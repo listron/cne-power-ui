@@ -40,6 +40,24 @@ class EditConflunce extends Component {
       checkStyle:checked
     })
   }
+
+  changeBranchCount = ({ target }) => { // 支路数据改变时的逻辑 => 改变支路数据 + 渲染每个支路默认信息
+    const { value } = target || {};
+    if (value > 0 && !isNaN(value) && !value.includes('.')) { // value 大于零 数字
+      const brachNum = parseInt(value.trim(), 10); // 支路数
+      const connectedBranches = this.props.form.getFieldValue('connectedBranches') || [];
+      const newBranchesInfo = [];
+      for(let i = 0; i < brachNum; i++){
+        const eachSubNum = connectedBranches[i];
+        newBranchesInfo.push(eachSubNum === undefined ? '1' : eachSubNum);
+      }
+      this.props.form.setFieldsValue({
+        branchCount: `${brachNum}`,
+        connectedBranches: newBranchesInfo,
+      });
+    }
+  }
+
   render() {
     const { showAddComponentMode, showAddComponent, componentModeCodeAdd, manufacturerComAdd,checkStyle } = this.state;
     const { pvDeviceModels, stationDeviceDetail } = this.props;
@@ -48,6 +66,7 @@ class EditConflunce extends Component {
     const detailMap = stationDeviceDetail ? stationDeviceDetail.map : {};
     // const connectedBranches = detailMap ? detailMap.connectedBranches : [];
     const { componentCount, connectedBranches } = detailMap;
+    const branchCount = getFieldValue('branchCount');
     // const branchCount = detailMap ? detailMap.connectedBranches : [];
     // const componentCount = getFieldValue("branchCount");
     // let branchCountArr = [];
@@ -84,7 +103,7 @@ class EditConflunce extends Component {
               { message: '1~20之间的整数', required: true, pattern: /^(0|1\d?|20?|[3-9])$/ },
             ]
           })(
-            <Input placeholder="请输入..." />
+            <Input placeholder="请输入..." onChange={this.changeBranchCount} />
             // {/*  <span>{stationDeviceDetail.map.branchCount}</span> */}
           )}
         </FormItem>
@@ -105,7 +124,7 @@ class EditConflunce extends Component {
               },
             }],
           })(
-            <BrachFormItem branchCount={componentCount || 0} />
+            <BrachFormItem branchCount={branchCount || 0} />
           )}
         </FormItem>
       </div>

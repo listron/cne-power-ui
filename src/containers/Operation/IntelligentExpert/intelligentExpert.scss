@@ -32,9 +32,6 @@
   }
 }
 
-.dark {
-  @import "../../../theme/antdResetDark.scss";
-  .contentBox {
-    background-color: $background;
-  }
+.intelligentExpert.dark {
+  background-image:linear-gradient(-118deg, #3b55aa 0%, #132267 96%);
 }

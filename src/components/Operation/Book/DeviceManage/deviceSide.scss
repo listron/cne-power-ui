@@ -458,7 +458,8 @@
 
             .itemName {
               margin-right: 4px;
-              flex: 0 0 60px;
+              text-align: right;
+              flex: 0 0 65px;
               @include overflowText();
             }
 

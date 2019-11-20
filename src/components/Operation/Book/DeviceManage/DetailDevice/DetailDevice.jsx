@@ -155,21 +155,8 @@ class DetailDevice extends Component {
                       {(deviceDetailMap && (deviceDetailMap.componentCount || deviceDetailMap.componentCount === 0)) ? deviceDetailMap.componentCount : '--'}
                     </div>
                   </div>
-                  <div className={styles.eachInfo}>
-                    <div className={styles.infoName}>所用支路</div>
-                    <div className={styles.checkGroup} >
-                      <div className={styles.checkItem}>
-                        {connectedBranches.map((e, i) => (
-                          <span className={styles.branchItem} key={i}>
-                            <span title={`第${i + 1}支路`} className={styles.itemName}>第{i + 1}支路</span>
-                            <span>[{e}]</span>
-                          </span>
-                        ))}
-                      </div>
-                      <div className={styles.brachTip}>
-                        (数值代表接入组传数, 0代表未接入)
-                  </div>
-                    </div>
+                  <div className={styles.brachTip}>
+                    (数值代表接入组串数, 0代表未接入)
                   </div>
                 </div>
                 }

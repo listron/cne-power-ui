@@ -26,7 +26,7 @@ class PlanDetail extends PureComponent {
       title: '首次下发时间',
       dataIndex: 'firstStartTime',
     }, {
-      title: '执行工时',
+      title: '执行天数',
       dataIndex: 'validPeriod',
       render: (validPeriod) => `${validPeriod}天`,
     }, {
@@ -69,7 +69,7 @@ class PlanDetail extends PureComponent {
         return <span>{firstStartTime || '--'} {firstStartWeek}</span>;
       },
     }, {
-      title: '执行工时',
+      title: '执行天数',
       dataIndex: 'validPeriod',
       render: ({ validPeriod }) => `${validPeriod || '--'}天`,
     }, {
@@ -175,11 +175,10 @@ class PlanDetail extends PureComponent {
     this.props.setWorkPlanStatus({ planId, planStatus });
   }
 
-
   toEdit = () => {
     const { planDetail } = this.props;
     const { stations = [], inspectTypeCode } = planDetail || {};
-    // // 若是巡视巡检, 请求对应的设备类型列表;
+    // // 若是设备巡检, 请求对应的设备类型列表;
     if (parseFloat(inspectTypeCode) === 100002) {
       this.props.getStationDeviceTypes({
         stationCodes: stations.map(e => e.stationCode).join(','),
@@ -190,12 +189,18 @@ class PlanDetail extends PureComponent {
 
   backList = () => this.props.changeStore({ planPageKey: 'list', planDetail: {} })
 
+  detailBaseCompose = (inspectTypeCode, cycleTypeCode) => {
+    const curBase = (parseFloat(inspectTypeCode) === 100001 ? this.baseDaily : this.baseInspect);
+    // cycleTypeCode为单次151时, 不展示计划失效时间
+    return parseFloat(cycleTypeCode) === 151 ? curBase.filter(e => e.dataIndex !== 'deadLine') : curBase;
+  }
+
   render(){
     const { planDetail, theme, planDetailHandleLoading } = this.props;
-    const { inspectTypeCode = 100001 } = planDetail || {}; // 巡检计划类型 日常：100001；巡视巡检：100002
+    const { inspectTypeCode = 100001, cycleTypeCode } = planDetail || {}; // 巡检计划类型 日常：100001；设备巡检：100002
     const detailBaseInfo = [
       ...this.detailBase,
-      ...(parseFloat(inspectTypeCode) === 100001 ? this.baseDaily : this.baseInspect),
+      ...this.detailBaseCompose(inspectTypeCode, cycleTypeCode),
       ...this.baseEnd,
     ];
     return (
