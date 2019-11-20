@@ -38,7 +38,7 @@ class StationContrast extends React.Component {
     const { stationCode, year, month, toChangeStationContrastStore } = this.props;
     if (timeObj.timeStyle === 'year') {
       toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] });
-      if (stationCode.length === 2) {
+      if (stationCode.length > 1) {
         this.props.getStationContrast({
           stationCode: stationCode,
           dateType: timeObj.timeStyle,
@@ -49,7 +49,7 @@ class StationContrast extends React.Component {
     }
     if (timeObj.timeStyle === 'month') {
       toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] });
-      if (stationCode.length === 2) {
+      if (stationCode.length > 1) {
         this.props.getStationContrast({
           stationCode: stationCode,
           dateType: timeObj.timeStyle,
@@ -62,7 +62,7 @@ class StationContrast extends React.Component {
       const currentYear = [moment(timeObj.startTime).format('YYYY')];
       const currentMonth = +moment(timeObj.startTime).format('MM');
       toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: currentYear, month: currentMonth });
-      if (stationCode.length === 2) {
+      if (stationCode.length > 1) {
         this.props.getStationContrast({
           stationCode: stationCode,
           dateType: timeObj.timeStyle,
