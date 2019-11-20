@@ -55,11 +55,11 @@ const InspectTypeForm = ({ getFieldDecorator }) => formItemCreate({
   label: '巡视类型',
   Item: getFieldDecorator('inspectType', {
     rules: [{ required: true, message: '请选择巡视类型' }],
-    initialValue: '日常巡检',
+    initialValue: '日常巡视',
   })(
     <Select>
-      <Option value="日常巡检">日常巡检</Option>
-      <Option value="巡视巡检">巡视巡检</Option>
+      <Option value="日常巡视">日常巡视</Option>
+      <Option value="设备巡检">设备巡检</Option>
     </Select>
   ),
 });
@@ -122,7 +122,7 @@ const LookContentForm = ({ getFieldDecorator }) => formItemCreate({ // 普通巡
   ),
 });
 
-const InspectNameForm = ({ getFieldDecorator }) => formItemCreate({ // 巡视巡检独有
+const InspectNameForm = ({ getFieldDecorator }) => formItemCreate({ // 设备巡检独有
   label: '巡检名称',
   Item: getFieldDecorator('inspectName', {
     rules: [{ required: true, message: '请输入巡视名称' }],
@@ -132,7 +132,7 @@ const InspectNameForm = ({ getFieldDecorator }) => formItemCreate({ // 巡视巡
   ),
 });
 
-const DeviceTypeForm = ({ getFieldDecorator }) => formItemCreate({ // 巡视巡检独有
+const DeviceTypeForm = ({ getFieldDecorator }) => formItemCreate({ // 设备巡检独有
   label: '设备类型',
   Item: getFieldDecorator('deviceType', {
     rules: [{ required: true, message: '请选择设备类型' }],

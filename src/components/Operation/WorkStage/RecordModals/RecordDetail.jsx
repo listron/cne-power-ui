@@ -28,10 +28,10 @@ class RecordDetail extends PureComponent {
       render: (completeTime = null) => {
         return completeTime ? moment(completeTime).format('YYYY-MM-DD HH:mm:ss') : '--';
       },
-    }, {
-      title: '执行人',
-      key: 'handleUser',
-    }, {
+    }, { // 工作记事去掉执行人字段
+      // title: '执行人',
+      // key: 'handleUser',
+    // }, {
       title: '记事内容',
       key: 'noteContent',
     },
