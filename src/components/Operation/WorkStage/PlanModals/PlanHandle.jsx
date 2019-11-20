@@ -40,7 +40,7 @@ class PlanHandle extends PureComponent {
         className: styles.stationName,
         render: (text = '') => (<div title={text} className={styles.stationNameText}>{text}</div>),
       }, {
-        title: '执行工时',
+        title: '执行天数',
         dataIndex: 'validPeriod',
         width: 90,
         render: (text = '') => (<div title={text} className={styles.validPeriodText}>{text}</div>),

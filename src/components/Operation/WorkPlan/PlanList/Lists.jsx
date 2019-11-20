@@ -64,7 +64,7 @@ class Lists extends PureComponent {
           return <span>{nextSendTime || '--'} {nextSendWeek}</span>;
         },
       }, {
-        title: '执行工时',
+        title: '执行天数',
         dataIndex: 'validPeriod',
         sorter: true,
       }, {

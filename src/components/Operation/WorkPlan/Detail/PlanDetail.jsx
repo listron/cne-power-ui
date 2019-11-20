@@ -26,7 +26,7 @@ class PlanDetail extends PureComponent {
       title: '首次下发时间',
       dataIndex: 'firstStartTime',
     }, {
-      title: '执行工时',
+      title: '执行天数',
       dataIndex: 'validPeriod',
       render: (validPeriod) => `${validPeriod}天`,
     }, {
@@ -69,7 +69,7 @@ class PlanDetail extends PureComponent {
         return <span>{firstStartTime || '--'} {firstStartWeek}</span>;
       },
     }, {
-      title: '执行工时',
+      title: '执行天数',
       dataIndex: 'validPeriod',
       render: ({ validPeriod }) => `${validPeriod || '--'}天`,
     }, {
