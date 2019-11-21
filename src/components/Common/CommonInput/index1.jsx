@@ -28,7 +28,7 @@ class CommonInput extends Component {
   static defaultProps = {
     size: 80,
     width: 440,
-    height: 90
+    height: 90,
   }
 
   constructor(props) {
@@ -41,28 +41,27 @@ class CommonInput extends Component {
     let value = this.props.value + text;
     if (value && value.length > this.props.size) {
       return;
-    } else {
-      this.props.onChange(value);
     }
+    this.props.onChange(value);
+
 
   }
 
   render() {
-    const { commonList } = this.props;
+    const { commonList = [] } = this.props;
     return (
       <div className={styles.commonInput}>
         <InputLimit {...this.props} />
         <div className={styles.commonList}>
-          {
-            commonList.map((item,index)=>{
-              return (
-                <Button
-                  key={'common' + index}
-                  ghost={true}
-                  type="primary"
-                  onClick={() => this.onClickCommon(item.languageInfo)}>{item.languageInfo || '--'}</Button>
-              );
-            })
+          {commonList.map((item, index) => {
+            return (
+              <Button
+                key={'common' + index}
+                ghost={true}
+                type="primary"
+                onClick={() => this.onClickCommon(item.languageInfo)}>{item.languageInfo || '--'}</Button>
+            );
+          })
           }
         </div>
       </div>

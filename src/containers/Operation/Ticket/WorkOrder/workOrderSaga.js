@@ -3,7 +3,7 @@ import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { workOrderAction } from './workOrderAction';
-message.config({ top: 120,duration: 2, maxCount: 2,});
+message.config({ top: 120, duration: 2, maxCount: 2 });
 
 
 function* changeWorkOrderStore(action) { // 存储payload指定参数，替换reducer-store属性。
@@ -11,18 +11,18 @@ function* changeWorkOrderStore(action) { // 存储payload指定参数，替换re
   yield put({
     type: workOrderAction.changeWorkOrderStore,
     payload,
-  })
+  });
 }
 
 function* resetStore() {
   yield put({
-    type: workOrderAction.RESET_STORE
-  })
+    type: workOrderAction.RESET_STORE,
+  });
 }
 
 function* getDefectDetail(action) { // 获取缺陷工单详情  两种状态  get 请求方式  defectID
   const { payload } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectDetail;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectDetail;
   yield put({ type: workOrderAction.workOrderFetch });
   try {
     const response = yield call(axios.get, url, { params: { defectId: payload.defectId } });
@@ -34,20 +34,20 @@ function* getDefectDetail(action) { // 获取缺陷工单详情  两种状态  g
           defectDetail: response.data.data,
           stationType: response.data.data.stationType,
           defectSource: response.data.data.defectSource,
-        }
+        },
       });
     } else {
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
-    message.error('请求数据失败')
+    message.error('请求数据失败');
   }
 }
 
 function* getDefectIdList(action) { // 获取缺陷工单Id列表(用于上一个，下一个) 暂时用不上
   const { payload } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectIdList;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectIdList;
   yield put({ type: workOrderAction.workOrderFetch });
   try {
     const response = yield call(axios.post, url, payload);
@@ -55,8 +55,8 @@ function* getDefectIdList(action) { // 获取缺陷工单Id列表(用于上一�
       yield put({
         type: workOrderAction.getworkOrderFetchSuccess,
         payload: {
-          defectIdList: response.data.data
-        }
+          defectIdList: response.data.data,
+        },
       });
     }
   } catch (e) {
@@ -64,10 +64,10 @@ function* getDefectIdList(action) { // 获取缺陷工单Id列表(用于上一�
   }
 }
 
-//获取缺陷常用语
-function* getDefectCommonList(action) { // 参数 languageType：0 全部 1 缺陷 2 巡检
+
+function* getDefectCommonList(action) { // 获取缺陷常用语  参数 languageType：0 全部 1 缺陷 2 巡检
   const { payload } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getCommonList;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getCommonList;
   yield put({ type: workOrderAction.workOrderFetch });
   try {
     const response = yield call(axios.get, url, { params: payload });
@@ -75,8 +75,8 @@ function* getDefectCommonList(action) { // 参数 languageType：0 全部 1 缺�
       yield put({
         type: workOrderAction.getworkOrderFetchSuccess,
         payload: {
-          commonList: response.data.data.data
-        }
+          commonList: response.data.data.data,
+        },
       });
     }
   } catch (e) {
@@ -87,7 +87,7 @@ function* getDefectCommonList(action) { // 参数 languageType：0 全部 1 缺�
 
 function* getDefectTypes(action) { // 获取缺陷类型信息
   const { payload } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectTypes;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectTypes;
   yield put({ type: workOrderAction.workOrderFetch });
   try {
     const response = yield call(axios.get, url, { params: payload });
@@ -96,7 +96,7 @@ function* getDefectTypes(action) { // 获取缺陷类型信息
         type: workOrderAction.getworkOrderFetchSuccess,
         payload: {
           defectTypes: response.data.data.data,
-        }
+        },
       });
     }
   } catch (e) {
@@ -107,7 +107,7 @@ function* getDefectTypes(action) { // 获取缺陷类型信息
 
 function* sendDefect(action) { // 下发工单
   const { payload } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.sendDefect;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.sendDefect;
   yield put({ type: workOrderAction.workOrderFetch });
   try {
     const response = yield call(axios.post, url, payload);
@@ -117,15 +117,15 @@ function* sendDefect(action) { // 下发工单
         type: workOrderAction.changeWorkOrderStore,
         payload: {
           callBack: true,
-        }
-      })
+        },
+      });
     } else {
       yield put({
         type: workOrderAction.SET_DEFECT_FAIL,
         error: {
           code: response.data.code,
-          message: response.data.message
-        }
+          message: response.data.message,
+        },
       });
     }
   } catch (e) {
@@ -136,7 +136,7 @@ function* sendDefect(action) { // 下发工单
 
 function* rejectDefect(action) { // 驳回工单
   const { payload } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.rejectDefect;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.rejectDefect;
   yield put({ type: workOrderAction.workOrderFetch });
   try {
     const response = yield call(axios.post, url, payload);
@@ -146,16 +146,16 @@ function* rejectDefect(action) { // 驳回工单
         type: workOrderAction.changeWorkOrderStore,
         payload: {
           callBack: true,
-        }
-      })
+        },
+      });
 
     } else {
       yield put({
         type: workOrderAction.SET_DEFECT_FAIL,
         error: {
           code: response.data.code,
-          message: response.data.message
-        }
+          message: response.data.message,
+        },
       });
     }
   } catch (e) {
@@ -166,7 +166,7 @@ function* rejectDefect(action) { // 驳回工单
 
 function* closeDefect(action) { // 关闭工单
   const { payload } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.closeDefect;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.closeDefect;
   yield put({ type: workOrderAction.workOrderFetch });
   try {
     const response = yield call(axios.post, url, payload);
@@ -176,15 +176,15 @@ function* closeDefect(action) { // 关闭工单
         type: workOrderAction.changeWorkOrderStore,
         payload: {
           callBack: true,
-        }
-      })
+        },
+      });
     } else {
       yield put({
         type: workOrderAction.SET_DEFECT_FAIL,
         error: {
           code: response.data.code,
-          message: response.data.message
-        }
+          message: response.data.message,
+        },
       });
     }
   } catch (e) {
@@ -195,7 +195,7 @@ function* closeDefect(action) { // 关闭工单
 
 function* handleDefect(action) { // 执行工单
   const { payload } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.handleDefect;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.handleDefect;
   yield put({ type: workOrderAction.workOrderFetch });
   try {
     const response = yield call(axios.post, url, payload);
@@ -205,15 +205,15 @@ function* handleDefect(action) { // 执行工单
         type: workOrderAction.changeWorkOrderStore,
         payload: {
           callBack: true,
-        }
-      })
+        },
+      });
     } else {
       yield put({
         type: workOrderAction.changeWorkOrderStoreSaga,
         error: {
           code: response.data.code,
-          message: response.data.message
-        }
+          message: response.data.message,
+        },
       });
     }
   } catch (e) {
@@ -224,26 +224,26 @@ function* handleDefect(action) { // 执行工单
 
 function* checkDefect(action) { // 验收工单
   const { payload } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.checkDefect;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.checkDefect;
   yield put({ type: workOrderAction.workOrderFetch });
   try {
     const response = yield call(axios.post, url, payload);
-    console.log(response)
+    console.log(response);
     if (response.data.code === '10000') {
       message.success('验收成功！');
       yield put({
         type: workOrderAction.changeWorkOrderStore,
         payload: {
           callBack: true,
-        }
-      })
+        },
+      });
     } else {
       yield put({
         type: workOrderAction.SET_DEFECT_FAIL,
         error: {
           code: response.data.code,
-          message: response.data.message
-        }
+          message: response.data.message,
+        },
       });
     }
   } catch (e) {
@@ -253,7 +253,7 @@ function* checkDefect(action) { // 验收工单
 
 function* getKnowledgebase(action) { // 获取智能专家列表
   const { payload } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getKnowledgebase;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getKnowledgebase;
   // let url = `/mock/operation/knowledgebase/list`;
   try {
     const response = yield call(axios.post, url, payload);
@@ -262,9 +262,9 @@ function* getKnowledgebase(action) { // 获取智能专家列表
         type: workOrderAction.changeWorkOrderStore,
         payload: {
           knowledgebaseList: response.data.data.dataList || [],
-        }
-      })
-    } else { throw response.data }
+        },
+      });
+    } else { throw response.data; }
   } catch (e) {
     console.log(e);
   }
@@ -273,26 +273,26 @@ function* getKnowledgebase(action) { // 获取智能专家列表
 function* likeKnowledgebase(action) { // 点赞智能专家
   const { payload } = action;
   const { knowledgeBaseId } = payload;
-  let url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.ticket.likeKnowledgebase}${knowledgeBaseId }`;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.ticket.likeKnowledgebase}${knowledgeBaseId}`;
   // let url = `/mock/operation/knowledgebase/like`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-      message.config({ top: 230,duration: 2, maxCount: 2,});
-      message.success('点赞成功')
+      message.config({ top: 230, duration: 2, maxCount: 2 });
+      message.success('点赞成功');
       const params = yield select(state => {
         const { defectDetail = {} } = state.operation.workOrder.toJS();
         return ({
           deviceTypeCodes: [defectDetail.deviceTypeCode],
           faultCodes: [defectDetail.defectTypeCode],
-        })
+        });
       }
       );
       yield put({ // 重新请求点赞列表
         type: workOrderAction.getKnowledgebase,
         payload: params,
-      })
-    } else { throw response.data }
+      });
+    } else { throw response.data; }
   } catch (e) {
     console.log(e);
   }

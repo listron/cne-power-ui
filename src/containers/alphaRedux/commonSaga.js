@@ -74,13 +74,7 @@ function* getMonitorDataUnit(action) { // 通用： 获取用户权限范围内�
       const [powerUnit = '万kWh', powerPoint = 0] = monitorDataUnit.power;
       yield put({
         type: commonAction.GET_COMMON_FETCH_SUCCESS,
-        payload: { // 旧版本需要保留
-          realTimePowerUnit,
-          realTimePowerPoint,
-          realCapacityUnit,
-          realCapacityPoint,
-          powerUnit,
-          powerPoint,
+        payload: {
           monitorPvUnit: {
             realTimePowerUnit,
             realTimePowerPoint,
@@ -254,7 +248,7 @@ function* getMatrixDevices(action) { // 2018-12-24新增，预期删除下面get
     const { params, actionName } = payload;
     const response = yield call(axios.get, getMatrixUrl, { params }); // 所有分区信息
     if (response.data.code === '10000') {
-      if(response.data.data.partitions){
+      if (response.data.data.partitions) {
         const partitionCode = response.data.data.partitions[0].deviceCode; // 第一分区code   
         const [matrixDevices, devices] = yield all([
           call(axios.get, getDevicesUrl, { params: { ...params, partitionCode } }),
@@ -270,7 +264,7 @@ function* getMatrixDevices(action) { // 2018-12-24新增，预期删除下面get
             },
           });
         }
-      }else{
+      } else {
         const response = yield call(axios.get, getDevicesUrl, { params });
         if (response.data.code === '10000') {
           const data = response.data.data;
@@ -283,7 +277,7 @@ function* getMatrixDevices(action) { // 2018-12-24新增，预期删除下面get
           });
         }
       }
-      
+
     }
   } catch (e) {
     console.log(e);

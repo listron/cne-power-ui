@@ -73,7 +73,8 @@ export default {
     },
     ticket: {
       // 工单
-      getDefectList: '/v3/defect/worklist/pc',
+      getDefectList: '/v3/defect/worklist/pc', // 3.12
+      getDockerDetail: '/v3/defect/relevancedocket', // 3.12
       getDefectIdList: '/v3/defect/worklist/getallid',
       batchDeleteDefect: '/v3/defect/delete/batch',
       getInspectList: '/v3/inspect/worklist/pc',
@@ -94,8 +95,10 @@ export default {
       handleDefect: '/v3/defect/handle',
       checkDefect: '/v3/defect/check',
       getDefectTypes: '/v3/defect/type',
-      createNewDefect: '/v3/defect',
-      submitDefect: '/v3/defect/reject/change',
+      createNewDefect: '/v3/defect', //3.3
+      submitDefect: '/v3/defect/reject/change', // 3.3
+      createDefect: '/v3/defect/add',// 3.12 
+      defectSubmit: '/v3/defect/reject/submit', // 3.12
       transformDefect: '/v3/inspect/defect',
       setInspectCheck: '/v3/inspect/check',
       finishInspect: '/v3/inspect/finish',

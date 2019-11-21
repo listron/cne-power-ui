@@ -33,16 +33,16 @@ class Overview extends Component {
   }
 
   componentDidMount() { // page list 列表页 defectDetail 缺陷详情 inspectDetail 巡检详情 defectId 缺陷ID inspectId 巡检ID
-    const { location } = this.props;
-    const { search, pathname } = location;
+    const { history } = this.props;
+    const { search, pathname } = history.location;
     const { page = 'list', tab = 'defect' } = searchUtil(search).parse(); //默认为缺陷列表页
     this.setState({ page, tab });
 
   }
 
   componentWillReceiveProps(nextProps) {
-    const { location } = nextProps;
-    const { search, pathname } = location;
+    const { history } = nextProps;
+    const { search, pathname } = history.location;
     const { page = 'list', tab = 'defect' } = searchUtil(search).parse(); //默认为缺陷列表页
     this.setState({ page, tab });
   }
@@ -83,7 +83,7 @@ class Overview extends Component {
           {page === 'list' &&
             <div className={styles.list}>
               <div className={styles.tabTitle}>
-                <p className={`${tab === 'defect' && styles.activeKey} `} onClick={() => { this.queryTargetData('defect'); }}>缺陷</p>
+                <p className={`${tab === 'defect' && styles.activeKey} `} onClick={() => { this.queryTargetData('defect'); }}>消缺</p>
                 <p className={`${tab === 'inspect' && styles.activeKey} `} onClick={() => { this.queryTargetData('inspect'); }}>巡检</p>
               </div>
               {tab === 'defect' && <DefectList {...this.props} />}
