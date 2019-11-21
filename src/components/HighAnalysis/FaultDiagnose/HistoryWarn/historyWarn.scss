@@ -1,51 +1,64 @@
 @import '../../../../theme/theme.scss';
-.historyWarn{
+
+.historyWarn {
   width: 100%;
-  .topSearch{
+
+  .topSearch {
     width: 100%;
     padding: 20px 0 0 30px;
-    button{
+
+    button {
       margin-left: 5px;
     }
   }
-  .topQuery{
+
+  .topQuery {
     width: 100%;
     padding: 10px 0 10px 30px;
     margin-top: 20px;
     background-color: #f9f9f9;
     display: flex;
-    >div{
+
+    > div {
       display: flex;
       line-height: 40px;
-      >span{
+
+      > span {
         margin-right: 5px;
       }
     }
-    div:nth-of-type(2){
+
+    > div:nth-of-type(2) {
       margin-left: 40px;
     }
-    .check{
+
+    .check {
       padding-top: 4px;
-      button{
+
+      button {
         margin: 0 10px;
       }
-      >span{
+
+      > span {
         cursor: pointer;
         color: $themeColor;
       }
     }
   }
-  .topPage{
+
+  .topPage {
     width: 100%;
     padding-right: 20px;
     display: flex;
     @include lineheight(52px);
     justify-content: flex-end;
   }
-  .filterWrap{
+
+  .filterWrap {
     padding-left: 30px;
   }
-  .filterBox{
+
+  .filterBox {
     display: flex;
     flex-shrink: 0;
   }
