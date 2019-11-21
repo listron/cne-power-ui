@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Select, Button } from 'antd';
-import styles from './participantSearch.scss';
+import styles from './defect.scss';
 
 const { Option } = Select;
 
@@ -70,6 +70,9 @@ class ParticipantSearch extends Component {
           }
           className={styles.searchSelect}
         >
+          {/* {participantList.map(e => (
+            <Option key={e} value={e}>{e}</Option>
+          ))} */}
           {participantList.map(e => {
             const { username, userFullname } = e || {};
             const userText = (username && userFullname) ? `${userFullname}(${username})` : (username || userFullname);
@@ -85,4 +88,24 @@ class ParticipantSearch extends Component {
 }
 
 export default ParticipantSearch;
+
+// {/* <Select
+//   style={{ width: '160px', marginRight: '12px' }}
+//   placeholder="请输入..."
+//   value={userId}
+//   onChange={this.userChange}
+//   getPopupContainer={() => this.userRef}
+//   showSearch
+//   optionFilterProp="children"
+//   filterOption={(input, option) =>
+//     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+//   }
+// >
+//   {inspectUserList.map(e => {
+//     const { username, userFullname } = e || {};
+//     // 同时存在两个名字以 里昂(liang) 方式展示, 否则展示存在项;
+//     const userText = (username && userFullname) ? `${userFullname}(${username})` : username;
+//     return <Option key={`${username}`} value={`${username}`}>{userText}</Option>;
+//   })}
+// </Select> */}
 

@@ -13,7 +13,7 @@ import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat'
 import { Gradient1, Gradient2, chartsLoading, themeConfig, chartsNodata } from '../../../../../../utils/darkConfig';
 class OutputTenMin extends Component {
   static propTypes = {
-    capabilityData: PropTypes.object,
+    capabilityData: PropTypes.any,
     yXaisName: PropTypes.string,
     // stationCode: PropTypes.number,
     yAxisUnit: PropTypes.string,
