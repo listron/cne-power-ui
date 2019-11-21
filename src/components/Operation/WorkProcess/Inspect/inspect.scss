@@ -8,6 +8,7 @@
 .inspectTable {
   display: flex;
   flex-direction: column;
+  min-width: 700px;
 
   :global {
 
@@ -17,27 +18,43 @@
     }
   }
 
+  .inspectName {
+    width: calc((100vw - 894px) * 0.25);
+
+    .nameWidth {
+      width: calc((100vw - 894px) * 0.25 - 20px);
+    }
+  }
+
+  .desc {
+    width: calc((100vw - 894px) * 0.50);
+
+    .inspectDesc {
+      width: calc((100vw - 894px) * 0.50 - 20px);
+    }
+  }
+
+  .inspectName,
   .nameWidth,
+  .desc,
   .textWidth,
   .inspectDesc {
-    max-width: 250px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     word-break: keep-all;
   }
 
-  .nameWidth {
-    max-width: 120px;
-  }
 
   .defectNum {
-    width: 64px;
-    text-align: center;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    text-align: right;
+    margin-right: 8px;
   }
+
+
+
+
+
 
 
   .cursorStyle {

@@ -137,7 +137,8 @@ class InspectTable extends React.Component {
       dataIndex: 'inspectName',
       key: 'inspectName',
       sorter: true,
-      width: 137,
+      // width: 137,
+      className: styles.inspectName,
       render: (text, record) => {
         return <div className={styles.nameWidth} title={text}>{text}</div>;
       },
@@ -146,7 +147,8 @@ class InspectTable extends React.Component {
       dataIndex: 'stationName',
       key: 'stationName',
       sorter: true,
-      width: 137,
+      // width: 137,
+      className: styles.inspectName,
       render: (text, record) => {
         return <div className={styles.nameWidth} title={text}>{text}</div>;
       },
@@ -154,7 +156,8 @@ class InspectTable extends React.Component {
       title: '工单描述',
       dataIndex: 'deviceTypeName',
       key: 'deviceTypeName',
-      width: 270,
+      // width: 270,
+      className: styles.desc,
       render: (text, record) => {
         return <div className={styles.inspectDesc} title={text}>{text}</div>;
       },
