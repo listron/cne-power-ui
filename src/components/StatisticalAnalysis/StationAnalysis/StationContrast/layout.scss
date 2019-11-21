@@ -70,80 +70,13 @@
 }
 
 .stationContrastTable {
-  // width: 1589px;
-  display: flex;
   border-bottom: 0;
   border-right: 0;
-  // overflow-x: scroll;
-  flex-direction: row;
-  flex-wrap: nowrap;
-
-  .limitWidth {
-
-    width: 100%;
-    overflow: auto;
-  }
-
-  .stationOne {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    line-height: 40px;
-    text-align: center;
-
-
-    // >div {
-    //   cursor: pointer;
-    //   display: flex;
-    //   flex-direction: row;
-
-    //   >span {
-    //     display: flex;
-    //     flex: 1;
-    //   }
-    // }
-
-    .test {
-      display: flex;
-      flex: 1;
-      flex-direction: row;
-      cursor: pointer;
-    }
-
-    .baseInfoBg {
-      width: 150px;
-      flex: 1;
-      cursor: pointer;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-
-    .contrastDetailPopover {
-      display: flex;
-      flex-direction: row;
-      // flex: 1;
-    }
-
-    .stationContrastOne {
-      display: flex;
-      flex: 1;
-      border-left: 0;
-      justify-content: center;
-      cursor: pointer;
-      width: 150px;
-    }
-
-    .stationContrastTwo {
-      display: flex;
-      flex: 1;
-      justify-content: center;
-    }
-  }
+  width: 100%;
+  overflow: auto;
 
   .baseNameBox {
-    display: flex;
+    float: left;
     flex-direction: column;
     width: 300px;
 
@@ -152,8 +85,6 @@
       flex: 1;
 
       .baseClassifyName {
-        // text-align: center;
-
         display: flex;
         flex: 5;
         justify-content: center;
@@ -171,15 +102,78 @@
         >div {
           flex: 1;
           padding-right: 8px;
-          width: 200px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
 
         }
+
+        .stationnameBg {
+          text-align: right;
+
+          >div {
+            width: 200px;
+            padding-right: 8px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+
+        }
       }
     }
   }
+
+  .limitWidth {
+    overflow: auto;
+    flex: 1;
+    display: flex;
+  }
+
+  .stationOne {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    line-height: 40px;
+    text-align: center;
+
+    .test {
+      display: flex;
+      flex-direction: row;
+      cursor: pointer;
+    }
+
+    .baseInfoBg {
+      min-width: 150px;
+      cursor: pointer;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+
+    .contrastDetailPopover {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .stationContrastOne {
+      display: flex;
+      flex: 1;
+      border-left: 0;
+      justify-content: center;
+      cursor: pointer;
+      min-width: 150px;
+    }
+
+    .stationContrastTwo {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+    }
+  }
+
+
 }
 
 .contrastOverlayClassName {
@@ -210,7 +204,6 @@
   border-radius: 4px;
   padding-top: 20px;
   line-height: 560px;
-  // position: relative;
 
 }
 

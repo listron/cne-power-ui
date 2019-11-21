@@ -105,7 +105,7 @@ class StationContrastTable extends React.Component {
               <div className={styles.rowName} >
                 {e.rowName.map((item, index) => {
                   if (item === '电站名称') {
-                    return (<div className={styles.stationnameBg} key={index}>{item}</div>);
+                    return (<div className={styles.stationnameBg}><div key={index}>{item}</div></div>);
                   }
                   return (<div key={index}>{item}</div>);
                 })}
