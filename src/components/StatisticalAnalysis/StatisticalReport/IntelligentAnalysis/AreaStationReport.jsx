@@ -39,94 +39,96 @@ class AreaStationReport extends Component{
                 <span className={styles.text}>{dataFormats(areaStationInfo.aveEquLossPowerhours, '--', 2, true) || '--'}</span>
                 <span>h。</span>
               </p>
-
-              <p className={styles.bigText}>
-                <span>（1）该区域等效利用小时数最高的三个电站为</span>
-                <span className={styles.text}>{highEquUsehourStations.map(e=>e.stationName).join('、')}</span>
-                <span>。</span>
-              </p>
-
-              <div className={styles.fileBox}>
-                <div className={styles.stationName}>
-                  <p className={styles.titlesText}>电站名称</p>
-                  {highEquUsehourStations.map((e) => (
-                    <p>{e.stationName || '--'}</p>
-                  ))}
-                </div>
-
-                <div className={styles.lossEquivalentHours}>
-                  <p className={styles.titlesText}>损失等效小时数</p>
-                  {highEquUsehourStations.map((e) => (
-                    <p>{dataFormats(e.hours, '--', 2, true) || '--'}</p>
-                  ))}
-                </div>
-
-                <div className={styles.sunnyDays}>
-                  <p className={styles.titlesText}>晴天天数（天）</p>
-                  {highEquUsehourStations.map((e) => (
-                    <p>{dataFormats(e.sunnyDays, '--', 2, true) || '--'}</p>
-                  ))}
-                </div>
-
-                <div className={styles.highProportion}>
-                  <p className={styles.titlesText}>占比（%）</p>
-                  {highEquUsehourStations.map((e) => (
-                    <p>{dataFormats(e.proportion, '--', 2, true) || '--'}</p>
-                  ))}
-                </div>
-              </div>
-
+              {highEquUsehourStations.length !== 0 &&
               <div>
-                <p className={styles.distanceTop + ' ' + styles.bigText}>
-                  <span>（2）该区域等效利用小时数最低的三个电站为</span>
-                  <span className={styles.text}>{lowEquUsehourStations.map(e=>e.stationName).join('、')}</span>
-                  <span>。原因说明：</span>
+                <p className={styles.bigText}>
+                  <span>（1）该区域等效利用小时数最高的三个电站为</span>
+                  <span className={styles.text}>{highEquUsehourStations.map(e=>e.stationName).join('、')}</span>
+                  <span>。</span>
                 </p>
 
                 <div className={styles.fileBox}>
                   <div className={styles.stationName}>
                     <p className={styles.titlesText}>电站名称</p>
-                    {lowEquUsehourStations.map((e) => (
+                    {highEquUsehourStations.map((e) => (
                       <p>{e.stationName || '--'}</p>
                     ))}
                   </div>
 
                   <div className={styles.lossEquivalentHours}>
                     <p className={styles.titlesText}>损失等效小时数</p>
-                    {lowEquUsehourStations.map((e) => (
+                    {highEquUsehourStations.map((e) => (
                       <p>{dataFormats(e.hours, '--', 2, true) || '--'}</p>
                     ))}
                   </div>
 
                   <div className={styles.sunnyDays}>
                     <p className={styles.titlesText}>晴天天数（天）</p>
-                    {lowEquUsehourStations.map((e) => (
+                    {highEquUsehourStations.map((e) => (
                       <p>{dataFormats(e.sunnyDays, '--', 2, true) || '--'}</p>
                     ))}
                   </div>
 
                   <div className={styles.highProportion}>
                     <p className={styles.titlesText}>占比（%）</p>
-                    {lowEquUsehourStations.map((e) => (
+                    {highEquUsehourStations.map((e) => (
                       <p>{dataFormats(e.proportion, '--', 2, true) || '--'}</p>
                     ))}
                   </div>
                 </div>
+                </div>}
+                
+                {lowEquUsehourStations !== 0 &&
+                <div>
+                  <p className={styles.distanceTop + ' ' + styles.bigText}>
+                    <span>（<span>{highEquUsehourStations.length !== 0 ? '2' : '1'}</span>）该区域等效利用小时数最低的三个电站为</span>
+                    <span className={styles.text}>{lowEquUsehourStations.map(e=>e.stationName).join('、')}</span>
+                    <span>。原因说明：</span>
+                  </p>
 
-              </div>
+                  <div className={styles.fileBox}>
+                    <div className={styles.stationName}>
+                      <p className={styles.titlesText}>电站名称</p>
+                      {lowEquUsehourStations.map((e) => (
+                        <p>{e.stationName || '--'}</p>
+                      ))}
+                    </div>
+
+                    <div className={styles.lossEquivalentHours}>
+                      <p className={styles.titlesText}>损失等效小时数</p>
+                      {lowEquUsehourStations.map((e) => (
+                        <p>{dataFormats(e.hours, '--', 2, true) || '--'}</p>
+                      ))}
+                    </div>
+
+                    <div className={styles.sunnyDays}>
+                      <p className={styles.titlesText}>晴天天数（天）</p>
+                      {lowEquUsehourStations.map((e) => (
+                        <p>{dataFormats(e.sunnyDays, '--', 2, true) || '--'}</p>
+                      ))}
+                    </div>
+
+                    <div className={styles.highProportion}>
+                      <p className={styles.titlesText}>占比（%）</p>
+                      {lowEquUsehourStations.map((e) => (
+                        <p>{dataFormats(e.proportion, '--', 2, true) || '--'}</p>
+                      ))}
+                    </div>
+                  </div>
+                </div>}
 
               <p className={styles.distanceTop + ' ' + styles.bigText}>
                 <span>2、区域内电站平均计划完成率为</span>
                 <span className={styles.text}>{dataFormats(areaStationInfo.aveComplateRate, '--', 2, true) || '--'}</span>
                 <span>%。</span>
               </p>
-
-              <p className={styles.bigText}>
-                <span>（1）该区域计划完成率最高的三个电站为</span>
-                <span className={styles.text}>{highComplateRateStations.map(e=>e.stationName).join('、')}</span>
-                <span>。原因说明：</span>
-              </p>
-
+              {highComplateRateStations.length !== 0 &&
+              <div>
+                <p className={styles.bigText}>
+                  <span>（1）该区域计划完成率最高的三个电站为</span>
+                  <span className={styles.text}>{highComplateRateStations.map(e=>e.stationName).join('、')}</span>
+                  <span>。原因说明：</span>
+                </p>
 
                 <div className={styles.fileBox}>
                   <div className={styles.stationName}>
@@ -157,12 +159,15 @@ class AreaStationReport extends Component{
                     ))}
                   </div>
                 </div>
+              </div>}
 
-              <p className={styles.bigText + ' ' + styles.distanceTop}>
-                <span>（2）该区域计划完成率最低的三个电站为</span>
-                <span className={styles.text}>{lowComplateRateStations.map(e=>e.stationName).join('、')}</span>
-                <span>。原因说明：</span>
-              </p>
+              {lowComplateRateStations.length !== 0 &&
+              <div>
+                <p className={styles.bigText + ' ' + styles.distanceTop}>
+                  <span>（<span>{highComplateRateStations.length !== 0 ? '2' : '1'}</span>）该区域计划完成率最低的三个电站为</span>
+                  <span className={styles.text}>{lowComplateRateStations.map(e=>e.stationName).join('、')}</span>
+                  <span>。原因说明：</span>
+                </p>
 
                 <div className={styles.fileBox}>
                   <div className={styles.stationName}>
@@ -193,6 +198,7 @@ class AreaStationReport extends Component{
                     ))}
                   </div>
                 </div>
+              </div>}
 
               <p className={styles.distanceTop + ' ' + styles.bigText}>
                 <span>3、区域内电站总损失电量为</span>
@@ -262,48 +268,52 @@ class AreaStationReport extends Component{
                 <span className={styles.text}>{dataFormats(areaStationInfo.aveEquLossPowerhours, '--', 2, true) || '--'}</span>
                 <span>h。</span>
               </p>
+              {highEquUsehourStations.length !== 0 &&
+              <div>
+                <p className={styles.bigText}>
+                  <span>（1）该区域等效利用小时数最高的三个电站为</span>
+                  <span className={styles.text}>{highEquUsehourStations.map(e=>e.stationName).join('、')}</span>
+                  <span>。原因说明：</span>
+                </p>
 
-              <p className={styles.bigText}>
-                <span>（1）该区域等效利用小时数最高的三个电站为</span>
-                <span className={styles.text}>{highEquUsehourStations.map(e=>e.stationName).join('、')}</span>
-                <span>。原因说明：</span>
-              </p>
+                <div className={styles.fileBox}>
+                  <div className={styles.stationName}>
+                    <p className={styles.titlesText}>电站名称</p>
+                    {highEquUsehourStations.map((e) => (
+                      <p>{e.stationName || '--'}</p>
+                    ))}
+                  </div>
 
-              <div className={styles.fileBox}>
-                <div className={styles.stationName}>
-                  <p className={styles.titlesText}>电站名称</p>
-                  {highEquUsehourStations.map((e) => (
-                    <p>{e.stationName || '--'}</p>
-                  ))}
+                  <div className={styles.lossEquivalentHours}>
+                    <p className={styles.titlesText}>损失等效小时数</p>
+                    {highEquUsehourStations.map((e) => (
+                      <p>{dataFormats(e.hours, '--', 2, true) || '--'}</p>
+                    ))}
+                  </div>
+
+                  <div className={styles.sunnyDays}>
+                    <p className={styles.titlesText}>晴天天数（天）</p>
+                    {highEquUsehourStations.map((e) => (
+                      <p>{dataFormats(e.sunnyDays, '--', 2, true) || '--'}</p>
+                    ))}
+                  </div>
+
+                  <div className={styles.highProportion}>
+                    <p className={styles.titlesText}>占比（%）</p>
+                    {highEquUsehourStations.map((e) => (
+                      <p>{dataFormats(e.proportion, '--', 2, true) || '--'}</p>
+                    ))}
+                  </div>
                 </div>
-
-                <div className={styles.lossEquivalentHours}>
-                  <p className={styles.titlesText}>损失等效小时数</p>
-                  {highEquUsehourStations.map((e) => (
-                    <p>{dataFormats(e.hours, '--', 2, true) || '--'}</p>
-                  ))}
-                </div>
-
-                <div className={styles.sunnyDays}>
-                  <p className={styles.titlesText}>晴天天数（天）</p>
-                  {highEquUsehourStations.map((e) => (
-                    <p>{dataFormats(e.sunnyDays, '--', 2, true) || '--'}</p>
-                  ))}
-                </div>
-
-                <div className={styles.highProportion}>
-                  <p className={styles.titlesText}>占比（%）</p>
-                  {highEquUsehourStations.map((e) => (
-                    <p>{dataFormats(e.proportion, '--', 2, true) || '--'}</p>
-                  ))}
-                </div>
-              </div>
-
-              <p className={styles.distanceTop + ' ' + styles.bigText}>
-                <span>（2）该区域等效利用小时数最低的三个电站为</span>
-                <span className={styles.text}>{lowEquUsehourStations.map(e=>e.stationName).join('、')}</span>
-                <span>。原因说明：</span>
-              </p>
+              </div>}
+              
+              {lowEquUsehourStations !== 0 &&
+              <div>
+                <p className={styles.distanceTop + ' ' + styles.bigText}>
+                  <span>（<span>{highEquUsehourStations.length !== 0 ? '2' : '1'}</span>）该区域等效利用小时数最低的三个电站为</span>
+                  <span className={styles.text}>{lowEquUsehourStations.map(e=>e.stationName).join('、')}</span>
+                  <span>。原因说明：</span>
+                </p>
 
                 <div className={styles.fileBox}>
                   <div className={styles.stationName}>
@@ -334,18 +344,20 @@ class AreaStationReport extends Component{
                     ))}
                   </div>
                 </div>
+              </div>}
 
               <p className={styles.distanceTop + ' ' + styles.bigText}>
                 <span>2、区域内电站平均计划完成率为</span>
                 <span className={styles.text}>{dataFormats(areaStationInfo.aveComplateRate,'--',2,true) || '--'}</span>
                 <span>%。</span>
               </p>
-
-              <p className={styles.bigText}>
-                <span>（1）该区域计划完成率最高的三个电站为</span>
-                <span className={styles.text}>{highComplateRateStations.map(e=>e.stationName).join('、')}</span>
-                <span>。原因说明：</span>
-              </p>
+              {highComplateRateStations.length !== 0 &&
+                <div>
+                <p className={styles.bigText}>
+                  <span>（1）该区域计划完成率最高的三个电站为</span>
+                  <span className={styles.text}>{highComplateRateStations.map(e=>e.stationName).join('、')}</span>
+                  <span>。原因说明：</span>
+                </p>
 
                 <div className={styles.fileBox}>
                   <div className={styles.stationName}>
@@ -376,12 +388,15 @@ class AreaStationReport extends Component{
                     ))}
                   </div>
                 </div>
+              </div>}
 
-              <p className={styles.distanceTop + ' ' + styles.bigText}>
-                <span>（2）该区域计划完成率最低的三个电站为</span>
-                <span className={styles.text}>{lowComplateRateStations.map(e=>e.stationName).join('、')}</span>
-                <span>。原因说明：</span>
-              </p>
+              {lowComplateRateStations.length !== 0 &&
+              <div>
+                <p className={styles.distanceTop + ' ' + styles.bigText}>
+                  <span>（<span>{highComplateRateStations.length !== 0 ? '2' : '1'}</span>）该区域计划完成率最低的三个电站为</span>
+                  <span className={styles.text}>{lowComplateRateStations.map(e=>e.stationName).join('、')}</span>
+                  <span>。原因说明：</span>
+                </p>
 
                 <div className={styles.fileBox}>
                   <div className={styles.stationName}>
@@ -412,6 +427,7 @@ class AreaStationReport extends Component{
                     ))}
                   </div>
                 </div>
+              </div>}
 
               <p className={styles.distanceTop + ' ' + styles.bigText}>
                 <span>3、区域内电站总损失电量为</span>

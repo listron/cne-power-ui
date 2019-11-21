@@ -3,7 +3,7 @@ import { reportStationAction } from './reportStationAction';
 import moment from 'moment';
 const initState = immutable.fromJS({
   loading: false,
-  exportLoading: false,
+  downloading: false,
   pageSize: 10,
   pageNum: 1,
   total: 0,

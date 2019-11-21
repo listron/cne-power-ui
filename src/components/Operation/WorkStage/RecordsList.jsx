@@ -73,7 +73,7 @@ class RecordsList extends PureComponent {
         dataIndex: 'handleUser',
         sorter: (a, b) => a.handleUser && a.handleUser.localeCompare(b.handleUser),
         className: styles.handleUser,
-        render: (text = '') => (<div title={text} className={styles.handleUserText}>{text}</div>),
+        render: (text = '') => (<div title={text} className={styles.handleUserText}>{text || '--'}</div>),
       }, {
         title: '完成情况', // completeStatus	Int	完成情况  0未完成  1已完成
         dataIndex: 'completeStatus',

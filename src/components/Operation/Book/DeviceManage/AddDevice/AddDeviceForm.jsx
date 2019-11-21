@@ -53,6 +53,7 @@ class AddDeviceForm extends Component {
                 ? addPvDeviceModeData.deviceModeCode
                 : values.componentMode,
               branchCount: +values.branchCount,
+              connectedBranches: values.connectedBranches.map(e => parseFloat(e)),
               // connectedBranches: values.connectedBranches,
             };
           }

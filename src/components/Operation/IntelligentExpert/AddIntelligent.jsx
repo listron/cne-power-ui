@@ -22,6 +22,7 @@ function debounce(callback, delay) { //（防抖）
 }
 class AddIntelligent extends Component {
   static propTypes = {
+    theme: PropTypes.string,
     deviceTypes: PropTypes.array,
     defectTypes: PropTypes.array,
     listParams: PropTypes.object,
@@ -209,7 +210,7 @@ class AddIntelligent extends Component {
 
   render() {
     const { showWarningTip, tooltipName, faultDescripDis, initFaultCode } = this.state;
-    const { deviceTypes, defectTypes, deviceModeList, stationType, faultCodeList, uploadFileList } = this.props;
+    const { theme, deviceTypes, defectTypes, deviceModeList, stationType, faultCodeList, uploadFileList } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const deviceTypeCode = getFieldValue('deviceTypeCode'); // 设备code
     const option = faultCodeList.map(e => <Option key={e.id} value={e.faultCode} desc={e.faultCodeDesc}>{e.faultCode}</Option>);
@@ -245,7 +246,7 @@ class AddIntelligent extends Component {
         <span ref={'wrap'} />
         <div className={styles.formBox}>
           <Form className={styles.preFormStyle}>
-            <FormItem label="设备类型" colon={false}>
+            <FormItem label="设备类型" className={styles.formItem} colon={false}>
               {getFieldDecorator('deviceTypeCode', {
                 rules: [{ required: true, message: '请选择' }],
                 // initialValue: deviceTypes.deviceTypeCode || null,
@@ -254,13 +255,15 @@ class AddIntelligent extends Component {
                   placeholder="请选择"
                   style={{ width: 198 }}
                   onChange={this.onChangeDeviceType}
+                  getPopupContainer={() => this.deviceTypeRef}
                 >
                   {deviceTypes.map(e => (
                     <Option key={e.deviceTypeCode} value={e.deviceTypeCode}> {e.deviceTypeName}</Option>))}
                 </Select>
               )}
+              <span ref={(ref) => { this.deviceTypeRef = ref; }} />
             </FormItem>
-            <FormItem label="设备型号" colon={false}>
+            <FormItem label="设备型号" className={styles.formItem} colon={false}>
               {getFieldDecorator('modeId', {
                 rules: [{ required: stationType === '0', message: '请选择' }],
                 initialValue: [],
@@ -272,6 +275,7 @@ class AddIntelligent extends Component {
                   onChange={this.deviceModeListChange}
                   disabled={!deviceTypeCode}
                   max={1}
+                  theme={theme}
                 />
               )}
             </FormItem>
@@ -285,8 +289,10 @@ class AddIntelligent extends Component {
                   options={groupedLostGenTypes}
                   expandTrigger="hover"
                   placeholder="请选择"
+                  getPopupContainer={() => this.faultTypeRef}
                 />
               )}
+              <span ref={(ref) => {this.faultTypeRef = ref;}} />
             </FormItem>
             {stationType === '1' &&
               <React.Fragment>
@@ -328,7 +334,7 @@ class AddIntelligent extends Component {
                   {initFaultCode && <i className="iconfont icon-done" onClick={this.addFaultCode} />}
                   <span style={{ marginLeft: 4, fontSize: 12 }}> (注:故障代码与故障描述为联动条目，需等待系统查验是否已存在)</span>
                 </div>
-                <FormItem classsName={styles.formItem} label="故障描述" colon={false}>
+                <FormItem className={styles.formItem} label="故障描述" colon={false}>
                   {getFieldDecorator('faultDescription', {
                     rules: [{ required: true, message: '请输入故障描述' }],
                   })(
@@ -370,7 +376,7 @@ class AddIntelligent extends Component {
                 <InputLimit end={true} size={999} width={590} placeholder="请输入..." />
               )}
             </FormItem>
-            <Form.Item label="上传附件" colon={false}>
+            <Form.Item label="上传附件" colon={false} className={styles.formItem} >
               {getFieldDecorator('annexs', {
               })(
                 <Upload
@@ -380,7 +386,10 @@ class AddIntelligent extends Component {
                   fileList={initFileList}
                   onPreview={this.onPreview}
                 >
-                  <Button> <Icon type="upload" /> 选择文件上传</Button>  <span className={styles.extraSpan}> 上传文件不得大于100M</span>
+                  <Button className={styles.uploaderBtn}>
+                    <Icon type="upload" /> 选择文件上传
+                  </Button>
+                  <span className={styles.extraSpan}> 上传文件不得大于100M</span>
                 </Upload>
               )}
             </Form.Item>

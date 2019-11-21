@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import styles from "./deviceManage.scss";
-import { Table } from "antd";
-import PropTypes from "prop-types";
-import WarningTip from "../../../Common/WarningTip";
-import TableColumnTitle from "../../../Common/TableColumnTitle";
-import { numWithComma } from "../../../../utils/utilFunc";
+import React, { Component } from 'react';
+import styles from './deviceManage.scss';
+import { Table } from 'antd';
+import PropTypes from 'prop-types';
+import WarningTip from '../../../Common/WarningTip';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 class DeviceManageList extends Component {
   static propTypes = {
-    loading: PropTypes.bool,
+    tableloading: PropTypes.bool,
     queryParams: PropTypes.object,
     deviceList: PropTypes.array,
     selectedRowKeys: PropTypes.array,
@@ -20,21 +20,21 @@ class DeviceManageList extends Component {
     getConnectDevice: PropTypes.func,
     getPvDevice: PropTypes.func,
     orderMethod: PropTypes.string,
-    orderField: PropTypes.string
+    orderField: PropTypes.string,
   };
   constructor(props) {
     super(props);
     this.state = {
       deviceRecord: {},
       showDeleteWarning: false,
-      warningTipText: "确定要删除选中设备信息?"
+      warningTipText: '确定要删除选中设备信息?',
     };
   }
 
   onSelectChange = (keys, record) => {
     this.props.changeDeviceManageStore({
       selectedRowData: record,
-      selectedRowKeys: keys
+      selectedRowKeys: keys,
     });
   };
 
@@ -44,8 +44,8 @@ class DeviceManageList extends Component {
     const { field, order } = sorter;
     getDeviceList({
       ...queryParams,
-      sortField: field ? field : "",
-      sortMethod: order ? (sorter.order === "ascend" ? "1" : "2") : ""
+      sortField: field ? field : '',
+      sortMethod: order ? (sorter.order === 'ascend' ? '1' : '2') : '',
     });
   };
 
@@ -55,30 +55,30 @@ class DeviceManageList extends Component {
       orderMethod,
       getStationDeviceDetail,
       changeDeviceManageStore,
-      getDevicePartInfo
+      getDevicePartInfo,
     } = this.props;
     getStationDeviceDetail({
       deviceFullCode: record.deviceFullCode,
-      selectedStationIndex: record.key
+      selectedStationIndex: record.key,
     });
-    changeDeviceManageStore({ showPage: "detail" });
+    changeDeviceManageStore({ showPage: 'detail' });
     getDevicePartInfo({
       deviceFullcode: record.deviceFullCode,
 
     });
   };
   showDeviceEdit = record => {
-    this.props.changeDeviceManageStore({ showPage: "edit" });
+    this.props.changeDeviceManageStore({ showPage: 'edit' });
     this.props.getStationDeviceDetail({
       deviceFullCode: record.deviceFullCode,
-      selectedStationIndex: record.key
+      selectedStationIndex: record.key,
     });
     this.props.getConnectDevice({
       stationCode: this.props.stationCode,
-      deviceTypeCode: record.deviceTypeCode
+      deviceTypeCode: record.deviceTypeCode,
     });
     this.props.getPvDevice({
-      deviceTypeCode: "509"
+      deviceTypeCode: '509',
     });
   };
   deleteDevice = record => {
@@ -99,13 +99,13 @@ class DeviceManageList extends Component {
     const { selectedRowKeys } = this.props;
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectChange
+      onChange: this.onSelectChange,
     };
     const deviceListColumn = [
       {
-        title: "设备名称",
-        dataIndex: "deviceName",
-        key: "deviceName",
+        title: '设备名称',
+        dataIndex: 'deviceName',
+        key: 'deviceName',
         sorter: true,
         render: (text, record) => (
           <span
@@ -114,79 +114,57 @@ class DeviceManageList extends Component {
           >
             {text}
           </span>
-        )
+        ),
       },
       {
-        title: "设备类型",
-        dataIndex: "deviceTypeName",
-        key: "deviceTypeName",
+        title: '设备类型',
+        dataIndex: 'deviceTypeName',
+        key: 'deviceTypeName',
         sorter: true,
         render(text) {
-          return text ? text : "--";
-        }
+          return text ? text : '--';
+        },
       },
       {
-        title: "设备型号",
-        dataIndex: "deviceModeName",
-        key: "deviceModeName",
-        sorter: true
+        title: '设备型号',
+        dataIndex: 'deviceModeName',
+        key: 'deviceModeName',
+        sorter: true,
       },
       {
-        title: "厂家",
-        dataIndex: "producerName",
-        key: "producerName",
-        sorter: true
+        title: '厂家',
+        dataIndex: 'producerName',
+        key: 'producerName',
+        sorter: true,
       },
       {
-        title: "制造商",
-        dataIndex: "madeName",
-        key: "madeName",
+        title: '制造商',
+        dataIndex: 'madeName',
+        key: 'madeName',
         sorter: true,
         render(text) {
-          return text ? text : "--";
-        }
+          return text ? text : '--';
+        },
       },
       {
-        title: "供货商",
-        dataIndex: "supplierName",
-        key: "supplierName",
+        title: '供货商',
+        dataIndex: 'supplierName',
+        key: 'supplierName',
         sorter: true,
         render(text) {
-          return text ? text : "--";
-        }
+          return text ? text : '--';
+        },
       },
-      //  {
-      //   title: '生产厂商',
-      //   dataIndex: 'producerName',
-      //   key: 'producerName',
-      // }, {
-      //   title: '关联设备',
-      //   dataIndex: 'connectDeviceName',
-      //   key: 'connectDeviceName',
-      //   sorter: true,
-      // }, {
-      //   title: () => <TableColumnTitle title="装机容量" unit="kW" />,
-      //   dataIndex: 'deviceCapacity',
-      //   key: 'deviceCapacity',
-      //   render(text) { return numWithComma(text); },
-      //   sorter: true,
-      // }, {
-      //   title: '是否显示',
-      //   dataIndex: 'enableDisplay',
-      //   key: 'enableDisplay',
-      //   sorter: true,
-      //   render: (text, record) => record.enableDisplay ? '是' : '否'
-      // },
       {
-        title: "操作",
-        dataIndex: "edit",
-        key: "edit",
+        title: '操作',
+        dataIndex: 'edit',
+        key: 'edit',
         render: (text, record) => {
           return (
             <div className={styles.editStyle}>
-              {record.deviceTypeCode === "509" ? (
+              {record.deviceTypeCode === '509' ? (
                 <span
-                  style={{ cursor: "not-allowed", color: "#f5f5f5" }}
+                  style={{ cursor: 'not-allowed', color: '#f5f5f5' }}
                   title="编辑"
                   className="iconfont icon-edit"
                 />
@@ -194,7 +172,7 @@ class DeviceManageList extends Component {
                   <span
                     className={styles.edit}
                     title="编辑"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                     className="iconfont icon-edit"
                     onClick={() => this.showDeviceEdit(record)}
                   />
@@ -206,10 +184,10 @@ class DeviceManageList extends Component {
               />
             </div>
           );
-        }
-      }
+        },
+      },
     ];
-    const { loading, deviceList } = this.props;
+    const { tableloading, deviceList } = this.props;
     const { showDeleteWarning, warningTipText } = this.state;
     return (
       <div className={styles.deviceManageList}>
@@ -221,14 +199,14 @@ class DeviceManageList extends Component {
           />
         )}
         <Table
-          loading={loading}
+          loading={tableloading}
           onChange={this.tableChange}
           rowSelection={rowSelection}
           columns={deviceListColumn}
           dataSource={deviceList.map((e, i) => ({ key: i, ...e }))}
           pagination={false}
           locale={{
-            emptyText: <img width="223" height="164" src="/img/nodata.png" />
+            emptyText: <img width="223" height="164" src="/img/nodata.png" />,
           }}
         />
       </div>
