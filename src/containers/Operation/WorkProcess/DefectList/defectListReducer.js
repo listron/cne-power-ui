@@ -26,6 +26,7 @@ const initState = immutable.fromJS({
     sortMethod: 'desc',
     pageSize: 10,
     pageNum: 1,
+    defectCategory: '', // 缺陷分类
   },
   total: 0, //总数
   selectedRowKeys: [], //选中的条数

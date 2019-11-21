@@ -17,6 +17,8 @@
       color: $darkColor;
       letter-spacing: 4px;
       margin-left: 44px;
+      width: calc(100% - 100px);
+      @include overflowText();
     }
     .backIcon {
       display: inline-block;
@@ -28,6 +30,7 @@
       line-height: 64px;
       width: 64px;
       cursor: pointer;
+      flex: 0 0 64px;
     }
   }
   .defectDetailCont {

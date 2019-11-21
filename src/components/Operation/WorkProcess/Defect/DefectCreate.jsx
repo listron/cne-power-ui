@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Button, Select, Switch, Radio, Cascader, Modal, Icon, Tooltip } from 'antd';
+import { Form, Button, Select, Radio, Cascader, Tooltip, DatePicker } from 'antd';
 import pathConfig from '@constants/path';
 import styles from './defect.scss';
 import StationSelect from '../../../Common/StationSelect';
@@ -9,37 +9,42 @@ import InputLimit from '../../../Common/InputLimit';
 import DeviceSelect from '../../../Common/DeviceSelect/index';
 import DefectProcessForm from './DefectProcessForm';
 import SolutionLibrary from './SolutionLibrary';
+import moment from 'moment';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class DefectCreate extends Component {
   static propTypes = {
     form: PropTypes.object,
-    stationName: PropTypes.string, //电站名称
     stations: PropTypes.array,
     defectDetail: PropTypes.object,
     getKnowledgebase: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
-    changeStore: PropTypes.func,
     likeKnowledgebase: PropTypes.func,
     editDefect: PropTypes.bool,
     commonList: PropTypes.array,
     deviceTypes: PropTypes.array,
     defectTypes: PropTypes.array,
     getLostGenType: PropTypes.func,
+    theme: PropTypes.string,
+    createDefect: PropTypes.func,
+    history: PropTypes.object,
 
   };
 
   constructor(props) {
     super(props);
-    this.state = {
-      checked: false,
-      deviceAreaCode: '',
-      deviceTypeCode: '',
-      dealVisible: false,
-    };
   }
 
+  componentDidMount() {
+    const { defectDetail = {} } = this.props;
+    const { stationCode, deviceTypeCode, defectTypeCode, stationType } = defectDetail;
+    if (stationCode) {
+      this.props.getStationDeviceTypes({ stationCodes: stationCode }); // 设备类型
+      this.props.getKnowledgebase({ faultTypeIds: [defectTypeCode], deviceTypeCodes: [deviceTypeCode], type: +stationType });
+      this.props.getLostGenType({ stationType, objectType: 1, deviceTypeCode }); // 缺陷类型
+    }
+  }
 
   componentWillReceiveProps(nextProps) {
     const { defectId, stationCode, deviceTypeCode, defectTypeCode, stationType } = nextProps.defectDetail;
@@ -52,36 +57,25 @@ class DefectCreate extends Component {
   }
 
 
-
-  componentWillUnmount() {
-    this.props.changeStore({ defectDetail: {}, knowledgebaseList: [] });
-  }
-
-
   onStationSelected = (stations) => { // 电站的选择
     const selectedStation = stations && stations[0] || {};
     const stationCodes = selectedStation.stationCode || null;
     if (stationCodes) {
       this.props.getStationDeviceTypes({ stationCodes }); // 获取设备类型
-      this.props.changeStore({ devices: [] });
     }
-    this.props.form.setFieldsValue({ stations: stations, deviceTypeCode: null, defectTypeCode: null, deviceCode: null });
+    this.props.form.setFieldsValue({ stations: stations, deviceTypeCode: null, defectTypeCode: null, deviceCodeArr: [] });
   }
 
   onChangeDeviceType = (deviceTypeCode) => { // 选择设备类型
     const { form } = this.props;
     const selectStation = form.getFieldValue('stations')[0];
-    const { stationCode, stationType } = selectStation; // 电站编码 电站类型
-    this.props.form.setFieldsValue({ defectTypeCode: null, deviceCode: null }); // 设备名称和缺陷类型置空
-
-    this.setState({ deviceTypeCode });
-    this.props.changeStore({ stationCode, deviceTypeCode });
-
-    this.props.getLostGenType({ stationType, objectType: 1, deviceTypeCode }); // 获取缺陷类型 设备名称组件内部调取
+    const { stationType } = selectStation; // 电站编码 电站类型
+    this.props.form.setFieldsValue({ defectTypeCode: null, deviceCodeArr: [] }); // 设备名称和缺陷类型置空
+    this.props.getLostGenType({ stationType, objectType: 1, deviceTypeCode }); // 获取缺陷类型 设备名称组件内部调取  
   }
 
-  selectedDevice = (value) => { // 选择设备
-    this.props.form.setFieldsValue({ deviceCode: value });
+  selectedDevice = (value) => { // 选择设备名称
+    this.props.form.setFieldsValue({ deviceCodeArr: value });
   }
 
   defectTypeChange = (value) => { // 选择缺陷类型 deviceTypeCode  faultTypeId
@@ -89,75 +83,51 @@ class DefectCreate extends Component {
     const faultTypeId = value.length > 0 && value[1] || '';
     const deviceTypeCode = getFieldValue('deviceTypeCode'); // 设备code
     const selectStation = getFieldValue('stations')[0] || {};
-    const stationType = selectStation.stationType; // 电站类型
+    const { stationType } = selectStation;
     this.props.getKnowledgebase({ faultTypeIds: [faultTypeId], deviceTypeCodes: [deviceTypeCode], type: stationType });
   }
 
+  callBackTableList = () => { // 返回列表页
+    const { history } = this.props;
+    history.push('/operation/workProcess/view?page=list&tab=defect');
+  }
+
   onDefectCreate = (isContinueAdd) => { // 保存的状态
-    const { error, form, onDefectCreateNew, submitDefect, container, defectDetail, changeStore } = this.props;
+    const { form, defectDetail } = this.props;
+    const { defectId } = defectDetail;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // 电站类型(0:风电，1光伏，2：全部)
-        const { stationCode, stationType } = values.stations[0];
-        const deviceCode = values.deviceCode[0].deviceCode;
-        const partitionCode = values.stations[0].zoneCode;
-        const partitionName = values.stations[0].zoneName;
+        console.log(values);
+        const { defectCategory, deviceCodeArr = [], imgDescribe, photoData, stations, defectTypeCode, createTime, ...rest } = values;
+        const { stationCode, stationType } = stations[0];
+        const { deviceCode = '' } = deviceCodeArr.length > 0 && deviceCodeArr[0];
         const rotatePhotoArray = [];
         let photoAddress = [];
-        const reasonDesc = values.reasonDesc || '';
-        if (container === 'create') {
-          photoAddress = values.imgDescribe.map(e => {
-            rotatePhotoArray.push(`${e.response},${e.rotate}`);
-            return e.response;
-          }).join(',');
-        }
-        if (container === 'edit') {
-          photoAddress = values.imgDescribe.map(e => {
-            rotatePhotoArray.push(`${e.thumbUrl},${e.rotate}`);
-            return e.thumbUrl;
-          }).join(',');
-        }
-        const photoSolveAddress = values.imgHandle && values.imgHandle.map(e => {
+        photoAddress = imgDescribe.map(e => { // 基本信息 照片信息列表
+          rotatePhotoArray.push(`${e.response || e.thumbUrl},${e.rotate}`);
+          return e.response || e.thumbUrl;
+        }).join(',');
+        const photoSolveAddress = photoData && photoData.map(e => { // 处理照片过程
           rotatePhotoArray.push(`${e.response},${e.rotate}`);
           return e.response;
         }).join(',');
-        const rotatePhoto = rotatePhotoArray.join(';');
-        delete values.stations;
-        delete values.imgDescribe;
-        delete values.imgHandle;
-        const params = {
-          ...values,
-          defectTypeCode: values.defectTypeCode[1],
-          isContinueAdd,
-          stationCode,
-          stationType,
-          deviceCode,
-          partitionCode,
-          partitionName,
-          photoAddress,
-          photoSolveAddress,
-          rotatePhoto,
-          reasonDesc,
-        };
-        if (container === 'create') {
-          onDefectCreateNew(params);
-          changeStore({
-            stationDeviceTypes: [],
-            devices: [],
-          });
-        }
-        if (container === 'edit') {
-          params.defectId = defectDetail.defectId;
-          submitDefect(params);
-        }
-        if (isContinueAdd) {
+        const rotatePhoto = rotatePhotoArray.join(';'); //  图片旋转信息
+        const initDeviceCode = defectCategory === 'device' && { deviceCode } || {}; // 其他缺陷的时候不传deviceCode
+        console.log('defectCategory', defectCategory, initDeviceCode);
+        this.props.createDefect({ // 当为缺陷分类的时候 缺陷类型传0
+          ...rest, defectId, stationCode, stationType, photoAddress, photoSolveAddress, rotatePhoto,
+          ...initDeviceCode,
+          defectTypeCode: defectCategory === 'device' && defectTypeCode[defectTypeCode.length - 1] || 0,
+          createTime: moment(createTime).format('YYYY/MM/DD HH:mm'),
+          func: this.callBackTableList,
+        });
+
+        if (isContinueAdd) { // 保存并继续添加
           this.props.form.resetFields();
         }
       }
     });
   }
-
-
 
   toolTip = () => {
     return (<div>
@@ -167,33 +137,17 @@ class DefectCreate extends Component {
     </div>);
   }
 
-
-  render() {
-    const { stations, deviceTypes, defectTypes, defectDetail, commonList, knowledgebaseList, form, editDefect = false, theme = 'light' } = this.props;
-    const { stationCode, deviceCode, deviceName } = defectDetail;
-    const { getFieldDecorator, getFieldValue } = this.props.form;
-    const defectCategory = getFieldValue('defectCategory'); // 缺陷分类
-    const currentStations = getFieldValue('stations'); // 电站
-    const deviceTypeCode = getFieldValue('deviceTypeCode'); // 设备code
-    const imgDescribe = defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e => !!e).map((e, i) => ({
-      uid: i,
-      rotate: 0,
-      status: 'done',
-      thumbUrl: e,
-    }));
-    // 缺陷类型
+  dealDefectData = (defectTypes, defectTypeCode) => { // 处理缺陷类型的数据 如果二级数据没有子类，则不显示
     const tmpGenTypes = [];
     let defaultDefectType = [];
     defectTypes.forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
-    console.log('defectTypes', defectTypes);
     const groupedLostGenTypes = [];
     tmpGenTypes.forEach(ele => {
       if (ele && ele.list && ele.list.length > 0) {
         const innerArr = { children: [] };
-        innerArr.label = ele.name;
-        innerArr.value = ele.id;
+        innerArr.label = ele.name; innerArr.value = ele.id;
         ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
-          if (editDefect && `${defectDetail.defectTypeCode}` === `${innerInfo.id}`) {
+          if (`${defectTypeCode}` === `${innerInfo.id}`) {
             defaultDefectType = [ele.id, innerInfo.id];
           }
           innerArr.children.push({
@@ -204,7 +158,27 @@ class DefectCreate extends Component {
         groupedLostGenTypes.push(innerArr);
       }
     });
-    const canSelectDefectType = currentStations && deviceTypeCode;
+
+    return [defaultDefectType, groupedLostGenTypes];
+  }
+
+  disabledDate = (current) => {
+    return current > moment().endOf('day');
+  }
+
+
+  render() {
+    const { stations, deviceTypes, defectTypes, defectDetail, commonList, knowledgebaseList, form, editDefect = false, theme = 'light' } = this.props;
+    const { stationCode, deviceCode, deviceName, defectTypeCode, processData = [], photoAddress } = defectDetail;
+    const rejectDeatil = processData.filter(e => e.flowCode === 10); //获取驳回中处理信息
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const defectCategory = getFieldValue('defectCategory'); // 缺陷分类
+    const currentStations = getFieldValue('stations'); // 电站
+    const deviceTypeCode = getFieldValue('deviceTypeCode'); // 设备code
+    const imgDescribe = photoAddress && photoAddress.split(',').filter(e => !!e).map((e, i) => ({
+      uid: i, rotate: 0, status: 'done', thumbUrl: e,
+    }));
+    const [defaultDefectType, groupedLostGenTypes] = this.dealDefectData(defectTypes, defectTypeCode);// 缺陷类型
     return (
       <Form className={`${styles.defectCreateForm} ${styles[theme]}`} >
         <span ref="toolTip"></span>
@@ -215,7 +189,7 @@ class DefectCreate extends Component {
           <FormItem label="缺陷分类" colon={false}>
             {getFieldDecorator('defectCategory', {
               rules: [{ required: true, message: '选择验收结果' }],
-              initialValue: 'device',
+              initialValue: defectTypeCode && 'device' || 'other',
             })(
               <Radio.Group>
                 <Radio.Button value="device">设备缺陷</Radio.Button>
@@ -240,20 +214,22 @@ class DefectCreate extends Component {
                   initialValue: defectDetail.deviceTypeCode || null,
                 })(
                   <Select
-                    style={{ width: 198 }} placeholder="请选择" disabled={deviceTypes.length === 0}
+                    style={{ width: 198 }}
+                    placeholder="请选择"
+                    disabled={currentStations.length === 0 || deviceTypes.length === 0}
                     onChange={this.onChangeDeviceType}>
                     {deviceTypes.map(e => (<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
                   </Select>
                 )}
               </FormItem>
               <FormItem label="设备名称" colon={false}>
-                {getFieldDecorator('deviceCode', {
+                {getFieldDecorator('deviceCodeArr', {
                   rules: [{ required: true, message: '请选择设备名称' }],
-                  initialValue: defectDetail.deviceName && [{ deviceCode: deviceCode, deviceName: deviceName }] || null,
+                  initialValue: defectDetail.deviceName && [{ deviceCode, deviceName }] || null,
                 })(
                   <DeviceSelect
-                    disabled={deviceTypeCode ? false : true}
-                    stationCode={stationCode}
+                    disabled={!deviceTypeCode}
+                    stationCode={currentStations.length > 0 && currentStations[0].stationCode || null}
                     deviceTypeCode={deviceTypeCode}
                     style={{ width: 'auto', minWidth: '198px' }}
                     onChange={this.selectedDevice}
@@ -268,7 +244,7 @@ class DefectCreate extends Component {
                   initialValue: defaultDefectType,
                 })(
                   <Cascader
-                    disabled={!canSelectDefectType}
+                    disabled={!deviceTypeCode}
                     style={{ width: 198 }}
                     options={groupedLostGenTypes}
                     expandTrigger="hover"
@@ -295,6 +271,21 @@ class DefectCreate extends Component {
                 </Tooltip>
               </FormItem>
             </React.Fragment>}
+          <FormItem label="发生时间" colon={false}>
+            {getFieldDecorator('createTime', {
+              rules: [{ required: true, message: '请选择发生时间' }],
+              initialValue: defectDetail.createTime && moment(defectDetail.createTime),
+            })(
+              <DatePicker
+                showTime
+                placeholder="默认当前时间"
+                format="YYYY-MM-DD HH:mm"
+                disabledDate={this.disabledDate}
+                disabledTime={this.disabledRangeTime}
+                getCalendarContainer={() => this.refs.toolTip}
+              />
+            )}
+          </FormItem>
           <FormItem label="缺陷描述" colon={false}>
             {getFieldDecorator('defectDescribe', {
               rules: [{ required: true, message: '请输入缺陷描述' }],
@@ -318,10 +309,10 @@ class DefectCreate extends Component {
         </div>
         <div className={styles.dealInfo}>
           <div className={styles.title}> 处理信息<i className="iconfont icon-content" /> </div>
-          <DefectProcessForm form={form} commonList={commonList} />
+          <DefectProcessForm form={form} commonList={commonList} rejectDeatil={rejectDeatil.length > 0 && rejectDeatil[0] || {}} />
           <div className={styles.actionBar}>
             <Button className={styles.saveBtn} onClick={() => this.onDefectCreate(false)}>保存</Button>
-            {!editDefect && <Button onClick={() => this.onDefectCreate(true)}>保存并继续添加</Button>}
+            {!editDefect && <Button onClick={() => this.onDefectCreate(true)} className={styles.addContinue}>保存并继续添加</Button>}
           </div>
         </div>
       </Form>

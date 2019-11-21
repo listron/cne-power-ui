@@ -94,8 +94,10 @@ export default {
       handleDefect: '/v3/defect/handle',
       checkDefect: '/v3/defect/check',
       getDefectTypes: '/v3/defect/type',
-      createNewDefect: '/v3/defect',
-      submitDefect: '/v3/defect/reject/change',
+      createNewDefect: '/v3/defect', //3.3
+      submitDefect: '/v3/defect/reject/change', // 3.3
+      createDefect: '/v3/defect/add',// 3.12 
+      defectSubmit: '/v3/defect/reject/submit', // 3.12
       transformDefect: '/v3/inspect/defect',
       setInspectCheck: '/v3/inspect/check',
       finishInspect: '/v3/inspect/finish',

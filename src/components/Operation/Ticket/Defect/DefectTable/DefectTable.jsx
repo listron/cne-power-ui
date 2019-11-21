@@ -171,7 +171,6 @@ class DefectTable extends Component {
       return status;
     }
     return null;
-
   }
 
   tableChange = (pagination, filter, sorter) => { // 进行排序的时候

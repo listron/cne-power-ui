@@ -16,6 +16,7 @@ const defectDetailAction = {
   checkDefect: Symbol('checkDefect'),
   getKnowledgebase: Symbol('getKnowledgebase'),
   likeKnowledgebase: Symbol('likeKnowledgebase'),
+  createDefect: Symbol('createDefect'),
 };
 
 const initState = immutable.fromJS({
@@ -27,6 +28,7 @@ const initState = immutable.fromJS({
   dockerDetail: {}, // 两票数据
   deviceTypes: [], //设备类型
   defectTypes: [], //缺陷类型
+  hasModify: false, // 是否修改 默认没有修改
 });
 
 const defectDetail = (state = initState, action) => {

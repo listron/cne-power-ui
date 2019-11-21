@@ -218,7 +218,7 @@ function* getKnowledgebase(action) { // 获取智能专家列表
 function* likeKnowledgebase(action) { // 点赞智能专家
   const { payload } = action;
   const { knowledgeBaseId } = payload;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.ticket.likeKnowledgebase}${knowledgeBaseId}`;
+  const url = `${APIBasePath}${ticket.likeKnowledgebase}${knowledgeBaseId}`;
   // let url = `/mock/operation/knowledgebase/like`;
   try {
     const response = yield call(axios.post, url, payload);
@@ -243,6 +243,26 @@ function* likeKnowledgebase(action) { // 点赞智能专家
   }
 }
 
+// createDefect defectSubmit
+function* createDefect(action) { // 创建缺陷 以及待提交状态
+  const { payload } = action;
+  const { defectId, func, ...params } = payload;
+  const url = defectId && `${APIBasePath}${ticket.defectSubmit}` || `${APIBasePath}${ticket.createDefect}`;
+  const initParams = defectId && { ...params, defectId } || params;
+  try {
+    const response = yield call(axios.post, url, initParams);
+    if (response.data.code === '10000') {
+      message.success('操作成功！');
+      func();
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    message.warn('操作失败，请重试！');
+  }
+}
+
 
 
 export function* watchDefectDetail() {
@@ -257,5 +277,6 @@ export function* watchDefectDetail() {
   yield takeLatest(defectDetailAction.checkDefect, checkDefect);
   yield takeLatest(defectDetailAction.getKnowledgebase, getKnowledgebase);
   yield takeLatest(defectDetailAction.likeKnowledgebase, likeKnowledgebase);
+  yield takeLatest(defectDetailAction.createDefect, createDefect);
 }
 

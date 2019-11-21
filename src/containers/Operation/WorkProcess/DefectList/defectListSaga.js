@@ -23,12 +23,13 @@ function* easyPut(actionName, payload) {
 function* getDefectList(action) {
   const { payload } = action;
   const url = `${APIBasePath}${ticket.getDefectList}`;
+  const { defectCategory, defectTypeCode, ...rest } = payload;
   try {
     yield call(easyPut, 'changeStore', {
       listLoading: true,
       listParams: payload,
     });
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, { ...rest, defectTypeCode: defectCategory.includes('other') && [...defectTypeCode, '0'] || defectTypeCode });
     if (response.data.code === '10000') {
       const total = response.data.data.total || 0;
       let { pageNum, pageSize } = payload;

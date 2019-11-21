@@ -15,29 +15,44 @@ class DefectProcessForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     commonList: PropTypes.array,
+    rejectDeatil: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
+    const { rejectDeatil = {} } = props;
     this.state = {
-      replace: false,
+      replace: !!rejectDeatil.replaceParts,
     };
   }
+
+  // componentWillReceiveProps(nextProps){
+  //   const {defectId}=this.props;
+  //   if (nextProps.defectId !== defectId){
+  //     this.setState({ replace:})
+  //   }
+
+  // }
 
   componentWillUnmount() {
     this.props.form.resetFields();
   }
 
   render() {
+    const { rejectDeatil = {} } = this.props;
+    const { defectSolveResult, defectProposal, reasonDesc, defectProcess, replaceParts, photoAddress } = rejectDeatil;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
+    const imgDescribe = photoAddress && photoAddress.split(',').filter(e => !!e).map((e, i) => ({
+      uid: i, rotate: 0, status: 'done', thumbUrl: e,
+    }));
     const { replace } = this.state;
     return (
       <React.Fragment>
         <FormItem label="处理结果" colon={false}>
           {getFieldDecorator('defectSolveResult', {
             rules: [{ required: true, message: '选择处理结果' }],
-            initialValue: '1',
+            initialValue: defectSolveResult || '1',
           })(
             <RadioGroup>
               <RadioButton value="1">未解决</RadioButton>
@@ -48,7 +63,7 @@ class DefectProcessForm extends Component {
         {!defectFinished && <FormItem label="处理建议" colon={false}>
           {getFieldDecorator('defectProposal', {
             rules: [{ required: true, message: '请输入处理建议' }],
-            initialValue: '',
+            initialValue: defectProposal,
           })(
             <InputLimit placeholder="请描述，不超过80个汉字" />
           )}
@@ -56,7 +71,7 @@ class DefectProcessForm extends Component {
         {defectFinished && <FormItem label="产生原因" colon={false}>
           {getFieldDecorator('reasonDesc', {
             rules: [{ required: true, message: '请输入产生原因' }],
-            initialValue: '',
+            initialValue: reasonDesc,
           })(
             <InputLimit placeholder="请描述，不超过80个汉字" />
           )}
@@ -64,7 +79,7 @@ class DefectProcessForm extends Component {
         <FormItem label="处理过程" colon={false}>
           {getFieldDecorator('defectProcess', {
             rules: [{ required: true, message: '请输入处理过程' }],
-            initialValue: '',
+            initialValue: defectProcess,
           })(
             <CommonInput commonList={this.props.commonList} placeholder="请描述，不超过80个汉字" />
           )}
@@ -74,7 +89,7 @@ class DefectProcessForm extends Component {
             <div className={styles.maxTip}>最多4张</div>
             {getFieldDecorator('photoData', {
               rules: [{ required: false, message: '请上传图片' }],
-              initialValue: [],
+              initialValue: imgDescribe || [],
               valuePropName: 'data',
             })(
               <ImgUploader
@@ -87,10 +102,8 @@ class DefectProcessForm extends Component {
           <div className={styles.replaceParts}>
             <Switch checked={replace} onChange={(checked) => { this.setState({ replace: checked }); }} />
             {replace && getFieldDecorator('replaceParts', {
-              rules: [{
-                required: true,
-                message: '请输入更换备件',
-              }],
+              rules: [{ required: true, message: '请输入更换备件' }],
+              initialValue: replaceParts,
             })(
               <Input style={{ marginLeft: 20 }} placeholder="备件名称+型号" />
             )}

@@ -35,12 +35,6 @@ class DefectList extends Component {
     getParticipant(); //  获取所有参与者。
   }
 
-
-  componentWillReceiveProps() {
-
-  }
-
-
   componentWillUnmount() { // 卸载的时候要注意
     const { history, location } = this.props;
     const { pathname } = history.location;
@@ -50,20 +44,13 @@ class DefectList extends Component {
     }
   }
 
-  detail = () => { // 进入详情页面
-    const { location, history } = this.props;
-    const { pathname } = location;
-    history.push(`${pathname}?page=defectDetail`);
-  }
-
 
   render() {
-    const { pageLoading, theme = 'light' } = this.props;
+    const { theme = 'light' } = this.props;
     return (
-      <div className={styles.cont}>
+      <div className={`${styles.cont} ${styles[theme]}`}>
         <DefectSearch {...this.props} />
         <DefectTableList {...this.props} />
-        {/* <Button onClick={this.detail}> 进入详情页面</Button> */}
       </div>
     );
   }

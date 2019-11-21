@@ -2,18 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defect.scss';
 import ImgUploader from '../../../Common/Uploader/ImgUploader';
-import { Modal, Button, Icon } from 'antd';
 import SolutionLibrary from './SolutionLibrary';
-import { log } from 'util';
 
 class DefectBasicInfo extends Component {
   static propTypes = {
     defectDetail: PropTypes.object,
-    defectTypes: PropTypes.object,
     getKnowledgebase: PropTypes.func,
     knowledgebaseList: PropTypes.array,
     likeKnowledgebase: PropTypes.func,
     dockerDetail: PropTypes.object,
+    history: PropTypes.object,
   }
 
   constructor(props) {
@@ -44,14 +42,16 @@ class DefectBasicInfo extends Component {
     { label: '操作票', type: 2, num: 'operateNumber', ticketMes: ['docketName', 'docketCode'] },
   ]
 
-  toTicket = (value) => {
-    console.log('value', value);
+  toTicket = (docketId, type) => {
+    const path = ['/operation/twoTickets/workflow', '/operation/twoTickets/operateflow'];
+    const { history } = this.props;
+    history.push(`${path[type]}?docketId=${docketId}`);
   }
 
 
   render() {
     const { defectDetail, knowledgebaseList, likeKnowledgebase, dockerDetail } = this.props;
-    const { workNumber, operateNumber, detail = [] } = dockerDetail;
+    const { detail = [] } = dockerDetail;
     const images = defectDetail.photoAddress ? defectDetail.photoAddress.split(',') : [];
     const carergory = defectDetail.defectTypeCode && this.deviceBaseInfo || this.otherBaseInfo;
     return (
@@ -78,7 +78,7 @@ class DefectBasicInfo extends Component {
           {carergory.map(item => {
             if (item.sub) {
               return ( // 如果是缺陷类型
-                <div className={styles.basicItem}>
+                <div className={styles.basicItem} key={item.value}>
                   <div className={styles.label}>{item.label}</div>
                   <div className={styles.information}>{`${defectDetail[item.value]}/${defectDetail[item.sub]}` || '--'}</div>
                   {knowledgebaseList.length > 0 && <SolutionLibrary knowledgebaseList={knowledgebaseList} likeKnowledgebase={likeKnowledgebase} />}
@@ -86,13 +86,13 @@ class DefectBasicInfo extends Component {
             }
             if (item.data) { // 缺陷来源数据处理
               return (
-                <div className={styles.basicItem}>
+                <div className={styles.basicItem} key={item.value}>
                   <div className={styles.label}>{item.label}</div>
                   <div className={styles.information}>{item.data[(defectDetail.defectSource)] || '--'}</div>
                 </div>);
             }
             return (
-              <div className={styles.basicItem}>
+              <div className={styles.basicItem} key={item.value}>
                 <div className={styles.label}>{item.label}</div>
                 <div className={styles.information}>{defectDetail[item.value] || '--'}</div>
               </div>);
@@ -105,10 +105,10 @@ class DefectBasicInfo extends Component {
                   const data = detail.filter(e => e.templateType === item.type);
                   const [name, code] = item.ticketMes;
                   return data.length > 0 &&
-                    (<div className={styles.megCont}>
+                    (<div className={styles.megCont} >
                       <div>【 {item.label} {dockerDetail[item.num]} 】</div>
                       <div className={styles.ticktCont}>
-                        {data.map(e => { return <div onClick={() => this.toTicket(e.docketId)} className={styles.tickets}>{e[name]}/{e[code]}</div>; })}
+                        {data.map(e => { return <div onClick={() => this.toTicket(e.docketId, e.templateType)} className={styles.tickets}>{e[name]}/{e[code]}</div>; })}
                       </div>
                     </div>);
                 }) || '无'
@@ -117,7 +117,7 @@ class DefectBasicInfo extends Component {
           </div>
           <div className={styles.viewImg}>
             <ImgUploader editable={false} data={images.map(item => ({
-              uid: item,
+              uid: `${item}?${Math.random()}`,
               rotate: 0,
               thumbUrl: `${item}?${Math.random()}`,
             }))}

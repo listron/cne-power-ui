@@ -3,27 +3,18 @@ import { Timeline } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './defect.scss';
 import moment from 'moment';
-import ImgListModal from '../../../Common/Uploader/ImgListModal';
-import { getHandleStatus } from '../../../../constants/ticket';
 import ImgUploader from '../../../Common/Uploader/ImgUploader';
 
-/*
-  时间线组件：
-  说明：
-    1.必须传入属性：流程当前状态status,流程信息progressData
- */
+/** 
+ * 时间线组件：
+ * 说明：1.必须传入属性：流程当前状态defectStatus ,流程信息progressData
+*/
 
 class OperateLine extends Component {
   static propTypes = {
     processData: PropTypes.array,
     defectStatus: PropTypes.string,
   }
-
-  constructor(props) {
-    super(props);
-  }
-
-
   getStatus(status, handleStatus) {
     // 0 待提交 1 审核缺陷 2 处理缺陷 3 验收缺陷  4 已完成
     let result = '';
@@ -37,34 +28,14 @@ class OperateLine extends Component {
     }
     return result;
   }
-
-  renderIcon(handleStatus) { // 图标
-    let result = '';
-    switch (handleStatus) {
-      case '1': result = <i className="iconfont icon-begin" />; break;
-      case '3':
-      case '4':
-      case '5':
-      case '6':
-      case '7':
-        result = <i className="iconfont icon-review" />; break;
-      case '0':
-        result = <i className="iconfont icon-doing" />; break;
-      default:
-        result = '';
-    }
-    return result;
-  }
-
-
-  renderItem = (item) => {
+  renderItem = (item) => { // 时间线中的内容 
     const photoAddressArr = item.photoAddress ? item.photoAddress.split(',') : [];
     //  10  新建缺陷 22 关闭缺陷 21 下发缺陷 23 驳回缺陷 31 提交缺陷 51 验收缺陷 41 处理缺陷
     return (
       <div className={styles.processItem}>
         <div className={styles.lineBasic}>
           <div className={styles.flowName}>{item.flowCode === 10 && '发现缺陷' || item.flowName}</div>
-          <div className={styles.status}>{['已解决', '未解决', '下发', '驳回', '不合格', '合格', '关闭'][item.handleStatus]}</div>
+          <div className={styles.status}>{['已解决', '未解决', '', '下发', '驳回', '不合格', '合格', '关闭'][item.handleStatus]}</div>
         </div>
         <div className={styles.processCont}>
           <div className={styles.processMsg}>
@@ -75,10 +46,10 @@ class OperateLine extends Component {
             {item.reasonDesc && <div className={styles.reason} ><span>【产生原因】</span> {item.reasonDesc} </div>}
             {item.defectProposal && <div className={styles.reason}> <span>{item.handleStatus === '3' && '【驳回原因】' || '【处理建议】'}  </span>{item.defectProposal}</div>}
             {item.defectProcess && <div className={styles.reason}><span>【处理过程】</span>{item.defectProcess}</div>}
-            {item.replaceParts && <div className={styles.reason}>】<span>【更换设备</span>{item.replaceParts}</div>}
+            {item.replaceParts && <div className={styles.reason}><span>【更换备件】</span>{item.replaceParts}</div>}
             {item.photoAddress && <div className={styles.imgBox}>
               <ImgUploader editable={false} data={photoAddressArr.map(item => ({
-                uid: item,
+                uid: `${item}?${Math.random()}`,
                 rotate: 0,
                 thumbUrl: `${item}?${Math.random()}`,
               }))}
@@ -89,7 +60,6 @@ class OperateLine extends Component {
       </div>
     );
   }
-
   render() {
     const { processData, defectStatus } = this.props;
     const lastStatus = (processData.length > 0 && processData[processData.length - 1].handleStatus) || '';

@@ -23,6 +23,8 @@ class DefectDetail extends Component {
     defectDetail: PropTypes.object,
     getRelevancedocket: PropTypes.func,
     processData: PropTypes.array,
+    resetStore: PropTypes.func,
+    hasModify: PropTypes.bool,
   };
 
 
@@ -39,18 +41,27 @@ class DefectDetail extends Component {
     const { search } = history.location;
     const { page = 'defectDetail', defectId } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
     this.props.changeStore({ defectId });
-    getDefectDetail({ defectId });
-    getRelevancedocket({ defectId });
+    if (defectId) {
+      getDefectDetail({ defectId });
+      getRelevancedocket({ defectId });
+    }
     getDefectCommonList({ languageType: '1' }); // languageType 1 缺陷
   }
 
 
   componentWillUnmount() {
-    this.props.changeStore();
+    this.props.resetStore();
   }
 
   onCancelEdit = () => { // 回退按钮
-    this.setState({ showWarningTip: true });
+    const { hasModify } = this.props;
+    if (hasModify) {
+      this.setState({ showWarningTip: true });
+    }
+    if (!hasModify) {
+      this.onConfirmWarningTip();
+    }
+
   }
 
   onCancelWarningTip = () => { // 取消
@@ -61,6 +72,7 @@ class DefectDetail extends Component {
     const { history } = this.props;
     const { pathname } = history.location;
     history.push(`${pathname}?page=list&tab=defect`);
+    this.props.changeStore({ hasModify: false });
   }
 
   renderTitle(status) { // 渲染标题 根据状态
@@ -68,9 +80,9 @@ class DefectDetail extends Component {
     // 0 待提交 1 审核缺陷 2 处理缺陷 3 验收缺陷  4 已完成
     switch (status) {
       case '0': result = '驳回原因'; break;
-      case '1': result = '审核缺陷'; break;
-      case '2': result = '处理缺陷'; break;
-      case '3': result = '验收缺陷'; break;
+      case '1': result = '消缺详情'; break; // 审核缺陷
+      case '2': result = '消缺详情'; break; // 处理缺陷
+      case '3': result = '消缺详情'; break; // 处理缺陷
       default:
         result = '消缺详情'; break;
     }
@@ -80,12 +92,12 @@ class DefectDetail extends Component {
   render() {
     const { theme = 'light', defectDetail, processData, defectId } = this.props;
     const { showWarningTip, warningTipText } = this.state;
-    const { defectStatus } = defectDetail; // defectStatus  当前的流程状态 defectStatus=1 为待提交状态
+    const { defectStatus, rejectReason } = defectDetail; // defectStatus  当前的流程状态 defectStatus=1 为待提交状态
     return (
       <div className={`${styles.detailWrap} ${styles[theme]}`}>
         {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.header}>
-          <div className={styles.text}>{this.renderTitle(defectStatus)}</div>
+          <div className={styles.text} title={rejectReason}>{this.renderTitle(defectStatus)}{defectStatus === '0' && `:${rejectReason}`}</div>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
         </div>
         <div className={styles.defectDetailCont}>
@@ -119,6 +131,7 @@ const mapDispatchToProps = (dispatch) => ({
   checkDefect: payload => dispatch({ type: defectDetailAction.checkDefect, payload }),
   getKnowledgebase: payload => dispatch({ type: defectDetailAction.getKnowledgebase, payload }),
   likeKnowledgebase: payload => dispatch({ type: defectDetailAction.likeKnowledgebase, payload }),
+  createDefect: payload => dispatch({ type: defectDetailAction.createDefect, payload }),
   getStationDeviceTypes: params => dispatch({ //  获取某一个电站下的设备
     type: commonAction.getStationDeviceTypes,
     payload: {

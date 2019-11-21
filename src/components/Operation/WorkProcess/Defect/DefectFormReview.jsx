@@ -20,9 +20,9 @@ class Status extends Component {
     const { value = 'send' } = this.props;
     return (
       <div className={styles.reviewType}>
-        <Button type={value === 'send' && 'primary'} onClick={() => { this.setDealResult('send'); }} >下发</Button>
-        <Button type={value === 'close' && 'primary'} onClick={() => { this.setDealResult('close'); }} >关闭</Button>
-        <Button type={value === 'reject' && 'primary'} onClick={() => { this.setDealResult('reject'); }} >驳回</Button>
+        <Button type={value === 'send' && 'primary' || 'default'} onClick={() => { this.setDealResult('send'); }} >下发</Button>
+        <Button type={value === 'close' && 'primary' || 'default'} onClick={() => { this.setDealResult('close'); }} >关闭</Button>
+        <Button type={value === 'reject' && 'primary' || 'default'} onClick={() => { this.setDealResult('reject'); }} >驳回</Button>
       </div>
     );
   }
@@ -31,9 +31,6 @@ class Status extends Component {
 class DefectFormReview extends Component {
   static propTypes = {
     form: PropTypes.object,
-  }
-
-  static defaultProps = {
   }
 
   constructor(props) {
@@ -72,10 +69,10 @@ class DefectFormReview extends Component {
             <Status changeStatus={this.statusChange} />
           )}
         </FormItem>
-        {dealResult !== 'reject' && (
+        {dealResult !== 'reject' && ( // 关闭的处理建议暂时为不必填
           <FormItem colon={false} label="处理建议">
             {getFieldDecorator('defectProposal', {
-              rules: [{ required: dealResult === 'close', message: '请输入关闭的处理建议' }],
+              rules: [{ required: false, message: '请输入关闭的处理建议' }],
             })(
               <InputLimit placeholder="请描述，不超过80个汉字" />
             )}
@@ -93,9 +90,9 @@ class DefectFormReview extends Component {
           </FormItem>
         )}
         {dealResult === 'send' && (
-          <FormItem label="截止时间" colon={false}>
+          <FormItem label="预计完成时间" colon={false}>
             {getFieldDecorator('deadLine', {
-              rules: [{ required: true, message: '清选择截止时间' }],
+              rules: [{ required: false, message: '清选择截止时间' }],
             })(
               <DatePicker
                 placeholder="默认当前时间"

@@ -44,7 +44,6 @@ class DetailContiner extends Component {
     const { defectStatus } = this.props.defectDetail;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('values', values);
         defectStatus === '1' && this.toReview(values);
         defectStatus === '2' && this.toProcess(values);
         defectStatus === '3' && this.toCheck(values);
@@ -102,28 +101,31 @@ class DetailContiner extends Component {
     const { theme = 'light', defectDetail, processData, form, commonList } = this.props;
     const { defectStatus } = defectDetail; // defectStatus  当前的流程状态
     // 0 待提交 1 审核缺陷 2 处理缺陷 3 验收缺陷  4 已完成
-    const rightHandler = localStorage.getItem('rightHandler');
-    const reviewDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_review');
-    const checkDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_check');
+    const rightHandler = localStorage.getItem('rightHandler') || '';
+    const rightArr = rightHandler.split(',');
+    // 审核 验收 执行
+    const hasRight = rightArr.includes(['workExamine_defect_review', 'workExamine_defect_excute', 'workExamine_defect_check'][defectStatus - 1]);
+    // const hasRight = true;
     return (
       <div className={`${styles.baseInfoCont} ${styles[theme]}`}>
         <BasicInfo {...this.props} />
         <div className={styles.rightCont}>
-          <div className={styles.process}>
+          {hasRight && <div className={`${styles.process} ${defectStatus === '1' && styles.review}`}>
             <div className={styles.titleText}>
               <div className={styles.border} />
               <div className={styles.text}>{['审核', '处理结果', '消缺验收'][defectStatus - 1]}</div>
             </div>
-            <Form className={styles.handleForm}>
-              {defectStatus === '1' && reviewDefectRight && <DefectFormReview form={form} />}
-              {defectStatus === '2' && checkDefectRight && <DefectProcessForm form={form} commonList={commonList} />}
-              {defectStatus === '3' && checkDefectRight && <DefectCheckForm form={form} />}
+            <Form className={`${styles.handleForm}`}>
+              {defectStatus === '1' && <DefectFormReview form={form} />}
+              {defectStatus === '2' && <DefectProcessForm form={form} commonList={commonList} />}
+              {defectStatus === '3' && <DefectCheckForm form={form} />}
             </Form>
             <div className={styles.actionBar}>
               <Button className={styles.cancelBtn} onClick={this.onReset}>重置</Button>
               <Button type="primary" onClick={this.handleSubmit}>提交</Button>
             </div>
           </div>
+          }
           <OperateLine processData={processData} defectStatus={defectStatus} />
         </div>
       </div >
@@ -132,4 +134,8 @@ class DetailContiner extends Component {
 }
 
 
-export default Form.create()(DetailContiner);
+export default Form.create({
+  onFieldsChange(props) {
+    props.changeStore({ hasModify: true });
+  },
+})(DetailContiner);

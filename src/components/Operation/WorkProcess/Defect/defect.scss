@@ -16,7 +16,6 @@
     }
   }
 }
-
 .participantSearch {
   display: flex;
   flex-direction: row;
@@ -41,20 +40,55 @@
     margin-left: 36px;
   }
 }
-
 .defectTable {
   display: flex;
   flex-direction: column;
   flex: 1;
-  .overText {
+  .stationNameText,
+  .deviceNameText,
+  .defectTypeNameText,
+  .defectDescribeText {
     @include overflowText();
-    max-width: 95px;
+  }
+  .stationName {
+    width: calc((100vw - 900px) * 0.21);
+  }
+  .stationNameText {
+    width: calc((100vw - 900px) * 0.21 - 18px);
+  }
+  .deviceName {
+    width: calc((100vw - 900px) * 0.21);
+  }
+  .deviceNameText {
+    width: calc((100vw - 900px) * 0.21 - 18px);
+  }
+  .defectTypeName {
+    width: calc((100vw - 900px) * 0.23);
+  }
+  .defectTypeNameText {
+    width: calc((100vw - 900px) * 0.23 - 18px);
+  }
+  .defectDescribe {
+    max-width: calc((100vw - 900px) * 0.34);
+  }
+  .defectDescribeText {
+    max-width: calc((100vw - 900px) * 0.34 - 18px);
   }
   .action {
     display: flex;
     justify-content: space-between;
     margin: 0 0 20px 20px;
     align-items: center;
+    .buttonArea {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    .operation {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+    }
   }
   .defectStatus {
     display: flex;
@@ -78,8 +112,19 @@
       }
     }
   }
+  :global {
+    .icon-help {
+      font-size: 14px;
+      margin-left: 4px;
+    }
+    .ant-table-placeholder {
+      border-bottom: none;
+    }
+    .ant-table .ant-table-tbody > tr > td {
+      padding: 0 8px;
+    }
+  }
 }
-
 .solutionWrap {
   .dealModal {
     .modalbody {
@@ -180,8 +225,11 @@
       margin-right: 10px;
       border: none;
     }
+    .addContinue {
+      margin-left: 10px;
+    }
     button {
-      width: 98px;
+      // width: 98px;
       &:hover {
         background-color: $themeColor;
         box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
@@ -367,6 +415,7 @@
         width: 220px;
       }
     }
+
     .dealResult {
       display: flex;
       flex-direction: row;
@@ -378,6 +427,18 @@
         color: #666;
         width: 64px;
         margin-right: 24px;
+      }
+    }
+  }
+  .review {
+    .actionBar {
+      margin-left: 95px;
+    }
+    :global {
+      .ant-form-item-label {
+        width: 85px;
+        text-align-last: right;
+        margin-right: 12px;
       }
     }
   }
@@ -407,6 +468,9 @@
       .lineBasic {
         margin-right: 24px;
         margin-left: 4px;
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 56px;
         .flowName {
           color: #000000;
         }
@@ -427,7 +491,7 @@
       }
       .reason {
         display: flex;
-        max-width: 415px;
+        // max-width: 415px;
         word-break: break-all;
         span {
           display: flex;

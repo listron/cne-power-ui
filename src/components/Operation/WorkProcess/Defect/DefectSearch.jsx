@@ -31,22 +31,21 @@ class DefectSearch extends Component {
 
   filterConditionChange = (value) => { // 筛选条件进行查找消缺
     const { listParams, username } = this.props;
-    const { join, rangeTimes, defectCategory, defectTypeCode, ...restValue } = value;
+    const { join, rangeTimes, ...restValue } = value;
     const [createTimeStart, createTimeEnd] = rangeTimes;
-    // const initDefectTypeCode = defectCategory.length > 0 && defectCategory.includes('device') ? defectTypeCode : ['0'];
-    this.props.getDefectList({ ...listParams, ...restValue, createTimeStart, createTimeEnd, handleUser: join && username || '' });
+    this.props.getDefectList({ ...listParams, ...restValue, createTimeStart, createTimeEnd, handleUser: join && username || '', pageNum: 1 });
   }
 
 
   onChangeStatus = (e) => { //  修改状态进行查找消缺
     const { listParams } = this.props;
     const status = e.target.value;
-    this.props.getDefectList({ ...listParams, status });
+    this.props.getDefectList({ ...listParams, status, pageNum: 1 });
   }
 
   joinChange = (value) => { // 参与人进行查找消缺
     const { listParams, getDefectList } = this.props;
-    getDefectList({ ...listParams, ...value });
+    getDefectList({ ...listParams, ...value, pageNum: 1 });
   }
 
   render() {
