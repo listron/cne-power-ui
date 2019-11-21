@@ -25,6 +25,8 @@ class PointManage extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     orderField: PropTypes.string,
+    devicePointStandardCode: PropTypes.string,
+    devicePointName: PropTypes.string,
     orderType: PropTypes.number,
     changePointManageStore: PropTypes.func,
     changeStationManageStore: PropTypes.func,
@@ -73,11 +75,11 @@ class PointManage extends Component {
   render() {
     const { showPointTip, showSidePage } = this.state;
     const {
-      stationCode, deviceTypeCode, deviceModeCode, pageNum, pageSize, orderField, orderType, showPage,
+      stationCode, deviceTypeCode, deviceModeCode, pageNum, pageSize, orderField, orderType, showPage, devicePointStandardCode, devicePointName,
     } = this.props;
 
     const queryParams = {
-      stationCode, deviceTypeCode, deviceModeCode, pageNum, pageSize, orderField, orderType,
+      stationCode, deviceTypeCode, deviceModeCode, pageNum, pageSize, orderField, orderType, devicePointStandardCode, devicePointName,
     };
     return (
       <div className={styles.pointManageContainer}>

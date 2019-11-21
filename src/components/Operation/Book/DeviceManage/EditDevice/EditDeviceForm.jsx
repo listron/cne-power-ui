@@ -31,15 +31,15 @@ class EditDeviceForm extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         if (deviceTypeCode === '202' || deviceTypeCode === '206') {
-          const branchCountArr = [];
-          for (let i = 0; i < values.branchCount; i++) {
-            branchCountArr.push(i + 1);
-          }
-          if (values.branchCount) {
-            values.connectedBranches = branchCountArr.map((e, i) => {
-              return values.connectedBranches.includes(e) ? 1 : 0;
-            });
-          }
+          // const branchCountArr = [];
+          // for (let i = 0; i < values.branchCount; i++) {
+          //   branchCountArr.push(i + 1);
+          // }
+          // if (values.branchCount) {
+          //   values.connectedBranches = branchCountArr.map((e, i) => {
+          //     return values.connectedBranches.includes(e) ? 1 : 0;
+          //   });
+          // }
 
           if (typeof values.componentMode === 'string') {
             const filterMode = pvDeviceModels.filter(
@@ -53,7 +53,8 @@ class EditDeviceForm extends Component {
           values.map = {
             componentMode: +values.componentMode,
             branchCount: +values.branchCount,
-            connectedBranches: values.connectedBranches,
+            // connectedBranches: values.connectedBranches,
+            connectedBranches: values.connectedBranches.map(e => parseFloat(e)),
           };
         }
         if (deviceTypeCode === '304') {
@@ -148,10 +149,7 @@ class EditDeviceForm extends Component {
       map,
     } = stationDeviceDetail;
     const madeName = map ? map.madeName : '';
-    console.log('madeName: ', madeName);
     const supplierName = map ? map.supplierName : '';
-    console.log('supplierName: ', supplierName);
-    console.log('stationDeviceDetail: ', stationDeviceDetail);
     const selectDeviceTypeName =
       typeof selectdeviceType === 'number'
         ? stationDeviceTypes.filter(

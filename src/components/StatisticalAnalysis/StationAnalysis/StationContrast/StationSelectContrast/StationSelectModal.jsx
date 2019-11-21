@@ -67,6 +67,7 @@ class StationSelectModal extends Component {
     });
     this.setState({
       selectedStation: [],
+
     });
   }
   onDeleteOneStation = (stationInfor) => {
@@ -159,7 +160,7 @@ class StationSelectModal extends Component {
           onCancel={hideStationModal}
           cancelText="取消"
           okText="保存"
-          title="请选择"
+          title="请选择2-10个电站对比"
           width={625}
           getContainer={() => this.refs.stations}
           wrapClassName={styles.stationModal}

@@ -6,6 +6,7 @@
     background: #fff;
     border: 1px solid #e1e2e2;
   }
+
   .componentContainer {
     background: #fff;
     border: 1px solid #e1e2e2;
@@ -13,16 +14,26 @@
 
   .stationContrastTable {
     border: 1px solid #dfdfdf;
+
     .stationOne {
       border-left: 1px solid #dfdfdf;
+
       .baseInfoBg {
         background: #f8f8f8;
         border-right: 1px solid #dfdfdf;
       }
-      > div {
+
+      .stationnameBg {
+        background: #199475;
+        color: #fff;
+      }
+
+      >div {
         border-bottom: 1px solid #dfdfdf;
       }
+
       .contrastDetailPopover {
+
         &:hover,
         &:active,
         &:focus,
@@ -30,35 +41,51 @@
           background: #ceebe0;
         }
       }
+
       .stationContrastOne,
       .stationContrastTwo {
         border-right: 1px solid #dfdfdf;
       }
+
       .differHighLight {
         background: #fcffe5;
+
         &:hover,
         &:active,
         &:focus,
         &:visited {
           background: #ceebe0;
         }
+
         .stationContrastOne {
           border-right: 1px solid #dfdfdf;
         }
+
         .stationContrastTwo {
           border-right: 1px solid #dfdfdf;
         }
       }
     }
+
     .baseNameBox {
       .baseName {
         background: #f8f8f8;
+
         .baseClassifyName {
           border-bottom: 1px solid #dfdfdf;
+          background: #199475;
+          color: #fff;
         }
+
         .rowName {
           border-left: 1px solid #dfdfdf;
-          > div {
+
+          .stationnameBg {
+            background: #199475;
+            color: #fff;
+          }
+
+          >div {
             border-bottom: 1px solid #dfdfdf;
           }
         }
@@ -73,6 +100,7 @@
 
 .dark {
   @import "../../../../theme/antdResetDark.scss";
+
   .stationTimeFilter {
     background: $light-background;
     border: 1px solid $border-color;
@@ -87,16 +115,22 @@
 
   .stationContrastTable {
     border: 1px solid $border-color;
+
     .stationOne {
       border-left: 1px solid $border-color;
+
       .baseInfoBg {
         background: #1f246f;
         border-right: 1px solid $border-color;
       }
-      > div {
+
+
+      >div {
         border-bottom: 1px solid $border-color;
       }
+
       .contrastDetailPopover {
+
         &:hover,
         &:active,
         &:focus,
@@ -104,29 +138,36 @@
           background: #1f246f;
         }
       }
+
       .stationContrastOne,
       .stationContrastTwo {
         border-right: 1px solid $border-color;
       }
+
       .differHighLight {
         background: #4d5fe2;
       }
     }
+
     .baseNameBox {
       .baseName {
         background: #1f246f;
+
         .baseClassifyName {
           border-bottom: 1px solid $border-color;
         }
+
         .rowName {
           border-left: 1px solid $border-color;
-          > div {
+
+          >div {
             border-bottom: 1px solid $border-color;
           }
         }
       }
     }
   }
+
   .tooltipBox {
     @include tooltipBox(rgba(83, 104, 241, 0.4));
   }

@@ -38,7 +38,7 @@ class StationContrast extends React.Component {
     const { stationCode, year, month, toChangeStationContrastStore } = this.props;
     if (timeObj.timeStyle === 'year') {
       toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] });
-      if (stationCode.length === 2) {
+      if (stationCode.length > 1) {
         this.props.getStationContrast({
           stationCode: stationCode,
           dateType: timeObj.timeStyle,
@@ -49,7 +49,7 @@ class StationContrast extends React.Component {
     }
     if (timeObj.timeStyle === 'month') {
       toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] });
-      if (stationCode.length === 2) {
+      if (stationCode.length > 1) {
         this.props.getStationContrast({
           stationCode: stationCode,
           dateType: timeObj.timeStyle,
@@ -62,7 +62,7 @@ class StationContrast extends React.Component {
       const currentYear = [moment(timeObj.startTime).format('YYYY')];
       const currentMonth = +moment(timeObj.startTime).format('MM');
       toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: currentYear, month: currentMonth });
-      if (stationCode.length === 2) {
+      if (stationCode.length > 1) {
         this.props.getStationContrast({
           stationCode: stationCode,
           dateType: timeObj.timeStyle,
@@ -102,6 +102,8 @@ class StationContrast extends React.Component {
 
   render() {
     const { stations, stationContrastList, selectedStations, theme } = this.props;
+    const disabled = [];
+    stations.forEach(e => { if (e.isConnected === 0) { disabled.push(e.stationCode); } });
     return (
       <div className={`${styles.singleStationType} ${styles[theme]}`}>
         <div className={styles.stationTimeFilter}>
@@ -109,8 +111,9 @@ class StationContrast extends React.Component {
             <div className={styles.stationFilter}>
               <StationSelectContrast
                 data={stations.filter(e => e.stationType === 1)}
-                holderText={'请选择电站对比'}
+                holderText={'请输入关键字快速查询'}
                 multiple={true}
+                disabledStation={disabled}
                 onChange={this.stationSelected}
                 value={selectedStations}
                 theme={theme}

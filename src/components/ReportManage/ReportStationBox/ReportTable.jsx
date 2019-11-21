@@ -16,9 +16,8 @@ class ReportTable extends React.Component {
     pageSize: PropTypes.number,
     total: PropTypes.number,
     loading: PropTypes.bool,
-    exportLoading: PropTypes.bool,
+    downloading: PropTypes.bool,
     getReportStationList: PropTypes.func,
-    exportReportStationList: PropTypes.func,
     downLoadFile: PropTypes.func,
     changeStore: PropTypes.func,
     startTime: PropTypes.string,
@@ -93,9 +92,7 @@ class ReportTable extends React.Component {
 
   }
   render() {
-    const { pageNum, pageSize, total, loading, reportStationList, exportLoading } = this.props;
-
-
+    const { pageNum, pageSize, total, loading, reportStationList, downloading } = this.props;
     const disabledExport = !reportStationList.length;
     const power = [
       { name: '理论发电量', unit: '万kWh', dataIndex: 'theoryPower', key: 'theoryPower' },
@@ -225,7 +222,7 @@ class ReportTable extends React.Component {
     return (
       <div className={styles.reportList}>
         <div className={styles.handlePage}>
-          <div><Button type="primary" onClick={this.exportReportStation} loading={exportLoading} disabled={disabledExport}>导出</Button></div>
+          <div><Button type="primary" onClick={this.exportReportStation} loading={downloading} disabled={disabledExport}>导出</Button></div>
           <div>
             <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.changePage} />
           </div>
@@ -237,7 +234,7 @@ class ReportTable extends React.Component {
           onChange={this.tableChange}
           dataSource={reportStationList.map((e, i) => ({ ...e, key: i }))}
           bordered
-          scroll={{ x: 3480, y: 460 }}
+          scroll={{ x: 3480, y: 450 }}
           pagination={false}
         />
 

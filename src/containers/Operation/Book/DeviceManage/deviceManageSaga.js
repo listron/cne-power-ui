@@ -32,6 +32,10 @@ function* getDeviceList(action) {
     }`;
   try {
     yield put({ type: deviceManageAction.DEVICE_MANAGE_FETCH });
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
+      payload: { ...payload, tableloading: true },
+    });
     const response = yield call(axios.post, url, {
       ...payload,
       sortField: payload.sortField.replace(/[A-Z]/g, e => `_${e.toLowerCase()}`), //重组字符串
@@ -60,6 +64,7 @@ function* getDeviceList(action) {
           deviceList: response.data.data.context || [],
           totalNum,
           pageNum,
+          tableloading: false,
         },
       });
     } else {
@@ -69,7 +74,7 @@ function* getDeviceList(action) {
     console.log(e);
     yield put({
       type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
-      payload: { ...payload, loading: false },
+      payload: { ...payload, loading: false, tableloading: false },
     });
   }
 }
@@ -121,20 +126,31 @@ function* getStationDeviceDetail(action) {
     Path.APISubPaths.system.showDeviceInfo
     }/${payload.deviceFullCode}`;
   try {
-    const response = yield call(axios.get, url, payload);
-    // if(response.data.code === "10000"){
     yield put({
-      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-      payload: {
-        selectedStationIndex,
-        stationDeviceDetail: response.data.data || {},
-        showPage: 'detail',
-      },
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
+      payload: { detailloading: true },
     });
-    // }
+    const response = yield call(axios.get, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          selectedStationIndex,
+          stationDeviceDetail: response.data.data || {},
+          showPage: 'detail',
+          detailloading: false,
+        },
+      });
+    } else {
+      throw response.data;
+    }
   } catch (e) {
     console.log(e);
     message.error('获取电站设备详情失败，请重试');
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
+      payload: { loading: false, detailloading: false },
+    });
   }
 }
 function* getConnectDevice(action) {
@@ -329,7 +345,12 @@ function* importStationDevice(action) {
     Path.APISubPaths.system.importStationDevice
     }/${payload.stationCode}`;
   try {
-    yield put({ type: deviceManageAction.DEVICE_MANAGE_FETCH });
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
+      payload: {
+        importLoading: true,
+      },
+    });
     const response = yield call(axios, {
       method: 'post',
       url,
@@ -344,6 +365,7 @@ function* importStationDevice(action) {
         payload: {
           selectedRowKeys: [],
           selectedRowData: [],
+          importLoading: false,
         },
       });
       const params = yield select(state => ({
@@ -367,7 +389,7 @@ function* importStationDevice(action) {
     }
   } catch (e) {
     console.log(e);
-    yield put({ type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA, payload: { loading: false } });
+    yield put({ type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA, payload: { loading: false, importLoading: false } });
   }
 }
 

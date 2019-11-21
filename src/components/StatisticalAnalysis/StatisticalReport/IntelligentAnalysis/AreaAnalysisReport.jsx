@@ -38,13 +38,15 @@ class AreaAnalysisReport extends Component{
                 <span>%。</span>
               </p>
 
-              <p className={styles.paragraph + ' ' + styles.bigText}>
-                <span>计划完成率最低的三个区域为</span>
-                <span className={styles.text}>{genRegionNameList.map(e => e).join('、')}</span>
-                <span>。</span>
-              </p>
-
-              <GenRegionDataList genRegionDataList={genRegionDataList} />
+              {genRegionDataList.length !== 0 &&
+              <div>
+                <p className={styles.paragraph + ' ' + styles.bigText}>
+                  <span>计划完成率最低的三个区域为</span>
+                  <span className={styles.text}>{genRegionNameList.map(e => e).join('、')}</span>
+                  <span>。</span>
+                </p>
+                <GenRegionDataList genRegionDataList={genRegionDataList} />
+              </div>}
 
               <p className={styles.bigText}>
                 <span>2、集团电站总损失电量等效时为</span>
@@ -52,13 +54,17 @@ class AreaAnalysisReport extends Component{
                 <span>h。</span>
               </p>
 
-              <p className={styles.paragraph + ' ' + styles.bigText}>
-                <span>损失电量等效时最高的三个区域为</span>
-                <span className={styles.text}>{lostRegionNameList.map(e => e).join('、')}</span>
-                <span>。</span>
-              </p>
+              {lostRegionDataList.length !== 0 &&
+              <div>
+                <p className={styles.paragraph + ' ' + styles.bigText}>
+                  <span>损失电量等效时最高的三个区域为</span>
+                  <span className={styles.text}>{lostRegionNameList.map(e => e).join('、')}</span>
+                  <span>。</span>
+                </p>
 
-              <LostRegionDataList lostRegionDataList={lostRegionDataList} />
+                <LostRegionDataList lostRegionDataList={lostRegionDataList} />
+              </div>}
+
             </div>
           </div>
           :
@@ -72,33 +78,36 @@ class AreaAnalysisReport extends Component{
                 <span className={styles.text}>{dataFormats(enterpriseGenData.rate,'--',2,true) || '--'}</span>
                 <span>%。</span>
               </p>
+              {genRegionDataList.length !== 0 && <div>
+                <p className={styles.paragraph + ' ' + styles.bigText}>
+                  <span>计划完成率最低的三个区域为</span>
+                  <span className={styles.text}>{genRegionNameList.map(e => e).join('、')}</span>
+                  <span>。</span>
+                </p>
 
-              <p className={styles.paragraph + ' ' + styles.bigText}>
-                <span>计划完成率最低的三个区域为</span>
-                <span className={styles.text}>{genRegionNameList.map(e => e).join('、')}</span>
-                <span>。</span>
-              </p>
-
-              <GenRegionDataList genRegionDataList={genRegionDataList} />
+                <GenRegionDataList genRegionDataList={genRegionDataList} />
+              </div>}
 
               <p className={styles.bigText}>
                 <span>2、集团电站总损失电量等效时为</span>
                 <span className={styles.text}>{dataFormats(enterpriseHoursData.value,'--',2,true) || '--'}</span>
                 <span>h。</span>
               </p>
+              {lostRegionDataList.length !== 0 &&
+              <div>
+                <p className={styles.paragraph + ' ' + styles.bigText}>
+                  <span>损失电量等效时最高的三个区域为</span>
+                  <span className={styles.text}>{lostRegionNameList.map(e => e).join('、')}</span>
+                  <span>。</span>
+                </p>
 
-              <p className={styles.paragraph + ' ' + styles.bigText}>
-                <span>损失电量等效时最高的三个区域为</span>
-                <span className={styles.text}>{lostRegionNameList.map(e => e).join('、')}</span>
-                <span>。</span>
-              </p>
-
-              <LostRegionDataList lostRegionDataList={lostRegionDataList} />
+                <LostRegionDataList lostRegionDataList={lostRegionDataList} />
+              </div>}
             </div>
           </div>
         }
       </div>
-    )
+    );
   }
 }
 

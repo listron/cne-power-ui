@@ -82,7 +82,8 @@ class StationContrastTable extends React.Component {
   }
 
   render() {
-    const { stationContrastDetail, theme, stationContrastList } = this.props;
+    const { stationContrastDetail, theme, stationContrastList, loading } = this.props;
+    // console.log('loading---table: ', loading);
     const { clicked } = this.state;
     const content = (
       <div onClick={this.chartlegend}>
@@ -96,59 +97,64 @@ class StationContrastTable extends React.Component {
     );
 
     return (
-      <Row className={styles.stationContrastTable} >
-        <Col span={4} className={styles.baseNameBox} >
+      <div className={styles.stationContrastTable} >
+        <div className={styles.baseNameBox} >
           {stationContrastBaseName.map((e, i) => {
-            return (<Row className={styles.baseName} key={i}>
-              <Col className={styles.baseClassifyName} span={5}><span>{e.baseClassifyName}</span></Col>
-              <Col className={styles.rowName} span={19}>
+            return (<div className={styles.baseName} key={i}>
+              <div className={styles.baseClassifyName} ><span>{e.baseClassifyName}</span></div>
+              <div className={styles.rowName} >
                 {e.rowName.map((item, index) => {
+                  if (item === '电站名称') {
+                    return (<div className={styles.stationnameBg}><div key={index}>{item}</div></div>);
+                  }
                   return (<div key={index}>{item}</div>);
                 })}
-              </Col>
-            </Row>);
+              </div>
+            </div>);
           })}
-        </Col>
-        {stationContrastList &&
-          // {stationContrastList && stationContrastList.length === 2 &&
-          (<Col className={styles.stationOne} span={20} >
-            <div>
-              {stationContrastList.map((e, i) => (<div key={i} className={styles.baseInfoBg} >{e.stationName || '--'}</div>))}
-            </div>
-            <div>
-              {stationContrastList.map((e, i) => (<div key={i} className={styles.baseInfoBg} >{e.ongridTime || '--'}</div>))}
-            </div>
-            <div>
-              {stationContrastList.map((e, i) => (<div key={i} className={styles.baseInfoBg} >{e.capacity || '--'}</div>))}
-            </div>
-            <div>
-              {stationContrastList.map((e, i) => (<div key={i} className={styles.baseInfoBg} >{e.regionName || '--'}</div>))}
-            </div>
-            <div>
-              {stationContrastList.map((e, i) => (<div key={i} className={styles.baseInfoBg} >{e.unitCount || '--'}</div>))}
-            </div>
-            <span ref="popover" />
-            {Object.entries(stationContrastDataInfo).map((item, index) => {
-              return (
-                <div key={index} data-rowname={item[0]} data-datafieldname={item[1]} onClick={this.showContrastDetail} >
-                  <Popover
-                    content={content}
-                    trigger="click"
-                    getPopupContainer={() => this.refs.popover}
-                    onVisibleChange={item => this.onVisibleChange(item)}
-                    visible={clicked === item[0]}
-                    className={styles.contrastDetailPopover}
-                    placement="bottom"
-                    overlayClassName={styles.contrastOverlayClassName} >
-                    {stationContrastList.map((e, i) => (<div key={i} className={styles.stationContrastOne} >{e[item[0]] || '--'}</div>))}
+        </div>
+        <div className={styles.limitWidth}>
+          {stationContrastList &&
+            // {stationContrastList && stationContrastList.length === 2 &&
+            (<div className={styles.stationOne} >
+              <div className={styles.test}>
+                {stationContrastList.map((e, i) => (<div key={i} title={e.stationName} className={`${styles.baseInfoBg} ${styles.stationnameBg}`} >{e.stationName || '--'}</div>))}
+              </div>
+              <div className={styles.test}>
+                {stationContrastList.map((e, i) => (<div key={i} title={e.ongridTime} className={styles.baseInfoBg} >{e.ongridTime || '--'}</div>))}
+              </div>
+              <div className={styles.test}>
+                {stationContrastList.map((e, i) => (<div key={i} title={e.capacity} className={styles.baseInfoBg} >{(e.capacity ? (+e.capacity).toFixed(2) : '--') || '--'}</div>))}
+              </div>
+              <div className={styles.test}>
+                {stationContrastList.map((e, i) => (<div key={i} title={e.regionName} className={styles.baseInfoBg} >{e.regionName || '--'}</div>))}
+              </div>
+              <div className={styles.test}>
+                {stationContrastList.map((e, i) => (<div key={i} title={e.unitCount} className={styles.baseInfoBg} >{e.unitCount || '--'}</div>))}
+              </div>
+              <span ref="popover" />
+              {Object.entries(stationContrastDataInfo).map((item, index) => {
+                return (
+                  <div key={index} data-rowname={item[0]} data-datafieldname={item[1]} onClick={this.showContrastDetail} >
+                    <Popover
+                      content={content}
+                      trigger="click"
+                      getPopupContainer={() => this.refs.popover}
+                      onVisibleChange={item => this.onVisibleChange(item)}
+                      visible={clicked === item[0]}
+                      className={styles.contrastDetailPopover}
+                      placement="bottom"
+                      overlayClassName={styles.contrastOverlayClassName} >
+                      {stationContrastList.map((e, i) => (<div key={i} title={e[item[0]]} className={styles.stationContrastOne} >{e[item[0]] || '--'}</div>))}
 
-                  </Popover>
-                </div>
-              );
-            })}
-          </Col>)
-        }
-      </Row>
+                    </Popover>
+                  </div>
+                );
+              })}
+            </div>)
+          }
+        </div>
+      </div>
     );
   }
 }

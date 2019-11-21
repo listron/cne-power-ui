@@ -54,17 +54,17 @@ function* exportReportStationList(action) {
     yield put({
       type: reportStationAction.changeStore,
       payload: {
-        exportLoading: true,
+        downloading: true,
       },
     });
     const response = yield call(axios.post, url, payload);
-
+    console.log(response.data);
     if (response.data.code === '10000') {
       message.success('电站报表导出成功');
       yield put({
         type: reportStationAction.changeStore,
         payload: {
-          exportLoading: false,
+          downloading: false,
         },
       });
     } else {
@@ -75,7 +75,7 @@ function* exportReportStationList(action) {
     yield put({
       type: reportStationAction.changeStore,
       payload: {
-        exportLoading: false,
+        downloading: false,
       },
     });
     console.log(e);

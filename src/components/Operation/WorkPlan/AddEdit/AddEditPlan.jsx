@@ -67,12 +67,18 @@ class AddEditPlan extends PureComponent {
   formInfoQuery = (queryMethod = () => {}, planId) => (err, values) => {
     if (!err) {
       const { stationList, firstStartTime, deadLine, ...rest} = values;
+      let deadLineStr; // 循环周期为一次时, 失效时间不必填写, 默认为首次下发时间 +1 天;
+      if (parseFloat(rest.cycleTypeCode) === 151) {
+        deadLineStr = moment(firstStartTime).add(1, 'day').format('YYYY/MM/DD');
+      } else {
+        deadLineStr = moment(deadLine).format('YYYY/MM/DD');
+      }
       queryMethod({
         ...rest,
         planId,
         stationCodes: stationList.map(e => e.stationCode),
         firstStartTime: firstStartTime.format('YYYY/MM/DD'),
-        deadLine: deadLine && deadLine.format('YYYY/MM/DD'),
+        deadLine: deadLineStr,
       });
     }
   }
@@ -166,12 +172,12 @@ class AddEditPlan extends PureComponent {
                   style={{width: '200px'}}
                   getPopupContainer={() => this.inspectTypeRef}
                 >
-                  <Option value={100001}>日常巡检</Option>
-                  <Option value={100002}>巡视巡检</Option>
+                  <Option value={100001}>日常巡视</Option>
+                  <Option value={100002}>设备巡检</Option>
                 </Select>
               )}
               <span ref={(ref) => { this.inspectTypeRef = ref; }} />
-              <span className={styles.addFormTips}>注：巡视巡检将直接作为定期巡检，下发为巡检工单。</span>
+              <span className={styles.addFormTips}>注：设备巡检将直接作为定期巡检，下发为巡检工单。</span>
             </FormItem>
             <FormItem label="首次下发时间" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('firstStartTime', {
@@ -205,19 +211,19 @@ class AddEditPlan extends PureComponent {
               )}
               <span ref={(ref) => { this.cycleTypeRef = ref; }} />
             </FormItem>
-            <FormItem label="执行工时" colon={false} className={styles.eachPlanForm} >
+            <FormItem label="执行天数" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('validPeriod', {
                 rules: [{
                   required: true,
                   validator: (rule, value, callback)=>{
                     if (!value) {
-                      callback('请输入执行工时');
+                      callback('请输入执行天数');
                     } else {
                       const notNumber = isNaN(value);
                       const hasDemical = `${value}`.split('.')[1];
                       const wrongNumber = value < 0 || value > this.validPeriodDays[cycleTypeCode];
                       (notNumber || hasDemical || wrongNumber) && callback(
-                        `执行工时需为不超过${this.validPeriodDays[cycleTypeCode] || 999}的整数`
+                        `执行天数需为不超过${this.validPeriodDays[cycleTypeCode] || 999}的整数`
                       );
                     }
                     callback();
@@ -253,14 +259,14 @@ class AddEditPlan extends PureComponent {
                     maxTagPlaceholder: `已选${deviceTypeCodes.length}/${stationDeviceTypes.length}`,
                   } : {})}
                 >
-                  {stationDeviceTypes.map(e => (
+                  {stationDeviceTypes.filter(e => e.deviceTypeName !== '全场信息汇总').map(e => (
                     <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
                   ))}
                 </Select>
               )}
               <span ref={(ref) => { this.deviceTypeRef = ref; }} />
             </FormItem>}
-            <FormItem label="计划失效时间" colon={false} className={styles.eachPlanForm} >
+            {parseFloat(cycleTypeCode) !== 151 && <FormItem label="计划失效时间" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('deadLine', {
                 rules: [{ required: true, message: '请选择计划失效时间' }],
                 initialValue: initialDeadLine ? moment(initialDeadLine) : moment().add(5, 'year'),
@@ -276,7 +282,7 @@ class AddEditPlan extends PureComponent {
               )}
               <span ref={(ref) => { this.deadLineRef = ref; }} />
               <span className={styles.addFormTips}>注：该时间为计划整体结束时间，不针对单次。</span>
-            </FormItem>
+            </FormItem>}
             {parseInt(inspectTypeCode, 10) === 100001 && <FormItem label="巡视内容" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('inspectContent', {
                 rules: [{ required: true, message: '请输入巡视内容' }],
@@ -308,7 +314,7 @@ class AddEditPlan extends PureComponent {
 export default Form.create({
   onValuesChange: (props, changedValues, allFields) => {
     const { stationList = [], inspectTypeCode } = changedValues || {};
-    if (// 巡视巡检 + 选择电站 => 请求设备类型列表
+    if (// 设备巡检 + 选择电站 => 请求设备类型列表
       (inspectTypeCode === 100002 && allFields.stationList.length > 0)
         || (stationList.length > 0 && allFields.inspectTypeCode === 100002)
     ) {

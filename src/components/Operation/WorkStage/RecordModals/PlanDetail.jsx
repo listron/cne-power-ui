@@ -24,7 +24,7 @@ class PlanDetail extends PureComponent {
       title: '巡视类型',
       key: 'inspectTypeName',
     }, {
-      title: '执行工时',
+      title: '执行天数',
       key: 'validPeriod',
       render: (validPeriod) => (validPeriod === 0 || validPeriod > 0) ? `${validPeriod}天` : '--',
     }, {

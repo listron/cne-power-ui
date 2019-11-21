@@ -26,9 +26,14 @@ class DeviceManageSearch extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      SelectdeviceType: '',
+    };
   }
   selectStation = stations => {
+    this.setState({
+      SelectdeviceType: '',
+    });
     const {
       getStationDeviceTypes,
       getDeviceList,
@@ -53,6 +58,9 @@ class DeviceManageSearch extends Component {
     });
   };
   selectDeviceType = value => {//获取厂家列表换接口1.2.10
+    this.setState({
+      SelectdeviceType: value,
+    });
     const {
       stationCode,
       getDeviceModel,
@@ -116,6 +124,7 @@ class DeviceManageSearch extends Component {
   };
 
   render() {
+    const { SelectdeviceType } = this.state;
     const {
       allStationBaseInfo,
       stationDeviceTypes,
@@ -144,7 +153,7 @@ class DeviceManageSearch extends Component {
         <Select
           className={styles.typeSelect}
           onChange={this.selectDeviceType}
-          // value={deviceTypeCode}
+          value={this.state.SelectdeviceType}
           placeholder="请选择设备类型"
           disabled={typeSelectDisable}
         >
