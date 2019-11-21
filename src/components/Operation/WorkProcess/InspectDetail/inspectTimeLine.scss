@@ -1,0 +1,202 @@
+@import '../../../../theme/theme.scss';
+
+.timeLineWrap {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 24px;
+    align-items: flex-start;
+
+    .border {
+      display: flex;
+      flex: 1;
+      height: 16px;
+      border-bottom: 1px #f1f1f1 solid;
+    }
+
+    .text {
+      background-color: #f8f8f8;
+      color: rgba(0, 0, 0, 0.85);
+      border: 1px solid #f1f1f1;
+      border-radius: 4px;
+      font-weight: 700;
+      width: 95px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .timeLines {
+    font-size: 14px;
+
+    .processItem {
+      display: flex;
+      flex-direction: column;
+      margin-left: 8px;
+
+      .basic {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 12px;
+
+        .flowName {
+          // color: $darkColor;
+          color: rgba(0, 0, 0, 0.85);
+          margin-right: 24px;
+          width: 56px;
+        }
+
+        .operateTime {
+          color: $darkColor;
+          // margin-right: 12px;
+        }
+
+        .operateUser {
+          color: $darkColor;
+        }
+
+        .viewStandard {
+          color: $themeColor;
+          border-color: $themeColor;
+          background-color: #fff;
+          margin-top: -4px;
+          margin-left: 4px;
+
+          &:hover {
+            color: #fff;
+            background-color: $themeColor;
+          }
+        }
+      }
+
+      .descStyle {
+        display: flex;
+
+        .flowName {
+          // color: $darkColor;
+          color: rgba(0, 0, 0, 0.85);
+          margin-right: 24px;
+          width: 56px;
+        }
+
+        .inspectTypedetail {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+
+          .matrixeBox {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+
+            .matrixe {
+              display: flex;
+              background: #eee;
+              justify-content: space-between;
+              height: 24px;
+              line-height: 24px;
+              border-radius: 4px;
+              margin-bottom: 4px;
+
+              .rightCont {
+                width: 80px;
+                margin-right: 8px;
+                display: flex;
+                justify-content: space-between;
+
+                .numStyle {
+                  color: #199475
+                }
+              }
+
+
+            }
+          }
+
+
+          .deviceTypes {
+            display: flex;
+            flex-direction: column;
+
+            .numStyle {
+              margin-left: 12px;
+              color: #199475
+            }
+          }
+
+        }
+
+      }
+
+      .inspectDesc {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+
+        .text {
+          color: $darkColor;
+          margin-right: 24px;
+        }
+
+        .content {
+          display: flex;
+          flex-wrap: wrap;
+          color: $darkColor;
+        }
+      }
+
+      .lastFlowName {
+        color: $themeColor;
+      }
+    }
+  }
+
+  :global {
+
+    .icon-begin,
+    .icon-review,
+    .icon-doing {
+      background-color: #d8d8d8;
+      width: 16px;
+      height: 16px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: $darkColor;
+    }
+
+    .icon-doned,
+    .icon-goon {
+      color: $themeColor;
+      font-size: 16px;
+    }
+
+    .ant-timeline-item {
+      padding-bottom: 24px;
+
+      .ant-timeline-item-head-custom {
+        left: 8px;
+      }
+    }
+
+    .ant-timeline-item-last {
+      .ant-timeline-item-tail {
+        height: 36px;
+      }
+    }
+
+    .ant-timeline-item-pending {
+      .ant-timeline-item-head-custom {
+        display: none;
+      }
+    }
+  }
+}

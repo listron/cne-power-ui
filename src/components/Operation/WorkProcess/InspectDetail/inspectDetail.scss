@@ -1,0 +1,174 @@
+@import '../../../../theme/theme.scss';
+
+.basicInfo {
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: $darkColor;
+    margin-bottom: 21px;
+
+    .text {
+      display: flex;
+      flex-direction: row;
+      font-weight: 700;
+      align-items: center;
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    .warning {
+      display: flex;
+      flex-direction: row;
+      font-size: 12px;
+      align-items: center;
+      margin-left: 12px;
+
+      .overTime {
+        display: flex;
+        align-items: center;
+        color: #a42b2c;
+        border: 1px #a42b2c solid;
+        border-radius: 4px;
+        width: 32px;
+        height: 14px;
+        margin-right: 4px;
+      }
+    }
+
+    :global {
+      .icon-content {
+        margin-left: 6px;
+        font-size: 6px;
+        color: rgba(0, 0, 0, 0.85);
+      }
+    }
+  }
+
+  .basicContent {
+    display: flex;
+    flex-direction: column;
+
+    .basicItem {
+      display: flex;
+      flex-direction: row;
+      line-height: 30px;
+      align-items: center;
+      color: $darkColor;
+
+      .nameStyle {
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 600;
+      }
+
+      >div {
+        white-space: nowrap;
+      }
+
+      >span {
+        display: inline-block;
+        color: $darkColor;
+        padding: 0 24px;
+        white-space: pre-line;
+      }
+    }
+
+    .progressStyele {
+      display: flex;
+      flex-direction: row;
+
+      .nameStyle {
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 600;
+      }
+
+      .processContent {
+        flex: 1;
+        height: 300px;
+        overflow-y: auto;
+
+        .processDetail {
+          padding: 0 24px;
+          display: flex;
+          flex: 1;
+
+          .overinspect,
+          .noinspect {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+
+            .bgStyle {
+              background: #eee;
+            }
+
+            .totalNum {
+              color: #199475;
+
+
+            }
+          }
+
+          .overinspect {
+            border-right: 1px dashed $themeColor;
+
+          }
+
+          .noinspect {
+            margin-left: 8px;
+          }
+
+        }
+      }
+
+
+
+    }
+  }
+}
+
+.rightContent {
+  .checkinspect {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 24px;
+
+    .title {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 24px;
+      align-items: flex-start;
+
+      .border {
+        display: flex;
+        flex: 1;
+        height: 16px;
+        border-bottom: 1px #f1f1f1 solid;
+      }
+
+      .text {
+        background-color: #f8f8f8;
+        color: rgba(0, 0, 0, 0.85);
+        border: 1px solid #f1f1f1;
+        border-radius: 4px;
+        font-weight: 700;
+        width: 95px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .checkBtn {
+      margin: 0 auto;
+      width: 120px;
+      color: #f9b600;
+    }
+  }
+
+
+
+}

@@ -7,6 +7,7 @@ import searchUtil from '@utils/searchUtil';
 import DefectList from '../DefectList/DefectList';
 import InspectList from '../InspectList/InspectList';
 import DefectDetail from '../DefectDetail/DefectDetail';
+import InspectDetail from '../InspectDetail/InspectDetail';
 
 
 /**
@@ -89,7 +90,7 @@ class Overview extends Component {
               {tab === 'inspect' && <InspectList {...this.props} />}
             </div>}
           {page === 'defectDetail' && <DefectDetail {...this.props} />}
-          {page === 'inspectDeatail' && <div>巡检详情</div>}
+          {page === 'inspectDeatail' && <InspectDetail {...this.props} />}
         </div>
       </ContentLayout>
     );

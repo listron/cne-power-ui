@@ -5,10 +5,15 @@ const inspectDetailAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
+  getInspectDetail: Symbol('getInspectDetail'),
+  setInspectCheck: Symbol('setInspectCheck'),
 };
 
 const initState = immutable.fromJS({
-  name: 'hjl',
+  loading: false,
+  inspectDetail: {},
+  inspectFlows: [],
+
 });
 
 const inspectDetail = (state = initState, action) => {
