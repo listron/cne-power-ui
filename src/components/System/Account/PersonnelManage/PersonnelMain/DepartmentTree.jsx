@@ -40,6 +40,10 @@ class DepartmentTree extends Component {
     this.props.downloadTemplate();
   }
 
+  selectDepartmentTree = (selectedKeys) => {
+    console.log(selectedKeys);
+  }
+
   addDepartment = () => {
     this.props.changeStore({ departmentDrawerKey: 'add' });
   }
@@ -77,7 +81,6 @@ class DepartmentTree extends Component {
           title={<DepartMentTitle {...titleProps} />}
           key={departmentId}
           className={styles.eachDepartment}
-          selectable={false}
         >
           {this.renderTreeNodes(list, 'subDepartmentTitle')}
         </TreeNode>
@@ -86,7 +89,6 @@ class DepartmentTree extends Component {
     return (
       <TreeNode
         key={departmentId}
-        selectable={false}
         title={<DepartMentTitle {...titleProps} className={styles[level]} />}
         className={styles.eachDepartment}
       />
@@ -97,6 +99,7 @@ class DepartmentTree extends Component {
     // todo 批量导入成功后, 重新请求列表页数据信息
     const { enterpriseId, templateLoading, selectedDepartment, departmentTree } = this.props;
     const { departmentId } = selectedDepartment || {};
+    // onSelect, selectedKeys
     return (
       <div className={styles.departmentTree}>
         <h3 className={styles.treeTop}>
@@ -115,7 +118,11 @@ class DepartmentTree extends Component {
               >分配人员</span>
             </span>
           </h4>
-          <DirectoryTree blockNode className={styles.treeContent}>
+          <DirectoryTree
+            blockNode
+            className={styles.treeContent}
+            onSelect={this.selectDepartmentTree}
+          >
             {this.renderTreeNodes(departmentTree)}
           </DirectoryTree>
         </section>
