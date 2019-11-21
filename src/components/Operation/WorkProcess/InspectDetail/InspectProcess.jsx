@@ -53,7 +53,7 @@ class InspectProcess extends React.Component {
       <div className={styles.rightContent}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
 
-        {inspectStatus === '2' && <div className={styles.checkinspect}>
+        {inspectStatus === '3' && <div className={styles.checkinspect}>
           <div className={styles.title}>
             <div className={styles.border}></div>
             <div className={styles.text}>巡检处理</div>

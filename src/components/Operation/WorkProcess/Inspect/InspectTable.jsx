@@ -25,7 +25,7 @@ class InspectTable extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      status: '',
+
       currentSelectedStatus: 5,
       showWarningTip: false,
       warningTipText: '确认全部验收吗?',
@@ -56,7 +56,6 @@ class InspectTable extends React.Component {
 
   }
   onChangeTab = (e) => {
-    this.setState({ status: e.target.value });
     this.getListData({
       status: e.target.value,
       pageNum: 1,
@@ -125,7 +124,7 @@ class InspectTable extends React.Component {
 
   render() {
     const { selectedRowKeys = [], params = {}, total, tableLoading, theme, inspectList, inspectStatusStatistics } = this.props;
-    const { pageSize = 10, pageNum = 1 } = params;
+    const { pageSize = 10, pageNum = 1, status } = params;
     const { executeNum, checkNum } = inspectStatusStatistics;
     const { currentSelectedStatus, showWarningTip, warningTipText } = this.state;
     const curInspectStatus = { '0': '待提交', '1': '待审核', '2': '执行中', '3': '待验收', '4': '已完成' };
@@ -219,7 +218,7 @@ class InspectTable extends React.Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={`${styles.statusGroup}`}>
           <div className={styles.text}><span>状</span><span>态</span></div>
-          <RadioGroup onChange={this.onChangeTab} defaultValue="" value={this.state.status}>
+          <RadioGroup onChange={this.onChangeTab} defaultValue="" value={status}>
             <RadioButton value="">全部</RadioButton>
             <RadioButton value="2">{`执行中  ${(executeNum || executeNum === 0) ? executeNum : ''}`}</RadioButton>
             <RadioButton value="3">{`待验收  ${(checkNum || checkNum === 0) ? checkNum : ''}`}</RadioButton>

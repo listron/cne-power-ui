@@ -34,19 +34,14 @@ class InspectDetail extends Component {
 
 
   componentWillUnmount() {
-    const { history, location, resetStore } = this.props;
-    const { pathname } = history.location;
-    const historyPathname = location.pathname;
-    if (pathname !== historyPathname) { // 判断如果 从当前的页面跳到其他页面 则需要清空路由
-      resetStore();
-    }
+    const { resetStore } = this.props;
+    resetStore();
   }
 
   onCancelEdit = () => {
-    const { location, history } = this.props;
-    const { pathname } = location;
+    const { history } = this.props;
+    const { pathname } = history.location;
     history.push(`${pathname}?page=list&tab=inspect`);
-    // history.go(-1);
   }
 
 
