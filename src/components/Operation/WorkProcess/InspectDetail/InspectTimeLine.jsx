@@ -78,7 +78,7 @@ class InspectTimeLine extends Component {
           {deviceType.devices.map((device, id) => (
             <div key={`${index}-${id}`}>
               <span>{device.deviceName}</span>
-              <span className={styles.numStyle}>{device.defectIds.length ? `缺陷${device.defectIds.length}` : '正常'}</span>
+              <span className={styles.numStyle}>{device.status ? `缺陷${device.defectIds.length}` : '正常'}</span>
             </div>
           ))}
         </div>

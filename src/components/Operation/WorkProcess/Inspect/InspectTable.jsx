@@ -137,6 +137,7 @@ class InspectTable extends React.Component {
       dataIndex: 'inspectName',
       key: 'inspectName',
       sorter: true,
+      width: 137,
       render: (text, record) => {
         return <div className={styles.nameWidth} title={text}>{text}</div>;
       },
@@ -145,6 +146,7 @@ class InspectTable extends React.Component {
       dataIndex: 'stationName',
       key: 'stationName',
       sorter: true,
+      width: 137,
       render: (text, record) => {
         return <div className={styles.nameWidth} title={text}>{text}</div>;
       },
@@ -152,6 +154,7 @@ class InspectTable extends React.Component {
       title: '工单描述',
       dataIndex: 'deviceTypeName',
       key: 'deviceTypeName',
+      width: 270,
       render: (text, record) => {
         return <div className={styles.inspectDesc} title={text}>{text}</div>;
       },
@@ -159,12 +162,16 @@ class InspectTable extends React.Component {
       title: '缺陷数目',
       dataIndex: 'abnormalNum',
       key: 'abnormalNum',
-      // sorter: true,
+      width: 80,
+      render: (text, record) => {
+        return <div className={styles.defectNum} title={text}>{text}</div>;
+      },
     }, {
       title: '发生时间',
       dataIndex: 'startTime',
       key: 'startTime',
       sorter: true,
+      width: 160,
       render: (text, record) => {
         return <div className={styles.textWidth} title={text}>{text}</div>;
       },
@@ -172,6 +179,7 @@ class InspectTable extends React.Component {
       title: '完成时间',
       dataIndex: 'checkTime',
       key: 'checkTime',
+      width: 160,
       render: (text, record) => {
         return <div className={styles.textWidth} title={text}>{text}</div>;
       },
@@ -181,6 +189,7 @@ class InspectTable extends React.Component {
       dataIndex: 'inspectStatus',
       key: 'inspectStatus',
       sorter: true,
+      width: 130,
       render: (value, record, index) => (
         <div className={styles.inspectStatus} >
           <span>{curInspectStatus[value]}</span>
@@ -191,6 +200,7 @@ class InspectTable extends React.Component {
       ),
     }, {
       title: '查看',
+      width: 60,
       render: (text, record) => (
         <span className={styles.cursorStyle}>
           <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record.inspectId); }} />
@@ -240,6 +250,7 @@ class InspectTable extends React.Component {
           rowSelection={rowSelection}
           onChange={this.onChangeTable}
           loading={tableLoading}
+          scroll={{ y: 450 }}
           pagination={false}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
