@@ -6,6 +6,8 @@ const personnelManageAction = {
   getAllUserBase: Symbol('getAllUserBase'), // 所有用户基础信息 => 用于分配人员
   downloadTemplate: Symbol('downloadTemplate'), // 下载导入模板
   getDepartmentTreeData: Symbol('getDepartmentTreeData'), // 获取部门树
+  addNewDepartment: Symbol('addNewDepartment'), // 新增部门
+  getStationOfDepartment: Symbol('getStationOfDepartment'), // 指定部门电站信息获取
   getUserList: Symbol('getUserList'), // 请求用户列表
 };
 
@@ -18,13 +20,14 @@ const initState = {
 
   showPersonnelDrawer: false, // 用户审核 抽屉
   departmentDrawerKey: 'hide', // 添加部门 add + 编辑部门 edit + 隐藏抽屉 hide
+  departmentEditInfo: {}, // departmentDrawerKey为edit时, 选中要去编辑的部门的信息
   showLogoutModal: false, // 注销弹框
 
   templateLoading: false, // 导入模板下载
   departmentTreeLoading: false, // 部门树loading
+  addDepartmentLoading: false, // 部门添加loading;
 
   // addUserLoading: false, // 添加人员loading状态
-  // addDepartmentLoading: false, // 添加部门loading状态
   // userListLoading: false, // 页面部门loading状态
   // logoutLoading: false, // 注销用户loading状态
 

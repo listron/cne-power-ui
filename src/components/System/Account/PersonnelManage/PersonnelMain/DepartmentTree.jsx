@@ -8,20 +8,19 @@ import styles from './main.scss';
 
 const { TreeNode, DirectoryTree } = Tree;
 
-const DepartMentTitle = ({ className, edit, remove, departmentName, departmentId}) => (
+const DepartMentTitle = ({ className, edit, remove, departmentInfo}) => (
   <span className={className}>
-    <span title={departmentName} className={styles.departmentName}>{departmentName}</span>
+    <span title={departmentInfo.departmentName} className={styles.departmentName}>{departmentInfo.departmentName}</span>
     <span>
-      <span data-code={departmentId} onClick={edit} className="iconfont icon-edit" />
-      <span data-code={departmentId} onClick={remove} className="iconfont icon-del" />
+      <span onClick={(e) => edit(event, departmentInfo)} className="iconfont icon-edit" />
+      <span onClick={(e) => remove(event, departmentInfo)} className="iconfont icon-del" />
     </span>
   </span>
 );
 
 DepartMentTitle.propTypes = {
   className: PropTypes.string,
-  departmentName: PropTypes.string,
-  departmentId: PropTypes.string,
+  departmentInfo: PropTypes.object,
   remove: PropTypes.func,
   edit: PropTypes.func,
 };
@@ -52,28 +51,22 @@ class DepartmentTree extends Component {
     console.log('点击分配人员中');
   }
 
-  editDepartment = (e) => {
-    e.stopPropagation();
-    const { target } = e;
-    const { dataset } = target || {};
-    console.log(target);
-    console.log(target.dataset);
+  editDepartment = (event, departmentEditInfo) => {
+    event.stopPropagation();
+    // this.props.changeStore({ departmentDrawerKey: 'edit', departmentEditInfo });
   }
 
-  removeDepartment = (e) => {
-    e.stopPropagation();
-    console.log(target)
-    console.log(target.dataset)
+  removeDepartment = (event, departmentInfo) => {
+    event.stopPropagation();
   }
 
   renderTreeNodes = (data, level = 'fatherDepartmentTitle') => data.map(item => {
-    const { departmentName, departmentId, list } = item;
+    const { departmentName, departmentId, parentDepartmentId, list } = item;
     const titleProps = {
       className: styles[level],
       edit: this.editDepartment,
       remove: this.removeDepartment,
-      departmentName,
-      departmentId: departmentId,
+      departmentInfo: { departmentName, departmentId, parentDepartmentId },
     };
     if (list && list.length > 0) {
       return (

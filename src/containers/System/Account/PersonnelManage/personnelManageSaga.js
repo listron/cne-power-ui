@@ -67,7 +67,7 @@ function *getDepartmentTreeData() { // 获取部门树结构
     //   });
     // } else { throw response.message; }
     yield call(easyPut, 'changeStore', { departmentTreeLoading: true });
-    yield delay(3000);
+    yield delay(1000);
     yield call(easyPut, 'fetchSuccess', {
       departmentTreeLoading: false,
       departmentTree: [{
@@ -94,8 +94,61 @@ function *getDepartmentTreeData() { // 获取部门树结构
   }
 }
 
+function *addNewDepartment({ payload }){ // 添加部门
+  try {
+    // const url = ''; // POST /api/v3/department
+    /** payload: 
+     * departmentName	String	否	部门名称
+     * departmentId	String	是	所属部门ID => 是否有父级部门;
+     * stationCodes	String[]	是	负责电站（多选）
+     */
+    yield call( easyPut, 'changeStore', { addDepartmentLoading: true });
+    yield delay(1000);
+    // const response = yield call(request.post, payload)
+    yield call( easyPut, 'changeStore', {
+      addDepartmentLoading: false,
+      addDepartmentSuccess: true, // response.code === '10000',
+    });
+  } catch(error) {
+    yield call( easyPut, 'changeStore', {
+      addDepartmentLoading: false,
+      addDepartmentSuccess: false,
+    });
+    message.error(`获取所有用户基础信息失败, 分配人员功能将不可用, 请刷新重试! ${error}`);
+  }
+}
+
+function *getStationOfDepartment({ payload }){ // 获取指定部门下的电站信息 => 部门编辑 、查看部门页面信息两个地方可用
+  // payload : {departmentEditInfo} 或者 {departmentId}
+  // 直接传departmentId时, 为查看右侧部门信息; => reducer记录为departmentStations
+  // 传departmentEditInfo时, 为点击左侧部门树编辑; => reducer记录进入departmentEditInfo的stations字段;
+  try{
+    const { departmentEditInfo } = payload;
+    const departmentId = departmentEditInfo ? departmentEditInfo.departmentId : payload.departmentId;
+    // const url = GET /api/v3/department/station/list/{departmentId}
+    // const response = yield call(request.post, payload)
+    yield delay(1000);
+    const mockStation = [{
+      stationId: '11223344',
+      stationName: '永仁',
+      StationCode: 56,
+    }];
+    // if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', departmentId ? {
+        departmentStations: mockStation, // response.data || [],
+      } : {
+        departmentEditInfo: {
+          ...departmentEditInfo,
+          stations: mockStation, // response.data || [],
+        },
+        departmentDrawerKey: 'edit', // 开启编辑页面
+      });
+    // } else { throw response.message;}
+  } catch (error) {
+    message.error(`获取部门电站信息失败, 请重试! ${error}`)
+  }
+}
 // 左侧: 树区请求: 
-// 新增部门
 // 编辑部门
 // 删除部门预请求
 // 删除部门
@@ -123,6 +176,8 @@ export function* watchPersonnelManage() {
   yield takeLatest(personnelManageAction.getAllUserBase, getAllUserBase);
   yield takeLatest(personnelManageAction.downloadTemplate, downloadTemplate);
   yield takeLatest(personnelManageAction.getDepartmentTreeData, getDepartmentTreeData);
+  yield takeLatest(personnelManageAction.addNewDepartment, addNewDepartment);
+  yield takeLatest(personnelManageAction.getStationOfDepartment, getStationOfDepartment);
 
   yield takeLatest(personnelManageAction.getUserList, getUserList);
 }

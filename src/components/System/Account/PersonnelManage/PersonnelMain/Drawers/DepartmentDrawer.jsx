@@ -12,8 +12,31 @@ const { Option } = Select;
 class PersonnelMain extends Component {
   static propTypes = {
     departmentDrawerKey: PropTypes.string,
+    departmentEditInfo: PropTypes.object,
+    addDepartmentLoading: PropTypes.bool,
     form: PropTypes.object,
     changeStore: PropTypes.func,
+    addNewDepartment: PropTypes.func,
+  }
+
+
+
+  componentWillReceiveProps(nextProps){
+    const { departmentDrawerKey, departmentEditInfo, form } = nextProps;
+    const preDrawerKey = this.props.departmentDrawerKey;
+    // if (preDrawerKey !== 'hide' && departmentDrawerKey !== 'hide'){
+    //   const { departmentName, departmentId, parentDepartmentId } = departmentEditInfo;
+    //   let initialFormValue =  departmentDrawerKey === 'add' ? {
+    //     departmentName: '',
+    //     departmentId: null,
+    //     stationCodes: [],
+    //   } : {
+    //     departmentName,
+    //     departmentId: parentDepartmentId,
+    //     stationCodes: [],
+    //   };
+    //   form.set
+    // }
   }
 
   drawerTitle = {
@@ -43,6 +66,11 @@ class PersonnelMain extends Component {
   render(){
     const { departmentDrawerKey, form } = this.props;
     const { getFieldDecorator } = form;
+    /** payload: 
+     * departmentName	String	否	部门名称
+     * departmentId	String	是	所属部门ID => 是否有父级部门;
+     * stationCodes	String[]	是	负责电站（多选）
+     */
     return (
       <Drawer
         title={this.drawerTitle[departmentDrawerKey] || '--'}
@@ -55,9 +83,9 @@ class PersonnelMain extends Component {
       >
         <Form>
           <FormItem label="父部门" colon={false}>
-            {getFieldDecorator('fartherDepart', {
+            {getFieldDecorator('departmentId', {
               rules: [{ required: true, message: '请选择父部门' }],
-              initialValue: [],
+              initialValue: null,
             })(
               <Select style={{width: '200px'}}>
                 <Option value={100}>巡视计划</Option>
@@ -73,7 +101,7 @@ class PersonnelMain extends Component {
             )}
           </FormItem>
           <FormItem label="负责电站" colon={false}>
-            {getFieldDecorator('stations', {
+            {getFieldDecorator('stationCodes', {
               rules: [{ required: true, message: '请选择负责电站' }],
               initialValue: [],
             })(
