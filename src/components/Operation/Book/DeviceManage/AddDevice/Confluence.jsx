@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from '../deviceSide.scss';
 import ShowAddComponentMode from './ShowAddComponentMode';
 import BrachFormItem from './BrachFormItem';
-import { Input, Form,  Select, Checkbox,  } from 'antd';
+import { Input, Form, Select, Checkbox } from 'antd';
 const FormItem = Form.Item;
 const { Option } = Select;
 class Confluence extends Component {
@@ -14,33 +14,33 @@ class Confluence extends Component {
     pvDeviceModels: PropTypes.array,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       showAddComponentMode: false,
       showAddComponent: false,
       componentModeCodeAdd: '',
       manufacturerComAdd: '',
-      checkStyle:[]
-    }
+      checkStyle: [],
+    };
   }
   showAddComponentMode = () => {
-    this.props.changeDeviceManageStore({ checkDeviceModeOk: null })
+    this.props.changeDeviceManageStore({ checkDeviceModeOk: null });
     this.setState({
-      showAddComponentMode: true
-    })
+      showAddComponentMode: true,
+    });
   }
   cancleDeviceModeModal = () => {
     this.setState({
-      showAddComponentMode: false
-    })
+      showAddComponentMode: false,
+    });
   }
   saveFormState = (record) => {
-    this.setState({ componentModeCodeAdd: record.addComponentMode, manufacturerComAdd: record.addmanufacturerCom, showAddComponent: true })
+    this.setState({ componentModeCodeAdd: record.addComponentMode, manufacturerComAdd: record.addmanufacturerCom, showAddComponent: true });
   }
-  checkstyle=(checked)=>{
+  checkstyle = (checked) => {
     this.setState({
-      checkStyle:checked
-    })
+      checkStyle: checked,
+    });
   }
 
   changeBranchCount = ({ target }) => { // 支路数据改变时的逻辑 => 改变支路数据 + 渲染每个支路默认信息
@@ -49,7 +49,7 @@ class Confluence extends Component {
       const brachNum = parseInt(value.trim(), 10); // 支路数
       const connectedBranches = this.props.form.getFieldValue('connectedBranches') || [];
       const newBranchesInfo = [];
-      for(let i = 0; i < brachNum; i++){
+      for (let i = 0; i < brachNum; i++) {
         const eachSubNum = connectedBranches[i];
         newBranchesInfo.push(eachSubNum === undefined ? '1' : eachSubNum);
       }
@@ -61,10 +61,10 @@ class Confluence extends Component {
   }
 
   render() {
-    const { showAddComponentMode,checkStyle } = this.state;
+    const { showAddComponentMode, checkStyle } = this.state;
     const { pvDeviceModels, addPvDeviceModeData } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const branchCount = getFieldValue("branchCount");
+    const branchCount = (getFieldValue('branchCount') && getFieldValue('branchCount') < 21 ? getFieldValue('branchCount') : 0);
     const initComponentMode = addPvDeviceModeData.data ? +addPvDeviceModeData.data : null;
     const filterComponentModeId = pvDeviceModels.filter((e, i) => (e.deviceModeCode === initComponentMode))[0];
     const initValue = filterComponentModeId ? filterComponentModeId.deviceModeId : null;
@@ -73,13 +73,13 @@ class Confluence extends Component {
         <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
           {getFieldDecorator('componentMode', {
             initialValue: initValue,
-            rules:[{required: true,message: '请选择组件型号',}]
+            rules: [{ required: true, message: '请选择组件型号' }],
           })(
             <Select className={styles.modelSelect} placeholder="请选择组件型号" disabled={pvDeviceModels.length === 0} >
-             <Option key={'all'} value={''}>请选择组件型号</Option>
+              <Option key={'all'} value={''}>请选择组件型号</Option>
               {pvDeviceModels.map(e => {
                 if (!e) { return null; }
-                return <Option key={e.deviceModeCode} value={e.deviceModeId}>{e.deviceModeName}</Option>
+                return <Option key={e.deviceModeCode} value={e.deviceModeId}>{e.deviceModeName}</Option>;
               })}
             </Select>
           )}
@@ -89,7 +89,7 @@ class Confluence extends Component {
           {getFieldDecorator('branchCount', {
             rules: [
               { message: '1~20之间的整数', required: true, pattern: /^(0|1\d?|20?|[3-9])$/ },
-            ]
+            ],
           })(
             <Input placeholder="1~20之间的整数" onChange={this.changeBranchCount} />
           )}
@@ -115,8 +115,8 @@ class Confluence extends Component {
         </FormItem>
         {showAddComponentMode && <ShowAddComponentMode {...this.props} showAddComponentMode={showAddComponentMode} cancleDeviceModeModal={this.cancleDeviceModeModal} saveFormState={this.saveFormState} />}
       </div>
-    )
+    );
   }
 }
-export default (Confluence)
+export default (Confluence);
 
