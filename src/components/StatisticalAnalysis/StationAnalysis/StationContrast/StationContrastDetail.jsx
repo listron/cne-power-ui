@@ -26,27 +26,29 @@ class StationContrastDetail extends Component {
   }
   componentDidMount() {
     const { stationContrastDetail, column, theme } = this.props;
-    this.drawChart(stationContrastDetail, column, theme);
+    this.drawChart(stationContrastDetail, column, theme, true);
   }
 
   componentWillReceiveProps(nextProps) {
     const { stationContrastDetail, column, theme } = nextProps;
     if (stationContrastDetail && stationContrastDetail.length > 0 || theme !== this.props.theme) {
-      this.drawChart(stationContrastDetail, column, theme);
+      //
+      this.drawChart(stationContrastDetail, column, theme, nextProps.loading);
     }
   }
 
   getColor = {
     // 'light': ['#199475', '#c7ceb2'],
-
     'dark': [Gradient1, Gradient2],
   }
-  drawChart = (stationContrastDetail, column, theme) => {
+  drawChart = (stationContrastDetail, column, theme, loading) => {
     let stationContrastDiagram = echarts.init(this.charts, themeConfig[theme]);
     if (stationContrastDiagram) {
       stationContrastDiagram.dispose();
       stationContrastDiagram = echarts.init(this.charts, themeConfig[theme]);
     }
+    loading ? stationContrastDiagram.showLoading('default', { color: '#199475' }) : stationContrastDiagram.hideLoading();
+
     const columnName = stationContrastBaseInfo[column].name;
     const columnUnit = stationContrastBaseInfo[column].unit;
     const contrastYears = stationContrastDetail.map(e => e.years);
@@ -106,9 +108,10 @@ class StationContrastDetail extends Component {
         formatter: (params) => {
           let paramsItem = '';
           params.forEach(item => {
+            const yvalue = item.value ? (item.value)[1] : '';
             const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
             paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
-                        ${item.seriesName} :  ${dataFormats(item.value, '--', 2)}${item.seriesType === 'line' && '%' || ''}</div>`;
+                        ${item.seriesName} :  ${dataFormats(yvalue, '--', 2)}${item.seriesType === 'line' && '%' || ''}</div>`;
           });
           return (
             `<div class=${styles.tooltipBox}>
@@ -173,11 +176,10 @@ class StationContrastDetail extends Component {
       },
       series: stationContrastDetail.map((e, i) => {
         const color = colorArr[i];
-
         return ({
           name: e.stationName,
           type: 'bar',
-          data: e.value,
+          data: e.value.map((item, i) => ([i, item, e.stationName])),
           barWidth: '6px',
           itemStyle: {
             barBorderRadius: 3,

@@ -82,7 +82,8 @@ class StationContrastTable extends React.Component {
   }
 
   render() {
-    const { stationContrastDetail, theme, stationContrastList } = this.props;
+    const { stationContrastDetail, theme, stationContrastList, loading } = this.props;
+    // console.log('loading---table: ', loading);
     const { clicked } = this.state;
     const content = (
       <div onClick={this.chartlegend}>
@@ -123,7 +124,7 @@ class StationContrastTable extends React.Component {
                 {stationContrastList.map((e, i) => (<div key={i} title={e.ongridTime} className={styles.baseInfoBg} >{e.ongridTime || '--'}</div>))}
               </div>
               <div className={styles.test}>
-                {stationContrastList.map((e, i) => (<div key={i} title={e.capacity} className={styles.baseInfoBg} >{e.capacity || '--'}</div>))}
+                {stationContrastList.map((e, i) => (<div key={i} title={e.capacity} className={styles.baseInfoBg} >{(e.capacity ? (+e.capacity).toFixed(2) : '--') || '--'}</div>))}
               </div>
               <div className={styles.test}>
                 {stationContrastList.map((e, i) => (<div key={i} title={e.regionName} className={styles.baseInfoBg} >{e.regionName || '--'}</div>))}
