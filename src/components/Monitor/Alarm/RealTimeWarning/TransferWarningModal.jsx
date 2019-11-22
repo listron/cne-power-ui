@@ -16,6 +16,7 @@ class TransferWarningModal extends Component {
     selectedTransfer: PropTypes.array,
     onCancel: PropTypes.func,
     getLostGenType: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
@@ -70,8 +71,15 @@ class TransferWarningModal extends Component {
     });
   }
 
+  levelToWork = {
+    '1': { lable: '一', workLevel: 'A' },
+    '2': { lable: '二', workLevel: 'B' },
+    '3': { lable: '三/四', workLevel: 'C' },
+    '4': { lable: '三/四', workLevel: 'C' },
+  }
+
   render() {
-    const { defectTypes, theme } = this.props;
+    const { defectTypes, theme, selectedTransfer } = this.props;
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText } = this.state;
     const tmpGenTypes = [];
@@ -91,6 +99,7 @@ class TransferWarningModal extends Component {
         groupedLostGenTypes.push(innerArr);
       }
     });
+    const level = selectedTransfer.length > 0 && `${selectedTransfer[0].warningLevel}`;
     return (
       <Form>
         {showWarningTip && <WarningTip
@@ -137,7 +146,9 @@ class TransferWarningModal extends Component {
               <InputLimit style={{ marginLeft: -80, marginTop: 4 }} placeholder="请输入不超过80字的缺陷描述..." />
             )}
           </FormItem>
-          {/* <div className={styles.instructionText}>注意：保存后，多条告警将转为多个消缺工单。</div> */}
+          <div className={styles.instructionText}>
+            {level && `注: 当前告警级别为${this.levelToWork[level].lable}级，对应的工单为${this.levelToWork[level].workLevel}级`}
+          </div>
         </Modal>
       </Form>
     );
