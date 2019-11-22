@@ -64,25 +64,9 @@ class EditConflunce extends Component {
 
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const detailMap = stationDeviceDetail ? stationDeviceDetail.map : {};
-    // const connectedBranches = detailMap ? detailMap.connectedBranches : [];
     const { componentCount, connectedBranches } = detailMap;
-    const branchCount = (getFieldValue('branchCount') && getFieldValue('branchCount') < 21 ? getFieldValue('branchCount') : 0);
-    // const branchCount = detailMap ? detailMap.connectedBranches : [];
-    // const componentCount = getFieldValue("branchCount");
-    // let branchCountArr = [];
-    // for (let i = 0; i < componentCount; i++) {
-    //   branchCountArr.push(i + 1)
-    // }
-    // const branchCountArr=branchCount.map((e,i)=>{
-    // return e===1?i+1:null
-    // })
-    // let initChecked = [];
-    // branchCount.forEach((e, i) => {
-    //   if (e) {
-    //     initChecked.push(i + 1)
+    const branchCount = (getFieldValue('branchCount') && getFieldValue('branchCount') < 21) && getFieldValue('branchCount');
 
-    //   }
-    // })
     return (
       <div className={styles.rightStyles}>
         <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
@@ -127,7 +111,7 @@ class EditConflunce extends Component {
               },
             }],
           })(
-            <BrachFormItem branchCount={branchCount || 0} />
+            <BrachFormItem branchCount={branchCount || componentCount || 0} />
           )}
         </FormItem>
       </div>
@@ -135,7 +119,4 @@ class EditConflunce extends Component {
   }
 }
 export default (EditConflunce);
-// <Col span={3} key={i}>
-// <div>第{i + 1}支路</div>
-// <Checkbox value={e} key={i}></Checkbox>
-// </Col>
+
