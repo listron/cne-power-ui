@@ -29,6 +29,8 @@ class DefectCreate extends Component {
     theme: PropTypes.string,
     createDefect: PropTypes.func,
     history: PropTypes.object,
+    knowledgebaseList: PropTypes.array,
+    changeStore: PropTypes.func,
 
   };
 
@@ -63,6 +65,7 @@ class DefectCreate extends Component {
     if (stationCodes) {
       this.props.getStationDeviceTypes({ stationCodes }); // 获取设备类型
     }
+    this.props.changeStore({ knowledgebaseList: [] })
     this.props.form.setFieldsValue({ stations: stations, deviceTypeCode: null, defectTypeCode: null, deviceCodeArr: [] });
   }
 
@@ -97,7 +100,6 @@ class DefectCreate extends Component {
     const { defectId } = defectDetail;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values);
         const { defectCategory, deviceCodeArr = [], imgDescribe, photoData, stations, defectTypeCode, createTime, ...rest } = values;
         const { stationCode, stationType } = stations[0];
         const { deviceCode = '' } = deviceCodeArr.length > 0 && deviceCodeArr[0];
@@ -113,7 +115,6 @@ class DefectCreate extends Component {
         }).join(',');
         const rotatePhoto = rotatePhotoArray.join(';'); //  图片旋转信息
         const initDeviceCode = defectCategory === 'device' && { deviceCode } || {}; // 其他缺陷的时候不传deviceCode
-        console.log('defectCategory', defectCategory, initDeviceCode);
         this.props.createDefect({ // 当为缺陷分类的时候 缺陷类型传0
           ...rest, defectId, stationCode, stationType, photoAddress, photoSolveAddress, rotatePhoto,
           ...initDeviceCode,
@@ -189,7 +190,7 @@ class DefectCreate extends Component {
           <FormItem label="缺陷分类" colon={false}>
             {getFieldDecorator('defectCategory', {
               rules: [{ required: true, message: '选择验收结果' }],
-              initialValue: defectTypeCode && 'device' || 'other',
+              initialValue: editDefect && (defectTypeCode ? 'device' : 'other') || 'device',
             })(
               <Radio.Group>
                 <Radio.Button value="device">设备缺陷</Radio.Button>
