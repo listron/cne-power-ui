@@ -3,23 +3,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Tree } from 'antd';
+import WarningTip from '@components/Common/WarningTip';
 import Uploader from './Uploader';
 import styles from './main.scss';
 
 const { TreeNode, DirectoryTree } = Tree;
 
-const DepartMentTitle = ({ className, edit, remove, departmentInfo}) => (
+const DepartMentTitle = ({ className, edit, remove, departmentInfo, hasChild}) => (
   <span className={className}>
-    <span title={departmentInfo.departmentName} className={styles.departmentName}>{departmentInfo.departmentName}</span>
+    <span
+      title={departmentInfo.departmentName}
+      className={styles.departmentName}
+    >{departmentInfo.departmentName}</span>
     <span>
-      <span onClick={(e) => edit(event, departmentInfo)} className="iconfont icon-edit" />
-      <span onClick={(e) => remove(event, departmentInfo)} className="iconfont icon-del" />
+      <span title="编辑" onClick={(event) => edit(event, departmentInfo)} className="iconfont icon-edit" />
+      <span title="删除" onClick={(event) => remove(event, departmentInfo, hasChild)} className="iconfont icon-del" />
     </span>
   </span>
 );
 
 DepartMentTitle.propTypes = {
   className: PropTypes.string,
+  hasChild: PropTypes.bool,
   departmentInfo: PropTypes.object,
   remove: PropTypes.func,
   edit: PropTypes.func,
@@ -28,24 +33,39 @@ DepartMentTitle.propTypes = {
 class DepartmentTree extends Component {
   static propTypes = {
     enterpriseId: PropTypes.string,
+    preDeleteText: PropTypes.string,
     templateLoading: PropTypes.bool,
     selectedDepartment: PropTypes.object,
     departmentTree: PropTypes.array,
     downloadTemplate: PropTypes.func,
     changeStore: PropTypes.func,
     getStationOfDepartment: PropTypes.func,
+    preDeleteDepartmentCheck: PropTypes.func,
+    deleteDepartment: PropTypes.func,
+  }
+
+  state = {
+    refuseText: '',
+    deleteDepartmentInfo: {},
   }
 
   downloadTemplate = () => {
     this.props.downloadTemplate();
   }
 
-  selectDepartmentTree = (selectedKeys) => {
-    console.log(selectedKeys);
+  addDepartment = () => { // 新增部门;
+    this.props.changeStore({ departmentDrawerKey: 'add' });
   }
 
-  addDepartment = () => {
-    this.props.changeStore({ departmentDrawerKey: 'add' });
+  selectDepartmentNode = (selectedKeys) => { // 选中部门 => 请求右侧所有数据 + 记录选中的部门
+    const { departmentTree } = this.props;
+    // 找到选中的信息
+    let departmentInfo = null;
+    // while(departmentTree){
+
+    // }
+    // console.log()
+    // selectedDepartment
   }
 
   assignPersonnel = () => {
@@ -54,27 +74,55 @@ class DepartmentTree extends Component {
 
   editDepartment = (event, departmentEditInfo) => { // 编辑
     event.stopPropagation();
+    event.nativeEvent.stopImmediatePropagation();
     this.props.getStationOfDepartment({ departmentEditInfo }); // 请求该部门下的电站
   }
 
-  removeDepartment = (event, departmentInfo) => {
+  removeDepartment = (event, departmentInfo, hasChild) => { // 删除部门 => 有子部门 或 预设部门, 不可删除
     event.stopPropagation();
+    const { departmentSource } = departmentInfo;
+    if (departmentSource === 0) {
+      this.setState({
+        refuseText: '不得删除预设部门!',
+      });
+    } else if (hasChild) {
+      this.setState({
+        refuseText: '请先删除子部门!',
+      });
+    } else { // 调用删前预请求接口
+      this.setState({ deleteDepartmentInfo: departmentInfo });
+      this.props.preDeleteDepartmentCheck({ departmentInfo });
+    }
   }
 
+  cancelRemoveDepartment = () => { // 取消删除部门
+    this.setState({ deleteDepartmentInfo: {} });
+    this.props.changeStore({ preDeleteText: '' });
+  }
+
+  confirmRemoveDepartment = () => {
+    const { deleteDepartmentInfo } = this.state;
+    this.props.deleteDepartment({ deleteDepartmentInfo });
+  }
+
+  refuseTipHide = () => this.setState({ refuseText: '' })
+
   renderTreeNodes = (data, level = 'fatherDepartmentTitle') => data.map(item => {
-    const { departmentName, departmentId, parentDepartmentId, list } = item;
+    const { departmentId, list } = item;
     const titleProps = {
       className: styles[level],
       edit: this.editDepartment,
       remove: this.removeDepartment,
-      departmentInfo: { departmentName, departmentId, parentDepartmentId },
+      departmentInfo: item,
     };
-    if (list && list.length > 0) {
+    const hasChild = list && list.length > 0;
+    if (hasChild) {
       return (
         <TreeNode
-          title={<DepartMentTitle {...titleProps} />}
+          title={<DepartMentTitle {...titleProps} hasChild={true} />}
           key={departmentId}
           className={styles.eachDepartment}
+          // selectable={false}
         >
           {this.renderTreeNodes(list, 'subDepartmentTitle')}
         </TreeNode>
@@ -83,7 +131,8 @@ class DepartmentTree extends Component {
     return (
       <TreeNode
         key={departmentId}
-        title={<DepartMentTitle {...titleProps} className={styles[level]} />}
+        // selectable={false}
+        title={<DepartMentTitle {...titleProps} hasChild={false} className={styles[level]} />}
         className={styles.eachDepartment}
       />
     );
@@ -91,9 +140,9 @@ class DepartmentTree extends Component {
 
   render(){
     // todo 批量导入成功后, 重新请求列表页数据信息
-    const { enterpriseId, templateLoading, selectedDepartment, departmentTree } = this.props;
+    const { enterpriseId, templateLoading, selectedDepartment, departmentTree, preDeleteText } = this.props;
+    const { refuseText } = this.state;
     const { departmentId } = selectedDepartment || {};
-    // onSelect, selectedKeys
     return (
       <div className={styles.departmentTree}>
         <h3 className={styles.treeTop}>
@@ -115,43 +164,20 @@ class DepartmentTree extends Component {
           <DirectoryTree
             blockNode
             className={styles.treeContent}
-            onSelect={this.selectDepartmentTree}
+            onSelect={this.selectDepartmentNode}
           >
             {this.renderTreeNodes(departmentTree)}
           </DirectoryTree>
         </section>
+        {refuseText && <WarningTip onOK={this.refuseTipHide} value={refuseText} />}
+        {preDeleteText && <WarningTip
+          onOK={this.confirmRemoveDepartment}
+          onCancel={this.cancelRemoveDepartment}
+          value={preDeleteText}
+        />}
       </div>
     );
   }
 }
 
 export default DepartmentTree;
-
-// const uploadProps = {
-//   name: 'file',
-//   action: url,
-//   headers: { 'Authorization': 'bearer ' + ((authData && authData !== 'undefined') ? authData : '') },
-//   beforeUpload: this.beforeUpload,
-//   data: {
-//     enterpriseId: this.props.enterpriseId,
-//   },
-//   onChange: (info) => {
-//     if (info.file.status === 'done') {
-//       if (info.file.response.code === '10000') {
-//         message.success(`${info.file.name} 导入完成`);
-//         const params = {
-//           enterpriseId: this.props.enterpriseId,
-//           userStatus: this.props.userStatus,
-//           roleId: this.props.roleId,
-//           pageNum: this.props.pageNum,
-//           pageSize: this.props.pageSize,
-//         };
-//         this.props.getUserList(params);
-//       } else {
-//         message.error(info.file.response.message);
-//       }
-//     } else if (info.file.status === 'error') {
-//       message.error(`${info.file.name} 导入失败，请重新导入.`);
-//     }
-//   },
-// };

@@ -9,6 +9,8 @@ const personnelManageAction = {
   addNewDepartment: Symbol('addNewDepartment'), // 新增部门
   editDepartment: Symbol('editDepartment'), // 编辑部门详情
   getStationOfDepartment: Symbol('getStationOfDepartment'), // 指定部门电站信息获取
+  preDeleteDepartmentCheck: Symbol('preDeleteDepartmentCheck'), // 删除部门前确认
+  deleteDepartment: Symbol('deleteDepartment'), // 删除部门
   getUserList: Symbol('getUserList'), // 请求用户列表
 };
 
@@ -28,6 +30,9 @@ const initState = {
   departmentTreeLoading: false, // 部门树loading
   addDepartmentLoading: false, // 部门添加loading;
   addDepartmentSuccess: false, // 部门添加/编辑结果;
+
+  preDeleteText: '', // 部门删除以前的提示语
+  deleteDepartmentSuccess: false, // 部门删除结果
 
   // addUserLoading: false, // 添加人员loading状态
   // userListLoading: false, // 页面部门loading状态

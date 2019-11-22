@@ -160,7 +160,7 @@ function *editDepartment({ payload }){ // 编辑部门
      */
     yield call( easyPut, 'changeStore', { addDepartmentLoading: true });
     yield delay(1000);
-    // const response = yield call(request.post, payload)
+    // const response = yield call(request.post, url, payload);
     yield call( easyPut, 'changeStore', {
       addDepartmentLoading: false,
       addDepartmentSuccess: true, // response.code === '10000',
@@ -171,13 +171,39 @@ function *editDepartment({ payload }){ // 编辑部门
       addDepartmentLoading: false,
       addDepartmentSuccess: false,
     });
-    message.error(`编辑部门失败 ${error}`);
+    message.error(`编辑部门失败, ${error}`);
+  }
+}
+
+function *preDeleteDepartmentCheck({ payload }){ // 删除部门前的检查、
+  try {
+    // const url = ''; // GET /api/v3/user/department/checkDel/{departmentId}
+    yield delay(1000);
+    // const response = yield call(request.get, url)
+    yield call(easyPut, 'changeStore', {
+      preDeleteText: '删除后, 将取消成员关联! ', // response.message || '删除后, 将取消成员关联! ',
+    });
+  } catch (err) {
+    message.error('删除失败, 请重试');
+  }
+}
+
+function *deleteDepartment({ payload }){ // 删除部门
+  try {
+    // const url = ''; // DELETE /api/v3/department/{departmentId}
+    yield delay(1000);
+    // const response = yield call(request.delete, url)
+    yield call(easyPut, 'changeStore', {
+      preDeleteText: '', // 删除弹框隐藏
+      deleteDepartmentSuccess: true, // response.code === '10000',
+    });
+    yield call(getDepartmentTreeData); // 重新请求部门树结构
+  } catch (error) {
+    yield call( easyPut, 'changeStore', { deleteDepartmentSuccess: false });
+    message.error(`删除部门失败, 请重试 ${error}`);
   }
 }
 // 左侧: 树区请求: 
-// 
-// 删除部门预请求
-// 删除部门
 // 为指定部门分配人员
 
 // 右侧: 列表区请求
@@ -205,6 +231,8 @@ export function* watchPersonnelManage() {
   yield takeLatest(personnelManageAction.addNewDepartment, addNewDepartment);
   yield takeLatest(personnelManageAction.getStationOfDepartment, getStationOfDepartment);
   yield takeLatest(personnelManageAction.editDepartment, editDepartment);
+  yield takeLatest(personnelManageAction.preDeleteDepartmentCheck, preDeleteDepartmentCheck);
+  yield takeLatest(personnelManageAction.deleteDepartment, deleteDepartment);
 
   yield takeLatest(personnelManageAction.getUserList, getUserList);
 }

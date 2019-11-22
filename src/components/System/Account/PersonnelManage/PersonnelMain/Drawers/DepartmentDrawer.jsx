@@ -36,7 +36,7 @@ class PersonnelMain extends Component {
         stationLists: stations.filter(e => departmentStation.some(m => `${m.stationCode}` === `${e.stationCode}`)),
       });
     }
-    if (preLoading && addDepartmentLoading && addDepartmentSuccess) { // 新增 / 编辑请求结束 => 成功 => 关闭抽屉
+    if (preLoading && !addDepartmentLoading && addDepartmentSuccess) { // 新增 / 编辑请求结束 => 成功 => 关闭抽屉
       this.hideDepartmentDrawer();
     }
   }
@@ -90,6 +90,7 @@ class PersonnelMain extends Component {
               initialValue: null,
             })(
               <Select style={{width: '200px'}} disabled={departmentDrawerKey === 'edit'}>
+                <Option value="0">无父部门</Option>
                 {departmentTree.map(e => (
                   <Option value={e.departmentId} key={e.departmentId}>{e.departmentName}</Option>
                 ))}
