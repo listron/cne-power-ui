@@ -67,7 +67,7 @@ class PersonnelMain extends Component {
           >
             <p>用户审核的相关表单内容</p>
           </Drawer>
-          <DepartmentDrawer departmentDrawerKey={departmentDrawerKey} changeStore={changeStore} />
+          <DepartmentDrawer {...this.props} />
         </div>
       </div>
     );

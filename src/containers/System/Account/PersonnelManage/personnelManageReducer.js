@@ -7,6 +7,7 @@ const personnelManageAction = {
   downloadTemplate: Symbol('downloadTemplate'), // 下载导入模板
   getDepartmentTreeData: Symbol('getDepartmentTreeData'), // 获取部门树
   addNewDepartment: Symbol('addNewDepartment'), // 新增部门
+  editDepartment: Symbol('editDepartment'), // 编辑部门详情
   getStationOfDepartment: Symbol('getStationOfDepartment'), // 指定部门电站信息获取
   getUserList: Symbol('getUserList'), // 请求用户列表
 };

@@ -56,6 +56,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDepartmentTreeData: () => dispatch({ type: personnelManageAction.getDepartmentTreeData }),
   addNewDepartment: payload => dispatch({ type: personnelManageAction.addNewDepartment, payload }),
   getStationOfDepartment: payload => dispatch({ type: personnelManageAction.getStationOfDepartment, payload }),
+  editDepartment: payload => dispatch({ type: personnelManageAction.editDepartment, payload }),
   getUserList: payload => dispatch({ type: personnelManageAction.getUserList, payload }),
 });
 

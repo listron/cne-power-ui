@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Drawer, Form, Select, Input } from 'antd';
+import { Drawer, Form, Select, Input, Button } from 'antd';
 import StationSelect from '@components/Common/StationSelect';
 import styles from './drawer.scss';
 
@@ -11,30 +11,29 @@ const { Option } = Select;
 
 class PersonnelMain extends Component {
   static propTypes = {
+    departmentTree: PropTypes.array,
     departmentDrawerKey: PropTypes.string,
     departmentEditInfo: PropTypes.object,
     addDepartmentLoading: PropTypes.bool,
+    stations: PropTypes.array,
     form: PropTypes.object,
     changeStore: PropTypes.func,
     addNewDepartment: PropTypes.func,
+    editDepartment: PropTypes.func,
   }
 
   componentWillReceiveProps(nextProps){
-    const { departmentDrawerKey, departmentEditInfo, form } = nextProps;
-    const preDrawerKey = this.props.departmentDrawerKey;
-    // if (preDrawerKey !== 'hide' && departmentDrawerKey !== 'hide'){
-    //   const { departmentName, departmentId, parentDepartmentId } = departmentEditInfo;
-    //   let initialFormValue =  departmentDrawerKey === 'add' ? {
-    //     departmentName: '',
-    //     departmentId: null,
-    //     stationCodes: [],
-    //   } : {
-    //     departmentName,
-    //     departmentId: parentDepartmentId,
-    //     stationCodes: [],
-    //   };
-    //   form.set
-    // }
+    const { departmentDrawerKey, departmentEditInfo, form, stations } = nextProps;
+    const preDepartmentEditInfo = this.props.departmentEditInfo;
+    if (departmentDrawerKey === 'edit' && preDepartmentEditInfo !== departmentEditInfo) { // 编辑页 得待新编辑部门数据
+      const { departmentName, parentDepartmentId } = departmentEditInfo;
+      const departmentStation = departmentEditInfo.stations || [];
+      form.setFieldsValue({ // 编辑信息内容存入
+        departmentName,
+        departmentId: parentDepartmentId,
+        stationLists: stations.filter(e => departmentStation.some(m => `${m.stationCode}` === `${e.stationCode}`)),
+      });
+    }
   }
 
   drawerTitle = {
@@ -42,27 +41,32 @@ class PersonnelMain extends Component {
     add: '添加部门',
   }
 
-  hideDepartmentDrawer = () => {
-    this.props.changeStore({ departmentDrawerKey: 'hide' });
+  saveDepartment = () => { // 保存 => 区分编辑 或 新增
+    const { form, departmentDrawerKey, departmentEditInfo } = this.props;
+    form.validateFields((err, values) => {
+      if (!err) {
+        const { stationLists, ...rest } = values;
+        const formValues = { ...rest, stationCodes: stationLists.map(e => e.stationCode) };
+        departmentDrawerKey === 'edit' && this.props.editDepartment({
+          ...rest,
+          departmentId: departmentEditInfo.departmentId,
+          stationCodes: stationLists.map(e => e.stationCode),
+        });
+        departmentDrawerKey === 'add' && this.props.addNewDepartment(formValues);
+      }
+    });
   }
 
-  // this.props.form.validateFields(this.formInfoQuery(this.props.addWorkPlan));
-
-  // formInfoQuery = (queryMethod = () => {}, planId) => (err, values) => {
-  //   if (!err) {
-  //     const { stationList, firstStartTime, deadLine, ...rest} = values;
-  //     queryMethod({
-  //       ...rest,
-  //       planId,
-  //       stationCodes: stationList.map(e => e.stationCode),
-  //       firstStartTime: firstStartTime.format('YYYY/MM/DD'),
-  //       deadLine: deadLine && deadLine.format('YYYY/MM/DD'),
-  //     });
-  //   }
-  // }
+  hideDepartmentDrawer = () => { // 隐藏抽屉并重置
+    this.props.form.resetFields();
+    this.props.changeStore({
+      departmentDrawerKey: 'hide',
+      departmentEditInfo: {},
+    });
+  }
 
   render(){
-    const { departmentDrawerKey, form, departmentTree } = this.props;
+    const { departmentDrawerKey, form, departmentTree, stations, addDepartmentLoading } = this.props;
     const { getFieldDecorator } = form;
     /** payload: 
      * departmentName	String	否	部门名称
@@ -85,8 +89,10 @@ class PersonnelMain extends Component {
               rules: [{ required: true, message: '请选择父部门' }],
               initialValue: null,
             })(
-              <Select style={{width: '200px'}}>
-                <Option value={100}>巡视计划</Option>
+              <Select style={{width: '200px'}} disabled={departmentDrawerKey === 'edit'}>
+                {departmentTree.map(e => (
+                  <Option value={e.departmentId} key={e.departmentId}>{e.departmentName}</Option>
+                ))}
               </Select>
             )}
           </FormItem>
@@ -99,19 +105,22 @@ class PersonnelMain extends Component {
             )}
           </FormItem>
           <FormItem label="负责电站" colon={false}>
-            {getFieldDecorator('stationCodes', {
+            {getFieldDecorator('stationLists', {
               rules: [{ required: true, message: '请选择负责电站' }],
               initialValue: [],
             })(
               <StationSelect
-                data={[]}
+                data={stations}
                 multiple={true}
                 style={{ width: '200px' }}
               />
             )}
           </FormItem>
+          <div className={styles.btns}>
+            <Button className={styles.cancelAdd} onClick={this.hideDepartmentDrawer}>取消</Button>
+            <Button loading={addDepartmentLoading} className={styles.saveAdd} onClick={this.saveDepartment}>保存</Button>
+          </div>
         </Form>
-        <p>新增部门或者编辑部门</p>
       </Drawer>
     );
   }

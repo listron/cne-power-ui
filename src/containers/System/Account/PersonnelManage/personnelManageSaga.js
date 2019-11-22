@@ -109,12 +109,13 @@ function *addNewDepartment({ payload }){ // 添加部门
       addDepartmentLoading: false,
       addDepartmentSuccess: true, // response.code === '10000',
     });
+    // response.code !== '10000' && throw response.message;
   } catch(error) {
     yield call( easyPut, 'changeStore', {
       addDepartmentLoading: false,
       addDepartmentSuccess: false,
     });
-    message.error(`获取所有用户基础信息失败, 分配人员功能将不可用, 请刷新重试! ${error}`);
+    message.error(`添加新部门失败, ${error}`);
   }
 }
 
@@ -131,7 +132,7 @@ function *getStationOfDepartment({ payload }){ // 获取指定部门下的电站
     const mockStation = [{
       stationId: '11223344',
       stationName: '永仁',
-      StationCode: 56,
+      stationCode: 56,
     }];
     // if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', departmentEditInfo ? {
@@ -139,6 +140,7 @@ function *getStationOfDepartment({ payload }){ // 获取指定部门下的电站
           ...departmentEditInfo,
           stations: mockStation, // response.data || [],
         },
+        departmentDrawerKey: 'edit',
       } : {
         departmentStations: mockStation, // response.data || [],
       });
@@ -147,8 +149,33 @@ function *getStationOfDepartment({ payload }){ // 获取指定部门下的电站
     message.error(`获取部门电站信息失败, 请重试! ${error}`);
   }
 }
+
+function *editDepartment({ payload }){ // 编辑部门
+  try {
+    // const url = ''; // POST /api/v3/department/update
+    /** payload: 
+     * departmentName	String	否	部门名称
+     * departmentId	String	是	所属部门ID => 是否有父级部门;
+     * stationCodes	String[]	是	负责电站（多选）
+     */
+    yield call( easyPut, 'changeStore', { addDepartmentLoading: true });
+    yield delay(1000);
+    // const response = yield call(request.post, payload)
+    yield call( easyPut, 'changeStore', {
+      addDepartmentLoading: false,
+      addDepartmentSuccess: true, // response.code === '10000',
+    });
+    // response.code !== '10000' && throw response.message;
+  } catch(error) {
+    yield call( easyPut, 'changeStore', {
+      addDepartmentLoading: false,
+      addDepartmentSuccess: false,
+    });
+    message.error(`编辑部门失败 ${error}`);
+  }
+}
 // 左侧: 树区请求: 
-// 编辑部门
+// 
 // 删除部门预请求
 // 删除部门
 // 为指定部门分配人员
@@ -177,6 +204,7 @@ export function* watchPersonnelManage() {
   yield takeLatest(personnelManageAction.getDepartmentTreeData, getDepartmentTreeData);
   yield takeLatest(personnelManageAction.addNewDepartment, addNewDepartment);
   yield takeLatest(personnelManageAction.getStationOfDepartment, getStationOfDepartment);
+  yield takeLatest(personnelManageAction.editDepartment, editDepartment);
 
   yield takeLatest(personnelManageAction.getUserList, getUserList);
 }

@@ -54,7 +54,6 @@ class DepartmentTree extends Component {
 
   editDepartment = (event, departmentEditInfo) => { // 编辑
     event.stopPropagation();
-    this.props.changeStore({ departmentDrawerKey: 'edit' }); // 展示编辑抽屉
     this.props.getStationOfDepartment({ departmentEditInfo }); // 请求该部门下的电站
   }
 
