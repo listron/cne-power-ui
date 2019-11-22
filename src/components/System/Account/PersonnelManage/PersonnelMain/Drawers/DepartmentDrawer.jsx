@@ -19,8 +19,6 @@ class PersonnelMain extends Component {
     addNewDepartment: PropTypes.func,
   }
 
-
-
   componentWillReceiveProps(nextProps){
     const { departmentDrawerKey, departmentEditInfo, form } = nextProps;
     const preDrawerKey = this.props.departmentDrawerKey;
@@ -64,7 +62,7 @@ class PersonnelMain extends Component {
   // }
 
   render(){
-    const { departmentDrawerKey, form } = this.props;
+    const { departmentDrawerKey, form, departmentTree } = this.props;
     const { getFieldDecorator } = form;
     /** payload: 
      * departmentName	String	否	部门名称

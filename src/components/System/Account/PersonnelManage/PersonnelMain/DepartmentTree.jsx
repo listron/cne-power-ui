@@ -33,6 +33,7 @@ class DepartmentTree extends Component {
     departmentTree: PropTypes.array,
     downloadTemplate: PropTypes.func,
     changeStore: PropTypes.func,
+    getStationOfDepartment: PropTypes.func,
   }
 
   downloadTemplate = () => {
@@ -51,9 +52,10 @@ class DepartmentTree extends Component {
     console.log('点击分配人员中');
   }
 
-  editDepartment = (event, departmentEditInfo) => {
+  editDepartment = (event, departmentEditInfo) => { // 编辑
     event.stopPropagation();
-    // this.props.changeStore({ departmentDrawerKey: 'edit', departmentEditInfo });
+    this.props.changeStore({ departmentDrawerKey: 'edit' }); // 展示编辑抽屉
+    this.props.getStationOfDepartment({ departmentEditInfo }); // 请求该部门下的电站
   }
 
   removeDepartment = (event, departmentInfo) => {

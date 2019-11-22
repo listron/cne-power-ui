@@ -124,7 +124,7 @@ function *getStationOfDepartment({ payload }){ // 获取指定部门下的电站
   // 传departmentEditInfo时, 为点击左侧部门树编辑; => reducer记录进入departmentEditInfo的stations字段;
   try{
     const { departmentEditInfo } = payload;
-    const departmentId = departmentEditInfo ? departmentEditInfo.departmentId : payload.departmentId;
+    // const departmentId = departmentEditInfo ? departmentEditInfo.departmentId : payload.departmentId;
     // const url = GET /api/v3/department/station/list/{departmentId}
     // const response = yield call(request.post, payload)
     yield delay(1000);
@@ -134,18 +134,17 @@ function *getStationOfDepartment({ payload }){ // 获取指定部门下的电站
       StationCode: 56,
     }];
     // if (response.code === '10000') {
-      yield call(easyPut, 'fetchSuccess', departmentId ? {
-        departmentStations: mockStation, // response.data || [],
-      } : {
+      yield call(easyPut, 'fetchSuccess', departmentEditInfo ? {
         departmentEditInfo: {
           ...departmentEditInfo,
           stations: mockStation, // response.data || [],
         },
-        departmentDrawerKey: 'edit', // 开启编辑页面
+      } : {
+        departmentStations: mockStation, // response.data || [],
       });
     // } else { throw response.message;}
   } catch (error) {
-    message.error(`获取部门电站信息失败, 请重试! ${error}`)
+    message.error(`获取部门电站信息失败, 请重试! ${error}`);
   }
 }
 // 左侧: 树区请求: 
