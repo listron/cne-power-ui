@@ -18,13 +18,19 @@ import styles from './brachFormItem.scss';
 
   changeBranchSubNumber = ({ target }) => {
     const { value } = target || {};
-    if ((value && !isNaN(value) && !value.includes('.')) || !value) { // value不存在 或 value为数字
+    const invalidValue = isNaN(value) || value.includes('.') || value < 0 || value > 99; // 非法数值;
+    if ((value && !invalidValue) || !value) { // value不存在 或 value为数字
       this.changeValue(() => value ? value.trim() : '');
     }
   }
 
   addBranch = () => {
-    this.changeValue(value => `${value ? ++value : 1}`);
+    this.changeValue(value => {
+      if(value){
+        return value >= 99 ? '99' : `${++value}`;
+      }
+      return '1';
+    });
   }
 
   reduceBranch = () => {
@@ -66,7 +72,10 @@ class BrachFormItem extends Component {
   static propTypes = {
     value: PropTypes.array,
     onChange: PropTypes.func,
-    branchCount: PropTypes.string,
+    branchCount: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
   };
 
   branchChange = (branchesResult) => {

@@ -100,11 +100,14 @@ class Confluence extends Component {
               required: true,
               validator: (rule, value, callback) => {
                 const noData = !value;
-                const hasEmpty = value && value.find(e => !e && e !== 0); // 支路数未填全
+                const hasEmpty = value && value.find(e => !e && e !== 0); // 支路数未填全 e 为null 或者 undifined 或NaN
+                const hasInvalidData = value && value.find(e => e < 0 || e > 99); // 支路数据异常
                 if (noData) {
                   callback('请填写支路信息');
                 } else if (hasEmpty !== undefined) { // 某个支路信息不全
                   callback('请完善支路信息');
+                } else if (hasInvalidData) { // 支路数据异常
+                  callback('支路数量应为0-99的整数');
                 }
                 callback();
               },

@@ -143,7 +143,7 @@ class StationContrastTable extends React.Component {
                       onVisibleChange={item => this.onVisibleChange(item)}
                       visible={clicked === item[0]}
                       className={styles.contrastDetailPopover}
-                      placement="bottom"
+                      placement="bottomLeft"
                       overlayClassName={styles.contrastOverlayClassName} >
                       {stationContrastList.map((e, i) => (<div key={i} title={e[item[0]]} className={styles.stationContrastOne} >{e[item[0]] || '--'}</div>))}
 
