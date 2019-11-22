@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Input, DatePicker } from 'antd';
+import { Button, Form, DatePicker } from 'antd';
 import moment from 'moment';
 import styles from './recordModals.scss';
 import InputLimit from '@components/Common/InputLimit';
