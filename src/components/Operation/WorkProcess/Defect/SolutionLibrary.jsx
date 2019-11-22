@@ -8,6 +8,8 @@ class SolutionLibrary extends React.PureComponent {
   static propTypes = {
     likeKnowledgebase: PropTypes.func,
     knowledgebaseList: PropTypes.array,
+    defectDetail: PropTypes.object,
+    getKnowledgebase: PropTypes.func,
   }
 
   constructor(props) {
@@ -21,6 +23,10 @@ class SolutionLibrary extends React.PureComponent {
     // console.log('info',this.props.basicInfo)
   }
 
+  componentWillUnmount() {
+    console.log('我卸载了一次');
+  }
+
   showModal = () => {
     this.setState({ dealVisible: true });
   }
@@ -31,6 +37,9 @@ class SolutionLibrary extends React.PureComponent {
 
   knowledegeBask = (knowledgeBaseId) => {
     this.props.likeKnowledgebase({ knowledgeBaseId });
+    // const { defectDetail } = this.props;
+    // const { defectTypeCode, deviceTypeCode, stationType } = defectDetail;
+    // this.props.getKnowledgebase({ deviceTypeCodes: [deviceTypeCode], faultTypeIds: [defectTypeCode], type: +stationType });
   }
 
   knowledgebaseInfo = [
@@ -60,9 +69,9 @@ class SolutionLibrary extends React.PureComponent {
           width={800}
         >
           <div className={styles.modalbody}>
-            {knowledgebaseList.map(list => {
+            {knowledgebaseList.map((list, index) => {
               return (
-                <div key={list.knowledgeBaseId} className={styles.dealBox}>
+                <div key={index} className={styles.dealBox}>
                   {this.knowledgebaseInfo.map(e => {
                     return (<div className={styles.column}>
                       <div className={styles.text}>{e.name}</div>  <div> {list[e.value] || e.default}</div>
