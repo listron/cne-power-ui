@@ -138,6 +138,7 @@ class PlanHandle extends PureComponent {
   render(){
     const { showModal, modalKey, activePlanDate, datePlans, handlePlanLoading, planListLoading, theme } = this.props;
     const { planColumn, handleType, selectedRowKeys, handleParams, warningTipText } = this.state;
+    const hasRowSelected = selectedRowKeys.length > 0;
     return (
       <Modal
         title={`工作计划 ${activePlanDate}`}
@@ -149,8 +150,16 @@ class PlanHandle extends PureComponent {
       >
         <div className={styles.planHandle}>
           <div className={styles.handle}>
-            <Button onClick={this.publishAll} loading={handleType === 'publish' && handlePlanLoading}>批量下发</Button>
-            <Button onClick={this.deleteAll} loading={handleType === 'delete' && handlePlanLoading}>批量删除</Button>
+            <Button
+              onClick={this.publishAll}
+              loading={handleType === 'publish' && handlePlanLoading}
+              disabled={!hasRowSelected}
+            >批量下发</Button>
+            <Button
+              onClick={this.deleteAll}
+              loading={handleType === 'delete' && handlePlanLoading}
+              disabled={!hasRowSelected}
+            >批量删除</Button>
           </div>
           <Table
             dataSource={datePlans}
