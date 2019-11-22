@@ -41,7 +41,7 @@ class PersonnelMain extends Component {
   }
 
   render(){
-    const { showPersonnelDrawer, departmentDrawerKey, changeStore } = this.props;
+    const { showPersonnelDrawer } = this.props;
     return (
       <div className={styles.personnelMain}>
         <div className={styles.mainContent}>

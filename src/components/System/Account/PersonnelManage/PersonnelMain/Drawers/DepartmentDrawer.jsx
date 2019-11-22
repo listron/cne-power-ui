@@ -15,6 +15,7 @@ class PersonnelMain extends Component {
     departmentDrawerKey: PropTypes.string,
     departmentEditInfo: PropTypes.object,
     addDepartmentLoading: PropTypes.bool,
+    addDepartmentSuccess: PropTypes.bool,
     stations: PropTypes.array,
     form: PropTypes.object,
     changeStore: PropTypes.func,
@@ -23,8 +24,9 @@ class PersonnelMain extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const { departmentDrawerKey, departmentEditInfo, form, stations } = nextProps;
+    const { departmentDrawerKey, departmentEditInfo, form, stations, addDepartmentLoading, addDepartmentSuccess } = nextProps;
     const preDepartmentEditInfo = this.props.departmentEditInfo;
+    const preLoading = this.props.addDepartmentLoading;
     if (departmentDrawerKey === 'edit' && preDepartmentEditInfo !== departmentEditInfo) { // 编辑页 得待新编辑部门数据
       const { departmentName, parentDepartmentId } = departmentEditInfo;
       const departmentStation = departmentEditInfo.stations || [];
@@ -33,6 +35,9 @@ class PersonnelMain extends Component {
         departmentId: parentDepartmentId,
         stationLists: stations.filter(e => departmentStation.some(m => `${m.stationCode}` === `${e.stationCode}`)),
       });
+    }
+    if (preLoading && addDepartmentLoading && addDepartmentSuccess) { // 新增 / 编辑请求结束 => 成功 => 关闭抽屉
+      this.hideDepartmentDrawer();
     }
   }
 
@@ -68,11 +73,6 @@ class PersonnelMain extends Component {
   render(){
     const { departmentDrawerKey, form, departmentTree, stations, addDepartmentLoading } = this.props;
     const { getFieldDecorator } = form;
-    /** payload: 
-     * departmentName	String	否	部门名称
-     * departmentId	String	是	所属部门ID => 是否有父级部门;
-     * stationCodes	String[]	是	负责电站（多选）
-     */
     return (
       <Drawer
         title={this.drawerTitle[departmentDrawerKey] || '--'}
@@ -83,8 +83,8 @@ class PersonnelMain extends Component {
         style={{ position: 'absolute' }}
         width={520}
       >
-        <Form>
-          <FormItem label="父部门" colon={false}>
+        <Form className={styles.departmentDrawer}>
+          <FormItem label="父部门" colon={false} className={styles.drawerItem}>
             {getFieldDecorator('departmentId', {
               rules: [{ required: true, message: '请选择父部门' }],
               initialValue: null,
@@ -96,7 +96,7 @@ class PersonnelMain extends Component {
               </Select>
             )}
           </FormItem>
-          <FormItem label="部门名称" colon={false}>
+          <FormItem label="部门名称" colon={false} className={styles.drawerItem}>
             {getFieldDecorator('departmentName', {
               rules: [{ required: true, message: '请输入部门名称' }],
               initialValue: '',
@@ -104,7 +104,7 @@ class PersonnelMain extends Component {
               <Input style={{width: '200px'}} placeholder="请输入..." />
             )}
           </FormItem>
-          <FormItem label="负责电站" colon={false}>
+          <FormItem label="负责电站" colon={false} className={styles.drawerItem}>
             {getFieldDecorator('stationLists', {
               rules: [{ required: true, message: '请选择负责电站' }],
               initialValue: [],

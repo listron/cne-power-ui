@@ -1,0 +1,20 @@
+
+
+.departmentDrawer{
+  .drawerItem{
+    display: flex;
+    :global{
+      .ant-form-item-label{
+        flex: 0 0 100px;
+      }
+      .ant-form-item-control-wrapper{
+
+      }
+    }
+  }
+  .btns{
+    height: 30px;
+    line-height: 40px;
+
+  }
+}

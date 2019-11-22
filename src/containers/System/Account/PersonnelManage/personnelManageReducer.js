@@ -27,6 +27,7 @@ const initState = {
   templateLoading: false, // 导入模板下载
   departmentTreeLoading: false, // 部门树loading
   addDepartmentLoading: false, // 部门添加loading;
+  addDepartmentSuccess: false, // 部门添加/编辑结果;
 
   // addUserLoading: false, // 添加人员loading状态
   // userListLoading: false, // 页面部门loading状态
