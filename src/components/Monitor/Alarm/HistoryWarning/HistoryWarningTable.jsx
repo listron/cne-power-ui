@@ -217,7 +217,7 @@ class HistoryWarningTable extends Component {
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
-          const deviceTypeCodes = ["202", "304", "302", "201", "206", "203", "101"];
+          const deviceTypeCodes = ['202', '304', '302', '201', '206', '101'];
           const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
           if (isClick) {
             return (
@@ -225,9 +225,9 @@ class HistoryWarningTable extends Component {
                 <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
               </div>
             );
-          } 
-            return text;
-          
+          }
+          return text;
+
         },
       }, {
         title: '设备类型',
