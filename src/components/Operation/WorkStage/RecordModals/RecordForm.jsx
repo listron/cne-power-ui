@@ -73,7 +73,7 @@ class AddRecord extends PureComponent {
     const { theme, form, stageStations, recordDetailInfo, modalKey, saveRecordLoading } = this.props;
     const { saveMode } = this.state;
     const { getFieldDecorator } = form;
-    const { stations = [], completeTime = null, handleUser = '', noteContent = ''} = recordDetailInfo || {};
+    const { stations = [], completeTime = null, /* handleUser = '',*/ noteContent = ''} = recordDetailInfo || {};
     return (
       <Form className={`${styles.addRecord} ${styles[theme]}`}>
         <FormItem label="电站" colon={false} className={styles.eachRecordForm}>
@@ -105,14 +105,14 @@ class AddRecord extends PureComponent {
           )}
           <span ref={(ref) => { this.completeRef = ref; }} />
         </FormItem>
-        <FormItem label="执行人" colon={false} className={styles.eachRecordForm} >
+        {/* <FormItem label="执行人" colon={false} className={styles.eachRecordForm} >
           {getFieldDecorator('handleUser', {
             // rules: [{ required: true, message: '请输入执行人' }],
             initialValue: handleUser,
           })(
             <Input style={{width: '200px'}} placeholder="请输入..." />
           )}
-        </FormItem>
+        </FormItem> */}
         <FormItem label="记事内容" colon={false} className={styles.eachRecordForm} >
           {getFieldDecorator('noteContent', {
             rules: [{ required: true, message: '请输入记事内容' }],
