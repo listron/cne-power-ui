@@ -241,6 +241,14 @@
       color: #fff;
     }
   }
+  .datesPlan{
+    :global{
+      .iconfont.icon-jxjh{
+        color: #fff;
+      }
+    }
+  }
+  
 }
 .light.noPlanDate{
   cursor: default;
@@ -346,6 +354,13 @@
     }
     .momentDate{
       color: #fff;
+    }
+  }
+  .datesPlan{
+    :global{
+      .iconfont.icon-jxjh{
+        color: #fff;
+      }
     }
   }
 }

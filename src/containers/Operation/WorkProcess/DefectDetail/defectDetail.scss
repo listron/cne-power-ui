@@ -1,5 +1,41 @@
-.cont {
-  background: #fff;
+@import "../../../../theme/theme.scss";
+.detailWrap {
   display: flex;
-  flex: 1;
+  flex: 1 0 auto; //background-color: #fff;
+  flex-direction: column;
+  justify-content: space-between; //padding: 24px 24px 0;
+  background-color: #fff;
+  z-index: 30;
+  width: 100%;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $promptColor;
+    .text {
+      font-size: 18px;
+      color: $darkColor;
+      letter-spacing: 4px;
+      margin-left: 44px;
+      width: calc(100% - 100px);
+      @include overflowText();
+    }
+    .backIcon {
+      display: inline-block;
+      color: $darkColor;
+      font-size: 20px;
+      border-left: 1px solid $promptColor;
+      margin-left: 10px;
+      height: 100%;
+      line-height: 64px;
+      width: 64px;
+      cursor: pointer;
+      flex: 0 0 64px;
+    }
+  }
+  .defectDetailCont {
+    display: flex;
+    flex: 1;
+    padding: 24px 36px;
+  }
 }

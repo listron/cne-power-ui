@@ -10,8 +10,11 @@
 }
 
 .brachFormContent .branchBox .eachBranch{ // 外面的某样式层级实在太高····烦躁。嵌套这么深还部分全局捕捉····
-  flex: 0 0 180px;
+  flex: 0 0 175px;
   margin-right: 50px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   .branchName{
     margin-right: 10px;
   }
