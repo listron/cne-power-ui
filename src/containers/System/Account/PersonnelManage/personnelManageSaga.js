@@ -19,24 +19,13 @@ function* easyPut(actionName, payload){
 
 function *getAllUserBase(){ // 进入页面预请求: 所有用户基础信息 => 用于分配人员
   try {
-    // const url = ''; post /api/v3/user/list/departmentInfolist
-    // const response = yield call(request.get, url, {});
-    // if (response.code === '10000') {
-    //   yield call(easyPut, 'fetchSuccess', {
-    //     allBaseUserData: response.data.map(e => ({ ...e, key: e.userId })) || [],
-    //   });
-    // } else { throw response.message; }
-    yield delay(1000);
-    yield call(easyPut, 'fetchSuccess', {
-      allBaseUserData: [{
-        key: '1122',
-        userId: '1122',
-        username: 'hellokitty',
-        userFullName: '贺罗凯缇',
-        phoneNum: '155124741122',
-        departmentNames: '运维一组,运维二组',
-      }],
-    });
+    const url = `${APIBasePath}${system.getAllUserBase}`;
+    const response = yield call(request.post, url); // departmentId 此处也可以传输部门id用于获取部门下用户
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        allBaseUserData: response.data.map(e => ({ ...e, key: e.userId })) || [],
+      });
+    } else { throw response.message; }
   } catch(error) {
     message.error(`获取所有用户基础信息失败, 分配人员功能将不可用, 请刷新重试! ${error}`);
   }
@@ -63,34 +52,12 @@ function *getDepartmentTreeData() { // 获取部门树结构
     const url = `${APIBasePath}${system.getDepartmentTreeData}`;
     const response = yield call(request.get, url);
     yield call(easyPut, 'changeStore', { departmentTreeLoading: true });
-    // if (response.code === '10000') {
-    //   yield call(easyPut, 'fetchSuccess', {
-    //     departmentTreeLoading: false,
-    //     departmentTree: response.data || [],
-    //   });
-    // } else { throw response.message; }
-    yield delay(1000);
-    yield call(easyPut, 'fetchSuccess', {
-      departmentTreeLoading: false,
-      departmentTree: [{
-        departmentId: '1',
-        departmentName: '未分配人员部门',
-        parentDepartmentId: '0',
-      }, {
-        departmentId: '2',
-        departmentName: '测试父部门一',
-        parentDepartmentId: '0',
-      }, {
-        departmentId: '3',
-        departmentName: '测试父部门二',
-        parentDepartmentId: '0',
-        list: [{
-          departmentId: '4',
-          departmentName: '子部门4-1',
-          parentDepartmentId: '3',
-        }],
-      }],
-    });
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        departmentTreeLoading: false,
+        departmentTree: response.data || [],
+      });
+    } else { throw response.message; }
   } catch(error) {
     message.error(`获取部门树失败, 请刷新重试! ${error}`);
   }

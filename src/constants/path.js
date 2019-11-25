@@ -281,7 +281,8 @@ export default {
       setDepartmentUser: '/v3/department/user', //设置部门成员
       setDepartmentStation: '/v3/department/station', //设置部门电站
       // 人员管理界面
-      getDepartmentTreeData: '/v3/department/tree',
+      getAllUserBase: '/v3/user/list/departmentInfos', // 企业所有用户信息
+      getDepartmentTreeData: '/v3/department/tree', // 用户企业部门树
 
 
       getRoleList: '/v3/role/list',

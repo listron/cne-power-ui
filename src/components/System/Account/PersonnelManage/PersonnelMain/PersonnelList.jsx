@@ -10,6 +10,16 @@ class PersonnelList extends Component {
   }
 
   render(){
+    // const { showSingleAssignModal, selectedDepartment, departmentTree, allBaseUserData, assignUserLoading } = this.props;
+    // const { departmentName, parentDepartmentId } = selectedDepartment;
+    // const { column, isChecked, tmpInputText, selectedUserRow } = this.state;
+    // const parentInfo = ![0, 1].includes(parentDepartmentId) && departmentTree.find(e => e.departmentId === parentDepartmentId);
+    // title={
+    //   <div className={styles.title}>
+    //     <span>分配人员({parentInfo ? `${parentInfo.departmentName} - `: ''}{departmentName})</span>
+    //     <Icon className={styles.close} type="close" onClick={this.cancelAssign} />
+    //   </div>
+    // }
     return (
       <div className={styles.personnelList}>
         <div>选中部门名称</div>
