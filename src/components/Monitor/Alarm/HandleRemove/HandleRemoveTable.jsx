@@ -103,6 +103,12 @@ class HandleRemoveTable extends Component {
     });
   }
 
+  onShowDetail = (record) => {
+    this.setState({
+      showTransferTicketModal: true,
+    });
+    this.props.changeHandleRemoveStore({ selectedTransfer: [record] });
+  }
   renderRelievePopover(i) {
     const relieveInfo = this.props.relieveInfo;
     return (
@@ -140,13 +146,6 @@ class HandleRemoveTable extends Component {
     );
   }
 
-  onShowDetail = (record) => {
-    this.setState({
-      showTransferTicketModal: true,
-    });
-    this.props.changeHandleRemoveStore({ selectedTransfer: [record] });
-  }
-
 
   render() {
     const level = ['一级', '二级', '三级', '四级'];
@@ -170,7 +169,7 @@ class HandleRemoveTable extends Component {
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
-          const deviceTypeCodes = ['202', '304', '302', '201', '509', '206', '203', '101'];
+          const deviceTypeCodes = ['202', '304', '302', '201', '206', '101'];
           const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
           if (isClick) {
             return (
