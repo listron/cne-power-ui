@@ -218,7 +218,7 @@ class HistoryWarningTable extends Component {
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
-          const deviceTypeCodes = ["202", "304", "302", "201", "509", "206", "203", "101"];
+          const deviceTypeCodes = ['202', '304', '302', '201', '206', '101'];
           const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
           if (isClick) {
             return (

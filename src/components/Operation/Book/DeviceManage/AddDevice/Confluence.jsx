@@ -64,7 +64,7 @@ class Confluence extends Component {
     const { showAddComponentMode, checkStyle } = this.state;
     const { pvDeviceModels, addPvDeviceModeData } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const branchCount = (getFieldValue('branchCount') && getFieldValue('branchCount') < 21 ? getFieldValue('branchCount') : 0);
+    const branchCount = (getFieldValue('branchCount') && getFieldValue('branchCount') < 21) ? getFieldValue('branchCount') : 0;
     const initComponentMode = addPvDeviceModeData.data ? +addPvDeviceModeData.data : null;
     const filterComponentModeId = pvDeviceModels.filter((e, i) => (e.deviceModeCode === initComponentMode))[0];
     const initValue = filterComponentModeId ? filterComponentModeId.deviceModeId : null;

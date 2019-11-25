@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { inspectListAction } from './inspectListReducer';
 import { commonAction } from '@containers/alphaRedux/commonAction';
 import styles from './inspectList.scss';
+import InspectSearch from '../../../../components/Operation/WorkProcess/Inspect/InspectSearch';
+import InspectTable from '../../../../components/Operation/WorkProcess/Inspect/InspectTable';
 
 class InspectList extends Component {
 
@@ -12,14 +14,27 @@ class InspectList extends Component {
     history: PropTypes.object,
     location: PropTypes.object,
     resetStore: PropTypes.func,
+    getInspectList: PropTypes.func,
+    stationType: PropTypes.string,
+    stationCodes: PropTypes.string,
+    timeInterval: PropTypes.string,
+    status: PropTypes.string,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    createTimeStart: PropTypes.string,
+    createTimeEnd: PropTypes.string,
+    deviceTypeCode: PropTypes.string,
+    sort: PropTypes.string,
+    params: PropTypes.object,
+
   };
 
   componentDidMount() {
-
+    const { getInspectList, params } = this.props;
+    getInspectList({
+      ...params,
+    });
   }
-
-
-
   componentWillUnmount() { // 卸载的时候要注意
     const { history, location } = this.props;
     const { pathname } = history.location;
@@ -29,12 +44,13 @@ class InspectList extends Component {
     }
   }
 
-
-
   render() {
-    const { pageLoading, theme = 'light' } = this.props;
+    const { theme = 'light' } = this.props;
     return (
-      <div className={styles.cont}> 巡检页面</div>
+      <div className={`${styles.inspectBox} ${theme}`}>
+        <InspectSearch {...this.props} />
+        <InspectTable {...this.props} />
+      </div>
     );
   }
 }
@@ -42,12 +58,15 @@ class InspectList extends Component {
 const mapStateToProps = (state) => ({
   ...state.operation.inspectList.toJS(),
   stations: state.common.get('stations').toJS(),
+  deviceTypes: state.common.get('deviceTypes').toJS(),
   theme: state.common.get('theme'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: inspectListAction.resetStore }),
   changeStore: payload => dispatch({ type: inspectListAction.changeStore, payload }),
+  getInspectList: payload => dispatch({ type: inspectListAction.getInspectList, payload }),
+  setInspectCheck: payload => dispatch({ type: inspectListAction.setInspectCheck, payload }),
 
 });
 

@@ -5,10 +5,29 @@ const inspectListAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
+  getInspectList: Symbol('getInspectList'),
+  setInspectCheck: Symbol('setInspectCheck'),
 };
 
 const initState = immutable.fromJS({
-  name: 'hjl',
+  tableLoading: false,
+  params: {
+    stationType: '2',
+    stationCodes: '',
+    timeInterval: '0',
+    status: '5',
+    pageNum: 1,
+    pageSize: 10,
+    createTimeStart: '',
+    createTimeEnd: '',
+    deviceTypeCode: '',
+    sort: '',
+  },
+  selectedRowKeys: [],
+  total: 0,
+  inspectList: [],
+  inspectStatusStatistics: {},
+
 });
 
 const inspectList = (state = initState, action) => {
