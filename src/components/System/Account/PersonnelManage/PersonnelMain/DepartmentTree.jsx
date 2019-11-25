@@ -153,7 +153,7 @@ class DepartmentTree extends Component {
           <Button className={styles.templateDown} onClick={this.downloadTemplate} loading={templateLoading}>导入模板下载</Button>
           <Uploader enterpriseId={enterpriseId} />
         </h3>
-        <section>
+        <section className={styles.treeSection}>
           <h4 className={styles.treeTitle}>
             <span className={styles.treeName}>部门列表</span>
             <span className={styles.titleHandle}>

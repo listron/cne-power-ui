@@ -22,8 +22,6 @@ class PersonnelManage extends Component {
     // 初入页面 请求企业下所有用户基础信息 + 请求部门列表树 + 请求默认未分配部门用户信息
   }
 
-  // todo 树形节点暂时没有做滚动
-
   render() {
     const { theme } = this.props;
     return (

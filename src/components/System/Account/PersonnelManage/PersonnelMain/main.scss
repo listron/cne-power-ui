@@ -37,6 +37,12 @@
       margin-right: 12px;
     }
   }
+  .treeSection{
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
   .treeTitle{
     height: 50px;
     display: flex;
@@ -70,6 +76,8 @@
   .treeContent{
     padding: 0 10px 0 10px;
     margin-top: 10px;
+    overflow-y: auto;
+    flex: 1;
     li.eachDepartment{
       padding: 0;
       .fatherDepartmentTitle, .subDepartmentTitle{
@@ -112,6 +120,12 @@
         }
       }
     }
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+    }
   }
 }
 
@@ -140,6 +154,11 @@
       border-bottom: none;
       border-left: solid transparent 7px;
       border-right: solid transparent 7px;
+    }
+  }
+  .treeContent{
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.5);
     }
   }
 }
