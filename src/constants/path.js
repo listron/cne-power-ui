@@ -283,6 +283,7 @@ export default {
       // 人员管理界面
       getAllUserBase: '/v3/user/list/departmentInfos', // 企业所有用户信息
       getDepartmentTreeData: '/v3/department/tree', // 用户企业部门树
+      preDeleteDepartmentCheck: '/v3/user/department/checkDel', // 删除部门前的预置请求
 
 
       getRoleList: '/v3/role/list',

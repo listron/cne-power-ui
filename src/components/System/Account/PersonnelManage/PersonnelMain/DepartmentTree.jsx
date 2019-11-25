@@ -85,7 +85,7 @@ class DepartmentTree extends Component {
   removeDepartment = (event, departmentInfo, hasChild) => { // 删除部门 => 有子部门 或 预设部门, 不可删除
     event.stopPropagation();
     const { departmentSource } = departmentInfo;
-    if (departmentSource === 0) {
+    if (departmentSource === '0') {
       this.setState({
         refuseText: '不得删除预设部门!',
       });

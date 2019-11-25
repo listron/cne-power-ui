@@ -146,11 +146,11 @@ function *editDepartment({ payload }){ // 编辑部门
 
 function *preDeleteDepartmentCheck({ payload }){ // 删除部门前的检查、
   try {
-    // const url = ''; // GET /api/v3/user/department/checkDel/{departmentId}
-    yield delay(1000);
-    // const response = yield call(request.get, url)
+    const { departmentId } = payload || {};
+    const url = `${APIBasePath}${system.preDeleteDepartmentCheck}/${departmentId}`;
+    const response = yield call(request.get, url);
     yield call(easyPut, 'changeStore', {
-      preDeleteText: '删除后, 将取消成员关联! ', // response.message || '删除后, 将取消成员关联! ',
+      preDeleteText: response.message || '删除后, 将取消成员关联! ',
     });
   } catch (err) {
     message.error('删除失败, 请重试');
