@@ -4,6 +4,8 @@ const personnelManageAction = {
   reset: Symbol('reset'),
   fetchSuccess: Symbol('fetchSuccess'),
   getAllUserBase: Symbol('getAllUserBase'), // 所有用户基础信息 => 用于分配人员
+  getDepartmentAllUser: Symbol('getDepartmentAllUser'), // 指定部门内所有用户id集合
+  assignUsers: Symbol('assignUsers'), // 分配用户
   downloadTemplate: Symbol('downloadTemplate'), // 下载导入模板
   getDepartmentTreeData: Symbol('getDepartmentTreeData'), // 获取部门树
   addNewDepartment: Symbol('addNewDepartment'), // 新增部门
@@ -33,13 +35,19 @@ const initState = {
 
   preDeleteText: '', // 部门删除以前的提示语
   deleteDepartmentSuccess: false, // 部门删除结果
-
+  assignUserLoading: false, // 部门分配loading;
+  assignUserSuccess: false, // 部门分配结果;
+  showSingleAssignModal: false, // 部门树用户分配弹框的展示
+  // showMultipleAssignModal: false, // 主界面表格多选用户进行多个部门分配弹框
   // addUserLoading: false, // 添加人员loading状态
   // userListLoading: false, // 页面部门loading状态
   // logoutLoading: false, // 注销用户loading状态
 
   allBaseUserData: [], // 所有用户基础信息 => 用于分配人员
+  departmentAllUsers: [], // 选中部门内所有用户 => 用于分配人员和部门内搜索模糊匹配;
+
   departmentTree: [], // 部门树形结构
+  departmentStations: [], // 主界面 部门负责电站
   userList: [], // 主界面用户列表
 };
 

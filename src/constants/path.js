@@ -280,6 +280,9 @@ export default {
       getDepartmentStation: '/v3/department/station', //所有电站列表，用于为部门分配电站
       setDepartmentUser: '/v3/department/user', //设置部门成员
       setDepartmentStation: '/v3/department/station', //设置部门电站
+      // 人员管理界面
+      getDepartmentTreeData: '/v3/department/tree',
+
 
       getRoleList: '/v3/role/list',
       getMenuList: '/v3/right',

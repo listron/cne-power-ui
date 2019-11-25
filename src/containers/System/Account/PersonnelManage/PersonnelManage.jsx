@@ -52,6 +52,8 @@ const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: personnelManageAction.resetStore }),
   changeStore: payload => dispatch({ type: personnelManageAction.changeStore, payload }),
   getAllUserBase: payload => dispatch({ type: personnelManageAction.getAllUserBase, payload }),
+  getDepartmentAllUser: payload => dispatch({ type: personnelManageAction.getDepartmentAllUser, payload }),
+  assignUsers: payload => dispatch({ type: personnelManageAction.assignUsers, payload }),
   downloadTemplate: () => dispatch({ type: personnelManageAction.downloadTemplate }),
   getDepartmentTreeData: () => dispatch({ type: personnelManageAction.getDepartmentTreeData }),
   addNewDepartment: payload => dispatch({ type: personnelManageAction.addNewDepartment, payload }),

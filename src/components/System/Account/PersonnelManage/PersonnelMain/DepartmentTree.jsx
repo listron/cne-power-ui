@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Button, Tree } from 'antd';
 import WarningTip from '@components/Common/WarningTip';
 import Uploader from './Uploader';
+import SingleAssignModal from './Modals/SingleAssignModal';
 import styles from './main.scss';
 
 const { TreeNode, DirectoryTree } = Tree;
@@ -42,6 +43,7 @@ class DepartmentTree extends Component {
     getStationOfDepartment: PropTypes.func,
     preDeleteDepartmentCheck: PropTypes.func,
     deleteDepartment: PropTypes.func,
+    getDepartmentAllUser: PropTypes.func,
   }
 
   state = {
@@ -57,15 +59,17 @@ class DepartmentTree extends Component {
     this.props.changeStore({ departmentDrawerKey: 'add' });
   }
 
-  selectDepartmentNode = (selectedKeys) => { // 选中部门 => 请求右侧所有数据 + 记录选中的部门
-    const { departmentTree } = this.props;
-    // 找到选中的信息
-    let departmentInfo = null;
-    // while(departmentTree){
-
-    // }
-    // console.log()
-    // selectedDepartment
+  selectDepartmentNode = (selectedKeys, selectNodes) => { // 选中部门 => 请求右侧所有数据 + 记录选中的部门
+    const { node = {} } = selectNodes || {}; // 直接根据node节点实例获取挂载的数据;
+    const { title = {} } = node.props || {};
+    const { departmentInfo = {} } = title.props || {};
+    const { departmentId } = departmentInfo;
+    // departmentId !== '1' && this.props.getStationOfDepartment({ departmentId }); // 请求部门下电站并作为右侧展示
+    this.props.getDepartmentAllUser({ departmentId });
+    this.props.changeStore({
+      showSingleAssignModal: true,
+      selectedDepartment: departmentInfo,
+    });
   }
 
   assignPersonnel = () => {
@@ -175,6 +179,7 @@ class DepartmentTree extends Component {
           onCancel={this.cancelRemoveDepartment}
           value={preDeleteText}
         />}
+        <SingleAssignModal {...this.props} />
       </div>
     );
   }

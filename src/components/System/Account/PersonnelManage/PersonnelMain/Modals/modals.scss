@@ -1,0 +1,92 @@
+
+
+@import '../../../../../../theme/theme.scss';
+
+
+.singleModal{
+  .title{
+    height: 34px;
+    font-size: 14px;
+    color: #fff;
+    background-color: $themeColor;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 20px;
+    .close{
+      cursor: pointer;
+      height: 14px;
+      flex-basis: 14px;
+      line-height: 17px;
+      border-radius: 50%;
+      background-color: #ceebe0;
+      color: rgb(40, 156, 126);
+      margin-right: 10px;
+      svg{
+        font-size: 10px;
+      }
+    }
+  }
+  .filterTop{
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px 0 20px;
+    align-items: center;
+    border-bottom:1px solid #d9d9d9;
+    box-shadow:0 1px 2px 0 rgba(0,0,0,0.20);
+    margin-bottom: 12px;
+    .tipText{
+      color: $lightColor;
+    }
+    .filterConditions{
+      display: flex;
+      align-items: center;
+      .checkedSwitch{
+        transform: scale(0.8);
+      }
+      .switchText{
+        margin: 0 10px 0 4px;
+      }
+      .nameSearch{
+        width: 150px;
+        button{
+          padding: 0 8px;
+        }
+      }
+    }
+  }
+  .userTable{
+    height: 400px;
+    .departmentNames{
+      max-width: 168px;
+      @include overflowText();
+    }
+  }
+  .assignFooter{
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    align-items: center;
+    padding: 0 20px;
+    background-color: #ececec;
+    .footerText{
+      .footerNum{
+        margin: 0 2px;
+        font-weight: 700;
+        color: $themeColor;
+      }
+    }
+    .btns button{
+      width: 82px;
+      margin-right: 10px;
+    }
+  }
+  :global{
+    .ant-modal .ant-modal-content .ant-modal-header, .ant-modal .ant-modal-content .ant-modal-body{
+      padding: 0;
+    }
+  }
+}
+
+

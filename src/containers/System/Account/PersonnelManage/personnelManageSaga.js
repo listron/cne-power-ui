@@ -1,6 +1,6 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-// import request from '@utils/request';
+import request from '@utils/request';
 import path from '@path';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import { message } from 'antd';
@@ -9,7 +9,6 @@ import { personnelManageAction } from './personnelManageReducer';
 const { basePaths, APISubPaths } = path;
 const { APIBasePath } = basePaths;
 const { system } = APISubPaths;
-// const { operation } = APISubPaths;
 
 function* easyPut(actionName, payload){
   yield put({
@@ -18,22 +17,24 @@ function* easyPut(actionName, payload){
   });
 }
 
-function *getAllUserBase(){ // 接口1 所有用户基础信息 => 用于分配人员
+function *getAllUserBase(){ // 进入页面预请求: 所有用户基础信息 => 用于分配人员
   try {
-    // const url = '';
+    // const url = ''; post /api/v3/user/list/departmentInfolist
     // const response = yield call(request.get, url, {});
     // if (response.code === '10000') {
     //   yield call(easyPut, 'fetchSuccess', {
-    //     allBaseUserData: response.data || [],
+    //     allBaseUserData: response.data.map(e => ({ ...e, key: e.userId })) || [],
     //   });
     // } else { throw response.message; }
     yield delay(1000);
     yield call(easyPut, 'fetchSuccess', {
       allBaseUserData: [{
-        name: '李大庆',
-        id: '12345',
-        call: '183',
-        depart: '1,2,3,4组',
+        key: '1122',
+        userId: '1122',
+        username: 'hellokitty',
+        userFullName: '贺罗凯缇',
+        phoneNum: '155124741122',
+        departmentNames: '运维一组,运维二组',
       }],
     });
   } catch(error) {
@@ -59,14 +60,15 @@ function *downloadTemplate(){ // 下载导入模板
 
 function *getDepartmentTreeData() { // 获取部门树结构
   try {
-    // const url = ''; GET /api/v3/department/tree
-    // const response = yield call(request.get, url, {});
+    const url = `${APIBasePath}${system.getDepartmentTreeData}`;
+    const response = yield call(request.get, url);
+    yield call(easyPut, 'changeStore', { departmentTreeLoading: true });
     // if (response.code === '10000') {
     //   yield call(easyPut, 'fetchSuccess', {
-    //     allBaseUserData: response.data || [],
+    //     departmentTreeLoading: false,
+    //     departmentTree: response.data || [],
     //   });
     // } else { throw response.message; }
-    yield call(easyPut, 'changeStore', { departmentTreeLoading: true });
     yield delay(1000);
     yield call(easyPut, 'fetchSuccess', {
       departmentTreeLoading: false,
@@ -197,14 +199,58 @@ function *deleteDepartment({ payload }){ // 删除部门
       preDeleteText: '', // 删除弹框隐藏
       deleteDepartmentSuccess: true, // response.code === '10000',
     });
+    // response.code !== '10000' && throw response.message;
     yield call(getDepartmentTreeData); // 重新请求部门树结构
   } catch (error) {
-    yield call( easyPut, 'changeStore', { deleteDepartmentSuccess: false });
+    yield call(easyPut, 'changeStore', { deleteDepartmentSuccess: false });
     message.error(`删除部门失败, 请重试 ${error}`);
   }
 }
-// 左侧: 树区请求: 
-// 为指定部门分配人员
+
+function *getDepartmentAllUser({ payload }){ // 获取指定部门所有用户列表; => 分配用户; 模糊搜索均用;
+  try {
+    // const url = ''; post /api/v3/user/all/list
+    // const response = yield call(request.post, url, {});
+    // if (response.code === '10000') {
+    //   yield call(easyPut, 'fetchSuccess', {
+    //     departmentAllUsers: response.data || [],
+    //   });
+    // } else { throw response.message; }
+    yield delay(1000);
+    yield call(easyPut, 'fetchSuccess', {
+      departmentAllUsers: [{
+        userId: '1122',
+        username: 'hellokitty',
+        userFullName: '贺罗凯缇',
+      }],
+    });
+  } catch(error) {
+    message.error(`获取该部门下人员信息失败, 请重试! ${error}`);
+  }
+}
+
+function *assignUsers({ payload }) { // 为部门分配用户
+  try {
+    // const url = ''; post /api/v3/user/list/departmentInfolist
+    // const response = yield call(request.post, url, {});
+    // if (response.code === '10000') {
+    //   yield call(easyPut, 'fetchSuccess', {
+    //     allBaseUserData: response.data || [],
+    //   });
+    // } else { throw response.message; }
+    yield call(easyPut, 'changeStore', { assignUserLoading: true });
+    yield delay(1000);
+    yield call(easyPut, 'changeStore', {
+      assignUserLoading: false,
+      assignUserSuccess: true, // response.code === '10000',
+    });
+    // response.code !== '10000' && throw response.message;
+    // 重新请求相关主页面的用户id列表, 用户详细列表;
+  } catch(error) {
+    yield call(easyPut, 'changeStore', { assignUserSuccess: false });
+    message.error(`获取该部门下人员信息失败, 请重试! ${error}`);
+  }
+}
 
 // 右侧: 列表区请求
 // 获取部门的电站
@@ -226,6 +272,8 @@ function *getUserList({ payload }) {
 
 export function* watchPersonnelManage() {
   yield takeLatest(personnelManageAction.getAllUserBase, getAllUserBase);
+  yield takeLatest(personnelManageAction.getDepartmentAllUser, getDepartmentAllUser);
+  yield takeLatest(personnelManageAction.assignUsers, assignUsers);
   yield takeLatest(personnelManageAction.downloadTemplate, downloadTemplate);
   yield takeLatest(personnelManageAction.getDepartmentTreeData, getDepartmentTreeData);
   yield takeLatest(personnelManageAction.addNewDepartment, addNewDepartment);
