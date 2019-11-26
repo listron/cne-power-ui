@@ -19,7 +19,11 @@ const personnelManageAction = {
 const initState = {
   pageKey: 'list', // list列表-addPersonnel添加人员-editPersonnel编辑人员-detailPersonnel人员信息详情
 
-  selectedDepartment: { departmentId: '1' }, // 选中的部门信息 {}; => 右侧用户页面展示依据。 默认为未分配人员部门 id约定为1
+  selectedDepartment: {
+    departmentId: '1',
+    departmentName: '未分配部门人员',
+    departmentSource: '0',
+  }, // 选中的部门信息 {}; => 右侧用户页面展示依据。 默认为未分配人员部门 id约定为1
   userListParams: {
     username: '',
     phoneNum: '',

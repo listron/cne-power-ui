@@ -1,0 +1,53 @@
+
+@import '../../../../../../theme/theme.scss';
+
+.listDepartmentName{
+  display: flex;
+  height: 40px;
+  align-items: center;
+  padding-left: 24px;
+  .parentName{
+    margin: 0 8px;
+  }
+  :global{
+    .iconfont{
+      flex-basis:24px;
+      height:24px;
+    }
+  }
+}
+
+.listFooter{
+  display: flex;
+  height: 46px;
+  align-items: center;
+  .footerValue{
+    margin: 0 4px;
+  }
+  .cancel{
+    cursor: pointer;
+  }
+}
+
+.listDepartmentName{
+  .parentName{
+    color: $lightColor;
+  }
+  :global{
+    .iconfont{
+      background-color: $themeColor;
+      color: #fff;
+    }
+  }
+}
+
+.listFooter{
+  color: $lightColor;
+  .footerValue{
+    color: rgb(249, 182, 0);
+  }
+  .cancel{
+    color: $themeColor;
+  }
+}
+

@@ -14,6 +14,7 @@ class PersonnelManage extends Component {
     theme: PropTypes.string,
     getAllUserBase: PropTypes.func,
     getDepartmentTreeData: PropTypes.func,
+    getUserList: PropTypes.func,
   };
 
   componentDidMount(){

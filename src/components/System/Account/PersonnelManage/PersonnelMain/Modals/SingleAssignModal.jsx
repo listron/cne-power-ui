@@ -108,9 +108,12 @@ class SingleAssignModal extends Component {
 
   render(){
     const { showSingleAssignModal, selectedDepartment, departmentTree, allBaseUserData, assignUserLoading } = this.props;
-    const { departmentName, parentDepartmentId } = selectedDepartment;
+    const { departmentName, parentDepartmentId, departmentId } = selectedDepartment;
     const { column, isChecked, tmpInputText, selectedUserRow } = this.state;
-    const parentInfo = !['0', '1'].includes(parentDepartmentId) && departmentTree.find(e => e.departmentId === parentDepartmentId);
+    let parentInfo; // parentDepartmentId为0代表无父部门, departmentId为1代表未分配部门, 均不用遍历
+    if (parentDepartmentId && departmentId !== '1' && parentDepartmentId !== '0') {
+      parentInfo = departmentTree.find(e => e.departmentId === parentDepartmentId);
+    }
     return (
       <Modal
         title={
