@@ -65,20 +65,21 @@ function *getDepartmentTreeData() { // 获取部门树结构
 
 function *addNewDepartment({ payload }){ // 添加部门
   try {
-    // const url = ''; // POST /api/v3/department
+    const url = `${APIBasePath}${system.handleDepartment}`;
     /** payload: 
      * departmentName	String	否	部门名称
      * departmentId	String	是	所属部门ID => 是否有父级部门;
      * stationCodes	String[]	是	负责电站（多选）
      */
     yield call( easyPut, 'changeStore', { addDepartmentLoading: true });
-    yield delay(1000);
-    // const response = yield call(request.post, payload)
-    yield call( easyPut, 'changeStore', {
-      addDepartmentLoading: false,
-      addDepartmentSuccess: true, // response.code === '10000',
-    });
-    // response.code !== '10000' && throw response.message;
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'changeStore', {
+        addDepartmentLoading: false,
+        addDepartmentSuccess: true,
+      });
+      yield call(getDepartmentTreeData); // 添加部门成功, 重新请求部门树
+    } else { throw response.message; }
   } catch(error) {
     yield call( easyPut, 'changeStore', {
       addDepartmentLoading: false,
@@ -94,26 +95,20 @@ function *getStationOfDepartment({ payload }){ // 获取指定部门下的电站
   // 传departmentEditInfo时, 为点击左侧部门树编辑; => reducer记录进入departmentEditInfo的stations字段;
   try{
     const { departmentEditInfo } = payload;
-    // const departmentId = departmentEditInfo ? departmentEditInfo.departmentId : payload.departmentId;
-    // const url = GET /api/v3/department/station/list/{departmentId}
-    // const response = yield call(request.post, payload)
-    yield delay(1000);
-    const mockStation = [{
-      stationId: '11223344',
-      stationName: '永仁',
-      stationCode: 56,
-    }];
-    // if (response.code === '10000') {
+    const departmentId = departmentEditInfo ? departmentEditInfo.departmentId : payload.departmentId;
+    const url = `${APIBasePath}${system.getStationOfDepartment}/${departmentId}`;
+    const response = yield call(request.get, url);
+    if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', departmentEditInfo ? {
         departmentEditInfo: {
           ...departmentEditInfo,
-          stations: mockStation, // response.data || [],
+          stations: response.data || [],
         },
         departmentDrawerKey: 'edit',
       } : {
-        departmentStations: mockStation, // response.data || [],
+        departmentStations: response.data || [],
       });
-    // } else { throw response.message;}
+    } else { throw response.message;}
   } catch (error) {
     message.error(`获取部门电站信息失败, 请重试! ${error}`);
   }
@@ -121,20 +116,21 @@ function *getStationOfDepartment({ payload }){ // 获取指定部门下的电站
 
 function *editDepartment({ payload }){ // 编辑部门
   try {
-    // const url = ''; // POST /api/v3/department/update
     /** payload: 
      * departmentName	String	否	部门名称
      * departmentId	String	是	所属部门ID => 是否有父级部门;
      * stationCodes	String[]	是	负责电站（多选）
      */
+    const url = `${APIBasePath}${system.handleDepartment}`;
     yield call( easyPut, 'changeStore', { addDepartmentLoading: true });
-    yield delay(1000);
-    // const response = yield call(request.post, url, payload);
-    yield call( easyPut, 'changeStore', {
-      addDepartmentLoading: false,
-      addDepartmentSuccess: true, // response.code === '10000',
-    });
-    // response.code !== '10000' && throw response.message;
+    const response = yield call(request.put, url, payload);
+    if (response.code === '10000') {
+      yield call( easyPut, 'changeStore', {
+        addDepartmentLoading: false,
+        addDepartmentSuccess: response.code === '10000',
+      });
+      yield call(getDepartmentTreeData); // 添加部门成功, 重新请求部门树
+    } else { throw response.message; }
   } catch(error) {
     yield call( easyPut, 'changeStore', {
       addDepartmentLoading: false,
@@ -146,7 +142,8 @@ function *editDepartment({ payload }){ // 编辑部门
 
 function *preDeleteDepartmentCheck({ payload }){ // 删除部门前的检查、
   try {
-    const { departmentId } = payload || {};
+    const { departmentInfo } = payload || {};
+    const { departmentId } = departmentInfo || {};
     const url = `${APIBasePath}${system.preDeleteDepartmentCheck}/${departmentId}`;
     const response = yield call(request.get, url);
     yield call(easyPut, 'changeStore', {
@@ -159,14 +156,15 @@ function *preDeleteDepartmentCheck({ payload }){ // 删除部门前的检查、
 
 function *deleteDepartment({ payload }){ // 删除部门
   try {
-    // const url = ''; // DELETE /api/v3/department/{departmentId}
-    yield delay(1000);
-    // const response = yield call(request.delete, url)
-    yield call(easyPut, 'changeStore', {
-      preDeleteText: '', // 删除弹框隐藏
-      deleteDepartmentSuccess: true, // response.code === '10000',
-    });
-    // response.code !== '10000' && throw response.message;
+    const { departmentId } = payload || {};
+    const url = `${APIBasePath}${system.handleDepartment}/${departmentId}`;
+    const response = yield call(request.delete, url);
+    if (response.code === '10000') {
+      yield call(easyPut, 'changeStore', {
+        preDeleteText: '', // 删除弹框隐藏
+        deleteDepartmentSuccess: true,
+      });
+    } else { throw response.message; }
     yield call(getDepartmentTreeData); // 重新请求部门树结构
   } catch (error) {
     yield call(easyPut, 'changeStore', { deleteDepartmentSuccess: false });

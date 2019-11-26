@@ -60,20 +60,25 @@ class DepartmentTree extends Component {
   }
 
   selectDepartmentNode = (selectedKeys, selectNodes) => { // 选中部门 => 请求右侧所有数据 + 记录选中的部门
+    const { selectedDepartment } = this.props;
     const { node = {} } = selectNodes || {}; // 直接根据node节点实例获取挂载的数据;
     const { title = {} } = node.props || {};
     const { departmentInfo = {} } = title.props || {};
     const { departmentId } = departmentInfo;
+    if (departmentId !== selectedDepartment.departmentId) {
+      this.props.changeStore({ selectedDepartment: departmentInfo });
+      //to do call request: stationofdepartment; listtableData
+    }
     // departmentId !== '1' && this.props.getStationOfDepartment({ departmentId }); // 请求部门下电站并作为右侧展示
-    this.props.getDepartmentAllUser({ departmentId });
-    this.props.changeStore({
-      showSingleAssignModal: true,
-      selectedDepartment: departmentInfo,
-    });
+    // this.props.getDepartmentAllUser({ departmentId });
+    // this.props.changeStore({
+    //   showSingleAssignModal: true,
+    //   selectedDepartment: departmentInfo,
+    // });
   }
 
   assignPersonnel = () => {
-    console.log('点击分配人员中');
+    this.props.changeStore({ showSingleAssignModal: true });
   }
 
   editDepartment = (event, departmentEditInfo) => { // 编辑
@@ -106,7 +111,7 @@ class DepartmentTree extends Component {
 
   confirmRemoveDepartment = () => {
     const { deleteDepartmentInfo } = this.state;
-    this.props.deleteDepartment({ deleteDepartmentInfo });
+    this.props.deleteDepartment({ departmentId: deleteDepartmentInfo.departmentId });
   }
 
   refuseTipHide = () => this.setState({ refuseText: '' })
