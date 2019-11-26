@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 import { Drawer } from 'antd';
 import DepartmentTree from './DepartmentTree';
 import DepartmentDrawer from './Drawers/DepartmentDrawer';
-// import UserList from './UserList';
-// import Footer from '../../../../Common/Footer';
+import { ListDepartmentName, ListFooter } from './PersonnelList/PureFunc';
 import styles from './main.scss';
 
 class PersonnelMain extends Component {
@@ -47,6 +46,7 @@ class PersonnelMain extends Component {
         <div className={styles.mainContent}>
           <DepartmentTree {...this.props} />
           <div className={styles.personnelList}>
+            <ListDepartmentName {...this.props} />
             <button onClick={this.toTestDetail}>展示详情</button>
             <button onClick={this.toTestEdit}>编辑用户</button>
             <button onClick={this.toTestAdd}>新增用户</button>
@@ -54,7 +54,7 @@ class PersonnelMain extends Component {
             <div>部门的负责电站展示</div>
             <div>部门用户搜索条</div>
             <div>用户列表表格</div>
-            <div>当前选中项 取消选择 请选择同意状态下的列表项，进行操作</div>
+            <ListFooter {...this.props} />
             <button onClick={this.toExamine}>用户审核抽屉</button>
           </div>
           <Drawer

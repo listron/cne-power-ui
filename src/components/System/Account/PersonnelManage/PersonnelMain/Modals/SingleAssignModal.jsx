@@ -110,7 +110,7 @@ class SingleAssignModal extends Component {
     const { showSingleAssignModal, selectedDepartment, departmentTree, allBaseUserData, assignUserLoading } = this.props;
     const { departmentName, parentDepartmentId } = selectedDepartment;
     const { column, isChecked, tmpInputText, selectedUserRow } = this.state;
-    const parentInfo = ![0, 1].includes(parentDepartmentId) && departmentTree.find(e => e.departmentId === parentDepartmentId);
+    const parentInfo = !['0', '1'].includes(parentDepartmentId) && departmentTree.find(e => e.departmentId === parentDepartmentId);
     return (
       <Modal
         title={
