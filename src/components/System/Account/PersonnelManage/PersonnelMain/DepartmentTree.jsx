@@ -44,6 +44,7 @@ class DepartmentTree extends Component {
     preDeleteDepartmentCheck: PropTypes.func,
     deleteDepartment: PropTypes.func,
     getDepartmentAllUser: PropTypes.func,
+    getUserList: PropTypes.func,
   }
 
   state = {
@@ -67,7 +68,13 @@ class DepartmentTree extends Component {
     const { departmentId } = departmentInfo;
     if (departmentId !== selectedDepartment.departmentId) {
       this.props.changeStore({ selectedDepartment: departmentInfo });
-      //to do call request; listtableData
+      this.props.getUserList({
+        departmentId,
+        pageNum: 1,
+        pageSize: 10,
+        sortField: 'u.create_time',
+        sortMethod: 'desc',
+      });
       departmentId !== '1' && this.props.getDepartmentAllUser({ departmentId }); // 请求部门下电站并作为右侧 + 分配用户展示
     }
   }

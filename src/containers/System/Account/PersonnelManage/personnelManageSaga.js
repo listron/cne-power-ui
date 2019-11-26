@@ -208,12 +208,23 @@ function *assignUsers({ payload }) { // 为部门分配用户
   }
 }
 
-// 右侧: 列表区请求
-// 获取部门的电站
-// 获取部门的用户名/真实姓名
-// 获取部门的用户表格信息
-function *getUserList({ payload }) {
-  console.log(payload);
+function *getUserList({ payload = {} } = {}) { // payload不存在时, 使用缓存参数继续请求;
+  try {
+    const { userListParams, userListPageInfo } = yield select(state => state.system.personnelManage);
+    const url = `${APIBasePath}${system.getUserPagelist}`;
+    const response = yield call(request.post, url, {
+      ...userListParams,
+      ...userListPageInfo,
+      ...payload,
+    });
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        userList: response.data,
+      });
+    } else { throw response.message; }
+  } catch(error) {
+    message.error(`获取用户列表失败, 请重试, ${error}`);
+  }
 }
 
 // 用户注销预请求

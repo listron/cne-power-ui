@@ -17,6 +17,7 @@ class PersonnelManage extends Component {
   };
 
   componentDidMount(){
+    this.props.getUserList();
     this.props.getAllUserBase();
     this.props.getDepartmentTreeData();
     // 初入页面 请求企业下所有用户基础信息 + 请求部门列表树 + 请求默认未分配部门用户信息

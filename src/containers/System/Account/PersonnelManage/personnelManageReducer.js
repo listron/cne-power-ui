@@ -20,8 +20,18 @@ const initState = {
   pageKey: 'list', // list列表-addPersonnel添加人员-editPersonnel编辑人员-detailPersonnel人员信息详情
 
   selectedDepartment: { departmentId: '1' }, // 选中的部门信息 {}; => 右侧用户页面展示依据。 默认为未分配人员部门 id约定为1
-  userListParams: {}, // 展示用户列表请求信息
-  userListPageInfo: {}, // 展示用户列表页面信息
+  userListParams: {
+    username: '',
+    phoneNum: '',
+    stationName: '',
+    departmentId: '1',
+  }, // 展示用户列表请求信息
+  userListPageInfo: {
+    pageNum: 1,
+    pageSize: 10,
+    sortField: 'u.create_time', // 排序（默认u.create_time，用户状态eu.enterprise_user_status）
+    sortMethod: 'desc', // 排序规则 "asc"：正序  "desc"：倒序
+  }, // 展示用户列表页面信息
 
   showPersonnelDrawer: false, // 用户审核 抽屉
   departmentDrawerKey: 'hide', // 添加部门 add + 编辑部门 edit + 隐藏抽屉 hide

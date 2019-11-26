@@ -150,6 +150,7 @@ class SingleAssignModal extends Component {
             selectedRowKeys: selectedUserRow.map(e => e.userId),
           }}
           className={styles.userTable}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" />}}
           scroll={{ y: 350 }}
         />
         <div className={styles.assignFooter}>

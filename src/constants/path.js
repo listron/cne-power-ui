@@ -288,6 +288,7 @@ export default {
       getStationOfDepartment: '/v3/department/station/list', // 获取某部门下的电站
       getDepartmentAllUser: '/v3/user/all/list', // 获取部门下所有用户基本信息: 模糊搜索 + 已有用户回填;
       assignUsers: '/v3/user/distribute/department', // 分配部门用户
+      getUserPagelist: '/v3/user/pagelist', // 新人员管理界面列表展示
 
       getRoleList: '/v3/role/list',
       getMenuList: '/v3/right',
