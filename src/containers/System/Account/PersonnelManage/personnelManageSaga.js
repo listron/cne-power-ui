@@ -174,46 +174,37 @@ function *deleteDepartment({ payload }){ // 删除部门
 
 function *getDepartmentAllUser({ payload }){ // 获取指定部门所有用户列表; => 分配用户; 模糊搜索均用;
   try {
-    // const url = ''; post /api/v3/user/all/list
-    // const response = yield call(request.post, url, {});
-    // if (response.code === '10000') {
-    //   yield call(easyPut, 'fetchSuccess', {
-    //     departmentAllUsers: response.data || [],
-    //   });
-    // } else { throw response.message; }
-    yield delay(1000);
-    yield call(easyPut, 'fetchSuccess', {
-      departmentAllUsers: [{
-        userId: '1122',
-        username: 'hellokitty',
-        userFullName: '贺罗凯缇',
-      }],
-    });
+    const url = `${APIBasePath}${system.getDepartmentAllUser}`;
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        departmentAllUsers: response.data || [],
+      });
+    } else { throw response.message; }
   } catch(error) {
     message.error(`获取该部门下人员信息失败, 请重试! ${error}`);
   }
 }
 
 function *assignUsers({ payload }) { // 为部门分配用户
+  // payload: { userIds: [], departmentId: [] }
   try {
-    // const url = ''; post /api/v3/user/list/departmentInfolist
-    // const response = yield call(request.post, url, {});
-    // if (response.code === '10000') {
-    //   yield call(easyPut, 'fetchSuccess', {
-    //     allBaseUserData: response.data || [],
-    //   });
-    // } else { throw response.message; }
-    yield call(easyPut, 'changeStore', { assignUserLoading: true });
-    yield delay(1000);
+    const url = `${APIBasePath}${system.assignUsers}`;
     yield call(easyPut, 'changeStore', {
-      assignUserLoading: false,
-      assignUserSuccess: true, // response.code === '10000',
+      assignUserLoading: true,
+      assignUserSuccess: false,
     });
-    // response.code !== '10000' && throw response.message;
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        assignUserLoading: false,
+        assignUserSuccess: true,
+      });
+    } else { throw response.message; }
     // 重新请求相关主页面的用户id列表, 用户详细列表;
   } catch(error) {
     yield call(easyPut, 'changeStore', { assignUserSuccess: false });
-    message.error(`获取该部门下人员信息失败, 请重试! ${error}`);
+    message.error(`分配人员信息失败, 请重试! ${error}`);
   }
 }
 

@@ -67,14 +67,9 @@ class DepartmentTree extends Component {
     const { departmentId } = departmentInfo;
     if (departmentId !== selectedDepartment.departmentId) {
       this.props.changeStore({ selectedDepartment: departmentInfo });
-      //to do call request: stationofdepartment; listtableData
+      //to do call request; listtableData
+      departmentId !== '1' && this.props.getDepartmentAllUser({ departmentId }); // 请求部门下电站并作为右侧 + 分配用户展示
     }
-    // departmentId !== '1' && this.props.getStationOfDepartment({ departmentId }); // 请求部门下电站并作为右侧展示
-    // this.props.getDepartmentAllUser({ departmentId });
-    // this.props.changeStore({
-    //   showSingleAssignModal: true,
-    //   selectedDepartment: departmentInfo,
-    // });
   }
 
   assignPersonnel = () => {

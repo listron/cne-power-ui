@@ -29,6 +29,7 @@ class SingleAssignModal extends Component {
       {
         title: '真实姓名',
         dataIndex: 'userFullName',
+        render: (text) => <div className={styles.userFullName}>{text || '--'}</div>,
       }, {
         title: '电话',
         dataIndex: 'phoneNum',
@@ -76,7 +77,11 @@ class SingleAssignModal extends Component {
       userSource = userSource.filter(e => selectedIds.includes(e.userId));
     }
     if (nameFilterText) {
-      userSource = userSource.filter(e => e.username.includes(nameFilterText) || e.userFullName.includes(nameFilterText));
+      userSource = userSource.filter(e => {
+        const hasUsername = e.username && e.username.includes(nameFilterText);
+        const hasFullName = e.userFullName && e.userFullName.includes(nameFilterText);
+        return hasUsername || hasFullName;
+      });
     }
     return userSource;
   }

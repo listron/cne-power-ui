@@ -58,7 +58,7 @@
   }
   .userTable{
     height: 400px;
-    .departmentNames{
+    .departmentNames, .userFullName{
       max-width: 168px;
       @include overflowText();
     }

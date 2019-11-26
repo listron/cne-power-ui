@@ -286,6 +286,8 @@ export default {
       preDeleteDepartmentCheck: '/v3/department/checkDel', // 删除部门前的预置请求
       handleDepartment: '/v3/department', //部门信息新增，编辑，详情，删除
       getStationOfDepartment: '/v3/department/station/list', // 获取某部门下的电站
+      getDepartmentAllUser: '/v3/user/all/list', // 获取部门下所有用户基本信息: 模糊搜索 + 已有用户回填;
+      assignUsers: '/v3/user/distribute/department', // 分配部门用户
 
       getRoleList: '/v3/role/list',
       getMenuList: '/v3/right',
