@@ -78,6 +78,7 @@ class RealtimeSearch extends Component {
   selectStation = (selectedStationInfo) => { // 电站选择。
     const { getAvailableDeviceType, changeRealtimeStore, queryParam, stopRealtimeChart, stopRealtimeList } = this.props;
     const { stationCode } = selectedStationInfo[0];
+    const { stationType } = selectedStationInfo[0];
     stopRealtimeChart();
     stopRealtimeList();
     getAvailableDeviceType({ stationCode });
@@ -92,6 +93,7 @@ class RealtimeSearch extends Component {
       pointInfo: [], // 清空测点信息
       chartRealtime: {}, // chart图 - 所有历史数据
       listRealtime: {}, // 表格内 - 分页后的历史数据
+      selectStationType: stationType,
     });
   }
 
