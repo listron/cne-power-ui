@@ -82,7 +82,8 @@ class HistorySearch extends Component {
   selectStation = (selectedStationInfo) => { // 电站选择。
     const { getAvailableDeviceType, changeHistoryStore, queryParam } = this.props;
     const { stationCode } = selectedStationInfo[0];
-    getAvailableDeviceType({ stationCode });
+    const { stationType } = selectedStationInfo[0];
+    getAvailableDeviceType({ stationCode});
     changeHistoryStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode: null,
       chartTime: null,
@@ -95,6 +96,7 @@ class HistorySearch extends Component {
       pointInfo: [], // 清空测点信息
       allHistory: {}, // chart图 - 所有历史数据
       partHistory: {}, // 表格内 - 分页后的历史数据
+      selectStationType: stationType,
     });
   }
 
