@@ -6,32 +6,10 @@
   .transferColor {
     display: flex;
     flex: 1;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     padding: 24px 24px 0 24px;
     overflow: hidden;
-  }
-  .transferContainer {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    justify-content: space-between;
-    overflow: hidden;
-    .transBox {
-      display: flex;
-      flex: 1 0 auto;
-      width: 100%;
-      z-index: 1;
-      flex-direction: column;
-    }
-    .detailBox {
-      display: flex;
-      flex: 1 0 auto;
-      width: 100%;
-      z-index: 10;
-      flex-direction: column;
-      min-height: 100%;
-    }
   }
 }
 
@@ -39,17 +17,11 @@
   .transferColor {
     background-color: #ececec;
   }
-  .transferContainer {
-    background: #fff;
-  }
 }
 
 .dark {
   @import "../../../../theme/antdResetDark.scss";
   .transferColor {
-    background: $background;
-  }
-  .transferContainer {
     background: $background;
   }
 }

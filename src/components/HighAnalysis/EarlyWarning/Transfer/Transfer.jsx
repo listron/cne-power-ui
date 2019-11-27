@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Select, Table, Modal, Button } from 'antd';
 import PropTypes from 'prop-types';
@@ -41,13 +42,6 @@ class Transfer extends Component {
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
     this.getTransferList({ pageNum: currentPage, pageSize });
-  }
-
-
-  onShowDetail = (record) => {
-    const defectId = record.defectId;
-    this.props.changeTransferStore({ pageName: 'detail', defectId });
-
   }
 
   getTransferList = (param) => { // 请求数据
@@ -132,7 +126,9 @@ class Transfer extends Component {
         className: styles.iconDetail,
         render: (text, record) => (
           <span className={styles.iconBox}>
-            <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
+            <Link to={`/operation/workProcess/view?page=defectDetail&defectId=${record.defectId}`} target="_blank">
+              <i className="iconfont icon-tranlist icon-action" />
+            </Link>
           </span>
 
         ),
