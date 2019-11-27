@@ -83,7 +83,7 @@
 }
 
 .dark {
-  @import "../../../theme/antdResetDark.scss";
+  @import "../../../theme/darkTheme.scss";
   .ticket {
     background: $background;
     :global {

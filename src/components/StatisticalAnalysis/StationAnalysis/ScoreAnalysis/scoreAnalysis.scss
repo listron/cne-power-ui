@@ -274,7 +274,7 @@
 }
 
 .dark {
-  @import "../../../../theme/antdResetDark.scss";
+  @import "../../../../theme/darkTheme.scss";
   .stationTypeTab {
     border: 1px solid $border-color;
     background: $light-background;

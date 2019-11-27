@@ -368,7 +368,7 @@
 }
 
 .dark {
-  @import "../../../../../theme/antdResetDark.scss";
+  @import "../../../../../theme/darkTheme.scss";
   background: $background;
   .headStation {
     border: 1px solid $border-color;

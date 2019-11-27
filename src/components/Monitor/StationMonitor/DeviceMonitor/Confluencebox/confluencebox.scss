@@ -91,7 +91,7 @@
 }
 
 .confluenceStatistics.dark {
-  @import "../../../../../theme/antdResetDark.scss";
+  @import "../../../../../theme/darkTheme.scss";
   border: 1px solid $border-color;
   background: $light-background;
   margin-top: 10px;
