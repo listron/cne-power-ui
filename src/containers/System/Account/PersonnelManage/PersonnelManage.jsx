@@ -62,6 +62,7 @@ const mapDispatchToProps = (dispatch) => ({
   preDeleteDepartmentCheck: payload => dispatch({ type: personnelManageAction.preDeleteDepartmentCheck, payload }),
   deleteDepartment: payload => dispatch({ type: personnelManageAction.deleteDepartment, payload }),
   getUserList: payload => dispatch({ type: personnelManageAction.getUserList, payload }),
+  editDepartmentStations: payload => dispatch({ type: personnelManageAction.editDepartmentStations, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonnelManage);

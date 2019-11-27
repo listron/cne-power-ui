@@ -9,17 +9,26 @@ import styles from './list.scss';
 class DepartmentStation extends Component {
   static propTypes = {
     showDepartmentStationModal: PropTypes.bool,
+    selectedDepartment: PropTypes.object,
     stations: PropTypes.array,
     departmentStations: PropTypes.array,
     changeStore: PropTypes.func,
+    editDepartmentStations: PropTypes.func,
   }
 
   showStationModal = () => {
     this.props.changeStore({showDepartmentStationModal: true});
   }
 
-  handleOK = (a, b, c) => { // 给指定部门分配电站
-    console.log(a, b, c);
+  handleOK = (values) => { // 给指定部门分配电站
+    const { selectedDepartment } = this.props;
+    const { departmentId, departmentName } = selectedDepartment;
+    this.props.changeStore({ showDepartmentStationModal: false });
+    this.props.editDepartmentStations({
+      departmentId,
+      departmentName,
+      stationCodes: values.map(e => e.stationCode),
+    });
   }
 
   hideStationModal = () => { // 隐藏分配电站弹框

@@ -317,6 +317,7 @@ export default {
       setStationDepartment: '/v3/management/alarmevent/station/department', // 分配部门
       importStationInfo: '/v3/management/station/devices', // 导入电站+设备信息
       getAllStationBaseInfo: '/v3/management/datalist', // 获取该用户所在企业的所有电站(与token无关)
+      editDepartmentStations: '/v3/department/update', // 编辑部门负责电站
 
       getDeviceList: '/v3/management/devicelist', // 获取设备列表
       downloadDeviceInfo: '/v3/management/station/devices', // 导出设备信息表

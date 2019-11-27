@@ -1,7 +1,7 @@
 
 @import '../../../../../../theme/theme.scss';
 
-.listDepartmentName{
+.listDepartmentName{ // 顶部 icon 及部门名称
   display: flex;
   height: 40px;
   align-items: center;
@@ -19,7 +19,7 @@
   }
 }
 
-.departmentStation{
+.departmentStation{ // 负责电站栏目
   display: flex;
   padding: 6px 20px 6px 24px;
   .stationTips{
@@ -41,6 +41,26 @@
       height:24px;
       margin-right: 8px;
     }
+  }
+}
+
+.listSearch{ // 条件搜索： 姓名， 电话， 负责电站
+  display: flex;
+  height: 50px;
+  align-items: center;
+  padding-left: 24px;
+  .searchTitle{
+    margin-right: 4px;
+  }
+  input{
+    margin-right: 20px;
+    &:last-of-type{
+      margin-right: 10px;
+    }
+  }
+  .reset{
+    margin-left: 20px;
+    cursor: pointer;
   }
 }
 
@@ -79,6 +99,13 @@
       background-color: $themeColor;
       color: #fff;
     }
+  }
+}
+
+.listSearch{
+  background:#f9f9f9;
+  .reset{
+    color: $themeColor;
   }
 }
 

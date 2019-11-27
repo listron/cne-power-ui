@@ -14,6 +14,7 @@ const personnelManageAction = {
   preDeleteDepartmentCheck: Symbol('preDeleteDepartmentCheck'), // 删除部门前确认
   deleteDepartment: Symbol('deleteDepartment'), // 删除部门
   getUserList: Symbol('getUserList'), // 请求用户列表
+  editDepartmentStations: Symbol('editDepartmentStations'), // 修改部门下电站
 };
 
 const initState = {

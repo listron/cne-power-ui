@@ -227,6 +227,22 @@ function *getUserList({ payload = {} } = {}) { // payload不存在时, 使用缓
   }
 }
 
+function *editDepartmentStations({ payload }){ // 修改部门负责的电站
+  // payload = { departmentId, departmentName, stationCodes }
+  try{
+    const url = `${APIBasePath}${system.editDepartmentStations}`;
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') { // 修改电站成功 => 再次请求
+      const { departmentId } = payload;
+      yield call(getStationOfDepartment, {
+        payload: { departmentId },
+      });
+    } else { throw response.message; }
+  }catch(error){
+    message.error(`修改部门负责电站失败, ${error}`);
+  }
+}
+
 // 用户注销预请求
 // 用户注销
 // 用户审核
@@ -248,6 +264,7 @@ export function* watchPersonnelManage() {
   yield takeLatest(personnelManageAction.editDepartment, editDepartment);
   yield takeLatest(personnelManageAction.preDeleteDepartmentCheck, preDeleteDepartmentCheck);
   yield takeLatest(personnelManageAction.deleteDepartment, deleteDepartment);
+  yield takeLatest(personnelManageAction.editDepartmentStations, editDepartmentStations);
 
   yield takeLatest(personnelManageAction.getUserList, getUserList);
 }
