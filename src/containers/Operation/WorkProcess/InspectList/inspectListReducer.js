@@ -12,7 +12,7 @@ const inspectListAction = {
 const initState = immutable.fromJS({
   tableLoading: false,
   params: {
-    stationType: '2',
+    stationType: '',
     stationCodes: '',
     timeInterval: '0',
     status: '5',

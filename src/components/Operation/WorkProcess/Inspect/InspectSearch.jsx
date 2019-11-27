@@ -22,14 +22,15 @@ class InspectSearch extends React.Component {
       ...params,
       createTimeStart,
       createTimeEnd,
-      stationType: stationType ? stationType : '2',
-      stationCodes: stationCodes.length ? stationCodes.join(',') : '',
+      stationType: stationType ? stationType : '',
+      stationCodes: stationCodes.length ? stationCodes : '',
       deviceTypeCode: deviceTypeCode.length ? deviceTypeCode.join(',') : '',
       pageNum: 1,
     });
   }
   render() {
-    const { stations, deviceTypes } = this.props;
+    const { stations, deviceTypes, params } = this.props;
+    const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode } = params;
     return (
       <div className={styles.searchStyle}>
         <FilterCondition
@@ -60,6 +61,7 @@ class InspectSearch extends React.Component {
             },
 
           ]}
+          value={{ rangeTimes: [createTimeStart, createTimeEnd], stationType, stationCodes, deviceTypeCode }}
         />
       </div>
     );
