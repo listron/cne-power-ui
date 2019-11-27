@@ -1,25 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Select, Table, Modal, Button } from 'antd';
+import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './transfer.scss';
 import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
-import WarningTip from '../../../Common/WarningTip';
 import moment from 'moment';
 
-const Option = Select.Option;
 class Transfer extends Component {
   static propTypes = {
-    changeTransferStore: PropTypes.func,
     getTransferList: PropTypes.func,
     transferList: PropTypes.array,
-    resetStore: PropTypes.func,
     getMatrixlist: PropTypes.func,
     stationCodes: PropTypes.array,
     belongMatrixs: PropTypes.array,
-    inefficiencyStatus: PropTypes.number,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     sortField: PropTypes.string,
