@@ -31,16 +31,6 @@ class EditDeviceForm extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         if (deviceTypeCode === '202' || deviceTypeCode === '206') {
-          // const branchCountArr = [];
-          // for (let i = 0; i < values.branchCount; i++) {
-          //   branchCountArr.push(i + 1);
-          // }
-          // if (values.branchCount) {
-          //   values.connectedBranches = branchCountArr.map((e, i) => {
-          //     return values.connectedBranches.includes(e) ? 1 : 0;
-          //   });
-          // }
-
           if (typeof values.componentMode === 'string') {
             const filterMode = pvDeviceModels.filter(
               (e, i) => e.deviceModeName === values.componentMode
@@ -49,12 +39,12 @@ class EditDeviceForm extends Component {
               values.componentMode = filterMode[0].deviceModeId;
             }
           }
-
+          const branchCount = parseFloat(values.branchCount);
+          const connectedBranches = values.connectedBranches.slice(0, branchCount).map(e => parseFloat(e));
           values.map = {
             componentMode: +values.componentMode,
-            branchCount: +values.branchCount,
-            // connectedBranches: values.connectedBranches,
-            connectedBranches: values.connectedBranches.map(e => parseFloat(e)),
+            branchCount,
+            connectedBranches,
           };
         }
         if (deviceTypeCode === '304') {
