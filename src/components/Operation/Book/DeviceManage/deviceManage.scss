@@ -63,11 +63,11 @@
       line-height: 30px;
       background-color: $themeColor;
     }
-    .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
-      margin-left: 0px;
-      width: 28px;
-      color: $darkColor;
-    }
+    // .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
+  //   margin-left: 0px;
+  //   width: 28px;
+  //   color: $darkColor;
+  // }
   }
   .left{
     display: flex;

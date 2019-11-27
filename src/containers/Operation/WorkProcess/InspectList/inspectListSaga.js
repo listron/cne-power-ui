@@ -10,6 +10,7 @@ const { APIBasePath } = basePaths;
 const { ticket } = APISubPaths;
 function* getInspectList(action) { // 获取巡检列表数据
   const { payload } = action;
+  const { stationCodes, stationType } = payload;
   const url = `${APIBasePath}${ticket.getInspectList}`;
   try {
     yield put({
@@ -19,7 +20,11 @@ function* getInspectList(action) { // 获取巡检列表数据
         params: { ...payload },
       },
     });
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, {
+      ...payload,
+      stationCodes: stationCodes.length ? stationCodes.join(',') : '',
+      stationType: stationType ? stationType : '2',
+    });
     if (response.data.code === '10000') {
       const total = response.data.data.total || 0;
       let { pageNum } = payload;

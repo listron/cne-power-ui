@@ -42,14 +42,6 @@ class TransferFormTable extends Component {
     this.props.getTransferInfo({ workOrderId });//请求工单的详细信息
   }
 
-
-  getDetail = (defectId, index) => { // 查看工单详情
-    this.props.changeTransferFormStore({ pageName: 'detail', defectId });
-    this.setState((state) => {
-      return state.showTransferPopover[index] = false;
-    });
-  }
-
   tableChange = (pagination, filters, sorter) => {
     const { changeTransferFormStore, onChangeFilter } = this.props;
     const { field, order } = sorter;
@@ -102,8 +94,10 @@ class TransferFormTable extends Component {
             <span className={styles.value}>{ticketInfo.defectDescribe}</span>
           </div>
         </div>
-        <Button className={styles.ticketButton} onClick={() => { this.getDetail(record.workOrderId, index); }}>
-          查看工单详情
+        <Button className={styles.ticketButton}>
+          <Link to={`/operation/workProcess/view?page=defectDetail&defectId=${record.workOrderId}`} target="_blank">
+            查看工单详情
+          </Link>
         </Button>
       </div>
     );

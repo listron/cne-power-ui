@@ -65,12 +65,7 @@ class HistoryWarningTable extends Component {
       showAutoRelievePopover,
     });
   }
-  getDetail = (defectId, index) => { // 查看工单详情
-    this.props.changeHistoryWarningStore({ pageName: 'detail', defectId });
-    this.setState((state) => {
-      return state.showTransferPopover[index] = false;
-    });
-  }
+
   tableChange = (pagination, filters, sorter) => {
     const { changeHistoryWarningStore, onChangeFilter } = this.props;
     const { field, order } = sorter;
@@ -124,8 +119,10 @@ class HistoryWarningTable extends Component {
           </div>
         </div>
         {/*<Button className={styles.ticketButton} ><Link to={`/operation/ticket/${ticketInfo.defectId}`}>查看工单详情</Link></Button>  */}
-        <Button className={styles.ticketButton} onClick={() => { this.getDetail(record.workOrderId, index); }}>
-          查看工单详情
+        <Button className={styles.ticketButton} >
+          <Link to={`/operation/workProcess/view?page=defectDetail&defectId=${record.workOrderId}`} target="_blank">
+            查看工单详情
+          </Link>
         </Button>
 
       </div>
@@ -264,6 +261,7 @@ class HistoryWarningTable extends Component {
               <Popover content={this.renderTransferPopover(index, record)}
                 trigger="click"
                 visible={this.state.showTransferPopover[index]}
+                getPopupContainer={() => this.refs.popover}
                 onVisibleChange={(visible) => this.onTransferChange(visible, record.workOrderId, index)}
               >
                 <div className={this.state.showTransferPopover[index] ? styles.selected : null}><i className="iconfont icon-tranlist icon-action"></i></div>
