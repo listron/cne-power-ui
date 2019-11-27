@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Drawer } from 'antd';
 import DepartmentTree from './DepartmentTree';
 import DepartmentDrawer from './Drawers/DepartmentDrawer';
+import DepartmentStation from './PersonnelList/DepartmentStation';
 import { ListDepartmentName, ListFooter } from './PersonnelList/PureFunc';
 import styles from './main.scss';
 
@@ -47,6 +48,7 @@ class PersonnelMain extends Component {
           <DepartmentTree {...this.props} />
           <div className={styles.personnelList}>
             <ListDepartmentName {...this.props} />
+            <DepartmentStation {...this.props} />
             <button onClick={this.toTestDetail}>展示详情</button>
             <button onClick={this.toTestEdit}>编辑用户</button>
             <button onClick={this.toTestAdd}>新增用户</button>

@@ -52,6 +52,8 @@ const initState = {
   assignUserLoading: false, // 部门分配loading;
   assignUserSuccess: false, // 部门分配结果;
   showSingleAssignModal: false, // 部门树用户分配弹框的展示
+
+  showDepartmentStationModal: false, // 部门分配电站弹框
   // showMultipleAssignModal: false, // 主界面表格多选用户进行多个部门分配弹框
   // addUserLoading: false, // 添加人员loading状态
   // userListLoading: false, // 页面部门loading状态

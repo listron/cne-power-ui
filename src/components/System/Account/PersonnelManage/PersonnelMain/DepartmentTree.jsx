@@ -68,6 +68,7 @@ class DepartmentTree extends Component {
     const { departmentId } = departmentInfo;
     if (departmentId !== selectedDepartment.departmentId) {
       this.props.changeStore({ selectedDepartment: departmentInfo });
+      this.props.getStationOfDepartment({ departmentId });
       this.props.getUserList({
         departmentId,
         pageNum: 1,
