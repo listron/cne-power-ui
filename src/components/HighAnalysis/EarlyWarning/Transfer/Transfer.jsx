@@ -1,24 +1,19 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Select, Table, Modal, Button } from 'antd';
+import { Link } from 'react-router-dom';
+import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './transfer.scss';
 import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
-import WarningTip from '../../../Common/WarningTip';
 import moment from 'moment';
 
-const Option = Select.Option;
 class Transfer extends Component {
   static propTypes = {
-    changeTransferStore: PropTypes.func,
     getTransferList: PropTypes.func,
     transferList: PropTypes.array,
-    resetStore: PropTypes.func,
     getMatrixlist: PropTypes.func,
     stationCodes: PropTypes.array,
     belongMatrixs: PropTypes.array,
-    inefficiencyStatus: PropTypes.number,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     sortField: PropTypes.string,
@@ -41,13 +36,6 @@ class Transfer extends Component {
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
     this.getTransferList({ pageNum: currentPage, pageSize });
-  }
-
-
-  onShowDetail = (record) => {
-    const defectId = record.defectId;
-    this.props.changeTransferStore({ pageName: 'detail', defectId });
-
   }
 
   getTransferList = (param) => { // 请求数据
@@ -132,7 +120,9 @@ class Transfer extends Component {
         className: styles.iconDetail,
         render: (text, record) => (
           <span className={styles.iconBox}>
-            <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
+            <Link to={`/operation/workProcess/view?page=defectDetail&defectId=${record.defectId}`} target="_blank">
+              <i className="iconfont icon-tranlist icon-action" />
+            </Link>
           </span>
 
         ),
