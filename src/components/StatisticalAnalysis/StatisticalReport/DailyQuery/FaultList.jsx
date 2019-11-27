@@ -49,6 +49,9 @@ class FaultList extends Component {
     const url = `${APIBasePath}${statisticalAnalysis.getExportFault}`;
     const { startDate, endDate, stationCodes } = queryParam;
     const { pageNum, pageSize } = listParam;
+    const faultId = faultIds.map(e => {
+      return Number(e.value);
+    });
 
     downLoadFile({
       url,
@@ -61,7 +64,7 @@ class FaultList extends Component {
         startDate,
         endDate,
         keyWord,
-        faultIds,
+        faultId,
       },
     });
   }
