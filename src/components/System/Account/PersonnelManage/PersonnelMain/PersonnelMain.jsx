@@ -27,9 +27,6 @@ class PersonnelMain extends Component {
   toTestEdit = () => {
     this.props.changeStore({ pageKey: 'editPersonnel' });
   }
-  toTestAdd = () => {
-    this.props.changeStore({ pageKey: 'addPersonnel' });
-  }
   toExamine = () => {
     this.props.changeStore({ showPersonnelDrawer: true });
   }
@@ -55,7 +52,6 @@ class PersonnelMain extends Component {
             <List {...this.props} />
             <button onClick={this.toTestDetail}>展示详情</button>
             <button onClick={this.toTestEdit}>编辑用户</button>
-            <button onClick={this.toTestAdd}>新增用户</button>
             <div>用户列表表格</div>
             <ListFooter {...this.props} />
             <button onClick={this.toExamine}>用户审核抽屉</button>

@@ -219,7 +219,7 @@ function *getUserList({ payload = {} } = {}) { // payload不存在时, 使用缓
     });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
-        userList: response.data,
+        userList: response.data.map(e => ({ ...e, key: e.userId })) || [],
       });
     } else { throw response.message; }
   } catch(error) {

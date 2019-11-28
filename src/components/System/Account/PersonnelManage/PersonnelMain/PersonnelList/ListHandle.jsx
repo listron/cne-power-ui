@@ -11,18 +11,27 @@ const { Option } = Select;
 class ListHandle extends Component {
   static propTypes = {
     userListPageInfo: PropTypes.object,
+    changeStore: PropTypes.func,
+    getUserList: PropTypes.func,
   }
 
   toAddUser = () => {
-    console.log('to add user');
+    this.props.changeStore({ pageKey: 'addPersonnel' });
   }
 
   handleUser = (a, b, c) => {
     console.log(a, b, c);
   }
 
-  paginationChange = (a, b, c) => {
-    console.log(a, b, c);
+  paginationChange = ({ pageSize, currentPage }) => {
+    const { userListPageInfo } = this.props;
+    const newPageInfo = {
+      ...userListPageInfo,
+      pageNum: currentPage,
+      pageSize,
+    };
+    this.props.changeStore({ userListPageInfo });
+    this.props.getUserList({ ...newPageInfo });
   }
 
   render(){
@@ -38,11 +47,16 @@ class ListHandle extends Component {
             value="操作"
             dropdownMatchSelectWidth={false}
           >
-            <Option key="assign">分配人员</Option>
-            <Option key="examine">审核人员</Option>
-            <Option key="logout">注销人员</Option>
+            <Option key="assign">
+              <span className={`iconfont icon-bumenx ${styles.icon}`} />分配人员
+            </Option>
+            <Option key="examine">
+              <span className={`iconfont icon-examine1 ${styles.icon}`} />审核人员
+            </Option>
+            <Option key="logout">
+              <span className={`iconfont icon-remove ${styles.icon}`} />注销人员
+            </Option>
           </Select>
-          <span>设置</span>
         </span>
         <CommonPagination
           total={0}
