@@ -9,6 +9,13 @@ import searchUtil from '@utils/searchUtil';
 import DefectSearch from '@components/Operation/WorkProcess/Defect/DefectSearch';
 import DefectTableList from '@components/Operation/WorkProcess/Defect/DefectTableList';
 
+/**
+ * 直接跳转进来的从路径上修改
+ * history.push(`/operation/workProcess/view?page=list&tab=defect&listSearch=${JSON.stringify({stationCodes:[77,95], stationType:1 })}`);
+ * @ page 代表的是当前页面  list 列表页 defectDetail 消缺详情 inspectDeatail 巡检详情
+ * @ tab  defect 指的是缺陷 inspect 巡检的列表页
+ * @ listSearch 列表页面需要的参数 例如 stationCodes 电站 stationType 电站类型 等等，可以传递的参数根绝筛选条件 格式请按照上述格式进行传递 否则解析不了
+ */
 class DefectList extends Component {
 
   static propTypes = {
@@ -62,7 +69,8 @@ const mapStateToProps = (state) => {
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
     username: state.common.get('username'),
-    theme: state.common.get('theme'),
+    // theme: state.common.get('theme'),
+    theme: 'light',
   });
 };
 

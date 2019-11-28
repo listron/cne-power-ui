@@ -8,8 +8,6 @@ import styles from './defectDetail.scss';
 import WarningTip from '../../../../components/Common/WarningTip';
 import DetailContiner from '../../../../components/Operation/WorkProcess/Defect/DetailContiner';
 import DefectCreate from '../../../../components/Operation/WorkProcess/Defect/DefectCreate';
-
-
 import { Icon } from 'antd';
 
 class DefectDetail extends Component {
@@ -25,6 +23,7 @@ class DefectDetail extends Component {
     processData: PropTypes.array,
     resetStore: PropTypes.func,
     hasModify: PropTypes.bool,
+    defectId: PropTypes.string,
   };
 
 
@@ -90,11 +89,12 @@ class DefectDetail extends Component {
   }
 
   render() {
-    const { theme = 'light', defectDetail, processData, defectId } = this.props;
+    const { theme, defectDetail, defectId } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const { defectStatus, rejectReason } = defectDetail; // defectStatus  当前的流程状态 defectStatus=1 为待提交状态
     return (
-      <div className={`${styles.detailWrap} ${styles[theme]}`}>
+      // <div className={`${styles.detailWrap} ${styles[theme]}`}>
+      <div className={`${styles.detailWrap}`}>
         {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.header}>
           <div className={styles.text} title={rejectReason}>{this.renderTitle(defectStatus)}{defectStatus === '0' && `:${rejectReason}`}</div>
@@ -114,7 +114,8 @@ class DefectDetail extends Component {
 const mapStateToProps = (state) => ({
   ...state.operation.defectDetail.toJS(),
   stations: state.common.get('stations').toJS(),
-  theme: state.common.get('theme'),
+  // theme: state.common.get('theme'),
+  theme: 'light',
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -161,7 +161,8 @@ class DefectTabelList extends Component {
     const { defectListData, selectedRowKeys, total, listLoading, theme, listParams } = this.props;
     const { pageSize, pageNum } = listParams;
     const rightHandler = localStorage.getItem('rightHandler');
-    const addDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_add');
+    // const addDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_add');
+    const addDefectRight = true;
     return (
       <div className={`${styles.defectTable} ${styles[theme]}`}>
         <span ref={'wrap'} />
