@@ -60,24 +60,28 @@ RunningLog.propTypes = {
   theme: PropTypes.string,
 };
 
-function TicketsLog({ ticketsInfo = {}, theme = 'light' }){
+function TicketsLog({ ticketsInfo = {}, theme = 'light', stageStations }){
   const { finish = {}, unfinish = {} } = ticketsInfo;
 
   const tmpFinishMaxValue = getMaxValue([finish.defectNum, finish.inspectNum, finish.workDocketNum, finish.operateDocketNum]);
   const tmpFinishWidth = getNumberLength(tmpFinishMaxValue);
   const tmpUnfinishMaxValue = getMaxValue([unfinish.defectNum, unfinish.inspectNum, unfinish.workDocketNum, unfinish.operateDocketNum]);
   const tmpUnfinishWidth = getNumberLength(tmpUnfinishMaxValue);
+  // 消缺 + 巡检 跳新页面的选中电站参数
+  const listSearch = {
+    stationCodes: stageStations && stageStations.map(cur => (cur.stationCode)) || [],
+  };
   const ticketArr = [
     {
       title: '消缺',
       finishValue: dataFormats(finish.defectNum),
       unfinishValue: dataFormats(unfinish.defectNum),
-      path: '/operation/ticket/list',
+      path: `/operation/workProcess/view?page=list&tab=defect&listSearch=${JSON.stringify(listSearch)}`,
     }, {
       title: '巡检',
       finishValue: dataFormats(finish.inspectNum),
       unfinishValue: dataFormats(unfinish.inspectNum),
-      path: '/operation/ticket/list',
+      path: `/operation/workProcess/view?page=list&tab=inspect&listSearch=${JSON.stringify(listSearch)}`,
     }, {
       title: '工作票',
       finishValue: dataFormats(finish.workDocketNum),
@@ -118,6 +122,7 @@ function TicketsLog({ ticketsInfo = {}, theme = 'light' }){
 TicketsLog.propTypes = {
   ticketsInfo: PropTypes.object,
   theme: PropTypes.string,
+  stageStations: PropTypes.array,
 };
 
 export {

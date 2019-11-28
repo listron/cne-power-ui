@@ -65,7 +65,7 @@ class DefectCreate extends Component {
     if (stationCodes) {
       this.props.getStationDeviceTypes({ stationCodes }); // 获取设备类型
     }
-    this.props.changeStore({ knowledgebaseList: [] })
+    this.props.changeStore({ knowledgebaseList: [] });
     this.props.form.setFieldsValue({ stations: stations, deviceTypeCode: null, defectTypeCode: null, deviceCodeArr: [] });
   }
 
