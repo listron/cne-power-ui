@@ -31,7 +31,7 @@ class ListHandle extends Component {
       pageNum: currentPage,
       pageSize,
     };
-    this.props.changeStore({ userListPageInfo });
+    this.props.changeStore({ userListPageInfo: newPageInfo });
     this.props.getUserList({ ...newPageInfo });
   }
 

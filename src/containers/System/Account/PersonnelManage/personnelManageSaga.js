@@ -212,6 +212,7 @@ function *getUserList({ payload = {} } = {}) { // payload不存在时, 使用缓
   try {
     const { userListParams, userListPageInfo } = yield select(state => state.system.personnelManage);
     const url = `${APIBasePath}${system.getUserPagelist}`;
+    yield call(easyPut, 'changeStore', { userListLoading: true });
     const response = yield call(request.post, url, {
       ...userListParams,
       ...userListPageInfo,
@@ -219,11 +220,13 @@ function *getUserList({ payload = {} } = {}) { // payload不存在时, 使用缓
     });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
+        userListLoading: false,
         userList: response.data.dataList.map(e => ({ ...e, key: e.userId })) || [],
         userListTotalNum: response.data.pageCount || 0,
       });
     } else { throw response.message; }
   } catch(error) {
+    yield call(easyPut, 'changeStore', { userListLoading: false });
     message.error(`获取用户列表失败, 请重试, ${error}`);
   }
 }
@@ -244,15 +247,44 @@ function *editDepartmentStations({ payload }){ // 修改部门负责的电站
   }
 }
 
-// 用户注销预请求
-// 用户注销
-// 用户审核
+function* getUserDetailInfo({ payload }) { // 获取用户详情 => 默认得到后进入详情页面
+  try {
+    const { userId, pageKey= 'detailPersonnel' } = payload;
+    const url = `${APIBasePath}${system.getUserDetailInfo}/${userId}`;
+    const response = yield call(request.get, url);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        userDetailInfo: response.data || {},
+        pageKey,
+      });
+    } else { throw response.message; }
+  } catch (err) {
+    message.error(`获取用户详情失败, 请重试, ${err}`);
+  }
+}
+
+function* setUserStatus({ payload }){ // 修改用户状态 => 审核/注销
+  // payload {userId: '', enterpriseId:'', enterpriseUserStatus:'', departmentIds: [], roleIds: []};
+  try{
+    const url= `${APIBasePath}${system.setUserStatus}`;
+    const response = yield call(request.put, url, payload);
+    if (response.code === '10000') { // 审核/注销成功, 重新请求当前用户列表
+      const { enterpriseUserStatus } = payload;
+      const tmpInfo = {
+        5: 'examineSuccess',
+        6: 'examineSuccess',
+        7: 'logoutSuccess',
+      };
+      yield call(easyPut, 'fetchSuccess', { [tmpInfo[enterpriseUserStatus]]: true });
+      yield call(getUserList);
+    } else { throw response.message; }
+  }catch(error){
+    message.error(`操作失败, 请重试, ${error}`);
+  }
+}
+
 // 新增用户
 // 编辑用户
-
-// function *import(){ // 模板下载
-
-// }
 
 export function* watchPersonnelManage() {
   yield takeLatest(personnelManageAction.getAllUserBase, getAllUserBase);
@@ -266,6 +298,8 @@ export function* watchPersonnelManage() {
   yield takeLatest(personnelManageAction.preDeleteDepartmentCheck, preDeleteDepartmentCheck);
   yield takeLatest(personnelManageAction.deleteDepartment, deleteDepartment);
   yield takeLatest(personnelManageAction.editDepartmentStations, editDepartmentStations);
+  yield takeLatest(personnelManageAction.getUserDetailInfo, getUserDetailInfo);
+  yield takeLatest(personnelManageAction.setUserStatus, setUserStatus);
 
   yield takeLatest(personnelManageAction.getUserList, getUserList);
 }

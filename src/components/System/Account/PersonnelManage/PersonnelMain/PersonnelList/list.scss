@@ -64,7 +64,7 @@
   }
 }
 
-.listHandle{
+.listHandle{ // 添加人员， 操作，分页器
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -77,7 +77,7 @@
   }
 }
 
-.listMain{
+.listMain{ // 表格部分
   .username, .roleName{
     @include overflowText();
   }
@@ -93,7 +93,7 @@
   }
 }
 
-.listFooter{
+.listFooter{ // 地步选中项，取消选择
   display: flex;
   height: 46px;
   align-items: center;
@@ -141,6 +141,12 @@
   background:#f9f9f9;
   .reset{
     color: $themeColor;
+  }
+}
+
+.listMain{
+  .toExamine{
+    color:#e08031;
   }
 }
 

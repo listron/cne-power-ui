@@ -131,6 +131,13 @@
 
 .personnelList{ // 右侧用户侧
   flex: 1;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+  }
 }
 
 
@@ -164,4 +171,7 @@
 }
 .personnelList{ // 右侧用户侧
   background-color: #fff;
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
+  }
 }

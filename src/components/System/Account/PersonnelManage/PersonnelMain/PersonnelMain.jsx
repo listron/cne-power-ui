@@ -8,7 +8,7 @@ import DepartmentDrawer from './Drawers/DepartmentDrawer';
 import DepartmentStation from './PersonnelList/DepartmentStation';
 import ListSearch from './PersonnelList/ListSearch';
 import List from './PersonnelList/List';
-import { ListDepartmentName, ListFooter } from './PersonnelList/PureFunc';
+import { ListDepartmentName } from './PersonnelList/PureFunc';
 import styles from './main.scss';
 
 class PersonnelMain extends Component {
@@ -18,25 +18,12 @@ class PersonnelMain extends Component {
     changeStore: PropTypes.func,
   }
 
-
-
   // 注: pageKey: 'list', // list列表-addPersonnel添加人员-editPersonnel编辑人员-detailPersonnel人员信息详情
-  toTestDetail = () => {
-    this.props.changeStore({ pageKey: 'detailPersonnel' });
-  }
-  toTestEdit = () => {
-    this.props.changeStore({ pageKey: 'editPersonnel' });
-  }
   toExamine = () => {
     this.props.changeStore({ showPersonnelDrawer: true });
   }
   testCloseUserExamine = () => {
     this.props.changeStore({ showPersonnelDrawer: false });
-  }
-
-
-  hideDepartmentDrawer = () => {
-    this.props.changeStore({ departmentDrawerKey: 'hide' });
   }
 
   render(){
@@ -50,10 +37,6 @@ class PersonnelMain extends Component {
             <DepartmentStation {...this.props} />
             <ListSearch {...this.props} />
             <List {...this.props} />
-            <button onClick={this.toTestDetail}>展示详情</button>
-            <button onClick={this.toTestEdit}>编辑用户</button>
-            <div>用户列表表格</div>
-            <ListFooter {...this.props} />
             <button onClick={this.toExamine}>用户审核抽屉</button>
           </div>
           <Drawer

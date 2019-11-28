@@ -289,6 +289,8 @@ export default {
       getDepartmentAllUser: '/v3/user/all/list', // 获取部门下所有用户基本信息: 模糊搜索 + 已有用户回填;
       assignUsers: '/v3/user/distribute/department', // 分配部门用户
       getUserPagelist: '/v3/user/pagelist', // 新人员管理界面列表展示
+      getUserDetailInfo: '/v3/user', //用户详情
+      setUserStatus: '/v3/user/status', // 修改用户状态
 
       getRoleList: '/v3/role/list',
       getMenuList: '/v3/right',

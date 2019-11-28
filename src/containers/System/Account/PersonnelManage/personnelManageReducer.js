@@ -15,6 +15,8 @@ const personnelManageAction = {
   deleteDepartment: Symbol('deleteDepartment'), // 删除部门
   getUserList: Symbol('getUserList'), // 请求用户列表
   editDepartmentStations: Symbol('editDepartmentStations'), // 修改部门下电站
+  getUserDetailInfo: Symbol('getUserDetailInfo'), // 获取用户详情
+  setUserStatus: Symbol('setUserStatus'), // 审核 / 注销用户
 };
 
 const initState = {
@@ -57,8 +59,9 @@ const initState = {
   showDepartmentStationModal: false, // 部门分配电站弹框
   // showMultipleAssignModal: false, // 主界面表格多选用户进行多个部门分配弹框
   // addUserLoading: false, // 添加人员loading状态
-  // userListLoading: false, // 页面部门loading状态
-  // logoutLoading: false, // 注销用户loading状态
+  userListLoading: false, // 页面部门loading状态
+  logoutSuccess: false, // 注销/审核成功
+  examineSuccess: false, // 审核成功
 
   allBaseUserData: [], // 所有用户基础信息 => 用于分配人员
   departmentAllUsers: [], // 选中部门内所有用户 => 用于分配人员和部门内搜索模糊匹配;
@@ -67,6 +70,7 @@ const initState = {
   departmentStations: [], // 主界面 部门负责电站
   userList: [], // 主界面用户列表
   userListTotalNum: 0, // 用户列表合计
+  userDetailInfo: {}, // 用户详情
 };
 
 const personnelManage = (state = initState, action) => {

@@ -1,4 +1,7 @@
 
+@import '../../../../../theme/theme.scss';
+
+
 .personnelManageSides{
   height: 100%;
   position: absolute;
@@ -9,4 +12,85 @@
   transition: all 500ms;
   z-index: 99;
   overflow-y: auto;
+}
+
+.detail{
+  height: 100%;
+  .topTitle{
+    height: 64px;
+    display: flex;
+    padding-left: 32px;
+    align-items: center;
+    justify-content: space-between;
+    .backIcon{
+      color: $darkColor;
+      font-size: 20px;
+      line-height: 64px;
+      flex: 0 0 64px;
+      cursor: pointer;
+    }
+  }
+}
+
+.detail .userContent{
+  display: flex;
+  padding: 54px 70px 0 40px;
+  .leftConfig, .rightContent{
+    .eachInfo{
+      display: flex;
+      height: 30px;
+      align-items: center;
+      .title{
+        flex: 0 0 56px;
+        margin-right: 24px;
+        text-align: right;
+      }
+    }
+  }
+  .leftConfig{
+    margin-right: 70px;
+    img{
+      width: 240px;
+      height: 240px;
+    }
+  }
+  .rightContent{
+    flex: 1;
+    .doshLine{
+      height: 1px;
+    }
+    .eachEnterprise{
+      display: flex;
+      .enterpriseName{
+        flex: 0 0 150px;
+        text-align: right;
+        @include overflowText();
+      }
+      .eachDepartment{
+        flex: 1;
+        word-break: break-all;
+        line-height: 30px;
+      }
+    }
+  }
+}
+
+// 颜色部分
+.detail{
+  background-color: #fff;
+  .topTitle{
+    border-bottom: 1px solid $promptColor;
+    .backIcon{
+      color: $darkColor;
+      border-left: 1px solid $promptColor;
+    }
+  }
+}
+
+.detail .userContent{
+  .rightContent{
+    .doshLine{
+      border-top: 1px dashed $promptColor;
+    }
+  }
 }
