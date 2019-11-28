@@ -14,6 +14,7 @@ class List extends Component {
     userListLoading: PropTypes.bool,
     logoutSuccess: PropTypes.bool,
     userList: PropTypes.array,
+    selectedRowKeys: PropTypes.array,
     getUserDetailInfo: PropTypes.func,
     setUserStatus: PropTypes.func,
     changeStore: PropTypes.func,
@@ -67,16 +68,11 @@ class List extends Component {
         },
       },
     ],
-    rowSelectedKeys: [],
   }
 
   componentWillReceiveProps(nextProps){
-    const { userList, logoutSuccess } = nextProps;
-    const preList = this.props.userList;
+    const { logoutSuccess } = nextProps;
     const preLogout = this.props.logoutSuccess;
-    if (userList !== preList) { // 表格数据更新时候, 自动清空选中行
-      this.setState({ rowSelectedKeys: [] });
-    }
     if (logoutSuccess && !preLogout) { // 注销成功
       this.setState({ // 重置需注销信息
         showLogout: false,
@@ -118,17 +114,17 @@ class List extends Component {
     this.setState({ showLogout: false, logoutUserId: null });
   }
 
-  rowSelect = (rowSelectedKeys) => {
-    this.setState({ rowSelectedKeys });
+  rowSelect = (selectedRowKeys) => {
+    this.props.changeStore({ selectedRowKeys });
   }
 
   cancelSelectRow = () => {
-    this.setState({ rowSelectedKeys: [] });
+    this.props.changeStore({ selectedRowKeys: [] });
   }
 
   render(){
-    const { userList, userListLoading } = this.props;
-    const { column, rowSelectedKeys, showLogout } = this.state;
+    const { userList, userListLoading, selectedRowKeys } = this.props;
+    const { column, showLogout } = this.state;
     return (
       <div className={styles.personnelMain}>
         <ListHandle {...this.props} />
@@ -140,15 +136,16 @@ class List extends Component {
           className={styles.listMain}
           rowSelection={{
             onChange: this.rowSelect,
-            selectedRowKeys: rowSelectedKeys,
+            selectedRowKeys,
           }}
         />
         {showLogout && <WarningTip
           onOK={this.logoutUser}
+          style={{ width: '310px', height: '115px' }}
           onCancel={this.cancelLogout}
           value="注销后用户不再属于任何部门，会被移出系统。您确定注销该人员吗？"
         />}
-        <ListFooter selectedLength={rowSelectedKeys.length} cancel={this.cancelSelectRow} />
+        <ListFooter selectedLength={selectedRowKeys.length} cancel={this.cancelSelectRow} />
       </div>
     );
   }

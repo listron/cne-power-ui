@@ -221,6 +221,7 @@ function *getUserList({ payload = {} } = {}) { // payload不存在时, 使用缓
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         userListLoading: false,
+        selectedRowKeys: [], // 列表数据变化, 清空选中行
         userList: response.data.dataList.map(e => ({ ...e, key: e.userId })) || [],
         userListTotalNum: response.data.pageCount || 0,
       });

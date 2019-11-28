@@ -91,6 +91,20 @@
   .roleName{
     max-width: 210px;
   }
+  .handle{
+    :global{
+      .iconfont{
+        margin-right: 12px;
+        cursor: pointer;
+        &:last-of-type{
+          margin-right: 4px;
+        }
+      }
+      .icon-examine1, .icon-bumenx{
+        font-size: 14px;
+      }
+    }
+  }
 }
 
 .listFooter{ // 地步选中项，取消选择
