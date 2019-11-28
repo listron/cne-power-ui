@@ -128,12 +128,16 @@ class RecordsList extends PureComponent {
 
   toDetail = ({ taskTypeCode, taskId }) => { // 详情
     if (taskTypeCode === 4 ) { // 记事 => 弹框展示记事详情
-      this.props.getRecordDetail({ noteId: taskId });
-    } else if (taskTypeCode === 1) { // 计划 => 弹框展示计划详情
-      this.props.getPlanDetail({ noteId: taskId });
-    } else { // 巡检 + 消缺 => 新开页面且跳转至对应的界面
-      window.open('#/operation/ticket/list');
+      return this.props.getRecordDetail({ noteId: taskId });
     }
+    if (taskTypeCode === 1) { // 计划 => 弹框展示计划详情
+      return this.props.getPlanDetail({ noteId: taskId });
+    }
+    if (taskTypeCode === 2) { // 消缺 => 新开页面且跳转至对应的界面
+      return window.open(`#/operation/workProcess/view?page=defectDetail&defectId=${taskId}`);
+    }
+    // 巡检 新开页面且跳转至对应的界面
+    return window.open(`#/operation/workProcess/view?page=inspectDeatail&inspectId=${taskId}`);
   }
 
   toEdit = ({ taskId }) => { // 请求详情并指定展示编辑弹框

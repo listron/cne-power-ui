@@ -151,26 +151,27 @@ const menuData = [
         iconStyle: 'icon-mapman',
         rightKey: 'operation_locate',
         defaultPath: true,
-      }, {
-        name: '工单',
-        iconStyle: 'icon-gd2',
-        path: 'ticket',
-        rightKey: 'operation_worklist',
-        children: [
-          {
-            name: '工单列表',
-            path: 'list',
-            defaultPath: true,
-            rightKey: 'operation_worklist_work',
-          }, {
-            name: '工单统计',
-            path: 'statistics',
-            rightKey: 'operation_worklist_statistics',
-          },
-        ],
       },
+      // {
+      //   name: '工单',
+      //   iconStyle: 'icon-gd2',
+      //   path: 'ticket',
+      //   rightKey: 'operation_worklist',
+      //   children: [
+      //     {
+      //       name: '工单列表',
+      //       path: 'list',
+      //       defaultPath: true,
+      //       rightKey: 'operation_worklist_work',
+      //     }, {
+      //       name: '工单统计',
+      //       path: 'statistics',
+      //       rightKey: 'operation_worklist_statistics',
+      //     },
+      //   ],
+      // },
       {
-        name: '新工单',
+        name: '工单',
         iconStyle: 'icon-gd2',
         path: 'workProcess',
         rightKey: 'operation_worklist',

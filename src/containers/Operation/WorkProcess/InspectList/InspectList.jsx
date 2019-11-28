@@ -6,6 +6,7 @@ import { commonAction } from '@containers/alphaRedux/commonAction';
 import styles from './inspectList.scss';
 import InspectSearch from '../../../../components/Operation/WorkProcess/Inspect/InspectSearch';
 import InspectTable from '../../../../components/Operation/WorkProcess/Inspect/InspectTable';
+import searchUtil from '@utils/searchUtil';
 
 class InspectList extends Component {
 
@@ -31,8 +32,13 @@ class InspectList extends Component {
 
   componentDidMount() {
     const { getInspectList, params } = this.props;
+    const { history } = this.props;
+    const { search } = history.location;
+    const urlParams = searchUtil(search).parse(); //默认为缺陷列表页
+    const urlParamsSerch = urlParams.listSearch && JSON.parse(urlParams.listSearch) || {}; // 判断从路由中过来的筛选条件
     getInspectList({
       ...params,
+      ...urlParamsSerch,
     });
   }
   componentWillUnmount() { // 卸载的时候要注意

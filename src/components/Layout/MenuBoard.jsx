@@ -20,7 +20,7 @@ class MenuBoard extends Component {
     rightMenu: localStorage.getItem('rightMenu') ? localStorage.getItem('rightMenu').split(',') : [], // 菜单权限
     linkInfo: [
       { text: '实时监控', path: '/monitor/station', right: 'monitor_station', icon: 'icon-monitoring', type: 'long', color: '#2b79c9' },
-      { text: '工单', path: '/operation/ticket/list', right: 'operation_worklist_work', icon: 'icon-gd2', type: 'short', color: '#bc1d4b' },
+      { text: '工单', path: '/operation/workProcess/view', right: 'operation_worklist_work', icon: 'icon-gd2', type: 'short', color: '#bc1d4b' },
       { text: '两票', path: '/operation/twoTickets/workflow', right: 'operation_twoTicket', icon: 'iconfont icon-gd1', type: 'short', color: '#2159c2' },
       { text: '台账', path: '/operation/book/assetsConfig', right: 'operation_book_assetConfig', icon: 'icon-gd3', type: 'long', color: '#2e9a00' },
 
