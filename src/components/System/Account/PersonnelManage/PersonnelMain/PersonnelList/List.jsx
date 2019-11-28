@@ -73,6 +73,7 @@ class List extends Component {
           dataSource={userList}
           columns={column}
           pagination={false}
+          className={styles.listMain}
           rowSelection={{
             onChange: this.rowSelect,
             selectedRowKeys: rowSelectedKeys,

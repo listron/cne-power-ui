@@ -11,6 +11,7 @@ const { Option } = Select;
 class ListHandle extends Component {
   static propTypes = {
     userListPageInfo: PropTypes.object,
+    userListTotalNum: PropTypes.number,
     changeStore: PropTypes.func,
     getUserList: PropTypes.func,
   }
@@ -35,7 +36,7 @@ class ListHandle extends Component {
   }
 
   render(){
-    const { userListPageInfo } = this.props;
+    const { userListPageInfo, userListTotalNum } = this.props;
     const { pageNum, pageSize } = userListPageInfo;
     return (
       <div className={styles.listHandle}>
@@ -59,7 +60,7 @@ class ListHandle extends Component {
           </Select>
         </span>
         <CommonPagination
-          total={0}
+          total={userListTotalNum}
           pageSize={pageSize}
           currentPage={pageNum}
           onPaginationChange={this.paginationChange}

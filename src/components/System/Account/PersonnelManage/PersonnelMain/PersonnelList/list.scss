@@ -77,6 +77,22 @@
   }
 }
 
+.listMain{
+  .username, .roleName{
+    @include overflowText();
+  }
+  .username{
+    max-width: 140px;
+    cursor: pointer;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+  .roleName{
+    max-width: 210px;
+  }
+}
+
 .listFooter{
   display: flex;
   height: 46px;

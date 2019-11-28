@@ -66,6 +66,7 @@ const initState = {
   departmentTree: [], // 部门树形结构
   departmentStations: [], // 主界面 部门负责电站
   userList: [], // 主界面用户列表
+  userListTotalNum: 0, // 用户列表合计
 };
 
 const personnelManage = (state = initState, action) => {

@@ -219,7 +219,8 @@ function *getUserList({ payload = {} } = {}) { // payload不存在时, 使用缓
     });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
-        userList: response.data.map(e => ({ ...e, key: e.userId })) || [],
+        userList: response.data.dataList.map(e => ({ ...e, key: e.userId })) || [],
+        userListTotalNum: response.data.pageCount || 0,
       });
     } else { throw response.message; }
   } catch(error) {
