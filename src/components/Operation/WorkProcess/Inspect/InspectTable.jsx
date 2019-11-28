@@ -183,7 +183,7 @@ class InspectTable extends React.Component {
       key: 'checkTime',
       width: 160,
       render: (text, record) => {
-        return <div className={styles.textWidth} title={text}>{text}</div>;
+        return <div className={styles.textWidth} title={text}>{text ? text : '--'}</div>;
       },
       sorter: true,
     }, {
@@ -203,10 +203,11 @@ class InspectTable extends React.Component {
     }, {
       title: '查看',
       width: 60,
+      className: styles.lookStyle,
       render: (text, record) => (
-        <span className={styles.cursorStyle}>
+        <div className={styles.cursorStyle}>
           <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record.inspectId); }} />
-        </span>
+        </div>
       ),
     }];
     const rowSelection = {
@@ -218,8 +219,8 @@ class InspectTable extends React.Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={`${styles.statusGroup}`}>
           <div className={styles.text}><span>状</span><span>态</span></div>
-          <RadioGroup onChange={this.onChangeTab} defaultValue="" value={status}>
-            <RadioButton value="">全部</RadioButton>
+          <RadioGroup onChange={this.onChangeTab} value={status}>
+            <RadioButton value="5">全部</RadioButton>
             <RadioButton value="2">{`执行中  ${(executeNum || executeNum === 0) ? executeNum : ''}`}</RadioButton>
             <RadioButton value="3">{`待验收  ${(checkNum || checkNum === 0) ? checkNum : ''}`}</RadioButton>
             <RadioButton value="4">{'已完成'}</RadioButton>
@@ -252,7 +253,7 @@ class InspectTable extends React.Component {
           rowSelection={rowSelection}
           onChange={this.onChangeTable}
           loading={tableLoading}
-          scroll={{ y: 450 }}
+          // scroll={{ y: 450, scrollToFirstRowOnChange: true }}
           pagination={false}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
