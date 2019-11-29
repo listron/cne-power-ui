@@ -264,7 +264,7 @@
 }
 
 .dark {
-  @import "../../../../theme/antdResetDark.scss";
+  @import "../../../../theme/darkTheme.scss";
   background: $background;
   .operation {
     // 样式发生变化

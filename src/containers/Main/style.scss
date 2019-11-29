@@ -1,12 +1,13 @@
 @import "../../theme/theme.scss";
 
-main.dark{
-  div[class*="dark__"], section[class*="dark__"]{
-    @import '../../theme/antdResetDark.scss';
+main.dark {
+  div[class*="dark__"],
+  section[class*="dark__"] {
+    @import "../../theme/antdResetDark.scss";
   }
 }
-div[class*="ant-modal-wrap"][class*="dark__"]{
-  @import '../../theme/antdResetDark.scss';
+div[class*="ant-modal-wrap"][class*="dark__"] {
+  @import "../../theme/antdResetDark.scss";
 }
 
 .app {
@@ -131,7 +132,6 @@ div[class*="ant-modal-wrap"][class*="dark__"]{
 
 .dark {
   @import "../../theme/darkTheme.scss";
-  // @import "../../theme/antdResetDark.scss";
   .appHeader {
     background: $sideBar-background;
     .logoBg {

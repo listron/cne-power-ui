@@ -348,7 +348,7 @@
 }
 
 .dark {
-  @import "../../../../../../theme/antdResetDark.scss";
+  @import "../../../../../../theme/darkTheme.scss";
   @import "../../../Theme/monitorDark.scss";
   .pvmodule {
     .pvmoduleListTop {
@@ -634,26 +634,26 @@
     .ant-tabs-nav .ant-tabs-tab {
       margin: 0;
       background: $button-primary;
-      color: #fff;
+      color: #fff !important;
     }
     .ant-tabs-nav .ant-tabs-tab-active {
-      color: #fff;
+      color: #fff !important;
       background: $themeColor;
     }
     .ant-tabs-nav .ant-tabs-tab:hover {
-      color: #fff;
+      color: #fff !important;
       background: $themeColor;
     }
     .ant-tabs .ant-tabs-nav .ant-tabs-tab-active:hover {
-      color: #fff;
+      color: #fff !important;
       background: $themeColor;
     }
 
     .ant-tabs-nav-scroll {
-      background: transparent;
+      background: transparent !important;
     }
     .ant-tabs-bar .ant-tabs-extra-content {
-      background: transparent;
+      background: transparent !important;
       color: $fontColor;
     }
 
