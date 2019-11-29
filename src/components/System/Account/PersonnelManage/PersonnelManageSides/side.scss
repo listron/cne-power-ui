@@ -11,13 +11,14 @@
   padding: 24px 24px 0;
   transition: all 500ms;
   z-index: 99;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-.detail{
-  height: 100%;
+.detail, .sideHandle{ // 详情, 编辑, 新增 公用顶部样式
+  flex: 1;
   .topTitle{
-    height: 64px;
+    flex-basis: 0 0 64px;
     display: flex;
     padding-left: 32px;
     align-items: center;
@@ -32,9 +33,10 @@
   }
 }
 
-.detail .userContent{
+.detail .userContent{ // 详情
   display: flex;
   padding: 54px 70px 0 40px;
+  overflow-y: auto;
   .leftConfig, .rightContent{
     .eachInfo{
       display: flex;
@@ -75,8 +77,29 @@
   }
 }
 
+.sideHandle .personnelInfoForm{ // 编辑, 新增
+  overflow-y: auto;
+  display: flex;
+  .leftLogo{
+    .logoPart{
+
+    }
+    .logotip{
+      color: yellowgreen;
+    }
+  }
+  .rightForms{
+    .eachForm{
+      height: 40px;
+    }
+    .buttonRow{
+      height: 60px;
+    }
+  }
+} 
+
 // 颜色部分
-.detail{
+.detail, .sideHandle{
   background-color: #fff;
   .topTitle{
     border-bottom: 1px solid $promptColor;

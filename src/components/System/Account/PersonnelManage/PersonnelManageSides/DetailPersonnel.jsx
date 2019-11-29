@@ -80,10 +80,10 @@ class PersonnelManageSides extends Component {
                 return (
                   <div className={styles.eachEnterprise}>
                     <span className={styles.enterpriseName}>{enterpriseName || '--'} : </span>
-                    {departmentList.map(depart => {
+                    {departmentList.map(depart => { // 企业下部门列表
                       const { departmentName, parentDepartmentName, stationData } = depart || {};
                       const stationList = stationData || [];
-                      return (
+                      return ( // 每个部门 负责的电站
                         <div className={styles.eachDepartment}>
                           <span>{parentDepartmentName ? `${parentDepartmentName}-` : ''}</span>
                           <span>{departmentName || '--'}</span>

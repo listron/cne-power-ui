@@ -59,10 +59,13 @@ const initState = {
   selectedRowKeys: [], // 用户列表选中列;
   showDepartmentStationModal: false, // 部门分配电站弹框
   // showMultipleAssignModal: false, // 主界面表格多选用户进行多个部门分配弹框
-  // addUserLoading: false, // 添加人员loading状态
   userListLoading: false, // 页面部门loading状态
   logoutSuccess: false, // 注销/审核成功
   examineSuccess: false, // 审核成功
+
+  userDetail: {}, // 编辑用户详情
+  addUserLoading: false, // 添加用户loading
+  addUserSuccess: false, // 添加用户成功状态
 
   allBaseUserData: [], // 所有用户基础信息 => 用于分配人员
   departmentAllUsers: [], // 选中部门内所有用户 => 用于分配人员和部门内搜索模糊匹配;
