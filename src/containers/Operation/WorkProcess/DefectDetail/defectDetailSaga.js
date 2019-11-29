@@ -225,18 +225,6 @@ function* likeKnowledgebase(action) { // 点赞智能专家
     if (response.data.code === '10000') {
       message.config({ top: 230, duration: 2, maxCount: 2 });
       message.success('点赞成功');
-      const params = yield select(state => {
-        const { defectDetail = {} } = state.operation.workOrder.toJS();
-        return ({
-          deviceTypeCodes: [defectDetail.deviceTypeCode],
-          faultCodes: [defectDetail.defectTypeCode],
-        });
-      }
-      );
-      yield put({ // 重新请求点赞列表
-        type: defectDetailAction.getKnowledgebase,
-        payload: params,
-      });
     } else { throw response.data; }
   } catch (e) {
     console.log(e);

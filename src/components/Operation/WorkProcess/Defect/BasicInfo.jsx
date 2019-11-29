@@ -18,9 +18,12 @@ class DefectBasicInfo extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    const { defectTypeCode, deviceTypeCode, stationType } = this.props.defectDetail;
-    this.props.getKnowledgebase({ deviceTypeCodes: [deviceTypeCode], faultTypeIds: [defectTypeCode], type: +stationType });
+
+  componentWillReceiveProps(nextProps) {
+    const { defectTypeCode, deviceTypeCode, stationType, defectId } = nextProps.defectDetail;
+    if (defectId !== this.props.defectDetail.defectId) {
+      this.props.getKnowledgebase({ deviceTypeCodes: [deviceTypeCode], faultTypeIds: [defectTypeCode], type: +stationType });
+    }
   }
 
 
@@ -50,7 +53,7 @@ class DefectBasicInfo extends Component {
 
 
   render() {
-    const { defectDetail, knowledgebaseList, likeKnowledgebase, dockerDetail } = this.props;
+    const { defectDetail, knowledgebaseList, likeKnowledgebase, dockerDetail, getKnowledgebase } = this.props;
     const { detail = [] } = dockerDetail;
     const images = defectDetail.photoAddress ? defectDetail.photoAddress.split(',') : [];
     const carergory = defectDetail.defectTypeCode && this.deviceBaseInfo || this.otherBaseInfo;
@@ -81,7 +84,13 @@ class DefectBasicInfo extends Component {
                 <div className={styles.basicItem} key={item.value}>
                   <div className={styles.label}>{item.label}</div>
                   <div className={styles.information}>{`${defectDetail[item.value]}/${defectDetail[item.sub]}` || '--'}</div>
-                  {knowledgebaseList.length > 0 && <SolutionLibrary knowledgebaseList={knowledgebaseList} likeKnowledgebase={likeKnowledgebase} />}
+                  {knowledgebaseList.length > 0 &&
+                    <SolutionLibrary
+                      knowledgebaseList={knowledgebaseList}
+                      likeKnowledgebase={likeKnowledgebase}
+                      defectDetail={defectDetail}
+                      getKnowledgebase={getKnowledgebase}
+                    />}
                 </div>);
             }
             if (item.data) { // 缺陷来源数据处理

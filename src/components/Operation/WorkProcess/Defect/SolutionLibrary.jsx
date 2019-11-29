@@ -19,14 +19,6 @@ class SolutionLibrary extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
-    // console.log('info',this.props.basicInfo)
-  }
-
-  componentWillUnmount() {
-    console.log('我卸载了一次');
-  }
-
   showModal = () => {
     this.setState({ dealVisible: true });
   }
@@ -36,10 +28,10 @@ class SolutionLibrary extends React.PureComponent {
   }
 
   knowledegeBask = (knowledgeBaseId) => {
+    const { defectDetail } = this.props;
+    const { defectTypeCode, deviceTypeCode, stationType } = defectDetail;
     this.props.likeKnowledgebase({ knowledgeBaseId });
-    // const { defectDetail } = this.props;
-    // const { defectTypeCode, deviceTypeCode, stationType } = defectDetail;
-    // this.props.getKnowledgebase({ deviceTypeCodes: [deviceTypeCode], faultTypeIds: [defectTypeCode], type: +stationType });
+    this.props.getKnowledgebase({ deviceTypeCodes: [deviceTypeCode], faultTypeIds: [defectTypeCode], type: +stationType });
   }
 
   knowledgebaseInfo = [

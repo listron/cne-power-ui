@@ -79,7 +79,13 @@ class StationSelectModal extends Component {
   }
 
   handleOK = () => {
+    setTimeout(() => this.setState({ filterStationType: 'all' }), 0);
     this.props.handleOK(this.state.selectedStation);
+  }
+
+  handleCancle = () => {
+    setTimeout(() => this.setState({ filterStationType: 'all' }), 0);
+    this.props.hideStationModal();
   }
 
   checkStation = (selectedStation) => {
@@ -143,6 +149,7 @@ class StationSelectModal extends Component {
     const { stationModalShow, hideStationModal, showStationModal, multiple, data } = this.props;
     const { filterStationType, reportType, showWarningTip, warningTipText } = this.state;
     const tmpStationSet = new Set(data.map(e => e.reportType));
+
     const hasMultipleType = tmpStationSet.size > 1;
     return (
       <div className={styles.stationSelectModal}>
@@ -152,7 +159,7 @@ class StationSelectModal extends Component {
         <Modal
           visible={stationModalShow}
           onOk={this.handleOK}
-          onCancel={hideStationModal}
+          onCancel={this.handleCancle}
           cancelText="取消"
           okText="确定"
           title="请选择"
