@@ -82,7 +82,7 @@ class PvStationList extends React.Component {
       },
 
       {
-        title: () => <TableColumnTitle title="瞬时辐照" unit="(W/m²)" className="nonePadding" />,
+        title: () => <TableColumnTitle title="瞬时辐照" unit="W/m²" className="nonePadding" />,
         dataIndex: 'instantaneous',
         className: styles.numberStyle,
         render: (value) => dataFormats(value, '--', 2, true),

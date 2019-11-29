@@ -198,7 +198,7 @@
 }
 
 .dark {
-  @import "../../../theme/antdResetDark.scss";
+  @import "../../../theme/darkTheme.scss";
   background: $light-background;
   border: 1px solid $border-color;
   color: $fontColor;

@@ -72,7 +72,7 @@
   }
 }
 .dark {
-  @import "../../../../theme/antdResetDark.scss";
+  @import "../../../../theme/darkTheme.scss";
 
   .title {
     color: $fontColor-invert;

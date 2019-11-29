@@ -40,7 +40,7 @@
 }
 
 .dark {
-  @import "../../../theme/antdResetDark.scss";
+  @import "../../../theme/darkTheme.scss";
   color: $fontColor;
   .textStyle {
     color: $fontColor;

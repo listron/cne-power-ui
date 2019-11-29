@@ -8,6 +8,7 @@ import { Form, Button } from 'antd';
 import DefectFormReview from './DefectFormReview';// 审核
 import DefectProcessForm from './DefectProcessForm'; // 执行
 import DefectCheckForm from './DefectCheckForm'; // 验收
+import searchUtil from '@utils/searchUtil';
 
 
 class DetailContiner extends Component {
@@ -53,7 +54,9 @@ class DetailContiner extends Component {
 
   callBackTableList = () => { // 返回列表页
     const { history } = this.props;
-    history.push('/operation/workProcess/view?page=list&tab=defect');
+
+
+    // history.push('/operation/workProcess/view?page=list&tab=defect');
   }
 
   getSubmitIamges(images) { // 照片提交

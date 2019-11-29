@@ -18,7 +18,7 @@
 }
 
 .dark {
-  @import "../../../../theme/antdResetDark.scss";
+  @import "../../../../theme/darkTheme.scss";
   .realtimeWarningBox {
     background-color: $background;
   }

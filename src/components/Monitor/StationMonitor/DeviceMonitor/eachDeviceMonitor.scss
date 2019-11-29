@@ -152,7 +152,7 @@
 }
 
 .dark {
-  @import "../../../../theme/antdResetDark.scss";
+  @import "../../../../theme/darkTheme.scss";
   background-color: $background;
   .deviceContent {
     background-color: $background;
