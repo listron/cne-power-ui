@@ -48,12 +48,14 @@ class InspectProcess extends React.Component {
     const { inspectFlows, inspectDetail } = this.props;
     const { inspectStatus, deviceTypeNames } = inspectDetail;
     const { showWarningTip, warningTipText } = this.state;
+    const rightHandler = localStorage.getItem('rightHandler');
+    const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
 
     return (
       <div className={styles.rightContent}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
 
-        {inspectStatus === '3' && <div className={styles.checkinspect}>
+        {(checkInspectRight && inspectStatus === '3') && <div className={styles.checkinspect}>
           <div className={styles.title}>
             <div className={styles.border}></div>
             <div className={styles.text}>巡检处理</div>

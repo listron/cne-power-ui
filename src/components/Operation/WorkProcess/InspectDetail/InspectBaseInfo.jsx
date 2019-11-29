@@ -15,16 +15,14 @@ class InspectBaseInfo extends React.Component {
     const baseInfo = [
       { name: '电站名称', value: `${stationName}`, icon: `${stationType}` },
       { name: '巡检名称', value: `${inspectName}` },
-      { name: '巡检时间', value: `${createTime}${deadLine ? '至' : ''}${deadLine}` },
+      { name: '巡检时间', value: `${createTime}  ${deadLine ? '至' : ''}  ${deadLine}` },
       { name: '设备类型', value: `${deviceTypeNames}` },
     ];
     return baseInfo;
   }
   render() {
     const { inspectDetail } = this.props;
-
-    const { isOverTime, inspectedItems, unInpsectedItems } = inspectDetail;
-
+    const { isOverTime, inspectedItems, unInspectedItems } = inspectDetail;
     const baseInfo = this.renderbaseInfo(inspectDetail);
     return (
       <div className={styles.basicInfo} >
@@ -47,42 +45,34 @@ class InspectBaseInfo extends React.Component {
           ))}
           <div className={styles.progressStyele}>
             <div className={styles.nameStyle}>巡检进度</div>
-            <div className={styles.processContent}>
-              <div className={styles.processDetail}>
-                <div className={styles.overinspect}>
-                  <span className={styles.totalNum}>已巡检</span>
-                  {inspectedItems && inspectedItems.map((e, i) => (
-                    <span className={i % 2 === 0 ? styles.bgStyle : styles.nobgStyle} key={e}>{e}</span>
-                  ))}
+            <div className={styles.box1}>
+              <div className={(inspectedItems && inspectedItems.length > 18 || unInspectedItems && unInspectedItems.length > 18) ? styles.box3 : styles.box2}>
+                <span className={styles.totalNum}>已巡检</span>
+                <span className={styles.noinspect}>未巡检</span>
+              </div>
+              <div className={styles.processContent}>
+                <div className={styles.processDetail}>
+                  <div className={styles.overinspect}>
+                    {inspectedItems && inspectedItems.map((e, i) => (
+                      <div className={i % 2 === 0 ? styles.bgStyle : styles.nobgStyle} title={e} key={e}>{e}</div>
+                    ))}
+                  </div>
+                  <div className={styles.noinspect}>
+                    {unInspectedItems && unInspectedItems.map((e, i) => (
+                      <div className={i % 2 === 0 ? styles.bgStyle : styles.nobgStyle} title={e} key={e}>{e}</div>
+                    ))}
+                  </div>
                 </div>
-                <div className={styles.noinspect}>
-                  <span className={styles.totalNum}>未巡检</span>
-                  {unInpsectedItems && unInpsectedItems.map((e, i) => (
-                    <span className={i % 2 === 0 ? styles.bgStyle : styles.nobgStyle} key={e}>{e}</span>
-                  ))}
-                </div>
+
               </div>
 
             </div>
 
+
           </div>
         </div>
-
-
       </div>
     );
   }
 }
 export default (InspectBaseInfo);
-/**
-  {matrixes && matrixes.filter((e, i) => e.status === 0).map((item, index) => (
-                    <span key={index}>{item.belongMatrix}</span>
-                  ))}
-                  {
-                    deviceTypes && deviceTypes.filter(e => e.unknownNum === 0).map((item, index) => {
-                      return item.devices.map((device, id) => (
-                        <span key={`${index}-${id}`}>{item.deviceTypeName}-{device.deviceName}</span>
-                      ));
-                    })
-                  }
- */
