@@ -17,6 +17,9 @@ const personnelManageAction = {
   editDepartmentStations: Symbol('editDepartmentStations'), // 修改部门下电站
   getUserDetailInfo: Symbol('getUserDetailInfo'), // 获取用户详情
   setUserStatus: Symbol('setUserStatus'), // 审核 / 注销用户
+  getRoleAllList: Symbol('getRoleAllList'), // 获取所有角色
+  addUser: Symbol('addUser'), // 新增用户
+  editUser: Symbol('editUser'), // 编辑用户
 };
 
 const initState = {
@@ -63,9 +66,8 @@ const initState = {
   logoutSuccess: false, // 注销/审核成功
   examineSuccess: false, // 审核成功
 
-  userDetail: {}, // 编辑用户详情
-  addUserLoading: false, // 添加用户loading
-  addUserSuccess: false, // 添加用户成功状态
+  addUserLoading: false, // 添加-编辑用户loading
+  addUserSuccess: false, // 添加-编辑用户成功状态
 
   allBaseUserData: [], // 所有用户基础信息 => 用于分配人员
   departmentAllUsers: [], // 选中部门内所有用户 => 用于分配人员和部门内搜索模糊匹配;
@@ -74,7 +76,9 @@ const initState = {
   departmentStations: [], // 主界面 部门负责电站
   userList: [], // 主界面用户列表
   userListTotalNum: 0, // 用户列表合计
-  userDetailInfo: {}, // 用户详情
+  userDetailInfo: {}, // 用户详情查看
+  roleAllList: [], // 普通角色列表
+  specialRoleList: [], // 特殊权限列表
 };
 
 const personnelManage = (state = initState, action) => {

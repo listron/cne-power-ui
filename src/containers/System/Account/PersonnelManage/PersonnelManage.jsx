@@ -15,12 +15,14 @@ class PersonnelManage extends Component {
     getAllUserBase: PropTypes.func,
     getDepartmentTreeData: PropTypes.func,
     getUserList: PropTypes.func,
+    getRoleAllList: PropTypes.func,
   };
 
   componentDidMount(){
     this.props.getUserList();
     this.props.getAllUserBase();
     this.props.getDepartmentTreeData();
+    this.props.getRoleAllList();
     // 初入页面 请求企业下所有用户基础信息 + 请求部门列表树 + 请求默认未分配部门用户信息
   }
 
@@ -65,6 +67,9 @@ const mapDispatchToProps = (dispatch) => ({
   editDepartmentStations: payload => dispatch({ type: personnelManageAction.editDepartmentStations, payload }),
   getUserDetailInfo: payload => dispatch({ type: personnelManageAction.getUserDetailInfo, payload }),
   setUserStatus: payload => dispatch({ type: personnelManageAction.setUserStatus, payload }),
+  getRoleAllList: payload => dispatch({ type: personnelManageAction.getRoleAllList, payload }),
+  addUser: payload => dispatch({ type: personnelManageAction.addUser, payload }),
+  editUser: payload => dispatch({ type: personnelManageAction.editUser, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonnelManage);

@@ -1,5 +1,6 @@
-import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { call, put, takeLatest, select, takeEvery, all } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
+import Cookie from 'js-cookie';
 import request from '@utils/request';
 import path from '@path';
 import { commonAction } from '../../../alphaRedux/commonAction';
@@ -284,6 +285,57 @@ function* setUserStatus({ payload }){ // 修改用户状态 => 审核/注销
   }
 }
 
+function* getRoleAllList() { // 获取企业角色 + 特殊权限列表 
+  try {
+    const enterpriseId = Cookie.get('enterpriseId') || '';
+    const url = `${APIBasePath}${system.getRoleAllList}`;
+    const [tmpList, tmpSpecialList] = yield all([ // roleType "0"普通角色 / "1"特殊权限
+      yield call(request.post, url, { roleType: '0', enterpriseId }),
+      yield call(request.post, url, { roleType: '1', enterpriseId }),
+    ]);
+    yield call(easyPut, 'fetchSuccess', {
+      roleAllList: tmpList.data || [],
+      specialRoleList: tmpSpecialList.data || [],
+    });
+  } catch (err) {
+    message.error(`角色列表获取失败, 新增和编辑用户功能将不可用, 请刷新重试, ${err}`);
+  }
+}
+
+function* addUser({ payload }){ // 新增用户
+  // payload: {username, userLogo, userFullname, phoneNum, email, roleIds[], specialRoleIds[], departmentIds[]}
+  try{
+    const url = `${APIBasePath}${system.addUser}`;
+    yield call(easyPut, 'changeStore', { addUserLoading: true, addUserSuccess: false });
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        addUserLoading: false, addUserSuccess: true,
+      });
+    }
+  } catch(err) {
+    yield call(easyPut, 'changeStore', { addUserLoading: false });
+    message.error(`添加用户失败, 请重试, ${err}`);
+  }
+}
+
+function* editUser({ payload }){ // 编辑用户
+  // payload: {userFullname, userLogo, email, roleIds[], specialRoleIds[], departmentIds[]}
+  try{
+    const url = `${APIBasePath}${system.editUser}`;
+    yield call(easyPut, 'changeStore', { addUserLoading: true, addUserSuccess: false });
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        addUserLoading: false, addUserSuccess: true,
+      });
+    }
+  } catch(err) {
+    yield call(easyPut, 'changeStore', { addUserLoading: false });
+    message.error(`修改用户信息失败, 请重试, ${err}`);
+  }
+} 
+
 // 新增用户
 // 编辑用户
 
@@ -301,6 +353,9 @@ export function* watchPersonnelManage() {
   yield takeLatest(personnelManageAction.editDepartmentStations, editDepartmentStations);
   yield takeLatest(personnelManageAction.getUserDetailInfo, getUserDetailInfo);
   yield takeLatest(personnelManageAction.setUserStatus, setUserStatus);
+  yield takeLatest(personnelManageAction.getRoleAllList, getRoleAllList);
+  yield takeLatest(personnelManageAction.addUser, addUser);
+  yield takeLatest(personnelManageAction.editUser, editUser);
 
   yield takeLatest(personnelManageAction.getUserList, getUserList);
 }

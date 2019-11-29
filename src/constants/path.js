@@ -291,6 +291,8 @@ export default {
       getUserPagelist: '/v3/user/pagelist', // 新人员管理界面列表展示
       getUserDetailInfo: '/v3/user', //用户详情
       setUserStatus: '/v3/user/status', // 修改用户状态
+      addUser: '/v3/createUser', // 新增用户
+      editUser: '/v3/updateUser', // 编辑用户
 
       getRoleList: '/v3/role/list',
       getMenuList: '/v3/right',

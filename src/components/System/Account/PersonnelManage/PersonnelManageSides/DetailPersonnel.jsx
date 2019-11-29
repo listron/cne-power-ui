@@ -14,11 +14,12 @@ class PersonnelManageSides extends Component {
   }
 
   backToList = () => {
-    this.props.changeStore({ pageKey: 'list' });
+    this.props.changeStore({ pageKey: 'list', userDetailInfo: {} }); // 清空详情请求
   }
 
   toEdit = () => {
-    this.props.changeStore({ pageKey: 'editPersonnel' });
+    const { userDetailInfo } = this.props; //需将详情信息结构 重置copy刷新一下对象, 保证对象内存地址变化从而手动触发edit的表单刷新。
+    this.props.changeStore({ pageKey: 'editPersonnel', userDetailInfo: { ...userDetailInfo } });
   }
 
   enterpriseStatusInfo = {
@@ -78,13 +79,13 @@ class PersonnelManageSides extends Component {
                 const { enterpriseName = '--', departmentData } = enterprise || {};
                 const departmentList = departmentData || [];
                 return (
-                  <div className={styles.eachEnterprise}>
+                  <div className={styles.eachEnterprise} key={enterpriseName}>
                     <span className={styles.enterpriseName}>{enterpriseName || '--'} : </span>
                     {departmentList.map(depart => { // 企业下部门列表
                       const { departmentName, parentDepartmentName, stationData } = depart || {};
                       const stationList = stationData || [];
                       return ( // 每个部门 负责的电站
-                        <div className={styles.eachDepartment}>
+                        <div className={styles.eachDepartment} key={departmentName}>
                           <span>{parentDepartmentName ? `${parentDepartmentName}-` : ''}</span>
                           <span>{departmentName || '--'}</span>
                           <span>(负责电站: {stationList.map(e => e.stationName).join(', ')})</span>
