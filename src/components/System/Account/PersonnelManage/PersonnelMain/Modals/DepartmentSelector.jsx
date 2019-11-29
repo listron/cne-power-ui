@@ -55,10 +55,10 @@ class DepartmentSelector extends Component {
     // parentDepartmentId
     // departmentSource
     return (
-      <div>
+      <div className={styles.departmentSelector}>
         <Select
           mode="multiple"
-          style={{ width: '100%' }}
+          style={{ width: '200px' }}
           placeholder="请选择"
           onChange={this.handleChange}
           value={value}

@@ -81,6 +81,18 @@
   }
 }
 
+.departmentSelector{
+  position: relative;
+  .departmentAssignModal{
+    position: absolute;
+    right: 6px;
+    top: 2px;
+    .handlIcon{
+      cursor: pointer;
+    }
+  }
+}
+
 .departmentModal { // 人员分配部门
   .toptips{ // 人员及提示
     height: 40px;
@@ -154,10 +166,44 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 30px 0 24px;
+    .cancel{
+      margin-right: 10px;
+    }
   }
 }
 
-.departmentModal { // 人员分配部门
+
+// 颜色部分
+.singleModal, .departmentModal {
+  .title{
+    color: #fff;
+    background-color: $themeColor;
+    .close{
+      background-color: #ceebe0;
+      color: rgb(40, 156, 126);
+    }
+  }
+}
+
+.singleModal{
+  .filterTop{
+    border-bottom:1px solid #d9d9d9;
+    box-shadow:0 1px 2px 0 rgba(0,0,0,0.20);
+    .tipText{
+      color: $lightColor;
+    }
+  }
+  .assignFooter{
+    background-color: #ececec;
+    .footerText{
+      .footerNum{
+        color: $themeColor;
+      }
+    }
+  }
+}
+
+.departmentModal {
   .toptips{
     height: 40px;
     align-items: center;
@@ -195,36 +241,6 @@
   }
   .footer{
     background-color: rgb(241, 241, 241);
-  }
-}
-
-// 颜色部分
-.singleModal, .departmentModal {
-  .title{
-    color: #fff;
-    background-color: $themeColor;
-    .close{
-      background-color: #ceebe0;
-      color: rgb(40, 156, 126);
-    }
-  }
-}
-
-.singleModal{
-  .filterTop{
-    border-bottom:1px solid #d9d9d9;
-    box-shadow:0 1px 2px 0 rgba(0,0,0,0.20);
-    .tipText{
-      color: $lightColor;
-    }
-  }
-  .assignFooter{
-    background-color: #ececec;
-    .footerText{
-      .footerNum{
-        color: $themeColor;
-      }
-    }
   }
 }
 

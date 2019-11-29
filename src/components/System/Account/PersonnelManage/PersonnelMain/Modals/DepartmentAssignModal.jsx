@@ -86,8 +86,8 @@ class DepartmentSelector extends Component {
             <div className={styles.footer}>
               <span>已选{fartherNum}个父部门, {sonNum}个子部门</span>
               <span>
-                <Button>取消</Button>
-                <Button>确定</Button>
+                <Button className={styles.cancel} onClick={this.hideModal}>取消</Button>
+                <Button onClick={this.handleOK}>确定</Button>
               </span>
             </div>
           </section>

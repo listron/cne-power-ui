@@ -63,6 +63,7 @@ class DepartSubSelect extends Component {
             departmentId={departmentId}
             onCheck={this.checkDepartment}
             checked={checkedIds.includes(departmentId)}
+            checkedDepartIds={checkedIds}
           />
           {list.length > 0 && <Icon
             className={`${styles.icon} ${open ? styles.iconRotate : ''}`}
@@ -81,6 +82,7 @@ class DepartSubSelect extends Component {
                   departmentId={departmentId}
                   checked={checkedIds.includes(departmentId)}
                   onCheck={this.checkDepartment}
+                  checkedDepartIds={checkedIds}
                 />
               </div>
             );
