@@ -20,6 +20,7 @@ class HandlePersonnelInfo extends Component {
     roleAllList: PropTypes.array,
     specialRoleList: PropTypes.array,
     changeStore: PropTypes.func,
+    getUserList: PropTypes.func,
   }
 
   state = {
@@ -44,6 +45,7 @@ class HandlePersonnelInfo extends Component {
     }
     if (!addUserLoading && preLoading && addUserSuccess) { // 信息提交成功;
       const { addMode } = this.state;
+      this.props.getUserList(); // 更新list页面数据
       addMode === 'save' && this.confirmBack(); // 返回列表页
       addMode === 'continue' && form.resetFields(); // 清空form表单, 继续填写
     }
@@ -85,10 +87,33 @@ class HandlePersonnelInfo extends Component {
     detailPersonnel: '详情',
   }
 
+  getEditEnterpriseDetail = () => {
+    const { userDetailInfo } = this.props;
+    const enterpriseLists = userDetailInfo.enterpriseData || [];
+    const departLists = [], stationLists = [];
+    const enterpriseTexts = enterpriseLists.map(e => {
+      const { departmentData, enterpriseName } = e || {};
+      departmentData && departLists.push(...departmentData);
+      return enterpriseName || '';
+    }).join(',');
+    const departTexts = departLists.map(e => {
+      const { departmentName, stationData } = e || {};
+      stationData && stationLists.push(...stationData);
+      return departmentName || '';
+    }).join(',');
+    const stationTexts = stationLists.map(e => e.stationName).join(',');
+    return {
+      enterpriseTexts,
+      departTexts,
+      stationTexts,
+    };
+  }
+
   render(){
     const { showWarningTip, addMode } = this.state;
     const { pageKey, form, roleAllList, specialRoleList, addUserLoading } = this.props;
     const { getFieldDecorator } = form;
+    const { enterpriseTexts, departTexts, stationTexts } =pageKey === 'editPersonnel' ? this.getEditEnterpriseDetail() : {};
     return (
       <div className={styles.sideHandle} style={pageKey === 'detailPersonnel' ? { display: 'none' } : {}}>
         <div className={styles.topTitle}>
@@ -96,7 +121,7 @@ class HandlePersonnelInfo extends Component {
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.warningTip} />
         </div>
           <Form className={styles.personnelInfoForm}>
-            <FormItem label="用户名" className={styles.leftLogo}>
+            <FormItem label="" className={styles.leftLogo}>
               {getFieldDecorator('userLogo', {})(
                 <PersonnelLogoUploader />
               )}
@@ -118,7 +143,7 @@ class HandlePersonnelInfo extends Component {
                     },
                     required: true,
                   }],
-                })( <Input placeholder="请输入用户名" /> )}
+                })( <Input placeholder="请输入用户名" style={{width: '200px'}} /> )}
                 <span className={styles.instructionText}>(3-25位中文,英文,数字,特殊字符都可)</span>
               </FormItem>
               <FormItem label="真实姓名" className={styles.eachForm} >
@@ -137,7 +162,7 @@ class HandlePersonnelInfo extends Component {
                     }},
                   ],
                   initialValue: '',
-                })( <Input placeholder="请输入真实姓名" /> )}
+                })( <Input placeholder="请输入真实姓名" style={{width: '200px'}} /> )}
                 <span className={styles.instructionText}>(中文/英文/空格 长度小于30个字)</span>
               </FormItem>
               <FormItem label="电话" className={styles.eachForm} >
@@ -148,7 +173,7 @@ class HandlePersonnelInfo extends Component {
                     pattern: /^1|9\d{10}$/,
                     required: true,
                   }],
-                })( <Input placeholder="请输入电话号码" /> )}
+                })( <Input placeholder="请输入电话号码" style={{width: '200px'}} /> )}
                 <span className={styles.instructionText}>(11位手机号码)</span>
               </FormItem>
               <FormItem label="邮箱" className={styles.eachForm} >
@@ -157,7 +182,7 @@ class HandlePersonnelInfo extends Component {
                     pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
                   }],
                   initialValue: '',
-                })( <Input placeholder="请输入邮箱" /> )}
+                })( <Input placeholder="请输入邮箱" style={{width: '200px'}} /> )}
                 <span className={styles.instructionText}>(可用邮箱找回密码)</span>
               </FormItem>
               <FormItem label="角色" className={styles.eachForm} >
@@ -167,6 +192,7 @@ class HandlePersonnelInfo extends Component {
                   <Select
                     mode="multiple"
                     placeholder="请选择用户角色"
+                    style={{width: '200px'}}
                     className={styles.selectRoles}
                   >
                     {roleAllList.map((e)=>(
@@ -176,6 +202,13 @@ class HandlePersonnelInfo extends Component {
                 )}
                 <span className={styles.instructionText}>(没有设置角色的用户无法正常使用系统)</span>
               </FormItem>
+              {pageKey === 'addPersonnel' && <FormItem label="所属部门" className={styles.eachForm}>
+                {getFieldDecorator('departmentIds', {
+                  initialValue: [],
+                })(
+                  <span>所属部门</span>
+                )}
+              </FormItem>}
               <FormItem label="特殊权限" className={styles.eachForm} >
                 {getFieldDecorator('specialRoleIds', {
                   initialValue: [],
@@ -184,6 +217,7 @@ class HandlePersonnelInfo extends Component {
                     mode="multiple"
                     placeholder="请选择特殊权限"
                     showArrow={true}
+                    style={{width: '200px'}}
                     className={styles.specialRoleId}
                   >
                     {specialRoleList.map((e)=>(
@@ -192,6 +226,20 @@ class HandlePersonnelInfo extends Component {
                   </Select>
                 )}
               </FormItem>
+              {pageKey === 'editPersonnel' && <div className={styles.enterpriseInfo}>
+                <div className={styles.eachForm}>
+                  <span className={styles.label}>所在企业</span>
+                  <span>{enterpriseTexts}</span>
+                </div>
+                <div className={styles.eachForm}>
+                  <span className={styles.label}>所在部门</span>
+                  <span>{departTexts}</span>
+                </div>
+                <div className={styles.eachForm}>
+                  <span className={styles.label}>所属电站</span>
+                  <span>{stationTexts}</span>
+                </div>
+              </div>}
               <div className={styles.buttonRow}>
                 <Button
                   onClick={this.saveUser}

@@ -84,20 +84,48 @@
 .sideHandle .personnelInfoForm{ // 编辑, 新增
   overflow-y: auto;
   display: flex;
+  padding: 24px 32px 0;
   .leftLogo{
-    .logoPart{
-
-    }
+    margin-right: 48px;
     .logotip{
-      color: yellowgreen;
+      line-height: 21px;
     }
   }
   .rightForms{
+    flex: 1;
     .eachForm{
-      height: 40px;
+      display: flex;
+      .instructionText{
+        margin-left: 12px;
+      }
+      :global{
+        .ant-form-item-label{
+          flex: 0 0 70px;
+          margin-right: 24px;
+          text-align: right;
+        }
+        .ant-form-item-control-wrapper{
+
+        }
+      }
     }
+    .enterpriseInfo{
+      margin-bottom: 20px;
+      .eachForm{
+        height: 40px;
+        line-height: 40px;
+        .label{
+          flex: 0 0 70px;
+          margin-right: 24px;
+          text-align: right;
+        }
+      }
+    } 
     .buttonRow{
-      height: 60px;
+      padding-left: 94px;
+      button{
+        margin-right: 20px;
+      }
     }
   }
 } 
@@ -121,3 +149,33 @@
     }
   }
 }
+
+.sideHandle .personnelInfoForm{ // 编辑, 新增
+  .leftLogo{
+    .logotip{
+      color: $promptColor;
+    }
+  }
+  .rightForms{
+    .eachForm{
+      .instructionText{
+        color: $promptColor;
+      }
+      :global{
+        .ant-form-item-label{
+          color: rgba(0, 0, 0, 0.85);
+        }
+        .ant-form-item-control-wrapper{
+
+        }
+      }
+    }
+    .enterpriseInfo .eachForm{
+      .label{
+        color: rgba(0, 0, 0, 0.85);
+      }
+    }
+    .buttonRow{
+    }
+  }
+} 
