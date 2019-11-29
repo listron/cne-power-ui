@@ -56,9 +56,12 @@
 
 
 
-
+.lookStyle{
+  text-align: center;
+}
   .cursorStyle {
     cursor: pointer;
+    text-align: center;
 
     &:hover {
       color: #199475;
