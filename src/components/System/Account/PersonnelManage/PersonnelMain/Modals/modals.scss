@@ -3,12 +3,10 @@
 @import '../../../../../../theme/theme.scss';
 
 
-.singleModal{
+.singleModal, .departmentModal { // 共有的弹框顶部
   .title{
     height: 34px;
     font-size: 14px;
-    color: #fff;
-    background-color: $themeColor;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -19,26 +17,27 @@
       flex-basis: 14px;
       line-height: 17px;
       border-radius: 50%;
-      background-color: #ceebe0;
-      color: rgb(40, 156, 126);
       margin-right: 10px;
       svg{
         font-size: 10px;
       }
     }
   }
+  :global{
+    .ant-modal .ant-modal-content .ant-modal-header, .ant-modal .ant-modal-content .ant-modal-body{
+      padding: 0;
+    }
+  }
+}
+
+.singleModal{ // 单部门分配人员
   .filterTop{
     height: 50px;
     display: flex;
     justify-content: space-between;
     padding: 0 20px 0 20px;
     align-items: center;
-    border-bottom:1px solid #d9d9d9;
-    box-shadow:0 1px 2px 0 rgba(0,0,0,0.20);
     margin-bottom: 12px;
-    .tipText{
-      color: $lightColor;
-    }
     .filterConditions{
       display: flex;
       align-items: center;
@@ -69,12 +68,10 @@
     height: 50px;
     align-items: center;
     padding: 0 20px;
-    background-color: #ececec;
     .footerText{
       .footerNum{
         margin: 0 2px;
         font-weight: 700;
-        color: $themeColor;
       }
     }
     .btns button{
@@ -82,11 +79,158 @@
       margin-right: 10px;
     }
   }
-  :global{
-    .ant-modal .ant-modal-content .ant-modal-header, .ant-modal .ant-modal-content .ant-modal-body{
-      padding: 0;
+}
+
+.departmentModal { // 人员分配部门
+  .toptips{ // 人员及提示
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    .usernames{}
+    .activeIcon, .inactiveIcon{
+      border-radius: 50%;
+      margin: 0 6px 0 10px;
+      font-size: 12px;
+    }
+  }
+  .departsContent{ // 中部内容区
+    height: 410px;
+    padding: 0 15px;
+    overflow-y: auto;
+  }
+  .departSubSelect{
+    .fartherDepart{ // 父部门
+      display: flex;
+      padding: 0 12px 0 16px;
+      height: 26px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      .icon{
+        flex: 0 0 24px;
+        cursor: pointer;
+        transition: all 0.3s;
+        transform: rotate(0deg);
+      }
+      .iconRotate{
+        transform: rotate(-90deg);
+      }
+    }
+    .fartherDepart, .subLists { // 共有
+      .eachDepart{
+        max-width: 180px;
+        cursor: pointer;
+        display: flex;
+        height: 24px;
+        align-items: center;
+      }
+      .activeIcon, .inactiveIcon{
+        border-radius: 50%;
+        font-size: 12px;
+        flex: 0 0 12px;
+      }
+      .name{
+        padding-left: 4px;
+      }
+    }
+    .subLists{
+      padding-left: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      .eachDepartBox{
+        flex: 0 0 180px;
+      }
+      .eachDepart{
+        display: inline-block;
+        @include overflowText();
+      }
+    }
+  }
+  .footer{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px 0 24px;
+  }
+}
+
+.departmentModal { // 人员分配部门
+  .toptips{
+    height: 40px;
+    align-items: center;
+    .usernames{
+      color:#000000;
+    }
+    .activeIcon{
+      color: #fff;
+      background-color: $themeColor;
+      border: 1px solid $themeColor;
+    }
+    .inactiveIcon{
+      color: $darkColor;
+      border: 1px solid $darkColor;
+    }
+  }
+  .departSubSelect{
+    .fartherDepart{ // 父部门
+      background-color: #f9f9f9;
+      .icon{
+        color: $lightColor;
+      }
+    }
+    .fartherDepart, .eachDepart { // 共有
+      .activeIcon{
+        color: #fff;
+        background-color: $themeColor;
+        border: 1px solid $themeColor;
+      }
+      .inactiveIcon{
+        color: $darkColor;
+        border: 1px solid $darkColor;
+      }
+    }
+  }
+  .footer{
+    background-color: rgb(241, 241, 241);
+  }
+}
+
+// 颜色部分
+.singleModal, .departmentModal {
+  .title{
+    color: #fff;
+    background-color: $themeColor;
+    .close{
+      background-color: #ceebe0;
+      color: rgb(40, 156, 126);
     }
   }
 }
+
+.singleModal{
+  .filterTop{
+    border-bottom:1px solid #d9d9d9;
+    box-shadow:0 1px 2px 0 rgba(0,0,0,0.20);
+    .tipText{
+      color: $lightColor;
+    }
+  }
+  .assignFooter{
+    background-color: #ececec;
+    .footerText{
+      .footerNum{
+        color: $themeColor;
+      }
+    }
+  }
+}
+
+
+
+
+
 
 

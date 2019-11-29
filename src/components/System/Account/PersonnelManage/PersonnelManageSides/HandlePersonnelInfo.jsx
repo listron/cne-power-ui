@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Button, Input, Form, Select, Icon } from 'antd';
 import WarningTip from '@components/Common/WarningTip';
 import PersonnelLogoUploader from './PersonnelLogoUploader';
+import DepartmentSelector from '../PersonnelMain/Modals/DepartmentSelector';
 import styles from './side.scss';
 
 const FormItem = Form.Item;
@@ -111,7 +112,7 @@ class HandlePersonnelInfo extends Component {
 
   render(){
     const { showWarningTip, addMode } = this.state;
-    const { pageKey, form, roleAllList, specialRoleList, addUserLoading } = this.props;
+    const { pageKey, form, roleAllList, specialRoleList, departmentTree, addUserLoading } = this.props;
     const { getFieldDecorator } = form;
     const { enterpriseTexts, departTexts, stationTexts } =pageKey === 'editPersonnel' ? this.getEditEnterpriseDetail() : {};
     return (
@@ -206,7 +207,7 @@ class HandlePersonnelInfo extends Component {
                 {getFieldDecorator('departmentIds', {
                   initialValue: [],
                 })(
-                  <span>所属部门</span>
+                  <DepartmentSelector departmentTree={departmentTree} />
                 )}
               </FormItem>}
               <FormItem label="特殊权限" className={styles.eachForm} >
