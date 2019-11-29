@@ -168,7 +168,7 @@ class DefectTabelList extends Component {
         <span ref={'wrap'} />
         <div className={styles.action}>
           <div className={styles.buttonArea}>
-            {addDefectRight && <Button className={styles.addDefect} type="add" onClick={this.addDefect} ><i>+</i> 缺陷 </Button>}
+            {addDefectRight && <Button className={styles.addDefect} type="add" onClick={this.addDefect} ><i>+</i> 消缺 </Button>}
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
