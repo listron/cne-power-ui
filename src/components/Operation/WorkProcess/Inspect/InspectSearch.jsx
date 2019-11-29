@@ -24,7 +24,7 @@ class InspectSearch extends React.Component {
       createTimeEnd,
       stationType: stationType ? stationType : '',
       stationCodes: stationCodes.length ? stationCodes : '',
-      deviceTypeCode: deviceTypeCode.length ? deviceTypeCode.join(',') : '',
+      deviceTypeCode: deviceTypeCode.length ? deviceTypeCode : [],
       pageNum: 1,
     });
   }
