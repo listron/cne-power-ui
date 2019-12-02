@@ -20,12 +20,14 @@ class List extends Component {
     getUserDetailInfo: PropTypes.func,
     setUserStatus: PropTypes.func,
     changeStore: PropTypes.func,
+    assignUsers: PropTypes.func,
   }
 
   state = {
     showLogout: false,
     logoutUserId: null,
     assignDepartUsers: [], // 分配部门弹框的用户信息对象数组
+    assignDepartChecked: [], // 用于存储部门弹框分配ids的数组
     column: [
       {
         title: '用户名',
@@ -111,7 +113,29 @@ class List extends Component {
     this.props.changeStore({ personnelDrawerIds: [userId] });
   }
 
-  assignDeparts = (assignDepartUsers) => this.setState({ assignDepartUsers }) // 去分配用户的部门
+  onDepartChecked = (assignDepartChecked) => this.setState({ assignDepartChecked })
+
+  onAssignOK = () => { // 确定用户分配 => 部门;
+    const { assignDepartChecked, assignDepartUsers } = this.state;
+    this.props.assignUsers({
+      userIds: assignDepartUsers.map(e => e.userId),
+      departmentId: assignDepartChecked,
+    });
+    this.setState({ // 重置弹框数据
+      assignDepartUsers: [],
+      assignDepartChecked: [],
+    });
+  }
+
+  assignDeparts = (assignDepartUsers) => this.setState({ // 开启分配部门弹框并初始化弹框选中项
+    assignDepartChecked: [],
+    assignDepartUsers,
+  })
+
+  hideDepartModal = () => this.setState({ // 取消分配用户
+    assignDepartChecked: [],
+    assignDepartUsers: [],
+  })
 
   logoutWarning = ({ userId }) => { // 注销用户前弹框
     this.setState({ showLogout: true, logoutUserId: userId });
@@ -139,7 +163,7 @@ class List extends Component {
 
   render(){
     const { userList, userListLoading, selectedRowKeys, departmentTree } = this.props;
-    const { column, showLogout, assignDepartUsers } = this.state;
+    const { column, showLogout, assignDepartUsers, assignDepartChecked } = this.state;
     return (
       <div className={styles.personnelMain}>
         <ListHandle {...this.props} assignDeparts={this.assignDeparts} />
@@ -155,12 +179,13 @@ class List extends Component {
           }}
         />
         <DepartmentAssignModal
+          value={assignDepartChecked}
+          onCheck={this.onDepartChecked}
+          onChange={this.onAssignOK}
+          modalShow={assignDepartUsers.length > 0}
           departmentTree={departmentTree}
-          value={[]}
-          onChange={(ids) => console.log(ids)}
-          username={assignDepartUsers.map(e => e.username)}
-          hiddenIcon={true}
-          modalShowControl={assignDepartUsers.length > 0}
+          username={assignDepartUsers.map(e => e.username).join(',')}
+          hideModal={this.hideDepartModal}
         />
         {showLogout && <WarningTip
           onOK={this.logoutUser}
@@ -175,14 +200,3 @@ class List extends Component {
 }
 
 export default List;
-
-
-// class DepartmentAssignModal extends Component { 
-//   static propTypes = {
-//     departmentTree: PropTypes.array,
-//     value: PropTypes.array,
-//     onChange: PropTypes.func,
-//     username: PropTypes.string,
-//     hiddenIcon: PropTypes.bool,
-//     modalShowControl: PropTypes.bool,
-//   }

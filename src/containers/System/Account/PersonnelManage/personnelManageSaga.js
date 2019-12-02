@@ -200,6 +200,7 @@ function *assignUsers({ payload }) { // 为部门分配用户
         assignUserLoading: false,
         assignUserSuccess: true,
       });
+      yield call(getUserList);
     } else { throw response.message; }
     // 重新请求相关主页面的用户id列表, 用户详细列表;
   } catch(error) {
@@ -339,9 +340,6 @@ function* editUser({ payload }){ // 编辑用户
     message.error(`修改用户信息失败, 请重试, ${err}`);
   }
 }
-
-// 新增用户
-// 编辑用户
 
 export function* watchPersonnelManage() {
   yield takeLatest(personnelManageAction.getAllUserBase, getAllUserBase);

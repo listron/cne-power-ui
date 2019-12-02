@@ -11,11 +11,14 @@ class DepartmentSelector extends Component {
   static propTypes = {
     departmentTree: PropTypes.array,
     value: PropTypes.array,
+    username: PropTypes.string,
     onChange: PropTypes.func,
   }
 
   state = {
     departmentsList: [], // 将departmentTree 树形结构全部抽离为一维数组的结果
+    modalShow: false, // modal展示
+    tmpCheckedDeparts: [], // 用于缓存modal数据的部门ids
   }
 
   componentDidMount(){
@@ -29,6 +32,34 @@ class DepartmentSelector extends Component {
     if (preTree !== departmentTree) {
       this.createDepartmentsList(departmentTree);
     }
+  }
+
+  showModal = () => { // 展示弹框
+    const { value } = this.props;
+    this.setState({
+      modalShow: true,
+      tmpCheckedDeparts: value,
+    });
+  }
+
+  hideModal = () => { // 隐藏弹框
+    this.setState({
+      modalShow: false,
+      tmpCheckedDeparts: [],
+    });
+  }
+
+  onChecked = (tmpCheckedDeparts) => { // 弹框内容选中
+    this.setState({ tmpCheckedDeparts });
+  }
+
+  onModalOK = () => { // 弹框内容确定
+    const { tmpCheckedDeparts } = this.state;
+    this.props.onChange(tmpCheckedDeparts);
+    this.setState({
+      modalShow: false,
+      tmpCheckedDeparts: [],
+    });
   }
 
   handleChange = (value) => {
@@ -48,12 +79,8 @@ class DepartmentSelector extends Component {
   }
 
   render() {
-    const { value } = this.props;
-    const { departmentsList } = this.state;
-    // departmentId
-    // departmentName
-    // parentDepartmentId
-    // departmentSource
+    const { value, departmentTree, username = '' } = this.props;
+    const { departmentsList, modalShow, tmpCheckedDeparts } = this.state;
     return (
       <div className={styles.departmentSelector}>
         <Select
@@ -67,7 +94,18 @@ class DepartmentSelector extends Component {
             <Option key={e.departmentId} value={e.departmentId}>{e.departmentName}</Option>
           ))}
         </Select>
-        <DepartmentAssignModal { ...this.props} />
+        <div className={styles.departmentAssignModal}>
+          <i className={`iconfont icon-filter ${styles.handlIcon}`} onClick={this.showModal} />
+          <DepartmentAssignModal
+            value={tmpCheckedDeparts}
+            onCheck={this.onChecked}
+            onChange={this.onModalOK}
+            modalShow={modalShow}
+            departmentTree={departmentTree}
+            username={username}
+            hideModal={this.hideModal}
+          />
+        </div>
       </div>
     );
   }
