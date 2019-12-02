@@ -21,8 +21,10 @@ class HandlePersonnelInfo extends Component {
     roleAllList: PropTypes.array,
     specialRoleList: PropTypes.array,
     departmentTree: PropTypes.array,
+    departmentsStationMap: PropTypes.array,
     changeStore: PropTypes.func,
     getUserList: PropTypes.func,
+    getDepartmentsStationMap: PropTypes.func,
   }
 
   state = {
@@ -94,31 +96,15 @@ class HandlePersonnelInfo extends Component {
     detailPersonnel: '详情',
   }
 
-  // getEditEnterpriseDetail = () => {
-  //   const { userDetailInfo } = this.props;
-  //   const enterpriseLists = userDetailInfo.enterpriseData || [];
-  //   const departLists = [], stationLists = [];
-  //   const enterpriseTexts = enterpriseLists.map(e => {
-  //     const { departmentData, enterpriseName } = e || {};
-  //     departmentData && departLists.push(...departmentData);
-  //     return enterpriseName || '';
-  //   }).join(',');
-  //   const departTexts = departLists.map(e => {
-  //     const { departmentName, stationData } = e || {};
-  //     stationData && stationLists.push(...stationData);
-  //     return departmentName || '';
-  //   }).join(',');
-  //   const stationTexts = stationLists.map(e => e.stationName).join(',');
-  //   return {
-  //     enterpriseTexts,
-  //     departTexts,
-  //     stationTexts,
-  //   };
-  // }
+  departsChange = (departmentIds) => {
+    const { form } = this.props;
+    this.props.getDepartmentsStationMap({ departmentIds });
+    form.setFieldsValue({ departmentIds });
+  }
 
   render(){
     const { showWarningTip, addMode } = this.state;
-    const { pageKey, form, roleAllList, specialRoleList, departmentTree, addUserLoading } = this.props;
+    const { pageKey, form, roleAllList, specialRoleList, departmentTree, addUserLoading, departmentsStationMap } = this.props;
     const { getFieldDecorator } = form;
     // const { enterpriseTexts, departTexts, stationTexts } =pageKey === 'editPersonnel' ? this.getEditEnterpriseDetail() : {};
     return (
@@ -136,7 +122,7 @@ class HandlePersonnelInfo extends Component {
               )}
             </FormItem>
             <div className={styles.rightForms}>
-              <FormItem label="用户名" className={styles.eachForm} >
+              <FormItem label="用户名" colon={false} className={styles.eachForm} >
                 {getFieldDecorator('username', {
                   initialValue: '',
                   rules: [{
@@ -155,7 +141,7 @@ class HandlePersonnelInfo extends Component {
                 })( <Input placeholder="请输入用户名" style={{width: '200px'}} /> )}
                 <span className={styles.instructionText}>(3-25位中文,英文,数字,特殊字符都可)</span>
               </FormItem>
-              <FormItem label="真实姓名" className={styles.eachForm} >
+              <FormItem label="真实姓名" colon={false} className={styles.eachForm} >
                 {getFieldDecorator('userFullName', {
                   rules: [
                     { required: true },
@@ -174,7 +160,7 @@ class HandlePersonnelInfo extends Component {
                 })( <Input placeholder="请输入真实姓名" style={{width: '200px'}} /> )}
                 <span className={styles.instructionText}>(中文/英文/空格 长度小于30个字)</span>
               </FormItem>
-              <FormItem label="电话" className={styles.eachForm} >
+              <FormItem label="电话" colon={false} className={styles.eachForm} >
                 {getFieldDecorator('phoneNum', {
                   initialValue: '',
                   rules: [{
@@ -185,7 +171,7 @@ class HandlePersonnelInfo extends Component {
                 })( <Input placeholder="请输入电话号码" style={{width: '200px'}} /> )}
                 <span className={styles.instructionText}>(11位手机号码)</span>
               </FormItem>
-              <FormItem label="邮箱" className={styles.eachForm} >
+              <FormItem label="邮箱" colon={false} className={styles.eachForm} >
                 {getFieldDecorator('email', {rules: [{
                     message: '请输入正确格式的邮箱',
                     pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
@@ -194,7 +180,7 @@ class HandlePersonnelInfo extends Component {
                 })( <Input placeholder="请输入邮箱" style={{width: '200px'}} /> )}
                 <span className={styles.instructionText}>(可用邮箱找回密码)</span>
               </FormItem>
-              <FormItem label="角色" className={styles.eachForm} >
+              <FormItem label="角色" colon={false} className={styles.eachForm} >
                 {getFieldDecorator('roleIds', {
                   initialValue: [],
                 })(
@@ -211,14 +197,29 @@ class HandlePersonnelInfo extends Component {
                 )}
                 <span className={styles.instructionText}>(没有设置角色的用户无法正常使用系统)</span>
               </FormItem>
-              {<FormItem label="所属部门" className={styles.eachForm}>
+              <FormItem label="所属部门" colon={false} className={styles.eachForm}>
                 {getFieldDecorator('departmentIds', {
                   initialValue: [],
                 })(
-                  <DepartmentSelector departmentTree={departmentTree} />
+                  <DepartmentSelector departmentTree={departmentTree} onChange={this.departsChange} />
                 )}
-              </FormItem>}
-              <FormItem label="特殊权限" className={styles.eachForm} >
+              </FormItem>
+              {departmentsStationMap.length > 0 && <div className={styles.eachForm}>
+                <div className={styles.label}>负责电站</div>
+                <div className={styles.stationInfos}>
+                  {departmentsStationMap.map(e => {
+                    const { departmentName, stations } = e || {};
+                    const stationText = stations ? stations.map(e => e.stationName).join(',') : '--';
+                    return (
+                      <section className={styles.eachDepart}>
+                        <h4>{departmentName || '--'}</h4>
+                        <div className={styles.stationText}>{stationText}</div>
+                      </section>
+                    );
+                  })}
+                </div>
+              </div>}
+              <FormItem colon={false} label="特殊权限" className={styles.eachForm} >
                 {getFieldDecorator('specialRoleIds', {
                   initialValue: [],
                 })(
@@ -235,20 +236,7 @@ class HandlePersonnelInfo extends Component {
                   </Select>
                 )}
               </FormItem>
-              {/* {pageKey === 'editPersonnel' && <div className={styles.enterpriseInfo}>
-                <div className={styles.eachForm}>
-                  <span className={styles.label}>所在企业</span>
-                  <span>{enterpriseTexts}</span>
-                </div>
-                <div className={styles.eachForm}>
-                  <span className={styles.label}>所在部门</span>
-                  <span>{departTexts}</span>
-                </div>
-                <div className={styles.eachForm}>
-                  <span className={styles.label}>所属电站</span>
-                  <span>{stationTexts}</span>
-                </div>
-              </div>} */}
+              
               <div className={styles.buttonRow}>
                 <Button
                   onClick={this.saveUser}

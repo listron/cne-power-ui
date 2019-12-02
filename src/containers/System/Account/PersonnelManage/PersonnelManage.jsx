@@ -70,6 +70,7 @@ const mapDispatchToProps = (dispatch) => ({
   getRoleAllList: payload => dispatch({ type: personnelManageAction.getRoleAllList, payload }),
   addUser: payload => dispatch({ type: personnelManageAction.addUser, payload }),
   editUser: payload => dispatch({ type: personnelManageAction.editUser, payload }),
+  getDepartmentsStationMap: payload => dispatch({ type: personnelManageAction.getDepartmentsStationMap, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonnelManage);

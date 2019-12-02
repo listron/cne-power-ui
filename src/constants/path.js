@@ -293,6 +293,7 @@ export default {
       setUserStatus: '/v3/user/status', // 修改用户状态
       addUser: '/v3/createUser', // 新增用户
       editUser: '/v3/updateUser', // 编辑用户
+      getDepartmentsStationMap: '/v3/department/station/collection', // 获取多个部门下的电站集合
 
       getRoleList: '/v3/role/list',
       getMenuList: '/v3/right',

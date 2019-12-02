@@ -17,6 +17,9 @@
 
 .detail, .sideHandle{ // 详情, 编辑, 新增 公用顶部样式
   flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   .topTitle{
     flex-basis: 0 0 64px;
     display: flex;
@@ -98,6 +101,18 @@
       .instructionText{
         margin-left: 12px;
       }
+      .label{
+        flex: 0 0 70px;
+        padding-right: 12px;
+        margin-right: 24px;
+        text-align: right;
+      }
+      .eachDepart{
+        margin-bottom: 21px;
+      }
+      .stationText{
+        padding: 0 24px;
+      }
       :global{
         .ant-form-item-label{
           flex: 0 0 70px;
@@ -106,20 +121,9 @@
         }
       }
     }
-    .enterpriseInfo{
-      margin-bottom: 20px;
-      .eachForm{
-        height: 40px;
-        line-height: 40px;
-        .label{
-          flex: 0 0 70px;
-          margin-right: 24px;
-          text-align: right;
-        }
-      }
-    } 
     .buttonRow{
       padding-left: 94px;
+      padding-bottom: 24px;
       button{
         margin-right: 20px;
       }
@@ -164,7 +168,7 @@
         }
       }
     }
-    .enterpriseInfo .eachForm{
+    .eachForm{
       .label{
         color: rgba(0, 0, 0, 0.85);
       }

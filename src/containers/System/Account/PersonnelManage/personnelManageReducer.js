@@ -20,6 +20,7 @@ const personnelManageAction = {
   getRoleAllList: Symbol('getRoleAllList'), // 获取所有角色
   addUser: Symbol('addUser'), // 新增用户
   editUser: Symbol('editUser'), // 编辑用户
+  getDepartmentsStationMap: Symbol('getDepartmentsStationMap'), // 新增-编辑界面选中部门后, 多部门下电站集合
 };
 
 const initState = {
@@ -79,6 +80,7 @@ const initState = {
   userDetailInfo: {}, // 用户详情查看
   roleAllList: [], // 普通角色列表
   specialRoleList: [], // 特殊权限列表
+  departmentsStationMap: [], // 新增-编辑界面选中部门后, 多部门下电站集合
 };
 
 const personnelManage = (state = initState, action) => {

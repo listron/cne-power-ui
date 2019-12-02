@@ -345,7 +345,17 @@ function* editUser({ payload }){ // 编辑用户
 
 function* getDepartmentsStationMap({ payload }){ // 新增-编辑用户中，获取多个部门下所有电站的集合
   // payload = { departmentIds: [] }
-  const url = '';
+  try {
+    const url = `${APIBasePath}${system.getDepartmentsStationMap}`;
+    const response = yield call(request.post, url, payload.departmentIds);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        departmentsStationMap: response.data || [],
+      });
+    } else { throw response.message; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', { departmentsStationMap: [] });
+  }
 }
 
 export function* watchPersonnelManage() {
@@ -365,6 +375,7 @@ export function* watchPersonnelManage() {
   yield takeLatest(personnelManageAction.getRoleAllList, getRoleAllList);
   yield takeLatest(personnelManageAction.addUser, addUser);
   yield takeLatest(personnelManageAction.editUser, editUser);
+  yield takeLatest(personnelManageAction.getDepartmentsStationMap, getDepartmentsStationMap);
 
   yield takeLatest(personnelManageAction.getUserList, getUserList);
 }
