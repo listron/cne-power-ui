@@ -1,5 +1,4 @@
-import { call, put, takeLatest, select, takeEvery, all } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import { call, put, takeLatest, select, all } from 'redux-saga/effects';
 import Cookie from 'js-cookie';
 import request from '@utils/request';
 import path from '@path';
@@ -339,7 +338,7 @@ function* editUser({ payload }){ // 编辑用户
     yield call(easyPut, 'changeStore', { addUserLoading: false });
     message.error(`修改用户信息失败, 请重试, ${err}`);
   }
-} 
+}
 
 // 新增用户
 // 编辑用户

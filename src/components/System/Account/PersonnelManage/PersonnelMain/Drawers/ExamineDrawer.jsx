@@ -15,15 +15,8 @@ class ExamineDrawer extends Component {
     showPersonnelDrawer: PropTypes.bool,
     roleAllList: PropTypes.array,
     departmentTree: PropTypes.array,
-    departmentDrawerKey: PropTypes.string,
-    departmentEditInfo: PropTypes.object,
-    addDepartmentLoading: PropTypes.bool,
-    addDepartmentSuccess: PropTypes.bool,
-    stations: PropTypes.array,
     form: PropTypes.object,
     changeStore: PropTypes.func,
-    addNewDepartment: PropTypes.func,
-    editDepartment: PropTypes.func,
   }
 
   // componentWillReceiveProps(nextProps){

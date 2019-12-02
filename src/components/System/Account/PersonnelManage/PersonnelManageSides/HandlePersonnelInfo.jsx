@@ -20,6 +20,7 @@ class HandlePersonnelInfo extends Component {
     form: PropTypes.object,
     roleAllList: PropTypes.array,
     specialRoleList: PropTypes.array,
+    departmentTree: PropTypes.array,
     changeStore: PropTypes.func,
     getUserList: PropTypes.func,
   }
@@ -39,7 +40,7 @@ class HandlePersonnelInfo extends Component {
       const tmpRoleNameArr = roleName ? roleName.split(',') : [];
       const tmpRoleSpcialArr = spcialRoleName ? spcialRoleName.split(',') : [];
       const roleIds = roleAllList.filter(e => tmpRoleNameArr.includes(e.roleDesc)).map(e => e.roleId);
-      const specialRoleIds = specialRoleList.filter(e => tmpRoleSpcialArr.includes(e.roleDesc)).map(e => roleId);
+      const specialRoleIds = specialRoleList.filter(e => tmpRoleSpcialArr.includes(e.roleDesc)).map(e => e.roleId);
       form.setFieldsValue({
         userLogo, username, userFullName, phoneNum, email, roleIds, specialRoleIds,
       });
