@@ -44,7 +44,7 @@ class HandlePersonnelInfo extends Component {
       const roleIds = roleAllList.filter(e => tmpRoleNameArr.includes(e.roleDesc)).map(e => e.roleId);
       const specialRoleIds = specialRoleList.filter(e => tmpRoleSpcialArr.includes(e.roleDesc)).map(e => e.roleId);
       form.setFieldsValue({
-        userLogo, username, userFullName, phoneNum, email, roleIds, specialRoleIds, departmentIds
+        userLogo, username, userFullName, phoneNum, email, roleIds, specialRoleIds, departmentIds,
       });
     }
     if (!addUserLoading && preLoading && addUserSuccess) { // 信息提交成功;
@@ -211,7 +211,7 @@ class HandlePersonnelInfo extends Component {
                     const { departmentName, stations } = e || {};
                     const stationText = stations ? stations.map(e => e.stationName).join(',') : '--';
                     return (
-                      <section className={styles.eachDepart}>
+                      <section key={departmentName} className={styles.eachDepart}>
                         <h4>{departmentName || '--'}</h4>
                         <div className={styles.stationText}>{stationText}</div>
                       </section>
@@ -236,7 +236,6 @@ class HandlePersonnelInfo extends Component {
                   </Select>
                 )}
               </FormItem>
-              
               <div className={styles.buttonRow}>
                 <Button
                   onClick={this.saveUser}

@@ -55,6 +55,7 @@ class DepartSubSelect extends Component {
     const { checkedIds, departInfo } = this.props;
     const { list, departmentName, departmentId } = departInfo || {};
     const subDeparts = list || [];
+    const height = Math.ceil(subDeparts.length / 3) * 24;
     return (
       <div className={styles.departSubSelect}>
         <div className={styles.fartherDepart}>
@@ -71,7 +72,7 @@ class DepartSubSelect extends Component {
             onClick={this.toggleSubShow}
           />}
         </div>
-        <div className={styles.subLists}>
+        <div className={styles.subLists} style={{height: open ? `${height}px` : '0px'}}>
           {subDeparts.map(e => {
             const { departmentId, departmentName } = e;
             return (
