@@ -13,17 +13,8 @@ import styles from './main.scss';
 
 class PersonnelMain extends Component {
   static propTypes = {
-    showPersonnelDrawer: PropTypes.bool,
     departmentDrawerKey: PropTypes.string,
     changeStore: PropTypes.func,
-  }
-
-  // 注: pageKey: 'list', // list列表-addPersonnel添加人员-editPersonnel编辑人员-detailPersonnel人员信息详情
-  toExamine = () => {
-    this.props.changeStore({ showPersonnelDrawer: true });
-  }
-  testCloseUserExamine = () => {
-    this.props.changeStore({ showPersonnelDrawer: false });
   }
 
   render(){
@@ -36,7 +27,6 @@ class PersonnelMain extends Component {
             <DepartmentStation {...this.props} />
             <ListSearch {...this.props} />
             <List {...this.props} />
-            <button onClick={this.toExamine}>用户审核抽屉</button>
           </div>
           <ExamineDrawer {...this.props} />
           <DepartmentDrawer {...this.props} />

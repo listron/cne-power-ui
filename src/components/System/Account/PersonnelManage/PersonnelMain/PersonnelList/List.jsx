@@ -28,18 +28,20 @@ class List extends Component {
         title: '用户名',
         dataIndex: 'username',
         render: (text, record) => (
-          <div className={styles.username} title={text} onClick={() => this.showDetail(record)}>{text}</div>
+          <div className={styles.username} title={text} onClick={() => this.showDetail(record)}>{text || '--'}</div>
         ),
       }, {
         title: '真实姓名',
         dataIndex: 'userFullName',
+        render: (text) => text || '--',
       }, {
         title: '电话',
         dataIndex: 'phoneNum',
+        render: (text) => text || '--',
       }, {
         title: '角色',
         dataIndex: 'roleName',
-        render: (text) => <div className={styles.roleName} title={text}>{text}</div>,
+        render: (text) => <div className={styles.roleName} title={text}>{text || '--'}</div>,
       }, {
         title: '用户状态',
         dataIndex: 'enterpriseStatus',
@@ -96,6 +98,10 @@ class List extends Component {
 
   editUser = ({ userId }) => { // 请求详情并进入编辑
     this.props.getUserDetailInfo({ userId, pageKey: 'editPersonnel' });
+  }
+
+  examineUser = ({ userId }) => { // 打开审核
+    this.props.changeStore({ personnelDrawerIds: [userId] });
   }
 
   logoutWarning = ({ userId }) => { // 注销用户前弹框

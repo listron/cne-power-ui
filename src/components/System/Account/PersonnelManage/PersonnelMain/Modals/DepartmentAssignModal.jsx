@@ -5,17 +5,28 @@ import { Modal, Icon, Button } from 'antd';
 import DepartSubSelect from './DepartSubSelect';
 import styles from './modals.scss';
 
-class DepartmentSelector extends Component {
+// 本身作为子组件使用, 也可以传入showControl与hiddenIcon配置后作为单独modal使用;
+class DepartmentAssignModal extends Component { 
   static propTypes = {
     departmentTree: PropTypes.array,
     value: PropTypes.array,
     onChange: PropTypes.func,
     username: PropTypes.string,
+    hiddenIcon: PropTypes.bool,
+    modalShowControl: PropTypes.bool,
   }
 
   state = {
     isShow: false,
     checkedDepartment: [],
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { modalShowControl } = nextProps;
+    const preModalShow = this.props.modalShowControl;
+    if (modalShowControl !== preModalShow) { // 外界手动控制显隐;
+      modalShowControl ? this.showModal() : this.hideModal();
+    }
   }
 
   showModal = () => {
@@ -33,7 +44,10 @@ class DepartmentSelector extends Component {
   }
 
   hideModal = () => {
-    this.setState({ isShow: false });
+    this.setState({
+      isShow: false,
+      checkedDepartment: [],
+    });
   }
 
   onChecked = (checkedDepartment) => {
@@ -47,11 +61,11 @@ class DepartmentSelector extends Component {
   }
 
   render() {
-    const { departmentTree, username } = this.props;
+    const { departmentTree, username, hiddenIcon } = this.props;
     const { isShow, checkedDepartment } = this.state;
     const { fartherNum, sonNum } = this.calcCheckNum(departmentTree, checkedDepartment);
     return (
-      <div className={styles.departmentAssignModal}>
+      <div className={styles.departmentAssignModal} style={hiddenIcon ? {display: 'none'} : {}}>
         <i className={`iconfont icon-filter ${styles.handlIcon}`} onClick={this.showModal} />
         <Modal
           visible={isShow}
@@ -96,4 +110,4 @@ class DepartmentSelector extends Component {
     );
   }
 }
-export default DepartmentSelector;
+export default DepartmentAssignModal;

@@ -43,7 +43,7 @@ const initState = {
     sortMethod: 'desc', // 排序规则 "asc"：正序  "desc"：倒序
   }, // 展示用户列表页面信息
 
-  showPersonnelDrawer: false, // 用户审核 抽屉
+  personnelDrawerIds: [], // 用户审核 抽屉要修改的用户id集合 => 同时根据length控制抽屉的展示/隐藏
   departmentDrawerKey: 'hide', // 添加部门 add + 编辑部门 edit + 隐藏抽屉 hide
   departmentEditInfo: {}, // departmentDrawerKey为edit时, 选中要去编辑的部门的信息
   showLogoutModal: false, // 注销弹框

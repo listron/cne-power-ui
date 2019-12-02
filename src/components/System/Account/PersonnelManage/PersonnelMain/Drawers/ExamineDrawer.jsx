@@ -12,62 +12,51 @@ const { Option } = Select;
 class ExamineDrawer extends Component {
   static propTypes = {
     examineLoading: PropTypes.bool,
-    showPersonnelDrawer: PropTypes.bool,
+    examineSuccess: PropTypes.bool,
+    personnelDrawerIds: PropTypes.array,
     roleAllList: PropTypes.array,
     departmentTree: PropTypes.array,
     form: PropTypes.object,
     changeStore: PropTypes.func,
+    getUserList: PropTypes.func,
+    setUserStatus: PropTypes.func,
   }
 
-  // componentWillReceiveProps(nextProps){
-  //   const { departmentDrawerKey, departmentEditInfo, form, stations, addDepartmentLoading, addDepartmentSuccess } = nextProps;
-  //   const preDepartmentEditInfo = this.props.departmentEditInfo;
-  //   const preLoading = this.props.addDepartmentLoading;
-  //   if (departmentDrawerKey === 'edit' && preDepartmentEditInfo !== departmentEditInfo) { // 编辑页 得待新编辑部门数据
-  //     const { departmentName, parentDepartmentId } = departmentEditInfo;
-  //     const departmentStation = departmentEditInfo.stations || [];
-  //     form.setFieldsValue({ // 编辑信息内容存入
-  //       departmentName,
-  //       departmentId: parentDepartmentId,
-  //       stationLists: stations.filter(e => departmentStation.some(m => `${m.stationCode}` === `${e.stationCode}`)),
-  //     });
-  //   }
-  //   if (preLoading && !addDepartmentLoading && addDepartmentSuccess) { // 新增 / 编辑请求结束 => 成功 => 关闭抽屉
-  //     this.hideDepartmentDrawer();
-  //   }
-  // }
+  componentWillReceiveProps(nextProps){
+    const { examineSuccess, examineLoading } = nextProps;
+    const preLoading = this.props.examineLoading;
+    if (preLoading && !examineLoading && examineSuccess) { // 审核完毕, 关闭弹框, 并刷新用户列表
+      this.hideExamineDrawer();
+      this.props.getUserList();
+    }
+  }
 
   saveExamine = () => { // 审核
-    const { form } = this.props;
+    const { form, personnelDrawerIds } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
-        // const { stationLists, ...rest } = values;
-        // const formValues = { ...rest, stationCodes: stationLists.map(e => e.stationCode) };
-        // departmentDrawerKey === 'edit' && this.props.editDepartment({
-        //   ...rest,
-        //   departmentId: departmentEditInfo.departmentId,
-        //   stationCodes: stationLists.map(e => e.stationCode),
-        // });
-        // departmentDrawerKey === 'add' && this.props.addNewDepartment(formValues);
+        this.props.setUserStatus({
+          userId: personnelDrawerIds.join(','),
+          ...values,
+        });
       }
     });
   }
 
   hideExamineDrawer = () => { // 隐藏抽屉并重置
     this.props.form.resetFields();
-    this.props.changeStore({ showPersonnelDrawer: false });
+    this.props.changeStore({ personnelDrawerIds: [] });
   }
 
   render(){
-    const { examineLoading, showPersonnelDrawer, form, roleAllList, departmentTree } = this.props;
+    const { examineLoading, personnelDrawerIds, form, roleAllList, departmentTree } = this.props;
     const { getFieldDecorator } = form;
     return (
       <Drawer
         title="用户审核"
         placement="right"
         onClose={this.hideExamineDrawer}
-        visible={showPersonnelDrawer}
+        visible={personnelDrawerIds.length > 0}
         getContainer={false}
         style={{ position: 'absolute' }}
         width={520}
@@ -76,7 +65,7 @@ class ExamineDrawer extends Component {
           <FormItem label="审核" colon={false} className={styles.drawerItem}>
             {getFieldDecorator('enterpriseUserStatus', {
               rules: [{ required: true, message: '请选择审核结果' }],
-              initialValue: true,
+              initialValue: '3',
             })(
                <Radio.Group>
                 <Radio value="3">通过</Radio>
@@ -87,7 +76,7 @@ class ExamineDrawer extends Component {
           <FormItem label="角色" colon={false} className={styles.drawerItem} >
             {getFieldDecorator('roleIds', {
               initialValue: [],
-              rules: [{ required: true, message: '请选择审核结果' }],
+              rules: [{ required: true, message: '请选择用户角色' }],
             })(
               <Select
                 mode="multiple"
@@ -103,7 +92,7 @@ class ExamineDrawer extends Component {
           </FormItem>
           <FormItem label="所属部门" colon={false} className={styles.drawerItem}>
             {getFieldDecorator('departmentIds', {
-              rules: [{ required: true, message: '请选择负责电站' }],
+              rules: [{ required: true, message: '请选择所属部门' }],
               initialValue: [],
             })(
               <DepartmentSelector departmentTree={departmentTree} />

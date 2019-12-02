@@ -42,8 +42,9 @@ class ListHandle extends Component {
     if (value === 'logout') { // 注销用户前弹框
       this.setState({ showLogout: true });
     }
-    if (value === 'examine') {
-      // this.setState({})
+    if (value === 'examine') { // 将选中项转存至personnelDrawerIds, 开启弹框
+      const { selectedRowKeys } = this.props;
+      this.props.changeStore({ personnelDrawerIds: selectedRowKeys });
     }
     if (value === 'assign') {
       // this.
