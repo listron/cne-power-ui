@@ -9,7 +9,7 @@ import styles from './drawer.scss';
 const FormItem = Form.Item;
 const { Option } = Select;
 
-class PersonnelMain extends Component {
+class DepartmentDrawer extends Component {
   static propTypes = {
     departmentTree: PropTypes.array,
     departmentDrawerKey: PropTypes.string,
@@ -127,4 +127,4 @@ class PersonnelMain extends Component {
   }
 }
 
-export default Form.create({})(PersonnelMain);
+export default Form.create({})(DepartmentDrawer);

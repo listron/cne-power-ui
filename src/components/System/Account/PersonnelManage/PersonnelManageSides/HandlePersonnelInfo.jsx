@@ -56,7 +56,7 @@ class HandlePersonnelInfo extends Component {
 
   confirmBack = () => { // 返回列表页并重置form数据;
     this.props.changeStore({ pageKey: 'list', userDetailInfo: {} });
-    this.setState({ addMode: 'save' });
+    this.setState({ addMode: 'save', showWarningTip: false });
     this.props.form.resetFields();
   }
 

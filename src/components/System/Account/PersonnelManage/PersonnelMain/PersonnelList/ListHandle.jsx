@@ -38,10 +38,16 @@ class ListHandle extends Component {
   }
 
   handleUser = (value) => {
+    console.log(value);
     if (value === 'logout') { // 注销用户前弹框
       this.setState({ showLogout: true });
     }
-    console.log(value);
+    if (value === 'examine') {
+      // this.setState({})
+    }
+    if (value === 'assign') {
+      // this.
+    }
   }
 
   logoutUser = () => { // 注销用户
@@ -82,7 +88,7 @@ class ListHandle extends Component {
             dropdownMatchSelectWidth={false}
           >
             <Option key="assign">
-              <span className={`iconfont icon-bumenx ${styles.icon}`} />分配人员
+              <span className={`iconfont icon-bumenx ${styles.icon}`} />分配部门
             </Option>
             <Option key="examine">
               <span className={`iconfont icon-examine1 ${styles.icon}`} />审核人员

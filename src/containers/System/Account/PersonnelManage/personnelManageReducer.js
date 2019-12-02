@@ -63,7 +63,8 @@ const initState = {
   showDepartmentStationModal: false, // 部门分配电站弹框
   // showMultipleAssignModal: false, // 主界面表格多选用户进行多个部门分配弹框
   userListLoading: false, // 页面部门loading状态
-  logoutSuccess: false, // 注销/审核成功
+  logoutSuccess: false, // 注销/审核(改变用户状态)成功
+  examineLoading: false, // 审核弹框loading
   examineSuccess: false, // 审核成功
 
   addUserLoading: false, // 添加-编辑用户loading

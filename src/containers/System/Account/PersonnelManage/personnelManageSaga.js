@@ -267,20 +267,25 @@ function* getUserDetailInfo({ payload }) { // 获取用户详情 => 默认得到
 
 function* setUserStatus({ payload }){ // 修改用户状态 => 审核/注销
   // payload {userId: '', enterpriseId:'', enterpriseUserStatus:'', departmentIds: [], roleIds: []};
+  const tmpInfo = {
+    3: 'examineSuccess',
+    6: 'examineSuccess',
+    7: 'logoutSuccess',
+  };
   try{
+    const { enterpriseUserStatus } = payload;
     const url= `${APIBasePath}${system.setUserStatus}`;
+    yield call(easyPut, 'changeStore', { examineLoading: true });
     const response = yield call(request.put, url, payload);
     if (response.code === '10000') { // 审核/注销成功, 重新请求当前用户列表
-      const { enterpriseUserStatus } = payload;
-      const tmpInfo = {
-        5: 'examineSuccess',
-        6: 'examineSuccess',
-        7: 'logoutSuccess',
-      };
-      yield call(easyPut, 'fetchSuccess', { [tmpInfo[enterpriseUserStatus]]: true });
+      yield call(easyPut, 'fetchSuccess', {
+        [tmpInfo[enterpriseUserStatus]]: true,
+        examineLoading: false,
+      });
       yield call(getUserList);
     } else { throw response.message; }
   }catch(error){
+    yield call(easyPut, 'changeStore', { examineLoading: false });
     message.error(`操作失败, 请重试, ${error}`);
   }
 }
