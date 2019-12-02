@@ -14,17 +14,20 @@ import styles from './main.scss';
 class PersonnelMain extends Component {
   static propTypes = {
     departmentDrawerKey: PropTypes.string,
+    selectedDepartment: PropTypes.object,
     changeStore: PropTypes.func,
   }
 
   render(){
+    const { selectedDepartment } = this.props;
+    const { departmentId } = selectedDepartment;
     return (
       <div className={styles.personnelMain}>
         <div className={styles.mainContent}>
           <DepartmentTree {...this.props} />
           <div className={styles.personnelList}>
-            <ListDepartmentName {...this.props} />
-            <DepartmentStation {...this.props} />
+          <ListDepartmentName {...this.props} />
+          {`${departmentId}` !== '1' && <DepartmentStation {...this.props} />}
             <ListSearch {...this.props} />
             <List {...this.props} />
           </div>

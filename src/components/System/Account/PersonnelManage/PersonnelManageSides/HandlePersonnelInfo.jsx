@@ -36,13 +36,13 @@ class HandlePersonnelInfo extends Component {
     const preLoading = this.props.addUserLoading;
     if (pageKey === 'editPersonnel' && userDetailInfo !== preDetail) { // 编辑模式且得到新的详情, 将详情set进入formValue
       const { roleAllList, specialRoleList } = this.props;
-      const { userLogo, username, userFullName, phoneNum, email, roleName, spcialRoleName } = userDetailInfo;
+      const { userLogo, username, userFullName, phoneNum, email, roleName, spcialRoleName, departmentIds } = userDetailInfo;
       const tmpRoleNameArr = roleName ? roleName.split(',') : [];
       const tmpRoleSpcialArr = spcialRoleName ? spcialRoleName.split(',') : [];
       const roleIds = roleAllList.filter(e => tmpRoleNameArr.includes(e.roleDesc)).map(e => e.roleId);
       const specialRoleIds = specialRoleList.filter(e => tmpRoleSpcialArr.includes(e.roleDesc)).map(e => e.roleId);
       form.setFieldsValue({
-        userLogo, username, userFullName, phoneNum, email, roleIds, specialRoleIds,
+        userLogo, username, userFullName, phoneNum, email, roleIds, specialRoleIds, departmentIds
       });
     }
     if (!addUserLoading && preLoading && addUserSuccess) { // 信息提交成功;
@@ -78,7 +78,12 @@ class HandlePersonnelInfo extends Component {
   userInfoSave = (addMode) => (methodName) => {
     this.setState({ addMode }, () => {
       this.props.form.validateFieldsAndScroll((err, values) => {
-        if (!err) { this.props[methodName](values); }
+        if (!err) {
+          this.props[methodName]({
+            ...values,
+            userId: this.props.userDetailInfo.userId,
+          });
+        }
       });
     });
   }
@@ -89,33 +94,33 @@ class HandlePersonnelInfo extends Component {
     detailPersonnel: '详情',
   }
 
-  getEditEnterpriseDetail = () => {
-    const { userDetailInfo } = this.props;
-    const enterpriseLists = userDetailInfo.enterpriseData || [];
-    const departLists = [], stationLists = [];
-    const enterpriseTexts = enterpriseLists.map(e => {
-      const { departmentData, enterpriseName } = e || {};
-      departmentData && departLists.push(...departmentData);
-      return enterpriseName || '';
-    }).join(',');
-    const departTexts = departLists.map(e => {
-      const { departmentName, stationData } = e || {};
-      stationData && stationLists.push(...stationData);
-      return departmentName || '';
-    }).join(',');
-    const stationTexts = stationLists.map(e => e.stationName).join(',');
-    return {
-      enterpriseTexts,
-      departTexts,
-      stationTexts,
-    };
-  }
+  // getEditEnterpriseDetail = () => {
+  //   const { userDetailInfo } = this.props;
+  //   const enterpriseLists = userDetailInfo.enterpriseData || [];
+  //   const departLists = [], stationLists = [];
+  //   const enterpriseTexts = enterpriseLists.map(e => {
+  //     const { departmentData, enterpriseName } = e || {};
+  //     departmentData && departLists.push(...departmentData);
+  //     return enterpriseName || '';
+  //   }).join(',');
+  //   const departTexts = departLists.map(e => {
+  //     const { departmentName, stationData } = e || {};
+  //     stationData && stationLists.push(...stationData);
+  //     return departmentName || '';
+  //   }).join(',');
+  //   const stationTexts = stationLists.map(e => e.stationName).join(',');
+  //   return {
+  //     enterpriseTexts,
+  //     departTexts,
+  //     stationTexts,
+  //   };
+  // }
 
   render(){
     const { showWarningTip, addMode } = this.state;
     const { pageKey, form, roleAllList, specialRoleList, departmentTree, addUserLoading } = this.props;
     const { getFieldDecorator } = form;
-    const { enterpriseTexts, departTexts, stationTexts } =pageKey === 'editPersonnel' ? this.getEditEnterpriseDetail() : {};
+    // const { enterpriseTexts, departTexts, stationTexts } =pageKey === 'editPersonnel' ? this.getEditEnterpriseDetail() : {};
     return (
       <div className={styles.sideHandle} style={pageKey === 'detailPersonnel' ? { display: 'none' } : {}}>
         <div className={styles.topTitle}>
@@ -124,7 +129,9 @@ class HandlePersonnelInfo extends Component {
         </div>
           <Form className={styles.personnelInfoForm}>
             <FormItem label="" className={styles.leftLogo}>
-              {getFieldDecorator('userLogo', {})(
+              {getFieldDecorator('userLogo', {
+                initialValue: '/img/nopic.png',
+              })(
                 <PersonnelLogoUploader />
               )}
             </FormItem>
@@ -204,7 +211,7 @@ class HandlePersonnelInfo extends Component {
                 )}
                 <span className={styles.instructionText}>(没有设置角色的用户无法正常使用系统)</span>
               </FormItem>
-              {pageKey === 'addPersonnel' && <FormItem label="所属部门" className={styles.eachForm}>
+              {<FormItem label="所属部门" className={styles.eachForm}>
                 {getFieldDecorator('departmentIds', {
                   initialValue: [],
                 })(
@@ -228,7 +235,7 @@ class HandlePersonnelInfo extends Component {
                   </Select>
                 )}
               </FormItem>
-              {pageKey === 'editPersonnel' && <div className={styles.enterpriseInfo}>
+              {/* {pageKey === 'editPersonnel' && <div className={styles.enterpriseInfo}>
                 <div className={styles.eachForm}>
                   <span className={styles.label}>所在企业</span>
                   <span>{enterpriseTexts}</span>
@@ -241,7 +248,7 @@ class HandlePersonnelInfo extends Component {
                   <span className={styles.label}>所属电站</span>
                   <span>{stationTexts}</span>
                 </div>
-              </div>}
+              </div>} */}
               <div className={styles.buttonRow}>
                 <Button
                   onClick={this.saveUser}

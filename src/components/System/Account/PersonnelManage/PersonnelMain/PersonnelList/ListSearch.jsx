@@ -105,8 +105,10 @@ class ListSearch extends Component {
     // const { departmentStations, departmentAllUsers } = this.props;
     // const stationNames = departmentStations.map(e => e.stationName);
     // const userNames = departmentAllUsers.map(e => e.username);
+    const { userListParams } = this.props;
     const { nameText, phoneText, stationText } = this.state;
-    const hasSearchCondition = nameText || phoneText || stationText;
+    const { username, phoneNum, stationName } = userListParams;
+    const hasSearchCondition = username || phoneNum || stationName;
     return (
       <div className={styles.listSearch}>
         {/* <Select

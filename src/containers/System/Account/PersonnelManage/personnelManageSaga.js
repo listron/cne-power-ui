@@ -211,12 +211,14 @@ function *assignUsers({ payload }) { // 为部门分配用户
 
 function *getUserList({ payload = {} } = {}) { // payload不存在时, 使用缓存参数继续请求;
   try {
-    const { userListParams, userListPageInfo } = yield select(state => state.system.personnelManage);
+    const { userListParams, userListPageInfo, selectedDepartment } = yield select(state => state.system.personnelManage);
     const url = `${APIBasePath}${system.getUserPagelist}`;
     yield call(easyPut, 'changeStore', { userListLoading: true });
+    const { departmentId } = selectedDepartment;
     const response = yield call(request.post, url, {
       ...userListParams,
       ...userListPageInfo,
+      departmentId,
       ...payload,
     });
     if (response.code === '10000') {
@@ -339,6 +341,11 @@ function* editUser({ payload }){ // 编辑用户
     yield call(easyPut, 'changeStore', { addUserLoading: false });
     message.error(`修改用户信息失败, 请重试, ${err}`);
   }
+}
+
+function* getDepartmentsStationMap({ payload }){ // 新增-编辑用户中，获取多个部门下所有电站的集合
+  // payload = { departmentIds: [] }
+  const url = '';
 }
 
 export function* watchPersonnelManage() {

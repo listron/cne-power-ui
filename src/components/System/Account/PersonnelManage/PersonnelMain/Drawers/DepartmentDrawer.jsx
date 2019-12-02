@@ -18,9 +18,11 @@ class DepartmentDrawer extends Component {
     addDepartmentSuccess: PropTypes.bool,
     stations: PropTypes.array,
     form: PropTypes.object,
+    selectedDepartment: PropTypes.object,
     changeStore: PropTypes.func,
     addNewDepartment: PropTypes.func,
     editDepartment: PropTypes.func,
+    getStationOfDepartment: PropTypes.func,
   }
 
   componentWillReceiveProps(nextProps){
@@ -37,6 +39,17 @@ class DepartmentDrawer extends Component {
       });
     }
     if (preLoading && !addDepartmentLoading && addDepartmentSuccess) { // 新增 / 编辑请求结束 => 成功 => 关闭抽屉
+      const { selectedDepartment } = this.props;
+      const { departmentId } = departmentEditInfo;
+      if (selectedDepartment.departmentId === departmentId) { // 若是编辑, 且正是当前选中查看详情部门, 重新请求右侧部门负责电站 + 更新
+        this.props.changeStore({
+          selectedDepartment: {
+            ...selectedDepartment,
+            departmentName: form.getFieldValue('departmentName'),
+          },
+        });
+        this.props.getStationOfDepartment({ departmentId });
+      }
       this.hideDepartmentDrawer();
     }
   }
