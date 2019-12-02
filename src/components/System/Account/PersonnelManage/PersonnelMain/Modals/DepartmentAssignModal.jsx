@@ -43,7 +43,7 @@ class DepartmentAssignModal extends Component {
         title={
           <div className={styles.title}>
             <span>请选择所属部门</span>
-            <Icon className={styles.close} type="close" onClick={this.cancelAssign} />
+            <Icon className={styles.close} type="close" onClick={this.props.hideModal} />
           </div>
         }
         closable={false}
