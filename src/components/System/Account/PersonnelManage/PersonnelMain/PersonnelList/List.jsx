@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Table } from 'antd';
 import ListHandle from './ListHandle';
 import WarningTip from '@components/Common/WarningTip';
+import DepartmentAssignModal from '../Modals/DepartmentAssignModal';
 import { ListFooter } from './PureFunc';
 
 import styles from './list.scss';
@@ -15,6 +16,7 @@ class List extends Component {
     logoutSuccess: PropTypes.bool,
     userList: PropTypes.array,
     selectedRowKeys: PropTypes.array,
+    departmentTree: PropTypes.array,
     getUserDetailInfo: PropTypes.func,
     setUserStatus: PropTypes.func,
     changeStore: PropTypes.func,
@@ -23,6 +25,7 @@ class List extends Component {
   state = {
     showLogout: false,
     logoutUserId: null,
+    assignDepartUsers: [], // 分配部门弹框的用户信息对象数组
     column: [
       {
         title: '用户名',
@@ -64,7 +67,11 @@ class List extends Component {
                 title="审核"
                 onClick={() => this.examineUser(record)}
               /> /*需审核*/}
-              {parseFloat(enterpriseStatus) !== 5 && <i title="分配" className="iconfont icon-bumenx" /> /*分配*/}
+              {parseFloat(enterpriseStatus) !== 5 && <i
+                title="分配"
+                className="iconfont icon-bumenx"
+                onClick={() => this.assignDeparts([record])}
+              /> /*分配*/}
             </span>
           );
         },
@@ -104,6 +111,8 @@ class List extends Component {
     this.props.changeStore({ personnelDrawerIds: [userId] });
   }
 
+  assignDeparts = (assignDepartUsers) => this.setState({ assignDepartUsers }) // 去分配用户的部门
+
   logoutWarning = ({ userId }) => { // 注销用户前弹框
     this.setState({ showLogout: true, logoutUserId: userId });
   }
@@ -129,11 +138,11 @@ class List extends Component {
   }
 
   render(){
-    const { userList, userListLoading, selectedRowKeys } = this.props;
-    const { column, showLogout } = this.state;
+    const { userList, userListLoading, selectedRowKeys, departmentTree } = this.props;
+    const { column, showLogout, assignDepartUsers } = this.state;
     return (
       <div className={styles.personnelMain}>
-        <ListHandle {...this.props} />
+        <ListHandle {...this.props} assignDeparts={this.assignDeparts} />
         <Table
           dataSource={userList}
           columns={column}
@@ -144,6 +153,14 @@ class List extends Component {
             onChange: this.rowSelect,
             selectedRowKeys,
           }}
+        />
+        <DepartmentAssignModal
+          departmentTree={departmentTree}
+          value={[]}
+          onChange={(ids) => console.log(ids)}
+          username={assignDepartUsers.map(e => e.username)}
+          hiddenIcon={true}
+          modalShowControl={assignDepartUsers.length > 0}
         />
         {showLogout && <WarningTip
           onOK={this.logoutUser}
@@ -158,3 +175,14 @@ class List extends Component {
 }
 
 export default List;
+
+
+// class DepartmentAssignModal extends Component { 
+//   static propTypes = {
+//     departmentTree: PropTypes.array,
+//     value: PropTypes.array,
+//     onChange: PropTypes.func,
+//     username: PropTypes.string,
+//     hiddenIcon: PropTypes.bool,
+//     modalShowControl: PropTypes.bool,
+//   }

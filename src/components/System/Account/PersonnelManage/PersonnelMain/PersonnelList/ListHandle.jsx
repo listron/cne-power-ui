@@ -15,9 +15,11 @@ class ListHandle extends Component {
     userListPageInfo: PropTypes.object,
     userListTotalNum: PropTypes.number,
     selectedRowKeys: PropTypes.array,
+    userList: PropTypes.array,
     changeStore: PropTypes.func,
     getUserList: PropTypes.func,
     setUserStatus: PropTypes.func,
+    assignDeparts: PropTypes.func,
   }
 
   state = {
@@ -38,16 +40,16 @@ class ListHandle extends Component {
   }
 
   handleUser = (value) => {
-    console.log(value);
+    const { selectedRowKeys, userList } = this.props;
     if (value === 'logout') { // 注销用户前弹框
       this.setState({ showLogout: true });
     }
     if (value === 'examine') { // 将选中项转存至personnelDrawerIds, 开启弹框
-      const { selectedRowKeys } = this.props;
       this.props.changeStore({ personnelDrawerIds: selectedRowKeys });
     }
     if (value === 'assign') {
-      // this.
+      const assignDepartUsers = userList.filter(e => selectedRowKeys.includes(e.userId));
+      this.props.assignDeparts(assignDepartUsers);
     }
   }
 
@@ -76,8 +78,10 @@ class ListHandle extends Component {
 
   render(){
     const { showLogout } = this.state;
-    const { userListPageInfo, userListTotalNum } = this.props;
+    const { userListPageInfo, userListTotalNum, userList, selectedRowKeys } = this.props;
     const { pageNum, pageSize } = userListPageInfo;
+    const selectedUserStatus = userList.filter(e => selectedRowKeys.includes(e.userId)).map(e => e.enterpriseStatus);
+    const handleDisable = new Set(selectedUserStatus).size !== 1;
     return (
       <div className={styles.listHandle}>
         <span className={styles.leftHandle}>
@@ -87,6 +91,7 @@ class ListHandle extends Component {
             style={{width: '70px', margin: '0 28px 0 10px'}}
             value="操作"
             dropdownMatchSelectWidth={false}
+            disabled={handleDisable}
           >
             <Option key="assign">
               <span className={`iconfont icon-bumenx ${styles.icon}`} />分配部门
