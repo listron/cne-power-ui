@@ -63,7 +63,7 @@ class ExamineDrawer extends Component {
 
   hideExamineDrawer = () => { // 隐藏抽屉并重置
     this.props.form.resetFields();
-    this.props.changeStore({ hideExamineDrawer: false });
+    this.props.changeStore({ showPersonnelDrawer: false });
   }
 
   render(){
@@ -91,9 +91,10 @@ class ExamineDrawer extends Component {
               </Radio.Group>
             )}
           </FormItem>
-          <FormItem label="角色" className={styles.drawerItem} >
+          <FormItem label="角色" colon={false} className={styles.drawerItem} >
             {getFieldDecorator('roleIds', {
               initialValue: [],
+              rules: [{ required: true, message: '请选择审核结果' }],
             })(
               <Select
                 mode="multiple"
