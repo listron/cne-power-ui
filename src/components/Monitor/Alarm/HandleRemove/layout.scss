@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+
   .realTimeWarningFilter {
     position: relative;
     display: flex;
@@ -16,20 +17,24 @@
     flex-direction: row;
     align-items: center;
     padding-left: 28px;
+
     .deviceName {
       width: 200px;
       margin: 0 16px;
     }
-    > span:last-child {
+
+    >span:last-child {
       font-size: 14px;
       cursor: pointer;
       margin-left: 16px;
     }
   }
+
   .realTimeWarningTable {
     display: flex;
     flex: 1;
     flex-direction: column;
+
     .tableHeader {
       display: flex;
       flex-direction: row;
@@ -39,24 +44,30 @@
       height: 55px;
       padding: 0 28px;
     }
+
     .alarmDesc {
       cursor: pointer;
     }
   }
+
   .tableFooter {
     height: 45px;
     line-height: 45px;
+
     .info {
       margin-right: 20px;
       margin-left: 24px;
+
       .totalNum {
         margin: auto 4px;
       }
     }
+
     .cancel {
       cursor: pointer;
     }
   }
+
   :global {
     .icon-action {
       width: 30px;
@@ -66,7 +77,9 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
+
     }
+
     .ant-table-placeholder {
       border-bottom: none;
     }
@@ -78,10 +91,12 @@
     display: flex;
     flex-direction: row;
   }
+
   .input {
     margin-left: -60px;
     margin-top: 15px;
   }
+
   .instructionText {
     display: flex;
     flex: 1;
@@ -89,6 +104,7 @@
     justify-content: flex-end;
     margin-right: 8px;
   }
+
   :global {
     .ant-modal-content {
       display: flex;
@@ -97,14 +113,17 @@
       height: 100%;
       margin-top: 180px;
     }
+
     .ant-form-item-control-wrapper {
       .ant-form-item-control {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
+
         .ant-form-item-children {
           display: flex;
           flex-direction: row;
+
           .ant-calendar-picker {
             margin-left: 12px;
             vertical-align: top;
@@ -122,33 +141,48 @@
   max-height: 300px;
   overflow-y: auto;
   overflow-x: hidden;
+
   .header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 6px;
+
     .title {
       display: flex;
       flex-direction: row;
       align-items: center;
+
+      i {
+        cursor: auto;
+        &:hover {
+          background-color: #ceebe0;
+          color: $themeColor;
+        }
+      }
+
       .titleText {
         font-size: 14px;
         margin-left: 10px;
       }
     }
   }
+
   .content {
     display: flex;
     flex-direction: column;
     line-height: 24px;
+
     .infoItem {
       display: flex;
       flex-direction: row;
+
       .label {
         font-size: 14px;
         min-width: 70px;
       }
+
       .value {
         display: flex;
         flex-wrap: wrap;
@@ -156,6 +190,7 @@
       }
     }
   }
+
   .ticketButton {
     margin-top: 24px;
     margin-left: 65px;
@@ -168,10 +203,12 @@
     display: flex;
     flex-direction: row;
   }
+
   .input {
     margin-left: -60px;
     margin-top: 15px;
   }
+
   .instructionText {
     display: flex;
     flex: 1;
@@ -179,6 +216,7 @@
     justify-content: flex-end;
     margin-right: 8px;
   }
+
   :global {
     .ant-modal-content {
       display: flex;

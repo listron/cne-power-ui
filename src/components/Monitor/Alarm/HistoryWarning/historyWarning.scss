@@ -1,33 +1,41 @@
 @import "../../../../theme/theme.scss";
 @import "./layout.scss";
+
 .light {
   background: #fff;
+
   .realTimeWarningFilter {
     background-color: #fff;
   }
+
   .deviceNameSearch {
     background-color: #f9f9f9;
     color: $darkColor;
   }
+
   .realTimeWarningTable {
     .tableHeader {
       background-color: #fff;
     }
+
     .deviceName {
       a {
         border-bottom: 1px $darkColor solid;
         color: $darkColor;
         text-decoration: none;
+
         &:hover {
           border-bottom: 1px $themeColor solid;
           color: $themeColor;
         }
       }
     }
+
     .alarmDesc {
       cursor: pointer;
     }
   }
+
   .detailInfo {
     color: $darkColor;
   }
@@ -36,12 +44,19 @@
     .icon-action {
       background-color: #ceebe0;
       color: $themeColor;
+
+      &:hover {
+        background-color: $themeColor;
+        color: #fff;
+      }
     }
+
     .ant-table-placeholder {
       border-bottom: none;
     }
   }
 }
+
 .dark {
   @import "../../../../theme/darkTheme.scss";
   background: $background;
@@ -57,17 +72,20 @@
     background: $light-background;
     border: 1px solid $border-color;
     margin-top: 10px;
+
     .iconDetail {
       i {
         color: $themeColor;
         cursor: pointer;
       }
     }
+
     .deviceName {
       a {
         border-bottom: 1px solid $fontColor;
         color: $fontColor;
         text-decoration: none;
+
         &:hover {
           border-bottom: 1px solid $fontColor-hover;
           color: $fontColor-hover;
@@ -84,6 +102,7 @@
     .icon-action {
       background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
       color: $fontColor-invert;
+
       &:hover {
         background-image: linear-gradient(-180deg, #b4ec51 0%, #429321 100%);
       }

@@ -3,26 +3,43 @@
 
 .light {
   background: #fff;
+
   .deviceNameSearch {
     background-color: #f9f9f9;
     color: $darkColor;
   }
+
   .realTimeWarningTable {
     .tableHeader {
       background-color: #fff;
     }
+
     .iconDetail {
-      i {
-        display: block;
+      // i {
+ //   display: block;
+ //   color: $themeColor;
+ //   cursor: pointer;
+ // }
+    }
+
+    :global {
+      .icon-action {
+        background-color: #ceebe0;
         color: $themeColor;
-        cursor: pointer;
+
+        &:hover {
+          background-color: $themeColor;
+          color: #fff;
+        }
       }
     }
+
     .deviceName {
       a {
         border-bottom: 1px $darkColor solid;
         color: $darkColor;
         text-decoration: none;
+
         &:hover {
           border-bottom: 1px $themeColor solid;
           color: $themeColor;
@@ -30,14 +47,18 @@
       }
     }
   }
+
   .tableFooter {
     background-color: #fff;
+
     .info {
       color: $darkColor;
+
       .totalNum {
         color: rgb(250, 185, 7);
       }
     }
+
     .cancel {
       color: $themeColor;
     }
@@ -47,6 +68,7 @@
 .dark {
   @import "../../../../theme/darkTheme.scss";
   background: $background;
+
   .realTimeWarningFilter {
     margin-top: 10px;
   }
@@ -62,21 +84,24 @@
     background: $light-background;
     border: 1px solid $border-color;
     margin-top: 10px;
+
     :global {
-      .ant-table-placeholder {
-      }
+      .ant-table-placeholder {}
     }
+
     .iconDetail {
       i {
         color: $themeColor;
         cursor: pointer;
       }
     }
+
     .deviceName {
       a {
         border-bottom: 1px solid $fontColor;
         color: $fontColor;
         text-decoration: none;
+
         &:hover {
           border-bottom: 1px solid $fontColor-hover;
           color: $fontColor-hover;
@@ -87,12 +112,15 @@
 
   .tableFooter {
     background-color: transparent;
+
     .info {
       color: $fontColor;
+
       .totalNum {
         color: #f8b14e;
       }
     }
+
     .cancel {
       color: #f8b14e;
     }
