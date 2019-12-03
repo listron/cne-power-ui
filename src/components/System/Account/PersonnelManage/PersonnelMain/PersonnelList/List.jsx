@@ -55,29 +55,7 @@ class List extends Component {
           return <span className={statusText === '待审核' ? styles.toExamine : styles.status}>{statusText || '--'}</span>;
         },
         sorter: true,
-      }, {
-        title: '操作',
-        dataIndex: 'handle',
-        render: (text, record) => {
-          const { enterpriseStatus } = record;
-          return (
-            <span className={styles.handle}>
-              <i className="iconfont icon-edit" title="编辑" onClick={() => this.editUser(record)} />
-              <i className="iconfont icon-remove" title="注销" onClick={() => this.logoutWarning(record)} />
-              {parseFloat(enterpriseStatus) === 5 && <i
-                className="iconfont icon-examine1"
-                title="审核"
-                onClick={() => this.examineUser(record)}
-              /> /*需审核*/}
-              {parseFloat(enterpriseStatus) !== 5 && <i
-                title="分配"
-                className="iconfont icon-bumenx"
-                onClick={() => this.assignDeparts([record])}
-              /> /*分配*/}
-            </span>
-          );
-        },
-      },
+      }
     ],
   }
 
@@ -161,15 +139,46 @@ class List extends Component {
     this.props.changeStore({ selectedRowKeys: [] });
   }
 
+  getHandleColumn = (editRight, assignRight, deleteRight, auditRight) => ({
+    title: '操作',
+    dataIndex: 'handle',
+    render: (text, record) => {
+      const { enterpriseStatus } = record;
+      return (
+        <span className={styles.handle}>
+          {editRight && <i className="iconfont icon-edit" title="编辑" onClick={() => this.editUser(record)} />}
+          {deleteRight && <i className="iconfont icon-remove" title="注销" onClick={() => this.logoutWarning(record)} />}
+          {auditRight && parseFloat(enterpriseStatus) === 5 && <i
+            className="iconfont icon-examine1"
+            title="审核"
+            onClick={() => this.examineUser(record)}
+          /> /*需审核*/}
+          {assignRight && parseFloat(enterpriseStatus) !== 5 && <i
+            title="分配"
+            className="iconfont icon-bumenx"
+            onClick={() => this.assignDeparts([record])}
+          /> /*分配*/}
+        </span>
+      );
+    },
+  })
+
   render(){
     const { userList, userListLoading, selectedRowKeys, departmentTree } = this.props;
     const { column, showLogout, assignDepartUsers, assignDepartChecked } = this.state;
+    const rights = localStorage.getItem('rightHandler');
+    const editRight = rights && rights.split(',').includes('account_user_edit'); // 编辑
+    const assignRight = rights && rights.split(',').includes('account_department_user'); // 部门 - 用户 分配
+    const deleteRight = rights && rights.split(',').includes('account_user_delete'); // 注销
+    const auditRight = rights && rights.split(',').includes('account_user_audit'); // 审核
+    const hasRights = assignRight || deleteRight || auditRight;
+    const tableColumn = hasRights ? column.concat(this.getHandleColumn(editRight, assignRight, deleteRight, auditRight)) : column;
     return (
       <div className={styles.personnelMain}>
         <ListHandle {...this.props} assignDeparts={this.assignDeparts} />
         <Table
           dataSource={userList}
-          columns={column}
+          columns={tableColumn}
           pagination={false}
           loading={userListLoading}
           className={styles.listMain}

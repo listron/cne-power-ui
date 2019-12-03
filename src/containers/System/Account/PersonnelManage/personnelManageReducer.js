@@ -35,7 +35,6 @@ const initState = {
     username: '',
     phoneNum: '',
     stationName: '',
-    departmentId: '1',
   }, // 展示用户列表请求信息
   userListPageInfo: {
     pageNum: 1,

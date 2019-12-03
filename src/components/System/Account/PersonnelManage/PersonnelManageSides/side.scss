@@ -30,6 +30,18 @@
       font-size: 18px;
       letter-spacing: 4px;
     }
+    .rightHandle{
+      display: flex;
+      flex: 0 0 200px;
+      justify-content: flex-end;
+      align-items: center;
+      :global{
+        .iconfont{
+          margin-right: 20px;
+          cursor: pointer;
+        }
+      }
+    }
     .backIcon{
       color: $darkColor;
       font-size: 20px;

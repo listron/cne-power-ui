@@ -629,14 +629,14 @@ const menuData = [
             path: 'personnelManage',
             rightKey: 'system_account_user',
           }, {
-            name: '部门',
-            path: 'department',
-            rightKey: 'system_account_department',
-          }, {
-            name: '用户',
-            path: 'user',
-            rightKey: 'system_account_user',
-          }, {
+          //   name: '部门',
+          //   path: 'department',
+          //   rightKey: 'system_account_department',
+          // }, {
+          //   name: '用户',
+          //   path: 'user',
+          //   rightKey: 'system_account_user',
+          // }, {
             name: '角色',
             path: 'role',
             rightKey: 'system_account_role',
