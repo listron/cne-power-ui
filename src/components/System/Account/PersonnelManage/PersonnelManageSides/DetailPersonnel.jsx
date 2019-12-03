@@ -72,10 +72,12 @@ class PersonnelManageSides extends Component {
     const { pageKey, userDetailInfo } = this.props;
     const { userLogo, enterpriseUserStatus, createtime, enterpriseData } = userDetailInfo;
     const enterpriseList = enterpriseData || [];
+    const rights = localStorage.getItem('rightHandler');
+    const editRight = rights && rights.split(',').includes('account_user_edit'); // 编辑
     return (
       <div className={styles.detail} style={['addPersonnel', 'editPersonnel'].includes(pageKey) ? {display: 'none'} : {}}>
         <div className={styles.topTitle}>
-          <Button className={styles.topButton} onClick={this.toEdit}>编辑</Button>
+          {editRight ? <Button className={styles.topButton} onClick={this.toEdit}>编辑</Button> : <span />}
           <span className={styles.rightHandle}>
             <i className="iconfont icon-last" title="上一个" onClick={this.preDetail} />
             <i className="iconfont icon-next" title="下一个" onClick={this.nextDetail} />
