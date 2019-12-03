@@ -64,6 +64,7 @@ class MonthPower extends Component {
         };
         const equipmentHoursObj = [{
             name: '利用小时(h)',
+            name: '等效时(h)',
             type: 'value',
             axisLabel: {
                 formatter: '{value}',
@@ -151,6 +152,7 @@ class MonthPower extends Component {
         }];
         const equipmentHoursObj = [{
             name: '利用小时',
+            // name: '等效时',
             type: 'bar',
             color: this.themeColor[theme].equipmentHours,
             barWidth: 6,
@@ -189,6 +191,7 @@ class MonthPower extends Component {
         const powerOption = {
             graphic: graphic,
             title: {
+                // text: '月发电量与等效时（截止昨天）',
                 text: '月发电量与利用小时（截止昨天）',
                 top: 8,
                 left: 10,
@@ -265,6 +268,7 @@ class MonthPower extends Component {
                 <div className={styles.powerRadio}>
                     <RadioGroup defaultValue={'monthPower'} size="small" onChange={this.onChangeTimePower} >
                         <RadioButton value={'monthPower'} key={'monthPower'} >发电量</RadioButton>
+                        {/* <RadioButton value={'equipmentHours'} key={'equipmentHours'}>等效时</RadioButton> */}
                         <RadioButton value={'equipmentHours'} key={'equipmentHours'}>利用小时</RadioButton>
                     </RadioGroup>
                 </div>

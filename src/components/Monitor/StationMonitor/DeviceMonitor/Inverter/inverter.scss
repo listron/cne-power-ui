@@ -101,6 +101,19 @@
         display: inline-block;
         width: 50%;
         text-align: left;
+        > div{
+          display: flex;
+          .tooltipName{
+            margin-top: -5px;
+            margin-left: 3px;
+            i{
+              color:  #dfdfdf;
+              &:hover{
+                color: #f9b600;
+              }
+            }
+          }
+        }
       }
     }
     .subBranch {

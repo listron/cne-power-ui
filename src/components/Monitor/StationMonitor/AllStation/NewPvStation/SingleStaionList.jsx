@@ -84,6 +84,7 @@ class SingleStaionList extends React.Component {
               </div>
               <div className={styles.column}>
                 <span className={styles.dataName}> 日利用小时</span>
+                <span className={styles.dataName}> 日等效时</span>
                 <div> <span className={styles.changeNum}> {dataFormats(equivalentHours, '--', 2)}</span> h </div>
               </div>
             </div>
@@ -100,9 +101,9 @@ class SingleStaionList extends React.Component {
           <Link to={`/monitor/singleStation/${singleStation.stationCode}?showPart=${'509'}`} className={styles.dataColumn}>
             异常支路数  <span className={styles[`${singleStation.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(singleStation.anomalousBranchNum, '--', 0)}</span>
           </Link>
-          <Link to={`/monitor/singleStation/${singleStation.stationCode}?showPart=${invertType}`} className={styles.dataColumn}>
+          {/* <Link to={`/monitor/singleStation/${singleStation.stationCode}?showPart=${invertType}`} className={styles.dataColumn}>
             低效逆变器  <span className={styles[`${singleStation.lowEfficiencyInverterNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(singleStation.lowEfficiencyInverterNum, '--', 0)}</span>
-          </Link>
+          </Link> */}
           <Link to={`/monitor/alarm/realtime?stationCode=${singleStation.stationCode}`} className={styles.dataColumn}>
             <div>
               告警  <span className={styles[`${singleStation.alarmNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(singleStation.alarmNum, '--', 0)}</span>

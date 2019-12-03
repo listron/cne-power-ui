@@ -34,6 +34,18 @@
       border: none;
     }
 
+    .equivalentTime{
+      display: flex;
+      align-items: center;
+    }
+    .tooltipName{
+      margin-left: 4px;
+      margin-bottom: 8px;
+      &:hover{
+        color: #f9b600;
+      }
+    }
+
     .dataValue {
       font-size: 24px;
       text-align: left;
