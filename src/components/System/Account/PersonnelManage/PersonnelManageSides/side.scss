@@ -1,0 +1,177 @@
+
+@import '../../../../../theme/theme.scss';
+
+
+.personnelManageSides{
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  padding: 24px 24px 0;
+  transition: all 500ms;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail, .sideHandle{ // 详情, 编辑, 新增 公用顶部样式
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .topTitle{
+    flex-basis: 0 0 64px;
+    display: flex;
+    padding-left: 32px;
+    align-items: center;
+    justify-content: space-between;
+    .titleName{
+      font-size: 18px;
+      letter-spacing: 4px;
+    }
+    .backIcon{
+      color: $darkColor;
+      font-size: 20px;
+      line-height: 64px;
+      flex: 0 0 64px;
+      cursor: pointer;
+    }
+  }
+}
+
+.detail .userContent{ // 详情
+  display: flex;
+  padding: 54px 70px 0 40px;
+  overflow-y: auto;
+  .leftConfig, .rightContent{
+    .eachInfo{
+      display: flex;
+      height: 30px;
+      align-items: center;
+      .title{
+        flex: 0 0 56px;
+        margin-right: 24px;
+        text-align: right;
+      }
+    }
+  }
+  .leftConfig{
+    margin-right: 70px;
+    img{
+      width: 240px;
+      height: 240px;
+    }
+  }
+  .rightContent{
+    flex: 1;
+    .doshLine{
+      height: 1px;
+    }
+    .eachEnterprise{
+      display: flex;
+      .enterpriseName{
+        flex: 0 0 150px;
+        text-align: right;
+        @include overflowText();
+      }
+      .eachDepartment{
+        flex: 1;
+        word-break: break-all;
+        line-height: 30px;
+      }
+    }
+  }
+}
+
+.sideHandle .personnelInfoForm{ // 编辑, 新增
+  overflow-y: auto;
+  display: flex;
+  padding: 24px 32px 0;
+  .leftLogo{
+    margin-right: 48px;
+    .logotip{
+      line-height: 21px;
+    }
+  }
+  .rightForms{
+    flex: 1;
+    .eachForm{
+      display: flex;
+      .instructionText{
+        margin-left: 12px;
+      }
+      .label{
+        flex: 0 0 70px;
+        padding-right: 12px;
+        margin-right: 24px;
+        text-align: right;
+      }
+      .eachDepart{
+        margin-bottom: 21px;
+      }
+      .stationText{
+        padding: 0 24px;
+      }
+      :global{
+        .ant-form-item-label{
+          flex: 0 0 70px;
+          margin-right: 24px;
+          text-align: right;
+        }
+      }
+    }
+    .buttonRow{
+      padding-left: 94px;
+      padding-bottom: 24px;
+      button{
+        margin-right: 20px;
+      }
+    }
+  }
+} 
+
+// 颜色部分
+.detail, .sideHandle{
+  background-color: #fff;
+  .topTitle{
+    border-bottom: 1px solid $promptColor;
+    .backIcon{
+      color: $darkColor;
+      border-left: 1px solid $promptColor;
+    }
+  }
+}
+
+.detail .userContent{
+  .rightContent{
+    .doshLine{
+      border-top: 1px dashed $promptColor;
+    }
+  }
+}
+
+.sideHandle .personnelInfoForm{ // 编辑, 新增
+  .leftLogo{
+    .logotip{
+      color: $promptColor;
+    }
+  }
+  .rightForms{
+    .eachForm{
+      .instructionText{
+        color: $promptColor;
+      }
+      :global{
+        .ant-form-item-label{
+          color: rgba(0, 0, 0, 0.85);
+        }
+      }
+    }
+    .eachForm{
+      .label{
+        color: rgba(0, 0, 0, 0.85);
+      }
+    }
+  }
+} 

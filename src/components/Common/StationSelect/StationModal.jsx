@@ -158,7 +158,7 @@ class StationModal extends Component { // 单独的弹框组件
         okText="确定"
         title="请选择"
         width={625}
-        getContainer={() => stationRef }
+        getContainer={() => stationRef || document.body}
         wrapClassName={`${styles.stationModal} ${styles[theme]}`}
       >
         <div className={styles.stationStyleModal}>

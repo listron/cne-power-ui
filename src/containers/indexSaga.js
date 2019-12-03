@@ -18,6 +18,7 @@ import { watchInspectList } from './Operation/WorkProcess/InspectList/inspectLis
 import { watchInspectDetail } from './Operation/WorkProcess/InspectDetail/inspectDetailSaga';
 
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
+import { watchPersonnelManage } from './System/Account/PersonnelManage/personnelManageSaga';
 import { watchDepartment } from './System/Account/Department/departmentSaga';
 import { watchRole } from './System/Account/Role/roleSaga';
 import { watchUser } from './System/Account/User/userSaga';
@@ -152,6 +153,7 @@ export default function* rootSaga() {
 
     //system-enterprise
     watchEnterprise(),
+    watchPersonnelManage(),
     watchDepartment(),
     watchRole(),
     watchUser(),
