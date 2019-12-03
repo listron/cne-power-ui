@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon } from 'antd';
+import { Button, Icon, message } from 'antd';
 import moment from 'moment';
 import styles from './side.scss';
 
@@ -10,7 +10,9 @@ class PersonnelManageSides extends Component {
   static propTypes = {
     pageKey: PropTypes.string,
     userDetailInfo: PropTypes.object,
+    userList: PropTypes.array,
     changeStore: PropTypes.func,
+    getUserDetailInfo: PropTypes.func,
   }
 
   backToList = () => {
@@ -20,6 +22,32 @@ class PersonnelManageSides extends Component {
   toEdit = () => {
     const { userDetailInfo } = this.props; //需将详情信息结构 重置copy刷新一下对象, 保证对象内存地址变化从而手动触发edit的表单刷新。
     this.props.changeStore({ pageKey: 'editPersonnel', userDetailInfo: { ...userDetailInfo } });
+  }
+
+  preDetail = () => {
+    const { userDetailInfo, userList } = this.props;
+    const { userId } = userDetailInfo;
+    const userIndex = userList.findIndex(e => `${e.userId}` === `${userId}`);
+    if (userIndex === 0) {
+      message.error('已经是当前页第一条数据');
+    } else if (userIndex > 0) {
+      const newInfo = userList[userIndex - 1] || {};
+      const newUserId = newInfo.userId;
+      this.props.getUserDetailInfo({ userId: newUserId });
+    }
+  }
+
+  nextDetail = () => {
+    const { userDetailInfo, userList } = this.props;
+    const { userId } = userDetailInfo;
+    const userIndex = userList.findIndex(e => `${e.userId}` === `${userId}`);
+    if (userIndex === userList.length - 1) {
+      message.error('已经是当前页最后一条数据');
+    } else if (userIndex >= 0) {
+      const newInfo = userList[userIndex + 1] || {};
+      const newUserId = newInfo.userId;
+      this.props.getUserDetailInfo({ userId: newUserId });
+    }
   }
 
   enterpriseStatusInfo = {
@@ -48,7 +76,11 @@ class PersonnelManageSides extends Component {
       <div className={styles.detail} style={['addPersonnel', 'editPersonnel'].includes(pageKey) ? {display: 'none'} : {}}>
         <div className={styles.topTitle}>
           <Button className={styles.topButton} onClick={this.toEdit}>编辑</Button>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
+          <span className={styles.rightHandle}>
+            <i className="iconfont icon-last" title="上一个" onClick={this.preDetail} />
+            <i className="iconfont icon-next" title="下一个" onClick={this.nextDetail} />
+            <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
+          </span>
         </div>
         <div className={styles.userContent}>
           <div className={styles.leftConfig}>

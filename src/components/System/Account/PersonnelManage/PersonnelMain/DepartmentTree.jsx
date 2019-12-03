@@ -10,15 +10,15 @@ import styles from './main.scss';
 
 const { TreeNode, DirectoryTree } = Tree;
 
-const DepartMentTitle = ({ className, edit, remove, departmentInfo, hasChild}) => (
+const DepartMentTitle = ({ className, edit, remove, departmentInfo, hasChild, deleteRight, updateRight }) => (
   <span className={className}>
     <span
       title={departmentInfo.departmentName}
       className={styles.departmentName}
     >{departmentInfo.departmentName}</span>
     <span>
-      <span title="编辑" onClick={(event) => edit(event, departmentInfo)} className="iconfont icon-edit" />
-      <span title="删除" onClick={(event) => remove(event, departmentInfo, hasChild)} className="iconfont icon-del" />
+      {updateRight && <span title="编辑" onClick={(event) => edit(event, departmentInfo)} className="iconfont icon-edit" />}
+      {deleteRight && <span title="删除" onClick={(event) => remove(event, departmentInfo, hasChild)} className="iconfont icon-del" />}
     </span>
   </span>
 );
@@ -27,6 +27,8 @@ DepartMentTitle.propTypes = {
   className: PropTypes.string,
   hasChild: PropTypes.bool,
   departmentInfo: PropTypes.object,
+  deleteRight: PropTypes.bool,
+  updateRight: PropTypes.bool,
   remove: PropTypes.func,
   edit: PropTypes.func,
 };
@@ -119,13 +121,15 @@ class DepartmentTree extends Component {
 
   refuseTipHide = () => this.setState({ refuseText: '' })
 
-  renderTreeNodes = (data, level = 'fatherDepartmentTitle') => data.map(item => {
+  renderTreeNodes = (data, deleteRight, updateRight, level = 'fatherDepartmentTitle') => data.map(item => {
     const { departmentId, list } = item;
     const titleProps = {
       className: styles[level],
       edit: this.editDepartment,
       remove: this.removeDepartment,
       departmentInfo: item,
+      deleteRight,
+      updateRight,
     };
     const hasChild = list && list.length > 0;
     if (hasChild) {
@@ -136,7 +140,7 @@ class DepartmentTree extends Component {
           className={styles.eachDepartment}
           // selectable={false}
         >
-          {this.renderTreeNodes(list, 'subDepartmentTitle')}
+          {this.renderTreeNodes(list, deleteRight, updateRight, 'subDepartmentTitle')}
         </TreeNode>
       );
     }
@@ -151,10 +155,14 @@ class DepartmentTree extends Component {
   });
 
   render(){
-    // todo 批量导入成功后, 重新请求列表页数据信息
     const { enterpriseId, templateLoading, selectedDepartment, departmentTree, preDeleteText } = this.props;
     const { refuseText } = this.state;
     const { departmentId } = selectedDepartment || {};
+    const rights = localStorage.getItem('rightHandler');
+    const createRight = rights && rights.split(',').includes('account_department_create');
+    const userRight = rights && rights.split(',').includes('account_department_user');
+    const deleteRight = rights && rights.split(',').includes('account_department_delete');
+    const updateRight = rights && rights.split(',').includes('account_department_update');
     return (
       <div className={styles.departmentTree}>
         <h3 className={styles.treeTop}>
@@ -165,12 +173,12 @@ class DepartmentTree extends Component {
           <h4 className={styles.treeTitle}>
             <span className={styles.treeName}>部门列表</span>
             <span className={styles.titleHandle}>
-              <span className={styles.addTip} onClick={this.addDepartment}>添加部门</span>
-              <span className={styles.tipHolder}>|</span>
-              <span
+              {createRight && <span className={styles.addTip} onClick={this.addDepartment}>添加部门</span>}
+              {createRight && <span className={styles.tipHolder}>|</span>}
+              {userRight && <span
                 className={`${styles.assignTip} ${departmentId === '1' ? styles.forbidAssign : ''}`}
                 onClick={departmentId === '1' ? null : this.assignPersonnel}
-              >分配人员</span>
+              >分配人员</span>}
             </span>
           </h4>
           <DirectoryTree
@@ -178,7 +186,7 @@ class DepartmentTree extends Component {
             className={styles.treeContent}
             onSelect={this.selectDepartmentNode}
           >
-            {this.renderTreeNodes(departmentTree)}
+            {this.renderTreeNodes(departmentTree, deleteRight, updateRight)}
           </DirectoryTree>
         </section>
         {refuseText && <WarningTip onOK={this.refuseTipHide} value={refuseText} />}
