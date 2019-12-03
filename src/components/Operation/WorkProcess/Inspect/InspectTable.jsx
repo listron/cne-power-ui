@@ -162,8 +162,8 @@ class InspectTable extends React.Component {
       },
     }, {
       title: '缺陷数目',
-      dataIndex: 'abnormalNum',
-      key: 'abnormalNum',
+      dataIndex: 'defectNum',
+      key: 'defectNum',
       width: 80,
       render: (text, record) => {
         return <div className={styles.defectNum} title={text}>{text}</div>;
