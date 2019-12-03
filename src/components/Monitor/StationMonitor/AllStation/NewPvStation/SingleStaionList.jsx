@@ -84,7 +84,7 @@ class SingleStaionList extends React.Component {
               </div>
               <div className={styles.column}>
                 <span className={styles.dataName}> 日利用小时</span>
-                <span className={styles.dataName}> 日等效时</span>
+                {/* <span className={styles.dataName}> 日等效时</span> */}
                 <div> <span className={styles.changeNum}> {dataFormats(equivalentHours, '--', 2)}</span> h </div>
               </div>
             </div>
