@@ -82,27 +82,33 @@ class ListHandle extends Component {
     const { pageNum, pageSize } = userListPageInfo;
     const selectedUserStatus = userList.filter(e => selectedRowKeys.includes(e.userId)).map(e => e.enterpriseStatus);
     const handleDisable = new Set(selectedUserStatus).size !== 1;
+    const rights = localStorage.getItem('rightHandler');
+    const userCreateRight = rights && rights.split(',').includes('account_user_create'); // 新增
+    const userAssignRight = rights && rights.split(',').includes('account_department_user'); // 部门 - 用户 分配
+    const userDeleteRight = rights && rights.split(',').includes('account_user_delete'); // 注销
+    const userAuditRight = rights && rights.split(',').includes('account_user_audit'); // 审核
+    const hasSelectRights = userAssignRight || userDeleteRight || userAuditRight;
     return (
       <div className={styles.listHandle}>
         <span className={styles.leftHandle}>
-          <Button type="add" onClick={this.toAddUser}><i>+</i>添加人员</Button>
-          <Select
+          {userCreateRight && <Button type="add" onClick={this.toAddUser}><i>+</i>添加人员</Button>}
+          {hasSelectRights && <Select
             onChange={this.handleUser}
             style={{width: '70px', margin: '0 28px 0 10px'}}
             value="操作"
             dropdownMatchSelectWidth={false}
             disabled={handleDisable}
           >
-            <Option key="assign">
+            {userAssignRight && <Option key="assign">
               <span className={`iconfont icon-bumenx ${styles.icon}`} />分配部门
-            </Option>
-            <Option key="examine">
+            </Option>}
+            {userAuditRight && <Option key="examine">
               <span className={`iconfont icon-examine1 ${styles.icon}`} />审核人员
-            </Option>
-            <Option key="logout">
+            </Option>}
+            {userDeleteRight && <Option key="logout">
               <span className={`iconfont icon-remove ${styles.icon}`} />注销人员
-            </Option>
-          </Select>
+            </Option>}
+          </Select>}
         </span>
         <CommonPagination
           total={userListTotalNum}

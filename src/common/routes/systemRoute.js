@@ -4,15 +4,15 @@ const account = [
   { // 系统管理-账户管理-企业
     path: '/system/account/enterprise',
     component: lazy(() => import('../../containers/System/Account/Enterprise/Enterprise')),
-  }, { // 系统管理-账户管理-部门
+  }, { // 系统管理-账户管理-用户管理
     path: '/system/account/personnelManage',
     component: lazy(() => import('../../containers/System/Account/PersonnelManage/PersonnelManage')),
-  }, { // 系统管理-账户管理-部门
-    path: '/system/account/department',
-    component: lazy(() => import('../../containers/System/Account/Department/Department')),
-  }, { // 系统管理-账户管理-用户
-    path: '/system/account/user',
-    component: lazy(() => import('../../containers/System/Account/User/User')),
+  // }, { // 系统管理-账户管理-部门
+  //   path: '/system/account/department',
+  //   component: lazy(() => import('../../containers/System/Account/Department/Department')),
+  // }, { // 系统管理-账户管理-用户
+  //   path: '/system/account/user',
+  //   component: lazy(() => import('../../containers/System/Account/User/User')),
   }, { // 系统管理-账户管理-角色
     path: '/system/account/role',
     component: lazy(() => import('../../containers/System/Account/Role/Role')),
