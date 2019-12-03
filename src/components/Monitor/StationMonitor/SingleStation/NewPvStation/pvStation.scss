@@ -164,6 +164,19 @@
           border: none;
         }
 
+        .instantaneous,.equivalentTime{
+          display: flex;
+          align-items: center;
+        }
+        
+        .tooltipName{
+          margin-left: 4px;
+          margin-bottom: 8px;
+          &:hover{
+            color: #f9b600;
+          }
+        }
+
         .dataValue {
           color: $themeColor;
           font-size: 24px;
@@ -172,9 +185,9 @@
           line-height: 30px;
         }
 
-        .radiation {
-          color: #f9b600;
-        }
+        // .radiation {
+        //   color: #f9b600;
+        // }
 
         .stationPower {
           display: flex;
@@ -361,11 +374,18 @@
         .dataValue {
           color: $fontColor-hover;
         }
-        .radiation {
-          color: #f8b14e;
-        }
+        // .radiation {
+        //   color: #f8b14e;
+        // }
         .iconStyle {
           color: $fontColor-hover;
+        }
+        .tooltipName{
+          margin-left: 4px;
+          margin-bottom: 8px;
+          &:hover{
+            color: #f9b600;
+          }
         }
       }
     }

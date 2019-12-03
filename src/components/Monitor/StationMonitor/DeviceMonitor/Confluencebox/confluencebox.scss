@@ -28,15 +28,25 @@
     margin-top: 18px;
   }
   .eachRecord {
+    display: flex;
     line-height: 36px;
     height: 36px;
     .text {
       display: inline-block;
       width: 68px;
       padding-left: 12px;
+      margin-top: 4px;
     }
     .unit {
       margin-left: 4px;
+      margin-top: 4px;
+    }
+    .tooltipName{
+      margin-top: -5px;
+      margin-left: 4px;
+      &:hover{
+        color: #f9b600;
+      }
     }
   }
   .elecInfo .eachRecord .text {

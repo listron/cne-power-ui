@@ -75,6 +75,7 @@ class DayPower extends Component {
             color: color,
             title: {
                 text: '日发电量与利用小时',
+                text: '日发电量与等效时',
                 textStyle: {
                     fontSize: 14,
                     fontWeight: 'normal',
@@ -207,6 +208,7 @@ class DayPower extends Component {
                 },
                 {
                     name: '日利用小时',
+                    name: '日等效时',
                     type: 'bar',
                     data: getDefaultData(equipmentHours),
                     color: this.themeColor[theme].equipmentHours,

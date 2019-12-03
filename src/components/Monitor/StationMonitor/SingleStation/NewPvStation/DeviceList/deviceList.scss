@@ -221,12 +221,23 @@
           }
           color: $darkColor;
           .value {
+            display: flex;
             color: $themeColor;
+            .tooltipName{
+              margin-top: -5px;
+              margin-left: 3px;
+              i{
+                color: #dfdfdf;
+                &:hover{
+                  color: #f9b600;
+                }
+              }
+            }
           }
         }
-        .lowEfficiency {
-          @include singleItem($moreThanTen, $moreThanTen_color, $moreThanTen_border, $moreThanTen_active);
-        }
+        // .lowEfficiency {
+        //   @include singleItem($moreThanTen, $moreThanTen_color, $moreThanTen_border, $moreThanTen_active);
+        // }
         .alarm {
           @include singleItem($alarm, $alarm_color, $alarm_border, $alarm_active);
         }
@@ -238,6 +249,16 @@
         }
       }
       .deviceTableBox {
+        .equipmentHours,.transferRate{
+          display: flex;
+            .tooltipName{
+              margin-top: -5px;
+              margin-left: 3px;
+              &:hover{
+                color: #f9b600;
+              }
+            }
+          }
         .deviceTable {
           .deviceCode {
             .tableDeviceName {
@@ -267,9 +288,19 @@
           }
           .detailId {
             color: #199475;
+            display: flex;
           }
           .detailUnit {
             color: #666;
+          }
+          .tooltipName{
+            margin-top: -5px;
+            i{
+              color: #dfdfdf;
+              &:hover{
+                color: #f9b600;
+              }
+            }
           }
         }
       }
@@ -557,9 +588,9 @@
             color: $fontColor-hover;
           }
         }
-        .lowEfficiency {
-          @include singleItem($moreThanTwenty, $moreThanTen_color, $moreThanTwenty-border, $moreThanTwenty-active);
-        }
+        // .lowEfficiency {
+        //   @include singleItem($moreThanTwenty, $moreThanTen_color, $moreThanTwenty-border, $moreThanTwenty-active);
+        // }
         .alarm {
           @include singleItem($alarm, $alarm_color, $alarm-border, $alarm-active);
         }
@@ -600,9 +631,19 @@
           }
           .detailId {
             color: $fontColor-hover;
+            display: flex;
           }
           .detailUnit {
             color: $fontColor;
+          }
+          .tooltipName{
+            margin-top: -5px;
+            i{
+              color: #dfdfdf;
+              &:hover{
+                color: #f9b600;
+              }
+            }
           }
         }
       }
