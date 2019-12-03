@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import OwnProgress from '../../../../Common/OwnProgress/index';
-import { Modal, InputNumber } from 'antd';
+import { Modal, InputNumber, Tooltip } from 'antd';
 import { deviceValueFormat, divideFormarts, multiplyFormarts } from '../../PvCommon/PvDataformat';
 import moment from 'moment';
 
@@ -93,12 +93,28 @@ class PvStationHeader extends React.Component {
           <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
         </div>
         <div className={styles.dataColumn}>
-          <div> 瞬时辐射  <span className={`${styles.dataValue} ${styles.radiation}`}>{deviceValueFormat(instantaneous, '--', 2)}</span> W/m² </div>
+          <div className={styles.instantaneous}> <span>瞬时辐射  <span className={`${styles.dataValue}`}>{deviceValueFormat(instantaneous, '--', 2)}</span> W/m²</span>
+            {/* <div className={styles.tooltipName}>
+              <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"></i>
+              </Tooltip>
+            </div> */}
+          </div>
           <div >  装机台数 <span className={styles.dataValue}>{deviceValueFormat(stationUnitCount, '--', 0)} </span> 台</div>
         </div>
         <div className={styles.dataColumn}>
           <div>日发电量  <span className={styles.dataValue}>{deviceValueFormat(dayPower, '--', 2, true)}</span> {powerUnit}  </div>
-          <div> 日利用小时 <span className={styles.dataValue}>{deviceValueFormat(equivalentHours, '--', 2)}</span> h</div>
+          <div className={styles.equivalentTime}>
+            <span>
+              日利用小时
+              {/* 日等效时 */}
+              <span className={styles.dataValue}>{deviceValueFormat(equivalentHours, '--', 2)}</span>
+              h
+            </span>
+            {/* <div className={styles.tooltipName}>
+              <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"></i>
+              </Tooltip>
+            </div> */}
+          </div>
         </div>
         <div className={styles.dataColumn}>
           <div> 月发电量  <span className={styles.dataValue}>{deviceValueFormat(monthPower, '--', 2, true)}</span>
