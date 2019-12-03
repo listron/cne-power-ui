@@ -69,15 +69,22 @@ class DepartmentTree extends Component {
     const { departmentInfo = {} } = title.props || {};
     const { departmentId } = departmentInfo;
     if (departmentId !== selectedDepartment.departmentId) {
-      this.props.changeStore({ selectedDepartment: departmentInfo });
-      this.props.getStationOfDepartment({ departmentId });
-      this.props.getUserList({
-        departmentId,
-        pageNum: 1,
-        pageSize: 10,
-        sortField: 'u.create_time',
-        sortMethod: 'desc',
+      this.props.changeStore({
+        selectedDepartment: departmentInfo,
+        userListParams: {
+          username: '',
+          phoneNum: '',
+          stationName: '',
+        }, // 展示用户列表请求信息
+        userListPageInfo: {
+          pageNum: 1,
+          pageSize: 10,
+          sortField: 'u.create_time', // 排序（默认u.create_time，用户状态eu.enterprise_user_status）
+          sortMethod: 'desc', // 排序规则 "asc"：正序  "desc"：倒序
+        }, // 展示用户列表页面信息
       });
+      this.props.getStationOfDepartment({ departmentId });
+      this.props.getUserList({ departmentId });
       departmentId !== '1' && this.props.getDepartmentAllUser({ departmentId }); // 请求部门下电站并作为右侧 + 分配用户展示
     }
   }
