@@ -1,0 +1,177 @@
+
+@import '../../../../../theme/theme.scss';
+
+.personnelMain{ // 部门-人员主页面
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  padding: 24px 24px 0;
+  transition: all 500ms;
+  z-index: 99;
+  display: flex;
+  overflow-y: auto;
+  overflow-x: hidden;
+  .mainContent{
+    display: flex;
+    position: relative;
+    flex: 0 0 100%;
+    overflow: hidden;
+  }
+}
+
+.departmentTree{ // 左侧部门树
+  flex-basis: 240px;
+  margin-right: 12px;
+  display: flex;
+  flex-direction: column;
+  .treeTop{
+    flex: 0 0 56px;
+    line-height: 56px;
+    text-align: center;
+    button{
+      padding: 0 8px;
+    }
+    .templateDown{
+      margin-right: 12px;
+    }
+  }
+  .treeSection{
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .treeTitle{
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    .treeName{
+      margin-left: 20px;
+    }
+    .titleHandle{
+      margin-right: 12px;
+    }
+    .addTip, .assignTip{
+      cursor: pointer;
+    }
+    .forbidAssign{
+      cursor: not-allowed;
+    }
+    .tipHolder{
+      margin: 0 4px;
+    }
+    &::after{
+      content: '';
+      position: absolute;
+      left: 24px;
+      bottom: -7px;
+      width: 0px;
+      height: 0px;
+    }
+  }
+  .treeContent{
+    padding: 0 10px 0 10px;
+    margin-top: 10px;
+    overflow-y: auto;
+    flex: 1;
+    li.eachDepartment{
+      padding: 0;
+      .fatherDepartmentTitle, .subDepartmentTitle{
+        display: flex;
+        height: 30px;
+        line-height: 30px;
+        justify-content: space-between;
+        :global{
+          .icon-edit{
+            margin-right: 12px;
+          }
+        }
+      }
+      .fatherDepartmentTitle{
+        width: 190px;
+        .departmentName{
+          flex: 0 0 126px;
+          @include overflowText();
+        }
+      }
+      .subDepartmentTitle{
+        width: 171px;
+        .departmentName{
+          flex: 0 0 107px;
+          @include overflowText();
+        }
+      }
+      
+      :global{
+        .ant-tree-node-content-wrapper::before{
+          height: 30px!important;
+          line-height: 30px!important;
+        }
+        .ant-tree-node-content-wrapper, .ant-tree-switcher{
+          height: 30px;
+          line-height: 30px;
+        }
+        .ant-tree-node-content-wrapper .ant-tree-iconEle{
+          display: none;
+        }
+      }
+    }
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+    }
+  }
+}
+
+.personnelList{ // 右侧用户侧
+  flex: 1;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+  }
+}
+
+
+
+.personnelMain {
+  background-color: #ececec;
+}
+.departmentTree{ // 左侧部门树
+  background-color: #fff;
+  .treeTitle{
+    background-color: var(--themeColor);
+    .treeName{
+      color: #fff;
+    }
+    .titleHandle{
+      color:#ceebe0;
+    }
+    &::after{
+      // 14宽 高7
+      border-top: solid var(--themeColor) 7px;
+      border-bottom: none;
+      border-left: solid transparent 7px;
+      border-right: solid transparent 7px;
+    }
+  }
+  .treeContent{
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+.personnelList{ // 右侧用户侧
+  background-color: #fff;
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}

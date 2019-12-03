@@ -4,6 +4,7 @@ import department from './Account/Department/departmentReducer';
 import enterprise from './Account/Enterprise/enterpriseReducer';
 import role from './Account/Role/roleReducer';
 import user from './Account/User/userReducer';
+import { personnelManage } from './Account/PersonnelManage/personnelManageReducer';
 
 import alarmManage from './Station/AlarmManage/alarmManageReducer';
 import stationManage from './Station/StationManage/stationManageReducer';
@@ -17,6 +18,21 @@ import warning from './Production/Warning/warningReducer';
 import score from './Production/Score/scoreReducer';
 
 
-const systemReducer = combineReducers({ department, enterprise, role, user, alarmManage, stationManage, deviceManage, pointManage, plan, powerCurve, warning, score,weatherStationReducer });
+const systemReducer = combineReducers({
+  department,
+  enterprise,
+  personnelManage,
+  role,
+  user,
+  alarmManage,
+  stationManage,
+  deviceManage,
+  pointManage,
+  plan,
+  powerCurve,
+  warning,
+  score,
+  weatherStationReducer,
+});
 
 export default systemReducer;
