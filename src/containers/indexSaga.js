@@ -14,9 +14,9 @@ import { watchIntelligentExper } from './Operation/IntelligentExpert/intelligent
 
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
 import { watchPersonnelManage } from './System/Account/PersonnelManage/personnelManageSaga';
-import { watchDepartment } from './System/Account/Department/departmentSaga';
+// import { watchDepartment } from './System/Account/Department/departmentSaga';
 import { watchRole } from './System/Account/Role/roleSaga';
-import { watchUser } from './System/Account/User/userSaga';
+// import { watchUser } from './System/Account/User/userSaga';
 import { watchPlan } from './System/Production/Plan/planSaga';
 import { watchWarning } from './System/Production/Warning/warningSaga';
 import { watchScore } from './System/Production/Score/scoreSaga';
@@ -140,9 +140,9 @@ export default function* rootSaga() {
     //system-enterprise
     watchEnterprise(),
     watchPersonnelManage(),
-    watchDepartment(),
+    // watchDepartment(),
     watchRole(),
-    watchUser(),
+    // watchUser(),
     // system - station
     watchStationManage(),
     watchDeviceManage(),

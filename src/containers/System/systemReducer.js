@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-import department from './Account/Department/departmentReducer';
+// import department from './Account/Department/departmentReducer';
 import enterprise from './Account/Enterprise/enterpriseReducer';
 import role from './Account/Role/roleReducer';
-import user from './Account/User/userReducer';
+// import user from './Account/User/userReducer';
 import { personnelManage } from './Account/PersonnelManage/personnelManageReducer';
 
 import alarmManage from './Station/AlarmManage/alarmManageReducer';
@@ -19,11 +19,11 @@ import score from './Production/Score/scoreReducer';
 
 
 const systemReducer = combineReducers({
-  department,
+  // department,
   enterprise,
   personnelManage,
   role,
-  user,
+  // user,
   alarmManage,
   stationManage,
   deviceManage,
