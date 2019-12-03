@@ -36,7 +36,7 @@ class DefectCheckForm extends Component {
               message: '请输入处理建议',
             }],
           })(
-            <InputLimit placeholder="请描述，不超过80个汉字" />
+            <InputLimit placeholder="请描述，不超过999个汉字" size={999} />
           )}
         </Form.Item>
       </React.Fragment>

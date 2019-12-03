@@ -126,7 +126,7 @@ class DetailContiner extends Component {
             </div>
           </div>
           }
-          <OperateLine processData={processData} defectStatus={defectStatus} />
+          <OperateLine processData={processData} defectStatus={defectStatus} defectDetail={defectDetail} />
         </div>
       </div >
     );
