@@ -129,7 +129,7 @@ class PvStationList extends React.Component {
         dataIndex: 'stationCapacity',
         sorter: true,
         className: styles.numberStyle,
-        render: (value) => realCapacityUnit === 'MW' ? value : multiplyFormarts(value, 1000),
+        render: (value) => dataFormats(realCapacityUnit === 'MW' ? value : multiplyFormarts(value, 1000), '--', 2),
       },
       {
         title: () => <TableColumnTitle title="装机" unit="台" className="nonePadding" />,
