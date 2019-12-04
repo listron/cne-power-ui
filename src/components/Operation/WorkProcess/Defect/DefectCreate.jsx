@@ -132,7 +132,7 @@ class DefectCreate extends Component {
 
   toolTip = () => {
     return (<div>
-      <p>A级缺陷：指发生了直接威胁设备安全运行并需理解处理的缺陷</p>
+      <p>A级缺陷：指直接威胁设备安全运行并需理解处理的缺陷</p>
       <p>B级缺陷：指针对设备有严重威胁，暂时能坚持运行但需要尽快处理的缺陷</p>
       <p>C级缺陷：指不停止主设备运行，不影响设备和全场出力情况即可消缺缺陷</p>
     </div>);
@@ -169,8 +169,8 @@ class DefectCreate extends Component {
 
 
   render() {
-    const { stations, deviceTypes, defectTypes, defectDetail, commonList, knowledgebaseList, form, editDefect = false, theme = 'light', getKnowledgebase } = this.props;
-    const { stationCode, deviceCode, deviceName, defectTypeCode, processData = [], photoAddress } = defectDetail;
+    const { stations = [], deviceTypes, defectTypes, defectDetail, commonList, knowledgebaseList, form, editDefect = false, theme = 'light', getKnowledgebase } = this.props;
+    const { stationCode, deviceCode, deviceName, defectTypeCode, processData = [], photoAddress, createTime } = defectDetail;
     const rejectDeatil = processData.filter(e => e.flowCode === 10); //获取驳回中处理信息
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const defectCategory = getFieldValue('defectCategory') || []; // 缺陷分类
@@ -186,6 +186,8 @@ class DefectCreate extends Component {
       deviceTypeCode: deviceTypeCode,
       stationType: currentStations.length > 0 && currentStations[0].stationType || null,
     };
+    const initCreateTime = createTime && moment(createTime) || moment();
+    const initStations = stationCode ? (stations.filter(e => e.stationCode === stationCode)) : (stations.length === 1 && stations[0] || []);
     return (
       <Form className={`${styles.defectCreateForm} ${styles[theme]}`} >
         <span ref="toolTip"></span>
@@ -207,7 +209,7 @@ class DefectCreate extends Component {
           <FormItem label="电站名称" colon={false}>
             {getFieldDecorator('stations', {
               rules: [{ required: true, message: '请选择电站' }],
-              initialValue: stations.filter(e => e.stationCode === stationCode),
+              initialValue: initStations,
             })(
               <StationSelect data={stations} multiple={false} onOK={this.onStationSelected} />
             )}
@@ -289,7 +291,7 @@ class DefectCreate extends Component {
           <FormItem label="发生时间" colon={false}>
             {getFieldDecorator('createTime', {
               rules: [{ required: true, message: '请选择发生时间' }],
-              initialValue: defectDetail.createTime && moment(defectDetail.createTime),
+              initialValue: initCreateTime,
             })(
               <DatePicker
                 showTime
@@ -306,10 +308,10 @@ class DefectCreate extends Component {
               rules: [{ required: true, message: '请输入缺陷描述' }],
               initialValue: editDefect && defectDetail.defectDescribe || null,
             })(
-              <InputLimit placeholder="请描述，不超过80个汉字" width={400} />
+              <InputLimit placeholder="请描述，不超过999个汉字" width={400} size={999} />
             )}
           </FormItem>
-          <FormItem label="添加图片" colon={false}>
+          <FormItem label="添加照片" colon={false}>
             <div className={styles.addImg}>
               <div className={styles.maxTip}>最多4张</div>
               {getFieldDecorator('imgDescribe', {
@@ -336,4 +338,8 @@ class DefectCreate extends Component {
 }
 
 
-export default Form.create()(DefectCreate);
+export default Form.create({
+  onFieldsChange(props) {
+    props.changeStore({ hasModify: true });
+  },
+})(DefectCreate);

@@ -74,16 +74,20 @@ class DefectDetail extends Component {
     this.props.changeStore({ hasModify: false });
   }
 
-  renderTitle(status) { // 渲染标题 根据状态
+  renderTitle(status, defectId) { // 渲染标题 根据状态
     let result = '';
-    // 0 待提交 1 审核缺陷 2 处理缺陷 3 验收缺陷  4 已完成
-    switch (status) {
-      case '0': result = '驳回原因'; break;
-      case '1': result = '消缺详情'; break; // 审核缺陷
-      case '2': result = '消缺详情'; break; // 处理缺陷
-      case '3': result = '消缺详情'; break; // 处理缺陷
-      default:
-        result = '消缺详情'; break;
+    if (defectId) {
+      // 0 待提交 1 审核缺陷 2 处理缺陷 3 验收缺陷  4 已完成
+      switch (status) {
+        case '0': result = '驳回原因'; break;
+        case '1': result = '消缺详情'; break; // 审核缺陷
+        case '2': result = '消缺详情'; break; // 处理缺陷
+        case '3': result = '消缺详情'; break; // 处理缺陷
+        default:
+          result = '消缺详情'; break;
+      }
+    } else {
+      result = '新建缺陷';
     }
     return result;
   }
@@ -97,7 +101,7 @@ class DefectDetail extends Component {
       <div className={`${styles.detailWrap}`}>
         {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.header}>
-          <div className={styles.text} title={rejectReason}>{this.renderTitle(defectStatus)}{defectStatus === '0' && `:${rejectReason}`}</div>
+          <div className={styles.text} title={rejectReason}>{this.renderTitle(defectStatus, defectId)}{defectStatus === '0' && `:${rejectReason}`}</div>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
         </div>
         <div className={styles.defectDetailCont}>
