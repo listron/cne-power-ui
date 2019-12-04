@@ -83,7 +83,8 @@ class ListHandle extends Component {
     const selectedUserStatus = userList.filter(e => selectedRowKeys.includes(e.userId)).map(e => e.enterpriseStatus);
     const statusSet = new Set(selectedUserStatus);
     const handleDisable = statusSet.size !== 1; // 统一状态选中，才能操作
-    const examinDisable = !statusSet.has(5); // 选中的有已审核用户
+    const examinDisable = !statusSet.has(5); // 选中的有已审核用户 => 不可审核
+    const assignDisable = statusSet.has(5); // 选中项中有带审核用户 => 不可分配
     const rights = localStorage.getItem('rightHandler');
     const userCreateRight = rights && rights.split(',').includes('account_user_create'); // 新增
     const userAssignRight = rights && rights.split(',').includes('account_department_user'); // 部门 - 用户 分配
@@ -101,7 +102,7 @@ class ListHandle extends Component {
             dropdownMatchSelectWidth={false}
             disabled={handleDisable}
           >
-            {userAssignRight && <Option key="assign">
+            {userAssignRight && <Option key="assign" disabled={assignDisable}>
               <span className={`iconfont icon-bumenx ${styles.icon}`} />分配部门
             </Option>}
             {userAuditRight && <Option key="examine" disabled={examinDisable}>
