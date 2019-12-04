@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defect.scss';
 import ImgUploader from '../../../Common/Uploader/ImgUploader';
@@ -18,12 +18,19 @@ class DefectBasicInfo extends Component {
     super(props);
   }
 
-
   componentWillReceiveProps(nextProps) {
     const { defectTypeCode, deviceTypeCode, stationType, defectId } = nextProps.defectDetail;
     if (defectId !== this.props.defectDetail.defectId) {
       this.props.getKnowledgebase({ deviceTypeCodes: [deviceTypeCode], faultTypeIds: [defectTypeCode], type: +stationType });
     }
+  }
+
+  shouldComponentUpdate = (nextProps) => {
+    const { defectId } = nextProps.defectDetail;
+    if (defectId !== this.props.defectDetail.defectId) {
+      return true;
+    }
+    return false;
   }
 
 
@@ -115,7 +122,7 @@ class DefectBasicInfo extends Component {
                   const [name, code] = item.ticketMes;
                   return data.length > 0 &&
                     (<div className={styles.megCont} >
-                      <div>【 {item.label} {dockerDetail[item.num]} 】</div>
+                      <div>【 {item.label} ({dockerDetail[item.num]}) 】</div>
                       <div className={styles.ticktCont}>
                         {data.map(e => { return <div onClick={() => this.toTicket(e.docketId, e.templateType)} className={styles.tickets}>{e[name]}/{e[code]}</div>; })}
                       </div>

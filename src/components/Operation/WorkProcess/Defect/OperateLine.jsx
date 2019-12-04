@@ -14,7 +14,17 @@ class OperateLine extends Component {
   static propTypes = {
     processData: PropTypes.array,
     defectStatus: PropTypes.string,
+    defectDetail: PropTypes.object,
   }
+
+  shouldComponentUpdate = (nextProps) => {
+    const { defectId } = nextProps.defectDetail;
+    if (defectId !== this.props.defectDetail.defectId) {
+      return true;
+    }
+    return false;
+  }
+
   getStatus(status, handleStatus) {
     // 0 待提交 1 审核缺陷 2 处理缺陷 3 验收缺陷  4 已完成
     let result = '';
