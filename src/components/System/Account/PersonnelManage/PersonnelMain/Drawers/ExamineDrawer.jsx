@@ -13,6 +13,8 @@ class ExamineDrawer extends Component {
   static propTypes = {
     examineLoading: PropTypes.bool,
     examineSuccess: PropTypes.bool,
+    pageKey: PropTypes.string,
+    userDetailInfo: PropTypes.object,
     personnelDrawerIds: PropTypes.array,
     roleAllList: PropTypes.array,
     departmentTree: PropTypes.array,
@@ -23,12 +25,31 @@ class ExamineDrawer extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const { examineSuccess, examineLoading } = nextProps;
+    const { examineSuccess, examineLoading, personnelDrawerIds, userDetailInfo, pageKey } = nextProps;
     const preLoading = this.props.examineLoading;
+    const preDetail = this.props.userDetailInfo;
+    if (pageKey === 'list' && personnelDrawerIds.length > 0 && userDetailInfo !== preDetail) { // 回填被审核者详情
+      const { roleAllList, form } = this.props;
+      const { roleName, enterpriseData } = userDetailInfo;
+      const tmpRoleNameArr = roleName ? roleName.split(',') : [];
+      const roleIds = roleAllList.filter(e => tmpRoleNameArr.includes(e.roleDesc)).map(e => e.roleId);
+      const departmentIds = this.getDepartmentIdsFromDetaiInfo(enterpriseData);
+      form.setFieldsValue({ roleIds, departmentIds });
+    }
     if (preLoading && !examineLoading && examineSuccess) { // 审核完毕, 关闭弹框, 并刷新用户列表
       this.hideExamineDrawer();
       this.props.getUserList();
     }
+  }
+
+  getDepartmentIdsFromDetaiInfo = (enterpriseData) => {
+    const enterpriseList = enterpriseData || [];
+    const departList = [];
+    enterpriseList.forEach(e => {
+      const departmentData = e.departmentData || [];
+      departList.push(...departmentData);
+    });
+    return departList.map(e => e.departmentId);
   }
 
   saveExamine = () => { // 审核
@@ -45,12 +66,13 @@ class ExamineDrawer extends Component {
 
   hideExamineDrawer = () => { // 隐藏抽屉并重置
     this.props.form.resetFields();
-    this.props.changeStore({ personnelDrawerIds: [] });
+    this.props.changeStore({ personnelDrawerIds: [], userDetailInfo: {} });
   }
 
   render(){
     const { examineLoading, personnelDrawerIds, form, roleAllList, departmentTree } = this.props;
     const { getFieldDecorator } = form;
+    const examineValue = form.getFieldValue('enterpriseUserStatus');
     return (
       <Drawer
         title="用户审核"
@@ -73,7 +95,7 @@ class ExamineDrawer extends Component {
               </Radio.Group>
             )}
           </FormItem>
-          <FormItem label="角色" colon={false} className={styles.drawerItem} >
+          {examineValue === '3' && <FormItem label="角色" colon={false} className={styles.drawerItem} >
             {getFieldDecorator('roleIds', {
               initialValue: [],
               rules: [{ required: true, message: '请选择用户角色' }],
@@ -89,15 +111,15 @@ class ExamineDrawer extends Component {
                 ))}
               </Select>
             )}
-          </FormItem>
-          <FormItem label="所属部门" colon={false} className={styles.drawerItem}>
+          </FormItem>}
+          {examineValue === '3' && <FormItem label="所属部门" colon={false} className={styles.drawerItem}>
             {getFieldDecorator('departmentIds', {
               rules: [{ required: true, message: '请选择所属部门' }],
               initialValue: [],
             })(
               <DepartmentSelector departmentTree={departmentTree} />
             )}
-          </FormItem>
+          </FormItem>}
           <div className={styles.btns}>
             <Button className={styles.cancelAdd} onClick={this.hideExamineDrawer}>取消</Button>
             <Button loading={examineLoading} className={styles.saveAdd} onClick={this.saveExamine}>保存</Button>
