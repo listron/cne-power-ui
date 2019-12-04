@@ -11,7 +11,10 @@ import PvStation from '../../../../components/Monitor/StationMonitor/SingleStati
 import WindStation from '../../../../components/Monitor/StationMonitor/SingleStation/NewWindStation/WindStation';
 class SingleStation extends Component {
   static propTypes = {
-    stationType: PropTypes.string,
+    stationType: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.bool,
+    ]),
     match: PropTypes.object,
     changeSingleStationStore: PropTypes.func,
     resetSingleStationStore: PropTypes.func,

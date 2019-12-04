@@ -4,61 +4,75 @@
   display: flex;
   height: 100px;
   justify-content: space-between;
+
   .confluenceInfo {
     display: flex;
   }
+
   .deviceIcon {
     width: 170px;
     text-align: center;
     line-height: 100px;
+
     :global {
       .iconfont {
         font-size: 24px;
       }
     }
   }
+
   .line {
     height: 48px;
     width: 1px;
     margin-top: 30px;
     margin-left: 12px;
   }
+
   .elecInfo,
   .statisticsInfo {
     margin-top: 18px;
   }
+
   .eachRecord {
     line-height: 36px;
     height: 36px;
+
     .text {
       display: inline-block;
       width: 68px;
       padding-left: 12px;
     }
+
     .unit {
       margin-left: 4px;
     }
   }
+
   .elecInfo .eachRecord .text {
     width: 54px;
   }
+
   .seriesCurrent {
     display: flex;
     width: 400px;
     flex-wrap: wrap;
+
     &:before {
       // 利用伪元素实现高度居中适配。
       content: "";
       width: 400px;
       display: block;
     }
+
     .eachCurrent {
       width: 40px;
       height: 24px;
-      line-height: 24px;
+      line-height: 21px;
       text-align: center;
       border-radius: 2px;
       margin-right: 6px;
+      user-select: none;
+
       &:nth-child(4n) {
         margin-right: 20px;
       }
@@ -69,6 +83,7 @@
 .confluenceStatistics.light {
   // border-top: solid 1px $promptColor;
   border-bottom: solid 1px $promptColor;
+
   .deviceIcon {
     :global {
       .iconfont {
@@ -76,12 +91,15 @@
       }
     }
   }
+
   .line {
     background-color: $promptColor;
   }
+
   .eachRecord {
     color: $darkColor;
   }
+
   .seriesCurrent {
     .eachCurrent {
       background: #ceebe0;
@@ -95,6 +113,7 @@
   border: 1px solid $border-color;
   background: $light-background;
   margin-top: 10px;
+
   .deviceIcon {
     :global {
       .iconfont {
@@ -102,12 +121,15 @@
       }
     }
   }
+
   .line {
     background-color: $border-color;
   }
+
   .eachRecord {
     color: $fontColor;
   }
+
   .seriesCurrent {
     .eachCurrent {
       background: #ceebe0;

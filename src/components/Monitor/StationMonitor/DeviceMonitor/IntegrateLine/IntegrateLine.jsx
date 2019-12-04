@@ -17,6 +17,13 @@ class IntegrateLine extends Component {
     theme: PropTypes.string,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      tabKey: '1',
+    };
+  }
+
   componentDidMount() {
     const { deviceCode, deviceTypeCode } = this.props.match.params;
     this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode });
@@ -41,7 +48,14 @@ class IntegrateLine extends Component {
     this.props.resetDeviceStore();
   }
 
+  tabKeyFunc = (key) => {
+    this.setState({
+      tabKey: key,
+    });
+  };
+
   render() {
+    const { tabKey } = this.state;
     const { stations, theme = 'light' } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
@@ -67,16 +81,26 @@ class IntegrateLine extends Component {
             deviceTypeCode={deviceTypeCode}
           />
           <div className={styles.contWrap}>
-            <div style={{ marginTop: 20 }}></div>
-            <DevicePointsTable {...this.props} />
-            <DeviceAlarmTable
+            <div style={{marginTop: 20}}/>
+            <div className={styles.integrateLineTabs}>
+              <div className={tabKey === '1' ? styles.tabActive : styles.tabNormal} onClick={() => this.tabKeyFunc('1')}>
+                实时告警
+              </div>
+              <div className={tabKey === '2' ? styles.tabActive : styles.tabNormal} onClick={() => this.tabKeyFunc('2')}>
+                测点信息
+              </div>
+              {stationType > 0 && <div className={tabKey === '3' ? styles.tabActive : styles.tabNormal} onClick={() => this.tabKeyFunc('3')}>
+                下级设备
+              </div>}
+            </div>
+            {tabKey === '1' && <DeviceAlarmTable
               {...this.props}
               stationCode={stationCode}
               deviceTypeCode={deviceTypeCode}
               deviceCode={deviceCode}
-            />
-            {stationType > 0 && <h3 className={styles.subTitleConfig}>下级设备</h3>}
-            {stationType > 0 && <SubBoxtransformer {...this.props} stationCode={stationCode} />}
+            />}
+            {tabKey === '2' && <DevicePointsTable {...this.props} />}
+            {(stationType > 0 && tabKey === '3') && <SubBoxtransformer {...this.props} stationCode={stationCode} />}
           </div>
         </div>
       </div>

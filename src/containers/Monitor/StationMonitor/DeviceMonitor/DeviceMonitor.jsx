@@ -11,6 +11,8 @@ import WindDevice from '../../../../components/Monitor/StationMonitor/DeviceMoni
 import IntegrateLine from '../../../../components/Monitor/StationMonitor/DeviceMonitor/IntegrateLine/IntegrateLine';
 import BoosterStation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/BoosterDevice/BoosterStation';
 import Footer from '../../../../components/Common/Footer';
+import {deviceManageAction} from '@containers/Operation/Book/DeviceManage/deviceManageAction';
+import {commonAction} from '@containers/alphaRedux/commonAction';
 
 class DeviceMonitor extends Component {
   static propTypes = {
@@ -62,6 +64,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  changeDeviceManageStore: payload =>
+    dispatch({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA,
+      payload,
+    }),
   changeDeviceStore: payload => dispatch({ type: deviceAction.CHANGE_DEVICE_MONITOR_STORE, payload }),
   resetDeviceStore: () => dispatch({ type: deviceAction.RESET_DEVICE_MONITOR_STORE }),
   getDevices: payload => dispatch({ type: deviceAction.getDevices, payload }),
@@ -73,6 +80,16 @@ const mapDispatchToProps = (dispatch) => ({
   getWindDeviceCharts: payload => dispatch({ type: deviceAction.getWindDeviceCharts, payload }),
   stopWindDeviceCharts: payload => dispatch({ type: deviceAction.stopWindDeviceCharts, payload }),
   getWindDeviceRealData: payload => dispatch({ type: deviceAction.getWindDeviceRealData, payload }),
+  handleRemoveWarning: payload => dispatch({ type: deviceAction.handleRemoveWarning, payload }),
+  transferWarning: payload => dispatch({ type: deviceAction.transferWarning, payload }),
+  getLostGenType: params => dispatch({
+    type: commonAction.getLostGenType,
+    payload: {
+      params,
+      actionName: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
+      resultName: 'defectTypes',
+    },
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceMonitor);
