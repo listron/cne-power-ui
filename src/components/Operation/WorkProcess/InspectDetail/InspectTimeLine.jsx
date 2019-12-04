@@ -78,7 +78,7 @@ class InspectTimeLine extends Component {
           {deviceType.devices.map((device, id) => (
             <div key={`${index}-${id}`}>
               <span>{device.deviceName}</span>
-              <span className={styles.numStyle}>{device.status ? `缺陷${device.defectIds.length}` : '正常'}</span>
+              <span className={styles.numStyle}>{device.status ? '正常' : `缺陷  ${device.defectIds.length}`}</span>
             </div>
           ))}
         </div>
@@ -127,7 +127,7 @@ class InspectTimeLine extends Component {
                 <div className={styles.processItem}>
                   <div className={styles.basic}>
                     <div className={styles.flowName}>{flowName[item.flowType]}</div>
-                    <div className={styles.operateTime}>{item.startTime}{item.endTime ? '--' : ''}{item.endTime}</div>
+                    <div className={styles.operateTime}>{item.startTime}{item.endTime ? '~' : ''}{item.endTime}</div>
                     <div className={styles.operateUser}>{item.userName}</div>
                   </div>
                   {item.flowType === 2 &&
@@ -147,8 +147,8 @@ class InspectTimeLine extends Component {
                               <div className={styles.matrixe}>
                                 <div>{m.belongMatrix}</div>
                                 <div className={styles.rightCont}>
-                                  <span>缺陷<span className={styles.numStyle}>{3}</span></span>
-                                  <span onClick={() => this.openMatrixe(m.belongMatrix)}>{(openMatri[m.belongMatrix]) ? <Icon type="caret-down" /> : <Icon type="caret-right" />}</span>
+                                  <span>缺陷<span className={styles.numStyle}>{`  ${m.defectIds.length}`}</span></span>
+                                  <span onClick={() => this.openMatrixe(m.belongMatrix)}>{(openMatri[m.belongMatrix]) ? <Icon type="down" /> : <Icon type="right" />}</span>
                                 </div>
                               </div>
                               {(openMatri[m.belongMatrix]) &&
