@@ -32,10 +32,11 @@ class DepartmentDrawer extends Component {
     if (departmentDrawerKey === 'edit' && preDepartmentEditInfo !== departmentEditInfo) { // 编辑页 得待新编辑部门数据
       const { departmentName, parentDepartmentId } = departmentEditInfo;
       const departmentStation = departmentEditInfo.stations || [];
+      const stationLists = stations.filter(e => departmentStation.some(m => `${m.stationCode}` === `${e.stationCode}`));
       form.setFieldsValue({ // 编辑信息内容存入
         departmentName,
-        departmentId: parentDepartmentId,
-        stationLists: stations.filter(e => departmentStation.some(m => `${m.stationCode}` === `${e.stationCode}`)),
+        departmentId: parentDepartmentId || '0', // 不存在父部门时 即为'0'
+        stationLists,
       });
     }
     if (preLoading && !addDepartmentLoading && addDepartmentSuccess) { // 新增 / 编辑请求结束 => 成功 => 关闭抽屉

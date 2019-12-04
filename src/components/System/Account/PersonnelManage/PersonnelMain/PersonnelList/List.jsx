@@ -97,7 +97,7 @@ class List extends Component {
     const { assignDepartChecked, assignDepartUsers } = this.state;
     this.props.assignUsers({
       userIds: assignDepartUsers.map(e => e.userId),
-      departmentId: assignDepartChecked,
+      departmentIds: assignDepartChecked,
     });
     this.setState({ // 重置弹框数据
       assignDepartUsers: [],

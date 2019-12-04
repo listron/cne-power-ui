@@ -81,7 +81,9 @@ class ListHandle extends Component {
     const { userListPageInfo, userListTotalNum, userList, selectedRowKeys } = this.props;
     const { pageNum, pageSize } = userListPageInfo;
     const selectedUserStatus = userList.filter(e => selectedRowKeys.includes(e.userId)).map(e => e.enterpriseStatus);
-    const handleDisable = new Set(selectedUserStatus).size !== 1;
+    const statusSet = new Set(selectedUserStatus);
+    const handleDisable = statusSet.size !== 1; // 统一状态选中，才能操作
+    const examinDisable = !statusSet.has(5); // 选中的有已审核用户
     const rights = localStorage.getItem('rightHandler');
     const userCreateRight = rights && rights.split(',').includes('account_user_create'); // 新增
     const userAssignRight = rights && rights.split(',').includes('account_department_user'); // 部门 - 用户 分配
@@ -94,7 +96,7 @@ class ListHandle extends Component {
           {userCreateRight && <Button type="add" onClick={this.toAddUser}><i>+</i>添加人员</Button>}
           {hasSelectRights && <Select
             onChange={this.handleUser}
-            style={{width: '70px', margin: '0 28px 0 10px'}}
+            style={{width: '80px', margin: '0 28px 0 10px'}}
             value="操作"
             dropdownMatchSelectWidth={false}
             disabled={handleDisable}
@@ -102,7 +104,7 @@ class ListHandle extends Component {
             {userAssignRight && <Option key="assign">
               <span className={`iconfont icon-bumenx ${styles.icon}`} />分配部门
             </Option>}
-            {userAuditRight && <Option key="examine">
+            {userAuditRight && <Option key="examine" disabled={examinDisable}>
               <span className={`iconfont icon-examine1 ${styles.icon}`} />审核人员
             </Option>}
             {userDeleteRight && <Option key="logout">

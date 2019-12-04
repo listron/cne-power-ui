@@ -85,6 +85,12 @@
         height: 30px;
         line-height: 30px;
         justify-content: space-between;
+        &>.handleIcons{
+          display: none;
+        }
+        &:hover>.handleIcons{
+          display: block;
+        }
         :global{
           .icon-edit{
             margin-right: 12px;

@@ -16,7 +16,7 @@ const DepartMentTitle = ({ className, edit, remove, departmentInfo, hasChild, de
       title={departmentInfo.departmentName}
       className={styles.departmentName}
     >{departmentInfo.departmentName}</span>
-    <span>
+    <span className={styles.handleIcons}>
       {updateRight && <span title="编辑" onClick={(event) => edit(event, departmentInfo)} className="iconfont icon-edit" />}
       {deleteRight && <span title="删除" onClick={(event) => remove(event, departmentInfo, hasChild)} className="iconfont icon-del" />}
     </span>
