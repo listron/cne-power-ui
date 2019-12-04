@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Spin } from 'antd';
 import { inspectDetailAction } from './inspectDetailReducer';
 
 import InspectBaseInfo from '../../../../components/Operation/WorkProcess/InspectDetail/InspectBaseInfo';
@@ -17,6 +18,8 @@ class InspectDetail extends Component {
     location: PropTypes.object,
     resetStore: PropTypes.func,
     getInspectDetail: PropTypes.func,
+    loading: PropTypes.bool,
+
   };
   constructor() {
     super();
@@ -47,7 +50,7 @@ class InspectDetail extends Component {
 
 
   render() {
-    const { theme = 'light' } = this.props;
+    const { theme = 'light', loading } = this.props;
 
     return (
       <div className={`${styles.inspectDetailBox} ${theme}`}>
@@ -57,14 +60,16 @@ class InspectDetail extends Component {
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
           </div>
         </div>
-        <div className={styles.content}>
-          <div className={styles.leftContent}>
-            <InspectBaseInfo {...this.props} />
+        <Spin spinning={loading}>
+          <div className={styles.content}>
+            <div className={styles.leftContent}>
+              <InspectBaseInfo {...this.props} />
+            </div>
+            <div className={styles.rightContent}>
+              <InspectProcess {...this.props} />
+            </div>
           </div>
-          <div className={styles.rightContent}>
-            <InspectProcess {...this.props} />
-          </div>
-        </div>
+        </Spin>
 
       </div>
     );
