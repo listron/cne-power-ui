@@ -38,7 +38,7 @@ class DefectBasicInfo extends Component {
     { label: '设备类型', value: 'deviceTypeName' },
     { label: '设备名称', value: 'deviceName' },
     { label: '缺陷类型', value: 'defectParentTypeName', sub: 'defectTypeName' },
-    { label: '缺陷级别', value: 'defectLevel', data: ['A级', 'B级', 'C级'] },
+    { label: '缺陷级别', value: 'defectLevel', data: ['', 'A级', 'B级', 'C级'] },
     { label: '缺陷来源', value: 'defectSource', data: ['告警', '上报', '巡检', '预警'] },
     { label: '缺陷描述', value: 'defectDescribe' },
   ]

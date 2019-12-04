@@ -77,8 +77,8 @@ class DetailContiner extends Component {
 
   toReview = (values) => { // 审核缺陷
     const { defectId, sendDefect, closeDefect, rejectDefect } = this.props;
-    const { status, deadLine, defectProposal, rejectReason } = values;
-    const initDeadLine = deadLine && deadLine.format('YYYY-MM-DD HH:mm:ss') || '';
+    const { status, deadLine, defectProposal = '', rejectReason } = values;
+    const initDeadLine = deadLine && deadLine.format('YYYY-MM-DD HH:mm:ss') || null;
     status === 'send' && sendDefect({ defectId, defectProposal, deadLine: initDeadLine, func: this.callBackTableList });
     status === 'reject' && rejectDefect({ defectId, rejectReason, func: this.callBackTableList });
     status === 'close' && closeDefect({ defectId, defectProposal, func: this.callBackTableList });
