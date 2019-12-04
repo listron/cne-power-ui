@@ -16,10 +16,10 @@
 
     .iconDetail {
       // i {
- //   display: block;
- //   color: $themeColor;
- //   cursor: pointer;
- // }
+      //   display: block;
+      //   color: $themeColor;
+      //   cursor: pointer;
+      // }
     }
 
     :global {
@@ -89,12 +89,12 @@
       .ant-table-placeholder {}
     }
 
-    .iconDetail {
-      i {
-        color: $themeColor;
-        cursor: pointer;
-      }
-    }
+    // .iconDetail {
+    //   i {
+    //     color: $themeColor;
+    //     cursor: pointer;
+    //   }
+    // }
 
     .deviceName {
       a {
@@ -123,6 +123,17 @@
 
     .cancel {
       color: #f8b14e;
+    }
+  }
+
+  :global {
+    .icon-action {
+      background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+      color: $fontColor-invert;
+
+      &:hover {
+        background-image: linear-gradient(-180deg, #b4ec51 0%, #429321 100%);
+      }
     }
   }
 }

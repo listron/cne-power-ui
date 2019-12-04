@@ -54,9 +54,9 @@
     .selected {
 
       // .icon-action {
- //   background-color: $themeColor;
- //   color: #fff;
- // }
+      //   background-color: $themeColor;
+      //   color: #fff;
+      // }
 
 
     }
@@ -80,14 +80,18 @@
 
   .detailInfo {
     color: $darkColor;
-  }
 
-  :global {
-    .icon-action {
-      background-color: #ceebe0;
-      color: $themeColor;
+    .header {
+      .title {
+        i {
+          background-color: #ceebe0;
+          color: $themeColor;
+        }
+      }
     }
   }
+
+
 }
 
 .dark {
@@ -131,8 +135,18 @@
     }
   }
 
+
   .detailInfo {
     color: $fontColor;
+
+    .header {
+      .title {
+        i {
+          background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+          color: $fontColor-invert;
+        }
+      }
+    }
   }
 
   :global {

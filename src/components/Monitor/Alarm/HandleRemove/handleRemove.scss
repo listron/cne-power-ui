@@ -133,13 +133,11 @@
   .detailInfo {
     color: $fontColor;
 
-    .title {
-      i {
-        cursor: auto;
-
-        &:hover {
-          background-color: #ceebe0;
-          color: $themeColor;
+    .header {
+      .title {
+        i {
+          background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+          color: $fontColor-invert;
         }
       }
     }

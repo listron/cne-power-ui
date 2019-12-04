@@ -127,7 +127,7 @@ class HistoryWarningTable extends Component {
     );
   }
 
-  renderRelievePopover(i) {
+  renderRelievePopover(record, i) {
     const relieveInfo = this.props.relieveInfo;
     return (
       <div className={styles.detailInfo}>
@@ -260,6 +260,7 @@ class HistoryWarningTable extends Component {
                 trigger="click"
                 getPopupContainer={() => this.refs.popover}
                 visible={this.state.showTransferPopover[index]}
+                getPopupContainer={() => this.refs.popover}
                 onVisibleChange={(visible) => this.onTransferChange(visible, record.workOrderId, index)}
               >
                 <div className={this.state.showTransferPopover[index] ? styles.selected : null}>
