@@ -54,41 +54,41 @@
       flex-direction: row;
       justify-content: space-between;
       margin: 25px;
-      :global{
-        .ant-btn{
-          border-color: $themeColor;
-          color: $themeColor;
+      .leftButtons{
+        display: flex;
+        align-items: center;
+        .uploadReport{
+          width: 98px;
+          padding: 0;
+          span{
+            margin-left: 0px;
+            display: inline-block;
+            width: 64px;
+            text-align: center;
+          }
+          :global{
+            .anticon{
+              width: 28px;
+              height: 30px;
+              line-height: 32px;
+              background: $themeColor;
+              color: #fff;
+              margin-left: -4px;
+            }
+          }
         }
-      }
-      .uploadReport{
-        width: 98px;
-        padding: 0;
-        margin-right: 12px;
-        span{
-          margin-left: 0px;
-          display: inline-block;
-          width: 64px;
-          text-align: center;
+        .importReportFile{
+          margin: 0 12px;
+          :global{
+            .ant-upload-list{
+              display: none;
+            }
+          }
         }
         :global{
-          .anticon{
-            width: 28px;
-            height: 30px;
-            line-height: 32px;
-            background: $themeColor;
-            color: #fff;
-            margin-left: -4px;
-          }
-          
-        }
-      }
-      .infoTooltip{
-        svg{
-          border-radius: 50%;
-          color: $darkColor;
-          &:hover{
-            color: #fff;
-            background-color: #f9b600;
+          .ant-btn{
+            border-color: $themeColor;
+            color: $themeColor;
           }
         }
       }
