@@ -319,7 +319,7 @@ function* addUser({ payload }){ // 新增用户
       yield call(easyPut, 'fetchSuccess', {
         addUserLoading: false, addUserSuccess: true,
       });
-    }
+    } else { throw response.message; }
   } catch(err) {
     yield call(easyPut, 'changeStore', { addUserLoading: false });
     message.error(`添加用户失败, 请重试, ${err}`);
@@ -336,7 +336,7 @@ function* editUser({ payload }){ // 编辑用户
       yield call(easyPut, 'fetchSuccess', {
         addUserLoading: false, addUserSuccess: true,
       });
-    }
+    } else { throw response.message; }
   } catch(err) {
     yield call(easyPut, 'changeStore', { addUserLoading: false });
     message.error(`修改用户信息失败, 请重试, ${err}`);
