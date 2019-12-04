@@ -44,7 +44,7 @@ class OperateLine extends Component {
     return (
       <div className={styles.processItem}>
         <div className={styles.lineBasic}>
-          <div className={styles.flowName}>{item.flowCode === 10 && '发现缺陷' || item.flowName}</div>
+          <div className={styles.flowName}>{item.flowCode === 10 && '新建工单' || item.flowName}</div>
           <div className={styles.status}>{['已解决', '未解决', '', '下发', '驳回', '不合格', '合格', '关闭'][item.handleStatus]}</div>
         </div>
         <div className={styles.processCont}>
