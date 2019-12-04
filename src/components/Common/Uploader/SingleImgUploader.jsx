@@ -54,6 +54,19 @@ class SingleImgUploader extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    const { data } = nextProps;
+    const { thumbUrl } = data || {};
+    const preData = this.props.data || {};
+    const preThumbUrl = preData.thumbUrl;
+    if (preThumbUrl !== thumbUrl) { // props新传入图片变化，同步切换
+      this.setState({
+        currentImgInfor: data,
+        preInfor: data,
+      });
+    }
+  }
+
   onOK = (imgInfor) => {
     const { onChange,onOK } = this.props;
     onOK && onOK(imgInfor);
@@ -101,7 +114,6 @@ class SingleImgUploader extends Component {
     const authData = localStorage.getItem('authData') || '';
     const { showCurentUpload, currentImgInfor, preInfor } = this.state;
     const { uploadPath, imgStyle } = this.props;
-
     const imageProps = {
       action: `${uploadPath}`,
       className:styles.uploader,

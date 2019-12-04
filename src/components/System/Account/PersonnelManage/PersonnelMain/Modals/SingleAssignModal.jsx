@@ -102,7 +102,7 @@ class SingleAssignModal extends Component {
     const { selectedDepartment } = this.props;
     this.props.assignUsers({
       userIds: selectedUserRow.map(e => e.userId),
-      departmentId: [selectedDepartment.departmentId],
+      departmentIds: [selectedDepartment.departmentId],
     });
   }
 
