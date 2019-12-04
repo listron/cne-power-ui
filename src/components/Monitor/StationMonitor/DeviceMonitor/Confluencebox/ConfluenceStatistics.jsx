@@ -13,7 +13,7 @@ const EachRecord = ({ text, value, unit, show }) => (
     <span className={styles.unit}>{unit}</span>
     {show &&
     <span className={styles.tooltipName}>
-      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"></i>
+      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={show}> <i className="iconfont icon-help"></i>
       </Tooltip>
     </span>}
   </div>
@@ -28,7 +28,7 @@ EachRecord.propTypes = {
 };
 
 function ConfluenceStatistics({ deviceDetail, subDeviceList = [], theme = 'light' }) {
-  const { devicePower, deviceCapacity, voltage, electricity, temperature, dispersionRatio } = deviceDetail;
+  const { devicePower, deviceCapacity, voltage, voltageValidation, electricity, electricityValidation, temperature, temperatureValidation, dispersionRatio } = deviceDetail;
   if (!subDeviceList.length && subDeviceList.electricityList) {
     subDeviceList = subDeviceList.electricityList || []; // 取出子集组串接口优化后删。
   }
@@ -60,12 +60,12 @@ function ConfluenceStatistics({ deviceDetail, subDeviceList = [], theme = 'light
         <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} theme={theme} />
         <div className={styles.line} />
         <div className={styles.elecInfo}>
-          <EachRecord text="电压" value={dataFormats(voltage, '--', 2)} unit="V" show />
-          <EachRecord text="电流" value={dataFormats(electricity, '--', 2)} unit="A" />
+          <EachRecord text="电压" value={dataFormats(voltage, '--', 2)} unit="V" show={voltageValidation} />
+          <EachRecord text="电流" value={dataFormats(electricity, '--', 2)} unit="A" show={electricityValidation} />
         </div>
         <div className={styles.line} />
         <div className={styles.statisticsInfo}>
-          <EachRecord text="温度" value={dataFormats(temperature, '--', 2)} unit="℃" />
+          <EachRecord text="温度" value={dataFormats(temperature, '--', 2)} unit="℃" show={temperatureValidation} />
           <EachRecord text="离散率" value={dataFormats(dispersionRatio, '--', 2)} unit="%" />
         </div>
       </div>

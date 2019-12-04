@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
-import { message, Select } from 'antd';
+import { message, Select, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
@@ -46,6 +46,7 @@ class SingleStaionList extends React.Component {
     const instantaneous = singleStation.instantaneous;
     const dayPower = divideFormarts(singleStation.dayPower, powerUnit);
     const equivalentHours = singleStation.equivalentHours;
+    const equivalentHoursValidation = singleStation.equivalentHoursValidation;
     const alarm = singleStation.alarmNum > 0;
     const invertType = singleStation.lowEffType === 1 ? '201' : '206';
     return (
@@ -83,9 +84,15 @@ class SingleStaionList extends React.Component {
                 <div> <span className={styles.changeNum}> {powerPoint(dayPower)}</span> {powerUnit} </div>
               </div>
               <div className={styles.column}>
-                <span className={styles.dataName}> 日利用小时</span>
-                {/* <span className={styles.dataName}> 日等效时</span> */}
-                <div> <span className={styles.changeNum}> {dataFormats(equivalentHours, '--', 2)}</span> h </div>
+                <span className={styles.dataName}> 日等效时</span>
+                <div className={styles.data}>
+                  <span className={styles.changeNum}> <span>{dataFormats(equivalentHours, '--', 2)}</span> h </span>
+                  {equivalentHoursValidation &&
+                    <div className={styles.tooltipName}>
+                      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"></i>
+                      </Tooltip>
+                    </div>}
+                </div>
               </div>
             </div>
           </div>

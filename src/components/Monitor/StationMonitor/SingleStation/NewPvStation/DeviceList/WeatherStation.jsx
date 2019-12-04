@@ -173,12 +173,12 @@ class WeatherStation extends Component {
                                 <div className={styles.detailId}>
                                     {value}
                                     <span className={styles.detailUnit}>{e.unit}</span>
-                                    {/* {e.isShow &&
+                                    {e.isShow && weatherstationDetail.radiatioQuantityValidation &&
                                     <span className={styles.tooltipName}>
                                         <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
                                             <i className="iconfont icon-help"></i>
                                         </Tooltip>
-                                    </span>} */}
+                                    </span>}
                                 </div>
                             </div>);
                         })}

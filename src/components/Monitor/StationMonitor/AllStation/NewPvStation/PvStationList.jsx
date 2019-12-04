@@ -103,8 +103,7 @@ class PvStationList extends React.Component {
         render: value => powerPoint(divideFormarts(value, powerUnit)),
       },
       {
-        // title: () => <TableColumnTitle title="日等效时" unit={'h'} className="nonePadding" />,
-        title: () => <TableColumnTitle title="日利用小时" unit={'h'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="日等效时" unit={'h'} className="nonePadding" />,
         dataIndex: 'equivalentHours',
         sorter: true,
         className: styles.numberStyle,
