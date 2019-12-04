@@ -175,7 +175,7 @@ class WeatherStation extends Component {
                                     <span className={styles.detailUnit}>{e.unit}</span>
                                     {e.isShow && weatherstationDetail.radiatioQuantityValidation &&
                                     <span className={styles.tooltipName}>
-                                        <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
+                                        <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={weatherstationDetail.radiatioQuantityValidation}>
                                             <i className="iconfont icon-help"></i>
                                         </Tooltip>
                                     </span>}

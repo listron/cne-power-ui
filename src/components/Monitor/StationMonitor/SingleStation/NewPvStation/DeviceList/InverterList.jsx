@@ -149,7 +149,7 @@ class InverterList extends Component {
               <span>{dataFormats(value, '--', 2)}</span>
               {record.equipmentHoursValidation &&
                 <span className={styles.tooltipName}>
-                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
+                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={record.equipmentHoursValidation}>
                     <i className="iconfont icon-help"></i>
                   </Tooltip>
                 </span>}
@@ -168,7 +168,7 @@ class InverterList extends Component {
               <span>{dataFormats(value, '--', 2)}</span>
               {record.transferRateValidation &&
                 <span className={styles.tooltipName}>
-                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
+                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={record.transferRateValidation}>
                     <i className="iconfont icon-help"></i>
                   </Tooltip>
                 </span>}

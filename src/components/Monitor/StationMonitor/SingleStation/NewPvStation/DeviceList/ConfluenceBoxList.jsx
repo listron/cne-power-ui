@@ -261,7 +261,6 @@ class ConfluenceBoxList extends Component {
   render() {
     const { confluenceBoxList, deviceTypeCode, loading, theme } = this.props;
     const { currentPage, pageSize, renderList } = this.state;
-    console.log('renderList: ', renderList);
     const { deviceList = [] } = confluenceBoxList;
     const baseLinkPath = '/hidden/monitorDevice';
     const { stationCode } = this.props.match.params;
@@ -326,7 +325,7 @@ class ConfluenceBoxList extends Component {
                                       <span>电压：{dataFormats(item.voltage, '--', 2)} V</span>
                                       {item.voltageValidation &&
                                         <span className={styles.tooltipName}>
-                                          <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
+                                          <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.voltageValidation}>
                                             <i className="iconfont icon-help"></i>
                                           </Tooltip>
                                         </span>}

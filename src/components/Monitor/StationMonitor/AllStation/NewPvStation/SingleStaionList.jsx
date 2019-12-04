@@ -89,7 +89,7 @@ class SingleStaionList extends React.Component {
                   <span className={styles.changeNum}> <span>{dataFormats(equivalentHours, '--', 2)}</span> h </span>
                   {equivalentHoursValidation &&
                     <div className={styles.tooltipName}>
-                      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"></i>
+                      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={equivalentHoursValidation}> <i className="iconfont icon-help"></i>
                       </Tooltip>
                     </div>}
                 </div>

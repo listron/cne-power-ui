@@ -94,9 +94,9 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
                     <span style={{ color: statusBoxStyle.color }} className={styles.deviceName}>{item.deviceName}</span>
                     <span className={styles.transferRate}>
                       <span>{dataFormats(item.transferRate, '--', 2)}%</span>
-                      {item.transferRateValidationtransferRateValidation &&
+                      {item.transferRateValidation &&
                         <span className={styles.tooltipName}>
-                          <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
+                          <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.transferRateValidation}>
                             <i className="iconfont icon-help"></i>
                           </Tooltip>
                         </span>}
@@ -120,7 +120,7 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
                     <span>{dataFormats(item.equipmentHours, '--', 2)} h</span>
                     {item.equipmentHoursValidation &&
                       <span className={styles.tooltipName}>
-                        <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
+                        <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.equipmentHoursValidation}>
                           <i className="iconfont icon-help"></i>
                         </Tooltip>
                       </span>}
