@@ -38,11 +38,12 @@ class HandlePersonnelInfo extends Component {
     const preLoading = this.props.addUserLoading;
     if (pageKey === 'editPersonnel' && userDetailInfo !== preDetail) { // 编辑模式且得到新的详情, 将详情set进入formValue
       const { roleAllList, specialRoleList } = this.props;
-      const { userLogo, username, userFullName, phoneNum, email, roleName, spcialRoleName, departmentIds } = userDetailInfo;
+      const { userLogo, username, userFullName, phoneNum, email, roleName, spcialRoleName, enterpriseData } = userDetailInfo;
       const tmpRoleNameArr = roleName ? roleName.split(',') : [];
       const tmpRoleSpcialArr = spcialRoleName ? spcialRoleName.split(',') : [];
       const roleIds = roleAllList.filter(e => tmpRoleNameArr.includes(e.roleDesc)).map(e => e.roleId);
       const specialRoleIds = specialRoleList.filter(e => tmpRoleSpcialArr.includes(e.roleDesc)).map(e => e.roleId);
+      const departmentIds = this.getDepartmentIdsFromDetaiInfo(enterpriseData);
       form.setFieldsValue({
         userLogo, username, userFullName, phoneNum, email, roleIds, specialRoleIds, departmentIds,
       });
@@ -53,6 +54,16 @@ class HandlePersonnelInfo extends Component {
       addMode === 'save' && this.confirmBack(); // 返回列表页
       addMode === 'continue' && form.resetFields(); // 清空form表单, 继续填写
     }
+  }
+
+  getDepartmentIdsFromDetaiInfo = (enterpriseData) => {
+    const enterpriseList = enterpriseData || [];
+    const departList = [];
+    enterpriseList.forEach(e => {
+      const departmentData = e.departmentData || [];
+      departList.push(...departmentData);
+    });
+    return departList.map(e => e.departmentId);
   }
 
   warningTip = () => this.setState({ showWarningTip: true })
