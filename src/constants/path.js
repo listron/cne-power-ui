@@ -134,6 +134,7 @@ export default {
       uploadDayReport: '/v3/performance/dailyreport', // 上报日报
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
+      uploadReportFile: '/v3/performance/dailyreport/upload', // 日报文件上报
 
       getImportIntelligent: '/v3/knowledgebase/import', // 智能专家库导入
       getIntelligentTable: '/v3/knowledgebase/list', // 智能专家库列表
