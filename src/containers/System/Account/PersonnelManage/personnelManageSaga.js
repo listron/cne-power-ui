@@ -121,9 +121,9 @@ function *editDepartment({ payload }){ // 编辑部门
      * departmentId	String	是	所属部门ID => 是否有父级部门;
      * stationCodes	String[]	是	负责电站（多选）
      */
-    const url = `${APIBasePath}${system.handleDepartment}`;
+    const url = `${APIBasePath}${system.editDepartment}`;
     yield call( easyPut, 'changeStore', { addDepartmentLoading: true });
-    const response = yield call(request.put, url, payload);
+    const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
       yield call( easyPut, 'changeStore', {
         addDepartmentLoading: false,
@@ -187,7 +187,7 @@ function *getDepartmentAllUser({ payload }){ // 获取指定部门所有用户�
 }
 
 function *assignUsers({ payload }) { // 为部门分配用户
-  // payload: { userIds: [], departmentId: [] }
+  // payload: { userIds: [], departmentIds: [] }
   try {
     const url = `${APIBasePath}${system.assignUsers}`;
     yield call(easyPut, 'changeStore', {

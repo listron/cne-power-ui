@@ -284,7 +284,8 @@ export default {
       getAllUserBase: '/v3/user/list/departmentInfos', // 企业所有用户信息
       getDepartmentTreeData: '/v3/department/tree', // 用户企业部门树
       preDeleteDepartmentCheck: '/v3/department/checkDel', // 删除部门前的预置请求
-      handleDepartment: '/v3/department', //部门信息新增，编辑，详情，删除
+      handleDepartment: '/v3/department', //部门信息新增，详情，删除
+      editDepartment: '/v3/department/update', // 部门编辑
       getStationOfDepartment: '/v3/department/station/list', // 获取某部门下的电站
       getDepartmentAllUser: '/v3/user/all/list', // 获取部门下所有用户基本信息: 模糊搜索 + 已有用户回填;
       assignUsers: '/v3/user/distribute/department', // 分配部门用户

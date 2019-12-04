@@ -94,7 +94,7 @@ class ListHandle extends Component {
           {userCreateRight && <Button type="add" onClick={this.toAddUser}><i>+</i>添加人员</Button>}
           {hasSelectRights && <Select
             onChange={this.handleUser}
-            style={{width: '70px', margin: '0 28px 0 10px'}}
+            style={{width: '80px', margin: '0 28px 0 10px'}}
             value="操作"
             dropdownMatchSelectWidth={false}
             disabled={handleDisable}
