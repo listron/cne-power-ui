@@ -89,6 +89,7 @@ class List extends Component {
 
   examineUser = ({ userId }) => { // 打开审核
     this.props.changeStore({ personnelDrawerIds: [userId] });
+    this.props.getUserDetailInfo({ userId, pageKey: 'list' });
   }
 
   onDepartChecked = (assignDepartChecked) => this.setState({ assignDepartChecked })
