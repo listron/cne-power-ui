@@ -95,7 +95,6 @@ class DefectFormReview extends Component {
               rules: [{ required: false, message: '清选择截止时间' }],
             })(
               <DatePicker
-                placeholder="默认当前时间"
                 format="YYYY-MM-DD"
                 disabledDate={this.disabledDate}
               />

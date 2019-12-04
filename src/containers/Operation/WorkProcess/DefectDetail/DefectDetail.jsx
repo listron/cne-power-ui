@@ -87,7 +87,7 @@ class DefectDetail extends Component {
           result = '消缺详情'; break;
       }
     } else {
-      result = '新建缺陷';
+      result = '新建工单';
     }
     return result;
   }
