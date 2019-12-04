@@ -11,10 +11,12 @@ class InverterSeriesTenMin extends Component {
     branchTenMinUnix: PropTypes.number,
     branchTenMin: PropTypes.object,
     theme: PropTypes.string,
-  }
+    pointNameArr: PropTypes.array,
+  };
 
-  state = {
-    HLColors: ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34'],
+  constructor(props) {
+    super(props);
+    this.HLColors = ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34'];
   }
 
   componentDidMount() {
@@ -24,14 +26,14 @@ class InverterSeriesTenMin extends Component {
   componentDidUpdate(prevProps) {
     const { branchTenMinUnix, theme } = this.props;
     const prevTenMinUnix = prevProps.branchTenMinUnix;
-    if (branchTenMinUnix !== prevTenMinUnix || theme !== prevProps.theme) { // 获得数据
+    const prevPointNameArr = prevProps.pointNameArr;
+    if (branchTenMinUnix !== prevTenMinUnix || theme !== prevProps.theme || prevPointNameArr.length >= 0) { // 获得数据
       this.renderChart();
     }
   }
 
   renderChart = () => {
-    const { branchTenMin, theme } = this.props;
-    const { HLColors } = this.state;
+    const { branchTenMin, theme, pointNameArr } = this.props;
     const echartBox = document.getElementById('seriesInverter_monitor_tenMin');
     let seriesInverterChart = echarts.init(echartBox, themeConfig[theme]);
     if (seriesInverterChart) {
@@ -61,10 +63,20 @@ class InverterSeriesTenMin extends Component {
         data: branchTenMin[e],
       };
     });
+    // 遍历选中支路数组
+    if(pointNameArr.length > 0) {
+      this.HLColors = ['#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666'];
+      pointNameArr.forEach(item => {
+        this.HLColors[item.pointIndex] = item.bgcColor;
+      });
+    }
+    if(pointNameArr.length === 0) {
+      this.HLColors = ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34']
+    }
     const seriesInverterGraphic = chartsNodata(!(time.length === 0), theme);
     const option = {
       graphic: seriesInverterGraphic,
-      color: ['#3e97d1', ...HLColors],
+      color: ['#3e97d1', ...this.HLColors],
       legend: {
         data: ['离散率', ...hlArr.map(e => `HL#${`${e}`.padStart(2, '0')}`)],
         top: 24,
