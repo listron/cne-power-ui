@@ -176,7 +176,7 @@ class HandlePersonnelInfo extends Component {
                   initialValue: '',
                   rules: [{
                     message: '请输入正确的手机号',
-                    pattern: /^1|9\d{10}$/,
+                    pattern: /^1[123456789]\d{9}$/,
                     required: true,
                   }],
                 })( <Input placeholder="请输入电话号码" style={{width: '200px'}} /> )}
