@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Progress } from 'antd';
+import { Progress, Tooltip } from 'antd';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './inverter.scss';
 
@@ -61,10 +61,37 @@ const SubConfluenceList = ({ subDeviceList = [], stationCode, theme = 'light' })
                 </div>
               </div>
               <div className={styles.deviceBlockFooter} >
-                <div>电压：{dataFormats(item.voltage, '--', 2)} V</div>
-                <div>电流：{dataFormats(item.electricity, '--', 2)} A</div>
+                <div>
+                  <div>
+                    <span>电压：{dataFormats(item.voltage, '--', 2)} V</span>
+                    {/* <span className={styles.tooltipName}>
+                      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
+                        <i className="iconfont icon-help"></i>
+                      </Tooltip>
+                    </span> */}
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <span>电流：{dataFormats(item.electricity, '--', 2)} A</span>
+                    {/* <span className={styles.tooltipName}>
+                      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
+                        <i className="iconfont icon-help"></i>
+                      </Tooltip>
+                    </span> */}
+                  </div>
+                </div>
                 <div className={styles.dispersionRatio}>离散率：{dataFormats(item.dispersionRatio, '--', 2)} %</div>
-                <div>温度：{dataFormats(item.temp, '--', 2)} ℃</div>
+                <div>
+                  <div>
+                    <span>温度：{dataFormats(item.temp, '--', 2)} ℃</span>
+                    {/* <span className={styles.tooltipName}>
+                      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
+                        <i className="iconfont icon-help"></i>
+                      </Tooltip>
+                    </span> */}
+                  </div>
+                </div>
               </div>
               {subInfo.length > 0 && <div className={styles.subBranch}>
                 {subInfo.map((branch, innerIndex) => {

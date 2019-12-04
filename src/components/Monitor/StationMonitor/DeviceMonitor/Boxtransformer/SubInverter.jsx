@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Progress } from 'antd';
+import { Progress, Tooltip } from 'antd';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './boxtransformer.scss';
 
@@ -92,7 +92,14 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
                 <div className={styles.deviceItemR}>
                   <div className={styles.deviceBlockName}>
                     <span style={{ color: statusBoxStyle.color }} className={styles.deviceName}>{item.deviceName}</span>
-                    <span>{dataFormats(item.transferRate, '--', 2)}%</span>
+                    <span className={styles.transferRate}>
+                      <span>{dataFormats(item.transferRate, '--', 2)}%</span>
+                      {/* <span className={styles.tooltipName}>
+                        <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
+                          <i className="iconfont icon-help"></i>
+                        </Tooltip>
+                      </span> */}
+                    </span>
                   </div>
                   <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
                   <div className={styles.deviceItemPower}>
@@ -108,7 +115,15 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
                 </div>
                 <div className={styles.eachInfo}>
                   <div>日利用小时</div>
-                  <div className={styles.value}>{dataFormats(item.equipmentHours, '--', 2)} h</div>
+                  {/* <div>日等效时</div> */}
+                  <div className={styles.value}>
+                    <span>{dataFormats(item.equipmentHours, '--', 2)} h</span>
+                    {/* <span className={styles.tooltipName}>
+                      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
+                        <i className="iconfont icon-help"></i>
+                      </Tooltip>
+                    </span> */}
+                  </div>
                 </div>
               </div>
               <div className={styles.allStatus}>

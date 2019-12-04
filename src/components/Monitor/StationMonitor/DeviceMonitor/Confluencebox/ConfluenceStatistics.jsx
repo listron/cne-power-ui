@@ -3,14 +3,20 @@ import PropTypes from 'prop-types';
 import PowerProgress from '../DeviceMonitorCommon/PowerProgress';
 import {DeviceValueFormat} from '../../../../Common/UtilComponent';
 import {dataFormat, dataFormats} from '../../../../../utils/utilFunc';
+import { Tooltip } from 'antd';
 
 import styles from './confluencebox.scss';
 
-const EachRecord = ({text, value, unit}) => (
+const EachRecord = ({ text, value, unit, show }) => (
   <div className={styles.eachRecord}>
     <span className={styles.text}>{text}</span>
     <DeviceValueFormat value={value} />
     <span className={styles.unit}>{unit}</span>
+    {show &&
+    <span className={styles.tooltipName}>
+      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"/>
+      </Tooltip>
+    </span>}
   </div>
 );
 
@@ -18,6 +24,7 @@ EachRecord.propTypes = {
   text: PropTypes.string,
   value: PropTypes.string,
   unit: PropTypes.string,
+  show: PropTypes.bool,
 };
 
 class ConfluenceStatistics extends Component{
@@ -114,7 +121,7 @@ class ConfluenceStatistics extends Component{
           <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} theme={theme} />
           <div className={styles.line} />
           <div className={styles.elecInfo}>
-            <EachRecord text="电压" value={dataFormats(voltage, '--', 2)} unit="V" />
+            <EachRecord text="电压" value={dataFormats(voltage, '--', 2)} unit="V" show/>
             <EachRecord text="电流" value={dataFormats(electricity, '--', 2)} unit="A" />
           </div>
           <div className={styles.line} />

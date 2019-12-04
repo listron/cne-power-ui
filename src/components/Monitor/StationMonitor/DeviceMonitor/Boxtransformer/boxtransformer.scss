@@ -35,13 +35,23 @@
       .deviceBlockName {
         height: 33px;
         line-height: 33px;
+        .transferRate{
+          display: flex;
+          .tooltipName{
+            margin-top: -5px;
+            margin-left: 3px;
+            &:hover{
+              color: #f9b600;
+            }
+          }
+        }
       }
       .deviceItemPower {
         height: 25px;
         line-height: 25px;
       }
       .deviceName {
-        width: 130px;
+        width: 120px;
         @include overflowText();
       }
     }
@@ -55,6 +65,19 @@
         line-height: 24px;
         display: flex;
         justify-content: space-between;
+        .value{
+          display: flex;
+          .tooltipName{
+            margin-top: -5px;
+            margin-left: 3px;
+            i{
+              color: #dfdfdf;
+              &:hover{
+                color: #f9b600;
+              }
+            }
+          }
+        }
       }
     }
     .allStatus {
