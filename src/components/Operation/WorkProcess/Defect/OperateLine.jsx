@@ -72,7 +72,7 @@ class OperateLine extends Component {
   }
   render() {
     const { processData, defectStatus } = this.props;
-    const lastStatus = (processData.length > 0 && processData[processData.length - 1].handleStatus) || '';
+    const lastStatus = (processData.length > 0 && processData[0].handleStatus) || '';
     return (
       <div className={styles.timeLineWrap}>
         <div className={styles.titleText}>
