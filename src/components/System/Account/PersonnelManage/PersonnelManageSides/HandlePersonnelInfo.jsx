@@ -44,12 +44,15 @@ class HandlePersonnelInfo extends Component {
       const roleIds = roleAllList.filter(e => tmpRoleNameArr.includes(e.roleDesc)).map(e => e.roleId);
       const specialRoleIds = specialRoleList.filter(e => tmpRoleSpcialArr.includes(e.roleDesc)).map(e => e.roleId);
       const departmentIds = this.getDepartmentIdsFromDetaiInfo(enterpriseData);
+      this.props.getDepartmentsStationMap({ departmentIds }); // 得到该用户的部门/电站分组信息
       form.setFieldsValue({
-        userLogo, username, userFullName, phoneNum, email, roleIds, specialRoleIds, departmentIds,
+        userLogo: userLogo || '/img/nopic.png',
+        username, userFullName, phoneNum, email, roleIds, specialRoleIds, departmentIds,
       });
     }
     if (!addUserLoading && preLoading && addUserSuccess) { // 信息提交成功;
       const { addMode } = this.state;
+      this.props.changeStore({ departmentsStationMap: [] }); // 清空负责电站项
       this.props.getUserList(); // 更新list页面数据
       addMode === 'save' && this.confirmBack(); // 返回列表页
       addMode === 'continue' && form.resetFields(); // 清空form表单, 继续填写
@@ -69,7 +72,11 @@ class HandlePersonnelInfo extends Component {
   warningTip = () => this.setState({ showWarningTip: true })
 
   confirmBack = () => { // 返回列表页并重置form数据;
-    this.props.changeStore({ pageKey: 'list', userDetailInfo: {} });
+    this.props.changeStore({
+      pageKey: 'list',
+      userDetailInfo: {},
+      departmentsStationMap: [],
+    });
     this.setState({ addMode: 'save', showWarningTip: false });
     this.props.form.resetFields();
   }

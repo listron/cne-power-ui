@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Table, Icon, Switch, Input, Button } from 'antd';
+import WarningTip from '@components/Common/WarningTip';
 import styles from './modals.scss';
 const { Search } = Input;
 
@@ -25,6 +26,8 @@ class SingleAssignModal extends Component {
     tmpInputText: '',
     nameFilterText: '',
     selectedUserRow: [],
+    warningText: '', // 删除某个只属于一个部门的用户时候提示
+    warningTmpSavedUserRow: [], // 删除某个只属于一个部门的用户时暂存
     column: [
       {
         title: '真实姓名',
@@ -71,8 +74,43 @@ class SingleAssignModal extends Component {
     this.setState({ nameFilterText: nameFilterText ? nameFilterText.trim() : '' });
   }
 
-  checkUser = (selectedKeys, selectedUserRow) => { // 选中
-    this.setState({ selectedUserRow });
+  checkUser = (selectedKeys, nextSelectedUserRow) => { // 选中
+    const { selectedUserRow } = this.state;
+    console.log(nextSelectedUserRow, selectedUserRow)
+    if (nextSelectedUserRow.length < selectedUserRow.length) { // 减少, 且减少的这个只有一个部门时，需要提示他将不属于任何部门
+      const { departmentAllUsers, selectedDepartment } = this.props;
+      const preKeys = nextSelectedUserRow.map(e => e.userId);
+      const deleteUser = selectedUserRow.find(e => !preKeys.includes(e.userId));
+      const isDeleteUserInThisDepart = departmentAllUsers.find(e => e.userId === deleteUser.userId);
+      console.log(departmentAllUsers, isDeleteUserInThisDepart);
+      if (isDeleteUserInThisDepart) { // 欲删除用户正好在当前部门内
+        const { departmentNames, username } = deleteUser || {};
+        const departNum = departmentNames ? departmentNames.split(',').length : 0;
+        console.log(departNum);
+        departNum === 1 && this.setState({
+          warningText: `${username} 在 ${selectedDepartment.departmentName} 取消分配后, 不再属于任何部门, 将在未分配部门人员列表中。您确认从${selectedDepartment.departmentName}中移出${username}吗?`,
+          warningTmpSavedUserRow: nextSelectedUserRow,
+        });
+        return;
+      }
+    }
+    this.setState({ selectedUserRow: nextSelectedUserRow });
+  }
+
+  confirmRemove = () => {
+    const { warningTmpSavedUserRow } = this.state;
+    this.setState({
+      selectedUserRow: warningTmpSavedUserRow,
+      warningText: '',
+      warningTmpSavedUserRow: [],
+    });
+  }
+
+  cancelRemove = () => {
+    this.setState({
+      warningText: '',
+      warningTmpSavedUserRow: [],
+    });
   }
 
   getUserSource = (data) => { // 基于筛选项 获取table表格数据
@@ -116,7 +154,7 @@ class SingleAssignModal extends Component {
   render(){
     const { showSingleAssignModal, selectedDepartment, departmentTree, allBaseUserData, assignUserLoading } = this.props;
     const { departmentName, parentDepartmentId, departmentId } = selectedDepartment;
-    const { column, isChecked, tmpInputText, selectedUserRow } = this.state;
+    const { column, isChecked, tmpInputText, selectedUserRow, warningText } = this.state;
     let parentInfo; // parentDepartmentId为0代表无父部门, departmentId为1代表未分配部门, 均不用遍历
     if (parentDepartmentId && departmentId !== '1' && parentDepartmentId !== '0') {
       parentInfo = departmentTree.find(e => e.departmentId === parentDepartmentId);
@@ -163,6 +201,12 @@ class SingleAssignModal extends Component {
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" />}}
           scroll={{ y: 350 }}
         />
+        {warningText && <WarningTip
+          onOK={this.confirmRemove}
+          style={{ width: '310px', height: '130px' }}
+          onCancel={this.cancelRemove}
+          value={warningText}
+        />}
         <div className={styles.assignFooter}>
           <span className={styles.footerText}>
             已选<span className={styles.footerNum}>{selectedUserRow.length}</span>个

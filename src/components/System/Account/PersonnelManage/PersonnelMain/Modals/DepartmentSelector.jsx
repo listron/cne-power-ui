@@ -89,6 +89,8 @@ class DepartmentSelector extends Component {
           placeholder="请选择"
           onChange={this.handleChange}
           value={value}
+          maxTagCount={0}
+          maxTagPlaceholder={`已选部门${value.length}/${departmentsList.length}`}
         >
           {departmentsList.map(e => (
             <Option key={e.departmentId} value={e.departmentId}>{e.departmentName}</Option>
