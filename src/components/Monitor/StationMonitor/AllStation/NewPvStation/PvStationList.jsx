@@ -144,13 +144,6 @@ class PvStationList extends React.Component {
         className: styles.numberStyle,
         render: value => value ? value : 0,
       },
-      // {
-      //   title: () => <TableColumnTitle title="低效逆变器" unit={'台'} className="nonePadding" />,
-      //   dataIndex: 'lowEfficiencyInverterNum',
-      //   sorter: true,
-      //   className: styles.numberStyle,
-      //   render: value => value ? value : 0,
-      // },
       {
         title: () => <TableColumnTitle title="告警" unit={'个'} className="nonePadding" />,
         dataIndex: 'alarmNum',
@@ -190,7 +183,6 @@ class PvStationList extends React.Component {
         'equivalentHours',
         'alarmNum',
         'anomalousBranchNum',
-        // 'lowEfficiencyInverterNum',
         'stationStatus'];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);

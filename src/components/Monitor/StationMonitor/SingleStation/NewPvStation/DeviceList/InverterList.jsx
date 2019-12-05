@@ -360,7 +360,6 @@ class InverterList extends Component {
     const filteredDeviceList = this.dealData(deviceList);
     const deviceGroupedList = this.groupData(renderList);
     const operations = (<div className={styles.inverterRight} >
-      {/* <Switch defaultChecked={false} onChange={this.onSwitchLow} /> 只看低效逆变器 */}
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm} style={{ marginLeft: 8 }} /> 只看告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus} >
         <Radio.Button value={0} >全部</Radio.Button>
@@ -409,7 +408,6 @@ class InverterList extends Component {
                                   const deviceTypeCode = deviceCode.split('M')[1];
                                   const progressPercent = devicePower / deviceCapacity * 100 || 0;
                                   const unconnect = `${deviceStatus}` === '900';
-                                  // const statusBoxStyle = item.isLowEfficiency > 0 ? 'lowEfficiency' : item.alarmNum > 0 && 'alarm';
                                   const statusBoxStyle = item.alarmNum > 0 && 'alarm' || '';
                                   return (
                                     <div key={i} className={`${styles.singledeviceItem} 

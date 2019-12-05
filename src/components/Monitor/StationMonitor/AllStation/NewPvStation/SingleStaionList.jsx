@@ -46,7 +46,6 @@ class SingleStaionList extends React.Component {
     const equivalentHours = singleStation.equivalentHours;
     const equivalentHoursValidation = singleStation.equivalentHoursValidation;
     const alarm = singleStation.alarmNum > 0;
-    const invertType = singleStation.lowEffType === 1 ? '201' : '206';
     return (
       <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}  ${alarm && styles.alarm}`}
            onClick={() => {
@@ -112,9 +111,6 @@ class SingleStaionList extends React.Component {
             异常支路数 <span
             className={styles[`${singleStation.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(singleStation.anomalousBranchNum, '--', 0)}</span>
           </Link>
-          {/* <Link to={`/monitor/singleStation/${singleStation.stationCode}?showPart=${invertType}`} className={styles.dataColumn}>
-            低效逆变器  <span className={styles[`${singleStation.lowEfficiencyInverterNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(singleStation.lowEfficiencyInverterNum, '--', 0)}</span>
-          </Link> */}
           <Link to={`/monitor/alarm/realtime?stationCode=${singleStation.stationCode}`} className={styles.dataColumn}>
             <div>
               告警 <span

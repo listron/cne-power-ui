@@ -41,14 +41,6 @@ class DetailCharts extends Component {
                 <div className={styles.hideDetail} onClick={() => { this.props.detailChange({ detailVisible: false }); }}>
                     <i className="iconfont icon-go"></i>
                 </div>
-                {/* <div className={styles.deviceStatus}>
-                    <div className={styles.deviceStaTitle}> <span>设备状态</span> // <i className="iconfont icon-more"></i> 
-                    </div>
-                    <div className={styles.deviceStaCont}>
-                        <span>{'异常支路数'} {dataFormats(stationDataSummary['anomalousBranchNum'], '--')}</span>
-                        <span>{'低效逆变器'} {dataFormats(stationDataSummary['lowEfficiencyInverterNum'], '--')}</span>
-                    </div>
-                </div> */}
                 <div className={styles.chartsBox}>
                     <DayPower
                         dayPowerData={dayPowerData}
