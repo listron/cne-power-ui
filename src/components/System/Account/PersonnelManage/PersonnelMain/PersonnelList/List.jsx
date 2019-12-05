@@ -55,7 +55,7 @@ class List extends Component {
           return <span className={statusText === '待审核' ? styles.toExamine : styles.status}>{statusText || '--'}</span>;
         },
         sorter: true,
-      }
+      },
     ],
   }
 
@@ -144,17 +144,17 @@ class List extends Component {
     title: '操作',
     dataIndex: 'handle',
     render: (text, record) => {
-      const { enterpriseStatus } = record;
+      const { enterpriseStatus } = record; // 5待审核，6审核不通过，可继续审核;  其余状态可进行分配操作;
       return (
         <span className={styles.handle}>
           {editRight && <i className="iconfont icon-edit" title="编辑" onClick={() => this.editUser(record)} />}
           {deleteRight && <i className="iconfont icon-remove" title="注销" onClick={() => this.logoutWarning(record)} />}
-          {auditRight && parseFloat(enterpriseStatus) === 5 && <i
+          {auditRight && [5, 6].includes(enterpriseStatus) && <i
             className="iconfont icon-examine1"
             title="审核"
             onClick={() => this.examineUser(record)}
           /> /*需审核*/}
-          {assignRight && parseFloat(enterpriseStatus) !== 5 && <i
+          {assignRight && ![5, 6].includes(enterpriseStatus) && <i
             title="分配"
             className="iconfont icon-bumenx"
             onClick={() => this.assignDeparts([record])}
@@ -193,7 +193,7 @@ class List extends Component {
           onCheck={this.onDepartChecked}
           onChange={this.onAssignOK}
           modalShow={assignDepartUsers.length > 0}
-          departmentTree={departmentTree}
+          departmentTree={departmentTree.filter(e => e.departmentId !== '1')}
           username={assignDepartUsers.map(e => e.username).join(',')}
           hideModal={this.hideDepartModal}
         />

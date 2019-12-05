@@ -212,7 +212,7 @@ class HandlePersonnelInfo extends Component {
                 {getFieldDecorator('departmentIds', {
                   initialValue: [],
                 })(
-                  <DepartmentSelector departmentTree={departmentTree} onChange={this.departsChange} />
+                  <DepartmentSelector departmentTree={departmentTree.filter(e => e.departmentId !== '1')} onChange={this.departsChange} />
                 )}
               </FormItem>
               {departmentsStationMap.length > 0 && <div className={styles.eachForm}>
