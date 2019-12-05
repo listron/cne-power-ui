@@ -1,0 +1,89 @@
+.transferModal {
+  .formItem {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .input {
+    margin-left: -60px;
+    margin-top: 15px;
+  }
+
+  .instructionText {
+    display: flex;
+    flex: 1;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-right: 8px;
+  }
+
+  :global {
+    .ant-modal-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      height: 100%;
+      margin-top: 180px;
+    }
+  }
+}
+
+.relieveModal {
+  .formItem {
+    display: flex;
+    flex-direction: row;
+
+    :global {
+      .ant-form-item-label {
+        overflow: visible;
+
+        .ant-form-item-required::before {
+          position: absolute;
+          top: 5px;
+          left: -10px;
+        }
+      }
+    }
+  }
+
+  .input {
+    margin-left: -60px;
+    margin-top: 15px;
+  }
+
+  .instructionText {
+    display: flex;
+    flex: 1;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-right: 8px;
+  }
+
+  :global {
+    .ant-modal-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      height: 100%;
+      margin-top: 180px;
+    }
+
+    .ant-form-item-control-wrapper {
+      .ant-form-item-control {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        .ant-form-item-children {
+          display: flex;
+          flex-direction: row;
+
+          .ant-calendar-picker {
+            margin-left: 12px;
+            vertical-align: top;
+          }
+        }
+      }
+    }
+  }
+}
