@@ -63,6 +63,9 @@ class ConfluenceStatistics extends Component{
   branchDetailsFunc = (e, pointIndex, pointStatus, bgcColor) => {
     // 阻止冒泡
     e.stopPropagation();
+    if(pointStatus === '900') {
+      return false;
+    }
     // pointStatus === 400正常，取边框颜色，其他的状态取背景颜色，产品说UI是这么设计的
     const colorParams = pointStatus === '400' ? '#199475' : bgcColor;
     const { pointNameFunc, pointNameArr } = this.props;
