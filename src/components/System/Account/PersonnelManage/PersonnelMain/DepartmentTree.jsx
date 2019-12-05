@@ -192,6 +192,7 @@ class DepartmentTree extends Component {
             blockNode
             className={styles.treeContent}
             onSelect={this.selectDepartmentNode}
+            defaultSelectedKeys={['1']}
           >
             {this.renderTreeNodes(departmentTree, deleteRight, updateRight)}
           </DirectoryTree>
