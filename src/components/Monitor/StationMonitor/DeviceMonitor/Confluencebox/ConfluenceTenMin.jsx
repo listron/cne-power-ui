@@ -55,7 +55,7 @@ class ConfluenceTenMin extends Component {
     });
     // 遍历选中支路数组
     if(pointNameArr.length > 0) {
-      this.HLColors = ['#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666'];
+      this.HLColors = ['#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999'];
       pointNameArr.forEach(item => {
         this.HLColors[item.pointIndex] = item.bgcColor;
       });
@@ -63,13 +63,15 @@ class ConfluenceTenMin extends Component {
     if(pointNameArr.length === 0) {
       this.HLColors = ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34'];
     }
+    // 选中的支路下标, 高亮选中的那条线
+    const selectPointIndex = pointNameArr && pointNameArr.length > 0 ? pointNameArr[0].pointIndex : '';
     const HLNamesArr = HLNames.map((e, i) => {
       return {
         name: e,
         type: 'line',
         lineStyle: {
           type: 'solid',
-          width: 1,
+          width: selectPointIndex === i ? 2 : 1,
         },
         label: {
           normal: {
@@ -79,6 +81,7 @@ class ConfluenceTenMin extends Component {
         itemStyle: {
           opacity: 0,
         },
+        z: selectPointIndex === i ? 2 : 1,
         yAxisIndex: 0,
         data: HLData[i],
       };
@@ -93,7 +96,7 @@ class ConfluenceTenMin extends Component {
       graphic: graphic,
       color: ['#3e97d1', ...this.HLColors],
       title: {
-        text: '时序图11',
+        text: '时序图',
         textStyle: {
           fontSize: 14,
         },

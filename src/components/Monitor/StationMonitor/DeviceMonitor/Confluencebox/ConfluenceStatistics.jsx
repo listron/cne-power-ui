@@ -60,9 +60,11 @@ class ConfluenceStatistics extends Component{
   }
 
   // 切换选中支路
-  branchDetailsFunc = (e, pointIndex, bgcColor) => {
+  branchDetailsFunc = (e, pointIndex, pointStatus, bgcColor) => {
     // 阻止冒泡
     e.stopPropagation();
+    // pointStatus === 400正常，取边框颜色，其他的状态取背景颜色，产品说UI是这么设计的
+    const colorParams = pointStatus === '400' ? '#199475' : bgcColor;
     const { pointNameFunc, pointNameArr } = this.props;
     if(pointNameArr.length > 0){
       let flag = true; // 判断是否执行
@@ -74,15 +76,13 @@ class ConfluenceStatistics extends Component{
       });
       if(flag) {
         flag = true;
-        // 添加选中的支路名称
-        pointNameArr.push({pointIndex, bgcColor});
-        pointNameFunc(pointNameArr);
+        // 选中的支路名称
+        pointNameFunc([{pointIndex, bgcColor: colorParams}]);
       }
       return false;
     }
-    // 添加选中的支路名称
-    pointNameArr.push({pointIndex, bgcColor});
-    return pointNameFunc(pointNameArr);
+    // 选中的支路名称
+    return pointNameFunc([{pointIndex, bgcColor: colorParams}]);
   };
 
   // 重置所有支路
@@ -104,6 +104,22 @@ class ConfluenceStatistics extends Component{
     return borderStyles === null ? '2px solid transparent' : borderStyles;
   };
 
+  // 如果有选中的支路颜色，改变背景色
+  otherStylesFunc = (pointIndex, pointStatus) => {
+    const { pointNameArr } = this.props;
+    // 选中的支路下标
+    const selectPointIndex = pointNameArr && pointNameArr.length > 0 ? pointNameArr[0].pointIndex : '';
+    // 默认灰色背景
+    let styleParams = {
+      color: '#666666',
+      backgroundColor: '#dfdfdf',
+    };
+    if(pointIndex === selectPointIndex || selectPointIndex === '' || pointStatus === '900') {
+      styleParams = {};
+    }
+    return styleParams;
+  };
+
   render() {
     const {
       deviceDetail,
@@ -121,7 +137,7 @@ class ConfluenceStatistics extends Component{
           <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} theme={theme} />
           <div className={styles.line} />
           <div className={styles.elecInfo}>
-            <EachRecord text="电压" value={dataFormats(voltage, '--', 2)} unit="V" show/>
+            <EachRecord text="电压" value={dataFormats(voltage, '--', 2)} unit="V"/>
             <EachRecord text="电流" value={dataFormats(electricity, '--', 2)} unit="A" />
           </div>
           <div className={styles.line} />
@@ -134,9 +150,13 @@ class ConfluenceStatistics extends Component{
           {subDeviceArr.map((cur, i) => (
             <span
               className={styles.eachCurrent}
-              onClick={(e) => {return this.branchDetailsFunc(e, i, this.statusColor[theme][cur.pointStatus].backgroundColor);}}
+              onClick={(e) => {return this.branchDetailsFunc(e, i, cur.pointStatus, this.statusColor[theme][cur.pointStatus].backgroundColor);}}
               key={i}
-              style={{...this.statusColor[theme][cur.pointStatus], border: this.borderFunc(cur.pointStatus, i)}}
+              style={{
+                ...this.statusColor[theme][cur.pointStatus],
+                border: this.borderFunc(cur.pointStatus, i),
+                ...this.otherStylesFunc(i, cur.pointStatus),
+              }}
             >{dataFormat(cur.pointValue, '--', 2)}</span>
           ))}
         </div>

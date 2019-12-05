@@ -130,12 +130,14 @@ class PvmoduleList extends Component {
     });
   };
 
-  junctionBoxDetailsFunc = (pointIndex, bgcColor, routerPath) => {
+  junctionBoxDetailsFunc = (pointIndex, pointStatus, bgcColor, routerPath) => {
     const { history } = this.props;
+    // pointStatus === 400正常，取边框颜色，其他的状态取背景颜色，产品说UI是这么设计的
+    const colorParams = pointStatus === '400' ? '#199475' : bgcColor;
     // 点击的支路电流进入汇流箱详情，选中点击的支路
     const params = {
       pointIndex,
-      bgcColor: bgcColor.split('#')[1],
+      bgcColor: colorParams.split('#')[1],
     };
     history.push(`${routerPath}?pointParams=${JSON.stringify(params)}`);
   };
@@ -195,7 +197,7 @@ class PvmoduleList extends Component {
                               return (
                                 <span
                                   style={{backgroundColor: colorStatus.backgroundColor, color: colorStatus.color, cursor: colorStatus.cursor}}
-                                  onClick={colorStatus.cursor === 'pointer' ? () => {this.junctionBoxDetailsFunc(i, colorStatus.backgroundColor, `${baseLinkPath}/${stationCode}/${parentTypeCode}/${deviceCode}`);} : () => {}}
+                                  onClick={colorStatus.cursor === 'pointer' ? () => {this.junctionBoxDetailsFunc(i, e.pointStatus, colorStatus.backgroundColor, `${baseLinkPath}/${stationCode}/${parentTypeCode}/${deviceCode}`);} : () => {}}
                                   className={styles.commonStyle}
                                   key={e.pointName}
                                 >

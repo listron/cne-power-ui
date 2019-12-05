@@ -43,13 +43,15 @@ class InverterSeriesTenMin extends Component {
     const { index = [], time = [], rate = [] } = branchTenMin;
     const timeFormatArr = time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
     const hlArr = index.filter(e => e > 0); // 取出正确的组串标识对应索引。
-    const hlSeries = hlArr.map(e => {
+    // 选中的支路下标, 高亮选中的那条线
+    const selectPointIndex = pointNameArr && pointNameArr.length > 0 ? pointNameArr[0].pointIndex : '';
+    const hlSeries = hlArr.map((e, i) => {
       return {
         name: `HL#${`${e}`.padStart(2, '0')}`,
         type: 'line',
         lineStyle: {
           type: 'solid',
-          width: 1,
+          width: selectPointIndex === i ? 2 : 1,
         },
         label: {
           normal: {
@@ -60,12 +62,13 @@ class InverterSeriesTenMin extends Component {
           opacity: 0,
         },
         yAxisIndex: 0,
+        z: selectPointIndex === i ? 2 : 1,
         data: branchTenMin[e],
       };
     });
     // 遍历选中支路数组
     if(pointNameArr.length > 0) {
-      this.HLColors = ['#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666', '#666666'];
+      this.HLColors = ['#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999'];
       pointNameArr.forEach(item => {
         this.HLColors[item.pointIndex] = item.bgcColor;
       });
