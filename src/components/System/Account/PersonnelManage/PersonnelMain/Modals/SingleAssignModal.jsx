@@ -17,7 +17,7 @@ class SingleAssignModal extends Component {
     departmentAllUsers: PropTypes.array,
     allBaseUserData: PropTypes.array,
     changeStore: PropTypes.func,
-    assignUsers: PropTypes.func,
+    assignDepartmentUsers: PropTypes.func,
   }
 
   state = {
@@ -106,9 +106,10 @@ class SingleAssignModal extends Component {
   assignUsers = () => {
     const { selectedUserRow } = this.state;
     const { selectedDepartment } = this.props;
-    this.props.assignUsers({
+    const { departmentId } = selectedDepartment || {};
+    this.props.assignDepartmentUsers({
       userIds: selectedUserRow.map(e => e.userId),
-      departmentIds: [selectedDepartment.departmentId],
+      departmentId,
     });
   }
 

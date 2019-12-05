@@ -21,7 +21,7 @@ class List extends Component {
     getUserDetailInfo: PropTypes.func,
     setUserStatus: PropTypes.func,
     changeStore: PropTypes.func,
-    assignUsers: PropTypes.func,
+    assignUserDepartments: PropTypes.func,
     getUserList: PropTypes.func,
   }
 
@@ -98,7 +98,7 @@ class List extends Component {
 
   onAssignOK = () => { // 确定用户分配 => 部门;
     const { assignDepartChecked, assignDepartUsers } = this.state;
-    this.props.assignUsers({
+    this.props.assignUserDepartments({
       userIds: assignDepartUsers.map(e => e.userId),
       departmentIds: assignDepartChecked,
     });

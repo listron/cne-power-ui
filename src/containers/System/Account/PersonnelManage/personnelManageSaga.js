@@ -173,6 +173,7 @@ function *deleteDepartment({ payload }){ // 删除部门
 }
 
 function *getDepartmentAllUser({ payload }){ // 获取指定部门所有用户列表; => 分配用户; 模糊搜索均用;
+  // payload: { departmentId: '' }
   try {
     const url = `${APIBasePath}${system.getDepartmentAllUser}`;
     const response = yield call(request.post, url, payload);
@@ -186,10 +187,35 @@ function *getDepartmentAllUser({ payload }){ // 获取指定部门所有用户�
   }
 }
 
-function *assignUsers({ payload }) { // 为部门分配用户
+function *assignDepartmentUsers({ payload }) { // 为部门分配用户 => 属性部门列弹框操作进行用户分配
+  // payload: { userIds: [], departmentId: "" }
+  try {
+    const url = `${APIBasePath}${system.assignDepartmentUsers}`;
+    yield call(easyPut, 'changeStore', {
+      assignUserLoading: true,
+      assignUserSuccess: false,
+    });
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        assignUserLoading: false,
+        assignUserSuccess: true,
+      });
+      const { departmentId } = payload;
+      yield call(getDepartmentAllUser, { payload: { departmentId } }); // 更新当前用户
+      yield call(getUserList);
+    } else { throw response.message; }
+    // 重新请求相关主页面的用户id列表, 用户详细列表;
+  } catch(error) {
+    yield call(easyPut, 'changeStore', { assignUserSuccess: false });
+    message.error(`分配人员信息失败, 请重试! ${error}`);
+  }
+}
+
+function *assignUserDepartments({ payload }){ // 为用户分配部门 => 主界面列表/操作 进行部门分配
   // payload: { userIds: [], departmentIds: [] }
   try {
-    const url = `${APIBasePath}${system.assignUsers}`;
+    const url = `${APIBasePath}${system.assignUserDepartments}`;
     yield call(easyPut, 'changeStore', {
       assignUserLoading: true,
       assignUserSuccess: false,
@@ -361,7 +387,8 @@ function* getDepartmentsStationMap({ payload }){ // 新增-编辑用户中，获
 export function* watchPersonnelManage() {
   yield takeLatest(personnelManageAction.getAllUserBase, getAllUserBase);
   yield takeLatest(personnelManageAction.getDepartmentAllUser, getDepartmentAllUser);
-  yield takeLatest(personnelManageAction.assignUsers, assignUsers);
+  yield takeLatest(personnelManageAction.assignDepartmentUsers, assignDepartmentUsers);
+  yield takeLatest(personnelManageAction.assignUserDepartments, assignUserDepartments);
   yield takeLatest(personnelManageAction.downloadTemplate, downloadTemplate);
   yield takeLatest(personnelManageAction.getDepartmentTreeData, getDepartmentTreeData);
   yield takeLatest(personnelManageAction.addNewDepartment, addNewDepartment);

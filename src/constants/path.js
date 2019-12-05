@@ -288,7 +288,8 @@ export default {
       editDepartment: '/v3/department/update', // 部门编辑
       getStationOfDepartment: '/v3/department/station/list', // 获取某部门下的电站
       getDepartmentAllUser: '/v3/user/all/list', // 获取部门下所有用户基本信息: 模糊搜索 + 已有用户回填;
-      assignUsers: '/v3/user/distribute/department', // 分配部门用户
+      assignDepartmentUsers: '/v3/department/distribute/user', // 为部门分配用户
+      assignUserDepartments: '/v3/user/distribute/department', // 为用户分配部门
       getUserPagelist: '/v3/user/pagelist', // 新人员管理界面列表展示
       getUserDetailInfo: '/v3/user', //用户详情
       setUserStatus: '/v3/user/status', // 修改用户状态
