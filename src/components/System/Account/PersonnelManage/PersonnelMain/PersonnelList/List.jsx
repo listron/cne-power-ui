@@ -55,7 +55,7 @@ class List extends Component {
           return <span className={statusText === '待审核' ? styles.toExamine : styles.status}>{statusText || '--'}</span>;
         },
         sorter: true,
-      }
+      },
     ],
   }
 
