@@ -101,6 +101,7 @@ class DayReportListHandle extends Component {
             beforeUpload={this.beforeUpload}
             onChange={this.importChange}
             className={styles.importReportFile}
+            multiple={true}
           >
             <Button>导入日报</Button>
           </Upload>}
