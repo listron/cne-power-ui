@@ -17,10 +17,12 @@ class List extends Component {
     userList: PropTypes.array,
     selectedRowKeys: PropTypes.array,
     departmentTree: PropTypes.array,
+    userListPageInfo: PropTypes.object,
     getUserDetailInfo: PropTypes.func,
     setUserStatus: PropTypes.func,
     changeStore: PropTypes.func,
     assignUsers: PropTypes.func,
+    getUserList: PropTypes.func,
   }
 
   state = {
@@ -136,6 +138,23 @@ class List extends Component {
     this.props.changeStore({ selectedRowKeys });
   }
 
+  sortList = (pagination, filters, sorter) => {
+    const { order /*, field */ } = sorter || {}; // 现只有一列需排序，field暂无用;
+    const { userListPageInfo } = this.props;
+    let sortField = 'u.create_time', sortMethod = 'desc';
+    if (order) {
+      sortField = 'eu.enterprise_user_status';
+      sortMethod = order === 'ascend' ? 'asc' : 'desc';
+    }
+    const newPageInfo = {
+      ...userListPageInfo,
+      sortField,
+      sortMethod,
+    };
+    this.props.changeStore({ userListPageInfo: newPageInfo });
+    this.props.getUserList({ ...newPageInfo });
+  }
+
   cancelSelectRow = () => {
     this.props.changeStore({ selectedRowKeys: [] });
   }
@@ -187,6 +206,7 @@ class List extends Component {
             onChange: this.rowSelect,
             selectedRowKeys,
           }}
+          onChange={this.sortList}
         />
         <DepartmentAssignModal
           value={assignDepartChecked}

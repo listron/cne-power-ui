@@ -29,15 +29,21 @@ class SingleAssignModal extends Component {
       {
         title: '真实姓名',
         dataIndex: 'userFullName',
-        render: (text) => <div className={styles.userFullName}>{text || '--'}</div>,
+        width: 130,
+        render: (text) => <div title={text || '--'} className={styles.userFullName}>{text || '--'}</div>,
+      }, {
+        title: '用户名',
+        dataIndex: 'username',
+        width: 120,
+        render: (text) => <div title={text || '--'} className={styles.username}>{text || '--'}</div>,
       }, {
         title: '电话',
+        width: 140,
         dataIndex: 'phoneNum',
       }, {
         title: '所属部门',
         dataIndex: 'departmentNames',
-        width: 200,
-        render: (text) => <div className={styles.departmentNames}>{text || '--'}</div>,
+        render: (text) => <div title={text || '--'} className={styles.departmentNames}>{text || '--'}</div>,
       },
     ],
   }

@@ -128,7 +128,7 @@ class ListSearch extends Component {
             return <Option key={`${username}`} value={`${username}`}>{userText}</Option>;
           })}
         </Select> */}
-        <span className={styles.searchTitle}>姓名</span>
+        <span className={styles.searchTitle}>用户名</span>
         <Input style={{width: '130px'}} value={nameText} placeholder="请输入..." onChange={this.nameChange} />
         <span className={styles.searchTitle}>电话</span>
         <Input style={{width: '160px'}} value={phoneText} placeholder="请输入..." onChange={this.phoneChange} />

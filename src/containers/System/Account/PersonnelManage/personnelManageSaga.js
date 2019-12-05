@@ -20,7 +20,7 @@ function* easyPut(actionName, payload){
 function *getAllUserBase(){ // 进入页面预请求: 所有用户基础信息 => 用于分配人员
   try {
     const url = `${APIBasePath}${system.getAllUserBase}`;
-    const response = yield call(request.post, url); // departmentId 此处也可以传输部门id用于获取部门下用户
+    const response = yield call(request.post, url, { userState: 3 }); // departmentId 此处也可以传输部门id用于获取部门下用户
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         allBaseUserData: response.data.map(e => ({ ...e, key: e.userId })) || [],

@@ -118,6 +118,7 @@ class HandlePersonnelInfo extends Component {
     const { pageKey, form, roleAllList, specialRoleList, departmentTree, addUserLoading, departmentsStationMap } = this.props;
     const { getFieldDecorator } = form;
     // const { enterpriseTexts, departTexts, stationTexts } =pageKey === 'editPersonnel' ? this.getEditEnterpriseDetail() : {};
+    const usernamePhoneDisable = pageKey === 'editPersonnel'; // 编辑情况下 用户名 / 电话 置灰。
     return (
       <div className={styles.sideHandle} style={pageKey === 'detailPersonnel' ? { display: 'none' } : {}}>
         <div className={styles.topTitle}>
@@ -149,7 +150,7 @@ class HandlePersonnelInfo extends Component {
                     },
                     required: true,
                   }],
-                })( <Input placeholder="请输入用户名" style={{width: '200px'}} /> )}
+                })( <Input placeholder="请输入用户名" style={{width: '200px'}} disabled={usernamePhoneDisable} /> )}
                 <span className={styles.instructionText}>(3-25位中文,英文,数字,特殊字符都可)</span>
               </FormItem>
               <FormItem label="真实姓名" colon={false} className={styles.eachForm} >
@@ -179,7 +180,7 @@ class HandlePersonnelInfo extends Component {
                     pattern: /^1[123456789]\d{9}$/,
                     required: true,
                   }],
-                })( <Input placeholder="请输入电话号码" style={{width: '200px'}} /> )}
+                })( <Input placeholder="请输入电话号码" style={{width: '200px'}} disabled={usernamePhoneDisable} /> )}
                 <span className={styles.instructionText}>(11位手机号码)</span>
               </FormItem>
               <FormItem label="邮箱" colon={false} className={styles.eachForm} >
