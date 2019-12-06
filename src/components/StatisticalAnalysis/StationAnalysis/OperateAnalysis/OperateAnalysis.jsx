@@ -407,7 +407,7 @@ class OperateAnalysis extends React.Component {
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem + ' ' + styles.photovoltaicModule}>
                 <div className={styles.innerTop}>
-                  <div className={styles.cardTitle}>光伏组件</div>
+                  <div className={styles.cardTitle}>光伏组串</div>
                   <div>发电量 {powerData.componentGen || '--'}万kWh</div>
                   <div>损耗 {powerData.componentLost || '--'}万kWh</div>
                 </div>
