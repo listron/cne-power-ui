@@ -9,7 +9,7 @@ import { chartsLoading, themeConfig, chartsNodata } from '../../../../utils/dark
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
-const SingleChart = ({ keyWord, data = [], id, theme = 'light' }) => {
+const SingleChart = ({ keyWord, data = [], id, hasSlider, theme = 'light' }) => {
   // 灰尘影响charts图(全局 + 方阵特殊覆盖属性 )
   const chartBox = document.getElementById(id);
   const getColor = {
@@ -126,20 +126,20 @@ const SingleChart = ({ keyWord, data = [], id, theme = 'light' }) => {
         },
       ],
     };
-    if (keyWord === 'matrix') {
+    if (keyWord === 'matrix' && hasSlider) {
       const maxLength = data.length || 1;
       const defaultLength = 30;
       const endZoom = (defaultLength / maxLength) * 100;
       option.dataZoom = [
         {
           show: true,
-          start: 0,
-          end: endZoom,
+          startValue: 0,
+          endValue: hasSlider ? 19 : endZoom,
         },
         {
           type: 'inside',
-          start: 0,
-          end: endZoom,
+          startValue: 0,
+          endValue: hasSlider ? 19 : endZoom,
         },
       ];
     }
@@ -155,6 +155,7 @@ SingleChart.propTypes = {
   data: PropTypes.array,
   id: PropTypes.string,
   theme: PropTypes.string,
+  hasSlider: PropTypes.bool,
 };
 
 class DustEffectCharts extends Component {
@@ -193,7 +194,6 @@ class DustEffectCharts extends Component {
   render() {
     const { startDay, endDay } = this.state;
     const { totalEffects, matrixEffects, theme } = this.props;
-
     const disabledDate = (current) => { // 不可选未来日期
       return current && current > moment().subtract(1, 'days');
     };
@@ -230,6 +230,7 @@ class DustEffectCharts extends Component {
             <div className={styles.eachChart}>
               <SingleChart
                 data={matrixEffects}
+                hasSlider={matrixEffects.length > 20}
                 keyWord="matrix"
                 id="cleanWarningMatrixEffect"
                 theme={theme}

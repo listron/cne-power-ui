@@ -12,7 +12,7 @@ import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/d
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
 
-const SingleChart = ({ keyWord, data = [], id, theme }) => { // 灰尘影响charts图(全局 + 方阵特殊覆盖属性 )
+const SingleChart = ({ keyWord, data = [], id, hasSlider, theme }) => { // 灰尘影响charts图(全局 + 方阵特殊覆盖属性 )
   const chartBox = document.getElementById(id);
   const getColor = {
     light: ['#199475', '#f9b600', '#3e97d1'],
@@ -120,6 +120,23 @@ const SingleChart = ({ keyWord, data = [], id, theme }) => { // 灰尘影响char
         },
       ],
     };
+    if (keyWord === 'matrix' && hasSlider) {
+      const maxLength = data.length || 1;
+      const defaultLength = 30;
+      const endZoom = (defaultLength / maxLength) * 100;
+      option.dataZoom = [
+        {
+          show: true,
+          startValue: 0,
+          endValue: hasSlider ? 19 : endZoom,
+        },
+        {
+          type: 'inside',
+          startValue: 0,
+          endValue: hasSlider ? 19 : endZoom,
+        },
+      ];
+    }
     chartInitBox.setOption(option);
   }
 
@@ -147,8 +164,8 @@ class DustEffectCharts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startTime: moment().subtract(30, 'day'),
-      endTime: moment(),
+      startTime: moment().subtract(1, 'months').add(-1, 'days'),
+      endTime: moment().subtract(1, 'days'),
     };
   }
 
@@ -156,8 +173,8 @@ class DustEffectCharts extends Component {
     const { singleStationCode, getMatrixDust, getStationDust } = this.props;
     const effectParam = {
       stationCode: singleStationCode,
-      startTime: timeString[0],
-      endTime: timeString[1],
+      startTime: moment(timeString[0]).format('YYYY-MM-DD'),
+      endTime: moment(timeString[1]).format('YYYY-MM-DD'),
     };
     getMatrixDust(effectParam);
     getStationDust(effectParam);
@@ -184,7 +201,7 @@ class DustEffectCharts extends Component {
           </TabPane>
           <TabPane className={styles.eachChart} tab={<span>方阵灰尘影响(基于系统效率/清洗板)</span>} key="2" forceRender={true}>
             <div className={styles.eachChart}>
-              <SingleChart data={matrixEffects} keyWord="matrix" id="cleanWarningMatrixEffect" theme={theme} />
+              <SingleChart data={matrixEffects} keyWord="matrix" id="cleanWarningMatrixEffect" hasSlider={matrixEffects.length > 20} theme={theme} />
             </div>
           </TabPane>
         </Tabs>
