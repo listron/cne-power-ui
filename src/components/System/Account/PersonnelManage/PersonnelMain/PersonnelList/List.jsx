@@ -108,10 +108,14 @@ class List extends Component {
     });
   }
 
-  assignDeparts = (assignDepartUsers) => this.setState({ // 开启分配部门弹框并初始化弹框选中项
-    assignDepartChecked: [],
-    assignDepartUsers,
-  })
+  assignDeparts = (assignDepartUsers) => {
+    const userDeparts = assignDepartUsers.map(e => e.departmentIds).filter(e => !!e).map(e => e.split(','));
+    const userDepartIds = userDeparts.reduce((a, b) => a.concat(b), []);
+    this.setState({ // 开启分配部门弹框并初始化弹框选中项
+      assignDepartChecked: userDepartIds,
+      assignDepartUsers,
+    });
+  }
 
   hideDepartModal = () => this.setState({ // 取消分配用户
     assignDepartChecked: [],
