@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
-import {message} from 'antd';
-import {Link} from 'react-router-dom';
-import {dataFormats} from '../../../../../utils/utilFunc';
-import {divideFormarts, multiplyFormarts, powerPoint} from '../../PvCommon/PvDataformat';
+import { message, Select, Tooltip } from 'antd';
+import { Link } from 'react-router-dom';
+import { dataFormats } from '../../../../../utils/utilFunc';
+import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
 import OutputTenMin from './OutputTenMin';
 
 class SingleStaionList extends React.Component {
@@ -44,8 +44,8 @@ class SingleStaionList extends React.Component {
     const instantaneous = singleStation.instantaneous;
     const dayPower = divideFormarts(singleStation.dayPower, powerUnit);
     const equivalentHours = singleStation.equivalentHours;
+    const equivalentHoursValidation = singleStation.equivalentHoursValidation;
     const alarm = singleStation.alarmNum > 0;
-    const invertType = singleStation.lowEffType === 1 ? '201' : '206';
     return (
       <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}  ${alarm && styles.alarm}`}
            onClick={() => {
@@ -85,9 +85,15 @@ class SingleStaionList extends React.Component {
                 <div><span className={styles.changeNum}> {powerPoint(dayPower)}</span> {powerUnit} </div>
               </div>
               <div className={styles.column}>
-                <span className={styles.dataName}> 日利用小时</span>
-                {/* <span className={styles.dataName}> 日等效时</span> */}
-                <div> <span className={styles.changeNum}> {dataFormats(equivalentHours, '--', 2)}</span> h </div>
+                <span className={styles.dataName}> 日等效时</span>
+                <div className={styles.data}>
+                  <span className={styles.changeNum}> <span>{dataFormats(equivalentHours, '--', 2)}</span> h </span>
+                  {equivalentHoursValidation &&
+                    <div className={styles.tooltipName}>
+                      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={equivalentHoursValidation}> <i className="iconfont icon-help"></i>
+                      </Tooltip>
+                    </div>}
+                </div>
               </div>
             </div>
           </div>
@@ -105,9 +111,6 @@ class SingleStaionList extends React.Component {
             异常支路数 <span
             className={styles[`${singleStation.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(singleStation.anomalousBranchNum, '--', 0)}</span>
           </Link>
-          {/* <Link to={`/monitor/singleStation/${singleStation.stationCode}?showPart=${invertType}`} className={styles.dataColumn}>
-            低效逆变器  <span className={styles[`${singleStation.lowEfficiencyInverterNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(singleStation.lowEfficiencyInverterNum, '--', 0)}</span>
-          </Link> */}
           <Link to={`/monitor/alarm/realtime?stationCode=${singleStation.stationCode}`} className={styles.dataColumn}>
             <div>
               告警 <span

@@ -186,7 +186,6 @@ class PvStationItem extends React.Component {
       { text: '默认排序', id: 'sort' },
       { text: '日等效时 ', id: 'equivalentHours' },
       { text: '告警事件', id: 'alarmNum' },
-      // { text: '低效逆变器', id: 'lowEfficiencyInverterNum' },
       { text: '异常支路数 ', id: 'anomalousBranchNum' },
       { text: '日发电量', id: 'dayPower' },
       { text: '瞬时辐射', id: 'instantaneous' },

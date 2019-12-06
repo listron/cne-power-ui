@@ -41,6 +41,7 @@
     .tooltipName{
       margin-left: 4px;
       margin-bottom: 8px;
+      color: #999;
       &:hover{
         color: #f9b600;
       }
@@ -197,6 +198,16 @@
           .dataName {
             width: 70px;
             margin-right: 6px;
+          }
+          .data{
+            display: flex;
+            .tooltipName{
+              margin-top: -5px;
+              color: #999;
+              &:hover{
+                color: #f9b600;
+              }
+            }
           }
         }
       }

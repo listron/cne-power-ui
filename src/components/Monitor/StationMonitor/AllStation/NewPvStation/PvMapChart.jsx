@@ -82,7 +82,6 @@ class PvMapChart extends Component {
             { name: '日等效时', value: 'equivalentHours', point: 2, unit: 'h' },
             { name: '日发电量', value: 'dayPower', point: 2, unit: powerUnit, unitChange: true },
             { name: '异常支路数', value: 'anomalousBranchNum', point: 0, unit: '个' },
-            // { name: '低效逆变器', value: 'lowEfficiencyInverterNum', point: 0, unit: '台' },
             { name: '告警数量', value: 'alarmNum', point: 0, unit: '个' },
           ];
           let paramsItem = '';

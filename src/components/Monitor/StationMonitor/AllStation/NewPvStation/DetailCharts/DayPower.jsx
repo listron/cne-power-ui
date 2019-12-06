@@ -74,7 +74,6 @@ class DayPower extends Component {
             graphic: graphic,
             color: color,
             title: {
-                text: '日发电量与利用小时',
                 text: '日发电量与等效时',
                 textStyle: {
                     fontSize: 14,
@@ -132,7 +131,7 @@ class DayPower extends Component {
             ],
             yAxis: [
                 {
-                    name: '利用小时(h)',
+                    name: '等效时(h)',
                     type: 'value',
                     axisLabel: {
                         formatter: '{value}',
@@ -207,7 +206,6 @@ class DayPower extends Component {
                     ...barRadius,
                 },
                 {
-                    name: '日利用小时',
                     name: '日等效时',
                     type: 'bar',
                     data: getDefaultData(equipmentHours),

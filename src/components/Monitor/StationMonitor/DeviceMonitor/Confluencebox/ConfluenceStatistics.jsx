@@ -14,7 +14,7 @@ const EachRecord = ({ text, value, unit, show }) => (
     <span className={styles.unit}>{unit}</span>
     {show &&
     <span className={styles.tooltipName}>
-      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"/>
+      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={show}> <i className="iconfont icon-help"></i>
       </Tooltip>
     </span>}
   </div>
@@ -88,6 +88,7 @@ class ConfluenceStatistics extends Component{
     return pointNameFunc([{pointIndex, bgcColor: colorParams}]);
   };
 
+
   // 重置所有支路
   resetBranchDetailsFunc = () => {
     const { pointNameFunc } = this.props;
@@ -129,7 +130,7 @@ class ConfluenceStatistics extends Component{
       subDeviceList = [],
       theme = 'light',
     } = this.props;
-    const {devicePower, deviceCapacity, voltage, electricity, temperature, dispersionRatio} = deviceDetail;
+    const {devicePower, deviceCapacity, voltage, voltageValidation, electricity, electricityValidation, temperature, temperatureValidation, dispersionRatio} = deviceDetail;
     const subDeviceArr = !subDeviceList.length && subDeviceList.electricityList ? (subDeviceList.electricityList || []) : subDeviceList;
     return (
       <div className={`${styles.confluenceStatistics} ${styles[theme]}`} onClick={this.resetBranchDetailsFunc}>
@@ -140,12 +141,12 @@ class ConfluenceStatistics extends Component{
           <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} theme={theme} />
           <div className={styles.line} />
           <div className={styles.elecInfo}>
-            <EachRecord text="电压" value={dataFormats(voltage, '--', 2)} unit="V"/>
-            <EachRecord text="电流" value={dataFormats(electricity, '--', 2)} unit="A" />
-          </div>
-          <div className={styles.line} />
-          <div className={styles.statisticsInfo}>
-            <EachRecord text="温度" value={dataFormats(temperature, '--', 2)} unit="℃" />
+          <EachRecord text="电压" value={dataFormats(voltage, '--', 2)} unit="V" show={voltageValidation} />
+          <EachRecord text="电流" value={dataFormats(electricity, '--', 2)} unit="A" show={electricityValidation} />
+        </div>
+        <div className={styles.line} />
+        <div className={styles.statisticsInfo}>
+            <EachRecord text="温度" value={dataFormats(temperature, '--', 2)} unit="℃" show={temperatureValidation} />
             <EachRecord text="离散率" value={dataFormats(dispersionRatio, '--', 2)} unit="%" />
           </div>
         </div>
