@@ -140,42 +140,41 @@ class InverterList extends Component {
         sorter: true,
       },
       {
-        title: () => <TableColumnTitle title="日利用小时" unit="h" />,
-        // title: () => <TableColumnTitle title="日等效时" unit="h" />,
+        title: () => <TableColumnTitle title="日等效时" unit="h" />,
         dataIndex: 'equipmentHours',
         key: 'equipmentHours',
-        render: value => dataFormats(value, '--', 2),
-        // {
-        //   return (
-        //     <div className={styles.equipmentHours}>
-        //       <span>{dataFormats(value, '--', 2)}</span>
-        //       <span className={styles.tooltipName}>
-        //         <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
-        //           <i className="iconfont icon-help"></i>
-        //         </Tooltip>
-        //       </span>
-        //     </div>
-        //   );
-        // },
+        render: (value, record, index) => {
+          return (
+            <div className={styles.equipmentHours}>
+              <span>{dataFormats(value, '--', 2)}</span>
+              {record.equipmentHoursValidation &&
+                <span className={styles.tooltipName}>
+                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={record.equipmentHoursValidation}>
+                    <i className="iconfont icon-help"></i>
+                  </Tooltip>
+                </span>}
+            </div>
+          );
+        },
         sorter: true,
       },
       {
         title: () => <TableColumnTitle title="转换效率" unit="%" />,
         dataIndex: 'transferRate',
         key: 'transferRate',
-        render: value => dataFormats(value, '--', 2),
-        // {
-        //   return (
-        //     <div className={styles.transferRate}>
-        //       <span>{dataFormats(value, '--', 2)}</span>
-        //       <span className={styles.tooltipName}>
-        //         <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
-        //           <i className="iconfont icon-help"></i>
-        //         </Tooltip>
-        //       </span>
-        //     </div>
-        //   );
-        // },
+        render: (value, record, index) => {
+          return (
+            <div className={styles.transferRate}>
+              <span>{dataFormats(value, '--', 2)}</span>
+              {record.transferRateValidation &&
+                <span className={styles.tooltipName}>
+                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={record.transferRateValidation}>
+                    <i className="iconfont icon-help"></i>
+                  </Tooltip>
+                </span>}
+            </div>
+          );
+        },
         sorter: true,
       },
       {
@@ -361,7 +360,6 @@ class InverterList extends Component {
     const filteredDeviceList = this.dealData(deviceList);
     const deviceGroupedList = this.groupData(renderList);
     const operations = (<div className={styles.inverterRight} >
-      {/* <Switch defaultChecked={false} onChange={this.onSwitchLow} /> 只看低效逆变器 */}
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm} style={{ marginLeft: 8 }} /> 只看告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus} >
         <Radio.Button value={0} >全部</Radio.Button>
@@ -410,7 +408,6 @@ class InverterList extends Component {
                                   const deviceTypeCode = deviceCode.split('M')[1];
                                   const progressPercent = devicePower / deviceCapacity * 100 || 0;
                                   const unconnect = `${deviceStatus}` === '900';
-                                  // const statusBoxStyle = item.isLowEfficiency > 0 ? 'lowEfficiency' : item.alarmNum > 0 && 'alarm';
                                   const statusBoxStyle = item.alarmNum > 0 && 'alarm' || '';
                                   return (
                                     <div key={i} className={`${styles.singledeviceItem} 
@@ -426,11 +423,12 @@ class InverterList extends Component {
                                               <span style={{ color: statusBoxStyle.color }} className={styles.deviceName} title={item.deviceName}>{item.deviceName}</span>
                                               <span className={styles.transferRate}>
                                                 <span>{dataFormats(item.transferRate, '--', 2, true)}%</span>
-                                                {/* <span className={styles.tooltipName}>
-                                                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
-                                                    <i className="iconfont icon-help"></i>
-                                                  </Tooltip>
-                                                </span> */}
+                                                {item.transferRateValidation &&
+                                                  <span className={styles.tooltipName}>
+                                                    <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.transferRateValidation}>
+                                                      <i className="iconfont icon-help"></i>
+                                                    </Tooltip>
+                                                  </span>}
                                               </span>
                                             </div>
                                             <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
@@ -446,15 +444,15 @@ class InverterList extends Component {
                                             <div className={styles.value}>{dataFormats(item.dayPower, '--', 2)} kWh</div>
                                           </div>
                                           <div className={styles.eachInfo}>
-                                            <div>日利用小时</div>
-                                            {/* <div>日等效时</div> */}
+                                            <div>日等效时</div>
                                             <div className={styles.value}>
                                               <span>{dataFormats(item.equipmentHours, '--', 2)} h</span>
-                                              {/* <span className={styles.tooltipName}>
-                                                <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不未填写 计划发电量的电站'}>
-                                                  <i className="iconfont icon-help"></i>
-                                                </Tooltip>
-                                              </span> */}
+                                              {item.equipmentHoursValidation &&
+                                                <span className={styles.tooltipName}>
+                                                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.equipmentHoursValidation}>
+                                                    <i className="iconfont icon-help"></i>
+                                                  </Tooltip>
+                                                </span>}
                                             </div>
                                           </div>
                                         </div>
