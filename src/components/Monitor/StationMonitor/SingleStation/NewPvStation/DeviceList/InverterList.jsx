@@ -136,7 +136,7 @@ class InverterList extends Component {
         title: () => <TableColumnTitle title="日发电量" unit="kWh" />,
         dataIndex: 'dayPower',
         key: 'dayPower',
-        render: value => numWithComma(value),
+        render: value => dataFormats(value, '--', 2),
         sorter: true,
       },
       {
@@ -181,14 +181,14 @@ class InverterList extends Component {
         title: () => <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
         key: 'devicePower',
-        render: value => numWithComma(value),
+        render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: true,
       }, {
         title: () => <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         width: '140px',
-        render: value => numWithComma(value),
+        render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
         title: () => <TableColumnTitle title="告警" unit="个" />,
