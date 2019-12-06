@@ -57,9 +57,20 @@
   }
   .userTable{
     height: 400px;
-    .departmentNames, .userFullName{
-      max-width: 168px;
+    .userFullName, .username, .phoneNum, .departmentNames{
       @include overflowText();
+    }
+    .userFullName{
+      max-width: 98px;
+    }
+    .username{
+      max-width: 88px;
+    }
+    .phoneNum{
+      max-width: 108px;
+    }
+    .departmentNames{
+      max-width: 138px;
     }
   }
   .assignFooter{

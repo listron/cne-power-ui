@@ -128,6 +128,7 @@ class DepartmentDrawer extends Component {
                 data={stations}
                 multiple={true}
                 style={{ width: '200px' }}
+                stationShowNumber={true}
               />
             )}
           </FormItem>
