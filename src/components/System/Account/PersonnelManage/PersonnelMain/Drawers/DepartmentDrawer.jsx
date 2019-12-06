@@ -105,7 +105,7 @@ class DepartmentDrawer extends Component {
             })(
               <Select style={{width: '200px'}} disabled={departmentDrawerKey === 'edit'}>
                 <Option value="0">无父部门</Option>
-                {departmentTree.map(e => (
+                {departmentTree.filter(e => e.departmentId !== '1').map(e => (
                   <Option value={e.departmentId} key={e.departmentId}>{e.departmentName}</Option>
                 ))}
               </Select>
