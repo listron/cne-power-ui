@@ -64,12 +64,12 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
     },
   };
 
-  const getStatusBox = (alarmNum, isLowEfficiency) => {
-    let backgroundColor = 'transparent', color = '#666';
-    alarmNum && isLowEfficiency && (backgroundColor = '#fefad2') && (color = '#e08031');
-    alarmNum && !isLowEfficiency && (backgroundColor = '#ff8e9c') && (color = '#a42b2c');
-    return { backgroundColor, color };
-  };
+  // const getStatusBox = (alarmNum, isLowEfficiency) => {
+  //   let backgroundColor = 'transparent', color = '#666';
+  //   alarmNum && isLowEfficiency && (backgroundColor = '#fefad2') && (color = '#e08031');
+  //   alarmNum && !isLowEfficiency && (backgroundColor = '#ff8e9c') && (color = '#a42b2c');
+  //   return { backgroundColor, color };
+  // };
   return (
     <div className={`${styles.subInverter} ${styles[theme]}`}>
       {/* <h3>下级设备</h3> */}
@@ -94,11 +94,12 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
                     <span style={{ color: statusBoxStyle.color }} className={styles.deviceName}>{item.deviceName}</span>
                     <span className={styles.transferRate}>
                       <span>{dataFormats(item.transferRate, '--', 2)}%</span>
-                      {/* <span className={styles.tooltipName}>
-                        <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
-                          <i className="iconfont icon-help"></i>
-                        </Tooltip>
-                      </span> */}
+                      {item.transferRateValidation &&
+                        <span className={styles.tooltipName}>
+                          <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.transferRateValidation}>
+                            <i className="iconfont icon-help"></i>
+                          </Tooltip>
+                        </span>}
                     </span>
                   </div>
                   <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
@@ -114,15 +115,15 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
                   <div className={styles.value}>{dataFormats(item.dayPower, '--', 2)} kWh</div>
                 </div>
                 <div className={styles.eachInfo}>
-                  <div>日利用小时</div>
-                  {/* <div>日等效时</div> */}
+                  <div>日等效时</div>
                   <div className={styles.value}>
                     <span>{dataFormats(item.equipmentHours, '--', 2)} h</span>
-                    {/* <span className={styles.tooltipName}>
-                      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}>
-                        <i className="iconfont icon-help"></i>
-                      </Tooltip>
-                    </span> */}
+                    {item.equipmentHoursValidation &&
+                      <span className={styles.tooltipName}>
+                        <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.equipmentHoursValidation}>
+                          <i className="iconfont icon-help"></i>
+                        </Tooltip>
+                      </span>}
                   </div>
                 </div>
               </div>

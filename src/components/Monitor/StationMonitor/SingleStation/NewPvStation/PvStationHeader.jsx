@@ -72,11 +72,13 @@ class PvStationHeader extends React.Component {
     const stationCapacity = realCapacityUnit === 'MW' ? stationDataSummary.stationCapacity : multiplyFormarts(stationDataSummary.stationCapacity, 1000);
     const stationUnitCount = stationDataSummary.stationUnitCount;
     const instantaneous = stationDataSummary.instantaneous;
+    const instantaneousValidation = stationDataSummary.instantaneousValidation;
     const dayPower = divideFormarts(stationDataSummary.dayPower, powerUnit);
     const monthPower = divideFormarts(stationDataSummary.monthPower, powerUnit);
     const yearPower = divideFormarts(stationDataSummary.yearPower, powerUnit);
     const monthRate = stationDataSummary.monthRate;
     const equivalentHours = stationDataSummary.equivalentHours;
+    const equivalentHoursValidation = stationDataSummary.equivalentHoursValidation;
     const yearRate = stationDataSummary.yearRate;
     const percent = (stationDataSummary.stationPower && stationCapacity) ? (stationDataSummary.stationPower / multiplyFormarts(stationDataSummary.stationCapacity, 1000)) * 100 : 0;
     const rightHandler = localStorage.getItem('rightHandler');
@@ -94,26 +96,23 @@ class PvStationHeader extends React.Component {
         </div>
         <div className={styles.dataColumn}>
           <div className={styles.instantaneous}> <span>瞬时辐射  <span className={`${styles.dataValue}`}>{deviceValueFormat(instantaneous, '--', 2)}</span> W/m²</span>
-            {/* <div className={styles.tooltipName}>
-              <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"></i>
+          {instantaneousValidation &&
+            <div className={styles.tooltipName}>
+              <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={instantaneousValidation}> <i className="iconfont icon-help"></i>
               </Tooltip>
-            </div> */}
+            </div>}
           </div>
           <div >  装机台数 <span className={styles.dataValue}>{deviceValueFormat(stationUnitCount, '--', 0)} </span> 台</div>
         </div>
         <div className={styles.dataColumn}>
           <div>日发电量  <span className={styles.dataValue}>{deviceValueFormat(dayPower, '--', 2, true)}</span> {powerUnit}  </div>
           <div className={styles.equivalentTime}>
-            <span>
-              日利用小时
-              {/* 日等效时 */}
-              <span className={styles.dataValue}>{deviceValueFormat(equivalentHours, '--', 2)}</span>
-              h
-            </span>
-            {/* <div className={styles.tooltipName}>
-              <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"></i>
-              </Tooltip>
-            </div> */}
+            <span>日等效时<span className={styles.dataValue}>{deviceValueFormat(equivalentHours, '--', 2)}</span>h</span>
+            {equivalentHoursValidation &&
+              <div className={styles.tooltipName}>
+                <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={equivalentHoursValidation}> <i className="iconfont icon-help"></i>
+                </Tooltip>
+              </div>}
           </div>
         </div>
         <div className={styles.dataColumn}>
