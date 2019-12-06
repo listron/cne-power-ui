@@ -104,7 +104,7 @@ class DefectBasicInfo extends Component {
               return (
                 <div className={styles.basicItem} key={item.value}>
                   <div className={styles.label}>{item.label}</div>
-                  <div className={styles.information}>{item.data[(defectDetail.defectSource)] || '--'}</div>
+                  <div className={styles.information}>{item.data[(defectDetail[item.value])] || '--'}</div>
                 </div>);
             }
             return (
