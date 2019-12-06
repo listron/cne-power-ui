@@ -44,12 +44,15 @@ class HandlePersonnelInfo extends Component {
       const roleIds = roleAllList.filter(e => tmpRoleNameArr.includes(e.roleDesc)).map(e => e.roleId);
       const specialRoleIds = specialRoleList.filter(e => tmpRoleSpcialArr.includes(e.roleDesc)).map(e => e.roleId);
       const departmentIds = this.getDepartmentIdsFromDetaiInfo(enterpriseData);
+      this.props.getDepartmentsStationMap({ departmentIds }); // 得到该用户的部门/电站分组信息
       form.setFieldsValue({
-        userLogo, username, userFullName, phoneNum, email, roleIds, specialRoleIds, departmentIds,
+        userLogo: userLogo || '/img/nopic.png',
+        username, userFullName, phoneNum, email, roleIds, specialRoleIds, departmentIds,
       });
     }
     if (!addUserLoading && preLoading && addUserSuccess) { // 信息提交成功;
       const { addMode } = this.state;
+      this.props.changeStore({ departmentsStationMap: [] }); // 清空负责电站项
       this.props.getUserList(); // 更新list页面数据
       addMode === 'save' && this.confirmBack(); // 返回列表页
       addMode === 'continue' && form.resetFields(); // 清空form表单, 继续填写
@@ -69,7 +72,11 @@ class HandlePersonnelInfo extends Component {
   warningTip = () => this.setState({ showWarningTip: true })
 
   confirmBack = () => { // 返回列表页并重置form数据;
-    this.props.changeStore({ pageKey: 'list', userDetailInfo: {} });
+    this.props.changeStore({
+      pageKey: 'list',
+      userDetailInfo: {},
+      departmentsStationMap: [],
+    });
     this.setState({ addMode: 'save', showWarningTip: false });
     this.props.form.resetFields();
   }
@@ -118,6 +125,7 @@ class HandlePersonnelInfo extends Component {
     const { pageKey, form, roleAllList, specialRoleList, departmentTree, addUserLoading, departmentsStationMap } = this.props;
     const { getFieldDecorator } = form;
     // const { enterpriseTexts, departTexts, stationTexts } =pageKey === 'editPersonnel' ? this.getEditEnterpriseDetail() : {};
+    const usernamePhoneDisable = pageKey === 'editPersonnel'; // 编辑情况下 用户名 / 电话 置灰。
     return (
       <div className={styles.sideHandle} style={pageKey === 'detailPersonnel' ? { display: 'none' } : {}}>
         <div className={styles.topTitle}>
@@ -149,7 +157,7 @@ class HandlePersonnelInfo extends Component {
                     },
                     required: true,
                   }],
-                })( <Input placeholder="请输入用户名" style={{width: '200px'}} /> )}
+                })( <Input placeholder="请输入用户名" style={{width: '200px'}} disabled={usernamePhoneDisable} /> )}
                 <span className={styles.instructionText}>(3-25位中文,英文,数字,特殊字符都可)</span>
               </FormItem>
               <FormItem label="真实姓名" colon={false} className={styles.eachForm} >
@@ -179,7 +187,7 @@ class HandlePersonnelInfo extends Component {
                     pattern: /^1[123456789]\d{9}$/,
                     required: true,
                   }],
-                })( <Input placeholder="请输入电话号码" style={{width: '200px'}} /> )}
+                })( <Input placeholder="请输入电话号码" style={{width: '200px'}} disabled={usernamePhoneDisable} /> )}
                 <span className={styles.instructionText}>(11位手机号码)</span>
               </FormItem>
               <FormItem label="邮箱" colon={false} className={styles.eachForm} >

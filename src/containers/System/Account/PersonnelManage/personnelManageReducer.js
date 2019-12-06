@@ -5,7 +5,8 @@ const personnelManageAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   getAllUserBase: Symbol('getAllUserBase'), // 所有用户基础信息 => 用于分配人员
   getDepartmentAllUser: Symbol('getDepartmentAllUser'), // 指定部门内所有用户id集合
-  assignUsers: Symbol('assignUsers'), // 分配用户 + 部门
+  assignDepartmentUsers: Symbol('assignUserDepartments'), // 为部门分配用户
+  assignUserDepartments: Symbol('assignUserDepartments'), // 为用户 分配 部门
   downloadTemplate: Symbol('downloadTemplate'), // 下载导入模板
   getDepartmentTreeData: Symbol('getDepartmentTreeData'), // 获取部门树
   addNewDepartment: Symbol('addNewDepartment'), // 新增部门
