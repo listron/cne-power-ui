@@ -15,6 +15,7 @@ class ListHandle extends Component {
     userListPageInfo: PropTypes.object,
     userListTotalNum: PropTypes.number,
     selectedRowKeys: PropTypes.array,
+    selectedDepartment: PropTypes.object,
     userList: PropTypes.array,
     changeStore: PropTypes.func,
     getUserList: PropTypes.func,
@@ -78,13 +79,16 @@ class ListHandle extends Component {
 
   render(){
     const { showLogout } = this.state;
-    const { userListPageInfo, userListTotalNum, userList, selectedRowKeys } = this.props;
+    const { userListPageInfo, userListTotalNum, userList, selectedRowKeys, selectedDepartment } = this.props;
     const { pageNum, pageSize } = userListPageInfo;
     const selectedUserStatus = userList.filter(e => selectedRowKeys.includes(e.userId)).map(e => e.enterpriseStatus);
     const statusSet = new Set(selectedUserStatus);
     const handleDisable = statusSet.size !== 1; // 统一状态选中，才能操作
-    const examinDisable = !(statusSet.has(5) || statusSet.has(6)); // 选中的有已审核 / 审核不通过用户 => 不可审核
-    const assignDisable = statusSet.has(5) || statusSet.has(6); // 选中项中有带审核 / 审核不通过用户 => 不可分配
+
+    const isNotAssigned = statusSet.has(5) || statusSet.has(6); // 已审核 | 审核不通过状态;
+    const examinDisable = !isNotAssigned; // 选中的有已审核 / 审核不通过用户 => 不可审核
+    const assignDisable = isNotAssigned || (selectedRowKeys.length > 1 && selectedDepartment.departmentId !== '1'); // 有待审核/不通过用户或者选中多人且非未分配部门用户时 => 禁止分配
+
     const rights = localStorage.getItem('rightHandler');
     const userCreateRight = rights && rights.split(',').includes('account_user_create'); // 新增
     const userAssignRight = rights && rights.split(',').includes('account_department_user'); // 部门 - 用户 分配

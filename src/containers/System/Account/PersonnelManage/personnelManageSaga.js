@@ -174,9 +174,20 @@ function *deleteDepartment({ payload }){ // 删除部门
 
 function *getDepartmentAllUser({ payload }){ // 获取指定部门所有用户列表; => 分配用户; 模糊搜索均用;
   // payload: { departmentId: '' }
-  try {
-    const url = `${APIBasePath}${system.getDepartmentAllUser}`;
-    const response = yield call(request.post, url, payload);
+  // try { 获取部门下用户基本信息 => 简单接口(只返回用户基本信息, 暂不使用)
+  //   const url = `${APIBasePath}${system.getDepartmentAllUser}`;
+  //   const response = yield call(request.post, url, payload);
+  //   if (response.code === '10000') {
+  //     yield call(easyPut, 'fetchSuccess', {
+  //       departmentAllUsers: response.data || [],
+  //     });
+  //   } else { throw response.message; }
+  // } catch(error) {
+  //   message.error(`获取该部门下人员信息失败, 请重试! ${error}`);
+  // }
+  try { // 传入departmentId 直接利用getAllUserBase的另一种方式复用;
+    const url = `${APIBasePath}${system.getAllUserBase}`;
+    const response = yield call(request.post, url, { userState: 3, ...payload });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         departmentAllUsers: response.data || [],

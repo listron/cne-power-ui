@@ -76,17 +76,14 @@ class SingleAssignModal extends Component {
 
   checkUser = (selectedKeys, nextSelectedUserRow) => { // 选中
     const { selectedUserRow } = this.state;
-    console.log(nextSelectedUserRow, selectedUserRow)
     if (nextSelectedUserRow.length < selectedUserRow.length) { // 减少, 且减少的这个只有一个部门时，需要提示他将不属于任何部门
       const { departmentAllUsers, selectedDepartment } = this.props;
       const preKeys = nextSelectedUserRow.map(e => e.userId);
       const deleteUser = selectedUserRow.find(e => !preKeys.includes(e.userId));
       const isDeleteUserInThisDepart = departmentAllUsers.find(e => e.userId === deleteUser.userId);
-      console.log(departmentAllUsers, isDeleteUserInThisDepart);
       if (isDeleteUserInThisDepart) { // 欲删除用户正好在当前部门内
         const { departmentNames, username } = deleteUser || {};
         const departNum = departmentNames ? departmentNames.split(',').length : 0;
-        console.log(departNum);
         departNum === 1 && this.setState({
           warningText: `${username} 在 ${selectedDepartment.departmentName} 取消分配后, 不再属于任何部门, 将在未分配部门人员列表中。您确认从${selectedDepartment.departmentName}中移出${username}吗?`,
           warningTmpSavedUserRow: nextSelectedUserRow,
