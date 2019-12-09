@@ -7,17 +7,13 @@ class ProvinceItem extends Component {
   static propTypes = {
     checkStation: PropTypes.func,
     multiple: PropTypes.bool,
+    filterStationType: PropTypes.number,
     oneStyleOnly: PropTypes.bool,
     provinceInfo: PropTypes.object,
     selectedStation: PropTypes.array,
     disabledStation: PropTypes.array,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
   checkStation = (station) => {
     const { selectedStation, multiple, oneStyleOnly } = this.props;
     const cancelCheck = selectedStation.some(e => e.stationCode === station.stationCode);
@@ -34,12 +30,18 @@ class ProvinceItem extends Component {
     }
     this.props.checkStation(newStations);
   }
+
   checkProvince = (e) => {
     const { checked } = e.target;
-    const { selectedStation, provinceInfo, oneStyleOnly } = this.props;
+    const { selectedStation, provinceInfo, oneStyleOnly, filterStationType } = this.props;
     let newSelectedStation = [];
     if (checked) {
-      const tmpStations = selectedStation.filter(e => e.provinceCode !== provinceInfo.provinceCode);
+      // const tmpStations = selectedStation.filter(e => e.provinceCode !== provinceInfo.provinceCode);
+      const tmpStations = selectedStation.filter(e => {
+        const notInProvince = e.provinceCode !== provinceInfo.provinceCode; // 不同省份
+        const notSameStationType = e.stationType !== filterStationType; // 同省但不同电站类型
+        return notInProvince || notSameStationType;
+      });
       newSelectedStation = [...tmpStations, ...provinceInfo.stations];
       if (oneStyleOnly) { // 只能选一种类型电站
         const stationTypeSet = new Set();
@@ -50,21 +52,32 @@ class ProvinceItem extends Component {
         }
       }
     } else {
-      newSelectedStation = selectedStation.filter(e => e.provinceCode !== provinceInfo.provinceCode);
+      // newSelectedStation = selectedStation.filter(e => e.provinceCode !== provinceInfo.provinceCode);
+      newSelectedStation = selectedStation.filter(e => {
+        const notInProvince = e.provinceCode !== provinceInfo.provinceCode;
+        const notSameStationType = e.stationType !== filterStationType;
+        return notInProvince || notSameStationType;
+      });
     }
     this.props.checkStation(newSelectedStation);
   }
 
   render() {
-    const { provinceInfo, selectedStation, multiple, disabledStation = [] } = this.props;
-    // console.log(selectedStation)
-    const filterdStations = selectedStation.filter(e => e.provinceCode === provinceInfo.provinceCode);
+    const { provinceInfo, selectedStation, multiple, disabledStation = [], filterStationType = 2 } = this.props;
+    const { provinceCode } = provinceInfo;
+
+    const filterdStations = selectedStation.filter(e => {
+      const isInProvince = e.provinceCode === provinceCode;
+      const isRightStationType = e.stationType === filterStationType || filterStationType === 2;
+      return isInProvince && isRightStationType;
+    });
     let provinceChecked = false, indeterminate = false;
     if (filterdStations.length > 0 && filterdStations.length < provinceInfo.stations.length) {
       indeterminate = true;
     } else if (filterdStations.length === provinceInfo.stations.length) {
       provinceChecked = true;
     }
+
     return (
       <div className={styles.provinceItem}>
         {multiple ?

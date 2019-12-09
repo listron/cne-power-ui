@@ -162,7 +162,7 @@ class DepartmentTree extends Component {
   });
 
   render(){
-    const { enterpriseId, templateLoading, selectedDepartment, departmentTree, preDeleteText } = this.props;
+    const { templateLoading, selectedDepartment, departmentTree, preDeleteText } = this.props;
     const { refuseText } = this.state;
     const { departmentId } = selectedDepartment || {};
     const rights = localStorage.getItem('rightHandler');
@@ -174,7 +174,7 @@ class DepartmentTree extends Component {
       <div className={styles.departmentTree}>
         <h3 className={styles.treeTop}>
           <Button className={styles.templateDown} onClick={this.downloadTemplate} loading={templateLoading}>导入模板下载</Button>
-          <Uploader enterpriseId={enterpriseId} />
+          <Uploader {...this.props} />
         </h3>
         <section className={styles.treeSection}>
           <h4 className={styles.treeTitle}>

@@ -1,13 +1,18 @@
 
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Upload, Button, message } from 'antd';
+import PropTypes from 'prop-types';
 import path from '@path';
+import Cookie from 'js-cookie';
 
 class Uploader extends Component {
+
   static propTypes = {
-    enterpriseId: PropTypes.string,
+    getUserList: PropTypes.func,
+    getAllUserBase: PropTypes.func,
+    getDepartmentTreeData: PropTypes.func,
+    getRoleAllList: PropTypes.func,
   }
 
   beforeUpload = (file) => {
@@ -22,7 +27,6 @@ class Uploader extends Component {
     if (info.file.status === 'done') {
       if (info.file.response.code === '10000') {
         message.success(`${info.file.name} 导入完成`);
-        // todo 批量导入成功后, 重新请求用户页数据
         // const params = {
         //   enterpriseId: this.props.enterpriseId,
         //   userStatus: this.props.userStatus,
@@ -31,6 +35,11 @@ class Uploader extends Component {
         //   pageSize: this.props.pageSize,
         // };
         // this.props.getUserList(params);
+        this.props.getUserList();
+        this.props.getAllUserBase();
+        this.props.getDepartmentTreeData();
+        this.props.getRoleAllList();
+    // 初入页面 请求企业下所有用户基础信息 + 请求部门列表树 + 请求默认未分配部门用户信息
       } else {
         message.error(info.file.response.message);
       }
@@ -40,9 +49,9 @@ class Uploader extends Component {
   }
 
   render(){
-    const { enterpriseId } = this.props;
-    const url = path.basePaths.APIBasePath + path.APISubPaths.system.import;
+    const url = `${path.basePaths.APIBasePath}${path.APISubPaths.system.importUserBatch}`;
     const authData = localStorage.getItem('authData')|| '';
+    const enterpriseId = Cookie.get('enterpriseId') || '';
     const uploadProps = {
       name: 'file',
       action: url,
@@ -50,6 +59,7 @@ class Uploader extends Component {
       beforeUpload: this.beforeUpload,
       data: { enterpriseId },
       onChange: this.uploadChange,
+      showUploadList: false,
     };
     return (
       <Upload {...uploadProps}>
