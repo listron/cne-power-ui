@@ -19,7 +19,15 @@ class PvStationHeader extends React.Component {
       editType: '',
       modalVisiable: false,
       editValue: null,
+      minusShow: false,
     };
+  }
+
+  componentWillReceiveProps(nextProps){
+    const nextSingleStationData = nextProps.singleStationData;
+    if (nextSingleStationData.instantaneous < 0 && nextSingleStationData.instantaneous > -2) {
+      this.setState({ minusShow: true });
+    }
   }
 
 
@@ -66,7 +74,7 @@ class PvStationHeader extends React.Component {
   render() {
     const { singleStationData, monitorPvUnit, theme = 'light' } = this.props;
     const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
-    const { editInfoError, editType, modalVisiable, editValue } = this.state;
+    const { editInfoError, editType, modalVisiable, editValue, minusShow } = this.state;
     const stationDataSummary = singleStationData || {};
     const stationPower = divideFormarts(stationDataSummary.stationPower, realTimePowerUnit);
     const stationCapacity = realCapacityUnit === 'MW' ? stationDataSummary.stationCapacity : multiplyFormarts(stationDataSummary.stationCapacity, 1000);
@@ -95,7 +103,7 @@ class PvStationHeader extends React.Component {
           <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
         </div>
         <div className={styles.dataColumn}>
-          <div className={styles.instantaneous}> <span>瞬时辐射  <span className={`${styles.dataValue}`}>{deviceValueFormat(instantaneous, '--', 2)}</span> W/m²</span>
+          <div className={styles.instantaneous}> <span>瞬时辐射  <span className={`${styles.dataValue}`}>{minusShow && '-' }{deviceValueFormat(instantaneous, '--', 2)}</span> W/m²</span>
           {instantaneousValidation &&
             <div className={styles.tooltipName}>
               <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={instantaneousValidation}> <i className="iconfont icon-help"></i>
