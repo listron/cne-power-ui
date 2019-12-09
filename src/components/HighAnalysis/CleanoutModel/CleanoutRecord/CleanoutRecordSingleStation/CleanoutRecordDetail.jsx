@@ -26,6 +26,8 @@ class CleanoutRecordDetail extends Component {
     getDetailList: PropTypes.func,
     history: PropTypes.object,
     theme: PropTypes.string,
+    endTime: PropTypes.string,
+    startTime: PropTypes.string,
   }
 
   constructor(props) {
@@ -104,10 +106,10 @@ class CleanoutRecordDetail extends Component {
     });
   }
   showDirtModal = () => {//展示灰尘影响图
-    const { singleStationCode, getMatrixDust, getStationDust } = this.props;
+    const { singleStationCode, getMatrixDust, getStationDust, endTime, startTime } = this.props;
     const stationCode = singleStationCode;
-    const endTime = moment().format('YYYY-MM-DD');
-    const startTime = moment().subtract(30, 'days').format('YYYY-MM-DD');
+    // const endTime = moment().format('YYYY-MM-DD');
+    // const startTime = moment().subtract(30, 'days').format('YYYY-MM-DD');
     this.setState({
       showDirtModal: true,
     });

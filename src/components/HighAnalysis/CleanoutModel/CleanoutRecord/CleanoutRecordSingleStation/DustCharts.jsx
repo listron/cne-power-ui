@@ -159,6 +159,7 @@ class DustEffectCharts extends Component {
     matrixEffects: PropTypes.array,
     getStationDust: PropTypes.func,
     getMatrixDust: PropTypes.func,
+    changeCleanoutRecordStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -170,12 +171,13 @@ class DustEffectCharts extends Component {
   }
 
   timeSelect = (timeMoment, timeString) => {
-    const { singleStationCode, getMatrixDust, getStationDust } = this.props;
+    const { singleStationCode, changeCleanoutRecordStore, getMatrixDust, getStationDust } = this.props;
     const effectParam = {
       stationCode: singleStationCode,
       startTime: moment(timeString[0]).format('YYYY-MM-DD'),
       endTime: moment(timeString[1]).format('YYYY-MM-DD'),
     };
+    changeCleanoutRecordStore({ startTime: effectParam.startTime, endTime: effectParam.endTime});
     getMatrixDust(effectParam);
     getStationDust(effectParam);
   }
