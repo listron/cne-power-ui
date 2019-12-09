@@ -92,7 +92,10 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
   _filterStation = () => {
     const { data, multiple, disabledStation, oneStyleOnly } = this.props;
     const { filterStationType, selectedStation } = this.state;
-    const tmpStations = filterStationType === 2 ? data : data.filter(e => (e.stationType === filterStationType));
+    let tmpStations = data;
+    if (filterStationType !== 2) { // 有类型
+      tmpStations = data.filter(e => (e.stationType === filterStationType));
+    }
     const filteredStation = [];
     tmpStations && tmpStations.length > 0 && tmpStations.forEach(e => {
       let findExactStation = false;
@@ -113,6 +116,7 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
     return filteredStation.map(e => (
       <ProvinceItem
         key={e.provinceCode}
+        filterStationType={filterStationType}
         oneStyleOnly={oneStyleOnly}
         disabledStation={disabledStation}
         multiple={multiple}
