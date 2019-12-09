@@ -167,7 +167,6 @@ class StationSelect extends Component {
       maxTagCount: 0,
       maxTagPlaceholder: `已选电站${checkedStations.length}/${data.length}`,
     } || {};
-    console.log(checkedStations)
     return (
       <div className={`${styles.stationSelect} ${styles[theme]}`} style={this.props.style}>
         <span ref="part" />

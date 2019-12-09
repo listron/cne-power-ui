@@ -91,6 +91,7 @@ class StationModal extends Component { // 单独的弹框组件
       <ProvinceItem
         key={e.provinceCode}
         oneStyleOnly={oneStyleOnly}
+        filterStationType={filterStationType}
         disabledStation={disabledStation}
         multiple={multiple}
         checkStation={this.checkStation}
