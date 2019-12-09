@@ -281,6 +281,7 @@ export default {
       setDepartmentUser: '/v3/department/user', //设置部门成员
       setDepartmentStation: '/v3/department/station', //设置部门电站
       // 人员管理界面
+      downLoadPersonnelTemplate: '/v3/user/downLoad/template', // 人员管理模板下载
       getAllUserBase: '/v3/user/list/departmentInfos', // 企业所有用户信息
       getDepartmentTreeData: '/v3/department/tree', // 用户企业部门树
       preDeleteDepartmentCheck: '/v3/department/checkDel', // 删除部门前的预置请求

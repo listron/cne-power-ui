@@ -32,7 +32,7 @@ function *getAllUserBase(){ // 进入页面预请求: 所有用户基础信息 =
 }
 
 function *downloadTemplate(){ // 下载导入模板
-  const url = `${APIBasePath}${system.downLoadUserTemplate}`;
+  const url = `${APIBasePath}${system.downLoadPersonnelTemplate}`;
   const authData = localStorage.getItem('authData') || '';
   yield put({
     type: commonAction.downLoadFile,
