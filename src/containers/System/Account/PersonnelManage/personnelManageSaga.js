@@ -215,6 +215,7 @@ function *assignDepartmentUsers({ payload }) { // 为部门分配用户 => 属�
       const { departmentId } = payload;
       yield call(getDepartmentAllUser, { payload: { departmentId } }); // 更新当前用户
       yield call(getUserList);
+      yield call(getAllUserBase);
     } else { throw response.message; }
     // 重新请求相关主页面的用户id列表, 用户详细列表;
   } catch(error) {

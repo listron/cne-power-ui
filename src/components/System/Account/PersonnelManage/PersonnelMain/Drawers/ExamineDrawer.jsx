@@ -122,7 +122,13 @@ class ExamineDrawer extends Component {
           </FormItem>}
           <div className={styles.btns}>
             <Button className={styles.cancelAdd} onClick={this.hideExamineDrawer}>取消</Button>
-            <Button loading={examineLoading} className={styles.saveAdd} onClick={this.saveExamine}>保存</Button>
+            <Button
+              loading={examineLoading}
+              className={styles.saveAdd}
+              onClick={this.saveExamine}
+            >
+              确定
+            </Button>
           </div>
         </Form>
       </Drawer>
