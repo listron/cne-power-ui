@@ -17,6 +17,8 @@ class CleanWarningSide extends Component {
     getMatrixDustEffect: PropTypes.func,
     changeCleanWarningStore: PropTypes.func,
     theme: PropTypes.string,
+    endDay: PropTypes.string,
+    startDay: PropTypes.string,
   }
 
   constructor(props) {
@@ -40,12 +42,10 @@ class CleanWarningSide extends Component {
   }
 
   changeStation = ({ stationCode }) => { // 切换电站并隐藏切换框
-    const { getCleanWarningDetail, getTotalDustEffect, getMatrixDustEffect, dustEffectInfo } = this.props;
+    const { getCleanWarningDetail, getTotalDustEffect, getMatrixDustEffect, dustEffectInfo, endDay, startDay } = this.props;
     if (dustEffectInfo.stationCode === stationCode) {
       return;
     }
-    const endDay = moment().format('YYYY-MM-DD');
-    const startDay = moment().subtract(30, 'day').format('YYYY-MM-DD');
     this.setState({
       stationCheckActive: false,
     });

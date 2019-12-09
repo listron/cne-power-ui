@@ -35,6 +35,7 @@ class AddCleanoutRecord extends Component {
 
     const { getFieldsValue } = this.props.form;
     const recordValue = getFieldsValue(['cleanDate', 'matrix', 'remark']);
+    console.log('recordValue: ', recordValue);
     recordValue.startTime = moment(recordValue.cleanDate[0]).format('YYYY-MM-DD');
     recordValue.endTime = moment(recordValue.cleanDate[1]).format('YYYY-MM-DD');
     const matrix = recordValue.matrix.toString();

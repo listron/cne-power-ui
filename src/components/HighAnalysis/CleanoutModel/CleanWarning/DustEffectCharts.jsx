@@ -165,6 +165,7 @@ class DustEffectCharts extends Component {
     matrixEffects: PropTypes.array,
     getTotalDustEffect: PropTypes.func,
     getMatrixDustEffect: PropTypes.func,
+    changeCleanWarningStore: PropTypes.func,
     theme: PropTypes.string,
   };
 
@@ -179,6 +180,7 @@ class DustEffectCharts extends Component {
   timeSelect = (timeMoment, timeString) => {
     const {
       dustEffectInfo,
+      changeCleanWarningStore,
       getTotalDustEffect,
       getMatrixDustEffect,
     } = this.props;
@@ -187,6 +189,7 @@ class DustEffectCharts extends Component {
       startDay: moment(timeString[0]).format('YYYY-MM-DD'),
       endDay: moment(timeString[1]).format('YYYY-MM-DD'),
     };
+    changeCleanWarningStore({ startDay: effectParam.startDay, endDay: effectParam.endDay });
     getTotalDustEffect(effectParam);
     getMatrixDustEffect(effectParam);
   };
