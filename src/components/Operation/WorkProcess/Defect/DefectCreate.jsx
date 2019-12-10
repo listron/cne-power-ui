@@ -294,7 +294,9 @@ class DefectCreate extends Component {
               initialValue: initCreateTime,
             })(
               <DatePicker
-                showTime
+                showTime={{
+                  format: 'HH:mm',
+                }}
                 placeholder="默认当前时间"
                 format="YYYY-MM-DD HH:mm"
                 disabledDate={this.disabledDate}
