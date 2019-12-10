@@ -114,7 +114,7 @@ class BigScattrChart extends React.Component {
       },
       xAxis: [{
         type: 'value',
-        nameGap: -40,
+        nameGap: 40,
         min: xMin,
         max: xMax,
         name: pointCodeNameX,
@@ -122,7 +122,7 @@ class BigScattrChart extends React.Component {
           fontSize: 18,
           verticalAlign: 'bottom',
           lineHeight: 40,
-          padding: [60, 0, 0, 0],
+          padding: [-20, 0, 0, 0],
         },
         nameLocation: 'center',
         axisTick: {

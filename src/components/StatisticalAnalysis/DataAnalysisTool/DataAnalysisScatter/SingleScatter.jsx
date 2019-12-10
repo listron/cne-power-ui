@@ -144,7 +144,7 @@ class SingleScatter extends React.PureComponent {
         axisLabel: {
           formatter: '{value}',
         },
-        nameGap: -40,
+        nameGap: 40,
         min: xMin,
         max: xMax,
         name: pointCodeNameX,
@@ -152,7 +152,7 @@ class SingleScatter extends React.PureComponent {
           fontSize: 14,
           verticalAlign: 'bottom',
           lineHeight: 30,
-          padding: [60, 0, 0, 0],
+          padding: [-20, 0, 0, 0],
         },
         nameLocation: 'center',
         axisTick: {
