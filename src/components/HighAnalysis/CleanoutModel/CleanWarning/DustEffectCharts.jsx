@@ -185,35 +185,52 @@ class DustEffectCharts extends Component {
   }
 
   timeSelect = (timeMoment, timeString) => {
+    const { key } = this.state;
     const {
       dustEffectInfo,
       changeCleanWarningStore,
       getTotalDustEffect,
       getMatrixDustEffect,
     } = this.props;
+
     const totalEffectParam = {
       stationCode: dustEffectInfo.stationCode,
-      endDay: moment(timeString[1]).format('YYYY-MM-DD'),
-      startDay: moment(timeString[0]).format('YYYY-MM-DD'),
+      endDay: timeString[1],
+      startDay: timeString[0],
     };
     const matrixEffectParam = {
       stationCode: dustEffectInfo.stationCode,
-      endDay: moment(timeString[1]).format('YYYY-MM-DD'),
-      startDay: moment(timeString[0]).format('YYYY-MM-DD'),
+      endDay: timeString[1],
+      startDay: timeString[0],
     };
-    changeCleanWarningStore({
-      matrixStartDay: matrixEffectParam.startDay,
-      matrixEndDay: matrixEffectParam.endDay,
-      totalStartDay: totalEffectParam.startDay,
-      totalEndDay: totalEffectParam.endDay,
-     });
-    getTotalDustEffect(totalEffectParam);
-    getMatrixDustEffect(matrixEffectParam);
+
+    if (key === '1') {
+      this.setState({
+        totalStartDay: moment(timeString[0]),
+        totalEndDay: moment(timeString[1]),
+      });
+      changeCleanWarningStore({
+        totalStartDay: totalEffectParam.startDay,
+        totalEndDay: totalEffectParam.endDay,
+       });
+      getMatrixDustEffect(matrixEffectParam);
+    }else{
+      this.setState({
+        matrixStartDay: moment(timeString[0]),
+        matrixEndDay: moment(timeString[1]),
+      });
+      changeCleanWarningStore({
+        matrixStartDay: totalEffectParam.startDay,
+        matrixEndDay: totalEffectParam.endDay,
+       });
+      getTotalDustEffect(totalEffectParam);
+    }
   };
 
   changeTab = (key) => { // 切换全局和方阵图时，改变所传时间（全局是前一个月，方阵是前一天）
     if (key === '1') {
       const { dustEffectInfo, getTotalDustEffect, totalStartDay, totalEndDay } = this.props;
+      console.log('totalStartDay: ', totalStartDay);
       const effectParam = {
         stationCode: dustEffectInfo.stationCode,
         startDay: totalStartDay,

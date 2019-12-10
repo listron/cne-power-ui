@@ -27,6 +27,8 @@ class CleanWarningMain extends Component { // 电站管理列表页
     theme: PropTypes.string,
     totalStartDay: PropTypes.string,
     totalEndDay: PropTypes.string,
+    matrixStartDay: PropTypes.string,
+    matrixEndDay: PropTypes.string,
   }
 
   componentDidMount() {

@@ -175,39 +175,52 @@ class DustEffectCharts extends Component {
   }
 
   timeSelect = (timeMoment, timeString) => {
+    const { key } = this.state;
     const { singleStationCode, getMatrixDust, getStationDust } = this.props;
     const totalEffectParam = {
       stationCode: singleStationCode,
-      endDay: moment(timeString[1]).format('YYYY-MM-DD'),
-      startDay: moment(timeString[0]).format('YYYY-MM-DD'),
+      endTime: timeString[1],
+      startTime: timeString[0],
     };
     const matrixEffectParam = {
       stationCode: singleStationCode,
-      endDay: moment(timeString[1]).format('YYYY-MM-DD'),
-      startDay: moment(timeString[0]).format('YYYY-MM-DD'),
+      endTime: timeString[1],
+      startTime: timeString[0],
     };
-    getMatrixDust(matrixEffectParam);
-    getStationDust(totalEffectParam);
+    if (key === '1') {
+      this.setState({
+        totalStartTime: moment(timeString[0]),
+        totalEndTime: moment(timeString[1]),
+      });
+      getMatrixDust(matrixEffectParam);
+    }else{
+      this.setState({
+        matrixStartTime: moment(timeString[0]),
+        matrixEndTime: moment(timeString[1]),
+      });
+      getStationDust(totalEffectParam);
+    }
   }
 
   changeTab = (key) => { // 切换全局和方阵图时，改变所传时间（全局是前一个月，方阵是前一天）
+    const { totalStartTime, totalEndTime, matrixStartTime, matrixEndTime } = this.state;
+    const { singleStationCode, getStationDust, getMatrixDust } = this.props;
+
     if (key === '1') {
-      const { singleStationCode, getStationDust } = this.props;
       const effectParam = {
         stationCode: singleStationCode,
-        startTime: moment().subtract(1, 'months').add(-1, 'days').format('YYYY-MM-DD'),
-        endTime: moment().subtract(1, 'days').format('YYYY-MM-DD'),
+        startTime: totalStartTime.format('YYYY-MM-DD'),
+        endTime: totalEndTime.format('YYYY-MM-DD'),
       };
       this.setState({
         key: '1',
       });
       getStationDust(effectParam);
     }else{
-      const { singleStationCode, getMatrixDust } = this.props;
       const effectParam = {
         stationCode: singleStationCode,
-        startTime: moment().subtract(1, 'days').format('YYYY-MM-DD'),
-        endTime: moment().subtract(1, 'days').format('YYYY-MM-DD'),
+        startTime: matrixStartTime.format('YYYY-MM-DD'),
+        endTime: matrixEndTime.format('YYYY-MM-DD'),
       };
       this.setState({
         key: '2',
