@@ -1,0 +1,68 @@
+@import "../../../../../theme/theme.scss";
+.reportSearch {
+  padding: 14px 40px;
+  min-height: 60px;
+  display: flex;
+  line-height: 40px;
+  align-items: center;
+  .column {
+    display: flex;
+    margin-right: 20px;
+  }
+  .lable {
+    margin-right: 4px;
+    flex: 1 0 56px;
+  }
+  .device {
+    max-width: 260px;
+    flex: 1 0;
+  }
+}
+.reporeTable {
+  margin-top: 10px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  .top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 12px 0 12px 40px;
+  }
+  .deviceName {
+    width: 120px;
+    @include overflowText();
+  }
+  :global {
+    .wrapper .ant-table .ant-table-scroll .ant-table-header {
+      padding-right: 0;
+    }
+    .ant-table .ant-table-thead > tr > th,
+    .ant-table .ant-table-tbody > tr > td {
+      padding: 0 8px;
+    }
+    .ant-table-placeholder {
+      border: none;
+    }
+    // .ant-table-body {
+    //   &::-webkit-scrollbar {
+    //     width: 6px;
+    //     height: 6px;
+    //   }
+    //   &::-webkit-scrollbar-thumb {
+    //     border-radius: 3px;
+    //     background: rgba(0, 0, 0, 0.5);
+    //   }
+    // }
+  }
+  .rightText {
+    text-align: right;
+  }
+}
+
+.reportSearch.light {
+  background: #fff;
+}
+.reporeTable.light {
+  background: #fff;
+}

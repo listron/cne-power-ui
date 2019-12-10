@@ -12,10 +12,10 @@ import realtimeWarningReducer from './Alarm/RealTimeWarning/realtimeWarningReduc
 import transferFormReducer from './Alarm/Transfer/transferFormReducer';
 import handleRemoveReducer from './Alarm/HandleRemove/handleRemoveReducer';
 import historyWarningReducer from './Alarm/HistoryWarning/historyWarningReducer';
-import powerReportReducer from './Report/PowerReport/powerReportReducer';
-import deviceStatusReducer from './Report/DeviceStatus/deviceStatusReducer';
-import malfunctionReducer from './Report/Malfunction/malfunctionReducer';
-import powerLostReducer from './Report/PowerLost/powerLostReducer';
+//import powerReportReducer from './Report/PowerReport/powerReportReducer';
+//import deviceStatusReducer from './Report/DeviceStatus/deviceStatusReducer';
+//import malfunctionReducer from './Report/Malfunction/malfunctionReducer';
+//import powerLostReducer from './Report/PowerLost/powerLostReducer';
 import alarmStatistic from './Alarm/AlarmStatic/alarmStatisticReducer';
 import alarmCount from './Alarm/AlarmCount/alarmCountReducer';
 
@@ -36,10 +36,10 @@ const monitorReducer = combineReducers({
   historyWarningReducer,
   allDeviceCurveReducer,
   singleDeviceCurveReducer,
-  powerReportReducer,
-  deviceStatusReducer,
-  malfunctionReducer,
-  powerLostReducer,
+  // powerReportReducer,
+  // deviceStatusReducer,
+  // malfunctionReducer,
+  // powerLostReducer,
   overview,
   dataHistory,
   dataRealtime,
