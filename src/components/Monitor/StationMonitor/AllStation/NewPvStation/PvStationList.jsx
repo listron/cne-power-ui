@@ -182,6 +182,7 @@ class PvStationList extends React.Component {
         'stationUnitCount',
         'equivalentHours',
         'alarmNum',
+        'loadRate',
         'anomalousBranchNum',
         'stationStatus'];
       if (arrayNumSort.includes(sortName)) {
