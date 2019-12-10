@@ -21,7 +21,7 @@ var initState = Immutable.fromJS({
   totalEffects: [], // api => 全局灰尘影响
   matrixEffects: [], // api => 方阵灰尘影响
 
-  startDay: moment().subtract(1, 'months').add(-1, 'days').format('YYYY-MM-DD'),
+  startDay: moment().subtract(1, 'days').format('YYYY-MM-DD'),
   endDay: moment().subtract(1, 'days').format('YYYY-MM-DD'),
 });
 

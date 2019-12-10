@@ -4,8 +4,7 @@ import { cleanoutRecordAction } from './cleanoutRecordAction';
 
 var initState = Immutable.fromJS({
   loading: false,
-  startTime: moment().subtract(1, 'months').add(-1, 'days').format('YYYY-MM-DD'),
-  endTime: moment().subtract(1, 'days').format('YYYY-MM-DD'),
+  startTime: '2018',
   stationCodes: [],
   singleStationCode: null, //单电站
   showPage: 'multiple', //默认展示列表页list ,详情detail,

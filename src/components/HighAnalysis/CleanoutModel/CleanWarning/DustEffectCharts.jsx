@@ -172,7 +172,7 @@ class DustEffectCharts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startDay: moment().subtract(1, 'months').add(-1, 'days'),
+      startDay: moment().subtract(1, 'days'),
       endDay: moment().subtract(1, 'days'),
     };
   }

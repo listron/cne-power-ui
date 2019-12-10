@@ -165,19 +165,18 @@ class DustEffectCharts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startTime: moment().subtract(1, 'months').add(-1, 'days'),
+      startTime: moment().subtract(1, 'days'),
       endTime: moment().subtract(1, 'days'),
     };
   }
 
   timeSelect = (timeMoment, timeString) => {
-    const { singleStationCode, changeCleanoutRecordStore, getMatrixDust, getStationDust } = this.props;
+    const { singleStationCode, getMatrixDust, getStationDust } = this.props;
     const effectParam = {
       stationCode: singleStationCode,
       startTime: moment(timeString[0]).format('YYYY-MM-DD'),
       endTime: moment(timeString[1]).format('YYYY-MM-DD'),
     };
-    changeCleanoutRecordStore({ startTime: effectParam.startTime, endTime: effectParam.endTime});
     getMatrixDust(effectParam);
     getStationDust(effectParam);
   }
