@@ -167,13 +167,20 @@ class DustEffectCharts extends Component {
     getMatrixDustEffect: PropTypes.func,
     changeCleanWarningStore: PropTypes.func,
     theme: PropTypes.string,
+    matrixStartDay: PropTypes.string,
+    matrixEndDay: PropTypes.string,
+    totalStartDay: PropTypes.string,
+    totalEndDay: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      startDay: moment().subtract(1, 'days'),
-      endDay: moment().subtract(1, 'days'),
+      matrixStartDay: moment().subtract(1, 'days'),
+      matrixEndDay: moment().subtract(1, 'days'),
+      totalStartDay: moment().subtract(1, 'months').add(-1, 'days'),
+      totalEndDay: moment().subtract(1, 'days'),
+      key: '1',
     };
   }
 
@@ -184,18 +191,54 @@ class DustEffectCharts extends Component {
       getTotalDustEffect,
       getMatrixDustEffect,
     } = this.props;
-    const effectParam = {
+    const totalEffectParam = {
       stationCode: dustEffectInfo.stationCode,
-      startDay: moment(timeString[0]).format('YYYY-MM-DD'),
       endDay: moment(timeString[1]).format('YYYY-MM-DD'),
+      startDay: moment(timeString[0]).format('YYYY-MM-DD'),
     };
-    changeCleanWarningStore({ startDay: effectParam.startDay, endDay: effectParam.endDay });
-    getTotalDustEffect(effectParam);
-    getMatrixDustEffect(effectParam);
+    const matrixEffectParam = {
+      stationCode: dustEffectInfo.stationCode,
+      endDay: moment(timeString[1]).format('YYYY-MM-DD'),
+      startDay: moment(timeString[0]).format('YYYY-MM-DD'),
+    };
+    changeCleanWarningStore({
+      matrixStartDay: matrixEffectParam.startDay,
+      matrixEndDay: matrixEffectParam.endDay,
+      totalStartDay: totalEffectParam.startDay,
+      totalEndDay: totalEffectParam.endDay,
+     });
+    getTotalDustEffect(totalEffectParam);
+    getMatrixDustEffect(matrixEffectParam);
   };
 
+  changeTab = (key) => { // 切换全局和方阵图时，改变所传时间（全局是前一个月，方阵是前一天）
+    if (key === '1') {
+      const { dustEffectInfo, getTotalDustEffect, totalStartDay, totalEndDay } = this.props;
+      const effectParam = {
+        stationCode: dustEffectInfo.stationCode,
+        startDay: totalStartDay,
+        endDay: totalEndDay,
+      };
+      this.setState({
+        key: '1',
+      });
+      getTotalDustEffect(effectParam);
+    }else{
+      const { dustEffectInfo, getMatrixDustEffect, matrixStartDay, matrixEndDay } = this.props;
+      const effectParam = {
+        stationCode: dustEffectInfo.stationCode,
+        startDay: matrixStartDay,
+        endDay: matrixEndDay,
+      };
+      this.setState({
+        key: '2',
+      });
+      getMatrixDustEffect(effectParam);
+    }
+  }
+
   render() {
-    const { startDay, endDay } = this.state;
+    const { key, matrixStartDay, matrixEndDay, totalStartDay, totalEndDay } = this.state;
     const { totalEffects, matrixEffects, theme } = this.props;
     const disabledDate = (current) => { // 不可选未来日期
       return current && current > moment().subtract(1, 'days');
@@ -204,12 +247,13 @@ class DustEffectCharts extends Component {
       <div className={styles.effectCharts}>
         <span ref="wrap" />
         <RangePicker
-          defaultValue={[startDay, endDay]}
+          value={key === '1' ? [totalStartDay, totalEndDay] : [matrixStartDay, matrixEndDay]}
           onChange={this.timeSelect}
           disabledDate={disabledDate}
           getCalendarContainer={() => this.refs.wrap}
         />
-        <Tabs defaultActiveKey="1">
+
+        <Tabs defaultActiveKey="1" onChange={this.changeTab}>
           <TabPane
             tab={<span>全局灰尘影响(基于系统效率/清洗板)</span>}
             key="1"

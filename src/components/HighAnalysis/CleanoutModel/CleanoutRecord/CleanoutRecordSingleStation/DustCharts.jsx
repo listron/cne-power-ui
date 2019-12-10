@@ -160,47 +160,88 @@ class DustEffectCharts extends Component {
     getStationDust: PropTypes.func,
     getMatrixDust: PropTypes.func,
     changeCleanoutRecordStore: PropTypes.func,
+    singleStationCode: PropTypes.number,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      startTime: moment().subtract(1, 'days'),
-      endTime: moment().subtract(1, 'days'),
+      matrixStartTime: moment().subtract(1, 'days'),
+      matrixEndTime: moment().subtract(1, 'days'),
+      totalStartTime: moment().subtract(1, 'months').add(-1, 'days'),
+      totalEndTime: moment().subtract(1, 'days'),
+      key: '1',
     };
   }
 
   timeSelect = (timeMoment, timeString) => {
     const { singleStationCode, getMatrixDust, getStationDust } = this.props;
-    const effectParam = {
+    const totalEffectParam = {
       stationCode: singleStationCode,
-      startTime: moment(timeString[0]).format('YYYY-MM-DD'),
-      endTime: moment(timeString[1]).format('YYYY-MM-DD'),
+      endDay: moment(timeString[1]).format('YYYY-MM-DD'),
+      startDay: moment(timeString[0]).format('YYYY-MM-DD'),
     };
-    getMatrixDust(effectParam);
-    getStationDust(effectParam);
+    const matrixEffectParam = {
+      stationCode: singleStationCode,
+      endDay: moment(timeString[1]).format('YYYY-MM-DD'),
+      startDay: moment(timeString[0]).format('YYYY-MM-DD'),
+    };
+    getMatrixDust(matrixEffectParam);
+    getStationDust(totalEffectParam);
+  }
+
+  changeTab = (key) => { // 切换全局和方阵图时，改变所传时间（全局是前一个月，方阵是前一天）
+    if (key === '1') {
+      const { singleStationCode, getStationDust } = this.props;
+      const effectParam = {
+        stationCode: singleStationCode,
+        startTime: moment().subtract(1, 'months').add(-1, 'days').format('YYYY-MM-DD'),
+        endTime: moment().subtract(1, 'days').format('YYYY-MM-DD'),
+      };
+      this.setState({
+        key: '1',
+      });
+      getStationDust(effectParam);
+    }else{
+      const { singleStationCode, getMatrixDust } = this.props;
+      const effectParam = {
+        stationCode: singleStationCode,
+        startTime: moment().subtract(1, 'days').format('YYYY-MM-DD'),
+        endTime: moment().subtract(1, 'days').format('YYYY-MM-DD'),
+      };
+      this.setState({
+        key: '2',
+      });
+      getMatrixDust(effectParam);
+    }
   }
 
   render() {
-    const { startTime, endTime } = this.state;
+    const { matrixStartTime, matrixEndTime, totalStartTime, totalEndTime, key } = this.state;
     const { totalEffects, matrixEffects, theme } = this.props;
     return (
       <div className={styles.effectCharts}>
         <span ref="wrap" />
         <RangePicker
-          // disabled
-          defaultValue={[startTime, endTime]}
+          value={key === '1' ? [totalStartTime, totalEndTime] : [matrixStartTime, matrixEndTime]}
           onChange={this.timeSelect}
           disabledDate={() => false}
           getCalendarContainer={() => this.refs.wrap}
         />
-        <Tabs defaultActiveKey="1">
-          <TabPane tab={<span>全局灰尘影响(基于系统效率/清洗板)</span>} key="1" forceRender={true}>
+        <Tabs defaultActiveKey="1" onChange={this.changeTab}>
+          <TabPane
+          tab={<span>全局灰尘影响(基于系统效率/清洗板)</span>}
+          key="1"
+          forceRender={true}>
             <div className={styles.eachChart}>
               <SingleChart data={totalEffects} keyWord="total" id="cleanWarningTotalEffect" theme={theme} />
             </div>
           </TabPane>
-          <TabPane className={styles.eachChart} tab={<span>方阵灰尘影响(基于系统效率/清洗板)</span>} key="2" forceRender={true}>
+          <TabPane
+          className={styles.eachChart}
+          tab={<span>方阵灰尘影响(基于系统效率/清洗板)</span>}
+          key="2"
+          forceRender={true}>
             <div className={styles.eachChart}>
               <SingleChart data={matrixEffects} keyWord="matrix" id="cleanWarningMatrixEffect" hasSlider={matrixEffects.length > 20} theme={theme} />
             </div>
