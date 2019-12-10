@@ -13,6 +13,7 @@ class InverterStatistics extends Component{
     theme: PropTypes.string,
     pointNameFunc: PropTypes.func,
     pointNameArr: PropTypes.array,
+    onBranchFunc: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -43,7 +44,9 @@ class InverterStatistics extends Component{
     if(pointStatus === '900') {
       return false;
     }
-    const { pointNameFunc, pointNameArr } = this.props;
+    const { pointNameFunc, pointNameArr, onBranchFunc } = this.props;
+    // 切换到支路电流图
+    onBranchFunc && onBranchFunc();
     // pointStatus === 400正常，取边框颜色，其他的状态取背景颜色，产品说UI是这么设计的
     const colorParams = pointStatus === '400' ? '#199475' : bgcColor;
     if(pointNameArr.length > 0){
