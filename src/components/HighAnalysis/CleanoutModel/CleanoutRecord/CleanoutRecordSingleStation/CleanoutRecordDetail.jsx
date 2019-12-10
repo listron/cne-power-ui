@@ -24,6 +24,7 @@ class CleanoutRecordDetail extends Component {
     onShowSideChange: PropTypes.func,
     changeCleanoutRecordStore: PropTypes.func,
     getDetailList: PropTypes.func,
+    getStationDust: PropTypes.func,
     history: PropTypes.object,
     theme: PropTypes.string,
     endTime: PropTypes.string,
@@ -80,7 +81,6 @@ class CleanoutRecordDetail extends Component {
   }
   changeCleanType = (e) => {
     const { changeCleanoutRecordStore, getDetailList, singleStationCode, cleanType, detailPageNum, detailPageSize } = this.props;
-    console.log('cleanType: ', cleanType);
     changeCleanoutRecordStore({ cleanType: e.target.value });
     getDetailList({ stationCode: singleStationCode, cleanType: e.target.value, pageNum: detailPageNum, pageSize: detailPageSize });
   }
@@ -109,11 +109,11 @@ class CleanoutRecordDetail extends Component {
     const { singleStationCode, getMatrixDust, getStationDust } = this.props;
     const stationCode = singleStationCode;
     const endTime = moment().subtract(1, 'days').format('YYYY-MM-DD');
-    const startTime = moment().subtract(1, 'days').format('YYYY-MM-DD');
+    const startTime = moment().subtract(1, 'months').add(-1, 'days').format('YYYY-MM-DD');
     this.setState({
       showDirtModal: true,
     });
-    getMatrixDust({ stationCode, endTime, startTime });
+    // getMatrixDust({ stationCode, endTime, startTime });
     getStationDust({ stationCode, endTime, startTime });
 
   }

@@ -17,8 +17,10 @@ class CleanWarningSide extends Component {
     getMatrixDustEffect: PropTypes.func,
     changeCleanWarningStore: PropTypes.func,
     theme: PropTypes.string,
-    endDay: PropTypes.string,
-    startDay: PropTypes.string,
+    matrixStartDay: PropTypes.string,
+    matrixEndDay: PropTypes.string,
+    totalStartDay: PropTypes.string,
+    totalEndDay: PropTypes.string,
   }
 
   constructor(props) {
@@ -42,19 +44,23 @@ class CleanWarningSide extends Component {
   }
 
   changeStation = ({ stationCode }) => { // 切换电站并隐藏切换框
-    const { getCleanWarningDetail, getTotalDustEffect, getMatrixDustEffect, dustEffectInfo, endDay, startDay } = this.props;
+    const { getCleanWarningDetail, getTotalDustEffect, getMatrixDustEffect, dustEffectInfo, matrixStartDay, matrixEndDay, totalStartDay, totalEndDay } = this.props;
     if (dustEffectInfo.stationCode === stationCode) {
       return;
     }
     this.setState({
       stationCheckActive: false,
     });
-    const effectParam = {
-      stationCode, endDay, startDay,
+    const totalEffectParam = {
+      stationCode, endDay: totalEndDay, startDay: totalStartDay,
     };
+    const matrixEffectParam = {
+      stationCode, endDay: matrixEndDay, startDay: matrixStartDay,
+    };
+
     getCleanWarningDetail({ stationCode });
-    getTotalDustEffect(effectParam);
-    getMatrixDustEffect(effectParam);
+    getTotalDustEffect(totalEffectParam);
+    getMatrixDustEffect(matrixEffectParam);
   }
 
   backToList = () => { // 返回列表页
