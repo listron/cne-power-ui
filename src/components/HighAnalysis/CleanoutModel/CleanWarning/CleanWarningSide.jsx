@@ -17,10 +17,10 @@ class CleanWarningSide extends Component {
     getMatrixDustEffect: PropTypes.func,
     changeCleanWarningStore: PropTypes.func,
     theme: PropTypes.string,
-    matrixStartDay: PropTypes.string,
-    matrixEndDay: PropTypes.string,
-    totalStartDay: PropTypes.string,
-    totalEndDay: PropTypes.string,
+    matrixStartDay: PropTypes.object,
+    matrixEndDay: PropTypes.object,
+    totalStartDay: PropTypes.object,
+    totalEndDay: PropTypes.object,
   }
 
   constructor(props) {
@@ -64,7 +64,13 @@ class CleanWarningSide extends Component {
   }
 
   backToList = () => { // 返回列表页
-    this.props.changeCleanWarningStore({ showPage: 'list' });
+    this.props.changeCleanWarningStore({
+      showPage: 'list',
+      matrixStartDay: moment().subtract(1, 'days'),
+      matrixEndDay: moment().subtract(1, 'days'),
+      totalStartDay: moment().subtract(1, 'months').add(-1, 'days'),
+      totalEndDay: moment().subtract(1, 'days'),
+   });
   }
 
   render() {

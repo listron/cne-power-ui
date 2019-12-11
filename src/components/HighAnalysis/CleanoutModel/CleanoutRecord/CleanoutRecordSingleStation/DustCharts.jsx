@@ -192,13 +192,13 @@ class DustEffectCharts extends Component {
         totalStartTime: moment(timeString[0]),
         totalEndTime: moment(timeString[1]),
       });
-      getMatrixDust(matrixEffectParam);
+      getStationDust(totalEffectParam);
     }else{
       this.setState({
         matrixStartTime: moment(timeString[0]),
         matrixEndTime: moment(timeString[1]),
       });
-      getStationDust(totalEffectParam);
+      getMatrixDust(matrixEffectParam);
     }
   }
 
