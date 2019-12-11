@@ -167,19 +167,15 @@ class DustEffectCharts extends Component {
     getMatrixDustEffect: PropTypes.func,
     changeCleanWarningStore: PropTypes.func,
     theme: PropTypes.string,
-    matrixStartDay: PropTypes.string,
-    matrixEndDay: PropTypes.string,
-    totalStartDay: PropTypes.string,
-    totalEndDay: PropTypes.string,
+    matrixStartDay: PropTypes.object,
+    matrixEndDay: PropTypes.object,
+    totalStartDay: PropTypes.object,
+    totalEndDay: PropTypes.object,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      matrixStartDay: moment().subtract(1, 'days'),
-      matrixEndDay: moment().subtract(1, 'days'),
-      totalStartDay: moment().subtract(1, 'months').add(-1, 'days'),
-      totalEndDay: moment().subtract(1, 'days'),
       key: '1',
     };
   }
@@ -205,32 +201,23 @@ class DustEffectCharts extends Component {
     };
 
     if (key === '1') {
-      this.setState({
-        totalStartDay: moment(timeString[0]),
-        totalEndDay: moment(timeString[1]),
-      });
       changeCleanWarningStore({
-        totalStartDay: totalEffectParam.startDay,
-        totalEndDay: totalEffectParam.endDay,
+        totalStartDay: moment(totalEffectParam.startDay),
+        totalEndDay: moment(totalEffectParam.endDay),
        });
-      getMatrixDustEffect(matrixEffectParam);
-    }else{
-      this.setState({
-        matrixStartDay: moment(timeString[0]),
-        matrixEndDay: moment(timeString[1]),
-      });
-      changeCleanWarningStore({
-        matrixStartDay: totalEffectParam.startDay,
-        matrixEndDay: totalEffectParam.endDay,
-       });
-      getTotalDustEffect(totalEffectParam);
+       getTotalDustEffect(totalEffectParam);
+      }else{
+        changeCleanWarningStore({
+          matrixStartDay: moment(matrixEffectParam.startDay),
+          matrixEndDay: moment(matrixEffectParam.endDay),
+        });
+        getMatrixDustEffect(matrixEffectParam);
     }
   };
 
   changeTab = (key) => { // 切换全局和方阵图时，改变所传时间（全局是前一个月，方阵是前一天）
     if (key === '1') {
       const { dustEffectInfo, getTotalDustEffect, totalStartDay, totalEndDay } = this.props;
-      console.log('totalStartDay: ', totalStartDay);
       const effectParam = {
         stationCode: dustEffectInfo.stationCode,
         startDay: totalStartDay,
@@ -255,8 +242,8 @@ class DustEffectCharts extends Component {
   }
 
   render() {
-    const { key, matrixStartDay, matrixEndDay, totalStartDay, totalEndDay } = this.state;
-    const { totalEffects, matrixEffects, theme } = this.props;
+    const { key } = this.state;
+    const { totalEffects, matrixEffects, theme, matrixStartDay, matrixEndDay, totalStartDay, totalEndDay } = this.props;
     const disabledDate = (current) => { // 不可选未来日期
       return current && current > moment().subtract(1, 'days');
     };

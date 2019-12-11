@@ -25,10 +25,10 @@ class CleanWarningMain extends Component { // 电站管理列表页
     changeCleanWarningStore: PropTypes.func,
     getWeather: PropTypes.func,
     theme: PropTypes.string,
-    totalStartDay: PropTypes.string,
-    totalEndDay: PropTypes.string,
-    matrixStartDay: PropTypes.string,
-    matrixEndDay: PropTypes.string,
+    totalStartDay: PropTypes.object,
+    totalEndDay: PropTypes.object,
+    matrixStartDay: PropTypes.object,
+    matrixEndDay: PropTypes.object,
   }
 
   componentDidMount() {
@@ -75,10 +75,10 @@ class CleanWarningMain extends Component { // 电站管理列表页
     const { totalStartDay, totalEndDay, matrixStartDay, matrixEndDay } = this.props;
     const { stationCode } = record;
     const totalEffectParam = {
-      stationCode, endDay: totalEndDay, startDay: totalStartDay,
+      stationCode, endDay: totalEndDay.format('YYYY-MM-DD'), startDay: totalStartDay.format('YYYY-MM-DD'),
     };
     const matrixEffectParam = {
-      stationCode, endDay: matrixEndDay, startDay: matrixStartDay,
+      stationCode, endDay: matrixEndDay.format('YYYY-MM-DD'), startDay: matrixStartDay.format('YYYY-MM-DD'),
     };
     this.props.getWeather({ stationCode });
     this.props.getCleanWarningDetail({ stationCode });

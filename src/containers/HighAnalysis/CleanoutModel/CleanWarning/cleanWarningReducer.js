@@ -21,10 +21,10 @@ var initState = Immutable.fromJS({
   totalEffects: [], // api => 全局灰尘影响
   matrixEffects: [], // api => 方阵灰尘影响
 
-  matrixStartDay: moment().subtract(1, 'days').format('YYYY-MM-DD'),
-  matrixEndDay: moment().subtract(1, 'days').format('YYYY-MM-DD'),
-  totalStartDay: moment().subtract(1, 'months').add(-1, 'days').format('YYYY-MM-DD'),
-  totalEndDay: moment().subtract(1, 'days').format('YYYY-MM-DD'),
+  matrixStartDay: moment().subtract(1, 'days'),
+  matrixEndDay: moment().subtract(1, 'days'),
+  totalStartDay: moment().subtract(1, 'months').add(-1, 'days'),
+  totalEndDay: moment().subtract(1, 'days'),
 });
 
 const cleanWarning = (state = initState, action) => {
