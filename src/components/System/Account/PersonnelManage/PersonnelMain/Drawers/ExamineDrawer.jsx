@@ -117,7 +117,7 @@ class ExamineDrawer extends Component {
               rules: [{ required: true, message: '请选择所属部门' }],
               initialValue: [],
             })(
-              <DepartmentSelector departmentTree={departmentTree} />
+              <DepartmentSelector departmentTree={departmentTree.filter(e => e.departmentId !== '1')} />
             )}
           </FormItem>}
           <div className={styles.btns}>

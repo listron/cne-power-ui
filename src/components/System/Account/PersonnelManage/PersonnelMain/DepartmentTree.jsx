@@ -52,6 +52,7 @@ class DepartmentTree extends Component {
   state = {
     refuseText: '',
     deleteDepartmentInfo: {},
+    expandKey: '', // 树形展开节点
   }
 
   downloadTemplate = () => {
@@ -87,6 +88,14 @@ class DepartmentTree extends Component {
       this.props.getUserList({ departmentId });
       departmentId !== '1' && this.props.getDepartmentAllUser({ departmentId }); // 请求部门下电站并作为右侧 + 分配用户展示
     }
+  }
+
+  expandTreeNode = (expandIds) => { // 受控展开节点, 只展开一个
+    const { expandKey } = this.state;
+    if (expandIds.length > 1) { // 只展开一个
+      expandIds = expandIds.filter(e => e !== expandKey);
+    }
+    this.setState({ expandKey: expandIds[0] || '' });
   }
 
   assignPersonnel = () => {
@@ -163,7 +172,7 @@ class DepartmentTree extends Component {
 
   render(){
     const { templateLoading, selectedDepartment, departmentTree, preDeleteText } = this.props;
-    const { refuseText } = this.state;
+    const { refuseText, expandKey } = this.state;
     const { departmentId } = selectedDepartment || {};
     const rights = localStorage.getItem('rightHandler');
     const createRight = rights && rights.split(',').includes('account_department_create');
@@ -192,7 +201,9 @@ class DepartmentTree extends Component {
             blockNode
             className={styles.treeContent}
             onSelect={this.selectDepartmentNode}
-            defaultSelectedKeys={['1']}
+            selectedKeys={[departmentId]}
+            expandedKeys={expandKey ? [expandKey] : []}
+            onExpand={this.expandTreeNode}
           >
             {this.renderTreeNodes(departmentTree, deleteRight, updateRight)}
           </DirectoryTree>

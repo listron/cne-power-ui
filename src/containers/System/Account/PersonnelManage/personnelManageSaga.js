@@ -1,4 +1,4 @@
-import { call, put, takeLatest, select, all } from 'redux-saga/effects';
+import { call, put, takeLatest, select, all, fork } from 'redux-saga/effects';
 import Cookie from 'js-cookie';
 import request from '@utils/request';
 import path from '@path';
@@ -160,12 +160,31 @@ function *deleteDepartment({ payload }){ // 删除部门
     const url = `${APIBasePath}${system.handleDepartment}/${departmentId}`;
     const response = yield call(request.delete, url);
     if (response.code === '10000') {
-      yield call(easyPut, 'changeStore', {
+      const { selectedDepartment } = yield select(state => state.system.personnelManage);
+      let params = { // 删除成功后需重置的信息;
         preDeleteText: '', // 删除弹框隐藏
         deleteDepartmentSuccess: true,
-      });
+      };
+      if (selectedDepartment.departmentId === departmentId) { // 若删除的正是当前选中的部门, 选中部门切至未分配部门并重新请求
+        const userListParams = { username: '', phoneNum: '', stationName: '' };
+        const userListPageInfo = { pageNum: 1, pageSize: 10, sortField: 'u.create_time', sortMethod: 'desc' };
+        params = { // 添加额外需重置信息
+          ...params,
+          selectedDepartment: {
+            departmentId: '1',
+            departmentName: '未分配部门人员',
+            departmentSource: '0',
+          },
+          userListParams,
+          userListPageInfo,
+          departmentStations: [],
+          departmentAllUsers: [],
+        };
+        yield fork(getUserList, { payload: { departmentId: '1', ...userListParams, ...userListPageInfo } });
+      }
+      yield call(easyPut, 'changeStore', params);
+      yield call(getDepartmentTreeData); // 重新请求部门树结构
     } else { throw response.message; }
-    yield call(getDepartmentTreeData); // 重新请求部门树结构
   } catch (error) {
     yield call(easyPut, 'changeStore', { deleteDepartmentSuccess: false });
     message.error(`删除部门失败, 请重试 ${error}`);
