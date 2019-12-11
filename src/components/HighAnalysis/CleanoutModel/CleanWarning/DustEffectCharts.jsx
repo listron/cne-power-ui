@@ -204,8 +204,8 @@ class DustEffectCharts extends Component {
       changeCleanWarningStore({
         totalStartDay: moment(totalEffectParam.startDay),
         totalEndDay: moment(totalEffectParam.endDay),
-       });
-       getTotalDustEffect(totalEffectParam);
+      });
+        getTotalDustEffect(totalEffectParam);
       }else{
         changeCleanWarningStore({
           matrixStartDay: moment(matrixEffectParam.startDay),
@@ -220,8 +220,8 @@ class DustEffectCharts extends Component {
       const { dustEffectInfo, getTotalDustEffect, totalStartDay, totalEndDay } = this.props;
       const effectParam = {
         stationCode: dustEffectInfo.stationCode,
-        startDay: totalStartDay,
-        endDay: totalEndDay,
+        startDay: totalStartDay.format('YYYY-MM-DD'),
+        endDay: totalEndDay.format('YYYY-MM-DD'),
       };
       this.setState({
         key: '1',
@@ -231,8 +231,8 @@ class DustEffectCharts extends Component {
       const { dustEffectInfo, getMatrixDustEffect, matrixStartDay, matrixEndDay } = this.props;
       const effectParam = {
         stationCode: dustEffectInfo.stationCode,
-        startDay: matrixStartDay,
-        endDay: matrixEndDay,
+        startDay: matrixStartDay.format('YYYY-MM-DD'),
+        endDay: matrixEndDay.format('YYYY-MM-DD'),
       };
       this.setState({
         key: '2',
