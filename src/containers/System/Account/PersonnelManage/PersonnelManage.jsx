@@ -16,6 +16,7 @@ class PersonnelManage extends Component {
     getDepartmentTreeData: PropTypes.func,
     getUserList: PropTypes.func,
     getRoleAllList: PropTypes.func,
+    resetStore: PropTypes.func,
   };
 
   componentDidMount(){
@@ -24,6 +25,10 @@ class PersonnelManage extends Component {
     this.props.getDepartmentTreeData();
     this.props.getRoleAllList();
     // 初入页面 请求企业下所有用户基础信息 + 请求部门列表树 + 请求默认未分配部门用户信息
+  }
+
+  componentWillUnmount(){
+    this.props.resetStore();
   }
 
   render() {
