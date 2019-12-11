@@ -227,7 +227,7 @@ class List extends Component {
           onCancel={this.cancelLogout}
           value="注销后用户不再属于任何部门，会被移出系统。您确定注销该人员吗？"
         />}
-        <ListFooter selectedLength={selectedRowKeys.length} cancel={this.cancelSelectRow} />
+        {userList.length > 0 && <ListFooter selectedLength={selectedRowKeys.length} cancel={this.cancelSelectRow} />}
       </div>
     );
   }

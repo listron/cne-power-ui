@@ -1,7 +1,7 @@
 
 const personnelManageAction = {
   changeStore: Symbol('changeStore'),
-  reset: Symbol('reset'),
+  resetStore: Symbol('resetStore'),
   fetchSuccess: Symbol('fetchSuccess'),
   getAllUserBase: Symbol('getAllUserBase'), // 所有用户基础信息 => 用于分配人员
   getDepartmentAllUser: Symbol('getDepartmentAllUser'), // 指定部门内所有用户id集合
@@ -89,7 +89,7 @@ const personnelManage = (state = initState, action) => {
       return { ...state, ...action.payload };
     case personnelManageAction.changeStore:
       return { ...state, ...action.payload };
-    case personnelManageAction.reset:
+    case personnelManageAction.resetStore:
       return initState;
   }
   return state;
