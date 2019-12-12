@@ -16,7 +16,6 @@ class InverterHeader extends Component {
     match: PropTypes.object,
     history: PropTypes.object,
     resetDeviceStore: PropTypes.func,
-    changeDeviceManageStore: PropTypes.func,
   };
 
   constructor(props) {
@@ -54,17 +53,8 @@ class InverterHeader extends Component {
     history.push(url);
   };
 
-  changeDeviceFunc = () => {
-    // 获取设备全编码
-    const { match: {params: {deviceCode }}, history, changeDeviceManageStore } = this.props;
-    history.push(`/operation/book/deviceManage?deviceFullCode=${deviceCode}`);
-    setTimeout(() => {
-      changeDeviceManageStore({ showPage: 'detail' });
-    }, 1000);
-  };
-
   render() {
-    const {devices, deviceDetail, stationCode, deviceTypeCode} = this.props;
+    const {devices, deviceDetail, stationCode, deviceTypeCode, match: {params: {deviceCode }}} = this.props;
     const {showDeviceChangeBox} = this.state;
     const {deviceStatus, manufacturer, deviceModeName} = deviceDetail;
     const parentDevice = deviceDetail.parentDevice || {};
@@ -83,7 +73,9 @@ class InverterHeader extends Component {
           <span className={styles.status}>设备状态: {interverStatus[deviceStatus] || '--'}</span>
           <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
           <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
-          <Button className={styles.deviceBtn} onClick={this.changeDeviceFunc}><i className="iconfont icon-edit"/><i>修改设备信息</i></Button>
+          <Link to={`/operation/book/deviceManage?deviceFullCode=${deviceCode}&showPage='detail'`} target="_blank">
+            <Button className={styles.deviceBtn}><i className="iconfont icon-edit"/><i>修改设备信息</i></Button>
+          </Link>
         </div>
         <div className={styles.linkTo}>
           {(parentDeviceTypeCode && parentDeviceCode && <span
