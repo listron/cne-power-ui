@@ -29,6 +29,7 @@ class DayReportListHandle extends Component {
 
   state = {
     uploadResult: '',
+    uploadLoading: false,
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页器
@@ -52,7 +53,9 @@ class DayReportListHandle extends Component {
 
   beforeUpload = (file) => {
     const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel';
+    this.setState({ uploadLoading: true });
     if (!isExcel) {
+      this.setState({ uploadLoading: false });
       message.error('只能上传Excel文件!');
     }
     return isExcel;
@@ -66,6 +69,7 @@ class DayReportListHandle extends Component {
       if (code === '10000') { // 上传成功 => 更新日报列表
         const { stationType, stationNameSort, startTime, regionName, pageSize, pageNum } = this.props;
         this.setState({
+          uploadLoading: false,
           uploadResult: '日报上传成功！',
         });
         this.props.getDayReportList({
@@ -73,6 +77,7 @@ class DayReportListHandle extends Component {
         });
       } else {
         this.setState({
+          uploadLoading: false,
           uploadResult: `日报上传失败: ${response.message}`,
         });
       }
@@ -84,7 +89,7 @@ class DayReportListHandle extends Component {
   confirmTip = this.cancelTip;
 
   render() {
-    const { uploadResult } = this.state;
+    const { uploadResult, uploadLoading } = this.state;
     const { pageSize, pageNum, totalNum } = this.props;
     const authData = localStorage.getItem('authData') || '';
     const rights = localStorage.getItem('rightHandler');
@@ -100,10 +105,10 @@ class DayReportListHandle extends Component {
             headers={{'Authorization': 'bearer ' + ((authData && authData !== 'undefined') ? authData : '')}}
             beforeUpload={this.beforeUpload}
             onChange={this.importChange}
-            className={styles.importReportFile}
             multiple={true}
+            className={styles.importReportFile}
           >
-            <Button>导入日报</Button>
+            <Button loading={uploadLoading}>导入日报</Button>
           </Upload>}
           {importRight && <Button className={styles.templateBtn} href={`${originUri}/template/reportTemplate.zip`}>下载导入模板</Button>}
         </span>
