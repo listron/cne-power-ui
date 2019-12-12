@@ -92,7 +92,7 @@ export default {
       sendDefect: '/v3/defect/distribute',
       rejectDefect: '/v3/defect/reject',
       closeDefect: '/v3/defect/close',
-      handleDefect: '/v3/defect/handle',
+      handleDefect: '/v3/defect/execute', // 3.12
       checkDefect: '/v3/defect/check',
       getDefectTypes: '/v3/defect/type',
       createNewDefect: '/v3/defect', //3.3
