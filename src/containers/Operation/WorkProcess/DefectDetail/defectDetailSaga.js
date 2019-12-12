@@ -1,5 +1,6 @@
 import { put, call, takeLatest, select, fork } from 'redux-saga/effects';
 import { defectDetailAction } from './defectDetailReducer';
+import { delay } from 'redux-saga';
 import axios from 'axios';
 import path from '@path';
 import moment from 'moment';
@@ -186,6 +187,7 @@ function* checkDefect(action) { // 验收工单
     const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
       message.success('验收成功！');
+      // yield delay(2000), // 阻塞2秒
       func();
     } else {
       throw response.data;
