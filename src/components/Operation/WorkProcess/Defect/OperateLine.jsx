@@ -45,7 +45,7 @@ class OperateLine extends Component {
       <div className={styles.processItem}>
         <div className={styles.lineBasic}>
           <div className={styles.flowName}>{item.flowCode === 10 && '新建工单' || item.flowName}</div>
-          <div className={styles.status}>{['已解决', '未解决', '', '下发', '驳回', '不合格', '合格', '关闭'][item.handleStatus]}</div>
+          <div className={styles.status}>{['已解决', '未解决', '提交', '下发', '驳回', '不合格', '合格', '关闭'][item.handleStatus]}</div>
         </div>
         <div className={styles.processCont}>
           <div className={styles.processMsg}>
@@ -54,7 +54,7 @@ class OperateLine extends Component {
           </div>
           <div className={styles.defectProposal}>
             {item.reasonDesc && <div className={styles.reason} ><span>【产生原因】</span> {item.reasonDesc} </div>}
-            {item.defectProposal && <div className={styles.reason}> <span>{item.handleStatus === '3' && '【驳回原因】' || '【处理建议】'}  </span>{item.defectProposal}</div>}
+            {item.defectProposal && <div className={styles.reason}> <span>{item.handleStatus === '4' && '【驳回原因】' || '【处理建议】'}  </span>{item.defectProposal}</div>}
             {item.defectProcess && <div className={styles.reason}><span>【处理过程】</span>{item.defectProcess}</div>}
             {item.replaceParts && <div className={styles.reason}><span>【更换备件】</span>{item.replaceParts}</div>}
             {item.photoAddress && <div className={styles.imgBox}>

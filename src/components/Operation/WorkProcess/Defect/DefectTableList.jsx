@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './defect.scss';
 import CommonPagination from '@components/Common/CommonPagination';
 import { Table, Icon, Modal, Select, Tooltip, Button } from 'antd';
+import moment from 'moment';
 const Option = Select.Option;
 
 
@@ -102,7 +103,7 @@ class DefectTabelList extends Component {
       className: styles.defectTypeName,
       sorter: true,
       render: (text, record) => {
-        return <div className={styles.defectTypeNameText} title={record.defectTypeName}>{record.defectTypeName || '--'}</div>;
+        return <div className={styles.defectTypeNameText} title={record.defectTypeName}>{record.defectTypeCode !== '0' && record.defectTypeName || '--'}</div>;
       },
     }, {
       title: '缺陷描述',
@@ -119,7 +120,7 @@ class DefectTabelList extends Component {
       width: 160,
       sorter: true,
       render: text => {
-        return <div className={styles.startTime} title={text || '--'}>{text || '--'}</div>;
+        return <div className={styles.startTime} title={text || '--'}>{text && moment(text).format('YYYY-MM-DD HH:mm') || '--'}</div>;
       },
     }, {
       title: '完成时间',
