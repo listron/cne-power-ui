@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
+import { Tooltip } from 'antd';
 import { dataFormats } from '../../../../../../utils/utilFunc';
 import DeviceAlarmTable from '../../../DeviceMonitor/DeviceMonitorCommon/DeviceAlarmTable';
 import moment from 'moment';
@@ -156,7 +157,7 @@ class WeatherStation extends Component {
             { id: 'pressure', name: '压力', unit: 'Pa', point: '2' },
             { id: 'windSpeed', name: '风速', unit: 'm/s', point: '2' },
             { id: 'windDirect', name: '风向', unit: '°', point: '2' },
-            { id: 'radiatioQuantity', name: '辐射量', unit: 'MJ/m²', point: '2' },
+            { id: 'radiatioQuantity', name: '辐射量', unit: 'MJ/m²', point: '2', isShow: true },
         ];
         return (
             <div className={styles.weatherStation}>
@@ -169,7 +170,16 @@ class WeatherStation extends Component {
                             }
                             return (<div className={styles.everyDetail} key={index}>
                                 <div>{e.name}</div>
-                                <div className={styles.detailId}>{value}<span className={styles.detailUnit}>{e.unit}</span></div>
+                                <div className={styles.detailId}>
+                                    {value}
+                                    <span className={styles.detailUnit}>{e.unit}</span>
+                                    {e.isShow && weatherstationDetail.radiatioQuantityValidation &&
+                                    <span className={styles.tooltipName}>
+                                        <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={weatherstationDetail.radiatioQuantityValidation}>
+                                            <i className="iconfont icon-help"></i>
+                                        </Tooltip>
+                                    </span>}
+                                </div>
                             </div>);
                         })}
                     </div>

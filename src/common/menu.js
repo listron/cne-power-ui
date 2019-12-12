@@ -626,14 +626,18 @@ const menuData = [
             defaultPath: true,
             rightKey: 'system_account_enterprise',
           }, {
-            name: '部门',
-            path: 'department',
-            rightKey: 'system_account_department',
-          }, {
-            name: '用户',
-            path: 'user',
+            name: '人员管理',
+            path: 'personnelManage',
             rightKey: 'system_account_user',
           }, {
+          //   name: '部门',
+          //   path: 'department',
+          //   rightKey: 'system_account_department',
+          // }, {
+          //   name: '用户',
+          //   path: 'user',
+          //   rightKey: 'system_account_user',
+          // }, {
             name: '角色',
             path: 'role',
             rightKey: 'system_account_role',

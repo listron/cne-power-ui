@@ -269,7 +269,7 @@ class WindStation extends Component {
               <div className={styles.tags}>
                 <Link to={`/monitor/alarm/realtime?stationCode=${stationCode}`}> 查看告警 {dataFormats(singleStationData.alarmNum, '--')} </Link>
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
-                <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
+                <Link to={`/report/windstation/powerReport`} > 报表查询  </Link>
               </div>
               <div className={styles.chartsBox}>
                 <OutputChart

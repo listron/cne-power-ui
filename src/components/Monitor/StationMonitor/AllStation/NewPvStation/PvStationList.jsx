@@ -82,7 +82,7 @@ class PvStationList extends React.Component {
       },
 
       {
-        title: () => <TableColumnTitle title="瞬时辐照" unit="(W/m²)" className="nonePadding" />,
+        title: () => <TableColumnTitle title="瞬时辐照" unit="W/m²" className="nonePadding" />,
         dataIndex: 'instantaneous',
         className: styles.numberStyle,
         render: (value) => dataFormats(value, '--', 2, true),
@@ -103,7 +103,7 @@ class PvStationList extends React.Component {
         render: value => powerPoint(divideFormarts(value, powerUnit)),
       },
       {
-        title: () => <TableColumnTitle title="日利用小时" unit={'h'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="日等效时" unit={'h'} className="nonePadding" />,
         dataIndex: 'equivalentHours',
         sorter: true,
         className: styles.numberStyle,
@@ -128,7 +128,7 @@ class PvStationList extends React.Component {
         dataIndex: 'stationCapacity',
         sorter: true,
         className: styles.numberStyle,
-        render: (value) => realCapacityUnit === 'MW' ? value : multiplyFormarts(value, 1000),
+        render: (value) => dataFormats(realCapacityUnit === 'MW' ? value : multiplyFormarts(value, 1000), '--', 2),
       },
       {
         title: () => <TableColumnTitle title="装机" unit="台" className="nonePadding" />,
@@ -140,13 +140,6 @@ class PvStationList extends React.Component {
       {
         title: () => <TableColumnTitle title="异常支路数" unit={'个'} className="nonePadding" />,
         dataIndex: 'anomalousBranchNum',
-        sorter: true,
-        className: styles.numberStyle,
-        render: value => value ? value : 0,
-      },
-      {
-        title: () => <TableColumnTitle title="低效逆变器" unit={'台'} className="nonePadding" />,
-        dataIndex: 'lowEfficiencyInverterNum',
         sorter: true,
         className: styles.numberStyle,
         render: value => value ? value : 0,
@@ -189,8 +182,8 @@ class PvStationList extends React.Component {
         'stationUnitCount',
         'equivalentHours',
         'alarmNum',
+        'loadRate',
         'anomalousBranchNum',
-        'lowEfficiencyInverterNum',
         'stationStatus'];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);

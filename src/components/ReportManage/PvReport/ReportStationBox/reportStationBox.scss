@@ -1,0 +1,109 @@
+@import '../../../../theme/theme';
+
+.reportContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .topSearch {
+    // background: #fff;
+    display: flex;
+    height: 60px;
+    line-height: 40px;
+    margin-bottom: 10px;
+
+    .timeStyle {
+      display: flex;
+      align-items: center;
+      padding-left: 40px;
+
+      .yearSelectStyle {
+        :global {
+          .ant-input {
+            width: 115px;
+          }
+        }
+      }
+
+
+      .yearWidth {
+        margin: 0 8px;
+      }
+
+      .btnStyle {
+        margin-left: 24px;
+      }
+
+    }
+  }
+
+  .reportList {
+    // background: #fff;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+
+    :global {
+      .ant-table .ant-table-thead>tr>th {
+        padding: 0 8px;
+      }
+
+      .ant-table .ant-table-tbody>tr>td {
+        padding: 0 5px;
+      }
+
+      // .ant-table-body {
+      // &::-webkit-scrollbar {
+      //   width: 6px;
+      //   height: 6px;
+      // }
+
+      // &::-webkit-scrollbar-thumb {
+      //   border-radius: 3px;
+      //   background: rgba(0, 0, 0, 0.5);
+      // }
+      // }
+
+    }
+
+    .stationName,
+    .timeStyle {
+      width: 108px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .timeStyle {
+      width: 150px;
+    }
+
+    .handlePage {
+      display: flex;
+      justify-content: space-between;
+      height: 56px;
+      align-items: center;
+      padding-left: 40px;
+    }
+
+    .rightStyle {
+      text-align: right;
+    }
+  }
+
+}
+
+.light {
+  .topSearch {
+    background: #fff;
+  }
+
+  .reportList {
+    background: #fff;
+  }
+}
+
+// .dark {}
+
+// .zt {}

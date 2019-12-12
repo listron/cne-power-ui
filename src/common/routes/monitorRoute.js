@@ -48,25 +48,25 @@ const alarm = [
   },
 ];
 
-const report = [
-  { //实时监控-报表查询-电量报表
-    path: '/monitor/report/powerReport',
-    // component: lazy(() => import('../../components/Common/Building/Building')),
-    component: lazy(() => import('../../containers/Monitor/Report/PowerReport/PowerReport')),
-  }, { //实时监控-报表查询-设备状态
-    path: '/monitor/report/deviceStatus',
-    // component: lazy(() => import('../../components/Common/Building/Building')),
-    component: lazy(() => import('../../containers/Monitor/Report/DeviceStatus/DeviceStatus')),
-  }, { //实时监控-报表查询-故障报表
-    path: '/monitor/report/malfunction',
-    // component: lazy(() => import('../../components/Common/Building/Building')),
-    component: lazy(() => import('../../containers/Monitor/Report/Malfunction/Malfunction')),
-  }, { //实时监控-报表查询-损失电量
-    path: '/monitor/report/powerLost',
-    // component: lazy(() => import('../../components/Common/Building/Building')),
-    component: lazy(() => import('../../containers/Monitor/Report/PowerLost/PowerLost')),
-  },
-];
+// const report = [
+//   { //实时监控-报表查询-电量报表
+//     path: '/monitor/report/powerReport',
+//     // component: lazy(() => import('../../components/Common/Building/Building')),
+//     component: lazy(() => import('../../containers/Monitor/Report/PowerReport/PowerReport')),
+//   }, { //实时监控-报表查询-设备状态
+//     path: '/monitor/report/deviceStatus',
+//     // component: lazy(() => import('../../components/Common/Building/Building')),
+//     component: lazy(() => import('../../containers/Monitor/Report/DeviceStatus/DeviceStatus')),
+//   }, { //实时监控-报表查询-故障报表
+//     path: '/monitor/report/malfunction',
+//     // component: lazy(() => import('../../components/Common/Building/Building')),
+//     component: lazy(() => import('../../containers/Monitor/Report/Malfunction/Malfunction')),
+//   }, { //实时监控-报表查询-损失电量
+//     path: '/monitor/report/powerLost',
+//     // component: lazy(() => import('../../components/Common/Building/Building')),
+//     component: lazy(() => import('../../containers/Monitor/Report/PowerLost/PowerLost')),
+//   },
+// ];
 
 const data = [
   { //实时监控-数据分析-历史趋势
@@ -91,6 +91,6 @@ export const monitorRoute = [
   ...stationMonitor,
   ...powerCurve,
   ...data,
-  ...report,
+  //...report,
   ...alarm,
 ];

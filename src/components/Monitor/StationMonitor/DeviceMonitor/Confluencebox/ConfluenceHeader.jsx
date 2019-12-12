@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import HeaderDeviceChange from '../DeviceMonitorCommon/HeaderDeviceChange';
-import { confluenceStatus, PVStationTypes } from '../../../../../constants/stationBaseInfo';
+import {confluenceStatus, PVStationTypes} from '../../../../../constants/stationBaseInfo';
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
-import { Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import {Icon, Button} from 'antd';
+import {Link} from 'react-router-dom';
 
 class ConfluenceHeader extends Component {
 
@@ -13,56 +13,67 @@ class ConfluenceHeader extends Component {
     stationCode: PropTypes.string,
     deviceTypeCode: PropTypes.string,
     deviceDetail: PropTypes.object,
+    match: PropTypes.object,
     history: PropTypes.object,
     resetDeviceStore: PropTypes.func,
-  }
+    changeDeviceManageStore: PropTypes.func,
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       showDeviceChangeBox: false,
-    }
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const main = document.getElementById('main');
-    main && main.addEventListener('click', this.hideDeviceChange,true);
+    main && main.addEventListener('click', this.hideDeviceChange, true);
   }
 
   componentWillUnmount() {
     const main = document.getElementById('main');
-    main && main.removeEventListener('click', this.hideDeviceChange,true);
+    main && main.removeEventListener('click', this.hideDeviceChange, true);
   }
 
   showDeviceChange = () => {
     this.setState({
       showDeviceChangeBox: true,
-    })
-  }
+    });
+  };
 
   hideDeviceChange = () => {
     this.setState({
       showDeviceChangeBox: false,
-    })
-  }
+    });
+  };
 
   toParentDevice = (url) => {
-    const { resetDeviceStore, history } = this.props;
+    const {resetDeviceStore, history} = this.props;
     resetDeviceStore();
     history.push(url);
-  }
+  };
+
+  changeDeviceFunc = () => {
+    // 获取设备全编码
+    const { match: {params: {deviceCode }}, history, changeDeviceManageStore } = this.props;
+    history.push(`/operation/book/deviceManage?deviceFullCode=${deviceCode}`);
+    setTimeout(() => {
+      changeDeviceManageStore({ showPage: 'detail' });
+    }, 1000);
+  };
 
   render() {
-    const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
-    const { showDeviceChangeBox } = this.state;
-    const { deviceStatus, manufacturer, deviceModeName } = deviceDetail;
-    let parentDevice = deviceDetail.parentDevice || {};
+    const {devices, deviceDetail, stationCode, deviceTypeCode} = this.props;
+    const {showDeviceChangeBox} = this.state;
+    const {deviceStatus, manufacturer, deviceModeName} = deviceDetail;
+    const parentDevice = deviceDetail.parentDevice || {};
     const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     const parentDeviceTypeCode = parentDevice.deviceTypeCode; // 父级设备type
     const parentDeviceCode = parentDevice.deviceCode; //父级设备code
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
-      <div className={styles.deviceMonitorHeader} >
+      <div className={styles.deviceMonitorHeader}>
         {showDeviceChangeBox && <HeaderDeviceChange
           devices={devices}
           deviceDetail={deviceDetail}
@@ -70,16 +81,17 @@ class ConfluenceHeader extends Component {
           hideDeviceChange={this.hideDeviceChange}
         />}
         <div className={styles.deviceName}>
-          <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
+          <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange}/>
           <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName || '--'}</span>
-          <span className={styles.status} >设备状态: {confluenceStatus[deviceStatus] || '--'}</span>
+          <span className={styles.status}>设备状态: {confluenceStatus[deviceStatus] || '--'}</span>
           <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
           <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
+          <Button className={styles.deviceBtn} onClick={this.changeDeviceFunc}><i className="iconfont icon-edit"/><i>修改设备信息</i></Button>
         </div>
         <div className={styles.linkTo}>
           {parentDeviceTypeCode && parentDeviceCode && <span
             onClick={() => this.toParentDevice(
-              `/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`
+              `/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`,
             )}
             className={styles.eachLink}
           >
@@ -89,8 +101,9 @@ class ConfluenceHeader extends Component {
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
           </span>}
-          <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`} className={styles.backIcon}>
-            <Icon type="arrow-left" />
+          <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`}
+                className={styles.backIcon}>
+            <Icon type="arrow-left"/>
           </Link>
           {/* {sonDevice && sonDevice.deviceTypeCode && <Link  to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`} className={styles.eachLink}>
             <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
@@ -99,7 +112,8 @@ class ConfluenceHeader extends Component {
           </Link>} */}
         </div>
       </div>
-    )
+    );
   }
 }
+
 export default ConfluenceHeader;

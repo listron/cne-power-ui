@@ -19,6 +19,13 @@ class Boxtransformer extends Component {
     theme: PropTypes.string,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      tabKey: '1',
+    };
+  }
+
   componentDidMount() {
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
     const params = {
@@ -58,7 +65,14 @@ class Boxtransformer extends Component {
     this.props.resetDeviceStore();
   }
 
+  tabKeyFunc = (key) => {
+    this.setState({
+      tabKey: key,
+    });
+  };
+
   render() {
+    const { tabKey } = this.state;
     const { stations, theme } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const backData = { path: `/monitor/singleStation/${stationCode}`, name: '返回电站' };
@@ -80,10 +94,20 @@ class Boxtransformer extends Component {
           <BoxtransformerHeader {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <div className={styles.contWrap}>
             <BoxtransformerTenMin {...this.props} />
-            <DevicePointsTable {...this.props} />
-            <DeviceAlarmTable {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} />
-            <h3 className={styles.subTitleConfig}>下级设备</h3>
-            <SubInverter {...this.props} stationCode={stationCode} />
+            <div className={styles.boxtransformerTabs}>
+              <div className={tabKey === '1' ? styles.tabActive : styles.tabNormal} onClick={() => this.tabKeyFunc('1')}>
+                实时告警
+              </div>
+              <div className={tabKey === '2' ? styles.tabActive : styles.tabNormal} onClick={() => this.tabKeyFunc('2')}>
+                测点信息
+              </div>
+              <div className={tabKey === '3' ? styles.tabActive : styles.tabNormal} onClick={() => this.tabKeyFunc('3')}>
+                下级设备
+              </div>
+            </div>
+            {tabKey === '1' && <DeviceAlarmTable {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} />}
+            {tabKey === '2' && <DevicePointsTable {...this.props} /> }
+            {tabKey === '3' && <SubInverter {...this.props} stationCode={stationCode} />}
           </div>
         </div>
       </div>

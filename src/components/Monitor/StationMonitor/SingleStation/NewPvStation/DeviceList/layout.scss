@@ -159,6 +159,17 @@
                 justify-content: space-between;
                 margin-bottom: -4px;
                 margin-top: 7px;
+                .transferRate{
+                  display: flex;
+                  .tooltipName{
+                    margin-top: -5px;
+                    margin-left: 3px;
+                    color: #999;
+                    &:hover{
+                      color: #f9b600;
+                    }
+                  }
+                }
               }
               .deviceItemPower {
                 display: flex;
@@ -181,6 +192,17 @@
               display: inline-block;
               width: 50%;
               text-align: left;
+              > div{
+                display: flex;
+                .tooltipName{
+                  margin-top: -5px;
+                  margin-left: 3px;
+                  color: #999;
+                  &:hover{
+                    color: #f9b600;
+                  }
+                }
+              }
             }
           }
         }
@@ -479,10 +501,21 @@
               height: 33px;
               line-height: 33px;
               margin-bottom: -4px;
+              .transferRate{
+                display: flex;
+                .tooltipName{
+                  margin-top: -5px;
+                  margin-left: 3px;
+                  color: #999;
+                  &:hover{
+                    color: #f9b600;
+                  }
+                }
+              }
             }
             .deviceName {
               display: inline-block;
-              width: 130px;
+              width: 120px;
               word-break: break-all;
               overflow: hidden;
               text-overflow: ellipsis;

@@ -138,6 +138,7 @@ export default {
       uploadDayReport: '/v3/performance/dailyreport', // 上报日报
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
+      uploadReportFile: '/v3/performance/dailyreport/upload', // 日报文件上报
 
       getImportIntelligent: '/v3/knowledgebase/import', // 智能专家库导入
       getIntelligentTable: '/v3/knowledgebase/list', // 智能专家库列表
@@ -284,6 +285,23 @@ export default {
       getDepartmentStation: '/v3/department/station', //所有电站列表，用于为部门分配电站
       setDepartmentUser: '/v3/department/user', //设置部门成员
       setDepartmentStation: '/v3/department/station', //设置部门电站
+      // 人员管理界面
+      downLoadPersonnelTemplate: '/v3/user/downLoad/template', // 人员管理模板下载
+      getAllUserBase: '/v3/user/list/departmentInfos', // 企业所有用户信息
+      getDepartmentTreeData: '/v3/department/tree', // 用户企业部门树
+      preDeleteDepartmentCheck: '/v3/department/checkDel', // 删除部门前的预置请求
+      handleDepartment: '/v3/department', //部门信息新增，详情，删除
+      editDepartment: '/v3/department/update', // 部门编辑
+      getStationOfDepartment: '/v3/department/station/list', // 获取某部门下的电站
+      getDepartmentAllUser: '/v3/user/all/list', // 获取部门下所有用户基本信息: 模糊搜索 + 已有用户回填;
+      assignDepartmentUsers: '/v3/department/distribute/user', // 为部门分配用户
+      assignUserDepartments: '/v3/user/distribute/department', // 为用户分配部门
+      getUserPagelist: '/v3/user/pagelist', // 新人员管理界面列表展示
+      getUserDetailInfo: '/v3/user', //用户详情
+      setUserStatus: '/v3/user/status', // 修改用户状态
+      addUser: '/v3/createUser', // 新增用户
+      editUser: '/v3/updateUser', // 编辑用户
+      getDepartmentsStationMap: '/v3/department/station/collection', // 获取多个部门下的电站集合
 
       getRoleList: '/v3/role/list',
       getMenuList: '/v3/right',
@@ -312,6 +330,7 @@ export default {
       setStationDepartment: '/v3/management/alarmevent/station/department', // 分配部门
       importStationInfo: '/v3/management/station/devices', // 导入电站+设备信息
       getAllStationBaseInfo: '/v3/management/datalist', // 获取该用户所在企业的所有电站(与token无关)
+      editDepartmentStations: '/v3/department/update', // 编辑部门负责电站
 
       getDeviceList: '/v3/management/devicelist', // 获取设备列表
       downloadDeviceInfo: '/v3/management/station/devices', // 导出设备信息表

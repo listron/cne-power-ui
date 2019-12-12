@@ -3,7 +3,7 @@
 .showCharts {
   display: flex;
   width: 464px;
-  height: 1046px;
+  height: 966px;
   flex: 1 0 auto;
   margin-left: 6px;
   margin-top: 90px;
@@ -47,22 +47,22 @@
       pointer-events: none;
     }
   }
-  .deviceStatus {
-    border-radius: 4px;
-    line-height: 40px;
-    margin-top: 12px;
-    padding: 0 13px;
-    .deviceStaTitle {
-      display: flex;
-      justify-content: space-between;
-    }
-    .deviceStaCont {
-      span {
-        margin-right: 12px;
-        display: inline-block;
-      }
-    }
-  }
+  // .deviceStatus {
+  //   border-radius: 4px;
+  //   line-height: 40px;
+  //   margin-top: 12px;
+  //   padding: 0 13px;
+  //   .deviceStaTitle {
+  //     display: flex;
+  //     justify-content: space-between;
+  //   }
+  //   .deviceStaCont {
+  //     span {
+  //       margin-right: 12px;
+  //       display: inline-block;
+  //     }
+  //   }
+  // }
   .chartsBox {
     margin-top: 12px;
     display: flex;

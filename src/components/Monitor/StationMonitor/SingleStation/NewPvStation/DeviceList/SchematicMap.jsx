@@ -152,7 +152,6 @@ class Schematic extends Component {
                     { 'id': 'stopSize', name: '正常停机数', unit: '台', point: 0 },
                     { 'id': 'exceptionSize', name: '故障停机数', unit: '台', point: 0, hot: true },
                     { 'id': 'breakSize', name: '通讯中断数', unit: '台', point: 0, hot: true },
-                    { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true, single: true },
                 ],
             },
             'all': {
@@ -163,7 +162,6 @@ class Schematic extends Component {
                     { 'id': 'stopSize', name: '正常停机数', unit: '台', point: 0 },
                     { 'id': 'exceptionSize', name: '故障停机数', unit: '台', point: 0, hot: true },
                     { 'id': 'breakSize', name: '通讯中断数', unit: '台', point: 0, hot: true },
-                    { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true, single: true },
                 ],
             },
         };

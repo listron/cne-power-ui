@@ -43,22 +43,22 @@ class Confluence extends Component {
     });
   }
 
-  changeBranchCount = ({ target }) => { // 支路数据改变时的逻辑 => 改变支路数据 + 渲染每个支路默认信息
-    const { value } = target || {};
-    if (value > 0 && !isNaN(value) && !value.includes('.')) { // value 大于零 数字
-      const brachNum = parseInt(value.trim(), 10); // 支路数
-      const connectedBranches = this.props.form.getFieldValue('connectedBranches') || [];
-      const newBranchesInfo = [];
-      for (let i = 0; i < brachNum; i++) {
-        const eachSubNum = connectedBranches[i];
-        newBranchesInfo.push(eachSubNum === undefined ? '1' : eachSubNum);
-      }
-      this.props.form.setFieldsValue({
-        branchCount: `${brachNum}`,
-        connectedBranches: newBranchesInfo,
-      });
-    }
-  }
+  // changeBranchCount = ({ target }) => { // 支路数据改变时的逻辑 => 改变支路数据 + 渲染每个支路默认信息
+  //   const { value } = target || {};
+  //   if (value > 0 && !isNaN(value) && !value.includes('.')) { // value 大于零 数字
+  //     const brachNum = parseInt(value.trim(), 10); // 支路数
+  //     const connectedBranches = this.props.form.getFieldValue('connectedBranches') || [];
+  //     const newBranchesInfo = [];
+  //     for (let i = 0; i < brachNum; i++) {
+  //       const eachSubNum = connectedBranches[i];
+  //       newBranchesInfo.push(eachSubNum === undefined ? '1' : eachSubNum);
+  //     }
+  //     this.props.form.setFieldsValue({
+  //       branchCount: `${brachNum}`,
+  //       connectedBranches: newBranchesInfo,
+  //     });
+  //   }
+  // }
 
   render() {
     const { showAddComponentMode, checkStyle } = this.state;
@@ -91,13 +91,14 @@ class Confluence extends Component {
               { message: '1~20之间的整数', required: true, pattern: /^(0|1\d?|20?|[3-9])$/ },
             ],
           })(
-            <Input placeholder="1~20之间的整数" onChange={this.changeBranchCount} />
+            <Input placeholder="1~20之间的整数" />
           )}
         </FormItem>
         <FormItem label="所用支路" colon={false} className={styles.formItemStyle}>
           {getFieldDecorator('connectedBranches', {
             rules: [{
               required: true,
+              initialValue: new Array(20).fill('1'),
               validator: (rule, value, callback) => {
                 const noData = !value;
                 const hasEmpty = value && value.find(e => !e && e !== 0); // 支路数未填全 e 为null 或者 undifined 或NaN

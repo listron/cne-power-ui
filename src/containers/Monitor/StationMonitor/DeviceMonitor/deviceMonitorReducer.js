@@ -12,6 +12,8 @@ const deviceAction = {
   getDeviceInfoMonitor: Symbol('deviceInfoMonitor'), // 10s信息
   getDeviceChartMonitor: Symbol('deviceChartMonitor'), // 1h图表信息
   stopMonitor: Symbol('stopMonitor'), // 获取同类设备列表
+  handleRemoveWarning: Symbol('handleRemoveWarning'), // 手动解除
+  transferWarning: Symbol('transferWarning'), // 转工单
 
   getwindturbineData: Symbol('getwindturbineData'), // 单风机详情
   getSequencechartData: Symbol('getSequencechartData'),
@@ -33,6 +35,8 @@ const initState = Immutable.fromJS({
   branchTenMin: [], // 仅组串逆变器下支路电流数组
   branchTenMinUnix: null, // 仅组串逆变器下支路电流时间记录
 
+  defectTypes: [],
+  selectedTransfer: [], // 选中的转工单数据
   sequencechart: {}, // 风机图表
   scatterpoint: {}, // 风机散点图
   scatterpointTime: null, // 风机散点图时间
