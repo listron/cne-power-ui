@@ -15,6 +15,7 @@ import PartInfo from './PartInfo/PartInfo';
 
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
+import searchUtil from '@utils/searchUtil';
 
 class DeviceManage extends Component {
   static propTypes = {
@@ -31,6 +32,7 @@ class DeviceManage extends Component {
     getStationOfEnterprise: PropTypes.func,
     resetStore: PropTypes.func,
     selectType: PropTypes.string,
+    location: PropTypes.object,
   };
   constructor(props) {
     super(props);
@@ -40,6 +42,11 @@ class DeviceManage extends Component {
     };
   }
   componentDidMount() {
+    const {
+      location: { search },
+      changeDeviceManageStore,
+    } = this.props;
+    const showPageStr = searchUtil(search).getValue('showPage');
     const { enterpriseId, getStationOfEnterprise } = this.props;
     getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
     this.timeout = setTimeout(() => {
@@ -47,6 +54,9 @@ class DeviceManage extends Component {
         showDeviceTip: false,
       });
     }, 3000);
+    showPageStr && setTimeout(() => {
+      changeDeviceManageStore({ showPage: 'detail' });
+    }, 1000);
   }
   componentWillUnmount() {
     clearTimeout(this.timeout);
@@ -100,6 +110,7 @@ class DeviceManage extends Component {
       sortField,
       sortMethod,
     };
+    console.log(showPage, '1111111111showPage');
     return (
       <div className={styles.deviceManageContainer}>
         <CommonBreadcrumb

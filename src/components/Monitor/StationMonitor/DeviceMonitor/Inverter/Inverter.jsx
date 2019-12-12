@@ -39,7 +39,7 @@ class Seriesinverter extends Component {
     this.state = {
       pointNameArr: pointParamsStr === '' ? [] : [pointParams], // 选中的支路数组
       tabKey: '1',
-      chartName: 'output', // 组串式逆变器 chart图表切换 output <=> branch
+      chartName: pointParamsStr === '' ? 'output' : 'branch', // 组串式逆变器 chart图表切换 output <=> branch
     };
   }
 
@@ -105,6 +105,13 @@ class Seriesinverter extends Component {
     });
   };
 
+  // 切换支路电流图
+  onBranchFunc = (chartName = 'branch') => {
+    this.setState({
+      chartName,
+    });
+  };
+
   render() {
     const { chartName, tabKey, pointNameArr } = this.state;
     const { match, stations, theme } = this.props;
@@ -126,7 +133,12 @@ class Seriesinverter extends Component {
         <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
         <div className={styles.deviceContent}>
           <InverterHeader {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-          <InverterStatistics pointNameFunc={this.pointNameFunc} pointNameArr={pointNameArr} {...this.props} />
+          <InverterStatistics
+            onBranchFunc={this.onBranchFunc}
+            pointNameFunc={this.pointNameFunc}
+            pointNameArr={pointNameArr}
+            {...this.props}
+          />
           <div className={styles.contWrap}>
             <div className={styles.inverterChartTitle}>
               {deviceTypeCode === '201' && <span className={styles.single}>出力图</span>}
