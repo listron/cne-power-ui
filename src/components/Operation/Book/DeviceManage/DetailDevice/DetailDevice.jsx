@@ -118,6 +118,8 @@ class DetailDevice extends Component {
     });
   }
   backToList = () => { // 返回列表页
+    const { history } = this.props;
+    history.push('/operation/book/deviceManage');
     this.props.changeDeviceManageStore({
       showPage: 'list',
       selectedStationIndex: null,
