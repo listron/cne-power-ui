@@ -5,3 +5,12 @@
   position: relative;
   overflow-x: hidden;
 }
+
+
+.light.planContent{
+  background-color: #ececec;
+}
+
+.dark.planContent{
+  background-image:linear-gradient(-118deg, #3b55aa 0%, #132267 96%);  
+}

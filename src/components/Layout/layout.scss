@@ -99,7 +99,7 @@
       overflow-x: hidden;
       overflow-y: auto;
       // background: #3f3f3f;
-      // border-right: solid 1px $promptColor;
+      border-right: none;
       &::-webkit-scrollbar {
         width: 4px;
       }
@@ -208,7 +208,7 @@
     }
     .menuList {
       background: #3f3f3f;
-      border-right: solid 1px $promptColor;
+      // border-right: solid 1px $promptColor;
       &::-webkit-scrollbar-thumb {
         background-color: #ccc;
       }
@@ -294,7 +294,7 @@
     }
     .menuList {
       background: $sideBar-background;
-      border-right: 1px solid $sideBar-background;
+      // border-right: 1px solid $sideBar-background;
       &::-webkit-scrollbar-thumb {
         background-color: #4d5fe2;
       }
