@@ -32,7 +32,7 @@ class WorkPlanList extends PureComponent {
       <div
         className={styles.workPlanList}
         style={{
-          display: listShow ? 'block' : 'none',
+          display: listShow ? 'flex' : 'none',
         }}
       >
         <PlanFilter {...this.props} />
