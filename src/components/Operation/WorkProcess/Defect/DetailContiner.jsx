@@ -53,8 +53,9 @@ class DetailContiner extends Component {
 
   callBackTableList = () => { // 返回列表页
     const { history } = this.props;
-    history.push('/operation/workProcess/view?page=list&tab=defect');
+    history.push('/operation/workProcess/view?page=list&tab=defect&listSearch={"sortField":"modify_time"}');
   }
+
 
   getSubmitIamges(images) { // 照片提交
     if (!images) {

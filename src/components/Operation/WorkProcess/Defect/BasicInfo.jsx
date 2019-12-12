@@ -45,6 +45,7 @@ class DefectBasicInfo extends Component {
 
   otherBaseInfo = [
     { label: '缺陷描述', value: 'defectDescribe' },
+    { label: '缺陷来源', value: 'defectSource', data: ['告警', '上报', '巡检', '预警'] },
   ]
 
   ticket = [
@@ -69,77 +70,82 @@ class DefectBasicInfo extends Component {
         <div className={styles.title}>
           <div className={styles.text}> 基本信息 <i className="iconfont icon-content" /></div>
           <div className={styles.warning}>
-            {!(+defectDetail.isOverTime) && <div className={styles.overTime}>超时</div>}
-            {!(+defectDetail.isCoordination) && <div className={styles.coordinate}>协调</div>}
+            {defectDetail.defectId &&
+              <React.Fragment>
+                {!(+defectDetail.isOverTime) && <div className={styles.overTime}>超时</div>}
+                {!(+defectDetail.isCoordination) && <div className={styles.coordinate}>协调</div>}
+              </React.Fragment>}
           </div>
         </div>
-        <div className={styles.basicContent}>
-          <div className={styles.basicItem}>
-            <div className={styles.label}>缺陷分类</div>
-            <div className={styles.information}>{defectDetail.defectTypeCode && '设备缺陷' || '其他缺陷'}</div>
-          </div>
-          <div className={styles.basicItem}>
-            <div className={styles.label}>电站名称</div>
-            <div className={styles.information}>
-              {defectDetail.stationName}{'   '}
-              {[<i className="iconfont icon-windlogo" />, <i className="iconfont icon-pvs" />][defectDetail.stationType]}
+        {defectDetail.defectId &&
+          <div className={styles.basicContent}>
+            <div className={styles.basicItem}>
+              <div className={styles.label}>缺陷分类</div>
+              <div className={styles.information}>{defectDetail.defectTypeCode && '设备缺陷' || '其他缺陷'}</div>
             </div>
-          </div>
-          {carergory.map(item => {
-            if (item.sub) {
-              return ( // 如果是缺陷类型
-                <div className={styles.basicItem} key={item.value}>
-                  <div className={styles.label}>{item.label}</div>
-                  <div className={styles.information}>{`${defectDetail[item.value]}/${defectDetail[item.sub]}` || '--'}</div>
-                  {knowledgebaseList.length > 0 &&
-                    <SolutionLibrary
-                      knowledgebaseList={knowledgebaseList}
-                      likeKnowledgebase={likeKnowledgebase}
-                      defectDetail={defectDetail}
-                      getKnowledgebase={getKnowledgebase}
-                    />}
-                </div>);
-            }
-            if (item.data) { // 缺陷来源数据处理
+            <div className={styles.basicItem}>
+              <div className={styles.label}>电站名称</div>
+              <div className={styles.information}>
+                {defectDetail.stationName}{'   '}
+                {[<i className="iconfont icon-windlogo" />, <i className="iconfont icon-pvs" />][defectDetail.stationType]}
+              </div>
+            </div>
+            {carergory.map(item => {
+              if (item.sub) {
+                return ( // 如果是缺陷类型
+                  <div className={styles.basicItem} key={item.value}>
+                    <div className={styles.label}>{item.label}</div>
+                    <div className={styles.information}>{`${defectDetail[item.value]}—${defectDetail[item.sub]}` || '--'}</div>
+                    {knowledgebaseList.length > 0 &&
+                      <SolutionLibrary
+                        knowledgebaseList={knowledgebaseList}
+                        likeKnowledgebase={likeKnowledgebase}
+                        defectDetail={defectDetail}
+                        getKnowledgebase={getKnowledgebase}
+                      />}
+                  </div>);
+              }
+              if (item.data) { // 缺陷来源数据处理
+                return (
+                  <div className={styles.basicItem} key={item.value}>
+                    <div className={styles.label}>{item.label}</div>
+                    <div className={styles.information}>{item.data[(defectDetail[item.value])] || '--'}</div>
+                  </div>);
+              }
               return (
                 <div className={styles.basicItem} key={item.value}>
                   <div className={styles.label}>{item.label}</div>
-                  <div className={styles.information}>{item.data[(defectDetail[item.value])] || '--'}</div>
+                  <div className={styles.information}>{defectDetail[item.value] || '--'}</div>
                 </div>);
-            }
-            return (
-              <div className={styles.basicItem} key={item.value}>
-                <div className={styles.label}>{item.label}</div>
-                <div className={styles.information}>{defectDetail[item.value] || '--'}</div>
-              </div>);
-          })}
-          <div className={styles.basicItem}>
-            <div className={styles.label}>关联工单</div>
-            <div className={styles.information}>
-              {detail.length > 0 &&
-                this.ticket.map(item => {
-                  const data = detail.filter(e => e.templateType === item.type);
-                  const [name, code] = item.ticketMes;
-                  return data.length > 0 &&
-                    (<div className={styles.megCont} >
-                      <div>【 {item.label} ({dockerDetail[item.num]}) 】</div>
-                      <div className={styles.ticktCont}>
-                        {data.map(e => { return <div onClick={() => this.toTicket(e.docketId, e.templateType)} className={styles.tickets}>{e[name]}/{e[code]}</div>; })}
-                      </div>
-                    </div>);
-                }) || '无'
-              }
+            })}
+            <div className={styles.basicItem}>
+              <div className={styles.label}>关联两票</div>
+              <div className={styles.information}>
+                {detail.length > 0 &&
+                  this.ticket.map(item => {
+                    const data = detail.filter(e => e.templateType === item.type);
+                    const [name, code] = item.ticketMes;
+                    return data.length > 0 &&
+                      (<div className={styles.megCont} >
+                        <div>【 {item.label} ({dockerDetail[item.num]}) 】</div>
+                        <div className={styles.ticktCont}>
+                          {data.map(e => { return <div onClick={() => this.toTicket(e.docketId, e.templateType)} className={styles.tickets}>{e[name]}/{e[code]}</div>; })}
+                        </div>
+                      </div>);
+                  }) || '无'
+                }
+              </div>
+            </div>
+            <div className={styles.viewImg}>
+              <ImgUploader editable={false} data={images.map(item => ({
+                uid: `${item}?${Math.random()}`,
+                rotate: 0,
+                thumbUrl: `${item}?${Math.random()}`,
+              }))}
+              />
             </div>
           </div>
-          <div className={styles.viewImg}>
-            <ImgUploader editable={false} data={images.map(item => ({
-              uid: `${item}?${Math.random()}`,
-              rotate: 0,
-              thumbUrl: `${item}?${Math.random()}`,
-            }))}
-            />
-          </div>
-        </div>
+        }
       </div>
     );
   }

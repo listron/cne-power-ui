@@ -92,7 +92,8 @@ class DefectCreate extends Component {
 
   callBackTableList = () => { // 返回列表页
     const { history } = this.props;
-    history.push('/operation/workProcess/view?page=list&tab=defect');
+    history.push('/operation/workProcess/view?page=list&tab=defect&listSearch={"sortField":"modify_time"}');
+    // console.log('测试一下', history);
   }
 
   onDefectCreate = (isContinueAdd) => { // 保存的状态
