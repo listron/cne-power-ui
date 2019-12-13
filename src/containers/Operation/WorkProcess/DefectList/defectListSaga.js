@@ -23,13 +23,17 @@ function* easyPut(actionName, payload) {
 function* getDefectList(action) {
   const { payload } = action;
   const url = `${APIBasePath}${ticket.getDefectList}`;
-  const { defectCategory, defectTypeCode, ...rest } = payload;
+  const { defectGroup, ...rest } = payload;
   try {
     yield call(easyPut, 'changeStore', {
       listLoading: true,
       listParams: payload,
     });
-    const response = yield call(axios.post, url, { ...rest, defectTypeCode: defectCategory.includes('other') && [...defectTypeCode, '0'] || defectTypeCode });
+    const response = yield call(axios.post, url,
+      {
+        ...rest,
+        defectGroup: (defectGroup.length > 1 || defectGroup.length === 0) ? '' : defectGroup[0],
+      });
     if (response.data.code === '10000') {
       const total = response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
@@ -51,7 +55,7 @@ function* getDefectList(action) {
       throw response.data;
     }
   } catch (error) {
-    message.error(`获取计划列表失败 ${error.message}, 请重试`);
+    message.error(`获取消缺列表失败 ${error.message}, 请重试`);
     yield call(easyPut, 'changeStore', {
       total: 0,
       selectedRowKeys: [],

@@ -242,7 +242,7 @@ function* createDefect(action) { // 创建缺陷 以及待提交状态
   try {
     const response = yield call(axios.post, url, initParams);
     if (response.data.code === '10000') {
-      message.success('操作成功！');
+      message.success('恭喜，您所提交信息已保存成功，可在工单列表及工作台中查看');
       func();
     } else {
       throw response.data;
