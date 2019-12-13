@@ -302,10 +302,12 @@
         .megCont {
           display: flex;
         }
+
         .tickets {
           cursor: pointer;
           width: 330px;
           @include overflowText();
+          display: block;
         }
         .dealMethod {
           margin: 0 10px;
