@@ -149,7 +149,7 @@ class WindDeviceGraph extends Component {
               <div>${params.seriesName}</div>
              
             </div>
-            <div  style='background:#dfdfdf;height:1px;
+            <div  style='background:#d4d4d4;height:1px;
             width:100%;' ></div>
             <div class=${styles.lineStyle}>风速区间:${windSpeedInterval}m/s</div>
             <div class=${styles.lineStyle}>风速:  ${dataFormats(+info.windSpeedCenter, '--', 2, true)}m/s</div>
@@ -161,7 +161,7 @@ class WindDeviceGraph extends Component {
               <div>${params.seriesName}</div>
               <div>风速区间:${windSpeedInterval}m/s</div>
             </div>
-            <div  style='background:#dfdfdf;height:1px;
+            <div  style='background:#d4d4d4;height:1px;
             width:100%;' ></div>
             <div class=${styles.lineStyle}>型号:  ${info.deviceModeName}</div>
             <div class=${styles.lineStyle}>平均风速:  ${dataFormats(+info.windSpeedAvg, '--', 2, true)}m/s</div>

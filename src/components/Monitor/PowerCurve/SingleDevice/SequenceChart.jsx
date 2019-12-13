@@ -71,7 +71,7 @@ class SequenceChart extends Component {
               <div class=${styles.topStyle}>
                 <div>${params[0].name}</div>
               </div>
-              <div  style='background:#dfdfdf;height:1px;
+              <div  style='background:#d4d4d4;height:1px;
                 width:100%;' ></div>
                 ${params.map((e, i) => {
               return `<div class=${styles.lineStyle}>

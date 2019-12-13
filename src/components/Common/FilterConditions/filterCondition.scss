@@ -132,8 +132,8 @@
       color: $darkColor;
     }
     .filterlist {
-      border: 1px solid #dfdfdf;
-      color: #666666;
+      border: 1px solid #d4d4d4;
+      color: #353535;
       &:hover,
       &:active,
       &:focus {
@@ -144,12 +144,12 @@
     .disabled {
       background: #f7f7f7;
       border: 1px solid #d9d9d9;
-      color: #dfdfdf;
+      color: #d4d4d4;
     }
   }
   .filteredItems {
     .tag {
-      border: 1px dashed #dfdfdf;
+      border: 1px dashed #d4d4d4;
       &:hover {
         background: #199475;
         color: #fff;

@@ -157,7 +157,7 @@ class HistoryChart extends Component {
     const option = {
       tooltip: {
         trigger: 'axis',
-        extraCssText: 'background-color: #fff; box-shadow:0 0 6px 0 rgba(0,0,0,0.3); border-radius:4px;',
+        extraCssText: 'background-color: #fff; box-shadow:0 0 6px 0 rgba(0,0,0,0.3); border-radius:2px;',
         padding: 16,
         formatter: params => {
           return (

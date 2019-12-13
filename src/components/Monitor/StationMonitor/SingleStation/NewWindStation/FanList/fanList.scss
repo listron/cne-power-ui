@@ -12,7 +12,7 @@
         align-items: center;
         justify-content: space-between;
         line-height: 51px;
-        border:1px dashed #dfdfdf;
+        border:1px dashed #d4d4d4;
         margin-top: 16px;
         :global{
             .iconTab{
@@ -101,7 +101,7 @@
     $maintainNum:#f9b600;
     $errorNum:#a42b2c;
     $interruptNum:#a42b2c;
-    $noAccessNum:#dfdfdf;
+    $noAccessNum:#d4d4d4;
     @mixin color($name) {
         color:$name
     }

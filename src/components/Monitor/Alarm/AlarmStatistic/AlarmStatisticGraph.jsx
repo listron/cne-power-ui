@@ -101,7 +101,7 @@ class AlarmStatisticGraph extends React.Component {
             total = `<div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">总计</span><span>${oneObj.value + twoObj.value + threeObj.value + fourObj.value}</span></div>`;
           }
           return `<div style="width: 150px; height: 170px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
-            <div style="border-bottom: 1px solid #dfdfdf;padding-left:4px;padding-bottom:4px">${params[0].name}</div> 
+            <div style="border-bottom: 1px solid #d4d4d4;padding-left:4px;padding-bottom:4px">${params[0].name}</div> 
             ${averageTime}${oneWarning}${twoWarning}${threeWarning}${fourWarning}${total}
             </div>`;
 

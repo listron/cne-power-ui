@@ -6,7 +6,7 @@
     flex-direction: column;
     :global {
         .ant-progress-inner {
-            background-color: #dfdfdf;
+            background-color: #d4d4d4;
         }
     }
     .stationTop {
@@ -117,7 +117,7 @@
         .stationTitle{
             height: 60px;
             line-height: 60px;
-            border-bottom: 1px solid #dfdfdf;
+            border-bottom: 1px solid #d4d4d4;
             display: flex;
             justify-content: space-between;
             .stationLeft{
@@ -152,7 +152,7 @@
                 display: flex;
                 align-items: center;
                 .backIcon{
-                    border-left: 1px solid #dfdfdf;
+                    border-left: 1px solid #d4d4d4;
                     width: 60px;
                     line-height: 60px;
                     text-align: center;
@@ -169,7 +169,7 @@
         }
     }
     .headStation {
-        // border-bottom: 1px dashed #dfdfdf;
+        // border-bottom: 1px dashed #d4d4d4;
         height: 108px;
         display: flex;
         color: $darkColor;
@@ -191,7 +191,7 @@
                 display: flex;
                 flex: 1;
                 justify-content: space-between;
-                color:#666666;
+                color:#353535;
                 min-width: 180px;
                 padding-right: 20px;
                 i{
@@ -211,7 +211,7 @@
                     display: inline-block;
                     margin-left: 4px;
                     text-align: left;
-                    color:#666666;
+                    color:#353535;
                 }
             }
         }
@@ -220,7 +220,7 @@
             flex-direction: column;
             // line-height: 36px;
             padding: 0 12px;
-            border-right: 1px solid #dfdfdf;
+            border-right: 1px solid #d4d4d4;
             min-width: 175px;
             >span{
                 display: flex;
@@ -283,7 +283,7 @@
                     display: flex;
                     text-align: center;
                     justify-content: space-between;
-                    color: #dfdfdf;
+                    color: #d4d4d4;
                     .deviceTypeItem,
                     .elecnettingItem {
                         .deviceTypeIcon {
@@ -353,8 +353,8 @@
                     //     height: 33px;
                     // }
                     // .ant-tabs-bar {
-                    //     border-top: 1px dashed #dfdfdf;
-                    //     border-bottom: 1px dashed #dfdfdf;
+                    //     border-top: 1px dashed #d4d4d4;
+                    //     border-bottom: 1px dashed #d4d4d4;
                     //     margin: 0;
                     // }
                     // .ant-tabs.ant-tabs-card>.ant-tabs-bar {
@@ -390,7 +390,7 @@
                     margin-right: 12px;
                     .spanNormal,.spanActive{
                         padding: 0 7px;
-                        color:#666666;
+                        color:#353535;
                         display: inline-block;
                         cursor: pointer;
                         border-right:1px solid #d9d9d9;
@@ -415,7 +415,7 @@
                 a {
                     padding: 0 12px;
                     background: #ffffff;
-                    border: 1px solid #dfdfdf;
+                    border: 1px solid #d4d4d4;
                     border-radius: 4px;
                     height: 30px;
                     line-height: 30px;
@@ -435,8 +435,8 @@
         }
     }
     .outputPowerDiagram {
-        border-top: 1px solid #dfdfdf;
-        border-bottom: 1px solid #dfdfdf;
+        border-top: 1px solid #d4d4d4;
+        border-bottom: 1px solid #d4d4d4;
         height: 300px;
         padding: 0 20px;
         display: flex;

@@ -172,7 +172,7 @@ class Map extends Component {
             <span style='color:red'>${params.data.alarmNum > 0 ? '⚠' : ''}${params.data.alarmNum > 0 ? params.data.alarmNum : ''}</span>    
             </a>
             </div>           
-            <div class='stationCardProgress' style='background:#dfdfdf;height:1px;
+            <div class='stationCardProgress' style='background:#d4d4d4;height:1px;
             width:100%;' ></div>
             <div class='stationCardValue'}>
               <span class='stationMark'>${stationPower}${realTimePowerUnit}</span>

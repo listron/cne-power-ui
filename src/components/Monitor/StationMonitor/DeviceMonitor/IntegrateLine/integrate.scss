@@ -82,7 +82,7 @@
 
 .light {
   .singledeviceItem {
-    border: 1px solid #dfdfdf;
+    border: 1px solid #d4d4d4;
     a {
       color: $darkColor;
     }
@@ -92,7 +92,7 @@
           color: #a42b2c;
         }
         .ant-progress-inner {
-          background-color: #dfdfdf;
+          background-color: #d4d4d4;
         }
       }
       .deviceItemR {
@@ -123,7 +123,7 @@
     }
   }
   $noContact: #f0f2f5;
-  $noContact_color: #666666;
+  $noContact_color: #353535;
   .noContact {
     &:hover {
       box-shadow: 0px 1px 4px 1px $noContact;
@@ -162,7 +162,7 @@
           color: #f8b14e;
         }
         .ant-progress-inner {
-          background-color: #dfdfdf;
+          background-color: #d4d4d4;
         }
       }
       .deviceItemR {

@@ -43,7 +43,7 @@
     .eachDevice{
       margin: 0px 12px 12px 0px;
       box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
-      border-radius:4px;
+      border-radius:2px;
       width:222px;
     }
     .deviceName{
@@ -67,8 +67,8 @@ $arlam:#ff8e9c;
   .eachDevice{
     height:102px;
     cursor: pointer;
-    border:1px solid #dfdfdf;
-    border-radius:4px;
+    border:1px solid #d4d4d4;
+    border-radius:2px;
     &:hover{
       box-shadow:0px 1px 4px 1px rgba(0,0,0,0.20);
       .deviceName{
@@ -81,7 +81,7 @@ $arlam:#ff8e9c;
     line-height: 50px;
     margin-bottom: 0;
     color: $promptColor;
-    border-radius:4px 4px 0 0;
+    border-radius:2px 4px 0 0;
     :global{
       .icon-jidian{
         margin-left: 8px;

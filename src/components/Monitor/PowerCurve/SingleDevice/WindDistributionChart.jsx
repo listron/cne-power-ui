@@ -86,7 +86,7 @@ class WindDistributionChart extends Component {
             <div class=${styles.topStyle}>
             <div>风速:${dataFormat(params.name, '--', 2)}</div>
             </div>
-            <div  style='background:#dfdfdf;height:1px;
+            <div  style='background:#d4d4d4;height:1px;
             width:100%;' ></div>
             <div class=${styles.lineStyle}>频次占比: ${dataFormat(params.value, '--', 2)}</div>
           </div>`;

@@ -126,7 +126,7 @@ class SequenceChart extends React.Component {
             <div class=${styles.topStyle}>
             <div>${deviceName}</div>
             </div>
-            <div  style='background:#dfdfdf;height:1px;
+            <div  style='background:#d4d4d4;height:1px;
             width:100%;' ></div>
             <div> ${moment(y1.axisValue).format('YYYY-MM-DD HH:mm:ss')}
             </div>

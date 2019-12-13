@@ -8,7 +8,7 @@
 
   :global {
     .ant-progress-inner {
-      background: #dfdfdf;
+      background: #d4d4d4;
     }
 
     .ant-switch {
@@ -91,7 +91,7 @@
     :global {
       .ant-tabs-bar {
         border: none;
-        border-bottom: 1px dashed #dfdfdf;
+        border-bottom: 1px dashed #d4d4d4;
       }
 
       .ant-tabs-bar .ant-tabs-tab-active.ant-tabs-tab {
@@ -119,7 +119,7 @@
   }
 
   .headStation {
-    border-bottom: 1px dashed #dfdfdf;
+    border-bottom: 1px dashed #d4d4d4;
     height: 108px;
     display: flex;
     color: $darkColor;
@@ -141,7 +141,7 @@
         display: flex;
         flex: 1;
         justify-content: space-between;
-        color: #666666;
+        color: #353535;
         min-width: 180px;
         padding-right: 20px;
         i {
@@ -161,7 +161,7 @@
           display: inline-block;
           margin-left: 4px;
           text-align: left;
-          color: #666666;
+          color: #353535;
         }
       }
     }
@@ -171,7 +171,7 @@
       flex-direction: column;
       // line-height: 36px;
       padding: 0 12px;
-      border-right: 1px solid #dfdfdf;
+      border-right: 1px solid #d4d4d4;
       min-width: 175px;
       > span {
         display: flex;
@@ -484,7 +484,7 @@
       a {
         padding: 0 12px;
         background: #ffffff;
-        border: 1px solid #dfdfdf;
+        border: 1px solid #d4d4d4;
         border-radius: 4px;
         height: 30px;
         line-height: 30px;

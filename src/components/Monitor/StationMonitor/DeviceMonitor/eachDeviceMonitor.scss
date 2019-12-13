@@ -4,7 +4,7 @@
 .windDevice {
   .windChart {
     > div {
-      border-right: 1px solid #dfdfdf;
+      border-right: 1px solid #d4d4d4;
     }
   }
 
@@ -65,7 +65,7 @@
     background-color: #fff;
 
     .deviceMonitorHeader {
-      border-bottom: 1px solid #dfdfdf;
+      border-bottom: 1px solid #d4d4d4;
       // 顶部
       .deviceName {
         color: $darkColor;
@@ -107,7 +107,7 @@
         }
 
         .backIcon {
-          border-left: 1px solid #dfdfdf;
+          border-left: 1px solid #d4d4d4;
           color: #666;
         }
       }
@@ -188,7 +188,7 @@
     .tabs {
       .inactive {
         color: #666;
-        border: 1px solid #dfdfdf;
+        border: 1px solid #d4d4d4;
       }
 
       .active {

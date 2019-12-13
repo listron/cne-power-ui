@@ -105,7 +105,7 @@
 
       .noColor {
         span {
-          color: #666666;
+          color: #353535;
           background: #f5f5f5;
         }
 
@@ -216,7 +216,7 @@
       .backIcon {
         color: $darkColor;
         font-size: 20px;
-        border-left: 1px solid #dfdfdf;
+        border-left: 1px solid #d4d4d4;
         height: 100%;
         line-height: 64px;
         width: 64px;
@@ -368,7 +368,7 @@
         display: flex;
         flex: 1;
         flex-direction: column;
-        border-right: 1px solid #dfdfdf;
+        border-right: 1px solid #d4d4d4;
         padding: 16px 16px 0 16px;
       }
 
