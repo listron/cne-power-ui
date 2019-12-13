@@ -95,7 +95,7 @@
 }
 
 .dark {
-  @import "../../../../theme/antdResetDark.scss";
+  @import "../../../../theme/darkTheme.scss";
   color: $fontColor;
   .stationTimeFilter {
     background: $light-background;

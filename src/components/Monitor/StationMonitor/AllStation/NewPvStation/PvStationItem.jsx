@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
-import { Select, Spin } from 'antd';
+import {Select, Spin} from 'antd';
+
 const Option = Select.Option;
 import SingleStaionList from './SingleStaionList';
-import { throttle } from 'lodash';
-
+import {throttle} from 'lodash';
 
 
 class PvStationItem extends React.Component {
@@ -20,7 +20,8 @@ class PvStationItem extends React.Component {
     changeMonitorStationStore: PropTypes.func,
     getPvCapabilitydiagrams: PropTypes.func,
     theme: PropTypes.string,
-  }
+  };
+
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -35,12 +36,12 @@ class PvStationItem extends React.Component {
   }
 
   componentDidMount() {
-    const { stationDataList, areaChecked } = this.props;
-    this.changeStationData({ stationDataList, areaChecked });
+    const {stationDataList, areaChecked} = this.props;
+    this.changeStationData({stationDataList, areaChecked});
     const main = document.getElementById('main');
     main.addEventListener('scroll', throttle(() => {
       if (this.newPinterest) {
-        const { renderList, topHeight } = this.state;
+        const {renderList, topHeight} = this.state;
         const clientH = document.documentElement.clientHeight; // 客户端高度
         const scrollTop = main.scrollTop; // 卷曲出去的高度
         const tableHeight = this.newPinterest.clientHeight; // 表格现在的高度。
@@ -56,9 +57,9 @@ class PvStationItem extends React.Component {
 
   componentWillReceiveProps(nextPorps) {
     let noChange = true; // 数据定时刷新 不增加滚动的列数
-    const { areaChecked, stationType, aralmstatus, regionName } = this.props;
-    if (areaChecked !== nextPorps.areaChecked || stationType !== nextPorps.stationType || aralmstatus !== nextPorps.aralmstatus || regionName !== nextPorps.regionName) { // 切换 区域、告警、状态、按区域分组 
-      this.setState({ renderList: [] });
+    const {areaChecked, stationType, aralmstatus, regionName} = this.props;
+    if (areaChecked !== nextPorps.areaChecked || stationType !== nextPorps.stationType || aralmstatus !== nextPorps.aralmstatus || regionName !== nextPorps.regionName) { // 切换 区域、告警、状态、按区域分组
+      this.setState({renderList: []});
       noChange = false;
     }
     this.changeStationData({
@@ -70,11 +71,13 @@ class PvStationItem extends React.Component {
 
   componentWillUnmount() {
     const main = document.getElementById('main');
-    main && main.removeEventListener('scroll', () => { return false; }, true);
+    main && main.removeEventListener('scroll', () => {
+      return false;
+    }, true);
   }
 
-  changeStationData = ({ stationDataList = [], areaChecked = false, noChange = false }) => { // 处理数据 排序规则
-    const { sortStatusName, ascend, selectStation } = this.state;
+  changeStationData = ({stationDataList = [], areaChecked = false, noChange = false}) => { // 处理数据 排序规则
+    const {sortStatusName, ascend, selectStation} = this.state;
     const filterStationList = selectStation.length > 0 ? stationDataList.filter(e => selectStation.includes(e.stationCode)) : stationDataList;
     const sortType = ascend ? 1 : -1;
     const stationSortList = filterStationList.sort((a, b) => { // 排序
@@ -86,23 +89,25 @@ class PvStationItem extends React.Component {
     });
 
     if (areaChecked) { // 是否分组排序
-      newStationsList = newStationsList.sort((a, b) => { return a['regionName'].localeCompare(b['regionName']); });
+      newStationsList = newStationsList.sort((a, b) => {
+        return a['regionName'].localeCompare(b['regionName']);
+      });
     }
-    this.setState({ newStationsList }, () => {
+    this.setState({newStationsList}, () => {
       this.initRender(noChange);
     });
-  }
+  };
 
   conditionChange = (value) => { // 条件查询
-    this.setState({ selectStation: value, renderList: [] }, () => {
-      const { stationDataList, areaChecked } = this.props;
-      this.changeStationData({ stationDataList, areaChecked });
+    this.setState({selectStation: value, renderList: []}, () => {
+      const {stationDataList, areaChecked} = this.props;
+      this.changeStationData({stationDataList, areaChecked});
     });
 
-  }
+  };
 
   sortStatus = (value) => { // 排序
-    const { sortStatusName, ascend } = this.state;
+    const {sortStatusName, ascend} = this.state;
     let currentAscend = true;
     if (sortStatusName === value) {
       currentAscend = !ascend;
@@ -112,14 +117,14 @@ class PvStationItem extends React.Component {
       ascend: currentAscend,
       renderList: [],
     }, () => {
-      const { stationDataList, areaChecked } = this.props;
-      this.changeStationData({ stationDataList, areaChecked });
+      const {stationDataList, areaChecked} = this.props;
+      this.changeStationData({stationDataList, areaChecked});
     });
-  }
+  };
 
 
   dealData = (stationDataList) => { //  分组显示
-    const { areaChecked } = this.props;
+    const {areaChecked} = this.props;
     const filteredStation = [];
     if (stationDataList.length > 0) {
       if (areaChecked) {
@@ -147,12 +152,12 @@ class PvStationItem extends React.Component {
 
     }
     return filteredStation;
-  }
+  };
 
 
   initRender = (noChange) => { //  渲染todolist 的条数
-    const { renderList, spliceLength, newStationsList } = this.state;
-    const { regionName } = this.props;
+    const {renderList, spliceLength, newStationsList} = this.state;
+    const {regionName} = this.props;
     const tmp = newStationsList.slice(0, spliceLength + renderList.length);
     const update = newStationsList.slice(0, renderList.length);
     const thisTmp = newStationsList.slice(renderList.length, spliceLength + renderList.length);
@@ -164,24 +169,23 @@ class PvStationItem extends React.Component {
       this.setState({
         renderList: tmp,
       });
-      this.props.changeMonitorStationStore({ stationCodes: tmp.map(e => e.stationCode) });
+      this.props.changeMonitorStationStore({stationCodes: tmp.map(e => e.stationCode)});
       this.props.getPvCapabilitydiagrams({
         nowStationCodes: thisTmp.map(e => e.stationCode),
         stationCodes: tmp.map(e => e.stationCode),
         regionName,
       });
     }
-  }
+  };
 
   render() {
-    const { stationDataList, pvCapabilitydiagramsData = [], monitorPvUnit } = this.props;
-    const { sortStatusName, ascend, selectStation } = this.state;
-    const { renderList } = this.state;
+    const {stationDataList, pvCapabilitydiagramsData = [], monitorPvUnit} = this.props;
+    const {sortStatusName, ascend, selectStation} = this.state;
+    const {renderList} = this.state;
     const sortName = [
       { text: '默认排序', id: 'sort' },
-      { text: '日利用小时 ', id: 'equivalentHours' },
+      { text: '日等效时 ', id: 'equivalentHours' },
       { text: '告警事件', id: 'alarmNum' },
-      { text: '低效逆变器', id: 'lowEfficiencyInverterNum' },
       { text: '异常支路数 ', id: 'anomalousBranchNum' },
       { text: '日发电量', id: 'dayPower' },
       { text: '瞬时辐射', id: 'instantaneous' },
@@ -195,7 +199,7 @@ class PvStationItem extends React.Component {
           <Select
             showSearch
             mode="multiple"
-            style={{ width: 200 }}
+            style={{width: 200}}
             placeholder="请选择电站"
             optionFilterProp="children"
             onChange={this.conditionChange}
@@ -209,7 +213,9 @@ class PvStationItem extends React.Component {
           </Select>
           <div className={styles.sortCondition}>
             {sortName.map(list => {
-              return (<div onClick={() => { this.sortStatus(list.id); }} key={list.id} className={`${styles.sortStatus}
+              return (<div onClick={() => {
+                this.sortStatus(list.id);
+              }} key={list.id} className={`${styles.sortStatus}
                 ${sortStatusName === list.id && styles['activeSortStatus']}`}>
                 {list.text}
                 {sortStatusName === list.id && ascend && <i className={`iconfont icon-back ${styles.ascend}`}></i>}
@@ -219,36 +225,39 @@ class PvStationItem extends React.Component {
           </div>
         </div>
 
-        <div className={styles.staionsListBox} ref={ref => (this.newPinterest = ref)} >
+        <div className={styles.staionsListBox} ref={ref => (this.newPinterest = ref)}>
           {stationDataList.length > 0 &&
-            <React.Fragment>
-              {filteredStation.map((list, key) => {
-                return (<div className={styles.regionList} key={key} >
-                  <div className={styles.regionName}>{list.regionName}</div>
-                  <div className={styles.staionsList}>
-                    {list.stations.map((item, index) => {
-                      const filterChartData = pvCapabilitydiagramsData.filter(e => e.stationCode === item.stationCode);
-                      return (<SingleStaionList
-                        singleStation={item}
-                        filterChartData={filterChartData}
-                        monitorPvUnit={monitorPvUnit}
-                        theme={this.props.theme}
-                      />);
-                    })}
-                  </div>
-                </div>);
-              })}
-              {/* 在筛选条件下不显示loading */}
-              {(renderList.length < stationDataList.length && selectStation.length === 0) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
-            </React.Fragment>
-            || <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>
+          <React.Fragment>
+            {filteredStation.map((list, key) => {
+              return (<div className={styles.regionList} key={key}>
+                <div className={styles.regionName}>{list.regionName}</div>
+                <div className={styles.staionsList}>
+                  {list.stations.map((item, index) => {
+                    const filterChartData = pvCapabilitydiagramsData.filter(e => e.stationCode === item.stationCode);
+                    return (<SingleStaionList
+                      key={index.toString()}
+                      singleStation={item}
+                      filterChartData={filterChartData}
+                      monitorPvUnit={monitorPvUnit}
+                      theme={this.props.theme}
+                    />);
+                  })}
+                </div>
+              </div>);
+            })}
+            {/* 在筛选条件下不显示loading */}
+            {(renderList.length < stationDataList.length && selectStation.length === 0) &&
+            <Spin size="large" style={{margin: '30px auto', width: '100%'}} className={styles.loading} />}
+          </React.Fragment>
+          || <div className={styles.noData}><img src="/img/nodata.png" style={{width: 223, height: 164}} /></div>
           }
           <div>
           </div>
         </div>
 
-      </div >
+      </div>
     );
   }
 }
+
 export default (PvStationItem);

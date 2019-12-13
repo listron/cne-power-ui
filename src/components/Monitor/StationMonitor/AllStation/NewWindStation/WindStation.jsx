@@ -191,7 +191,7 @@ class WindStation extends React.Component {
               <div className={styles.tags}>
                 <Link to={{ pathname: `/monitor/alarm/realtime`, state: { stationType: '0' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
-                <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
+                <Link to={`/report/windstation/powerReport`} > 报表查询  </Link>
               </div>
               <div className={styles.deviceStatus}>
                 <div className={styles.deviceStaTitle}> <span>设备状态</span> {/* <i className="iconfont icon-more"></i>  */}

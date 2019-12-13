@@ -59,7 +59,7 @@
 }
 
 .dark {
-  @import "../../../../theme/antdResetDark.scss";
+  @import "../../../../theme/darkTheme.scss";
   .contentBox {
     @include contentBoxStyle();
     color: $fontColor;

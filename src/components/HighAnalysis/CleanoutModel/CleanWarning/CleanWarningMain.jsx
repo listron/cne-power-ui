@@ -25,6 +25,10 @@ class CleanWarningMain extends Component { // 电站管理列表页
     changeCleanWarningStore: PropTypes.func,
     getWeather: PropTypes.func,
     theme: PropTypes.string,
+    totalStartDay: PropTypes.object,
+    totalEndDay: PropTypes.object,
+    matrixStartDay: PropTypes.object,
+    matrixEndDay: PropTypes.object,
   }
 
   componentDidMount() {
@@ -68,16 +72,18 @@ class CleanWarningMain extends Component { // 电站管理列表页
   }
 
   toWarningDetail = record => { // 请求灰尘影响详情，默认30天的全局影响，方阵影响。
-    const endDay = moment().format('YYYY-MM-DD');
-    const startDay = moment().subtract(30, 'day').format('YYYY-MM-DD');
+    const { totalStartDay, totalEndDay, matrixStartDay, matrixEndDay } = this.props;
     const { stationCode } = record;
-    const effectParam = {
-      stationCode, endDay, startDay,
+    const totalEffectParam = {
+      stationCode, endDay: totalEndDay.format('YYYY-MM-DD'), startDay: totalStartDay.format('YYYY-MM-DD'),
+    };
+    const matrixEffectParam = {
+      stationCode, endDay: matrixEndDay.format('YYYY-MM-DD'), startDay: matrixStartDay.format('YYYY-MM-DD'),
     };
     this.props.getWeather({ stationCode });
     this.props.getCleanWarningDetail({ stationCode });
-    this.props.getTotalDustEffect(effectParam);
-    this.props.getMatrixDustEffect(effectParam);
+    this.props.getTotalDustEffect(totalEffectParam);
+    this.props.getMatrixDustEffect(matrixEffectParam);
   }
 
   render() {

@@ -59,7 +59,7 @@
 }
 
 .dark {
-  @import "../../../../theme/antdResetDark.scss";
+  @import "../../../../theme/darkTheme.scss";
   background: $light-background;
   border: 1px solid $border-color;
   margin-top: 10px;

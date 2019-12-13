@@ -53,7 +53,7 @@
 }
 
 .dark {
-  @import "../../../../../theme/antdResetDark.scss";
+  @import "../../../../../theme/darkTheme.scss";
   :global {
     .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th {
       background-color: transparent;

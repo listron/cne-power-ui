@@ -3,27 +3,46 @@
 
 .light {
   background: #fff;
+
   .realTimeWarningFilter {
     background-color: #fff;
   }
+
   .deviceNameSearch {
     background-color: #f9f9f9;
-    > span {
+
+    >span {
       color: $darkColor;
     }
-    > span:last-child {
+
+    >span:last-child {
       color: $themeColor;
     }
   }
+
   .realTimeWarningTable {
     .tableHeader {
       background-color: #fff;
     }
+
+    :global {
+      .icon-action {
+        background-color: #ceebe0;
+        color: $themeColor;
+
+        &:hover {
+          background-color: $themeColor;
+          color: #fff;
+        }
+      }
+    }
+
     .deviceName {
       :global {
         a {
           border-bottom: 1px $darkColor solid;
           color: $darkColor;
+
           &:hover {
             border-bottom: 1px $themeColor solid;
             color: $themeColor;
@@ -31,44 +50,59 @@
         }
       }
     }
+
     .selected {
-      .icon-action {
-        background-color: $themeColor;
-        color: #fff;
-      }
+
+      // .icon-action {
+      //   background-color: $themeColor;
+      //   color: #fff;
+      // }
+
+
     }
   }
 
   .tableFooter {
     background-color: #fff;
+
     .info {
       color: $darkColor;
+
       .totalNum {
         color: rgb(250, 185, 7);
       }
     }
+
     .cancel {
       color: $themeColor;
     }
   }
+
   .detailInfo {
     color: $darkColor;
-  }
-  :global {
-    .icon-action {
-      background-color: #ceebe0;
-      color: $themeColor;
+
+    .header {
+      .title {
+        i {
+          background-color: #ceebe0;
+          color: $themeColor;
+        }
+      }
     }
   }
+
+
 }
 
 .dark {
   @import "../../../../theme/darkTheme.scss";
   background: $background;
+
   .realTimeWarningFilter {
     background-color: transparent;
     margin-top: 10px;
   }
+
   .deviceNameSearch {
     background-color: $light-background;
     color: $fontColor;
@@ -79,17 +113,20 @@
   .realTimeWarningTable {
     margin-top: 10px;
     background: $light-background;
+
     .deviceName {
       a {
         border-bottom: 1px solid $fontColor;
         color: $fontColor;
         text-decoration: none;
+
         &:hover {
           border-bottom: 1px solid $fontColor-hover;
           color: $fontColor-hover;
         }
       }
     }
+
     .selected {
       .icon-action {
         background-color: $themeColor;
@@ -98,14 +135,25 @@
     }
   }
 
+
   .detailInfo {
     color: $fontColor;
+
+    .header {
+      .title {
+        i {
+          background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+          color: $fontColor-invert;
+        }
+      }
+    }
   }
 
   :global {
     .icon-action {
       background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
       color: $fontColor-invert;
+
       &:hover {
         background-image: linear-gradient(-180deg, #b4ec51 0%, #429321 100%);
       }

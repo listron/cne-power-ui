@@ -221,12 +221,23 @@
           }
           color: $darkColor;
           .value {
+            display: flex;
             color: $themeColor;
+            .tooltipName{
+              margin-top: -5px;
+              margin-left: 3px;
+              i{
+                color: #999;
+                &:hover{
+                  color: #f9b600;
+                }
+              }
+            }
           }
         }
-        .lowEfficiency {
-          @include singleItem($moreThanTen, $moreThanTen_color, $moreThanTen_border, $moreThanTen_active);
-        }
+        // .lowEfficiency {
+        //   @include singleItem($moreThanTen, $moreThanTen_color, $moreThanTen_border, $moreThanTen_active);
+        // }
         .alarm {
           @include singleItem($alarm, $alarm_color, $alarm_border, $alarm_active);
         }
@@ -238,6 +249,17 @@
         }
       }
       .deviceTableBox {
+        .equipmentHours,.transferRate{
+          display: flex;
+            .tooltipName{
+              margin-top: -5px;
+              margin-left: 3px;
+              color: #999;
+              &:hover{
+                color: #f9b600;
+              }
+            }
+          }
         .deviceTable {
           .deviceCode {
             .tableDeviceName {
@@ -267,9 +289,19 @@
           }
           .detailId {
             color: #199475;
+            display: flex;
           }
           .detailUnit {
             color: #666;
+          }
+          .tooltipName{
+            margin-top: -5px;
+            i{
+              color: #999;
+              &:hover{
+                color: #f9b600;
+              }
+            }
           }
         }
       }
@@ -348,7 +380,7 @@
 }
 
 .dark {
-  @import "../../../../../../theme/antdResetDark.scss";
+  @import "../../../../../../theme/darkTheme.scss";
   @import "../../../Theme/monitorDark.scss";
   .pvmodule {
     .pvmoduleListTop {
@@ -557,9 +589,9 @@
             color: $fontColor-hover;
           }
         }
-        .lowEfficiency {
-          @include singleItem($moreThanTwenty, $moreThanTen_color, $moreThanTwenty-border, $moreThanTwenty-active);
-        }
+        // .lowEfficiency {
+        //   @include singleItem($moreThanTwenty, $moreThanTen_color, $moreThanTwenty-border, $moreThanTwenty-active);
+        // }
         .alarm {
           @include singleItem($alarm, $alarm_color, $alarm-border, $alarm-active);
         }
@@ -600,9 +632,19 @@
           }
           .detailId {
             color: $fontColor-hover;
+            display: flex;
           }
           .detailUnit {
             color: $fontColor;
+          }
+          .tooltipName{
+            margin-top: -5px;
+            i{
+              color: #999;
+              &:hover{
+                color: #f9b600;
+              }
+            }
           }
         }
       }
@@ -634,26 +676,26 @@
     .ant-tabs-nav .ant-tabs-tab {
       margin: 0;
       background: $button-primary;
-      color: #fff;
+      color: #fff !important;
     }
     .ant-tabs-nav .ant-tabs-tab-active {
-      color: #fff;
+      color: #fff !important;
       background: $themeColor;
     }
     .ant-tabs-nav .ant-tabs-tab:hover {
-      color: #fff;
+      color: #fff !important;
       background: $themeColor;
     }
     .ant-tabs .ant-tabs-nav .ant-tabs-tab-active:hover {
-      color: #fff;
+      color: #fff !important;
       background: $themeColor;
     }
 
     .ant-tabs-nav-scroll {
-      background: transparent;
+      background: transparent !important;
     }
     .ant-tabs-bar .ant-tabs-extra-content {
-      background: transparent;
+      background: transparent !important;
       color: $fontColor;
     }
 

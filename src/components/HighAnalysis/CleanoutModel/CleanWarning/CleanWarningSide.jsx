@@ -17,6 +17,10 @@ class CleanWarningSide extends Component {
     getMatrixDustEffect: PropTypes.func,
     changeCleanWarningStore: PropTypes.func,
     theme: PropTypes.string,
+    matrixStartDay: PropTypes.object,
+    matrixEndDay: PropTypes.object,
+    totalStartDay: PropTypes.object,
+    totalEndDay: PropTypes.object,
   }
 
   constructor(props) {
@@ -40,25 +44,33 @@ class CleanWarningSide extends Component {
   }
 
   changeStation = ({ stationCode }) => { // 切换电站并隐藏切换框
-    const { getCleanWarningDetail, getTotalDustEffect, getMatrixDustEffect, dustEffectInfo } = this.props;
+    const { getCleanWarningDetail, getTotalDustEffect, getMatrixDustEffect, dustEffectInfo, matrixStartDay, matrixEndDay, totalStartDay, totalEndDay } = this.props;
     if (dustEffectInfo.stationCode === stationCode) {
       return;
     }
-    const endDay = moment().format('YYYY-MM-DD');
-    const startDay = moment().subtract(30, 'day').format('YYYY-MM-DD');
     this.setState({
       stationCheckActive: false,
     });
-    const effectParam = {
-      stationCode, endDay, startDay,
+    const totalEffectParam = {
+      stationCode, endDay: totalEndDay, startDay: totalStartDay,
     };
+    const matrixEffectParam = {
+      stationCode, endDay: matrixEndDay, startDay: matrixStartDay,
+    };
+
     getCleanWarningDetail({ stationCode });
-    getTotalDustEffect(effectParam);
-    getMatrixDustEffect(effectParam);
+    getTotalDustEffect(totalEffectParam);
+    getMatrixDustEffect(matrixEffectParam);
   }
 
   backToList = () => { // 返回列表页
-    this.props.changeCleanWarningStore({ showPage: 'list' });
+    this.props.changeCleanWarningStore({
+      showPage: 'list',
+      matrixStartDay: moment().subtract(1, 'days'),
+      matrixEndDay: moment().subtract(1, 'days'),
+      totalStartDay: moment().subtract(1, 'months').add(-1, 'days'),
+      totalEndDay: moment().subtract(1, 'days'),
+   });
   }
 
   render() {

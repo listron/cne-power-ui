@@ -95,7 +95,7 @@ class BrachFormItem extends Component {
             <EachBranch key={i} index={i} branchArr={branchArr} onChange={this.branchChange} />
           ))}
         </div>}
-        <span>(数值代表接入串数, 0代表未接入)</span>
+        <span>(数值代表接入组串数, 0代表未接入)</span>
       </div>
     );
   }

@@ -5,7 +5,7 @@
   // 子汇流箱
   display: flex;
   flex-wrap: wrap;
-  padding: 0 60px;
+  padding: 15px 60px 48px;
   .singledeviceItem {
     margin-right: 18px;
     margin-bottom: 20px;
@@ -35,13 +35,24 @@
       .deviceBlockName {
         height: 33px;
         line-height: 33px;
+        .transferRate{
+          display: flex;
+          .tooltipName{
+            margin-top: -5px;
+            margin-left: 3px;
+            color: #999;
+            &:hover{
+              color: #f9b600;
+            }
+          }
+        }
       }
       .deviceItemPower {
         height: 25px;
         line-height: 25px;
       }
       .deviceName {
-        width: 130px;
+        width: 120px;
         @include overflowText();
       }
     }
@@ -55,6 +66,19 @@
         line-height: 24px;
         display: flex;
         justify-content: space-between;
+        .value{
+          display: flex;
+          .tooltipName{
+            margin-top: -5px;
+            margin-left: 3px;
+            i{
+              color: #999;
+              &:hover{
+                color: #f9b600;
+              }
+            }
+          }
+        }
       }
     }
     .allStatus {
@@ -157,7 +181,7 @@
 }
 
 .subInverter.dark {
-  @import "../../../../../theme/antdResetDark.scss";
+  @import "../../../../../theme/darkTheme.scss";
   @import "../../Theme/monitorDark.scss";
   // 子汇流箱
   .singledeviceItem {

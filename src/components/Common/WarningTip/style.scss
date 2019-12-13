@@ -105,7 +105,7 @@
 }
 
 .dark {
-  @import "../../../theme/antdResetDark.scss";
+  @import "../../../theme/darkTheme.scss";
   .warningTip {
     background: $slide-backgound;
     border: 1px solid $slide-border;

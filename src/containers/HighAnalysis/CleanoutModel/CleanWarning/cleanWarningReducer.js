@@ -1,4 +1,5 @@
 import Immutable from 'immutable';
+import moment from 'moment';
 import { cleanWarningAction } from './cleanWarningAction';
 
 var initState = Immutable.fromJS({
@@ -19,6 +20,11 @@ var initState = Immutable.fromJS({
   dustEffectInfo: {}, // api => 灰尘影响详情
   totalEffects: [], // api => 全局灰尘影响
   matrixEffects: [], // api => 方阵灰尘影响
+
+  matrixStartDay: moment().subtract(1, 'days'),
+  matrixEndDay: moment().subtract(1, 'days'),
+  totalStartDay: moment().subtract(1, 'months').add(-1, 'days'),
+  totalEndDay: moment().subtract(1, 'days'),
 });
 
 const cleanWarning = (state = initState, action) => {

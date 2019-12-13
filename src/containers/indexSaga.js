@@ -18,9 +18,10 @@ import { watchInspectList } from './Operation/WorkProcess/InspectList/inspectLis
 import { watchInspectDetail } from './Operation/WorkProcess/InspectDetail/inspectDetailSaga';
 
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
-import { watchDepartment } from './System/Account/Department/departmentSaga';
+import { watchPersonnelManage } from './System/Account/PersonnelManage/personnelManageSaga';
+// import { watchDepartment } from './System/Account/Department/departmentSaga';
 import { watchRole } from './System/Account/Role/roleSaga';
-import { watchUser } from './System/Account/User/userSaga';
+// import { watchUser } from './System/Account/User/userSaga';
 import { watchPlan } from './System/Production/Plan/planSaga';
 import { watchWarning } from './System/Production/Warning/warningSaga';
 import { watchScore } from './System/Production/Score/scoreSaga';
@@ -52,10 +53,10 @@ import { watchSingleDeviceCurve } from './Monitor/PowerCurve/SingleDeviceCurve/s
 
 import { watchDataScatterDiagramMonitor } from './Monitor/DataAnalysis/DataScatterDiagram/scatterDiagramSaga'; // 数据分析 - 散点图
 
-import { watchMonitorPowerReport } from './Monitor/Report/PowerReport/powerReportSaga'; // 报表
-import { watchMonitorDeviceStatus } from './Monitor/Report/DeviceStatus/deviceStatusSaga'; // 报表
-import { watchMonitorMalfunction } from './Monitor/Report/Malfunction/malfunctionSaga'; // 报表
-import { watchMonitorPowerLost } from './Monitor/Report/PowerLost/powerLostSaga'; // 报表
+import { watchMonitorPowerReport } from './ReportManage/WindReport/PowerReport/powerReportSaga'; // 报表
+import { watchMonitorDeviceStatus } from './ReportManage/WindReport/DeviceStatus/deviceStatusSaga'; // 报表
+import { watchMonitorMalfunction } from './ReportManage/WindReport/Malfunction/malfunctionSaga'; // 报表
+import { watchMonitorPowerLost } from './ReportManage/WindReport/PowerLost/powerLostSaga'; // 报表
 
 
 import { watchOthersSaga } from './alphaRedux/othersSaga';
@@ -118,11 +119,11 @@ import { watchWorkFlow } from './Operation/TwoTickets/WorkFlow/workFlowSaga';
 import { watchCadePartSaga } from './Operation/CaseSet/casePartSaga';
 
 //报表管理
-import { watchReportStation } from './ReportManage/ReportStation/reportStationSaga';
-import { watchCenterInvert } from './ReportManage/ReportDevice/CenterInvert/centerInvertSaga';
-import { watchWeatherStationReport } from './ReportManage/ReportDevice/WeatherStation/weatherStationSaga';
-import { watchCombineInvert } from './ReportManage/ReportDevice/CombineInvert/combineInvertSaga';
-import { watchConfluenceBox } from './ReportManage/ReportDevice/ConfluenceBox/confluenceBoxSaga';
+import { watchReportStation } from './ReportManage/PvReport/ReportStation/reportStationSaga';
+import { watchCenterInvert } from './ReportManage/PvReport/ReportDevice/CenterInvert/centerInvertSaga';
+import { watchWeatherStationReport } from './ReportManage/PvReport/ReportDevice/WeatherStation/weatherStationSaga';
+import { watchCombineInvert } from './ReportManage/PvReport/ReportDevice/CombineInvert/combineInvertSaga';
+import { watchConfluenceBox } from './ReportManage/PvReport/ReportDevice/ConfluenceBox/confluenceBoxSaga';
 
 
 
@@ -152,9 +153,10 @@ export default function* rootSaga() {
 
     //system-enterprise
     watchEnterprise(),
-    watchDepartment(),
+    watchPersonnelManage(),
+    // watchDepartment(),
     watchRole(),
-    watchUser(),
+    // watchUser(),
     // system - station
     watchStationManage(),
     watchDeviceManage(),

@@ -168,7 +168,16 @@ class BoxtransformerTenMin extends Component {
   render() {
     const { theme } = this.props;
     return (
-      <div id="boxtransformer_monitor_tenMin" className={`${styles.boxtransformerTenMin} ${styles[theme]}`} style={{ height: '335px', marginTop: 10 }}></div>
+      <div
+        id="boxtransformer_monitor_tenMin"
+        className={`${styles.boxtransformerTenMin}
+        ${styles[theme]}`}
+        style={{
+          height: '335px',
+          marginTop: 10,
+          backgroundColor: '#ffffff',
+        }}
+      />
     );
   }
 }
