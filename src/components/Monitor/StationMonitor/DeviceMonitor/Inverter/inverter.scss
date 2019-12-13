@@ -104,6 +104,9 @@
         text-align: left;
         > div{
           display: flex;
+          .specialColor{
+            color: #a22c30 !important;
+          }
           .tooltipName{
             margin-top: -5px;
             margin-left: 3px;
