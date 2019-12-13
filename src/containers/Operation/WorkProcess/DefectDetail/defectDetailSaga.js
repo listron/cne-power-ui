@@ -42,7 +42,7 @@ function* getDefectDetail(action) { // 获取缺陷工单详情  两种状态  g
   }
 }
 
-function* getRelevancedocket(action) { // 获取当前缺陷关联的工单
+function* getRelevancedocket(action) { // 获取当前缺陷关联的两票
   const { payload } = action;
   const url = `${APIBasePath}${ticket.getDockerDetail}`;
   try {

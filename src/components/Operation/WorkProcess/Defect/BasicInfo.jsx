@@ -1,4 +1,5 @@
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './defect.scss';
 import ImgUploader from '../../../Common/Uploader/ImgUploader';
@@ -26,8 +27,10 @@ class DefectBasicInfo extends Component {
   }
 
   shouldComponentUpdate = (nextProps) => {
-    const { defectId } = nextProps.defectDetail;
-    if (defectId !== this.props.defectDetail.defectId) {
+    const { defectId, dockerDetail = {} } = nextProps.defectDetail;
+    const preDetail = this.props.dockerDetail.detail || [];
+    const detail = dockerDetail || [];
+    if (defectId !== this.props.defectDetail.defectId || detail.length !== preDetail.length) {
       return true;
     }
     return false;
@@ -52,13 +55,6 @@ class DefectBasicInfo extends Component {
     { label: '工作票', type: 1, num: 'workNumber', ticketMes: ['docketTypeName', 'docketCode'] },
     { label: '操作票', type: 2, num: 'operateNumber', ticketMes: ['docketName', 'docketCode'] },
   ]
-
-  toTicket = (docketId, type) => {
-    const path = ['/operation/twoTickets/workflow', '/operation/twoTickets/operateflow'];
-    const { history } = this.props;
-    history.push(`${path[type]}?docketId=${docketId}`);
-  }
-
 
   render() {
     const { defectDetail, knowledgebaseList, likeKnowledgebase, dockerDetail, getKnowledgebase } = this.props;
@@ -122,14 +118,20 @@ class DefectBasicInfo extends Component {
               <div className={styles.label}>关联两票</div>
               <div className={styles.information}>
                 {detail.length > 0 &&
-                  this.ticket.map(item => {
+                  this.ticket.map((item, index) => {
                     const data = detail.filter(e => e.templateType === item.type);
                     const [name, code] = item.ticketMes;
                     return data.length > 0 &&
-                      (<div className={styles.megCont} >
+                      (<div className={styles.megCont} key={index}>
                         <div>【 {item.label} ({dockerDetail[item.num]}) 】</div>
                         <div className={styles.ticktCont}>
-                          {data.map(e => { return <div onClick={() => this.toTicket(e.docketId, e.templateType)} className={styles.tickets}>{e[name]}/{e[code]}</div>; })}
+                          {data.map(e => {
+                            const path = ['/operation/twoTickets/workflow', '/operation/twoTickets/operateflow'];
+                            return (
+                              <Link to={`${path[e.templateType - 1]}?docketId=${e.docketId}`} target="_blank" className={styles.tickets} key={e.docketId}>
+                                {e[name]}/{e[code]}
+                              </Link>);
+                          })}
                         </div>
                       </div>);
                   }) || '无'
