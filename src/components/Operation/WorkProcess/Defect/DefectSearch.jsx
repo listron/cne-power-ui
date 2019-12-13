@@ -60,14 +60,14 @@ class DefectSearch extends Component {
       });
       defectTypeList = e.list && [...defectTypeList, ...e.list] || [...defectTypeList];
     });
-    const defectTypeArr = [{ label: '设备缺陷', value: 'device' }, { label: '其他缺陷', value: 'other' }];
+    const defectTypeArr = [{ label: '设备缺陷', value: '1' }, { label: '其他缺陷', value: '0' }];
     const initDeviceTypes = deviceTypes.filter(e => e.deviceTypeName !== '全场信息汇总');
     const options = [
       { name: '发生时间', type: 'time', typeName: 'rangeTimes' },
       { name: '电站类型', type: 'stationType', typeName: 'stationType' },
       { name: '电站名称', type: 'stationName', typeName: 'stationCodes', data: stations },
       { name: '设备类型', type: 'multipleType', typeName: 'deviceTypeCode', rules: ['deviceTypeName', 'deviceTypeCode'], data: initDeviceTypes },
-      { name: '缺陷分类', type: 'multipleType', typeName: 'defectCategory', data: defectTypeArr },
+      { name: '缺陷分类', type: 'multipleType', typeName: 'defectGroup', data: defectTypeArr },
       { name: '缺陷类型', type: 'parentCheckBox', typeName: 'defectTypeCode', parentName: 'parentName', rules: ['name', 'id'], data: defectTypeList },
       { name: '缺陷来源', type: 'defectSource', typeName: 'defectSource' },
       { name: '我参与的', type: 'switch', typeName: 'join' },
