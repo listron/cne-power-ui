@@ -28,7 +28,9 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
   height: $height;
   line-height: $height;
 }
+
 @mixin highLight($color) {
+
   //创建高亮色配置
   &:hover,
   &:focus,
@@ -45,7 +47,7 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  padding: 24px 24px 0;
+  padding: 15px 24px 0;
   background: #ececec;
 }
 
@@ -58,6 +60,7 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
 
 @mixin tooltipBox($borderColor) {
   min-width: 180px;
+
   .axisValue {
     padding: 0 12px 0 8px;
     line-height: 26px;
@@ -66,10 +69,12 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
     flex: 1;
     justify-content: space-between;
   }
+
   .tooltipContainer {
     padding: 10px 30px 10px 0;
     text-align: left;
   }
+
   .tooltipCont {
     span {
       display: inline-block;
@@ -82,17 +87,17 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
   }
 }
 
-.light{
+.light {
   --lightColor: #999; // 浅色文字-非凸显
   --darkColor: #666; // 主要使用文字色
   --themeColor: #199475; // 高亮, 选中, 主体色
   --promptColor: #d4d4d4; // 边框/禁用/input+placehodler颜色
 }
 
-.dark{
-  --lightColor: #1f2a4e;; // 浅色文字-非凸显
+.dark {
+  --lightColor: #1f2a4e;
+  ; // 浅色文字-非凸显
   --darkColor: #9cd1ff; // 主要使用文字色
-  --themeColor:#00cdff; // 高亮, 选中, 主体色
+  --themeColor: #00cdff; // 高亮, 选中, 主体色
   --promptColor: #3d7bac; // 边框/禁用/input+placehodler颜色
 }
-
