@@ -188,7 +188,7 @@ class DefectCreate extends Component {
       stationType: currentStations.length > 0 && currentStations[0].stationType || null,
     };
     const initCreateTime = createTime && moment(createTime) || moment();
-    const initStations = stationCode ? (stations.filter(e => e.stationCode === stationCode)) : (stations.length === 1 && stations[0] || []);
+    const initStations = stationCode ? (stations.filter(e => e.stationCode === stationCode)) : (stations.length === 1 && stations || []);
     return (
       <Form className={`${styles.defectCreateForm} ${styles[theme]}`} >
         <span ref="toolTip"></span>
@@ -210,7 +210,7 @@ class DefectCreate extends Component {
           <FormItem label="电站名称" colon={false}>
             {getFieldDecorator('stations', {
               rules: [{ required: true, message: '请选择电站' }],
-              initialValue: initStations,
+              initialValue: initStations || [],
             })(
               <StationSelect data={stations} multiple={false} onOK={this.onStationSelected} />
             )}

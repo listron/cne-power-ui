@@ -6,6 +6,7 @@ import { operateFlowAction } from './operateFlowAction';
 import { commonAction } from '../../../../containers/alphaRedux/commonAction';
 import Header from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
+import searchUtil from '@utils/searchUtil';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import TableList from '../../../../components/Operation/TwoTickets/OperateFlow/TableList';
 import Condition from '../../../../components/Operation/TwoTickets/OperateFlow/Condition';
@@ -16,13 +17,23 @@ class OperateFlow extends Component {
         showPage: PropTypes.string,
         resetStore: PropTypes.func,
         theme: PropTypes.string,
+        history: PropTypes.object,
+        changeFlowStore: PropTypes.func,
     }
 
     constructor() {
         super();
         this.state = {
         };
+    }
 
+    componentDidMount() {
+        const { history } = this.props;
+        const { search } = history.location;
+        const { docketId } = searchUtil(search).parse(); //默认为缺陷列表页
+        if (docketId && docketId !== 'undefined') {
+            this.props.changeFlowStore({ showPage: 'detail', docketId });
+        }
     }
 
     componentWillUnmount() {
