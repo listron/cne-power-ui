@@ -90,10 +90,10 @@ const data = [
 const pvData = [
   { //实时监控-光伏数据分析-历史趋势
     path: '/monitor/pvData/history',
-    component: lazy(() => import('../../containers/Monitor/PvDataAnalysis/DataHistory/DataHistory')),
+    component: lazy(() => import('../../containers/Monitor/PvDataAnalysis/PvDataHistory/PvDataHistory')),
   }, { //实时监控-光伏数据分析-实时数据
     path: '/monitor/pvData/realtime',
-    component: lazy(() => import('../../containers/Monitor/PvDataAnalysis/DataRealtime/DataRealtime')),
+    component: lazy(() => import('../../containers/Monitor/PvDataAnalysis/PvDataRealtime/PvDataRealtime')),
   },
 ];
 

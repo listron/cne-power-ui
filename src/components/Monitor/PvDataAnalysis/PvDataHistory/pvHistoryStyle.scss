@@ -1,0 +1,433 @@
+@import '../../../../theme/theme.scss';
+
+.historySearch {
+
+  .typeCheck {
+    display: flex;
+
+    .typeNormal, .typeActive {
+      height: 40px;
+      line-height: 40px;
+      flex-basis: 120px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid $promptColor;
+      border-left: none;
+      color: $lightColor;
+      background-color: #f8f8f8;
+    }
+
+    .typeActive {
+      background-color: #fff;
+      border-top: 2px solid $themeColor;
+      border-bottom: none;
+      color: #000;
+    }
+
+    .holder {
+      flex: 1;
+      background-color: #f8f8f8;
+      border-top: 1px solid $promptColor;
+      border-bottom: 1px solid $promptColor;
+    }
+  }
+
+  .searchPart {
+    padding: 20px 32px;
+    display: flex;
+    flex-wrap: wrap;
+
+    .stationSelect, .typeSelect, .startSelect, .endSelect {
+      flex: 0 0 25%;
+    }
+
+    .deviceSelect, .intervalSelect {
+      flex: 0 0 50%;
+    }
+
+    .stationSelect, .typeSelect, .deviceSelect, .startSelect, .endSelect, .intervalSelect {
+      display: flex;
+      line-height: 40px;
+      height: 40px;
+      align-items: center;
+
+      .text {
+        flex: 0 0 96px;
+        text-align: right;
+        margin-right: 8px;
+      }
+    }
+
+    .startSelect {
+      :global {
+        .ant-calendar-picker {
+          width: 198px;
+
+          .ant-calendar-picker-input {
+
+            .anticon,
+            .anticon-calendar,
+            .ant-calendar-picker-icon {
+              right: 8px
+            }
+          }
+        }
+
+
+      }
+    }
+
+    .intervalSelect {
+      :global {
+        .ant-select-selection__rendered {
+          width: 70px;
+        }
+      }
+    }
+    .export{
+      display: flex;
+      flex: 1;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
+}
+
+.historyDataType {
+  display: flex;
+  border-top: 1px dotted $promptColor;
+  border-bottom: 1px dotted $promptColor;
+  justify-content: space-between;
+  align-items: center;
+
+  .tabIcons {
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+
+    .active, .normal {
+      cursor: pointer;
+      flex: 0 0 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .active {
+      color: #fff;
+      background-color: $themeColor;
+    }
+
+    .normal {
+      color: #999;
+      background-color: #f1f1f1;
+    }
+  }
+
+  .export {
+    margin-right: 24px;
+  }
+}
+
+.pointTree {
+  flex: 0 0 196px;
+
+  .pointTreeInfo{
+    text-align: center;
+    color: $themeColor;
+    margin-top: 16px;
+  }
+  h3 {
+    height: 42px;
+    line-height: 42px;
+    color: $slideFontColor;
+    text-align: center;
+    background-color: $themeColor;
+
+    .num{
+      color: #f9b600;
+    }
+  }
+
+  :global {
+    .ant-tree {
+      max-height: 780px;
+      width: 196px;
+      overflow-x: auto;
+      overflow-y: auto;
+
+      li .ant-tree-node-content-wrapper {
+        height: auto;
+        line-height: 21px;
+      }
+
+      .ant-tree-title {
+        display: inline-block;
+        white-space: normal;
+      }
+
+      .ant-tree-treenode-switcher-close {
+        .ant-tree-title {
+          width: 116px;
+        }
+      }
+
+      .ant-tree-node-content-wrapper .ant-tree-node-content-wrapper-normal {
+        .ant-tree-treenode-switcher-close {
+          .ant-tree-title {
+            width: 120px;
+          }
+        }
+      }
+
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        background: rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+}
+
+.historyChart {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  align-content: flex-start;
+  border-left: 1px solid $promptColor;
+
+  .noData{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
+  }
+
+  h4 {
+    flex-basis: 100%;
+    height: 50px;
+    line-height: 50px;
+    display: flex;
+    margin-bottom: 0;
+    justify-content: space-between;
+
+    .tabIcons {
+      margin-left: 16px;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+
+      .active,
+      .normal {
+        cursor: pointer;
+        flex: 0 0 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .active {
+        color: #fff;
+        background-color: $themeColor;
+      }
+
+      .normal {
+        color: #999;
+        background-color: #f1f1f1;
+      }
+    }
+
+    .eachTitle,
+    .tipTitle {
+      // flex: 1 0 33.33%;
+    }
+
+    .tipTitle {
+      text-align: right;
+      padding-right: 24px;
+      color: $darkColor;
+    }
+  }
+
+  .innerChart {
+    flex-basis: 100%;
+  }
+
+  .chartTool {
+    .title {
+      font-size: 14px;
+      height: 24px;
+      line-height: 24px;
+      color: $darkColor;
+    }
+
+    .content {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      height: 24px;
+
+      .itemStyle {
+        margin: 0 8px;
+        position: relative;
+
+        &::before, &::after {
+          color: inherit;
+          content: '-';
+          position: absolute;
+        }
+
+        &::before {
+          left: 5px;
+        }
+
+        &::after {
+          right: 5px;
+        }
+      }
+
+      .text {
+        color: $darkColor;
+        margin-right: 4px;
+      }
+
+      .value {
+        color: $darkColor;
+      }
+    }
+
+  }
+}
+
+.historyList {
+  flex: 1;
+  border-left: 1px solid $promptColor;
+  padding: 0 16px;
+
+  .tabIcons {
+    height: 50px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+
+    .active,
+    .normal {
+      cursor: pointer;
+      flex: 0 0 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .active {
+      color: #fff;
+      background-color: $themeColor;
+    }
+
+    .normal {
+      color: #999;
+      background-color: #f1f1f1;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    justify-content: flex-end;
+
+    .text {
+      margin-left: 36px;
+    }
+  }
+
+  .sorterType {
+    :global {
+      .ant-table-column-sorters {
+        .ant-table-column-sorter {
+          display: none;
+        }
+
+        &:hover {
+          .ant-table-column-sorter {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+  :global {
+    .ant-table {
+      .ant-table-thead tr th {
+        height: 60px;
+      }
+
+      tr {
+        display: flex;
+
+        th, td {
+          padding: 8px;
+          line-height: 21px;
+        }
+      }
+
+      .stationName, .deviceTypeName, .deviceModeName, .time, .deviceName, .points {
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .stationName {
+        flex: 0 0 100px;
+      }
+
+      .deviceTypeName {
+        flex: 0 0 100px;
+      }
+
+      .deviceModeName {
+        flex: 1 0 114px;
+      }
+
+      .time {
+        flex: 0 0 150px;
+      }
+
+      .deviceName, .points {
+        flex: 1 0 100px;
+      }
+    }
+  }
+}
+
+.historyRangeDropdown {
+  .infoTip {
+    color: $themeColor;
+  }
+
+  :global {
+    .ant-calendar-footer-btn {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .ant-calendar-input {
+      pointer-events: none;
+    }
+
+    .ant-calendar-ok-btn {
+      display: none;
+    }
+  }
+}

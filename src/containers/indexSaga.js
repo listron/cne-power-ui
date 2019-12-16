@@ -50,6 +50,9 @@ import { watchDataExport } from './Monitor/DataAnalysis/DataExport/dataExportSag
 import { watchAllDeviceCurve } from './Monitor/PowerCurve/AllDeviceCurve/allDeviceCurveSaga'; // 多设备功率曲线
 import { watchSingleDeviceCurve } from './Monitor/PowerCurve/SingleDeviceCurve/singleDeviceCurveSaga'; // 单设备功率曲线
 
+import { watchPvDataHistoryMonitor } from './Monitor/PvDataAnalysis/PvDataHistory/pvHistorySaga'; // 光伏数据分析 - 历史趋势
+import { watchPvDataRealtimeMonitor } from './Monitor/PvDataAnalysis/PvDataRealtime/pvRealtimeSaga'; // 光伏数据分析 - 实时数据
+
 import { watchDataScatterDiagramMonitor } from './Monitor/DataAnalysis/DataScatterDiagram/scatterDiagramSaga'; // 数据分析 - 散点图
 
 import { watchMonitorPowerReport } from './Monitor/Report/PowerReport/powerReportSaga'; // 报表
@@ -186,6 +189,8 @@ export default function* rootSaga() {
     watchMonitorDeviceStatus(), //报表-设备状态
     watchMonitorMalfunction(), //报表-故障
     watchMonitorPowerLost(), //报表--电量损失
+    watchPvDataHistoryMonitor(), // 光伏数据分析-历史趋势
+    watchPvDataRealtimeMonitor(), // 光伏数据分析-实时数据
 
 
     watchDataScatterDiagramMonitor(), //  数据分析 - 散点图
