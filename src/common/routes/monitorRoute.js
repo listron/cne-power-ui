@@ -14,8 +14,8 @@ const stationMonitor = [
 ];
 
 const powerCurve = [
-   {//实时监控-功率曲线-多设备
-    path: '/monitor/powercurve',
+  {//实时监控-功率曲线-多设备
+    path: '/monitor/data/powercurve',
     exact: true,
     component: lazy(() => import('../../containers/Monitor/PowerCurve/AllDeviceCurve/AllDeviceCurve')),
   }, {//实时监控-功率曲线-单设备
@@ -82,7 +82,7 @@ const data = [
     path: '/monitor/data/realtime',
     component: lazy(() => import('../../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime')),
   }, { //实时监控-数据分析-数据导出
-    path: '/monitor/data/dataExport',
+    path: '/monitor/dataExport',
     component: lazy(() => import('../../containers/Monitor/DataAnalysis/DataExport/DataExport')),
   },
 ];

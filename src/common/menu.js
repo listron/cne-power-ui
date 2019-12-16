@@ -1,4 +1,4 @@
-import {isUrl} from '../utils';
+import { isUrl } from '../utils';
 
 /*
   文件说明： 菜单配置项
@@ -34,83 +34,6 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
-        name: '功率曲线',
-        iconStyle: 'icon-monitoring',
-        path: 'powercurve',
-        rightKey: 'monitor_powerCurve',
-      }, {
-        name: '光伏数据分析',
-        iconStyle: 'icon-pvs',
-        path: 'pvData',
-        rightKey: 'monitor_dataAnalysis',
-        children: [
-          {
-            name: '历史趋势',
-            path: 'history',
-            defaultPath: true,
-            rightKey: 'dataAnalysis_historyTrend',
-          }, {
-            name: '实时数据',
-            path: 'realtime',
-            rightKey: 'dataAnalysis_realTime',
-          },
-        ],
-      }, {
-        name: '数据分析',
-        iconStyle: 'icon-sand',
-        path: 'data',
-        rightKey: 'monitor_dataAnalysis',
-        children: [
-          {
-            name: '散点图',
-            path: 'scatterDiagram',
-            rightKey: 'dataAnalysis_scatterPlot',
-            renderKey: 'wind',
-          }, {
-            name: '数据概览',
-            path: 'overview',
-            rightKey: 'dataAnalysis_dataQuality',
-          }, {
-            name: '历史趋势',
-            path: 'history',
-            rightKey: 'dataAnalysis_historyTrend',
-          }, {
-            name: '实时数据',
-            path: 'realtime',
-            rightKey: 'dataAnalysis_realTime',
-          }, {
-            name: '数据导出',
-            path: 'dataExport',
-            rightKey: 'dataAnalysis_dataExport',
-          },
-        ],
-      },
-      //   {
-      //     name: '报表查询',
-      //     iconStyle: 'icon-trends',
-      //     path: 'report',
-      //     rightKey: 'monitor_reportQuery',
-      //     children: [
-      //       {
-      //         name: '电量报表',
-      //         path: 'powerReport',
-      //         rightKey: 'reportQuery_powerReport',
-      //       }, {
-      //         name: '设备状态',
-      //         path: 'deviceStatus',
-      //         rightKey: 'reportQuery_deviceStatus',
-      //       }, {
-      //         name: '故障报表',
-      //         path: 'malfunction',
-      //         rightKey: 'reportQuery_malfunction',
-      //       }, {
-      //         name: '损失电量',
-      //         path: 'powerLost',
-      //         rightKey: 'reportQuery_powerLost',
-      //       },
-      //     ],
-      //   },
-      {
         name: '告警',
         iconStyle: 'icon-alarm1',
         path: 'alarm',
@@ -137,12 +60,59 @@ const menuData = [
             path: 'statistic',
             rightKey: 'monitor_alarm_statistics',
           },
-          // {
-          //   name: '告警统计',
-          //   path: 'statistics',
-          //   rightKey: 'monitor_alarm_statistics',
-          // }
         ],
+      }, {
+        name: '光伏数据分析',
+        iconStyle: 'icon-pvs',
+        path: 'pvData',
+        rightKey: 'monitor_dataAnalysis',
+        children: [
+          {
+            name: '历史趋势',
+            path: 'history',
+            defaultPath: true,
+            rightKey: 'dataAnalysis_historyTrend',
+          }, {
+            name: '实时数据',
+            path: 'realtime',
+            rightKey: 'dataAnalysis_realTime',
+          },
+        ],
+      }, {
+        name: '风电数据分析',
+        iconStyle: 'icon-windy',
+        path: 'data',
+        rightKey: 'monitor_dataAnalysis',
+        children: [{
+          name: '功率曲线',
+          iconStyle: 'icon-monitoring',
+          path: 'powercurve',
+          rightKey: 'monitor_powerCurve',
+        },
+        {
+          name: '散点图',
+          path: 'scatterDiagram',
+          rightKey: 'dataAnalysis_scatterPlot',
+          renderKey: 'wind',
+        }, {
+          name: '数据概览',
+          path: 'overview',
+          rightKey: 'dataAnalysis_dataQuality',
+        }, {
+          name: '历史趋势',
+          path: 'history',
+          rightKey: 'dataAnalysis_historyTrend',
+        }, {
+          name: '实时数据',
+          path: 'realtime',
+          rightKey: 'dataAnalysis_realTime',
+        },
+        ],
+      },
+      {
+        name: '数据导出',
+        path: 'dataExport',
+        rightKey: 'dataAnalysis_dataExport',
       },
     ],
   },
@@ -715,7 +685,7 @@ const menuData = [
 
 function formatter(data, parentPath = '/') {
   return data.map(item => {
-    let {path} = item;
+    let { path } = item;
     if (!isUrl(path) && path !== '/') {
       path = parentPath + item.path;
     }

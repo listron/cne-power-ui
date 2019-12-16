@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Table } from 'antd';
+import { Table, Icon } from 'antd';
 import styles from './historyStyle.scss';
 import PropTypes from 'prop-types';
-import CommonPagination from '../../../Common/CommonPagination'
+import CommonPagination from '../../../Common/CommonPagination';
 import moment from 'moment';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../utils/utilFunc';
+
 
 class HistoryList extends Component {
   static propTypes = {
@@ -24,10 +25,21 @@ class HistoryList extends Component {
         ...listParam,
         pageSize,
         pageNum: currentPage,
-      }
-    })
+      },
+    });
   }
-  
+  showChart = () => {
+    this.selectHistoryType('chart');
+  }
+
+  showList = () => {
+    this.selectHistoryType('list');
+  }
+  selectHistoryType = (historyType) => { // 切换图表展示类型 'chart'图 / 'list'表格
+    const { changeHistoryStore } = this.props;
+    changeHistoryStore({ historyType });
+  }
+
   // onListChange = (pagination, filter, sorter) => { // 表格排序
   //   const { getListHistory, queryParam, listParam } = this.props;
   //   const { orderField, orderType } = listParam;
@@ -58,11 +70,11 @@ class HistoryList extends Component {
         <div className={styles.text}>{title}</div>
         <div className={styles.unit}>{unit ? `(${unit})` : ''}</div>
       </div>
-    )
+    );
   }
 
   render() {
-    const { partHistory, listParam, queryParam, tableLoading } = this.props;
+    const { partHistory, listParam, queryParam, tableLoading, historyType } = this.props;
     const { totalCount = 0, dataList = [] } = partHistory;
     const { timeInterval } = queryParam;
     const { pageNum, pageSize } = listParam; // orderField
@@ -72,7 +84,7 @@ class HistoryList extends Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         className: 'deviceName',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
         // sorter: true,
         // className: orderField === 'deviceName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceName')
@@ -80,7 +92,7 @@ class HistoryList extends Component {
         title: '电站名称',
         dataIndex: 'stationName',
         className: 'stationName',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
         // sorter: true,
         // className: orderField === 'stationName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('stationName')
@@ -88,7 +100,7 @@ class HistoryList extends Component {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
         className: 'deviceTypeName',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
         // sorter: true,
         // className: orderField === 'deviceTypeName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceTypeName')
@@ -96,7 +108,7 @@ class HistoryList extends Component {
         title: '型号',
         dataIndex: 'deviceModeName',
         className: 'deviceModeName',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
         // sorter: true,
         // className: orderField === 'deviceModeName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceModeName')
@@ -104,11 +116,11 @@ class HistoryList extends Component {
         title: '时间',
         dataIndex: 'time',
         className: 'time',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
         // sorter: true,
         // className: orderField === 'time' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('time')
-      }
+      },
     ];
     const pointColumn = pointData.map(e => ({
       title: e.pointUnit ? () => (<TableColumnTitle
@@ -125,20 +137,24 @@ class HistoryList extends Component {
       // sortOrder: this.getSortOrder(e.e.devicePointCode)
     }));
     const dataSource = dataList.map((e, i) => { // 数据处理及时间规范。
-      let pointInfo = {}
+      const pointInfo = {};
       e.pointData.forEach(point => {
-        pointInfo[point.devicePointCode] = point.pointValue
-      })
+        pointInfo[point.devicePointCode] = point.pointValue;
+      });
       return {
         key: i,
         ...e,
         ...pointInfo,
         time: e.time ? moment(e.time).format('YYYY-MM-DD HH:mm:ss') : '--',
-      }
+      };
     });
     return (
       <div className={styles.historyList}>
         <div className={styles.pagination}>
+          <div className={styles.tabIcons}>
+            <Icon onClick={this.showChart} type="bar-chart" className={historyType === 'chart' ? styles.active : styles.normal} />
+            <Icon onClick={this.showList} type="bars" className={historyType === 'list' ? styles.active : styles.normal} />
+          </div>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
@@ -151,11 +167,12 @@ class HistoryList extends Component {
           dataSource={dataSource}
           columns={columns.concat(pointColumn)}
           // onChange={this.onListChange}
+          scroll={{ x: 1200 }}
           pagination={false}
-          locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
-    )
+    );
   }
 }
 

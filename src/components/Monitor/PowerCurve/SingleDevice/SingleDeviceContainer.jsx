@@ -152,7 +152,7 @@ class SingleDeviceContainer extends Component {
     const { stations, deviceShowType, stationCode, airDensity, selectDeviceFullCode, deviceInfo } = this.props;
     const deviceTypeCode = 101;
     const stationInfo = stations ? stations.filter(e => (e.stationCode === +singleStation))[0] : {};
-    const pathAllDevice = '#/monitor/powercurve';
+    const pathAllDevice = '#/monitor/data/powercurve';
     return (
       <div className={styles.singleDevice}>
         <div className={styles.headerStyle}>
