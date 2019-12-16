@@ -37,7 +37,7 @@ class DataHistory extends Component {
         <div className={styles.contentBox}>
           <div className={styles.historyContent} >
             <HistorySearch {...this.props} />
-            <HistoryDataType {...this.props} />
+            ｛/*<HistoryDataType {...this.props} />*/｝
             <div className={styles.dataCenter}>
               <PointTree {...this.props} />
               {historyType === 'chart' && <HistoryChart {...this.props} />}
