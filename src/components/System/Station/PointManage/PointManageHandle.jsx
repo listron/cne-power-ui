@@ -6,6 +6,7 @@ import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import path from '../../../../constants/path';
 import WarningTip from '../../../../components/Common/WarningTip';
+import { handleRight } from '@utils/utilFunc';
 
 class PointManageHandle extends Component {
   static propTypes = {
@@ -117,9 +118,10 @@ class PointManageHandle extends Component {
     const pointForbidClear = !selectedStationInfo || selectedStationInfo.alarmStatus === 1; // 未找到电站或电站已导入告警，不可清除
     // const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`;
     const downloadTemplet = `${path.basePaths.originUri}${path.APISubPaths.system.downloadPointExcel}`;
+    const pointOperation = handleRight('station_point_operate');
     return (
       <div className={styles.pointManageHandle}>
-        <div className={styles.leftHandler}>
+        {pointOperation ? <div className={styles.leftHandler}>
           {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
           <Button onClick={this.showAddPage} className={styles.addButton}>
             <span className={styles.plus}>+</span>
@@ -149,7 +151,7 @@ class PointManageHandle extends Component {
             target="_blank"
           >下载标准点表
           </Button>
-        </div>
+        </div> : <div></div>}
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
       </div>
     );
