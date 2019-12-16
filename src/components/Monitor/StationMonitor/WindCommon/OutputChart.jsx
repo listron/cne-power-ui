@@ -121,7 +121,7 @@ class OutputChart extends Component {
                 }),
                 axisLine: {
                     lineStyle: {
-                        color: '#dfdfdf',
+                        color: '#d4d4d4',
                     },
                 },
                 axisLabel: {
@@ -152,7 +152,7 @@ class OutputChart extends Component {
                     axisLine: {
                         show: true,
                         lineStyle: {
-                            color: '#dfdfdf',
+                            color: '#d4d4d4',
                         },
                     },
                     splitLine: {
@@ -175,7 +175,7 @@ class OutputChart extends Component {
                     },
                     axisLine: {
                         lineStyle: {
-                            color: '#dfdfdf',
+                            color: '#d4d4d4',
                         },
                     },
                     splitLine: {

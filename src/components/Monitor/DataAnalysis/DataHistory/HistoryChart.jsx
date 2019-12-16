@@ -67,7 +67,7 @@ class HistoryChart extends Component {
     },
     splitLine: {
       lineStyle: {
-        color: '#dfdfdf',
+        color: '#d4d4d4',
         type: 'dotted',
       },
     },
@@ -78,7 +78,7 @@ class HistoryChart extends Component {
     gridIndex: i,
     axisLine: {
       lineStyle: {
-        color: '#dfdfdf',
+        color: '#d4d4d4',
       },
     },
     axisLabel: {
@@ -90,7 +90,7 @@ class HistoryChart extends Component {
     },
     splitLine: {
       lineStyle: {
-        color: '#dfdfdf',
+        color: '#d4d4d4',
         type: 'dotted',
       },
     },

@@ -41,7 +41,7 @@ class DeviceRateChart extends PureComponent{
   chartColors = {
     light: {
       font: '#666',
-      axis: '#dfdfdf',
+      axis: '#d4d4d4',
       bar: '#199475',
     },
     dark: {
@@ -101,7 +101,7 @@ class DeviceRateChart extends PureComponent{
       dataAxis.push(deviceName);
       rateData.push(completeRate);
     });
-    const { font = '#666', axis = '#dfdfdf', bar = '#199475' } = this.chartColors[theme] || {};
+    const { font = '#666', axis = '#d4d4d4', bar = '#199475' } = this.chartColors[theme] || {};
     const option = {
       graphic: !deviceData || deviceData.length === 0 ? showNoData : hiddenNoData,
       grid: {

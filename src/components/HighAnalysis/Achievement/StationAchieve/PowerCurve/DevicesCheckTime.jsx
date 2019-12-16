@@ -80,7 +80,7 @@ class DevicesCheckTime extends Component {
             const lineColor = uiColors[isTheory ? 'mainColors' : 'outputColors'][lineIndex];
             const backgroundColor = active ? lineColor : '#fff';
             const border = active ? `1px solid ${lineColor}` : '1px solid rgb(238,238,238)';
-            const color = active ? '#666' : '#dfdfdf';
+            const color = active ? '#666' : '#d4d4d4';
             return (
               <li
                 className={styles.device}

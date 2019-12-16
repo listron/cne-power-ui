@@ -44,14 +44,14 @@ class BarGraph extends React.Component {
 
   getColor = {
     light: {
-      '发电量': ['#dfdfdf', '#199475', '#f9b600'],
-      '辐射总量': ['#dfdfdf', '#a42b2c', '#f9b600'],
-      '等效利用小时数': ['#dfdfdf', '#ceebe0', '#f9b600'],
-      'PR': ['#dfdfdf', '#3e97d1', '#f9b600'],
-      '损失电量': ['#dfdfdf', '#c7ceb2', '#f9b600'],
-      '损失电量等效时': ['#dfdfdf', '#199475', '#f9b600'],
-      '购网电量': ['#dfdfdf', '#199475', '#f9b600'],
-      '上网电量': ['#dfdfdf', '#3e97d1', '#f9b600'],
+      '发电量': ['#d4d4d4', '#199475', '#f9b600'],
+      '辐射总量': ['#d4d4d4', '#a42b2c', '#f9b600'],
+      '等效利用小时数': ['#d4d4d4', '#ceebe0', '#f9b600'],
+      'PR': ['#d4d4d4', '#3e97d1', '#f9b600'],
+      '损失电量': ['#d4d4d4', '#c7ceb2', '#f9b600'],
+      '损失电量等效时': ['#d4d4d4', '#199475', '#f9b600'],
+      '购网电量': ['#d4d4d4', '#199475', '#f9b600'],
+      '上网电量': ['#d4d4d4', '#3e97d1', '#f9b600'],
     },
     dark: {
       '发电量': [Gradient1, Gradient2, '#f8b14e'],
@@ -76,7 +76,7 @@ class BarGraph extends React.Component {
 
   getYearOption = (param) => {
     const { yAxisName, xAxisName, barGraphThatYear, barGraphmonth, barGraphRingRatio, title, hasData, theme = 'light' } = param;
-    const color = this.getColor[theme][xAxisName] || ['#dfdfdf', '#3e97d1', '#f9b600'];
+    const color = this.getColor[theme][xAxisName] || ['#d4d4d4', '#3e97d1', '#f9b600'];
     const graphic = chartsNodata(hasData, theme);
     return {
       graphic: graphic,
@@ -175,7 +175,7 @@ class BarGraph extends React.Component {
 
   getMonthOption = (param) => {
     const { yAxisName, xAxisName, barGraphThatYear, barGraphLastYear, barGraphmonth, barGraphYearOnYear, lastYear, currentYear, title, hasData, theme = 'light' } = param;
-    const color = this.getColor[theme][xAxisName] || ['#dfdfdf', '#3e97d1', '#f9b600'];
+    const color = this.getColor[theme][xAxisName] || ['#d4d4d4', '#3e97d1', '#f9b600'];
     const graphic = chartsNodata(hasData, theme);
     return {
       graphic: graphic,

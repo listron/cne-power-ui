@@ -160,7 +160,7 @@ class PowerSpeedChart extends Component {
           show: true,
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -188,13 +188,13 @@ class PowerSpeedChart extends Component {
           splitLine: {
             show: true,
             lineStyle: {
-              color: ['#dfdfdf'],
+              color: ['#d4d4d4'],
               type: 'dashed',
             },
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {

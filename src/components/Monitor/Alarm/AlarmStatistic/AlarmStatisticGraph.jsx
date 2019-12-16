@@ -146,7 +146,7 @@ class AlarmStatisticGraph extends React.Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -163,7 +163,7 @@ class AlarmStatisticGraph extends React.Component {
         },
         axisLine: {
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {

@@ -193,7 +193,7 @@ class WindDeviceGraph extends Component {
         splitLine: {
           show: true,
           lineStyle: {
-            color: ['#dfdfdf'],
+            color: ['#d4d4d4'],
             type: 'dashed',
           },
         },
@@ -203,7 +203,7 @@ class WindDeviceGraph extends Component {
         axisLine: {
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -225,13 +225,13 @@ class WindDeviceGraph extends Component {
 
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           splitLine: {
             show: true,
             lineStyle: {
-              color: ['#dfdfdf'],
+              color: ['#d4d4d4'],
               type: 'dashed',
             },
           },
