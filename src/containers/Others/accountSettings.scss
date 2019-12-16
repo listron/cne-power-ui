@@ -121,18 +121,15 @@
     }
 
     .accoutCont {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
         height: calc(100vh - 59px);
-        background-color: #ececec;
+        @include contentBoxStyle();
+        flex: 1;
 
-        .accoutContainer {
+      .accoutContainer {
             display: flex;
             flex: 1;
             flex-direction: column;
             align-content: space-around;
-            margin: 24px 24px 0;
             background: #fff;
         }
     }

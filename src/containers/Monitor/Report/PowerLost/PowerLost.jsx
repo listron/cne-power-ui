@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import styles from "./powerLost.scss";
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { powerLostAction } from './powerLostAction';
 import { commonAction } from '../../../../containers/alphaRedux/commonAction';
 import Footer from '../../../../components/Common/Footer';
@@ -36,16 +35,8 @@ class PowerLost extends Component {
   checkPv = () => this.props.changePowerLostStore({selectStationType:'1'}) // 选中光伏电站
   render() {
     const { stationTypeCount, selectStationType } = this.props;
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '报告查询-损失电量',
-        }
-      ],
-    };
     return (
       <div className={styles.containerDiv}>
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
           {/*
@@ -58,7 +49,7 @@ class PowerLost extends Component {
             }
          {selectStationType === '0' && <PowerLostContainer {...this.props} />}
            {selectStationType === '1' && <PowerLostContainer {...this.props} />}
-           
+
           */}
             <PowerLostContainer {...this.props} />
           </div>

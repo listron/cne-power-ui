@@ -16,12 +16,8 @@
     width: 100%;
     // padding: 24px 24px 0;
     .deviceManageMain{
-      padding: 24px 24px 0;
-      display: flex;
-      flex-direction: column;
-      flex: 1 0 auto;
-      width: 100%;
-      
+      @include contentBoxStyle();
+
       .allStationTitle{
         display: flex;
         line-height: 40px;
@@ -50,7 +46,7 @@
                 background: $themeColor;
             }
         }
-    
+
     }
       .deviceManageContent{
         background-color: #fff;

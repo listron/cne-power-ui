@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './combineInvert.scss';
 import PropTypes from 'prop-types';
-import CommonBreadcrumb from '@components/Common/CommonBreadcrumb';
 import Footer from '@components/Common/Footer';
 import { combineInvertAction } from './combineInvertReducer';
 import { commonAction } from '@containers/alphaRedux/commonAction';
@@ -33,7 +32,6 @@ class CombineInvert extends Component {
     const { dateType, theme } = this.props;
     return (
       <div className={`${styles.combineInvert} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '组串式逆变器' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.reportbox}>
           <ReportSearch {...this.props} />
           {dateType === 'hour' && <ReportHourTable {...this.props} /> || <ReportTable {...this.props} />}

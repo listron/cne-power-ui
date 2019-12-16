@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './reTransfer.scss';
 import { transferAction } from './transferAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import TransferCont from '../../../../components/HighAnalysis/EarlyWarning/Transfer/Transfer';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
@@ -45,7 +44,6 @@ class Transfer extends Component {
     const { showPage } = this.state;
     return (
       <div className={`${styles.transferBox} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '已转工单' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.transferColor}>
           <div className={styles.transferContainer}>
             <div className={styles.transBox}>

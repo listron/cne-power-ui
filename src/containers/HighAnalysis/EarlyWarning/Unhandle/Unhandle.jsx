@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './newUnhandle.scss';
 import { unhandleAction } from './unhandleAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
-import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import UnhandleContainer from '../../../../components/HighAnalysis/EarlyWarning/Unhandle/Unhandle';
 
 class Unhandle extends Component {
@@ -32,7 +30,6 @@ class Unhandle extends Component {
     const { theme = 'light' } = this.props;
     return (
       <div className={`${styles.UnhandleBox} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '待处理预警' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.unhandleContainer}>
           <UnhandleContainer {...this.props} />
         </div>

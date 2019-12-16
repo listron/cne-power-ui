@@ -1,8 +1,7 @@
 @import '../../../../theme/theme';
 .PowerCurve {
-    display: flex;
-    flex: 1;
-    background: #ececec;
+    @include contentBoxStyle();
+    flex-direction: initial;
     .contentMain {
         border: 1px solid #e1e2e2;
         position: relative;
@@ -10,7 +9,6 @@
         flex-direction: column;
         flex: 1 0 auto;
         width: 100%;
-        margin: 24px 24px 0;
         background: #fff;
         .selectSearth {
             display: flex;

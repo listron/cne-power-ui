@@ -6,7 +6,6 @@ import { warningAction } from "./warningAction";
 import { commonAction } from '../../../alphaRedux/commonAction';
 import styles from "./warning.scss";
 import PropTypes from 'prop-types';
-import CommonBreadcrumb from "../../../../components/Common/CommonBreadcrumb";
 import SeriesMain from '../../../../components/System/Production/Warning/Series/SeriesMain.jsx';
 import CleaningMain from '../../../../components/System/Production/Warning/Cleaning/CleaningMain.jsx';
 import WarnConfig from '../../../../components/System/Production/Warning/WarnConfig/WarnConfig';
@@ -58,7 +57,6 @@ class Warning extends Component {
     const { activeKey } = this.state;
     return (
       <div className={styles.warningBox}>
-        <CommonBreadcrumb breadData={[{ name: '预警配置' }]} style={{ paddingLeft: '38px', background: '#fff' }} />
         <div className={styles.warningContainer}>
           <div className={styles.warningContent}>
             <div className={styles.WarnCont}>
@@ -119,7 +117,7 @@ const mapDispatchToProps = (dispatch) => ({
 
   getStationOfEnterprise: params => dispatch({ // 企业电站下的所有电站
     type: commonAction.getStationOfEnterprise,
-    payload: { 
+    payload: {
       params:params,
       actionName: warningAction.changeWarnStore,
       resultName: 'allStationBaseInfo'

@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import styles from './performanceAnalysis.scss';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import PerformanceAnalysisFilter from '../../../../components/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysisFilter';
 import PerformanceAnalysisTabs from '../../../../components/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysisTabs';
 import Footer from '../../../../components/Common/Footer';
 import { performanceAnalysisAction } from './performanceAnalysisAction';
-import Cookie from 'js-cookie';
 
 class PerformanceAnalysis extends Component {
   static propTypes = {
@@ -56,7 +54,6 @@ class PerformanceAnalysis extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.PerformanceAnalysisContainerBox} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '性能分析' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.PerformanceAnalysisContainer}>
           <div className={styles.PerformanceAnalysisMain}>
             <PerformanceAnalysisFilter {...this.props} />

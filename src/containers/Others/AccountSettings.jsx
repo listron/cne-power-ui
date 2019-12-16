@@ -23,7 +23,7 @@ class AccountSettings extends Component {
     }
   }
 
-  
+
 
   onOpenChange = (openKeys) => {
     this.setState({
@@ -68,7 +68,6 @@ class AccountSettings extends Component {
           </Menu>
         </h3>
         <div className={styles.accoutCont}>
-          <CommonBreadcrumb breadData={[{ name: '账户信息' }]} style={{ paddingLeft: '38px', background: '#fff' }} />
           <div className={styles.accoutContainer}>
             {selectMenu === "editUserName" && <EditUserName {...this.props} />}
             {selectMenu === "editPassword" && <EditPasswordForm {...this.props} />}

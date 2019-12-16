@@ -4,7 +4,7 @@
   display: flex;
   padding-left: 32px;
   align-items: center;
-  border-bottom: solid 1px $promptColor;  
+  border-bottom: solid 1px $promptColor;
 }
 .roleTableTooltip {
   display: flex;
@@ -19,12 +19,7 @@
   width: 110px;
 }
 .roleList{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 auto;
-  padding: 24px 24px 0;
-  background-color: #ececec;
+  @include contentBoxStyle();
   .roleContent{
     flex: 1;
     background-color: #fff;
@@ -145,7 +140,7 @@
         width: 64px;
         cursor: pointer;
       }
-      
+
     }
     .editPart{
       flex: 1;
@@ -195,7 +190,7 @@
             }
           }
         }
-      }  
+      }
     }
   }
 }

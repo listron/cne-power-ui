@@ -5,7 +5,6 @@ import Cookie from 'js-cookie';
 import axios from 'axios';
 import styles from './intelligentReport.scss';
 import Footer from '../../../../components/Common/Footer/index';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { apiUrlReal } from '../../../../config/apiConfig';
 
 class IntelligentReport extends Component {
@@ -69,7 +68,6 @@ class IntelligentReport extends Component {
     const theme = Cookie.get('theme');
     return (
       <div className={`${styles.intelligentReport} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '智能报表' }]} style={{ marginLeft: '40px' }} />
         <div className={styles.contentBox}>
           <div className={styles.reportContent}>
             <div className={styles.intelligentSearch}>

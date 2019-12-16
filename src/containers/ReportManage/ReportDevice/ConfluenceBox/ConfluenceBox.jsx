@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './confluenceBox.scss';
 import PropTypes from 'prop-types';
-import CommonBreadcrumb from '@components/Common/CommonBreadcrumb';
 import Footer from '@components/Common/Footer';
 import { confluenceBoxAction } from './confluenceBoxReducer';
 import { commonAction } from '@containers/alphaRedux/commonAction';
@@ -32,7 +31,6 @@ class ConfluenceBox extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.confluenceBox} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '汇流箱' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.reportbox}>
           <ReportSearch {...this.props} />
           <ReportHourTable {...this.props} />

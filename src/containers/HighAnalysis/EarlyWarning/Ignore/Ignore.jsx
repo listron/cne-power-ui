@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import styles from "./reIgnore.scss";
 import { ignoreAction } from './ignoreAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import Ingore from '../../../../components/HighAnalysis/EarlyWarning/Ignore/Ignore';
 
@@ -23,7 +22,6 @@ class Ignore extends Component {
   render() {
     return (
       <div className={styles.ignoreBox} >
-        <CommonBreadcrumb breadData={[{ name: '已忽略', }]} style={{ marginLeft: '38px' }} />
         <div className={styles.ignoreContainer}>
           <Ingore {...this.props} />
         </div>

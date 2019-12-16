@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import styles from './weatherStation.scss';
 import PropTypes from 'prop-types';
 // import ReportStationBox from '../../../components/ReportManage/ReportStationBox/ReportStationBox';
-import CommonBreadcrumb from '@components/Common/CommonBreadcrumb';
 import Footer from '@components/Common/Footer';
 import { weatherStationAction } from './weatherStationReducer';
 import { commonAction } from '@containers/alphaRedux/commonAction';
@@ -34,7 +33,6 @@ class WeatherStation extends Component {
     const { dateType, theme } = this.props;
     return (
       <div className={`${styles.weatherStation} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '气象站' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.reportbox}>
           <ReportSearch {...this.props} />
           {dateType === 'hour' && <ReportHourTable {...this.props} /> || <ReportTable {...this.props} />}

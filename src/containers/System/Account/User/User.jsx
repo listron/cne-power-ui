@@ -8,7 +8,6 @@ import TransitionContainer from '../../../../components/Common/TransitionContain
 import UserSide from '../../../../components/System/Account/User/UserSide/UserSide';
 import UserMain from '../../../../components/System/Account/User/UserList/UserMain';
 import Cookie from 'js-cookie';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 
 class User extends Component {
   static propTypes = {
@@ -114,12 +113,8 @@ class User extends Component {
   render() {
     const { showPage } = this.props;
     const { showSidePage } = this.state;
-    const breadCrumbData = {
-      breadData: [{ name: '用户' }],
-    };
     return (
       <div className={styles.userContainerBox}>
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.userContainer}>
           <UserMain
             {...this.props}

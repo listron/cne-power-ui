@@ -79,7 +79,6 @@ class DeviceManage extends Component {
     }
     return (
       <div className={styles.deviceManageContainer}>
-        <CommonBreadcrumb breadData={[{ name: '设备' }]} style={{ marginLeft: '38px', backgroundColor: '#fff' }} />
         <div className={styles.deviceManage}>
           <div className={styles.deviceManageMain}>
             {showDeviceTip && <StationManageTip hideManageTip={this.hideManageTip} text="请选择您要查看的电站！" />}

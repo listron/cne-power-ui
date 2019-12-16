@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import styles from './realTimeWarning.scss';
 import { realtimeWarningAction } from './realtimeWarningAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import RealTimeWarningContainer from '../../../../components/HighAnalysis/IntelligentWarning/RealTimeWarning/RealTimeWarningContainer';
 
@@ -27,7 +26,6 @@ class RealTimeWarning extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.realtime} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '实时预警' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.realtimeWarningBox}>
           <RealTimeWarningContainer {...this.props} />
         </div>

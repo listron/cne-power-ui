@@ -4,14 +4,7 @@
 @import '../../../../../theme/theme.scss';
 
 .userMain{
-  flex: 1 0 auto;
-  width: 100%;
-  background: #ececec;
-  padding: 24px 24px 0;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  @include contentBoxStyle();
   .userMainContent{
     flex: 1;
     background-color: #fff;
@@ -87,7 +80,7 @@
               display: none;
             }
           }
-          
+
           .filterCondition{
             margin: 30px 10px 0 26px;
             color: $darkColor;
@@ -95,7 +88,7 @@
         }
         .userStatus{
           margin-left: 30%;
-          >span{ 
+          >span{
             margin-right: 20px;
           }
           :global{
@@ -113,23 +106,23 @@
             }
           }
         }
-        
+
         .selectedRoles{
           width: 100px;
           ul.listbox{
             width: 200px;
           }
         }
-        
+
       }
       .selectedRolesBox{
         width: 100%;
         padding-left: 25px;
         margin-bottom: 20px;
         .selectedRole{
-          background: #fff; 
+          background: #fff;
           border-style: dashed;
-          height: 30px; 
+          height: 30px;
           line-height: 30px;
           font-size: 14px;
           margin-left: 5px;
@@ -161,7 +154,7 @@
         .userHelperLeft{
           display: flex;
           justify-content: flex-start;
-          
+
           .importUser{
             display: inline-block;
             :global{
@@ -189,7 +182,7 @@
               vertical-align: top;
               color: #fff;
               width: 28px;
-              line-height: 30px;            
+              line-height: 30px;
               display: inline-block;
             }
             .text{
@@ -198,7 +191,7 @@
               font-size: 14px;
               text-align: center;
               display: inline-block;
-              margin: 0;  
+              margin: 0;
               line-height: 30px;
             }
             @include highLight($themeColor);
@@ -237,11 +230,11 @@
           .selectedColumnsBox{
             .selectedColumns{
               margin-top: 20px;
-              width: 33px; 
+              width: 33px;
               height: 33px;
               border-radius: 4px;
               margin-left: 20px;
-              
+
               :global{
                 .ant-select-selection__placeholder{
                   display: none;
@@ -255,9 +248,9 @@
               }
             }
           }
-          
+
         }
-        
+
       }
       .tableFooter{
         line-height: 46px;
@@ -266,7 +259,7 @@
         .info{
           margin-left: 25px;
           .totalNum{
-            color:#e08031; 
+            color:#e08031;
           }
         }
         .cancel{
@@ -276,12 +269,12 @@
         .operateTip{
           float: right;
           margin-right: 60px;
-          
+
         }
       }
-    }  
+    }
   }
-  
+
 }
 .responsibleDetails{
   color: $darkColor;
@@ -294,7 +287,7 @@
       display: inline-block;
       vertical-align: middle;
       margin-right: 4px;
-      margin-top: -4px;        
+      margin-top: -4px;
     }
     @include lineheight(30px);
   }
@@ -335,7 +328,7 @@
         margin-left: 24px;
         padding:0 8px;
         color: $darkColor;
-        
+
         &:hover{
           background-color: $themeColor;
           color: #fff;
@@ -375,7 +368,7 @@
         }
       }
     }
-    
+
   }
 }
 
@@ -387,8 +380,8 @@
     }
     .ant-select-dropdown-menu-item{
       color:$themeColor;
-      i.iconfont{ 
-        margin-right: 7px; 
+      i.iconfont{
+        margin-right: 7px;
       }
     }
     .ant-select-dropdown-menu-item-disabled{

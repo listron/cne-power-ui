@@ -1,16 +1,12 @@
+@import '../../../../theme/theme.scss';
+
 .enterpriseContainerBox{
   display: flex;
   flex-direction: column;
   min-height: 100%;
   flex:1;
 .enterpriseContainer{
-  display: flex;
-  flex-direction: column;
-  flex:1;
-  //width: 100%;
-  //min-height: 100%;
-  padding: 24px 24px 0;
-  background:#ececec;
+  @include contentBoxStyle();
   justify-content: space-between;
   .enterpriseFooter{
     text-align: right;

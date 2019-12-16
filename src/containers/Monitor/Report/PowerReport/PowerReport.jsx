@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './powerReport.scss';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { powerReportAction } from './powerReportAction';
 import { commonAction } from '../../../../containers/alphaRedux/commonAction';
 import Footer from '../../../../components/Common/Footer';
@@ -37,16 +36,8 @@ class PowerReport extends Component {
   checkPv = () => this.props.changePowerReportStore({ selectStationType: '1' }) // 选中光伏电站
   render() {
     const { stationTypeCount, selectStationType } = this.props;
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '报告查询-电量报表',
-        },
-      ],
-    };
     return (
       <div className={styles.containerDiv}>
-        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
 
@@ -60,7 +51,7 @@ class PowerReport extends Component {
             }
          {selectStationType === '0' && <PowerReportContainer {...this.props} />}
            {selectStationType === '1' && <PowerReportContainer {...this.props} />}
-           
+
           */}
 
             <PowerReportContainer {...this.props} />

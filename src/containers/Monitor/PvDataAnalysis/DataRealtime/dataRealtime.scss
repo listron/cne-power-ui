@@ -1,0 +1,20 @@
+@import '../../../../theme/theme.scss';
+
+.dataRealtime{
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  .contentBox{
+    @include contentBoxStyle();
+  }
+  .realtimeContent{
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .dataCenter{
+    flex: 1;
+    display: flex;
+  }
+}

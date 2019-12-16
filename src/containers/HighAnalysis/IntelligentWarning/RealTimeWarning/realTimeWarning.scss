@@ -1,3 +1,4 @@
+@import "../../../../theme/theme.scss";
 .realtime {
   min-height: 100%;
   display: flex;
@@ -5,9 +6,7 @@
   flex: 1;
 
   .realtimeWarningBox {
-    display: flex;
-    flex: 1;
-    padding: 24px 24px 0;
+    @include contentBoxStyle();
   }
 }
 

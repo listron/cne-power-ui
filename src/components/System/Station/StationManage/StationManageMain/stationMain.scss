@@ -2,13 +2,7 @@
 @import '../../../../../theme/theme.scss';
 
 .stationMain{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1 0 auto;
-  width: 100%;
-  padding: 24px 24px 0;
-  background:#ececec;
+  @include contentBoxStyle();
   .stationContent{
     background-color: #fff;
     flex: 1;
@@ -77,7 +71,7 @@
         .leftHandler{
           display: flex;
           .uploadStation{
-            .plusButton { // 添加电站 
+            .plusButton { // 添加电站
               margin: 0 12px 0 32px;
               padding: 0;
               font-size: 0;
@@ -92,7 +86,7 @@
                 display: inline-block;
                font-size: 14px;
                 width: 40px;
-                line-height: 30px; 
+                line-height: 30px;
                 margin: 0px;
               }
               &:hover{

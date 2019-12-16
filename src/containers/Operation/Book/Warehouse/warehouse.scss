@@ -5,13 +5,7 @@
   min-height: 100%;
   flex-direction: column;
   .warehouseCenter{
-    width: 100%;
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 25px 25px 0 25px;
-    background-color: $pageBackground;
+    @include contentBoxStyle();
     .warehouseBox{
       display: flex;
       flex: 1;

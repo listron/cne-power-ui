@@ -1,14 +1,11 @@
+@import "../../../../theme/theme.scss";
 .transfer {
   min-height: 100%;
   display: flex;
   flex-direction: column;
   flex: 1;
   .transferColor {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 24px 24px 0 24px;
+    @include contentBoxStyle();
     overflow: hidden;
   }
   .transferAlarmContainer {

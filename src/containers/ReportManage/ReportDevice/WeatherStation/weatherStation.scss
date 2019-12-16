@@ -7,10 +7,7 @@
   flex-direction: column;
 
   .reportbox {
-    display: flex;
-    flex: 1;
-    padding: 24px 24px 0;
-    flex-direction: column;
+    @include contentBoxStyle();
   }
 }
 

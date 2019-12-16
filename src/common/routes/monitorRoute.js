@@ -87,10 +87,21 @@ const data = [
   },
 ];
 
+const pvData = [
+  { //实时监控-光伏数据分析-历史趋势
+    path: '/monitor/pvData/history',
+    component: lazy(() => import('../../containers/Monitor/PvDataAnalysis/DataHistory/DataHistory')),
+  }, { //实时监控-光伏数据分析-实时数据
+    path: '/monitor/pvData/realtime',
+    component: lazy(() => import('../../containers/Monitor/PvDataAnalysis/DataRealtime/DataRealtime')),
+  },
+];
+
 export const monitorRoute = [
   ...stationMonitor,
   ...powerCurve,
   ...data,
   ...report,
   ...alarm,
+  ...pvData,
 ];

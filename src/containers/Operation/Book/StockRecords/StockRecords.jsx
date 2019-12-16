@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import styles from "./stockRecords.scss";
 import { commonAction } from '../../../alphaRedux/commonAction';
 import { stockRecordsAction } from "./stockRecordsAction.js";
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import StockSearch from '../../../../components/Operation/Book/StockRecords/StockSearch';
 import StockList from '../../../../components/Operation/Book/StockRecords/StockList';
@@ -21,7 +20,6 @@ class StockRecords extends Component {
   render() {
     return (
       <div className={styles.stockRecordsBox}>
-        <CommonBreadcrumb breadData={[{name:'出入库记录'}]} style={{marginLeft:'38px'}} />
         <div className={styles.stockRecordsCenter}>
           <div className={styles.stockRecordsContent}>
             <StockSearch {...this.props} />

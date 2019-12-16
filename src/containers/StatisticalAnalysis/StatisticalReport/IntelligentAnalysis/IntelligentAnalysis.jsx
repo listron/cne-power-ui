@@ -4,7 +4,6 @@ import { Radio } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './intelligentAnalysis.scss';
 import { commonAction } from '../../../alphaRedux/commonAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
 import { intelligentAnalysisAction } from './intelligentAnalysisAction';
 import SingleStationAnalysis from '../../../../components/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/SingleStationAnalysis';
@@ -41,7 +40,6 @@ class IntelligentAnalysis extends Component {
     const { tabsType, theme } = this.props;
     return (
       <div className={`${styles.intelligentAnalysis} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '智能分析报告' }]} style={{ marginLeft: '40px' }} />
         <div className={styles.contentBox}>
           <div className={styles.intelligentAnalysisContent}>
             <Radio.Group value={tabsType} buttonStyle="solid"

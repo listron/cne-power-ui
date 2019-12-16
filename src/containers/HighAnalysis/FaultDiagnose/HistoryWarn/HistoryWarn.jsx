@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import styles from './historyWarn.scss';
 import Footer from '../../../../components/Common/Footer';
 import HistoryWarnMain from '../../../../components/HighAnalysis/FaultDiagnose/HistoryWarn/HistoryWarn';
@@ -65,7 +64,6 @@ class HistoryWarn extends React.Component {
   render() {
     return (
       <div className={styles.faultWarnList}>
-        <CommonBreadcrumb breadData={[{name: '历史预警'}]} style={{marginLeft: '38px'}} />
         <div className={styles.faultWarnListContainer}>
           <div className={styles.faultWarnListContent}>
             <HistoryWarnMain onChangeFilter={this.onChangeFilter} {...this.props} />

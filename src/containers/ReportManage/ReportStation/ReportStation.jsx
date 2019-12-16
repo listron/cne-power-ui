@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import styles from './reportStation.scss';
 import PropTypes from 'prop-types';
 import ReportStationBox from '../../../components/ReportManage/ReportStationBox/ReportStationBox';
-import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../components/Common/Footer';
 import { reportStationAction } from './reportStationAction';
 import { commonAction } from '../../../containers/alphaRedux/commonAction';
@@ -23,7 +22,6 @@ class ReportStation extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.reportstation} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '电站报表' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.reportbox}>
           <ReportStationBox {...this.props} />
         </div>
