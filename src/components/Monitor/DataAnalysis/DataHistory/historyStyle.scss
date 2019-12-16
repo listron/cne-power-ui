@@ -184,13 +184,11 @@
 
 .historyChart {
   display: flex;
-  flex-wrap: wrap;
   flex: 1;
-  align-content: flex-start;
+  flex-direction: column;
   border-left: 1px solid $promptColor;
 
   h4 {
-    flex-basis: 100%;
     height: 60px;
     line-height: 60px;
     display: flex;
@@ -224,11 +222,6 @@
       }
     }
 
-    .eachTitle,
-    .tipTitle {
-      // flex: 1 0 33.33%;
-    }
-
     .tipTitle {
       text-align: right;
       padding-right: 24px;
@@ -236,19 +229,13 @@
     }
   }
 
-  .innerChart {
-    flex-basis: 100%;
-  }
+
 
   .nodata {
     display: flex;
     flex: 1;
     justify-content: center;
     align-items: center;
-    margin-top: 200px;
-
-
-
   }
 
   .chartTool {
@@ -299,9 +286,19 @@
 }
 
 .historyList {
+  // display: flex;
   flex: 1;
+  // width: 1400px;
+  width: calc(100vh - 460px);
+  // flex-direction: column;
   border-left: 1px solid $promptColor;
   padding: 0 16px;
+
+  :global {
+    .ant-table .ant-table-thead>tr>th {
+      padding: 0 8px;
+    }
+  }
 
   .pagination {
     height: 60px;
@@ -340,6 +337,49 @@
     }
   }
 
+
+
+  .points,
+  .pointsValue .stationName,
+  .deviceTypeName,
+  .deviceModeName,
+  .time,
+  .deviceName {
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .deviceName,
+  .stationName {
+    width: 100px;
+  }
+
+  .deviceTypeName {
+    width: 100px;
+  }
+
+  .deviceModeName {
+    width: 150px;
+  }
+
+  .time {
+    width: 150px;
+  }
+
+  .points {
+    width: 120px;
+  }
+
+  .pointsValue {
+    width: 100px;
+  }
+
+
+
+
+
   .sorterType {
     :global {
       .ant-table-column-sorters {
@@ -362,48 +402,32 @@
         height: 60px;
       }
 
-      tr {
-        display: flex;
-
-        th,
-        td {
-          padding: 8px;
-          line-height: 21px;
-        }
+      .ant-table .ant-table-thead>tr>th,
+      .ant-table .ant-table-tbody>tr>td {
+        padding: 0 8px;
       }
 
-      .stationName,
-      .deviceTypeName,
-      .deviceModeName,
-      .time,
-      .deviceName,
+      .ant-table-tbody>tr>td {
+        padding: 0 8px;
+      }
+
+      .ant-table-body-inner {
+        overflow-y: none !important;
+
+      }
+
       .points {
         word-break: break-all;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        width: 120px;
       }
 
-      .stationName {
-        flex: 0 0 100px;
+      .pointsValue {
+        width: 100px;
       }
 
-      .deviceTypeName {
-        flex: 0 0 100px;
-      }
-
-      .deviceModeName {
-        flex: 1 0 114px;
-      }
-
-      .time {
-        flex: 0 0 150px;
-      }
-
-      .deviceName,
-      .points {
-        flex: 1 0 100px;
-      }
     }
   }
 }

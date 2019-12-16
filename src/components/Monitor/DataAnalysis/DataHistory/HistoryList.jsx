@@ -83,40 +83,51 @@ class HistoryList extends Component {
       {
         title: '设备名称',
         dataIndex: 'deviceName',
-        className: 'deviceName',
-        render: (text) => <span title={text}>{text}</span>,
+        // className: 'deviceName',
+
+        fixed: pointData.length > 1 ? 'left' : false,
+        width: 120,
+        render: (text) => <div className={styles.deviceTypeName} title={text}>{text}</div>,
         // sorter: true,
         // className: orderField === 'deviceName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceName')
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
-        className: 'stationName',
-        render: (text) => <span title={text}>{text}</span>,
+        // className: 'stationName',
+        fixed: pointData.length > 1 ? 'left' : false,
+        width: 120,
+        render: (text) => <div className={styles.deviceTypeName} title={text}>{text}</div>,
         // sorter: true,
         // className: orderField === 'stationName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('stationName')
       }, {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
-        className: 'deviceTypeName',
-        render: (text) => <span title={text}>{text}</span>,
+        // className: 'deviceTypeName',
+        fixed: pointData.length > 1 ? 'left' : false,
+        width: 120,
+        render: (text) => <div className={styles.deviceTypeName} title={text}>{text}</div>,
         // sorter: true,
         // className: orderField === 'deviceTypeName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceTypeName')
       }, {
         title: '型号',
         dataIndex: 'deviceModeName',
-        className: 'deviceModeName',
-        render: (text) => <span title={text}>{text}</span>,
+        // className: 'deviceModeName',
+        fixed: pointData.length > 1 ? 'left' : false,
+        width: 170,
+        render: (text) => <div className={styles.deviceModeName} title={text}>{text}</div>,
         // sorter: true,
         // className: orderField === 'deviceModeName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceModeName')
       }, {
         title: '时间',
         dataIndex: 'time',
-        className: 'time',
-        render: (text) => <span title={text}>{text}</span>,
+        // className: 'time',
+        fixed: pointData.length > 1 ? 'left' : false,
+        width: 170,
+        render: (text) => <div className={styles.time} title={text}>{text}</div>,
         // sorter: true,
         // className: orderField === 'time' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('time')
@@ -126,11 +137,11 @@ class HistoryList extends Component {
       title: e.pointUnit ? () => (<TableColumnTitle
         title={e.pointName}
         unit={e.pointUnit}
-        style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }}
+        style={{ paddingTop: 0, width: '102px', height: '52px' }}
       />) : e.pointName,
       dataIndex: e.devicePointCode,
       className: 'points',
-      render: value => numWithComma(parseFloat(value).toFixed(2)),
+      render: value => <div className={styles.pointsValue} title={value}>{numWithComma(parseFloat(value).toFixed(2))}</div>,
       // align: 'right'
       // sorter: true,
       // className: orderField === e.e.devicePointCode ? null : styles.sorterType,
@@ -163,11 +174,15 @@ class HistoryList extends Component {
           />
         </div>
         <Table
+          scroll={{ x: 700 + pointData.length * 120, y: 470 }}
+          // scroll={{ x: 2020, y: 470 }}
+          showHeader={true}
+          bordered={true}
           loading={tableLoading}
           dataSource={dataSource}
           columns={columns.concat(pointColumn)}
-          // onChange={this.onListChange}
-          scroll={{ x: 1200 }}
+          onChange={this.onListChange}
+          // scroll={{ x: 800, y: 500 }}
           pagination={false}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
