@@ -252,7 +252,7 @@ class TableList extends Component {
                 render: (text, record) => (
                     <div>
                         <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record); }} />
-                        {handleRights('workTicket_operate') && record.stateCode === '2' && <i
+                        {handleRight('workTicket_operate') && record.stateCode === '2' && <i
                             className="iconfont icon-del"
                             onClick={() => { this.delList('del', record.docketId); }}
                         />}
