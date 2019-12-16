@@ -223,6 +223,9 @@
           .value {
             display: flex;
             color: $themeColor;
+            .specialColor{
+              color: #a22c30 !important;
+            }
             .tooltipName{
               margin-top: -5px;
               margin-left: 3px;
@@ -251,6 +254,9 @@
       .deviceTableBox {
         .equipmentHours,.transferRate{
           display: flex;
+          .specialColor{
+            color: #a22c30 !important;
+          }
             .tooltipName{
               margin-top: -5px;
               margin-left: 3px;
@@ -289,7 +295,10 @@
           }
           .detailId {
             color: #199475;
-            display: flex;
+            display: flex;    
+            .specialColor{
+              color: #a22c30 !important;
+            }
           }
           .detailUnit {
             color: #666;

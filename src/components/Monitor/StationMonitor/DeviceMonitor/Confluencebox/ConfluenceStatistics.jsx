@@ -9,7 +9,7 @@ import styles from './confluencebox.scss';
 
 const EachRecord = ({ text, value, unit, show }) => (
   <div className={styles.eachRecord}>
-    <span className={styles.text}>{text}</span>
+    <span className={`${styles.text} ${show && styles.specialColor}`}>{text}</span>
     <DeviceValueFormat value={value} />
     <span className={styles.unit}>{unit}</span>
     {show &&
