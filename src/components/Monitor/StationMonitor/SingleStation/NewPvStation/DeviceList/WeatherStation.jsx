@@ -171,7 +171,7 @@ class WeatherStation extends Component {
                             return (<div className={styles.everyDetail} key={index}>
                                 <div>{e.name}</div>
                                 <div className={styles.detailId}>
-                                    <span className={e.isShow && weatherstationDetail.radiatioQuantityValidation && styles.specialColor}></span>{value}
+                                    <span className={e.isShow && weatherstationDetail.radiatioQuantityValidation && styles.specialColor}>{value}</span>
                                     <span className={styles.detailUnit}>{e.unit}</span>
                                     {e.isShow && weatherstationDetail.radiatioQuantityValidation &&
                                     <span className={styles.tooltipName}>
