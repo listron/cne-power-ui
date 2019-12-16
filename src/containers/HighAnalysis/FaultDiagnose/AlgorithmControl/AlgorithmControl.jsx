@@ -130,7 +130,7 @@ class AlgorithmControl extends Component {
       backgroundColor: '#199475',
     };
     const UnCheckStyle = {
-      color: '#666666',
+      color: '#353535',
       backgroundColor: '#ffffff',
     };
     return (

@@ -198,7 +198,7 @@ class DeviceSelectModal extends Component {
                     style={{
                       backgroundColor: activeDevice ? '#199475' : '#f1f1f1',
                       color: activeDevice ? '#fff' :
-                        (disableCheck ? '#dfdfdf' : '#666'),
+                        (disableCheck ? '#d4d4d4' : '#666'),
                       cursor: disableCheck ? 'not-allowed' : 'pointer',
                     }}
                   >{e.deviceName}</div>);

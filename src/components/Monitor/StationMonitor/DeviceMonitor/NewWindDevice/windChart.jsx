@@ -88,7 +88,7 @@ function InverterTenMin({ sequenceChart }) {
         data: xTime,
         axisLine: {
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -115,7 +115,7 @@ function InverterTenMin({ sequenceChart }) {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -135,7 +135,7 @@ function InverterTenMin({ sequenceChart }) {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -292,7 +292,7 @@ function SactterChart({ theory, actual }) {
         axisLine: {
           // onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -316,7 +316,7 @@ function SactterChart({ theory, actual }) {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -459,7 +459,7 @@ function SequenceChart({ sequenceChartList }) {
         axisLine: {
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -488,7 +488,7 @@ function SequenceChart({ sequenceChartList }) {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -508,7 +508,7 @@ function SequenceChart({ sequenceChartList }) {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {

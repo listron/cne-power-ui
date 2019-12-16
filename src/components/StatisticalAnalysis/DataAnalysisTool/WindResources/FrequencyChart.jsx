@@ -183,7 +183,7 @@ class FrequencyChart extends Component{
           },
           axisLine: {
             lineStyle: {
-                color: '#dfdfdf',
+                color: '#d4d4d4',
             },
           },
         },
@@ -210,7 +210,7 @@ class FrequencyChart extends Component{
           },
           axisLine: {
             lineStyle: {
-                color: '#dfdfdf', // 轴线颜色
+                color: '#d4d4d4', // 轴线颜色
             },
           },
         },

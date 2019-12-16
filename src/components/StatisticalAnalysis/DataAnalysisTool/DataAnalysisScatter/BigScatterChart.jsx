@@ -132,7 +132,7 @@ class BigScattrChart extends React.Component {
           show: true,
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisPointer: {
@@ -167,7 +167,7 @@ class BigScattrChart extends React.Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisTick: {

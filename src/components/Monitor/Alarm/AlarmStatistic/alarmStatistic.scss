@@ -45,7 +45,7 @@
       margin: 0;
       border: 1px solid #e8e8e8;
       border-bottom: 0;
-      border-radius: 4px 4px 0 0;
+      border-radius: 2px 2px 0 0;
       background: #fafafa;
       padding: 0 16px; 
       line-height: 38px;
@@ -100,7 +100,7 @@
         flex: 1;
         flex-shrink: 0;
         min-height: 40px;
-        border-radius: 4px;
+        border-radius: 2px;
         background-color: #f0f2f5;
         align-items: center;
         padding: 5px 26px;
@@ -153,7 +153,7 @@
         .exportBtn{
           color: $themeColor;
           background-color:#fff;
-          border-radius: 4px;
+          border-radius: 2px;
           border: 1px solid #199475;     
           line-height:30px;
           height: 30px;

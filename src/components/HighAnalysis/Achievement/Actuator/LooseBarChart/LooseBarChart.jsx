@@ -183,7 +183,7 @@ export default class LooseBarChart extends Component {
     const baseChartParams = {
       axisLine: {
         lineStyle: {
-          color: '#666666',
+          color: '#353535',
         },
       },
       splitLine: {
@@ -194,7 +194,7 @@ export default class LooseBarChart extends Component {
       },
       axisLabel: {
         textStyle: {
-          color: '#666666',
+          color: '#353535',
         },
       },
     };

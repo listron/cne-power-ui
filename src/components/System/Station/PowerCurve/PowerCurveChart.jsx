@@ -103,7 +103,7 @@ class PowerCurveChart extends Component {
         axisLine: {
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -126,7 +126,7 @@ class PowerCurveChart extends Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {

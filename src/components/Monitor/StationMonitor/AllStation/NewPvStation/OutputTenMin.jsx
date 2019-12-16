@@ -97,7 +97,7 @@ class OutputTenMin extends Component {
         }),
         axisLine: {
           lineStyle: {
-            // color: '#dfdfdf',
+            // color: '#d4d4d4',
           },
         },
         axisLabel: {

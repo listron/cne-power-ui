@@ -175,7 +175,7 @@ class BigFrequencyChats extends Component{
           },
           axisLine: {
             lineStyle: {
-                color: '#dfdfdf',
+                color: '#d4d4d4',
             },
           },
         },
@@ -202,7 +202,7 @@ class BigFrequencyChats extends Component{
           },
           axisLine: {
             lineStyle: {
-                color: '#dfdfdf', // 轴线颜色
+                color: '#d4d4d4', // 轴线颜色
             },
           },
         },

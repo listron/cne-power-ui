@@ -162,7 +162,7 @@ class SingleScatter extends React.PureComponent {
           show: true,
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisPointer: {
@@ -200,7 +200,7 @@ class SingleScatter extends React.PureComponent {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisTick: {
