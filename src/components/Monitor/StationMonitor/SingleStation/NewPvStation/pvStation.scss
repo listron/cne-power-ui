@@ -185,7 +185,10 @@
           padding: 0 4px;
           line-height: 30px;
         }
-
+        
+        .specialColor{
+          color: #a22c30 !important;
+        }
         // .radiation {
         //   color: #f9b600;
         // }
@@ -380,6 +383,10 @@
         // }
         .iconStyle {
           color: $fontColor-hover;
+        }
+        
+        .specialColor{
+          color: #a22c30 !important;
         }
         .tooltipName{
           margin-left: 4px;

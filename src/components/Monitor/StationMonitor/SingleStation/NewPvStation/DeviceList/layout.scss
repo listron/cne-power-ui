@@ -161,6 +161,9 @@
                 margin-top: 7px;
                 .transferRate{
                   display: flex;
+                  .specialColor{
+                    color: #a22c30 !important;
+                  }
                   .tooltipName{
                     margin-top: -5px;
                     margin-left: 3px;
@@ -194,6 +197,9 @@
               text-align: left;
               > div{
                 display: flex;
+                .specialColor{
+                  color: #a22c30 !important;
+                }
                 .tooltipName{
                   margin-top: -5px;
                   margin-left: 3px;
@@ -503,6 +509,9 @@
               margin-bottom: -4px;
               .transferRate{
                 display: flex;
+                .specialColor{
+                  color: #a22c30 !important;
+                }
                 .tooltipName{
                   margin-top: -5px;
                   margin-left: 3px;
