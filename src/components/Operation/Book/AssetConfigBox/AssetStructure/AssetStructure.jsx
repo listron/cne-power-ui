@@ -6,6 +6,7 @@ import AddNodeFrom from './AddNodeFrom';
 import EditNodeFrom from './EditNodeFrom';
 import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
+import { handleRights, handleRight } from '@utils/utilFunc';
 
 const { TreeNode } = Tree;
 class AssetStructure extends React.Component {
@@ -145,7 +146,8 @@ class AssetStructure extends React.Component {
   render() {
     const { stationType, stationTypeCount, assetList, childrenNodeDetail } = this.props;
     const { addNode, editNode, showWarningTip, warningTipText, assetsType } = this.state;
-    const columns = [
+    const operateRight = handleRight('operation_book_operateAsset');
+    const baseColumns = [
       {
         title: '编码',
         dataIndex: 'assetsCode',
@@ -170,14 +172,15 @@ class AssetStructure extends React.Component {
         title: '操作人',
         dataIndex: 'operateUser',
         render: (text) => <span title={text ? text : '系统'}>{text ? text : '系统'}</span>,
-      }, {
-        title: '操作',
-        render: (text, record, index) => {
-          return record.isBuild ? <span title="删除" className="iconfont icon-del" onClick={() => this.deleteNode(record)}></span> : '';
-        },
-      },
-
+      }
     ];
+    const columns = operateRight ? baseColumns.concat({
+      title: '操作',
+      dataIndex: 'handle',
+      render: (text, record, index) => {
+        return record.isBuild ? <span title="删除" className="iconfont icon-del" onClick={() => this.deleteNode(record)}></span> : '';
+      },
+    }) : baseColumns;
     return (
       <div className={styles.box}>
         <div className={styles.titleType} >
@@ -200,11 +203,16 @@ class AssetStructure extends React.Component {
             </Tree>
           </div>
           <div className={styles.rightNode}>
-            <Button onClick={this.addDevice} className={addNode ? styles.disabledStyle : styles.plusButton} icon="plus" disabled={addNode} >添加子节点</Button>
+            {operateRight && <Button
+              onClick={this.addDevice}
+              className={addNode ? styles.disabledStyle : styles.plusButton}
+              icon="plus"
+              disabled={addNode}
+            >添加子节点</Button>}
             {
               addNode && <AddNodeFrom {...this.props} closeFrom={this.closeAddFrom} />
             }
-            {editNode && <EditNodeFrom {...this.props} closeFrom={this.closeEditFrom} assetsType={assetsType} />}
+            {operateRight && editNode && <EditNodeFrom {...this.props} closeFrom={this.closeEditFrom} assetsType={assetsType} />}
             {
               <Table
                 loading={false}
