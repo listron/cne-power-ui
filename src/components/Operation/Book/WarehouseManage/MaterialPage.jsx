@@ -4,6 +4,7 @@ import HandleComponent from './ManageCommon/HandleComponents';
 import { Table, Popover } from 'antd';
 import PropTypes from 'prop-types';
 import { dataFormat } from '../../../../utils/utilFunc';
+import { handleRight } from '@utils/utilFunc';
 import styles from './warehouseManageComp.scss';
 
 class MaterialPage extends Component {
@@ -94,7 +95,8 @@ class MaterialPage extends Component {
         style={{maxWidth: `${widthParam - 16}px`}}
       >{text || '--'}</div>
     );
-    const goodsInitTypes = { 301: '生活物资' , 302: '办公物资', 303: '其他' };
+    const goodsInitTypes = { 301: '生活物资', 302: '办公物资', 303: '其他' };
+    const materialHandleRight = handleRight('book_operateSupply');
     return [
       {
         title: '物品名称',
@@ -159,8 +161,8 @@ class MaterialPage extends Component {
         width: handleWidth,
         render: (text, record) => (
           <div className={styles.stockHandle}>
-            <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>
-            <span className={styles.text} onClick={() => this.toTakeout(record)}>损耗</span>
+            {materialHandleRight && <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>}
+            {materialHandleRight && <span className={styles.text} onClick={() => this.toTakeout(record)}>损耗</span>}
             <span className={styles.text} onClick={() => this.getReserveDetail(record)}>库存</span>
           </div>
         )

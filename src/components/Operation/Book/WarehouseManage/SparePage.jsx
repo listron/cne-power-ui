@@ -3,6 +3,7 @@ import ConditionSearch from './ManageCommon/ConditionSearch';
 import HandleComponent from './ManageCommon/HandleComponents';
 import { Table, Popover } from 'antd';
 import PropTypes from 'prop-types';
+import { handleRight } from '@utils/utilFunc';
 import styles from './warehouseManageComp.scss';
 
 class SparePage extends Component {
@@ -18,10 +19,6 @@ class SparePage extends Component {
     getReserveDetail: PropTypes.func,
     getReserveList: PropTypes.func,
     getWarehouseManageList: PropTypes.func,
-  }
-
-  state = {
-    highlightId: null,
   }
 
   onTableRowSelect = (selectedRowKeys, checkedStocks) => { // 选中条目
@@ -78,6 +75,7 @@ class SparePage extends Component {
     const fiexedWidth = 95; // 库存数量 = 最低阈值 = 更多信息
     const handleWidth = 140; // 操作
     let calcNormalWidth = 100, calcLongWidth = 200;
+    const spareHandleRight = handleRight('book_operateSpare');
     if (spareRef) { // 样式对齐，防止文字过多错行。
       const { clientWidth } = spareRef;
       const restWidth = (clientWidth - selectWidth - fiexedWidth * 3 - handleWidth);
@@ -90,7 +88,7 @@ class SparePage extends Component {
         className={styles[styleText]}
         style={{maxWidth: `${widthParam - 16}px`}}
       >{text || '--'}</div>
-    )
+    );
     return [
       {
         title: '物品名称',
@@ -178,19 +176,19 @@ class SparePage extends Component {
         width: handleWidth,
         render: (text, record) => (
           <div className={styles.stockHandle}>
-            <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>
-            <span className={styles.text} onClick={() => this.toTakeout(record)}>出库</span>
+            {spareHandleRight && <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>}
+            {spareHandleRight && <span className={styles.text} onClick={() => this.toTakeout(record)}>出库</span>}
             <span className={styles.text} onClick={() => this.getReserveDetail(record)}>库存</span>
           </div>
-        )
-      }
-    ]
+        ),
+      },
+    ];
   }
 
   render(){
     const { checkedStocks, stocksList, stocksListLoading } = this.props;
     return (
-      <div className={styles.sparePage} ref={(ref) => this.spareRef = ref}>
+      <div className={styles.sparePage} ref={(ref) => { this.spareRef = ref; }}>
         <ConditionSearch {...this.props} />
         <HandleComponent {...this.props} />
         <Table
@@ -198,7 +196,7 @@ class SparePage extends Component {
           onChange={this.tableChange}
           rowSelection={{
             selectedRowKeys: checkedStocks.map(e => e.key),
-            onChange: this.onTableRowSelect
+            onChange: this.onTableRowSelect,
           }}
           columns={this.spareColumn()}
           dataSource={stocksList.map(e => ({ key: e.inventoryId, ...e }))}
@@ -206,7 +204,7 @@ class SparePage extends Component {
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
-    )
+    );
   }
 }
 

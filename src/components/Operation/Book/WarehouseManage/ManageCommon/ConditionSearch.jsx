@@ -4,6 +4,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import styles from './manageCommon.scss';
 import path from '../../../../../constants/path';
+import { handleRight } from '@utils/utilFunc';
 const { Option } = Select;
 const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
@@ -85,6 +86,12 @@ class ConditionSearch extends Component {
   render(){
     const { warehouseList = [], manufacturerList = [], modeList = [], tableParams = {}, tabName, stocksList = [], exportInfoLoading } = this.props;
     const { selectedWarehouse, selectedManufacturer, selectedMode } = tableParams;
+    const rightBase = {
+      spares: handleRight('book_operateSpare'),
+      tools: handleRight('book_operateTool'),
+      materials: handleRight('book_operateSupply'),
+    };
+    const warehouseHandleRight = rightBase[tabName];
     return (
       <div className={styles.conditionSearch}>
         <div className={styles.searchParts}>
@@ -123,12 +130,12 @@ class ConditionSearch extends Component {
             ))}
           </Select>}
         </div>
-        <Button
+        {warehouseHandleRight && <Button
           className={styles.export}
           disabled={!selectedWarehouse || stocksList.length === 0}
           onClick={this.exportStock}
           loading={exportInfoLoading}
-        >导出</Button>
+        >导出</Button>}
       </div>
     );
   }

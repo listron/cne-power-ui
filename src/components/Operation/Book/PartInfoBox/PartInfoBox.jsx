@@ -11,6 +11,7 @@ import WarningTip from '../../../Common/WarningTip';
 import path from '../../../../constants/path';
 import moment from 'moment';
 import Cookie from 'js-cookie';
+import { handleRight } from '@utils/utilFunc';
 const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
 
@@ -207,8 +208,8 @@ class PartInfoBox extends React.Component {
     } = this.state;
 
     const disableClick = !(stationCode && deviceCode);
-
-    const columns = [
+    const partInfoRight = handleRight('book_operatePart');
+    const baseColumn = [
       {
         title: '部件名称',
         dataIndex: 'partsName',
@@ -249,26 +250,26 @@ class PartInfoBox extends React.Component {
         dataIndex: 'supplierName',
         render: text => <span title={text}>{text}</span>,
       },
-      {
-        title: '操作',
-        render: (text, record, index) => {
-          return (
-            <div>
-              <span
-                title="编辑"
-                className="iconfont icon-edit"
-                onClick={() => this.editParts(record)}
-              />
-              <span
-                title="删除"
-                className="iconfont icon-del"
-                onClick={() => this.deleteParts(record)}
-              />
-            </div>
-          );
-        },
-      },
     ];
+    const columns = partInfoRight ? baseColumn.concat({
+      title: '操作',
+      render: (text, record, index) => {
+        return (
+          <div>
+            <span
+              title="编辑"
+              className="iconfont icon-edit"
+              onClick={() => this.editParts(record)}
+            />
+            <span
+              title="删除"
+              className="iconfont icon-del"
+              onClick={() => this.deleteParts(record)}
+            />
+          </div>
+        );
+      },
+    }) : baseColumn;
     const downloadTemplet = `${path.basePaths.originUri}${
       path.APISubPaths.operation.downloadPartInfoTemplet
       }`;
@@ -315,7 +316,7 @@ class PartInfoBox extends React.Component {
               )}
             />
           </div>
-          <div>
+          {partInfoRight && <div>
             <Upload {...uploadProps} className={styles.exportInfo}>
               <Button
                 className={styles.exportInfo}
@@ -341,7 +342,7 @@ class PartInfoBox extends React.Component {
             >
               下载部件导入模板
             </Button>
-          </div>
+          </div>}
         </div>
         <div className={styles.conatainer}>
           <div className={styles.leftTree}>
@@ -349,7 +350,7 @@ class PartInfoBox extends React.Component {
             {stationName && test ? <DeviceTree {...this.props} /> : ''}
           </div>
           <div className={styles.right}>
-            <div className={styles.addParts}>
+            {partInfoRight && <div className={styles.addParts}>
               <Button
                 onClick={this.addPartsInfo}
                 disabled={disableClick}
@@ -365,7 +366,7 @@ class PartInfoBox extends React.Component {
               >
                 复制
               </Button>
-            </div>
+            </div>}
             <Table
               loading={false}
               dataSource={deviceComList}
