@@ -96,9 +96,9 @@ class Confluence extends Component {
         </FormItem>
         <FormItem label="所用支路" colon={false} className={styles.formItemStyle}>
           {getFieldDecorator('connectedBranches', {
+            initialValue: new Array(20).fill('1'),
             rules: [{
               required: true,
-              initialValue: new Array(20).fill('1'),
               validator: (rule, value, callback) => {
                 const noData = !value;
                 const hasEmpty = value && value.find(e => !e && e !== 0); // 支路数未填全 e 为null 或者 undifined 或NaN
