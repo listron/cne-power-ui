@@ -45,8 +45,8 @@ class PlanCompleteRateAnalysisBar extends React.Component {
   getColor = {
     light: {
       'year': ['#f9b600', '#3e97d1', '#f9b600'],
-      'month': ['#dfdfdf', '#f9b600', '#999999', '#3e97d1', '#e08031'],
-      'day': ['#dfdfdf', '#f9b600', '#999999', '#3e97d1', '#e08031'],
+      'month': ['#d4d4d4', '#f9b600', '#999999', '#3e97d1', '#e08031'],
+      'day': ['#d4d4d4', '#f9b600', '#999999', '#3e97d1', '#e08031'],
     },
     dark: {
       'year': [Gradient2, '#00f8ff', '#f95071'],

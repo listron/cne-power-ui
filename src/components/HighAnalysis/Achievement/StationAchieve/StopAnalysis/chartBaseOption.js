@@ -11,7 +11,7 @@ export const getBaseXAxis = (dataAxis) => ({
   data: dataAxis,
   axisLabel: {
     textStyle: {
-      color: '#666666',
+      color: '#353535',
     },
   },
   axisTick: {
@@ -19,7 +19,7 @@ export const getBaseXAxis = (dataAxis) => ({
   },
   axisLine: {
     lineStyle: {
-      color: '#dfdfdf',
+      color: '#d4d4d4',
     },
   },
 });
@@ -27,7 +27,7 @@ export const getBaseXAxis = (dataAxis) => ({
 export const getBaseYAxis = (name) => ({
   axisLine: {
     lineStyle: {
-      color: '#dfdfdf',
+      color: '#d4d4d4',
     },
   },
   splitLine: {
@@ -38,11 +38,11 @@ export const getBaseYAxis = (name) => ({
   },
   axisLabel: {
     textStyle: {
-      color: '#666666',
+      color: '#353535',
     },
   },
   nameTextStyle: {
-    color: '#666666',
+    color: '#353535',
     padding: [0, -20, 0, 0],
   },
   name,

@@ -126,16 +126,16 @@ export default class HandleComponent extends Component {
             disabled={insertDisable}
             style={{
               cursor: insertDisable ? 'not-allowed' : 'pointer',
-              borderColor: insertDisable ? '#dfdfdf' : '#199475',
+              borderColor: insertDisable ? '#d4d4d4' : '#199475',
             }}
           >
             <Icon type="plus"
               className={styles.plus}
-              style={{ backgroundColor: insertDisable ? '#dfdfdf' : '#199475'}}
+              style={{ backgroundColor: insertDisable ? '#d4d4d4' : '#199475'}}
             />
             <span
               className={styles.text}
-              style={{ color: insertDisable ? '#dfdfdf' : '#666'}}
+              style={{ color: insertDisable ? '#d4d4d4' : '#666'}}
             >入库</span>
           </button>
           <Button disabled={!(checkedStocks.length > 0)} onClick={this.showDelModal} loading={delStockLoading}>删除</Button>

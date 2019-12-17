@@ -133,7 +133,7 @@ class PointScatter extends Component {
                     show: true,
                     onZero: false,
                     lineStyle: {
-                        color: '#dfdfdf',
+                        color: '#d4d4d4',
                     },
                 },
                 min: 0,
@@ -161,7 +161,7 @@ class PointScatter extends Component {
                     },
                     axisLine: {
                         lineStyle: {
-                            color: '#dfdfdf',
+                            color: '#d4d4d4',
                         },
                     },
                     axisLabel: {

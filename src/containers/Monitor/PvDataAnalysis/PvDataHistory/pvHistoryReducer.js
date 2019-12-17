@@ -1,7 +1,7 @@
 import Immutable from 'immutable';
 import moment from 'moment';
 
-const historyAction = {
+const pvHistoryAction = {
   getAvailableDeviceType: Symbol('getAvailableDeviceType'), // 获取有测点的设备类型
   getChartHistory: Symbol('getChartHistory'), // 获取时间段内图表chart历史数据
   getListHistory: Symbol('getListHistory'), // 表格历史数据
@@ -9,12 +9,12 @@ const historyAction = {
   getSecendInterval: Symbol('getSecendInterval'), // 获取是否有秒级数据。
 
   GET_HISTORY_SUCCESS: Symbol('GET_HISTORY_SUCCESS'), // 获取api数据成功
-  CHANGE_HISTORY_STORE:Symbol('CHANGE_HISTORY_STORE'), // 手动更新当前history数据
-  RESET_HISTORY:Symbol('RESET_HISTORY'), // 数据重置
-}
+  CHANGE_HISTORY_STORE: Symbol('CHANGE_HISTORY_STORE'), // 手动更新当前history数据
+  RESET_HISTORY: Symbol('RESET_HISTORY'), // 数据重置
+};
 
 const initState = Immutable.fromJS({
-  selectStationType: 0, // 选中的电站类型
+  selectStationType: 1, // 选中的电站类型
   deviceTypeCode: null, // 选中的设备类型
   tableLoading: false, // 列表请求的loading
   chartLoading: false, // chart图表的loading
@@ -33,12 +33,12 @@ const initState = Immutable.fromJS({
     orderField: 'deviceName', // 排序字段(默认时间倒序（最新的时间在最上方）
     orderType: 1, //	排序方式	否	0：ASC正序，1：DESC倒序
     pageNum: 1, // 当前页码（从1开始）
-    pageSize: 10 // 每页条数
+    pageSize: 10, // 每页条数
   },
   historyType: 'chart', // 数据展示方式，'chart'图 / 'list'表格
   recordedMinuteStart: moment().subtract(1, 'day').startOf('day'), // 记录10min起始时间
   recordedMinuteEnd: moment().subtract(1, 'day').endOf('day'), // 记录10min终止时间
-  
+
   stationDeviceTypes: [], // 电站下可选设备类型
   intervalInfo: [10, 5], // 默认支持的时间间隔 5s, 10min
   pointInfo: [], // 选中设备内可选测点信息。
@@ -47,16 +47,16 @@ const initState = Immutable.fromJS({
   logPoint: null, // 请求时暂存的测点数据
 });
 
-const dataHistory = (state = initState, action) => {
+const pvDataHistory = (state = initState, action) => {
   switch (action.type) {
-    case historyAction.GET_HISTORY_SUCCESS :
+    case pvHistoryAction.GET_HISTORY_SUCCESS :
       return state.merge(Immutable.fromJS(action.payload));
-    case historyAction.CHANGE_HISTORY_STORE:
+    case pvHistoryAction.CHANGE_HISTORY_STORE:
       return state.merge(Immutable.fromJS(action.payload));
-    case historyAction.RESET_HISTORY:
+    case pvHistoryAction.RESET_HISTORY:
       return initState;
   }
   return state;
-}
+};
 
-export { historyAction, dataHistory };
+export {pvHistoryAction, pvDataHistory};

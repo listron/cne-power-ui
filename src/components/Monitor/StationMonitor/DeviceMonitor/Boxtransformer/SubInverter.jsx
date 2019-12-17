@@ -50,7 +50,7 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
   const confluenceStatus = { // 汇流箱设备状态
     light: {
       '400': '#ceebe0', // 正常
-      '500': '#dfdfdf', // 无通讯
+      '500': '#d4d4d4', // 无通讯
       '900': '#f1f1f1', // 未接入
       '801': '#f9b600', // 离散率>=10%数
       '802': '#a42b2c', // 离散率>=20%数

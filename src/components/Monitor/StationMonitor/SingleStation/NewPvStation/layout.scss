@@ -235,7 +235,7 @@
       display: flex;
       align-items: center;
       .activeIcon {
-        border-radius: 4px;
+        border-radius: 2px;
         width: 24px;
         height: 24px;
         margin-left: 4px;
@@ -369,10 +369,10 @@
         }
       }
       .weatherStationLink {
-        color: "#dfdfdf";
+        color: "#d4d4d4";
         .combinedTypeWeatherStation {
           margin-top: 45px;
-          border-radius: 4px;
+          border-radius: 2px;
           width: 72px;
           height: 72px;
           margin-right: 60px;
@@ -383,7 +383,7 @@
           }
         }
         .weatherStation {
-          border-radius: 4px;
+          border-radius: 2px;
           width: 72px;
           height: 72px;
           margin-right: 60px;
@@ -402,7 +402,7 @@
 
       .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
         border-bottom: 0;
-        border-radius: 4px 4px 0 0;
+        border-radius: 2px 2px 0 0;
       }
       .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
         width: 80px;
@@ -410,7 +410,7 @@
         text-align: center;
       }
       .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
-        border-radius: 4px 4px 0 0;
+        border-radius: 2px 2px 0 0;
         width: 80px;
         height: 33px;
         text-align: center;
@@ -422,7 +422,7 @@
     position: absolute;
     right: 0;
     top: 61px;
-    border-radius: 4px;
+    border-radius: 2px;
     width: 40px;
     height: 158px;
     display: flex;

@@ -231,7 +231,7 @@ class ChartLostTrend extends Component {
           gridIndex: 1,
           axisLabel: {
             textStyle: {
-              color: '#666666',
+              color: '#353535',
             },
             formatter: (value) => `${value}`.includes('.') ? '' : value,
           },

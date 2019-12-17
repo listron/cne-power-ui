@@ -58,7 +58,7 @@ class MonthsSelector extends Component {
             const active = curveCheckedMonths.includes(e);
             const backgroundColor = active ? monthColor : '#fff';
             const border = active ? `1px solid ${monthColor}` : '1px solid rgb(238,238,238)';
-            const color = active ? '#666' : '#dfdfdf';
+            const color = active ? '#666' : '#d4d4d4';
             return (<li
               className={styles.month}
               key={e}

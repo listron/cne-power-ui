@@ -202,7 +202,7 @@ class PowercurveChart extends Component {
         axisLine: {
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -216,7 +216,7 @@ class PowercurveChart extends Component {
         splitLine: {
           show: true,
           lineStyle: {
-            color: ['#dfdfdf'],
+            color: ['#d4d4d4'],
             type: 'dashed',
           },
         },
@@ -234,7 +234,7 @@ class PowercurveChart extends Component {
           axisLine: {
             lineStyle: {
 
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -246,7 +246,7 @@ class PowercurveChart extends Component {
           splitLine: {
             show: true,
             lineStyle: {
-              color: ['#dfdfdf'],
+              color: ['#d4d4d4'],
               type: 'dashed',
             },
           },

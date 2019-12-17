@@ -100,7 +100,7 @@ class OutputTenMin extends Component {
         }),
         axisLine: {
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -131,7 +131,7 @@ class OutputTenMin extends Component {
           axisLine: {
             show: true,
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           splitLine: {
@@ -151,7 +151,7 @@ class OutputTenMin extends Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           splitLine: {
@@ -210,7 +210,7 @@ class OutputTenMin extends Component {
     const resourceAnalysis = `/statistical/stationaccount/resource#${stationCode}`;
     return (
       <div className={styles.capabilityDiagramBox} >
-        <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#666', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
+        <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #d4d4d4", color: '#666', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
         {stationCode && <Link to={resourceAnalysis} ><i className="iconfont icon-more"></i></Link>}
       </div>
     )

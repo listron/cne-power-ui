@@ -60,7 +60,7 @@ class RealtimeChart extends Component {
     },
     splitLine: {
       lineStyle: {
-        color: '#dfdfdf',
+        color: '#d4d4d4',
         type: 'dotted',
       } 
     },
@@ -71,7 +71,7 @@ class RealtimeChart extends Component {
     gridIndex: i,
     axisLine: {
       lineStyle: {
-        color: '#dfdfdf'
+        color: '#d4d4d4'
       },
     },
     axisLabel: {
@@ -83,7 +83,7 @@ class RealtimeChart extends Component {
     },
     splitLine:{
       lineStyle: {
-        color: '#dfdfdf',
+        color: '#d4d4d4',
         type: 'dotted',
       } 
     },

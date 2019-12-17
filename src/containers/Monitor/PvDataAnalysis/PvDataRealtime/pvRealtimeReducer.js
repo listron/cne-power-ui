@@ -1,7 +1,6 @@
 import immutable from 'immutable';
-import moment from 'moment';
 
-const realtimeAction = {
+const pvRealtimeAction = {
   getAvailableDeviceType: Symbol('getAvailableDeviceType'), // 获取有测点的设备类型
   getRealtimeChart: Symbol('getRealtimeChart'), // 获取实时图表chart数据
   stopRealtimeChart: Symbol('stopRealtimeChart'), // 停止图表实时
@@ -11,12 +10,12 @@ const realtimeAction = {
   getSecendInterval: Symbol('getSecendInterval'), // 获取是否有秒级数据。
 
   GET_REALTIME_SUCCESS: Symbol('GET_REALTIME_SUCCESS'), // 获取api数据成功
-  CHANGE_REALTIME_STORE:Symbol('CHANGE_REALTIME_STORE'), // 手动更新当前history数据
-  RESET_REALTIME:Symbol('RESET_REALTIME'), // 数据重置
-}
+  CHANGE_REALTIME_STORE: Symbol('CHANGE_REALTIME_STORE'), // 手动更新当前history数据
+  RESET_REALTIME: Symbol('RESET_REALTIME'), // 数据重置
+};
 
 const initState = immutable.fromJS({
-  selectStationType: 0, // 选中的电站类型
+  selectStationType: 1, // 选中的电站类型
   deviceTypeCode: null, // 选中的设备类型
   dataTime: null, // 记录的最新数据时间
   tableLoading: false, // 列表请求的loading
@@ -32,10 +31,10 @@ const initState = immutable.fromJS({
   },
   listParam: { // 表格排序额外参数
     pageNum: 1, // 当前页码（从1开始）
-    pageSize: 10 // 每页条数
+    pageSize: 10, // 每页条数
   },
   realtimeType: 'chart', // 数据展示方式，'chart'图 / 'list'表格
-  
+
   stationDeviceTypes: [], // 电站下可选设备类型
   pointInfo: [], // 选中设备内可选测点信息。
   chartRealtime: {}, // chart图 - 所有历史数据
@@ -45,16 +44,16 @@ const initState = immutable.fromJS({
   endTime: null, // 导出的结束时间
 });
 
-const dataRealtime = (state = initState, action) => {
+const pvDataRealtime = (state = initState, action) => {
   switch (action.type) {
-    case realtimeAction.GET_REALTIME_SUCCESS :
+    case pvRealtimeAction.GET_REALTIME_SUCCESS :
       return state.merge(immutable.fromJS(action.payload));
-    case realtimeAction.CHANGE_REALTIME_STORE:
+    case pvRealtimeAction.CHANGE_REALTIME_STORE:
       return state.merge(immutable.fromJS(action.payload));
-    case realtimeAction.RESET_REALTIME:
+    case pvRealtimeAction.RESET_REALTIME:
       return initState;
   }
   return state;
-}
+};
 
-export { realtimeAction, dataRealtime };
+export {pvRealtimeAction, pvDataRealtime};

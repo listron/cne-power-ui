@@ -73,7 +73,7 @@ export const AllStationChart=({sequenceChartList})=>{
             axisLine: {
               onZero: false,
               lineStyle: {
-                color: '#dfdfdf',
+                color: '#d4d4d4',
               },
             },
             axisLabel: {
@@ -102,7 +102,7 @@ export const AllStationChart=({sequenceChartList})=>{
               },
               axisLine: {
                 lineStyle: {
-                  color: '#dfdfdf',
+                  color: '#d4d4d4',
                 },
               },
               axisLabel: {
@@ -122,7 +122,7 @@ export const AllStationChart=({sequenceChartList})=>{
               },
               axisLine: {
                 lineStyle: {
-                  color: '#dfdfdf',
+                  color: '#d4d4d4',
                 },
               },
               axisLabel: {
