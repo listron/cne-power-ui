@@ -3,6 +3,7 @@ import styles from './deviceManage.scss';
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import WarningTip from '../../../Common/WarningTip';
+import { handleRight } from '@utils/utilFunc';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../utils/utilFunc';
 
@@ -101,7 +102,8 @@ class DeviceManageList extends Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    const deviceListColumn = [
+    const deviceHandleRight = handleRight('book_operateDevice');
+    const deviceBaseColumn = [
       {
         title: '设备名称',
         dataIndex: 'deviceName',
@@ -155,38 +157,38 @@ class DeviceManageList extends Component {
           return text ? text : '--';
         },
       },
-      {
-        title: '操作',
-        dataIndex: 'edit',
-        key: 'edit',
-        render: (text, record) => {
-          return (
-            <div className={styles.editStyle}>
-              {record.deviceTypeCode === '509' ? (
-                <span
-                  style={{ cursor: 'not-allowed', color: '#f5f5f5' }}
-                  title="编辑"
-                  className="iconfont icon-edit"
-                />
-              ) : (
-                  <span
-                    className={styles.edit}
-                    title="编辑"
-                    style={{ cursor: 'pointer' }}
-                    className="iconfont icon-edit"
-                    onClick={() => this.showDeviceEdit(record)}
-                  />
-                )}
-              <span
-                title="删除"
-                className="iconfont icon-del"
-                onClick={() => this.deleteDevice(record)}
-              />
-            </div>
-          );
-        },
-      },
     ];
+    const deviceListColumn = deviceHandleRight ? deviceBaseColumn.concat({
+      title: '操作',
+      dataIndex: 'edit',
+      key: 'edit',
+      render: (text, record) => {
+        return (
+          <div className={styles.editStyle}>
+            {record.deviceTypeCode === '509' ? (
+              <span
+                style={{ cursor: 'not-allowed', color: '#f5f5f5' }}
+                title="编辑"
+                className="iconfont icon-edit"
+              />
+            ) : (
+                <span
+                  className={styles.edit}
+                  title="编辑"
+                  style={{ cursor: 'pointer' }}
+                  className="iconfont icon-edit"
+                  onClick={() => this.showDeviceEdit(record)}
+                />
+              )}
+            <span
+              title="删除"
+              className="iconfont icon-del"
+              onClick={() => this.deleteDevice(record)}
+            />
+          </div>
+        );
+      },
+    }): deviceBaseColumn;
     const { tableloading, deviceList } = this.props;
     const { showDeleteWarning, warningTipText } = this.state;
     return (
