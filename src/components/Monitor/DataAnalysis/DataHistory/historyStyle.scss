@@ -34,32 +34,51 @@
     }
   }
 
-  .searchPart {
-    padding: 20px 32px;
+  .searchPart,
+  .timeType {
+    padding: 20px 48px 0 10px;
     display: flex;
     flex-wrap: wrap;
 
     .stationSelect,
     .typeSelect,
-    .startSelect,
-    .endSelect {
-      flex: 0 0 25%;
+    .deviceSelect,
+    .startSelect {
+      flex: 1;
     }
 
-    .deviceSelect,
     .intervalSelect {
-      flex: 0 0 50%;
+      flex: 3;
+      // justify-content: flex-end;
     }
 
 
     .export {
       display: flex;
       flex: 1;
-      justify-content: flex-end;
+      justify-content: flex-start;
       align-items: center;
 
       .exportbtn {
-        // width: 64px;
+        background: rgba(206, 235, 224, 0.30);
+        border: 1px solid $themeColor;
+        border-radius: 2px;
+        width: 66px;
+        height: 30px;
+        color: $themeColor;
+        margin-left: 224px;
+      }
+
+      :global {
+        .ant-btn[disabled] {
+          background: #f1f1f1;
+          border: 1px solid #d4d4d4;
+
+          border-radius: 2px;
+          width: 66px;
+          height: 30px;
+          color: #999;
+        }
       }
     }
 
@@ -88,11 +107,15 @@
           }
         }
 
+        .ant-select {
+          width: 198px;
+        }
+
 
       }
 
       .text {
-        flex: 0 0 96px;
+        flex: 0 0 84px;
         text-align: right;
         margin-right: 8px;
       }
@@ -105,6 +128,10 @@
         }
       }
     }
+  }
+
+  .timeType {
+    padding: 10px 48px 14px 10px;
   }
 }
 
@@ -126,16 +153,19 @@
   flex: 0 0 196px;
 
   h3 {
+    background: $themeColor;
     height: 40px;
     line-height: 40px;
-    color: $darkColor;
+    color: #fff;
     border-bottom: 1px solid $promptColor;
     text-align: center;
   }
 
   .tipTxt {
+    margin-top: 16px;
     display: block;
     text-align: center;
+    color: $themeColor;
   }
 
   :global {
@@ -184,15 +214,13 @@
 
 .historyChart {
   display: flex;
-  flex-wrap: wrap;
   flex: 1;
-  align-content: flex-start;
+  flex-direction: column;
   border-left: 1px solid $promptColor;
 
   h4 {
-    flex-basis: 100%;
-    height: 60px;
-    line-height: 60px;
+    height: 50px;
+    line-height: 50px;
     display: flex;
     margin-bottom: 0;
     justify-content: space-between;
@@ -224,11 +252,6 @@
       }
     }
 
-    .eachTitle,
-    .tipTitle {
-      // flex: 1 0 33.33%;
-    }
-
     .tipTitle {
       text-align: right;
       padding-right: 24px;
@@ -236,19 +259,13 @@
     }
   }
 
-  .innerChart {
-    flex-basis: 100%;
-  }
+
 
   .nodata {
     display: flex;
     flex: 1;
     justify-content: center;
     align-items: center;
-    margin-top: 200px;
-
-
-
   }
 
   .chartTool {
@@ -299,12 +316,22 @@
 }
 
 .historyList {
+  // display: flex;
   flex: 1;
+  // width: 1400px;
+  width: calc(100vh - 460px);
+  // flex-direction: column;
   border-left: 1px solid $promptColor;
-  padding: 0 16px;
+  padding: 0 26px 0 16px;
+
+  :global {
+    .ant-table .ant-table-thead>tr>th {
+      padding: 0 8px;
+    }
+  }
 
   .pagination {
-    height: 60px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -340,6 +367,58 @@
     }
   }
 
+  .pageStyle {
+    margin-right: -26px;
+    height: 46px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+
+
+  .points,
+  .pointsValue .stationName,
+  .deviceTypeName,
+  .deviceModeName,
+  .time,
+  .deviceName {
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .deviceName,
+  .stationName {
+    width: 100px;
+  }
+
+  .deviceTypeName {
+    width: 100px;
+  }
+
+  .deviceModeName {
+    width: 150px;
+  }
+
+  .time {
+    width: 150px;
+  }
+
+  .points {
+    width: 120px;
+  }
+
+  .pointsValue {
+    width: 100px;
+    text-align: right;
+  }
+
+
+
+
+
   .sorterType {
     :global {
       .ant-table-column-sorters {
@@ -362,48 +441,32 @@
         height: 60px;
       }
 
-      tr {
-        display: flex;
-
-        th,
-        td {
-          padding: 8px;
-          line-height: 21px;
-        }
+      .ant-table .ant-table-thead>tr>th,
+      .ant-table .ant-table-tbody>tr>td {
+        padding: 0 8px;
       }
 
-      .stationName,
-      .deviceTypeName,
-      .deviceModeName,
-      .time,
-      .deviceName,
+      .ant-table-tbody>tr>td {
+        padding: 0 8px;
+      }
+
+      .ant-table-body-inner {
+        overflow-y: none !important;
+
+      }
+
       .points {
         word-break: break-all;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        width: 120px;
       }
 
-      .stationName {
-        flex: 0 0 100px;
+      .pointsValue {
+        width: 100px;
       }
 
-      .deviceTypeName {
-        flex: 0 0 100px;
-      }
-
-      .deviceModeName {
-        flex: 1 0 114px;
-      }
-
-      .time {
-        flex: 0 0 150px;
-      }
-
-      .deviceName,
-      .points {
-        flex: 1 0 100px;
-      }
     }
   }
 }
