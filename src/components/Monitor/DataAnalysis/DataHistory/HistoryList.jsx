@@ -79,13 +79,16 @@ class HistoryList extends Component {
     const { timeInterval } = queryParam;
     const { pageNum, pageSize } = listParam; // orderField
     const { pointData = [] } = dataList[0] || {};
+    const clientWidth = document.body.clientWidth;
+    //动态计算冻结列，根据可是窗口1440-1920区间，table的实际宽度为964-1444px,固定列宽度和为700px，测点列设置的为120px,所以的不同宽度下，不同的测点数量，选择何时激活fixed,
+    const fixedNum = (clientWidth - 476 - 700) / 120;
     const columns = [
       {
         title: '设备名称',
         dataIndex: 'deviceName',
         // className: 'deviceName',
 
-        fixed: pointData.length > 1 ? 'left' : false,
+        fixed: pointData.length > fixedNum ? 'left' : false,
         width: 120,
         render: (text) => <div className={styles.deviceTypeName} title={text}>{text}</div>,
         // sorter: true,
@@ -95,7 +98,7 @@ class HistoryList extends Component {
         title: '电站名称',
         dataIndex: 'stationName',
         // className: 'stationName',
-        fixed: pointData.length > 1 ? 'left' : false,
+        fixed: pointData.length > fixedNum ? 'left' : false,
         width: 120,
         render: (text) => <div className={styles.deviceTypeName} title={text}>{text}</div>,
         // sorter: true,
@@ -105,7 +108,7 @@ class HistoryList extends Component {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
         // className: 'deviceTypeName',
-        fixed: pointData.length > 1 ? 'left' : false,
+        fixed: pointData.length > fixedNum ? 'left' : false,
         width: 120,
         render: (text) => <div className={styles.deviceTypeName} title={text}>{text}</div>,
         // sorter: true,
@@ -115,7 +118,7 @@ class HistoryList extends Component {
         title: '型号',
         dataIndex: 'deviceModeName',
         // className: 'deviceModeName',
-        fixed: pointData.length > 1 ? 'left' : false,
+        fixed: pointData.length > fixedNum ? 'left' : false,
         width: 170,
         render: (text) => <div className={styles.deviceModeName} title={text}>{text}</div>,
         // sorter: true,
@@ -125,7 +128,7 @@ class HistoryList extends Component {
         title: '时间',
         dataIndex: 'time',
         // className: 'time',
-        fixed: pointData.length > 1 ? 'left' : false,
+        fixed: pointData.length > fixedNum ? 'left' : false,
         width: 170,
         render: (text) => <div className={styles.time} title={text}>{text}</div>,
         // sorter: true,
@@ -166,6 +169,10 @@ class HistoryList extends Component {
             <Icon onClick={this.showChart} type="bar-chart" className={historyType === 'chart' ? styles.active : styles.normal} />
             <Icon onClick={this.showList} type="bars" className={historyType === 'list' ? styles.active : styles.normal} />
           </div>
+          <span className={styles.eachTitle}>各设备测点历史数据趋势图</span>
+          <span className={styles.tipTitle}>数据为瞬时值</span>
+        </div>
+        <div className={styles.pageStyle}>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}

@@ -128,7 +128,7 @@ class PointTree extends Component {
     return (
       <section className={styles.pointTree}>
         <h3>选择测点({devicePoints.filter(e => !e.includes('group_')).length})</h3>
-        {pointInfo.length === 0 && <span className={styles.tipTxt}>请选择电站及设备</span>}
+        {pointInfo.length === 0 && <span className={styles.tipTxt}>请选择电站及设备!</span>}
 
         <Tree
           checkable

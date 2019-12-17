@@ -477,6 +477,8 @@ class HistorySearch extends Component {
               showTime
             />
           </div> */}
+        </div>
+        <div className={styles.timeType}>
           <div className={styles.intervalSelect}>
             <span className={styles.text}>数据时间间隔</span>
             <Select
