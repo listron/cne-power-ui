@@ -155,7 +155,7 @@ class RoleEditForm extends Component {
               }],
               initialValue: initialOperateName,
             })(
-              <RadioGroup onChange={this.onOperatetypeChange} value={initialOperateName}>
+              <RadioGroup onChange={this.onOperatetypeChange}>
                 <Radio value={'management'}>管理</Radio>
                 <Radio value={'implement'}>执行</Radio>
                 <Radio value={'browse'}>浏览</Radio>
