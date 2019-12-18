@@ -3,6 +3,7 @@ import styles from './pointManage.scss';
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import WarningTip from '../../../../components/Common/WarningTip';
+import { handleRight } from '@utils/utilFunc';
 
 
 
@@ -148,20 +149,34 @@ class PointManageList extends Component {
       //   dataIndex: 'devicePointDecimalplace',
       //   key: 'devicePointDecimalplace',
       // },
-      {
-        title: '操作',
-        key: 'caozuo',
-        render: (text, record, index) => {
-          return (
-            <div>
-              <span className={`${styles.editPoint}  iconfont icon-edit`} onClick={() => this.showEditPage(record)}></span>
-              <span className={`${styles.editPoint}  iconfont icon-del`} onClick={() => this.deletePoint(record)}></span>
-            </div>
-          );
-        },
+      // {
+      //   title: '操作',
+      //   key: 'caozuo',
+      //   render: (text, record, index) => {
+      //     return (
+      //       <div>
+      //         <span className={`${styles.editPoint}  iconfont icon-edit`} onClick={() => this.showEditPage(record)}></span>
+      //         <span className={`${styles.editPoint}  iconfont icon-del`} onClick={() => this.deletePoint(record)}></span>
+      //       </div>
+      //     );
+      //   },
 
-      },
+      // },
     ];
+
+    const pointOperation = handleRight('station_point_operate');
+    const operationColumn = {
+      title: '操作',
+      key: 'caozuo',
+      render: (text, record, index) => {
+        return (
+          <div>
+            <span className={`${styles.editPoint}  iconfont icon-edit`} onClick={() => this.showEditPage(record)}></span>
+            <span className={`${styles.editPoint}  iconfont icon-del`} onClick={() => this.deletePoint(record)}></span>
+          </div>
+        );
+      },
+    };
     const { loading, pointList, selectedRowKeys } = this.props;
     const rowSelection = {
       selectedRowKeys,
@@ -175,7 +190,7 @@ class PointManageList extends Component {
           loading={loading}
           rowSelection={rowSelection}
           onChange={this.tableChange}
-          columns={pointListColumn}
+          columns={pointOperation ? pointListColumn.concat(operationColumn) : pointListColumn}
           dataSource={pointList.map((e, i) => ({ key: i, ...e }))}
           className={styles.tableStyles}
           pagination={false}

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Input, Form } from 'antd';
+import { Button, Input, Form, Radio } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
 import RoleTree from './RoleTree';
 const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
 
 
 class RoleEditForm extends Component {
@@ -23,29 +24,38 @@ class RoleEditForm extends Component {
 
   constructor(props){
     super(props);
+    this.state = {
+      operateType: 'implement',
+    }
   }
 
   onSaveRole = () => {
-    const { enterpriseId, selectedRole, defaultMenuData } = this.props;
+    const { enterpriseId, selectedRole, defaultMenuData, operatetypeData } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
+        // const { roleDesc, rightId, operateName} = values;
         const { roleDesc, rightId} = values;
         const tmpDefault = defaultMenuData.map(e=>`${e}`);
         const outputRightSet = new Set([...rightId,...tmpDefault]);
         const outputRightArr = [...outputRightSet];
+        // const operateId = operatetypeData.find(e => {
+        //   return e.name === operateName;
+        // });
         if(this.props.showPage === 'create') {
           this.props.onCreateRole({
             roleDesc: roleDesc.trim(),
             rightId: outputRightArr.join(','),
             enterpriseId,
             continueAdd: false,
+            // operateId,
           });
         } else {
           this.props.onEditRole({
             roleDesc: roleDesc.trim(),
             rightId: outputRightArr.join(','),
             roleId: selectedRole[0].roleId,
-            enterpriseId
+            enterpriseId,
+            // operateId,
           })
         }
       }
@@ -95,18 +105,29 @@ class RoleEditForm extends Component {
     return defaultRootMenu;
   }
 
+  onOperatetypeChange = e => {
+    this.setState({
+      operateType: e.target.value,
+    });
+  };
+
+
   render(){
     const { getFieldDecorator } = this.props.form;
     const { showPage, loading, continueAdd, selectedRole, menuData } = this.props;
     const isCreate = showPage === 'create';
     const selectedRight = isCreate? [] : selectedRole[0].rightData;
     let initialRightValue = [];
+    let initialOperateName = '';
     const defaultRootMenu = this.getDefaultRootMenu(menuData);
     if(isCreate){
       initialRightValue = defaultRootMenu.map(e=>`${e}`);
+      initialOperateName = 'implement';
     }else{
       initialRightValue = this.getRightIdArr(selectedRight);
+      // initialOperateName = selectedRole[0].operateName;
     }
+
     return (     
       <Form onSubmit={this.onSubmit} className={styles.roleEditForm}>
         <FormItem label="角色名称">
@@ -127,6 +148,21 @@ class RoleEditForm extends Component {
             <Input placeholder="请输入..." />
           )}
           <span className={styles.instructionText}>(10字以内)</span>
+        </FormItem>
+        <FormItem label="权限设置">
+          {getFieldDecorator('operatetype', {
+              rules: [{
+                required: true,
+              }],
+              initialValue: initialOperateName,
+            })(
+              // <RadioGroup onChange={this.onChange} value={selectedRole[0].operateName ? selectedRole[0].operateName : this.state.operateType}>
+              <RadioGroup onChange={this.onOperatetypeChange} value={this.state.operateType}>
+                <Radio value={'management'}>管理</Radio>
+                <Radio value={'implement'}>执行</Radio>
+                <Radio value={'browse'}>浏览</Radio>
+              </RadioGroup>
+          )}
         </FormItem>
         <FormItem
           className={styles.dealProposal} 

@@ -8,6 +8,7 @@ import TransitionContainer from '../../../Common/TransitionContainer';
 import PowerCurveChart from './PowerCurveChart';
 import path from '../../../../constants/path';
 import Cookie from 'js-cookie';
+import { handleRight } from '@utils/utilFunc';
 
 import SingleStationImportFileModel from '../../../Common/SingleStationImportFileModel';
 
@@ -197,6 +198,7 @@ class PowerCurve extends Component {
   render() {
     const { stations, deviceModels, powerList, pageSize, pageNum, totalNum, powercurveDetail, loading } = this.props;
     const { selectStation, selectedRowKeys, visible, air, selectModle } = this.state;
+    const powerCurveOperation = handleRight('station_powercurve_operate');
     const dataSource = powerList.map((item, index) => ({ ...item, key: index, airDensityType: item.airDensityType === 1 ? '现场空气密度' : '标准空气密度' }));
     const columns = [
       {
@@ -265,6 +267,7 @@ class PowerCurve extends Component {
             </Select>
 
           </div>
+          {powerCurveOperation ?
           <div className={styles.Button}>
             <Button href={downloadHref}  target="_blank" className={styles.download} > 下载导入模板</Button>
             <SingleStationImportFileModel
@@ -277,7 +280,7 @@ class PowerCurve extends Component {
               hasExistedJudge={true}
             />
             <Button type="default" onClick={this.downloadPowerExcel} className={styles.export} > 导出</Button>
-          </div>
+          </div> : <div></div>}
           <div className={styles.PowerCurveTable}>
             <div className={styles.pagination}>
               <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}

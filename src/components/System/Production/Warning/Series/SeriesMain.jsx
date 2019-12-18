@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Input, Switch, Button, message, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
 import styles from "./series.scss";
+import { handleRight } from '@utils/utilFunc';
 
 class SeriesMain extends Component {
   static propTypes = {
@@ -86,6 +87,7 @@ class SeriesMain extends Component {
   render() {
     const { isShow } = this.state;
     const { lostGenPercent, isSend, sendNum } = this.props;
+    const seriesOperation = handleRight('inefficientDetect_modify');
     return (
       <div className={styles.seriesBox}>
         <div className={styles.thresholdt}>
@@ -112,7 +114,7 @@ class SeriesMain extends Component {
 
         {
           !isShow ? <div className={styles.btn}>
-            <Button onClick={this.modify} default >修改</Button>
+            {seriesOperation && <Button onClick={this.modify} default >修改</Button>}
           </div> :
             <div className={styles.btn}>
               <Button className={styles.btnBottom} onClick={this.handleClear} >恢复默认值</Button>

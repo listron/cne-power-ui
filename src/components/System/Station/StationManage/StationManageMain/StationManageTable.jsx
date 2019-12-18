@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
 import path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
+import { handleRight } from '@utils/utilFunc';
 
 // to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
 // 动态确认/取消后，改回调重置为null。可减少诸多记录状态的变量，利用一个交互函数进行覆盖处理。
@@ -173,7 +174,8 @@ class StationManageTable extends Component {
   render(){
     const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize  } = this.props;
     const { departmentModal, departmentSetInfo, uploading, fileList ,showWarningTip, warningTipText,deleteInfo} = this.state;
-    const authData = localStorage.getItem('authData') || '';
+    // const authData = localStorage.getItem('authData') || '';
+    const stationOperation = handleRight('station_export');
     const column = [
       {
         title: '电站名称',
@@ -187,6 +189,9 @@ class StationManageTable extends Component {
         }
       },
       ...stationManageTableColumn,
+    ];
+
+    const operationColumn = [
       {
         title: '部门设置',
         dataIndex: 'departmentStatus',
@@ -195,12 +200,12 @@ class StationManageTable extends Component {
         render: (text, record, index) => {
           const { stationDepartments } = record;
           if(stationDepartments && stationDepartments.length > 0){
-            return (<span title="查看" className="iconfont icon-look" onClick={()=>this.showDepartmentModal(record)}></span>)
-          }else{
-            return (<span title="去设置" className="iconfont icon-goset" onClick={()=>this.showDepartmentModal(record)}></span>)
+            return (<span title="查看" className="iconfont icon-look" onClick={()=>this.showDepartmentModal(record)}></span>);
           }
-        }
-      },{
+          return (<span title="去设置" className="iconfont icon-goset" onClick={()=>this.showDepartmentModal(record)}></span>);
+        },
+      },
+      {
         title: '操作',
         dataIndex: 'handler',
         key: 'handler',
@@ -210,26 +215,26 @@ class StationManageTable extends Component {
             return (<span>
               <i className={`${styles.editStation} iconfont icon-edit`} onClick={() => this.editStation(record, index)} />
               <span className={styles.deleteStation} onClick={()=>this.deleteEdit(record)}>删除</span>
-            </span>)
-          }else{
-            return (<span>
-              <i className={`${styles.editStation} iconfont icon-edit`} onClick={() => this.editStation(record, index)} />
-              <span className={styles.deleteDisable}>删除</span>
-            </span>)
+            </span>);
           }
-        }
-      }
+          return (<span>
+            <i className={`${styles.editStation} iconfont icon-edit`} onClick={() => this.editStation(record, index)} />
+            <span className={styles.deleteDisable}>删除</span>
+          </span>);
+        },
+      },
     ];
+
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
     return (
       <div className={styles.stationList}>
         <div className={styles.topHandler}>
-          <div className={styles.leftHandler}>
+          {stationOperation ? <div className={styles.leftHandler}>
             <Upload 
               action={`${path.basePaths.APIBasePath}${path.APISubPaths.system.uploadStationFile}`}
               className={styles.uploadStation}
               onChange={this.onStationUpload}
-              headers={{'Authorization': 'bearer ' + authData}}
+              headers={{'Authorization': 'bearer ' + stationOperation}}
               beforeUpload={this.beforeUploadStation}
               data={(file)=>({file})}
               showUploadList={false}
@@ -237,15 +242,15 @@ class StationManageTable extends Component {
             >
               <Button className={styles.plusButton} icon="plus" loading={uploading}>电站</Button>
             </Upload>
-            <Button href={downloadHref} download={downloadHref}  target="_blank"  >下载电站配置模板</Button>
-          </div>
+            {stationOperation && <Button href={downloadHref} download={downloadHref}  target="_blank"  >下载电站配置模板</Button>}
+          </div> : <div></div>}
           <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={()=>this.confirmWarningTip(deleteInfo)} value={warningTipText} />}
         <Table 
           loading={stationListLoading}
           dataSource={ stationList.map((e, i) => ({...e, key: i})) } 
-          columns={column} 
+          columns={stationOperation ? column.concat(operationColumn) : column}
           className={styles.stationTable}
           onChange={this.tableChange}
           pagination={false}
@@ -257,7 +262,7 @@ class StationManageTable extends Component {
           allDepartmentData={allDepartmentData}
         />}
       </div>
-    )
+    );
   }
 }
 

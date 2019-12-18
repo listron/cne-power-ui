@@ -6,7 +6,7 @@ import InputLimit from '../../../../Common/InputLimit';
 import moment from 'moment';
 import { Table, Icon, Modal, Form, DatePicker, Input, Button, TreeSelect } from 'antd';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
-import { numWithComma } from '../../../../../utils/utilFunc';
+import { numWithComma, handleRight } from '../../../../../utils/utilFunc';
 const FormItem = Form.Item;
 
 const SHOW_PARENT = TreeSelect.SHOW_PARENT;
@@ -192,6 +192,7 @@ class RecordDetailTable extends Component {
   render() {
     const { loading, detailListData, theme } = this.props;
     const { showWarningTip, warningTipText, showAddRecordModal, cleanoutRecord, editCleanoutPlan } = this.state;
+    const cleaningOperation = handleRight('analysis_cleanModel_planRecord_operate');
     const column = [
       {
         title: '计划清洗时间',
@@ -244,7 +245,41 @@ class RecordDetailTable extends Component {
         dataIndex: 'cleanProfit',
         key: 'cleanProfit',
         render(text) { return numWithComma(text); },
-      }, {
+      }, 
+      // {
+      //   title: '添加/查看清洗记录',
+      //   key: 'addRecord',
+      //   dataIndex: 'cleanType',
+      //   render: (text, record, index) => {
+      //     return (
+      //       text === 1 ? <div className={styles.iconStyles}>
+      //         <span style={{ marginRight: '8px' }} title="添加" className="iconfont icon-addto" onClick={() => this.addCleanRecord(record)}></span>
+      //         {/*   {this.addCleanoutRecord(record)} */}
+
+      //         <span title="查看" className="iconfont icon-viewplan" onClick={() => this.showRecodePlanModal(record, index)}></span>
+      //       </div> : ''
+      //     );
+      //   },
+      // }, {
+      //   title: '操作',
+      //   key: 'editAndDelet',
+      //   dataIndex: 'isDelete',
+      //   render: (text, record, index) => {
+      //     return (
+      //       <div>
+      //         <span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={() => this.showEditModal(record)}>
+      //         </span>
+
+      //         {text === 0 ? <span title="删除" className="iconfont icon-del" onClick={() => this.deleteCleanPlan(record)}></span> : ''}
+      //       </div>
+      //     );
+      //   },
+      // },
+
+    ];
+
+    const cleanOperation = [
+      {
         title: '添加/查看清洗记录',
         key: 'addRecord',
         dataIndex: 'cleanType',
@@ -273,7 +308,6 @@ class RecordDetailTable extends Component {
           );
         },
       },
-
     ];
     return (
       <div className={styles[theme]}>
@@ -282,7 +316,7 @@ class RecordDetailTable extends Component {
         <Table
           loading={loading}
           dataSource={detailListData.map((e, i) => ({ ...e, key: i }))}
-          columns={column}
+          columns={cleaningOperation ? column.concat(cleanOperation) : column}
           className={styles.stationTable}
           onChange={this.tableChange}
           pagination={false}

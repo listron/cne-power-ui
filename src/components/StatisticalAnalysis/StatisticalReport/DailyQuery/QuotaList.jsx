@@ -5,7 +5,7 @@ import moment from 'moment';
 import path from '../../../../constants/path';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
-import { dataFormat } from '../../../../utils/utilFunc';
+import { dataFormat, handleRight } from '../../../../utils/utilFunc';
 import styles from './dailyQuery.scss';
 
 const { APIBasePath } = path.basePaths;
@@ -77,6 +77,7 @@ class QuotaList extends Component {
     const { listParam, quotaListData, tableLoading, quotaInfoData, exportLoading } = this.props;
     const { pageNum, pageSize } = listParam;
     const { total = 0, dataList = [] } = quotaListData;
+    const dailyOperation = handleRight('dailyQuery_export');
 
     const otherCol = quotaInfoData.map(e => ({
       title: (e.unit && e.unit !== '%') ? () => (<TableColumnTitle title={e.label} unit={e.unit} style={{ maxWidth: '100%', height: '52px' }} />) : e.label,
@@ -111,12 +112,13 @@ class QuotaList extends Component {
     return (
       <div className={styles.quotaList}>
         <div className={styles.pagination}>
+        {dailyOperation ?
           <Button
           className={dataList.length === 0 ? styles.disabledExport : styles.listExport}
           onClick={this.onExport}
           loading={exportLoading}
           disabled={dataList.length === 0}
-          >导出</Button>
+          >导出</Button> : <div></div>}
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}

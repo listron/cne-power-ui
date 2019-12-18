@@ -7,6 +7,7 @@ import CommonPagination from '../../../Common/CommonPagination';
 import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import WarningTip from '../../../Common/WarningTip';
 import TransitionContainer from '../../../Common/TransitionContainer';
+import { handleRight } from '@utils/utilFunc';
 import EditWeather from './Edit';
 const ButtonGroup = Button.Group;
 
@@ -91,6 +92,20 @@ class WeatherList extends Component {
 
 
     render() {
+    const weatherOperation = handleRight('weatherConfig_operate');
+    const operateColumn = {
+            title: '操作',
+            className: styles.operate,
+            render: (text, record) => {
+                const { subordinateStationCode, stationCode } = record;
+                return (
+                    <span>
+                        {stationCode && !(subordinateStationCode === stationCode) && <i className="iconfont icon-edit" onClick={() => { this.editStaion(record); }} />}
+                        {(stationCode && subordinateStationCode && subordinateStationCode !== stationCode) && <i className="iconfont icon-refresh2" onClick={() => { this.refresh(record); }} />}
+                    </span>
+                );
+            },
+        };
         const columns = [
             {
                 title: '电站名称',
@@ -113,22 +128,23 @@ class WeatherList extends Component {
                 key: 'updateDate',
                 sorter: false,
             },
-            {
-                title: '操作',
-                className: styles.operate,
-                render: (text, record) => {
-                    const { subordinateStationCode, stationCode } = record;
-                    return (
-                        <span>
-                            {stationCode && !(subordinateStationCode === stationCode) && <i className="iconfont icon-edit" onClick={() => { this.editStaion(record); }} />}
-                            {(stationCode && subordinateStationCode && subordinateStationCode !== stationCode) && <i className="iconfont icon-refresh2" onClick={() => { this.refresh(record); }} />}
-                        </span>
-                    );
-                },
+            // {
+            //     title: '操作',
+            //     className: styles.operate,
+            //     render: (text, record) => {
+            //         const { subordinateStationCode, stationCode } = record;
+            //         return (
+            //             <span>
+            //                 {stationCode && !(subordinateStationCode === stationCode) && <i className="iconfont icon-edit" onClick={() => { this.editStaion(record); }} />}
+            //                 {(stationCode && subordinateStationCode && subordinateStationCode !== stationCode) && <i className="iconfont icon-refresh2" onClick={() => { this.refresh(record); }} />}
+            //             </span>
+            //         );
+            //     },
 
 
-            },
+            // },
         ];
+
         const { stations = [], listParameter = {}, totalNum, loading, weatherList, pageStatus } = this.props;
         const { pageSize, pageNum } = listParameter;
         const { showWarningTip, warningTipText, editList, filterStatus } = this.state;
@@ -176,7 +192,7 @@ class WeatherList extends Component {
                         <Table
                             loading={loading}
                             dataSource={weatherData}
-                            columns={columns}
+                            columns={weatherOperation ? columns.concat(operateColumn) : columns}
                             pagination={false}
                             onChange={this.tableChange}
                             locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
