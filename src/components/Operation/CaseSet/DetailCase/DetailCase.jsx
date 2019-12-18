@@ -5,7 +5,7 @@ import EditCase from '../EditCase/EditCase';
 import { Icon, Button } from 'antd';
 import WarningTip from '../../../../components/Common/WarningTip';
 import path from '../../../../constants/path';
-import Cookie from 'js-cookie';
+import { handleRight } from '@utils/utilFunc';
 const { originUri } = path.basePaths;
 class DetailCase extends React.Component {
   static propTypes = {
@@ -106,7 +106,7 @@ class DetailCase extends React.Component {
     const { caseDetail, showPage } = this.props;
     const dataDom = this.detailInfo(caseDetail);
     const { likeCount } = caseDetail;
-    const rightkey = Cookie.get('userRight').includes('operation_case_operate');//操作权限
+    const caseHandleRight = handleRight('operation_case_operate');//操作权限
     if (showPage === 'detail') {
       return (
         <div className={styles.caseDetail}>
@@ -114,7 +114,7 @@ class DetailCase extends React.Component {
           <div className={styles.pageTop}>
             <div className={styles.pageTopLeft}>
               <span className={styles.text}>查看案例集</span>
-              {rightkey && <Button type="primary" onClick={this.showEditPage} >编辑</Button>}
+              {caseHandleRight && <Button type="primary" onClick={this.showEditPage} >编辑</Button>}
             </div>
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
           </div>

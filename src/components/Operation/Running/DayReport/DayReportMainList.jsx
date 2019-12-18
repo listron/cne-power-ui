@@ -7,6 +7,7 @@ import Footer from '../../../Common/Footer';
 import DayReportListHandle from './DayReportListHandle';
 import styles from './dayReportAll.scss';
 import { Table, Icon } from 'antd';
+import { handleRight } from '@utils/utilFunc';
 import moment from 'moment';
 
 class DayReportMainList extends Component {
@@ -71,6 +72,7 @@ class DayReportMainList extends Component {
             const stationDayInfo = record.dataList.find(info => info.reportDate === e.reportDate);
             const { /* available, */ isUpload, status} = stationDayInfo;
             const afterToday = moment(e.reportDate) > moment();
+            const reportRight = handleRight('daily_report');
             /*
               available: true可以进行日报上报/查看, false不可进行任何操作-->直到选中日前一天日报数据上报
               status: false未上报日报，true已上传。
@@ -88,9 +90,9 @@ class DayReportMainList extends Component {
               </span>);
             }
             return ( // 未上报
-              <span onClick={()=>this.toUploadReport(record, e.reportDate)}>
+              reportRight ? <span onClick={()=>this.toUploadReport(record, e.reportDate)}>
                 <Icon type="plus-circle" theme="outlined" />
-              </span>
+              </span> : <span />
             );
           },
         });

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Form, Table} from 'antd';
 import moment from 'moment';
 import EditableCell from './EditableCell/EditableCell';
-
+import { handleRight } from '@utils/utilFunc';
 import styles from './warehouseGoodsTable.scss';
 import WarningTip from '../../../../../Common/WarningTip';
 
@@ -183,6 +183,7 @@ class WarehouseGoodsTable extends Component {
       showWarningTip,
       warningTipText,
     } = this.state;
+    const warehouseGoodRight = handleRight('book_operateGoods');
     const components = {
       body: {
         row: EditableFormRow,
@@ -195,7 +196,7 @@ class WarehouseGoodsTable extends Component {
         },
       },
     };
-    const columnsEdit = [
+    const baseColumnsEdit = [
       {
         title: '物品名称',
         dataIndex: 'goodsName',
@@ -214,33 +215,35 @@ class WarehouseGoodsTable extends Component {
         title: '操作人',
         dataIndex: 'user',
         render: (text) => <span title={text}>{text}</span>,
-      }, {
-        title: '操作',
-        render: (text, record) => {
-          const { editingKey } = this.state;
-          const editable = this.isEditing(record);
-          return (
-            <div>
-              {editable ?
-                (<EditableContext.Consumer>
-                  {form => {
-                    return (
-                      <a
-                        onClick={() => this.save(form, record.goodsId)}
-                        style={{ marginRight: 8 }}>
-                        <span style={{marginRight: '4px'}} title="编辑" className={'iconfont icon-doned'} />
-                      </a>
-                    );
-                  }}
-                </EditableContext.Consumer>)
-                : <a disabled={editingKey !== ''} onClick={() => this.edit(record.goodsId)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'} /></a>
-              }
-              <span title="删除" style={{cursor: 'pointer'}} className="iconfont icon-del" onClick={() => this.deleteMode(record)} />
-            </div>
-          );
-        },
       },
-    ].map((col) => {
+    ];
+    const totalColumnsEdit = warehouseGoodRight ? baseColumnsEdit.concat({
+      title: '操作',
+      render: (text, record) => {
+        const { editingKey } = this.state;
+        const editable = this.isEditing(record);
+        return (
+          <div>
+            {editable ?
+              (<EditableContext.Consumer>
+                {form => {
+                  return (
+                    <a
+                      onClick={() => this.save(form, record.goodsId)}
+                      style={{ marginRight: 8 }}>
+                      <span style={{marginRight: '4px'}} title="编辑" className={'iconfont icon-doned'} />
+                    </a>
+                  );
+                }}
+              </EditableContext.Consumer>)
+              : <a disabled={editingKey !== ''} onClick={() => this.edit(record.goodsId)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'} /></a>
+            }
+            <span title="删除" style={{cursor: 'pointer'}} className="iconfont icon-del" onClick={() => this.deleteMode(record)} />
+          </div>
+        );
+      },
+    }) : baseColumnsEdit;
+    const columnsEdit = totalColumnsEdit.map((col) => {
       if (!col.editable) {
         return col;
       }
@@ -255,7 +258,6 @@ class WarehouseGoodsTable extends Component {
         }),
       };
     });
-
     const columnsUnEdit = [
       {
         title: '物品名称',

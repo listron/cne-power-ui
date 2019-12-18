@@ -7,6 +7,7 @@ import WarningTip from '../../../Common/WarningTip';
 import CommonPagination from '../../../Common/CommonPagination';
 import styles from './warehouseManageComp.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
+import { handleRight } from '@utils/utilFunc';
 
 export default class ToolReserve extends Component {
 
@@ -91,7 +92,8 @@ export default class ToolReserve extends Component {
         style={{maxWidth: `${widthParam - 16}px`}}
       >{text || '--'}</div>
     );
-    return [
+    const toolHandleRight = handleRight('book_operateTool');
+    const column = [
       {
         title: '物资编码',
         dataIndex: 'materialCode',
@@ -170,24 +172,25 @@ export default class ToolReserve extends Component {
         render: (text) => (
           text > 0 ? <span className={styles.inWarehouse}>在库中</span> : <span className={styles.outWarehouse}>已出库</span>
         ),
-      }, {
-        title: '操作',
-        dataIndex: 'handle',
-        width: handleWidth,
-        render: (text, record) => {
-          const { isEntry } = record;
-          return (
-            <span
-              className={styles.handle}
-              onClick={() => this.showRemindModal(record, isEntry > 0 ? 'delete' : 'takeback')}
-            >
-              {isEntry > 0 ? <i className="iconfont icon-del" /> : <i className="iconfont icon-back2" />}
-              <span>{isEntry > 0 ? '删除' : '撤回'}</span>
-            </span>
-          );
-        },
       },
     ];
+    return toolHandleRight ? column.concat({
+      title: '操作',
+      dataIndex: 'handle',
+      width: handleWidth,
+      render: (text, record) => {
+        const { isEntry } = record;
+        return (
+          <span
+            className={styles.handle}
+            onClick={() => this.showRemindModal(record, isEntry > 0 ? 'delete' : 'takeback')}
+          >
+            {isEntry > 0 ? <i className="iconfont icon-del" /> : <i className="iconfont icon-back2" />}
+            <span>{isEntry > 0 ? '删除' : '撤回'}</span>
+          </span>
+        );
+      },
+    }) : column;
   }
 
   showRemindModal = ({ materialCode }, key) => { // key: 'delete' 'takeback'
