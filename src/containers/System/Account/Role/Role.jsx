@@ -31,7 +31,7 @@ class Role extends Component {
       enterpriseId: this.props.enterpriseId
     }
     this.props.getRoleList(params);
-    // this.props.getOperatetype(); // 获得权限操作类型
+    this.props.getOperatetype(); // 获得权限操作类型
   }
   componentWillUnmount() {
     this.props.resetRole();
