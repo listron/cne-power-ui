@@ -11,13 +11,14 @@ import WindDevice from '../../../../components/Monitor/StationMonitor/DeviceMoni
 import IntegrateLine from '../../../../components/Monitor/StationMonitor/DeviceMonitor/IntegrateLine/IntegrateLine';
 import BoosterStation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/BoosterDevice/BoosterStation';
 import Footer from '../../../../components/Common/Footer';
-import {deviceManageAction} from '@containers/Operation/Book/DeviceManage/deviceManageAction';
-import {commonAction} from '@containers/alphaRedux/commonAction';
+import { deviceManageAction } from '@containers/Operation/Book/DeviceManage/deviceManageAction';
+import { commonAction } from '@containers/alphaRedux/commonAction';
 
 class DeviceMonitor extends Component {
   static propTypes = {
     match: PropTypes.object,
     getDevices: PropTypes.func,
+    getBoosterstation: PropTypes.func,
     resetDeviceStore: PropTypes.func,
     theme: PropTypes.string,
   }
@@ -26,6 +27,9 @@ class DeviceMonitor extends Component {
     const main = document.getElementById('main');
     main && main.scroll(0, 0);
     const { stationCode, deviceTypeCode } = this.props.match.params;
+    if (deviceTypeCode === '301') {
+      this.props.getBoosterstation({ stationCode });
+    }
     this.props.getDevices({ deviceTypeCode, stationCode });
   }
 
@@ -34,6 +38,9 @@ class DeviceMonitor extends Component {
     const preTypeCode = prevProps.match.params.deviceTypeCode;
     if (preTypeCode !== deviceTypeCode) { // 设备类型变化，重新请求设备列表
       this.props.getDevices({ deviceTypeCode, stationCode });
+      if (deviceTypeCode === '301') {
+        this.props.getBoosterstation({ stationCode });
+      }
     }
   }
 
@@ -72,6 +79,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeDeviceStore: payload => dispatch({ type: deviceAction.CHANGE_DEVICE_MONITOR_STORE, payload }),
   resetDeviceStore: () => dispatch({ type: deviceAction.RESET_DEVICE_MONITOR_STORE }),
   getDevices: payload => dispatch({ type: deviceAction.getDevices, payload }),
+  getBoosterstation: payload => dispatch({ type: deviceAction.getBoosterstation, payload }),
   getDeviceInfoMonitor: payload => dispatch({ type: deviceAction.getDeviceInfoMonitor, payload }),
   getDeviceChartMonitor: payload => dispatch({ type: deviceAction.getDeviceChartMonitor, payload }),
   stopMonitor: payload => dispatch({ type: deviceAction.stopMonitor, payload }),
