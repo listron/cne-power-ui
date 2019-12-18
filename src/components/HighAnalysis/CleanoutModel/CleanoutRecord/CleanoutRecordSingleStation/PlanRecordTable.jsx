@@ -3,6 +3,7 @@ import AddCleanoutRecord from './AddCleanoutRecord';
 import styles from './PlanRecordTable.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import InputLimit from '../../../../Common/InputLimit';
+import { handleRight } from '@utils/utilFunc';
 import moment from 'moment';
 import { Table, Icon, Modal, Form, DatePicker, Input, Button, TreeSelect } from 'antd';
 const FormItem = Form.Item;
@@ -56,6 +57,7 @@ class PlanRecordTable extends Component {
 
     const { planId, cleanRecordListData, loading, cleanRecorddetail, theme } = this.props;
     const { showWarningTip, warningTipText, showEditModal, recordId } = this.state;
+    const planRecorOperation = handleRight('analysis_cleanModel_planRecord_operate');
 
     const column = [
       {
@@ -92,19 +94,33 @@ class PlanRecordTable extends Component {
         dataIndex: 'pr',
         key: 'pr',
 
-      }, {
-        title: '操作',
-        key: 'check',
-        render: (text, record, index) => {
-          return (
-            <div>
-              <span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={() => this.showEditRecoord(record)}></span>
-              <span title="删除" className="iconfont icon-del" onClick={() => this.showDeletModal(record)}></span>
-            </div>
-          );
-        },
-      },
+      }, 
+      // {
+      //   title: '操作',
+      //   key: 'check',
+      //   render: (text, record, index) => {
+      //     return (
+      //       <div>
+      //         <span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={() => this.showEditRecoord(record)}></span>
+      //         <span title="删除" className="iconfont icon-del" onClick={() => this.showDeletModal(record)}></span>
+      //       </div>
+      //     );
+      //   },
+      // },
     ];
+
+    const cleanOperation = {
+      title: '操作',
+      key: 'check',
+      render: (text, record, index) => {
+        return (
+          <div>
+            <span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={() => this.showEditRecoord(record)}></span>
+            <span title="删除" className="iconfont icon-del" onClick={() => this.showDeletModal(record)}></span>
+          </div>
+        );
+      },
+    };
 
     return (
       <div className={styles[theme]}>
@@ -116,7 +132,7 @@ class PlanRecordTable extends Component {
             const pr = `${+prArr[0] && +prArr[0] !== 0 ? prArr[0] : '--'},${+prArr[1] && +prArr[1] !== 0 ? prArr[1] : '--'}`;
             return ({ ...e, key: i, pr: pr });
           })}
-          columns={column}
+          columns={planRecorOperation ? column.concat(cleanOperation) : column}
           className={styles.stationTable}
           onChange={this.tableChange}
           pagination={false}

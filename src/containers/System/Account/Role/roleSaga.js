@@ -193,6 +193,23 @@ function *deleteRole(action) { // 删除角色
   }
 }
 
+function *getOperatetype(action){ // 获得权限操作类型
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.getOperatetype;
+  try{
+    const response = yield call(axios.get, url);
+    if(response.data.code === '10000') {
+      yield put({
+        type: roleAction.GET_ROLE_FETCH_SUCCESS,
+        payload: {
+          operatetypeData: response.data.data || [],
+        },
+      });
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
 
 
 export function* watchRole() {
@@ -204,5 +221,6 @@ export function* watchRole() {
   yield takeLatest(roleAction.EDIT_ROLE_SAGA, editRole);
   yield takeLatest(roleAction.DELETE_ROLE_SAGA, deleteRole);
   yield takeLatest(roleAction.RESET_ROLE_SAGA, resetRole);
+  yield takeLatest(roleAction.getOperatetype, getOperatetype);
 }
 

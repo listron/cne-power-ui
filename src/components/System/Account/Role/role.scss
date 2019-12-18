@@ -199,3 +199,106 @@
     }
   }
 }
+.tableModal{
+  :global{
+    .ant-modal{
+      .ant-modal-close{
+        top: -10px;
+        .ant-modal-close-x{
+          width: 40px;
+          height: 35px;
+          // font-size: 14px;
+          .anticon{
+            color: $themeColor;
+            background: #ceebe0;
+            border-radius: 50%;
+            font-size: 12px;
+            border: 2px solid #ceebe0;
+            &:hover{
+              background: #fff;
+              border: 2px solid #fff;
+            }
+          }
+        }
+      }
+      .ant-modal-header{
+        padding: 5px 24px;
+        background: $themeColor;
+        .ant-modal-title{
+          font-size: 14px;
+          color: #fff;
+        }
+      }
+      .ant-modal-body{
+        overflow-x: hidden;
+        max-height: 430px;
+        &::-webkit-scrollbar {
+          // 滚动条的设置
+          width: 6px;
+          height: 6px;
+        }
+        &::-webkit-scrollbar-track{
+          border-radius:2px;
+          background: #fff;
+        }
+        &::-webkit-scrollbar-thumb{
+          width: 100px;
+          background: rgba(0,0,0,0.50);
+          border-radius:10px;
+        }
+      }
+    }
+  }
+}
+.rightTable{
+  border: 1px solid #dfdfdf;
+  .tableHeader{
+    display: flex;
+  }
+  .tableHeader{
+    min-height: 30px;
+    background: #f4f4f4;
+    .secondColumn{
+      width: 145px;
+      padding: 4px 4px 4px 9px;
+      border-right: 1px solid #dfdfdf;
+    }
+    .thirdColumn{
+      width: 446px;
+      padding: 4px 4px 4px 9px;
+    }
+  }
+  .tableContent{
+    // min-height: 30px;
+    border-bottom: 1px solid #dfdfdf;
+    &:last-child{
+      border-bottom: 0;
+    }
+    .rows{
+      display: flex;
+      border-bottom: 1px solid #dfdfdf;
+      &:last-child{
+        border-bottom: 0;
+      }
+    }
+    .secondMenu{
+      width: 145px;
+      padding: 4px 4px 4px 9px;
+      border-right: 1px solid #dfdfdf;
+    }
+    .thirdMenu{
+      width: 446px;
+      padding: 4px 4px 4px 9px;
+      .partition{
+        display: inline-block;
+      }
+      .rightName{
+        &:last-child{
+          .partition:last-child{
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

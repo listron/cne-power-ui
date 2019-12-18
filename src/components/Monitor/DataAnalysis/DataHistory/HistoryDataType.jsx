@@ -5,6 +5,7 @@ import styles from './historyStyle.scss';
 import moment from 'moment';
 import path from '../../../../constants/path';
 import cookie from 'js-cookie';
+import { handleRight } from '@utils/utilFunc';
 
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
@@ -70,18 +71,20 @@ class HistoryDataType extends Component {
   render(){
     const { historyType, downloading, partHistory = {} } = this.props;
     const { dataList = [] } = partHistory;
+    const historyOperation = handleRight('realTime_export');
     return (
       <div className={styles.historyDataType}>
         <div className={styles.tabIcons}>
           <Icon onClick={this.showChart} type="bar-chart" className={historyType === 'chart'? styles.active : styles.normal} />
           <Icon onClick={this.showList} type="bars" className={historyType === 'list'? styles.active : styles.normal} />
         </div>
+        {historyOperation &&
         <Button
           className={styles.export}
           loading={downloading}
           onClick={this.exportHistory}
           disabled={dataList.length === 0}
-        >导出</Button>
+        >导出</Button>}
       </div>
     )
   }

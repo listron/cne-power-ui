@@ -189,6 +189,9 @@ class StationManageTable extends Component {
         }
       },
       ...stationManageTableColumn,
+    ];
+
+    const operationColumn = [
       {
         title: '部门设置',
         dataIndex: 'departmentStatus',
@@ -197,11 +200,10 @@ class StationManageTable extends Component {
         render: (text, record, index) => {
           const { stationDepartments } = record;
           if(stationDepartments && stationDepartments.length > 0){
-            return (<span title="查看" className="iconfont icon-look" onClick={()=>this.showDepartmentModal(record)}></span>)
-          }else{
-            return (<span title="去设置" className="iconfont icon-goset" onClick={()=>this.showDepartmentModal(record)}></span>)
+            return (<span title="查看" className="iconfont icon-look" onClick={()=>this.showDepartmentModal(record)}></span>);
           }
-        }
+          return (<span title="去设置" className="iconfont icon-goset" onClick={()=>this.showDepartmentModal(record)}></span>);
+        },
       },
       {
         title: '操作',
@@ -209,19 +211,18 @@ class StationManageTable extends Component {
         key: 'handler',
         render: (text, record, index) => { // 电站未接入且alarmStatus,departmentStatus,deviceStatus,pointStatus全部为0时，才能删除。
           const deletable = !record.alarmStatus && !record.departmentStatus && !record.pointStatus && !record.isConnected;
-          if(deletable && stationOperation){
+          if(deletable){
             return (<span>
               <i className={`${styles.editStation} iconfont icon-edit`} onClick={() => this.editStation(record, index)} />
               <span className={styles.deleteStation} onClick={()=>this.deleteEdit(record)}>删除</span>
-            </span>)
-          }else{
-            return (<span>
-              {stationOperation && <i className={`${styles.editStation} iconfont icon-edit`} onClick={() => this.editStation(record, index)} />}
-              <span className={styles.deleteDisable}>删除</span>
-            </span>)
+            </span>);
           }
-        }
-      }
+          return (<span>
+            <i className={`${styles.editStation} iconfont icon-edit`} onClick={() => this.editStation(record, index)} />
+            <span className={styles.deleteDisable}>删除</span>
+          </span>);
+        },
+      },
     ];
 
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
@@ -249,7 +250,7 @@ class StationManageTable extends Component {
         <Table 
           loading={stationListLoading}
           dataSource={ stationList.map((e, i) => ({...e, key: i})) } 
-          columns={column} 
+          columns={stationOperation ? column.concat(operationColumn) : column}
           className={styles.stationTable}
           onChange={this.tableChange}
           pagination={false}

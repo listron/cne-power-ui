@@ -8,6 +8,7 @@ import AlgorithmModal from '../../../../components/HighAnalysis/FaultDiagnose/Al
 import ListView from '../../../../components/HighAnalysis/FaultDiagnose/AlgorithmControl/ListView/ListView';
 import AddAlgorithm from '../../../../components/HighAnalysis/FaultDiagnose/AlgorithmControl/AddAlgorithm/AddAlgorithm';
 import Footer from '../../../../components/Common/Footer';
+import { handleRight } from '@utils/utilFunc';
 
 import styles from './algorithmControl.scss';
 
@@ -125,6 +126,7 @@ class AlgorithmControl extends Component {
   render() {
     const { pageFlag } = this.state;
     const { viewType } = this.props;
+    const controlOperation = handleRight('turbineFDD_console_new');
     const checkStyle = {
       color: '#ffffff',
       backgroundColor: '#199475',
@@ -155,7 +157,7 @@ class AlgorithmControl extends Component {
           </div>,
           <div className={styles.controlContainer} key="controlContainer">
             <div className={styles.controlBox}>
-            {(viewType === 'algorithm') && (
+            {(viewType === 'algorithm') && controlOperation && (
               <Button className={styles.addControl} onClick={() => {return this.onAddControlFunc(false);}}>
                 <Icon type="plus" />
                 <span className={styles.text}>添加</span>
