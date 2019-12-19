@@ -64,6 +64,7 @@ class OutputTenMin extends Component {
         right: 'center',
         top: 'center',
         z: -10,
+        $action: 'replace',
         style: {
           image: capabilityGraphic && '/img/noChartData1.png' || '',
           width: 60,
