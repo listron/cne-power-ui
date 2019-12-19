@@ -144,7 +144,13 @@ class HistoryChart extends Component {
           xAxisIndex: index,
           yAxisIndex: index,
           type: 'line',
+          symbol: 'circle',
+          showSymbol: false,
+          lineStyle: {
+            width: 3,
+          },
           data: point.pointInfo[device.deviceCode] || [],
+
         });
       });
     });
@@ -228,8 +234,8 @@ class HistoryChart extends Component {
       <section className={styles.historyChart}>
         <h4>
           <div className={styles.tabIcons}>
-            <Icon onClick={this.showChart} type="bar-chart" className={historyType === 'chart' ? styles.active : styles.normal} />
-            <Icon onClick={this.showList} type="bars" className={historyType === 'list' ? styles.active : styles.normal} />
+            <i onClick={this.showChart} className={historyType === 'chart' ? `${styles.active} iconfont icon-drawing` : `${styles.normal} iconfont icon-drawing`} />
+            <i onClick={this.showList} className={historyType === 'list' ? `${styles.active} iconfont icon-table` : `${styles.normal} iconfont icon-table`} />
           </div>
           {/* <span className={styles.eachTitle} /> */}
           <span className={styles.eachTitle}>各设备测点历史数据趋势图</span>

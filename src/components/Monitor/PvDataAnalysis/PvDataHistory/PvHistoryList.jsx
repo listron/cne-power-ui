@@ -81,11 +81,16 @@ class PvHistoryList extends Component {
     const {timeInterval} = queryParam;
     const {pageNum, pageSize} = listParam; // orderField
     const {pointData = []} = dataList[0] || {};
+    const clientWidth = document.body.clientWidth;
+    //动态计算冻结列，根据可是窗口1440-1920区间，table的实际宽度为964-1444px,固定列宽度和为700px，测点列设置的为120px,所以的不同宽度下，不同的测点数量，选择何时激活fixed,
+    const fixedNum = (clientWidth - 476 - 700) / 120;
     const columns = [
       {
         title: '设备名称',
         dataIndex: 'deviceName',
-        className: 'deviceName',
+        // className: 'deviceName',
+        fixed: pointData.length > fixedNum ? 'left' : false,
+        width: 120,
         render: (text) => <span title={text}>{text}</span>,
         // sorter: true,
         // className: orderField === 'deviceName' ? null : styles.sorterType,
@@ -93,7 +98,9 @@ class PvHistoryList extends Component {
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
-        className: 'stationName',
+        // className: 'stationName',
+        fixed: pointData.length > fixedNum ? 'left' : false,
+        width: 120,
         render: (text) => <span title={text}>{text}</span>,
         // sorter: true,
         // className: orderField === 'stationName' ? null : styles.sorterType,
@@ -101,7 +108,9 @@ class PvHistoryList extends Component {
       }, {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
-        className: 'deviceTypeName',
+        // className: 'deviceTypeName',
+        fixed: pointData.length > fixedNum ? 'left' : false,
+        width: 120,
         render: (text) => <span title={text}>{text}</span>,
         // sorter: true,
         // className: orderField === 'deviceTypeName' ? null : styles.sorterType,
@@ -109,7 +118,9 @@ class PvHistoryList extends Component {
       }, {
         title: '型号',
         dataIndex: 'deviceModeName',
-        className: 'deviceModeName',
+        // className: 'deviceModeName',
+        fixed: pointData.length > fixedNum ? 'left' : false,
+        width: 170,
         render: (text) => <span title={text}>{text}</span>,
         // sorter: true,
         // className: orderField === 'deviceModeName' ? null : styles.sorterType,
@@ -117,7 +128,9 @@ class PvHistoryList extends Component {
       }, {
         title: '时间',
         dataIndex: 'time',
-        className: 'time',
+        // className: 'time',
+        fixed: pointData.length > fixedNum ? 'left' : false,
+        width: 170,
         render: (text) => <span title={text}>{text}</span>,
         // sorter: true,
         // className: orderField === 'time' ? null : styles.sorterType,
@@ -128,7 +141,7 @@ class PvHistoryList extends Component {
       title: e.pointUnit ? () => (<TableColumnTitle
         title={e.pointName}
         unit={e.pointUnit}
-        style={{paddingTop: 0, maxWidth: '100%', height: '52px'}}
+        style={{paddingTop: 12, maxWidth: '102px', height: '56px'}}
       />) : e.pointName,
       dataIndex: e.devicePointCode,
       className: 'points',
@@ -139,7 +152,7 @@ class PvHistoryList extends Component {
       // sortOrder: this.getSortOrder(e.e.devicePointCode)
     }));
     const dataSource = dataList.map((e, i) => { // 数据处理及时间规范。
-      let pointInfo = {};
+      const pointInfo = {};
       e.pointData.forEach(point => {
         pointInfo[point.devicePointCode] = point.pointValue;
       });
@@ -152,11 +165,15 @@ class PvHistoryList extends Component {
     });
     return (
       <div className={styles.historyList}>
-        <div className={styles.tabIcons}>
-          <Icon onClick={this.showChart} type="bar-chart" className={historyType === 'chart' ? styles.active : styles.normal} />
-          <Icon onClick={this.showList} type="bars" className={historyType === 'list' ? styles.active : styles.normal} />
-        </div>
         <div className={styles.pagination}>
+          <div className={styles.tabIcons}>
+            <i onClick={this.showChart} className={historyType === 'chart' ? `${styles.active} iconfont icon-drawing` : `${styles.normal} iconfont icon-drawing`} />
+            <i onClick={this.showList} className={historyType === 'list' ? `${styles.active} iconfont icon-table` : `${styles.normal} iconfont icon-table`} />
+          </div>
+          <span className={styles.eachTitle}>各设备测点历史数据趋势</span>
+          <span className={styles.tipTitle}>数据为瞬时值</span>
+        </div>
+        <div className={styles.pageStyle}>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
@@ -165,6 +182,9 @@ class PvHistoryList extends Component {
           />
         </div>
         <Table
+          scroll={{ x: 700 + pointData.length * 120, y: 470 }}
+          showHeader={true}
+          bordered={true}
           loading={tableLoading}
           dataSource={dataSource}
           columns={columns.concat(pointColumn)}
