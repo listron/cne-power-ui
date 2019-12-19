@@ -5,7 +5,8 @@
   .typeCheck {
     display: flex;
 
-    .typeNormal, .typeActive {
+    .typeNormal,
+    .typeActive {
       height: 40px;
       line-height: 40px;
       flex-basis: 120px;
@@ -33,33 +34,65 @@
     }
   }
 
-  .searchPart {
-    padding: 20px 32px;
+  .searchPart,
+  .timeType {
+    padding: 20px 48px 0 10px;
     display: flex;
     flex-wrap: wrap;
 
-    .stationSelect, .typeSelect, .startSelect, .endSelect {
-      flex: 0 0 25%;
+    .stationSelect,
+    .typeSelect,
+    .deviceSelect,
+    .startSelect {
+      flex: 1;
     }
 
-    .deviceSelect, .intervalSelect {
-      flex: 0 0 50%;
+    .intervalSelect {
+      flex: 3;
+      // justify-content: flex-end;
     }
 
-    .stationSelect, .typeSelect, .deviceSelect, .startSelect, .endSelect, .intervalSelect {
+
+    .export {
+      display: flex;
+      flex: 1;
+      justify-content: flex-start;
+      align-items: center;
+
+      .exportbtn {
+        background: rgba(206, 235, 224, 0.30);
+        border: 1px solid $themeColor;
+        border-radius: 2px;
+        width: 66px;
+        height: 30px;
+        color: $themeColor;
+        margin-left: 224px;
+      }
+
+      :global {
+        .ant-btn[disabled] {
+          background: #f1f1f1;
+          border: 1px solid #d4d4d4;
+
+          border-radius: 2px;
+          width: 66px;
+          height: 30px;
+          color: #999;
+        }
+      }
+    }
+
+    .stationSelect,
+    .typeSelect,
+    .deviceSelect,
+    .startSelect,
+    .endSelect,
+    .intervalSelect {
       display: flex;
       line-height: 40px;
       height: 40px;
       align-items: center;
 
-      .text {
-        flex: 0 0 96px;
-        text-align: right;
-        margin-right: 8px;
-      }
-    }
-
-    .startSelect {
       :global {
         .ant-calendar-picker {
           width: 198px;
@@ -74,7 +107,17 @@
           }
         }
 
+        .ant-select {
+          width: 198px;
+        }
 
+
+      }
+
+      .text {
+        flex: 0 0 84px;
+        text-align: right;
+        margin-right: 8px;
       }
     }
 
@@ -85,12 +128,10 @@
         }
       }
     }
-    .export{
-      display: flex;
-      flex: 1;
-      justify-content: flex-end;
-      align-items: center;
-    }
+  }
+
+  .timeType {
+    padding: 10px 48px 14px 10px;
   }
 }
 
@@ -197,9 +238,8 @@
 
 .historyChart {
   display: flex;
-  flex-wrap: wrap;
   flex: 1;
-  align-content: flex-start;
+  flex-direction: column;
   border-left: 1px solid $promptColor;
 
   .noData{
@@ -211,7 +251,6 @@
   }
 
   h4 {
-    flex-basis: 100%;
     height: 50px;
     line-height: 50px;
     display: flex;
@@ -243,11 +282,6 @@
         color: #999;
         background-color: #f1f1f1;
       }
-    }
-
-    .eachTitle,
-    .tipTitle {
-      // flex: 1 0 33.33%;
     }
 
     .tipTitle {
@@ -308,46 +342,63 @@
 }
 
 .historyList {
+  // display: flex;
   flex: 1;
+  // width: 1400px;
+  width: calc(100vh - 460px);
+  // flex-direction: column;
   border-left: 1px solid $promptColor;
-  padding: 0 16px;
+  padding: 0 26px 0 16px;
 
-  .tabIcons {
-    height: 50px;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-
-    .active,
-    .normal {
-      cursor: pointer;
-      flex: 0 0 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .active {
-      color: #fff;
-      background-color: $themeColor;
-    }
-
-    .normal {
-      color: #999;
-      background-color: #f1f1f1;
+  :global {
+    .ant-table .ant-table-thead>tr>th {
+      padding: 0 8px;
     }
   }
 
   .pagination {
+    height: 50px;
     display: flex;
     align-items: center;
-    height: 50px;
-    justify-content: flex-end;
+    justify-content: space-between;
+
+    .tabIcons {
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+
+      .active,
+      .normal {
+        cursor: pointer;
+        flex: 0 0 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .active {
+        color: #fff;
+        background-color: $themeColor;
+      }
+
+      .normal {
+        color: #999;
+        background-color: #f1f1f1;
+      }
+    }
 
     .text {
       margin-left: 36px;
     }
+  }
+
+  .pageStyle {
+    margin-right: -26px;
+    height: 46px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
 
   .sorterType {
@@ -367,46 +418,43 @@
   }
 
   :global {
+    /*table新样式*/
+    .ant-table-wrapper{
+      box-shadow: 0 2px 5px 3px rgba(208,208,208,0.60);
+    }
+    /*table新样式*/
+    .ant-table .ant-table-tbody>tr:nth-of-type(even) {
+      background-color: #fbfbfb;
+    }
     .ant-table {
       .ant-table-thead tr th {
         height: 60px;
+        /*table新样式*/
+        background-color: $themeColor;
+        color: $slideFontColor;
       }
 
-      tr {
-        display: flex;
-
-        th, td {
-          padding: 8px;
-          line-height: 21px;
-        }
+      .ant-table .ant-table-thead>tr>th,
+      .ant-table .ant-table-tbody>tr>td {
+        padding: 0 8px;
       }
 
-      .stationName, .deviceTypeName, .deviceModeName, .time, .deviceName, .points {
+      .ant-table-tbody>tr>td {
+        padding: 0 8px;
+      }
+
+      .points {
         word-break: break-all;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        width: 120px;
       }
 
-      .stationName {
-        flex: 0 0 100px;
+      .pointsValue {
+        width: 100px;
       }
 
-      .deviceTypeName {
-        flex: 0 0 100px;
-      }
-
-      .deviceModeName {
-        flex: 1 0 114px;
-      }
-
-      .time {
-        flex: 0 0 150px;
-      }
-
-      .deviceName, .points {
-        flex: 1 0 100px;
-      }
     }
   }
 }
