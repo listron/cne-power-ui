@@ -361,11 +361,13 @@ class PvHistorySearch extends Component {
           </div>
           <div className={styles.export}>
             <Button
-              className={styles.exportbtn}
+              className={dataList.length === 0 ? `${styles.btn}` : `${styles.btn} ${styles.am} ${styles.amScale}`}
               loading={downloading}
               onClick={this.exportHistory}
               disabled={dataList.length === 0}
-            >导出</Button>
+            >
+              <span>导出</span>
+            </Button>
           </div>
         </div>
       </div>

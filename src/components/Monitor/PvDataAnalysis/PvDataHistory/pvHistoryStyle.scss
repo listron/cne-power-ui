@@ -59,24 +59,78 @@
       justify-content: flex-start;
       align-items: center;
 
-      .exportbtn {
-        background: rgba(206, 235, 224, 0.30);
-        border: 1px solid $themeColor;
-        border-radius: 2px;
-        width: 66px;
-        height: 30px;
+      .btn{
+        display: inline-block;
+        vertical-align: top;
+        @include lineheight(32px);
+        letter-spacing: 1px;
         color: $themeColor;
+        transition: all .4s;
+        position: relative;
+        font-size: 14px;
         margin-left: 224px;
+        background: rgba(206,235,224,0.30);
+        box-shadow:inset 1px 1px 0 0 rgba(255,255,255,0.50);
+        border: 1px solid $themeColor;
       }
+      .am {
+        overflow: hidden;
+      }
+      .amScale:before {
+        background: $slideSelectColor;
+        width: 0;
+        height: 0;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        border-radius: 1000px;
+        opacity: 0;
+        transition: all .6s;
+      }
+      .am:before {
+        content: '';
+        display: block;
+        position: absolute;
+        z-index: 1;
+      }
+      .amScale:hover:before {
+        width: 120%;
+        height: 200%;
+        opacity: 1;
+      }
+
+      .am > span {
+        position: relative;
+        z-index: 2;
+      }
+
+      //.exportbtn {
+      //  background: rgba(206, 235, 224, 0.30);
+      //  border: 1px solid $themeColor;
+      //  border-radius: 2px;
+      //  width: 66px;
+      //  height: 30px;
+      //  color: $themeColor;
+      //  margin-left: 224px;
+      //  overflow: hidden;
+      //  transition: all .4s;
+      //  position: relative;
+      //
+      //  &:hover{
+      //    background-color: red;
+      //    opacity: 1;
+      //    transition: all .6s;
+      //    transform: translate(-50%,-50%);
+      //    border-radius: 1000px;
+      //  }
+      //}
 
       :global {
         .ant-btn[disabled] {
           background: #f1f1f1;
           border: 1px solid #d4d4d4;
-
           border-radius: 2px;
-          width: 66px;
-          height: 30px;
+          @include lineheight(32px);
           color: #999;
         }
       }
@@ -242,14 +296,6 @@
   flex-direction: column;
   border-left: 1px solid $promptColor;
 
-  .noData{
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    margin-top: 200px;
-  }
-
   h4 {
     height: 50px;
     line-height: 50px;
@@ -291,8 +337,13 @@
     }
   }
 
-  .innerChart {
-    flex-basis: 100%;
+
+
+  .nodata {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
   }
 
   .chartTool {
@@ -313,7 +364,8 @@
         margin: 0 8px;
         position: relative;
 
-        &::before, &::after {
+        &::before,
+        &::after {
           color: inherit;
           content: '-';
           position: absolute;
