@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {Icon, Table} from 'antd';
+import React, { Component } from 'react';
+import { Icon, Table } from 'antd';
 import styles from './pvHistoryStyle.scss';
 import PropTypes from 'prop-types';
 import CommonPagination from '../../../Common/CommonPagination';
 import moment from 'moment';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
-import {numWithComma} from '../../../../utils/utilFunc';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 class PvHistoryList extends Component {
   static propTypes = {
@@ -18,8 +18,8 @@ class PvHistoryList extends Component {
     changeHistoryStore: PropTypes.func,
   };
 
-  onPaginationChange = ({pageSize, currentPage}) => { // 操作分页器
-    const {getListHistory, queryParam, listParam} = this.props;
+  onPaginationChange = ({ pageSize, currentPage }) => { // 操作分页器
+    const { getListHistory, queryParam, listParam } = this.props;
     getListHistory({
       queryParam,
       listParam: {
@@ -76,11 +76,11 @@ class PvHistoryList extends Component {
   };
 
   render() {
-    const {partHistory, listParam, queryParam, tableLoading, historyType} = this.props;
-    const {totalCount = 0, dataList = []} = partHistory;
-    const {timeInterval} = queryParam;
-    const {pageNum, pageSize} = listParam; // orderField
-    const {pointData = []} = dataList[0] || {};
+    const { partHistory, listParam, queryParam, tableLoading, historyType } = this.props;
+    const { totalCount = 0, dataList = [] } = partHistory;
+    const { timeInterval } = queryParam;
+    const { pageNum, pageSize } = listParam; // orderField
+    const { pointData = [] } = dataList[0] || {};
     const clientWidth = document.body.clientWidth;
     //动态计算冻结列，根据可是窗口1440-1920区间，table的实际宽度为964-1444px,固定列宽度和为700px，测点列设置的为120px,所以的不同宽度下，不同的测点数量，选择何时激活fixed,
     const fixedNum = (clientWidth - 476 - 700) / 120;
@@ -91,7 +91,7 @@ class PvHistoryList extends Component {
         // className: 'deviceName',
         fixed: pointData.length > fixedNum ? 'left' : false,
         width: 120,
-        render: (text) => <span title={text}>{text}</span>,
+        render: (text) => <span style={{ paddingLeft: '12px' }} title={text}>{text}</span>,
         // sorter: true,
         // className: orderField === 'deviceName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceName')
@@ -141,7 +141,7 @@ class PvHistoryList extends Component {
       title: e.pointUnit ? () => (<TableColumnTitle
         title={e.pointName}
         unit={e.pointUnit}
-        style={{paddingTop: 12, maxWidth: '102px', height: '56px'}}
+        style={{ paddingTop: 12, maxWidth: '102px', height: '56px' }}
       />) : e.pointName,
       dataIndex: e.devicePointCode,
       className: 'points',
@@ -190,7 +190,7 @@ class PvHistoryList extends Component {
           columns={columns.concat(pointColumn)}
           // onChange={this.onListChange}
           pagination={false}
-          locale={{emptyText: <img width="223" height="164" src="/img/nodata.png"/>}}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
     );

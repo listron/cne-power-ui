@@ -59,7 +59,7 @@
       justify-content: flex-start;
       align-items: center;
 
-      .btn{
+      .btn {
         display: inline-block;
         vertical-align: top;
         @include lineheight(32px);
@@ -69,37 +69,41 @@
         position: relative;
         font-size: 14px;
         margin-left: 224px;
-        background: rgba(206,235,224,0.30);
-        box-shadow:inset 1px 1px 0 0 rgba(255,255,255,0.50);
+        background: rgba(206, 235, 224, 0.30);
+        box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.50);
         border: 1px solid $themeColor;
       }
+
       .am {
         overflow: hidden;
       }
+
       .amScale:before {
         background: $slideSelectColor;
         width: 0;
         height: 0;
         left: 50%;
         top: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         border-radius: 1000px;
         opacity: 0;
         transition: all .6s;
       }
+
       .am:before {
         content: '';
         display: block;
         position: absolute;
         z-index: 1;
       }
+
       .amScale:hover:before {
         width: 120%;
         height: 200%;
         opacity: 1;
       }
 
-      .am > span {
+      .am>span {
         position: relative;
         z-index: 2;
       }
@@ -201,7 +205,8 @@
     display: flex;
     align-items: center;
 
-    .active, .normal {
+    .active,
+    .normal {
       cursor: pointer;
       flex: 0 0 50px;
       height: 50px;
@@ -229,11 +234,12 @@
 .pointTree {
   flex: 0 0 196px;
 
-  .pointTreeInfo{
+  .pointTreeInfo {
     text-align: center;
     color: $themeColor;
     margin-top: 16px;
   }
+
   h3 {
     height: 42px;
     line-height: 42px;
@@ -241,7 +247,7 @@
     text-align: center;
     background-color: $themeColor;
 
-    .num{
+    .num {
       color: #f9b600;
     }
   }
@@ -416,6 +422,11 @@
       height: 56px;
       line-height: 0;
     }
+
+    .ant-table-thead>tr:first-child>th:first-child {
+      padding-left: 20px;
+    }
+
   }
 
   .pagination {
@@ -480,14 +491,17 @@
   }
 
   :global {
+
     /*table新样式*/
-    .ant-table-wrapper{
-      box-shadow: 0 2px 5px 3px rgba(208,208,208,0.60);
+    .ant-table-wrapper {
+      box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.60);
     }
+
     /*table新样式*/
     .ant-table .ant-table-tbody>tr:nth-of-type(even) {
       background-color: #fbfbfb;
     }
+
     .ant-table {
       .ant-table-thead tr th {
         //height: 60px;
