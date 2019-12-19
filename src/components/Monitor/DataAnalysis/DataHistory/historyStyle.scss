@@ -436,9 +436,20 @@
   }
 
   :global {
+    /*table新样式*/
+    .ant-table-wrapper{
+      box-shadow: 0 2px 5px 3px rgba(208,208,208,0.60);
+    }
+    /*table新样式*/
+    .ant-table .ant-table-tbody>tr:nth-of-type(even) {
+      background-color: #fbfbfb;
+    }
     .ant-table {
       .ant-table-thead tr th {
         height: 60px;
+        /*table新样式*/
+        background-color: $themeColor;
+        color: $slideFontColor;
       }
 
       .ant-table .ant-table-thead>tr>th,
@@ -448,11 +459,6 @@
 
       .ant-table-tbody>tr>td {
         padding: 0 8px;
-      }
-
-      .ant-table-body-inner {
-        overflow-y: none !important;
-
       }
 
       .points {

@@ -345,6 +345,8 @@ class PvHistorySearch extends Component {
               onCalendarChange={this.onCalendarChange}
             />
           </div>
+        </div>
+        <div className={styles.timeType}>
           <div className={styles.intervalSelect}>
             <span className={styles.text}>数据时间间隔</span>
             <Select
@@ -359,6 +361,7 @@ class PvHistorySearch extends Component {
           </div>
           <div className={styles.export}>
             <Button
+              className={styles.exportbtn}
               loading={downloading}
               onClick={this.exportHistory}
               disabled={dataList.length === 0}
