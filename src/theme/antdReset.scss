@@ -3,30 +3,41 @@
 
 :global {
   .ant-table {
+
     //table行高，高亮，背景色调整；
     .ant-table-tbody {
       background: #fff;
-      & > tr:hover {
+
+      &>tr:hover {
         td {
           background: $tableSelectedBackground;
         }
       }
     }
-    .ant-table-thead > tr > th,
-    .ant-table-tbody > tr > td {
+
+    //table的hover颜色
+    .ant-table-tbody>tr:hover:not(.ant-table-expanded-row)>td {
+      background: $tableSelectedBackground;
+    }
+
+    .ant-table-thead>tr>th,
+    .ant-table-tbody>tr>td {
       padding: 0 16px;
       height: 40px;
       line-height: 40px;
       color: $darkColor;
     }
-    .ant-table-thead > tr > th {
+
+    .ant-table-thead>tr>th {
       background: #f4f4f4;
       color: $darkColor;
     }
+
     .ant-table-column-sorter-up.on .anticon-caret-up {
       //table表格排序上三角点击后的的颜色
       color: $themeColor;
     }
+
     .ant-table-column-sorter-down.on .anticon-caret-down {
       //table表格排序下三角点击后的的颜色
       color: $themeColor;
@@ -34,18 +45,21 @@
   }
 
   .ant-tree {
+
     // 对antd tree控件的初始化： 高两色调整。
     .ant-tree-checkbox-checked .ant-tree-checkbox-inner {
       background-color: $themeColor;
       border-color: $themeColor;
     }
+
     .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner {
       background-color: #fff;
       border-color: $themeColor;
     }
+
     .ant-tree-checkbox-wrapper:hover .ant-tree-checkbox-inner,
     .ant-tree-checkbox:hover .ant-tree-checkbox-inner,
-    .ant-tree-checkbox-input:focus + .ant-tree-checkbox-inner {
+    .ant-tree-checkbox-input:focus+.ant-tree-checkbox-inner {
       border-color: $themeColor;
     }
   }
@@ -54,6 +68,7 @@
     //antd按钮样式调整-高亮
     color: $darkColor;
     @include highLight($themeColor);
+
     &:hover {
       color: $themeColor;
     }
@@ -64,6 +79,7 @@
     border-color: $themeColor;
     background: transparent;
     text-shadow: initial;
+
     &:active,
     // &:focus,
     &:hover {
@@ -83,6 +99,7 @@
     display: flex;
     padding-right: 4px;
     margin-right: 8px;
+
     i {
       width: 30px;
       height: 30px;
@@ -94,6 +111,7 @@
       color: #fff;
       margin-right: 4px;
     }
+
     &:hover,
     // &:focus,
     &:active {
@@ -108,6 +126,7 @@
     // 重置之类的
     color: $themeColor;
     border-color: $themeColor;
+
     &:active,
     // &:focus,
     &:hover {
@@ -121,14 +140,17 @@
       &:first-child:not(:last-child) {
         border-right-color: $themeColor;
       }
+
       &:last-child:not(:first-child) {
         border-left-color: $themeColor;
       }
     }
   }
+
   .ant-select-dropdown-menu-item:hover {
     background-color: #ceebe0;
   }
+
   .ant-select:not(.ant-select-disabled) {
     .ant-select-selection {
       .ant-select-selection__rendered {
@@ -136,12 +158,15 @@
           color: $promptColor;
         }
       }
+
       .ant-select-arrow {
         color: $darkColor;
       }
+
       @include highLight($themeColor);
     }
   }
+
   .ant-switch-checked {
     color: $themeColor;
   }
@@ -151,16 +176,20 @@
       color: $themeColor;
       background-color: $themeColor;
     }
+
     .ant-tabs-nav,
     .ant-tabs-tab-active {
       color: $themeColor;
     }
+
     .ant-tabs-nav .ant-tabs-tab-active:hover {
       color: $themeColor;
     }
+
     .ant-tabs-tab {
       color: $darkColor;
     }
+
     // .ant-tabs-nav .ant-tabs-tab:hover{
     //   color: $themeColor;
     // }
@@ -179,6 +208,7 @@
   .ant-input:not(.ant-input-disabled):hover {
     border-color: $themeColor;
   }
+
   .ant-input {
     background: #ffffff;
     border: 1px solid $promptColor;
@@ -186,6 +216,7 @@
     width: 198px;
     height: 31px;
   }
+
   /*输入框前面的小方块*/
   .ant-input-affix-wrapper .ant-input-prefix {
     left: 12px;
@@ -203,6 +234,7 @@
   .ant-form-horizontal {
     margin-bottom: 21px;
   }
+
   /*input的鼠标移上颜色*/
   .ant-input-affix-wrapper:not(ant-input-disabled):hover {
     border-color: $themeColor;
@@ -212,15 +244,18 @@
   /*步骤*/
   .ant-steps {
     margin-bottom: 20px;
+
     /*步骤的标题的字体大小*/
     .ant-steps-item-title {
       font-size: 12px;
     }
+
     //字体颜色
-    .ant-steps-item-process > .ant-steps-item-content > .ant-steps-item-title,
-    .ant-steps-item-finish > .ant-steps-item-content > .ant-steps-item-title {
+    .ant-steps-item-process>.ant-steps-item-content>.ant-steps-item-title,
+    .ant-steps-item-finish>.ant-steps-item-content>.ant-steps-item-title {
       color: #fff;
     }
+
     /*流程步骤的icon大小形状以及对齐*/
     .ant-steps-item-icon {
       border: 1px solid rgba(0, 0, 0, 0.25);
@@ -234,6 +269,7 @@
       vertical-align: -22px;
       margin-left: 10px;
     }
+
     /*流程步骤的icon颜色背景*/
     .ant-steps-item-process .ant-steps-item-icon,
     .ant-steps-item-finish .ant-steps-item-icon {
@@ -241,14 +277,17 @@
       background: #ceebe0;
       line-height: 13px;
     }
+
     .ant-steps-item-title:after {
       width: 0;
     }
-    .ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon,
-    .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+
+    .ant-steps-item-process .ant-steps-item-icon>.ant-steps-icon,
+    .ant-steps-item-finish .ant-steps-item-icon>.ant-steps-icon {
       color: $themeColor;
     }
   }
+
   //控制步骤的背景图的显示问题。
   .ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item {
     margin-right: 0;
@@ -259,48 +298,58 @@
     background-color: $themeColor;
     border-color: $themeColor;
   }
+
   .ant-checkbox-indeterminate .ant-checkbox-inner {
     background-color: #fff;
     border-color: $themeColor;
   }
+
   .ant-checkbox-wrapper:hover .ant-checkbox-inner,
   .ant-checkbox:hover .ant-checkbox-inner,
-  .ant-checkbox-input:focus + .ant-checkbox-inner {
+  .ant-checkbox-input:focus+.ant-checkbox-inner {
     border-color: $themeColor;
   }
+
   .ant-checkbox-disabled .ant-checkbox-inner {
     background-color: #eaeaea;
     border-color: rgba(0, 0, 0, 0.15);
     border-radius: 2px;
     color: $darkColor;
   }
+
   /*ant-btn-dashed:hover ant-btn-dashed:focus颜色*/
   .ant-btn-dashed:hover,
   // .ant-btn-dashed:focus,
   .ant-btn-dashed::selection {
     color: $darkColor;
   }
+
   /*select下拉框背景色*/
   .ant-select-dropdown-menu-item-active {
     background-color: #f8f8f8;
   }
+
   .ant-switch-checked {
     background-color: $themeColor;
   }
+
   // 加载的spin
   .ant-spin-dot i {
     background-color: $themeColor;
   }
+
   //ant-select-dropdown-menu下拉框选中的√颜色
   .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after,
   .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
     color: $themeColor;
   }
+
   // antd提示语message图标颜色
   .ant-message-info .anticon,
   .ant-message-loading .anticon {
     color: $themeColor;
   }
+
   //modal框
   .ant-modal-wrap {
     .ant-modal {
