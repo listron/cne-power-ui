@@ -50,9 +50,9 @@ class pvStationHeader extends React.Component {
         </div>
         <div className={styles.dataColumn}>
           <div>日发电量  <span className={styles.dataValue}>{deviceValueFormat(dayPower, '--', 2, true)}</span> {powerUnit}  </div>
-            <div className={styles.equivalentTime}>
-              <span>日等效时<span className={`${styles.dataValue} ${equivalentHoursValidation && styles.specialColor}`}>{deviceValueFormat(equivalentHours, '--', 2)}</span>h</span>
-              {equivalentHoursValidation &&
+          <div className={styles.equivalentTime}>
+            <span>日等效时<span className={`${styles.dataValue} ${equivalentHoursValidation && styles.specialColor}`}>{deviceValueFormat(equivalentHours, '--', 2)}</span>h</span>
+            {equivalentHoursValidation &&
               <div className={styles.tooltipName}>
                 <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={equivalentHoursValidation}> <i className="iconfont icon-help"></i>
                 </Tooltip>

@@ -3,6 +3,9 @@
 
 .light {
   background: #fff;
+  .specialColor {
+    color: #a22c30 !important;
+  }
   .headStation {
     border-bottom: 1px dashed #d4d4d4;
     color: $darkColor;
@@ -18,9 +21,6 @@
       .dataValue {
         color: $themeColor;
       }
-      // .radiation {
-      //   color: #f9b600;
-      // }
     }
   }
   .StationTitle {
@@ -75,14 +75,12 @@
         color: $darkColor;
         background: #ffffff;
         border: 1px solid #d4d4d4;
-        &:hover {
-          box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.2);
+        .changeNum {
+          color: $themeColor;
         }
         a {
           color: $darkColor;
-        }
-        .changeNum {
-          color: $themeColor;
         }
         .staionCenter {
           border-bottom: 1px solid #d4d4d4;
@@ -94,6 +92,14 @@
             &:last-child {
               border: none;
             }
+          }
+        }
+        :global {
+          .iconfont {
+            font-size: 20px;
+          }
+          .icon-alert {
+            color: #a42b2c;
           }
         }
       }
@@ -116,42 +122,76 @@
       .normal {
         // 正常的状态
         .stationTop {
-          background: #ceebe0;
-        }
-        .stationName {
+          background: linear-gradient(-90deg, #ffffff 0%, #ceebe0 100%);
           color: $themeColor;
+        }
+        &:hover {
+          box-shadow: 0 0 6px 2px rgba(25, 148, 117, 0.6);
         }
       }
 
       .alarm {
         .stationTop {
-          background: #d01b31;
-          color: #fff;
-          .changeNum {
-            color: #fff;
-          }
+          background: linear-gradient(-90deg, #ffffff 0%, #f9dcd8 100%);
+          color: #a42b2c;
         }
-        .stationName {
-          color: #fff;
+        animation: alarm 3s ease-in-out 1s infinite;
+        &:hover {
+          box-shadow: 0 0 6px 2px rgba(164, 43, 44, 0.6);
         }
       }
 
       .interrupt {
         // 通讯中断
         .stationTop {
-          background: #e08031;
-          color: #fff;
-          .changeNum {
-            color: #fff;
-          }
+          background: linear-gradient(-90deg, #ffffff 0%, #fcd6b6 100%);
+          color: #e08031;
         }
-        .stationName {
-          color: #fff;
+        animation: interrupt 3s ease-in-out 1s infinite;
+        &:hover {
+          box-shadow: 0 0 6px 2px rgba(224, 128, 49, 0.6);
+        }
+      }
+
+      @keyframes interrupt {
+        0% {
+          box-shadow: unset;
+        }
+        30% {
+          box-shadow: 0 0 6px 2px rgba(224, 128, 49, 0.6);
+          transform: translate3d(0, -1px, 0);
+        }
+        60% {
+          box-shadow: 0 0 6px 2px rgba(224, 128, 49, 0.6);
+          transform: translate3d(0, -1px, 0);
+        }
+        100% {
+          box-shadow: unset;
+        }
+      }
+
+      @keyframes alarm {
+        0% {
+          box-shadow: unset;
+        }
+        30% {
+          box-shadow: 0 0 6px 2px rgba(164, 43, 44, 0.6);
+          transform: translate3d(0, -1px, 0);
+        }
+        60% {
+          box-shadow: 0 0 6px 2px rgba(164, 43, 44, 0.6);
+          transform: translate3d(0, -1px, 0);
+        }
+        100% {
+          box-shadow: unset;
         }
       }
 
       .notConnected {
-        background: #f8f8f8;
+        background: linear-gradient(0deg, #ffffff 0%, #f0f2f5 100%);
+        .changeNum {
+          color: #353535;
+        }
       }
     }
   }
@@ -189,6 +229,14 @@
 
       &:hover {
         color: $themeColor;
+      }
+    }
+    .equivalentHours {
+      .tooltipName {
+        color: #999;
+        &:hover {
+          color: #f9b600;
+        }
       }
     }
 

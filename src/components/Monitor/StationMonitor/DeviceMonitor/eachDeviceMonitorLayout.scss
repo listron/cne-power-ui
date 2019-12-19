@@ -69,17 +69,12 @@
 
         .deviceBtn {
           margin-left: 20px;
-          color: $themeColor;
-          border: 1px solid $themeColor;
           border-radius: 2px;
-          i{
+          i {
             font-style: normal;
           }
-
-          &:hover{
+          &:hover {
             box-shadow: none;
-            color: $themeColor;
-            border: 1px solid $themeColor;
           }
         }
       }

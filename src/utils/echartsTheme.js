@@ -196,7 +196,7 @@ export const lightTheme = () => { // 数据规范展示
       splitLine: {
         lineStyle: {
           type: 'dashed',
-          color: '#f1f1f1',
+          color: lineColor,
         },
       },
       splitArea: {
@@ -213,7 +213,7 @@ export const lightTheme = () => { // 数据规范展示
   ];
   var theme = {
     color: colorPalette,
-    backgroundColor: backgroundColor,
+    // backgroundColor: backgroundColor,
     tooltip: {
       axisPointer: {
         lineStyle: {

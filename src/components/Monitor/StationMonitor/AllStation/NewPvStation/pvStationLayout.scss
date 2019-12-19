@@ -34,19 +34,15 @@
       border: none;
     }
 
-    .equivalentTime{
+    .equivalentTime {
       display: flex;
       align-items: center;
     }
-    
-    .specialColor{
-      color: #a22c30 !important;
-    }
-    .tooltipName{
+    .tooltipName {
       margin-left: 4px;
       margin-bottom: 8px;
       color: #999;
-      &:hover{
+      &:hover {
         color: #f9b600;
       }
     }
@@ -56,9 +52,6 @@
       text-align: left;
       padding: 0 4px;
       line-height: 30px;
-    }
-    .specialColor{
-      color: #a22c30 !important;
     }
 
     .stationPower {
@@ -157,7 +150,7 @@
       margin: 20px 0 0 39px;
       width: 339px;
       height: 319px;
-      border-radius: 2px;
+      border-radius: 4px;
       color: $darkColor;
       display: flex;
       flex-direction: column;
@@ -174,18 +167,23 @@
         justify-content: space-between;
         padding: 0 12px;
         .stationName {
-          width: 100px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          display: flex;
+          .stationNameTilte {
+            display: inline-block;
+            max-width: 170px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 4px;
+          }
         }
         .staionCapacity {
           display: flex;
           justify-content: space-around;
         }
-        .stationUnitCount {
-          margin-left: 8px;
-        }
+        // .stationUnitCount {
+        //   margin-left: 8px;
+        // }
       }
       .staionCenter {
         display: flex;
@@ -203,20 +201,17 @@
         }
         .staionCenterRight {
           .dataName {
-            width: 70px;
+            width: 60px;
             margin-right: 6px;
           }
-          .data{
+          .data {
             display: flex;
-            .tooltipName{
+            .tooltipName {
               margin-top: -5px;
               color: #999;
-              &:hover{
+              &:hover {
                 color: #f9b600;
               }
-            }
-            .specialColor{
-              color: #a22c30 !important;
             }
           }
         }
@@ -312,6 +307,17 @@
   .numberStyle {
     text-align: right;
   }
+  .equivalentHours {
+    display: flex;
+    justify-content: flex-end;
+    .tooltipName {
+      width: 16px;
+      margin-top: -7px;
+      margin-left: 3px;
+      cursor: pointer;
+    }
+  }
+
   @mixin statusBox {
     width: 5px;
     height: 20px;
@@ -321,12 +327,8 @@
     display: flex;
     justify-content: center;
   }
-  .normal {
-    @include statusBox();
-  }
-  .interrupt {
-    @include statusBox();
-  }
+  .normal,
+  .interrupt,
   .notConnected {
     @include statusBox();
   }
@@ -364,7 +366,6 @@
         width: 14px;
         height: 18px;
         border-radius: 50%;
-        color: #fff;
         font-size: 13px;
       }
     }

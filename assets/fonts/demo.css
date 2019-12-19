@@ -252,7 +252,7 @@
   margin: 0 3px;
   padding: 0 5px;
   background: #eee;
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 .markdown strong,
@@ -461,7 +461,7 @@ pre[class*="language-"] {
 /* Inline code */
 :not(pre)>code[class*="language-"] {
   padding: .1em;
-  border-radius: .2em;
+  border-radius: .3em;
   white-space: normal;
 }
 

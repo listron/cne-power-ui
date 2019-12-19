@@ -6,21 +6,23 @@ import styles from './detailCharts.scss';
 import echarts from 'echarts';
 import { DatePicker } from 'antd';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
-import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
 import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
-import { Gradient1, Gradient2, chartsLoading, themeConfig, chartsNodata } from '../../../../../../utils/darkConfig';
+import { themeConfig, chartsNodata, chartsLoading } from '../../../../../../utils/darkConfig';
 class OutputTenMin extends Component {
   static propTypes = {
-    capabilityData: PropTypes.any,
-    yXaisName: PropTypes.string,
-    // stationCode: PropTypes.number,
-    yAxisUnit: PropTypes.string,
+    stationCode: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
+    onChange: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
+    this.state = {
+      time: moment(),
+    };
   }
 
   componentDidMount() {
@@ -32,7 +34,7 @@ class OutputTenMin extends Component {
   }
 
   drawChart = (param) => {
-    const { capabilityData = {}, yAxisUnit, theme } = param;
+    const { capabilityData = {}, yAxisUnit, capabilityLoading, theme } = param;
     const { chartDatas = [], showTemplate } = capabilityData; // showTemplate  样板逆变器功率 0 不显示 1 显示
     const yAxisType = `功率(${yAxisUnit})`;
     let capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'), themeConfig[theme]);
@@ -40,22 +42,25 @@ class OutputTenMin extends Component {
       capabilityDiagram.dispose();
       capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'), themeConfig[theme]);
     }
-    const capabilityPower = chartDatas.map(e => dataFormats(divideFormarts(e.stationPower, yAxisUnit), '--', 2, true));
-    const capabilityRadiation = chartDatas.map(e => dataFormats(e.instantaneous, '--', 2, true));
-    const templatePower = chartDatas.map(e => dataFormats(divideFormarts(e.templatePower, yAxisUnit), '--', 2, true)); // 样板逆变器功率 无样板机逆变器时没有
-    const theoreticalPower = chartDatas.map(e => dataFormats(divideFormarts(e.theoreticalPower, yAxisUnit), '--', 2, true)); // 理论功率 无气象站时没有
+    chartsLoading(capabilityDiagram, capabilityLoading, theme);
+    const capabilityPower = chartDatas.map(e => dataFormats(divideFormarts(e.stationPower, yAxisUnit), '--', 2));
+    const capabilityRadiation = chartDatas.map(e => dataFormats(e.instantaneous, '--', 2));
+    const templatePower = chartDatas.map(e => dataFormats(divideFormarts(e.templatePower, yAxisUnit), '--', 2)); // 样板逆变器功率 无样板机逆变器时没有
+    const theoreticalPower = chartDatas.map(e => dataFormats(divideFormarts(e.theoreticalPower, yAxisUnit), '--', 2)); // 理论功率 无气象站时没有
     const templatePowerSeries = showTemplate && chartDatas.length > 0 && chartDatas[0].templatePower !== undefined && {
-      name: '样板机逆变器功率',
+      name: '样板机功率',
       type: 'line',
       smooth: true,
       data: templatePower,
       yAxisIndex: 0,
+      z: 4,
       axisTick: {
         show: false,
       },
       color: '#3e97d1',
       lineStyle: {
         color: '#3e97d1',
+        width: 3,
       },
     } || { type: 'line' };
     const theoreticalPowerSeries = chartDatas.length > 0 && chartDatas[0].theoreticalPower !== undefined && {
@@ -64,12 +69,14 @@ class OutputTenMin extends Component {
       smooth: true,
       data: theoreticalPower,
       yAxisIndex: 0,
+      z: 5,
       axisTick: {
         show: false,
       },
       color: '#199475',
       lineStyle: {
         color: '#199475',
+        width: 3,
       },
     } || { type: 'line' };
     const filterCapabilityPower = chartDatas.filter(e => e.stationPower);
@@ -123,11 +130,12 @@ class OutputTenMin extends Component {
         type: 'category',
         boundaryGap: false,
         data: chartDatas && chartDatas.map(e => {
-          return moment(moment.utc(e.utc).toDate()).format('MM-DD HH:mm');
+          return moment(e.utc).format('MM-DD HH:mm');
         }),
         axisLabel: {
+          interval: 23, // 4*6-1
           formatter: (value) => {
-            return moment(value).format('HH:MM');
+            return moment(value).format('HH:mm');
           },
         },
         axisTick: {
@@ -147,8 +155,14 @@ class OutputTenMin extends Component {
           axisLabel: {
             formatter: '{value}',
           },
-          splitLine: {
+          axisLine: {
             show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+          splitLine: {
+            show: true,
           },
         },
         {
@@ -158,6 +172,12 @@ class OutputTenMin extends Component {
           axisLabel: {
             formatter: '{value}',
           },
+          axisLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
           splitLine: {
             show: false,
           },
@@ -165,17 +185,19 @@ class OutputTenMin extends Component {
       ],
       series: [
         {
-          name: '交流侧功率',
+          name: '交流功率',
           type: 'line',
           smooth: true,
           data: capabilityPower,
           yAxisIndex: 0,
           color: '#a42b2c',
+          z: 3,
           axisTick: {
             show: false,
           },
           lineStyle: {
             color: '#a42b2c',
+            width: 3,
           },
         },
         theoreticalPowerSeries,
@@ -188,7 +210,23 @@ class OutputTenMin extends Component {
           color: '#f9b600',
           lineStyle: {
             color: '#f9b600',
-            type: 'dotted',
+            width: 3,
+            // type: 'dotted',
+          },
+          areaStyle: {
+            color: {
+              type: 'linear',
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [{
+                offset: 0, color: 'rgba(249, 182, 0, 0.5)', // 0% 处的颜色
+              }, {
+                offset: 1, color: 'rgba(249, 182, 0, 0.2)', // 100% 处的颜色
+              }],
+              global: false, // 缺省为 false
+            },
           },
           axisTick: {
             show: false,
@@ -201,6 +239,21 @@ class OutputTenMin extends Component {
   }
 
   timeChange = (value) => { // 时间改变
+    this.timeChange(value);
+  }
+
+  prevDay = () => { //向前一天
+    const time = moment(this.state.time).subtract(1, 'day');
+    this.timeChange(time);
+  }
+
+  nextDay = () => { //向后一天
+    const time = moment(this.state.time).add(1, 'day');
+    this.timeChange(time);
+  }
+
+  timeChange = (value) => {
+    this.setState({ time: value });
     const startTime = startTime || moment(value).startOf('day').utc().format();
     const endTime = endTime || moment(value).endOf('day').utc().format();
     const stationType = '1';
@@ -211,13 +264,18 @@ class OutputTenMin extends Component {
 
   render() {
     const { stationCode } = this.props;
+    const { time } = this.state;
+    const today = moment().format('YYYY-MM-DD');
+    const isChoice = moment(today).isSame(moment(time).format('YYYY-MM-DD'));
     return (
       <div className={styles.powerDiagramBox} >
         <div id="capabilityDiagram" style={{ width: 440, height: 278 }} />
+        <span ref={'date'} />
         <div className={styles.dataChange}>
-          <span ref={'date'} />
+          <i className={`iconfont icon-arrowleft ${styles.arrow}`} onClick={this.prevDay} />
           <DatePicker
-            defaultValue={moment(moment(), 'YYYY/MM/DD')}
+            // defaultValue={moment(moment(), 'YYYY/MM/DD')}
+            value={moment(time, 'YYYY/MM/DD')}
             format={'YYYY/MM/DD'}
             style={{ width: 128 }}
             onChange={this.timeChange}
@@ -225,8 +283,8 @@ class OutputTenMin extends Component {
             disabledDate={(current) => { return current > moment().endOf('day'); }}
             getCalendarContainer={() => this.refs.date}
           />
+          <i className={`iconfont icon-arrowr ${styles.arrow}  ${isChoice && styles.disabled}`} onClick={this.nextDay} />
         </div>
-        {/* <a href={'javascript:void(0)'} className={styles.link}><i className="iconfont icon-more"></i></a> */}
       </div>
     );
   }
