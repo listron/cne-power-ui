@@ -403,8 +403,18 @@
   padding: 0 26px 0 16px;
 
   :global {
+    .ant-table-thead {
+      height: 56px;
+
+      .ant-table-header-column {
+        margin-top: -9px;
+      }
+    }
+
     .ant-table .ant-table-thead>tr>th {
       padding: 0 8px;
+      height: 56px;
+      line-height: 0;
     }
   }
 
@@ -480,7 +490,7 @@
     }
     .ant-table {
       .ant-table-thead tr th {
-        height: 60px;
+        //height: 60px;
         /*table新样式*/
         background-color: $themeColor;
         color: $slideFontColor;
@@ -501,6 +511,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         width: 120px;
+        text-align: right;
       }
 
       .pointsValue {

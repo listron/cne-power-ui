@@ -141,7 +141,7 @@ class PvHistoryList extends Component {
       title: e.pointUnit ? () => (<TableColumnTitle
         title={e.pointName}
         unit={e.pointUnit}
-        style={{paddingTop: 0, maxWidth: '102px', height: '52px'}}
+        style={{paddingTop: 12, maxWidth: '102px', height: '56px'}}
       />) : e.pointName,
       dataIndex: e.devicePointCode,
       className: 'points',
