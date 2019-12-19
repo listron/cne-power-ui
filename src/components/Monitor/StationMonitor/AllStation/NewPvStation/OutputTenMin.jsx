@@ -49,7 +49,7 @@ class OutputTenMin extends Component {
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
     const capabilityGraphic = filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0;
-    const graphic = chartsNodata(!(capabilityGraphic), theme);
+    // const graphic = capabilityGraphic && nodataLogo || {};
     let labelInterval = 46; // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
     const totalLength = capabilityData.length;
     if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
@@ -59,7 +59,18 @@ class OutputTenMin extends Component {
     const minRadiation = Math.min(...capabilityRadiation);
     const color = theme === 'dark' ? ['#a42b2c', '#00f8ff'] : ['#1e9475', '#f9b600'];
     const capabilityOption = {//出力图
-      graphic: graphic,
+      graphic: {
+        type: 'image',
+        right: 'center',
+        top: 'center',
+        z: -10,
+        style: {
+          image: capabilityGraphic && '/img/noChartData1.png' || '',
+          width: 60,
+          height: 76,
+
+        },
+      },
       // backgroundColor: 'transparnet',
       legend: {
         itemWidth: 24,

@@ -82,7 +82,9 @@ class SingleStaionList extends React.Component {
               <div className={styles.column}>
                 <span className={styles.dataName}> 日等效时</span>
                 <div className={styles.data}>
-                  <span className={styles.changeNum}> <span className={equivalentHoursValidation && styles.specialColor}>{dataFormats(equivalentHours, '--', 2)}</span> h </span>
+                  <span className={styles.changeNum}>
+                    <span className={equivalentHoursValidation && styles.specialColor}>{dataFormats(equivalentHours, '--', 2)}</span></span>
+                  h
                   {equivalentHoursValidation &&
                     <div className={styles.tooltipName}>
                       <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={equivalentHoursValidation}> <i className="iconfont icon-help"></i>

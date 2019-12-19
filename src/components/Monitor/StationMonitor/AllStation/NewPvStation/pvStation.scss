@@ -75,9 +75,7 @@
         color: $darkColor;
         background: #ffffff;
         border: 1px solid #d4d4d4;
-        &:hover {
-          box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.2);
-        }
+        box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.2);
         .changeNum {
           color: $themeColor;
         }
@@ -123,7 +121,6 @@
 
       .normal {
         // 正常的状态
-        box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.5);
         .stationTop {
           background: linear-gradient(-90deg, #ffffff 0%, #ceebe0 100%);
           color: $themeColor;
@@ -138,6 +135,7 @@
           background: linear-gradient(-90deg, #ffffff 0%, #f9dcd8 100%);
           color: #a42b2c;
         }
+        animation: alarm 3s ease-in-out 1s infinite;
         &:hover {
           box-shadow: 0 0 6px 2px rgba(164, 43, 44, 0.6);
         }
@@ -149,26 +147,50 @@
           background: linear-gradient(-90deg, #ffffff 0%, #fcd6b6 100%);
           color: #e08031;
         }
-        -webkit-animation: myfirst 3s linear 2s infinite;
+        animation: interrupt 3s ease-in-out 1s infinite;
         &:hover {
           box-shadow: 0 0 6px 2px rgba(224, 128, 49, 0.6);
         }
       }
 
-      @keyframes myfirst {
-        from {
+      @keyframes interrupt {
+        0% {
           box-shadow: unset;
-          // box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.5);
         }
-        to {
+        30% {
           box-shadow: 0 0 6px 2px rgba(224, 128, 49, 0.6);
+          transform: translate3d(0, -1px, 0);
+        }
+        60% {
+          box-shadow: 0 0 6px 2px rgba(224, 128, 49, 0.6);
+          transform: translate3d(0, -1px, 0);
+        }
+        100% {
+          box-shadow: unset;
+        }
+      }
+
+      @keyframes alarm {
+        0% {
+          box-shadow: unset;
+        }
+        30% {
+          box-shadow: 0 0 6px 2px rgba(164, 43, 44, 0.6);
+          transform: translate3d(0, -1px, 0);
+        }
+        60% {
+          box-shadow: 0 0 6px 2px rgba(164, 43, 44, 0.6);
+          transform: translate3d(0, -1px, 0);
+        }
+        100% {
+          box-shadow: unset;
         }
       }
 
       .notConnected {
         background: linear-gradient(0deg, #ffffff 0%, #f0f2f5 100%);
         .changeNum {
-          color: #666666;
+          color: #353535;
         }
       }
     }
