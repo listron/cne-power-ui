@@ -193,7 +193,7 @@ function *deleteRole(action) { // 删除角色
   }
 }
 
-function *getOperatetype(action){ // 获得权限操作类型
+function *getOperatetype(){ // 获得权限操作类型
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.getOperatetype;
   try{
     const response = yield call(axios.get, url);

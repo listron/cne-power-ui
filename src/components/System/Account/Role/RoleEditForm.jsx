@@ -30,24 +30,23 @@ class RoleEditForm extends Component {
   }
 
   onSaveRole = () => {
-    const { enterpriseId, selectedRole, defaultMenuData, operatetypeData } = this.props;
+    const { enterpriseId, selectedRole, defaultMenuData, operatetypeData = [] } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
-        // const { roleDesc, rightId, operateName} = values;
-        const { roleDesc, rightId} = values;
+        const { roleDesc, rightId, operateName} = values;
         const tmpDefault = defaultMenuData.map(e=>`${e}`);
         const outputRightSet = new Set([...rightId,...tmpDefault]);
         const outputRightArr = [...outputRightSet];
-        // const operateId = operatetypeData.find(e => {
-        //   return e.name === operateName;
-        // });
+        const operateId = operatetypeData.length > 0 ? operatetypeData.find(e => {
+          return e.name === operateName;
+        }) : '';
         if(this.props.showPage === 'create') {
           this.props.onCreateRole({
             roleDesc: roleDesc.trim(),
             rightId: outputRightArr.join(','),
             enterpriseId,
             continueAdd: false,
-            // operateId,
+            operateId,
           });
         } else {
           this.props.onEditRole({
@@ -55,7 +54,7 @@ class RoleEditForm extends Component {
             rightId: outputRightArr.join(','),
             roleId: selectedRole[0].roleId,
             enterpriseId,
-            // operateId,
+            operateId,
           })
         }
       }
@@ -125,7 +124,7 @@ class RoleEditForm extends Component {
       initialOperateName = 'implement';
     }else{
       initialRightValue = this.getRightIdArr(selectedRight);
-      // initialOperateName = selectedRole[0].operateName;
+      initialOperateName = selectedRole[0].operateName;
     }
 
     return (     
@@ -156,8 +155,7 @@ class RoleEditForm extends Component {
               }],
               initialValue: initialOperateName,
             })(
-              // <RadioGroup onChange={this.onChange} value={selectedRole[0].operateName ? selectedRole[0].operateName : this.state.operateType}>
-              <RadioGroup onChange={this.onOperatetypeChange} value={this.state.operateType}>
+              <RadioGroup onChange={this.onOperatetypeChange}>
                 <Radio value={'management'}>管理</Radio>
                 <Radio value={'implement'}>执行</Radio>
                 <Radio value={'browse'}>浏览</Radio>
