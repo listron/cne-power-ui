@@ -57,7 +57,7 @@ class OutputTenMin extends Component {
     }
     const minPower = Math.min(...capabilityPower);
     const minRadiation = Math.min(...capabilityRadiation);
-    const color = theme === 'dark' ? ['#a42b2c', '#00f8ff'] : ['#119475', '#f9b600'];
+    const color = theme === 'dark' ? ['#a42b2c', '#00f8ff'] : ['#1e9475', '#f9b600'];
     const capabilityOption = {//出力图
       graphic: graphic,
       // backgroundColor: 'transparnet',

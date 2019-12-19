@@ -38,10 +38,6 @@
       display: flex;
       align-items: center;
     }
-
-    .specialColor {
-      color: #a22c30 !important;
-    }
     .tooltipName {
       margin-left: 4px;
       margin-bottom: 8px;
@@ -56,9 +52,6 @@
       text-align: left;
       padding: 0 4px;
       line-height: 30px;
-    }
-    .specialColor {
-      color: #a22c30 !important;
     }
 
     .stationPower {
@@ -220,9 +213,6 @@
                 color: #f9b600;
               }
             }
-            .specialColor {
-              color: #a22c30 !important;
-            }
           }
         }
       }
@@ -376,7 +366,6 @@
         width: 14px;
         height: 18px;
         border-radius: 50%;
-        color: #fff;
         font-size: 13px;
       }
     }

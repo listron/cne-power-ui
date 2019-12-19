@@ -108,12 +108,13 @@ class PvStationList extends React.Component {
         render: (value, record) => {
           return (
             <div className={styles.equivalentHours}>
-              {dataFormats(value, '--', 2, true)}
+              <span style={record.equivalentHoursValidation && styles.specialColor} >{dataFormats(value, '--', 2, true)}</span>
               <div className={styles.tooltipName}>
                 {record.equivalentHoursValidation &&
                   <Tooltip placement="top" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={record.equivalentHoursValidation}>
                     <i className="iconfont icon-help" />
-                  </Tooltip>}
+                  </Tooltip>
+                }
               </div>
             </div>);
         },

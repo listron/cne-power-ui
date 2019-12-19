@@ -3,6 +3,9 @@
 
 .light {
   background: #fff;
+  .specialColor {
+    color: #a22c30 !important;
+  }
   .headStation {
     border-bottom: 1px dashed #d4d4d4;
     color: $darkColor;
@@ -18,9 +21,6 @@
       .dataValue {
         color: $themeColor;
       }
-      // .radiation {
-      //   color: #f9b600;
-      // }
     }
   }
   .StationTitle {
@@ -75,9 +75,9 @@
         color: $darkColor;
         background: #ffffff;
         border: 1px solid #d4d4d4;
-        // &:hover {
-        //   box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.2);
-        // }
+        &:hover {
+          box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.2);
+        }
         .changeNum {
           color: $themeColor;
         }
@@ -123,6 +123,7 @@
 
       .normal {
         // 正常的状态
+        box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.5);
         .stationTop {
           background: linear-gradient(-90deg, #ffffff 0%, #ceebe0 100%);
           color: $themeColor;
@@ -148,7 +149,7 @@
           background: linear-gradient(-90deg, #ffffff 0%, #fcd6b6 100%);
           color: #e08031;
         }
-        // -webkit-animation: myfirst 3s linear 2s infinite;
+        -webkit-animation: myfirst 3s linear 2s infinite;
         &:hover {
           box-shadow: 0 0 6px 2px rgba(224, 128, 49, 0.6);
         }
@@ -157,6 +158,7 @@
       @keyframes myfirst {
         from {
           box-shadow: unset;
+          // box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.5);
         }
         to {
           box-shadow: 0 0 6px 2px rgba(224, 128, 49, 0.6);
@@ -205,6 +207,14 @@
 
       &:hover {
         color: $themeColor;
+      }
+    }
+    .equivalentHours {
+      .tooltipName {
+        color: #999;
+        &:hover {
+          color: #f9b600;
+        }
       }
     }
 
