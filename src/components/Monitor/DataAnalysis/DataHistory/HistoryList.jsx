@@ -89,7 +89,7 @@ class HistoryList extends Component {
         // className: 'deviceName',
         fixed: pointData.length > fixedNum ? 'left' : false,
         width: 120,
-        render: (text) => <div className={styles.deviceTypeName} title={text}>{text}</div>,
+        render: (text) => <div style={{ paddingLeft: '12px' }} className={styles.deviceTypeName} title={text}>{text}</div>,
         // sorter: true,
         // className: orderField === 'deviceName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceName')

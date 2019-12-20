@@ -5,20 +5,23 @@
   .ant-table {
 
     //table行高，高亮，背景色调整；
-    .ant-table-tbody {
-      background: #fff;
 
-      &>tr:hover {
-        td {
-          background: $tableSelectedBackground;
-        }
+    //table的hover颜色
+    .ant-table-tbody>tr:hover {
+      td {
+        background: $tableSelectedBackground !important;
       }
     }
 
-    //table的hover颜色
-    .ant-table-tbody>tr:hover:not(.ant-table-expanded-row)>td {
-      background: $tableSelectedBackground;
+    .ant-table-tbody>.ant-table-row-hover {
+      td {
+        background: $tableSelectedBackground !important;
+      }
     }
+
+
+
+
 
     .ant-table-thead>tr>th,
     .ant-table-tbody>tr>td {
@@ -43,6 +46,7 @@
       color: $themeColor;
     }
   }
+
 
   .ant-tree {
 
