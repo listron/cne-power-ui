@@ -35,9 +35,11 @@ class InspectProcess extends React.Component {
     const { inspectId } = inspectDetail;
     setInspectCheck({
       inspectId,
+      location,
+      history,
     });
-    const { pathname } = location;
-    history.push(`${pathname}?page=list&tab=inspect`);
+    // const { pathname } = location;
+    // history.push(`${pathname}?page=list&tab=inspect`);
     this.setState({
       showWarningTip: false,
     });
