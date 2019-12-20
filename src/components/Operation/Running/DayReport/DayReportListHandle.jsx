@@ -76,9 +76,15 @@ class DayReportListHandle extends Component {
           stationType, stationNameSort, startTime, regionName, pageSize, pageNum,
         });
       } else {
+        const uploadResult = response.message ? (<div>
+          <div>日报上传失败: </div>
+          <div>
+            {response.message.split(';').map(e => <div>{e}</div>)}
+          </div>
+        </div>) : <span />;
         this.setState({
           uploadLoading: false,
-          uploadResult: `日报上传失败: ${response.message}`,
+          uploadResult,
         });
       }
     }
@@ -123,7 +129,7 @@ class DayReportListHandle extends Component {
           hiddenCancel={true}
           onOK={this.confirmTip}
           value={uploadResult}
-          style={{ width: '320px', minHeight: '88px', height: 'auto', paddingBottom: '12px' }}
+          style={{ width: '640px', minHeight: '88px', height: 'auto', paddingBottom: '12px' }}
         />}
       </div>
     );
