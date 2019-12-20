@@ -16,20 +16,20 @@ class OrbitMap extends Component {
     super(props)
   }
   componentDidMount() {
-    const { testId, orbitList,users,itemOrbit,startAndEndCoord,data } = this.props;
+    const { testId, orbitList, users, itemOrbit, startAndEndCoord, data } = this.props;
     const testChart = echarts.init(document.getElementById(testId));
-    this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord,data);
+    this.setMapChart(testChart, orbitList, users, itemOrbit, startAndEndCoord, data);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { testId, orbitList, users,itemOrbit,startAndEndCoord,data } = nextProps;
+    const { testId, orbitList, users, itemOrbit, startAndEndCoord, data } = nextProps;
     if (this.props.orbitList.length !== nextProps.orbitList.length || users !== this.props.users) {
       const testChart = echarts.init(document.getElementById(testId));
-      this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord,data);
+      this.setMapChart(testChart, orbitList, users, itemOrbit, startAndEndCoord, data);
     }
   }
 
-  setMapChart = (testChart, orbitList,users,itemOrbit,startAndEndCoord,data) => {
+  setMapChart = (testChart, orbitList, users, itemOrbit, startAndEndCoord, data) => {
     // 取中心点
     const pointData = orbitList && orbitList[0] && orbitList[0].pointData;
     const option = {
@@ -133,7 +133,7 @@ class OrbitMap extends Component {
             'featureType': 'label',
             'elementType': 'labels.text.fill',
             'stylers': {
-              'color': '#666'
+              'color': '#353535'
             }
           }]
         }//地图样式配置
@@ -146,7 +146,7 @@ class OrbitMap extends Component {
         orient: 'vertical',
         top: 'bottom',
         left: 'right',
-        show:false,
+        show: false,
       },
       selected: {
         '刘德华1': true,
@@ -172,7 +172,7 @@ class OrbitMap extends Component {
             },
             backgroundColor: '#fff',
             textStyle: {
-              color: '#666',
+              color: '#353535',
             },
             extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
           },
@@ -194,7 +194,7 @@ class OrbitMap extends Component {
                 },
               },
             },
-            data:startAndEndCoord,
+            data: startAndEndCoord,
             // data: [
             //   {
             //     coord: ['132.1212', '33.2321'],
@@ -213,7 +213,7 @@ class OrbitMap extends Component {
 
           },
           coordinateSystem: 'bmap',
-          data:data,
+          data: data,
           //  data: [
           // [{ coord: ["132.214", "33.32534"] }, { coord: ["133.124", "34.352"] }],
           //  { coords: [['119.4543', '25.9222'],['87.9236', '43.5883']],name:'刘德华1',dateValue:['2017-2018'] },
@@ -236,10 +236,10 @@ class OrbitMap extends Component {
         },
       ]
     };
-    try{
+    try {
       // testChart.clear();
-      testChart.setOption(option,'notMerge');
-    }catch(error){
+      testChart.setOption(option, 'notMerge');
+    } catch (error) {
       message.error('中国地图获取失败,请稍后刷新重试');
       console.log(error);
     }
@@ -249,7 +249,7 @@ class OrbitMap extends Component {
   render() {
     const { testId } = this.props;
     return (
-      <div id={testId} style={{width: "100%", flex: 1}} />
+      <div id={testId} style={{ width: "100%", flex: 1 }} />
     )
   }
 }

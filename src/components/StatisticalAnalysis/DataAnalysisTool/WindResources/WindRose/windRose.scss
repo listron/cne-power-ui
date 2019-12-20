@@ -1,4 +1,4 @@
-@import '../../../../../theme/theme.scss';
+@import "../../../../../theme/theme.scss";
 
 .windRoseBox {
   padding-top: 24px;
@@ -42,12 +42,12 @@
     cursor: pointer;
     z-index: 3;
 
-    :global{
-      .icon-enlarge1{
+    :global {
+      .icon-enlarge1 {
         display: block;
       }
 
-      .icon-enlarge2{
+      .icon-enlarge2 {
         display: none;
       }
     }
@@ -60,15 +60,16 @@
     z-index: 1;
   }
 
-  .windDirection{
+  .windDirection {
     left: 23%;
   }
 
-  .windPower{
+  .windPower {
     left: 73%;
   }
 
-  .firstInfo, .secondInfo{
+  .firstInfo,
+  .secondInfo {
     width: 50%;
     height: 44px;
     position: absolute;
@@ -77,18 +78,18 @@
     @include lineheight(44px);
     display: flex;
     justify-content: center;
-    div{
+    div {
       width: 128px;
       border-radius: 2px;
       text-align: center;
     }
   }
 
-  .firstInfo{
+  .firstInfo {
     left: 0;
   }
 
-  .secondInfo{
+  .secondInfo {
     right: 0;
   }
 }
@@ -108,7 +109,8 @@
   }
 }
 
-.windRoseModal { // 模态框
+.windRoseModal {
+  // 模态框
   .imgBox {
     display: flex;
     flex: 1;
@@ -129,11 +131,11 @@
       display: flex;
       flex: 1;
 
-      .bigWindRoseBox{
+      .bigWindRoseBox {
         position: relative;
         width: 100%;
 
-        .windDirectionTitle{
+        .windDirectionTitle {
           position: absolute;
           z-index: 1;
           font-weight: bold;
@@ -141,7 +143,7 @@
           left: 24%;
         }
 
-        .windPowerTitle{
+        .windPowerTitle {
           position: absolute;
           z-index: 1;
           font-weight: bold;
@@ -154,7 +156,8 @@
           height: 580px;
         }
 
-        .firstBigInfo, .secondBigInfo{
+        .firstBigInfo,
+        .secondBigInfo {
           border-radius: 2px;
           width: 128px;
           height: 44px;
@@ -165,11 +168,11 @@
           @include lineheight(44px);
         }
 
-        .firstBigInfo{
+        .firstBigInfo {
           left: 232px;
         }
 
-        .secondBigInfo{
+        .secondBigInfo {
           right: 232px;
         }
       }
@@ -179,7 +182,6 @@
         flex: 1;
         width: 100%;
       }
-
     }
   }
 }
@@ -195,10 +197,10 @@
 }
 
 .chartWrap {
-
-  .firstInfo, .secondInfo{
-    div{
-      background: rgba(0,0,0,0.50);
+  .firstInfo,
+  .secondInfo {
+    div {
+      background: rgba(0, 0, 0, 0.5);
       color: #fff;
     }
   }
@@ -207,12 +209,12 @@
     color: $themeColor;
 
     &:hover {
-      :global{
-        .icon-enlarge1{
+      :global {
+        .icon-enlarge1 {
           display: none;
         }
 
-        .icon-enlarge2{
+        .icon-enlarge2 {
           display: block;
         }
       }
@@ -220,17 +222,19 @@
   }
 }
 
-.bigWindRoseBox{
-  .firstBigInfo, .secondBigInfo{
-    background: rgba(0,0,0,0.50);
+.bigWindRoseBox {
+  .firstBigInfo,
+  .secondBigInfo {
+    background: rgba(0, 0, 0, 0.5);
     color: #fff;
   }
 }
 
-.tooltip { // chart提示
+.tooltip {
+  // chart提示
   background-color: #fff;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
-  color: #666;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+  color: #353535;
 
   .title {
     border-bottom: 1px solid #d4d4d4;

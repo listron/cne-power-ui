@@ -4,19 +4,19 @@ import echarts from 'echarts';
 import { dataFormats } from '@utils/utilFunc';
 import styles from './point.scss';
 
-class PointChart extends PureComponent{
+class PointChart extends PureComponent {
   static propTypes = {
     theme: PropTypes.string,
     pointsLoading: PropTypes.bool,
     histogramList: PropTypes.array,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { histogramList, theme } = this.props;
     histogramList && histogramList.length > 0 && this.drawChart(histogramList, theme);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { histogramList, pointsLoading, theme } = nextProps;
     const preLoading = this.props.pointsLoading;
     if (preLoading && !pointsLoading) { // 请求完毕
@@ -28,7 +28,7 @@ class PointChart extends PureComponent{
 
   chartColors = {
     light: {
-      font: '#666',
+      font: '#353535',
       axis: '#d4d4d4',
       bar: ['#1cfcf4', '#009cff'],
     },
@@ -53,7 +53,7 @@ class PointChart extends PureComponent{
       dataAxis.push(`${startNum}~${endNum}`);
       rateData.push(rate * 100);
     });
-    const { font = '#666', bar = ['#1cfcf4', '#009cff'] } = this.chartColors[theme] || {};
+    const { font = '#353535', bar = ['#1cfcf4', '#009cff'] } = this.chartColors[theme] || {};
     const option = {
       grid: {
         top: 20,
@@ -107,9 +107,9 @@ class PointChart extends PureComponent{
         barWidth: '8px',
         cursor: 'default',
         itemStyle: {
-          color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
-            {offset: 0, color: bar[0] },
-            {offset: 1, color: bar[1] },
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: bar[0] },
+            { offset: 1, color: bar[1] },
           ]),
         },
         data: rateData,
@@ -119,9 +119,9 @@ class PointChart extends PureComponent{
     histogramChart.setOption(option);
   }
 
-  render(){
+  render() {
     const { histogramList } = this.props;
-    return(
+    return (
       <section className={styles.histogramChart}>
         <h3 className={styles.chartTitle}>有效值分布图</h3>
         <div className={styles.chart} ref={(ref) => { this.histogramRef = ref; }} />

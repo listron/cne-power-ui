@@ -1,344 +1,353 @@
-@import '../../../../../../theme/theme.scss';
-
+@import "../../../../../../theme/theme.scss";
 
 .fanListCont {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-bottom: 20px;
+  .StationTitle {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    line-height: 51px;
+    border: 1px dashed #d4d4d4;
+    margin-top: 16px;
+    :global {
+      .iconTab {
+        height: 54px;
+        width: 54px;
+        background: #f1f1f1;
+        color: #353535;
+        display: inline-block;
+        text-align: center;
+        font-size: 20px;
+        &:hover {
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+    }
+    .activeCard {
+      background: $themeColor;
+      color: #fff;
+    }
+  }
+
+  .inverterRight {
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @mixin propContainer() {
+    // 卡片样式
+    .popover {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      .popTitle {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4px;
+      }
+      .name {
+        text-align: center;
+        color: #000;
+      }
+      .normalNum,
+      .standbyNum {
+        color: #199475;
+      }
+      .shutdownNum,
+      .maintainNum {
+        color: #f9b600;
+      }
+      .errorNum,
+      .interruptNum {
+        color: #a42b2c;
+      }
+      .deviceModeName {
+        padding: 0 16px;
+        line-height: 31px;
+      }
+
+      .value {
+        color: $themeColor;
+      }
+
+      & .popColumn:nth-child(2n-1) {
+        background: #fff;
+      }
+
+      & .popColumn:nth-child(2n) {
+        background: #f8f8f8;
+      }
+      .popColumn {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 16px;
+      }
+
+      .unit {
+        width: 27px;
+        display: inline-block;
+        margin-left: 6px;
+      }
+    }
+  }
+  $normalNum: #199475;
+  $standbyNum: #199475;
+  $shutdownNum: #f9b600;
+  $maintainNum: #f9b600;
+  $errorNum: #a42b2c;
+  $interruptNum: #a42b2c;
+  $noAccessNum: #d4d4d4;
+  @mixin color($name) {
+    color: $name;
+  }
+  .deviceContent {
     display: flex;
     flex-direction: column;
-    flex:1;
-    margin-bottom: 20px;
-    .StationTitle{
+    .parentDeviceName {
+      margin-left: 26px;
+      margin-top: 14px;
+    }
+    .fanCard {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-self: flex-start;
+      .fanBlock {
+        background: #ffffff;
+        border: 1px solid #a42b2c;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 2px;
+        width: 215px;
+        margin: 20px 0 0 24px;
+        padding: 8px;
+        width: 215px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        .inverterItemIcon {
+          position: relative;
+          .deviceIcon {
+            position: absolute;
+            right: 0;
+            top: 17px;
+          }
+        }
+      }
+      .normalNum,
+      .standbyNum {
+        border: 1px solid $normalNum;
+        .deviceIcon {
+          @include color($normalNum);
+        }
+      }
+      .shutdownNum,
+      .maintainNum {
+        border: 1px solid $maintainNum;
+        .deviceIcon {
+          @include color($maintainNum);
+        }
+      }
+      .errorNum,
+      .interruptNum {
+        border: 1px solid $interruptNum;
+        .deviceIcon {
+          @include color($interruptNum);
+        }
+      }
+      .noAccessNum {
+        background: #f8f8f8;
+        border: none;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+        cursor: auto;
+      }
+      .linkBox {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+      }
+      .inverterItemR {
         display: flex;
         flex: 1;
-        align-items: center;
-        justify-content: space-between;
-        line-height: 51px;
-        border:1px dashed #d4d4d4;
-        margin-top: 16px;
-        :global{
-            .iconTab{
-               height: 54px;
-               width: 54px; 
-               background: #f1f1f1;
-               color: #666;
-               display:inline-block;
-               text-align: center;
-               font-size: 20px; 
-               &:hover{
-                background:$themeColor;
-                color: #fff;
-               }
-            }
-        }
-        .activeCard{
-            background:$themeColor;
-            color: #fff;
-        }
-    }
-
-    .inverterRight {
-        margin-right: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    @mixin propContainer() {
-        // 卡片样式
-        .popover {
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            .popTitle{
-                display: flex;
-                justify-content:space-between;
-                margin-bottom: 4px;
-            }
-            .name {
-                text-align: center;
-                color: #000;
-            }
-            .normalNum,.standbyNum{
-               color: #199475;
-            }
-            .shutdownNum,.maintainNum{
-                color:#f9b600;
-            }
-            .errorNum,.interruptNum{
-                color: #a42b2c;
-            }
-            .deviceModeName{
-                padding: 0 16px;
-                line-height: 31px;
-            }
-
-            .value {
-                color: $themeColor;
-            }
-
-            & .popColumn:nth-child(2n-1) {
-                background: #fff;
-            }
-
-            & .popColumn:nth-child(2n) {
-                background: #f8f8f8;
-            }
-            .popColumn {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 0 16px;
-            }
-
-            .unit {
-                width: 27px;
-                display: inline-block;
-                margin-left: 6px;
-            }
-        }
-    }
-    $normalNum:#199475;
-    $standbyNum:#199475;
-    $shutdownNum:#f9b600;
-    $maintainNum:#f9b600;
-    $errorNum:#a42b2c;
-    $interruptNum:#a42b2c;
-    $noAccessNum:#d4d4d4;
-    @mixin color($name) {
-        color:$name
-    }
-    .deviceContent{
-        display: flex;
         flex-direction: column;
-        .parentDeviceName{
-            margin-left: 26px;
-            margin-top: 14px;
+        padding: 0 8px;
+        .column {
+          display: flex;
+          width: 100%;
+          align-content: center;
+          justify-content: space-between;
+          line-height: 24px;
+          .changeNum {
+            color: $themeColor;
+          }
+          .aralm {
+            color: #a42b2c;
+          }
         }
-        .fanCard {
-            display: flex;
-            width: 100%;
-            flex-direction: row;
-            flex-wrap: wrap;
-            align-self: flex-start;
-            .fanBlock {
-                background: #ffffff;
-                border: 1px solid #a42b2c;
-                box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
-                border-radius: 2px;
-                width: 215px;
-                margin: 20px 0 0 24px;
-                padding: 8px;
-                width: 215px;
-                cursor: pointer;
-                display: flex;
-                flex-direction: row;
-                .inverterItemIcon{
-                    position: relative;
-                    .deviceIcon{
-                        position: absolute;
-                        right:0;
-                        top:17px;
-                    }
-                }
-            }
-            .normalNum,.standbyNum{
-                border:1px solid $normalNum;
-                .deviceIcon{ @include color($normalNum);}
-            }
-            .shutdownNum,.maintainNum{
-                border:1px solid $maintainNum;
-                .deviceIcon{ @include color($maintainNum);}
-            }
-            .errorNum,.interruptNum{
-                border:1px solid $interruptNum;
-                .deviceIcon{ @include color($interruptNum);}
-            }
-            .noAccessNum{
-                background:#f8f8f8;
-                border: none;
-                box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
-                pointer-events: none;
-                cursor: auto;
-            }
-            .linkBox{
-                display: flex;
-                flex-direction: row;
-                flex:1;
-            }
-            .inverterItemR{
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-                padding:0 8px;
-                .column{
-                    display: flex;
-                    width:100%;
-                    align-content: center;
-                    justify-content: space-between;
-                    line-height: 24px;
-                    .changeNum{
-                        color: $themeColor;
-                    }
-                    .aralm{
-                        color:#a42b2c;
-                    }
-                }
+      }
 
-            }
-
-           
-            :global{
-                .icon-windlogo{
-                    color:$themeColor;
-                    font-size: 28px;
-                }
-            }
+      :global {
+        .icon-windlogo {
+          color: $themeColor;
+          font-size: 28px;
         }
-       
+      }
     }
-    .stationCardContainer{
-        position: relative; 
-        :global {
-            .ant-popover-placement-right > .ant-popover-content > .ant-popover-arrow{
-                display: none
-            }
-        }
+  }
+  .stationCardContainer {
+    position: relative;
+    :global {
+      .ant-popover-placement-right > .ant-popover-content > .ant-popover-arrow {
+        display: none;
+      }
     }
-    .deviceCard {
-        width: 235px;
-        height: 214px;
-        cursor: pointer;
-        @include propContainer();
-        :global {
-            .ant-popover-inner-content {
-                background: #f8f8f8;
-                box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
-            }
-            .ant-popover-placement-right > .ant-popover-content > .ant-popover-arrow{
-                display: none
-            }
-        }
+  }
+  .deviceCard {
+    width: 235px;
+    height: 214px;
+    cursor: pointer;
+    @include propContainer();
+    :global {
+      .ant-popover-inner-content {
+        background: #f8f8f8;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+      }
+      .ant-popover-placement-right > .ant-popover-content > .ant-popover-arrow {
+        display: none;
+      }
     }
-    .fanTable{
-        display: flex;
-        flex-direction: column;
-        .pagination {
-            margin: 10px;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .deviceCode {
-            width: 70px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
-            &:hover {
-                color: $themeColor;
-            }
-        }
-        
-        .deviceStatus{
-            display: inline-block;
-            line-height: 22px;
-            padding: 0 4px;
-            border-radius: 2px
-        }
-
-        .normalNum,.standbyNum{
-            border:1px solid $normalNum;
-            @include color($normalNum);
-            @extend .deviceStatus;
-        }
-        .shutdownNum,.maintainNum{
-            border:1px solid $maintainNum;
-            @include color($maintainNum);
-            @extend .deviceStatus;
-        }
-        .errorNum,.interruptNum{
-            border:1px solid $interruptNum;
-            @include color($interruptNum);
-            @extend .deviceStatus;
-        }
-        .noAccessNum{
-            border:1px solid $noAccessNum;
-            @extend .deviceStatus;
-        }
-        .tableDeviceName {
-           text-decoration: underline;
-           width:90px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .lineName{
-            width:90px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .deviceModeName{
-            width:90px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .numberStyle{
-            text-align: right;
-        }
-        :global{
-            .ant-table .ant-table-thead>tr>th,
-            .ant-table .ant-table-tbody>tr>td {
-                padding: 0px 10px;
-                height: 40px;
-                line-height: 30px;
-            }
-            .ant-table-placeholder {
-                border: none;
-            }
-            
-        }
-
+  }
+  .fanTable {
+    display: flex;
+    flex-direction: column;
+    .pagination {
+      margin: 10px;
+      display: flex;
+      justify-content: flex-end;
     }
-    .noData{
-        text-align: center;
-        margin-top: 30px;
+
+    .deviceCode {
+      width: 70px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &:hover {
+        color: $themeColor;
+      }
     }
-    .building{
-        width:300px;
-        height: 500px;
-        margin: 0 auto;
-        background: url('/img/undo.png') no-repeat center #fff;
+
+    .deviceStatus {
+      display: inline-block;
+      line-height: 22px;
+      padding: 0 4px;
+      border-radius: 2px;
+    }
+
+    .normalNum,
+    .standbyNum {
+      border: 1px solid $normalNum;
+      @include color($normalNum);
+      @extend .deviceStatus;
+    }
+    .shutdownNum,
+    .maintainNum {
+      border: 1px solid $maintainNum;
+      @include color($maintainNum);
+      @extend .deviceStatus;
+    }
+    .errorNum,
+    .interruptNum {
+      border: 1px solid $interruptNum;
+      @include color($interruptNum);
+      @extend .deviceStatus;
+    }
+    .noAccessNum {
+      border: 1px solid $noAccessNum;
+      @extend .deviceStatus;
+    }
+    .tableDeviceName {
+      text-decoration: underline;
+      width: 90px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .lineName {
+      width: 90px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .deviceModeName {
+      width: 90px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .numberStyle {
+      text-align: right;
     }
     :global {
-        .ant-spin-dot i {
-            background-color: #199475;
-        }
-        .ant-radio-group {
-            margin: 0 20px;
-        }
-        .ant-switch-checked {
-            background-color: $themeColor;
-        }
-        .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-            background: $themeColor;
-            border-color: $themeColor;
-            color: #fff;
-        }
-        .ant-radio-button-wrapper {
-            height: 24px;
-            line-height: 24px;
-        }
-        .ant-radio-button-wrapper:hover,
-        .ant-radio-button-wrapper-focused {
-            color: $themeColor;
-            position: relative;
-        }
-        .iconfont {
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .iconfont:hover {
-            color: $themeColor;
-        }
+      .ant-table .ant-table-thead > tr > th,
+      .ant-table .ant-table-tbody > tr > td {
+        padding: 0px 10px;
+        height: 40px;
+        line-height: 30px;
+      }
+      .ant-table-placeholder {
+        border: none;
+      }
     }
+  }
+  .noData {
+    text-align: center;
+    margin-top: 30px;
+  }
+  .building {
+    width: 300px;
+    height: 500px;
+    margin: 0 auto;
+    background: url("/img/undo.png") no-repeat center #fff;
+  }
+  :global {
+    .ant-spin-dot i {
+      background-color: #199475;
+    }
+    .ant-radio-group {
+      margin: 0 20px;
+    }
+    .ant-switch-checked {
+      background-color: $themeColor;
+    }
+    .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+      background: $themeColor;
+      border-color: $themeColor;
+      color: #fff;
+    }
+    .ant-radio-button-wrapper {
+      height: 24px;
+      line-height: 24px;
+    }
+    .ant-radio-button-wrapper:hover,
+    .ant-radio-button-wrapper-focused {
+      color: $themeColor;
+      position: relative;
+    }
+    .iconfont {
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .iconfont:hover {
+      color: $themeColor;
+    }
+  }
 }

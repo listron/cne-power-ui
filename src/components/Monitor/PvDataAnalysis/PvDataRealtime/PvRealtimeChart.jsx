@@ -15,7 +15,7 @@ class PvRealtimeChart extends Component {
     chartRealtime: PropTypes.object,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       datazoomStart: 0,
@@ -35,20 +35,20 @@ class PvRealtimeChart extends Component {
     if (!preTime && dataTime) { // 第一次得到数据 => 计算默认的datazoom
       const maxValues = 30 * 60 / timeInterval; // 最大数据量。
       this.setState({
-        datazoomStart: 20000 / maxValues ,
+        datazoomStart: 20000 / maxValues,
         datazoomEnd: 100,
       }, () => this.renderChart(chartRealtime, reRender))
-    }else if (dataTime !== preTime || emptyRealTime || chartLoading !== preLoading) { // 数据重新请求后重绘。
+    } else if (dataTime !== preTime || emptyRealTime || chartLoading !== preLoading) { // 数据重新请求后重绘。
       this.renderChart(chartRealtime, reRender);
     }
   }
 
   xAxisCreate = (pointInfo) => pointInfo.map((e, i) => ({ // 基于测点数据生成各grid的x轴。
-    type : 'category',
+    type: 'category',
     gridIndex: i,
     axisLine: {
       lineStyle: {
-          color: '#666'
+        color: '#353535'
       },
     },
     axisTick: {
@@ -56,7 +56,7 @@ class PvRealtimeChart extends Component {
     },
     axisLabel: {
       show: i === pointInfo.length - 1,
-      lineStyle: { color: '#666' }
+      lineStyle: { color: '#353535' }
     },
     splitLine: {
       lineStyle: {
@@ -67,7 +67,7 @@ class PvRealtimeChart extends Component {
   }));
 
   yAxisCreate = (pointInfo) => pointInfo.map((e, i) => ({ // 基于pointData生成多y轴
-    type : 'value',
+    type: 'value',
     gridIndex: i,
     axisLine: {
       lineStyle: {
@@ -75,13 +75,13 @@ class PvRealtimeChart extends Component {
       },
     },
     axisLabel: {
-      color: '#666',
+      color: '#353535',
       showMaxLabel: i === 0 ? true : false,
     },
     axisTick: {
       show: false
     },
-    splitLine:{
+    splitLine: {
       lineStyle: {
         color: '#dfdfdf',
         type: 'dotted',
@@ -91,7 +91,7 @@ class PvRealtimeChart extends Component {
     nameLocation: 'middle',
     nameGap: 72,
     nameTextStyle: {
-      color: '#666',
+      color: '#353535',
     }
   }))
 
@@ -130,7 +130,7 @@ class PvRealtimeChart extends Component {
           left: `${4 + (mapNumber % 4) * 23}%`,
           textStyle: {
             fontSize: 12,
-            color: '#666',
+            color: '#353535',
           },
           data: [lengendName],
         });
@@ -183,7 +183,7 @@ class PvRealtimeChart extends Component {
         }
       },
       axisPointer: {
-        link: {xAxisIndex: 'all'},
+        link: { xAxisIndex: 'all' },
         type: 'line',
         label: {
           backgroundColor: '#6a7985'
@@ -198,20 +198,20 @@ class PvRealtimeChart extends Component {
       ...this.legendSeriesCreate(pointInfo)
     };
     pointTime.length > 0 && pointInfo.length > 0 && (option.dataZoom = [{ // 有数据时，展示数据筛选条
-        type: 'slider',
-        start: datazoomStart,
-        end: datazoomEnd,
-        left: 80,
-        right: 80,
-        filterMode: 'empty',
-        xAxisIndex: pointInfo.map((e, i)=> i),
-      },{
-        type: 'inside',
-        orient: 'horizontal',
-        filterMode: 'empty',
-        xAxisIndex: pointInfo.map((e, i)=> i),
-      }]);
-    realtimeChart.on('datazoom',(datazoom) => {
+      type: 'slider',
+      start: datazoomStart,
+      end: datazoomEnd,
+      left: 80,
+      right: 80,
+      filterMode: 'empty',
+      xAxisIndex: pointInfo.map((e, i) => i),
+    }, {
+      type: 'inside',
+      orient: 'horizontal',
+      filterMode: 'empty',
+      xAxisIndex: pointInfo.map((e, i) => i),
+    }]);
+    realtimeChart.on('datazoom', (datazoom) => {
       const { type, start, end, batch } = datazoom;
       if (type !== 'datazoom') {
         return;
@@ -252,7 +252,7 @@ class PvRealtimeChart extends Component {
             </span>
           </span>
         </h4>
-        <div className={styles.innerChart} id="dataRealtimeChart" style={{ height: `${chartHeight}px`}} />
+        <div className={styles.innerChart} id="dataRealtimeChart" style={{ height: `${chartHeight}px` }} />
       </section>
     )
   }

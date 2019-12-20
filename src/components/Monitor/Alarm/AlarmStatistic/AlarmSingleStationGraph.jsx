@@ -15,7 +15,7 @@ class AlarmSingleStationGraph extends React.Component {
     this.alarmChart = echarts.init(document.getElementById('singleStationAlarmChart'));
     this.renderChart(data);
   }
-  
+
   componentWillReceiveProps(nextProps) {
     const { singleAlarmStatistic } = nextProps;
     const data = this.transferData(singleAlarmStatistic);
@@ -41,7 +41,7 @@ class AlarmSingleStationGraph extends React.Component {
     const transferWorkRate = singleAlarmStatistic && singleAlarmStatistic.map((item, index) => {
       return item.transferWorkRate;
     });
-    
+
     return {
       timeData, alarmNum, transferWorkAlarmNum, noTransferWorkAlarmNum, transferWorkRate
     };
@@ -52,26 +52,26 @@ class AlarmSingleStationGraph extends React.Component {
       tooltip: {
         trigger: 'axis',
         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-          type : 'line',
-          lineStyle:{
-              width:30,
-              color:'rgb(0, 0, 0,0.2)'
+          type: 'line',
+          lineStyle: {
+            width: 30,
+            color: 'rgb(0, 0, 0,0.2)'
           },
         },
         textStyle: {
-          color: '#666',
+          color: '#353535',
           fontSize: 12,
         },
-        extraCssText:'width:128px;height:116px;',
+        extraCssText: 'width:128px;height:116px;',
         formatter: (params) => {
           return `<div>
           <div style="border-bottom: 1px solid #d4d4d4;padding-left:4px;padding-bottom:4px">${params[0].name}</div> 
-          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">告警数</span><span>${params[1].value+params[2].value}</span></div>
+          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">告警数</span><span>${params[1].value + params[2].value}</span></div>
           <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[1].marker}${params[1].seriesName}</span><span>${params[1].value}</span></div> 
           <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[2].marker}${params[2].seriesName}</span><span>${params[2].value}</span></div>
           <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[0].marker}${params[0].seriesName}</span><span>${params[0].value}%</span></div>       
           </div>`
-          },
+        },
         backgroundColor: '#fff',
       },
       legend: {
@@ -123,7 +123,7 @@ class AlarmSingleStationGraph extends React.Component {
           name: '转工单数',
           type: 'bar',
           //单个柱最大宽度
-          barMaxWidth:'200px',
+          barMaxWidth: '200px',
           stack: '总量',
           itemStyle: {
             color: '#c7ceb2'
@@ -148,10 +148,10 @@ class AlarmSingleStationGraph extends React.Component {
     this.alarmChart.setOption(option)
   }
 
-  
+
   render() {
     return (
-      <div id="singleStationAlarmChart" style={{ marginTop:10,display:'flex',flex:1}}> </div>
+      <div id="singleStationAlarmChart" style={{ marginTop: 10, display: 'flex', flex: 1 }}> </div>
     );
   }
 }

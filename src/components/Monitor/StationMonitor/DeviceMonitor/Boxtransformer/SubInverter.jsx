@@ -65,7 +65,7 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
   };
 
   // const getStatusBox = (alarmNum, isLowEfficiency) => {
-  //   let backgroundColor = 'transparent', color = '#666';
+  //   let backgroundColor = 'transparent', color = '#353535';
   //   alarmNum && isLowEfficiency && (backgroundColor = '#fefad2') && (color = '#e08031');
   //   alarmNum && !isLowEfficiency && (backgroundColor = '#ff8e9c') && (color = '#a42b2c');
   //   return { backgroundColor, color };

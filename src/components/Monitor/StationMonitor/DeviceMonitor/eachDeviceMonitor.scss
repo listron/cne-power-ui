@@ -108,7 +108,7 @@
 
         .backIcon {
           border-left: 1px solid #d4d4d4;
-          color: #666;
+          color: #353535;
         }
       }
     }
@@ -146,7 +146,7 @@
     .confluenceTabs,
     .inverterTabs,
     .boxtransformerTabs,
-    .integrateLineTabs{
+    .integrateLineTabs {
       margin: 37px 48px 0;
       display: flex;
       background-color: #f8f8f8;
@@ -177,7 +177,7 @@
       }
 
       .tabNormal {
-        color: $darkColor;;
+        color: $darkColor;
         border-bottom: 1px solid transparent;
       }
     }
@@ -187,7 +187,7 @@
   .inverterChartTitle {
     .tabs {
       .inactive {
-        color: #666;
+        color: #353535;
         border: 1px solid #d4d4d4;
       }
 

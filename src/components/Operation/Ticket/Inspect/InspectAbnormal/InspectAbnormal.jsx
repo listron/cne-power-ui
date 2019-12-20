@@ -19,7 +19,7 @@ class InspectAbnormal extends Component {
     inspectDetail: PropTypes.object,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       abnormalId: null,
@@ -28,23 +28,23 @@ class InspectAbnormal extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const stationType = this.props.inspectDetail.get('stationType');
     const deviceTypeCodes = this.props.inspectDetail.get('deviceTypeCodes');
-    this.props.getInspectStandard({stationType, deviceTypeCodes});
+    this.props.getInspectStandard({ stationType, deviceTypeCodes });
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.inspectDetail.get('inspectId') !== this.props.inspectDetail.get('inspectId')){
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.inspectDetail.get('inspectId') !== this.props.inspectDetail.get('inspectId')) {
       const stationType = nextProps.inspectDetail.get('stationType');
       const deviceTypeCodes = nextProps.inspectDetail.get('deviceTypeCodes');
-      this.props.getInspectStandard({stationType, deviceTypeCodes});
+      this.props.getInspectStandard({ stationType, deviceTypeCodes });
     }
   }
 
   onShowDetail = (data) => {
     const abnormalId = this.state.abnormalId;
-    if(abnormalId === data.get('abnormalId')) {
+    if (abnormalId === data.get('abnormalId')) {
       this.setState({
         abnormalId: null,
         showAbnormal: false
@@ -57,8 +57,8 @@ class InspectAbnormal extends Component {
     }
   }
 
-  onShowModal = () =>{
-    this.setState({showInspectStandard: true})
+  onShowModal = () => {
+    this.setState({ showInspectStandard: true })
     // const stationType = this.props.inspectDetail.get('stationType');
     // const deviceTypeCodes = this.props.inspectDetail.get('deviceTypeCodes');
     // this.props.getInspectStandard({stationType, deviceTypeCodes});
@@ -76,36 +76,36 @@ class InspectAbnormal extends Component {
     });
   }
 
-  renderItems(){
+  renderItems() {
     let status = this.props.status;
     return this.props.abnormalItems.map((item, index) => {
-      if(status === '2') {
+      if (status === '2') {
         return (
-        //   <AbnormalItem 
-        //   key={'abnormal'+index}
-        //   status="delete"
-        //   item={item}
-        //   selected={this.state.abnormalId === item.get('abnormalId')}
-        //   onShowDetail={this.onShowDetail}
-        //   onDelete={this.props.onDeleteAbnormal}
-        // /> 
-        <AbnormalItem 
-        key={'abnormal'+index}
-        status="delete"
-        item={item}
-        onShowDetail={this.onShowDetail}
-        disabled={item.get('isTransform') === '1'}
-        checked={this.props.selectedIds.includes(item.get('abnormalId'))}
-        selected={this.state.abnormalId === item.get('abnormalId')}
-        onSelect={this.props.onSelectItem}
-        onDelete={this.props.onDeleteAbnormal}
-      />
-          
+          //   <AbnormalItem 
+          //   key={'abnormal'+index}
+          //   status="delete"
+          //   item={item}
+          //   selected={this.state.abnormalId === item.get('abnormalId')}
+          //   onShowDetail={this.onShowDetail}
+          //   onDelete={this.props.onDeleteAbnormal}
+          // /> 
+          <AbnormalItem
+            key={'abnormal' + index}
+            status="delete"
+            item={item}
+            onShowDetail={this.onShowDetail}
+            disabled={item.get('isTransform') === '1'}
+            checked={this.props.selectedIds.includes(item.get('abnormalId'))}
+            selected={this.state.abnormalId === item.get('abnormalId')}
+            onSelect={this.props.onSelectItem}
+            onDelete={this.props.onDeleteAbnormal}
+          />
+
         );
-      } else if(status === '3') {
+      } else if (status === '3') {
         return (
-          <AbnormalItem 
-            key={'abnormal'+index}
+          <AbnormalItem
+            key={'abnormal' + index}
             status="select"
             item={item}
             onShowDetail={this.onShowDetail}
@@ -115,10 +115,10 @@ class InspectAbnormal extends Component {
             onSelect={this.props.onSelectItem}
           />
         );
-      } else if(status === '4') {
+      } else if (status === '4') {
         return (
-          <AbnormalItem 
-            key={'abnormal'+index}
+          <AbnormalItem
+            key={'abnormal' + index}
             status="view"
             onShowDetail={this.onShowDetail}
             item={item}
@@ -131,7 +131,7 @@ class InspectAbnormal extends Component {
   }
 
   renderMenu(inspectStandard) {
-    if(inspectStandard.size === 0) {
+    if (inspectStandard.size === 0) {
       return null;
     }
     return inspectStandard.map((item, index) => {
@@ -144,7 +144,7 @@ class InspectAbnormal extends Component {
           <div className={styles.subMenu}>
             {item.get('standardData').map((subItem, i) => {
               return (
-                <div style={this.state.standardInfo===subItem.get('standardInfo')?{backgroundColor:'#666'}:{}} className={styles.subMenuTitle} key={i} onClick={()=>this.getStandardInfo(subItem.get('standardInfo'))} title={subItem.get('standardItem')}>
+                <div style={this.state.standardInfo === subItem.get('standardInfo') ? { backgroundColor: '#353535' } : {}} className={styles.subMenuTitle} key={i} onClick={() => this.getStandardInfo(subItem.get('standardInfo'))} title={subItem.get('standardItem')}>
                   {subItem.get('standardItem')}
                 </div>
               );
@@ -155,11 +155,11 @@ class InspectAbnormal extends Component {
     });
   }
 
-  renderStandard(){
+  renderStandard() {
     let inspectStandard = this.props.inspectStandard;
     return (
       <Modal
-        className={styles.defectStandardModal} 
+        className={styles.defectStandardModal}
         visible={true}
         footer={null}
         mask={false}
@@ -181,15 +181,15 @@ class InspectAbnormal extends Component {
 
   renderItemDetail() {
     let abnormalId = this.state.abnormalId;
-    if(abnormalId) {
-       let detail = this.props.abnormalItems.find((item) => {
+    if (abnormalId) {
+      let detail = this.props.abnormalItems.find((item) => {
         return item.get('abnormalId') === abnormalId
       });
-      if(detail) {
+      if (detail) {
         const defectTypeName = detail.get('defectTypeName');
         const defectParentTypeName = detail.get('defectParentTypeName') || '';
         const defectTypeText = `${defectParentTypeName}/${defectTypeName}`;
-        const detailImages = detail.get('photoAddress')?detail.get('photoAddress').split(','): [];
+        const detailImages = detail.get('photoAddress') ? detail.get('photoAddress').split(',') : [];
         return (
           <div className={styles.abnormalDetail}>
             <div className={styles.detailItem}>
@@ -205,7 +205,7 @@ class InspectAbnormal extends Component {
               异常描述<span title={detail.get('abnormalDescribe')}>{detail.get('abnormalDescribe')}</span>
             </div>
             <div className={styles.viewImg}>
-              <ImgUploader editable={false} data={detailImages.map(e=>({
+              <ImgUploader editable={false} data={detailImages.map(e => ({
                 uid: e,
                 rotate: 0,
                 thumbUrl: `${e}?${Math.random()}`
@@ -221,8 +221,8 @@ class InspectAbnormal extends Component {
     }
   }
 
-  render(){
-    const {inspectStandard} = this.props;
+  render() {
+    const { inspectStandard } = this.props;
     return (
       <div className={styles.inspectAbnormal}>
         <div className={styles.title}>
@@ -235,8 +235,8 @@ class InspectAbnormal extends Component {
         <div className={styles.abnormalItems}>
           {this.renderItems()}
         </div>
-        {this.state.showAbnormal &&this.renderItemDetail()}
-        {this.state.showInspectStandard&&this.renderStandard()}
+        {this.state.showAbnormal && this.renderItemDetail()}
+        {this.state.showInspectStandard && this.renderStandard()}
       </div>
     )
   }

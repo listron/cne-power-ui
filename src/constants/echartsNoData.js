@@ -3,7 +3,7 @@ const showNoData = {
   left: 'center',
   top: 'center',
   style: {
-    fill: '#666',
+    fill: '#353535',
     text: [
       '暂无数据',
     ],
@@ -29,7 +29,7 @@ const hiddenNoData = {
   left: 'center',
   top: 'center',
   style: {
-    fill: '#666',
+    fill: '#353535',
     text: [
       '',
     ],

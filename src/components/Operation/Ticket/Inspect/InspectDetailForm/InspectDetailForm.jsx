@@ -124,16 +124,16 @@ class InspectDetailForm extends Component {
             <div className={styles.border}></div>
           </div>
           <Button className={styles.transferBtn} onClick={this.onTransformDefect} disabled={abnormalIds.size === 0}>转工单</Button>
-          <div style={{ color: '#666' }}>
+          <div style={{ color: '#353535' }}>
 
           </div>
           {checkInspectRight && <Button className={styles.checkBtn} onClick={this.onInspectCheck}>验收</Button>}
-          <div style={{ color: '#666' }}></div>
+          <div style={{ color: '#353535' }}></div>
         </div>
       )
-    } 
-      return null;
-    
+    }
+    return null;
+
   }
 
   renderTitle() {
@@ -142,9 +142,9 @@ class InspectDetailForm extends Component {
       return '执行巡检';
     } else if (status === '3') {
       return '验收巡检';
-    } 
-      return '缺陷详情';
-    
+    }
+    return '缺陷详情';
+
   }
 
   render() {

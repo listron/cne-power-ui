@@ -1,8 +1,7 @@
-
-.stopStatus{
+.stopStatus {
   position: relative;
   margin-top: 12px;
-  .modes{
+  .modes {
     position: absolute;
     width: 100%;
     display: flex;
@@ -10,61 +9,60 @@
     align-items: center;
     top: 20px;
     font-size: 12px;
-    .eachFault{
+    .eachFault {
       margin-right: 20px;
     }
-    .rect{
+    .rect {
       margin-right: 4px;
-      border-radius:2px;
+      border-radius: 2px;
       display: inline-block;
       width: 15px;
       height: 9px;
     }
-    .modeText{
+    .modeText {
       white-space: nowrap;
     }
   }
-  .stautsChart{
+  .stautsChart {
     height: 600px;
   }
 }
 
-.tooltip{
+.tooltip {
   width: 290px;
-  .title{
+  .title {
     display: flex;
     justify-content: space-between;
     padding: 0 8px;
     margin-bottom: 0;
     line-height: 24px;
   }
-  .info{
+  .info {
     padding: 8px;
   }
-  .eachItem{
+  .eachItem {
     display: flex;
     line-height: 21px;
     font-size: 12px;
   }
-  .itemName{
+  .itemName {
     margin-right: 8px;
   }
-  .itemValue{
+  .itemValue {
     white-space: normal;
   }
 }
 
-
-
-.stopStatus{
+.stopStatus {
   background-color: #fff;
 }
-.tooltip{ // chart提示
+.tooltip {
+  // chart提示
   background-color: #fff;
-  border:1px solid #e1e2e2;
-  color: #666;
-  box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
-  .title{
+  border: 1px solid #e1e2e2;
+  color: #353535;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+  .title {
     border-bottom: 1px solid #d4d4d4;
   }
 }

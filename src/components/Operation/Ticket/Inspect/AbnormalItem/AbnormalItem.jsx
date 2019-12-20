@@ -56,7 +56,7 @@ class AbnormalItem extends Component {
           style={{
             height: height,
             width: width,
-            color: selected ? '#fff' : '#666',
+            color: selected ? '#fff' : '#353535',
             backgroundColor: selected ? '#199475' : '#f1f1f1',
           }}
         >
@@ -80,7 +80,7 @@ class AbnormalItem extends Component {
           style={{
             height: height,
             width: width,
-            color: selected ? '#fff' : disabled ? '#d4d4d4' : '#666',
+            color: selected ? '#fff' : disabled ? '#d4d4d4' : '#353535',
             backgroundColor: selected ? '#199475' : '#f1f1f1',
           }}
         >
@@ -97,7 +97,7 @@ class AbnormalItem extends Component {
           style={{
             height: height,
             width: width,
-            color: selected ? '#fff' : checked ? '#d4d4d4' : '#666',
+            color: selected ? '#fff' : checked ? '#d4d4d4' : '#353535',
             backgroundColor: selected ? '#199475' : '#f1f1f1',
           }}
         >
