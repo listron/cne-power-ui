@@ -26,7 +26,7 @@ class SequenceChart extends Component {
   drawChart = (params, sequenceLoadding) => {
     const sequenceChart = echarts.init(document.getElementById('sequenceChart'));
     sequenceLoadding ? sequenceChart.showLoading('default', { color: '#199475' }) : sequenceChart.hideLoading();
-    const lineColor = '#666';
+    const lineColor = '#353535';
     const { xAxisDate } = this.props;
     const color = ['#3e97d1', '#a42b2c', '#199475'];
     const yData = params.map(e => (e.deviceName));

@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import { themeConfig } from '../../../../utils/darkConfig';
 import styles from './resources.scss';
 
-class BigFrequencyChats extends Component{
+class BigFrequencyChats extends Component {
   static propTypes = {
     index: PropTypes.number,
     theme: PropTypes.string,
@@ -18,7 +18,7 @@ class BigFrequencyChats extends Component{
     frequencyMaxData: PropTypes.object,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { curBigChartData, deviceList, index, theme, bigchartLoading } = this.props;
     const curChart = deviceList[index];
     const saveBtn = curChart ? curChart.likeStatus : false;
@@ -37,7 +37,7 @@ class BigFrequencyChats extends Component{
     this.renderChart(curBigChartData, saveBtn, deviceName);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { curBigChartData, theme, index, deviceList } = nextProps;
     const { bigChart } = this;
     const curChart = deviceList[index];
@@ -48,7 +48,7 @@ class BigFrequencyChats extends Component{
       maskColor: 'rgba(255, 255, 255, 0.8)',
       color: '#199475',
     };
-    if(this.props.curBigChartData.length !== curBigChartData.length){
+    if (this.props.curBigChartData.length !== curBigChartData.length) {
       myChart.showLoading('default', lightColor);
       this.renderChart(curBigChartData, saveBtn, deviceName);
     }
@@ -74,7 +74,7 @@ class BigFrequencyChats extends Component{
     const windSpeedNameData = [], speedFrequencyData = [], eneryFrequencyData = [];
     curBigChartData.forEach(e => {
       // 小于等于最大值
-      if(e.windSpeedConfId <= windSpeedConfId) {
+      if (e.windSpeedConfId <= windSpeedConfId) {
         windSpeedNameData.push(e.windSpeedName);
         speedFrequencyData.push(e.speedFrequency);
         eneryFrequencyData.push(e.eneryFrequency);
@@ -169,13 +169,13 @@ class BigFrequencyChats extends Component{
             show: false, // 隐藏刻度线
           },
           axisLabel: {
-　　　　　　　textStyle: { //textStyle里面写x轴下的字体的样式
-              color: '#666',
+            textStyle: { //textStyle里面写x轴下的字体的样式
+              color: '#353535',
             },
           },
           axisLine: {
             lineStyle: {
-                color: '#d4d4d4',
+              color: '#d4d4d4',
             },
           },
         },
@@ -196,13 +196,13 @@ class BigFrequencyChats extends Component{
           },
           axisLabel: {
             formatter: '{value}%', // 为y轴数字增加单位
-　　　　　　　textStyle: { // textStyle里面写x轴下的字体的样式
-              color: '#666',
+            textStyle: { // textStyle里面写x轴下的字体的样式
+              color: '#353535',
             },
           },
           axisLine: {
             lineStyle: {
-                color: '#d4d4d4', // 轴线颜色
+              color: '#d4d4d4', // 轴线颜色
             },
           },
         },
@@ -228,12 +228,12 @@ class BigFrequencyChats extends Component{
     const myChart = eCharts.init(bigChart, themeConfig[this.props.theme]);
     const option = this.creatOption(curBigChartData, saveBtn, deviceName);
     myChart.off();
-    myChart.on('click', 'title', ()=>{
+    myChart.on('click', 'title', () => {
       likeStatusChange(index, !saveBtn, curBigChartData);
     });
     myChart.setOption(option);
   }
-  render(){
+  render() {
     return (
       <div ref={(ref) => { this.bigChart = ref; }} className={styles.frequencyCharts}></div>
     );

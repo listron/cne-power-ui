@@ -141,7 +141,7 @@ class GpsMap extends Component {
       'featureType': 'label',
       'elementType': 'labels.text.fill',
       'stylers': {
-        'color': '#666',
+        'color': '#353535',
       },
     },
     {
@@ -254,7 +254,7 @@ class GpsMap extends Component {
       'featureType': 'label',
       'elementType': 'labels.text.fill',
       'stylers': {
-        'color': '#666',
+        'color': '#353535',
       },
     }];
     const option = {
@@ -288,7 +288,7 @@ class GpsMap extends Component {
           height: '68px',
           backgroundColor: '#fff',
           textStyle: {
-            color: '#666',
+            color: '#353535',
           },
           extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
         },

@@ -47,7 +47,7 @@ class WindDistributionChart extends Component {
     (params && params.length > 0) && params.forEach((e, i) => filterpercent.push(e.precent));
 
     const inverterTenMinGraphic = (filterwindSpeed.length === 0 && filterpercent.length === 0) ? showNoData : hiddenNoData;
-    const lineColor = '#666';
+    const lineColor = '#353535';
     const option = {
       graphic: inverterTenMinGraphic,
       color: '#c7ceb2',

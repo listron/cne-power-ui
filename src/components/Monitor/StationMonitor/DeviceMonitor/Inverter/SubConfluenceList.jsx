@@ -12,7 +12,7 @@ const SubConfluenceList = ({ subDeviceList = [], stationCode, theme = 'light' })
     400: { name: 'normal', text: '正常', color: '#199475' },
     801: { name: 'moreThanTen', text: '离散率>10%', color: '#f9b600' },
     802: { name: 'moreThanTwenty', text: '离散率>20%', color: '#e08031' },
-    500: { name: 'noContact', text: '无通讯', color: '#666' },
+    500: { name: 'noContact', text: '无通讯', color: '#353535' },
     900: { name: 'noAccess', text: '未接入', color: '#999' },
   };
 
@@ -89,11 +89,11 @@ const SubConfluenceList = ({ subDeviceList = [], stationCode, theme = 'light' })
                   <div>
                     <span>温度：<span className={item.tempValidation && styles.specialColor}>{dataFormats(item.temp, '--', 2)}</span> ℃</span>
                     {item.tempValidation &&
-                    <span className={styles.tooltipName}>
-                      <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.tempValidation}>
-                        <i className="iconfont icon-help"></i>
-                      </Tooltip>
-                    </span>}
+                      <span className={styles.tooltipName}>
+                        <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.tempValidation}>
+                          <i className="iconfont icon-help"></i>
+                        </Tooltip>
+                      </span>}
                   </div>
                 </div>
               </div>

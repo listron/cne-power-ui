@@ -6,7 +6,7 @@ import { dataFormats } from '@utils/utilFunc';
 import { themeConfig } from '../../../../utils/darkConfig';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
-class FrequencyChart extends Component{
+class FrequencyChart extends Component {
   static propTypes = {
     frequencyData: PropTypes.array,
     deviceList: PropTypes.array,
@@ -32,7 +32,7 @@ class FrequencyChart extends Component{
     myChart.setOption(option, true);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { saveBtn, frequencyData, activeCode, deviceList, startTime, endTime } = nextProps;
     const requestParams = { startTime, endTime };
     const prevCode = this.props.activeCode;
@@ -77,11 +77,11 @@ class FrequencyChart extends Component{
         eneryFrequency,
         speedFrequency,
         windSpeedConfId,
-      }} = this.props;
+      } } = this.props;
     const windSpeedNameData = [], speedFrequencyData = [], eneryFrequencyData = [];
     frequencyData.forEach(e => {
       // 小于等于最大值
-      if(e.windSpeedConfId <= windSpeedConfId) {
+      if (e.windSpeedConfId <= windSpeedConfId) {
         windSpeedNameData.push(e.windSpeedName);
         speedFrequencyData.push(e.speedFrequency);
         eneryFrequencyData.push(e.eneryFrequency);
@@ -177,13 +177,13 @@ class FrequencyChart extends Component{
             show: false, // 隐藏刻度线
           },
           axisLabel: {
-　　　　　　　textStyle: { //textStyle里面写x轴下的字体的样式
-              color: '#666',
+            textStyle: { //textStyle里面写x轴下的字体的样式
+              color: '#353535',
             },
           },
           axisLine: {
             lineStyle: {
-                color: '#d4d4d4',
+              color: '#d4d4d4',
             },
           },
         },
@@ -204,13 +204,13 @@ class FrequencyChart extends Component{
           },
           axisLabel: {
             formatter: '{value}%', // 为y轴数字增加单位
-　　　　　　　textStyle: { //textStyle里面写x轴下的字体的样式
-              color: '#666',
+            textStyle: { //textStyle里面写x轴下的字体的样式
+              color: '#353535',
             },
           },
           axisLine: {
             lineStyle: {
-                color: '#d4d4d4', // 轴线颜色
+              color: '#d4d4d4', // 轴线颜色
             },
           },
         },
@@ -237,7 +237,7 @@ class FrequencyChart extends Component{
     };
     const myChart = echarts.init(this.frequencyChart, themeConfig[theme]); //构建下一个实例
     myChart.clear();
-    const option = this.creatOption(frequencyData, saveBtn );
+    const option = this.creatOption(frequencyData, saveBtn);
     myChart.off();
     myChart.on('click', 'title', (payload) => {
       likeStatusChange(index, !saveBtn, frequencyData);
@@ -262,9 +262,9 @@ class FrequencyChart extends Component{
     myChart.setOption(option, true);
   }
 
-  render(){
+  render() {
     const { index, showImg } = this.props;
-    return(
+    return (
       <div className={styles.frequencyChart}>
         {showImg && <div className={styles.showModalIcon} onClick={() => showImg(index)}>
           <i className="iconfont icon-enlarge2"></i>

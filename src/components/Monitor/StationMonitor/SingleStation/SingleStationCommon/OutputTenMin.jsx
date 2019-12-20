@@ -30,7 +30,7 @@ class OutputTenMin extends Component {
     const { capabilityData, yXaisName, chartType, yAxisUnit, yAxisValuePoint } = nextProps;
     let yAxisType = `功率(${yAxisUnit})`
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
-    const lineColor = '#666';
+    const lineColor = '#353535';
     const capabilityPower = capabilityData.map(e => (yAxisUnit === 'MW' ? (+e.stationPower) : (+e.stationPower * 1000)).toFixed(yAxisValuePoint));
     const capabilityRadiation = capabilityData.map(e => e.instantaneous);
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
@@ -210,7 +210,7 @@ class OutputTenMin extends Component {
     const resourceAnalysis = `/statistical/stationaccount/resource#${stationCode}`;
     return (
       <div className={styles.capabilityDiagramBox} >
-        <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #d4d4d4", color: '#666', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
+        <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #d4d4d4", color: '#353535', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
         {stationCode && <Link to={resourceAnalysis} ><i className="iconfont icon-more"></i></Link>}
       </div>
     )

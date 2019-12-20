@@ -15,7 +15,7 @@ class RealtimeChart extends Component {
     chartRealtime: PropTypes.object,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       datazoomStart: 0,
@@ -35,39 +35,39 @@ class RealtimeChart extends Component {
     if (!preTime && dataTime) { // 第一次得到数据 => 计算默认的datazoom
       const maxValues = 30 * 60 / timeInterval; // 最大数据量。
       this.setState({
-        datazoomStart: 20000 / maxValues ,
+        datazoomStart: 20000 / maxValues,
         datazoomEnd: 100,
       }, () => this.renderChart(chartRealtime, reRender))
-    }else if (dataTime !== preTime || emptyRealTime || chartLoading !== preLoading) { // 数据重新请求后重绘。
+    } else if (dataTime !== preTime || emptyRealTime || chartLoading !== preLoading) { // 数据重新请求后重绘。
       this.renderChart(chartRealtime, reRender);
     }
   }
 
   xAxisCreate = (pointInfo) => pointInfo.map((e, i) => ({ // 基于测点数据生成各grid的x轴。
-    type : 'category',
+    type: 'category',
     gridIndex: i,
     axisLine: {
       lineStyle: {
-          color: '#666'
+        color: '#353535'
       },
     },
-    axisTick: { 
-      show: false 
+    axisTick: {
+      show: false
     },
-    axisLabel: { 
+    axisLabel: {
       show: i === pointInfo.length - 1,
-      lineStyle: { color: '#666' }
+      lineStyle: { color: '#353535' }
     },
     splitLine: {
       lineStyle: {
         color: '#d4d4d4',
         type: 'dotted',
-      } 
+      }
     },
   }));
 
   yAxisCreate = (pointInfo) => pointInfo.map((e, i) => ({ // 基于pointData生成多y轴
-    type : 'value',
+    type: 'value',
     gridIndex: i,
     axisLine: {
       lineStyle: {
@@ -75,23 +75,23 @@ class RealtimeChart extends Component {
       },
     },
     axisLabel: {
-      color: '#666',
+      color: '#353535',
       showMaxLabel: i === 0 ? true : false,
     },
     axisTick: {
       show: false
     },
-    splitLine:{
+    splitLine: {
       lineStyle: {
         color: '#d4d4d4',
         type: 'dotted',
-      } 
+      }
     },
     name: `${e.pointName}\n${e.pointUnit ? `(${e.pointUnit})` : ''}`,
     nameLocation: 'middle',
     nameGap: 72,
     nameTextStyle: {
-      color: '#666',
+      color: '#353535',
     }
   }))
 
@@ -130,7 +130,7 @@ class RealtimeChart extends Component {
           left: `${4 + (mapNumber % 4) * 23}%`,
           textStyle: {
             fontSize: 12,
-            color: '#666',
+            color: '#353535',
           },
           data: [lengendName],
         });
@@ -150,7 +150,7 @@ class RealtimeChart extends Component {
     const { chartLoading } = this.props;
     const { datazoomStart, datazoomEnd } = this.state;
     const chartDOM = document.getElementById('dataRealtimeChart');
-    
+
     if (!chartDOM) { return; }
     reRender && echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。 
     const realtimeChart = echarts.init(chartDOM);
@@ -183,7 +183,7 @@ class RealtimeChart extends Component {
         }
       },
       axisPointer: {
-        link: {xAxisIndex: 'all'},
+        link: { xAxisIndex: 'all' },
         type: 'line',
         label: {
           backgroundColor: '#6a7985'
@@ -198,20 +198,20 @@ class RealtimeChart extends Component {
       ...this.legendSeriesCreate(pointInfo)
     };
     pointTime.length > 0 && pointInfo.length > 0 && (option.dataZoom = [{ // 有数据时，展示数据筛选条 
-        type: 'slider',
-        start: datazoomStart,
-        end: datazoomEnd,
-        left: 80,
-        right: 80,
-        filterMode: 'empty',
-        xAxisIndex: pointInfo.map((e, i)=> i),
-      },{
-        type: 'inside',
-        orient: 'horizontal',
-        filterMode: 'empty',
-        xAxisIndex: pointInfo.map((e, i)=> i),
-      }]);
-    realtimeChart.on('datazoom',(datazoom) => {
+      type: 'slider',
+      start: datazoomStart,
+      end: datazoomEnd,
+      left: 80,
+      right: 80,
+      filterMode: 'empty',
+      xAxisIndex: pointInfo.map((e, i) => i),
+    }, {
+      type: 'inside',
+      orient: 'horizontal',
+      filterMode: 'empty',
+      xAxisIndex: pointInfo.map((e, i) => i),
+    }]);
+    realtimeChart.on('datazoom', (datazoom) => {
       const { type, start, end, batch } = datazoom;
       if (type !== 'datazoom') {
         return;
@@ -236,7 +236,7 @@ class RealtimeChart extends Component {
     // height: 160 * 测点数 + top(10) + bottom(60) + 24 * 设备数。
     // const { queryParam = {}, dataTime = null } = this.props;
     const { queryParam = {}, chartTimeMoment } = this.props;
-    
+
     const { deviceFullCodes = [], devicePoints = [] } = queryParam;
     const calcHeight = 160 * devicePoints.length + 70 + 24 * Math.ceil((deviceFullCodes.length * devicePoints.length) / 4);
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
@@ -252,7 +252,7 @@ class RealtimeChart extends Component {
             </span>
           </span>
         </h4>
-        <div className={styles.innerChart} id="dataRealtimeChart" style={{ height: `${chartHeight}px`}} />
+        <div className={styles.innerChart} id="dataRealtimeChart" style={{ height: `${chartHeight}px` }} />
       </section>
     )
   }

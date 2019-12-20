@@ -103,7 +103,7 @@
         .stationRight {
           .backIcon {
             border-left: 1px solid #d4d4d4;
-            color: #666;
+            color: #353535;
           }
         }
       }
@@ -164,16 +164,17 @@
           border: none;
         }
 
-        .instantaneous,.equivalentTime{
+        .instantaneous,
+        .equivalentTime {
           display: flex;
           align-items: center;
         }
-        
-        .tooltipName{
+
+        .tooltipName {
           margin-left: 4px;
           margin-bottom: 8px;
           color: #999;
-          &:hover{
+          &:hover {
             color: #f9b600;
           }
         }
@@ -185,8 +186,8 @@
           padding: 0 4px;
           line-height: 30px;
         }
-        
-        .specialColor{
+
+        .specialColor {
           color: #a22c30 !important;
         }
         // .radiation {
@@ -384,15 +385,15 @@
         .iconStyle {
           color: $fontColor-hover;
         }
-        
-        .specialColor{
+
+        .specialColor {
           color: #a22c30 !important;
         }
-        .tooltipName{
+        .tooltipName {
           margin-left: 4px;
           margin-bottom: 8px;
           color: #999;
-          &:hover{
+          &:hover {
             color: #f9b600;
           }
         }

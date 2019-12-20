@@ -136,7 +136,7 @@ class Map extends Component {
             'featureType': 'label',
             'elementType': 'labels.text.fill',
             'stylers': {
-              'color': '#666',
+              'color': '#353535',
             },
           }],
 
@@ -190,7 +190,7 @@ class Map extends Component {
           // height:'68px',
           backgroundColor: '#fff',
           textStyle: {
-            color: '#666',
+            color: '#353535',
           },
           extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
         },
@@ -223,9 +223,9 @@ class Map extends Component {
     testChart.on('click', (params) => {
       if (params.data.stationStatus !== '900') {
         return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)
-      } 
-        this.showTip();
-      
+      }
+      this.showTip();
+
 
     });
   }
