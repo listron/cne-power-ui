@@ -61,7 +61,7 @@ class AlarmStatisticGraph extends React.Component {
           },
         },
         textStyle: {
-          color: '#666',
+          color: '#353535',
           fontSize: 12,
         },
         // extraCssText:'width:128px;height:165px;background: rgba(0,0,0,0);',
@@ -117,7 +117,7 @@ class AlarmStatisticGraph extends React.Component {
           type: 'value',
           name: '告警数(个)',
           nameTextStyle: {
-            color: '#666',
+            color: '#353535',
           },
           splitLine: {
             show: false,
@@ -129,14 +129,14 @@ class AlarmStatisticGraph extends React.Component {
             show: false,
           },
           axisLabel: {
-            color: '#666',
+            color: '#353535',
           },
         },
         {
           type: 'value',
           name: '小时(h)',
           nameTextStyle: {
-            color: '#666',
+            color: '#353535',
           },
           splitLine: {
             show: false,
@@ -150,7 +150,7 @@ class AlarmStatisticGraph extends React.Component {
             },
           },
           axisLabel: {
-            color: '#666',
+            color: '#353535',
           },
         },
       ],
@@ -167,7 +167,7 @@ class AlarmStatisticGraph extends React.Component {
           },
         },
         axisLabel: {
-          color: '#666',
+          color: '#353535',
         },
       },
       // dataZoom: {

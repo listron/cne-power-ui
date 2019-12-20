@@ -1,135 +1,173 @@
+@import "./miniCommon.scss";
 
-@import './miniCommon.scss';
-
-@media screen and (max-width: 1439px) { // 1440以下屏幕，按1366px进行适配。
-  .stationGeneral, .inefficientSeries, .monthGen, .outputPower, .operationInfo, .deviceStatus{
+@media screen and (max-width: 1439px) {
+  // 1440以下屏幕，按1366px进行适配。
+  .stationGeneral,
+  .inefficientSeries,
+  .monthGen,
+  .outputPower,
+  .operationInfo,
+  .deviceStatus {
     width: 340px;
     margin-bottom: 1.5%;
   }
-  .stationGeneral, .outputPower{
+  .stationGeneral,
+  .outputPower {
     flex: 1 1 40%;
   }
-  .operationInfo, .inefficientSeries{
+  .operationInfo,
+  .inefficientSeries {
     flex: 1 1 25%;
   }
-  .monthGen, .deviceStatus{
+  .monthGen,
+  .deviceStatus {
     flex: 1 1 30%;
   }
-  .centerMap{
+  .centerMap {
     padding-bottom: 0.3%;
-    .worldMap{
+    .worldMap {
       width: 170px;
       height: 100px;
     }
   }
 }
 
-@media screen and (max-width: 1919px) and (min-width: 1440px) { // 1440及以上屏
-  .stationGeneral, .inefficientSeries, .monthGen, .outputPower, .operationInfo, .deviceStatus{
+@media screen and (max-width: 1919px) and (min-width: 1440px) {
+  // 1440及以上屏
+  .stationGeneral,
+  .inefficientSeries,
+  .monthGen,
+  .outputPower,
+  .operationInfo,
+  .deviceStatus {
     width: 340px;
     margin-bottom: 3.5%;
   }
-  .stationGeneral, .outputPower{
+  .stationGeneral,
+  .outputPower {
     flex: 1 1 38%;
   }
-  .operationInfo, .inefficientSeries{
+  .operationInfo,
+  .inefficientSeries {
     flex: 1 1 23%;
   }
-  .monthGen, .deviceStatus{
+  .monthGen,
+  .deviceStatus {
     flex: 1 1 27%;
   }
-  .centerMap{
+  .centerMap {
     padding-bottom: 1%;
-    .worldMap{
+    .worldMap {
       width: 268px;
       height: 168px;
     }
   }
 }
 
-@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
-  .stationGeneral, .inefficientSeries, .monthGen, .outputPower, .operationInfo, .deviceStatus{
+@media screen and (min-width: 1920px) {
+  // 1920及以上屏幕按1920展示
+  .stationGeneral,
+  .inefficientSeries,
+  .monthGen,
+  .outputPower,
+  .operationInfo,
+  .deviceStatus {
     width: 435px;
     margin-bottom: 3.5%;
   }
-  .stationGeneral, .outputPower{
+  .stationGeneral,
+  .outputPower {
     flex: 1 1 38%;
   }
-  .operationInfo, .inefficientSeries{
+  .operationInfo,
+  .inefficientSeries {
     flex: 1 1 23%;
   }
-  .monthGen, .deviceStatus{
+  .monthGen,
+  .deviceStatus {
     flex: 1 1 27%;
   }
-  .centerMap{
+  .centerMap {
     padding-bottom: 1%;
-    .worldMap{
+    .worldMap {
       width: 268px;
       height: 168px;
     }
   }
 }
 
-.stationGeneral, .outputPower{
+.stationGeneral,
+.outputPower {
   h3 {
     flex: 0 0 23.5%;
   }
 }
-.operationInfo, .inefficientSeries{
+.operationInfo,
+.inefficientSeries {
   h3 {
     flex: 0 0 27.5%;
   }
 }
-.monthGen, .deviceStatus{
+.monthGen,
+.deviceStatus {
   h3 {
     flex: 0 0 20.8%;
   }
 }
 
-.stationGeneral, .inefficientSeries, .monthGen, .outputPower, .operationInfo, .deviceStatus{
+.stationGeneral,
+.inefficientSeries,
+.monthGen,
+.outputPower,
+.operationInfo,
+.deviceStatus {
   @include boxStyle();
   position: relative;
-  h3{
+  h3 {
     @include titles();
   }
-  .checkTags{
+  .checkTags {
     @include typeTags();
   }
 }
 
-.stationGeneral{ // 电站概况
-  .generalBox{
+.stationGeneral {
+  // 电站概况
+  .generalBox {
     display: flex;
     flex: 1;
     flex-wrap: wrap;
   }
-  .eachGeneral{
+  .eachGeneral {
     flex-basis: 50%;
-    .value,.unit,.name{
-      font-family:PingFangSC-Regular;
-      color:#00baff;
+    .value,
+    .unit,
+    .name {
+      font-family: PingFangSC-Regular;
+      color: #00baff;
       margin-left: 24px;
     }
-    .value{
-      color:#ffffff;
+    .value {
+      color: #ffffff;
       font-size: 18px;
     }
-    .unit{
+    .unit {
       margin-left: 2px;
     }
-    .name{
+    .name {
       margin-top: 4px;
     }
   }
 }
 
-.inefficientSeries{ // 低效组串预警
-  .table{
+.inefficientSeries {
+  // 低效组串预警
+  .table {
     flex: 1;
     display: flex;
     flex-direction: column;
   }
-  .inefficientList{
+  .inefficientList {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -140,36 +178,39 @@
     // }
     // &::-webkit-scrollbar-thumb{
     //   border-radius: 2px;
-    //   background-color: #666;
+    //   background-color: #353535;
     // }
-    .noData{
+    .noData {
       @include nodataBox();
     }
   }
-  .eachInefficient, .inefficientText{
+  .eachInefficient,
+  .inefficientText {
     display: flex;
     align-items: center;
-    .name, .series, .lost{
+    .name,
+    .series,
+    .lost {
       word-break: break-all;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       color: #fff;
     }
-    .name{
+    .name {
       flex: 0 0 30%;
     }
-    .lost{
+    .lost {
       flex: 0 0 32%;
     }
     .name {
       padding-left: 20px;
     }
-    .lost{
+    .lost {
       padding-right: 12px;
       text-align: center;
     }
-    .series{
+    .series {
       padding: 0 8px;
       flex: 0 0 38%;
     }
@@ -177,45 +218,50 @@
   .inefficientText {
     flex-basis: 30px;
     line-height: 30px;
-    color:#00baff;
-    .name, .series, .lost{
-      color:#00baff;
+    color: #00baff;
+    .name,
+    .series,
+    .lost {
+      color: #00baff;
     }
   }
 }
 
-.monthGen{
-  .monthTool{ // chart图内文字及样式。
+.monthGen {
+  .monthTool {
+    // chart图内文字及样式。
     @include chartTool();
     width: 88px;
     height: 60px;
     line-height: 21px;
   }
-  .monthChart{
+  .monthChart {
     @include nodataBox();
     z-index: 99;
     margin: 0 10px;
   }
 }
 
-.outputPower{ // 电站出力
-  .outputChart{
+.outputPower {
+  // 电站出力
+  .outputChart {
     @include nodataBox();
   }
-  .outputTool{
+  .outputTool {
     @include chartTool();
     width: 126px;
     height: 90px;
     display: flex;
     flex-direction: column;
-    .time, .text {
-      color:#a6e8ff;
+    .time,
+    .text {
+      color: #a6e8ff;
     }
-    .time{
+    .time {
       height: 32px;
       line-height: 32px;
     }
-    .text{
+    .text {
       height: 24px;
       line-height: 24px;
       text-align: right;
@@ -224,22 +270,24 @@
   }
 }
 
-.operationInfo{ // 运维情况
-  .ticketDetail{
+.operationInfo {
+  // 运维情况
+  .ticketDetail {
     flex: 1;
     display: flex;
     justify-content: space-around;
   }
-  .ticketDone, .ticketDoing{
+  .ticketDone,
+  .ticketDoing {
     display: flex;
     flex-direction: column;
     align-items: center;
-    h4{
-      color:#06bdf4;
+    h4 {
+      color: #06bdf4;
       margin-bottom: 0;
     }
   }
-  .circle{
+  .circle {
     width: 82px;
     height: 82px;
     line-height: 82px;
@@ -247,104 +295,108 @@
     font-size: 18px;
     color: #fff;
   }
-  .ticketDone .circle{
-    background: url('/img/round01_img.png') no-repeat center center;
+  .ticketDone .circle {
+    background: url("/img/round01_img.png") no-repeat center center;
   }
-  .ticketDoing .circle{
-    background: url('/img/round02_img.png') no-repeat center center;
+  .ticketDoing .circle {
+    background: url("/img/round02_img.png") no-repeat center center;
   }
 }
 
-.deviceStatus{ // 设备状态
-  .statusBox{
+.deviceStatus {
+  // 设备状态
+  .statusBox {
     flex: 1;
     display: flex;
-    .statusTool{
+    .statusTool {
       @include chartTool();
       width: 105px;
       height: 56px;
       display: flex;
       flex-direction: column;
-      .status, .percent {
+      .status,
+      .percent {
         display: flex;
         height: 24px;
         line-height: 24px;
-        .name, .value{
-          color:#a6e8ff;
+        .name,
+        .value {
+          color: #a6e8ff;
           height: 32px;
           line-height: 32px;
         }
-        .name{
+        .name {
           flex: 0 0 60px;
         }
       }
     }
-    .statusTotal{
+    .statusTotal {
       flex: 1 0 40%;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
-    .eachStatus{
+    .eachStatus {
       display: flex;
       align-items: center;
-      .round{
+      .round {
         flex: 0 0 14px;
         height: 14px;
         border-radius: 50%;
       }
-      .text{
+      .text {
         flex: 0 0 60px;
-        color:#25c1fe;
+        color: #25c1fe;
         margin: 0 8px 0 8px;
       }
-      .value{
-        color:#fff;
+      .value {
+        color: #fff;
         font-size: 20px;
       }
     }
-    .statusChart{
+    .statusChart {
       @include nodataBox();
       flex-basis: 55%;
     }
   }
 }
 
-.centerMap{ // 中心地图
+.centerMap {
+  // 中心地图
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   height: 100%;
-  .topData{
+  .topData {
     display: flex;
     padding-top: 20px;
     margin-left: 24px;
   }
-  .bottomData{
+  .bottomData {
     display: flex;
     align-items: flex-end;
-    .static{
-      color:#a6e8ff;
+    .static {
+      color: #a6e8ff;
       font-size: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      .count{
+      .count {
         margin: 0 4px 0 30px;
       }
-      img{
+      img {
         max-width: 24px;
         max-height: 20px;
       }
     }
   }
-  .countryMap{
+  .countryMap {
     position: absolute;
     left: 0;
     top: 0;
   }
-  .singleStation{
+  .singleStation {
     z-index: 9999;
     align-self: center;
     justify-self: center;
@@ -353,83 +405,83 @@
     display: flex;
     flex-direction: column;
     top: 200px;
-    background-color: rgba(0,0,0,0.70);
+    background-color: rgba(0, 0, 0, 0.7);
     pointer-events: none;
-    .title{
+    .title {
       display: flex;
       margin: 0 12px;
       height: 62px;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid #a6e8ff;
-      .titleLeft{
+      .titleLeft {
         display: flex;
         align-items: center;
-        img{
+        img {
           max-width: 50px;
           max-height: 36px;
           margin-right: 12px;
           margin-left: 20px;
         }
-        .name{
+        .name {
           color: #a6e8ff;
           margin-right: 8px;
-          font-size:20px;
+          font-size: 20px;
         }
-        .arrow{
+        .arrow {
           width: 12px;
           height: 12px;
           border: solid 6px #a6e8ff;
           border-color: transparent transparent transparent #a6e8ff;
         }
       }
-      .status{
-        font-size:20px;
+      .status {
+        font-size: 20px;
         margin-right: 20px;
-        color:#4dde49;
+        color: #4dde49;
       }
     }
-    .content{
+    .content {
       flex: 1;
       display: flex;
       justify-content: space-around;
       flex-wrap: wrap;
       padding: 0 36px;
-      .info{
+      .info {
         display: flex;
         flex-direction: column;
         width: 33.33%;
         align-items: flex-start;
         justify-content: center;
-        &:nth-child(2){
+        &:nth-child(2) {
           width: 66.66%;
         }
       }
-      .value{
-        color:#4dde49;
+      .value {
+        color: #4dde49;
         font-size: 28px;
       }
-      .text{
-        color:#a6e8ff;
+      .text {
+        color: #a6e8ff;
         font-size: 20px;
       }
     }
   }
 }
 
-.resource{
+.resource {
   display: flex;
   height: 45px;
   margin-right: 16px;
-  img{
+  img {
     max-width: 50px;
     max-height: 36px;
     margin-right: 12px;
   }
-  .resourceDetail{
+  .resourceDetail {
     display: flex;
     flex-direction: column;
-    .detailTop{
+    .detailTop {
       display: flex;
       height: 28px;
       align-items: flex-end;
@@ -438,12 +490,13 @@
       height: 28px;
       margin-right: 8px;
       line-height: 28px;
-      font-size:28px;
+      font-size: 28px;
       color: #fff;
-      font-family:PingFangSC-Regular;
+      font-family: PingFangSC-Regular;
     }
-    .unit, .name{
-      color:#06bdf4;
+    .unit,
+    .name {
+      color: #06bdf4;
     }
   }
 }

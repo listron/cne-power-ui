@@ -6,7 +6,7 @@ import { dataFormats } from '@utils/utilFunc';
 import { hiddenNoData, showNoData } from '@constants/echartsNoData';
 import styles from './device.scss';
 
-class DeviceRateChart extends PureComponent{
+class DeviceRateChart extends PureComponent {
   static propTypes = {
     theme: PropTypes.string,
     devicesData: PropTypes.object,
@@ -19,14 +19,14 @@ class DeviceRateChart extends PureComponent{
     sortType: 'up', // up升序, down降序 默认设备名称升序排列
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { sortType } = this.state;
     const { devicesData, theme } = this.props;
     const { deviceData = [] } = devicesData;
     deviceData.length > 0 && this.drawChart(sortType, deviceData, theme);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { sortType } = this.state;
     const { devicesData, deveiceLoading, theme } = nextProps;
     const preLoading = this.props.deveiceLoading;
@@ -40,7 +40,7 @@ class DeviceRateChart extends PureComponent{
 
   chartColors = {
     light: {
-      font: '#666',
+      font: '#353535',
       axis: '#d4d4d4',
       bar: '#199475',
     },
@@ -101,7 +101,7 @@ class DeviceRateChart extends PureComponent{
       dataAxis.push(deviceName);
       rateData.push(completeRate);
     });
-    const { font = '#666', axis = '#d4d4d4', bar = '#199475' } = this.chartColors[theme] || {};
+    const { font = '#353535', axis = '#d4d4d4', bar = '#199475' } = this.chartColors[theme] || {};
     const option = {
       graphic: !deviceData || deviceData.length === 0 ? showNoData : hiddenNoData,
       grid: {
@@ -205,12 +205,12 @@ class DeviceRateChart extends PureComponent{
     });
   }
 
-  render(){
+  render() {
     const { sortType } = this.state;
     const { devicesData } = this.props;
     const { total } = devicesData;
     const activeIcon = '#199475';
-    return(
+    return (
       <div className={styles.deviceRate}>
         <div className={styles.total}>
           <div className={styles.num}>{dataFormats(total, '--', 2, true)}%</div>
@@ -219,8 +219,8 @@ class DeviceRateChart extends PureComponent{
         {/* <Spin spinning={true} size="large" delay={400} className={styles.spinStyle} /> */}
         <div className={styles.chart} ref={(ref) => { this.rateRef = ref; }} />
         <div className={styles.sorter}>
-          <Icon type="caret-up" style={{color: sortType === 'up' ? activeIcon : '#999' }} onClick={this.upSorter} />
-          <Icon type="caret-down" style={{color: sortType === 'down' ? activeIcon : '#999' }} onClick={this.downSorter} />
+          <Icon type="caret-up" style={{ color: sortType === 'up' ? activeIcon : '#999' }} onClick={this.upSorter} />
+          <Icon type="caret-down" style={{ color: sortType === 'down' ? activeIcon : '#999' }} onClick={this.downSorter} />
         </div>
       </div>
     );

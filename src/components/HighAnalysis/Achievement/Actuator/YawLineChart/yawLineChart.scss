@@ -33,7 +33,8 @@
         margin-right: 20px;
       }
 
-      .lineCount, .lineHour {
+      .lineCount,
+      .lineHour {
         display: inline-block;
         width: 5px;
         margin: 0 10px 0 4px;
@@ -43,7 +44,7 @@
         top: -1px;
 
         &::before {
-          content: '';
+          content: "";
           position: absolute;
           width: 15px;
           height: 1px;
@@ -78,7 +79,7 @@
   .info {
     padding: 8px;
 
-    >span {
+    > span {
       display: block;
     }
   }
@@ -87,7 +88,8 @@
     position: relative;
     line-height: 21px;
 
-    .firLine, .secLine {
+    .firLine,
+    .secLine {
       display: inline-block;
       width: 5px;
       margin: 0 10px 0 4px;
@@ -97,7 +99,7 @@
       top: -1px;
 
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         width: 15px;
         height: 1px;
@@ -111,7 +113,6 @@
     @include overflowText();
   }
 }
-
 
 /*css样式*/
 
@@ -137,10 +138,11 @@
   }
 }
 
-.tooltip { // chart提示
+.tooltip {
+  // chart提示
   background-color: #fff;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
-  color: #666;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+  color: #353535;
 
   .title {
     border-bottom: 1px solid #d4d4d4;
@@ -155,7 +157,7 @@
       }
     }
 
-    .secLine{
+    .secLine {
       border: 1px solid #f9b600;
 
       &::before {

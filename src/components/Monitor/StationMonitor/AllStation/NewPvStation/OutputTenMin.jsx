@@ -220,7 +220,7 @@ class OutputTenMin extends Component {
   render() {
     const { stationCode } = this.props;
     return (
-      <div id={`capabilityDiagram_${stationCode}`} style={{ width: 341, height: 176, color: '#666' }}></div>
+      <div id={`capabilityDiagram_${stationCode}`} style={{ width: 341, height: 176, color: '#353535' }}></div>
     );
   }
 }

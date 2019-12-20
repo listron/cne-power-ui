@@ -32,7 +32,7 @@ class WindRoseChart extends Component {
         percent.push([dataFormat(e.percent, 0), i, e.windDirection]);
     });
     const hasData = (windDirection.length === 0 || avgWindSpeed.length === 0) ? showNoData : hiddenNoData;
-    const lineColor = '#666';
+    const lineColor = '#353535';
     const color = ['#199475', 'orange'];
     const option = {
       graphic: hasData,
@@ -42,7 +42,7 @@ class WindRoseChart extends Component {
         textStyle: {
           fontSize: 14,
           fontWeight: 'bolder',
-          // color: '#666'          // 主标题文字颜色
+          // color: '#353535'          // 主标题文字颜色
         },
       },
       color: color,

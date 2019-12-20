@@ -37,7 +37,7 @@ export default class HandleComponent extends Component {
     deleteModalShow: false,
   }
 
-  onPaginationChange = ({pageSize, currentPage}) => { // 翻页
+  onPaginationChange = ({ pageSize, currentPage }) => { // 翻页
     const { tableParams, getWarehouseManageList, changeStore } = this.props;
     changeStore({
       tableParams: {
@@ -109,7 +109,7 @@ export default class HandleComponent extends Component {
 
   toImport = () => this.props.changeStore({ importFileShow: true });
 
-  render(){
+  render() {
     const { stockMaxValue, deleteModalShow } = this.state;
     const {
       tabName, tableParams, totalCount, checkedStocks, stockMaxShow, importFileShow,
@@ -131,11 +131,11 @@ export default class HandleComponent extends Component {
           >
             <Icon type="plus"
               className={styles.plus}
-              style={{ backgroundColor: insertDisable ? '#d4d4d4' : '#199475'}}
+              style={{ backgroundColor: insertDisable ? '#d4d4d4' : '#199475' }}
             />
             <span
               className={styles.text}
-              style={{ color: insertDisable ? '#d4d4d4' : '#666'}}
+              style={{ color: insertDisable ? '#d4d4d4' : '#353535' }}
             >入库</span>
           </button>
           <Button disabled={!(checkedStocks.length > 0)} onClick={this.showDelModal} loading={delStockLoading}>删除</Button>

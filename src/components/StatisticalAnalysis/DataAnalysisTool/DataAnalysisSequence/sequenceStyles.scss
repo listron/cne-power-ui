@@ -1,4 +1,4 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
 
 .allstationBox {
   padding: 24px 24px 24px 4px;
@@ -13,7 +13,7 @@
     color: #3e97d1;
 
     span {
-      font-size: 14px
+      font-size: 14px;
     }
   }
 
@@ -32,7 +32,7 @@
       text-align: center;
       border: 4px solid;
       border-radius: 2px;
-      box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.30);
+      box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.3);
       border-image: -webkit-linear-gradient(#7ddcff, #47b7ff) 10 10;
 
       &:hover {
@@ -44,8 +44,7 @@
         cursor: pointer;
 
         background-image: linear-gradient(-180deg, #7ddcff 0%, #47b7ff 100%);
-        box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30), inset 0 0 4px 2px rgba(255, 255, 255, 0.50);
-
+        box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.3), inset 0 0 4px 2px rgba(255, 255, 255, 0.5);
       }
     }
   }
@@ -103,15 +102,12 @@
           :global {
             .ant-input-number {
               margin: 0 4px;
-
             }
           }
         }
 
         .defaultStyle {
           margin-left: 24px;
-
-
         }
 
         .nomalIcon {
@@ -125,7 +121,6 @@
         .swapStyle {
           width: 140px;
           color: #f9b600;
-          ;
           background: #fcffe5;
           // color: rgb(249, 183, 6);
           // background: rgb(252, 255, 229);
@@ -147,16 +142,15 @@
       .disabledSeach {
         border: none;
         background: #f5f5f5;
-        color: #BFBFBF;
+        color: #bfbfbf;
 
         &:hover {
           background: #f5f5f5;
-          color: #BFBFBF;
+          color: #bfbfbf;
         }
       }
     }
   }
-
 
   .sequenceBox {
     display: flex;
@@ -198,8 +192,6 @@
           width: 100%;
           height: 280px;
         }
-
-
       }
     }
 
@@ -209,7 +201,7 @@
       display: flex;
       flex-direction: column;
       background: #fff;
-      color: #666;
+      color: #353535;
 
       .topStyle {
         display: flex;
@@ -263,16 +255,12 @@
       &:hover {
         color: $themeColor;
       }
-
     }
 
     .scatterStyle {
       display: flex;
       flex: 1;
     }
-
-
-
   }
 }
 
@@ -308,7 +296,6 @@
         flex: 1;
         width: 100%;
       }
-
     }
   }
 }

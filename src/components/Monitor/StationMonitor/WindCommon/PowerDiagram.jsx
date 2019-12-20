@@ -63,7 +63,7 @@ class PowerDiagram extends Component {
         const chartsBox = document.getElementById('powerDiagram');
         const powerDiagram = echarts.init(chartsBox);
         loading ? powerDiagram.showLoading('default', { color: '#199475' }) : powerDiagram.hideLoading();
-        const lineColor = '#666';
+        const lineColor = '#353535';
         let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '#199475'];
         const powerOption = { //实际发电量 计划发电量
             graphic: powerGraphic,

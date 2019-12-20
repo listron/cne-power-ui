@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from './pvHistoryStyle.scss';
-import {dataFormat} from '../../../../utils/utilFunc';
-import {Icon} from 'antd';
+import { dataFormat } from '../../../../utils/utilFunc';
+import { Icon } from 'antd';
 
 class PvHistoryChart extends Component {
   static propTypes = {
@@ -17,14 +17,14 @@ class PvHistoryChart extends Component {
   };
 
   componentDidMount() {
-    const {allHistory, chartTime} = this.props;
+    const { allHistory, chartTime } = this.props;
     if (chartTime) {
       this.renderChart(allHistory);
     }
   }
 
   componentDidUpdate(prevProps) {
-    const {allHistory, chartTime, chartLoading} = this.props;
+    const { allHistory, chartTime, chartLoading } = this.props;
     const preTime = prevProps.chartTime;
     const preLoading = prevProps.chartLoading;
     const preHistory = prevProps.allHistory;
@@ -43,7 +43,7 @@ class PvHistoryChart extends Component {
     axisLine: {
       show: false,
       lineStyle: {
-        color: '#666',
+        color: '#353535',
       },
     },
     axisTick: {
@@ -51,7 +51,7 @@ class PvHistoryChart extends Component {
     },
     axisLabel: {
       show: i === pointData.length - 1,
-      lineStyle: {color: '#666'},
+      lineStyle: { color: '#353535' },
     },
     splitLine: {
       lineStyle: {
@@ -70,7 +70,7 @@ class PvHistoryChart extends Component {
       },
     },
     axisLabel: {
-      color: '#666',
+      color: '#353535',
       showMaxLabel: i === 0,
     },
     axisTick: {
@@ -86,7 +86,7 @@ class PvHistoryChart extends Component {
     nameLocation: 'middle',
     nameGap: 72,
     nameTextStyle: {
-      color: '#666',
+      color: '#353535',
     },
   }));
 
@@ -106,7 +106,7 @@ class PvHistoryChart extends Component {
         bottom: 60 + Math.ceil(deviceInfo.length * pointData.length / 4) * 24,
       };
     }
-      return baseGridOption;
+    return baseGridOption;
 
   });
 
@@ -123,7 +123,7 @@ class PvHistoryChart extends Component {
           left: `${4 + (mapNumber % 4) * 23}%`,
           textStyle: {
             fontSize: 12,
-            color: '#666',
+            color: '#353535',
           },
           data: [lengendName],
         });
@@ -141,7 +141,7 @@ class PvHistoryChart extends Component {
         });
       });
     });
-    return {series, legend};
+    return { series, legend };
   };
 
   showChart = () => {
@@ -158,7 +158,7 @@ class PvHistoryChart extends Component {
   };
 
   renderChart = (allHistory) => {
-    const {chartLoading} = this.props;
+    const { chartLoading } = this.props;
     const chartDOM = document.getElementById('dataHistoryChart');
     if (!chartDOM) {
       return;
@@ -169,12 +169,12 @@ class PvHistoryChart extends Component {
       historyChart.showLoading();
       return;
     }
-      historyChart.hideLoading();
+    historyChart.hideLoading();
 
     if (Object.keys(allHistory).length === 0) { // 空数据销毁后，不进行处理
       return;
     }
-    const {pointTime = [], deviceInfo = [], pointData = []} = allHistory;
+    const { pointTime = [], deviceInfo = [], pointData = [] } = allHistory;
     const xAxisData = pointTime.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
     const option = {
       tooltip: {
@@ -195,14 +195,14 @@ class PvHistoryChart extends Component {
         },
       },
       axisPointer: {
-        link: {xAxisIndex: 'all'},
+        link: { xAxisIndex: 'all' },
         type: 'line',
         label: {
           backgroundColor: '#6a7985',
         },
       },
       grid: this.gridCreate(pointData, deviceInfo),
-      xAxis: this.xAxisCreate(pointData).map(e => ({...e, data: xAxisData})),
+      xAxis: this.xAxisCreate(pointData).map(e => ({ ...e, data: xAxisData })),
       yAxis: this.yAxisCreate(pointData),
       ...this.legendSeriesCreate(pointData, deviceInfo),
     };
@@ -228,8 +228,8 @@ class PvHistoryChart extends Component {
 
   render() {
     // height: 160 * 测点数 + top(10) + bottom(80) + 24 * 数据指示条行数。
-    const {queryParam, historyType, chartTime, allHistory} = this.props;
-    const {deviceFullCodes, devicePoints } = queryParam;
+    const { queryParam, historyType, chartTime, allHistory } = this.props;
+    const { deviceFullCodes, devicePoints } = queryParam;
     const calcHeight = 160 * devicePoints.length + 90 + 24 * Math.ceil((deviceFullCodes.length * devicePoints.length) / 4);
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
     return (
@@ -243,7 +243,7 @@ class PvHistoryChart extends Component {
           <span className={styles.tipTitle}>数据为瞬时值</span>
 
         </h4>
-        {(chartTime && Object.keys(allHistory).length) ? <div className={styles.innerChart} id="dataHistoryChart" style={{height: `${chartHeight}px`}} /> :
+        {(chartTime && Object.keys(allHistory).length) ? <div className={styles.innerChart} id="dataHistoryChart" style={{ height: `${chartHeight}px` }} /> :
           <div className={styles.nodata}>
             <img width="223" height="164" src="/img/nodata.png" />
           </div>}

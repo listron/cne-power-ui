@@ -104,7 +104,7 @@ class PowercurveChart extends Component {
       series = [...test1, ...test];
 
     });
-    const lineColor = '#666';
+    const lineColor = '#353535';
     const color = ['#e08031', '#f9b600', '#199475', '#a42b2c', '#3E97D1', '#9F98FF', '#50E3C2'];
     const option = {
       graphic: inverterTenMinGraphic,
