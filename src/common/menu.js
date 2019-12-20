@@ -116,23 +116,24 @@ const menuData = [
       },
     ],
   },
-  {
+  
+{
     name: '运维管理',
     path: 'operation',
     rightKey: 'operation',
     children: [
       {
-        //   name: '工作台',
-        //   path: 'workStage',
-        //   iconStyle: 'icon-gzt',
-        //   rightKey: 'operation_workStation',
-        //   defaultPath: true,
-        // }, {
-        //   name: '工作计划管理',
-        //   path: 'workPlan',
-        //   iconStyle: 'icon-gzjh',
-        //   rightKey: 'operation_planManage',
-        // }, {
+        name: '工作台',
+        path: 'workStage',
+        iconStyle: 'icon-gzt',
+        rightKey: 'operation_workStation',
+        defaultPath: true,
+      }, {
+        name: '工作计划管理',
+        path: 'workPlan',
+        iconStyle: 'icon-gzjh',
+        rightKey: 'operation_planManage',
+      }, {
         name: '员工定位',
         path: 'gps',
         iconStyle: 'icon-mapman',
@@ -531,7 +532,8 @@ const menuData = [
   {
     name: '报表管理',
     path: 'report',
-    rightKey: 'reportManage',
+    rightKey: 'operation',
+    // rightKey: 'reportManage',
     children: [
       {
         name: '风电报表',
@@ -612,14 +614,18 @@ const menuData = [
             defaultPath: true,
             rightKey: 'system_account_enterprise',
           }, {
-            name: '部门',
-            path: 'department',
-            rightKey: 'system_account_department',
-          }, {
-            name: '用户',
-            path: 'user',
+            name: '人员管理',
+            path: 'personnelManage',
             rightKey: 'system_account_user',
           }, {
+          //   name: '部门',
+          //   path: 'department',
+          //   rightKey: 'system_account_department',
+          // }, {
+          //   name: '用户',
+          //   path: 'user',
+          //   rightKey: 'system_account_user',
+          // }, {
             name: '角色',
             path: 'role',
             rightKey: 'system_account_role',
