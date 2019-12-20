@@ -46,7 +46,9 @@ function* getInspectDetail(action) { // 获取工单详情数据
 }
 function* setInspectCheck(action) { // 验收巡检
   const { payload } = action;
-  const { inspectId } = payload;
+  const { inspectId, location, history } = payload;
+  const { pathname } = location;
+
   const url = `${APIBasePath}${ticket.setInspectCheck}`;
   try {
     yield put({
@@ -58,6 +60,7 @@ function* setInspectCheck(action) { // 验收巡检
     });
     const response = yield call(axios.post, url, { inspectId });
     if (response.data.code === '10000') {
+      history.push(`${pathname}?page=list&tab=inspect`);
       yield put({
         type: inspectDetailAction.changeStore,
         payload: {
