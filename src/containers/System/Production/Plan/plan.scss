@@ -1,3 +1,4 @@
+@import "../../../../theme/theme.scss";
 .planContainerBox{
     display: flex;
     flex: 1;
@@ -6,9 +7,5 @@
 }
 
 .planContainer{
-  display: flex;
-  min-height: 100%;
-  flex: 1;
-  overflow: hidden;
-  background:#ececec;
+  @include contentBoxStyle();
 }

@@ -109,7 +109,7 @@ class PowerDiagramTenMin extends Component {
           data: powerData && powerData.map(e => intervalTime === 0 ? moment(e.time).format('MM-DD') : e.time),
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -180,7 +180,7 @@ class PowerDiagramTenMin extends Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisTick: {

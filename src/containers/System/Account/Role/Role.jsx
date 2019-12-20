@@ -8,7 +8,6 @@ import Footer from '../../../../components/Common/Footer';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import RoleEdit from '../../../../components/System/Account/Role/RoleEdit';
 import RoleTable from '../../../../components/System/Account/Role/RoleTable';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 
 class Role extends Component {
   static propTypes = {
@@ -37,16 +36,8 @@ class Role extends Component {
 
   render() {
     const { showPage } = this.props;
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '角色',
-        }
-      ],
-    };
     return (
       <div className={styles.roleContainerBox} >
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.roleContainer}>
           <div className={styles.roleMain} style={{ visibility: showPage === 'list' ? 'visible' : 'hidden' }}>
             <RoleTable {...this.props} />

@@ -1,20 +1,26 @@
 @import '../../../../theme/theme.scss';
 
-.dataHistory{
+.dataHistory {
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  .contentBox{
+  flex:1;
+
+  .contentBox {
     @include contentBoxStyle();
+    overflow: hidden;
   }
-  .historyContent{
+
+  .historyContent {
     background-color: #fff;
     display: flex;
     flex-direction: column;
     flex: 1;
   }
-  .dataCenter{
+
+  .dataCenter {
     flex: 1;
     display: flex;
+    border: 1px solid #d4d4d4;
   }
 }

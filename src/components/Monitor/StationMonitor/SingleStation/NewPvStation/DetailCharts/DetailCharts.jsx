@@ -24,6 +24,7 @@ class DetailCharts extends Component {
         detailVisible: PropTypes.bool,
         detailChange: PropTypes.func,
         theme: PropTypes.string,
+        getCapabilityDiagram: PropTypes.func,
     }
 
 

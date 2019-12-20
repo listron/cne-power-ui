@@ -6,12 +6,7 @@
   flex-direction: column;
 }
 .ticket {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-  justify-content: space-between;
-  padding: 24px 24px 0;
+  @include contentBoxStyle();
   :global {
     .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-nav div {
       display: flex;

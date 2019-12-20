@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Tabs } from 'antd';
 import styles from './ScoreAnalysis.scss';
 import { scoreAnalysisAction } from './scoreAnalysisAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import PvScoreAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/ScoreAnalysis/PvScoreAnalysis';
 import Footer from '../../../../components/Common/Footer';
-const TabPane = Tabs.TabPane;
 
 
 class ScoreAnalysis extends Component {
@@ -39,7 +36,6 @@ class ScoreAnalysis extends Component {
     const { activeKey } = this.state;
     return (
       <div className={`${styles.stationScore} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '电站评分' }]} style={{ paddingLeft: '38px' }} />
         <div className={styles.scoreContainer}>
           <div className={styles.scoreContent}>
             {stationTypeCount === 'multiple' &&

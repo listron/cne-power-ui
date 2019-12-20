@@ -20,6 +20,7 @@ class BoosterStation extends Component {
     getDeviceInfoMonitor: PropTypes.func,
     stopMonitor: PropTypes.func,
     theme: PropTypes.string,
+    boosterList: PropTypes.array,
   }
 
   constructor(props) {
@@ -61,7 +62,7 @@ class BoosterStation extends Component {
   }
 
   render() {
-    const { stations, devices, deviceDetail, deviceAlarmList, subDeviceList, theme = 'light' } = this.props;
+    const { stations, boosterList, deviceDetail, deviceAlarmList, subDeviceList, theme = 'light' } = this.props;
     const { activeIndex } = this.state;
     const boosterDetail = deviceDetail[activeIndex] || {};
     const pointData = boosterDetail.pointData || {}; // 测点数据集合
@@ -85,7 +86,7 @@ class BoosterStation extends Component {
         <div className={styles.deviceContent}>
           <BoosterHeader
             deviceDetail={boosterDetail}
-            devices={devices}
+            devices={boosterList}
             stationCode={stationCode}
             deviceTypeCode={deviceTypeCode}
           />

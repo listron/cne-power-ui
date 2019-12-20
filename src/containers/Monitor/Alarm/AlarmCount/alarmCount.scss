@@ -6,6 +6,6 @@
     min-height: 100%;
     flex-direction: column;
     .alarmStatistic{
-        @include contentBoxStyle;
+      @include contentBoxStyle();
     }
 }

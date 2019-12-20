@@ -16,11 +16,7 @@
 }
 
 .ticket {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: space-between;
-  padding: 24px 24px 0;
+  @include contentBoxStyle();
 }
 
 .inspectCreate {

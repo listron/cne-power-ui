@@ -29,7 +29,7 @@ class PointChart extends PureComponent{
   chartColors = {
     light: {
       font: '#666',
-      axis: '#dfdfdf',
+      axis: '#d4d4d4',
       bar: ['#1cfcf4', '#009cff'],
     },
     dark: {

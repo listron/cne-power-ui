@@ -79,7 +79,7 @@
     justify-content: center;
     div{
       width: 128px;
-      border-radius: 4px;
+      border-radius: 2px;
       text-align: center;
     }
   }
@@ -155,7 +155,7 @@
         }
 
         .firstBigInfo, .secondBigInfo{
-          border-radius: 4px;
+          border-radius: 2px;
           width: 128px;
           height: 44px;
           text-align: center;
@@ -233,6 +233,6 @@
   color: #666;
 
   .title {
-    border-bottom: 1px solid #dfdfdf;
+    border-bottom: 1px solid #d4d4d4;
   }
 }

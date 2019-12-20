@@ -121,7 +121,7 @@ class PowerSpeedChart extends Component {
             <div class=${styles.topStyle}>
             <div>${params.seriesName}</div>
             </div>
-            <div  style='background:#dfdfdf;height:1px;
+            <div  style='background:#d4d4d4;height:1px;
             width:100%;' ></div>
             <div>${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
             <div class=${styles.lineStyle}>${chartId === 'powerSpeedChart' ? '转速' : '风速'}: ${dataFormat(info[0], '--', 2)}</div>
@@ -160,7 +160,7 @@ class PowerSpeedChart extends Component {
           show: true,
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -188,13 +188,13 @@ class PowerSpeedChart extends Component {
           splitLine: {
             show: true,
             lineStyle: {
-              color: ['#dfdfdf'],
+              color: ['#d4d4d4'],
               type: 'dashed',
             },
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {

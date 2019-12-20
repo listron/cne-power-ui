@@ -130,12 +130,11 @@ class AlgorithmControl extends Component {
       backgroundColor: '#199475',
     };
     const UnCheckStyle = {
-      color: '#666666',
+      color: '#353535',
       backgroundColor: '#ffffff',
     };
     return (
       <div className={styles.controlBox}>
-        <CommonBreadcrumb breadData={[{name: '算法控制台'}]} style={{marginLeft: '38px'}} />
         {pageFlag ? [
           <div className={styles.controlType} key="controlType">
             <div

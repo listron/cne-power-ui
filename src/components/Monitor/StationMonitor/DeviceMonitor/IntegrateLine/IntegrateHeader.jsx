@@ -4,7 +4,7 @@ import { PVStationTypes, deviceStatusArray } from '../../../../../constants/stat
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Icon } from 'antd';
+import { Icon, Button } from 'antd';
 
 class IntegrateHeader extends Component {
 
@@ -55,7 +55,7 @@ class IntegrateHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { manufacturer, deviceModeName } = deviceDetail;
+    const { manufacturer, deviceModeName, deviceCode } = deviceDetail;
     const parentDevice = deviceDetail.parentDevice || {};
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
@@ -72,6 +72,9 @@ class IntegrateHeader extends Component {
           <span className={styles.name}>{deviceDetail.deviceName}</span>
           <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
           <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
+          <Link to={`/operation/book/deviceManage?deviceFullCode=${deviceCode}&showPage='detail'`} target="_blank">
+            <Button className={styles.deviceBtn} type="primary"><i className="iconfont icon-edit" /><i>修改设备信息</i></Button>
+          </Link>
         </div>
         <div className={styles.linkTo}>
           {parentDevice && parentDevice.deviceTypeCode && <span

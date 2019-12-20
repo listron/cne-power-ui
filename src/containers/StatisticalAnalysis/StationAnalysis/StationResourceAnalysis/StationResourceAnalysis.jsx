@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
 import StationResourceAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/StationResourceAnalysis/StationResourceAnalysis';
 
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
 
@@ -29,7 +28,6 @@ class ResourceAnalysisContainer extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.stationResourceAnalysisBox} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '资源分析' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.stationResourceAnalysis}>
           <StationResourceAnalysis {...this.props} />
         </div>

@@ -89,7 +89,7 @@ class WindRoseChart extends Component {
           <div class=${styles.topStyle}>
             <div>风向:${params[0].value[2]}</div>
           </div>
-          <div  style='background:#dfdfdf;height:1px;
+          <div  style='background:#d4d4d4;height:1px;
           width:100%;' ></div>
           <div class=${styles.lineStyle}>  <span class=${styles.itemStyle} style='color: ${color[0]}'>○</span>平均风速:  ${dataFormat(speed, '--', 2)}m/s</div>
           <div class=${styles.lineStyle}> <span class=${styles.itemStyle} style='color: ${color[1]}'>○</span>风向占比: ${dataFormat(percent, '--', 2)}%</div>

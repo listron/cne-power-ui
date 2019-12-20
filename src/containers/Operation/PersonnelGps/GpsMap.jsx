@@ -134,7 +134,7 @@ class GpsMap extends Component {
       'stylers': {
         'visibility': 'on',
         'weight': 1,
-        'color': '#66666600',
+        'color': '#35353500',
       },
     },
     {

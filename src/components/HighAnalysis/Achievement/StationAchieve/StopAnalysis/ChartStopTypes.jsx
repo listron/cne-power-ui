@@ -266,7 +266,7 @@ class ChartStopTypes extends Component {
           min: 0,
           axisLabel: {
             textStyle: {
-              color: '#666666',
+              color: '#353535',
             },
             formatter: (value) => `${value}`.includes('.') ? '' : value,
           },
@@ -275,7 +275,7 @@ class ChartStopTypes extends Component {
         {
           ...getBaseYAxis('停机损失电量(万kWh)'),
           nameTextStyle: {
-            color: '#666666',
+            color: '#353535',
             padding: [0, -40, 0, 0],
           },
           gridIndex: 2,

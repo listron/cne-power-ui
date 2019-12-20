@@ -12,7 +12,7 @@
   position: relative;
   z-index: 99;
   .hideDetail {
-    border-radius: 4px;
+    border-radius: 2px;
     width: 40px;
     height: 40px;
     position: absolute;
@@ -38,7 +38,7 @@
     justify-content: flex-start;
     a {
       padding: 0 12px;
-      border-radius: 4px;
+      border-radius: 2px;
       height: 30px;
       line-height: 30px;
       margin-right: 11px;
@@ -47,48 +47,12 @@
       pointer-events: none;
     }
   }
-  // .deviceStatus {
-  //   border-radius: 4px;
-  //   line-height: 40px;
-  //   margin-top: 12px;
-  //   padding: 0 13px;
-  //   .deviceStaTitle {
-  //     display: flex;
-  //     justify-content: space-between;
-  //   }
-  //   .deviceStaCont {
-  //     span {
-  //       margin-right: 12px;
-  //       display: inline-block;
-  //     }
-  //   }
-  // }
   .chartsBox {
     margin-top: 12px;
     display: flex;
     height: 278px;
     width: 100%;
   }
-
-  // .tooltipBox {
-  //   .axisValue {
-  //     padding: 0 30px 0 10px;
-  //     line-height: 26px;
-  //   }
-  //   .tooltipContainer {
-  //     padding: 10px 30px 10px 0;
-  //   }
-  //   .tooltipCont {
-  //     span {
-  //       display: inline-block;
-  //       width: 5px;
-  //       height: 5px;
-  //       border-radius: 50%;
-  //       vertical-align: 2px;
-  //       margin: 0 4px 0 8px;
-  //     }
-  //   }
-  // }
 
   .powerDiagramBox {
     display: flex;
@@ -131,7 +95,7 @@
   .tags {
     a {
       background: #ffffff;
-      border: 1px solid #dfdfdf;
+      border: 1px solid #d4d4d4;
       color: #666;
     }
   }
@@ -146,7 +110,7 @@
   }
 
   .tooltipBox {
-    @include tooltipBox(#dfdfdf);
+    @include tooltipBox(#d4d4d4);
   }
 
   .powerDiagramBox {
@@ -177,7 +141,7 @@
     }
 
     .link {
-      color: #666666;
+      color: #353535;
     }
   }
 }
@@ -218,7 +182,7 @@
       color: $darkColor;
     }
     .link {
-      color: #666666;
+      color: #353535;
     }
   }
 }

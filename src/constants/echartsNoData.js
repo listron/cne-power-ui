@@ -1,5 +1,5 @@
 const showNoData = {
-  type: 'text',
+  type: 'image',
   left: 'center',
   top: 'center',
   style: {
@@ -10,6 +10,18 @@ const showNoData = {
     font: '12px Microsoft YaHei',
   },
 };
+
+// const showNoData = {
+//   type: 'image',
+//   right: 'center',
+//   top: 'center',
+//   z: -10,
+//   style: {
+//     image: '/img/noChartdata.png',
+//     width: 100,
+//     height: 78,
+//   },
+// };
 
 
 const hiddenNoData = {

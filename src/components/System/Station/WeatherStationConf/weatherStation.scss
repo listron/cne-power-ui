@@ -7,12 +7,10 @@
     align-items: center;
     border-bottom: solid 1px $promptColor;
   }
-  
+
 .weatherList {
-    display: flex;
-    flex: 1;
-    background: #fff;
-    margin: 25px 24px 0;
+    @include contentBoxStyle();
+    flex-direction: initial;
     overflow: hidden;
     .listContiner {
         position: relative;
@@ -37,7 +35,7 @@
             .buttonGroup{
                 display: inline-block;
                 border:1px solid #d9d9d9;
-                border-radius:4px;
+                border-radius:2px;
                 line-height: 32px;
                 span{
                    padding: 0 12px;

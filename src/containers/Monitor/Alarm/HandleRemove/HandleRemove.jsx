@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import styles from './handleRemove.scss';
 import { handleRemoveAction } from './handleRemoveAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import HandleRemoveContainer from '../../../../components/Monitor/Alarm/HandleRemove/HandleRemoveContainer';
 
@@ -28,7 +27,6 @@ class HandleRemove extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.handle} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '手动解除' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.handleRemoveBox}>
           <HandleRemoveContainer {...this.props} />
         </div>

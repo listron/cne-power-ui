@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import WarehouseGoods from '../../../../components/Operation/Book/Warehouse/WarehouseGoods/WarehouseGoods';
 import WarehouseWrap from '../../../../components/Operation/Book/Warehouse/WarehouseWrap/WarehouseWrap';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { warehouseAction } from './warehouseAction.js';
 import Footer from '../../../../components/Common/Footer';
 
@@ -44,7 +43,6 @@ class Warehouse extends Component {
     const { type } = this.state;
     return (
       <div className={styles.warehouseWrap}>
-        <CommonBreadcrumb breadData={[{name: '仓库配置'}]} style={{marginLeft: '38px'}} />
         <div className={styles.warehouseCenter}>
           <div className={styles.warehouseBox}>
             <div className={styles.warehouseDiv}>

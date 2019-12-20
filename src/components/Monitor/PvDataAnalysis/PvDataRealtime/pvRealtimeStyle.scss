@@ -1,0 +1,260 @@
+@import '../../../../theme/theme.scss';
+
+.realtimeSearch{
+  .typeCheck{
+    display: flex;
+    .typeNormal, .typeActive{
+      height: 40px;
+      line-height: 40px;
+      flex-basis: 120px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid $promptColor;
+      border-left: none;
+      color: $lightColor;
+      background-color: #f8f8f8;
+    }
+    .typeActive{
+      background-color: #fff;
+      border-top: 2px solid $themeColor;
+      border-bottom: none;
+      color: #000;
+    }
+    .holder{
+      flex: 1;
+      background-color: #f8f8f8;
+      border-top: 1px solid $promptColor;
+      border-bottom: 1px solid $promptColor;
+    }
+  }
+  .searchPart{
+    padding: 20px 0;
+    display: flex;
+    .stationSelect, .typeSelect{
+      flex: 0 0 25%;
+    }
+    .deviceSelect{
+      flex: 0 0 50%;
+    }
+    .stationSelect, .typeSelect, .deviceSelect{
+      display: flex;
+      line-height: 40px;
+      height: 40px;
+      align-items: center;
+      .text{
+        flex: 0 0 96px;
+        text-align: right;
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.realtimeDataType{
+  display: flex;
+  border-top: 1px dotted $promptColor;
+  border-bottom: 1px dotted $promptColor;
+  justify-content: space-between;
+  align-items: center;
+  .tabIcons{
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    .active, .normal{
+      cursor: pointer;
+      flex: 0 0 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .active{
+      color: #fff;
+      background-color: $themeColor;
+    }
+    .normal{
+      color: #999;
+      background-color: #f1f1f1;
+    }
+  }
+  .export{
+    margin-right: 24px;
+  }
+}
+
+.pointTree{
+  flex: 0 0 196px;
+  .pointTreeInfo{
+    text-align: center;
+  }
+  h3{
+    height: 40px;
+    line-height: 40px;
+    color: $darkColor;
+    text-align: center;
+    border-bottom: 1px solid $promptColor;
+    button{
+      color: #fff;
+      background-color: $themeColor;
+      height: 24px;
+    }
+    :global{
+      .ant-btn:hover, .ant-btn:focus, .ant-btn:active, .ant-btn.active{
+        color: #fff;
+        background-color: $themeColor;
+      }
+    }
+  }
+  :global{
+    .ant-tree{
+      max-height: 780px;
+      width: 196px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      li .ant-tree-node-content-wrapper{
+        height: auto;
+        line-height: 21px;
+      }
+      .ant-tree-title{
+        display: inline-block;
+        white-space: normal;
+      }
+      .ant-tree-treenode-switcher-close{ // 一级分组
+        .ant-tree-title{
+          width: 134px;
+        }
+      }
+      .ant-tree-treenode-switcher-open{ // 子集测点
+        .ant-tree-treenode-switcher-close{
+          .ant-tree-title{
+            width: 116px;
+          }
+        }
+      }
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 3px;
+        background:rgba(0,0,0,0.5);
+      }
+    }
+  }
+}
+
+.realtimeChart{
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  align-content: flex-start;
+  border-left: 1px solid $promptColor;
+  h4{
+    flex-basis: 100%;
+    height: 60px;
+    line-height: 60px;
+    display: flex;
+    margin-bottom: 0;
+    .eachTitle, .tipTitle{
+      flex: 1 0 33.33%;
+    }
+    .tipTitle{
+      text-align: right;
+      padding-right: 24px;
+      color: $darkColor;
+      .currentTime{
+        display: inline-block;
+        text-align: center;
+        width: 140px;
+      }
+    }
+  }
+  .innerChart{
+    flex-basis: 100%;
+  }
+  .chartTool{
+    .title{
+      font-size: 14px;
+      height: 24px;
+      line-height: 24px;
+      color: $darkColor;
+    }
+    .content{
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      height: 24px;
+      .itemStyle{
+        margin: 0 8px;
+        position: relative;
+        &::before, &::after{
+          color: inherit;
+          content: '-';
+          position: absolute;
+        }
+        &::before{
+          left: 5px;
+        }
+        &::after{
+          right: 5px;
+        }
+      }
+      .text{
+        color: $darkColor;
+        margin-right: 4px;
+      }
+      .value{
+        color: $darkColor;
+      }
+    }
+
+  }
+}
+
+.realtimeList{
+  flex: 1;
+  padding: 0 16px;
+  border-left: 1px solid $promptColor;
+  .pagination {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    justify-content: space-between;
+    .text{
+      margin-left: 36px;
+    }
+  }
+  :global{
+    .ant-table {
+      .ant-table-thead tr th{
+        height: 60px;
+      }
+      tr{
+        display: flex;
+        th, td{
+          padding: 8px;
+          line-height: 21px;
+        }
+      }
+      .stationName, .deviceTypeName, .deviceModeName, .deviceName, .points{
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .stationName {
+        flex: 0 0 124px;
+      }
+      .deviceTypeName{
+        flex: 0 0 128px;
+      }
+      .deviceModeName{
+        flex: 1 0 140px;
+      }
+      .deviceName, .points{
+        flex: 1 0 100px;
+      }
+    }
+  }
+}

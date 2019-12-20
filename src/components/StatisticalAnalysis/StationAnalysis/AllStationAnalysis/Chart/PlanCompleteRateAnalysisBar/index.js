@@ -34,7 +34,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
     const targetChart = echarts.init(document.getElementById(graphId));
     let targetOption = {};
     targetChart.resize();
-    let color =['#dfdfdf','#f9b600','#3e97d1'];
+    let color =['#d4d4d4','#f9b600','#3e97d1'];
     const lineColor = '#f1f1f1';
     const fontColor = '#333';
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";

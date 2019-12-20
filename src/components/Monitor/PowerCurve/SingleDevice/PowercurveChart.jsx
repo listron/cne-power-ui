@@ -149,7 +149,7 @@ class PowercurveChart extends Component {
             <div style='margin-right:10px'>${params.seriesName}</div>
             <div>型号:${info[4]}</div>
           </div>
-          <div  style='background:#dfdfdf;height:1px;
+          <div  style='background:#d4d4d4;height:1px;
           width:100%;' ></div>
             <div class=${styles.lineStyle}>时间:  ${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
             <div class=${styles.lineStyle}>风速:  ${dataFormat(info[0], '--', 2)}m/s</div>
@@ -166,7 +166,7 @@ class PowercurveChart extends Component {
             <div style='margin-right:10px'>${params.seriesName}</div>
             <div>型号:${info[3]}</div>
           </div>
-          <div  style='background:#dfdfdf;height:1px;
+          <div  style='background:#d4d4d4;height:1px;
           width:100%;' ></div>
           <div class=${styles.lineStyle}>风速区间: ${info[2]}m/s</div>
           <div class=${styles.lineStyle}>平均风速: ${dataFormat(+info[0], '--', 2)}m/s</div>
@@ -202,7 +202,7 @@ class PowercurveChart extends Component {
         axisLine: {
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -216,7 +216,7 @@ class PowercurveChart extends Component {
         splitLine: {
           show: true,
           lineStyle: {
-            color: ['#dfdfdf'],
+            color: ['#d4d4d4'],
             type: 'dashed',
           },
         },
@@ -234,7 +234,7 @@ class PowercurveChart extends Component {
           axisLine: {
             lineStyle: {
 
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -246,7 +246,7 @@ class PowercurveChart extends Component {
           splitLine: {
             show: true,
             lineStyle: {
-              color: ['#dfdfdf'],
+              color: ['#d4d4d4'],
               type: 'dashed',
             },
           },

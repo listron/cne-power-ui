@@ -1,19 +1,15 @@
-
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import styles from "./alarmCount.scss";
-import PropTypes from "prop-types";
-import { alarmCountAction } from './alarmCountAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb/index';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import styles from './alarmCount.scss';
+import PropTypes from 'prop-types';
+import {alarmCountAction} from './alarmCountAction';
 import Footer from '../../../../components/Common/Footer/index';
-import AllAlarmCount from '../../../../components/Monitor/Alarm/AlarmCount/AllAlarmCount'
-import SingleAlarmCount from '../../../../components/Monitor/Alarm/AlarmCount/SingleAlarmCount'
+import AllAlarmCount from '../../../../components/Monitor/Alarm/AlarmCount/AllAlarmCount';
+import SingleAlarmCount from '../../../../components/Monitor/Alarm/AlarmCount/SingleAlarmCount';
 
 
 class AlarmCount extends Component {
-  static propTypes = {
-
-  }
+  static propTypes = {};
 
   constructor(props) {
     super(props);
@@ -35,41 +31,31 @@ class AlarmCount extends Component {
   }
 
   render() {
-    const { showPage } = this.props;
+    const {showPage} = this.props;
     return (
-      <div className={styles.alarmCountBox} >
-        <CommonBreadcrumb breadData={[{ name: '告警统计', }]} style={{ marginLeft: '38px' }} />
+      <div className={styles.alarmCountBox}>
         <div className={styles.alarmStatistic}>
           {showPage === 'multiple' && <AllAlarmCount {...this.props} />}
           {showPage === 'single' && <SingleAlarmCount {...this.props} />}
         </div>
-        <Footer />
+        <Footer/>
       </div>
-    )
+    );
   }
 }
+
 const mapStateToProps = (state) => {
   return {
     ...state.monitor.alarmCount.toJS(),
     stations: state.common.get('stations').toJS(),
     stationTypeCount: state.common.get('stationTypeCount'),
-  }
-}
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
-  changeAlarmCountStore: payload => dispatch({ type: alarmCountAction.changeAlarmCountStore, payload }),
-  resetStore: payload => dispatch({ type: alarmCountAction.resetStore, payload }),
-  getAlarmStatistic: payload => dispatch({ type: alarmCountAction.getAlarmStatistic, payload }),
-  getStationsAlarmStatistic: payload => dispatch({ type: alarmCountAction.getSingleAlarmStatistic, payload }),
-})
-
+  changeAlarmCountStore: payload => dispatch({type: alarmCountAction.changeAlarmCountStore, payload}),
+  resetStore: payload => dispatch({type: alarmCountAction.resetStore, payload}),
+  getAlarmStatistic: payload => dispatch({type: alarmCountAction.getAlarmStatistic, payload}),
+  getStationsAlarmStatistic: payload => dispatch({type: alarmCountAction.getSingleAlarmStatistic, payload}),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlarmCount);
-
-
-
-
-
-
-
-
-

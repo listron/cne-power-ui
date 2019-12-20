@@ -144,7 +144,7 @@ class SpeedScatter extends Component {
                     show: true,
                     onZero: false,
                     lineStyle: {
-                        color: '#dfdfdf',
+                        color: '#d4d4d4',
                     },
                 },
                 axisLabel: {
@@ -171,7 +171,7 @@ class SpeedScatter extends Component {
                     },
                     axisLine: {
                         lineStyle: {
-                            color: '#dfdfdf',
+                            color: '#d4d4d4',
                         },
                     },
                     axisLabel: {

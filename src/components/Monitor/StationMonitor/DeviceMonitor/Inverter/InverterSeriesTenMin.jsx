@@ -134,7 +134,7 @@ class InverterSeriesTenMin extends Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisTick: {
@@ -147,7 +147,7 @@ class InverterSeriesTenMin extends Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisTick: {

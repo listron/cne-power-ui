@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './dataAnalysisSequence.scss';
 import { dataAnalysisSequenceAction } from './dataAnalysisSequenceAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import SequenceAllStation from '../../../../components/StatisticalAnalysis/DataAnalysisTool/DataAnalysisSequence/SequenceAllStation';
 import SequenceSingleStation from '../../../../components/StatisticalAnalysis/DataAnalysisTool/DataAnalysisSequence/SequenceSingleStation';
@@ -21,11 +20,9 @@ class DataAnalysisSequence extends Component {
     this.props.resetStore();
   }
   render() {
-    const breadCrumbData = { breadData: [{ name: '时序图' }] };
     const { showPage, theme } = this.props;
     return (
       <div className={`${styles.dataAnalysisSequence} ${styles[theme]}`} >
-        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} theme={theme} />
         <div className={styles.sequenceMain}>
           {showPage === 'allStation' && <SequenceAllStation {...this.props} />}
           {showPage === 'singleStation' && <SequenceSingleStation {...this.props} />}
