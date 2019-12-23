@@ -5,6 +5,7 @@ import moment from 'moment';
 import styles from './pvRealtimeStyle.scss';
 import path from '../../../../constants/path';
 import WarningTip from '../../../Common/WarningTip';
+import { handleRight } from '@utils/utilFunc';
 
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
@@ -96,6 +97,7 @@ class PvRealtimeDataType extends Component {
   render(){
     const { warningTipText, showWarningTip } = this.state;
     const { realtimeType, downloading } = this.props;
+    const historyOperation = handleRight('realTimeTurbine_export');
     return (
       <div className={styles.realtimeDataType}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -103,11 +105,12 @@ class PvRealtimeDataType extends Component {
           <Icon onClick={this.showChart} type="bar-chart" className={realtimeType === 'chart'? styles.active : styles.normal} />
           <Icon onClick={this.showList} type="bars" className={realtimeType === 'list'? styles.active : styles.normal} />
         </div>
+        {historyOperation &&
         <Button
           className={styles.export}
           onClick={this.exportRealtime}
           loading={downloading}
-        >导出</Button>
+        >导出</Button>}
       </div>
     )
   }

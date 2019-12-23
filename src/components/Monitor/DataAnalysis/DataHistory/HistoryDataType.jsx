@@ -71,7 +71,7 @@ class HistoryDataType extends Component {
   render() {
     const { historyType, downloading, partHistory = {} } = this.props;
     const { dataList = [] } = partHistory;
-    const historyOperation = handleRight('realTime_export');
+    const historyOperation = handleRight('historyTrend_export');
     return (
       <div className={styles.historyDataType}>
         <div className={styles.tabIcons}>
