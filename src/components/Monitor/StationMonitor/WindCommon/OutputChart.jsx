@@ -49,7 +49,7 @@ class OutputChart extends Component {
         const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous || e.windSpeed);
         const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) && !loading ? showNoData : hiddenNoData;
         const capabilityDiagram = echarts.init(chartsBox);
-        const lineColor = '#666';
+        const lineColor = '#353535';
         const color = ['#c57576', '#3e97d1'];
         const fontColor = '#333';
         let labelInterval = 47 // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
@@ -86,7 +86,7 @@ class OutputChart extends Component {
                 trigger: 'axis',
                 axisPointer: {
                     type: 'cross',
-                    label: { color: '#666' },
+                    label: { color: '#353535' },
                 },
                 backgroundColor: '#fff',
                 textStyle: {
@@ -121,7 +121,7 @@ class OutputChart extends Component {
                 }),
                 axisLine: {
                     lineStyle: {
-                        color: '#dfdfdf',
+                        color: '#d4d4d4',
                     },
                 },
                 axisLabel: {
@@ -152,7 +152,7 @@ class OutputChart extends Component {
                     axisLine: {
                         show: true,
                         lineStyle: {
-                            color: '#dfdfdf',
+                            color: '#d4d4d4',
                         },
                     },
                     splitLine: {
@@ -175,7 +175,7 @@ class OutputChart extends Component {
                     },
                     axisLine: {
                         lineStyle: {
-                            color: '#dfdfdf',
+                            color: '#d4d4d4',
                         },
                     },
                     splitLine: {

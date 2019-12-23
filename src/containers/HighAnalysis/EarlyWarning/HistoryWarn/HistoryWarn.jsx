@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import styles from './historyWarn.scss';
 import PropTypes from 'prop-types';
 import { historyWarnAction } from './historyWarnAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import HistoryWarnCon from '../../../../components/HighAnalysis/EarlyWarning/HistoryWarn/HistoryWarnCon';
 
@@ -25,7 +24,6 @@ class HistoryWarn extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.historyWarnBox} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '历史预警' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.historyWarnContainer}>
           <div className={styles.historyWarnContent}>
             <HistoryWarnCon {...this.props} />

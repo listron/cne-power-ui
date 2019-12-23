@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './cleanoutRecord.scss';
 import { cleanoutRecordAction } from './cleanoutRecordAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import CleanoutRecordMain from '../../../../components/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecordMain/CleanoutRecordMain';
 import CleanoutRecordDetail from '../../../../components/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecordSingleStation/CleanoutRecordDetail';
@@ -28,7 +27,6 @@ class CleanoutRecord extends Component {
     const { showPage, theme } = this.props;
     return (
       <div className={`${styles.cleanoutRecordBox} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '清洗计划与记录' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.cleanoutRecordContainer}>
           {showPage === 'multiple' ? <CleanoutRecordMain {...this.props} /> : ''}
           {showPage === 'single' ? <CleanoutRecordDetail {...this.props} /> : ''}

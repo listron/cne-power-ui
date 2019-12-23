@@ -69,17 +69,12 @@
 
         .deviceBtn {
           margin-left: 20px;
-          color: $themeColor;
-          border: 1px solid $themeColor;
-          border-radius: 4px;
-          i{
+          border-radius: 2px;
+          i {
             font-style: normal;
           }
-
-          &:hover{
+          &:hover {
             box-shadow: none;
-            color: $themeColor;
-            border: 1px solid $themeColor;
           }
         }
       }
@@ -181,13 +176,13 @@
   }
 
   .tabs {
-    border-radius: 4px;
+    border-radius: 2px;
 
     .inactive,
     .active {
       padding: 2px 6px;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 2px;
     }
   }
 }

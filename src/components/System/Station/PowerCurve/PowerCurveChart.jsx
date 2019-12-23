@@ -46,7 +46,7 @@ class PowerCurveChart extends Component {
     const filterWindSpeed = params.filter(e => e.speed);
 
     const inverterTenMinGraphic = (filterpower.length === 0 && filterWindSpeed.length === 0) ? showNoData : hiddenNoData;
-    const lineColor = '#666';
+    const lineColor = '#353535';
     let color = ['#199475'];
     const option = {
       graphic: inverterTenMinGraphic,
@@ -103,7 +103,7 @@ class PowerCurveChart extends Component {
         axisLine: {
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -126,7 +126,7 @@ class PowerCurveChart extends Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {

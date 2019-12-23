@@ -27,10 +27,7 @@ class DeviceAlarmTable extends Component {
     defectTypes: PropTypes.array,
     selectedTransfer: PropTypes.array,
     deviceDetail: PropTypes.object,
-    loading: PropTypes.bool,
     stationCode: PropTypes.string,
-    deviceTypeCode: PropTypes.string,
-    deviceCode: PropTypes.string,
     style: PropTypes.object,
     titleName: PropTypes.bool,
     handleRemoveWarning: PropTypes.func,
@@ -126,8 +123,8 @@ class DeviceAlarmTable extends Component {
             <span className={styles.operationBtn} title="转工单">
               <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
             </span>
-            <span className={styles.delBtn} title="手动解除" onClick={() => {this.onDelDetail(record)}}>
-              <i className="iconfont icon-manual"/>
+            <span className={styles.delBtn} title="手动解除" onClick={() => { this.onDelDetail(record) }}>
+              <i className="iconfont icon-manual" />
             </span>
           </div>
         ),

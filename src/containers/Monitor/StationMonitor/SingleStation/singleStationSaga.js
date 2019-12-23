@@ -11,34 +11,6 @@ message.config({ top: 120, duration: 2, maxCount: 2 });
 let realChartsInterval = null;
 const baseurl = Path.basePaths.APIBasePath;
 
-function* getSingleStation(action) { //获取单电站实时数据 (后期可删除)
-  const { payload } = action;
-  const { stationCode, stationType } = payload;
-  const utcTime = moment.utc().format();
-  const pvUrl = `${APIBasePath}${monitor.getSingleStation}${stationCode}/${utcTime}`;
-  const windUrl = `${APIBasePath}${monitor.getSingleWindleStation}${stationCode}/${utcTime}`;
-  const url = stationType === '0' ? windUrl : pvUrl;
-  try {
-    const response = yield call(axios.get, url);
-    if (response.data.code === '10000') {
-      yield put({
-        type: singleStationAction.changeSingleStationStore,
-        payload: {
-          singleStationData: response.data.data || {},
-          stationType: response.data.data.stationType || '',
-        },
-      });
-    } else { throw response.data; }
-  } catch (e) {
-    console.log(e);
-    yield put({
-      type: singleStationAction.changeSingleStationStore,
-      payload: {
-        singleStationData: {},
-      },
-    });
-  }
-}
 
 
 // ==================== 光伏 ====================

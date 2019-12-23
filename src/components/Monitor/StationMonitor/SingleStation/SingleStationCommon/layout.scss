@@ -131,8 +131,8 @@
     flex-direction: column;
   }
   .weatherList {
-    border: 1px solid #dfdfdf;
-    border-radius: 4px;
+    border: 1px solid #d4d4d4;
+    border-radius: 2px;
     height: 140px;
     padding: 20px;
     position: relative;
@@ -184,8 +184,8 @@
     }
   }
   .operatorList {
-    border: 1px solid #dfdfdf;
-    border-radius: 4px;
+    border: 1px solid #d4d4d4;
+    border-radius: 2px;
     height: 140px;
     padding: 0 14px;
     position: relative;
@@ -255,8 +255,8 @@
     }
   }
   .alarmList {
-    border: 1px solid #dfdfdf;
-    border-radius: 4px;
+    border: 1px solid #d4d4d4;
+    border-radius: 2px;
     height: 140px;
     padding: 10px;
     :global {
@@ -302,8 +302,8 @@
   }
   .workList {
     padding: 10px;
-    border: 1px solid #dfdfdf;
-    border-radius: 4px;
+    border: 1px solid #d4d4d4;
+    border-radius: 2px;
     height: 140px;
     :global {
       .iconfont:hover {

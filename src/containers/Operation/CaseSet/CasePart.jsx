@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { casePartAction } from './casePartAction';
 import styles from './casePart.scss';
-import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../components/Common/Footer';
 import TransitionContainer from '../../../components/Common/TransitionContainer';
 import CasePartSide from '../../../components/Operation/CaseSet/CasePartSide';
@@ -37,7 +36,6 @@ class CasePart extends Component {
     const { showPage } = this.props;
     return (
       <div className={styles.casePart}>
-        <CommonBreadcrumb breadData={[{ name: '案例集' }]} style={{ marginLeft: '38px', backgroundColor: '#fff' }} />
         <div className={styles.casePartBox}>
           <div className={styles.casePartMain}>
             <div className={styles.casePartContent}>

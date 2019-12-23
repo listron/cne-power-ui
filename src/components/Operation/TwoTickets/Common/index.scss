@@ -36,7 +36,7 @@
     .defectDetail{
       display: block;
       background:#fbfbfb;
-      border-radius:4px;
+      border-radius:2px;
       width:300px;
       color:#999999;
       line-height:24px;
@@ -55,7 +55,7 @@
       }
       .label{
         font-size: 14px;
-        color: #666666;
+        color: #353535;
         text-align: right;
         line-height: 24px;
         vertical-align: top;
@@ -132,7 +132,7 @@
     padding: 24px 36px;
     .basic {
       box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.20);
-      border-radius: 4px;
+      border-radius: 2px;
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -206,7 +206,7 @@
       background: #f8f8f8;
       color: rgba(0, 0, 0, 0.85);
       border: 1px solid #f1f1f1;
-      border-radius: 4px;
+      border-radius: 2px;
       width: 95px;
       height: 30px;
       display: flex;
@@ -274,7 +274,7 @@
           color: $themeColor;
           padding: 0 4px;
           border: 1px solid $themeColor;
-          border-radius:4px;
+          border-radius:2px;
           margin-left: 12px;
           cursor: pointer;
           text-align: center;
@@ -285,7 +285,7 @@
           display: flex;
           .status{
             border: 1px solid #999;
-            border-radius: 4px;
+            border-radius: 2px;
             width: 48px;
             line-height: 21px;
             margin-right: 4px;
@@ -371,7 +371,7 @@
         align-items: center;
         color: #a42b2c;
         border: 1px #a42b2c solid;
-        border-radius: 4px;
+        border-radius: 2px;
         width: 32px;
         height: 14px;
         margin-right: 4px;
@@ -381,7 +381,7 @@
         align-items: center;
         color: #f9b600;
         border: 1px #f9b600 solid;
-        border-radius: 4px;
+        border-radius: 2px;
         width: 32px;
         height: 14px;
       }

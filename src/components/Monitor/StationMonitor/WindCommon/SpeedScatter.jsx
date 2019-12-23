@@ -66,7 +66,7 @@ class SpeedScatter extends Component {
             return scatterData[item.value] && scatterData[item.value].length > 0
         })
         const Graphic = !hasData ? showNoData : hiddenNoData;
-        const lineColor = '#666';
+        const lineColor = '#353535';
         const fontColor = '#333';
         const SpeedScatterGraph = echarts.init(chartsBox);
         loading ? SpeedScatterGraph.showLoading('default', { color: '#199475' }) : SpeedScatterGraph.hideLoading();
@@ -144,7 +144,7 @@ class SpeedScatter extends Component {
                     show: true,
                     onZero: false,
                     lineStyle: {
-                        color: '#dfdfdf',
+                        color: '#d4d4d4',
                     },
                 },
                 axisLabel: {
@@ -171,7 +171,7 @@ class SpeedScatter extends Component {
                     },
                     axisLine: {
                         lineStyle: {
-                            color: '#dfdfdf',
+                            color: '#d4d4d4',
                         },
                     },
                     axisLabel: {

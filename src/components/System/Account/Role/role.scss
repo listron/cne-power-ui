@@ -4,7 +4,7 @@
   display: flex;
   padding-left: 32px;
   align-items: center;
-  border-bottom: solid 1px $promptColor;  
+  border-bottom: solid 1px $promptColor;
 }
 .roleTableTooltip {
   display: flex;
@@ -19,12 +19,7 @@
   width: 110px;
 }
 .roleList{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 auto;
-  padding: 24px 24px 0;
-  background-color: #ececec;
+  @include contentBoxStyle();
   .roleContent{
     flex: 1;
     background-color: #fff;
@@ -53,10 +48,10 @@
         width: 28px;
         line-height: 30px;
         height: 100%;
-        border-radius: 4px 0 0 4px;
+        border-radius: 2px 0 0 2px;
       }
       .text{
-        border-radius: 0 4px 4px 0;
+        border-radius: 0 2px 2px 0;
         background:#fff;
         color:$themeColor;
         display: inline-block;
@@ -115,7 +110,6 @@
     overflow: hidden;
     display: inline-block;
     word-break:keep-all;
-    cursor: pointer;
   }
 }
 
@@ -146,7 +140,7 @@
         width: 64px;
         cursor: pointer;
       }
-      
+
     }
     .editPart{
       flex: 1;
@@ -194,110 +188,6 @@
               width: 200px;
               margin-right: 12px;
             }
-          }
-        }
-      }  
-    }
-  }
-}
-.tableModal{
-  :global{
-    .ant-modal{
-      .ant-modal-close{
-        top: -10px;
-        .ant-modal-close-x{
-          width: 40px;
-          height: 35px;
-          // font-size: 14px;
-          .anticon{
-            color: $themeColor;
-            background: #ceebe0;
-            border-radius: 50%;
-            font-size: 12px;
-            border: 2px solid #ceebe0;
-            &:hover{
-              background: #fff;
-              border: 2px solid #fff;
-            }
-          }
-        }
-      }
-      .ant-modal-header{
-        padding: 5px 24px;
-        background: $themeColor;
-        .ant-modal-title{
-          font-size: 14px;
-          color: #fff;
-        }
-      }
-      .ant-modal-body{
-        overflow-x: hidden;
-        max-height: 430px;
-        &::-webkit-scrollbar {
-          // 滚动条的设置
-          width: 6px;
-          height: 6px;
-        }
-        &::-webkit-scrollbar-track{
-          border-radius:2px;
-          background: #fff;
-        }
-        &::-webkit-scrollbar-thumb{
-          width: 100px;
-          background: rgba(0,0,0,0.50);
-          border-radius:10px;
-        }
-      }
-    }
-  }
-}
-.rightTable{
-  border: 1px solid #dfdfdf;
-  .tableHeader{
-    display: flex;
-  }
-  .tableHeader{
-    min-height: 30px;
-    background: #f4f4f4;
-    .secondColumn{
-      width: 145px;
-      padding: 4px 4px 4px 9px;
-      border-right: 1px solid #dfdfdf;
-    }
-    .thirdColumn{
-      width: 446px;
-      padding: 4px 4px 4px 9px;
-    }
-  }
-  .tableContent{
-    // min-height: 30px;
-    border-bottom: 1px solid #dfdfdf;
-    &:last-child{
-      border-bottom: 0;
-    }
-    .rows{
-      display: flex;
-      border-bottom: 1px solid #dfdfdf;
-      &:last-child{
-        border-bottom: 0;
-      }
-    }
-    .secondMenu{
-      width: 145px;
-      padding: 4px 4px 4px 9px;
-      border-right: 1px solid #dfdfdf;
-    }
-    .thirdMenu{
-      width: 446px;
-      padding: 4px 4px 4px 9px;
-      .partition{
-        padding: 0 3px;
-        display: inline-block;
-      }
-      .rightName{
-        &:last-child{
-          .partition:last-child{
-            display: none;
           }
         }
       }

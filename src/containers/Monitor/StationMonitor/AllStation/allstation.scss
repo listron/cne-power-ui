@@ -6,10 +6,7 @@
   flex: 1;
   flex-direction: column;
   .stationContainer {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    padding: 24px 24px 0;
+    @include contentBoxStyle();
     position: relative;
     .noData {
       display: flex;

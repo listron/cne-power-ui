@@ -56,7 +56,7 @@ class PointScatter extends Component {
         });
         const chartsBox = document.getElementById('SpeedScatterGraph');
         const Graphic = (needData.length === 0) ? showNoData : hiddenNoData;
-        const lineColor = '#666';
+        const lineColor = '#353535';
         const fontColor = '#333';
         const SpeedScatterGraph = echarts.init(chartsBox);
         scatterData.monthsChart ? SpeedScatterGraph.hideLoading() : SpeedScatterGraph.showLoading('default', { color: '#199475' });
@@ -133,7 +133,7 @@ class PointScatter extends Component {
                     show: true,
                     onZero: false,
                     lineStyle: {
-                        color: '#dfdfdf',
+                        color: '#d4d4d4',
                     },
                 },
                 min: 0,
@@ -161,7 +161,7 @@ class PointScatter extends Component {
                     },
                     axisLine: {
                         lineStyle: {
-                            color: '#dfdfdf',
+                            color: '#d4d4d4',
                         },
                     },
                     axisLabel: {

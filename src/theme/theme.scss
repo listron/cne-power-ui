@@ -4,15 +4,15 @@
 2. $darkColor: 常用 ---- 深色字体，正常页面文字深色效果：(表格/表头)
 3. $lightColor:常用 ---- 浅色字体，正常页面文字浅色展示：(文字输入，文字展示)；
 
-4. $promptColor: #dfdfdf; 禁用/浅色提示文字/input+placehodler颜色/边框颜色，
+4. $promptColor: #d4d4d4; 禁用/浅色提示文字/input+placehodler颜色/边框颜色，
 5. $pageBackground 页面常用背景色
 */
 
-$darkColor: #666;
+$darkColor: #353535;
 $blackColor: #000000;
 $lightColor: #999;
-$promptColor: #dfdfdf;
-$borderColor: #dfdfdf;
+$promptColor: #d4d4d4;
+$borderColor: #d4d4d4;
 $themeColor: #199475;
 $slideSelectColor: #ceebe0;
 $slideFontColor: #ffffff;
@@ -28,6 +28,7 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
   height: $height;
   line-height: $height;
 }
+
 @mixin highLight($color) {
   //创建高亮色配置
   &:hover,
@@ -45,7 +46,7 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  padding: 24px 24px 0;
+  padding: 15px 24px 0;
   background: #ececec;
 }
 
@@ -58,6 +59,7 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
 
 @mixin tooltipBox($borderColor) {
   min-width: 180px;
+
   .axisValue {
     padding: 0 12px 0 8px;
     line-height: 26px;
@@ -66,10 +68,12 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
     flex: 1;
     justify-content: space-between;
   }
+
   .tooltipContainer {
     padding: 10px 30px 10px 0;
     text-align: left;
   }
+
   .tooltipCont {
     span {
       display: inline-block;
@@ -82,17 +86,16 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
   }
 }
 
-.light{
+.light {
   --lightColor: #999; // 浅色文字-非凸显
-  --darkColor: #666; // 主要使用文字色
+  --darkColor: #353535; // 主要使用文字色
   --themeColor: #199475; // 高亮, 选中, 主体色
-  --promptColor: #dfdfdf; // 边框/禁用/input+placehodler颜色
+  --promptColor: #d4d4d4; // 边框/禁用/input+placehodler颜色
 }
 
-.dark{
-  --lightColor: #1f2a4e;; // 浅色文字-非凸显
+.dark {
+  --lightColor: #1f2a4e; // 浅色文字-非凸显
   --darkColor: #9cd1ff; // 主要使用文字色
-  --themeColor:#00cdff; // 高亮, 选中, 主体色
+  --themeColor: #00cdff; // 高亮, 选中, 主体色
   --promptColor: #3d7bac; // 边框/禁用/input+placehodler颜色
 }
-

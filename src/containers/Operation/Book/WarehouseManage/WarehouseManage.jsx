@@ -17,7 +17,6 @@ import MaterialInsert from '../../../../components/Operation/Book/WarehouseManag
 import MaterialTakeout from '../../../../components/Operation/Book/WarehouseManage/MaterialTakeout';
 import MaterialReserve from '../../../../components/Operation/Book/WarehouseManage/MaterialReserve';
 
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import { warehouseManageAction } from './warehouseManageReducer';
 import { commonAction } from '../../../alphaRedux/commonAction';
@@ -96,7 +95,6 @@ class WarehouseManage extends Component {
     const { tabName, sideKey } = this.props;
     return (
       <div className={styles.warehouseManage}>
-        <CommonBreadcrumb breadData={[{name: '库存管理'}]} style={{ marginLeft: '38px' }} />
         <div className={styles.manageContainer}>
           <div className={styles.listPage}>
             <div className={styles.listContent}>

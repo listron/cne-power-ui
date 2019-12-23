@@ -1,8 +1,7 @@
 @import '../../../../theme/theme';
 .PowerCurve {
-    display: flex;
-    flex: 1;
-    background: #ececec;
+    @include contentBoxStyle();
+    flex-direction: initial;
     .contentMain {
         border: 1px solid #e1e2e2;
         position: relative;
@@ -10,7 +9,6 @@
         flex-direction: column;
         flex: 1 0 auto;
         width: 100%;
-        margin: 24px 24px 0;
         background: #fff;
         .selectSearth {
             display: flex;
@@ -20,7 +18,7 @@
             >span {
                 margin-left: 28px;
                 font-size: 14px;
-                color: #666666;
+                color: #353535;
                 line-height: 69px;
             }
             >div {
@@ -89,7 +87,7 @@
             line-height: 30px;
             height: 30px;
             width: 87%;
-            color: #666666;
+            color: #353535;
             >span {
                 cursor: pointer;
             }

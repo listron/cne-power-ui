@@ -3,7 +3,7 @@ import HeaderDeviceChange from '../DeviceMonitorCommon/HeaderDeviceChange';
 import { PVStationTypes, boxtransformerStatus } from '../../../../../constants/stationBaseInfo';
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
-import { Icon } from 'antd';
+import { Icon, Button } from 'antd';
 import { Link } from 'react-router-dom';
 
 class BoxtransformerHeader extends Component {
@@ -21,17 +21,17 @@ class BoxtransformerHeader extends Component {
     super(props);
     this.state = {
       showDeviceChangeBox: false,
-    }
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const main = document.getElementById('main');
-    main && main.addEventListener('click', this.hideDeviceChange,true);
+    main && main.addEventListener('click', this.hideDeviceChange, true);
   }
 
   componentWillUnmount() {
     const main = document.getElementById('main');
-    main && main.removeEventListener('click', this.hideDeviceChange,true);
+    main && main.removeEventListener('click', this.hideDeviceChange, true);
   }
 
   showDeviceChange = () => {
@@ -55,8 +55,8 @@ class BoxtransformerHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { deviceStatus, manufacturer, deviceModeName } = deviceDetail;
-    let parentDevice = deviceDetail.parentDevice || {};
+    const { deviceStatus, manufacturer, deviceModeName, deviceCode } = deviceDetail;
+    const parentDevice = deviceDetail.parentDevice || {};
     const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     const parentDeviceTypeCode = parentDevice.deviceTypeCode; // 父级设备type
     const parentDeviceCode = parentDevice.deviceCode; //父级设备code
@@ -70,6 +70,9 @@ class BoxtransformerHeader extends Component {
           <span className={styles.status}>设备状态:{boxtransformerStatus[deviceStatus] || '--'}</span>
           <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
           <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
+          <Link to={`/operation/book/deviceManage?deviceFullCode=${deviceCode}&showPage='detail'`} target="_blank">
+            <Button className={styles.deviceBtn} type="primary"><i className="iconfont icon-edit" /><i>修改设备信息</i></Button>
+          </Link>
         </div>
         <div className={styles.linkTo}>
           {parentDeviceTypeCode && parentDeviceCode && <span
@@ -96,7 +99,7 @@ class BoxtransformerHeader extends Component {
           </Link>
         </div>} */}
       </div>
-    )
+    );
   }
 }
 export default BoxtransformerHeader;

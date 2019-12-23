@@ -40,7 +40,7 @@ export const YxPoints = ({ yxData = [], theme = 'light' }) => {
     } else if (value === '0') {
       return { backgroundColor: '#d0021b' };
     }
-    return { backgroundColor: '#dfdfdf' };
+    return { backgroundColor: '#d4d4d4' };
   };
   return (
     <section className={`${styles.yxInfo} ${styles[theme]}`}>

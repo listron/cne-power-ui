@@ -7,7 +7,7 @@ import { Radio } from 'antd';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
-import {dataFormat}  from '../../../../../utils/utilFunc'
+import { dataFormat } from '../../../../../utils/utilFunc'
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -30,19 +30,19 @@ class PowerDiagramTenMin extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    const { powerData, chartType, yAxisUnit,yAxisValuePoint } = nextProps;
+    const { powerData, chartType, yAxisUnit, yAxisValuePoint } = nextProps;
     const { intervalTime } = this.state;
     const yAxisType = `电量(${yAxisUnit})`
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
-    const lineColor = '#666';
+    const lineColor = '#353535';
     const actualPower = powerData.map(e => (yAxisUnit === '万kWh' ? (+e.actualPower) : (+e.actualPower * 10000)).toFixed(yAxisValuePoint));  // 实际发电量
     const filterActualPower = powerData.filter(e => e.actualPower);
     const theoryPower = powerData.map(e => e.theoryPower); // 计划发电量
     const filterTheoryPower = powerData.filter(e => e.theoryPower);
     const instantaneous = powerData.map(e => e.instantaneous); // 风速／累计曝幅值
     const filterInstantaneous = powerData.filter(e => e.instantaneous);
-    const completeRate = powerData.map(e =>dataFormat(e.completeRate,'--',2));  // 完成率
+    const completeRate = powerData.map(e => dataFormat(e.completeRate, '--', 2));  // 完成率
     const filterCompleteRate = powerData.filter(e => e.completeRate);
     const powerGraphic = (
       filterActualPower.length === 0
@@ -50,7 +50,7 @@ class PowerDiagramTenMin extends Component {
       && filterInstantaneous.length === 0
       && filterCompleteRate.length === 0
     ) ? showNoData : hiddenNoData;
-    let color=this.getColor(chartType,intervalTime);
+    let color = this.getColor(chartType, intervalTime);
     const powerOption = {//实际发电量 计划发电量
       graphic: powerGraphic,
       color: color,
@@ -66,7 +66,7 @@ class PowerDiagramTenMin extends Component {
         right: 85,
       },
       legend: {
-      
+
         textStyle: {
           color: lineColor,
         },
@@ -86,7 +86,7 @@ class PowerDiagramTenMin extends Component {
           let paramsItem = '';
           params.forEach((item, index) => {
             return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${item.seriesName} :
-            ${this.dealValue(item.seriesName,item.value,this.getDefaultPoint(item.seriesName))}</div>`
+            ${this.dealValue(item.seriesName, item.value, this.getDefaultPoint(item.seriesName))}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>${paramsItem}`
@@ -109,7 +109,7 @@ class PowerDiagramTenMin extends Component {
           data: powerData && powerData.map(e => intervalTime === 0 ? moment(e.time).format('MM-DD') : e.time),
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -180,7 +180,7 @@ class PowerDiagramTenMin extends Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisTick: {
@@ -248,31 +248,31 @@ class PowerDiagramTenMin extends Component {
       powerOption.yAxis[1].nameTextStyle.padding = 0;
       powerOption.yAxis = powerOption.yAxis.filter(e => e.name !== '完成率');
       powerOption.series = powerOption.series.filter(e => e.name !== '计划发电量' && e.name !== '完成率');
-      powerOption.series.color = ['#a42b2c','#f9b600'];
+      powerOption.series.color = ['#a42b2c', '#f9b600'];
     }
     powerDiagram.setOption(powerOption, 'notMerge');
     powerDiagram.resize();
   }
 
   onChangeTimePower = (e) => { // 改变 日／月／年
-    const { stationCode ,stationType} = this.props;
+    const { stationCode, stationType } = this.props;
     const intervalTime = e.target.value;
     this.setState({ intervalTime });
-    this.props.getPowerDataTenMin({stationCode,stationType, intervalTime});// 时间格式传出，清空定时器并重新请求数据。
+    this.props.getPowerDataTenMin({ stationCode, stationType, intervalTime });// 时间格式传出，清空定时器并重新请求数据。
   }
 
-  
 
-   getColor=(type,intervalTime)=>{  // 颜色的设置
-     let color=[];
-     if(type==='wind'){
-       if(intervalTime===0){ return color=['#a42b2c','#3e97d1'];}
-       return color=['#a42b2c', '#c7ceb2', '#3e97d1','#199475'];
-     }else{
-      if(intervalTime===0){ return color=['#a42b2c', '#f9b600',];}
-      return color=['#a42b2c', '#c7ceb2', '#f9b600','#199475'];
-     }
-   }
+
+  getColor = (type, intervalTime) => {  // 颜色的设置
+    let color = [];
+    if (type === 'wind') {
+      if (intervalTime === 0) { return color = ['#a42b2c', '#3e97d1']; }
+      return color = ['#a42b2c', '#c7ceb2', '#3e97d1', '#199475'];
+    } else {
+      if (intervalTime === 0) { return color = ['#a42b2c', '#f9b600',]; }
+      return color = ['#a42b2c', '#c7ceb2', '#f9b600', '#199475'];
+    }
+  }
 
   getDefault = (intervalTime) => {
     let result = [];
@@ -296,8 +296,8 @@ class PowerDiagramTenMin extends Component {
 
   dealValue = (seriesName, value, point) => { // 完成率的修改
     if (seriesName === '完成率') {
-      return ((value || +value === 0) && value )+'%' ||'--' +'%'
-    } else { 
+      return ((value || +value === 0) && value) + '%' || '--' + '%'
+    } else {
       return (value || +value === 0 && parseFloat(value).toFixed(point)) || '--'
     }
   }
@@ -308,7 +308,7 @@ class PowerDiagramTenMin extends Component {
     const productionAnalysis = `/statistical/stationaccount/production#${stationCode}`;
     return (
       <div className={styles.powerDiagramBox} >
-        <div id="powerDiagram" style={{ width: "100%", height: "100%", color: '#666', paddingTop: "20px" }}></div>
+        <div id="powerDiagram" style={{ width: "100%", height: "100%", color: '#353535', paddingTop: "20px" }}></div>
         <div className={styles.powerRadio}>
           <RadioGroup defaultValue={0} size="small" onChange={this.onChangeTimePower} >
             <RadioButton value={0}>日</RadioButton>

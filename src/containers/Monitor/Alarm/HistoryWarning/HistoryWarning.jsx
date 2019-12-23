@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './historyWarning.scss';
 import PropTypes from 'prop-types';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { historyWarningAction } from './historyWarningAction';
-import { commonAction } from '../../../alphaRedux/commonAction';
-// import TransitionContainer from '../../../../components/Common/TransitionContainer';
-// import WorkOrder from '../../../Operation/Ticket/WorkOrder/WorkOrder';
+import TransitionContainer from '../../../../components/Common/TransitionContainer';
+import WorkOrder from '../../../Operation/Ticket/WorkOrder/WorkOrder';
 
 
 
@@ -44,11 +42,10 @@ class HistoryWarning extends Component {
     const { showPage } = this.state;
     return (
       <div className={`${styles.history} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '历史告警' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.transferColor}>
           <div className={styles.transferAlarmContainer}>
             <HistoryWarningContainer {...this.props} />
-            {/* <TransitionContainer
+            <TransitionContainer
               show={pageName === 'detail'}
               timeout={500}
               effect="side"
@@ -58,7 +55,7 @@ class HistoryWarning extends Component {
               <WorkOrder defectId={defectId} otherFrom={true} pageName={'list'} onChange={this.prevChange}
                 showPage={showPage}
               />
-            </TransitionContainer> */}
+            </TransitionContainer>
           </div>
         </div>
         <Footer />

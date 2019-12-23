@@ -18,7 +18,7 @@
           height: 24px;
           line-height: 24px;
           padding: 0 4px;
-          border-radius: 4px;
+          border-radius: 2px;
           margin-left: 8px;
           cursor: pointer;
           i {
@@ -115,7 +115,7 @@
           margin-bottom: 20px;
           width: 222px;
           height: 121px;
-          border-radius: 4px;
+          border-radius: 2px;
           font-size: 12px;
           cursor: pointer;
           a {
@@ -161,6 +161,9 @@
                 margin-top: 7px;
                 .transferRate{
                   display: flex;
+                  .specialColor{
+                    color: #a22c30 !important;
+                  }
                   .tooltipName{
                     margin-top: -5px;
                     margin-left: 3px;
@@ -194,6 +197,9 @@
               text-align: left;
               > div{
                 display: flex;
+                .specialColor{
+                  color: #a22c30 !important;
+                }
                 .tooltipName{
                   margin-top: -5px;
                   margin-left: 3px;
@@ -294,7 +300,7 @@
     .eachDevice {
       height: 92px;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 2px;
       margin: 0px 12px 12px 0px;
       width: 222px;
       font-size: 12px;
@@ -303,7 +309,7 @@
     .deviceName {
       height: 35px;
       margin-bottom: 0;
-      border-radius: 4px 4px 0 0;
+      border-radius: 2px 4px 0 0;
       display: flex;
       display: flex;
       justify-content: space-between;
@@ -335,7 +341,7 @@
     .eachDevice {
       height: 102px;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 2px;
       margin: 0px 12px 12px 0px;
       width: 222px;
     }
@@ -343,7 +349,7 @@
       height: 50px;
       line-height: 50px;
       margin-bottom: 0;
-      border-radius: 4px 4px 0 0;
+      border-radius: 2px 4px 0 0;
       display: flex;
       :global {
         .icon-jidian {
@@ -374,14 +380,14 @@
     // 电能表
     .eachDevice {
       height: 140px;
-      border-radius: 4px;
+      border-radius: 2px;
       margin: 0px 12px 12px 0px;
       width: 222px;
     }
     .deviceName {
       height: 35px;
       margin-bottom: 0;
-      border-radius: 4px 4px 0 0;
+      border-radius: 2px 4px 0 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -476,7 +482,7 @@
           margin-bottom: 20px;
           width: 230px;
           height: 151px;
-          border-radius: 4px;
+          border-radius: 2px;
           .statusBox {
             display: flex;
             align-items: center;
@@ -503,6 +509,9 @@
               margin-bottom: -4px;
               .transferRate{
                 display: flex;
+                .specialColor{
+                  color: #a22c30 !important;
+                }
                 .tooltipName{
                   margin-top: -5px;
                   margin-left: 3px;

@@ -37,17 +37,8 @@ class PersonnelGps extends Component {
         symbol: 'image:///img/position.png',
       });
     });
-
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '工单列表',
-        },
-      ],
-    };
     return (
       <div className={`${styles.ticketBox} ${styles[theme]}`}>
-        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} theme={theme} />
         <div className={styles.ticket}>
           <div className={styles.inspectCreate}>
             <div className={styles.createTop}>

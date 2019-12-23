@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import styles from "./deviceStatus.scss";
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { deviceStatusAction } from './deviceStatusAction';
 import { commonAction } from '../../../../containers/alphaRedux/commonAction';
 
@@ -37,19 +36,11 @@ class DeviceStatus extends Component {
   checkPv = () => this.props.changeDeviceStatusStore({selectStationType:'1'}) // 选中光伏电站
   render() {
     const { stationTypeCount, selectStationType } = this.props;
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '报告查询-设备状态',
-        }
-      ],
-    };
     return (
       <div className={styles.containerDiv}>
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
-          
+
             {/*
             {stationTypeCount === 'multiple' &&
               <div className={styles.typeCheck}>
@@ -60,11 +51,11 @@ class DeviceStatus extends Component {
             }
            {selectStationType === '0' && <DeviceStatusContainer {...this.props} />}
            {selectStationType === '1' && <DeviceStatusContainer {...this.props} />}
-           
+
           */}
-           
+
            <DeviceStatusContainer {...this.props} />
-           
+
           </div>
         </div>
         <Footer />

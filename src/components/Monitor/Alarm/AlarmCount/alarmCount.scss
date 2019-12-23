@@ -17,7 +17,7 @@
         height: 40px;
         line-height: 40px;
         justify-content: space-between;
-        background: #f8f8f8; // border-bottom:1px solid #dfdfdf;
+        background: #f8f8f8; // border-bottom:1px solid #d4d4d4;
         .type {
             display: flex;
             flex-direction: row;
@@ -25,7 +25,7 @@
                 width: 120px;
                 text-align: center;
                 color: $lightColor;
-                border-right: 1px solid #dfdfdf;
+                border-right: 1px solid #d4d4d4;
                 cursor: pointer;
             }
             .active {
@@ -58,7 +58,7 @@
             .exportBtn {
                 color: $themeColor;
                 background-color: #fff;
-                border-radius: 4px;
+                border-radius: 2px;
                 border: 1px solid #199475;
                 line-height: 30px;
                 height: 30px;
@@ -93,8 +93,8 @@
             }
             .ant-tabs-bar {
                 background-color: #fff;
-                border-bottom: 1px dashed #dfdfdf;
-                border-top: 1px dashed #dfdfdf;
+                border-bottom: 1px dashed #d4d4d4;
+                border-top: 1px dashed #d4d4d4;
             }
             .ant-tabs-bar .ant-tabs-tab-active.ant-tabs-tab {
                 background: $themeColor;

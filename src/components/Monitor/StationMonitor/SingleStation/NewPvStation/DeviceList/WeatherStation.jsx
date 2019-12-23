@@ -171,23 +171,23 @@ class WeatherStation extends Component {
                             return (<div className={styles.everyDetail} key={index}>
                                 <div>{e.name}</div>
                                 <div className={styles.detailId}>
-                                    {value}
+                                    <span className={e.isShow && weatherstationDetail.radiatioQuantityValidation && styles.specialColor}>{value}</span>
                                     <span className={styles.detailUnit}>{e.unit}</span>
                                     {e.isShow && weatherstationDetail.radiatioQuantityValidation &&
-                                    <span className={styles.tooltipName}>
-                                        <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={weatherstationDetail.radiatioQuantityValidation}>
-                                            <i className="iconfont icon-help"></i>
-                                        </Tooltip>
-                                    </span>}
+                                        <span className={styles.tooltipName}>
+                                            <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={weatherstationDetail.radiatioQuantityValidation}>
+                                                <i className="iconfont icon-help"></i>
+                                            </Tooltip>
+                                        </span>}
                                 </div>
                             </div>);
                         })}
                     </div>
                     <div className={styles.weatherList}>
                         {weather.map((e, index) => {
-                            const weekArray = ['日', '一', '二', '三', '四', '五', '六'];
+                            const weekArray = ['一', '二', '三', '四', '五', '六', '日'];
                             const date = ['昨天', '今天', '明天', '后天', '星期'];
-                            const dateInner = (index === weather.length - 1) ? '星期' + weekArray[moment(e.weatherDate).get('weekday')] : date[index];
+                            const dateInner = (index === weather.length - 1) ? '星期' + weekArray[moment(e.weatherDate).weekday()] : date[index];
                             return (<div className={styles.weatherDay} key={index}>
                                 <div className={styles.weatherDate}>{e.weatherDate} <span> {dateInner}</span></div>
                                 {weather.length > 0 &&

@@ -14,7 +14,7 @@ class FanListCont extends React.Component {
     match: PropTypes.object,
     pointparams: PropTypes.object,
     getPointparams: PropTypes.func,
-    getNewFanList: PropTypes.func,
+    getFanList: PropTypes.func,
     changeSingleStationStore: PropTypes.func,
     fanList: PropTypes.object,
     fanDisplay: PropTypes.string,
@@ -23,7 +23,7 @@ class FanListCont extends React.Component {
   }
 
   static defaultProps = {
-    loading: true
+    loading: true,
   }
 
   constructor(props) {
@@ -34,13 +34,13 @@ class FanListCont extends React.Component {
       currentPage: 1,
       pageSize: 10,
       firstLoad: true,
-    }
+    };
   }
 
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getData(stationCode);
-    this.props.getPointparams()
+    this.props.getPointparams();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -66,16 +66,16 @@ class FanListCont extends React.Component {
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
     this.setState({
       currentPage,
-      pageSize
-    })
+      pageSize,
+    });
   }
 
 
   getData = stationCode => { // 获取数据
     const { firstLoad } = this.state;
     this.props.getNewFanList({ stationCode, firstLoad });
-    this.timeOutId = setTimeout(()=>{
-      if(firstLoad){
+    this.timeOutId = setTimeout(() => {
+      if (firstLoad) {
         this.setState({ firstLoad: false });
       }
       this.getData(stationCode);
@@ -84,18 +84,18 @@ class FanListCont extends React.Component {
 
   pointparamsChange = (e) => {
     this.setState({
-      cardPointParams: e
-    })
+      cardPointParams: e,
+    });
   }
 
 
   operations = () => { // 下拉筛选框
     const { pointparams, fanDisplay } = this.props;
     const { alarmSwitch, cardPointParams } = this.state;
-    const list = ["Default", "NC005", "GN010", "GN001", "RT001", "TM101", "NC001", "TM105", "NC004"]
-    let optionList = list.map(e => {
-      return <Option value={e} key={e}>{pointparams[e]}</Option>
-    })
+    const list = ['Default', 'NC005', 'GN010', 'GN001', 'RT001', 'TM101', 'NC001', 'TM105', 'NC004'];
+    const optionList = list.map(e => {
+      return <Option value={e} key={e}>{pointparams[e]}</Option>;
+    });
     const operations = (<div className={styles.inverterRight} >
       {fanDisplay === 'deviceCard' &&
         <Select style={{ width: 190, marginRight: 24 }} onChange={this.pointparamsChange} value={cardPointParams}>
@@ -104,23 +104,23 @@ class FanListCont extends React.Component {
       }
       <Switch onChange={this.onSwitchAlarm} value={alarmSwitch} style={{ marginRight: 8 }} /> 只看告警
     </div>);
-    return operations
+    return operations;
   }
 
   fanDisplay = (e) => { // 改变风机展示的状态
-    this.props.changeSingleStationStore({ fanDisplay: e })
+    this.props.changeSingleStationStore({ fanDisplay: e });
   }
 
   filterStatusDataList = () => { // 删选数据
-    let { alarmSwitch } = this.state;
+    const { alarmSwitch } = this.state;
     const { fanList, currentStatus } = this.props;
     const { deviceList = [] } = fanList;
-    const newStationDataList = deviceList.filter(e => { return !alarmSwitch || (alarmSwitch && e.alarmNum > 0) }).filter(e => {
+    const newStationDataList = deviceList.filter(e => { return !alarmSwitch || (alarmSwitch && e.alarmNum > 0); }).filter(e => {
       if (currentStatus === 0) {
         return true
-      } else { return e.deviceStatus === currentStatus }
-    })
-    return newStationDataList
+      }  return e.deviceStatus === currentStatus 
+    });
+    return newStationDataList;
   }
 
 
@@ -132,17 +132,17 @@ class FanListCont extends React.Component {
       <div className={styles.fanListCont}>
         <div className={styles.StationTitle} >
           <div className={styles.tabs}>
-            <i className={`${"iconfont icon-grid iconTab"} ${fanDisplay === 'deviceCard' && styles.activeCard}`}
-              onClick={() => { this.fanDisplay('deviceCard') }}> </i>
-            <i className={`${"iconfont icon-table iconTab"} ${fanDisplay === 'deviceTable' && styles.activeCard}`} onClick={() => { this.fanDisplay('deviceTable') }}></i>
-            <i className={`${"iconfont icon-map iconTab"} ${fanDisplay === 'deviceMap' && styles.activeCard}`} onClick={() => { this.fanDisplay('deviceMap') }}></i>
+            <i className={`${'iconfont icon-grid iconTab'} ${fanDisplay === 'deviceCard' && styles.activeCard}`}
+              onClick={() => { this.fanDisplay('deviceCard'); }}> </i>
+            <i className={`${'iconfont icon-table iconTab'} ${fanDisplay === 'deviceTable' && styles.activeCard}`} onClick={() => { this.fanDisplay('deviceTable'); }}></i>
+            <i className={`${'iconfont icon-map iconTab'} ${fanDisplay === 'deviceMap' && styles.activeCard}`} onClick={() => { this.fanDisplay('deviceMap'); }}></i>
           </div>
           <div>
             {this.operations()}
           </div>
         </div>
         {fanDisplay === 'deviceCard' &&
-          (loading  ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
+          (loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
             <FanItem
               {...this.props}
               cardPointParams={cardPointParams}
@@ -158,7 +158,7 @@ class FanListCont extends React.Component {
           />}
         {fanDisplay === 'deviceMap' && <div className={styles.building}></div>}
       </div>
-    )
+    );
   }
 }
 
