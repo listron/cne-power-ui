@@ -1,11 +1,11 @@
+@import "../../../../theme/theme.scss";
 .cleanoutRecordBox {
   min-height: 100%;
   display: flex;
   flex: 1;
   flex-direction: column;
   .cleanoutRecordContainer {
-    display: flex;
-    flex: 1;
+    @include contentBoxStyle();
   }
 }
 

@@ -1,15 +1,11 @@
+@import "../../../../theme/theme.scss";
 .alarmStatisticBox {
     display: flex;
     flex: 1;
     min-height: 100%;
     flex-direction: column;
     .alarmStatistic {
-        display: flex;
-        flex: 1; //min-height: 100%;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 24px 24px 0;
-        background-color: #ececec;
+        @include contentBoxStyle();
     }
 }
 
@@ -25,7 +21,7 @@
         justify-content: space-between;
         padding: 24px 24px 0;
         background-color: #ececec;
-       
+
     }
 }
 

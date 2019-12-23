@@ -5,7 +5,6 @@ import styles from './stationContrast.scss';
 import { stationContrastAction } from './stationContrastAction';
 import PropTypes from 'prop-types';
 import StationContrast from '../../../../components/StatisticalAnalysis/StationAnalysis/StationContrast/StationContrast';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
 class StationContrastContainer extends Component {
@@ -23,7 +22,6 @@ class StationContrastContainer extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.productionAnalysisBox} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '电站对比' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.productionAnalysis}>
           <StationContrast {...this.props} />
         </div>

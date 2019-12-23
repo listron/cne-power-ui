@@ -3,12 +3,10 @@ import { connect } from 'react-redux';
 import styles from './powerCurve.scss';
 import { powerCurveAction } from './powerCurveAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import PowerCurves from '../../../../components/System/Station/PowerCurve/PowerCurve';
 
 import Footer from '../../../../components/Common/Footer';
 import PropTypes from 'prop-types';
-import Cookie from 'js-cookie';
 
 class PowerCurve extends Component {
   static propTypes = {
@@ -16,18 +14,17 @@ class PowerCurve extends Component {
   }
   constructor(props) {
     super(props);
-   
+
  }
- 
+
  componentWillUnmount() {
   this.props.resetStore()
 }
 
-  
+
   render() {
     return (
       <div className={styles.powerCurveContainer}>
-        <CommonBreadcrumb  breadData={[{name: '功率曲线'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <PowerCurves {...this.props} />
         <Footer />
       </div>
@@ -50,7 +47,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,
     payload: {
-      params, 
+      params,
       deviceTypeAction: powerCurveAction.powerCurveFetchSuccess,
       resultName: 'stationDeviceTypes'
     }
@@ -58,7 +55,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceModel: params => dispatch({
     type: commonAction.getDeviceModel,
     payload: {
-      params, 
+      params,
       actionName: powerCurveAction.powerCurveFetchSuccess,
       resultName: 'deviceModels'
     }

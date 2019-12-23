@@ -99,11 +99,13 @@ class EditPhone extends Component {
               {getFieldDecorator('newPhoneNum', {
                 rules: [{
                   required: true,
-                  message: '请输入新的手机号码'},
+                  message: '请输入新的手机号码'
+                },
                 {
                   pattern: /(^1\d{10}$)/,
-                  message: '新的手机号码输入错误'}
-                 ],
+                  message: '新的手机号码输入错误'
+                }
+                ],
               })(
                 <Input type="phone" placeholder={'请输入新手机号'} addonBefore={<i className="iconfont icon-phone"></i>} />
               )}
@@ -126,7 +128,7 @@ class EditPhone extends Component {
                 </div>
               )}
               {timeValue !== 0 && sendCode &&
-                <span className={styles.instructionText} style={{ width: 380, color: '#666' }}>验证码已经发送到 {currentPhone}</span>
+                <span className={styles.instructionText} style={{ width: 380, color: '#353535' }}>验证码已经发送到 {currentPhone}</span>
               }
             </FormItem>
             <Row type={'flex'} className={styles.saveButton}>

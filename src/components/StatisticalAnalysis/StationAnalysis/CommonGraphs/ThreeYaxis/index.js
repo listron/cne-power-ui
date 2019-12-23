@@ -70,7 +70,7 @@ class PowerEfficency extends React.Component {
       'hours': '#199475',
       'light': '#e08031',
       'pr': '#3e97d1',
-      'planPower': '#dfdfdf',
+      'planPower': '#d4d4d4',
       'actualPower': '#f9b600',
       'planRate': '#e08031',
       'resourceValue': '#3e97d1',

@@ -4,7 +4,6 @@ import { Tabs } from 'antd';
 import { scoreAction } from "./scoreAction";
 import styles from "./score.scss";
 import PropTypes from 'prop-types';
-import CommonBreadcrumb from "../../../../components/Common/CommonBreadcrumb";
 import Footer from '../../../../components/Common/Footer';
 import ScoreMain from '../../../../components/System/Production/Score/Score';
 const TabPane = Tabs.TabPane;
@@ -36,7 +35,6 @@ class Score extends Component {
     const { activeKey } = this.state;
     return (
       <div className={styles.scoreBox}>
-        <CommonBreadcrumb breadData={[{ name: '绩效评分' }]} style={{ paddingLeft: '38px', background: '#fff' }} />
         <div className={styles.scoreContainer}>
           <div className={styles.scoreContent}>
             {stationTypeCount === 'multiple' &&

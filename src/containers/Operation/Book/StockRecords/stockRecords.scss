@@ -5,12 +5,7 @@
   min-height: 100%;
   flex-direction: column;
   .stockRecordsCenter{
-    display: flex;
-    flex: 1 0 auto;
-    flex-direction: column;
-    width: 100%;
-    padding:24px 24px 0;
-    background-color: $pageBackground;
+    @include contentBoxStyle();
     .stockRecordsContent{
       display: flex;
       flex: 1 0 auto;

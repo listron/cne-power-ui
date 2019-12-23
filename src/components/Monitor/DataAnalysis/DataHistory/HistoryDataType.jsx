@@ -21,8 +21,8 @@ class HistoryDataType extends Component {
     startTime: PropTypes.object,
     endTime: PropTypes.object,
     pointCodes: PropTypes.array, // 选中的测点
-    timeSpace:  PropTypes.string,
-    historyType:  PropTypes.string,
+    timeSpace: PropTypes.string,
+    historyType: PropTypes.string,
     queryParam: PropTypes.object,
     partHistory: PropTypes.object,
 
@@ -33,7 +33,7 @@ class HistoryDataType extends Component {
 
   selectHistoryType = (historyType) => { // 切换图表展示类型 'chart'图 / 'list'表格
     const { changeHistoryStore } = this.props;
-    changeHistoryStore({ historyType })
+    changeHistoryStore({ historyType });
   }
 
   showChart = () => {
@@ -65,18 +65,18 @@ class HistoryDataType extends Component {
         startTime,
         endTime,
       },
-    })
+    });
   }
 
-  render(){
+  render() {
     const { historyType, downloading, partHistory = {} } = this.props;
     const { dataList = [] } = partHistory;
     const historyOperation = handleRight('realTime_export');
     return (
       <div className={styles.historyDataType}>
         <div className={styles.tabIcons}>
-          <Icon onClick={this.showChart} type="bar-chart" className={historyType === 'chart'? styles.active : styles.normal} />
-          <Icon onClick={this.showList} type="bars" className={historyType === 'list'? styles.active : styles.normal} />
+          <Icon onClick={this.showChart} type="bar-chart" className={historyType === 'chart' ? styles.active : styles.normal} />
+          <Icon onClick={this.showList} type="bars" className={historyType === 'list' ? styles.active : styles.normal} />
         </div>
         {historyOperation &&
         <Button
@@ -86,7 +86,7 @@ class HistoryDataType extends Component {
           disabled={dataList.length === 0}
         >导出</Button>}
       </div>
-    )
+    );
   }
 }
 

@@ -71,7 +71,7 @@
   }
   .basicInfo {
     box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
+    border-radius: 2px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -116,7 +116,7 @@
         text-align: center;
         cursor: pointer;
         width: 202px;
-        border-radius: 4px;
+        border-radius: 2px;
         line-height: 28px;
       }
       .liked,
@@ -128,11 +128,11 @@
         text-align: center;
         cursor: pointer;
         width: 202px;
-        border-radius: 4px;
+        border-radius: 2px;
         line-height: 28px;
       }
       .disabled {
-        background: #dfdfdf;
+        background: #d4d4d4;
         border: 1px solid #c3c3c3;
         cursor: not-allowed;
         color: #999999;
@@ -184,7 +184,7 @@
   .addTips {
     margin-top: 10px;
     font-size: 12px;
-    color: #dfdfdf;
+    color: #d4d4d4;
     display: flex;
     margin-left: 88px;
     flex-direction: column;

@@ -6,10 +6,7 @@
   flex-direction: column;
   min-height: 100%;
   .generalReportContainer {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    padding: 25px 24px 0px;
+    @include contentBoxStyle();
     .generalReportMain {
       display: flex;
       flex: 1;

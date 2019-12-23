@@ -50,7 +50,7 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
   const confluenceStatus = { // 汇流箱设备状态
     light: {
       '400': '#ceebe0', // 正常
-      '500': '#dfdfdf', // 无通讯
+      '500': '#d4d4d4', // 无通讯
       '900': '#f1f1f1', // 未接入
       '801': '#f9b600', // 离散率>=10%数
       '802': '#a42b2c', // 离散率>=20%数
@@ -65,7 +65,7 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
   };
 
   // const getStatusBox = (alarmNum, isLowEfficiency) => {
-  //   let backgroundColor = 'transparent', color = '#666';
+  //   let backgroundColor = 'transparent', color = '#353535';
   //   alarmNum && isLowEfficiency && (backgroundColor = '#fefad2') && (color = '#e08031');
   //   alarmNum && !isLowEfficiency && (backgroundColor = '#ff8e9c') && (color = '#a42b2c');
   //   return { backgroundColor, color };
@@ -93,7 +93,7 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
                   <div className={styles.deviceBlockName}>
                     <span style={{ color: statusBoxStyle.color }} className={styles.deviceName}>{item.deviceName}</span>
                     <span className={styles.transferRate}>
-                      <span>{dataFormats(item.transferRate, '--', 2)}%</span>
+                      <span className={item.transferRateValidation && styles.specialColor}>{dataFormats(item.transferRate, '--', 2)}%</span>
                       {item.transferRateValidation &&
                         <span className={styles.tooltipName}>
                           <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.transferRateValidation}>
@@ -117,7 +117,7 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode, theme
                 <div className={styles.eachInfo}>
                   <div>日等效时</div>
                   <div className={styles.value}>
-                    <span>{dataFormats(item.equipmentHours, '--', 2)} h</span>
+                    <span className={item.equipmentHoursValidation && styles.specialColor}>{dataFormats(item.equipmentHours, '--', 2)} h</span>
                     {item.equipmentHoursValidation &&
                       <span className={styles.tooltipName}>
                         <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.equipmentHoursValidation}>

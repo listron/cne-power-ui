@@ -4,7 +4,6 @@ import styles from './customize.scss';
 import PropTypes from 'prop-types';
 import { customizeAction } from './customizeAction';
 import CustomizeCont from '../../../../components/StatisticalAnalysis/EquipmentAnalysis/Customize/Customize';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
 class Customize extends Component {
@@ -25,7 +24,6 @@ class Customize extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.customizeBox} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '自定义对比' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.customizeContainer}>
           <CustomizeCont {...this.props} />
         </div>

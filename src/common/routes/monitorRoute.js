@@ -14,8 +14,8 @@ const stationMonitor = [
 ];
 
 const powerCurve = [
-   {//实时监控-功率曲线-多设备
-    path: '/monitor/powercurve',
+  {//实时监控-功率曲线-多设备
+    path: '/monitor/data/powercurve',
     exact: true,
     component: lazy(() => import('../../containers/Monitor/PowerCurve/AllDeviceCurve/AllDeviceCurve')),
   }, {//实时监控-功率曲线-单设备
@@ -82,8 +82,18 @@ const data = [
     path: '/monitor/data/realtime',
     component: lazy(() => import('../../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime')),
   }, { //实时监控-数据分析-数据导出
-    path: '/monitor/data/dataExport',
+    path: '/monitor/dataExport',
     component: lazy(() => import('../../containers/Monitor/DataAnalysis/DataExport/DataExport')),
+  },
+];
+
+const pvData = [
+  { //实时监控-光伏数据分析-历史趋势
+    path: '/monitor/pvData/history',
+    component: lazy(() => import('../../containers/Monitor/PvDataAnalysis/PvDataHistory/PvDataHistory')),
+  }, { //实时监控-光伏数据分析-实时数据
+    path: '/monitor/pvData/realtime',
+    component: lazy(() => import('../../containers/Monitor/PvDataAnalysis/PvDataRealtime/PvDataRealtime')),
   },
 ];
 
@@ -93,4 +103,5 @@ export const monitorRoute = [
   ...data,
   //...report,
   ...alarm,
+  ...pvData,
 ];

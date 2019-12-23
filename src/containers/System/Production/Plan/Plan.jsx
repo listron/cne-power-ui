@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import styles from "./plan.scss";
 import { connect } from 'react-redux';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
-import CommonBreadcrumb from "../../../../components/Common/CommonBreadcrumb";
 import PlanMain from '../../../../components/System/Production/Plan/PlanMain/PlanMain';
 import PlanSide from '../../../../components/System/Production/Plan/PlanSide/PlanSide';
 import PropTypes from 'prop-types';
@@ -61,7 +60,6 @@ class Plan extends Component {
     const { showSidePage } = this.state;
     return (
       <div className={styles.planContainerBox}>
-        <CommonBreadcrumb breadData={[{ name: '生产计划', }]} style={{ marginLeft: '38px' }} />
         <div className={styles.planContainer}>
           <PlanMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
           <TransitionContainer

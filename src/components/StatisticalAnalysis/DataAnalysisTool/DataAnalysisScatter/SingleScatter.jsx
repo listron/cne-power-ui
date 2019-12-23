@@ -123,7 +123,7 @@ class SingleScatter extends React.PureComponent {
             <div class=${styles.topStyle}>
             <div>${payload.seriesName}</div>
             </div>
-            <div  style='background:#dfdfdf;height:1px;
+            <div  style='background:#d4d4d4;height:1px;
             width:100%;' ></div>
             <div class=${styles.lineStyle}>时间: ${info[2] ? moment(info[2]).format('YYYY-MM-DD HH:mm:ss') : '--'}</div>
             <div class=${styles.lineStyle}>${pointCodeNameX}: ${dataFormat(info[0], '--', 2)}</div>
@@ -162,7 +162,7 @@ class SingleScatter extends React.PureComponent {
           show: true,
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisPointer: {
@@ -200,7 +200,7 @@ class SingleScatter extends React.PureComponent {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisTick: {

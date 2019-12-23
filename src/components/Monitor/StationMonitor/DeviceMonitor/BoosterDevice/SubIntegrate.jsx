@@ -23,7 +23,7 @@ const SubIntegrate = ({ subDeviceList, deviceDetail, stationCode, theme }) => {
                   {(alarmNum > 0) && <i className="iconfont icon-alarm" />}
                 </div>
                 <div className={styles.deviceItemR} >
-                  <span style={{ color: alarmNum > 0 ? '#a42b2c' : '#666' }}>{item.deviceName}</span>
+                  <span style={{ color: alarmNum > 0 ? '#a42b2c' : '#353535' }}>{item.deviceName}</span>
                 </div>
               </div>
               <div className={styles.deviceBlockFooter}>

@@ -7,7 +7,6 @@ import Cookie from 'js-cookie';
 import PropTypes from 'prop-types';
 import ProductionAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/ProductionAnalysis/ProductionAnalysis';
 
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
 
@@ -36,7 +35,6 @@ class ProductionAnalysisContainer extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.productionAnalysisBox} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '生产分析' }]} style={{ marginLeft: '38px' }} theme={theme} />
         <div className={styles.productionAnalysis}>
           <ProductionAnalysis {...this.props} />
         </div>

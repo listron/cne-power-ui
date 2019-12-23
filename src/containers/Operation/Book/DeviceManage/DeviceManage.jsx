@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import styles from './deviceManage.scss';
 import { deviceManageAction } from './deviceManageAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import DeviceSide from '../../../../components/Operation/Book/DeviceManage/DeviceSide';
@@ -112,10 +111,6 @@ class DeviceManage extends Component {
     };
     return (
       <div className={styles.deviceManageContainer}>
-        <CommonBreadcrumb
-          breadData={[{ name: '设备' }]}
-          style={{ marginLeft: '38px', backgroundColor: '#fff' }}
-        />
         {selectType === 'deviceInfo' && (
           <div className={styles.deviceManage}>
             <div className={styles.deviceManageMain}>

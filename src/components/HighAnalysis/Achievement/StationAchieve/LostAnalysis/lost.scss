@@ -1,9 +1,9 @@
-@import '../stationStyle.scss';
+@import "../stationStyle.scss";
 
-.lostAnalysis{
+.lostAnalysis {
   display: flex;
   flex-wrap: wrap;
-  .modes{
+  .modes {
     position: absolute;
     width: 100%;
     display: flex;
@@ -12,26 +12,27 @@
     right: 36px;
     top: 48px;
     font-size: 12px;
-    .eachMode{
+    .eachMode {
       margin-right: 20px;
     }
-    .rect{
+    .rect {
       margin-right: 4px;
-      border-radius:2px;
+      border-radius: 2px;
       display: inline-block;
       width: 15px;
       height: 9px;
     }
-    .line, .lineTheory{
+    .line,
+    .lineTheory {
       display: inline-block;
-      width:5px;
+      width: 5px;
       margin: 0 10px 0 4px;
-      height:5px;
+      height: 5px;
       border-radius: 50%;
       position: relative;
       top: -1px;
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         width: 15px;
         height: 1px;
@@ -39,117 +40,123 @@
         top: 1px;
       }
     }
-    .modeText{
+    .modeText {
       white-space: nowrap;
     }
   }
-  .lostRank, .lostTrend, .lostTypes{
+  .lostRank,
+  .lostTrend,
+  .lostTypes {
     display: flex;
     flex-direction: column;
     padding: 0 24px;
     height: 338px;
-    .top{
+    .top {
       width: 100%;
       flex: 0 0 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .title{
+    .title {
       font-weight: 600;
     }
-    .chart{
+    .chart {
       flex: 1;
       width: 100%;
     }
   }
-  .lostRank{
+  .lostRank {
     width: 100%;
     margin-bottom: 8px;
-    .handle{
-      .eachHandle{
+    .handle {
+      .eachHandle {
         margin-right: 24px;
       }
-      .text{
+      .text {
         margin-right: 4px;
       }
     }
   }
-  .lostTrend, .lostTypes{
+  .lostTrend,
+  .lostTypes {
     width: calc(50% - 5px);
   }
-  .lostTrend{
+  .lostTrend {
     position: relative;
     margin-right: 10px;
-    .modes{
+    .modes {
       top: 70px;
     }
   }
 }
-.indicators{
+.indicators {
   width: 150px;
-  :global{
-    .ant-cascader-picker-label{
+  :global {
+    .ant-cascader-picker-label {
       padding-right: 16px;
     }
   }
 }
 
-.tooltip{
+.tooltip {
   min-width: 160px;
-  .title{
+  .title {
     display: flex;
     justify-content: space-between;
     padding: 0 8px;
     margin-bottom: 0;
     line-height: 21px;
   }
-  .info{
+  .info {
     padding: 8px;
   }
-  .eachItem{
+  .eachItem {
     display: flex;
     line-height: 21px;
     justify-content: space-between;
   }
-  .modeName{
+  .modeName {
     margin-left: 4px;
     @include overflowText();
   }
 }
 
 // 颜色
-.lostAnalysis{
+.lostAnalysis {
   background-color: #ececec;
-  .lostRank, .lostTrend, .lostTypes{
+  .lostRank,
+  .lostTrend,
+  .lostTypes {
     background-color: #fff;
-    .top .title{
+    .top .title {
       color: #000;
     }
-    .top .handle{
-      color: #666;
+    .top .handle {
+      color: #353535;
     }
   }
-  .modes{
-    .line{
-      border:1px solid #f9b600;
+  .modes {
+    .line {
+      border: 1px solid #f9b600;
       &::before {
         background-color: #f9b600;
       }
     }
-    .lineTheory{
-      border:1px solid #2564cc;
+    .lineTheory {
+      border: 1px solid #2564cc;
       &::before {
         background-color: #2564cc;
       }
     }
   }
 }
-.tooltip{ // chart提示
+.tooltip {
+  // chart提示
   background-color: #fff;
-  color: #666;
-  box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
-  .title{
-    border-bottom: 1px solid #dfdfdf;
+  color: #353535;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+  .title {
+    border-bottom: 1px solid #d4d4d4;
   }
 }

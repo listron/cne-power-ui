@@ -131,7 +131,7 @@ class Map extends Component {
             'featureType': 'label',
             'elementType': 'labels.text.fill',
             'stylers': {
-              'color': '#666'
+              'color': '#353535'
             }
           }]
         }//地图样式配置
@@ -164,7 +164,7 @@ class Map extends Component {
             <span style='color:red'>${params.data.alarmNum > 0 ? '⚠' : ''}${params.data.alarmNum > 0 ? params.data.alarmNum : ''}</span>    
             </a>
             </div>           
-            <div class='stationCardProgress' style='background:#dfdfdf;height:1px;
+            <div class='stationCardProgress' style='background:#d4d4d4;height:1px;
             width:100%;' ></div>
             <div class='stationCardValue'}>
               <span class='stationMark'>${stationPower}kW</span>
@@ -180,7 +180,7 @@ class Map extends Component {
           },
           backgroundColor: '#fff',
           textStyle: {
-            color: '#666',
+            color: '#353535',
           },
           extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
         },
@@ -229,7 +229,7 @@ class Map extends Component {
 
   render() {
     const { testId } = this.props;
-    return ( <div id={testId} style={{ width: "100%", flex: 1 }} ></div>   )
+    return (<div id={testId} style={{ width: "100%", flex: 1 }} ></div>)
   }
 }
 export default withRouter(Map);

@@ -1,75 +1,235 @@
 @import "../../../../theme/theme.scss";
-@import "./layout.scss";
-
-.seacrchCont.light {
+.seacrchCont {
+  .statusGroup {
+    display: flex;
+    padding: 0px 28px 20px;
+    align-items: center;
+    .text {
+      text-align-last: justify;
+      margin-right: 16px;
+      width: 56px;
+    }
+  }
   :global {
-    .ant-radio-button-wrapper-checked {
-      background-color: $themeColor;
-      border: 1px solid $themeColor;
-      color: #fff;
+    .ant-radio-button-wrapper {
+      padding: 0 8px;
     }
   }
 }
-
-.defectTable.light {
+.participantSearch {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 28px 20px;
+  .participantTip {
+    flex: 0 0 56px;
+    text-align-last: justify;
+    margin-right: 16px;
+  }
+  .searchSelect {
+    :global {
+      .ant-select-selection__rendered {
+        height: 30px;
+      }
+      .ant-select-selection__rendered > ul {
+        display: flex;
+      }
+    }
+  }
+  .search {
+    margin-left: 36px;
+  }
+}
+.defectTable {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .stationNameText,
+  .deviceNameText,
+  .defectTypeNameText,
+  .defectDescribeText {
+    @include overflowText();
+  }
+  .stationName {
+    width: calc((100vw - 900px) * 0.21);
+  }
+  .stationNameText {
+    width: calc((100vw - 900px) * 0.21 - 18px);
+  }
+  .deviceName {
+    width: calc((100vw - 900px) * 0.21);
+  }
+  .deviceNameText {
+    width: calc((100vw - 900px) * 0.21 - 18px);
+  }
+  .defectTypeName {
+    width: calc((100vw - 900px) * 0.23);
+  }
+  .defectTypeNameText {
+    width: calc((100vw - 900px) * 0.23 - 18px);
+  }
+  .defectDescribe {
+    max-width: calc((100vw - 900px) * 0.34);
+  }
+  .defectDescribeText {
+    max-width: calc((100vw - 900px) * 0.34 - 18px);
+  }
+  .action {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 20px 20px;
+    align-items: center;
+    .buttonArea {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    .operation {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+    }
+  }
   .defectStatus {
-    .overTime {
-      color: #a42b2c;
-      border: 1px #a42b2c solid;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .warning {
+      display: flex;
+      flex-direction: row;
+      font-size: 12px;
+      align-items: center;
+      margin-left: 4px;
+      .overTime,
+      .coordinate {
+        display: flex;
+        align-items: center;
+        border-radius: 2px;
+        width: 32px;
+        height: 20px;
+        margin-right: 4px;
+        justify-content: center;
+      }
     }
-    .coordinate {
-      color: #f9b600;
-      border: 1px #f9b600 solid;
+  }
+  :global {
+    .icon-help {
+      font-size: 14px;
+      margin-left: 4px;
+    }
+    .ant-table-placeholder {
+      border-bottom: none;
+    }
+    .ant-table .ant-table-tbody > tr > td {
+      padding: 0 8px;
     }
   }
 }
-
 .solutionWrap {
   .dealModal {
+    .modalbody {
+      height: 400px;
+      overflow: auto;
+      padding: 24px;
+    }
     .dealBox {
       background: #f0f2f5;
+      margin-bottom: 12px;
+      padding: 12px 16px;
+      position: relative;
+      .column {
+        display: flex;
+        line-height: 28px;
+        .text {
+          width: 70px;
+          text-align: right;
+          color: #000;
+          margin-right: 12px;
+          flex-shrink: 0;
+        }
+      }
+      .like {
+        color: $themeColor;
+        border: 1px solid $themeColor;
+        background: #fff;
+        position: absolute;
+        right: 10px;
+        bottom: 8px;
+        text-align: center;
+        cursor: pointer;
+        width: 202px;
+        border-radius: 2px;
+        line-height: 28px;
+      }
+      .liked,
+      .disabled {
+        border: 1px solid $themeColor;
+        position: absolute;
+        right: 10px;
+        bottom: 8px;
+        text-align: center;
+        cursor: pointer;
+        width: 202px;
+        border-radius: 2px;
+        line-height: 28px;
+      }
+      .disabled {
+        background: #d4d4d4;
+        border: 1px solid #c3c3c3;
+        cursor: not-allowed;
+        color: #999999;
+      }
     }
-    .text {
-      color: #000;
-    }
-    .like {
-      color: $themeColor;
-      border: 1px solid $themeColor;
-      background: #fff;
-    }
-    .liked,
-    .disabled {
-      border: 1px solid $themeColor;
-    }
-    .disabled {
-      background: #dfdfdf;
-      border: 1px solid #c3c3c3;
-      color: #999999;
+    :global {
+      .ant-modal-body {
+        padding: 0;
+      }
     }
   }
 }
-
 .defectCreateForm.light,
 .baseInfoCont.light {
   .basicInfo {
     box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 28px;
     background-color: #f8f8f8;
     .dealMethod {
       border: 1px solid $themeColor;
       color: $themeColor;
+      margin: 0 10px;
+      height: 30px;
     }
   }
   .addImg {
+    display: flex;
+    align-items: flex-end;
+    margin-left: -65px;
     .maxTip {
+      width: 65px;
       color: $promptColor;
+      font-family: MicrosoftYaHei;
     }
   }
+  .replaceParts {
+    display: flex;
+  }
   .actionBar {
+    margin-left: 88px;
     .cancelBtn {
       background-color: #f1f1f1;
       color: $darkColor;
+      margin-right: 10px;
+      border: none;
+    }
+    .addContinue {
+      margin-left: 10px;
     }
     button {
+      // width: 98px;
       &:hover {
         background-color: $themeColor;
         box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
@@ -78,14 +238,28 @@
     }
   }
   :global {
+    .ant-form-item {
+      display: flex;
+      .ant-form-item-children {
+        display: flex;
+      }
+    }
+    .ant-form-item-label {
+      width: 71px;
+      text-align-last: justify;
+      margin-right: 12px;
+    }
+    .ant-form-item-required::before {
+      display: none;
+    }
     .ant-form-item-required::after {
       display: inline-block;
       margin-right: 4px;
+      color: #a42b2c;
       font-size: 14px;
       font-family: SimSun, sans-serif;
       line-height: 1;
       content: "*";
-      color: #a42b2c;
     }
     .ant-radio-button-wrapper {
       padding: 0 8px;
@@ -109,94 +283,291 @@
   }
 }
 
-.baseInfoCont.light {
+.baseInfoCont {
+  display: flex;
+  flex: 1;
   .basicInfo {
     .title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
       color: $darkColor;
+      margin-bottom: 21px;
       .text {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         color: rgba(0, 0, 0, 0.85);
+        font-weight: 700;
       }
-      .overTime {
-        color: #a42b2c;
-        border: 1px #a42b2c solid;
-      }
-      .coordinate {
-        color: #f9b600;
-        border: 1px #f9b600 solid;
+      .warning {
+        display: flex;
+        flex-direction: row;
+        font-size: 12px;
+        align-items: center;
+        margin-left: 12px;
+        .overTime {
+          display: flex;
+          align-items: center;
+          color: #a42b2c;
+          border: 1px #a42b2c solid;
+          border-radius: 2px;
+          padding: 4px;
+          height: 16px;
+          margin-right: 4px;
+          justify-content: center;
+        }
+        .coordinate {
+          display: flex;
+          align-items: center;
+          color: #f9b600;
+          border: 1px #f9b600 solid;
+          border-radius: 2px;
+          padding: 4px;
+          height: 16px;
+          justify-content: center;
+        }
       }
       :global {
         .icon-content {
+          margin-left: 6px;
+          font-size: 6px;
           color: rgba(0, 0, 0, 0.85);
         }
       }
     }
     .basicContent {
+      display: flex;
+      flex-direction: column;
       .basicItem {
+        display: flex;
+        flex-direction: row;
+        line-height: 30px;
         color: $darkColor;
+        .label {
+          color: #000000;
+          font-weight: 700;
+          white-space: nowrap;
+        }
+        .information {
+          display: inline-block;
+          color: $darkColor;
+          padding-left: 24px;
+          word-break: break-all;
+        }
+        .megCont {
+          display: flex;
+        }
+        .tickets {
+          color: $themeColor;
+          cursor: pointer;
+          width: 330px;
+          @include overflowText();
+        }
+        .dealMethod {
+          border: 1px solid $themeColor;
+          color: $themeColor;
+          margin: 0 10px;
+          height: 30px;
+        }
       }
-      .label {
-        color: #000000;
-      }
-      .tickets {
-        color: $themeColor;
-      }
-      .dealMethod {
-        border: 1px solid $themeColor;
-        color: $themeColor;
+      .viewImg {
+        margin-top: 10px;
+        margin-left: 80px;
       }
     }
   }
   .rightCont {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin-left: 40px;
     .titleText {
+      // 标题
+      position: relative;
       .text {
         background: #f8f8f8;
         border: 1px solid #f1f1f1;
+        border-radius: 2px;
+        width: 93px;
+        line-height: 28px;
+        text-align: center;
         color: rgba(0, 0, 0, 0.85);
+        margin: 0 auto;
       }
       .border {
         background: #f1f1f1;
+        height: 1px;
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        z-index: -1;
       }
     }
   }
   .process {
-    .reviewTitle {
-      color: #666;
+    margin-bottom: 32px;
+    .handleForm {
+      margin-top: 20px;
+      .reviewType {
+        display: flex;
+        justify-content: space-between;
+        width: 220px;
+      }
+    }
+
+    .dealResult {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 18px;
+      align-items: center;
+      .reviewTitle {
+        text-align-last: justify;
+        margin-right: 7px;
+        color: #353535;
+        width: 64px;
+        margin-right: 24px;
+      }
     }
   }
+  .review {
+    .actionBar {
+      margin-left: 95px;
+    }
+    :global {
+      .ant-form-item-label {
+        width: 85px;
+        text-align-last: right;
+        margin-right: 12px;
+      }
+    }
+  }
+
   .timeLineWrap {
+    .timeLine {
+      margin-top: 25px;
+    }
     .lastFlowName {
       color: $themeColor;
+      margin-left: 4px;
     }
     .lineIcon {
       background-color: #d8d8d8;
-      color: #666;
+      width: 18px;
+      height: 18px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #353535;
     }
     .processItem {
-      .flowName {
-        color: #000000;
+      display: flex;
+      line-height: 24px;
+      .lineBasic {
+        margin-right: 24px;
+        margin-left: 4px;
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 56px;
+        .flowName {
+          color: #000000;
+        }
+        .status {
+          border: 1px solid #999999;
+          border-radius: 2px;
+          text-align: center;
+          margin-top: 4px;
+        }
       }
-      .status {
-        border: 1px solid #999999;
+      .processMsg {
+        display: flex;
+        .operateUser {
+          margin-left: 12px;
+        }
+      }
+      .processCont {
+      }
+      .reason {
+        display: flex;
+        // max-width: 415px;
+        word-break: break-all;
+        span {
+          display: flex;
+          flex: 0 0 84px;
+        }
       }
     }
   }
 }
 
-.defectCreateForm.light {
+.defectCreateForm {
+  display: flex;
+  flex: 1;
   .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 700;
     color: rgba(0, 0, 0, 0.85);
+    margin-bottom: 21px;
+  }
+  .dealInfo {
+    display: flex;
+    flex: 1;
+    margin-left: 40px;
+    flex-direction: column;
   }
   .tipText {
     color: $promptColor;
+    margin-left: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 14px;
     :global {
       .icon-filter {
+        font-size: 14px;
         color: $promptColor;
       }
     }
   }
   :global {
     .icon-help {
-      color: $themeColor;
+      margin-left: 8px;
+      line-height: 30px;
+      color: #199475;
+    }
+  }
+  .overlay {
+    // background: pink;
+  }
+}
+
+.seacrchCont.light {
+  :global {
+    .ant-radio-button-wrapper-checked {
+      background-color: $themeColor;
+      border: 1px solid $themeColor;
+      color: #fff;
+    }
+  }
+}
+
+.participantSearch.light {
+}
+
+.defectTable.light {
+  .defectStatus {
+    .overTime {
+      color: #a42b2c;
+      border: 1px #a42b2c solid;
+    }
+    .coordinate {
+      color: #f9b600;
+      border: 1px #f9b600 solid;
     }
   }
 }

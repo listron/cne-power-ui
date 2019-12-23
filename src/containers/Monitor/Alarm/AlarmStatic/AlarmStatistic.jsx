@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import AlarmAllStationStatistic from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmAllStationStatistic';
 import AlarmSingleStationStatistic from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmSingleStationStatistic'
 import { alarmAction } from './alarmAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb/index';
 import Footer from '../../../../components/Common/Footer/index';
 
 
@@ -41,17 +40,9 @@ class ALarmStatistic extends Component {
 
   render() {
     const { showPage } = this.props;
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '告警统计',
-        }
-      ],
-    };
 
     return (
       <div className={styles.alarmStatisticBox} >
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.alarmStatistic}>
 
           {showPage === 'multiple' && <AlarmAllStationStatistic {...this.props} />}

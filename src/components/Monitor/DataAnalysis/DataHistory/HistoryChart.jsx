@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from './historyStyle.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
+import { Button, Icon } from 'antd';
 
 class HistoryChart extends Component {
   static propTypes = {
@@ -16,6 +17,7 @@ class HistoryChart extends Component {
 
   componentDidMount() {
     const { allHistory, chartTime } = this.props;
+
     if (chartTime) {
       this.renderChart(allHistory);
     }
@@ -34,58 +36,70 @@ class HistoryChart extends Component {
       this.renderChart(allHistory);
     }
   }
+  showChart = () => {
+
+    this.selectHistoryType('chart');
+  }
+
+  showList = () => {
+    this.selectHistoryType('list');
+  }
+  selectHistoryType = (historyType) => { // 切换图表展示类型 'chart'图 / 'list'表格
+    const { changeHistoryStore } = this.props;
+    changeHistoryStore({ historyType });
+  }
 
   xAxisCreate = (pointData) => pointData.map((e, i) => ({ // 基于测点数据生成各grid的x轴。
-    type : 'category',
+    type: 'category',
     gridIndex: i,
     axisLine: {
       show: false,
       lineStyle: {
-        color: '#666'
+        color: '#353535',
       },
     },
-    axisTick: { 
-      show: false 
+    axisTick: {
+      show: false,
     },
-    axisLabel: { 
+    axisLabel: {
       show: i === pointData.length - 1,
-      lineStyle: { color: '#666' }
+      lineStyle: { color: '#353535' },
     },
     splitLine: {
       lineStyle: {
-        color: '#dfdfdf',
+        color: '#d4d4d4',
         type: 'dotted',
-      } 
+      },
     },
   }));
 
   yAxisCreate = (pointData) => pointData.map((e, i) => ({ // 基于pointData生成多y轴
-    type : 'value',
+    type: 'value',
     gridIndex: i,
     axisLine: {
       lineStyle: {
-        color: '#dfdfdf'
+        color: '#d4d4d4',
       },
     },
     axisLabel: {
-      color: '#666',
+      color: '#353535',
       showMaxLabel: i === 0 ? true : false,
     },
     axisTick: {
-      show: false
+      show: false,
     },
-    splitLine:{
+    splitLine: {
       lineStyle: {
-        color: '#dfdfdf',
+        color: '#d4d4d4',
         type: 'dotted',
-      } 
+      },
     },
     name: `${e.pointName}\n${e.pointUnit ? `(${e.pointUnit})` : ''}`,
     nameLocation: 'middle',
     nameGap: 72,
     nameTextStyle: {
-      color: '#666',
-    }
+      color: '#353535',
+    },
   }))
 
   gridCreate = (pointData, deviceInfo) => pointData.map((e, i) => { // 基于数据生成各grid. grid固定高160
@@ -96,16 +110,16 @@ class HistoryChart extends Component {
       right: 40,
       show: true,
       borderColor: '#eee',
-      backgroundColor: i % 2 === 1 ? '#eee' : 'transparent'
-    }
+      backgroundColor: i % 2 === 1 ? '#eee' : 'transparent',
+    };
     if (i === pointData.length - 1) { // 最后一个grid
       return {
         ...baseGridOption,
-        bottom: 60 + Math.ceil(deviceInfo.length * pointData.length / 4) * 24
-      }
-    } else {
-      return baseGridOption
+        bottom: 60 + Math.ceil(deviceInfo.length * pointData.length / 4) * 24,
+      };
     }
+    return baseGridOption;
+
   })
 
   legendSeriesCreate = (pointData, deviceInfo) => { // 嵌套遍历生成相关的series 与legend;
@@ -121,7 +135,7 @@ class HistoryChart extends Component {
           left: `${4 + (mapNumber % 4) * 23}%`,
           textStyle: {
             fontSize: 12,
-            color: '#666',
+            color: '#353535',
           },
           data: [lengendName],
         });
@@ -130,11 +144,17 @@ class HistoryChart extends Component {
           xAxisIndex: index,
           yAxisIndex: index,
           type: 'line',
+          symbol: 'circle',
+          showSymbol: false,
+          lineStyle: {
+            width: 3,
+          },
           data: point.pointInfo[device.deviceCode] || [],
+
         });
       });
-    })
-    return { series, legend }
+    });
+    return { series, legend };
   }
 
   renderChart = (allHistory) => {
@@ -146,9 +166,9 @@ class HistoryChart extends Component {
     if (chartLoading) { // loading态控制。
       historyChart.showLoading();
       return;
-    } else {
-      historyChart.hideLoading();
     }
+    historyChart.hideLoading();
+
     if (Object.keys(allHistory).length === 0) { // 空数据销毁后，不进行处理
       return;
     }
@@ -157,7 +177,7 @@ class HistoryChart extends Component {
     const option = {
       tooltip: {
         trigger: 'axis',
-        extraCssText: 'background-color: #fff; box-shadow:0 0 6px 0 rgba(0,0,0,0.3); border-radius:4px;',
+        extraCssText: 'background-color: #fff; box-shadow:0 0 6px 0 rgba(0,0,0,0.3); border-radius:2px;',
         padding: 16,
         formatter: params => {
           return (
@@ -169,20 +189,20 @@ class HistoryChart extends Component {
                 <span class=${styles.value}>${dataFormat(e.value, '--', 2)}</span>
               </div>`).join('')}
             </div>`
-          )
-        }
+          );
+        },
       },
       axisPointer: {
-        link: {xAxisIndex: 'all'},
+        link: { xAxisIndex: 'all' },
         type: 'line',
         label: {
-          backgroundColor: '#6a7985'
-        }
+          backgroundColor: '#6a7985',
+        },
       },
       grid: this.gridCreate(pointData, deviceInfo),
       xAxis: this.xAxisCreate(pointData).map(e => ({ ...e, data: xAxisData })),
       yAxis: this.yAxisCreate(pointData),
-      ...this.legendSeriesCreate(pointData, deviceInfo)
+      ...this.legendSeriesCreate(pointData, deviceInfo),
     };
     if (pointTime.length > 0) { // 有数据时，展示数据筛选条
       option.dataZoom = [{
@@ -193,35 +213,43 @@ class HistoryChart extends Component {
         left: 150,
         right: 150,
         filterMode: 'empty',
-        xAxisIndex: pointData.map((e, i)=> i),
-      },{
+        xAxisIndex: pointData.map((e, i) => i),
+      }, {
         type: 'inside',
         orient: 'horizontal',
         filterMode: 'empty',
-        xAxisIndex: pointData.map((e, i)=> i),
-      }]
+        xAxisIndex: pointData.map((e, i) => i),
+      }];
     }
     historyChart.setOption(option);
   }
 
   render() {
     // height: 160 * 测点数 + top(10) + bottom(80) + 24 * 数据指示条行数。
-    const { queryParam } = this.props;
+    const { queryParam, historyType, chartTime, allHistory } = this.props;
     const { deviceFullCodes, devicePoints, timeInterval } = queryParam;
     const calcHeight = 160 * devicePoints.length + 90 + 24 * Math.ceil((deviceFullCodes.length * devicePoints.length) / 4);
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
     return (
       <section className={styles.historyChart}>
         <h4>
-          <span className={styles.eachTitle} />
+          <div className={styles.tabIcons}>
+            <i onClick={this.showChart} className={historyType === 'chart' ? `${styles.active} iconfont icon-drawing` : `${styles.normal} iconfont icon-drawing`} />
+            <i onClick={this.showList} className={historyType === 'list' ? `${styles.active} iconfont icon-table` : `${styles.normal} iconfont icon-table`} />
+          </div>
+          {/* <span className={styles.eachTitle} /> */}
           <span className={styles.eachTitle}>各设备测点历史数据趋势图</span>
           <span className={styles.tipTitle}>数据为瞬时值</span>
 
+
         </h4>
-        <div className={styles.innerChart} id="dataHistoryChart" style={{ height: `${chartHeight}px`}} />
+        {(chartTime) ? <div className={styles.innerChart} id="dataHistoryChart" style={{ height: `${chartHeight}px` }} /> :
+          <div className={styles.nodata}>
+            <img width="223" height="164" src="/img/nodata.png" />
+          </div>}
       </section>
-      
-    )
+
+    );
   }
 }
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { windResourcesAction } from './windResourcesAction.js';
 import AllStations from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/AllStations.jsx';
 import HandleSearch from '../../../../components/StatisticalAnalysis/DataAnalysisTool/WindResources/HandleSearch.jsx';
@@ -21,11 +20,9 @@ class WindResources extends Component{
   }
 
   render(){
-    const breadCrumbData = { breadData: [{ name: '风资源' }] };
     const { theme, showPage } = this.props;
     return(
       <div className={styles.windResources}>
-        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} theme={theme} />
         <div className={styles.resourcesMain}>
           {showPage === 'allStation' && <AllStations {...this.props} />}
           {showPage === 'singleStation' && [
