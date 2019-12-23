@@ -182,7 +182,7 @@ class DeviceSelectModal extends Component {
                       style={{ 'backgroundColor': activeDevice ? '#199475' : '#f1f1f1' }}
                       className={styles.eachDevice}>
                       <Checkbox
-                        style={{ color: activeDevice ? '#fff' : '#666' }}
+                        style={{ color: activeDevice ? '#fff' : '#353535' }}
                         onChange={() => this.checkDevice(e)}
                         checked={activeDevice}
                         disabled={disableCheck}
@@ -198,7 +198,7 @@ class DeviceSelectModal extends Component {
                     style={{
                       backgroundColor: activeDevice ? '#199475' : '#f1f1f1',
                       color: activeDevice ? '#fff' :
-                        (disableCheck ? '#d4d4d4' : '#666'),
+                        (disableCheck ? '#d4d4d4' : '#353535'),
                       cursor: disableCheck ? 'not-allowed' : 'pointer',
                     }}
                   >{e.deviceName}</div>);

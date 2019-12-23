@@ -43,7 +43,7 @@ class PvHistoryChart extends Component {
     axisLine: {
       show: false,
       lineStyle: {
-        color: '#666',
+        color: '#353535',
       },
     },
     axisTick: {
@@ -51,7 +51,7 @@ class PvHistoryChart extends Component {
     },
     axisLabel: {
       show: i === pointData.length - 1,
-      lineStyle: { color: '#666' },
+      lineStyle: { color: '#353535' },
     },
     splitLine: {
       lineStyle: {
@@ -70,7 +70,7 @@ class PvHistoryChart extends Component {
       },
     },
     axisLabel: {
-      color: '#666',
+      color: '#353535',
       showMaxLabel: i === 0,
     },
     axisTick: {
@@ -86,7 +86,7 @@ class PvHistoryChart extends Component {
     nameLocation: 'middle',
     nameGap: 72,
     nameTextStyle: {
-      color: '#666',
+      color: '#353535',
     },
   }));
 
@@ -123,7 +123,7 @@ class PvHistoryChart extends Component {
           left: `${4 + (mapNumber % 4) * 23}%`,
           textStyle: {
             fontSize: 12,
-            color: '#666',
+            color: '#353535',
           },
           data: [lengendName],
         });

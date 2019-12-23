@@ -58,14 +58,14 @@ class MonthsSelector extends Component {
             const active = curveCheckedMonths.includes(e);
             const backgroundColor = active ? monthColor : '#fff';
             const border = active ? `1px solid ${monthColor}` : '1px solid rgb(238,238,238)';
-            const color = active ? '#666' : '#d4d4d4';
+            const color = active ? '#353535' : '#d4d4d4';
             return (<li
               className={styles.month}
               key={e}
               onClick={() => this.monthCheck(e)}
             >
-              <span className={styles.round} style={{backgroundColor, border}} />
-              <span className={styles.monthText} style={{color}}>{e}</span>
+              <span className={styles.round} style={{ backgroundColor, border }} />
+              <span className={styles.monthText} style={{ color }}>{e}</span>
             </li>);
           })}
         </ul>

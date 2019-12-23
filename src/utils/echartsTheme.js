@@ -172,7 +172,7 @@ export const darkTheme = () => { // 数据规范展示
 };
 
 export const lightTheme = () => { // 数据规范展示
-  const contrastColor = '#666';
+  const contrastColor = '#353535';
   const fontColor = '#000';
   const backgroundColor = '#fff';
   const lineColor = '#d4d4d4';

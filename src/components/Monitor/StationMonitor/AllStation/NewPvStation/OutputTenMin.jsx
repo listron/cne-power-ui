@@ -64,6 +64,7 @@ class OutputTenMin extends Component {
         right: 'center',
         top: 'center',
         z: -10,
+        $action: 'replace',
         style: {
           image: capabilityGraphic && '/img/noChartData1.png' || '',
           width: 60,
@@ -219,7 +220,7 @@ class OutputTenMin extends Component {
   render() {
     const { stationCode } = this.props;
     return (
-      <div id={`capabilityDiagram_${stationCode}`} style={{ width: 341, height: 176, color: '#666' }}></div>
+      <div id={`capabilityDiagram_${stationCode}`} style={{ width: 341, height: 176, color: '#353535' }}></div>
     );
   }
 }

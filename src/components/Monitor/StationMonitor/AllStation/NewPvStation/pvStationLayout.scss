@@ -209,6 +209,9 @@
             .tooltipName {
               margin-top: -5px;
               color: #999;
+              i {
+                font-size: 14px;
+              }
               &:hover {
                 color: #f9b600;
               }
@@ -457,7 +460,7 @@
     .popover {
       width: 235px;
       margin-bottom: 20px;
-      color: #666;
+      color: #353535;
     }
   }
   .backChina {

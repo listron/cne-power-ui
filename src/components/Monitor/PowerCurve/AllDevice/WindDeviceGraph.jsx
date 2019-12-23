@@ -107,7 +107,7 @@ class WindDeviceGraph extends Component {
       return pre.concat(next);
     }) : [];
     const inverterTenMinGraphic = (hasData.length === 0) ? showNoData : hiddenNoData;
-    const lineColor = '#666';
+    const lineColor = '#353535';
     params.forEach((e, i) => {
       e.dataList.sort(this.compare('windSpeedCenter'));
     });

@@ -223,15 +223,15 @@
           .value {
             display: flex;
             color: $themeColor;
-            .specialColor{
+            .specialColor {
               color: #a22c30 !important;
             }
-            .tooltipName{
+            .tooltipName {
               margin-top: -5px;
               margin-left: 3px;
-              i{
+              i {
                 color: #999;
-                &:hover{
+                &:hover {
                   color: #f9b600;
                 }
               }
@@ -252,20 +252,21 @@
         }
       }
       .deviceTableBox {
-        .equipmentHours,.transferRate{
+        .equipmentHours,
+        .transferRate {
           display: flex;
-          .specialColor{
+          .specialColor {
             color: #a22c30 !important;
           }
-            .tooltipName{
-              margin-top: -5px;
-              margin-left: 3px;
-              color: #999;
-              &:hover{
-                color: #f9b600;
-              }
+          .tooltipName {
+            margin-top: -5px;
+            margin-left: 3px;
+            color: #999;
+            &:hover {
+              color: #f9b600;
             }
           }
+        }
         .deviceTable {
           .deviceCode {
             .tableDeviceName {
@@ -295,19 +296,19 @@
           }
           .detailId {
             color: #199475;
-            display: flex;    
-            .specialColor{
+            display: flex;
+            .specialColor {
               color: #a22c30 !important;
             }
           }
           .detailUnit {
-            color: #666;
+            color: #353535;
           }
-          .tooltipName{
+          .tooltipName {
             margin-top: -5px;
-            i{
+            i {
               color: #999;
-              &:hover{
+              &:hover {
                 color: #f9b600;
               }
             }
@@ -646,11 +647,11 @@
           .detailUnit {
             color: $fontColor;
           }
-          .tooltipName{
+          .tooltipName {
             margin-top: -5px;
-            i{
+            i {
               color: #999;
-              &:hover{
+              &:hover {
                 color: #f9b600;
               }
             }

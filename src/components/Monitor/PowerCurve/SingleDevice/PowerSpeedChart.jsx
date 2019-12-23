@@ -78,7 +78,7 @@ class PowerSpeedChart extends Component {
       }
     });
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0 || filterDeviceName.length === 0) ? showNoData : hiddenNoData;
-    const lineColor = '#666';
+    const lineColor = '#353535';
     // let color = ['#199475', '#e08031', '#a42b2c'];
     // let color2 = ['#3e97d1', '#bd10e0', '#199475'];
     const option = {
