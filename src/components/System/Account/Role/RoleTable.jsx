@@ -66,8 +66,7 @@ class RoleTable extends Component {
       if(hasChildRight){
         const innerData = this.getRightArr(e.childRightData, e.rightName);
         dataInfoArr.push(...innerData);
-      }
-      else{
+      }else{
         const isDefaultRight = defaultMenuData.includes(parseInt(e.rightId)); // 默认权限不显示
         const rightText = `${frontText?`${frontText}-`:''}${e.rightName}`;
         e && e.rightName && !isDefaultRight && dataInfoArr.push(rightText);
@@ -82,27 +81,23 @@ class RoleTable extends Component {
       {
         title: '名称',
         dataIndex: 'roleDesc',
-        key: 'roleDesc'
+        key: 'roleDesc',
       },
-      // {
-      //   title: '权限',
-      //   dataIndex: 'operateName',
-      //   key: 'operateName',
-      //   render: text => (<span>{text}</span>),
-      // },
+      {
+        title: '权限',
+        dataIndex: 'operateName',
+        key: 'operateName',
+        render: text => (<span>{text}</span>),
+      },
       {
         title: '功能定义',
         dataIndex: 'rightData',
         key: 'rightData',
         render: (rightData, record)=>{
           const rightArr = this.getRightArr(rightData, '');
-          return (
-            <div>
-              <div className={styles.menu} onClick={() => this.showModel(record)}>{rightArr.join(' | ')}</div>
-          </div>
-          );
-        }
-      }
+          return (<div className={styles.menu} onClick={() => this.showModel(record)}>{rightArr.join(' | ')}</div>);
+        },
+      },
     ];
     const rightHandler = localStorage.getItem('rightHandler') || '';
     const roleDeleteRight = rightHandler.split(',').includes('account_role_delete');
@@ -155,18 +150,38 @@ class RoleTable extends Component {
   }
 
   showModel = (record) => { // 点击某行显示权限列表
-    const { defaultMenuData } = this.props;
-    let dataArr = [];
-    record.rightData && record.rightData.length > 0 && record.rightData.forEach(e=>{
-      const isDefaultRight = defaultMenuData.includes(parseInt(e.rightId)); // 默认权限不显示
-      e && e.rightName && !isDefaultRight && dataArr.push(e);
-    });
+    const rightdataArr = this.getRightTree(record.rightData);
 
     this.setState({
       visibleModel: true,
-      recordData: dataArr,
+      recordData: rightdataArr,
       modelName: record.roleDesc,
     });
+  }
+
+  getRightTree (data) { // 递归筛选非默认权限的三级菜单
+    const { defaultMenuData } = this.props; // 默认权限ID
+    return data.map(e => {
+      const { rightId, rightName, childRightData = [] } = e || {};
+      if (childRightData && childRightData.length > 0) {
+        const tmpRighData = this.getRightTree(childRightData);
+        if (tmpRighData.length > 0) {
+        return {
+            rightId,
+            rightName,
+            childRightData: tmpRighData,
+          };
+        }
+        return defaultMenuData.includes(+rightId) ? false : {
+            rightId,
+            rightName,
+            childRightData: [],
+          };
+      } else if (defaultMenuData.includes(+rightId)) {
+        return false;
+      }
+        return { ...e };
+    }).filter(e => !!e);
   }
 
   handleOk = e => {
@@ -261,7 +276,7 @@ class RoleTable extends Component {
               </div>
             </div>
           </div>
-          <Table 
+          <Table
             loading={loading}
             rowKey={(record)=>{return record.roleId}} 
             rowSelection={{
@@ -305,7 +320,7 @@ class RoleTable extends Component {
                             return (
                               <span className={styles.rightName}>
                                 <span className={styles.text}>{item.rightName}</span>
-                                <span className={styles.partition}> | </span>
+                                <span className={styles.partition}>|</span>
                               </span>
                             );
                           })}

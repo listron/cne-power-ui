@@ -115,6 +115,7 @@
     overflow: hidden;
     display: inline-block;
     word-break:keep-all;
+    cursor: pointer;
   }
 }
 
@@ -290,6 +291,7 @@
       width: 446px;
       padding: 4px 4px 4px 9px;
       .partition{
+        padding: 0 3px;
         display: inline-block;
       }
       .rightName{

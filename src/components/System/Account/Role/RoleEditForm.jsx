@@ -20,56 +20,63 @@ class RoleEditForm extends Component {
     changeRoleStore: PropTypes.func,
     loading: PropTypes.bool,
     continueAdd: PropTypes.bool,
+    operatetypeData: PropTypes.array,
   }
 
   constructor(props){
     super(props);
     this.state = {
-      operateType: 'implement',
-    }
+      operateType: '执行',
+    };
   }
 
   onSaveRole = () => {
-    const { enterpriseId, selectedRole, defaultMenuData, operatetypeData = [] } = this.props;
+    const { enterpriseId, selectedRole, defaultMenuData, operatetypeData = [], showPage, onCreateRole, onEditRole } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
         const { roleDesc, rightId, operateName} = values;
         const tmpDefault = defaultMenuData.map(e=>`${e}`);
         const outputRightSet = new Set([...rightId,...tmpDefault]);
         const outputRightArr = [...outputRightSet];
-        const operateId = operatetypeData.length > 0 ? operatetypeData.find(e => {
+        const selectOperateInfo = operatetypeData.find(e => {
           return e.name === operateName;
-        }) : '';
-        if(this.props.showPage === 'create') {
-          this.props.onCreateRole({
+        }) || '';
+        const operateId = selectOperateInfo.id;
+        if(showPage === 'create') {
+          onCreateRole({
             roleDesc: roleDesc.trim(),
             rightId: outputRightArr.join(','),
             enterpriseId,
-            continueAdd: false,
             operateId,
+            continueAdd: false,
           });
         } else {
-          this.props.onEditRole({
+          onEditRole({
             roleDesc: roleDesc.trim(),
             rightId: outputRightArr.join(','),
-            roleId: selectedRole[0].roleId,
             enterpriseId,
             operateId,
-          })
+            roleId: selectedRole[0].roleId,
+          });
         }
       }
     });
   }
 
   onSaveRoleAndAdd = () => {
-    const { enterpriseId } = this.props;
+    const { enterpriseId, operatetypeData = [] } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
+      const { operateName} = values;
+      const operateId = operatetypeData.length > 0 ? operatetypeData.find(e => {
+        return e.name === operateName;
+      }) : '';
       if(!err) {
         this.props.onCreateRole({
           roleDesc: values.roleDesc.trim(),
           rightId: values.rightId.join(','),
           enterpriseId,
           continueAdd: true,
+          operateId,
         });
         this.props.form.resetFields();
       }
@@ -112,8 +119,10 @@ class RoleEditForm extends Component {
 
 
   render(){
+    const { operateType } = this.state;
     const { getFieldDecorator } = this.props.form;
     const { showPage, loading, continueAdd, selectedRole, menuData } = this.props;
+    console.log('selectedRole: ', selectedRole);
     const isCreate = showPage === 'create';
     const selectedRight = isCreate? [] : selectedRole[0].rightData;
     let initialRightValue = [];
@@ -121,7 +130,7 @@ class RoleEditForm extends Component {
     const defaultRootMenu = this.getDefaultRootMenu(menuData);
     if(isCreate){
       initialRightValue = defaultRootMenu.map(e=>`${e}`);
-      initialOperateName = 'implement';
+      initialOperateName = operateType;
     }else{
       initialRightValue = this.getRightIdArr(selectedRight);
       initialOperateName = selectedRole[0].operateName;
@@ -149,16 +158,17 @@ class RoleEditForm extends Component {
           <span className={styles.instructionText}>(10字以内)</span>
         </FormItem>
         <FormItem label="权限设置">
-          {getFieldDecorator('operatetype', {
+          {getFieldDecorator('operateName', {
               rules: [{
                 required: true,
+                message: '请选择权限',
               }],
               initialValue: initialOperateName,
             })(
               <RadioGroup onChange={this.onOperatetypeChange}>
-                <Radio value={'management'}>管理</Radio>
-                <Radio value={'implement'}>执行</Radio>
-                <Radio value={'browse'}>浏览</Radio>
+                <Radio value={'管理'}>管理</Radio>
+                <Radio value={'执行'}>执行</Radio>
+                <Radio value={'浏览'}>浏览</Radio>
               </RadioGroup>
           )}
         </FormItem>

@@ -76,11 +76,12 @@ function *getDefaultMenuList(action){ // 获取默认权限
 //新建角色
 function *createRole(action){
   const { payload } = action;
-  const { enterpriseId, roleDesc, rightId, continueAdd } = payload;
+  const { enterpriseId, roleDesc, rightId, continueAdd, operateId } = payload;
   const data = {
     enterpriseId,
     roleDesc,
-    rightId
+    rightId,
+    operateId,
   }
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.createRole}`
   try{
@@ -107,7 +108,7 @@ function *createRole(action){
           loading: false,
         }
       });
-      message.error(response.data.message);
+      message.error('新建角色失败，请重试！');
     }
   }catch(e){
     console.log(e);
@@ -142,7 +143,7 @@ function *editRole(action){
           loading: false,
         }
       });
-      message.error(response.data.message);
+      message.error('编辑角色失败，请重试！');
     }
   }catch(e){
     console.log(e);
@@ -221,6 +222,6 @@ export function* watchRole() {
   yield takeLatest(roleAction.EDIT_ROLE_SAGA, editRole);
   yield takeLatest(roleAction.DELETE_ROLE_SAGA, deleteRole);
   yield takeLatest(roleAction.RESET_ROLE_SAGA, resetRole);
-  yield takeLatest(roleAction.getOperatetype, getOperatetype);
+  yield takeLatest(roleAction.GET_OPERATE_TYPE, getOperatetype);
 }
 
