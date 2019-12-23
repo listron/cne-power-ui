@@ -83,7 +83,7 @@ const mapDispatchToProps = (dispatch) => ({
   onEditRole: payload => dispatch({ type: roleAction.EDIT_ROLE_SAGA, payload }),
   onDeleteRole: payload => dispatch({ type: roleAction.DELETE_ROLE_SAGA, payload }),
   resetRole: payload => dispatch({ type: roleAction.RESET_ROLE_SAGA, payload }),
-  getOperatetype: payload => dispatch({ type: roleAction.getOperatetype, payload }),
+  getOperatetype: payload => dispatch({ type: roleAction.GET_OPERATE_TYPE, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Role);
