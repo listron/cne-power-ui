@@ -7,7 +7,7 @@
   flex:1;
   flex-direction: column;
   .tabs{
-    flex: 0 0 55px;
+    flex: 0 0 48px;
     margin: 0 24px -1px 24px;
     display: flex;
     align-items: flex-end;
@@ -17,9 +17,9 @@
       position: relative;
       // color: #a6e8ff;
       // background-image:-webkit-linear-gradient(-90deg, #38FCF5 17%, #009CFF 83%);
-      // background-clip: text; 
-      // -webkit-background-clip: text; 
-      // -webkit-text-fill-color:transparent; 
+      // background-clip: text;
+      // -webkit-background-clip: text;
+      // -webkit-text-fill-color:transparent;
     }
     .button{
       display: flex;

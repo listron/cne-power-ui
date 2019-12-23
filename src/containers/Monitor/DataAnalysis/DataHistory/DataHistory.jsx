@@ -21,7 +21,7 @@ class DataHistory extends Component {
     getSecendInterval: PropTypes.func,
   };
 
-  componentDidMount(){ // 获取数据时间间隔
+  componentDidMount() { // 获取数据时间间隔
     const { enterpriseId, getSecendInterval } = this.props;
     getSecendInterval({ enterpriseId });
   }
@@ -34,11 +34,10 @@ class DataHistory extends Component {
     const { historyType } = this.props;
     return (
       <div className={styles.dataHistory}>
-        <CommonBreadcrumb breadData={[{ name: '历史趋势' }]} style={{ marginLeft: '40px' }} />
         <div className={styles.contentBox}>
           <div className={styles.historyContent} >
             <HistorySearch {...this.props} />
-            <HistoryDataType {...this.props} />
+            {/* <HistoryDataType {...this.props} /> */}
             <div className={styles.dataCenter}>
               <PointTree {...this.props} />
               {historyType === 'chart' && <HistoryChart {...this.props} />}
@@ -72,9 +71,9 @@ const mapDispatchToProps = (dispatch) => ({
     type: commonAction.downLoadFile,
     payload: {
       ...payload,
-      actionName: historyAction.CHANGE_HISTORY_STORE
-    }
-  })
+      actionName: historyAction.CHANGE_HISTORY_STORE,
+    },
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataHistory);

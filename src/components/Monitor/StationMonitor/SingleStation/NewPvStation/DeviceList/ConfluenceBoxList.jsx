@@ -322,7 +322,7 @@ class ConfluenceBoxList extends Component {
                                 <div className={styles.deviceBlockFooter} >
                                   <div>
                                     <div>
-                                      <span>电压：{dataFormats(item.voltage, '--', 2)} V</span>
+                                      <span>电压：<span className={item.voltageValidation && styles.specialColor}>{dataFormats(item.voltage, '--', 2)}</span> V</span>
                                       {item.voltageValidation &&
                                         <span className={styles.tooltipName}>
                                           <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.voltageValidation}>
@@ -333,7 +333,7 @@ class ConfluenceBoxList extends Component {
                                   </div>
                                   <div>
                                     <div>
-                                      <span>电流：{dataFormats(item.electricity, '--', 2)} A</span>
+                                      <span>电流：<span className={item.voltageValidation && styles.specialColor}>{dataFormats(item.electricity, '--', 2)}</span> A</span>
                                       {item.electricityValidation &&
                                         <span className={styles.tooltipName}>
                                           <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.electricityValidation}>
@@ -345,7 +345,7 @@ class ConfluenceBoxList extends Component {
                                   <div className={styles.dispersionRatio}>离散率：{dataFormats(item.dispersionRatio, '--', 2)} %</div>
                                   <div>
                                     <div>
-                                      <span>温度：{dataFormats(item.temp, '--', 2)} ℃</span>
+                                      <span>温度：<span className={item.voltageValidation && styles.specialColor}>{dataFormats(item.temp, '--', 2)}</span> ℃</span>
                                       {item.tempValidation &&
                                         <span className={styles.tooltipName}>
                                           <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.tempValidation}>

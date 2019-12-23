@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import styles from './dataExport.scss';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import { dataExportAction } from './dataExportAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
 import DataExportSearch from '../../../../components/Monitor/DataAnalysis/DataExport/DataExportSearch';
 import DataExportList from '../../../../components/Monitor/DataAnalysis/DataExport/DataExportList';
@@ -29,7 +28,6 @@ class DataExport extends Component {
   render() {
     return (
       <div className={styles.dataExport}>
-        <CommonBreadcrumb breadData={[{ name: '数据导出' }]} style={{ marginLeft: '40px' }} />
         <div className={styles.contentBox}>
           <div className={styles.dataContent}>
             <DataExportSearch {...this.props} />

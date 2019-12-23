@@ -107,7 +107,7 @@ class WindDeviceGraph extends Component {
       return pre.concat(next);
     }) : [];
     const inverterTenMinGraphic = (hasData.length === 0) ? showNoData : hiddenNoData;
-    const lineColor = '#666';
+    const lineColor = '#353535';
     params.forEach((e, i) => {
       e.dataList.sort(this.compare('windSpeedCenter'));
     });
@@ -149,7 +149,7 @@ class WindDeviceGraph extends Component {
               <div>${params.seriesName}</div>
              
             </div>
-            <div  style='background:#dfdfdf;height:1px;
+            <div  style='background:#d4d4d4;height:1px;
             width:100%;' ></div>
             <div class=${styles.lineStyle}>风速区间:${windSpeedInterval}m/s</div>
             <div class=${styles.lineStyle}>风速:  ${dataFormats(+info.windSpeedCenter, '--', 2, true)}m/s</div>
@@ -161,7 +161,7 @@ class WindDeviceGraph extends Component {
               <div>${params.seriesName}</div>
               <div>风速区间:${windSpeedInterval}m/s</div>
             </div>
-            <div  style='background:#dfdfdf;height:1px;
+            <div  style='background:#d4d4d4;height:1px;
             width:100%;' ></div>
             <div class=${styles.lineStyle}>型号:  ${info.deviceModeName}</div>
             <div class=${styles.lineStyle}>平均风速:  ${dataFormats(+info.windSpeedAvg, '--', 2, true)}m/s</div>
@@ -193,7 +193,7 @@ class WindDeviceGraph extends Component {
         splitLine: {
           show: true,
           lineStyle: {
-            color: ['#dfdfdf'],
+            color: ['#d4d4d4'],
             type: 'dashed',
           },
         },
@@ -203,7 +203,7 @@ class WindDeviceGraph extends Component {
         axisLine: {
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -225,13 +225,13 @@ class WindDeviceGraph extends Component {
 
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           splitLine: {
             show: true,
             lineStyle: {
-              color: ['#dfdfdf'],
+              color: ['#d4d4d4'],
               type: 'dashed',
             },
           },

@@ -9,7 +9,7 @@ const grid = {
 const xAxis = {
   axisLabel: {
     textStyle: {
-      color: '#666666',
+      color: '#353535',
     },
   },
   axisTick: {
@@ -20,18 +20,18 @@ const xAxis = {
   },
   axisLine: {
     lineStyle: {
-      color: '#dfdfdf',
+      color: '#d4d4d4',
     },
   },
   nameTextStyle: {
-    color: '#666666',
+    color: '#353535',
   },
 };
 
 const yAxis = {
   axisLine: {
     lineStyle: {
-      color: '#dfdfdf',
+      color: '#d4d4d4',
     },
   },
   splitLine: {
@@ -42,11 +42,11 @@ const yAxis = {
   },
   axisLabel: {
     textStyle: {
-      color: '#666666',
+      color: '#353535',
     },
   },
   nameTextStyle: {
-    color: '#666666',
+    color: '#353535',
     padding: [0, 0, 0, 30],
   },
 };

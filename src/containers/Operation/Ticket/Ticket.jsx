@@ -13,7 +13,6 @@ import InspectDetail from './Inspect/InspectDetail/InspectDetail';
 import InspectCreate from './Inspect/InspectCreate/InspectCreate';
 import InspectOrbit from './Inspect/InspectOrbit/InspectOrbit';
 import InspectRecord from './Inspect/InspectRecord/InspectRecord';
-import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
 
 import WorkOrder from './WorkOrder/WorkOrder';
 
@@ -101,7 +100,6 @@ class Ticket extends Component {
     const { tab } = this.state;
     return (
       <div className={`${styles.ticketBox} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '工单列表' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.ticket}>
           {container === 'list' &&
             <Tabs activeKey={tab} onChange={this.onChangeTab} type="card">

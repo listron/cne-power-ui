@@ -7,10 +7,7 @@
   flex-direction: column;
 }
 .singleStationContainer {
-  background: $pageBackground;
-  padding: 24px 24px 0;
-  display: flex;
-  flex: 1;
+  @include contentBoxStyle();
   :global {
     a {
       cursor: pointer;

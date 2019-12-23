@@ -103,7 +103,7 @@ class PvStationHeader extends React.Component {
           <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
         </div>
         <div className={styles.dataColumn}>
-          <div className={styles.instantaneous}> <span>瞬时辐射  <span className={`${styles.dataValue}`}>{minusShow && '-' }{deviceValueFormat(instantaneous, '--', 2)}</span> W/m²</span>
+          <div className={styles.instantaneous}> <span>瞬时辐射  <span className={`${styles.dataValue} ${instantaneousValidation && styles.specialColor}`}>{minusShow && '-' }{deviceValueFormat(instantaneous, '--', 2)}</span> W/m²</span>
           {instantaneousValidation &&
             <div className={styles.tooltipName}>
               <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={instantaneousValidation}> <i className="iconfont icon-help"></i>
@@ -115,7 +115,7 @@ class PvStationHeader extends React.Component {
         <div className={styles.dataColumn}>
           <div>日发电量  <span className={styles.dataValue}>{deviceValueFormat(dayPower, '--', 2, true)}</span> {powerUnit}  </div>
           <div className={styles.equivalentTime}>
-            <span>日等效时<span className={styles.dataValue}>{deviceValueFormat(equivalentHours, '--', 2)}</span>h</span>
+            <span>日等效时<span className={`${styles.dataValue} ${equivalentHoursValidation && styles.specialColor}`}>{deviceValueFormat(equivalentHours, '--', 2)}</span>h</span>
             {equivalentHoursValidation &&
               <div className={styles.tooltipName}>
                 <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={equivalentHoursValidation}> <i className="iconfont icon-help"></i>

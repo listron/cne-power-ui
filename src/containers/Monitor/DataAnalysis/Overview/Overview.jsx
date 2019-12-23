@@ -7,7 +7,6 @@ import HearderTab from '@components/Monitor/DataAnalysis/Overview/HeaderTab/Hear
 import StationOverview from '@components/Monitor/DataAnalysis/Overview/StationOverview/StationOverview';
 import DeviceOverview from '@components/Monitor/DataAnalysis/Overview/DeviceOverview/DeviceOverview';
 import PointsOverview from '@components/Monitor/DataAnalysis/Overview/PointsOverview/PointsOverview';
-import CommonBreadcrumb from '@components/Common/CommonBreadcrumb';
 import Footer from '@components/Common/Footer/index';
 import styles from './overview.scss';
 
@@ -64,7 +63,6 @@ class Overview extends Component{
     const { theme } = this.props;
     return(
       <div className={`${styles.overview} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '数据概览' }]} style={{ paddingLeft: '40px' }} />
         <div className={styles.contentBox}>
           <HearderTab {...this.props} />
           <div className={styles.dataOverview}>

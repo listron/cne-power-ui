@@ -13,7 +13,7 @@ import Cookie from 'js-cookie';
 class StationManage extends Component {
   static propTypes = {
     showPage: PropTypes.string,
-    stationType: PropTypes.string, 
+    stationType: PropTypes.string,
     regionName: PropTypes.string,
     stationName: PropTypes.string,
     pageNum: PropTypes.number,
@@ -72,7 +72,6 @@ class StationManage extends Component {
     const { showSidePage } = this.state;
     return (
       <div className={styles.stationManageContainer}>
-        <CommonBreadcrumb  breadData={[{name: '电站管理'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.stationManage}>
           <StationManageMain
             {...this.props}
@@ -86,10 +85,10 @@ class StationManage extends Component {
             effect="side"
           >
             <StationManageSide
-              {...this.props} 
+              {...this.props}
               showSidePage={showSidePage}
               queryListParams={queryListParams}
-              onShowSideChange={this.onShowSideChange} 
+              onShowSideChange={this.onShowSideChange}
             />
           </TransitionContainer>
         </div>
@@ -115,7 +114,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAllDepartmentData: params => dispatch({
     type: commonAction.getAllDepartment,
     payload: {
-      params, 
+      params,
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
       resultName: 'allDepartmentData'
     }
@@ -123,7 +122,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationBelongTypes: params => dispatch({
     type: commonAction.getStationBelongTypes,
     payload: {
-      params, 
+      params,
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
       resultName: 'stationBelongInfo'
     }
@@ -131,7 +130,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationTargetInfo: ({params, resultName}) => dispatch({ // 省市县
     type: commonAction.getStationTargetInfo,
     payload: {
-      params, 
+      params,
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
       resultName,
     }

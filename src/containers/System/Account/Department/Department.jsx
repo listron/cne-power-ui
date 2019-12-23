@@ -7,7 +7,6 @@ import TransitionContainer from '../../../../components/Common/TransitionContain
 import DepartmentMain from '../../../../components/System/Account/Department/DepartmentMain/DepartmentMain';
 import DepartmentSide from '../../../../components/System/Account/Department/DepartmentSide/DepartmentSide';
 import Cookie from 'js-cookie';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 
 class Department extends Component {
   static propTypes = {
@@ -75,16 +74,8 @@ class Department extends Component {
   render() {
     const { showPage } = this.props;
     const { showSidePage } = this.state;
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '部门',
-        }
-      ],
-    };
     return (
       <div className={styles.departmentContainerBox} >
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.departmentContainer}>
           <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
           <TransitionContainer

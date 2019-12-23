@@ -61,7 +61,7 @@ class AlarmStatisticGraph extends React.Component {
           },
         },
         textStyle: {
-          color: '#666',
+          color: '#353535',
           fontSize: 12,
         },
         // extraCssText:'width:128px;height:165px;background: rgba(0,0,0,0);',
@@ -101,7 +101,7 @@ class AlarmStatisticGraph extends React.Component {
             total = `<div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">总计</span><span>${oneObj.value + twoObj.value + threeObj.value + fourObj.value}</span></div>`;
           }
           return `<div style="width: 150px; height: 170px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
-            <div style="border-bottom: 1px solid #dfdfdf;padding-left:4px;padding-bottom:4px">${params[0].name}</div> 
+            <div style="border-bottom: 1px solid #d4d4d4;padding-left:4px;padding-bottom:4px">${params[0].name}</div> 
             ${averageTime}${oneWarning}${twoWarning}${threeWarning}${fourWarning}${total}
             </div>`;
 
@@ -117,7 +117,7 @@ class AlarmStatisticGraph extends React.Component {
           type: 'value',
           name: '告警数(个)',
           nameTextStyle: {
-            color: '#666',
+            color: '#353535',
           },
           splitLine: {
             show: false,
@@ -129,14 +129,14 @@ class AlarmStatisticGraph extends React.Component {
             show: false,
           },
           axisLabel: {
-            color: '#666',
+            color: '#353535',
           },
         },
         {
           type: 'value',
           name: '小时(h)',
           nameTextStyle: {
-            color: '#666',
+            color: '#353535',
           },
           splitLine: {
             show: false,
@@ -146,11 +146,11 @@ class AlarmStatisticGraph extends React.Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
-            color: '#666',
+            color: '#353535',
           },
         },
       ],
@@ -163,11 +163,11 @@ class AlarmStatisticGraph extends React.Component {
         },
         axisLine: {
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
-          color: '#666',
+          color: '#353535',
         },
       },
       // dataZoom: {

@@ -32,7 +32,7 @@ class WindRoseChart extends Component {
         percent.push([dataFormat(e.percent, 0), i, e.windDirection]);
     });
     const hasData = (windDirection.length === 0 || avgWindSpeed.length === 0) ? showNoData : hiddenNoData;
-    const lineColor = '#666';
+    const lineColor = '#353535';
     const color = ['#199475', 'orange'];
     const option = {
       graphic: hasData,
@@ -42,7 +42,7 @@ class WindRoseChart extends Component {
         textStyle: {
           fontSize: 14,
           fontWeight: 'bolder',
-          // color: '#666'          // 主标题文字颜色
+          // color: '#353535'          // 主标题文字颜色
         },
       },
       color: color,
@@ -89,7 +89,7 @@ class WindRoseChart extends Component {
           <div class=${styles.topStyle}>
             <div>风向:${params[0].value[2]}</div>
           </div>
-          <div  style='background:#dfdfdf;height:1px;
+          <div  style='background:#d4d4d4;height:1px;
           width:100%;' ></div>
           <div class=${styles.lineStyle}>  <span class=${styles.itemStyle} style='color: ${color[0]}'>○</span>平均风速:  ${dataFormat(speed, '--', 2)}m/s</div>
           <div class=${styles.lineStyle}> <span class=${styles.itemStyle} style='color: ${color[1]}'>○</span>风向占比: ${dataFormat(percent, '--', 2)}%</div>

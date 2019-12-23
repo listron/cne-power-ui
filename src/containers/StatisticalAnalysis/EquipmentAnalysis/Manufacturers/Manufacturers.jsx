@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import styles from './manufacturers.scss';
 import PropTypes from 'prop-types';
 import { manufacturersAction } from './manufacturersAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import ManufacturersCont from '../../../../components/StatisticalAnalysis/EquipmentAnalysis/Manufacturers/Manufacturers';
 
@@ -26,7 +25,6 @@ class Manufacturers extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.manufacturersBox} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '设备对比' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.manufacturersContainer}>
           <ManufacturersCont {...this.props} />
         </div>

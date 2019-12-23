@@ -146,7 +146,7 @@ class InverterList extends Component {
         render: (value, record, index) => {
           return (
             <div className={styles.equipmentHours}>
-              <span>{dataFormats(value, '--', 2)}</span>
+              <span className={record.equipmentHoursValidation && styles.specialColor}>{dataFormats(value, '--', 2)}</span>
               {record.equipmentHoursValidation &&
                 <span className={styles.tooltipName}>
                   <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={record.equipmentHoursValidation}>
@@ -165,7 +165,7 @@ class InverterList extends Component {
         render: (value, record, index) => {
           return (
             <div className={styles.transferRate}>
-              <span>{dataFormats(value, '--', 2)}</span>
+              <span className={record.transferRateValidation && styles.specialColor}>{dataFormats(value, '--', 2)}</span>
               {record.transferRateValidation &&
                 <span className={styles.tooltipName}>
                   <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={record.transferRateValidation}>
@@ -283,7 +283,7 @@ class InverterList extends Component {
   confluenceStatus = { // 汇流箱设备状态
     light: {
       '400': '#ceebe0', // 正常
-      '500': '#dfdfdf', // 无通讯
+      '500': '#d4d4d4', // 无通讯
       '900': '#f1f1f1', // 未接入
       '801': '#f9b600', // 离散率>=10%数
       '802': '#a42b2c', // 离散率>=20%数
@@ -422,7 +422,7 @@ class InverterList extends Component {
                                             <div className={styles.deviceBlockName}>
                                               <span style={{ color: statusBoxStyle.color }} className={styles.deviceName} title={item.deviceName}>{item.deviceName}</span>
                                               <span className={styles.transferRate}>
-                                                <span>{dataFormats(item.transferRate, '--', 2, true)}%</span>
+                                                <span className={item.transferRateValidation && styles.specialColor}>{dataFormats(item.transferRate, '--', 2, true)}%</span>
                                                 {item.transferRateValidation &&
                                                   <span className={styles.tooltipName}>
                                                     <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.transferRateValidation}>
@@ -446,7 +446,7 @@ class InverterList extends Component {
                                           <div className={styles.eachInfo}>
                                             <div>日等效时</div>
                                             <div className={styles.value}>
-                                              <span>{dataFormats(item.equipmentHours, '--', 2)} h</span>
+                                              <span className={item.equipmentHoursValidation && styles.specialColor}>{dataFormats(item.equipmentHours, '--', 2)} h</span>
                                               {item.equipmentHoursValidation &&
                                                 <span className={styles.tooltipName}>
                                                   <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.equipmentHoursValidation}>

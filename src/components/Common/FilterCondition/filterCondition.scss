@@ -46,7 +46,7 @@
   flex-shrink: 0;
   padding-left: 26px;
   min-height: 40px;
-  border-radius: 4px;
+  border-radius: 2px;
   > span {
     margin-right: 10px;
   }
@@ -79,7 +79,7 @@
   max-height: 190px;
   min-height: 40px;
   overflow-y: auto;
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 10px 16px;
   padding-bottom: 24px;
 }
@@ -93,7 +93,7 @@
   flex-shrink: 0;
   padding-left: 26px;
   min-height: 40px;
-  border-radius: 4px;
+  border-radius: 2px;
   background-color: #f0f2f5;
   > span {
     margin-right: 10px;
@@ -144,7 +144,7 @@
       border-style: dashed;
       padding: 0 10px;
       height: 30px;
-      border-radius: 4px;
+      border-radius: 2px;
       display: flex;
       align-items: center;
       font-size: 14px;

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Icon, DatePicker, Button, message } from 'antd';
 import styles from './generalReport.scss';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationSelect from '../../../../components/Common/StationSelect';
 import Footer from '../../../../components/Common/Footer';
 import moment from 'moment';
@@ -201,7 +200,6 @@ class GeneralReport extends Component {
     const reportInfo = enterpriseKey.find(e => e.enterpriseName === enterpriseName);
     return (
       <div className={`${styles.generalReportBox} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={{ name: '通用报表' }} style={{ marginLeft: '38px' }} />
         <span ref={'wrap'} />
         <div className={styles.generalReportContainer}>
           <div className={styles.generalReportMain}>

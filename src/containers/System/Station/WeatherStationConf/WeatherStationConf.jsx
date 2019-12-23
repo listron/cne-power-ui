@@ -23,7 +23,6 @@ class WeatherStationConf extends Component {
     render() {
         return (
             <div className={styles.weatherStation}>
-                <CommonBreadcrumb breadData={[{ name: '气象站配置' }]} style={{ paddingLeft: '38px', backgroundColor: '#fff' }} />
                 <WeatherList {...this.props} />
                 <Footer />
             </div>

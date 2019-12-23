@@ -11,7 +11,7 @@
   }
   .reportDetailTitle{
     height: 64px;
-    border-bottom: 1px solid #dfdfdf;
+    border-bottom: 1px solid #d4d4d4;
     line-height: 64px;
     display: flex;
     justify-content: space-between;
@@ -86,7 +86,7 @@
   }
   .lostInfo, .limitInfo, .powerGenInfo{
     padding: 20px 25px;
-    border-bottom:1px #dfdfdf dashed;
+    border-bottom:1px #d4d4d4 dashed;
     .noListData{
       display: inline-block;
       width: 100px;
@@ -141,7 +141,7 @@
   }
   .operateInfo{
     padding: 20px 25px;
-    border-bottom:1px #dfdfdf dashed;
+    border-bottom:1px #d4d4d4 dashed;
     border: 0;
     .operateInfoCon{
       padding: 0 56px;
@@ -161,7 +161,7 @@
   flex: 1;
   .reportDetailTitle{
     height: 64px;
-    border-bottom: 1px solid #dfdfdf;
+    border-bottom: 1px solid #d4d4d4;
     line-height: 64px;
     display: flex;
     justify-content: space-between;

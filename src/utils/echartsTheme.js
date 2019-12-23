@@ -172,10 +172,10 @@ export const darkTheme = () => { // 数据规范展示
 };
 
 export const lightTheme = () => { // 数据规范展示
-  const contrastColor = '#666';
+  const contrastColor = '#353535';
   const fontColor = '#000';
   const backgroundColor = '#fff';
-  const lineColor = '#dfdfdf';
+  const lineColor = '#d4d4d4';
   var axisCommon = function () {
     return {
       axisLine: {
@@ -196,7 +196,7 @@ export const lightTheme = () => { // 数据规范展示
       splitLine: {
         lineStyle: {
           type: 'dashed',
-          color: '#f1f1f1',
+          color: lineColor,
         },
       },
       splitArea: {
@@ -213,7 +213,7 @@ export const lightTheme = () => { // 数据规范展示
   ];
   var theme = {
     color: colorPalette,
-    backgroundColor: backgroundColor,
+    // backgroundColor: backgroundColor,
     tooltip: {
       axisPointer: {
         lineStyle: {

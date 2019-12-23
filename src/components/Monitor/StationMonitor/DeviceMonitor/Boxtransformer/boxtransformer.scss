@@ -11,11 +11,14 @@
     margin-bottom: 20px;
     width: 230px;
     height: 151px;
-    border-radius: 4px;
+    border-radius: 2px;
     .statusBox {
       display: flex;
       align-items: center;
       padding: 0 12px;
+      .specialColor{
+        color: #a22c30 !important;
+      }
     }
     .deviceItemIcon {
       align-self: flex-start;
@@ -67,7 +70,10 @@
         display: flex;
         justify-content: space-between;
         .value{
-          display: flex;
+          display: flex;      
+          .specialColor{
+            color: #a22c30 !important;
+          }
           .tooltipName{
             margin-top: -5px;
             margin-left: 3px;
@@ -134,7 +140,7 @@
 .subInverter.light {
   // 子汇流箱
   .singledeviceItem {
-    border: 1px solid #dfdfdf;
+    border: 1px solid #d4d4d4;
     .deviceItemR {
       .deviceBlockName,
       .deviceItemPower {
@@ -154,7 +160,7 @@
         color: #a42b2c;
       }
       .ant-progress-inner {
-        background-color: #dfdfdf;
+        background-color: #d4d4d4;
       }
       .ant-progress-success-bg,
       .ant-progress-bg {
@@ -197,7 +203,7 @@
         color: #a42b2c;
       }
       .ant-progress-inner {
-        background-color: #dfdfdf;
+        background-color: #d4d4d4;
       }
       .ant-progress-success-bg,
       .ant-progress-bg {

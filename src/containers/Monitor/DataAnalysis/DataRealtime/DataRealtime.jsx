@@ -9,7 +9,6 @@ import RealtimeDataType from '../../../../components/Monitor/DataAnalysis/DataRe
 import PointTree from '../../../../components/Monitor/DataAnalysis/DataRealtime/PointTree';
 import RealtimeChart from '../../../../components/Monitor/DataAnalysis/DataRealtime/RealtimeChart';
 import RealtimeList from '../../../../components/Monitor/DataAnalysis/DataRealtime/RealtimeList';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
 import Cookie from 'js-cookie';
 
@@ -39,7 +38,6 @@ class DataRealtime extends Component {
     const { realtimeType } = this.props;
     return (
       <div className={styles.dataRealtime}>
-        <CommonBreadcrumb breadData={[{ name: '实时数据' }]} style={{ marginLeft: '40px' }} />
         <div className={styles.contentBox}>
           <div className={styles.realtimeContent} >
             <RealtimeSearch {...this.props} />

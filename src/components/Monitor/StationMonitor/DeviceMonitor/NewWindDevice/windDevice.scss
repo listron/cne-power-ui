@@ -1,339 +1,346 @@
-@import '../../../../../theme/theme.scss';
+@import "../../../../../theme/theme.scss";
 .newWindDevice {
-    background-color: $promptColor;
-    .deviceContent {
-        background-color: #fff;
-        margin: 24px 24px 0;
-        .deviceMonitorHeader {
-            height: 65px;
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            border-bottom: 1px solid #dfdfdf;
-            .deviceName {
-                align-items: center;
-                display: flex;
-                flex: 1;
-                .swap {
-                    font-size: 18px;
-                    margin-left: 32px;
-                    color: $themeColor;
-                    cursor: pointer;
-                }
-                .name {
-                    font-size: 18px;
-                    margin-left: 12px;
-                    color: $darkColor;
-                    cursor: pointer;
-                }
-                .status {
-                    font-size: 14px;
-                    margin-left: 24px;
-                    color: $darkColor;
-                    display: flex;
-                    align-items: center;
-                    .normalNum,.standbyNum{
-                        padding-left: 4px;
-                        span{color:#199475};
-                    }
-                    .shutdownNum,.maintainNum{
-                        padding-left: 4px;
-                       span{color:#f9b600;} 
-                    }
-                    .errorNum,.interruptNum{
-                        padding-left: 4px;
-                        span{color:#a42b2c;}
-                    }
-                }
-                .parentsName {
-                    margin-left: 47px;
-                }
-            }
-        }
-    }
-
-     .headStation {
-        height: 108px;
+  background-color: $promptColor;
+  .deviceContent {
+    background-color: #fff;
+    margin: 24px 24px 0;
+    .deviceMonitorHeader {
+      height: 65px;
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      border-bottom: 1px solid #d4d4d4;
+      .deviceName {
+        align-items: center;
         display: flex;
-        color: $darkColor;
+        flex: 1;
+        .swap {
+          font-size: 18px;
+          margin-left: 32px;
+          color: $themeColor;
+          cursor: pointer;
+        }
+        .name {
+          font-size: 18px;
+          margin-left: 12px;
+          color: $darkColor;
+          cursor: pointer;
+        }
+        .status {
+          font-size: 14px;
+          margin-left: 24px;
+          color: $darkColor;
+          display: flex;
+          align-items: center;
+          .normalNum,
+          .standbyNum {
+            padding-left: 4px;
+            span {
+              color: #199475;
+            }
+          }
+          .shutdownNum,
+          .maintainNum {
+            padding-left: 4px;
+            span {
+              color: #f9b600;
+            }
+          }
+          .errorNum,
+          .interruptNum {
+            padding-left: 4px;
+            span {
+              color: #a42b2c;
+            }
+          }
+        }
+        .parentsName {
+          margin-left: 47px;
+        }
+      }
+    }
+  }
+
+  .headStation {
+    height: 108px;
+    display: flex;
+    color: $darkColor;
+    flex-direction: row;
+    padding: 20px;
+    border-bottom: 1px solid #d4d4d4;
+    .deviceName {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      .deviceModeName {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        word-break: break-all;
+        width: 120px;
+        text-align: center;
+      }
+    }
+    .leftIcon {
+      width: 25px;
+      height: 30px;
+      background: url("/img/wind01.png") no-repeat center;
+      background-size: contain;
+    }
+    .allStaionStatic {
+      :global {
+        .ant-popover-inner-content {
+          background: #f8f8f8;
+          box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
+        }
+      }
+      .poverItem {
+        display: flex;
+        flex: 1;
+        justify-content: space-between;
+        color: #353535;
+        min-width: 180px;
+        padding-right: 20px;
+        i {
+          font-style: normal;
+          text-align: right;
+          display: inline-block;
+        }
+        p {
+          text-align: right;
+          margin-bottom: 0;
+        }
+        span {
+          color: $themeColor;
+        }
+        .unit {
+          width: 27px;
+          display: inline-block;
+          margin-left: 4px;
+          text-align: left;
+          color: #353535;
+        }
+      }
+    }
+    .dataColumn {
+      display: flex;
+      flex-direction: column;
+      // line-height: 36px;
+      padding: 0 12px;
+      border-right: 1px solid #d4d4d4;
+      min-width: 145px;
+      > span {
+        display: flex;
+        flex-direction: column;
+      }
+      &:last-child {
+        border: none;
+      }
+
+      .dataValue {
+        color: $themeColor;
+        font-size: 24px;
+        text-align: left;
+        padding: 0 4px;
+        line-height: 30px;
+      }
+
+      .speed {
+        color: #3e97d1;
+      }
+
+      .stationPower {
+        display: flex;
         flex-direction: row;
-        padding: 20px;
-        border-bottom: 1px solid #dfdfdf;
-        .deviceName{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-around;
-            .deviceModeName{
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-                word-break: break-all;
-                width:120px;
-                text-align: center;
-            }
+        justify-content: space-between;
+        min-width: 230px;
+        line-height: 30px;
+        > div {
+          margin-right: 10;
         }
-        .leftIcon {
-            width: 25px;
-            height: 30px;
-            background: url('/img/wind01.png') no-repeat center;
-            background-size: contain;
-        }
-        .allStaionStatic{
-            :global {
-                .ant-popover-inner-content {
-                    background: #f8f8f8;
-                    box-shadow:0 0 6px 0 rgba(0,0,0,0.30);
-                }
-            }
-            .poverItem{
-                display: flex;
-                flex: 1;
-                justify-content: space-between;
-                color:#666666;
-                min-width: 180px;
-                padding-right: 20px;
-                i{
-                    font-style: normal;
-                    text-align: right;
-                    display: inline-block;
-                }
-                p{
-                    text-align: right;
-                    margin-bottom: 0;
-                }
-                span{
-                    color: $themeColor;
-                }
-                .unit{
-                    width: 27px;
-                    display: inline-block;
-                    margin-left: 4px;
-                    text-align: left;
-                    color:#666666;
-                }
-            }
-        }
-        .dataColumn {
-            display: flex;
-            flex-direction: column;
-            // line-height: 36px;
-            padding: 0 12px;
-            border-right: 1px solid #dfdfdf;
-            min-width: 145px;
-            >span{
-                display: flex;
-                flex-direction: column;
-            }
-            &:last-child {
-                border: none
-            }
-
-            .dataValue {
-                color: $themeColor;
-                font-size: 24px;
-                text-align: left;
-                padding: 0 4px;
-                line-height: 30px;
-            }
-
-            .speed {
-                color: #3e97d1;
-            }
-
-            .stationPower {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                min-width: 230px;
-                line-height: 30px;
-                >div {
-                    margin-right: 10
-                }
-            }
-        }
-        .typeIcon {
-            width: 120px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-        }
-        .iconStyle{
-            color: $themeColor;
-        }
+      }
     }
+    .typeIcon {
+      width: 120px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+    .iconStyle {
+      color: $themeColor;
+    }
+  }
 
-    .windDeviceContainer{
+  .windDeviceContainer {
+    display: flex;
+    // flex:1;
+    .windDeviceInfo {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      .structure {
         display: flex;
-        // flex:1;
-        .windDeviceInfo{
+        width: 100%;
+        height: 398px;
+        border-bottom: 1px solid #d4d4d4;
+        .structureTitle {
+          color: #000000;
+          margin: 20px 70px 20px 35px;
+        }
+        .structureImg {
+          img {
+            width: 527px;
+            height: 369px;
+          }
+        }
+      }
+      .windPointData {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        border-bottom: 1px solid #d4d4d4;
+        .pointDataTitle {
+          color: #000000;
+          margin: 20px 35px 8px;
+          display: flex;
+          justify-content: space-between;
+          .learnMore {
+            color: $themeColor;
+            cursor: pointer;
+          }
+        }
+        .pointDataContiner {
+          display: flex;
+          flex-direction: row;
+          padding: 0 12px 17px 12px;
+          .group {
             display: flex;
             flex: 1;
             flex-direction: column;
-            .structure{
-                display: flex;
-                width:100%;
-                height:398px;
-                border-bottom: 1px solid #dfdfdf;
-                .structureTitle{
-                    color:#000000;
-                    margin: 20px 70px 20px 35px;
-                }
-                .structureImg{
-                    img{
-                        width: 527px;
-                        height: 369px;
-                    }
-                }
+            line-height: 27px;
+            border-right: 1px solid #d4d4d4;
+            padding: 0 7px;
+            &:last-child {
+              border: none;
             }
-            .windPointData{
-                display: flex;
-                width:100%;
-                flex-direction: column;
-                border-bottom: 1px solid #dfdfdf;
-                .pointDataTitle{
-                    color:#000000;
-                    margin: 20px 35px 8px;
-                    display: flex;
-                    justify-content: space-between;
-                    .learnMore{
-                        color: $themeColor;
-                        cursor: pointer;
-                    }
-                }
-                .pointDataContiner{
-                    display: flex;
-                    flex-direction: row;
-                    padding: 0 12px 17px 12px;
-                    .group{
-                        display: flex;
-                        flex: 1;
-                        flex-direction: column;
-                        line-height: 27px;
-                        border-right:1px solid #dfdfdf;
-                        padding: 0 7px;
-                        &:last-child{
-                            border: none
-                        }
-                        .eachData{
-                            display: flex;
-                            justify-content: space-between;
-                            p{
-                                margin-bottom: 0
-                            }
-                            .devicePointValue{
-                                color: $themeColor;
-                            }
-                            .unit{
-                                display: inline-block;
-                                // width:30px;
-                                color: #666;
-                            }
-                    }
-                }
+            .eachData {
+              display: flex;
+              justify-content: space-between;
+              p {
+                margin-bottom: 0;
+              }
+              .devicePointValue {
+                color: $themeColor;
+              }
+              .unit {
+                display: inline-block;
+                // width:30px;
+                color: #353535;
+              }
             }
-            }
-
-            .pointAlarm{
-                display: flex;
-                flex-direction: column;
-                .pointAlarmTitle{
-                    color: #000000;
-                    margin: 20px 35px 0;
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: -10px;
-                }
-               
-            }
-
+          }
         }
-        .windDeviceChart{
-            display: flex;
-            width: 464px;
-            background: #f8f8f8;
-            padding: 0 12px 20px;
-            flex-direction: column;
-            .tags {
-                display: flex;
-                justify-content: space-around;
-                margin: 8px 30px;
-                a {
-                    padding: 0 12px;
-                    background: #ffffff;
-                    border: 1px solid #dfdfdf;
-                    border-radius: 4px;
-                    height: 30px;
-                    line-height: 30px;
-                    color: #666;
-                }
-                .noLink{
-                    pointer-events: none;
-                }
-            }
-            .chartsBox{
-                margin-bottom: 20px;
-                display: flex;
-                height: 260px;
-                width:100%;
-                background: #fff;
-            }
+      }
+
+      .pointAlarm {
+        display: flex;
+        flex-direction: column;
+        .pointAlarmTitle {
+          color: #000000;
+          margin: 20px 35px 0;
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: -10px;
         }
+      }
     }
-    
-    .pointData {
-        // background-color: #f8f8f8;
-        // padding: 20px 60px 80px 60px;
-        .pointTitle {
+    .windDeviceChart {
+      display: flex;
+      width: 464px;
+      background: #f8f8f8;
+      padding: 0 12px 20px;
+      flex-direction: column;
+      .tags {
+        display: flex;
+        justify-content: space-around;
+        margin: 8px 30px;
+        a {
+          padding: 0 12px;
+          background: #ffffff;
+          border: 1px solid #d4d4d4;
+          border-radius: 2px;
+          height: 30px;
+          line-height: 30px;
+          color: #353535;
+        }
+        .noLink {
+          pointer-events: none;
+        }
+      }
+      .chartsBox {
+        margin-bottom: 20px;
+        display: flex;
+        height: 260px;
+        width: 100%;
+        background: #fff;
+      }
+    }
+  }
+
+  .pointData {
+    // background-color: #f8f8f8;
+    // padding: 20px 60px 80px 60px;
+    .pointTitle {
+      color: $darkColor;
+      margin-left: 20px;
+    }
+    .pointDataList {
+      display: flex;
+      flex-wrap: wrap;
+      height: 580px;
+      overflow: scroll;
+      .eachGroup {
+        min-width: 20%;
+        max-width: 20%;
+        padding-left: 20px;
+        margin: 16px 0;
+        border-right: dotted 1px $promptColor;
+        position: relative;
+        padding-top: 24px;
+        .groupName {
+          color: $darkColor;
+          background: #f0f0f0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: calc(100% - 20px);
+          margin-left: 20px;
+        }
+        .eachData {
+          margin-bottom: 4px;
+          .pointName {
             color: $darkColor;
-            margin-left: 20px;
+            margin-bottom: 0;
+          }
+          .pointValue {
+            color: #199475;
+            margin-bottom: 0;
+            word-wrap: break-word;
+            padding-right: 20px;
+          }
+          &:hover {
+            background: rgba(206, 235, 224, 0.3);
+          }
+          .devicePointUnit {
+            color: $darkColor;
+          }
         }
-        .pointDataList {
-            display: flex;
-            flex-wrap: wrap;
-            height: 580px;
-            overflow: scroll;
-            .eachGroup {
-                min-width: 20%;
-                max-width: 20%;
-                padding-left: 20px;
-                margin: 16px 0;
-                border-right: dotted 1px $promptColor;
-                position: relative;
-                padding-top: 24px;
-                .groupName {
-                    color: $darkColor;
-                    background: #f0f0f0;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: calc(100% - 20px);
-                    margin-left: 20px;
-                }
-                .eachData {
-                    margin-bottom: 4px;
-                    .pointName {
-                        color: $darkColor;
-                        margin-bottom: 0;
-                    }
-                    .pointValue {
-                        color: #199475;
-                        margin-bottom: 0;
-                        word-wrap: break-word;
-                        padding-right: 20px;
-                    }
-                    &:hover{
-                       background: rgba(206, 235, 224, 0.3); 
-                    }
-                    .devicePointUnit{
-                        color: $darkColor;
-                    }
-                }
-            }
-            .eachGroup:last-child {
-                border-right: none;
-            }
-        }
+      }
+      .eachGroup:last-child {
+        border-right: none;
+      }
     }
+  }
 }

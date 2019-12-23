@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './deviceAccount.scss';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { deviceAccountAction } from './deviceAccountAction';
 import Footer from '../../../../components/Common/Footer';
 import DeviceAccountBox from '../../../../components/Operation/Book/DeviceAccount/DeviceAccountBox';
@@ -22,13 +21,8 @@ class DeviceAccount extends Component {
   }
 
   render() {
-    const { } = this.props;
-    const breadCrumbData = {
-      breadData: [{name: '设备台账'}],
-    };
     return (
       <div className={styles.containerDiv}>
-        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
             <DeviceAccountBox {...this.props} />
