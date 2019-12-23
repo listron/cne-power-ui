@@ -17,7 +17,7 @@ class RealtimeSearch extends Component {
     selectStationType: PropTypes.number, // 选中的电站类型
     deviceTypeCode: PropTypes.number, // 选中的设备类型
     queryParam: PropTypes.object,
-    
+
     stationDeviceTypes: PropTypes.array, // 电站下可选设备类型
     changeRealtimeStore: PropTypes.func,
     getAvailableDeviceType: PropTypes.func,
@@ -26,7 +26,7 @@ class RealtimeSearch extends Component {
     stopRealtimeList: PropTypes.func,
   };
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     const { queryParam, changeRealtimeStore, filterDevices } = this.props;
     const prevDevices = prevProps.filterDevices;
     if (prevDevices.length === 0 && filterDevices.length > 0) { // 得到初始设备数据
@@ -34,19 +34,19 @@ class RealtimeSearch extends Component {
         queryParam: {
           ...queryParam,
           deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
-        }
+        },
       });
       this.selectedDevice([filterDevices[0]]);
     } else if (
       prevDevices.length > 0
-        && filterDevices.length > 0
-        && prevDevices[0].deviceCode !== filterDevices[0].deviceCode
+      && filterDevices.length > 0
+      && prevDevices[0].deviceCode !== filterDevices[0].deviceCode
     ) { // 设备类型切换
       changeRealtimeStore({
         queryParam: {
           ...queryParam,
           deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
-        }
+        },
       });
       this.selectedDevice([filterDevices[0]]);
     }
@@ -125,7 +125,7 @@ class RealtimeSearch extends Component {
       },
       allHistory: {},
       partHistory: {},
-    })
+    });
     getPointInfo({
       deviceFullCodes: devices,
       timeInterval,
@@ -137,28 +137,25 @@ class RealtimeSearch extends Component {
     wind: 0,
   }
 
-  render(){
+  render() {
     const {
-      queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount
+      queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount,
     } = this.props;
     const { stationCode, deviceFullCodes } = queryParam;
     return (
       <div className={styles.realtimeSearch}>
-        {stationTypeCount === 'multiple' && <div className={styles.typeCheck}>
+        {/* {stationTypeCount === 'multiple' && <div className={styles.typeCheck}>
           <div className={selectStationType === 0 ? styles.typeActive: styles.typeNormal} onClick={this.checkWind}>风电</div>
           <div className={selectStationType === 1 ? styles.typeActive: styles.typeNormal} onClick={this.checkPv}>光伏</div>
           <div className={styles.holder} />
-        </div>}
+        </div>} */}
         <div className={styles.searchPart}>
           <div className={styles.stationSelect}>
             <span className={styles.text}>电站名称</span>
             <StationSelect
-              data={typeof(selectStationType) === 'number' ? stations.filter(e => {
-                if (stationTypeCount !== 'multiple') { // 单种
-                  return e.stationType === this.stationTypeInfo[stationTypeCount];
-                }
+              data={stations.filter(e => {
                 return e.stationType === selectStationType; // 多种类型时才有顶部区别
-              }) : stations}
+              })}
               onOK={this.selectStation}
               disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}
               value={stations.filter(e => e.stationCode === stationCode)}
@@ -194,7 +191,7 @@ class RealtimeSearch extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
