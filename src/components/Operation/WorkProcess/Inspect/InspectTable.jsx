@@ -62,6 +62,7 @@ class InspectTable extends React.Component {
       pageNum: 1,
       pageSize: 10,
     });
+    this.props.changeStore({ selectedRowKeys: [] });
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {
@@ -86,10 +87,7 @@ class InspectTable extends React.Component {
     this.getListData({ sort });
   }
   onSelectChange = (selectedRowKeys, selectedRows) => {
-
-
     const inspectArr = selectedRows.map(e => (e.inspectStatus));
-
     const filterStatus = new Set(inspectArr);//当且仅当只有一种待验收的状态时，方可验收
     if (filterStatus.size === 1 && filterStatus.has('3')) {
       this.setState({
@@ -100,9 +98,7 @@ class InspectTable extends React.Component {
         currentSelectedStatus: false,
       });
     }
-
     this.props.changeStore({ selectedRowKeys });
-
   }
   cancelRowSelect = () => {
     this.props.changeStore({
@@ -241,9 +237,9 @@ class InspectTable extends React.Component {
               <Option value="check" disabled={unselected || currentSelectedStatus !== '3'}>
                 <i className="iconfont icon-done"></i>验收</Option>
             </Select>}
-            <Tooltip overlayStyle={{ width: 220, maxWidth: 220, fontSize: '12px' }} placement="top" title="请选择同一状态下的列表项，进行操作">
+            {checkInspectRight && <Tooltip overlayStyle={{ width: 220, maxWidth: 220, fontSize: '12px' }} placement="top" title="请选择同一状态下的列表项，进行操作">
               <i className="iconfont icon-help" />
-            </Tooltip>
+            </Tooltip>}
           </div>
           <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>

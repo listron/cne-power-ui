@@ -16,7 +16,7 @@ class WarningTip extends Component {
     onCancel: PropTypes.func,
     onOK: PropTypes.func,
     style: PropTypes.object,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     hiddenCancel: PropTypes.bool,
   }
   static defaultProps = {

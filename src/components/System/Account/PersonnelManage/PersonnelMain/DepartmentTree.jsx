@@ -91,11 +91,19 @@ class DepartmentTree extends Component {
   }
 
   expandTreeNode = (expandIds) => { // 受控展开节点, 只展开一个
+    const { departmentTree } = this.props;
     const { expandKey } = this.state;
-    if (expandIds.length > 1) { // 只展开一个
-      expandIds = expandIds.filter(e => e !== expandKey);
+    if (expandIds.length === 0) { // 全部收缩
+      this.setState({ expandKey: '' });
+    } else if (expandIds.length === 1) { // 选中某一个节点, 该节点有子集部门 => 展开
+      const [expandIdStr] = expandIds;
+      const ableExpand = departmentTree.find(e => e.departmentId === expandIdStr && e.list && e.list.length > 0);
+      ableExpand && this.setState({ expandKey: expandIdStr });
+    } else if (expandIds.length > 1) { // 已有一展开节点, 若新节点也可展开则收缩已展开节点, 打开新节点; 若新节点不可展开, 则不变
+      const newExpandId = expandIds.find(e => expandKey !== e); // 新节点id;
+      const ableExpand = departmentTree.find(e => e.departmentId === newExpandId && e.list && e.list.length > 0); // 新节点可否展开
+      ableExpand && this.setState({ expandKey: newExpandId });
     }
-    this.setState({ expandKey: expandIds[0] || '' });
   }
 
   assignPersonnel = () => {
