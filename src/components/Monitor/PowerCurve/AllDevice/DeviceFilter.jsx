@@ -6,6 +6,7 @@ import styles from './allDeviceCurve.scss';
 import StationSelect from '../../../Common/StationSelect';
 import DeviceSelect from '../../../Common/DeviceSelect/index';
 import path from '../../../../constants/path';
+import { handleRight } from '@utils/utilFunc';
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
 const RangePicker = DatePicker.RangePicker;
@@ -117,6 +118,7 @@ class DeviceFilter extends Component {
   }
   render() {
     const { stations, stationCode, deviceShowType, selectdeviceCode, powerCurveListData, startTime, endTime } = this.props;
+    const listOperation = handleRight('powerCurve_export');
     return (
       <div className={styles.filterStyle}>
         <div className={styles.searchPart}>
@@ -158,7 +160,7 @@ class DeviceFilter extends Component {
           </div>
           <div className={styles.buttonBox}>
             <Button className={styles.buttonStyle} disabled={selectdeviceCode.length > 0 ? false : true} onClick={this.seekDeviceData}>查询</Button>
-            {deviceShowType === 'list' ? <Button className={styles.buttonStyle} onClick={this.exportList}
+            {deviceShowType === 'list' && listOperation ? <Button className={styles.buttonStyle} onClick={this.exportList}
               disabled={powerCurveListData.length === 0}
             >导出</Button> : ''}
           </div>

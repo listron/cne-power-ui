@@ -5,6 +5,7 @@ import styles from './cleanoutRecordMain.scss';
 import moment from 'moment';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../../utils/utilFunc';
+import { handleRight } from '@utils/utilFunc';
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -103,6 +104,8 @@ class CleanoutRecordTable extends Component {
   render() {
     const { loading, mainListData } = this.props;
     const { record } = this.state;
+    const planRecorOperation = handleRight('analysis_cleanModel_planRecord_operate');
+
     const column = [
       {
         title: '电站名称',
@@ -139,17 +142,6 @@ class CleanoutRecordTable extends Component {
         sorter: true,
         render: text => (<span>{(text) ? `${text}` : '--'}</span>),
       }, {
-        title: '添加清洗计划/降雨',
-        key: 'addplan',
-        render: (text, record, index) => {
-          // let record2 = 'dianzhan1/qinhxi'
-          return (
-            <div className={styles.iconStyles}>
-              <div title="添加清洗计划/降雨" className="iconfont icon-addto" onClick={() => this.showAddPlanModal(record)}>
-              </div>
-            </div>);
-        },
-      }, {
         title: '查看',
         key: 'check',
         render: (text, record, index) => {
@@ -157,6 +149,20 @@ class CleanoutRecordTable extends Component {
         },
       },
     ];
+
+    const addColum = {
+      title: '添加清洗计划/降雨',
+      key: 'addplan',
+      render: (text, record, index) => {
+        return (
+          <div className={styles.iconStyles}>
+            <div title="添加清洗计划/降雨" className="iconfont icon-addto" onClick={() => this.showAddPlanModal(record)}>
+            </div>
+          </div>);
+      },
+    };
+
+    planRecorOperation && column.splice(-1, 0, addColum); // 若有planRecorOperation权限则添加addColum列
 
     const formItemLayout = {
       labelCol: {

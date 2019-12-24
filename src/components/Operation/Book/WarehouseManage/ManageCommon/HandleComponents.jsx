@@ -5,6 +5,7 @@ import { Icon, Button, Modal, Input } from 'antd';
 import ImportFile from './ImportFile';
 import CommonPagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
+import { handleRight } from '@utils/utilFunc';
 import styles from './manageCommon.scss';
 import path from '../../../../../constants/path';
 
@@ -117,9 +118,15 @@ export default class HandleComponent extends Component {
     } = this.props;
     const { pageSize, pageNum } = tableParams;
     const insertDisable = checkedStocks.length > 1;
+    const rightBase = {
+      spares: handleRight('book_operateSpare'),
+      tools: handleRight('book_operateTool'),
+      materials: handleRight('book_operateSupply'),
+    };
+    const warehouseHandleRight = rightBase[tabName];
     return (
       <div className={styles.handleRow}>
-        <div className={styles.leftHandler}>
+        {warehouseHandleRight ? <div className={styles.leftHandler}>
           <button
             className={styles.enterWarehouse}
             onClick={this.toInsert}
@@ -145,7 +152,7 @@ export default class HandleComponent extends Component {
           >设置阈值</Button>}
           <Button onClick={this.toImport}>导入</Button>
           <Button onClick={this.exportTemplete} loading={exportTempleteLoading}>下载导入模板</Button>
-        </div>
+        </div> : <div />}
         <CommonPagination
           total={totalCount}
           pageSize={pageSize}

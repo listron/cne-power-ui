@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Input, Button, InputNumber, message } from 'antd';
 import styles from "./cleaning.scss";
 import PropTypes from 'prop-types';
+import { handleRight } from '@utils/utilFunc';
 
 class CleaningMain extends Component {
   static propTypes = {
@@ -72,6 +73,7 @@ class CleaningMain extends Component {
   render() {
     const { isShow } = this.state;
     const { lossPowerPercent } = this.props;
+    const cleaningOperation = handleRight('cleanModel_modify');
     return (
       !isShow ?
         <div className={styles.cleaningBox}>
@@ -81,9 +83,9 @@ class CleaningMain extends Component {
             <span>%</span>
           </div>
 
-          <div className={styles.btn}>
+          {cleaningOperation && <div className={styles.btn}>
             <Button onClick={this.modify}>修改</Button>
-          </div>
+          </div>}
         </div> :
 
         <div className={styles.cleaningBoxCopy}>

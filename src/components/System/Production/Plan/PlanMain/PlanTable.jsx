@@ -9,7 +9,7 @@ import styles from './planMain.scss';
 import moment from 'moment';
 import EditableCell from './EditableCell';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
-import { numWithComma } from '../../../../../utils/utilFunc';
+import { numWithComma, handleRight } from '../../../../../utils/utilFunc';
 
 const { APIBasePath, originUri } = path.basePaths;
 const { system } = path.APISubPaths;
@@ -142,6 +142,7 @@ class PlanTable extends Component {
   }
 
   _createTableColumn = () => {//生成表头
+    const planOperation = handleRight('config_production_operate');
     const _this = this;
     const tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const MonthColumn = tabelKey.map((item, index) => {
@@ -161,6 +162,35 @@ class PlanTable extends Component {
         },
       };
     });
+
+    const operationColumns = {
+      title: '操作',
+      dataIndex: 'operation',
+      key: 'operation',
+      className: styles.operation,
+      render: (text, record) => {
+        const editable = _this.isEditing(record);
+        const canEdit = moment().year() - record.planYear > 0;
+        return (
+          <div>
+            {editable ? (
+              <span>
+                <EditableContext.Consumer>
+                  {form => (
+                    <a href="javascript:;" className={styles.save}
+                      onClick={() => _this.save(form, record.key)}
+                      style={{ marginRight: 8 }}
+                    >
+                      保存
+                    </a>
+                  )}
+                </EditableContext.Consumer>
+              </span>
+            ) : (<a onClick={() => _this.edit(record.key)} className={canEdit ? styles.noEdit : styles.edit}>编辑</a>)}
+          </div>
+        );
+      },
+    };
 
     const columns = [
       {
@@ -227,36 +257,54 @@ class PlanTable extends Component {
           return (<span><Input defaultValue={textValue} disabled={true} /></span>);
         },
       },
-      {
-        title: '操作',
-        dataIndex: 'operation',
-        key: 'operation',
-        className: styles.operation,
-        render: (text, record) => {
-          const editable = this.isEditing(record);
-          const canEdit = moment().year() - record.planYear > 0;
-          return (
-            <div>
-              {editable ? (
-                <span>
-                  <EditableContext.Consumer>
-                    {form => (
-                      <a href="javascript:;" className={styles.save}
-                        onClick={() => this.save(form, record.key)}
-                        style={{ marginRight: 8 }}
-                      >
-                        保存
-                      </a>
-                    )}
-                  </EditableContext.Consumer>
-                </span>
-              ) : (<a onClick={() => this.edit(record.key)} className={canEdit ? styles.noEdit : styles.edit}>编辑</a>)}
-            </div>
-          );
-        },
-      }];
+      // {
+      //   title: '操作',
+      //   dataIndex: 'operation',
+      //   key: 'operation',
+      //   className: styles.operation,
+      //   render: (text, record) => {
+      //     const editable = this.isEditing(record);
+      //     const canEdit = moment().year() - record.planYear > 0;
+      //     return (
+      //       <div>
+      //         {editable ? (
+      //           <span>
+      //             <EditableContext.Consumer>
+      //               {form => (
+      //                 <a href="javascript:;" className={styles.save}
+      //                   onClick={() => this.save(form, record.key)}
+      //                   style={{ marginRight: 8 }}
+      //                 >
+      //                   保存
+      //                 </a>
+      //               )}
+      //             </EditableContext.Consumer>
+      //           </span>
+      //         ) : (<a onClick={() => this.edit(record.key)} className={canEdit ? styles.noEdit : styles.edit}>编辑</a>)}
+      //       </div>
+      //     );
+      //   },
+      // }
+    ];
 
-    const columnList = columns.map((col) => {
+
+
+    const columnList = planOperation ? columns.map((col) => {
+      if (!col.editable) {
+        return col;
+      }
+      return {
+        ...col,
+        onCell: record => {
+          return ({
+            record,
+            dataIndex: col.dataIndex,
+            title: record[col.dataIndex],
+            editing: this.isEditing(record),
+          });
+        },
+      };
+    }).concat(operationColumns) : columns.map((col) => {
       if (!col.editable) {
         return col;
       }
@@ -352,6 +400,7 @@ class PlanTable extends Component {
   render() {
     const { pageSize, pageNum, totalNum, loading, importLoading } = this.props;
     const { showWarningTip, warningTipText, data, importVisible, fileList } = this.state;
+    const planOperation = handleRight('config_production_operate');
     const components = {
       body: {
         row: EditableFormRow,
@@ -372,6 +421,7 @@ class PlanTable extends Component {
         {showWarningTip &&
           <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.planListTop}>
+          {planOperation ?
           <div className={styles.buttons}>
             <Button className={styles.addplan} onClick={this.onPlanAdd}>
               <Icon type="plus" />
@@ -379,7 +429,7 @@ class PlanTable extends Component {
             </Button>
             <Button type={'default'} onClick={this.batchImport} >批量导入</Button>
             <Button href={downloadHref} download={downloadHref} >导入模板下载</Button>
-          </div>
+          </div> : <div></div>}
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table

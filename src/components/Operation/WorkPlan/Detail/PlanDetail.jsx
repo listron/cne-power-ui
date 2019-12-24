@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, Switch, Popconfirm, Spin } from 'antd';
+import { handleRight } from '@utils/utilFunc';
 import styles from './detail.scss';
 
 class PlanDetail extends PureComponent {
@@ -125,7 +126,7 @@ class PlanDetail extends PureComponent {
           okText="确定"
           cancelText="取消"
         >
-          <Switch checked={planStatus === 1} />
+          <Switch checked={planStatus === 1} disabled={!handleRight('operation_workStation_manage')} />
         </Popconfirm>
       ),
     }, {
@@ -203,12 +204,13 @@ class PlanDetail extends PureComponent {
       ...this.detailBaseCompose(inspectTypeCode, cycleTypeCode),
       ...this.baseEnd,
     ];
+    const workPlanHandleRight = handleRight('operation_workStation_manage');
     return (
       <section className={`${styles.planDetail} ${styles[theme]}`}>
         <h3 className={styles.detailTop}>
           <span>查看计划</span>
           <span className={styles.topHandle}>
-            <Button onClick={this.toEdit}>编辑</Button>
+            {workPlanHandleRight && <Button onClick={this.toEdit}>编辑</Button>}
             <Icon onClick={this.backList} type="arrow-left" className={styles.backIcon} />
           </span>
         </h3>

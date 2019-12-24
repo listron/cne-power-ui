@@ -4,6 +4,8 @@ import moment from 'moment';
 import { Icon, Button, Spin } from 'antd';
 import EachDate from './PlanModals/EachDate';
 import styles from './workPage.scss';
+import { handleRight } from '@utils/utilFunc';
+
 
 class PlanList extends PureComponent {
 
@@ -86,15 +88,16 @@ class PlanList extends PureComponent {
   render(){
     const { theme, planMonth, planList, pageLoading, planListLoading } = this.props;
     const { datesInfo } = this.state;
+    const addRight = handleRight('workStation_add');
     const monthReduceUnable = moment(planMonth).isSame(moment(), 'M'); // 当前月不可往前选月
     // 不属于本月的日期: 禁止选择灰色不触发, 本月日期: hover浅色, 选中深色, 默认无色
     return (
       <div className={`${styles.planList} ${styles[theme]}`}>
         <div className={styles.topPlanHandle}>
-          <Button className={styles.addPlanBtn} type="add" onClick={this.onAdd} >
+          {addRight ? <Button className={styles.addPlanBtn} type="add" onClick={this.onAdd} >
             <i>+</i>
             <span className={styles.addPlanBtnText}>添加计划</span>
-          </Button>
+          </Button> : <span />}
           <span className={styles.monthHandler}>
             <Icon
               type="left" className={styles.monthIcon}

@@ -8,6 +8,8 @@ import RecordTable from './RecordTable';
 import moment from 'moment';
 import { Icon, Button, Spin } from 'antd';
 import searchUtil from '@utils/searchUtil';
+import { handleRight } from '@utils/utilFunc';
+
 class DetailDevice extends Component {
   static propTypes = {
     totalNum: PropTypes.number,
@@ -140,15 +142,16 @@ class DetailDevice extends Component {
     const windTower = windTowerFun(stationDeviceDetail);
     const windTime = windTimeFun(stationDeviceDetail);
     const { showWarningTip, warningTipText, tableFilter, deviceFullCodeStr } = this.state;
+    const deviceHandleRight = handleRight('book_operateDevice');
     return (
       <div className={styles.contentBox}>
         {detailloading ? <div className={styles.loadingStyle}> <Spin /></div> :
           <div className={styles.detailDevice}>
             {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
             <div className={styles.detailTop}>
-              <span className={styles.topInfoShow}>
+              {deviceHandleRight && <span className={styles.topInfoShow}>
                 <Button className={styles.title} onClick={this.onShowSideChange} disabled={deviceTypeCode === '509'}>编辑</Button>
-              </span>
+              </span>}
               <span className={styles.handleArea} >
                 <i className="iconfont icon-last" title="上一个" onClick={deviceFullCodeStr ? () => {} : this.preStation} />
                 <i className="iconfont icon-next" title="下一个" onClick={deviceFullCodeStr ? () => {} : this.nextStation} />

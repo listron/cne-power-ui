@@ -4,7 +4,7 @@ import { Button, Table, Icon } from 'antd';
 import path from '../../../../constants/path';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
-import { dataFormats } from '../../../../utils/utilFunc';
+import { dataFormats, handleRight } from '../../../../utils/utilFunc';
 import styles from './dailyQuery.scss';
 
 const { APIBasePath } = path.basePaths;
@@ -73,6 +73,7 @@ class FaultList extends Component {
     const { listParam, faultListData, tableLoading, exportLoading  } = this.props;
     const { pageNum, pageSize } = listParam;
     const { total = 0, dataList = [] } = faultListData;
+    const dailyOperation = handleRight('dailyQuery_export');
 
     const columns = [{
       title: '电站名称',
@@ -174,12 +175,13 @@ class FaultList extends Component {
     return (
       <div className={styles.faultList}>
         <div className={styles.pagination}>
+        {dailyOperation ?
           <Button
             className={dataList.length === 0 ? styles.disabledExport : styles.listExport}
             onClick={this.onExport}
             loading={exportLoading}
             disabled={dataList.length === 0}
-          >导出</Button>
+          >导出</Button> : <div></div>}
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}

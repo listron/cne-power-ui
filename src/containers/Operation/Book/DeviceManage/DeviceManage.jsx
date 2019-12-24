@@ -109,7 +109,6 @@ class DeviceManage extends Component {
       sortField,
       sortMethod,
     };
-    console.log(showPage, '1111111111showPage');
     return (
       <div className={styles.deviceManageContainer}>
         {selectType === 'deviceInfo' && (

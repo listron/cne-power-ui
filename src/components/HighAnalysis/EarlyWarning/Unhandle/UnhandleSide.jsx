@@ -7,6 +7,7 @@ import { Select, Table, Button, DatePicker, Icon } from 'antd';
 import moment from 'moment';
 import WarningTip from '../../../Common/WarningTip';
 import IgnoreModal from './IgnoreModal';
+import { handleRight } from '@utils/utilFunc';
 import { SequenceChart } from '../CommonChart/SequenceChart';
 const { RangePicker } = DatePicker;
 
@@ -94,6 +95,7 @@ class UnhandleSide extends Component {
     const happenTime = warnDetail.happenTime;
     const deviceName = warnDetail.deviceName;
     const lastHappenTime = happenTime && moment(happenTime).subtract(1, 'days').format('YYYY/MM/DD');
+    const unhandleOperation = handleRight('inefficientDetect_remove');
     return (
       <div className={styles.unhandleSide} >
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -101,7 +103,7 @@ class UnhandleSide extends Component {
           <div>
             <span>预警处理</span>
             {
-              !dealSuccess &&
+              !dealSuccess && unhandleOperation &&
               <React.Fragment>
                 <Button className={styles.warnButton} onClick={() => { this.selectChange('ignore'); }}> 忽略 </Button>
                 <Button className={styles.warnButton} onClick={() => { this.selectChange('transfer'); }}> 转工单</Button>

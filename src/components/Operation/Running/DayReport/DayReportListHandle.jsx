@@ -8,6 +8,7 @@ import styles from './dayReportAll.scss';
 import { Button, Upload, message } from 'antd';
 import moment from 'moment';
 import WarningTip from '@components/Common/WarningTip';
+import { handleRights } from '@utils/utilFunc';
 
 const { basePaths, APISubPaths } = path;
 const { APIBasePath, originUri } = basePaths;
@@ -100,15 +101,14 @@ class DayReportListHandle extends Component {
   render() {
     const { uploadResult, uploadLoading } = this.state;
     const { pageSize, pageNum, totalNum } = this.props;
+    const [reportRight, importRight] = handleRights(['daily_report', 'daily_import']);
     const authData = localStorage.getItem('authData') || '';
-    const rights = localStorage.getItem('rightHandler');
-    const importRight = rights && rights.split(',').includes('daily_import');
     return (
       <div className={styles.operateDayReport}>
         <span className={styles.leftButtons}>
-          <Button onClick={this.toUploadPage} icon="plus" className={styles.uploadReport} >
+          {reportRight && <Button onClick={this.toUploadPage} icon="plus" className={styles.uploadReport} >
             上报日报
-          </Button>
+          </Button>}
           {importRight && <Upload
             action={`${APIBasePath}${operation.uploadReportFile}`}
             headers={{'Authorization': 'bearer ' + ((authData && authData !== 'undefined') ? authData : '')}}

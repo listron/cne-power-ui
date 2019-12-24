@@ -4,7 +4,7 @@ import { Button, Icon, Tree, Form, Row, Col, Input } from 'antd';
 import CommonBreadcrumb from '../../../../../components/Common/CommonBreadcrumb';
 import CommonPagination from '../../../../Common/CommonPagination';
 import WarehouseGoodsTable from './WarehouseGoodsTable/WarehouseGoodsTable';
-
+import { handleRight } from '@utils/utilFunc';
 import styles from './warehouseGoods.scss';
 
 const { TreeNode } = Tree;
@@ -151,6 +151,7 @@ class WarehouseGoods extends Component {
     } = this.props;
     const { addFlag } = this.state;
     const { getFieldDecorator } = form;
+    const warehouseGoodRight = handleRight('book_operateGoods');
     return (
       <div className={styles.warehouseGoods}>
         <CommonBreadcrumb
@@ -181,7 +182,7 @@ class WarehouseGoods extends Component {
             </Tree>
           </div>
           <div className={styles.goodsRight}>
-            {isAbleOper === 0 && (
+            {warehouseGoodRight && isAbleOper === 0 && (
               <div className={styles.goodsBtn}>
                 <Button
                   className={styles.addControl}
@@ -194,7 +195,7 @@ class WarehouseGoods extends Component {
                 </Button>
               </div>
             )}
-            {(isAbleOper === 1 ? false : addFlag) && (
+            {warehouseGoodRight && (isAbleOper === 1 ? false : addFlag) && (
               <div className={styles.goodsAdd}>
                 <div className={styles.goodsTitle}>
                   <span>添加</span>

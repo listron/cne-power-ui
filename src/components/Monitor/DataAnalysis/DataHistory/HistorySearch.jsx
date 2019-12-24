@@ -129,6 +129,31 @@ class HistorySearch extends Component {
     });
   }
 
+  // startChange = (nowStartTime) => {
+  //   const { queryParam } = this.props;
+  //   const { endTime, startTime } = queryParam;
+  //   if (moment(nowStartTime).isSame(startTime, 's')) {
+  //     return;
+  //   }
+  //   if (moment().isBefore(nowStartTime, 's')) {
+  //     nowStartTime = moment();
+  //   } else if (endTime && endTime.isBefore(nowStartTime, 's')) {
+  //     nowStartTime = moment(endTime);
+  //   }
+  //   this.historyDataFetch({ startTime: nowStartTime, endTime: null });
+  // }
+
+  // endChange = (endTime) => {
+  //   const { queryParam } = this.props;
+  //   const { startTime } = queryParam;
+  //   if (moment().isBefore(endTime, 's')) {
+  //     endTime = moment();
+  //   } else if (endTime.isBefore(startTime, 's')) {
+  //     endTime = moment(startTime);
+  //   }
+  //   this.historyDataFetch({ endTime });
+  // }
+
   createTimeArr = (start, end) => {
     const timeArr = [];
     for (let i = start; i < end; i += 1) {

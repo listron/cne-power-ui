@@ -6,6 +6,7 @@ import WarningTip from '../../../Common/WarningTip/index'
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import path from '../../../../constants/path';
+import { handleRight } from '@utils/utilFunc';
 
 class AlarmManageHandle extends Component {
   static propTypes = {
@@ -86,10 +87,13 @@ class AlarmManageHandle extends Component {
   render() {
     const { pageSize, pageNum, totalNum, alarmList, allStationBaseInfo, stations } = this.props;
     const { showWarningTip, warningTipText } = this.state;
+    const alarmOperation = handleRight('station_alert_operate');
+
     return (
       <div className={styles.alarmManageHandle}>
         {showWarningTip &&
           <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} style={{width: '210px',height:'100px',marginTop:'50px'}}/>}
+        {alarmOperation ?
         <div className={styles.leftHandler}>
           <SingleStationImportFileModel
             data={allStationBaseInfo}
@@ -102,7 +106,8 @@ class AlarmManageHandle extends Component {
           {/* <Button disabled={alarmList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}>导出告警事件信息表</Button> */}
           <Button disabled={alarmList.length === 0} className={styles.exportInfo} onClick={this.downloadAlarmExcel}>导出告警事件信息表</Button>
           <Button disabled={alarmList.length === 0} onClick={this.deleteAlarmList} className={styles.clearAlarm}>清除告警</Button>
-        </div>
+          
+        </div> : <div></div>}
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
       </div>
     );

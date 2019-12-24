@@ -20,6 +20,7 @@ class Role extends Component {
     resetRole: PropTypes.func,
     enterpriseId: PropTypes.string,
     continueAdd: PropTypes.bool,
+    getOperatetype: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -29,6 +30,7 @@ class Role extends Component {
       enterpriseId: this.props.enterpriseId
     }
     this.props.getRoleList(params);
+    this.props.getOperatetype(); // 获得权限操作类型
   }
   componentWillUnmount() {
     this.props.resetRole();
@@ -72,6 +74,7 @@ const mapDispatchToProps = (dispatch) => ({
   onEditRole: payload => dispatch({ type: roleAction.EDIT_ROLE_SAGA, payload }),
   onDeleteRole: payload => dispatch({ type: roleAction.DELETE_ROLE_SAGA, payload }),
   resetRole: payload => dispatch({ type: roleAction.RESET_ROLE_SAGA, payload }),
+  getOperatetype: payload => dispatch({ type: roleAction.GET_OPERATE_TYPE, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Role);

@@ -5,6 +5,7 @@ import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
 import { Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
+import { handleRight } from '@utils/utilFunc';
 import path from '../../../../constants/path';
 
 class DeviceManageHandle extends Component {
@@ -104,9 +105,10 @@ class DeviceManageHandle extends Component {
     const { showModal, showDeleteWarning, warningTipText, showDeleteDevice } = this.state;
     const { totalNum, deviceList, stationCode, pageSize, pageNum, allStationBaseInfo, selectedRowKeys, exportLoading } = this.props;
     const downloadTemplet = `${path.basePaths.originUri}${path.APISubPaths.system.downloadDeviceTemplet}`;
+    const deviceHandleRight = handleRight('book_operateDevice');
     return (
       <div className={styles.deviceManageHandle}>
-        <div className={styles.left}>
+        {deviceHandleRight ? <div className={styles.left}>
           <Button onClick={this.addDevice} className={styles.plusButton} icon="plus" >设备</Button>
           <Button className={styles.deletStyle} onClick={this.deletDevice} disabled={selectedRowKeys.length === 0} >删除</Button>
           <Button className={styles.downloadStyle} href={downloadTemplet} download={downloadTemplet} target="_blank" >下载设备信息导入模板</Button>
@@ -118,7 +120,7 @@ class DeviceManageHandle extends Component {
             loading={exportLoading}
           >导出</Button>
           <Button onClick={this.deleteStationDevice} className={styles.exportInfo} disabled={!stationCode}>清除设备</Button>
-        </div>
+        </div> : <div />}
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         {showModal ? <ImportDevice {...this.props} showModal={showModal} cancelModal={this.cancelModal} allStationBaseInfo={allStationBaseInfo} /> : ''}
         {(showDeleteWarning || showDeleteDevice) && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}

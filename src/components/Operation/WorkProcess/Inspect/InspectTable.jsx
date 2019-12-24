@@ -4,6 +4,7 @@ import styles from './inspect.scss';
 import { Table, Select, Tooltip, Radio } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination/index';
 import WarningTip from '../../../Common/WarningTip/index';
+import { handleRight } from '@utils/utilFunc';
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -125,8 +126,9 @@ class InspectTable extends React.Component {
     const { currentSelectedStatus, showWarningTip, warningTipText } = this.state;
     const curInspectStatus = { '0': '待提交', '1': '待审核', '2': '执行中', '3': '待验收', '4': '已完成' };
     const unselected = selectedRowKeys.length === 0;
-    const rightHandler = localStorage.getItem('rightHandler');
-    const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
+    // const rightHandler = localStorage.getItem('rightHandler');
+    // const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
+    const checkInspectRight = handleRight('workExamine_inspection_check');
     const columns = [{
       title: '巡检名称',
       dataIndex: 'inspectName',
