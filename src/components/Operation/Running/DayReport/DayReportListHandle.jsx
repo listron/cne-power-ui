@@ -52,13 +52,14 @@ class DayReportListHandle extends Component {
   }
 
   beforeUpload = (file) => {
-    const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel';
+    // const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel';
+    const validType = /\.xlsx$/.test(file.name); // 导入后缀为xls或非excel文件时提示与产品文档不一致
     this.setState({ uploadLoading: true });
-    if (!isExcel) {
+    if (!validType) {
       this.setState({ uploadLoading: false });
-      message.error('只能上传Excel文件!');
+      message.error('仅支持后缀名为 .xlsx 的文件格式。');
     }
-    return isExcel;
+    return validType;
   }
 
   importChange = (info) => {
@@ -70,8 +71,10 @@ class DayReportListHandle extends Component {
         const { stationType, stationNameSort, startTime, regionName, pageSize, pageNum } = this.props;
         this.setState({
           uploadLoading: false,
-          uploadResult: '日报上传成功！',
+          uploadResult: '',
         });
+        message.config({ top: 150, duration: 3 });
+        message.success('日报上传成功');
         this.props.getDayReportList({
           stationType, stationNameSort, startTime, regionName, pageSize, pageNum,
         });
