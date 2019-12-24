@@ -199,8 +199,8 @@ function* getSecendInterval(action) { // 用户所在企业数据时间间隔
     const { queryParam } = yield select(state => state.monitor.dataHistory.toJS());
     const tmpQueryParam = { // 时间重置。
       ...queryParam,
-      startTime: moment().subtract(1, 'day').startOf('day'),
-      endTime: moment().subtract(1, 'day').endOf('day'),
+      startTime: moment().startOf('day'),
+      endTime: moment(),
     };
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,

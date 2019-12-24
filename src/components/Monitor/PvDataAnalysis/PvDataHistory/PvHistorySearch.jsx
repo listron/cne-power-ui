@@ -1,18 +1,18 @@
-import React, {Component} from 'react';
-import {Select, DatePicker, Button} from 'antd';
+import React, { Component } from 'react';
+import { Select, DatePicker, Button } from 'antd';
 import StationSelect from '../../../Common/StationSelect';
 import DeviceSelect from '../../../Common/DeviceSelect';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import styles from './pvHistoryStyle.scss';
-import {message} from 'antd';
+import { message } from 'antd';
 import cookie from 'js-cookie';
 import path from '@constants/path';
 
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
-const {Option} = Select;
+const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 class PvHistorySearch extends Component {
@@ -42,7 +42,7 @@ class PvHistorySearch extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    const {queryParam, changeHistoryStore, filterDevices} = this.props;
+    const { queryParam, changeHistoryStore, filterDevices } = this.props;
     const prevDevices = prevProps.filterDevices;
     if (prevDevices.length === 0 && filterDevices.length > 0) { // 得到初始设备数据
       changeHistoryStore({
@@ -68,10 +68,10 @@ class PvHistorySearch extends Component {
   }
 
   selectStation = (selectedStationInfo) => { // 电站选择。
-    const {getAvailableDeviceType, changeHistoryStore, queryParam} = this.props;
-    const {stationCode} = selectedStationInfo[0];
-    const {stationType} = selectedStationInfo[0];
-    getAvailableDeviceType({stationCode});
+    const { getAvailableDeviceType, changeHistoryStore, queryParam } = this.props;
+    const { stationCode } = selectedStationInfo[0];
+    const { stationType } = selectedStationInfo[0];
+    getAvailableDeviceType({ stationCode });
     changeHistoryStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode: null,
       chartTime: null,
@@ -89,7 +89,7 @@ class PvHistorySearch extends Component {
   };
 
   selectDeviceType = (deviceTypeCode) => { // 设备类型选择
-    const {changeHistoryStore, queryParam} = this.props;
+    const { changeHistoryStore, queryParam } = this.props;
     changeHistoryStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode,
       chartTime: null,
@@ -105,8 +105,8 @@ class PvHistorySearch extends Component {
   };
 
   selectedDevice = (devices) => { // 设备选择
-    const {getPointInfo, changeHistoryStore, queryParam, getListHistory, getChartHistory, listParam, selectStationType} = this.props;
-    const {timeInterval} = queryParam;
+    const { getPointInfo, changeHistoryStore, queryParam, getListHistory, getChartHistory, listParam, selectStationType } = this.props;
+    const { timeInterval } = queryParam;
     changeHistoryStore({
       chartTime: null,
       queryParam: {
@@ -162,9 +162,8 @@ class PvHistorySearch extends Component {
   };
 
   selectTimeSpace = (interval) => { // 间隔时间选择
-    console.log('interval: ', interval);
-    const {queryParam, changeHistoryStore, recordedMinuteStart, recordedMinuteEnd, listParam, getChartHistory, getListHistory} = this.props;
-    const {timeInterval, deviceFullCodes} = queryParam;
+    const { queryParam, changeHistoryStore, recordedMinuteStart, recordedMinuteEnd, listParam, getChartHistory, getListHistory } = this.props;
+    const { timeInterval, deviceFullCodes } = queryParam;
     const tmpQueryParam = {
       ...queryParam,
       deviceFullCodes: deviceFullCodes.slice(0, 2),
@@ -229,8 +228,8 @@ class PvHistorySearch extends Component {
       changeHistoryStore({
         queryParam: {
           ...tmpQueryParam,
-          startTime: moment().subtract(1, 'day').startOf('day'),
-          endTime: moment().subtract(1, 'day').endOf('day'),
+          startTime: moment().startOf('day'),
+          endTime: moment().format(),
         },
         allHistory: {},
         partHistory: {},
@@ -242,8 +241,8 @@ class PvHistorySearch extends Component {
       getChartHistory({
         queryParam: {
           ...tmpQueryParam,
-          startTime: moment().subtract(1, 'day').startOf('day'),
-          endTime: moment().subtract(1, 'day').endOf('day'),
+          startTime: moment().startOf('day'),
+          endTime: moment().format(),
         },
       });
       getListHistory({
@@ -253,15 +252,15 @@ class PvHistorySearch extends Component {
         listParam,
       });
     } else { // 秒级数据( 1s与5s)切换
-      this.historyDataFetch({timeInterval});
+      this.historyDataFetch({ timeInterval });
     }
   };
 
   historyDataFetch = (params) => {
-    const {changeHistoryStore, queryParam, listParam, getChartHistory, getListHistory} = this.props;
-    const {devicePoints} = queryParam;
-    const tmpPayload = {queryParam: {...queryParam, ...params}};
-    const {startTime, endTime, timeInterval} = tmpPayload.queryParam;
+    const { changeHistoryStore, queryParam, listParam, getChartHistory, getListHistory } = this.props;
+    const { devicePoints } = queryParam;
+    const tmpPayload = { queryParam: { ...queryParam, ...params } };
+    const { startTime, endTime, timeInterval } = tmpPayload.queryParam;
     if (timeInterval === 10) {
       tmpPayload.recordedMinuteStart = startTime;
       tmpPayload.recordedMinuteEnd = endTime;
@@ -274,7 +273,7 @@ class PvHistorySearch extends Component {
     } else if (devicePoints.length > 0) { // 已选择测点 - 重新请求数据
       changeHistoryStore(tmpPayload);
       getChartHistory(tmpPayload);
-      getListHistory({...tmpPayload, listParam});
+      getListHistory({ ...tmpPayload, listParam });
     } else { // 未选时间-暂存信息。
       changeHistoryStore(tmpPayload);
     }
@@ -315,7 +314,7 @@ class PvHistorySearch extends Component {
       queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount, intervalInfo, downloading, partHistory,
     } = this.props;
     const { dataList = [] } = partHistory;
-    const {stationCode, startTime, endTime, timeInterval, deviceFullCodes} = queryParam;
+    const { stationCode, startTime, endTime, timeInterval, deviceFullCodes } = queryParam;
     return (
       <div className={styles.historySearch}>
         <div className={styles.searchPart}>
@@ -336,7 +335,7 @@ class PvHistorySearch extends Component {
           <div className={styles.typeSelect}>
             <span className={styles.text}>设备类型</span>
             <Select
-              style={{width: '200px'}}
+              style={{ width: '200px' }}
               onChange={this.selectDeviceType}
               value={deviceTypeCode}
               placeholder="请选择设备类型"
@@ -357,7 +356,7 @@ class PvHistorySearch extends Component {
               multiple={true}
               // max={timeInterval === 10 ? 5 : 2}
               deviceShowNumber={true}
-              style={{width: 'auto', minWidth: '198px'}}
+              style={{ width: 'auto', minWidth: '198px' }}
               onChange={this.selectedDevice}
             />
           </div>
