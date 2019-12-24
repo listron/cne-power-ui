@@ -75,11 +75,19 @@ class SingleAssignModal extends Component {
   }
 
   checkUser = (selectedKeys, nextSelectedUserRow) => { // 选中
-    const { selectedUserRow } = this.state;
-    if (nextSelectedUserRow.length < selectedUserRow.length) { // 减少, 且减少的这个只有一个部门时，需要提示他将不属于任何部门
+    const { selectedUserRow, nameFilterText } = this.state;
+    let filteredSelectedUserRow = selectedUserRow;
+    if (nameFilterText) { // 有筛选时， 在筛选后表格中展示的选中项;
+      filteredSelectedUserRow = selectedUserRow.filter(e => {
+        const hasUsername = e.username && e.username.includes(nameFilterText);
+        const hasFullName = e.userFullName && e.userFullName.includes(nameFilterText);
+        return hasUsername || hasFullName;
+      });
+    }
+    if (nextSelectedUserRow.length < filteredSelectedUserRow.length) { // 减少, 且减少的这个只有一个部门时，需要提示他将不属于任何部门
       const { departmentAllUsers, selectedDepartment } = this.props;
       const preKeys = nextSelectedUserRow.map(e => e.userId);
-      const deleteUser = selectedUserRow.find(e => !preKeys.includes(e.userId));
+      const deleteUser = filteredSelectedUserRow.find(e => !preKeys.includes(e.userId));
       const isDeleteUserInThisDepart = departmentAllUsers.find(e => e.userId === deleteUser.userId);
       const { departmentNames, username } = deleteUser || {};
       const departNum = departmentNames ? departmentNames.split(',').length : 0;
