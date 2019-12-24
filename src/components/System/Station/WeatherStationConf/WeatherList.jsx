@@ -188,7 +188,6 @@ class WeatherList extends Component {
                     timeout={500}
                     effect="side"
                 >
-                    {/* <div className={styles.edit}> </div> */}
                     <EditWeather {...this.props} editList={editList} />
                 </TransitionContainer>
             </div>
