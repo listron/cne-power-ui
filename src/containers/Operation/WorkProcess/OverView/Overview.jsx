@@ -72,10 +72,10 @@ class Overview extends Component {
     const { tab, page } = this.state;
     return (
       <ContentLayout
-        breadcrumb={{
-          breadData: [{ name: '工单' }],
-          style: { paddingLeft: '40px' },
-        }}
+        // breadcrumb={{
+        //   breadData: [{ name: '工单' }],
+        //   style: { paddingLeft: '40px' },
+        // }}
         theme={theme}
         contentClassName={`${styles.overview} ${styles[theme]}`}
       >
