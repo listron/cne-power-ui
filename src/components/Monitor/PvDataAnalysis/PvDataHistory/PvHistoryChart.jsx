@@ -111,6 +111,8 @@ class PvHistoryChart extends Component {
   });
 
   legendSeriesCreate = (pointData, deviceInfo) => { // 嵌套遍历生成相关的series 与legend;
+    console.log('deviceInfo: ', deviceInfo);
+    console.log('pointData: ', pointData);
     const series = [], legend = [];
     const deviceNum = deviceInfo.length || 0;
     const pointNum = pointData.length || 0;

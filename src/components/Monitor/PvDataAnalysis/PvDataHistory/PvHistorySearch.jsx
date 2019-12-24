@@ -162,6 +162,7 @@ class PvHistorySearch extends Component {
   };
 
   selectTimeSpace = (interval) => { // 间隔时间选择
+    console.log('interval: ', interval);
     const {queryParam, changeHistoryStore, recordedMinuteStart, recordedMinuteEnd, listParam, getChartHistory, getListHistory} = this.props;
     const {timeInterval, deviceFullCodes} = queryParam;
     const tmpQueryParam = {
@@ -197,6 +198,32 @@ class PvHistorySearch extends Component {
         },
         listParam,
       });
+    } else if (interval === 2) {
+      changeHistoryStore({
+        queryParam: {
+          ...tmpQueryParam,
+          startTime: recordedMinuteStart,
+          endTime: recordedMinuteEnd,
+        },
+        allHistory: {},
+        partHistory: {},
+      });
+
+      getChartHistory({
+        queryParam: {
+          ...tmpQueryParam,
+          startTime: recordedMinuteStart,
+          endTime: recordedMinuteEnd,
+        },
+      });
+
+      getListHistory({
+        queryParam: {
+          ...tmpQueryParam,
+        },
+        listParam,
+      });
+
     } else if (timeInterval === 10) { // 10min数据切换至秒级数
       // message.info('请重新选择设备和时间');
       changeHistoryStore({
@@ -355,7 +382,7 @@ class PvHistorySearch extends Component {
               placeholder="数据间隔时间"
             >
               {intervalInfo.map(e => (
-                <Option key={e} value={e}>{e === 10 ? '10分钟' : `${e}秒`}</Option>
+                <Option key={e} value={e}>{(e === 2 && '1分钟' || e === 10 && '10分钟' ) || `${e}秒`}</Option>
               ))}
             </Select>
           </div>
