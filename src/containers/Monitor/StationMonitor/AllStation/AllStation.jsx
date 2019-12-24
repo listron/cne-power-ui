@@ -29,8 +29,13 @@ class AllStation extends Component {
       showRegion: false,
     };
   }
-
+  componentDidMount() {
+    const main = document.getElementById('main');
+    main && main.addEventListener('click', this.hideRegionSelect, true);
+  }
   componentWillUnmount() {
+    const main = document.getElementById('main');
+    main && main.removeEventListener('click', this.hiddenStationList, true);
     this.props.changeMonitorStationStore({
       stationShowType: 'stationBlock',
     });
@@ -44,15 +49,20 @@ class AllStation extends Component {
     changeMonitorStationStore({ stationShowType: 'stationBlock', stationType: activeKey });
     stopRealMonitorData();
   }
-
   showRegionSelect = () => {
     this.setState({ showRegion: true });
   }
 
   hideRegionSelect = () => {
-    this.setState({ showRegion: false });
+    const { showRegion } = this.state;
+    setTimeout(() => {
+      if (showRegion) {
+        this.setState({
+          showRegion: false,
+        });
+      }
+    }, 100);
   }
-
   regionChange = (value) => {
     let curName = '';
     if (!value) {
@@ -87,14 +97,7 @@ class AllStation extends Component {
             <div className={styles.allArea} onClick={this.showRegionSelect}>
               {regionName} <i className={'iconfont icon-content'}></i>
             </div>}
-          {stationTypeCount === 'multiple' && stationType === '2' && <Allstation {...this.props} />}
-          {stationTypeCount === 'multiple' && stationType === '0' && <WindStation {...this.props} />}
-          {stationTypeCount === 'multiple' && stationType === '1' && <PvStation {...this.props} />}
-          {stationTypeCount === 'wind' && <WindStation {...this.props} />}
-          {stationTypeCount === 'pv' && <PvStation {...this.props} />}
-          {stationTypeCount === 'none' && <div className={styles.noData}> </div>}
-          {
-            showRegion &&
+          {showRegion &&
             <div className={styles.regionSelect}>
               <div className={styles.regionSelectTop}>
                 {'全部区域'} <i className={'iconfont icon-content'}></i>
@@ -103,7 +106,7 @@ class AllStation extends Component {
                 <div onClick={() => { this.regionChange(''); }} className={`${styles.normal} ${regionName === '全部区域' && styles.active} `}> {'全部区域'}</div>
                 {regionArr.map(e => {
                   return (<div
-                    onClick={() => { this.regionChange(e); }}
+                    onClick={(item) => { this.regionChange(e, item); }}
                     key={e}
                     className={`${styles.normal} ${e === regionName && styles.active} `}> {e}</div>);
                 })}
@@ -111,6 +114,12 @@ class AllStation extends Component {
 
             </div>
           }
+          {stationTypeCount === 'multiple' && stationType === '2' && <Allstation {...this.props} />}
+          {stationTypeCount === 'multiple' && stationType === '0' && <WindStation {...this.props} />}
+          {stationTypeCount === 'multiple' && stationType === '1' && <PvStation {...this.props} />}
+          {stationTypeCount === 'wind' && <WindStation {...this.props} />}
+          {stationTypeCount === 'pv' && <PvStation {...this.props} />}
+          {stationTypeCount === 'none' && <div className={styles.noData}> </div>}
         </div>
         <Footer theme={this.props.theme} />
       </div>

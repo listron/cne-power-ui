@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import { Tooltip } from 'antd';
 import OwnProgress from '../../../../Common/OwnProgress/index';
-import { deviceValueFormat, divideFormarts, multiplyFormarts } from '../../PvCommon/PvDataformat';
+import { deviceValueFormat, divideFormarts, multiplyFormarts, transferCapacityUnit } from '../../PvCommon/PvDataformat';
 
 class pvStationHeader extends React.Component {
   static propTypes = {
@@ -15,13 +15,19 @@ class pvStationHeader extends React.Component {
   }
 
 
+
   render() {
     // 默认传过来的数据是 发电量是kW 装机容量 MW 实时功率 kW 小数根据数据计算
     const { pvMonitorStation, monitorPvUnit, theme } = this.props;
     const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
     const { stationDataSummary = {} } = pvMonitorStation;
-    const stationPower = divideFormarts(stationDataSummary.stationPower, realTimePowerUnit);
-    const stationCapacity = realCapacityUnit === 'MW' ? stationDataSummary.stationCapacity : multiplyFormarts(stationDataSummary.stationCapacity, 1000);
+    //此处的逻辑：主要依据装机容量的单位，比如说装机容量是MW那么实时功率就是MW，
+    //并且当装机容量的值小于1的时候，单位变为kW，实时功率要跟着变
+    //后台的接口返回的实时功率数据是kW的值，返回的装机容量是MW的值，所以需要换算
+    const showCapacityUnit = transferCapacityUnit(stationDataSummary.stationCapacity, realCapacityUnit);//计算装机容量的单位
+    const stationPower = divideFormarts(stationDataSummary.stationPower, showCapacityUnit);//转换实时功率的值
+    const stationCapacity = showCapacityUnit === 'MW' ? stationDataSummary.stationCapacity : multiplyFormarts(stationDataSummary.stationCapacity, 1000);//转换装机容量的值
+
     const stationUnitCount = stationDataSummary.stationUnitCount;
     const stationSize = stationDataSummary.stationSize;
     // const instantaneous = stationDataSummary.instantaneous;
@@ -32,14 +38,15 @@ class pvStationHeader extends React.Component {
     const equivalentHours = stationDataSummary.equivalentHours;
     const equivalentHoursValidation = stationDataSummary.equivalentHoursValidation;
     const yearRate = stationDataSummary.yearRate;
-    const percent = (stationDataSummary.stationPower && stationCapacity) ? (stationDataSummary.stationPower / multiplyFormarts(stationDataSummary.stationCapacity, 1000)) * 100 : 0;
+    const percent = (stationDataSummary.stationPower && stationCapacity) ? (stationPower / stationCapacity) * 100 : 0;
+    // const percent = (stationDataSummary.stationPower && stationCapacity) ? (stationDataSummary.stationPower / multiplyFormarts(stationDataSummary.stationCapacity, 1000)) * 100 : 0;
     return (
       <div className={`${styles.headStation}`} >
         <div className={`${styles.leftIcon}`}> <span className={'iconfont icon-pvlogo'}></span> </div>
         <div className={styles.dataColumn}>
           <div className={styles.stationPower}>
-            <div> <span className={styles.dataValue}>{deviceValueFormat(stationPower, '--', 2)}</span>{realTimePowerUnit}</div>
-            <div> <span className={styles.dataValue}>{deviceValueFormat(stationCapacity, '--', 2)}</span>{realCapacityUnit}</div>
+            <div> <span className={styles.dataValue}>{deviceValueFormat(stationPower, '--', 2)}</span>{showCapacityUnit}</div>
+            <div> <span className={styles.dataValue}>{deviceValueFormat(stationCapacity, '--', 2)}</span>{showCapacityUnit}</div>
           </div>
           <OwnProgress percent={percent} active={true} theme={theme} />
           <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>

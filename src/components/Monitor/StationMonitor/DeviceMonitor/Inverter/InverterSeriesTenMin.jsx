@@ -67,14 +67,14 @@ class InverterSeriesTenMin extends Component {
       };
     });
     // 遍历选中支路数组
-    if(pointNameArr.length > 0) {
+    if (pointNameArr.length > 0) {
       this.HLColors = ['#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999'];
       pointNameArr.forEach(item => {
         this.HLColors[item.pointIndex] = item.bgcColor;
       });
     }
-    if(pointNameArr.length === 0) {
-      this.HLColors = ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34']
+    if (pointNameArr.length === 0) {
+      this.HLColors = ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34'];
     }
     const seriesInverterGraphic = chartsNodata(!(time.length === 0), theme);
     const option = {
@@ -84,14 +84,14 @@ class InverterSeriesTenMin extends Component {
         data: ['离散率', ...hlArr.map(e => `HL#${`${e}`.padStart(2, '0')}`)],
         top: 24,
         itemWidth: 20,
-        itemHeight: 4,
+        itemHeight: 6,
       },
       tooltip: {
         show: true,
         trigger: 'axis',
         axisPointer: {
           crossStyle: {
-            width: 1,
+            width: 3,
             type: 'dotted',
           },
         },
@@ -115,10 +115,10 @@ class InverterSeriesTenMin extends Component {
           );
         },
       },
-      grid: {
-        top: 95,
-        containLabel: true,
-      },
+      // grid: {
+      //   top: 95,
+      //   containLabel: true,
+      // },
       xAxis: {
         type: 'category',
         data: timeFormatArr,
@@ -159,9 +159,10 @@ class InverterSeriesTenMin extends Component {
         {
           name: '离散率',
           type: 'line',
+          showSymbol: false,
           lineStyle: {
             type: 'dotted',
-            width: 1,
+            width: 3,
           },
           label: {
             normal: {
@@ -180,13 +181,14 @@ class InverterSeriesTenMin extends Component {
     time.length > 0 && (option.dataZoom = [
       {
         show: true,
-        zoomLock: true,
+        // zoomLock: true,
         start: 90,
         end: 100,
+        height: '16px',
       }, {
         type: 'inside',
         start: 90,
-        zoomLock: true,
+        // zoomLock: true,
         end: 100,
       },
     ]);
@@ -196,7 +198,7 @@ class InverterSeriesTenMin extends Component {
 
   render() {
     return (
-      <div id="seriesInverter_monitor_tenMin" style={{ height: '335px', marginTop: '20px' }} />
+      <div id="seriesInverter_monitor_tenMin" style={{ height: '335px', marginTop: '10px' }} />
     );
   }
 }

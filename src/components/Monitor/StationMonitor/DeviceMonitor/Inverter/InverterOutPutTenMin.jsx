@@ -72,7 +72,7 @@ class InverterOutPutTenMin extends Component {
             <div class=${styles.header}>${showTime.name || ''}</div>
             ${param.map((e, i) => (
             `<div class=${styles.eachInfo}>
-                <span class=${styles.extraTip} style="color: ${colorGroup[i]}"></span>
+                <span class=${styles.extraTip} style="color: ${e.color}"></span>
                 <span class=${styles.name}>${e.seriesName}</span>
                 <span class=${styles.value}>${dataFormat(e.value, '--', 2)}</span>
               </div>`
@@ -120,30 +120,57 @@ class InverterOutPutTenMin extends Component {
           type: 'line',
           yAxisIndex: 0,
           data: dcPowerData,
+          showSymbol: false,
+          lineStyle: {
+            width: 3,
+          },
+          z: 2,
         }, {
           name: '交流侧功率',
           type: 'line',
           yAxisIndex: 0,
           data: acPowerData,
+          showSymbol: false,
+          lineStyle: {
+            width: 3,
+          },
+          z: 2,
         }, {
           name: '瞬时辐照',
           type: 'line',
           yAxisIndex: 1,
           data: radiationLineData,
+          showSymbol: false,
+          lineStyle: {
+            width: 3,
+          },
+          areaStyle: {
+            normal: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: 'rgba(249,182,0,0.4)',
+              }, {
+                offset: 1,
+                color: 'rgba(249,182,0,0.1)',
+
+              }]),
+            },
+          },
+          z: 1,
         },
       ],
     };
     deviceTenMin.length > 0 && (option.dataZoom = [
       {
         show: true,
-        zoomLock: true,
+        // zoomLock: true,
         start: 90,
         end: 100,
         height: '16px',
       }, {
         type: 'inside',
         start: 90,
-        zoomLock: true,
+        // zoomLock: true,
         end: 100,
       },
     ]);

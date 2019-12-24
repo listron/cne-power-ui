@@ -120,7 +120,7 @@ class BoxtransformerTenMin extends Component {
           lineStyle: {
             type: 'solid',
             color: '#c57576',
-            width: 1,
+            width: 3,
           },
           itemStyle: {
             opacity: 0,
@@ -137,6 +137,8 @@ class BoxtransformerTenMin extends Component {
           },
           yAxisIndex: 0,
           data: powerLineData,
+          zlevel: 9,
+          z: 9,
         },
         {
           name: '瞬时辐照',
@@ -145,7 +147,7 @@ class BoxtransformerTenMin extends Component {
           lineStyle: {
             type: 'dotted',
             color: '#199475',
-            width: 1,
+            width: 3,
           },
           itemStyle: {
             color: '#199475',
@@ -155,7 +157,10 @@ class BoxtransformerTenMin extends Component {
             normal: {
               show: false,
             },
+            z: 1,
+            zlevel: 1,
           },
+
           yAxisIndex: 1,
           data: instantaneousData,
         },
