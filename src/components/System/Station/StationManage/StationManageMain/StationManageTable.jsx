@@ -174,7 +174,7 @@ class StationManageTable extends Component {
   render(){
     const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize  } = this.props;
     const { departmentModal, departmentSetInfo, uploading, fileList ,showWarningTip, warningTipText,deleteInfo} = this.state;
-    // const authData = localStorage.getItem('authData') || '';
+    const authData = localStorage.getItem('authData') || '';
     const stationOperation = handleRight('station_export');
     const column = [
       {
@@ -234,7 +234,7 @@ class StationManageTable extends Component {
               action={`${path.basePaths.APIBasePath}${path.APISubPaths.system.uploadStationFile}`}
               className={styles.uploadStation}
               onChange={this.onStationUpload}
-              headers={{'Authorization': 'bearer ' + stationOperation}}
+              headers={{'Authorization': 'bearer ' + authData}}
               beforeUpload={this.beforeUploadStation}
               data={(file)=>({file})}
               showUploadList={false}
