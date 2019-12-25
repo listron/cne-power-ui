@@ -93,4 +93,8 @@ export const monitorRoute = [
   ...data,
   //...report,
   ...alarm,
+  { // 
+    path: '/monitor/diagnoseCenter',
+    component: lazy(() => import('../../containers/Monitor/DiagnoseCenter/DiagnoseCenter')),
+  },
 ];
