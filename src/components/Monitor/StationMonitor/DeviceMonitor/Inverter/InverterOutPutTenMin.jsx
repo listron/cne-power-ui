@@ -3,7 +3,7 @@ import echarts from 'echarts';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import styles from './inverter.scss';
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { dataFormat, chartsInterval } from '../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
 
@@ -39,10 +39,14 @@ class InverterOutPutTenMin extends Component {
     const acPowerData = [], dcPowerData = [], radiationLineData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e => {
       xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm'));
-      acPowerData.push(e.acPower); // 交流侧功率
-      dcPowerData.push(e.dcPower); // 直流侧功率
+      acPowerData.push(+e.acPower); // 交流侧功率
+      dcPowerData.push(+e.dcPower); // 直流侧功率
       radiationLineData.push(e.instantaneous);
     });
+    const maxArr = [...new Set(dcPowerData), ...new Set(acPowerData)];
+    const yAxisInterval = chartsInterval(maxArr, 5);
+    const { max = null, interval } = yAxisInterval;
+
     const filterStationPower = deviceTenMin.filter(e => e.acPower);
     const filterInstantaneous = deviceTenMin.filter(e => e.dcPower);
     const inverterTenMinGraphic = (filterStationPower.length === 0 && filterInstantaneous.length === 0);
@@ -98,8 +102,12 @@ class InverterOutPutTenMin extends Component {
         {
           name: '功率(kW)',
           splitLine: {
-            show: false,
+            show: true,
           },
+          max: max,
+          min: 0,
+          // splitNumber: 5,
+          interval: interval,
           axisTick: {
             show: false,
           },
@@ -121,9 +129,6 @@ class InverterOutPutTenMin extends Component {
           yAxisIndex: 0,
           data: dcPowerData,
           showSymbol: false,
-          lineStyle: {
-            width: 3,
-          },
           z: 2,
         }, {
           name: '交流侧功率',
@@ -131,9 +136,6 @@ class InverterOutPutTenMin extends Component {
           yAxisIndex: 0,
           data: acPowerData,
           showSymbol: false,
-          lineStyle: {
-            width: 3,
-          },
           z: 2,
         }, {
           name: '瞬时辐照',
@@ -141,9 +143,6 @@ class InverterOutPutTenMin extends Component {
           yAxisIndex: 1,
           data: radiationLineData,
           showSymbol: false,
-          lineStyle: {
-            width: 3,
-          },
           areaStyle: {
             normal: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{

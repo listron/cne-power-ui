@@ -3,6 +3,7 @@ import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from '../eachDeviceMonitor.scss';
+import { chartsInterval } from '../../../../../utils/utilFunc';
 import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
 class ConfluenceTenMin extends Component {
   static propTypes = {
@@ -53,6 +54,9 @@ class ConfluenceTenMin extends Component {
     HLData = HLData.map((e, i) => {
       return conflenceData.map(inner => inner[i]);
     });
+    const maxArr = HLData.flat(2);
+    const yAxisInterval = chartsInterval(maxArr, 5);
+    const { max = null, interval } = yAxisInterval;
     // 遍历选中支路数组
     if (pointNameArr.length > 0) {
       this.HLColors = ['#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999'];
@@ -156,8 +160,11 @@ class ConfluenceTenMin extends Component {
       yAxis: [
         {
           name: '电流(A)',
+          max: max,
+          min: 0,
+          interval: interval,
           splitLine: {
-            show: false,
+            show: true,
           },
           axisTick: {
             show: false,
@@ -179,7 +186,7 @@ class ConfluenceTenMin extends Component {
           type: 'line',
           lineStyle: {
             type: 'dotted',
-            width: 3,
+            width: 1,
           },
           label: {
             normal: {
@@ -201,6 +208,7 @@ class ConfluenceTenMin extends Component {
         // zoomLock: true,
         start: 90,
         end: 100,
+        height: '16px',
       }, {
         type: 'inside',
         start: 90,

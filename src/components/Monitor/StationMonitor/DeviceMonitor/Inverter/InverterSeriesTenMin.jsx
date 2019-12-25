@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from '../eachDeviceMonitor.scss';
 import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
+import { chartsInterval } from '../../../../../utils/utilFunc';
 
 
 class InverterSeriesTenMin extends Component {
@@ -43,6 +44,10 @@ class InverterSeriesTenMin extends Component {
     const { index = [], time = [], rate = [] } = branchTenMin;
     const timeFormatArr = time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
     const hlArr = index.filter(e => e > 0); // 取出正确的组串标识对应索引。
+    const dataArr = hlArr.map((e => branchTenMin[e]));
+    const maxArr = dataArr.flat(2);
+    const yAxisInterval = chartsInterval(maxArr, 5);
+    const { max = null, interval } = yAxisInterval;
     // 选中的支路下标, 高亮选中的那条线
     const selectPointIndex = pointNameArr && pointNameArr.length > 0 ? pointNameArr[0].pointIndex : '';
     const hlSeries = hlArr.map((e, i) => {
@@ -91,7 +96,7 @@ class InverterSeriesTenMin extends Component {
         trigger: 'axis',
         axisPointer: {
           crossStyle: {
-            width: 3,
+            width: 1,
             type: 'dotted',
           },
         },
@@ -130,8 +135,11 @@ class InverterSeriesTenMin extends Component {
         {
           name: '电流(A)',
           splitLine: {
-            show: false,
+            show: true,
           },
+          max: max,
+          min: 0,
+          interval: interval,
           axisLine: {
             lineStyle: {
               color: '#d4d4d4',
@@ -162,7 +170,7 @@ class InverterSeriesTenMin extends Component {
           showSymbol: false,
           lineStyle: {
             type: 'dotted',
-            width: 3,
+            width: 1,
           },
           label: {
             normal: {
