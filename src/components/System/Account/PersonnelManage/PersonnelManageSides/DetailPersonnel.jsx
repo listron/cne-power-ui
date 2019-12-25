@@ -108,22 +108,24 @@ class PersonnelManageSides extends Component {
             ))}
             <div>
             <div className={styles.enterpriseDepartment}>
-              <h4>企业-部门(负责电站)</h4>
+              <h4 className={styles.enterpriseTitle}>企业-部门(负责电站)</h4>
               {enterpriseList.map(enterprise => {
                 const { enterpriseName = '--', departmentData } = enterprise || {};
                 const departmentList = departmentData || [];
                 return (
                   <div className={styles.eachEnterprise} key={enterpriseName}>
-                    <span className={styles.enterpriseName}>{enterpriseName || '--'} : </span>
                     {departmentList.map(depart => { // 企业下部门列表
                       const { departmentName, parentDepartmentName, stationData } = depart || {};
                       const stationList = stationData || [];
                       return ( // 每个部门 负责的电站
-                        <div className={styles.eachDepartment} key={departmentName}>
-                          <span>{parentDepartmentName ? `${parentDepartmentName}-` : ''}</span>
-                          <span>{departmentName || '--'}</span>
-                          <span>(负责电站: {stationList.map(e => e.stationName).join(', ')})</span>
-                        </div>
+                        <section className={styles.eachDepartment} key={departmentName}>
+                          <h4 className={styles.departmentTitle}>
+                            <span className={styles.enterpriseName}>{`${enterpriseName}-` || ''}</span>
+                            <span>{parentDepartmentName ? `${parentDepartmentName}-` : ''}</span>
+                            <span>{departmentName || '--'}</span>
+                          </h4>
+                          <div className={styles.departmentStations}>负责电站: {stationList.map(e => e.stationName).join(', ')}</div>
+                        </section>
                       );
                     })}
                   </div>

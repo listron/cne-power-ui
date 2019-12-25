@@ -80,17 +80,21 @@
     .doshLine{
       height: 1px;
     }
+    .enterpriseDepartment{
+      margin-top: 21px;
+    }
     .eachEnterprise{
-      display: flex;
-      .enterpriseName{
-        flex: 0 0 150px;
-        text-align: right;
-        @include overflowText();
-      }
+      padding: 0 24px;
       .eachDepartment{
         flex: 1;
         word-break: break-all;
         line-height: 30px;
+      }
+      .departmentTitle{
+        margin-bottom: 0;
+      }
+      .departmentStations{
+        padding: 0 24px;
       }
     }
   }
@@ -159,6 +163,14 @@
   .rightContent{
     .doshLine{
       border-top: 1px dashed $promptColor;
+    }
+  }
+  .eachEnterprise{
+    .departmentTitle{
+      color: rgba(0, 0, 0, 0.85);
+    }
+    .departmentStations{
+      padding: 0 24px;
     }
   }
 }
