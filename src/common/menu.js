@@ -126,6 +126,11 @@ const menuData = [
           //   rightKey: 'monitor_alarm_statistics',
           // }
         ],
+      }, {
+        name: '诊断中心',
+        iconStyle: 'icon-monitoring',
+        path: 'diagnoseCenter',
+        rightKey: 'monitor_powerCurve',
       },
     ],
   },
