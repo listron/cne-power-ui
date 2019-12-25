@@ -1159,6 +1159,111 @@
       "font_class": "bumenx",
       "unicode": "e6f1",
       "unicode_decimal": 59121
+    },
+    {
+      "icon_id": "12362568",
+      "name": "alert",
+      "font_class": "alert",
+      "unicode": "e6f2",
+      "unicode_decimal": 59122
+    },
+    {
+      "icon_id": "12441233",
+      "name": "newbuilt",
+      "font_class": "newbuilt",
+      "unicode": "e6f3",
+      "unicode_decimal": 59123
+    },
+    {
+      "icon_id": "12441234",
+      "name": "closeall",
+      "font_class": "closeall",
+      "unicode": "e6f4",
+      "unicode_decimal": 59124
+    },
+    {
+      "icon_id": "12441235",
+      "name": "powerstations",
+      "font_class": "powerstations",
+      "unicode": "e6f5",
+      "unicode_decimal": 59125
+    },
+    {
+      "icon_id": "12441236",
+      "name": "export",
+      "font_class": "export",
+      "unicode": "e6f6",
+      "unicode_decimal": 59126
+    },
+    {
+      "icon_id": "12441237",
+      "name": "save",
+      "font_class": "save",
+      "unicode": "e6f7",
+      "unicode_decimal": 59127
+    },
+    {
+      "icon_id": "12441238",
+      "name": "goset",
+      "font_class": "goset1",
+      "unicode": "e6f8",
+      "unicode_decimal": 59128
+    },
+    {
+      "icon_id": "12445250",
+      "name": "hulue",
+      "font_class": "hulue",
+      "unicode": "e6f9",
+      "unicode_decimal": 59129
+    },
+    {
+      "icon_id": "12445251",
+      "name": "paifa",
+      "font_class": "paifa",
+      "unicode": "e6fa",
+      "unicode_decimal": 59130
+    },
+    {
+      "icon_id": "12445252",
+      "name": "zhank",
+      "font_class": "zhank",
+      "unicode": "e6fb",
+      "unicode_decimal": 59131
+    },
+    {
+      "icon_id": "12445253",
+      "name": "chexiao",
+      "font_class": "chexiao",
+      "unicode": "e6fc",
+      "unicode_decimal": 59132
+    },
+    {
+      "icon_id": "12445255",
+      "name": "shouq",
+      "font_class": "shouq",
+      "unicode": "e6fd",
+      "unicode_decimal": 59133
+    },
+    {
+      "icon_id": "12450165",
+      "name": "yhulue",
+      "font_class": "yhulue",
+      "unicode": "e6fe",
+      "unicode_decimal": 59134
+    },
+    {
+      "icon_id": "12450166",
+      "name": "ywancheng",
+      "font_class": "ywancheng",
+      "unicode": "e6ff",
+      "unicode_decimal": 59135
+    },
+    {
+      "icon_id": "12520605",
+      "name": "zhenduan",
+      "font_class": "zhenduan",
+      "unicode": "e700",
+      "unicode_decimal": 59136
     }
   ]
 }
