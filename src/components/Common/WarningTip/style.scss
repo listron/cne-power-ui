@@ -7,11 +7,14 @@
     // background-color: #fff;
     padding: 16px 16px 0 16px;
     .textArea {
+      display: flex;
+      align-items: flex-start;
       .icon {
         // background-color: #f9b600;
         border-radius: 50%;
         // color: #fff;
         margin-right: 8px;
+        margin-top: 2px;
       }
       .text {
         // color: $darkColor;

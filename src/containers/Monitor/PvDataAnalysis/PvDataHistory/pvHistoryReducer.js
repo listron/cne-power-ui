@@ -24,8 +24,8 @@ const initState = Immutable.fromJS({
   queryParam: { // 请求chart数据的参数集合
     stationCode: null, // 选中的电站
     deviceFullCodes: [], // 选中的设备
-    startTime: moment().subtract(1, 'day').startOf('day'),
-    endTime: moment().subtract(1, 'day').endOf('day'),
+    startTime: moment().startOf('day').format(),
+    endTime: moment().format(),
     devicePoints: [], // 选中的测点
     timeInterval: 10, // 数据时间间隔:1-1s, 5-5s, 10-10min;
   },
@@ -36,8 +36,8 @@ const initState = Immutable.fromJS({
     pageSize: 10, // 每页条数
   },
   historyType: 'chart', // 数据展示方式，'chart'图 / 'list'表格
-  recordedMinuteStart: moment().subtract(1, 'day').startOf('day'), // 记录10min起始时间
-  recordedMinuteEnd: moment().subtract(1, 'day').endOf('day'), // 记录10min终止时间
+  recordedMinuteStart: moment().startOf('day').format(), // 记录10min起始时间
+  recordedMinuteEnd: moment().format(), // 记录10min终止时间
 
   stationDeviceTypes: [], // 电站下可选设备类型
   intervalInfo: [10, 5], // 默认支持的时间间隔 5s, 10min
@@ -49,7 +49,7 @@ const initState = Immutable.fromJS({
 
 const pvDataHistory = (state = initState, action) => {
   switch (action.type) {
-    case pvHistoryAction.GET_HISTORY_SUCCESS :
+    case pvHistoryAction.GET_HISTORY_SUCCESS:
       return state.merge(Immutable.fromJS(action.payload));
     case pvHistoryAction.CHANGE_HISTORY_STORE:
       return state.merge(Immutable.fromJS(action.payload));
@@ -59,4 +59,4 @@ const pvDataHistory = (state = initState, action) => {
   return state;
 };
 
-export {pvHistoryAction, pvDataHistory};
+export { pvHistoryAction, pvDataHistory };

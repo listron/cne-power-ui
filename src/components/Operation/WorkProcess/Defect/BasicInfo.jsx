@@ -30,7 +30,7 @@ class DefectBasicInfo extends Component {
     const { defectId, dockerDetail = {} } = nextProps.defectDetail;
     const preDetail = this.props.dockerDetail.detail || [];
     const detail = dockerDetail || [];
-    if (defectId !== this.props.defectDetail.defectId || detail.length !== preDetail.length) {
+    if (defectId !== this.props.defectDetail.defectId || (detail.length !== preDetail.length && detail.length > 0)) {
       return true;
     }
     return false;

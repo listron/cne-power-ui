@@ -61,6 +61,8 @@ class InspectTimeLine extends Component {
     switch (flowType) {
       case 2:
         return <i className="iconfont icon-begin" />;
+      case 3:
+        return <i className="iconfont icon-doing" />;
       case 4:
         return <i className="iconfont icon-review" />;
       case 5:
@@ -133,7 +135,7 @@ class InspectTimeLine extends Component {
                   {item.flowType === 2 &&
                     (<div className={styles.descStyle}>
                       <div className={styles.flowName}>巡检描述</div>
-                      <span>{inspectdescribe}</span>
+                      <div>{inspectdescribe}</div>
                     </div>)}
                   {item.flowType === 5 && (
                     <div className={styles.descStyle}>
@@ -167,8 +169,8 @@ class InspectTimeLine extends Component {
                             <div className={styles.matrixe}>
                               <div>其他缺陷</div>
                               <div className={styles.rightCont}>
-                                <span>缺陷<span className={styles.numStyle}>{otherDefectIds.length}</span></span>
-                                <span onClick={() => this.openOther(index)}>{(openOther && curOther === index) ? <Icon type="caret-down" /> : <Icon type="caret-right" />}</span>
+                                <span>缺陷<span className={styles.numStyle}>{`  ${otherDefectIds.length}`}</span></span>
+                                <span onClick={() => this.openOther(index)}>{(openOther && curOther === index) ? <Icon type="down" /> : <Icon type="right" />}</span>
                               </div>
                             </div>
                             {(openOther && curOther === index) &&
