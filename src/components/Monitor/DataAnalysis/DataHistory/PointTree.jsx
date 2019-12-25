@@ -21,6 +21,7 @@ class PointTree extends Component {
   state = {
     halfCheckedKeys: [],
     expandedKeys: [],
+    selectPointArr: [],
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,8 +34,56 @@ class PointTree extends Component {
     }
   }
 
-  expandTree = (expandedKeys) => {
+  expandTree = (expandedKeys, expanded) => {
     this.setState({ expandedKeys });
+    if(expanded.expanded){
+      if(expandedKeys.length>0){
+          expandedKeys.splice(0, expandedKeys.length-1);
+      }
+      this.setState({
+          expandedKeys: expandedKeys,
+      });
+    }else{
+     const key = expanded.node.props.children.map((obj, index)=>{
+        if(expandedKeys.indexOf(obj.key)>-1){
+            return obj.key;
+        }
+        return '';
+      }).filter((v, index)=> v!== '');
+      //index  是点击收起节点的下级展开节点
+      const index = expandedKeys.indexOf(key[0]); //因为展开的时候会收起兄弟节点  所以这里应该只有一个
+      if(index>0){
+          expandedKeys.splice(0, index + 1); //从0开始  删除到点击的下一级已展开节点
+      }
+      this.setState({
+        expandedKeys: expandedKeys,
+      });
+    }
+  }
+  selectPoint = (selectedKeys, e) => {
+    const { queryParam, listParam, getChartHistory, getListHistory, changeHistoryStore } = this.props;
+    const { selectPointArr } = this.state;
+    const newSelectPointArr = new Set(selectPointArr);
+    if (selectPointArr.includes(e.node.props.eventKey)) {
+      newSelectPointArr.delete(e.node.props.eventKey);
+    } else {
+      newSelectPointArr.add(e.node.props.eventKey);
+    }
+    this.setState({
+      selectPointArr: [...newSelectPointArr],
+    });
+    const newQueryParam = {
+      ...queryParam,
+      devicePoints: [...newSelectPointArr],
+    };
+    changeHistoryStore({
+      queryParam: newQueryParam,
+    });
+    getChartHistory({ queryParam: newQueryParam });
+    getListHistory({
+      queryParam: newQueryParam,
+      listParam,
+    });
   }
 
   pointSelect = (selectedKeys, { halfCheckedKeys }) => {
@@ -49,6 +98,7 @@ class PointTree extends Component {
     // }
     this.setState({
       halfCheckedKeys,
+      selectPointArr: selectedKeys,
     });
     const { queryParam, listParam, getChartHistory, getListHistory, changeHistoryStore } = this.props;
     const { startTime, endTime, timeInterval } = queryParam;
@@ -137,6 +187,7 @@ class PointTree extends Component {
         <Tree
           checkable
           onCheck={this.pointSelect}
+          onSelect={this.selectPoint}
           onExpand={this.expandTree}
           expandedKeys={expandedKeys}
           checkedKeys={{

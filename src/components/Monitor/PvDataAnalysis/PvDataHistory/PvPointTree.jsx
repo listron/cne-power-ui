@@ -6,10 +6,6 @@ import styles from './pvHistoryStyle.scss';
 
 const {TreeNode} = Tree;
 
-const selectpoints = [];
-const resultPoints = [];
-let selectAllPoints = [];
-
 class PvPointTree extends Component {
 
   static propTypes = {
@@ -25,9 +21,7 @@ class PvPointTree extends Component {
   state = {
     halfCheckedKeys: [],
     expandedKeys: [],
-    // selectpoints: [],
-    // resultPoints: [],
-    // selectAllPoints: [],
+    selectPointArr: [],
   };
 
   componentWillReceiveProps(nextProps) {
@@ -49,27 +43,28 @@ class PvPointTree extends Component {
       this.setState({
           expandedKeys: expandedKeys,
       });
- }else{
+    }else{
      const key = expanded.node.props.children.map((obj, index)=>{
-         if(expandedKeys.indexOf(obj.key)>-1){
-             return obj.key;
-         }
-         return '';
-     }).filter((v, index)=> v!== '');
-     //index  是点击收起节点的下级展开节点
-     const index = expandedKeys.indexOf(key[0]); //因为展开的时候会收起兄弟节点  所以这里应该只有一个
-     if(index>0){
-         expandedKeys.splice(0, index + 1); //从0开始  删除到点击的下一级已展开节点
-     }
-    this.setState({
-      expandedKeys: expandedKeys,
-   });
- }
+        if(expandedKeys.indexOf(obj.key)>-1){
+            return obj.key;
+        }
+        return '';
+      }).filter((v, index)=> v!== '');
+      //index  是点击收起节点的下级展开节点
+      const index = expandedKeys.indexOf(key[0]); //因为展开的时候会收起兄弟节点  所以这里应该只有一个
+      if(index>0){
+          expandedKeys.splice(0, index + 1); //从0开始  删除到点击的下一级已展开节点
+      }
+      this.setState({
+        expandedKeys: expandedKeys,
+      });
+    }
   };
 
   pointSelect = (selectedKeys, {halfCheckedKeys}) => {
     this.setState({
       halfCheckedKeys,
+      selectPointArr: selectedKeys,
     });
     const {queryParam, listParam, getChartHistory, getListHistory, changeHistoryStore} = this.props;
     const {startTime, endTime, timeInterval} = queryParam;
@@ -92,22 +87,25 @@ class PvPointTree extends Component {
     }
   };
 
-  onSelect = (selectedKeys, event) => {
-    const arr1 = selectpoints.push(selectedKeys); // selectedKeys是选中的测点，将selectedKeys放进selectpoints数组中
-    selectpoints.forEach(e => resultPoints.push(...e)); // 由于selectedKeys本身是数组，所以遍历出测点元素放进一个全新的数组中
-    selectAllPoints = new Set(resultPoints); // 数组去重
-    let allPoints = [...selectAllPoints]; // 数组去重后成为了对象，再解构成数组
-
-    if (selectedKeys.length === 0) { // 当选中的测点和数组里的元素重复时删除重复值
-      this.selectedPointfunc(allPoints, event.node.props.eventKey);
-    }
-
+  onSelect = (selectedKeys, e) => {
     const {queryParam, listParam, getChartHistory, getListHistory, changeHistoryStore} = this.props;
     const {startTime, endTime, timeInterval} = queryParam;
+    const { selectPointArr } = this.state;
+    const newSelectPointArr = new Set(selectPointArr);
+    if (selectPointArr.includes(e.node.props.eventKey)) {
+      newSelectPointArr.delete(e.node.props.eventKey);
+    } else {
+      newSelectPointArr.add(e.node.props.eventKey);
+    }
+    this.setState({
+      selectPointArr: [...newSelectPointArr],
+    });
     const newQueryParam = {
       ...queryParam,
-      devicePoints: allPoints,
+      devicePoints: [...newSelectPointArr],
     };
+
+
     const tmpAllowedEnd = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
     if (startTime.isBefore(tmpAllowedEnd, 's')) {
       message.error(`${timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}`);
@@ -120,17 +118,6 @@ class PvPointTree extends Component {
         queryParam: newQueryParam,
         listParam,
       });
-    }
-  }
-
-  selectedPointfunc(allPoints, pointKey){ // 去重函数
-    if (allPoints.includes(pointKey)) {
-      allPoints.forEach((item, index) => {
-        if (item === pointKey) {
-          allPoints.splice(index, 1);
-        }
-      });
-      return allPoints;
     }
   }
 

@@ -111,36 +111,37 @@ class PvHistoryChart extends Component {
   });
 
   legendSeriesCreate = (pointData, deviceInfo) => { // 嵌套遍历生成相关的series 与legend;
-    console.log('deviceInfo: ', deviceInfo);
-    console.log('pointData: ', pointData);
     const series = [], legend = [];
     const deviceNum = deviceInfo.length || 0;
     const pointNum = pointData.length || 0;
     pointData.forEach((point, index) => {
+      const pointDeciceName = Object.keys(point.pointInfo);
       deviceInfo.forEach((device, deviceIndex) => {
-        const mapNumber = index * deviceNum + deviceIndex; // 属于所有数据中的顺序
-        const lengendName = `${point.pointName}-${device.deviceName}`;
-        legend.push({
-          top: 72 + 160 * pointNum + 24 * parseInt(mapNumber / 4, 0),
-          left: `${4 + (mapNumber % 4) * 23}%`,
-          textStyle: {
-            fontSize: 12,
-            color: '#353535',
-          },
-          data: [lengendName],
-        });
-        series.push({
-          name: lengendName,
-          xAxisIndex: index,
-          yAxisIndex: index,
-          type: 'line',
-          symbol: 'circle',
-          showSymbol: false,
-          lineStyle: {
-            width: 3,
-          },
-          data: point.pointInfo[device.deviceCode] || [],
-        });
+        if (pointDeciceName.includes(device.deviceCode)) {
+          const mapNumber = index; // 属于所有数据中的顺序
+          const lengendName = `${point.pointName}-${device.deviceName}`;
+          legend.push({
+            top: 72 + 160 * pointNum + 24 * parseInt(mapNumber / 4, 0),
+            left: `${4 + (mapNumber % 4) * 23}%`,
+            textStyle: {
+              fontSize: 12,
+              color: '#353535',
+            },
+            data: [lengendName],
+          });
+          series.push({
+            name: lengendName,
+            xAxisIndex: index,
+            yAxisIndex: index,
+            type: 'line',
+            symbol: 'circle',
+            showSymbol: false,
+            lineStyle: {
+              width: 3,
+            },
+            data: point.pointInfo[device.deviceCode] || [],
+          });
+        }
       });
     });
     return { series, legend };
