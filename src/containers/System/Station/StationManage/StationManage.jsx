@@ -13,7 +13,7 @@ import Cookie from 'js-cookie';
 class StationManage extends Component {
   static propTypes = {
     showPage: PropTypes.string,
-    stationType: PropTypes.string, 
+    stationType: PropTypes.string,
     regionName: PropTypes.string,
     stationName: PropTypes.string,
     pageNum: PropTypes.number,
@@ -34,7 +34,7 @@ class StationManage extends Component {
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { enterpriseId } = this.props;
     this.props.getStationList({ // 初始请求电站列表
       stationType: "",
@@ -49,11 +49,11 @@ class StationManage extends Component {
     this.props.getAllDepartmentData({ enterpriseId }) // 2.请求所有部门
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.resetStore();
   }
 
-  onShowSideChange = ({showSidePage}) => {
+  onShowSideChange = ({ showSidePage }) => {
     this.setState({ showSidePage });
   }
 
@@ -72,24 +72,24 @@ class StationManage extends Component {
     const { showSidePage } = this.state;
     return (
       <div className={styles.stationManageContainer}>
-        <CommonBreadcrumb  breadData={[{name: '电站管理'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
+        {/* <CommonBreadcrumb breadData={[{ name: '电站管理' }]} style={{ marginLeft: '38px', backgroundColor: '#fff' }} /> */}
         <div className={styles.stationManage}>
           <StationManageMain
             {...this.props}
             queryListParams={queryListParams}
           />
           <TransitionContainer
-            show={showPage!=='list'}
+            show={showPage !== 'list'}
             onEnter={this.onToggleSide}
             onExited={this.onToggleSide}
             timeout={500}
             effect="side"
           >
             <StationManageSide
-              {...this.props} 
+              {...this.props}
               showSidePage={showSidePage}
               queryListParams={queryListParams}
-              onShowSideChange={this.onShowSideChange} 
+              onShowSideChange={this.onShowSideChange}
             />
           </TransitionContainer>
         </div>
@@ -104,34 +104,34 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeStationManageStore: payload => dispatch({type:stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA, payload}),
-  getStationList: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_LIST, payload}),
-  getStationDetail: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_DETAIL, payload}),
-  getOtherPageStationDetail: payload => dispatch({type: stationManageAction.GET_OTHER_PAGE_STATION_MANAGE_DETAIL, payload}),
-  saveStationDetail: payload => dispatch({type: stationManageAction.EDIT_STATION_MANAGE_DETAIL, payload}),
-  deleteStation: payload => dispatch({type: stationManageAction.DELET_STATION_MANAGE, payload}),
-  setStationDepartment: payload => dispatch({type: stationManageAction.SET_STATION_MANAGE_DEPARTMENT, payload}),
+  changeStationManageStore: payload => dispatch({ type: stationManageAction.changeStationManageStore, payload }),
+  getStationList: payload => dispatch({ type: stationManageAction.GET_STATION_MANAGE_LIST, payload }),
+  getStationDetail: payload => dispatch({ type: stationManageAction.GET_STATION_MANAGE_DETAIL, payload }),
+  getOtherPageStationDetail: payload => dispatch({ type: stationManageAction.GET_OTHER_PAGE_STATION_MANAGE_DETAIL, payload }),
+  saveStationDetail: payload => dispatch({ type: stationManageAction.EDIT_STATION_MANAGE_DETAIL, payload }),
+  deleteStation: payload => dispatch({ type: stationManageAction.DELET_STATION_MANAGE, payload }),
+  setStationDepartment: payload => dispatch({ type: stationManageAction.SET_STATION_MANAGE_DEPARTMENT, payload }),
   resetStore: () => dispatch({ type: stationManageAction.resetStore }),
   getAllDepartmentData: params => dispatch({
     type: commonAction.getAllDepartment,
     payload: {
-      params, 
+      params,
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
-      resultName: 'allDepartmentData'
+      resultName: 'allDepartmentData',
     }
   }),
   getStationBelongTypes: params => dispatch({
     type: commonAction.getStationBelongTypes,
     payload: {
-      params, 
+      params,
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
       resultName: 'stationBelongInfo'
     }
   }),
-  getStationTargetInfo: ({params, resultName}) => dispatch({ // 省市县
+  getStationTargetInfo: ({ params, resultName }) => dispatch({ // 省市县
     type: commonAction.getStationTargetInfo,
     payload: {
-      params, 
+      params,
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
       resultName,
     }
