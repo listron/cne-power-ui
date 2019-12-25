@@ -127,20 +127,20 @@
 .light {
   color: $darkColor;
   .CleanoutPlanRecord {
-    background-color: #ececec;
+    background-color: #f0f2f5;
     .testBackground {
       background-color: #fff;
     }
     .detailTop {
-      border-bottom: 1px solid #ececec;
+      border-bottom: 1px solid #f0f2f5;
       .backIcon {
         border-left: solid 1px $promptColor;
       }
     }
     .statisticData {
-      border-bottom: 1px solid #ececec;
+      border-bottom: 1px solid #f0f2f5;
       .statisticTarget {
-        border-right: 1px solid #ececec;
+        border-right: 1px solid #f0f2f5;
         .numberColor {
           color: #199475;
         }

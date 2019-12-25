@@ -13,7 +13,6 @@ const { monitor } = path.APISubPaths;
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
-
 class HistorySearch extends Component {
   static propTypes = {
     stations: PropTypes.array,
@@ -21,12 +20,10 @@ class HistorySearch extends Component {
     stationTypeCount: PropTypes.string,
     recordedMinuteStart: PropTypes.object,
     recordedMinuteEnd: PropTypes.object,
-
     selectStationType: PropTypes.number, // 选中的电站类型
     deviceTypeCode: PropTypes.number, // 选中的设备类型
     queryParam: PropTypes.object,
     listParam: PropTypes.object,
-
     intervalInfo: PropTypes.array, // 可选时间间隔
     stationDeviceTypes: PropTypes.array, // 电站下可选设备类型
     changeHistoryStore: PropTypes.func,
@@ -61,28 +58,6 @@ class HistorySearch extends Component {
       this.selectedDevice([filterDevices[0]]);
     }
   }
-
-  onStationTypeChange = (selectStationType) => { // 存储选中电站类型，并重置数据。
-    const { changeHistoryStore, queryParam } = this.props;
-    changeHistoryStore({
-      selectStationType,
-      deviceTypeCode: null,
-      chartTime: null,
-      queryParam: {
-        ...queryParam,
-        stationCode: null,
-        deviceFullCodes: [],
-        devicePoints: [],
-      },
-      pointInfo: [], // 选中设备内可选测点信息。
-      allHistory: {}, // chart图 - 所有历史数据
-      partHistory: {}, // 表格内 - 分页后的历史数据
-    });
-  }
-
-  checkWind = () => this.onStationTypeChange(0) // 选中风电站
-
-  checkPv = () => this.onStationTypeChange(1) // 选中光伏电站
 
   selectStation = (selectedStationInfo) => { // 电站选择。
     const { getAvailableDeviceType, changeHistoryStore, queryParam } = this.props;
@@ -154,31 +129,6 @@ class HistorySearch extends Component {
     });
   }
 
-  // startChange = (nowStartTime) => {
-  //   const { queryParam } = this.props;
-  //   const { endTime, startTime } = queryParam;
-  //   if (moment(nowStartTime).isSame(startTime, 's')) {
-  //     return;
-  //   }
-  //   if (moment().isBefore(nowStartTime, 's')) {
-  //     nowStartTime = moment();
-  //   } else if (endTime && endTime.isBefore(nowStartTime, 's')) {
-  //     nowStartTime = moment(endTime);
-  //   }
-  //   this.historyDataFetch({ startTime: nowStartTime, endTime: null });
-  // }
-
-  // endChange = (endTime) => {
-  //   const { queryParam } = this.props;
-  //   const { startTime } = queryParam;
-  //   if (moment().isBefore(endTime, 's')) {
-  //     endTime = moment();
-  //   } else if (endTime.isBefore(startTime, 's')) {
-  //     endTime = moment(startTime);
-  //   }
-  //   this.historyDataFetch({ endTime });
-  // }
-
   createTimeArr = (start, end) => {
     const timeArr = [];
     for (let i = start; i < end; i += 1) {
@@ -195,7 +145,7 @@ class HistorySearch extends Component {
   }
 
   onCalendarChange = (dates) => {
-    console.log('dates: ', dates);
+
     if (dates.length === 1) {
       this.start = dates[0].format('YYYY-MM-DD');
     } else {
@@ -262,7 +212,6 @@ class HistorySearch extends Component {
     }
     return;
   }
-
   selectTimeSpace = (interval) => { // 间隔时间选择
     const { queryParam, changeHistoryStore, getPointInfo, recordedMinuteStart, recordedMinuteEnd, listParam, getChartHistory, getListHistory } = this.props;
     const { timeInterval, deviceFullCodes, devicePoints } = queryParam;
@@ -282,10 +231,7 @@ class HistorySearch extends Component {
         allHistory: {},
         partHistory: {},
       });
-      // getPointInfo({
-      //   deviceFullCodes,
-      //   timeInterval: interval,
-      // });
+
       getChartHistory({
         queryParam: {
           ...tmpQueryParam,
@@ -300,12 +246,11 @@ class HistorySearch extends Component {
         listParam,
       });
     } else if (timeInterval === 10) { // 10min数据切换至秒级数
-      // message.info('请重新选择设备和时间');
       changeHistoryStore({
         queryParam: {
           ...tmpQueryParam,
-          startTime: moment().subtract(1, 'day').startOf('day'),
-          endTime: moment().subtract(1, 'day').endOf('day'),
+          startTime: moment().startOf('day'),
+          endTime: moment().format(),
         },
         allHistory: {},
         partHistory: {},
@@ -317,8 +262,8 @@ class HistorySearch extends Component {
       getChartHistory({
         queryParam: {
           ...tmpQueryParam,
-          startTime: moment().subtract(1, 'day').startOf('day'),
-          endTime: moment().subtract(1, 'day').endOf('day'),
+          startTime: moment().startOf('day'),
+          endTime: moment().format(),
         },
       });
       getListHistory({
@@ -337,11 +282,14 @@ class HistorySearch extends Component {
     const { devicePoints } = queryParam;
     const tmpPayload = { queryParam: { ...queryParam, ...params } };
     const { startTime, endTime, timeInterval } = tmpPayload.queryParam;
+
     if (timeInterval === 10) {
       tmpPayload.recordedMinuteStart = startTime;
       tmpPayload.recordedMinuteEnd = endTime;
     }
     const tmpAllowedEnd = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
+
+
 
     if (startTime.isBefore(tmpAllowedEnd, 's')) {
       message.error(`${timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}`);
@@ -385,10 +333,13 @@ class HistorySearch extends Component {
 
   render() {
     const {
-      queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount, intervalInfo, downloading, partHistory,
-    } = this.props;
+      queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount, intervalInfo, downloading, partHistory } = this.props;
+
+
     const { dataList = [] } = partHistory;
     const { stationCode, startTime, endTime, timeInterval, deviceFullCodes } = queryParam;
+
+
     return (
       <div className={styles.historySearch}>
         <div className={styles.searchPart}>
@@ -441,42 +392,9 @@ class HistorySearch extends Component {
               onChange={this.onChangeTime}
               onCalendarChange={this.onCalendarChange}
             />
-            {/* <DatePicker
-              allowClear={false}
-              showToday={false}
-              format="YYYY-MM-DD HH:mm:ss"
-              onChange={this.startChange}
-              value={startTime}
-              disabledDate={this.disableStartDate}
-              disabledTime={this.disableStartTime}
-              dropdownClassName={styles.historyRangeDropdown}
-              renderExtraFooter={() => (
-                <span className={styles.infoTip}>
-                  {timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}
-                </span>
-              )}
-              showTime
-            /> */}
+
           </div>
-          {/* <div className={styles.endSelect}>
-            <span className={styles.text}>结束时间</span>
-            <DatePicker
-              allowClear={false}
-              showToday={false}
-              format="YYYY-MM-DD HH:mm:ss"
-              onChange={this.endChange}
-              value={endTime}
-              disabledDate={this.disableEndDate}
-              disabledTime={this.disableEndTime}
-              dropdownClassName={styles.historyRangeDropdown}
-              renderExtraFooter={() => (
-                <span className={styles.infoTip}>
-                  {timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过2天'}
-                </span>
-              )}
-              showTime
-            />
-          </div> */}
+
         </div>
         <div className={styles.timeType}>
           <div className={styles.intervalSelect}>

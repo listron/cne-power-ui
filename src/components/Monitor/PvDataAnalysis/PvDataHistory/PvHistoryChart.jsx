@@ -243,7 +243,7 @@ class PvHistoryChart extends Component {
           <span className={styles.tipTitle}>数据为瞬时值</span>
 
         </h4>
-        {(chartTime && Object.keys(allHistory).length) ? <div className={styles.innerChart} id="dataHistoryChart" style={{ height: `${chartHeight}px` }} /> :
+        {(chartTime) ? <div className={styles.innerChart} id="dataHistoryChart" style={{ height: `${chartHeight}px` }} /> :
           <div className={styles.nodata}>
             <img width="223" height="164" src="/img/nodata.png" />
           </div>}

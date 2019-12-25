@@ -33,7 +33,7 @@ class WorkFlow extends Component {
         const { showPage, theme } = this.props;
         return (
             <div className={`${styles.workflow} ${styles[theme]}`}>
-                <Header breadData={[{ name: '工作票' }]} style={{ marginLeft: '38px' }} />
+                {/* <Header breadData={[{ name: '工作票' }]} style={{ marginLeft: '38px' }} /> */}
                 <div className={styles.contentBox}>
                     <div className={styles.container}>
                         <div className={styles.workflowList}>

@@ -17,7 +17,7 @@ $themeColor: #199475;
 $slideSelectColor: #ceebe0;
 $slideFontColor: #ffffff;
 $tableSelectedBackground: rgba(206, 235, 224, 0.3); //表格高亮背景色
-$pageBackground: #ececec;
+$pageBackground: #f0f2f5;
 $pageGround: #fff;
 $warnColor: #a42b2c; // 故障color
 $box-shadow-color: rgba(0, 0, 0, 0.2);
@@ -47,7 +47,7 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
   justify-content: space-between;
   width: 100%;
   padding: 15px 24px 0;
-  background: #ececec;
+  background: #f0f2f5;
 }
 
 @mixin overflowText() {
