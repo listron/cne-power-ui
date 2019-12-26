@@ -1,20 +1,25 @@
 @import "../../../../theme/theme.scss";
 
 .overview {
+  padding: 15px 24px 0 !important;
+
   .container {
     // background: #fff;
     display: flex;
     flex: 1;
     flex-direction: column;
   }
+
   .list {
     display: flex;
     flex: 1;
     flex-direction: column;
   }
+
   .tabTitle {
     display: flex;
     line-height: 40px;
+
     // overflow: hidden;
     p {
       width: 120px;
@@ -23,8 +28,10 @@
       cursor: pointer;
       margin-bottom: -2px;
     }
+
     .activeKey {
       position: relative;
+
       &::before {
         content: "";
         position: absolute;
@@ -36,18 +43,23 @@
     }
   }
 }
+
 .light.overview {
   background-color: #f0f2f5;
+
   .tabTitle {
     background: #f8f8f8;
     border-bottom: 1px solid $borderColor;
+
     p {
       border-right: 1px solid $borderColor;
       color: $lightColor;
     }
+
     .activeKey {
       background: $pageGround;
       color: $darkColor;
+
       &::before {
         background: $themeColor;
       }
