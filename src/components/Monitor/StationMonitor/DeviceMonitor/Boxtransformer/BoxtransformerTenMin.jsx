@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
 import styles from '../eachDeviceMonitor.scss';
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { dataFormat, chartsInterval } from '../../../../../utils/utilFunc';
 import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
 
 class BoxtransformerTenMin extends Component {
@@ -36,6 +36,10 @@ class BoxtransformerTenMin extends Component {
       powerLineData.push(e.acPower);
       instantaneousData.push(e.instantaneous);
     });
+    const maxArr = [...new Set(powerLineData)];
+    const yAxisInterval = chartsInterval(maxArr, 5);
+    const { max = null, interval } = yAxisInterval;
+
     const filterStationPower = deviceTenMin.filter(e => e.acPower);
     const filterInstantaneous = deviceTenMin.filter(e => e.instantaneous);
     const boxtransformerTenMinGraphic = (filterStationPower.length === 0 && filterInstantaneous.length === 0);
@@ -97,11 +101,14 @@ class BoxtransformerTenMin extends Component {
         {
           name: '功率(kW)',
           splitLine: {
-            show: false,
+            show: true,
           },
           axisTick: {
             show: false,
           },
+          max: max,
+          min: 0,
+          interval: interval,
         },
         {
           name: '瞬时辐照(W/m²)',
@@ -137,6 +144,7 @@ class BoxtransformerTenMin extends Component {
           },
           yAxisIndex: 0,
           data: powerLineData,
+          z: 9,
         },
         {
           name: '瞬时辐照',
@@ -155,7 +163,9 @@ class BoxtransformerTenMin extends Component {
             normal: {
               show: false,
             },
+            z: 1,
           },
+
           yAxisIndex: 1,
           data: instantaneousData,
         },

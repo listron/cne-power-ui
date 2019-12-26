@@ -173,3 +173,20 @@ export const handleRight = (rightName, allRights = localStorage.getItem('rightHa
   return false;
 };
 
+export const chartsInterval = (valueArr, num) => {
+  if (num && +num > 0) {
+    const arr = valueArr.filter((e) => {
+      return +e > 0;
+    });
+    const maxValue = Math.max(...new Set(arr));
+    //通过判断，当最大值小于10的时候，ceil=10，
+    //当最大值大于100的时候ceil=100,
+    //10-100之间网上去整十，例如最大值34，ceil=40
+    const ceil = (maxValue / 100 < 0.1) ? 10 : (maxValue / 100 > 1) ? 100 : Math.ceil((maxValue / 100)) * 10;
+    const max = (Math.ceil(maxValue / ceil) * ceil);
+    const interval = max / num;
+
+    return { max, interval };
+  }
+  return { max: null, interval: 0 };
+};

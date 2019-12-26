@@ -76,10 +76,10 @@ class WorkStage extends Component {
     const { pageLoading, theme = 'light' } = this.props;
     return (
       <ContentLayout
-        breadcrumb={{
-          breadData: [{ name: '工作台' }],
-          style: { paddingLeft: '40px' },
-        }}
+        // breadcrumb={{
+        //   breadData: [{ name: '工作台' }],
+        //   style: { paddingLeft: '40px' },
+        // }}
         theme={theme}
         contentClassName={`${styles.workStage} ${styles[theme]}`}
       >

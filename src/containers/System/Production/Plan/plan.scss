@@ -1,11 +1,13 @@
 @import "../../../../theme/theme.scss";
-.planContainerBox{
-    display: flex;
-    flex: 1;
-    min-height: 100%;
-    flex-direction: column;
+
+.planContainerBox {
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+  flex-direction: column;
 }
 
-.planContainer{
+.planContainer {
   @include contentBoxStyle();
+  flex-direction: row;
 }

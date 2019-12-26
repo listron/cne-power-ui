@@ -161,6 +161,7 @@ class WeatherList extends Component {
                     value={warningTipText}
                     style={{ width: '210px', height: '100px' }}
                 />}
+                <div className={styles.weatherMain}>
                 <div className={styles.listContiner}>
                     <div className={styles.selectCondition}>
                         <FilterCondition
@@ -197,6 +198,7 @@ class WeatherList extends Component {
                             onChange={this.tableChange}
                             locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
                         />
+                        </div>
                     </div>
                 </div>
                 <TransitionContainer
@@ -213,3 +215,4 @@ class WeatherList extends Component {
 }
 
 export default WeatherList;
+

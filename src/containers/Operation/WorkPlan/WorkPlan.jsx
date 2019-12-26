@@ -33,10 +33,10 @@ class WorkPlan extends Component {
     const { theme } = this.props;
     return (
       <ContentLayout
-        breadcrumb={{
-          breadData: [{ name: '工作计划管理' }],
-          style: { paddingLeft: '40px' },
-        }}
+        // breadcrumb={{
+        //   breadData: [{ name: '工作计划管理' }],
+        //   style: { paddingLeft: '40px' },
+        // }}
         theme={theme}
         contentClassName={`${styles.planContent} ${styles[theme]}`}
       >

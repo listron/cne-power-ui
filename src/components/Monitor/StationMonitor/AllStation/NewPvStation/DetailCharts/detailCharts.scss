@@ -10,7 +10,8 @@
   flex-direction: column;
   padding: 8px 12px 24px 12px;
   position: relative;
-  z-index: 99;
+  z-index: 18;
+
   .hideDetail {
     border-radius: 2px;
     width: 40px;
@@ -22,6 +23,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+
     :global {
       .iconfont {
         width: 13px;
@@ -33,9 +35,11 @@
       }
     }
   }
+
   .tags {
     display: flex;
     justify-content: flex-start;
+
     a {
       padding: 0 12px;
       border-radius: 2px;
@@ -43,10 +47,12 @@
       line-height: 30px;
       margin-right: 11px;
     }
+
     .noLink {
       pointer-events: none;
     }
   }
+
   .chartsBox {
     margin-top: 12px;
     display: flex;
@@ -58,10 +64,12 @@
     display: flex;
     flex: 1;
     position: relative;
+
     .powerChart {
       width: 440px;
       height: 280px;
     }
+
     .powerRadio {
       position: absolute;
       top: 11px;
@@ -77,6 +85,7 @@
     }
   }
 }
+
 .hideCharts {
   display: none;
 }
@@ -84,14 +93,17 @@
 .light {
   background: #f8f8f8;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
+
   .hideDetail {
     background: $themeColor;
+
     :global {
       .iconfont {
         color: #fff;
       }
     }
   }
+
   .tags {
     a {
       background: #ffffff;
@@ -99,12 +111,15 @@
       color: #353535;
     }
   }
+
   .deviceStatus {
     background: #ffffff;
+
     .deviceStaTitle {
       color: #000;
     }
   }
+
   .chartsBox {
     background: #fff;
   }
@@ -116,6 +131,7 @@
   .powerDiagramBox {
     .powerRadio {
       color: $darkColor;
+
       :global {
         .ant-radio-button-wrapper-checked:first-child {
           border-color: $themeColor;
@@ -150,14 +166,17 @@
   @import "../../../../../../theme/darkTheme.scss";
   background: $slide-backgound;
   box-shadow: inset 0 0 5px 2px $slide-border-shadow;
+
   .hideDetail {
     background: $button-active;
+
     :global {
       .iconfont {
         color: $fontColor-invert;
       }
     }
   }
+
   .tags {
     a {
       background: $button-active;
@@ -165,10 +184,12 @@
       color: $fontColor-invert;
     }
   }
+
   .deviceStatus {
     background: #161858;
     color: $fontColor;
   }
+
   .chartsBox {
     background: #161858;
   }
@@ -181,6 +202,7 @@
     .powerRadio {
       color: $darkColor;
     }
+
     .link {
       color: #353535;
     }
