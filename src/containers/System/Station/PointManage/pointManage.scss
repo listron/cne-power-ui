@@ -9,12 +9,14 @@
   .pointManage {
     @include contentBoxStyle();
     flex-direction: initial;
+    padding: 0;
 
     .pointManageMain {
       display: flex;
       flex-direction: column;
       flex: 1 0 auto;
       width: 100%;
+      padding: 15px 24px 0;
 
       .pointManageContent {
         background-color: #fff;
