@@ -1,36 +1,113 @@
 
 
+@import '../../../../theme/theme.scss';
 
 
+@media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
+  .cneTable{
+    :global{
+      .ant-table{
+        font-size: 14px;
+      }
+      .ant-table .ant-table-tbody > tr > td{
+        line-height: 40px;
+      }
+    }
+  }
+}
 
+@media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+  .cneTable{
+    :global{
+      .ant-table{
+        font-size: 1.2em;
+      }
+      .ant-table .ant-table-tbody > tr > td{
+        line-height: 1em;
+      }
+    }
+  }
+}
 
-
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .cneTable{
+    :global{
+      .ant-table{
+        font-size: 1.3em;
+      }
+      .ant-table .ant-table-tbody > tr > td{
+        line-height: 1em;
+      }
+    }
+  }
+}
 
 .cneTable{
   :global{
+    .ant-table .ant-table-thead > tr > th,
+    .ant-table .ant-table-tbody > tr > td {
+      padding: 0 10px 0 10px;
+      &:first-child:not(.ant-table-selection-column) {
+        padding-left: 20px;
+      }
+      &:last-child {
+        padding-right: 20px;
+      }
+    }
     .ant-table .ant-table-thead > tr > th{
       line-height: 36px;
       height: auto;
       border-bottom: none;
+      .ant-table-column-sorter{
+        position: absolute;
+        right: 5px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        margin-top: -2px;
+      }
     }
   }
-  // table > thead > tr > th {
-  //   background-color: lightblue;
-  //   line-height: 36px;
-  // }
 }
 
 .cneTable.light{
-
+  :global{
+    .ant-table .ant-table-thead > tr > th,
+    .ant-table .ant-table-tbody > tr > td{
+      border-right: 1px solid #d4d4d4;
+      &:last-child {
+        border-right: none;
+      }
+    }
+    .ant-table .ant-table-thead > tr > th{
+      background-color: var(--themeColor);
+      color: #fff;
+    }
+    .ant-table .ant-table-tbody > tr{
+      & > td {
+        border-bottom: 1px solid #d4d4d4;
+      }
+      &:last-child > td{
+        border-bottom: none;
+      }
+      &:nth-of-type(odd){
+        background-color: transparent;
+      }
+      &:nth-of-type(even){
+        background-color: #fbfbfb;
+      }
+      &:hover{
+        &>td{
+          background-color: rgba(206,235,224,0.30);
+        }
+      }
+    }
+  }
 }
 
 .cneTable.dark{
 
 }
-
-
-
-// 1. 永仁光伏  => 王红;   选中。
 
 
 
