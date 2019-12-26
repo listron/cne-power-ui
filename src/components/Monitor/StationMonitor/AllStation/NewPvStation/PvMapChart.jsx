@@ -7,7 +7,7 @@ import styles from './pvStation.scss';
 import echarts from 'echarts';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { divideFormarts, multiplyFormarts, powerPoint, provinceList, provinceListArray } from '../../PvCommon/PvDataformat';
+import { divideFormarts, multiplyFormarts, powerPoint, provinceList, provinceListArray, transferCapacityUnit } from '../../PvCommon/PvDataformat';
 import { dataFormats } from '../../../../../utils/utilFunc';
 
 
@@ -53,7 +53,7 @@ class PvMapChart extends Component {
 
   initOption = () => { // 默认的数据
     const { monitorPvUnit } = this.props;
-    const { powerUnit, realTimePowerUnit } = monitorPvUnit;
+    const { powerUnit, realTimePowerUnit, realCapacityUnit } = monitorPvUnit;
     const option = {
       legend: {
         show: true,
@@ -71,12 +71,14 @@ class PvMapChart extends Component {
         confine: true,
         formatter: (params) => {
           const item = params.data;
+          const { stationCapacity } = item;
+          const showCapacityUnit = transferCapacityUnit(stationCapacity, realCapacityUnit);//计算装机容量的单位
           const currentStatus = `${item.stationStatus}`;
           if (currentStatus === '900') {
             return null;
           }
           const needData = [
-            { name: '实时功率', value: 'stationPower', point: 2, unit: realTimePowerUnit, unitChange: true },
+            { name: '实时功率', value: 'stationPower', point: 2, unit: showCapacityUnit, unitChange: true },
             { name: '瞬时辐射', value: 'instantaneous', point: 2, unit: 'W/m²' },
             { name: '负荷率', value: 'loadRate', point: 2, unit: '%' },
             { name: '日等效时', value: 'equivalentHours', point: 2, unit: 'h' },
@@ -88,7 +90,7 @@ class PvMapChart extends Component {
           needData.forEach((e, index) => {
             let value = dataFormats(item[e['value']], '--', e.point, true);
             if (e.value === 'stationPower') {
-              const stationPowerNum = divideFormarts(item.stationPower, realTimePowerUnit);
+              const stationPowerNum = divideFormarts(item.stationPower, showCapacityUnit);
               value = dataFormats(stationPowerNum, '--', e.point, true);
             }
             if (e.value === 'dayPower') {

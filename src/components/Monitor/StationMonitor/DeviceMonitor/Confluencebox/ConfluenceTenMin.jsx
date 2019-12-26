@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from '../eachDeviceMonitor.scss';
-import {chartsLoading, themeConfig, chartsNodata} from '../../../../../utils/darkConfig';
+import { chartsInterval } from '../../../../../utils/utilFunc';
+import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
 class ConfluenceTenMin extends Component {
   static propTypes = {
     tenMinChartLoading: PropTypes.bool,
@@ -22,7 +23,7 @@ class ConfluenceTenMin extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {tenMinUnix, tenMinChartLoading, theme} = this.props;
+    const { tenMinUnix, tenMinChartLoading, theme } = this.props;
     const prevTenMinUnix = prevProps.tenMinUnix;
     const prevPointNameArr = prevProps.pointNameArr;
     if (tenMinUnix !== prevTenMinUnix || tenMinChartLoading || theme !== prevProps.theme || prevPointNameArr.length >= 0) { // 获得数据
@@ -31,8 +32,8 @@ class ConfluenceTenMin extends Component {
   }
 
   renderChart = () => {
-    const {deviceTenMin, tenMinChartLoading, theme, pointNameArr} = this.props;
-    const {HLNames} = this.state;
+    const { deviceTenMin, tenMinChartLoading, theme, pointNameArr } = this.props;
+    const { HLNames } = this.state;
     // 重新赋值
     const echartBox = document.getElementById('confluence_monitor_tenMin');
     let confluenceChart = echarts.init(echartBox, themeConfig[theme]);
@@ -53,14 +54,17 @@ class ConfluenceTenMin extends Component {
     HLData = HLData.map((e, i) => {
       return conflenceData.map(inner => inner[i]);
     });
+    const maxArr = HLData.flat(2);
+    const yAxisInterval = chartsInterval(maxArr, 5);
+    const { max = null, interval } = yAxisInterval;
     // 遍历选中支路数组
-    if(pointNameArr.length > 0) {
+    if (pointNameArr.length > 0) {
       this.HLColors = ['#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999'];
       pointNameArr.forEach(item => {
         this.HLColors[item.pointIndex] = item.bgcColor;
       });
     }
-    if(pointNameArr.length === 0) {
+    if (pointNameArr.length === 0) {
       this.HLColors = ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34'];
     }
     // 选中的支路下标, 高亮选中的那条线
@@ -156,8 +160,11 @@ class ConfluenceTenMin extends Component {
       yAxis: [
         {
           name: '电流(A)',
+          max: max,
+          min: 0,
+          interval: interval,
           splitLine: {
-            show: false,
+            show: true,
           },
           axisTick: {
             show: false,
@@ -198,13 +205,14 @@ class ConfluenceTenMin extends Component {
     deviceTenMin.length > 0 && (option.dataZoom = [
       {
         show: true,
-        zoomLock: true,
+        // zoomLock: true,
         start: 90,
         end: 100,
+        height: '16px',
       }, {
         type: 'inside',
         start: 90,
-        zoomLock: true,
+        // zoomLock: true,
         end: 100,
       },
     ]);
@@ -214,7 +222,7 @@ class ConfluenceTenMin extends Component {
 
   render() {
     return (
-      <div id="confluence_monitor_tenMin" style={{height: '335px', marginTop: '20px'}} />
+      <div id="confluence_monitor_tenMin" style={{ height: '335px', marginTop: '20px' }} />
     );
   }
 }
