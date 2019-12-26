@@ -27,7 +27,7 @@ const initState = Immutable.fromJS({
     startTime: moment().startOf('day').format(),
     endTime: moment().format(),
     devicePoints: [], // 选中的测点
-    timeInterval: 10, // 数据时间间隔:1-1s, 5-5s, 10-10min;
+    timeInterval: 10, // 数据时间间隔:1-1s, 5-5s, 10-10min, 2-1min;
   },
   listParam: { // 表格排序额外参数
     orderField: 'deviceName', // 排序字段(默认时间倒序（最新的时间在最上方）
@@ -40,11 +40,12 @@ const initState = Immutable.fromJS({
   recordedMinuteEnd: moment().format(), // 记录10min终止时间
 
   stationDeviceTypes: [], // 电站下可选设备类型
-  intervalInfo: [10, 5], // 默认支持的时间间隔 5s, 10min
+  intervalInfo: [10, 5, 2], // 默认支持的时间间隔 5s, 10min, 1min
   pointInfo: [], // 选中设备内可选测点信息。
   allHistory: {}, // chart图 - 所有历史数据
   partHistory: {}, // 表格内 - 分页后的历史数据
   logPoint: null, // 请求时暂存的测点数据
+
 });
 
 const pvDataHistory = (state = initState, action) => {
