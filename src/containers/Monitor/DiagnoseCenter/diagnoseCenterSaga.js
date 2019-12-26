@@ -1,4 +1,4 @@
-import { call, put, takeLatest, select, fork, cancel } from 'redux-saga/effects';
+import { call, put, takeLatest, select, fork, cancel, takeEvery } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import request from '@utils/request';
 import { message } from 'antd';
@@ -177,7 +177,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
 
 export function* watchDiagnoseCenter() {
   yield takeLatest(diagnoseCenterAction.getEventstatus, getEventstatus);
-  yield takeLatest(diagnoseCenterAction.getEventtypes, getEventtypes);
+  yield takeEvery(diagnoseCenterAction.getEventtypes, getEventtypes);
   yield takeLatest(diagnoseCenterAction.getDiagnoseList, getDiagnoseList);
   yield takeLatest(diagnoseCenterAction.circlingQueryList, circlingQueryList);
   yield takeLatest(diagnoseCenterAction.stopCircleQueryList, stopCircleQueryList);

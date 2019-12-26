@@ -15,6 +15,7 @@ const diagnoseCenterAction = {
 
 const initState = {
   pageKey: 'alarm', // 激活页 alarm告警事件 diagnose诊断时间 data数据事件
+  showAnalysisPage: false, // 展示侧边分析页 
   listParams: {
     eventType: 1, // 1告警事件, 2诊断事件, 3数据事件;
     finished: 0, // 1归档事件, 0非归档事件
