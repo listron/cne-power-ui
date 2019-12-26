@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import styles from './diagnoseCenter.scss';
+import { diagnoseCenterAction } from './diagnoseCenterReducer';
 import { connect } from 'react-redux';
 
 
@@ -18,15 +19,25 @@ class DiagnoseCenter extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <div className={styles.diagnoseCenter} >
-        诊断中心
+        <div>顶部tabs</div>
+        <div>中间统计</div>
+        <div>筛选</div>
+        <div>表格</div>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {};
-const mapDispatchToProps = (dispatch) => ({});
+const mapStateToProps = (state) => ({
+  stations: state.common.stations,
+  ...state.monitor.diagnoseCenter,
+});
+const mapDispatchToProps = (dispatch) => ({
+  reset: () => dispatch({ type: diagnoseCenterAction.reset }),
+  changeStore: payload => dispatch({ type: diagnoseCenterAction.changeStore, payload }),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiagnoseCenter);
