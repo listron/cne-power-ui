@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Table, Select, Popover, Button, Icon } from 'antd';
-// import CneTable from '@components/Common/Power/CneTable';
 import WarningTip from '../../../Common/WarningTip';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
@@ -251,18 +250,6 @@ class RoleTable extends Component {
             onChange={this.tableChange}
             pagination={false}
           />
-          {/* <CneTable
-            loading={loading}
-            rowKey={(record)=>{return record.roleId}} 
-            rowSelection={{
-              selectedRowKeys: selectedRole.map(e=>e.roleId),
-              onChange: this.onRowSelect
-            }}
-            dataSource={roleData} 
-            columns={this.createRoloeColumn()} 
-            onChange={this.tableChange}
-            pagination={false}
-          /> */}
         </div>
         <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
