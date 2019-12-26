@@ -1,0 +1,9 @@
+
+
+@import '../../../theme/theme.scss';
+
+
+.diagnoseCenter{
+  height: 100%;
+  @include contentBoxStyle();
+}

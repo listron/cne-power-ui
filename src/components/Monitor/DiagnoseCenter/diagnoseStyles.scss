@@ -1,0 +1,65 @@
+
+
+@import '../../../theme/theme.scss';
+
+.diagnoseHeaderTabs{
+  display: flex;
+  height: 30px;
+  .leftHolder{
+    flex: 0 0 12px;
+  }
+  .tab{
+    cursor: pointer;
+    flex: 0 0 98px;
+    text-align: center;
+    line-height: 30px;
+  }
+  .tabHolder{
+    flex: 0 0 28px;
+  }
+  .rightHolder{
+    flex: 1;
+  }
+}
+
+// 颜色控制部分
+.diagnoseHeaderTabs{
+  .leftHolder, .tabHolder, .rightHolder{
+    color: var(--themeColor);
+    border-bottom: 1px solid var(--themeColor);
+  }
+  .tab.active{
+    background-color: #fff;
+    border: 1px solid var(--themeColor);
+    border-top: 2px solid var(--themeColor);
+    border-bottom: none;
+  }
+  .tab.inactive{
+    border: 1px solid transparent;
+    border-top: 2px solid transparent;
+    border-bottom: 1px solid var(--themeColor);
+  }
+  .tabHolder{
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
