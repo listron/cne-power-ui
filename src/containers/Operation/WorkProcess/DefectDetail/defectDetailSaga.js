@@ -1,5 +1,6 @@
 import { put, call, takeLatest, select, fork } from 'redux-saga/effects';
 import { defectDetailAction } from './defectDetailReducer';
+import { delay } from 'redux-saga';
 import axios from 'axios';
 import path from '@path';
 import moment from 'moment';
@@ -41,7 +42,7 @@ function* getDefectDetail(action) { // 获取缺陷工单详情  两种状态  g
   }
 }
 
-function* getRelevancedocket(action) { // 获取当前缺陷关联的工单
+function* getRelevancedocket(action) { // 获取当前缺陷关联的两票
   const { payload } = action;
   const url = `${APIBasePath}${ticket.getDockerDetail}`;
   try {
@@ -186,6 +187,7 @@ function* checkDefect(action) { // 验收工单
     const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
       message.success('验收成功！');
+      // yield delay(2000), // 阻塞2秒
       func();
     } else {
       throw response.data;
@@ -225,18 +227,6 @@ function* likeKnowledgebase(action) { // 点赞智能专家
     if (response.data.code === '10000') {
       message.config({ top: 230, duration: 2, maxCount: 2 });
       message.success('点赞成功');
-      const params = yield select(state => {
-        const { defectDetail = {} } = state.operation.workOrder.toJS();
-        return ({
-          deviceTypeCodes: [defectDetail.deviceTypeCode],
-          faultCodes: [defectDetail.defectTypeCode],
-        });
-      }
-      );
-      yield put({ // 重新请求点赞列表
-        type: defectDetailAction.getKnowledgebase,
-        payload: params,
-      });
     } else { throw response.data; }
   } catch (e) {
     console.log(e);
@@ -252,7 +242,7 @@ function* createDefect(action) { // 创建缺陷 以及待提交状态
   try {
     const response = yield call(axios.post, url, initParams);
     if (response.data.code === '10000') {
-      message.success('操作成功！');
+      message.success('恭喜，您所提交信息已保存成功，可在工单列表及工作台中查看');
       func();
     } else {
       throw response.data;

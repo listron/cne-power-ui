@@ -5,6 +5,7 @@ import styles from "./score.scss";
 import WarningTip from '../../../Common/WarningTip';
 import DetailTable from './DetailTable';
 import EditTable from './EditTable';
+import { handleRight } from '@utils/utilFunc';
 import { ifError } from "assert";
 class ScoreMain extends Component {
     static propTypes = {
@@ -183,6 +184,7 @@ class ScoreMain extends Component {
         const { stationTypes, showWarningTip, warningTipText, basicScore } = this.state;
         const { indexList, edit } = this.props;
         const editData = this.deepClone(indexList);
+        const scoreOperation = handleRight('config_score_modify');
         return (
             <div className={styles.scoreBox}>
                 {showWarningTip &&
@@ -197,7 +199,7 @@ class ScoreMain extends Component {
                 {!edit &&
                     <div className={styles.scoreLine}>
                         <div className={styles.initScore}>电站初始分 {this.props.basicScore}</div>
-                        <Button type="default" onClick={this.edit}>修改配置</Button>
+                        {scoreOperation && <Button type="default" onClick={this.edit}>修改配置</Button>}
                     </div>}
                 {!!edit &&
                     <div className={styles.scoreLine}>

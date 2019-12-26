@@ -13,11 +13,7 @@
     flex: 1;
 
     .casePartMain {
-      padding: 24px 24px 0;
-      display: flex;
-      justify-content: space-between;
-      flex: 1 0 auto;
-      width: 100%;
+      @include contentBoxStyle();
 
       .casePartContent {
         background-color: #fff;

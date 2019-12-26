@@ -224,7 +224,7 @@ class WindDevice extends Component {
                   search: `?stationCode=${stationCode}`, state: { stationType: '0', deviceName }
                 }}> 查看告警 {dataFormats(deviceDetail.alarmNum, '--')} </Link>
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
-                <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
+                <Link to={`/report/windstation/powerReport`} > 报表查询  </Link>
               </div>
               <div className={styles.chartsBox}>
                 <OutputChart

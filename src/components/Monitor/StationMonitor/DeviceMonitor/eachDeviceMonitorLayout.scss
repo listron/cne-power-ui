@@ -1,4 +1,5 @@
 @import "../../../../theme/theme.scss";
+
 .seriesinverter,
 .confluencebox,
 .boxtransformer,
@@ -8,31 +9,38 @@
 .boosterStation {
   .deviceContent {
     margin: 24px 24px 0;
+
     .deviceMonitorHeader {
       // 顶部
       height: 65px;
       display: flex;
       justify-content: space-between;
       position: relative;
+
       .deviceName {
         line-height: 65px;
+
         .swap {
           font-size: 18px;
           margin-left: 32px;
           cursor: pointer;
         }
+
         .name {
           font-size: 18px;
           margin-left: 12px;
           cursor: pointer;
         }
+
         .weatherStationName {
           margin-left: 60px;
           font-size: 18px;
         }
+
         .status {
           font-size: 14px;
           margin-left: 24px;
+
           :global {
             .statusIcon {
               font-size: 18px;
@@ -41,28 +49,45 @@
               margin-left: 4px;
             }
           }
+
           > p {
             display: inline-block;
           }
         }
+
         .dispersionRatio,
         .manufactor,
         .deviceModelName {
           font-size: 14px;
           margin-left: 12px;
         }
+
         .manufactor,
         .deviceModelName {
           margin-left: 40px;
         }
+
+        .deviceBtn {
+          margin-left: 20px;
+          border-radius: 2px;
+          i {
+            font-style: normal;
+          }
+          &:hover {
+            box-shadow: none;
+          }
+        }
       }
+
       .linkTo {
         line-height: 65px;
         text-align: right;
+
         .eachLink {
           line-height: 65px;
           margin-right: 28px;
           cursor: pointer;
+
           :global {
             .linkIcon {
               font-size: 18px;
@@ -71,6 +96,7 @@
             }
           }
         }
+
         .backIcon {
           width: 60px;
           line-height: 65px;
@@ -81,20 +107,24 @@
         }
       }
     }
+
     .statisticsBox {
       // 设备信息统计区
       display: flex;
       height: 100px;
+
       .deviceIcon {
         width: 170px;
         text-align: center;
         line-height: 100px;
+
         :global {
           .iconfont {
             font-size: 24px;
           }
         }
       }
+
       .timerGen,
       .timerDayGen,
       .weatherEachData {
@@ -103,6 +133,7 @@
         margin-top: 24px;
         display: flex;
         flex-direction: column;
+
         .genNum {
           font-size: 24px;
           height: 24px;
@@ -110,19 +141,23 @@
           color: $themeColor;
           margin-bottom: 8px;
         }
+
         .empty {
           height: 10px;
         }
       }
+
       .timerDayGen,
       .weatherEachData {
         width: 105px;
         margin-left: 24px;
       }
     }
+
     .subTitleConfig {
       padding-left: 48px;
     }
+
     .points {
       display: flex;
     }
@@ -135,16 +170,19 @@
   z-index: 999;
   top: 12px;
   left: 56px;
+
   .single {
     font-weight: 700;
   }
+
   .tabs {
-    border-radius: 4px;
+    border-radius: 2px;
+
     .inactive,
     .active {
       padding: 2px 6px;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 2px;
     }
   }
 }
@@ -154,6 +192,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
+
   .deviceContent {
     flex: 1;
   }
@@ -163,9 +202,11 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+
   .statisticsBox {
     border-bottom: none;
   }
+
   .deviceContent {
     display: flex;
     flex: 1;
@@ -179,6 +220,7 @@
     display: flex;
     height: 40px;
     align-items: center;
+
     .eachDevice {
       cursor: pointer;
       line-height: 40px;
@@ -194,25 +236,30 @@
     display: flex;
     flex-direction: row;
     height: 323px;
+
     > div {
       flex: 1;
     }
   }
+
   .deviceContent {
     .statisticsBox {
       .deviceIcon {
         width: 170px;
         text-align: center;
         line-height: 30px;
+
         span {
           margin-top: 20px;
           display: inline-block;
         }
+
         :global {
           .iconfont {
             font-size: 31px;
           }
         }
+
         .deviceCode {
           display: block;
           overflow: hidden;
@@ -222,14 +269,18 @@
       }
     }
   }
+
   .pointData {
     padding: 20px 60px 80px 60px;
+
     .pointTitle {
       margin-left: 20px;
     }
+
     .pointDataList {
       display: flex;
       flex-wrap: wrap;
+
       .eachGroup {
         min-width: 20%;
         max-width: 20%;
@@ -237,6 +288,7 @@
         margin: 16px 0;
         position: relative;
         padding-top: 24px;
+
         .groupName {
           position: absolute;
           top: 0;
@@ -244,11 +296,14 @@
           width: calc(100% - 20px);
           margin-left: 20px;
         }
+
         .eachData {
           margin-bottom: 4px;
+
           .pointName {
             margin-bottom: 0;
           }
+
           .pointValue {
             margin-bottom: 0;
             word-wrap: break-word;
@@ -256,6 +311,7 @@
           }
         }
       }
+
       .eachGroup:last-child {
         border-right: none;
       }

@@ -9,7 +9,7 @@
     flex-direction: row;
     justify-content: space-between;
     line-height: 60px;
-    border-bottom: 1px solid #dfdfdf;
+    border-bottom: 1px solid #d4d4d4;
     .left {
       display: flex;
       justify-content: center;
@@ -21,7 +21,7 @@
     }
     .right {
       .backIcon {
-        border-left: 1px solid #dfdfdf;
+        border-left: 1px solid #d4d4d4;
         width: 60px;
         line-height: 60px;
         text-align: center;
@@ -76,7 +76,7 @@
         height: 600px;
         display: flex;
         flex: 2;
-        border-right: 1px solid #dfdfdf;
+        border-right: 1px solid #d4d4d4;
         flex-direction: column;
         .leftTop {
           display: flex;

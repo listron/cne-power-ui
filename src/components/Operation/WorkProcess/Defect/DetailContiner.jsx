@@ -9,6 +9,7 @@ import DefectFormReview from './DefectFormReview';// 审核
 import DefectProcessForm from './DefectProcessForm'; // 执行
 import DefectCheckForm from './DefectCheckForm'; // 验收
 import searchUtil from '@utils/searchUtil';
+import { handleRights } from '@utils/utilFunc';
 
 
 class DetailContiner extends Component {
@@ -54,10 +55,9 @@ class DetailContiner extends Component {
 
   callBackTableList = () => { // 返回列表页
     const { history } = this.props;
-
-
-    // history.push('/operation/workProcess/view?page=list&tab=defect');
+    history.push('/operation/workProcess/view?page=list&tab=defect&listSearch={"sortField":"modify_time"}');
   }
+
 
   getSubmitIamges(images) { // 照片提交
     if (!images) {
@@ -77,8 +77,8 @@ class DetailContiner extends Component {
 
   toReview = (values) => { // 审核缺陷
     const { defectId, sendDefect, closeDefect, rejectDefect } = this.props;
-    const { status, deadLine, defectProposal, rejectReason } = values;
-    const initDeadLine = deadLine && deadLine.format('YYYY-MM-DD HH:mm:ss') || '';
+    const { status, deadLine, defectProposal = '', rejectReason } = values;
+    const initDeadLine = deadLine && deadLine.format('YYYY-MM-DD HH:mm:ss') || null;
     status === 'send' && sendDefect({ defectId, defectProposal, deadLine: initDeadLine, func: this.callBackTableList });
     status === 'reject' && rejectDefect({ defectId, rejectReason, func: this.callBackTableList });
     status === 'close' && closeDefect({ defectId, defectProposal, func: this.callBackTableList });
@@ -104,11 +104,12 @@ class DetailContiner extends Component {
     const { theme = 'light', defectDetail, processData, form, commonList } = this.props;
     const { defectStatus } = defectDetail; // defectStatus  当前的流程状态
     // 0 待提交 1 审核缺陷 2 处理缺陷 3 验收缺陷  4 已完成
-    const rightHandler = localStorage.getItem('rightHandler') || '';
-    const rightArr = rightHandler.split(',');
     // 审核 验收 执行
-    const hasRight = rightArr.includes(['workExamine_defect_review', 'workExamine_defect_excute', 'workExamine_defect_check'][defectStatus - 1]);
-    // const hasRight = true;
+    const hasRight = handleRights([
+      'workExamine_defect_review', 'workExamine_defect_excute', 'workExamine_defect_check',
+    ])[defectStatus - 1];
+
+    // const hasRight = rightArr.includes(['workExamine_defect_review', 'workExamine_defect_excute', 'workExamine_defect_check'][defectStatus - 1]);
     return (
       <div className={`${styles.baseInfoCont} ${styles[theme]}`}>
         <BasicInfo {...this.props} />
@@ -129,7 +130,7 @@ class DetailContiner extends Component {
             </div>
           </div>
           }
-          <OperateLine processData={processData} defectStatus={defectStatus} />
+          <OperateLine processData={processData} defectStatus={defectStatus} defectDetail={defectDetail} />
         </div>
       </div >
     );

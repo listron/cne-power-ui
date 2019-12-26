@@ -3,11 +3,13 @@
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
+
   .realTimeWarningFilter {
     position: relative;
     display: flex;
     flex-direction: column;
   }
+
   .deviceNameSearch {
     display: flex;
     height: 50px;
@@ -15,20 +17,24 @@
     flex-direction: row;
     align-items: center;
     padding-left: 28px;
+
     .deviceName {
       width: 200px;
       margin: 0 16px;
     }
-    > span:last-child {
+
+    >span:last-child {
       font-size: 14px;
       cursor: pointer;
       margin-left: 16px;
     }
   }
+
   .realTimeWarningTable {
     display: flex;
     flex: 1;
     flex-direction: column;
+
     .tableHeader {
       display: flex;
       flex-direction: row;
@@ -38,6 +44,7 @@
       height: 55px;
       padding: 0 28px;
     }
+
     .alarmDesc {
       cursor: pointer;
     }
@@ -49,33 +56,40 @@
       max-height: 300px;
       overflow-y: auto;
       overflow-x: hidden;
+
       .header {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 6px;
+
         .title {
           display: flex;
           flex-direction: row;
           align-items: center;
+
           .titleText {
             font-size: 14px;
             margin-left: 10px;
           }
         }
       }
+
       .content {
         display: flex;
         flex-direction: column;
         line-height: 24px;
+
         .infoItem {
           display: flex;
           flex-direction: row;
+
           .label {
             font-size: 14px;
             min-width: 70px;
           }
+
           .value {
             display: flex;
             flex-wrap: wrap;
@@ -83,6 +97,7 @@
           }
         }
       }
+
       .ticketButton {
         margin-top: 24px;
         margin-left: 65px;
@@ -90,6 +105,7 @@
       }
     }
   }
+
   .detailInfo {
     display: flex;
     flex-direction: column;
@@ -97,33 +113,44 @@
     max-height: 300px;
     overflow-y: auto;
     overflow-x: hidden;
+
     .header {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 6px;
+
       .title {
         display: flex;
         flex-direction: row;
         align-items: center;
+
+        i {
+          cursor: auto;
+        }
+
         .titleText {
           font-size: 14px;
           margin-left: 10px;
         }
       }
     }
+
     .content {
       display: flex;
       flex-direction: column;
       line-height: 24px;
+
       .infoItem {
         display: flex;
         flex-direction: row;
+
         .label {
           font-size: 14px;
           min-width: 70px;
         }
+
         .value {
           display: flex;
           flex-wrap: wrap;
@@ -131,12 +158,14 @@
         }
       }
     }
+
     .ticketButton {
       margin-top: 24px;
       margin-left: 65px;
       width: 120px;
     }
   }
+
   :global {
     .icon-action {
       width: 30px;
@@ -147,6 +176,7 @@
       align-items: center;
       cursor: pointer;
     }
+
     .ant-table-placeholder {
       border-bottom: none;
     }

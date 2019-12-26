@@ -5,6 +5,7 @@ import { Icon, Button, Modal, Input } from 'antd';
 import ImportFile from './ImportFile';
 import CommonPagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
+import { handleRight } from '@utils/utilFunc';
 import styles from './manageCommon.scss';
 import path from '../../../../../constants/path';
 
@@ -37,7 +38,7 @@ export default class HandleComponent extends Component {
     deleteModalShow: false,
   }
 
-  onPaginationChange = ({pageSize, currentPage}) => { // 翻页
+  onPaginationChange = ({ pageSize, currentPage }) => { // 翻页
     const { tableParams, getWarehouseManageList, changeStore } = this.props;
     changeStore({
       tableParams: {
@@ -109,7 +110,7 @@ export default class HandleComponent extends Component {
 
   toImport = () => this.props.changeStore({ importFileShow: true });
 
-  render(){
+  render() {
     const { stockMaxValue, deleteModalShow } = this.state;
     const {
       tabName, tableParams, totalCount, checkedStocks, stockMaxShow, importFileShow,
@@ -117,25 +118,31 @@ export default class HandleComponent extends Component {
     } = this.props;
     const { pageSize, pageNum } = tableParams;
     const insertDisable = checkedStocks.length > 1;
+    const rightBase = {
+      spares: handleRight('book_operateSpare'),
+      tools: handleRight('book_operateTool'),
+      materials: handleRight('book_operateSupply'),
+    };
+    const warehouseHandleRight = rightBase[tabName];
     return (
       <div className={styles.handleRow}>
-        <div className={styles.leftHandler}>
+        {warehouseHandleRight ? <div className={styles.leftHandler}>
           <button
             className={styles.enterWarehouse}
             onClick={this.toInsert}
             disabled={insertDisable}
             style={{
               cursor: insertDisable ? 'not-allowed' : 'pointer',
-              borderColor: insertDisable ? '#dfdfdf' : '#199475',
+              borderColor: insertDisable ? '#d4d4d4' : '#199475',
             }}
           >
             <Icon type="plus"
               className={styles.plus}
-              style={{ backgroundColor: insertDisable ? '#dfdfdf' : '#199475'}}
+              style={{ backgroundColor: insertDisable ? '#d4d4d4' : '#199475' }}
             />
             <span
               className={styles.text}
-              style={{ color: insertDisable ? '#dfdfdf' : '#666'}}
+              style={{ color: insertDisable ? '#d4d4d4' : '#353535' }}
             >入库</span>
           </button>
           <Button disabled={!(checkedStocks.length > 0)} onClick={this.showDelModal} loading={delStockLoading}>删除</Button>
@@ -145,7 +152,7 @@ export default class HandleComponent extends Component {
           >设置阈值</Button>}
           <Button onClick={this.toImport}>导入</Button>
           <Button onClick={this.exportTemplete} loading={exportTempleteLoading}>下载导入模板</Button>
-        </div>
+        </div> : <div />}
         <CommonPagination
           total={totalCount}
           pageSize={pageSize}

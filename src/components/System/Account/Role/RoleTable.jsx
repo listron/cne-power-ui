@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Select, Popover, Button, Icon } from 'antd';
+import { Table, Select, Popover, Button, Icon, Modal } from 'antd';
 import WarningTip from '../../../Common/WarningTip';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
@@ -30,6 +30,9 @@ class RoleTable extends Component {
       deleteTipText: false, //删除提示语
       handleColumnDel: false, // 删除操作来源, false =>选中行后点击删除。true => 选中表格列中的直接删除
       handleColumnDelInfo: {}, // 选中表格列中直接删除记录的信息
+      visibleModel: false,
+      recordData: [], // 点击每行的出现的内容
+      modelName: '', // 弹出框名字
     };
   }
 
@@ -68,45 +71,33 @@ class RoleTable extends Component {
         const rightText = `${frontText?`${frontText}-`:''}${e.rightName}`;
         e && e.rightName && !isDefaultRight && dataInfoArr.push(rightText);
       }
-    })
+    });
+
     return dataInfoArr;
   }
-  
+
   createRoloeColumn = () => {
     let column = [
       {
         title: '名称',
         dataIndex: 'roleDesc',
-        key: 'roleDesc'
-      }, {
-        title: '预设',
-        dataIndex: 'isPre',
-        key: 'isPre',
-        sorter: true,
-        render: text => (<span>{text?'否':'是'}</span>),
-      }, {
+        key: 'roleDesc',
+      },
+      {
+        title: '权限',
+        dataIndex: 'operateName',
+        key: 'operateName',
+        render: text => (<span>{text}</span>),
+      },
+      {
         title: '功能定义',
         dataIndex: 'rightData',
         key: 'rightData',
-        render: (rightData,record)=>{
-          const rightArr = this.getRightArr(rightData,'');
-          const {roleDesc}=record;
-          const content = (
-            <div className={styles.roleTableTooltip}>
-              <span>基础权限</span>
-              {rightArr.map((item,index)=>(<span key={index}>{item}</span>))}
-            </div>
-          );
-          let tableRightArr = [...rightArr];
-          tableRightArr.unshift('基础权限');
-          const title = <span className={styles.roleTableTitle}>{roleDesc}</span>
-          return (
-            <Popover  content={content}  placement="right" trigger="hover"  title={title}>
-              <div className={styles.menu}>{tableRightArr.join(' | ')}</div>
-            </Popover>
-          );
-        }
-      }
+        render: (rightData, record)=>{
+          const rightArr = this.getRightArr(rightData, '');
+          return (<div className={styles.menu} onClick={() => this.showModel(record)}>{rightArr.join(' | ')}</div>);
+        },
+      },
     ];
     const rightHandler = localStorage.getItem('rightHandler') || '';
     const roleDeleteRight = rightHandler.split(',').includes('account_role_delete');
@@ -157,6 +148,53 @@ class RoleTable extends Component {
       }); 
     }
   }
+
+  showModel = (record) => { // 点击某行显示权限列表
+    const rightdataArr = this.getRightTree(record.rightData);
+
+    this.setState({
+      visibleModel: true,
+      recordData: rightdataArr,
+      modelName: record.roleDesc,
+    });
+  }
+
+  getRightTree (data) { // 递归筛选非默认权限的三级菜单
+    const { defaultMenuData } = this.props; // 默认权限ID
+    return data.map(e => {
+      const { rightId, rightName, childRightData = [] } = e || {};
+      if (childRightData && childRightData.length > 0) {
+        const tmpRighData = this.getRightTree(childRightData);
+        if (tmpRighData.length > 0) {
+        return {
+            rightId,
+            rightName,
+            childRightData: tmpRighData,
+          };
+        }
+        return defaultMenuData.includes(+rightId) ? false : {
+            rightId,
+            rightName,
+            childRightData: [],
+          };
+      } else if (defaultMenuData.includes(+rightId)) {
+        return false;
+      }
+        return { ...e };
+    }).filter(e => !!e);
+  }
+
+  handleOk = e => {
+    this.setState({
+      visibleModel: false,
+    });
+  };
+
+  handleCancel = e => {
+    this.setState({
+      visibleModel: false,
+    });
+  };
 
   ColumnEditRole = (record) => { // 列操作中直接编辑角色
     const forbiddenEdit = record.isPre === 0; // 预设角色不可删除
@@ -212,8 +250,8 @@ class RoleTable extends Component {
   }
 
   render(){
-    const { selectedRole, roleData, loading, showPage } = this.props;
-    const { showWarningTip, warningTipText, showDeleteTip } = this.state;
+    const { selectedRole, roleData, loading, showPage, defaultMenuData } = this.props;
+    const { showWarningTip, warningTipText, showDeleteTip, recordData, modelName } = this.state;
     const rightHandler = localStorage.getItem('rightHandler') || '';
     const roleCreateRight = rightHandler.split(',').includes('account_role_create');
     const roleDeleteRight = rightHandler.split(',').includes('account_role_delete');
@@ -238,7 +276,7 @@ class RoleTable extends Component {
               </div>
             </div>
           </div>
-          <Table 
+          <Table
             loading={loading}
             rowKey={(record)=>{return record.roleId}} 
             rowSelection={{
@@ -255,13 +293,52 @@ class RoleTable extends Component {
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
           {selectedRole.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
         </div>
+        <Modal
+          title={modelName}
+          visible={this.state.visibleModel}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+          mask={false}
+          wrapClassName={styles.tableModal}
+          width={625}
+          footer={null}
+        >
+          <div className={styles.rightTable}>
+            <div className={styles.tableHeader}>
+              <div className={styles.secondColumn}>二级菜单</div>
+              <div className={styles.thirdColumn}>三级菜单</div>
+            </div>
+            {recordData && recordData.length > 0 && recordData.map(e => {
+              return (
+                <div className={styles.tableContent}>
+                  {e.childRightData && e.childRightData.map(m => {
+                    return (
+                      <div className={styles.rows}>
+                        <div className={styles.secondMenu}>{m.rightName}</div>
+                        <div className={styles.thirdMenu}>
+                          {m.childRightData && m.childRightData.map(item => {
+                            return (
+                              <span className={styles.rightName}>
+                                <span className={styles.text}>{item.rightName}</span>
+                                <span className={styles.partition}>|</span>
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+        </Modal>
       </div>
-    )
+    );
   }
 }
 
 export default RoleTable;
-
 
 
 

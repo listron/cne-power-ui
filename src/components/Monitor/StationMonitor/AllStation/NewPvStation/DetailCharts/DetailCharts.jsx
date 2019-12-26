@@ -36,18 +36,10 @@ class DetailCharts extends Component {
                 <div className={styles.tags}>
                     <Link to={{ pathname: '/monitor/alarm/realtime', state: { stationType: '1' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
                     <Link to={'/statistical/stationaccount/allstation'}> 统计分析  </Link>
-                    <Link to={'/statistical/statement/currency'} > 报表查询  </Link>
+                    <Link to={'/report/pvstation/station'} > 电站报表  </Link>
                 </div>
                 <div className={styles.hideDetail} onClick={() => { this.props.detailChange({ detailVisible: false }); }}>
                     <i className="iconfont icon-go"></i>
-                </div>
-                <div className={styles.deviceStatus}>
-                    <div className={styles.deviceStaTitle}> <span>设备状态</span> {/* <i className="iconfont icon-more"></i>  */}
-                    </div>
-                    <div className={styles.deviceStaCont}>
-                        <span>{'异常支路数'} {dataFormats(stationDataSummary['anomalousBranchNum'], '--')}</span>
-                        <span>{'低效逆变器'} {dataFormats(stationDataSummary['lowEfficiencyInverterNum'], '--')}</span>
-                    </div>
                 </div>
                 <div className={styles.chartsBox}>
                     <DayPower

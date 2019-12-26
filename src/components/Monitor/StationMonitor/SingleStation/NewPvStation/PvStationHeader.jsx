@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import OwnProgress from '../../../../Common/OwnProgress/index';
-import { Modal, InputNumber } from 'antd';
+import { Modal, InputNumber, Tooltip } from 'antd';
 import { deviceValueFormat, divideFormarts, multiplyFormarts } from '../../PvCommon/PvDataformat';
 import moment from 'moment';
 
@@ -19,7 +19,15 @@ class PvStationHeader extends React.Component {
       editType: '',
       modalVisiable: false,
       editValue: null,
+      minusShow: false,
     };
+  }
+
+  componentWillReceiveProps(nextProps){
+    const nextSingleStationData = nextProps.singleStationData;
+    if (nextSingleStationData.instantaneous < 0 && nextSingleStationData.instantaneous > -2) {
+      this.setState({ minusShow: true });
+    }
   }
 
 
@@ -66,17 +74,19 @@ class PvStationHeader extends React.Component {
   render() {
     const { singleStationData, monitorPvUnit, theme = 'light' } = this.props;
     const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
-    const { editInfoError, editType, modalVisiable, editValue } = this.state;
+    const { editInfoError, editType, modalVisiable, editValue, minusShow } = this.state;
     const stationDataSummary = singleStationData || {};
     const stationPower = divideFormarts(stationDataSummary.stationPower, realTimePowerUnit);
     const stationCapacity = realCapacityUnit === 'MW' ? stationDataSummary.stationCapacity : multiplyFormarts(stationDataSummary.stationCapacity, 1000);
     const stationUnitCount = stationDataSummary.stationUnitCount;
     const instantaneous = stationDataSummary.instantaneous;
+    const instantaneousValidation = stationDataSummary.instantaneousValidation;
     const dayPower = divideFormarts(stationDataSummary.dayPower, powerUnit);
     const monthPower = divideFormarts(stationDataSummary.monthPower, powerUnit);
     const yearPower = divideFormarts(stationDataSummary.yearPower, powerUnit);
     const monthRate = stationDataSummary.monthRate;
     const equivalentHours = stationDataSummary.equivalentHours;
+    const equivalentHoursValidation = stationDataSummary.equivalentHoursValidation;
     const yearRate = stationDataSummary.yearRate;
     const percent = (stationDataSummary.stationPower && stationCapacity) ? (stationDataSummary.stationPower / multiplyFormarts(stationDataSummary.stationCapacity, 1000)) * 100 : 0;
     const rightHandler = localStorage.getItem('rightHandler');
@@ -93,12 +103,25 @@ class PvStationHeader extends React.Component {
           <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
         </div>
         <div className={styles.dataColumn}>
-          <div> 瞬时辐射  <span className={`${styles.dataValue} ${styles.radiation}`}>{deviceValueFormat(instantaneous, '--', 2)}</span> W/m² </div>
+          <div className={styles.instantaneous}> <span>瞬时辐射  <span className={`${styles.dataValue} ${instantaneousValidation && styles.specialColor}`}>{minusShow && '-' }{deviceValueFormat(instantaneous, '--', 2)}</span> W/m²</span>
+          {instantaneousValidation &&
+            <div className={styles.tooltipName}>
+              <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={instantaneousValidation}> <i className="iconfont icon-help"></i>
+              </Tooltip>
+            </div>}
+          </div>
           <div >  装机台数 <span className={styles.dataValue}>{deviceValueFormat(stationUnitCount, '--', 0)} </span> 台</div>
         </div>
         <div className={styles.dataColumn}>
           <div>日发电量  <span className={styles.dataValue}>{deviceValueFormat(dayPower, '--', 2, true)}</span> {powerUnit}  </div>
-          <div> 日利用小时 <span className={styles.dataValue}>{deviceValueFormat(equivalentHours, '--', 2)}</span> h</div>
+          <div className={styles.equivalentTime}>
+            <span>日等效时<span className={`${styles.dataValue} ${equivalentHoursValidation && styles.specialColor}`}>{deviceValueFormat(equivalentHours, '--', 2)}</span>h</span>
+            {equivalentHoursValidation &&
+              <div className={styles.tooltipName}>
+                <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={equivalentHoursValidation}> <i className="iconfont icon-help"></i>
+                </Tooltip>
+              </div>}
+          </div>
         </div>
         <div className={styles.dataColumn}>
           <div> 月发电量  <span className={styles.dataValue}>{deviceValueFormat(monthPower, '--', 2, true)}</span>

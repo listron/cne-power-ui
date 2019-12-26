@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
+import { Tooltip } from 'antd';
 import { dataFormats } from '../../../../../../utils/utilFunc';
 import DeviceAlarmTable from '../../../DeviceMonitor/DeviceMonitorCommon/DeviceAlarmTable';
 import moment from 'moment';
@@ -156,7 +157,7 @@ class WeatherStation extends Component {
             { id: 'pressure', name: '压力', unit: 'Pa', point: '2' },
             { id: 'windSpeed', name: '风速', unit: 'm/s', point: '2' },
             { id: 'windDirect', name: '风向', unit: '°', point: '2' },
-            { id: 'radiatioQuantity', name: '辐射量', unit: 'MJ/m²', point: '2' },
+            { id: 'radiatioQuantity', name: '辐射量', unit: 'MJ/m²', point: '2', isShow: true },
         ];
         return (
             <div className={styles.weatherStation}>
@@ -169,15 +170,24 @@ class WeatherStation extends Component {
                             }
                             return (<div className={styles.everyDetail} key={index}>
                                 <div>{e.name}</div>
-                                <div className={styles.detailId}>{value}<span className={styles.detailUnit}>{e.unit}</span></div>
+                                <div className={styles.detailId}>
+                                    <span className={e.isShow && weatherstationDetail.radiatioQuantityValidation && styles.specialColor}>{value}</span>
+                                    <span className={styles.detailUnit}>{e.unit}</span>
+                                    {e.isShow && weatherstationDetail.radiatioQuantityValidation &&
+                                        <span className={styles.tooltipName}>
+                                            <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={weatherstationDetail.radiatioQuantityValidation}>
+                                                <i className="iconfont icon-help"></i>
+                                            </Tooltip>
+                                        </span>}
+                                </div>
                             </div>);
                         })}
                     </div>
                     <div className={styles.weatherList}>
                         {weather.map((e, index) => {
-                            const weekArray = ['日', '一', '二', '三', '四', '五', '六'];
+                            const weekArray = ['一', '二', '三', '四', '五', '六', '日'];
                             const date = ['昨天', '今天', '明天', '后天', '星期'];
-                            const dateInner = (index === weather.length - 1) ? '星期' + weekArray[moment(e.weatherDate).get('weekday')] : date[index];
+                            const dateInner = (index === weather.length - 1) ? '星期' + weekArray[moment(e.weatherDate).weekday()] : date[index];
                             return (<div className={styles.weatherDay} key={index}>
                                 <div className={styles.weatherDate}>{e.weatherDate} <span> {dateInner}</span></div>
                                 {weather.length > 0 &&

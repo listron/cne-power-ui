@@ -4,6 +4,7 @@ import styles from './workFlow.scss';
 import { connect } from 'react-redux';
 import { workFlowAction } from './workFlowAction';
 import { commonAction } from '../../../../containers/alphaRedux/commonAction';
+import searchUtil from '@utils/searchUtil';
 import Header from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
@@ -16,13 +17,21 @@ class WorkFlow extends Component {
         showPage: PropTypes.string,
         resetStore: PropTypes.func,
         theme: PropTypes.string,
+        history: PropTypes.object,
+        changeFlowStore: PropTypes.func,
     }
 
     constructor() {
         super();
-        this.state = {
-        };
+    }
 
+    componentDidMount() {
+        const { history } = this.props;
+        const { search } = history.location;
+        const { docketId } = searchUtil(search).parse(); //默认为缺陷列表页
+        if (docketId && docketId !== 'undefined') {
+            this.props.changeFlowStore({ showPage: 'detail', docketId });
+        }
     }
 
     componentWillUnmount() {

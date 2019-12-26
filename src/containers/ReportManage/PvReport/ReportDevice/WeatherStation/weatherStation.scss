@@ -1,0 +1,18 @@
+@import "../../../../../theme/theme.scss";
+
+.weatherStation {
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+  flex-direction: column;
+
+  .reportbox {
+    @include contentBoxStyle();
+  }
+}
+
+.weatherStation.light {
+  .reportbox {
+    background: $pageBackground;
+  }
+}

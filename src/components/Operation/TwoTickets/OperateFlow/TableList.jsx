@@ -9,6 +9,7 @@ import moment from 'moment';
 import path from '../../../../constants/path';
 import ReviewForm from '../Common/HandleForm/ReviewForm';
 import Obsolete from '../Common/HandleForm/Obsolete';
+import { handleRights, handleRight } from '@utils/utilFunc';
 import Cookie from 'js-cookie';
 
 class TableList extends Component {
@@ -234,7 +235,7 @@ class TableList extends Component {
                 render: (text, record) => (
                     <div>
                         <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record); }} />
-                        {record.stateCode === '2' && <i className="iconfont icon-del" onClick={() => { this.delList('del', record.docketId); }} />}
+                        {handleRight('operationTicket_operate') && record.stateCode === '2' && <i className="iconfont icon-del" onClick={() => { this.delList('del', record.docketId); }} />}
                     </div>
                 ),
             },
@@ -291,6 +292,7 @@ class TableList extends Component {
             'review': '审核',
             'obsolete': '作废',
         };
+        const [addRight, handleRight] = handleRights(['operationTicket_add', 'operationTicket_operate']);
         return (
             <div className={`${styles.flowTable} ${styles[theme]}`}>
                 {showWarningTip && <WarningTip
@@ -299,10 +301,10 @@ class TableList extends Component {
                     value={warningTipText} />}
                 <div className={styles.tableTop}>
                     <div className={styles.selectCondition}>
-                        <Button type="add" onClick={this.addWorkFlow}><i>+</i>操作票 </Button>
-                        <div className={`${styles.commonButton} ${!review && styles.disabled}`}
-                            onClick={() => { this.handleBatch('review'); }}>审核</div>
-                        {stopRight.map((e) => {
+                        {addRight && <Button type="add" onClick={this.addWorkFlow}><i>+</i>操作票 </Button>}
+                        {handleRight && <div className={`${styles.commonButton} ${!review && styles.disabled}`}
+                            onClick={() => { this.handleBatch('review'); }}>审核</div>}
+                        {handleRight && stopRight.map((e) => {
                             if (e.nodeName) {
                                 return (
                                     <div className={`${styles.commonButton} ${!obsolete && styles.disabled}`}

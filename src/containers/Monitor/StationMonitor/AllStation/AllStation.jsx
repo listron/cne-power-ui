@@ -3,14 +3,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './allstation.scss';
 import PropTypes from 'prop-types';
-import { Tabs } from 'antd';
 import { allStationAction } from './allStationAction';
 import Allstation from '../../../../components/Monitor/StationMonitor/AllStation/AllStation.jsx';
 import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/NewWindStation/WindStation.jsx';
 import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/NewPvStation/PvStation.jsx';
 import Footer from '../../../../components/Common/Footer';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-import Cookie from 'js-cookie';
 class AllStation extends Component {
   static propTypes = {
     changeMonitorStationStore: PropTypes.func,
@@ -78,7 +75,6 @@ class AllStation extends Component {
     const { showRegion } = this.state;
     return (
       <div className={`${styles.stationMonitor} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '电站监控' }]} theme={theme} style={{ paddingLeft: '38px' }} />
         <div className={styles.stationContainer}>
           {stationTypeCount === 'multiple' &&
             <div className={styles.allStationTitle}>

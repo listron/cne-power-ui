@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import { Button, Table } from 'antd';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import TransferWarningModal from './monitorModal/TransferWarningModal';
+import HandleRemoveModal from './monitorModal/HandleRemoveModal';
 const warningLevelArray = [{
   levelName: '一级',
   levelColor: '#a42b2c',
@@ -22,13 +24,16 @@ class DeviceAlarmTable extends Component {
 
   static propTypes = {
     deviceAlarmList: PropTypes.array,
+    defectTypes: PropTypes.array,
+    selectedTransfer: PropTypes.array,
     deviceDetail: PropTypes.object,
-    loading: PropTypes.bool,
     stationCode: PropTypes.string,
-    deviceTypeCode: PropTypes.string,
-    deviceCode: PropTypes.string,
     style: PropTypes.object,
     titleName: PropTypes.bool,
+    handleRemoveWarning: PropTypes.func,
+    transferWarning: PropTypes.func,
+    getLostGenType: PropTypes.func,
+    changeDeviceStore: PropTypes.func,
   }
 
   static defaultProps = {
@@ -43,6 +48,9 @@ class DeviceAlarmTable extends Component {
       currentPage: 1,
       sortName: 'warningLevel',
       descend: false,
+      showTransferTicketModal: false,
+      showHandleRemoveModal: false,
+      selectedRowKeys: [],
     };
   }
 
@@ -52,6 +60,22 @@ class DeviceAlarmTable extends Component {
       descend: sorter.order === 'descend',
     });
   }
+
+  onShowDetail = (record) => {
+    this.setState({
+      showTransferTicketModal: true,
+    }, () => {
+      this.props.changeDeviceStore({ selectedTransfer: [record] });
+    });
+  };
+
+  onDelDetail = (record) => {
+    const { warningLogId } = record;
+    this.setState({
+      selectedRowKeys: [warningLogId],
+      showHandleRemoveModal: true,
+    });
+  };
 
   initColumn = () => {
     const columns = [
@@ -89,6 +113,21 @@ class DeviceAlarmTable extends Component {
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
+      }, {
+        title: '操作',
+        align: 'center',
+        dataIndex: '操作',
+        key: '操作',
+        render: (text, record) => (
+          <div className={styles.actionBtnBox}>
+            <span className={styles.operationBtn} title="转工单">
+              <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
+            </span>
+            <span className={styles.delBtn} title="手动解除" onClick={() => { this.onDelDetail(record) }}>
+              <i className="iconfont icon-manual" />
+            </span>
+          </div>
+        ),
       },
     ];
     return columns;
@@ -123,14 +162,25 @@ class DeviceAlarmTable extends Component {
   }
 
   render() {
-    const { deviceAlarmList = [], deviceDetail = {}, stationCode, style, titleName = 'true', theme = 'light' } = this.props;
-    const { pageSize, currentPage } = this.state;
+    const {
+      deviceAlarmList = [],
+      deviceDetail = {},
+      stationCode, style,
+      titleName = 'true',
+      theme = 'light',
+      handleRemoveWarning,
+      transferWarning,
+      defectTypes,
+      getLostGenType,
+      selectedTransfer,
+      changeDeviceStore,
+    } = this.props;
+    const { pageSize, currentPage, showTransferTicketModal, showHandleRemoveModal, selectedRowKeys } = this.state;
     const tableSource = this.createTableSource(deviceAlarmList);
     const columns = this.initColumn();
     const { deviceName } = deviceDetail;
     return (
       <div className={`${styles.alarmTable} ${styles[theme]}`} style={style}>
-        {titleName && <h3>实时告警</h3>}
         <div className={styles.tableHeader}>
           <Button className={styles.historyButton}>
             <Link to={{
@@ -150,6 +200,28 @@ class DeviceAlarmTable extends Component {
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         // loading={loading}
         />
+        {showTransferTicketModal &&
+          <TransferWarningModal
+            deviceAlarmList={deviceAlarmList}
+            changeDeviceStore={changeDeviceStore}
+            onCancel={() => this.setState({ showTransferTicketModal: false })}
+            onTransferAlarm={transferWarning}
+            defectTypes={defectTypes}
+            selectedTransfer={selectedTransfer}
+            getLostGenType={getLostGenType}
+            theme={theme}
+          />
+        }
+        {showHandleRemoveModal &&
+          <HandleRemoveModal
+            changeDeviceStore={changeDeviceStore}
+            deviceAlarmList={deviceAlarmList}
+            onCancel={() => this.setState({ showHandleRemoveModal: false })}
+            handleRemoveWarning={handleRemoveWarning}
+            selectedRowKeys={selectedRowKeys}
+            theme={theme}
+          />
+        }
       </div>
     );
   }

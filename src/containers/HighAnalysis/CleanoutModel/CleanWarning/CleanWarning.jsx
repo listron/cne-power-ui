@@ -5,7 +5,6 @@ import styles from './cleanWarning.scss';
 import { cleanWarningAction } from './cleanWarningAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import CleanWarningMain from '../../../../components/HighAnalysis/CleanoutModel/CleanWarning/CleanWarningMain';
 import CleanWarningSide from '../../../../components/HighAnalysis/CleanoutModel/CleanWarning/CleanWarningSide';
 
@@ -28,7 +27,6 @@ class CleanWarning extends Component {
     const { showPage, theme } = this.props;
     return (
       <div className={`${styles.cleanWarningBox} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '清洗预警' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.cleanWarningContainer}>
           <CleanWarningMain {...this.props} />
           <TransitionContainer

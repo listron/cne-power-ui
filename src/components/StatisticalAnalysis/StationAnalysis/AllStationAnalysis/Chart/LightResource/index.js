@@ -35,7 +35,7 @@ class LightResource extends React.Component {
     const targetChart = echarts.init(document.getElementById(graphId));
     let targetMonthOption={};
     targetChart.resize();
-    const color=['#dfdfdf','#a42b2c','#a42b2c','#f9b600'];
+    const color=['#d4d4d4','#a42b2c','#a42b2c','#f9b600'];
     const lineColor = '#f1f1f1';
     const fontColor = '#333';
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";

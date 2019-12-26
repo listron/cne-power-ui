@@ -5,12 +5,8 @@ import Cookie from 'js-cookie';
 import styles from './intelligentExpert.scss';
 import { intelligentExpertAction } from './intelligentExpertAction';
 import { commonAction } from '../../alphaRedux/commonAction';
-import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
 import TransitionContainer from '../../../components/Common/TransitionContainer';
 
-import AddIntelligent from '../../../components/Operation/IntelligentExpert/AddIntelligent';
-import EditIntelligent from '../../../components/Operation/IntelligentExpert/EditIntelligent';
-import ShowIntelligent from '../../../components/Operation/IntelligentExpert/ShowIntelligent';
 import IntelligentSide from '../../../components/Operation/IntelligentExpert/IntelligentSide';
 
 import Footer from '../../../components/Common/Footer';
@@ -56,7 +52,6 @@ class IntelligentExpert extends Component {
     const { showPage, theme } = this.props;
     return (
       <div className={`${styles.intelligentExpert} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '智能专家库' }]} style={{ marginLeft: '40px' }} />
         <div className={styles.contentBox}>
           <div className={styles.warp}>
             <InterlligentExpertMain {...this.props} />

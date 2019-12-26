@@ -1,50 +1,50 @@
 import { lazy } from 'react';
 
 
-const reportStation = [ // 电站报表
+const reportStation = [ // 风电报表
   {
     path: '/report/windstation/powerReport',
-    component: lazy(() => import('../../containers/Monitor/Report/PowerReport/PowerReport')),
+    component: lazy(() => import('../../containers/ReportManage/WindReport/PowerReport/PowerReport')),
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
   {
     path: '/report/windstation/deviceStatus',
-    component: lazy(() => import('../../containers/Monitor/Report/DeviceStatus/DeviceStatus')),
+    component: lazy(() => import('../../containers/ReportManage/WindReport/DeviceStatus/DeviceStatus')),
   },
   {
     path: '/report/windstation/malfunction',
-    component: lazy(() => import('../../containers/Monitor/Report/Malfunction/Malfunction')),
+    component: lazy(() => import('../../containers/ReportManage/WindReport/Malfunction/Malfunction')),
   },
   {
     path: '/report/windstation/powerLost',
-    component: lazy(() => import('../../containers/Monitor/Report/PowerLost/PowerLost')),
+    component: lazy(() => import('../../containers/ReportManage/WindReport/PowerLost/PowerLost')),
   },
 ];
 
-export const reportDevice = [ //设备报表
+export const reportDevice = [ //光伏报表
   {
     path: '/report/pvstation/station',
-    component: lazy(() => import('../../containers/ReportManage/ReportStation/ReportStation.jsx')),
+    component: lazy(() => import('../../containers/ReportManage/PvReport/ReportStation/ReportStation.jsx')),
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
   {
     path: '/report/pvstation/centerInvert', // 集中式逆变器
-    component: lazy(() => import('../../containers/ReportManage/ReportDevice/CenterInvert/CenterInvert.jsx')),
+    component: lazy(() => import('../../containers/ReportManage/PvReport/ReportDevice/CenterInvert/CenterInvert.jsx')),
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
   {
     path: '/report/pvstation/combineInvert', // 组串式逆变器
-    component: lazy(() => import('../../containers/ReportManage/ReportDevice/CombineInvert/CombineInvert.jsx')),
+    component: lazy(() => import('../../containers/ReportManage/PvReport/ReportDevice/CombineInvert/CombineInvert.jsx')),
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
   {
     path: '/report/pvstation/confluenceBox', // 汇流箱
-    component: lazy(() => import('../../containers/ReportManage/ReportDevice/ConfluenceBox/ConfluenceBox.jsx')),
+    component: lazy(() => import('../../containers/ReportManage/PvReport/ReportDevice/ConfluenceBox/ConfluenceBox.jsx')),
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
   {
     path: '/report/pvstation/weatherStation', // 气象站
-    component: lazy(() => import('../../containers/ReportManage/ReportDevice/WeatherStation/WeatherStation')),
+    component: lazy(() => import('../../containers/ReportManage/PvReport/ReportDevice/WeatherStation/WeatherStation')),
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
 ];

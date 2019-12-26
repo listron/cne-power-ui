@@ -12,6 +12,7 @@
   width: 300px;
   height: calc(100vh - 123px);
   overflow: auto;
+
   .deviceTitle {
     color: $darkColor;
     font-size: 18px;
@@ -19,6 +20,7 @@
     line-height: 65px;
     margin-bottom: 0px;
     cursor: pointer;
+
     .titleIcon {
       cursor: pointer;
       margin-left: 32px;
@@ -26,9 +28,11 @@
       color: $themeColor;
     }
   }
+
   .deviceList {
     display: flex;
     flex-wrap: wrap;
+
     .deviceName {
       width: 140px;
       padding-left: 30px;
@@ -37,10 +41,12 @@
       height: 28px;
       line-height: 28px;
       @include overflowText();
+
       &:hover {
         background-color: #eee;
       }
     }
+
     .currentDeviceName {
       width: 140px;
       padding-left: 30px;
@@ -56,35 +62,43 @@
 .pointData {
   background-color: #f8f8f8;
   padding: 20px 60px 80px 60px;
+
   .pointTitle {
     color: $darkColor;
   }
+
   .pointDataList {
     display: flex;
     flex-wrap: wrap;
+
     .eachGroup {
       min-width: 20%;
       max-width: 20%;
       padding-left: 20px;
       margin: 16px 0;
       border-right: dotted 1px $promptColor;
+
       .eachData {
         margin-bottom: 4px;
+
         .pointName {
           color: $darkColor;
           margin-bottom: 0;
         }
+
         .pointValue {
           color: #199475;
           margin-bottom: 0;
           word-wrap: break-word;
           padding-right: 20px;
         }
+
         &:hover {
           background: rgba(206, 235, 224, 0.3);
         }
       }
     }
+
     .eachGroup:last-child {
       border-right: none;
     }
@@ -95,10 +109,12 @@
   // 设备测点表格图
   display: flex;
   justify-content: space-around;
+
   .pointsList,
   .eventsList {
     flex-basis: 615px;
     height: 240px;
+
     h3 {
       padding-left: 8px;
       margin-bottom: 0;
@@ -106,28 +122,34 @@
       line-height: 32px;
       font-weight: 700;
     }
+
     .listBox {
       height: 206px;
       padding: 8px 0 8px 8px;
       overflow-y: auto;
+
       .noEvents {
         display: block;
         text-align: center;
         line-height: 190px;
       }
+
       &::-webkit-scrollbar {
         width: 4px;
       }
     }
+
     .eachInfo {
       height: 24px;
       line-height: 24px;
       padding-left: 24px;
     }
   }
+
   .pointsList .eachInfo {
     display: flex;
     justify-content: space-between;
+
     .pointValue {
       .unit {
         display: inline-block;
@@ -136,6 +158,7 @@
       }
     }
   }
+
   .eventsList .eventDescribe {
     margin-left: 30px;
   }
@@ -144,24 +167,29 @@
 .ymInfo {
   border-top: 1px solid $promptColor;
   height: 500px;
+
   .ymList {
     display: flex;
     overflow: auto;
     height: 274px;
     border: 1px solid $promptColor;
+
     &::-webkit-scrollbar {
       width: 6px;
       background-color: #f4f4f4;
     }
+
     &::-webkit-scrollbar-thumb {
       border-radius: 3px;
       background-color: #555;
       opacity: 0.5;
     }
   }
+
   .ymColumn {
     border-right: 1px dashed $promptColor;
   }
+
   .eachYm {
     padding-left: 12px;
     width: 260px;
@@ -170,6 +198,7 @@
     flex-direction: column;
     justify-content: center;
     color: $lightColor;
+
     &:hover {
       background-color: #f1f1f1;
     }
@@ -182,6 +211,7 @@
       border: 1px solid $themeColor;
       color: $themeColor;
     }
+
     .historyButton:hover {
       background: $themeColor;
       color: #fff;
@@ -195,13 +225,16 @@
     .ant-progress-bg {
       background: $themeColor;
     }
+
     .ant-progress-inner {
-      background-color: #dfdfdf;
+      background-color: #d4d4d4;
     }
   }
+
   .progressNum {
     color: $themeColor;
   }
+
   .progressText {
     color: $darkColor;
   }
@@ -212,22 +245,27 @@
   .pointsList,
   .eventsList {
     border: 1px solid $promptColor;
+
     h3 {
       border-bottom: 1px solid $promptColor;
     }
+
     .listBox {
       &::-webkit-scrollbar-thumb {
         border-radius: 2px;
         background: rgba(0, 0, 0, 0.5);
       }
     }
+
     .eachInfo {
       color: $darkColor;
+
       &:nth-child(2n) {
         background: #f8f8f8;
       }
     }
   }
+
   .pointsList .eachInfo {
     .pointValue {
       .value {
@@ -241,34 +279,43 @@
   .ycList {
     border: 1px solid $promptColor;
   }
+
   .ycContent {
     &::-webkit-scrollbar {
       background-color: #f4f4f4;
     }
+
     &::-webkit-scrollbar-thumb {
       background-color: #555;
     }
   }
+
   .top,
   .eachYc {
     color: $darkColor;
   }
+
   .top {
     background-color: #f4f4f4;
   }
+
   .eachYc {
     background-color: #fff;
+
     &:hover {
       background: #f0f9f5;
     }
   }
 }
+
 .yxInfo.light {
   .yxList {
     border: 1px solid $promptColor;
+
     &::-webkit-scrollbar {
       background-color: #f4f4f4;
     }
+
     &::-webkit-scrollbar-thumb {
       background-color: #555;
     }
@@ -278,16 +325,19 @@
 @import "../../../../../theme/darkTheme.scss";
 .alarmTable.dark {
   color: $fontColor;
+
   h3 {
     color: $fontColor-hover;
     font-weight: 400;
   }
+
   .tableHeader {
     .historyButton {
       border: 1px solid $themeColor;
       color: $fontColor-invert;
       background-image: linear-gradient(-180deg, #6ebeff 0%, #2465c2 100%);
     }
+
     .historyButton:hover {
       color: $fontColor-invert;
       box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
@@ -301,9 +351,11 @@
       background-color: $fontColor-hover;
     }
   }
+
   .progressNum {
     color: $fontColor-hover;
   }
+
   .progressText {
     color: $fontColor;
   }
@@ -314,20 +366,25 @@
   .pointsList,
   .eventsList {
     border: 1px solid $border-color;
+
     h3 {
       border-bottom: 1px solid $border-color;
       color: $fontColor-hover;
     }
+
     .noEvents {
       color: $fontColor;
     }
+
     .eachInfo {
       color: $fontColor;
+
       &:nth-child(2n) {
         background: $light-background;
       }
     }
   }
+
   .pointsList .eachInfo {
     .pointValue {
       .value {
@@ -336,20 +393,25 @@
     }
   }
 }
+
 .ycInfo.dark {
   h3 {
     color: $fontColor-hover;
   }
+
   .ycList {
     border: 1px solid $border-color;
   }
+
   .top,
   .eachYc {
     color: $themeColor;
   }
+
   .top {
     background: #1f246f;
   }
+
   .eachYc {
     // background-color: #fff;
     &:hover {
@@ -362,7 +424,9 @@
   h3 {
     color: $fontColor-hover;
   }
+
   color: $fontColor;
+
   .yxList {
     border: 1px solid $border-color;
   }

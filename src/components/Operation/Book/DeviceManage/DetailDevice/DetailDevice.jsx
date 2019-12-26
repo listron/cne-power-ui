@@ -7,6 +7,9 @@ import DetailInfoPart from './DetailInfoPart';
 import RecordTable from './RecordTable';
 import moment from 'moment';
 import { Icon, Button, Spin } from 'antd';
+import searchUtil from '@utils/searchUtil';
+import { handleRight } from '@utils/utilFunc';
+
 class DetailDevice extends Component {
   static propTypes = {
     totalNum: PropTypes.number,
@@ -14,16 +17,34 @@ class DetailDevice extends Component {
     pageSize: PropTypes.number,
     onShowSideChange: PropTypes.func,
     changeDeviceManageStore: PropTypes.func,
+    getStationDeviceDetail: PropTypes.func,
+    getDevicePartInfo: PropTypes.func,
     detailloading: PropTypes.bool,
+    history: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context);
+    const { search } = props.history.location;
+    const deviceFullCodeStr = searchUtil(search).getValue('deviceFullCode');
     this.state = {
       showWarningTip: false,
       warningTipText: '',
       tableFilter: 'part',
+      deviceFullCodeStr: deviceFullCodeStr,
     };
   }
+
+  componentDidMount () {
+    const { deviceFullCodeStr } = this.state;
+    const { getStationDeviceDetail, getDevicePartInfo } = this.props;
+    deviceFullCodeStr && getStationDeviceDetail({
+      deviceFullCode: deviceFullCodeStr,
+    });
+    deviceFullCodeStr && getDevicePartInfo({
+      deviceFullcode: deviceFullCodeStr,
+    });
+  }
+
   onShowSideChange = () => { // 编辑页
     const { getPvDevice, stationDeviceDetail, stationCode, getConnectDevice } = this.props;
     const { deviceTypeCode } = stationDeviceDetail;
@@ -99,6 +120,8 @@ class DetailDevice extends Component {
     });
   }
   backToList = () => { // 返回列表页
+    const { history } = this.props;
+    history.push('/operation/book/deviceManage');
     this.props.changeDeviceManageStore({
       showPage: 'list',
       selectedStationIndex: null,
@@ -118,19 +141,20 @@ class DetailDevice extends Component {
     const selcetbaseInfo = selcetbaseFun(stationDeviceDetail);
     const windTower = windTowerFun(stationDeviceDetail);
     const windTime = windTimeFun(stationDeviceDetail);
-    const { showWarningTip, warningTipText, tableFilter } = this.state;
+    const { showWarningTip, warningTipText, tableFilter, deviceFullCodeStr } = this.state;
+    const deviceHandleRight = handleRight('book_operateDevice');
     return (
       <div className={styles.contentBox}>
         {detailloading ? <div className={styles.loadingStyle}> <Spin /></div> :
           <div className={styles.detailDevice}>
             {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
             <div className={styles.detailTop}>
-              <span className={styles.topInfoShow}>
+              {deviceHandleRight && <span className={styles.topInfoShow}>
                 <Button className={styles.title} onClick={this.onShowSideChange} disabled={deviceTypeCode === '509'}>编辑</Button>
-              </span>
+              </span>}
               <span className={styles.handleArea} >
-                <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />
-                <i className="iconfont icon-next" title="下一个" onClick={this.nextStation} />
+                <i className="iconfont icon-last" title="上一个" onClick={deviceFullCodeStr ? () => {} : this.preStation} />
+                <i className="iconfont icon-next" title="下一个" onClick={deviceFullCodeStr ? () => {} : this.nextStation} />
                 <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
               </span>
             </div>

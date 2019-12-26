@@ -19,14 +19,14 @@ const initState = immutable.fromJS({
     deviceTypeCode: [], // 设备类型
     defectTypeCode: [], // 缺陷类型
     defectSource: [], //缺陷来源
-    handleUser: ' ', // 处理人
+    handleUser: '', // 处理人
     status: '', // 处理状态 0 待提交 1 待审核 2 执行中 3 待验收 4 已完成 
     handleUserList: [], // 选中的属于participantList的参与人列表
     sortField: 'create_time',
     sortMethod: 'desc',
     pageSize: 10,
     pageNum: 1,
-    defectCategory: '', // 缺陷分类
+    defectGroup: [], // 缺陷分类
   },
   total: 0, //总数
   selectedRowKeys: [], //选中的条数

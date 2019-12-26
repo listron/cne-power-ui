@@ -56,9 +56,12 @@
 
 
 
-
+.lookStyle{
+  text-align: center;
+}
   .cursorStyle {
     cursor: pointer;
+    text-align: center;
 
     &:hover {
       color: #199475;
@@ -80,7 +83,7 @@
       .overTime {
         display: flex;
         align-items: center;
-        border-radius: 4px;
+        border-radius: 2px;
         width: 32px;
         height: 14px;
         margin-right: 4px;
@@ -185,7 +188,7 @@
     }
 
     .icon-help {
-      color: #dfdfdf;
+      color: #d4d4d4;
 
       &:hover {
         color: #e08031;

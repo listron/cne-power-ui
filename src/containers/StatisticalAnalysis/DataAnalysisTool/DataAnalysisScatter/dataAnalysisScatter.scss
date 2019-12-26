@@ -7,12 +7,7 @@
   flex-direction: column;
 
   .scatterMain {
-    display: flex;
-    flex: 1;
-    background-color: #ececec;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 24px 24px 0;
+    @include contentBoxStyle();
   }
 }
 

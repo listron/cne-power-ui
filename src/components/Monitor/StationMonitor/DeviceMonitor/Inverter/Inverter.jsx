@@ -9,10 +9,12 @@ import SubConfluenceList from './SubConfluenceList';
 import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
+import searchUtil from '@utils/searchUtil';
 
 class Seriesinverter extends Component {
   static propTypes = {
     match: PropTypes.object,
+    history: PropTypes.object,
     stations: PropTypes.array,
     resetDeviceStore: PropTypes.func,
     stopMonitor: PropTypes.func,
@@ -21,8 +23,24 @@ class Seriesinverter extends Component {
     theme: PropTypes.string,
   }
 
-  state = {
-    chartName: 'output', // 组串式逆变器 chart图表切换 output <=> branch
+  constructor(props) {
+    super(props);
+    const { history: { location: { search } } } = props;
+    // 默认选中的支路电流名称
+    const pointParamsStr = searchUtil(search).getValue('pointParams') || '';
+    // 字符串转成对象
+    let pointParams = null;
+    if(pointParamsStr !== '') {
+      pointParams = {
+        ...JSON.parse(pointParamsStr),
+        bgcColor: `#${JSON.parse(pointParamsStr).bgcColor}`,
+      };
+    }
+    this.state = {
+      pointNameArr: pointParamsStr === '' ? [] : [pointParams], // 选中的支路数组
+      tabKey: '1',
+      chartName: pointParamsStr === '' ? 'output' : 'branch', // 组串式逆变器 chart图表切换 output <=> branch
+    };
   }
 
   componentDidMount() {
@@ -72,10 +90,30 @@ class Seriesinverter extends Component {
     } else if (innerHTML === '支路电流图' && chartName === 'output') {
       this.setState({ chartName: 'branch' });
     }
-  }
+  };
+
+  pointNameFunc = (arr) => {
+    this.setState({
+      pointNameArr: arr,
+    });
+  };
+
+  // 切换
+  tabKeyFunc = (key) => {
+    this.setState({
+      tabKey: key,
+    });
+  };
+
+  // 切换支路电流图
+  onBranchFunc = (chartName = 'branch') => {
+    this.setState({
+      chartName,
+    });
+  };
 
   render() {
-    const { chartName } = this.state;
+    const { chartName, tabKey, pointNameArr } = this.state;
     const { match, stations, theme } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = match.params;
     const backData = { path: `/monitor/singleStation/${stationCode}`, name: '返回电站' };
@@ -95,7 +133,12 @@ class Seriesinverter extends Component {
         <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
         <div className={styles.deviceContent}>
           <InverterHeader {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-          <InverterStatistics {...this.props} />
+          <InverterStatistics
+            onBranchFunc={this.onBranchFunc}
+            pointNameFunc={this.pointNameFunc}
+            pointNameArr={pointNameArr}
+            {...this.props}
+          />
           <div className={styles.contWrap}>
             <div className={styles.inverterChartTitle}>
               {deviceTypeCode === '201' && <span className={styles.single}>出力图</span>}
@@ -111,17 +154,28 @@ class Seriesinverter extends Component {
               </span>}
             </div>
             {chartName === 'output' && <InverterOutPutTenMin {...this.props} />}
-            {chartName === 'branch' && <InverterSeriesTenMin {...this.props} />}
-            <DevicePointsTable {...this.props} />
-            <DeviceAlarmTable
+            {chartName === 'branch' && <InverterSeriesTenMin pointNameArr={pointNameArr} {...this.props} />}
+            <div className={styles.inverterTabs}>
+              <div className={tabKey === '1' ? styles.tabActive : styles.tabNormal} onClick={() => this.tabKeyFunc('1')}>
+                实时告警
+              </div>
+              <div className={tabKey === '2' ? styles.tabActive : styles.tabNormal} onClick={() => this.tabKeyFunc('2')}>
+                测点信息
+              </div>
+              {(deviceTypeCode === '201') && <div className={tabKey === '3' ? styles.tabActive : styles.tabNormal} onClick={() => this.tabKeyFunc('3')}>
+                下级设备
+              </div>}
+            </div>
+            {(tabKey === '1') && <DeviceAlarmTable
               {...this.props}
               stationCode={stationCode}
               deviceTypeCode={deviceTypeCode}
               deviceCode={deviceCode}
               theme={theme}
             />
-            {deviceTypeCode === '201' && <h3 className={styles.subTitleConfig}>下级设备</h3>}
-            {deviceTypeCode === '201' && <SubConfluenceList {...this.props} stationCode={stationCode} />}
+            }
+            {tabKey === '2' && <DevicePointsTable {...this.props} />}
+            {(deviceTypeCode === '201' && tabKey === '3') && <SubConfluenceList {...this.props} stationCode={stationCode} />}
           </div>
         </div>
       </div>

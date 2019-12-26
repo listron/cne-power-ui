@@ -4,13 +4,7 @@
 @import '../../../../../theme/theme.scss';
 
 .departmentMain{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1 0 auto;
-  width: 100%;
-  padding: 24px 24px 0;
-  background:#ececec;
+  @include contentBoxStyle();
   .contentMain{
     background-color: #fff;
     flex: 1;
@@ -69,7 +63,7 @@
           padding : 0;
           margin-left: 24px;
           margin-right: 12px;
-          font-size: 0;      
+          font-size: 0;
           border: 1px solid $themeColor;
           i{
             background-color:$themeColor;
@@ -77,7 +71,7 @@
             font-size: 14px;
             vertical-align: top;
             width: 28px;
-            line-height: 30px;       
+            line-height: 30px;
             border-radius: 2px 0 0 2px;
           }
           .text{
@@ -85,7 +79,7 @@
             font-size: 14px;
             // background:#fff;
             color:$themeColor;
-            display: inline-block;   
+            display: inline-block;
             width: 40px;
             line-height: 30px;
             margin: 0px;
@@ -113,26 +107,26 @@
       table{
         a{
           text-decoration: underline;
-          color: $darkColor;  
+          color: $darkColor;
           &:hover{
             color: #199475;
           }
         }
 
         .tableDepartmentName{
-          color: $darkColor;       
+          color: $darkColor;
           &:hover{
             color: #199475;
           }
-          .departmentName{           
-          
+          .departmentName{
+
             width: 80px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            
+
           }
-          
+
         }
       }
       .stationColumn{
@@ -203,7 +197,7 @@
     }
     @include lineheight(30px);
   }
-  
+
   :global{
     .ant-popover-title{
       color: $darkColor;

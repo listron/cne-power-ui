@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
-import { Tabs, Switch, Spin, Table, Progress, Radio } from 'antd';
+import { Tabs, Switch, Spin, Table, Progress, Radio, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../../Common/CommonPagination/index';
 import TableColumnTitle from '../../../../../Common/TableColumnTitle';
@@ -148,39 +148,39 @@ class ConfluenceBoxList extends Component {
         title: () => <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
         key: 'devicePower',
-        render: value => numWithComma(value),
+        render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: true,
       }, {
         title: () => <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         width: '140px',
-        render: value => numWithComma(value),
+        render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       },
       {
         title: () => <TableColumnTitle title="电压" unit="V" />,
         dataIndex: 'voltage',
         key: 'voltage',
-        render: value => numWithComma(value),
+        render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: (a, b) => a.voltage - b.voltage,
       }, {
         title: () => <TableColumnTitle title="电流" unit="A" />,
         dataIndex: 'electricity',
         key: 'electricity',
-        render: value => numWithComma(value),
+        render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: (a, b) => a.electricity - b.electricity,
       }, {
         title: () => <TableColumnTitle title="离散率" unit="%" />,
         dataIndex: 'dispersionRatio',
         key: 'dispersionRatio',
-        render: value => value && value + '%' || '--',
+        render: value => dataFormats(value, '--', 2),
         sorter: (a, b) => a.dispersionRatio - b.dispersionRatio,
       }, {
         title: () => <TableColumnTitle title="温度" unit="℃" />,
         dataIndex: 'temp',
         key: 'temp',
-        render: value => numWithComma(value),
+        render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: (a, b) => a.temp - b.temp,
       }, {
         title: '设备状态',
@@ -320,10 +320,40 @@ class ConfluenceBoxList extends Component {
                                   </div>
                                 </div>
                                 <div className={styles.deviceBlockFooter} >
-                                  <div>电压：{dataFormats(item.voltage, '--', 2)} V</div>
-                                  <div>电流：{dataFormats(item.electricity, '--', 2)} A</div>
+                                  <div>
+                                    <div>
+                                      <span>电压：<span className={item.voltageValidation && styles.specialColor}>{dataFormats(item.voltage, '--', 2)}</span> V</span>
+                                      {item.voltageValidation &&
+                                        <span className={styles.tooltipName}>
+                                          <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.voltageValidation}>
+                                            <i className="iconfont icon-help"></i>
+                                          </Tooltip>
+                                        </span>}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div>
+                                      <span>电流：<span className={item.voltageValidation && styles.specialColor}>{dataFormats(item.electricity, '--', 2)}</span> A</span>
+                                      {item.electricityValidation &&
+                                        <span className={styles.tooltipName}>
+                                          <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.electricityValidation}>
+                                            <i className="iconfont icon-help"></i>
+                                          </Tooltip>
+                                        </span>}
+                                    </div>
+                                  </div>
                                   <div className={styles.dispersionRatio}>离散率：{dataFormats(item.dispersionRatio, '--', 2)} %</div>
-                                  <div>温度：{dataFormats(item.temp, '--', 2)} ℃</div>
+                                  <div>
+                                    <div>
+                                      <span>温度：<span className={item.voltageValidation && styles.specialColor}>{dataFormats(item.temp, '--', 2)}</span> ℃</span>
+                                      {item.tempValidation &&
+                                        <span className={styles.tooltipName}>
+                                          <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.tempValidation}>
+                                            <i className="iconfont icon-help"></i>
+                                          </Tooltip>
+                                        </span>}
+                                    </div>
+                                  </div>
                                 </div>
                               </Link>
                             </div>

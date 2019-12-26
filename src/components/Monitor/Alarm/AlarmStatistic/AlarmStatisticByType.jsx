@@ -6,6 +6,7 @@ import styles from './alarmStatistic.scss';
 import AlarmStatisticTable from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticTable.jsx';
 import AlarmStatisticGraph from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticGraph.jsx';
 import StationFilter from '../AlarmFilter/StationFilter';
+import { handleRight } from '@utils/utilFunc';
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;
@@ -129,7 +130,7 @@ class AlarmStatisticByType extends Component {
   }
   render() {
     const { showFilter, key } = this.state;
-
+    const alarmStatisticOperation = handleRight('alarm_statistics_export');
     //数据导出按钮
     const operations = (
       <div className={styles.exportData}>
@@ -165,7 +166,7 @@ class AlarmStatisticByType extends Component {
             /></div>
           }
         </div>}
-        <Tabs animated={false} tabBarGutter={0} className={styles.tabContainer} activeKey={key} tabBarExtraContent={operations} onChange={this.onChangeTab}>
+        <Tabs animated={false} tabBarGutter={0} className={styles.tabContainer} activeKey={key} tabBarExtraContent={alarmStatisticOperation && operations} onChange={this.onChangeTab}>
           <TabPane
             tab={<i className="iconfont icon-drawing"></i>}
             key="graph"

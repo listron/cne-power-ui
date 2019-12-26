@@ -8,8 +8,6 @@ import styles from './defectDetail.scss';
 import WarningTip from '../../../../components/Common/WarningTip';
 import DetailContiner from '../../../../components/Operation/WorkProcess/Defect/DetailContiner';
 import DefectCreate from '../../../../components/Operation/WorkProcess/Defect/DefectCreate';
-
-
 import { Icon } from 'antd';
 
 class DefectDetail extends Component {
@@ -25,6 +23,7 @@ class DefectDetail extends Component {
     processData: PropTypes.array,
     resetStore: PropTypes.func,
     hasModify: PropTypes.bool,
+    defectId: PropTypes.string,
   };
 
 
@@ -75,29 +74,34 @@ class DefectDetail extends Component {
     this.props.changeStore({ hasModify: false });
   }
 
-  renderTitle(status) { // 渲染标题 根据状态
+  renderTitle(status, defectId) { // 渲染标题 根据状态
     let result = '';
-    // 0 待提交 1 审核缺陷 2 处理缺陷 3 验收缺陷  4 已完成
-    switch (status) {
-      case '0': result = '驳回原因'; break;
-      case '1': result = '消缺详情'; break; // 审核缺陷
-      case '2': result = '消缺详情'; break; // 处理缺陷
-      case '3': result = '消缺详情'; break; // 处理缺陷
-      default:
-        result = '消缺详情'; break;
+    if (defectId) {
+      // 0 待提交 1 审核缺陷 2 处理缺陷 3 验收缺陷  4 已完成
+      switch (status) {
+        case '0': result = '驳回原因'; break;
+        case '1': result = '消缺详情'; break; // 审核缺陷
+        case '2': result = '消缺详情'; break; // 处理缺陷
+        case '3': result = '消缺详情'; break; // 处理缺陷
+        default:
+          result = '消缺详情'; break;
+      }
+    } else {
+      result = '新建工单';
     }
     return result;
   }
 
   render() {
-    const { theme = 'light', defectDetail, processData, defectId } = this.props;
+    const { theme, defectDetail, defectId } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const { defectStatus, rejectReason } = defectDetail; // defectStatus  当前的流程状态 defectStatus=1 为待提交状态
     return (
-      <div className={`${styles.detailWrap} ${styles[theme]}`}>
+      // <div className={`${styles.detailWrap} ${styles[theme]}`}>
+      <div className={`${styles.detailWrap}`}>
         {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.header}>
-          <div className={styles.text} title={rejectReason}>{this.renderTitle(defectStatus)}{defectStatus === '0' && `:${rejectReason}`}</div>
+          <div className={styles.text} title={rejectReason}>{this.renderTitle(defectStatus, defectId)}{defectStatus === '0' && `:${rejectReason}`}</div>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
         </div>
         <div className={styles.defectDetailCont}>
@@ -114,7 +118,8 @@ class DefectDetail extends Component {
 const mapStateToProps = (state) => ({
   ...state.operation.defectDetail.toJS(),
   stations: state.common.get('stations').toJS(),
-  theme: state.common.get('theme'),
+  // theme: state.common.get('theme'),
+  theme: 'light',
 });
 
 const mapDispatchToProps = (dispatch) => ({

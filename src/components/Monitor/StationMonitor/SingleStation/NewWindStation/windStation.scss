@@ -1,471 +1,468 @@
-@import '../../../../../theme/theme.scss';
+@import "../../../../../theme/theme.scss";
 .windStation {
-    background: #fff;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    :global {
-        .ant-progress-inner {
-            background-color: #dfdfdf;
-        }
+  background: #fff;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  :global {
+    .ant-progress-inner {
+      background-color: #d4d4d4;
     }
-    .stationTop {
+  }
+  .stationTop {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    .stationListBox {
+      display: flex;
+      position: relative;
+      :global {
+        .ant-drawer {
+          position: absolute;
+          display: flex;
+          width: 300px;
+          position: absolute;
+          background-color: #fff;
+          border-right: 1px solid $promptColor;
+          border-bottom: 1px solid $promptColor;
+          z-index: 9999;
+          left: 0px;
+          top: 0px;
+          width: 300px;
+          max-height: calc(100vh - 83px);
+          overflow: auto;
+        }
+        .ant-drawer-left {
+          display: none;
+        }
+        .ant-drawer-open {
+          display: block;
+        }
+      }
+      .stationTitle {
+        color: $darkColor;
+        font-size: 18px;
+        height: 61px;
+        line-height: 65px;
+        margin-bottom: 0px;
+        .titleIcon {
+          cursor: pointer;
+          margin-left: 32px;
+          margin-right: 12px;
+        }
+      }
+      .stationList {
         display: flex;
         flex-direction: column;
-        position: relative;
-        .stationListBox{
-            display: flex;
-            position: relative;
-            :global{
-                .ant-drawer{
-                    position: absolute;
-                    display: flex;
-                    width:300px;
-                    position: absolute;
-                    background-color: #fff;
-                    border-right: 1px solid $promptColor;
-                    border-bottom: 1px solid $promptColor;
-                    z-index: 9999;
-                    left: 0px;
-                    top: 0px;
-                    width: 300px;
-                    max-height: calc(100vh - 83px);
-                    overflow: auto;
-                }
-                .ant-drawer-left{
-                    display: none;
-                }
-                .ant-drawer-open{
-                    display: block;
-                }
-            }
-            .stationTitle{
-                color: $darkColor;
-                font-size: 18px;
-                height: 61px;
-                line-height: 65px;
-                margin-bottom: 0px;
-                .titleIcon{
-                  cursor: pointer;
-                  margin-left: 32px;
-                  margin-right: 12px;
-                }
-              }
-              .stationList{
-                display: flex;
-                flex-direction: column;
-                padding-left: 42px;
-                height: 1000px;
-                .provinceName{
-                  color:$darkColor;
-                  text-align:left;
-                  line-height: 30px;
-                  background: #f8f8f8;
-                  height: 30px;
-                  text-indent: 1em;
-                  
-                }
-                .stationName{
-                  display: block;
-                  float: left;
-                  width: 120px;
-                  height: 30px;
-                  line-height: 30px;
-                  text-align: left;
-                  text-indent: 1em;
-                  cursor: pointer;
-                  color:$darkColor;
-                  max-width:120px;
-                  word-break: break-all;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                  font-size: 14px;
-                }
-                .currentStationName{
-                  display: block;
-                  float: left;
-                  width: 120px;
-                  height: 30px;
-                  line-height: 30px;
-                  text-align: left;
-                  text-indent: 1em;
-                  cursor: pointer;
-                  color: $themeColor;
-                  max-width:120px;
-                  word-break: break-all;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                }
-                .stationName:hover,.stationName:focus{
-                  color: $themeColor;
-                }
-                .eachStation{
-                  width: 50%;
-                  padding-left: 40px;
-                  cursor: pointer;
-                  color: $darkColor;
-                  height: 28px;
-                  line-height: 28px;
-                  &:hover{
-                    background-color: #eee;
-                  }
-                }
-              }
+        padding-left: 42px;
+        height: 1000px;
+        .provinceName {
+          color: $darkColor;
+          text-align: left;
+          line-height: 30px;
+          background: #f8f8f8;
+          height: 30px;
+          text-indent: 1em;
         }
-        .stationTitle{
-            height: 60px;
-            line-height: 60px;
-            border-bottom: 1px solid #dfdfdf;
-            display: flex;
-            justify-content: space-between;
-            .stationLeft{
-                display: flex;
-                .stationToggle {
-                    display: flex;
-                    position: relative;
-                    cursor: pointer;
-                    align-items: center;
-                }
-                :global{
-                    .anticon-swap {
-                        color: $themeColor;
-                        display: inline-block;
-                        margin: 0 15px 0 20px;
-                        font-size: 18px;
-                    }
-                }
-                h3 {
-                    font-size: 18px;
-                    color: $darkColor;
-                    margin: 0;
-                    margin-right: 20px;
-                    
-                }
-                span { 
-                    color: $darkColor;
-                    margin-right: 15px;
-                }
-            }
-            .stationRight{
-                display: flex;
-                align-items: center;
-                .backIcon{
-                    border-left: 1px solid #dfdfdf;
-                    width: 60px;
-                    line-height: 60px;
-                    text-align: center;
-                    color: #666;
-                    cursor: pointer;
-                    font-size: 18px;
-                    display: block;
-                }
-                .weather{
-                    margin: 0 13px 0 19px;
-                }
-               
-            }
+        .stationName {
+          display: block;
+          float: left;
+          width: 120px;
+          height: 30px;
+          line-height: 30px;
+          text-align: left;
+          text-indent: 1em;
+          cursor: pointer;
+          color: $darkColor;
+          max-width: 120px;
+          word-break: break-all;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: 14px;
         }
+        .currentStationName {
+          display: block;
+          float: left;
+          width: 120px;
+          height: 30px;
+          line-height: 30px;
+          text-align: left;
+          text-indent: 1em;
+          cursor: pointer;
+          color: $themeColor;
+          max-width: 120px;
+          word-break: break-all;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .stationName:hover,
+        .stationName:focus {
+          color: $themeColor;
+        }
+        .eachStation {
+          width: 50%;
+          padding-left: 40px;
+          cursor: pointer;
+          color: $darkColor;
+          height: 28px;
+          line-height: 28px;
+          &:hover {
+            background-color: #eee;
+          }
+        }
+      }
     }
-    .headStation {
-        // border-bottom: 1px dashed #dfdfdf;
-        height: 108px;
+    .stationTitle {
+      height: 60px;
+      line-height: 60px;
+      border-bottom: 1px solid #d4d4d4;
+      display: flex;
+      justify-content: space-between;
+      .stationLeft {
         display: flex;
-        color: $darkColor;
-        flex-direction: row;
-        padding: 20px;
-        .leftIcon {
-            width: 31px;
-            height: 60px;
-            background: url('/img/wind01.png') no-repeat center;
+        .stationToggle {
+          display: flex;
+          position: relative;
+          cursor: pointer;
+          align-items: center;
         }
-        .allStaionStatic{
-            :global {
-                .ant-popover-inner-content {
-                    background: #f8f8f8;
-                    box-shadow:0 0 6px 0 rgba(0,0,0,0.30);
-                }
-            }
-            .poverItem{
-                display: flex;
-                flex: 1;
-                justify-content: space-between;
-                color:#666666;
-                min-width: 180px;
-                padding-right: 20px;
-                i{
-                    font-style: normal;
-                    text-align: right;
-                    display: inline-block;
-                }
-                p{
-                    text-align: right;
-                    margin-bottom: 0;
-                }
-                span{
-                    color: $themeColor;
-                }
-                .unit{
-                    width: 27px;
-                    display: inline-block;
-                    margin-left: 4px;
-                    text-align: left;
-                    color:#666666;
-                }
-            }
-        }
-        .dataColumn {
-            display: flex;
-            flex-direction: column;
-            // line-height: 36px;
-            padding: 0 12px;
-            border-right: 1px solid #dfdfdf;
-            min-width: 175px;
-            >span{
-                display: flex;
-                flex-direction: column;
-            }
-            &:last-child {
-                border: none
-            }
-
-            .dataValue {
-                color: $themeColor;
-                font-size: 24px;
-                text-align: left;
-                padding: 0 4px;
-                line-height: 30px;
-            }
-
-            .speed {
-                color: #3e97d1;
-            }
-
-            .stationPower {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                min-width: 230px;
-                line-height: 30px;
-                >div {
-                    margin-right: 10
-                }
-            }
-        }
-        .typeIcon {
-            width: 120px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-        }
-        .iconStyle{
+        :global {
+          .anticon-swap {
             color: $themeColor;
-            cursor: pointer;
+            display: inline-block;
+            margin: 0 15px 0 20px;
+            font-size: 18px;
+          }
         }
+        h3 {
+          font-size: 18px;
+          color: $darkColor;
+          margin: 0;
+          margin-right: 20px;
+        }
+        span {
+          color: $darkColor;
+          margin-right: 15px;
+        }
+      }
+      .stationRight {
+        display: flex;
+        align-items: center;
+        .backIcon {
+          border-left: 1px solid #d4d4d4;
+          width: 60px;
+          line-height: 60px;
+          text-align: center;
+          color: #353535;
+          cursor: pointer;
+          font-size: 18px;
+          display: block;
+        }
+        .weather {
+          margin: 0 13px 0 19px;
+        }
+      }
     }
-    .windContainer{
+  }
+  .headStation {
+    // border-bottom: 1px dashed #d4d4d4;
+    height: 108px;
+    display: flex;
+    color: $darkColor;
+    flex-direction: row;
+    padding: 20px;
+    .leftIcon {
+      width: 31px;
+      height: 60px;
+      background: url("/img/wind01.png") no-repeat center;
+    }
+    .allStaionStatic {
+      :global {
+        .ant-popover-inner-content {
+          background: #f8f8f8;
+          box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
+        }
+      }
+      .poverItem {
         display: flex;
         flex: 1;
-        .windList{
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            .threadAndDevice {
-                display: flex;
-                flex-direction: row;
-                background:#f8f8f8;
-                height: 50px;
-                align-items: center;
-                justify-content: space-between;
-                .deviceTypeFlow {
-                    display: flex;
-                    text-align: center;
-                    justify-content: space-between;
-                    color: #dfdfdf;
-                    .deviceTypeItem,
-                    .elecnettingItem {
-                        .deviceTypeIcon {
-                           
-                        }
-                    }
-                }
-                :global {
-                    .ant-radio-group {
-                        display: flex;
-                        align-items: center;
-                    }
-                    .ant-radio-button-wrapper {
-                        background: #f8f8f8;
-                        height: 50px;
-                        line-height: 50px;
-                        border: none;
-                        &:first-child{
-                            border-radius:0
-                        }
-                        &:last-child{
-                            border-radius:0
-                        }
-                        &:hover{
-                            border: none;
-                            border-top:1px solid $themeColor;
-                            color: $themeColor;
-                            background: #fff;
-                        }
-                        
-                    }
-                   
-                    .ant-radio-button-wrapper-focused {
-                        color: $themeColor;
-                        background: #fff;
-                        box-shadow: none;
-                        &:after{
-                            border: none;
-                        }
-                    }
-                   
-                    .ant-radio-button-wrapper-checked {
-                        background: #fff;
-                        border: none;
-                        border-top:1px solid $themeColor;
-                        color: $themeColor;
-                        box-shadow: none;
-                        z-index: 1;
-                    }
-                    .ant-radio-button-wrapper:not(:first-child)::before {
-                        width: 0px;
-                    }
-                    .iconfont {
-                        font-size: 22px;
-                        cursor: pointer;
-                    }
-                    .alarmIcon{
-                        font-size: 14px;
-                        color: #a42b2c;
-                        margin-left: -8px;
-                    }
-                    .iconfont:hover {
-                        color: $themeColor;
-                    }
-
-                    // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-nav-container {
-                    //     height: 33px;
-                    // }
-                    // .ant-tabs-bar {
-                    //     border-top: 1px dashed #dfdfdf;
-                    //     border-bottom: 1px dashed #dfdfdf;
-                    //     margin: 0;
-                    // }
-                    // .ant-tabs.ant-tabs-card>.ant-tabs-bar {
-                    //     border-color: #fff;
-                    // }
-                    // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab {
-                    //     border: 1px solid #fff;
-                    //     border-bottom: 0;
-                    //     border-radius: 4px 4px 0 0;
-                    //     background: #fff;
-                    // }
-                    // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab {
-                    //     width: 80px;
-                    //     height: 33px;
-                    //     text-align: center;
-                    //     color: $darkColor;
-                    // }
-                    // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab-active {
-                    //     background: #f8f8f8;
-                    //     border-radius: 4px 4px 0 0;
-                    //     width: 80px;
-                    //     height: 33px;
-                    //     text-align: center;
-                    //     color: $darkColor;
-                    // }
-                }
-                .singleDeviceTypeBox{
-                    border:1px solid #d9d9d9;
-                    height:22px;
-                    background:#ffffff;
-                    line-height: 22px;
-                    border-radius: 4px;
-                    margin-right: 12px;
-                    .spanNormal,.spanActive{
-                        padding: 0 7px;
-                        color:#666666;
-                        display: inline-block;
-                        cursor: pointer;
-                        border-right:1px solid #d9d9d9;
-                    }
-                    .spanActive{
-                        background: $themeColor;
-                        color: #fff;
-                    }
-                }
-            } 
+        justify-content: space-between;
+        color: #353535;
+        min-width: 180px;
+        padding-right: 20px;
+        i {
+          font-style: normal;
+          text-align: right;
+          display: inline-block;
         }
-        .windStationChart {
-            display: flex;
-            width: 464px;
-            background: #f8f8f8;
-            padding: 0 12px 20px;
-            flex-direction: column;
-            .tags {
-                display: flex;
-                justify-content: space-around;
-                margin: 8px 30px;
-                a {
-                    padding: 0 12px;
-                    background: #ffffff;
-                    border: 1px solid #dfdfdf;
-                    border-radius: 4px;
-                    height: 30px;
-                    line-height: 30px;
-                    color: #666;
-                }
-                .noLink{
-                    pointer-events: none;
-                }
-            }
-            .chartsBox{
-                margin-bottom: 20px;
-                display: flex;
-                height: 260px;
-                width:100%;
-                background: #fff;
-            }
+        p {
+          text-align: right;
+          margin-bottom: 0;
         }
+        span {
+          color: $themeColor;
+        }
+        .unit {
+          width: 27px;
+          display: inline-block;
+          margin-left: 4px;
+          text-align: left;
+          color: #353535;
+        }
+      }
     }
-    .outputPowerDiagram {
-        border-top: 1px solid #dfdfdf;
-        border-bottom: 1px solid #dfdfdf;
-        height: 300px;
-        padding: 0 20px;
+    .dataColumn {
+      display: flex;
+      flex-direction: column;
+      // line-height: 36px;
+      padding: 0 12px;
+      border-right: 1px solid #d4d4d4;
+      min-width: 175px;
+      > span {
+        display: flex;
+        flex-direction: column;
+      }
+      &:last-child {
+        border: none;
+      }
+
+      .dataValue {
+        color: $themeColor;
+        font-size: 24px;
+        text-align: left;
+        padding: 0 4px;
+        line-height: 30px;
+      }
+
+      .speed {
+        color: #3e97d1;
+      }
+
+      .stationPower {
         display: flex;
         flex-direction: row;
-        width: 100%;
+        justify-content: space-between;
+        min-width: 230px;
+        line-height: 30px;
+        > div {
+          margin-right: 10;
+        }
+      }
     }
-    .windTabs {
+    .typeIcon {
+      width: 120px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+    .iconStyle {
+      color: $themeColor;
+      cursor: pointer;
+    }
+  }
+  .windContainer {
+    display: flex;
+    flex: 1;
+    .windList {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      .threadAndDevice {
+        display: flex;
+        flex-direction: row;
+        background: #f8f8f8;
+        height: 50px;
+        align-items: center;
+        justify-content: space-between;
+        .deviceTypeFlow {
+          display: flex;
+          text-align: center;
+          justify-content: space-between;
+          color: #d4d4d4;
+          .deviceTypeItem,
+          .elecnettingItem {
+            .deviceTypeIcon {
+            }
+          }
+        }
         :global {
-            .ant-tabs.ant-tabs-line>.ant-tabs-bar .ant-tabs-nav-container {
-                height: 46px;
-                background: #f8f8f8;
-                line-height: 46px;
+          .ant-radio-group {
+            display: flex;
+            align-items: center;
+          }
+          .ant-radio-button-wrapper {
+            background: #f8f8f8;
+            height: 50px;
+            line-height: 50px;
+            border: none;
+            &:first-child {
+              border-radius: 0;
             }
-            .ant-tabs-bar {
-                margin: 0;
+            &:last-child {
+              border-radius: 0;
             }
-            .ant-tabs-nav .ant-tabs-tab:hover {
-                color: $themeColor;
+            &:hover {
+              border: none;
+              border-top: 1px solid $themeColor;
+              color: $themeColor;
+              background: #fff;
             }
-            .ant-tabs-nav .ant-tabs-tab-active {
-                color: $themeColor;
+          }
+
+          .ant-radio-button-wrapper-focused {
+            color: $themeColor;
+            background: #fff;
+            box-shadow: none;
+            &:after {
+              border: none;
             }
-            .ant-tabs-nav .ant-tabs-tab {
-                margin: 0 30px;
-                padding: 0 16px;
-            }
+          }
+
+          .ant-radio-button-wrapper-checked {
+            background: #fff;
+            border: none;
+            border-top: 1px solid $themeColor;
+            color: $themeColor;
+            box-shadow: none;
+            z-index: 1;
+          }
+          .ant-radio-button-wrapper:not(:first-child)::before {
+            width: 0px;
+          }
+          .iconfont {
+            font-size: 22px;
+            cursor: pointer;
+          }
+          .alarmIcon {
+            font-size: 14px;
+            color: #a42b2c;
+            margin-left: -8px;
+          }
+          .iconfont:hover {
+            color: $themeColor;
+          }
+
+          // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-nav-container {
+          //     height: 33px;
+          // }
+          // .ant-tabs-bar {
+          //     border-top: 1px dashed #d4d4d4;
+          //     border-bottom: 1px dashed #d4d4d4;
+          //     margin: 0;
+          // }
+          // .ant-tabs.ant-tabs-card>.ant-tabs-bar {
+          //     border-color: #fff;
+          // }
+          // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab {
+          //     border: 1px solid #fff;
+          //     border-bottom: 0;
+          //     border-radius: 2px 4px 0 0;
+          //     background: #fff;
+          // }
+          // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab {
+          //     width: 80px;
+          //     height: 33px;
+          //     text-align: center;
+          //     color: $darkColor;
+          // }
+          // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab-active {
+          //     background: #f8f8f8;
+          //     border-radius: 2px 4px 0 0;
+          //     width: 80px;
+          //     height: 33px;
+          //     text-align: center;
+          //     color: $darkColor;
+          // }
         }
-        .outputPowerDiagram {
-            border-top: none
+        .singleDeviceTypeBox {
+          border: 1px solid #d9d9d9;
+          height: 22px;
+          background: #ffffff;
+          line-height: 22px;
+          border-radius: 2px;
+          margin-right: 12px;
+          .spanNormal,
+          .spanActive {
+            padding: 0 7px;
+            color: #353535;
+            display: inline-block;
+            cursor: pointer;
+            border-right: 1px solid #d9d9d9;
+          }
+          .spanActive {
+            background: $themeColor;
+            color: #fff;
+          }
         }
+      }
     }
+    .windStationChart {
+      display: flex;
+      width: 464px;
+      background: #f8f8f8;
+      padding: 0 12px 20px;
+      flex-direction: column;
+      .tags {
+        display: flex;
+        justify-content: space-around;
+        margin: 8px 30px;
+        a {
+          padding: 0 12px;
+          background: #ffffff;
+          border: 1px solid #d4d4d4;
+          border-radius: 2px;
+          height: 30px;
+          line-height: 30px;
+          color: #353535;
+        }
+        .noLink {
+          pointer-events: none;
+        }
+      }
+      .chartsBox {
+        margin-bottom: 20px;
+        display: flex;
+        height: 260px;
+        width: 100%;
+        background: #fff;
+      }
+    }
+  }
+  .outputPowerDiagram {
+    border-top: 1px solid #d4d4d4;
+    border-bottom: 1px solid #d4d4d4;
+    height: 300px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  .windTabs {
+    :global {
+      .ant-tabs.ant-tabs-line > .ant-tabs-bar .ant-tabs-nav-container {
+        height: 46px;
+        background: #f8f8f8;
+        line-height: 46px;
+      }
+      .ant-tabs-bar {
+        margin: 0;
+      }
+      .ant-tabs-nav .ant-tabs-tab:hover {
+        color: $themeColor;
+      }
+      .ant-tabs-nav .ant-tabs-tab-active {
+        color: $themeColor;
+      }
+      .ant-tabs-nav .ant-tabs-tab {
+        margin: 0 30px;
+        padding: 0 16px;
+      }
+    }
+    .outputPowerDiagram {
+      border-top: none;
+    }
+  }
 }

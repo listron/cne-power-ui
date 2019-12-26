@@ -7,7 +7,7 @@ import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
 import Pagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
-
+import { handleRight } from '@utils/utilFunc';
 
 
 const FormItem = Form.Item;
@@ -154,7 +154,8 @@ class DeviceFactory extends React.Component {
     // console.log('handleEnterprisecodes: ', handleEnterprisecodes);
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText, showEditFactorModal, tableRecord } = this.state;
-    const columns = [
+    const manufactureRight = handleRight('book_operateManufacture');
+    const basecolumns = [
       {
         title: '编码',
         dataIndex: 'manufactorCode',
@@ -186,24 +187,22 @@ class DeviceFactory extends React.Component {
         render: (text, record) => {
           return (<div className={styles.operateUser} title={text}>{text ? text : record.isBuild === 1 ? '系统' : '--'}</div>);
         },
-      }, {
-        title: '操作',
-        render: (text, record, index) => {
-          return (<div className={styles.editStyle}>
-            <a onClick={() => this.editFactors(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'}></span></a>
-
-            {record.isBuild === 0 ? <span title="删除" className={'iconfont icon-del'} onClick={() => this.deleteFactory(record)}></span> : ''}
-          </div>);
-        },
-
       },
     ];
+    const columns = manufactureRight ? basecolumns.concat({
+      title: '操作',
+      render: (text, record, index) => {
+        return (<div className={styles.editStyle}>
+          <a onClick={() => this.editFactors(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'}></span></a>
 
+          {record.isBuild === 0 ? <span title="删除" className={'iconfont icon-del'} onClick={() => this.deleteFactory(record)}></span> : ''}
+        </div>);
+      },
+    }) : basecolumns;
     return (
       <div className={styles.deviceFactory}>
-        <div className={styles.title}>
+        {manufactureRight && <div className={styles.title}>
           <div className={styles.leftAdd}>
-
             <Form className={styles.editPart}>
               <FormItem className={styles.formItemStyle} colon={false} label="添加设备厂家">
                 {getFieldDecorator('manufactorName', {
@@ -230,9 +229,7 @@ class DeviceFactory extends React.Component {
               <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
             </Form>
           </div>
-
-
-        </div>
+        </div>}
         <div className={styles.tableStyles}>
           <div className={styles.paginationStyle}>
             <div className={styles.rightSeach}>

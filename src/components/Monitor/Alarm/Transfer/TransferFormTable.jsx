@@ -42,14 +42,6 @@ class TransferFormTable extends Component {
     this.props.getTransferInfo({ workOrderId });//请求工单的详细信息
   }
 
-
-  getDetail = (defectId, index) => { // 查看工单详情
-    this.props.changeTransferFormStore({ pageName: 'detail', defectId });
-    this.setState((state) => {
-      return state.showTransferPopover[index] = false;
-    });
-  }
-
   tableChange = (pagination, filters, sorter) => {
     const { changeTransferFormStore, onChangeFilter } = this.props;
     const { field, order } = sorter;
@@ -102,8 +94,10 @@ class TransferFormTable extends Component {
             <span className={styles.value}>{ticketInfo.defectDescribe}</span>
           </div>
         </div>
-        <Button className={styles.ticketButton} onClick={() => { this.getDetail(record.workOrderId, index); }}>
-          查看工单详情
+        <Button className={styles.ticketButton}>
+          <Link to={`/operation/workProcess/view?page=defectDetail&defectId=${record.workOrderId}`} target="_blank">
+            查看工单详情
+          </Link>
         </Button>
       </div>
     );
@@ -131,17 +125,40 @@ class TransferFormTable extends Component {
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
-          const deviceTypeCodes = ['202', '304', '302', '201', '206', '101'];
+          const deviceTypeCodes = ['202', '304', '302', '201', '206', '101', '509'];
           const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
           if (isClick) {
-            return (
+            let renderDom = (
               <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target='_blank' className={styles.underlin} >{text}</Link>
               </div>
             );
+            if(`${record.deviceTypeCode}` === '509') {
+              // 获取支路的下标
+              const deviceIndex = Number(record.deviceName.split('#')[1]) - 1;
+              const paramsColor = {
+                '801': 'f9b600', // 偏低
+                '802': '3e97d1', // 偏高
+                '803': 'a42b2c', // 异常
+                '400': '199475', // 正常
+                '500': 'f1f1f1', // 无通讯
+                '900': 'f1f1f1', // 未接入
+              };
+              // 选中点击的支路
+              const params = {
+                pointIndex: deviceIndex,
+                bgcColor: paramsColor[record.zlStatus || '400'],
+              };
+              // deviceTypeCode === 509 光伏组串 需要用父级的parentTypeCode
+              renderDom = (
+                <div className={styles.deviceName}>
+                  <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.parentTypeCode.split('M')[1]}/${record.parentTypeCode}?pointParams=${JSON.stringify(params)}`} target='_blank' className={styles.underlin} >{text}</Link>
+                </div>
+              );
+            }
+            return renderDom;
           }
           return text;
-
         },
       }, {
         title: '设备类型',

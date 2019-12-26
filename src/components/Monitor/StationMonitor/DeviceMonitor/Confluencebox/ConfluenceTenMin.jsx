@@ -1,34 +1,39 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from '../eachDeviceMonitor.scss';
-import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
-
+import {chartsLoading, themeConfig, chartsNodata} from '../../../../../utils/darkConfig';
 class ConfluenceTenMin extends Component {
   static propTypes = {
     tenMinChartLoading: PropTypes.bool,
     tenMinUnix: PropTypes.number,
     deviceTenMin: PropTypes.array,
+    pointNameArr: PropTypes.array,
     theme: PropTypes.string,
-  }
+  };
 
-  state = {
-    HLNames: ['HL001', 'HL002', 'HL003', 'HL004', 'HL005', 'HL006', 'HL007', 'HL008', 'HL009', 'HL010', 'HL011', 'HL012', 'HL013', 'HL014', 'HL015', 'HL016'],
-    HLColors: ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34'],
+  constructor(props) {
+    super(props);
+    this.state = {
+      HLNames: ['HL001', 'HL002', 'HL003', 'HL004', 'HL005', 'HL006', 'HL007', 'HL008', 'HL009', 'HL010', 'HL011', 'HL012', 'HL013', 'HL014', 'HL015', 'HL016'],
+    };
+    this.HLColors = ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34'];
   }
 
   componentDidUpdate(prevProps) {
-    const { tenMinUnix, tenMinChartLoading, theme } = this.props;
+    const {tenMinUnix, tenMinChartLoading, theme} = this.props;
     const prevTenMinUnix = prevProps.tenMinUnix;
-    if (tenMinUnix !== prevTenMinUnix || tenMinChartLoading || theme !== prevProps.theme) { // 获得数据
+    const prevPointNameArr = prevProps.pointNameArr;
+    if (tenMinUnix !== prevTenMinUnix || tenMinChartLoading || theme !== prevProps.theme || prevPointNameArr.length >= 0) { // 获得数据
       this.renderChart();
     }
   }
 
   renderChart = () => {
-    const { deviceTenMin, tenMinChartLoading, theme } = this.props;
-    const { HLNames, HLColors } = this.state;
+    const {deviceTenMin, tenMinChartLoading, theme, pointNameArr} = this.props;
+    const {HLNames} = this.state;
+    // 重新赋值
     const echartBox = document.getElementById('confluence_monitor_tenMin');
     let confluenceChart = echarts.init(echartBox, themeConfig[theme]);
     if (confluenceChart) {
@@ -36,7 +41,8 @@ class ConfluenceTenMin extends Component {
       confluenceChart = echarts.init(echartBox, themeConfig[theme]);
     }
     chartsLoading(confluenceChart, tenMinChartLoading, theme);
-    let dispersionRatio = [], xTime = [], HLData = [], conflenceData = [];
+    let HLData = [];
+    const dispersionRatio = [], xTime = [], conflenceData = [];
     HLData.length = 16;
     HLData.fill([]);
     deviceTenMin.length > 0 && deviceTenMin.forEach((e, outerIndex) => {
@@ -47,13 +53,25 @@ class ConfluenceTenMin extends Component {
     HLData = HLData.map((e, i) => {
       return conflenceData.map(inner => inner[i]);
     });
+    // 遍历选中支路数组
+    if(pointNameArr.length > 0) {
+      this.HLColors = ['#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999'];
+      pointNameArr.forEach(item => {
+        this.HLColors[item.pointIndex] = item.bgcColor;
+      });
+    }
+    if(pointNameArr.length === 0) {
+      this.HLColors = ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34'];
+    }
+    // 选中的支路下标, 高亮选中的那条线
+    const selectPointIndex = pointNameArr && pointNameArr.length > 0 ? pointNameArr[0].pointIndex : '';
     const HLNamesArr = HLNames.map((e, i) => {
       return {
         name: e,
         type: 'line',
         lineStyle: {
           type: 'solid',
-          width: 1,
+          width: selectPointIndex === i ? 2 : 1,
         },
         label: {
           normal: {
@@ -63,6 +81,7 @@ class ConfluenceTenMin extends Component {
         itemStyle: {
           opacity: 0,
         },
+        z: selectPointIndex === i ? 2 : 1,
         yAxisIndex: 0,
         data: HLData[i],
       };
@@ -75,7 +94,7 @@ class ConfluenceTenMin extends Component {
     const graphic = !tenMinChartLoading && chartsNodata(!(filterDispersionRatio.length === 0), theme);
     const option = {
       graphic: graphic,
-      color: ['#3e97d1', ...HLColors],
+      color: ['#3e97d1', ...this.HLColors],
       title: {
         text: '时序图',
         textStyle: {
@@ -130,7 +149,7 @@ class ConfluenceTenMin extends Component {
         },
         axisLine: {
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
       },
@@ -191,11 +210,11 @@ class ConfluenceTenMin extends Component {
     ]);
     confluenceChart.setOption(option);
     confluenceChart.resize();
-  }
+  };
 
   render() {
     return (
-      <div id="confluence_monitor_tenMin" style={{ height: '335px', marginTop: '20px' }} />
+      <div id="confluence_monitor_tenMin" style={{height: '335px', marginTop: '20px'}} />
     );
   }
 }

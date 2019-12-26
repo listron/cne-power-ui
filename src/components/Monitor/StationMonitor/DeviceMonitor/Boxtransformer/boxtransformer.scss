@@ -5,17 +5,20 @@
   // 子汇流箱
   display: flex;
   flex-wrap: wrap;
-  padding: 0 60px;
+  padding: 15px 60px 48px;
   .singledeviceItem {
     margin-right: 18px;
     margin-bottom: 20px;
     width: 230px;
     height: 151px;
-    border-radius: 4px;
+    border-radius: 2px;
     .statusBox {
       display: flex;
       align-items: center;
       padding: 0 12px;
+      .specialColor{
+        color: #a22c30 !important;
+      }
     }
     .deviceItemIcon {
       align-self: flex-start;
@@ -35,13 +38,24 @@
       .deviceBlockName {
         height: 33px;
         line-height: 33px;
+        .transferRate{
+          display: flex;
+          .tooltipName{
+            margin-top: -5px;
+            margin-left: 3px;
+            color: #999;
+            &:hover{
+              color: #f9b600;
+            }
+          }
+        }
       }
       .deviceItemPower {
         height: 25px;
         line-height: 25px;
       }
       .deviceName {
-        width: 130px;
+        width: 120px;
         @include overflowText();
       }
     }
@@ -55,6 +69,22 @@
         line-height: 24px;
         display: flex;
         justify-content: space-between;
+        .value{
+          display: flex;      
+          .specialColor{
+            color: #a22c30 !important;
+          }
+          .tooltipName{
+            margin-top: -5px;
+            margin-left: 3px;
+            i{
+              color: #999;
+              &:hover{
+                color: #f9b600;
+              }
+            }
+          }
+        }
       }
     }
     .allStatus {
@@ -110,7 +140,7 @@
 .subInverter.light {
   // 子汇流箱
   .singledeviceItem {
-    border: 1px solid #dfdfdf;
+    border: 1px solid #d4d4d4;
     .deviceItemR {
       .deviceBlockName,
       .deviceItemPower {
@@ -130,7 +160,7 @@
         color: #a42b2c;
       }
       .ant-progress-inner {
-        background-color: #dfdfdf;
+        background-color: #d4d4d4;
       }
       .ant-progress-success-bg,
       .ant-progress-bg {
@@ -173,7 +203,7 @@
         color: #a42b2c;
       }
       .ant-progress-inner {
-        background-color: #dfdfdf;
+        background-color: #d4d4d4;
       }
       .ant-progress-success-bg,
       .ant-progress-bg {

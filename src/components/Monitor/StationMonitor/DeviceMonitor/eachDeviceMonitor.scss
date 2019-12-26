@@ -4,9 +4,10 @@
 .windDevice {
   .windChart {
     > div {
-      border-right: 1px solid #dfdfdf;
+      border-right: 1px solid #d4d4d4;
     }
   }
+
   .deviceContent {
     .statisticsBox {
       .deviceIcon {
@@ -15,31 +16,39 @@
             color: $themeColor;
           }
         }
+
         .deviceCode {
           color: $themeColor;
         }
       }
     }
   }
+
   .pointData {
     background-color: #f8f8f8;
+
     .pointTitle {
       color: $darkColor;
     }
+
     .pointDataList {
       .eachGroup {
         border-right: dotted 1px $promptColor;
+
         .groupName {
           color: $darkColor;
           background: #f0f0f0;
         }
+
         .eachData {
           .pointName {
             color: $darkColor;
           }
+
           .pointValue {
             color: #199475;
           }
+
           &:hover {
             background: rgba(206, 235, 224, 0.3);
           }
@@ -51,53 +60,64 @@
 
 .light {
   background-color: $promptColor;
+
   .deviceContent {
     background-color: #fff;
+
     .deviceMonitorHeader {
-      border-bottom: 1px solid #dfdfdf;
+      border-bottom: 1px solid #d4d4d4;
       // 顶部
       .deviceName {
         color: $darkColor;
+
         .swap {
           color: $themeColor;
         }
+
         .status {
           :global {
             .statusIcon {
               // 天气
               color: $darkColor;
             }
+
             .alarm {
               color: #a42b2c;
             }
           }
         }
       }
+
       .linkTo {
         .eachLink {
           .linkName {
             color: $themeColor;
           }
+
           :global {
             .linkIcon {
               color: $promptColor;
             }
+
             .icon-upstream,
             .icon-downstream {
               color: #ceebe0;
             }
           }
         }
+
         .backIcon {
-          border-left: 1px solid #dfdfdf;
-          color: #666;
+          border-left: 1px solid #d4d4d4;
+          color: #353535;
         }
       }
     }
+
     .statisticsBox {
       // 设备信息统计区
       // border-top: solid 1px $promptColor;
       border-bottom: solid 1px $promptColor;
+
       .deviceIcon {
         :global {
           .iconfont {
@@ -105,28 +125,72 @@
           }
         }
       }
+
       .timerGen,
       .timerDayGen,
       .weatherEachData {
         .genNum {
           color: $themeColor;
         }
+
         .genText {
           color: $darkColor;
         }
       }
     }
+
     .points {
       border-top: 1px solid $promptColor;
     }
+
+    .confluenceTabs,
+    .inverterTabs,
+    .boxtransformerTabs,
+    .integrateLineTabs {
+      margin: 37px 48px 0;
+      display: flex;
+      background-color: #f8f8f8;
+      @include lineheight(40px);
+      border-top: 1px solid #e1e2e2;
+
+      div {
+        text-align: center;
+        width: 70px;
+        cursor: pointer;
+      }
+
+      div:nth-of-type(1) {
+        margin-left: 20px;
+      }
+
+      div:nth-of-type(2) {
+        margin-left: 80px;
+      }
+
+      div:nth-of-type(3) {
+        margin-left: 80px;
+      }
+
+      .tabActive {
+        color: $themeColor;
+        border-bottom: 1px solid $themeColor;
+      }
+
+      .tabNormal {
+        color: $darkColor;
+        border-bottom: 1px solid transparent;
+      }
+    }
   }
+
   .seriesinverter,
   .inverterChartTitle {
     .tabs {
       .inactive {
-        color: #666;
-        border: 1px solid #dfdfdf;
+        color: #353535;
+        border: 1px solid #d4d4d4;
       }
+
       .active {
         color: #fff;
         border: 1px solid $themeColor;
@@ -139,13 +203,16 @@
     // 升压站单独样式
     background-color: #f8f8f8;
     border-top: 1px solid $promptColor;
+
     .eachDevice {
       color: $darkColor;
     }
+
     .active {
       border-bottom: 2px solid #199475;
     }
   }
+
   .tooltipBox {
     @include tooltipBox($promptColor);
   }
@@ -154,55 +221,67 @@
 .dark {
   @import "../../../../theme/darkTheme.scss";
   background-color: $background;
+
   .deviceContent {
     background-color: $background;
+
     .deviceMonitorHeader {
       // 顶部
       background: $light-background;
       border: 1px solid $border-color;
+
       .deviceName {
         color: $fontColor;
+
         .swap {
           color: $fontColor-hover;
         }
+
         .status {
           :global {
             .statusIcon {
               // 天气
               color: $fontColor;
             }
+
             .alarm {
               color: #fd6e8f;
             }
           }
         }
       }
+
       .linkTo {
         .eachLink {
           .linkName {
             color: $fontColor-hover;
           }
+
           :global {
             .linkIcon {
               color: $fontColor-hover;
             }
+
             .icon-upstream,
             .icon-downstream {
               color: $fontColor-hover;
             }
           }
         }
+
         .backIcon {
           border-left: 1px solid $border-color;
           color: $fontColor-hover;
         }
       }
     }
+
     .statisticsBox {
       // 设备信息统计区
       border: 1px solid $border-color;
       margin-top: 10px;
       background: $light-background;
+
       .deviceIcon {
         :global {
           .iconfont {
@@ -210,17 +289,20 @@
           }
         }
       }
+
       .timerGen,
       .timerDayGen,
       .weatherEachData {
         .genNum {
           color: $fontColor-hover;
         }
+
         .genText {
           color: $fontColor;
         }
       }
     }
+
     .points {
       border-top: 1px solid $border-color;
     }
@@ -237,11 +319,13 @@
   .seriesinverter,
   .inverterChartTitle {
     color: $fontColor-hover;
+
     .tabs {
       .inactive {
         color: $fontColor;
         border: 1px solid $button-border;
       }
+
       .active {
         color: #fff;
         border: 1px solid $button-border;
@@ -249,6 +333,7 @@
       }
     }
   }
+
   .subTitleConfig {
     color: $fontColor-hover;
   }
@@ -261,9 +346,11 @@
     // 升压站单独样式
     background-color: transparent;
     border: none;
+
     .eachDevice {
       color: $fontColor;
     }
+
     .active {
       border-bottom: 2px solid $themeColor;
     }

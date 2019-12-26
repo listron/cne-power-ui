@@ -12,7 +12,7 @@ export const getBaseOption = (dataAxis) => ({
     data: dataAxis,
     axisLabel: {
       textStyle: {
-        color: '#666666',
+        color: '#353535',
       },
     },
     axisTick: {
@@ -20,14 +20,14 @@ export const getBaseOption = (dataAxis) => ({
     },
     axisLine: {
       lineStyle: {
-        color: '#dfdfdf',
+        color: '#d4d4d4',
       },
     },
   },
   yAxis: {
     axisLine: {
       lineStyle: {
-        color: '#dfdfdf',
+        color: '#d4d4d4',
       },
     },
     splitLine: {
@@ -38,11 +38,11 @@ export const getBaseOption = (dataAxis) => ({
     },
     axisLabel: {
       textStyle: {
-        color: '#666666',
+        color: '#353535',
       },
     },
     nameTextStyle: {
-      color: '#666666',
+      color: '#353535',
     },
   },
 });

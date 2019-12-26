@@ -4,6 +4,9 @@ import { delay } from 'redux-saga';
 import path from '../../../../constants/path';
 import { deviceAction } from './deviceMonitorReducer';
 import moment from 'moment';
+import Path from '@constants/path';
+import { message } from 'antd';
+
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
 
@@ -14,29 +17,29 @@ let realChartsInterval = null;
 let WindDeviceRealData = null;
 
 const monitorPath = { // 详情， 十分钟数据，各设备类型路径不同。
-  '202': {  // 汇流箱： 202
+  '202': { // 汇流箱： 202
     detail: monitor.confluenceboxDetail, // '/mock/monitor/confluenceboxDetail'
     tenMin: monitor.confluenceboxTenMin, // '/mock/monitor/confluenceboxTenMin'
     subList: monitor.confluenceboxSubList,
   },
-  '206': {  // 组串式逆变器：206
+  '206': { // 组串式逆变器：206
     detail: monitor.seriesinverterDetail, //  '/mock/monitor/seriesinverter'
     tenMin: monitor.seriesinverterTenMin, //  '/mock/monitor/seriesinverterTenMin'
     subList: monitor.inverterSubList,
   },
-  '201': {  // 集中式逆变器：201
+  '201': { // 集中式逆变器：201
     detail: monitor.seriesinverterDetail, //  '/mock/monitor/seriesinverter'
     tenMin: monitor.seriesinverterTenMin, //  '/mock/monitor/seriesinverterTenMin'
     subList: monitor.inverterSubList,
   },
-  '304': {  // 箱变： 304
+  '304': { // 箱变： 304
     detail: monitor.boxtransformerDetail, // '/mock/monitor/boxtransformerDetail'
     tenMin: monitor.boxtransformerTenMin, // '/mock/monitor/boxtransformerTenMin'
     subList: monitor.boxtransformerSubList,
   },
   // '207': {  // 交流汇流箱 - 暂不考虑
   //   detail: monitor.confluenceboxDetail, // '/mock/monitor/confluenceboxDetail'
-  //   tenMin: monitor.confluenceboxTenMin, // '/mock/monitor/confluenceboxTenMin'  
+  //   tenMin: monitor.confluenceboxTenMin, // '/mock/monitor/confluenceboxTenMin'
   // },
   '302': { // 集电线路 302
     detail: monitor.integrateDetail,
@@ -45,8 +48,8 @@ const monitorPath = { // 详情， 十分钟数据，各设备类型路径不同
   '301': { // 升压站 301
     detail: monitor.boosterDetail,
     subList: monitor.boosterSubList,
-  }
-}
+  },
+};
 
 function* getDevices({ payload }) { // 单设备同级所有设备信息[]
   const { deviceTypeCode, stationCode } = payload;
@@ -57,14 +60,16 @@ function* getDevices({ payload }) { // 单设备同级所有设备信息[]
       yield put({
         type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
         payload: { devices: tmpDevices.data.data || [] },
-      })
-    } else { throw tmpDevices.data }
+      });
+    } else {
+      throw tmpDevices.data;
+    }
   } catch (error) {
     console.log(error);
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: { devices: [] },
-    })
+    });
   }
 }
 
@@ -76,14 +81,16 @@ function* getDeviceDetail({ deviceTypeCode, deviceCode }) { // 10s实时详情
       yield put({
         type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
         payload: { deviceDetail: tmpDetail.data.data || {} },
-      })
-    } else { throw tmpDetail.data }
+      });
+    } else {
+      throw tmpDetail.data;
+    }
   } catch (error) {
     console.log(error);
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: { deviceDetail: [] },
-    })
+    });
   }
 
 }
@@ -100,15 +107,17 @@ function* getSeriesInverterTenMin({ deviceCode }) {
         payload: {
           branchTenMin: tmpBranch.data.data || {},
           branchTenMinUnix: moment().unix(),
-        }
-      })
-    } else { throw tmpBranch.data }
+        },
+      });
+    } else {
+      throw tmpBranch.data;
+    }
   } catch (error) {
     console.log(error);
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: { branchTenMin: [] },
-    })
+    });
   }
 
 }
@@ -118,7 +127,7 @@ function* getTenMin({ deviceTypeCode, deviceCode, timeParam }) { // 1h实时十�
     const tenMinUrl = `${APIBasePath}${monitorPath[deviceTypeCode].tenMin}/${deviceCode}/${timeParam}`;
     // 组串式逆变器需额外请求下方组串10分钟数据
     if (deviceTypeCode === '206') {
-      yield fork(getSeriesInverterTenMin, { deviceCode })
+      yield fork(getSeriesInverterTenMin, { deviceCode });
     }
     const tmpTenMin = yield call(axios.get, tenMinUrl);
     if (tmpTenMin.data.code === '10000') {
@@ -127,16 +136,18 @@ function* getTenMin({ deviceTypeCode, deviceCode, timeParam }) { // 1h实时十�
         payload: {
           deviceTenMin: tmpTenMin.data.data || {},
           tenMinUnix: moment().unix(),
-          tenMinChartLoading: false
+          tenMinChartLoading: false,
         },
-      })
-    } else { throw tmpTenMin.data }
+      });
+    } else {
+      throw tmpTenMin.data;
+    }
   } catch (error) {
     console.log(error);
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: { deviceTenMin: [], tenMinChartLoading: false },
-    })
+    });
   }
 }
 
@@ -148,14 +159,16 @@ function* getDevicePoints({ deviceCode }) { // 10s实时测点信息
       yield put({
         type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
         payload: { devicePointData: tmpPoint.data.data || {} },
-      })
-    } else { throw tmpPoint.data }
+      });
+    } else {
+      throw tmpPoint.data;
+    }
   } catch (error) {
     console.log(error);
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: { devicePointData: [] },
-    })
+    });
   }
 }
 
@@ -167,14 +180,16 @@ function* getEvents({ deviceCode }) { // 10s事件信息
       yield put({
         type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
         payload: { deviceEvents: tmpEvents.data.data || {} },
-      })
-    } else { throw tmpEvents.data }
+      });
+    } else {
+      throw tmpEvents.data;
+    }
   } catch (error) {
     console.log(error);
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: { deviceEvents: [] },
-    })
+    });
   }
 }
 
@@ -186,14 +201,16 @@ function* getAlarms({ deviceCode }) { // 10s实时告警
       yield put({
         type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
         payload: { deviceAlarmList: tmpAlarm.data.data || {} },
-      })
-    } else { throw tmpAlarm.data }
+      });
+    } else {
+      throw tmpAlarm.data;
+    }
   } catch (error) {
     console.log(error);
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: { deviceAlarmList: [] },
-    })
+    });
   }
 
 }
@@ -209,14 +226,16 @@ function* getSubList({ deviceCode, deviceTypeCode }) { // 10s获取下级设备�
       yield put({
         type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
         payload: { subDeviceList: tmpSubList.data.data || [] },
-      })
-    } else { throw tmpSubList.data }
+      });
+    } else {
+      throw tmpSubList.data;
+    }
   } catch (error) {
     console.log(error);
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: { subDeviceList: [] },
-    })
+    });
   }
 }
 
@@ -240,8 +259,8 @@ function* getDeviceChartMonitor({ payload, waiting }) { // 开启图表1h实时�
   } else { // 第一次请求
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
-      payload: { tenMinChartLoading: true }
-    })
+      payload: { tenMinChartLoading: true },
+    });
   }
   yield fork(getTenMin, { deviceTypeCode, deviceCode, timeParam });
   pvMonitorChartTask = yield fork(getDeviceChartMonitor, { payload, waiting: true });
@@ -256,189 +275,32 @@ function* stopMonitor() {
   }
 }
 
-function* getDeviceMonitorData(action) {  // 请求单设备数据(统计信息，十分钟数据，告警，测点数据)入口
+function* getBoosterstation(action) { // 获取升压站列表(共有)
   const { payload } = action;
-  const { deviceTypeCode } = payload;
-  if (deviceTypeCode === '203') {  // 气象站
+  try {
+    const { stationCode } = payload;
+    const url = `${APIBasePath}${monitor.getBoosterstation}${stationCode}`;
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
+        payload: {
+          boosterList: response.data.data || [],
+        },
+      });
+    } else { throw response.data; }
+  } catch (e) {
+    console.log(e);
     yield put({
-      type: deviceAction.GET_WEATHERSTATION_DATA_SAGA,
-      payload,
-    })
-  } else { // 其他-逆变器，汇流箱，箱变
-    yield put({
-      type: deviceAction.GET_NORMAL_DEVICE_DATA_SAGA,
-      payload,
-    })
-  }
-}
-
-function* getNormalDeviceData(action) { // 请求单设备汇流箱，逆变器，箱变-除气象站数据信息
-  const { payload } = action;
-  const { stationCode, deviceTypeCode, deviceCode } = payload;
-  try {
-    const devicesUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
-    const detailUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
-    const pointUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.monitorPointData}/${deviceCode}`
-    const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}/事件告警`
-
-    yield put({ type: deviceAction.MONITOR_DEVICE_FETCH });
-    const [tmpDevices, tmpDetail, tmpPoint, tmpAlarm] = yield all([
-      call(axios.get, devicesUrl),
-      call(axios.get, detailUrl),
-      call(axios.get, pointUrl),
-      call(axios.get, alarmUrl),
-    ]);
-    if (tmpDevices.data.code === '10000' && tmpDetail.data.code === "10000" && tmpPoint.data.code === "10000" && tmpAlarm.data.code === "10000") {
-      yield put({
-        type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
-        payload: {
-          devices: tmpDevices.data.data || [],
-          deviceDetail: tmpDetail.data.data || {},
-          devicePointData: tmpPoint.data.data || [],
-          deviceAlarmList: tmpAlarm.data.data || [],
-        },
-      })
-    } else {
-      throw tmpDevices.data
-    }
-  } catch (e) {
-    console.log(e);
-    yield put({  //清空数据
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: {
-        devices: [],
-        deviceDetail: {},
-        devicePointData: [],
-        deviceAlarmList: [],
-        loading: false,
+        boosterList: [],
       },
-    })
+    });
   }
 }
 
-function* getTenMinDeviceData(action) { // 请求10min时序图数据信息
-  const { payload } = action;
-  const { deviceTypeCode, deviceCode, timeParam } = payload;
-  try {
-    const tenMinUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].tenMin}/${deviceCode}/${timeParam}`;
 
-    yield put({ type: deviceAction.CHANGE_DEVICE_MONITOR_STORE });
-    const tmpTenMin = yield call(axios.get, tenMinUrl);
-    if (tmpTenMin.data.code === "10000") {
-      yield put({
-        type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
-        payload: {
-          deviceTenMin: tmpTenMin.data.data || [],
-        },
-      })
-    } else {
-      console.log(tmpTenMin.data.data)
-    }
-  } catch (e) {
-    console.log(e);
-    yield put({  //清空数据
-      type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
-      payload: {
-        deviceTenMin: [],
-        loading: false,
-      },
-    })
-  }
-}
-
-function* getWeatherStationData(action) { // 请求气象站设备信息
-  const { payload } = action;
-  const { deviceTypeCode, deviceCode, stationCode } = payload;
-  try {
-    // const detailUrl = monitorPath[deviceTypeCode].detail;
-    const detailUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${stationCode}`;
-    // const alarmUrl = '/mock/monitor/deviceAlarm';
-    const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}/事件告警`
-    yield put({ type: deviceAction.CHANGE_DEVICE_MONITOR_STORE });
-    const [tmpDetail, tmpAlarm] = yield all([
-      call(axios.get, detailUrl),
-      call(axios.get, alarmUrl),
-    ])
-    if (tmpDetail.data.code === "10000" && tmpAlarm.data.code === "10000") {
-      yield put({//清空选中项
-        type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
-        payload: {
-          deviceDetail: tmpDetail.data.data || {},
-          deviceAlarmList: tmpAlarm.data.data || [],
-        },
-      })
-    } else {
-      console.log(tmpDetail.data.data);
-      console.log(tmpAlarm.data.data);
-    }
-  } catch (e) {
-    console.log(e);
-    yield put({  //清空数据
-      type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
-      payload: {
-        deviceDetail: {},
-        deviceAlarmList: [],
-        loading: false,
-      },
-    })
-  }
-}
-
-function* getIntegrateData(action) { // 集电线路信息
-  const { payload } = action;
-  try {
-    const { stationCode, deviceTypeCode, deviceCode } = payload;
-    const devicesUrl = `${APIBasePath}${monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
-    const detailUrl = `${APIBasePath}${monitor.integrateDetail}/${deviceCode}`;
-    const alarmUrl = `${APIBasePath}${monitor.deviceAlarmData}/${deviceCode}/事件告警`;
-    yield put({ type: deviceAction.CHANGE_DEVICE_MONITOR_STORE });
-    const [tmpDevices, tmpDetail, tmpAlarm] = yield all([
-      call(axios.get, devicesUrl),
-      call(axios.get, detailUrl),
-      call(axios.get, alarmUrl),
-    ])
-    if (tmpDevices.data.code === '10000' && tmpDetail.data.code === "10000" && tmpAlarm.data.code === "10000") {
-      yield put({
-        type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
-        payload: {
-          devices: tmpDevices.data.data || [],
-          deviceDetail: tmpDetail.data.data || {},
-          deviceAlarmList: tmpAlarm.data.data || [],
-        },
-      })
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-function* getBoosterData(action) { // 升压站信息
-  const { payload } = action;
-  try {
-    const { stationCode, deviceCode } = payload;
-    const devicesUrl = `${APIBasePath}${monitor.getBoosterstation}${stationCode}`;
-    const detailUrl = `${APIBasePath}${monitor.boosterDetail}/${deviceCode}`;
-    const alarmUrl = `${APIBasePath}${monitor.deviceAlarmData}/${deviceCode}/事件告警`
-    yield put({ type: deviceAction.CHANGE_DEVICE_MONITOR_STORE });
-    const [tmpDevices, tmpDetail, tmpAlarm] = yield all([
-      call(axios.get, devicesUrl),
-      call(axios.get, detailUrl),
-      call(axios.get, alarmUrl),
-    ])
-    if (tmpDevices.data.code === '10000' && tmpDetail.data.code === "10000" && tmpAlarm.data.code === "10000") {
-      yield put({
-        type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
-        payload: {
-          devices: tmpDevices.data.data || [],
-          deviceDetail: tmpDetail.data.data || {},
-          deviceAlarmList: tmpAlarm.data.data || [],
-        },
-      })
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 // 风机部分
 function* getwindturbineData(action) { // 获取风机实时数据 (由于暂时还需要保持之前的地址，不要删)
@@ -449,7 +311,7 @@ function* getwindturbineData(action) { // 获取风机实时数据 (由于暂时
     const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.newWindturbine}/${deviceCode}`; // 新的实时数据
     const detailUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.getFanList}/${stationCode}`; // 设备列表
     const pointUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.monitorPointData}/${deviceCode}`; // 测点数据
-    const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}/事件告警` //告警数据
+    const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}/事件告警`; //告警数据
     yield put({ type: deviceAction.CHANGE_DEVICE_MONITOR_STORE });
 
     const [windturbine, fanPoint, fanDetail, fanAlarm] = yield all([
@@ -457,61 +319,41 @@ function* getwindturbineData(action) { // 获取风机实时数据 (由于暂时
       call(axios.get, pointUrl),
       call(axios.get, detailUrl),
       call(axios.get, alarmUrl),
-    ])
+    ]);
     if (windturbine.data.code === '10000') {
       yield put({
         type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
         payload: {
           deviceDetail: windturbine.data.data || {}, // 单风机详细数据
-        }
-      })
+        },
+      });
     }
     if (fanPoint.data.code === '10000') {
       yield put({
         type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
         payload: {
           devicePointData: fanPoint.data.data || [],
-        }
-      })
+        },
+      });
     }
     if (fanAlarm.data.code === '10000') {
       yield put({
         type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
         payload: {
           deviceAlarmList: fanAlarm.data.data || [],
-        }
-      })
+        },
+      });
     }
     if (fanDetail.data.code === '10000') {
       yield put({
         type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
         payload: {
           devices: fanDetail.data.data.deviceList || [], // 同一个风机组下的数据
-        }
-      })
+        },
+      });
     }
   } catch (e) {
-    console.log(e)
-  }
-}
-
-function* getSequencechartData(action) { // 获取风机图表数据(新功能中已经没有)
-  const { payload } = action;
-  const { deviceCode, timeParam, } = payload;
-  const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.sequencechart}/${deviceCode}/${timeParam}`;
-  try {
-    yield put({ type: deviceAction.CHANGE_DEVICE_MONITOR_STORE });
-    const response = yield call(axios.get, windturbineUrl);
-    if (response.data.code === '10000') {
-      yield put({
-        type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
-        payload: {
-          sequencechart: response.data.data || {},
-        }
-      })
-    }
-  } catch (e) {
-    console.log(e)
+    console.log(e);
   }
 }
 
@@ -525,8 +367,8 @@ function* getScatterpoint(action) { // 单风机散点图
         scatterpoint: {},
         scatterpointTime: null,
         scatterpointLoading: true,
-      }
-    })
+      },
+    });
     const response = yield call(axios.post, windturbineUrl, payload);
     if (response.data.code === '10000') {
       yield put({
@@ -535,25 +377,27 @@ function* getScatterpoint(action) { // 单风机散点图
           scatterpoint: response.data.data || {},
           scatterpointTime: moment().unix(),
           scatterpointLoading: false,
-        }
-      })
-    } else { throw response.data }
+        },
+      });
+    } else {
+      throw response.data;
+    }
   } catch (e) {
-    console.log(e)
+    console.log(e);
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: {
         scatterpoint: {},
         scatterpointTime: moment().unix(),
         scatterpointLoading: false,
-      }
-    })
+      },
+    });
   }
 }
 
 function* getSequencediagram(action) { // 单风机出力图(时序图)
   const { payload } = action;
-  const { deviceFullCode, startTime, endTime, } = payload;
+  const { deviceFullCode, startTime, endTime } = payload;
   const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.sequencediagram}/${deviceFullCode}/${startTime}/${endTime}`;
   try {
     yield put({
@@ -561,9 +405,9 @@ function* getSequencediagram(action) { // 单风机出力图(时序图)
       payload: {
         sequencediagram: {},
         sequencediagramTime: null,
-        sequenceLoading: true
-      }
-    })
+        sequenceLoading: true,
+      },
+    });
     const response = yield call(axios.get, windturbineUrl, payload);
     if (response.data.code === '10000') {
       yield put({
@@ -571,20 +415,22 @@ function* getSequencediagram(action) { // 单风机出力图(时序图)
         payload: {
           sequencediagram: response.data.data || {},
           sequencediagramTime: moment().unix(),
-          sequenceLoading: false
-        }
-      })
-    } else { throw response.data }
+          sequenceLoading: false,
+        },
+      });
+    } else {
+      throw response.data;
+    }
   } catch (e) {
-    console.log(e)
+    console.log(e);
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: {
         sequencediagram: {},
         sequencediagramTime: moment().unix(),
-        sequenceLoading: false
-      }
-    })
+        sequenceLoading: false,
+      },
+    });
   }
 }
 
@@ -617,17 +463,68 @@ function* stopWindDeviceCharts(action) { // 停止进程
   }
 }
 
+function* handleRemoveWarning(action) { // 手动解除告警
+  const { payload } = action;
+  // 保存参数
+  const objParams = {};
+  // 过滤func函数
+  Object.keys(payload).forEach((key) => {
+    if (key !== 'func') {
+      objParams[key] = payload[key];
+    }
+  });
+  const url = `${path.basePaths.APIBasePath}${Path.APISubPaths.monitor.relieveAlarm}`;
+  try {
+    const response = yield call(axios.post, url, objParams);
+    if (response.data.code === '10000') {
+      payload.func();
+      message.success('手动解除成功', 1);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* transferWarning(action) { // 转工单
+  const { payload } = action;
+  const url = `${APIBasePath}${monitor.transferAlarm}`;
+  // 保存参数
+  const objParams = {};
+  // 过滤func函数
+  Object.keys(payload).forEach((key) => {
+    if (key !== 'func') {
+      objParams[key] = payload[key];
+    }
+  });
+  try {
+    const response = yield call(axios.post, url, objParams);
+    if (response.data.code === '10000') {
+      payload.func();
+      message.success('转工单成功', 1);
+    } else {
+      message.warning('转工单失败', 1);
+      throw response.data.data;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* watchDeviceMonitor() {
   yield takeLatest(deviceAction.getDevices, getDevices);
   yield takeLatest(deviceAction.getDeviceInfoMonitor, getDeviceInfoMonitor);
   yield takeLatest(deviceAction.getDeviceChartMonitor, getDeviceChartMonitor);
   yield takeLatest(deviceAction.stopMonitor, stopMonitor);
+  yield takeLatest(deviceAction.getBoosterstation, getBoosterstation);
   // 风机部分
   // yield takeLatest(deviceAction.getwindturbineData, getwindturbineData);
   // yield takeLatest(deviceAction.getSequencechartData, getSequencechartData);
   yield takeLatest(deviceAction.getWindDeviceCharts, getWindDeviceCharts);
   yield takeLatest(deviceAction.stopWindDeviceCharts, stopWindDeviceCharts);
   yield takeLatest(deviceAction.getWindDeviceRealData, getWindDeviceRealData);
+  yield takeLatest(deviceAction.handleRemoveWarning, handleRemoveWarning);
+  yield takeLatest(deviceAction.transferWarning, transferWarning);
+
 }
 
 

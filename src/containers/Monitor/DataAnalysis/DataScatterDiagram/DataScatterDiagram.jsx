@@ -8,7 +8,6 @@ import ScatterDiagramSearch from '../../../../components/Monitor/DataAnalysis/Da
 import ScatterDiagramDataType from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramDataType';
 import ScatterDiagramChart from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramChart';
 import ScatterDiagramList from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramList';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
 
 class DataScatterDiagram extends Component{
@@ -25,7 +24,6 @@ class DataScatterDiagram extends Component{
     const { scatterDiagramType } = this.props;
     return(
       <div className={styles.scatterDiagram}>
-        <CommonBreadcrumb breadData={[{ name: '散点图' }]} style={{ marginLeft: '40px' }} />
         <div className={styles.contentBox}>
           <div className={styles.scatterDiagramContent}>
             <ScatterDiagramSearch {...this.props} />

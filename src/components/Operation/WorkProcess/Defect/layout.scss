@@ -1,0 +1,467 @@
+@import "../../../../theme/theme.scss";
+.seacrchCont {
+  .statusGroup {
+    display: flex;
+    padding: 0px 28px 20px;
+    align-items: center;
+    .text {
+      text-align-last: justify;
+      margin-right: 16px;
+      width: 56px;
+    }
+  }
+  :global {
+    .ant-radio-button-wrapper {
+      padding: 0 8px;
+    }
+  }
+}
+// 参与人
+.participantSearch {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 28px 20px;
+  .participantTip {
+    flex: 0 0 56px;
+    text-align-last: justify;
+    margin-right: 16px;
+  }
+  .searchSelect {
+    :global {
+      .ant-select-selection__rendered {
+        height: 30px;
+      }
+      .ant-select-selection__rendered > ul {
+        display: flex;
+      }
+    }
+  }
+  .search {
+    margin-left: 36px;
+  }
+}
+// 消缺表格
+.defectTable {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .stationNameText,
+  .deviceNameText,
+  .defectTypeNameText,
+  .defectDescribeText {
+    @include overflowText();
+  }
+  .stationName {
+    width: calc((100vw - 900px) * 0.21);
+  }
+  .stationNameText {
+    width: calc((100vw - 900px) * 0.21 - 18px);
+  }
+  .deviceName {
+    width: calc((100vw - 900px) * 0.21);
+  }
+  .deviceNameText {
+    width: calc((100vw - 900px) * 0.21 - 18px);
+  }
+  .defectTypeName {
+    width: calc((100vw - 900px) * 0.23);
+  }
+  .defectTypeNameText {
+    width: calc((100vw - 900px) * 0.23 - 18px);
+  }
+  .defectDescribe {
+    max-width: calc((100vw - 900px) * 0.34);
+  }
+  .defectDescribeText {
+    max-width: calc((100vw - 900px) * 0.34 - 18px);
+  }
+  .action {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 20px 20px;
+    align-items: center;
+    .buttonArea {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    .operation {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+    }
+  }
+  .defectStatus {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .warning {
+      display: flex;
+      flex-direction: row;
+      font-size: 12px;
+      align-items: center;
+      margin-left: 4px;
+      .overTime,
+      .coordinate {
+        display: flex;
+        align-items: center;
+        border-radius: 4px;
+        width: 32px;
+        height: 20px;
+        margin-right: 4px;
+        justify-content: center;
+      }
+    }
+  }
+  :global {
+    .icon-help {
+      font-size: 14px;
+      margin-left: 4px;
+    }
+    .ant-table-placeholder {
+      border-bottom: none;
+    }
+    .ant-table .ant-table-tbody > tr > td {
+      padding: 0 8px;
+    }
+  }
+}
+// 解决方案
+.solutionWrap {
+  .dealModal {
+    .modalbody {
+      height: 400px;
+      overflow: auto;
+      padding: 24px;
+    }
+    .dealBox {
+      margin-bottom: 12px;
+      padding: 12px 16px;
+      position: relative;
+      .column {
+        display: flex;
+        line-height: 28px;
+        .text {
+          width: 70px;
+          text-align: right;
+          margin-right: 12px;
+          flex-shrink: 0;
+        }
+      }
+      .like {
+        position: absolute;
+        right: 10px;
+        bottom: 8px;
+        text-align: center;
+        cursor: pointer;
+        width: 202px;
+        border-radius: 4px;
+        line-height: 28px;
+      }
+      .liked,
+      .disabled {
+        position: absolute;
+        right: 10px;
+        bottom: 8px;
+        text-align: center;
+        cursor: pointer;
+        width: 202px;
+        border-radius: 4px;
+        line-height: 28px;
+      }
+      .disabled {
+        cursor: not-allowed;
+      }
+    }
+    :global {
+      .ant-modal-body {
+        padding: 0;
+      }
+    }
+  }
+}
+
+.defectCreateForm,
+.baseInfoCont {
+  .basicInfo {
+    border-radius: 4px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 28px;
+    .dealMethod {
+      margin: 0 10px;
+      height: 30px;
+    }
+  }
+  .addImg {
+    display: flex;
+    align-items: flex-end;
+    margin-left: -65px;
+    .maxTip {
+      width: 65px;
+      font-family: MicrosoftYaHei;
+    }
+  }
+  .replaceParts {
+    display: flex;
+  }
+  .actionBar {
+    margin-left: 88px;
+    .cancelBtn {
+      margin-right: 10px;
+      border: none;
+    }
+    .addContinue {
+      margin-left: 10px;
+    }
+  }
+  :global {
+    .ant-form-item {
+      display: flex;
+      .ant-form-item-children {
+        display: flex;
+      }
+    }
+    .ant-form-item-label {
+      width: 71px;
+      text-align-last: justify;
+      margin-right: 12px;
+    }
+    .ant-form-item-required::before {
+      display: none;
+    }
+    .ant-radio-button-wrapper {
+      padding: 0 8px;
+    }
+  }
+}
+
+// 查看详情
+.baseInfoCont {
+  display: flex;
+  flex: 1;
+  .basicInfo {
+    .title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      color: $darkColor;
+      margin-bottom: 21px;
+      .text {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-weight: 700;
+      }
+      .warning {
+        display: flex;
+        flex-direction: row;
+        font-size: 12px;
+        align-items: center;
+        margin-left: 12px;
+        .overTime {
+          margin-right: 4px;
+        }
+        .overTime,
+        .coordinate {
+          display: flex;
+          align-items: center;
+          border-radius: 4px;
+          padding: 4px;
+          height: 16px;
+          justify-content: center;
+        }
+      }
+      :global {
+        .icon-content {
+          margin-left: 6px;
+          font-size: 6px;
+        }
+      }
+    }
+    .basicContent {
+      display: flex;
+      flex-direction: column;
+      .basicItem {
+        display: flex;
+        flex-direction: row;
+        line-height: 30px;
+        color: $darkColor;
+        .label {
+          font-weight: 700;
+          white-space: nowrap;
+        }
+        .information {
+          display: inline-block;
+          padding-left: 24px;
+          word-break: break-all;
+        }
+        .megCont {
+          display: flex;
+        }
+
+        .tickets {
+          cursor: pointer;
+          width: 330px;
+          @include overflowText();
+          display: block;
+        }
+        .dealMethod {
+          margin: 0 10px;
+          height: 30px;
+        }
+      }
+      .viewImg {
+        margin-top: 10px;
+        margin-left: 80px;
+      }
+    }
+  }
+  .rightCont {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin-left: 40px;
+    .titleText {
+      // 标题
+      position: relative;
+      .text {
+        border-radius: 4px;
+        width: 93px;
+        line-height: 28px;
+        text-align: center;
+        margin: 0 auto;
+      }
+      .border {
+        height: 1px;
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        z-index: -1;
+      }
+    }
+  }
+  .process {
+    margin-bottom: 32px;
+    .handleForm {
+      margin-top: 20px;
+      .reviewType {
+        display: flex;
+        justify-content: space-between;
+        width: 220px;
+      }
+    }
+    .dealResult {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 18px;
+      align-items: center;
+      .reviewTitle {
+        text-align-last: justify;
+        margin-right: 7px;
+        width: 64px;
+        margin-right: 24px;
+      }
+    }
+  }
+  .review {
+    .actionBar {
+      margin-left: 95px;
+    }
+    :global {
+      .ant-form-item-label {
+        width: 85px;
+        text-align-last: right;
+        margin-right: 12px;
+      }
+    }
+  }
+
+  .timeLineWrap {
+    .timeLine {
+      margin-top: 25px;
+    }
+    .lastFlowName {
+      margin-left: 4px;
+    }
+    .lineIcon {
+      width: 18px;
+      height: 18px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    .processItem {
+      display: flex;
+      line-height: 24px;
+      .lineBasic {
+        margin-right: 24px;
+        margin-left: 4px;
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 56px;
+        .status {
+          border-radius: 4px;
+          text-align: center;
+          margin-top: 4px;
+        }
+      }
+      .processMsg {
+        display: flex;
+        .operateUser {
+          margin-left: 12px;
+        }
+      }
+      .reason {
+        display: flex;
+        word-break: break-all;
+        span {
+          display: flex;
+          flex: 0 0 84px;
+        }
+      }
+    }
+  }
+}
+
+// 创建 待提交
+.defectCreateForm {
+  display: flex;
+  flex: 1;
+  .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 700;
+    margin-bottom: 21px;
+  }
+  .dealInfo {
+    display: flex;
+    flex: 1;
+    margin-left: 40px;
+    flex-direction: column;
+  }
+  .tipText {
+    margin-left: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 14px;
+    :global {
+      .icon-filter {
+        font-size: 14px;
+      }
+    }
+  }
+  :global {
+    .icon-help {
+      margin-left: 8px;
+      line-height: 30px;
+    }
+  }
+}

@@ -6,6 +6,7 @@ import path from '../../../../constants/path';
 import StationSelect from '../../../Common/StationSelect';
 import DeviceSelect from '../../../Common/DeviceSelect';
 import moment from 'moment';
+import { handleRight } from '@utils/utilFunc';
 
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
@@ -159,6 +160,7 @@ class ScatterDiagramSearch extends Component{
     const { dataList = [] } = scatterDiagramList;
     const { stationCode, deviceFullCode, xPoint, yPoint, startTime, endTime } = queryParam;   
     const selectedStation = stationCode[0] || {};
+    const scatterDiagramnOperation = handleRight('scatterPlot_export');
     return(
       <div className={styles.scatterDiagramSearch}>
         <div className={styles.searchPart}>
@@ -239,7 +241,7 @@ class ScatterDiagramSearch extends Component{
           </div>
           <div className={styles.rightHandle}>
             <Button type="default" className={styles.searchInfo} onClick={this.searchPointList} disabled={!xPoint || !yPoint}>查询</Button>
-            {scatterDiagramType === 'list' &&<Button  type="default" className={styles.exportPoint} onClick={this.exportPointList} disabled={dataList.length === 0 }>导出</Button> }
+            {scatterDiagramType === 'list' && scatterDiagramnOperation && <Button type="default" className={styles.exportPoint} onClick={this.exportPointList} disabled={dataList.length === 0 }>导出</Button> }
           </div>
         </div>
       </div>

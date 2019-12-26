@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import styles from './defect.scss';
 import CommonPagination from '@components/Common/CommonPagination';
 import { Table, Icon, Modal, Select, Tooltip, Button } from 'antd';
+import moment from 'moment';
+import { handleRight } from '@utils/utilFunc';
+
 const Option = Select.Option;
 
 
@@ -103,7 +106,7 @@ class DefectTabelList extends Component {
       className: styles.defectTypeName,
       sorter: true,
       render: (text, record) => {
-        return <div className={styles.defectTypeNameText} title={record.defectTypeName}>{record.defectTypeName || '--'}</div>;
+        return <div className={styles.defectTypeNameText} title={record.defectTypeName}>{record.defectTypeCode !== '0' && record.defectTypeName || '--'}</div>;
       },
     }, {
       title: '缺陷描述',
@@ -120,7 +123,7 @@ class DefectTabelList extends Component {
       width: 160,
       sorter: true,
       render: text => {
-        return <div className={styles.startTime} title={text || '--'}>{text || '--'}</div>;
+        return <div className={styles.startTime} title={text || '--'}>{text && moment(text).format('YYYY-MM-DD HH:mm') || '--'}</div>;
       },
     }, {
       title: '完成时间',
@@ -161,14 +164,13 @@ class DefectTabelList extends Component {
   render() {
     const { defectListData, selectedRowKeys, total, listLoading, theme, listParams } = this.props;
     const { pageSize, pageNum } = listParams;
-    const rightHandler = localStorage.getItem('rightHandler');
-    const addDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_add');
+    const addRight = handleRight('workExamine_defect_add');
     return (
       <div className={`${styles.defectTable} ${styles[theme]}`}>
         <span ref={'wrap'} />
         <div className={styles.action}>
           <div className={styles.buttonArea}>
-            {addDefectRight && <Button className={styles.addDefect} type="add" onClick={this.addDefect} ><i>+</i> 缺陷 </Button>}
+            {addRight && <Button className={styles.addDefect} type="add" onClick={this.addDefect} ><i>+</i> 消缺 </Button>}
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>

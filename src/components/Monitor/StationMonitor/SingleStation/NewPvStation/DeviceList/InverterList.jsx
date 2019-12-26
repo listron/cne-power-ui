@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
-import { Tabs, Switch, Radio, Table, Progress, Spin } from 'antd';
+import { Tabs, Switch, Radio, Table, Progress, Spin, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../../Common/CommonPagination/index';
 import TableColumnTitle from '../../../../../Common/TableColumnTitle';
@@ -136,35 +136,59 @@ class InverterList extends Component {
         title: () => <TableColumnTitle title="日发电量" unit="kWh" />,
         dataIndex: 'dayPower',
         key: 'dayPower',
-        render: value => numWithComma(value),
+        render: value => dataFormats(value, '--', 2),
         sorter: true,
       },
       {
-        title: () => <TableColumnTitle title="日利用小时" unit="h" />,
+        title: () => <TableColumnTitle title="日等效时" unit="h" />,
         dataIndex: 'equipmentHours',
         key: 'equipmentHours',
-        render: value => dataFormats(value, '--', 2),
+        render: (value, record, index) => {
+          return (
+            <div className={styles.equipmentHours}>
+              <span className={record.equipmentHoursValidation && styles.specialColor}>{dataFormats(value, '--', 2)}</span>
+              {record.equipmentHoursValidation &&
+                <span className={styles.tooltipName}>
+                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={record.equipmentHoursValidation}>
+                    <i className="iconfont icon-help"></i>
+                  </Tooltip>
+                </span>}
+            </div>
+          );
+        },
         sorter: true,
       },
       {
         title: () => <TableColumnTitle title="转换效率" unit="%" />,
         dataIndex: 'transferRate',
         key: 'transferRate',
-        render: value => dataFormats(value, '--', 2),
+        render: (value, record, index) => {
+          return (
+            <div className={styles.transferRate}>
+              <span className={record.transferRateValidation && styles.specialColor}>{dataFormats(value, '--', 2)}</span>
+              {record.transferRateValidation &&
+                <span className={styles.tooltipName}>
+                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={record.transferRateValidation}>
+                    <i className="iconfont icon-help"></i>
+                  </Tooltip>
+                </span>}
+            </div>
+          );
+        },
         sorter: true,
       },
       {
         title: () => <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
         key: 'devicePower',
-        render: value => numWithComma(value),
+        render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: true,
       }, {
         title: () => <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         width: '140px',
-        render: value => numWithComma(value),
+        render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
         title: () => <TableColumnTitle title="告警" unit="个" />,
@@ -259,7 +283,7 @@ class InverterList extends Component {
   confluenceStatus = { // 汇流箱设备状态
     light: {
       '400': '#ceebe0', // 正常
-      '500': '#dfdfdf', // 无通讯
+      '500': '#d4d4d4', // 无通讯
       '900': '#f1f1f1', // 未接入
       '801': '#f9b600', // 离散率>=10%数
       '802': '#a42b2c', // 离散率>=20%数
@@ -336,7 +360,6 @@ class InverterList extends Component {
     const filteredDeviceList = this.dealData(deviceList);
     const deviceGroupedList = this.groupData(renderList);
     const operations = (<div className={styles.inverterRight} >
-      <Switch defaultChecked={false} onChange={this.onSwitchLow} /> 只看低效逆变器
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm} style={{ marginLeft: 8 }} /> 只看告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus} >
         <Radio.Button value={0} >全部</Radio.Button>
@@ -385,7 +408,7 @@ class InverterList extends Component {
                                   const deviceTypeCode = deviceCode.split('M')[1];
                                   const progressPercent = devicePower / deviceCapacity * 100 || 0;
                                   const unconnect = `${deviceStatus}` === '900';
-                                  const statusBoxStyle = item.isLowEfficiency > 0 ? 'lowEfficiency' : item.alarmNum > 0 && 'alarm';
+                                  const statusBoxStyle = item.alarmNum > 0 && 'alarm' || '';
                                   return (
                                     <div key={i} className={`${styles.singledeviceItem} 
                                     ${styles[statusBoxStyle]}  ${unconnect && styles.noAccess}`}>
@@ -398,7 +421,15 @@ class InverterList extends Component {
                                           <div className={styles.deviceItemR}>
                                             <div className={styles.deviceBlockName}>
                                               <span style={{ color: statusBoxStyle.color }} className={styles.deviceName} title={item.deviceName}>{item.deviceName}</span>
-                                              <span>{dataFormats(item.transferRate, '--', 2, true)}%</span>
+                                              <span className={styles.transferRate}>
+                                                <span className={item.transferRateValidation && styles.specialColor}>{dataFormats(item.transferRate, '--', 2, true)}%</span>
+                                                {item.transferRateValidation &&
+                                                  <span className={styles.tooltipName}>
+                                                    <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.transferRateValidation}>
+                                                      <i className="iconfont icon-help"></i>
+                                                    </Tooltip>
+                                                  </span>}
+                                              </span>
                                             </div>
                                             <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
                                             <div className={styles.deviceItemPower}>
@@ -413,8 +444,16 @@ class InverterList extends Component {
                                             <div className={styles.value}>{dataFormats(item.dayPower, '--', 2)} kWh</div>
                                           </div>
                                           <div className={styles.eachInfo}>
-                                            <div>日利用小时</div>
-                                            <div className={styles.value}>{dataFormats(item.equipmentHours, '--', 2)} h</div>
+                                            <div>日等效时</div>
+                                            <div className={styles.value}>
+                                              <span className={item.equipmentHoursValidation && styles.specialColor}>{dataFormats(item.equipmentHours, '--', 2)} h</span>
+                                              {item.equipmentHoursValidation &&
+                                                <span className={styles.tooltipName}>
+                                                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={item.equipmentHoursValidation}>
+                                                    <i className="iconfont icon-help"></i>
+                                                  </Tooltip>
+                                                </span>}
+                                            </div>
                                           </div>
                                         </div>
                                         <div className={styles.allStatus}>

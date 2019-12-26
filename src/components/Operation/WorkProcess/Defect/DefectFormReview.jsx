@@ -74,7 +74,7 @@ class DefectFormReview extends Component {
             {getFieldDecorator('defectProposal', {
               rules: [{ required: false, message: '请输入关闭的处理建议' }],
             })(
-              <InputLimit placeholder="请描述，不超过80个汉字" />
+              <InputLimit placeholder="请描述，不超过999个汉字" size={999} />
             )}
           </FormItem>
         )}
@@ -85,7 +85,7 @@ class DefectFormReview extends Component {
             {getFieldDecorator('rejectReason', {
               rules: [{ required: true, message: '请输入驳回原因' }],
             })(
-              <InputLimit placeholder="请描述，不超过80个汉字" />
+              <InputLimit placeholder="请描述，不超过999个汉字" size={999} />
             )}
           </FormItem>
         )}
@@ -95,7 +95,6 @@ class DefectFormReview extends Component {
               rules: [{ required: false, message: '清选择截止时间' }],
             })(
               <DatePicker
-                placeholder="默认当前时间"
                 format="YYYY-MM-DD"
                 disabledDate={this.disabledDate}
               />

@@ -8,7 +8,7 @@ import WarningTip from '../../../Common/WarningTip';
 import IgnoreModal from './IgnoreModal';
 import moment from 'moment';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
-import { numWithComma } from '../../../../utils/utilFunc';
+import { numWithComma, handleRight } from '../../../../utils/utilFunc';
 
 const Option = Select.Option;
 class Unhandle extends Component {
@@ -138,6 +138,7 @@ class Unhandle extends Component {
   render() {
     const { stations, pageSize, pageNum, totalNum, loading, unhandleList, matrixList, ignoreReason, theme } = this.props;
     const { selectedRowKeys, showWarningTip, warningTipText, ingoreVisible } = this.state;
+    const unhandleOperation = handleRight('inefficientDetect_worklist');
     const columns = [
       {
         title: '电站名称',
@@ -212,13 +213,13 @@ class Unhandle extends Component {
         <div className={styles.wrap}>
           <span ref={'select'} />
           <div className={styles.selectCondition}>
-            <Select onChange={this.selectChange} placeholder="操作" value={'操作'} dropdownMatchSelectWidth={false}
+          {unhandleOperation ? <Select onChange={this.selectChange} placeholder="操作" value={'操作'} dropdownMatchSelectWidth={false}
               getPopupContainer={() => this.refs.select}>
               <Option value="transfer" disabled={selectedRowKeys.length > 0 ? false : true} className={styles.option}>
                 <i className="iconfont icon-tranlist" />  转工单</Option>
               <Option value="ignore" disabled={selectedRowKeys.length > 0 ? false : true} className={styles.option}>
                 <i className="iconfont icon-neglect" />  忽略</Option>
-            </Select>
+            </Select> : <div></div>}
             <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
               onPaginationChange={this.onPaginationChange} theme={theme} />
           </div>

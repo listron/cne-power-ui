@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import styles from './deviceManage.scss';
 import { deviceManageAction } from './deviceManageAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import DeviceSide from '../../../../components/Operation/Book/DeviceManage/DeviceSide';
@@ -15,6 +14,7 @@ import PartInfo from './PartInfo/PartInfo';
 
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
+import searchUtil from '@utils/searchUtil';
 
 class DeviceManage extends Component {
   static propTypes = {
@@ -31,6 +31,7 @@ class DeviceManage extends Component {
     getStationOfEnterprise: PropTypes.func,
     resetStore: PropTypes.func,
     selectType: PropTypes.string,
+    location: PropTypes.object,
   };
   constructor(props) {
     super(props);
@@ -40,6 +41,11 @@ class DeviceManage extends Component {
     };
   }
   componentDidMount() {
+    const {
+      location: { search },
+      changeDeviceManageStore,
+    } = this.props;
+    const showPageStr = searchUtil(search).getValue('showPage');
     const { enterpriseId, getStationOfEnterprise } = this.props;
     getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
     this.timeout = setTimeout(() => {
@@ -47,6 +53,9 @@ class DeviceManage extends Component {
         showDeviceTip: false,
       });
     }, 3000);
+    showPageStr && setTimeout(() => {
+      changeDeviceManageStore({ showPage: 'detail' });
+    }, 1000);
   }
   componentWillUnmount() {
     clearTimeout(this.timeout);
@@ -102,10 +111,6 @@ class DeviceManage extends Component {
     };
     return (
       <div className={styles.deviceManageContainer}>
-        <CommonBreadcrumb
-          breadData={[{ name: '设备' }]}
-          style={{ marginLeft: '38px', backgroundColor: '#fff' }}
-        />
         {selectType === 'deviceInfo' && (
           <div className={styles.deviceManage}>
             <div className={styles.deviceManageMain}>

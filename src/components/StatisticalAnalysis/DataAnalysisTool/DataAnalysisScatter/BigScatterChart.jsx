@@ -92,7 +92,7 @@ class BigScattrChart extends React.Component {
             <div class=${styles.topStyle}>
             <div>${payload.seriesName}</div>
             </div>
-            <div  style='background:#dfdfdf;height:1px;
+            <div  style='background:#d4d4d4;height:1px;
             width:100%;' ></div>
             <div class=${styles.lineStyle}>时间: ${info[2] ? moment(info[2]).format('YYYY-MM-DD HH:mm:ss') : '--'}</div>
             <div class=${styles.lineStyle}>${pointCodeNameX}: ${dataFormat(info[0], '--', 2)}</div>
@@ -114,7 +114,7 @@ class BigScattrChart extends React.Component {
       },
       xAxis: [{
         type: 'value',
-        nameGap: -40,
+        nameGap: 40,
         min: xMin,
         max: xMax,
         name: pointCodeNameX,
@@ -122,7 +122,7 @@ class BigScattrChart extends React.Component {
           fontSize: 18,
           verticalAlign: 'bottom',
           lineHeight: 40,
-          padding: [60, 0, 0, 0],
+          padding: [-20, 0, 0, 0],
         },
         nameLocation: 'center',
         axisTick: {
@@ -132,7 +132,7 @@ class BigScattrChart extends React.Component {
           show: true,
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisPointer: {
@@ -167,7 +167,7 @@ class BigScattrChart extends React.Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisTick: {

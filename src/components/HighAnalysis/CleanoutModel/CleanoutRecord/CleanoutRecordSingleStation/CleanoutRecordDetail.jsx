@@ -24,8 +24,11 @@ class CleanoutRecordDetail extends Component {
     onShowSideChange: PropTypes.func,
     changeCleanoutRecordStore: PropTypes.func,
     getDetailList: PropTypes.func,
+    getStationDust: PropTypes.func,
     history: PropTypes.object,
     theme: PropTypes.string,
+    endTime: PropTypes.string,
+    startTime: PropTypes.string,
   }
 
   constructor(props) {
@@ -78,7 +81,6 @@ class CleanoutRecordDetail extends Component {
   }
   changeCleanType = (e) => {
     const { changeCleanoutRecordStore, getDetailList, singleStationCode, cleanType, detailPageNum, detailPageSize } = this.props;
-    console.log('cleanType: ', cleanType);
     changeCleanoutRecordStore({ cleanType: e.target.value });
     getDetailList({ stationCode: singleStationCode, cleanType: e.target.value, pageNum: detailPageNum, pageSize: detailPageSize });
   }
@@ -106,12 +108,12 @@ class CleanoutRecordDetail extends Component {
   showDirtModal = () => {//展示灰尘影响图
     const { singleStationCode, getMatrixDust, getStationDust } = this.props;
     const stationCode = singleStationCode;
-    const endTime = moment().format('YYYY-MM-DD');
-    const startTime = moment().subtract(30, 'days').format('YYYY-MM-DD');
+    const endTime = moment().subtract(1, 'days').format('YYYY-MM-DD');
+    const startTime = moment().subtract(1, 'months').add(-1, 'days').format('YYYY-MM-DD');
     this.setState({
       showDirtModal: true,
     });
-    getMatrixDust({ stationCode, endTime, startTime });
+    // getMatrixDust({ stationCode, endTime, startTime });
     getStationDust({ stationCode, endTime, startTime });
 
   }

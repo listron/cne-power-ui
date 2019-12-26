@@ -8,7 +8,6 @@ import Footer from '../../../../components/Common/Footer';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import RoleEdit from '../../../../components/System/Account/Role/RoleEdit';
 import RoleTable from '../../../../components/System/Account/Role/RoleTable';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 
 class Role extends Component {
   static propTypes = {
@@ -21,6 +20,7 @@ class Role extends Component {
     resetRole: PropTypes.func,
     enterpriseId: PropTypes.string,
     continueAdd: PropTypes.bool,
+    getOperatetype: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -30,6 +30,7 @@ class Role extends Component {
       enterpriseId: this.props.enterpriseId
     }
     this.props.getRoleList(params);
+    this.props.getOperatetype(); // 获得权限操作类型
   }
   componentWillUnmount() {
     this.props.resetRole();
@@ -37,16 +38,8 @@ class Role extends Component {
 
   render() {
     const { showPage } = this.props;
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '角色',
-        }
-      ],
-    };
     return (
       <div className={styles.roleContainerBox} >
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.roleContainer}>
           <div className={styles.roleMain} style={{ visibility: showPage === 'list' ? 'visible' : 'hidden' }}>
             <RoleTable {...this.props} />
@@ -81,6 +74,7 @@ const mapDispatchToProps = (dispatch) => ({
   onEditRole: payload => dispatch({ type: roleAction.EDIT_ROLE_SAGA, payload }),
   onDeleteRole: payload => dispatch({ type: roleAction.DELETE_ROLE_SAGA, payload }),
   resetRole: payload => dispatch({ type: roleAction.RESET_ROLE_SAGA, payload }),
+  getOperatetype: payload => dispatch({ type: roleAction.GET_OPERATE_TYPE, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Role);

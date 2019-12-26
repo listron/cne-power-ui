@@ -7,6 +7,7 @@ import CommonPagination from '../../Common/CommonPagination';
 import ImportIntelligent from './ImportIntelligent';
 import WarningTip from '../../Common/WarningTip';
 import moment from 'moment';
+import { handleRight } from '@utils/utilFunc';
 
 class IntelligentTable extends Component {
   static propTypes = {
@@ -176,8 +177,7 @@ class IntelligentTable extends Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    const rightHandler = localStorage.getItem('rightHandler') || '';
-    const editRight = rightHandler.split(',').includes('operation_experience_edit');
+    const editRight = handleRight('operation_experience_edit');
     const columns = [
       {
         title: '设备类型',

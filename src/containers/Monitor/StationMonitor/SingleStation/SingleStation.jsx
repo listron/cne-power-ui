@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './singleStation.scss';
 import { singleStationAction } from './singleStationAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
 import PvStation from '../../../../components/Monitor/StationMonitor/SingleStation/NewPvStation/PvStation';
 // import PvStation from '../../../../components/Monitor/StationMonitor/SingleStation/PvStation/PvStation';
@@ -11,7 +10,10 @@ import PvStation from '../../../../components/Monitor/StationMonitor/SingleStati
 import WindStation from '../../../../components/Monitor/StationMonitor/SingleStation/NewWindStation/WindStation';
 class SingleStation extends Component {
   static propTypes = {
-    stationType: PropTypes.string,
+    stationType: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.bool,
+    ]),
     match: PropTypes.object,
     changeSingleStationStore: PropTypes.func,
     resetSingleStationStore: PropTypes.func,
@@ -54,7 +56,6 @@ class SingleStation extends Component {
     const { stationType, theme } = this.props;
     return (
       <div className={`${styles.singleStation} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '电站监控' }]} style={{ paddingLeft: '38px' }} theme={theme} />
         <div className={styles.singleStationContainer} >
           {stationType === '1' && <PvStation {...this.props} />}
           {stationType === '0' && <WindStation {...this.props} />}

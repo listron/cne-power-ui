@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Input, Form } from 'antd';
+import { Button, Input, Form, Radio } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
 import RoleTree from './RoleTree';
 const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
 
 
 class RoleEditForm extends Component {
@@ -19,48 +20,63 @@ class RoleEditForm extends Component {
     changeRoleStore: PropTypes.func,
     loading: PropTypes.bool,
     continueAdd: PropTypes.bool,
+    operatetypeData: PropTypes.array,
   }
 
   constructor(props){
     super(props);
+    this.state = {
+      operateType: '执行',
+    };
   }
 
   onSaveRole = () => {
-    const { enterpriseId, selectedRole, defaultMenuData } = this.props;
+    const { enterpriseId, selectedRole, defaultMenuData, operatetypeData = [], showPage, onCreateRole, onEditRole } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
-        const { roleDesc, rightId} = values;
+        const { roleDesc, rightId, operateName} = values;
         const tmpDefault = defaultMenuData.map(e=>`${e}`);
         const outputRightSet = new Set([...rightId,...tmpDefault]);
         const outputRightArr = [...outputRightSet];
-        if(this.props.showPage === 'create') {
-          this.props.onCreateRole({
+        const selectOperateInfo = operatetypeData.find(e => {
+          return e.name === operateName;
+        }) || '';
+        const operateId = selectOperateInfo.id;
+        if(showPage === 'create') {
+          onCreateRole({
             roleDesc: roleDesc.trim(),
             rightId: outputRightArr.join(','),
             enterpriseId,
+            operateId,
             continueAdd: false,
           });
         } else {
-          this.props.onEditRole({
+          onEditRole({
             roleDesc: roleDesc.trim(),
             rightId: outputRightArr.join(','),
+            enterpriseId,
+            operateId,
             roleId: selectedRole[0].roleId,
-            enterpriseId
-          })
+          });
         }
       }
     });
   }
 
   onSaveRoleAndAdd = () => {
-    const { enterpriseId } = this.props;
+    const { enterpriseId, operatetypeData = [] } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
+      const { operateName} = values;
+      const operateId = operatetypeData.length > 0 ? operatetypeData.find(e => {
+        return e.name === operateName;
+      }) : '';
       if(!err) {
         this.props.onCreateRole({
           roleDesc: values.roleDesc.trim(),
           rightId: values.rightId.join(','),
           enterpriseId,
           continueAdd: true,
+          operateId,
         });
         this.props.form.resetFields();
       }
@@ -95,18 +111,31 @@ class RoleEditForm extends Component {
     return defaultRootMenu;
   }
 
+  onOperatetypeChange = e => {
+    this.setState({
+      operateType: e.target.value,
+    });
+  };
+
+
   render(){
+    const { operateType } = this.state;
     const { getFieldDecorator } = this.props.form;
     const { showPage, loading, continueAdd, selectedRole, menuData } = this.props;
+    console.log('selectedRole: ', selectedRole);
     const isCreate = showPage === 'create';
     const selectedRight = isCreate? [] : selectedRole[0].rightData;
     let initialRightValue = [];
+    let initialOperateName = '';
     const defaultRootMenu = this.getDefaultRootMenu(menuData);
     if(isCreate){
       initialRightValue = defaultRootMenu.map(e=>`${e}`);
+      initialOperateName = operateType;
     }else{
       initialRightValue = this.getRightIdArr(selectedRight);
+      initialOperateName = selectedRole[0].operateName;
     }
+
     return (     
       <Form onSubmit={this.onSubmit} className={styles.roleEditForm}>
         <FormItem label="角色名称">
@@ -127,6 +156,21 @@ class RoleEditForm extends Component {
             <Input placeholder="请输入..." />
           )}
           <span className={styles.instructionText}>(10字以内)</span>
+        </FormItem>
+        <FormItem label="权限设置">
+          {getFieldDecorator('operateName', {
+              rules: [{
+                required: true,
+                message: '请选择权限',
+              }],
+              initialValue: initialOperateName,
+            })(
+              <RadioGroup onChange={this.onOperatetypeChange}>
+                <Radio value={'管理'}>管理</Radio>
+                <Radio value={'执行'}>执行</Radio>
+                <Radio value={'浏览'}>浏览</Radio>
+              </RadioGroup>
+          )}
         </FormItem>
         <FormItem
           className={styles.dealProposal} 

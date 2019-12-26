@@ -10,7 +10,8 @@ var initState = Immutable.fromJS({
   defaultMenuData: [], // 默认具有的功能角色
   selectedRole: [], //table选中角色,
   continueAdd: false,
-  error: {}
+  error: {},
+  operatetypeData: [], // 获得权限操作类型
 });
 
 const roleReducer = (state = initState, action) => {

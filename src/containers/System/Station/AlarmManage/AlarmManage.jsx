@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import styles from './alarmManage.scss';
 import { alarmManageAction } from './alarmManageAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-import { stationManageAction } from '../StationManage/stationManageAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import AlarmManageSearch from '../../../../components/System/Station/AlarmManage/AlarmManageSearch';
 import AlarmManageHandle from '../../../../components/System/Station/AlarmManage/AlarmManageHandle';
@@ -55,15 +53,14 @@ class AlarmManage extends Component {
 
   render() {
     const { showAlarmTip } = this.state;
-    const { 
+    const {
       stationCode, deviceTypeCode, deviceModeCode, pointCode, pageNum, pageSize, sortField, sortOrder,warningType
     } = this.props;
-    const queryParams = { 
+    const queryParams = {
       stationCode, deviceTypeCode, deviceModeCode, pointCode, pageNum, pageSize, sortField, sortOrder,warningType
     }
     return (
       <div className={styles.alarmManageContainer}>
-        <CommonBreadcrumb  breadData={[{name: '告警事件'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.alarmManage}>
           <div className={styles.alarmManageMain}>
             {showAlarmTip && <StationManageTip hideManageTip={this.hideManageTip} text="请选择您要查看的电站！" />}
@@ -95,7 +92,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,
     payload: {
-      params, 
+      params,
       deviceTypeAction: alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
       resultName: 'stationDeviceTypes'
     }
@@ -103,7 +100,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceModel: params => dispatch({
     type: commonAction.getDeviceModel,
     payload: {
-      params, 
+      params,
       actionName: alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
       resultName: 'deviceModels'
     }
@@ -111,18 +108,18 @@ const mapDispatchToProps = (dispatch) => ({
   getPoints: params => dispatch({
     type: commonAction.getPoints,
     payload: {
-      params, 
+      params,
       actionName: alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
       resultName: 'devicePoints'
     }
   }),
   getStationOfEnterprise: params =>dispatch({
-    type: commonAction.getStationOfEnterprise, 
+    type: commonAction.getStationOfEnterprise,
     payload: {
-      params, 
+      params,
       actionName: alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
       resultName: 'allStationBaseInfo'
-    } 
+    }
   }),
 });
 

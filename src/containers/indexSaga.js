@@ -51,12 +51,15 @@ import { watchDataExport } from './Monitor/DataAnalysis/DataExport/dataExportSag
 import { watchAllDeviceCurve } from './Monitor/PowerCurve/AllDeviceCurve/allDeviceCurveSaga'; // 多设备功率曲线
 import { watchSingleDeviceCurve } from './Monitor/PowerCurve/SingleDeviceCurve/singleDeviceCurveSaga'; // 单设备功率曲线
 
+import { watchPvDataHistoryMonitor } from './Monitor/PvDataAnalysis/PvDataHistory/pvHistorySaga'; // 光伏数据分析 - 历史趋势
+import { watchPvDataRealtimeMonitor } from './Monitor/PvDataAnalysis/PvDataRealtime/pvRealtimeSaga'; // 光伏数据分析 - 实时数据
+
 import { watchDataScatterDiagramMonitor } from './Monitor/DataAnalysis/DataScatterDiagram/scatterDiagramSaga'; // 数据分析 - 散点图
 
-import { watchMonitorPowerReport } from './Monitor/Report/PowerReport/powerReportSaga'; // 报表
-import { watchMonitorDeviceStatus } from './Monitor/Report/DeviceStatus/deviceStatusSaga'; // 报表
-import { watchMonitorMalfunction } from './Monitor/Report/Malfunction/malfunctionSaga'; // 报表
-import { watchMonitorPowerLost } from './Monitor/Report/PowerLost/powerLostSaga'; // 报表
+import { watchMonitorPowerReport } from './ReportManage/WindReport/PowerReport/powerReportSaga'; // 报表
+import { watchMonitorDeviceStatus } from './ReportManage/WindReport/DeviceStatus/deviceStatusSaga'; // 报表
+import { watchMonitorMalfunction } from './ReportManage/WindReport/Malfunction/malfunctionSaga'; // 报表
+import { watchMonitorPowerLost } from './ReportManage/WindReport/PowerLost/powerLostSaga'; // 报表
 
 
 import { watchOthersSaga } from './alphaRedux/othersSaga';
@@ -119,11 +122,11 @@ import { watchWorkFlow } from './Operation/TwoTickets/WorkFlow/workFlowSaga';
 import { watchCadePartSaga } from './Operation/CaseSet/casePartSaga';
 
 //报表管理
-import { watchReportStation } from './ReportManage/ReportStation/reportStationSaga';
-import { watchCenterInvert } from './ReportManage/ReportDevice/CenterInvert/centerInvertSaga';
-import { watchWeatherStationReport } from './ReportManage/ReportDevice/WeatherStation/weatherStationSaga';
-import { watchCombineInvert } from './ReportManage/ReportDevice/CombineInvert/combineInvertSaga';
-import { watchConfluenceBox } from './ReportManage/ReportDevice/ConfluenceBox/confluenceBoxSaga';
+import { watchReportStation } from './ReportManage/PvReport/ReportStation/reportStationSaga';
+import { watchCenterInvert } from './ReportManage/PvReport/ReportDevice/CenterInvert/centerInvertSaga';
+import { watchWeatherStationReport } from './ReportManage/PvReport/ReportDevice/WeatherStation/weatherStationSaga';
+import { watchCombineInvert } from './ReportManage/PvReport/ReportDevice/CombineInvert/combineInvertSaga';
+import { watchConfluenceBox } from './ReportManage/PvReport/ReportDevice/ConfluenceBox/confluenceBoxSaga';
 
 
 
@@ -188,6 +191,8 @@ export default function* rootSaga() {
     watchMonitorDeviceStatus(), //报表-设备状态
     watchMonitorMalfunction(), //报表-故障
     watchMonitorPowerLost(), //报表--电量损失
+    watchPvDataHistoryMonitor(), // 光伏数据分析-历史趋势
+    watchPvDataRealtimeMonitor(), // 光伏数据分析-实时数据
 
 
     watchDataScatterDiagramMonitor(), //  数据分析 - 散点图

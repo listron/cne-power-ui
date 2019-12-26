@@ -176,7 +176,7 @@
 
 .eachStationReport{ // 各电站上报数据-各行样式。
   height: 40px;
-  border-bottom: 1px solid #dfdfdf;
+  border-bottom: 1px solid #d4d4d4;
   display: flex;
   align-items: center;
   .stationName{
@@ -213,7 +213,7 @@
     align-items: center;
     .text{
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 2px;
       color: $themeColor;
       &:hover{
         background-color: #ececec;
@@ -231,7 +231,7 @@
     .ant-input{
       background:#fcffe5;
       border:1px solid #f9b600;
-      border-radius:4px;
+      border-radius:2px;
       padding: 0 4px;
       text-align: center;
       width:76px;
@@ -246,7 +246,7 @@
     .ant-input:focus {
       box-shadow: 0 0 0 0;
       background: #fff;
-      border:1px solid #dfdfdf;
+      border:1px solid #d4d4d4;
     }
     .icon-alert_01:before{
       font-size: 12px;
@@ -407,14 +407,14 @@
 
 .lostAddForm{
   background:#f0f2f5;
-  border:1px solid #dfdfdf;
-  border-radius:4px;
+  border:1px solid #d4d4d4;
+  border-radius:2px;
   margin: 0 20px;
   padding: 10px 0 15px 80px;
   margin-top: 10px;
   .infoTip{
     margin: 0 0 15px 30px;
-    border-radius: 4px;
+    border-radius: 2px;
     line-height: 30px;
     height: 30px;
     width: 480px;
@@ -437,7 +437,7 @@
     z-index: 10;
     background:#ffffff;
     box-shadow:0 2px 8px 0 rgba(0,0,0,0.20);
-    border-radius:4px;
+    border-radius:2px;
     width:268px;
     height: auto;
     display: flex;

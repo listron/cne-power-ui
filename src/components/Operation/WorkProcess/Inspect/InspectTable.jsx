@@ -4,6 +4,7 @@ import styles from './inspect.scss';
 import { Table, Select, Tooltip, Radio } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination/index';
 import WarningTip from '../../../Common/WarningTip/index';
+import { handleRight } from '@utils/utilFunc';
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -61,6 +62,7 @@ class InspectTable extends React.Component {
       pageNum: 1,
       pageSize: 10,
     });
+    this.props.changeStore({ selectedRowKeys: [] });
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {
@@ -85,10 +87,7 @@ class InspectTable extends React.Component {
     this.getListData({ sort });
   }
   onSelectChange = (selectedRowKeys, selectedRows) => {
-
-
     const inspectArr = selectedRows.map(e => (e.inspectStatus));
-
     const filterStatus = new Set(inspectArr);//当且仅当只有一种待验收的状态时，方可验收
     if (filterStatus.size === 1 && filterStatus.has('3')) {
       this.setState({
@@ -99,9 +98,7 @@ class InspectTable extends React.Component {
         currentSelectedStatus: false,
       });
     }
-
     this.props.changeStore({ selectedRowKeys });
-
   }
   cancelRowSelect = () => {
     this.props.changeStore({
@@ -129,8 +126,9 @@ class InspectTable extends React.Component {
     const { currentSelectedStatus, showWarningTip, warningTipText } = this.state;
     const curInspectStatus = { '0': '待提交', '1': '待审核', '2': '执行中', '3': '待验收', '4': '已完成' };
     const unselected = selectedRowKeys.length === 0;
-    const rightHandler = localStorage.getItem('rightHandler');
-    const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
+    // const rightHandler = localStorage.getItem('rightHandler');
+    // const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
+    const checkInspectRight = handleRight('workExamine_inspection_check');
     const columns = [{
       title: '巡检名称',
       dataIndex: 'inspectName',
@@ -162,8 +160,8 @@ class InspectTable extends React.Component {
       },
     }, {
       title: '缺陷数目',
-      dataIndex: 'abnormalNum',
-      key: 'abnormalNum',
+      dataIndex: 'defectNum',
+      key: 'defectNum',
       width: 80,
       render: (text, record) => {
         return <div className={styles.defectNum} title={text}>{text}</div>;
@@ -183,7 +181,7 @@ class InspectTable extends React.Component {
       key: 'checkTime',
       width: 160,
       render: (text, record) => {
-        return <div className={styles.textWidth} title={text}>{text}</div>;
+        return <div className={styles.textWidth} title={text}>{text ? text : '--'}</div>;
       },
       sorter: true,
     }, {
@@ -203,10 +201,11 @@ class InspectTable extends React.Component {
     }, {
       title: '查看',
       width: 60,
+      className: styles.lookStyle,
       render: (text, record) => (
-        <span className={styles.cursorStyle}>
+        <div className={styles.cursorStyle}>
           <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record.inspectId); }} />
-        </span>
+        </div>
       ),
     }];
     const rowSelection = {
@@ -218,8 +217,8 @@ class InspectTable extends React.Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={`${styles.statusGroup}`}>
           <div className={styles.text}><span>状</span><span>态</span></div>
-          <RadioGroup onChange={this.onChangeTab} defaultValue="" value={status}>
-            <RadioButton value="">全部</RadioButton>
+          <RadioGroup onChange={this.onChangeTab} value={status}>
+            <RadioButton value="5">全部</RadioButton>
             <RadioButton value="2">{`执行中  ${(executeNum || executeNum === 0) ? executeNum : ''}`}</RadioButton>
             <RadioButton value="3">{`待验收  ${(checkNum || checkNum === 0) ? checkNum : ''}`}</RadioButton>
             <RadioButton value="4">{'已完成'}</RadioButton>
@@ -238,9 +237,9 @@ class InspectTable extends React.Component {
               <Option value="check" disabled={unselected || currentSelectedStatus !== '3'}>
                 <i className="iconfont icon-done"></i>验收</Option>
             </Select>}
-            <Tooltip overlayStyle={{ width: 220, maxWidth: 220, fontSize: '12px' }} placement="top" title="请选择同一状态下的列表项，进行操作">
+            {checkInspectRight && <Tooltip overlayStyle={{ width: 220, maxWidth: 220, fontSize: '12px' }} placement="top" title="请选择同一状态下的列表项，进行操作">
               <i className="iconfont icon-help" />
-            </Tooltip>
+            </Tooltip>}
           </div>
           <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
@@ -252,7 +251,7 @@ class InspectTable extends React.Component {
           rowSelection={rowSelection}
           onChange={this.onChangeTable}
           loading={tableLoading}
-          scroll={{ y: 450 }}
+          // scroll={{ y: 450, scrollToFirstRowOnChange: true }}
           pagination={false}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />

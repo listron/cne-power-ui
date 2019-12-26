@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
-import { Progress, Table, message } from 'antd';
+import { Table, message, Tooltip } from 'antd';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { numWithComma, dataFormats } from '../../../../../utils/utilFunc';
 import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
@@ -12,8 +12,6 @@ class PvStationList extends React.Component {
     pageSize: PropTypes.number,
     currentPage: PropTypes.number,
     onPaginationChange: PropTypes.func,
-    windMonitorStation: PropTypes.object,
-    pvMonitorStation: PropTypes.object,
     monitorPvUnit: PropTypes.object,
     theme: PropTypes.string,
   }
@@ -103,11 +101,23 @@ class PvStationList extends React.Component {
         render: value => powerPoint(divideFormarts(value, powerUnit)),
       },
       {
-        title: () => <TableColumnTitle title="日利用小时" unit={'h'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="日等效时" unit={'h'} className="nonePadding" />,
         dataIndex: 'equivalentHours',
         sorter: true,
         className: styles.numberStyle,
-        render: value => dataFormats(value, '--', 2, true),
+        render: (value, record) => {
+          return (
+            <div className={styles.equivalentHours}>
+              <span className={record.equivalentHoursValidation && styles.specialColor} >{dataFormats(value, '--', 2, true)}</span>
+              <div className={styles.tooltipName}>
+                {record.equivalentHoursValidation &&
+                  <Tooltip placement="top" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={record.equivalentHoursValidation}>
+                    <i className="iconfont icon-help" />
+                  </Tooltip>
+                }
+              </div>
+            </div>);
+        },
       },
       {
         title: () => <TableColumnTitle title="月发电量" unit={powerUnit} className="nonePadding" />,
@@ -128,7 +138,7 @@ class PvStationList extends React.Component {
         dataIndex: 'stationCapacity',
         sorter: true,
         className: styles.numberStyle,
-        render: (value) => realCapacityUnit === 'MW' ? value : multiplyFormarts(value, 1000),
+        render: (value) => dataFormats(realCapacityUnit === 'MW' ? value : multiplyFormarts(value, 1000), '--', 2),
       },
       {
         title: () => <TableColumnTitle title="装机" unit="台" className="nonePadding" />,
@@ -140,13 +150,6 @@ class PvStationList extends React.Component {
       {
         title: () => <TableColumnTitle title="异常支路数" unit={'个'} className="nonePadding" />,
         dataIndex: 'anomalousBranchNum',
-        sorter: true,
-        className: styles.numberStyle,
-        render: value => value ? value : 0,
-      },
-      {
-        title: () => <TableColumnTitle title="低效逆变器" unit={'台'} className="nonePadding" />,
-        dataIndex: 'lowEfficiencyInverterNum',
         sorter: true,
         className: styles.numberStyle,
         render: value => value ? value : 0,
@@ -189,8 +192,9 @@ class PvStationList extends React.Component {
         'stationUnitCount',
         'equivalentHours',
         'alarmNum',
+        'loadRate',
         'anomalousBranchNum',
-        'lowEfficiencyInverterNum',
+        'loadRate',
         'stationStatus'];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);

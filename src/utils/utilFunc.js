@@ -130,3 +130,46 @@ export const downloadFile = (fileName, content) => {
   aLink.click();
 
 };
+
+export const handleRights = (rightNames, allRights = localStorage.getItem('rightHandler')) => { // 获取多个权限
+  /**
+   * 入参 keys要获取的权限 - 允许类型[str]或者{}; 入参allRights所有权限的集合, 默认为localStorage设置的,分割的字符串, 也可手动指定 / 甚至可以传入权限的字符串数组;
+   * keys若传入[str]; 则返回[bool]与输入一一对应, 适用于权限获取较少的情况：const [right1, right2] = handleRights(['rightKey1', 'rightKey2'];
+   * keys若传入obj, 则返回{}, 使用权限所需较大情况: const {right1, right2} = handleRights({right1: 'key1', rightKey2: 'key2'});
+   * 若输入格式不满足要求, 默认返回[] (不管何种方式解析, 均非true);
+   */
+  let rightTotalArr = allRights;
+  if (typeof allRights === 'string') {
+    rightTotalArr = allRights.split(',');
+  }
+
+  if (typeof rightNames === 'object' && rightNames instanceof Array) { // 传入数组
+    return rightNames.map(e => handleRight(e, rightTotalArr));
+  } else if (typeof rightNames === 'object') { // 对象
+    const rightkeyNames = Object.keys(rightNames); // 要获取的权限关键字;
+    const rightResult = {};
+    rightkeyNames.forEach(e => {
+      rightResult[e] = handleRight(e, rightTotalArr);
+    });
+    return rightResult;
+  }
+  console.error('所获取权限入参必须是 字符串数组 或对象!');
+  return [];
+};
+
+export const handleRight = (rightName, allRights = localStorage.getItem('rightHandler')) => { // 获取单个权限
+  /**
+   * 入参 key要获取的权限 - 允许类型str 入参allRights所有权限的集合, 默认为localStorage设置的,分割的字符串, 也可手动指定 / 甚至可以传入权限的字符串数组;
+   * 返回是否有该权限
+   */
+  let rightTotalArr = allRights;
+  if (typeof allRights === 'string') {
+    rightTotalArr = allRights.split(',');
+  }
+
+  if (typeof rightName === 'string') {
+    return rightTotalArr.includes(rightName);
+  }
+  return false;
+};
+

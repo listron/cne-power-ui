@@ -157,7 +157,7 @@ class DeviceManageSearch extends Component {
           placeholder="请选择设备类型"
           disabled={typeSelectDisable}
         >
-          <Option key={null} value={null}>
+          <Option key={'all'} value={''}>
             {'全部设备类型'}
           </Option>
           {stationDeviceTypes.map(e => {

@@ -64,12 +64,6 @@ class HistoryWarningTable extends Component {
       showAutoRelievePopover,
     });
   }
-  getDetail = (defectId, index) => { // 查看工单详情
-    this.props.changeHistoryWarningStore({ pageName: 'detail', defectId });
-    this.setState((state) => {
-      return state.showTransferPopover[index] = false;
-    });
-  }
 
   tableChange = (pagination, filters, sorter) => {
     const { changeHistoryWarningStore, onChangeFilter } = this.props;
@@ -122,16 +116,18 @@ class HistoryWarningTable extends Component {
             <span className={styles.value}>{ticketInfo.defectDescribe}</span>
           </div>
         </div>
-        {/*<Button className={styles.ticketButton} ><Link to={`/operation/ticket/${ticketInfo.defectId}`}>查看工单详情</Link></Button>  */}
-        <Button className={styles.ticketButton} onClick={() => { this.getDetail(record.workOrderId, index); }}>
-          查看工单详情
+
+        <Button className={styles.ticketButton}>
+          <Link to={`/operation/workProcess/view?page=defectDetail&defectId=${record.workOrderId}`} target="_blank">
+            查看工单详情
+          </Link>
         </Button>
 
       </div>
     );
   }
 
-  renderRelievePopover(i) {
+  renderRelievePopover(record, i) {
     const relieveInfo = this.props.relieveInfo;
     return (
       <div className={styles.detailInfo}>
@@ -217,17 +213,40 @@ class HistoryWarningTable extends Component {
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
-          const deviceTypeCodes = ['202', '304', '302', '201', '206', '101'];
+          const deviceTypeCodes = ['202', '304', '302', '201', '206', '101', '509'];
           const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
           if (isClick) {
-            return (
+            let renderDom = (
               <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target='_blank' className={styles.underlin} >{text}</Link>
               </div>
             );
+            if(`${record.deviceTypeCode}` === '509') {
+              // 获取支路的下标
+              const deviceIndex = Number(record.deviceName.split('#')[1]) - 1;
+              const paramsColor = {
+                '801': 'f9b600', // 偏低
+                '802': '3e97d1', // 偏高
+                '803': 'a42b2c', // 异常
+                '400': '199475', // 正常
+                '500': 'f1f1f1', // 无通讯
+                '900': 'f1f1f1', // 未接入
+              };
+              // 选中点击的支路
+              const params = {
+                pointIndex: deviceIndex,
+                bgcColor: paramsColor[record.zlStatus || '400'],
+              };
+              // deviceTypeCode === 509 光伏组串 需要用父级的parentTypeCode
+              renderDom = (
+                <div className={styles.deviceName}>
+                  <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.parentTypeCode.split('M')[1]}/${record.parentTypeCode}?pointParams=${JSON.stringify(params)}`} target='_blank' className={styles.underlin} >{text}</Link>
+                </div>
+              );
+            }
+            return renderDom;
           }
           return text;
-
         },
       }, {
         title: '设备类型',
@@ -262,10 +281,14 @@ class HistoryWarningTable extends Component {
             return (
               <Popover content={this.renderTransferPopover(index, record)}
                 trigger="click"
+                getPopupContainer={() => this.refs.popover}
                 visible={this.state.showTransferPopover[index]}
+                getPopupContainer={() => this.refs.popover}
                 onVisibleChange={(visible) => this.onTransferChange(visible, record.workOrderId, index)}
               >
-                <div className={this.state.showTransferPopover[index] ? styles.selected : null}><i className="iconfont icon-tranlist icon-action"></i></div>
+                <div className={this.state.showTransferPopover[index] ? styles.selected : null}>
+                  <i className="iconfont icon-tranlist icon-action"></i>
+                </div>
               </Popover>
             );
           }
@@ -296,8 +319,6 @@ class HistoryWarningTable extends Component {
       },
     ];
     const { historyWarningList, pageSize, pageNum, total, theme } = this.props;
-
-
     return (
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>
@@ -306,7 +327,7 @@ class HistoryWarningTable extends Component {
         <span ref={'popover'} />
         <Table
           dataSource={historyWarningList}
-          rowKey={record => record.warningLogId}
+          // rowKey={record => record.warningLogId}
           columns={columns}
           pagination={false}
           onChange={this.tableChange}
