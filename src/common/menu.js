@@ -82,7 +82,7 @@ const menuData = [
         name: '风电数据分析',
         iconStyle: 'icon-windy',
         path: 'data',
-        rightKey: 'monitor_dataAnalysis',
+        rightKey: 'monitor_dataAnalysisTurbine',
         children: [{
           name: '功率曲线',
           iconStyle: 'icon-monitoring',
@@ -101,11 +101,11 @@ const menuData = [
         }, {
           name: '历史趋势',
           path: 'history',
-          rightKey: 'dataAnalysis_historyTrend',
+          rightKey: 'dataAnalysisTurbine_historyTrend',
         }, {
           name: '实时数据',
           path: 'realtime',
-          rightKey: 'dataAnalysis_realTime',
+          rightKey: 'dataAnalysisTurbine_realTime',
         },
         ],
       },
@@ -116,8 +116,8 @@ const menuData = [
       },
     ],
   },
-  
-{
+
+  {
     name: '运维管理',
     path: 'operation',
     rightKey: 'operation',
@@ -618,14 +618,14 @@ const menuData = [
             path: 'personnelManage',
             rightKey: 'system_account_user',
           }, {
-          //   name: '部门',
-          //   path: 'department',
-          //   rightKey: 'system_account_department',
-          // }, {
-          //   name: '用户',
-          //   path: 'user',
-          //   rightKey: 'system_account_user',
-          // }, {
+            //   name: '部门',
+            //   path: 'department',
+            //   rightKey: 'system_account_department',
+            // }, {
+            //   name: '用户',
+            //   path: 'user',
+            //   rightKey: 'system_account_user',
+            // }, {
             name: '角色',
             path: 'role',
             rightKey: 'system_account_role',
