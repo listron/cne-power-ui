@@ -78,7 +78,7 @@ class InspectTable extends React.Component {
       inspectName: '0',
       stationName: '1',
       startTime: '2',
-      checkTime: '3',
+      checkTime: '6',
       inspectStatus: '4',
     };
     const orderFiled = orderFile[field];
