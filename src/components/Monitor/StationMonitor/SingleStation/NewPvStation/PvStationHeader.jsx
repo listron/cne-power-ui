@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import OwnProgress from '../../../../Common/OwnProgress/index';
 import { Modal, InputNumber, Tooltip } from 'antd';
-import { deviceValueFormat, divideFormarts, multiplyFormarts } from '../../PvCommon/PvDataformat';
+import { deviceValueFormat, divideFormarts, multiplyFormarts, transferCapacityUnit } from '../../PvCommon/PvDataformat';
 import moment from 'moment';
 
 class PvStationHeader extends React.Component {
@@ -23,7 +23,7 @@ class PvStationHeader extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const nextSingleStationData = nextProps.singleStationData;
     if (nextSingleStationData.instantaneous < 0 && nextSingleStationData.instantaneous > -2) {
       this.setState({ minusShow: true });
@@ -76,8 +76,9 @@ class PvStationHeader extends React.Component {
     const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
     const { editInfoError, editType, modalVisiable, editValue, minusShow } = this.state;
     const stationDataSummary = singleStationData || {};
-    const stationPower = divideFormarts(stationDataSummary.stationPower, realTimePowerUnit);
-    const stationCapacity = realCapacityUnit === 'MW' ? stationDataSummary.stationCapacity : multiplyFormarts(stationDataSummary.stationCapacity, 1000);
+    const showCapacityUnit = transferCapacityUnit(stationDataSummary.stationCapacity, realCapacityUnit);//计算装机容量的单位
+    const stationPower = divideFormarts(stationDataSummary.stationPower, showCapacityUnit);//转换实时功率的值
+    const stationCapacity = showCapacityUnit === 'MW' ? stationDataSummary.stationCapacity : multiplyFormarts(stationDataSummary.stationCapacity, 1000);//转换装机容量的值
     const stationUnitCount = stationDataSummary.stationUnitCount;
     const instantaneous = stationDataSummary.instantaneous;
     const instantaneousValidation = stationDataSummary.instantaneousValidation;
@@ -88,7 +89,7 @@ class PvStationHeader extends React.Component {
     const equivalentHours = stationDataSummary.equivalentHours;
     const equivalentHoursValidation = stationDataSummary.equivalentHoursValidation;
     const yearRate = stationDataSummary.yearRate;
-    const percent = (stationDataSummary.stationPower && stationCapacity) ? (stationDataSummary.stationPower / multiplyFormarts(stationDataSummary.stationCapacity, 1000)) * 100 : 0;
+    const percent = (stationDataSummary.stationPower && stationCapacity) ? (stationPower / stationCapacity) * 100 : 0;
     const rightHandler = localStorage.getItem('rightHandler');
     const powerUpdate = rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
     return (
@@ -96,19 +97,19 @@ class PvStationHeader extends React.Component {
         <div className={`${styles.leftIcon}`}> <span className={'iconfont icon-pvlogo'}></span> </div>
         <div className={styles.dataColumn}>
           <div className={styles.stationPower}>
-            <div> <span className={styles.dataValue}>{deviceValueFormat(stationPower, '--', 2)}</span>{realTimePowerUnit}</div>
-            <div> <span className={styles.dataValue}>{deviceValueFormat(stationCapacity, '--', 2)}</span>{realCapacityUnit}</div>
+            <div> <span className={styles.dataValue}>{deviceValueFormat(stationPower, '--', 2)}</span>{showCapacityUnit}</div>
+            <div> <span className={styles.dataValue}>{deviceValueFormat(stationCapacity, '--', 2)}</span>{showCapacityUnit}</div>
           </div>
           <OwnProgress percent={percent} active={true} theme={theme} />
           <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
         </div>
         <div className={styles.dataColumn}>
-          <div className={styles.instantaneous}> <span>瞬时辐射  <span className={`${styles.dataValue} ${instantaneousValidation && styles.specialColor}`}>{minusShow && '-' }{deviceValueFormat(instantaneous, '--', 2)}</span> W/m²</span>
-          {instantaneousValidation &&
-            <div className={styles.tooltipName}>
-              <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={instantaneousValidation}> <i className="iconfont icon-help"></i>
-              </Tooltip>
-            </div>}
+          <div className={styles.instantaneous}> <span>瞬时辐射  <span className={`${styles.dataValue} ${instantaneousValidation && styles.specialColor}`}>{minusShow && '-'}{deviceValueFormat(instantaneous, '--', 2)}</span> W/m²</span>
+            {instantaneousValidation &&
+              <div className={styles.tooltipName}>
+                <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={instantaneousValidation}> <i className="iconfont icon-help"></i>
+                </Tooltip>
+              </div>}
           </div>
           <div >  装机台数 <span className={styles.dataValue}>{deviceValueFormat(stationUnitCount, '--', 0)} </span> 台</div>
         </div>

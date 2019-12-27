@@ -21,6 +21,7 @@ class PvPointTree extends Component {
   state = {
     halfCheckedKeys: [],
     expandedKeys: [],
+    selectPointArr: [],
   };
 
   componentWillReceiveProps(nextProps) {
@@ -33,22 +34,37 @@ class PvPointTree extends Component {
     }
   }
 
-  expandTree = (expandedKeys) => {
+  expandTree = (expandedKeys, expanded) => {
     this.setState({expandedKeys});
+    if(expanded.expanded){
+      if(expandedKeys.length>0){
+          expandedKeys.splice(0, expandedKeys.length-1);
+      }
+      this.setState({
+          expandedKeys: expandedKeys,
+      });
+    }else{
+     const key = expanded.node.props.children.map((obj, index)=>{
+        if(expandedKeys.indexOf(obj.key)>-1){
+            return obj.key;
+        }
+        return '';
+      }).filter((v, index)=> v!== '');
+      //index  是点击收起节点的下级展开节点
+      const index = expandedKeys.indexOf(key[0]); //因为展开的时候会收起兄弟节点  所以这里应该只有一个
+      if(index>0){
+          expandedKeys.splice(0, index + 1); //从0开始  删除到点击的下一级已展开节点
+      }
+      this.setState({
+        expandedKeys: expandedKeys,
+      });
+    }
   };
 
   pointSelect = (selectedKeys, {halfCheckedKeys}) => {
-    // const valideKeys = selectedKeys.filter(e => !e.includes('group_'));
-    // if (valideKeys.length > 4) {
-    //   const preHalfCheckedKeys = this.state.halfCheckedKeys;
-    //   message.error('所选测点不得超过4个');
-    //   this.setState({
-    //     halfCheckedKeys: preHalfCheckedKeys
-    //   });
-    //   return;
-    // }
     this.setState({
       halfCheckedKeys,
+      selectPointArr: selectedKeys,
     });
     const {queryParam, listParam, getChartHistory, getListHistory, changeHistoryStore} = this.props;
     const {startTime, endTime, timeInterval} = queryParam;
@@ -70,6 +86,40 @@ class PvPointTree extends Component {
       });
     }
   };
+
+  onSelect = (selectedKeys, e) => {
+    const {queryParam, listParam, getChartHistory, getListHistory, changeHistoryStore} = this.props;
+    const {startTime, endTime, timeInterval} = queryParam;
+    const { selectPointArr } = this.state;
+    const newSelectPointArr = new Set(selectPointArr);
+    if (selectPointArr.includes(e.node.props.eventKey)) {
+      newSelectPointArr.delete(e.node.props.eventKey);
+    } else {
+      newSelectPointArr.add(e.node.props.eventKey);
+    }
+    this.setState({
+      selectPointArr: [...newSelectPointArr],
+    });
+    const newQueryParam = {
+      ...queryParam,
+      devicePoints: [...newSelectPointArr],
+    };
+
+
+    const tmpAllowedEnd = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
+    if (startTime.isBefore(tmpAllowedEnd, 's')) {
+      message.error(`${timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}`);
+      changeHistoryStore({
+        queryParam: newQueryParam,
+      });
+    } else {
+      getChartHistory({queryParam: newQueryParam});
+      getListHistory({
+        queryParam: newQueryParam,
+        listParam,
+      });
+    }
+  }
 
   renderTreeNodes = () => { // 数据分组并基于分组渲染节点。
     const {pointInfo} = this.props;
@@ -121,6 +171,8 @@ class PvPointTree extends Component {
     return PointsNodes;
   };
 
+
+
   render() {
     const {queryParam, pointInfo} = this.props;
     const {halfCheckedKeys, expandedKeys} = this.state;
@@ -140,6 +192,7 @@ class PvPointTree extends Component {
             <Tree
               checkable
               onCheck={this.pointSelect}
+              onSelect={this.onSelect}
               onExpand={this.expandTree}
               expandedKeys={expandedKeys}
               checkedKeys={{

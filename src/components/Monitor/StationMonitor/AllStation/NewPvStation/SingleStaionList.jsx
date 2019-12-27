@@ -4,7 +4,7 @@ import styles from './pvStation.scss';
 import { message, Select, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { dataFormats } from '../../../../../utils/utilFunc';
-import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
+import { divideFormarts, multiplyFormarts, powerPoint, transferCapacityUnit } from '../../PvCommon/PvDataformat';
 import OutputTenMin from './OutputTenMin';
 
 class SingleStaionList extends React.Component {
@@ -39,8 +39,11 @@ class SingleStaionList extends React.Component {
     };
     const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
     const currentStatus = singleStation.stationStatus;
-    const stationPower = divideFormarts(singleStation.stationPower, realTimePowerUnit);
-    const stationCapacity = realCapacityUnit === 'MW' ? singleStation.stationCapacity : multiplyFormarts(singleStation.stationCapacity, 1000);
+    const showCapacityUnit = transferCapacityUnit(singleStation.stationCapacity, realCapacityUnit);//计算装机容量的单位
+    const stationPower = divideFormarts(singleStation.stationPower, showCapacityUnit);//转换实时功率的值
+    const stationCapacity = showCapacityUnit === 'MW' ? singleStation.stationCapacity : multiplyFormarts(singleStation.stationCapacity, 1000);//转换装机容量的值
+    // const stationPower = divideFormarts(singleStation.stationPower, realTimePowerUnit);
+    // const stationCapacity = realCapacityUnit === 'MW' ? singleStation.stationCapacity : multiplyFormarts(singleStation.stationCapacity, 1000);
     const instantaneous = singleStation.instantaneous;
     const dayPower = divideFormarts(singleStation.dayPower, powerUnit);
     const equivalentHours = singleStation.equivalentHours;
@@ -55,7 +58,7 @@ class SingleStaionList extends React.Component {
           <div className={styles.stationTop}>
             <div className={styles.stationName} title={singleStation.stationName}>
               <span className={styles.stationNameTilte}> {singleStation.stationName}</span>
-              <span> ({dataFormats(stationCapacity, '--', 2)} {realCapacityUnit})</span>
+              <span> ({dataFormats(stationCapacity, '--', 2)} {showCapacityUnit})</span>
             </div>
             <div className={styles.staionCapacity}>
               {`${currentStatus}` === '500' && <i className="iconfont icon-outage" />}
@@ -66,7 +69,7 @@ class SingleStaionList extends React.Component {
             <div className={styles.staionCenterLeft}>
               <div className={styles.column}>
                 <span className={styles.dataName}> 实时功率</span>
-                <div><span className={styles.changeNum}> {dataFormats(stationPower, '--', 2)}</span> {realTimePowerUnit}
+                <div><span className={styles.changeNum}> {dataFormats(stationPower, '--', 2)}</span> {showCapacityUnit}
                 </div>
               </div>
               <div className={styles.column}>
@@ -98,7 +101,7 @@ class SingleStaionList extends React.Component {
           <OutputTenMin {...this.props}
             yXaisName={'辐射(W/m²)'}
             stationCode={singleStation.stationCode}
-            yAxisUnit={realTimePowerUnit}
+            yAxisUnit={showCapacityUnit}
             capabilityData={filterChartData.length > 0 && filterChartData[0].chartData || []} />
         </div>
         <div className={styles.bottom}>

@@ -145,43 +145,46 @@ class WeatherList extends Component {
                     value={warningTipText}
                     style={{ width: '210px', height: '100px' }}
                 />}
-                <div className={styles.listContiner}>
-                    <div className={styles.selectCondition}>
-                        <FilterCondition
-                            onChange={this.onChangeFilter}
-                            option={[
-                                {
-                                    name: '电站名称',
-                                    type: 'stationName',
-                                    typeName: 'stationCodes',
-                                    data: stations.filter(e => e.stationType === 1),
-                                },
-                            ]}
-                        />
-                        <div className={styles.filterButton}>
-                            <span className={styles.setStause}>设置状态</span>
-                            <div className={styles.buttonGroup}>
-                                <span className={`${filterStatus === 'all' && styles.buttonActive}`} onClick={() => { this.changefilter('all'); }}>全部</span>
-                                <span className={`${filterStatus === 'set' && styles.buttonActive}`} onClick={() => { this.changefilter('set'); }}>已设置</span>
-                                <span className={`${filterStatus === 'noSet' && styles.buttonActive}`} onClick={() => { this.changefilter('noSet'); }}>未设置</span>
+                <div className={styles.weatherMain}>
+                    <div className={styles.listContiner}>
+                        <div className={styles.selectCondition}>
+                            <FilterCondition
+                                onChange={this.onChangeFilter}
+                                option={[
+                                    {
+                                        name: '电站名称',
+                                        type: 'stationName',
+                                        typeName: 'stationCodes',
+                                        data: stations.filter(e => e.stationType === 1),
+                                    },
+                                ]}
+                            />
+                            <div className={styles.filterButton}>
+                                <span className={styles.setStause}>设置状态</span>
+                                <div className={styles.buttonGroup}>
+                                    <span className={`${filterStatus === 'all' && styles.buttonActive}`} onClick={() => { this.changefilter('all'); }}>全部</span>
+                                    <span className={`${filterStatus === 'set' && styles.buttonActive}`} onClick={() => { this.changefilter('set'); }}>已设置</span>
+                                    <span className={`${filterStatus === 'noSet' && styles.buttonActive}`} onClick={() => { this.changefilter('noSet'); }}>未设置</span>
+                                </div>
                             </div>
-                        </div>
 
-                    </div>
-                    <div className={styles.weatherListTable}>
-                        <div className={styles.pagination}>
-                            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-                                onPaginationChange={this.onPaginationChange} />
                         </div>
-                        <Table
-                            loading={loading}
-                            dataSource={weatherData}
-                            columns={columns}
-                            pagination={false}
-                            onChange={this.tableChange}
-                            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-                        />
+                        <div className={styles.weatherListTable}>
+                            <div className={styles.pagination}>
+                                <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
+                                    onPaginationChange={this.onPaginationChange} />
+                            </div>
+                            <Table
+                                loading={loading}
+                                dataSource={weatherData}
+                                columns={columns}
+                                pagination={false}
+                                onChange={this.tableChange}
+                                locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+                            />
+                        </div>
                     </div>
+
                 </div>
                 <TransitionContainer
                     show={pageStatus !== 'list'}

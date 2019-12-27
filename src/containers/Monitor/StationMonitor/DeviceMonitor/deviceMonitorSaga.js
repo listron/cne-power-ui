@@ -97,7 +97,7 @@ function* getDeviceDetail({ deviceTypeCode, deviceCode }) { // 10s实时详情
 
 function* getSeriesInverterTenMin({ deviceCode }) {
   const startTime = moment().utc().subtract(720, 'hours').format();
-  const endTime = moment().utc().format();
+  const endTime = moment().endOf('day').utc().format();
   const tenMinUrl = `${APIBasePath}${monitor.seriesBranchTenMin}/${deviceCode}/${startTime}/${endTime}`;
   try {
     const tmpBranch = yield call(axios.get, tenMinUrl);

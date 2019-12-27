@@ -179,7 +179,7 @@ class OutputTenMin extends Component {
             show: false,
           },
           lineStyle: {
-            width: 3,
+            width: 1,
           },
         },
         {
@@ -206,7 +206,7 @@ class OutputTenMin extends Component {
             },
           },
           lineStyle: {
-            width: 3,
+            width: 1,
           },
         },
       ],
