@@ -84,11 +84,11 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
       const url = `${APIBasePath}${monitor.getDiagnoseList}`;
       yield call(easyPut, 'changeStore', { diagnoseListLoading: true });
       const { listParams, listPage } = yield select(state => state.monitor.diagnoseCenter);
-      const response = yield call(request.get, url, { params: {
-        ...listParams,
-        ...listPage,
-        ...payload,
-      }});
+      // const response = yield call(request.get, url, { params: {
+      //   ...listParams,
+      //   ...listPage,
+      //   ...payload,
+      // }});
       // if (response.code === '10000') {
         yield call(easyPut, 'fetchSuccess', {
           // diagnoseListData: response.data.list || [],

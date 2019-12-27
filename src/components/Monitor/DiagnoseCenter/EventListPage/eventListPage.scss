@@ -1,6 +1,6 @@
 
 
-@import '../../../theme/theme.scss';
+@import '../../../../theme/theme.scss';
 
 .diagnoseHeaderTabs{
   display: flex;
@@ -20,6 +20,12 @@
   .rightHolder{
     flex: 1;
   }
+}
+
+.diagnoseLevelSummry{
+  flex: 0 0 88px;
+  display: flex;
+  justify-content: space-between;
 }
 
 // 颜色控制部分
@@ -42,6 +48,11 @@
   .tabHolder{
 
   }
+}
+
+.diagnoseLevelSummry{
+  // background-color: #fff;
+
 }
 
 

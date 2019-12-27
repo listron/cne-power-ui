@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './diagnoseCenter.scss';
 import { diagnoseCenterAction } from './diagnoseCenterReducer';
-import DiagnoseHeaderTabs from '../../../components/Monitor/DiagnoseCenter/DiagnoseHeaderTabs';
+import DiagnoseHeaderTabs from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseHeaderTabs';
+import DiagnoseLevelSummry from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseLevelSummry';
 import Footer from '@components/Common/Footer';
 import { connect } from 'react-redux';
 
@@ -44,18 +45,20 @@ class DiagnoseCenter extends Component {
       <div className={styles.diagnoseCenter} >
         <div className={styles.diagnoseListPage}>
           <DiagnoseHeaderTabs {...this.props} />
-          <div>中间统计</div>
-          <div>筛选</div>
-          <div>表格</div>
-          <button onClick={() => this.props.changeStore({ showAnalysisPage: true})}>侧边栏展示</button>
-          <Footer />
+          <div className={styles.listPageContent}>
+            <DiagnoseLevelSummry {...this.props} />
+            <div>筛选</div>
+            <div>表格</div>
+            <button onClick={() => this.props.changeStore({ showAnalysisPage: true })}>侧边栏展示</button>
+          </div>
+          <Footer className={styles.footer} />
         </div>
         <div className={styles.diagnoseSidePage} style={{ transform: sideTranslateX }}>
           <div>侧边页面顶部</div>
           <div>侧边分析页面基本描述</div>
           <div>侧边图表信息展示</div>
-          <button onClick={() => this.props.changeStore({ showAnalysisPage: false})}>返回主页面</button>
-          <Footer />
+          <button onClick={() => this.props.changeStore({ showAnalysisPage: false })}>返回主页面</button>
+          <Footer className={styles.footer} />
         </div>
       </div>
     );

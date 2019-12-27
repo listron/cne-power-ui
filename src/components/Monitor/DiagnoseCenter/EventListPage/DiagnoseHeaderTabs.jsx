@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './diagnoseStyles.scss';
+import styles from './eventListPage.scss';
 
 class DiagnoseHeaderTabs extends Component {
   static propTypes = {
     pageKey: PropTypes.string,
-    // deviceShowType: PropTypes.string,
-    // endTime: PropTypes.string,
-    // stationCode: PropTypes.number,
-    // changeAllDeviceStore: PropTypes.func,
-    // getDeviceModel: PropTypes.func,
-    // getAllDeviceCurveData: PropTypes.func,
     circlingQueryList: PropTypes.func,
     stopCircleQueryList: PropTypes.func,
     changeStore: PropTypes.func,
   }
-  // pageKey: 'alarm', // 激活页 alarm告警事件 diagnose诊断时间 data数据事件
+
   pages = [{
     name: '告警事件',
     value: 'alarm',
