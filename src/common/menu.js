@@ -140,24 +140,6 @@ const menuData = [
         rightKey: 'operation_locate',
         defaultPath: true,
       },
-      // {
-      //   name: '工单',
-      //   iconStyle: 'icon-gd2',
-      //   path: 'ticket',
-      //   rightKey: 'operation_worklist',
-      //   children: [
-      //     {
-      //       name: '工单列表',
-      //       path: 'list',
-      //       defaultPath: true,
-      //       rightKey: 'operation_worklist_work',
-      //     }, {
-      //       name: '工单统计',
-      //       path: 'statistics',
-      //       rightKey: 'operation_worklist_statistics',
-      //     },
-      //   ],
-      // },
       {
         name: '工单',
         iconStyle: 'icon-gd2',
@@ -170,9 +152,15 @@ const menuData = [
             defaultPath: true,
             rightKey: 'operation_worklist_work',
           },
+          {
+            name: '工单统计',
+            path: 'statistics',
+            rightKey: 'operation_worklist_statistics',
+          },
         ],
       },
-      {
+      
+{
         name: '两票管理',
         path: 'twoTickets',
         iconStyle: 'icon-gd1',
@@ -715,3 +703,4 @@ export const menu = formatter(menuData);
 //   monitor_alarm_realTime: ['alarm_remove','alarm_worklist','monitor_alarm_remove','monitor_alarm_history'],
 //   operation_worklist_work: ['workExamine_defect_review', 'workExamine_defect_check', 'workExamine_inspection_check'],
 // }
+
