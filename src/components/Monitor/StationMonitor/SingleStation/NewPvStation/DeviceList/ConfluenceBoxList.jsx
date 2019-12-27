@@ -233,13 +233,13 @@ class ConfluenceBoxList extends Component {
     return filteredDeviceList;
   }
 
-  groupData = (deviceList = []) => { // 数据分组 用于网格
-    const parentDeviceCodes = [...new Set(deviceList.map(e => e.parentDeviceCode))];
-    const deviceGroupedList = parentDeviceCodes.map(e => {
-      const subDeviceList = deviceList.filter(item => item.parentDeviceCode === e);
-      return subDeviceList.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName));
-    });
-    return deviceGroupedList;
+  groupData = (deviceList = []) => { // 数据分组 用于网格
+      const parentDeviceCodes = [...new Set(deviceList.map(e => e.parentDeviceFullCode))];
+      const deviceGroupedList = parentDeviceCodes.map(e => {
+        const subDeviceList = deviceList.filter(item => item.parentDeviceFullCode === e);
+        return subDeviceList.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName));
+      });
+      return deviceGroupedList;
   }
 
   changeStationData = (deviceList) => { // 改变数据之后改变
