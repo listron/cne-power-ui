@@ -2,7 +2,7 @@ import { call, put, takeLatest, select, fork, cancel, takeEvery } from 'redux-sa
 import { delay } from 'redux-saga';
 import request from '@utils/request';
 import { message } from 'antd';
-// import moment from 'moment';
+import moment from 'moment';
 import path from '@path';
 import { diagnoseCenterAction } from './diagnoseCenterReducer';
 
@@ -94,6 +94,7 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
           // diagnoseListData: response.data.list || [],
           // totalNum: response.data.total || 0,
           // summaryInfo: response.data.summary || {},
+          diagnoseUpdateTime: moment().format('YYYY-MM-DD HH:mm'), // 更新表格数据时间
           diagnoseListData: [1, 2, 3].map(e => ({
             diagWarningId: `M${e}M${e * e}M${e ** e}`,
             eventCode: e * e,

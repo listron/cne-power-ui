@@ -37,6 +37,7 @@ const initState = {
   dataEventtypes: [], // 数据事件信息
   diagnoseListLoading: false, // 表格请求loading
   diagnoseListData: [], // 表格信息
+  diagnoseUpdateTime: '--', // 表格数据更新时间
   totalNum: 0, // 总量
   summaryInfo: {}, // 汇总统计
   eventAnalysisInfo: {}, // 告警事件分析结果

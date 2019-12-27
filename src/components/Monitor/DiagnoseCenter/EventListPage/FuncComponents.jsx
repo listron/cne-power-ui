@@ -6,17 +6,18 @@ import styles from './eventListPage.scss';
 export function WarningTotal({ warningNum }){
   return (
     <div className={styles.warningTotal}>
-      <span>图标</span>
-      <span className={styles.warningNumBox}>
-        <span>0</span>
-        <span>告警数</span>
-      </span>
+      <i className="iconfont icon-alarm" />
+      <div className={styles.warningNumBox}>
+        <div className={styles.totalValue}>{warningNum}</div>
+        <div className={styles.totalText}>告警数</div>
+        <div className={styles.triangle} />
+      </div>
     </div>
   );
 }
 
 WarningTotal.propTypes = {
-  warningNum: PropTypes.number,
+  warningNum: PropTypes.string,
 };
 
 export function UpdateTime({ currentTime }){

@@ -47,6 +47,7 @@ class DiagnoseCenter extends Component {
           <DiagnoseHeaderTabs {...this.props} />
           <div className={styles.listPageContent}>
             <DiagnoseLevelSummry {...this.props} />
+            {/* <DiagnoseFilter {...this.props} /> */}
             <div>筛选</div>
             <div>表格</div>
             <button onClick={() => this.props.changeStore({ showAnalysisPage: true })}>侧边栏展示</button>
