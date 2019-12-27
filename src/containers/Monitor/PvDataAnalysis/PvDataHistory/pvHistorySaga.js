@@ -218,7 +218,7 @@ function* getSecendInterval(action) { // 用户所在企业数据时间间隔
       yield put({
         type: pvHistoryAction.GET_HISTORY_SUCCESS,
         payload: {
-          intervalInfo: hasSecond === 1 ? [10, 5, 1, 2] : [10, 5, 2],
+          intervalInfo: hasSecond === 1 ? [10, 2, 5, 1] : [10, 2, 5],
           queryParam: tmpQueryParam,
         },
       });
