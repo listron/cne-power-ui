@@ -12,6 +12,16 @@ const { monitor } = path.APISubPaths;
 
 let circleTimer = null; // 循环任务标识
 
+// 交互确认: 
+// √1. tab切换 => 以默认值请求事件列表, 清空所有上一个页面搜索条件和定时请求, 开启下一个页面得定时请求;  
+// √2. 告警级别点击 => 重新请求列表, 清空下方所有搜索条件, 停止定时请求;
+// √3. 筛选条件点击 => 重新请求列表, 停止定时请求;
+// √4. 归档点击 => 重新请求列表, 停止定时请求; 其他条件清空
+// √5. 刷新按钮点击 => 以当前筛选条件请求列表, 条件不变
+// √6. 排序点击 => 重新请求列表, 停止当前定时请求
+// √7. 分析点击 =>停止当前定时请求, 单独开启分析页面;
+
+
 function* easyPut(actionName, payload){
   yield put({
     type: diagnoseCenterAction[actionName],
@@ -91,11 +101,12 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
       // }});
       // if (response.code === '10000') {
         yield call(easyPut, 'fetchSuccess', {
-          // diagnoseListData: response.data.list || [],
+          // diagnoseListData: response.data.list.map(e => ({ ...e, key: e.diagWarningId })) || [],
           // totalNum: response.data.total || 0,
           // summaryInfo: response.data.summary || {},
           diagnoseUpdateTime: moment().format('YYYY-MM-DD HH:mm'), // 更新表格数据时间
           diagnoseListData: [1, 2, 3].map(e => ({
+            key: `M${e}M${e * e}M${e ** e}`,
             diagWarningId: `M${e}M${e * e}M${e ** e}`,
             eventCode: e * e,
             eventName: `事件${e}`,

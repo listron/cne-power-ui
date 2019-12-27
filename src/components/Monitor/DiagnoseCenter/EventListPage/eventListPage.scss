@@ -126,6 +126,15 @@
   }
 }
 
+.diagnoseList{
+  .pagination{
+    display: flex;
+    height: 45px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+
 // 颜色控制部分
 .diagnoseHeaderTabs{
   .leftHolder, .tabHolder, .rightHolder{

@@ -9,7 +9,7 @@ export function WarningTotal({ warningNum }){
       <i className="iconfont icon-alarm" />
       <div className={styles.warningNumBox}>
         <div className={styles.totalValue}>{warningNum}</div>
-        <div className={styles.totalText}>告警数</div>
+        <div className={styles.totalText}>事件数</div>
         <div className={styles.triangle} />
       </div>
     </div>

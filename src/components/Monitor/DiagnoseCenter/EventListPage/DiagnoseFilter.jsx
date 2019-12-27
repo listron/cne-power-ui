@@ -1,79 +1,56 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip } from 'antd';
-import moment from 'moment';
-import { WarningTotal, UpdateTime } from './FuncComponents';
-import { dataFormats } from '@utils/utilFunc';
+import FilterConditions from '@components/Common/FilterConditions/FilterCondition';
 import styles from './eventListPage.scss';
 
-class DiagnoseLevelSummry extends Component {
+class DiagnoseFilter extends Component {
   static propTypes = {
-    diagnoseUpdateTime: PropTypes.string,
-    summaryInfo: PropTypes.object,
+    pageKey: PropTypes.string,
+    stations: PropTypes.array,
+    deviceTypes: PropTypes.array,
+    eventstatus: PropTypes.array,
+    listParams: PropTypes.object,
   }
 
-  warningLevels = [{
-    key: 1,
-    text: '一级',
-    summaryKey: 'level1',
-  }, {
-    key: 2,
-    text: '二级',
-    summaryKey: 'level2',
-  }, {
-    key: 3,
-    text: '三级',
-    summaryKey: 'level3',
-  }, {
-    key: 4,
-    text: '四级',
-    summaryKey: 'level4',
-  }]
-
-  getLevelList = (eventLevel) => {
-    console.log('新等级列表请求 -> level ' + eventLevel);
+  filterConditionChange = (conditions) => {
+    console.log(conditions);
   }
 
-  refresh = () => { // 
-    console.log('重新刷新refresh list data');
+  eventTypeInfo = {
+    alarm: 'alarmEventtypes',
+    diagnose: 'diagnEventtypes',
+    data: 'dataEventtypes',
   }
 
   render() {
-    const { summaryInfo = {}, diagnoseUpdateTime } = this.props;
-    const { total } = summaryInfo || {};
+    const { stations, deviceTypes, eventstatus, pageKey, listParams } = this.props;
+    const eventTypesData = this.props[this.eventTypeInfo[pageKey]] || [];
+    const options = [
+      { name: '电站名称', type: 'stationName', typeName: 'stationCode', data: stations },
+      { name: '设备类型', type: 'radioSelect', typeName: 'deviceTypeCode', rules: ['deviceTypeName', 'deviceTypeCode'], data: deviceTypes },
+      { name: '发生时间', type: 'time', typeName: 'rangeTimes' },
+      { name: '告警事件', type: 'radioSelect', typeName: 'eventCode', rules: ['eventName', 'eventCode'], data: eventTypesData },
+      { name: '事件状态', type: 'radioSelect', typeName: 'eventStatus', parentName: 'parentName', rules: ['statusName', 'statusCode'], data: eventstatus },
+      { name: '归档事件', type: 'switch', typeName: 'finished' },
+    ];
+    const { stationCode, deviceTypeCode, rangeTimes, eventCode, eventStatus, finished } = listParams;
     return (
-      <div className={styles.diagnoseLevelSummry} >
-        <div className={styles.leftSummary}>
-          <WarningTotal warningNum={dataFormats(total)} />
-          <div className={styles.levelCounts}>
-            <span className={styles.gradientLine} />
-            {this.warningLevels.map(e => (
-              <span className={styles.eachLevel} key={e.key} onClick={() => this.getLevelList(e.key)}>
-                <span className={styles.levelNum}>{summaryInfo ? dataFormats(summaryInfo[e.summaryKey]) : '--'}</span>
-                <span className={styles.levelText}>{e.text}</span>
-              </span>
-            ))}
-            <span className={styles.gradientLine} />
-          </div>
-        </div>
-        <div className={styles.rightUpdater}>
-          <UpdateTime currentTime={diagnoseUpdateTime} />
-          <Tooltip
-            placement="topLeft"
-            overlayStyle={{ width: 418, maxWidth: 500, fontSize: '12px' }}
-            title="数据每隔10秒刷新一次，筛选/查询后不再刷新，如需重置，请点此按钮刷新"
-          >
-              <div className={styles.refreshIcon} onClick={this.refresh}>
-                <span className={styles.updater}>
-                  <i className="iconfont icon-refresh" />
-                </span>
-                <i className="iconfont icon-help" />
-              </div>
-            </Tooltip>
-        </div>
+      <div className={styles.diagnoseFilter} >
+        <FilterConditions
+          onChange={this.filterConditionChange}
+          option={options}
+          value={{
+            stationCode,
+            deviceTypeCode,
+            rangeTimes,
+            eventCode,
+            eventStatus,
+            finished,
+          }}
+        />
       </div>
     );
   }
 }
 
-export default DiagnoseLevelSummry;
+export default DiagnoseFilter;

@@ -4,6 +4,8 @@ import styles from './diagnoseCenter.scss';
 import { diagnoseCenterAction } from './diagnoseCenterReducer';
 import DiagnoseHeaderTabs from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseHeaderTabs';
 import DiagnoseLevelSummry from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseLevelSummry';
+import DiagnoseFilter from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseFilter';
+import DiagnoseList from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseList';
 import Footer from '@components/Common/Footer';
 import { connect } from 'react-redux';
 
@@ -47,9 +49,8 @@ class DiagnoseCenter extends Component {
           <DiagnoseHeaderTabs {...this.props} />
           <div className={styles.listPageContent}>
             <DiagnoseLevelSummry {...this.props} />
-            {/* <DiagnoseFilter {...this.props} /> */}
-            <div>筛选</div>
-            <div>表格</div>
+            <DiagnoseFilter {...this.props} />
+            <DiagnoseList {...this.props} />
             <button onClick={() => this.props.changeStore({ showAnalysisPage: true })}>侧边栏展示</button>
           </div>
           <Footer className={styles.footer} />
@@ -67,7 +68,8 @@ class DiagnoseCenter extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  stations: state.common.stations,
+  stations: state.common.get('stations').toJS(),
+  deviceTypes: state.common.get('deviceTypes').toJS(),
   ...state.monitor.diagnoseCenter,
 });
 const mapDispatchToProps = (dispatch) => ({
