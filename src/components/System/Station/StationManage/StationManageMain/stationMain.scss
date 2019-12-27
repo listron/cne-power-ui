@@ -6,12 +6,12 @@
   justify-content: space-between;
   flex: 1 0 auto;
   width: 100%;
-  padding: 24px 24px 0;
+  padding: 15px 24px 0;
   background: #ececec;
   .stationContent {
-    background-color: #fff;
+    // background-color: #fff;
     flex: 1;
-    border: 1px solid #e1e2e2;
+    // border: 1px solid #e1e2e2;
     .stationSearch {
       // 电站类型+区域搜索区
       .typeSearch {
@@ -71,44 +71,19 @@
     }
     .stationList {
       // 添加电站, 下载模板, 翻译, 电站列表。
+      display: flex;
+      flex-direction: column;
+      height: 100%;
       .topHandler {
         // 顶部操作区 添加电站，下载模板, 翻页
-        height: 70px;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        margin-right: 27px;
+        margin-bottom: 16px;
         .leftHandler {
           display: flex;
           .uploadStation {
-            .plusButton {
-              // 添加电站
-              margin: 0 12px 0 32px;
-              padding: 0;
-              font-size: 0;
-              i {
-                vertical-align: top;
-                font-size: 14px;
-              }
-              span {
-                background-color: #fff;
-                color: $themeColor;
-                border-radius: 0 4px 4px 0;
-                display: inline-block;
-                font-size: 14px;
-                width: 40px;
-                line-height: 30px;
-                margin: 0px;
-              }
-              &:hover {
-                span {
-                  background-color: $themeColor;
-                  color: #fff;
-                }
-              }
-            }
-            .plusButton:hover {
-              border-radius: 6px;
-            }
             :global {
               .anticon-plus {
                 color: #fff;
@@ -128,6 +103,7 @@
             }
 
             .addButton {
+              margin: 0 14px 0 0;
               display: flex;
               background: rgba(206, 235, 224, 0.3);
               border: 1px solid #199475;
@@ -143,48 +119,160 @@
               }
             }
           }
+          .download {
+            background: rgba(206, 235, 224, 0.3);
+            border: 1px solid #199475;
+            box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+            color: $themeColor;
+            padding: 0 10px;
+            margin-right: 13px;
+          }
+          .conditionSearch {
+            display: flex;
+            background: #199475;
+            border: 1px solid #007155;
+            box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            height: 30px;
+            align-items: center;
+            color: #fff;
+            &:hover {
+              input {
+                display: block;
+              }
+            }
+            input {
+              width: 200px;
+              margin: 0 4px;
+              height: 22px;
+              display: none;
+            }
+            i {
+              width: 32px;
+              display: flex;
+              justify-content: center;
+              cursor: pointer;
+            }
+          }
         }
       }
       .stationTable {
         // 表格区
-        .stationName {
-          cursor: pointer;
-          text-decoration: underline;
-        }
-        :global {
-          .departmentSetting {
-            .iconfont {
-              font-size: 18px;
-              cursor: pointer;
-            }
+        .stationNameWrap {
+          display: flex;
+          align-items: center;
+          i {
+            display: flex;
+            flex: 0 0 24px;
+            height: 24px;
+            justify-content: center;
+            align-items: center;
+            background: #199475;
+            border-radius: 12px;
+            color: #fff;
+            margin-right: 7px;
+            font-size: 18px;
           }
-          // .ant-table-thead{
-          //   th>div{
-          //     height: 60px;
-          //   }
-          // }
-          // .ant-table-column-sorter{
-          //   top: 18px;
-          // }
         }
-        .notSet {
-          color: $darkColor;
+        .stationNameText,
+        .regionNameText,
+        .defectTypeNameText,
+        .defectDescribeText {
+          @include overflowText();
         }
-        .editStation {
-          cursor: pointer;
-          margin-right: 12px;
+        .stationName {
+          padding-left: 40px;
+          width: calc((100vw - 300px) * 0.14);
         }
-        .deleteStation {
-          cursor: pointer;
+        .stationNameText {
+          width: calc((100vw - 300px) * 0.14 - 44px);
+          color: #199475;
         }
-        .deleteDisable {
-          color: $promptColor;
+
+        .stationCapacity {
+          text-align: right;
+          width: calc((100vw - 300px) * 0.098);
         }
-        .centerFlex {
+        .stationCapacityText {
+          width: calc((100vw - 300px) * 0.1- 20px);
+        }
+        .stationStatus,
+        .pointStatus,
+        .isConnected,
+        .regionName,
+        .eventStatus,
+        .stationUnitCount {
+          width: calc((100vw - 300px) * 0.08);
+        }
+        .isConnectedText,
+        .stationUnitCountText,
+        .stationStatusText,
+        .regionNameText,
+        .eventStatusText,
+        .pointStatusText {
+          width: calc((100vw - 300px) * 0.08- 20px);
+        }
+        .eventStatusText {
           text-align: center;
         }
-        .rightFlex {
+        .stationUnitCountText {
           text-align: right;
+        }
+        .eventDataStatus {
+          width: calc((100vw - 300px) * 0.093);
+          text-align: center;
+        }
+        .eventDataStatusText {
+          width: calc((100vw - 300px) * 0.093- 20px);
+        }
+        .handlerText {
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          span {
+            display: flex;
+            box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+            width: 26px;
+            height: 26px;
+            align-items: center;
+            justify-content: center;
+
+            i {
+              color: #fff;
+              font-size: 16px;
+            }
+          }
+          .editStation {
+            background: #199475;
+            cursor: pointer;
+          }
+          .deleteStation {
+            cursor: pointer;
+            background: #ff9900;
+            color: #fff;
+            cursor: pointer;
+          }
+          .deleteDisable {
+            background: $darkColor;
+            cursor: not-allowed;
+          }
+        }
+
+        .disabled {
+          color: #999999;
+        }
+
+        :global {
+          .iconfont {
+            color: #199475;
+            font-size: 24px;
+            cursor: pointer;
+          }
+          .ant-table .ant-table-tbody > tr > td:first-child:not(.ant-table-selection-column) {
+            padding-left: 10px;
+          }
         }
       }
     }
@@ -250,6 +338,25 @@
           padding: 0;
         }
       }
+    }
+  }
+}
+
+.eventYx {
+  :global {
+    .ant-modal-header {
+      background: #199475;
+      height: 34px;
+    }
+    .ant-modal-title {
+      color: #fff;
+      line-height: 34px;
+    }
+    .ant-modal-close {
+    }
+    .ant-modal-close-x {
+      width: 34px;
+      height: 34px;
     }
   }
 }

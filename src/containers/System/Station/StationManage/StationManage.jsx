@@ -35,15 +35,16 @@ class StationManage extends Component {
   }
 
   componentDidMount() {
-    const { enterpriseId } = this.props;
+    const { enterpriseId, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand } = this.props;
+
     this.props.getStationList({ // 初始请求电站列表
-      stationType: "",
-      regionName: '',
-      stationName: '',
-      pageNum: 1,
-      pageSize: 10,
-      orderField: '',
-      orderCommand: '',
+      stationType,
+      regionName,
+      stationName,
+      pageNum,
+      pageSize,
+      orderField,
+      orderCommand,
     });
     this.props.getStationBelongTypes()
     this.props.getAllDepartmentData({ enterpriseId }) // 2.请求所有部门

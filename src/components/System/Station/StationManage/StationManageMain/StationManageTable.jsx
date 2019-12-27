@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Upload, Button, Table, message, Icon } from 'antd';
+import { Upload, Button, Table, message, Icon, Input } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import stationManageTableColumn from './stationManageTableColumn';
 import SetDepartmentModal from './SetDepartmentModal';
@@ -11,6 +11,7 @@ import Cookie from 'js-cookie';
 import path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
 import CneTable from '../../../../Common/Power/CneTable/index';
+import SetEventYxModal from './SetEventYxModal';
 
 // to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
 // 动态确认/取消后，改回调重置为null。可减少诸多记录状态的变量，利用一个交互函数进行覆盖处理。
@@ -42,6 +43,9 @@ class StationManageTable extends Component {
       showWarningTip: false,
       warningTipText: '确定要删除?',
       deleteInfo: {},
+      eventYxModal: false,
+      eventYcStatus: false,
+      eventDataStatus: false,
     }
   }
 
@@ -76,7 +80,7 @@ class StationManageTable extends Component {
       ...queryListParams,
       pageSize,
       pageNum: currentPage,
-    })
+    });
   }
 
   onStationDelete = (record) => { // 删除电站
@@ -173,7 +177,7 @@ class StationManageTable extends Component {
 
   render() {
     const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize } = this.props;
-    const { departmentModal, departmentSetInfo, uploading, fileList, showWarningTip, warningTipText, deleteInfo } = this.state;
+    const { departmentModal, departmentSetInfo, uploading, fileList, showWarningTip, warningTipText, deleteInfo, eventYxModal } = this.state;
     const authData = localStorage.getItem('authData') || '';
     const column = [
       {
@@ -181,9 +185,13 @@ class StationManageTable extends Component {
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
+        className: styles.stationName,
         render: (text, record, index) => {
           return (
-            <span className={styles.stationName} onClick={() => this.toStationDetail(record, index)}>{record.stationName}</span>
+            <div className={styles.stationNameWrap}>
+              <i className={`iconfont icon-${['windgo', 'pvs'][record.stationType]}`} />
+              <span className={styles.stationNameText} onClick={() => this.toStationDetail(record, index)}>{record.stationName}</span>
+            </div>
           )
         }
       },
@@ -192,35 +200,131 @@ class StationManageTable extends Component {
         title: '部门设置',
         dataIndex: 'departmentStatus',
         key: 'departmentStatus',
-        className: 'departmentSetting',
+        className: styles.eventStatus,
         render: (text, record, index) => {
           const { stationDepartments } = record;
           if (stationDepartments && stationDepartments.length > 0) {
-            return (<span title="查看" className="iconfont icon-look" onClick={() => this.showDepartmentModal(record)}></span>)
+            return (
+              <div className={styles.eventStatusText}>
+                <span title="查看" className="iconfont icon-look" onClick={() => this.showDepartmentModal(record)}></span>
+              </div>
+            );
           }
-          return (<span title="去设置" className="iconfont icon-goset" onClick={() => this.showDepartmentModal(record)}></span>)
+          return (
+            <div className={styles.eventStatusText}>
+              <span title="去设置" className="iconfont icon-goset" onClick={() => this.showDepartmentModal(record)}></span>
+            </div>
+          );
         }
       }, {
         title: '操作',
         dataIndex: 'handler',
         key: 'handler',
+        className: styles.handler,
         render: (text, record, index) => { // 电站未接入且alarmStatus,departmentStatus,deviceStatus,pointStatus全部为0时，才能删除。
           const deletable = !record.alarmStatus && !record.departmentStatus && !record.pointStatus && !record.isConnected;
-          if (deletable) {
-            return (<span>
-              <i className={`${styles.editStation} iconfont icon-edit`} onClick={() => this.editStation(record, index)} />
-              <span className={styles.deleteStation} onClick={() => this.deleteEdit(record)}>删除</span>
-            </span>);
-          }
-          return (<span>
-            <i className={`${styles.editStation} iconfont icon-edit`} onClick={() => this.editStation(record, index)} />
-            <span className={styles.deleteDisable}>删除</span>
-          </span>);
+          return (
+            <div className={styles.handlerText}>
+              <span className={styles.editStation}>
+                <i className={'iconfont icon-edit'} onClick={() => this.editStation(record, index)} title={'编辑'} /> </span>
+              {
+                deletable &&
+                <span className={styles.deleteStation}>
+                  <i className={'iconfont icon-del'} onClick={() => this.deleteEdit(record, index)} title={'删除'} /></span> ||
+                <span className={styles.deleteDisable}><i className={'iconfont icon-del'} title={'删除'} /></span>
+              }
+            </div>
+          );
         }
       }
     ];
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
-    console.log('uploading', uploading);
+    const eventYxData = [
+      {
+        deviceTypeCode: 201,
+        deviceTypeName: '组串式逆变器',
+        deviceModes: [
+          {
+            deviceModeCode: 123,
+            deviceModeName: 'ASG40KTL',
+            manufactorCode: 'ASG40KTL',
+            manufactorName: '阳光',
+            versions: [
+              {
+                diagModeVersionId: 'V1.1.29',
+                version: 'V1.1.29',
+                selected: 0,
+              },
+              {
+                diagModeVersionId: 'V1.1.30883455',
+                version: 'V1.1.30883455',
+                selected: 1,
+              },
+            ],
+          },
+          {
+            deviceModeCode: 123,
+            deviceModeName: 'ASG40KTL12',
+            manufactorCode: 'ASG40KTL12',
+            manufactorName: '阳光',
+            versions: [
+              {
+                diagModeVersionId: 'V1.1.291',
+                version: 'V1.1.291',
+                selected: 0,
+              },
+              {
+                diagModeVersionId: 'V1.1.308834551',
+                version: 'V1.1.308834551',
+                selected: 1,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        deviceTypeCode: 206,
+        deviceTypeName: '集中式逆变器',
+        deviceModes: [
+          {
+            deviceModeCode: 123,
+            deviceModeName: 'ASG40KTL',
+            manufactorCode: 'ASG40KTL',
+            manufactorName: '阳光',
+            versions: [
+              {
+                diagModeVersionId: 'V1.1.29',
+                version: 'V1.1.29',
+                selected: 0,
+              },
+              {
+                diagModeVersionId: 'V1.1.30883455',
+                version: 'V1.1.30883455',
+                selected: 1,
+              },
+            ],
+          },
+          {
+            deviceModeCode: 123,
+            deviceModeName: 'ASG40KTL12',
+            manufactorCode: 'ASG40KTL12',
+            manufactorName: '阳光',
+            versions: [
+              {
+                diagModeVersionId: 'V1.1.291',
+                version: 'V1.1.291',
+                selected: 0,
+              },
+              {
+                diagModeVersionId: 'V1.1.308834551',
+                version: 'V1.1.308834551',
+                selected: 1,
+              },
+            ],
+          },
+        ],
+      },
+    ];
     return (
       <div className={styles.stationList}>
         <div className={styles.topHandler}>
@@ -239,11 +343,16 @@ class StationManageTable extends Component {
                 <div className={styles.icon}> {uploading && <Icon type="loading" /> || <span className={'iconfont icon-newbuilt'} />}</div>电站
               </div>
             </Upload>
-            <Button href={downloadHref} download={downloadHref} target="_blank"  >
-              <span className={'iconfont icon-newbuilt'} /> 下载电站配置模板
+            <Button href={downloadHref} download={downloadHref} target="_blank" className={styles.download}>
+              <span className={'iconfont icon-download'} /> 下载模板
             </Button>
+            <div className={styles.conditionSearch}>
+              <Input type="text" placeholder={'电站类型／区域／电站名称'} />
+              <i className={'iconfont icon-search'}></i>
+            </div>
           </div>
-          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <div>合计：{totalNum}</div>
+          {/* <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalNum} onPaginationChange={this.onPaginationChange} /> */}
         </div>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={() => this.confirmWarningTip(deleteInfo)} value={warningTipText} />}
         <CneTable
@@ -259,6 +368,10 @@ class StationManageTable extends Component {
           departmentSetInfo={departmentSetInfo}
           closeDepartmentModal={this.closeDepartmentModal}
           allDepartmentData={allDepartmentData}
+        />}
+        {<SetEventYxModal
+          closeEventYxModal={this.closeEventYxModal}
+          allEventYx={eventYxData}
         />}
       </div>
     )
