@@ -40,7 +40,7 @@ const initState = Immutable.fromJS({
   recordedMinuteEnd: moment().format(), // 记录10min终止时间
 
   stationDeviceTypes: [], // 电站下可选设备类型
-  intervalInfo: [10, 5, 2], // 默认支持的时间间隔 5s, 10min, 1min
+  intervalInfo: [10, 2, 5], // 默认支持的时间间隔 5s, 10min, 1min
   pointInfo: [], // 选中设备内可选测点信息。
   allHistory: {}, // chart图 - 所有历史数据
   partHistory: {}, // 表格内 - 分页后的历史数据

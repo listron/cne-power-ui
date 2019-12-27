@@ -101,10 +101,13 @@
       // background: #3f3f3f;
       border-right: none;
       &::-webkit-scrollbar {
-        width: 4px;
+        width: 8px;
+        height: 171px;
+        //background:rgba(255,255,255,0.25);
       }
       &::-webkit-scrollbar-thumb {
-        border-radius: 2px;
+        border-radius: 4px;
+        background-color:rgba(255,255,255,0.25)
       }
       :global {
         li.ant-menu-item, li.ant-menu-submenu{
