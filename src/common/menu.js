@@ -543,8 +543,8 @@ const menuData = [
   {
     name: '报表管理',
     path: 'report',
-    rightKey: 'operation',
-    // rightKey: 'reportManage',
+    // rightKey: 'operation',
+    rightKey: 'reportManage',
     children: [
       {
         name: '风电报表',
