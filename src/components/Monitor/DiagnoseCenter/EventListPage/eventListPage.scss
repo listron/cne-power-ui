@@ -5,6 +5,7 @@
 .diagnoseHeaderTabs{
   display: flex;
   flex: 0 0 30px;
+  z-index: 99;
   .leftHolder{
     flex: 0 0 12px;
   }
@@ -130,8 +131,51 @@
   .pagination{
     display: flex;
     height: 45px;
+    padding-left: 20px;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
+  }
+  .diagnoseTable{
+    .finishIcon{
+      width: 40px;
+      padding: 0px!important;
+      position: relative;
+      text-align: center;
+    }
+    .done, .ignore{
+      position: absolute;
+      left: 5px;
+      top: 0px;
+      font-size: 30px;
+    }
+    .eventName, .eventNameText, .warningLevel, .warningLevelText, .pointValueDesc, .pointValueDescText, .deviceTypeName, .deviceTypeNameText, .deviceName, .deviceNameText, .stationName, .stationNameText, .beginTime, .beginTimeText, .warningDuration, .warningDurationText, .warningFrequency, .warningFrequencyText, .statusName, .statusNameText {
+      @include overflowText();
+    }
+    .beginTime {
+      width: calc((100vw - 388px) * 0.115);
+    }
+    .beginTimeText {
+      max-width: calc((100vw - 388px) * 0.115 - 20px);
+    }
+    .eventName, .pointValueDesc, .deviceTypeName, .stationName {
+      width: calc((100vw - 388px) * 0.099);
+    }
+    .eventNameText, .pointValueDescText, .deviceTypeNameText, .stationNameText {
+      max-width: calc((100vw - 388px) * 0.099 - 20px);
+    }
+    .warningLevel, .deviceName, .warningDuration, .warningFrequency, .statusName{
+      width: calc((100vw - 388px) * 0.074);
+    }
+    .warningLevelText, .deviceNameText, .warningDurationText, .warningFrequencyText, .statusNameText {
+      max-width: calc((100vw - 388px) * 0.074 - 20px);
+    }
+    .handleStyle{
+      width: calc((100vw - 388px) * 0.09);
+      .handleAnalysis{
+        margin-right: 10px;
+        cursor: pointer;
+      }
+    }
   }
 }
 
@@ -210,6 +254,22 @@
       }
       .iconfont.icon-help{
         color: #f9b600;
+      }
+    }
+  }
+}
+
+.diagnoseList{
+  .diagnoseTable{
+    .done {
+      color: var(--themeColor);
+    }
+    .ignore{
+      color: #ff9900;
+    }
+    .handleStyle{
+      .handleAnalysis{
+        color: var(--themeColor);
       }
     }
   }

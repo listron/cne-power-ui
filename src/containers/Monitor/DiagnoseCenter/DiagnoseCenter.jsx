@@ -51,7 +51,6 @@ class DiagnoseCenter extends Component {
             <DiagnoseLevelSummry {...this.props} />
             <DiagnoseFilter {...this.props} />
             <DiagnoseList {...this.props} />
-            <button onClick={() => this.props.changeStore({ showAnalysisPage: true })}>侧边栏展示</button>
           </div>
           <Footer className={styles.footer} />
         </div>
