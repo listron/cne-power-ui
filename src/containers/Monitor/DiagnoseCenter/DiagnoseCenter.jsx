@@ -6,6 +6,7 @@ import DiagnoseHeaderTabs from '../../../components/Monitor/DiagnoseCenter/Event
 import DiagnoseLevelSummry from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseLevelSummry';
 import DiagnoseFilter from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseFilter';
 import DiagnoseList from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseList';
+import EventAnalysisPage from '../../../components/Monitor/DiagnoseCenter/EventAnalysisPage/EventAnalysisPage';
 import Footer from '@components/Common/Footer';
 import { connect } from 'react-redux';
 
@@ -55,6 +56,7 @@ class DiagnoseCenter extends Component {
           <Footer className={styles.footer} />
         </div>
         <div className={styles.diagnoseSidePage} style={{ transform: sideTranslateX }}>
+          <EventAnalysisPage {...this.props} />
           <div>侧边页面顶部</div>
           <div>侧边分析页面基本描述</div>
           <div>侧边图表信息展示</div>
