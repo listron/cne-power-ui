@@ -131,6 +131,9 @@
         border-radius: 2px;
         margin-right: 2px;
         margin-bottom: 2px;
+        font-size: 7px;
+        text-align: center;
+        min-width: 22px;
         &:nth-child(8n + 4) {
           margin-right: 8px;
         }
