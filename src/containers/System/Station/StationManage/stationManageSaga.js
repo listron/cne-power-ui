@@ -220,6 +220,113 @@ function* setStationDepartment(action) { // 保存分配至指定电站的部门
   }
 }
 
+
+function* getDiagconfigYx(action) {  // 获取遥信配置
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getYxconfig}${payload.stationCode}`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: stationManageAction.changeStationManageStore,
+        payload: {
+          YxConfigData: response.data.data || []
+        },
+      });
+    } else { throw response.data }
+  } catch (e) {
+    yield put({
+      type: stationManageAction.changeStationManageStore,
+      payload: {
+        YxConfigData: []
+      },
+    })
+  }
+}
+
+function* setDiagconfigYx(action) {  // 更改遥信配置
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.setYxconfig}`;
+  try {
+    yield put({
+      type: stationManageAction.changeStationManageStore,
+      payload: {
+        YxLoading: true,
+      },
+    })
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: stationManageAction.changeStationManageStore,
+        payload: {
+          YxLoading: false,
+        },
+      })
+    } else { throw response.data }
+  } catch (e) {
+    yield put({
+      type: stationManageAction.changeStationManageStore,
+      payload: {
+        YxLoading: false,
+      },
+    })
+  }
+}
+
+function* getDiagconfigYc(action) {  // 获取遥测或者数据质量配置
+  const { payload } = action;
+  const { type, stationCode, init } = payload;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getYcconfig}${type}/${stationCode}/${init}`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: stationManageAction.changeStationManageStore,
+        payload: {
+          YcConfigData: response.data.data || []
+        },
+      });
+    } else { throw response.data }
+  } catch (e) {
+    yield put({
+      type: stationManageAction.changeStationManageStore,
+      payload: {
+        YcConfigData: []
+      },
+    })
+  }
+}
+
+function* setDiagconfigYc(action) {  // 更改遥测或者数据质量配置
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.setYcconfig}`;
+  try {
+    yield put({
+      type: stationManageAction.changeStationManageStore,
+      payload: {
+        YcLoading: true,
+      },
+    })
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: stationManageAction.changeStationManageStore,
+        payload: {
+          YcLoading: false,
+        },
+      })
+    } else { throw response.data }
+  } catch (e) {
+    yield put({
+      type: stationManageAction.changeStationManageStore,
+      payload: {
+        YcLoading: false,
+      },
+    })
+  }
+}
+
+
 export function* watchStationManage() {
   yield takeLatest(stationManageAction.GET_STATION_MANAGE_LIST, getStationList);
   yield takeLatest(stationManageAction.GET_STATION_MANAGE_DETAIL, getStationDetail);
@@ -227,5 +334,9 @@ export function* watchStationManage() {
   yield takeLatest(stationManageAction.DELET_STATION_MANAGE, deleteStation);
   yield takeLatest(stationManageAction.SET_STATION_MANAGE_DEPARTMENT, setStationDepartment);
   yield takeLatest(stationManageAction.GET_OTHER_PAGE_STATION_MANAGE_DETAIL, getOtherPageStationDetail);
+  yield takeLatest(stationManageAction.getDiagconfigYx, getDiagconfigYx);
+  yield takeLatest(stationManageAction.setDiagconfigYx, setDiagconfigYx);
+  yield takeLatest(stationManageAction.getDiagconfigYc, getDiagconfigYx);
+  yield takeLatest(stationManageAction.setDiagconfigYc, setDiagconfigYx);
 }
 

@@ -13,6 +13,10 @@ export const stationManageAction = {
   GET_STATION_MANAGE_FETCH_SUCCESS: Symbol('GET_STATION_MANAGE_FETCH_SUCCESS'), // 电站管理普通api请求成功
   resetStore: Symbol('resetStore'), // 发起重置数据请求
   changeStationManageStore: Symbol('changeStationManageStore'), // 发起重置数据请求
+  getDiagconfigYx: Symbol('getDiagconfigYx'), // 电站遥信数据
+  setDiagconfigYx: Symbol('setDiagconfigYx'), // 更改电站遥信数据
+  getDiagconfigYc: Symbol('getDiagconfigYc'), // 电站遥测或者数据质量配置
+  setDiagconfigYc: Symbol('setDiagconfigYc'), // 更改遥测或者数据质量配置
 }
 
 

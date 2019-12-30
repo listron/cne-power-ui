@@ -54,58 +54,20 @@ const stationManageTableColumn = [{
     return <span className={styles.pointStatusText}>{text && '已设置' || '未设置'}</span>
   },
 },
-// {
-//   title: '告警配置',
-//   dataIndex: 'alarmStatus',
-//   key: 'alarmStatus',
-//   sorter: true,
-//   render: (text, record, index) => {
-//     const { alarmStatus } = record;
-//     if (alarmStatus) {
-//       return <span>已设置</span>;
-//     }
-//     return <span className={styles.notSet}>未设置</span>;
-//   },
-// }
-{
-  title: '遥信诊断',
-  dataIndex: 'eventYxStatus',
-  key: 'eventYxStatus',
-  className: styles.eventStatus,
-  render: (text, record, index) => {
-    const { pointStatus, stationType } = record;
-    const title = pointStatus && '已设置' || '未设置';
-    return (<div className={styles.eventStatusText}>
-      <i className={`iconfont ${pointStatus && 'icon-look' || 'icon-goset'}`} title={title} />
-    </div>)
-  },
-},
-{
-  title: '遥测诊断',
-  dataIndex: 'eventYcStatus',
-  key: 'eventYcStatus',
-  className: styles.eventStatus,
-  render: (text, record, index) => {
-    const { pointStatus, stationType } = record;
-    const title = pointStatus && '已设置' || '未设置';
-    return (<div className={`${styles.eventStatusText} ${styles.disabled}`}>
-      <i className={`iconfont ${pointStatus && 'icon-look' || 'icon-goset'}`} title={title} />
-    </div>)
-  },
-},
-{
-  title: '数据质量诊断',
-  dataIndex: 'eventDataStatus',
-  key: 'eventDataStatus',
-  className: styles.eventDataStatus,
-  render: (text, record, index) => {
-    const { pointStatus, stationType } = record;
-    const title = pointStatus && '已设置' || '未设置';
-    return (<div className={styles.eventDataStatusText}>
-      <i className={`iconfont ${pointStatus && 'icon-look' || 'icon-goset'}`} title={title} />
-    </div>)
-  },
-},
+  // {
+  //   title: '告警配置',
+  //   dataIndex: 'alarmStatus',
+  //   key: 'alarmStatus',
+  //   sorter: true,
+  //   render: (text, record, index) => {
+  //     const { alarmStatus } = record;
+  //     if (alarmStatus) {
+  //       return <span>已设置</span>;
+  //     }
+  //     return <span className={styles.notSet}>未设置</span>;
+  //   },
+  // }
+
 ];
 
 export default stationManageTableColumn;

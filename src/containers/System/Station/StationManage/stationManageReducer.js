@@ -22,6 +22,10 @@ var initState = Immutable.fromJS({
 
   cityData: [], // 市信息列表
   countyData: [], // 市信息列表
+  YxConfigData: [],// 电站遥信数据
+  YxLoading: false,
+  YcConfigData: [],// 电站遥测或者数据诊断配置
+  YcLoading: false,
 });
 
 const stationManageReducer = (state = initState, action) => {

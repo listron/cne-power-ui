@@ -181,8 +181,10 @@
           @include overflowText();
         }
         .stationName {
-          padding-left: 40px;
           width: calc((100vw - 300px) * 0.14);
+        }
+        th.stationName {
+          padding-left: 40px !important;
         }
         .stationNameText {
           width: calc((100vw - 300px) * 0.14 - 44px);
@@ -212,8 +214,15 @@
         .pointStatusText {
           width: calc((100vw - 300px) * 0.08- 20px);
         }
+        .eventStatus,
         .eventStatusText {
           text-align: center;
+        }
+        .windDisabled {
+          i {
+            color: #999999;
+            pointer-events: none;
+          }
         }
         .stationUnitCountText {
           text-align: right;
@@ -343,20 +352,169 @@
 }
 
 .eventYx {
+  .deviceTypeName {
+    background: #f1f1f1;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 24px;
+    span {
+      background: #199475;
+      border-radius: 2px;
+      color: #fff;
+      display: inline-block;
+      height: 24px;
+      width: 110px;
+      @include overflowText();
+      text-align: center;
+    }
+  }
+  .deviceTypeCont {
+    padding: 7px 13px;
+    line-height: 30px;
+    .version {
+      @include overflowText();
+      width: 124px;
+    }
+  }
+  .footer {
+    .cancel,
+    .confirm {
+      width: 82px;
+      height: 32px;
+      color: $darkColor;
+      border: solid 1px $lightColor;
+      &:hover,
+      &:focus {
+        color: $themeColor;
+        border-color: $themeColor;
+      }
+    }
+    .confirm {
+      margin-right: 48px;
+      margin-left: 20px;
+    }
+  }
+}
+
+.eventYx,
+.SetEventYcModal {
   :global {
     .ant-modal-header {
       background: #199475;
       height: 34px;
+      padding: 0 21px;
     }
     .ant-modal-title {
       color: #fff;
-      line-height: 34px;
+      font-size: 14px;
+      line-height: 32px;
     }
     .ant-modal-close {
+      top: 9px;
+      right: 10px;
     }
     .ant-modal-close-x {
-      width: 34px;
-      height: 34px;
+      width: 14px;
+      height: 14px;
+      background: #ceebe0;
+      border-radius: 50%;
+      font-size: 12px;
+      line-height: 14px;
+      &:hover {
+        background: #fff;
+      }
+    }
+    .ant-modal-body {
+      padding: 21px 18px;
+      height: 450px;
+      overflow: scroll;
+      span.ant-radio + * {
+        padding-left: 3px;
+      }
+      .ant-radio-wrapper:hover {
+        color: #199475;
+      }
+      .ant-radio-wrapper-checked {
+        color: #199475;
+      }
+    }
+
+    .ant-modal-footer {
+      background: #efefef;
+      height: 40px;
+      line-height: 40px;
+      padding: 0 16px;
+    }
+  }
+}
+
+.SetEventYcModal {
+  .ycName {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    line-height: 30px;
+    margin-right: 30px;
+  }
+  .configCode:nth-child(even) {
+    background: #fbfbfb;
+    border-top: 1px dashed #d4d4d4;
+    border-bottom: 1px dashed #d4d4d4;
+  }
+
+  .configCodeData {
+    display: flex;
+    height: 40px;
+    line-height: 40px;
+    align-items: center;
+    .ycName {
+      width: 140px;
+    }
+    .inputNumber {
+      margin-left: 30px;
+    }
+  }
+
+  .configCodeData:nth-child(even) {
+    background: #fbfbfb;
+    border-top: 1px dashed #d4d4d4;
+    border-bottom: 1px dashed #d4d4d4;
+  }
+
+  :global {
+    .ant-switch {
+      background: #f1f1f1;
+      border: 1px solid #d4d4d4;
+      box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.6);
+      border-radius: 7px;
+      width: 44px;
+      height: 14px;
+      &::after {
+        width: 18px;
+        height: 18px;
+        border-radius: 100%;
+        background: #ffffff;
+        border: 1px solid #d4d4d4;
+        box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.3), inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+        left: -1px;
+        top: -4px;
+      }
+    }
+    .ant-input-number {
+      margin-left: 4px;
+      margin-right: 4px;
+    }
+    .ant-switch-checked {
+      background: #199475;
+      border: 1px solid #007155;
+      box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
+      &::after {
+        background-image: linear-gradient(35deg, #fcfcfc 3%, #d0f5eb 100%);
+        border: 1px solid #007155;
+        box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.3), inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+        margin-left: 2px;
+        left: 100%;
+      }
     }
   }
 }

@@ -112,6 +112,10 @@ const mapDispatchToProps = (dispatch) => ({
   saveStationDetail: payload => dispatch({ type: stationManageAction.EDIT_STATION_MANAGE_DETAIL, payload }),
   deleteStation: payload => dispatch({ type: stationManageAction.DELET_STATION_MANAGE, payload }),
   setStationDepartment: payload => dispatch({ type: stationManageAction.SET_STATION_MANAGE_DEPARTMENT, payload }),
+  setDiagconfigYx: payload => dispatch({ type: stationManageAction.setDiagconfigYx, payload }),
+  getDiagconfigYx: payload => dispatch({ type: stationManageAction.getDiagconfigYx, payload }),
+  setDiagconfigYc: payload => dispatch({ type: stationManageAction.setDiagconfigYc, payload }),
+  getDiagconfigYc: payload => dispatch({ type: stationManageAction.getDiagconfigYc, payload }),
   resetStore: () => dispatch({ type: stationManageAction.resetStore }),
   getAllDepartmentData: params => dispatch({
     type: commonAction.getAllDepartment,
