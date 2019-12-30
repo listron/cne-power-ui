@@ -186,7 +186,7 @@ class Main extends Component {
             {!isHomePage && <SideMenu stationTypeCount={stationTypeCount} />}
             <main
               className={`${styles.content} ${styles[theme]}`}
-              style={{ height: isHomePage ? '100vh' : 'calc(100vh - 59px)' }}
+              style={{ height: isHomePage ? '100vh' : 'calc(100vh - 40px)' }}
               id="main"
             >
               <Switch>
