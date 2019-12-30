@@ -232,6 +232,7 @@ class PvHistoryChart extends Component {
   render() {
     // height: 160 * 测点数 + top(10) + bottom(80) + 24 * 数据指示条行数。
     const { queryParam, historyType, chartTime, allHistory } = this.props;
+    const { pointData = [] } = allHistory;
     const { deviceFullCodes, devicePoints } = queryParam;
     const calcHeight = 160 * devicePoints.length + 90 + 24 * Math.ceil((deviceFullCodes.length * devicePoints.length) / 4);
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
@@ -246,7 +247,7 @@ class PvHistoryChart extends Component {
           <span className={styles.tipTitle}>数据为瞬时值</span>
 
         </h4>
-        {(chartTime) ? <div className={styles.innerChart} id="dataHistoryChart" style={{ height: `${chartHeight}px` }} /> :
+        {(chartTime) ? <div className={styles.innerChart} id="dataHistoryChart" style={(pointData && pointData.length > 0) ? {height: `${chartHeight}px` } : {height: '0px' }} /> :
           <div className={styles.nodata}>
             <img width="223" height="164" src="/img/nodata.png" />
           </div>}

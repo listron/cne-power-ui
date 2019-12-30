@@ -74,7 +74,7 @@ div[class*="ant-modal-wrap"][class*="dark__"] {
     display: flex;
     flex: 1;
     .content {
-      height: calc(100vh - 59px);
+      height: calc(100vh - 40px);
       flex: 1;
       overflow-y: auto;
       overflow-x: hidden; // margin-bottom: 6rem;
