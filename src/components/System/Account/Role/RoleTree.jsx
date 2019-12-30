@@ -29,8 +29,8 @@ class RoleTree extends Component {
   }
 
   onCheck = (checkedKeys, e) => {
-    const { defaultRootMenu } = this.props;
-    const checkedKeyResult = [...checkedKeys, ...defaultRootMenu.map(e=>`${e}`)];
+    // const { defaultRootMenu } = this.props;
+    const checkedKeyResult = [...checkedKeys];
     this.props.onChange([...checkedKeyResult, ...e.halfCheckedKeys]);
     this.setState({ checkedKeys: checkedKeyResult});
   }
@@ -43,9 +43,9 @@ class RoleTree extends Component {
       this.setState({ checkedKeys: allKeys });
       this.props.onChange(allKeys);
     }else{ // 全不选时恢复默认设定权限。
-      const defaultChecked = defaultRootMenu.map(e=>`${e}`)
-      this.setState({ checkedKeys: defaultChecked });
-      this.props.onChange(defaultChecked);
+      // const defaultChecked = defaultRootMenu.map(e=>`${e}`)
+      this.setState({ checkedKeys: [] });
+      // this.props.onChange(defaultChecked);
     }
   }
 
