@@ -68,8 +68,11 @@ class SetEventYxModal extends Component { // 电站管理列表页
         wrapClassName={styles.eventYx}
         width={625}
         footer={<div className={styles.footer}>
-          <Button onClick={this.cancelSetting} className={styles.cancel}>取消</Button>
-          <Button onClick={this.confirmSetting} className={styles.confirm}>保存</Button>
+          <div className={styles.text}>若未找到需要的软件版本，去<a>添加平台级告警规则设置</a></div>
+          <div className={styles.button}>
+            <div onClick={this.cancelSetting} className={styles.cancel}>取 消</div>
+            <Button onClick={this.confirmSetting} className={styles.confirm}>确定</Button>
+          </div>
         </div>}
       >
         {allEventYx.map(list => {

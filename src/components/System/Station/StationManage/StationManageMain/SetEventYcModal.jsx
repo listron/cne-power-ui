@@ -10,7 +10,7 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
     eventData: PropTypes.array,
     type: PropTypes.string,
     closeEventModal: PropTypes.func,
-    setDiagconfigYx: PropTypes.func,
+    setDiagconfigYc: PropTypes.func,
   }
 
   constructor(props) {
@@ -46,8 +46,8 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
 
   confirmSetting = () => {
     const { eventData } = this.state;
-    const { setDiagconfigYx } = this.props;
-    setDiagconfigYx(eventData);
+    const { setDiagconfigYc } = this.props;
+    setDiagconfigYc(eventData);
     console.log('eventData', eventData);
   }
 
@@ -73,8 +73,8 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
         wrapClassName={styles.SetEventYcModal}
         width={625}
         footer={<div className={styles.footer}>
-          <Button onClick={this.cancelSetting} className={styles.cancel}>取消</Button>
-          <Button onClick={this.confirmSetting} className={styles.confirm}>保存</Button>
+          <div onClick={this.cancelSetting} className={styles.cancel}>取 消</div>
+          <Button onClick={this.confirmSetting} className={styles.confirm}>确定</Button>
         </div>}
       >
         <div>

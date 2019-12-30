@@ -189,6 +189,7 @@
         .stationNameText {
           width: calc((100vw - 300px) * 0.14 - 44px);
           color: #199475;
+          cursor: pointer;
         }
 
         .stationCapacity {
@@ -214,22 +215,26 @@
         .pointStatusText {
           width: calc((100vw - 300px) * 0.08- 20px);
         }
-        .eventStatus,
-        .eventStatusText {
-          text-align: center;
-        }
         .windDisabled {
           i {
             color: #999999;
             pointer-events: none;
           }
         }
+        .eventDataStatus,
+        .eventStatus,
+        .handler,
+        .eventStatusText {
+          text-align: center;
+        }
+        .stationCapacity,
+        .stationUnitCount,
+        .stationCapacityText,
         .stationUnitCountText {
           text-align: right;
         }
         .eventDataStatus {
           width: calc((100vw - 300px) * 0.093);
-          text-align: center;
         }
         .eventDataStatusText {
           width: calc((100vw - 300px) * 0.093- 20px);
@@ -351,51 +356,6 @@
   }
 }
 
-.eventYx {
-  .deviceTypeName {
-    background: #f1f1f1;
-    border-radius: 2px;
-    height: 24px;
-    line-height: 24px;
-    span {
-      background: #199475;
-      border-radius: 2px;
-      color: #fff;
-      display: inline-block;
-      height: 24px;
-      width: 110px;
-      @include overflowText();
-      text-align: center;
-    }
-  }
-  .deviceTypeCont {
-    padding: 7px 13px;
-    line-height: 30px;
-    .version {
-      @include overflowText();
-      width: 124px;
-    }
-  }
-  .footer {
-    .cancel,
-    .confirm {
-      width: 82px;
-      height: 32px;
-      color: $darkColor;
-      border: solid 1px $lightColor;
-      &:hover,
-      &:focus {
-        color: $themeColor;
-        border-color: $themeColor;
-      }
-    }
-    .confirm {
-      margin-right: 48px;
-      margin-left: 20px;
-    }
-  }
-}
-
 .eventYx,
 .SetEventYcModal {
   :global {
@@ -444,6 +404,89 @@
       height: 40px;
       line-height: 40px;
       padding: 0 16px;
+    }
+  }
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 40px;
+    .cancel {
+      width: 82px;
+      height: 32px;
+      color: $darkColor;
+      text-align: center;
+      line-height: 32px;
+      cursor: pointer;
+    }
+    .confirm {
+      width: 82px;
+      height: 32px;
+      background: rgba(206, 235, 224, 0.3);
+      border: 1px solid #199475;
+      box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+      position: relative;
+      overflow: hidden;
+      color: #199475;
+      span {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+      }
+      &:after {
+        position: absolute;
+        content: "";
+        background: #ceebe0;
+        width: 0;
+        height: 0;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 1000px;
+        opacity: 0;
+        transition: all 0.6s;
+      }
+      &:hover::after {
+        width: 120%;
+        height: 200%;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.eventYx {
+  .deviceTypeName {
+    background: #f1f1f1;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 24px;
+    span {
+      background: #199475;
+      border-radius: 2px;
+      color: #fff;
+      display: inline-block;
+      height: 24px;
+      width: 110px;
+      @include overflowText();
+      text-align: center;
+    }
+  }
+  .deviceTypeCont {
+    padding: 7px 13px;
+    line-height: 30px;
+    .version {
+      @include overflowText();
+      width: 124px;
+    }
+  }
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    .button {
+      display: flex;
     }
   }
 }
