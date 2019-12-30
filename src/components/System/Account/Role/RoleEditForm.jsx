@@ -96,20 +96,20 @@ class RoleEditForm extends Component {
     return treeKey;
   }
 
-  getDefaultRootMenu = (rightData) => {
-    const { defaultMenuData } = this.props;
-    let defaultRootMenu = [];
-    rightData && rightData.length > 0 && rightData.forEach(e=>{
-      const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
+  // getDefaultRootMenu = (rightData) => {
+  //   const { defaultMenuData } = this.props;
+  //   let defaultRootMenu = [];
+  //   rightData && rightData.length > 0 && rightData.forEach(e=>{
+  //     const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
 
-      if(hasChildRight){
-        defaultRootMenu.push(...this.getDefaultRootMenu(e.childRightData));
-      }else{
-        defaultMenuData.includes(e.rightId) && defaultRootMenu.push(e.rightId);
-      }
-    })
-    return defaultRootMenu;
-  }
+  //     if(hasChildRight){
+  //       defaultRootMenu.push(...this.getDefaultRootMenu(e.childRightData));
+  //     }else{
+  //       defaultMenuData.includes(e.rightId) && defaultRootMenu.push(e.rightId);
+  //     }
+  //   })
+  //   return defaultRootMenu;
+  // }
 
   onOperatetypeChange = e => {
     this.setState({
@@ -122,14 +122,13 @@ class RoleEditForm extends Component {
     const { operateType } = this.state;
     const { getFieldDecorator } = this.props.form;
     const { showPage, loading, continueAdd, selectedRole, menuData } = this.props;
-    console.log('selectedRole: ', selectedRole);
     const isCreate = showPage === 'create';
     const selectedRight = isCreate? [] : selectedRole[0].rightData;
     let initialRightValue = [];
     let initialOperateName = '';
-    const defaultRootMenu = this.getDefaultRootMenu(menuData);
+    // const defaultRootMenu = this.getDefaultRootMenu(menuData);
     if(isCreate){
-      initialRightValue = defaultRootMenu.map(e=>`${e}`);
+      initialRightValue = [];
       initialOperateName = operateType;
     }else{
       initialRightValue = this.getRightIdArr(selectedRight);
@@ -182,7 +181,7 @@ class RoleEditForm extends Component {
             }],
             initialValue: initialRightValue,
           })(
-            <RoleTree treeData={menuData} defaultRootMenu={defaultRootMenu} />
+            <RoleTree treeData={menuData} />
           )}
         </FormItem>
         <div className={styles.buttonGroup}>
