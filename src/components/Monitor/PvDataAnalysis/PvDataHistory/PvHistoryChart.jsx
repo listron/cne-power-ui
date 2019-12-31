@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from './pvHistoryStyle.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
-import { Icon } from 'antd';
 
 class PvHistoryChart extends Component {
   static propTypes = {
@@ -134,9 +133,6 @@ class PvHistoryChart extends Component {
           type: 'line',
           symbol: 'circle',
           showSymbol: false,
-          lineStyle: {
-            width: 3,
-          },
           data: point.pointInfo[device.deviceCode] || [],
         });
       });

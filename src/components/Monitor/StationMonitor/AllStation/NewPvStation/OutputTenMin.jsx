@@ -76,12 +76,15 @@ class OutputTenMin extends Component {
       legend: {
         itemWidth: 24,
         itemHeight: 6,
+        textStyle: {
+          color: '#999999',
+        },
       },
       grid: {
         show: false,
         bottom: 25,
-        // left: '13%',
-        // right: '14%',
+        left: 50,
+        // right: 17,
         top: 32,
       },
       tooltip: {
@@ -91,12 +94,12 @@ class OutputTenMin extends Component {
           let paramsItem = '';
           params.forEach(item => {
             paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
-              ${item.seriesName.split('(')[0]} :  ${item.value}</div>`;
+              ${item.seriesName} : ${item.value}${item.seriesName === '辐射' ? 'W/m²' : yAxisUnit}</div>`;
           });
           return (
             `<div class=${styles.tooltipBox}>
                   <div class=${styles.axisValue}>${params[0].name}</div>
-                  <div class=${styles.tooltipContainer}> ${paramsItem}</div>
+                  <div class=${styles.tooltipContainer}>${paramsItem}</div>
               </div>`
           );
         },
@@ -111,7 +114,7 @@ class OutputTenMin extends Component {
         }),
         axisLabel: {
           interval: labelInterval,
-          show: false,
+          show: true,
         },
         axisTick: {
           show: false,
@@ -121,22 +124,35 @@ class OutputTenMin extends Component {
             show: false,
           },
         },
+        splitLine: {
+          show: true,
+        },
+        nameTextStyle: {
+          color: '#999999',
+        },
       },
       yAxis: [
         {
-          name: yAxisType,
+          // name: yAxisType,
           type: 'value',
           min: minPower < 0 ? minPower : 0,
-          show: false,
+          show: true,
           axisLabel: {
             formatter: '{value}',
-            show: false,
+            show: true,
           },
           nameTextStyle: {
             padding: [0, 0, 0, 20],
+            color: '#999999',
           },
           axisLine: {
             show: true,
+          },
+          splitArea: {
+            show: true,
+            areaStyle: {
+              color: ['#fbfbfb', '#ffffff'],
+            },
           },
         },
         {
@@ -151,24 +167,42 @@ class OutputTenMin extends Component {
           splitLine: {
             show: false,
           },
+          splitArea: {
+            show: true,
+            areaStyle: {
+              color: ['#fbfbfb', '#ffffff'],
+            },
+          },
+          nameTextStyle: {
+            color: '#999999',
+          },
         },
         {
           // name: '辅助',
           type: 'value',
           show: !capabilityGraphic,
-          min: 0,
-          max: 100,
+          // min: 0,
+          // max: 100,
           axisLabel: {
-            show: false,
+            show: true,
           },
           axisLine: {
             show: false,
+          },
+          splitArea: {
+            show: true,
+            areaStyle: {
+              color: ['#fbfbfb', '#ffffff'],
+            },
+          },
+          nameTextStyle: {
+            color: '#999999',
           },
         },
       ],
       series: [
         {
-          name: `功率(${yAxisUnit})`,
+          name: '功率',
           nameLabel: '功率',
           type: 'line',
           smooth: true,
@@ -179,11 +213,11 @@ class OutputTenMin extends Component {
             show: false,
           },
           lineStyle: {
-            width: 3,
+            width: 2,
           },
         },
         {
-          name: '辐射(W/m²)',
+          name: '辐射',
           type: 'line',
           data: capabilityRadiation,
           yAxisIndex: 1,
@@ -206,7 +240,7 @@ class OutputTenMin extends Component {
             },
           },
           lineStyle: {
-            width: 3,
+            width: 2,
           },
         },
       ],
