@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, Select, DatePicker } from 'antd';
+import ChartLine from './ChartLine';
 import styles from './eventAnalysis.scss';
 const { Option } = Select;
 
@@ -73,9 +74,7 @@ class EventAnalysisPage extends PureComponent {
             <Icon className={styles.rightIcon} type="right" />
           </span>
         </div>
-        <div>
-          时序图数据表格
-        </div>
+        <ChartLine {...this.props} />
       </section>
     );
   }
