@@ -280,6 +280,7 @@
       background: $themeColor;
       .detailShowfont {
         color: #fff;
+        z-index: 0;
       }
       :global {
         .iconfont {
