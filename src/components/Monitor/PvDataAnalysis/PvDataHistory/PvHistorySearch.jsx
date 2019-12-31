@@ -360,6 +360,8 @@ class PvHistorySearch extends Component {
               onChange={this.selectedDevice}
             />
           </div>
+        </div>
+        <div className={styles.timeType}>
           <div className={styles.startSelect}>
             <span className={styles.text}>选择日期</span>
             <RangePicker
@@ -371,14 +373,12 @@ class PvHistorySearch extends Component {
               onCalendarChange={this.onCalendarChange}
             />
           </div>
-        </div>
-        <div className={styles.timeType}>
           <div className={styles.intervalSelect}>
-            <span className={styles.text}>数据时间间隔</span>
+            <span className={styles.text}>数据间隔</span>
             <Select
               onChange={this.selectTimeSpace}
               value={timeInterval}
-              placeholder="数据间隔时间"
+              placeholder="数据时间"
             >
               {intervalInfo.map(e => (
                 <Option key={e} value={e}>{(e === 2 && '1分钟' || e === 10 && '10分钟' ) || `${e}秒`}</Option>

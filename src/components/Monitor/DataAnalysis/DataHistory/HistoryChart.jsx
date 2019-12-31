@@ -131,7 +131,7 @@ class HistoryChart extends Component {
         const mapNumber = index * deviceNum + deviceIndex; // 属于所有数据中的顺序
         const lengendName = `${point.pointName}-${device.deviceName}`;
         legend.push({
-          top: 72 + 160 * pointNum + 24 * parseInt(mapNumber / 4),
+          top: 72 + 160 * pointNum + 24 * parseInt(mapNumber / 4, 0),
           left: `${4 + (mapNumber % 4) * 23}%`,
           textStyle: {
             fontSize: 12,
@@ -146,9 +146,6 @@ class HistoryChart extends Component {
           type: 'line',
           symbol: 'circle',
           showSymbol: false,
-          lineStyle: {
-            width: 3,
-          },
           data: point.pointInfo[device.deviceCode] || [],
 
         });
