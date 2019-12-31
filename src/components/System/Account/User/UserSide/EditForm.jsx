@@ -75,7 +75,7 @@ class EditForm extends Component {
           {getFieldDecorator('username',{
             initialValue: userDetail && userDetail.get('username'),
             rules: [
-            {pattern: /^[A-Za-z0-9~!@#$%^&*()_+.\u4e00-\u9fa5]{3,25}$/gi, message: '请输入字符长度为3-25的用户名',required: true,},
+            {pattern: /^[A-Za-z0-9~!@#$%^&*()-_+.\u4e00-\u9fa5]{3,25}$/gi, message: '请输入字符长度为3-25的用户名',required: true,},
             ]
           })(
             <Input placeholder="请输入用户名" disabled />

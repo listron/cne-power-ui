@@ -286,7 +286,7 @@ class JoinInForm extends Component{
               {getFieldDecorator('username', {
                 rules: [
                   {required: true, message: '请输入用户名'},
-                  {pattern: /^[A-Za-z0-9~!@#$%^&*()_+.\u4e00-\u9fa5]{3,25}$/gi,message: '请输入字符长度为3-25的用户名'},
+                  {pattern: /^[A-Za-z0-9~!@#$%^&*()-_+.\u4e00-\u9fa5]{3,25}$/gi,message: '请输入字符长度为3-25的用户名'},
                 ],
                 initialValue: username || '',
               })(
