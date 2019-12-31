@@ -74,8 +74,8 @@ class TransferWarningModal extends Component {
   levelToWork = {
     '1': { lable: '一', workLevel: 'A' },
     '2': { lable: '二', workLevel: 'B' },
-    '3': { lable: '三/四', workLevel: 'C' },
-    '4': { lable: '三/四', workLevel: 'C' },
+    '3': { lable: '三', workLevel: 'C' },
+    '4': { lable: '四', workLevel: 'C' },
   }
 
   render() {
