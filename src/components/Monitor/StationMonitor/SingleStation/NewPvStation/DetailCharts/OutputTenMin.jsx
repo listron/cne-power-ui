@@ -60,7 +60,6 @@ class OutputTenMin extends Component {
       color: '#3e97d1',
       lineStyle: {
         color: '#3e97d1',
-        width: 3,
       },
     } || { type: 'line' };
     const theoreticalPowerSeries = chartDatas.length > 0 && chartDatas[0].theoreticalPower !== undefined && {
@@ -76,7 +75,6 @@ class OutputTenMin extends Component {
       color: '#199475',
       lineStyle: {
         color: '#199475',
-        width: 3,
       },
     } || { type: 'line' };
     const filterCapabilityPower = chartDatas.filter(e => e.stationPower);
@@ -197,7 +195,6 @@ class OutputTenMin extends Component {
           },
           lineStyle: {
             color: '#a42b2c',
-            width: 3,
           },
         },
         theoreticalPowerSeries,
@@ -210,7 +207,6 @@ class OutputTenMin extends Component {
           color: '#f9b600',
           lineStyle: {
             color: '#f9b600',
-            width: 3,
             // type: 'dotted',
           },
           areaStyle: {

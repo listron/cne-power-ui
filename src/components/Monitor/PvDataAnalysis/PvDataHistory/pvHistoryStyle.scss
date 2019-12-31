@@ -36,27 +36,22 @@
 
   .searchPart,
   .timeType {
-    padding: 20px 48px 0 10px;
+    padding: 20px 40px 0 10px;
     display: flex;
     flex-wrap: wrap;
 
     .stationSelect,
     .typeSelect,
     .deviceSelect,
-    .startSelect {
+    .startSelect,
+    .intervalSelect{
       flex: 1;
     }
-
-    .intervalSelect {
-      flex: 3;
-      // justify-content: flex-end;
-    }
-
 
     .export {
       display: flex;
       flex: 1;
-      justify-content: flex-start;
+      justify-content: flex-end;
       align-items: center;
 
       .btn {
@@ -189,7 +184,7 @@
   }
 
   .timeType {
-    padding: 10px 48px 14px 10px;
+    padding: 10px 40px 14px 10px;
   }
 }
 
@@ -241,8 +236,8 @@
   }
 
   h3 {
-    height: 42px;
-    line-height: 42px;
+    height: 50px;
+    line-height: 50px;
     color: $slideFontColor;
     text-align: center;
     background-color: $themeColor;
