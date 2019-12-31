@@ -17,6 +17,7 @@ class DiagnoseCenter extends Component {
     getEventstatus: PropTypes.func,
     getEventtypes: PropTypes.func,
     getDiagnoseList: PropTypes.func,
+    reset: PropTypes.func,
   }
 
   state = {
@@ -40,6 +41,10 @@ class DiagnoseCenter extends Component {
     if (preAnalysis && !showAnalysisPage) { // 侧边页回主页
       this.setState({ sideTranslateX: 'translateX(100%)' });
     }
+  }
+
+  componentWillUnmount(){
+    this.props.reset();
   }
 
   render() {
