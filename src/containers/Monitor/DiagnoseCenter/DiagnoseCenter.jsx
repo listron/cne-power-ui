@@ -57,10 +57,6 @@ class DiagnoseCenter extends Component {
         </div>
         <div className={styles.diagnoseSidePage} style={{ transform: sideTranslateX }}>
           <EventAnalysisPage {...this.props} />
-          <div>侧边页面顶部</div>
-          <div>侧边分析页面基本描述</div>
-          <div>侧边图表信息展示</div>
-          <button onClick={() => this.props.changeStore({ showAnalysisPage: false })}>返回主页面</button>
           <Footer className={styles.footer} />
         </div>
       </div>

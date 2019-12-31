@@ -164,8 +164,21 @@ function* stopCircleQueryList(){ // 停止10s周期调用列表
 function* getEventsAnalysis({ payload = {} }) { // 诊断分析
   //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒, date日期, eventCode事件类型编码 }
   try {
+    // const { diagWarningId, deviceFullcode, eventCode, beginTime } = payload;
+    // const params = {
+    //   diagWarningId,
+    //   deviceFullcode,
+    //   eventCode,
+    //   date: beginTime,
+    // };
+    // analysisEvent = ({ diagWarningId, deviceFullcode, beginTime, eventCode}) => {
+    //   this.props.getEventsAnalysis({
+    //     diagWarningId, deviceFullcode, eventCode,
+    //     date: beginTime,
+    //   });
+    // }
     // const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
-    // const response = yield call(request.get, url, { params: payload });
+    // const response = yield call(request.get, url, { params });
     // if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         showAnalysisPage: true,

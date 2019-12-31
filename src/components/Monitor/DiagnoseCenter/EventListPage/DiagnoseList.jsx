@@ -28,11 +28,8 @@ class DiagnoseList extends Component {
     return eventNameCreator[pageKey](finished, this.analysisEvent);
   }
 
-  analysisEvent = ({ diagWarningId, deviceFullcode, beginTime, eventCode}) => {
-    this.props.getEventsAnalysis({
-      diagWarningId, deviceFullcode, eventCode,
-      date: beginTime,
-    });
+  analysisEvent = (record) => {
+    this.props.getEventsAnalysis(record);
   }
 
   // selectRows = (selectedRowKeys) => { // todo 工单系统改造完成后, 操作功能添加

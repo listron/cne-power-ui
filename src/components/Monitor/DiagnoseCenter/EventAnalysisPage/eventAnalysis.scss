@@ -8,70 +8,144 @@
   .detailTop{
     margin-bottom: 0;
     display: flex;
-    font-size: 18px;
     align-items: center;
     justify-content: space-between;
-    padding-left: 40px;
     flex: 0 0 60px;
+    .titleInfo{
+      display: flex;
+      align-items: center;
+      .titleName{
+        font-size: 18px;
+        flex: 0 0 142px;
+        text-align: center;
+      }
+      .infoText{
+        flex: 0 0 auto;
+        font-size: 14px;
+        margin-right: 16px;
+      }
+    }
     .topHandle{
       height: 60px;
       display: flex;
       flex: 0 0 150px;
       justify-content: flex-end;
       align-items: center;
-      button{
+      .showMore{
         margin-right: 12px;
+        padding: 0 2px;
+        .shadow{
+          line-height: 24px;
+          padding: 0 2px;
+          border-radius: 50%;
+        }
+        :global{
+          .iconfont{
+            margin-right: 4px;
+          }
+        }
       }
       .backIcon{
         cursor: pointer;
         flex: 0 0 60px;
+        font-size: 20px;
         line-height: 60px;
       }
     }
   }
-  .detailContent{
-    flex: 1 0;
-    padding: 16px 40px 24px 40px;
-    overflow: auto;
+  .analysisSearch{
+    flex: 0 0 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 80px;
+    .searchText{
+      font-size:18px;
+    }
+    .searchParts{
+      display: flex;
+      flex: 0 0 500px;
+      justify-content: flex-end;
+      align-items: center;
+      line-height: 60px;
+      .intervalSelect{
+        margin: 0 40px 0 4px;
+        :global{
+          .ant-select-selection{
+            height: 24px;
+          }
+        }
+      }
+      .leftIcon, .rightIcon{
+        flex: 0 0 22px;
+        height: 24px;
+        line-height: 24px;
+        border-radius: 2px;
+      }
+      .dateSelect{
+        margin: 0 4px;
+        :global{
+          .ant-calendar-picker-input.ant-input{
+            height: 24px;
+          }
+        }
+      }
+    }
   }
 }
 
 
-.light.planDetail{
+.eventAnalysis{
   background-color: #fff;
+  box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
   .detailTop{
-    color: var(--darkColor);
-    border-bottom: 1px solid var(--promptColor);
+    border-bottom: 1px solid #d4d4d4;
+    .titleInfo{
+      .titleName{
+        color: #353535;
+      }
+      .infoText{
+        color: var(--lightColor);
+      }
+    }
     .topHandle{
+      color: var(--themeColor);
+      .showMore{
+        background:rgba(206,235,224,0.30);
+        &:hover .shadow{
+          background-color: rgb(206,235,224);
+        }
+      }
+      
       .backIcon{
-        border-left: 1px solid var(--promptColor);
+        border-left: 1px solid #d4d4d4;
+        color: var(--lightColor);
       }
     }
   }
-  .detailContent{
-    .detailTitle{
+  .analysisSearch{
+    .searchText{
       color: #000;
     }
-  }
-}
-
-.dark.planDetail{
-  background-image: linear-gradient(-118deg, #3b55aa 0%, #132267 96%);
-  .detailTop{
-    background:rgba(20,33,101,0.40);
-    border:1px solid #4288b5;
-    color:#9cd1ff;
-    margin-bottom: 10px;
-    .topHandle{
-      .backIcon{
-        border-left: 1px solid #4288b5;
+    .searchParts{
+      color: #353535;
+      .intervalSelect{
+        
+      }
+      .leftIcon, .rightIcon{
+        border:1px solid var(--themeColor);
+        &:hover{
+          color: #fff;
+          background-color: var(--themeColor);
+        }
+      }
+      .dateSelect{
+        
       }
     }
   }
-  .detailContent{
-    background:rgba(20,33,101,0.40);
-  }
 }
+
 
 
 
