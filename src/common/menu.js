@@ -34,66 +34,6 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
-        name: '功率曲线',
-        iconStyle: 'icon-monitoring',
-        path: 'powercurve',
-        rightKey: 'monitor_powerCurve',
-      }, {
-        name: '数据分析',
-        iconStyle: 'icon-sand',
-        path: 'data',
-        rightKey: 'monitor_dataAnalysis',
-        children: [
-          {
-            name: '散点图',
-            path: 'scatterDiagram',
-            rightKey: 'dataAnalysis_scatterPlot',
-            renderKey: 'wind',
-          }, {
-            name: '数据概览',
-            path: 'overview',
-            rightKey: 'dataAnalysis_dataQuality',
-          }, {
-            name: '历史趋势',
-            path: 'history',
-            rightKey: 'dataAnalysis_historyTrend',
-          }, {
-            name: '实时数据',
-            path: 'realtime',
-            rightKey: 'dataAnalysis_realTime',
-          }, {
-            name: '数据导出',
-            path: 'dataExport',
-            rightKey: 'dataAnalysis_dataExport',
-          },
-        ],
-      },
-      // {
-      //   name: '报表查询',
-      //   iconStyle: 'icon-trends',
-      //   path: 'report',
-      //   rightKey: 'monitor_reportQuery',
-      //   children: [
-      //     {
-      //       name: '电量报表',
-      //       path: 'powerReport',
-      //       rightKey: 'reportQuery_powerReport',
-      //     }, {
-      //       name: '设备状态',
-      //       path: 'deviceStatus',
-      //       rightKey: 'reportQuery_deviceStatus',
-      //     }, {
-      //       name: '故障报表',
-      //       path: 'malfunction',
-      //       rightKey: 'reportQuery_malfunction',
-      //     }, {
-      //       name: '损失电量',
-      //       path: 'powerLost',
-      //       rightKey: 'reportQuery_powerLost',
-      //     },
-      //   ],
-      // },
-      {
         name: '告警',
         iconStyle: 'icon-alarm1',
         path: 'alarm',
@@ -120,15 +60,63 @@ const menuData = [
             path: 'statistic',
             rightKey: 'monitor_alarm_statistics',
           },
-          // {
-          //   name: '告警统计',
-          //   path: 'statistics',
-          //   rightKey: 'monitor_alarm_statistics',
-          // }
         ],
+      }, {
+        name: '光伏数据分析',
+        iconStyle: 'icon-pvs',
+        path: 'pvData',
+        rightKey: 'monitor_dataAnalysis',
+        children: [
+          {
+            name: '历史趋势',
+            path: 'history',
+            defaultPath: true,
+            rightKey: 'dataAnalysis_historyTrend',
+          }, {
+            name: '实时数据',
+            path: 'realtime',
+            rightKey: 'dataAnalysis_realTime',
+          },
+        ],
+      }, {
+        name: '风电数据分析',
+        iconStyle: 'icon-windy',
+        path: 'data',
+        rightKey: 'monitor_dataAnalysisTurbine',
+        children: [{
+          name: '功率曲线',
+          iconStyle: 'icon-monitoring',
+          path: 'powercurve',
+          rightKey: 'monitor_powerCurve',
+        },
+        {
+          name: '散点图',
+          path: 'scatterDiagram',
+          rightKey: 'dataAnalysis_scatterPlot',
+          renderKey: 'wind',
+        }, {
+          name: '数据概览',
+          path: 'overview',
+          rightKey: 'dataAnalysis_dataQuality',
+        }, {
+          name: '历史趋势',
+          path: 'history',
+          rightKey: 'dataAnalysisTurbine_historyTrend',
+        }, {
+          name: '实时数据',
+          path: 'realtime',
+          rightKey: 'dataAnalysisTurbine_realTime',
+        },
+        ],
+      },
+      {
+        name: '数据导出',
+        path: 'dataExport',
+        rightKey: 'dataAnalysis_dataExport',
       },
     ],
   },
+
   {
     name: '运维管理',
     path: 'operation',
@@ -152,24 +140,6 @@ const menuData = [
         rightKey: 'operation_locate',
         defaultPath: true,
       },
-      // {
-      //   name: '工单',
-      //   iconStyle: 'icon-gd2',
-      //   path: 'ticket',
-      //   rightKey: 'operation_worklist',
-      //   children: [
-      //     {
-      //       name: '工单列表',
-      //       path: 'list',
-      //       defaultPath: true,
-      //       rightKey: 'operation_worklist_work',
-      //     }, {
-      //       name: '工单统计',
-      //       path: 'statistics',
-      //       rightKey: 'operation_worklist_statistics',
-      //     },
-      //   ],
-      // },
       {
         name: '工单',
         iconStyle: 'icon-gd2',
@@ -182,9 +152,15 @@ const menuData = [
             defaultPath: true,
             rightKey: 'operation_worklist_work',
           },
+          {
+            name: '工单统计',
+            path: 'statistics',
+            rightKey: 'operation_worklist_statistics',
+          },
         ],
       },
-      {
+      
+{
         name: '两票管理',
         path: 'twoTickets',
         iconStyle: 'icon-gd1',
@@ -544,8 +520,8 @@ const menuData = [
   {
     name: '报表管理',
     path: 'report',
-    rightKey: 'operation',
-    // rightKey: 'reportManage',
+    // rightKey: 'operation',
+    rightKey: 'reportManage',
     children: [
       {
         name: '风电报表',
@@ -630,14 +606,14 @@ const menuData = [
             path: 'personnelManage',
             rightKey: 'system_account_user',
           }, {
-          //   name: '部门',
-          //   path: 'department',
-          //   rightKey: 'system_account_department',
-          // }, {
-          //   name: '用户',
-          //   path: 'user',
-          //   rightKey: 'system_account_user',
-          // }, {
+            //   name: '部门',
+            //   path: 'department',
+            //   rightKey: 'system_account_department',
+            // }, {
+            //   name: '用户',
+            //   path: 'user',
+            //   rightKey: 'system_account_user',
+            // }, {
             name: '角色',
             path: 'role',
             rightKey: 'system_account_role',
@@ -727,3 +703,4 @@ export const menu = formatter(menuData);
 //   monitor_alarm_realTime: ['alarm_remove','alarm_worklist','monitor_alarm_remove','monitor_alarm_history'],
 //   operation_worklist_work: ['workExamine_defect_review', 'workExamine_defect_check', 'workExamine_inspection_check'],
 // }
+

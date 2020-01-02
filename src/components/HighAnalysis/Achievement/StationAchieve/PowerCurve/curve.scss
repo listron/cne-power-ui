@@ -1,25 +1,27 @@
-@import '../stationStyle.scss';
+@import "../stationStyle.scss";
 
-.curveAnalysis{
+.curveAnalysis {
   display: flex;
   flex-wrap: wrap;
-  .curveAllDevice, .curveEachMonth{
+  .curveAllDevice,
+  .curveEachMonth {
     height: 494px;
     flex-basis: 100%;
     display: flex;
     flex-direction: column;
-    .header{
+    .header {
       flex-basis: 40px;
       line-height: 40px;
       margin-bottom: 0;
       font-weight: 600;
       padding-left: 24px;
     }
-    .content{
+    .content {
       display: flex;
       flex: 1;
     }
-    .leftCurve .curveTip, .indicatorDetails .curveTip{
+    .leftCurve .curveTip,
+    .indicatorDetails .curveTip {
       display: inline-block;
       border-radius: 50%;
       width: 12px;
@@ -30,7 +32,7 @@
       line-height: 12px;
       text-align: center;
     }
-    .leftCurve{
+    .leftCurve {
       flex-basis: calc(50% - 170px);
       display: flex;
       flex-direction: column;
@@ -41,19 +43,20 @@
         margin-bottom: 0;
         font-weight: 600;
       }
-      .totalChart{
+      .totalChart {
         width: 100%;
         flex: 1;
       }
     }
-    .timeSelector{
+    .timeSelector {
       flex-basis: 170px;
       text-align: center;
-      .timeTitle{
+      .timeTitle {
         margin-top: 52px;
         margin-bottom: 12px;
       }
-      .monthList, .deviceList{
+      .monthList,
+      .deviceList {
         height: 288px;
         overflow: auto;
         &::-webkit-scrollbar {
@@ -63,60 +66,61 @@
           border-radius: 3px;
         }
       }
-      .monthList .month, .deviceList .device{
+      .monthList .month,
+      .deviceList .device {
         display: flex;
         height: 24px;
         width: 100px;
         margin: 0 auto;
         cursor: pointer;
         align-items: center;
-        .round{
+        .round {
           border-radius: 50%;
           height: 16px;
           flex: 0 0 16px;
           flex-basis: 16px;
           margin-right: 12px;
         }
-        .deviceText{
+        .deviceText {
           flex: 0 0 72px;
           @include overflowText();
         }
       }
-      .allHandler{
+      .allHandler {
         display: flex;
         height: 48px;
         align-items: center;
         justify-content: center;
-        .allHandlerText{
+        .allHandlerText {
           margin-left: 4px;
         }
       }
     }
-    .indicatorDetails{
+    .indicatorDetails {
       display: flex;
       flex-direction: column;
       flex-basis: 50%;
-      .aep{
+      .aep {
         width: 100%;
         flex-basis: 50%;
         display: flex;
         flex-direction: column;
         position: relative;
       }
-      .aepTop{
+      .aepTop {
         display: flex;
         justify-content: space-between;
         flex-basis: 50px;
         align-items: center;
         padding: 0 20px;
-        .aepText{
+        .aepText {
           font-weight: 600;
         }
-        .sorterText{
+        .sorterText {
           margin-right: 4px;
         }
       }
-      .modes{
+      .modes {
         position: absolute;
         width: 100%;
         display: flex;
@@ -124,26 +128,26 @@
         align-items: center;
         top: 55px;
         font-size: 12px;
-        .eachMode{
+        .eachMode {
           margin-right: 20px;
         }
-        .rect{
+        .rect {
           margin-right: 4px;
-          border-radius:2px;
+          border-radius: 2px;
           display: inline-block;
           width: 15px;
           height: 9px;
         }
-        .line{
+        .line {
           display: inline-block;
-          width:5px;
+          width: 5px;
           margin: 0 10px 0 4px;
-          height:5px;
+          height: 5px;
           border-radius: 50%;
           position: relative;
           top: -1px;
           &::before {
-            content: '';
+            content: "";
             position: absolute;
             width: 15px;
             height: 1px;
@@ -151,74 +155,76 @@
             top: 1px;
           }
         }
-        .modeText{
+        .modeText {
           white-space: nowrap;
         }
       }
-      .aepChart{
+      .aepChart {
         flex: 1;
       }
     }
   }
-  .curveAllDevice{
+  .curveAllDevice {
     margin-bottom: 10px;
   }
 }
 
-.tooltip{
+.tooltip {
   min-width: 206px;
-  border-radius:2px;
-  .title{
+  border-radius: 2px;
+  .title {
     display: flex;
     justify-content: space-between;
     padding: 0 8px;
     margin-bottom: 0;
     line-height: 21px;
   }
-  .info{
+  .info {
     padding: 8px;
   }
-  .eachItem{
+  .eachItem {
     display: flex;
     line-height: 21px;
     justify-content: space-between;
   }
-  .modeName{
+  .modeName {
     @include overflowText();
   }
 }
 
 // 颜色部分。
-.curveAnalysis{
-  background-color: #ececec;
-  .curveAllDevice, .curveEachMonth{
-    .header{
-      background-image:linear-gradient(-180deg, #ffffff 0%, #dedede 100%);
-      .headerText{
+.curveAnalysis {
+  background-color: #f0f2f5;
+  .curveAllDevice,
+  .curveEachMonth {
+    .header {
+      background-image: linear-gradient(-180deg, #ffffff 0%, #dedede 100%);
+      .headerText {
         color: #000;
       }
     }
-    .content{
+    .content {
       background-color: #fff;
     }
-    .curveTip{
+    .curveTip {
       color: #fff;
-      background:#f9b600;
+      background: #f9b600;
     }
   }
-  .timeSelector{
-    border-left:1px solid #e1e2e2;
-    border-right:1px solid #e1e2e2;
-    .timeTitle{
-      color: #666;
+  .timeSelector {
+    border-left: 1px solid #e1e2e2;
+    border-right: 1px solid #e1e2e2;
+    .timeTitle {
+      color: #353535;
     }
-    .monthList::-webkit-scrollbar-thumb, .deviceList::-webkit-scrollbar-thumb {
+    .monthList::-webkit-scrollbar-thumb,
+    .deviceList::-webkit-scrollbar-thumb {
       background: rgba(0, 0, 0, 0.5);
     }
   }
-  .modes{
-    .line{
-      border:1px solid #00cdff;
+  .modes {
+    .line {
+      border: 1px solid #00cdff;
       &::before {
         background-color: #00cdff;
       }
@@ -230,15 +236,16 @@
   //     color: #000;
   //   }
   //   .top .handle{
-  //     color: #666;
+  //     color: #353535;
   //   }
   // }
 }
-.tooltip{ // chart提示
+.tooltip {
+  // chart提示
   background-color: #fff;
-  color: #666;
-  box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
-  .title{
-    border-bottom: 1px solid #dfdfdf;
+  color: #353535;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+  .title {
+    border-bottom: 1px solid #d4d4d4;
   }
 }

@@ -8,14 +8,7 @@
   min-height: 100%;
   flex-direction: column;
   .alarmManage{
-    padding: 24px 24px 0;
-    background-color: $pageBackground;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex: 1 0 auto;
-    width: 100%;
-    padding: 24px 24px 0;
+    @include contentBoxStyle();
     .alarmManageMain{
       display: flex;
       flex-direction: column;

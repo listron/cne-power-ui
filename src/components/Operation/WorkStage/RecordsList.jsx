@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Radio, Table, Checkbox, Popconfirm } from 'antd';
 import styles from './workPage.scss';
 import moment from 'moment';
-import { dataFormats } from '@utils/utilFunc';
+import { dataFormats, handleRights, handleRight } from '@utils/utilFunc';
 
 class RecordsList extends PureComponent {
 
@@ -88,13 +88,14 @@ class RecordsList extends PureComponent {
           const { taskTypeCode, completeStatus } = record;
           // 工作类型编码 1 计划 2 缺陷 3 巡检 4 记事 taskTypeName	String	工作类型名字
           // 所有都有详情, 计划 有完成(1)未完成(0)状态, 记事 有编辑删除功能;
+          const [manageRight, finishRecordRight] = handleRights(['operation_workStation_manage', 'operation_workStation_finish']);
           return (
             <span className={styles.handleRow}>
               <span className="iconfont icon-look" onClick={() => this.toDetail(record)} />
               {taskTypeCode === 1 && !!completeStatus && <span title="已标记完成">
                 <Checkbox checked={true} />
               </span>}
-              {taskTypeCode === 1 && !completeStatus && <Popconfirm
+              {finishRecordRight && taskTypeCode === 1 && !completeStatus && <Popconfirm
                 title="是否标记为已完成?"
                 onConfirm={() => this.confirmComplete(record)}
                 okText="确定"
@@ -105,8 +106,12 @@ class RecordsList extends PureComponent {
                   <Checkbox checked={false} />
                 </span>
               </Popconfirm>}
-              {taskTypeCode === 4 && <span title="编辑" className="iconfont icon-edit" onClick={() => this.toEdit(record)} />}
-              {taskTypeCode === 4 && <Popconfirm
+              {manageRight && taskTypeCode === 4 && <span
+                title="编辑"
+                className="iconfont icon-edit"
+                onClick={() => this.toEdit(record)}
+              />}
+              {manageRight && taskTypeCode === 4 && <Popconfirm
                 title="是否确认删除记事?"
                 onConfirm={() => this.toRemove(record)}
                 okText="确定"
@@ -190,15 +195,16 @@ class RecordsList extends PureComponent {
     const recordSource = recordFilterCode === 0 ? stageList : stageList.filter( // 是否按照类型筛选查看
       e => e.taskTypeCode === recordFilterCode
     );
+    const addRight = handleRight('workStation_add');
     return (
       <div className={`${styles.recordsList} ${styles[theme]}`}>
         <div className={styles.recordFilter} ref={(ref) => { this.recordsRef = ref; }}>
           <span className={styles.todayWorkTitle}>今日工作</span>
           <span className={styles.filterParts}>
-            <Button className={styles.addRecord} type="add" onClick={this.onAddRecord} >
+            {addRight && <Button className={styles.addRecord} type="add" onClick={this.onAddRecord} >
               <i>+</i>
               <span className={styles.btnText}>添加工作记事</span>
-            </Button>
+            </Button>}
             <span className={styles.filterTips}>筛选查看</span>
             <span>
             <Radio.Group value={recordFilterCode} onChange={this.recordTypeFilter}>

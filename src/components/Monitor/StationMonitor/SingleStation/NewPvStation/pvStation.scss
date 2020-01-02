@@ -86,7 +86,7 @@
         }
       }
       .stationTitle {
-        border-bottom: 1px solid #dfdfdf;
+        border-bottom: 1px solid #d4d4d4;
         .stationLeft {
           :global {
             .anticon-swap {
@@ -102,14 +102,14 @@
         }
         .stationRight {
           .backIcon {
-            border-left: 1px solid #dfdfdf;
-            color: #666;
+            border-left: 1px solid #d4d4d4;
+            color: #353535;
           }
         }
       }
     }
     .headStation {
-      // border-bottom: 1px dashed #dfdfdf;
+      // border-bottom: 1px dashed #d4d4d4;
       color: $darkColor;
       .leftIcon {
         color: $themeColor;
@@ -125,7 +125,7 @@
           display: flex;
           flex: 1;
           justify-content: space-between;
-          color: #666666;
+          color: #353535;
           min-width: 180px;
           padding-right: 20px;
           i {
@@ -145,7 +145,7 @@
             display: inline-block;
             margin-left: 4px;
             text-align: left;
-            color: #666666;
+            color: #353535;
           }
         }
       }
@@ -154,7 +154,7 @@
         flex-direction: column;
         // line-height: 36px;
         padding: 0 12px;
-        border-right: 1px solid #dfdfdf;
+        border-right: 1px solid #d4d4d4;
         min-width: 175px;
         > span {
           display: flex;
@@ -164,16 +164,17 @@
           border: none;
         }
 
-        .instantaneous,.equivalentTime{
+        .instantaneous,
+        .equivalentTime {
           display: flex;
           align-items: center;
         }
-        
-        .tooltipName{
+
+        .tooltipName {
           margin-left: 4px;
           margin-bottom: 8px;
           color: #999;
-          &:hover{
+          &:hover {
             color: #f9b600;
           }
         }
@@ -186,6 +187,9 @@
           line-height: 30px;
         }
 
+        .specialColor {
+          color: #a22c30 !important;
+        }
         // .radiation {
         //   color: #f9b600;
         // }
@@ -220,7 +224,7 @@
         align-items: center;
         .activeIcon {
           background: $themeColor;
-          border-radius: 4px;
+          border-radius: 2px;
           width: 24px;
           height: 24px;
           margin-left: 4px;
@@ -230,7 +234,7 @@
         }
         .icon {
           pointer-events: none;
-          background: #dfdfdf;
+          background: #d4d4d4;
         }
       }
     }
@@ -260,7 +264,7 @@
       right: 0;
       top: 61px;
       background: $themeColor;
-      border-radius: 4px;
+      border-radius: 2px;
       width: 40px;
       height: 158px;
       display: flex;
@@ -273,7 +277,7 @@
         color: #fff;
         width: 14px;
         line-height: 20px;
-        z-index: 66;
+        z-index: 0;
       }
       .show {
         transform: translate(-180deg);
@@ -381,11 +385,15 @@
         .iconStyle {
           color: $fontColor-hover;
         }
-        .tooltipName{
+
+        .specialColor {
+          color: #a22c30 !important;
+        }
+        .tooltipName {
           margin-left: 4px;
           margin-bottom: 8px;
           color: #999;
-          &:hover{
+          &:hover {
             color: #f9b600;
           }
         }

@@ -1,15 +1,11 @@
+@import "../../../../theme/theme.scss";
 .faultWarnList{
   min-height: 100%;
   display: flex;
   flex:1;
   flex-direction: column;
   .faultWarnListContainer{
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 24px 24px 0 24px;
-    background-color: #ececec;
+    @include contentBoxStyle();
     overflow: hidden;
   }
   .faultWarnListContent{

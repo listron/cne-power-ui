@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import styles from './transferForm.scss';
 import { transferFormAction } from './transferFormAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import TransferFormContainer from '../../../../components/Monitor/Alarm/Transfer/TransferFormContainer';
 // import TransitionContainer from '../../../../components/Common/TransitionContainer';
@@ -45,7 +44,6 @@ class TransferForm extends Component {
     const { showPage } = this.state;
     return (
       <div className={`${styles.transfer} ${styles[theme]}`}>
-        <CommonBreadcrumb breadData={[{ name: '已转工单' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.transferColor}>
           <div className={styles.transferAlarmContainer}>
             <TransferFormContainer {...this.props} />

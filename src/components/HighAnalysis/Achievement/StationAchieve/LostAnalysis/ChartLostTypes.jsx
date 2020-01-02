@@ -18,12 +18,12 @@ class ChartLostTypes extends Component {
     lostChartTime: PropTypes.string,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { lostTypes } = this.props;
     Object.keys(lostTypes).length > 0 && this.renderChart(lostTypes);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { lostTypesLoading, lostTypes } = nextProps;
     const preLoading = this.props.lostTypesLoading;
     if (preLoading && !lostTypesLoading) { // 请求完毕
@@ -89,7 +89,7 @@ class ChartLostTypes extends Component {
       searchDevice: [lostChartDevice.deviceFullcode],
       searchDates: date,
     });
-    const searchResult = searchUtil(search).replace({pages: nextPagesStr}).replace({run: stationSearch}).stringify();
+    const searchResult = searchUtil(search).replace({ pages: nextPagesStr }).replace({ run: stationSearch }).stringify();
     this.props.history.push(`/analysis/achievement/analysis/run?${searchResult}`);
   }
 
@@ -128,7 +128,7 @@ class ChartLostTypes extends Component {
             </h3>
             <div class=${styles.info}>
               ${param && param[1] &&
-              `<span class=${styles.eachItem}>
+            `<span class=${styles.eachItem}>
                 <span>等效小时数:</span>
                 <span>${dataFormats(param[1].value, '--', 2, true)}</span>
               </span>`}
@@ -152,27 +152,27 @@ class ChartLostTypes extends Component {
         },
         data: hideBarData,
       }, {
-          name: '损失电量',
-          type: 'bar',
-          stack: '总量',
-          barWidth: '10px',
-          cursor: 'default',
-          label: {
-            normal: {
-              show: true,
-              position: 'top',
-              color: '#666',
-            },
+        name: '损失电量',
+        type: 'bar',
+        stack: '总量',
+        barWidth: '10px',
+        cursor: 'default',
+        label: {
+          normal: {
+            show: true,
+            position: 'top',
+            color: '#353535',
           },
-          data: barData.map((e, i) => ({
-            value: e,
-            itemStyle: {
-              color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
-                {offset: 0, color: this.barColor[i] ? this.barColor[i][0] : ((uiColors.outputColors[i]) || 'blue')},
-                {offset: 1, color: this.barColor[i] ? this.barColor[i][1] : ((uiColors.outputColors[i + 112]) || 'lightblue')},
-              ]),
-            },
-          })),
+        },
+        data: barData.map((e, i) => ({
+          value: e,
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: this.barColor[i] ? this.barColor[i][0] : ((uiColors.outputColors[i]) || 'blue') },
+              { offset: 1, color: this.barColor[i] ? this.barColor[i][1] : ((uiColors.outputColors[i + 112]) || 'lightblue') },
+            ]),
+          },
+        })),
       }],
     };
     typesChart.hideLoading();
@@ -193,7 +193,7 @@ class ChartLostTypes extends Component {
             <Button disabled={!lostChartDevice} onClick={this.toRunPage}>运行数据</Button>
           </span>
         </div>
-        <div className={styles.chart} ref={(ref)=> {this.typesRef = ref;}} />
+        <div className={styles.chart} ref={(ref) => { this.typesRef = ref; }} />
       </div>
     );
   }

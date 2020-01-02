@@ -832,11 +832,11 @@
       border-left: 1px solid $button-border;
     }
     &:last-child {
-      border-radius: 0 4px 4px 0;
+      border-radius: 0 2px 2px 0;
     }
 
     &:first-child:last-child {
-      border-radius: 4px;
+      border-radius: 2px;
     }
 
     &:hover {

@@ -14,13 +14,14 @@ const deviceAction = {
   stopMonitor: Symbol('stopMonitor'), // 获取同类设备列表
   handleRemoveWarning: Symbol('handleRemoveWarning'), // 手动解除
   transferWarning: Symbol('transferWarning'), // 转工单
+  getBoosterstation: Symbol('getBoosterstation'), // 升压站的设备列表
 
   getwindturbineData: Symbol('getwindturbineData'), // 单风机详情
   getSequencechartData: Symbol('getSequencechartData'),
   getWindDeviceCharts: Symbol('getWindDeviceCharts'),
   stopWindDeviceCharts: Symbol('stopWindDeviceCharts'),
   getWindDeviceRealData: Symbol('getWindDeviceRealData'),
-}
+};
 
 const initState = Immutable.fromJS({
   deviceDetail: {}, // 单设备详情
@@ -42,6 +43,7 @@ const initState = Immutable.fromJS({
   scatterpointTime: null, // 风机散点图时间
   sequencediagram: {}, // 风机时序图
   sequencediagramTime: null, // 风机时序图时间
+  boosterList: [], // 升压站的列表数据
 });
 
 const deviceMonitor = (state = initState, action) => {
@@ -52,6 +54,6 @@ const deviceMonitor = (state = initState, action) => {
       return initState;
   }
   return state;
-}
+};
 
 export { deviceMonitor, deviceAction };

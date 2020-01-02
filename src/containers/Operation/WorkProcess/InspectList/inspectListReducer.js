@@ -21,7 +21,7 @@ const initState = immutable.fromJS({
     createTimeStart: '',
     createTimeEnd: '',
     deviceTypeCode: '',
-    sort: '',
+    sort: '2,1',
   },
   selectedRowKeys: [],
   total: 0,

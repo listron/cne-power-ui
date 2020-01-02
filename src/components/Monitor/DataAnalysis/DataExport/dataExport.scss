@@ -31,7 +31,7 @@
     .intervalSelect{
       // :global{
       //   .ant-select-selection-selected-value{
-      //     color: #dfdfdf;
+      //     color: #d4d4d4;
       //   }
       // }
       .intervaltext{
@@ -78,7 +78,7 @@
       .eachDevice{
         cursor: pointer;
         background-color: #f1f1f1;
-        border-radius: 4px;
+        border-radius: 2px;
         width: 135px;
         height: 24px;
         line-height: 24px;
@@ -138,7 +138,7 @@
           cursor: pointer;
           padding-right: 4px;
           padding-left: 4px;
-          border-radius: 4px;
+          border-radius: 2px;
           &:hover{
             color: #f9b600;
           }
@@ -154,7 +154,7 @@
         // width: 198px;
         // display: flex;
         // line-height: 30px;
-        // border-radius: 4px;
+        // border-radius: 2px;
         // padding-left: 15px;
 
         width: 198px;
@@ -179,7 +179,7 @@
     
 .dataExportList{
   flex: 1;
-  border-top: 10px solid #ececec;
+  border-top: 10px solid #f0f2f5;
   .pagination {
     display: flex;
     align-items: center;

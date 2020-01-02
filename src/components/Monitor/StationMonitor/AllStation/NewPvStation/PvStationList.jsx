@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
-import { Progress, Table, message } from 'antd';
+import { Table, message, Tooltip } from 'antd';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { numWithComma, dataFormats } from '../../../../../utils/utilFunc';
 import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
@@ -12,8 +12,6 @@ class PvStationList extends React.Component {
     pageSize: PropTypes.number,
     currentPage: PropTypes.number,
     onPaginationChange: PropTypes.func,
-    windMonitorStation: PropTypes.object,
-    pvMonitorStation: PropTypes.object,
     monitorPvUnit: PropTypes.object,
     theme: PropTypes.string,
   }
@@ -107,7 +105,19 @@ class PvStationList extends React.Component {
         dataIndex: 'equivalentHours',
         sorter: true,
         className: styles.numberStyle,
-        render: value => dataFormats(value, '--', 2, true),
+        render: (value, record) => {
+          return (
+            <div className={styles.equivalentHours}>
+              <span className={record.equivalentHoursValidation && styles.specialColor} >{dataFormats(value, '--', 2, true)}</span>
+              <div className={styles.tooltipName}>
+                {record.equivalentHoursValidation &&
+                  <Tooltip placement="top" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={record.equivalentHoursValidation}>
+                    <i className="iconfont icon-help" />
+                  </Tooltip>
+                }
+              </div>
+            </div>);
+        },
       },
       {
         title: () => <TableColumnTitle title="月发电量" unit={powerUnit} className="nonePadding" />,
@@ -184,6 +194,7 @@ class PvStationList extends React.Component {
         'alarmNum',
         'loadRate',
         'anomalousBranchNum',
+        'loadRate',
         'stationStatus'];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);

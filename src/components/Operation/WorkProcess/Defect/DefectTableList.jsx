@@ -4,6 +4,8 @@ import styles from './defect.scss';
 import CommonPagination from '@components/Common/CommonPagination';
 import { Table, Icon, Modal, Select, Tooltip, Button } from 'antd';
 import moment from 'moment';
+import { handleRight } from '@utils/utilFunc';
+
 const Option = Select.Option;
 
 
@@ -162,15 +164,13 @@ class DefectTabelList extends Component {
   render() {
     const { defectListData, selectedRowKeys, total, listLoading, theme, listParams } = this.props;
     const { pageSize, pageNum } = listParams;
-    const rightHandler = localStorage.getItem('rightHandler');
-    // const addDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_add');
-    const addDefectRight = true;
+    const addRight = handleRight('workExamine_defect_add');
     return (
       <div className={`${styles.defectTable} ${styles[theme]}`}>
         <span ref={'wrap'} />
         <div className={styles.action}>
           <div className={styles.buttonArea}>
-            {addDefectRight && <Button className={styles.addDefect} type="add" onClick={this.addDefect} ><i>+</i> 消缺 </Button>}
+            {addRight && <Button className={styles.addDefect} type="add" onClick={this.addDefect} ><i>+</i> 消缺 </Button>}
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>

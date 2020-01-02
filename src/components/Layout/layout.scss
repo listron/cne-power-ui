@@ -35,8 +35,8 @@
 }
 
 .topMenu {
-  height: 59px;
-  line-height: 58px;
+  height: 38px;
+  line-height: 38px;
   // width: 700px;
   background-color: transparent;
   border-bottom: none;
@@ -94,17 +94,20 @@
     .menuList {
       display: flex;
       flex: 1;
-      max-height: calc(100vh - 99px);
+      max-height: calc(100vh - 80px);
       flex-direction: column;
       overflow-x: hidden;
       overflow-y: auto;
       // background: #3f3f3f;
       border-right: none;
       &::-webkit-scrollbar {
-        width: 4px;
+        width: 8px;
+        height: 171px;
+        //background:rgba(255,255,255,0.25);
       }
       &::-webkit-scrollbar-thumb {
-        border-radius: 2px;
+        border-radius: 4px;
+        background-color:rgba(255,255,255,0.25)
       }
       :global {
         li.ant-menu-item, li.ant-menu-submenu{
@@ -141,7 +144,7 @@
 
 .boardWrap {
   background: url("/img/menuboard.png") no-repeat 0;
-  top: 59px;
+  top: 40px;
   .menuLinks {
     display: flex;
     .left,

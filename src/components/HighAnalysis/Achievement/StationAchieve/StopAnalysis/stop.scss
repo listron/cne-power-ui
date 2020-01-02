@@ -1,16 +1,16 @@
-@import '../stationStyle.scss';
+@import "../stationStyle.scss";
 
-.stopAnalysis{
+.stopAnalysis {
   display: flex;
   flex-wrap: wrap;
-  .eleTypes{
+  .eleTypes {
     flex-basis: 100%;
     height: 60px;
     padding: 0 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .info{
+    .info {
       width: 860px;
       flex-basis: calc(100% - 260px);
       display: flex;
@@ -18,38 +18,39 @@
       line-height: 32px;
       position: relative;
     }
-    .eachInfo{
+    .eachInfo {
       flex-shrink: 0;
       flex-grow: 0;
       text-align: center;
       @include overflowText();
     }
-    .detail{
+    .detail {
       position: absolute;
-      border-radius: 4px;
+      border-radius: 2px;
       top: 32px;
       min-width: 150px;
       height: 76px;
       z-index: 99;
-      .title, .eachDetail{
+      .title,
+      .eachDetail {
         padding: 0 8px;
         height: 24px;
         line-height: 24px;
         margin-bottom: 0;
       }
-      .eachDetail{
+      .eachDetail {
         display: flex;
         justify-content: space-between;
-        .detailText{
+        .detailText {
           flex: 0 0 auto;
         }
       }
     }
-    .stopTypeHanlder{
+    .stopTypeHanlder {
       margin-right: 4px;
     }
   }
-  .modes{
+  .modes {
     position: absolute;
     width: 100%;
     display: flex;
@@ -58,26 +59,28 @@
     right: 36px;
     top: 114px;
     font-size: 12px;
-    .eachMode{
+    .eachMode {
       margin-right: 20px;
     }
-    .rect{
+    .rect {
       margin-right: 4px;
-      border-radius:2px;
+      border-radius: 2px;
       display: inline-block;
       width: 15px;
       height: 9px;
     }
-    .line, .lineHour, .lineCount{
+    .line,
+    .lineHour,
+    .lineCount {
       display: inline-block;
-      width:5px;
+      width: 5px;
       margin: 0 10px 0 4px;
-      height:5px;
+      height: 5px;
       border-radius: 50%;
       position: relative;
       top: -1px;
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         width: 15px;
         height: 1px;
@@ -85,140 +88,144 @@
         top: 1px;
       }
     }
-    .modeText{
+    .modeText {
       white-space: nowrap;
     }
   }
-  .stopRank, .stopTrend, .stopTypes{
+  .stopRank,
+  .stopTrend,
+  .stopTypes {
     display: flex;
     flex-direction: column;
     padding: 0 24px;
     height: 338px;
-    .top{
+    .top {
       width: 100%;
       flex: 0 0 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .toStop{
+    .toStop {
       padding: 0 10px;
       height: 24px;
       margin-right: 4px;
     }
-    .title{
+    .title {
       font-weight: 600;
       @include overflowText();
     }
-    .chart{
+    .chart {
       flex: 1;
       width: 100%;
     }
   }
-  .stopRank{
+  .stopRank {
     width: 100%;
     margin-bottom: 8px;
-    .handle{
-      .eachHandle{
+    .handle {
+      .eachHandle {
         margin-right: 24px;
       }
-      .text{
+      .text {
         margin-right: 4px;
       }
     }
-    .modes{
+    .modes {
       right: 0;
       justify-content: center;
     }
   }
-  .stopTrend, .stopTypes{
+  .stopTrend,
+  .stopTypes {
     height: 473px;
     width: calc(50% - 10px);
     position: relative;
-    .handle{
+    .handle {
       flex: 0 0 240px;
     }
   }
-  .stopTrend{
+  .stopTrend {
     margin-right: 10px;
   }
-  
 }
-.tooltip{
+.tooltip {
   min-width: 160px;
-  .title{
+  .title {
     display: flex;
     justify-content: space-between;
     padding: 0 8px;
     margin-bottom: 0;
     line-height: 21px;
   }
-  .info{
+  .info {
     padding: 8px;
   }
-  .eachItem{
+  .eachItem {
     display: flex;
     line-height: 21px;
     justify-content: space-between;
   }
-  .modeName{
+  .modeName {
     @include overflowText();
   }
 }
-.stopAnalysis .eleTypes{
+.stopAnalysis .eleTypes {
   background-color: #fff;
-  .eachInfo{
+  .eachInfo {
     color: #fff;
   }
-  .detail{
+  .detail {
     background-color: #fff;
     border: 1px solid $promptColor;
     color: $darkColor;
-    .title{
+    .title {
       border-bottom: 1px solid $promptColor;
     }
   }
-  .active{
-    box-shadow:0 0 4px 2px rgba(0,0,0,0.20);
+  .active {
+    box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.2);
   }
 }
 
-
-
-.stopAnalysis{
-  background-color: #ececec;
-  .modes{
-    .line, .lineHour{
-      border:1px solid #f9b600;
+.stopAnalysis {
+  background-color: #f0f2f5;
+  .modes {
+    .line,
+    .lineHour {
+      border: 1px solid #f9b600;
       &::before {
         background-color: #f9b600;
       }
     }
-    .lineCount{
-      border:1px solid #2564cc;
+    .lineCount {
+      border: 1px solid #2564cc;
       &::before {
         background-color: #2564cc;
       }
     }
   }
-  .stopRank, .stopTrend, .stopTypes{
+  .stopRank,
+  .stopTrend,
+  .stopTypes {
     background-color: #fff;
-    .top .title{
+    .top .title {
       color: #000;
     }
-    .toStop{
+    .toStop {
       color: $themeColor;
     }
-    .top .handle{
-      color: #666;
+    .top .handle {
+      color: #353535;
     }
   }
 }
-.tooltip{ // chart提示
+.tooltip {
+  // chart提示
   background-color: #fff;
-  box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
-  color: #666;
-  .title{
-    border-bottom: 1px solid #dfdfdf;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+  color: #353535;
+  .title {
+    border-bottom: 1px solid #d4d4d4;
   }
 }

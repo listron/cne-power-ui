@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData.js';
 
-const themeColor = '#dfdfdf';
+const themeColor = '#d4d4d4';
 
 // 故障图表-发电机前驱温度
 export const preTemperatureOptions = (data, name) => {
@@ -415,7 +415,7 @@ export const singleTemperatureOptions = (data, name) => {
       text: name,
       left: '46%',
       textStyle: {
-        color: '#666666',
+        color: '#353535',
         fontSize: 12,
       },
     },
@@ -515,7 +515,7 @@ export const heatTemperatureOptions = (data, name) => {
       text: name,
       left: '46%',
       textStyle: {
-        color: '#666666',
+        color: '#353535',
         fontSize: 12,
       },
     },
@@ -666,7 +666,7 @@ export const allFansOptions = (data, name) => {
       text: name,
       left: '46%',
       textStyle: {
-        color: '#666666',
+        color: '#353535',
         fontSize: 12,
       },
     },

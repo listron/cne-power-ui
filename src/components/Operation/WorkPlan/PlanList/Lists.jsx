@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popconfirm, Table } from 'antd';
 import CommonPagination from '@components/Common/CommonPagination';
+import { handleRight } from '@utils/utilFunc';
 import styles from './listSearch.scss';
 
 class Lists extends PureComponent {
@@ -80,18 +81,19 @@ class Lists extends PureComponent {
         title: '操作',
         dataIndex: 'handle',
         render: (text, record) => {
+          const workPlanHandleRight = handleRight('operation_workStation_manage');
           return (
             <span className={styles.handleRow}>
               <span className="iconfont icon-look" onClick={() => this.toDetail(record)} />
-              <span className="iconfont icon-edit" onClick={() => this.toEdit(record)} />
-              <Popconfirm
+              {workPlanHandleRight && <span className="iconfont icon-edit" onClick={() => this.toEdit(record)} />}
+              {workPlanHandleRight && <Popconfirm
                 title="是否确认删除计划?"
                 onConfirm={() => this.deletePlan(record)}
                 okText="确定"
                 cancelText="取消"
               >
                 <span className="iconfont icon-del" />
-              </Popconfirm>
+              </Popconfirm>}
             </span>
           );
         },
@@ -180,10 +182,11 @@ class Lists extends PureComponent {
     const { column, selectedRowKeys } = this.state;
     const { planListPageParams, planCount, planList, planListLoading, theme } = this.props;
     const { pageNum, pageSize } = planListPageParams;
+    const workPlanHandleRight = handleRight('operation_workStation_manage');
     return (
       <div className={`${styles.lists} ${styles[theme]}`}>
         <div className={styles.listPageRow} >
-          <span className={styles.listBtns}>
+          {workPlanHandleRight ? <span className={styles.listBtns}>
             <Button className={styles.addPlanBtn} type="add" onClick={this.toAddPlan} >
               <i>+</i>
               <span>添加计划</span>
@@ -196,7 +199,7 @@ class Lists extends PureComponent {
               >
                 <Button>批量删除</Button>
               </Popconfirm>
-          </span>
+          </span> : <span />}
           <CommonPagination
             pageSize={pageSize}
             currentPage={pageNum}

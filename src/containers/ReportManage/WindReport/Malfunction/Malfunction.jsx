@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import styles from "./malfunction.scss";
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { malfunctionAction } from './malfunctionAction';
 import Footer from '../../../../components/Common/Footer';
 import MalfunctionContainer from '../../../../components/ReportManage/WindReport/Malfunction/Malfunction';
@@ -46,7 +45,6 @@ class Malfunction extends Component {
     };
     return (
       <div className={styles.containerDiv}>
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
            {/*
@@ -59,7 +57,7 @@ class Malfunction extends Component {
             }
          {selectStationType === '0' && <MalfunctionContainer {...this.props} />}
            {selectStationType === '1' && <MalfunctionContainer {...this.props} />}
-           
+
           */}
             <MalfunctionContainer {...this.props} />
           </div>

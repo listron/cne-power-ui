@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import OperateAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/OperateAnalysis/OperateAnalysis';
 // import { getCookie } from '../../../../utils/index.js';
 import Cookie from 'js-cookie';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
 
@@ -31,7 +30,6 @@ class OperateAnalysisContainer extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.operateAnalysisBox} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '运行分析' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.operateAnalysis}>
           <OperateAnalysis {...this.props} />
         </div>

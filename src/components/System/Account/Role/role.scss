@@ -4,7 +4,7 @@
   display: flex;
   padding-left: 32px;
   align-items: center;
-  border-bottom: solid 1px $promptColor;  
+  border-bottom: solid 1px $promptColor;
 }
 .roleTableTooltip {
   display: flex;
@@ -19,12 +19,7 @@
   width: 110px;
 }
 .roleList{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 auto;
-  padding: 24px 24px 0;
-  background-color: #ececec;
+  @include contentBoxStyle();
   .roleContent{
     flex: 1;
     background-color: #fff;
@@ -53,10 +48,10 @@
         width: 28px;
         line-height: 30px;
         height: 100%;
-        border-radius: 4px 0 0 4px;
+        border-radius: 2px 0 0 2px;
       }
       .text{
-        border-radius: 0 4px 4px 0;
+        border-radius: 0 2px 2px 0;
         background:#fff;
         color:$themeColor;
         display: inline-block;
@@ -122,7 +117,7 @@
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
-  background-color: #ececec;
+  background-color: #f0f2f5;
   padding: 24px 24px 0;
   .roleEditContent{
     flex: 1;
@@ -145,7 +140,7 @@
         width: 64px;
         cursor: pointer;
       }
-      
+
     }
     .editPart{
       flex: 1;
@@ -195,7 +190,7 @@
             }
           }
         }
-      }  
+      }
     }
   }
 }

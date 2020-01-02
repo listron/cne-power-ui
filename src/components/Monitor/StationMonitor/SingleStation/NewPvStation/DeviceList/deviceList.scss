@@ -61,7 +61,7 @@
         }
       }
       .singledeviceItem {
-        border: 1px solid #dfdfdf;
+        border: 1px solid #d4d4d4;
         .statusBox {
           a {
             color: $darkColor;
@@ -165,7 +165,7 @@
       }
     }
     .eachDevice {
-      border: 1px solid #dfdfdf;
+      border: 1px solid #d4d4d4;
       &:hover {
         box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2);
         .deviceName {
@@ -215,7 +215,7 @@
         }
 
         .singledeviceItem {
-          border: 1px solid #dfdfdf;
+          border: 1px solid #d4d4d4;
           &:hover {
             box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
           }
@@ -223,12 +223,15 @@
           .value {
             display: flex;
             color: $themeColor;
-            .tooltipName{
+            .specialColor {
+              color: #a22c30 !important;
+            }
+            .tooltipName {
               margin-top: -5px;
               margin-left: 3px;
-              i{
+              i {
                 color: #999;
-                &:hover{
+                &:hover {
                   color: #f9b600;
                 }
               }
@@ -249,17 +252,21 @@
         }
       }
       .deviceTableBox {
-        .equipmentHours,.transferRate{
+        .equipmentHours,
+        .transferRate {
           display: flex;
-            .tooltipName{
-              margin-top: -5px;
-              margin-left: 3px;
-              color: #999;
-              &:hover{
-                color: #f9b600;
-              }
+          .specialColor {
+            color: #a22c30 !important;
+          }
+          .tooltipName {
+            margin-top: -5px;
+            margin-left: 3px;
+            color: #999;
+            &:hover {
+              color: #f9b600;
             }
           }
+        }
         .deviceTable {
           .deviceCode {
             .tableDeviceName {
@@ -282,7 +289,7 @@
     // 气象站
     .datailWrap {
       .detail {
-        border: 1px solid #dfdfdf;
+        border: 1px solid #d4d4d4;
         .everyDetail {
           &:nth-child(2n) {
             background: #f8f8f8;
@@ -290,15 +297,18 @@
           .detailId {
             color: #199475;
             display: flex;
+            .specialColor {
+              color: #a22c30 !important;
+            }
           }
           .detailUnit {
-            color: #666;
+            color: #353535;
           }
-          .tooltipName{
+          .tooltipName {
             margin-top: -5px;
-            i{
+            i {
               color: #999;
-              &:hover{
+              &:hover {
                 color: #f9b600;
               }
             }
@@ -307,9 +317,9 @@
       }
 
       .weatherList {
-        border: 1px solid #dfdfdf;
+        border: 1px solid #d4d4d4;
         .weatherDay {
-          border-right: 1px solid #dfdfdf;
+          border-right: 1px solid #d4d4d4;
           .weatherDate {
             background: #f8f8f8;
           }
@@ -318,7 +328,7 @@
     }
     .tooltipBox {
       .axisValue {
-        border-bottom: 1px solid #dfdfdf;
+        border-bottom: 1px solid #d4d4d4;
       }
     }
   }
@@ -330,7 +340,7 @@
       color: $moreThanTwenty_color;
     }
     .ant-progress-inner {
-      background-color: #dfdfdf;
+      background-color: #d4d4d4;
     }
     .ant-progress-success-bg,
     .ant-progress-bg {
@@ -340,8 +350,8 @@
       background-color: #199475;
     }
     .ant-tabs-bar {
-      border-top: 1px dashed #dfdfdf;
-      border-bottom: 1px dashed #dfdfdf;
+      border-top: 1px dashed #d4d4d4;
+      border-bottom: 1px dashed #d4d4d4;
     }
     .ant-tabs-nav .ant-tabs-tab {
       margin: 0;
@@ -637,11 +647,11 @@
           .detailUnit {
             color: $fontColor;
           }
-          .tooltipName{
+          .tooltipName {
             margin-top: -5px;
-            i{
+            i {
               color: #999;
-              &:hover{
+              &:hover {
                 color: #f9b600;
               }
             }
@@ -661,7 +671,7 @@
     }
     .tooltipBox {
       .axisValue {
-        border-bottom: 1px solid #dfdfdf;
+        border-bottom: 1px solid #d4d4d4;
       }
     }
   }
@@ -706,7 +716,7 @@
       color: $noContact_color;
     }
     .ant-progress-inner {
-      background-color: #dfdfdf;
+      background-color: #d4d4d4;
     }
     .ant-progress-success-bg,
     .ant-progress-bg {

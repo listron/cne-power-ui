@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Table, Select, Popover, Icon, Button } from 'antd';
 import moment from 'moment';
+import { handleRights } from '@utils/utilFunc';
 const Option = Select.Option;
 
 class RealTimeWarningTable extends Component {
@@ -74,6 +75,7 @@ class RealTimeWarningTable extends Component {
 
 
   render() {
+    const [listOperation, removeOperation] = handleRights(['intelligentWarning_worklist', 'intelligentWarning_remove']);
     const level = ['一级', '二级', '三级', '四级'];
     const columns = [
       {
@@ -130,18 +132,30 @@ class RealTimeWarningTable extends Component {
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
-      }, {
-        title: '操作',
-        className: styles.iconDetail,
-        render: (text, record) => (
-          <div>
-            <span>
-              <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
-            </span>
-          </div>
-        ),
       },
+      //  {
+      //   title: '操作',
+      //   className: styles.iconDetail,
+      //   render: (text, record) => (
+      //     <div>
+      //       <span>
+      //         <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
+      //       </span>
+      //     </div>
+      //   ),
+      // },
     ];
+    const realTimeWarningColumns = {
+      title: '操作',
+      className: styles.iconDetail,
+      render: (text, record) => (
+        <div>
+          <span>
+            <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
+          </span>
+        </div>
+      ),
+    };
     const { realtimeWarning, selectedRowKeys, pageSize, currentPage, loading, selectedTransfer, getLostGenType, defectTypes, transferWarning, theme } = this.props;
     const { sortName, descend, showTransferTicketModal, showHandleRemoveModal } = this.state;
     const rowSelection = {
@@ -174,20 +188,20 @@ class RealTimeWarningTable extends Component {
       <div className={styles.realTimeWarningTable}>
         <span ref={'select'} />
         <div className={styles.tableHeader}>
-          <Select onChange={this.onHandle}
+          {removeOperation ? <Select onChange={this.onHandle}
             value="操作"
             getPopupContainer={() => this.refs.select}
             placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
             {/* <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option>  */}
             <Option value="relieve" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>手动解除</Option>
-          </Select>
+          </Select> : <div></div>}
           <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onPaginationChange} total={realtimeWarning.length} theme={this.props.theme} />
         </div>
         <Table
           dataSource={tableSource}
           rowKey={record => record.warningLogId}
           rowSelection={rowSelection}
-          columns={columns}
+          columns={listOperation ? columns.concat(realTimeWarningColumns) : columns}
           pagination={false}
           onChange={this.tableChange}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}

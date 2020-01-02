@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './assetsConfig.scss';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { assetConfigAction } from './assetsConfigAction';
-import { commonAction } from '../../../../containers/alphaRedux/commonAction';
 import Footer from '../../../../components/Common/Footer';
 import AssetStructure from '../../../../components/Operation/Book/AssetConfigBox/AssetStructure/AssetStructure';
 import DeviceFactory from '../../../../components/Operation/Book/AssetConfigBox/DeviceFactory/DeviceFactory';
@@ -33,16 +31,8 @@ class AssetsConfig extends Component {
   render() {
     const { selectType, handleEnterprisecodes } = this.props;
     // console.log('handleEnterprisecodes: ', handleEnterprisecodes);
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '资产配置',
-        },
-      ],
-    };
     return (
       <div className={styles.containerDiv}>
-        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
             <div className={styles.allStationTitle} >

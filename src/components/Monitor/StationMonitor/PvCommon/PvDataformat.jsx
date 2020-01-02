@@ -23,6 +23,12 @@ const deviceValueFormat = (data, placeholder = '--', pointLength, special = fals
   return showData;
 
 };
+const transferCapacityUnit = (value, unit) => {//换算装机容量的单位
+  if (unit === 'MW' && +value > 1) {
+    return unit;
+  }
+  return 'kW';
+};
 
 const divideFormarts = (data, unit, divide) => { // 除
   if (isNaN(data) || (!data && data !== 0)) {
@@ -211,4 +217,4 @@ var provinceListArray = [
 
 
 
-export { deviceValueFormat, divideFormarts, multiplyFormarts, powerPoint, provinceList, chartPowerPoint, provinceListArray };
+export { deviceValueFormat, transferCapacityUnit, divideFormarts, multiplyFormarts, powerPoint, provinceList, chartPowerPoint, provinceListArray };

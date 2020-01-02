@@ -76,20 +76,20 @@ class PlancompletionRate extends React.Component {
             </div>
           </div>
           <div className={styles.dataSummary}>
-            <div className={styles.stationTargetData}>
-              <div className={styles.stationTargetName}>累计光辐射总量 : </div>
-              <div className={styles.stationTargetValue}>{monitordataFormat(planSummary.rayRadiation)}
-                <span className={styles.unit}> MJ/㎡</span></div>
-            </div>
+            {/*<div className={styles.stationTargetData}>*/}
+              {/*<div className={styles.stationTargetName}>累计光辐射总量 : </div>*/}
+              {/*<div className={styles.stationTargetValue}>{monitordataFormat(planSummary.rayRadiation)}*/}
+                {/*<span className={styles.unit}> MJ/㎡</span></div>*/}
+            {/*</div>*/}
             <div className={styles.stationTargetData}>
               <div className={styles.stationTargetName}>电站可利用率 : </div>
               <div className={styles.stationTargetValue}>{monitordataFormat(planSummary.stationAvailability)}% </div>
             </div>
-            <div className={styles.stationTargetData}>
-              <div className={styles.stationTargetName}>等效利用小时数 : </div>
-              <div className={styles.stationTargetValue}>{monitordataFormat(planSummary.equivalentHours)}
-                <span className={styles.unit}>h</span></div>
-            </div>
+            {/*<div className={styles.stationTargetData}>*/}
+              {/*<div className={styles.stationTargetName}>等效利用小时数 : </div>*/}
+              {/*<div className={styles.stationTargetValue}>{monitordataFormat(planSummary.equivalentHours)}*/}
+                {/*<span className={styles.unit}>h</span></div>*/}
+            {/*</div>*/}
             <div className={styles.stationTargetData}>
               <div className={styles.stationTargetName}>故障台次数 : </div>
               <div className={styles.stationTargetValue}>{dataFormat(planSummary.faultDeviceNum, '--', 2)}</div>

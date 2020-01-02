@@ -52,10 +52,11 @@ export default class RunSearch extends Component {
       const runInfoStr = searchUtil(search).getValue('run');
       if(runInfoStr) {
         const runInfo = runInfoStr ? JSON.parse(runInfoStr) : {};
-        const { searchDates, searchCode} = runInfo;
+        const { searchDates, searchCode, searchDevice } = runInfo;
         const params = {
           searchDates,
           searchCode,
+          searchDevice,
         };
         this.props.getDevices({ stationCode: searchCode, runInfo: params, runFlag: true });
       }

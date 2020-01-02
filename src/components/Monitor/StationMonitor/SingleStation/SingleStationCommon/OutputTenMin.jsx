@@ -30,7 +30,7 @@ class OutputTenMin extends Component {
     const { capabilityData, yXaisName, chartType, yAxisUnit, yAxisValuePoint } = nextProps;
     let yAxisType = `功率(${yAxisUnit})`
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
-    const lineColor = '#666';
+    const lineColor = '#353535';
     const capabilityPower = capabilityData.map(e => (yAxisUnit === 'MW' ? (+e.stationPower) : (+e.stationPower * 1000)).toFixed(yAxisValuePoint));
     const capabilityRadiation = capabilityData.map(e => e.instantaneous);
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
@@ -83,7 +83,7 @@ class OutputTenMin extends Component {
         },
         formatter: param => {
           return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
-            <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;" >${param[0] && param[0].name || '--'}</div>
+            <div style="border-bottom: 1px solid #d4d4d4;padding-left: 5px;" >${param[0] && param[0].name || '--'}</div>
             ${param.map(e => `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> ${e.seriesName}: ${e.value || '--'}</div>`).join('')}
           </div>`;
         },
@@ -100,7 +100,7 @@ class OutputTenMin extends Component {
         }),
         axisLine: {
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -131,7 +131,7 @@ class OutputTenMin extends Component {
           axisLine: {
             show: true,
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           splitLine: {
@@ -151,7 +151,7 @@ class OutputTenMin extends Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           splitLine: {
@@ -210,7 +210,7 @@ class OutputTenMin extends Component {
     const resourceAnalysis = `/statistical/stationaccount/resource#${stationCode}`;
     return (
       <div className={styles.capabilityDiagramBox} >
-        <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#666', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
+        <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #d4d4d4", color: '#353535', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
         {stationCode && <Link to={resourceAnalysis} ><i className="iconfont icon-more"></i></Link>}
       </div>
     )

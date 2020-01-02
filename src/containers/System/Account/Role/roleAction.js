@@ -21,6 +21,8 @@ export const roleAction = {
 
   RESET_ROLE_SAGA: Symbol('RESET_ROLE_SAGA'),
   RESET_ROLE: Symbol('RESET_ROLE'),
+
+  GET_OPERATE_TYPE: Symbol('GET_OPERATE_TYPE'),
 }
 
 

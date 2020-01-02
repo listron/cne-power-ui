@@ -7,6 +7,7 @@ import { Button, Table, Form, Input, Icon, Select } from 'antd';
 import Pagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
+import { handleRight } from '@utils/utilFunc';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -174,12 +175,10 @@ class DeviceMode extends React.Component {
   }
   render() {
     const { pageSize, pageNum, modePageCount, deviceFactorsList, deviceModesList, assetList, stationTypeCount, stationType } = this.props;
-    
-    
-    
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText, showEditModeModal, tableRecord } = this.state;
-    const columns = [
+    const modeHandleRight = handleRight('book_operateMode');
+    const baseColumn = [
       {
         title: '编码',
         dataIndex: 'deviceModeCode',
@@ -218,21 +217,20 @@ class DeviceMode extends React.Component {
         dataIndex: 'operateUser',
         sorter: true,
         render: (text) => <div className={styles.stationType} title={text}>{text ? text : '--'}</div>,
-      }, {
-        title: '操作',
-        render: (text, record, index) => {
-          return (<div>
-            <a onClick={() => this.editMode(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'}></span></a>
-
-            <span title="删除" className="iconfont icon-del" onClick={() => this.deleteDeviceMode(record)}></span>
-          </div>);
-        },
       },
-
     ];
+    const columns = modeHandleRight ? baseColumn.concat({
+      title: '操作',
+      render: (text, record, index) => {
+        return (<div>
+          <a onClick={() => this.editMode(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'}></span></a>
+          <span title="删除" className="iconfont icon-del" onClick={() => this.deleteDeviceMode(record)}></span>
+        </div>);
+      },
+    }) : baseColumn;
     return (
       <div className={styles.deviceMode}>
-        <div className={styles.title}>
+        {modeHandleRight && <div className={styles.title}>
           <div className={styles.leftAdd}>
             <Form className={styles.editPart}>
               <FormItem className={styles.formItemStyle} colon={false} label="设备型号">
@@ -279,7 +277,7 @@ class DeviceMode extends React.Component {
             </Form>
           </div>
 
-        </div>
+        </div>}
         <div className={styles.tableStyles}>
           <div className={styles.paginationStyle}>
             <div className={styles.rightSeach}>

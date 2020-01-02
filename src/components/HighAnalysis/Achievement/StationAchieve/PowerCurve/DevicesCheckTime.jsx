@@ -65,7 +65,7 @@ class DevicesCheckTime extends Component {
           allowClear={false}
           onChange={this.selectMonth}
           placeholder="请选择月份"
-          style={{width: '120px', marginBottom: '12px'}}
+          style={{ width: '120px', marginBottom: '12px' }}
           value={curveDevicesTime}
         >
           {curveAllMonths.map(e => (
@@ -80,15 +80,15 @@ class DevicesCheckTime extends Component {
             const lineColor = uiColors[isTheory ? 'mainColors' : 'outputColors'][lineIndex];
             const backgroundColor = active ? lineColor : '#fff';
             const border = active ? `1px solid ${lineColor}` : '1px solid rgb(238,238,238)';
-            const color = active ? '#666' : '#dfdfdf';
+            const color = active ? '#353535' : '#d4d4d4';
             return (
               <li
                 className={styles.device}
                 key={e}
                 onClick={() => this.checkDevice(e)}
               >
-                <span className={styles.round} style={{backgroundColor, border}} />
-                <span className={styles.deviceText} title={e} style={{color}}>{e}</span>
+                <span className={styles.round} style={{ backgroundColor, border }} />
+                <span className={styles.deviceText} title={e} style={{ color }}>{e}</span>
               </li>
             );
           })}

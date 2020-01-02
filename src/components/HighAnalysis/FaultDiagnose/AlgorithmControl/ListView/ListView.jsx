@@ -8,6 +8,7 @@ import ModalFilter from '../../Filter/Modal/ModalFilter';
 import FilteredItems from '../../Filter/FilterItems/FilteredItems';
 import CommonPagination from '../../../../Common/CommonPagination';
 import ListViewTable from './ListViewTable/ListViewTable';
+import { handleRight } from '@utils/utilFunc';
 
 export default class ListView extends React.Component {
   static propTypes = {
@@ -70,6 +71,7 @@ export default class ListView extends React.Component {
 
   render() {
     const { showFilter } = this.state;
+    const listOperation = handleRight('turbineFDD_console_new');
     const {
       pageSize,
       pageNum,
@@ -119,12 +121,12 @@ export default class ListView extends React.Component {
           <FilteredItems {...this.props} />
         </div>
         <div className={styles.addAndPage}>
-          <div>
+          {listOperation ? <div>
             <Button className={styles.addControl} onClick={this.onAddControl}>
               <Icon type="plus" />
               <span className={styles.text}>添加</span>
             </Button>
-          </div>
+          </div> : <div></div>}
           <div>
             <CommonPagination pageSize={pageSize} currentPage={pageNum} total={count} onPaginationChange={this.onPaginationChange} />
           </div>

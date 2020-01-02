@@ -4,6 +4,8 @@ import styles from './inspectDetail.scss';
 import { Button } from 'antd';
 import InspectTimeLine from './InspectTimeLine';
 import WarningTip from '../../../Common/WarningTip/index';
+import { handleRight } from '@utils/utilFunc';
+
 
 class InspectProcess extends React.Component {
   static propTypes = {
@@ -35,9 +37,11 @@ class InspectProcess extends React.Component {
     const { inspectId } = inspectDetail;
     setInspectCheck({
       inspectId,
+      location,
+      history,
     });
-    const { pathname } = location;
-    history.push(`${pathname}?page=list&tab=inspect`);
+    // const { pathname } = location;
+    // history.push(`${pathname}?page=list&tab=inspect`);
     this.setState({
       showWarningTip: false,
     });
@@ -48,9 +52,9 @@ class InspectProcess extends React.Component {
     const { inspectFlows, inspectDetail } = this.props;
     const { inspectStatus, deviceTypeNames } = inspectDetail;
     const { showWarningTip, warningTipText } = this.state;
-    const rightHandler = localStorage.getItem('rightHandler');
-    const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
-
+    // const rightHandler = localStorage.getItem('rightHandler');
+    // const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
+    const checkInspectRight = handleRight('workExamine_inspection_check');
     return (
       <div className={styles.rightContent}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}

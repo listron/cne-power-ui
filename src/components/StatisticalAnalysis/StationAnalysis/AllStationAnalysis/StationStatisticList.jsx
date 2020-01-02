@@ -7,6 +7,7 @@ import moment from 'moment';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../utils/utilFunc';
 import Path from '../../../../constants/path';
+import Cookie from 'js-cookie';
 
 class StationStatisticList extends React.Component {
   static propTypes = {
@@ -148,7 +149,8 @@ class StationStatisticList extends React.Component {
   }
 
   initMonthColumn = () => { // 月table表
-    const columns = [
+    const enterpriseId = Cookie.get('enterpriseId');
+    const columns1 = [
       {
         title: '电站名称',
         dataIndex: 'stationName',
@@ -228,11 +230,85 @@ class StationStatisticList extends React.Component {
         render(text) { return numWithComma(text); },
       },
     ];
-    return columns;
+    const columns2 = [
+      {
+        title: '电站名称',
+        dataIndex: 'stationName',
+        className: styles.stationName,
+        onFilter: (value, record) => record.stationName.indexOf(value) === 0,
+        sorter: true,
+        render: (value, record, index) => {
+          return {
+            children: (
+              <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
+            ),
+          };
+        },
+      }, {
+        title: '区域',
+        dataIndex: 'region',
+        sorter: true,
+        render: (value, record, index) => {
+          return {
+            children: (
+              <div className={styles.region}>{record.region}</div>
+            ),
+          };
+        },
+      }, {
+        title: () => <TableColumnTitle title="月发电量" unit="万kWh" />,
+        dataIndex: 'genValid',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="月计划" unit="万kWh" />,
+        dataIndex: 'planGen',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="计划完成率" unit="%" />,
+        dataIndex: 'planGenRate',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+        defaultSortOrder: 'ascend',
+      }, {
+        title: () => <TableColumnTitle title="发电量同比" unit="%" />,
+        dataIndex: 'powerRate',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
+        dataIndex: 'resourceValue',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="资源同比" unit="%" />,
+        dataIndex: 'resourceRate',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="PR" unit="%" />,
+        dataIndex: 'pr',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
+        dataIndex: 'lostPower',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
+        dataIndex: 'limitPowerHours',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      },
+    ];
+    return enterpriseId !== '451436467886592' ? columns1 : columns2;
   }
   //年table表
   initYearColumn = () => {
-    const columns = [
+    const enterpriseId = Cookie.get('enterpriseId');
+    const columns1 = [
       {
         title: '电站名称',
         dataIndex: 'stationName',
@@ -312,7 +388,83 @@ class StationStatisticList extends React.Component {
         sorter: true,
       },
     ];
-    return columns;
+
+    const columns2 = [
+      {
+        title: '电站名称',
+        dataIndex: 'stationName',
+        className: styles.stationName,
+        onFilter: (value, record) => record.stationName.indexOf(value) === 0,
+        sorter: true,
+        render: (value, record, index) => {
+          return {
+            children: (
+              <a href={`#/statistical/stationaccount/allstation/${record.key}`} onClick={() => this.selectStation(record)}>
+                <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
+              </a >
+            ),
+          };
+        },
+      }, {
+        title: '区域',
+        dataIndex: 'region',
+        sorter: true,
+        render: (value, record, index) => {
+          return {
+            children: (
+              <div className={styles.region}>{record.region}</div>
+            ),
+          };
+        },
+      }, {
+        title: () => <TableColumnTitle title="年发电量" unit="万kWh" />,
+        dataIndex: 'genValid',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="年计划" unit="万kWh" />,
+        dataIndex: 'planGen',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="计划完成率" unit="%" />,
+        dataIndex: 'planGenRate',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+        defaultSortOrder: 'ascend',
+      }, {
+        title: () => <TableColumnTitle title="发电量环比" unit="%" />,
+        dataIndex: 'powerRate',
+        render(text) { return numWithComma(text); },
+        sorter: true,
+      }, {
+        title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
+        dataIndex: 'resourceValue',
+        render(text) { return numWithComma(text); },
+        sorter: true,
+      }, {
+        title: () => <TableColumnTitle title="资源环比" unit="%" />,
+        dataIndex: 'resourceRate',
+        render(text) { return numWithComma(text); },
+        sorter: true,
+      }, {
+        title: () => <TableColumnTitle title="PR" unit="%" />,
+        dataIndex: 'pr',
+        render(text) { return numWithComma(text); },
+        sorter: true,
+      }, {
+        title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
+        dataIndex: 'lostPower',
+        sorter: true,
+        render(text) { return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
+        dataIndex: 'limitPowerHours',
+        render(text) { return numWithComma(text); },
+        sorter: true,
+      },
+    ];
+    return enterpriseId !== '451436467886592' ? columns1 : columns2;
   }
   //导出table
   exportTable = () => {
@@ -339,6 +491,7 @@ class StationStatisticList extends React.Component {
 
   render() {
     const { dateType, allStationStatisticTableData, totalNum, pageSize, pageNum, theme } = this.props;
+    console.log(dateType === 'month', 'dateType === \'month\'');
     const columns = dateType === 'month' ? this.initMonthColumn() : this.initYearColumn();
     const dataSource = allStationStatisticTableData.map((e, i) => ({ ...e, key: i }));
     return (

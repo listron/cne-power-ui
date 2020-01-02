@@ -19,7 +19,7 @@
       background-color:#f8f8f8;
       color: rgba(0,0,0,0.85);
       border: 1px solid #f1f1f1;
-      border-radius: 4px;
+      border-radius: 2px;
       font-weight: 700;
       width: 95px;
       height: 30px;
@@ -70,7 +70,7 @@
   }
   .addAbnormalForm {
     box-shadow: 0 1px 6px 0 rgba(0,0,0,0.20);
-    border-radius: 4px;
+    border-radius: 2px;
     padding: 18px 45px 16px 18px;
     :global { 
       .ant-form-item {
@@ -128,7 +128,7 @@
   .addTips {
     margin-top: 10px;
     font-size: 12px;
-    color: #dfdfdf;
+    color: #d4d4d4;
     display: flex;
     margin-left: 140px;
     flex-direction: column;

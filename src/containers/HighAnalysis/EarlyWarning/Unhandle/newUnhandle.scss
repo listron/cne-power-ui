@@ -1,20 +1,17 @@
+@import "../../../../theme/theme.scss";
 .UnhandleBox {
   min-height: 100%;
   display: flex;
   flex: 1;
   flex-direction: column;
   .unhandleContainer {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 24px 24px 0;
+    @include contentBoxStyle();
   }
 }
 
 .light {
   .unhandleContainer {
-    background-color: #ececec;
+    background-color: #f0f2f5;
   }
 }
 

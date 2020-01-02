@@ -5,7 +5,8 @@ import { lazy } from 'react';
 //     // 运维管理-工单-工单列表
 //     path: '/operation/ticket/list',
 //     component: lazy(() => import('../../containers/Operation/Ticket/Ticket')),
-//   }, {
+//   },
+//    {
 //     // 运维管理-工单-工单统计
 //     path: '/operation/ticket/statistics',
 //     component: lazy(() => import('../../components/Common/Building/Building')),
@@ -17,20 +18,13 @@ const ticket = [
   {
     // 运维管理-工单-工单列表
     path: '/operation/workProcess/view',
-    // component: lazy(() => import('../../components/Common/Building/Building')),
     component: lazy(() => import('../../containers/Operation/WorkProcess/OverView/Overview.jsx')),
   },
-  // {
-  //   // 运维管理-工单-消缺详情
-  //   // path: '/operation/workProcess/list/defectDetail/:defectId',
-  //   path: '/operation/workProcess/:list',
-  //   component: lazy(() => import('../../components/Common/Building/Building')),
-  // },
-  // {
-  //   // 运维管理-工单-巡检详情
-  //   path: '/operation/workProcess/inspectDetail/:inspectId',
-  //   component: lazy(() => import('../../components/Common/Building/Building')),
-  // },
+  {
+    // 运维管理-工单-工单统计
+    path: '/operation/workProcess/statistics',
+    component: lazy(() => import('../../components/Common/Building/Building')),
+  },
 ];
 
 const twoTickets = [

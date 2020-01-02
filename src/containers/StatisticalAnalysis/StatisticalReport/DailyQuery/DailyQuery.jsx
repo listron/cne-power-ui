@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './dailyQuery.scss';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import { dailyQueryAction } from './dailyQueryAction';
 import Footer from '../../../../components/Common/Footer/index';
@@ -25,7 +24,6 @@ class DailyQuery extends Component {
     const { tableType } = this.props;
     return(
       <div className={styles.dailyQuery}>
-        <CommonBreadcrumb breadData={[{name: '日报查询'}]} style={{ marginLeft: '40px' }} />
         <div className={styles.dailyQueryBox}>
           <DailySearch {...this.props} />
           {tableType === 'quotaList' && <QuotaList {...this.props} />}

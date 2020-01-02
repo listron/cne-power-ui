@@ -1,52 +1,65 @@
 @import '../../../../theme/theme';
 
-@mixin top(){//详情，编辑通用顶部基础样式
+@mixin top() {
+    //详情，编辑通用顶部基础样式
     @include lineheight(64px);
     display: flex;
     padding-left: 32px;
     align-items: center;
     border-bottom: solid 1px $promptColor;
-  }
-  
+}
+
 .weatherList {
-    display: flex;
-    flex: 1;
-    background: #fff;
-    margin: 25px 24px 0;
-    overflow: hidden;
-    .listContiner {
-        position: relative;
+
+    @include contentBoxStyle();
+    flex-direction: initial;
+    padding: 0;
+
+    .weatherMain {
         display: flex;
         flex-direction: column;
         flex: 1 0 auto;
         width: 100%;
-        // margin: 24px 24px 0;
-        background: #fff;
+        padding: 15px 24px 0;
+        position: relative;
+    }
+
+    .listContiner {
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
         .pagination {
             display: flex;
             justify-content: flex-end;
             margin-bottom: 20px;
         }
-        .filterButton{
+
+        .filterButton {
             position: absolute;
-            left: 249px;
-            top:26px;
-            .setStause{
+            left: 273px;
+            top: 39px;
+
+            .setStause {
                 margin-right: 12px;
             }
-            .buttonGroup{
+
+            .buttonGroup {
                 display: inline-block;
-                border:1px solid #d9d9d9;
-                border-radius:4px;
+                border: 1px solid #d9d9d9;
+                border-radius: 2px;
                 line-height: 32px;
-                span{
-                   padding: 0 12px;
-                   border-right:1px solid #d9d9d9;
-                   display: inline-block;
-                   cursor: pointer;
-                   margin-right: -2px;
+
+                span {
+                    padding: 0 12px;
+                    border-right: 1px solid #d9d9d9;
+                    display: inline-block;
+                    cursor: pointer;
+                    margin-right: -2px;
                 }
-                .buttonActive{
+
+                .buttonActive {
                     background: #199475;
                     color: #fff;
                 }
@@ -54,9 +67,10 @@
         }
 
         .weatherListTable {
-            .operate{
+            .operate {
                 text-align: center;
-                i{
+
+                i {
                     cursor: pointer;
                     color: #199475;
                     padding: 0 8px;
@@ -82,74 +96,102 @@
         }
     }
 
-    .editWeather {
-        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.20);
+    .editWeatherSide {
         display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         flex: 1 0 auto;
         width: 100%;
-        // margin: 24px 24px 0;
-        background: #fff;
-        z-index: 15;
+        background: #f0f2f5;
+        padding: 15px 24px 0;
+        z-index: 99;
+    }
+
+    .editWeather {
+        // box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.20);
+        // display: flex;
+        // flex: 1 0 auto;
+        // // width: 100%;
+        // background: #fff;
+        // z-index: 99;
+        // flex-direction: column;
+        display: flex;
+        flex: 1 0 auto;
         flex-direction: column;
-        .editTop{
+        background: #fff;
+
+
+
+
+        .editTop {
             @include top;
             justify-content: space-between;
-            .topTitle{
+
+            .topTitle {
                 display: flex;
                 justify-content: space-between;
                 flex: 1;
                 padding-right: 36px;
             }
-            .text{
-              font-size:18px;
-              color: $darkColor;
-              letter-spacing:4px;
+
+            .text {
+                font-size: 18px;
+                color: $darkColor;
+                letter-spacing: 4px;
             }
-            .tips{
+
+            .tips {
                 color: #e08031;
             }
-            .backIcon{
-              color: $darkColor;
-              font-size: 20px;
-              border-left: 1px solid $promptColor;
-              height: 100%;
-              line-height: 64px;
-              width: 64px;
-              cursor: pointer;
+
+            .backIcon {
+                color: $darkColor;
+                font-size: 20px;
+                border-left: 1px solid $promptColor;
+                height: 100%;
+                line-height: 64px;
+                width: 64px;
+                cursor: pointer;
             }
-          }
-         .editCont{
+        }
+
+        .editCont {
             display: flex;
             flex-direction: column;
             flex: 1;
             align-items: center;
             padding-top: 35px;
-          }
-        .column{
-              display: flex;
-              line-height: 40px;
-               width:334px;
-               margin-bottom: 12px;
-              .label{
-                  width:124px;
-                  color:#000000;
-                  text-align:right;
-                  margin-right: 12px;
-              }
-              button{
-                  margin-right: 12px;
-              }
-         }
-         :global{
+        }
+
+        .column {
+            display: flex;
+            line-height: 40px;
+            width: 334px;
+            margin-bottom: 12px;
+
+            .label {
+                width: 124px;
+                color: #000000;
+                text-align: right;
+                margin-right: 12px;
+            }
+
+            button {
+                margin-right: 12px;
+            }
+        }
+
+        :global {
             .ant-btn-primary {
                 color: $themeColor;
                 border-color: $themeColor;
                 background-color: #fff;
+
                 &:hover {
                     background-color: $themeColor;
                     color: #fff;
                 }
             }
-         }
+        }
     }
 }

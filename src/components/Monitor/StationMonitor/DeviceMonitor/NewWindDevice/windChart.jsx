@@ -5,7 +5,7 @@ import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData
 
 function InverterTenMin({ sequenceChart }) {
   const echartBox = document.getElementById('inverter_monitor_tenMin');
-  const lineColor = '#666';
+  const lineColor = '#353535';
   if (echartBox) {
     const inverterChart = echarts.init(echartBox);
     let powerLineData = [], radiationLineData = [], radiationLineData1 = [], xTime = [];
@@ -88,7 +88,7 @@ function InverterTenMin({ sequenceChart }) {
         data: xTime,
         axisLine: {
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -115,7 +115,7 @@ function InverterTenMin({ sequenceChart }) {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -135,7 +135,7 @@ function InverterTenMin({ sequenceChart }) {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -203,7 +203,7 @@ function InverterTenMin({ sequenceChart }) {
 
 function SactterChart({ theory, actual }) {
   const echartBox = document.getElementById('wind_monitor');
-  const lineColor = '#666';
+  const lineColor = '#353535';
   if (echartBox) {
     const inverterChart = echarts.init(echartBox);
     let actualData = [], theoryData = [], xData = [], actualData1 = [], theoryData1 = [];
@@ -292,7 +292,7 @@ function SactterChart({ theory, actual }) {
         axisLine: {
           // onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -316,7 +316,7 @@ function SactterChart({ theory, actual }) {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -371,7 +371,7 @@ function SactterChart({ theory, actual }) {
 
 function SequenceChart({ sequenceChartList }) {
   const echartBox = document.getElementById('sequenceChart');
-  const lineColor = '#666';
+  const lineColor = '#353535';
   if (echartBox) {
     const inverterChart = echarts.init(echartBox);
     let pitchAngle1Data = [], pitchAngle2Data = [], pitchAngle3Data = [], speedData = [], xTime = [], replaceData = [];
@@ -459,7 +459,7 @@ function SequenceChart({ sequenceChartList }) {
         axisLine: {
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -488,7 +488,7 @@ function SequenceChart({ sequenceChartList }) {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {
@@ -508,7 +508,7 @@ function SequenceChart({ sequenceChartList }) {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {

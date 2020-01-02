@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import styles from './centerInvert.scss';
 import PropTypes from 'prop-types';
 // import ReportStationBox from '../../../components/ReportManage/ReportStationBox/ReportStationBox';
-import CommonBreadcrumb from '@components/Common/CommonBreadcrumb';
 import Footer from '@components/Common/Footer';
 import { centerInvertAction } from './centerInvertReducer';
 import { commonAction } from '@containers/alphaRedux/commonAction';
@@ -34,7 +33,6 @@ class CenterInvert extends Component {
     const { dateType, theme } = this.props;
     return (
       <div className={`${styles.centerInvert} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '集中式逆变器' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.reportbox}>
           <ReportSearch {...this.props} />
           {dateType === 'hour' && <ReportHourTable {...this.props} /> || <ReportTable {...this.props} />}

@@ -9,7 +9,6 @@ import Cookie from 'js-cookie';
 import PropTypes from 'prop-types';
 import AllStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationStatistic';
 import SingStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/SingStationStatistic';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
 
@@ -36,7 +35,6 @@ class AllStationAnalysis extends Component {
     const { showPage, theme } = this.props;
     return (
       <div className={`${styles.allStationAnalysisBox} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '全部电站' }]} style={{ paddingLeft: '38px' }} theme={theme} />
         <div className={styles.allStationStatistic}>
           {showPage === 'multiple' && <AllStationStatistic {...this.props} />}
           {showPage === 'single' && <SingStationStatistic {...this.props} />}

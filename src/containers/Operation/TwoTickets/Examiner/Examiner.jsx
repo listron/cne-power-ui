@@ -5,7 +5,6 @@ import WorkExaminer from '../../../../components/Operation/TwoTickets/Examiner/W
 import HandleExaminer from '../../../../components/Operation/TwoTickets/Examiner/HandleExaminer';
 import DetailModal from '../../../../components/Operation/TwoTickets/Examiner/DetailModal';
 import EditModal from '../../../../components/Operation/TwoTickets/Examiner/EditModal';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import { examinerAction } from './examinerReducer';
 import styles from './examiner.scss';
@@ -63,7 +62,6 @@ class Examiner extends Component {
     // WorkExaminer 与 HandleExaminer组件，现完全相同，为防止后期表格或操作异化，暂作两个复制组件
     return (
       <div className={styles.examiner}>
-        <CommonBreadcrumb breadData={[{name: '审核人设置'}]} style={{ marginLeft: '38px' }} />
         <div className={styles.examinerList}>
           <div className={styles.listContent}>
             <div className={styles.tabs} onClick={this.tabChange}>

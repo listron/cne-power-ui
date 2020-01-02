@@ -7,11 +7,6 @@
   flex-direction: column;
 
   .resourcesMain {
-    display: flex;
-    flex: 1 0 auto;
-    flex-direction: column;
-    width: 100%;
-    padding: 24px 24px 0;
-    background: #ececec;
+    @include contentBoxStyle();
   }
 }

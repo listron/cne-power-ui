@@ -10,7 +10,7 @@ import styles from './confluencebox.scss';
 const EachRecord = ({ text, value, unit, show }) => (
   <div className={styles.eachRecord}>
     <span className={styles.text}>{text}</span>
-    <DeviceValueFormat value={value} />
+    <span className={show && styles.specialColor}><DeviceValueFormat value={value} /></span>
     <span className={styles.unit}>{unit}</span>
     {show &&
     <span className={styles.tooltipName}>
@@ -115,8 +115,8 @@ class ConfluenceStatistics extends Component{
     const selectPointIndex = pointNameArr && pointNameArr.length > 0 ? pointNameArr[0].pointIndex : '';
     // 默认灰色背景
     let styleParams = {
-      color: '#666666',
-      backgroundColor: '#dfdfdf',
+      color: '#353535',
+      backgroundColor: '#d4d4d4',
     };
     if(pointIndex === selectPointIndex || selectPointIndex === '' || pointStatus === '900') {
       styleParams = {};

@@ -3,7 +3,6 @@
   flex: 1 0 auto;
   width: 100%;
   flex-direction: column;
-  padding: 24px 24px 0;
   .cleanoutcontainer {
     display: flex;
     flex: 1;
@@ -70,7 +69,7 @@
 }
 
 .cleanoutRecordMain.light {
-  background: #ececec;
+  background: #f0f2f5;
   .cleanoutcontainer {
     background-color: #fff;
   }

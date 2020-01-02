@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from '../eachDeviceMonitor.scss';
 import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
+import { chartsInterval } from '../../../../../utils/utilFunc';
 
 
 class InverterSeriesTenMin extends Component {
@@ -43,6 +44,10 @@ class InverterSeriesTenMin extends Component {
     const { index = [], time = [], rate = [] } = branchTenMin;
     const timeFormatArr = time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
     const hlArr = index.filter(e => e > 0); // 取出正确的组串标识对应索引。
+    const dataArr = hlArr.map((e => branchTenMin[e]));
+    const maxArr = dataArr.flat(2);
+    const yAxisInterval = chartsInterval(maxArr, 5);
+    const { max = null, interval } = yAxisInterval;
     // 选中的支路下标, 高亮选中的那条线
     const selectPointIndex = pointNameArr && pointNameArr.length > 0 ? pointNameArr[0].pointIndex : '';
     const hlSeries = hlArr.map((e, i) => {
@@ -67,14 +72,14 @@ class InverterSeriesTenMin extends Component {
       };
     });
     // 遍历选中支路数组
-    if(pointNameArr.length > 0) {
+    if (pointNameArr.length > 0) {
       this.HLColors = ['#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999'];
       pointNameArr.forEach(item => {
         this.HLColors[item.pointIndex] = item.bgcColor;
       });
     }
-    if(pointNameArr.length === 0) {
-      this.HLColors = ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34']
+    if (pointNameArr.length === 0) {
+      this.HLColors = ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34'];
     }
     const seriesInverterGraphic = chartsNodata(!(time.length === 0), theme);
     const option = {
@@ -84,7 +89,7 @@ class InverterSeriesTenMin extends Component {
         data: ['离散率', ...hlArr.map(e => `HL#${`${e}`.padStart(2, '0')}`)],
         top: 24,
         itemWidth: 20,
-        itemHeight: 4,
+        itemHeight: 6,
       },
       tooltip: {
         show: true,
@@ -115,10 +120,10 @@ class InverterSeriesTenMin extends Component {
           );
         },
       },
-      grid: {
-        top: 95,
-        containLabel: true,
-      },
+      // grid: {
+      //   top: 95,
+      //   containLabel: true,
+      // },
       xAxis: {
         type: 'category',
         data: timeFormatArr,
@@ -130,11 +135,14 @@ class InverterSeriesTenMin extends Component {
         {
           name: '电流(A)',
           splitLine: {
-            show: false,
+            show: true,
           },
+          max: max,
+          min: 0,
+          interval: interval,
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisTick: {
@@ -147,7 +155,7 @@ class InverterSeriesTenMin extends Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisTick: {
@@ -159,6 +167,7 @@ class InverterSeriesTenMin extends Component {
         {
           name: '离散率',
           type: 'line',
+          showSymbol: false,
           lineStyle: {
             type: 'dotted',
             width: 1,
@@ -180,13 +189,14 @@ class InverterSeriesTenMin extends Component {
     time.length > 0 && (option.dataZoom = [
       {
         show: true,
-        zoomLock: true,
+        // zoomLock: true,
         start: 90,
         end: 100,
+        height: '16px',
       }, {
         type: 'inside',
         start: 90,
-        zoomLock: true,
+        // zoomLock: true,
         end: 100,
       },
     ]);
@@ -196,7 +206,7 @@ class InverterSeriesTenMin extends Component {
 
   render() {
     return (
-      <div id="seriesInverter_monitor_tenMin" style={{ height: '335px', marginTop: '20px' }} />
+      <div id="seriesInverter_monitor_tenMin" style={{ height: '335px', marginTop: '10px' }} />
     );
   }
 }

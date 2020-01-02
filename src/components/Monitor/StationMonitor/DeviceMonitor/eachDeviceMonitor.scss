@@ -4,7 +4,7 @@
 .windDevice {
   .windChart {
     > div {
-      border-right: 1px solid #dfdfdf;
+      border-right: 1px solid #d4d4d4;
     }
   }
 
@@ -65,7 +65,7 @@
     background-color: #fff;
 
     .deviceMonitorHeader {
-      border-bottom: 1px solid #dfdfdf;
+      border-bottom: 1px solid #d4d4d4;
       // 顶部
       .deviceName {
         color: $darkColor;
@@ -107,8 +107,8 @@
         }
 
         .backIcon {
-          border-left: 1px solid #dfdfdf;
-          color: #666;
+          border-left: 1px solid #d4d4d4;
+          color: #353535;
         }
       }
     }
@@ -146,7 +146,7 @@
     .confluenceTabs,
     .inverterTabs,
     .boxtransformerTabs,
-    .integrateLineTabs{
+    .integrateLineTabs {
       margin: 37px 48px 0;
       display: flex;
       background-color: #f8f8f8;
@@ -177,7 +177,7 @@
       }
 
       .tabNormal {
-        color: $darkColor;;
+        color: $darkColor;
         border-bottom: 1px solid transparent;
       }
     }
@@ -187,8 +187,8 @@
   .inverterChartTitle {
     .tabs {
       .inactive {
-        color: #666;
-        border: 1px solid #dfdfdf;
+        color: #353535;
+        border: 1px solid #d4d4d4;
       }
 
       .active {

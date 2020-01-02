@@ -3,6 +3,13 @@
   height: 60px;
   line-height: 60px;
   padding: 0 24px;
+  .power {
+    position:relative;
+    top:0;
+  }
+  .footerText {
+    margin-left: 10px;
+  }
 }
 
 .darkFooter{
@@ -12,5 +19,5 @@
 
 .lightFooter{
  color:#999999;
- background-color: #ececec;
+ background-color: #f0f2f5;
 }

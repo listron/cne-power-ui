@@ -7,6 +7,7 @@ import WarningTip from '../../../../Common/WarningTip';
 import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './stationSide.scss';
+import { handleRight } from '@utils/utilFunc';
 import moment from 'moment';
 
 class StationManageDetail extends Component {
@@ -136,6 +137,7 @@ class StationManageDetail extends Component {
     const departmentInfo = this.departmentInfoFun(departmentList);
     const isPv = stationDetail.stationType === 1;
     const isWind = stationDetail.stationType === 0;
+    const stationOperation = handleRight('station_export');
     return (
       <div className={styles.stationManageDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -162,6 +164,7 @@ class StationManageDetail extends Component {
             title="基本信息"
             infoArray={baseInfo}
             handler={this.editDetail}
+            stationOperation
             extraInfo={
               isWind ? <div className={styles.windInfo}>
                 <div className={styles.eachItem}>

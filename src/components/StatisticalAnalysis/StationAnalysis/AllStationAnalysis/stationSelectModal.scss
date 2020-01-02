@@ -38,7 +38,7 @@
         min-width: 130px;
         padding-right: 6px;
         height: 24px;
-        border-radius: 4px;
+        border-radius: 2px;
         display: flex;
         align-items: center;
         padding-left: 6px;
@@ -54,7 +54,7 @@
   }
   :global {
     .ant-modal-footer {
-      background-color: #ececec;
+      background-color: #f0f2f5;
     }
   }
   .content {

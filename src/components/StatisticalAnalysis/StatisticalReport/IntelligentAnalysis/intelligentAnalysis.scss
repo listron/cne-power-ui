@@ -83,11 +83,11 @@
         }
         .quota{
           width: 135px;
-          border-left: 1px solid #dfdfdf;
+          border-left: 1px solid #d4d4d4;
           .texts{
             padding: 20px 0 20px 23px;
             height: 70px;
-            border-bottom: 1px solid #dfdfdf;
+            border-bottom: 1px solid #d4d4d4;
           }
         }
         .data{
@@ -95,7 +95,7 @@
           .texts{
             padding: 20px 0 20px 23px;
             height: 70px;
-            border-bottom: 1px solid #dfdfdf;
+            border-bottom: 1px solid #d4d4d4;
           }
         }
         .compares{
@@ -103,7 +103,7 @@
           .texts{
             padding: 20px 0 20px 23px;
             height: 70px;
-            border-bottom: 1px solid #dfdfdf;
+            border-bottom: 1px solid #d4d4d4;
           }
         }
         .reasons{
@@ -111,11 +111,11 @@
           .texts{
             padding: 13px 15px 20px 23px;
             height: 70px;
-            border-bottom: 1px solid #dfdfdf;
+            border-bottom: 1px solid #d4d4d4;
           }
         }
         .quota,.data,.compares,.reasons{
-          border-right: 1px solid #dfdfdf;
+          border-right: 1px solid #d4d4d4;
         }
         .titlesText{
           background: #f4f4f4;
@@ -124,25 +124,25 @@
           height: 40px;
           line-height: 40px;
           margin: 0;
-          border-bottom: 2px solid #dfdfdf;
-            border-top: 2px solid #dfdfdf;
+          border-bottom: 2px solid #d4d4d4;
+            border-top: 2px solid #d4d4d4;
         }
 
         .faultType,.LossElectricity,.proportion,.Comparisons{
-          border-right: 1px solid #dfdfdf;
+          border-right: 1px solid #d4d4d4;
           p:first-child{
-            border-bottom: 2px solid #dfdfdf;
+            border-bottom: 2px solid #d4d4d4;
           }
           p{
             height: 40px;
             line-height: 40px;
             padding-left: 23px;
-            border-bottom: 1px solid #dfdfdf;
+            border-bottom: 1px solid #d4d4d4;
           }
         }
         .faultType{
           width: 327px;
-          border-left: 1px solid #dfdfdf;
+          border-left: 1px solid #d4d4d4;
         }
         .LossElectricity{
           width: 213px;
@@ -156,7 +156,7 @@
         //单电站年份
         .firstColumn{
           width: 150px;
-          border-left: 1px solid #dfdfdf;
+          border-left: 1px solid #d4d4d4;
         }
         .secondColumn{
           width: 100px;
@@ -169,19 +169,19 @@
         }
         .fifthColumn{
           width: 504px;
-          border-right: 1px solid #dfdfdf;
+          border-right: 1px solid #d4d4d4;
 
           p:last-child{
-            border-right: 0px solid #dfdfdf;
+            border-right: 0px solid #d4d4d4;
           }
         }
         .firstColumn,.secondColumn,.thirdColumn,.fourthColumn{
-          border-right: 1px solid #dfdfdf;
+          border-right: 1px solid #d4d4d4;
           p:first-child{
-            border-bottom: 2px solid #dfdfdf;
+            border-bottom: 2px solid #d4d4d4;
           }
           p:last-child{
-            border-right: 0px solid #dfdfdf;
+            border-right: 0px solid #d4d4d4;
           }
         }
         .secondLine{
@@ -197,11 +197,11 @@
           padding: 20px 12px 20px 23px;
         }
         .secondLine,.thirdLine,.fourthLine{
-          border-bottom: 1px solid #dfdfdf;
+          border-bottom: 1px solid #d4d4d4;
         }
         .fault{
           width: 326px;
-          border-left: 1px solid #dfdfdf;
+          border-left: 1px solid #d4d4d4;
         }
         .electricity{
           width: 213px;
@@ -213,10 +213,10 @@
           width: 270px;
         }
         .fault,.electricity,.ratio,.rateCompared{
-          border-right: 1px solid #dfdfdf;
+          border-right: 1px solid #d4d4d4;
           .text{
             color: $darkColor;
-            border-bottom: 1px solid #dfdfdf;
+            border-bottom: 1px solid #d4d4d4;
             padding: 10px 20px;
           }
         }
@@ -237,20 +237,20 @@
 
     //统同一区域的电站
     .stationName,.lossEquivalentHours,.sunnyDays,.highProportion{
-      border-right: 1px solid #dfdfdf;
+      border-right: 1px solid #d4d4d4;
       p:first-child{
-        border-bottom: 2px solid #dfdfdf;
+        border-bottom: 2px solid #d4d4d4;
       }
       p{
         height: 40px;
         line-height: 40px;
         padding-left: 23px;
-        border-bottom: 1px solid #dfdfdf;
+        border-bottom: 1px solid #d4d4d4;
       }
     }
     .stationName{
       width: 381px;
-      border-left: 1px solid #dfdfdf;
+      border-left: 1px solid #d4d4d4;
     }
     .lossEquivalentHours{
       width: 202px;
@@ -263,42 +263,42 @@
     }
     .faults{
       width: 380px;
-      border-left: 1px solid #dfdfdf;
+      border-left: 1px solid #d4d4d4;
     }
     .electricitys{
       width: 444px;
-      border-left: 1px solid #dfdfdf;
+      border-left: 1px solid #d4d4d4;
     }
     .ratios{
       width: 227px;
-      border-left: 1px solid #dfdfdf;
-      border-right: 1px solid #dfdfdf;
+      border-left: 1px solid #d4d4d4;
+      border-right: 1px solid #d4d4d4;
     }
     .faults,.electricitys,.ratios{
       p:first-child{
-        border-bottom: 2px solid #dfdfdf;
+        border-bottom: 2px solid #d4d4d4;
       }
       p{
         height: 40px;
         line-height: 40px;
         padding-left: 23px;
-        border-bottom: 1px solid #dfdfdf;
+        border-bottom: 1px solid #d4d4d4;
       }
     }
     .stationNames{
       width: 381px;
-      border-left: 1px solid #dfdfdf;
+      border-left: 1px solid #d4d4d4;
     }
     .score{
       width: 202px;
     }
     .cause{
       width: 469px;
-      border-right: 1px solid #dfdfdf;
+      border-right: 1px solid #d4d4d4;
       p{
         height: 73px;
         padding: 2px 0 2px 18px;
-        border-bottom: 1px solid #dfdfdf;
+        border-bottom: 1px solid #d4d4d4;
       }
       .causeAnalysis{
         display: flex;
@@ -310,15 +310,15 @@
       }
     }
     .stationNames,.score{
-      border-right: 1px solid #dfdfdf;
+      border-right: 1px solid #d4d4d4;
       p:first-child{
-        border-bottom: 2px solid #dfdfdf;
+        border-bottom: 2px solid #d4d4d4;
       }
       p{
         height: 73px;
         line-height: 73px;
         padding-left: 23px;
-        border-bottom: 1px solid #dfdfdf;
+        border-bottom: 1px solid #d4d4d4;
       }
     }
 
@@ -352,12 +352,12 @@
         padding-right: 12px;
         height: 40px;
         line-height: 40px;
-        border-top: 2px solid #dfdfdf;
-        border-bottom: 2px solid #dfdfdf;
+        border-top: 2px solid #d4d4d4;
+        border-bottom: 2px solid #d4d4d4;
       }
     }
     .column{
-      border-bottom: 1px solid #dfdfdf;
+      border-bottom: 1px solid #d4d4d4;
     }
   }
 

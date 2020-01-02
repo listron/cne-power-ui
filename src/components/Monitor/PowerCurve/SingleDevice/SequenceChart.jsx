@@ -26,7 +26,7 @@ class SequenceChart extends Component {
   drawChart = (params, sequenceLoadding) => {
     const sequenceChart = echarts.init(document.getElementById('sequenceChart'));
     sequenceLoadding ? sequenceChart.showLoading('default', { color: '#199475' }) : sequenceChart.hideLoading();
-    const lineColor = '#666';
+    const lineColor = '#353535';
     const { xAxisDate } = this.props;
     const color = ['#3e97d1', '#a42b2c', '#199475'];
     const yData = params.map(e => (e.deviceName));
@@ -71,7 +71,7 @@ class SequenceChart extends Component {
               <div class=${styles.topStyle}>
                 <div>${params[0].name}</div>
               </div>
-              <div  style='background:#dfdfdf;height:1px;
+              <div  style='background:#d4d4d4;height:1px;
                 width:100%;' ></div>
                 ${params.map((e, i) => {
               return `<div class=${styles.lineStyle}>
@@ -109,7 +109,7 @@ class SequenceChart extends Component {
         axisLine: {
           onZero: false,
           lineStyle: {
-            color: '#dfdfdf',
+            color: '#d4d4d4',
           },
         },
         axisLabel: {
@@ -135,7 +135,7 @@ class SequenceChart extends Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: '#d4d4d4',
             },
           },
           axisLabel: {

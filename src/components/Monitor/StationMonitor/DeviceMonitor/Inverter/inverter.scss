@@ -36,7 +36,7 @@
     margin-right: 18px;
     margin-bottom: 20px;
     width: 222px;
-    border-radius: 4px;
+    border-radius: 2px;
     font-size: 12px;
     cursor: pointer;
     .statusBox {
@@ -104,6 +104,9 @@
         text-align: left;
         > div{
           display: flex;
+          .specialColor{
+            color: #a22c30 !important;
+          }
           .tooltipName{
             margin-top: -5px;
             margin-left: 3px;
@@ -128,6 +131,9 @@
         border-radius: 2px;
         margin-right: 2px;
         margin-bottom: 2px;
+        font-size: 7px;
+        text-align: center;
+        min-width: 22px;
         &:nth-child(8n + 4) {
           margin-right: 8px;
         }
@@ -184,7 +190,7 @@
 .subConfluence.light {
   // 子汇流箱
   .singledeviceItem {
-    border: 1px solid #dfdfdf;
+    border: 1px solid #d4d4d4;
     .statusBox {
       a {
         color: $darkColor;
@@ -197,7 +203,7 @@
           color: #e08031;
         }
         .ant-progress-inner {
-          background-color: #dfdfdf;
+          background-color: #d4d4d4;
         }
       }
       .deviceItemR {
@@ -221,7 +227,7 @@
 
     .deviceBlockFooter {
       .dispersionRatio {
-        color: #666666;
+        color: #353535;
       }
     }
   }
@@ -280,7 +286,7 @@
           color: #e08031;
         }
         .ant-progress-inner {
-          background-color: #dfdfdf;
+          background-color: #d4d4d4;
         }
       }
       .deviceItemR {

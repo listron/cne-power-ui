@@ -309,6 +309,7 @@ export default {
       createRole: '/v3/role',
       editRole: '/v3/role/{enterpriseId}',
       deleteRole: '/v3/role',
+      getOperatetype: '/v3/base/system/operatetype', // 获得权限操作类型
 
       getUserList: '/v3/user/list', //用户列表
       changeUserStatus: '/v3/user/status', //更改用户状态

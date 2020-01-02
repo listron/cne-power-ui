@@ -5,8 +5,8 @@ import path from '../../../constants/path';
 import { Button } from 'antd';
 import CommonPagination from '../../../components/Common/CommonPagination';
 import WarningTip from '../../../components/Common/WarningTip';
-import Cookie from 'js-cookie';
 import UploadModal from './UploadModal';
+import { handleRight } from '@utils/utilFunc';
 const { originUri } = path.basePaths;
 const { operation } = path.APISubPaths;
 
@@ -108,27 +108,27 @@ class CaseHandle extends React.Component {
     const { showWarningTip, warningTipText, showUpload } = this.state;
     const { casePartTableData, selectedRowKeys, pageSize, pageNum, total } = this.props;
     const downloadTemplet = `${originUri}${operation.downCaseTemplate}`;//当前没有链接
-    const rightkey = Cookie.get('userRight').includes('operation_case_operate');//操作权限
+    const caseHandleRight = handleRight('operation_case_operate');//操作权限
     return (
       <div className={styles.caseHandle}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-        <div className={styles.leftHandler}>
-          {rightkey && <Button onClick={this.showAddPage} className={styles.addButton}>
+        {caseHandleRight ? <div className={styles.leftHandler}>
+          <Button onClick={this.showAddPage} className={styles.addButton}>
             <span className={styles.plus}>+</span>
             <span className={styles.name}>{'添加'}</span>
-          </Button>}
-          {rightkey && <Button type="primary" disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deleteCasePart} > 批量删除 </Button>}
-          {rightkey && <Button className={styles.intoFile} onClick={this.uploadFile}> 批量导入 </Button>}
+          </Button>
+          <Button type="primary" disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deleteCasePart} > 批量删除 </Button>
+          <Button className={styles.intoFile} onClick={this.uploadFile}> 批量导入 </Button>}
           {showUpload && <UploadModal {...this.props} showModal={showUpload} cancelModal={this.cancelModal} />}
-          {rightkey && <Button
+          <Button
             className={styles.downloadStyle}
             href={downloadTemplet}
             download={downloadTemplet}
             target="_blank"
           >模板下载
-          </Button>}
+          </Button>
 
-        </div>
+        </div> : <div />}
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
 
       </div>

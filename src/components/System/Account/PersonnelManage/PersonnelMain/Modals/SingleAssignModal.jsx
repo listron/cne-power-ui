@@ -75,10 +75,18 @@ class SingleAssignModal extends Component {
   }
 
   checkUser = (selectedKeys, nextSelectedUserRow) => { // 选中
-    const { selectedUserRow } = this.state;
-    if (nextSelectedUserRow.length < selectedUserRow.length) { // 减少, 且减少的这个只有一个部门时，需要提示他将不属于任何部门
+    const { selectedUserRow, nameFilterText } = this.state;
+    const totalSelectedUserRow = nextSelectedUserRow;
+    if (nameFilterText) { // 有筛选时， 在筛选后表格中展示的选中项; 实际选中项需要加进使用姓名过滤前的选中信息
+      selectedUserRow.forEach(e => {
+          const hasUsername = e.username && e.username.includes(nameFilterText);
+          const hasFullName = e.userFullName && e.userFullName.includes(nameFilterText);
+          !hasUsername && !hasFullName && totalSelectedUserRow.push(e);
+      });
+    }
+    if (totalSelectedUserRow.length < selectedUserRow.length) { // 减少, 且减少的这个只有一个部门时，需要提示他将不属于任何部门
       const { departmentAllUsers, selectedDepartment } = this.props;
-      const preKeys = nextSelectedUserRow.map(e => e.userId);
+      const preKeys = totalSelectedUserRow.map(e => e.userId);
       const deleteUser = selectedUserRow.find(e => !preKeys.includes(e.userId));
       const isDeleteUserInThisDepart = departmentAllUsers.find(e => e.userId === deleteUser.userId);
       const { departmentNames, username } = deleteUser || {};
@@ -86,12 +94,12 @@ class SingleAssignModal extends Component {
       if (isDeleteUserInThisDepart && departNum === 1) { // 欲删除用户正好在当前部门内 且只有一个部门;
         this.setState({
           warningText: `${username} 在 ${selectedDepartment.departmentName} 取消分配后, 不再属于任何部门, 将在未分配部门人员列表中。您确认从${selectedDepartment.departmentName}中移出${username}吗?`,
-          warningTmpSavedUserRow: nextSelectedUserRow,
+          warningTmpSavedUserRow: totalSelectedUserRow,
         });
         return;
       }
     }
-    this.setState({ selectedUserRow: nextSelectedUserRow });
+    this.setState({ selectedUserRow: totalSelectedUserRow });
   }
 
   confirmRemove = () => {

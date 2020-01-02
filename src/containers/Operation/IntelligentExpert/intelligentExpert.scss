@@ -6,10 +6,7 @@
   min-height: 100%;
   flex-direction: column;
   .contentBox {
-    display: flex;
-    padding: 24px 24px 0;
-    justify-content: space-between;
-    flex: 1 0 auto;
+    @include contentBoxStyle();
   }
   .warp {
     display: flex;
@@ -28,7 +25,7 @@
 
 .light {
   .contentBox {
-    background-color: #ececec;
+    background-color: #f0f2f5;
   }
 }
 

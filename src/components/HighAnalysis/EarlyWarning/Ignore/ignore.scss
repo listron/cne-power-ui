@@ -1,14 +1,11 @@
 @import "../../../../theme/theme";
 .ignoreBox {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
+  @include contentBoxStyle();
   .ignoreMain {
     position: relative;
     display: flex;
     flex-direction: column;
     flex: 1 0 auto;
-    margin: 24px 24px 0;
     .wrap {
       display: flex;
       flex: 1;
@@ -29,7 +26,7 @@
 }
 
 .light {
-  background: #ececec;
+  background: #f0f2f5;
   .ignoreMain {
     border: 1px solid #e1e2e2;
     background: #fff;

@@ -5,6 +5,7 @@ import CommonPagination from '../../../../Common/CommonPagination';
 import StationSelect from '../../../../Common/StationSelect/index';
 import WarehouseWrapTable from './WarehouseWrapTable/WarehouseWrapTable';
 import WarningTip from '../../../../Common/WarningTip';
+import { handleRight } from '@utils/utilFunc';
 
 const Search = Input.Search;
 const FormItem = Form.Item;
@@ -202,10 +203,11 @@ class WarehouseWrap extends Component {
     } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const { getFieldDecorator } = form;
+    const warehouseHandleRight = handleRight('book_operateWarehouse');
     return (
       <div className={styles.warehouseWrap}>
         <div className={styles.warehouseSearch}>
-          <Form onSubmit={this.handleSend} layout="inline">
+          {warehouseHandleRight ? <Form onSubmit={this.handleSend} layout="inline">
             <Row>
               <Col>
                 <FormItem label="添加仓库名称">
@@ -236,7 +238,7 @@ class WarehouseWrap extends Component {
                 </Button>
               </Col>
             </Row>
-          </Form>
+          </Form> : <div />}
           <div className={styles.rightSeach}>
             <Search
               allowClear
@@ -249,14 +251,14 @@ class WarehouseWrap extends Component {
           </div>
         </div>
         <div className={styles.warehouseHandle}>
-          <Button
+          {warehouseHandleRight ? <Button
             style={{ width: '90px' }}
             onClick={() => {
               return this.selectDelFunc();
             }}
           >
             批量删除
-          </Button>
+          </Button> : <span />}
           <CommonPagination
             pageSize={pageSize}
             currentPage={pageNum}

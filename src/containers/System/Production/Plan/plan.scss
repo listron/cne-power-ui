@@ -1,14 +1,13 @@
-.planContainerBox{
-    display: flex;
-    flex: 1;
-    min-height: 100%;
-    flex-direction: column;
+@import "../../../../theme/theme.scss";
+
+.planContainerBox {
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+  flex-direction: column;
 }
 
-.planContainer{
-  display: flex;
-  min-height: 100%;
-  flex: 1;
-  overflow: hidden;
-  background:#ececec;
+.planContainer {
+  @include contentBoxStyle();
+  flex-direction: row;
 }

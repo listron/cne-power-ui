@@ -39,12 +39,16 @@ class DefectCreate extends Component {
   }
 
   componentDidMount() {
-    const { defectDetail = {} } = this.props;
+    const { defectDetail = {}, stations = [] } = this.props;
     const { stationCode, deviceTypeCode, defectTypeCode, stationType } = defectDetail;
     if (stationCode) {
       this.props.getStationDeviceTypes({ stationCodes: stationCode }); // 设备类型
       this.props.getKnowledgebase({ faultTypeIds: [defectTypeCode], deviceTypeCodes: [deviceTypeCode], type: +stationType });
       this.props.getLostGenType({ stationType, objectType: 1, deviceTypeCode }); // 缺陷类型
+    }
+    if (!stationCode && stations.length === 1) { // 解决只有一个电站的直接默认当前的电站
+      const initStationCode = stations[0].stationCode;
+      this.props.getStationDeviceTypes({ stationCodes: initStationCode }); // 设备类型
     }
   }
 
@@ -93,7 +97,6 @@ class DefectCreate extends Component {
   callBackTableList = () => { // 返回列表页
     const { history } = this.props;
     history.push('/operation/workProcess/view?page=list&tab=defect&listSearch={"sortField":"modify_time"}');
-    // console.log('测试一下', history);
   }
 
   onDefectCreate = (isContinueAdd) => { // 保存的状态
@@ -134,7 +137,7 @@ class DefectCreate extends Component {
   toolTip = () => {
     return (<div>
       <p>A级缺陷：指直接威胁设备安全运行并需理解处理的缺陷</p>
-      <p>B级缺陷：指针对设备有严重威胁，暂时能坚持运行但需要尽快处理的缺陷</p>
+      <p>B级缺陷：指对设备有严重威胁，暂时能坚持运行但需要尽快处理的缺陷</p>
       <p>C级缺陷：指不停止主设备运行，不影响设备和全场出力情况即可消除的缺陷</p>
     </div>);
   }

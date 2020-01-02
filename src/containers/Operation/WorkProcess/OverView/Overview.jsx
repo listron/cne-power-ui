@@ -10,15 +10,11 @@ import DefectDetail from '../DefectDetail/DefectDetail';
 import InspectDetail from '../InspectDetail/InspectDetail';
 
 
-
 /**
- * 
  *  params  url
  *   page=list&tab=defect 列表缺陷页面 teb inspect 巡检页面
  *   page=defectDetail&defectId=123 缺陷详情页面 缺陷ID
  *   page=inspectDetail&inspectId=123 巡检详情页面 巡检ID
- * 
- *  进入列表页面请看defectList 的注释
  */
 class Overview extends Component {
 
@@ -38,7 +34,7 @@ class Overview extends Component {
 
   componentDidMount() { // page list 列表页 defectDetail 缺陷详情 inspectDetail 巡检详情 defectId 缺陷ID inspectId 巡检ID
     const { history } = this.props;
-    const { search } = history.location;
+    const { search, pathname } = history.location;
     const { page = 'list', tab = 'defect' } = searchUtil(search).parse(); //默认为缺陷列表页
     this.setState({ page, tab });
 
@@ -46,7 +42,7 @@ class Overview extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { history } = nextProps;
-    const { search } = history.location;
+    const { search, pathname } = history.location;
     const { page = 'list', tab = 'defect' } = searchUtil(search).parse(); //默认为缺陷列表页
     this.setState({ page, tab });
   }
@@ -76,7 +72,10 @@ class Overview extends Component {
     const { tab, page } = this.state;
     return (
       <ContentLayout
-        breadcrumb={{ breadData: [{ name: '工单' }], style: { paddingLeft: '40px' } }}
+        // breadcrumb={{
+        //   breadData: [{ name: '工单' }],
+        //   style: { paddingLeft: '40px' },
+        // }}
         theme={theme}
         contentClassName={`${styles.overview} ${styles[theme]}`}
       >

@@ -4,6 +4,7 @@ import HandleComponent from './ManageCommon/HandleComponents';
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './warehouseManageComp.scss';
+import { handleRight } from '@utils/utilFunc';
 import { dataFormat } from '../../../../utils/utilFunc';
 
 class ToolPage extends Component {
@@ -98,7 +99,8 @@ class ToolPage extends Component {
       201: '安全工器具',
       202: '检修工器具',
       203: '仪器仪表',
-    }
+    };
+    const toolHandleRight = handleRight('book_operateTool');
     return [
       {
         title: '物品名称',
@@ -163,8 +165,8 @@ class ToolPage extends Component {
         width: handleWidth,
         render: (text, record) => (
           <div className={styles.stockHandle}>
-            <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>
-            <span className={styles.text} onClick={() => this.toTakeout(record)}>损耗</span>
+            {toolHandleRight && <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>}
+            {toolHandleRight && <span className={styles.text} onClick={() => this.toTakeout(record)}>损耗</span>}
             <span className={styles.text} onClick={() => this.getReserveDetail(record)}>库存</span>
           </div>
         )

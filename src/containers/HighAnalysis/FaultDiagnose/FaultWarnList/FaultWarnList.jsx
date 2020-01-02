@@ -49,7 +49,6 @@ class FaultWarnList extends React.Component {
   render() {
     return (
       <div className={styles.faultWarnList}>
-        <CommonBreadcrumb breadData={[{name: '故障预警'}]} style={{marginLeft: '38px'}} />
         <div className={styles.faultWarnListContainer}>
           <div className={styles.faultWarnListContent}>
             <FaultWarnMainList onChangeFilter={this.onChangeFilter} {...this.props} />

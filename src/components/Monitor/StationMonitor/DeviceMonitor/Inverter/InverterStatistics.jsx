@@ -93,8 +93,8 @@ class InverterStatistics extends Component{
     const selectPointIndex = pointNameArr && pointNameArr.length > 0 ? pointNameArr[0].pointIndex : '';
     // 默认灰色背景
     let styleParams = {
-      color: '#666666',
-      backgroundColor: '#dfdfdf',
+      color: '#353535',
+      backgroundColor: '#d4d4d4',
     };
     if(pointIndex === selectPointIndex || selectPointIndex === '' || pointStatus === '900') {
       styleParams = {};

@@ -4,6 +4,7 @@ import { Icon, Button, message } from 'antd';
 import moment from 'moment';
 import styles from './intelligentExpert.scss';
 import path from '../../../constants/path';
+import { handleRight } from '@utils/utilFunc';
 
 class ShowIntelligent extends Component {
   static propTypes = {
@@ -68,8 +69,7 @@ class ShowIntelligent extends Component {
 
   render() {
     const { intelligentDetail = {} } = this.props;
-    const rightHandler = localStorage.getItem('rightHandler') || '';
-    const editRight = rightHandler.split(',').includes('operation_experience_edit');
+    const editRight = handleRight('operation_experience_edit');
     const href = this.changeAnnexsform(intelligentDetail.annexs).map(e => <div className={styles.link} onClick={() => this.downFile(e.url, e.urlName)}>{e.urlName}</div>);
     return (
       <div className={styles.showIntelligent}>

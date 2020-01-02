@@ -9,13 +9,13 @@ import styles from './stationSide.scss';
   hasBottomBorder默认true代表有底部border线。
 */
 
-function DetailInfoPart({ title, infoArray,  handler, noBottomBorder=false, extraInfo=null }){
+function DetailInfoPart({ title, infoArray,  handler, stationOperation, noBottomBorder=false, extraInfo=null }){
   const borderStyle = noBottomBorder?{borderBottom: 'none'}:{};
   return (
     <div className={styles.infoBox} style={{...borderStyle}}>
       <div className={styles.infoTitle}>
         <span className={styles.titleText}>{title}</span>
-        {handler?<Button onClick={handler} className={styles.button} >编辑</Button>:null}
+        {(handler && stationOperation) ?<Button onClick={handler} className={styles.button} >编辑</Button>:null}
       </div>
       <div className={styles.infoPart}>
         {infoArray.map(e=>{

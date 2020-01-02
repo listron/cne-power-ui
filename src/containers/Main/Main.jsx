@@ -163,7 +163,7 @@ class Main extends Component {
               {!this.props.menuBoardShow && <TopMenu />}
             </div>
             <div className={styles.headerRight}>
-              <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
+              {/* <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} /> */}
               <div ref={'changeTheme'} />{/*
               <Dropdown overlay={themeMenu}
                 getPopupContainer={() => this.refs.changeTheme}
@@ -186,7 +186,7 @@ class Main extends Component {
             {!isHomePage && <SideMenu stationTypeCount={stationTypeCount} />}
             <main
               className={`${styles.content} ${styles[theme]}`}
-              style={{ height: isHomePage ? '100vh' : 'calc(100vh - 59px)' }}
+              style={{ height: isHomePage ? '100vh' : 'calc(100vh - 40px)' }}
               id="main"
             >
               <Switch>

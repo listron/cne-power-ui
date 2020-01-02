@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import styles from './faultWarn.scss';
 import PropTypes from 'prop-types';
 import { faultWarnAction } from './faultWarnAction.js';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import FaultWarnMain from '../../../../components/HighAnalysis/FaultDiagnose/FaultWarn/FaultWarn';
 import Footer from '../../../../components/Common/Footer';
 
@@ -30,7 +29,6 @@ class FaultWarn extends Component {
   render() {
     return (
       <div className={styles.faultWarnBox}>
-        <CommonBreadcrumb breadData={[{name: '故障预警'}]} style={{marginLeft: '38px'}} />
         <div className={styles.faultWarnContainer}>
           <div className={styles.faultWarnContent}>
             <FaultWarnMain {...this.props} />

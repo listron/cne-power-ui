@@ -4,6 +4,7 @@ import styles from "./warnConfig.scss";
 import PropTypes from 'prop-types';
 import WarnConfigSearch from './WarnConfigSearch';
 import CommonPagination from '../../../../Common/CommonPagination';
+import { handleRight } from '@utils/utilFunc';
 const Option = Select.Option;
 class WarnConfig extends Component {
     static propTypes = {
@@ -119,19 +120,22 @@ class WarnConfig extends Component {
             key: 'warningEnable',
             sorter: true,
             render: (text, record) => record.warningEnable ? '是' : '否',
-        }, {
+        }];
+
+        const editColumn = {
             title: '编辑',
             dataIndex: 'edit',
             key: 'edit',
             render: (text, record) => (
                 <span className={styles.edit}>
-                    <i className="iconfont icon-edit" onClick={() => { this.wranEdit(record) }} />
+                    <i className="iconfont icon-edit" onClick={() => { this.wranEdit(record); }} />
                 </span>
-            )
-        }];
+            ),
+        };
         const { loading, warnList, listQueryParams, totalNum } = this.props;
         const { pageSize, pageNum } = listQueryParams;
         const { selectedRowKeys } = this.state;
+        const warnConfigOperation = handleRight('intelligentWarning_operate');
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -140,7 +144,7 @@ class WarnConfig extends Component {
             <div className={styles.warnConfig}>
                 <WarnConfigSearch {...this.props} />
                 <div className={styles.warnListTop}>
-                    <div className={styles.warnListLeft}>
+                    {warnConfigOperation ? <div className={styles.warnListLeft}>
                         <Button className={styles.rule} onClick={this.addRule}>
                             <Icon type="plus" />
                             <span className={styles.text}>预警规则</span>
@@ -148,13 +152,13 @@ class WarnConfig extends Component {
                         <Select onChange={this.selectChange} placeholder="操作" value={'操作'} dropdownMatchSelectWidth={false} >
                             <Option value="deleate" disabled={!selectedRowKeys.length > 0}>删除</Option>
                         </Select>
-                    </div>
+                    </div> : <div></div>}
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
                 </div>
                 <Table
                     loading={loading}
                     onChange={this.tableChange}
-                    columns={warnListColumn}
+                    columns={warnConfigOperation ? warnListColumn.concat(editColumn) : warnListColumn}
                     dataSource={warnList.map((e, i) => ({ key: e.warningCheckId, ...e, warningLevel: `${['一', '二', '三', '四', '五'][e.warningLevel - 1] || '--'}级` }))}
                     pagination={false}
                     rowSelection={rowSelection}

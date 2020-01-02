@@ -8,16 +8,14 @@
   flex:1;
   flex-direction: column;
   .contentBox{
-    display: flex;
-    flex-direction: column;
+    @include contentBoxStyle();
     flex: 1;
-    width: 100%;
-    padding:0 24px;
+    display: block;
   }
 }
 
 .light.overview{
-  background-color: #ececec;
+  background-color: #f0f2f5;
 }
 
 .dark.overview{

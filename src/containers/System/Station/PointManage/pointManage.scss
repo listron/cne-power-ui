@@ -7,20 +7,16 @@
   flex-direction: column;
 
   .pointManage {
-
-    background-color: $pageBackground;
-    display: flex;
-    // flex-direction: column;
-    justify-content: space-between;
-    flex: 1 0 auto;
-    width: 100%;
+    @include contentBoxStyle();
+    flex-direction: initial;
+    padding: 0;
 
     .pointManageMain {
-      padding: 24px 24px 0;
       display: flex;
       flex-direction: column;
       flex: 1 0 auto;
       width: 100%;
+      padding: 15px 24px 0;
 
       .pointManageContent {
         background-color: #fff;

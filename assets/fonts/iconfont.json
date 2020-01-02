@@ -1159,6 +1159,13 @@
       "font_class": "bumenx",
       "unicode": "e6f1",
       "unicode_decimal": 59121
+    },
+    {
+      "icon_id": "12362568",
+      "name": "alert",
+      "font_class": "alert",
+      "unicode": "e6f2",
+      "unicode_decimal": 59122
     }
   ]
 }

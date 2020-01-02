@@ -5,6 +5,7 @@ import moment from 'moment';
 import HandlePart from './HandlePart';
 import WarningTip from '@components/Common/WarningTip';
 import styles from './planModals.scss';
+import { handleRight } from '@utils/utilFunc';
 
 class PlanHandle extends PureComponent {
 
@@ -23,7 +24,7 @@ class PlanHandle extends PureComponent {
   };
 
   state = {
-    planColumn: [
+    baseColumn: [
       {
         title: '计划类型',
         dataIndex: 'planTypeName',
@@ -44,13 +45,14 @@ class PlanHandle extends PureComponent {
         dataIndex: 'validPeriod',
         width: 90,
         render: (text = '') => (<div title={text} className={styles.validPeriodText}>{text}</div>),
-      }, {
-        title: '操作',
-        dataIndex: 'handle',
-        width: 150,
-        render: (text, record) => <HandlePart record={record} publishOnce={this.publishOnce} deleteOnce={this.deleteOnce} />,
       },
     ],
+    handleRow: {
+      title: '操作',
+      dataIndex: 'handle',
+      width: 150,
+      render: (text, record) => <HandlePart record={record} publishOnce={this.publishOnce} deleteOnce={this.deleteOnce} />,
+    },
     handleType: '', // publish, delete
     selectedRowKeys: [], // 选中项
     handleParams: null,
@@ -137,8 +139,10 @@ class PlanHandle extends PureComponent {
 
   render(){
     const { showModal, modalKey, activePlanDate, datePlans, handlePlanLoading, planListLoading, theme } = this.props;
-    const { planColumn, handleType, selectedRowKeys, handleParams, warningTipText } = this.state;
+    const { baseColumn, handleType, selectedRowKeys, handleParams, warningTipText, handleRow } = this.state;
     const hasRowSelected = selectedRowKeys.length > 0;
+    const planManageRight = handleRight('operation_workStation_manage');
+    const planColumn = planManageRight ? baseColumn.concat(handleRow): baseColumn;
     return (
       <Modal
         title={`工作计划 ${activePlanDate}`}
@@ -149,7 +153,7 @@ class PlanHandle extends PureComponent {
         wrapClassName={styles[theme]}
       >
         <div className={styles.planHandle}>
-          <div className={styles.handle}>
+          {planManageRight && <div className={styles.handle}>
             <Button
               onClick={this.publishAll}
               loading={handleType === 'publish' && handlePlanLoading}
@@ -160,7 +164,7 @@ class PlanHandle extends PureComponent {
               loading={handleType === 'delete' && handlePlanLoading}
               disabled={!hasRowSelected}
             >批量删除</Button>
-          </div>
+          </div>}
           <Table
             dataSource={datePlans}
             columns={planColumn}

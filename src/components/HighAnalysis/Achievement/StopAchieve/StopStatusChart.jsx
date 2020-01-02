@@ -19,12 +19,12 @@ class StopStatusChart extends Component {
     stopTypes: [],
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { stopStatusList = [] } = this.props;
     stopStatusList.length > 0 && this.renderChart(stopStatusList);
   }
 
-  componentDidUpdate(preProps){ // didupdate => 保证在dom高度动态更新后, 再基于新的dom进行渲染
+  componentDidUpdate(preProps) { // didupdate => 保证在dom高度动态更新后, 再基于新的dom进行渲染
     const { stopStatusLoading, stopStatusList } = this.props;
     const preLoading = preProps.stopStatusLoading;
     if (preLoading && !stopStatusLoading) { // 请求完毕
@@ -47,20 +47,20 @@ class StopStatusChart extends Component {
     const end = api.coord([api.value(2), categoryIndex]);
     const height = api.size([0, 1])[1] * 0.6; // api.size得到坐标系上一段数值范围对应的长度 default: api.size([0, 1])[1] * 0.6;
     const rectShape = echarts.graphic.clipRectByRect({
-        x: start[0],
-        y: start[1] - height / 2,
-        width: end[0] - start[0],
-        height: height,
+      x: start[0],
+      y: start[1] - height / 2,
+      width: end[0] - start[0],
+      height: height,
     }, {
-        x: params.coordSys.x,
-        y: params.coordSys.y,
-        width: params.coordSys.width,
-        height: params.coordSys.height,
+      x: params.coordSys.x,
+      y: params.coordSys.y,
+      width: params.coordSys.width,
+      height: params.coordSys.height,
     });
     return rectShape && {
-        type: 'rect',
-        shape: rectShape,
-        style: api.style(), // 得到series定义的样式信息
+      type: 'rect',
+      shape: rectShape,
+      style: api.style(), // 得到series定义的样式信息
     };
   }
 
@@ -109,7 +109,7 @@ class StopStatusChart extends Component {
         type: 'time',
         position: 'top',
         axisLine: {
-          lineStyle: { color: '#666' },
+          lineStyle: { color: '#353535' },
         },
         axisLabel: {
           formatter: (value) => moment(value).format('YYYY.MM.DD'),
@@ -119,7 +119,7 @@ class StopStatusChart extends Component {
       },
       yAxis: {
         axisLine: {
-          lineStyle: { color: '#666' },
+          lineStyle: { color: '#353535' },
         },
         axisTick: { show: false },
         splitLine: { show: false },
@@ -200,12 +200,12 @@ class StopStatusChart extends Component {
             <span key={e} className={styles.eachFault}>
               <span className={styles.rect} style={{
                 backgroundImage: `linear-gradient(-180deg, ${this.stopColors[i]} 0%, ${this.stopColors[i]} 100%)`,
-                }} />
+              }} />
               <span className={styles.modeText}>{e}</span>
             </span>
           ))}
         </div>
-        <div className={styles.stautsChart} style={{height: `${height}px`}} ref={(ref)=> {this.statusRef = ref;}} />
+        <div className={styles.stautsChart} style={{ height: `${height}px` }} ref={(ref) => { this.statusRef = ref; }} />
       </div>
     );
   }

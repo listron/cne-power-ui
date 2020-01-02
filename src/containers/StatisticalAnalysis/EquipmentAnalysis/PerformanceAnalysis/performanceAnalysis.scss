@@ -6,11 +6,7 @@
   flex-direction: column;
   min-height: 100%;
   .PerformanceAnalysisContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex: 1;
-    padding: 24px 24px 0;
+    @include contentBoxStyle();
     .PerformanceAnalysisMain {
       display: flex;
       flex-direction: column;
@@ -21,7 +17,7 @@
 
 .light {
   .PerformanceAnalysisContainer {
-    background-color: #ececec;
+    background-color: #f0f2f5;
   }
 }
 
