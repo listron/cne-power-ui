@@ -23,7 +23,7 @@ class ReportStation extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.reportstation} ${styles[theme]}`} >
-        <CommonBreadcrumb breadData={[{ name: '电站报表' }]} style={{ marginLeft: '38px' }} />
+        {/* <CommonBreadcrumb breadData={[{ name: '电站报表' }]} style={{ marginLeft: '38px' }} /> */}
         <div className={styles.reportbox}>
           <ReportStationBox {...this.props} />
         </div>
