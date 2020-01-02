@@ -172,8 +172,8 @@ class PvHistoryChart extends Component {
           });
           series.push({
             name: lengendName,
-            xAxisIndex: index,
-            yAxisIndex: index,
+            xAxisIndex: preTotalNum + index,
+            yAxisIndex: preTotalNum + index,
             type: 'line',
             symbol: 'circle',
             showSymbol: false,
