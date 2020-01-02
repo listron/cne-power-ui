@@ -163,6 +163,7 @@ class PvHistoryChart extends Component {
     weatherStationPoint.forEach((weather, index) => {
       const pointDeciceName = Object.keys(weather.pointInfo);
       deviceInfo.forEach((device, deviceIndex) => {
+        console.log(preTotalNum+ index);
         if (pointDeciceName.includes(device.deviceCode)) {
           const mapNumber = preTotalNum + index; // 属于气象站数据中的顺序
           const lengendName = `${weather.pointName}-${device.deviceName}`;
@@ -177,8 +178,8 @@ class PvHistoryChart extends Component {
           });
           series.push({
             name: lengendName,
-            xAxisIndex: preTotalNum + index,
-            yAxisIndex: preTotalNum + index,
+            xAxisIndex: index + otherPoints.length,
+            yAxisIndex: index + otherPoints.length,
             type: 'line',
             symbol: 'circle',
             showSymbol: false,
