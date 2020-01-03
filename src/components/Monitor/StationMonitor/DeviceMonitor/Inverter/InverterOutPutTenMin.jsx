@@ -39,8 +39,8 @@ class InverterOutPutTenMin extends Component {
     const acPowerData = [], dcPowerData = [], radiationLineData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e => {
       xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm'));
-      acPowerData.push(+e.acPower); // 交流侧功率
-      dcPowerData.push(+e.dcPower); // 直流侧功率
+      acPowerData.push(e.acPower); // 交流侧功率
+      dcPowerData.push(e.dcPower); // 直流侧功率
       radiationLineData.push(e.instantaneous);
     });
     const maxArr = [...new Set(dcPowerData), ...new Set(acPowerData)];
