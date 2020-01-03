@@ -112,14 +112,61 @@ class PvHistoryChart extends Component {
 
   legendSeriesCreate = (pointData, deviceInfo) => { // 嵌套遍历生成相关的series 与legend;
     const series = [], legend = [];
-    const deviceNum = deviceInfo.length || 0;
+    const deviceNum = deviceInfo.length >= 2 ? deviceInfo.length - 1 : (deviceInfo.length || 0);
     const pointNum = pointData.length || 0;
+    const weatherStationPoint = []; // 气象站的测点
+    const otherPoints = []; // 除气象站外其他测点
+
     pointData.forEach((point, index) => {
-      const pointDeciceName = Object.keys(point.pointInfo);
+      const pointDeciceName = Object.keys(point.pointInfo).toString();
+      const strIndex = pointDeciceName.indexOf('M', 0);
+      const weatherStationId = pointDeciceName.substr(strIndex + 1, 3); // 截取出气象站的deviceCode
+      if (weatherStationId === '203') {
+        weatherStationPoint.push(point);
+      }else{
+        otherPoints.push(point);
+      }
+    });
+
+    otherPoints.forEach((point, index) => {
+      const pointDeciceName = Object.keys(point.pointInfo);
+        deviceInfo.forEach((device, deviceIndex) => {
+          if (pointDeciceName.includes(device.deviceCode)) {
+            const mapNumber = index * deviceNum + deviceIndex; // 属于其他数据中的顺序
+            const lengendName = `${point.pointName}-${device.deviceName}`;
+            legend.push({
+              top: 72 + 160 * pointNum + 24 * parseInt(mapNumber / 4, 0),
+              left: `${4 + (mapNumber % 4) * 23}%`,
+              textStyle: {
+                fontSize: 12,
+                color: '#353535',
+              },
+              data: [lengendName],
+            });
+            series.push({
+              name: lengendName,
+              xAxisIndex: index,
+              yAxisIndex: index,
+              type: 'line',
+              symbol: 'circle',
+              showSymbol: false,
+              lineStyle: {
+                width: 3,
+              },
+              data: point.pointInfo[device.deviceCode] || [],
+            });
+          }
+        });
+    });
+
+    const preTotalNum = otherPoints.length * deviceNum;
+    weatherStationPoint.forEach((weather, index) => {
+      const pointDeciceName = Object.keys(weather.pointInfo);
       deviceInfo.forEach((device, deviceIndex) => {
+        console.log(preTotalNum+ index);
         if (pointDeciceName.includes(device.deviceCode)) {
-          const mapNumber = index; // 属于所有数据中的顺序
-          const lengendName = `${point.pointName}-${device.deviceName}`;
+          const mapNumber = preTotalNum + index; // 属于气象站数据中的顺序
+          const lengendName = `${weather.pointName}-${device.deviceName}`;
           legend.push({
             top: 72 + 160 * pointNum + 24 * parseInt(mapNumber / 4, 0),
             left: `${4 + (mapNumber % 4) * 23}%`,
@@ -131,19 +178,21 @@ class PvHistoryChart extends Component {
           });
           series.push({
             name: lengendName,
-            xAxisIndex: index,
-            yAxisIndex: index,
+            xAxisIndex: index + otherPoints.length,
+            yAxisIndex: index + otherPoints.length,
             type: 'line',
             symbol: 'circle',
             showSymbol: false,
             lineStyle: {
               width: 3,
             },
-            data: point.pointInfo[device.deviceCode] || [],
+            data: weather.pointInfo[device.deviceCode] || [],
           });
         }
       });
     });
+    otherPoints.push(...weatherStationPoint);
+
     return { series, legend };
   };
 
