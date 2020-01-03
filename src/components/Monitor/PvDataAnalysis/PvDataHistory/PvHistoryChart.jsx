@@ -151,7 +151,7 @@ class PvHistoryChart extends Component {
               symbol: 'circle',
               showSymbol: false,
               lineStyle: {
-                width: 3,
+                width: 2,
               },
               data: point.pointInfo[device.deviceCode] || [],
             });
@@ -184,7 +184,7 @@ class PvHistoryChart extends Component {
             symbol: 'circle',
             showSymbol: false,
             lineStyle: {
-              width: 3,
+              width: 2,
             },
             data: weather.pointInfo[device.deviceCode] || [],
           });
