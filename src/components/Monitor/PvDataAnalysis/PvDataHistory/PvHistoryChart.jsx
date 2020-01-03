@@ -148,6 +148,9 @@ class PvHistoryChart extends Component {
               type: 'line',
               symbol: 'circle',
               showSymbol: false,
+              lineStyle: {
+                width: 3,
+              },
               data: point.pointInfo[device.deviceCode] || [],
             });
           }
@@ -302,4 +305,5 @@ class PvHistoryChart extends Component {
 }
 
 export default PvHistoryChart;
+
 
