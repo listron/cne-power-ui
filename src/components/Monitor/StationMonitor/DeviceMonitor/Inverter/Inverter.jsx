@@ -10,6 +10,7 @@ import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
 import searchUtil from '@utils/searchUtil';
+import moment from 'moment';
 
 class Seriesinverter extends Component {
   static propTypes = {
@@ -44,12 +45,14 @@ class Seriesinverter extends Component {
   }
 
   componentDidMount() {
+    const endTime = moment().endOf("day").utc().format();
+    const startTime = moment().endOf("day").utc().subtract(720, 'hours').format();
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
     const params = {
       stationCode,
       deviceCode,
       deviceTypeCode,
-      timeParam: '720',
+      timeParam: `${startTime}/${endTime}`,
     };
     this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode });
     this.props.getDeviceChartMonitor(params);
@@ -61,12 +64,14 @@ class Seriesinverter extends Component {
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
+    const endTime = moment().endOf("day").utc().format();
+    const startTime = moment().endOf("day").utc().subtract(720, 'hours').format();
     if (nextDevice !== deviceCode) {
       const params = {
         stationCode: nextStation,
         deviceCode: nextDevice,
         deviceTypeCode: nextType,
-        timeParam: '720',
+        timeParam: `${startTime}/${endTime}`,
       };
       this.props.stopMonitor(); // 停止之前的定时器。
       this.props.getDeviceInfoMonitor({
