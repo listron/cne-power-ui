@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
 import { themeConfig } from '@utils/darkConfig';
+import {dataFormats} from '@utils/utilFunc';
 import styles from './windRose.scss';
 
 export default class BigWindRose extends Component{
@@ -109,7 +110,7 @@ export default class BigWindRose extends Component{
           return `<div class=${styles.tooltip}>
               <span class=${styles.title}>${name}</span>
               <div class=${styles.info}>
-                <span>占比：</span><span>${data}</span><span>%</span>
+                <span>占比：</span><span>${dataFormats(data, '--', 2)}</span><span>%</span>
               </div>
             </div>`;
         },
