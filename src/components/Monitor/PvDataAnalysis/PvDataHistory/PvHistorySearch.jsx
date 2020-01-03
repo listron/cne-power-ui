@@ -148,7 +148,7 @@ class PvHistorySearch extends Component {
   onChangeTime = (dateMoment, dateString) => { // 按日选择
     this.historyDataFetch({
       startTime: moment(dateString[0]),
-      endTime: moment(dateString[1]),
+      endTime: moment(dateString[1]).endOf('day'),
     });
 
   };
@@ -197,7 +197,7 @@ class PvHistorySearch extends Component {
         },
         listParam,
       });
-    } else if (interval === 2) {
+    } else if (timeInterval === 2) { //由1min数据切换至秒级数据
       changeHistoryStore({
         queryParam: {
           ...tmpQueryParam,
@@ -224,7 +224,6 @@ class PvHistorySearch extends Component {
       });
 
     } else if (timeInterval === 10) { // 10min数据切换至秒级数
-      // message.info('请重新选择设备和时间');
       changeHistoryStore({
         queryParam: {
           ...tmpQueryParam,
@@ -234,10 +233,29 @@ class PvHistorySearch extends Component {
         allHistory: {},
         partHistory: {},
       });
-      // getPointInfo({
-      //   deviceFullCodes: deviceFullCodes.slice(0, 2),
-      //   timeInterval: interval,
-      // });
+      getChartHistory({
+        queryParam: {
+          ...tmpQueryParam,
+          startTime: moment().startOf('day'),
+          endTime: moment().format(),
+        },
+      });
+      getListHistory({
+        queryParam: {
+          ...tmpQueryParam,
+        },
+        listParam,
+      });
+    } else if (interval === 2) { // 由秒级数据切换到1分钟数据
+      changeHistoryStore({
+        queryParam: {
+          ...tmpQueryParam,
+          startTime: moment().startOf('day'),
+          endTime: moment().format(),
+        },
+        allHistory: {},
+        partHistory: {},
+      });
       getChartHistory({
         queryParam: {
           ...tmpQueryParam,
@@ -381,7 +399,7 @@ class PvHistorySearch extends Component {
               placeholder="数据时间"
             >
               {intervalInfo.map(e => (
-                <Option key={e} value={e}>{(e === 2 && '1分钟' || e === 10 && '10分钟' ) || `${e}秒`}</Option>
+                <Option key={e} value={e}>{(e === 2 && '1分钟' || e === 10 && '10分钟' ) || `${e}秒`}</Option>                
               ))}
             </Select>
           </div>
