@@ -37,7 +37,7 @@ class OutputTenMin extends Component {
 
   drawChart = (param, themeChange) => {
     const { capabilityData, yAxisUnit, stationCode, theme } = param;
-    const yAxisType = `交流侧功率(${yAxisUnit})`;
+    // const yAxisType = `交流侧功率(${yAxisUnit})`;
     let capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`), themeConfig[theme]);
     if (themeChange) {
       capabilityDiagram.dispose();
@@ -50,25 +50,25 @@ class OutputTenMin extends Component {
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
     const capabilityGraphic = filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0;
     // const graphic = capabilityGraphic && nodataLogo || {};
-    let labelInterval = 46; // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
-    const totalLength = capabilityData.length;
-    if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
-      labelInterval = parseInt(totalLength / 3, 10) - 1;
-    }
+    // let labelInterval = 46; // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
+    // const totalLength = capabilityData.length;
+    // if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
+    //   labelInterval = parseInt(totalLength / 3, 10) - 1;
+    // }
     const minPower = Math.min(...capabilityPower);
     const minRadiation = Math.min(...capabilityRadiation);
     const color = theme === 'dark' ? ['#a42b2c', '#00f8ff'] : ['#1e9475', '#f9b600'];
     const capabilityOption = {//出力图
       graphic: {
         type: 'image',
-        right: 'center',
-        top: 'center',
+        right: capabilityGraphic && 'center' || 2,
+        top: capabilityGraphic && 'center' || 30,
         z: -10,
         $action: 'replace',
         style: {
-          image: capabilityGraphic && '/img/noChartData1.png' || '',
-          width: 60,
-          height: 76,
+          image: capabilityGraphic && '/img/noChartData1.png' || '/img/picbg.png',
+          width: capabilityGraphic && 60 || 293,
+          height: capabilityGraphic && 76 || 120,
 
         },
       },
@@ -83,7 +83,7 @@ class OutputTenMin extends Component {
       grid: {
         show: false,
         bottom: 25,
-        left: 50,
+        // left: 50,
         // right: 17,
         top: 32,
       },
@@ -108,13 +108,20 @@ class OutputTenMin extends Component {
       xAxis: {
         type: 'category',
         splitNumber: 4,
-        boundaryGap: false,
+        min: '00', // 隐藏00时间刻度
+        // boundaryGap: false,
         data: capabilityData && capabilityData.map(e => {
-          return moment(e.utc).format('HH:mm');
+          return moment(e.utc).format('HH');
         }),
         axisLabel: {
-          interval: labelInterval,
+          // interval: labelInterval,
+          interval: 24,
           show: true,
+          color: '#999999',
+          padding: [0, 0, 0, 24],
+        },
+        axisLine: {
+          show: false,
         },
         axisTick: {
           show: false,
@@ -125,7 +132,7 @@ class OutputTenMin extends Component {
           },
         },
         splitLine: {
-          show: true,
+          show: false,
         },
         nameTextStyle: {
           color: '#999999',
@@ -140,20 +147,21 @@ class OutputTenMin extends Component {
           axisLabel: {
             formatter: '{value}',
             show: true,
+            color: '#999999',
           },
           nameTextStyle: {
             padding: [0, 0, 0, 20],
             color: '#999999',
           },
+          axisTick: {
+            show: false,
+          },
           axisLine: {
-            show: true,
+            show: false,
           },
-          splitArea: {
-            show: true,
-            areaStyle: {
-              color: ['#fbfbfb', '#ffffff'],
-            },
-          },
+          splitLine: {
+            show: false
+          }
         },
         {
           name: '辐射(W/m²)',
@@ -163,15 +171,13 @@ class OutputTenMin extends Component {
           min: minRadiation < 0 ? minRadiation : 0,
           axisLabel: {
             formatter: '{value}',
+            color: '#999999',
           },
           splitLine: {
             show: false,
           },
-          splitArea: {
-            show: true,
-            areaStyle: {
-              color: ['#fbfbfb', '#ffffff'],
-            },
+          axisTick: {
+            show: false,
           },
           nameTextStyle: {
             color: '#999999',
@@ -185,18 +191,19 @@ class OutputTenMin extends Component {
           // max: 100,
           axisLabel: {
             show: true,
+            color: '#999999',
+          },
+          axisTick: {
+            show: false,
           },
           axisLine: {
             show: false,
           },
-          splitArea: {
-            show: true,
-            areaStyle: {
-              color: ['#fbfbfb', '#ffffff'],
-            },
-          },
           nameTextStyle: {
             color: '#999999',
+          },
+          splitLine: {
+            show: false,
           },
         },
       ],
@@ -254,7 +261,7 @@ class OutputTenMin extends Component {
   render() {
     const { stationCode } = this.props;
     return (
-      <div id={`capabilityDiagram_${stationCode}`} style={{ width: 341, height: 176, color: '#353535' }}></div>
+      <div id={`capabilityDiagram_${stationCode}`} style={{width: 325, height: 176, color: '#353535', margin: '0 auto'}} />
     );
   }
 }
