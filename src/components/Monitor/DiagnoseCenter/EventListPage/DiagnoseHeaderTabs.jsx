@@ -32,11 +32,14 @@ class DiagnoseHeaderTabs extends Component {
       eventCode: null,
       eventStatus: null,
       eventLevel: null,
+      startTime: null, //  起始时间
+      endTime: null, // 终止事件
+      includeSummary: 1, // 1包括汇总信息, 0不包括
     };
     const listPage = { // 表格排序方式, 表格当前页, 表格每页数据量
       pageNum: 1,
       pageSize: 20,
-      sortField: '',
+      sortField: 'eventStatus',
       sortMethod: 'desc',
     };
     this.props.changeStore({ // 清空并重置当前页面所有数据
@@ -48,7 +51,7 @@ class DiagnoseHeaderTabs extends Component {
       summaryInfo: {}, // 汇总统计
       diagnoseUpdateTime: '--', // 表格数据更新时间
     });
-    this.props.circlingQueryList({}); // 启动下一个页面的定时实时请求
+    this.props.circlingQueryList({ ...listParams, ...listPage }); // 启动下一个页面的定时实时请求
   }
 
   render() {

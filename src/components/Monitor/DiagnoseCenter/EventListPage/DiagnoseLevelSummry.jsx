@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'antd';
-import moment from 'moment';
 import { WarningTotal, UpdateTime } from './FuncComponents';
 import { dataFormats } from '@utils/utilFunc';
 import styles from './eventListPage.scss';
@@ -10,6 +9,11 @@ class DiagnoseLevelSummry extends Component {
   static propTypes = {
     diagnoseUpdateTime: PropTypes.string,
     summaryInfo: PropTypes.object,
+    listParams: PropTypes.object,
+    listPage: PropTypes.object,
+    changeStore: PropTypes.func,
+    stopCircleQueryList: PropTypes.func,
+    getDiagnoseList: PropTypes.func,
   }
 
   warningLevels = [{
@@ -30,12 +34,38 @@ class DiagnoseLevelSummry extends Component {
     summaryKey: 'level4',
   }]
 
-  getLevelList = (eventLevel) => {
-    console.log('新等级列表请求 -> level ' + eventLevel);
+  getLevelList = (eventLevel) => { // 重新请求列表, 清空下方所有搜索条件, 停止定时请求;
+    const { listParams } = this.props;
+    const { eventType } = listParams;
+    this.props.stopCircleQueryList(); // 停止当前页面定时请求
+    const newListParams = { // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件, 
+      eventType,
+      finished: 0,
+      stationCode: null,
+      deviceTypeCode: null,
+      eventCode: null,
+      eventStatus: null,
+      eventLevel,
+      startTime: null, //  起始时间
+      endTime: null, // 终止事件
+      includeSummary: 1, // 1包括汇总信息, 0不包括
+    };
+    const listPage = { // 表格排序方式, 表格当前页, 表格每页数据量
+      pageNum: 1,
+      pageSize: 20,
+      sortField: 'eventStatus',
+      sortMethod: 'desc',
+    };
+    this.props.changeStore({ // 清空并重置筛选条件
+      listParams: newListParams,
+      listPage,
+    });
+    this.props.getDiagnoseList({ ...newListParams, ...listPage }); // 请求列表
   }
 
-  refresh = () => { // 
-    console.log('重新刷新refresh list data');
+  refresh = () => { // 以当前筛选条件再次请求列表
+    const { listParams, listPage } = this.props;
+    this.props.getDiagnoseList({ ...listParams, ...listPage }); // 请求列表
   }
 
   render() {

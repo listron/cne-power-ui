@@ -84,7 +84,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
-      sorter: true,
+      // sorter: true,
       className: styles.stationName,
       render: (text = '--') => (<div title={text} className={styles.stationNameText}>{text}</div>),
     }, {

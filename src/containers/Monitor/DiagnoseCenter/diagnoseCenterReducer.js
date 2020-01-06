@@ -25,11 +25,14 @@ const initState = {
     eventCode: null, // 标准事件编码
     eventStatus: null, // 事件状态编码
     eventLevel: null, // 事件级别
+    startTime: null, //  起始时间
+    endTime: null, // 终止事件
+    includeSummary: 1, // 1包括汇总信息, 0不包括
   }, // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件, 
   listPage: {
     pageNum: 1, // 页码
     pageSize: 20, // 页容量
-    sortField: '', // 排序字段 告警事件event_desc;事件级别warning_level;告警描述point_value_desc;设备类型device_type_name;设备名称device_name;发生时间begin_time;持续时长warning_duration
+    sortField: 'eventStatus', // 排序 告警事件eventCode;事件级别eventLevel;设备类型deviceTypeName;设备名称deviceName;发生时间beginTime;持续时长duration;事件状态eventStatus; 发生频次frequency
     sortMethod: 'desc', // 排序方式 asc升序 + desc降序
   }, // 表格排序方式, 表格当前页, 表格每页数据量
   eventstatus: [], // 事件状态信息

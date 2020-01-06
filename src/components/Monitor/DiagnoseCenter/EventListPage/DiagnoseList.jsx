@@ -10,6 +10,7 @@ import styles from './eventListPage.scss';
 class DiagnoseList extends Component {
   static propTypes = {
     pageKey: PropTypes.string,
+    diagnoseListLoading: PropTypes.bool,
     listParams: PropTypes.object,
     listPage: PropTypes.object,
     totalNum: PropTypes.number,
@@ -52,7 +53,7 @@ class DiagnoseList extends Component {
   }
 
   render() {
-    const { listPage, totalNum, diagnoseListData } = this.props;
+    const { listPage, totalNum, diagnoseListData, diagnoseListLoading } = this.props;
     const { pageNum, pageSize } = listPage || {};
 
     return (
@@ -75,6 +76,7 @@ class DiagnoseList extends Component {
         <CneTable
           columns={this.createColumn()}
           dataSource={diagnoseListData}
+          loading={diagnoseListLoading}
           // rowSelection={{
           //   selectedRowKeys: [],
           //   onChange: this.selectRows,

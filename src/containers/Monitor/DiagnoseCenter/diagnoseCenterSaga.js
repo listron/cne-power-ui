@@ -101,7 +101,7 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
       });
       if (response.code === '10000') {
         yield call(easyPut, 'fetchSuccess', {
-          diagnoseListData: response.data.list.map(e => ({ ...e, key: e.diagWarningId })) || [],
+          diagnoseListData: response.data.list.slice(0, 3).map(e => ({ ...e, key: e.diagWarningId })) || [],
           totalNum: response.data.total || 0,
           summaryInfo: response.data.summary || {},
           diagnoseUpdateTime: moment().format('YYYY-MM-DD HH:mm'), // 更新表格数据时间
@@ -164,50 +164,44 @@ function* stopCircleQueryList(){ // 停止10s周期调用列表
 function* getEventsAnalysis({ payload = {} }) { // 诊断分析
   //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒, date日期, eventCode事件类型编码 }
   try {
-    // const { diagWarningId, deviceFullcode, eventCode, beginTime } = payload;
-    // const params = {
-    //   diagWarningId,
-    //   deviceFullcode,
-    //   eventCode,
-    //   date: beginTime,
-    // };
-    // analysisEvent = ({ diagWarningId, deviceFullcode, beginTime, eventCode}) => {
-    //   this.props.getEventsAnalysis({
-    //     diagWarningId, deviceFullcode, eventCode,
-    //     date: beginTime,
-    //   });
-    // }
-    // const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
-    // const response = yield call(request.get, url, { params });
-    // if (response.code === '10000') {
+    const { diagWarningId, deviceFullcode, eventCode, beginTime } = payload;
+    const params = {
+      diagWarningId,
+      deviceFullcode,
+      eventCode,
+      date: beginTime,
+    };
+    const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
+    const response = yield call(request.get, url, { params });
+    if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         showAnalysisPage: true,
         analysisEvent: payload,
-        eventAnalysisInfo: {
-          period: [{
-            beginTime: '2018-01-01',
-            endTime: '2018-01-02',
-          }, {
-            beginTime: '2018-01-04',
-            endTime: '2018-01-05',
-          }],
-          data: {
-            time: ['2018-01-01', '2018-01-02', '2018-01-03', '2018-01-04', '2018-01-05', '2018-01-06'],
-            pointData: [4, 5, 6].map(e => ({
-              deviceFullCode: `M${e}M${e * e}`,
-              deviceName: `M${e}M${e * e}`,
-              pointCode: `M${e}M${e * e}`,
-              pointName: `测点${e * e}${e * 7}`,
-              value: [1, 2, 3, 4, 5, 6].map(e => [
-                e + 1, e * 2, e * 7, e * e, e * (e + 1), e * 9,
-              ]),
-            })),
-          },
-          chartType: 1, // 1折线, 2比值
-        },
-      // eventAnalysisInfo: response.data || {},
+        // eventAnalysisInfo: {
+        //   period: [{
+        //     beginTime: '2018-01-01',
+        //     endTime: '2018-01-02',
+        //   }, {
+        //     beginTime: '2018-01-04',
+        //     endTime: '2018-01-05',
+        //   }],
+        //   data: {
+        //     time: ['2018-01-01', '2018-01-02', '2018-01-03', '2018-01-04', '2018-01-05', '2018-01-06'],
+        //     pointData: [4, 5, 6].map(e => ({
+        //       deviceFullCode: `M${e}M${e * e}`,
+        //       deviceName: `M${e}M${e * e}`,
+        //       pointCode: `M${e}M${e * e}`,
+        //       pointName: `测点${e * e}${e * 7}`,
+        //       value: [1, 2, 3, 4, 5, 6].map(e => [
+        //         e + 1, e * 2, e * 7, e * e, e * (e + 1), e * 9,
+        //       ]),
+        //     })),
+        //   },
+        //   chartType: 1, // 1折线, 2比值
+        // },
+        eventAnalysisInfo: response.data || {},
       });
-    // } else { throw response.message; }
+    } else { throw response.message; }
   } catch (error) {
     message.error(`告警事件分析结果获取失败, ${error}`);
     yield call(easyPut, 'changeStore', {
