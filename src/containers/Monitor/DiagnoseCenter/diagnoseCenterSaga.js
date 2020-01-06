@@ -33,19 +33,19 @@ function* getEventstatus(){ // 获取事件状态
   try {
     const url = `${APIBasePath}${monitor.getEventstatus}`;
     const response = yield call(request.get, url);
-    // if (response.code === '10000') {
-      // yield call(easyPut, 'fetchSuccess', { eventstatus: response.data || [] });
-      yield call(easyPut, 'fetchSuccess', { eventstatus: [{
-        statusCode: 112,
-        statusName: '状态一种',
-      }, {
-        statusCode: 123,
-        statusName: '二种',
-      }, {
-        statusCode: 321,
-        statusName: '三兄弟',
-      }]});
-    // } else { throw response.message; }
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', { eventstatus: response.data || [] });
+      // yield call(easyPut, 'fetchSuccess', { eventstatus: [{
+      //   statusCode: 112,
+      //   statusName: '状态一种',
+      // }, {
+      //   statusCode: 123,
+      //   statusName: '二种',
+      // }, {
+      //   statusCode: 321,
+      //   statusName: '三兄弟',
+      // }]});
+    } else { throw response.message; }
   } catch (error) {
     message.error(`事件状态获取失败, ${error}`);
     yield call(easyPut, 'changeStore', { eventstatus: [] });
@@ -59,17 +59,17 @@ function* getEventtypes({ payload = {} }) { // 获取事件类型
   try {
     const url = `${APIBasePath}${monitor.getEventtypes}`;
     const response = yield call(request.get, url, { params: payload });
-    // if (response.code === '10000') {
+    if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
-        // [eventTypeInfo[eventType - 1]]: response.data || [],
-        [eventTypeInfo[eventType - 1]]: [1, 2, 3, 4].map(e => ({
-          eventCode: e * e,
-          eventName: `类型${e}`,
-          deviceTypeCode: e * (e + 1),
-          deviceTypeName: `设备${e*2}类型名`,
-        })),
+        [eventTypeInfo[eventType - 1]]: response.data || [],
+        // [eventTypeInfo[eventType - 1]]: [1, 2, 3, 4].map(e => ({
+        //   eventCode: e * e,
+        //   eventName: `类型${e}`,
+        //   deviceTypeCode: e * (e + 1),
+        //   deviceTypeName: `设备${e*2}类型名`,
+        // })),
       });
-    // } else { throw response.message; }
+    } else { throw response.message; }
   } catch (error) {
     message.error(`事件类型信息获取失败, ${error}`);
     yield call(easyPut, 'changeStore', {
@@ -94,48 +94,48 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
       const url = `${APIBasePath}${monitor.getDiagnoseList}`;
       yield call(easyPut, 'changeStore', { diagnoseListLoading: true });
       const { listParams, listPage } = yield select(state => state.monitor.diagnoseCenter);
-      // const response = yield call(request.get, url, { params: {
-      //   ...listParams,
-      //   ...listPage,
-      //   ...payload,
-      // }});
-      // if (response.code === '10000') {
+      const response = yield call(request.post, url, {
+        ...listParams,
+        ...listPage,
+        ...payload,
+      });
+      if (response.code === '10000') {
         yield call(easyPut, 'fetchSuccess', {
-          // diagnoseListData: response.data.list.map(e => ({ ...e, key: e.diagWarningId })) || [],
-          // totalNum: response.data.total || 0,
-          // summaryInfo: response.data.summary || {},
+          diagnoseListData: response.data.list.map(e => ({ ...e, key: e.diagWarningId })) || [],
+          totalNum: response.data.total || 0,
+          summaryInfo: response.data.summary || {},
           diagnoseUpdateTime: moment().format('YYYY-MM-DD HH:mm'), // 更新表格数据时间
-          diagnoseListData: [1, 2, 3].map(e => ({
-            key: `M${e}M${e * e}M${e ** e}`,
-            diagWarningId: `M${e}M${e * e}M${e ** e}`,
-            eventCode: e * e,
-            eventName: `事件${e}`,
-            statusCode: `状态${e + 10}`,
-            statusName: `${e + 12}状态`,
-            warningLevel: e,
-            pointCode: `M${e}MM${e * e}MMM${e ** e}`,
-            pointValueDesc: `${e * e}${Math.random()}`,
-            deviceTypeCode: `${e}M设备类型`,
-            deviceTypeName: `${e}M设备类型`,
-            stationCode: `${e}电站code`,
-            stationName: `${e}M电站名称`,
-            deviceFullcode: `M${e}MM${e * e}MMM${e ** e}`,
-            deviceName: `设备名${e}M${e * e}M${e ** e}`,
-            beginTime: `2019-0${e}-${e}${e}`,
-            warningDuration: e ** e,
-            warningFrequency: e ** e + e * e + e,
-          })),
-          totalNum: 87,
-          summaryInfo: {
-            total: 1137 + Math.ceil(Math.random() * 1000),
-            level1: 100 + Math.ceil(Math.random() * 100),
-            level2: 200 + Math.ceil(Math.random() * 200),
-            level3: 300 + Math.ceil(Math.random() * 300),
-            level4: 400 + Math.ceil(Math.random() * 400),
-          },
+          // diagnoseListData: [1, 2, 3].map(e => ({
+          //   key: `M${e}M${e * e}M${e ** e}`,
+          //   diagWarningId: `M${e}M${e * e}M${e ** e}`,
+          //   eventCode: e * e,
+          //   eventName: `事件${e}`,
+          //   statusCode: `状态${e + 10}`,
+          //   statusName: `${e + 12}状态`,
+          //   warningLevel: e,
+          //   pointCode: `M${e}MM${e * e}MMM${e ** e}`,
+          //   pointValueDesc: `${e * e}${Math.random()}`,
+          //   deviceTypeCode: `${e}M设备类型`,
+          //   deviceTypeName: `${e}M设备类型`,
+          //   stationCode: `${e}电站code`,
+          //   stationName: `${e}M电站名称`,
+          //   deviceFullcode: `M${e}MM${e * e}MMM${e ** e}`,
+          //   deviceName: `设备名${e}M${e * e}M${e ** e}`,
+          //   beginTime: `2019-0${e}-${e}${e}`,
+          //   warningDuration: e ** e,
+          //   warningFrequency: e ** e + e * e + e,
+          // })),
+          // totalNum: 87,
+          // summaryInfo: {
+          //   total: 1137 + Math.ceil(Math.random() * 1000),
+          //   level1: 100 + Math.ceil(Math.random() * 100),
+          //   level2: 200 + Math.ceil(Math.random() * 200),
+          //   level3: 300 + Math.ceil(Math.random() * 300),
+          //   level4: 400 + Math.ceil(Math.random() * 400),
+          // },
           diagnoseListLoading: false,
         });
-      // } else { throw response.message; }
+      } else { throw response.message; }
     } catch (error) {
       message.error(`事件列表获取失败, ${error}`);
       yield call(easyPut, 'changeStore', {
@@ -149,7 +149,7 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
 
 function* circlingQueryList({ payload = {} }){ // 启动10s周期调用列表
   circleTimer = yield fork(getDiagnoseList, { payload });
-  yield delay(2000);
+  yield delay(10000000);
   if (circleTimer) {
     circleTimer = yield fork(circlingQueryList, { payload });
   }

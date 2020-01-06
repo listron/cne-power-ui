@@ -16,7 +16,8 @@ class DiagnoseCenter extends Component {
     showAnalysisPage: PropTypes.bool,
     getEventstatus: PropTypes.func,
     getEventtypes: PropTypes.func,
-    getDiagnoseList: PropTypes.func,
+    circlingQueryList: PropTypes.func,
+    stopCircleQueryList: PropTypes.func,
     reset: PropTypes.func,
   }
 
@@ -29,7 +30,7 @@ class DiagnoseCenter extends Component {
     this.props.getEventtypes({ eventType: 1 });
     this.props.getEventtypes({ eventType: 2 });
     this.props.getEventtypes({ eventType: 3 });
-    this.props.getDiagnoseList({});
+    this.props.circlingQueryList({}); // 以默认参数启动告警中心数据请求;
   }
 
   componentWillReceiveProps(nextProps){
@@ -44,6 +45,7 @@ class DiagnoseCenter extends Component {
   }
 
   componentWillUnmount(){
+    this.props.stopCircleQueryList(); // 停止定时请求
     this.props.reset();
   }
 

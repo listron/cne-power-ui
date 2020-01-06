@@ -22,13 +22,33 @@ class DiagnoseHeaderTabs extends Component {
   }]
 
   changePage = (pageKey) => {
-    console.log(pageKey);
-    // 停止当前页面定时请求
-    this.props.stopCircleQueryList();
-    // 清空并重置当前页面所有数据
-    this.props.changeStore({ pageKey });
-    // 启动下一个页面的定时实时请求
-    this.props.circlingQueryList({});
+    this.props.stopCircleQueryList(); // 停止当前页面定时请求
+    const eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
+    const listParams = { // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件, 
+      eventType,
+      finished: 0,
+      stationCode: null,
+      deviceTypeCode: null,
+      eventCode: null,
+      eventStatus: null,
+      eventLevel: null,
+    };
+    const listPage = { // 表格排序方式, 表格当前页, 表格每页数据量
+      pageNum: 1,
+      pageSize: 20,
+      sortField: '',
+      sortMethod: 'desc',
+    };
+    this.props.changeStore({ // 清空并重置当前页面所有数据
+      pageKey,
+      listParams,
+      listPage,
+      diagnoseListData: [],
+      totalNum: 0, // 总量
+      summaryInfo: {}, // 汇总统计
+      diagnoseUpdateTime: '--', // 表格数据更新时间
+    });
+    this.props.circlingQueryList({}); // 启动下一个页面的定时实时请求
   }
 
   render() {
