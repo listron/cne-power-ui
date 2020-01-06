@@ -7,6 +7,7 @@ import DevicePointsTable from '../DeviceMonitorCommon/DevicePointsTable';
 import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
+import moment from 'moment';
 
 class Boxtransformer extends Component {
   static propTypes = {
@@ -27,12 +28,14 @@ class Boxtransformer extends Component {
   }
 
   componentDidMount() {
+    const endTime = moment().endOf("day").utc().format();
+    const startTime = moment().endOf("day").utc().subtract(72, 'hours').format();
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
     const params = {
       stationCode,
       deviceCode,
       deviceTypeCode,
-      timeParam: '72',
+      timeParam: `${startTime}/${endTime}`,
     };
     this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode });
     this.props.getDeviceChartMonitor(params);
@@ -44,12 +47,15 @@ class Boxtransformer extends Component {
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
+
+    const endTime = moment().endOf("day").utc().format();
+    const startTime = moment().endOf("day").utc().subtract(72, 'hours').format();
     if (nextDevice !== deviceCode) {
       const params = {
         stationCode: nextStation,
         deviceCode: nextDevice,
         deviceTypeCode: nextType,
-        timeParam: '72',
+        timeParam: `${startTime}/${endTime}`,
       };
       this.props.stopMonitor(); // 停止之前的定时器。
       this.props.getDeviceInfoMonitor({
