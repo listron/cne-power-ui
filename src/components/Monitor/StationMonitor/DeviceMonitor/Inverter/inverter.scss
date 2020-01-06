@@ -35,7 +35,7 @@
     display: inline-block;
     margin-right: 18px;
     margin-bottom: 20px;
-    width: 222px;
+    width: 318px;
     border-radius: 2px;
     font-size: 12px;
     cursor: pointer;
@@ -70,14 +70,14 @@
       }
       .deviceItemR {
         display: inline-block;
-        width: 165px;
+        width: 261px;
         .deviceBlockName {
           display: flex;
           justify-content: space-between;
           margin-bottom: -4px;
           margin-top: 7px;
           .deviceName {
-            width: 135px;
+            width: 231px;
             @include overflowText();
           }
         }
@@ -131,9 +131,8 @@
         border-radius: 2px;
         margin-right: 2px;
         margin-bottom: 2px;
-        font-size: 7px;
         text-align: center;
-        min-width: 22px;
+        min-width:36px;
         &:nth-child(8n + 4) {
           margin-right: 8px;
         }
@@ -208,7 +207,7 @@
       }
       .deviceItemR {
         display: inline-block;
-        width: 165px;
+        width: 261px;
         color: $darkColor;
         .realDevicePower {
           color: $themeColor;
