@@ -15,12 +15,11 @@ class PerformanceAnalysisFilter extends Component {
     getFault: PropTypes.func,
     changePerformanceAnalysisStore: PropTypes.func,
     stations: PropTypes.array,
-    deviceTypeCode: PropTypes.array,
+    // deviceTypeCode: PropTypes.array,
     getDeviceModels: PropTypes.func,
     getEleLineCode: PropTypes.func,
     startDate: PropTypes.string,
     endDate: PropTypes.string,
-    deviceModels: PropTypes.array,
     stationCode: PropTypes.any,
     getEleDeviceData: PropTypes.func,
     contrastSwitch: PropTypes.bool,
@@ -108,7 +107,7 @@ class PerformanceAnalysisFilter extends Component {
   getData = (values) => { // 获取普通的数据
     const { stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode, targetTabs } = this.props;
     const params = { stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode };
-    if (targetTabs === '1') {
+    if (targetTabs === '1' && deviceTypeCode === '201,206') {
       this.props.getPerformance({ ...params, ...values });
     } else {
       this.props.getFault({ ...params, ...values });
@@ -118,7 +117,7 @@ class PerformanceAnalysisFilter extends Component {
   getContrastData = (values) => { // 获取对比周期的数据
     const { stationCode, startDate, endDate, contrastStartDate, contrastEndDate, deviceTypeCode, deviceModeTypeCode, electricLineCode, targetTabs } = this.props;
     const params = { stationCode, startDate, endDate, contrastStartDate, contrastEndDate, deviceTypeCode, deviceModeTypeCode, electricLineCode };
-    if (targetTabs === '1') {
+    if (targetTabs === '1' && deviceTypeCode === '201,206') {
       this.props.getPerformanceContrast({ ...params, ...values });
     } else {
       this.props.getFaultContrast({ ...params, ...values });
@@ -136,7 +135,7 @@ class PerformanceAnalysisFilter extends Component {
   }
 
   stationSelected = (stationSelect) => { // 选择电站
-    const deviceTypeCode = [201, 206];
+    const deviceTypeCode = '201,206';
     const stationCode = stationSelect[0].stationCode;
     this.props.changePerformanceAnalysisStore({
       stationCode,
@@ -149,12 +148,15 @@ class PerformanceAnalysisFilter extends Component {
       deviceModeCode: null,
       deviceModeTypeCode: null,
       timeType: 'last30',
+      deviceTypeCode,
     });
     this.props.getEleLineCode({
       stationCode,
       deviceTypeCode: 302,
     });
-    this.getData({ stationCode, deviceTypeCode, deviceModeTypeCode: null, electricLineCode: null });
+    setTimeout(() => {
+      this.getData({ stationCode, deviceTypeCode, deviceModeTypeCode: null, electricLineCode: null });
+    }, 1000);
   };
 
   timeSelectMonth = (date, dateString) => { // 时间的选择
@@ -171,12 +173,26 @@ class PerformanceAnalysisFilter extends Component {
   }
 
   selectDeviceType = (value) => { // 选择设备类型,此处不可选设备类型
+    const { contrastSwitch } = this.props;
+    const targetTabs = value !== '201,206' ? '2' : '1';
+    this.props.changePerformanceAnalysisStore({
+      deviceTypeCode: value,
+      targetTabs: targetTabs,
+    });
+    setTimeout(() => {
+      if (contrastSwitch) {
+        this.getContrastData({ deviceTypeCode: value });
+      } else {
+        this.getData({ deviceTypeCode: value });
+      }
+    }, 1000);
+
   }
 
   selectEleLine = (value) => { // 选择集电线路
     const { changePerformanceAnalysisStore, contrastSwitch, getEleDeviceData } = this.props;
     const deviceModeTypeCode = null;
-    const deviceTypeCode = [201, 206];
+    const deviceTypeCode = '201,206';
     changePerformanceAnalysisStore({
       electricLineCode: value,
       deviceModeTypeCode,
@@ -194,7 +210,7 @@ class PerformanceAnalysisFilter extends Component {
   selectDeviceModel = (value) => { // 选择设备型号
     const { contrastSwitch, changePerformanceAnalysisStore } = this.props;
     const deviceModeTypeCode = value && Number(value.split('__')[0]);
-    const deviceTypeCode = value ? [Number(value.split('__')[1])] : [201, 206];
+    const deviceTypeCode = value ? value.split('__')[1] : '201,206';
     changePerformanceAnalysisStore({
       deviceModeCode: value,
       deviceModeTypeCode: deviceModeTypeCode,
@@ -238,7 +254,7 @@ class PerformanceAnalysisFilter extends Component {
 
   render() {
     const { Option } = Select;
-    const { stationCode, stations, contrastSwitch, deviceModeCode, eleLineCodeData, electricLineCode, eleDeviceModels, theme } = this.props;
+    const { stationCode, stations, contrastSwitch, deviceModeCode, deviceTypeCode, eleLineCodeData, electricLineCode, eleDeviceModels, theme } = this.props;
     const station = stationCode ? stations.filter(e => `${e.stationCode}` === `${stationCode}`) : '';
     return (
       <div className={`${styles.performanceSearch} ${styles[theme]}`}>
@@ -278,9 +294,12 @@ class PerformanceAnalysisFilter extends Component {
           <Select
             placeholder="请选择设备类型"
             onChange={this.selectDeviceType}
-            value={null}
+            value={deviceTypeCode}
             getPopupContainer={() => this.refs.performanceSearch}>
-            <Option key={null} value={null}>{'逆变器'}</Option>
+            <Option key={'逆变器'} value={'201,206'}>{'逆变器'}</Option>
+            <Option key={'汇流箱'} value={'202'}>{'汇流箱'}</Option>
+            <Option key={'箱变'} value={'304'}>{'箱变'}</Option>
+
           </Select>
           <Select
             className={styles.modelSelect}

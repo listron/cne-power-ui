@@ -70,7 +70,7 @@ class PerformanceAnalysisTabs extends Component {
 
   render() {
     const TabPane = Tabs.TabPane;
-    const { targetTabs, loading, theme } = this.props;
+    const { targetTabs, loading, theme, deviceTypeCode } = this.props;
     const { contrastSwitch, contrastEndDate, conversionAvgRate, conversioneffData, faultTimeData, faultNumData, lostPowerData, availabilityData, hourData, contrastAvgRate, contrastConversionAvgRate, conversioneffContrastData, faultTimeContrastData, faultNumContrastData, lostPowerContrastData, availabilityContrastData, hourContrastData, conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames, conversionNullValue, hourNullValue, faultNumNullvalue, faultTimeNullValue } = this.props;
     //转化效率
     const xData = conversioneffData.map(e => e.deviceName) || [];
@@ -268,7 +268,7 @@ class PerformanceAnalysisTabs extends Component {
     return (
       <div className={`${styles.targetTabs} ${styles[theme]}`}>
         <Tabs activeKey={targetTabs} onChange={this.queryData} animated={false} >
-          <TabPane tab="发电性能" key="1">
+          {deviceTypeCode === '201,206' && <TabPane tab="发电性能" key="1">
             <div className={styles.chartsContainer}>
               <div className={styles.chart}>
                 <PerformanceCharts
@@ -322,7 +322,7 @@ class PerformanceAnalysisTabs extends Component {
 
               </div>
             </div>
-          </TabPane>
+          </TabPane>}
           <TabPane tab="故障情况" key="2">
             <div className={styles.chartsContainer}>
               <div className={styles.chart}>
