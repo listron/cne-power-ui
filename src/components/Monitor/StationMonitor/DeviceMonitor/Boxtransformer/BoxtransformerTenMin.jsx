@@ -70,7 +70,7 @@ class BoxtransformerTenMin extends Component {
           params.forEach(item => {
             const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
             paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
-              ${item.seriesName} :  ${dataFormat(item.value, 2, '--')} 
+              ${item.seriesName} :  ${dataFormat(item.value, '--', 2)} 
             </div>`;
           });
           return (
