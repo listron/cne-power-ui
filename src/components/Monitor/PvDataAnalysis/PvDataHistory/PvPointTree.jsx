@@ -72,9 +72,19 @@ class PvPointTree extends Component {
       ...queryParam,
       devicePoints: selectedKeys,
     };
-    const tmpAllowedEnd = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
+    const tmpEndTime = {
+      10: moment(endTime).subtract(1, 'M'),
+      2: moment(endTime).subtract(14, 'd'),
+      5: moment(endTime).subtract(1, 'd'),
+    };
+    const tmpAllowedEnd = tmpEndTime[timeInterval];
+    const tmpText = {
+      10: '时间选择范围不可超过1个月',
+      2: '时间选择范围不可超过14天',
+      5: '时间选择范围不可超过1天',
+    };
     if (startTime.isBefore(tmpAllowedEnd, 's')) {
-      message.error(`${timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}`);
+      message.error(tmpText[timeInterval]);
       changeHistoryStore({
         queryParam: newQueryParam,
       });
@@ -104,11 +114,19 @@ class PvPointTree extends Component {
       ...queryParam,
       devicePoints: [...newSelectPointArr],
     };
-
-
-    const tmpAllowedEnd = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
+    const tmpEndTime = {
+      10: moment(endTime).subtract(1, 'M'),
+      2: moment(endTime).subtract(14, 'd'),
+      5: moment(endTime).subtract(1, 'd'),
+    };
+    const tmpAllowedEnd = tmpEndTime[timeInterval];
+    const tmpText = {
+      10: '时间选择范围不可超过1个月',
+      2: '时间选择范围不可超过14天',
+      5: '时间选择范围不可超过1天',
+    };
     if (startTime.isBefore(tmpAllowedEnd, 's')) {
-      message.error(`${timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}`);
+      message.error(tmpText[timeInterval]);
       changeHistoryStore({
         queryParam: newQueryParam,
       });
