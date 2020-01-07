@@ -300,7 +300,6 @@ class PvHistoryChart extends Component {
             <img width="223" height="164" src="/img/nodata.png" />
           </div>}
       </section>
-
     );
   }
 }
