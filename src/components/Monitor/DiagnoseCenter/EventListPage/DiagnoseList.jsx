@@ -33,7 +33,7 @@ class DiagnoseList extends Component {
   }
 
   analysisEvent = (record) => {
-    this.props.getEventsAnalysis(record);
+    this.props.getEventsAnalysis({ ...record, interval: 1 }); // 默认十分钟数据
   }
 
   // selectRows = (selectedRowKeys) => { // todo 工单系统改造完成后, 操作功能添加

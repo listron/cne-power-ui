@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Icon, Select, DatePicker } from 'antd';
 import ChartLine from './ChartLine';
 import styles from './eventAnalysis.scss';
+import moment from 'moment';
 const { Option } = Select;
 
 class EventAnalysisPage extends PureComponent {
@@ -11,6 +12,7 @@ class EventAnalysisPage extends PureComponent {
     pageKey: PropTypes.string,
     analysisEvent: PropTypes.object,
     changeStore: PropTypes.func,
+    getEventsAnalysis: PropTypes.func,
   };
 
   titleName = {
@@ -32,16 +34,18 @@ class EventAnalysisPage extends PureComponent {
   }
 
   onIntervalChange = (interval) => {
-    console.log(interval);
+    const { analysisEvent } = this.props;
+    this.props.getEventsAnalysis({ ...analysisEvent, interval }); // 默认十分钟数据
   }
 
-  onDateChange = (date) => {
-    console.log(date);
+  onDateChange = (momentTime, beginTime) => {
+    const { analysisEvent } = this.props;
+    this.props.getEventsAnalysis({ ...analysisEvent, beginTime }); // 默认十分钟数据
   }
 
   render(){
     const { pageKey, analysisEvent } = this.props;
-    const { eventName, pointValueDesc, deviceTypeName } = analysisEvent || {};
+    const { eventName, pointValueDesc, deviceTypeName, beginTime, interval } = analysisEvent || {};
     return (
       <section className={styles.eventAnalysis}>
         <h3 className={styles.detailTop}>
@@ -65,12 +69,21 @@ class EventAnalysisPage extends PureComponent {
           <strong className={styles.searchText}>告警诊断指标时序图</strong>
           <span className={styles.searchParts}>
             <span className={styles.intervalText}>数据时间间隔</span>
-            <Select className={styles.intervalSelect} style={{ width: '114px' }} onChange={this.onIntervalChange}>
+            <Select
+              className={styles.intervalSelect}
+              onChange={this.onIntervalChange}
+              value={interval}
+            >
               <Option value={1}>10分钟</Option>
               <Option value={2}>5秒钟</Option>
             </Select>
             <Icon className={styles.leftIcon} type="left" />
-            <DatePicker className={styles.dateSelect} style={{ width: '128px' }} onChange={this.onDateChange} />
+            <DatePicker
+              value={beginTime? moment(beginTime) : null}
+              className={styles.dateSelect}
+              onChange={this.onDateChange}
+              allowClear={false}
+            />
             <Icon className={styles.rightIcon} type="right" />
           </span>
         </div>

@@ -155,15 +155,18 @@ function* stopCircleQueryList(){ // 停止10s周期调用列表
 }
 
 function* getEventsAnalysis({ payload = {} }) { // 诊断分析
-  //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒, date日期, eventCode事件类型编码 }
+  //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒, date日期, eventCode事件类型编码eventType: 1告警事件2诊断事件3数据事件 }
   try {
     const { diagWarningId, deviceFullcode, eventCode, beginTime } = payload;
+    const { pageKey } = yield select(state => state.monitor.diagnoseCenter);
+    const eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
     const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
     const response = yield call(request.get, url, { params: {
-      diagWarningId,
-      deviceFullcode,
-      eventCode,
-      date: moment(beginTime).format('YYYY-MM-DD'),
+      diagWarningId: 477149066110719,
+      deviceFullcode: '350M201M2M61',
+      eventCode: 'NB0043',
+      eventType: 1,
+      date: '2019-01-06', // moment(beginTime).format('YYYY-MM-DD'),
     }});
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
@@ -191,7 +194,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
         //   },
         //   chartType: 1, // 1折线, 2比值
         // },
-        eventAnalysisInfo: response.data || {},
+        eventAnalysisInfo: response.data[0] || {}, // 01.06
       });
     } else { throw response.message; }
   } catch (error) {

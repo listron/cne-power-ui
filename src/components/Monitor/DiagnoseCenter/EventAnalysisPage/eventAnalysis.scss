@@ -70,9 +70,13 @@
       line-height: 60px;
       .intervalSelect{
         margin: 0 40px 0 4px;
+        width: 114px;
         :global{
           .ant-select-selection{
             height: 24px;
+          }
+          .ant-select-selection__rendered{
+            line-height: 22px;
           }
         }
       }
@@ -84,6 +88,7 @@
       }
       .dateSelect{
         margin: 0 4px;
+        width: 128px;
         :global{
           .ant-calendar-picker-input.ant-input{
             height: 24px;
