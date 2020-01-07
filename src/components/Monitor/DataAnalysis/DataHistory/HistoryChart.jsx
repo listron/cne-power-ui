@@ -244,7 +244,7 @@ class HistoryChart extends Component {
 
 
         </h4>
-        {(chartTime) ? <div className={styles.innerChart} id="dataHistoryChart" style={(pointData && pointData.length > 0) ? {height: `${chartHeight}px` } : {height: '0px' }} /> :
+        {(chartTime) ? <div className={styles.innerChart} id="dataHistoryChart" style={{height: `${chartHeight}px` }} /> :
           <div className={styles.nodata}>
             <img width="223" height="164" src="/img/nodata.png" />
           </div>}

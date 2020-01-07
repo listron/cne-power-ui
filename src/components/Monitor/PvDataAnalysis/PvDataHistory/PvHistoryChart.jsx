@@ -163,7 +163,6 @@ class PvHistoryChart extends Component {
     weatherStationPoint.forEach((weather, index) => {
       const pointDeciceName = Object.keys(weather.pointInfo);
       deviceInfo.forEach((device, deviceIndex) => {
-        console.log(preTotalNum+ index);
         if (pointDeciceName.includes(device.deviceCode)) {
           const mapNumber = preTotalNum + index; // 属于气象站数据中的顺序
           const lengendName = `${weather.pointName}-${device.deviceName}`;
@@ -296,12 +295,11 @@ class PvHistoryChart extends Component {
           <span className={styles.tipTitle}>数据为瞬时值</span>
 
         </h4>
-        {(chartTime) ? <div className={styles.innerChart} id="dataHistoryChart" style={(pointData && pointData.length > 0) ? {height: `${chartHeight}px` } : {height: '0px' }} /> :
+        {(chartTime) ? <div className={styles.innerChart} id="dataHistoryChart" style={{height: `${chartHeight}px` }} /> :
           <div className={styles.nodata}>
             <img width="223" height="164" src="/img/nodata.png" />
           </div>}
       </section>
-
     );
   }
 }
