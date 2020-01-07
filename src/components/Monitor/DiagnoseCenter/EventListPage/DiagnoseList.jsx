@@ -16,6 +16,9 @@ class DiagnoseList extends Component {
     totalNum: PropTypes.number,
     diagnoseListData: PropTypes.array,
     getEventsAnalysis: PropTypes.func,
+    stopCircleQueryList: PropTypes.func,
+    changeStore: PropTypes.func,
+    getDiagnoseList: PropTypes.func,
   }
 
   createColumn = () => {
@@ -37,19 +40,40 @@ class DiagnoseList extends Component {
   //   console.log(selectedRowKeys);
   // }
 
-  onPaginationChange = ({ currentPage, pageSize }) => {
-    console.log({ currentPage, pageSize });
-    // const { listParams } = this.props;
-    // this.props.getDefectList({ ...listParams, pageNum: currentPage, pageSize });
+  onPaginationChange = ({ currentPage, pageSize }) => { // 分页排序点击 => 重新请求列表, 停止当前定时请求
+    this.props.stopCircleQueryList(); // 停止当前页面定时请求
+    const { listParams, listPage } = this.props;
+    const newListPage = {
+      ...listPage,
+      pageNum: currentPage,
+      pageSize,
+    };
+    this.props.changeStore({ listPage: newListPage });
+    this.props.getDiagnoseList({ ...listParams, ...newListPage });
   }
 
-  tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
-    console.log(pagination, filter, sorter);
-    // const { listParams } = this.props;
-    // const { order } = sorter;
-    // const sortMethod = order === 'ascend' ? 'asc' : 'desc';
-    // const sortField = this.getSortMethod[sorter.field] || 'create_time';
-    // this.props.getDefectList({ ...listParams, sortMethod, sortField, pageNum: 1 });
+  tableChange = (pagination, filter, sorter) => {// 分页排序点击 => 重新请求列表, 停止当前定时请求
+    this.props.stopCircleQueryList(); // 停止当前页面定时请求
+    const { field, order } = sorter;
+    const { listParams, listPage } = this.props;
+    let sortField= 'eventStatus', sortMethod = 'desc'; // 默认排序
+    if (field) { // 某指定排序
+      sortMethod = order === 'ascend' ? 'asc' : 'desc';
+      const sortFieldMap = {
+        eventName: 'eventCode',
+        warningLevel: 'eventLevel',
+        deviceTypeName: 'deviceTypeName',
+        deviceName: 'deviceName',
+        beginTime: 'beginTime',
+        warningDuration: 'duration',
+        warningFrequency: 'frequency',
+        statusName: 'eventStatus',
+      };
+      sortField = sortFieldMap[field];
+      const newListPage = { ...listPage, sortField, sortMethod };
+      this.props.changeStore({ listPage: newListPage });
+      this.props.getDiagnoseList({ ...listParams, ...newListPage });
+    }
   }
 
   render() {

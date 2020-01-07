@@ -52,7 +52,7 @@ class DiagnoseLevelSummry extends Component {
     };
     const listPage = { // 表格排序方式, 表格当前页, 表格每页数据量
       pageNum: 1,
-      pageSize: 20,
+      pageSize: 10,
       sortField: 'eventStatus',
       sortMethod: 'desc',
     };

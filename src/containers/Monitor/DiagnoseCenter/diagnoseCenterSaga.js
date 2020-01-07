@@ -94,7 +94,7 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
       });
       if (response.code === '10000') {
         yield call(easyPut, 'fetchSuccess', {
-          diagnoseListData: response.data.list.slice(0, 3).map(e => ({ ...e, key: e.diagWarningId })) || [],
+          diagnoseListData: response.data.list.map(e => ({ ...e, key: e.diagWarningId })) || [],
           totalNum: response.data.total || 0,
           summaryInfo: response.data.summary || {},
           diagnoseUpdateTime: moment().format('YYYY-MM-DD HH:mm'), // 更新表格数据时间
@@ -158,14 +158,13 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
   //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒, date日期, eventCode事件类型编码 }
   try {
     const { diagWarningId, deviceFullcode, eventCode, beginTime } = payload;
-    const params = {
+    const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
+    const response = yield call(request.get, url, { params: {
       diagWarningId,
       deviceFullcode,
       eventCode,
-      date: beginTime,
-    };
-    const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
-    const response = yield call(request.get, url, { params });
+      date: moment(beginTime).format('YYYY-MM-DD'),
+    }});
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         showAnalysisPage: true,

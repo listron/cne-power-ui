@@ -21,12 +21,12 @@ class DiagnoseFilter extends Component {
     const { listParams, listPage } = this.props;
     const preFinish = listParams.finished;
     const { stationCode, deviceTypeCode, rangeTimes, eventCode, eventStatus, finished } = conditions;
-    const finishChange = preFinish === !finished;
+    const finishChange = !preFinish === !!finished; // 是否归档切换
     let newListParams = {}, newListPage = {};
     if (finishChange) { // 归档点击 => 重新请求列表, 停止定时请求; 其他条件清空
       newListParams = {
         eventType: 1, // 1告警事件, 2诊断事件, 3数据事件;
-        finished: !!finished, // 1归档事件, 0非归档事件
+        finished: finished ? 1 : 0, // 1归档事件, 0非归档事件
         stationCode: null, // 电站编码
         deviceTypeCode: null, // 设备类型编码
         eventCode: null, // 标准事件编码
@@ -38,7 +38,7 @@ class DiagnoseFilter extends Component {
       };
       newListPage = {
         pageNum: 1, // 页码
-        pageSize: 20, // 页容量
+        pageSize: 10, // 页容量
         sortField: 'eventStatus',
         sortMethod: 'desc', // 排序方式 asc升序 + desc降序
       };
@@ -84,7 +84,7 @@ class DiagnoseFilter extends Component {
           onChange={this.filterConditionChange}
           option={options}
           value={{
-            stationCode,
+            stationCode: stationCode && stationCode.length > 0 ? stationCode : [],
             deviceTypeCode,
             rangeTimes: [startTime, endTime],
             eventCode,

@@ -31,7 +31,7 @@ const initState = {
   }, // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件, 
   listPage: {
     pageNum: 1, // 页码
-    pageSize: 20, // 页容量
+    pageSize: 10, // 页容量
     sortField: 'eventStatus', // 排序 告警事件eventCode;事件级别eventLevel;设备类型deviceTypeName;设备名称deviceName;发生时间beginTime;持续时长duration;事件状态eventStatus; 发生频次frequency
     sortMethod: 'desc', // 排序方式 asc升序 + desc降序
   }, // 表格排序方式, 表格当前页, 表格每页数据量
