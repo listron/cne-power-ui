@@ -194,7 +194,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
         //   },
         //   chartType: 1, // 1折线, 2比值
         // },
-        eventAnalysisInfo: response.data[0] || {}, // 01.06
+        eventAnalysisInfo: response.data || {},
       });
     } else { throw response.message; }
   } catch (error) {

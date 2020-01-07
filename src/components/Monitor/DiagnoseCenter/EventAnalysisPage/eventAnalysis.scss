@@ -98,7 +98,47 @@
     }
   }
   .analysisChart{
-
+    flex: 1;
+    .chartTooltip{
+      .tooltipTitle{
+        margin-bottom: 4px;
+        height: 30px;
+        line-height: 30px;
+      }
+      .eachItem{
+        height: 24px;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        .tipIcon{
+          position: relative;
+          width: 12px;
+          height: 24px;
+          .line{
+            position: absolute;
+            height: 2px;
+            width: 12px;
+            left: 0;
+            top: 11px;
+          }
+          .rect{
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            left: 3px;
+            top: 9px;
+            border-radius: 50%;
+          }
+        }
+        .tipName{
+          line-height: 24px;
+          margin: 0 12px 0 4px;
+        }
+        .tipValue{
+          line-height: 24px;
+        }
+      }
+    }
   }
 }
 
@@ -153,7 +193,24 @@
     }
   }
   .analysisChart{
-    
+    .chartTooltip{
+      .tooltipTitle{
+        color: #fff;
+      }
+      .eachItem{
+        .tipIcon{
+          .rect{
+            border: solid 1px #fff;
+          }
+        }
+        .tipName{
+          color: #fff;
+        }
+        .tipValue{
+          color: #fff;
+        }
+      }
+    }
   }
 }
 
