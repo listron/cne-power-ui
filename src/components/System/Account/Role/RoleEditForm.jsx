@@ -36,8 +36,8 @@ class RoleEditForm extends Component {
       if(!err) {
         const { roleDesc, rightId, operateName} = values;
         const tmpDefault = defaultMenuData.map(e=>`${e}`);
-        const outputRightSet = new Set([...rightId,...tmpDefault]);
-        const outputRightArr = [...outputRightSet];
+        // const outputRightSet = new Set([...rightId,...tmpDefault]);
+        // const outputRightArr = [...outputRightSet];
         const selectOperateInfo = operatetypeData.find(e => {
           return e.name === operateName;
         }) || '';
@@ -45,7 +45,7 @@ class RoleEditForm extends Component {
         if(showPage === 'create') {
           onCreateRole({
             roleDesc: roleDesc.trim(),
-            rightId: outputRightArr.join(','),
+            rightId: values.rightId.join(','),
             enterpriseId,
             operateId,
             continueAdd: false,
@@ -53,7 +53,7 @@ class RoleEditForm extends Component {
         } else {
           onEditRole({
             roleDesc: roleDesc.trim(),
-            rightId: outputRightArr.join(','),
+            rightId: values.rightId.join(','),
             enterpriseId,
             operateId,
             roleId: selectedRole[0].roleId,
@@ -67,9 +67,10 @@ class RoleEditForm extends Component {
     const { enterpriseId, operatetypeData = [] } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       const { operateName} = values;
-      const operateId = operatetypeData.length > 0 ? operatetypeData.find(e => {
+      const selectOperateInfo = operatetypeData.length > 0 ? operatetypeData.find(e => {
         return e.name === operateName;
       }) : '';
+      const operateId = selectOperateInfo.id;
       if(!err) {
         this.props.onCreateRole({
           roleDesc: values.roleDesc.trim(),
