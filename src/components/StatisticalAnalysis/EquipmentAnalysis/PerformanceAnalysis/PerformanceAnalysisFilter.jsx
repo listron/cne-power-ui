@@ -192,34 +192,34 @@ class PerformanceAnalysisFilter extends Component {
   selectEleLine = (value) => { // 选择集电线路
     const { changePerformanceAnalysisStore, contrastSwitch, getEleDeviceData } = this.props;
     const deviceModeTypeCode = null;
-    const deviceTypeCode = '201,206';
+    // const deviceTypeCode = '201,206';
     changePerformanceAnalysisStore({
       electricLineCode: value,
       deviceModeTypeCode,
       deviceModeCode: null,
-      deviceTypeCode,
+      // deviceTypeCode,
     });
     getEleDeviceData({ deviceFullCode: value });
     if (contrastSwitch) {
-      this.getContrastData({ electricLineCode: value, deviceModeTypeCode, deviceTypeCode });
+      this.getContrastData({ electricLineCode: value, deviceModeTypeCode });
     } else {
-      this.getData({ electricLineCode: value, deviceModeTypeCode, deviceTypeCode });
+      this.getData({ electricLineCode: value, deviceModeTypeCode });
     }
   }
 
   selectDeviceModel = (value) => { // 选择设备型号
     const { contrastSwitch, changePerformanceAnalysisStore } = this.props;
     const deviceModeTypeCode = value && Number(value.split('__')[0]);
-    const deviceTypeCode = value ? value.split('__')[1] : '201,206';
+    // const deviceTypeCode = value ? value.split('__')[1] : '201,206';
     changePerformanceAnalysisStore({
       deviceModeCode: value,
       deviceModeTypeCode: deviceModeTypeCode,
-      deviceTypeCode,
+      // deviceTypeCode,
     });
     if (contrastSwitch) {
-      this.getContrastData({ deviceModeTypeCode, deviceTypeCode });
+      this.getContrastData({ deviceModeTypeCode });
     } else {
-      this.getData({ deviceModeTypeCode, deviceTypeCode });
+      this.getData({ deviceModeTypeCode });
     }
   }
 
