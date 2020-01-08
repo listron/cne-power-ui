@@ -59,7 +59,7 @@ class RoleTable extends Component {
   }
 
   getRightArr(rightData, frontText='') { // 递归生成权限数组['一级-二级-三级...',...]
-    const { defaultMenuData } = this.props;
+    // const { defaultMenuData } = this.props;
     let dataInfoArr = [];
     rightData && rightData.length > 0 && rightData.forEach(e=>{
       const hasChildRight = e && e.childRightData && e.childRightData.length > 0
@@ -67,9 +67,9 @@ class RoleTable extends Component {
         const innerData = this.getRightArr(e.childRightData, e.rightName);
         dataInfoArr.push(...innerData);
       }else{
-        const isDefaultRight = defaultMenuData.includes(parseInt(e.rightId)); // 默认权限不显示
+        // const isDefaultRight = defaultMenuData.includes(parseInt(e.rightId)); // 默认权限不显示
         const rightText = `${frontText?`${frontText}-`:''}${e.rightName}`;
-        e && e.rightName && !isDefaultRight && dataInfoArr.push(rightText);
+        e && e.rightName && dataInfoArr.push(rightText);
       }
     });
 
@@ -160,7 +160,7 @@ class RoleTable extends Component {
   }
 
   getRightTree (data) { // 递归筛选非默认权限的三级菜单
-    const { defaultMenuData } = this.props; // 默认权限ID
+    // const { defaultMenuData } = this.props; // 默认权限ID
     return data.map(e => {
       const { rightId, rightName, childRightData = [] } = e || {};
       if (childRightData && childRightData.length > 0) {
@@ -172,14 +172,15 @@ class RoleTable extends Component {
             childRightData: tmpRighData,
           };
         }
-        return defaultMenuData.includes(+rightId) ? false : {
-            rightId,
-            rightName,
-            childRightData: [],
-          };
-      } else if (defaultMenuData.includes(+rightId)) {
-        return false;
+        // return defaultMenuData.includes(+rightId) ? false : { // 二级菜单有默认权限的时候筛选里层的数据
+        //     rightId,
+        //     rightName,
+        //     childRightData: [],
+        //   };
       }
+      // else if (defaultMenuData.includes(+rightId)) {
+      //   return false;
+      // }
         return { ...e };
     }).filter(e => !!e);
   }
