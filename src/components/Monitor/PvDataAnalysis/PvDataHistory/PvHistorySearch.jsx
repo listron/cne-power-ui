@@ -108,7 +108,7 @@ class PvHistorySearch extends Component {
     const { getPointInfo, changeHistoryStore, queryParam, getListHistory, getChartHistory, listParam, selectStationType } = this.props;
     const { timeInterval } = queryParam;
     changeHistoryStore({
-      chartTime: null,
+      // chartTime: null,
       queryParam: {
         ...queryParam,
         deviceFullCodes: devices,
