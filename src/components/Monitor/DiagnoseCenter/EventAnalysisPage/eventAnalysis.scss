@@ -111,9 +111,14 @@
         margin-bottom: 0;
         display: flex;
         align-items: center;
+        .tipRect{
+          flex: 0 0 12px;
+          height: 12px;
+          border-radius: 2px;
+        }
         .tipIcon{
           position: relative;
-          width: 12px;
+          flex: 0 0 12px;
           height: 24px;
           .line{
             position: absolute;
@@ -133,9 +138,10 @@
         }
         .tipName{
           line-height: 24px;
-          margin: 0 12px 0 4px;
+          padding: 0 12px 0 4px;
         }
         .tipValue{
+          flex: 0 0 auto;
           line-height: 24px;
         }
       }
@@ -200,6 +206,9 @@
         color: #fff;
       }
       .eachItem{
+        .tipRect{
+          border: 1px solid #fff;
+        }
         .tipIcon{
           .rect{
             border: solid 1px #fff;

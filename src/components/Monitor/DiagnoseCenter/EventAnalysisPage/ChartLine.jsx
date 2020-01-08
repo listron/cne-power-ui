@@ -13,7 +13,7 @@ class ChartLine extends PureComponent {
 
   componentDidMount(){
     const { eventAnalysisInfo } = this.props;
-    const { period = [], data = [] } = eventAnalysisInfo || {};
+    const { period = [], data = {} } = eventAnalysisInfo || {};
     this.drawChart(period, data);
   }
 
@@ -21,7 +21,7 @@ class ChartLine extends PureComponent {
     const preAnalysiInfo = this.props.eventAnalysisInfo;
     const { eventAnalysisInfo } = nextProps;
     if (eventAnalysisInfo !== preAnalysiInfo) {
-      const { period = [], data = [] } = eventAnalysisInfo || {};
+      const { period = [], data = {} } = eventAnalysisInfo || {};
       this.drawChart(period, data);
     }
   }
