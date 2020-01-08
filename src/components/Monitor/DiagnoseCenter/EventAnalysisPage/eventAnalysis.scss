@@ -85,6 +85,7 @@
         height: 24px;
         line-height: 24px;
         border-radius: 2px;
+        cursor: pointer;
       }
       .dateSelect{
         margin: 0 4px;
@@ -181,6 +182,7 @@
         
       }
       .leftIcon, .rightIcon{
+        background-color: #ceebe0;
         border:1px solid var(--themeColor);
         &:hover{
           color: #fff;

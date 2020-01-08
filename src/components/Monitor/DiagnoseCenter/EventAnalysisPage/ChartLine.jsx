@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
+import { dataFormats } from '@utils/utilFunc';
 import styles from './eventAnalysis.scss';
 
 class ChartLine extends PureComponent {
@@ -74,17 +75,15 @@ class ChartLine extends PureComponent {
       grid: {
         show: true,
         borderColor: '#d4d4d4',
-        bottom: 25,
-        left: '13%',
-        right: '14%',
-        top: 32,
+        bottom: 60,
+        left: '7%',
+        right: '7%',
       },
       tooltip: {
         trigger: 'axis',
         show: true,
         extraCssText: 'padding: 5px 10px; background-color: rgba(0,0,0,0.70); box-shadow:0 1px 4px 2px rgba(0,0,0,0.20); border-radius:2px;',
         formatter: (params = []) => {
-          console.log(params);
           const { name } = params[0] || {};
           return (
             `<section class=${styles.chartTooltip}>
@@ -96,7 +95,7 @@ class ChartLine extends PureComponent {
                     <span class=${styles.rect} style="background-color:${e.color}"></span>
                   </span>
                   <span class=${styles.tipName}>${e.seriesName}</span>
-                  <span class=${styles.tipValue}>${e.value}</span>
+                  <span class=${styles.tipValue}>${dataFormats(e.value, '--', 2)}</span>
                 </p>`
               )).join('')}
             </section>`
@@ -138,6 +137,17 @@ class ChartLine extends PureComponent {
       ],
       series,
     };
+    if (pointData.length > 0) {
+      option.dataZoom = [
+        {
+          show: true,
+          height: 20,
+          bottom: 12,
+        }, {
+          type: 'inside',
+        },
+      ];
+    }
     lineChart.setOption(option);
   }
 

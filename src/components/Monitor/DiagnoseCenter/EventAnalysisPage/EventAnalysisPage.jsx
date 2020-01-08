@@ -40,7 +40,18 @@ class EventAnalysisPage extends PureComponent {
 
   onDateChange = (momentTime, beginTime) => {
     const { analysisEvent } = this.props;
-    this.props.getEventsAnalysis({ ...analysisEvent, beginTime }); // 默认十分钟数据
+    this.props.getEventsAnalysis({ ...analysisEvent, beginTime });
+  }
+
+  prevMonth = () => this.onMonthChange('subtract')
+
+  nextMonth = () => this.onMonthChange('add')
+
+  onMonthChange = (method) => {
+    const { analysisEvent } = this.props;
+    const { beginTime } = analysisEvent || {};
+    const newMonthStr = moment(beginTime)[method](1, 'month').format('YYYY-MM-DD');
+    this.props.getEventsAnalysis({ ...analysisEvent, beginTime: newMonthStr });
   }
 
   render(){
@@ -77,14 +88,14 @@ class EventAnalysisPage extends PureComponent {
               <Option value={1}>10分钟</Option>
               <Option value={2}>5秒钟</Option>
             </Select>
-            <Icon className={styles.leftIcon} type="left" />
+            <Icon className={styles.leftIcon} type="left" onClick={this.prevMonth} />
             <DatePicker
               value={beginTime? moment(beginTime) : null}
               className={styles.dateSelect}
               onChange={this.onDateChange}
               allowClear={false}
             />
-            <Icon className={styles.rightIcon} type="right" />
+            <Icon className={styles.rightIcon} type="right" onClick={this.nextMonth} />
           </span>
         </div>
         <ChartLine {...this.props} />
