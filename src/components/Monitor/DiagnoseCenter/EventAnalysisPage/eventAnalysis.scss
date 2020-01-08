@@ -53,15 +53,35 @@
       }
     }
   }
-  .analysisSearch{
+  .analysisLineSearch, .analysisBarSearch{
+    padding: 0 80px;
+    .searchText{ // 标题
+      font-size:18px;
+    }
+    .searchParts{ // 日期
+      .leftIcon, .rightIcon{
+        flex: 0 0 22px;
+        height: 24px;
+        line-height: 24px;
+        border-radius: 2px;
+        cursor: pointer;
+      }
+      .dateSelect{
+        margin: 0 4px;
+        width: 128px;
+        :global{
+          .ant-calendar-picker-input.ant-input{
+            height: 24px;
+          }
+        }
+      }
+    }
+  }
+  .analysisLineSearch{
     flex: 0 0 60px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 80px;
-    .searchText{
-      font-size:18px;
-    }
     .searchParts{
       display: flex;
       flex: 0 0 500px;
@@ -80,21 +100,33 @@
           }
         }
       }
-      .leftIcon, .rightIcon{
-        flex: 0 0 22px;
-        height: 24px;
-        line-height: 24px;
-        border-radius: 2px;
-        cursor: pointer;
-      }
-      .dateSelect{
-        margin: 0 4px;
-        width: 128px;
-        :global{
-          .ant-calendar-picker-input.ant-input{
-            height: 24px;
-          }
+    }
+  }
+  .analysisBarSearch{
+    flex: 0 0 90px;
+    .searchText{
+      height: 60px;
+      line-height: 60px;
+    }
+    .searchParts{
+      height: 30px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .barTips{
+        .acValue{
+
+        } 
+        .theoryValue{
+
         }
+        .rateValue{
+
+        }
+      }
+      .dateCheck{
+        display: flex;
       }
     }
   }
@@ -178,15 +210,12 @@
       }
     }
   }
-  .analysisSearch{
+  .analysisLineSearch, .analysisBarSearch{
     .searchText{
       color: #000;
     }
     .searchParts{
       color: #353535;
-      .intervalSelect{
-        
-      }
       .leftIcon, .rightIcon{
         background-color: #ceebe0;
         border:1px solid var(--themeColor);
@@ -195,11 +224,15 @@
           background-color: var(--themeColor);
         }
       }
-      .dateSelect{
-        
-      }
     }
   }
+  .analysisLineSearch{
+
+  }
+  .analysisBarSearch{
+
+  }
+
   .analysisChart{
     .chartTooltip{
       .tooltipTitle{

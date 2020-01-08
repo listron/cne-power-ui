@@ -52,6 +52,7 @@ class ChartBar extends PureComponent {
       grid: {
         show: true,
         borderColor: '#d4d4d4',
+        top: 0,
         bottom: 60,
         left: '7%',
         right: '7%',

@@ -31,17 +31,24 @@ class EventBarSearch extends PureComponent {
     const { analysisEvent } = this.props;
     const { beginTime } = analysisEvent || {};
     return (
-        <div className={styles.analysisSearch}>
-          <strong className={styles.searchText}>发电量对比图</strong>
+        <div className={styles.analysisBarSearch}>
+          <h3 className={styles.searchText}>发电量对比图</h3>
           <div className={styles.searchParts}>
-            <Icon className={styles.leftIcon} type="left" onClick={this.prevMonth} />
-            <DatePicker
-              value={beginTime? moment(beginTime) : null}
-              className={styles.dateSelect}
-              onChange={this.onDateChange}
-              allowClear={false}
-            />
-            <Icon className={styles.rightIcon} type="right" onClick={this.nextMonth} />
+            <span className={styles.barTips}>
+              <span className={styles.acValue}>逆变器直流发电量(kWh)</span>
+              <span className={styles.theoryValue}>方阵理论发电量(kWh)</span>
+              <span className={styles.rateValue}>对比差值(%)</span>
+            </span>
+            <span className={styles.dateCheck}>
+              <Icon className={styles.leftIcon} type="left" onClick={this.prevMonth} />
+              <DatePicker
+                value={beginTime? moment(beginTime) : null}
+                className={styles.dateSelect}
+                onChange={this.onDateChange}
+                allowClear={false}
+              />
+              <Icon className={styles.rightIcon} type="right" onClick={this.nextMonth} />
+            </span>
           </div>
         </div>
     );

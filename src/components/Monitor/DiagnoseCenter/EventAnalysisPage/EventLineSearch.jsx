@@ -37,7 +37,7 @@ class EventLineSearch extends PureComponent {
     const { analysisEvent } = this.props;
     const { beginTime, interval } = analysisEvent || {};
     return (
-        <div className={styles.analysisSearch}>
+        <div className={styles.analysisLineSearch}>
           <strong className={styles.searchText}>告警诊断指标时序图</strong>
           <span className={styles.searchParts}>
             <span className={styles.intervalText}>数据时间间隔</span>
