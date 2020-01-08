@@ -190,16 +190,15 @@ class PerformanceAnalysisFilter extends Component {
   }
 
   selectEleLine = (value) => { // 选择集电线路
-    const { changePerformanceAnalysisStore, contrastSwitch, getEleDeviceData } = this.props;
+    const { changePerformanceAnalysisStore, contrastSwitch, getEleDeviceData, stationCode, deviceTypeCode } = this.props;
     const deviceModeTypeCode = null;
-    // const deviceTypeCode = '201,206';
+    const deviceTypeCodes = deviceTypeCode ? deviceTypeCode.split(',').map(e => (+e)) : [];
     changePerformanceAnalysisStore({
       electricLineCode: value,
       deviceModeTypeCode,
       deviceModeCode: null,
-      // deviceTypeCode,
     });
-    getEleDeviceData({ deviceFullCode: value });
+    getEleDeviceData({ deviceFullCode: value, deviceTypeCodes, stationCode });
     if (contrastSwitch) {
       this.getContrastData({ electricLineCode: value, deviceModeTypeCode });
     } else {
