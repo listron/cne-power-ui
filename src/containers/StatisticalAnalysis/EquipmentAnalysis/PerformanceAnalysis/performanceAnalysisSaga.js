@@ -45,10 +45,10 @@ function* getDeviceModels(action) { // 新共用接口，获取电站设备类�
 
 function* getEleDeviceData(action) { // 查询集电线路下的设备型号和设备类型数据
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getEleDeviceData}/${payload.deviceFullCode}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getEleDeviceData}`;
 
   try {
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield put({
         type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
