@@ -6,7 +6,6 @@ import EventLineSearch from './EventLineSearch';
 import ChartBar from './ChartBar';
 import EventBarSearch from './EventBarSearch';
 import styles from './eventAnalysis.scss';
-import moment from 'moment';
 
 class EventAnalysisPage extends PureComponent {
 

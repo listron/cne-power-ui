@@ -37,7 +37,13 @@ class EventBarSearch extends PureComponent {
             <span className={styles.barTips}>
               <span className={styles.acValue}>逆变器直流发电量(kWh)</span>
               <span className={styles.theoryValue}>方阵理论发电量(kWh)</span>
-              <span className={styles.rateValue}>对比差值(%)</span>
+              <span className={styles.rateValue}>
+                <span className={styles.lineTip}>
+                  <span className={styles.line}></span>
+                  <span className={styles.rect}></span>
+                </span>
+                <span>对比差值(%)</span>
+              </span>
             </span>
             <span className={styles.dateCheck}>
               <Icon className={styles.leftIcon} type="left" onClick={this.prevMonth} />
