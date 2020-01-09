@@ -1,4 +1,5 @@
 import React from 'react';
+import { dataFormats } from '@utils/utilFunc';
 import styles from './eventListPage.scss';
 
 // 告警事件筛选条件: 电站名称, 设备类型，发生时间， 告警事件， 事件状态， 归档按钮
@@ -31,17 +32,18 @@ import styles from './eventListPage.scss';
 // warningDuration	float	持续时长
 // warningFrequency	int	发生频次
 
-
-
 // listParams -> finished: 1归档事件, 0非归档事件
 // 是否归档, 生成两个表头: 归档需要状态图标, 不需要事件状态列; 非归档不需要状态图标列, 需要事件状态列;
 const columnFilter = (totalColumn, finished) => totalColumn.filter(e => (e.dataIndex !== (finished > 0 ? 'statusName' : 'statusCode')));
 
 const statusIcon = (record) => {
-  const { statusName } = record;
-  const eventDone = statusName === '已完成';
+  const { statusCode } = record;
+  const statusClassNames = {
+    5: `iconfont icon-ywancheng ${styles.done}`, // 已完成
+    6: `iconfont icon-yhulue ${styles.ignore}`, // 已忽略
+  };
   return (
-    <span className={`iconfont icon-${eventDone ? `ywancheng ${styles.done}` : `yhulue ${styles.ignore}`}`} />
+    <span className={statusClassNames[statusCode]} />
   );
 };
 
@@ -98,7 +100,12 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       title: '持续时长',
       sorter: true,
       className: styles.warningDuration,
-      render: (text = '--') => (<div title={text} className={styles.warningDurationText}>{text}</div>),
+      render: (text = '--') => (
+        <div
+          title={dataFormats(text, '--', 2, true)}
+          className={styles.warningDurationText}
+        >{dataFormats(text, '--', 2, true)}</div>
+      ),
     }, {
       dataIndex: 'warningFrequency',
       title: '发生频次',
@@ -174,7 +181,12 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       title: '持续时长',
       sorter: true,
       className: styles.warningDuration,
-      render: (text = '--') => (<div title={text} className={styles.warningDurationText}>{text}</div>),
+      render: (text = '--') => (
+      <div
+        title={dataFormats(text, '--', 2, true)}
+        className={styles.warningDurationText}
+      >{dataFormats(text, '--', 2, true)}</div>
+      ),
     }, {
       dataIndex: 'statusName',
       title: '事件状态',
@@ -248,7 +260,11 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       title: '持续时长',
       sorter: true,
       className: styles.warningDuration,
-      render: (text = '--') => (<div title={text} className={styles.warningDurationText}>{text}</div>),
+      render: (text = '--') => (
+      <div
+        title={dataFormats(text, '--', 2, true)}
+        className={styles.warningDurationText}
+      >{dataFormats(text, '--', 2, true)}</div>),
     }, {
       dataIndex: 'statusName',
       title: '事件状态',

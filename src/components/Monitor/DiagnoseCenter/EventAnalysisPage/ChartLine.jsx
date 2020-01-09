@@ -107,7 +107,7 @@ class ChartLine extends PureComponent {
                     <span class=${styles.rect} style="background-color:${e.color}"></span>
                   </span>
                   <span class=${styles.tipName}>${e.seriesName}</span>
-                  <span class=${styles.tipValue}>${dataFormats(e.value, '--', 2)}</span>
+                  <span class=${styles.tipValue}>${dataFormats(e.value, '--', 2, true)}</span>
                 </p>`
               )).join('')}
             </section>`

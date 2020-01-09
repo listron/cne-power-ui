@@ -83,12 +83,12 @@ class ChartBar extends PureComponent {
                 <p class=${styles.eachItem} style="margin-right: 20px">
                   <span class=${styles.tipRect} style="background-color: #7D8C87"></span>
                   <span class=${styles.tipName} style="flex: 0 0 176px">逆变器直流发电量(kWh)</span>
-                  <span class=${styles.tipValue}>${dataFormats(baseValue, '--', 2)}</span>
+                  <span class=${styles.tipValue}>${dataFormats(baseValue, '--', 2, true)}</span>
                 </p>
                 <p class=${styles.eachItem} style="margin-right: 20px">
                   <span class=${styles.tipRect} style="background-color: #6E6F6F"></span>
                   <span class=${styles.tipName} style="flex: 0 0 176px">方阵理论发电量(kWh)</span>
-                  <span class=${styles.tipValue}>${dataFormats(theoryValue, '--', 2)}</span>
+                  <span class=${styles.tipValue}>${dataFormats(theoryValue, '--', 2, true)}</span>
                 </p>
                 <p class=${styles.eachItem} style="margin-right: 20px">
                   <span class=${styles.tipIcon}>
@@ -96,7 +96,7 @@ class ChartBar extends PureComponent {
                     <span class=${styles.rect} style="background-color: #ff9900"></span>
                   </span>
                   <span class=${styles.tipName} style="flex: 0 0 176px">对比差值(%)</span>
-                  <span class=${styles.tipValue}>${dataFormats(rateValue, '--', 2)}</span>
+                  <span class=${styles.tipValue}>${dataFormats(rateValue, '--', 2, true)}</span>
                 </p>
               </div>
             </section>`
