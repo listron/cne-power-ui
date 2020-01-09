@@ -164,7 +164,7 @@ class StationManageDetail extends Component {
             title="基本信息"
             infoArray={baseInfo}
             handler={this.editDetail}
-            stationOperation
+            stationOperation={stationOperation}
             extraInfo={
               isWind ? <div className={styles.windInfo}>
                 <div className={styles.eachItem}>
