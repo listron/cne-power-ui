@@ -22,12 +22,12 @@ const monitorPath = { // 详情， 十分钟数据，各设备类型路径不同
     tenMin: monitor.confluenceboxTenMin, // '/mock/monitor/confluenceboxTenMin'
     subList: monitor.confluenceboxSubList,
   },
-  '206': { // 组串式逆变器：206
+  '206': { // 逆变器（组串）：206
     detail: monitor.seriesinverterDetail, //  '/mock/monitor/seriesinverter'
     tenMin: monitor.seriesinverterTenMin, //  '/mock/monitor/seriesinverterTenMin'
     subList: monitor.inverterSubList,
   },
-  '201': { // 集中式逆变器：201
+  '201': { // 逆变器（集中）：201
     detail: monitor.seriesinverterDetail, //  '/mock/monitor/seriesinverter'
     tenMin: monitor.seriesinverterTenMin, //  '/mock/monitor/seriesinverterTenMin'
     subList: monitor.inverterSubList,

@@ -39,7 +39,7 @@ class AddDeviceForm extends Component {
                 return values.connectedBranches.includes(e) ? 1 : 0
               })
             }
-            
+
             values.map = {
               componentMode: addPvDeviceModeData.deviceModeCode ? addPvDeviceModeData.deviceModeCode : values.componentMode,
               branchCount: +values.branchCount,
@@ -153,12 +153,12 @@ class AddDeviceForm extends Component {
     const deviceTypeName = getFieldValue('deviceTypeCode');
     const deviceModeCodeValue = getFieldValue('deviceModeCode');
     const selectDeviceTypeName = typeof (selectdeviceType) === 'number' ? stationDevices.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName : selectdeviceType
-    //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202，集中式逆变器：201
+    //101是风电机组，箱变304，测风塔501，逆变器（组串）、汇流箱：206、202，逆变器（集中）：201
     const modelSelectDisable = deviceModels.length === 0;
     const initiDeviceMode = addDeviceModeData.data ? +addDeviceModeData.data : null;
     const manufacturerArr = deviceModels.filter((e, i) => (e.deviceModeCode === deviceModeCodeValue))[0];
     const manufactureName = manufacturerArr && manufacturerArr.manufacturer;
-    // 
+    //
     const isShow = ['202', '206', '304', '101', '201', '207'].includes(`${selectdeviceType}`);//通用的:关联设备，额定，装机，经纬度
     const isMeteorology = ['203', '501',].includes(`${selectdeviceType}`);//测风塔和气象站呈现经纬度
     const isTemplateMachine = ['201', '304', '206'].includes(`${selectdeviceType}`);//是否呈现样板机的设备

@@ -11,7 +11,7 @@ const { monitor } = Path.APISubPaths;
 function* getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
   const { stationCode } = payload;
   const sortTypes = [ // 电站默认排序顺序
-    '风电机组', '集中式逆变器', '组串式逆变器', '集电线路', '箱变', '汇流箱', '气象站', '站内母线', '主变', '站用变', '接地变', '测风塔', '全场信息汇总', '电能采集', '主进线', '功率预测系统', '能量管理平台', 'SVG', '母线分段', '馈线', '直流屏', '孤岛保护',
+    '风电机组', '逆变器（集中）', '逆变器（组串）', '集电线路', '箱变', '汇流箱', '气象站', '站内母线', '主变', '站用变', '接地变', '测风塔', '全场信息汇总', '电能采集', '主进线', '功率预测系统', '能量管理平台', 'SVG', '母线分段', '馈线', '直流屏', '孤岛保护',
   ];
   try {
     const url = `${APIBasePath}${monitor.getAvailableDeviceType}/${stationCode}`;

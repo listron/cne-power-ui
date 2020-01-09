@@ -3,12 +3,12 @@
 export const PVStationTypes = [
   {
     deviceTypeCode: '206',
-    deviceTypeName: '组串式逆变器',
+    deviceTypeName: '逆变器（组串）',
     deviceConfig: 'seriesinverter',
     icon: 'iconfont icon-nb'
   },{
     deviceTypeCode: '201',
-    deviceTypeName: '集中式逆变器',
+    deviceTypeName: '逆变器（集中）',
     deviceConfig: 'seriesinverter',
     icon: 'iconfont icon-nb'
   },{

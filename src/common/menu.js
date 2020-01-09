@@ -575,11 +575,11 @@ const menuData = [
             defaultPath: true,
           },
           {
-            name: '集中式逆变器',
+            name: '逆变器（集中）',
             path: 'centerInvert',
             rightKey: 'pvReport_centralizedInverter',
           }, {
-            name: '组串式逆变器',
+            name: '逆变器（组串）',
             path: 'combineInvert',
             rightKey: 'pvReport_stringInverter',
           },

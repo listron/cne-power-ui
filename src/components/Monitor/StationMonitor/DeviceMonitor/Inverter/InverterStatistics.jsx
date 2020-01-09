@@ -108,7 +108,7 @@ class InverterStatistics extends Component{
     // powerDay = isNaN(parseFloat(powerDay)) ? ' -- ' : parseFloat(powerDay);
     // powerMonth = isNaN(parseFloat(powerMonth)) ? ' -- ' : parseFloat(powerMonth);
     // powerYear = isNaN(parseFloat(powerYear)) ? ' -- ' : parseFloat(powerYear);
-    // deviceTypeCode === '201' 集中式逆变器 206 组串式逆变器
+    // deviceTypeCode === '201' 逆变器（集中） 206 逆变器（组串）
     // 取出子集组串接口优化后删。
     const subDeviceArr = !subDeviceList.length && subDeviceList.electricityList ? (subDeviceList.electricityList || []) : subDeviceList;
     const seriesGroup = Math.ceil(subDeviceList.length / 4);

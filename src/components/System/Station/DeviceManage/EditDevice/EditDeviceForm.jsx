@@ -33,7 +33,7 @@ class EditDeviceForm extends Component {
               return values.connectedBranches.includes(e) ? 1 : 0
             })
           }
-          
+
           if (typeof (values.componentMode) === 'string') {
             let filterMode = pvDeviceModels.filter((e, i) =>
               e.deviceModeName === values.componentMode
@@ -108,7 +108,7 @@ class EditDeviceForm extends Component {
 
     const { stationName, manufacturer, deviceModeName, deviceTypeCode, deviceTypeName, deviceFullCode, connectTime, deviceName } = stationDeviceDetail
     const selectDeviceTypeName = typeof (selectdeviceType) === 'number' ? stationDeviceTypes.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName : selectdeviceType
-    //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202
+    //101是风电机组，箱变304，测风塔501，逆变器（组串）、汇流箱：206、202
     const isShow = ['202', '206', '304', '101', '201', '207'].includes(stationDeviceDetail.deviceTypeCode);//特殊设备通用的，看产品文档备注，关联设备，额定，装机，经纬度
     const isShowComponent = ['501', '202', '206', '304', '101',].includes(stationDeviceDetail.deviceTypeCode);//显示组件
     const isMeteorology = ['203', '501',].includes(stationDeviceDetail.deviceTypeCode);//测风塔和气象站呈现经纬度
