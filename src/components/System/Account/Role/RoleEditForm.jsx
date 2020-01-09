@@ -84,16 +84,14 @@ class RoleEditForm extends Component {
     });
   }
 
-  getRightIdArr = (rightData) => { // 获取被编辑角色的id根节点数组(剔除中间节点)
-    const treeKey = [];
+  getRightIdArr = (rightData, treeKey = []) => { // 获取被编辑角色的id根节点数组(剔除中间节点)
     rightData && rightData.length > 0 && rightData.forEach(e=>{
       const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
+      treeKey.push(e.rightId);
       if(hasChildRight){
-        treeKey.push(...this.getRightIdArr(e.childRightData));
-      }else{
-        e.rightId && treeKey.push(e.rightId.toString());
+        this.getRightIdArr(e.childRightData, treeKey);
       }
-    })
+    });
     return treeKey;
   }
 

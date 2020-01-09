@@ -151,7 +151,6 @@ class RoleTable extends Component {
 
   showModel = (record) => { // 点击某行显示权限列表
     const rightdataArr = this.getRightTree(record.rightData);
-
     this.setState({
       visibleModel: true,
       recordData: rightdataArr,
@@ -159,7 +158,7 @@ class RoleTable extends Component {
     });
   }
 
-  getRightTree (data) { // 递归筛选非默认权限的三级菜单
+  getRightTree (data) { // 递归筛选三级菜单
     // const { defaultMenuData } = this.props; // 默认权限ID
     return data.map(e => {
       const { rightId, rightName, childRightData = [] } = e || {};
