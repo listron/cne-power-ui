@@ -12,10 +12,12 @@ import deviceManage from './Station/DeviceManage/deviceManageReducer';
 import pointManage from './Station/PointManage/pointManageReducer';
 import powerCurve from './Station/PowerCurve/powerCurveReducer';
 import { weatherStationReducer } from './Station/WeatherStationConf/weatherStationReducer';
+import { alarmEventReducer } from './Station/AlarmEvent/alarmEventReducer'; // 平台告警事件
 
 import plan from './Production/Plan/planReducer';
 import warning from './Production/Warning/warningReducer';
 import score from './Production/Score/scoreReducer';
+
 
 
 const systemReducer = combineReducers({
@@ -33,6 +35,7 @@ const systemReducer = combineReducers({
   warning,
   score,
   weatherStationReducer,
+  alarmEventReducer,
 });
 
 export default systemReducer;

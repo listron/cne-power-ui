@@ -55,7 +55,7 @@ class DepartSubSelect extends Component {
     const { checkedIds, departInfo } = this.props;
     const { list, departmentName, departmentId } = departInfo || {};
     const subDeparts = list || [];
-    const height = Math.ceil(subDeparts.length / 3) * 24;
+    const height = Math.ceil(subDeparts.length / 3) * 30;
     return (
       <div className={styles.departSubSelect}>
         <div className={styles.fartherDepart}>

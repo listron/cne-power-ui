@@ -4,7 +4,7 @@ import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './index.scss';
 
-export default function CneTable ({ ...props }) {
+export default function CneTable({ ...props }) {
   const { theme = 'light', className, ...rest } = props;
   return (
     <Table
