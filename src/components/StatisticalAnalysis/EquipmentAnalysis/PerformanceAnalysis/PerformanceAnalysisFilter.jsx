@@ -178,6 +178,9 @@ class PerformanceAnalysisFilter extends Component {
     this.props.changePerformanceAnalysisStore({
       deviceTypeCode: value,
       targetTabs: targetTabs,
+      electricLineCode: null,
+      deviceModeCode: null,
+      deviceModeTypeCode: null,
     });
     setTimeout(() => {
       if (contrastSwitch) {
