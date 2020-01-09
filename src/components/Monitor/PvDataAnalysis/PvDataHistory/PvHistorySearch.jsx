@@ -179,8 +179,8 @@ class PvHistorySearch extends Component {
       changeHistoryStore({
         queryParam: {
           ...tmpQueryParam,
-          startTime: recordedMinuteStart,
-          endTime: recordedMinuteEnd,
+          startTime,
+          endTime,
         },
         allHistory: {},
         partHistory: {},
@@ -188,8 +188,8 @@ class PvHistorySearch extends Component {
       getChartHistory({
         queryParam: {
           ...tmpQueryParam,
-          startTime: recordedMinuteStart,
-          endTime: recordedMinuteEnd,
+          startTime,
+          endTime,
         },
       });
       getListHistory({
@@ -205,13 +205,12 @@ class PvHistorySearch extends Component {
           message.error('时间选择范围不可超过1天');
           return;
         }
-
       }
       changeHistoryStore({
         queryParam: {
           ...tmpQueryParam,
-          startTime: recordedMinuteStart,
-          endTime: recordedMinuteEnd,
+          startTime,
+          endTime,
         },
         allHistory: {},
         partHistory: {},
@@ -220,8 +219,8 @@ class PvHistorySearch extends Component {
       getChartHistory({
         queryParam: {
           ...tmpQueryParam,
-          startTime: recordedMinuteStart,
-          endTime: recordedMinuteEnd,
+          startTime,
+          endTime,
         },
       });
 
@@ -261,11 +260,16 @@ class PvHistorySearch extends Component {
         listParam,
       });
     } else if (interval === 2) { // 由秒级数据切换到1分钟数据
+      const tmpEndTime = moment(endTime).subtract(14, 'd');
+      if (startTime.isBefore(tmpEndTime, 's')) {
+        message.error('时间选择范围不可超过14天');
+        return;
+      }
       changeHistoryStore({
         queryParam: {
           ...tmpQueryParam,
-          startTime: recordedMinuteStart,
-          endTime: recordedMinuteEnd,
+          startTime,
+          endTime,
         },
         allHistory: {},
         partHistory: {},
@@ -273,8 +277,8 @@ class PvHistorySearch extends Component {
       getChartHistory({
         queryParam: {
           ...tmpQueryParam,
-          startTime: recordedMinuteStart,
-          endTime: recordedMinuteEnd,
+          startTime,
+          endTime,
         },
       });
       getListHistory({
