@@ -12,9 +12,6 @@ const { monitor } = path.APISubPaths;
 
 let circleTimer = null; // 循环任务标识
 
-// √6. 排序点击 => 重新请求列表, 停止当前定时请求
-// √7. 分析点击 => 停止当前定时请求, 单独开启分析页面;
-
 function* easyPut(actionName, payload){
   yield put({
     type: diagnoseCenterAction[actionName],

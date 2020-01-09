@@ -34,7 +34,7 @@ class DiagnoseFilter extends Component {
         eventLevel: null, // 事件级别
         startTime: null, //  起始时间
         endTime: null, // 终止事件
-        includeSummary: 1, // 1包括汇总信息, 0不包括
+        hassum: 1, // 1包括汇总信息, 0不包括
       };
       newListPage = {
         pageNum: 1, // 页码

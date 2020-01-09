@@ -48,7 +48,7 @@ class DiagnoseLevelSummry extends Component {
       eventLevel,
       startTime: null, //  起始时间
       endTime: null, // 终止事件
-      includeSummary: 1, // 1包括汇总信息, 0不包括
+      hassum: 1, // 1包括汇总信息, 0不包括
     };
     const listPage = { // 表格排序方式, 表格当前页, 表格每页数据量
       pageNum: 1,

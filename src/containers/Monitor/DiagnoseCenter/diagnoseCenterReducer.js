@@ -27,7 +27,7 @@ const initState = {
     eventLevel: null, // 事件级别
     startTime: null, //  起始时间
     endTime: null, // 终止事件
-    includeSummary: 1, // 1包括汇总信息, 0不包括
+    hassum: 1, // 1包括汇总信息, 0不包括
   }, // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件, 
   listPage: {
     pageNum: 1, // 页码

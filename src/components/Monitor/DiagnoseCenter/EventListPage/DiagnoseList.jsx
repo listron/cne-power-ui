@@ -32,7 +32,8 @@ class DiagnoseList extends Component {
     return eventNameCreator[pageKey](finished, this.analysisEvent);
   }
 
-  analysisEvent = (record) => {
+  analysisEvent = (record) => { // √7. 分析点击 => 停止当前定时请求, 单独开启分析页面;
+    this.props.stopCircleQueryList(); // 停止当前页面定时请求
     this.props.getEventsAnalysis({ ...record, interval: 1 }); // 默认十分钟数据
   }
 
