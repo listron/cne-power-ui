@@ -118,7 +118,7 @@ class CaseHandle extends React.Component {
             <span className={styles.name}>{'添加'}</span>
           </Button>
           <Button type="primary" disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deleteCasePart} > 批量删除 </Button>
-          <Button className={styles.intoFile} onClick={this.uploadFile}> 批量导入 </Button>}
+          <Button className={styles.intoFile} onClick={this.uploadFile}> 批量导入 </Button>
           {showUpload && <UploadModal {...this.props} showModal={showUpload} cancelModal={this.cancelModal} />}
           <Button
             className={styles.downloadStyle}
