@@ -231,9 +231,9 @@ class Schematic extends Component {
                                 })}
                             </div>
                         }
-                        {!invertType && (deviceTypeArr.includes('201') || deviceTypeArr.includes('206')) &&// 集中式逆变器／组合式逆变器
+                        {!invertType && (deviceTypeArr.includes('201') || deviceTypeArr.includes('206')) &&// 逆变器（集中）／组合式逆变器
                             <div className={styles.inverter} onClick={() => { this.changeTypeCode(invertTypeCode); }}>
-                                <div className={styles.title}>{deviceTypeArr.includes('201') ? '集中式逆变器' : '组串式逆变器'}</div>
+                                <div className={styles.title}>{deviceTypeArr.includes('201') ? '逆变器（集中）' : '逆变器（组串）'}</div>
                                 {commonList['201'].summaryInfo.map((e, index) => {
                                     const number = this.dealData(invertTypeCode, e.id, e.point);
                                     return (<div className={`${styles.column} ${e.hot && `${number}` !== '0' && styles.hot} ${e.single && styles.singleLine} ${e.allNumber && styles.allNumber}`} key={index}>

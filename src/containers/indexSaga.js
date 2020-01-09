@@ -260,7 +260,7 @@ export default function* rootSaga() {
     watchReportStation(), //电站报表
     watchCenterInvert(), //设备报表
     watchWeatherStationReport(), //气象站报表
-    watchCombineInvert(), //组串式逆变器
+    watchCombineInvert(), //逆变器（组串）
     watchConfluenceBox(), //汇流箱
   ]);
 }

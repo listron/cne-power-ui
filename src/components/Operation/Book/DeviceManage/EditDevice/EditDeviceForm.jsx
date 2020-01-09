@@ -146,7 +146,7 @@ class EditDeviceForm extends Component {
           (e, i) => e.deviceTypeCode === selectdeviceType
         )[0].deviceTypeName
         : selectdeviceType;
-    //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202
+    //101是风电机组，箱变304，测风塔501，逆变器（组串）、汇流箱：206、202
     const isShow = ['202', '206', '304', '101', '201', '207'].includes(
       stationDeviceDetail.deviceTypeCode
     ); //特殊设备通用的，看产品文档备注，关联设备，额定，装机，经纬度

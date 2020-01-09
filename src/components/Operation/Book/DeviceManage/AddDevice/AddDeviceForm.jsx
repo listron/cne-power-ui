@@ -220,7 +220,7 @@ class AddDeviceForm extends Component {
           (e, i) => e.deviceTypeCode === selectdeviceType
         )[0].deviceTypeName
         : selectdeviceType;
-    //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202，集中式逆变器：201
+    //101是风电机组，箱变304，测风塔501，逆变器（组串）、汇流箱：206、202，逆变器（集中）：201
     const modelSelectDisable = deviceModels.length === 0;
     const initiDeviceMode = addDeviceModeData.data
       ? +addDeviceModeData.data

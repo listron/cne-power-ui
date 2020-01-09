@@ -15,7 +15,7 @@ let realtimeListInterval = null;
 function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
   const { stationCode } = payload;
   const sortTypes = [ // 默认排序顺序
-    '风电机组', '集中式逆变器', '组串式逆变器','集电线路', '箱变', '汇流箱', '气象站', '站内母线', '主变', '站用变', '接地变', '测风塔', '全场信息汇总', '电能采集', '主进线', '功率预测系统', '能量管理平台', 'SVG', '母线分段', '馈线', '直流屏', '孤岛保护'
+    '风电机组', '逆变器（集中）', '逆变器（组串）','集电线路', '箱变', '汇流箱', '气象站', '站内母线', '主变', '站用变', '接地变', '测风塔', '全场信息汇总', '电能采集', '主进线', '功率预测系统', '能量管理平台', 'SVG', '母线分段', '馈线', '直流屏', '孤岛保护'
   ];
   try {
     const url = `${APIBasePath}${monitor.getAvailableDeviceType}/${stationCode}`;
@@ -170,7 +170,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
                 reverseValues.splice(0, cutLength);
                 pointValue.splice(0, pointTime.length - cutLength, ...reverseValues);
                 // 返回的时间
-              } else { // 队列操作, 位移长度 = pointTime.length - timeSpace 
+              } else { // 队列操作, 位移长度 = pointTime.length - timeSpace
                 const cutLength = pointTime.length - timeSpace;
                 pointValue.splice(pointValue.length - cutLength, pointValue.length, ...reverseValues); // 切末尾并插入新数据
               }

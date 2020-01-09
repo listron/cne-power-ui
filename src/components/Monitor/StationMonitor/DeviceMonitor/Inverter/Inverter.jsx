@@ -39,7 +39,7 @@ class Seriesinverter extends Component {
     this.state = {
       pointNameArr: pointParamsStr === '' ? [] : [pointParams], // 选中的支路数组
       tabKey: '1',
-      chartName: pointParamsStr === '' ? 'output' : 'branch', // 组串式逆变器 chart图表切换 output <=> branch
+      chartName: pointParamsStr === '' ? 'output' : 'branch', // 逆变器（组串） chart图表切换 output <=> branch
     };
   }
 
@@ -124,7 +124,7 @@ class Seriesinverter extends Component {
         name: currentStation.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
       }, {
-        name: deviceTypeCode === '201' ? '集中式逆变器' : '组串式逆变器',
+        name: deviceTypeCode === '201' ? '逆变器（集中）' : '逆变器（组串）',
       }],
       iconName: 'iconfont icon-nb',
     };
