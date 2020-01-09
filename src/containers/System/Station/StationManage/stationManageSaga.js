@@ -7,13 +7,13 @@ import { stationManageAction } from './stationManageAction';
 function* getStationList(action) { // 请求电站列表信息
   const { payload } = action;
   // const url = '/mock/system/stationList/001';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationList}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationList}`;
   try {
     yield put({ type: stationManageAction.STATION_MANAGE_FETCH });
     yield put({
       type: stationManageAction.changeStationManageStore,
       payload: { stationListLoading: true },
-    })
+    });
     const response = yield call(axios.post, url, payload);
     // if(response.data.code === "10000"){
     const totalNum = response.data.data.total || 0;
@@ -33,16 +33,16 @@ function* getStationList(action) { // 请求电站列表信息
         totalNum,
         pageNum,
         stationListLoading: false,
-      }
-    })
+      },
+    });
     // }
   } catch (e) {
     console.log(e);
     message.error('获取电站列表数据失败，请重试');
     yield put({
       type: stationManageAction.changeStationManageStore,
-      payload: { loading: false, stationListLoading: false, },
-    })
+      payload: { loading: false, stationListLoading: false },
+    });
   }
 }
 
@@ -50,7 +50,7 @@ function* getStationDetail(action) { // 获取选中电站详情；
   const { payload } = action;
   const { selectedStationIndex, showPage = 'detail' } = payload;
   // const url = '/mock/system/stationDetail/001';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDetail}/${payload.stationCode}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDetail}/${payload.stationCode}`;
   try {
     const response = yield call(axios.get, url);
     // if(response.data.code === "10000"){
@@ -60,8 +60,8 @@ function* getStationDetail(action) { // 获取选中电站详情；
         selectedStationIndex,
         stationDetail: response.data.data || {},
         showPage,
-      }
-    })
+      },
+    });
     // }
   } catch (e) {
     console.log(e);
@@ -80,9 +80,9 @@ function* getOtherPageStationDetail(action) { // 电站详情页面翻页时请�
     delete payload.selectedStationIndex;
     const listResponse = yield call(axios.post, listUrl, payload);
     const selectedStationCode = listResponse.data.data.list[selectedStationIndex].stationCode;
-    const detailUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDetail}/${selectedStationCode}`
+    const detailUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDetail}/${selectedStationCode}`;
     const detailResponse = yield call(axios.get, detailUrl);
-    if (detailResponse.data.code === "10000") {
+    if (detailResponse.data.code === '10000') {
       yield put({
         type: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
         payload: {
@@ -90,14 +90,14 @@ function* getOtherPageStationDetail(action) { // 电站详情页面翻页时请�
           selectedStationIndex,
           stationList: listResponse.data.data.list || [],
           totalNum: listResponse.data.data.total || 0,
-        }
-      })
+        },
+      });
     } else {
       message.error('获取详情数据失败，请重试');
       yield put({
         type: stationManageAction.changeStationManageStore,
         payload: { loading: false },
-      })
+      });
     }
   } catch (e) {
     console.log(e);
@@ -105,18 +105,18 @@ function* getOtherPageStationDetail(action) { // 电站详情页面翻页时请�
     yield put({
       type: stationManageAction.changeStationManageStore,
       payload: { loading: false },
-    })
+    });
   }
 }
 
 function* saveStationDetail(action) { // 保存编辑的电站详情；
   const { payload } = action;
   // const url = '/mock/system/saveStationDetail';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.saveStationDetail}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.saveStationDetail}`;
   try {
     yield put({ type: stationManageAction.STATION_MANAGE_FETCH });
     const response = yield call(axios.put, url, payload);
-    if (response.data.code === "10000") { // 保存成功后，继续请求电站列表信息 + 该电站详情
+    if (response.data.code === '10000') { // 保存成功后，继续请求电站列表信息 + 该电站详情
       const listPayload = yield select(state => ({
         stationType: state.system.stationManage.get('stationType'),
         regionName: state.system.stationManage.get('regionName'),
@@ -132,15 +132,15 @@ function* saveStationDetail(action) { // 保存编辑的电站详情；
       const detailPayload = {
         stationCode: stationList[selectedStationIndex].stationCode,
         selectedStationIndex,
-      }
+      };
       yield put({ // 重新请求列表
         type: stationManageAction.GET_STATION_MANAGE_LIST,
-        payload: { ...listPayload }
-      })
+        payload: { ...listPayload },
+      });
       yield put({ // 重新请求详情
         type: stationManageAction.GET_STATION_MANAGE_DETAIL,
-        payload: { ...detailPayload }
-      })
+        payload: { ...detailPayload },
+      });
     }
   } catch (e) {
     console.log(e);
@@ -151,11 +151,11 @@ function* saveStationDetail(action) { // 保存编辑的电站详情；
 function* deleteStation(action) { // 删除电站(及以下设备)
   const { payload } = action;
   // const url = '/mock/system/deleteStation';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteStation}/${payload.stationCode}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteStation}/${payload.stationCode}`;
   try {
     yield put({ type: stationManageAction.STATION_MANAGE_FETCH });
     const response = yield call(axios.delete, url, payload);
-    if (response.data.code === "10000") { // 删除成功后，继续请求电站列表信息
+    if (response.data.code === '10000') { // 删除成功后，继续请求电站列表信息
       const payload = yield select(state => ({
         stationType: state.system.stationManage.get('stationType'),
         regionName: state.system.stationManage.get('regionName'),
@@ -168,13 +168,13 @@ function* deleteStation(action) { // 删除电站(及以下设备)
       yield put({
         type: stationManageAction.GET_STATION_MANAGE_LIST,
         payload,
-      })
+      });
       yield put({
         type: stationManageAction.changeStationManageStore_SAGA,
         payload: {
           showPage: 'list',
-        }
-      })
+        },
+      });
     }
   } catch (e) {
     console.log(e);
@@ -185,11 +185,11 @@ function* deleteStation(action) { // 删除电站(及以下设备)
 function* setStationDepartment(action) { // 保存分配至指定电站的部门；
   const { payload } = action;
   // const url = '/mock/system/setDepartment';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.setStationDepartment}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.setStationDepartment}`;
   try {
     yield put({ type: stationManageAction.STATION_MANAGE_FETCH });
     const response = yield call(axios.post, url, payload);
-    if (response.data.code === "10000") { // 保存成功后，继续请求电站列表信息
+    if (response.data.code === '10000') { // 保存成功后，继续请求电站列表信息
       const payload = yield select(state => ({
         stationType: state.system.stationManage.get('stationType'),
         regionName: state.system.stationManage.get('regionName'),
@@ -202,13 +202,13 @@ function* setStationDepartment(action) { // 保存分配至指定电站的部门
       yield put({
         type: stationManageAction.GET_STATION_MANAGE_LIST,
         payload,
-      })
+      });
     } else {
       message.error('分配部门操作失败，请重试');
       yield put({
         type: stationManageAction.changeStationManageStore,
         payload: { loading: false },
-      })
+      });
     }
   } catch (e) {
     console.log(e);
@@ -216,12 +216,11 @@ function* setStationDepartment(action) { // 保存分配至指定电站的部门
     yield put({
       type: stationManageAction.changeStationManageStore,
       payload: { loading: false },
-    })
+    });
   }
 }
 
-
-function* getDiagconfigYx(action) {  // 获取遥信配置
+function* getDiagconfigYx(action) { // 获取遥信配置
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getYxconfig}${payload.stationCode}`;
   try {
@@ -230,22 +229,23 @@ function* getDiagconfigYx(action) {  // 获取遥信配置
       yield put({
         type: stationManageAction.changeStationManageStore,
         payload: {
-          YxConfigData: response.data.data || []
+          YxConfigData: response.data.data || [],
         },
       });
-    } else { throw response.data }
+    } else { throw response.data; }
   } catch (e) {
     yield put({
       type: stationManageAction.changeStationManageStore,
       payload: {
-        YxConfigData: []
+        YxConfigData: [],
       },
-    })
+    });
   }
 }
 
-function* setDiagconfigYx(action) {  // 更改遥信配置
+function* setDiagconfigYx(action) { // 更改遥信配置
   const { payload } = action;
+  const { func, ...rest } = payload;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.setYxconfig}`;
   try {
     yield put({
@@ -253,29 +253,33 @@ function* setDiagconfigYx(action) {  // 更改遥信配置
       payload: {
         YxLoading: true,
       },
-    })
-    const response = yield call(axios.post, url, payload);
+    });
+    const response = yield call(axios.post, url, rest);
     if (response.data.code === '10000') {
+      message.success('修改成功');
       yield put({
         type: stationManageAction.changeStationManageStore,
         payload: {
           YxLoading: false,
         },
-      })
-    } else { throw response.data }
+      });
+      func({ eventYxModal: false });
+    } else { throw response.data; }
   } catch (e) {
+    message.error('修改失败，请重试！');
     yield put({
       type: stationManageAction.changeStationManageStore,
       payload: {
         YxLoading: false,
       },
-    })
+    });
   }
 }
 
-function* getDiagconfigYc(action) {  // 获取遥测或者数据质量配置
+function* getDiagconfigYc(action) { // 获取遥测或者数据质量配置
   const { payload } = action;
   const { type, stationCode, init } = payload;
+  console.log('getDiagconfigYc', type, stationCode, init);
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getYcconfig}${type}/${stationCode}/${init}`;
   try {
     const response = yield call(axios.get, url);
@@ -283,22 +287,23 @@ function* getDiagconfigYc(action) {  // 获取遥测或者数据质量配置
       yield put({
         type: stationManageAction.changeStationManageStore,
         payload: {
-          YcConfigData: response.data.data || []
+          YcConfigData: response.data.data || [],
         },
       });
-    } else { throw response.data }
+    } else { throw response.data; }
   } catch (e) {
     yield put({
       type: stationManageAction.changeStationManageStore,
       payload: {
-        YcConfigData: []
+        YcConfigData: [],
       },
-    })
+    });
   }
 }
 
-function* setDiagconfigYc(action) {  // 更改遥测或者数据质量配置
+function* setDiagconfigYc(action) { // 更改遥测或者数据质量配置
   const { payload } = action;
+  const { eventData, func } = payload;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.setYcconfig}`;
   try {
     yield put({
@@ -306,23 +311,26 @@ function* setDiagconfigYc(action) {  // 更改遥测或者数据质量配置
       payload: {
         YcLoading: true,
       },
-    })
-    const response = yield call(axios.post, url, payload);
+    });
+    const response = yield call(axios.post, url, eventData);
     if (response.data.code === '10000') {
+      message.success('修改成功');
       yield put({
         type: stationManageAction.changeStationManageStore,
         payload: {
           YcLoading: false,
         },
-      })
-    } else { throw response.data }
+      });
+      func({ eventYcModal: false });
+    } else { throw response.data; }
   } catch (e) {
+    message.error('修改失败，请重试！');
     yield put({
       type: stationManageAction.changeStationManageStore,
       payload: {
         YcLoading: false,
       },
-    })
+    });
   }
 }
 
@@ -336,7 +344,7 @@ export function* watchStationManage() {
   yield takeLatest(stationManageAction.GET_OTHER_PAGE_STATION_MANAGE_DETAIL, getOtherPageStationDetail);
   yield takeLatest(stationManageAction.getDiagconfigYx, getDiagconfigYx);
   yield takeLatest(stationManageAction.setDiagconfigYx, setDiagconfigYx);
-  yield takeLatest(stationManageAction.getDiagconfigYc, getDiagconfigYx);
-  yield takeLatest(stationManageAction.setDiagconfigYc, setDiagconfigYx);
+  yield takeLatest(stationManageAction.getDiagconfigYc, getDiagconfigYc);
+  yield takeLatest(stationManageAction.setDiagconfigYc, setDiagconfigYc);
 }
 

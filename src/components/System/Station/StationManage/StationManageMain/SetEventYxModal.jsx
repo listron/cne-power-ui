@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tree, Modal, message, Checkbox, Button, Radio } from 'antd';
+import { Tree, Modal, message, Checkbox, Button, Radio, Icon } from 'antd';
 import styles from './stationMain.scss';
 import { Link } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ class SetEventYxModal extends Component { // 电站管理列表页
     setDiagconfigYx: PropTypes.func,
     closeEventModal: PropTypes.func,
     stationCode: PropTypes.number,
+    loading: PropTypes.bool,
   }
 
   constructor(props) {
@@ -38,8 +39,8 @@ class SetEventYxModal extends Component { // 电站管理列表页
     });
     const selectKeys = { ...defaultSelectKeys, ...checkedKeys };
     const diagModeVersions = Object.values(selectKeys);
-    console.log('selectKeys', selectKeys, diagModeVersions);
-    setDiagconfigYx({ diagModeVersions: diagModeVersions, stationCode });
+    setDiagconfigYx({ diagModeVersions: diagModeVersions, stationCode, func: this.props.closeEventModal });
+
   }
 
 
@@ -57,7 +58,7 @@ class SetEventYxModal extends Component { // 电站管理列表页
 
 
   render() {
-    const { allEventYx } = this.props;
+    const { allEventYx, loading } = this.props;
     return (
       <Modal
         title={<span>请设置平台级告警规则</span>}
@@ -71,7 +72,11 @@ class SetEventYxModal extends Component { // 电站管理列表页
           <div className={styles.text}>若未找到需要的软件版本，去<a>添加平台级告警规则设置</a></div>
           <div className={styles.button}>
             <div onClick={this.cancelSetting} className={styles.cancel}>取 消</div>
-            <Button onClick={this.confirmSetting} className={styles.confirm}>确定</Button>
+            <Button onClick={this.confirmSetting} className={styles.confirm}>
+              <div className={styles.buttonCont}>
+                {loading && <Icon type="loading" style={{ fontSize: 18 }} spin />} 确 定
+            </div>
+            </Button>
           </div>
         </div>}
       >

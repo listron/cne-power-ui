@@ -635,14 +635,14 @@ const menuData = [
             path: 'personnelManage',
             rightKey: 'system_account_user',
           }, {
-          //   name: '部门',
-          //   path: 'department',
-          //   rightKey: 'system_account_department',
-          // }, {
-          //   name: '用户',
-          //   path: 'user',
-          //   rightKey: 'system_account_user',
-          // }, {
+            //   name: '部门',
+            //   path: 'department',
+            //   rightKey: 'system_account_department',
+            // }, {
+            //   name: '用户',
+            //   path: 'user',
+            //   rightKey: 'system_account_user',
+            // }, {
             name: '角色',
             path: 'role',
             rightKey: 'system_account_role',
@@ -658,7 +658,13 @@ const menuData = [
             name: '电站',
             path: 'stationManage',
             rightKey: 'system_station_stat',
-          }, {
+          },
+          {
+            name: '平台级告警事件',
+            path: 'alarmEvent',
+            rightKey: 'system_station_stat',
+          },
+          {
             name: '设备',
             path: 'deviceManage',
             rightKey: 'system_station_device',

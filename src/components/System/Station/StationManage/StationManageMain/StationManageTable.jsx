@@ -13,6 +13,7 @@ import WarningTip from '../../../../Common/WarningTip';
 import CneTable from '../../../../Common/Power/CneTable/index';
 import SetEventYxModal from './SetEventYxModal';
 import SetEventYcModal from './SetEventYcModal';
+const { Search } = Input;
 
 // to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
 // 动态确认/取消后，改回调重置为null。可减少诸多记录状态的变量，利用一个交互函数进行覆盖处理。
@@ -34,6 +35,8 @@ class StationManageTable extends Component {
     stationList: PropTypes.array,
     getDiagconfigYx: PropTypes.func,
     getDiagconfigYc: PropTypes.func,
+    setDiagconfigYc: PropTypes.func,
+    setDiagconfigYx: PropTypes.func,
   }
 
   constructor(props) {
@@ -187,15 +190,14 @@ class StationManageTable extends Component {
   setYcStatus = (list, type) => {// 设置遥测数据和数据质量诊断
     const { stationCode, eventDataStatus, eventYcStatus } = list;
     const { getDiagconfigYc } = this.props;
-    getDiagconfigYc({ type, stationCode, init: type === 'yc' ? eventYcStatus : eventDataStatus });
+    // getDiagconfigYc({ type, stationCode, init: type === 'yc' ? eventYcStatus : eventDataStatus });
+    getDiagconfigYc({ type, stationCode, init: 1 });
     this.setState({ eventYcModal: true, type });
   }
 
   closeEventModal = (value) => {// 关闭
     this.setState({ ...value, stationCode: null });
   }
-
-
 
   initColumn = () => {
     const column = [
@@ -221,10 +223,10 @@ class StationManageTable extends Component {
         key: 'eventYxStatus',
         className: styles.eventStatus,
         render: (text, record) => {
-          const { pointStatus, stationType } = record;
-          const title = pointStatus && '已设置' || '未设置';
+          const { eventYxStatus, stationType } = record;
+          const title = eventYxStatus && '已设置' || '未设置';
           return (<div className={`${styles.eventStatusText} ${stationType === 0 && styles.windDisabled}`}>
-            <i className={`iconfont ${pointStatus && 'icon-look' || 'icon-goset'}`} title={title} onClick={(record) => this.setYxStatus(record)} />
+            <i className={`iconfont ${eventYxStatus && 'icon-look' || 'icon-goset'}`} title={title} onClick={() => this.setYxStatus(record)} />
           </div>);
         },
       },
@@ -234,10 +236,10 @@ class StationManageTable extends Component {
         key: 'eventYcStatus',
         className: styles.eventStatus,
         render: (text, record, index) => {
-          const { pointStatus, stationType } = record;
-          const title = pointStatus && '已设置' || '未设置';
+          const { eventYcStatus, stationType } = record;
+          const title = eventYcStatus && '已设置' || '未设置';
           return (<div className={`${styles.eventStatusText} ${stationType === 0 && styles.windDisabled}`}>
-            <i className={`iconfont ${pointStatus && 'icon-look' || 'icon-goset'}`} title={title} onClick={() => this.setYcStatus(record, 'yc')} />
+            <i className={`iconfont ${eventYcStatus && 'icon-look' || 'icon-goset'}`} title={title} onClick={() => this.setYcStatus(record, 'yc')} />
           </div>);
         },
       },
@@ -247,10 +249,10 @@ class StationManageTable extends Component {
         key: 'eventDataStatus',
         className: styles.eventDataStatus,
         render: (text, record, index) => {
-          const { pointStatus, stationType } = record;
-          const title = pointStatus && '已设置' || '未设置';
+          const { eventDataStatus, stationType } = record;
+          const title = eventDataStatus && '已设置' || '未设置';
           return (<div className={`${styles.eventStatusText} ${stationType === 0 && styles.windDisabled}`}>
-            <i className={`iconfont ${pointStatus && 'icon-look' || 'icon-goset'}`} title={title} onClick={() => this.setYcStatus(record, 'data')} />
+            <i className={`iconfont ${eventDataStatus && 'icon-look' || 'icon-goset'}`} title={title} onClick={() => this.setYcStatus(record, 'data')} />
           </div>);
         },
       },
@@ -299,116 +301,18 @@ class StationManageTable extends Component {
     return column;
   }
 
-
+  selectCondition = (value) => { // 查询电站
+    const { getStationList, queryListParams } = this.props;
+    getStationList({ ...queryListParams, keyword: value });
+  }
 
   render() {
-    const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize, setDiagconfigYx, setDiagconfigYc } = this.props;
+    const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize } = this.props;
+    const { setDiagconfigYx, setDiagconfigYc, YxConfigData, YcConfigData, YxLoading, YcLoading, keyword } = this.props;
     const { departmentModal, departmentSetInfo, uploading, fileList, showWarningTip, warningTipText, deleteInfo } = this.state;
     const { eventYxModal, stationCode, eventYcModal, type } = this.state;
     const authData = localStorage.getItem('authData') || '';
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
-    const eventYxData = [
-      {
-        deviceTypeCode: 201,
-        deviceTypeName: '组串式逆变器',
-        deviceModes: [
-          {
-            deviceModeCode: 123,
-            deviceModeName: 'ASG40KTL',
-            manufactorCode: 'ASG40KTL',
-            manufactorName: '阳光',
-            versions: [
-              {
-                diagModeVersionId: 'V1.1.29',
-                version: 'V1.1.29',
-                selected: 0,
-              },
-              {
-                diagModeVersionId: 'V1.1.30883455',
-                version: 'V1.1.30883455',
-                selected: 1,
-              },
-            ],
-          },
-          {
-            deviceModeCode: 1234,
-            deviceModeName: 'ASG40KTL12',
-            manufactorCode: 'ASG40KTL12',
-            manufactorName: '阳光',
-            versions: [
-              {
-                diagModeVersionId: 'V1.1.291',
-                version: 'V1.1.291',
-                selected: 0,
-              },
-              {
-                diagModeVersionId: 'V1.1.308834551',
-                version: 'V1.1.308834551',
-                selected: 0,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        deviceTypeCode: 206,
-        deviceTypeName: '集中式逆变器',
-        deviceModes: [
-          {
-            deviceModeCode: 123,
-            deviceModeName: 'ASG40KTL',
-            manufactorCode: 'ASG40KTL',
-            manufactorName: '阳光',
-            versions: [
-              {
-                diagModeVersionId: 'V1.1.2913',
-                version: 'V1.1.29',
-                selected: 0,
-              },
-              {
-                diagModeVersionId: 'V1.1.3088345514',
-                version: 'V1.1.30883455',
-                selected: 1,
-              },
-            ],
-          },
-          {
-            deviceModeCode: 123345,
-            deviceModeName: 'ASG40KTL12',
-            manufactorCode: 'ASG40KTL12',
-            manufactorName: '阳光',
-            versions: [
-              {
-                diagModeVersionId: 'V1.1.29112',
-                version: 'V1.1.291',
-                selected: 0,
-              },
-              {
-                diagModeVersionId: 'V1.1.30883455112',
-                version: 'V1.1.308834551',
-                selected: 1,
-              },
-            ],
-          },
-        ],
-      },
-    ];
-    const eventData = [];
-    for (var i = 350; i < 359; i++) {
-      const configName = ['零电流', '低效', '固定物遮挡', '电压异常', '转换效率偏低', '并网延时', '阵列损耗', '交流线缆损耗', '并网线路损耗'];
-      eventData.push({
-        diagStationConfigId: i,
-        enterpriseCode: i,
-        stationCode: i,
-        configCode: i,
-        configName: configName[i - 350],
-        configEnabled: i % 2,
-        eventType: 2,
-        configType: 1,
-        threshold: i - 350,
-        order: i,
-      });
-    }
     return (
       <div className={styles.stationList}>
         <div className={styles.topHandler}>
@@ -431,8 +335,13 @@ class StationManageTable extends Component {
               <span className={'iconfont icon-download'} /> 下载模板
             </Button>
             <div className={styles.conditionSearch}>
-              <Input type="text" placeholder={'电站类型／区域／电站名称'} />
-              <i className={'iconfont icon-search'}></i>
+              {/* <Input type="text" placeholder={'电站类型／区域／电站名称'} value={stationCondition} onChange={this.changeCondition} onPressEnter={this.onPressEnter} />
+              <i className={'iconfont icon-search'} onClick={this.selectCondition} /> */}
+              <Search
+                placeholder="电站类型／区域／电站名称"
+                enterButton={<i className={'iconfont icon-search'} />}
+                onSearch={this.selectCondition}
+              />
             </div>
           </div>
           <div>合计：{totalNum}</div>
@@ -446,6 +355,7 @@ class StationManageTable extends Component {
           className={styles.stationTable}
           onChange={this.tableChange}
           pagination={false}
+          // scroll={{ y: 720 }}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
         {departmentModal && <SetDepartmentModal
@@ -455,14 +365,17 @@ class StationManageTable extends Component {
         />}
         {eventYxModal && <SetEventYxModal
           closeEventModal={this.closeEventModal}
-          allEventYx={eventYxData}
+          allEventYx={YxConfigData}
           stationCode={stationCode}
           setDiagconfigYx={setDiagconfigYx}
+          loading={YxLoading}
         />}
         {eventYcModal && <SetEventYcModal
           closeEventModal={this.closeEventModal}
-          eventData={eventData}
+          eventData={YcConfigData}
           type={type}
+          setDiagconfigYc={setDiagconfigYc}
+          loading={YcLoading}
         />}
       </div>
     );

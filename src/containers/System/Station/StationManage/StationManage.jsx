@@ -26,12 +26,13 @@ class StationManage extends Component {
     getAllDepartmentData: PropTypes.func, // 企业下所有部门
     resetStore: PropTypes.func, // 重置数据
     getStationBelongTypes: PropTypes.func,
+    keyword: PropTypes.string,
   }
   constructor(props) {
     super(props);
     this.state = {
-      showSidePage: 'list'
-    }
+      showSidePage: 'list',
+    };
   }
 
   componentDidMount() {
@@ -46,8 +47,8 @@ class StationManage extends Component {
       orderField,
       orderCommand,
     });
-    this.props.getStationBelongTypes()
-    this.props.getAllDepartmentData({ enterpriseId }) // 2.请求所有部门
+    this.props.getStationBelongTypes();
+    this.props.getAllDepartmentData({ enterpriseId }); // 2.请求所有部门
   }
 
   componentWillUnmount() {
@@ -61,15 +62,15 @@ class StationManage extends Component {
   onToggleSide = () => {
     const { showPage } = this.props;
     this.setState({
-      showSidePage: showPage
+      showSidePage: showPage,
     });
   }
 
   render() {
-    const { showPage, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand } = this.props;
+    const { showPage, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand, keyword } = this.props;
     const queryListParams = {
-      stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand,
-    }
+      stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand, keyword,
+    };
     const { showSidePage } = this.state;
     return (
       <div className={styles.stationManageContainer}>
@@ -123,15 +124,15 @@ const mapDispatchToProps = (dispatch) => ({
       params,
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
       resultName: 'allDepartmentData',
-    }
+    },
   }),
   getStationBelongTypes: params => dispatch({
     type: commonAction.getStationBelongTypes,
     payload: {
       params,
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
-      resultName: 'stationBelongInfo'
-    }
+      resultName: 'stationBelongInfo',
+    },
   }),
   getStationTargetInfo: ({ params, resultName }) => dispatch({ // 省市县
     type: commonAction.getStationTargetInfo,
@@ -139,7 +140,7 @@ const mapDispatchToProps = (dispatch) => ({
       params,
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
       resultName,
-    }
+    },
   }),
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
 });

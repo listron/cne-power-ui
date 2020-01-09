@@ -141,17 +141,27 @@
                 display: block;
               }
             }
-            input {
-              width: 200px;
-              margin: 0 4px;
-              height: 22px;
-              display: none;
-            }
-            i {
-              width: 32px;
-              display: flex;
-              justify-content: center;
-              cursor: pointer;
+            :global {
+              .ant-input-search {
+                margin: 0 4px;
+                height: 30px;
+                display: block;
+              }
+              .ant-input {
+                height: 22px;
+                margin: 3px 0;
+                width: 200px;
+                display: none;
+              }
+              .ant-input-search-button {
+                padding: 0;
+                background: #199475;
+                color: #fff;
+                border: none;
+                height: 30px;
+                width: 30px;
+                outline: none;
+              }
             }
           }
         }
@@ -213,7 +223,7 @@
         .regionNameText,
         .eventStatusText,
         .pointStatusText {
-          width: calc((100vw - 300px) * 0.08- 20px);
+          width: calc((100vw - 300px) * 0.08- 30px);
         }
         .windDisabled {
           i {
@@ -428,12 +438,13 @@
       position: relative;
       overflow: hidden;
       color: #199475;
-      span {
+      .buttonCont {
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
         z-index: 3;
+        line-height: 32px;
       }
       &:after {
         position: absolute;

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tree, Modal, message, Checkbox, Button, Switch, InputNumber } from 'antd';
+import { Tree, Modal, message, Checkbox, Button, Switch, InputNumber, Icon } from 'antd';
 import styles from './stationMain.scss';
 
 class SetEventYxModal extends Component { // 遥测诊断或者是数据质量诊断的数据
@@ -11,6 +11,7 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
     type: PropTypes.string,
     closeEventModal: PropTypes.func,
     setDiagconfigYc: PropTypes.func,
+    loading: PropTypes.bool,
   }
 
   constructor(props) {
@@ -21,13 +22,20 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
     };
   }
 
-  componentDidMount() {
-    const { eventData } = this.props;
-    this.setState({ eventData });
+  componentWillReceiveProps(nextProps) {
+    const { eventData } = nextProps;
+    if (eventData.length !== this.props.eventData.length) {
+      this.setState({ eventData });
+    }
   }
 
 
-  onChange = (bool, e) => {
+  componentWillUnmount() {
+    this.setState({ eventData: [] });
+  }
+
+
+  onChange = (bool, e) => { // 改变开关
     const { eventData } = this.state;
     const diagStationConfigId = e.diagStationConfigId;
     const resetData = eventData.findIndex(e => e.diagStationConfigId === diagStationConfigId);
@@ -35,8 +43,7 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
     setTimeout(() => { this.setState({ eventData }); }, 0);
   }
 
-  numberChange = (value, list) => {
-    console.log(12344, value, list);
+  numberChange = (value, list) => { // 改变阈值
     const { eventData } = this.state;
     const diagStationConfigId = list.diagStationConfigId;
     const resetData = eventData.findIndex(e => e.diagStationConfigId === diagStationConfigId);
@@ -44,25 +51,20 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
     setTimeout(() => { this.setState({ eventData }); }, 0);
   }
 
-  confirmSetting = () => {
+  confirmSetting = () => { // 确定
     const { eventData } = this.state;
     const { setDiagconfigYc } = this.props;
-    setDiagconfigYc(eventData);
-    console.log('eventData', eventData);
+    setDiagconfigYc({ eventData, func: this.props.closeEventModal });
   }
 
-
-
-  cancelSetting = () => {
+  cancelSetting = () => { // 取消
     this.props.closeEventModal({ eventYcModal: false });
   }
 
 
-
-
   render() {
     const { eventData } = this.state;
-    const { type } = this.props;
+    const { type, loading } = this.props;
     return (
       <Modal
         title={<span>遥测诊断设置</span>}
@@ -74,7 +76,11 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
         width={625}
         footer={<div className={styles.footer}>
           <div onClick={this.cancelSetting} className={styles.cancel}>取 消</div>
-          <Button onClick={this.confirmSetting} className={styles.confirm}>确定</Button>
+          <Button onClick={this.confirmSetting} className={styles.confirm}>
+            <div className={styles.buttonCont}>
+              {loading && <Icon type="loading" style={{ fontSize: 18 }} spin />} 确 定
+            </div>
+          </Button>
         </div>}
       >
         <div>
@@ -101,8 +107,6 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
             })
           }
         </div>
-
-
       </Modal>
     );
   }
