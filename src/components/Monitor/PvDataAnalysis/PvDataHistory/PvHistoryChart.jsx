@@ -116,6 +116,8 @@ class PvHistoryChart extends Component {
     const pointNum = pointData.length || 0;
     const weatherStationPoint = []; // 气象站的测点
     const otherPoints = []; // 除气象站外其他测点
+    const weatherStationDevice = []; // 气象站设备
+    const otherDevice = []; // 除气象站外其他设备
 
     pointData.forEach((point, index) => {
       const pointDeciceName = Object.keys(point.pointInfo).toString();
@@ -128,10 +130,18 @@ class PvHistoryChart extends Component {
       }
     });
 
+    deviceInfo.forEach(device => {
+      const strIndex = device.deviceCode.indexOf('M', 0);
+      const weatherStationId = device.deviceCode.substr(strIndex + 1, 3); // 截取出气象站的deviceCode
+      if (weatherStationId === '203') {
+        weatherStationDevice.push(device);
+      }else{
+        otherDevice.push(device);
+      }
+    });
+
     otherPoints.forEach((point, index) => {
-      const pointDeciceName = Object.keys(point.pointInfo);
-        deviceInfo.forEach((device, deviceIndex) => {
-          if (pointDeciceName.includes(device.deviceCode)) {
+      otherDevice.forEach((device, deviceIndex) => {
             const mapNumber = index * deviceNum + deviceIndex; // 属于其他数据中的顺序
             const lengendName = `${point.pointName}-${device.deviceName}`;
             legend.push({
@@ -155,15 +165,12 @@ class PvHistoryChart extends Component {
               },
               data: point.pointInfo[device.deviceCode] || [],
             });
-          }
         });
     });
 
     const preTotalNum = otherPoints.length * deviceNum;
     weatherStationPoint.forEach((weather, index) => {
-      const pointDeciceName = Object.keys(weather.pointInfo);
-      deviceInfo.forEach((device, deviceIndex) => {
-        if (pointDeciceName.includes(device.deviceCode)) {
+      weatherStationDevice.forEach((device, deviceIndex) => {
           const mapNumber = preTotalNum + index; // 属于气象站数据中的顺序
           const lengendName = `${weather.pointName}-${device.deviceName}`;
           legend.push({
@@ -187,9 +194,9 @@ class PvHistoryChart extends Component {
             },
             data: weather.pointInfo[device.deviceCode] || [],
           });
-        }
       });
     });
+
     otherPoints.push(...weatherStationPoint);
 
     return { series, legend };
