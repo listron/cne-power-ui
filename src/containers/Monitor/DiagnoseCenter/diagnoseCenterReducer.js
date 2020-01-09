@@ -44,6 +44,7 @@ const initState = {
   diagnoseUpdateTime: '--', // 表格数据更新时间
   totalNum: 0, // 总量
   summaryInfo: {}, // 汇总统计
+  eventAnalysisLoading: false, // 时间分析loading状态
   eventAnalysisInfo: {}, // 告警事件分析结果
 };
 

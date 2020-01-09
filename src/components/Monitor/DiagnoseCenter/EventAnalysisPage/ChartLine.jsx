@@ -8,6 +8,7 @@ import styles from './eventAnalysis.scss';
 class ChartLine extends PureComponent {
 
   static propTypes = {
+    eventAnalysisLoading: PropTypes.bool,
     eventAnalysisInfo: PropTypes.object,
   };
 
@@ -19,7 +20,11 @@ class ChartLine extends PureComponent {
 
   componentWillReceiveProps(nextProps){
     const preAnalysiInfo = this.props.eventAnalysisInfo;
-    const { eventAnalysisInfo } = nextProps;
+    const preLoading = this.props.eventAnalysisLoading;
+    const { eventAnalysisInfo, eventAnalysisLoading } = nextProps;
+    if (eventAnalysisLoading && !preLoading) {
+      this.chartLoading();
+    }
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { period = [], data = {} } = eventAnalysisInfo || {};
       this.drawChart(period, data);
@@ -28,12 +33,18 @@ class ChartLine extends PureComponent {
 
   lineColors = ['#ff9900', '#4d90fd', '#60c060', '#ff8d83', '#00cdff', '#9f98ff', '#d5c503', '#2ad7ab', '#b550b2', '#3e97d1', '#83bcc4', '#cc6500', '#5578c2', '#86acea', '#d3b08e', '#7286f1', '#512ca8', '#33cc27', '#bfbf95', '#986cff'];
 
+  chartLoading = () => {
+    const lineChart = echarts.init(this.lineRef);
+    lineChart.showLoading();
+  }
+
   drawChart = (period = [], data = {}) => {
     const lineChart = echarts.init(this.lineRef);
+    lineChart.hideLoading();
     const { time = [], pointData = [] } = data;
     const legendData = [{
       name: '告警时段',
-      icon: 'rect',
+      icon: 'image://data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iOHB4IiBoZWlnaHQ9IjhweCIgdmlld0JveD0iMCAwIDggOCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggNTEuMyAoNTc1NDQpIC0gaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoIC0tPgogICAgPHRpdGxlPlJlY3RhbmdsZSAzPC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnM+PC9kZWZzPgogICAgPGcgaWQ9IlNjcmVlbjIt5ZGK6K2mIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iMy3mjInpkq7lkozooajljZUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00MTYuMDAwMDAwLCAtNTIxLjAwMDAwMCkiIGZpbGw9IiNEOEQ4RDgiIGZpbGwtcnVsZT0ibm9uemVybyI+CiAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtMyIgeD0iNDE2IiB5PSI1MjEiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiIHJ4PSIyIj48L3JlY3Q+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=',
     }];
     const markAreaData = period.map(e => {
       const { beginTime, endTime } = e || {};
@@ -69,6 +80,7 @@ class ChartLine extends PureComponent {
     });
     const option = {
       legend: {
+        selectedMode: false,
         data: legendData,
       },
       color: colors,

@@ -7,6 +7,7 @@ import styles from './eventAnalysis.scss';
 
 class ChartBar extends PureComponent {
   static propTypes = {
+    eventAnalysisLoading: PropTypes.bool,
     eventAnalysisInfo: PropTypes.object,
   };
 
@@ -18,15 +19,25 @@ class ChartBar extends PureComponent {
 
   componentWillReceiveProps(nextProps){
     const preAnalysiInfo = this.props.eventAnalysisInfo;
-    const { eventAnalysisInfo } = nextProps;
+    const preLoading = this.props.eventAnalysisLoading;
+    const { eventAnalysisInfo, eventAnalysisLoading } = nextProps;
+    if (eventAnalysisLoading && !preLoading) { // 数据加载中
+      this.chartLoading();
+    }
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { data = [] } = eventAnalysisInfo || {};
       this.drawChart(data);
     }
   }
 
+  chartLoading = () => {
+    const barChart = echarts.init(this.lineRef);
+    barChart.showLoading();
+  }
+
   drawChart = (data = []) => {
     const barChart = echarts.init(this.barRef);
+    barChart.hideLoading();
     const xNames = [], baseData = [], theoryData = [], lineData = [];
     data.forEach((e) => {
       xNames.push(e.name);

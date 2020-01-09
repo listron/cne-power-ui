@@ -158,6 +158,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
     const { pageKey } = yield select(state => state.monitor.diagnoseCenter);
     const eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
     const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
+    yield call(easyPut, 'changeStore', { eventAnalysisLoading: true });
     const response = yield call(request.get, url, { params: {
       diagWarningId: 477149066110719,
       deviceFullcode: '350M201M2M61',
@@ -168,24 +169,26 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         showAnalysisPage: true,
+        eventAnalysisLoading: false,
         analysisEvent: payload,
-        eventAnalysisInfo: {
-          period: [],
-          data: [1, 2, 3, 4, 5].map(e => ({
-            name: `设备${e}`,
-            gen: Math.random() * 100,
-            theoryGen: Math.random() * 200 + 100,
-            diff: Math.random(),
-          })),
-          chartType: 2, // 1折线, 2比值
-        },
-        // eventAnalysisInfo: response.data || {},
+        // eventAnalysisInfo: {
+        //   period: [],
+        //   data: [1, 2, 3, 4, 5].map(e => ({
+        //     name: `设备${e}`,
+        //     gen: Math.random() * 100,
+        //     theoryGen: Math.random() * 200 + 100,
+        //     diff: Math.random(),
+        //   })),
+        //   chartType: 2, // 1折线, 2比值
+        // },
+        eventAnalysisInfo: response.data || {},
       });
     } else { throw response.message; }
   } catch (error) {
     message.error(`告警事件分析结果获取失败, ${error}`);
     yield call(easyPut, 'changeStore', {
       eventAnalysisInfo: {},
+      eventAnalysisLoading: false,
     });
   }
 }
