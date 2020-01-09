@@ -6,12 +6,19 @@ import styles from './index.scss';
 
 export default function CneTable({ ...props }) {
   const { theme = 'light', className, ...rest } = props;
-  return <Table className={`${styles.cneTable} ${className} ${styles[theme]}`} {...rest} />;
+  return (
+    <Table
+      className={`${styles.cneTable} ${className} ${styles[theme]}`}
+      locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+      pagination={false}
+      {...rest}
+    />
+  );
 }
 
 CneTable.propTypes = {
   theme: PropTypes.string,
-  className: PropTypes.any,
+  className: PropTypes.string,
 };
 
 
