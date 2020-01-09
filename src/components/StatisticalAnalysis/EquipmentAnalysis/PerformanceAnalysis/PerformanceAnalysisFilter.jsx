@@ -181,6 +181,7 @@ class PerformanceAnalysisFilter extends Component {
       electricLineCode: null,
       deviceModeCode: null,
       deviceModeTypeCode: null,
+      eleDeviceModels: [],
     });
     setTimeout(() => {
       if (contrastSwitch) {
