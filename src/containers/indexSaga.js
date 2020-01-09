@@ -52,6 +52,7 @@ import { watchAllDeviceCurve } from './Monitor/PowerCurve/AllDeviceCurve/allDevi
 import { watchSingleDeviceCurve } from './Monitor/PowerCurve/SingleDeviceCurve/singleDeviceCurveSaga'; // 单设备功率曲线
 
 import { watchDataScatterDiagramMonitor } from './Monitor/DataAnalysis/DataScatterDiagram/scatterDiagramSaga'; // 数据分析 - 散点图
+import { watchDiagnoseCenter } from './Monitor/DiagnoseCenter/diagnoseCenterSaga'; // 诊断中心
 
 import { watchMonitorPowerReport } from './ReportManage/WindReport/PowerReport/powerReportSaga'; // 报表
 import { watchMonitorDeviceStatus } from './ReportManage/WindReport/DeviceStatus/deviceStatusSaga'; // 报表
@@ -191,6 +192,7 @@ export default function* rootSaga() {
 
 
     watchDataScatterDiagramMonitor(), //  数据分析 - 散点图
+    watchDiagnoseCenter(), // 诊断中心
 
     watchOthersSaga(),
     // watchOtherSaga(),

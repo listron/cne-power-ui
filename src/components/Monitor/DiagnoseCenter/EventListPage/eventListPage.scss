@@ -1,0 +1,309 @@
+
+
+@import '../../../../theme/theme.scss';
+
+.diagnoseHeaderTabs{
+  display: flex;
+  flex: 0 0 30px;
+  z-index: 99;
+  .leftHolder{
+    flex: 0 0 12px;
+  }
+  .tab{
+    cursor: pointer;
+    flex: 0 0 98px;
+    text-align: center;
+    line-height: 30px;
+  }
+  .tabHolder{
+    flex: 0 0 28px;
+  }
+  .rightHolder{
+    flex: 1;
+  }
+}
+
+.diagnoseLevelSummry{
+  flex: 0 0 88px;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 12px 0 20px;
+  .leftSummary, .rightUpdater{
+    display: flex;
+  }
+  .warningTotal{ // 总数统计
+    height: 60px;
+    display: flex;
+    align-items: center;
+    :global{
+      .iconfont.icon-alarm{
+        font-size: 30px;
+        margin: 0 8px 0 0;
+      }
+    }
+    .warningNumBox{
+      position: relative;
+      border-radius:4px;
+      padding: 0 10px;
+      text-align: center;
+      .totalValue{
+        font-size: 24px;
+        line-height: 34px;
+      }
+      .totalText{
+        line-height: 24px;
+      }
+      .triangle{
+        position: absolute;
+        width: 10px;
+        height: 8px;
+        overflow: hidden;
+        bottom: -8px;
+        left: calc(50% - 4px);
+        &::after{
+          transform: rotate(-45deg);
+          content: '';
+          display: inline-block;
+          position: absolute;
+          top: -3px;
+          left: 1px;
+          width: 8px;
+          height: 8px;
+        }
+      }
+    }
+  }
+  .levelCounts{ // 告警等级
+    display: flex;
+    height: 60px;
+    margin-left: 20px;
+    .gradientLine{
+      flex: 0 0 2px;
+      height:60px;
+    }
+    .eachLevel{
+      margin: 0 30px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      .levelNum{
+        line-height: 34px;
+        font-size: 24px;
+      }
+      .levelNum, .levelText{
+        text-align: center;
+        word-break: keep-all;
+      }
+    }
+  }
+  .updateTime{ // 时间
+    margin-right: 20px;
+    .timeText{
+      line-height: 30px;
+    }
+    .timeArea{
+      margin-left: 8px;
+    }
+  }
+  .refreshIcon{ // 刷新
+    display: flex;
+    .updater{
+      flex: 0 0 30px;
+      height: 30px;
+      border-radius: 50%;
+      text-align: center;
+      margin-right: 2px;
+    }
+    :global{
+      .iconfont.icon-refresh{
+        font-size: 18px;
+        cursor: pointer;
+        line-height: 30px;
+      }
+      .iconfont.icon-help{
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+.diagnoseFilter{
+  div[class*="filterCondition__"] {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    min-height: 50px;
+  }
+}
+
+.diagnoseList{
+  .pagination{
+    display: flex;
+    height: 45px;
+    padding-left: 20px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .diagnoseTable{
+    .finishIcon{
+      width: 40px;
+      padding: 0px!important;
+      position: relative;
+      text-align: center;
+    }
+    .done, .ignore{
+      position: absolute;
+      left: 5px;
+      top: 0px;
+      font-size: 30px;
+    }
+    .eventName, .eventNameText, .warningLevel, .warningLevelText, .pointValueDesc, .pointValueDescText, .deviceTypeName, .deviceTypeNameText, .deviceName, .deviceNameText, .stationName, .stationNameText, .beginTime, .beginTimeText, .warningDuration, .warningDurationText, .warningFrequency, .warningFrequencyText, .statusName, .statusNameText {
+      @include overflowText();
+    }
+    .beginTime {
+      width: calc((100vw - 388px) * 0.115);
+    }
+    .beginTimeText {
+      max-width: calc((100vw - 388px) * 0.115 - 20px);
+    }
+    .eventName, .pointValueDesc, .deviceTypeName, .stationName {
+      width: calc((100vw - 388px) * 0.099);
+    }
+    .eventNameText, .pointValueDescText, .deviceTypeNameText, .stationNameText {
+      max-width: calc((100vw - 388px) * 0.099 - 20px);
+    }
+    .warningLevel, .deviceName, .warningDuration, .warningFrequency, .statusName{
+      width: calc((100vw - 388px) * 0.074);
+    }
+    .warningLevelText, .deviceNameText, .warningDurationText, .warningFrequencyText, .statusNameText {
+      max-width: calc((100vw - 388px) * 0.074 - 20px);
+    }
+    .handleStyle{
+      width: calc((100vw - 388px) * 0.09);
+      .handleAnalysis{
+        margin-right: 10px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+// 颜色控制部分
+.diagnoseHeaderTabs{
+  .leftHolder, .tabHolder, .rightHolder{
+    color: var(--themeColor);
+    border-bottom: 1px solid var(--themeColor);
+  }
+  .tab.active{
+    background-color: #fff;
+    border: 1px solid var(--themeColor);
+    border-top: 2px solid var(--themeColor);
+    border-bottom: none;
+  }
+  .tab.inactive{
+    border: 1px solid transparent;
+    border-top: 2px solid transparent;
+    border-bottom: 1px solid var(--themeColor);
+  }
+  .tabHolder{
+
+  }
+}
+
+.diagnoseLevelSummry{
+  // background-color: #fff;
+  .warningTotal{
+    :global{
+      .iconfont.icon-alert{
+        color: #a42b2c;
+      }
+    }
+    .warningNumBox{
+      background-image:linear-gradient(-180deg, #ceebe0 0%, #cfece1 24%, #f3fbf8 100%);
+      border:1px solid #ceebe0;
+      box-shadow:2px 2px 0 0 rgba(206,235,224,0.30), inset -2px 2px 0 0 rgba(255,255,255,0.80);
+      color: var(--themeColor);
+      .triangle{
+        // background-color: #f3fbf8;
+        // border:1px solid #ceebe0;
+        &::after{
+          position: absolute;
+          background-color: #f3fbf8;
+          border:1px solid #ceebe0;
+        }
+      }
+    }
+  }
+  .levelCounts{
+    .gradientLine{
+      background-image:linear-gradient(-180deg, rgba(255,255,255,0.00) 0%, #999999 57%, rgba(255,255,255,0.00) 100%);
+    }
+    .eachLevel{
+      color: var(--lightColor);
+      &:hover{
+        color: var(--themeColor);
+      }
+    }
+  }
+  .updateTime{
+    .timeText{
+      color: var(--themeColor);
+    }
+    .timeTip{
+      color: var(--lightColor);
+    }
+  }
+  .refreshIcon{
+    .updater{
+      background-color: var(--themeColor);
+    }
+    :global{
+      .iconfont.icon-refresh{
+        color: #fff;
+      }
+      .iconfont.icon-help{
+        color: #f9b600;
+      }
+    }
+  }
+}
+
+.diagnoseFilter{
+  border-top: 1px dashed #d4d4d4;
+  border-bottom: 1px dashed #d4d4d4;
+}
+
+.diagnoseList{
+  .diagnoseTable{
+    .done {
+      color: var(--themeColor);
+    }
+    .ignore{
+      color: #ff9900;
+    }
+    .handleStyle{
+      .handleAnalysis{
+        color: var(--themeColor);
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

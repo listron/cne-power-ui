@@ -25,6 +25,8 @@ import { dataRealtime } from './DataAnalysis/DataRealtime/realtimeReducer'; // �
 import { dataScatterDiagram } from './DataAnalysis/DataScatterDiagram/scatterDiagramReducer'; // 数据分析 - 散点图
 import dataExport from './DataAnalysis/DataExport/dataExportReducer'; // 数据分析 - 数据导出
 
+import { diagnoseCenter } from './DiagnoseCenter/diagnoseCenterReducer';
+
 const monitorReducer = combineReducers({
   stationMonitor,
   deviceMonitor,
@@ -46,6 +48,8 @@ const monitorReducer = combineReducers({
   dataScatterDiagram,
   alarmCount,
   dataExport,
+
+  diagnoseCenter, // 诊断中心
 });
 
 export default monitorReducer;

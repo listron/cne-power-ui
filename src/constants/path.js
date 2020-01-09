@@ -519,6 +519,11 @@ export default {
       getMalfunctionDetail: '/v3/wind/report/fan/devicefault/detail', //故障报表明细
       exportDevicefault: '/v3/wind/report/fan/devicefault/export', //导出设备故障报表
       getPowerLostList: '/v3/wind/report/fan/lostpower', //损失电量报表汇总
+
+      getEventstatus: '/v3/diagconfig/eventstatus', // 获取事件状态
+      getEventtypes: '/v3/diagconfig/eventtype', // 获取事件类型
+      getDiagnoseList: '/v3/diagwarning', // 获取诊断中心事件列表
+      getEventsAnalysis: '/v3/diagwarning/analysis', // 诊断中心事件分析
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码
