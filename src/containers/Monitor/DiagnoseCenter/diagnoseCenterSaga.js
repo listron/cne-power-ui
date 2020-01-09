@@ -160,11 +160,11 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
     const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
     yield call(easyPut, 'changeStore', { eventAnalysisLoading: true });
     const response = yield call(request.get, url, { params: {
-      diagWarningId: 477149066110719,
-      deviceFullcode: '350M201M2M61',
-      eventCode: 'NB0043',
-      eventType: 1,
-      date: '2019-01-06', // moment(beginTime).format('YYYY-MM-DD'),
+      diagWarningId, //: 477149066110719,
+      deviceFullcode, // : '350M201M2M61',
+      eventCode, // : 'NB0043',
+      eventType, //: 1,
+      date: moment(beginTime).format('YYYY-MM-DD'), // '2019-01-06', // moment(beginTime).format('YYYY-MM-DD'),
     }});
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
