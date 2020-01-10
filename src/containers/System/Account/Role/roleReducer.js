@@ -4,6 +4,7 @@ import { roleAction } from './roleAction';
 
 var initState = Immutable.fromJS({
   loading: false,
+  roleTableLoading: false, // 角色列表loading
   showPage: 'list',//默认展示列表页,可展示列表:list/新建:create/编辑:edit,
   roleData: [],//角色列表数据
   menuData: [],//功能列表数据
