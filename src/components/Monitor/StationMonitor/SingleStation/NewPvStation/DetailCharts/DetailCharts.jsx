@@ -4,7 +4,7 @@ import styles from './detailCharts.scss';
 import echarts from 'echarts';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { dataFormats } from '../../../../../../utils/utilFunc';
+import { dataFormats, handleRight } from '../../../../../../utils/utilFunc';
 import MonthPlanPower from './MonthPlanPower';
 import MonthPower from './MonthPower';
 import OutputTenMin from './OutputTenMin';
@@ -34,11 +34,12 @@ class DetailCharts extends Component {
         const { alarmNum, monitorPvUnit, detailVisible, workList, theme = 'light' } = this.props;
         const { powerUnit, realTimePowerUnit } = monitorPvUnit;
         const { stationCode } = this.props.match.params;
+        const statisticsRight = handleRight('statistics');
         return (
             <div className={`${styles.showCharts} ${!detailVisible && styles.hideCharts} ${styles[theme]}`}>
                 <div className={styles.tags}>
                     <Link to={`/monitor/alarm/realtime?stationCode=${stationCode}`}> 查看告警 {dataFormats(alarmNum, '--')} </Link>
-                    <Link to={`/statistical/stationaccount/allstation/${stationCode}`}> 统计分析  </Link>
+                    {statisticsRight && <Link to={`/statistical/stationaccount/allstation/${stationCode}`}> 统计分析  </Link>}
                 </div>
                 <div className={styles.hideDetail} onClick={() => { this.props.detailChange({ detailVisible: false }); }}>
                     <i className="iconfont icon-go"></i>
