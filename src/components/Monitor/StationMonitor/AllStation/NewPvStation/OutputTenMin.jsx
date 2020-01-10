@@ -98,7 +98,7 @@ class OutputTenMin extends Component {
           });
           return (
             `<div class=${styles.tooltipBox}>
-                  <div class=${styles.axisValue}>${params[0].name}</div>
+                  <div class=${styles.axisValue}>${params[0].name.split(',')[1]}</div>
                   <div class=${styles.tooltipContainer}>${paramsItem}</div>
               </div>`
           );
@@ -108,17 +108,18 @@ class OutputTenMin extends Component {
       xAxis: {
         type: 'category',
         splitNumber: 4,
-        min: '00', // 隐藏00时间刻度
         // boundaryGap: false,
         data: capabilityData && capabilityData.map(e => {
-          return moment(e.utc).format('HH');
+          return `${moment(e.utc).format('HH')},${moment(e.utc).format('MM-DD HH:mm')}`;
         }),
         axisLabel: {
           // interval: labelInterval,
           interval: 24,
           show: true,
           color: '#999999',
-          padding: [0, 0, 0, 24],
+          formatter: (value) => {
+            if(value.split(',')[0] !== '00') return value.split(',')[0];
+          },
         },
         axisLine: {
           show: false,
