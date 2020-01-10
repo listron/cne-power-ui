@@ -225,6 +225,11 @@
         .pointStatusText {
           width: calc((100vw - 300px) * 0.08- 30px);
         }
+        .eventStatusText {
+          i {
+            color: #4d90fd;
+          }
+        }
         .windDisabled {
           i {
             color: #999999;
