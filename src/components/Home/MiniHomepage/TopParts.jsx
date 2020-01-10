@@ -7,7 +7,7 @@ import UserInfo from '../../Layout/UserInfo';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
-import { dataFormat } from '../../../utils/utilFunc';
+import { dataFormat, enterDefaultPage } from '../../../utils/utilFunc';
 
 class TopParts extends Component{
   static propTypes = {
@@ -90,6 +90,7 @@ class TopParts extends Component{
       energySaving, changeLoginStore, resetMonitorData, username, userFullName, userLogo, realTimeInfo, resetCommonStore,
     } = this.props;
     const { enterpriseName } = realTimeInfo;
+    const enterDefault = enterDefaultPage();
     return (
       <div className={styles.topParts}>
         <div className={styles.leftTop}>
@@ -107,7 +108,7 @@ class TopParts extends Component{
           </div>
         </div>
         <div className={styles.middleTop}>
-          <Link to="/monitor/station" className={styles.back}>
+          <Link to={enterDefault} className={styles.back}>
             <img width="25px" height="20px" src="/img/back.gif" />
           </Link>
           <div className={styles.title}>{enterpriseName || '--'}epower智慧运维平台</div>

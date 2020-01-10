@@ -80,7 +80,9 @@ class TopMenu extends Component {
   render() {
     const { selectedKeys } = this.state;
     const rightMenu = localStorage.getItem('rightMenu');
+    //console.log('rightMenu=',rightMenu);
     const filteredMenu = menu.filter(e => rightMenu && rightMenu.split(',').includes(e.rightKey));
+    //console.log('filteredMenu=',filteredMenu);
     return (
       <Menu mode="horizontal" onSelect={this.selectTopMenu} selectedKeys={selectedKeys} className={`${styles.topMenu} `}>
         {filteredMenu.map((e, i) => (

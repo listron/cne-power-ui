@@ -6,7 +6,7 @@ import moment from 'moment';
 import UserInfo from '../../Layout/UserInfo';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { dataFormat } from '../../../utils/utilFunc';
+import { dataFormat, enterDefaultPage } from '../../../utils/utilFunc';
 
 class HomepageTop extends Component{
   static propTypes = {
@@ -76,12 +76,13 @@ class HomepageTop extends Component{
     const { enterpriseName } = realTimeInfo;
     const dioxide = dataFormat(energySaving.dioxide);
     const coal = dataFormat(energySaving.coal);
+    const enterDefault = enterDefaultPage();
     return (
       <div className={styles.topBox}>
         <div className={styles.infoShow}>
           <div className={styles.timeShow}>{timeText} 星期{weekDay[weekIndex]}</div>
           <div className={styles.upperArrow}>
-            <Link to="/monitor/station">
+            <Link to={enterDefault}>
               <img width="25px" height="20px" src="/img/back.gif" />
             </Link>
           </div>

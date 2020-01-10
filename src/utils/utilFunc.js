@@ -1,5 +1,5 @@
 import { uniqBy, groupBy } from 'lodash';
-
+import { menu } from '../common/menu';
 
 export const dataFormat = (data, placeholder = '--', pointLength) => { // 数据规范展示
   if (isNaN(data) || (!data && data !== 0)) { // 数据不规范
@@ -173,3 +173,118 @@ export const handleRight = (rightName, allRights = localStorage.getItem('rightHa
   return false;
 };
 
+export const enterFirstPage = () => { //根据产品定的优先级，根据配置权限，动态跳转到优先级-
+  const rightMenu = localStorage.getItem('rightMenu');
+  if(rightMenu == null){
+    return '/homepage';
+  }
+  //console.log(typeof(rightMenu));
+  if(rightMenu.indexOf(',') != -1){
+    if(rightMenu.split(',').includes('homepage')){
+      return '/homepage';
+    }else if(rightMenu.split(',').includes('monitor')){
+      return gotoSubMenu('/monitor');
+    }else if(rightMenu.split(',').includes('operation')){
+      return gotoSubMenu('/operation');
+    }else if(rightMenu.split(',').includes('statistics')){
+      return gotoSubMenu('/statistical');
+    }else if(rightMenu.split(',').includes('analysis')){
+      return gotoSubMenu('/analysis');
+    }else if(rightMenu.split(',').includes('reportManage')){
+      return gotoSubMenu('/report');
+    }else if(rightMenu.split(',').includes('system')){
+      return gotoSubMenu('/system');
+    }
+    }else if(rightMenu.indexOf(',') == -1){
+      if(rightMenu == 'homepage'){
+        return '/homepage';
+      }else if(rightMenu == 'monitor'){
+        return gotoSubMenu('/monitor');
+      }else if(rightMenu == 'operation'){
+        return gotoSubMenu('/operation');
+      }else if(rightMenu == 'statistics'){
+        return gotoSubMenu('/statistical');
+      }else if(rightMenu == 'analysis'){
+        return gotoSubMenu('/analysis');
+      }else if(rightMenu == 'reportManage'){
+        return gotoSubMenu('/report');
+      }else if(rightMenu == 'system'){
+        return gotoSubMenu('/system');
+      }
+    }
+    return '/homepage';
+};
+
+export const enterDefaultPage = () =>{ //根据产品定的优先级，根据配置权限，动态跳转到优先级-
+  const rightMenu = localStorage.getItem('rightMenu');
+  //console.log(rightMenu);
+  if(rightMenu == null){
+    return '/homepage';
+  }
+  if(rightMenu.indexOf(',') != -1){
+    if(rightMenu.split(',').includes('monitor')){
+      return gotoSubMenu('/monitor');
+    }else if(rightMenu.split(',').includes('operation')){
+      return gotoSubMenu('/operation');
+    }else if(rightMenu.split(',').includes('statistics')){
+      return gotoSubMenu('/statistical');
+    }else if(rightMenu.split(',').includes('analysis')){
+      return gotoSubMenu('/analysis');
+    }else if(rightMenu.split(',').includes('reportManage')){
+      return gotoSubMenu('/report');
+    }else if(rightMenu.split(',').includes('system')){
+      return gotoSubMenu('/system');
+    }
+  }else if(rightMenu.indexOf(',') == -1){
+    if(rightMenu == 'monitor'){
+      return gotoSubMenu('/monitor');
+    }else if(rightMenu == 'operation'){
+      return gotoSubMenu('/operation');
+    }else if(rightMenu == 'statistics'){
+      return gotoSubMenu('/statistical');
+    }else if(rightMenu == 'analysis'){
+      return gotoSubMenu('/analysis');
+    }else if(rightMenu == 'reportManage'){
+      return gotoSubMenu('/report');
+    }else if(rightMenu == 'system'){
+      return gotoSubMenu('/system');
+    }
+  }
+  return '/homepage';
+
+};
+
+export const findDefaultPath = (menuArray) => {
+  const rightMenu = localStorage.getItem('rightMenu') || '';
+  const rightArr = rightMenu.split(',');
+  const getDefaultPath = menuArray.find(e => e.defaultPath && rightArr.includes(e.rightKey));
+  if (getDefaultPath) {
+    return getDefaultPath.path;
+  }
+  for (let i = 0; i < menuArray.length; i += 1) {
+    const subMenuArray = menuArray[i].children;
+    if (subMenuArray && subMenuArray.length > 0) {
+      const getSubDefaultPath = findDefaultPath(subMenuArray);
+      if (getSubDefaultPath) {
+        return getSubDefaultPath;
+      }
+    }
+  }
+
+};
+
+export const gotoSubMenu = (key) => {
+  const params = menu.find(e => e.path === key);
+  //console.log(menu);
+  //console.log(params);
+  let defaultPath = '/';
+  if(params){
+    if (params.defaultPath) {
+      defaultPath = params.path;
+    } else if (params.children && params.children.length > 0) {
+      defaultPath = findDefaultPath(params.children);
+    }
+  }
+  //console.log(defaultPath);
+  return defaultPath;
+};
