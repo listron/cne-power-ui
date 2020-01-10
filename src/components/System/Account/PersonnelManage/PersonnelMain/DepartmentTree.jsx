@@ -187,11 +187,12 @@ class DepartmentTree extends Component {
     const userRight = rights && rights.split(',').includes('account_department_user');
     const deleteRight = rights && rights.split(',').includes('account_department_delete');
     const updateRight = rights && rights.split(',').includes('account_department_update');
+    const uploaderRight = rights && rights.split(',').includes('account_user_batchImport');
     return (
       <div className={styles.departmentTree}>
         <h3 className={styles.treeTop}>
           <Button className={styles.templateDown} onClick={this.downloadTemplate} loading={templateLoading}>导入模板下载</Button>
-          <Uploader {...this.props} />
+          {uploaderRight && <Uploader {...this.props} />}
         </h3>
         <section className={styles.treeSection}>
           <h4 className={styles.treeTitle}>

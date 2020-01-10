@@ -15,7 +15,7 @@ function DetailInfoPart({ title, infoArray,  handler, stationOperation, noBottom
     <div className={styles.infoBox} style={{...borderStyle}}>
       <div className={styles.infoTitle}>
         <span className={styles.titleText}>{title}</span>
-        {(handler && stationOperation) ?<Button onClick={handler} className={styles.button} >编辑</Button>:null}
+        {stationOperation && <Button onClick={handler} className={styles.button} >编辑</Button>}
       </div>
       <div className={styles.infoPart}>
         {infoArray.map(e=>{
