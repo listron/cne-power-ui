@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Select, Popover, Button, Icon, Modal } from 'antd';
+import { Table, Select, Popover, Button, Icon, Modal, Spin } from 'antd';
 import WarningTip from '../../../Common/WarningTip';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
@@ -7,16 +7,15 @@ const { Option } = Select;
 
 // to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
 // 动态确认/取消后，改回调重置为null。可减少诸多记录状态的变量，利用一个交互函数进行覆盖处理。
-
 class RoleTable extends Component {
   static propTypes = {
     showPage: PropTypes.string,
     loading: PropTypes.bool,
-    totalNum: PropTypes.number,
+    // totalNum: PropTypes.number,
     roleData: PropTypes.array,
-    selectedRole: PropTypes.array,//勾选的数组
+    selectedRole: PropTypes.array, //勾选的数组
     defaultMenuData: PropTypes.array,
-    getRoleList: PropTypes.func,
+    // getRoleList: PropTypes.func,
     changeRoleStore: PropTypes.func,
     onDeleteRole: PropTypes.func,
   }
@@ -27,19 +26,20 @@ class RoleTable extends Component {
       showWarningTip: false, // 提示弹框
       warningTipText: '', // 提示语
       showDeleteTip: false, //删除弹框
-      deleteTipText: false, //删除提示语
+      // deleteTipText: false, //删除提示语
       handleColumnDel: false, // 删除操作来源, false =>选中行后点击删除。true => 选中表格列中的直接删除
       handleColumnDelInfo: {}, // 选中表格列中直接删除记录的信息
       visibleModel: false,
       recordData: [], // 点击每行的出现的内容
       modelName: '', // 弹出框名字
+      tableLoading: true, // 弹出表格时显示loading
     };
   }
 
   onRowSelect = (selectedRowKeys, selectedRows) => {
     this.props.changeRoleStore({
-      selectedRole: selectedRows
-    })
+      selectedRole: selectedRows,
+    });
   }
 
   onRoleAdd = () =>{//进入添加角色页
@@ -49,13 +49,13 @@ class RoleTable extends Component {
   onConfirmWarningTip = () => {
     this.setState({
       showWarningTip: false,
-    });  
+    });
   }
 
   onCancelDelete = () => {
     this.setState({
       showDeleteTip: false,
-    }); 
+    });
   }
 
   getRightArr(rightData, frontText='') { // 递归生成权限数组['一级-二级-三级...',...]
@@ -105,7 +105,7 @@ class RoleTable extends Component {
     if (roleDeleteRight || roleUpdateRight) { // 至少有一个编辑或删除权限
       return column.concat({
         title: '操作',
-        width:'100px',
+        width: '100px',
         dataIndex: 'handler',
         render: (text, record) => (<span>
             {roleUpdateRight && <i
@@ -117,16 +117,16 @@ class RoleTable extends Component {
               onClick={() => this.ColumnDeleteRole(record)}
             />}
           </span>
-        )
-      })
+        ),
+      });
     }
-    return column
+    return column;
   };
 
   cancelRowSelect = () => {
     this.props.changeRoleStore({
-      selectedRole:[]
-    })
+      selectedRole:[],
+    });
   }
 
   roleHandle = (value) => {//编辑,删除操作
@@ -138,19 +138,24 @@ class RoleTable extends Component {
         showWarningTip: true,
         warningTipText,
         showWarningCancel: false,
-      })
+      });
     }else{
       value === 'edit'?changeRoleStore({ //编辑
         showPage: 'edit',
       }): this.setState({
         showDeleteTip: true,
-        warningTipText: '确认要删除么?'
-      }); 
+        warningTipText: '确认要删除么?',
+      });
     }
   }
 
   showModel = (record) => { // 点击某行显示权限列表
     const rightdataArr = this.getRightTree(record.rightData);
+    setTimeout(() => {
+      this.setState({
+        tableLoading: false,
+      });
+    }, 500);
     this.setState({
       visibleModel: true,
       recordData: rightdataArr,
@@ -193,6 +198,7 @@ class RoleTable extends Component {
   handleCancel = e => {
     this.setState({
       visibleModel: false,
+      tableLoading: true,
     });
   };
 
@@ -203,12 +209,12 @@ class RoleTable extends Component {
         showWarningTip: true,
         warningTipText: '不得编辑预设角色',
         showWarningCancel: false,
-      })
+      });
     } else {
       this.props.changeRoleStore({ //编辑
         showPage: 'edit',
         selectedRole: [record],
-      })
+      });
     }
   }
 
@@ -219,14 +225,14 @@ class RoleTable extends Component {
         showWarningTip: true,
         warningTipText: '不得删除预设角色',
         showWarningCancel: false,
-      })
+      });
     } else {
       this.setState({
         showDeleteTip: true,
         warningTipText: '确认要删除么?',
         handleColumnDel: true,
         handleColumnDelInfo: record,
-      }); 
+      });
     }
   }
 
@@ -239,19 +245,19 @@ class RoleTable extends Component {
       });
     } else { // 选中行 后操作删除。
       onDeleteRole({
-        roleId: selectedRole.map(e=>e.roleId).join(',')
+        roleId: selectedRole.map(e=>e.roleId).join(','),
       });
     }
     this.setState({
       showDeleteTip: false,
       handleColumnDel: false,
       handleColumnDelInfo: {},
-    })
+    });
   }
 
   render(){
     const { selectedRole, roleData, loading, showPage, defaultMenuData } = this.props;
-    const { showWarningTip, warningTipText, showDeleteTip, recordData, modelName } = this.state;
+    const { showWarningTip, warningTipText, showDeleteTip, recordData, modelName, tableLoading } = this.state;
     const rightHandler = localStorage.getItem('rightHandler') || '';
     const roleCreateRight = rightHandler.split(',').includes('account_role_create');
     const roleDeleteRight = rightHandler.split(',').includes('account_role_delete');
@@ -269,7 +275,7 @@ class RoleTable extends Component {
                 <span className={styles.text}>角色</span>
               </Button>}
               <div className={styles.handleRole}>
-              {roleConfigRight && <Select onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName=  {styles.roleTableHandleDropdown}>
+              {roleConfigRight && <Select onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName = {styles.roleTableHandleDropdown}>
                 {roleUpdateRight && <Option value="edit" disabled={selectedRole.length !== 1}>编辑</Option>}
                 {roleDeleteRight && <Option value="delete" disabled={selectedRole.length===0}>删除</Option>}
               </Select>}
@@ -278,13 +284,13 @@ class RoleTable extends Component {
           </div>
           <Table
             loading={loading}
-            rowKey={(record)=>{return record.roleId}} 
+            rowKey={(record)=>{return record.roleId;}}
             rowSelection={{
               selectedRowKeys: selectedRole.map(e=>e.roleId),
-              onChange: this.onRowSelect
+              onChange: this.onRowSelect,
             }}
-            dataSource={roleData} 
-            columns={this.createRoloeColumn()} 
+            dataSource={roleData}
+            columns={this.createRoloeColumn()}
             onChange={this.tableChange}
             pagination={false}
           />
@@ -315,35 +321,38 @@ class RoleTable extends Component {
           width={625}
           footer={null}
         >
-          <div className={styles.rightTable}>
-            <div className={styles.tableHeader}>
-              <div className={styles.secondColumn}>二级菜单</div>
-              <div className={styles.thirdColumn}>三级菜单</div>
-            </div>
-            {recordData && recordData.length > 0 && recordData.map(e => {
-              return (
-                <div className={styles.tableContent}>
-                  {e.childRightData && e.childRightData.map(m => {
-                    return (
-                      <div className={styles.rows}>
-                        <div className={styles.secondMenu}>{m.rightName}</div>
-                        <div className={styles.thirdMenu}>
-                          {m.childRightData && m.childRightData.map(item => {
-                            return (
-                              <span className={styles.rightName}>
-                                <span className={styles.text}>{item.rightName}</span>
-                                <span className={styles.partition}>|</span>
-                              </span>
-                            );
-                          })}
+          <Spin spinning={tableLoading}>
+            {!tableLoading &&
+            <div className={styles.rightTable}>
+              <div className={styles.tableHeader}>
+                <div className={styles.secondColumn}>二级菜单</div>
+                <div className={styles.thirdColumn}>三级菜单</div>
+              </div>
+              {recordData && recordData.length > 0 && recordData.map(e => {
+                return (
+                  <div className={styles.tableContent}>
+                    {e.childRightData && e.childRightData.map(m => {
+                      return (
+                        <div className={styles.rows}>
+                          <div className={styles.secondMenu}>{m.rightName}</div>
+                          <div className={styles.thirdMenu}>
+                            {m.childRightData && m.childRightData.map(item => {
+                              return (
+                                <span className={styles.rightName}>
+                                  <span className={styles.text}>{item.rightName}</span>
+                                  <span className={styles.partition}>|</span>
+                                </span>
+                              );
+                            })}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>}
+          </Spin>
         </Modal>
       </div>
     );

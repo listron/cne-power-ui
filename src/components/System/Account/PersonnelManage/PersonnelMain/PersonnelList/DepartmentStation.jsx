@@ -37,6 +37,8 @@ class DepartmentStation extends Component {
 
   render(){
     const { departmentStations, stations, showDepartmentStationModal } = this.props;
+    const rights = localStorage.getItem('rightHandler');
+    const updateRight = rights && rights.split(',').includes('account_department_update');
     return (
       <div className={styles.departmentStation}>
         <span className="iconfont icon-elecmanage" />
@@ -44,7 +46,7 @@ class DepartmentStation extends Component {
         <span className={styles.stationNames}>
           {departmentStations.map(e => e.stationName).join('、')}
         </span>
-        <Button className={styles.editButton} onClick={this.showStationModal}>编辑</Button>
+        {updateRight && <Button className={styles.editButton} onClick={this.showStationModal}>编辑</Button>}
         <StationModal
           theme="light"
           multiple={true}
