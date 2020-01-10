@@ -7,6 +7,7 @@ import TransferWarningModal from '../RealTimeWarning/TransferWarningModal';
 import { Link } from 'react-router-dom';
 import { Table, Select, Popover, Icon, Button } from 'antd';
 import moment from 'moment';
+import { handleRight } from '@utils/utilFunc';
 const Option = Select.Option;
 
 class HandleRemoveTable extends Component {
@@ -263,7 +264,7 @@ class HandleRemoveTable extends Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-
+    const removeRight = handleRight('alarm_remove');//操作权限
     return (
       <div className={styles.realTimeWarningTable}>
         {showWarningTip && <WarningTip
@@ -274,6 +275,7 @@ class HandleRemoveTable extends Component {
           onOK={this.onConfirmWarningTip}
           value={warningTipText} />}
         <span ref={'select'} />
+        {removeRight ?
         <div className={styles.tableHeader}>
           <Select onChange={this.onHandle}
             value="操作"
@@ -285,7 +287,7 @@ class HandleRemoveTable extends Component {
             <Option value="cancleRemove" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>取消手动解除</Option>
           </Select>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} theme={theme} />
-        </div>
+        </div> : <div></div>}
         <Table
           dataSource={handleRemoveList}
           rowKey={record => record.warningLogId}
