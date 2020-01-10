@@ -190,8 +190,7 @@ class StationManageTable extends Component {
   setYcStatus = (list, type) => {// 设置遥测数据和数据质量诊断
     const { stationCode, eventDataStatus, eventYcStatus } = list;
     const { getDiagconfigYc } = this.props;
-    // getDiagconfigYc({ type, stationCode, init: type === 'yc' ? eventYcStatus : eventDataStatus });
-    getDiagconfigYc({ type, stationCode, init: 1 });
+    getDiagconfigYc({ type, stationCode, init: type === 'yc' ? eventYcStatus : eventDataStatus });
     this.setState({ eventYcModal: true, type });
   }
 
@@ -226,7 +225,7 @@ class StationManageTable extends Component {
           const { eventYxStatus, stationType } = record;
           const title = eventYxStatus && '已设置' || '未设置';
           return (<div className={`${styles.eventStatusText} ${stationType === 0 && styles.windDisabled}`}>
-            <i className={`iconfont ${eventYxStatus && 'icon-look' || 'icon-goset'}`} title={title} onClick={() => this.setYxStatus(record)} />
+            <i className={`iconfont ${eventYxStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYxStatus(record)} />
           </div>);
         },
       },
@@ -239,7 +238,7 @@ class StationManageTable extends Component {
           const { eventYcStatus, stationType } = record;
           const title = eventYcStatus && '已设置' || '未设置';
           return (<div className={`${styles.eventStatusText} ${stationType === 0 && styles.windDisabled}`}>
-            <i className={`iconfont ${eventYcStatus && 'icon-look' || 'icon-goset'}`} title={title} onClick={() => this.setYcStatus(record, 'yc')} />
+            <i className={`iconfont ${eventYcStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYcStatus(record, 'yc')} />
           </div>);
         },
       },
@@ -252,7 +251,7 @@ class StationManageTable extends Component {
           const { eventDataStatus, stationType } = record;
           const title = eventDataStatus && '已设置' || '未设置';
           return (<div className={`${styles.eventStatusText} ${stationType === 0 && styles.windDisabled}`}>
-            <i className={`iconfont ${eventDataStatus && 'icon-look' || 'icon-goset'}`} title={title} onClick={() => this.setYcStatus(record, 'data')} />
+            <i className={`iconfont ${eventDataStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYcStatus(record, 'data')} />
           </div>);
         },
       },
@@ -272,7 +271,7 @@ class StationManageTable extends Component {
           }
           return (
             <div className={styles.eventStatusText}>
-              <span title="去设置" className="iconfont icon-goset" onClick={() => this.showDepartmentModal(record)}></span>
+              <span title="去设置" className="iconfont icon-goset1" onClick={() => this.showDepartmentModal(record)}></span>
             </div>
           );
         },
