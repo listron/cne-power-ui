@@ -17,6 +17,7 @@ import MenuBoard from '../../components/Layout/MenuBoard';
 import LogoInfo from '../../components/Layout/LogoInfo';
 import UserInfo from '../../components/Layout/UserInfo';
 import Cookie from 'js-cookie';
+import { enterFirstPage } from '../../utils/utilFunc';
 
 const Login = lazy(() => import('../Login/LoginLayout'));
 
@@ -134,6 +135,8 @@ class Main extends Component {
     const userRight = Cookie.get('userRight');
     const rightMenu = localStorage.getItem('rightMenu');
     const isTokenValid = Cookie.get('expireData') && moment().isBefore(new Date(Cookie.get('expireData')), 'second');
+    const enterFirst = enterFirstPage();
+    //console.log(enterFirstPage);
     if (authData && isTokenValid) {
       axios.defaults.headers.common['Authorization'] = 'bearer ' + authData;
     }
@@ -191,7 +194,9 @@ class Main extends Component {
             >
               <Switch>
                 {routerConfig}
-                <Redirect to="/monitor/station" />
+                <Redirect to={
+                  enterFirst
+                } />
               </Switch>
             </main>
           </div>
