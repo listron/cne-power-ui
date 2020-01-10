@@ -111,6 +111,7 @@ const menuData = [
       },
       {
         name: '数据导出',
+		iconStyle: 'icon-export',
         path: 'dataExport',
         rightKey: 'dataAnalysis_dataExport',
       },
