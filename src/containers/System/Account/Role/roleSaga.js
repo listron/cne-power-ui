@@ -25,15 +25,29 @@ function *getRoleList(action){
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getRoleList}/${payload.enterpriseId}`;
   try{
-    yield put({ type:roleAction.ROLE_FETCH });
-    const response = yield call(axios.get,url);
+    yield put({
+      type: roleAction.CHANGE_ROLE_STORE,
+      payload: {
+        roleTableLoading: true,
+        ...payload,
+      },
+    });
+    const response = yield call(axios.get, url);
     if(response.data.code === '10000') {
       yield put({
         type: roleAction.GET_ROLE_FETCH_SUCCESS,
-        payload: {roleData: response.data.data},
-      });      
-    }  
+        payload: {
+          roleTableLoading: false,
+          roleData: response.data.data,
+        },
+      });
+    }
   }catch(e){
+    message.error('获取角色列表失败，请重试!');
+    yield put({
+      type: roleAction.CHANGE_ROLE_STORE,
+      payload: { roleTableLoading: false },
+    });
     console.log(e);
   }
 }
