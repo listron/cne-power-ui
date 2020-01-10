@@ -5,7 +5,7 @@ import echarts from 'echarts';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData';
-import { dataFormats } from '../../../../../../utils/utilFunc';
+import { dataFormats, handleRights } from '../../../../../../utils/utilFunc';
 import DayPower from './DayPower';
 import MonthPlanPower from './MonthPlanPower';
 import MonthPower from './MonthPower';
@@ -31,12 +31,13 @@ class DetailCharts extends Component {
         const { stationDataSummary = {}, monitorPvUnit, detailVisible } = this.props;
         const { dayPowerTime, dayPowerData, monthPlanPowerData, monthPlanPowerTime, monthPowerData, monthPowerTime, theme } = this.props;
         const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
+        const [statisticsRight, pvReportStationRight] = handleRights(['statistics', 'pvReport_station']);
         return (
             <div className={`${styles.showCharts} ${!detailVisible && styles.hideCharts} ${styles[theme]}`} >
                 <div className={styles.tags}>
                     <Link to={{ pathname: '/monitor/alarm/realtime', state: { stationType: '1' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
-                    <Link to={'/statistical/stationaccount/allstation'}> 统计分析  </Link>
-                    <Link to={'/report/pvstation/station'} > 电站报表  </Link>
+                    {statisticsRight && <Link to={'/statistical/stationaccount/allstation'}> 统计分析  </Link>}
+                    {pvReportStationRight && <Link to={'/report/pvstation/station'} > 电站报表  </Link>}
                 </div>
                 <div className={styles.hideDetail} onClick={() => { this.props.detailChange({ detailVisible: false }); }}>
                     <i className="iconfont icon-go"></i>
