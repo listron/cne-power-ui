@@ -32,12 +32,16 @@ class RoleEditForm extends Component {
 
   onSaveRole = () => {
     const { enterpriseId, selectedRole, defaultMenuData, operatetypeData = [], showPage, onCreateRole, onEditRole } = this.props;
+    const isEdit = showPage === 'edit';
+    const selectedRight = isEdit ? selectedRole[0].rightData : [];
+    const allRoleIds = this.getRightIdArr(selectedRight);
+
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
         const { roleDesc, rightId, operateName} = values;
-        const tmpDefault = defaultMenuData.map(e=>`${e}`);
-        // const outputRightSet = new Set([...rightId,...tmpDefault]);
-        // const outputRightArr = [...outputRightSet];
+        const outputRightSet = new Set([...rightId, ...allRoleIds]);
+        const outputRightArr = [...outputRightSet];
+
         const selectOperateInfo = operatetypeData.find(e => {
           return e.name === operateName;
         }) || '';
@@ -53,7 +57,7 @@ class RoleEditForm extends Component {
         } else {
           onEditRole({
             roleDesc: roleDesc.trim(),
-            rightId: rightId.join(','),
+            rightId: outputRightArr.join(','),
             enterpriseId,
             operateId,
             roleId: selectedRole[0].roleId,
@@ -84,12 +88,25 @@ class RoleEditForm extends Component {
     });
   }
 
-  getRightIdArr = (rightData, treeKey = []) => { // 获取被编辑角色的id根节点数组(剔除中间节点)
+  getRightIdArr = (rightData, treeKey = []) => { // 获取被编辑角色的所有id根节点数组(给后端传菜单的全部rightId)
     rightData && rightData.length > 0 && rightData.forEach(e=>{
       const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
       treeKey.push(e.rightId);
       if(hasChildRight){
         this.getRightIdArr(e.childRightData, treeKey);
+      }
+    });
+    return treeKey;
+  }
+
+  getRightId = (rightData) => { // 获取被编辑角色的id根节点数组(剔除中间节点)
+    const treeKey = [];
+    rightData && rightData.length > 0 && rightData.forEach(e=>{
+      const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
+      if(hasChildRight){
+        treeKey.push(...this.getRightId(e.childRightData));
+      }else{
+        e.rightId && treeKey.push(e.rightId.toString());
       }
     });
     return treeKey;
@@ -130,10 +147,10 @@ class RoleEditForm extends Component {
       initialRightValue = [];
       initialOperateName = operateType;
     }else{
-      initialRightValue = this.getRightIdArr(selectedRight);
+      initialRightValue = this.getRightId(selectedRight);
       initialOperateName = selectedRole[0].operateName;
     }
-
+    
     return (     
       <Form onSubmit={this.onSubmit} className={styles.roleEditForm}>
         <FormItem label="角色名称">
