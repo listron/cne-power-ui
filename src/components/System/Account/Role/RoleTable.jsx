@@ -10,11 +10,12 @@ const { Option } = Select;
 class RoleTable extends Component {
   static propTypes = {
     showPage: PropTypes.string,
-    loading: PropTypes.bool,
+    // loading: PropTypes.bool,
+    roleTableLoading: PropTypes.bool,
     // totalNum: PropTypes.number,
     roleData: PropTypes.array,
     selectedRole: PropTypes.array, //勾选的数组
-    defaultMenuData: PropTypes.array,
+    // defaultMenuData: PropTypes.array,
     // getRoleList: PropTypes.func,
     changeRoleStore: PropTypes.func,
     onDeleteRole: PropTypes.func,
@@ -256,7 +257,7 @@ class RoleTable extends Component {
   }
 
   render(){
-    const { selectedRole, roleData, loading, showPage, defaultMenuData } = this.props;
+    const { selectedRole, roleData, showPage, roleTableLoading } = this.props;
     const { showWarningTip, warningTipText, showDeleteTip, recordData, modelName, tableLoading } = this.state;
     const rightHandler = localStorage.getItem('rightHandler') || '';
     const roleCreateRight = rightHandler.split(',').includes('account_role_create');
@@ -283,7 +284,7 @@ class RoleTable extends Component {
             </div>
           </div>
           <Table
-            loading={loading}
+            loading={roleTableLoading}
             rowKey={(record)=>{return record.roleId;}}
             rowSelection={{
               selectedRowKeys: selectedRole.map(e=>e.roleId),
