@@ -28,6 +28,8 @@ import dataExport from './DataAnalysis/DataExport/dataExportReducer'; // 数据�
 import { pvDataHistory } from './PvDataAnalysis/PvDataHistory/pvHistoryReducer'; // 光伏数据分析 - 历史趋势
 import { pvDataRealtime } from './PvDataAnalysis/PvDataRealtime/pvRealtimeReducer'; // 光伏数据分析 - 实时数据
 
+import { diagnoseCenter } from './DiagnoseCenter/diagnoseCenterReducer';
+
 const monitorReducer = combineReducers({
   stationMonitor,
   deviceMonitor,
@@ -51,6 +53,8 @@ const monitorReducer = combineReducers({
   dataExport,
   pvDataHistory,
   pvDataRealtime,
+  diagnoseCenter, // 诊断中心
 });
 
 export default monitorReducer;
+

@@ -60,7 +60,7 @@
       border-bottom: none;
       .ant-table-column-sorter{
         position: absolute;
-        right: 5px;
+        right: 2px;
         height: 100%;
         display: flex;
         align-items: center;
@@ -87,9 +87,9 @@
       & > td {
         border-bottom: 1px solid #d4d4d4;
       }
-      &:last-child > td{
-        border-bottom: none;
-      }
+      // &:last-child > td{
+      //   border-bottom: none;
+      // }
       &:nth-of-type(odd){
         background-color: transparent;
       }

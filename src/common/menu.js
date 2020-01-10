@@ -34,7 +34,8 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
-        name: '告警',
+       
+ name: '告警',
         iconStyle: 'icon-alarm1',
         path: 'alarm',
         rightKey: 'monitor_alarm',
@@ -694,7 +695,13 @@ const menuData = [
             path: 'stationManage',
             defaultPath: true,
             rightKey: 'system_station_stat',
-          }, {
+          },
+          {
+            name: '平台级告警事件',
+            path: 'alarmEvent',
+	    defaultPath: true,
+            rightKey: 'system_station_stat',
+          },{
             name: '设备',
             path: 'deviceManage',
             defaultPath: true,
@@ -776,4 +783,5 @@ export const menu = formatter(menuData);
 //   monitor_alarm_realTime: ['alarm_remove','alarm_worklist','monitor_alarm_remove','monitor_alarm_history'],
 //   operation_worklist_work: ['workExamine_defect_review', 'workExamine_defect_check', 'workExamine_inspection_check'],
 // }
+
 

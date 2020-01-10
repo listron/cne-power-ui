@@ -9,18 +9,18 @@ import styles from './stationMain.scss'
 
 class StationManageMain extends Component { // 电站管理列表页
   static propTypes = {
-    
+
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
-  render(){
+  render() {
     return (
       <div className={styles.stationMain}>
         <div className={styles.stationContent}>
-          <StationManageSearch {...this.props} />    
+          {/* <StationManageSearch {...this.props} />     */}
           <StationManageTable {...this.props} />
         </div>
         <Footer />

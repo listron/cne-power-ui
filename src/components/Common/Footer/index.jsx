@@ -5,7 +5,7 @@ import Cookie from 'js-cookie';
 
 class Footer extends Component {
   static propTypes = {
-    theme: PropTypes.string,
+    className: PropTypes.string,
   }
 
 
@@ -15,9 +15,9 @@ class Footer extends Component {
 
   render() {
     const theme = Cookie.get('theme') || 'light';
+    const { className } = this.props;
     return (
-      <div className={`${styles.footer} ${theme === 'dark' ? styles.darkFooter : styles.lightFooter}`}>
-        <span className={styles.power}><img src="/img/powerr.png" style={{ width: 55, height: 14 }} /></span>
+      <div className={`${styles.footer} ${theme === 'dark' ? styles.darkFooter : styles.lightFooter} ${className}`}>
         <span className={styles.footerText}>京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司</span>
       </div>
     );

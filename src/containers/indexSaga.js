@@ -32,6 +32,7 @@ import { watchPointManage } from './System/Station/PointManage/pointManageSaga';
 import { watchAlarmManage } from './System/Station/AlarmManage/alarmManageSaga';
 import { watchPowerCurve } from './System/Station/PowerCurve/powerCurveSaga';
 import { watchWeatherStation } from './System/Station/WeatherStationConf/weatherStationSaga';
+import { watchAlarmEvent } from './System/Station/AlarmEvent/alarmEventSaga';
 
 
 import { watchSingleStationMonitor } from './Monitor/StationMonitor/SingleStation/singleStationSaga';
@@ -55,6 +56,7 @@ import { watchPvDataHistoryMonitor } from './Monitor/PvDataAnalysis/PvDataHistor
 import { watchPvDataRealtimeMonitor } from './Monitor/PvDataAnalysis/PvDataRealtime/pvRealtimeSaga'; // 光伏数据分析 - 实时数据
 
 import { watchDataScatterDiagramMonitor } from './Monitor/DataAnalysis/DataScatterDiagram/scatterDiagramSaga'; // 数据分析 - 散点图
+import { watchDiagnoseCenter } from './Monitor/DiagnoseCenter/diagnoseCenterSaga'; // 诊断中心
 
 import { watchMonitorPowerReport } from './ReportManage/WindReport/PowerReport/powerReportSaga'; // 报表
 import { watchMonitorDeviceStatus } from './ReportManage/WindReport/DeviceStatus/deviceStatusSaga'; // 报表
@@ -167,6 +169,7 @@ export default function* rootSaga() {
     watchAlarmManage(),
     watchPowerCurve(),
     watchWeatherStation(),
+    watchAlarmEvent(), // 平台级告警事件
     // system-production
     watchPlan(),
     watchWarning(), //预警配置
@@ -196,6 +199,7 @@ export default function* rootSaga() {
 
 
     watchDataScatterDiagramMonitor(), //  数据分析 - 散点图
+    watchDiagnoseCenter(), // 诊断中心
 
     watchOthersSaga(),
     // watchOtherSaga(),

@@ -1,0 +1,326 @@
+
+@import '../../../../theme/theme.scss';
+
+.eventAnalysis{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .detailTop{ // 分析页顶部
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 0 0 60px;
+    .titleInfo{
+      display: flex;
+      align-items: center;
+      .titleName{
+        font-size: 18px;
+        flex: 0 0 142px;
+        text-align: center;
+      }
+      .infoText{
+        flex: 0 0 auto;
+        font-size: 14px;
+        margin-right: 16px;
+      }
+    }
+    .topHandle{
+      height: 60px;
+      display: flex;
+      flex: 0 0 150px;
+      justify-content: flex-end;
+      align-items: center;
+      .showMore{
+        margin-right: 12px;
+        padding: 0 2px;
+        .shadow{
+          line-height: 24px;
+          padding: 0 2px;
+          border-radius: 50%;
+        }
+        :global{
+          .iconfont{
+            margin-right: 4px;
+          }
+        }
+      }
+      .backIcon{
+        cursor: pointer;
+        flex: 0 0 60px;
+        font-size: 20px;
+        line-height: 60px;
+      }
+    }
+  }
+  .analysisLineSearch, .analysisBarSearch{
+    padding: 0 80px;
+    .searchText{ // 标题
+      font-size:18px;
+    }
+    .searchParts{ // 日期
+      .leftIcon, .rightIcon{
+        flex: 0 0 22px;
+        height: 24px;
+        line-height: 24px;
+        border-radius: 2px;
+        cursor: pointer;
+      }
+      .dateSelect{
+        margin: 0 4px;
+        width: 128px;
+        :global{
+          .ant-calendar-picker-input.ant-input{
+            height: 24px;
+          }
+        }
+      }
+    }
+  }
+  .analysisLineSearch{ // 线型图分析筛选
+    flex: 0 0 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .searchParts{
+      display: flex;
+      flex: 0 0 500px;
+      justify-content: flex-end;
+      align-items: center;
+      line-height: 60px;
+      .intervalSelect{
+        margin: 0 40px 0 4px;
+        width: 114px;
+        :global{
+          .ant-select-selection{
+            height: 24px;
+          }
+          .ant-select-selection__rendered{
+            line-height: 22px;
+          }
+        }
+      }
+    }
+  }
+  .analysisBarSearch{ // 柱图分析 筛选
+    flex: 0 0 90px;
+    .searchText{
+      height: 60px;
+      line-height: 60px;
+    }
+    .searchParts{
+      height: 30px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .barTips{
+        display: flex;
+        .acValue, .theoryValue{
+          display: flex;
+          align-items: center;
+          &::before{
+            display: inline-block;
+            border-radius: 2px;
+            content: '';
+            width: 12px;
+            height: 12px;
+            margin: 0 4px 0 10px;
+          }
+        }
+        .acValue{
+          &::before{
+            background-color: rgba(206,235,224,0.50);
+          }
+        } 
+        .theoryValue{
+          &::before{
+            border: 1px solid #199475;
+          }
+        }
+        .rateValue{
+          display: flex;
+          align-items: center;
+          .lineTip{
+            position: relative;
+            width: 12px;
+            height: 24px;
+            margin: 0 4px 0 10px;
+            .line{
+              position: absolute;
+              height: 2px;
+              width: 12px;
+              left: 0;
+              top: 11px;
+              background-color: #ff9900;
+            }
+            .rect{
+              position: absolute;
+              width: 6px;
+              height: 6px;
+              left: 3px;
+              top: 9px;
+              border-radius: 50%;
+              background-color: #ff9900;
+            }
+          }
+        }
+      }
+      .dateCheck{
+        display: flex;
+      }
+    }
+  }
+  .analysisChart{
+    flex: 1;
+    .chartTooltip{
+      .tooltipTitle{
+        margin-bottom: 4px;
+        height: 30px;
+        line-height: 30px;
+      }
+      .eachItem{
+        height: 24px;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        .tipRect{
+          flex: 0 0 12px;
+          height: 12px;
+          border-radius: 2px;
+        }
+        .tipIcon{
+          position: relative;
+          flex: 0 0 12px;
+          height: 24px;
+          .line{
+            position: absolute;
+            height: 2px;
+            width: 12px;
+            left: 0;
+            top: 11px;
+          }
+          .rect{
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            left: 3px;
+            top: 9px;
+            border-radius: 50%;
+          }
+        }
+        .tipName{
+          line-height: 24px;
+          padding: 0 12px 0 4px;
+        }
+        .tipValue{
+          flex: 0 0 auto;
+          line-height: 24px;
+        }
+      }
+    }
+  }
+}
+
+// 颜色部分。
+.eventAnalysis{
+  background-color: #fff;
+  box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+  .detailTop{
+    border-bottom: 1px solid #d4d4d4;
+    .titleInfo{
+      .titleName{
+        color: #353535;
+      }
+      .infoText{
+        color: var(--lightColor);
+      }
+    }
+    .topHandle{
+      color: var(--themeColor);
+      .showMore{
+        background:rgba(206,235,224,0.30);
+        &:hover .shadow{
+          background-color: rgb(206,235,224);
+        }
+      }
+      
+      .backIcon{
+        border-left: 1px solid #d4d4d4;
+        color: var(--lightColor);
+      }
+    }
+  }
+  .analysisLineSearch, .analysisBarSearch{
+    .searchText{
+      color: #000;
+    }
+    .searchParts{
+      color: #353535;
+      .leftIcon, .rightIcon{
+        background-color: #ceebe0;
+        border:1px solid var(--themeColor);
+        &:hover{
+          color: #fff;
+          background-color: var(--themeColor);
+        }
+      }
+    }
+  }
+  .analysisLineSearch{
+
+  }
+  .analysisBarSearch{
+    .searchParts{
+      .acValue{
+        &::before{
+          background-color: rgba(206,235,224,0.50);
+        }
+      } 
+      .theoryValue{
+        &::before{
+          border: 1px solid #199475;
+        }
+      }
+      .rateValue{
+        .lineTip{
+          .line{
+            background-color: #ff9900;
+          }
+          .rect{
+            background-color: #ff9900;
+          }
+        }
+      }
+    }
+  }
+
+  .analysisChart{
+    .chartTooltip{
+      .tooltipTitle{
+        color: #fff;
+      }
+      .eachItem{
+        .tipRect{
+          border: 1px solid #fff;
+        }
+        .tipIcon{
+          .rect{
+            border: solid 1px #fff;
+          }
+        }
+        .tipName{
+          color: #fff;
+        }
+        .tipValue{
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+

@@ -26,59 +26,62 @@ class StationManage extends Component {
     getAllDepartmentData: PropTypes.func, // 企业下所有部门
     resetStore: PropTypes.func, // 重置数据
     getStationBelongTypes: PropTypes.func,
+    keyword: PropTypes.string,
   }
   constructor(props) {
     super(props);
     this.state = {
-      showSidePage: 'list'
-    }
+      showSidePage: 'list',
+    };
   }
 
-  componentDidMount(){
-    const { enterpriseId } = this.props;
+  componentDidMount() {
+    const { enterpriseId, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand } = this.props;
+
     this.props.getStationList({ // 初始请求电站列表
-      stationType: "",
-      regionName: '',
-      stationName: '',
-      pageNum: 1,
-      pageSize: 10,
-      orderField: '',
-      orderCommand: '',
+      stationType,
+      regionName,
+      stationName,
+      pageNum,
+      pageSize,
+      orderField,
+      orderCommand,
     });
-    this.props.getStationBelongTypes()
-    this.props.getAllDepartmentData({ enterpriseId }) // 2.请求所有部门
+    this.props.getStationBelongTypes();
+    this.props.getAllDepartmentData({ enterpriseId }); // 2.请求所有部门
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.resetStore();
   }
 
-  onShowSideChange = ({showSidePage}) => {
+  onShowSideChange = ({ showSidePage }) => {
     this.setState({ showSidePage });
   }
 
   onToggleSide = () => {
     const { showPage } = this.props;
     this.setState({
-      showSidePage: showPage
+      showSidePage: showPage,
     });
   }
 
   render() {
-    const { showPage, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand } = this.props;
+    const { showPage, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand, keyword } = this.props;
     const queryListParams = {
-      stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand,
-    }
+      stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand, keyword,
+    };
     const { showSidePage } = this.state;
     return (
       <div className={styles.stationManageContainer}>
+        {/* <CommonBreadcrumb breadData={[{ name: '电站管理' }]} style={{ marginLeft: '38px', backgroundColor: '#fff' }} /> */}
         <div className={styles.stationManage}>
           <StationManageMain
             {...this.props}
             queryListParams={queryListParams}
           />
           <TransitionContainer
-            show={showPage!=='list'}
+            show={showPage !== 'list'}
             onEnter={this.onToggleSide}
             onExited={this.onToggleSide}
             timeout={500}
@@ -103,37 +106,41 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeStationManageStore: payload => dispatch({type:stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA, payload}),
-  getStationList: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_LIST, payload}),
-  getStationDetail: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_DETAIL, payload}),
-  getOtherPageStationDetail: payload => dispatch({type: stationManageAction.GET_OTHER_PAGE_STATION_MANAGE_DETAIL, payload}),
-  saveStationDetail: payload => dispatch({type: stationManageAction.EDIT_STATION_MANAGE_DETAIL, payload}),
-  deleteStation: payload => dispatch({type: stationManageAction.DELET_STATION_MANAGE, payload}),
-  setStationDepartment: payload => dispatch({type: stationManageAction.SET_STATION_MANAGE_DEPARTMENT, payload}),
+  changeStationManageStore: payload => dispatch({ type: stationManageAction.changeStationManageStore, payload }),
+  getStationList: payload => dispatch({ type: stationManageAction.GET_STATION_MANAGE_LIST, payload }),
+  getStationDetail: payload => dispatch({ type: stationManageAction.GET_STATION_MANAGE_DETAIL, payload }),
+  getOtherPageStationDetail: payload => dispatch({ type: stationManageAction.GET_OTHER_PAGE_STATION_MANAGE_DETAIL, payload }),
+  saveStationDetail: payload => dispatch({ type: stationManageAction.EDIT_STATION_MANAGE_DETAIL, payload }),
+  deleteStation: payload => dispatch({ type: stationManageAction.DELET_STATION_MANAGE, payload }),
+  setStationDepartment: payload => dispatch({ type: stationManageAction.SET_STATION_MANAGE_DEPARTMENT, payload }),
+  setDiagconfigYx: payload => dispatch({ type: stationManageAction.setDiagconfigYx, payload }),
+  getDiagconfigYx: payload => dispatch({ type: stationManageAction.getDiagconfigYx, payload }),
+  setDiagconfigYc: payload => dispatch({ type: stationManageAction.setDiagconfigYc, payload }),
+  getDiagconfigYc: payload => dispatch({ type: stationManageAction.getDiagconfigYc, payload }),
   resetStore: () => dispatch({ type: stationManageAction.resetStore }),
   getAllDepartmentData: params => dispatch({
     type: commonAction.getAllDepartment,
     payload: {
       params,
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
-      resultName: 'allDepartmentData'
-    }
+      resultName: 'allDepartmentData',
+    },
   }),
   getStationBelongTypes: params => dispatch({
     type: commonAction.getStationBelongTypes,
     payload: {
       params,
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
-      resultName: 'stationBelongInfo'
-    }
+      resultName: 'stationBelongInfo',
+    },
   }),
-  getStationTargetInfo: ({params, resultName}) => dispatch({ // 省市县
+  getStationTargetInfo: ({ params, resultName }) => dispatch({ // 省市县
     type: commonAction.getStationTargetInfo,
     payload: {
       params,
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
       resultName,
-    }
+    },
   }),
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
 });
