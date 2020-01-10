@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Table, Select, Popover, Icon, Button } from 'antd';
 import moment from 'moment';
+import { handleRight } from '@utils/utilFunc';
 const Option = Select.Option;
 
 class RealTimeWarningTable extends Component {
@@ -193,9 +194,12 @@ class RealTimeWarningTable extends Component {
       const endIndex = startIndex + pageSize;
       return (i >= startIndex && i < endIndex);
     });
+
+    const removeRight = handleRight('alarm_remove');//操作权限
     return (
       <div className={styles.realTimeWarningTable}>
         <span ref={'select'} />
+        {removeRight ?
         <div className={styles.tableHeader}>
           <Select onChange={this.onHandle}
             value="操作"
@@ -205,7 +209,7 @@ class RealTimeWarningTable extends Component {
             <Option value="relieve" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>手动解除</Option>
           </Select>
           <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onPaginationChange} total={realtimeWarning.length} theme={this.props.theme} />
-        </div>
+        </div> : <div></div>}
         <Table
           dataSource={tableSource}
           rowKey={record => record.warningLogId}
