@@ -130,7 +130,7 @@ const menuData = [
         name: '诊断中心',
         iconStyle: 'icon-monitoring',
         path: 'diagnoseCenter',
-        rightKey: 'monitor_powerCurve',
+        rightKey: 'monitor_diagnosis',
       },
     ],
   },
