@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Icon, Table } from 'antd';
 import styles from './pvHistoryStyle.scss';
 import PropTypes from 'prop-types';
@@ -28,6 +29,10 @@ class PvHistoryList extends Component {
         pageNum: currentPage,
       },
     });
+
+    const pvHistoryTable = ReactDOM.findDOMNode(this.onScroll),
+    pvHistoryTableBody = pvHistoryTable.querySelector('.ant-table-body');
+    pvHistoryTableBody.scrollTop = 0; // 操作分页时，表格内容滚动到行首
   };
 
   showChart = () => {
@@ -182,7 +187,7 @@ class PvHistoryList extends Component {
           />
         </div>
         <Table
-          scroll={{ x: 700 + pointData.length * 120, y: 470 }}
+          scroll={{ x: 700 + pointData.length * 120, y: 470}}
           showHeader={true}
           bordered={true}
           loading={tableLoading}
@@ -190,6 +195,7 @@ class PvHistoryList extends Component {
           columns={columns.concat(pointColumn)}
           // onChange={this.onListChange}
           pagination={false}
+          ref={(ref) => this.onScroll = ref}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
