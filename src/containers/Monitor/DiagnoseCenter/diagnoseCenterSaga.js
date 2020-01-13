@@ -22,7 +22,7 @@ function* easyPut(actionName, payload){
 function* getEventstatus(){ // 获取事件状态
   try {
     const url = `${APIBasePath}${monitor.getEventstatus}`;
-    const response = yield call(request.get, url);
+    const response = yield call(request.get, url, { params: { statusType: 0 }}); // 0全部 1活动 2已归档
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', { eventstatus: response.data || [] });
       // yield call(easyPut, 'fetchSuccess', { eventstatus: [{
@@ -80,14 +80,17 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
     // pageSize: 20, // 页容量
     // sortField: '', // 排序字段
     // sortMethod: 'desc', // 排序方式 asc升序 + desc降序 }
+    const { hideLoading, ...rest } = payload || {};
     try {
       const url = `${APIBasePath}${monitor.getDiagnoseList}`;
-      yield call(easyPut, 'changeStore', { diagnoseListLoading: true });
+      if (hideLoading) {
+        yield call(easyPut, 'changeStore', { diagnoseListLoading: true });
+      }
       const { listParams, listPage } = yield select(state => state.monitor.diagnoseCenter);
       const response = yield call(request.post, url, {
         ...listParams,
         ...listPage,
-        ...payload,
+        ...rest,
       });
       if (response.code === '10000') {
         yield call(easyPut, 'fetchSuccess', {
@@ -137,11 +140,12 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
     }
 }
 
-function* circlingQueryList({ payload = {} }){ // 启动10s周期调用列表
-  circleTimer = yield fork(getDiagnoseList, { payload });
-  yield delay(10000000);
+function* circlingQueryList({ payload }){ // 启动10s周期调用列表
+  const { hideLoading, ...rest } = payload || {};
+  circleTimer = yield fork(getDiagnoseList, { payload: { ...rest, hideLoading } });
+  yield delay(10000);
   if (circleTimer) {
-    circleTimer = yield fork(circlingQueryList, { payload });
+    circleTimer = yield fork(circlingQueryList, { payload: { ...rest, hideLoading: true } });
   }
 }
 

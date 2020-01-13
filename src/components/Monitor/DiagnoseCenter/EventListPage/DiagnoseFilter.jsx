@@ -78,6 +78,7 @@ class DiagnoseFilter extends Component {
       { name: '归档事件', type: 'switch', typeName: 'finished' },
     ];
     const { stationCode, deviceTypeCode, startTime, endTime, eventCode, eventStatus, finished } = listParams;
+    // eventStatus数组中, statusType字段 => 1活动 2已归档
     return (
       <div className={styles.diagnoseFilter} >
         <FilterConditions
@@ -88,7 +89,7 @@ class DiagnoseFilter extends Component {
             deviceTypeCode,
             rangeTimes: [startTime, endTime],
             eventCode,
-            eventStatus,
+            eventStatus, 
             finished: !!finished,
           }}
         />
