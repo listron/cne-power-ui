@@ -1,5 +1,5 @@
 const showNoData = {
-  type: 'image',
+  type: 'text',
   left: 'center',
   top: 'center',
   style: {
