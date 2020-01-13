@@ -48,11 +48,29 @@ class WorkStage extends Component {
 
   stageQuery = (stageStations, pageLoading = false) => { // 页面整体数据请求及记录 => f5 或 选择电站触发.
     const stationCodes = stageStations.map(e => e.stationCode);
-    this.props.changeStore({ stageStations, pageLoading }); // 默认当前用户所有电站
-    this.props.getTaskList({ stationCodes }); // 记事列表
-    this.props.getRunningLog({ stationCodes }); // 运行记录
-    this.props.getTickets({ stationCodes }); // 两票三制
-    this.props.getPlanList({ stationCodes }); // 计划日历
+    if (!stationCodes || stationCodes.length === 0) {
+      // 不让传[],~测试伙伴提bug他们不改还退群发脾气, 喏~前端做个简单屏蔽~ 毕竟~不能总跟**过不去。
+      // 不传电站数据时, 界面数据清空.
+      this.props.changeStore({
+        stageStations,
+        stageList: [],
+        stageNumInfo: {},
+        stageLoading: false,
+        pageLoading: false,
+        runLogInfo: {},
+        runLogLoading: false,
+        ticketsInfo: {},
+        ticketsLoading: false,
+        planList: [],
+        planListLoading: false,
+      });
+    } else {
+      this.props.changeStore({ stageStations, pageLoading }); // 默认当前用户所有电站
+      this.props.getTaskList({ stationCodes }); // 记事列表
+      this.props.getRunningLog({ stationCodes }); // 运行记录
+      this.props.getTickets({ stationCodes }); // 两票三制
+      this.props.getPlanList({ stationCodes }); // 计划日历
+    }
   }
 
   handleCancel = () => {
