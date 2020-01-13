@@ -37,16 +37,17 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
 
   onChange = (bool, e) => { // 改变开关
     const { eventData } = this.state;
-    const diagStationConfigId = e.diagStationConfigId;
-    const resetData = eventData.findIndex(e => e.diagStationConfigId === diagStationConfigId);
+    const configCode = e.configCode;
+    const resetData = eventData.findIndex(e => e.configCode === configCode);
+    console.log('resetData', resetData);
     eventData[resetData]['configEnabled'] = +bool;
     setTimeout(() => { this.setState({ eventData }); }, 0);
   }
 
   numberChange = (value, list) => { // 改变阈值
     const { eventData } = this.state;
-    const diagStationConfigId = list.diagStationConfigId;
-    const resetData = eventData.findIndex(e => e.diagStationConfigId === diagStationConfigId);
+    const configCode = list.configCode;
+    const resetData = eventData.findIndex(e => e.configCode === configCode);
     eventData[resetData]['threshold'] = value;
     setTimeout(() => { this.setState({ eventData }); }, 0);
   }
@@ -65,6 +66,7 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
   render() {
     const { eventData } = this.state;
     const { type, loading } = this.props;
+    console.log('eventData', eventData);
     return (
       <Modal
         title={<span>遥测诊断设置</span>}
@@ -88,7 +90,7 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
             eventData.map(list => {
               return (<div key={list.configCode} className={styles.configCode}>
                 <span className={styles.ycName}>{list.configName}</span>
-                <Switch onChange={(e) => this.onChange(e, list)} checked={list.configEnabled && true || false} />
+                <Switch onChange={(e) => this.onChange(e, list)} checked={+list.configEnabled} />
               </div>);
             })
           }
@@ -97,8 +99,8 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
               return (
                 <div key={list.configCode} className={styles.configCodeData}>
                   <span className={styles.ycName}>{list.configName}</span>
-                  <Switch onChange={(e) => this.onChange(e, list)} checked={list.configEnabled && true || false} />
-                  {list.configEnabled &&
+                  <Switch onChange={(e) => this.onChange(e, list)} checked={+list.configEnabled} />
+                  {+list.configEnabled &&
                     <div className={styles.inputNumber}> 阈值
                    <InputNumber min={1} max={100} value={list.threshold} onChange={(value) => this.numberChange(value, list)} />
                       % </div> || ''}
