@@ -77,7 +77,7 @@ class PerformanceAnalysisTabs extends Component {
     const haveSliderConver = xData.length > 20;
     const barData = conversioneffData.map(e => e.conversionRate) || [];
     const lineData = Array(xData.length).fill(conversionAvgRate) || [];
-    const conversionHasData = barData.some(e => (e && +e !== 0)) || lineData.some(e => (e && +e !== 0));
+    const conversionHasData = barData.some(e => e || e === 0) || lineData.some(e => e || e === 0);
     //对比转化效率
     const contrastDeviceName = conversioneffContrastData.map(e => e.deviceName) || [];
     const haveSliderContrastCon = contrastDeviceName.length > 20;
@@ -85,7 +85,7 @@ class PerformanceAnalysisTabs extends Component {
     const contrastConversionRate = conversioneffContrastData.map(e => e.contrastConversionRate) || [];
     const contrastAvgRateData = Array(xData.length).fill(contrastAvgRate) || [];
     const contrastConversionAvgRateData = Array(xData.length).fill(contrastConversionAvgRate) || [];
-    const contrastConversionHasData = conversionRate.some(e => (e && +e !== 0)) || contrastConversionRate.some(e => (e && +e !== 0)) || contrastAvgRateData.some(e => (e && +e !== 0)) || contrastConversionAvgRateData.some(e => (e && +e !== 0));
+    const contrastConversionHasData = conversionRate.some(e => e || e === 0) || contrastConversionRate.some(e => e || e === 0) || contrastAvgRateData.some(e => e || e === 0) || contrastConversionAvgRateData.some(e => e || e === 0);
 
     //等效小时数、故障次数、故障时长
     const hoursDeviceNameData = hourData.map(e => e.deviceName);
@@ -97,57 +97,57 @@ class PerformanceAnalysisTabs extends Component {
     const faultTimeDeviceNameData = faultTimeData.map(e => e.deviceName);
     const haveSliderTime = faultTimeDeviceNameData.length > 20;
     const faultTimeDataResults = faultTimeData.map(e => e.dataResults);
-    const hoursHasData = hoursDataResults.some(e => (e && +e !== 0));
-    const faultNumHasData = faultNumDataResults.some(e => (e && +e !== 0));
-    const faultTimeHasData = faultTimeDataResults.some(e => (e && +e !== 0));
+    const hoursHasData = hoursDataResults.some(e => e || e === 0);
+    const faultNumHasData = faultNumDataResults.some(e => e || e === 0);
+    const faultTimeHasData = faultTimeDataResults.some(e => e || e === 0);
 
     //对比等效小时数、
     const contrastHoursDeviceNameData = hourContrastData.map(e => e.deviceName);
     const haveSliderConTrastHour = contrastHoursDeviceNameData.length > 20;
     const contrastHoursResults = hourContrastData.map(e => e.dataResults);
     const contrastHoursDataResults = hourContrastData.map(e => e.contrastDataResults);
-    const contrastHoursHasData = contrastHoursResults.some(e => (e && +e !== 0)) || contrastHoursDataResults.some(e => (e && +e !== 0));
+    const contrastHoursHasData = contrastHoursResults.some(e => e || e === 0) || contrastHoursDataResults.some(e => e || e === 0);
 
     //对比故障次数
     const contrastFaultNumDeviceNameData = faultNumContrastData.map(e => e.deviceName);
     const haveSliderConTrastNum = contrastFaultNumDeviceNameData.length > 20;
     const contrastFaultNumResults = faultNumContrastData.map(e => e.dataResults);
     const contrastFaultNumDataResults = faultNumContrastData.map(e => e.contrastDataResults);
-    const contrastFaultNumHasData = contrastFaultNumResults.some(e => (e && +e !== 0)) || contrastFaultNumDataResults.some(e => (e && +e !== 0));
+    const contrastFaultNumHasData = contrastFaultNumResults.some(e => e || e === 0) || contrastFaultNumDataResults.some(e => e || e === 0);
 
     //对比故障时长
     const contrastFaultTimeDeviceNameData = faultTimeContrastData.map(e => e.deviceName);
     const haveSliderConTrastTime = contrastFaultTimeDeviceNameData.length > 20;
     const contrastFaultTimeResults = faultTimeContrastData.map(e => e.dataResults);
     const contrastFaultTimeDataResults = faultTimeContrastData.map(e => e.contrastDataResults);
-    const contrastFaultTimeHasData = contrastFaultTimeResults.some(e => (e && +e !== 0)) || contrastFaultTimeDataResults.some(e => (e && +e !== 0));
+    const contrastFaultTimeHasData = contrastFaultTimeResults.some(e => e || e === 0) || contrastFaultTimeDataResults.some(e => e || e === 0);
 
     //利用率
     const availabilityDeviceName = availabilityData.map(e => e.deviceName);
     const haveSliderAvailability = availabilityDeviceName.length > 20;
     const availabilityDataResults = availabilityData.map(e => e.availability);
-    const availabilityHasData = availabilityDataResults.some(e => (e && +e !== 0));
+    const availabilityHasData = availabilityDataResults.some(e => e || e === 0);
 
 
     //损失电量
     const lostPowerDeviceName = lostPowerData.map(e => e.deviceName);
     const haveSliderLostPower = lostPowerDeviceName.length > 20;
     const lostPowerDataResults = lostPowerData.map(e => e.lossPower);
-    const lostPowerHasData = lostPowerDataResults.some(e => (e && +e !== 0));
+    const lostPowerHasData = lostPowerDataResults.some(e => e || e === 0);
 
     //对比利用率及
     const contrastAvailabilityDeviceName = availabilityContrastData.map(e => e.deviceName);
     const haveSliderConAvailability = contrastAvailabilityDeviceName.length > 20;
     const availabilityConData = availabilityContrastData.map(e => e.availability);
     const contrastAvailabilityData = availabilityContrastData.map(e => e.contrastAvailability);
-    const contrastAvailabilityHasData = availabilityConData.some(e => (e && +e !== 0)) || contrastAvailabilityData.some(e => (e && +e !== 0));
+    const contrastAvailabilityHasData = availabilityConData.some(e => e || e === 0) || contrastAvailabilityData.some(e => e || e === 0);
 
     //对比损失电量
     const contrastLossPowerDeviceName = lostPowerContrastData.map((e, i) => { return e.deviceName; });
     const haveSliderConLostPower = contrastLossPowerDeviceName.length > 20;
     const lostPowerDataCon = lostPowerContrastData.map((e, i) => { return e.lossPower; });
     const contrastLossPowerData = lostPowerContrastData.map((e, i) => { return e.contrastLossPower; });
-    const contrastLostPowerHasData = lostPowerDataCon.some(e => (e && +e !== 0)) || contrastLossPowerData.some(e => (e && +e !== 0));
+    const contrastLostPowerHasData = lostPowerDataCon.some(e => e || e === 0) || contrastLossPowerData.some(e => e || e === 0);
 
     //前五名设备
     // conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames
