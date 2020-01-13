@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Table, Select, Popover, Icon, Button } from 'antd';
 import moment from 'moment';
-import { handleRight } from '@utils/utilFunc';
+import { handleRights } from '@utils/utilFunc';
 const Option = Select.Option;
 
 class RealTimeWarningTable extends Component {
@@ -154,18 +154,20 @@ class RealTimeWarningTable extends Component {
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
-      }, {
-        title: '操作',
-        className: styles.iconDetail,
-        render: (text, record) => (
-          <div>
-            <span>
-              <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
-            </span>
-          </div>
-        ),
       },
     ];
+    const realTimeWarningColumn = {
+      title: '操作',
+      className: styles.iconDetail,
+      render: (text, record) => (
+        <div>
+          <span>
+            <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
+          </span>
+        </div>
+      ),
+    };
+
     const { realtimeWarning, selectedRowKeys, pageSize, currentPage, loading, selectedTransfer, getLostGenType, defectTypes, transferWarning, theme } = this.props;
     const { sortName, descend, showTransferTicketModal, showHandleRemoveModal } = this.state;
     const rowSelection = {
@@ -195,7 +197,7 @@ class RealTimeWarningTable extends Component {
       return (i >= startIndex && i < endIndex);
     });
 
-    const removeRight = handleRight('alarm_remove');//操作权限
+    const [removeRight, worklistRight] = handleRights(['alarm_remove', 'alarm_worklist']);//操作权限
     return (
       <div className={styles.realTimeWarningTable}>
         <span ref={'select'} />
@@ -214,7 +216,7 @@ class RealTimeWarningTable extends Component {
           dataSource={tableSource}
           rowKey={record => record.warningLogId}
           rowSelection={rowSelection}
-          columns={columns}
+          columns={worklistRight ? columns.concat(realTimeWarningColumn) : columns}
           pagination={false}
           onChange={this.tableChange}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
