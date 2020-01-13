@@ -7,7 +7,7 @@ import TransferWarningModal from '../RealTimeWarning/TransferWarningModal';
 import { Link } from 'react-router-dom';
 import { Table, Select, Popover, Icon, Button } from 'antd';
 import moment from 'moment';
-import { handleRight } from '@utils/utilFunc';
+import { handleRights } from '@utils/utilFunc';
 const Option = Select.Option;
 
 class HandleRemoveTable extends Component {
@@ -258,13 +258,25 @@ class HandleRemoveTable extends Component {
         ),
       },
     ];
+
+    const operationColumn = {
+      title: '操作',
+      className: styles.iconDetail,
+      render: (text, record) => (
+        <div>
+          <span>
+            <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
+          </span>
+        </div>
+      ),
+    };
     const { handleRemoveList, selectedRowKeys, pageSize, pageNum, total, loading, selectedTransfer, getLostGenType, theme } = this.props;
     const { showTransferTicketModal, showWarningTip, warningTipText } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    const removeRight = handleRight('alarm_remove');//操作权限
+    const [removeRight, alarmRemoveRight] = handleRights(['alarm_remove', 'monitor_alarm_remove']);//操作权限
     return (
       <div className={styles.realTimeWarningTable}>
         {showWarningTip && <WarningTip
@@ -292,7 +304,7 @@ class HandleRemoveTable extends Component {
           dataSource={handleRemoveList}
           rowKey={record => record.warningLogId}
           rowSelection={rowSelection}
-          columns={columns}
+          columns={alarmRemoveRight ? columns.concat(operationColumn) : columns}
           pagination={false}
           onChange={this.tableChange}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
