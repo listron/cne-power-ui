@@ -19,18 +19,8 @@ class PvHistoryList extends Component {
     changeHistoryStore: PropTypes.func,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      scrollTop: false,
-    };
-  }
-
   onPaginationChange = ({ pageSize, currentPage }) => { // 操作分页器
     const { getListHistory, queryParam, listParam } = this.props;
-    this.setState({
-      scrollTop: true,
-    });
     getListHistory({
       queryParam,
       listParam: {
@@ -91,8 +81,6 @@ class PvHistoryList extends Component {
   };
 
   render() {
-    const { scrollTop } = this.state;
-    console.log('scrollTop: ', scrollTop);
     const { partHistory, listParam, queryParam, tableLoading, historyType } = this.props;
     const { totalCount = 0, dataList = [] } = partHistory;
     const { timeInterval } = queryParam;
