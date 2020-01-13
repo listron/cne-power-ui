@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Table, Icon } from 'antd';
 import styles from './historyStyle.scss';
 import PropTypes from 'prop-types';
@@ -27,6 +28,10 @@ class HistoryList extends Component {
         pageNum: currentPage,
       },
     });
+
+    const historyTable = ReactDOM.findDOMNode(this.onScroll),
+    historyTableBody = historyTable.querySelector('.ant-table-body');
+    historyTableBody.scrollTop = 0; // 操作分页时，表格内容滚动到行首
   }
   showChart = () => {
     this.selectHistoryType('chart');
@@ -189,6 +194,7 @@ class HistoryList extends Component {
           onChange={this.onListChange}
           // scroll={{ x: 800, y: 500 }}
           pagination={false}
+          ref={(ref) => this.onScroll = ref}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
