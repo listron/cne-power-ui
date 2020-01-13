@@ -128,6 +128,12 @@ const menuData = [
         defaultPath: true,
         rightKey: 'dataAnalysis_dataExport',
       },
+      {
+        name: '诊断中心',
+        iconStyle: 'icon-monitoring',
+        path: 'diagnoseCenter',
+        rightKey: 'monitor_diagnosis',
+      },
     ],
   },
 
@@ -784,5 +790,6 @@ export const menu = formatter(menuData);
 //   monitor_alarm_realTime: ['alarm_remove','alarm_worklist','monitor_alarm_remove','monitor_alarm_history'],
 //   operation_worklist_work: ['workExamine_defect_review', 'workExamine_defect_check', 'workExamine_inspection_check'],
 // }
+
 
 
