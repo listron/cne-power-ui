@@ -175,7 +175,7 @@ class FilterCondition extends Component {
     this.props.onChange(obj);
   }
 
-  showFilterChange = (showFilter) => { // 改变筛选类型
+  showFilterChange = ({ showFilter }) => { // 改变筛选类型
     this.setState({ showFilter });
   }
 

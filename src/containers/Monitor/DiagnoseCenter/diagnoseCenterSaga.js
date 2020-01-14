@@ -50,8 +50,15 @@ function* getEventtypes({ payload = {} }) { // 获取事件类型
     const url = `${APIBasePath}${monitor.getEventtypes}`;
     const response = yield call(request.get, url, { params: payload });
     if (response.code === '10000') {
+      const result = [], codeSet = new Set();
+      response.data.forEach(e => { // 基于eventCode去重, 防止设备类型的误干扰。
+        if (!codeSet.has(e.eventCode)) {
+          codeSet.add(e.eventCode);
+          result.push(e);
+        }
+      });
       yield call(easyPut, 'fetchSuccess', {
-        [eventTypeInfo[eventType - 1]]: response.data || [],
+        [eventTypeInfo[eventType - 1]]: result || [],
         // [eventTypeInfo[eventType - 1]]: [1, 2, 3, 4].map(e => ({
         //   eventCode: e * e,
         //   eventName: `类型${e}`,

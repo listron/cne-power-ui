@@ -36,6 +36,8 @@ import styles from './eventListPage.scss';
 // 是否归档, 生成两个表头: 归档需要状态图标, 不需要事件状态列; 非归档不需要状态图标列, 需要事件状态列;
 const columnFilter = (totalColumn, finished) => totalColumn.filter(e => (e.dataIndex !== (finished > 0 ? 'statusName' : 'statusCode')));
 
+const eventLevelArray = ['--', '一级', '二级', '三级', '四级'];
+
 const statusIcon = (record) => {
   const { statusCode } = record;
   const statusClassNames = {
@@ -65,7 +67,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       title: '事件级别',
       sorter: true,
       className: styles.warningLevel,
-      render: (text = '--') => (<div title={text} className={styles.warningLevelText}>{text}</div>),
+      render: (text = '--') => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
     }, {
       dataIndex: 'pointValueDesc',
       title: '告警描述',
@@ -151,7 +153,7 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       title: '事件级别',
       sorter: true,
       className: styles.warningLevel,
-      render: (text = '--') => (<div title={text} className={styles.warningLevelText}>{text}</div>),
+      render: (text = '--') => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
     }, {
       dataIndex: 'deviceTypeName',
       title: '设备类型',
@@ -225,7 +227,7 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       title: '事件级别',
       sorter: true,
       className: styles.warningLevel,
-      render: (text = '--') => (<div title={text} className={styles.warningLevelText}>{text}</div>),
+      render: (text = '--') => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
     }, {
       dataIndex: 'pointValueDesc',
       title: '测点描述',
