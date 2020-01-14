@@ -239,7 +239,7 @@ class HistoryChart extends Component {
             <i onClick={this.showList} className={historyType === 'list' ? `${styles.active} iconfont icon-table` : `${styles.normal} iconfont icon-table`} />
           </div>
           {/* <span className={styles.eachTitle} /> */}
-          <span className={styles.eachTitle}>各设备测点历史数据趋势图</span>
+          <span className={styles.eachTitle}>各设备测点历史数据趋势</span>
           <span className={styles.tipTitle}>数据为瞬时值</span>
 
 

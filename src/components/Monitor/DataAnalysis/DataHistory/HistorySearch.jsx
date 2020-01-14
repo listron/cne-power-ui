@@ -391,6 +391,7 @@ class HistorySearch extends Component {
               disabledDate={this.disabledDate}
               onChange={this.onChangeTime}
               onCalendarChange={this.onCalendarChange}
+              mode={'year'}
             />
 
           </div>
