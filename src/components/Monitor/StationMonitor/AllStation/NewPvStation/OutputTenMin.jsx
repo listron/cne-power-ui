@@ -67,8 +67,8 @@ class OutputTenMin extends Component {
         $action: 'replace',
         style: {
           image: capabilityGraphic && '/img/noChartData1.png' || '/img/picbg.png',
-          width: capabilityGraphic && 60 || 293,
-          height: capabilityGraphic && 76 || 120,
+          width: capabilityGraphic && 56 || 293,
+          height: capabilityGraphic && 60 || 120,
 
         },
       },
@@ -217,6 +217,14 @@ class OutputTenMin extends Component {
           data: capabilityPower,
           yAxisIndex: 0,
           z: 3,
+          symbol: 'circle',
+          showSymbol: false,
+          itemStyle: {
+            normal: {
+              borderColor: '#ffffff', // 点边线的颜色
+              borderWidth: 2,
+            },
+          },
           axisTick: {
             show: false,
           },
@@ -229,6 +237,13 @@ class OutputTenMin extends Component {
           type: 'line',
           data: capabilityRadiation,
           yAxisIndex: 1,
+          symbol: 'circle',
+          showSymbol: false,
+          itemStyle: {
+            normal: {
+              borderColor: '#ffffff', // 点边线的颜色
+            },
+          },
           axisTick: {
             show: false,
           },
