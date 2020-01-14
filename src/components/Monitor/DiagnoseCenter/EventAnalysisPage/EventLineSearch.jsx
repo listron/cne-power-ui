@@ -29,7 +29,7 @@ class EventLineSearch extends PureComponent {
   onMonthChange = (method) => {
     const { analysisEvent } = this.props;
     const { beginTime } = analysisEvent || {};
-    const newMonthStr = moment(beginTime)[method](1, 'month').format('YYYY-MM-DD');
+    const newMonthStr = moment(beginTime)[method](1, 'day').format('YYYY-MM-DD');
     this.props.getEventsAnalysis({ ...analysisEvent, beginTime: newMonthStr });
   }
 
