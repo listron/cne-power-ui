@@ -111,6 +111,7 @@ class PvHistoryChart extends Component {
   });
 
   legendSeriesCreate = (pointData, deviceInfo) => { // 嵌套遍历生成相关的series 与legend;
+    const series = [], legend = [];
     let weatherStationPoint = []; // 气象站测点
     let otherPoints = []; // 除气象站外其他测点
     let weatherStationDevice = []; // 气象站设备
@@ -126,7 +127,6 @@ class PvHistoryChart extends Component {
         otherPoints.push(point);
       }
     });
-    const series = [], legend = [];
     const deviceNum = (weatherStationPoint.length > 0 && deviceInfo.length >= 2) ? deviceInfo.length - 1 : (deviceInfo.length || 0);
     const pointNum = pointData.length || 0;
 
