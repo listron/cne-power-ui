@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popconfirm } from 'antd';
 import moment from 'moment';
+import { handleRight } from '@utils/utilFunc';
 import styles from './recordModals.scss';
 
 class PlanDetail extends PureComponent {
@@ -67,6 +68,7 @@ class PlanDetail extends PureComponent {
     const { recordDetailInfo, theme, saveRecordLoading } = this.props;
     const { completeTime } = recordDetailInfo; // 任务是否完成的判断
     const planArr = completeTime ? [...this.planBase, ...this.completeBase] : this.planBase;
+    const finishRecordRight = handleRight('operation_workStation_finish');
     return (
       <div className={`${styles.recordDetail} ${styles[theme]}`}>
         {planArr.map(e => {
@@ -78,7 +80,7 @@ class PlanDetail extends PureComponent {
             </p>
           );
         })}
-        {!completeTime && <div className={styles.handleComplete}>
+        {finishRecordRight && !completeTime && <div className={styles.handleComplete}>
           <Popconfirm
             title="是否标记为已完成?"
             onConfirm={this.handleComplete}
