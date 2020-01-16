@@ -37,7 +37,6 @@ class StationManage extends Component {
 
   componentDidMount() {
     const { enterpriseId, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand } = this.props;
-
     this.props.getStationList({ // 初始请求电站列表
       stationType,
       regionName,

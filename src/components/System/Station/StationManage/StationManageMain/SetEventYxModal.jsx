@@ -86,7 +86,7 @@ class SetEventYxModal extends Component { // 电站管理列表页
               <div className={styles.deviceTypeName}><span>{list.deviceTypeName}</span></div>
               <div className={styles.deviceTypeCont}>
                 {list.deviceModes.map(mode => {
-                  const defaultValue = mode.versions.filter(e => e.selected);
+                  const defaultValue = mode.versions.filter(e => +e.selected);
                   const diagModeVersionId = defaultValue.length > 0 && defaultValue[0].diagModeVersionId || '';
                   return (
                     <React.Fragment>

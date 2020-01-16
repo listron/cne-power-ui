@@ -7,7 +7,7 @@
   flex: 1 0 auto;
   width: 100%;
   padding: 15px 24px 0;
-  background: #ececec;
+  background: #f0f2f5;
   .stationContent {
     // background-color: #fff;
     flex: 1;
@@ -168,6 +168,9 @@
       }
       .stationTable {
         // 表格区
+        background: #ffffff;
+        border: 1px solid #d4d4d4;
+        box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
         .stationNameWrap {
           display: flex;
           align-items: center;
@@ -225,15 +228,11 @@
         .pointStatusText {
           width: calc((100vw - 300px) * 0.08- 30px);
         }
-        .eventStatusText {
-          i {
-            color: #4d90fd;
-          }
-        }
         .windDisabled {
           i {
             color: #999999;
             pointer-events: none;
+            cursor: not-allowed;
           }
         }
         .eventDataStatus,
@@ -267,25 +266,21 @@
             height: 26px;
             align-items: center;
             justify-content: center;
-
-            i {
-              color: #fff;
-              font-size: 16px;
-            }
           }
           .editStation {
-            background: #199475;
+            color: #199475;
             cursor: pointer;
+            font-size: 20px;
           }
           .deleteStation {
             cursor: pointer;
-            background: #ff9900;
-            color: #fff;
-            cursor: pointer;
+            color: #ff9900;
+            font-size: 20px;
           }
           .deleteDisable {
-            background: $darkColor;
+            color: $darkColor;
             cursor: not-allowed;
+            font-size: 20px;
           }
         }
 
@@ -296,8 +291,15 @@
         :global {
           .iconfont {
             color: #199475;
-            font-size: 24px;
             cursor: pointer;
+          }
+          .icon-look {
+            color: #199475;
+            font-size: 24px;
+          }
+          .icon-goset1 {
+            color: #4d90fd;
+            font-size: 24px;
           }
           .ant-table .ant-table-tbody > tr > td:first-child:not(.ant-table-selection-column) {
             padding-left: 10px;
