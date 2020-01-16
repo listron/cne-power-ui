@@ -285,13 +285,11 @@ class StationManageTable extends Component {
           const deletable = !record.alarmStatus && !record.departmentStatus && !record.pointStatus && !record.isConnected;
           return (
             <div className={styles.handlerText}>
-              <span className={styles.editStation}>
-                <i className={'iconfont icon-edit'} onClick={() => this.editStation(record, index)} title={'编辑'} /> </span>
+              <i className={`iconfont icon-edit ${styles.editStation}`} onClick={() => this.editStation(record, index)} title={'编辑'} />
               {
                 deletable &&
-                <span className={styles.deleteStation}>
-                  <i className={'iconfont icon-del'} onClick={() => this.deleteEdit(record, index)} title={'删除'} /></span> ||
-                <span className={styles.deleteDisable}><i className={'iconfont icon-del'} title={'删除'} /></span>
+                <i className={`iconfont icon-del ${styles.deleteStation}`} onClick={() => this.deleteEdit(record, index)} title={'删除'} /> ||
+                <i className={`iconfont icon-del ${styles.deleteDisable}`} title={'删除'} />
               }
             </div>
           );
@@ -331,7 +329,7 @@ class StationManageTable extends Component {
               fileList={fileList}
             >
               <div className={styles.addButton} >
-                <div className={styles.icon}> {uploading && <Icon type="loading" /> || <span className={'iconfont icon-newbuilt'} />}</div>电站
+                <div className={styles.icon}> {uploading && <Icon type="loading" /> || <span className={'iconfont icon-newbuilt'} />}</div>新建
               </div>
             </Upload>
             {stationOperation && <Button href={downloadHref} download={downloadHref} target="_blank" className={styles.download}>
@@ -358,9 +356,9 @@ class StationManageTable extends Component {
           className={styles.stationTable}
           onChange={this.tableChange}
           pagination={false}
-          // scroll={{ y: 720 }}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
+
         {departmentModal && <SetDepartmentModal
           departmentSetInfo={departmentSetInfo}
           closeDepartmentModal={this.closeDepartmentModal}

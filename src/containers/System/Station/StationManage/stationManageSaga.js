@@ -264,6 +264,19 @@ function* setDiagconfigYx(action) { // 更改遥信配置
         },
       });
       func({ eventYxModal: false });
+      const payload = yield select(state => ({
+        stationType: state.system.stationManage.get('stationType'),
+        regionName: state.system.stationManage.get('regionName'),
+        stationName: state.system.stationManage.get('stationName'),
+        pageNum: state.system.stationManage.get('pageNum'),
+        pageSize: state.system.stationManage.get('pageSize'),
+        orderField: state.system.stationManage.get('orderField'),
+        orderCommand: state.system.stationManage.get('orderCommand'),
+      }));
+      yield put({
+        type: stationManageAction.GET_STATION_MANAGE_LIST,
+        payload,
+      });
     } else { throw response.data; }
   } catch (e) {
     message.error('修改失败，请重试！');
@@ -322,6 +335,19 @@ function* setDiagconfigYc(action) { // 更改遥测或者数据质量配置
         },
       });
       func({ eventYcModal: false });
+      const payload = yield select(state => ({
+        stationType: state.system.stationManage.get('stationType'),
+        regionName: state.system.stationManage.get('regionName'),
+        stationName: state.system.stationManage.get('stationName'),
+        pageNum: state.system.stationManage.get('pageNum'),
+        pageSize: state.system.stationManage.get('pageSize'),
+        orderField: state.system.stationManage.get('orderField'),
+        orderCommand: state.system.stationManage.get('orderCommand'),
+      }));
+      yield put({
+        type: stationManageAction.GET_STATION_MANAGE_LIST,
+        payload,
+      });
     } else { throw response.data; }
   } catch (e) {
     message.error('修改失败，请重试！');
