@@ -204,16 +204,13 @@
     border-top: 2px solid transparent;
     border-bottom: 1px solid var(--themeColor);
   }
-  .tabHolder{
-
-  }
 }
 
 .diagnoseLevelSummry{
   // background-color: #fff;
   .warningTotal{
     :global{
-      .iconfont.icon-alert{
+      .iconfont.icon-alarm{
         color: #a42b2c;
       }
     }

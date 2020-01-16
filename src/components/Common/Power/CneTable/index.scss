@@ -65,6 +65,12 @@
         display: flex;
         align-items: center;
         margin-top: -2px;
+        .on, .off{
+          transform: scale(1.25, 1);
+        }
+        .ant-table-column-sorter-down{
+          margin-top: 0.175em;
+        }
       }
     }
   }
@@ -82,6 +88,14 @@
     .ant-table .ant-table-thead > tr > th{
       background-color: var(--themeColor);
       color: #fff;
+      .ant-table-column-sorter{
+        .on{
+          color: #fffd00;
+        }
+        .off{
+          color: #fff;
+        }
+      }
     }
     .ant-table .ant-table-tbody > tr{
       & > td {
