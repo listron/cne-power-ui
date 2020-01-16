@@ -62,33 +62,33 @@ class PvHistoryChart extends Component {
   }));
 
   yAxisCreate = (pointData) => pointData.map((e, i) => ({ // 基于pointData生成多y轴
-    type: 'value',
-    gridIndex: i,
-    axisLine: {
-      lineStyle: {
-        color: '#dfdfdf',
+      type: 'value',
+      gridIndex: i,
+      axisLine: {
+        lineStyle: {
+          color: '#dfdfdf',
+        },
       },
-    },
-    axisLabel: {
-      color: '#353535',
-      showMaxLabel: i === 0,
-    },
-    axisTick: {
-      show: false,
-    },
-    splitLine: {
-      lineStyle: {
-        color: '#dfdfdf',
-        type: 'dotted',
+      axisLabel: {
+        color: '#353535',
+        showMaxLabel: i === 0,
       },
-    },
-    name: `${e.pointName}\n${e.pointUnit ? `(${e.pointUnit})` : ''}`,
-    nameLocation: 'middle',
-    nameGap: 72,
-    nameTextStyle: {
-      color: '#353535',
-    },
-  }));
+      axisTick: {
+        show: false,
+      },
+      splitLine: {
+        lineStyle: {
+          color: '#dfdfdf',
+          type: 'dotted',
+        },
+      },
+      name: `${e.pointName}\n${e.pointUnit ? `(${e.pointUnit})` : ''}`,
+      nameLocation: 'middle',
+      nameGap: 72,
+      nameTextStyle: {
+        color: '#353535',
+      },
+    }));
 
   gridCreate = (pointData, deviceInfo) => pointData.map((e, i) => { // 基于数据生成各grid. grid固定高160
     const baseGridOption = {
@@ -114,10 +114,17 @@ class PvHistoryChart extends Component {
     const series = [], legend = [];
     const deviceNum = deviceInfo.length >= 2 ? deviceInfo.length - 1 : (deviceInfo.length || 0);
     const pointNum = pointData.length || 0;
-    const weatherStationPoint = []; // 气象站的测点
-    const otherPoints = []; // 除气象站外其他测点
-    const weatherStationDevice = []; // 气象站设备
-    const otherDevice = []; // 除气象站外其他设备
+    let weatherStationPoint = []; // 气象站测点
+    let otherPoints = []; // 除气象站外其他测点
+    let weatherStationDevice = []; // 气象站设备
+    let otherDevice = []; // 除气象站外其他设备
+    let weatherStationId = '';
+
+    if (pointData.length >=2) { // 因为气象站测点是追加到其他测点后面的，当返回的第一个测点是气象站的测点时，也需要设置一下其xAxisIndex和yAxisIndex的位置
+      const pointDeciceName = Object.keys(pointData[0].pointInfo).toString();
+      const strIndex = pointDeciceName.indexOf('M', 0);
+      weatherStationId = pointDeciceName.substr(strIndex + 1, 3); // 截取出气象站的deviceCode
+    }
 
     pointData.forEach((point, index) => {
       const pointDeciceName = Object.keys(point.pointInfo).toString();
@@ -140,10 +147,10 @@ class PvHistoryChart extends Component {
       }
     });
 
-    otherPoints.forEach((point, index) => {
+    otherPoints.forEach((otherPoint, index) => {
       otherDevice.forEach((device, deviceIndex) => {
             const mapNumber = index * deviceNum + deviceIndex; // 属于其他数据中的顺序
-            const lengendName = `${point.pointName}-${device.deviceName}`;
+            const lengendName = `${otherPoint.pointName}-${device.deviceName}`;
             legend.push({
               top: 72 + 160 * pointNum + 24 * parseInt(mapNumber / 4, 0),
               left: `${4 + (mapNumber % 4) * 23}%`,
@@ -155,24 +162,24 @@ class PvHistoryChart extends Component {
             });
             series.push({
               name: lengendName,
-              xAxisIndex: index,
-              yAxisIndex: index,
+              xAxisIndex: weatherStationId !== '203' ? index : (index + weatherStationPoint.length),
+              yAxisIndex: weatherStationId !== '203' ? index : (index + weatherStationPoint.length),
               type: 'line',
               symbol: 'circle',
               showSymbol: false,
               lineStyle: {
                 width: 2,
               },
-              data: point.pointInfo[device.deviceCode] || [],
+              data: otherPoint.pointInfo[device.deviceCode] || [],
             });
         });
     });
 
     const preTotalNum = otherPoints.length * deviceNum;
-    weatherStationPoint.forEach((weather, index) => {
+    weatherStationPoint.forEach((weatherPoint, index) => {
       weatherStationDevice.forEach((device, deviceIndex) => {
           const mapNumber = preTotalNum + index; // 属于气象站数据中的顺序
-          const lengendName = `${weather.pointName}-${device.deviceName}`;
+          const lengendName = `${weatherPoint.pointName}-${device.deviceName}`;
           legend.push({
             top: 72 + 160 * pointNum + 24 * parseInt(mapNumber / 4, 0),
             left: `${4 + (mapNumber % 4) * 23}%`,
@@ -184,15 +191,15 @@ class PvHistoryChart extends Component {
           });
           series.push({
             name: lengendName,
-            xAxisIndex: index + otherPoints.length,
-            yAxisIndex: index + otherPoints.length,
+            xAxisIndex: weatherStationId !== '203' ? (index + otherPoints.length) : index,
+            yAxisIndex: weatherStationId !== '203' ? (index + otherPoints.length) : index,
             type: 'line',
             symbol: 'circle',
             showSymbol: false,
             lineStyle: {
               width: 2,
             },
-            data: weather.pointInfo[device.deviceCode] || [],
+            data: weatherPoint.pointInfo[device.deviceCode] || [],
           });
       });
     });
@@ -240,6 +247,20 @@ class PvHistoryChart extends Component {
         extraCssText: 'background-color: #fff; box-shadow:0 0 6px 0 rgba(0,0,0,0.3); border-radius:2px;',
         padding: 16,
         formatter: params => {
+          const compare = (data) => { // 显示的内容排序固定
+            return function (obj1, obj2) {
+                var val1 = obj1[data];
+                var val2 = obj2[data];
+                if (val1 < val2) {
+                    return -1;
+                } else if (val1 > val2) {
+                    return 1;
+                }
+                return 0;
+              };
+            };
+          params.sort(compare('componentIndex'));
+
           return (
             `<div class=${styles.chartTool}>
               <div class=${styles.title}>${params[0].name}</div>

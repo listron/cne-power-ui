@@ -20,8 +20,8 @@ class PvHistorySearch extends Component {
     stations: PropTypes.array,
     filterDevices: PropTypes.array,
     stationTypeCount: PropTypes.string,
-    recordedMinuteStart: PropTypes.object,
-    recordedMinuteEnd: PropTypes.object,
+    recordedMinuteStart: PropTypes.string,
+    recordedMinuteEnd: PropTypes.string,
 
     selectStationType: PropTypes.number, // 选中的电站类型
     deviceTypeCode: PropTypes.number, // 选中的设备类型
@@ -414,6 +414,7 @@ class PvHistorySearch extends Component {
               disabledDate={this.disabledDate}
               onChange={this.onChangeTime}
               onCalendarChange={this.onCalendarChange}
+              mode={'year'}
             />
           </div>
         </div>
