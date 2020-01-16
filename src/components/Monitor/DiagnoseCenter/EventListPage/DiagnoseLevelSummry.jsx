@@ -36,11 +36,11 @@ class DiagnoseLevelSummry extends Component {
 
   getLevelList = (eventLevel) => { // 重新请求列表, 清空下方所有搜索条件, 停止定时请求;
     const { listParams } = this.props;
-    const { eventType } = listParams;
+    const { eventType, finished } = listParams;
     this.props.stopCircleQueryList(); // 停止当前页面定时请求
     const newListParams = { // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件, 
       eventType,
-      finished: 0,
+      finished,
       stationCode: null,
       deviceTypeCode: null,
       eventCode: null,

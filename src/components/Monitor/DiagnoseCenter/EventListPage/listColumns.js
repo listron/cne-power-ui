@@ -1,5 +1,6 @@
 import React from 'react';
 import { dataFormats } from '@utils/utilFunc';
+import moment from 'moment';
 import styles from './eventListPage.scss';
 
 // 告警事件筛选条件: 电站名称, 设备类型，发生时间， 告警事件， 事件状态， 归档按钮
@@ -96,7 +97,12 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       title: '发生时间',
       sorter: true,
       className: styles.beginTime,
-      render: (text = '--') => (<div title={text} className={styles.beginTimeText}>{text}</div>),
+      render: (text) => (
+        <div
+          title={text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}
+          className={styles.beginTimeText}
+        >{text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}</div>
+      ),
     }, {
       dataIndex: 'warningDuration',
       title: '持续时长',
@@ -106,7 +112,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
         <div
           title={dataFormats(text, '--', 2, true)}
           className={styles.warningDurationText}
-        >{dataFormats(text, '--', 2, true)}</div>
+        >{dataFormats(text, '--', 2, true)}h</div>
       ),
     }, {
       dataIndex: 'warningFrequency',
@@ -177,17 +183,22 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       title: '发生时间',
       sorter: true,
       className: styles.beginTime,
-      render: (text = '--') => (<div title={text} className={styles.beginTimeText}>{text}</div>),
+      render: (text) => (
+        <div
+          title={text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}
+          className={styles.beginTimeText}
+        >{text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}</div>
+      ),
     }, {
       dataIndex: 'warningDuration',
       title: '持续时长',
       sorter: true,
       className: styles.warningDuration,
       render: (text = '--') => (
-      <div
-        title={dataFormats(text, '--', 2, true)}
-        className={styles.warningDurationText}
-      >{dataFormats(text, '--', 2, true)}</div>
+        <div
+          title={dataFormats(text, '--', 2, true)}
+          className={styles.warningDurationText}
+        >{dataFormats(text, '--', 2, true)}h</div>
       ),
     }, {
       dataIndex: 'statusName',
@@ -256,17 +267,23 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       title: '发生时间',
       sorter: true,
       className: styles.beginTime,
-      render: (text = '--') => (<div title={text} className={styles.beginTimeText}>{text}</div>),
+      render: (text = '--') => (
+        <div
+          title={text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}
+          className={styles.beginTimeText}
+        >{text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}</div>
+      ),
     }, {
       dataIndex: 'warningDuration',
       title: '持续时长',
       sorter: true,
       className: styles.warningDuration,
       render: (text = '--') => (
-      <div
-        title={dataFormats(text, '--', 2, true)}
-        className={styles.warningDurationText}
-      >{dataFormats(text, '--', 2, true)}</div>),
+        <div
+          title={dataFormats(text, '--', 2, true)}
+          className={styles.warningDurationText}
+        >{dataFormats(text, '--', 2, true)}h</div>
+      ),
     }, {
       dataIndex: 'statusName',
       title: '事件状态',
