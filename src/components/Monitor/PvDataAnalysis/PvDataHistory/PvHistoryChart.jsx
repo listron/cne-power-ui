@@ -110,20 +110,11 @@ class PvHistoryChart extends Component {
 
   legendSeriesCreate = (pointData, deviceInfo) => { // 嵌套遍历生成相关的series 与legend;
     const series = [], legend = [];
-    const deviceNum = deviceInfo.length >= 2 ? deviceInfo.length - 1 : (deviceInfo.length || 0);
-    const pointNum = pointData.length || 0;
     let weatherStationPoint = []; // 气象站测点
     let otherPoints = []; // 除气象站外其他测点
     let weatherStationDevice = []; // 气象站设备
     let otherDevice = []; // 除气象站外其他设备
     let weatherStationId = '';
-
-    if (pointData.length >=2) { // 因为气象站测点是追加到其他测点后面的，当返回的第一个测点是气象站的测点时，也需要设置一下其xAxisIndex和yAxisIndex的位置
-      const pointDeciceName = Object.keys(pointData[0].pointInfo).toString();
-      const strIndex = pointDeciceName.indexOf('M', 0);
-      weatherStationId = pointDeciceName.substr(strIndex + 1, 3); // 截取出气象站的deviceCode
-    }
-
     pointData.forEach((point, index) => {
       const pointDeciceName = Object.keys(point.pointInfo).toString();
       const strIndex = pointDeciceName.indexOf('M', 0);
@@ -134,6 +125,14 @@ class PvHistoryChart extends Component {
         otherPoints.push(point);
       }
     });
+    const deviceNum = (weatherStationPoint.length > 0 && deviceInfo.length >= 2) ? deviceInfo.length - 1 : (deviceInfo.length || 0);
+    const pointNum = pointData.length || 0;
+
+    if (pointData.length >=2) { // 因为气象站测点是追加到其他测点后面的，当返回的第一个测点是气象站的测点时，也需要设置一下其xAxisIndex和yAxisIndex的位置
+      const pointDeciceName = Object.keys(pointData[0].pointInfo).toString();
+      const strIndex = pointDeciceName.indexOf('M', 0);
+      weatherStationId = pointDeciceName.substr(strIndex + 1, 3); // 截取出气象站的deviceCode
+    }
 
     deviceInfo.forEach(device => {
       const strIndex = device.deviceCode.indexOf('M', 0);
