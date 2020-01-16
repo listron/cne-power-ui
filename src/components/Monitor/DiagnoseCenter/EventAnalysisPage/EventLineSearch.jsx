@@ -33,6 +33,8 @@ class EventLineSearch extends PureComponent {
     this.props.getEventsAnalysis({ ...analysisEvent, beginTime: newMonthStr });
   }
 
+  disabledDateFunc = (cur) => moment().isBefore(cur, 'day')
+
   render(){
     const { analysisEvent } = this.props;
     const { beginTime, interval } = analysisEvent || {};
@@ -55,6 +57,7 @@ class EventLineSearch extends PureComponent {
               className={styles.dateSelect}
               onChange={this.onDateChange}
               allowClear={false}
+              disabledDate={this.disabledDateFunc}
             />
             <Icon className={styles.rightIcon} type="right" onClick={this.nextMonth} />
           </span>

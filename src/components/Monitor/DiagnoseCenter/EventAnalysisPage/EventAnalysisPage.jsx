@@ -13,6 +13,7 @@ class EventAnalysisPage extends PureComponent {
     pageKey: PropTypes.string,
     analysisEvent: PropTypes.object,
     eventAnalysisInfo: PropTypes.object,
+    history: PropTypes.object,
     changeStore: PropTypes.func,
     getEventsAnalysis: PropTypes.func,
   };
@@ -23,8 +24,8 @@ class EventAnalysisPage extends PureComponent {
     data: '数据事件',
   }
 
-  showMore = () => {
-    console.log('todo 查看更多');
+  showMore = () => { // 跳转至历史趋势
+    this.props.history.push('/monitor/data/history');
   }
 
   backList = () => { // 返回列表页, 清空数据;

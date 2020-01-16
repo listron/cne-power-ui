@@ -165,17 +165,18 @@ function* stopCircleQueryList(){ // 停止10s周期调用列表
 function* getEventsAnalysis({ payload = {} }) { // 诊断分析
   //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒, date日期, eventCode事件类型编码eventType: 1告警事件2诊断事件3数据事件 }
   try {
-    const { diagWarningId, deviceFullcode, eventCode, beginTime } = payload;
+    const { diagWarningId, deviceFullcode, eventCode, beginTime, interval } = payload;
     const { pageKey } = yield select(state => state.monitor.diagnoseCenter);
     const eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
     const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
     yield call(easyPut, 'changeStore', { eventAnalysisLoading: true });
     const response = yield call(request.get, url, { params: {
-      diagWarningId, //: 477149066110719,
-      deviceFullcode, // : '350M201M2M61',
-      eventCode, // : 'NB0043',
-      eventType, //: 1,
-      date: moment(beginTime).format('YYYY-MM-DD'), // '2019-01-06', // moment(beginTime).format('YYYY-MM-DD'),
+      diagWarningId,
+      deviceFullcode,
+      eventCode,
+      eventType,
+      interval, // 1: 十分钟, 2: 5秒
+      date: moment(beginTime).format('YYYY-MM-DD'),
     }});
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
