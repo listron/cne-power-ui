@@ -47,7 +47,7 @@ class DiagnoseFilter extends Component {
       newListParams = { // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件, 
         ...listParams,
         stationCode,
-        finished: finished ? 1 : 0,
+        finished: preFinish,
         deviceTypeCode,
         eventCode,
         eventStatus,

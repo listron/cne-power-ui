@@ -40,13 +40,17 @@ const columnFilter = (totalColumn, finished) => totalColumn.filter(e => (e.dataI
 const eventLevelArray = ['--', '一级', '二级', '三级', '四级'];
 
 const statusIcon = (record) => {
-  const { statusCode } = record;
-  const statusClassNames = {
-    5: `iconfont icon-ywancheng ${styles.done}`, // 已完成
-    6: `iconfont icon-yhulue ${styles.ignore}`, // 已忽略
-  };
+  const { statusName } = record;
+  const statusClassNames = [{
+    name: '已完成',
+    value: `iconfont icon-ywancheng ${styles.done}`, // 已完成
+  }, {
+    name: '已忽略',
+    value: `iconfont icon-yhulue ${styles.ignore}`, // 已忽略
+  }];
+  const statusStyleInfo = statusClassNames.find(e => e.name === statusName) || {};
   return (
-    <span className={statusClassNames[statusCode]} />
+    <span className={statusStyleInfo.value || ''} />
   );
 };
 
