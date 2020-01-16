@@ -35,7 +35,7 @@ const initState = {
     sortField: 'eventStatus', // 排序 告警事件eventCode;事件级别eventLevel;设备类型deviceTypeName;设备名称deviceName;发生时间beginTime;持续时长duration;事件状态eventStatus; 发生频次frequency
     sortMethod: 'desc', // 排序方式 asc升序 + desc降序
   }, // 表格排序方式, 表格当前页, 表格每页数据量
-  eventstatus: [], // 事件状态信息
+  allEventsStatus: [], // 事件状态信息
   alarmEventtypes: [], //告警事件信息
   diagnEventtypes: [], // 诊断事件信息
   dataEventtypes: [], // 数据事件信息
