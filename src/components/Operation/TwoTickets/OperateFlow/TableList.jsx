@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './operate.scss';
-import { Table, Icon, Modal, Button } from 'antd';
+import { Table, Modal, Button } from 'antd';
 import ImgListModal from '../../../Common/Uploader/ImgListModal';
 import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';

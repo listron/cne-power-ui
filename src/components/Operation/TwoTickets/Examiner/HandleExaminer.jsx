@@ -4,6 +4,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
+import { handleRight } from '@utils/utilFunc';
 import styles from './examinerComp.scss';
 
 class HandleExaminer extends Component { // 这个页面其实没啥用···只是为了防止工作票和操作票后期列表异化。
@@ -82,14 +83,15 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
       dataIndex: 'handle',
       render: (text, record) => {
         const { state } = record;
+        const editRight = handleRight('twoTicket_config_edit');
         return (
           <div className={styles.handler}>
-            <span
+            {editRight && <span
               className="iconfont icon-edit"
               onClick={() => {
                 state > 0 ? this.showEdit(record) : this.showCreate(record);
               }}
-            />
+            />}
             {state > 0 && <span
               className="iconfont icon-look"
               onClick={() => this.showDetail(record)}
@@ -111,7 +113,6 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
   showCreate = (modalRecord) => { // 展示新设置弹框
     const { distributionId, stationCode } = modalRecord;
     const { settableNodes, getSettableUsers } = this.props;
-    console.log(modalRecord)
     getSettableUsers({ settableNodes, stationCode });
     this.props.changeStore({ editModalShow: true, handleDistributionId: distributionId, modalRecord });
   }
