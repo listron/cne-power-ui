@@ -150,7 +150,7 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
 function* circlingQueryList({ payload }){ // 启动10s周期调用列表
   const { hideLoading, ...rest } = payload || {};
   circleTimer = yield fork(getDiagnoseList, { payload: { ...rest, hideLoading } });
-  yield delay(1000000000);
+  yield delay(10000);
   if (circleTimer) {
     circleTimer = yield fork(circlingQueryList, { payload: { ...rest, hideLoading: true } });
   }
