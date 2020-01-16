@@ -67,27 +67,6 @@ class RoleEditForm extends Component {
     });
   }
 
-  onSaveRoleAndAdd = () => {
-    const { enterpriseId, operatetypeData = [] } = this.props;
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      const { operateName} = values;
-      const selectOperateInfo = operatetypeData.length > 0 ? operatetypeData.find(e => {
-        return e.name === operateName;
-      }) : '';
-      const operateId = selectOperateInfo.id;
-      if(!err) {
-        this.props.onCreateRole({
-          roleDesc: values.roleDesc.trim(),
-          rightId: values.rightId.join(','),
-          enterpriseId,
-          continueAdd: true,
-          operateId,
-        });
-        this.props.form.resetFields();
-      }
-    });
-  }
-
   getRightIdArr = (rightData, treeKey = []) => { // 获取被编辑角色的所有id根节点数组(给后端传菜单的全部rightId)
     rightData && rightData.length > 0 && rightData.forEach(e=>{
       const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
@@ -202,9 +181,8 @@ class RoleEditForm extends Component {
         </FormItem>
         <div className={styles.buttonGroup}>
           <Button className={styles.save} onClick={this.onSaveRole} loading={!continueAdd&&loading}>保存</Button>
-          {isCreate&&<Button onClick={this.onSaveRoleAndAdd} loading={continueAdd&&loading}>保存并继续添加</Button>}
         </div>
-        <div style={{marginLeft:410}} className={styles.instructionText}>选择“保存”按钮后将跳转到对应的列表页；选择“保存并继续添加”按钮将会停留在添加页面</div>
+        <div style={{marginLeft:410}} className={styles.instructionText}>选择“保存”按钮后将跳转到对应的列表页</div>
       </Form>
     );
   }
