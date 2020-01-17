@@ -57,7 +57,8 @@ class RoleEditForm extends Component {
         } else {
           onEditRole({
             roleDesc: roleDesc.trim(),
-            rightId: outputRightArr.join(','),
+            // rightId: outputRightArr.join(','),
+            rightId: values.rightId.join(','),
             enterpriseId,
             operateId,
             roleId: selectedRole[0].roleId,
