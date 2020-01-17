@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-
+// test
 import common from './alphaRedux/commonReducer';
 import homepage from './Home/homepageReducer';
 import operation from './Operation/operationReducer';
