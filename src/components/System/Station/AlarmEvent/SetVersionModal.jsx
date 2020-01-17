@@ -30,6 +30,10 @@ class SetVersionModal extends Component { //版本的设置
   componentDidMount() {
     const { selectVersion, staticData } = this.props;
     const { deviceTypeCode, manufactorCode, deviceModeCode } = selectVersion;
+    if (deviceTypeCode) {
+      const manufactors = staticData.filter(list => list.deviceTypeCode === deviceTypeCode)[0].manufactors;
+      this.setState({ manufactors });
+    }
     if (deviceModeCode) {
       const manufactors = staticData.filter(list => list.deviceTypeCode === deviceTypeCode)[0].manufactors;
       const deviceModes = manufactors.filter(list => list.manufactorCode === manufactorCode)[0].deviceModes;
@@ -41,7 +45,7 @@ class SetVersionModal extends Component { //版本的设置
     const { selectVersion, staticData } = nextProps;
     const { deviceTypeCode, manufactorCode, deviceModeCode } = selectVersion;
     const prevSelectVersion = this.props.selectVersion || {};
-    if (deviceModeCode !== prevSelectVersion.deviceModeCode) {
+    if (deviceModeCode !== prevSelectVersion.deviceModeCode || deviceTypeCode !== prevSelectVersion.deviceTypeCode) {
       const manufactors = staticData.filter(list => list.deviceTypeCode === deviceTypeCode)[0].manufactors;
       const deviceModes = manufactors.filter(list => list.manufactorCode === manufactorCode)[0].deviceModes;
       this.setState({ manufactors, deviceModes });

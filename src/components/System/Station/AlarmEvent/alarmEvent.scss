@@ -86,6 +86,9 @@
       width: 93px;
       @include overflowText();
     }
+    .selectVersionName {
+      color: #199475;
+    }
     .poerate {
       display: none;
     }
@@ -100,6 +103,10 @@
         color: #ff9900;
       }
     }
+  }
+  .tree {
+    height: 654px;
+    overflow: scroll;
   }
 
   :global {
@@ -128,6 +135,9 @@
       &:before {
         background: transparent;
       }
+    }
+    .anticon {
+      font-size: 18px !important;
     }
     // .ant-tree.ant-tree-directory > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper,
     .ant-tree.ant-tree-directory
@@ -374,7 +384,9 @@
   .tableList {
     width: calc(100vw - 480px); // 其他区域占480px
     position: relative;
-
+    background: #ffffff;
+    border: 1px solid #d4d4d4;
+    box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
     .tableHeader {
       background: #199475;
       height: 36px;
