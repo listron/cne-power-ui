@@ -16,6 +16,9 @@ class VersionSelect extends Component {
     editVersionLoading: PropTypes.bool,
     delVersion: PropTypes.func,
     getVersionStation: PropTypes.func,
+    getDiagVersion: PropTypes.func,
+    getAlarmEvent: PropTypes.func,
+    getVersionEvent: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -33,15 +36,15 @@ class VersionSelect extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { diagConfigData, deviceTypeCode } = nextProps;
-    if (diagConfigData.length !== this.props.diagConfigData.length) {
+    if (diagConfigData.length !== this.props.diagConfigData.length || deviceTypeCode !== this.props.deviceTypeCode) {
       const initDiagConfigData = diagConfigData.filter(e => `${e.deviceTypeCode}` === `${deviceTypeCode}`) || [];
       const { manufactors = [] } = initDiagConfigData[0] || {};
       const { manufactorCode, deviceModes = [] } = manufactors.length > 0 && manufactors[0] || {};
       const { deviceModeCode, versions = [] } = deviceModes.length > 0 && deviceModes[0];
       const initTreeSelect = `${manufactorCode}_${deviceModeCode}`;
-      const diagModeVersionId = versions.length > 0 && versions[0].diagModeVersionId;
-      this.setState({ initTreeSelect: initTreeSelect });
-      if (diagModeVersionId) {
+      const diagModeVersionId = versions.length > 0 && versions[0].diagModeVersionId || '';
+      if (deviceModeCode) {
+        this.setState({ initTreeSelect: initTreeSelect });
         this.props.changeStore({ deviceModeCode });
         this.props.getVersionEvent({ diagModeVersionId });
       }
@@ -50,7 +53,9 @@ class VersionSelect extends Component {
 
 
   changeDeviceType = (value) => { // 改变设备类型
-    this.props.changeStore({ deviceTypeCode: value });
+    this.props.changeStore({ diagConfigData: [] });
+    this.props.getDiagVersion({ deviceTypeCode: value });
+    this.props.getAlarmEvent({ eventType: 1, deviceTypeCode: value });
   }
 
   addVersion = (event, type, value) => { // 添加软件版本
@@ -80,6 +85,7 @@ class VersionSelect extends Component {
   cancelWarningTip = () => {
     this.setState({ showWarningTip: false });
   }
+
   cancelWarnEvent = () => {
     this.setState({ showWarningVersion: false });
   }
@@ -92,7 +98,7 @@ class VersionSelect extends Component {
 
   render() {
     const { addVersionModal, selectVersion, type, initTreeSelect, showWarningTip, showWarningVersion } = this.state;
-    const { stations = [], diagConfigData, deviceTypeCode, editVersion, editVersionLoading, applayStations } = this.props;
+    const { stations = [], diagConfigData, deviceTypeCode, editVersion, editVersionLoading, applayStations, diagModeVersionId } = this.props;
     const initDiagConfigData = diagConfigData.filter(e => `${e.deviceTypeCode}` === `${deviceTypeCode}`) || [];
     return (
       <div className={styles.VersionSelectCont}>
@@ -101,11 +107,12 @@ class VersionSelect extends Component {
         <div className={styles.deviceType}>
           <Select style={{ width: 212 }} onSelect={this.changeDeviceType} value={deviceTypeCode}>
             <Select.Option value={206}>组串式逆变器</Select.Option>
-            {/* <Select.Option value={201}>集中式逆变器</Select.Option> */}
+            <Select.Option value={201}>集中式逆变器</Select.Option>
+            <Select.Option value={304}>箱变</Select.Option>
           </Select>
         </div>
         <div className={styles.cont}>
-          <div className={styles.icon} onClick={(e) => this.addVersion(e, 'add', {})}> <i className={'iconfont icon-newbuilt'} /> <span>添加软件版本</span>  </div>
+          <div className={styles.icon} onClick={(e) => this.addVersion(e, 'add', { deviceTypeCode: deviceTypeCode })}> <i className={'iconfont icon-newbuilt'} /> <span>添加软件版本</span>  </div>
           <div className={styles.tree}>
             {
               initDiagConfigData.length > 0 &&
@@ -128,7 +135,7 @@ class VersionSelect extends Component {
                                   <div className={styles.versionWrap} title={ver.version} onClick={(e) => {
                                     this.selectversion(e, ver.diagModeVersionId, deviceMode.deviceModeCode);
                                   }}>
-                                    <div className={styles.versionName}>{ver.version}</div>
+                                    <div className={`${styles.versionName} ${diagModeVersionId === ver.diagModeVersionId && styles.selectVersionName}`}>{ver.version}</div>
                                     <div className={styles.poerate}>
                                       <i className="iconfont icon-edit" title="编辑" onClick={(e) => {
                                         this.addVersion(e, 'edit', { deviceTypeCode: deviceTypeCode, manufactorCode: manufactors.manufactorCode, deviceModeCode: deviceMode.deviceModeCode, diagModeVersionId: ver.diagModeVersionId, version: ver.version });

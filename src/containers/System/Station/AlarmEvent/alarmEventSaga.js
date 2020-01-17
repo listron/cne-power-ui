@@ -16,6 +16,7 @@ function* getDiagVersion(action) { // 获取设备型号列表及版本
       yield put({
         type: alarmEventAction.changeStore,
         payload: {
+          ...payload,
           diagConfigData: response.data.data,
         },
       });
@@ -103,21 +104,25 @@ function* getVersionEvent(action) { // 获取型号制定版本的告警事件�
         versionEventLoading: true,
       },
     });
-    const response = yield call(axios.get, url, { params: payload });
-    if (response.data.code === '10000') {
-      const { stations = [], events = [] } = response.data.data;
-      yield put({
-        type: alarmEventAction.changeStore,
-        payload: {
-          versionStationCodes: stations,
-          versionList: events,
-          versionEventLoading: false,
-          stationCode: stations.length > 0 && stations[0].stationCode || null,
-        },
-      });
-    } else { throw response.data; }
+    if (payload.diagModeVersionId) {
+      const response = yield call(axios.get, url, { params: payload });
+      if (response.data.code === '10000') {
+        const { stations = [], events = [] } = response.data.data;
+        yield put({
+          type: alarmEventAction.changeStore,
+          payload: {
+            versionStationCodes: stations,
+            versionList: events,
+            versionEventLoading: false,
+            stationCode: stations.length > 0 && stations[0].stationCode || null,
+          },
+        });
+      } else { throw response.data; }
+    }
+    if (!payload.diagModeVersionId) {
+      throw 'error';
+    }
   } catch (e) {
-    console.log(e);
     yield put({
       type: alarmEventAction.changeStore,
       payload: {
