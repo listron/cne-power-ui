@@ -10,14 +10,14 @@ class PointsData extends Component {
     devicePointData: PropTypes.array,
   }
 
-  shouldComponentUpdate(nextprops) {
-    const nextPointsData = nextprops.devicePointData;
-    const { devicePointData } = this.props;
-    if (devicePointData.length !== nextPointsData.length) {
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate(nextprops) {
+  //   const nextPointsData = nextprops.devicePointData;
+  //   const { devicePointData } = this.props;
+  //   if (devicePointData.length !== nextPointsData.length) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   render() {
     const { devicePointData } = this.props;
@@ -46,14 +46,14 @@ class EventsData extends Component {
     deviceEvents: PropTypes.array,
   }
 
-  shouldComponentUpdate(nextprops) {
-    const nextEventsData = nextprops.deviceEvents;
-    const { deviceEvents } = this.props;
-    if (deviceEvents.length !== nextEventsData.length) {
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate(nextprops) {
+  //   const nextEventsData = nextprops.deviceEvents;
+  //   const { deviceEvents } = this.props;
+  //   if (deviceEvents.length !== nextEventsData.length) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   render() {
     const { deviceEvents } = this.props;
