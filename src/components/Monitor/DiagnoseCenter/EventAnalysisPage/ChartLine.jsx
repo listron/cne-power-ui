@@ -94,7 +94,7 @@ class ChartLine extends PureComponent {
       grid: {
         show: true,
         borderColor: '#d4d4d4',
-        bottom: 60,
+        bottom: 100,
         top: 8,
         left: '7%',
         right: '7%',
@@ -124,12 +124,15 @@ class ChartLine extends PureComponent {
       },
       xAxis: {
         type: 'category',
-        data: time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss')),
+        data: time.map(e => moment(e).format('YYYY-MM-DD__HH:mm:ss')),
         axisLine: {
           show: false,
         },
         axisLabel: {
-          // show: false,
+          fontSize: 14,
+          color: '#353535',
+          lineHeight: 21,
+          formatter: (value = '') => value.split('__').join('\n'),
         },
         axisTick: {
           show: false,
@@ -162,7 +165,7 @@ class ChartLine extends PureComponent {
         {
           show: true,
           height: 20,
-          bottom: 12,
+          bottom: 16,
         }, {
           type: 'inside',
         },
@@ -187,7 +190,7 @@ class ChartLine extends PureComponent {
             </span>
           ))}
         </div>
-        <div style={{width: '100%', height: '600px'}} ref={(ref) => { this.lineRef = ref; } } />
+        <div style={{width: '100%', height: '506px'}} ref={(ref) => { this.lineRef = ref; } } />
       </div>
     );
   }

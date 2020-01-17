@@ -21,6 +21,9 @@
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+    .footer{
+      flex: 0 0 60px;
+    }
   }
   .listPageContent{
     flex: 1 0 auto;

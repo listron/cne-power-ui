@@ -64,7 +64,7 @@ class ChartBar extends PureComponent {
         show: true,
         borderColor: '#d4d4d4',
         top: 0,
-        bottom: 60,
+        bottom: 104,
         left: '7%',
         right: '7%',
       },
@@ -108,6 +108,10 @@ class ChartBar extends PureComponent {
         data: xNames,
         axisLine: {
           show: false,
+        },
+        axisLabel: {
+          fontSize: 14,
+          color: '#353535',
         },
         axisTick: {
           show: false,
@@ -184,7 +188,7 @@ class ChartBar extends PureComponent {
         {
           show: true,
           height: 20,
-          bottom: 12,
+          bottom: 16,
         }, {
           type: 'inside',
         },
@@ -196,7 +200,7 @@ class ChartBar extends PureComponent {
   render(){
     return (
       <div className={styles.analysisChart}>
-        <div style={{width: '100%', height: '600px'}} ref={(ref) => { this.barRef = ref; } } />
+        <div style={{width: '100%', height: '560px'}} ref={(ref) => { this.barRef = ref; } } />
       </div>
     );
   }
