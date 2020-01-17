@@ -14,7 +14,7 @@ class DiagnoseHeaderTabs extends Component {
     name: '告警事件',
     value: 'alarm',
   }, {
-    name: '诊断时间',
+    name: '诊断事件',
     value: 'diagnose',
   }, {
     name: '数据事件',

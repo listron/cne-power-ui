@@ -22,10 +22,10 @@ function* easyPut(actionName, payload){
 function* getEventstatus(){ // 获取事件状态
   try {
     const url = `${APIBasePath}${monitor.getEventstatus}`;
-    const response = yield call(request.get, url);
+    const response = yield call(request.get, url, { params: { statusType: 0 }}); // 0全部 1活动 2已归档
     if (response.code === '10000') {
-      yield call(easyPut, 'fetchSuccess', { eventstatus: response.data || [] });
-      // yield call(easyPut, 'fetchSuccess', { eventstatus: [{
+      yield call(easyPut, 'fetchSuccess', { allEventsStatus: response.data || [] });
+      // yield call(easyPut, 'fetchSuccess', { allEventsStatus: [{
       //   statusCode: 112,
       //   statusName: '状态一种',
       // }, {
@@ -38,7 +38,7 @@ function* getEventstatus(){ // 获取事件状态
     } else { throw response.message; }
   } catch (error) {
     message.error(`事件状态获取失败, ${error}`);
-    yield call(easyPut, 'changeStore', { eventstatus: [] });
+    yield call(easyPut, 'changeStore', { allEventsStatus: [] });
   }
 }
 
@@ -50,8 +50,15 @@ function* getEventtypes({ payload = {} }) { // 获取事件类型
     const url = `${APIBasePath}${monitor.getEventtypes}`;
     const response = yield call(request.get, url, { params: payload });
     if (response.code === '10000') {
+      const result = [], codeSet = new Set();
+      response.data.forEach(e => { // 基于eventCode去重, 防止设备类型的误干扰。
+        if (!codeSet.has(e.eventCode)) {
+          codeSet.add(e.eventCode);
+          result.push(e);
+        }
+      });
       yield call(easyPut, 'fetchSuccess', {
-        [eventTypeInfo[eventType - 1]]: response.data || [],
+        [eventTypeInfo[eventType - 1]]: result || [],
         // [eventTypeInfo[eventType - 1]]: [1, 2, 3, 4].map(e => ({
         //   eventCode: e * e,
         //   eventName: `类型${e}`,
@@ -80,14 +87,17 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
     // pageSize: 20, // 页容量
     // sortField: '', // 排序字段
     // sortMethod: 'desc', // 排序方式 asc升序 + desc降序 }
+    const { hideLoading, ...rest } = payload || {};
     try {
       const url = `${APIBasePath}${monitor.getDiagnoseList}`;
-      yield call(easyPut, 'changeStore', { diagnoseListLoading: true });
+      if (!hideLoading) {
+        yield call(easyPut, 'changeStore', { diagnoseListLoading: true });
+      }
       const { listParams, listPage } = yield select(state => state.monitor.diagnoseCenter);
       const response = yield call(request.post, url, {
         ...listParams,
         ...listPage,
-        ...payload,
+        ...rest,
       });
       if (response.code === '10000') {
         yield call(easyPut, 'fetchSuccess', {
@@ -137,11 +147,12 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
     }
 }
 
-function* circlingQueryList({ payload = {} }){ // 启动10s周期调用列表
-  circleTimer = yield fork(getDiagnoseList, { payload });
-  yield delay(10000000);
+function* circlingQueryList({ payload }){ // 启动10s周期调用列表
+  const { hideLoading, ...rest } = payload || {};
+  circleTimer = yield fork(getDiagnoseList, { payload: { ...rest, hideLoading } });
+  yield delay(10000);
   if (circleTimer) {
-    circleTimer = yield fork(circlingQueryList, { payload });
+    circleTimer = yield fork(circlingQueryList, { payload: { ...rest, hideLoading: true } });
   }
 }
 
@@ -154,17 +165,18 @@ function* stopCircleQueryList(){ // 停止10s周期调用列表
 function* getEventsAnalysis({ payload = {} }) { // 诊断分析
   //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒, date日期, eventCode事件类型编码eventType: 1告警事件2诊断事件3数据事件 }
   try {
-    const { diagWarningId, deviceFullcode, eventCode, beginTime } = payload;
+    const { diagWarningId, deviceFullcode, eventCode, beginTime, interval } = payload;
     const { pageKey } = yield select(state => state.monitor.diagnoseCenter);
     const eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
     const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
     yield call(easyPut, 'changeStore', { eventAnalysisLoading: true });
     const response = yield call(request.get, url, { params: {
-      diagWarningId, //: 477149066110719,
-      deviceFullcode, // : '350M201M2M61',
-      eventCode, // : 'NB0043',
-      eventType, //: 1,
-      date: moment(beginTime).format('YYYY-MM-DD'), // '2019-01-06', // moment(beginTime).format('YYYY-MM-DD'),
+      diagWarningId,
+      deviceFullcode,
+      eventCode,
+      eventType,
+      interval, // 1: 十分钟, 2: 5秒
+      date: moment(beginTime).format('YYYY-MM-DD'),
     }});
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {

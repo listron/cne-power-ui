@@ -8,7 +8,7 @@ class DiagnoseFilter extends Component {
     pageKey: PropTypes.string,
     stations: PropTypes.array,
     deviceTypes: PropTypes.array,
-    eventstatus: PropTypes.array,
+    allEventsStatus: PropTypes.array,
     listParams: PropTypes.object,
     listPage: PropTypes.object,
     stopCircleQueryList: PropTypes.func,
@@ -47,7 +47,7 @@ class DiagnoseFilter extends Component {
       newListParams = { // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件, 
         ...listParams,
         stationCode,
-        finished: finished ? 1 : 0,
+        finished: preFinish,
         deviceTypeCode,
         eventCode,
         eventStatus,
@@ -67,17 +67,18 @@ class DiagnoseFilter extends Component {
   }
 
   render() {
-    const { stations, deviceTypes, eventstatus, pageKey, listParams } = this.props;
+    const { stations, deviceTypes, allEventsStatus, pageKey, listParams } = this.props;
+    const { stationCode, deviceTypeCode, startTime, endTime, eventCode, eventStatus, finished } = listParams;
     const eventTypesData = this.props[this.eventTypeInfo[pageKey]] || [];
+    const statusArray = allEventsStatus.filter(e => e.statusType === (!!finished ? 2 : 1)); // statusType:1活动 2已归档
     const options = [
       { name: '电站名称', type: 'stationName', typeName: 'stationCode', data: stations },
       { name: '设备类型', type: 'radioSelect', typeName: 'deviceTypeCode', rules: ['deviceTypeName', 'deviceTypeCode'], data: deviceTypes },
       { name: '发生时间', type: 'time', typeName: 'rangeTimes' },
       { name: '告警事件', type: 'radioSelect', typeName: 'eventCode', rules: ['eventName', 'eventCode'], data: eventTypesData },
-      { name: '事件状态', type: 'radioSelect', typeName: 'eventStatus', parentName: 'parentName', rules: ['statusName', 'statusCode'], data: eventstatus },
+      { name: '事件状态', type: 'radioSelect', typeName: 'eventStatus', parentName: 'parentName', rules: ['statusName', 'statusCode'], data: statusArray },
       { name: '归档事件', type: 'switch', typeName: 'finished' },
     ];
-    const { stationCode, deviceTypeCode, startTime, endTime, eventCode, eventStatus, finished } = listParams;
     return (
       <div className={styles.diagnoseFilter} >
         <FilterConditions
