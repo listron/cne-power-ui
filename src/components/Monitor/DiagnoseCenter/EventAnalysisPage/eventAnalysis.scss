@@ -2,8 +2,8 @@
 @import '../../../../theme/theme.scss';
 
 .eventAnalysis{
-  height: 100%;
   display: flex;
+  flex: 1 0 auto;
   flex-direction: column;
   .detailTop{ // 分析页顶部
     margin-bottom: 0;
@@ -334,7 +334,6 @@
       }
     }
   }
-
   .analysisChart{
     .chartTooltip{
       .tooltipTitle{
