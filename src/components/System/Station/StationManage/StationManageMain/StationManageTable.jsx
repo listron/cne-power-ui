@@ -315,6 +315,7 @@ class StationManageTable extends Component {
     const { eventYxModal, stationCode, eventYcModal, type } = this.state;
     const authData = localStorage.getItem('authData') || '';
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
+    const initTableScroll = stationList.length > 0 && { y: 900 } || {};
     return (
       <div className={styles.stationList}>
         <div className={styles.topHandler}>
@@ -355,7 +356,7 @@ class StationManageTable extends Component {
           className={styles.stationTable}
           onChange={this.tableChange}
           pagination={false}
-          scroll={{ y: 720 }}
+          scroll={initTableScroll}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
 
@@ -384,3 +385,4 @@ class StationManageTable extends Component {
 }
 
 export default StationManageTable;
+
