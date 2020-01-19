@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'antd';
-import { WarningTotal, UpdateTime } from './FuncComponents';
+import { UpdateTime } from './FuncComponents';
 import { dataFormats } from '@utils/utilFunc';
 import styles from './eventListPage.scss';
 
@@ -69,18 +69,32 @@ class DiagnoseLevelSummry extends Component {
   }
 
   render() {
-    const { summaryInfo = {}, diagnoseUpdateTime } = this.props;
+    const { summaryInfo = {}, diagnoseUpdateTime, listParams } = this.props;
+    const { eventLevel } = listParams;
     const { total } = summaryInfo || {};
     return (
       <div className={styles.diagnoseLevelSummry} >
         <div className={styles.leftSummary}>
-          <WarningTotal warningNum={dataFormats(total)} />
+          <i className="iconfont icon-alarm" />
           <div className={styles.levelCounts}>
+            <span
+              className={`${styles.eachLevel} ${eventLevel ? '' : styles.activeLevel}`}
+              onClick={() => this.getLevelList(null)}
+            >
+              <span className={styles.levelNum}>{dataFormats(total)}</span>
+              <span className={styles.levelText}>事件数</span>
+              {!eventLevel && <span className={styles.triangle} />}
+            </span>
             <span className={styles.gradientLine} />
             {this.warningLevels.map(e => (
-              <span className={styles.eachLevel} key={e.key} onClick={() => this.getLevelList(e.key)}>
+              <span
+                className={`${styles.eachLevel} ${eventLevel === e.key ? styles.activeLevel : ''}`}
+                key={e.key}
+                onClick={() => this.getLevelList(e.key)}
+              >
                 <span className={styles.levelNum}>{summaryInfo ? dataFormats(summaryInfo[e.summaryKey]) : '--'}</span>
                 <span className={styles.levelText}>{e.text}</span>
+                {eventLevel === e.key && <span className={styles.triangle} />}
               </span>
             ))}
             <span className={styles.gradientLine} />
