@@ -430,6 +430,9 @@
       &:nth-child(even) {
         background: #fbfbfb;
       }
+      &:hover {
+        background: rgba(206, 235, 224, 0.3);
+      }
     }
     .EventColumn {
       display: flex;

@@ -171,6 +171,13 @@
         background: #ffffff;
         border: 1px solid #d4d4d4;
         box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+        :global {
+          .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
+            overflow-y: scroll;
+            overflow-y: overlay;
+            height: calc(100vh - 20px) !important;
+          }
+        }
         .stationNameWrap {
           display: flex;
           align-items: center;
@@ -200,7 +207,7 @@
           padding-left: 40px !important;
         }
         .stationNameText {
-          width: calc((100vw - 300px) * 0.14 - 44px);
+          width: calc((100vw - 300px) * 0.14 - 48px);
           color: #199475;
           cursor: pointer;
         }
@@ -404,7 +411,7 @@
     .ant-modal-body {
       padding: 21px 18px;
       height: 450px;
-      overflow: scroll;
+      overflow-y: scroll;
       span.ant-radio + * {
         padding-left: 3px;
       }
