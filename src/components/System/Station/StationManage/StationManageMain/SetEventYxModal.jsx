@@ -90,7 +90,7 @@ class SetEventYxModal extends Component { // 电站管理列表页
                   const diagModeVersionId = defaultValue.length > 0 && defaultValue[0].diagModeVersionId || '';
                   return (
                     <React.Fragment>
-                      <div key={mode.deviceTypeCode} >{mode.deviceModeName}({mode.manufactorName})  </div>
+                      <div key={`${mode.deviceModeCode}_${mode.manufactorCode}`} >{mode.deviceModeName}({mode.manufactorName})  </div>
                       <Radio.Group
                         name={`${list.deviceTypeCode}_${mode.deviceModeCode}`}
                         onChange={this.onChange}

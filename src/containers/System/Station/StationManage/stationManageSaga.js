@@ -118,9 +118,10 @@ function* saveStationDetail(action) { // 保存编辑的电站详情；
     const response = yield call(axios.put, url, payload);
     if (response.data.code === '10000') { // 保存成功后，继续请求电站列表信息 + 该电站详情
       const listPayload = yield select(state => ({
-        stationType: state.system.stationManage.get('stationType'),
-        regionName: state.system.stationManage.get('regionName'),
-        stationName: state.system.stationManage.get('stationName'),
+        // stationType: state.system.stationManage.get('stationType'),
+        // regionName: state.system.stationManage.get('regionName'),
+        // stationName: state.system.stationManage.get('stationName'),
+        keyword: state.system.stationManage.get('keyword'),
         pageNum: state.system.stationManage.get('pageNum'),
         pageSize: state.system.stationManage.get('pageSize'),
         orderField: state.system.stationManage.get('orderField'),
@@ -157,9 +158,10 @@ function* deleteStation(action) { // 删除电站(及以下设备)
     const response = yield call(axios.delete, url, payload);
     if (response.data.code === '10000') { // 删除成功后，继续请求电站列表信息
       const payload = yield select(state => ({
-        stationType: state.system.stationManage.get('stationType'),
-        regionName: state.system.stationManage.get('regionName'),
-        stationName: state.system.stationManage.get('stationName'),
+        // stationType: state.system.stationManage.get('stationType'),
+        // regionName: state.system.stationManage.get('regionName'),
+        // stationName: state.system.stationManage.get('stationName'),
+        keyword: state.system.stationManage.get('keyword'),
         pageNum: state.system.stationManage.get('pageNum'),
         pageSize: state.system.stationManage.get('pageSize'),
         orderField: state.system.stationManage.get('orderField'),
@@ -191,9 +193,10 @@ function* setStationDepartment(action) { // 保存分配至指定电站的部门
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') { // 保存成功后，继续请求电站列表信息
       const payload = yield select(state => ({
-        stationType: state.system.stationManage.get('stationType'),
-        regionName: state.system.stationManage.get('regionName'),
-        stationName: state.system.stationManage.get('stationName'),
+        // stationType: state.system.stationManage.get('stationType'),
+        // regionName: state.system.stationManage.get('regionName'),
+        // stationName: state.system.stationManage.get('stationName'),
+        keyword: state.system.stationManage.get('keyword'),
         pageNum: state.system.stationManage.get('pageNum'),
         pageSize: state.system.stationManage.get('pageSize'),
         orderField: state.system.stationManage.get('orderField'),
@@ -265,9 +268,10 @@ function* setDiagconfigYx(action) { // 更改遥信配置
       });
       func({ eventYxModal: false });
       const payload = yield select(state => ({
-        stationType: state.system.stationManage.get('stationType'),
-        regionName: state.system.stationManage.get('regionName'),
-        stationName: state.system.stationManage.get('stationName'),
+        // stationType: state.system.stationManage.get('stationType'),
+        // regionName: state.system.stationManage.get('regionName'),
+        // stationName: state.system.stationManage.get('stationName'),
+        keyword: state.system.stationManage.get('keyword'),
         pageNum: state.system.stationManage.get('pageNum'),
         pageSize: state.system.stationManage.get('pageSize'),
         orderField: state.system.stationManage.get('orderField'),
@@ -292,7 +296,6 @@ function* setDiagconfigYx(action) { // 更改遥信配置
 function* getDiagconfigYc(action) { // 获取遥测或者数据质量配置
   const { payload } = action;
   const { type, stationCode, init } = payload;
-  console.log('getDiagconfigYc', type, stationCode, init);
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getYcconfig}${type}/${stationCode}/${init}`;
   try {
     const response = yield call(axios.get, url);
@@ -336,9 +339,10 @@ function* setDiagconfigYc(action) { // 更改遥测或者数据质量配置
       });
       func({ eventYcModal: false });
       const payload = yield select(state => ({
-        stationType: state.system.stationManage.get('stationType'),
-        regionName: state.system.stationManage.get('regionName'),
-        stationName: state.system.stationManage.get('stationName'),
+        // stationType: state.system.stationManage.get('stationType'),
+        // regionName: state.system.stationManage.get('regionName'),
+        // stationName: state.system.stationManage.get('stationName'),
+        keyword: state.system.stationManage.get('keyword'),
         pageNum: state.system.stationManage.get('pageNum'),
         pageSize: state.system.stationManage.get('pageSize'),
         orderField: state.system.stationManage.get('orderField'),

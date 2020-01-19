@@ -30,7 +30,6 @@ class StationManageTable extends Component {
     getStations: PropTypes.func,
     getStationList: PropTypes.func,
     getStationDetail: PropTypes.func,
-    changeStationManageStore: PropTypes.func,
     setStationDepartment: PropTypes.func,
     deleteStation: PropTypes.func,
     stationList: PropTypes.array,
@@ -38,6 +37,7 @@ class StationManageTable extends Component {
     getDiagconfigYc: PropTypes.func,
     setDiagconfigYc: PropTypes.func,
     setDiagconfigYx: PropTypes.func,
+    changeStationManageStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -81,14 +81,14 @@ class StationManageTable extends Component {
     }
   }
 
-  onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
-    const { getStationList, queryListParams } = this.props;
-    getStationList({
-      ...queryListParams,
-      pageSize,
-      pageNum: currentPage,
-    });
-  }
+  // onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
+  //   const { getStationList, queryListParams } = this.props;
+  //   getStationList({
+  //     ...queryListParams,
+  //     pageSize,
+  //     pageNum: currentPage,
+  //   });
+  // }
 
   onStationDelete = (record) => { // 删除电站
     this.props.deleteStation({ stationCode: record.stationCode });
@@ -128,8 +128,6 @@ class StationManageTable extends Component {
       alarmStatus: '9',
     };
     const orderField = sortInfo[field] ? sortInfo[field] : '';
-    //const orderField = field ? sortInfo[field] : '';
-    //const orderField = field ? field : '';
     const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
     getStationList({
       ...queryListParams,
@@ -196,6 +194,13 @@ class StationManageTable extends Component {
   }
 
   closeEventModal = (value) => {// 关闭
+    const getName = Object.keys(value)[0];
+    if (getName === 'eventYxModal') {
+      this.props.changeStationManageStore({ YxConfigData: [] });
+    }
+    if (getName === 'eventYcModal') {
+      this.props.changeStationManageStore({ YcConfigData: [] });
+    }
     this.setState({ ...value, stationCode: null });
   }
 
@@ -336,8 +341,6 @@ class StationManageTable extends Component {
               <span className={'iconfont icon-download'} /> 下载模板
             </Button>}
             <div className={styles.conditionSearch}>
-              {/* <Input type="text" placeholder={'电站类型／区域／电站名称'} value={stationCondition} onChange={this.changeCondition} onPressEnter={this.onPressEnter} />
-              <i className={'iconfont icon-search'} onClick={this.selectCondition} /> */}
               <Search
                 placeholder="电站类型／区域／电站名称"
                 enterButton={<i className={'iconfont icon-search'} />}
@@ -356,6 +359,7 @@ class StationManageTable extends Component {
           className={styles.stationTable}
           onChange={this.tableChange}
           pagination={false}
+          scroll={{ y: 720 }}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
 
