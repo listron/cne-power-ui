@@ -25,7 +25,7 @@ class DiagnoseFilter extends Component {
     let newListParams = {}, newListPage = {};
     if (finishChange) { // 归档点击 => 重新请求列表, 停止定时请求; 其他条件清空
       newListParams = {
-        eventType: 1, // 1告警事件, 2诊断事件, 3数据事件;
+        ...listParams,
         finished: finished ? 1 : 0, // 1归档事件, 0非归档事件
         stationCode: null, // 电站编码
         deviceTypeCode: null, // 设备类型编码
@@ -34,7 +34,6 @@ class DiagnoseFilter extends Component {
         eventLevel: null, // 事件级别
         startTime: null, //  起始时间
         endTime: null, // 终止事件
-        hassum: 1, // 1包括汇总信息, 0不包括
       };
       newListPage = {
         pageNum: 1, // 页码
