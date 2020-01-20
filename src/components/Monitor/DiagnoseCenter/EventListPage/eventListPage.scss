@@ -153,25 +153,25 @@
       @include overflowText();
     }
     .beginTime {
-      width: calc((100vw - 388px) * 0.115);
+      width: calc((100vw - 230px) * 0.115);
     }
     .beginTimeText {
-      max-width: calc((100vw - 388px) * 0.115 - 20px);
+      max-width: calc((100vw - 230px) * 0.115 - 20px);
     }
     .eventName, .pointValueDesc, .deviceTypeName, .stationName {
-      width: calc((100vw - 388px) * 0.099);
+      width: calc((100vw - 230px) * 0.099);
     }
     .eventNameText, .pointValueDescText, .deviceTypeNameText, .stationNameText {
-      max-width: calc((100vw - 388px) * 0.099 - 20px);
+      max-width: calc((100vw - 230px) * 0.099 - 20px);
     }
     .warningLevel, .deviceName, .warningDuration, .warningFrequency, .statusName{
-      width: calc((100vw - 388px) * 0.074);
+      width: calc((100vw - 230px) * 0.074);
     }
     .warningLevelText, .deviceNameText, .warningDurationText, .warningFrequencyText, .statusNameText {
-      max-width: calc((100vw - 388px) * 0.074 - 20px);
+      max-width: calc((100vw - 230px) * 0.074 - 20px);
     }
     .handleStyle{
-      width: calc((100vw - 388px) * 0.09);
+      width: calc((100vw - 230px) * 0.09);
       .handleAnalysis{
         margin-right: 10px;
         cursor: pointer;
