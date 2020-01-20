@@ -133,7 +133,7 @@
             border: 1px solid #007155;
             box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
             border-radius: 2px;
-            height: 30px;
+            height: 32px;
             align-items: center;
             color: #fff;
             &:hover {
@@ -151,7 +151,8 @@
                 height: 22px;
                 margin: 3px 0;
                 width: 200px;
-                display: none;
+                border-radius: 2px;
+                // display: none;
               }
               .ant-input-search-button {
                 padding: 0;
@@ -161,6 +162,7 @@
                 height: 30px;
                 width: 30px;
                 outline: none;
+                border-radius: 0;
               }
             }
           }
