@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import styles from './windDevice.scss';
-import {  dataFormats } from '../../../../../utils/utilFunc';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import { Popover } from 'antd';
 import OwnProgress from '../../../../Common/OwnProgress/index';
 import { DeviceValueFormat } from '../../WindCommon/WindDataformat';
@@ -32,7 +32,7 @@ class InverterStatistics extends React.Component {
           <i>出力比</i>
           <p><span>{dataFormats(capabilityRate, '--', 2, true)}</span> <span className={styles.unit}>%</span> </p>
         </div>
-      </div>)
+      </div>);
     return (
       <div className={styles.headStation} >
         <div className={styles.deviceName}>
@@ -63,15 +63,16 @@ class InverterStatistics extends React.Component {
         </div>
         <div className={styles.dataColumn}>
           <div> 日发电量  <span className={styles.dataValue}>{DeviceValueFormat(powerDay / 10000, '--', 2, true)}</span> 万kWh</div>
-          <div> 年发电量 <span className={styles.dataValue}>{DeviceValueFormat(powerYear / 10000, '--', 2,true)} </span> 万kWh</div>
+          <div> 年发电量 <span className={styles.dataValue}>{DeviceValueFormat(powerYear / 10000, '--', 2, true)} </span> 万kWh</div>
         </div>
         <div className={styles.dataColumn}>
           <div> 月发电量  <span className={styles.dataValue}>{DeviceValueFormat(powerMonth / 10000, '--', 2, true)}</span> 万kWh</div>
-          <div> 年利用小时 <span className={styles.dataValue}>{DeviceValueFormat(equipmentHours, '--', 2, true)}</span> h</div>
+          <div> 日利用小时 <span className={styles.dataValue}>{DeviceValueFormat(equipmentHours, '--', 2, true)}</span> h</div>
         </div>
       </div>
-    )
+    );
   }
 }
 
 export default InverterStatistics
+  ;
