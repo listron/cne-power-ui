@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Button, Icon } from 'antd';
 import ChartLine from './ChartLine';
 import EventLineSearch from './EventLineSearch';
@@ -50,12 +51,18 @@ class EventAnalysisPage extends PureComponent {
             <span className={styles.infoText}>设备类型： {deviceTypeName || '--'}</span>
           </span>
           <span className={styles.topHandle}>
-            <Button onClick={this.showMore} className={styles.showMore}>
+            <Link to="/monitor/data/history" target="_blank" className={styles.showMore}>
               <span className={styles.shadow}>
                 <span className="iconfont icon-gd4" />
                 <span>更多数据</span>
               </span>
-            </Button>
+            </Link>
+            {/* <Button className={styles.showMore}>
+              <span className={styles.shadow}>
+                <span className="iconfont icon-gd4" />
+                <span>更多数据</span>
+              </span>
+            </Button> */}
             <Icon onClick={this.backList} type="arrow-left" className={styles.backIcon} />
           </span>
         </h3>

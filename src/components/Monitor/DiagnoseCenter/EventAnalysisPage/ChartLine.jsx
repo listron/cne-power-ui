@@ -124,7 +124,7 @@ class ChartLine extends PureComponent {
       },
       xAxis: {
         type: 'category',
-        data: time.map(e => moment(e).format('YYYY-MM-DD__HH:mm:ss')),
+        data: time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss')),
         axisLine: {
           show: false,
         },
@@ -132,7 +132,7 @@ class ChartLine extends PureComponent {
           fontSize: 14,
           color: '#353535',
           lineHeight: 21,
-          formatter: (value = '') => value.split('__').join('\n'),
+          formatter: (value = '') => value.split(' ').join('\n'),
         },
         axisTick: {
           show: false,

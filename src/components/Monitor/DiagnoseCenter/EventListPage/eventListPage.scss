@@ -31,68 +31,61 @@
   .leftSummary, .rightUpdater{
     display: flex;
   }
-  .warningTotal{ // 总数统计
-    height: 60px;
-    display: flex;
-    align-items: center;
+  .leftSummary{
     :global{
       .iconfont.icon-alarm{
         font-size: 30px;
         margin: 0 8px 0 0;
       }
     }
-    .warningNumBox{
-      position: relative;
-      border-radius:4px;
-      padding: 0 10px;
-      text-align: center;
-      .totalValue{
-        font-size: 24px;
-        line-height: 34px;
-      }
-      .totalText{
-        line-height: 24px;
-      }
-      .triangle{
-        position: absolute;
-        width: 10px;
-        height: 8px;
-        overflow: hidden;
-        bottom: -8px;
-        left: calc(50% - 4px);
-        &::after{
-          transform: rotate(-45deg);
-          content: '';
-          display: inline-block;
-          position: absolute;
-          top: -3px;
-          left: 1px;
-          width: 8px;
-          height: 8px;
-        }
-      }
-    }
   }
   .levelCounts{ // 告警等级
     display: flex;
     height: 60px;
-    margin-left: 20px;
     .gradientLine{
       flex: 0 0 2px;
       height:60px;
     }
     .eachLevel{
-      margin: 0 30px;
+      margin: 0 20px;
+      padding: 0 10px;
+      border-radius:4px;
+      position: relative;
+      min-width: 60px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      .levelNum{
-        line-height: 34px;
-        font-size: 24px;
+      &:first-child{
+        margin-left: 0;
       }
       .levelNum, .levelText{
         text-align: center;
         word-break: keep-all;
+      }
+      .levelNum{
+        line-height: 34px;
+        font-size: 24px;
+      }
+      .levelText{
+        line-height: 24px;
+      }
+    }
+    .triangle{
+      position: absolute;
+      width: 10px;
+      height: 8px;
+      overflow: hidden;
+      bottom: -8px;
+      left: calc(50% - 4px);
+      &::after{
+        transform: rotate(-45deg);
+        content: '';
+        display: inline-block;
+        position: absolute;
+        top: -3px;
+        left: 1px;
+        width: 8px;
+        height: 8px;
       }
     }
   }
@@ -193,6 +186,9 @@
     color: var(--themeColor);
     border-bottom: 1px solid var(--themeColor);
   }
+  .tab{
+    color: var(--themeColor);
+  }
   .tab.active{
     background-color: #fff;
     border: 1px solid var(--themeColor);
@@ -208,25 +204,10 @@
 
 .diagnoseLevelSummry{
   // background-color: #fff;
-  .warningTotal{
+  .leftSummary{
     :global{
       .iconfont.icon-alarm{
         color: #a42b2c;
-      }
-    }
-    .warningNumBox{
-      background-image:linear-gradient(-180deg, #ceebe0 0%, #cfece1 24%, #f3fbf8 100%);
-      border:1px solid #ceebe0;
-      box-shadow:2px 2px 0 0 rgba(206,235,224,0.30), inset -2px 2px 0 0 rgba(255,255,255,0.80);
-      color: var(--themeColor);
-      .triangle{
-        // background-color: #f3fbf8;
-        // border:1px solid #ceebe0;
-        &::after{
-          position: absolute;
-          background-color: #f3fbf8;
-          border:1px solid #ceebe0;
-        }
       }
     }
   }
@@ -238,6 +219,19 @@
       color: var(--lightColor);
       &:hover{
         color: var(--themeColor);
+      }
+    }
+    .activeLevel.activeLevel{
+      background-image:linear-gradient(-180deg, #ceebe0 0%, #cfece1 24%, #f3fbf8 100%);
+      border:1px solid #ceebe0;
+      box-shadow:2px 2px 0 0 rgba(206,235,224,0.30), inset -2px 2px 0 0 rgba(255,255,255,0.80);
+      color: var(--themeColor);
+      .triangle{
+        &::after{
+          position: absolute;
+          background-color: #f3fbf8;
+          border:1px solid #ceebe0;
+        }
       }
     }
   }

@@ -150,7 +150,7 @@ class FilterCondition extends Component {
         }
       } else {
         item.checkedValue = '';
-        if (value[item['typeName']]) {
+        if (value[item['typeName']] !== undefined) {
           item.checkedValue = value[item['typeName']];
         } else {
           item.checkedValue = currentItem.checkedValue;
