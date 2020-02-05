@@ -35,10 +35,6 @@ class PersonnelManage extends Component {
     const { theme } = this.props;
     return (
       <ContentLayout
-        breadcrumb={{
-          breadData: [{ name: '人员管理' }],
-          style: { paddingLeft: '40px' },
-        }}
         theme={theme}
         contentClassName={`${styles.personnelManage} ${styles[theme]}`}
       >
