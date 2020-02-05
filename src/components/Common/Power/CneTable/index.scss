@@ -56,6 +56,7 @@
     }
     .ant-table .ant-table-thead > tr > th{
       line-height: 36px;
+      border-radius: 0;
       height: auto;
       border-bottom: none;
       .ant-table-column-sorter{
@@ -108,11 +109,11 @@
         background-color: transparent;
       }
       &:nth-of-type(even){
-        background-color: #fbfbfb;
+        background-color: #f3f2f2;
       }
       &:hover{
         &>td{
-          background-color: rgba(206,235,224,0.30);
+          background-color:rgba(206,235,224,0.50);
         }
       }
     }
