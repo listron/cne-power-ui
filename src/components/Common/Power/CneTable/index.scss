@@ -61,11 +61,13 @@
       border-bottom: none;
       .ant-table-column-sorter{
         position: absolute;
-        right: 2px;
         height: 100%;
         display: flex;
         align-items: center;
         margin-top: -2px;
+        .ant-table-column-sorter-inner{
+          margin-left: 4px;
+        }
         .on, .off{
           transform: scale(1.25, 1);
         }
@@ -112,6 +114,7 @@
         background-color: #f3f2f2;
       }
       &:hover{
+        // box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
         &>td{
           background-color:rgba(206,235,224,0.50);
         }
