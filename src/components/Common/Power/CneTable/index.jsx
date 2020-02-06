@@ -12,7 +12,11 @@ import styles from './index.scss';
  */
 
 export default function CneTable ({ ...props }) {
-  const { theme = 'light', className, sortField, sortMethod, columns, ...rest } = props;
+  const {
+    theme = 'light',
+    className, sortField, sortMethod, columns,
+    ...rest
+  } = props;
   let tableColumn = [...columns];
   if (sortField && sortMethod) {
     tableColumn = columns.map(e => {
