@@ -1,14 +1,14 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './pvStation.scss';
 import PvStationHeader from './PvStationHeader.jsx';
 import PvStationItem from './PvStationItem.jsx';
-import { Tabs, Radio, Switch, Spin } from 'antd';
 import PvStationList from './PvStationList';
 import TransitionContainer from '../../../../Common/TransitionContainer';
 import DetailCharts from './DetailCharts/DetailCharts';
 import PvMapChart from './PvMapChart';
+import styles from './pvStation.scss';
+import { Tabs, Radio, Switch, Spin } from 'antd';
 const RadioButton = Radio.Button;
 
 

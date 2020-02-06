@@ -96,7 +96,7 @@ class CommonPagination extends Component {
           </Select>
         </div>
         <div className={styles.pageSelector} >
-          <span>页数：</span>
+          <span className={styles.text}>页数</span>
           <Pagination simple current={total === 0 ? 0 : currentPage} total={total} onChange={this.onPageChange} pageSize={pageSize} />
         </div>
       </div>
