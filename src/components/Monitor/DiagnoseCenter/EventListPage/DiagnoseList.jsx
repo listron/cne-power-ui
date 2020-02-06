@@ -11,6 +11,7 @@ class DiagnoseList extends Component {
   static propTypes = {
     pageKey: PropTypes.string,
     diagnoseListLoading: PropTypes.bool,
+    diagnoseListError: PropTypes.bool,
     listParams: PropTypes.object,
     listPage: PropTypes.object,
     totalNum: PropTypes.number,
@@ -101,7 +102,7 @@ class DiagnoseList extends Component {
   }
 
   render() {
-    const { listPage, totalNum, diagnoseListData, diagnoseListLoading } = this.props;
+    const { listPage, totalNum, diagnoseListData, diagnoseListLoading, diagnoseListError } = this.props;
     const { pageNum, pageSize, sortField, sortMethod } = listPage || {};
     return (
       <div className={styles.diagnoseList} >
@@ -124,12 +125,9 @@ class DiagnoseList extends Component {
           columns={this.createColumn()}
           dataSource={diagnoseListData}
           loading={diagnoseListLoading}
+          dataError={diagnoseListError}
           sortField={this.tableSortMap[sortField]}
           sortMethod={this.sortMethodMap[sortMethod] || false}
-          // rowSelection={{
-          //   selectedRowKeys: [],
-          //   onChange: this.selectRows,
-          // }}
           className={styles.diagnoseTable}
           onChange={this.tableChange}
         />
