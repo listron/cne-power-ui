@@ -331,7 +331,10 @@ export default {
       importStationInfo: '/v3/management/station/devices', // 导入电站+设备信息
       getAllStationBaseInfo: '/v3/management/datalist', // 获取该用户所在企业的所有电站(与token无关)
       editDepartmentStations: '/v3/department/update', // 编辑部门负责电站
-
+      getYxconfig: '/v3/diagconfig/yx/', //获取电站遥信配置
+      setYxconfig: '/v3/diagconfig/yx', //更新电站遥信配置
+      getYcconfig: '/v3/diagconfig/', //获取遥测或者数据质量配置
+      setYcconfig: '/v3/diagconfig/ycdata', //更新遥测或者数据质量配置
       getDeviceList: '/v3/management/devicelist', // 获取设备列表
       downloadDeviceInfo: '/v3/management/station/devices', // 导出设备信息表
       downloadDeviceTemplet: '/template/DeviceInfoTemplate.zip', // 下载设备配置模板
@@ -389,6 +392,15 @@ export default {
       // 气象站配置
       WeatherStaion: '/v3/pv/monitor/weather',
       getWeatherStation: '/v3/pv/monitor/weather/list/',
+
+      // 平台级告警 <诊断中心>
+      addVersionPath: '/v3/diagconfig/version', // 新增版本信息
+      updateVersionPath: '/v3/diagconfig/version', // 更新版本信息
+      delVersionPath: '/v3/diagconfig/version', // 删除版本信息
+      getVersionPath: '/v3/diagconfig/version', // 获取设备型号列表及版本
+      getVersionListPath: '/v3/diagconfig/event', // 获取型号指定版本的告警事件列表
+      versionEvent: '/v3/diagconfig/event', //添加告警事件 编辑告警事件 删除告警事件
+      getEventType: '/v3/diagconfig/eventtype', //获取标准事件告警类型
     },
     monitor: {
       //实时监控

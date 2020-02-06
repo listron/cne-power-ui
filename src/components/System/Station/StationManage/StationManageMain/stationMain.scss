@@ -1,112 +1,91 @@
+@import "../../../../../theme/theme.scss";
 
-@import '../../../../../theme/theme.scss';
-
-.stationMain{
+.stationMain {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 1 0 auto;
   width: 100%;
-  padding: 24px 24px 0;
-  background:#ececec;
-  .stationContent{
-    background-color: #fff;
+  padding: 15px 24px 0;
+  background: #f0f2f5;
+  .stationContent {
+    // background-color: #fff;
     flex: 1;
-    border: 1px solid #e1e2e2;
-    .stationSearch{ // 电站类型+区域搜索区
-      .typeSearch{
+    // border: 1px solid #e1e2e2;
+    .stationSearch {
+      // 电站类型+区域搜索区
+      .typeSearch {
         height: 80px;
         line-height: 80px;
-        .title{
+        .title {
           margin-left: 28px;
           margin-right: 12px;
           color: $darkColor;
         }
-        :global{
-          .ant-radio-group{
-            .ant-radio-button-wrapper{
+        :global {
+          .ant-radio-group {
+            .ant-radio-button-wrapper {
               color: $darkColor;
               padding: 0 12px;
             }
-            .ant-radio-button-wrapper-checked{
+            .ant-radio-button-wrapper-checked {
               background-color: $themeColor;
               border-color: $themeColor;
               box-shadow: -1px 0 0 0 $themeColor;
-              &>span{
-                color:#fff;
+              & > span {
+                color: #fff;
               }
             }
           }
         }
       }
-      .inputSearch{ // input输入区
+      .inputSearch {
+        // input输入区
         background-color: #f9f9f9;
         height: 50px;
         display: flex;
         align-items: center;
-        .area{
+        .area {
           letter-spacing: 25px;
           margin-left: 28px;
           margin-right: 16px;
           color: $darkColor;
         }
-        .searchInput{
+        .searchInput {
           width: 160px;
         }
-        .name{
+        .name {
           margin-left: 24px;
           margin-right: 12px;
           color: $darkColor;
         }
-        .searchButton{
+        .searchButton {
           margin: 0 12px;
           color: $darkColor;
         }
-        .searchReset{
+        .searchReset {
           color: $themeColor;
           cursor: pointer;
         }
       }
     }
-    .stationList{ // 添加电站, 下载模板, 翻译, 电站列表。
-      .topHandler{ // 顶部操作区 添加电站，下载模板, 翻页
-        height: 70px;
+    .stationList {
+      // 添加电站, 下载模板, 翻译, 电站列表。
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      .topHandler {
+        // 顶部操作区 添加电站，下载模板, 翻页
         display: flex;
         align-items: center;
         justify-content: space-between;
-        .leftHandler{
+        margin-right: 27px;
+        margin-bottom: 16px;
+        .leftHandler {
           display: flex;
-          .uploadStation{
-            .plusButton { // 添加电站 
-              margin: 0 12px 0 32px;
-              padding: 0;
-              font-size: 0;
-              i{
-                vertical-align: top;
-                font-size: 14px;
-              }
-              span{
-                background-color: #fff;
-                color:$themeColor;
-                border-radius: 0 4px 4px 0;
-                display: inline-block;
-               font-size: 14px;
-                width: 40px;
-                line-height: 30px; 
-                margin: 0px;
-              }
-              &:hover{
-                span{
-                  background-color: $themeColor;
-                  color:#fff;
-                }
-              }
-            }
-            .plusButton:hover{
-              border-radius: 6px;
-            }
-            :global{
-              .anticon-plus{
+          .uploadStation {
+            :global {
+              .anticon-plus {
                 color: #fff;
                 height: 100%;
                 border-radius: 4px 0 0 4px;
@@ -115,108 +94,498 @@
                 line-height: 30px;
                 background-color: $themeColor;
               }
-              .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
+              .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only)
+                .anticon {
                 margin-left: 0px;
                 width: 28px;
                 color: $darkColor;
               }
             }
+
+            .addButton {
+              margin: 0 14px 0 0;
+              display: flex;
+              background: rgba(206, 235, 224, 0.3);
+              border: 1px solid #199475;
+              box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+              border-radius: 2px;
+              color: $themeColor;
+              width: 90px;
+              height: 32px;
+              line-height: 30px;
+              cursor: pointer;
+              .icon {
+                margin: 0 14px 0 10px;
+              }
+            }
+          }
+          .download {
+            background: rgba(206, 235, 224, 0.3);
+            border: 1px solid #199475;
+            box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+            color: $themeColor;
+            padding: 0 10px;
+            margin-right: 13px;
+          }
+          .conditionSearch {
+            display: flex;
+            background: #199475;
+            border: 1px solid #007155;
+            box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            height: 30px;
+            align-items: center;
+            color: #fff;
+            &:hover {
+              input {
+                display: block;
+              }
+            }
+            :global {
+              .ant-input-search {
+                margin: 0 4px;
+                height: 30px;
+                display: block;
+              }
+              .ant-input {
+                height: 22px;
+                margin: 3px 0;
+                width: 200px;
+                display: none;
+              }
+              .ant-input-search-button {
+                padding: 0;
+                background: #199475;
+                color: #fff;
+                border: none;
+                height: 30px;
+                width: 30px;
+                outline: none;
+              }
+            }
           }
         }
       }
-      .stationTable{ // 表格区
-        .stationName{
-          cursor: pointer;
-          text-decoration: underline;
-        }
-        :global{
-          .departmentSetting{
-            .iconfont{
-              font-size: 18px;
-              cursor: pointer;
-            }
+      .stationTable {
+        // 表格区
+        background: #ffffff;
+        border: 1px solid #d4d4d4;
+        box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+        height: 100%;
+        :global {
+          .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
+            overflow-y: scroll;
+            overflow-y: overlay;
+            height: calc(100vh - 205px) !important;
           }
-          .ant-table-thead{
-            th>div{
-              height: 60px;
-            }
-          }
-          .ant-table-column-sorter{
-            top: 18px;
+          .ant-table-placeholder {
+            border-bottom: none;
           }
         }
-        .notSet{
-          color: $darkColor;
+        .stationNameWrap {
+          display: flex;
+          align-items: center;
+          i {
+            display: flex;
+            flex: 0 0 24px;
+            height: 24px;
+            justify-content: center;
+            align-items: center;
+            background: #199475;
+            border-radius: 12px;
+            color: #fff;
+            margin-right: 7px;
+            font-size: 18px;
+          }
         }
-        .editStation{
+        .stationNameText,
+        .regionNameText,
+        .defectTypeNameText,
+        .defectDescribeText {
+          @include overflowText();
+        }
+        .stationName {
+          width: calc((100vw - 300px) * 0.14);
+        }
+        th.stationName {
+          padding-left: 40px !important;
+        }
+        .stationNameText {
+          width: calc((100vw - 300px) * 0.14 - 48px);
+          color: #199475;
           cursor: pointer;
-          margin-right: 12px;
         }
-        .deleteStation{
-          cursor: pointer;
+
+        .stationCapacity {
+          text-align: right;
+          width: calc((100vw - 300px) * 0.098);
         }
-        .deleteDisable{
-          color: $promptColor;
+        .stationCapacityText {
+          width: calc((100vw - 300px) * 0.1- 20px);
+        }
+        .stationStatus,
+        .pointStatus,
+        .isConnected,
+        .regionName,
+        .eventStatus,
+        .stationUnitCount {
+          width: calc((100vw - 300px) * 0.08);
+        }
+        .isConnectedText,
+        .stationUnitCountText,
+        .stationStatusText,
+        .regionNameText,
+        .eventStatusText,
+        .pointStatusText {
+          width: calc((100vw - 300px) * 0.08- 30px);
+        }
+        .windDisabled {
+          i {
+            color: #999999;
+            pointer-events: none;
+            cursor: not-allowed;
+          }
+        }
+        .eventDataStatus,
+        .eventStatus,
+        .handler,
+        .eventStatusText {
+          text-align: center;
+        }
+        .stationCapacity,
+        .stationUnitCount,
+        .stationCapacityText,
+        .stationUnitCountText {
+          text-align: right;
+        }
+        .eventDataStatus {
+          width: calc((100vw - 300px) * 0.093);
+        }
+        .eventDataStatusText {
+          width: calc((100vw - 300px) * 0.093- 20px);
+        }
+        .handlerText {
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          span {
+            display: flex;
+            box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+            width: 26px;
+            height: 26px;
+            align-items: center;
+            justify-content: center;
+          }
+          .editStation {
+            color: #199475;
+            cursor: pointer;
+            font-size: 20px;
+          }
+          .deleteStation {
+            cursor: pointer;
+            color: #ff9900;
+            font-size: 20px;
+          }
+          .deleteDisable {
+            color: $darkColor;
+            cursor: not-allowed;
+            font-size: 20px;
+          }
+        }
+
+        .disabled {
+          color: #999999;
+        }
+
+        :global {
+          .iconfont {
+            color: #199475;
+            cursor: pointer;
+          }
+          .icon-look {
+            color: #199475;
+            font-size: 24px;
+          }
+          .icon-goset1 {
+            color: #4d90fd;
+            font-size: 24px;
+          }
+          .ant-table .ant-table-tbody > tr > td:first-child:not(.ant-table-selection-column) {
+            padding-left: 10px;
+          }
         }
       }
     }
   }
 }
 
-.departmentSetting{
-  .footer{
-    .cancel, .confirm{
+.departmentSetting {
+  .footer {
+    .cancel,
+    .confirm {
       width: 82px;
       height: 32px;
       color: $darkColor;
       border: solid 1px $lightColor;
-      &:hover,&:focus{
+      &:hover,
+      &:focus {
         color: $themeColor;
         border-color: $themeColor;
       }
     }
-    .confirm{
+    .confirm {
       margin-right: 48px;
       margin-left: 20px;
     }
   }
-  :global{
-    .ant-modal{
-      .ant-modal-content{
-        .ant-modal-close-x{
+  :global {
+    .ant-modal {
+      .ant-modal-content {
+        .ant-modal-close-x {
           width: 40px;
           height: 40px;
           line-height: 40px;
           color: $darkColor;
         }
-        .ant-modal-header{
+        .ant-modal-header {
           height: 40px;
           padding: 0 20px 0 12px;
           color: $darkColor;
-          .ant-modal-title{
+          .ant-modal-title {
             color: $darkColor;
             line-height: 40px;
           }
         }
-        .ant-modal-body{
+        .ant-modal-body {
           height: 420px;
           overflow-y: auto;
           padding-left: 220px;
-          .ant-checkbox-wrapper{
+          .ant-checkbox-wrapper {
             color: $darkColor;
           }
-          .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner{
+          .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+          .ant-checkbox:hover .ant-checkbox-inner,
+          .ant-checkbox-input:focus + .ant-checkbox-inner {
             border-color: $themeColor;
           }
-          .ant-tree-title{
+          .ant-tree-title {
             color: $darkColor;
           }
         }
-        .ant-modal-footer{
+        .ant-modal-footer {
           height: 60px;
           line-height: 60px;
           padding: 0;
         }
+      }
+    }
+  }
+}
+
+.eventYx,
+.SetEventYcModal {
+  :global {
+    .ant-modal-header {
+      background: #199475;
+      height: 34px;
+      padding: 0 21px;
+    }
+    .ant-modal-title {
+      color: #fff;
+      font-size: 14px;
+      line-height: 32px;
+    }
+    .ant-modal-close {
+      top: 9px;
+      right: 10px;
+    }
+    .ant-modal-close-x {
+      width: 14px;
+      height: 14px;
+      background: #ceebe0;
+      border-radius: 50%;
+      font-size: 12px;
+      line-height: 14px;
+      &:hover {
+        background: #fff;
+      }
+    }
+    .ant-modal-body {
+      padding: 21px 18px;
+      height: 450px;
+      overflow-y: scroll;
+      span.ant-radio + * {
+        padding-left: 3px;
+      }
+      .ant-radio-wrapper:hover {
+        color: #199475;
+      }
+      .ant-radio-wrapper-checked {
+        color: #199475;
+      }
+    }
+
+    .ant-modal-footer {
+      background: #efefef;
+      height: 40px;
+      line-height: 40px;
+      padding: 0 16px;
+    }
+  }
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 40px;
+    .cancel {
+      width: 82px;
+      height: 32px;
+      color: $darkColor;
+      text-align: center;
+      line-height: 32px;
+      cursor: pointer;
+    }
+    .confirm {
+      width: 82px;
+      height: 32px;
+      background: rgba(206, 235, 224, 0.3);
+      border: 1px solid #199475;
+      box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+      position: relative;
+      overflow: hidden;
+      color: #199475;
+      .buttonCont {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+        line-height: 32px;
+      }
+      &:after {
+        position: absolute;
+        content: "";
+        background: #ceebe0;
+        width: 0;
+        height: 0;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 1000px;
+        opacity: 0;
+        transition: all 0.6s;
+      }
+      &:hover::after {
+        width: 120%;
+        height: 200%;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.eventYx {
+  .deviceTypeName {
+    background: #f1f1f1;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 24px;
+    span {
+      background: #199475;
+      border-radius: 2px;
+      color: #fff;
+      display: inline-block;
+      height: 24px;
+      width: 110px;
+      @include overflowText();
+      text-align: center;
+    }
+  }
+  .deviceTypeCont {
+    padding: 7px 13px;
+    line-height: 30px;
+    .version {
+      @include overflowText();
+      width: 124px;
+    }
+  }
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    .button {
+      display: flex;
+    }
+  }
+}
+
+.SetEventYcModal {
+  .ycName {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    line-height: 30px;
+    margin-right: 30px;
+  }
+  .configCode:nth-child(even) {
+    background: #fbfbfb;
+    border-top: 1px dashed #d4d4d4;
+    border-bottom: 1px dashed #d4d4d4;
+  }
+
+  .configCodeData {
+    display: flex;
+    height: 40px;
+    line-height: 40px;
+    align-items: center;
+    .ycName {
+      width: 140px;
+    }
+    .inputNumber {
+      margin-left: 30px;
+    }
+  }
+
+  .configCodeData:nth-child(even) {
+    background: #fbfbfb;
+    border-top: 1px dashed #d4d4d4;
+    border-bottom: 1px dashed #d4d4d4;
+  }
+
+  :global {
+    .ant-switch {
+      background: #f1f1f1;
+      border: 1px solid #d4d4d4;
+      box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.6);
+      border-radius: 7px;
+      width: 44px;
+      height: 14px;
+      &::after {
+        width: 18px;
+        height: 18px;
+        border-radius: 100%;
+        background: #ffffff;
+        border: 1px solid #d4d4d4;
+        box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.3), inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+        left: -1px;
+        top: -4px;
+      }
+    }
+    .ant-input-number {
+      margin-left: 4px;
+      margin-right: 4px;
+    }
+    .ant-switch-checked {
+      background: #199475;
+      border: 1px solid #007155;
+      box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
+      &::after {
+        background-image: linear-gradient(35deg, #fcfcfc 3%, #d0f5eb 100%);
+        border: 1px solid #007155;
+        box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.3), inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+        margin-left: 2px;
+        left: 100%;
       }
     }
   }

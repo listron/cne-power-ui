@@ -7,12 +7,12 @@ const account = [
   }, { // 系统管理-账户管理-用户管理
     path: '/system/account/personnelManage',
     component: lazy(() => import('../../containers/System/Account/PersonnelManage/PersonnelManage')),
-  // }, { // 系统管理-账户管理-部门
-  //   path: '/system/account/department',
-  //   component: lazy(() => import('../../containers/System/Account/Department/Department')),
-  // }, { // 系统管理-账户管理-用户
-  //   path: '/system/account/user',
-  //   component: lazy(() => import('../../containers/System/Account/User/User')),
+    // }, { // 系统管理-账户管理-部门
+    //   path: '/system/account/department',
+    //   component: lazy(() => import('../../containers/System/Account/Department/Department')),
+    // }, { // 系统管理-账户管理-用户
+    //   path: '/system/account/user',
+    //   component: lazy(() => import('../../containers/System/Account/User/User')),
   }, { // 系统管理-账户管理-角色
     path: '/system/account/role',
     component: lazy(() => import('../../containers/System/Account/Role/Role')),
@@ -23,7 +23,12 @@ const station = [
   { // 系统管理-电站管理-电站;
     path: '/system/station/stationManage',
     component: lazy(() => import('../../containers/System/Station/StationManage/StationManage')),
-  }, { // 系统管理-电站管理-设备
+  },
+  { // 系统管理-电站管理-平台级告警事件;
+    path: '/system/station/alarmEvent',
+    component: lazy(() => import('../../containers/System/Station/AlarmEvent/AlarmEvent')),
+  },
+  { // 系统管理-电站管理-设备
     path: '/system/station/deviceManage',
     component: lazy(() => import('../../containers/System/Station/DeviceManage/DeviceManage')),
     // component: lazy(() => import('../../containers/Operation/Book/DeviceManage/DeviceManage')),

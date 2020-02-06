@@ -1,13 +1,21 @@
 {
   "presets": [
-    "react", 
+    "react",
     "es2015",
     "stage-0"
   ],
   "plugins": [
     "transform-runtime",
     "syntax-dynamic-import",
-    ["react-hot-loader/babel"],
-    ["import", { "libraryName": "antd", "style": true }]
+    [
+      "react-hot-loader/babel"
+    ],
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": true
+      }
+    ]
   ]
 }
