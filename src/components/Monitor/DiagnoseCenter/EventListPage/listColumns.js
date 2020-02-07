@@ -109,14 +109,14 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       ),
     }, {
       dataIndex: 'warningDuration',
-      title: '持续时长',
+      title: '持续时长(h)',
       sorter: true,
       className: styles.warningDuration,
       render: (text = '--') => (
         <div
           title={dataFormats(text, '--', 2, true)}
           className={styles.warningDurationText}
-        >{dataFormats(text, '--', 2, true)}h</div>
+        >{dataFormats(text, '--', 2, true)}</div>
       ),
     }, {
       dataIndex: 'warningFrequency',
