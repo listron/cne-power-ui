@@ -143,24 +143,19 @@
     }
   }
 
-  .ant-switch{
-    min-width: 46px;
+  button.ant-switch{
     height: 16px;
-    line-height: 16px;
-    background-color: #f1f1f1;
-    border: 1px solid #d4d4d4;
     &::after{
       top: -2px;
-      left: -1px;
+      margin-left: -1px;
       box-shadow: 0px 0px 2px 3px rgba(0, 35, 11, 0.2);
     }
   }
-  .ant-switch-checked{
+  button.ant-switch-checked{
     color: $themeColor;
-    background-color: #199475;
+    background-color: $themeColor;
     &::after {
       margin-left: 1px;
-      border: 1px solid #199475;
     }
   }
   .ant-radio-group{
@@ -311,9 +306,6 @@
   /*select下拉框背景色*/
   .ant-select-dropdown-menu-item-active {
     background-color: #f8f8f8;
-  }
-  .ant-switch-checked {
-    background-color: $themeColor;
   }
   // 加载的spin
   .ant-spin-dot i {
