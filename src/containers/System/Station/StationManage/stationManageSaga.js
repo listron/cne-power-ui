@@ -12,7 +12,7 @@ function* getStationList(action) { // 请求电站列表信息
     yield put({ type: stationManageAction.STATION_MANAGE_FETCH });
     yield put({
       type: stationManageAction.changeStationManageStore,
-      payload: { stationListLoading: true },
+      payload: { stationListLoading: true},
     });
     const response = yield call(axios.post, url, payload);
     // if(response.data.code === "10000"){
@@ -33,6 +33,7 @@ function* getStationList(action) { // 请求电站列表信息
         totalNum,
         pageNum,
         stationListLoading: false,
+        stationListError: false,
       },
     });
     // }
@@ -41,7 +42,7 @@ function* getStationList(action) { // 请求电站列表信息
     message.error('获取电站列表数据失败，请重试');
     yield put({
       type: stationManageAction.changeStationManageStore,
-      payload: { loading: false, stationListLoading: false },
+      payload: { loading: false, stationListLoading: false, stationListError: true },
     });
   }
 }
