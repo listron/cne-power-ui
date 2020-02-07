@@ -5,13 +5,14 @@ import { stationManageAction } from './stationManageAction';
 var initState = Immutable.fromJS({
   loading: false,
   stationListLoading: false, // 电站列表的loading态。
+  stationListError: false, // 表格data error
   showPage: 'list', //默认展示列表页list ,   编辑edit,详情detail,
   stationType: '', // 电站类型("0"-风电、"1"-光伏、""全部)
   stationName: '', // 电站名称(模糊匹配)
   pageNum: 1, // 当前页
   pageSize: 999, // 每页条数
-  orderField: '', // 排序字段 '1'：电站名称; '2':区域 ;'3':覆盖类型;'4':并网类型;'5'：装机容量;'6':发点单元数;'7'：电站接入
-  orderCommand: '', // 排序方式 ;"1"升序; "2"降序
+  orderField: '1', // 排序字段 '1'：电站名称; '2':区域 ;'3':覆盖类型;'4':并网类型;'5'：装机容量;'6':发点单元数;'7'：电站接入
+  orderCommand: '2', // 排序方式 ;"1"升序; "2"降序
   stationList: [], // 电站列表数据
   totalNum: 0, // 电站总数
   keyword: null, // 筛选条件 电站类型、区域、电站名称(模糊匹配)

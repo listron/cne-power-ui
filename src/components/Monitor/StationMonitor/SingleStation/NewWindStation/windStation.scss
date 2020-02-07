@@ -63,7 +63,8 @@
           background: #f8f8f8;
           height: 30px;
           text-indent: 1em;
-        }
+        
+}
         .stationName {
           display: block;
           float: left;
@@ -379,18 +380,20 @@
         }
         .singleDeviceTypeBox {
           border: 1px solid #d9d9d9;
-          height: 22px;
+          // height: 22px;
           background: #ffffff;
-          line-height: 22px;
+          // line-height: 22px;
           border-radius: 2px;
           margin-right: 12px;
           .spanNormal,
           .spanActive {
-            padding: 0 7px;
+            padding: 0 5px;
             color: #353535;
             display: inline-block;
             cursor: pointer;
             border-right: 1px solid #d9d9d9;
+            height: 30px;
+            line-height: 30px;
           }
           .spanActive {
             background: $themeColor;
@@ -466,3 +469,4 @@
     }
   }
 }
+

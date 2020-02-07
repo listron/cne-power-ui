@@ -415,6 +415,12 @@
       @include overflowText();
       width: calc((100vw - 480px) * 0.145);
     }
+    .pointValue{
+      text-align: right;
+    }
+    .switchType,.enabled{
+      text-align: center;
+    }
     .operate {
       text-align: center;
       width: calc((100vw - 480px) * 0.124);
@@ -471,7 +477,8 @@
       .operate {
         i {
           font-size: 18px;
-          margin: 0 10px;
+          margin: 0 8px;
+          padding: 0 2px;
         }
         .edit {
           color: #199475;

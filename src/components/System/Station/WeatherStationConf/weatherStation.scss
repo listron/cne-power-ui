@@ -52,13 +52,15 @@
                 line-height: 32px;
 
                 span {
-                    padding: 0 12px;
+                    padding: 0 5px;
                     border-right: 1px solid #d9d9d9;
                     display: inline-block;
                     cursor: pointer;
                     margin-right: -2px;
+                   &:last-child{
+                    border-right: 0;
+                   }
                 }
-
                 .buttonActive {
                     background: #199475;
                     color: #fff;
