@@ -289,8 +289,10 @@ class LimitAddForm extends Component {
               {getFieldDecorator('lostPower', {
                 rules: [{ 
                   validator: (rule, value, callback) => {
-                    let truelyValue = value && value.trim();
-                    if(truelyValue && isNaN(truelyValue)){
+                    let truelyValue = value;
+                    if(truelyValue.indexOf(" ") >= 0){
+                      callback('损失电量请填写数字');
+                    }else if(truelyValue && isNaN(truelyValue)){
                       callback('损失电量请填写数字');
                     }else if(truelyValue){
                       const demical = `${truelyValue}`.split('.')[1];
