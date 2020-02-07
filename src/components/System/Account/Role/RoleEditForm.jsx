@@ -35,13 +35,12 @@ class RoleEditForm extends Component {
     const isEdit = showPage === 'edit';
     const selectedRight = isEdit ? selectedRole[0].rightData : [];
     const allRoleIds = this.getRightIdArr(selectedRight);
-
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
-        const { roleDesc, rightId, operateName} = values;
-        const outputRightSet = new Set([...rightId, ...allRoleIds]);
-        const outputRightArr = [...outputRightSet];
-
+        const { roleDesc, operateName} = values;
+        // const outputRightSet = new Set([...rightId, ...allRoleIds]);
+        // const outputRightArr = [...outputRightSet];
+        let treeRightValues = values.rightId || [];
         const selectOperateInfo = operatetypeData.find(e => {
           return e.name === operateName;
         }) || '';
@@ -49,16 +48,22 @@ class RoleEditForm extends Component {
         if(showPage === 'create') {
           onCreateRole({
             roleDesc: roleDesc.trim(),
-            rightId: values.rightId.join(','),
+            rightId: treeRightValues.join(','),
             enterpriseId,
             operateId,
             continueAdd: false,
           });
         } else {
+          const initialRightValue = this.getRightId(selectedRight);
+          const notEditRightTree = this.compareRights(initialRightValue, treeRightValues);
+          // initialRightValue 与 treeRightValues 相同, 未进行树编辑(可能进行权限/名称编辑)
+          if (notEditRightTree) { // 树未编辑 => 将默认值权限传回去。
+            treeRightValues = [...allRoleIds];
+          }
           onEditRole({
             roleDesc: roleDesc.trim(),
             // rightId: outputRightArr.join(','),
-            rightId: values.rightId.join(','),
+            rightId: treeRightValues.join(','),
             enterpriseId,
             operateId,
             roleId: selectedRole[0].roleId,
@@ -66,6 +71,10 @@ class RoleEditForm extends Component {
         }
       }
     });
+  }
+
+  compareRights = (a = [], b = []) => { // a, b均为字符串数组
+    return a.length === b.length && a.every(right => b.includes(right));
   }
 
   getRightIdArr = (rightData, treeKey = []) => { // 获取被编辑角色的所有id根节点数组(给后端传菜单的全部rightId)
@@ -130,7 +139,6 @@ class RoleEditForm extends Component {
       initialRightValue = this.getRightId(selectedRight);
       initialOperateName = selectedRole[0].operateName;
     }
-    
     return (     
       <Form onSubmit={this.onSubmit} className={styles.roleEditForm}>
         <FormItem label="角色名称">
