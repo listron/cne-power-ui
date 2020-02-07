@@ -57,6 +57,10 @@
     color: $darkColor;
 
     :global {
+      .ant-radio-button-wrapper{
+        height: 24px;
+        line-height: 24px;
+      }
       .ant-radio-button-wrapper-checked:first-child {
         border-color: $themeColor;
       }
