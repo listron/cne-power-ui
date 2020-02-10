@@ -154,7 +154,7 @@ class EditForm extends Component {
           )}
           <span className={styles.instructionText}>(没有设置角色的用户无法正常使用系统)</span>
         </FormItem>
-        <FormItem label="特殊权限" >
+        {/* <FormItem label="特殊权限" >
           {getFieldDecorator('specialRoleId', {
             initialValue: spcialRoleIds && spcialRoleIds.filter(e=>!!e) || [],
           })(
@@ -170,7 +170,7 @@ class EditForm extends Component {
               ))}
             </Select>
           )}
-        </FormItem>
+        </FormItem> */}
         <FormItem label="所在企业" >
           {getFieldDecorator('enterpriseName', {
             initialValue: userDetail.get('enterpriseData') && 

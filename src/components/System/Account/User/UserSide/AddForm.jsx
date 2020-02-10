@@ -171,7 +171,7 @@ class AddForm extends Component {
           )}
           <span className={styles.instructionText}>(没有设置角色的用户无法正常使用系统)</span>
         </FormItem>
-        <FormItem label="特殊权限" >
+        {/* <FormItem label="特殊权限" >
           {getFieldDecorator('specialRoleId', {
             initialValue: [],
           })(
@@ -187,7 +187,7 @@ class AddForm extends Component {
               ))}
             </Select>
           )}
-        </FormItem>
+        </FormItem> */}
         <Button onClick={this.saveUser} value="save" loading={loading} className={styles.saveUser} >保存</Button>
         <Button onClick={this.continueToAdd} value="continueToAdd" loading={loading} >保存并继续添加</Button>
       </Form>
