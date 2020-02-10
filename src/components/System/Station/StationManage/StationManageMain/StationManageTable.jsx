@@ -53,6 +53,7 @@ class StationManageTable extends Component {
       eventYcModal: false,
       stationCode: {}, // 选中的当前的电站
       type: 'yc', // 'yc' 遥测诊断 'data' 数据质量诊断
+      search: false, // 搜索框出现
     };
   }
 
@@ -308,11 +309,18 @@ class StationManageTable extends Component {
     getStationList({ ...queryListParams, keyword: value });
   }
 
+  enterSearch = () => {
+    const { search } = this.state;
+    if (!search) {
+      this.setState({ search: true });
+    }
+  }
+
   render() {
     const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize } = this.props;
     const { setDiagconfigYx, setDiagconfigYc, YxConfigData, YcConfigData, YxLoading, YcLoading, keyword } = this.props;
     const { departmentModal, departmentSetInfo, uploading, fileList, showWarningTip, warningTipText, deleteInfo } = this.state;
-    const { eventYxModal, stationCode, eventYcModal, type } = this.state;
+    const { eventYxModal, stationCode, eventYcModal, type, search } = this.state;
     const authData = localStorage.getItem('authData') || '';
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
     const initTableScroll = stationList.length > 0 && { y: 900 } || {};
@@ -337,12 +345,14 @@ class StationManageTable extends Component {
             <Button href={downloadHref} download={downloadHref} target="_blank" className={styles.download}>
               <span className={'iconfont icon-download'} /> 下载模板
             </Button>
-            <div className={styles.conditionSearch}>
+            <div className={`${styles.conditionSearch} ${!search && styles.closeConditionSearch}`} onMouseEnter={this.enterSearch}>
               <Search
                 placeholder="电站类型／区域／电站名称"
                 enterButton={<i className={'iconfont icon-search'} />}
                 onSearch={this.selectCondition}
+                onChange={this.conditionChange}
               />
+              <i className={`iconfont icon-wrong ${styles.closeSearch}`} onClick={() => this.setState({ search: false })} />
             </div>
           </div>
           <div>合计：{totalNum}</div>
@@ -360,26 +370,32 @@ class StationManageTable extends Component {
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
 
-        {departmentModal && <SetDepartmentModal
-          departmentSetInfo={departmentSetInfo}
-          closeDepartmentModal={this.closeDepartmentModal}
-          allDepartmentData={allDepartmentData}
-        />}
-        {eventYxModal && <SetEventYxModal
-          closeEventModal={this.closeEventModal}
-          allEventYx={YxConfigData}
-          stationCode={stationCode}
-          setDiagconfigYx={setDiagconfigYx}
-          loading={YxLoading}
-        />}
-        {eventYcModal && <SetEventYcModal
-          closeEventModal={this.closeEventModal}
-          eventData={YcConfigData}
-          type={type}
-          setDiagconfigYc={setDiagconfigYc}
-          loading={YcLoading}
-        />}
-      </div>
+        {
+          departmentModal && <SetDepartmentModal
+            departmentSetInfo={departmentSetInfo}
+            closeDepartmentModal={this.closeDepartmentModal}
+            allDepartmentData={allDepartmentData}
+          />
+        }
+        {
+          eventYxModal && <SetEventYxModal
+            closeEventModal={this.closeEventModal}
+            allEventYx={YxConfigData}
+            stationCode={stationCode}
+            setDiagconfigYx={setDiagconfigYx}
+            loading={YxLoading}
+          />
+        }
+        {
+          eventYcModal && <SetEventYcModal
+            closeEventModal={this.closeEventModal}
+            eventData={YcConfigData}
+            type={type}
+            setDiagconfigYc={setDiagconfigYc}
+            loading={YcLoading}
+          />
+        }
+      </div >
     );
   }
 }

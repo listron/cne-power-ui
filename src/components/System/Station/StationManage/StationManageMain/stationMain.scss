@@ -136,10 +136,20 @@
             height: 32px;
             align-items: center;
             color: #fff;
-            &:hover {
-              input {
-                display: block;
-              }
+            position: relative;
+            .closeSearch {
+              position: absolute;
+              left: 188px;
+              color: #fff;
+              background: #999999;
+              width: 14px;
+              height: 14px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 50%;
+              z-index: 9;
+              cursor: pointer;
             }
             :global {
               .ant-input-search {
@@ -152,7 +162,9 @@
                 margin: 3px 0;
                 width: 200px;
                 border-radius: 2px;
-                // display: none;
+                padding-right: 16px;
+                padding-left: 5px;
+                display: block;
               }
               .ant-input-search-button {
                 padding: 0;
@@ -163,6 +175,17 @@
                 width: 30px;
                 outline: none;
                 border-radius: 0;
+                box-shadow: none;
+              }
+            }
+          }
+          .closeConditionSearch {
+            .closeSearch {
+              display: none;
+            }
+            :global {
+              .ant-input {
+                display: none;
               }
             }
           }
@@ -180,6 +203,12 @@
             overflow-y: overlay;
             height: calc(100vh - 205px) !important;
           }
+          // .ant-table-body::after {
+          //   content: url("/img/nodata.png");
+          //   position: absolute;
+          //   left: 50%;
+          // }
+
           .ant-table-placeholder {
             border-bottom: none;
           }
