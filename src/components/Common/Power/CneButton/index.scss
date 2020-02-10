@@ -1,0 +1,65 @@
+
+
+@import '../../../../theme/theme.scss';
+
+
+@media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
+  .cnebtn{
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+  .cnebtn{
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .cnebtn{
+    font-size: 18px;
+  }
+}
+
+.cnebtn{
+  overflow: hidden;
+  position: relative;
+  border-radius: 2px;
+  text-align: center;
+  & > *{
+    position: relative;
+    z-index: 9;
+  }
+  &::after {
+    position: absolute;
+    content: "";
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    left: 50%;
+    top: 50%;
+    border-radius: 1000px;
+    opacity: 0;
+    transition: all 0.6s;
+}
+  &:hover:after {
+    width: 120%;
+    height: 200%;
+    opacity: 1;
+  }
+}
+
+.cnebtn.light{
+  background: rgba(206, 235, 224, 0.3);
+  border: 1px solid $themeColor;
+  box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+  color: $themeColor;
+  &:after {
+    background: #ceebe0;
+  }
+}
+
+.cnebtn.dark{
+
+}
+

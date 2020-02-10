@@ -230,7 +230,7 @@ class VersionEvent extends Component {
   }
 
   render() {
-    const { versionList, versionStationCodes, stationCode } = this.props;
+    const { versionList, versionStationCodes, stationCode, versionError } = this.props;
     const { pointList, getPointList, deviceTypeCode, deviceModeCode, setPonitModal, editPoint, versionEventLoading, alarmEventType } = this.props;
     const { addEventList, currentEventList, showWarningTip, showWarningEvent, selectKeysArr, allSelect, indeterminate } = this.state;
     const type = editPoint.key && editPoint.key.includes('add') && 'add' || 'edit';
@@ -283,8 +283,15 @@ class VersionEvent extends Component {
                 checkSelect={this.selectKeys}
                 deleteEvent={this.deleteEvent} />);
             })}
-            {(addEventList.length === 0 && versionList.length === 0) &&
-              <div className={styles.img}><img width="223" height="164" src="/img/nodata.png" /></div>
+            {/* 没有更多数据的设置 */}
+            {(addEventList.length + currentEventList.length > 0) &&
+              <div className={styles.img}><img width="97" height="72" src="/img/notabdata.png" /></div>
+            }
+            {/* 没有数据，或者是数据请求失败 */}
+            {(addEventList.length === 0 && currentEventList.length === 0) &&
+              <div className={styles.img}>
+                {versionError && <img width="84" height="77" src="/img/datawrong.png" /> || <img width="223" height="164" src="/img/nodata.png" />}
+              </div>
             }
           </div>
           {versionEventLoading && <div className={styles.spin} />}
