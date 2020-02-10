@@ -1,0 +1,16 @@
+
+
+
+
+@mixin scrollTableLast() { // 滚动性表格最后一行标识最后数据通用样式
+  .ant-table:not(.ant-table-empty) {
+    .ant-table-body:after {
+      content: url("/img/notabdata.png");
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin: 50px 10px 10px;
+    }
+  }
+}
+
