@@ -115,6 +115,7 @@ function* getVersionEvent(action) { // 获取型号制定版本的告警事件�
             versionList: events,
             versionEventLoading: false,
             stationCode: stations.length > 0 && stations[0].stationCode || null,
+            versionError: false,
           },
         });
       } else { throw response.data; }
@@ -129,6 +130,7 @@ function* getVersionEvent(action) { // 获取型号制定版本的告警事件�
         versionStationCodes: [],
         versionList: [],
         versionEventLoading: false,
+        versionError: true,
       },
     });
   }

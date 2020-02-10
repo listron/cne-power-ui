@@ -203,12 +203,15 @@
             overflow-y: overlay;
             height: calc(100vh - 205px) !important;
           }
-          // .ant-table-body::after {
-          //   content: url("/img/nodata.png");
-          //   position: absolute;
-          //   left: 50%;
-          // }
-
+          .ant-table:not(.ant-table-empty) {
+            .ant-table-body:after {
+              content: url("/img/notabdata.png");
+              position: absolute;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              margin: 50px 10px 10px;
+            }
+          }
           .ant-table-placeholder {
             border-bottom: none;
           }
@@ -260,7 +263,7 @@
         .regionName,
         .eventStatus,
         .stationUnitCount {
-          width: calc((100vw - 300px) * 0.08);
+          width: calc((100vw - 300px) * 0.083);
         }
         .stationStatus,
         .pointStatus,
@@ -273,7 +276,7 @@
         .regionNameText,
         .eventStatusText,
         .pointStatusText {
-          width: calc((100vw - 300px) * 0.08- 30px);
+          width: calc((100vw - 300px) * 0.083- 30px);
         }
         .windDisabled {
           i {

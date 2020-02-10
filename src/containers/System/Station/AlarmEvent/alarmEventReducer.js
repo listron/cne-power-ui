@@ -28,6 +28,7 @@ var initState = Immutable.fromJS({
   editVersionLoading: false, // 编辑版本的loading
   versionStationCodes: [], // 当前的制定版本涉及的电站
   versionList: [], // 选定的版本的告警事件
+  versionError: false, //获取列表失败
   versionEventLoading: false, //版本告警事件的loading
   editVersionStationCodes: [], // 编辑的版本涉及的电站
   alarmEventType: [], // 告警标准事件类型
@@ -36,6 +37,7 @@ var initState = Immutable.fromJS({
   setPonitModal: false, // 测点编辑的弹框
   warningTipText: '',
   applayStations: [], //版本应用的电站
+
 });
 
 const alarmEventReducer = (state = initState, action) => {

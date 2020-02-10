@@ -411,18 +411,13 @@
     .pointValueDesc,
     .switchType,
     .enabled,
+    .operate,
     .eventName {
       @include overflowText();
       width: calc((100vw - 480px) * 0.145);
-    }
-    .pointValue{
-      text-align: right;
-    }
-    .switchType,.enabled{
       text-align: center;
     }
     .operate {
-      text-align: center;
       width: calc((100vw - 480px) * 0.124);
     }
   }
@@ -430,6 +425,8 @@
     overflow-y: scroll;
     overflow-y: overlay;
     height: calc(100vh - 205px);
+    display: flex;
+    flex-direction: column;
     .EventColumn {
       &:nth-child(odd) {
         background: #fff;
@@ -438,7 +435,9 @@
         background: #fbfbfb;
       }
       &:hover {
-        background: rgba(206, 235, 224, 0.3);
+        background: rgba(206, 235, 224, 0.5);
+        box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.3);
+        z-index: 10;
       }
     }
     .EventColumn {
@@ -479,6 +478,7 @@
           font-size: 18px;
           margin: 0 8px;
           padding: 0 2px;
+          cursor: pointer;
         }
         .edit {
           color: #199475;
@@ -500,12 +500,19 @@
         }
       }
     }
+    .eventCode,
+    .eventName,
+    .pointValueDesc {
+      text-align: left;
+    }
+    .pointValue {
+      text-align: right;
+    }
   }
   .img {
     text-align: center;
     padding: 30px;
   }
-
   .spin {
     position: absolute;
     top: 0;

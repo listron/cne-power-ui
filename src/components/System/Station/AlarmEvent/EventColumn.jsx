@@ -71,7 +71,7 @@ class EventColumn extends Component {
                 getPopupContainer={() => this.refs.select}
                 onChange={(value) => { this.onChangeColumn('eventCode', value); }}>
                 {alarmEventType.map(e => (
-                  <Option key={e.eventCode} value={e.eventCode}>{e.eventName}</Option>
+                  <Option key={e.eventCode} value={e.eventCode} title={e.eventName}>{e.eventName}</Option>
                 ))}
               </Select>
             </div>
@@ -112,15 +112,15 @@ class EventColumn extends Component {
         {!editable &&
           <React.Fragment>
             <div className={styles.checkbox}>  <Checkbox onChange={this.onChange} checked={eventData.checked} /> </div>
-            <div className={styles.eventCode}>  {eventData.eventName}</div>
-            <div className={styles.eventName}>  {eventData.pointCode}</div>
-            <div className={styles.pointValue}>  {eventData.pointValue}</div>
-            <div className={styles.pointValueDesc}>  {eventData.pointValueDesc}</div>
+            <div className={styles.eventCode} title={eventData.eventName}>  {eventData.eventName}</div>
+            <div className={styles.eventName} title={eventData.pointCode}>  {eventData.pointCode}</div>
+            <div className={styles.pointValue} title={eventData.pointValue}>  {eventData.pointValue}</div>
+            <div className={styles.pointValueDesc} title={eventData.pointValueDesc}>  {eventData.pointValueDesc}</div>
             <div className={styles.switchType}>  {['否', '是'][eventData.switchType]}</div>
             <div className={styles.enabled}>  {['否', '是'][eventData.enabled]}</div>
             <div className={styles.operate}>
-              <i className={`iconfont icon-edit ${styles.edit}`} onClick={() => { this.onChangeColumn('editable', true); }} />
-              <i className={`iconfont icon-del ${styles.del}`} onClick={() => { this.delEvent(eventData); }} />
+              <i className={`iconfont icon-edit ${styles.edit}`} onClick={() => { this.onChangeColumn('editable', true); }} title={'去编辑'} />
+              <i className={`iconfont icon-del ${styles.del}`} onClick={() => { this.delEvent(eventData); }} title={'删除'} />
             </div>
           </React.Fragment> || null
         }

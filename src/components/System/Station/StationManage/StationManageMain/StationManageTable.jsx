@@ -133,24 +133,12 @@ class StationManageTable extends Component {
   tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
     const { getStationList, queryListParams, orderField, orderCommand } = this.props;
     const { field } = sorter;
-    const sortInfo = {
-      stationName: '1',
-      regionName: '2',
-      coverType: '3',
-      connectionType: '4',
-      stationCapacity: '5',
-      stationUnitCount: '6',
-      isConnected: '7',
-      pointStatus: '8',
-      alarmStatus: '9',
-    };
-    let newField = sortInfo[field] ? sortInfo[field] : orderField, newCommand = '2';
+    let newField = this.tableSortMap[field] ? this.tableSortMap[field] : orderField, newCommand = '2';
     if (orderField === this.sortFieldMap[field]) { // 点击的是正在排序的列
       newCommand = orderCommand === '2' ? '1' : '2'; // 交换排序方式
-    }else{ // 切换列
+    } else { // 切换列
       newField = this.sortFieldMap[field] ? this.sortFieldMap[field] : orderField;
     }
-
     getStationList({
       ...queryListParams,
       orderField: newField,
@@ -234,6 +222,7 @@ class StationManageTable extends Component {
         key: 'stationName',
         sorter: true,
         className: styles.stationName,
+        defaultSortOrder: 'descend',
         render: (text, record, index) => {
           return (
             <div className={styles.stationNameWrap}>
@@ -346,6 +335,7 @@ class StationManageTable extends Component {
     const authData = localStorage.getItem('authData') || '';
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
     const initTableScroll = stationList.length > 0 && { y: 900 } || {};
+    console.log('stationListError', stationListError);
     return (
       <div className={styles.stationList}>
         <div className={styles.topHandler}>
@@ -386,13 +376,12 @@ class StationManageTable extends Component {
           dataSource={stationList.map((e, i) => ({ ...e, key: i }))}
           columns={this.initColumn()}
           className={styles.stationTable}
-          onChange={this.tableChange}
           pagination={false}
           scroll={initTableScroll}
           dataError={stationListError}
           sortField={this.tableSortMap[orderField]}
           sortMethod={this.sortMethodMap[orderCommand] || false}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          onChange={this.tableChange}
         />
 
         {
