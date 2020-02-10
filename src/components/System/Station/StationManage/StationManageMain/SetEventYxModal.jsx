@@ -56,7 +56,6 @@ class SetEventYxModal extends Component { // 电站管理列表页
   }
 
 
-
   render() {
     const { allEventYx, loading } = this.props;
     return (
