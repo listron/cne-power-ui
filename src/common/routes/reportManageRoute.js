@@ -28,12 +28,12 @@ export const reportDevice = [ //光伏报表
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
   {
-    path: '/report/pvstation/centerInvert', // 集中式逆变器
+    path: '/report/pvstation/centerInvert', // 逆变器（集中）
     component: lazy(() => import('../../containers/ReportManage/PvReport/ReportDevice/CenterInvert/CenterInvert.jsx')),
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
   {
-    path: '/report/pvstation/combineInvert', // 组串式逆变器
+    path: '/report/pvstation/combineInvert', // 逆变器（组串）
     component: lazy(() => import('../../containers/ReportManage/PvReport/ReportDevice/CombineInvert/CombineInvert.jsx')),
     // component: lazy(() => import('../../components/Common/Building/Building.jsx')),
   },
@@ -54,3 +54,4 @@ export const reportManageRoute = [
   ...reportStation,
   ...reportDevice,
 ];
+
