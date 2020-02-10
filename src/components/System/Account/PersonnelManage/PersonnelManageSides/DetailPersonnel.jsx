@@ -65,7 +65,7 @@ class PersonnelManageSides extends Component {
     ['邮箱', 'email'],
     ['微信账户', 'webChat', <hr className={styles.doshLine} />],
     ['角色', 'roleName'],
-    ['特殊权限', 'spcialRoleName', <hr className={styles.doshLine} />],
+    // ['特殊权限', 'spcialRoleName', <hr className={styles.doshLine} />],
   ]
 
   render(){

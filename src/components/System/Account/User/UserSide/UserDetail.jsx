@@ -163,12 +163,12 @@ class UserDetail extends Component {
               <span className={styles.title}>角色</span>
               <span className={styles.value}>{userDetail.get('roleName') || '--'}</span>
             </div>
-            <div className={styles.detailSpecialRole} >
+            {/* <div className={styles.detailSpecialRole} >
               <span className={styles.title}>特殊权限</span>
               <span className={styles.value}>
                 {userDetail.get('spcialRoleName') || '--'}
               </span>
-            </div>
+            </div> */}
             <hr className={styles.doshLine} />
             <div>
               <span className={styles.enterpriseDepartment}>

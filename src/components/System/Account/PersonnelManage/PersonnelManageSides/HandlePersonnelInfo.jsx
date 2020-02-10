@@ -238,7 +238,7 @@ class HandlePersonnelInfo extends Component {
                   })}
                 </div>
               </div>}
-              <FormItem colon={false} label="特殊权限" className={styles.eachForm} >
+              {/* <FormItem colon={false} label="特殊权限" className={styles.eachForm} >
                 {getFieldDecorator('specialRoleIds', {
                   initialValue: [],
                 })(
@@ -254,7 +254,7 @@ class HandlePersonnelInfo extends Component {
                     ))}
                   </Select>
                 )}
-              </FormItem>
+              </FormItem> */}
               <div className={styles.buttonRow}>
                 <Button
                   onClick={this.saveUser}
