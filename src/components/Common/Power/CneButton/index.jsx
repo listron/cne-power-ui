@@ -12,12 +12,12 @@ import styles from './index.scss';
  */
 
 export default function CneButton ({ ...props }) {
-  const { theme = 'light', className, ...rest } = props;
+  const { theme = 'light', className, children, ...rest } = props;
   return (
     <Button
-      className={`${styles[theme]} ${styles.cnebtn} ${className}`}
+      className={`${styles[theme]} ${styles.cnebtn} ${className || ''}`}
       {...rest}
-    />
+    >{children}</Button>
   );
 }
 
@@ -28,4 +28,5 @@ CneButton.propTypes = {
   sortMethod: PropTypes.string,
   className: PropTypes.string,
   columns: PropTypes.array,
+  children: PropTypes.any,
 };
