@@ -88,8 +88,8 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
     // sortField: '', // 排序字段
     // sortMethod: 'desc', // 排序方式 asc升序 + desc降序 }
     const { hideLoading, ...rest } = payload || {};
-    try {
-      const url = `${APIBasePath}${monitor.getDiagnoseList}`;
+    try {  
+    const url = `${APIBasePath}${monitor.getDiagnoseList}`;
       if (!hideLoading) {
         yield call(easyPut, 'changeStore', { diagnoseListLoading: true });
       }
@@ -101,6 +101,7 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
       });
       if (response.code === '10000') {
         yield call(easyPut, 'fetchSuccess', {
+          diagnoseListError: false,
           diagnoseListData: response.data.list.map(e => ({ ...e, key: e.diagWarningId })) || [],
           totalNum: response.data.total || 0,
           summaryInfo: response.data.summary || {},
@@ -140,6 +141,7 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
       message.error(`事件列表获取失败, ${error}`);
       yield call(easyPut, 'changeStore', {
         diagnoseListData: [],
+        diagnoseListError: true,
         totalNum: 0,
         summaryInfo: {},
         diagnoseListLoading: false,

@@ -11,6 +11,7 @@ class DiagnoseList extends Component {
   static propTypes = {
     pageKey: PropTypes.string,
     diagnoseListLoading: PropTypes.bool,
+    diagnoseListError: PropTypes.bool,
     listParams: PropTypes.object,
     listPage: PropTypes.object,
     totalNum: PropTypes.number,
@@ -19,6 +20,33 @@ class DiagnoseList extends Component {
     stopCircleQueryList: PropTypes.func,
     changeStore: PropTypes.func,
     getDiagnoseList: PropTypes.func,
+  }
+
+  sortFieldMap = { // 表格排序字段 => api
+    eventName: 'eventCode',
+    warningLevel: 'eventLevel',
+    deviceTypeName: 'deviceTypeName',
+    deviceName: 'deviceName',
+    beginTime: 'beginTime',
+    warningDuration: 'duration',
+    warningFrequency: 'frequency',
+    statusName: 'eventStatus',
+  };
+
+  tableSortMap = { // api存储字段 => 表格排序字段
+    eventCode: 'eventName',
+    eventLevel: 'warningLevel',
+    deviceTypeName: 'deviceTypeName',
+    deviceName: 'deviceName',
+    beginTime: 'beginTime',
+    duration: 'warningDuration',
+    frequency: 'warningFrequency',
+    eventStatus: 'statusName',
+  };
+
+  sortMethodMap = {
+    desc: 'descend',
+    asc: 'ascend',
   }
 
   createColumn = () => {
@@ -55,32 +83,27 @@ class DiagnoseList extends Component {
 
   tableChange = (pagination, filter, sorter) => {// 分页排序点击 => 重新请求列表, 停止当前定时请求
     this.props.stopCircleQueryList(); // 停止当前页面定时请求
-    const { field, order } = sorter;
+    const { field } = sorter;
     const { listParams, listPage } = this.props;
-    let sortField= 'eventStatus', sortMethod = 'desc'; // 默认排序
-    if (field) { // 某指定排序
-      sortMethod = order === 'ascend' ? 'asc' : 'desc';
-      const sortFieldMap = {
-        eventName: 'eventCode',
-        warningLevel: 'eventLevel',
-        deviceTypeName: 'deviceTypeName',
-        deviceName: 'deviceName',
-        beginTime: 'beginTime',
-        warningDuration: 'duration',
-        warningFrequency: 'frequency',
-        statusName: 'eventStatus',
-      };
-      sortField = sortFieldMap[field];
-      const newListPage = { ...listPage, sortField, sortMethod };
-      this.props.changeStore({ listPage: newListPage });
-      this.props.getDiagnoseList({ ...listParams, ...newListPage });
+    const { sortField, sortMethod } = listPage || {};
+    let newField = sortField, newSort = 'desc';
+    if (sortField === this.sortFieldMap[field]) { // 点击的是正在排序的列
+      newSort = sortMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
+    } else { // 切换列
+      newField = this.sortFieldMap[field];
     }
+    const newListPage = {
+      ...listPage,
+      sortField: newField,
+      sortMethod: newSort,
+    };
+    this.props.changeStore({ listPage: newListPage });
+    this.props.getDiagnoseList({ ...listParams, ...newListPage });
   }
 
   render() {
-    const { listPage, totalNum, diagnoseListData, diagnoseListLoading } = this.props;
-    const { pageNum, pageSize } = listPage || {};
-
+    const { listPage, totalNum, diagnoseListData, diagnoseListLoading, diagnoseListError } = this.props;
+    const { pageNum, pageSize, sortField, sortMethod } = listPage || {};
     return (
       <div className={styles.diagnoseList} >
         <div className={styles.pagination}>
@@ -102,10 +125,9 @@ class DiagnoseList extends Component {
           columns={this.createColumn()}
           dataSource={diagnoseListData}
           loading={diagnoseListLoading}
-          // rowSelection={{
-          //   selectedRowKeys: [],
-          //   onChange: this.selectRows,
-          // }}
+          dataError={diagnoseListError}
+          sortField={this.tableSortMap[sortField]}
+          sortMethod={this.sortMethodMap[sortMethod] || false}
           className={styles.diagnoseTable}
           onChange={this.tableChange}
         />

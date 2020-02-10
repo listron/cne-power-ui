@@ -262,6 +262,11 @@
         .stationUnitCount {
           width: calc((100vw - 300px) * 0.08);
         }
+        .stationStatus,
+        .pointStatus,
+        .isConnected {
+          text-align: center;
+        }
         .isConnectedText,
         .stationUnitCountText,
         .stationStatusText,
@@ -313,6 +318,7 @@
             color: #199475;
             cursor: pointer;
             font-size: 20px;
+            padding: 0 2px;
           }
           .deleteStation {
             cursor: pointer;
@@ -323,6 +329,7 @@
             color: $darkColor;
             cursor: not-allowed;
             font-size: 20px;
+            padding: 0 2px;
           }
         }
 

@@ -1,3 +1,5 @@
+@import '../../../theme/theme.scss';
+
 $commonHeight: 28px;
 
 .commonPagination {
@@ -21,6 +23,10 @@ $commonHeight: 28px;
   }
   .pageSelector {
     display: flex;
+    margin-top: 5px;
+    .text{
+      margin-right: 6px;
+    }
     :global {
       .ant-pagination {
         line-height: inherit;
@@ -28,20 +34,39 @@ $commonHeight: 28px;
         .ant-pagination-prev,
         .ant-pagination-next {
           vertical-align: middle;
-          height: $commonHeight;
-          line-height: $commonHeight;
+          height: 30px;
+          line-height: 30px;
           .ant-pagination-item-link {
-            height: $commonHeight;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            border:1px solid #d4d4d4;
             &::after {
               height: $commonHeight;
               line-height: $commonHeight;
+            }
+            &:hover{
+              background-color: $themeColor;
+              color: $pageGround;
+              border: 1px solid $themeColor;
+            }
+          }
+        }
+        .ant-pagination-disabled{
+          .ant-pagination-item-link{
+            background-color: #f1f1f1;
+            color: #e1e1e1;
+            &:hover{
+              background-color: #f1f1f1;
+              color: #e1e1e1;
             }
           }
         }
         .ant-pagination-simple-pager {
           input {
             vertical-align: middle;
-            height: $commonHeight;
+            height: 30px;
+            width: 30px;
           }
         }
       }
@@ -51,16 +76,19 @@ $commonHeight: 28px;
 .light {
   @import "../../../theme/theme.scss";
   .sizeSelector {
-    :global {
-      .ant-select-selection {
-        height: $commonHeight;
-        &:focus,
-        &:hover {
-          border: 1px solid $themeColor;
-          box-shadow: 0 0 1px $themeColor;
-        }
-      }
+    .pageNumber {
+      border: 1px solid #d4d4d4;
     }
+    // :global {
+    //   .ant-select-selection {
+    //     height: $commonHeight;
+    //     &:focus,
+    //     &:hover {
+    //       border: 1px solid $themeColor;
+    //       box-shadow: 0 0 1px $themeColor;
+    //     }
+    //   }
+    // }
   }
   .pageSelector {
     :global {

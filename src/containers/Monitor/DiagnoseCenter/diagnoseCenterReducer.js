@@ -40,6 +40,7 @@ const initState = {
   diagnEventtypes: [], // 诊断事件信息
   dataEventtypes: [], // 数据事件信息
   diagnoseListLoading: false, // 表格请求loading
+  diagnoseListError: false, // 表格data error
   diagnoseListData: [], // 表格信息
   diagnoseUpdateTime: '--', // 表格数据更新时间
   totalNum: 0, // 总量

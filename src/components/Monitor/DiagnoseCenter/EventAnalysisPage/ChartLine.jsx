@@ -10,6 +10,7 @@ class ChartLine extends PureComponent {
   static propTypes = {
     eventAnalysisLoading: PropTypes.bool,
     eventAnalysisInfo: PropTypes.object,
+    analysisEvent: PropTypes.object,
   };
 
   state = {
@@ -25,13 +26,14 @@ class ChartLine extends PureComponent {
   componentWillReceiveProps(nextProps){
     const preAnalysiInfo = this.props.eventAnalysisInfo;
     const preLoading = this.props.eventAnalysisLoading;
-    const { eventAnalysisInfo, eventAnalysisLoading } = nextProps;
+    const { eventAnalysisInfo, eventAnalysisLoading, analysisEvent } = nextProps;
     if (eventAnalysisLoading && !preLoading) {
       this.chartLoading();
     }
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { period = [], data = {} } = eventAnalysisInfo || {};
-      this.drawChart(period, data);
+      const { interval } = analysisEvent;
+      this.drawChart(period, data, interval);
     }
   }
 
@@ -42,7 +44,21 @@ class ChartLine extends PureComponent {
     lineChart.showLoading();
   }
 
-  drawChart = (period = [], data = {}) => {
+  timeFormat = (timeStr, interval = 1) => { // 针对markArea时间进行处理
+    if (!timeStr) {
+      return '';
+    }
+    const timeMoment = moment(timeStr);
+    if (interval === 1) { // 10min数据处理为YYYY-MM-DD HH:mm0:00的十分钟格式;
+      const dayTimeStr = timeMoment.format('YYYY-MM-DD HH:');
+      const minuteNum = Math.round(timeMoment.minute() / 10);
+      return `${dayTimeStr}${minuteNum}0:00`;
+    }
+    // 5s按照正常格式返回 
+    return timeMoment.format('YYYY-MM-DD HH:mm:ss');
+  }
+
+  drawChart = (period = [], data = {}, interval) => {
     const lineChart = echarts.init(this.lineRef);
     lineChart.hideLoading();
     const { time = [], pointData = [] } = data;
@@ -54,9 +70,9 @@ class ChartLine extends PureComponent {
     const markAreaData = period.map(e => {
       const { beginTime, endTime } = e || {};
       return [{
-        xAxis: moment(beginTime).format('YYYY-MM-DD HH:mm:ss'),
+        xAxis: this.timeFormat(beginTime, interval),
       }, {
-        xAxis: moment(endTime).format('YYYY-MM-DD HH:mm:ss'),
+        xAxis: this.timeFormat(endTime, interval),
       }];
     });
     const series = [{
@@ -124,7 +140,7 @@ class ChartLine extends PureComponent {
       },
       xAxis: {
         type: 'category',
-        data: time.map(e => moment(e).format('YYYY-MM-DD__HH:mm:ss')),
+        data: time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss')),
         axisLine: {
           show: false,
         },
@@ -132,7 +148,7 @@ class ChartLine extends PureComponent {
           fontSize: 14,
           color: '#353535',
           lineHeight: 21,
-          formatter: (value = '') => value.split('__').join('\n'),
+          formatter: (value = '') => value.split(' ').join('\n'),
         },
         axisTick: {
           show: false,
@@ -171,6 +187,7 @@ class ChartLine extends PureComponent {
         },
       ];
     }
+    lineChart.clear();
     lineChart.setOption(option);
   }
 

@@ -21,6 +21,7 @@ const { Search } = Input;
 class StationManageTable extends Component {
   static propTypes = {
     stationListLoading: PropTypes.bool,
+    stationListError: PropTypes.bool,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
@@ -37,6 +38,8 @@ class StationManageTable extends Component {
     setDiagconfigYc: PropTypes.func,
     setDiagconfigYx: PropTypes.func,
     changeStationManageStore: PropTypes.func,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
   }
 
   constructor(props) {
@@ -55,6 +58,23 @@ class StationManageTable extends Component {
       type: 'yc', // 'yc' 遥测诊断 'data' 数据质量诊断
       search: false, // 搜索框出现
     };
+  }
+
+  sortFieldMap = { // 表格排序字段 => api
+    stationName: '1',
+    regionName: '2',
+    isConnected: '7',
+  };
+
+  tableSortMap = { // api存储字段 => 表格排序字段
+    '1': 'stationName',
+    '2': 'regionName',
+    '7': 'isConnected',
+  };
+
+  sortMethodMap = {
+    desc: '2',
+    asc: '1',
   }
 
 
@@ -111,28 +131,30 @@ class StationManageTable extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
-    const { getStationList, queryListParams } = this.props;
-    const { field, order } = sorter;
+    const { getStationList, queryListParams, orderField, orderCommand } = this.props;
+    const { field } = sorter;
     const sortInfo = {
       stationName: '1',
-      // area: '2',
       regionName: '2',
       coverType: '3',
       connectionType: '4',
       stationCapacity: '5',
-      // series: '6',
       stationUnitCount: '6',
-      // stationStatus: '7',
       isConnected: '7',
       pointStatus: '8',
       alarmStatus: '9',
     };
-    const orderField = sortInfo[field] ? sortInfo[field] : '';
-    const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
+    let newField = sortInfo[field] ? sortInfo[field] : orderField, newCommand = '2';
+    if (orderField === this.sortFieldMap[field]) { // 点击的是正在排序的列
+      newCommand = orderCommand === '2' ? '1' : '2'; // 交换排序方式
+    }else{ // 切换列
+      newField = this.sortFieldMap[field] ? this.sortFieldMap[field] : orderField;
+    }
+
     getStationList({
       ...queryListParams,
-      orderField,
-      orderCommand,
+      orderField: newField,
+      orderCommand: newCommand,
     });
   }
 
@@ -317,7 +339,7 @@ class StationManageTable extends Component {
   }
 
   render() {
-    const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize } = this.props;
+    const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize, orderField, orderCommand, stationListError } = this.props;
     const { setDiagconfigYx, setDiagconfigYc, YxConfigData, YcConfigData, YxLoading, YcLoading, keyword } = this.props;
     const { departmentModal, departmentSetInfo, uploading, fileList, showWarningTip, warningTipText, deleteInfo } = this.state;
     const { eventYxModal, stationCode, eventYcModal, type, search } = this.state;
@@ -367,6 +389,9 @@ class StationManageTable extends Component {
           onChange={this.tableChange}
           pagination={false}
           scroll={initTableScroll}
+          dataError={stationListError}
+          sortField={this.tableSortMap[orderField]}
+          sortMethod={this.sortMethodMap[orderCommand] || false}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
 
