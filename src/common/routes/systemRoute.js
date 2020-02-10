@@ -7,12 +7,12 @@ const account = [
   }, { // 系统管理-账户管理-用户管理
     path: '/system/account/personnelManage',
     component: lazy(() => import('../../containers/System/Account/PersonnelManage/PersonnelManage')),
-  // }, { // 系统管理-账户管理-部门
-  //   path: '/system/account/department',
-  //   component: lazy(() => import('../../containers/System/Account/Department/Department')),
-  // }, { // 系统管理-账户管理-用户
-  //   path: '/system/account/user',
-  //   component: lazy(() => import('../../containers/System/Account/User/User')),
+    // }, { // 系统管理-账户管理-部门
+    //   path: '/system/account/department',
+    //   component: lazy(() => import('../../containers/System/Account/Department/Department')),
+    // }, { // 系统管理-账户管理-用户
+    //   path: '/system/account/user',
+    //   component: lazy(() => import('../../containers/System/Account/User/User')),
   }, { // 系统管理-账户管理-角色
     path: '/system/account/role',
     component: lazy(() => import('../../containers/System/Account/Role/Role')),
@@ -39,6 +39,9 @@ const station = [
   }, { // 系统管理-电站管理-气象站配置
     path: '/system/station/weatherStation',
     component: lazy(() => import('../../containers/System/Station/WeatherStationConf/WeatherStationConf')),
+  }, {//系统管理-电站管理-支路配置
+    path: '/system/station/branch',
+    component: lazy(() => import('../../containers/System/Station/BranchConfig/BranchConfig')),
   },
 ];
 

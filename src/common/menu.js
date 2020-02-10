@@ -128,8 +128,8 @@ const menuData = [
       },
     ],
   },
-  
-{
+
+  {
     name: '运维管理',
     path: 'operation',
     rightKey: 'operation',
@@ -681,14 +681,14 @@ const menuData = [
             defaultPath: true,
             rightKey: 'system_account_user',
           }, {
-          //   name: '部门',
-          //   path: 'department',
-          //   rightKey: 'system_account_department',
-          // }, {
-          //   name: '用户',
-          //   path: 'user',
-          //   rightKey: 'system_account_user',
-          // }, {
+            //   name: '部门',
+            //   path: 'department',
+            //   rightKey: 'system_account_department',
+            // }, {
+            //   name: '用户',
+            //   path: 'user',
+            //   rightKey: 'system_account_user',
+            // }, {
             name: '角色',
             path: 'role',
             defaultPath: true,
@@ -721,6 +721,10 @@ const menuData = [
             path: 'alarmManage',
             defaultPath: true,
             rightKey: 'system_station_alert',
+          }, {
+            name: '支路配置',
+            path: 'branch',
+            rightKey: 'system_station_stat',
           },
           {
             name: '功率曲线',

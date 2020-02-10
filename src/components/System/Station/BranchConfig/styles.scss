@@ -1,0 +1,267 @@
+@import '../../../../theme/theme.scss';
+
+.searchBox,
+.tablebox {
+  // background: #fff;
+}
+
+.searchBox {
+  background: #ffffff;
+  border: 1px solid #d4d4d4;
+  box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.60);
+  margin-bottom: 4px;
+
+  .topSearch {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    line-height: 50px;
+
+  }
+
+  .topSearch {
+    // padding: 20px 48px 0 10px;
+    display: flex;
+    flex-wrap: wrap;
+
+    .stationSelect,
+    .typeSelect,
+    .deviceSelect {
+      flex: 1;
+    }
+
+    .stationSelect,
+    .typeSelect,
+    .deviceSelect {
+      display: flex;
+      line-height: 40px;
+      height: 40px;
+      align-items: center;
+
+      :global {
+        .ant-calendar-picker {
+          width: 198px;
+
+          .ant-calendar-picker-input {
+
+            .anticon,
+            .anticon-calendar,
+            .ant-calendar-picker-icon {
+              right: 8px
+            }
+          }
+        }
+
+        .ant-select {
+          width: 198px;
+        }
+      }
+
+      .text {
+        flex: 0 0 84px;
+        text-align: right;
+        margin-right: 8px;
+      }
+    }
+
+  }
+
+}
+
+.tablebox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .checkstyle {
+    height: 56px;
+    display: flex;
+    // flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    background: #f0f2f5;
+
+    .leftInfo {
+      .btnStyle {
+        margin-right: 8px;
+      }
+
+      i {
+        margin-right: 6px;
+      }
+
+      .fontcolor {
+        margin-left: 10px;
+        margin-right: 50px;
+        color: $themeColor;
+
+        .dateMargin {
+          margin: 0 4px;
+        }
+
+      }
+    }
+
+    .rightInfo {
+      display: flex;
+      align-items: center;
+
+      .iconmargin {
+        margin: 0 10px 0 4px;
+      }
+
+      .icon,
+      .icon2,
+      .icon3 {
+        background: #f1f1f1;
+        border: 1px solid #999999;
+        border-radius: 12px;
+        width: 16px;
+        height: 16px;
+      }
+
+      .icon2 {
+        background: #ceebe0;
+        border: 1px solid #199475;
+      }
+
+      .icon3 {
+        background: #df4b33;
+        border: 2px solid #ffffff;
+        width: 8px;
+        height: 8px;
+        border-radius: 100%;
+      }
+    }
+  }
+
+  .tableContainer {
+    display: flex;
+    // flex: 1;
+    flex-direction: column;
+    // height: 680px;
+    min-width: 1212px;
+
+    .tablePart {
+      height: 645px;
+      overflow-y: auto;
+      overflow-y: overlay;
+    }
+
+
+    .tableTitle,
+    .tabletd,
+    .tableEventd {
+      display: flex;
+      background: #199475;
+      height: 36px;
+
+      .name,
+      .number,
+      .titleStyle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-right: 1px solid #fff;
+        color: #fff
+      }
+
+      .name {
+        padding-left: 20px;
+        padding-right: 16px;
+      }
+
+      .number {
+        // flex: 1 0 74px;
+        padding: 0 8px;
+
+      }
+
+      .titleStyle {
+        flex: 1;
+        padding: 0 8px;
+      }
+
+    }
+
+    .tabletd,
+    .tableEventd {
+      background: #fff;
+      height: 40px;
+
+      &:hover {
+        background: rgba(206, 235, 224, 0.50);
+      }
+
+      .name,
+      .number,
+      .titleStyle {
+        color: #666;
+        border-right: 1px dashed #d4d4d4;
+        border-bottom: 1px solid #d4d4d4;
+
+      }
+
+      .name,
+      .number {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .name {
+        width: 93px;
+
+      }
+
+      .number {
+        width: 73px;
+      }
+
+      .titleStyle {
+
+        .link,
+        .nolink,
+        .change {
+          border-radius: 12px;
+          width: 22px;
+          height: 22px;
+          text-align: center;
+        }
+
+        .nolink {
+          background: #f1f1f1;
+          border: 1px solid #999999;
+        }
+
+        .link,
+        .change {
+          background: #ceebe0;
+          border: 1px solid #199475;
+        }
+
+        .change {
+          background: #ceebe0;
+          border: 1px solid #199475;
+          position: relative;
+
+          div {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #df4b33;
+            border: 2px solid #ffffff;
+            width: 8px;
+            height: 8px;
+            border-radius: 100%;
+          }
+        }
+      }
+
+    }
+
+    .tableEventd {
+      background: #f3f2f2;
+    }
+  }
+}
