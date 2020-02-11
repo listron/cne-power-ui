@@ -362,6 +362,15 @@ export default {
       editPoints: '/v3/management/station/device/points',
       getStandardDesc: '/v3/management/station/device/standard/points',
 
+      //支路配置
+      getStations: '/base/user/currentuser/stations',
+      getDeviceType: '/base/user/currentuser/stations',
+      getDeviceName: '/base/user/currentuser/stations',
+      getCheckStatus: '/base/user/currentuser/stations',
+      getDeviceBranchInfo: '/base/user/currentuser/stations',
+      getCheckData: '/base/user/currentuser/stations',
+      editBranchData: '/base/user/currentuser/stations',
+
       importAlarmInfo: '/v3/management/alarmevent/import', //导入告警信息
       getAlarmList: '/v3/management/alarmevent/list', //获取告警列表
       deleteAlarms: '/v3/management/alarmevent/delete', // 删除告警

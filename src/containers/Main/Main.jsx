@@ -133,7 +133,8 @@ class Main extends Component {
     const authData = localStorage.getItem('authData') || '';
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
-    const rightMenu = Cookie.get('rightMenu');
+    // const rightMenu = Cookie.get('rightMenu');
+    const rightMenu = localStorage.getItem('rightMenu') || '';
     const isTokenValid = Cookie.get('expireData') && moment().isBefore(new Date(Cookie.get('expireData')), 'second');
     const enterFirst = enterFirstPage();
     //console.log(enterFirstPage);

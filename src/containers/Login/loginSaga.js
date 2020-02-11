@@ -163,7 +163,7 @@ function* phoneCodeLogin(action) {
           Cookie.set('isNotLogin', action.params.isNotLogin);
           data.auto && Cookie.set('auto', data.auto);
           data.right && Cookie.set('userRight', data.right);
-          data.rightMenu && Cookie.set('rightMenu', data.rightMenu);
+          // data.rightMenu && Cookie.set('rightMenu', data.rightMenu);
 
           data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
           data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储

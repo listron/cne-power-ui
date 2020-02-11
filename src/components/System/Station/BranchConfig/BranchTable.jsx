@@ -4,11 +4,26 @@ import styles from './styles.scss';
 import { Select, Button, Input, Switch } from 'antd';
 
 
-class Table extends React.Component {
+class BranchTable extends React.Component {
   static propTypes = {
   }
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      focus: false,
+    };
+  }
+  componentDidMount() {
+    console.log('this.refs', this.refs);
+    // var textBox = document.createElement('INPUT');
+    // console.log('textBox: ', textBox);
+    // const value = this.myref.innerHTML;
+    // console.log('value: ', value);
+    // textBox.value = value;
+    // textBox.appendChild(this.myref);
+  }
+  componentDidUpdate() {
+    this.refs.input && this.refs.input.focus();
   }
   queryCheckData = () => {
 
@@ -22,8 +37,28 @@ class Table extends React.Component {
   cancleCheckValue = () => {
 
   }
+  editNum = (e) => {
+    console.log('e.target: ', e.target);
+    console.log('e.target.value: ', e.target.value);
+    console.log('e.target.innerHtml: ', e.target.textContent);
+    const value = e.target.textContent ? e.target.textContent : e.target.value;
+    this.setState({
+      focus: value,
+    });
+    // this.refs.input.focus();
+  }
+  inputBlur = (value) => {
+    console.log('value: ', value);
+    // this.setState({
+    //   focus: 4,
+    // });
+
+  }
   render() {
     const { loadding } = this.props;
+    const { focus } = this.state;
+    console.log('focus: ', focus);
+    const a = Array.from({ length: 40 }, (e, i) => i + 1);
     return (
       <div className={styles.tablebox}>
         <div className={styles.checkstyle}>
@@ -79,24 +114,29 @@ class Table extends React.Component {
             ))}
           </div>
           <div className={styles.tablePart}>
-            {Array.from({ length: 40 }, (item, index) => (
+            {a.map((item, index) => (
               <div className={index % 2 === 0 ? styles.tabletd : styles.tableEventd} key={index}>
                 <div className={styles.name}>NB00{index + 1}</div>
-                <div className={styles.number}>{index + 1}</div>
-                {Array.from({ length: 20 }, (item, index) => (
-                  <div className={styles.titleStyle} key={index + 1}>
-                    <div className={index % 3 === 0 ? styles.nolink : index % 3 === 1 ? styles.link : styles.change}>{index + 1}
-                      <div></div>
+                <div ref={item} onClick={(e) => { this.editNum(e); }} key={item} value={item} className={styles.number}>{+focus === index + 1 ? <Input ref="input" onBlur={this.inputBlur} defaultValue={item} /> : index + 1}</div>
+                {
+                  Array.from({ length: 20 }, (item, index) => (
+                    <div className={styles.titleStyle} key={index + 1}>
+                      <div
+                        // EditType="DropDownList"
+                        // onClick={this.editNum}
+                        className={index % 3 === 0 ? styles.nolink : index % 3 === 1 ? styles.link : styles.change}>{index + 1}
+                        <div></div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                }
               </div>
             ))}
             <div className={styles.tabletd}></div>
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }
-export default (Table);
+export default (BranchTable);

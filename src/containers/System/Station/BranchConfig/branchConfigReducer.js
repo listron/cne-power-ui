@@ -3,8 +3,13 @@ import { branchConfigAction } from './branchConfigAction';
 
 const initState = Immutable.fromJS({
   loading: false,
+  stationsInfo: [],
+  deviceTypeData: [],
+  deviceNameData: [],
+
   stationCode: null,
   deviceTypeCode: null,
+  deviceFullCodes: [],
 
 });
 
