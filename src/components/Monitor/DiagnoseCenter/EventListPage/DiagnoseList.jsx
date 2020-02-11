@@ -92,6 +92,7 @@ class DiagnoseList extends Component {
     } else { // 切换列
       newField = this.sortFieldMap[field];
     }
+    console.log(sorter, newField, newSort);
     const newListPage = {
       ...listPage,
       sortField: newField,
@@ -104,6 +105,7 @@ class DiagnoseList extends Component {
   render() {
     const { listPage, totalNum, diagnoseListData, diagnoseListLoading, diagnoseListError } = this.props;
     const { pageNum, pageSize, sortField, sortMethod } = listPage || {};
+    console.log(sortField, sortMethod, this.sortMethodMap[sortMethod]);
     return (
       <div className={styles.diagnoseList} >
         <div className={styles.pagination}>
