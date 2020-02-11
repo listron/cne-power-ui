@@ -100,40 +100,13 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
         ...rest,
       });
       if (response.code === '10000') {
+        const { list, total, summary } = response.data || {};
         yield call(easyPut, 'fetchSuccess', {
           diagnoseListError: false,
-          diagnoseListData: response.data.list.map(e => ({ ...e, key: e.diagWarningId })) || [],
-          totalNum: response.data.total || 0,
-          summaryInfo: response.data.summary || {},
+          diagnoseListData: list ? list.map(e => ({ ...e, key: e.diagWarningId })) : [],
+          totalNum: total || 0,
+          summaryInfo: summary || {},
           diagnoseUpdateTime: moment().format('YYYY-MM-DD HH:mm'), // 更新表格数据时间
-          // diagnoseListData: [1, 2, 3].map(e => ({
-          //   key: `M${e}M${e * e}M${e ** e}`,
-          //   diagWarningId: `M${e}M${e * e}M${e ** e}`,
-          //   eventCode: e * e,
-          //   eventName: `事件${e}`,
-          //   statusCode: `状态${e + 10}`,
-          //   statusName: `${e + 12}状态`,
-          //   warningLevel: e,
-          //   pointCode: `M${e}MM${e * e}MMM${e ** e}`,
-          //   pointValueDesc: `${e * e}${Math.random()}`,
-          //   deviceTypeCode: `${e}M设备类型`,
-          //   deviceTypeName: `${e}M设备类型`,
-          //   stationCode: `${e}电站code`,
-          //   stationName: `${e}M电站名称`,
-          //   deviceFullcode: `M${e}MM${e * e}MMM${e ** e}`,
-          //   deviceName: `设备名${e}M${e * e}M${e ** e}`,
-          //   beginTime: `2019-0${e}-${e}${e}`,
-          //   warningDuration: e ** e,
-          //   warningFrequency: e ** e + e * e + e,
-          // })),
-          // totalNum: 87,
-          // summaryInfo: {
-          //   total: 1137 + Math.ceil(Math.random() * 1000),
-          //   level1: 100 + Math.ceil(Math.random() * 100),
-          //   level2: 200 + Math.ceil(Math.random() * 200),
-          //   level3: 300 + Math.ceil(Math.random() * 300),
-          //   level4: 400 + Math.ceil(Math.random() * 400),
-          // },
           diagnoseListLoading: false,
         });
       } else { throw response.message; }
@@ -177,7 +150,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
       deviceFullcode,
       eventCode,
       eventType,
-      interval, // 1: 十分钟, 2: 5秒
+      interval, // 1: 十分钟, 2: 5秒, 3: 1分钟
       date: moment(beginTime).format('YYYY-MM-DD'),
     }});
     if (response.code === '10000') {

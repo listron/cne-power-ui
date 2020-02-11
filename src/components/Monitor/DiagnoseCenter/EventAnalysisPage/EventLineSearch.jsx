@@ -49,6 +49,7 @@ class EventLineSearch extends PureComponent {
               value={interval}
             >
               <Option value={1}>10分钟</Option>
+              <Option value={3}>1分钟</Option>
               <Option value={2}>5秒钟</Option>
             </Select>
             <Icon className={styles.leftIcon} type="left" onClick={this.prevMonth} />

@@ -29,6 +29,7 @@
   & > *{
     position: relative;
     z-index: 9;
+    line-height: 30px;
   }
   &::after {
     position: absolute;

@@ -54,19 +54,13 @@ class EventAnalysisPage extends PureComponent {
           </span>
           <span className={styles.topHandle}>
             <Link to="/monitor/data/history" target="_blank" className={styles.showMore}>
-              <CneButton>
-                <span className={styles.shadow}>
+              <CneButton className={styles.shadow}>
+                <span>
                   <span className="iconfont icon-gd4" />
                   <span>更多数据</span>
                 </span>
               </CneButton>
             </Link>
-            {/* <Button className={styles.showMore}>
-              <span className={styles.shadow}>
-                <span className="iconfont icon-gd4" />
-                <span>更多数据</span>
-              </span>
-            </Button> */}
             <Icon onClick={this.backList} type="arrow-left" className={styles.backIcon} />
           </span>
         </h3>
