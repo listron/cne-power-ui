@@ -70,9 +70,11 @@ class DiagnoseFilter extends Component {
     const { stationCode, deviceTypeCode, startTime, endTime, eventCode, eventStatus, finished } = listParams;
     const eventTypesData = this.props[this.eventTypeInfo[pageKey]] || [];
     const statusArray = allEventsStatus.filter(e => e.statusType === (!!finished ? 2 : 1)); // statusType:1活动 2已归档
+    const pvStations = stations.filter(e => e.stationType === 1); // 只展示光伏电站
+    const pvDeviceTypes = deviceTypes.filter(e => [1, 2].includes(e.stationType)); // 只展示光伏设备类型;
     const options = [
-      { name: '电站名称', type: 'stationName', typeName: 'stationCode', data: stations },
-      { name: '设备类型', type: 'radioSelect', typeName: 'deviceTypeCode', rules: ['deviceTypeName', 'deviceTypeCode'], data: deviceTypes },
+      { name: '电站名称', type: 'stationName', typeName: 'stationCode', data: pvStations },
+      { name: '设备类型', type: 'radioSelect', typeName: 'deviceTypeCode', rules: ['deviceTypeName', 'deviceTypeCode'], data: pvDeviceTypes },
       { name: '发生时间', type: 'time', typeName: 'rangeTimes' },
       { name: '告警事件', type: 'radioSelect', typeName: 'eventCode', rules: ['eventName', 'eventCode'], data: eventTypesData },
       { name: '事件状态', type: 'radioSelect', typeName: 'eventStatus', parentName: 'parentName', rules: ['statusName', 'statusCode'], data: statusArray },
