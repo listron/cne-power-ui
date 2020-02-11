@@ -88,7 +88,7 @@ function* getDiagnoseList({ payload = {}}) { // 获取诊断中心列表
     // sortField: '', // 排序字段
     // sortMethod: 'desc', // 排序方式 asc升序 + desc降序 }
     const { hideLoading, ...rest } = payload || {};
-    try {  
+    try {
     const url = `${APIBasePath}${monitor.getDiagnoseList}`;
       if (!hideLoading) {
         yield call(easyPut, 'changeStore', { diagnoseListLoading: true });
