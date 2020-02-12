@@ -9,7 +9,7 @@ const { Option } = Select;
 class BranchFilter extends React.Component {
   static propTypes = {
     getDeviceBranchInfo: PropTypes.func,
-    changeHistoryStore: PropTypes.func,
+    changeBranchStore: PropTypes.func,
     getDeviceType: PropTypes.func,
     getDeviceName: PropTypes.func,
     getCheckStatus: PropTypes.func,
@@ -21,14 +21,15 @@ class BranchFilter extends React.Component {
     super(props, context);
   }
   selectStation = (selectedStationInfo) => {
-    const { changeHistoryStore, getDeviceType } = this.props;
+    const { changeBranchStore, getDeviceType } = this.props;
     const { stationCode } = selectedStationInfo[0];
-    changeHistoryStore({ stationCode, deviceTypeData: [], deviceNameData: [], deviceBranchInfo: [] });
+
+    changeBranchStore({ stationCode, deviceTypeData: [], deviceNameData: [], deviceBranchInfo: [] });
     getDeviceType({ stationCode });
   }
   selectDeviceType = (deviceTypeCode) => {
-    const { changeHistoryStore, getDeviceName, stationCode, getCheckStatus } = this.props;
-    changeHistoryStore({
+    const { changeBranchStore, getDeviceName, stationCode, getCheckStatus } = this.props;
+    changeBranchStore({
       deviceTypeCode,
       deviceFullCodes: [],
     });
@@ -37,11 +38,10 @@ class BranchFilter extends React.Component {
       deviceTypeCode,
     });
     this.getBranchInfo({ stationCode, deviceTypeCode });
-    getCheckStatus();
   }
   selectedDevice = (devices) => {
-    const { changeHistoryStore } = this.props;
-    changeHistoryStore({
+    const { changeBranchStore } = this.props;
+    changeBranchStore({
       deviceFullCodes: devices,
     });
     this.getBranchInfo({
@@ -57,11 +57,12 @@ class BranchFilter extends React.Component {
 
   render() {
     const { stations, stationCode, deviceTypeCode, deviceFullCodes, deviceTypeData } = this.props;
-    const hasbox = deviceTypeData.map(e => e.deviceTypeCode).includes('202');
-    const hasinverter = deviceTypeData.map(e => e.deviceTypeCode).includes('206');
-    const all = [{ deviceTypeCode: 202, deviceTypeName: '汇流箱' }, { deviceTypeCode: 206, deviceTypeName: '组串式逆变器' }];
-    const deviceTypeArray = hasbox ? (hasinverter ? all : all.shift()) : (hasinverter ? all.pop() : []);
-    console.log('deviceTypeArray: ', deviceTypeArray);
+    console.log('deviceTypeData: ', deviceTypeData);
+    // const hasbox = deviceTypeData.map(e => e.deviceTypeCode).includes(202);
+    // const hasinverter = deviceTypeData.map(e => e.deviceTypeCode).includes(206);
+    // const all = [{ deviceTypeCode: 202, deviceTypeName: '汇流箱' }, { deviceTypeCode: 206, deviceTypeName: '组串式逆变器' }];
+    // const deviceTypeArray = hasbox ? (hasinverter ? all : all.shift()) : (hasinverter ? all.pop() : []);
+    // console.log('deviceTypeArray: ', deviceTypeArray);
 
     return (<div className={styles.searchBox}>
       <div className={styles.topSearch}>
@@ -80,13 +81,13 @@ class BranchFilter extends React.Component {
             onChange={this.selectDeviceType}
             value={null}
             placeholder="请选择设备类型"
-            disabled={deviceTypeArray.length === 0}
+            disabled={deviceTypeData.length === 0}
           >
             <Option key={null} value={null}>{'全部设备类型'}</Option>
-            {deviceTypeArray.map((e, index) => {
+            {deviceTypeData.map((e, index) => {
               if (!e) return;
               return (
-                <Option key={deviceTypeCode} value={deviceTypeCode}>{e.deviceTypeName}</Option>
+                <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
               );
             })}
           </Select>

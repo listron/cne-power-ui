@@ -363,13 +363,13 @@ export default {
       getStandardDesc: '/v3/management/station/device/standard/points',
 
       //支路配置
-      getStations: '/base/user/currentuser/stations',
-      getDeviceType: '/base/user/currentuser/stations',
-      getDeviceName: '/base/user/currentuser/stations',
-      getCheckStatus: '/base/user/currentuser/stations',
-      getDeviceBranchInfo: '/base/user/currentuser/stations',
-      getCheckData: '/base/user/currentuser/stations',
-      editBranchData: '/base/user/currentuser/stations',
+      getStations: '/v4/base/user/currentuser/stations',
+      getDeviceType: '/v4/base/devicetype/branch',
+      getDeviceName: '/v4/base/branchdevice',
+      // getCheckStatus: '/v4/base/user/currentuser/stations',
+      getDeviceBranchInfo: '/v4/base/branch/checkresult',
+      getCheckData: '/v4/base/branch/checkresult',
+      editBranchData: '/v4/base/branch/status',
 
       importAlarmInfo: '/v3/management/alarmevent/import', //导入告警信息
       getAlarmList: '/v3/management/alarmevent/list', //获取告警列表

@@ -4,6 +4,7 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { branchConfigAction } from './branchConfigAction';
 import { message } from 'antd';
+import moment from 'moment';
 
 const { APIBasePath } = Path.basePaths;
 const { monitor, system } = Path.APISubPaths;
@@ -72,7 +73,8 @@ function* getStations(action) {
 }
 function* getDeviceType(action) {
   const { payload } = action;
-  const url = `${APIBasePath}${system.getDeviceType}`;
+  const url = '/mock/base/devicetype/branch';
+  // const url = `${APIBasePath}${system.getDeviceType}`;
   try {
     const response = yield call(axios.get, url, { ...payload });
     if (response.data.code === '10000') {
@@ -120,42 +122,48 @@ function* getDeviceName(action) {
     });
   }
 }
-function* getCheckStatus(action) {
-  const { payload } = action;
-  const url = `${APIBasePath}${system.getCheckStatus}`;
-  try {
-    const response = yield call(axios.get, url, { ...payload });
-    if (response.data.code === '10000') {
-      yield put({
-        type: branchConfigAction.changeBranchStore,
-        payload: {
-          ...payload,
-          checkStatus: response.data.data || [],
-        },
-      });
-    } else {
-      throw response.data.message;
-    }
+// function* getCheckStatus(action) {
+//   const { payload } = action;
+//   const url = `${APIBasePath}${system.getCheckStatus}`;
+//   try {
+//     const response = yield call(axios.get, url, { ...payload });
+//     if (response.data.code === '10000') {
+//       yield put({
+//         type: branchConfigAction.changeBranchStore,
+//         payload: {
+//           ...payload,
+//           checkStatus: response.data.data || [],
+//         },
+//       });
+//     } else {
+//       throw response.data.message;
+//     }
 
-  } catch (e) {
-    console.log(e);
-    yield put({
-      type: branchConfigAction.changeBranchStore,
-      payload: { checkStatus: [] },
-    });
-  }
-}
+//   } catch (e) {
+//     console.log(e);
+//     yield put({
+//       type: branchConfigAction.changeBranchStore,
+//       payload: { checkStatus: [] },
+//     });
+//   }
+// }
 function* getDeviceBranchInfo(action) {
   const { payload } = action;
-  const url = `${APIBasePath}${system.getDeviceBranchInfo}`;
+  const url = '/mock/base/branch/checkresult';
+  // const url = `${APIBasePath}${system.getDeviceBranchInfo}`;
   try {
     const response = yield call(axios.get, url, { ...payload });
     if (response.data.code === '10000') {
+      const deviceBranchInfo = response.data.data.deviceList || [];
+      const checkTime = response.data.data.checkTime || '';
+
       yield put({
         type: branchConfigAction.changeBranchStore,
         payload: {
           ...payload,
-          deviceBranchInfo: response.data.data || [],
+          checkTime: checkTime ? moment(checkTime).format('YYYY-MM-DD') : '',
+          deviceBranchInfo,
+          copyData: response.data.data.deviceList || [],
         },
       });
     } else {
@@ -225,7 +233,7 @@ export function* watchBranchConfigSaga() {
   yield takeLatest(branchConfigAction.getStations, getStations);
   yield takeLatest(branchConfigAction.getDeviceType, getDeviceType);
   yield takeLatest(branchConfigAction.getDeviceName, getDeviceName);
-  yield takeLatest(branchConfigAction.getCheckStatus, getCheckStatus);
+  // yield takeLatest(branchConfigAction.getCheckStatus, getCheckStatus);
   yield takeLatest(branchConfigAction.getDeviceBranchInfo, getDeviceBranchInfo);
   yield takeLatest(branchConfigAction.getCheckData, getCheckData);
   yield takeLatest(branchConfigAction.editBranchData, editBranchData);

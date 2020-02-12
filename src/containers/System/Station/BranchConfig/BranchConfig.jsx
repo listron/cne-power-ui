@@ -42,7 +42,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: branchConfigAction.getStations, payload }),
   getDeviceType: payload => dispatch({ type: branchConfigAction.getDeviceType, payload }),
   getDeviceName: payload => dispatch({ type: branchConfigAction.getDeviceName, payload }),
-  getCheckStatus: payload => dispatch({ type: branchConfigAction.getCheckStatus, payload }),
+  // getCheckStatus: payload => dispatch({ type: branchConfigAction.getCheckStatus, payload }),
   getDeviceBranchInfo: payload => dispatch({ type: branchConfigAction.getDeviceBranchInfo, payload }),
   getCheckData: payload => dispatch({ type: branchConfigAction.getCheckData, payload }),
   editBranchData: payload => dispatch({ type: branchConfigAction.editBranchData, payload }),

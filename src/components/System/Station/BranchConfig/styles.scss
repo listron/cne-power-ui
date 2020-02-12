@@ -143,9 +143,19 @@
     min-width: 1212px;
 
     .tablePart {
+      background: #fff;
       height: 645px;
       overflow-y: auto;
       overflow-y: overlay;
+
+      .noData {
+        height: 600px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
     }
 
 
@@ -219,6 +229,8 @@
       }
 
       .titleStyle {
+        flex: 1;
+        padding: 0 2px;
 
         .link,
         .nolink,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './styles.scss';
 import { Select, Button, Input, Switch } from 'antd';
 
-
+const { Option } = Select;
 class BranchTable extends React.Component {
   static propTypes = {
   }
@@ -11,6 +11,7 @@ class BranchTable extends React.Component {
     super(props, context);
     this.state = {
       focus: false,
+      isCheckStatus: false,
     };
   }
   componentDidMount() {
@@ -26,7 +27,11 @@ class BranchTable extends React.Component {
     this.refs.input && this.refs.input.focus();
   }
   queryCheckData = () => {
-
+    this.setState({
+      isCheckStatus: true,
+    });
+    // const { stationCode, deviceTypeCode, deviceFullCodes } = this.props;
+    // this.props.getCheckData(stationCode, deviceTypeCode, deviceFullCodes);
   }
   changeSwitch = () => {
 
@@ -37,62 +42,85 @@ class BranchTable extends React.Component {
   cancleCheckValue = () => {
 
   }
-  editNum = (e) => {
-    console.log('e.target: ', e.target);
-    console.log('e.target.value: ', e.target.value);
-    console.log('e.target.innerHtml: ', e.target.textContent);
+  editNum = (e, deviceFullCode) => {
+    console.log('deviceFullCode: ', deviceFullCode);
+    // console.log('e.target: ', e.target);
+    // console.log('e.target.value: ', e.target.value);
+    // console.log('e.target.textContent: ', e.target.textContent);
     const value = e.target.textContent ? e.target.textContent : e.target.value;
-    this.setState({
-      focus: value,
-    });
-    // this.refs.input.focus();
+    const { isCheckStatus } = this.state;
+    if (isCheckStatus) {
+      this.setState({
+        focus: deviceFullCode,
+      });
+    }
+
   }
+  // editNum2 = (e, branchCode) => {
+  //   console.log('branchCode: ', branchCode);
+  //   const value = e.target.textContent ? e.target.textContent : e.target.value;
+  //   this.setState({
+  //     focus: branchCode,
+  //   });
+  // }
+
   inputBlur = (value) => {
     console.log('value: ', value);
-    // this.setState({
-    //   focus: 4,
-    // });
+  }
+  //判断状态显示
+  jugeStatus = (e) => {
+    console.log('状态');
+    const { isCheckStatus } = this.state;
+    const { branchStatus, checkStatus, isChange, pvNums } = e;
+    if (isCheckStatus) {//当时检测支路状态
+      return isChange && pvNums > 0 ? styles.change : checkStatus ? styles.link : styles.nolink;
+    }
+    return branchStatus ? styles.link : styles.nolink;
+  }
+  handleSelect = (value) => {
+    console.log('value: ', value);
 
   }
   render() {
-    const { loadding } = this.props;
-    const { focus } = this.state;
-    console.log('focus: ', focus);
-    const a = Array.from({ length: 40 }, (e, i) => i + 1);
+    const { loadding, copyData, checkTime } = this.props;
+    const { focus, isCheckStatus } = this.state;
     return (
       <div className={styles.tablebox}>
         <div className={styles.checkstyle}>
           <div className={styles.leftInfo}>
-            <Button type="primary"
+            {!isCheckStatus ? <Button type="primary"
               icon="poweroff"
               loading={loadding}
-              disabled={true}
+              disabled={!checkTime}
               onClick={this.queryCheckData}>
               {/* <i className="iconfont icon-save" /> */}
               支路检测
-            </Button>
-            <Button type="primary"
-              icon="save"
-              className={styles.btnStyle}
-              loading={loadding}
-              onClick={this.saveCheckValue}>
-              {/* <i className="iconfont icon-addto" /> */}
-              保存检测结果
-            </Button>
-            <Button type="primary"
-              loading={loadding}
-              className={styles.btnStyle}
-              onClick={this.cancleCheckValue}>
-              取消
-            </Button>
-            <span className={styles.fontcolor}>
-              检测结果日期
-              <span className={styles.dateMargin}>:</span>
-              <span>2019-12-18</span>
-            </span>
-            <Switch onChange={this.changeSwitch} />
-            <span>只看变更</span>
+            </Button> :
+              <div>
+                <Button type="primary"
+                  icon="save"
+                  className={styles.btnStyle}
+                  loading={loadding}
+                  onClick={this.saveCheckValue}>
+                  {/* <i className="iconfont icon-addto" /> */}
+                  保存检测结果
+                </Button>
+                <Button type="primary"
+                  loading={loadding}
+                  className={styles.btnStyle}
+                  onClick={this.cancleCheckValue}>
+                  取消
+                </Button>
+                <span className={styles.fontcolor}>
+                  检测结果日期
+                <span className={styles.dateMargin}>:</span>
+                  <span>{checkTime}</span>
+                </span>
+                <Switch onChange={this.changeSwitch} />
+                <span>只看变更</span>
 
+              </div>
+            }
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.icon}></div>
@@ -101,8 +129,8 @@ class BranchTable extends React.Component {
             <span className={styles.iconmargin}>接入支路数</span>
             <div className={styles.icon3}></div>
             <span className={styles.iconmargin}>有变更(单击可修改配置)</span>
-            合计:10
-         </div>
+            合计:{copyData.length}
+          </div>
 
         </div>
         <div className={styles.tableContainer}>
@@ -114,24 +142,51 @@ class BranchTable extends React.Component {
             ))}
           </div>
           <div className={styles.tablePart}>
-            {a.map((item, index) => (
+            {copyData.length ? copyData.map((item, index) => (
               <div className={index % 2 === 0 ? styles.tabletd : styles.tableEventd} key={index}>
-                <div className={styles.name}>NB00{index + 1}</div>
-                <div ref={item} onClick={(e) => { this.editNum(e); }} key={item} value={item} className={styles.number}>{+focus === index + 1 ? <Input ref="input" onBlur={this.inputBlur} defaultValue={item} /> : index + 1}</div>
+                <div className={styles.name}>{item.deviceName}</div>
+                <div
+                  ref={item.deviceFullCode}
+                  className={styles.number}
+                  onClick={(e) => { this.editNum(e, item.deviceFullCode); }}
+                  key={item}
+                  value={item}
+                >
+                  {focus === item.deviceFullCode ? <Input ref="input" onBlur={this.inputBlur} defaultValue={item.branchList.length} /> : item.branchList.length}
+                </div>
                 {
-                  Array.from({ length: 20 }, (item, index) => (
-                    <div className={styles.titleStyle} key={index + 1}>
-                      <div
-                        // EditType="DropDownList"
-                        // onClick={this.editNum}
-                        className={index % 3 === 0 ? styles.nolink : index % 3 === 1 ? styles.link : styles.change}>{index + 1}
-                        <div></div>
+                  item.branchList.map((e, i) => {
+                    const styleStatus = this.jugeStatus(e);
+                    return (
+                      <div className={styles.titleStyle} key={e.branchCode}>
+
+                        {focus === e.branchCode ? <Select defaultValue={'' + e.pvNums} style={{ width: 45 }} onChange={this.handleSelect}>
+                          <Option value="0">0</Option>
+                          <Option value="1">1</Option>
+                          <Option value="2">2</Option>
+                          <Option value="3" >3</Option>
+                          <Option value="4">4</Option>
+                          <Option value="5">5</Option>
+                        </Select> :
+                          <div
+                            onClick={(info) => { this.editNum(info, e.branchCode); }}
+                            value={e.pvNums}
+                            className={styleStatus}
+                          >
+                            {e.pvNums}
+                            <div></div>
+                          </div>}
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 }
               </div>
-            ))}
+            )) :
+              <div className={styles.noData}>
+                <img src="/assets/img/nodata.png" width="223" height="164" />
+
+              </div>
+            }
             <div className={styles.tabletd}></div>
           </div>
         </div>
