@@ -86,6 +86,10 @@ const runningReport = [
     // 运维管理-电站运行-月报
     path: '/operation/running/monthReport',
     component: lazy(() => import('../../components/Common/Building/Building')),
+  }, {
+    // 运维管理-电站运行-抄表设置
+    path: '/operation/running/meterReadSet',
+    component: lazy(() => import('../../containers/Operation/Running/MeterReadSet/MeterReadSet')),
   },
 ];
 
