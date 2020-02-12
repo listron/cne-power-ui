@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Icon } from 'antd';
+import { Icon } from 'antd';
 import ChartLine from './ChartLine';
 import EventLineSearch from './EventLineSearch';
 import ChartBar from './ChartBar';
