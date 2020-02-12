@@ -106,8 +106,8 @@ class VersionSelect extends Component {
         {showWarningVersion && <WarningTip onOK={this.cancelWarnEvent} style={{ width: 210, height: 100 }} value={'此软件版本的告警事件规则存在应用电站，不可删除!'} />}
         <div className={styles.deviceType}>
           <Select style={{ width: 212 }} onSelect={this.changeDeviceType} value={deviceTypeCode}>
-            <Select.Option value={206}>组串式逆变器</Select.Option>
-            <Select.Option value={201}>集中式逆变器</Select.Option>
+            <Select.Option value={206}>逆变器（组串）</Select.Option>
+            <Select.Option value={201}>逆变器（集中）</Select.Option>
             <Select.Option value={304}>箱变</Select.Option>
           </Select>
         </div>
