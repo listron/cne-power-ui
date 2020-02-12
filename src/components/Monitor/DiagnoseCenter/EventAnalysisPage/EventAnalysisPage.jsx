@@ -27,10 +27,6 @@ class EventAnalysisPage extends PureComponent {
     data: '数据事件',
   }
 
-  showMore = () => { // 跳转至历史趋势
-    this.props.history.push('/monitor/data/history');
-  }
-
   backList = () => { // 返回列表页, 清空数据;
     this.props.changeStore({
       showAnalysisPage: false,
@@ -53,7 +49,7 @@ class EventAnalysisPage extends PureComponent {
             <span className={styles.infoText}>设备类型： {deviceTypeName || '--'}</span>
           </span>
           <span className={styles.topHandle}>
-            <Link to="/monitor/data/history" target="_blank" className={styles.showMore}>
+            <Link to="/monitor/pvData/history" target="_blank" className={styles.showMore}>
               <CneButton className={styles.shadow}>
                 <span>
                   <span className="iconfont icon-gd4" />
