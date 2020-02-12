@@ -63,6 +63,9 @@
         border-radius: 2px;
         cursor: pointer;
       }
+      .forbidDay{
+        cursor: not-allowed;
+      }
       .dateSelect{
         margin: 0 4px;
         width: 128px;
@@ -297,6 +300,11 @@
           color: #fff;
           background-color: var(--themeColor);
         }
+      }
+      .forbidDay, .forbidDay:hover{
+        background-color:#f1f1f1;
+        border:1px solid #999999;
+        color: #999999;
       }
     }
   }
