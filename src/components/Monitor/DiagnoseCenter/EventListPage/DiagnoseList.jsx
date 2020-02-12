@@ -92,7 +92,6 @@ class DiagnoseList extends Component {
     } else { // 切换列
       newField = this.sortFieldMap[field];
     }
-    console.log(`tabelchangeProps: sortField=${sortField} & sortMethod = ${sortMethod} & tableColumn=${this.sortFieldMap[field]}`, sorter, newField, newSort);
     const newListPage = {
       ...listPage,
       sortField: newField,

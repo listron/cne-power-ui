@@ -22,11 +22,11 @@ class EventLineSearch extends PureComponent {
     this.props.getEventsAnalysis({ ...analysisEvent, beginTime });
   }
 
-  prevMonth = () => this.onMonthChange('subtract')
+  prevDay = () => this.onDayChange('subtract')
 
-  nextMonth = () => this.onMonthChange('add')
+  nextDay = () => this.onDayChange('add')
 
-  onMonthChange = (method) => {
+  onDayChange = (method) => {
     const { analysisEvent } = this.props;
     const { beginTime } = analysisEvent || {};
     const newMonthStr = moment(beginTime)[method](1, 'day').format('YYYY-MM-DD');
@@ -38,6 +38,7 @@ class EventLineSearch extends PureComponent {
   render(){
     const { analysisEvent } = this.props;
     const { beginTime, interval } = analysisEvent || {};
+    const forbidNextDay = !moment().isAfter(moment(beginTime), 'day');
     return (
         <div className={styles.analysisLineSearch}>
           <strong className={styles.searchText}>告警诊断指标时序图</strong>
@@ -52,7 +53,7 @@ class EventLineSearch extends PureComponent {
               <Option value={3}>1分钟</Option>
               <Option value={2}>5秒钟</Option>
             </Select>
-            <Icon className={styles.leftIcon} type="left" onClick={this.prevMonth} />
+            <Icon className={styles.leftIcon} type="left" onClick={this.prevDay} />
             <DatePicker
               value={beginTime? moment(beginTime) : null}
               className={styles.dateSelect}
@@ -60,7 +61,11 @@ class EventLineSearch extends PureComponent {
               allowClear={false}
               disabledDate={this.disabledDateFunc}
             />
-            <Icon className={styles.rightIcon} type="right" onClick={this.nextMonth} />
+            <Icon
+              className={`${styles.rightIcon} ${forbidNextDay ? styles.forbidDay : ''}`}
+              type="right"
+              onClick={this.nextDay}
+            />
           </span>
         </div>
     );

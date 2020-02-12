@@ -51,7 +51,7 @@ class ChartLine extends PureComponent {
     const timeMoment = moment(timeStr);
     if(interval === 1){ // 10min数据处理为YYYY-MM-DD HH:mm0:00的十分钟格式;
       const dayTimeStr = timeMoment.format('YYYY-MM-DD HH:');
-      const minuteNum = Math.round(timeMoment.minute() / 10);
+      const minuteNum = Math.floor(timeMoment.minute() / 10);
       return `${dayTimeStr}${minuteNum}0:00`;
     } else if (interval === 3) { // 1min数据处理为YYYY-MM-DD HH:mm:00的整分钟格式;
       const dayTimeStr = timeMoment.format('YYYY-MM-DD HH:mm');
