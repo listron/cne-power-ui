@@ -14,10 +14,13 @@ function* changeCommonStore(action) {//存储payload指定参数，替换reducer
   });
 }
 
-function* getStations(action) { // 通用：获取所有电站信息
+function* getStations({ payload }) { // 通用：获取所有电站信息
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStations}`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
+    const { /* params, */nextAction } = payload || {};
+    // 可以允许调用该接口后，发起其他指定action;
+    // params, 添加电站类型可选参数stationType获取指定类型的电站列表
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       const stations = response.data.data || [];
@@ -30,13 +33,18 @@ function* getStations(action) { // 通用：获取所有电站信息
       } else if (stationTypes.has(0)) { // 只有风电站
         stationTypeCount = 'wind';
       }
-      yield put({
-        type: commonAction.GET_COMMON_FETCH_SUCCESS,
-        payload: {
-          stations: response.data.data,
-          stationTypeCount,
-        },
-      });
+      const nextPayload = {
+        stations: response.data.data,
+        stationTypeCount,
+      };
+      if (nextAction) {
+        yield put({ type: nextAction, payload: nextPayload });
+      } else {
+        yield put({
+          type: commonAction.GET_COMMON_FETCH_SUCCESS,
+          payload: nextPayload,
+        });
+      }
     }
   } catch (e) {
     console.log(e);

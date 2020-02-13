@@ -130,6 +130,11 @@ class VersionSelect extends PureComponent {
             {deviceTypeArr.map(e => {
               return (<Select.Option value={e.deviceTypeCode} key={e.deviceTypeCode}>{e.deviceTypeName}</Select.Option>);
             })}
+            {/* 
+             <Select.Option value={206}>逆变器（组串）</Select.Option>
+            <Select.Option value={201}>逆变器（集中）</Select.Option>
+            <Select.Option value={304}>箱变</Select.Option>
+             */}
           </Select>
         </div>
         <div className={styles.cont}>

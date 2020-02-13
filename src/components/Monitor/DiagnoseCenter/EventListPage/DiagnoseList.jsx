@@ -83,11 +83,11 @@ class DiagnoseList extends Component {
 
   tableChange = (pagination, filter, sorter) => {// 分页排序点击 => 重新请求列表, 停止当前定时请求
     this.props.stopCircleQueryList(); // 停止当前页面定时请求
-    const { field } = sorter;
+    const { field } = sorter || {};
     const { listParams, listPage } = this.props;
     const { sortField, sortMethod } = listPage || {};
     let newField = sortField, newSort = 'desc';
-    if (sortField === this.sortFieldMap[field]) { // 点击的是正在排序的列
+    if (!field || (sortField === this.sortFieldMap[field])) { // 点击的是正在排序的列
       newSort = sortMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
     } else { // 切换列
       newField = this.sortFieldMap[field];

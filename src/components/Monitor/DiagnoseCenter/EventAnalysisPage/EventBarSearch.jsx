@@ -16,11 +16,11 @@ class EventBarSearch extends PureComponent {
     this.props.getEventsAnalysis({ ...analysisEvent, beginTime });
   }
 
-  prevMonth = () => this.onMonthChange('subtract')
+  prevDay = () => this.onDayChange('subtract')
 
-  nextMonth = () => this.onMonthChange('add')
+  nextDay = () => this.onDayChange('add')
 
-  onMonthChange = (method) => {
+  onDayChange = (method) => {
     const { analysisEvent } = this.props;
     const { beginTime } = analysisEvent || {};
     const newMonthStr = moment(beginTime)[method](1, 'day').format('YYYY-MM-DD');
@@ -32,6 +32,7 @@ class EventBarSearch extends PureComponent {
   render(){
     const { analysisEvent } = this.props;
     const { beginTime } = analysisEvent || {};
+    const forbidNextDay = !moment().isAfter(moment(beginTime), 'day');
     return (
         <div className={styles.analysisBarSearch}>
           <h3 className={styles.searchText}>发电量对比图</h3>
@@ -48,7 +49,7 @@ class EventBarSearch extends PureComponent {
               </span>
             </span>
             <span className={styles.dateCheck}>
-              <Icon className={styles.leftIcon} type="left" onClick={this.prevMonth} />
+              <Icon className={styles.leftIcon} type="left" onClick={this.prevDay} />
               <DatePicker
                 value={beginTime? moment(beginTime) : null}
                 className={styles.dateSelect}
@@ -56,7 +57,11 @@ class EventBarSearch extends PureComponent {
                 allowClear={false}
                 disabledDate={this.disabledDateFunc}
               />
-              <Icon className={styles.rightIcon} type="right" onClick={this.nextMonth} />
+              <Icon
+                className={`${styles.rightIcon} ${forbidNextDay ? styles.forbidDay : ''}`}
+                type="right"
+                onClick={this.nextDay}
+              />
             </span>
           </div>
         </div>

@@ -12,6 +12,9 @@
       .ant-table .ant-table-tbody > tr > td{
         line-height: 40px;
       }
+      .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
+        margin-top: -0.4em;
+      }
     }
   }
 }
@@ -24,6 +27,9 @@
       }
       .ant-table .ant-table-tbody > tr > td{
         line-height: 1em;
+      }
+      .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
+        margin-top: -0.25em;
       }
     }
   }
@@ -38,12 +44,14 @@
       .ant-table .ant-table-tbody > tr > td{
         line-height: 1em;
       }
+      .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
+        margin-top: -0.1em;
+      }
     }
   }
 }
 
 .cneTable{
-  min-width: 1212px;
   :global{
     .ant-table .ant-table-thead > tr > th,
     .ant-table .ant-table-tbody > tr > td {
@@ -65,8 +73,7 @@
         position: relative;
         .ant-table-column-sorter-inner{
           margin-left: 4px;
-          height: 1.65em;
-          margin-top: 30%;
+          height: 1em;
         }
         .on, .off{
           transform: scale(1.25, 1);

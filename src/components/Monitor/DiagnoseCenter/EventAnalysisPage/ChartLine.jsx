@@ -49,10 +49,13 @@ class ChartLine extends PureComponent {
       return '';
     }
     const timeMoment = moment(timeStr);
-    if (interval === 1) { // 10min数据处理为YYYY-MM-DD HH:mm0:00的十分钟格式;
+    if(interval === 1){ // 10min数据处理为YYYY-MM-DD HH:mm0:00的十分钟格式;
       const dayTimeStr = timeMoment.format('YYYY-MM-DD HH:');
-      const minuteNum = Math.round(timeMoment.minute() / 10);
+      const minuteNum = Math.floor(timeMoment.minute() / 10);
       return `${dayTimeStr}${minuteNum}0:00`;
+    } else if (interval === 3) { // 1min数据处理为YYYY-MM-DD HH:mm:00的整分钟格式;
+      const dayTimeStr = timeMoment.format('YYYY-MM-DD HH:mm');
+      return `${dayTimeStr}:00`;
     }
     // 5s按照正常格式返回 
     return timeMoment.format('YYYY-MM-DD HH:mm:ss');
@@ -80,6 +83,7 @@ class ChartLine extends PureComponent {
       type: 'line',
       data: [],
       markArea: {
+        silent: true,
         data: markAreaData,
       },
     }];

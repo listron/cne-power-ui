@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Icon } from 'antd';
+import { Icon } from 'antd';
 import ChartLine from './ChartLine';
 import EventLineSearch from './EventLineSearch';
 import ChartBar from './ChartBar';
 import EventBarSearch from './EventBarSearch';
 import styles from './eventAnalysis.scss';
+import CneButton from '@components/Common/Power/CneButton';
+
 
 class EventAnalysisPage extends PureComponent {
 
@@ -23,10 +25,6 @@ class EventAnalysisPage extends PureComponent {
     alarm: '告警事件',
     diagnose: '诊断事件',
     data: '数据事件',
-  }
-
-  showMore = () => { // 跳转至历史趋势
-    this.props.history.push('/monitor/data/history');
   }
 
   backList = () => { // 返回列表页, 清空数据;
@@ -51,18 +49,14 @@ class EventAnalysisPage extends PureComponent {
             <span className={styles.infoText}>设备类型： {deviceTypeName || '--'}</span>
           </span>
           <span className={styles.topHandle}>
-            <Link to="/monitor/data/history" target="_blank" className={styles.showMore}>
-              <span className={styles.shadow}>
-                <span className="iconfont icon-gd4" />
-                <span>更多数据</span>
-              </span>
+            <Link to="/monitor/pvData/history" target="_blank" className={styles.showMore}>
+              <CneButton className={styles.shadow}>
+                <span>
+                  <span className="iconfont icon-gd4" />
+                  <span>更多数据</span>
+                </span>
+              </CneButton>
             </Link>
-            {/* <Button className={styles.showMore}>
-              <span className={styles.shadow}>
-                <span className="iconfont icon-gd4" />
-                <span>更多数据</span>
-              </span>
-            </Button> */}
             <Icon onClick={this.backList} type="arrow-left" className={styles.backIcon} />
           </span>
         </h3>
