@@ -58,7 +58,10 @@ class ChartLine extends PureComponent {
       return `${dayTimeStr}:00`;
     }
     // 5s按照正常格式返回 
-    return timeMoment.format('YYYY-MM-DD HH:mm:ss');
+    const timeMinuteStr = timeMoment.format('YYYY-MM-DD HH:mm');
+    const secondNum = Math.floor(timeMoment.second() / 5) * 5;
+    const secondNumStr = secondNum > 5 ? `:${secondNum}` : `:0${secondNum}`;
+    return `${timeMinuteStr}${secondNumStr}`;
   }
 
   drawChart = (period = [], data = {}, interval) => {
