@@ -84,6 +84,10 @@ class ChartLine extends PureComponent {
       data: [],
       markArea: {
         silent: true,
+        itemStyle: {
+          borderColor: '#fbe6e3',
+          borderWidth: 1,
+        },
         data: markAreaData,
       },
     }];
@@ -99,7 +103,11 @@ class ChartLine extends PureComponent {
       series.push({
         name: pointName,
         type: 'line',
+        lineStyle: {
+          width: 3,
+        },
         data: e.value,
+        symbol: 'circle',
         showSymbol: false,
         smooth: true,
       });
@@ -122,6 +130,11 @@ class ChartLine extends PureComponent {
       tooltip: {
         trigger: 'axis',
         show: true,
+        axisPointer: {
+          lineStyle: {
+            color: '#000',
+          },
+        },
         extraCssText: 'padding: 5px 10px; background-color: rgba(0,0,0,0.70); box-shadow:0 1px 4px 2px rgba(0,0,0,0.20); border-radius:2px;',
         formatter: (params = []) => {
           const { name } = params[0] || {};
