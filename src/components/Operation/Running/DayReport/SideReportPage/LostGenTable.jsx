@@ -195,6 +195,27 @@ class LostGenTable extends Component {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_lostPower`, {
               initialValue: record.lostPower,
+              rules:[{
+                validator: (rule, value, callback) => {
+                  let truelyValue = value;
+                  if (truelyValue && isNaN(truelyValue)) {
+                    message.error('损失电量请填写数字');
+                    callback('损失电量请填写数字');
+                  }
+                  else if (truelyValue.indexOf(" ") >= 0) {
+                    message.error('损失电量请填写数字');
+                    callback('损失电量请填写数字');
+                  }
+                  else if (truelyValue) {
+                    const demical = `${truelyValue}`.split('.')[1];
+                    if (demical && demical.length > 2) {
+                      message.error('损失电量不超过2位小数');
+                      callback('损失电量不超过2位小数');
+                    }
+                  }
+                  callback(); 
+                }
+              }],
             })(
               <Input placeholder="日损失电量"  className={styles.lostPower} />
             )}
