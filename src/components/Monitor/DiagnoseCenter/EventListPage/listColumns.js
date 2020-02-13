@@ -135,7 +135,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       title: '操作',
       className: styles.handleStyle,
       render: (text, record) => (
-        <div>
+        <div className={styles.handlers}>
           <span className={styles.handleAnalysis} onClick={() => handlers[0](record)}>分析</span>
         </div>
       ),
@@ -215,7 +215,7 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       title: '操作',
       className: styles.handleStyle,
       render: (text, record) => (
-        <div>
+        <div className={styles.handlers}>
           <span className={styles.handleAnalysis} onClick={() => handlers[0](record)}>分析</span>
         </div>
       ),
@@ -299,7 +299,7 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       title: '操作',
       className: styles.handleStyle,
       render: (text, record) => (
-        <div>
+        <div className={styles.handlers}>
           <span className={styles.handleAnalysis} onClick={() => handlers[0](record)}>分析</span>
         </div>
       ),
