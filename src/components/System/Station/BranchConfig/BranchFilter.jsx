@@ -57,7 +57,6 @@ class BranchFilter extends React.Component {
 
   render() {
     const { stations, stationCode, deviceTypeCode, deviceFullCodes, deviceTypeData } = this.props;
-    console.log('deviceTypeData: ', deviceTypeData);
     // const hasbox = deviceTypeData.map(e => e.deviceTypeCode).includes(202);
     // const hasinverter = deviceTypeData.map(e => e.deviceTypeCode).includes(206);
     // const all = [{ deviceTypeCode: 202, deviceTypeName: '汇流箱' }, { deviceTypeCode: 206, deviceTypeName: '组串式逆变器' }];
