@@ -257,12 +257,17 @@
   }
   .refreshIcon{
     .updater{
-      background-color: var(--themeColor);
+      color: var(--themeColor);
+      border: 1px solid #199475;;
+      &:hover{
+        color: #fff;
+        background-color: var(--themeColor);
+      }
     }
     :global{
-      .iconfont.icon-refresh{
-        color: #fff;
-      }
+      // .iconfont.icon-refresh{
+      //   color: #fff;
+      // }
       .iconfont.icon-help{
         color: #f9b600;
       }

@@ -46,7 +46,7 @@ class FilterConditionTitle extends Component {
                 return (
                   <div className={styles.switch} key={key}>
                     <Switch onChange={(value) => this.switchChange(value, item)} checked={!!item.checkedValue} disabled={item.disabled || false} />
-                    <span>{item.name || '我参与的'}</span>
+                    <span className={styles.switchText}>{item.name || '我参与的'}</span>
                   </div>);
               }
               return (
