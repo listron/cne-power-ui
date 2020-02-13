@@ -131,6 +131,11 @@
     .text {
       color: $darkColor;
     }
+    .switch {
+      .switchText {
+        color: var(--darkColor);
+      }
+    }
     .filterlist {
       border: 1px solid #dfdfdf;
       color: #666666;

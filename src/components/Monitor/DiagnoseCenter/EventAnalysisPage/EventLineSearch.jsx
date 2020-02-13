@@ -64,7 +64,7 @@ class EventLineSearch extends PureComponent {
             <Icon
               className={`${styles.rightIcon} ${forbidNextDay ? styles.forbidDay : ''}`}
               type="right"
-              onClick={this.nextDay}
+              onClick={forbidNextDay ? null : this.nextDay}
             />
           </span>
         </div>
