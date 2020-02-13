@@ -5,6 +5,7 @@ import { Input, Select, Tree, Button, Checkbox, Spin } from 'antd';
 import EventColumn from './EventColumn';
 import SetPonitModal from './SetPonitModal';
 import WarningTip from '../../../Common/WarningTip/index';
+
 class VersionEvent extends Component {
   static propTypes = {
     versionList: PropTypes.array,
@@ -14,28 +15,32 @@ class VersionEvent extends Component {
     addVersionEvent: PropTypes.func,
     editVersionEvent: PropTypes.func,
     delVersionEvent: PropTypes.func,
+    editPoint: PropTypes.object,
+    pointListError: PropTypes.bool,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      addEventList: [],
+      addEventList: [], // 新增的告警配置列表
+      currentEventList: [], // 已有告警的数据列表
+
       showWarningTip: false,
       showWarningEvent: false,
       delEvent: null,
       selectKeysArr: [],
       allSelect: false,
       indeterminate: false,
-      currentEventList: [],
 
     };
   }
+
 
   componentWillReceiveProps(nextProps) {
     const { stationCode, versionStationCodes, deviceTypeCode, deviceModeCode, diagModeVersionId, versionList } = nextProps;
     if (diagModeVersionId !== this.props.diagModeVersionId) { // 切换版本，置空数据
       this.setState({
-        addEventList: [],
+        addEventList: [], // 添加的新的数据
         showWarningTip: false,
         showWarningEvent: false,
         delEvent: null,
@@ -80,8 +85,7 @@ class VersionEvent extends Component {
   addEvent = () => { // 添加行
     const { addEventList } = this.state;
     const keyIndex = addEventList.length > 0 && addEventList[addEventList.length - 1].key.split('add')[1] || 0; // 从默认开始添加
-    const addKey = { key: `add${+keyIndex + 1}`, switchType: 1, enabled: 1, pointValue: 1 };
-    addEventList.push(addKey);
+    addEventList.push({ key: `add${+keyIndex + 1}`, switchType: 1, enabled: 1, pointValue: 1 });
     this.setState({ addEventList: addEventList });
   }
 
@@ -94,19 +98,18 @@ class VersionEvent extends Component {
     const { addEventList, currentEventList } = this.state;
     const lastKey = addEventList.length > 0 && addEventList[addEventList.length - 1].key.split('add')[1] || 0;
     if (!editPoint.diagModeEventId) { // 新添加的
-      const findIndex = addEventList.findIndex(e => {
-        return e.key === editPoint.key;
-      });
+      const findIndex = addEventList.findIndex(e => e.key === editPoint.key); // 当前编辑进行修改
       addEventList[findIndex] = { ...addEventList[findIndex], pointCode: value[0].devicePointStandardCode, pointValueDesc: value[0].devicePointName };
       value.forEach((e, index) => { // 多条添加
         if (index > 0) {
           addEventList.push({
-            key: `add${+lastKey + 1}`,
+            key: `add${+lastKey + index}`,
             switchType: 1,
             enabled: 1,
             pointValue: 1,
             pointCode: e.devicePointStandardCode,
             pointValueDesc: e.devicePointName,
+            eventCode: editPoint.eventCode,
           });
         }
       });
@@ -219,6 +222,7 @@ class VersionEvent extends Component {
     const { addEventList, currentEventList } = this.state;
     if (diagModeEventId) {
       const index = currentEventList.findIndex(e => e.diagModeEventId === diagModeEventId);
+      console.log('trData', trData, index, currentEventList);
       currentEventList[index] = trData;
       this.setState({ currentEventList: currentEventList });
     }
@@ -264,6 +268,7 @@ class VersionEvent extends Component {
             }).map(list => {
               return (<EventColumn
                 eventData={list}
+                key={list.key}
                 alarmEventType={alarmEventType}
                 changePoint={this.changeEditPoint}
                 saveEvent={this.saveEvent}
@@ -276,6 +281,7 @@ class VersionEvent extends Component {
             }).map(list => {
               return (<EventColumn
                 eventData={list}
+                key={list.key}
                 alarmEventType={alarmEventType}
                 changePoint={this.changeEditPoint}
                 saveEvent={this.saveEvent}
@@ -308,6 +314,7 @@ class VersionEvent extends Component {
             closePointModal={this.closePointModal}
             setPointData={this.setPointData}
             type={type}
+            pointListError={this.props.pointListError}
           />
         }
       </div>

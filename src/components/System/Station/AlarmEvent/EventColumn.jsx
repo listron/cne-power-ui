@@ -5,6 +5,16 @@ import { Input, Select, InputNumber, Checkbox, message } from 'antd';
 const Option = Select.Option;
 
 
+/**
+ * eventData
+ * alarmEventType 告警事件类型
+ * changePoint 改变类型
+ * saveEvent   保存事件 
+ * editEvent   编辑事件 编辑每一列的值 type value
+ * checkSelect 选择当前的列数
+ * deleteEvent 删除事件
+ */
+
 class EventColumn extends Component {
   static propTypes = {
     changePoint: PropTypes.func,
@@ -57,7 +67,8 @@ class EventColumn extends Component {
 
   render() {
     const { alarmEventType = [], eventData } = this.props;
-    const { editable, key } = eventData;
+    const { editable, key, pointValue } = eventData;
+    console.log('eventData', eventData);
     return (
       <div className={styles.EventColumn}>
         {editable &&
@@ -80,7 +91,7 @@ class EventColumn extends Component {
               <i className={'iconfont icon-newbuilt'} onClick={this.setPoint} />
             </div>
             <div className={styles.pointValue}>
-              <InputNumber value={eventData.pointValue || 1} onChange={(value) => { this.onChangeColumn('pointValue', value); }} />
+              <InputNumber value={(!pointValue && pointValue !== 0) && 1 || pointValue} onChange={(value) => { this.onChangeColumn('pointValue', value); }} />
             </div>
             <div className={styles.pointValueDesc}>
               <Input value={eventData.pointValueDesc} onChange={(e) => { this.onChangeColumn('pointValueDesc', e.target.value); }} />
@@ -89,6 +100,7 @@ class EventColumn extends Component {
               <Select
                 placeholder="请选择"
                 value={eventData.switchType}
+                getPopupContainer={() => this.refs.select}
                 onChange={(value) => { this.onChangeColumn('switchType', value); }}>
                 <Option value={1}>是</Option>
                 <Option value={0}>否</Option>
@@ -98,14 +110,15 @@ class EventColumn extends Component {
               <Select
                 placeholder="请选择"
                 value={eventData.enabled}
+                getPopupContainer={() => this.refs.select}
                 onChange={(value) => { this.onChangeColumn('enabled', value); }}>
                 <Option value={1}>是</Option>
                 <Option value={0}>否</Option>
               </Select>
             </div>
             <div className={styles.operate}>
-              <i className={`iconfont icon-save ${styles.save}`} onClick={() => { this.saveEvent(eventData); }} />
-              <i className={`iconfont icon-del ${styles.del}`} onClick={() => { this.delEvent(eventData); }} />
+              <i className={`iconfont icon-save ${styles.save}`} onClick={() => { this.saveEvent(eventData); }} title={'保存'} />
+              <i className={`iconfont icon-del ${styles.del}`} onClick={() => { this.delEvent(eventData); }} title={'删除'} />
             </div>
           </React.Fragment> || null
         }

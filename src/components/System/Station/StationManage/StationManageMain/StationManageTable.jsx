@@ -55,6 +55,7 @@ class StationManageTable extends Component {
       eventYxModal: false,
       eventYcModal: false,
       stationCode: {}, // 选中的当前的电站
+      selectSataionInfo: {},//选中的当前的电站
       type: 'yc', // 'yc' 遥测诊断 'data' 数据质量诊断
       search: false, // 搜索框出现
     };
@@ -190,10 +191,10 @@ class StationManageTable extends Component {
   }
 
   setYxStatus = (list) => { // 设置遥信的数据
-    const { stationCode } = list;
+    const { stationCode, stationName } = list;
     const { getDiagconfigYx } = this.props;
     getDiagconfigYx({ stationCode });
-    this.setState({ eventYxModal: true, stationCode });
+    this.setState({ eventYxModal: true,selectSataionInfo: { stationCode, stationName} });
   }
 
   setYcStatus = (list, type) => {// 设置遥测数据和数据质量诊断
@@ -211,7 +212,7 @@ class StationManageTable extends Component {
     if (getName === 'eventYcModal') {
       this.props.changeStationManageStore({ YcConfigData: [] });
     }
-    this.setState({ ...value, stationCode: null });
+    this.setState({ ...value, selectSataionInfo:{} });
   }
 
   initColumn = () => {
@@ -331,7 +332,7 @@ class StationManageTable extends Component {
     const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize, orderField, orderCommand, stationListError } = this.props;
     const { setDiagconfigYx, setDiagconfigYc, YxConfigData, YcConfigData, YxLoading, YcLoading, keyword } = this.props;
     const { departmentModal, departmentSetInfo, uploading, fileList, showWarningTip, warningTipText, deleteInfo } = this.state;
-    const { eventYxModal, stationCode, eventYcModal, type, search } = this.state;
+    const { eventYxModal, eventYcModal, type, search, selectSataionInfo } = this.state;
     const authData = localStorage.getItem('authData') || '';
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
     const initTableScroll = stationList.length > 0 && { y: 900 } || {};
@@ -395,7 +396,7 @@ class StationManageTable extends Component {
           eventYxModal && <SetEventYxModal
             closeEventModal={this.closeEventModal}
             allEventYx={YxConfigData}
-            stationCode={stationCode}
+            selectSataionInfo={selectSataionInfo}
             setDiagconfigYx={setDiagconfigYx}
             loading={YxLoading}
           />

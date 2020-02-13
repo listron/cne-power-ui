@@ -17,6 +17,7 @@ class SetVersionModal extends Component { //版本的设置
     selectVersion: PropTypes.object,
     type: PropTypes.string,
     editVersion: PropTypes.func,
+    deviceTypes: PropTypes.array,
   }
 
   constructor(props) {
@@ -42,7 +43,7 @@ class SetVersionModal extends Component { //版本的设置
   }
 
   componentWillReceiveProps(nextProps) {
-    const { selectVersion, staticData } = nextProps;
+    const { selectVersion, staticData, applayStations } = nextProps;
     const { deviceTypeCode, manufactorCode, deviceModeCode } = selectVersion;
     const prevSelectVersion = this.props.selectVersion || {};
     if (deviceModeCode !== prevSelectVersion.deviceModeCode || deviceTypeCode !== prevSelectVersion.deviceTypeCode) {
@@ -50,6 +51,8 @@ class SetVersionModal extends Component { //版本的设置
       const deviceModes = manufactors.filter(list => list.manufactorCode === manufactorCode)[0].deviceModes;
       this.setState({ manufactors, deviceModes });
     }
+
+
   }
 
 
@@ -57,17 +60,16 @@ class SetVersionModal extends Component { //版本的设置
     const { staticData } = this.props;
     const manufactors = staticData.filter(list => list.deviceTypeCode === value)[0].manufactors;
     this.setState({ manufactors, deviceModes: [] });
-    this.props.form.setFieldsValue({ manufactor: '', deviceModeCode: '' });
+    this.props.form.setFieldsValue({ deviceTypeCode: value, manufactorCode: null, deviceModeCode: null });
   }
 
   onChangeManufactor = (value) => { // 选择生产厂家
     const { manufactors } = this.state;
     const deviceModes = manufactors.filter(list => list.manufactorCode === value)[0].deviceModes;
     this.setState({ deviceModes });
-    this.props.form.setFieldsValue({ deviceModeCode: '' });
+    this.props.form.setFieldsValue({ deviceModeCode: null });
 
   }
-
 
   cancelSetting = () => {
     this.props.closeModal(false);
@@ -79,9 +81,12 @@ class SetVersionModal extends Component { //版本的设置
       if (!err) {
         const { deviceTypeCode, manufactorCode, deviceModeCode, version, stations } = values;
         const initStations = stations.map(e => e.stationCode);
-        let params = { deviceTypeCode, deviceModeCode, version, stations: initStations };
+        let params = { deviceTypeCode, deviceModeCode, version, stations: initStations, extraInfo: { deviceTypeCode, manufactorCode, deviceModeCode } };
         if (type === 'edit') {
-          params = { diagModeVersionId: selectVersion.diagModeVersionId, version, stations: initStations };
+          params = {
+            diagModeVersionId: selectVersion.diagModeVersionId, version, stations: initStations,
+            extraInfo: { deviceTypeCode, manufactorCode, deviceModeCode, diagModeVersionId: selectVersion.diagModeVersionId },
+          };
         }
         this.props.editVersion({ ...params, func: this.props.closeModal, type });
       }
@@ -91,17 +96,15 @@ class SetVersionModal extends Component { //版本的设置
 
 
   render() {
-    const { staticData, stations, selectVersion, applayStations, type, editVersionLoading } = this.props;
+    const { staticData, stations, selectVersion, type, editVersionLoading, deviceTypes, applyStations = [] } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { manufactors, deviceModes } = this.state;
     const { deviceTypeCode, manufactorCode, deviceModeCode, diagModeVersionId, version = '' } = selectVersion;
-    const deviceTypes = [];
-    staticData.map(list => {
-      deviceTypes.push({
-        deviceTypeCode: list.deviceTypeCode,
-        deviceTypeName: list.deviceTypeName,
-      });
-    });
+    // const deviceTypes = [
+    //   { deviceTypeName: '集中式逆变器', deviceTypeCode: 201 },
+    //   { deviceTypeName: '组串式逆变器', deviceTypeCode: 206 },
+    //   { deviceTypeName: '箱变', deviceTypeCode: 304 },
+    // ];
     return (
       <Modal
         title={<span>{type === 'edit' ? '编辑' : '添加'}</span>}
@@ -179,9 +182,13 @@ class SetVersionModal extends Component { //版本的设置
             <FormItem label="电站名称" colon={false}>
               {getFieldDecorator('stations', {
                 rules: [{ required: false, message: '请选择电站' }],
-                initialValue: applayStations || [],
+                initialValue: applyStations,
               })(
-                <StationSelect data={stations.filter(e => e.stationType !== 0)} multiple={true} onOK={this.onStationSelected} />
+                <StationSelect
+                  data={stations.filter(e => e.stationType !== 0)}
+                  multiple={true}
+                  onOK={this.onStationSelected}
+                />
               )}
             </FormItem>
           </Form>

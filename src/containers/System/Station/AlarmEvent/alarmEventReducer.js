@@ -33,10 +33,14 @@ var initState = Immutable.fromJS({
   editVersionStationCodes: [], // 编辑的版本涉及的电站
   alarmEventType: [], // 告警标准事件类型
   pointList: [], //测点数据
+  pointListError: false, // 测点数据错误
   editPoint: {}, // 测点编辑的数据
   setPonitModal: false, // 测点编辑的弹框
   warningTipText: '',
-  applayStations: [], //版本应用的电站
+  applyStations: [], //版本应用的电站
+
+  selectedNodesKey: '', // 选中的节点   manufactorCode_deviceModeCode_diagModeVersionId
+  expandedKeys: [], // 受控展开的树节点  manufactorCode manufactorCode_deviceModeCode
 
 });
 

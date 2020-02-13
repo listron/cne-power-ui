@@ -2,7 +2,6 @@
 .alarmEventContiner {
   @include contentBoxStyle();
   background: #f0f2f5;
-  height: 100%;
 
   .content {
     display: flex;
