@@ -662,7 +662,7 @@ const menuData = [
           {
             name: '平台级告警事件',
             path: 'alarmEvent',
-            rightKey: 'system_station_stat',
+            rightKey: 'system_station_alertTemplate',
           },
           {
             name: '设备',
