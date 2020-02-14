@@ -13,10 +13,6 @@ class ChartLine extends PureComponent {
     analysisEvent: PropTypes.object,
   };
 
-  state = {
-    legend: [],
-  }
-
   componentDidMount(){
     const { eventAnalysisInfo } = this.props;
     const { period = [], data = {} } = eventAnalysisInfo || {};
@@ -68,12 +64,18 @@ class ChartLine extends PureComponent {
     const lineChart = echarts.init(this.lineRef);
     lineChart.hideLoading();
     const { time = [], pointData = [] } = data;
-    // const legendData = [{
-    //   name: '告警时段',
-    //   icon: 'image://data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iOHB4IiBoZWlnaHQ9IjhweCIgdmlld0JveD0iMCAwIDggOCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggNTEuMyAoNTc1NDQpIC0gaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoIC0tPgogICAgPHRpdGxlPlJlY3RhbmdsZSAzPC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnM+PC9kZWZzPgogICAgPGcgaWQ9IlNjcmVlbjIt5ZGK6K2mIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iMy3mjInpkq7lkozooajljZUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00MTYuMDAwMDAwLCAtNTIxLjAwMDAwMCkiIGZpbGw9IiNEOEQ4RDgiIGZpbGwtcnVsZT0ibm9uemVybyI+CiAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtMyIgeD0iNDE2IiB5PSI1MjEiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiIHJ4PSIyIj48L3JlY3Q+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=',
-    // }];
-    const legendData = [];
-    const markAreaData = period.map(e => {
+    const legendData = [{
+      name: '告警时段',
+      icon: 'rect',
+      textStyle: {
+        width: 120,
+      },
+    }];
+    const colors = ['#FBE6E3']; // 图标依次着色
+    const unitGroupSets = new Set();
+    let unitsGroup = []; // 解出单位数组
+    const unitSortTemplate = ['W/m2', 'kW', 'V', 'A'];
+    const markAreaData = period.map(e => { // 告警事件段数据规范。
       const { beginTime, endTime } = e || {};
       return [{
         xAxis: this.timeFormat(beginTime, interval),
@@ -81,7 +83,7 @@ class ChartLine extends PureComponent {
         xAxis: this.timeFormat(endTime, interval),
       }];
     });
-    const series = [{
+    const series = [{ // 初始化series;
       name: '告警时段',
       type: 'line',
       data: [],
@@ -94,18 +96,29 @@ class ChartLine extends PureComponent {
         data: markAreaData,
       },
     }];
-    const colors = ['#FBE6E3'];
-    pointData.forEach((e, i) => {
+    const sortedPointData = pointData.sort((a, b) => { // 单位排序：w/m2 >kw>V>A；其余默认
+      const aUnit = a.pointUnit || '';
+      const bUnit = b.pointUnit || '';
+      unitGroupSets.add(aUnit);
+      unitGroupSets.add(bUnit);
+      unitsGroup = [...unitGroupSets]; // 解出单位数组
+      if(unitSortTemplate.indexOf(aUnit) < 0) {
+        return 1;
+      }
+      if (unitSortTemplate.indexOf(bUnit) < 0) {
+        return -1;
+      }
+      return unitSortTemplate.indexOf(aUnit) - unitSortTemplate.indexOf(bUnit);
+    });
+    sortedPointData.forEach((e, i) => {
       const pointName = `${e.deviceName} ${e.pointName || ''}`;
+      const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
       colors.push(this.lineColors[i % this.lineColors.length]);
-      legendData.push(`${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`);
-      // legendData.push({
-      //   name: pointName,
-      //   icon: 'path://M681.38649,914 C682.148892,914 683.387172,914 685.05,914 C685.574671,914 686,914.447715 686,915 C686,915.552285 685.574671,916 685.05,916 C683.395287,916 682.145906,916 681.38649,916 C681.458399,915.583252 681.494354,915.256592 681.494354,915.02002 C681.494354,914.783447 681.458399,914.443441 681.38649,914 Z M671.590869,916 C670.781787,916 669.568164,916 667.95,916 C667.425329,916 667,915.552285 667,915 C667,914.447715 667.425329,914 667.95,914 C669.599694,914 670.766022,914 671.590869,914 C671.520725,914.443358 671.485654,914.776691 671.485654,915 C671.485654,915.221136 671.520725,915.554469 671.590869,916 Z M676.5,919 C674.290861,919 672.5,917.209139 672.5,915 C672.5,912.790861 674.290861,911 676.5,911 C678.709139,911 680.5,912.790861 680.5,915 C680.5,917.209139 678.709139,919 676.5,919 Z',
-      // });
+      legendData.push({ name: pointFullName });
       series.push({
-        name: pointName,
+        name: pointFullName,
         type: 'line',
+        yAxisIndex: unitsGroup.indexOf(e.pointUnit || ''), // 空单位统一以''作为单位
         lineStyle: {
           width: 3,
         },
@@ -115,18 +128,34 @@ class ChartLine extends PureComponent {
         smooth: true,
       });
     });
-    this.setState({ legend: legendData });
+    const yAxis = unitsGroup.map(e => ({ // 生成多y纵坐标, 相同单位对应一个y轴
+      type: 'value',
+      axisLabel: {
+        show: false,
+      },
+      axisTick: {
+        show: false,
+      },
+      axisLine: {
+        show: false,
+      },
+      splitLine: {
+        show: false,
+      },
+    }));
+    const legendHeight = Math.ceil(legendData.length / 4) * 30;
+    console.log(sortedPointData, unitsGroup, series);
     const option = {
-      // legend: {
-      //   selectedMode: false,
-      //   data: legendData,
-      // },
+      legend: {
+        height: legendHeight,
+        data: legendData,
+      },
       color: colors,
       grid: {
         show: true,
         borderColor: '#d4d4d4',
         bottom: 100,
-        top: 8,
+        top: legendHeight,
         left: '7%',
         right: '7%',
       },
@@ -140,20 +169,28 @@ class ChartLine extends PureComponent {
         },
         extraCssText: 'padding: 5px 10px; background-color: rgba(0,0,0,0.70); box-shadow:0 1px 4px 2px rgba(0,0,0,0.20); border-radius:2px;',
         formatter: (params = []) => {
+          console.log(params, sortedPointData);
           const { name } = params[0] || {};
           return (
             `<section class=${styles.chartTooltip}>
               <h3 class=${styles.tooltipTitle}>${name}</h3>
-              ${params.map(e => (
-                `<p class=${styles.eachItem}>
-                  <span class=${styles.tipIcon}>
-                    <span class=${styles.line} style="background-color:${e.color}"></span>
-                    <span class=${styles.rect} style="background-color:${e.color}"></span>
-                  </span>
-                  <span class=${styles.tipName}>${e.seriesName}</span>
-                  <span class=${styles.tipValue}>${dataFormats(e.value, '--', 2, true)}</span>
-                </p>`
-              )).join('')}
+              ${params.map(e => {
+                const { color, seriesIndex, value } = e || {};
+                const eachFullData = sortedPointData[seriesIndex - 1] || {};
+                // 解析全数据使用， 因为系列中有个首条空线， series需减一对应。
+                const { isWarned, pointName, deviceName } = eachFullData;
+                const lineFullName = `${deviceName} ${pointName || ''}`;
+                return (
+                  `<p class=${styles.eachItem}>
+                    <span class=${styles.tipIcon}>
+                      <span class=${styles.line} style="background-color:${color}"></span>
+                      <span class=${styles.rect} style="background-color:${color}"></span>
+                    </span>
+                    <span class=${styles.tipName}>${lineFullName}</span>
+                    <span class=${styles.tipValue}>${dataFormats(value, '--', 2, true)}</span>
+                  </p>`
+                );
+              }).join('')}
             </section>`
           );
         },
@@ -177,23 +214,7 @@ class ChartLine extends PureComponent {
           show: false,
         },
       },
-      yAxis: [
-        {
-          type: 'value',
-          axisLabel: {
-            show: false,
-          },
-          axisTick: {
-            show: false,
-          },
-          axisLine: {
-            show: false,
-          },
-          splitLine: {
-            show: false,
-          },
-        },
-      ],
+      yAxis,
       series,
     };
     if (pointData.length > 0) {
@@ -212,10 +233,9 @@ class ChartLine extends PureComponent {
   }
 
   render(){
-    const { legend } = this.state;
     return (
       <div className={styles.analysisChart}>
-        <div className={styles.legends}>
+        {/* <div className={styles.legends}>
           <span className={styles.period}>告警时段</span>
           {legend.map((e, i) => (
             <span key={e} className={styles.eachLegend}>
@@ -226,7 +246,7 @@ class ChartLine extends PureComponent {
               <span className={styles.legendName}>{e}</span>
             </span>
           ))}
-        </div>
+        </div> */}
         <div style={{width: '100%', height: '506px'}} ref={(ref) => { this.lineRef = ref; } } />
       </div>
     );
