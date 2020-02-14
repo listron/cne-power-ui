@@ -13,7 +13,7 @@ class BranchTable extends React.Component {
       focus: false,
       selectDeviceFullCode: false,
       isCheckStatus: false,
-      saveEditArr: [],
+      // saveEditArr: [],
     };
   }
   componentDidMount() {
@@ -51,16 +51,13 @@ class BranchTable extends React.Component {
   }
   //改变支路条数
   changeBranchNum = (value) => {
-
     const { copyData, changeBranchStore } = this.props;
     const { focus, selectDeviceFullCode } = this.state;
-
-    const selectedArr = copyData.filter((e, i) => e.deviceFullCode === focus);
-    const selectedDevice = selectedArr[0];
-    const branchList = selectedDevice ? selectedDevice.branchList : [];
-    const length = branchList ? branchList.length : 0;
-
-    // const arr = [];
+    const selectedArr = copyData.filter((e, i) => e.deviceFullCode === focus);//筛选的设备名称
+    const selectedDevice = selectedArr[0];//选中的设备名称的数据{...}
+    const branchList = selectedDevice ? selectedDevice.branchList : [];//支路的数据
+    const length = branchList ? branchList.length : 0;//支路得长度
+    const arr = [];
     // const data = { deviceFullCode: focus, branchIndex, branchCode, pvNum, isDelete };
     //修改的支路大于原有支路时，就是新增的时候；
     if (value > length) {
@@ -68,14 +65,15 @@ class BranchTable extends React.Component {
         branchList.forEach((item, index) => {
           if (i > index) {
             //此处需要判断索引时从0开始的还是1开始的，0的话时i,1的话i+1；branchCode没有值，可以不填
-            // arr.push({ deviceFullCode: focus, branchIndex: i, pvNums: 1, isDelete: 0 });
+            arr.push({ deviceFullCode: focus, branchIndex: i, pvNums: 1, isDelete: 0 });
             const editArr = this.filterEditData(focus, i, 1, 0);
-            this.setState({
-              saveEditArr: editArr,
-            });
+            changeBranchStore({ saveEditArr: editArr });
+
           }
         });
       }
+      console.log('arr-新增: ', arr);
+
       const newTableData = copyData.map((e, i) => {
         if (e.deviceFullCode === selectDeviceFullCode) {
           const count = e.branchList.length;
@@ -95,9 +93,8 @@ class BranchTable extends React.Component {
         const pvNums = item.pvNums;
         if (i > value) {
           const editArr = this.filterEditData(focus, branchIndex, pvNums, 1);
-          this.setState({
-            saveEditArr: editArr,
-          });
+          changeBranchStore({ saveEditArr: editArr });
+
         }
       }
 
@@ -112,9 +109,7 @@ class BranchTable extends React.Component {
 
       changeBranchStore({ copyData: newTableData });
     }
-    // this.setState({
-    //   saveEditArr: arr,
-    // });
+
   }
   inputBlur = (value) => {
     this.setState({
@@ -123,9 +118,15 @@ class BranchTable extends React.Component {
   }
   //判断状态显示
   jugeStatus = (e) => {
+    if (Object.keys(e).length === 0) {//判断是否是空{}
+      return '';
+    }
     const { isCheckStatus } = this.state;
     const { branchStatus, checkStatus, isChange, pvNums } = e;
-    if (isCheckStatus) {//当时检测支路状态
+    if (isCheckStatus) {//当为检测支路状态
+      if (pvNums === 0) {
+        return styles.nolink;
+      }
       return isChange && pvNums > 0 ? styles.change : checkStatus ? styles.link : styles.nolink;
     }
     return branchStatus ? styles.link : styles.nolink;
@@ -139,6 +140,8 @@ class BranchTable extends React.Component {
           if (item.branchIndex === +branchIndex) {
             item.pvNums = value;
             item.isChange = 0;
+            item.branchStatus = value === 0 ? 0 : 1;
+            item.checkStatus = value === 0 ? 0 : 1;
             return { ...item };
           }
           return { ...item };
@@ -156,19 +159,15 @@ class BranchTable extends React.Component {
     const deviceFullCode = focus.split('_')[0];//设备名的code
     const branchIndex = focus.split('_')[1];//拿到索引
     const newTableData = this.editTableData(deviceFullCode, branchIndex, value);
-    changeBranchStore({ copyData: newTableData });
     const editArr = this.filterEditData(deviceFullCode, branchIndex, value);
-    this.setState({
-      saveEditArr: editArr,
-    });
+    changeBranchStore({ copyData: newTableData, saveEditArr: editArr });
+
   }
   //筛选出已编辑的数据，并去重
   filterEditData = (deviceFullCode, branchIndex, value, isDelete) => {
-
-    const { saveEditArr, selectDeviceFullCode } = this.state;
-
+    const { selectDeviceFullCode } = this.state;
+    const { saveEditArr } = this.props;
     const isExitCode = (deviceFullCode === selectDeviceFullCode) && saveEditArr.some((e) => (e.branchIndex === +branchIndex));
-
     const editItem = saveEditArr.map((e) => {
       if (deviceFullCode === selectDeviceFullCode && e.branchIndex === +branchIndex) {
         e.pvNums = value;
@@ -181,8 +180,9 @@ class BranchTable extends React.Component {
   }
 
   render() {
-    const { loadding, copyData, checkTime } = this.props;
-    const { focus, isCheckStatus, saveEditArr } = this.state;
+    const { loadding, copyData, checkTime, saveEditArr } = this.props;
+    console.log('copyData: ', copyData);
+    const { focus, isCheckStatus } = this.state;
     console.log('saveEditArr: ', saveEditArr);
     const pvNumsArr = [0, 1, 2, 3, 4, 5];
     return (
@@ -243,35 +243,36 @@ class BranchTable extends React.Component {
             ))}
           </div>
           <div className={styles.tablePart}>
-            {copyData.length ? copyData.map((item, index) => (
-              <div className={index % 2 === 0 ? styles.tabletd : styles.tableEventd} key={index}>
-                <div className={styles.name}>{item.deviceName}</div>
-                <div
-                  // ref={item.deviceFullCode}
-                  className={styles.number}
-                  onClick={(e) => { this.editNum(e, item.deviceFullCode, item.deviceFullCode); }}
-                  key={item}
-                  value={item}
-                >
-                  {focus === item.deviceFullCode ?
-                    <InputNumber min={1} max={20}
-                      ref="input"
-                      onBlur={this.inputBlur}
-                      onChange={this.changeBranchNum}
-                      defaultValue={item.branchList.length}
-                    /> :
-                    item.branchList.length}
-                </div>
-                {
-                  item.branchList.map((e, i) => {
-                    const styleStatus = this.jugeStatus(e);
-                    const branchId = `${item.deviceFullCode}_${e.branchIndex}`;
+            {copyData.length ? copyData.map((item, index) => {
+              const branchList = item.branchList;
+              return (
+                <div className={index % 2 === 0 ? styles.tabletd : styles.tableEventd} key={index}>
+                  <div className={styles.name}>{item.deviceName}</div>
+                  <div
+                    // ref={item.deviceFullCode}
+                    className={styles.number}
+                    onClick={(e) => { this.editNum(e, item.deviceFullCode, item.deviceFullCode); }}
+                    key={item}
+                    value={item}
+                  >
+                    {focus === item.deviceFullCode ?
+                      <InputNumber min={1} max={20}
+                        ref="input"
+                        onBlur={this.inputBlur}
+                        onChange={this.changeBranchNum}
+                        defaultValue={item.branchList.length}
+                      /> :
+                      item.branchList.length}
+                  </div>
+                  {Array.from({ length: 20 }, (e, i) => {
+                    const branchListItem = branchList[i] ? branchList[i] : {};
+                    const styleStatus = this.jugeStatus(branchListItem);
+                    const branchId = `${item.deviceFullCode}_${branchListItem.branchIndex}`;
                     return (
-                      <div className={styles.titleStyle} key={branchId}>
-
+                      <div className={styles.titleStyle} key={i}>
                         {focus === branchId ?
                           <Select
-                            defaultValue={e.pvNums}
+                            defaultValue={branchListItem.pvNums}
                             style={{ width: 45 }}
                             onChange={this.handleSelect}
                             onBlur={this.inputBlur}
@@ -279,22 +280,20 @@ class BranchTable extends React.Component {
                             {pvNumsArr.map((pvNum, value) => (
                               <Option value={pvNum}>{pvNum}</Option>
                             ))}
-
                           </Select> :
                           <div
                             onClick={(info) => { this.editNum(info, branchId, item.deviceFullCode); }}
-                            value={e.pvNums}
                             className={styleStatus}
                           >
-                            {e.pvNums}
+                            {branchListItem.pvNums ? branchListItem.pvNums : null}
                             <div></div>
                           </div>}
                       </div>
                     );
-                  })
-                }
-              </div>
-            )) :
+                  })}
+                </div>
+              );
+            }) :
               <div className={styles.noData}>
                 <img src="/assets/img/nodata.png" width="223" height="164" />
               </div>
@@ -307,3 +306,35 @@ class BranchTable extends React.Component {
   }
 }
 export default (BranchTable);
+
+{/* {
+                    item.branchList.map((e, i) => {
+                      const styleStatus = this.jugeStatus(e);
+                      const branchId = `${item.deviceFullCode}_${e.branchIndex}`;
+                      return (
+                        <div className={styles.titleStyle} key={branchId}>
+  
+                          {focus === branchId ?
+                            <Select
+                              defaultValue={e.pvNums}
+                              style={{ width: 45 }}
+                              onChange={this.handleSelect}
+                              onBlur={this.inputBlur}
+                            >
+                              {pvNumsArr.map((pvNum, value) => (
+                                <Option value={pvNum}>{pvNum}</Option>
+                              ))}
+  
+                            </Select> :
+                            <div
+                              onClick={(info) => { this.editNum(info, branchId, item.deviceFullCode); }}
+                              value={e.pvNums}
+                              className={styleStatus}
+                            >
+                              {e.pvNums}
+                              <div></div>
+                            </div>}
+                        </div>
+                      );
+                    })
+                  } */}

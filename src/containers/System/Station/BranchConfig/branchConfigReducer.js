@@ -13,6 +13,7 @@ const initState = Immutable.fromJS({
   checkTime: '',
   deviceBranchInfo: [],
   copyData: [],
+  saveEditArr: [],
 
 });
 
