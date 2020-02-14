@@ -1,0 +1,423 @@
+@import "../../../../../theme/theme.scss";
+
+// 复用代码块：
+@mixin btnCommon() {
+  // 按钮重复样式
+  width: 90px;
+  cursor: pointer;
+  display: inline-block;
+  @include lineheight(30px);
+  letter-spacing: 1px;
+  text-align: center;
+  margin-left: 30px;
+  transition: all .4s;
+  position: relative;
+  font-size: 14px;
+  border-radius: 2px;
+}
+
+@mixin btnScale() {
+  // 按钮动画重复样式
+  width: 0;
+  height: 0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 1000px;
+  opacity: 0;
+  transition: all .6s;
+}
+
+.meterBaseInfo {
+  width: 100%;
+
+  .baseTitleBox {
+    width: 100%;
+    display: flex;
+    padding-right: 25px;
+    justify-content: space-between;
+
+    .baseBanner {
+      width: 166px;
+      color: #ffffff;
+      padding-left: 17px;
+      @include lineheight(36px);
+      background-image: url("../../../../../../assets/img/bannerBgc.png");
+      background-repeat: no-repeat;
+    }
+
+    .baseIconBox {
+      width: 104px;
+      display: flex;
+      justify-content: space-between;
+      line-height: 34px;
+      position: relative;
+
+      .baseTimeout {
+        font-size: 20px;
+        color: #df4b33;
+      }
+
+      .baseEnd {
+        position: absolute;
+        z-index: 1;
+        font-size: 80px;
+        color: $themeColor;
+        top: 15px;
+        right: -20px;
+      }
+
+      .baseStatus {
+        width: 70px;
+        @include lineheight(34px);
+        border-radius: 17px;
+        background-color: #fbe6e3;
+        color: #df4b33;
+        text-align: center;
+      }
+    }
+  }
+
+  .baseTableInfo {
+    width: 100%;
+    margin-top: 13px;
+    padding: 0 25px;
+
+    .baseTableContent {
+      width: 100%;
+      color: #353535;
+      border: 1px solid $borderColor;
+      background-color: #fff;
+
+      .tableTop {
+        width: 100%;
+        display: flex;
+        min-height: 40px;
+
+        .stationNameBox {
+          display: flex;
+
+          .stationName {
+            width: 9%;
+            min-width: 76px;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Medium, serif;
+            padding-left: 10px;
+            background-color: #f3f2f2;
+            border-right: 1px dashed $borderColor;
+          }
+
+          .stationContent {
+            width: 64%;
+            font-family: PingFangSC-Regular, serif;
+            color: #353535;
+            word-break: break-word;
+            min-width: 530px;
+            padding: 12px 0 0 10px;
+          }
+        }
+
+        .workProcessBox {
+          display: flex;
+
+          .workProcessType {
+            width: 12%;
+            min-width: 104px;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Medium, serif;
+            padding-left: 10px;
+            background-color: #f3f2f2;
+            border-right: 1px dashed $borderColor;
+            border-left: 1px dashed $borderColor;
+          }
+
+          .workProcessContent {
+            width: 15%;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Regular, serif;
+            min-width: 130px;
+            padding-left: 10px;
+          }
+        }
+      }
+
+      .tableMid {
+        width: 100%;
+        display: flex;
+        min-height: 40px;
+        border-top: 1px solid #d4d4d4;
+        border-bottom: 1px solid #d4d4d4;
+
+        .creatorBox {
+          display: flex;
+
+          .creator {
+            width: 9%;
+            min-width: 76px;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Medium, serif;
+            padding-left: 10px;
+            background-color: #f3f2f2;
+            border-right: 1px dashed $borderColor;
+          }
+
+          .creatorContent {
+            width: 37%;
+            min-width: 296px;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Regular, serif;
+            padding-left: 10px;
+          }
+        }
+
+        .workProcessTimeBox {
+          display: flex;
+
+          .workProcessTime {
+            width: 12%;
+            min-width: 104px;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Medium, serif;
+            padding-left: 10px;
+            background-color: #f3f2f2;
+            border-right: 1px dashed $borderColor;
+            border-left: 1px dashed $borderColor;
+          }
+
+          .workProcessTimeContent {
+            width: 15%;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Regular, serif;
+            min-width: 130px;
+            padding-left: 10px;
+          }
+
+        }
+
+        .finishTimeBox {
+          display: flex;
+
+          .finishTime {
+            width: 12%;
+            min-width: 104px;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Medium, serif;
+            padding-left: 10px;
+            background-color: #f3f2f2;
+            border-right: 1px dashed $borderColor;
+            border-left: 1px dashed $borderColor;
+          }
+
+          .finishTimeContent {
+            width: 15%;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Regular, serif;
+            min-width: 130px;
+            padding-left: 10px;
+          }
+        }
+      }
+
+      .tableBottom {
+        width: 100%;
+        display: flex;
+        min-height: 40px;
+
+        .operatorBox {
+          display: flex;
+
+          .operator {
+            width: 9%;
+            min-width: 76px;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Medium, serif;
+            padding-left: 10px;
+            background-color: #f3f2f2;
+            border-right: 1px dashed $borderColor;
+          }
+
+          .operatorContent {
+            width: 37%;
+            display: flex;
+            min-width: 296px;
+            padding: 12px 0 0 10px;
+            font-family: PingFangSC-Regular, serif;
+
+            i {
+              cursor: pointer;
+              font-size: 20px;
+              vertical-align: sub;
+              color: $themeColor;
+            }
+          }
+        }
+
+        .acceptorBox {
+          display: flex;
+
+          .acceptor {
+            width: 12%;
+            min-width: 104px;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Medium, serif;
+            padding-left: 10px;
+            background-color: #f3f2f2;
+            border-right: 1px dashed $borderColor;
+            border-left: 1px dashed $borderColor;
+          }
+
+          .acceptorContent {
+            width: 15%;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Regular, serif;
+            min-width: 130px;
+            padding-left: 10px;
+          }
+
+        }
+
+        .actualTimeBox {
+          display: flex;
+
+          .actualTime {
+            width: 12%;
+            min-width: 104px;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Medium, serif;
+            padding-left: 10px;
+            background-color: #f3f2f2;
+            border-right: 1px dashed $borderColor;
+            border-left: 1px dashed $borderColor;
+          }
+
+          .actualTimeContent {
+            width: 15%;
+            display: flex;
+            align-items: center;
+            font-family: PingFangSC-Regular, serif;
+            min-width: 130px;
+            padding-left: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.operatorWrap {
+  padding-left: 0;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px 4px rgba(0, 0, 0, 0.40);
+
+  .operatorCenter {
+    width: 250px;
+
+    .operatorList {
+      width: 220px;
+      margin: 0 auto;
+      padding: 10px 0 30px;
+    }
+
+    .operatorBtn {
+      width: 100%;
+      height: 40px;
+      background-color: #f1f1f1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .cancelBtn {
+        cursor: pointer;
+      }
+
+      .btnGreen {
+        @include btnCommon();
+        color: $themeColor;
+        background: rgba(206, 235, 224, 0.30);
+        box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.50);
+        border: 1px solid $themeColor;
+      }
+
+      .am {
+        overflow: hidden;
+      }
+
+      .amGreenScale:before {
+        @include btnScale();
+        background: $slideSelectColor;
+
+      }
+
+      .am:before {
+        content: '';
+        display: block;
+        position: absolute;
+        z-index: 1;
+      }
+
+      .amGreenScale:hover:before {
+        width: 120%;
+        height: 200%;
+        opacity: 1;
+      }
+
+      .am > span {
+        letter-spacing: normal;
+        position: relative;
+        z-index: 2;
+      }
+    }
+  }
+
+  .operatorItemBox{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed $borderColor;
+
+    .operatorItem {
+      display: inline-block;
+      margin-right: 0;
+      width: 105px;
+      padding: 7px 0;
+      border-radius: 2px;
+    }
+  }
+
+  :global {
+    .ant-popover-inner-content {
+      padding: 0;
+    }
+
+    .ant-popover-arrow {
+      display: none;
+    }
+
+    .ant-checkbox-wrapper {
+      padding-left: 5px;
+      width: 100%;
+      border-radius: 2px;
+    }
+
+    .ant-checkbox-wrapper-checked{
+      background-color: $themeColor;
+
+      .ant-checkbox + span{
+        color: #fff;
+      }
+    }
+  }
+}

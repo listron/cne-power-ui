@@ -1,0 +1,106 @@
+@import "../../../../../theme/theme.scss";
+
+.meterProcess {
+  width: 100%;
+
+  .processTitleBox {
+    width: 100%;
+    display: flex;
+    padding-right: 25px;
+    justify-content: space-between;
+
+    .processBanner {
+      width: 166px;
+      color: #ffffff;
+      padding-left: 17px;
+      @include lineheight(36px);
+      background-image: url("../../../../../../assets/img/bannerBgc.png");
+      background-repeat: no-repeat;
+    }
+  }
+
+  .processContent {
+    padding: 18px 15px 0 15px;
+
+    .processItem {
+      min-height: 30px;
+      position: relative;
+      background-color: #f2f8f5;
+      box-shadow: 0 2px 4px 0 #999999;
+
+      .processItemBox {
+        width: 100%;
+        display: flex;
+        padding: 0 5px;
+        justify-content: space-between;
+
+        .processItemName {
+          color: #353535;
+          @include lineheight(30px);
+          font-family: PingFangSC-Medium, serif;
+        }
+
+        .itemRight {
+          display: flex;
+
+          .processItemDetail {
+            color: #353535;
+            @include lineheight(30px);
+            font-family: PingFangSC-Regular, serif;
+          }
+
+          .processItemTime {
+            margin-left: 5px;
+            @include lineheight(30px);
+            font-family: ArialMT, serif;
+            color: #999999;
+          }
+        }
+      }
+
+      .processTriangle {
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 5px;
+        left: -8px;
+        border-bottom: 8px solid #f2f8f5;
+        border-left: 8px solid transparent;
+        box-shadow: 0 2px 4px -1px #999999;
+      }
+    }
+
+    .singleInfo {
+      color: $themeColor;
+    }
+
+    .processContentDetail {
+      padding: 0 5px;
+      line-height: 32px;
+      border-top: 1px solid #8eb7a8;
+
+      b {
+        font-family: PingFangSC-Medium, serif;
+        color: #353535;
+      }
+
+      span {
+        font-family: PingFangSC-Regular, serif;
+        color: #353535
+      }
+    }
+  }
+
+  :global {
+    .ant-timeline-item{
+      margin: 20px 0;
+    }
+    .ant-timeline-item-tail {
+      border-left: 0;
+      width: 3px;
+      top: 15px;
+      border-radius: 1.5px;
+      background-image: linear-gradient(-180deg, #f1f1f1 4%, #aeadad 94%);
+    }
+  }
+}
