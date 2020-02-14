@@ -157,13 +157,13 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
     }
   }
   render() {
-    const { stationModalShow, hideStationModal, showStationModal, multiple, data, oneStyleOnly, disabledStation } = this.props;
+    const { stationModalShow, hideStationModal, showStationModal, multiple, data, oneStyleOnly, disabledStation, classNameStyle } = this.props;
     const { filterStationType, stationType, showWarningTip, warningTipText, selectedStation } = this.state;
     const tmpStationSet = new Set(data.map(e => e.stationType));
     const hasMultipleType = tmpStationSet.size > 1;
     const checked = selectedStation.length + disabledStation.length === data.length;
     return (
-      <div className={styles.stationSelectModal}>
+      <div className={`${styles.stationSelectModal} ${classNameStyle || ''}`}>
         {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <i className="iconfont icon-filter" onClick={showStationModal} />
         <span ref={'stations'} />
