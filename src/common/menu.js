@@ -34,6 +34,44 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
+        name: '告警',
+        iconStyle: 'icon-alarm1',
+        path: 'alarm',
+        rightKey: 'monitor_alarm',
+        children: [
+          {
+            name: '实时告警',
+            path: 'realtime',
+            rightKey: 'monitor_alarm_realTime',
+          }, {
+            name: '已转工单',
+            path: 'transfer',
+            rightKey: 'monitor_alarm_realTime',
+          }, {
+            name: '手动解除',
+            path: 'relieve',
+            rightKey: 'monitor_alarm_realTime',
+          }, {
+            name: '历史告警',
+            path: 'history',
+            rightKey: 'monitor_alarm_history',
+          }, {
+            name: '告警统计',
+            path: 'statistic',
+            rightKey: 'monitor_alarm_statistics',
+          },
+          // {
+          //   name: '告警统计',
+          //   path: 'statistics',
+          //   rightKey: 'monitor_alarm_statistics',
+          // }
+        ],
+      }, {
+        name: '诊断中心',
+        iconStyle: 'icon-monitoring',
+        path: 'diagnoseCenter',
+        rightKey: 'monitor_diagnosis',
+      }, {
         name: '功率曲线',
         iconStyle: 'icon-monitoring',
         path: 'powercurve',
@@ -93,45 +131,6 @@ const menuData = [
       //     },
       //   ],
       // },
-      {
-        name: '告警',
-        iconStyle: 'icon-alarm1',
-        path: 'alarm',
-        rightKey: 'monitor_alarm',
-        children: [
-          {
-            name: '实时告警',
-            path: 'realtime',
-            rightKey: 'monitor_alarm_realTime',
-          }, {
-            name: '已转工单',
-            path: 'transfer',
-            rightKey: 'monitor_alarm_realTime',
-          }, {
-            name: '手动解除',
-            path: 'relieve',
-            rightKey: 'monitor_alarm_realTime',
-          }, {
-            name: '历史告警',
-            path: 'history',
-            rightKey: 'monitor_alarm_history',
-          }, {
-            name: '告警统计',
-            path: 'statistic',
-            rightKey: 'monitor_alarm_statistics',
-          },
-          // {
-          //   name: '告警统计',
-          //   path: 'statistics',
-          //   rightKey: 'monitor_alarm_statistics',
-          // }
-        ],
-      }, {
-        name: '诊断中心',
-        iconStyle: 'icon-monitoring',
-        path: 'diagnoseCenter',
-        rightKey: 'monitor_diagnosis',
-      },
     ],
   },
   {
