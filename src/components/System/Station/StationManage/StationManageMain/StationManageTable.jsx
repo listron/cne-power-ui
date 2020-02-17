@@ -12,6 +12,7 @@ import path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
 import { handleRight } from '@utils/utilFunc';
 import CneTable from '../../../../Common/Power/CneTable/index';
+import CneButton from '../../../../Common/Power/CneButton/index';
 import SetEventYxModal from './SetEventYxModal';
 import SetEventYcModal from './SetEventYcModal';
 const { Search } = Input;
@@ -55,9 +56,10 @@ class StationManageTable extends Component {
       deleteInfo: {},
       eventYxModal: false,
       eventYcModal: false,
-      stationCode: {}, // 选中的当前的电站
+      selectSataionInfo: {}, //选中的当前的电站
       type: 'yc', // 'yc' 遥测诊断 'data' 数据质量诊断
       search: false, // 搜索框出现
+      conditionInfo: null, //筛选条件
     };
   }
 
@@ -192,10 +194,10 @@ class StationManageTable extends Component {
   }
 
   setYxStatus = (list) => { // 设置遥信的数据
-    const { stationCode } = list;
+    const { stationCode, stationName } = list;
     const { getDiagconfigYx } = this.props;
     getDiagconfigYx({ stationCode });
-    this.setState({ eventYxModal: true, stationCode });
+    this.setState({ eventYxModal: true, selectSataionInfo: { stationCode, stationName } });
   }
 
   setYcStatus = (list, type) => {// 设置遥测数据和数据质量诊断
@@ -414,5 +416,6 @@ class StationManageTable extends Component {
 }
 
 export default StationManageTable;
+
 
 

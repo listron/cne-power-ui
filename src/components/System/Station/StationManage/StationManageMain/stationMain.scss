@@ -109,22 +109,13 @@
               border: 1px solid #199475;
               box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
               border-radius: 2px;
-              color: $themeColor;
-              width: 90px;
-              height: 32px;
-              line-height: 30px;
               cursor: pointer;
               .icon {
-                margin: 0 14px 0 10px;
+                margin: 0 10px 0 0;
               }
             }
           }
           .download {
-            background: rgba(206, 235, 224, 0.3);
-            border: 1px solid #199475;
-            box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
-            color: $themeColor;
-            padding: 0 10px;
             margin-right: 13px;
           }
           .conditionSearch {
@@ -139,17 +130,13 @@
             position: relative;
             .closeSearch {
               position: absolute;
-              left: 188px;
-              color: #fff;
-              background: #999999;
-              width: 14px;
-              height: 14px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              border-radius: 50%;
+              left: 186px;
+              color: #999;
               z-index: 9;
               cursor: pointer;
+              &:hover {
+                color: #e08031;
+              }
             }
             :global {
               .ant-input-search {
@@ -162,7 +149,7 @@
                 margin: 3px 0;
                 width: 200px;
                 border-radius: 2px;
-                padding-right: 16px;
+                padding-right: 20px;
                 padding-left: 5px;
                 display: block;
               }
