@@ -1,0 +1,125 @@
+@import "../../../../../theme/theme.scss";
+@import "./layout.scss";
+.light {
+  .stationSelectModal {
+    :global {
+      .icon-filter {
+        color: $darkColor;
+      }
+    }
+  }
+  .stationStyleModal {
+    display: flex;
+    flex-direction: column;
+    padding-top: 24px;
+    .provinceList {
+      border-bottom: 1px #f1f1f1 solid;
+      .provinceItem {
+        .name {
+          color: $darkColor;
+        }
+        .stationList {
+          .eachStation {
+            background-color: #f1f1f1;
+            color: $darkColor;
+            cursor: pointer;
+          }
+          .checked {
+            background: $themeColor;
+            color: #fff;
+            :global {
+              .ant-checkbox-wrapper {
+                color: #fff;
+              }
+            }
+          }
+          .disabled {
+            cursor: not-allowed;
+            color: rgba(0, 0, 0, 0.25);
+            background-color: #f5f5f5;
+          }
+        }
+      }
+    }
+    .selectedStationList {
+      .selectedStationTitle {
+        .clearAll {
+          color: $themeColor;
+        }
+      }
+      .innerStationList {
+        .eachSelectedStation {
+          background-color: #f1f1f1;
+          color: $darkColor;
+          &:hover {
+            background-color: #fbe6e3;
+          }
+        }
+      }
+    }
+  }
+  :global {
+    .ant-radio-button-wrapper-checked {
+      background-color: $themeColor;
+      border: 1px solid $themeColor;
+      color: #fff;
+    }
+  }
+}
+
+.dark {
+  @import "../../../../../theme/darkTheme.scss";
+  .stationSelectModal {
+    :global {
+      .icon-filter {
+        color: $fontColor;
+      }
+    }
+  }
+  .stationStyleModal {
+    .provinceList {
+      border-bottom: 1px solid $border-color;
+      .provinceItem {
+        .name {
+          color: $fontColor;
+        }
+        .stationList {
+          .eachStation {
+            // background-color: $button-primary;
+            color: $fontColor;
+          }
+          .checked {
+            background: $button-active;
+            color: $fontColor-invert;
+            :global {
+              .ant-checkbox-wrapper {
+                color: $fontColor-invert;
+              }
+            }
+          }
+          .disabled {
+            // background: $button-primary;
+            color: #205bac;
+          }
+        }
+      }
+    }
+    .selectedStationList {
+      .selectedStationTitle {
+        .clearAll {
+          color: $themeColor;
+        }
+      }
+      .innerStationList {
+        .eachSelectedStation {
+          background-color: $button-active;
+          color: $fontColor-invert;
+          &:hover {
+            background: #fd6e8f;
+            color: #b70016;
+          }
+        }
+      }
+    }
+  }
+}
