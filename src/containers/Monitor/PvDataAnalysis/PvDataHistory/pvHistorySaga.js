@@ -10,7 +10,7 @@ const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 
 function* getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
-  const { stationCode } = payload;
+  const { stationCode, deviceTypeCode } = payload;
   const sortTypes = [ // 电站默认排序顺序
     '风电机组', '逆变器（集中）', '逆变器（组串）', '集电线路', '箱变', '汇流箱', '气象站', '站内母线', '主变', '站用变', '接地变', '测风塔', '全场信息汇总', '电能采集', '主进线', '功率预测系统', '能量管理平台', 'SVG', '母线分段', '馈线', '直流屏', '孤岛保护',
   ];
@@ -31,7 +31,13 @@ function* getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
         }
         return (tmpIndexA - tmpIndexB);
       });
-      const defaultTypes = stationDeviceTypes.find(e => e.deviceTypeCode); // 默认选中第一个设备类型名称
+      const defaultTypes = stationDeviceTypes.find(e => {
+        // payload.deviceTypeCode代表指定设备类型, 否则默认选中第一个设备类型名称;
+        if (deviceTypeCode) {
+          return `${e.deviceTypeCode}` === `${deviceTypeCode}`;
+        }
+        return e.deviceTypeCode;
+      });
       yield put({
         type: pvHistoryAction.GET_HISTORY_SUCCESS,
         payload: {
@@ -202,16 +208,6 @@ function* getSecendInterval(action) { // 用户所在企业数据时间间隔
   try {
     const { enterpriseId } = payload;
     const url = `${APIBasePath}${monitor.getSecendInteral}/${enterpriseId}`; // '/mock/monitor/dataAnalysisSecendInteral';
-    const { queryParam } = yield select(state => state.monitor.dataHistory.toJS());
-    const tmpQueryParam = { // 时间重置。
-      ...queryParam,
-      startTime: moment().startOf('day'),
-      endTime: moment(),
-    };
-    yield put({
-      type: pvHistoryAction.CHANGE_HISTORY_STORE,
-      payload: tmpQueryParam,
-    });
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       const { hasSecond } = response.data.data;
@@ -219,7 +215,6 @@ function* getSecendInterval(action) { // 用户所在企业数据时间间隔
         type: pvHistoryAction.GET_HISTORY_SUCCESS,
         payload: {
           intervalInfo: hasSecond === 1 ? [10, 2, 5, 1] : [10, 2, 5],
-          queryParam: tmpQueryParam,
         },
       });
     } else {
@@ -238,3 +233,4 @@ export function* watchPvDataHistoryMonitor() {
   yield takeLatest(pvHistoryAction.getListHistory, getListHistory);
   yield takeLatest(pvHistoryAction.getSecendInterval, getSecendInterval);
 }
+
