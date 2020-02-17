@@ -61,8 +61,11 @@ class DiagnoseList extends Component {
   }
 
   analysisEvent = (record) => { // √7. 分析点击 => 停止当前定时请求, 单独开启分析页面;
+    const { pageKey } = this.props;
+    const interval = pageKey === 'alarm' ? 2 : 1;
     this.props.stopCircleQueryList(); // 停止当前页面定时请求
-    this.props.getEventsAnalysis({ ...record, interval: 1 }); // 默认十分钟数据
+    // 告警事件-数据时间间隔5s interval = 2, 其他默认十分钟数据interval = 1;
+    this.props.getEventsAnalysis({ ...record, interval });
   }
 
   // selectRows = (selectedRowKeys) => { // todo 工单系统改造完成后, 操作功能添加
