@@ -176,7 +176,7 @@ class VersionSelect extends PureComponent {
         <CneTips
           tipText={'退出后信息无法保存'}
           onConfirm={this.tipConfirm}
-          onCancel={this.setState({ modifytip: false })}
+          onCancel={() => this.setState({ modifytip: false })}
           visible={modifytip}
           tipClassname={styles.modalWidth}
         />
