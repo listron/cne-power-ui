@@ -10,18 +10,37 @@ import PvHistoryChart from '../../../../components/Monitor/PvDataAnalysis/PvData
 import PvHistoryList from '../../../../components/Monitor/PvDataAnalysis/PvDataHistory/PvHistoryList';
 import Footer from '../../../../components/Common/Footer/index';
 import Cookie from 'js-cookie';
+import searchUtil from '@utils/searchUtil';
 
 class PvDataHistory extends Component {
   static propTypes = {
     historyType: PropTypes.string,
     enterpriseId: PropTypes.string,
+    history: PropTypes.object,
+    queryParam: PropTypes.object,
     resetHistoryStore: PropTypes.func,
     getSecendInterval: PropTypes.func,
+    getAvailableDeviceType: PropTypes.func,
+    changeHistoryStore: PropTypes.func,
   };
 
-  componentDidMount() { // 获取数据时间间隔
-    const {enterpriseId, getSecendInterval} = this.props;
-    getSecendInterval({enterpriseId});
+  componentDidMount() { // 获取数据时间间隔 + 若是携带路径参数进入该页面, 进行自动处理。
+    const { enterpriseId, history, queryParam } = this.props;
+    const { location } = history;
+    const { search } = location;
+    this.props.getSecendInterval({enterpriseId});
+    if (search) {
+      const { stationCode, deviceTypeCode } = searchUtil(search).parse();
+      if (stationCode) {
+        this.props.changeHistoryStore({
+          queryParam: {
+            ...queryParam,
+            stationCode: parseFloat(stationCode),
+          },
+        });
+        this.props.getAvailableDeviceType({ stationCode, deviceTypeCode });
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -29,7 +48,7 @@ class PvDataHistory extends Component {
   }
 
   render() {
-    const {historyType} = this.props;
+    const { historyType } = this.props;
     return (
       <div className={styles.dataHistory}>
         <div className={styles.contentBox}>
@@ -41,7 +60,7 @@ class PvDataHistory extends Component {
               {historyType === 'list' && <PvHistoryList {...this.props} />}
             </div>
           </div>
-          <Footer/>
+          <Footer />
         </div>
       </div>
     );
