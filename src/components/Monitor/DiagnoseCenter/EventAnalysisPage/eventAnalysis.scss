@@ -179,7 +179,7 @@
         height: 30px;
         line-height: 30px;
       }
-      .eachItem{
+      .eachItem, .warnedItem{
         height: 24px;
         margin-bottom: 0;
         display: flex;
@@ -294,6 +294,7 @@
     .searchParts{
       color: #353535;
       .leftIcon, .rightIcon{
+        color: var(--themeColor);
         background-color: #ceebe0;
         border:1px solid var(--themeColor);
         &:hover{
@@ -337,7 +338,7 @@
       .tooltipTitle{
         color: #fff;
       }
-      .eachItem{
+      .eachItem, .warnedItem{
         .tipRect{
           border: 1px solid #fff;
         }
@@ -351,6 +352,11 @@
         }
         .tipValue{
           color: #fff;
+        }
+      }
+      .warnedItem{
+        .tipName, .tipValue{
+          color: #f5222d;
         }
       }
     }

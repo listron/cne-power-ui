@@ -35,10 +35,10 @@ class DiagnoseFilter extends Component {
         startTime: null, //  起始时间
         endTime: null, // 终止事件
       };
-      newListPage = {
+      newListPage = { // 归档: 发生时间 降序; 非归档默认以事件状态 降序
         pageNum: 1, // 页码
         pageSize: 10, // 页容量
-        sortField: 'eventStatus',
+        sortField: finished ? 'beginTime' : 'eventStatus',
         sortMethod: 'desc', // 排序方式 asc升序 + desc降序
       };
     } else {// 筛选条件点击 => 重新请求列表, 停止定时请求;

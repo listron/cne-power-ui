@@ -152,11 +152,13 @@
     .eventName, .eventNameText, .warningLevel, .warningLevelText, .pointValueDesc, .pointValueDescText, .deviceTypeName, .deviceTypeNameText, .deviceName, .deviceNameText, .stationName, .stationNameText, .beginTime, .beginTimeText, .warningDuration, .warningDurationText, .warningFrequency, .warningFrequencyText, .statusName, .statusNameText {
       @include overflowText();
     }
-    .warningLevelText, .beginTimeText, .statusNameText, .handleStyle{ // 状态, 等级, 时间 居中
+    .warningLevelText, .beginTimeText, .statusNameText{ // 状态, 等级, 时间 居中
       text-align: center;
+      margin: 0 auto; // 盒子居td正中
     }
     .warningDurationText, .warningFrequencyText{ // 数值 居右
       text-align: right;
+      margin-left: auto;  // 盒子居td右侧
     }
     .beginTime {
       width: calc((100vw - 230px) * 0.115);
@@ -183,9 +185,12 @@
       max-width: calc((100vw - 230px) * 0.074 - 20px);
     }
     .handleStyle{
+      .handlers{
+        text-align: center;
+        margin: 0 auto; // 盒子居td正中
+      }
       width: calc((100vw - 230px) * 0.074);
       .handleAnalysis{
-        // margin-right: 10px;
         cursor: pointer;
       }
     }
@@ -257,12 +262,17 @@
   }
   .refreshIcon{
     .updater{
-      background-color: var(--themeColor);
+      color: var(--themeColor);
+      border: 1px solid #199475;;
+      &:hover{
+        color: #fff;
+        background-color: var(--themeColor);
+      }
     }
     :global{
-      .iconfont.icon-refresh{
-        color: #fff;
-      }
+      // .iconfont.icon-refresh{
+      //   color: #fff;
+      // }
       .iconfont.icon-help{
         color: #f9b600;
       }
