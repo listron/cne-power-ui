@@ -157,7 +157,6 @@ class ChartLine extends PureComponent {
       },
     }));
     const legendHeight = Math.ceil(legends.length / 4) * 30;
-    console.log(sortedPointData, unitsGroup, series, legends);
     const option = {
       legend: legends,
       color: colors,
@@ -179,7 +178,6 @@ class ChartLine extends PureComponent {
         },
         extraCssText: 'padding: 5px 10px; background-color: rgba(0,0,0,0.70); box-shadow:0 1px 4px 2px rgba(0,0,0,0.20); border-radius:2px;',
         formatter: (params = []) => {
-          console.log(params, sortedPointData);
           const { name } = params[0] || {};
           return (
             `<section class=${styles.chartTooltip}>
