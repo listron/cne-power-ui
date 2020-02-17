@@ -64,11 +64,15 @@ class ChartLine extends PureComponent {
     const lineChart = echarts.init(this.lineRef);
     lineChart.hideLoading();
     const { time = [], pointData = [] } = data;
-    const legendData = [{
+    const legends = [{
       name: '告警时段',
       icon: 'rect',
+      height: 30,
+      left: '7%',
+      top: 0,
+      data: ['告警时段'],
       textStyle: {
-        width: 120,
+        color: '#353535',
       },
     }];
     const colors = ['#FBE6E3']; // 图标依次着色
@@ -114,7 +118,16 @@ class ChartLine extends PureComponent {
       const pointName = `${e.deviceName} ${e.pointName || ''}`;
       const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
       colors.push(this.lineColors[i % this.lineColors.length]);
-      legendData.push({ name: pointFullName });
+      legends.push({
+        name: pointFullName,
+        height: 30,
+        left: `${7 + (i + 1) % 4 * 21.5}%`,
+        top: `${Math.floor((i + 1) / 4) * 30}`,
+        data: [pointFullName],
+        textStyle: {
+          color: e.isWarned ? '#f5222d' : '#353535',
+        },
+      });
       series.push({
         name: pointFullName,
         type: 'line',
@@ -143,13 +156,10 @@ class ChartLine extends PureComponent {
         show: false,
       },
     }));
-    const legendHeight = Math.ceil(legendData.length / 4) * 30;
-    console.log(sortedPointData, unitsGroup, series);
+    const legendHeight = Math.ceil(legends.length / 4) * 30;
+    console.log(sortedPointData, unitsGroup, series, legends);
     const option = {
-      legend: {
-        height: legendHeight,
-        data: legendData,
-      },
+      legend: legends,
       color: colors,
       grid: {
         show: true,
@@ -181,7 +191,7 @@ class ChartLine extends PureComponent {
                 const { isWarned, pointName, deviceName } = eachFullData;
                 const lineFullName = `${deviceName} ${pointName || ''}`;
                 return (
-                  `<p class=${styles.eachItem}>
+                  `<p class=${isWarned ? styles.eachItem : styles.warnedItem}>
                     <span class=${styles.tipIcon}>
                       <span class=${styles.line} style="background-color:${color}"></span>
                       <span class=${styles.rect} style="background-color:${color}"></span>

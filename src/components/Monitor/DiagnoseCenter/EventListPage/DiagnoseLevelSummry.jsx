@@ -107,8 +107,8 @@ class DiagnoseLevelSummry extends Component {
             overlayStyle={{ width: 418, maxWidth: 500, fontSize: '12px' }}
             title="数据每隔10秒刷新一次，筛选/查询后不再刷新，如需重置，请点此按钮刷新"
           >
-              <div className={styles.refreshIcon} onClick={this.refresh}>
-                <span className={styles.updater}>
+              <div className={styles.refreshIcon}>
+                <span className={styles.updater} onClick={this.refresh}>
                   <i className="iconfont icon-refresh" />
                 </span>
                 <i className="iconfont icon-help" />
