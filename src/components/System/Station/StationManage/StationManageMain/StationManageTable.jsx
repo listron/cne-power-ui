@@ -139,10 +139,9 @@ class StationManageTable extends Component {
     let newField = this.tableSortMap[field] ? this.tableSortMap[field] : orderField, newCommand = '2';
     if (orderField === this.sortFieldMap[field]) { // 点击的是正在排序的列
       newCommand = orderCommand === '2' ? '1' : '2'; // 交换排序方式
-    }else{ // 切换列
+    } else { // 切换列
       newField = this.sortFieldMap[field] ? this.sortFieldMap[field] : orderField;
     }
-
     getStationList({
       ...queryListParams,
       orderField: newField,
@@ -215,7 +214,7 @@ class StationManageTable extends Component {
     if (getName === 'eventYcModal') {
       this.props.changeStationManageStore({ YcConfigData: [] });
     }
-    this.setState({ ...value, stationCode: null });
+    this.setState({ ...value, selectSataionInfo: {} });
   }
 
   initColumn = () => {
@@ -331,18 +330,16 @@ class StationManageTable extends Component {
     }
   }
 
+
   render() {
     const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize, orderField, orderCommand, stationListError } = this.props;
     const { setDiagconfigYx, setDiagconfigYc, YxConfigData, YcConfigData, YxLoading, YcLoading, keyword } = this.props;
-    const { departmentModal, departmentSetInfo, uploading, fileList, showWarningTip, warningTipText, deleteInfo } = this.state;
-    const { eventYxModal, stationCode, eventYcModal, type, search } = this.state;
+    const { departmentModal, departmentSetInfo, uploading, fileList, showWarningTip, warningTipText, deleteInfo, conditionInfo } = this.state;
+    const { eventYxModal, eventYcModal, type, search, selectSataionInfo } = this.state;
     const authData = localStorage.getItem('authData') || '';
     const stationOperation = handleRight('station_export');
-    
-
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
     const initTableScroll = stationList.length > 0 && { y: 900 } || {};
-    console.log('stationListError', stationListError);
     return (
       <div className={styles.stationList}>
         <div className={styles.topHandler}>
@@ -357,21 +354,23 @@ class StationManageTable extends Component {
               showUploadList={false}
               fileList={fileList}
             >
-              <div className={styles.addButton} >
+              <CneButton className={styles.addButton}>
                 <div className={styles.icon}> {uploading && <Icon type="loading" /> || <span className={'iconfont icon-newbuilt'} />}</div>新建
-              </div>
+              </CneButton>
             </Upload>
-            {stationOperation && <Button href={downloadHref} download={downloadHref} target="_blank" className={styles.download}>
-              <span className={'iconfont icon-download'} /> 下载模板
-            </Button>}
+            {stationOperation &&
+              <CneButton href={downloadHref} download={downloadHref} target="_blank" className={styles.download}>
+                <span className={'iconfont icon-download'} />  下载模板
+            </CneButton>}
             <div className={`${styles.conditionSearch} ${!search && styles.closeConditionSearch}`} onMouseEnter={this.enterSearch}>
               <Search
                 placeholder="电站类型／区域／电站名称"
                 enterButton={<i className={'iconfont icon-search'} />}
                 onSearch={this.selectCondition}
-                onChange={this.conditionChange}
+                onChange={(e) => this.setState({ conditionInfo: e.target.value })}
+                value={conditionInfo}
               />
-              <i className={`iconfont icon-wrong ${styles.closeSearch}`} onClick={() => this.setState({ search: false })} />
+              <i className={`iconfont icon-wrong ${styles.closeSearch}`} onClick={() => this.setState({ search: false, conditionInfo: null })} />
             </div>
           </div>
           <div>合计：{totalNum}</div>
@@ -391,31 +390,35 @@ class StationManageTable extends Component {
           onChange={this.tableChange}
         />
 
-        {departmentModal && <SetDepartmentModal
-          departmentSetInfo={departmentSetInfo}
-          closeDepartmentModal={this.closeDepartmentModal}
-          allDepartmentData={allDepartmentData}
-        />}
-        {eventYxModal && <SetEventYxModal
-          closeEventModal={this.closeEventModal}
-          allEventYx={YxConfigData}
-          stationCode={stationCode}
-          setDiagconfigYx={setDiagconfigYx}
-          loading={YxLoading}
-        />}
-        {eventYcModal && <SetEventYcModal
-          closeEventModal={this.closeEventModal}
-          eventData={YcConfigData}
-          type={type}
-          setDiagconfigYc={setDiagconfigYc}
-          loading={YcLoading}
-        />}
-      </div>
+        {
+          departmentModal && <SetDepartmentModal
+            departmentSetInfo={departmentSetInfo}
+            closeDepartmentModal={this.closeDepartmentModal}
+            allDepartmentData={allDepartmentData}
+          />
+        }
+        {
+          eventYxModal && <SetEventYxModal
+            closeEventModal={this.closeEventModal}
+            allEventYx={YxConfigData}
+            selectSataionInfo={selectSataionInfo}
+            setDiagconfigYx={setDiagconfigYx}
+            loading={YxLoading}
+          />
+        }
+        {
+          eventYcModal && <SetEventYcModal
+            closeEventModal={this.closeEventModal}
+            eventData={YcConfigData}
+            type={type}
+            setDiagconfigYc={setDiagconfigYc}
+            loading={YcLoading}
+          />
+        }
+      </div >
     );
   }
 }
 
 export default StationManageTable;
-
-
 
