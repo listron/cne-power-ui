@@ -66,36 +66,36 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       title: '告警事件',
       sorter: true,
       className: styles.eventName,
-      render: (text = '--') => (<div title={text} className={styles.eventNameText}>{text}</div>),
+      render: (text) => (<div title={text} className={styles.eventNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'warningLevel',
       title: '事件级别',
       sorter: true,
       className: styles.warningLevel,
-      render: (text = '--') => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
+      render: (text) => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
     }, {
       dataIndex: 'pointValueDesc',
       title: '告警描述',
       className: styles.pointValueDesc,
-      render: (text = '--') => (<div title={text} className={styles.pointValueDescText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.pointValueDescText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceTypeName',
       title: '设备类型',
       sorter: true,
       className: styles.deviceTypeName,
-      render: (text = '--') => (<div title={text} className={styles.deviceTypeNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.deviceTypeNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceName',
       title: '设备名称',
       sorter: true,
       className: styles.deviceName,
-      render: (text = '--') => (<div title={text} className={styles.deviceNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.deviceNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
       // sorter: true,
       className: styles.stationName,
-      render: (text = '--') => (<div title={text} className={styles.stationNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'beginTime',
       title: '发生时间',
@@ -112,7 +112,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       title: '持续时长(h)',
       sorter: true,
       className: styles.warningDuration,
-      render: (text = '--') => (
+      render: (text) => (
         <div
           title={dataFormats(text, '--', 2, true)}
           className={styles.warningDurationText}
@@ -123,19 +123,19 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       title: '发生频次',
       sorter: true,
       className: styles.warningFrequency,
-      render: (text = '--') => (<div title={text} className={styles.warningFrequencyText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.warningFrequencyText}>{text || '--'}</div>),
     }, {
       dataIndex: 'statusName',
       title: '事件状态',
       sorter: true,
       className: styles.statusName,
-      render: (text = '--') => (<div title={text} className={styles.statusNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.statusNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'handle',
       title: '操作',
       className: styles.handleStyle,
       render: (text, record) => (
-        <div>
+        <div className={styles.handlers}>
           <span className={styles.handleAnalysis} onClick={() => handlers[0](record)}>分析</span>
         </div>
       ),
@@ -157,31 +157,31 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       title: '诊断事件',
       sorter: true,
       className: styles.eventName,
-      render: (text = '--') => (<div title={text} className={styles.eventNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.eventNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'warningLevel',
       title: '事件级别',
       sorter: true,
       className: styles.warningLevel,
-      render: (text = '--') => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
+      render: (text) => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
     }, {
       dataIndex: 'deviceTypeName',
       title: '设备类型',
       sorter: true,
       className: styles.deviceTypeName,
-      render: (text = '--') => (<div title={text} className={styles.deviceTypeNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.deviceTypeNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceName',
       title: '设备名称',
       sorter: true,
       className: styles.deviceName,
-      render: (text = '--') => (<div title={text} className={styles.deviceNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.deviceNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
       // sorter: true,
       className: styles.stationName,
-      render: (text = '--') => (<div title={text} className={styles.stationNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'beginTime',
       title: '发生时间',
@@ -198,7 +198,7 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       title: '持续时长',
       sorter: true,
       className: styles.warningDuration,
-      render: (text = '--') => (
+      render: (text) => (
         <div
           title={dataFormats(text, '--', 2, true)}
           className={styles.warningDurationText}
@@ -209,13 +209,13 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       title: '事件状态',
       sorter: true,
       className: styles.statusName,
-      render: (text = '--') => (<div title={text} className={styles.statusNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.statusNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'handle',
       title: '操作',
       className: styles.handleStyle,
       render: (text, record) => (
-        <div>
+        <div className={styles.handlers}>
           <span className={styles.handleAnalysis} onClick={() => handlers[0](record)}>分析</span>
         </div>
       ),
@@ -236,42 +236,42 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       title: '数据事件',
       sorter: true,
       className: styles.eventName,
-      render: (text = '--') => (<div title={text} className={styles.eventNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.eventNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'warningLevel',
       title: '事件级别',
       sorter: true,
       className: styles.warningLevel,
-      render: (text = '--') => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
+      render: (text) => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
     }, {
       dataIndex: 'pointValueDesc',
       title: '测点描述',
       className: styles.pointValueDesc,
-      render: (text = '--') => (<div title={text} className={styles.pointValueDescText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.pointValueDescText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceTypeName',
       title: '设备类型',
       sorter: true,
       className: styles.deviceTypeName,
-      render: (text = '--') => (<div title={text} className={styles.deviceTypeNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.deviceTypeNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceName',
       title: '设备名称',
       sorter: true,
       className: styles.deviceName,
-      render: (text = '--') => (<div title={text} className={styles.deviceNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.deviceNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
       // sorter: true,
       className: styles.stationName,
-      render: (text = '--') => (<div title={text} className={styles.stationNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'beginTime',
       title: '发生时间',
       sorter: true,
       className: styles.beginTime,
-      render: (text = '--') => (
+      render: (text) => (
         <div
           title={text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}
           className={styles.beginTimeText}
@@ -282,7 +282,7 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       title: '持续时长',
       sorter: true,
       className: styles.warningDuration,
-      render: (text = '--') => (
+      render: (text) => (
         <div
           title={dataFormats(text, '--', 2, true)}
           className={styles.warningDurationText}
@@ -293,13 +293,13 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       title: '事件状态',
       sorter: true,
       className: styles.statusName,
-      render: (text = '--') => (<div title={text} className={styles.statusNameText}>{text}</div>),
+      render: (text) => (<div title={text || '--'} className={styles.statusNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'handle',
       title: '操作',
       className: styles.handleStyle,
       render: (text, record) => (
-        <div>
+        <div className={styles.handlers}>
           <span className={styles.handleAnalysis} onClick={() => handlers[0](record)}>分析</span>
         </div>
       ),

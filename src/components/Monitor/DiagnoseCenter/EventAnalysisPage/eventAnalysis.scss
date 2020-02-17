@@ -294,6 +294,7 @@
     .searchParts{
       color: #353535;
       .leftIcon, .rightIcon{
+        color: var(--themeColor);
         background-color: #ceebe0;
         border:1px solid var(--themeColor);
         &:hover{
