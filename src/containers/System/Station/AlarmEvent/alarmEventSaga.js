@@ -99,7 +99,7 @@ function* delVersion(action) { // 删除版本信息
     } else { throw response.data; }
   } catch (e) {
     console.log(e);
-    message.error('删除失败');
+    // message.error(e.message, 1);
     func();
   }
 }

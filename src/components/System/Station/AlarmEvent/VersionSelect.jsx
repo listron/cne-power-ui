@@ -23,6 +23,7 @@ class VersionSelect extends PureComponent {
     getVersionEvent: PropTypes.func,
     applyStations: PropTypes.array,
     FilterConditionStations: PropTypes.func,
+    modifyStatus: PropTypes.bool,
   }
   constructor(props) {
     super(props);
@@ -35,7 +36,7 @@ class VersionSelect extends PureComponent {
       delVersionArr: [], // 删除的版本
       deviceTypeArr: [], // 设备类型版本
       modifytip: false, // 退出后信息无法保存的提示
-      isleave: false,
+      callback: null, // 回调函数
     };
   }
 
@@ -66,20 +67,43 @@ class VersionSelect extends PureComponent {
     }
   }
 
+  modifytip = (callback) => {
+    this.setState({ modifytip: true, callback });
+  }
+
   changeDeviceType = (value) => { // 改变设备类型
-    this.props.changeStore({ deviceTypeCode: value, selectedNodesKey: '', expandedKeys: [] });
-    this.props.getAlarmEvent({ eventType: 1, deviceTypeCode: value });
+    const { modifyStatus } = this.props;
+    const callback = () => {
+      this.props.changeStore({ deviceTypeCode: value, selectedNodesKey: '', expandedKeys: [] });
+      this.props.getAlarmEvent({ eventType: 1, deviceTypeCode: value });
+    };
+    if (!modifyStatus) {
+      callback();
+    }
+    if (modifyStatus) {
+      this.modifytip(callback);
+    }
   }
 
   addVersion = (event, type, value) => { // 添加软件版本
     event.stopPropagation();
-    if (type === 'edit') {
-      this.props.getVersionStation({ diagModeVersionId: value.diagModeVersionId });
+    const { modifyStatus } = this.props;
+    const callback = () => {
+      if (type === 'edit') {
+        this.props.getVersionStation({ diagModeVersionId: value.diagModeVersionId });
+      }
+      if (value) {
+        this.setState({ selectVersion: value });
+      }
+      this.setState({ addVersionModal: true, type });
+    };
+
+    if (!modifyStatus) {
+      callback();
     }
-    if (value) {
-      this.setState({ selectVersion: value });
+    if (modifyStatus) {
+      this.modifytip(callback);
     }
-    this.setState({ addVersionModal: true, type });
   }
 
   delVersion = (event, id) => { // 删除软件版本
@@ -89,8 +113,18 @@ class VersionSelect extends PureComponent {
 
   selectversion = (event, id, deviceModeCode, manufactorCode) => { //选择版本查看告警事件
     event.stopPropagation();
-    this.props.changeStore({ deviceModeCode, selectedNodesKey: `${manufactorCode}_${deviceModeCode}_${id}` });
-    this.props.getVersionEvent({ diagModeVersionId: id });
+    const { modifyStatus } = this.props;
+    const callback = () => {
+      this.props.changeStore({ deviceModeCode, selectedNodesKey: `${manufactorCode}_${deviceModeCode}_${id}` });
+      this.props.getVersionEvent({ diagModeVersionId: id });
+    };
+    if (!modifyStatus) {
+      callback();
+    }
+    if (modifyStatus) {
+      this.modifytip(callback);
+    }
+
   }
 
   closeModal = (value) => { // 关闭软件版本的弹框
@@ -100,10 +134,6 @@ class VersionSelect extends PureComponent {
 
   cancelWarningTip = () => {
     this.setState({ showWarningTip: false });
-  }
-
-  cancelWarnEvent = () => {
-    this.setState({ showWarningVersion: false });
   }
 
   confirmWarningTip = () => {
@@ -117,14 +147,10 @@ class VersionSelect extends PureComponent {
   }
 
   tipConfirm = () => {
-    setTimeout(() => this.setState({ isleave: true, modifytip: false }), 0);
+    setTimeout(() => this.setState({ modifytip: false }), 0);
+    const { callback } = this.state;
+    callback();
   }
-
-  cancelModify = () => {
-    setTimeout(() => this.setState({ isleave: false, modifytip: false }), 0);
-  }
-
-
 
   render() {
     const { addVersionModal, selectVersion, type, showWarningTip, showWarningVersion, modifytip } = this.state;
@@ -133,20 +159,33 @@ class VersionSelect extends PureComponent {
     const deviceTypeArr = diagConfigData.map(e => ({ deviceTypeCode: e.deviceTypeCode, deviceTypeName: e.deviceTypeName }));
     return (
       <div className={styles.VersionSelectCont}>
-        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} style={{ width: 210, height: 100 }} onOK={this.confirmWarningTip} value={'确定删除此软件版本的告警事件规则吗？'} />}
-        {showWarningVersion && <WarningTip onOK={this.cancelWarnEvent} style={{ width: 210, height: 100 }} value={'此软件版本的告警事件规则存在应用电站，不可删除!'} />}
-        {/* <CneTips tipText={'退出后信息无法保存'} onConfirm={this.tipConfirm} onCancel={this.cancelModify} visible={modifytip} style={{ width: 210 }} /> */}
+        <CneTips
+          onCancel={() => this.setState({ showWarningVersion: false })}
+          onConfirm={this.confirmWarningTip}
+          visible={showWarningTip}
+          tipText={'确定删除此软件版本的告警事件规则吗？'}
+          tipClassname={styles.modalWidth}
+        />
+        <CneTips
+          onCancel={() => this.setState({ showWarningVersion: false })}
+          visible={showWarningVersion}
+          tipText={'此软件版本的告警事件规则存在应用电站，不可删除!'}
+          mode={'cancel'}
+          tipClassname={styles.modalWidth}
+        />
+        <CneTips
+          tipText={'退出后信息无法保存'}
+          onConfirm={this.tipConfirm}
+          onCancel={this.setState({ modifytip: false })}
+          visible={modifytip}
+          tipClassname={styles.modalWidth}
+        />
         <div className={styles.icon} onClick={(e) => this.addVersion(e, 'add', {})}> <i className={'iconfont icon-newbuilt'} /> <span>添加软件版本</span>  </div>
         <div className={styles.deviceType}>
           <Select style={{ width: 212 }} onSelect={this.changeDeviceType} value={deviceTypeCode}>
             {deviceTypeArr.map(e => {
               return (<Select.Option value={e.deviceTypeCode} key={e.deviceTypeCode}>{e.deviceTypeName}</Select.Option>);
             })}
-            {/* 
-             <Select.Option value={206}>逆变器（组串）</Select.Option>
-            <Select.Option value={201}>逆变器（集中）</Select.Option>
-            <Select.Option value={304}>箱变</Select.Option>
-             */}
           </Select>
         </div>
         <div className={styles.cont}>

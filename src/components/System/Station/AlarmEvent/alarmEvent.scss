@@ -590,3 +590,11 @@
     }
   }
 }
+
+.modalWidth {
+  :global {
+    .ant-modal {
+      width: 260px !important;
+    }
+  }
+}
