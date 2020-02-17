@@ -6,6 +6,7 @@ const { TreeNode, DirectoryTree } = Tree;
 import SetVersionModal from './SetVersionModal';
 import WarningTip from '../../../Common/WarningTip/index';
 import searchUtil from '@utils/searchUtil';
+import CneTips from '../../../Common/Power/CneTips/index';
 
 class VersionSelect extends PureComponent {
   static propTypes = {
@@ -21,6 +22,7 @@ class VersionSelect extends PureComponent {
     getAlarmEvent: PropTypes.func,
     getVersionEvent: PropTypes.func,
     applyStations: PropTypes.array,
+    FilterConditionStations: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -32,6 +34,8 @@ class VersionSelect extends PureComponent {
       showWarningVersion: false, // 不能删除版本弹框
       delVersionArr: [], // 删除的版本
       deviceTypeArr: [], // 设备类型版本
+      modifytip: false, // 退出后信息无法保存的提示
+      isleave: false,
     };
   }
 
@@ -62,10 +66,8 @@ class VersionSelect extends PureComponent {
     }
   }
 
-
   changeDeviceType = (value) => { // 改变设备类型
     this.props.changeStore({ deviceTypeCode: value, selectedNodesKey: '', expandedKeys: [] });
-    // this.props.getDiagVersion({ deviceTypeCode: value });
     this.props.getAlarmEvent({ eventType: 1, deviceTypeCode: value });
   }
 
@@ -110,13 +112,22 @@ class VersionSelect extends PureComponent {
     this.setState({ delVersionArr: [], showWarningTip: false });
   }
 
-
   onExpand = (expandedKeys) => { // 展开树节点
     this.props.changeStore({ expandedKeys });
   }
 
+  tipConfirm = () => {
+    setTimeout(() => this.setState({ isleave: true, modifytip: false }), 0);
+  }
+
+  cancelModify = () => {
+    setTimeout(() => this.setState({ isleave: false, modifytip: false }), 0);
+  }
+
+
+
   render() {
-    const { addVersionModal, selectVersion, type, showWarningTip, showWarningVersion } = this.state;
+    const { addVersionModal, selectVersion, type, showWarningTip, showWarningVersion, modifytip } = this.state;
     const { stations = [], diagConfigData, deviceTypeCode, editVersion, editVersionLoading, applyStations, diagModeVersionId, expandedKeys } = this.props;
     const initDiagConfigData = diagConfigData.filter(e => `${e.deviceTypeCode}` === `${deviceTypeCode}`) || [];
     const deviceTypeArr = diagConfigData.map(e => ({ deviceTypeCode: e.deviceTypeCode, deviceTypeName: e.deviceTypeName }));
@@ -124,6 +135,7 @@ class VersionSelect extends PureComponent {
       <div className={styles.VersionSelectCont}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} style={{ width: 210, height: 100 }} onOK={this.confirmWarningTip} value={'确定删除此软件版本的告警事件规则吗？'} />}
         {showWarningVersion && <WarningTip onOK={this.cancelWarnEvent} style={{ width: 210, height: 100 }} value={'此软件版本的告警事件规则存在应用电站，不可删除!'} />}
+        {/* <CneTips tipText={'退出后信息无法保存'} onConfirm={this.tipConfirm} onCancel={this.cancelModify} visible={modifytip} style={{ width: 210 }} /> */}
         <div className={styles.icon} onClick={(e) => this.addVersion(e, 'add', {})}> <i className={'iconfont icon-newbuilt'} /> <span>添加软件版本</span>  </div>
         <div className={styles.deviceType}>
           <Select style={{ width: 212 }} onSelect={this.changeDeviceType} value={deviceTypeCode}>
@@ -140,7 +152,6 @@ class VersionSelect extends PureComponent {
         <div className={styles.cont}>
           <div className={styles.tree}>
             {
-              // expandedKeys={[this.props.expandedKeys]} selectedKeys={[this.props.selectedNodesKey]}
               initDiagConfigData.length > 0 &&
               <DirectoryTree showIcon={false} expandedKeys={this.props.expandedKeys} onExpand={this.onExpand} selectedKeys={[this.props.selectedNodesKey]}>
                 {initDiagConfigData[0].manufactors.map(manufactors => {
@@ -198,6 +209,9 @@ class VersionSelect extends PureComponent {
             editVersionLoading={editVersionLoading}
             deviceTypes={deviceTypeArr}
             applyStations={applyStations}
+            FilterConditionStations={this.props.FilterConditionStations}
+            filterStations={this.props.filterStations}
+            changeStore={this.props.changeStore}
           />
         }
       </div>

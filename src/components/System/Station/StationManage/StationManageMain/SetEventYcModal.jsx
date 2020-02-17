@@ -100,7 +100,7 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
                   <Switch onChange={(e) => this.onChange(e, list)} checked={Boolean(+list.configEnabled)} />
                   {+list.configEnabled &&
                     <div className={styles.inputNumber}> 阈值
-                   <InputNumber min={1} max={100} value={list.threshold} onChange={(value) => this.numberChange(value, list)} />
+                   <InputNumber min={0} max={100} value={list.threshold} onChange={(value) => this.numberChange(value, list)} />
                       % </div> || ''}
                 </div>
               );

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Form, Select, Input, Icon } from 'antd';
 import styles from './alarmEvent.scss';
-import StationSelect from '../../../Common/StationSelect';
+import StationSelect from './StationSelect';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -18,6 +18,8 @@ class SetVersionModal extends Component { //版本的设置
     type: PropTypes.string,
     editVersion: PropTypes.func,
     deviceTypes: PropTypes.array,
+    FilterConditionStations: PropTypes.func,
+    changeStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -34,6 +36,7 @@ class SetVersionModal extends Component { //版本的设置
     if (deviceTypeCode) {
       const manufactors = staticData.filter(list => list.deviceTypeCode === deviceTypeCode)[0].manufactors;
       this.setState({ manufactors });
+      this.props.FilterConditionStations({ deviceTypeCode, deviceModeCode });
     }
     if (deviceModeCode) {
       const manufactors = staticData.filter(list => list.deviceTypeCode === deviceTypeCode)[0].manufactors;
@@ -51,8 +54,6 @@ class SetVersionModal extends Component { //版本的设置
       const deviceModes = manufactors.filter(list => list.manufactorCode === manufactorCode)[0].deviceModes;
       this.setState({ manufactors, deviceModes });
     }
-
-
   }
 
 
@@ -61,6 +62,7 @@ class SetVersionModal extends Component { //版本的设置
     const manufactors = staticData.filter(list => list.deviceTypeCode === value)[0].manufactors;
     this.setState({ manufactors, deviceModes: [] });
     this.props.form.setFieldsValue({ deviceTypeCode: value, manufactorCode: null, deviceModeCode: null });
+    this.props.changeStore({ filterStations: [] }); //清空选中设备型号的电站
   }
 
   onChangeManufactor = (value) => { // 选择生产厂家
@@ -68,7 +70,13 @@ class SetVersionModal extends Component { //版本的设置
     const deviceModes = manufactors.filter(list => list.manufactorCode === value)[0].deviceModes;
     this.setState({ deviceModes });
     this.props.form.setFieldsValue({ deviceModeCode: null });
+    this.props.changeStore({ filterStations: [] }); //清空选中设备型号的电站
+  }
 
+  onChangeDeviceModes = (value) => {
+    const deviceTypeCode = this.props.form.getFieldValue('deviceTypeCode');
+    const deviceModeCode = value;
+    this.props.FilterConditionStations({ deviceTypeCode, deviceModeCode });
   }
 
   cancelSetting = () => {
@@ -96,7 +104,7 @@ class SetVersionModal extends Component { //版本的设置
 
 
   render() {
-    const { staticData, stations, selectVersion, type, editVersionLoading, deviceTypes, applyStations = [] } = this.props;
+    const { staticData, stations, selectVersion, type, editVersionLoading, deviceTypes, applyStations = [], filterStations } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { manufactors, deviceModes } = this.state;
     const { deviceTypeCode, manufactorCode, deviceModeCode, diagModeVersionId, version = '' } = selectVersion;
@@ -164,6 +172,7 @@ class SetVersionModal extends Component { //版本的设置
                   style={{ width: 198 }}
                   placeholder="设备型号"
                   disabled={deviceModes.length === 0 || type === 'edit'}
+                  onChange={this.onChangeDeviceModes}
                 >
                   {deviceModes.map(e => (
                     <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
@@ -188,6 +197,8 @@ class SetVersionModal extends Component { //版本的设置
                   data={stations.filter(e => e.stationType !== 0)}
                   multiple={true}
                   onOK={this.onStationSelected}
+                  filterStations={filterStations.map(e => e.stationCode)}
+                  filterSwitch={!!getFieldValue('deviceModeCode')}
                 />
               )}
             </FormItem>

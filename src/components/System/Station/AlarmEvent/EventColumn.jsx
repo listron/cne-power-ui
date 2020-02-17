@@ -38,7 +38,6 @@ class EventColumn extends Component {
     } else {
       this.props.saveEvent(eventData);
     }
-
   }
 
   delEvent = (value) => { // 删除告警事件
@@ -64,11 +63,10 @@ class EventColumn extends Component {
   }
 
 
-
   render() {
     const { alarmEventType = [], eventData } = this.props;
     const { editable, key, pointValue } = eventData;
-    console.log('eventData', eventData);
+    // console.log('editable', editable);
     return (
       <div className={styles.EventColumn}>
         {editable &&

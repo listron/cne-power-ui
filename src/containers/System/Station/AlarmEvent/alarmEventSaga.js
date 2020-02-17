@@ -39,7 +39,6 @@ function* editVersion(action) { // 新增版本信息  更新版本信息
   const { deviceTypeCode, manufactorCode, deviceModeCode, diagModeVersionId } = extraInfo;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addVersionPath}`;
   const requestType = type === 'edit' && axios.put || axios.post;
-  console.log('rest', rest);
   try {
     yield put({
       type: alarmEventAction.changeStore,
@@ -53,7 +52,6 @@ function* editVersion(action) { // 新增版本信息  更新版本信息
       const oldExpandedKeys = yield select(state => state.system.alarmEventReducer.get('expandedKeys'));
       const expandedKeys = deviceTypeCode === oldDeviceTypeCode && [...oldExpandedKeys, `${manufactorCode}`, `${manufactorCode}_${deviceModeCode}`] || [`${manufactorCode}`, `${manufactorCode}_${deviceModeCode}`];
       const currentDiagModeVersionId = type === 'edit' ? diagModeVersionId : response.data.data.diagModeVersionId;
-      console.log('diagModeVersionId', currentDiagModeVersionId);
       yield put({
         type: alarmEventAction.changeStore,
         payload: {
@@ -109,7 +107,6 @@ function* delVersion(action) { // 删除版本信息
 function* getVersionEvent(action) { // 获取型号制定版本的告警事件列表 versionEventLoading
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getVersionListPath}`;
-  console.log('获取型号制定版本的告警事件列表', payload.diagModeVersionId);
   try {
     yield put({
       type: alarmEventAction.changeStore,
@@ -134,6 +131,7 @@ function* getVersionEvent(action) { // 获取型号制定版本的告警事件�
         });
       } else { throw response.data; }
     }
+
     if (!payload.diagModeVersionId) {
       yield put({
         type: alarmEventAction.changeStore,
@@ -141,7 +139,7 @@ function* getVersionEvent(action) { // 获取型号制定版本的告警事件�
           versionStationCodes: [],
           versionList: [],
           versionEventLoading: false,
-          versionError: true,
+          versionError: false,
         },
       });
     }
@@ -186,7 +184,6 @@ function* getEditVersionStation(action) { // 获取编辑型号制定版本的�
 function* addVersionEvent(action) { // 添加告警事件
   const { payload } = action;
   const { func, ...rest } = payload;
-  console.log('payload', payload, func);
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.versionEvent}`;
   try {
     const response = yield call(axios.post, url, rest);
@@ -210,7 +207,6 @@ function* editVersionEvent(action) { // 编辑告警事件
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.versionEvent}`;
   const { func, ...rest } = payload;
-  console.log('rest', rest);
   try {
     const response = yield call(axios.put, url, rest);
     if (response.data.code === '10000') {
@@ -330,6 +326,31 @@ function* getVersionStation(action) { // 获取型号制定版本的应用电站
   }
 }
 
+function* FilterConditionStations(action) { // 获取筛选条件的电站数据
+  // deviceTypeCode deviceModeCode
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStations}`;
+  const { payload } = action;
+  try {
+    const response = yield call(axios.get, url, { params: payload });
+    if (response.data.code === '10000') {
+      yield put({
+        type: alarmEventAction.changeStore,
+        payload: {
+          filterStations: response.data.data || [],
+        },
+      });
+    } else { throw response.data; }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: alarmEventAction.changeStore,
+      payload: {
+        filterStations: [],
+      },
+    });
+  }
+}
+
 
 export function* watchAlarmEvent() {
   yield takeLatest(alarmEventAction.getDiagVersion, getDiagVersion);
@@ -343,4 +364,5 @@ export function* watchAlarmEvent() {
   yield takeLatest(alarmEventAction.getAlarmEvent, getAlarmEvent);
   yield takeLatest(alarmEventAction.getPointList, getPointList);
   yield takeLatest(alarmEventAction.getVersionStation, getVersionStation);
+  yield takeLatest(alarmEventAction.FilterConditionStations, FilterConditionStations);
 }

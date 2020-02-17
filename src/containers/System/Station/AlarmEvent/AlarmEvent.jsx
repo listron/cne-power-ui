@@ -73,6 +73,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAlarmEvent: payload => dispatch({ type: alarmEventAction.getAlarmEvent, payload }),
   getPointList: payload => dispatch({ type: alarmEventAction.getPointList, payload }),
   getVersionStation: payload => dispatch({ type: alarmEventAction.getVersionStation, payload }),
+  FilterConditionStations: payload => dispatch({ type: alarmEventAction.FilterConditionStations, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlarmEvent);

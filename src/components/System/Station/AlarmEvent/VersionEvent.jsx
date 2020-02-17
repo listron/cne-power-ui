@@ -38,6 +38,7 @@ class VersionEvent extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { stationCode, versionStationCodes, deviceTypeCode, deviceModeCode, diagModeVersionId, versionList } = nextProps;
+    const { currentEventList, addEventList } = this.state;
     if (diagModeVersionId !== this.props.diagModeVersionId) { // 切换版本，置空数据
       this.setState({
         addEventList: [], // 添加的新的数据
@@ -50,6 +51,9 @@ class VersionEvent extends Component {
         currentEventList: [],
       });
     }
+    const allEventList = [...currentEventList, ...addEventList];
+    const initmodifyStatus = allEventList.length > 0 && allEventList.some(e => e.editable) || false;
+    this.props.changeStore({ modifyStatus: initmodifyStatus }); // 修改状态
     if (this.props.stationCode !== stationCode) {
       const stationCode = versionStationCodes.length > 0 && versionStationCodes[0].stationCode;
       this.props.getPointList({ // 请求测点数据
@@ -65,10 +69,9 @@ class VersionEvent extends Component {
       });
       this.props.changeStore({ stationCode });
     }
-
     if (this.props.versionEventLoading && !nextProps.versionEventLoading) {
       const { currentEventList } = this.state;
-      currentEventList.forEach(trData => {
+      currentEventList.forEach(trData => { // 进行一个优化
         if (trData.editable) {
           const index = versionList.findIndex(e => e.diagModeEventId === trData.diagModeEventId);
           versionList[index] = trData;
@@ -76,6 +79,7 @@ class VersionEvent extends Component {
       });
       this.setState({ currentEventList: versionList });
     }
+
   }
 
   closePointModal = (value) => { // 关闭测点编号的弹框
@@ -87,6 +91,7 @@ class VersionEvent extends Component {
     const keyIndex = addEventList.length > 0 && addEventList[addEventList.length - 1].key.split('add')[1] || 0; // 从默认开始添加
     addEventList.push({ key: `add${+keyIndex + 1}`, switchType: 1, enabled: 1, pointValue: 1 });
     this.setState({ addEventList: addEventList });
+    this.props.changeStore({ modifyStatus: true });
   }
 
   changeEditPoint = (value) => { // 需要编辑的测点
@@ -211,7 +216,6 @@ class VersionEvent extends Component {
     this.setState({ allSelect: checked, selectKeysArr });
   }
 
-
   delSelectedRowKeys = () => { // 批量删除
     const { selectKeysArr } = this.state;
     this.setState({ showWarningTip: true, delEvent: selectKeysArr });
@@ -219,10 +223,10 @@ class VersionEvent extends Component {
 
   editEvent = (trData) => { // 编辑测点内容
     const { diagModeEventId } = trData;
+    this.props.changeStore({ modifyStatus: true }); // 修改状态的判断
     const { addEventList, currentEventList } = this.state;
     if (diagModeEventId) {
       const index = currentEventList.findIndex(e => e.diagModeEventId === diagModeEventId);
-      console.log('trData', trData, index, currentEventList);
       currentEventList[index] = trData;
       this.setState({ currentEventList: currentEventList });
     }
