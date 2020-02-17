@@ -38,7 +38,15 @@ class EventAnalysisPage extends PureComponent {
   render(){
     const { pageKey, analysisEvent, eventAnalysisInfo } = this.props;
     const { eventName, pointValueDesc, deviceTypeName } = analysisEvent || {};
-    const { chartType } = eventAnalysisInfo || {};
+    const { chartType, data } = eventAnalysisInfo || {};
+    const { pointData } = data || {};
+    const deviceInfo = pointData ? pointData[0] : {};
+    const { deviceFullcode = '' } = deviceInfo || {};
+    const [stationStr, devoceTypeStr] = deviceFullcode ? deviceFullcode.split('M') : [];
+    let redirectPath = '/monitor/pvData/history';
+    if (stationStr && devoceTypeStr) {
+      redirectPath = `${redirectPath}?stationCode=${stationStr}&deviceTypeCode=${devoceTypeStr}`;
+    }
     return (
       <section className={styles.eventAnalysis}>
         <h3 className={styles.detailTop}>
@@ -49,7 +57,7 @@ class EventAnalysisPage extends PureComponent {
             <span className={styles.infoText}>设备类型： {deviceTypeName || '--'}</span>
           </span>
           <span className={styles.topHandle}>
-            <Link to="/monitor/pvData/history" target="_blank" className={styles.showMore}>
+            <Link to={redirectPath} target="_blank" className={styles.showMore}>
               <CneButton className={styles.shadow}>
                 <span>
                   <span className="iconfont icon-gd4" />
