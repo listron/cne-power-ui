@@ -114,6 +114,9 @@ class ChartLine extends PureComponent {
       }
       return unitSortTemplate.indexOf(aUnit) - unitSortTemplate.indexOf(bUnit);
     });
+    if (pointData.length < 2) { // length < 2不会执行排序函数~
+      unitsGroup = sortedPointData.map(e => e.pointUnit);
+    }
     sortedPointData.forEach((e, i) => {
       const pointName = `${e.deviceName} ${e.pointName || ''}`;
       const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
