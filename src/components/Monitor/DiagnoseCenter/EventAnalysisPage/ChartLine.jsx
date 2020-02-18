@@ -192,7 +192,7 @@ class ChartLine extends PureComponent {
                 const { isWarned, pointName, deviceName } = eachFullData;
                 const lineFullName = `${deviceName} ${pointName || ''}`;
                 return (
-                  `<p class=${isWarned ? styles.eachItem : styles.warnedItem}>
+                  `<p class=${isWarned ? styles.warnedItem : styles.eachItem }>
                     <span class=${styles.tipIcon}>
                       <span class=${styles.line} style="background-color:${color}"></span>
                       <span class=${styles.rect} style="background-color:${color}"></span>
