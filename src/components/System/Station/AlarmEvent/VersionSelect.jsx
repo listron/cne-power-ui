@@ -160,7 +160,7 @@ class VersionSelect extends PureComponent {
     return (
       <div className={styles.VersionSelectCont}>
         <CneTips
-          onCancel={() => this.setState({ showWarningVersion: false })}
+          onCancel={() => this.setState({ showWarningTip: false })}
           onConfirm={this.confirmWarningTip}
           visible={showWarningTip}
           tipText={'确定删除此软件版本的告警事件规则吗？'}
