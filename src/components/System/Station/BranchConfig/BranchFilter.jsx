@@ -12,9 +12,9 @@ class BranchFilter extends React.Component {
     changeBranchStore: PropTypes.func,
     getDeviceType: PropTypes.func,
     getDeviceName: PropTypes.func,
-    getCheckStatus: PropTypes.func,
     deviceTypeData: PropTypes.array,
-
+    stationsInfo: PropTypes.array,
+    deviceTypeCode: PropTypes.number,
   }
 
   constructor(props, context) {
@@ -23,12 +23,12 @@ class BranchFilter extends React.Component {
   selectStation = (selectedStationInfo) => {
     const { changeBranchStore, getDeviceType } = this.props;
     const { stationCode } = selectedStationInfo[0];
-
     changeBranchStore({ stationCode, deviceTypeData: [], deviceNameData: [], deviceBranchInfo: [] });
     getDeviceType({ stationCode });
+    this.getBranchInfo({ stationCode });
   }
   selectDeviceType = (deviceTypeCode) => {
-    const { changeBranchStore, getDeviceName, stationCode, getCheckStatus } = this.props;
+    const { changeBranchStore, getDeviceName, stationCode } = this.props;
     changeBranchStore({
       deviceTypeCode,
       deviceFullCodes: [],
@@ -50,19 +50,14 @@ class BranchFilter extends React.Component {
 
   }
   getBranchInfo = (values) => {
-    const { getDeviceBranchInfo, stationCode, deviceTypeCode } = this.props;
-    getDeviceBranchInfo({ stationCode, deviceTypeCode, ...values });
+    const { getDeviceBranchInfo, stationCode } = this.props;
+    getDeviceBranchInfo({ stationCode, ...values });
 
   }
 
   render() {
-    const { stations, stationCode, deviceTypeCode, deviceFullCodes, deviceTypeData } = this.props;
-    // const hasbox = deviceTypeData.map(e => e.deviceTypeCode).includes(202);
-    // const hasinverter = deviceTypeData.map(e => e.deviceTypeCode).includes(206);
-    // const all = [{ deviceTypeCode: 202, deviceTypeName: '汇流箱' }, { deviceTypeCode: 206, deviceTypeName: '组串式逆变器' }];
-    // const deviceTypeArray = hasbox ? (hasinverter ? all : all.shift()) : (hasinverter ? all.pop() : []);
-    // console.log('deviceTypeArray: ', deviceTypeArray);
-
+    const { stations, stationsInfo, stationCode, deviceTypeCode, deviceFullCodes, deviceTypeData } = this.props;
+    console.log('stationsInfo: ', stationsInfo);
     return (<div className={styles.searchBox}>
       <div className={styles.topSearch}>
         <div className={styles.stationSelect}>

@@ -9,5 +9,4 @@ export const branchConfigAction = {
   getCheckData: Symbol('getCheckData'),
   editBranchData: Symbol('editBranchData'),
 
-  getAvailableDeviceType: Symbol('getAvailableDeviceType'),
 };

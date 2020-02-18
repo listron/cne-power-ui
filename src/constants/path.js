@@ -365,7 +365,7 @@ export default {
       //支路配置
       getStations: '/v4/base/user/currentuser/stations',
       getDeviceType: '/v4/base/devicetype/branch',
-      getDeviceName: '/v4/base/branchdevice',
+      getDeviceName: '/v4/base/device',
       // getCheckStatus: '/v4/base/user/currentuser/stations',
       getDeviceBranchInfo: '/v4/base/branch/checkresult',
       getCheckData: '/v4/base/branch/checkresult',

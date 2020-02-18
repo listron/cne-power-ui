@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
-import { Select, Button, InputNumber, Switch } from 'antd';
+import { Select, Button, InputNumber, Switch, Icon } from 'antd';
 import lodash from 'lodash';
 
 const { Option } = Select;
 class BranchTable extends React.Component {
   static propTypes = {
+    loadding: PropTypes.bool,
+    changeBranchStore: PropTypes.func,
+    saveEditArr: PropTypes.array,
+    deviceTypeCode: PropTypes.number,
   }
   constructor(props, context) {
     super(props, context);
@@ -26,6 +30,8 @@ class BranchTable extends React.Component {
     this.setState({
       isCheckStatus: true,
     });
+    const { getCheckData, stationCode, deviceTypeCode, deviceFullCodes } = this.props;
+    getCheckData({ stationCode, deviceTypeCode, deviceFullCodes });
   }
   changeSwitch = (checked) => {
     const { changeBranchStore, copyData } = this.props;
@@ -84,7 +90,10 @@ class BranchTable extends React.Component {
 
     }
     changeBranchStore({ saveEditArr: editArr });
-    editBranchData({ editArr });
+    editBranchData({ saveEditArr: editArr });
+    this.setState({
+      isCheckStatus: false,
+    });
 
   }
   cancleCheckValue = () => {
@@ -209,7 +218,8 @@ class BranchTable extends React.Component {
   }
 
   render() {
-    const { loadding, copyData, checkTime } = this.props;
+    const { loadding, copyData, checkTime, saveEditArr } = this.props;
+    console.log('saveEditArr: ', saveEditArr);
     const { focus, isCheckStatus, checked } = this.state;
     const pvNumsArr = [0, 1, 2, 3, 4, 5];
     const filterCopyData = this.filterData(checked);
@@ -219,7 +229,7 @@ class BranchTable extends React.Component {
         <div className={styles.checkstyle}>
           <div className={styles.leftInfo}>
             {!isCheckStatus ? <Button type="primary"
-              icon="poweroff"
+              icon="deployment-unit"
               loading={loadding}
               disabled={!checkTime}
               onClick={this.queryCheckData}>
@@ -322,7 +332,11 @@ class BranchTable extends React.Component {
                 <img src="/assets/img/nodata.png" width="223" height="164" />
               </div>
             }
-            <div className={styles.tabletd}></div>
+            {copyData.length > 20 ?
+              <div className={styles.nomoreData}>
+                <div className={styles.noDataIcon} > <Icon type="appstore" /></div>
+                <div className={styles.noDatatext}>没有更多得数据了</div>
+              </div> : ''}
           </div>
         </div>
       </div >

@@ -14,6 +14,9 @@ class BranchConfig extends Component {
   constructor(props, context) {
     super(props, context);
   }
+  componentDidMount() {
+    this.props.getStations();
+  }
   componentWillUnmount() {
     this.props.resetBranchStore();
   }
@@ -46,9 +49,6 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceBranchInfo: payload => dispatch({ type: branchConfigAction.getDeviceBranchInfo, payload }),
   getCheckData: payload => dispatch({ type: branchConfigAction.getCheckData, payload }),
   editBranchData: payload => dispatch({ type: branchConfigAction.editBranchData, payload }),
-
-  getAvailableDeviceType: payload => dispatch({ type: branchConfigAction.getAvailableDeviceType, payload }),
-
 });
 export default connect(mapStateToProps, mapDispatchToProps)(BranchConfig);
 

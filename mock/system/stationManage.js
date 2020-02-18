@@ -1,5 +1,5 @@
 
-const arrData = Array.from({ length: 40 }, (e, i) => i + 1);
+const arrData = Array.from({ length: 1000 }, (e, i) => i + 1);
 module.exports = [
   { // 电站管理列表
     api: '/mock/system/stationList/001',
@@ -279,7 +279,7 @@ module.exports = [
         deviceList: arrData.map((e, i) => ({
           deviceFullCode: `nb${e}`,
           deviceName: `nb00${e}`,
-          branchList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => ({
+          branchList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((item, index) => ({
             branchCode: `${e}_i${item}`,
             branchIndex: index,
             branchStatus: Math.random(0, 1) > 0.5 ? 0 : 1,
