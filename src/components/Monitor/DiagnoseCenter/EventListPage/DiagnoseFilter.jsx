@@ -6,6 +6,7 @@ import styles from './eventListPage.scss';
 class DiagnoseFilter extends Component {
   static propTypes = {
     pageKey: PropTypes.string,
+    filterBoxType: PropTypes.string,
     stations: PropTypes.array,
     deviceTypes: PropTypes.array,
     allEventsStatus: PropTypes.array,
@@ -59,6 +60,10 @@ class DiagnoseFilter extends Component {
     this.props.getDiagnoseList({ ...newListParams, ...newListParams });
   }
 
+  onFilterBoxTypeChange = ({ filterBoxType }) => { // 保存组件内的筛选条件显影控制同步
+    this.props.changeStore({ filterBoxType });
+  }
+
   eventTypeInfo = {
     alarm: 'alarmEventtypes',
     diagnose: 'diagnEventtypes',
@@ -66,7 +71,7 @@ class DiagnoseFilter extends Component {
   }
 
   render() {
-    const { stations, deviceTypes, allEventsStatus, pageKey, listParams } = this.props;
+    const { stations, deviceTypes, allEventsStatus, pageKey, listParams, filterBoxType } = this.props;
     const { stationCode, deviceTypeCode, startTime, endTime, eventCode, eventStatus, finished } = listParams;
     const eventTypesData = this.props[this.eventTypeInfo[pageKey]] || [];
     const statusArray = allEventsStatus.filter(e => e.statusType === (!!finished ? 2 : 1)); // statusType:1活动 2已归档
@@ -85,6 +90,8 @@ class DiagnoseFilter extends Component {
         <FilterConditions
           onChange={this.filterConditionChange}
           option={options}
+          filterBoxType={filterBoxType}
+          onFilterBoxTypeChange={this.onFilterBoxTypeChange}
           value={{
             stationCode: stationCode && stationCode.length > 0 ? stationCode : [],
             deviceTypeCode,

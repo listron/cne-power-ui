@@ -5,6 +5,7 @@ import { Button, Switch, Icon } from 'antd';
 
 class FilterConditionTitle extends Component {
   static propTypes = {
+    showFilterBox: PropTypes.bool,
     options: PropTypes.array,
     onChange: PropTypes.func,
     onChangeFilter: PropTypes.func,
@@ -19,9 +20,15 @@ class FilterConditionTitle extends Component {
 
   onFilterShowChange = (item) => { //筛选出应该展示哪一个
     const { type, typeName } = item;
+    const { showFilterBox } = this.props;
     const { showFilter } = this.state;
     let showFilterType = { type, typeName };
-    if (showFilter.type === item.type && showFilter.typeName === item.typeName) {
+    if (
+      showFilter.type === item.type
+      && showFilter.typeName === item.typeName
+      && showFilterBox
+      // showFilterBox: true-默认情况; false有外部控制, 继续进行展示
+    ) {
       showFilterType = { type: '', typeName: '' };
     }
     this.setState({ showFilter: showFilterType });
@@ -34,7 +41,7 @@ class FilterConditionTitle extends Component {
   }
 
   render() {
-    const { options } = this.props;
+    const { options, showFilterBox } = this.props;
     const { showFilter } = this.state;
     return (
       <div className={`${styles.filterConditionTitle}`}>
@@ -54,7 +61,12 @@ class FilterConditionTitle extends Component {
                   onClick={() => this.onFilterShowChange(item)}
                   key={key}
                   className={`${styles.filterlist} ${item.disabled && styles.disabled}`}>
-                  {item.name} {(showFilter.type === item.type && showFilter.typeName === item.typeName && !item.disabled) ? <Icon type="up" /> : <Icon type="down" />}
+                  {item.name} {(
+                    showFilter.type === item.type
+                      && showFilter.typeName === item.typeName
+                      && !item.disabled
+                      && showFilterBox
+                    ) ? <Icon type="up" /> : <Icon type="down" />}
                 </div>);
             })
           }
