@@ -16,8 +16,13 @@ class FilterCondition extends Component {
     value: PropTypes.object,
     option: PropTypes.array,
     theme: PropTypes.string,
+    filterBoxType: PropTypes.string,
+    onFilterBoxTypeChange: PropTypes.func,
   }
 
+  static defaultProps = {
+    filterBoxType: 'items', // items只要触发筛选条件即展示筛选项; none隐藏筛选项
+  }
 
   /**
    * 
@@ -40,16 +45,16 @@ class FilterCondition extends Component {
    *   5  rules 匹配的规则  rules=[stationName,stationCode]， 默认为label value
    *   6  disabled 不能选泽 联动的时候使用 true false
    *   7  parentName 根据什么分组 parentCheckBox 使用 默认为parentName
+   *   8  filterBoxType 外部传入手动指定隐藏筛选条件('none')时使用, 映射至state.showFilterBox
+   *   9  onFilterBoxTypeChange用于外部同步filterBoxType
    *   注意：要不使用传入的value,要不使用自己内部的机制
    */
-
-
-
 
   constructor(props) {
     super(props);
     this.state = {
       optionItem: [],
+      showFilterBox: true,
       showFilter: {
         type: '',
         typeName: '',
@@ -57,17 +62,17 @@ class FilterCondition extends Component {
     };
   }
 
-
-
   componentDidMount() {
     const { value, option } = this.props;
     this.changeDataType(value, option);
-
   }
 
-
   componentWillReceiveProps(nextProps) {
-    const { value, option } = nextProps;
+    const { value, option, filterBoxType } = nextProps;
+    const preShowFilterBox = this.props.filterBoxType;
+    if (filterBoxType === 'none' && preShowFilterBox === 'items') { // 隐藏
+      this.setState({ showFilterBox: false });
+    }
     this.changeDataType(value, option);
   }
 
@@ -132,7 +137,6 @@ class FilterCondition extends Component {
     return result;
   }
 
-
   changeDataType = (value = {}, option) => { // 切换数据，如果value 变化，或者是data 发生变化
     const { optionItem } = this.state;
     const optionList = [];
@@ -176,7 +180,8 @@ class FilterCondition extends Component {
   }
 
   showFilterChange = ({ showFilter }) => { // 改变筛选类型
-    this.setState({ showFilter });
+    this.props.onFilterBoxTypeChange({ filterBoxType: 'items' }); // 通知外部触发条件筛选展示
+    this.setState({ showFilter, showFilterBox: true });
   }
 
   onChangeFilter = (value) => { // 改变其中一项的数据
@@ -203,7 +208,7 @@ class FilterCondition extends Component {
 
   render() {
     const { theme = 'light' } = this.props;
-    const { showFilter, optionItem } = this.state;
+    const { showFilter, optionItem, showFilterBox } = this.state;
     const { type } = showFilter;
     const selectData = optionItem.filter(e => e.type === showFilter.type && e.typeName === showFilter.typeName);
     const rangeTime = optionItem.filter(e => e.type === 'rangeTime');
@@ -213,8 +218,13 @@ class FilterCondition extends Component {
     const parentMultipArray = ['stationName', 'parentCheckBox'];
     return (
       <div className={`${styles.filterCondition} ${styles[theme]}`}>
-        <FilterConditionTitle options={optionItem} onChange={this.showFilterChange} onChangeFilter={this.onChangeFilter} />
-        <div className={styles.filterBox}>
+        <FilterConditionTitle
+          options={optionItem}
+          onChange={this.showFilterChange}
+          onChangeFilter={this.onChangeFilter}
+          showFilterBox={showFilterBox}
+        />
+        <div style={{display: showFilterBox ? 'block' : 'none'}} className={styles.filterBox}>
           {parentMultipArray.includes(type) && selectData.length > 0 &&
             <ParentFilter
               onChangeFilter={this.onChangeFilter}

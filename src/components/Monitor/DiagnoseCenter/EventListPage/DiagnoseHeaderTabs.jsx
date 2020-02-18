@@ -44,6 +44,7 @@ class DiagnoseHeaderTabs extends Component {
     };
     this.props.changeStore({ // 清空并重置当前页面所有数据
       pageKey,
+      filterBoxType: 'none', // 关闭筛选条件展示
       listParams,
       listPage,
       diagnoseListData: [],

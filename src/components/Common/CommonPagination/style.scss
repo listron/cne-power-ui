@@ -64,9 +64,10 @@ $commonHeight: 28px;
         }
         .ant-pagination-simple-pager {
           input {
+            padding: 0 5px;
             vertical-align: middle;
             height: 30px;
-            width: 30px;
+            width: 50px;
           }
         }
       }
