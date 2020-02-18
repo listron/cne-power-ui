@@ -195,14 +195,14 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       ),
     }, {
       dataIndex: 'warningDuration',
-      title: '持续时长',
+      title: '持续时长(h)',
       sorter: true,
       className: styles.warningDuration,
       render: (text) => (
         <div
           title={dataFormats(text, '--', 2, true)}
           className={styles.warningDurationText}
-        >{dataFormats(text, '--', 2, true)}h</div>
+        >{dataFormats(text, '--', 2, true)}</div>
       ),
     }, {
       dataIndex: 'statusName',
@@ -279,14 +279,14 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       ),
     }, {
       dataIndex: 'warningDuration',
-      title: '持续时长',
+      title: '持续时长(h)',
       sorter: true,
       className: styles.warningDuration,
       render: (text) => (
         <div
           title={dataFormats(text, '--', 2, true)}
           className={styles.warningDurationText}
-        >{dataFormats(text, '--', 2, true)}h</div>
+        >{dataFormats(text, '--', 2, true)}</div>
       ),
     }, {
       dataIndex: 'statusName',
