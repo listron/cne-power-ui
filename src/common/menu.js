@@ -258,11 +258,6 @@ const menuData = [
             path: 'monthReport',
             defaultPath: true,
             rightKey: 'operation_running_monthly',
-          }, {
-            name: '抄表设置',
-            path: 'meterReadSet',
-            defaultPath: true,
-            rightKey: 'operation_running_daily',
           },
         ],
       }, {

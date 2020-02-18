@@ -10,7 +10,6 @@ import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
 import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
 import { watchPersonnelGps } from './Operation/PersonnelGps/personnelGpsSaga';
 import { watchDayReport } from './Operation/Running/DayReport/dayReportSaga';
-import { wacthMeterReadSet} from './Operation/Running/MeterReadSet/meterReadSetSaga';
 import { watchIntelligentExper } from './Operation/IntelligentExpert/intelligentExpertSaga';
 // 工单
 import { watchDefectList } from './Operation/WorkProcess/DefectList/defectListSaga';
@@ -150,7 +149,6 @@ export default function* rootSaga() {
     watchInspect(), // 巡检
     watchPersonnelGps(), //员工定位
     watchDayReport(), // operation- 日报
-    wacthMeterReadSet(), // 抄表设置
     watchIntelligentExper(), // 光伏智能专家库
 
     watchDefectList(), // 缺陷列表
