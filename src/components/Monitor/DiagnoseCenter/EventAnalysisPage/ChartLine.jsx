@@ -70,6 +70,7 @@ class ChartLine extends PureComponent {
       height: 30,
       left: '7%',
       top: 0,
+      selectedMode: false,
       data: ['告警时段'],
       textStyle: {
         color: '#353535',
@@ -140,6 +141,7 @@ class ChartLine extends PureComponent {
         },
         data: e.value,
         symbol: 'circle',
+        symbolSize: 10,
         showSymbol: false,
         smooth: true,
       });

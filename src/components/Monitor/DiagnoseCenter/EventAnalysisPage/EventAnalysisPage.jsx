@@ -60,7 +60,7 @@ class EventAnalysisPage extends PureComponent {
             <Link to={redirectPath} target="_blank" className={styles.showMore}>
               <CneButton className={styles.shadow}>
                 <span>
-                  <span className="iconfont icon-gd4" />
+                  <span className="iconfont icon-moredata" />
                   <span>更多数据</span>
                 </span>
               </CneButton>
