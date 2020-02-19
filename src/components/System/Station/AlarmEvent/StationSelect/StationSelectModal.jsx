@@ -18,7 +18,7 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
     hideStationModal: PropTypes.func,
     showStationModal: PropTypes.func,
     handleOK: PropTypes.func,
-    filterStations: PropTypes.func,
+    filterStations: PropTypes.array,
   }
   constructor(props) {
     super(props);
