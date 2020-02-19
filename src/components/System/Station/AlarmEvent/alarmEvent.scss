@@ -596,5 +596,11 @@
     .ant-modal {
       width: 260px !important;
     }
+    @media screen and (min-width: 1920px) {
+      // 1920及以上屏幕按1920px适配
+      .ant-btn {
+        font-size: 16px;
+      }
+    }
   }
 }
