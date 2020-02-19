@@ -70,6 +70,7 @@ class ChartLine extends PureComponent {
       height: 30,
       left: '7%',
       top: 0,
+      itemWidth: 14,
       selectedMode: false,
       data: ['告警时段'],
       textStyle: {
