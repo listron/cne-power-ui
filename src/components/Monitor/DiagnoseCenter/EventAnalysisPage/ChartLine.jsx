@@ -146,7 +146,7 @@ class ChartLine extends PureComponent {
         smooth: true,
       });
     });
-    const yAxis = unitsGroup.map(e => ({ // 生成多y纵坐标, 相同单位对应一个y轴
+    const eachyAxis = { // 生成多y纵坐标, 相同单位对应一个y轴
       type: 'value',
       axisLabel: {
         show: false,
@@ -160,7 +160,10 @@ class ChartLine extends PureComponent {
       splitLine: {
         show: false,
       },
-    }));
+    }
+    const yAxis = unitsGroup.length > 0 ? unitsGroup.map(e => ({
+      ...eachyAxis,
+    })) : eachyAxis; // 若返回异常数据导致无单位，使用默认单纵坐标即可
     const legendHeight = Math.ceil(legends.length / 4) * 30;
     const option = {
       legend: legends,
@@ -228,7 +231,7 @@ class ChartLine extends PureComponent {
         },
       },
       yAxis,
-      series,
+      series, // 若返回异常空数据, 则需要置空
     };
     if (pointData.length > 0) {
       option.dataZoom = [
