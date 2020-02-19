@@ -189,7 +189,7 @@ class ReportTable extends React.Component {
         title: '损耗指标',
         children: this.tableChildren(lost),
       }, {
-        title: '运动水平指标',
+        title: '运行水平指标',
         children: [{
           title: '最大出力',
           children: [
