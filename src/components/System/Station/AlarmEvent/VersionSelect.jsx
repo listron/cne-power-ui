@@ -53,7 +53,7 @@ class VersionSelect extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     const { diagConfigData, deviceTypeCode, selectedNodesKey } = nextProps;
-    if (diagConfigData.length !== this.props.diagConfigData.length || deviceTypeCode !== this.props.deviceTypeCode) {
+    if (diagConfigData.length !== this.props.diagConfigData.length || deviceTypeCode !== this.props.deviceTypeCode || !selectedNodesKey) {
       const initDiagConfigData = diagConfigData.filter(e => `${e.deviceTypeCode}` === `${deviceTypeCode}`) || [];
       const { manufactors = [] } = initDiagConfigData[0] || {};
       const { manufactorCode, deviceModes = [] } = manufactors.length > 0 && manufactors[0] || {};
@@ -165,6 +165,7 @@ class VersionSelect extends PureComponent {
           visible={showWarningTip}
           tipText={'确定删除此软件版本的告警事件规则吗？'}
           tipClassname={styles.modalWidth}
+          confirmText={'确认'}
         />
         <CneTips
           onCancel={() => this.setState({ showWarningVersion: false })}
@@ -172,6 +173,7 @@ class VersionSelect extends PureComponent {
           tipText={'此软件版本的告警事件规则存在应用电站，不可删除!'}
           mode={'cancel'}
           tipClassname={styles.modalWidth}
+          confirmText={'确认'}
         />
         <CneTips
           tipText={'退出后信息无法保存'}
@@ -179,6 +181,7 @@ class VersionSelect extends PureComponent {
           onCancel={() => this.setState({ modifytip: false })}
           visible={modifytip}
           tipClassname={styles.modalWidth}
+          confirmText={'确认'}
         />
         <div className={styles.icon} onClick={(e) => this.addVersion(e, 'add', {})}> <i className={'iconfont icon-newbuilt'} /> <span>添加软件版本</span>  </div>
         <div className={styles.deviceType}>
