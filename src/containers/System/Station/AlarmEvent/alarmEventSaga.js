@@ -91,11 +91,19 @@ function* delVersion(action) { // 删除版本信息
     const response = yield call(axios.delete, url, { data: rest });
     if (response.data.code === '10000') {
       message.success('删除成功');
-      const deviceTypeCode = yield select(state => state.system.alarmEventReducer.get('deviceTypeCode'));
+      const diagModeVersionId = yield select(state => state.system.alarmEventReducer.get('diagModeVersionId'));
+      const currentDiagModeVersionId = rest.diagModeVersionIds[0] || '';
       yield put({
         type: alarmEventAction.getDiagVersion,
-        // payload: { deviceTypeCode },
       });
+      if (diagModeVersionId === currentDiagModeVersionId) {
+        yield put({
+          type: alarmEventAction.changeStore,
+          payload: {
+            selectedNodesKey: null,
+          },
+        });
+      }
     } else { throw response.data; }
   } catch (e) {
     console.log(e);
@@ -219,7 +227,11 @@ function* editVersionEvent(action) { // 编辑告警事件
       });
     } else { throw response.data; }
   } catch (e) {
-    message.error('编辑失败,请重试');
+    const rule = {
+      90003: '该条规则存在告警，不可编辑',
+      90004: '该条规则存在告警，不可编辑',
+    };
+    message.warn(rule[e.code]);
     console.log(e);
   }
 }
@@ -234,6 +246,7 @@ function* delVersionEvent(action) { // 删除告警事件
     if (response.data.code === '10000') {
       message.success('删除成功');
       const diagModeVersionId = yield select(state => state.system.alarmEventReducer.get('diagModeVersionId'));
+
       yield put({
         type: alarmEventAction.getVersionEvent,
         payload: { diagModeVersionId },

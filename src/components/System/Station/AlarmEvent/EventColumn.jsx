@@ -130,7 +130,7 @@ class EventColumn extends Component {
             <div className={styles.switchType}>  {['否', '是'][eventData.switchType]}</div>
             <div className={styles.enabled}>  {['否', '是'][eventData.enabled]}</div>
             <div className={styles.operate}>
-              <i className={`iconfont icon-edit ${styles.edit}`} onClick={() => { this.onChangeColumn('editable', true); }} title={'去编辑'} />
+              <i className={`iconfont icon-edit ${styles.edit}`} onClick={() => { this.onChangeColumn('editable', true); }} title={'编辑'} />
               <i className={`iconfont icon-del ${styles.del}`} onClick={() => { this.delEvent(eventData); }} title={'删除'} />
             </div>
           </React.Fragment> || null
