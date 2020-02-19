@@ -329,7 +329,7 @@ class BranchTable extends React.Component {
               );
             }) :
               <div className={styles.noData}>
-                <img src="/assets/img/nodata.png" width="223" height="164" />
+                <img src="/img/nodata.png" width="223" height="164" />
               </div>
             }
             {copyData.length > 20 ?
