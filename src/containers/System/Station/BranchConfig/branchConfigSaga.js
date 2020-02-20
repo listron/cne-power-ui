@@ -37,8 +37,8 @@ function* getStations(action) {
 }
 function* getDeviceType(action) {
   const { payload } = action;
-  // const url = '/mock/base/devicetype/branch';
-  const url = `${APIBasePath}${system.getDeviceType}/${payload.stationCode}`;
+  const url = '/mock/base/devicetype/branch';
+  // const url = `${APIBasePath}${system.getDeviceType}/${payload.stationCode}`;
   try {
     const response = yield call(axios.get, url, { ...payload });
     if (response.data.code === '10000') {
@@ -92,8 +92,16 @@ function* getDeviceBranchInfo(action) {
   const { payload } = action;
   const { stationCode, deviceTypeCode, deviceFullCodes } = payload;
   // const url = '/mock/base/branch/checkresult';
-  const url = `${APIBasePath}${system.getDeviceBranchInfo}/${stationCode}/${deviceTypeCode}/${deviceFullCodes}`;
+  const url = `${APIBasePath}${system.getDeviceBranchInfo}/${stationCode}`;
+  ///${deviceTypeCode}/${deviceFullCodes}
   try {
+    yield put({
+      type: branchConfigAction.changeBranchStore,
+      payload: {
+        cancelloadding: true,
+        loadding: true,
+      },
+    });
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       const deviceBranchInfo = response.data.data.deviceList || [];
@@ -105,6 +113,9 @@ function* getDeviceBranchInfo(action) {
           checkTime: checkTime ? moment(checkTime).format('YYYY-MM-DD') : '',
           deviceBranchInfo,
           copyData: response.data.data.deviceList || [],
+          cancelloadding: false,
+          loadding: false,
+
         },
       });
     } else {
@@ -115,19 +126,19 @@ function* getDeviceBranchInfo(action) {
     console.log(e);
     yield put({
       type: branchConfigAction.changeBranchStore,
-      payload: { deviceBranchInfo: [] },
+      payload: { deviceBranchInfo: [], cancelloadding: false, loadding: false },
     });
   }
 }
 function* getCheckData(action) {
   const { payload } = action;
   const { stationCode, deviceTypeCode, deviceFullCodes } = payload;
-  const url = `${APIBasePath}${system.getCheckData}/${stationCode}/${deviceTypeCode}/${deviceFullCodes}`;
+  const url = `${APIBasePath}${system.getCheckData}/${stationCode}`;
+  // /${deviceTypeCode}/${deviceFullCodes}
   try {
     yield put({
       type: branchConfigAction.changeBranchStore,
       payload: {
-        ...payload,
         loadding: true,
       },
     });
@@ -139,10 +150,10 @@ function* getCheckData(action) {
         type: branchConfigAction.changeBranchStore,
         payload: {
           loadding: false,
-          ...payload,
+          // ...payload,
           checkTime: checkTime ? moment(checkTime).format('YYYY-MM-DD') : '',
           // deviceBranchInfo,
-          // copyData: response.data.data.deviceList || [],
+          copyData: response.data.data.deviceList || [],
         },
       });
     } else {
@@ -183,6 +194,7 @@ function* editBranchData(action) {
     }
 
   } catch (e) {
+    message.error('保存编辑失败');
     console.log(e, '编辑保存失败了');
     yield put({
       type: branchConfigAction.changeBranchStore,

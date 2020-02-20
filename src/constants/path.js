@@ -367,9 +367,9 @@ export default {
       getDeviceType: '/v4/base/devicetype/branch',
       getDeviceName: '/v4/base/device',
       // getCheckStatus: '/v4/base/user/currentuser/stations',
-      getDeviceBranchInfo: '/v4/base/branch/checkresult',
-      getCheckData: '/v4/base/branch/checkresult',
-      editBranchData: '/v4/base/branch/status',
+      getDeviceBranchInfo: '/v4/base/device/branch/checkresult',
+      getCheckData: '/v4/base/device/branch/checkresult',
+      editBranchData: '/v4/base/device/branch/status',
 
       importAlarmInfo: '/v3/management/alarmevent/import', //导入告警信息
       getAlarmList: '/v3/management/alarmevent/list', //获取告警列表
