@@ -38,10 +38,7 @@ class EventAnalysisPage extends PureComponent {
   render(){
     const { pageKey, analysisEvent, eventAnalysisInfo } = this.props;
     const { eventName, pointValueDesc, deviceTypeName } = analysisEvent || {};
-    const { chartType, data } = eventAnalysisInfo || {};
-    const { pointData } = data || {};
-    const deviceInfo = pointData ? pointData[0] : {};
-    const { deviceFullcode = '' } = deviceInfo || {};
+    const { chartType, deviceFullcode } = eventAnalysisInfo || {};
     const [stationStr, devoceTypeStr] = deviceFullcode ? deviceFullcode.split('M') : [];
     let redirectPath = '/monitor/pvData/history';
     if (stationStr && devoceTypeStr) {
