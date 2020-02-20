@@ -12,6 +12,7 @@ import deviceManage from './Station/DeviceManage/deviceManageReducer';
 import pointManage from './Station/PointManage/pointManageReducer';
 import powerCurve from './Station/PowerCurve/powerCurveReducer';
 import { weatherStationReducer } from './Station/WeatherStationConf/weatherStationReducer';
+import branchConfigReducer from './Station/BranchConfig/branchConfigReducer';
 
 import plan from './Production/Plan/planReducer';
 import warning from './Production/Warning/warningReducer';
@@ -33,6 +34,7 @@ const systemReducer = combineReducers({
   warning,
   score,
   weatherStationReducer,
+  branchConfigReducer,
 });
 
 export default systemReducer;
