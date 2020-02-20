@@ -82,7 +82,7 @@ class ChartBar extends PureComponent {
                     <span class=${styles.rect} style="background-color: #ff9900"></span>
                   </span>
                   <span class=${styles.tipName} style="flex: 0 0 176px">对比差值(%)</span>
-                  <span class=${styles.tipValue}>${dataFormats(rateValue, '--', 2, true)}</span>
+                  <span class=${styles.tipValue}>${dataFormats(rateValue * 100, '--', 2, true)}</span>
                 </p>
               </div>
             </section>`
@@ -145,10 +145,20 @@ class ChartBar extends PureComponent {
           barGap: '-100%',
           itemStyle: {
             color: '#FFF',
+            // color: 'transparent',
             borderWidth: 1,
             borderColor: '#199475',
             barBorderRadius: [2, 2, 0, 0],
           },
+          // emphasis: {
+          //   itemStyle: {
+          //     borderWidth: 3,
+          //     shadowColor: 'rgba(25,148,117,0.70)',
+          //     shadowBlur: 2,
+          //     shadowOffsetX: 0,
+          //     shadowOffsetY: 2,
+          //   },
+          // },
           data: theoryData,
         }, {
           name: '逆变器直流发电量(kWh)',
@@ -156,6 +166,12 @@ class ChartBar extends PureComponent {
           itemStyle: {
             color: '#CEEBE0',
           },
+          // emphasis: {
+          //   itemStyle: {
+          //     borderWidth: 3,
+          //     borderColor: 'transparent',
+          //   },
+          // },
           barWidth: 34,
           data: baseData,
         }, {
