@@ -59,8 +59,8 @@ class ChartBar extends PureComponent {
         show: true,
         extraCssText: 'padding: 5px 10px; background-color: rgba(0,0,0,0.70); box-shadow:0 1px 4px 2px rgba(0,0,0,0.20); border-radius:2px;',
         formatter: (params = []) => {
-          const { name, value: theoryValue } = params[0] || {};
-          const { value: baseValue } = params[1] || {};
+          const { name, value: baseValue } = params[0] || {};
+          const { value: theoryValue } = params[1] || {};
           const { value: rateValue } = params[2] || {};
           return (
             `<section class=${styles.chartTooltip}>
@@ -139,41 +139,40 @@ class ChartBar extends PureComponent {
       ],
       series: [
         {
-          name: '方阵理论发电量(kWh)',
-          type: 'bar',
-          barWidth: 34,
-          barGap: '-100%',
-          itemStyle: {
-            color: '#FFF',
-            // color: 'transparent',
-            borderWidth: 1,
-            borderColor: '#199475',
-            barBorderRadius: [2, 2, 0, 0],
-          },
-          // emphasis: {
-          //   itemStyle: {
-          //     borderWidth: 3,
-          //     shadowColor: 'rgba(25,148,117,0.70)',
-          //     shadowBlur: 2,
-          //     shadowOffsetX: 0,
-          //     shadowOffsetY: 2,
-          //   },
-          // },
-          data: theoryData,
-        }, {
           name: '逆变器直流发电量(kWh)',
           type: 'bar',
           itemStyle: {
             color: '#CEEBE0',
           },
-          // emphasis: {
-          //   itemStyle: {
-          //     borderWidth: 3,
-          //     borderColor: 'transparent',
-          //   },
-          // },
+          emphasis: {
+            itemStyle: {
+              color: '#CEEBE0',
+            },
+          },
           barWidth: 34,
           data: baseData,
+        }, {
+          name: '方阵理论发电量(kWh)',
+          type: 'bar',
+          barWidth: 34,
+          barGap: '-100%',
+          itemStyle: {
+            // color: '#FFF',
+            color: 'transparent',
+            borderWidth: 1,
+            borderColor: '#199475',
+            barBorderRadius: [2, 2, 0, 0],
+          },
+          emphasis: {
+            itemStyle: {
+              borderWidth: 3,
+              shadowColor: 'rgba(25,148,117,0.70)',
+              shadowBlur: 2,
+              shadowOffsetX: 0,
+              shadowOffsetY: 2,
+            },
+          },
+          data: theoryData,
         }, {
           name: '对比差值(%)',
           type: 'line',
