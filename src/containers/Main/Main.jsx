@@ -119,9 +119,8 @@ class Main extends Component {
     Cookie.remove('refresh_token');
     Cookie.remove('isNotLogin');
     Cookie.remove('auto');
-    Cookie.remove('userRight');
-    Cookie.remove('rightMenu');
-    // Cookie.remove('theme');
+    
+// Cookie.remove('theme');
     this.props.resetMonitorData();
     this.props.resetCommonStore();
     this.props.changeLoginStore({ pageTab: 'login' });
@@ -132,7 +131,7 @@ class Main extends Component {
     const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore, theme, stationTypeCount } = this.props;
     const authData = localStorage.getItem('authData') || '';
     const isNotLogin = Cookie.get('isNotLogin');
-    const userRight = Cookie.get('userRight');
+    const userRight = localStorage.getItem('rightHandler');
     const rightMenu = localStorage.getItem('rightMenu');
     const isTokenValid = Cookie.get('expireData') && moment().isBefore(new Date(Cookie.get('expireData')), 'second');
     const enterFirst = enterFirstPage();
@@ -258,3 +257,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default hot(withRouter(connect(mapStateToProps, mapDispatchToProps)(Main)));
+
