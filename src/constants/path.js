@@ -97,7 +97,7 @@ export default {
       getDefectTypes: '/v3/defect/type',
       createNewDefect: '/v3/defect', //3.3
       submitDefect: '/v3/defect/reject/change', // 3.3
-      createDefect: '/v3/defect/add', // 3.12 
+      createDefect: '/v3/defect/add', // 3.12
       defectSubmit: '/v3/defect/reject/submit', // 3.12
       transformDefect: '/v3/inspect/defect',
       setInspectCheck: '/v3/inspect/check/batch',
@@ -113,6 +113,7 @@ export default {
       getKnowledgebase: '/v3/knowledgebase/list', // 获取智能专家库列表
       likeKnowledgebase: '/v3/knowledgebase/like/', // 点赞智能专家
       getParticipant: '/v3/defect/handleuser/like', // 获取参与者列表
+      getMeterList: '/v4/opms/readMeter/meterPage', // 获取抄表列表
     },
     operation: {
       // 工作台
