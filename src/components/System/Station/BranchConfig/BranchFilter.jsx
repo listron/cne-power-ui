@@ -3,7 +3,7 @@ import styles from './styles.scss';
 import PropTypes from 'prop-types';
 import StationSelect from '../../../Common/StationSelect';
 import DeviceSelect from '../../../Common/DeviceSelect';
-import { Select, Button, Input } from 'antd';
+import { Select } from 'antd';
 const { Option } = Select;
 
 class BranchFilter extends React.Component {
@@ -15,6 +15,7 @@ class BranchFilter extends React.Component {
     deviceTypeData: PropTypes.array,
     stationsInfo: PropTypes.array,
     deviceTypeCode: PropTypes.number,
+    stationCode: PropTypes.number,
   }
 
   constructor(props, context) {

@@ -8,9 +8,21 @@ const { Option } = Select;
 class BranchTable extends React.Component {
   static propTypes = {
     loadding: PropTypes.bool,
+    cancelloadding: PropTypes.bool,
     changeBranchStore: PropTypes.func,
+    getCheckData: PropTypes.func,
     saveEditArr: PropTypes.array,
+    deviceBranchInfo: PropTypes.array,
     deviceTypeCode: PropTypes.number,
+    stationCode: PropTypes.number,
+    deviceFullCodes: PropTypes.array,
+    editBranchData: PropTypes.array,
+    copyData: PropTypes.array,
+    focus: PropTypes.bool,
+    selectDeviceFullCode: PropTypes.bool,
+    isCheckStatus: PropTypes.bool,
+    checked: PropTypes.bool,
+    checkTime: PropTypes.str,
   }
   constructor(props, context) {
     super(props, context);
@@ -24,7 +36,7 @@ class BranchTable extends React.Component {
     getCheckData({ stationCode, deviceTypeCode, deviceFullCodes });
   }
   changeSwitch = (checked) => {
-    const { changeBranchStore, copyData } = this.props;
+    const { changeBranchStore } = this.props;
     changeBranchStore({ checked: checked });
   }
   filterData = (checked) => { //筛选变动的
@@ -96,7 +108,7 @@ class BranchTable extends React.Component {
   }
   //改变支路条数
   changeBranchNum = (value) => {
-    const { copyData, changeBranchStore, deviceBranchInfo, focus, selectDeviceFullCode } = this.props;
+    const { copyData, changeBranchStore, focus, selectDeviceFullCode } = this.props;
     const selectedArr = copyData.filter((e, i) => e.deviceFullCode === focus);//筛选的设备名称
     const selectedDevice = selectedArr[0];//选中的设备名称的数据{...}
     const branchList = selectedDevice ? selectedDevice.branchList : [];//支路的数据
@@ -193,7 +205,7 @@ class BranchTable extends React.Component {
   }
 
   render() {
-    const { loadding, cancelloadding, copyData, checkTime, saveEditArr, isCheckStatus, focus, checked } = this.props;
+    const { loadding, cancelloadding, copyData, checkTime, isCheckStatus, focus, checked } = this.props;
     const pvNumsArr = [0, 1, 2, 3, 4, 5];
     const filterCopyData = this.filterData(checked);
 
