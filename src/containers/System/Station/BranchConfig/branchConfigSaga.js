@@ -37,8 +37,8 @@ function* getStations(action) {
 }
 function* getDeviceType(action) {
   const { payload } = action;
-  const url = '/mock/base/devicetype/branch';
-  // const url = `${APIBasePath}${system.getDeviceType}/${payload.stationCode}`;
+  // const url = '/mock/base/devicetype/branch';
+  const url = `${APIBasePath}${system.getDeviceType}/${payload.stationCode}`;
   try {
     const response = yield call(axios.get, url, { ...payload });
     if (response.data.code === '10000') {
