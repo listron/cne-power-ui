@@ -191,7 +191,7 @@ class SetVersionModal extends Component { //版本的设置
             <FormItem label="电站名称" colon={false}>
               {getFieldDecorator('stations', {
                 rules: [{ required: false, message: '请选择电站' }],
-                initialValue: applyStations,
+                initialValue: stations.filter(e => applyStations.map(e => e.stationCode).includes(e.stationCode)),
               })(
                 <StationSelect
                   data={stations.filter(e => e.stationType !== 0)}
