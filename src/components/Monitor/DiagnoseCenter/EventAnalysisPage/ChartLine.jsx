@@ -8,6 +8,7 @@ import styles from './eventAnalysis.scss';
 class ChartLine extends PureComponent {
 
   static propTypes = {
+    pageKey: PropTypes.string,
     eventAnalysisLoading: PropTypes.bool,
     eventAnalysisInfo: PropTypes.object,
     analysisEvent: PropTypes.object,
@@ -61,6 +62,7 @@ class ChartLine extends PureComponent {
   }
 
   drawChart = (period = [], data = {}, interval) => {
+    const { pageKey } = this.props;
     const lineChart = echarts.init(this.lineRef);
     lineChart.hideLoading();
     const { time = [], pointData = [] } = data;
@@ -70,6 +72,8 @@ class ChartLine extends PureComponent {
       height: 30,
       left: '7%',
       top: 0,
+      itemWidth: 14,
+      selectedMode: false,
       data: ['告警时段'],
       textStyle: {
         color: '#353535',
@@ -128,7 +132,7 @@ class ChartLine extends PureComponent {
         top: `${Math.floor((i + 1) / 4) * 30}`,
         data: [pointFullName],
         textStyle: {
-          color: e.isWarned ? '#f5222d' : '#353535',
+          color: e.isWarned && pageKey === 'diagnose' ? '#f5222d' : '#353535',
         },
       });
       series.push({
@@ -140,11 +144,12 @@ class ChartLine extends PureComponent {
         },
         data: e.value,
         symbol: 'circle',
+        symbolSize: 10,
         showSymbol: false,
         smooth: true,
       });
     });
-    const yAxis = unitsGroup.map(e => ({ // 生成多y纵坐标, 相同单位对应一个y轴
+    const eachyAxis = { // 生成多y纵坐标, 相同单位对应一个y轴
       type: 'value',
       axisLabel: {
         show: false,
@@ -158,7 +163,10 @@ class ChartLine extends PureComponent {
       splitLine: {
         show: false,
       },
-    }));
+    };
+    const yAxis = unitsGroup.length > 0 ? unitsGroup.map(e => ({
+      ...eachyAxis,
+    })) : eachyAxis; // 若返回异常数据导致无单位，使用默认单纵坐标即可
     const legendHeight = Math.ceil(legends.length / 4) * 30;
     const option = {
       legend: legends,
@@ -174,6 +182,18 @@ class ChartLine extends PureComponent {
       tooltip: {
         trigger: 'axis',
         show: true,
+        position: (point, params, dom, rect, size) => {
+          const { viewSize, contentSize } = size || {};
+          const [viewWidth] = viewSize || [];
+          const [tipWidth] = contentSize || [];
+          const [pointLeft] = point || [];
+          let leftPosition = pointLeft; // 默认随鼠标
+          if (viewWidth - pointLeft - 10 <= tipWidth) { // 右侧空间不足以展示浮层
+            leftPosition = pointLeft - tipWidth - 5;
+          }
+          const topPosition = legendHeight + 5; //悬浮框位于图形顶部, 防止溢出。
+          return [leftPosition, topPosition];
+        },
         axisPointer: {
           lineStyle: {
             color: '#000',
@@ -192,7 +212,7 @@ class ChartLine extends PureComponent {
                 const { isWarned, pointName, deviceName } = eachFullData;
                 const lineFullName = `${deviceName} ${pointName || ''}`;
                 return (
-                  `<p class=${isWarned ? styles.warnedItem : styles.eachItem }>
+                  `<p class=${(isWarned && pageKey === 'diagnose') ? styles.warnedItem : styles.eachItem }>
                     <span class=${styles.tipIcon}>
                       <span class=${styles.line} style="background-color:${color}"></span>
                       <span class=${styles.rect} style="background-color:${color}"></span>
@@ -226,7 +246,7 @@ class ChartLine extends PureComponent {
         },
       },
       yAxis,
-      series,
+      series, // 若返回异常空数据, 则需要置空
     };
     if (pointData.length > 0) {
       option.dataZoom = [

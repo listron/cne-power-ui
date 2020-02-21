@@ -168,7 +168,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
         //   })),
         //   chartType: 2, // 1折线, 2比值
         // },
-        eventAnalysisInfo: response.data || {},
+        eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
       });
     } else { throw response.message; }
   } catch (error) {
