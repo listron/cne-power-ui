@@ -67,19 +67,19 @@ class ChartBar extends PureComponent {
               <h3 class=${styles.tooltipTitle}>${name}</h3>
               <div>
                 <p class=${styles.eachItem}>
-                  <span class=${styles.tipRect} style="background-color: #7D8C87"></span>
+                  <span class=${styles.barRect}></span>
                   <span class=${styles.tipName} style="flex: 0 0 176px">逆变器直流发电量(kWh)</span>
                   <span class=${styles.tipValue}>${dataFormats(baseValue, '--', 2, true)}</span>
                 </p>
                 <p class=${styles.eachItem}>
-                  <span class=${styles.tipRect} style="background-color: #6E6F6F"></span>
+                  <span class=${styles.barBorderRect}></span>
                   <span class=${styles.tipName} style="flex: 0 0 176px">方阵理论发电量(kWh)</span>
                   <span class=${styles.tipValue}>${dataFormats(theoryValue, '--', 2, true)}</span>
                 </p>
                 <p class=${styles.eachItem}>
                   <span class=${styles.tipIcon}>
                     <span class=${styles.line} style="background-color: #ff9900"></span>
-                    <span class=${styles.rect} style="background-color: #ff9900"></span>
+                    <span class=${styles.rect} style="background-color: #ff9900; border: solid 1px #fff"></span>
                   </span>
                   <span class=${styles.tipName} style="flex: 0 0 176px">对比差值(%)</span>
                   <span class=${styles.tipValue}>${dataFormats(rateValue * 100, '--', 2, true)}</span>
