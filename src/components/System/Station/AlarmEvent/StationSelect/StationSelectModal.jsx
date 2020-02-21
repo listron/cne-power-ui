@@ -182,7 +182,9 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
     }
     const tmpStationSet = new Set(data.map(e => e.stationType));
     const hasMultipleType = tmpStationSet.size > 1;
-    const checked = selectedStation.length + disabledStation.length === data.length;
+    const tmpCodes = [...selectedStation.map(e => e.stationCode), ...disabledStation.map(e => e.stationCode)];
+    const mixedCode = tmpCodes.filter(e => data.map(e => e.stationCode).includes(e));
+    const checked = mixedCode.length === data.length;
     return (
       <div className={styles.stationSelectModal}>
         {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}

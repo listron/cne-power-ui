@@ -42,7 +42,8 @@ class ProvinceItem extends Component {
         const notSameStationType = e.stationType !== filterStationType; // 同省但不同电站类型
         return notInProvince || notSameStationType;
       });
-      newSelectedStation = [...tmpStations, ...provinceInfo.stations];
+      const allProvinceStationCode = provinceInfo.stations.map(e => e.stationCode);
+      newSelectedStation = provinceInfo.stations.concat(tmpStations.filter(v => !allProvinceStationCode.includes(v.stationCode)));
       if (oneStyleOnly) { // 只能选一种类型电站
         const stationTypeSet = new Set();
         newSelectedStation.forEach(e => { stationTypeSet.add(e.stationType); });
@@ -65,19 +66,21 @@ class ProvinceItem extends Component {
   render() {
     const { provinceInfo, selectedStation, multiple, disabledStation = [], filterStationType = 2 } = this.props;
     const { provinceCode } = provinceInfo;
-
     const filterdStations = selectedStation.filter(e => {
       const isInProvince = e.provinceCode === provinceCode;
       const isRightStationType = e.stationType === filterStationType || filterStationType === 2;
       return isInProvince && isRightStationType;
     });
+    const provinceInfoStationCode = provinceInfo.stations.map(e => e.stationCode);
+    const filterdStationsCode = filterdStations.map(e => e.stationCode);
+    const IntersectionCode = provinceInfoStationCode.filter(e => filterdStationsCode.includes(e));
+
     let provinceChecked = false, indeterminate = false;
-    if (filterdStations.length > 0 && filterdStations.length < provinceInfo.stations.length) {
+    if (IntersectionCode.length > 0 && IntersectionCode.length < provinceInfo.stations.length) {
       indeterminate = true;
-    } else if (filterdStations.length === provinceInfo.stations.length) {
+    } else if (IntersectionCode.length === provinceInfo.stations.length) {
       provinceChecked = true;
     }
-
     return (
       <div className={styles.provinceItem}>
         {multiple ?
