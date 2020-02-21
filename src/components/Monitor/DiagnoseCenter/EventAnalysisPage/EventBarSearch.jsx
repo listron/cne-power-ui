@@ -23,8 +23,8 @@ class EventBarSearch extends PureComponent {
   onDayChange = (method) => {
     const { analysisEvent } = this.props;
     const { beginTime } = analysisEvent || {};
-    const newMonthStr = moment(beginTime)[method](1, 'day').format('YYYY-MM-DD');
-    this.props.getEventsAnalysis({ ...analysisEvent, beginTime: newMonthStr });
+    const newDayStr = moment(beginTime)[method](1, 'day').format('YYYY-MM-DD');
+    this.props.getEventsAnalysis({ ...analysisEvent, beginTime: newDayStr });
   }
 
   disabledDateFunc = (cur) => moment().isBefore(cur, 'day')
