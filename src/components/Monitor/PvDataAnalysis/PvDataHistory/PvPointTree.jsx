@@ -83,7 +83,7 @@ class PvPointTree extends Component {
       2: '时间选择范围不可超过14天',
       5: '时间选择范围不可超过1天',
     };
-    if (moment(startTime).isBefore(tmpAllowedEnd, 's')) {
+    if (startTime.isBefore(tmpAllowedEnd, 's')) {
       message.error(tmpText[timeInterval]);
       changeHistoryStore({
         queryParam: newQueryParam,
@@ -125,7 +125,7 @@ class PvPointTree extends Component {
       2: '时间选择范围不可超过14天',
       5: '时间选择范围不可超过1天',
     };
-    if (moment(startTime).isBefore(tmpAllowedEnd, 's')) {
+    if (startTime.isBefore(tmpAllowedEnd, 's')) {
       message.error(tmpText[timeInterval]);
       changeHistoryStore({
         queryParam: newQueryParam,
