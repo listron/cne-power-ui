@@ -229,7 +229,7 @@ class StationManageTable extends Component {
           return (
             <div className={styles.stationNameWrap}>
               <i className={`iconfont icon-${['windgo', 'pvs'][record.stationType]}`} />
-              <span className={styles.stationNameText} onClick={() => this.toStationDetail(record, index)}>{record.stationName}</span>
+              <div className={styles.stationNameText} onClick={() => this.toStationDetail(record, index)}>{record.stationName}</div>
             </div>
           );
         },
@@ -269,7 +269,7 @@ class StationManageTable extends Component {
         render: (text, record, index) => {
           const { eventDataStatus, stationType } = record;
           const title = eventDataStatus && '已设置' || '未设置';
-          return (<div className={`${styles.eventStatusText} ${stationType === 0 && styles.windDisabled}`}>
+          return (<div className={`${styles.eventDataStatusText} ${stationType === 0 && styles.windDisabled}`}>
             <i className={`iconfont ${eventDataStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYcStatus(record, 'data')} />
           </div>);
         },
@@ -374,19 +374,20 @@ class StationManageTable extends Component {
           {/* <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalNum} onPaginationChange={this.onPaginationChange} /> */}
         </div>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={() => this.confirmWarningTip(deleteInfo)} value={warningTipText} />}
-        <CneTable
-          loading={stationListLoading}
-          dataSource={stationList.map((e, i) => ({ ...e, key: i }))}
-          columns={this.initColumn()}
-          className={styles.stationTable}
-          pagination={false}
-          scroll={initTableScroll}
-          dataError={stationListError}
-          sortField={this.tableSortMap[orderField]}
-          sortMethod={this.sortMethodMap[orderCommand] || false}
-          onChange={this.tableChange}
-        />
-
+        <div className={styles.tableWrap}>
+          <CneTable
+            loading={stationListLoading}
+            dataSource={stationList.map((e, i) => ({ ...e, key: i }))}
+            columns={this.initColumn()}
+            className={styles.stationTable}
+            pagination={false}
+            scroll={initTableScroll}
+            dataError={stationListError}
+            sortField={this.tableSortMap[orderField]}
+            sortMethod={`${this.sortMethodMap[orderCommand]}` || false}
+            onChange={this.tableChange}
+          />
+        </div>
         {
           departmentModal && <SetDepartmentModal
             departmentSetInfo={departmentSetInfo}

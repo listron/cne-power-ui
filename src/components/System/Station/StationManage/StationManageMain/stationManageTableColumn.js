@@ -17,7 +17,7 @@ const stationManageTableColumn = [{
   dataIndex: 'stationCapacity',
   key: 'stationCapacity',
   className: styles.stationCapacity,
-  render: (text) => <div className={styles.regionNameText} title={text}>{numWithComma(text)}</div>,
+  render: (text) => <div className={styles.stationCapacityText} title={text}>{numWithComma(text)}</div>,
 }, {
   title: '发电单元数',
   dataIndex: 'stationUnitCount',
@@ -31,8 +31,8 @@ const stationManageTableColumn = [{
   sorter: true,
   className: styles.isConnected,
   render: (text) => {
-    return <span className={styles.isConnectedText}>{text ? '是' : '否'}</span>
-  }
+    return <div className={styles.isConnectedText}>{text ? '是' : '否'}</div>;
+  },
 }, {
   title: '电站状态',
   dataIndex: 'stationStatus',
@@ -42,8 +42,8 @@ const stationManageTableColumn = [{
     const { stationStatus } = record;
     const statusInfo = stationStatusArray.find(e => e.statusCode === stationStatus);
     const statusText = statusInfo && statusInfo.statusName || '--';
-    return <span className={styles.stationStatus}>{statusText}</span>
-  }
+    return <div className={styles.stationStatusText}>{statusText}</div>;
+  },
 },
 {
   title: '测点',
@@ -51,7 +51,7 @@ const stationManageTableColumn = [{
   key: 'pointStatus',
   className: styles.pointStatus,
   render: (text) => {
-    return <span className={styles.pointStatusText}>{text && '已设置' || '未设置'}</span>
+    return <div className={styles.pointStatusText}>{text && '已设置' || '未设置'}</div>;
   },
 },
   // {
