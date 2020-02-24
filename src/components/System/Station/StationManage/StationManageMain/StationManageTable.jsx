@@ -229,7 +229,7 @@ class StationManageTable extends Component {
           return (
             <div className={styles.stationNameWrap}>
               <i className={`iconfont icon-${['windgo', 'pvs'][record.stationType]}`} />
-              <span className={styles.stationNameText} onClick={() => this.toStationDetail(record, index)}>{record.stationName}</span>
+              <div className={styles.stationNameText} onClick={() => this.toStationDetail(record, index)}>{record.stationName}</div>
             </div>
           );
         },
@@ -269,7 +269,7 @@ class StationManageTable extends Component {
         render: (text, record, index) => {
           const { eventDataStatus, stationType } = record;
           const title = eventDataStatus && '已设置' || '未设置';
-          return (<div className={`${styles.eventStatusText} ${stationType === 0 && styles.windDisabled}`}>
+          return (<div className={`${styles.eventDataStatusText} ${stationType === 0 && styles.windDisabled}`}>
             <i className={`iconfont ${eventDataStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYcStatus(record, 'data')} />
           </div>);
         },
@@ -338,6 +338,39 @@ class StationManageTable extends Component {
     const authData = localStorage.getItem('authData') || '';
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
     const initTableScroll = stationList.length > 0 && { y: 900 } || {};
+    const teststationList = [
+      {
+        'stationCode': 25,
+        'departmentStatus': 1,
+        'stationType': 0,
+        'regionName': '吉林',
+        'isConnected': 0,
+        'eventDataStatus': 0,
+        'eventYxStatus': 0,
+        'deviceStatus': '0',
+        'coverType': null,
+        'regionCode': null,
+        'alarmStatus': 0,
+        'eventYcStatus': 0,
+        'stationUnitCount': 33,
+        'stationStatus': '900',
+        'stationName': '黑鱼泡四期',
+        'pointStatus': 1,
+        'agencyType': null,
+        'stationCapacity': 49.500000,
+        'stationDepartments': [
+          '316603493269505',
+          '316603493269506',
+          '347089804705792',
+          '349279789236224',
+          '316603493269507',
+          '398135175847936',
+          '386880599924736',
+          '426020805844480',
+          '479222536155136',
+        ],
+      },
+    ];
     return (
       <div className={styles.stationList}>
         <div className={styles.topHandler}>
@@ -374,19 +407,20 @@ class StationManageTable extends Component {
           {/* <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalNum} onPaginationChange={this.onPaginationChange} /> */}
         </div>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={() => this.confirmWarningTip(deleteInfo)} value={warningTipText} />}
-        <CneTable
-          loading={stationListLoading}
-          dataSource={stationList.map((e, i) => ({ ...e, key: i }))}
-          columns={this.initColumn()}
-          className={styles.stationTable}
-          pagination={false}
-          scroll={initTableScroll}
-          dataError={stationListError}
-          sortField={this.tableSortMap[orderField]}
-          sortMethod={this.sortMethodMap[orderCommand] || false}
-          onChange={this.tableChange}
-        />
-
+        <div className={styles.tableWrap}>
+          <CneTable
+            loading={stationListLoading}
+            dataSource={teststationList.map((e, i) => ({ ...e, key: i }))}
+            columns={this.initColumn()}
+            className={styles.stationTable}
+            pagination={false}
+            scroll={initTableScroll}
+            dataError={stationListError}
+            sortField={this.tableSortMap[orderField]}
+            sortMethod={`${this.sortMethodMap[orderCommand]}` || false}
+            onChange={this.tableChange}
+          />
+        </div>
         {
           departmentModal && <SetDepartmentModal
             departmentSetInfo={departmentSetInfo}

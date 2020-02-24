@@ -178,6 +178,15 @@
           }
         }
       }
+      .textWrap{
+        width:100vw;
+        height:30px;
+        background: pink;
+      }
+      .tableWrap {
+        min-width: 1212px;
+        overflow-x: scroll;
+      }
       .stationTable {
         // 表格区
         background: #ffffff;
@@ -219,82 +228,80 @@
             font-size: 18px;
           }
         }
-        .stationNameText,
-        .regionNameText,
-        .defectTypeNameText,
-        .defectDescribeText {
-          @include overflowText();
+        .windDisabled {
+                  i {
+                    color: #999999;
+                    pointer-events: none;
+                    cursor: not-allowed;
+                  }
+         }
+        .stationName,.regionName,.stationCapacity,.stationUnitCount,.stationStatus,.isConnected,.pointStatus,.eventStatus,.eventDataStatus,.departmentStatus,.handler{
+           @include overflowText();
+          //  background: pink;
         }
+        .stationNameText,.regionNameText,.stationCapacityText,.stationUnitCountText,.isConnectedText,.eventStatusText,.stationStatusText,.pointStatusText,.handlerText,.eventDataStatusText{
+          @include overflowText();
+          height: 40px;
+          line-height: 40px;
+          // background: aqua;
+        }
+        .isConnectedText,.stationStatusText,.pointStatusText,.eventStatusText,.eventDataStatusText,.handlerText{
+          text-align: center;
+          // display: block;
+        }
+        .stationCapacityText,.stationUnitCountText {
+          text-align: right;
+        }
+        // 电站
         .stationName {
-          width: calc((100vw - 300px) * 0.14);
+          width: calc((100vw - 240px) * 0.12);
+          // width:153px; 
         }
         th.stationName {
+          text-align: left;
           padding-left: 40px !important;
         }
+        // .stationNameWrap{
+        //   max-width: calc((100vw - 280px) * 0.13 - 20px);
+          
+        // }
         .stationNameText {
-          width: calc((100vw - 300px) * 0.14 - 48px);
+          width: calc((100vw - 240px) * 0.12 - 55px);
           color: #199475;
           cursor: pointer;
         }
-
+        // 装机容量
         .stationCapacity {
-          text-align: right;
-          width: calc((100vw - 300px) * 0.098);
+          width: calc((100vw - 240px) * 0.09);
         }
         .stationCapacityText {
-          width: calc((100vw - 300px) * 0.1- 20px);
+          max-width: calc((100vw - 240px) * 0.09 - 20px);
         }
-        .stationStatus,
-        .pointStatus,
-        .isConnected,
-        .regionName,
-        .eventStatus,
-        .stationUnitCount {
-          width: calc((100vw - 300px) * 0.083);
+
+        .regionName,.stationUnitCount,.isConnected,.stationStatus,.pointStatus,.eventStatus{
+          width: calc((100vw - 240px) * 0.0785);
+          // width:93px;
+          // background: pink;
         }
-        .stationStatus,
-        .pointStatus,
-        .isConnected {
-          text-align: center;
-        }
-        .isConnectedText,
-        .stationUnitCountText,
-        .stationStatusText,
-        .regionNameText,
-        .eventStatusText,
-        .pointStatusText {
-          width: calc((100vw - 300px) * 0.083- 30px);
-        }
-        .windDisabled {
-          i {
-            color: #999999;
-            pointer-events: none;
-            cursor: not-allowed;
-          }
-        }
-        .eventDataStatus,
-        .eventStatus,
-        .handler,
-        .eventStatusText {
-          text-align: center;
-        }
-        .stationCapacity,
-        .stationUnitCount,
-        .stationCapacityText,
-        .stationUnitCountText {
-          text-align: right;
+
+        .regionNameText,.stationUnitCountText,.isConnectedText, .stationStatusText, .pointStatusText, .eventStatusText {
+          max-width: calc((100vw - 240px) * 0.0785- 20px);
         }
         .eventDataStatus {
-          width: calc((100vw - 300px) * 0.093);
+           width: calc((100vw - 240px) * 0.09);
         }
         .eventDataStatusText {
-          width: calc((100vw - 300px) * 0.093- 20px);
+          max-width: calc((100vw - 240px) * 0.09 - 20px);
+        }
+        .handler{
+          width: calc((100vw - 240px) * 0.07);
         }
         .handlerText {
           color: #fff;
           display: flex;
           align-items: center;
           justify-content: space-around;
+          max-width: calc((100vw - 240px) * 0.07 - 30px);
           span {
             display: flex;
             box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
