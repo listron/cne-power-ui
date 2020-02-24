@@ -338,39 +338,6 @@ class StationManageTable extends Component {
     const authData = localStorage.getItem('authData') || '';
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
     const initTableScroll = stationList.length > 0 && { y: 900 } || {};
-    const teststationList = [
-      {
-        'stationCode': 25,
-        'departmentStatus': 1,
-        'stationType': 0,
-        'regionName': '吉林',
-        'isConnected': 0,
-        'eventDataStatus': 0,
-        'eventYxStatus': 0,
-        'deviceStatus': '0',
-        'coverType': null,
-        'regionCode': null,
-        'alarmStatus': 0,
-        'eventYcStatus': 0,
-        'stationUnitCount': 33,
-        'stationStatus': '900',
-        'stationName': '黑鱼泡四期',
-        'pointStatus': 1,
-        'agencyType': null,
-        'stationCapacity': 49.500000,
-        'stationDepartments': [
-          '316603493269505',
-          '316603493269506',
-          '347089804705792',
-          '349279789236224',
-          '316603493269507',
-          '398135175847936',
-          '386880599924736',
-          '426020805844480',
-          '479222536155136',
-        ],
-      },
-    ];
     return (
       <div className={styles.stationList}>
         <div className={styles.topHandler}>
@@ -410,7 +377,7 @@ class StationManageTable extends Component {
         <div className={styles.tableWrap}>
           <CneTable
             loading={stationListLoading}
-            dataSource={teststationList.map((e, i) => ({ ...e, key: i }))}
+            dataSource={stationList.map((e, i) => ({ ...e, key: i }))}
             columns={this.initColumn()}
             className={styles.stationTable}
             pagination={false}
