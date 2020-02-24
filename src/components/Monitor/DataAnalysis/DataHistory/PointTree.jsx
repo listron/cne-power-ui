@@ -36,24 +36,24 @@ class PointTree extends Component {
 
   expandTree = (expandedKeys, expanded) => {
     this.setState({ expandedKeys });
-    if(expanded.expanded){
-      if(expandedKeys.length>0){
-          expandedKeys.splice(0, expandedKeys.length-1);
+    if (expanded.expanded) {
+      if (expandedKeys.length > 0) {
+        expandedKeys.splice(0, expandedKeys.length - 1);
       }
       this.setState({
-          expandedKeys: expandedKeys,
+        expandedKeys: expandedKeys,
       });
-    }else{
-     const key = expanded.node.props.children.map((obj, index)=>{
-        if(expandedKeys.indexOf(obj.key)>-1){
-            return obj.key;
+    } else {
+      const key = expanded.node.props.children.map((obj, index) => {
+        if (expandedKeys.indexOf(obj.key) > -1) {
+          return obj.key;
         }
         return '';
-      }).filter((v, index)=> v!== '');
+      }).filter((v, index) => v !== '');
       //index  是点击收起节点的下级展开节点
       const index = expandedKeys.indexOf(key[0]); //因为展开的时候会收起兄弟节点  所以这里应该只有一个
-      if(index>0){
-          expandedKeys.splice(0, index + 1); //从0开始  删除到点击的下一级已展开节点
+      if (index > 0) {
+        expandedKeys.splice(0, index + 1); //从0开始  删除到点击的下一级已展开节点
       }
       this.setState({
         expandedKeys: expandedKeys,
@@ -107,7 +107,7 @@ class PointTree extends Component {
       devicePoints: selectedKeys,
     };
     const tmpAllowedEnd = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
-    if (startTime.isBefore(tmpAllowedEnd, 's')) {
+    if (moment(startTime).isBefore(tmpAllowedEnd, 's')) {
       message.error(`${timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}`);
       changeHistoryStore({
         queryParam: newQueryParam,
