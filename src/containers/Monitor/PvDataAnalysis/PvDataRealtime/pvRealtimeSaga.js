@@ -1,19 +1,19 @@
-import {call, put, takeLatest, select, fork, cancel, race} from 'redux-saga/effects';
-import {delay} from 'redux-saga';
+import { call, put, takeLatest, select, fork, cancel, race } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-import {pvRealtimeAction} from './pvRealtimeReducer';
-import {message} from 'antd';
+import { pvRealtimeAction } from './pvRealtimeReducer';
+import { message } from 'antd';
 import moment from 'moment';
 import Cookie from 'js-cookie';
 
-const {APIBasePath} = Path.basePaths;
-const {monitor} = Path.APISubPaths;
+const { APIBasePath } = Path.basePaths;
+const { monitor } = Path.APISubPaths;
 let realtimeChartInterval = null;
 let realtimeListInterval = null;
 
-function* getAvailableDeviceType({payload = {}}) { // 获取可用设备类型
-  const {stationCode} = payload;
+function* getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
+  const { stationCode } = payload;
   const sortTypes = [ // 默认排序顺序
     '风电机组', '逆变器（集中）', '逆变器（组串）', '集电线路', '箱变', '汇流箱', '气象站', '站内母线', '主变', '站用变', '接地变', '测风塔', '全场信息汇总', '电能采集', '主进线', '功率预测系统', '能量管理平台', 'SVG', '母线分段', '馈线', '直流屏', '孤岛保护',
   ];
@@ -49,8 +49,8 @@ function* getAvailableDeviceType({payload = {}}) { // 获取可用设备类型
   }
 }
 
-function* getPointInfo({payload}) { // 获取可选测点
-  const {deviceFullCodes, timeInterval, selectStationType} = payload;
+function* getPointInfo({ payload }) { // 获取可选测点
+  const { deviceFullCodes, timeInterval, selectStationType } = payload;
   const deviceTypeCode = deviceFullCodes.map(e => e.deviceTypeCode);
   const url = `${APIBasePath}${monitor.getPointsInfo}`; // '/mock/monitor/dataAnalysisPoints';
   try {
@@ -76,13 +76,13 @@ function* getPointInfo({payload}) { // 获取可选测点
   }
 }
 
-function* realChartInterval({payload = {}}) { // 请求。=> (推送)处理数据及错误判断
+function* realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数据及错误判断
   const url = `${APIBasePath}${monitor.getRealtimeChart}`; // '/mock/monitor/dataAnalysisChartRealtime'
-  const {chartRealtime, dataTime, timeInterval, chartTimeText} = yield select(state => state.monitor.dataRealtime.toJS());
+  const { chartRealtime, dataTime, timeInterval, chartTimeText } = yield select(state => state.monitor.pvDataRealtime.toJS());
   const maxInfoLength = 30 * 60 / timeInterval; // 规定的最大数据长度30min.
   try {
-    const {queryParam = {}} = payload;
-    const {devicePoints = [], deviceFullCodes = []} = queryParam;
+    const { queryParam = {} } = payload;
+    const { devicePoints = [], deviceFullCodes = [] } = queryParam;
     const [response, timeoutInfo] = yield race([
       call(axios.post, url, {
         ...queryParam,
@@ -94,7 +94,7 @@ function* realChartInterval({payload = {}}) { // 请求。=> (推送)处理数�
     ]);
     if (response && response.data && response.data.code === '10000') { // 请求成功
       const chartInfo = response.data.data || {};
-      const {pointTime = [], pointInfo = []} = chartInfo;
+      const { pointTime = [], pointInfo = [] } = chartInfo;
       const maxTime = moment(pointTime[0]); // api返回的最大时刻。
 
       if (!dataTime && pointTime[0]) { // 初次请求得到数据 => 30min内数据需用null补全。
@@ -108,13 +108,13 @@ function* realChartInterval({payload = {}}) { // 请求。=> (推送)处理数�
             chartTimeMoment: maxTime, // 仅用于展示的最新api数据时间。
             chartRealtime: {
               pointInfo: pointInfo.map(e => {
-                const {pointCode, pointName, pointUnit, deviceInfo = []} = e || {};
+                const { pointCode, pointName, pointUnit, deviceInfo = [] } = e || {};
                 return {
                   pointCode,
                   pointName,
                   pointUnit,
                   deviceInfo: deviceInfo.map(device => {
-                    const {deviceCode, deviceName, pointValue = []} = device || {};
+                    const { deviceCode, deviceName, pointValue = [] } = device || {};
                     const tmpFillValues = [];
                     if (pointTime.length > 0 && pointValue.length > 0) { // 有时间和数据，才进行填充管理。
                       for (let i = 0; i < maxInfoLength; i++) {
@@ -143,7 +143,7 @@ function* realChartInterval({payload = {}}) { // 请求。=> (推送)处理数�
         const newPointTime = chartRealtime.pointTime || [];
         const prePointInfo = chartRealtime.pointInfo || [];
         if (!pointTime[0] || (moment(pointTime[0]) <= moment(newPointTime[0]))) { // api时间不存在或返回时间已小于记录中的最小时间，抛弃。
-          throw {response};
+          throw { response };
         }
         const timeSpace = parseInt((maxTime - moment(dataTime)) / 1000 / timeInterval, 0); // 超出记录的最大时间的段数.(可为负数)
 
@@ -154,15 +154,15 @@ function* realChartInterval({payload = {}}) { // 请求。=> (推送)处理数�
         }
         // console.log('时间跨度'+newPointTime.length+'最小时间:'+newPointTime[0]+'---最大时间:' + newPointTime[newPointTime.length - 1])
         const newPointInfo = prePointInfo.map(e => { // 新数据添加推送入旧数据
-          const {pointName, pointCode, pointUnit, deviceInfo} = e;
-          const matchedPoint = pointInfo.find(res => res.pointCode === e.pointCode) || {deviceInfo: []};
+          const { pointName, pointCode, pointUnit, deviceInfo } = e;
+          const matchedPoint = pointInfo.find(res => res.pointCode === e.pointCode) || { deviceInfo: [] };
           return {
             pointName,
             pointCode,
             pointUnit,
             deviceInfo: deviceInfo.map(inner => {
-              const {deviceCode, deviceName, pointValue} = inner;
-              const matchedDevice = matchedPoint.deviceInfo.find(res => res.deviceCode === deviceCode) || {pointValue: []};
+              const { deviceCode, deviceName, pointValue } = inner;
+              const matchedDevice = matchedPoint.deviceInfo.find(res => res.deviceCode === deviceCode) || { pointValue: [] };
               const reverseValues = [...matchedDevice.pointValue].reverse();
               if (timeSpace > pointTime.length) { // 需追加数据超过api传来的数据长度，null补足后，再倒序插入api数据。
                 for (let i = 0; i < timeSpace - pointTime.length; i++) {
@@ -204,7 +204,7 @@ function* realChartInterval({payload = {}}) { // 请求。=> (推送)处理数�
         });
       }
     } else { // 超时或请求失败。基于记录的请求时间 + 设定时间间隔。
-      throw {response, timeoutInfo};
+      throw { response, timeoutInfo };
     }
   } catch (err) { // 请求失败，推送入null进入各数据数组，时间 + 5s存储。
     if (!dataTime) { // 初次(dataTime === null)请求数据即失败，不做任何处理。
@@ -217,7 +217,7 @@ function* realChartInterval({payload = {}}) { // 请求。=> (推送)处理数�
       return;
     }
     const newDataTime = moment(dataTime).add(timeInterval, 's').format('YYYY-MM-DD HH:mm:ss');
-    const {pointTime = [], pointInfo = []} = chartRealtime;
+    const { pointTime = [], pointInfo = [] } = chartRealtime;
     pointTime.shift();
     pointTime.push(newDataTime);
     const newPointInfo = pointInfo.map(e => ({
@@ -225,7 +225,7 @@ function* realChartInterval({payload = {}}) { // 请求。=> (推送)处理数�
       pointCode: e.pointCode,
       pointUnit: e.pointUnit,
       deviceInfo: e.deviceInfo.map(inner => {
-        const {deviceCode, deviceName, pointValue} = inner;
+        const { deviceCode, deviceName, pointValue } = inner;
         pointValue.shift();
         pointValue.push(null);
         return {
@@ -251,16 +251,16 @@ function* realChartInterval({payload = {}}) { // 请求。=> (推送)处理数�
 }
 
 function* getRealtimeChart(action) { // 实时chart数据获取
-  const {firtQuery = true} = action;
+  const { firtQuery = true } = action;
   if (firtQuery) {
     yield put({
       type: pvRealtimeAction.CHANGE_REALTIME_STORE,
-      payload: {chartLoading: true},
+      payload: { chartLoading: true },
     });
   }
   yield fork(realChartInterval, action);
   yield delay(5000); // 阻塞5秒
-  realtimeChartInterval = yield fork(getRealtimeChart, {...action, firtQuery: false});
+  realtimeChartInterval = yield fork(getRealtimeChart, { ...action, firtQuery: false });
 }
 
 function* stopRealtimeChart() { // 停止图表数据定时请求并清空数据
@@ -276,11 +276,11 @@ function* stopRealtimeChart() { // 停止图表数据定时请求并清空数据
   }
 }
 
-function* realListInterval({payload = {}}) {
-  const {queryParam = {}, listParam = {}} = payload;
+function* realListInterval({ payload = {} }) {
+  const { queryParam = {}, listParam = {} } = payload;
   const url = `${APIBasePath}${monitor.getRealtimeList}`; // '/mock/monitor/dataAnalysisListRealtime';
   try {
-    const {devicePoints = [], deviceFullCodes = []} = queryParam;
+    const { devicePoints = [], deviceFullCodes = [] } = queryParam;
     const response = yield call(axios.post, url, {
       ...queryParam,
       ...listParam,
@@ -302,22 +302,22 @@ function* realListInterval({payload = {}}) {
     console.log(err);
     yield put({
       type: pvRealtimeAction.CHANGE_REALTIME_STORE,
-      payload: {tableLoading: false},
+      payload: { tableLoading: false },
     });
   }
 }
 
 function* getRealtimeList(action) { // 实时表格数据获取
-  const {firtQuery = true} = action;
+  const { firtQuery = true } = action;
   if (firtQuery) {
     yield put({
       type: pvRealtimeAction.CHANGE_REALTIME_STORE,
-      payload: {tableLoading: true},
+      payload: { tableLoading: true },
     });
   }
   yield fork(realListInterval, action);
   yield delay(5000); // 阻塞5秒
-  realtimeListInterval = yield fork(getRealtimeList, {...action, firtQuery: false});
+  realtimeListInterval = yield fork(getRealtimeList, { ...action, firtQuery: false });
 }
 
 function* stopRealtimeList() { // 停止列表数据定时请求
@@ -327,13 +327,13 @@ function* stopRealtimeList() { // 停止列表数据定时请求
 }
 
 function* getSecendInterval(action) { // 用户所在企业数据时间间隔
-  const {payload} = action;
+  const { payload } = action;
   try {
-    const {enterpriseId} = payload;
+    const { enterpriseId } = payload;
     const url = `${APIBasePath}${monitor.getSecendInteral}/${enterpriseId}`; // '/mock/monitor/dataAnalysisSecendInteral'
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
-      const {hasSecond} = response.data.data;
+      const { hasSecond } = response.data.data;
       yield put({
         type: pvRealtimeAction.GET_REALTIME_SUCCESS,
         payload: {
