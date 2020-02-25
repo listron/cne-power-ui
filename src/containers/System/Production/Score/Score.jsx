@@ -37,12 +37,13 @@ class Score extends Component {
       <div className={styles.scoreBox}>
         <div className={styles.scoreContainer}>
           <div className={styles.scoreContent}>
-            {stationTypeCount === 'multiple' &&
+            {/* {stationTypeCount === 'multiple' &&
               <Tabs type="card" onChange={this.onTabChange} activeKey={activeKey}>
                 <TabPane tab="风电" key="wind" disabled><div>test</div> </TabPane>
                 <TabPane tab="光伏" key="pv"> <ScoreMain {...this.props} /> </TabPane>
               </Tabs>
-            }
+            } */}
+            {stationTypeCount === 'multiple' && <div> <ScoreMain {...this.props} /></div>}
             {stationTypeCount === 'pv' && <div> <ScoreMain {...this.props} /></div>}
             {stationTypeCount === 'wind' && <div>风电</div>}
           </div>

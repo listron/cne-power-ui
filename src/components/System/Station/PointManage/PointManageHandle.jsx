@@ -32,6 +32,7 @@ class PointManageHandle extends Component {
       showWarningTip: false,
       warningTipText: '确定要删除选中的测点吗?',
     };
+    this.clearFlag = 0; //标记删除测点的方式； 0 删除 1 清除测点 
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => {
@@ -64,8 +65,10 @@ class PointManageHandle extends Component {
   }
 
   deletePoint = () => {
+    this.clearFlag = 1; //清除测点
     this.setState({
       showWarningTip: true,
+      warningTipText: '确定要清除测点吗?',
       //deleteInfo: record,
     });
   }
@@ -80,10 +83,15 @@ class PointManageHandle extends Component {
     this.setState({
       showWarningTip: false,
     });
-    // this.deletePointList();
-    this.props.deletePoints({
-      devicePointIds: selectedRowData.map(e => (e.devicePointId)),
-    });
+    if (1 == this.clearFlag)
+    { 
+      this.deletePointList();
+    }
+    else {
+      this.props.deletePoints({
+        devicePointIds: selectedRowData.map(e => (e.devicePointId)),
+      });
+    }
   }
 
   toExport = () => {
@@ -106,8 +114,10 @@ class PointManageHandle extends Component {
     });
   }
   deletePoints = () => {
+    this.clearFlag = 0; //删除
     this.setState({
       showWarningTip: true,
+      warningTipText: '确定要删除选中的测点吗?',
     });
   }
 
@@ -142,7 +152,7 @@ class PointManageHandle extends Component {
             onClick={this.toExport}
           >导出测点表</Button>
           {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
-          {/* <Button disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePoint} className={styles.clearPoint}>清除测点</Button> */}
+          <Button disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePoint} className={styles.clearPoint}>清除测点</Button>
           <Button disabled={pointList.length === 0 || selectedRowKeys.length === 0} onClick={this.deletePoints}> 删除 </Button>
           <Button
             className={styles.downloadStyle}
