@@ -209,6 +209,7 @@ export default class MeterDisposeInfo extends React.Component {
       func: () => {
         changeStore({
           editFlag: false,
+          thisReadTimeFlag: false,
         });
         this.setState({
           changeDateFlag: false,
