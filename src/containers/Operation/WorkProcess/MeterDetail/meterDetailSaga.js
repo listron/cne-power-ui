@@ -229,7 +229,7 @@ function* getReadMeter(action) { // 获取处理信息数据
                 percent: 0,
               });
             }),
-            generationDatas: response.data.data.onlineDatas.map(cur => {
+            generationDatas: response.data.data.generationDatas.map(cur => {
               return Object.assign(cur, {
                 flag1: false,
                 flag2: false,
