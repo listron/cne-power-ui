@@ -19,7 +19,7 @@ const initState = immutable.fromJS({
     operName: null, // 执行人
     stateId: null, // 状态id
     isMy: null, // 1代表查询我参与过的
-    sortField: 'create_time', // 排序字段
+    sortField: 'createTime', // 排序字段
     sortMethod: 'desc', // 排序规则
     pageNum: 1, // 页码
     pageSize: 10, // 条数

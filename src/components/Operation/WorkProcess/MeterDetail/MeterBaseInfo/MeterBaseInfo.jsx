@@ -156,9 +156,9 @@ export default class MeterBaseInfo extends React.Component {
           <div className={styles.baseIconBox}>
             {this.timeoutIconFunc()}
             {endTime && <i className={`iconfont icon-jiedan ${styles.baseEnd}`} />}
-            <div className={styles.baseStatus}>
+            {!endTime && <div className={styles.baseStatus}>
               {stateName || '- -'}
-            </div>
+            </div>}
           </div>
         </div>
         <div className={styles.baseTableInfo}>

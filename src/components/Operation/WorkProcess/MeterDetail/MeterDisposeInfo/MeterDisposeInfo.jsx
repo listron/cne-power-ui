@@ -72,7 +72,7 @@ export default class MeterDisposeInfo extends React.Component {
               percent: 0,
             });
           }),
-          generationDatas: readMeterData.onlineDatas.map(cur => {
+          generationDatas: readMeterData.generationDatas.map(cur => {
             return Object.assign(cur, {
               flag1: true,
               flag2: true,
@@ -132,7 +132,7 @@ export default class MeterDisposeInfo extends React.Component {
               percent: 0,
             });
           }),
-          generationDatas: readMeterData.onlineDatas.map(cur => {
+          generationDatas: readMeterData.generationDatas.map(cur => {
             return Object.assign(cur, {
               flag1: false,
               flag2: false,
@@ -393,7 +393,6 @@ export default class MeterDisposeInfo extends React.Component {
         </CneButton>
       </div>
     );
-    console.log(thisReadTime, 'thisReadTime');
     return (
       <div className={styles.meterDisposeInfo}>
         <div className={styles.disposeBannerBox}>

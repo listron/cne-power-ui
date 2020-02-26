@@ -54,10 +54,10 @@ export default class MeterTable extends React.Component {
     const { field } = sorter || {};
     // 排序字段
     const sortFieldMap = {
-        stationName: 'station_name',
-        settleMonth: 'settle_month',
-        createTime: 'create_time',
-        keepLength: 'keep_length',
+        stationName: 'stationName',
+        settleMonth: 'settleMonth',
+        createTime: 'createTime',
+        keepLength: 'keepLength',
         stateName: 'sort',
     };
     const { sortField, sortMethod } = listParams || {};
