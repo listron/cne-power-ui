@@ -1,0 +1,1055 @@
+@import  '../../../../theme/theme';
+
+.meterReadAllSatation{ // 全部电站列表页面
+  padding: 0px 24px 0px 4px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  .title{
+    display: flex;
+    padding: 0 0 14px 20px;
+    font-size: 18px;
+    i{
+      display: flex;
+      width: 26px;
+      height: 26px;
+      justify-content: center;
+      margin-right: 5px;
+      font-size: 20px;
+      border-radius: 4px;
+      line-height: 26px;
+    }
+  }
+  .stationsBox{
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    max-height: calc(100vh - 163px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: center;
+    &::-webkit-scrollbar{ // 滚动条
+      width:8px;
+      height:10px;
+    }
+    &::-webkit-scrollbar-track{
+      border-radius:2px;
+    }
+    &::-webkit-scrollbar-thumb{
+      width: 100px;
+      border-radius:10px;
+    }
+    .stationData{
+      display: flex;
+      .stationsNameData{
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px 2px 50px 2px;
+        .stationCard {
+          margin-left: 18px;
+          margin-bottom: 20px;
+          font-size: 18px;
+          width: 208px;
+          height: 68px;
+          line-height: 68px;
+          text-align: center;
+          border: 4px solid;
+          border-radius: 2px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          &:hover {
+            border-radius: 2px;
+            border: none;
+            cursor: pointer;
+            width: 208px;
+            height: 68px;
+          }
+        }
+      }
+      .noMoreData{
+        margin-bottom: 20px;
+      }
+      .nodata{
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.meterReadSingle{ // 单电站页面
+  flex: 1;
+  .meterReadSingleTop {
+    display: flex;
+    justify-content: space-between;
+    .text{
+      display: flex;
+      font-size: 18px;
+      letter-spacing:4px;
+      i{
+        display: flex;
+        width: 26px;
+        height: 26px;
+        justify-content: center;
+        margin-right: 5px;
+        font-size: 20px;
+        border-radius: 4px;
+        line-height: 26px;
+      }
+    }
+    .backIcon{
+      font-size: 20px;
+      height: 40px;
+      width: 40px;
+      cursor: pointer;
+      margin-right: -10px;
+      i{
+        display: flex;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        &:hover{
+          -webkit-background-clip: text;
+        }
+      }
+    }
+  }
+}
+
+.meterReadTable{ // 电表设置
+  position: relative;
+  height: 550px;
+  :global{
+    .ant-alert{
+      position: fixed;
+      width: 200px;
+      height: 54px;
+      line-height: 36px;
+      text-align: center;
+      margin: auto;
+      left: 0;
+      right: 0;
+      top: 255px;
+      z-index: 99;
+    }
+  }
+  .tableTop{
+    display: flex;
+    justify-content: space-between;
+    margin: 13px 20px 15px 0;
+    .title{
+      display: inline-block;
+      width: 166px;
+      height: 36px;
+      padding: 8px 0 8px 17px;
+      background: url('/img/banner166-36.png') no-repeat;
+    }
+    .addBtn{
+      width: 92px;
+      border-radius: 4px;
+      .addIcon{
+        margin-left: -9px;
+      }
+      .text{
+        margin-left: 15px;
+      }
+    }
+  }
+  .tableMain{
+    .meterName,.meterNumber,.meterType,.initCode,.switchType,.updateTime,.handler{
+      @include overflowText();
+      overflow: visible;
+    }
+
+    .meterName{
+      flex: 0 0 19%;
+      padding: 0 9px 0 19px;
+    }
+    .meterNumber{
+      flex: 0 0 8%;
+      padding: 0 9px 0 8px;
+      .meterNumberText{
+        position: absolute;
+      }
+    }
+    .meterType{
+      flex: 0 0 10%;
+      text-align: center;
+      padding: 0 9px;
+    }
+    .initCode{
+      flex: 0 0 7%;
+      text-align: right;
+      padding: 0 9px;
+    }
+    .switchType{
+      flex: 0 0 32%;
+    }
+    .updateTime{
+      flex: 0 0 14%;
+    }
+    .handler{
+      flex: 0 0 10%;
+    }
+
+    .totalStartCode,.topStartCode,.peakStartCode,.flatStartCode,.lowStartCode{
+      @include overflowText();
+      padding: 0 9px;
+      overflow: visible;
+    }
+    .switchType{
+      text-align: right;
+      .switchTypeParent{
+        height: 30px;
+        line-height: 30px;
+      }
+      .switchTypeChild{
+        display: flex;
+        > span {
+          flex: 0 0 20%;
+          line-height: 26px;
+          &:last-child{
+            border-right: none;
+          }
+        }
+      }
+    }
+
+    .tableHeader {
+      height: 56px;
+      display: flex;
+      > div {
+        text-align: center;
+        &:last-child {
+          border: none;
+        }
+      }
+      .meterName,.meterNumber,.meterType,.initCode,.updateTime,.handler{
+        line-height: 56px;
+      }
+    }
+    .tableContent {
+      overflow-y: overlay;
+      height: 431px;
+      &::-webkit-scrollbar{ // 滚动条
+        width:8px;
+        height:10px;
+      }
+      &::-webkit-scrollbar-track{
+        background: transparent; // 滚动条颜色
+        border-radius:2px;
+      }
+      &::-webkit-scrollbar-thumb{
+        width: 100px;
+        border-radius:10px;
+      }
+      .editableCell { // 抄表列表
+        display: flex;
+        &:hover {
+          z-index: 10;
+        }
+        :global {
+          .ant-form{
+            display: flex;
+            width: 100%;
+            .ant-form-item-required::before{
+              display: none;
+            }
+            .ant-form-explain{
+              position: absolute;
+              white-space: nowrap;
+              top: 6px;
+              height: 32px;
+              line-height: 32px;
+              border-radius: 4px;
+              padding: 0 5px;
+              user-select: none;
+              z-index: 2;
+  
+                 /* 箭头 - :before and :after, 一起组成了气泡小箭头 */
+              &:before {
+                position: absolute;
+                display: inline-block;
+                left: -7px;
+                top: 8px;
+                content: '';
+              }
+  
+              /* 背景阴影*/
+              &:after {
+                position: absolute;
+                display: inline-block;
+                left: -5px;
+                top: 9px;
+                content: '';
+              }
+            }
+          }
+          .ant-select {
+            width: 100%;
+          }
+          .ant-input{
+            text-align: right;
+          }
+          .ant-input-number {
+            width: 100%;
+          }
+          input {
+            width: 100%;
+          }
+        }
+        .meterName,.meterNumber,.meterType,.initCode,.switchType,.updateTime,.handler{
+          height: 40px;
+          line-height: 40px;
+        }
+        .meterName,.meterNumber,.meterType,.initCode,.updateTime,.handler{
+          line-height: 40px;
+        }
+        .updateTime,.handler{
+          text-align: center;
+        }
+        .handler{
+          display: flex;
+          border: none;
+          i{
+            flex: 1;
+            cursor: pointer;
+          }
+          .disableBtn{
+            cursor: not-allowed; 
+          }
+        }
+        .meterNumber{
+          :global{
+            .ant-form-explain{
+              left: 107px;
+            }
+            @media screen and (max-width: 1679px) { // 1679以下屏幕，
+              .ant-form-explain{
+                left: 76px;
+              }
+            }
+          }
+        }
+        .initCode{
+          :global{
+            .ant-form-explain{
+              left: 124px;
+            }
+            @media screen and (max-width: 1679px) { // 1679以下屏幕，
+              .ant-form-explain{
+                left: 88px;
+              }
+            }
+          }
+        }
+        .switchType{
+          .switchTypeChild{
+            display: flex;
+            > span {
+              flex: 0 0 20%;
+              line-height: 40px;
+              padding-right: 10px;
+              &:last-child{
+                border-right: none;
+              }
+            }
+            :global{
+              .ant-form-explain{
+                left: 96px;
+              }
+              @media screen and (max-width: 1679px) { // 1679以下屏幕，
+                .ant-form-explain{
+                  left: 65px;
+                }
+              }
+              .ant-form-item{
+                margin-bottom: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+    .img{
+      text-align: center;
+      padding: 30px;
+    }
+  }
+  .spin{
+    position: absolute;
+    z-index: 5;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.modalModal{ // 换表弹框
+  :global{
+    .ant-modal-header {
+      padding: 0;
+      .ant-modal-title{
+        font-size: 14px;
+        padding: 7px 20px;
+      }
+    }
+    .ant-modal-body{
+      padding: 3px 20px 12px;
+    }
+    .ant-modal-footer{
+      padding: 4px 16px;
+    }
+    .ant-input{
+      width: 159px;
+      margin-left: 4px;
+      text-align: right;
+    }
+    .ant-btn{
+      height: 30px;
+      border: none;
+      &:hover{
+        box-shadow: none;
+      }
+    }
+  }
+  .meterModalContent{
+    .modalTitle,.modalMeterName,.modalMeterType{
+      line-height: 30px;
+    }
+    .modalMeterName{
+      width: 100%;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .meterText{
+      display: flex;
+      :global{
+        .ant-form{
+          display: flex;
+        }
+      }
+    }
+    .oldMeter,.newMeter{
+      width: 200px;
+      margin-top: 12px;
+      .title{
+        // font-weight: bold;
+        line-height: 30px;
+        padding: 0 12px;
+      }
+      .meterContent{
+        padding: 0 12px 10px;
+        :global{
+          .ant-form-item{
+            display: flex;
+            margin-bottom: 2px;
+          }
+          .ant-form-item-required::before{
+            display: none;
+          }
+          .ant-form-explain{
+            position: absolute;
+            white-space: nowrap;
+            top: 6px;
+            left: 172px;
+            height: 32px;
+            line-height: 32px;
+            border-radius: 4px;
+            padding: 0 5px;
+            user-select: none;
+            z-index: 2;
+
+               /* 箭头 - :before and :after, 一起组成了气泡小箭头 */
+            &:before {
+              position: absolute;
+              display: inline-block;
+              left: -7px;
+              top: 8px;
+              content: '';
+            }
+
+            /* 背景阴影*/
+            &:after {
+              position: absolute;
+              display: inline-block;
+              left: -5px;
+              top: 9px;
+              content: '';
+            }
+          }
+        }
+        .modalInitCode{
+          display: flex;
+          :global{
+            .ant-input{
+              width: 132px;
+              margin-left:0;
+            }
+            .ant-form-explain{
+              left: 144px;
+            }
+          }
+        }
+        .oldData,.newData {
+          font-weight: bold;
+          margin-bottom: 12px;
+        }
+      }
+    }
+    .oldMeter{
+      .modalInitCode{
+        line-height: 56px;
+      }
+    }
+    .newMeter{
+      margin-left: 10px;
+      .modalInitCode{
+        display: flex;
+        align-items: center;
+        padding: 7px 0;
+      }
+    }
+  }
+}
+
+.powerPrice{ // 电价设置
+  height: 148px;
+  margin-top: 10px;
+  .priceTop{
+    display: flex;
+    justify-content: space-between;
+    margin: 13px 20px 15px 0;
+    .title{
+      display: inline-block;
+      width: 166px;
+      height: 36px;
+      padding: 8px 0 8px 17px;
+    }
+    .topRight{
+      display: flex;
+      align-items: center;
+      .updateTime{
+        margin-right: 19px;
+      }
+      .cancelBtn{
+        margin-right: 8px;
+        border-radius: 4px;
+        padding: 0 8px;
+      }
+      .editBtn,.saveBtn{
+        width: 92px;
+        border-radius: 4px;
+        .editIcon,.saveIcon{
+          margin-left: -9px;
+        }
+        .text{
+          margin-left: 15px;
+        }
+      }
+    }
+  }
+  .priceContent{
+    margin: 13px 25px 0 25px;
+    .priceInfo{
+      display: flex;
+      > div{
+        display: flex;
+        height: 40px;
+        line-height: 40px;
+      }
+      :global{
+        .ant-form{
+          display: flex;
+          width: 100%;
+          .ant-form-item{
+            margin-bottom: 0;
+            .ant-form-explain{
+              position: absolute;
+              white-space: nowrap;
+              top: 6px;
+              height: 32px;
+              line-height: 32px;
+              border-radius: 4px;
+              padding: 0 5px;
+              color: red;
+              user-select: none;
+              z-index: 2;
+              background: #fbe6e3;
+              border: 1px solid #df4b33;
+              box-shadow: 0 2px 4px 2px rgba(0,0,0,0.30);
+  
+                 /* 箭头 - :before and :after, 一起组成了气泡小箭头 */
+              &:before {
+                position: absolute;
+                display: inline-block;
+                border-top: 7px solid transparent;
+                border-right: 7px solid red;
+                border-bottom: 7px solid transparent;
+                left: -7px;
+                top: 8px;
+                content: '';
+              }
+  
+              /* 背景阴影*/
+              &:after {
+                position: absolute;
+                display: inline-block;
+                border-top: 6px solid transparent;
+                border-right: 6px solid $pageBackground;
+                border-bottom: 6px solid transparent;
+                left: -5px;
+                top: 9px;
+                content: '';
+              }
+            }
+          }
+        }
+        .ant-input{
+          margin-right: 4px;
+          text-align: right;
+        }
+      }
+      .text{
+        width: 76px;
+        text-align: center;
+        margin-right: 9px;
+        font-weight: bold;
+      }
+      .unit{
+        margin-left: 4px;
+      }
+      .topPrice,.peakPrice,.flatPrice,.lowPrice{
+        flex: 0 0 20.9%;
+        line-height: 40px;
+      }
+      .topPrice{
+        .text{
+          border-left: none;
+        }
+      }
+      .discountRate{
+        flex: 0 0 16%;
+        line-height: 40px;
+      }
+      .priceData,.discountRateInfo{
+        display: flex;
+        align-items: center;
+      }
+      .priceData{
+        :global{
+          @media screen and (max-width: 1679px) { // 1679以下屏幕
+            .ant-form-explain{
+              left: 139px;
+            }
+          }
+          @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+            .ant-form-explain{
+              left: 205px;
+            }
+          }
+        }
+      }
+      .discountRateInfo{
+        :global{
+          @media screen and (max-width: 1679px) { // 1679以下屏幕
+            .ant-form-explain{
+              left: 122px;
+            }
+          }
+          @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+            .ant-form-explain{
+              left: 177px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+// 颜色
+
+.meterReadAllSatation{ // 全部电站列表页面
+  .title{
+    color: $themeColor;
+    i{
+      background: $themeColor;
+      color: #fff;
+    }
+  }
+  .stationsBox{
+    background: #fff;
+    border: 1px solid #d4d4d4;
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.2);
+    &::-webkit-scrollbar-thumb{
+      background:rgba(0,0,0,0.50);
+    }
+    .stationData{
+      .stationsNameData{
+        .stationCard {
+          color: $themeColor;
+          box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.30);
+          border-image: -webkit-linear-gradient(#36c6ad, $themeColor) 10 10;
+          &:hover {
+            background-image: linear-gradient(-180deg, #36c6ad 0%, #199475 100%);
+            box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30), inset 0 0 4px 2px rgba(255, 255, 255, 0.50);
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}
+
+.meterReadSingle{ // 单电站页面
+  .meterReadSingleTop{
+    .text{
+      color: $themeColor;
+      i{
+        color: $themeColor;
+      }
+    }
+    .backIcon{
+      color: $themeColor;
+      i:hover{
+        background-image: linear-gradient(0deg, #00baff 1%, #5beda9 100%);
+        color: transparent;
+      }
+    }
+  }
+}
+
+.meterReadTable{ // 电表设置
+  background-color: #fff;
+  border: 1px solid #d4d4d4;
+  box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+  :global{
+    .ant-alert{
+      background-color: rgba(0,0,0,0.70);
+      .ant-alert-message{
+        color: #fff;
+      }
+    }
+  }
+  .tableTop{
+    .title{
+      color: #fff;
+    }
+  }
+  .tableMain{
+    .switchType{
+      .switchTypeParent{
+        border-bottom: 2px solid #8bc9b9;
+      }
+      .switchTypeChild{
+        > span {
+          border-right: 2px solid #8bc9b9;
+        }
+      }
+    }
+
+    .tableHeader {
+      background: #199475;
+      color: #fff;
+      > div {
+        border-right: 2px solid #8bc9b9;
+      }
+    }
+    .tableContent {
+      background: #fff;
+      &::-webkit-scrollbar-thumb{
+        background:rgba(0,0,0,0.50); // 滚动条背景色
+      }
+      .editableCell { // 抄表列表
+        border-bottom: 1px solid #d4d4d4;
+        &:nth-child(odd) {
+          background: #fff;
+        }
+        &:nth-child(even) {
+          background: #f3f2f2;
+        }
+        &:hover {
+          box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.3);
+          background: rgba(206, 235, 224, 0.3);
+        }
+        :global {
+          .ant-form{
+            .ant-form-explain{
+              color: red;
+              background: #fbe6e3;
+              border: 1px solid #df4b33;
+              box-shadow: 0 2px 4px 2px rgba(0,0,0,0.30);
+  
+                 /* 箭头 - :before and :after, 一起组成了气泡小箭头 */
+              &:before {
+                border-right: 7px solid red;
+                border-top: 7px solid transparent;
+                border-bottom: 7px solid transparent;
+              }
+  
+              /* 背景阴影*/
+              &:after {
+                border-right: 6px solid $pageBackground;
+                border-top: 6px solid transparent;
+                border-bottom: 6px solid transparent;
+              }
+            }
+          }
+        }
+        input:-webkit-autofill{
+          -webkit-box-shadow:0 0 0 1000px  #fff inset !important; 
+        }
+        .meterName,.meterNumber,.meterType,.initCode,.switchType,.updateTime,.handler{
+          border-right: 1px dashed #8bc9b9;
+        }
+        .handler{
+          border-right: 0;
+          .cancel,.editBtn,.updateBtn,.delBtn{
+            color: $themeColor;
+            &:hover{
+              color: #f9b600;
+            }
+          }
+          .save{
+            color: #4d90fd;
+            &:hover{
+              color: #f9b600;
+            }
+          }
+          .disableBtn{
+            color: #999;
+          }
+        }
+        .switchType{
+          .switchTypeChild{
+            > span {
+              border-right: 1px dashed #8bc9b9;
+            }
+          }
+        }
+        .meterInpNull{
+          input::-webkit-input-placeholder {
+            color:#999;  
+          }
+          :global{
+            .ant-input{
+              background-color: #fcffe5;
+            }
+            .ant-select-selection{
+              background-color: #fcffe5;
+            }
+            .ant-select-selection, .ant-select-selection__placeholder{
+              color:#999;
+            }
+            .ant-select-arrow{
+              .anticon{
+                color: #999;
+              }
+            }
+          }
+        }
+        .meterInpDel{
+          input::-webkit-input-placeholder {
+            color:#df4b33;  
+          }
+          :global{
+            .ant-input{
+              background-color: #fbe6e3;
+            }
+            .ant-select-selection{
+              background-color: #fbe6e3;
+            }
+            .ant-select-selection, .ant-select-selection__placeholder{
+              color:#df4b33;
+            }
+            .ant-select-arrow{
+              .anticon{
+                color: #df4b33;
+              }
+            }
+          }
+        }
+        .meterSelectNull{ // 电表名称下拉框无值
+          :global{
+            .ant-select-selection{
+              background-color: #fcffe5;
+            }
+            .ant-select-selection, .ant-select-selection__placeholder{
+              color: #999;
+            }
+            .ant-select-arrow{
+              .anticon{
+                color: #999;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.meterNameSelect{ // 电表名称下拉框有值
+  :global{
+    .ant-select-dropdown-menu-item{
+      &:hover{
+        background-color: #e6f4ef;
+      }
+      &:active{
+        background-color: #f8f8f8;
+        color: $themeColor;
+      }
+    }
+  }
+  .noDataText{
+    align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    .meterIcon{
+     font-size: 38px;
+     margin: 23px 0 16px 0;
+    }
+  }
+}
+
+.modalModal{ // 换表弹框
+  :global{
+    .ant-modal-header {
+      background-color: $themeColor;
+      .ant-modal-title{
+        color: #fff;
+      }
+    }
+    .ant-modal-footer{
+      background: #f1f1f1;
+    }
+    .ant-btn{
+      background: #f1f1f1;
+    }
+    .ant-btn-primary{
+      background:rgba(206,235,224,0.30);
+      &:hover{
+        color: #fff;
+        background: $themeColor;
+      }
+    }
+  }
+  .meterModalContent{
+    .modalTitle{
+      color: $themeColor;
+    }
+    .oldMeter,.newMeter{
+      .title{
+        background-color: #d4d4d4;
+      }
+      .meterContent{
+        background-color: #f3f2f2;
+        .meterInpNull{
+          input::-webkit-input-placeholder {
+            color:#999;  
+          }
+          :global{
+            .ant-input{
+              background-color: #fcffe5;
+            }
+          }
+        }
+        .meterInpDel{
+          input::-webkit-input-placeholder {
+            color:#df4b33;  
+          }
+          :global{
+            .ant-input{
+              background-color: #fbe6e3;
+            }
+          }
+        }
+        :global{
+          .ant-form-explain{
+            color: red;
+            background: #fbe6e3;
+            border: 1px solid #df4b33;
+            box-shadow: 0 2px 4px 2px rgba(0,0,0,0.30);
+
+               /* 箭头 - :before and :after, 一起组成了气泡小箭头 */
+            &:before {
+              border-top: 7px solid transparent;
+              border-right: 7px solid red;
+              border-bottom: 7px solid transparent;
+            }
+
+            /* 背景阴影*/
+            &:after {
+              border-top: 6px solid transparent;
+              border-right: 6px solid $pageBackground;
+              border-bottom: 6px solid transparent;
+            }
+          }
+        }
+      }
+    }
+    .newMeter{
+      .title{
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.powerPrice{ // 电价设置
+  background-color: #fff;
+  border: 1px solid #d4d4d4;
+  box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+  .title{
+    background: url(/img/banner166-36.png) no-repeat;
+    color: #fff;
+  }
+  .priceInfo{
+    border: 1px solid #d4d4d4;
+    input:-webkit-autofill{
+      -webkit-box-shadow:0 0 0 1000px  #fff inset !important; 
+    }
+    .text{
+      background-color: #f3f2f2;
+      border-right: 1px dashed #d4d4d4;
+      border-left: 1px dashed #d4d4d4;
+    }
+    .meterInpNull{
+      input::-webkit-input-placeholder {
+        color:#999;  
+      }
+      :global{
+        .ant-input{
+          background-color: #fcffe5;
+        }
+      }
+    }
+    .meterInpDel{
+      input::-webkit-input-placeholder {
+        color:#df4b33;  
+      }
+      :global{
+        .ant-input{
+          background-color: #fbe6e3;
+        }
+      }
+    }
+  }
+}
+
+
+.haveData{
+  :global{
+    .ant-input{
+      background-color: #fff;
+    }
+  }
+}

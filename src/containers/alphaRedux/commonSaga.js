@@ -35,11 +35,16 @@ function* getStations(action) { // 通用：获取所有电站信息
         payload: {
           stations: response.data.data,
           stationTypeCount,
+          stationsDataError: false,
         },
       });
     }
   } catch (e) {
     console.log(e);
+    yield put({
+      type: commonAction.GET_COMMON_FETCH_SUCCESS,
+      payload: { stationsDataError: true },
+    });
   }
 }
 

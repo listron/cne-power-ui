@@ -158,7 +158,7 @@ class AddEditPlan extends PureComponent {
                   style={{width: '200px', display: 'inline-block'}}
                 >{planTypeCode === '100' ? '巡视计划' : '抄表计划'}</span> : <Select style={{width: '200px'}} getPopupContainer={() => this.planTypeRef}>
                   <Option value={100}>巡视计划</Option>
-                  <Option value={101}>抄表计划</Option>
+                  <Option value={200}>抄表计划</Option>
                 </Select>
               )}
               <span ref={(ref) => { this.planTypeRef = ref; }} />

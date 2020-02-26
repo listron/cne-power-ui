@@ -9,6 +9,7 @@ import ticket from './Ticket/ticketReducer';
 import personnelGps from './PersonnelGps/personnelGpsReducer';
 
 import dayReport from './Running/DayReport/dayReportReducer';
+import meterReadSet from './Running/MeterReadSet/meterReadSetReducer';
 import workOrder from './Ticket/WorkOrder/workOrderReducer';
 import assetsConfig from './Book/AssetsConfig/assetsConfigReducer';
 import deviceManage from './Book/DeviceManage/deviceManageReducer';
@@ -39,6 +40,7 @@ const operationReducer = combineReducers({
   ticket,
   personnelGps,
   dayReport,
+  meterReadSet,
   workOrder,
   assetsConfig,
   deviceManage,
