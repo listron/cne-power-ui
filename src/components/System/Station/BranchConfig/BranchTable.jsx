@@ -68,7 +68,7 @@ class BranchTable extends React.Component {
           //比较两个支路数据是否相等。不相等的话，将item存起
           const isEqual = lodash.isEqual(item, initBranchListItem);
           if (!isEqual) {
-            editArr.push({ ...item, deviceFullCode: deviceFullCode });
+            editArr.push({ ...item, deviceFullCode: deviceFullCode, deviceCode: deviceFullCode });
           }
         });
 
@@ -76,7 +76,7 @@ class BranchTable extends React.Component {
         initBranchList.forEach((item, index) => {
           const curBranchListItem = currentBranchList[index] ? currentBranchList[index] : {};//这是当前数据的每一个支路的数据
           if (Object.keys(curBranchListItem).length === 0) {
-            editArr.push({ deviceFullCode, branchIndex: index, branchCode: item.branchCode, pvNums: item.pvNums, isDelete: 1 });
+            editArr.push({ deviceFullCode, deviceCode: deviceFullCode, branchIndex: index, branchCode: item.branchCode, pvNums: item.pvNums, isDelete: 1 });
           } else {
             const isEqual = lodash.isEqual(item, curBranchListItem);
             if (!isEqual) {
@@ -87,7 +87,7 @@ class BranchTable extends React.Component {
       }
 
     }
-    changeBranchStore({ saveEditArr: editArr, isCheckStatus: true });
+    changeBranchStore({ saveEditArr: editArr, isCheckStatus: false });
     editBranchData({ saveEditArr: editArr });
   }
   cancleCheckValue = () => {
@@ -99,12 +99,12 @@ class BranchTable extends React.Component {
     //如果是检测支路状态可以编辑
     const { isCheckStatus, changeBranchStore } = this.props;
 
-    if (isCheckStatus) {
-      changeBranchStore({
-        focus: focusCode,
-        selectDeviceFullCode: deviceFullCode,
-      });
-    }
+    // if (isCheckStatus) {
+    changeBranchStore({
+      focus: focusCode,
+      selectDeviceFullCode: deviceFullCode,
+    });
+    // }
   }
   //改变支路条数
   changeBranchNum = (value) => {
@@ -136,11 +136,20 @@ class BranchTable extends React.Component {
       changeBranchStore({ copyData: newTableData });
     }
   }
-  //失去焦点
+  //input失去焦点
   inputBlur = (value) => {
+    this.saveCheckValue();
     this.props.changeBranchStore({
       focus: false,
     });
+  }
+  //select失去焦点
+  selectBlur = (value) => {
+    this.saveCheckValue();
+    this.props.changeBranchStore({
+      focus: false,
+    });
+
   }
   //判断状态显示的样式
   jugeStatus = (e) => {
@@ -299,7 +308,7 @@ class BranchTable extends React.Component {
                               defaultValue={branchListItem.pvNums}
                               style={{ width: 45 }}
                               onChange={this.handleSelect}
-                              onBlur={this.inputBlur}
+                              onBlur={this.selectBlur}
                             >
                               {pvNumsArr.map((pvNum, value) => (
                                 <Option key={value} value={pvNum}>{pvNum}</Option>
