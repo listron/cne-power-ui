@@ -194,6 +194,7 @@ export default class MeterDisposeInfo extends React.Component {
       obj.meterImgs = cur.meterImgs;
       obj.totalStartCode = cur.totalStartCode;
       obj.flatEndCode = cur.flatEndCode;
+      obj.meterId = cur.meterId;
       return obj;
     });
     const params = {
@@ -208,6 +209,7 @@ export default class MeterDisposeInfo extends React.Component {
       func: () => {
         changeStore({
           editFlag: false,
+          thisReadTimeFlag: false,
         });
         this.setState({
           changeDateFlag: false,
@@ -416,7 +418,7 @@ export default class MeterDisposeInfo extends React.Component {
                 结算月份
               </div>
               <div>
-                {settleMonth ? moment(settleMonth).format('YYYY年MM月DD日') : '- -'}
+                {settleMonth ? moment(settleMonth).format('YYYY年MM月') : '- -'}
               </div>
             </div>
             <div className={styles.navNow}>
