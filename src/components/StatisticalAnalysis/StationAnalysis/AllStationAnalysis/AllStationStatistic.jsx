@@ -259,16 +259,16 @@ class AllStationStatistic extends React.Component {
             </div>
           </div>
           :
-          <Tabs
-            type="card"
-            tabBarExtraContent={enterpriseId !== '451436467886592' ? operations : null}
-            activeKey={stationType}
-            onChange={this.queryTargetData}
-          >
-            <TabPane tab="风电" key={'0'}>
-              <div className={styles.windContainer} />
-            </TabPane>
-            <TabPane tab="光伏" key={'1'}>
+          // <Tabs
+          //   type="card"
+          //   tabBarExtraContent={enterpriseId !== '451436467886592' ? operations : null}
+          //   activeKey={stationType}
+          //   onChange={this.queryTargetData}
+          // >
+          //   <TabPane tab="风电" key={'0'}>
+          //     <div className={styles.windContainer} />
+          //   </TabPane>
+          //   <TabPane tab="光伏" key={'1'}>
               <div className={styles.componentContainer}>
                 <div className={styles.timeSelect}> <TimeSelect showDayPick={false} onChange={this.onTimeChange} theme={theme} /></div>
                 <PlanCompletionRate
@@ -284,8 +284,8 @@ class AllStationStatistic extends React.Component {
                 <TargetTabs {...this.props} theme={theme} />
                 <StationStatisticList {...this.props} theme={theme} />
               </div>
-            </TabPane>
-          </Tabs>
+          //   </TabPane>
+          // </Tabs>
         }
         {
           showStationSelect &&
