@@ -71,8 +71,8 @@
         width: 70px;
         @include lineheight(34px);
         border-radius: 17px;
-        background-color: #fbe6e3;
-        color: #df4b33;
+        background-color: $slideSelectColor;
+        color: $themeColor;
         text-align: center;
       }
     }
@@ -194,7 +194,7 @@
             width: 15%;
             display: flex;
             align-items: center;
-            font-family: PingFangSC-Regular, serif;
+            font-family: arial, serif;
             min-width: 130px;
             padding-left: 10px;
           }
@@ -220,7 +220,7 @@
             width: 15%;
             display: flex;
             align-items: center;
-            font-family: PingFangSC-Regular, serif;
+            font-family: arial, serif;
             min-width: 130px;
             padding-left: 10px;
           }
@@ -307,7 +307,7 @@
             width: 15%;
             display: flex;
             align-items: center;
-            font-family: PingFangSC-Regular, serif;
+            font-family: arial, serif;
             min-width: 130px;
             padding-left: 10px;
           }
@@ -329,6 +329,8 @@
       width: 220px;
       margin: 0 auto;
       padding: 10px 0 30px;
+      height: 360px;
+      overflow-y: auto;
     }
 
     .operatorBtn {
@@ -410,6 +412,18 @@
       padding-left: 5px;
       width: 100%;
       border-radius: 2px;
+      display: flex;
+      align-items: center;
+    }
+
+    .ant-checkbox{
+      margin-top: 2px;
+    }
+
+    .ant-checkbox + span{
+      width: 85px;
+      padding-right: 0;
+      @include overflowText();
     }
 
     .ant-checkbox-wrapper-checked{

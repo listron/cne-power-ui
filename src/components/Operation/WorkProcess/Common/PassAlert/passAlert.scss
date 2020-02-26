@@ -1,0 +1,69 @@
+@import "../../../../../theme/theme.scss";
+
+.passBox {
+
+  :global {
+    .ant-modal {
+      padding: 0;
+      overflow: hidden;
+      border-radius: 2px;
+      box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30);
+
+      .ant-modal-body {
+        padding: 0;
+      }
+    }
+  }
+
+  .passContentBox {
+    width: 100%;
+
+    .passTitle{
+      width: 100%;
+      background-color: $themeColor;
+      color: #fff;
+      padding-left: 20px;
+      @include lineheight(36px);
+    }
+
+    .passContent{
+      padding: 0 20px;
+
+      .passContentText{
+        display: block;
+        color:  #353535;
+        @include lineheight(36px);
+      }
+
+      textarea{
+        padding-left: 13px;
+        padding-top: 15px;
+        border-radius: 2px;
+        resize: none;
+        height: 150px;
+      }
+
+      .passInfo{
+        color:  #353535;
+        text-align: right;
+        @include lineheight(32px);
+      }
+    }
+
+    .passBtn{
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 100%;
+      padding-right: 20px;
+      background-color: #f1f1f1;
+      @include lineheight(40px);
+
+      .passCancelBtn{
+        margin-right: 30px;
+        color: #666666;
+        cursor: pointer;
+      }
+    }
+  }
+}

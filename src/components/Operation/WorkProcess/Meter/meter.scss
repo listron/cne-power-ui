@@ -179,17 +179,66 @@
       }
     }
   }
-  .iconLookBtn{
+
+  .stationName,
+  .operName,
+  .stationNameText,
+  .operNameText{
+    @include overflowText();
+  }
+
+  .stationName,
+  .operName{
+    width: calc((100vw - 230px) * 0.17);
+  }
+
+  .stationNameText{
+    max-width: calc((100vw - 230px) * 0.17 - 30px);
+  }
+
+  .operNameText{
+    max-width: calc((100vw - 230px) * 0.17 - 20px);
+  }
+
+  .settleMonth,
+  .createTime,
+  .keepLength{
+    width: calc((100vw - 230px) * 0.15);
+  }
+
+  .stateName{
+    position: relative;
+    width: calc((100vw - 230px) * 0.13);
+  }
+
+  .stateNameBox{
+
+    i{
+      position: absolute;
+      right: 5px;
+      top: 1px;
+      font-size: 20px;
+      color: #df4b33;
+    }
+  }
+
+  .meterDetails{
+    width: calc((100vw - 230px) * 0.08);
+  }
+
+  .iconLookBtn {
     cursor: pointer;
     color: $themeColor;
+
     &:hover {
       color: #f9b600;
     }
   }
-  .tableStyles{
-    :global{
+
+  .tableStyles {
+    :global {
       .ant-table .ant-table-thead > tr > th:last-child,
-      .ant-table .ant-table-tbody > tr > td:last-child{
+      .ant-table .ant-table-tbody > tr > td:last-child {
         padding-right: 0;
       }
     }
