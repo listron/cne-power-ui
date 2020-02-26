@@ -22,9 +22,14 @@ class DiagnoseFilter extends Component {
     const { listParams, listPage } = this.props;
     const preFinish = listParams.finished;
     const { stationCode, deviceTypeCode, rangeTimes, eventCode, eventStatus, finished } = conditions;
-    const finishChange = !preFinish === !!finished; // 是否归档切换
+    let changeType = 'normal'; // switch-归档切换; clear-清空; normal-筛选条件改变
+    if (finished === '') { // 清空条件时独特的返回值
+      changeType = 'clear';
+    } else if (!preFinish === !!finished) { // 是否归档切换
+      changeType = 'switch';
+    }
     let newListParams = {}, newListPage = {};
-    if (finishChange) { // 归档点击 => 重新请求列表, 停止定时请求; 其他条件清空
+    if (changeType === 'switch') { // 归档点击:重新请求列表,停止定时,其他条件清空
       newListParams = {
         ...listParams,
         finished: finished ? 1 : 0, // 1归档事件, 0非归档事件
@@ -42,7 +47,7 @@ class DiagnoseFilter extends Component {
         sortField: finished ? 'beginTime' : 'eventStatus',
         sortMethod: 'desc', // 排序方式 asc升序 + desc降序
       };
-    } else {// 筛选条件点击 => 重新请求列表, 停止定时请求;
+    } else {// 筛选条件点击或清空筛选条件 => 重新请求列表, 停止定时请求;
       const [startTime, endTime] = rangeTimes || [];
       newListParams = { // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件, 
         ...listParams,
