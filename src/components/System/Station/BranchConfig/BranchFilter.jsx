@@ -14,6 +14,7 @@ class BranchFilter extends React.Component {
     getDeviceName: PropTypes.func,
     deviceTypeData: PropTypes.array,
     stationsInfo: PropTypes.array,
+    deviceCodes: PropTypes.array,
     deviceTypeCode: PropTypes.number,
     stationCode: PropTypes.number,
   }
@@ -36,13 +37,13 @@ class BranchFilter extends React.Component {
 
     });
     getDeviceType({ stationCode });
-    this.getBranchInfo({ stationCode });
+    // this.getBranchInfo({ stationCode });
   }
   selectDeviceType = (deviceTypeCode) => {
     const { changeBranchStore, getDeviceName, stationCode } = this.props;
     changeBranchStore({
       deviceTypeCode,
-      deviceFullCodes: [],
+      deviceCodes: [],
       focus: false,
       selectDeviceFullCode: false,
       isCheckStatus: false,
@@ -55,16 +56,18 @@ class BranchFilter extends React.Component {
     this.getBranchInfo({ stationCode, deviceTypeCode });
   }
   selectedDevice = (devices) => {
-    const { changeBranchStore } = this.props;
+    const { changeBranchStore, deviceTypeCode } = this.props;
+
     changeBranchStore({
-      deviceFullCodes: devices,
+      deviceCodes: devices,
       focus: false,
       selectDeviceFullCode: false,
       isCheckStatus: false,
       checked: false,
     });
     this.getBranchInfo({
-      deviceFullCodes: devices,
+      deviceCodes: devices,
+      deviceTypeCode,
     });
 
   }
@@ -75,7 +78,7 @@ class BranchFilter extends React.Component {
   }
 
   render() {
-    const { stationsInfo, stationCode, deviceTypeCode, deviceFullCodes, deviceTypeData } = this.props;
+    const { stationsInfo, stationCode, deviceTypeCode, deviceCodes, deviceTypeData } = this.props;
     return (<div className={styles.searchBox}>
       <div className={styles.topSearch}>
         <div className={styles.stationSelect}>
@@ -84,7 +87,7 @@ class BranchFilter extends React.Component {
             data={stationsInfo.filter((e) => (e.stationType === 1))}
             onOK={this.selectStation}
             value={stationsInfo.filter(e => e.stationCode === stationCode)}
-            holderText="请输入电站名称" />
+            holderText="请输入关键字查询" />
         </div>
         <div className={styles.typeSelect}>
           <span className={styles.text}>设备类型</span>
@@ -92,7 +95,7 @@ class BranchFilter extends React.Component {
             style={{ width: '200px' }}
             onChange={this.selectDeviceType}
             value={deviceTypeCode}
-            placeholder="请选择设备类型"
+            placeholder="请选择"
             disabled={deviceTypeData.length === 0}
           >
             <Option key={null} value={null}>{'全部设备类型'}</Option>
@@ -109,7 +112,7 @@ class BranchFilter extends React.Component {
           <DeviceSelect
             disabled={!deviceTypeCode}
             stationCode={stationCode}
-            value={deviceFullCodes}
+            value={deviceCodes}
             deviceTypeCode={deviceTypeCode}
             multiple={true}
             deviceShowNumber={true}

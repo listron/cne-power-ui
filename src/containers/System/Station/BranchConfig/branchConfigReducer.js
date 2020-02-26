@@ -14,7 +14,7 @@ const initState = Immutable.fromJS({
 
   stationCode: null,
   deviceTypeCode: null,
-  deviceFullCodes: [],
+  deviceCodes: [],
   checkTime: '',
   deviceBranchInfo: [],
   copyData: [],

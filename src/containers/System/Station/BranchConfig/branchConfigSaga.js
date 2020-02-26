@@ -37,18 +37,29 @@ function* getStations(action) {
 }
 function* getDeviceType(action) {
   const { payload } = action;
+  const { stationCode } = payload;
   // const url = '/mock/base/devicetype/branch';
   const url = `${APIBasePath}${system.getDeviceType}/${payload.stationCode}`;
   try {
     const response = yield call(axios.get, url, { ...payload });
     if (response.data.code === '10000') {
+      const deviceTypeData = response.data.data || [];
+      const hasbox = deviceTypeData.some(e => e.deviceTypeCode === 202);
+      const hasInverter = deviceTypeData.some(e => e.deviceTypeCode === 206);
+      const deviceTypeCode = hasbox ? 202 : hasInverter ? 206 : null;
       yield put({
         type: branchConfigAction.changeBranchStore,
         payload: {
           ...payload,
-          deviceTypeData: response.data.data || [],
+          deviceTypeData,
+          deviceTypeCode,
         },
       });
+      yield put({
+        type: branchConfigAction.getDeviceBranchInfo,
+        payload: { stationCode, deviceTypeCode },
+      });
+
     } else {
       throw response.data.message;
     }
@@ -90,10 +101,10 @@ function* getDeviceName(action) {
 
 function* getDeviceBranchInfo(action) {
   const { payload } = action;
-  const { stationCode, deviceTypeCode, deviceFullCodes } = payload;
+  const { stationCode, deviceTypeCode, deviceCodes = [] } = payload;
   // const url = '/mock/base/branch/checkresult';
+  const deviceCodeArr = deviceCodes.map(e => e.deviceCode);
   const url = `${APIBasePath}${system.getDeviceBranchInfo}/${stationCode}`;
-  ///${deviceTypeCode}/${deviceFullCodes}
   try {
     yield put({
       type: branchConfigAction.changeBranchStore,
@@ -102,7 +113,7 @@ function* getDeviceBranchInfo(action) {
         loadding: true,
       },
     });
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.post, url, { ...payload, deviceTypeCode, deviceCodes: deviceCodeArr });
     if (response.data.code === '10000') {
       const deviceBranchInfo = response.data.data.deviceList || [];
       const checkTime = response.data.data.checkTime || '';
@@ -132,9 +143,10 @@ function* getDeviceBranchInfo(action) {
 }
 function* getCheckData(action) {
   const { payload } = action;
-  const { stationCode, deviceTypeCode, deviceFullCodes } = payload;
+  const { stationCode, deviceTypeCode, deviceCodes } = payload;
+  const deviceCodeArr = deviceCodes.map(e => e.deviceCode);
   const url = `${APIBasePath}${system.getCheckData}/${stationCode}`;
-  // /${deviceTypeCode}/${deviceFullCodes}
+
   try {
     yield put({
       type: branchConfigAction.changeBranchStore,
@@ -142,7 +154,7 @@ function* getCheckData(action) {
         loadding: true,
       },
     });
-    const response = yield call(axios.get, url, { ...payload });
+    const response = yield call(axios.post, url, { ...payload, deviceTypeCode, deviceCodes: deviceCodeArr });
     if (response.data.code === '10000') {
       const deviceBranchInfo = response.data.data.deviceList || [];
       const checkTime = response.data.data.checkTime || '';
