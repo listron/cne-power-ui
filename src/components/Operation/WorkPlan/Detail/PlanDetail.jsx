@@ -233,7 +233,7 @@ class PlanDetail extends PureComponent {
 
   render(){
     const { planDetail, theme, planDetailHandleLoading } = this.props;
-    const { inspectTypeCode = 100001, cycleTypeCode, planTypeCode } = planDetail || {}; // 巡检计划类型 日常：100001；设备巡检：100002;计划类型 巡视计划：'100'；抄表计划：'101'
+    const { inspectTypeCode = 100001, cycleTypeCode, planTypeCode } = planDetail || {}; // 巡检计划类型 日常：100001；设备巡检：100002;计划类型 巡视计划：'100'；抄表计划：'200'
     const detailBaseInfo = [
       ...this.planDistinguish(inspectTypeCode, cycleTypeCode, planTypeCode),
       ...this.baseEnd,

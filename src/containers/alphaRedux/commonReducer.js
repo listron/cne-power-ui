@@ -48,6 +48,8 @@ var initState = Immutable.fromJS({
   },
   theme: Cookie.get('theme') || 'light', //主题色，默认是浅色系
 
+  stationsDataError: false, // 页面error图片
+
 });
 
 const defectReducer = (state = initState, action) => {

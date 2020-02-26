@@ -154,13 +154,15 @@ export default {
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
       uploadReportFile: '/v3/performance/dailyreport/upload', // 日报文件上报
 
-      getMeterList: '/v3/opms/meter/meterPage', // 抄表设置列表
-      getAddMeterList: '/v3/opms/meter/new', // 新增电表
-      getUpDateMeterList: '/v3/opms/meter/update', // 修改列表
-      getChangeMeterList: '/v3/opms/meter/change', // 列表换表
-      getDeleteMeterList: '/v3/opms/meter/del', //删除列表
-      getMeterPrice: '/v3/opms/meter/price', // 设置电价
-      getMeterdDetail: '/v3/opms/meter/detail', // 查看电表详情
+      getMeterList: '/v4/opms/meter/meterList', // 抄表设置列表
+      getAddMeterList: '/v4/opms/meter/new', // 新增电表
+      getUpDateMeterList: '/v4/opms/meter/update', // 修改列表
+      getChangeMeterList: '/v4/opms/meter/change', // 列表换表
+      getDeleteMeterList: '/v4/opms/meter/del', //删除列表
+      getMeterPrice: '/v4/opms/powerPrice/updatePrice', // 设置电价
+      getPriceDetail: '/v4/opms/powerPrice/priceDetail', // 查看电价详情
+      getBaseDevice: '/v4/base/device', // 获取电站指定类型的设备简单信息列表
+
 
       getImportIntelligent: '/v3/knowledgebase/import', // 智能专家库导入
       getIntelligentTable: '/v3/knowledgebase/list', // 智能专家库列表
