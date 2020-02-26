@@ -41,7 +41,7 @@ function* getProcessBaseInfo(action) { // 获取基本信息数据
       throw response.data;
     }
   } catch (e) {
-    message.error('获取基本信息数据失败！');
+    message.error(e.message);
     yield put({
       type: meterDetailAction.changeStore,
       payload: {
@@ -75,7 +75,7 @@ function* getOperableUser(action) { // 获取流程可操作人数据
       throw response.data;
     }
   } catch (e) {
-    message.error('获取流程可操作人数据失败！');
+    message.error(e.message);
     yield put({
       type: meterDetailAction.changeStore,
       payload: {
@@ -109,7 +109,7 @@ function* getProcessList(action) { // 获取流程流转信息数据
       throw response.data;
     }
   } catch (e) {
-    message.error('获取流程流转数据失败！');
+    message.error(e.message);
     yield put({
       type: meterDetailAction.changeStore,
       payload: {
@@ -167,7 +167,7 @@ function* getBaseUsername(action) { // 获取有权限电站权限用户
       throw response.data;
     }
   } catch (e) {
-    message.error('获取用户数据失败！');
+    message.error(e.message);
     yield put({
       type: meterDetailAction.changeStore,
       payload: {
@@ -258,7 +258,7 @@ function* getReadMeter(action) { // 获取处理信息数据
       throw response.data;
     }
   } catch (e) {
-    message.error('获取处理信息数据失败！');
+    message.error(e.message);
     yield put({
       type: meterDetailAction.changeStore,
       payload: {
@@ -280,10 +280,25 @@ function* getAddUser(action) { // 添加处理人（执行人）
       },
     });
     const response = yield call(axios.post, url, payload);
+    console.log(response.data, 'response.data');
     if (response.data.code === '10000') {
       // 重新调用基本信息
-      yield ({
+      yield put({
         type: meterDetailAction.getProcessBaseInfo,
+        payload: {
+          meterId: payload.docketId,
+        },
+      });
+      // 可执行人数据
+      yield put({
+        type: meterDetailAction.getOperableUser,
+        payload: {
+          meterId: payload.docketId,
+        },
+      });
+      // 重新调用流程信息
+      yield put({
+        type: meterDetailAction.getProcessList,
         payload: {
           meterId: payload.docketId,
         },
@@ -300,7 +315,7 @@ function* getAddUser(action) { // 添加处理人（执行人）
       throw response.data;
     }
   } catch (e) {
-    message.error('添加失败！');
+    message.error(e.message);
     yield put({
       type: meterDetailAction.changeStore,
       payload: {
@@ -335,7 +350,7 @@ function* getProcessAction(action) { // 获取流程可执行动作
       throw response.data;
     }
   } catch (e) {
-    message.error('获取流程可执行动作数据失败！');
+    message.error(e.message);
     yield put({
       type: meterDetailAction.changeStore,
       payload: {
@@ -406,7 +421,7 @@ function* getSubmitAction(action) { // 提交验收按钮
       throw response.data;
     }
   } catch (e) {
-    message.error('提交失败！');
+    message.error(e.message);
     yield put({
       type: meterDetailAction.changeStore,
       payload: {
@@ -477,7 +492,7 @@ function* getReceiveAction(action) { // 提交验收按钮
       throw response.data;
     }
   } catch (e) {
-    message.error('提交失败！');
+    message.error(e.message);
     yield put({
       type: meterDetailAction.changeStore,
       payload: {
@@ -534,7 +549,7 @@ function* getSaveAction(action) { // 保存按钮
       throw response.data;
     }
   } catch (e) {
-    message.error('保存失败！');
+    message.error(e.message);
     yield put({
       type: meterDetailAction.changeStore,
       payload: {
@@ -571,7 +586,7 @@ function* getRotateImg(action) { // 旋转图片
       throw response.data;
     }
   } catch (e) {
-    message.error('保存失败！');
+    message.error(e.message);
     yield put({
       type: meterDetailAction.changeStore,
       payload: {

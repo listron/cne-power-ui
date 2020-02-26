@@ -393,6 +393,7 @@ export default class MeterDisposeInfo extends React.Component {
         </CneButton>
       </div>
     );
+    console.log(thisReadTime, 'thisReadTime');
     return (
       <div className={styles.meterDisposeInfo}>
         <div className={styles.disposeBannerBox}>
@@ -416,7 +417,7 @@ export default class MeterDisposeInfo extends React.Component {
                 结算月份
               </div>
               <div>
-                {settleMonth || '- -'}
+                {settleMonth ? moment(settleMonth).format('YYYY年MM月DD日') : '- -'}
               </div>
             </div>
             <div className={styles.navNow}>
@@ -427,7 +428,7 @@ export default class MeterDisposeInfo extends React.Component {
                 {thisReadTimeFlag ? (
                   <DatePicker
                     allowClear={false}
-                    value={thisReadTime}
+                    value={thisReadTime ? moment(thisReadTime, dateFormat) : null}
                     className={changeDateFlag ? styles.normalDate : styles.warnDate}
                     suffixIcon={<i className="iconfont icon-date" />}
                     showToday={false}
