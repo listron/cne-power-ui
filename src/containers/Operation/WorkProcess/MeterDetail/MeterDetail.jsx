@@ -81,6 +81,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAddUser: payload => dispatch({ type: meterDetailAction.getAddUser, payload }),
   getProcessAction: payload => dispatch({ type: meterDetailAction.getProcessAction, payload }),
   getSubmitAction: payload => dispatch({ type: meterDetailAction.getSubmitAction, payload }),
+  getReceiveAction: payload => dispatch({ type: meterDetailAction.getReceiveAction, payload }),
   getSaveAction: payload => dispatch({ type: meterDetailAction.getSaveAction, payload }),
   getRotateImg: payload => dispatch({ type: meterDetailAction.getRotateImg, payload }),
 });

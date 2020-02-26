@@ -25,7 +25,7 @@ function* getParticipant() { // 获取执行人所有列表
       throw response.data;
     }
   } catch (e) {
-    message.error('获取执行人列表数据失败！');
+    message.error(e.message);
     yield put({
       type: meterListAction.changeStore,
       payload: {
@@ -62,7 +62,7 @@ function* getMeterList(action) { // 获取抄表列表数据
       throw response.data;
     }
   } catch (e) {
-    message.error('获取抄表列表数据失败！');
+    message.error(e.message);
     yield put({
       type: meterListAction.changeStore,
       payload: {

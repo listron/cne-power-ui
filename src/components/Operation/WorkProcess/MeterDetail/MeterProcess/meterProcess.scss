@@ -52,13 +52,13 @@
           .processItemDetail {
             color: #353535;
             @include lineheight(30px);
-            font-family: PingFangSC-Regular, serif;
+            font-family: arial, serif;
           }
 
           .processItemTime {
             margin-left: 5px;
             @include lineheight(30px);
-            font-family: ArialMT, serif;
+            font-family: arial, serif;
             color: #999999;
           }
         }

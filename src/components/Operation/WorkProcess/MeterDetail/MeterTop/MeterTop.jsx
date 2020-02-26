@@ -16,6 +16,7 @@ export default class MeterTop extends React.Component {
     thisReadTimeFlag: PropTypes.bool,
     readMeterData: PropTypes.object,
     changeStore: PropTypes.func,
+    getReceiveAction: PropTypes.func,
   };
 
   constructor(props) {
@@ -151,6 +152,7 @@ export default class MeterTop extends React.Component {
       meterBaseData: {
         stateId,
       },
+      getReceiveAction,
     } = this.props;
     const { search, pathname } = history.location;
     const { meterId, params } = searchUtil(search).parse(); // 抄表详情页
@@ -186,7 +188,7 @@ export default class MeterTop extends React.Component {
       if(actionCode === '2') {
         processActionData.forEach(cur => {
           if(cur.actionCode === '2') {
-            getSubmitAction({
+            getReceiveAction({
               docketId: meterId,
               actionCode: cur.actionCode,
               stateId,
