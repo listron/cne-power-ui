@@ -280,7 +280,6 @@ function* getAddUser(action) { // 添加处理人（执行人）
       },
     });
     const response = yield call(axios.post, url, payload);
-    console.log(response.data, 'response.data');
     if (response.data.code === '10000') {
       // 重新调用基本信息
       yield put({
@@ -382,13 +381,6 @@ function* getSubmitAction(action) { // 提交验收按钮
     const response = yield call(axios.post, url, objParams);
     if (response.data.code === '10000') {
       payload.func();
-      // 获取抄表基本信息
-      yield put({
-        type: meterDetailAction.getBaseUsername,
-        payload: {
-          meterId: payload.docketId,
-        },
-      });
       // 获取流程可操作人数据
       yield put({
         type: meterDetailAction.getOperableUser,
@@ -413,6 +405,13 @@ function* getSubmitAction(action) { // 提交验收按钮
       // 获取抄表基本信息
       yield put({
         type: meterDetailAction.getProcessAction,
+        payload: {
+          meterId: payload.docketId,
+        },
+      });
+      // 获取抄表基本信息
+      yield put({
+        type: meterDetailAction.getProcessBaseInfo,
         payload: {
           meterId: payload.docketId,
         },
@@ -453,13 +452,6 @@ function* getReceiveAction(action) { // 提交验收按钮
     const response = yield call(axios.post, url, objParams);
     if (response.data.code === '10000') {
       payload.func();
-      // 获取抄表基本信息
-      yield put({
-        type: meterDetailAction.getBaseUsername,
-        payload: {
-          meterId: payload.docketId,
-        },
-      });
       // 获取流程可操作人数据
       yield put({
         type: meterDetailAction.getOperableUser,
@@ -484,6 +476,13 @@ function* getReceiveAction(action) { // 提交验收按钮
       // 获取抄表基本信息
       yield put({
         type: meterDetailAction.getProcessAction,
+        payload: {
+          meterId: payload.docketId,
+        },
+      });
+      // 获取抄表基本信息
+      yield put({
+        type: meterDetailAction.getProcessBaseInfo,
         payload: {
           meterId: payload.docketId,
         },
@@ -526,7 +525,7 @@ function* getSaveAction(action) { // 保存按钮
       payload.func();
       // 获取抄表基本信息
       yield put({
-        type: meterDetailAction.getBaseUsername,
+        type: meterDetailAction.getProcessBaseInfo,
         payload: {
           meterId: payload.docketId,
         },
