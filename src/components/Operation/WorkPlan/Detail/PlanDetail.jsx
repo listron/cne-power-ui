@@ -49,7 +49,7 @@ class PlanDetail extends PureComponent {
     },
   ]
 
-  detailBase = [
+  detailBase = [ // 巡视计划
     {
       title: '适用电站',
       dataIndex: 'stations',
@@ -76,6 +76,36 @@ class PlanDetail extends PureComponent {
     }, {
       title: '循环周期',
       dataIndex: 'cycleTypeName',
+    },
+  ]
+
+  meterReadingBase = [ // 抄表计划
+    {
+      title: '适用电站',
+      dataIndex: 'stations',
+      render: ({ stations = [] }) => {
+        const stationStr = stations.map(e => e.stationName).join(',');
+        return (<span title={stationStr}>{stationStr || '--'}</span>);
+      },
+    }, {
+      title: '计划类型',
+      dataIndex: 'planTypeName',
+    }, {
+      title: '首次下发时间',
+      dataIndex: 'firstStartTime',
+      render: ({ firstStartTime, firstStartWeek }) => {
+        return <span>{firstStartTime || '--'} {firstStartWeek}</span>;
+      },
+    }, {
+      title: '执行天数',
+      dataIndex: 'validPeriod',
+      render: ({ validPeriod }) => `${validPeriod || '--'}天`,
+    }, {
+      title: '循环周期',
+      dataIndex: 'cycleTypeName',
+    }, {
+      title: '计划失效时间',
+      dataIndex: 'deadLine',
     },
   ]
 
@@ -196,12 +226,16 @@ class PlanDetail extends PureComponent {
     return parseFloat(cycleTypeCode) === 151 ? curBase.filter(e => e.dataIndex !== 'deadLine') : curBase;
   }
 
+  planDistinguish = (inspectTypeCode, cycleTypeCode, planTypeCode) => {
+    const detailBaseInfo = [...this.detailBase, ...this.detailBaseCompose(inspectTypeCode, cycleTypeCode)];
+    return planTypeCode === '100' ? detailBaseInfo : [...this.meterReadingBase];
+  }
+
   render(){
     const { planDetail, theme, planDetailHandleLoading } = this.props;
-    const { inspectTypeCode = 100001, cycleTypeCode } = planDetail || {}; // 巡检计划类型 日常：100001；设备巡检：100002
+    const { inspectTypeCode = 100001, cycleTypeCode, planTypeCode } = planDetail || {}; // 巡检计划类型 日常：100001；设备巡检：100002;计划类型 巡视计划：'100'；抄表计划：'101'
     const detailBaseInfo = [
-      ...this.detailBase,
-      ...this.detailBaseCompose(inspectTypeCode, cycleTypeCode),
+      ...this.planDistinguish(inspectTypeCode, cycleTypeCode, planTypeCode),
       ...this.baseEnd,
     ];
     const workPlanHandleRight = handleRight('operation_workStation_manage');

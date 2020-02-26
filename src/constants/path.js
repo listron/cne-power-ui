@@ -154,6 +154,14 @@ export default {
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
       uploadReportFile: '/v3/performance/dailyreport/upload', // 日报文件上报
 
+      getMeterList: '/v3/opms/meter/meterPage', // 抄表设置列表
+      getAddMeterList: '/v3/opms/meter/new', // 新增电表
+      getUpDateMeterList: '/v3/opms/meter/update', // 修改列表
+      getChangeMeterList: '/v3/opms/meter/change', // 列表换表
+      getDeleteMeterList: '/v3/opms/meter/del', //删除列表
+      getMeterPrice: '/v3/opms/meter/price', // 设置电价
+      getMeterdDetail: '/v3/opms/meter/detail', // 查看电表详情
+
       getImportIntelligent: '/v3/knowledgebase/import', // 智能专家库导入
       getIntelligentTable: '/v3/knowledgebase/list', // 智能专家库列表
       // getKnowledgebase: '/v3/knowledgebase', // 智能专家库详情
