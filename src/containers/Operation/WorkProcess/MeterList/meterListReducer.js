@@ -5,6 +5,8 @@ const meterListAction = {
   resetStore: Symbol('resetStore'),
   // 获取抄表列表
   getMeterList: Symbol('getMeterList'),
+  // 获取执行人列表
+  getParticipant: Symbol('getParticipant'),
 };
 
 const initState = immutable.fromJS({
@@ -33,6 +35,8 @@ const initState = immutable.fromJS({
   sortField: 'stationName',
   sortMethod: 'descend',
   searchStatus: '', // 查询状态
+  participantList: [], // 执行人列表
+  operatorValue: [], // 执行人名称
 });
 
 const meterList = (state = initState, action) => {

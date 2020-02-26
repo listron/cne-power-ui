@@ -81,6 +81,7 @@
       .picZoomImgContent {
         width: 100%;
         position: relative;
+        min-height: 200px;
 
         .picLeftBox {
           width: 78px;
@@ -118,11 +119,19 @@
         }
 
         .picLeft {
+          cursor: no-drop;
 
+          &:hover{
+            color: #e0e0df;
+          }
         }
 
         .picRight {
+          cursor: no-drop;
 
+          &:hover{
+            color: #e0e0df;
+          }
         }
 
         img {

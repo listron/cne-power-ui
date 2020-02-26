@@ -114,6 +114,19 @@ export default {
       likeKnowledgebase: '/v3/knowledgebase/like/', // 点赞智能专家
       getParticipant: '/v3/defect/handleuser/like', // 获取参与者列表
       getMeterList: '/v4/opms/readMeter/meterPage', // 获取抄表列表
+      getProcessBaseInfo: '/v4/opms/process/processInfo', // 获取抄表详情基本信息
+      getOperableUser: '/v4/opms/process/operableUser', // 获取流程可操作人数据
+      getProcessList: '/v4/opms/process/stateList', // 获取流程流转信息数据
+      getBaseUsername: '/v4/base/user/username', // 获取有权限电站权限用户
+      getReadMeter: '/v4/opms/readMeter/meterDetail', // 获取处理信息
+      getAddUser: '/v4/opms/docket/addAbleUser', // 添加处理人
+      getProcessAction: '/v4/opms/docket/action', // 获取流程可执行动作
+      getSubmitAction: '/v4/opms/docket/handleState', // 提交按钮
+      getReceiveAction: '/v4/opms/docket/receiveDocket', // 领取
+      getSaveAction: '/v4/opms/readMeter/updateMeter', // 更新
+      getOperaUser: '/v4/base/user/station/user', // 获取执行人
+      getUploadFile: '/v4/common/fastdfs/uploadfile', // 上传图片
+      getRotateImg: '/v4/common/fastdfs/rotateImg', // 旋转图片
     },
     operation: {
       // 工作台

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Radio } from 'antd';
+import moment from 'moment';
 import CommonPagination from '@components/Common/CommonPagination';
 import CneTable from '@components/Common/Power/CneTable';
 import styles from './meter.scss';
@@ -22,6 +23,8 @@ export default class MeterTable extends React.Component {
     ]),
     getMeterList: PropTypes.func,
     changeStore: PropTypes.func,
+    operatorValue: PropTypes.array,
+    selectedStation: PropTypes.array,
   };
 
   onChangeStatus = e => {
@@ -48,7 +51,6 @@ export default class MeterTable extends React.Component {
 
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
     const { getMeterList, listParams, changeStore } = this.props;
-    console.log(sorter, 'sorter');
     const { field } = sorter || {};
     // 排序字段
     const sortFieldMap = {
@@ -56,7 +58,7 @@ export default class MeterTable extends React.Component {
         settleMonth: 'settle_month',
         createTime: 'create_time',
         keepLength: 'keep_length',
-        stateName: 'state_name',
+        stateName: 'sort',
     };
     const { sortField, sortMethod } = listParams || {};
     let newField = sortField, newSort = 'desc';
@@ -67,8 +69,8 @@ export default class MeterTable extends React.Component {
     }
     // 手动改变表格排序字段
     changeStore({
-      sortField: newField,
-      sortMethod: newSort,
+      sortField: !field ? this.props.sortField : field,
+      sortMethod: newSort === 'asc' ? 'ascend' : 'descend',
     });
     // 请求抄表列表
     getMeterList({
@@ -76,14 +78,61 @@ export default class MeterTable extends React.Component {
       sortField: newField,
       sortMethod: newSort,
     });
-    console.log(newField, '2345678', newSort);
   };
 
   onShowDetail = (record) => { // 展示详情
-    const { type } = record;
-    const { history } = this.props;
+    const { docketId } = record;
+    const {
+      history,
+      selectedStation,
+      listParams,
+      sortField,
+      sortMethod,
+      searchStatus,
+      operatorValue,
+    } = this.props;
     const { pathname } = history.location;
-    history.push(`${pathname}?page=meterDetail&meterId=${type}`);
+    // 下钻到详情页时保留当前查询参数，返回查询当前页面
+    const params = {
+      selectedStation,
+      listParams,
+      sortField,
+      sortMethod,
+      searchStatus,
+      operatorValue,
+    };
+    history.push(`${pathname}?page=meterDetail&meterId=${docketId}&params=${JSON.stringify(params)}`);
+  };
+
+  /**
+   * 格式化分钟转为天、时、分
+   * @param {number} minutes
+   */
+  formatMinutes = (minutes) => {
+
+    const day = parseInt(minutes / 1440, 0);
+
+    const hour = day > 0
+
+      ? Math.floor((minutes - day * 1440) / 60)
+
+      : Math.floor(minutes / 60);
+
+    const minute = hour > 0
+
+      ? Math.floor(minutes - day * 1440 - hour * 60)
+
+      : minutes;
+
+    let time = '';
+
+    if (day > 0) time += day.toString().padStart(2, '0') + '天';
+
+    if (hour > 0) time += hour.toString().padStart(2, '0') + '小时';
+
+    if (hour > 0 && minute > 0) time += minute.toString().padStart(2, '0') + '分钟';
+
+    return time;
   };
 
   render() {
@@ -124,14 +173,14 @@ export default class MeterTable extends React.Component {
         dataIndex: 'createTime',
         sorter: true,
         className: styles.createTime,
-        render: (text) => (<div title={text} >{text || '- -'}</div>),
+        render: (text) => (<div title={text} >{text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '- -'}</div>),
       }, {
         title: '持续时间',
         align: 'center',
         dataIndex: 'keepLength',
         sorter: true,
         className: styles.keepLength,
-        render: (text) => (<div title={text}>{text || '- -'}</div>),
+        render: (text) => (<div title={text}>{text ? this.formatMinutes(Number(text)) : '- -'}</div>),
       },
       {
         title: '执行人',
@@ -144,7 +193,39 @@ export default class MeterTable extends React.Component {
         dataIndex: 'stateName',
         className: styles.stateName,
         sorter: true,
-        render: (text, record) => (<div title={text}>{text || '- -'}</div>),
+        render: (text, record) => {
+          const { endTime, planEndTime } = record;
+          // 当前时间
+          const currentTime = Math.round(new Date().getTime() / 1000);
+          /**
+           * 1）状态=已结单，实际完成时间(endTime)＞要求完成时间(planEndTime)，记为超时
+           * 2）状态≠已结单，当前时间(本地时间)＞要求完成时间(planEndTime)，记为超时
+           * 3）直接显示文本
+           * */
+          // 1)状态=已结单
+          if(endTime && planEndTime && endTime > planEndTime) {
+            return (
+              <div className={styles.stateNameBox} title={text}>
+                <div>{text || '- -'}</div>
+                <i className={'iconfont icon-chaoshi'} />
+              </div>
+            );
+          }
+          // 2)状态≠已结单
+          if(!endTime && planEndTime && currentTime > planEndTime) {
+            return (
+              <div className={styles.stateNameBox} title={text}>
+                <div>{text || '- -'}</div>
+                <i className={'iconfont icon-chaoshi'} />
+              </div>
+            );
+          }
+          return (
+            <div className={styles.stateNameBox} title={text}>
+              <div>{text || '- -'}</div>
+            </div>
+          );
+        },
       }, {
         title: '操作',
         align: 'center',
@@ -177,7 +258,7 @@ export default class MeterTable extends React.Component {
           rowKey={(record, index) => index || 'key'}
           scroll={{ y: 462 }}
           pagination={false}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png"  alt=""/> }}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" alt="" /> }}
         />
       </div>
     );

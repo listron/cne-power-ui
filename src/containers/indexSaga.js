@@ -17,6 +17,7 @@ import { watchDefectDetail } from './Operation/WorkProcess/DefectDetail/defectDe
 import { watchInspectList } from './Operation/WorkProcess/InspectList/inspectListSaga';
 import { watchInspectDetail } from './Operation/WorkProcess/InspectDetail/inspectDetailSaga';
 import { watchMeterList } from './Operation/WorkProcess/MeterList/meterListSaga';
+import { watchMeterDetail } from './Operation/WorkProcess/MeterDetail/meterDetailSaga';
 
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
 import { watchPersonnelManage } from './System/Account/PersonnelManage/personnelManageSaga';
@@ -157,6 +158,7 @@ export default function* rootSaga() {
     watchInspectList(), // 巡检列表
     watchInspectDetail(), // 巡检详情
     watchMeterList(), // 抄表列表
+    watchMeterDetail(), // 抄表详情
 
     //system-enterprise
     watchEnterprise(),

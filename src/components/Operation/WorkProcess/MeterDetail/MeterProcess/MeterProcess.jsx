@@ -1,64 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Timeline } from 'antd';
+import moment from 'moment';
+import { processIconFunc } from '../../Common/processIconCode';
 import styles from './meterProcess.scss';
-const data = [{
-  type: 1,
-  detail: null,
-}, {
-  type: 2,
-  detail: null,
-}, {
-  type: 1,
-  detail: '<b>添加：</b><span>张佳、王汽车、赵明灯、李幺鸡王汽车、赵明灯、李幺鸡</span>',
-}, {
-  type: 1,
-  detail: null,
-}, {
-  type: 2,
-  detail: null,
-}, {
-  type: 1,
-  detail: '<b>添加：</b><span>张佳、王汽车、赵明灯、李幺鸡王汽车、赵明灯、李幺鸡</span>',
-}, {
-  type: 2,
-  detail: null,
-}, {
-  type: 1,
-  detail: '<b>添加：</b><span>张佳、王汽车、赵明灯、李幺鸡王汽车、赵明灯、李幺鸡</span>',
-}, {
-  type: 2,
-  detail: null,
-}, {
-  type: 1,
-  detail: null,
-}];
 export default class MeterProcess extends React.Component {
   static propTypes = {
-    meterDetail: PropTypes.object,
+    processList: PropTypes.array,
   };
 
-  timelineItem = (data) => {
-    return data && data.map((cur, index) => {
-      if(cur.type === 1) {
+  timelineItem = () => {
+    const { processList } = this.props;
+    return processList && processList.map((cur, index) => {
+      if(processList.length - 1!== index) {
         return (
-          <Timeline.Item>
+          <Timeline.Item key={index.toString()} dot={<i className={processIconFunc(cur.icon)} style={Number(cur.colorCode) === 3002 ? {fontSize: '20px', color: '#df4b33'} : {fontSize: '20px'}} />}>
             <div className={styles.processItem}>
               <div className={styles.processItemBox}>
-                <div className={styles.processItemName}>创建工单</div>
+                <div className={Number(cur.colorCode) === 3002 ? styles.processErrorItemName : styles.processItemName}>{cur.nodeName}</div>
                 <div className={styles.itemRight}>
-                  <div className={styles.processItemDetail}>计划下发</div>
-                  <div className={styles.processItemTime}>2019-11-15 16:10</div>
+                  <div className={styles.processItemDetail}>{cur.handleUser}</div>
+                  <div className={styles.processItemTime}>{moment(cur.endTime).format('YYYY-MM-DD HH:mm')}</div>
                 </div>
               </div>
-              {cur.detail && <div className={styles.processContentDetail} dangerouslySetInnerHTML={{__html: cur.detail}} />}
+              {cur.handleDesc && <div className={styles.processContentDetail} dangerouslySetInnerHTML={{__html: cur.handleDesc}} />}
               <div className={styles.processTriangle} />
             </div>
           </Timeline.Item>
         );
       }
-      if(cur.type === 2) {
-        return <Timeline.Item><div className={styles.singleInfo}>执行中</div></Timeline.Item>;
+      if(processList.length - 1 === index) {
+        return (
+          <Timeline.Item key={index.toString()} dot={<i className={processIconFunc(cur.icon)} style={{fontSize: '20px'}} />}>
+            <div className={styles.singleInfo}>{cur.nodeName}</div>
+          </Timeline.Item>
+        );
       }
     });
   };
@@ -73,7 +49,7 @@ export default class MeterProcess extends React.Component {
         </div>
         <div className={styles.processContent}>
           <Timeline>
-            {this.timelineItem(data)}
+            {this.timelineItem()}
           </Timeline>
         </div>
       </div>

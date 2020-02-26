@@ -15,20 +15,30 @@ class MeterList extends Component {
     location: PropTypes.object,
     resetStore: PropTypes.func,
     getMeterList: PropTypes.func,
+    getParticipant: PropTypes.func,
     listParams: PropTypes.object,
   };
 
   componentDidMount() {
-    const { getMeterList, listParams } = this.props;
+    const { getMeterList, listParams, getParticipant } = this.props;
     const { history } = this.props;
     const { search } = history.location;
-    const { listSearch } = searchUtil(search).parse(); // 抄表列表页
+    const { listSearch, params } = searchUtil(search).parse(); // 抄表列表页
     const urlParamsSearch = listSearch && JSON.parse(listSearch) || {}; // 判断从路由中过来的筛选条件
-    // 调用抄表列表页
-    getMeterList({
+    const paramsSearch = params && JSON.parse(params) || {}; // 判断从详情页中过来的筛选条件
+    // 列表查询参数
+    const listSearchParams = paramsSearch.listParams ? {
       ...listParams,
       ...urlParamsSearch,
-    });
+      ...paramsSearch.listParams,
+    } : {
+      ...listParams,
+      ...urlParamsSearch,
+    };
+    // 调用抄表列表页
+    getMeterList(listSearchParams);
+    // 获取所有执行人列表
+    getParticipant();
   }
 
   componentWillUnmount() { // 卸载的时候要注意
@@ -54,7 +64,6 @@ class MeterList extends Component {
 const mapStateToProps = (state) => ({
   ...state.operation.meterList.toJS(),
   stations: state.common.get('stations').toJS(),
-  deviceTypes: state.common.get('deviceTypes').toJS(),
   theme: state.common.get('theme'),
 });
 
@@ -62,6 +71,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: meterListAction.resetStore }),
   changeStore: payload => dispatch({ type: meterListAction.changeStore, payload }),
   getMeterList: payload => dispatch({ type: meterListAction.getMeterList, payload }),
+  getParticipant: payload => dispatch({ type: meterListAction.getParticipant, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeterList);

@@ -207,7 +207,19 @@
   }
 
   .stateName{
+    position: relative;
     width: calc((100vw - 230px) * 0.13);
+  }
+
+  .stateNameBox{
+
+    i{
+      position: absolute;
+      right: 5px;
+      top: 1px;
+      font-size: 20px;
+      color: #df4b33;
+    }
   }
 
   .meterDetails{
