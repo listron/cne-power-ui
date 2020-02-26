@@ -40,19 +40,25 @@
           font-family: PingFangSC-Medium, serif;
         }
 
+        .processErrorItemName{
+          color: #df4b33;
+          @include lineheight(30px);
+          font-family: PingFangSC-Medium, serif;
+        }
+
         .itemRight {
           display: flex;
 
           .processItemDetail {
             color: #353535;
             @include lineheight(30px);
-            font-family: PingFangSC-Regular, serif;
+            font-family: arial, serif;
           }
 
           .processItemTime {
             margin-left: 5px;
             @include lineheight(30px);
-            font-family: ArialMT, serif;
+            font-family: arial, serif;
             color: #999999;
           }
         }
@@ -63,9 +69,9 @@
         height: 0;
         position: absolute;
         top: 5px;
-        left: -8px;
-        border-bottom: 8px solid #f2f8f5;
-        border-left: 8px solid transparent;
+        left: -5px;
+        border-bottom: 5px solid #f2f8f5;
+        border-left: 5px solid transparent;
         box-shadow: 0 2px 4px -1px #999999;
       }
     }

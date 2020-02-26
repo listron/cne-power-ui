@@ -2,51 +2,95 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import StationSelect from '@components/Common/StationSelect';
 import { Switch, DatePicker, Select } from 'antd';
+import moment from 'moment';
 import styles from './meter.scss';
 
 const { MonthPicker } = DatePicker;
 const { Option } = Select;
 
+const monthFormat = 'YYYY-MM';
+
 export default class MeterSearch extends React.Component {
   static propTypes = {
-    params: PropTypes.object,
+    listParams: PropTypes.object,
     stations: PropTypes.array,
-    theme: PropTypes.string,
-    deviceTypes: PropTypes.array,
     selectedStation: PropTypes.array,
+    theme: PropTypes.string,
+    getMeterList: PropTypes.func,
+    changeStore: PropTypes.func,
+    participantList: PropTypes.array,
+    operatorValue: PropTypes.array,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      operatorValue: [],
-    };
-  }
-
   selectStation = selectedStation => {
-    console.log(selectedStation, 'selectedStation');
+    const { getMeterList, changeStore, listParams } = this.props;
+    // 选中电站
+    const stationCodes = selectedStation.map(cur => cur.stationCode);
+    changeStore({
+      selectedStation: stationCodes,
+    });
+    // 调用抄表列表接口
+    getMeterList({
+      ...listParams,
+      stationCodes,
+    });
   };
 
   startChange = (date, dateString) => {
-    console.log(date, dateString);
+    const { getMeterList, listParams } = this.props;
+    // 调用抄表列表接口
+    getMeterList({
+      ...listParams,
+      startSettleMonth: dateString,
+    });
   };
 
   endChange = (date, dateString) => {
-    console.log(date, dateString);
+    const { getMeterList, listParams } = this.props;
+    // 调用抄表列表接口
+    getMeterList({
+      ...listParams,
+      endSettleMonth: dateString,
+    });
   };
 
   handleChangeOperator = value => {
-    console.log(value, 'value');
-    (value.length === 0 || value.length === 1) && this.setState({operatorValue: value});
+    const { getMeterList, listParams, changeStore } = this.props;
+    if((value.length === 0 || value.length === 1)) {
+      // 选中执行人
+      changeStore({
+        operatorValue: value,
+      });
+      // 调用抄表列表接口
+      getMeterList({
+        ...listParams,
+        operName: value.toString(),
+      });
+    }
   };
 
   onChange = checked => {
-    console.log(checked, 'checked');
+    const { getMeterList, listParams } = this.props;
+    // 调用抄表列表接口
+    getMeterList({
+      ...listParams,
+      isMy: checked ? 1 : null,
+    });
   };
 
   render() {
-    const { operatorValue } = this.state;
-    const { params, stations, theme, selectedStation } = this.props;
+    const { operatorValue } = this.props;
+    const {
+      stations,
+      theme,
+      selectedStation,
+      participantList,
+      listParams: {
+        isMy,
+        startSettleMonth,
+        endSettleMonth,
+      },
+    } = this.props;
     return (
       <div className={styles.searchStyle}>
         <div className={styles.searchLeft}>
@@ -66,9 +110,9 @@ export default class MeterSearch extends React.Component {
           </div>
           <div className={styles.monthBox}>
             <span className={styles.monthTitleName}>结算月份</span>
-            <MonthPicker style={{width: 100}} onChange={this.startChange} placeholder="开始月份" />
+            <MonthPicker value={startSettleMonth ? moment(startSettleMonth, monthFormat) : startSettleMonth} style={{width: 100}} onChange={this.startChange} placeholder="开始月份" />
             <span className={styles.betweenIcon}>~</span>
-            <MonthPicker style={{width: 100}} onChange={this.endChange} placeholder="结束月份" />
+            <MonthPicker value={endSettleMonth ? moment(endSettleMonth, monthFormat) : endSettleMonth} style={{width: 100}} onChange={this.endChange} placeholder="结束月份" />
           </div>
           <div className={styles.operatorBox}>
             <span>执行人</span>
@@ -83,15 +127,18 @@ export default class MeterSearch extends React.Component {
                 dropdownClassName={styles.searchSelect}
                 onChange={this.handleChangeOperator}
               >
-                <Option key="1" value="1" >1111111111</Option>
-                <Option key="1" value="2" >2222222222</Option>
+                {participantList.map(cur => {
+                  return (
+                    <Option key={cur.userId} title={cur.userFullname || cur.username} value={cur.userFullname || cur.username} >{cur.userFullname || cur.username}</Option>
+                  );
+                })}
               </Select>
               <i className={'iconfont icon-search'} />
             </div>
           </div>
         </div>
         <div className={styles.searchRight}>
-          <Switch defaultChecked onChange={this.onChange} />
+          <Switch checked={isMy === 1} onChange={this.onChange} />
           <span>只看我参与的</span>
         </div>
       </div>
