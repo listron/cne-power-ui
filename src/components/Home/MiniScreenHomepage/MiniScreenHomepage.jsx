@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import HomepageTop from './HomepageTop';
 import StationGeneral from './HomeParts/StationGeneral';
 import MonthGenChart from './HomeParts/MonthGenChart';
-import { CompleteRate, OperationInfo } from './HomeParts/HomeFuncParts';
 import OutputPower from './HomeParts/OutputPower';
 import DeviceStatus from './HomeParts/DeviceStatus';
 import EqpHours from './HomeParts/EqpHours';
