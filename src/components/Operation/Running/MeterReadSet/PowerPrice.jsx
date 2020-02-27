@@ -40,7 +40,7 @@ class PowerPrice extends Component{
   }
 
   saveEvent = (value) => { // 保存
-    const { form, getMeterPrice, stationCode, changeMeterReadSetStore } = this.props;
+    const { form, getMeterPrice, stationCode, changeMeterReadSetStore, priceDetailData } = this.props;
     form.validateFieldsAndScroll((error, values)=>{
       if(!error){
         this.setState({
@@ -48,6 +48,7 @@ class PowerPrice extends Component{
         });
         getMeterPrice({
           stationCode,
+          powerPriceId: priceDetailData.powerPriceId,
           topPrice: Number(values.topPrice),
           peakPrice: Number(values.peakPrice),
           flatPrice: Number(values.flatPrice),
@@ -102,6 +103,7 @@ class PowerPrice extends Component{
     const { isEdit, topPriceValue, peakPriceValue, flatPriceValue, lowPriceValue, discountRateValue } = this.state;
     const { priceDetailData, theme, form } = this.props;
     const { updateTime } = priceDetailData;
+    console.log('priceDetailData: ', priceDetailData);
     const { getFieldDecorator } = form;
     return(
       <div className={`${styles.powerPrice} ${styles[theme]}`}>
