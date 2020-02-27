@@ -8,7 +8,7 @@ import Cookie from 'js-cookie';
 import axios from 'axios';
 import MiniHomepage from '../../components/Home/MiniHomepage/MiniHomepage';
 import FullHomepage from '../../components/Home/FullHomepage/FullHomepage';
-// import MiniScreenHomepage from '../../components/Home/MiniScreenHomepage/MiniScreenHomepage';
+import MiniScreenHomepage from '../../components/Home/MiniScreenHomepage/MiniScreenHomepage';
 
 class Homepage extends Component {
 
@@ -27,7 +27,7 @@ class Homepage extends Component {
     const enterpriseId = Cookie.get('enterpriseId');
     // fullScreenHomepageIds
     // homepageType: miniTheme-小版另类主题, miniFullScreen-小版一屏版本
-    let homepageType = 'normal';
+    let homepageType = 'miniFullScreen'; // 正常默认主页
     if (miniHomepageIds.includes(enterpriseId)) { // 小版另类主题
       homepageType = 'miniTheme';
     } else if (fullScreenHomepageIds.includes(enterpriseId)) { // 小版一屏
@@ -42,7 +42,7 @@ class Homepage extends Component {
       <React.Fragment>
         { homepageType === 'normal' && <FullHomepage {...this.props} />}
         { homepageType === 'miniTheme' && <MiniHomepage {...this.props} />}
-        {/* { homepageType === 'miniFullScreen' && <MiniScreenHomepage {...this.props} />} */}
+        { homepageType === 'miniFullScreen' && <MiniScreenHomepage {...this.props} />}
       </React.Fragment>
     );
   }

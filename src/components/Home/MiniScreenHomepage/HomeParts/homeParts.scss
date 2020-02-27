@@ -1,0 +1,586 @@
+
+@import '../homepageParts.scss';
+
+@media screen and (max-width: 1439px) { // 1440以下屏幕，按照1345px进行适配。
+  .stationGeneral, .completeRate, .monthGen, .operationInfo, .outputPower, .operationInfo, .deviceStatus {
+    width: 340px;
+    height: 275px;
+  }
+  .stationGeneral{
+    .value{
+      font-size:20px;
+    }
+  }
+  .eqpHours, .faultList, .alarmList{
+    width: 440px;
+  }
+  .eqpHours .hourRectGroup{
+    margin: 0 12px;
+  }
+  .deviceStatus .statusChart{
+    width: 55%;
+  }
+}
+
+@media screen and (max-width: 1919px) and (min-width: 1440px) { // 1920以下宽度屏按1440px适配
+  .stationGeneral, .completeRate, .monthGen, .operationInfo, .outputPower, .operationInfo, .deviceStatus {
+    width: 340px;
+    height: 275px;
+  }
+  .stationGeneral{
+    .value{
+      font-size:20px;
+    }
+  }
+  .eqpHours, .faultList, .alarmList{
+    width: 465px;
+  }
+  .eqpHours .hourRectGroup{
+    margin: 0 12px;
+  }
+  .deviceStatus .statusChart{
+    width: 60%;
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
+  .stationGeneral, .completeRate, .monthGen, .operationInfo, .outputPower, .operationInfo, .deviceStatus{
+    width: 435px;
+    height: 322px;
+  }
+  .stationGeneral{
+    .value{
+      font-size:28px;
+    }
+    .unit{
+      font-size:18px;
+    }
+    .name{
+      font-size:22px;
+    }
+  }
+  .eqpHours, .faultList, .alarmList{
+    width: 625px;
+  }
+  .eqpHours .hourRectGroup{
+    margin: 0 60px;
+  }
+  .faultList .list{
+    padding-right: 60px;
+  }
+  .deviceStatus .statusChart{
+    width: 60%;
+  }
+}
+
+.stationTypeTag{ // 全部,风,光切换样式。
+  display: flex;
+  .text{
+    color: #fff;
+    margin-right: 8px;
+    font-size: 18px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.chartTool{ // chart图内文字及样式。
+  color:#a6e8ff;
+  font-family:PingFangSC-Regular;
+  font-size: 14px;
+  border-radius: 2px;
+  width: 88px;
+  height: 60px;
+  line-height: 21px;
+}
+
+.noData{
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  color: #353535;
+  font-size: 10px;
+}
+
+.stationGeneral{ // 电站概况
+  @include boxStyle();
+  margin-top: 12px;
+  position: relative;
+  align-content: flex-start;
+  h3{
+    @include titles();
+  }
+  .checkTags{
+    @include typeTags();
+  }
+  .generalBox{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .eachGeneral{
+    width: 50%;
+    margin-bottom: 16px;
+    .value,.unit,.name{
+      font-family:PingFangSC-Regular;
+      color:#06bdf4;
+      margin-left: 36px;
+    }
+    .value{
+      color:#4dde49;
+    }
+    .unit{
+      margin-left: 0;
+    }
+    .name{
+      line-height:24px;
+    }
+  }
+}
+.monthGen, .deviceStatus, .eqpHours, .faultList, .alarmList, .completeRate, .operationInfo{ // 大致所有盒子高度。
+  height: 205px;
+}
+.monthGen, .deviceStatus, .outputPower, .eqpHours, .faultList, .alarmList, .completeRate, .operationInfo{ // 大致所有盒子总样式。
+  margin-top: 12px;
+  @include boxStyle();
+  position: relative;
+  h3{
+    @include titles();
+  }
+  .checkTags{
+    @include typeTags();
+  }  
+}
+.eqpHours, .faultList{
+  margin-right: 12px;
+}
+
+.monthGen{
+  h3{
+    height: 42px;
+  }
+  .monthTool{ // chart图内文字及样式。
+    @include chartTool();
+    width: 88px;
+    height: 60px;
+    line-height: 21px;
+  }
+  .monthChart{
+    flex: 1;
+    z-index: 99;
+    margin: 0 10px;
+  }
+}
+
+.completeRate, .operationInfo{ // 计划完成率 + 运维情况部分样式
+  margin-top: 12px;
+  height: 185px;
+  .completeInfo{
+    display: flex;
+    height: 90px;
+    justify-content: center;
+  }
+  .windCol, .pvCol{ // 光伏风电比例
+    flex: 1 0 70px;
+    color: #48cf49;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: 0 12px 0 0;
+    span{
+      height: 30px;
+      line-height: 30px;
+      font-size: 20px;
+    }
+    .typeText{
+      position: relative;
+      font-size: 14px;
+      padding-left: 16px;
+      &::before{
+        content: '';
+        position: absolute;
+        left: 4px;
+        top: 12px;
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        background-color: #48cf49;
+      }
+    }
+  }
+  .pvCol{
+    align-items: flex-start;
+    color: #06bdf4;
+    margin: 0 0 0 12px;
+  }
+  .windProgress, .pvProgress, .middleText{ // 光伏 风电进度条
+    width: 105px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .windProgress, .pvProgress{
+    flex: 1 1 115px;
+    :global{
+      .ant-progress{
+        top: -2px;
+        height: 30px;
+        line-height: 30px;
+        .ant-progress-inner{
+          background:#28608f;
+        }
+      }
+    }
+  }
+  .middleText{
+    flex: 0 0 65px;
+    color: #06bdf4;
+    line-height: 30px;
+  }
+}
+
+.outputPower{ // 电站出力
+  align-items: center;
+  .outputChart{
+    flex: 1;
+    width: 340px;
+  }
+  .outputTool{
+    @include chartTool();
+    width: 126px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    .time, .text {
+      color:#a6e8ff;
+    }
+    .time{
+      height: 32px;
+      line-height: 32px;
+    }
+    .text{
+      height: 24px;
+      line-height: 24px;
+      text-align: right;
+      margin-right: 12px;
+    }
+  }
+  .totalPower{
+    display: flex;
+    align-items: center;
+    height: 30px;
+    line-height: 30px;
+    .highlight{
+      color:#4dde49;
+      font-size:28px;
+      font-family: digital-7mono;
+    }
+    .text{
+      color:#06bdf4;
+    }
+  }
+}
+
+.operationInfo{ // 运维情况
+  display: flex;
+  flex-direction: column;
+  .ticketDetail{
+    display: flex;
+    justify-content: space-around;
+  }
+  .ticketDone, .ticketDoing{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h4{
+      color:#06bdf4;
+    }
+  }
+  .animationOperation{
+    width: 82px;
+    height: 82px;
+    position: relative;
+    .value, .circle{
+      display: inline-block;
+      width: 82px;
+      height: 82px;
+      line-height: 82px;
+      text-align: center;
+      font-size: 28px;
+      color: #48cf49;
+    }
+    .value{
+      background: url('/img/rotate.png') no-repeat center center;
+    }
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      left: 0;
+      right: 0;
+    }
+  }
+  .ticketDone .circle{
+    background: url('/img/turn1.png') no-repeat center center;
+    // animation: circlFrame 1s linear infinite;
+    // -webkit-animation: circlFrame 1s linear infinite;
+  }
+  .ticketDoing .circle{
+    background: url('/img/turn2.png') no-repeat center center;
+    // animation: circlFrame 1s linear infinite;
+    // -webkit-animation: circlFrame 1s linear infinite;
+  }
+  // @keyframes circlFrame {
+  //   0% { transform: rotate(0deg); }
+  //   50% { transform: rotate(180deg);}
+  //   100% { transform: rotate(360deg);}
+  // }
+  // .doneData, .doingData{
+  //   width: 82px;
+  //   height: 82px;
+  //   color:#4dde49;
+  //   font-size:28px;
+  //   text-align: center;
+  //   line-height: 82px;
+  //   background: url('/img/turn1.png') no-repeat center center,
+  //     url('/img/rotate.png') no-repeat center center;
+  // }
+  // .doingData{
+  //   background: url('/img/turn2.png') no-repeat center center,
+  //     url('/img/rotate.png') no-repeat center center;
+  // }
+}
+
+.deviceStatus{ // 设备状态
+  .statusBox{
+    flex: 1;
+    display: flex;
+    .statusTool{
+      @include chartTool();
+      width: 105px;
+      height: 56px;
+      display: flex;
+      flex-direction: column;
+      .status, .percent {
+        display: flex;
+        height: 24px;
+        line-height: 24px;
+        .name, .value{
+          color:#a6e8ff;
+          height: 32px;
+          line-height: 32px;
+        }
+        .name{
+          flex: 0 0 60px;
+        }
+      }
+    }
+    .statusTotal{
+      width: 40%;
+    }
+    .eachStatus{
+      display: flex;
+      height: 34px;
+      align-items: center;
+      .round{
+        flex: 0 0 14px;
+        height: 14px;
+        border-radius: 50%;
+      }
+      .text{
+        flex: 0 0 60px;
+        color:#06bdf4;
+        margin: 0 8px 0 8px;
+      }
+      .value{
+        color:#4dde49;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+.eqpHours{ // 今年等效利用小时数
+  .stationProgress{
+    flex: 1;
+    .eachStation{
+      display: flex;
+      justify-content: center;
+      .stationName, .hour{
+        color:#06bdf4;
+        flex: 1;
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-all; 
+      }
+      .hour{
+        text-align: left;
+      }
+      .hourRectGroup{
+        display: flex;
+        align-items: center;
+        .eachRect{
+          background:rgba(72,207,73,0.40);
+          margin-right: 2px;
+          display: flex;
+          .highLightRect{
+            background:#48cf49;
+          }
+        }
+      }
+    }
+  }
+  .average{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 12px;
+    .averageText{
+      color:#06bdf4;
+    }
+    .averageNum{
+      color: #48cf49;
+    }
+  }
+}
+
+.faultList{ // 本月故障台次
+  .faultContent{
+    flex: 1;
+    display: flex;
+    .list, .chart{
+      width: 45%;
+      display: flex;
+      flex-direction: column;
+    }
+    .chart{
+      width: 55%;
+    }
+    .eachFault{
+      display: flex;
+      background-repeat: no-repeat;
+      background-position: center right;
+      .text, .stationName, .value{
+        color:#06bdf4;
+        line-height: 24px;
+        height: 24px;
+      }
+      .text{
+        width: 54px;
+      }
+      .stationName{
+        flex: 1;
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-all; 
+      }
+      .value{
+        color:#4dde49;
+        width: 40px;
+      }
+    }
+    .faultTool{
+      @include chartTool();
+      width: 84px;
+      height: 54px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+  }
+}
+
+.alarmList{ // 告警列表
+  h3{
+    position: relative;
+    .total{
+      position: absolute;
+      right: 18px;
+      bottom: -8px;
+      font-size:14px;
+      color:#06bdf4;
+    }
+  }
+  .alarmContent{
+    flex: 1;
+  }
+  .alarmBox{
+    height: 110px;
+    overflow: hidden;
+    .scrollAlarm{
+      transition: all 0.5s,
+    }
+  }
+  .alarmColumn, .eachAlarm{
+    display: flex;
+    line-height: 22px;
+    background-repeat: no-repeat;
+    background-position: center right;
+    background-size: cover;
+    .level, .stationName, .info, .time{
+      color: #06bdf4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      word-break: break-all; 
+    }
+    .level{
+      color: #fff;
+      width: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .round{
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        text-align: center;
+        background:#c23c3c;
+        border-radius: 50%;
+      }
+    }
+    .stationName{
+      width: 104px;
+      text-align: left;
+    }
+    .info{
+      flex: 1;
+      text-align: center;
+    }
+    .time{
+      width: 95px;
+      display: flex;
+      .day, .hour{
+        color:#a6e8ff;
+        width: 17px;
+        text-align: right;
+      }
+      .day {
+        width: 24px;
+      }
+    }
+  }
+  .alarmColumn{
+    margin-bottom: 4px;
+    .level, .stationName, .info, .time{
+      color:#a6e8ff;
+    }
+    .info{
+      text-align: center;
+    }
+    .time{
+      justify-content: flex-end;
+      margin-right: 12px;
+    }
+  }
+}
