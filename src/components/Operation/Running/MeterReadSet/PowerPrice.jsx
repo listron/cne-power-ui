@@ -103,7 +103,6 @@ class PowerPrice extends Component{
     const { isEdit, topPriceValue, peakPriceValue, flatPriceValue, lowPriceValue, discountRateValue } = this.state;
     const { priceDetailData, theme, form } = this.props;
     const { updateTime } = priceDetailData;
-    console.log('priceDetailData: ', priceDetailData);
     const { getFieldDecorator } = form;
     return(
       <div className={`${styles.powerPrice} ${styles[theme]}`}>
