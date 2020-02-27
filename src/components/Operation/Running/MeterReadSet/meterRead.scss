@@ -482,6 +482,18 @@
             }
           }
         }
+        .modalMeterNumber{
+          display: flex;
+          :global{
+            .ant-input{
+              width: 132px;
+              margin-left:0;
+            }
+            .ant-form-explain{
+              left: 144px;
+            }
+          }
+        }
         .modalInitCode{
           display: flex;
           :global{
@@ -496,21 +508,29 @@
         }
         .oldData,.newData {
           font-weight: bold;
-          margin-bottom: 12px;
+          margin-bottom: 9px;
         }
       }
     }
     .oldMeter{
+      .modalMeterNumber{
+        line-height: 38px;
+        padding-top: 5px;
+      }
       .modalInitCode{
-        line-height: 56px;
+        line-height: 38px;
+        margin-bottom: 10px;
+        margin-top: 5px;
       }
     }
     .newMeter{
       margin-left: 10px;
+      .modalMeterNumber{
+        padding-top: 5px;
+      }
       .modalInitCode{
-        display: flex;
         align-items: center;
-        padding: 7px 0;
+        margin-bottom: 7px;
       }
     }
   }
