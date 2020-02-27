@@ -36,7 +36,6 @@ class BranchConfig extends Component {
 const mapStateToProps = (state) => {
   return {
     ...state.system.branchConfigReducer.toJS(),
-    stations: state.common.get('stations').toJS(),
   };
 };
 const mapDispatchToProps = (dispatch) => ({
