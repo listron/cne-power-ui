@@ -50,9 +50,7 @@ class BranchTable extends React.Component {
     }
     return copyData;
   }
-  saveCheckValue = () => {//保存更改的支路数据
-    // const data = { deviceFullCode: focus, branchIndex, branchCode, pvNum, isDelete };
-    //失去焦点的时候计算原table和当前table的差异
+  contrastValue = () => {
     const { copyData, deviceBranchInfo, changeBranchStore, editBranchData } = this.props;
     const editArr = [];
     const rowNum = deviceBranchInfo.length;
@@ -87,6 +85,14 @@ class BranchTable extends React.Component {
       }
 
     }
+
+    return editArr;
+  }
+  saveCheckValue = () => {//保存更改的支路数据
+    // const data = { deviceFullCode: focus, branchIndex, branchCode, pvNum, isDelete };
+    //失去焦点的时候计算原table和当前table的差异
+    const { changeBranchStore, editBranchData } = this.props;
+    const editArr = this.contrastValue();
     changeBranchStore({ saveEditArr: editArr, isCheckStatus: false });
     editBranchData({ saveEditArr: editArr });
   }
@@ -138,14 +144,24 @@ class BranchTable extends React.Component {
   }
   //input失去焦点
   inputBlur = (value) => {
-    this.saveCheckValue();
+    const { isCheckStatus, changeBranchStore, editBranchData } = this.props;
+    if (!isCheckStatus) {
+      const editArr = this.contrastValue();
+      changeBranchStore({ saveEditArr: editArr });
+      editBranchData({ saveEditArr: editArr });
+    }
     this.props.changeBranchStore({
       focus: false,
     });
   }
   //select失去焦点
   selectBlur = (value) => {
-    this.saveCheckValue();
+    const { isCheckStatus, changeBranchStore, editBranchData } = this.props;
+    if (!isCheckStatus) {
+      const editArr = this.contrastValue();
+      changeBranchStore({ saveEditArr: editArr });
+      editBranchData({ saveEditArr: editArr });
+    }
     this.props.changeBranchStore({
       focus: false,
     });
@@ -214,7 +230,7 @@ class BranchTable extends React.Component {
   }
 
   render() {
-    const { loadding, cancelloadding, copyData, checkTime, isCheckStatus, focus, checked } = this.props;
+    const { loadding, editLoadding, cancelloadding, copyData, checkTime, isCheckStatus, focus, checked } = this.props;
     const pvNumsArr = [0, 1, 2, 3, 4, 5];
     const filterCopyData = this.filterData(checked);
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -235,7 +251,7 @@ class BranchTable extends React.Component {
                 <Button type="primary"
                   icon="save"
                   className={styles.btnStyle}
-                  loading={loadding}
+                  loading={editLoadding}
                   onClick={this.saveCheckValue}>
                   {/* <i className="iconfont icon-addto" /> */}
                   保存检测结果
