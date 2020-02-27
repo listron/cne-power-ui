@@ -27,7 +27,7 @@ export default class MeterSearch extends React.Component {
     // 选中电站
     const stationCodes = selectedStation.map(cur => cur.stationCode);
     changeStore({
-      selectedStation: stationCodes,
+      selectedStation: selectedStation,
     });
     // 调用抄表列表接口
     getMeterList({

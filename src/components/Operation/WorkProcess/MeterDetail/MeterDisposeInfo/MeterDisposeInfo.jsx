@@ -252,6 +252,7 @@ export default class MeterDisposeInfo extends React.Component {
     });
   };
 
+  // 改变输入框
   changeStopCode = (e, index, arrStr, filed, type) => {
     const { readMeterData, changeStore } = this.props;
     // 判断最多是6位整数和两位小数
@@ -262,7 +263,7 @@ export default class MeterDisposeInfo extends React.Component {
     // arrStr需要改变的数组
     // filed需要改变的value
     // type 样式类型
-    readMeterData[arrStr][index][filed] = e.target.value;
+    readMeterData[arrStr][index][filed] = e.target.value === '' ? e.target.value : Number(e.target.value);
     readMeterData[arrStr][index][type] = reg.test(e.target.value) ? 0 : 2;
     changeStore({readMeterData});
   };
