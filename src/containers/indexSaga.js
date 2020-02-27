@@ -10,12 +10,15 @@ import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
 import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
 import { watchPersonnelGps } from './Operation/PersonnelGps/personnelGpsSaga';
 import { watchDayReport } from './Operation/Running/DayReport/dayReportSaga';
+import { wacthMeterReadSet} from './Operation/Running/MeterReadSet/meterReadSetSaga';
 import { watchIntelligentExper } from './Operation/IntelligentExpert/intelligentExpertSaga';
 // 工单
 import { watchDefectList } from './Operation/WorkProcess/DefectList/defectListSaga';
 import { watchDefectDetail } from './Operation/WorkProcess/DefectDetail/defectDetailSaga';
 import { watchInspectList } from './Operation/WorkProcess/InspectList/inspectListSaga';
 import { watchInspectDetail } from './Operation/WorkProcess/InspectDetail/inspectDetailSaga';
+import { watchMeterList } from './Operation/WorkProcess/MeterList/meterListSaga';
+import { watchMeterDetail } from './Operation/WorkProcess/MeterDetail/meterDetailSaga';
 
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
 import { watchPersonnelManage } from './System/Account/PersonnelManage/personnelManageSaga';
@@ -150,12 +153,15 @@ export default function* rootSaga() {
     watchInspect(), // 巡检
     watchPersonnelGps(), //员工定位
     watchDayReport(), // operation- 日报
+    wacthMeterReadSet(), // 抄表设置
     watchIntelligentExper(), // 光伏智能专家库
 
     watchDefectList(), // 缺陷列表
     watchDefectDetail(), // 缺陷详情
     watchInspectList(), // 巡检列表
     watchInspectDetail(), // 巡检详情
+    watchMeterList(), // 抄表列表
+    watchMeterDetail(), // 抄表详情
 
     //system-enterprise
     watchEnterprise(),

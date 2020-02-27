@@ -9,6 +9,7 @@ import ticket from './Ticket/ticketReducer';
 import personnelGps from './PersonnelGps/personnelGpsReducer';
 
 import dayReport from './Running/DayReport/dayReportReducer';
+import meterReadSet from './Running/MeterReadSet/meterReadSetReducer';
 import workOrder from './Ticket/WorkOrder/workOrderReducer';
 import assetsConfig from './Book/AssetsConfig/assetsConfigReducer';
 import deviceManage from './Book/DeviceManage/deviceManageReducer';
@@ -28,6 +29,8 @@ import { defectList } from './WorkProcess/DefectList/defectListReducer'; // 缺�
 import { defectDetail } from './WorkProcess/DefectDetail/defectDetailReducer'; //缺陷详情
 import { inspectList } from './WorkProcess/InspectList/inspectListReducer'; // 巡检列表
 import { inspectDetail } from './WorkProcess/InspectDetail/inspectDetailReducer'; //巡检详情
+import { meterList } from './WorkProcess/MeterList/meterListReducer'; // 抄表列表
+import { meterDetail } from './WorkProcess/MeterDetail/meterDetailReducer'; // 抄表详情
 
 const operationReducer = combineReducers({
   workStage, // 工作台
@@ -37,6 +40,7 @@ const operationReducer = combineReducers({
   ticket,
   personnelGps,
   dayReport,
+  meterReadSet,
   workOrder,
   assetsConfig,
   deviceManage,
@@ -55,6 +59,8 @@ const operationReducer = combineReducers({
   defectDetail, //缺陷详情
   inspectList, // 巡检列表
   inspectDetail, //巡检详情
+  meterList, // 抄表列表
+  meterDetail, // 抄表详情
 });
 
 

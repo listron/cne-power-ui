@@ -97,7 +97,7 @@ export default {
       getDefectTypes: '/v3/defect/type',
       createNewDefect: '/v3/defect', //3.3
       submitDefect: '/v3/defect/reject/change', // 3.3
-      createDefect: '/v3/defect/add', // 3.12 
+      createDefect: '/v3/defect/add', // 3.12
       defectSubmit: '/v3/defect/reject/submit', // 3.12
       transformDefect: '/v3/inspect/defect',
       setInspectCheck: '/v3/inspect/check/batch',
@@ -113,6 +113,20 @@ export default {
       getKnowledgebase: '/v3/knowledgebase/list', // 获取智能专家库列表
       likeKnowledgebase: '/v3/knowledgebase/like/', // 点赞智能专家
       getParticipant: '/v3/defect/handleuser/like', // 获取参与者列表
+      getMeterList: '/v4/opms/readMeter/meterPage', // 获取抄表列表
+      getProcessBaseInfo: '/v4/opms/process/processInfo', // 获取抄表详情基本信息
+      getOperableUser: '/v4/opms/process/operableUser', // 获取流程可操作人数据
+      getProcessList: '/v4/opms/process/stateList', // 获取流程流转信息数据
+      getBaseUsername: '/v4/base/user/username', // 获取有权限电站权限用户
+      getReadMeter: '/v4/opms/readMeter/meterDetail', // 获取处理信息
+      getAddUser: '/v4/opms/docket/addAbleUser', // 添加处理人
+      getProcessAction: '/v4/opms/docket/action', // 获取流程可执行动作
+      getSubmitAction: '/v4/opms/docket/handleState', // 提交按钮
+      getReceiveAction: '/v4/opms/docket/receiveDocket', // 领取
+      getSaveAction: '/v4/opms/readMeter/updateMeter', // 更新
+      getOperaUser: '/v4/base/user/station/user', // 获取执行人
+      getUploadFile: '/v4/common/fastdfs/uploadfile', // 上传图片
+      getRotateImg: '/v4/common/fastdfs/rotateImg', // 旋转图片
     },
     operation: {
       // 工作台
@@ -139,6 +153,16 @@ export default {
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
       uploadReportFile: '/v3/performance/dailyreport/upload', // 日报文件上报
+
+      getMeterList: '/v4/opms/meter/meterList', // 抄表设置列表
+      getAddMeterList: '/v4/opms/meter/new', // 新增电表
+      getUpDateMeterList: '/v4/opms/meter/update', // 修改列表
+      getChangeMeterList: '/v4/opms/meter/change', // 列表换表
+      getDeleteMeterList: '/v4/opms/meter/del', //删除列表
+      getMeterPrice: '/v4/opms/powerPrice/updatePrice', // 设置电价
+      getPriceDetail: '/v4/opms/powerPrice/priceDetail', // 查看电价详情
+      getBaseDevice: '/v4/base/device', // 获取电站指定类型的设备简单信息列表
+
 
       getImportIntelligent: '/v3/knowledgebase/import', // 智能专家库导入
       getIntelligentTable: '/v3/knowledgebase/list', // 智能专家库列表

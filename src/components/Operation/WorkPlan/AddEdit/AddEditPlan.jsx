@@ -125,7 +125,8 @@ class AddEditPlan extends PureComponent {
       inspectTypeCode = initialInspectTypeCode,
       deviceTypeCodes = initialDeviceTypes,
       cycleTypeCode = initialCycleTypeCode,
-    } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes', 'cycleTypeCode']);
+      planTypeCode = initialPlanTypeCode,
+    } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes', 'cycleTypeCode', 'planTypeCode']);
     return (
       <section className={`${styles.addEditPlan} ${styles[theme]}`}>
         <h3 className={styles.top}>
@@ -155,13 +156,14 @@ class AddEditPlan extends PureComponent {
               })(
                 planPageKey === 'edit' ? <span
                   style={{width: '200px', display: 'inline-block'}}
-                >巡视计划</span> : <Select style={{width: '200px'}} getPopupContainer={() => this.planTypeRef}>
+                >{planTypeCode === '100' ? '巡视计划' : '抄表计划'}</span> : <Select style={{width: '200px'}} getPopupContainer={() => this.planTypeRef}>
                   <Option value={100}>巡视计划</Option>
+                  <Option value={200}>抄表计划</Option>
                 </Select>
               )}
               <span ref={(ref) => { this.planTypeRef = ref; }} />
             </FormItem>
-            <FormItem label="巡视类型" colon={false} className={styles.eachPlanForm} >
+            {(planPageKey === 'edit' ? planTypeCode === '100' : planTypeCode === 100) && <FormItem label="巡视类型" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('inspectTypeCode', {
                 rules: [{ required: true, message: '请选择巡视类型' }],
                 initialValue: initialInspectTypeCode,
@@ -178,7 +180,7 @@ class AddEditPlan extends PureComponent {
               )}
               <span ref={(ref) => { this.inspectTypeRef = ref; }} />
               <span className={styles.addFormTips}>注：设备巡检将直接作为定期巡检，下发为巡检工单。</span>
-            </FormItem>
+            </FormItem>}
             <FormItem label="首次下发时间" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('firstStartTime', {
                 rules: [{ required: true, message: '请选择首次下发时间' }],
@@ -197,7 +199,8 @@ class AddEditPlan extends PureComponent {
             <FormItem label="循环周期" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('cycleTypeCode', {
                 rules: [{ required: true, message: '请选择循环周期' }],
-                initialValue: initialCycleTypeCode,
+                initialValue: (planPageKey === 'edit' ? planTypeCode === '100' : planTypeCode === 100) ? initialCycleTypeCode : 154,
+                // initialValue: initialCycleTypeCode,
               })(
                 <Select style={{width: '200px'}} getPopupContainer={() => this.cycleTypeRef}>
                   <Option value={151}>单次</Option>
@@ -229,7 +232,8 @@ class AddEditPlan extends PureComponent {
                     callback();
                   },
                 }],
-                initialValue: initialValidPeriod,
+                // initialValue: initialValidPeriod,
+                initialValue: (planPageKey === 'edit' ? planTypeCode === '100' : planTypeCode === 100) ? initialValidPeriod : 2,
               })(
                 <Input style={{width: '200px', marginRight: '4px'}} placeholder="请输入..." />
               )}
@@ -283,7 +287,7 @@ class AddEditPlan extends PureComponent {
               <span ref={(ref) => { this.deadLineRef = ref; }} />
               <span className={styles.addFormTips}>注：该时间为计划整体结束时间，不针对单次。</span>
             </FormItem>}
-            {parseInt(inspectTypeCode, 10) === 100001 && <FormItem label="巡视内容" colon={false} className={styles.eachPlanForm} >
+            {parseInt(inspectTypeCode, 10) === 100001 && (planPageKey === 'edit' ? planTypeCode === '100' : planTypeCode === 100) && <FormItem label="巡视内容" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('inspectContent', {
                 rules: [{ required: true, message: '请输入巡视内容' }],
                 initialValue: initialInspectContent,

@@ -44,6 +44,7 @@ const Option = Select.Option;
   10. 选填- stationShowNumber:bool; 默认是false，展示具体的电站名称  传入为true时，显示: 已选电站 已选电站数量/所有电站数量
   11. 选填 - stationShowNumber为true时, selectsStationText 对stationShowNumber的补充,用于手动自定义展示已选电站文本 - todo
   12.当电站类型为风或光这种单一电站数据类型，（就是没有头部的电站类型选择时）并且电站选择模式为多选时会有全选功能
+  13. 选填 - classNameStyle 默认为 '', 修改icon的图片的对应位置（居中问题）
 */
 
 class StationSelect extends Component {
@@ -62,6 +63,7 @@ class StationSelect extends Component {
     onOK: PropTypes.func,
     style: PropTypes.object,
     deviceShowNumber: PropTypes.bool,
+    classNameStyle: PropTypes.string,
   }
   static defaultProps = {
     multiple: false,
@@ -72,6 +74,7 @@ class StationSelect extends Component {
     data: [],
     disabledStation: [],
     theme: 'light',
+    classNameStyle: '',
   }
   constructor(props) {
     super(props);
@@ -161,7 +164,7 @@ class StationSelect extends Component {
   }
 
   render() {
-    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly, stationShowNumber, theme = 'dark' } = this.props;
+    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly, stationShowNumber, theme = 'dark', classNameStyle } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
     const deviceShow = checkedStations.length > 0 && stationShowNumber && {
       maxTagCount: 0,
@@ -196,6 +199,7 @@ class StationSelect extends Component {
             {filteredSelectedStation.map((e) => (<Option key={e.stationName}>{e.stationName}</Option>))}
           </AutoComplete>}
         <StationSelectModal
+          classNameStyle={classNameStyle}
           multiple={multiple}
           oneStyleOnly={oneStyleOnly}
           disabled={disabled}

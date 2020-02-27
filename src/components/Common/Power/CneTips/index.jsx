@@ -1,5 +1,4 @@
-
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 import CneButton from '../CneButton';
@@ -16,7 +15,7 @@ import styles from './index.scss';
  * cancelText: string, 默认'取消', 有特别需求更变取消按钮文字时使用
  */
 
-export default class CneTips extends Component {
+export default class CneTips extends Component {
   static propTypes = {
     mode: PropTypes.string,
     visible: PropTypes.bool,
@@ -40,11 +39,11 @@ export default class CneTips extends Component {
 
   onCancel = () => { // 取消按钮
     this.props.onCancel();
-  }
+  };
 
   onConfirm = () => { // 确定按钮
     this.props.onConfirm();
-  }
+  };
 
   render(){
     const {

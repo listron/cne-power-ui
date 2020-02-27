@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ContentLayout from '@components/Common/ContentLayout';
 import styles from './overview.scss';
 import searchUtil from '@utils/searchUtil';
 import DefectList from '../DefectList/DefectList';
 import InspectList from '../InspectList/InspectList';
+import MeterList from '../MeterList/MeterList';
 import DefectDetail from '../DefectDetail/DefectDetail';
 import InspectDetail from '../InspectDetail/InspectDetail';
+import MeterDetail from '../MeterDetail/MeterDetail';
 
 
 /**
  *  params  url
- *   page=list&tab=defect 列表缺陷页面 teb inspect 巡检页面
+ *   page=list&tab=defect&tab=meter 列表缺陷页面 teb inspect 巡检页面 meter 抄表列表页面
  *   page=defectDetail&defectId=123 缺陷详情页面 缺陷ID
  *   page=inspectDetail&inspectId=123 巡检详情页面 巡检ID
+ *   page=meterDetail&meterId=123 抄表详情页面 抄表ID
  */
 class Overview extends Component {
 
@@ -72,10 +74,6 @@ class Overview extends Component {
     const { tab, page } = this.state;
     return (
       <ContentLayout
-        // breadcrumb={{
-        //   breadData: [{ name: '工单' }],
-        //   style: { paddingLeft: '40px' },
-        // }}
         theme={theme}
         contentClassName={`${styles.overview} ${styles[theme]}`}
       >
@@ -85,12 +83,15 @@ class Overview extends Component {
               <div className={styles.tabTitle}>
                 <p className={`${tab === 'defect' && styles.activeKey} `} onClick={() => { this.queryTargetData('defect'); }}>消缺</p>
                 <p className={`${tab === 'inspect' && styles.activeKey} `} onClick={() => { this.queryTargetData('inspect'); }}>巡检</p>
+                <p className={`${tab === 'meter' && styles.activeKey} `} onClick={() => { this.queryTargetData('meter'); }}>抄表</p>
               </div>
               {tab === 'defect' && <DefectList {...this.props} />}
               {tab === 'inspect' && <InspectList {...this.props} />}
+              {tab === 'meter' && <MeterList {...this.props} />}
             </div>}
           {page === 'defectDetail' && <DefectDetail {...this.props} />}
           {page === 'inspectDeatail' && <InspectDetail {...this.props} />}
+          {page === 'meterDetail' && <MeterDetail {...this.props} />}
         </div>
       </ContentLayout>
     );

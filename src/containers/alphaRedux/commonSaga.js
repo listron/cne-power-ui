@@ -36,6 +36,7 @@ function* getStations({ payload }) { // 通用：获取所有电站信息
       const nextPayload = {
         stations: response.data.data,
         stationTypeCount,
+	stationsDataError: false,
       };
       if (nextAction) {
         yield put({ type: nextAction, payload: nextPayload });
@@ -48,6 +49,10 @@ function* getStations({ payload }) { // 通用：获取所有电站信息
     }
   } catch (e) {
     console.log(e);
+    yield put({
+      type: commonAction.GET_COMMON_FETCH_SUCCESS,
+      payload: { stationsDataError: true },
+    });
   }
 }
 
@@ -675,3 +680,4 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getStationDevicemode, getStationDevicemode);
   yield takeLatest(commonAction.getRegionStationDevice, getRegionStationDevice);
 }
+
