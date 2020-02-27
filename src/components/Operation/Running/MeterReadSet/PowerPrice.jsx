@@ -109,8 +109,10 @@ class PowerPrice extends Component{
         <div className={styles.priceTop}>
           <span className={styles.title}>自用电电价设置</span>
           <div className={styles.topRight}>
-            <span>更新时间：</span>
-            <span className={styles.updateTime}>{moment(updateTime).format('YYYY-MM-DD h:mm:ss')}</span>
+            {updateTime && <span>
+              <span>更新时间：</span>
+              <span className={styles.updateTime}>{moment(updateTime).format('YYYY-MM-DD h:mm:ss')}</span>
+            </span>}
             {isEdit && <div>
               <CneButton className={styles.cancelBtn} onClick={this.cancelEvent}>取消</CneButton>
               <CneButton className={styles.saveBtn} onClick={this.saveEvent}>
