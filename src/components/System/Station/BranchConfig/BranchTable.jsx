@@ -9,6 +9,7 @@ class BranchTable extends React.Component {
   static propTypes = {
     loadding: PropTypes.bool,
     cancelloadding: PropTypes.bool,
+    editLoadding: PropTypes.bool,
     changeBranchStore: PropTypes.func,
     getCheckData: PropTypes.func,
     saveEditArr: PropTypes.array,
@@ -51,7 +52,7 @@ class BranchTable extends React.Component {
     return copyData;
   }
   contrastValue = () => {
-    const { copyData, deviceBranchInfo, changeBranchStore, editBranchData } = this.props;
+    const { copyData, deviceBranchInfo } = this.props;
     const editArr = [];
     const rowNum = deviceBranchInfo.length;
     for (let i = 0; i < rowNum; i++) {
@@ -104,7 +105,6 @@ class BranchTable extends React.Component {
   editNum = (e, focusCode, deviceFullCode) => {
     //如果是检测支路状态可以编辑
     const { isCheckStatus, changeBranchStore } = this.props;
-
     // if (isCheckStatus) {
     changeBranchStore({
       focus: focusCode,
@@ -154,19 +154,7 @@ class BranchTable extends React.Component {
       focus: false,
     });
   }
-  //select失去焦点
-  selectBlur = (value) => {
-    const { isCheckStatus, changeBranchStore, editBranchData } = this.props;
-    if (!isCheckStatus) {
-      const editArr = this.contrastValue();
-      changeBranchStore({ saveEditArr: editArr });
-      editBranchData({ saveEditArr: editArr });
-    }
-    this.props.changeBranchStore({
-      focus: false,
-    });
 
-  }
   //判断状态显示的样式
   jugeStatus = (e) => {
     if (Object.keys(e).length === 0) {//判断是否是空{}
@@ -231,7 +219,7 @@ class BranchTable extends React.Component {
 
   render() {
     const { loadding, editLoadding, cancelloadding, copyData, checkTime, isCheckStatus, focus, checked } = this.props;
-    const pvNumsArr = [0, 1, 2, 3, 4, 5];
+    const pvNumsArr = [1, 2, 3, 4, 5];
     const filterCopyData = this.filterData(checked);
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
@@ -325,10 +313,11 @@ class BranchTable extends React.Component {
                               defaultValue={branchListItem.pvNums}
                               style={{ width: 45 }}
                               onChange={this.handleSelect}
-                              onBlur={this.selectBlur}
+                              onBlur={this.inputBlur}
                             >
+                              <Option key={'未接入'} value={0} title={'未接入'}>未接入</Option>
                               {pvNumsArr.map((pvNum, value) => (
-                                <Option key={value} value={pvNum}>{pvNum}</Option>
+                                <Option key={pvNum} value={pvNum}>{pvNum}</Option>
                               ))}
                             </Select> :
                             <div
