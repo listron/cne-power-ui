@@ -35,7 +35,7 @@ const menuData = [
         rightKey: 'monitor_station',
       }, {
        name: '告警',
-        iconStyle: 'icon-alarm1',
+	iconStyle: 'icon-alarm1',
         path: 'alarm',
         rightKey: 'monitor_alarm',
         children: [
@@ -259,6 +259,11 @@ const menuData = [
             path: 'monthReport',
             defaultPath: true,
             rightKey: 'operation_running_monthly',
+          },{
+            name: '抄表设置',
+            path: 'meterReadSet',
+            defaultPath: true,
+            rightKey: 'operation_running_daily',
           },
         ],
       }, {
@@ -794,4 +799,4 @@ export const menu = formatter(menuData);
 //   monitor_alarm_realTime: ['alarm_remove','alarm_worklist','monitor_alarm_remove','monitor_alarm_history'],
 //   operation_worklist_work: ['workExamine_defect_review', 'workExamine_defect_check', 'workExamine_inspection_check'],
 // }
-
+        
