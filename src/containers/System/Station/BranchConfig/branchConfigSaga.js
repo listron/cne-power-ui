@@ -115,18 +115,16 @@ function* getDeviceBranchInfo(action) {
     });
     const response = yield call(axios.post, url, { ...payload, deviceTypeCode, deviceCodes: deviceCodeArr });
     if (response.data.code === '10000') {
-      const deviceBranchInfo = response.data.data.deviceList || [];
       const checkTime = response.data.data.checkTime || '';
       yield put({
         type: branchConfigAction.changeBranchStore,
         payload: {
           ...payload,
           checkTime: checkTime ? moment(checkTime).format('YYYY-MM-DD') : '',
-          deviceBranchInfo,
+          deviceBranchInfo: response.data.data.deviceList || [],
           copyData: response.data.data.deviceList || [],
           cancelloadding: false,
           loadding: false,
-
         },
       });
     } else {

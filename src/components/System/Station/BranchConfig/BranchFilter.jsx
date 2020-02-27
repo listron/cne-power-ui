@@ -34,10 +34,8 @@ class BranchFilter extends React.Component {
       selectDeviceFullCode: false,
       isCheckStatus: false,
       checked: false,
-
     });
     getDeviceType({ stationCode });
-    // this.getBranchInfo({ stationCode });
   }
   selectDeviceType = (deviceTypeCode) => {
     const { changeBranchStore, getDeviceName, stationCode } = this.props;
@@ -74,9 +72,7 @@ class BranchFilter extends React.Component {
   getBranchInfo = (values) => {
     const { getDeviceBranchInfo, stationCode } = this.props;
     getDeviceBranchInfo({ stationCode, ...values });
-
   }
-
   render() {
     const { stationsInfo, stationCode, deviceTypeCode, deviceCodes, deviceTypeData } = this.props;
     return (<div className={styles.searchBox}>
