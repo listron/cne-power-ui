@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes, { number } from 'prop-types';
 import { Form, Input, Select } from 'antd';
 import styles from './meterRead.scss';
+import moment from 'moment';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -299,7 +300,7 @@ class EditableCell extends Component {
                 <span className={styles.lowStartCode}>{eventData.lowStartCode}</span>
               </div>
             </div>
-            <div className={styles.updateTime}>{eventData.updateTime ? eventData.updateTime : '--'}</div>
+            <div className={styles.updateTime}>{eventData.updateTime ? moment(eventData.updateTime).format('YYYY-MM-DD HH:mm:ss') : '--'}</div>
             <div className={styles.handler}>
               {isRelDocket === 0 ? <i title={'编辑'} className={`iconfont icon-edit ${styles.editBtn}`} onClick={() => { this.onChangeColumn('editable', true); }} /> : <i className={`iconfont icon-edit ${styles.disableBtn}`} />}
               <i title={'换表'} className={`iconfont icon-changedb ${styles.updateBtn}`} onClick={() => { this.changeMeter(eventData); }} />
