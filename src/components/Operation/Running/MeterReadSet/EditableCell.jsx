@@ -17,7 +17,6 @@ class EditableCell extends Component {
     delEvent: PropTypes.func,
     changeMeter: PropTypes.func,
     changeMeterReadSetStore: PropTypes.func,
-    theme: PropTypes.string,
   }
 
   constructor(props){
@@ -38,8 +37,8 @@ class EditableCell extends Component {
   onChangeColumn = (type, value) => { // 改变每列值
     const { eventData, changeMeterReadSetStore} = this.props;
     eventData[type] = value;
-    this.props.editEvent(eventData);
-    changeMeterReadSetStore({ isEditList: eventData.editable });
+    this.props.editEvent(eventData, type);
+    changeMeterReadSetStore({isEditList: eventData.editable});
     if (type === 'meterName') {
       this.setState({
         meterNameValue: value,
@@ -140,8 +139,8 @@ class EditableCell extends Component {
                 {getFieldDecorator('meterNumber', {
                   rules: [{
                     required: true,
-                    pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                    message: '最多输入6位整数和2位小数',
+                    pattern: new RegExp(/(^[0-9]{1,10}$)/),
+                    message: '最多输入10位整数',
                   }],
                   getValueFromEvent: (event) => {
                     return event.target.value.replace(/[^\d.]/g, '');
@@ -302,7 +301,7 @@ class EditableCell extends Component {
             </div>
             <div className={styles.updateTime}>{eventData.updateTime ? eventData.updateTime : '--'}</div>
             <div className={styles.handler}>
-            {isRelDocket === 0 ? <i title={'编辑'} className={`iconfont icon-edit ${styles.editBtn}`} onClick={() => { this.onChangeColumn('editable', true); }} /> : <i className={`iconfont icon-edit ${styles.disableEdit}`} />}
+              {isRelDocket === 0 ? <i title={'编辑'} className={`iconfont icon-edit ${styles.editBtn}`} onClick={() => { this.onChangeColumn('editable', true); }} /> : <i className={`iconfont icon-edit ${styles.disableEdit}`} />}
               <i title={'换表'} className={`iconfont icon-changedb ${styles.updateBtn}`} onClick={() => { this.changeMeter(eventData); }} />
               {isRelDocket === 0 ? <i title={'删除'} className={`iconfont icon-del ${styles.delBtn}`} onClick={() => { this.delEvent(eventData); }} /> : <i className={`iconfont icon-del ${styles.disableEdit}`} />}
             </div>
