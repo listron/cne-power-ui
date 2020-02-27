@@ -87,7 +87,7 @@ class DefectCreate extends Component {
         {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.createTop}>
           <span className={styles.text}>{editDefect ? rejectReason : '新建缺陷'}</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCancelEdit} />
         </div>
         <div className={styles.createContent}>
           <DefectCreateForm {...this.props} />

@@ -104,7 +104,7 @@ class DetailRule extends Component {
           <div className={styles.action}>
             <i className="iconfont icon-last" title="上一个" onClick={this.onPrev} />
             <i className="iconfont icon-next" title="下一个" onClick={this.onNext} />
-            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCancelEdit} />
           </div>
         </div>
         <div className={styles.detailCont}>

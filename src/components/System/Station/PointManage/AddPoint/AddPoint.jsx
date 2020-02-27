@@ -154,7 +154,7 @@ class AddPoint extends React.Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.pageTop}>
           <span className={styles.text}>新增</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onWarningTipShow} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onWarningTipShow} />
         </div>
         {
           preStep && <div className={styles.preStepBox}>

@@ -205,7 +205,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore, dayRepo
         </div>
         <div className={styles.reportDetailTitleRight}>
           {reportRight && <Button onClick={toEditDetail} className={styles.reportEdit}>编辑</Button>}
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={toReportList} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={toReportList} />
         </div>
       </div>
       <div className={styles.totalInfo}>

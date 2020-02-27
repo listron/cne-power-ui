@@ -155,7 +155,7 @@ class DetailDevice extends Component {
               <span className={styles.handleArea} >
                 <i className="iconfont icon-last" title="上一个" onClick={deviceFullCodeStr ? () => { } : this.preStation} />
                 <i className="iconfont icon-next" title="下一个" onClick={deviceFullCodeStr ? () => { } : this.nextStation} />
-                <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
+                <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
               </span>
             </div>
             <div className={styles.detailPart}>

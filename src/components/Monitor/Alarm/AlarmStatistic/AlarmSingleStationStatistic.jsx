@@ -209,7 +209,7 @@ class ALarmSingleStationStatistic extends React.Component {
           </div>
         </div>
         <Link to="/monitor/alarm/statistic">
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onClose} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onClose} />
         </Link>
 
       </div>

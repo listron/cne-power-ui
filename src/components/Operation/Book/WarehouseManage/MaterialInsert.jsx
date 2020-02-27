@@ -134,7 +134,7 @@ class MaterialInsert extends Component {
       <section className={styles.insert}>
         <h3 className={styles.title}>
           <span className={styles.text}>物资 - 入库</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
         </h3>
         <Form className={styles.formPart}>
           <FormItem label="仓库名称">

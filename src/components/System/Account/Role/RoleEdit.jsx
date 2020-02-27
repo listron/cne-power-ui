@@ -59,7 +59,7 @@ class RoleEdit extends Component {
         <div className={styles.roleEditContent}>
           <div className={styles.editTop}>
             <span className={styles.text}>{this.props.showPage === 'create' ? '新建' : '编辑'}</span>
-            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCancelEdit} />
           </div>
           <div className={styles.editPart} >
             {this.props.showPage !== 'list' && <RoleEditForm {...this.props} />}

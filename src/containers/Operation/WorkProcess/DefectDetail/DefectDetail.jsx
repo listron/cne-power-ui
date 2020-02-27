@@ -102,7 +102,7 @@ class DefectDetail extends Component {
         {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.header}>
           <div className={styles.text} title={rejectReason}>{this.renderTitle(defectStatus, defectId)}{defectStatus === '0' && `:${rejectReason}`}</div>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCancelEdit} />
         </div>
         <div className={styles.defectDetailCont}>
           {defectId && defectStatus !== '0' && <DetailContiner {...this.props} />}

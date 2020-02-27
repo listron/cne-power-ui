@@ -110,7 +110,7 @@ class UnhandleSide extends Component {
               </React.Fragment>
             }
           </div>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.handleClose} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.handleClose} />
         </div>
         <div className={styles.wrap}>
           <div className={styles.detail}>

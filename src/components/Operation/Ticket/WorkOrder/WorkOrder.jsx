@@ -143,7 +143,7 @@ class DefectDetailForm extends Component {
                 <i className="iconfont icon-last" onClick={this.onPrev} />
                 <i className="iconfont icon-next" onClick={this.onNext} />
               </div>}
-              <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
+              <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCancelEdit} />
             </div>
           </div>
           <div className={styles.content}>

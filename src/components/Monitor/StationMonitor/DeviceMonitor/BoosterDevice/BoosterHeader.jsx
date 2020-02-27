@@ -95,7 +95,7 @@ class BoosterHeader extends Component {
             <span className="iconfont icon-upstream linkIcon"></span>
           </span>}
           <Link to={`/monitor/singleStation/${stationCode}?showPart=301`} className={styles.backIcon}>
-            <i className={`iconfont icon-fanhui ${styles.backIcon}`} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" />
           </Link>
           {/* {sonDevice && sonDevice.deviceTypeCode && <Link
             to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`}

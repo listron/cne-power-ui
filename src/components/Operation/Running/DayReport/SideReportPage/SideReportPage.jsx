@@ -240,7 +240,7 @@ class SideReportPage extends Component {
                 loading={loading}
               >提交</Button>
             </Popconfirm>}
-            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backList} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backList} />
           </div>
         </div>
         {!showReportInputList && <div className={styles.sideReportContent}>

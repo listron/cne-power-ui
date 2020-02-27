@@ -157,7 +157,7 @@ class AddRule extends Component {
           <WarningTip onCancel={this.cancelSaveWarningTip} onOK={this.confirmSaveWarningTip} value={warningTipSaveText} />}
         <div className={styles.addTop}>
           <span className={styles.text}>新增</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCancelEdit} />
         </div>
         <Form layout="inline" className={styles.form}>
           <div className={styles.stationsRule}>

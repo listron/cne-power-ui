@@ -114,7 +114,7 @@ class AddDevice extends Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.editTop}>
           <span className={styles.text}>新增</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onWarningTipShow} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onWarningTipShow} />
         </div>
         {showStep === 'pre' && <Form className={styles.preFormStyle}>
           <FormItem label="电站名称" colon={false} className={styles.formItemStyle} >

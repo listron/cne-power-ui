@@ -115,7 +115,7 @@ class UserDetail extends Component {
               title="下一个"
               onClick={this.nextPage}
             />
-            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
           </span>
         </div>
         <div className={styles.userInfor}>

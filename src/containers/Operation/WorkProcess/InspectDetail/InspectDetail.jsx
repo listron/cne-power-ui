@@ -57,7 +57,7 @@ class InspectDetail extends Component {
         <div className={styles.header}>
           <div className={styles.text}>巡检详情</div>
           <div className={styles.arrowBox}>
-            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCancelEdit} />
           </div>
         </div>
         <Spin spinning={loading}>

@@ -42,7 +42,7 @@ class EditCase extends React.Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.pageTop}>
           <span className={styles.text}>编辑案例集</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onWarningTipShow} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onWarningTipShow} />
         </div>
         <AddCaseForm {...this.props} />
       </div>

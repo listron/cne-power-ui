@@ -297,7 +297,7 @@ class ReportEdit extends Component {
                 className={styles.reportEdit}
               >保存</Button>
             </Popconfirm>
-            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.showDetaiTip} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.showDetaiTip} />
           </div>
         </div>
         <ResourceElecInfo

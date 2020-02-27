@@ -137,7 +137,7 @@ class EditIntelligent extends Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.titleTop}>
           <span className={styles.text}>编辑解决方案</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={() => this.setState({ showWarningTip: true, tooltipName: 'back' })} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={() => this.setState({ showWarningTip: true, tooltipName: 'back' })} />
         </div>
         <div className={styles.editmiddle}>
           <Form className={styles.preFormStyle}>

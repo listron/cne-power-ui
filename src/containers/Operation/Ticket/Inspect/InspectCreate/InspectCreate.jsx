@@ -55,7 +55,7 @@ class InspectCreate extends Component {
         {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.createTop}>
           <span className={styles.text}>新建巡检</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCloseInspectCreate} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCloseInspectCreate} />
         </div>
         <div className={styles.createContent}>
           <InspectCreateForm {...this.props} />

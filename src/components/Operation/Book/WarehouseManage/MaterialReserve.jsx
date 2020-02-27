@@ -222,7 +222,7 @@ export default class MaterialReserve extends Component {
       <section className={styles.reserve} ref={(ref) => this.reserveBox = ref}>
         <h3 className={styles.title}>
           <span className={styles.text}>物资 - 库存</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
         </h3>
         <ReserveDetail reserveDetail={reserveDetail} tabName={tabName} />
         <div className={styles.pagination}>

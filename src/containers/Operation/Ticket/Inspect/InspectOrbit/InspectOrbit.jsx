@@ -227,7 +227,7 @@ class InspectOrbit extends Component {
          */}
         <div className={styles.createTop}>
           <span className={styles.text}>巡检轨迹</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCloseInspectCreate} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCloseInspectCreate} />
         </div>
         {this.selectUser()}
         <div className={styles.createContent}>

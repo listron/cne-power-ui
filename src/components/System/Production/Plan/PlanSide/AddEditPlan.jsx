@@ -149,7 +149,7 @@ class PlanSide extends Component {
               this.onWarningTipShow('prev');
             }} className={styles.addPlanPrev}>上一步</Button>
             <Button onClick={this.save} className={styles.savePlan}>保存</Button>
-            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={() => { this.onWarningTipShow('quit'); }} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={() => { this.onWarningTipShow('quit'); }} />
           </div>
         </div>
         <div className={styles.mainPart}>

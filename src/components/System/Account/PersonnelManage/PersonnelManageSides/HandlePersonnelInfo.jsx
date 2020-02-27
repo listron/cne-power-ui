@@ -130,7 +130,7 @@ class HandlePersonnelInfo extends Component {
       <div className={styles.sideHandle} style={pageKey === 'detailPersonnel' ? { display: 'none' } : {}}>
         <div className={styles.topTitle}>
           <span className={styles.titleName}>{this.pageKeyInfo[pageKey] || ''}</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.warningTip} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.warningTip} />
         </div>
         <Form className={styles.personnelInfoForm}>
           <FormItem label="" className={styles.leftLogo}>
@@ -170,8 +170,8 @@ class HandlePersonnelInfo extends Component {
                       const patternRule = /^[A-Za-z \u4e00-\u9fa5]{0,30}$/;
                       if (!exactStr) {
                         callback('请输入用户名');
-                      //} else if (!patternRule.test(exactStr)) {
-                      } else if(exactStr.length>=30){
+                        //} else if (!patternRule.test(exactStr)) {
+                      } else if (exactStr.length >= 30) {
                         callback('请输入小于30字符的真实姓名');
                       }
                       callback();

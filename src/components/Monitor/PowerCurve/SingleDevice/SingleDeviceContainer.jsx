@@ -182,7 +182,7 @@ class SingleDeviceContainer extends Component {
           </div>
           <div className={styles.right}>
             <a href={pathAllDevice} >
-              <i className={`iconfont icon-fanhui ${styles.backIcon}`} />
+              <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" />
             </a>
           </div>
 

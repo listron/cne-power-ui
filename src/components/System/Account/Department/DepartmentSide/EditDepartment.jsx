@@ -45,7 +45,7 @@ class AddDepartment extends Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.cancelEdit} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.cancelEdit} />
         </div>
         <div className={styles.mainPart}>
           <EditForm {...this.props} />

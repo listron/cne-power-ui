@@ -212,7 +212,7 @@ export default class FaultWarn extends React.Component {
             </div>
           </div>
           <Link to="/analysis/faultDiagnose/faultWarn">
-            <i className={`iconfont icon-fanhui ${styles.backIcon}`} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" />
           </Link>
         </div>
         <div className={styles.faultWarnMainCenter}>

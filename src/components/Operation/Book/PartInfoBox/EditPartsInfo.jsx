@@ -148,7 +148,7 @@ class EditPartsInfo extends React.Component {
         )}
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
         </div>
         <Form className={styles.editPart}>
           <FormItem

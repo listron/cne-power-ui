@@ -93,7 +93,7 @@ class StationManageEdit extends Component {
             </span>
           </span>
           <span className={styles.handleArea} >
-            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.cancelEdit} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.cancelEdit} />
           </span>
         </div>
         <EditForm

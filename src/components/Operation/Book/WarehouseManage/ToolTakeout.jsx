@@ -73,7 +73,7 @@ class ToolTakeout extends Component {
       <section className={styles.takeout}>
         <h3 className={styles.title}>
           <span className={styles.text}>工器具 - 损耗</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
         </h3>
         <Form className={styles.formPart}>
           <FormItem label="仓库名称">

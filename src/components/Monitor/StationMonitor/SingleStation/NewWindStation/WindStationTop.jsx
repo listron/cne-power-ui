@@ -78,7 +78,7 @@ class WindStationTop extends Component {
             <Operator operatorList={operatorList} operatorTime={operatorTime} />
             <div className={styles.weather}>天气:{todayWeather.weather} {todayWeather.temperature}</div>
             <Link to={pathAllStation} >
-              <i className={`iconfont icon-fanhui ${styles.backIcon}`} />
+              <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" />
             </Link>
           </div>
         </div>

@@ -183,7 +183,7 @@ class AddAlgorithm extends React.Component {
               新建
             </div>
             <div onClick={this.cancelFunc}>
-              <i className={`iconfont icon-fanhui ${styles.backIcon}`} />
+              <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" />
             </div>
 
           </div>

@@ -91,7 +91,7 @@ class InverterHeader extends Component {
             <span className="iconfont icon-upstream linkIcon"></span>
           </span>)}
           <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`} >
-            <i className={`iconfont icon-fanhui ${styles.backIcon}`} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" />
           </Link>
         </div>
       </div>

@@ -27,7 +27,7 @@ class WorkFlowSide extends Component {
             <div className={styles.workflowDeatil}>
                 <div className={styles.header}>
                     <div className={styles.text}>{showPage === 'add' ? '新建' : operTitle}</div>
-                    <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
+                    <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCancelEdit} />
                 </div>
                 {showPage === 'add' && <CreateFlow {...this.props} type={'operate'} />}
                 {showPage === 'detail' && <DeatilFlow {...this.props} type={'operate'} />}

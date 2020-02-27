@@ -77,7 +77,7 @@ class ShowIntelligent extends Component {
           <span className={styles.text}>查看解决方案</span>
           <div className={styles.titleRight}>
             {editRight && <Button onClick={this.editBtn} className={styles.editBtn}>编辑</Button>}
-            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onWarningTipShow} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onWarningTipShow} />
           </div>
         </div>
         <div className={styles.detailContent}>

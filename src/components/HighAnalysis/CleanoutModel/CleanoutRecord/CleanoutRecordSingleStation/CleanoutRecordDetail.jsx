@@ -162,7 +162,7 @@ class CleanoutRecordDetail extends Component {
               </div>
               <span className={styles.handleArea} >
                 <span className={styles.dirtEff} onClick={this.showDirtModal}>灰尘影响</span>
-                <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
+                <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
               </span>
               {showDirtModal ? <Modal
                 visible={this.state.showDirtModal}

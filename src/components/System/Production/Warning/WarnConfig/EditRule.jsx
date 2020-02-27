@@ -80,7 +80,7 @@ class EditRule extends Component {
           <WarningTip onCancel={this.cancelSaveWarningTip} onOK={this.confirmSaveWarningTip} value={warningTipSaveText} />}
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCancelEdit} />
         </div>
         <div className={styles.editCont}>
           <div className={styles.editBox}>

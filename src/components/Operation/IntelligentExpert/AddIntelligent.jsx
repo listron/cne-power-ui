@@ -241,7 +241,7 @@ class AddIntelligent extends Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.titleTop}>
           <span className={styles.text}>添加解决方案</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={() => this.setState({ showWarningTip: true, tooltipName: 'back' })} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={() => this.setState({ showWarningTip: true, tooltipName: 'back' })} />
         </div>
         <span ref={'wrap'} />
         <div className={styles.formBox}>

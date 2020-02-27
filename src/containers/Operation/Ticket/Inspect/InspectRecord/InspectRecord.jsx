@@ -81,7 +81,7 @@ class inspectRecord extends Component {
 
         <div className={styles.createTop}>
           <span className={styles.text}>巡检记录</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCloseInspectCreate} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCloseInspectCreate} />
         </div>
         <div className={styles.createContent}>
           <InspectRecordFilter {...this.props} onChangeFilter={this.onChangeFilter} />

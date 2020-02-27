@@ -69,7 +69,7 @@ class AddPlan extends Component {
       <div className={styles.addPlan}>
         <div className={styles.editTop}>
           <span className={styles.text}>添加</span>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onWarningTipShow} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onWarningTipShow} />
         </div>
         <div className={styles.mainPart}>
           <div className={styles.selectTime}>

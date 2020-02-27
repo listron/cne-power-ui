@@ -178,7 +178,7 @@ class InspectDetailForm extends Component {
             <div className={styles.action}>
               <i className="iconfont icon-last" onClick={this.props.onPrev} />
               <i className="iconfont icon-next" onClick={this.props.onNext} />
-              <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
+              <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCancelEdit} />
             </div>
           </div>
           <div className={styles.content} >
