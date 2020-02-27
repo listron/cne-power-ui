@@ -17,6 +17,7 @@ class PlanTypeFilter extends PureComponent {
 
   planTypes = [
     { label: '巡视计划', value: 100 },
+    { label: '抄表计划', value: 200 },
   ]
 
   onReset = () => {
