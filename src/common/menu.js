@@ -34,8 +34,7 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
-       
- name: '告警',
+       name: '告警',
         iconStyle: 'icon-alarm1',
         path: 'alarm',
         rightKey: 'monitor_alarm',
@@ -260,11 +259,6 @@ const menuData = [
             path: 'monthReport',
             defaultPath: true,
             rightKey: 'operation_running_monthly',
-          },{
-            name: '抄表设置',
-            path: 'meterReadSet',
-            defaultPath: true,
-            rightKey: 'operation_running_daily',
           },
         ],
       }, {
@@ -363,7 +357,13 @@ const menuData = [
             rightKey: 'statistics_report_general',
           },
           {
-            name: '智能分析报告',
+            name: '日报查询',
+            path: 'dailyQuery',
+	    defaultPath: true,
+            rightKey: 'statistics_report_dailyQuery',
+          },
+          {
+            name: '智能报告',
             path: 'intelligentAnalysis',
             defaultPath: true,
             rightKey: 'statistics_report_report',
@@ -374,12 +374,7 @@ const menuData = [
             defaultPath: true,
             rightKey: 'statistics_report_table',
           },
-          {
-            name: '日报查询',
-            path: 'dailyQuery',
-            defaultPath: true,
-            rightKey: 'statistics_report_dailyQuery',
-          },
+
         ],
       }, {
         name: '数据分析工具',
@@ -711,11 +706,6 @@ const menuData = [
             rightKey: 'system_station_stat',
           },
           {
-            name: '平台级告警事件',
-            path: 'alarmEvent',
-	    defaultPath: true,
-            rightKey: 'system_station_alertTemplate',
-          },{
             name: '设备',
             path: 'deviceManage',
             defaultPath: true,
@@ -725,15 +715,18 @@ const menuData = [
             path: 'pointManage',
             defaultPath: true,
             rightKey: 'system_station_point',
-          }, {
+          },
+          {
+            name: '平台级告警事件',
+            path: 'alarmEvent',
+	    defaultPath: true,
+            rightKey: 'system_station_alertTemplate',
+          },
+          {
             name: '告警事件',
             path: 'alarmManage',
             defaultPath: true,
             rightKey: 'system_station_alert',
-          }, {
-            name: '支路配置',
-            path: 'branch',
-            rightKey: 'system_station_stat',
           },
           {
             name: '功率曲线',
@@ -755,11 +748,6 @@ const menuData = [
         rightKey: 'system_config',
         children: [
           {
-            name: '绩效评分',
-            path: 'performanceScore',
-            defaultPath: true,
-            rightKey: 'system_config_score',
-          }, {
             name: '生产计划',
             path: 'plan',
             defaultPath: true,
@@ -769,7 +757,12 @@ const menuData = [
             path: 'warning',
             defaultPath: true,
             rightKey: 'system_config_warning',
-          },
+          }, {
+            name: '绩效评分',
+            path: 'performanceScore',
+	    defaultPath: true,
+            rightKey: 'system_config_score',
+          }, 
         ],
       },
     ],
@@ -801,7 +794,4 @@ export const menu = formatter(menuData);
 //   monitor_alarm_realTime: ['alarm_remove','alarm_worklist','monitor_alarm_remove','monitor_alarm_history'],
 //   operation_worklist_work: ['workExamine_defect_review', 'workExamine_defect_check', 'workExamine_inspection_check'],
 // }
-
-
-
 
