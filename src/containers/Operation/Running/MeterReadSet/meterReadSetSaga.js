@@ -3,7 +3,6 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { message } from 'antd';
 import { meterReadSetAction } from './meterReadSetAction';
-import { func } from 'prop-types';
 const { APIBasePath } = Path.basePaths;
 const { operation } = Path.APISubPaths;
 
@@ -48,7 +47,7 @@ function *getMeterList({ payload = {} }){ // 获取抄表设置列表
       },
     });
     console.log(error);
-    message.error('获取抄表设置列表失败');
+    message.error(error.message);
   }
 }
 
@@ -68,7 +67,7 @@ function *getAddMeterList({ payload = {} }){ // 新增列表行
     } else { throw response.data; }
   } catch(error) {
     console.log(error);
-    message.error('新增失败');
+    message.error(error.message);
   }
 }
 
@@ -95,7 +94,7 @@ function *getUpDateMeterList({ payload = {} }){ // 修改列表
     } else{ throw response.data; }
   } catch(error){
     console.log(error);
-    message.error('修改失败');
+    message.error(error.message);
     yield put({
       type: meterReadSetAction.changeMeterReadSetStore,
       payload: {
@@ -116,13 +115,10 @@ function *getDeleteMeterList({ payload = {} }){ // 删除列表
         type: meterReadSetAction.getMeterList,
         payload: {stationCode: params},
       });
-    } else{
-      message.error(response.data.message);
-      throw response.data;
-    }
+    } else{ throw response.data; }
   } catch(error){
     console.log(error);
-    message.error('删除失败');
+    message.error(error.message);
   }
 }
 
@@ -131,17 +127,15 @@ function *getChangeMeterList({ payload = {} }){ // 换表
   try{
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+    const params = yield select(state => state.operation.meterReadSet.get('stationCode'));
     yield put({
-        type: meterReadSetAction.changeMeterReadSetStore,
-        payload,
+      type: meterReadSetAction.getMeterList,
+        payload: {stationCode: params},
       });
-    }else {
-      message.error(response.data.message);
-      throw response.data;
-    }
+    } else{ throw response.data; }
   }catch(error){
     console.log(error);
-    message.error('换表失败');
+    message.error(error.message);
   }
 }
 
@@ -157,13 +151,10 @@ function *getBaseDevice({ payload = {} }){ // 电表设置-电表名称下拉框
           baseDeviceData: response.data.data || [],
         },
       });
-    }else{
-      message.error(response.data.message);
-      throw response.data;
-    }
+    } else{ throw response.data; }
   } catch(error){
     console.log(error);
-    message.error('获取电表名称失败');
+    message.error(error.message);
   }
 }
 
@@ -179,18 +170,16 @@ function *getPriceDetail({ payload = {} }){ // 查看电价详情
           priceDetailData: response.data.data || {},
         },
       });
-    }else{
-      message.error('查看电价详情失败');
-      yield put({
-        type: meterReadSetAction.changeMeterReadSetStore,
-        payload: {
-          priceDetailData: {},
-        },
-      });
-    }
+    }else{ throw response.data; }
   } catch(error){
     console.log(error);
-    message.error('查看电价详情失败');
+    message.error(error.message);
+    yield put({
+      type: meterReadSetAction.changeMeterReadSetStore,
+      payload: {
+        priceDetailData: {},
+      },
+    });
   }
 }
 
@@ -205,13 +194,10 @@ function *getMeterPrice({ payload = {} }){ // 编辑电价
         type: meterReadSetAction.getPriceDetail,
         payload: {stationCode: params},
       });
-    }else{
-      message.error(response.data.message);
-      throw response.data;
-    }
+    }else{ throw response.data; }
   }catch(error){
     console.log(error);
-    message.error('编辑电价详情失败');
+    message.error(error.message);
   }
 }
 

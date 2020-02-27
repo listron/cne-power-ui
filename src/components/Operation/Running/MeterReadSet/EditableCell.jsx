@@ -301,9 +301,9 @@ class EditableCell extends Component {
             </div>
             <div className={styles.updateTime}>{eventData.updateTime ? eventData.updateTime : '--'}</div>
             <div className={styles.handler}>
-              {isRelDocket === 0 ? <i title={'编辑'} className={`iconfont icon-edit ${styles.editBtn}`} onClick={() => { this.onChangeColumn('editable', true); }} /> : <i className={`iconfont icon-edit ${styles.disableEdit}`} />}
+              {isRelDocket === 0 ? <i title={'编辑'} className={`iconfont icon-edit ${styles.editBtn}`} onClick={() => { this.onChangeColumn('editable', true); }} /> : <i className={`iconfont icon-edit ${styles.disableBtn}`} />}
               <i title={'换表'} className={`iconfont icon-changedb ${styles.updateBtn}`} onClick={() => { this.changeMeter(eventData); }} />
-              {isRelDocket === 0 ? <i title={'删除'} className={`iconfont icon-del ${styles.delBtn}`} onClick={() => { this.delEvent(eventData); }} /> : <i className={`iconfont icon-del ${styles.disableEdit}`} />}
+              {isRelDocket === 0 ? <i title={'删除'} className={`iconfont icon-del ${styles.delBtn}`} onClick={() => { this.delEvent(eventData); }} /> : <i className={`iconfont icon-del ${styles.disableBtn}`} />}
             </div>
           </React.Fragment>}
       </div>

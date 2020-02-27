@@ -397,7 +397,6 @@ class MeterReadTable extends Component{
     const { tableLoading, meterListError, baseDeviceData, isListTip, isPriceTip, changeMeterReadSetStore } = this.props;
     const { getFieldDecorator } = this.props.form;
     const { addEventList, currentEventList, showWarningTip, showModalTip, warningTipText, modalTipText, modalVisible, modalMeterName, modalMeterType, modalMeterNumber, modalInitCode, oldTotalEndCode, oldTopEndCode, oldPeakEndCode, oldFlatEndCode, oldLowEndCode, newTotalStartCode, newTopStartCode, newPeakStartCode, newFlatStartCode, newLowStartCode, newMeterNumber, newMagnification } = this.state;
-    console.log('newMeterNumber, newMagnification: ', newMeterNumber, newMagnification);
 
     return(
       <div className={styles.meterReadTable}>
