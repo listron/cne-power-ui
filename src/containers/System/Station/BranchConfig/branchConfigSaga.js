@@ -188,7 +188,7 @@ function* editBranchData(action) {
       type: branchConfigAction.changeBranchStore,
       payload: {
         ...payload,
-        loadding: true,
+        editLoadding: true,
       },
     });
     const response = yield call(axios.post, url, payload.saveEditArr);
@@ -198,7 +198,7 @@ function* editBranchData(action) {
         type: branchConfigAction.changeBranchStore,
         payload: {
           ...payload,
-          loadding: false,
+          editLoadding: false,
         },
       });
     } else {
@@ -210,7 +210,7 @@ function* editBranchData(action) {
     console.log(e, '编辑保存失败了');
     yield put({
       type: branchConfigAction.changeBranchStore,
-      payload: { loadding: false },
+      payload: { editLoadding: false },
     });
   }
 }
