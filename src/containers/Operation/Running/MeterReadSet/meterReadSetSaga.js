@@ -47,7 +47,7 @@ function *getMeterList({ payload = {} }){ // 获取抄表设置列表
       },
     });
     console.log(error);
-    message.error(error.message);
+    message.error(error.message ? error.message : '查看电表失败，请重试！');
   }
 }
 
@@ -67,7 +67,7 @@ function *getAddMeterList({ payload = {} }){ // 新增列表行
     } else { throw response.data; }
   } catch(error) {
     console.log(error);
-    message.error(error.message);
+    message.error(error.message ? error.message : '新增失败，请重试！');
   }
 }
 
@@ -94,7 +94,7 @@ function *getUpDateMeterList({ payload = {} }){ // 修改列表
     } else{ throw response.data; }
   } catch(error){
     console.log(error);
-    message.error(error.message);
+    message.error(error.message ? error.message : '编辑失败，请重试！');
     yield put({
       type: meterReadSetAction.changeMeterReadSetStore,
       payload: {
@@ -118,7 +118,7 @@ function *getDeleteMeterList({ payload = {} }){ // 删除列表
     } else{ throw response.data; }
   } catch(error){
     console.log(error);
-    message.error(error.message);
+    message.error(error.message ? error.message : '删除失败，请重试！');
   }
 }
 
@@ -135,7 +135,7 @@ function *getChangeMeterList({ payload = {} }){ // 换表
     } else{ throw response.data; }
   }catch(error){
     console.log(error);
-    message.error(error.message);
+    message.error(error.message ? error.message : '换表失败，请重试！');
   }
 }
 
@@ -154,7 +154,7 @@ function *getBaseDevice({ payload = {} }){ // 电表设置-电表名称下拉框
     } else{ throw response.data; }
   } catch(error){
     console.log(error);
-    message.error(error.message);
+    message.error(error.message ? error.message : '查看电表名称下拉列表失败，请重试！');
   }
 }
 
@@ -173,7 +173,7 @@ function *getPriceDetail({ payload = {} }){ // 查看电价详情
     }else{ throw response.data; }
   } catch(error){
     console.log(error);
-    message.error(error.message);
+    message.error(error.message ? error.message : '查看电价详情失败，请重试！');
     yield put({
       type: meterReadSetAction.changeMeterReadSetStore,
       payload: {
@@ -197,7 +197,7 @@ function *getMeterPrice({ payload = {} }){ // 编辑电价
     }else{ throw response.data; }
   }catch(error){
     console.log(error);
-    message.error(error.message);
+    message.error(error.message ? error.message : '编辑电价详情失败，请重试！');
   }
 }
 
