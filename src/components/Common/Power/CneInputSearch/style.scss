@@ -1,0 +1,67 @@
+@import '../../../../theme/theme.scss';
+
+.commonSearch {
+    display: flex;
+    .conditionSearch {
+        display: flex;
+        background: #199475;
+        border: 1px solid #007155;
+        box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        height: 32px;
+        align-items: center;
+        color: #fff;
+        position: relative;
+        .closeSearch {
+          position: absolute;
+          left: 188px;
+          color: #fff;
+          background: #999999;
+          width: 14px;
+          height: 14px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 50%;
+          z-index: 9;
+          cursor: pointer;
+        }
+        :global {
+          .ant-input-search {
+            margin: 0 4px;
+            height: 30px;
+            display: block;
+          }
+          .ant-input {
+            height: 22px;
+            margin: 3px 0;
+            width: 200px;
+            border-radius: 2px;
+            padding-right: 16px;
+            padding-left: 5px;
+            display: block;
+          }
+          .ant-input-search-button {
+            padding: 0;
+            background: #199475;
+            color: #fff;
+            border: none;
+            height: 30px;
+            width: 30px;
+            outline: none;
+            border-radius: 0;
+            box-shadow: none;
+          }
+        }
+      }
+    .closeConditionSearch {
+        .closeSearch {
+          display: none;
+        }
+        :global {
+          .ant-input {
+            display: none;
+          }
+        }
+      }
+}

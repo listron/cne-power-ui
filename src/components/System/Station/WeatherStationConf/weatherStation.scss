@@ -30,6 +30,15 @@
         flex-direction: column;
         flex: 1;
 
+        .selectCondition {
+            display: flex;
+            margin-top: 24px;
+
+            .searchButton {
+                margin-left: 20px;
+            }
+        }
+
         .pagination {
             display: flex;
             justify-content: flex-end;
@@ -37,9 +46,7 @@
         }
 
         .filterButton {
-            position: absolute;
-            left: 273px;
-            top: 39px;
+            margin-left: 20px;
 
             .setStause {
                 margin-right: 12px;

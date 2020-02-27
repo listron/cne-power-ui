@@ -8,6 +8,7 @@ const initState = Immutable.fromJS({
   startTime: moment().format('YYYY-MM'), // 日报主页查询月,
   pageSize: 10,
   pageNum: 1,
+  keyword:'',     //查询查询关键字
   stationNameSort: 0, // 电站的默认排序方式;1 升序 0 降序，默认降序；
   stationType: 2, // 查询日报的电站类型;
   regionName: null, // 选中的上报区域;

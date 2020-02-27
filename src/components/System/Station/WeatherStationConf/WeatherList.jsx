@@ -7,6 +7,7 @@ import CommonPagination from '../../../Common/CommonPagination';
 import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import WarningTip from '../../../Common/WarningTip';
 import TransitionContainer from '../../../Common/TransitionContainer';
+import CneInputSearch from '@components/Common/Power/CneInputSearch';
 import { handleRight } from '@utils/utilFunc';
 import EditWeather from './Edit';
 const ButtonGroup = Button.Group;
@@ -24,6 +25,7 @@ class WeatherList extends Component {
         pageStatus: PropTypes.string,
         changeWeatherStationStore: PropTypes.func,
         getWeatherStation: PropTypes.func,
+        keyword: PropTypes.string,
     }
 
     constructor(props) {
@@ -47,10 +49,12 @@ class WeatherList extends Component {
         getWeatherList({ ...listParameter, pageNum: currentPage, pageSize });
     };
 
+    /*
     onChangeFilter = (value) => {
         const { listParameter, getWeatherList } = this.props;
         getWeatherList({ ...listParameter, ...value });
     }
+    */
 
     tableChange = (pagination, filter, sorter) => {// 点击表头 排序
         const sortField = sorter.field;
@@ -90,6 +94,10 @@ class WeatherList extends Component {
         this.setState({ filterStatus: value });
     }
 
+    doSearch = (str) => {
+        const { listParameter, getWeatherList } = this.props;
+        getWeatherList({ ...listParameter, keyword: str });
+    }
 
     render() {
     const weatherOperation = handleRight('weatherConfig_operate');
@@ -164,7 +172,7 @@ class WeatherList extends Component {
                 <div className={styles.weatherMain}>
                 <div className={styles.listContiner}>
                     <div className={styles.selectCondition}>
-                        <FilterCondition
+                        {/* <FilterCondition
                             onChange={this.onChangeFilter}
                             option={[
                                 {
@@ -174,7 +182,7 @@ class WeatherList extends Component {
                                     data: stations.filter(e => e.stationType === 1),
                                 },
                             ]}
-                        />
+                        /> */}
                         <div className={styles.filterButton}>
                             <span className={styles.setStause}>设置状态</span>
                             <div className={styles.buttonGroup}>
@@ -183,7 +191,12 @@ class WeatherList extends Component {
                                 <span className={`${filterStatus === 'noSet' && styles.buttonActive}`} onClick={() => { this.changefilter('noSet'); }}>未设置</span>
                             </div>
                         </div>
-
+                        <div className={styles.searchButton}>
+                            <CneInputSearch 
+                                placeholder="区域／电站名称"
+                                onSearch={this.doSearch}    
+                            />
+                        </div>
                     </div>
                     <div className={styles.weatherListTable}>
                         <div className={styles.pagination}>

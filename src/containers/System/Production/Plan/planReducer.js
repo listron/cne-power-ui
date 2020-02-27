@@ -22,6 +22,7 @@ const initState = Immutable.fromJS({
   stationType: null, //电站类型，只可以添加同类型电站
   // year: null, //年份选择，默认是当前年
   importLoading: false, //导入的loading
+  keyword:'', //查询关键字
 });
 
 const planReducer = (state = initState, action) => {

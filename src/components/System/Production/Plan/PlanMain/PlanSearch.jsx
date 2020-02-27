@@ -3,6 +3,7 @@ import { Button, Select } from 'antd';
 import styles from './planMain.scss';
 import PropTypes from 'prop-types';
 import StationSelect from '../../../../Common/StationSelect';
+import CneInputSearch from '@components/Common/Power/CneInputSearch';
 
 const Option = Select.Option;
 
@@ -17,6 +18,7 @@ class planSearch extends Component {
     planYearList: PropTypes.array,
     changePlanStore: PropTypes.func,
     planYear: PropTypes.any,
+    keyword: PropTypes.string,
   };
 
   constructor(props) {
@@ -37,6 +39,7 @@ class planSearch extends Component {
     });
   };
 
+  /*
   selectValue = () => {
     const { stationCodes } = this.state;
     const params = {
@@ -49,10 +52,26 @@ class planSearch extends Component {
     };
     this.props.getPlanList(params);
   };
+  */
 
   selectYear = (e) => {
     this.props.changePlanStore({ planYear: e });
   };
+
+  doSearch = (str) => {
+    const { stationCodes } = this.state;
+    const {getPlanList, sortField, sortMethod, planYear} = this.props;
+    let params = {
+        sortField, 
+        sortMethod,
+        year: planYear,
+        stationCodes: stationCodes.length > 0 ? stationCodes : null,
+        pageNum: 1,
+        pageSize: 10,
+        keyword: str,
+    }
+    getPlanList(params);
+  }
 
   render() {
     const { stations, planYearList, planYear } = this.props;
@@ -67,7 +86,7 @@ class planSearch extends Component {
             })}
           </Select>
         </div>
-        <div className={styles.topLeft}>
+        {/* <div className={styles.topLeft}>
           <label className={styles.station}>电站选择</label>
           <StationSelect
             data={stations.toJS()}
@@ -76,7 +95,14 @@ class planSearch extends Component {
             onChange={this.stationSelected}
           />
         </div>
-        <Button className={styles.searchButton} onClick={this.selectValue}>查询</Button>
+        <Button className={styles.searchButton} onClick={this.selectValue}>查询</Button> */}
+        <div className={styles.topLeft} >
+          <CneInputSearch 
+            placeholder="电站类型／区域／电站名称"
+            onSearch={this.doSearch}
+          />
+        </div>
+        
       </div>
     );
   }

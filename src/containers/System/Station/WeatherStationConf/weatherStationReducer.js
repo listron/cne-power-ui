@@ -18,6 +18,7 @@ var initState = Immutable.fromJS({
     pageNum: 1,
     orderFiled: 'stationName',
     orderType: 1,
+    keyword: '',  //查询电站关键字
   },
   pageStatus:'list',
   weatherStation:[],// 气象站列表

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './dayReportAll.scss';
 import { DatePicker, Select, Radio } from 'antd';
 import moment from 'moment';
+import CneInputSearch from "@components/Common/Power/CneInputSearch";
 const { MonthPicker } = DatePicker;
 const { Option } = Select;
 
@@ -19,6 +20,7 @@ class DayReportListSearch extends Component {
     stationNameSort: PropTypes.number, 
     stations: PropTypes.array,
     getDayReportList: PropTypes.func,
+    keyword: PropTypes.string,
   }
 
   constructor(props) {
@@ -35,6 +37,7 @@ class DayReportListSearch extends Component {
     });
   }
 
+  /*
   regionSelect = (value) => {
     const { getDayReportList, stationType, stationNameSort, pageSize, startTime  } = this.props;
     let params = { stationType, stationNameSort, pageSize, startTime };
@@ -46,9 +49,16 @@ class DayReportListSearch extends Component {
     let params = { stationNameSort, pageSize, startTime, regionName };
     getDayReportList({ ...params, pageNum: 1, stationType: e.target.value });
   }
+  */
 
   disabledDate = (start) => {
     return start && start > moment();
+  }
+
+  doSearch = (str) => {
+    const { getDayReportList, stationType, stationNameSort, pageSize, startTime, regionName } = this.props;
+    let params = { stationNameSort, pageSize, startTime, regionName, stationType };
+    getDayReportList({ ...params, pageNum: 1, keyword: str });
   }
 
   render() {
@@ -58,17 +68,23 @@ class DayReportListSearch extends Component {
       e.regionName && regionSet.add(e.regionName);
       stationTypeSet.add(e.stationType);
     });
-    const showTypeChangeButtonGroup = stationTypeSet.size > 1; // 两种类型电站以上，才显示电站类型选择
+    // const showTypeChangeButtonGroup = stationTypeSet.size > 1; // 两种类型电站以上，才显示电站类型选择
     return (
       <div className={styles.search}>
-        <span>条件查询</span>
-        <MonthPicker 
-          value={startTime?moment(startTime):null} 
-          className={styles.monthSearch} 
-          onChange={this.startTimeChange} 
-          disabledDate={this.disabledDate} 
+        <div>
+          <span>条件查询</span>
+          <MonthPicker 
+            value={startTime?moment(startTime):null} 
+            className={styles.monthSearch} 
+            onChange={this.startTimeChange} 
+            disabledDate={this.disabledDate} 
+          />
+        </div>
+        <CneInputSearch 
+          placeholder="电站类型／区域／电站名称"
+          onSearch = {this.doSearch}
         />
-        <Select onChange={this.regionSelect} placeholder="区域" value={!regionName? undefined: regionName} className={styles.regionSearch} >
+        {/* <Select onChange={this.regionSelect} placeholder="区域" value={!regionName? undefined: regionName} className={styles.regionSearch} >
           <Option value={null}>全部</Option>
           {[...regionSet].map(e=>(
             <Option value={e} key={e}>{e}</Option>
@@ -81,7 +97,7 @@ class DayReportListSearch extends Component {
             <Radio.Button value={0}>风电</Radio.Button>
             <Radio.Button value={1}>光伏</Radio.Button>
           </Radio.Group>
-        </span>}
+        </span>} */}
       </div>
       
     )
