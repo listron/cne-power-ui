@@ -106,7 +106,8 @@ class AddForm extends Component {
               { validator: (rule, value, callback) => {
                 const exactStr = value.trim();
                 const patternRule = /^[A-Za-z \u4e00-\u9fa5]{0,30}$/;
-                if (!patternRule.test(exactStr)) {
+                // if (!patternRule.test(exactStr)) {
+                if(exactStr.length>=30){
                   callback('请输入小于30字符的真实姓名');
                 }
                 callback();

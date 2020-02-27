@@ -169,7 +169,8 @@ class HandlePersonnelInfo extends Component {
                       const patternRule = /^[A-Za-z \u4e00-\u9fa5]{0,30}$/;
                       if (!exactStr) {
                         callback('请输入用户名');
-                      } else if (!patternRule.test(exactStr)) {
+                      //} else if (!patternRule.test(exactStr)) {
+                      } else if(exactStr.length>=30){
                         callback('请输入小于30字符的真实姓名');
                       }
                       callback();
