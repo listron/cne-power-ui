@@ -184,14 +184,21 @@ class ChartBar extends PureComponent {
         },
       ],
     };
-    if (data.length > 0) {
+    if (data.length > 10) {
+      const handlerInfo = {
+        start: 0,
+        end: parseInt(10 / data.length * 100, 10),
+        zoomLock: true,
+      };
       option.dataZoom = [
         {
           show: true,
           height: 20,
           bottom: 16,
+          ...handlerInfo,
         }, {
           type: 'inside',
+          ...handlerInfo,
         },
       ];
     }
