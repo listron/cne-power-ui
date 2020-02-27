@@ -15,7 +15,7 @@ class BranchTable extends React.Component {
     deviceBranchInfo: PropTypes.array,
     deviceTypeCode: PropTypes.number,
     stationCode: PropTypes.number,
-    deviceFullCodes: PropTypes.array,
+    deviceCodes: PropTypes.array,
     editBranchData: PropTypes.array,
     copyData: PropTypes.array,
     focus: PropTypes.bool,
@@ -32,8 +32,8 @@ class BranchTable extends React.Component {
   }
   queryCheckData = () => {//获取检测支路配置的状态
     this.props.changeBranchStore({ isCheckStatus: true });
-    const { getCheckData, stationCode, deviceTypeCode, deviceFullCodes } = this.props;
-    getCheckData({ stationCode, deviceTypeCode, deviceFullCodes });
+    const { getCheckData, stationCode, deviceTypeCode, deviceCodes } = this.props;
+    getCheckData({ stationCode, deviceTypeCode, deviceCodes });
   }
   changeSwitch = (checked) => {
     const { changeBranchStore } = this.props;
@@ -217,19 +217,20 @@ class BranchTable extends React.Component {
     const { loadding, cancelloadding, copyData, checkTime, isCheckStatus, focus, checked } = this.props;
     const pvNumsArr = [0, 1, 2, 3, 4, 5];
     const filterCopyData = this.filterData(checked);
+    const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
     return (
       <div className={styles.tablebox}>
         <div className={styles.checkstyle}>
           <div className={styles.leftInfo}>
-            {!isCheckStatus ? <Button type="primary"
+            {!isCheckStatus ? <div> <Button type="primary"
               icon="deployment-unit"
               loading={loadding}
               disabled={!checkTime}
               onClick={this.queryCheckData}>
               {/* <i className="iconfont icon-save" /> */}
               支路检测
-            </Button> :
+            </Button><span className={styles.tipsStyles}>至少需要三天的电流数据或基础配置才会有检测结果</span></div> :
               <div>
                 <Button type="primary"
                   icon="save"
@@ -277,7 +278,7 @@ class BranchTable extends React.Component {
 
             {loadding ?
               <div className={styles.spin}>
-                <Spin />
+                <Spin indicator={antIcon} tip="数据加载中" />
               </div> :
               copyData.length ? filterCopyData.map((item, index) => {
                 const branchList = item.branchList;
