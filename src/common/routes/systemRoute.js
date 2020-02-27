@@ -44,6 +44,9 @@ const station = [
   }, { // 系统管理-电站管理-气象站配置
     path: '/system/station/weatherStation',
     component: lazy(() => import('../../containers/System/Station/WeatherStationConf/WeatherStationConf')),
+  }, {//系统管理-电站管理-支路配置
+    path: '/system/station/branch',
+    component: lazy(() => import('../../containers/System/Station/BranchConfig/BranchConfig')),
   },
 ];
 

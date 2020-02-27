@@ -55,7 +55,7 @@ function* userNameLogin(action) {
       //   }
       // })
       if (data.userEnterpriseStatus === 3) {//3启用状态
-        data.access_token && Cookie.set('authData', data.access_token);
+        // data.access_token && Cookie.set('authData', data.access_token);
         data.access_token && localStorage.setItem('authData', data.access_token);
         data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
         data.enterpriseCode && Cookie.set('enterpriseCode', data.enterpriseCode);
@@ -71,7 +71,8 @@ function* userNameLogin(action) {
         Cookie.set('isNotLogin', 0);
         data.auto && Cookie.set('auto', data.auto);
 
-        data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
+        
+data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
         data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
         yield put({ // 存入reducer
           type: commonAction.changeCommonStore,
@@ -146,7 +147,7 @@ function* phoneCodeLogin(action) {
       const { data } = response.data;
       if (data.userEnterpriseStatus === 3) {
         if (params.isNotLogin === 1 || (data.auto === '0' && data.enterpriseId !== null)) {//非登录/正常用户
-          data.access_token && Cookie.set('authData', JSON.stringify(data.access_token));
+          // data.access_token && Cookie.set('authData', JSON.stringify(data.access_token));
           data.access_token && localStorage.setItem('authData', data.access_token);
           data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
           data.enterpriseCode && Cookie.set('enterpriseCode', data.enterpriseCode);

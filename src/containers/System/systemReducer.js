@@ -12,7 +12,8 @@ import deviceManage from './Station/DeviceManage/deviceManageReducer';
 import pointManage from './Station/PointManage/pointManageReducer';
 import powerCurve from './Station/PowerCurve/powerCurveReducer';
 import { weatherStationReducer } from './Station/WeatherStationConf/weatherStationReducer';
-import { alarmEventReducer } from './Station/AlarmEvent/alarmEventReducer'; // 骞冲彴鍛婅浜嬩欢
+import { alarmEventReducer } from './Station/AlarmEvent/alarmEventReducer'; // 平台告警事件
+import branchConfigReducer from './Station/BranchConfig/branchConfigReducer';
 
 import plan from './Production/Plan/planReducer';
 import warning from './Production/Warning/warningReducer';
@@ -36,6 +37,8 @@ const systemReducer = combineReducers({
   score,
   weatherStationReducer,
   alarmEventReducer,
+  branchConfigReducer,
 });
 
 export default systemReducer;
+

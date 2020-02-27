@@ -132,7 +132,7 @@ class Main extends Component {
     const authData = localStorage.getItem('authData') || '';
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = localStorage.getItem('rightHandler');
-    const rightMenu = localStorage.getItem('rightMenu');
+    const rightMenu = localStorage.getItem('rightMenu') || '';
     const isTokenValid = Cookie.get('expireData') && moment().isBefore(new Date(Cookie.get('expireData')), 'second');
     const enterFirst = enterFirstPage();
     //console.log(enterFirstPage);
@@ -257,4 +257,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default hot(withRouter(connect(mapStateToProps, mapDispatchToProps)(Main)));
+
 
