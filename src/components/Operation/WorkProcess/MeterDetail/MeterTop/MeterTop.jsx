@@ -213,7 +213,7 @@ export default class MeterTop extends React.Component {
   };
 
   // 验收通过
-  onConfirmPass = (value) => {
+  onConfirmPass = (value, callback) => {
     const {
       getSubmitAction,
       processActionData,
@@ -232,6 +232,7 @@ export default class MeterTop extends React.Component {
           stateId,
           handleDesc: value || null,
           func: () => {
+            callback();
             this.setState({
               actionCode: '',
               passVisible: false,
@@ -258,7 +259,7 @@ export default class MeterTop extends React.Component {
   };
 
   // 确认驳回
-  onConfirmReject = (value) => {
+  onConfirmReject = (value, callback) => {
     const {
       getSubmitAction,
       processActionData,
@@ -277,6 +278,7 @@ export default class MeterTop extends React.Component {
           stateId,
           handleDesc: value || null,
           func: () => {
+            callback();
             this.setState({
               actionCode: '',
               rejectVisible: false,
