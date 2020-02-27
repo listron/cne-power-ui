@@ -92,7 +92,7 @@ class WeatherList extends Component {
                             <span className={styles.text}>编辑</span>
                             <span className={styles.tips}> 注：修改气象站配置后，电站相关指标当天值会发生变化</span>
                         </div>
-                        <Icon type="arrow-left" className={styles.backIcon} onClick={this.callBack} />
+                        <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.callBack} />
                     </div>
                     <div className={styles.editCont}>
                         <div className={styles.column}>

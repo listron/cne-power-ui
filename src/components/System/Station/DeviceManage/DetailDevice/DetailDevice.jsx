@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from '../deviceSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import { baseFun, windTowerFun, windTimeFun, selcetbaseFun } from './detailInformation';
@@ -15,26 +15,26 @@ class DetailDevice extends Component {
     changeDeviceManageStore: PropTypes.func,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       showWarningTip: false,
       warningTipText: '',
-    }
+    };
   }
   onShowSideChange = () => { // 编辑页
     const { getPvDevice, stationDeviceDetail, stationCode, getConnectDevice } = this.props;
-    const { deviceTypeCode, } = stationDeviceDetail;
+    const { deviceTypeCode } = stationDeviceDetail;
     this.props.changeDeviceManageStore({ showPage: 'edit' });
     this.props.onShowSideChange('edit');
     getConnectDevice({
       stationCode: stationCode,
       deviceTypeCode: deviceTypeCode,
-    })
+    });
     if (deviceTypeCode === '202' || deviceTypeCode === '206') {
       getPvDevice({
         stationCode,
         deviceTypeCode: '509',
-      })
+      });
     }
 
   }
@@ -44,19 +44,19 @@ class DetailDevice extends Component {
       this.setState({
         showWarningTip: true,
         warningTipText: '这是第一个!',
-      })
+      });
     } else if (selectedStationIndex === 0 && pageNum > 1) { // 其他页向前翻页
       getOtherPageDeviceDetail({
         ...queryParams,
         pageNum: pageNum - 1,
         selectedStationIndex: pageSize - 1,
-      })
+      });
     } else {
       getStationDeviceDetail({ // 正常请求上一条电站详情数据
         ...queryParams,
         selectedStationIndex: selectedStationIndex - 1,
         deviceFullCode: deviceList[selectedStationIndex - 1].deviceFullCode,
-      })
+      });
     }
   }
 
@@ -70,26 +70,26 @@ class DetailDevice extends Component {
       this.setState({
         showWarningTip: true,
         warningTipText: '这是最后一个!',
-      })
+      });
     } else if (selectedStationIndex === pageSize - 1 && pageNum < maxPage) { // 向后翻页
       getOtherPageDeviceDetail({
         ...queryParams,
         pageNum: pageNum + 1,
         selectedStationIndex: 0,
-      })
+      });
     } else {
       getStationDeviceDetail({ // 请求下一条电站详情数据
         ...queryParams,
         selectedStationIndex: selectedStationIndex + 1,
         deviceFullCode: deviceList[selectedStationIndex + 1]['deviceFullCode'],
-      })
+      });
     }
   }
   confirmWarningTip = () => { // 提示框确认
     this.setState({
       showWarningTip: false,
       warningTipText: '',
-    })
+    });
   }
   backToList = () => { // 返回列表页
     this.props.changeDeviceManageStore({
@@ -101,7 +101,7 @@ class DetailDevice extends Component {
     const { stationDeviceDetail } = this.props;
     const deviceTypeCode = stationDeviceDetail.deviceTypeCode;
     const deviceDetailMap = stationDeviceDetail.map;
-    const connectedBranches = deviceDetailMap ? deviceDetailMap.connectedBranches : []
+    const connectedBranches = deviceDetailMap ? deviceDetailMap.connectedBranches : [];
     const baseInfo = baseFun(stationDeviceDetail);
     const selcetbaseInfo = selcetbaseFun(stationDeviceDetail);
     const windTower = windTowerFun(stationDeviceDetail);
@@ -112,12 +112,12 @@ class DetailDevice extends Component {
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
           <span className={styles.topInfoShow}>
-            <Button className={styles.title} onClick={this.onShowSideChange} disabled={deviceTypeCode==='509'}>编辑</Button>
+            <Button className={styles.title} onClick={this.onShowSideChange} disabled={deviceTypeCode === '509'}>编辑</Button>
           </span>
           <span className={styles.handleArea} >
             <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />
             <i className="iconfont icon-next" title="下一个" onClick={this.nextStation} />
-            <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
           </span>
         </div>
         <div className={styles.detailPart}>
@@ -145,14 +145,14 @@ class DetailDevice extends Component {
                 <div className={styles.infoName}>所用支路</div>
                 <div className={styles.checkGroup} >
                   <div className={styles.checkItem}>
-                  {connectedBranches.map((e, i) => {
-                    return (
-                      <div className={styles.itemStyle} key={i}>
-                        <div className={(!!e) ? styles.checkedTopName : styles.topName}>第{i + 1}支路</div>
-                        <Checkbox className={styles.bottomSelect} checked={!!e} key={i}></Checkbox>
-                      </div>
-                    )
-                  })}
+                    {connectedBranches.map((e, i) => {
+                      return (
+                        <div className={styles.itemStyle} key={i}>
+                          <div className={(!!e) ? styles.checkedTopName : styles.topName}>第{i + 1}支路</div>
+                          <Checkbox className={styles.bottomSelect} checked={!!e} key={i}></Checkbox>
+                        </div>
+                      );
+                    })}
                   </div>
                   <div className={styles.linestyle}>
                     <div className={styles.box}>( <span className={styles.selectRingStyle}></span>接入<span className={styles.ringStyle}></span>未接入 )
@@ -173,10 +173,10 @@ class DetailDevice extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
-export default (DetailDevice)
+export default (DetailDevice);
 //(deviceTypeCode === 202||deviceTypeCode === 206)
 // <Col span={3}>
 // <div>第{i + 1}支路</div>

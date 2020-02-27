@@ -106,7 +106,7 @@ class StationSelectModal extends Component {
         <span ref={'singleModal'} />
         <Modal
           wrapClassName={`${styles.stationSelectModal} ${styles[theme]}`}
-          style={{ top: 82, right: 24, height: '90%', float: 'right', paddingBottom: 0 }}
+          style={{ top: 56, right: 24, height: '90%', float: 'right', paddingBottom: 0 }}
           width={620}
           title={title}
           visible={true}

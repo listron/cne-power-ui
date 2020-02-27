@@ -34,7 +34,7 @@ class DetailDevice extends Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { deviceFullCodeStr } = this.state;
     const { getStationDeviceDetail, getDevicePartInfo } = this.props;
     deviceFullCodeStr && getStationDeviceDetail({
@@ -153,9 +153,9 @@ class DetailDevice extends Component {
                 <Button className={styles.title} onClick={this.onShowSideChange} disabled={deviceTypeCode === '509'}>编辑</Button>
               </span>}
               <span className={styles.handleArea} >
-                <i className="iconfont icon-last" title="上一个" onClick={deviceFullCodeStr ? () => {} : this.preStation} />
-                <i className="iconfont icon-next" title="下一个" onClick={deviceFullCodeStr ? () => {} : this.nextStation} />
-                <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
+                <i className="iconfont icon-last" title="上一个" onClick={deviceFullCodeStr ? () => { } : this.preStation} />
+                <i className="iconfont icon-next" title="下一个" onClick={deviceFullCodeStr ? () => { } : this.nextStation} />
+                <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
               </span>
             </div>
             <div className={styles.detailPart}>

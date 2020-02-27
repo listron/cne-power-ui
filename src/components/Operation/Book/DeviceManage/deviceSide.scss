@@ -103,13 +103,7 @@
       }
 
       .backIcon {
-        color: $darkColor;
-        font-size: 20px;
-        border-left: 1px solid #d4d4d4;
-        height: 100%;
-        line-height: 64px;
-        width: 64px;
-        cursor: pointer;
+        @include backIcon();
       }
     }
 
@@ -329,7 +323,7 @@
         align-items: center;
 
         :global {
-          .iconfont {
+          .icon-last,.icon-next {
             font-size: 20px;
             margin-right: 20px;
             cursor: pointer;
@@ -338,7 +332,7 @@
 
         .previous,
         .next,
-        .backIcon {
+         {
           font-size: 20px;
           cursor: pointer;
           color: $darkColor;
@@ -354,9 +348,7 @@
         }
 
         .backIcon {
-          width: 60px;
-          border-left: solid 1px $promptColor;
-          margin-left: 20px;
+          @include backIcon();
         }
       }
     }

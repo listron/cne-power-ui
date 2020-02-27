@@ -245,7 +245,7 @@ class PlanDetail extends PureComponent {
           <span>查看计划</span>
           <span className={styles.topHandle}>
             {workPlanHandleRight && <Button onClick={this.toEdit}>编辑</Button>}
-            <Icon onClick={this.backList} type="arrow-left" className={styles.backIcon} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backList} />
           </span>
         </h3>
         <div className={styles.detailContent}>
@@ -264,3 +264,4 @@ class PlanDetail extends PureComponent {
 }
 
 export default PlanDetail;
+

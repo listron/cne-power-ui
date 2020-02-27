@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Icon, message } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
-import WarningTip from '../../../../Common/WarningTip'
+import WarningTip from '../../../../Common/WarningTip';
 class UserDetail extends Component {
   static propTypes = {
     userData: PropTypes.object,
@@ -17,17 +17,17 @@ class UserDetail extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
-      warningTipText: ""
+      warningTipText: '',
     };
   }
 
   onShowSideChange = () => {
-    const {userDetail} = this.props;
+    const { userDetail } = this.props;
     this.props.changeUserStore({ showPage: 'edit', userDetail: userDetail });
     this.props.onShowSideChange('edit');
   };
   getEnterpriseStatus = (enterpriseStatus) => {
-    switch(enterpriseStatus){
+    switch (enterpriseStatus) {
       case 3:
         return '启用';
       case 4:
@@ -39,18 +39,18 @@ class UserDetail extends Component {
       case 7:
         return '移除';
       default:
-        return ;
+        return;
     }
   }
   prePage = () => {
-    let userData = this.props.userData;
-    let userId = this.props.userDetail.get('userId');
-    let index = userData.findIndex(item => {
+    const userData = this.props.userData;
+    const userId = this.props.userDetail.get('userId');
+    const index = userData.findIndex(item => {
       return item.get('userId') === userId;
     });
-    if(index !== -1) {
-      if(index !== 0) {
-        this.props.getUserDetail({userId: userData.getIn([index-1, 'userId'])});
+    if (index !== -1) {
+      if (index !== 0) {
+        this.props.getUserDetail({ userId: userData.getIn([index - 1, 'userId']) });
       } else {
         message.destroy();
         message.config({
@@ -64,14 +64,14 @@ class UserDetail extends Component {
   }
 
   nextPage = () => {
-    let userData = this.props.userData;
-    let userId = this.props.userDetail.get('userId');
-    let index = userData.findIndex(item => {
+    const userData = this.props.userData;
+    const userId = this.props.userDetail.get('userId');
+    const index = userData.findIndex(item => {
       return item.get('userId') === userId;
     });
-    if(index !== -1) {
-      if(index !== userData.size - 1) {
-        this.props.getUserDetail({userId: userData.getIn([index+1, 'userId'])});
+    if (index !== -1) {
+      if (index !== userData.size - 1) {
+        this.props.getUserDetail({ userId: userData.getIn([index + 1, 'userId']) });
       } else {
         message.destroy();
         message.config({
@@ -86,11 +86,11 @@ class UserDetail extends Component {
 
   backToList = () => {
     this.props.changeUserStore({
-      showPage: 'list'
+      showPage: 'list',
     });
   };
   render() {
-    const { userDetail} = this.props;
+    const { userDetail } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const rightHandler = localStorage.getItem('rightHandler');
     const userEditRight = rightHandler && rightHandler.split(',').includes('account_user_edit');
@@ -107,19 +107,15 @@ class UserDetail extends Component {
             编辑
           </Button>}
           <span className={styles.handleArea}>
-            <i className="iconfont icon-last" 
+            <i className="iconfont icon-last"
               title="上一个"
               onClick={this.prePage}
             />
-            <i className="iconfont icon-next" 
+            <i className="iconfont icon-next"
               title="下一个"
               onClick={this.nextPage}
             />
-            <Icon
-              type="arrow-left"
-              className={styles.backIcon}
-              onClick={this.backToList}
-            />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
           </span>
         </div>
         <div className={styles.userInfor}>
@@ -175,26 +171,26 @@ class UserDetail extends Component {
                 企业-部门(负责电站)
               </span>
               <div className={styles.enterpriseDepartmentValue}>
-                {userDetail.get('enterpriseData') && 
-                  userDetail.get('enterpriseData').toJS().map((item,index)=>{
+                {userDetail.get('enterpriseData') &&
+                  userDetail.get('enterpriseData').toJS().map((item, index) => {
                     return (<div className={styles.departmentDetail} key={index} >
                       <div className={styles.enterpriseName}>{item.enterpriseName}：</div>
                       <div className={styles.enterpriseDetail}>
-                        {item.departmentData && item.departmentData.map((item2,i)=>{
-                          return (<p key={i} >{item2.parentDepartmentName||''}{item2.parentDepartmentName && item2.departmentName && '-'}{item2.departmentName}（负责电站：{item2.stationData &&
-                            item2.stationData.map((item3,index3)=>{
-                              if(item2.stationData.length-1 === index3){
+                        {item.departmentData && item.departmentData.map((item2, i) => {
+                          return (<p key={i} >{item2.parentDepartmentName || ''}{item2.parentDepartmentName && item2.departmentName && '-'}{item2.departmentName}（负责电站：{item2.stationData &&
+                            item2.stationData.map((item3, index3) => {
+                              if (item2.stationData.length - 1 === index3) {
                                 return item3.stationName;
-                              }else{
-                                return `${item3.stationName}，`;
                               }
+                              return `${item3.stationName}，`;
+
                             })
-                          }）</p>)
+                          }）</p>);
                         })}
                       </div>
-                    </div>)
+                    </div>);
                   })
-                }                
+                }
               </div>
             </div>
           </div>

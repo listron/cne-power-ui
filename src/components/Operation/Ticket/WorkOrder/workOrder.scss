@@ -16,6 +16,7 @@
   .header {
     @include top;
     justify-content: space-between;
+    height: 60px;
     .text {
       font-size: 18px;
       color: $darkColor;
@@ -24,14 +25,7 @@
     .arrowBox {
       display: flex;
       .backIcon {
-        color: $darkColor;
-        font-size: 20px;
-        border-left: 1px solid $promptColor;
-        margin-left: 10px;
-        height: 100%;
-        line-height: 64px;
-        width: 64px;
-        cursor: pointer;
+        @include backIcon();
       }
       .backBtn {
         margin-right: 40px;

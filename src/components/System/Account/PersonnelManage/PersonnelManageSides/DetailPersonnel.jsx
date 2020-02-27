@@ -68,20 +68,20 @@ class PersonnelManageSides extends Component {
     // ['特殊权限', 'spcialRoleName', <hr className={styles.doshLine} />],
   ]
 
-  render(){
+  render() {
     const { pageKey, userDetailInfo } = this.props;
     const { userLogo, enterpriseUserStatus, createtime, enterpriseData } = userDetailInfo;
     const enterpriseList = enterpriseData || [];
     const rights = localStorage.getItem('rightHandler');
     const editRight = rights && rights.split(',').includes('account_user_edit'); // 编辑
     return (
-      <div className={styles.detail} style={['addPersonnel', 'editPersonnel'].includes(pageKey) ? {display: 'none'} : {}}>
+      <div className={styles.detail} style={['addPersonnel', 'editPersonnel'].includes(pageKey) ? { display: 'none' } : {}}>
         <div className={styles.topTitle}>
           {editRight ? <Button className={styles.topButton} onClick={this.toEdit}>编辑</Button> : <span />}
           <span className={styles.rightHandle}>
             <i className="iconfont icon-last" title="上一个" onClick={this.preDetail} />
             <i className="iconfont icon-next" title="下一个" onClick={this.nextDetail} />
-            <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
           </span>
         </div>
         <div className={styles.userContent}>
@@ -107,31 +107,31 @@ class PersonnelManageSides extends Component {
               </React.Fragment>
             ))}
             <div>
-            <div className={styles.enterpriseDepartment}>
-              <h4 className={styles.enterpriseTitle}>企业-部门(负责电站)</h4>
-              {enterpriseList.map(enterprise => {
-                const { enterpriseName = '--', departmentData } = enterprise || {};
-                const departmentList = departmentData || [];
-                return (
-                  <div className={styles.eachEnterprise} key={enterpriseName}>
-                    {departmentList.map(depart => { // 企业下部门列表
-                      const { departmentName, parentDepartmentName, stationData } = depart || {};
-                      const stationList = stationData || [];
-                      return ( // 每个部门 负责的电站
-                        <section className={styles.eachDepartment} key={departmentName}>
-                          <h4 className={styles.departmentTitle}>
-                            <span className={styles.enterpriseName}>{`${enterpriseName}-` || ''}</span>
-                            <span>{parentDepartmentName ? `${parentDepartmentName}-` : ''}</span>
-                            <span>{departmentName || '--'}</span>
-                          </h4>
-                          <div className={styles.departmentStations}>负责电站: {stationList.map(e => e.stationName).join(', ')}</div>
-                        </section>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
+              <div className={styles.enterpriseDepartment}>
+                <h4 className={styles.enterpriseTitle}>企业-部门(负责电站)</h4>
+                {enterpriseList.map(enterprise => {
+                  const { enterpriseName = '--', departmentData } = enterprise || {};
+                  const departmentList = departmentData || [];
+                  return (
+                    <div className={styles.eachEnterprise} key={enterpriseName}>
+                      {departmentList.map(depart => { // 企业下部门列表
+                        const { departmentName, parentDepartmentName, stationData } = depart || {};
+                        const stationList = stationData || [];
+                        return ( // 每个部门 负责的电站
+                          <section className={styles.eachDepartment} key={departmentName}>
+                            <h4 className={styles.departmentTitle}>
+                              <span className={styles.enterpriseName}>{`${enterpriseName}-` || ''}</span>
+                              <span>{parentDepartmentName ? `${parentDepartmentName}-` : ''}</span>
+                              <span>{departmentName || '--'}</span>
+                            </h4>
+                            <div className={styles.departmentStations}>负责电站: {stationList.map(e => e.stationName).join(', ')}</div>
+                          </section>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

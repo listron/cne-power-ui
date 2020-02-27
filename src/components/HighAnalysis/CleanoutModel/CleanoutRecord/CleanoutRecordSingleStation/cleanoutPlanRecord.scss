@@ -3,6 +3,7 @@
 .sidePage {
   z-index: 2;
   @include contentBoxStyle();
+  padding: 0;
 }
 .CleanoutPlanRecord {
   display: flex;
@@ -30,15 +31,14 @@
       display: flex;
       align-items: center;
       :global {
-        .iconfont {
+        .icon-last,.icon-next {
           font-size: 20px;
           margin-right: 20px;
           cursor: pointer;
         }
       }
       .previous,
-      .next,
-      .backIcon {
+      .next {
         font-size: 20px;
         cursor: pointer;
         height: 100%;
@@ -50,14 +50,9 @@
       .next {
         width: 40px;
       }
-      .backIcon {
-        width: 60px;
-        margin-left: 20px;
-      }
     }
-    .backIcon {
-      width: 60px;
-      font-size: 20px;
+    .backIcon{
+      @include backIcon();
     }
   }
   .statisticData {
@@ -133,9 +128,6 @@
     }
     .detailTop {
       border-bottom: 1px solid #f0f2f5;
-      .backIcon {
-        border-left: solid 1px $promptColor;
-      }
     }
     .statisticData {
       border-bottom: 1px solid #f0f2f5;

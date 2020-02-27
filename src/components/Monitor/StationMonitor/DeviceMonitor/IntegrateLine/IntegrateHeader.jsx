@@ -89,8 +89,8 @@ class IntegrateHeader extends Component {
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
           </span>}
-          <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`} className={styles.backIcon}>
-            <Icon type="arrow-left" />
+          <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`}>
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} />
           </Link>
           {/* {sonDevice && sonDevice.deviceTypeCode && <Link
             to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`}

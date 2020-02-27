@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './planSide.scss';
 import { Button, Icon } from 'antd';
 import WarningTip from '../../../../Common/WarningTip';
-import PlanAddTable from './AddPlanTable'
+import PlanAddTable from './AddPlanTable';
 
 class PlanSide extends Component {
   static propTypes = {
@@ -27,18 +27,18 @@ class PlanSide extends Component {
       addSave: 'false', // 是否保存
       warningTipSaveText: '请先填写完整之后再保存',
       showSaveWarningTip: false,
-      prev: 'false'
-    }
+      prev: 'false',
+    };
   }
 
   onWarningTipShow = (name) => { // 上一步按钮
-    this.setState({ prev: "true", leave: name })
+    this.setState({ prev: 'true', leave: name });
   };
 
   confirmWarningTip = () => { // 上一步
     this.setState({
       showWarningTip: false,
-      prev: 'false'
+      prev: 'false',
     });
     this.state.leave === 'quit' ?
       this.props.changePlanStore({
@@ -55,71 +55,71 @@ class PlanSide extends Component {
   cancelWarningTip = () => { // 上一步
     this.setState({
       showWarningTip: false,
-      prev: 'false'
-    })
+      prev: 'false',
+    });
   };
 
   save = () => { // 保存按钮
     this.setState({
-      addSave: 'true'
-    })
+      addSave: 'true',
+    });
   };
 
   addPlanSave = (stations) => { // 保存数据判断
-    const {stationType}=this.props;
-    let continueSave = stations.every((list, index) => { //判断是否可以保存
-      let pvSaveAddStation = list.yearPR && list.monthPower.length === 12;
-      let windSaveAddStation=list.monthPower.length === 12;
-      let saveAddStation=stationType===0?windSaveAddStation:pvSaveAddStation;
+    const { stationType } = this.props;
+    const continueSave = stations.every((list, index) => { //判断是否可以保存
+      const pvSaveAddStation = list.yearPR && list.monthPower.length === 12;
+      const windSaveAddStation = list.monthPower.length === 12;
+      const saveAddStation = stationType === 0 ? windSaveAddStation : pvSaveAddStation;
       if (!saveAddStation) {
         return false;
       }
       let startIndex = 0;
       list.setGridTime ? startIndex = Number(list.setGridTime) - 1 : startIndex = 0;
       for (let i = startIndex; i < list.monthPower.length; i++) {
-        if (list.monthPower[i] === "" || typeof (list.monthPower[i]) === "undefined") {
-          return false
+        if (list.monthPower[i] === '' || typeof (list.monthPower[i]) === 'undefined') {
+          return false;
         }
       }
-      return true
+      return true;
     });
     if (continueSave) {
-      let data = stations.map((list, index) => {
-        let station = {};
+      const data = stations.map((list, index) => {
+        const station = {};
         station.year = Number(list.planYear);
         station.monthPower = list.monthPower;
         station.planPower = list.planPower;
         station.yearPR = list.yearPR || null;
         station.stationCode = list.stationCode;
-        return station
+        return station;
       });
       this.setState({ addSave: 'false' });
-      this.props.addPlanInfo({ "data": data });
+      this.props.addPlanInfo({ 'data': data });
       this.props.changePlanStore({
         showPage: 'list',
         addPlanYear: '', //计划生产的年份
         addStationCodes: [], // 计划生产的电站
-      })
+      });
     } else {
       this.setState({
         addSave: 'false',
         showSaveWarningTip: true,
-      })
+      });
     }
   };
 
   saveWarningTip = () => { // 保存按钮的提示
     this.setState({
-      showSaveWarningTip: false
-    })
+      showSaveWarningTip: false,
+    });
   };
 
   addValueChange = (stations) => { // 是否添加新的数据
-    if (stations.some(e => e.eddit === "true")) {
+    if (stations.some(e => e.eddit === 'true')) {
       this.setState({
         showWarningTip: true,
-        prev: 'flase'
-      })
+        prev: 'flase',
+      });
     } else {
       this.state.leave === 'quit' ?
         this.props.changePlanStore({
@@ -146,12 +146,10 @@ class PlanSide extends Component {
           <span className={styles.sideEidtTitleTip}>添加</span>
           <div className={styles.sideEditTitleRight}>
             <Button onClick={() => {
-              this.onWarningTipShow("prev")
+              this.onWarningTipShow('prev');
             }} className={styles.addPlanPrev}>上一步</Button>
             <Button onClick={this.save} className={styles.savePlan}>保存</Button>
-            <Icon type="arrow-left" className={styles.backIcon} onClick={() => {
-              this.onWarningTipShow("quit")
-            }} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={() => { this.onWarningTipShow('quit'); }} />
           </div>
         </div>
         <div className={styles.mainPart}>
@@ -167,7 +165,7 @@ class PlanSide extends Component {
           />
         </div>
       </div>
-    )
+    );
   }
 }
 

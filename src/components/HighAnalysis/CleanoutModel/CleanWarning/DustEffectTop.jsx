@@ -56,9 +56,7 @@ export const DustEffectStation = ({ ...props }) => { // 清洗预警=> 详情电
           {currentStation.stationName || '--'} - {currentStation.provinceName || '--'}
         </span>
       </div>
-      <div className={styles.rightPart} onClick={backToList}>
-        <Icon type="arrow-left" className={styles.backIcon} />
-      </div>
+      <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={backToList} />
     </div>
   );
 };

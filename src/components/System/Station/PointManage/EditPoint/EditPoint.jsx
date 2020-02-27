@@ -41,7 +41,7 @@ class EditPoint extends React.Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.pageTop}>
           <span className={styles.text}>编辑 </span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onWarningTipShow} />
         </div>
         <AddNextStep {...this.props} />
 

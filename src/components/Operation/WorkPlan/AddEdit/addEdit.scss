@@ -13,9 +13,7 @@
     padding-left: 40px;
     height: 60px;
     .backIcon{
-      cursor: pointer;
-      flex: 0 0 60px;
-      line-height: 60px;
+      @include backIcon();
     }
   }
   .addEditPlanForm{ // 添加计划
@@ -73,9 +71,6 @@
   .top{
     color: var(--darkColor);
     border-bottom: 1px solid var(--promptColor);
-    .backIcon{
-      border-left: 1px solid var(--promptColor);
-    }
   }
   .addEditPlanForm{ // 添加计划
     .eachPlanForm{
@@ -112,9 +107,6 @@
     border:1px solid #4288b5;
     color:#9cd1ff;
     margin-bottom: 10px;
-    .backIcon{
-      border-left: 1px solid #4288b5;
-    }
   }
   .addEditPlanForm{ // 添加计划
     .eachPlanForm{

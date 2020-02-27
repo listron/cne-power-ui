@@ -131,7 +131,7 @@ class AddEditPlan extends PureComponent {
       <section className={`${styles.addEditPlan} ${styles[theme]}`}>
         <h3 className={styles.top}>
           <span>添加计划</span>
-          <Icon onClick={this.backList} type="arrow-left" className={styles.backIcon} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backList} />
         </h3>
         <Form className={styles.addEditPlanForm}>
           <div className={styles.formBox}>
@@ -327,3 +327,4 @@ export default Form.create({
     }
   },
 })(AddEditPlan);
+

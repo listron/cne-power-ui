@@ -59,8 +59,8 @@ const loseColumn = [
     render: (text, record) => (
       <span title={text}>{dataFormat(text)}</span>
     ),
-  }
-]
+  },
+];
 const limitColumn = [
   {
     title: '设备类型',
@@ -111,10 +111,10 @@ const limitColumn = [
     render: (text, record) => (
       <span title={text}>{dataFormat(text)}</span>
     ),
-  }
-]
+  },
+];
 
-const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayReportConfig, onSidePageChange }) => {
+const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore, dayReportConfig, onSidePageChange }) => {
   const faultList = selectedDayReportDetail.faultList || [];
   const limitList = selectedDayReportDetail.limitList || [];
   const configUtil = dayReportConfig[0] || {};
@@ -127,15 +127,15 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     toChangeDayReportStore({
       showPage: 'list',
       selectedDayReportDetail: {},
-    })
-  }
+    });
+  };
 
   const toEditDetail = () => {
-    onSidePageChange({ sidePage : 'edit'});
+    onSidePageChange({ sidePage: 'edit' });
     toChangeDayReportStore({
-      showPage: 'edit'
+      showPage: 'edit',
     });
-  }
+  };
   // const sourceInfoArr = [
   //   // {name: '天气', value: 'weather', unit: ''},
   //   // {name: '温度', value: 'temperature', unit: ''},
@@ -160,10 +160,10 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
   // ]
   const totalInfo = [
     {
-      name: stationType>0? '日累计辐射': '日均风速',
-      value: 'resourceValue', 
-      unit: stationType>0? radiationUnit: speedUnit,
-    }, 
+      name: stationType > 0 ? '日累计辐射' : '日均风速',
+      value: 'resourceValue',
+      unit: stationType > 0 ? radiationUnit : speedUnit,
+    },
     { name: '日等效小时数', value: 'equivalentHours', unit: 'h' },
     { name: '日故障损失电量', value: 'faultLost', unit: genUnit },
     { name: '日限电损失电量', value: 'limitLost', unit: genUnit },
@@ -186,8 +186,8 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
   ];
   let { createTime, updateTime } = selectedDayReportDetail;
   // reportDate = reportDate? moment(reportDate).format('YYYY-MM-DD'): '--';
-  createTime = createTime? moment(createTime).format('YYYY-MM-DD HH:mm'): '--';
-  updateTime = updateTime? moment(updateTime).format('YYYY-MM-DD HH:mm'): '--';
+  createTime = createTime ? moment(createTime).format('YYYY-MM-DD HH:mm') : '--';
+  updateTime = updateTime ? moment(updateTime).format('YYYY-MM-DD HH:mm') : '--';
   const { errorInfo } = selectedDayReportDetail;
   const errorArray = errorInfo && errorInfo.split(';').filter(e => !!e) || [];
   const reportRight = handleRight('daily_report');
@@ -205,7 +205,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         </div>
         <div className={styles.reportDetailTitleRight}>
           {reportRight && <Button onClick={toEditDetail} className={styles.reportEdit}>编辑</Button>}
-          <Icon type="arrow-left" className={styles.backIcon} onClick={toReportList} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={toReportList} />
         </div>
       </div>
       <div className={styles.totalInfo}>
@@ -221,7 +221,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         </div>
       </div>
       <div className={styles.totalInfo}>
-        <div className={styles.tooltip}>{stationType>0? '逆变器': '风电机组'}信息<Icon type="caret-right" theme="outlined" /></div>
+        <div className={styles.tooltip}>{stationType > 0 ? '逆变器' : '风电机组'}信息<Icon type="caret-right" theme="outlined" /></div>
         <div className={styles.infoDetail}>
           {inverterInfo.map(e => (
             <span className={styles.eachInfo} key={e.name}>
@@ -258,13 +258,13 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       </div>
       <div className={styles.lostInfo} >
         <h4 className={styles.reportSubTitle} >损失电量信息<Icon type="caret-right" theme="outlined" /></h4>
-        {faultList.length === 0 ? <span className={styles.noListData}>无</span>:<Table 
-          columns={loseColumn} 
-          dataSource={faultList.map((e,i)=>({
+        {faultList.length === 0 ? <span className={styles.noListData}>无</span> : <Table
+          columns={loseColumn}
+          dataSource={faultList.map((e, i) => ({
             ...e,
             key: i,
-            startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'):'--',
-            endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'):'--',
+            startTime: e.startTime ? moment(e.startTime).format('YYYY-MM-DD HH:mm') : '--',
+            endTime: e.endTime ? moment(e.endTime).format('YYYY-MM-DD HH:mm') : '--',
           }))}
           pagination={false}
           className={styles.lostInfoTable}
@@ -272,13 +272,13 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       </div>
       <div className={styles.limitInfo} >
         <h4 className={styles.reportSubTitle} >限电信息<Icon type="caret-right" theme="outlined" /></h4>
-        {limitList.length === 0 ? <span className={styles.noListData}>无</span>:<Table 
-          columns={limitColumn} 
-          dataSource={limitList.map((e,i)=>({
+        {limitList.length === 0 ? <span className={styles.noListData}>无</span> : <Table
+          columns={limitColumn}
+          dataSource={limitList.map((e, i) => ({
             ...e,
             key: i,
-            startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'):'--',
-            endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'):'--',
+            startTime: e.startTime ? moment(e.startTime).format('YYYY-MM-DD HH:mm') : '--',
+            endTime: e.endTime ? moment(e.endTime).format('YYYY-MM-DD HH:mm') : '--',
           }))}
           pagination={false}
           className={styles.limitInfoTable}
@@ -287,7 +287,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       <div className={styles.powerGenInfo} >
         <h4 className={styles.reportSubTitle} >发电信息<Icon type="caret-right" theme="outlined" /></h4>
         <div className={styles.powerGenInfoCon}>
-          {errorArray.length > 0? errorArray.map((e, i) => <div key={i}>{e}</div>) : '正常'}
+          {errorArray.length > 0 ? errorArray.map((e, i) => <div key={i}>{e}</div>) : '正常'}
         </div>
       </div>
       <div className={styles.operateInfo} >
@@ -316,6 +316,6 @@ ReportDetail.propTypes = {
   toChangeDayReportStore: PropTypes.func,
   dayReportConfig: PropTypes.array,
   onSidePageChange: PropTypes.func,
-}
+};
 
 export default ReportDetail;

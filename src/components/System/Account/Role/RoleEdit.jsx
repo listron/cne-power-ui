@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Icon} from 'antd';
+import { Icon } from 'antd';
 import styles from './role.scss';
 import RoleEditForm from './RoleEditForm';
 import WarningTip from '../../../Common/WarningTip';
@@ -20,7 +20,7 @@ class RoleEdit extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '',
-    }
+    };
   }
 
   componentDidMount() {
@@ -31,7 +31,7 @@ class RoleEdit extends Component {
   onCancelEdit = () => {
     this.setState({
       showWarningTip: true,
-      warningTipText: '退出后信息无法保存!'
+      warningTipText: '退出后信息无法保存!',
     });
   }
 
@@ -48,21 +48,21 @@ class RoleEdit extends Component {
     this.props.changeRoleStore({
       showPage: 'list',
       selectedRole: [],
-    });   
+    });
   }
 
-  render(){
+  render() {
     const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.roleEdit}>
         {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.roleEditContent}>
           <div className={styles.editTop}>
-            <span className={styles.text}>{this.props.showPage==='create'?'新建':'编辑'}</span>
-            <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+            <span className={styles.text}>{this.props.showPage === 'create' ? '新建' : '编辑'}</span>
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
           </div>
           <div className={styles.editPart} >
-            {this.props.showPage!=='list'&&<RoleEditForm {...this.props} />}
+            {this.props.showPage !== 'list' && <RoleEditForm {...this.props} />}
           </div>
         </div>
       </div>

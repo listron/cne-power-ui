@@ -102,7 +102,7 @@ export default class FaultWarn extends React.Component {
         healthList,
         largeSizeList,
         natureList,
-    }} = this.props;
+      } } = this.props;
     const arr = []; //保存有故障的
     healthList.forEach(item => {
       if (item.windTurbines.length !== 0) {
@@ -150,10 +150,10 @@ export default class FaultWarn extends React.Component {
     const stationItems = stations && stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode === +singleStationCode))[0] || {};
     return (
-      <div className={styles.faultWarnMain} ref={(ref) => {this.main = ref;}}>
+      <div className={styles.faultWarnMain} ref={(ref) => { this.main = ref; }}>
         <div className={styles.title}>
           {showStationSelect &&
-          <ChangeStation stations={stationItems.filter(e => e.stationType === 0)} stationName={stationItem.stationName} baseLinkPath="/analysis/faultDiagnose/fanWarn" hideStationChange={this.hideStationChange} />
+            <ChangeStation stations={stationItems.filter(e => e.stationType === 0)} stationName={stationItem.stationName} baseLinkPath="/analysis/faultDiagnose/fanWarn" hideStationChange={this.hideStationChange} />
           }
           <div className={styles.titleLeft}>
             <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
@@ -212,7 +212,7 @@ export default class FaultWarn extends React.Component {
             </div>
           </div>
           <Link to="/analysis/faultDiagnose/faultWarn">
-            <Icon type="arrow-left" className={styles.backIcon} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} />
           </Link>
         </div>
         <div className={styles.faultWarnMainCenter}>

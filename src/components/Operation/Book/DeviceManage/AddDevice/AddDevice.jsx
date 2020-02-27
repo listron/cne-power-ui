@@ -114,7 +114,7 @@ class AddDevice extends Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.editTop}>
           <span className={styles.text}>新增</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onWarningTipShow} />
         </div>
         {showStep === 'pre' && <Form className={styles.preFormStyle}>
           <FormItem label="电站名称" colon={false} className={styles.formItemStyle} >
@@ -144,8 +144,8 @@ class AddDevice extends Component {
                 disabled={typeSelectDisable}>
                 <Option key={null} value={null}>{'全部设备类型'}</Option>
                 {stationDevices.map((e, i) => {
-                  if (!e||e.deviceTypeCode==='509') { return null; }
-                    return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>;
+                  if (!e || e.deviceTypeCode === '509') { return null; }
+                  return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>;
 
                 })}
               </Select>

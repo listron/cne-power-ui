@@ -25,7 +25,7 @@ class WindStationTop extends Component {
     super(props);
     this.state = {
       showStationList: false,
-    }
+    };
 
   }
 
@@ -52,14 +52,14 @@ class WindStationTop extends Component {
   }
 
   render() {
-    const { singleStationData = {}, stationList, weatherList, operatorList,operatorTime } = this.props;
+    const { singleStationData = {}, stationList, weatherList, operatorList, operatorTime } = this.props;
     const { showStationList } = this.state;
-    const baseLinkPath = `/monitor/singleStation`;
-    const pathAllStation = "/monitor/station";
+    const baseLinkPath = '/monitor/singleStation';
+    const pathAllStation = '/monitor/station';
     const currentStationName = singleStationData.stationName;
     const { stationStatus = {} } = singleStationData;
     const { stationStatusName, stationStatusTime } = stationStatus;
-    const todayWeather = weatherList.length > 0 && weatherList[0] || {}
+    const todayWeather = weatherList.length > 0 && weatherList[0] || {};
     return (
       <div className={styles.stationTop} >
         {showStationList && <ChangeStation stations={stationList.filter(e => e.isConnected === 1)} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
@@ -77,13 +77,13 @@ class WindStationTop extends Component {
           <div className={styles.stationRight}>
             <Operator operatorList={operatorList} operatorTime={operatorTime} />
             <div className={styles.weather}>天气:{todayWeather.weather} {todayWeather.temperature}</div>
-            <Link to={pathAllStation}  >
-              <Icon type="arrow-left" className={styles.backIcon} />
+            <Link to={pathAllStation} >
+              <i className={`iconfont icon-fanhui ${styles.backIcon}`} />
             </Link>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

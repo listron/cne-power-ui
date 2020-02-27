@@ -159,14 +159,12 @@
           }
         }
       }
+      a{
+        display: flex;
+        height: 100%;
+      }
       .backIcon {
-        border-left: 1px solid #d4d4d4;
-        width: 60px;
-        line-height: 60px;
-        text-align: center;
-        // padding: 0 30px;
-        color: $darkColor;
-        cursor: pointer;
+        @include backIcon()
       }
     }
 

@@ -22,16 +22,16 @@ class MaterialTakeout extends Component {
     takeoutWarehouseMaterial: PropTypes.func,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { getMaterialDetailsList, originTakeoutInfo, materialListParams } = this.props;
     const { inventoryId } = originTakeoutInfo;
     getMaterialDetailsList({ inventoryId, ...materialListParams }); // 该仓库下的物资列表
   }
 
-  componentDidUpdate(preProps){
+  componentDidUpdate(preProps) {
     const preStatus = preProps.takeoutStatus;
     const { takeoutStatus } = this.props;
-    if ( preStatus === 'loading' && takeoutStatus === 'success') {
+    if (preStatus === 'loading' && takeoutStatus === 'success') {
       this.backToList(); // 成功，返回主页面
     }
   }
@@ -56,7 +56,7 @@ class MaterialTakeout extends Component {
     });
   }
 
-  render(){
+  render() {
     const { form, originTakeoutInfo, materialDetailsList, takeoutStatus } = this.props;
     const { getFieldDecorator } = form;
     const requireInfoFun = (text, initialValue) => ({
@@ -72,19 +72,19 @@ class MaterialTakeout extends Component {
       <section className={styles.takeout}>
         <h3 className={styles.title}>
           <span className={styles.text}>物资 - 出库</span>
-          <Icon type="arrow-left" onClick={this.backToList} className={styles.backIcon} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
         </h3>
         <Form className={styles.formPart}>
           <FormItem label="仓库名称">
             {getFieldDecorator('warehouseId', requireInfoFun('无仓库名称', originTakeoutInfo.warehouseName))(
-              <Select style={{width: 200}} disabled>
+              <Select style={{ width: 200 }} disabled>
                 <Option value={originTakeoutInfo.warehouseName}>{originTakeoutInfo.warehouseName}</Option>
               </Select>
             )}
           </FormItem>
           <FormItem label="物品类型">
             {getFieldDecorator('goodsType', requireInfoFun('请选择物品类型', originTakeoutInfo.goodsType))(
-              <Select placeholder="请选择" disabled style={{width: 200}}>
+              <Select placeholder="请选择" disabled style={{ width: 200 }}>
                 {goodsInfo.map(e => (
                   <Option key={e.value} value={e.value}>{e.label}</Option>
                 ))}
@@ -93,19 +93,19 @@ class MaterialTakeout extends Component {
           </FormItem>
           <FormItem label="物品名称">
             {getFieldDecorator('goodsName', requireInfoFun('无物品名称', originTakeoutInfo.goodsName))(
-              <Select style={{width: 200}} disabled>
+              <Select style={{ width: 200 }} disabled>
                 <Option value={originTakeoutInfo.goodsName}>{originTakeoutInfo.goodsName}</Option>
               </Select>
             )}
           </FormItem>
           <FormItem label="厂家">
             {getFieldDecorator('devManufactorName', requireInfoFun('无厂家名称', originTakeoutInfo.devManufactorName))(
-              <Input style={{width: 200}} disabled />
+              <Input style={{ width: 200 }} disabled />
             )}
           </FormItem>
           <FormItem label="型号">
             {getFieldDecorator('modeName', requireInfoFun('无型号', originTakeoutInfo.modeName))(
-              <Input style={{width: 200}} disabled />
+              <Input style={{ width: 200 }} disabled />
             )}
           </FormItem>
           <FormItem label="物资编码" className={styles.materialCodes}>

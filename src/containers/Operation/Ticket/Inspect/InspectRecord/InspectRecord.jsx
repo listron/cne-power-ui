@@ -21,7 +21,7 @@ class inspectRecord extends Component {
     this.state = {
       editDataGet: false,
       showWarningTip: false,
-    }
+    };
   }
 
   componentDidMount() {
@@ -49,39 +49,39 @@ class inspectRecord extends Component {
   }
   onChangeFilter = (obj) => {
     const { inspectId, startDate, endDate, pageNum, pageSize, userId, inspectStatus, deviceTypeCode, sortType } = this.props;
-    let filter = {
+    const filter = {
       inspectId,
       startDate,
       endDate,
-      pageNum:1,
+      pageNum: 1,
       pageSize,
       userId,
       inspectStatus,
       deviceTypeCode,
-      sortType
-    }
-    let newFiter = Object.assign({}, filter, obj);
+      sortType,
+    };
+    const newFiter = Object.assign({}, filter, obj);
     this.props.getInspectDetailRecord(newFiter);
-    if(!obj.pageNum) {
+    if (!obj.pageNum) {
       this.props.getInspectDetailRecord(newFiter);
     }
-   
+
   }
 
   render() {
     const { showWarningTip, warningTipText } = this.state;
     const { inspectId, startDate, endDate, pageNum, pageSize, userId, inspectStatus, deviceTypeCode, sortType } = this.props;
     const queryParams = {
-      inspectId, startDate, endDate, pageNum, pageSize, userId, inspectStatus, deviceTypeCode, sortType
-    }
+      inspectId, startDate, endDate, pageNum, pageSize, userId, inspectStatus, deviceTypeCode, sortType,
+    };
 
     return (
       <div className={styles.inspectCreate}>
-       {/* {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />} */}
+        {/* {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />} */}
 
         <div className={styles.createTop}>
           <span className={styles.text}>巡检记录</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCloseInspectCreate} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCloseInspectCreate} />
         </div>
         <div className={styles.createContent}>
           <InspectRecordFilter {...this.props} onChangeFilter={this.onChangeFilter} />
@@ -94,8 +94,8 @@ class inspectRecord extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  ...state.operation.inspect.toJS()
-})
+  ...state.operation.inspect.toJS(),
+});
 const mapDispatchToProps = (dispatch) => ({
   onChangeStore: payload => dispatch({ type: ticketAction.CHANGE_INSPECT_STORE_SAGA, payload }),
   getInspectDetailRecord: payload => dispatch({ type: ticketAction.getInspectDetailRecord, payload }),
@@ -107,5 +107,5 @@ const mapDispatchToProps = (dispatch) => ({
   //     resultName: 'stationDeviceTypes'
   //   }
   // }),
-})
+});
 export default connect(mapStateToProps, mapDispatchToProps)(inspectRecord);

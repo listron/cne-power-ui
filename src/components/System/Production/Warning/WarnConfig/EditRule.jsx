@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { Select, Button, Icon, Form, Input } from 'antd';
 import PropTypes from 'prop-types';
-import styles from "./warnConfig.scss";
+import styles from './warnConfig.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import WarnRule from './WarnRule';
 const Option = Select.Option;
@@ -15,38 +15,38 @@ class EditRule extends Component {
   }
 
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       showWarningTip: false,
       showSaveWarningTip: false,
       warningTipText: '退出后信息将无法保存',
       warningTipSaveText: '请确认预警规则',
-    }
+    };
   }
 
   onCancelEdit = () => { //  推出按钮
-    this.setState({ showWarningTip: true })
+    this.setState({ showWarningTip: true });
   }
 
   saveRule = (e) => { // 保存
     this.props.form.validateFields((error, values) => {
       if (!error) {
-        this.setState({ showSaveWarningTip: true, buttonStatus: e })
+        this.setState({ showSaveWarningTip: true, buttonStatus: e });
       }
     });
   }
 
   cancelWarningTip = () => { // 取消
-    this.setState({ showWarningTip: false })
+    this.setState({ showWarningTip: false });
   }
 
   confirmWarningTip = () => { // 确定
-    this.setState({ showWarningTip: false })
-    this.props.changeWarnStore({ showPage: 'home' })
+    this.setState({ showWarningTip: false });
+    this.props.changeWarnStore({ showPage: 'home' });
   }
 
   cancelSaveWarningTip = () => { // 保存取消
-    this.setState({ showSaveWarningTip: false })
+    this.setState({ showSaveWarningTip: false });
   }
 
   confirmSaveWarningTip = () => { // 保存确定
@@ -61,16 +61,16 @@ class EditRule extends Component {
           warningValue: warnRules[1],
           warningDeadZone: warnRules[2],
           warningLevel,
-          warningEnabled
-        }
-        this.props.modify(params)
+          warningEnabled,
+        };
+        this.props.modify(params);
       }
     });
   }
 
   render() {
     const { warnDetail } = this.props;
-    const { showWarningTip, warningTipText,showSaveWarningTip,warningTipSaveText} = this.state;
+    const { showWarningTip, warningTipText, showSaveWarningTip, warningTipSaveText } = this.state;
     const { getFieldDecorator } = this.props.form;
     return (
       <div className={styles.editRule} >
@@ -80,7 +80,7 @@ class EditRule extends Component {
           <WarningTip onCancel={this.cancelSaveWarningTip} onOK={this.confirmSaveWarningTip} value={warningTipSaveText} />}
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
         </div>
         <div className={styles.editCont}>
           <div className={styles.editBox}>
@@ -98,9 +98,9 @@ class EditRule extends Component {
                     rules: [{
                       required: true,
                       message: '请输入预警描述(不能超过30字)',
-                      max: 30
+                      max: 30,
                     }],
-                    initialValue: warnDetail.warningCheckDesc
+                    initialValue: warnDetail.warningCheckDesc,
                   })(
                     <Input type="text" placeholder="不能超过30字" className={styles.warnDescribe} />
                   )}
@@ -117,7 +117,7 @@ class EditRule extends Component {
                           (!warningDeadZone && warningValue !== 0) && callback('请输入震荡区间');
                           warningValue && warningDeadZone && +warningDeadZone >= +warningValue && callback('震荡区间的值不能大于预警值');
                           callback();
-                        }
+                        },
                       }],
                   })(
                     <WarnRule />
@@ -148,14 +148,14 @@ class EditRule extends Component {
                   )}
                 </FormItem>
                 <div className={styles.buttonGroup}>
-                  <Button onClick={this.saveRule} className={styles.save} type={"default"} >保存</Button>
+                  <Button onClick={this.saveRule} className={styles.save} type={'default'} >保存</Button>
                 </div>
               </Form>
             </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

@@ -16,74 +16,74 @@ class AddUser extends Component {
     userDetail: PropTypes.object,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       //userLogo: props.userDetail && props.userDetail.userLogo,
-      userLogo:'/img/nopic.png',
+      userLogo: '/img/nopic.png',
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
-    }
+    };
   }
 
-  onWarningTipShow = () =>{
+  onWarningTipShow = () => {
     this.setState({
       showWarningTip: true,
-    })
+    });
   }
 
   uploadLogo = (imgInfor) => {
     this.setState({
-      userLogo: imgInfor.thumbUrl
-    })
+      userLogo: imgInfor.thumbUrl,
+    });
   }
 
   confirmWarningTip = () => {
     this.setState({
       showWarningTip: false,
-    })
+    });
     this.props.changeUserStore({
       showPage: 'list',
     });
-    
+
   }
 
   cancelWarningTip = () => {
     this.setState({
       showWarningTip: false,
-    })
+    });
   }
-  
-  render(){
+
+  render() {
     const { userLogo } = this.state;
-    const { userDetail,saveUserInfor, loading } = this.props;
+    const { userDetail, saveUserInfor, loading } = this.props;
     const { showWarningTip, warningTipText } = this.state;
-    const uploadPath=`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`;
+    const uploadPath = `${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`;
     return (
       <div className={styles.addUser} >
-        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}      
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.editTop}>
           <span className={styles.text}>新建</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onWarningTipShow} />
         </div>
         <div className={styles.mainPart} >
           <div className={styles.logoPart} >
-            <SingleImgUploader uploadPath={uploadPath} onOK={this.uploadLogo} data={{thumbUrl:userLogo}} />
+            <SingleImgUploader uploadPath={uploadPath} onOK={this.uploadLogo} data={{ thumbUrl: userLogo }} />
             <div className={styles.instruction}>
               <span>头像上传</span>
               <span>240px*240px为佳，大小不超过2M</span>
             </div>
           </div>
-          <AddForm 
-            userDetail={userDetail} 
-            userLogo={userLogo} 
-            saveUserInfor={saveUserInfor} 
-            loading={loading} 
+          <AddForm
+            userDetail={userDetail}
+            userLogo={userLogo}
+            saveUserInfor={saveUserInfor}
+            loading={loading}
             {...this.props}
           />
         </div>
       </div>
-    )
+    );
   }
 }
 

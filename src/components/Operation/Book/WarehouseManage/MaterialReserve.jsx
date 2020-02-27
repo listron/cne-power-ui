@@ -30,7 +30,7 @@ export default class MaterialReserve extends Component {
     remindShow: false,
     remindText: '',
     materialCode: null,
-    confirmRemind: () => {}
+    confirmRemind: () => { },
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 翻页
@@ -39,7 +39,7 @@ export default class MaterialReserve extends Component {
       ...reserveParams,
       pageNum: currentPage,
       pageSize,
-    })
+    });
   }
 
   tableChange = (pagination, filter, sorter) => { // 排序
@@ -59,17 +59,17 @@ export default class MaterialReserve extends Component {
     this.queryReserveList({
       ...reserveParams,
       sortField,
-      sortMethod
-    })
+      sortMethod,
+    });
   }
-  
+
   queryReserveList = (reserveParams) => { // 请求库存列表
     const { changeStore, getReserveList, reserveInventoryId } = this.props;
     changeStore({ reserveParams });
     getReserveList({
       inventoryId: reserveInventoryId,
-      ...reserveParams
-    })
+      ...reserveParams,
+    });
   }
 
   reserveColumn = () => {
@@ -86,7 +86,7 @@ export default class MaterialReserve extends Component {
       <div
         title={text || '--'}
         className={styles[styleText]}
-        style={{maxWidth: `${widthParam - 16}px`}}
+        style={{ maxWidth: `${widthParam - 16}px` }}
       >{text || '--'}</div>
     );
     const materialHandleRight = handleRight('book_operateSupply');
@@ -111,7 +111,7 @@ export default class MaterialReserve extends Component {
         dataIndex: 'price',
         sorter: true,
         width: pricePersonWidth,
-        render: (text) => dataFormat(text)
+        render: (text) => dataFormat(text),
       }, {
         title: '入库人',
         dataIndex: 'user',
@@ -122,13 +122,13 @@ export default class MaterialReserve extends Component {
         dataIndex: 'enteryTime',
         width: timeWidth,
         sorter: true,
-        render: (text) => text ? moment(text).format('YYYY/MM/DD HH:mm:ss') : '--'
+        render: (text) => text ? moment(text).format('YYYY/MM/DD HH:mm:ss') : '--',
       }, {
         title: '出库时间',
         dataIndex: 'outTime',
         width: timeWidth,
         sorter: true,
-        render: (text) => text ? moment(text).format('YYYY/MM/DD HH:mm:ss') : '--'
+        render: (text) => text ? moment(text).format('YYYY/MM/DD HH:mm:ss') : '--',
       }, {
         title: '备注',
         dataIndex: 'remarks',
@@ -141,7 +141,7 @@ export default class MaterialReserve extends Component {
         width: statusWidth,
         render: (text) => (
           text > 0 ? <span className={styles.inWarehouse}>在库中</span> : <span className={styles.outWarehouse}>已出库</span>
-        )
+        ),
       },
     ];
     return materialHandleRight ? column.concat({
@@ -152,14 +152,14 @@ export default class MaterialReserve extends Component {
         const { isEntry } = record;
         return (
           <span
-            style={{width: `${handleWidth - 16}px`}}
+            style={{ width: `${handleWidth - 16}px` }}
             className={styles.handle}
             onClick={() => this.showRemindModal(record, isEntry > 0 ? 'delete' : 'takeback')}
           >
             {isEntry > 0 ? <i className="iconfont icon-del" /> : <i className="iconfont icon-back2" />}
             <span>{isEntry > 0 ? '删除' : '撤回'}</span>
           </span>
-        )
+        );
       },
     }) : column;
   }
@@ -169,8 +169,8 @@ export default class MaterialReserve extends Component {
       remindShow: true,
       materialCode,
       remindText: key === 'delete' ? '确定删除么' : '确定撤回且重新入库么',
-      confirmRemind: key === 'delete' ? this.deleteReserve : this.takebackReserve
-    })
+      confirmRemind: key === 'delete' ? this.deleteReserve : this.takebackReserve,
+    });
   }
 
   hideRemindModal = () => { // 隐藏删除/撤回弹框
@@ -178,8 +178,8 @@ export default class MaterialReserve extends Component {
       remindShow: false,
       remindText: '',
       materialCode: null,
-      confirmRemind: () => {}
-    })
+      confirmRemind: () => { },
+    });
   }
 
 
@@ -205,14 +205,14 @@ export default class MaterialReserve extends Component {
       reserveParams: { // 重置物资列表请求参数
         pageNum: 1,
         pageSize: 10,
-        sortField: 'entry_time', 
-        sortMethod: 'desc', 
+        sortField: 'entry_time',
+        sortMethod: 'desc',
       },
     });
     this.props.backList();
   }
 
-  render(){
+  render() {
     const { remindShow, remindText, confirmRemind } = this.state;
     const { reserveDetail, reserveListInfo, tabName, reserveParams, reserveListLoading } = this.props;
     const { pageSize, pageNum } = reserveParams;
@@ -222,7 +222,7 @@ export default class MaterialReserve extends Component {
       <section className={styles.reserve} ref={(ref) => this.reserveBox = ref}>
         <h3 className={styles.title}>
           <span className={styles.text}>物资 - 库存</span>
-          <Icon type="arrow-left" onClick={this.backToList} className={styles.backIcon} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
         </h3>
         <ReserveDetail reserveDetail={reserveDetail} tabName={tabName} />
         <div className={styles.pagination}>
@@ -243,7 +243,7 @@ export default class MaterialReserve extends Component {
         />
         {remindShow && <WarningTip onOK={confirmRemind} onCancel={this.hideRemindModal} value={remindText} />}
       </section>
-    )
+    );
   }
 }
 

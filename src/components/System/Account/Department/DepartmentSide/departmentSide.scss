@@ -32,13 +32,7 @@
         letter-spacing:4px;
       }
       .backIcon{
-        color: $darkColor;
-        font-size: 20px;
-        border-left: 1px solid $promptColor;
-        height: 100%;
-        line-height: 64px;
-        width: 64px;
-        cursor: pointer;
+        @include backIcon();
       }
     }
     .mainPart{
@@ -113,12 +107,7 @@
           }
         }
         .backIcon{
-          height: 100%;
-          line-height: 64px;
-          color: $darkColor;
-          border-left: 1px solid $promptColor;
-          width: 64px;
-          cursor: pointer;
+          @include backIcon();
         }
       }
       

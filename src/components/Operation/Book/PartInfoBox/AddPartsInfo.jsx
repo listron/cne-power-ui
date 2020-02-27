@@ -181,11 +181,7 @@ class AddPartsInfo extends React.Component {
         )}
         <div className={styles.editTop}>
           <span className={styles.text}>新增</span>
-          <Icon
-            type="arrow-left"
-            className={styles.backIcon}
-            onClick={this.backToList}
-          />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
         </div>
 
         <Form className={styles.editPart}>

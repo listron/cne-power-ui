@@ -96,14 +96,11 @@
             }
           }
         }
-
-        .backIcon {
-          width: 60px;
-          line-height: 65px;
-          text-align: center;
-          cursor: pointer;
-          font-size: 18px;
+        a{
           display: inline-block;
+        }
+        .backIcon {
+          @include backIcon();
         }
       }
     }

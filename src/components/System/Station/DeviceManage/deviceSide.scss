@@ -72,13 +72,14 @@
         letter-spacing: 4px;
       }
       .backIcon {
-        color: $darkColor;
-        font-size: 20px;
-        border-left: 1px solid #d4d4d4;
-        height: 100%;
-        line-height: 64px;
-        width: 64px;
-        cursor: pointer;
+        @include backIcon();
+        // color: $darkColor;
+        // font-size: 20px;
+        // border-left: 1px solid #d4d4d4;
+        // height: 100%;
+        // line-height: 64px;
+        // width: 64px;
+        // cursor: pointer;
       }
     }
     .colStyles {
@@ -256,15 +257,15 @@
         display: flex;
         align-items: center;
         :global {
-          .iconfont {
+          .icon-last,.icon-next {
             font-size: 20px;
             margin-right: 20px;
             cursor: pointer;
           }
         }
         .previous,
-        .next,
-        .backIcon {
+        .next{
+         
           font-size: 20px;
           cursor: pointer;
           color: $darkColor;
@@ -273,15 +274,15 @@
           align-items: center;
           justify-content: center;
         }
+        .backIcon{
+          @include backIcon();
+        }
+         
         .previous,
         .next {
           width: 40px;
         }
-        .backIcon {
-          width: 60px;
-          border-left: solid 1px $promptColor;
-          margin-left: 20px;
-        }
+        
       }
     }
     .detailPart {

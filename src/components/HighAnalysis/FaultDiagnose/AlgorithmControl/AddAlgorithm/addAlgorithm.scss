@@ -18,13 +18,7 @@
       }
       div:nth-of-type(2){
         .backIcon{
-          display: block;
-          border-left: 1px solid $promptColor;
-          width: 60px;
-          line-height: 60px;
-          text-align: center;
-          color: $darkColor;
-          cursor: pointer;
+          @include backIcon();
         }
       }
     }

@@ -40,19 +40,19 @@ class AddPlan extends Component {
 
   selectTime = (value) => {
     this.props.getOwnStations({
-      planYear: value
+      planYear: value,
     });
     this.props.changePlanStore({
-      addPlanYear: value
-    })
-    this.props.getStations() //  重新请求电站列表
+      addPlanYear: value,
+    });
+    this.props.getStations(); //  重新请求电站列表
   };
 
   selectStation = (stations) => {
     this.props.changePlanStore({
       addStationCodes: stations,
-      stationType: stations.length > 0 && stations[0].stationType
-    })
+      stationType: stations.length > 0 && stations[0].stationType,
+    });
   };
 
 
@@ -64,19 +64,19 @@ class AddPlan extends Component {
     const { continueAdd, addPlanYear, addStationCodes, planStations } = this.props;
     const canAdd = addPlanYear && addStationCodes && addStationCodes.length > 0;
     const currentYear = moment().year();
-    let year = [currentYear + 1, currentYear];
+    const year = [currentYear + 1, currentYear];
     return (
       <div className={styles.addPlan}>
         <div className={styles.editTop}>
           <span className={styles.text}>添加</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onWarningTipShow} />
         </div>
         <div className={styles.mainPart}>
           <div className={styles.selectTime}>
             <span><i>*</i>年份填写</span>
             <Select style={{ width: 105 }} onChange={this.selectTime} value={addPlanYear || '--'}>
               {year.map((year) => {
-                return <Option value={`${year}`} key={year}>{`${year}`}</Option>
+                return <Option value={`${year}`} key={year}>{`${year}`}</Option>;
               })}
             </Select>
           </div>
@@ -95,7 +95,7 @@ class AddPlan extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

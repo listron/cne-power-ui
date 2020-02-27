@@ -29,7 +29,7 @@ class ToolInsert extends Component {
     changeStore: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     const { originInsertInfo } = props;
     const inventoryNum = originInsertInfo ? originInsertInfo.inventoryNum : 0;
@@ -39,7 +39,7 @@ class ToolInsert extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { originInsertInfo, form } = this.props;
     if (originInsertInfo) {// 基于originInsertInfo判断是 入库 or edit再入库
       form.setFieldsValue({
@@ -55,10 +55,10 @@ class ToolInsert extends Component {
     }
   }
 
-  componentDidUpdate(preProps){
+  componentDidUpdate(preProps) {
     const preInsertStatus = preProps.insertStatus;
     const { insertStatus, form, originInsertInfo } = this.props;
-    if ( preInsertStatus === 'loading' && insertStatus === 'success') { // 保存操作请求成功
+    if (preInsertStatus === 'loading' && insertStatus === 'success') { // 保存操作请求成功
       const { saveMode } = this.state;
       if (saveMode === 'once') { // 保存 => 清空form并返回
         form.resetFields();
@@ -114,7 +114,7 @@ class ToolInsert extends Component {
     });
   }
 
-  render(){
+  render() {
     const { saveMode, toolNumber } = this.state;
     const {
       form, tabName, warehouseList, addNewGood, goodsList, addGoodName,
@@ -134,12 +134,12 @@ class ToolInsert extends Component {
       <section className={styles.insert}>
         <h3 className={styles.title}>
           <span className={styles.text}>工器具 - 入库</span>
-          <Icon type="arrow-left" onClick={this.backToList} className={styles.backIcon} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
         </h3>
         <Form className={styles.formPart}>
           <FormItem label="仓库名称">
             {getFieldDecorator('warehouseId', requireInfoFun('请选择仓库名称'))(
-              <Select placeholder="请选择" style={{width: 200}} disabled={!!originInsertInfo}>
+              <Select placeholder="请选择" style={{ width: 200 }} disabled={!!originInsertInfo}>
                 {warehouseList.map(e => (
                   <Option key={e.warehouseId} value={e.warehouseId}>{e.warehouseName}</Option>
                 ))}
@@ -148,7 +148,7 @@ class ToolInsert extends Component {
           </FormItem>
           <FormItem label="物品类型">
             {getFieldDecorator('goodsType', requireInfoFun('请选择物品类型'))(
-              <Select placeholder="请选择" style={{width: 200}} onChange={this.refreshGoodList} disabled={!!originInsertInfo}>
+              <Select placeholder="请选择" style={{ width: 200 }} onChange={this.refreshGoodList} disabled={!!originInsertInfo}>
                 {goodsInfo.map(e => (
                   <Option key={e.value} value={e.value}>{e.label}</Option>
                 ))}
@@ -170,22 +170,22 @@ class ToolInsert extends Component {
           </FormItem>
           <FormItem label="厂家">
             {getFieldDecorator('devManufactorName', requireInfoFun('请选择厂家'))(
-              <Input placeholder="请输入..." style={{width: 200}} disabled={!!originInsertInfo} />
+              <Input placeholder="请输入..." style={{ width: 200 }} disabled={!!originInsertInfo} />
             )}
           </FormItem>
           <FormItem label="型号">
             {getFieldDecorator('modeName', requireInfoFun('请选择型号'))(
-              <Input placeholder="请输入..." style={{width: 200}} disabled={!!originInsertInfo} />
+              <Input placeholder="请输入..." style={{ width: 200 }} disabled={!!originInsertInfo} />
             )}
           </FormItem>
           <FormItem label="制造商">
             {getFieldDecorator('manufactorName')(
-              <Input placeholder="30字以内" style={{width: 200}} />
+              <Input placeholder="30字以内" style={{ width: 200 }} />
             )}
           </FormItem>
           <FormItem label="供货商">
             {getFieldDecorator('supplierName')(
-              <Input placeholder="30字以内" style={{width: 200}} />
+              <Input placeholder="30字以内" style={{ width: 200 }} />
             )}
           </FormItem>
           <FormItem label="入库数量">
@@ -202,9 +202,9 @@ class ToolInsert extends Component {
                 },
               }],
             })(
-              <Input placeholder="30字以内" style={{width: 200}} />
+              <Input placeholder="30字以内" style={{ width: 200 }} />
             )}
-           {originInsertInfo && <span className={styles.prompt}>当前库存量为{toolNumber}</span>}
+            {originInsertInfo && <span className={styles.prompt}>当前库存量为{toolNumber}</span>}
           </FormItem>
           <FormItem label="单价">
             {getFieldDecorator('price', {
@@ -220,7 +220,7 @@ class ToolInsert extends Component {
                 },
               }],
             })(
-              <Input placeholder="请输入..." style={{width: 200}} />
+              <Input placeholder="请输入..." style={{ width: 200 }} />
             )}
             <span className={styles.prompt}>元</span>
           </FormItem>

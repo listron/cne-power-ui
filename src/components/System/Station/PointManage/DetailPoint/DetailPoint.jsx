@@ -79,7 +79,7 @@ class DetailPoint extends React.Component {
                 <Button className={styles.saveBtn} onClick={this.deletePoint}>删除</Button>
               </span>
             </div>
-            <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onWarningTipShow} />
           </div>
           <div className={styles.pageContainer}>
             <div className={styles.left}>

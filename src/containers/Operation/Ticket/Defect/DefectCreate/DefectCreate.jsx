@@ -25,14 +25,14 @@ class DefectCreate extends Component {
     changeCommonStore: PropTypes.func,
     getSliceDevices: PropTypes.func,
     getLostGenType: PropTypes.func,
-    editDefect:PropTypes.bool,
+    editDefect: PropTypes.bool,
   };
   constructor(props) {
     super(props);
     this.state = {
       showWarningTip: false,
       warningTipText: '',
-    }
+    };
   }
   componentDidMount() {
     this.props.getCommonList({ languageType: '1' });
@@ -42,7 +42,7 @@ class DefectCreate extends Component {
   componentWillReceiveProps(nextProps) {
     const { container, defectDetail } = nextProps;
     if (container === 'edit' && defectDetail.defectId !== this.props.defectDetail.defectId) {
-      const stationCode=defectDetail.stationCode
+      const stationCode = defectDetail.stationCode;
       this.props.getLostGenType({ stationCode, objectType: 1 });
     }
   }
@@ -50,11 +50,11 @@ class DefectCreate extends Component {
   onCancelEdit = () => { //取消编辑
     this.setState({
       showWarningTip: true,
-      warningTipText: '退出后信息无法保存!'
+      warningTipText: '退出后信息无法保存!',
     });
   }
 
-  onCancelWarningTip = () => {  //取消的事件
+  onCancelWarningTip = () => { //取消的事件
     this.setState({
       showWarningTip: false,
     });
@@ -86,8 +86,8 @@ class DefectCreate extends Component {
       <div className={styles.defectCreate}>
         {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.createTop}>
-          <span className={styles.text}>{editDefect ? rejectReason:'新建缺陷'}</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+          <span className={styles.text}>{editDefect ? rejectReason : '新建缺陷'}</span>
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
         </div>
         <div className={styles.createContent}>
           <DefectCreateForm {...this.props} />
@@ -119,16 +119,16 @@ const mapDispatchToProps = (dispatch) => ({
     payload: {
       params,
       deviceTypeAction: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-      resultName: 'deviceTypes'
-    }
+      resultName: 'deviceTypes',
+    },
   }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
     payload: {
       params,
       actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-      resultName: 'defectTypes'
-    }
+      resultName: 'defectTypes',
+    },
   }),
 });
 

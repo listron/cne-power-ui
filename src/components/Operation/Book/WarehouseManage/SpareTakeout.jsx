@@ -22,16 +22,16 @@ class SpareTakeout extends Component {
     takeoutWarehouseMaterial: PropTypes.func,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { getMaterialDetailsList, originTakeoutInfo, materialListParams } = this.props;
     const { inventoryId } = originTakeoutInfo;
     getMaterialDetailsList({ inventoryId, ...materialListParams });
   }
 
-  componentDidUpdate(preProps){
+  componentDidUpdate(preProps) {
     const preStatus = preProps.takeoutStatus;
     const { takeoutStatus } = this.props;
-    if ( preStatus === 'loading' && takeoutStatus === 'success') {
+    if (preStatus === 'loading' && takeoutStatus === 'success') {
       this.backToList(); // 成功，返回主页面
     }
   }
@@ -56,7 +56,7 @@ class SpareTakeout extends Component {
     });
   }
 
-  render(){
+  render() {
     const { form, originTakeoutInfo, takeoutStatus } = this.props;
     const { getFieldDecorator } = form;
     const requireInfoFun = (text, initialValue) => ({
@@ -67,33 +67,33 @@ class SpareTakeout extends Component {
       <section className={styles.takeout}>
         <h3 className={styles.title}>
           <span className={styles.text}>备品备件 - 出库</span>
-          <Icon type="arrow-left" onClick={this.backToList} className={styles.backIcon} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
         </h3>
         <Form className={styles.formPart}>
           <FormItem label="仓库名称">
             {getFieldDecorator('warehouseId', requireInfoFun('无仓库名称', originTakeoutInfo.warehouseName))(
-              <Select style={{width: 200}} disabled>
+              <Select style={{ width: 200 }} disabled>
                 <Option value={originTakeoutInfo.warehouseName}>{originTakeoutInfo.warehouseName}</Option>
               </Select>
             )}
           </FormItem>
           <FormItem label="物品名称">
             {getFieldDecorator('goodsName', requireInfoFun('无物品名称', originTakeoutInfo.goodsName))(
-              <Select style={{width: 200}} disabled>
+              <Select style={{ width: 200 }} disabled>
                 <Option value={originTakeoutInfo.goodsName}>{originTakeoutInfo.goodsName}</Option>
               </Select>
             )}
           </FormItem>
           <FormItem label="厂家">
             {getFieldDecorator('devManufactorName', requireInfoFun('无厂家名称', originTakeoutInfo.devManufactorName))(
-              <Select style={{width: 200}} disabled>
+              <Select style={{ width: 200 }} disabled>
                 <Option value={originTakeoutInfo.devManufactorName}>{originTakeoutInfo.devManufactorName}</Option>
               </Select>
             )}
           </FormItem>
           <FormItem label="型号">
             {getFieldDecorator('modeName', requireInfoFun('无型号', originTakeoutInfo.modeName))(
-              <Select style={{width: 200}} disabled>
+              <Select style={{ width: 200 }} disabled>
                 <Option value={originTakeoutInfo.modeName}>{originTakeoutInfo.modeName}</Option>
               </Select>
             )}

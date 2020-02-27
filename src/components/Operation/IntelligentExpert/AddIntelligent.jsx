@@ -241,7 +241,7 @@ class AddIntelligent extends Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.titleTop}>
           <span className={styles.text}>添加解决方案</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={() => this.setState({ showWarningTip: true, tooltipName: 'back' })} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={() => this.setState({ showWarningTip: true, tooltipName: 'back' })} />
         </div>
         <span ref={'wrap'} />
         <div className={styles.formBox}>
@@ -292,7 +292,7 @@ class AddIntelligent extends Component {
                   getPopupContainer={() => this.faultTypeRef}
                 />
               )}
-              <span ref={(ref) => {this.faultTypeRef = ref;}} />
+              <span ref={(ref) => { this.faultTypeRef = ref; }} />
             </FormItem>
             {stationType === '1' &&
               <React.Fragment>

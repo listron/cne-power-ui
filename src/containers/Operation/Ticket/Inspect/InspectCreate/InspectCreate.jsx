@@ -7,7 +7,7 @@ import { ticketAction } from '../../ticketAction';
 import { Icon } from 'antd';
 import styles from './inspectCreate.scss';
 import WarningTip from '../../../../../components/Common/WarningTip';
-class InspectCreate extends Component{
+class InspectCreate extends Component {
   static propTypes = {
     deviceTypeItems: PropTypes.object,
     onChangeShowContainer: PropTypes.func,
@@ -17,21 +17,21 @@ class InspectCreate extends Component{
     showContainer: PropTypes.string,
     changeInspectStore: PropTypes.func,
   }
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       editDataGet: false,
       showWarningTip: false,
-    }
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
   }
 
   onCloseInspectCreate = () => {
     this.setState({
       showWarningTip: true,
-      warningTipText: '退出后信息无法保存!'
+      warningTipText: '退出后信息无法保存!',
     });
   }
 
@@ -45,17 +45,17 @@ class InspectCreate extends Component{
     this.setState({
       showWarningTip: false,
     });
-    this.props.onChangeShowContainer({ container: 'list' });  
+    this.props.onChangeShowContainer({ container: 'list' });
   }
 
-  render(){
+  render() {
     const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.inspectCreate}>
-        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.createTop}>
           <span className={styles.text}>新建巡检</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCloseInspectCreate} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCloseInspectCreate} />
         </div>
         <div className={styles.createContent}>
           <InspectCreateForm {...this.props} />
@@ -71,18 +71,18 @@ const mapStateToProps = (state) => ({
   stations: state.common.get('stations'),
   error: state.operation.inspect.get('error'),
   deviceTypeItems: state.operation.inspect.get('deviceTypeItems'),
-})
+});
 const mapDispatchToProps = (dispatch) => ({
-  createInspect: payload => dispatch({ type: ticketAction.CREATE_INSPECT_SAGA, payload}),
+  createInspect: payload => dispatch({ type: ticketAction.CREATE_INSPECT_SAGA, payload }),
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
-  onChangeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload}),
+  onChangeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload }),
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,
     payload: {
-      params, 
+      params,
       deviceTypeAction: ticketAction.GET_INSPECT_FETCH_SUCCESS,
-      resultName: 'deviceTypeItems'
-    }
+      resultName: 'deviceTypeItems',
+    },
   }),
-})
-export default connect(mapStateToProps,mapDispatchToProps)(InspectCreate);
+});
+export default connect(mapStateToProps, mapDispatchToProps)(InspectCreate);

@@ -61,11 +61,7 @@
         font-size: 14px;
       }
       .backIcon {
-        font-size: 20px;
-        height: 100%;
-        width: 64px;
-        line-height: 64px;
-        cursor: pointer;
+        @include backIcon();
       }
     }
     .detail {

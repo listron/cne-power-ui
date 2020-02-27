@@ -30,7 +30,7 @@ export default class ToolReserve extends Component {
     remindShow: false,
     remindText: '',
     materialCode: null,
-    confirmRemind: () => {},
+    confirmRemind: () => { },
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 翻页
@@ -89,7 +89,7 @@ export default class ToolReserve extends Component {
       <div
         title={text || '--'}
         className={styles[styleText]}
-        style={{maxWidth: `${widthParam - 16}px`}}
+        style={{ maxWidth: `${widthParam - 16}px` }}
       >{text || '--'}</div>
     );
     const toolHandleRight = handleRight('book_operateTool');
@@ -207,7 +207,7 @@ export default class ToolReserve extends Component {
       remindShow: false,
       remindText: '',
       materialCode: null,
-      confirmRemind: () => {},
+      confirmRemind: () => { },
     });
   }
 
@@ -241,7 +241,7 @@ export default class ToolReserve extends Component {
     this.props.backList();
   }
 
-  render(){
+  render() {
     const { remindShow, remindText, confirmRemind } = this.state;
     const { reserveDetail, reserveListInfo, tabName, reserveParams, reserveListLoading } = this.props;
     const { pageSize, pageNum } = reserveParams;
@@ -251,7 +251,7 @@ export default class ToolReserve extends Component {
       <section className={styles.reserve} ref={(ref) => this.reserveBox = ref}>
         <h3 className={styles.title}>
           <span className={styles.text}>工器具 - 库存</span>
-          <Icon type="arrow-left" onClick={this.backToList} className={styles.backIcon} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
         </h3>
         <ReserveDetail reserveDetail={reserveDetail} tabName={tabName} />
         <div className={styles.pagination}>

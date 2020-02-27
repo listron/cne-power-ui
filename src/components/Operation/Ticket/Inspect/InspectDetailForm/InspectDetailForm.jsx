@@ -111,11 +111,11 @@ class InspectDetailForm extends Component {
     const rightHandler = localStorage.getItem('rightHandler');
     const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
     const abnormalIds = this.state.abnormalIds;
-    if (status === "2") {
+    if (status === '2') {
       return (
         <InspectAddAbnormal {...this.props} onSelectItem={this.onSelectItem} onTransformDefect={this.onTransformDefect} abnormalIds={this.state.abnormalIds} />
-      )
-    } else if (status === "3") {
+      );
+    } else if (status === '3') {
       return (
         <div className={styles.checkInspect}>
           <div className={styles.title}>
@@ -130,7 +130,7 @@ class InspectDetailForm extends Component {
           {checkInspectRight && <Button className={styles.checkBtn} onClick={this.onInspectCheck}>验收</Button>}
           <div style={{ color: '#353535' }}></div>
         </div>
-      )
+      );
     }
     return null;
 
@@ -178,7 +178,7 @@ class InspectDetailForm extends Component {
             <div className={styles.action}>
               <i className="iconfont icon-last" onClick={this.props.onPrev} />
               <i className="iconfont icon-next" onClick={this.props.onNext} />
-              <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+              <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
             </div>
           </div>
           <div className={styles.content} >

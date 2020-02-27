@@ -9,7 +9,7 @@ import DepartmentSelector from '../PersonnelMain/Modals/DepartmentSelector';
 import styles from './side.scss';
 
 const FormItem = Form.Item;
-const Option= Select.Option;
+const Option = Select.Option;
 
 class HandlePersonnelInfo extends Component {
   static propTypes = {
@@ -32,7 +32,7 @@ class HandlePersonnelInfo extends Component {
     addMode: 'save', // save, continue两种保存方式
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { userDetailInfo, pageKey, addUserLoading, addUserSuccess, form } = nextProps;
     const preDetail = this.props.userDetailInfo;
     const preLoading = this.props.addUserLoading;
@@ -120,7 +120,7 @@ class HandlePersonnelInfo extends Component {
     form.setFieldsValue({ departmentIds });
   }
 
-  render(){
+  render() {
     const { showWarningTip, addMode } = this.state;
     const { pageKey, form, roleAllList, specialRoleList, departmentTree, addUserLoading, departmentsStationMap } = this.props;
     const { getFieldDecorator } = form;
@@ -130,41 +130,42 @@ class HandlePersonnelInfo extends Component {
       <div className={styles.sideHandle} style={pageKey === 'detailPersonnel' ? { display: 'none' } : {}}>
         <div className={styles.topTitle}>
           <span className={styles.titleName}>{this.pageKeyInfo[pageKey] || ''}</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.warningTip} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.warningTip} />
         </div>
-          <Form className={styles.personnelInfoForm}>
-            <FormItem label="" className={styles.leftLogo}>
-              {getFieldDecorator('userLogo', {
-                initialValue: '/img/nopic.png',
-              })(
-                <PersonnelLogoUploader />
-              )}
+        <Form className={styles.personnelInfoForm}>
+          <FormItem label="" className={styles.leftLogo}>
+            {getFieldDecorator('userLogo', {
+              initialValue: '/img/nopic.png',
+            })(
+              <PersonnelLogoUploader />
+            )}
+          </FormItem>
+          <div className={styles.rightForms}>
+            <FormItem label="用户名" colon={false} className={styles.eachForm} >
+              {getFieldDecorator('username', {
+                initialValue: '',
+                rules: [{
+                  validator: (rule, value, callback) => {
+                    const truelyStr = value.trim();
+                    const patternRule = /^\S[\s\S]{1,23}\S$/;
+                    if (!truelyStr) {
+                      callback('请输入字符长度为3-25的用户名');
+                    } else if (!patternRule.test(truelyStr)) {
+                      callback('用户名需3-25个字符');
+                    }
+                    callback();
+                  },
+                  required: true,
+                }],
+              })(<Input placeholder="请输入用户名" style={{ width: '200px' }} disabled={usernamePhoneDisable} />)}
+              <span className={styles.instructionText}>(3-25位中文,英文,数字,特殊字符都可)</span>
             </FormItem>
-            <div className={styles.rightForms}>
-              <FormItem label="用户名" colon={false} className={styles.eachForm} >
-                {getFieldDecorator('username', {
-                  initialValue: '',
-                  rules: [{
+            <FormItem label="真实姓名" colon={false} className={styles.eachForm} >
+              {getFieldDecorator('userFullName', {
+                rules: [
+                  { required: true },
+                  {
                     validator: (rule, value, callback) => {
-                      const truelyStr = value.trim();
-                      const patternRule = /^\S[\s\S]{1,23}\S$/;
-                      if (!truelyStr) {
-                        callback('请输入字符长度为3-25的用户名');
-                      } else if (!patternRule.test(truelyStr)) {
-                        callback('用户名需3-25个字符');
-                      }
-                      callback();
-                    },
-                    required: true,
-                  }],
-                })( <Input placeholder="请输入用户名" style={{width: '200px'}} disabled={usernamePhoneDisable} /> )}
-                <span className={styles.instructionText}>(3-25位中文,英文,数字,特殊字符都可)</span>
-              </FormItem>
-              <FormItem label="真实姓名" colon={false} className={styles.eachForm} >
-                {getFieldDecorator('userFullName', {
-                  rules: [
-                    { required: true },
-                    { validator: (rule, value, callback) => {
                       const exactStr = value.trim();
                       const patternRule = /^[A-Za-z \u4e00-\u9fa5]{0,30}$/;
                       if (!exactStr) {
@@ -174,72 +175,74 @@ class HandlePersonnelInfo extends Component {
                         callback('请输入小于30字符的真实姓名');
                       }
                       callback();
-                    }},
-                  ],
-                  initialValue: '',
-                })( <Input placeholder="请输入真实姓名" style={{width: '200px'}} /> )}
-                <span className={styles.instructionText}>(中文/英文/空格 长度小于30个字)</span>
-              </FormItem>
-              <FormItem label="电话" colon={false} className={styles.eachForm} >
-                {getFieldDecorator('phoneNum', {
-                  initialValue: '',
-                  rules: [{
-                    message: '请输入正确的手机号',
-                    pattern: /^1[123456789]\d{9}$/,
-                    required: true,
-                  }],
-                })( <Input placeholder="请输入电话号码" style={{width: '200px'}} disabled={usernamePhoneDisable} /> )}
-                <span className={styles.instructionText}>(11位手机号码)</span>
-              </FormItem>
-              <FormItem label="邮箱" colon={false} className={styles.eachForm} >
-                {getFieldDecorator('email', {rules: [{
-                    message: '请输入正确格式的邮箱',
-                    pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
-                  }],
-                  initialValue: '',
-                })( <Input placeholder="请输入邮箱" style={{width: '200px'}} /> )}
-                <span className={styles.instructionText}>(可用邮箱找回密码)</span>
-              </FormItem>
-              <FormItem label="角色" colon={false} className={styles.eachForm} >
-                {getFieldDecorator('roleIds', {
-                  initialValue: [],
-                })(
-                  <Select
-                    mode="multiple"
-                    placeholder="请选择用户角色"
-                    style={{width: '200px'}}
-                    className={styles.selectRoles}
-                  >
-                    {roleAllList.map((e)=>(
-                      <Option key={e.roleId} value={e.roleId}>{e.roleDesc}</Option>
-                    ))}
-                  </Select>
-                )}
-                <span className={styles.instructionText}>(没有设置角色的用户无法正常使用系统)</span>
-              </FormItem>
-              <FormItem label="所属部门" colon={false} className={styles.eachForm}>
-                {getFieldDecorator('departmentIds', {
-                  initialValue: [],
-                })(
-                  <DepartmentSelector departmentTree={departmentTree.filter(e => e.departmentId !== '1')} onChange={this.departsChange} />
-                )}
-              </FormItem>
-              {departmentsStationMap.length > 0 && <div className={styles.eachForm}>
-                <div className={styles.label}>负责电站</div>
-                <div className={styles.stationInfos}>
-                  {departmentsStationMap.map(e => {
-                    const { departmentName, stations } = e || {};
-                    const stationText = stations ? stations.map(e => e.stationName).join(',') : '--';
-                    return (
-                      <section key={departmentName} className={styles.eachDepart}>
-                        <h4>{departmentName || '--'}</h4>
-                        <div className={styles.stationText}>{stationText}</div>
-                      </section>
-                    );
-                  })}
-                </div>
-              </div>}
-              {/* <FormItem colon={false} label="特殊权限" className={styles.eachForm} >
+                    },
+                  },
+                ],
+                initialValue: '',
+              })(<Input placeholder="请输入真实姓名" style={{ width: '200px' }} />)}
+              <span className={styles.instructionText}>(中文/英文/空格 长度小于30个字)</span>
+            </FormItem>
+            <FormItem label="电话" colon={false} className={styles.eachForm} >
+              {getFieldDecorator('phoneNum', {
+                initialValue: '',
+                rules: [{
+                  message: '请输入正确的手机号',
+                  pattern: /^1[123456789]\d{9}$/,
+                  required: true,
+                }],
+              })(<Input placeholder="请输入电话号码" style={{ width: '200px' }} disabled={usernamePhoneDisable} />)}
+              <span className={styles.instructionText}>(11位手机号码)</span>
+            </FormItem>
+            <FormItem label="邮箱" colon={false} className={styles.eachForm} >
+              {getFieldDecorator('email', {
+                rules: [{
+                  message: '请输入正确格式的邮箱',
+                  pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
+                }],
+                initialValue: '',
+              })(<Input placeholder="请输入邮箱" style={{ width: '200px' }} />)}
+              <span className={styles.instructionText}>(可用邮箱找回密码)</span>
+            </FormItem>
+            <FormItem label="角色" colon={false} className={styles.eachForm} >
+              {getFieldDecorator('roleIds', {
+                initialValue: [],
+              })(
+                <Select
+                  mode="multiple"
+                  placeholder="请选择用户角色"
+                  style={{ width: '200px' }}
+                  className={styles.selectRoles}
+                >
+                  {roleAllList.map((e) => (
+                    <Option key={e.roleId} value={e.roleId}>{e.roleDesc}</Option>
+                  ))}
+                </Select>
+              )}
+              <span className={styles.instructionText}>(没有设置角色的用户无法正常使用系统)</span>
+            </FormItem>
+            <FormItem label="所属部门" colon={false} className={styles.eachForm}>
+              {getFieldDecorator('departmentIds', {
+                initialValue: [],
+              })(
+                <DepartmentSelector departmentTree={departmentTree.filter(e => e.departmentId !== '1')} onChange={this.departsChange} />
+              )}
+            </FormItem>
+            {departmentsStationMap.length > 0 && <div className={styles.eachForm}>
+              <div className={styles.label}>负责电站</div>
+              <div className={styles.stationInfos}>
+                {departmentsStationMap.map(e => {
+                  const { departmentName, stations } = e || {};
+                  const stationText = stations ? stations.map(e => e.stationName).join(',') : '--';
+                  return (
+                    <section key={departmentName} className={styles.eachDepart}>
+                      <h4>{departmentName || '--'}</h4>
+                      <div className={styles.stationText}>{stationText}</div>
+                    </section>
+                  );
+                })}
+              </div>
+            </div>}
+            {/* <FormItem colon={false} label="特殊权限" className={styles.eachForm} >
                 {getFieldDecorator('specialRoleIds', {
                   initialValue: [],
                 })(
@@ -256,20 +259,20 @@ class HandlePersonnelInfo extends Component {
                   </Select>
                 )}
               </FormItem> */}
-              <div className={styles.buttonRow}>
-                <Button
-                  onClick={this.saveUser}
-                  loading={addMode === 'continue' && addUserLoading }
-                  className={styles.saveUser}
-                >保存</Button>
-                <Button
-                  onClick={this.saveContinue}
-                  loading={pageKey === 'save' && addUserLoading}
-                >保存并继续添加</Button>
-              </div>
+            <div className={styles.buttonRow}>
+              <Button
+                onClick={this.saveUser}
+                loading={addMode === 'continue' && addUserLoading}
+                className={styles.saveUser}
+              >保存</Button>
+              <Button
+                onClick={this.saveContinue}
+                loading={pageKey === 'save' && addUserLoading}
+              >保存并继续添加</Button>
             </div>
-          </Form>
-          {showWarningTip && <WarningTip onCancel={this.cancelBack} onOK={this.confirmBack} value="退出后信息无法保存!" />}
+          </div>
+        </Form>
+        {showWarningTip && <WarningTip onCancel={this.cancelBack} onOK={this.confirmBack} value="退出后信息无法保存!" />}
       </div>
     );
   }

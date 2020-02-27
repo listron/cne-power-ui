@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Icon, Form, Row, Col, Button, DatePicker, Select} from 'antd';
+import { Icon, Form, Row, Col, Button, DatePicker, Select } from 'antd';
 import CancelModal from './CancelModal/CancelModal';
 import SureModal from './SureModal/SureModal';
 import StationSelect from '../../../../Common/StationSelect/index';
@@ -47,7 +47,7 @@ class AddAlgorithm extends React.Component {
   }
 
   componentDidMount() {
-    const {getAlgoOptionList} = this.props;
+    const { getAlgoOptionList } = this.props;
     getAlgoOptionList();
   }
 
@@ -183,30 +183,31 @@ class AddAlgorithm extends React.Component {
               新建
             </div>
             <div onClick={this.cancelFunc}>
-              <Icon type="arrow-left" className={styles.backIcon} />
+              <i className={`iconfont icon-fanhui ${styles.backIcon}`} />
             </div>
+
           </div>
           <div className={styles.addContent}>
             <div className={styles.addForm}>
               <Form onSubmit={this.handleSend} layout="inline">
-                <Row style={{paddingLeft: 28}}>
+                <Row style={{ paddingLeft: 28 }}>
                   <Col>
                     <FormItem label="算法模型">
                       {getFieldDecorator('modal', {
-                        rules: [{ required: true, message: '请输入算法模型'}],
+                        rules: [{ required: true, message: '请输入算法模型' }],
                         initialValue: 1,
                       })(<Select style={{ width: 200 }}>
-                          {optionItem}
+                        {optionItem}
                       </Select>
                       )}
                     </FormItem>
                   </Col>
                 </Row>
-                <Row style={{paddingLeft: 28}}>
+                <Row style={{ paddingLeft: 28 }}>
                   <Col>
                     <FormItem label="电站名称">
                       {getFieldDecorator('selectStationName', {
-                        rules: [{ required: true, message: '请输入电站名称'}],
+                        rules: [{ required: true, message: '请输入电站名称' }],
                       })(
                         <StationSelect
                           data={stations.toJS().filter(e => e.stationType === 0)}
@@ -221,7 +222,7 @@ class AddAlgorithm extends React.Component {
                   <Col>
                     <FormItem label="检测开始日期">
                       {getFieldDecorator('startTime', {
-                        rules: [{ required: true, message: '请输入检测开始日期'}],
+                        rules: [{ required: true, message: '请输入检测开始日期' }],
                       })(
                         <DatePicker
                           style={{ width: '200px' }}
@@ -236,7 +237,7 @@ class AddAlgorithm extends React.Component {
                   <Col>
                     <FormItem label="训练开始日期">
                       {getFieldDecorator('actionTime', {
-                        rules: [{ required: true, message: '请输入训练开始日期'}],
+                        rules: [{ required: true, message: '请输入训练开始日期' }],
                       })(
                         <DatePicker
                           style={{ width: '200px' }}
@@ -246,7 +247,7 @@ class AddAlgorithm extends React.Component {
                           placeholder="请选择时间"
                         />)}
                     </FormItem>
-                    <FormItem style={{color: '#999999'}}>
+                    <FormItem style={{ color: '#999999' }}>
                       {(!actionAndEndTime) && (`（训练时长${actionDiffTime}天）`)}
                     </FormItem>
                   </Col>
@@ -255,27 +256,27 @@ class AddAlgorithm extends React.Component {
                   <Col>
                     <FormItem label="检测结束日期">
                       {getFieldDecorator('endTime', {
-                        rules: [{ required: true, message: '请输入检测结束日期'}],
+                        rules: [{ required: true, message: '请输入检测结束日期' }],
                       })(<DatePicker
-                          style={{ width: '200px' }}
-                          disabled={actionAndEndTime}
-                          disabledDate={current => current && current > moment(actionAndEndDisabledDate).add(6, 'days') || current && current < moment(actionAndEndDisabledDate).subtract(0, 'days')}
-                          onChange={this.onEndChange}
-                          placeholder="请选择时间"
+                        style={{ width: '200px' }}
+                        disabled={actionAndEndTime}
+                        disabledDate={current => current && current > moment(actionAndEndDisabledDate).add(6, 'days') || current && current < moment(actionAndEndDisabledDate).subtract(0, 'days')}
+                        onChange={this.onEndChange}
+                        placeholder="请选择时间"
                       />)}
                     </FormItem>
-                    <FormItem style={{color: '#999999'}}>
+                    <FormItem style={{ color: '#999999' }}>
                       {(!actionAndEndTime) && (`（检测时长${endDiffTime}天）`)}
                     </FormItem>
                   </Col>
                 </Row>
-                <Row style={{display: 'flex', paddingLeft: 110}}>
+                <Row style={{ display: 'flex', paddingLeft: 110 }}>
                   <Col>
                     <Button style={{ width: '88px' }} onClick={this.handlerResetForm}>
                       重置
                     </Button>
                   </Col>
-                  <Col style={{marginLeft: 24}}>
+                  <Col style={{ marginLeft: 24 }}>
                     <Button style={{ width: '88px' }} htmlType="submit" type="primary">
                       下发
                     </Button>

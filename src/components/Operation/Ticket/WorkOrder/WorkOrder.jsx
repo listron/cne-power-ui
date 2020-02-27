@@ -39,21 +39,21 @@ class DefectDetailForm extends Component {
       showWarningTip: false,
       warningTipText: '',
       warningTipText: '退出后信息无法保存!',
-    }
+    };
   }
 
   componentWillUnmount() {
-    this.props.resetStore()
+    this.props.resetStore();
   }
 
 
   onCancelEdit = () => {
     const data = this.props;
     const { pageName, onChange, modify } = this.props;
-    modify && this.setState({ showWarningTip: true, });
+    modify && this.setState({ showWarningTip: true });
     if (!modify || data.defectDetail.defectStatus === '4') {//已完成的状态
-      this.setState({ showWarningTip: false, });
-      onChange({ pageName });  //  退回到之前的页面
+      this.setState({ showWarningTip: false });
+      onChange({ pageName }); //  退回到之前的页面
     }
   }
 
@@ -63,19 +63,19 @@ class DefectDetailForm extends Component {
     });
   }
 
-  onConfirmWarningTip = () => {  //确定
+  onConfirmWarningTip = () => { //确定
     this.setState({
       showWarningTip: false,
     });
     const { pageName, onChange } = this.props;
-    onChange({ pageName });  //  退回到之前的页面
+    onChange({ pageName }); //  退回到之前的页面
   }
 
 
 
   onPrev = () => { // 向前
     const { defectIdList, defectId } = this.props;
-    let index = defectIdList.findIndex(e => e === defectId);
+    const index = defectIdList.findIndex(e => e === defectId);
     if (index > -1) {
       if (index === 0) {
         message.destroy();
@@ -93,7 +93,7 @@ class DefectDetailForm extends Component {
 
   onNext = () => { // 向后
     const { defectIdList, defectId } = this.props;
-    let index = defectIdList.findIndex(e => e === defectId);
+    const index = defectIdList.findIndex(e => e === defectId);
     if (index > -1) {
       if (index === defectIdList.length - 1) {
         message.destroy();
@@ -127,7 +127,7 @@ class DefectDetailForm extends Component {
 
 
   render() {
-    const { defectTypes, defectDetail, isFromAlarm, commonList, otherFrom, modify,getKnowledgebase,knowledgebaseList } = this.props;
+    const { defectTypes, defectDetail, isFromAlarm, commonList, otherFrom, modify, getKnowledgebase, knowledgebaseList } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const processData = defectDetail.processData;
     const status = defectDetail.defectStatus;
@@ -143,17 +143,17 @@ class DefectDetailForm extends Component {
                 <i className="iconfont icon-last" onClick={this.onPrev} />
                 <i className="iconfont icon-next" onClick={this.onNext} />
               </div>}
-              <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+              <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
             </div>
           </div>
           <div className={styles.content}>
             <div className={styles.basic}>
-              <DefectBasicInfo 
-              basicInfo={defectDetail} 
-              defectTypes={defectTypes} 
-              getKnowledgebase={getKnowledgebase} 
-              knowledgebaseList={knowledgebaseList}
-              likeKnowledgebase={this.props.likeKnowledgebase}
+              <DefectBasicInfo
+                basicInfo={defectDetail}
+                defectTypes={defectTypes}
+                getKnowledgebase={getKnowledgebase}
+                knowledgebaseList={knowledgebaseList}
+                likeKnowledgebase={this.props.likeKnowledgebase}
               />
             </div>
             <div className={styles.right}>

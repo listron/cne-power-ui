@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { Button, Icon, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import WarningTip from '../../../../Common/WarningTip';
-import styles from "./warnConfig.scss";
+import styles from './warnConfig.scss';
 
 class DetailRule extends Component {
   static propTypes = {
@@ -16,11 +16,11 @@ class DetailRule extends Component {
   }
 
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       showWarningTip: false,
-      warningTipText: ''
-    }
+      warningTipText: '',
+    };
   }
 
   componentDidMount() { // 初始请求数据
@@ -30,20 +30,20 @@ class DetailRule extends Component {
   onPrev = () => { // 向前
     const { warnList, warnDetail, listQueryParams, getOtherPageDetail, getDetail } = this.props;
     const { pageNum } = listQueryParams;
-    let detailIndex = warnList.findIndex(e => e.warningCheckId === warnDetail.warningCheckId);
+    const detailIndex = warnList.findIndex(e => e.warningCheckId === warnDetail.warningCheckId);
     if (pageNum === 1 && detailIndex === 0) {//第一条记录
       this.setState({
         showWarningTip: true,
         warningTipText: '这是第一个!',
-      })
+      });
     } else if (pageNum > 1 && detailIndex === 0) { // 向前翻一页
-      listQueryParams.pageNum = pageNum - 1
-      getOtherPageDetail({ parms: listQueryParams, previous: true })
+      listQueryParams.pageNum = pageNum - 1;
+      getOtherPageDetail({ parms: listQueryParams, previous: true });
     } else if (detailIndex > 0) {
-      const { warningCheckId } = warnList[detailIndex - 1]
-      getDetail(warningCheckId)
+      const { warningCheckId } = warnList[detailIndex - 1];
+      getDetail(warningCheckId);
     } else {
-      console.log("信息有误，在tablelist中未获取")
+      console.log('信息有误，在tablelist中未获取');
     }
   }
 
@@ -52,27 +52,27 @@ class DetailRule extends Component {
   onNext = () => { // 向后
     const { warnList, warnDetail, listQueryParams, getOtherPageDetail, getDetail, totalNum } = this.props;
     const { pageNum, pageSize } = listQueryParams;
-    let detailIndex = warnList.findIndex(e => e.warningCheckId === warnDetail.warningCheckId);
-    const maxPage = Math.ceil(totalNum / pageSize)
+    const detailIndex = warnList.findIndex(e => e.warningCheckId === warnDetail.warningCheckId);
+    const maxPage = Math.ceil(totalNum / pageSize);
     const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize - 1;
     if (pageNum === maxPage && detailIndex === lastPageMaxIndex) {//最后一条记录
       this.setState({
         showWarningTip: true,
         warningTipText: '这是最后一个!',
-      })
+      });
     } else if (pageNum < maxPage && detailIndex === pageSize - 1) {
-      listQueryParams.pageNum = pageNum + 1
-      getOtherPageDetail({ parms: listQueryParams, previous: false })
+      listQueryParams.pageNum = pageNum + 1;
+      getOtherPageDetail({ parms: listQueryParams, previous: false });
     } else if (pageNum <= maxPage) {
-      const { warningCheckId } = warnList[detailIndex + 1]
-      getDetail(warningCheckId)
+      const { warningCheckId } = warnList[detailIndex + 1];
+      getDetail(warningCheckId);
     } else {
-      console.log("信息有误，在tablelist中未获取")
+      console.log('信息有误，在tablelist中未获取');
     }
   }
 
   onCancelEdit = () => { // 退出按钮
-    this.props.changeWarnStore({ showPage: 'home' })
+    this.props.changeWarnStore({ showPage: 'home' });
   }
 
   warnDetail = (warnDetail) => { // 预警详情
@@ -82,15 +82,15 @@ class DetailRule extends Component {
     return (<div>
       <span>{'预警规则：'}</span>
       <div>{`当测点值 ${rule}${warnDetail.warningValue}会产生预警， 当测点${rule2}${value}时预警才会消失`}</div>
-    </div>)
+    </div>);
   }
 
   clickEdit = () => {
-    this.props.changeWarnStore({ showPage: 'edit' })
+    this.props.changeWarnStore({ showPage: 'edit' });
   }
 
   confirmWarningTip = () => {
-    this.setState({ showWarningTip: false })
+    this.setState({ showWarningTip: false });
   }
 
   render() {
@@ -104,7 +104,7 @@ class DetailRule extends Component {
           <div className={styles.action}>
             <i className="iconfont icon-last" title="上一个" onClick={this.onPrev} />
             <i className="iconfont icon-next" title="下一个" onClick={this.onNext} />
-            <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
           </div>
         </div>
         <div className={styles.detailCont}>
@@ -124,14 +124,15 @@ class DetailRule extends Component {
                   </Tooltip>
                 </div>
                 <span className={styles.warningRuler}>{warnDetail.warningRuler === 1 ? '小于' : '大于'}{warnDetail.warningValue},震荡区间 {warnDetail.warningDeadZone} </span></div>
-              <div>预警级别 <span>{['一','二','三','四','五'][warnDetail.warningLevel-1]||'--'}级</span></div>
+              <div>预警级别 <span>{['一', '二', '三', '四', '五'][warnDetail.warningLevel - 1] || '--'}级</span></div>
               <div>是否启用 <span>{warnDetail.warningEnabled === 1 ? '是' : '否' || '--'}</span></div>
             </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
 export default DetailRule
+  ;

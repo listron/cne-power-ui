@@ -8,7 +8,7 @@
   left: 0;
   top: 0;
   width: 100%;
-  padding: 24px 24px 0;
+  padding: 15px 24px 0;
   transition: all 500ms;
   z-index: 99;
   display: flex;
@@ -26,6 +26,7 @@
     padding-left: 32px;
     align-items: center;
     justify-content: space-between;
+    height: 64px;
     .titleName{
       font-size: 18px;
       letter-spacing: 4px;
@@ -36,18 +37,14 @@
       justify-content: flex-end;
       align-items: center;
       :global{
-        .iconfont{
+        .icon-last,.icon-next{
           margin-right: 20px;
           cursor: pointer;
         }
       }
     }
     .backIcon{
-      color: $darkColor;
-      font-size: 20px;
-      line-height: 64px;
-      flex: 0 0 64px;
-      cursor: pointer;
+      @include backIcon();
     }
   }
 }
@@ -152,10 +149,6 @@
   background-color: #fff;
   .topTitle{
     border-bottom: 1px solid $promptColor;
-    .backIcon{
-      color: $darkColor;
-      border-left: 1px solid $promptColor;
-    }
   }
 }
 

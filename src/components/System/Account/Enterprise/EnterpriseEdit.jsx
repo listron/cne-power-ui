@@ -20,31 +20,31 @@ class EnterpriseEdit extends Component {
     enterpriseDetail: PropTypes.object,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       enterpriseLogo: props.enterpriseDetail && props.enterpriseDetail.enterpriseLogo,
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
-    }
+    };
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.changeEnterpriseStore({
       showPage: 'detail',
     });
   }
 
-  onWarningTipShow = () =>{
+  onWarningTipShow = () => {
     this.setState({
       showWarningTip: true,
-    })
+    });
   }
 
   uploadLogo = (imgInfor) => {
     this.setState({
-      enterpriseLogo: imgInfor.thumbUrl
-    })
+      enterpriseLogo: imgInfor.thumbUrl,
+    });
   }
 
   confirmWarningTip = () => {
@@ -56,39 +56,39 @@ class EnterpriseEdit extends Component {
   cancelWarningTip = () => {
     this.setState({
       showWarningTip: false,
-    })
+    });
   }
-  
-  render(){
+
+  render() {
     const { enterpriseLogo } = this.state;
-    const { enterpriseId, enterpriseDetail,saveEnterpriseInfor, loading } = this.props;
+    const { enterpriseId, enterpriseDetail, saveEnterpriseInfor, loading } = this.props;
     const { showWarningTip, warningTipText } = this.state;
-    const uploadPath=`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`;
+    const uploadPath = `${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`;
     return (
       <div className={styles.enterpriseEdit} >
-        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}      
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onWarningTipShow} />
         </div>
         <div className={styles.mainPart} >
           <div className={styles.logoPart} >
-            <SingleImgUploader uploadPath={uploadPath} onOK={this.uploadLogo} data={{thumbUrl:enterpriseLogo}} />
+            <SingleImgUploader uploadPath={uploadPath} onOK={this.uploadLogo} data={{ thumbUrl: enterpriseLogo }} />
             <div className={styles.instruction}>
               <span>LOGO上传</span>
               <span>240px*240px为佳，大小不超过2M</span>
             </div>
           </div>
-          <EditForm 
-            enterpriseDetail={enterpriseDetail} 
-            enterpriseLogo={enterpriseLogo} 
-            saveEnterpriseInfor={saveEnterpriseInfor} 
-            loading={loading} 
+          <EditForm
+            enterpriseDetail={enterpriseDetail}
+            enterpriseLogo={enterpriseLogo}
+            saveEnterpriseInfor={saveEnterpriseInfor}
+            loading={loading}
             enterpriseId={enterpriseId}
           />
         </div>
       </div>
-    )
+    );
   }
 }
 

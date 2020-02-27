@@ -143,7 +143,7 @@ class CleanoutPlanRecord extends Component {
               <span className={styles.handleArea} >
                 <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />
                 <i className="iconfont icon-next" title="下一个" onClick={this.nextStation} />
-                <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
+                <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
               </span>
             </div>
             <div className={styles.statisticData}>

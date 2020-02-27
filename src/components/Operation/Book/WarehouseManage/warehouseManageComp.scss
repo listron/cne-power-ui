@@ -93,6 +93,7 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid $promptColor;
+    height: 60px;
     .text{
       font-size: 18px;
       font-weight: 550;
@@ -100,12 +101,7 @@
       padding-left: 30px;
     }
     .backIcon{
-      font-size: 24px;
-      flex-basis: 64px;
-      height: 64px;
-      line-height: 64px;
-      color: $lightColor;
-      border-left: 1px solid $promptColor;
+      @include backIcon();
     }
   }
   .handlePart{

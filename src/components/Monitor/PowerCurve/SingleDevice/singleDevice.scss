@@ -21,14 +21,7 @@
     }
     .right {
       .backIcon {
-        border-left: 1px solid #d4d4d4;
-        width: 60px;
-        line-height: 60px;
-        text-align: center;
-        color: $darkColor;
-        cursor: pointer;
-        font-size: 18px;
-        display: block;
+        @include backIcon();
       }
     }
   }

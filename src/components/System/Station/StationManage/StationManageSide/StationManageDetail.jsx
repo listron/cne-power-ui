@@ -30,7 +30,7 @@ class StationManageDetail extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '',
-    }
+    };
   }
 
   preStation = () => { // 上一个电站详情
@@ -39,19 +39,19 @@ class StationManageDetail extends Component {
       this.setState({
         showWarningTip: true,
         warningTipText: '这是第一个!',
-      })
+      });
     } else if (selectedStationIndex === 0 && pageNum > 1) { // 其他页向前翻页
       getOtherPageStationDetail({
         ...queryListParams,
         pageNum: pageNum - 1,
         selectedStationIndex: pageSize - 1,
-      })
+      });
     } else {
       getStationDetail({ // 正常请求上一条电站详情数据
         ...queryListParams,
         selectedStationIndex: selectedStationIndex - 1,
         stationCode: stationList[selectedStationIndex].stationCode,
-      })
+      });
     }
   }
 
@@ -63,19 +63,19 @@ class StationManageDetail extends Component {
       this.setState({
         showWarningTip: true,
         warningTipText: '这是最后一个!',
-      })
+      });
     } else if (selectedStationIndex === pageSize - 1 && pageNum < maxPage) { // 向后翻页
       getOtherPageStationDetail({
         ...queryListParams,
         pageNum: pageNum + 1,
         selectedStationIndex: 0,
-      })
+      });
     } else {
       getStationDetail({ // 请求下一条电站详情数据
         ...queryListParams,
         selectedStationIndex: selectedStationIndex + 1,
         stationCode: stationList[selectedStationIndex].stationCode,
-      })
+      });
     }
   }
 
@@ -83,7 +83,7 @@ class StationManageDetail extends Component {
     this.setState({
       showWarningTip: false,
       warningTipText: '',
-    })
+    });
   }
 
   backToList = () => { // 返回列表页
@@ -104,25 +104,25 @@ class StationManageDetail extends Component {
     departmentList.forEach(e => {
       if (!e) { return; }
       e.parentDepartmentId ? subDepartmentArray.push({
-        ...e
+        ...e,
       }) : parentDepartmentArray.push({
-        ...e
-      })
-    })
+        ...e,
+      });
+    });
     const departmentInfoTree = parentDepartmentArray.map(e => {
       const subArray = subDepartmentArray.filter(sub => sub.parentDepartmentId === e.departmentId);
       return {
         ...e,
         children: subArray,
-      }
-    })
+      };
+    });
     const departmentInfo = departmentInfoTree.map(e => {
       let subInfo = '';
       if (e.children && e.children.length > 0) {
         subInfo = `-${e.children.map(sub => sub.departmentName).join(',')}`;
       }
-      return `${e.departmentName}${subInfo}`
-    })
+      return `${e.departmentName}${subInfo}`;
+    });
     return departmentInfo.join('；');
   }
 
@@ -148,15 +148,15 @@ class StationManageDetail extends Component {
               接入时间:{stationDetail.ongridTime ? moment(stationDetail.ongridTime).format('YYYY-MM-DD') : '--'}
             </span>
               : <span>电站未接入</span>}
-            {departmentInfo ? ` | ` : ``}
+            {departmentInfo ? ' | ' : ''}
             <span className={styles.departmentInfo} title={departmentInfo}>
               {departmentInfo}
             </span>
           </span>
           <span className={styles.handleArea} >
-            <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />
+            <i className="iconfont icon-last" title=" 上一个" onClick={this.preStation} />
             <i className="iconfont icon-next" title="下一个" onClick={this.nextStation} />
-            <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.backToList} />
           </span>
         </div>
         <div className={styles.stationManageContent} >
@@ -187,7 +187,7 @@ class StationManageDetail extends Component {
           <DetailInfoPart title="其他信息" infoArray={otherInfo} noBottomBorder />
         </div>
       </div>
-    )
+    );
   }
 }
 

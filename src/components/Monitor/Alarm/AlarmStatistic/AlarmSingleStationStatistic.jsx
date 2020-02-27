@@ -208,7 +208,10 @@ class ALarmSingleStationStatistic extends React.Component {
             <div>{singleAlarmSummary && singleAlarmSummary.stationStatus === '500' && `时间：${singleAlarmSummary && singleAlarmSummary.interruptTime}`}</div>
           </div>
         </div>
-        <Link to="/monitor/alarm/statistic"><Icon type="arrow-left" className={styles.backIcon} onClick={this.onClose} /></Link>
+        <Link to="/monitor/alarm/statistic">
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onClose} />
+        </Link>
+
       </div>
     );
   }

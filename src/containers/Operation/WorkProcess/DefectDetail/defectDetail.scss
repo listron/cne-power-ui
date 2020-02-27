@@ -12,6 +12,7 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid $promptColor;
+    height:60px;
     .text {
       font-size: 18px;
       color: $darkColor;
@@ -21,16 +22,8 @@
       @include overflowText();
     }
     .backIcon {
-      display: inline-block;
-      color: $darkColor;
-      font-size: 20px;
-      border-left: 1px solid $promptColor;
       margin-left: 10px;
-      height: 100%;
-      line-height: 64px;
-      width: 64px;
-      cursor: pointer;
-      flex: 0 0 64px;
+      @include backIcon();
     }
   }
   .defectDetailCont {

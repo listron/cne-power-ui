@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { Select, Table, Modal, Form, Input, Button, Icon, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
-import styles from "./warnConfig.scss";
+import styles from './warnConfig.scss';
 import StationSelect from '../../../../Common/StationSelect';
 import WarnRule from './WarnRule';
 import WarningTip from '../../../../Common/WarningTip';
@@ -24,7 +24,7 @@ class AddRule extends Component {
   }
 
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       stationCode: null,
       deviceTypeCode: null,
@@ -34,74 +34,74 @@ class AddRule extends Component {
       warningTipText: '退出后信息将无法保存',
       warningTipSaveText: '请确认预警规则',
       buttonStatus: '',
-    }
+    };
   }
   onCancelEdit = () => { //  推出按钮
-    this.setState({ showWarningTip: true })
+    this.setState({ showWarningTip: true });
   }
 
   selectStation = (stations) => { // 选中电站
     const { getStationDeviceTypes, changeWarnStore } = this.props;
     getStationDeviceTypes({
-      payload: { stationCodes: stations.length > 0 && stations[0].stationCode || null, },
-      resultName: 'ruleStationDeviceTypes'
+      payload: { stationCodes: stations.length > 0 && stations[0].stationCode || null },
+      resultName: 'ruleStationDeviceTypes',
     });
-    this.setState({ stationCode: stations.length > 0 && stations[0].stationCode || null, })
+    this.setState({ stationCode: stations.length > 0 && stations[0].stationCode || null });
     changeWarnStore({
       ruleDeviceModels: [],
       ruleDevicePoints: [],
-    })
-    this.props.form.setFieldsValue({ deviceTypeCode: null, deviceModeCode: null, pointCode: '', pointUnit: '' })
+    });
+    this.props.form.setFieldsValue({ deviceTypeCode: null, deviceModeCode: null, pointCode: '', pointUnit: '' });
   }
 
   selectDeviceType = (value) => { // 选中设备类型
     const { changeWarnStore, getDeviceModel } = this.props;
     const { stationCode } = this.state;
     getDeviceModel({
-      payload: { stationCode, deviceTypeCode: value, },
-      resultName: 'ruleDeviceModels'
+      payload: { stationCode, deviceTypeCode: value },
+      resultName: 'ruleDeviceModels',
     });
-    this.setState({ deviceTypeCode: value })
+    this.setState({ deviceTypeCode: value });
     changeWarnStore({
       ruleDevicePoints: [],
-    })
-    this.props.form.setFieldsValue({ deviceModeCode: null, pointCode: '', pointUnit: '' })
+    });
+    this.props.form.setFieldsValue({ deviceModeCode: null, pointCode: '', pointUnit: '' });
   }
 
   selectDeviceModel = (value) => { // 选中设备型号
     const { getFilterPoints } = this.props;
     const { stationCode, deviceTypeCode } = this.state;
-    this.setState({ deviceModeCode: value })
-    getFilterPoints({stationCode, deviceTypeCode, deviceModeCode: value });
-    this.props.form.setFieldsValue({ pointCode: '', pointUnit: '' })
+    this.setState({ deviceModeCode: value });
+    getFilterPoints({ stationCode, deviceTypeCode, deviceModeCode: value });
+    this.props.form.setFieldsValue({ pointCode: '', pointUnit: '' });
   }
 
   selectPoints = (value) => { // 选中测点
     const unit = value.split('_')[1];
     const { setFieldsValue } = this.props.form;
-    setFieldsValue({ pointUnit: unit !== 'null' && unit || '--' })
+    setFieldsValue({ pointUnit: unit !== 'null' && unit || '--' });
   }
 
 
   saveRule = (e) => { // 保存／保存并添加
     this.props.form.validateFields((error, values) => {
       if (!error) {
-        this.setState({ showSaveWarningTip: true, buttonStatus: e })
+        this.setState({ showSaveWarningTip: true, buttonStatus: e });
       }
     });
   }
 
   cancelWarningTip = () => { // 取消
-    this.setState({ showWarningTip: false })
+    this.setState({ showWarningTip: false });
   }
 
   confirmWarningTip = () => { // 确定
-    this.setState({ showWarningTip: false })
-    this.props.changeWarnStore({ showPage: 'home' })
+    this.setState({ showWarningTip: false });
+    this.props.changeWarnStore({ showPage: 'home' });
   }
 
   cancelSaveWarningTip = () => { // 保存取消
-    this.setState({ showSaveWarningTip: false })
+    this.setState({ showSaveWarningTip: false });
   }
 
   confirmSaveWarningTip = () => { // 保存确定
@@ -121,22 +121,22 @@ class AddRule extends Component {
           warningValue: warnRules[1],
           warningDeadZone: warnRules[2],
           warningLevel,
-          warningEnabled
-        }
+          warningEnabled,
+        };
         if (buttonStatus === 'save') { // 保存
           this.props.addWran({
             params: params,
             continueAdd: false,
-          })
-          this.setState({ showSaveWarningTip: false })
+          });
+          this.setState({ showSaveWarningTip: false });
         } else { // 保存并添加
           this.props.addWran({
             params: params,
             continueAdd: true,
-          })
-          this.setState({ showSaveWarningTip: false })
+          });
+          this.setState({ showSaveWarningTip: false });
           this.props.form.resetFields();
-          this.props.form.setFieldsValue({ stations: [] })
+          this.props.form.setFieldsValue({ stations: [] });
         }
       }
     });
@@ -157,7 +157,7 @@ class AddRule extends Component {
           <WarningTip onCancel={this.cancelSaveWarningTip} onOK={this.confirmSaveWarningTip} value={warningTipSaveText} />}
         <div className={styles.addTop}>
           <span className={styles.text}>新增</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onCancelEdit} />
         </div>
         <Form layout="inline" className={styles.form}>
           <div className={styles.stationsRule}>
@@ -176,7 +176,7 @@ class AddRule extends Component {
                   <Option key={null} value={null} disabled>{'请选择设备类型'}</Option>
                   {ruleStationDeviceTypes.map(e => {
                     if (!e) { return null; }
-                    return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
+                    return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>;
                   })}
                 </Select>
               )}
@@ -189,7 +189,7 @@ class AddRule extends Component {
                   <Option key={null} value={null} disabled>{'请选择设备型号'}</Option>
                   {ruleDeviceModels.map(e => {
                     if (!e) { return null; }
-                    return <Option key={e.deviceModeCode} value={e.deviceModeCode} title={e.deviceModeName}>{e.deviceModeName}</Option>
+                    return <Option key={e.deviceModeCode} value={e.deviceModeCode} title={e.deviceModeName}>{e.deviceModeName}</Option>;
                   })}
                 </Select>
               )}
@@ -202,7 +202,7 @@ class AddRule extends Component {
                   <Option key={null} value={''} disabled>{'请选择测点'}</Option>
                   {ruleDevicePoints.map(e => {
                     if (!e) { return null; }
-                    return <Option key={e.devicePointStandardCode} value={e.devicePointStandardCode + '_' + e.devicePointUnit} title={e.devicePointName} >{e.devicePointName}</Option>
+                    return <Option key={e.devicePointStandardCode} value={e.devicePointStandardCode + '_' + e.devicePointUnit} title={e.devicePointName} >{e.devicePointName}</Option>;
                   })}
                 </Select>
               )}
@@ -211,7 +211,7 @@ class AddRule extends Component {
               {getFieldDecorator('pointUnit', {
                 rules: [{ required: false, message: '请选择测点' }],
               })(
-                <Input type="text" placeholder="测点单位" style={{ 'pointerEvents': 'none' }} />
+                <Input type="text" placeholder="测点单位" style={{ 'pointerEvents': 'none', width: 198 }} />
               )}
             </FormItem>
           </div>
@@ -220,7 +220,7 @@ class AddRule extends Component {
               {getFieldDecorator('warningCheckDesc', {
                 rules: [{
                   required: true, message: '请输入预警描述(不能超过30字)',
-                  type: "string",
+                  type: 'string',
                   max: 30,
                 }],
               })(
@@ -239,7 +239,7 @@ class AddRule extends Component {
                       (!warningDeadZone && warningValue !== 0) && callback('请输入震荡区间');
                       warningValue && warningDeadZone && warningDeadZone >= warningValue && callback('震荡区间的值不能大于预警值');
                       callback();
-                    }
+                    },
                   }],
               })(
                 <WarnRule />
@@ -270,14 +270,14 @@ class AddRule extends Component {
               )}
             </FormItem>
             <div className={styles.buttonGroup}>
-              <Button onClick={() => { this.saveRule('save') }} className={styles.save}>保存</Button>
-              <Button onClick={() => { this.saveRule('saveAndCon') }} >保存并继续添加</Button>
+              <Button onClick={() => { this.saveRule('save'); }} className={styles.save}>保存</Button>
+              <Button onClick={() => { this.saveRule('saveAndCon'); }} >保存并继续添加</Button>
             </div>
           </div>
         </Form>
       </div>
 
-    )
+    );
   }
 }
 

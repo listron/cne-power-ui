@@ -7,6 +7,7 @@
 }
 .CleanoutRecordDetail {
   @include contentBoxStyle();
+  padding: 0;
   .detailMain {
     flex: 1;
     display: flex;
@@ -72,7 +73,7 @@
   :global {
     .iconfont {
       font-size: 20px;
-      margin-right: 20px;
+      // margin-right: 20px;
       cursor: pointer;
     }
   }
@@ -90,16 +91,17 @@
     margin-right: 40px;
   }
   .backIcon {
-    font-size: 20px;
-    cursor: pointer;
-    color: $darkColor;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    border-left: solid 1px $promptColor;
-    margin-left: 20px;
+    @include backIcon();
+    // font-size: 20px;
+    // cursor: pointer;
+    // color: $darkColor;
+    // height: 100%;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    // width: 60px;
+    // border-left: solid 1px $promptColor;
+    // margin-left: 20px;
   }
 }
 .dirtEffBox {
@@ -219,10 +221,6 @@
     .dirtEff {
       color: #199475;
       background: #ceebe0;
-    }
-    .backIcon {
-      color: $darkColor;
-      border-left: solid 1px $promptColor;
     }
   }
 

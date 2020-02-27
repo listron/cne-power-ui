@@ -86,6 +86,22 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
   }
 }
 
+@mixin backIcon() {
+    display: flex;
+    flex:0 0 60px;
+    width: 60px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    color:#199475;
+    &:hover{
+      background-image:linear-gradient(0deg, #00baff 1%, #5beda9 100%);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+}
+
 .light {
   --lightColor: #999; // 浅色文字-非凸显
   --darkColor: #353535; // 主要使用文字色

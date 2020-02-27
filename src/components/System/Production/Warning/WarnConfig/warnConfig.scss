@@ -91,14 +91,7 @@
                 letter-spacing: 4px;
             }
             .backIcon {
-                color: $darkColor;
-                font-size: 20px;
-                border-left: 1px solid $promptColor;
-                margin-left: 10px;
-                height: 100%;
-                line-height: 64px;
-                width: 64px;
-                cursor: pointer;
+                @include backIcon();
             }
         }
         .form {
@@ -116,9 +109,7 @@
                 width: 198px;
                 margin-right: 12px;
             }
-            .unit {
-                margin-left: 22px;
-            }
+            
         }
         .rules {
             display: flex;
@@ -171,24 +162,18 @@
                 color: $darkColor;
                 letter-spacing: 4px;
             }
-            i {
-                cursor: pointer;
+            .action{
+                display: flex;
             }
             .backIcon {
-                color: $darkColor;
-                font-size: 20px;
-                border-left: 1px solid $promptColor;
-                margin-left: 10px;
-                height: 100%;
-                line-height: 64px;
-                width: 64px;
-                cursor: pointer;
+                @include backIcon();
             }
             :global {
                 .icon-last,
                 .icon-next {
                     font-size: 20px;
-                    margin-right: 20px; // color: $darkColor;
+                    margin-right: 20px; 
+                     cursor: pointer;
                 }
             }
         }
@@ -242,14 +227,7 @@
                 letter-spacing: 4px;
             }
             .backIcon {
-                color: $darkColor;
-                font-size: 20px;
-                border-left: 1px solid $promptColor;
-                margin-left: 10px;
-                height: 100%;
-                line-height: 64px;
-                width: 64px;
-                cursor: pointer;
+                @include backIcon();
             }
         }
         .editCont {

@@ -116,7 +116,7 @@ class DetailCase extends React.Component {
               <span className={styles.text}>查看案例集</span>
               {caseHandleRight && <Button type="primary" onClick={this.showEditPage} >编辑</Button>}
             </div>
-            <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.onWarningTipShow} />
           </div>
           <div className={styles.detailBox}>
 

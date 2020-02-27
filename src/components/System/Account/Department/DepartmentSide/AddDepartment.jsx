@@ -13,45 +13,45 @@ class AddDepartment extends Component {
     changeDepartmentStore: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
-    }
+    };
   }
 
   cancelAdd = () => {
     this.setState({
       showWarningTip: true,
-    })
+    });
   }
   cancelWarningTip = () => {
     this.setState({
       showWarningTip: false,
-    })
+    });
   }
   confirmWarningTip = () => {
     this.setState({
       showWarningTip: false,
-    })
-    this.props.changeDepartmentStore({showPage: 'list'});    
+    });
+    this.props.changeDepartmentStore({ showPage: 'list' });
   }
 
-  render(){
+  render() {
     const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.addDepartment} >
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.editTop}>
           <span className={styles.text}>新建</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.cancelAdd} />
+          <i className={`iconfont icon-fanhui ${styles.backIcon}`} onClick={this.cancelAdd} />
         </div>
         <div className={styles.mainPart}>
-          <AddForm {...this.props} /> 
+          <AddForm {...this.props} />
         </div>
       </div>
-    )
+    );
   }
 }
 
