@@ -18,6 +18,7 @@ export default class MeterPicZoom extends Component {
     changeStore: PropTypes.func,
     changeStateFunc: PropTypes.func,
     getRotateImg: PropTypes.func,
+    newReadMeterData: PropTypes.object,
   };
 
   static defaultProps = {
@@ -34,25 +35,51 @@ export default class MeterPicZoom extends Component {
 
   rotateImgParentDivAdapt = () => {
     const { rotate } = this.state;
-    const { data, curIndex, imgIndex, arrStr, getRotateImg, changeStore } = this.props;
-    const imgUrl = data[arrStr][curIndex].meterImgs[imgIndex];
+    const { data, curIndex, imgIndex, arrStr, getRotateImg, changeStore, newReadMeterData } = this.props;
+    const imgUrl = data[arrStr][curIndex].meterImgs[imgIndex].url;
+    // 旋转的照片状态标记删除2
+    // 重新赋值newReadMeterData对应的图片
+    newReadMeterData[arrStr][curIndex].meterImgs = newReadMeterData[arrStr][curIndex].meterImgs.map(cur => {
+      if(cur.url === imgUrl){
+        cur.updateSign = 2;
+      }
+      return cur;
+    });
+    changeStore({
+      newReadMeterData,
+    });
     getRotateImg({
       url: imgUrl,
       rotate: rotate + 90,
       func: (res) => {
         // 重新改变当前旋转之后的图片
-        data[arrStr][curIndex].meterImgs[imgIndex] = res;
+        data[arrStr][curIndex].meterImgs[imgIndex].url = res;
+        // 成功之后添加旋转之后的照片, 和原来的imgId
+        newReadMeterData[arrStr][curIndex].meterImgs.push({
+          url: res,
+          updateSign: 1,
+          imgId: data[arrStr][curIndex].meterImgs[imgIndex].imgId,
+        });
         changeStore({
           readMeterData: data,
+          newReadMeterData,
         });
       },
     });
   };
 
   delImgFunc = () => {
-    const { changeStore, data, arrStr, curIndex, imgIndex, changeStateFunc } = this.props;
+    const { changeStore, data, arrStr, curIndex, imgIndex, changeStateFunc, newReadMeterData } = this.props;
     // 删除当前表格线下-图片数组下的指定下标图片
-    data[arrStr][curIndex].meterImgs.splice(imgIndex, 1);
+    const urlStr = data[arrStr][curIndex].meterImgs.splice(imgIndex, 1);
+    // 获取newReadMeterData里面的图片数组
+    // 重新赋值newReadMeterData对应的图片
+    newReadMeterData[arrStr][curIndex].meterImgs = newReadMeterData[arrStr][curIndex].meterImgs.map(cur => {
+      if(cur.url === urlStr[0].url){
+        cur.updateSign = 2;
+      }
+      return cur;
+    });
     const len = data[arrStr][curIndex].meterImgs.length;
     // 判断删除图片之后怎么展示当前图片
     // 1.当前下标>删除之后数组长度 当前下标 = 数组长度
@@ -66,7 +93,7 @@ export default class MeterPicZoom extends Component {
       // 小于
       imgIndex < len && changeStateFunc(imgIndex);
     }
-    // 2.当前下标 = 删除之后数组长度0  当前下标 = 0
+    // 3.当前下标 = 删除之后数组长度0  当前下标 = 0
     if(imgIndex === 0 || len === 0) {
       changeStateFunc(0);
     }
@@ -75,6 +102,7 @@ export default class MeterPicZoom extends Component {
     }, () => {
       changeStore({
         readMeterData: data,
+        newReadMeterData,
       });
     });
   };
@@ -151,7 +179,7 @@ export default class MeterPicZoom extends Component {
               <div className={styles.picLeftBox}>
                 <i title="前一张" onClick={imgIndex - 1 >= 0 ? this.prevFunc : () => {}} className={`iconfont icon-arrowleft ${imgIndex - 1 >= 0 ? '' : styles.picLeft}`} />
               </div>
-              <img src={data[arrStr][curIndex].meterImgs[imgIndex]} alt="" />
+              <img src={data[arrStr][curIndex].meterImgs[imgIndex].url} alt="" />
               <div className={styles.picRightBox}>
                 <i title="后一张" onClick={imgIndex + 1 < len ? this.nextFunc : () => {}} className={`iconfont icon-arrowr ${imgIndex + 1 < len ? '' : styles.picRight}`} />
               </div>

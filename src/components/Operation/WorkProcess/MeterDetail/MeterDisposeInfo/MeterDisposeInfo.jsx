@@ -23,6 +23,8 @@ export default class MeterDisposeInfo extends React.Component {
     meterBaseData: PropTypes.object,
     thisReadTimeFlag: PropTypes.bool,
     getRotateImg: PropTypes.func,
+    newReadMeterData: PropTypes.object,
+    otherReadMeterData: PropTypes.object,
   };
 
   constructor(props) {
@@ -162,7 +164,7 @@ export default class MeterDisposeInfo extends React.Component {
   // 保存编辑
   onSaveEdit = () => {
     const {
-      readMeterData: {
+      newReadMeterData: {
         readmeterId,
         docketId,
         lastReadTime,
@@ -254,7 +256,12 @@ export default class MeterDisposeInfo extends React.Component {
 
   // 改变输入框
   changeStopCode = (e, index, arrStr, filed, type) => {
-    const { readMeterData, changeStore } = this.props;
+    const { readMeterData, newReadMeterData, otherReadMeterData, changeStore } = this.props;
+    /**
+     * readMeterData 可以修改的和渲染用
+     * otherReadMeterData 作对比用
+     * newReadMeterData 最后传给后端的数据
+     * */
     // 判断最多是6位整数和两位小数
     const reg = /(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/;
     // 改变当前input值
@@ -265,6 +272,17 @@ export default class MeterDisposeInfo extends React.Component {
     // type 样式类型
     readMeterData[arrStr][index][filed] = e.target.value === '' ? e.target.value : Number(e.target.value);
     readMeterData[arrStr][index][type] = reg.test(e.target.value) ? 0 : 2;
+    // 判断当前改变输入框的值和otherReadMeterData里面当前的值对比是否一样
+    // 一样是-1，不一样就是当前e.target.value
+    if(e.target.value !== '' && Number(e.target.value) === otherReadMeterData[arrStr][index][filed]) {
+      // 修改当前值为-1
+      newReadMeterData[arrStr][index][filed] = -1;
+      changeStore({newReadMeterData});
+    }else {
+      // 修改当前值为e.target.value
+      newReadMeterData[arrStr][index][filed] = e.target.value === '' ? e.target.value : Number(e.target.value);
+      changeStore({newReadMeterData});
+    }
     changeStore({readMeterData});
   };
 
@@ -283,7 +301,7 @@ export default class MeterDisposeInfo extends React.Component {
   };
 
   handleChange = (info, index, arrStr) => {
-    const { readMeterData, changeStore } = this.props;
+    const { readMeterData, changeStore, newReadMeterData } = this.props;
     if (info.file.status === 'uploading') {
       // 改变上传状态
       readMeterData[arrStr][index].loading = true;
@@ -304,9 +322,19 @@ export default class MeterDisposeInfo extends React.Component {
       // 上传保存图片url->恢复默认
       readMeterData[arrStr][index].loading = false;
       readMeterData[arrStr][index].percent = 0;
-      readMeterData[arrStr][index].meterImgs.push(info.file.response.data);
+      readMeterData[arrStr][index].meterImgs.push({
+        url: info.file.response.data,
+        imgId: '',
+      });
+      // 发送后端的数据
+      newReadMeterData[arrStr][index].meterImgs.push({
+        url: info.file.response.data,
+        updateSign: 1,
+        imgId: '',
+      });
       changeStore({
         readMeterData,
+        newReadMeterData,
       });
     }
   };
@@ -348,6 +376,7 @@ export default class MeterDisposeInfo extends React.Component {
       thisReadTimeFlag,
       changeStore,
       getRotateImg,
+      newReadMeterData,
     } = this.props;
     const url = `${APIBasePath}${ticket.getUploadFile}`;
     const authData = localStorage.getItem('authData') || '';
@@ -617,7 +646,7 @@ export default class MeterDisposeInfo extends React.Component {
                                       }}
                                       className={`${styles.netPhotoBox} ${styles.fl}`}
                                     >
-                                      <img src={cur} alt="" />
+                                      <img src={cur.url} alt="" />
                                       <div className={styles.shadeBox} />
                                     </div>
                                   );
@@ -641,11 +670,28 @@ export default class MeterDisposeInfo extends React.Component {
                                   </Upload>
                                 )}
                               </div>
-                            ) : (
-                              <div className={styles.netNoPhoto}>
-                                <img src="/img/noImg.png" alt=""/>
-                              </div>
-                            )}
+                            ) : cur.meterImgs.length > 0 ? (
+                                <div className={`${styles.netTablePhoto} ${styles.clear}`}>
+                                  {cur.meterImgs.map((cur, idx) => {
+                                    return (
+                                      <div
+                                        key={idx.toString()}
+                                        onClick={() => {
+                                          this.lookPic(index % 2 === 0, index, idx, 'onlineDatas');
+                                        }}
+                                        className={`${styles.netPhotoBox} ${styles.fl}`}
+                                      >
+                                        <img src={cur.url} alt="" />
+                                        <div className={styles.shadeBox} />
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              ): (
+                                <div className={styles.netNoPhoto}>
+                                  <img src="/img/noImg.png" alt=""/>
+                                </div>
+                              )}
                           </div>
                         </div>
                       </div>
@@ -828,7 +874,7 @@ export default class MeterDisposeInfo extends React.Component {
                                       }}
                                       className={`${styles.electricityPhotoBox} ${styles.fl}`}
                                     >
-                                      <img src={cur} alt="" />
+                                      <img src={cur.url} alt="" />
                                       <div className={styles.shadeBox} />
                                     </div>
                                   );
@@ -852,7 +898,24 @@ export default class MeterDisposeInfo extends React.Component {
                                   </Upload>
                                 )}
                               </div>
-                            ) : (
+                            ) : cur.meterImgs.length > 0 ? (
+                              <div className={`${styles.electricityTablePhoto} ${styles.clear}`}>
+                                {cur.meterImgs.map((cur, idx) => {
+                                  return (
+                                    <div
+                                      key={idx.toString()}
+                                      onClick={() => {
+                                        this.lookPic(index % 2 === 0, index, idx, 'generationDatas');
+                                      }}
+                                      className={`${styles.electricityPhotoBox} ${styles.fl}`}
+                                    >
+                                      <img src={cur.url} alt="" />
+                                      <div className={styles.shadeBox} />
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                              ) : (
                               <div className={styles.electricityNoPhoto}>
                                 <img src="/img/noImg.png" alt=""/>
                               </div>
@@ -879,6 +942,7 @@ export default class MeterDisposeInfo extends React.Component {
             imgIndex={imgIndex}
             curIndex={curIndex}
             data={readMeterData}
+            newReadMeterData={newReadMeterData}
             arrStr={arrStr}
           />
         )}
