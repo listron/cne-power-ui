@@ -732,6 +732,11 @@ const menuData = [
             path: 'alarmManage',
             defaultPath: true,
             rightKey: 'system_station_alert',
+          }, {
+            name: '支路配置',
+            path: 'branch',
+	    defaultPath: true,
+            rightKey: 'system_station_stat',
           },
           {
             name: '功率曲线',
