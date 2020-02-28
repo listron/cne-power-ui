@@ -47,8 +47,8 @@ class FullHomepage extends Component {
   }
 
   componentDidMount() {
-    const { getMapStation, enterpriseId, mapStation } = this.props;
-    getMapStation({ enterpriseId }); // 先获取电站信息
+    const { enterpriseId, mapStation } = this.props;
+    this.props.getMapStation({ enterpriseId }); // 先获取电站信息
     if (mapStation.length > 0) {
       this.gettedStationInfo(mapStation);
     }
@@ -78,19 +78,18 @@ class FullHomepage extends Component {
   getMonitorData = () => { // 10s实时监控
     const { enterpriseId } = this.props;
     this.props.getRealTimeData({ enterpriseId });
+    this.props.getMapStation({ enterpriseId }); // 更新电站信息
     this.clocker = setTimeout(this.getMonitorData, 10 * 1000); // 10s一刷新
   }
 
   getOriginData = (stationType) => { // 首次获取所有页面内初始数据。
     const { enterpriseId } = this.props;
-    this.props.getCompleteRate({ enterpriseId });
     this.props.getEnergySaving({ enterpriseId });
     this.props.getMonthPower({ enterpriseId, stationType });
     this.props.getEqpHours({ enterpriseId, stationType });
     this.props.getFaultNumber({ enterpriseId, stationType });
     this.props.getAlarmList({ enterpriseId });
     this.props.getOutputDiagram({ enterpriseId, stationType });
-    this.props.getOperationInfo({ enterpriseId });
   }
 
   render() {

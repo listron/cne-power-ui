@@ -13,7 +13,6 @@ class CenterMap extends Component {
     mapStation: PropTypes.array,
     singleStation: PropTypes.object,
     realTimeInfo: PropTypes.object,
-    getMapStation: PropTypes.func,
     getSingleStation: PropTypes.func,
     changeHomepageStore: PropTypes.func,
   }
@@ -55,6 +54,9 @@ class CenterMap extends Component {
       this.setState({ countriesInfo });
       this.setCountryMap(mapStation, 'China');
     }
+    // if () { // 电站数据更新
+    //   this.setCountryMap(mapStation, 'China');
+    // }
   }
 
   componentWillUnmount() {
@@ -123,37 +125,14 @@ class CenterMap extends Component {
     } else {
       countryStation = mapStation.filter(e => e.country && e.country === mapName);
     }
-    // const countryStation = mapStation.filter(e=>e.country && e.country === mapName);
-    // const series = [], pvStationPositionsData = [], windStationPositionsData = [];
-    // countryStation.forEach(e => {
-    //   const { stationType, longitude, latitude } = e || {};
-    //   if (stationType === 1) { // 光伏
-    //     if (longitude > -178 && longitude < -154 && latitude > 18 && latitude < 28) { // 更变夏威夷光伏电站坐标
-    //       e.longitude = longitude + 20;
-    //       e.latitude = latitude + 20;
-    //     }
-    //     pvStationPositionsData.push(e);
-    //   }
-    //   if (e => e.stationType === 0) { // 风
-    //     windStationPositionsData.push(e);
-    //   }
-    // });
-    const pvStationData = countryStation.filter(e => e.stationType === 1).map(e => {
-      if (e.longitude > -178 && e.longitude < -154 && e.latitude > 18 && e.latitude < 28) { // 更变夏威夷光伏电站坐标
-        e.longitude += 20;
-        e.latitude += 20;
-      }
-      return [e.longitude, e.latitude];
-    });
-    const windStationData = countryStation.filter(e => e.stationType === 0).map(e => [e.longitude, e.latitude]);
-    console.log(countryStation);
-    // warningCount > 0则有告警, statusName, statusCode: 电站状态码400通讯正常; 500信息中断, 900未接入
-
+    const {
+      staticInfo, scatterData,
+    } = this.stationAnalysisUtil(countryStation);
+    console.log(countryStation, staticInfo, scatterData);
     this.setState({
       mapCountInfo: {
         name: countryStation[0] && countryStation[0].countryChineseName,
-        wind: windStationData.length,
-        pv: pvStationData.length,
+        ...staticInfo,
       },
     });
     const { clientWidth } = document.body;
@@ -183,43 +162,12 @@ class CenterMap extends Component {
           width: 10,
         },
       });
-      // import { windSvgPath, pvSvgPath } from '../../constants/svg/svgFont';
       countryChart.setOption({
         series: [{
-          name: 'wind',
+          name: 'stations',
           type: 'scatter',
           coordinateSystem: 'geo',
-          data: windStationData,
-          symbol: `path://${windSvgPath}`,
-          symbolRotate: 0,
-          symbolSize: [15, 18],
-          itemStyle: {
-            color: '#fff',
-          },
-          emphasis: {
-            itemStyle: {
-              color: '#fff35f',
-              opacity: 1,
-            },
-          },
-        }, {
-          name: 'pv',
-          type: 'scatter',
-          coordinateSystem: 'geo',
-          data: pvStationData,
-          // symbol: 'image:///img/ico_pv.png',
-          symbol: `path://${pvSvgPath}`,
-          symbolRotate: 0,
-          symbolSize: [25, 16],
-          itemStyle: {
-            color: '#111111',
-          },
-          emphasis: {
-            itemStyle: {
-              color: '#fff35f',
-              opacity: 1,
-            },
-          },
+          data: scatterData,
         }],
         geo: {
           silent: true,
@@ -256,6 +204,62 @@ class CenterMap extends Component {
     });
   }
 
+  stationAnalysisUtil = (stations) => {
+    const scatterData = [];
+    const staticInfo = {
+      wind: 0, // 风电站统计
+      pv: 0, // 光伏电站统计
+      alarm: 0, // 告警
+      400: 0, // 通讯正常
+      500: 0, // 信息中断
+      900: 0, // 未接入
+    };
+    const statusColor = { // 400通讯正常; 500信息中断, 900未接入
+      400: '#00ffff',
+      500: '#f8e71c',
+      900: '#cac6c6',
+    };
+    stations.forEach(e => {
+      const { stationType, longitude, latitude, statusCode, warningCount } = e || {};
+      // warningCount > 0则有告警, statusName, statusCode: 电站状态码
+      let itemColor = '00ffff';
+      if (statusCode === 400 && warningCount > 0) { // 有告警
+        itemColor = '#c23c3c';
+        staticInfo.alarm += 1;
+      } else {
+        itemColor = statusColor[statusCode] || '00ffff';
+        staticInfo[statusCode] += 1;
+      }
+      if (stationType === 0) {
+        staticInfo.wind += 1;
+        scatterData.push({
+          value: [longitude, latitude],
+          symbol: `path://${windSvgPath}`,
+          symbolSize: [15, 18],
+          itemStyle: {
+            color: itemColor,
+          },
+        });
+      }
+      if (stationType === 1) {
+        if (longitude > -178 && longitude < -154 && latitude > 18 && latitude < 28) { // 更变夏威夷光伏电站坐标
+          e.longitude += 20;
+          e.latitude += 20;
+        }
+        staticInfo.pv += 1;
+        scatterData.push({
+          value: [e.longitude, e.latitude],
+          symbol: `path://${pvSvgPath}`,
+          symbolSize: [25, 16],
+          itemStyle: {
+            color: itemColor,
+          },
+        });
+      }
+    });
+    return { staticInfo, scatterData };
+  }
+
   setStars = () => {
     const tmpArr = [];
     tmpArr.length = 10;
@@ -264,6 +268,13 @@ class CenterMap extends Component {
     this.setState({ starArr });
     this.clocker = setTimeout(this.setStars, 5 * 60 * 1000);
   }
+
+  statusBase = [
+    { key: '400', name: '正常运行', color: '#00ffff' },
+    { key: 'alarm', name: '告警运行', color: '#c23c3c' },
+    { key: '500', name: '通讯中断', color: '#f8e71c' },
+    { key: '900', name: '未接入', color: '#cac6c6' },
+  ]
 
   render() {
     const { mapStation, singleStation, realTimeInfo } = this.props;
@@ -302,6 +313,7 @@ class CenterMap extends Component {
       width: homeContentDom ? homeContentDom.offsetWidth : 0,
       height: homeContentDom ? homeContentDom.offsetHeight : 0,
     };
+    console.log(mapCountInfo);
     return (
       <div className={styles.centerMap}>
         <div className={styles.topData}>
@@ -331,14 +343,20 @@ class CenterMap extends Component {
           <div className={styles.worldMap} id="homeWorldMap"></div>
           <div className={styles.static}>
             <div className={styles.stationTotalStatic}>
-            <span>{mapCountryName}</span>
+              <span>{mapCountryName}</span>
               {mapCountInfo.pv > 0 && <span className={styles.count} >{mapCountInfo.pv}个</span>}
               {mapCountInfo.pv > 0 && <img src="/img/ico_pv.png" />}
               {mapCountInfo.wind > 0 && <span className={styles.count}>{mapCountInfo.wind}个</span>}
               {mapCountInfo.wind > 0 && <img src="/img/ico_wind.png" />}
             </div>
             <div className={styles.stationStatusStatic}>
-              
+              {this.statusBase.map(e => (
+                <span key={e.key} className={styles.eachStatus}>
+                  <span className={styles.statusRound} style={{backgroundColor: e.color}} />
+                  <span className={styles.statusName}>{e.name}: </span>
+                  <span className={styles.statusValue}>{mapCountInfo[e.key]}</span>
+                </span>
+              ))}
             </div>
           </div>
         </div>
