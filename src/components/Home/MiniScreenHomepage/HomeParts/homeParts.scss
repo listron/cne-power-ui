@@ -1,16 +1,7 @@
 
 @import '../homepageParts.scss';
 
-@media screen and (max-width: 1439px) { // 1440以下屏幕，按照1345px进行适配。
-  .stationGeneral, .monthGen, .outputPower, .deviceStatus {
-    width: 340px;
-    height: 275px;
-  }
-  .stationGeneral{
-    .value{
-      font-size:20px;
-    }
-  }
+@media screen and (max-width: 1679px) { // 1680以下屏幕，按1440px进行适配。
   .eqpHours, .faultList, .alarmList{
     width: 440px;
   }
@@ -22,18 +13,9 @@
   }
 }
 
-@media screen and (max-width: 1919px) and (min-width: 1440px) { // 1920以下宽度屏按1440px适配
-  .stationGeneral, .monthGen, .outputPower, .deviceStatus {
-    width: 340px;
-    height: 275px;
-  }
-  .stationGeneral{
-    .value{
-      font-size:20px;
-    }
-  }
+@media screen and (max-width: 1919px) and (min-width: 1680px) { // 1920以下宽度屏按1680px适配
   .eqpHours, .faultList, .alarmList{
-    width: 465px;
+    width: 475px;
   }
   .eqpHours .hourRectGroup{
     margin: 0 12px;
@@ -44,21 +26,6 @@
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
-  .stationGeneral, .monthGen, .outputPower, .deviceStatus{
-    width: 435px;
-    height: 322px;
-  }
-  .stationGeneral{
-    .value{
-      font-size:28px;
-    }
-    .unit{
-      font-size:18px;
-    }
-    .name{
-      font-size:22px;
-    }
-  }
   .eqpHours, .faultList, .alarmList{
     width: 625px;
   }
@@ -107,11 +74,38 @@
   color: #353535;
   font-size: 10px;
 }
+// 多个盒子容器尺寸数据
+.stationGeneral, .monthGen, .outputPower, .deviceStatus {
+  width: 340px;
+}
+.stationGeneral, .outputPower{
+  height: 280px;
+}
+.monthGen, .deviceStatus{
+  height: 240px;
+}
+.eqpHours, .faultList, .alarmList{ // 底部盒子高度。
+  height: 205px;
+}
+.monthGen, .deviceStatus, .outputPower, .eqpHours, .faultList, .alarmList{ // 大致所有盒子总样式。
+  margin-top: 20px;
+  @include boxStyle();
+  position: relative;
+  h3{
+    @include titles();
+  }
+  .checkTags{
+    @include typeTags();
+  }  
+}
+.eqpHours, .faultList{
+  margin-right: 12px;
+}
 
 .stationGeneral{ // 电站概况
   @include boxStyle();
-  margin-top: 12px;
   position: relative;
+  margin-top: 20px;
   align-content: flex-start;
   h3{
     @include titles();
@@ -132,6 +126,7 @@
       margin-left: 36px;
     }
     .value{
+      font-size:20px;
       color:#4dde49;
     }
     .unit{
@@ -142,24 +137,6 @@
     }
   }
 }
-.monthGen, .deviceStatus, .eqpHours, .faultList, .alarmList{ // 大致所有盒子高度。
-  height: 205px;
-}
-.monthGen, .deviceStatus, .outputPower, .eqpHours, .faultList, .alarmList{ // 大致所有盒子总样式。
-  margin-top: 12px;
-  @include boxStyle();
-  position: relative;
-  h3{
-    @include titles();
-  }
-  .checkTags{
-    @include typeTags();
-  }  
-}
-.eqpHours, .faultList{
-  margin-right: 12px;
-}
-
 .monthGen{
   h3{
     height: 42px;
@@ -176,7 +153,6 @@
     margin: 0 10px;
   }
 }
-
 .outputPower{ // 电站出力
   align-items: center;
   .outputChart{
@@ -245,6 +221,9 @@
     }
     .statusTotal{
       width: 40%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .eachStatus{
       display: flex;

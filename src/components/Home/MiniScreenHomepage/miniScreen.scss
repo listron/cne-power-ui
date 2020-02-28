@@ -1,37 +1,23 @@
 
-@media screen and (max-width: 1439px) { // 1440以下屏幕，按1345px进行适配。
-  .innerContent{
-    width: 1345px;
-  }
-  .middleBox{
-    height: 705px;
-  }
-  .mapInfo{
-    width: 641px;
-  }
-}
+// 1680以下屏幕不刻意考虑， 按1440 * 768适配
+// 1920 - 1680(含)屏幕，按1680 * 1050适配
+// 1920及以上屏幕，按1920 * 1080适配
 
-@media screen and (max-width: 1919px) and (min-width: 1440px) { // 1920以下宽度屏按1440px适配
+@media screen and (max-width: 1679px) { // 1680以下屏幕，按1440px进行适配。
   .innerContent{
     width: 1420px;
   }
-  .middleBox{
-    height: 705px;
-  }
-  .mapInfo{
-    width: 716px;
+}
+
+@media screen and (max-width: 1919px) and (min-width: 1680px) { // 1920以下宽度屏按1680px适配
+  .innerContent{
+    width: 1680px;
   }
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
   .innerContent{
-    width: 1900px;
-  }
-  .middleBox{
-    height: 750px;
-  }
-  .mapInfo{
-    width: 1006px;
+    width: 1920px;
   }
 }
 
@@ -43,6 +29,7 @@
   overflow: auto;
   overflow-y: hidden; // 屏蔽内部纵向滚动条
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   flex-wrap: wrap;
   background-image: url('/img/homepage.png');
@@ -52,17 +39,24 @@
     padding: 0 90px;
     .middleBox{
       display: flex;
+      height: 560px;
       .leftInfo{
+        flex: 0 0 340px;
         z-index: 99;
       }
+      .rightInfo{
+        flex: 0 0 340px;
+      }
       .mapInfo{
-        margin: 12px 12px 0 12px;
+        flex: 1 0 auto;
+        margin: 0 12px 0 12px;
       }
     }
     .bottomBox{
       height: 207px;
       display: flex;
       margin-bottom: 24px;
+      justify-content: space-between;
     }
   }
 }

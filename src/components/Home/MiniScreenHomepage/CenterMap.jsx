@@ -6,7 +6,7 @@ import styles from './homepageParts.scss';
 import axios from 'axios';
 import { dataFormat } from '../../../utils/utilFunc';
 import { message } from 'antd';
-// import { windSvgPath, pvSvgPath } from '../../constants/svg/svgFont';
+import { windSvgPath, pvSvgPath } from '../../../constants/svg/svgFont';
 
 class CenterMap extends Component {
   static propTypes = {
@@ -124,6 +124,20 @@ class CenterMap extends Component {
       countryStation = mapStation.filter(e => e.country && e.country === mapName);
     }
     // const countryStation = mapStation.filter(e=>e.country && e.country === mapName);
+    // const series = [], pvStationPositionsData = [], windStationPositionsData = [];
+    // countryStation.forEach(e => {
+    //   const { stationType, longitude, latitude } = e || {};
+    //   if (stationType === 1) { // 光伏
+    //     if (longitude > -178 && longitude < -154 && latitude > 18 && latitude < 28) { // 更变夏威夷光伏电站坐标
+    //       e.longitude = longitude + 20;
+    //       e.latitude = latitude + 20;
+    //     }
+    //     pvStationPositionsData.push(e);
+    //   }
+    //   if (e => e.stationType === 0) { // 风
+    //     windStationPositionsData.push(e);
+    //   }
+    // });
     const pvStationData = countryStation.filter(e => e.stationType === 1).map(e => {
       if (e.longitude > -178 && e.longitude < -154 && e.latitude > 18 && e.latitude < 28) { // 更变夏威夷光伏电站坐标
         e.longitude += 20;
@@ -132,6 +146,9 @@ class CenterMap extends Component {
       return [e.longitude, e.latitude];
     });
     const windStationData = countryStation.filter(e => e.stationType === 0).map(e => [e.longitude, e.latitude]);
+    console.log(countryStation);
+    // warningCount > 0则有告警, statusName, statusCode: 电站状态码400通讯正常; 500信息中断, 900未接入
+
     this.setState({
       mapCountInfo: {
         name: countryStation[0] && countryStation[0].countryChineseName,
@@ -146,7 +163,7 @@ class CenterMap extends Component {
     } else if (clientWidth < 1920) {
       countrySize = 650;
     } else if (clientWidth >= 1920) {
-      countrySize = 900;
+      countrySize = 750;
     }
     axios.get(`/mapJson/${mapName}.json`).then(response => {
       const countryBox = document.getElementById('homeCountryMap');
@@ -166,13 +183,15 @@ class CenterMap extends Component {
           width: 10,
         },
       });
+      // import { windSvgPath, pvSvgPath } from '../../constants/svg/svgFont';
       countryChart.setOption({
         series: [{
           name: 'wind',
           type: 'scatter',
           coordinateSystem: 'geo',
           data: windStationData,
-          symbol: 'image:///img/ico_wind.png',
+          symbol: `path://${windSvgPath}`,
+          symbolRotate: 0,
           symbolSize: [15, 18],
           itemStyle: {
             color: '#fff',
@@ -188,11 +207,12 @@ class CenterMap extends Component {
           type: 'scatter',
           coordinateSystem: 'geo',
           data: pvStationData,
-          symbol: 'image:///img/ico_pv.png',
+          // symbol: 'image:///img/ico_pv.png',
+          symbol: `path://${pvSvgPath}`,
           symbolRotate: 0,
           symbolSize: [25, 16],
           itemStyle: {
-            color: '#fff',
+            color: '#111111',
           },
           emphasis: {
             itemStyle: {
@@ -310,11 +330,16 @@ class CenterMap extends Component {
         <div className={styles.bottomData}>
           <div className={styles.worldMap} id="homeWorldMap"></div>
           <div className={styles.static}>
+            <div className={styles.stationTotalStatic}>
             <span>{mapCountryName}</span>
-            {mapCountInfo.pv > 0 && <span className={styles.count} >{mapCountInfo.pv}个</span>}
-            {mapCountInfo.pv > 0 && <img src="/img/ico_pv.png" />}
-            {mapCountInfo.wind > 0 && <span className={styles.count}>{mapCountInfo.wind}个</span>}
-            {mapCountInfo.wind > 0 && <img src="/img/ico_wind.png" />}
+              {mapCountInfo.pv > 0 && <span className={styles.count} >{mapCountInfo.pv}个</span>}
+              {mapCountInfo.pv > 0 && <img src="/img/ico_pv.png" />}
+              {mapCountInfo.wind > 0 && <span className={styles.count}>{mapCountInfo.wind}个</span>}
+              {mapCountInfo.wind > 0 && <img src="/img/ico_wind.png" />}
+            </div>
+            <div className={styles.stationStatusStatic}>
+              
+            </div>
           </div>
         </div>
         <div className={styles.starBox}>
