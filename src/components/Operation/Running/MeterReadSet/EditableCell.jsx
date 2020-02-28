@@ -23,7 +23,7 @@ class EditableCell extends Component {
   constructor(props){
     super(props);
     this.state = {
-      sun: false,
+      isFromSave: false,
       meterNameValue: 'noData',
       meterTypeValue: 'noData',
       magnificationValue: 'noData',
@@ -58,7 +58,7 @@ class EditableCell extends Component {
     form.validateFieldsAndScroll((error, values)=>{
       if (error) {
         this.setState({
-          sun: true,
+          isFromSave: true,
           meterNameValue: values.meterName ? values.meterName : '',
           meterNumberValue: values.meterNumber ? values.meterNumber : '',
           meterTypeValue: values.meterType ? values.meterType : '',
@@ -102,7 +102,7 @@ class EditableCell extends Component {
   }
 
   render(){
-    const { sun, meterNameValue, meterNumberValue, meterTypeValue, magnificationValue, flatStartCodeValue, lowStartCodeValue, peakStartCodeValue, topStartCodeValue, totalStartCodeValue } = this.state;
+    const { isFromSave, meterNameValue, meterNumberValue, meterTypeValue, magnificationValue, flatStartCodeValue, lowStartCodeValue, peakStartCodeValue, topStartCodeValue, totalStartCodeValue } = this.state;
     const { eventData, baseDeviceData = [], form } = this.props;
     const { getFieldDecorator } = form;
     const { editable, isRelDocket } = eventData;
@@ -138,7 +138,7 @@ class EditableCell extends Component {
                 )}
               </FormItem>
             </div>
-            <div className={`${styles.meterNumber} ${!sun ? (eventData.meterNumber === undefined && styles.meterInpNull || (eventData.meterNumber === '' && styles.meterInpDel)) : ((eventData.meterNumber === '' || eventData.meterNumber === undefined) && styles.meterInpDel)}`}>
+            <div className={`${styles.meterNumber} ${!isFromSave ? (eventData.meterNumber === undefined && styles.meterInpNull || (eventData.meterNumber === '' && styles.meterInpDel)) : ((eventData.meterNumber === '' || eventData.meterNumber === undefined) && styles.meterInpDel)}`}>
               <FormItem>
                 {getFieldDecorator('meterNumber', {
                   rules: [{
@@ -175,7 +175,7 @@ class EditableCell extends Component {
                 )}
               </FormItem>
             </div>
-            <div className={`${styles.initCode} ${!sun ? (eventData.magnification === undefined && styles.meterInpNull || (eventData.magnification === '' && styles.meterInpDel)) : ((eventData.magnification === '' || eventData.magnification === undefined) && styles.meterInpDel)}`}>
+            <div className={`${styles.initCode} ${!isFromSave ? (eventData.magnification === undefined && styles.meterInpNull || (eventData.magnification === '' && styles.meterInpDel)) : ((eventData.magnification === '' || eventData.magnification === undefined) && styles.meterInpDel)}`}>
               <FormItem>
                 {getFieldDecorator('magnification', {
                   rules: [{
@@ -194,7 +194,7 @@ class EditableCell extends Component {
             </div>
             <div className={styles.switchType}>
               <div className={styles.switchTypeChild}>
-                <span className={`${styles.totalStartCode} ${!sun ? (eventData.totalStartCode === undefined && styles.meterInpNull) || (eventData.totalStartCode === '' && styles.meterInpDel) : ((eventData.totalStartCode === '' || eventData.totalStartCode === undefined) && styles.meterInpDel)}`}>
+                <span className={`${styles.totalStartCode} ${!isFromSave ? (eventData.totalStartCode === undefined && styles.meterInpNull) || (eventData.totalStartCode === '' && styles.meterInpDel) : ((eventData.totalStartCode === '' || eventData.totalStartCode === undefined) && styles.meterInpDel)}`}>
                   <FormItem>
                     {getFieldDecorator('totalStartCode', {
                       rules: [{
@@ -211,7 +211,7 @@ class EditableCell extends Component {
                       )}
                   </FormItem>
                 </span>
-                <span className={`${styles.topStartCode} ${!sun ? (eventData.topStartCode === undefined && styles.meterInpNull) || (eventData.topStartCode === '' && styles.meterInpDel) : ((eventData.topStartCode === '' || eventData.topStartCode === undefined) && styles.meterInpDel)}`}>
+                <span className={`${styles.topStartCode} ${!isFromSave ? (eventData.topStartCode === undefined && styles.meterInpNull) || (eventData.topStartCode === '' && styles.meterInpDel) : ((eventData.topStartCode === '' || eventData.topStartCode === undefined) && styles.meterInpDel)}`}>
                   <FormItem>
                     {getFieldDecorator('topStartCode', {
                       rules: [{
@@ -228,7 +228,7 @@ class EditableCell extends Component {
                       )}
                   </FormItem>
                 </span>
-                <span className={`${styles.peakStartCode} ${!sun ? (eventData.peakStartCode === undefined && styles.meterInpNull) || (eventData.peakStartCode === '' && styles.meterInpDel) : ((eventData.peakStartCode === '' || eventData.peakStartCode === undefined) && styles.meterInpDel)}`}>
+                <span className={`${styles.peakStartCode} ${!isFromSave ? (eventData.peakStartCode === undefined && styles.meterInpNull) || (eventData.peakStartCode === '' && styles.meterInpDel) : ((eventData.peakStartCode === '' || eventData.peakStartCode === undefined) && styles.meterInpDel)}`}>
                   <FormItem>
                     {getFieldDecorator('peakStartCode', {
                       rules: [{
@@ -245,7 +245,7 @@ class EditableCell extends Component {
                       )}
                   </FormItem>
                 </span>
-                <span className={`${styles.flatStartCode} ${!sun ? (eventData.flatStartCode === undefined && styles.meterInpNull) || (eventData.flatStartCode === '' && styles.meterInpDel) : ((eventData.flatStartCode === '' || eventData.flatStartCode === undefined) && styles.meterInpDel)}`}>
+                <span className={`${styles.flatStartCode} ${!isFromSave ? (eventData.flatStartCode === undefined && styles.meterInpNull) || (eventData.flatStartCode === '' && styles.meterInpDel) : ((eventData.flatStartCode === '' || eventData.flatStartCode === undefined) && styles.meterInpDel)}`}>
                   <FormItem>
                     {getFieldDecorator('flatStartCode', {
                       rules: [{
@@ -262,7 +262,7 @@ class EditableCell extends Component {
                       )}
                   </FormItem>
                 </span>
-                <span className={`${styles.lowStartCode} ${!sun ? (eventData.lowStartCode === undefined && styles.meterInpNull) || (eventData.lowStartCode === '' && styles.meterInpDel) : ((eventData.lowStartCode === '' || eventData.lowStartCode === undefined) && styles.meterInpDel)}`}>
+                <span className={`${styles.lowStartCode} ${!isFromSave ? (eventData.lowStartCode === undefined && styles.meterInpNull) || (eventData.lowStartCode === '' && styles.meterInpDel) : ((eventData.lowStartCode === '' || eventData.lowStartCode === undefined) && styles.meterInpDel)}`}>
                   <FormItem>
                     {getFieldDecorator('lowStartCode', {
                       rules: [{
