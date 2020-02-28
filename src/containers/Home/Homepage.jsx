@@ -27,7 +27,7 @@ class Homepage extends Component {
     const enterpriseId = Cookie.get('enterpriseId');
     // fullScreenHomepageIds
     // homepageType: miniTheme-小版另类主题, miniFullScreen-小版一屏版本
-    let homepageType = 'miniFullScreen'; // 正常默认主页
+    let homepageType = 'normal'; // 正常默认主页
     if (miniHomepageIds.includes(enterpriseId)) { // 小版另类主题
       homepageType = 'miniTheme';
     } else if (fullScreenHomepageIds.includes(enterpriseId)) { // 小版一屏

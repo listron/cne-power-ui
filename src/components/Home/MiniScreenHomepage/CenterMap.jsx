@@ -13,6 +13,7 @@ class CenterMap extends Component {
     mapStation: PropTypes.array,
     singleStation: PropTypes.object,
     realTimeInfo: PropTypes.object,
+    mapStationTimer: PropTypes.number,
     getSingleStation: PropTypes.func,
     changeHomepageStore: PropTypes.func,
   }
@@ -24,12 +25,15 @@ class CenterMap extends Component {
       showStationInfo: false,
       starArr: [],
       mapCountInfo: {}, // 选中国家风电统计{name: '中国', wind: 21, pv: 11}
+      activeCountryName: 'China',
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    const { mapStation } = nextProps;
+    const { mapStation, mapStationTimer } = nextProps;
+    const { activeCountryName } = this.state;
     const preStations = this.props.mapStation;
+    const preStationTime = this.props.mapStationTimer;
     if (mapStation.length > 0 && preStations.length === 0) { // 第一次得到电站数据
       this.setStars(); // 开始渲染星图。
       const countriesInfo = []; // 国家信息
@@ -52,11 +56,11 @@ class CenterMap extends Component {
         // message.error('加载世界地图失败，请重试');
       });
       this.setState({ countriesInfo });
-      this.setCountryMap(mapStation, 'China');
+      this.setCountryMap(mapStation, activeCountryName);
     }
-    // if () { // 电站数据更新
-    //   this.setCountryMap(mapStation, 'China');
-    // }
+    if (preStationTime && preStationTime !== mapStationTimer) { // 后续电站数据更新
+      this.setCountryMap(mapStation, activeCountryName); // 重新绘制地图
+    }
   }
 
   componentWillUnmount() {
@@ -73,8 +77,11 @@ class CenterMap extends Component {
       const activeInfo = countriesInfo.find(e => {
         return e.position[0] === activePosition[0] && e.position[1] === activePosition[1];
       });
-      activeInfo && this.setWorldMap(countriesInfo, activeInfo); // 切换世界激活项
-      activeInfo && this.setCountryMap(mapStation, activeInfo.countryName); // 切换国家
+      if (activeInfo) {
+        this.setState({ activeCountryName: activeInfo.countryName });
+        this.setWorldMap(countriesInfo, activeInfo); // 切换世界激活项
+        this.setCountryMap(mapStation, activeInfo.countryName); // 切换国家
+      }
     }
   }
 
@@ -128,7 +135,6 @@ class CenterMap extends Component {
     const {
       staticInfo, scatterData,
     } = this.stationAnalysisUtil(countryStation);
-    console.log(countryStation, staticInfo, scatterData);
     this.setState({
       mapCountInfo: {
         name: countryStation[0] && countryStation[0].countryChineseName,
@@ -147,7 +153,7 @@ class CenterMap extends Component {
     axios.get(`/mapJson/${mapName}.json`).then(response => {
       const countryBox = document.getElementById('homeCountryMap');
       const countryChart = echarts.init(countryBox);
-      countryChart.clear();
+      // countryChart.clear();
       const { data } = response;
       const mapNameType = mapName === 'China' && 'china' || mapName;
       echarts.registerMap(mapNameType, data, {
@@ -313,7 +319,6 @@ class CenterMap extends Component {
       width: homeContentDom ? homeContentDom.offsetWidth : 0,
       height: homeContentDom ? homeContentDom.offsetHeight : 0,
     };
-    console.log(mapCountInfo);
     return (
       <div className={styles.centerMap}>
         <div className={styles.topData}>

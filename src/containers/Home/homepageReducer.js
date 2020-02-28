@@ -12,6 +12,7 @@ const initState = Immutable.fromJS({
   alarmList: [], // 告警列表 
   operationInfo: {}, // 运维情况
   mapStation: [], // 地图各坐标情况
+  mapStationTimer: null, // 地图坐标情况时刻记录
   outputPower: [], // 出力图
   singleStation: {}, // 单电站效果
   outputPowerTime: '', // 记录风电站出力图数据请求时间=>用于对比是否需要刷新chart图。
