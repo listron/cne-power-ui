@@ -1,0 +1,89 @@
+@import "../../../../theme/theme";
+
+@mixin top() {
+  //详情，编辑通用顶部基础样式
+  @include lineheight(64px);
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: solid 1px $promptColor;
+}
+
+.inspectDetailBox {
+  background: #fff;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .header {
+    @include top;
+    justify-content: space-between;
+    width: 100%;
+
+    .text {
+      font-size: 18px;
+      color: $darkColor;
+      letter-spacing: 4px;
+    }
+
+    .arrowBox {
+      display: flex;
+
+      .backIcon {
+        color: $darkColor;
+        font-size: 20px;
+        border-left: 1px solid $promptColor;
+        margin-left: 10px;
+        height: 100%;
+        line-height: 64px;
+        width: 64px;
+        cursor: pointer;
+      }
+
+      .backBtn {
+        margin-right: 40px;
+
+        :global {
+          a {
+            color: $themeColor;
+          }
+        }
+      }
+    }
+
+    :global {
+
+      .icon-last,
+      .icon-next {
+        cursor: pointer;
+        font-size: 20px;
+        margin-right: 20px; // color: $darkColor;
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    flex: 1;
+    padding: 24px 36px;
+
+    .leftContent {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 18px 28px;
+      background-color: #f8f8f8;
+      border-radius: 2px;
+      box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.20);
+    }
+
+    .rightContent {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      margin-left: 40px;
+      margin-right: 24px;
+      padding: 18px 0;
+    }
+  }
+}

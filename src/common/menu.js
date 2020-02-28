@@ -34,7 +34,7 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
-       
+
  name: '告警',
         iconStyle: 'icon-alarm1',
         path: 'alarm',
@@ -174,13 +174,19 @@ const menuData = [
             rightKey: 'operation_worklist_work',
           },
           {
+            name: '新工单列表',
+            path: 'newView',
+            defaultPath: true,
+            rightKey: 'operation_worklist_work',
+          },
+          {
             name: '工单统计',
             path: 'statistics',
             rightKey: 'operation_worklist_statistics',
           },
         ],
       },
-      
+
 {
         name: '两票管理',
         path: 'twoTickets',

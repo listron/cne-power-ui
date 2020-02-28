@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import ContentLayout from '@components/Common/ContentLayout';
 import styles from './overview.scss';
 import searchUtil from '@utils/searchUtil';
-import DefectList from '../DefectList/DefectList';
-import InspectList from '../InspectList/InspectList';
-import DefectDetail from '../DefectDetail/DefectDetail';
-import InspectDetail from '../InspectDetail/InspectDetail';
+import DefectList from '../NewDefectList/DefectList';
+import InspectList from '../NewInspectList/InspectList';
+import MeterList from '../NewMeterList/MeterList';
+import DefectDetail from '../NewDefectDetail/DefectDetail';
+import InspectDetail from '../NewInspectDetail/InspectDetail';
+import MeterDetail from '../NewMeterDetail/MeterDetail';
 
 
 /**
@@ -81,12 +83,15 @@ class Overview extends Component {
               <div className={styles.tabTitle}>
                 <p className={`${tab === 'defect' && styles.activeKey} `} onClick={() => { this.queryTargetData('defect'); }}>消缺</p>
                 <p className={`${tab === 'inspect' && styles.activeKey} `} onClick={() => { this.queryTargetData('inspect'); }}>巡检</p>
+                <p className={`${tab === 'meter' && styles.activeKey} `} onClick={() => { this.queryTargetData('meter'); }}>抄表</p>
               </div>
               {tab === 'defect' && <DefectList {...this.props} />}
               {tab === 'inspect' && <InspectList {...this.props} />}
+              {tab === 'meter' && <MeterList {...this.props} />}
             </div>}
           {page === 'defectDetail' && <DefectDetail {...this.props} />}
           {page === 'inspectDeatail' && <InspectDetail {...this.props} />}
+          {page === 'meterDetail' && <MeterDetail {...this.props} />}
         </div>
       </ContentLayout>
     );
