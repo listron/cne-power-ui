@@ -179,7 +179,7 @@ export default class MeterPicZoom extends Component {
               <div className={styles.picLeftBox}>
                 <i title="前一张" onClick={imgIndex - 1 >= 0 ? this.prevFunc : () => {}} className={`iconfont icon-arrowleft ${imgIndex - 1 >= 0 ? '' : styles.picLeft}`} />
               </div>
-              <img src={data[arrStr][curIndex].meterImgs[imgIndex].url} alt="" />
+              <img src={data[arrStr][curIndex].meterImgs[imgIndex] ? data[arrStr][curIndex].meterImgs[imgIndex].url : ''} alt="" />
               <div className={styles.picRightBox}>
                 <i title="后一张" onClick={imgIndex + 1 < len ? this.nextFunc : () => {}} className={`iconfont icon-arrowr ${imgIndex + 1 < len ? '' : styles.picRight}`} />
               </div>
