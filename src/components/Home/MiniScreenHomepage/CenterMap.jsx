@@ -142,7 +142,7 @@ class CenterMap extends Component {
     } else if (clientWidth < 1920) {
       countrySize = 650;
     } else if (clientWidth >= 1920) {
-      countrySize = 750;
+      countrySize = 700;
     }
     axios.get(`/mapJson/${mapName}.json`).then(response => {
       const countryBox = document.getElementById('homeCountryMap');
@@ -173,7 +173,7 @@ class CenterMap extends Component {
           silent: true,
           map: mapNameType,
           roam: true,
-          layoutCenter: ['50%', '55%'],
+          layoutCenter: ['50%', '50%'],
           scaleLimit: {
             min: 0.75,
           },

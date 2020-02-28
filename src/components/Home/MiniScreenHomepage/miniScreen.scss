@@ -6,18 +6,27 @@
 @media screen and (max-width: 1679px) { // 1680以下屏幕，按1440px进行适配。
   .innerContent{
     width: 1420px;
+    .middleBox{
+      height: 530px;
+    }
   }
 }
 
 @media screen and (max-width: 1919px) and (min-width: 1680px) { // 1920以下宽度屏按1680px适配
   .innerContent{
     width: 1680px;
+    .middleBox{
+      height: 530px;
+    }
   }
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
   .innerContent{
     width: 1920px;
+    .middleBox{
+      height: 560px;
+    }
   }
 }
 
@@ -39,7 +48,6 @@
     padding: 0 90px;
     .middleBox{
       display: flex;
-      height: 560px;
       .leftInfo{
         flex: 0 0 340px;
         z-index: 99;

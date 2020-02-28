@@ -5,6 +5,9 @@
   .eqpHours, .faultList, .alarmList{
     width: 440px;
   }
+  .monthGen, .deviceStatus{
+    height: 210px;
+  }
   .eqpHours .hourRectGroup{
     margin: 0 12px;
   }
@@ -17,6 +20,9 @@
   .eqpHours, .faultList, .alarmList{
     width: 475px;
   }
+  .monthGen, .deviceStatus{
+    height: 210px;
+  }
   .eqpHours .hourRectGroup{
     margin: 0 12px;
   }
@@ -27,7 +33,10 @@
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
   .eqpHours, .faultList, .alarmList{
-    width: 625px;
+    width: 550px;
+  }
+  .monthGen, .deviceStatus{
+    height: 240px;
   }
   .eqpHours .hourRectGroup{
     margin: 0 60px;
@@ -81,9 +90,7 @@
 .stationGeneral, .outputPower{
   height: 280px;
 }
-.monthGen, .deviceStatus{
-  height: 240px;
-}
+
 .eqpHours, .faultList, .alarmList{ // 底部盒子高度。
   height: 205px;
 }
@@ -97,9 +104,6 @@
   .checkTags{
     @include typeTags();
   }  
-}
-.eqpHours, .faultList{
-  margin-right: 12px;
 }
 
 .stationGeneral{ // 电站概况
