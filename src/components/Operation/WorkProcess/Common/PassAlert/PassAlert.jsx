@@ -42,7 +42,9 @@ export default class PassAlert extends Component {
 
   onConfirm = () => { // 确定按钮
     const { value } = this.state;
-    this.props.onConfirm(value ? value.trim() : value);
+    this.props.onConfirm(value ? value.trim() : value, () => {
+      this.setState({value: null});
+    });
   };
 
   onChange = e => {

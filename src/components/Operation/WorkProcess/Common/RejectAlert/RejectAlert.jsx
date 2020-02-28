@@ -44,7 +44,9 @@ export default class RejectAlert extends Component {
   onConfirm = () => { // 确定按钮
     const { value } = this.state;
     if(value && value.trim()) {
-      return this.props.onConfirm(value);
+      return this.props.onConfirm(value, () => {
+        this.setState({value: null});
+      });
     }
     return this.setState({
       errorFlag: true,

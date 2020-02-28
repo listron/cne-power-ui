@@ -62,6 +62,8 @@ const initState = immutable.fromJS({
     readmeterId: '', // 抄表扩展信息id
     settleMonth: '', // 结算月份
   },
+  newReadMeterData: {}, // 备份一份新的处理信息数据（做好对比有没有更改)
+  otherReadMeterData: {}, // 需要和原始数据作对比
   checkedUserList: [], // 添加执行人
   addVisible: false, // 添加执行人弹框
   processActionData: [], // 获取流程可执行动作

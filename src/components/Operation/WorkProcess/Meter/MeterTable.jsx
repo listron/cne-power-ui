@@ -110,28 +110,24 @@ export default class MeterTable extends React.Component {
    */
   formatMinutes = (minutes) => {
 
-    const day = parseInt(minutes / 1440, 0);
+    const day = parseInt(minutes / 60 / 24, 0);
 
-    const hour = day > 0
+    const hour = parseInt(minutes / 60 % 24, 0);
 
-      ? Math.floor((minutes - day * 1440) / 60)
-
-      : Math.floor(minutes / 60);
-
-    const minute = hour > 0
-
-      ? Math.floor(minutes - day * 1440 - hour * 60)
-
-      : minutes;
+    const min = parseInt(minutes % 60, 0);
 
     let time = '';
 
-    if (day > 0) time += day.toString().padStart(2, '0') + '天';
-
-    if (hour > 0) time += hour.toString().padStart(2, '0') + '小时';
-
-    if (hour > 0 && minute > 0) time += minute.toString().padStart(2, '0') + '分钟';
-
+    if (day > 0) {
+      time = day.toString().padStart(2, '0') + '天';
+    }
+    if (hour > 0) {
+      time += hour.toString().padStart(2, '0') + '小时';
+    }
+    if (min > 0) {
+      time += parseFloat(min).toString().padStart(2, '0') + '分钟';
+    }
+    //三元运算符 传入的分钟数不够一分钟 默认为0分钟
     return time;
   };
 
@@ -165,7 +161,7 @@ export default class MeterTable extends React.Component {
         align: 'center',
         dataIndex: 'settleMonth',
         className: styles.settleMonth,
-        render: (text) => (<div title={text} >{text || '- -'}</div>),
+        render: (text) => (<div title={text} >{text ? moment(text).format('YYYY-MM') : '- -'}</div>),
         sorter: true,
       }, {
         title: '工单创建时间',
