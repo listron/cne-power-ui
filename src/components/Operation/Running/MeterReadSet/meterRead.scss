@@ -320,14 +320,38 @@
             cursor: not-allowed; 
           }
         }
-        .meterNumber{
+        .meterName{
           :global{
             .ant-form-explain{
-              left: 107px;
+              left: 296px;
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
-                left: 76px;
+                left: 208px;
+              }
+            }
+          }
+        }
+        .meterType{
+          :global{
+            .ant-form-explain{
+              left: 155px;
+            }
+            @media screen and (max-width: 1679px) { // 1679以下屏幕，
+              .ant-form-explain{
+                left: 110px;
+              }
+            }
+          }
+        }
+        .meterNumber{
+          :global{
+            .ant-form-explain{
+              left: 123px;
+            }
+            @media screen and (max-width: 1679px) { // 1679以下屏幕，
+              .ant-form-explain{
+                left: 87px;
               }
             }
           }
@@ -335,11 +359,11 @@
         .initCode{
           :global{
             .ant-form-explain{
-              left: 124px;
+              left: 105px;
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
-                left: 88px;
+                left: 73px;
               }
             }
           }
