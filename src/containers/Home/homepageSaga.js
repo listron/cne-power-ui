@@ -133,6 +133,7 @@ function* getMapStation(action){ // 地图坐标及统计
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         mapStation: response.data.data || [],
+        mapStationTimer: moment().unix(),
       },
     });
   }catch(error){

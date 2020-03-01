@@ -8,6 +8,7 @@ import Cookie from 'js-cookie';
 import axios from 'axios';
 import MiniHomepage from '../../components/Home/MiniHomepage/MiniHomepage';
 import FullHomepage from '../../components/Home/FullHomepage/FullHomepage';
+import MiniScreenHomepage from '../../components/Home/MiniScreenHomepage/MiniScreenHomepage';
 
 class Homepage extends Component {
 
@@ -22,9 +23,16 @@ class Homepage extends Component {
   getHomepageType = async () => { // 获取主页类型
     const result = await axios.get('/menuBoardRequired.json') || {};
     const { data } = result;
-    const { miniHomepageIds } = data || {};
+    const { miniHomepageIds, fullScreenHomepageIds } = data || {};
     const enterpriseId = Cookie.get('enterpriseId');
-    const homepageType = miniHomepageIds.includes(enterpriseId) ? 'mini' : 'full';
+    // fullScreenHomepageIds
+    // homepageType: miniTheme-小版另类主题, miniFullScreen-小版一屏版本
+    let homepageType = 'normal'; // 正常默认主页
+    if (miniHomepageIds.includes(enterpriseId)) { // 小版另类主题
+      homepageType = 'miniTheme';
+    } else if (fullScreenHomepageIds.includes(enterpriseId)) { // 小版一屏
+      homepageType = 'miniFullScreen';
+    }
     this.setState({ homepageType });
   }
 
@@ -32,8 +40,9 @@ class Homepage extends Component {
     const { homepageType } = this.state;
     return ( // minipage: 精简版主页, fullpage完全版主页。
       <React.Fragment>
-        { homepageType === 'mini' && <MiniHomepage {...this.props} />}
-        { homepageType === 'full' && <FullHomepage {...this.props} />}
+        { homepageType === 'normal' && <FullHomepage {...this.props} />}
+        { homepageType === 'miniTheme' && <MiniHomepage {...this.props} />}
+        { homepageType === 'miniFullScreen' && <MiniScreenHomepage {...this.props} />}
       </React.Fragment>
     );
   }

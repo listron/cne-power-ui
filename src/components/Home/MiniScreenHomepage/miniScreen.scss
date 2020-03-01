@@ -1,0 +1,70 @@
+
+// 1680以下屏幕不刻意考虑， 按1440 * 768适配
+// 1920 - 1680(含)屏幕，按1680 * 1050适配
+// 1920及以上屏幕，按1920 * 1080适配
+
+@media screen and (max-width: 1679px) { // 1680以下屏幕，按1440px进行适配。
+  .innerContent{
+    width: 1420px;
+    .middleBox{
+      height: 530px;
+    }
+  }
+}
+
+@media screen and (max-width: 1919px) and (min-width: 1680px) { // 1920以下宽度屏按1680px适配
+  .innerContent{
+    width: 1680px;
+    .middleBox{
+      height: 530px;
+    }
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .innerContent{
+    width: 1920px;
+    .middleBox{
+      height: 560px;
+    }
+  }
+}
+
+.homepage{
+  position: relative;
+  width: 100%;
+  background:#0c2539;
+  background-attachment: local;
+  overflow: auto;
+  overflow-y: hidden; // 屏蔽内部纵向滚动条
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  flex-wrap: wrap;
+  background-image: url('/img/homepage.png');
+  background-position: center top;
+  background-repeat: no-repeat;
+  .innerContent{
+    padding: 0 90px;
+    .middleBox{
+      display: flex;
+      .leftInfo{
+        flex: 0 0 340px;
+        z-index: 99;
+      }
+      .rightInfo{
+        flex: 0 0 340px;
+      }
+      .mapInfo{
+        flex: 1 0 auto;
+        margin: 0 12px 0 12px;
+      }
+    }
+    .bottomBox{
+      height: 207px;
+      display: flex;
+      margin-bottom: 24px;
+      justify-content: space-between;
+    }
+  }
+}

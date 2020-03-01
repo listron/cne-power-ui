@@ -1,0 +1,352 @@
+
+
+@mixin boxStyle(){
+  background:rgba(56,108,150,0.15);
+  border:1px solid #3f566c;
+  box-shadow:0 0 6px 0 rgba(255,255,255,0.30);
+  border-radius:2px;
+  display: flex;
+  flex-direction: column;
+};
+
+@mixin typeTags(){
+  position: absolute;
+  z-index: 99;
+  right: 0;
+  top: 0;
+};
+
+@mixin titles {
+  text-align: center;
+  font-family:PingFangSC-Regular;
+  font-size:24px;
+  color:#a6e8ff;
+  height: 60px;
+  line-height: 60px;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+@mixin chartTool{ // chart图内文字及样式。
+  color:#a6e8ff;
+  font-family:PingFangSC-Regular;
+  font-size: 14px;
+  border-radius: 2px;
+}
+
+@media screen and (max-width: 1679px) { // 1680以下屏幕，按1440px进行适配。
+  .topBox{
+    .enterpriseTitle{
+      width: 1420px;
+    }
+  }
+  .centerMap{
+    .singleStation{
+      left: 171px;
+    }
+  }
+}
+
+@media screen and (max-width: 1919px) and (min-width: 1680px) { // 1920以下宽度屏按1680px适配
+  .topBox{
+    .enterpriseTitle{
+      width: 1680px;
+    }
+  }
+  .centerMap{
+    .singleStation{
+      left: 171px;
+    }
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .topBox{
+    .enterpriseTitle{
+      width: 1920px;
+    }
+  }
+  .centerMap{
+    .singleStation{
+      left: 253px;
+    }
+  }
+}
+
+.topBox{ // 顶部盒子
+  width: 100%;
+  z-index: 99;
+  background-attachment: local;
+  height: 130px;
+  background: url('/img/tiltebg.png') no-repeat center 15px;
+  .infoShow{ // 顶部信息展示。
+    display: flex;
+    width: 100%;
+    height: 40px;
+    align-items: center;
+    padding: 0 20px;
+    .timeShow,.upperArrow,.userShow{
+      width: 33.33%;
+    }
+    .timeShow{
+      color:#88a6bf;
+      text-align: left;
+      padding-left: 20px;
+      font-size: 14px;
+    }
+    .upperArrow{
+      text-align: center;
+      // margin-top: -30px;
+    }
+    .userShow{
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      .logo{
+        margin-left: 48px;
+      }
+    }
+  }
+  .enterpriseTitle{ // 企业标题
+    display: flex;
+    margin-top: 15px;
+    padding: 0 120px;
+    align-items: center;
+    height: 75px;
+    .saving{
+      flex:0 0 30%;
+      align-self: flex-end;
+      .savingText{
+        color:#88a6bf;
+        margin-left: 8px;
+      }
+      .saveInfo{
+        display: flex;
+        height: 34px;
+        margin-left: 12px;
+        align-items: center;
+      }
+      .eachSaving{
+        margin-right: 30px;
+        display: flex;
+        align-items: center;
+        .value{
+          font-size:18px;
+          color:#4dde49;
+          margin: 0 4px;
+        }
+        .unit{
+          color:#06bdf4;
+        }
+      }
+    }
+    .title{
+      flex:0 0 40%;
+      font-family:PingFangSC-Regular;
+      font-size: 34px;
+      color:#a6e8ff;
+      letter-spacing:1.74px;
+      text-align: center;
+    }
+    .sizeImg{
+      flex:0 0 30%;
+      align-self: flex-end;
+      text-align: right;
+      img{
+        cursor: pointer;
+        margin-right: 12px;
+      }
+    }
+  }
+}
+
+.centerMap{ // 中心地图
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  .topData{
+    display: flex;
+    justify-content: center;
+  }
+  .bottomData{
+    .worldMap{
+      width: 175px;
+      height: 110px;
+    }
+    .static{
+      display: flex;
+      color:#a6e8ff;
+      .stationTotalStatic{
+        flex: 0 0 175px;
+        text-align: center;
+        .count{
+          margin: 0 4px 0 8px;
+        }
+        img{
+          max-width: 15px;
+          max-height: 16px;
+        }
+      }
+      .stationStatusStatic{
+        display: flex;
+        align-items: center;
+        flex: 1;
+        .eachStatus{
+          margin-right: 20px;
+          display: flex;
+          align-items: center;
+        }
+        .statusRound{
+          border-radius: 50%;
+          display: inline-block;
+          margin-right: 2px;
+          width: 12px;
+          height: 12px;
+        }
+      }
+    }
+  }
+  .resource{
+    display: flex;
+    height: 45px;
+    margin-right: 16px;
+    img{
+      max-width: 50px;
+      max-height: 36px;
+      margin-right: 12px;
+    }
+    .resourceDetail{
+      display: flex;
+      flex-direction: column;
+      .detailTop{
+        display: flex;
+        height: 28px;
+        align-items: flex-end;
+      }
+      .value, .topValue, .bottomValue{
+        width: 80px;
+        height: 28px;
+        line-height: 28px;
+        font-size:28px;
+        font-family: digital-7mono;
+      }
+      .value{
+        color:#4dde49;
+        font-size:28px;
+        overflow: hidden;
+      }
+      .animationBox{
+        transition: all 3s;
+        display: flex;
+        flex-direction: column;
+      }
+      .unit, .name{
+        color:#06bdf4;
+      }
+    }
+  }
+  .resource:nth-child(2){
+    margin-right: 112px;
+  }
+  .countryMap{
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .singleStation{
+    z-index: 9999;
+    align-self: center;
+    justify-self: center;
+    width: 500px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    top: 200px;
+    background-color: rgba(0,0,0,0.70);
+    pointer-events: none;
+    .title{
+      display: flex;
+      margin: 0 12px;
+      height: 62px;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #a6e8ff;
+      .titleLeft{
+        display: flex;
+        align-items: center;
+        img{
+          max-width: 50px;
+          max-height: 36px;
+          margin-right: 12px;
+          margin-left: 20px;
+        }
+        .name{
+          color: #a6e8ff;
+          margin-right: 8px;
+          font-size:20px;
+        }
+        .arrow{
+          width: 12px;
+          height: 12px;
+          border: solid 6px #a6e8ff;
+          border-color: transparent transparent transparent #a6e8ff;
+        }
+      }
+      .status{
+        font-size:20px;
+        margin-right: 20px;
+        color:#4dde49;
+      }
+    }
+    .content{
+      flex: 1;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      padding: 0 36px;
+      .info{
+        display: flex;
+        flex-direction: column;
+        width: 33.33%;
+        align-items: flex-start;
+        justify-content: center;
+        &:nth-child(2){
+          width: 66.66%;
+        }
+      }
+      .value{
+        color:#4dde49;
+        font-size: 28px;
+      }
+      .text{
+        color:#a6e8ff;
+        font-size: 20px;
+      }
+    }
+  }
+  .starBox{
+    position: absolute;
+    left: 0;
+    top: 80px;
+    width: 100%;
+    height: 340px;
+    pointer-events: none;
+    .star{
+      pointer-events: none;
+      position: absolute;
+      border-radius: 50%;
+      box-shadow:1px 1px 1px 1px rgba(255,255,255,0.3);
+      animation: starFrame 10s linear infinite;
+      -webkit-animation: starFrame 10s linear infinite;
+      background-color: rgba(255,255,255,0.5);
+    }
+  }
+}
+@keyframes starFrame {
+  0% { width: 2px; height: 2px;}
+  50% { width: 3px; height: 3px;}
+  100% { width: 1px; height: 1px;}
+}
+
