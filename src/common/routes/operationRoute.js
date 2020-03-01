@@ -21,6 +21,11 @@ const ticket = [
     component: lazy(() => import('../../containers/Operation/WorkProcess/OverView/Overview.jsx')),
   },
   {
+    // 运维管理-工单-工单列表
+    path: '/operation/workProcess/newView',
+    component: lazy(() => import('../../containers/Operation/NewWorkProcess/NewOverView/Overview.jsx')),
+  },
+  {
     // 运维管理-工单-工单统计
     path: '/operation/workProcess/statistics',
     component: lazy(() => import('../../components/Common/Building/Building')),

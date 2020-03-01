@@ -32,6 +32,13 @@ import { inspectDetail } from './WorkProcess/InspectDetail/inspectDetailReducer'
 import { meterList } from './WorkProcess/MeterList/meterListReducer'; // 抄表列表
 import { meterDetail } from './WorkProcess/MeterDetail/meterDetailReducer'; // 抄表详情
 
+import { newDefectList } from './NewWorkProcess/NewDefectList/defectListReducer'; // 新缺陷列表
+import { newDefectDetail } from './NewWorkProcess/NewDefectDetail/defectDetailReducer'; //新缺陷详情
+import { newInspectList } from './NewWorkProcess/NewInspectList/inspectListReducer'; // 新巡检列表
+import { newInspectDetail } from './NewWorkProcess/NewInspectDetail/inspectDetailReducer'; //新巡检详情
+import { newMeterList } from './NewWorkProcess/NewMeterList/meterListReducer'; // 新新抄表列表
+import { newMeterDetail } from './NewWorkProcess/NewMeterDetail/meterDetailReducer'; // 新抄表详情
+
 const operationReducer = combineReducers({
   workStage, // 工作台
   workPlan, // 工作管理计划
@@ -61,6 +68,13 @@ const operationReducer = combineReducers({
   inspectDetail, //巡检详情
   meterList, // 抄表列表
   meterDetail, // 抄表详情
+
+  newDefectList, // 新缺陷列表
+  newDefectDetail, //新缺陷详情
+  newInspectList, // 新巡检列表
+  newInspectDetail, //新巡检详情
+  newMeterList, // 新抄表列表
+  newMeterDetail, // 新抄表详情
 });
 
 

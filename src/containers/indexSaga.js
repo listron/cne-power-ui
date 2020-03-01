@@ -19,6 +19,13 @@ import { watchInspectList } from './Operation/WorkProcess/InspectList/inspectLis
 import { watchInspectDetail } from './Operation/WorkProcess/InspectDetail/inspectDetailSaga';
 import { watchMeterList } from './Operation/WorkProcess/MeterList/meterListSaga';
 import { watchMeterDetail } from './Operation/WorkProcess/MeterDetail/meterDetailSaga';
+// 新工单
+import { newWatchDefectList } from './Operation/NewWorkProcess/NewDefectList/defectListSaga';
+import { newWatchDefectDetail } from './Operation/NewWorkProcess/NewDefectDetail/defectDetailSaga';
+import { newWatchInspectList } from './Operation/NewWorkProcess/NewInspectList/inspectListSaga';
+import { newWatchInspectDetail } from './Operation/NewWorkProcess/NewInspectDetail/inspectDetailSaga';
+import { newWatchMeterList } from './Operation/NewWorkProcess/NewMeterList/meterListSaga';
+import { newWatchMeterDetail } from './Operation/NewWorkProcess/NewMeterDetail/meterDetailSaga';
 
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
 import { watchPersonnelManage } from './System/Account/PersonnelManage/personnelManageSaga';
@@ -162,6 +169,13 @@ export default function* rootSaga() {
     watchInspectDetail(), // 巡检详情
     watchMeterList(), // 抄表列表
     watchMeterDetail(), // 抄表详情
+
+    newWatchDefectList(), // 新缺陷列表
+    newWatchDefectDetail(), // 新缺陷详情
+    newWatchInspectList(), // 新巡检列表
+    newWatchInspectDetail(), // 新巡检详情
+    newWatchMeterList(), // 新抄表列表
+    newWatchMeterDetail(), // 新抄表详情
 
     //system-enterprise
     watchEnterprise(),
