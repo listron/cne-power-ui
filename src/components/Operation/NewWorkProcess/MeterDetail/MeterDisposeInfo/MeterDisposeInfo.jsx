@@ -933,6 +933,7 @@ export default class MeterDisposeInfo extends React.Component {
         {zoomVisible && (
           <MeterPicZoom
             getRotateImg={getRotateImg}
+            editFlag={editFlag}
             changeStore={changeStore}
             onCancel={this.closePicZoom}
             changeStateFunc={this.changeStateFunc}

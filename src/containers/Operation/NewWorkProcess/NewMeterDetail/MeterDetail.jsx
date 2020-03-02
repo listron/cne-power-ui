@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { message } from 'antd';
 import {newMeterDetailAction} from './meterDetailReducer';
 import MeterTop from '@components/Operation/NewWorkProcess/MeterDetail/MeterTop/MeterTop.jsx';
 import MeterBaseInfo from '@components/Operation/NewWorkProcess/MeterDetail/MeterBaseInfo/MeterBaseInfo.jsx';
@@ -8,6 +9,13 @@ import MeterProcess from '@components/Operation/NewWorkProcess/MeterDetail/Meter
 import MeterDisposeInfo from '@components/Operation/NewWorkProcess/MeterDetail/MeterDisposeInfo/MeterDisposeInfo.jsx';
 import searchUtil from '@utils/searchUtil';
 import styles from './meterDetail.scss';
+
+message.config({
+  top: 100,
+  duration: 2,
+  maxCount: 3,
+});
+
 
 class MeterDetail extends Component {
 

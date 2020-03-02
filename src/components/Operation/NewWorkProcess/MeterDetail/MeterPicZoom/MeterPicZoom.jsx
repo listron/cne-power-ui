@@ -19,6 +19,7 @@ export default class MeterPicZoom extends Component {
     changeStateFunc: PropTypes.func,
     getRotateImg: PropTypes.func,
     newReadMeterData: PropTypes.object,
+    editFlag: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -131,7 +132,7 @@ export default class MeterPicZoom extends Component {
 
   render() {
     const {
-      visible, theme, tipClassname, width, style, imgIndex, data, arrStr, curIndex,
+      visible, theme, tipClassname, width, style, imgIndex, data, arrStr, curIndex, editFlag,
     } = this.props;
     const defaultModalProps = {
       style,
@@ -156,8 +157,8 @@ export default class MeterPicZoom extends Component {
                 {len ? imgIndex+1 : 0}/{len}
               </div>
               <div className={styles.picZoomHandle}>
-                <i title="旋转" className="iconfont icon-xuanzhuan" onClick={this.rotateImgParentDivAdapt} />
-                <i title="删除" className="iconfont icon-del" onClick={this.delImgFunc} />
+                {editFlag && <i title="旋转" className="iconfont icon-xuanzhuan" onClick={this.rotateImgParentDivAdapt} />}
+                {editFlag && <i title="删除" className="iconfont icon-del" onClick={this.delImgFunc} />}
               </div>
               <div />
             </div>

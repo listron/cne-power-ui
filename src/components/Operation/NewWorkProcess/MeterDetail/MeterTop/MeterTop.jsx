@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import CneTips from '@components/Common/Power/CneTips';
-import PassAlert from '@components/Operation/WorkProcess/Common/PassAlert/PassAlert';
-import RejectAlert from '@components/Operation/WorkProcess/Common/RejectAlert/RejectAlert';
+import { MyMessage } from '@components/Operation/NewWorkProcess/Common/MyMessage/MyMessage';
+import PassAlert from '@components/Operation/NewWorkProcess/Common/PassAlert/PassAlert';
+import RejectAlert from '@components/Operation/NewWorkProcess/Common/RejectAlert/RejectAlert';
 import styles from './meterTop.scss';
 import searchUtil from '@utils/searchUtil';
 
@@ -17,6 +18,7 @@ export default class MeterTop extends React.Component {
     readMeterData: PropTypes.object,
     changeStore: PropTypes.func,
     getReceiveAction: PropTypes.func,
+    myMessageFlag: PropTypes.bool,
   };
 
   constructor(props) {
@@ -27,6 +29,7 @@ export default class MeterTop extends React.Component {
       rejectVisible: false,
       warningTipText: '',
       actionCode: '',
+      messageText: '',
     };
   }
 
@@ -45,6 +48,7 @@ export default class MeterTop extends React.Component {
       showWarningTip: true,
       actionCode: '2',
       warningTipText: '确认领取此工单？',
+      messageText: '已领取！',
     });
   };
 
@@ -123,6 +127,7 @@ export default class MeterTop extends React.Component {
       this.setState({
         showWarningTip: true,
         actionCode: '5',
+        messageText: '已提交验收！',
         warningTipText: '确认将此工单提交验收？',
       });
     }
@@ -153,6 +158,7 @@ export default class MeterTop extends React.Component {
         stateId,
       },
       getReceiveAction,
+      changeStore,
     } = this.props;
     const { search, pathname } = history.location;
     const { meterId, params } = searchUtil(search).parse(); // 抄表详情页
@@ -174,6 +180,15 @@ export default class MeterTop extends React.Component {
               actionCode: cur.actionCode,
               stateId,
               func: () => {
+                // 改变弹框
+                changeStore({
+                  myMessageFlag: true,
+                });
+                setTimeout(() => {
+                  changeStore({
+                    myMessageFlag: false,
+                  });
+                }, 2000);
                 this.setState({
                   actionCode: '',
                   showWarningTip: false,
@@ -193,6 +208,15 @@ export default class MeterTop extends React.Component {
               actionCode: cur.actionCode,
               stateId,
               func: () => {
+                // 改变弹框
+                changeStore({
+                  myMessageFlag: true,
+                });
+                setTimeout(() => {
+                  changeStore({
+                    myMessageFlag: false,
+                  });
+                }, 2000);
                 this.setState({
                   actionCode: '',
                   showWarningTip: false,
@@ -290,10 +314,11 @@ export default class MeterTop extends React.Component {
   };
 
   render() {
-    const { showWarningTip, warningTipText, passVisible, rejectVisible } = this.state;
-    const { processActionData, thisReadTimeFlag } = this.props;
+    const { showWarningTip, warningTipText, passVisible, rejectVisible, messageText } = this.state;
+    const { processActionData, thisReadTimeFlag, myMessageFlag } = this.props;
     return (
       <React.Fragment>
+        {myMessageFlag && <MyMessage message={messageText} />}
         <div className={styles.meterTop} >
           <div className={styles.meterTopTitle}>
             <div className={styles.titleBox}>

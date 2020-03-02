@@ -69,6 +69,7 @@ const initState = immutable.fromJS({
   processActionData: [], // 获取流程可执行动作
   editFlag: false, // 编辑
   thisReadTimeFlag: false, // 选择时间
+  myMessageFlag: false, // 控制message
 });
 
 const newMeterDetail = (state = initState, action) => {
