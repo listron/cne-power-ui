@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes, { number } from 'prop-types';
 import { Form, Input, Select } from 'antd';
 import styles from './meterRead.scss';
+import moment from 'moment';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -17,12 +18,12 @@ class EditableCell extends Component {
     delEvent: PropTypes.func,
     changeMeter: PropTypes.func,
     changeMeterReadSetStore: PropTypes.func,
-    theme: PropTypes.string,
   }
 
   constructor(props){
     super(props);
     this.state = {
+      isFromSave: false,
       meterNameValue: 'noData',
       meterTypeValue: 'noData',
       magnificationValue: 'noData',
@@ -38,8 +39,8 @@ class EditableCell extends Component {
   onChangeColumn = (type, value) => { // 改变每列值
     const { eventData, changeMeterReadSetStore} = this.props;
     eventData[type] = value;
-    this.props.editEvent(eventData);
-    changeMeterReadSetStore({ isEditList: eventData.editable });
+    this.props.editEvent(eventData, type);
+    changeMeterReadSetStore({isEditList: eventData.editable});
     if (type === 'meterName') {
       this.setState({
         meterNameValue: value,
@@ -57,6 +58,7 @@ class EditableCell extends Component {
     form.validateFieldsAndScroll((error, values)=>{
       if (error) {
         this.setState({
+          isFromSave: true,
           meterNameValue: values.meterName ? values.meterName : '',
           meterNumberValue: values.meterNumber ? values.meterNumber : '',
           meterTypeValue: values.meterType ? values.meterType : '',
@@ -100,7 +102,7 @@ class EditableCell extends Component {
   }
 
   render(){
-    const { meterNameValue, meterNumberValue, meterTypeValue, magnificationValue, flatStartCodeValue, lowStartCodeValue, peakStartCodeValue, topStartCodeValue, totalStartCodeValue } = this.state;
+    const { isFromSave, meterNameValue, meterNumberValue, meterTypeValue, magnificationValue, flatStartCodeValue, lowStartCodeValue, peakStartCodeValue, topStartCodeValue, totalStartCodeValue } = this.state;
     const { eventData, baseDeviceData = [], form } = this.props;
     const { getFieldDecorator } = form;
     const { editable, isRelDocket } = eventData;
@@ -113,12 +115,13 @@ class EditableCell extends Component {
                 {getFieldDecorator('meterName', {
                     rules: [{
                       required: true,
+                      message: '请选择电表名称',
                     }],
-                    initialValue: eventData.meterName ? eventData.meterName : '请选择电能表',
+                    initialValue: eventData.meterName,
                   })(
                     <Select
-                      className={((!eventData.meterName && meterNameValue === 'noData') && styles.meterInpNull) || (meterNameValue === '请选择电能表' && styles.meterInpDel)}
-                      placeholder="请选择"
+                      className={((!eventData.meterName && meterNameValue === 'noData') && styles.meterInpNull) || (meterNameValue === '' && styles.meterInpDel)}
+                      placeholder="请选择电能表"
                       dropdownClassName={styles.meterNameSelect}
                       onChange={(value) => { this.onChangeColumn('meterName', value); }}
                     >
@@ -135,13 +138,13 @@ class EditableCell extends Component {
                 )}
               </FormItem>
             </div>
-            <div className={`${styles.meterNumber} ${(meterNumberValue === 'noData' ? (eventData.meterNumber === undefined && styles.meterInpNull) : styles.meterInpDel) || (eventData.meterNumber === '' && styles.meterInpDel)}`}>
+            <div className={`${styles.meterNumber} ${!isFromSave ? (eventData.meterNumber === undefined && styles.meterInpNull || (eventData.meterNumber === '' && styles.meterInpDel)) : ((eventData.meterNumber === '' || eventData.meterNumber === undefined) && styles.meterInpDel)}`}>
               <FormItem>
                 {getFieldDecorator('meterNumber', {
                   rules: [{
                     required: true,
-                    pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                    message: '最多输入6位整数和2位小数',
+                    pattern: new RegExp(/(^[0-9]{1,10}$)/),
+                    message: '最多输入10位整数',
                   }],
                   getValueFromEvent: (event) => {
                     return event.target.value.replace(/[^\d.]/g, '');
@@ -157,11 +160,12 @@ class EditableCell extends Component {
                 {getFieldDecorator('meterType', {
                   rules: [{
                     required: true,
+                    message: '请选择计量类型',
                   }],
-                  initialValue: eventData.meterType ? eventData.meterType : '请选择',
+                  initialValue: eventData.meterType,
                 })(
                   <Select
-                    className={((!eventData.meterType && meterTypeValue === 'noData') && styles.meterInpNull) || (meterTypeValue === '请选择' && styles.meterInpDel)}
+                    className={((!eventData.meterType && meterTypeValue === 'noData') && styles.meterInpNull) || (meterTypeValue === '' && styles.meterInpDel)}
                     placeholder="请选择"
                     onChange={(value) => { this.onChangeColumn('meterType', value); }}
                   >
@@ -171,7 +175,7 @@ class EditableCell extends Component {
                 )}
               </FormItem>
             </div>
-            <div className={`${styles.initCode} ${(magnificationValue === 'noData' ? (eventData.magnification === undefined && styles.meterInpNull) : styles.meterInpDel) || (eventData.magnification === '' && styles.meterInpDel)}`}>
+            <div className={`${styles.initCode} ${!isFromSave ? (eventData.magnification === undefined && styles.meterInpNull || (eventData.magnification === '' && styles.meterInpDel)) : ((eventData.magnification === '' || eventData.magnification === undefined) && styles.meterInpDel)}`}>
               <FormItem>
                 {getFieldDecorator('magnification', {
                   rules: [{
@@ -190,7 +194,7 @@ class EditableCell extends Component {
             </div>
             <div className={styles.switchType}>
               <div className={styles.switchTypeChild}>
-                <span className={`${styles.totalStartCode} ${(totalStartCodeValue === 'noData' ? (eventData.totalStartCode === undefined && styles.meterInpNull) : styles.meterInpDel) || (eventData.totalStartCode === '' && styles.meterInpDel)}`}>
+                <span className={`${styles.totalStartCode} ${!isFromSave ? (eventData.totalStartCode === undefined && styles.meterInpNull) || (eventData.totalStartCode === '' && styles.meterInpDel) : ((eventData.totalStartCode === '' || eventData.totalStartCode === undefined) && styles.meterInpDel)}`}>
                   <FormItem>
                     {getFieldDecorator('totalStartCode', {
                       rules: [{
@@ -207,7 +211,7 @@ class EditableCell extends Component {
                       )}
                   </FormItem>
                 </span>
-                <span className={`${styles.topStartCode} ${(topStartCodeValue === 'noData' ? (eventData.topStartCode === undefined && styles.meterInpNull) : styles.meterInpDel) || (eventData.topStartCode === '' && styles.meterInpDel)}`}>
+                <span className={`${styles.topStartCode} ${!isFromSave ? (eventData.topStartCode === undefined && styles.meterInpNull) || (eventData.topStartCode === '' && styles.meterInpDel) : ((eventData.topStartCode === '' || eventData.topStartCode === undefined) && styles.meterInpDel)}`}>
                   <FormItem>
                     {getFieldDecorator('topStartCode', {
                       rules: [{
@@ -224,7 +228,7 @@ class EditableCell extends Component {
                       )}
                   </FormItem>
                 </span>
-                <span className={`${styles.peakStartCode} ${(peakStartCodeValue === 'noData' ? (eventData.peakStartCode === undefined && styles.meterInpNull) : styles.meterInpDel) || (eventData.peakStartCode === '' && styles.meterInpDel)}`}>
+                <span className={`${styles.peakStartCode} ${!isFromSave ? (eventData.peakStartCode === undefined && styles.meterInpNull) || (eventData.peakStartCode === '' && styles.meterInpDel) : ((eventData.peakStartCode === '' || eventData.peakStartCode === undefined) && styles.meterInpDel)}`}>
                   <FormItem>
                     {getFieldDecorator('peakStartCode', {
                       rules: [{
@@ -241,7 +245,7 @@ class EditableCell extends Component {
                       )}
                   </FormItem>
                 </span>
-                <span className={`${styles.flatStartCode} ${(flatStartCodeValue === 'noData' ? (eventData.flatStartCode === undefined && styles.meterInpNull) : styles.meterInpDel) || (eventData.flatStartCode === '' && styles.meterInpDel)}`}>
+                <span className={`${styles.flatStartCode} ${!isFromSave ? (eventData.flatStartCode === undefined && styles.meterInpNull) || (eventData.flatStartCode === '' && styles.meterInpDel) : ((eventData.flatStartCode === '' || eventData.flatStartCode === undefined) && styles.meterInpDel)}`}>
                   <FormItem>
                     {getFieldDecorator('flatStartCode', {
                       rules: [{
@@ -258,7 +262,7 @@ class EditableCell extends Component {
                       )}
                   </FormItem>
                 </span>
-                <span className={`${styles.lowStartCode} ${(lowStartCodeValue === 'noData' ? (eventData.lowStartCode === undefined && styles.meterInpNull) : styles.meterInpDel) || (eventData.lowStartCode === '' && styles.meterInpDel)}`}>
+                <span className={`${styles.lowStartCode} ${!isFromSave ? (eventData.lowStartCode === undefined && styles.meterInpNull) || (eventData.lowStartCode === '' && styles.meterInpDel) : ((eventData.lowStartCode === '' || eventData.lowStartCode === undefined) && styles.meterInpDel)}`}>
                   <FormItem>
                     {getFieldDecorator('lowStartCode', {
                       rules: [{
@@ -300,11 +304,11 @@ class EditableCell extends Component {
                 <span className={styles.lowStartCode}>{eventData.lowStartCode}</span>
               </div>
             </div>
-            <div className={styles.updateTime}>{eventData.updateTime ? eventData.updateTime : '--'}</div>
+            <div className={styles.updateTime}>{eventData.updateTime ? moment(eventData.updateTime).format('YYYY-MM-DD HH:mm:ss') : '--'}</div>
             <div className={styles.handler}>
-            {isRelDocket === 0 ? <i title={'编辑'} className={`iconfont icon-edit ${styles.editBtn}`} onClick={() => { this.onChangeColumn('editable', true); }} /> : <i className={`iconfont icon-edit ${styles.disableEdit}`} />}
+              {isRelDocket === 0 ? <i title={'编辑'} className={`iconfont icon-edit ${styles.editBtn}`} onClick={() => { this.onChangeColumn('editable', true); }} /> : <i className={`iconfont icon-edit ${styles.disableBtn}`} />}
               <i title={'换表'} className={`iconfont icon-changedb ${styles.updateBtn}`} onClick={() => { this.changeMeter(eventData); }} />
-              {isRelDocket === 0 ? <i title={'删除'} className={`iconfont icon-del ${styles.delBtn}`} onClick={() => { this.delEvent(eventData); }} /> : <i className={`iconfont icon-del ${styles.disableEdit}`} />}
+              {isRelDocket === 0 ? <i title={'删除'} className={`iconfont icon-del ${styles.delBtn}`} onClick={() => { this.delEvent(eventData); }} /> : <i className={`iconfont icon-del ${styles.disableBtn}`} />}
             </div>
           </React.Fragment>}
       </div>

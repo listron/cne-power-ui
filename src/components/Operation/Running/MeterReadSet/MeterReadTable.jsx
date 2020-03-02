@@ -43,6 +43,7 @@ class MeterReadTable extends Component{
       modalMeterName: '', // 换表框电表名称
       modalMeterType: '', // 换表框计量类型
       modalInitCode: '', // 换表框倍率
+      modalMeterNumber: '', // 换表框电表号
       showModalTip: false, // 换表弹框二次确认弹框
       modalTipText: '', // 换表弹框二次确认弹框内容
       delArr: null,
@@ -57,6 +58,7 @@ class MeterReadTable extends Component{
       newFlatStartCode: 'noData',
       newLowStartCode: 'noData',
       newMagnification: 'noData',
+      newMeterNumber: 'noData',
     };
   }
 
@@ -112,7 +114,7 @@ class MeterReadTable extends Component{
     if (meterId) { // 编辑行
       const index = currentEventList.findIndex(e => e.meterId === meterId);
       changeMeterReadSetStore({isEditList: false});
-      getUpDateMeterList({stationCode, stationName, meterId, ...rest, func: () => { currentEventList[index].editable = false; this.setState({ currentEventList }); }});
+      getUpDateMeterList({ meterId, ...rest, func: () => { currentEventList[index].editable = false; this.setState({ currentEventList }); }});
     }else { // 添加行
       const addIndex = addEventList.findIndex(e => e.key === value.key);
       changeMeterReadSetStore({isEditList: false});
@@ -120,13 +122,11 @@ class MeterReadTable extends Component{
     }
   }
 
-  editEvent = (trData) => { // 编辑
+  editEvent = (trData, type) => { // 编辑
     const { meterId } = trData;
-    const { currentEventList, addEventList } = this.state;
-    const editColumn = currentEventList.filter(e => {
-      return e.editable === true;
-    });
-    const { addDataNum, changeMeterReadSetStore, isEditPrice } = this.props;
+    const { currentEventList, addEventList} = this.state;
+    const { addDataNum, changeMeterReadSetStore, isEditPrice, isEditList } = this.props;
+
     if (isEditPrice) {
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
@@ -142,7 +142,7 @@ class MeterReadTable extends Component{
         }, 3000);
         return;
       }
-      if (editColumn.length > 1) {
+      if (type === 'editable' && isEditList) {
         changeMeterReadSetStore({ isListTip: true });
         setTimeout(() => {
           changeMeterReadSetStore({ isListTip: false });
@@ -255,6 +255,7 @@ class MeterReadTable extends Component{
       modalMeterName: value.meterName,
       modalMeterType: value.meterType,
       modalInitCode: value.magnification,
+      modalMeterNumber: value.meterNumber,
       deleteMeterId: value.meterId,
     });
   }
@@ -275,6 +276,7 @@ class MeterReadTable extends Component{
           newFlatStartCode: values.newFlatStartCode,
           newLowStartCode: values.newLowStartCode,
           newMagnification: values.newMagnification,
+          newMeterNumber: values.newMeterNumber,
         });
         return;
       }
@@ -292,7 +294,7 @@ class MeterReadTable extends Component{
   }
 
   modalConfirmTip = () => { // 确定换表-二次确认框
-    const { deleteMeterId, modalInitCode } = this.state;
+    const { deleteMeterId, modalInitCode, modalMeterNumber } = this.state;
     const { getChangeMeterList, form } = this.props;
     this.setState({
       showModalTip: false,
@@ -303,12 +305,14 @@ class MeterReadTable extends Component{
         getChangeMeterList({
           meterId: deleteMeterId,
           oldMagnification: modalInitCode,
+          oldMeterNumber: modalMeterNumber,
           oldTotalEndCode: Number(values.oldTotalEndCode),
           oldTopEndCode: Number(values.oldTopEndCode),
           oldPeakEndCode: Number(values.oldPeakEndCode),
           oldFlatEndCode: Number(values.oldFlatEndCode),
           oldLowEndCode: Number(values.oldLowEndCode),
           newMagnification: Number(values.newMagnification),
+          newMeterNumber: Number(values.newMeterNumber),
           newTotalStartCode: Number(values.newTotalStartCode),
           newTopStartCode: Number(values.newTopStartCode),
           newPeakStartCode: Number(values.newPeakStartCode),
@@ -333,6 +337,7 @@ class MeterReadTable extends Component{
       newFlatStartCode: 'noData',
       newLowStartCode: 'noData',
       newMagnification: 'noData',
+      newMeterNumber: 'noData',
     });
   }
 
@@ -377,6 +382,10 @@ class MeterReadTable extends Component{
       this.setState({
         newLowStartCode: e.target.value ? e.target.value : '',
       });
+    }else if (type === 'newMeterNumber') {
+      this.setState({
+        newMeterNumber: e.target.value ? e.target.value : '',
+      });
     }else if (type === 'newMagnification') {
       this.setState({
         newMagnification: e.target.value ? e.target.value : '',
@@ -385,9 +394,9 @@ class MeterReadTable extends Component{
   }
 
   render(){
-    const { tableLoading, meterListError, baseDeviceData, isListTip, isPriceTip, changeMeterReadSetStore} = this.props;
+    const { tableLoading, meterListError, baseDeviceData, isListTip, isPriceTip, changeMeterReadSetStore } = this.props;
     const { getFieldDecorator } = this.props.form;
-    const { addEventList, currentEventList, showWarningTip, showModalTip, warningTipText, modalTipText, modalVisible, modalMeterName, modalMeterType, modalInitCode, oldTotalEndCode, oldTopEndCode, oldPeakEndCode, oldFlatEndCode, oldLowEndCode, newTotalStartCode, newTopStartCode, newPeakStartCode, newFlatStartCode, newLowStartCode, newMagnification } = this.state;
+    const { addEventList, currentEventList, showWarningTip, showModalTip, warningTipText, modalTipText, modalVisible, modalMeterName, modalMeterType, modalMeterNumber, modalInitCode, oldTotalEndCode, oldTopEndCode, oldPeakEndCode, oldFlatEndCode, oldLowEndCode, newTotalStartCode, newTopStartCode, newPeakStartCode, newFlatStartCode, newLowStartCode, newMeterNumber, newMagnification } = this.state;
 
     return(
       <div className={styles.meterReadTable}>
@@ -416,6 +425,7 @@ class MeterReadTable extends Component{
                 <div className={styles.oldMeter}>
                   <div className={styles.title}>旧电表信息</div>
                   <div className={styles.meterContent}>
+                    <div className={styles.modalMeterNumber}>表号：{modalMeterNumber}</div>
                     <div className={styles.modalInitCode}>倍率：{modalInitCode}</div>
                     <div className={styles.oldData}>旧电表止码</div>
                     <div className={`${styles.oldTotalEndCode} ${(oldTotalEndCode === 'noData' && styles.meterInpNull) || (!oldTotalEndCode && styles.meterInpDel)}`}>
@@ -508,12 +518,31 @@ class MeterReadTable extends Component{
                 <div className={styles.newMeter}>
                   <div className={styles.title}>新电表信息</div>
                   <div className={styles.meterContent}>
+                  <div className={styles.modalMeterNumber}>
+                    <div className={`${styles.newMeterNumber} ${(newMeterNumber === 'noData' && styles.meterInpNull) || (!newMeterNumber && styles.meterInpDel)}`}>
+                        <FormItem label="表号" colon={true}>
+                            {getFieldDecorator('newMeterNumber', {
+                                rules: [{
+                                  required: true,
+                                  pattern: new RegExp(/^[1-9][0-9]{0,10}$/),
+                                  message: '最多输入10位整数',
+                                }],
+                                getValueFromEvent: (event) => {
+                                  return event.target.value.replace(/[^\d.]/g, '');
+                                },
+                                initialValue: '',
+                            })(
+                              <Input placeholder={'请输入'} onChange={(e) => this.meterChange('newMeterNumber', e)} />
+                            )}
+                          </FormItem>
+                      </div>
+                    </div>
                     <div className={styles.modalInitCode}>
                       <div className={`${styles.newMagnification} ${(newMagnification === 'noData' && styles.meterInpNull) || (!newMagnification && styles.meterInpDel)}`}>
                         <FormItem label="倍率" colon={true}>
                             {getFieldDecorator('newMagnification', {
                                 rules: [{
-                              required: true,
+                                  required: true,
                                   pattern: new RegExp(/^[1-9][0-9]{0,5}$/),
                                   message: '最多输入6位整数',
                                 }],

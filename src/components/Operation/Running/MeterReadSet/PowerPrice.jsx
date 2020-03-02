@@ -35,19 +35,34 @@ class PowerPrice extends Component{
     const { changeMeterReadSetStore } = this.props;
     this.setState({
       isEdit: false,
+      topPriceValue: 'noData',
+      peakPriceValue: 'noData',
+      flatPriceValue: 'noData',
+      lowPriceValue: 'noData',
+      discountRateValue: 'noData',
     });
     changeMeterReadSetStore({isEditPrice: false});
   }
 
   saveEvent = (value) => { // 保存
-    const { form, getMeterPrice, stationCode, changeMeterReadSetStore } = this.props;
+    const { form, getMeterPrice, stationCode, changeMeterReadSetStore, priceDetailData } = this.props;
     form.validateFieldsAndScroll((error, values)=>{
+      if (error) {
+        this.setState({
+          topPriceValue: values.topPrice ? values.topPrice : '',
+          peakPriceValue: values.peakPrice ? values.peakPrice : '',
+          flatPriceValue: values.flatPrice ? values.flatPrice : '',
+          lowPriceValue: values.lowPrice ? values.lowPrice : '',
+          discountRateValue: values.discountRate ? values.discountRate : '',
+        });
+      }
       if(!error){
         this.setState({
           isEdit: false,
         });
         getMeterPrice({
           stationCode,
+          powerPriceId: priceDetailData.powerPriceId,
           topPrice: Number(values.topPrice),
           peakPrice: Number(values.peakPrice),
           flatPrice: Number(values.flatPrice),
@@ -108,8 +123,10 @@ class PowerPrice extends Component{
         <div className={styles.priceTop}>
           <span className={styles.title}>自用电电价设置</span>
           <div className={styles.topRight}>
-            <span>更新时间：</span>
-            <span className={styles.updateTime}>{moment(updateTime).format('YYYY-MM-DD h:mm:ss')}</span>
+            {updateTime && <span>
+              <span>更新时间：</span>
+              <span className={styles.updateTime}>{moment(updateTime).format('YYYY-MM-DD h:mm:ss')}</span>
+            </span>}
             {isEdit && <div>
               <CneButton className={styles.cancelBtn} onClick={this.cancelEvent}>取消</CneButton>
               <CneButton className={styles.saveBtn} onClick={this.saveEvent}>
@@ -127,7 +144,7 @@ class PowerPrice extends Component{
           {isEdit && <div className={styles.priceInfo}>
             <Form>
               <div className={styles.topPrice}>
-                <div className={`${styles.priceData} ${topPriceValue === 'noData' && priceDetailData.topPrice === undefined && styles.meterInpNull || !topPriceValue && styles.meterInpDel}`}>
+                <div className={`${styles.priceData} ${topPriceValue === 'noData' ? ((priceDetailData.topPrice === undefined || priceDetailData.topPrice === null) && styles.meterInpNull) : (topPriceValue === '' && styles.meterInpDel)}`}>
                   <span className={styles.text}>尖时段</span>
                   <FormItem>
                     {getFieldDecorator('topPrice', {
@@ -148,7 +165,7 @@ class PowerPrice extends Component{
                 </div>
               </div>
               <div className={styles.peakPrice}>
-                <div className={`${styles.priceData} ${peakPriceValue === 'noData' && priceDetailData.peakPrice === undefined && styles.meterInpNull || !peakPriceValue && styles.meterInpDel}`}>
+                <div className={`${styles.priceData} ${peakPriceValue === 'noData' ? ((priceDetailData.peakPrice === undefined || priceDetailData.peakPrice === null) && styles.meterInpNull) : (peakPriceValue === '' && styles.meterInpDel)}`}>
                   <span className={styles.text}>峰时段</span>
                     <FormItem>
                       {getFieldDecorator('peakPrice', {
@@ -169,7 +186,7 @@ class PowerPrice extends Component{
                 </div>
               </div>
               <div className={styles.flatPrice}>
-                <div className={`${styles.priceData} ${flatPriceValue === 'noData' && priceDetailData.flatPrice === undefined && styles.meterInpNull || !flatPriceValue && styles.meterInpDel}`}>
+                <div className={`${styles.priceData} ${flatPriceValue === 'noData' ? ((priceDetailData.flatPrice === undefined || priceDetailData.flatPrice === null) && styles.meterInpNull) : (flatPriceValue === '' && styles.meterInpDel)}`}>
                   <span className={styles.text}>平时段</span>
                   <FormItem>
                     {getFieldDecorator('flatPrice', {
@@ -190,7 +207,7 @@ class PowerPrice extends Component{
                 </div>
               </div>
               <div className={styles.lowPrice}>
-                <div className={`${styles.priceData}  ${lowPriceValue === 'noData' && priceDetailData.lowPrice === undefined && styles.meterInpNull || !lowPriceValue && styles.meterInpDel}`}>
+                <div className={`${styles.priceData}  ${lowPriceValue === 'noData' ? ((priceDetailData.lowPrice === undefined || priceDetailData.lowPrice === null) && styles.meterInpNull) : (lowPriceValue === '' && styles.meterInpDel)}`}>
                   <span className={styles.text}>谷时段</span>
                   <FormItem>
                     {getFieldDecorator('lowPrice', {
@@ -211,7 +228,7 @@ class PowerPrice extends Component{
                 </div>
               </div>
               <div className={styles.discountRate}>
-                <div className={`${styles.discountRateInfo} ${discountRateValue === 'noData' && priceDetailData.discountRate === undefined && styles.meterInpNull || !discountRateValue && styles.meterInpDel}`}>
+                <div className={`${styles.discountRateInfo} ${discountRateValue === 'noData' ? ((priceDetailData.discountRate === undefined || priceDetailData.discountRate === null) && styles.meterInpNull) : (discountRateValue === '' && styles.meterInpDel)}`}>
                   <span className={styles.text}>折扣率</span>
                   <FormItem>
                     {getFieldDecorator('discountRate', {
