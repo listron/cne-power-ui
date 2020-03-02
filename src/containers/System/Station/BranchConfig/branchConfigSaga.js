@@ -154,7 +154,7 @@ function* getCheckData(action) {
     });
     const response = yield call(axios.post, url, { ...payload, deviceTypeCode, deviceCodes: deviceCodeArr });
     if (response.data.code === '10000') {
-      const deviceBranchInfo = response.data.data.deviceList || [];
+
       const checkTime = response.data.data.checkTime || '';
       yield put({
         type: branchConfigAction.changeBranchStore,
@@ -162,7 +162,7 @@ function* getCheckData(action) {
           loadding: false,
           // ...payload,
           checkTime: checkTime ? moment(checkTime).format('YYYY-MM-DD') : '',
-          // deviceBranchInfo,
+          deviceBranchInfo: response.data.data.deviceList || [],
           copyData: response.data.data.deviceList || [],
         },
       });
@@ -180,6 +180,7 @@ function* getCheckData(action) {
 }
 function* editBranchData(action) {
   const { payload } = action;
+  const { copyData, isgetTable, stationCode, deviceTypeCode, deviceCodes } = payload;
   const url = `${APIBasePath}${system.editBranchData}`;
   try {
     yield put({
@@ -192,13 +193,27 @@ function* editBranchData(action) {
     const response = yield call(axios.post, url, payload.saveEditArr);
 
     if (response.data.code === '10000') {
+      const newAdd = response.data.data || [];
       yield put({
         type: branchConfigAction.changeBranchStore,
         payload: {
           ...payload,
+          deviceBranchInfo: copyData,
           editLoadding: false,
+          isCheckStatus: false,
+          newAdd,
         },
       });
+      if (isgetTable) {
+        yield put({
+          type: branchConfigAction.getDeviceBranchInfo,
+          payload: {
+            stationCode,
+            deviceTypeCode,
+            deviceCodes,
+          },
+        });
+      }
     } else {
       throw response.data.message;
     }
