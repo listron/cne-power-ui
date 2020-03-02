@@ -148,7 +148,7 @@ function* getBaseUsername(action) { // 获取有权限电站权限用户
     });
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
-      const {operableUserData} = yield select(state => state.operation.meterDetail.toJS());
+      const {operableUserData} = yield select(state => state.operation.newMeterDetail.toJS());
       const operableUserArr = operableUserData[0].ableUserIds && operableUserData[0].ableUserIds.split(',') || [];
       const arr = [];
       response.data.data && response.data.data.forEach(cur => {
