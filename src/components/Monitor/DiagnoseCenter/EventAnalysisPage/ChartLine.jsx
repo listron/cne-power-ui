@@ -15,9 +15,10 @@ class ChartLine extends PureComponent {
   };
 
   componentDidMount(){
-    const { eventAnalysisInfo } = this.props;
+    const { eventAnalysisInfo, analysisEvent } = this.props;
     const { period = [], data = {} } = eventAnalysisInfo || {};
-    this.drawChart(period, data);
+    const { interval } = analysisEvent;
+    this.drawChart(period, data, interval);
   }
 
   componentWillReceiveProps(nextProps){
@@ -54,7 +55,7 @@ class ChartLine extends PureComponent {
       const dayTimeStr = timeMoment.format('YYYY-MM-DD HH:mm');
       return `${dayTimeStr}:00`;
     }
-    // 5s按照正常格式返回 
+    // 5s按照正常格式返回 interval = 2
     const timeMinuteStr = timeMoment.format('YYYY-MM-DD HH:mm');
     const secondNum = Math.floor(timeMoment.second() / 5) * 5;
     const secondNumStr = secondNum > 5 ? `:${secondNum}` : `:0${secondNum}`;
