@@ -91,9 +91,6 @@
   height: 280px;
 }
 
-.eqpHours, .faultList, .alarmList{ // 底部盒子高度。
-  height: 205px;
-}
 .monthGen, .deviceStatus, .outputPower, .eqpHours, .faultList, .alarmList{ // 大致所有盒子总样式。
   margin-top: 20px;
   @include boxStyle();
@@ -104,6 +101,17 @@
   .checkTags{
     @include typeTags();
   }  
+}
+
+@media screen and (min-height: 1000px) { // 视口高度过高 => 全屏时候
+  .monthGen, .deviceStatus{
+    margin-top: 40px;
+  }
+}
+
+.eqpHours, .faultList, .alarmList{ // 底部盒子高度。
+  margin-top: 0px;
+  height: 205px;
 }
 
 .stationGeneral{ // 电站概况

@@ -6,6 +6,7 @@
 @media screen and (max-width: 1679px) { // 1680以下屏幕，按1440px进行适配。
   .innerContent{
     width: 1420px;
+    padding: 0 24px;
     .middleBox{
       height: 530px;
     }
@@ -15,8 +16,14 @@
 @media screen and (max-width: 1919px) and (min-width: 1680px) { // 1920以下宽度屏按1680px适配
   .innerContent{
     width: 1680px;
+    padding: 0 90px;
     .middleBox{
       height: 530px;
+    }
+  }
+  @media screen and (min-height: 1000px) { // 视口高度过高 =》 全屏时候
+    .innerContent .middleBox{
+      height: 570px;
     }
   }
 }
@@ -24,9 +31,35 @@
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
   .innerContent{
     width: 1920px;
+    padding: 0 90px;
     .middleBox{
       height: 560px;
     }
+  }
+  @media screen and (min-height: 1000px) { // 视口高度过高 =》 全屏时候
+    .innerContent .middleBox{
+      height: 600px;
+    }
+  }
+}
+
+@media screen and (min-height: 1000px) { // 视口高度过高 =》 全屏时候
+  .innerContent .middleBox{
+    margin-top: 20px;
+    .leftInfo, .rightInfo{
+      margin-top: 20px;
+    }
+  }
+  .innerContent .bottomBox{
+    margin-top: 40px;
+  }
+}
+@media screen and (max-height: 1000px) { // 视口高度正常
+  .innerContent .middleBox{
+    margin-top: 0px;
+  }
+  .innerContent .bottomBox{
+    margin-top: 20px;
   }
 }
 
@@ -45,7 +78,6 @@
   background-position: center top;
   background-repeat: no-repeat;
   .innerContent{
-    padding: 0 90px;
     .middleBox{
       display: flex;
       .leftInfo{
@@ -57,13 +89,12 @@
       }
       .mapInfo{
         flex: 1 0 auto;
-        margin: 0 12px 0 12px;
       }
     }
     .bottomBox{
       height: 207px;
       display: flex;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
       justify-content: space-between;
     }
   }
