@@ -17,8 +17,6 @@ import { watchDefectList } from './Operation/WorkProcess/DefectList/defectListSa
 import { watchDefectDetail } from './Operation/WorkProcess/DefectDetail/defectDetailSaga';
 import { watchInspectList } from './Operation/WorkProcess/InspectList/inspectListSaga';
 import { watchInspectDetail } from './Operation/WorkProcess/InspectDetail/inspectDetailSaga';
-import { watchMeterList } from './Operation/WorkProcess/MeterList/meterListSaga';
-import { watchMeterDetail } from './Operation/WorkProcess/MeterDetail/meterDetailSaga';
 // 新工单
 import { newWatchDefectList } from './Operation/NewWorkProcess/NewDefectList/defectListSaga';
 import { newWatchDefectDetail } from './Operation/NewWorkProcess/NewDefectDetail/defectDetailSaga';
@@ -166,8 +164,6 @@ export default function* rootSaga() {
     watchDefectDetail(), // 缺陷详情
     watchInspectList(), // 巡检列表
     watchInspectDetail(), // 巡检详情
-    watchMeterList(), // 抄表列表
-    watchMeterDetail(), // 抄表详情
 
     newWatchDefectList(), // 新缺陷列表
     newWatchDefectDetail(), // 新缺陷详情
