@@ -125,7 +125,7 @@ class PowerPrice extends Component{
           <div className={styles.topRight}>
             {updateTime && <span>
               <span>更新时间：</span>
-              <span className={styles.updateTime}>{moment(updateTime).format('YYYY-MM-DD h:mm:ss')}</span>
+              <span className={styles.updateTime}>{moment(updateTime).format('YYYY-MM-DD HH:mm:ss')}</span>
             </span>}
             {isEdit && <div>
               <CneButton className={styles.cancelBtn} onClick={this.cancelEvent}>取消</CneButton>
