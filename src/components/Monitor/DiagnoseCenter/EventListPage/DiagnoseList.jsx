@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CneTable from '@components/Common/Power/CneTable';
-// import { Table /*, Select */ } from 'antd';
 import CommonPagination from '@components/Common/CommonPagination';
 import { createAlarmColumn, createDiagnoseColumn, createDataColumn } from './listColumns';
 import styles from './eventListPage.scss';
-// const { Option } = Select;
 
 class DiagnoseList extends Component {
   static propTypes = {
