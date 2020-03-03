@@ -79,8 +79,6 @@ class MeterReadTable extends Component{
   addEvent = () => { //添加新行
     const { addEventList } = this.state;
     const { changeMeterReadSetStore, isEditPrice, isEditList } = this.props;
-    console.log(addEventList.length);
-    console.log(addEventList.length >= 1);
     if (isEditPrice) { // 编辑电价时提示先保存电价再进行其他操作
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
@@ -89,7 +87,6 @@ class MeterReadTable extends Component{
       return;
     }
     if (addEventList.length >= 1) { // 电表添加新行时提示先保存后再进行其他操作
-      console.log('添加');
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
