@@ -30,8 +30,8 @@ import { defectDetail } from './WorkProcess/DefectDetail/defectDetailReducer'; /
 import { inspectList } from './WorkProcess/InspectList/inspectListReducer'; // 巡检列表
 import { inspectDetail } from './WorkProcess/InspectDetail/inspectDetailReducer'; //巡检详情
 
-import { newDefectList } from './NewWorkProcess/NewDefectList/defectListReducer'; // 新缺陷列表
-import { newDefectDetail } from './NewWorkProcess/NewDefectDetail/defectDetailReducer'; //新缺陷详情
+import { eliminateDefectList } from './NewWorkProcess/EliminateDefectList/defectListReducer'; // 新的消缺列表
+import { eliminateDefectDetail } from './NewWorkProcess/EliminateDefectDetail//defectDetailReducer'; //新消缺详情
 import { newInspectList } from './NewWorkProcess/NewInspectList/inspectListReducer'; // 新巡检列表
 import { newInspectDetail } from './NewWorkProcess/NewInspectDetail/inspectDetailReducer'; //新巡检详情
 import { newMeterList } from './NewWorkProcess/NewMeterList/meterListReducer'; // 新新抄表列表
@@ -65,8 +65,8 @@ const operationReducer = combineReducers({
   inspectList, // 巡检列表
   inspectDetail, //巡检详情
 
-  newDefectList, // 新缺陷列表
-  newDefectDetail, //新缺陷详情
+  eliminateDefectList, // 新缺陷列表
+  eliminateDefectDetail, //新缺陷详情
   newInspectList, // 新巡检列表
   newInspectDetail, //新巡检详情
   newMeterList, // 新抄表列表

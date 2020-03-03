@@ -1,9 +1,8 @@
 import { put, call, takeLatest, select, fork } from 'redux-saga/effects';
 import axios from 'axios';
-import { newDefectListAction } from './defectListReducer';
+import { eliminateDefectListAction } from './defectListReducer';
 import path from '@path';
 import moment from 'moment';
-
 
 import { message } from 'antd';
 const { basePaths, APISubPaths } = path;
@@ -14,13 +13,12 @@ const { ticket } = APISubPaths;
 
 function* easyPut(actionName, payload) {
   yield put({
-    type: newDefectListAction[actionName],
+    type: eliminateDefectListAction[actionName],
     payload,
   });
 }
 
-//获取缺陷工单列表
-function* getDefectList(action) {
+function* getDefectList(action) { //获取缺陷工单列表
   const { payload } = action;
   const url = `${APIBasePath}${ticket.getDefectList}`;
   const { defectGroup, ...rest } = payload;
@@ -85,9 +83,8 @@ function* getParticipant() { // 获取参与人所有列表
   }
 }
 
-
-export function* newWatchDefectList() {
-  yield takeLatest(newDefectListAction.getDefectList, getDefectList);
-  yield takeLatest(newDefectListAction.getParticipant, getParticipant);
+export function* watchEliminateDefectList() {
+  yield takeLatest(eliminateDefectListAction.getDefectList, getDefectList);
+  yield takeLatest(eliminateDefectListAction.getParticipant, getParticipant);
 }
 

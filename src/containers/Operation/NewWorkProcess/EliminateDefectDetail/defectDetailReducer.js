@@ -1,7 +1,7 @@
 import immutable from 'immutable';
 import moment from 'moment';
 
-const newDefectDetailAction = {
+const eliminateDefectDetailAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
@@ -24,23 +24,20 @@ const initState = immutable.fromJS({
   defectDetail: {}, // 消缺详情
   processData: [], // 流程信息
   commonList: [], //缺陷常用语
-  knowledgebaseList: [], // 专家库列表
-  dockerDetail: {}, // 两票数据
   deviceTypes: [], //设备类型
   defectTypes: [], //缺陷类型
-  hasModify: false, // 是否修改 默认没有修改
 });
 
-const newDefectDetail = (state = initState, action) => {
+const eliminateDefectDetail = (state = initState, action) => {
   switch (action.type) {
-    case newDefectDetailAction.fetchSuccess:
+    case eliminateDefectDetailAction.fetchSuccess:
       return state.merge(immutable.fromJS(action.payload));
-    case newDefectDetailAction.changeStore:
+    case eliminateDefectDetailAction.changeStore:
       return state.merge(immutable.fromJS(action.payload));
-    case newDefectDetailAction.resetStore:
+    case eliminateDefectDetailAction.resetStore:
       return initState;
   }
   return state;
 };
 
-export { newDefectDetail, newDefectDetailAction };
+export { eliminateDefectDetail, eliminateDefectDetailAction };
