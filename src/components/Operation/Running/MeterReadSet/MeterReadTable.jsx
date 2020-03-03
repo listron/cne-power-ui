@@ -79,6 +79,8 @@ class MeterReadTable extends Component{
   addEvent = () => { //添加新行
     const { addEventList } = this.state;
     const { changeMeterReadSetStore, isEditPrice, isEditList } = this.props;
+    console.log(addEventList.length);
+    console.log(addEventList.length >= 1);
     if (isEditPrice) { // 编辑电价时提示先保存电价再进行其他操作
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
@@ -716,7 +718,19 @@ class MeterReadTable extends Component{
           </div>
         </div>
         {/* 数据加载loading */}
-        {tableLoading && <div className={styles.spin}><Spin tip="数据加载中"></Spin></div>}
+        {tableLoading && <div className={styles.spin}>
+          <div className={styles.loadEffect}>
+            <div><span></span></div>
+            <div><span></span></div>
+            <div><span></span></div>
+            <div><span></span></div>
+            <div><span></span></div>
+            <div><span></span></div>
+            <div><span></span></div>
+            <div><span></span></div>
+          </div>
+          <div className={styles.loadText}>数据加载中</div>
+        </div>}
       </div>
     );
   }
