@@ -94,6 +94,7 @@ class HomepageTop extends Component{
               userFullName={userFullName}
               userLogo={userLogo}
               resetCommonStore={resetCommonStore}
+              theme="dark"
             />
             <img className={styles.logo} width="105px" height="26px" src="/img/powerLogo.png" />
           </div>
