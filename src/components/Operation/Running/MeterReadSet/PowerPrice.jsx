@@ -76,11 +76,11 @@ class PowerPrice extends Component{
 
   editEvent = () => { // 编辑
     const { addDataNum, changeMeterReadSetStore, isEditList } = this.props;
-    if (addDataNum > 1 || isEditList) { // 当电表添加或者编辑时，电价不可编辑
+    if (addDataNum >= 1 || isEditList) { // 当电表添加或者编辑时，电价不可编辑
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     this.setState({
