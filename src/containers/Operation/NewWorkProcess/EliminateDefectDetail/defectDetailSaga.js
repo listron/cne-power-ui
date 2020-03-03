@@ -1,5 +1,5 @@
 import { put, call, takeLatest, select, fork } from 'redux-saga/effects';
-import { newDefectDetailAction } from './defectDetailReducer';
+import { eliminateDefectDetailAction } from './defectDetailReducer';
 import { delay } from 'redux-saga';
 import axios from 'axios';
 import path from '@path';
@@ -12,7 +12,7 @@ const { ticket } = APISubPaths;
 
 function* easyPut(actionName, payload) {
   yield put({
-    type: newDefectDetailAction[actionName],
+    type: eliminateDefectDetailAction[actionName],
     payload,
   });
 }
@@ -86,12 +86,12 @@ function* getDefectCommonList(action) { // 获取缺陷常用语  参数 languag
 function* getDefectTypes(action) { // 获取缺陷类型信息
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectTypes;
-  yield put({ type: newDefectDetailAction.workOrderFetch });
+  yield put({ type: eliminateDefectDetailAction.workOrderFetch });
   try {
     const response = yield call(axios.get, url, { params: payload });
     if (response.data.code === '10000') {
       yield put({
-        type: newDefectDetailAction.getworkOrderFetchSuccess,
+        type: eliminateDefectDetailAction.getworkOrderFetchSuccess,
         payload: {
           defectTypes: response.data.data.data,
         },
@@ -145,7 +145,7 @@ function* closeDefect(action) { // 关闭工单
   const { payload } = action;
   const { func, ...params } = payload;
   const url = `${APIBasePath}${ticket.closeDefect}`;
-  yield put({ type: newDefectDetailAction.workOrderFetch });
+  yield put({ type: eliminateDefectDetailAction.workOrderFetch });
   try {
     const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
@@ -198,41 +198,6 @@ function* checkDefect(action) { // 验收工单
   }
 }
 
-function* getKnowledgebase(action) { // 获取智能专家列表
-  const { payload } = action;
-  const url = `${APIBasePath}${ticket.getKnowledgebase}`;
-  // let url = `/mock/operation/knowledgebase/list`;
-  try {
-    const response = yield call(axios.post, url, payload);
-    if (response.data.code === '10000') {
-      yield call(easyPut, 'changeStore', {
-        knowledgebaseList: response.data.data.dataList || [],
-      });
-    } else { throw response.data; }
-  } catch (e) {
-    console.log(e);
-    yield call(easyPut, 'changeStore', {
-      knowledgebaseList: [],
-    });
-  }
-}
-
-function* likeKnowledgebase(action) { // 点赞智能专家
-  const { payload } = action;
-  const { knowledgeBaseId } = payload;
-  const url = `${APIBasePath}${ticket.likeKnowledgebase}${knowledgeBaseId}`;
-  // let url = `/mock/operation/knowledgebase/like`;
-  try {
-    const response = yield call(axios.post, url, payload);
-    if (response.data.code === '10000') {
-      message.config({ top: 230, duration: 2, maxCount: 2 });
-      message.success('点赞成功');
-    } else { throw response.data; }
-  } catch (e) {
-    console.log(e);
-  }
-}
-
 // createDefect defectSubmit
 function* createDefect(action) { // 创建缺陷 以及待提交状态
   const { payload } = action;
@@ -254,19 +219,16 @@ function* createDefect(action) { // 创建缺陷 以及待提交状态
 }
 
 
-
-export function* newWatchDefectDetail() {
-  yield takeLatest(newDefectDetailAction.getDefectDetail, getDefectDetail);
-  yield takeLatest(newDefectDetailAction.getRelevancedocket, getRelevancedocket);
-  yield takeLatest(newDefectDetailAction.getDefectCommonList, getDefectCommonList);
-  yield takeLatest(newDefectDetailAction.getDefectTypes, getDefectTypes);
-  yield takeLatest(newDefectDetailAction.sendDefect, sendDefect);
-  yield takeLatest(newDefectDetailAction.rejectDefect, rejectDefect);
-  yield takeLatest(newDefectDetailAction.closeDefect, closeDefect);
-  yield takeLatest(newDefectDetailAction.handleDefect, handleDefect);
-  yield takeLatest(newDefectDetailAction.checkDefect, checkDefect);
-  yield takeLatest(newDefectDetailAction.getKnowledgebase, getKnowledgebase);
-  yield takeLatest(newDefectDetailAction.likeKnowledgebase, likeKnowledgebase);
-  yield takeLatest(newDefectDetailAction.createDefect, createDefect);
+export function* watchEliminateDefectDetail() {
+  yield takeLatest(eliminateDefectDetailAction.getDefectDetail, getDefectDetail);
+  yield takeLatest(eliminateDefectDetailAction.getRelevancedocket, getRelevancedocket);
+  yield takeLatest(eliminateDefectDetailAction.getDefectCommonList, getDefectCommonList);
+  yield takeLatest(eliminateDefectDetailAction.getDefectTypes, getDefectTypes);
+  yield takeLatest(eliminateDefectDetailAction.sendDefect, sendDefect);
+  yield takeLatest(eliminateDefectDetailAction.rejectDefect, rejectDefect);
+  yield takeLatest(eliminateDefectDetailAction.closeDefect, closeDefect);
+  yield takeLatest(eliminateDefectDetailAction.handleDefect, handleDefect);
+  yield takeLatest(eliminateDefectDetailAction.checkDefect, checkDefect);
+  yield takeLatest(eliminateDefectDetailAction.createDefect, createDefect);
 }
 

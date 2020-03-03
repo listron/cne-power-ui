@@ -10,7 +10,7 @@ import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
 import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
 import { watchPersonnelGps } from './Operation/PersonnelGps/personnelGpsSaga';
 import { watchDayReport } from './Operation/Running/DayReport/dayReportSaga';
-import { wacthMeterReadSet} from './Operation/Running/MeterReadSet/meterReadSetSaga';
+import { wacthMeterReadSet } from './Operation/Running/MeterReadSet/meterReadSetSaga';
 import { watchIntelligentExper } from './Operation/IntelligentExpert/intelligentExpertSaga';
 // 工单
 import { watchDefectList } from './Operation/WorkProcess/DefectList/defectListSaga';
@@ -18,8 +18,8 @@ import { watchDefectDetail } from './Operation/WorkProcess/DefectDetail/defectDe
 import { watchInspectList } from './Operation/WorkProcess/InspectList/inspectListSaga';
 import { watchInspectDetail } from './Operation/WorkProcess/InspectDetail/inspectDetailSaga';
 // 新工单
-import { newWatchDefectList } from './Operation/NewWorkProcess/NewDefectList/defectListSaga';
-import { newWatchDefectDetail } from './Operation/NewWorkProcess/NewDefectDetail/defectDetailSaga';
+import { watchEliminateDefectList } from './Operation/NewWorkProcess/EliminateDefectList/defectListSaga';
+import { watchEliminateDefectDetail } from './Operation/NewWorkProcess/EliminateDefectDetail/defectDetailSaga';
 import { newWatchInspectList } from './Operation/NewWorkProcess/NewInspectList/inspectListSaga';
 import { newWatchInspectDetail } from './Operation/NewWorkProcess/NewInspectDetail/inspectDetailSaga';
 import { newWatchMeterList } from './Operation/NewWorkProcess/NewMeterList/meterListSaga';
@@ -165,8 +165,8 @@ export default function* rootSaga() {
     watchInspectList(), // 巡检列表
     watchInspectDetail(), // 巡检详情
 
-    newWatchDefectList(), // 新缺陷列表
-    newWatchDefectDetail(), // 新缺陷详情
+    watchEliminateDefectList(), // 新缺陷列表
+    watchEliminateDefectDetail(), // 新缺陷详情
     newWatchInspectList(), // 新巡检列表
     newWatchInspectDetail(), // 新巡检详情
     newWatchMeterList(), // 新抄表列表
