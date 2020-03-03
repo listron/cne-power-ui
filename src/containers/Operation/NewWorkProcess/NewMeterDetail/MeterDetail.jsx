@@ -54,6 +54,11 @@ class MeterDetail extends Component {
     getProcessAction({meterId});
   }
 
+  componentWillUnmount() { // 卸载的时候要注意
+    const { resetStore } = this.props;
+    resetStore();
+  }
+
   render() {
     const { theme = 'light' } = this.props;
     return (

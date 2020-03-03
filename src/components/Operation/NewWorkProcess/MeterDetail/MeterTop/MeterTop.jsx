@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import CneTips from '@components/Common/Power/CneTips';
 import { MyMessage } from '@components/Operation/NewWorkProcess/Common/MyMessage/MyMessage';
 import PassAlert from '@components/Operation/NewWorkProcess/Common/PassAlert/PassAlert';
@@ -114,6 +114,7 @@ export default class MeterTop extends React.Component {
     // 判断有空的现象
     if(!flag) {
       const { readMeterData } = this.props;
+      message.error('请填写完整后再提交验收');
       changeStore({
         readMeterData: {
           ...readMeterData,
@@ -316,6 +317,7 @@ export default class MeterTop extends React.Component {
   render() {
     const { showWarningTip, warningTipText, passVisible, rejectVisible, messageText } = this.state;
     const { processActionData, thisReadTimeFlag, myMessageFlag } = this.props;
+
     return (
       <React.Fragment>
         {myMessageFlag && <MyMessage message={messageText} />}
@@ -328,7 +330,7 @@ export default class MeterTop extends React.Component {
           </div>
           <div className={styles.meterTopBtn}>
             <div className={styles.btnBox}>
-              {processActionData.map(cur => cur.actionCode).includes('7') && (
+              {processActionData.filter(cur => cur.actionCode === '7' && cur.isPermission === 0).length > 0 && (
                 <Button
                   className={`${styles.btnGreen} ${styles.am} ${styles.amGreenScale}`}
                   onClick={this.submitReject}
@@ -339,7 +341,7 @@ export default class MeterTop extends React.Component {
                   </span>
                 </Button>
               )}
-              {processActionData.map(cur => cur.actionCode).includes('2') && (
+              {processActionData.filter(cur => cur.actionCode === '2' && cur.isPermission === 0).length > 0 && (
                 <Button
                   className={`${styles.btnOrange} ${styles.am} ${styles.amOrangeScale}`}
                   onClick={this.getWorkProcess}
@@ -350,7 +352,7 @@ export default class MeterTop extends React.Component {
                   </span>
                 </Button>
               )}
-              {processActionData.map(cur => cur.actionCode).includes('5') && (
+              {processActionData.filter(cur => cur.actionCode === '5' && cur.isPermission === 0).length > 0 && (
                 <Button
                   className={thisReadTimeFlag ? `${styles.disableBtnOrange}` : `${styles.btnOrange} ${styles.am} ${styles.amOrangeScale}`}
                   onClick={thisReadTimeFlag ? () => {} : this.submitWorkProcess}
@@ -361,7 +363,7 @@ export default class MeterTop extends React.Component {
                   </span>
                 </Button>
                 )}
-              {processActionData.map(cur => cur.actionCode).includes('6') && (
+              {processActionData.filter(cur => cur.actionCode === '6' && cur.isPermission === 0).length > 0 && (
                 <Button
                   className={`${styles.btnOrange} ${styles.am} ${styles.amOrangeScale}`}
                   onClick={this.submitPass}

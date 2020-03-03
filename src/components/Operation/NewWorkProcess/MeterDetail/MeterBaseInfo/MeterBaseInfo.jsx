@@ -50,7 +50,6 @@ export default class MeterBaseInfo extends React.Component {
   }
 
   onChange = (checkedList) => {
-    console.log(checkedList, '1111');
     const { changeStore } = this.props;
     changeStore({
       checkedUserList: checkedList,
@@ -221,7 +220,7 @@ export default class MeterBaseInfo extends React.Component {
                      }}>
                   <span>
                     {operableUserData[0].ableUsers ? operableUserData[0].ableUsers.split(',').join('、') : '- -'}
-                    {processActionData.map(cur => cur.actionCode).includes('3') && (
+                    {processActionData.filter(cur => cur.actionCode === '3' && cur.isPermission === 0).length > 0 && (
                       <Popover
                         placement="rightTop"
                         visible={addVisible}

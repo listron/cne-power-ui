@@ -103,7 +103,7 @@ export default class MeterDisposeInfo extends React.Component {
 
   // 取消编辑
   onCancelEdit = () => {
-    const { changeStore, readMeterData } = this.props;
+    const { changeStore, otherReadMeterData } = this.props;
     this.setState({
       changeDateFlag: false,
     }, () => {
@@ -111,51 +111,7 @@ export default class MeterDisposeInfo extends React.Component {
         editFlag: false,
         thisReadTimeFlag: false,
         readMeterData: {
-          ...readMeterData,
-          onlineDatas: readMeterData.onlineDatas.map(cur => {
-            return Object.assign(cur, {
-              flag1: false,
-              flag2: false,
-              flag3: false,
-              flag4: false,
-              flag5: false,
-              errorFlag1: false,
-              errorFlag2: false,
-              errorFlag3: false,
-              errorFlag4: false,
-              errorFlag5: false,
-              type1: cur.totalEndCode ? 0 : 1,
-              type2: cur.topEndCode ? 0 : 1,
-              type3: cur.peakEndCode ? 0 : 1,
-              type4: cur.flatEndCode ? 0 : 1,
-              type5: cur.lowEndCode ? 0 : 1,
-              imgFlag: false,
-              loading: false,
-              percent: 0,
-            });
-          }),
-          generationDatas: readMeterData.generationDatas.map(cur => {
-            return Object.assign(cur, {
-              flag1: false,
-              flag2: false,
-              flag3: false,
-              flag4: false,
-              flag5: false,
-              errorFlag1: false,
-              errorFlag2: false,
-              errorFlag3: false,
-              errorFlag4: false,
-              errorFlag5: false,
-              type1: cur.totalEndCode ? 0 : 1,
-              type2: cur.topEndCode ? 0 : 1,
-              type3: cur.peakEndCode ? 0 : 1,
-              type4: cur.flatEndCode ? 0 : 1,
-              type5: cur.lowEndCode ? 0 : 1,
-              imgFlag: false,
-              loading: false,
-              percent: 0,
-            });
-          }),
+          ...otherReadMeterData, // 用备份数组恢复默认
         },
       });
     });
@@ -340,13 +296,17 @@ export default class MeterDisposeInfo extends React.Component {
   };
 
   dateChange = (date) => {
-    const { readMeterData, changeStore } = this.props;
+    const { readMeterData, newReadMeterData, changeStore } = this.props;
     this.setState({
       changeDateFlag: true,
     }, () => {
       changeStore({
-        readMeterData: {
+        readMeterData: { // 原始数据
           ...readMeterData,
+          thisReadTime: date,
+        },
+        newReadMeterData: { // 改变传送后端的数据
+          ...newReadMeterData,
           thisReadTime: date,
         },
       });
@@ -431,7 +391,7 @@ export default class MeterDisposeInfo extends React.Component {
           <div className={styles.disposeBanner}>
             处理信息
           </div>
-          {processActionData.map(cur => cur.actionCode).includes('4') && (editFlag ? editStatusBtn : normalStatusBtn)}
+          {processActionData.filter(cur => cur.actionCode === '4' && cur.isPermission === 0).length > 0 && (editFlag ? editStatusBtn : normalStatusBtn)}
         </div>
         <div className={styles.disposeContent}>
           <div className={styles.disposeNav}>
