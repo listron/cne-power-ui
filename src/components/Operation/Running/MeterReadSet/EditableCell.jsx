@@ -281,7 +281,7 @@ class EditableCell extends Component {
                 </span>
               </div>
             </div>
-            <div className={styles.updateTime}>{eventData.updateTime ? eventData.updateTime : '--'}</div>
+            <div className={styles.updateTime}>{eventData.updateTime ? moment(eventData.updateTime).format('YYYY-MM-DD HH:mm:ss') : '--'}</div>
             <div className={styles.handler}>
               <i title={'取消'} className={`iconfont icon-closeall ${styles.cancel}`} onClick={() => { this.cancelEvent(eventData); }} />
               <i title={'保存'} className={`iconfont icon-save ${styles.save}`} onClick={() => { this.saveEvent(eventData); }} />
