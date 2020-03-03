@@ -79,27 +79,25 @@ class MeterReadTable extends Component{
   addEvent = () => { //添加新行
     const { addEventList } = this.state;
     const { changeMeterReadSetStore, isEditPrice, isEditList } = this.props;
-    console.log(addEventList.length);
-    console.log(addEventList.length >= 1);
     if (isEditPrice) { // 编辑电价时提示先保存电价再进行其他操作
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
         changeMeterReadSetStore({ isPriceTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (addEventList.length >= 1) { // 电表添加新行时提示先保存后再进行其他操作
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (isEditList) { // 编辑电表时提示先保存电表再进行其他操作
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     const keyIndex = addEventList.length > 0 && addEventList[addEventList.length - 1].key.split('add')[1] || 0;
@@ -133,22 +131,22 @@ class MeterReadTable extends Component{
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
         changeMeterReadSetStore({ isPriceTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (meterId) {
-      if (addDataNum > 1) {
+      if (addDataNum >= 1) {
         changeMeterReadSetStore({ isListTip: true });
         setTimeout(() => {
           changeMeterReadSetStore({ isListTip: false });
-        }, 3000);
+        }, 2000);
         return;
       }
       if (type === 'editable' && isEditList) {
         changeMeterReadSetStore({ isListTip: true });
         setTimeout(() => {
           changeMeterReadSetStore({ isListTip: false });
-        }, 3000);
+        }, 2000);
         return;
       }
       const index = currentEventList.findIndex(e => e.meterId === meterId);
@@ -170,21 +168,21 @@ class MeterReadTable extends Component{
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
         changeMeterReadSetStore({ isPriceTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
-    if (addDataNum > 1) {
+    if (addDataNum >= 1) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (isEditList) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (meterId) {
@@ -235,21 +233,21 @@ class MeterReadTable extends Component{
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
         changeMeterReadSetStore({ isPriceTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
-    if (addDataNum > 1) {
+    if (addDataNum >= 1) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (isEditList) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     this.setState({
