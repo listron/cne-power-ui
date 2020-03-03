@@ -6,7 +6,7 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 import styles from './listPage.scss';
 
-export default class EliminateDefectsHandler extends Component {
+export default class DefectsHandler extends Component {
 
   addDefect = () => {
     console.log('新建消缺工单');
@@ -28,7 +28,7 @@ export default class EliminateDefectsHandler extends Component {
       toExamine: 21,
     };
     return (
-      <div className={styles.eliminateDefectsHandler}>
+      <div className={styles.defectsHandler}>
         <div>
           <CneButton className={styles.addBtn} onClick={this.addDefect}>
             <i className={`iconfont icon-newbuilt ${styles.addIcon}`} />
