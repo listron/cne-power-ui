@@ -158,14 +158,30 @@
   }
   .tableMain{
     @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
-      font-size: 1.2em;
+      :global{
+        .ant-select-selection,.ant-input{
+          font-size: 1.2em;
+        }
+      }
     }
     @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
-      font-size: 1.3em;
+      :global{
+        .ant-select-selection,.ant-input{
+          font-size: 1.3em;
+        }
+      }
     }
     .meterName,.meterNumber,.meterType,.initCode,.switchType,.updateTime,.handler{
       @include overflowText();
       overflow: visible;
+    }
+    .meterName,.meterNumber,.meterType,.initCode,.switchType,.updateTime{
+      @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+        font-size: 1.2em;
+      }
+      @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+        font-size: 1.3em;
+      }
     }
 
     .meterName{
@@ -182,7 +198,7 @@
     .meterType{
       flex: 0 0 10%;
       text-align: center;
-      padding: 0 9px;
+      padding-right: 7px;
       @media screen and (max-width: 1679px) { // 1679以下屏幕，
         flex: 0 0 9%;
       }
@@ -190,7 +206,7 @@
     .initCode{
       flex: 0 0 7%;
       text-align: right;
-      padding: 0 8px;
+      padding: 0 7px;
     }
     .switchType{
       flex: 0 0 32%;
@@ -207,7 +223,7 @@
     .handler{
       flex: 0 0 10%;
       @media screen and (max-width: 1679px) { // 1679以下屏幕，
-        flex: 0 0 9%;
+        flex: 0 0 8%;
       }
     }
 
@@ -326,6 +342,9 @@
         }
         .updateTime,.handler{
           text-align: center;
+        }
+        .updateTime{
+          color: #353535;
         }
         .handler{
           display: flex;
@@ -727,10 +746,18 @@
   }
   .priceContent{
     @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
-      font-size: 1.2em;
+      :global{
+        .ant-input{
+          font-size: 1.2em;
+        }
+      }
     }
     @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
-      font-size: 1.3em;
+      :global{
+        .ant-input{
+          font-size: 1.3em;
+        }
+      }
     }
     margin: 13px 25px 0 25px;
     .priceInfo{
@@ -746,6 +773,7 @@
           width: 100%;
           .ant-form-item{
             margin-bottom: 0;
+            flex: 0 0 50%;
             .ant-form-explain{
               position: absolute;
               white-space: nowrap;
@@ -801,6 +829,14 @@
       .unit{
         margin-left: 4px;
       }
+      .topPrice,.peakPrice,.flatPrice,.lowPrice,.discountRate{
+        @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+          font-size: 1.2em;
+        }
+        @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+          font-size: 1.3em;
+        }
+      }
       .topPrice,.peakPrice,.flatPrice,.lowPrice{
         flex: 0 0 20.9%;
         line-height: 40px;
@@ -813,6 +849,12 @@
       .discountRate{
         flex: 0 0 16%;
         line-height: 40px;
+        
+        :global{
+          .ant-form-item{
+            flex: 0 0 54%;
+          }
+        }
       }
       .priceData,.discountRateInfo{
         display: flex;
@@ -1088,9 +1130,15 @@
   }
 }
 
-.meterNameSelect{ // 电表名称下拉框有值
+.meterNameSelect,.meterTypeSelect{ // 电表名称下拉框有值
   :global{
     .ant-select-dropdown-menu-item{
+      @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+        font-size: 1.2em;
+      }
+      @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+        font-size: 1.3em;
+      }
       &:hover{
         background-color: #e6f4ef;
       }

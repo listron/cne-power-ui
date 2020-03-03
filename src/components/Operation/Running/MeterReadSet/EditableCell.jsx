@@ -166,6 +166,7 @@ class EditableCell extends Component {
                 })(
                   <Select
                     className={((!eventData.meterType && meterTypeValue === 'noData') && styles.meterInpNull) || (meterTypeValue === '' && styles.meterInpDel)}
+                    dropdownClassName={styles.meterTypeSelect}
                     placeholder="请选择"
                     onChange={(value) => { this.onChangeColumn('meterType', value); }}
                   >

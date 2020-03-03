@@ -23,21 +23,21 @@ class MeterReadSingleSatation extends Component{
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
         changeMeterReadSetStore({ isPriceTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
-    if (addDataNum > 1) {
+    if (addDataNum >= 1) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (isEditList) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     changeMeterReadSetStore({showPage: 'allStation'});
