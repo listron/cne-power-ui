@@ -47,10 +47,10 @@ class BranchFilter extends React.Component {
       isCheckStatus: false,
       checked: false,
     });
-    getDeviceName({
-      stationCode,
-      deviceTypeCode,
-    });
+    // getDeviceName({//此处不需要请求设备名称，用的是公共组件中内置的请求
+    //   stationCode,
+    //   deviceTypeCode,
+    // });
     this.getBranchInfo({ stationCode, deviceTypeCode });
   }
   selectedDevice = (devices) => {

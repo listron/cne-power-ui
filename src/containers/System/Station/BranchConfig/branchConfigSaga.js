@@ -1,5 +1,5 @@
 
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { branchConfigAction } from './branchConfigAction';
@@ -154,7 +154,7 @@ function* getCheckData(action) {
     });
     const response = yield call(axios.post, url, { ...payload, deviceTypeCode, deviceCodes: deviceCodeArr });
     if (response.data.code === '10000') {
-      const deviceBranchInfo = response.data.data.deviceList || [];
+
       const checkTime = response.data.data.checkTime || '';
       yield put({
         type: branchConfigAction.changeBranchStore,
@@ -162,7 +162,7 @@ function* getCheckData(action) {
           loadding: false,
           // ...payload,
           checkTime: checkTime ? moment(checkTime).format('YYYY-MM-DD') : '',
-          // deviceBranchInfo,
+          deviceBranchInfo: response.data.data.deviceList || [],
           copyData: response.data.data.deviceList || [],
         },
       });
@@ -180,6 +180,7 @@ function* getCheckData(action) {
 }
 function* editBranchData(action) {
   const { payload } = action;
+  const { copyData, isgetTable, stationCode, deviceTypeCode, deviceCodes } = payload;
   const url = `${APIBasePath}${system.editBranchData}`;
   try {
     yield put({
@@ -190,15 +191,37 @@ function* editBranchData(action) {
       },
     });
     const response = yield call(axios.post, url, payload.saveEditArr);
-
+    const params = yield select(state => ({//继续请求部门列表
+      newAdd: state.system.branchConfigReducer.get('newAdd').toJS(),
+    }));
     if (response.data.code === '10000') {
+      const data = response.data.data || [];
+      let newAdd = params.newAdd;
+      if (data.length) {//如果是数组的话就对新增的这些支路数据，进行拼接到数组里，已有的就
+        const { branchCode } = data;
+        const preAdddata = newAdd.filter(e => e.branchCode !== branchCode);
+        newAdd = [...preAdddata, ...data];
+      }
       yield put({
         type: branchConfigAction.changeBranchStore,
         payload: {
           ...payload,
+          deviceBranchInfo: copyData,
           editLoadding: false,
+          isCheckStatus: false,
+          newAdd,
         },
       });
+      if (isgetTable) {
+        yield put({
+          type: branchConfigAction.getDeviceBranchInfo,
+          payload: {
+            stationCode,
+            deviceTypeCode,
+            deviceCodes,
+          },
+        });
+      }
     } else {
       throw response.data.message;
     }
