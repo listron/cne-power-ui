@@ -53,7 +53,10 @@ class BranchTable extends React.Component {
     return copyData;
   }
   contrastValue = () => {
-    const { copyData, deviceBranchInfo = [], newAdd } = this.props;
+    const { copyData, deviceBranchInfo = [], newAdd = [] } = this.props;
+
+
+
     const editArr = [];
     const rowNum = deviceBranchInfo.length ? deviceBranchInfo.length : 0;
     for (let i = 0; i < rowNum; i++) {
@@ -84,30 +87,26 @@ class BranchTable extends React.Component {
       } else {//支路数减少的时候
         initBranchList.forEach((item, index) => {
           const curBranchListItem = currentBranchList[index] ? currentBranchList[index] : {};//这是当前数据的每一个支路的数据
-          const { pvNums, branchCode, branchIndex } = curBranchListItem;
-
+          const { pvNums, branchCode } = curBranchListItem;
           if (Object.keys(curBranchListItem).length === 0) {//当前支路已经没有数据的情况下
             editArr.push({ branchCode: item.branchCode, pvNums: item.pvNums, isDelete: 1 });
           } else {
             const isEqual = lodash.isEqual(item, curBranchListItem);
             if (!isEqual) {
-              editArr.push({ branchCode, pvNums, isDelete: 0 });
+              editArr.push({ branchCode: item.branchCode, pvNums, isDelete: 0 });
             }
           }
         });
       }
-
     }
-
     return editArr;
   }
   saveCheckValue = () => {//保存更改的支路数据
     // const data = { deviceFullCode: focus, branchIndex, branchCode, pvNum, isDelete };
     //失去焦点的时候计算原table和当前table的差异
-    const { changeBranchStore, editBranchData, copyData, stationCode, deviceTypeCode, deviceCodes } = this.props;
+    const { editBranchData, copyData, stationCode, deviceTypeCode, deviceCodes } = this.props;
     const editArr = this.contrastValue();
     editBranchData({ saveEditArr: editArr, copyData, isgetTable: true, stationCode, deviceTypeCode, deviceCodes });
-
   }
   cancleCheckValue = () => {
     const { changeBranchStore, deviceBranchInfo } = this.props;
@@ -130,19 +129,28 @@ class BranchTable extends React.Component {
     const selectedArr = copyData.filter((e, i) => e.deviceFullCode === focus);//筛选的设备名称
     const selectedDevice = selectedArr[0];//选中的设备名称的数据{...}
     const branchList = selectedDevice ? selectedDevice.branchList : [];//支路的数据
-    const length = branchList ? branchList.length : 0;//支路得长度
+    // const length = branchList ? branchList.length : 0;//支路得长度
+    const length = selectedDevice ? selectedDevice.branchNums : 0;
+
     if (value > length) {
       const newTableData = copyData.map((e, i) => {
         if (e.deviceFullCode === selectDeviceFullCode) {
-          const count = e.branchList.length;
-          const newBranchData = Array.from({ length: +value }, (item, index) => ({ branchIndex: index + 1, pvNums: 1, branchStatus: 1, checkStatus: 1, isChange: 0 })).slice(count);//添加支路数要，新增得数据,此处的branchIndex是和表头对上的所以是index+1
+          const count = e.branchNums || 0;
+          const newBranchData = Array.from({ length: +value }, (item, index) => {
+            const branchItem = e.branchList[index] || {};
+            return ({ branchCode: branchItem.branchCode, pvNums: 1, checkStatus: 1, branchStatus: 1, branchIndex: index + 1, isChange: 0 });
+          }).slice(count);//添加支路数要，新增得数据,此处的branchIndex是和表头对上的所以是index+1
           const branchList = e.branchList.concat(newBranchData);//原有数据和新增数据拼接
           return { ...e, branchList, branchNums: value };
         }
         return { ...e };
       });
+
       changeBranchStore({ copyData: newTableData });
     } else {
+      if (!value) {
+        return;
+      }
       const newTableData = copyData.map((e, i) => {
         if (e.deviceFullCode === selectDeviceFullCode) {
           //此处拿到新增的几个支路的branchIndex数据
@@ -159,6 +167,7 @@ class BranchTable extends React.Component {
     const { isCheckStatus, changeBranchStore, editBranchData, copyData } = this.props;
     if (!isCheckStatus) {//非检测状态下编辑table
       const editArr = this.contrastValue();
+
       changeBranchStore({ saveEditArr: editArr });
       editBranchData({ saveEditArr: editArr, copyData });
     }
@@ -175,10 +184,11 @@ class BranchTable extends React.Component {
     const { isCheckStatus } = this.props;
     const { branchStatus, checkStatus, isChange, pvNums } = e;
     if (isCheckStatus) {//当为检测支路状态
-      if (pvNums === 0) {
+      if (pvNums === 0) {//如果是连接条数为0就是未连接状态
         return styles.nolink;
       }
-      return isChange && pvNums > 0 ? styles.change : checkStatus ? styles.link : styles.nolink;
+      //判断状态
+      return isChange && pvNums > 0 ? styles.change : checkStatus === 1 ? styles.link : styles.nolink;
     }
     return branchStatus ? styles.link : styles.nolink;
   }
@@ -209,10 +219,8 @@ class BranchTable extends React.Component {
     const deviceFullCode = focus.split('_')[0];//设备名的code
     const branchIndex = focus.split('_')[1];//拿到索引
     const newTableData = this.editTableData(deviceFullCode, branchIndex, value);
-
     // const editArr = this.filterEditData(deviceFullCode, branchIndex, value);
     changeBranchStore({ copyData: newTableData });
-
   }
   //筛选出已编辑的数据，并去重
   filterEditData = (deviceFullCode, branchIndex, value, isDelete) => {
@@ -231,7 +239,8 @@ class BranchTable extends React.Component {
   }
 
   render() {
-    const { loadding, editLoadding, cancelloadding, copyData, checkTime, isCheckStatus, focus, checked } = this.props;
+    const { loadding, editLoadding, cancelloadding, copyData, checkTime, isCheckStatus, focus, checked, newAdd } = this.props;
+
     const pvNumsArr = [1, 2, 3, 4, 5];
     const filterCopyData = this.filterData(checked);
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;

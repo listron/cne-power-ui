@@ -1,5 +1,5 @@
 
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { branchConfigAction } from './branchConfigAction';
@@ -191,9 +191,17 @@ function* editBranchData(action) {
       },
     });
     const response = yield call(axios.post, url, payload.saveEditArr);
-
+    const params = yield select(state => ({//继续请求部门列表
+      newAdd: state.system.branchConfigReducer.get('newAdd').toJS(),
+    }));
     if (response.data.code === '10000') {
-      const newAdd = response.data.data || [];
+      const data = response.data.data || [];
+      let newAdd = params.newAdd;
+      if (data.length) {//如果是数组的话就对新增的这些支路数据，进行拼接到数组里，已有的就
+        const { branchCode } = data;
+        const preAdddata = newAdd.filter(e => e.branchCode !== branchCode);
+        newAdd = [...preAdddata, ...data];
+      }
       yield put({
         type: branchConfigAction.changeBranchStore,
         payload: {
