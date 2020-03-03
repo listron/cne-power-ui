@@ -1,0 +1,38 @@
+
+@import '../../../../theme/theme.scss';
+
+
+.defectsHandler{ // 新建, 按钮组及 分页组件
+  display: flex;
+  height: 58px;
+  justify-content: space-between;
+  align-items: center;
+  .addBtn{
+    width: 92px;
+    padding-left: 6px;
+    margin-right: 20px;
+    text-align: left;
+    .addIcon{
+      margin-right: 16px;
+    }
+  }
+}
+.defectTable{ // 表格部分
+
+}
+
+// 颜色部分
+.defectsHandler {
+  border-top: 1px dashed var(--promptColor);
+  .ant-radio-button-wrapper {
+    color: var(--themeColor);
+  }
+  :global{
+    .ant-radio-button-wrapper-checked{
+      color: #fff;
+      background-color: var(--themeColor);
+    }
+  }
+}
+
+

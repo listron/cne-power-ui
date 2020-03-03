@@ -7,7 +7,8 @@ import styles from './defectList.scss';
 import { Button } from 'antd';
 import searchUtil from '@utils/searchUtil';
 import DefectSearch from '@components/Operation/NewWorkProcess/Defect/DefectSearch';
-import DefectTableList from '@components/Operation/NewWorkProcess/Defect/DefectTableList';
+import DefectsHandler from '@components/Operation/NewWorkProcess/EliminateDefectList/DefectsHandler';
+import DefectTable from '@components/Operation/NewWorkProcess/EliminateDefectList/DefectTable';
 
 /**
  * 直接跳转进来的从路径上修改
@@ -56,6 +57,8 @@ class DefectList extends Component {
     return (
       <div className={`${styles.cont} ${styles[theme]}`}>
         消缺列表
+        <DefectsHandler />
+        <DefectTable />
       </div>
     );
   }
