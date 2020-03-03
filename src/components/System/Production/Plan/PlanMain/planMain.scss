@@ -99,15 +99,18 @@
   .tableList {
     .edit {
       color: $themeColor;
+      white-space: nowrap;
     }
     .noEdit {
       color: $promptColor;
       pointer-events: none;
+      white-space: nowrap;
     }
     .save {
       color: #f9b600;
       margin-right: 0 !important;
     }
+
     :global {
       .month .ant-input,
       .yearPR .ant-input {
@@ -116,44 +119,46 @@
         padding: 0 3px;
         border: 1px solid #f9b600;
       }
+
       .ant-table .ant-table-thead > tr > th,
       .ant-table .ant-table-tbody > tr > td {
-        padding: 0 3px;
-        line-height: 44px;
         min-width: 48px;
       }
       .ant-table .ant-table-thead > tr > th.month,
       .ant-table .ant-table-tbody > tr > td.month {
         min-width: 48px;
+        padding: 0 3px;
       }
+
+      .ant-table .ant-table-thead > tr > th {
+        &:first-child:not(.ant-table-selection-column) {
+          padding: 0px 0px;
+          text-align: center;
+        }
+        &:last-child {
+          padding-right: 10px;
+        }
+      }
+
       .ant-table .ant-table-thead > tr > th.yearPR,
       .ant-table .ant-table-tbody > tr > td.yearPR {
         min-width: 72px;
         width: 72px;
       }
-      .ant-table-thead {
-        th > div {
-          height: 60px;
-        }
-        .month {
-          & > div {
-            padding-top: 13px;
-          }
-        }
-        :local {
-          .regionName,
-          .stationNameBox,
-          .planYear,
-          .operation {
-            & > div {
-              padding-top: 13px;
-            }
+      .ant-table .ant-table-tbody > tr > td.yearPR {
+        padding: 0 3px;
+      }
+
+      .ant-table .ant-table-thead > tr > th[class*="stationCapacity"],
+      .ant-table .ant-table-thead > tr > th[class*="planPower"]
+       {
+        .ant-table-column-sorter{
+          .ant-table-column-sorter-inner{
+            margin-top: -22px;
           }
         }
       }
-      .ant-table-column-sorter {
-        top: 18px;
-      }
+
       .ant-input.ant-input-disabled {
         background: #f8f8f8;
         border: 1px solid #d4d4d4;
@@ -169,8 +174,8 @@
     }
     .regionName {
       min-width: 50px;
+      white-space: nowrap;
       width: 6%;
-      padding-left: 10px !important;
     }
     .stationName {
       width: 90px;
@@ -180,7 +185,8 @@
     }
     .operation {
       width: 2.7%;
-      min-width: 38px;
+      min-width: 50px;
+      text-align: center;
     }
     .planYear {
       width: 5%;
@@ -189,10 +195,17 @@
     .planPower {
       width: 10%;
       min-width: 105px;
+      text-align: end;
     }
     .stationCapacity {
       width: 7.5%;
       min-width: 70px;
+      text-align: end;
+    }
+
+    .tableCommonTitle {
+      height: 56px;
+      padding: 8px 0;
     }
   }
   table {

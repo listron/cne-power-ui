@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import WarnConfigSearch from './WarnConfigSearch';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { handleRight } from '@utils/utilFunc';
+import CneTable from '@components/Common/Power/CneTable';
+
 const Option = Select.Option;
 class WarnConfig extends Component {
     static propTypes = {
@@ -114,11 +116,13 @@ class WarnConfig extends Component {
             key: 'warningLevel',
             sorter: true,
             defaultSortOrder: 'ascend',
+            className:styles.warningLevel,
         }, {
             title: '是否启用',
             dataIndex: 'warningEnable',
             key: 'warningEnable',
             sorter: true,
+            className:styles.warningEnable,
             render: (text, record) => record.warningEnable ? '是' : '否',
         }];
 
@@ -126,6 +130,7 @@ class WarnConfig extends Component {
             title: '编辑',
             dataIndex: 'edit',
             key: 'edit',
+            className:styles.alarmEdit,
             render: (text, record) => (
                 <span className={styles.edit}>
                     <i className="iconfont icon-edit" onClick={() => { this.wranEdit(record); }} />
@@ -155,13 +160,14 @@ class WarnConfig extends Component {
                     </div> : <div></div>}
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
                 </div>
-                <Table
+                <CneTable
                     loading={loading}
                     onChange={this.tableChange}
                     columns={warnConfigOperation ? warnListColumn.concat(editColumn) : warnListColumn}
                     dataSource={warnList.map((e, i) => ({ key: e.warningCheckId, ...e, warningLevel: `${['一', '二', '三', '四', '五'][e.warningLevel - 1] || '--'}级` }))}
                     pagination={false}
                     rowSelection={rowSelection}
+                    className={styles.tableStyle}
                     locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
                 />
             </div>

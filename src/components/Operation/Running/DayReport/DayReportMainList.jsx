@@ -9,6 +9,7 @@ import styles from './dayReportAll.scss';
 import { Table, Icon } from 'antd';
 import { handleRight } from '@utils/utilFunc';
 import moment from 'moment';
+import CneTable from '@components/Common/Power/CneTable';
 
 class DayReportMainList extends Component {
   static propTypes = {
@@ -113,7 +114,7 @@ class DayReportMainList extends Component {
           <div className={styles.contentMain}>
             <DayReportListSearch {...this.props} />
             <DayReportListHandle {...this.props} />
-            <Table
+            <CneTable
               loading={loading}
               dataSource={dayReportList.map((e, i) => { // 二维数据结构调整解析至页面
                 const { dateList } = e;
@@ -129,6 +130,7 @@ class DayReportMainList extends Component {
               columns={columns}
               onChange={this.tableChange}
               pagination={false}
+              className={styles.tableStyle}
             />
           </div>
           <Footer />

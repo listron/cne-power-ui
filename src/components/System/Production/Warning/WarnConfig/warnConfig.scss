@@ -56,6 +56,7 @@
         }
     }
     .describe {
+        color: #60C060;
         text-decoration: underline;
         cursor: pointer;
     }
@@ -67,6 +68,15 @@
     .edit {
         color: $themeColor;
         cursor: pointer;
+    }
+
+    .tableStyle {
+        border: 1px solid #d4d4d4;
+        border-top: none;
+    
+        .warningLevel, .warningEnable, .alarmEdit{
+            text-align: center;
+        }
     }
 }
 

@@ -8,6 +8,7 @@ import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import WarningTip from '../../../Common/WarningTip';
 import TransitionContainer from '../../../Common/TransitionContainer';
 import CneInputSearch from '@components/Common/Power/CneInputSearch';
+import CneTable from '@components/Common/Power/CneTable';
 import { handleRight } from '@utils/utilFunc';
 import EditWeather from './Edit';
 const ButtonGroup = Button.Group;
@@ -121,6 +122,7 @@ class WeatherList extends Component {
                 key: 'stationName',
                 defaultSortOrder: 'ascend',
                 sorter: true,
+                className: styles.stationName,
                 render: text => text || '--',
             },
             {
@@ -128,6 +130,7 @@ class WeatherList extends Component {
                 dataIndex: 'subordinateStation',
                 key: 'subordinateStation',
                 sorter: false,
+                className: styles.inArea,
                 render: text => text || '--',
             },
             {
@@ -135,6 +138,7 @@ class WeatherList extends Component {
                 dataIndex: 'updateDate',
                 key: 'updateDate',
                 sorter: false,
+                className: styles.lastSetTime,
             },
             // {
             //     title: '操作',
@@ -203,7 +207,8 @@ class WeatherList extends Component {
                             <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
                                 onPaginationChange={this.onPaginationChange} />
                         </div>
-                        <Table
+                        <CneTable
+                            className={styles.weatherTable}
                             loading={loading}
                             dataSource={weatherData}
                             columns={weatherOperation ? columns.concat(operateColumn) : columns}

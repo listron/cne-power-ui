@@ -51,4 +51,14 @@
       }
     }
   }
+
+  .alarmTable {
+    border: 1px solid #d4d4d4;
+    border-top: none;
+
+
+    .warningType, .warningLevel, .warningEnable {
+      text-align: center;
+    }
+  }
 }

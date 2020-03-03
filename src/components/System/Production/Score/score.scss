@@ -50,6 +50,8 @@
     .detailTable {
         display: flex;
         flex-direction: column; // border-bottom: 1px solid $promptColor;
+        border: 1px solid #d4d4d4;
+        border-top: none;
     }
     .tHead,
     .tBody {
@@ -58,37 +60,30 @@
         line-height: 40px;
         .classification {
             flex: 0 0 9%;
-            border-right: 1px solid $promptColor;
             text-align: center;
         }
         .type {
             flex: 0 0 13%;
-            border-right: 1px solid $promptColor;
             text-align: center;
         }
         .examContent {
             flex: 0 0 21%;
-            border-right: 1px solid $promptColor;
             text-align: center;
         }
         .typeWeight {
             flex: 0 0 8%;
-            border-right: 1px solid $promptColor;
             text-align: center;
         }
         .judgeStandard {
             flex: 0 0 14%;
-            border-right: 1px solid $promptColor;
             text-align: center;
         }
         .inOrDePoints {
             flex: 0 0 9%;
-            border-right: 1px solid $promptColor;
             text-align: center;
         }
         .inOrDeScore {
             flex: 0 0 8%;
-            border-right: 1px solid $promptColor;
             text-align: center;
         }
         .assessInstruct {
@@ -97,24 +92,40 @@
         }
     }
     .tHead {
-        background: $pageBackground;
+        background: #199475;
+        color: #FFFFFF;
     }
+
+    .tHead {
+        .classification ,
+        .type, .examContent,
+        .typeWeight, .judgeStandard,
+        .inOrDePoints, .inOrDeScore,
+        .assessInstruct {
+            border-right: 1px solid #fff;
+        }   
+    }
+
     .tBody {
         .level {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             height: 203px; // line-height: 200px;
             border-bottom: 1px solid $promptColor;
+            border-right: 1px dashed #d4d4d4;
+            padding-left: 20px;
         }
         .manage {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             height: 164px; // line-height: 160px;
             border-bottom: 1px solid $promptColor;
+            padding-left: 20px;
+            border-right: 1px dashed #d4d4d4;
         }
         .oneColumn {
             display: flex;
@@ -123,6 +134,8 @@
             line-height: 40px;
             height: 41px;
             border-bottom: 1px solid $promptColor;
+            border-right: 1px dashed #d4d4d4;
+            border-left: none;
         }
         .twoColumn {
             display: flex;
@@ -131,6 +144,8 @@
             height: 80px;
             line-height: 40px;
             border-bottom: 1px solid $promptColor;
+            border-right: 1px dashed #d4d4d4;
+            border-left: none;
         }
         .threeColumn {
             display: flex;
@@ -138,6 +153,8 @@
             justify-content: center;
             border-bottom: 1px solid $promptColor;
             height: 123px;
+            border-right: 1px dashed #d4d4d4;
+            border-left: none;
         }
         .assessInstruct {
             border-bottom: 1px solid $promptColor;
@@ -146,6 +163,8 @@
             text-align: justify;
             padding: 10px;
             line-height: 30px;
+            // border-right: 1px dashed #d4d4d4;
+            border-left: none;
         }
         .type,
         .examContent {
@@ -165,8 +184,9 @@
         }
     }
     .editTable {
+        border: 1px solid #d4d4d4;
         .tBody {
-            .judgeStandard,
+            .judgeStandard
                 {
                 .twoColumn,
                 .threeColumn,
@@ -176,7 +196,7 @@
                     text-align: left;
                 }
             }
-            .inOrDePoints,
+            .inOrDePoints
                 {
                 .twoColumn,
                 .threeColumn,
@@ -186,6 +206,36 @@
                     text-align: left;
                 }
             }
+
+            :global {
+                .ant-input {
+                    height: 30px;  
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
+    .scoreBox {
+        .tHead, .tBody{
+          font-size: 14px;
+        }
+    }
+}
+  
+@media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+    .scoreBox {
+        .tHead, .tBody{
+            font-size: 1.2em;
+        }
+    }
+}
+  
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+    .scoreBox {
+        .tHead, .tBody{
+            font-size: 1.3em;
         }
     }
 }

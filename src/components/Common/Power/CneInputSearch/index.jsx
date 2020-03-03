@@ -68,6 +68,13 @@ class CneInputSearch extends Component {
         }
     }
 
+    /**
+     * close search
+     */
+    doCloseSearch = () => {
+       this.setState({ displaySearchInput: false, value: '' });
+    }
+
 
     render() {
         const {displaySearchInput, value} = this.state;
@@ -83,7 +90,7 @@ class CneInputSearch extends Component {
                         onSearch={this.doSearch}
                         onChange={this.doChange}
                     />
-                    <i className={`iconfont icon-wrong ${styles.closeSearch}`} onClick={() => this.setState({ displaySearchInput: false })} />
+                    <i className={`iconfont icon-wrong ${styles.closeSearch}`} onClick={this.doCloseSearch} />
                 </div>
             </div>
       );

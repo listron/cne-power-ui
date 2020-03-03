@@ -4,7 +4,7 @@ import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import WarningTip from '../../../../components/Common/WarningTip';
 import { handleRight } from '@utils/utilFunc';
-
+import CneTable from '@components/Common/Power/CneTable';
 
 
 class PointManageList extends Component {
@@ -130,11 +130,13 @@ class PointManageList extends Component {
         dataIndex: 'devicePointDatatype',
         key: 'devicePointDatatype',
         sorter: true,
+        className: styles.deviceDataType,
       }, {
         title: '测点类型',
         dataIndex: 'devicePointType',
         key: 'devicePointType',
         sorter: true,
+        className: styles.devicePointType,
       },
       // {
       //   title: '单位',
@@ -168,6 +170,7 @@ class PointManageList extends Component {
     const operationColumn = {
       title: '操作',
       key: 'caozuo',
+      className:styles.operation,
       render: (text, record, index) => {
         return (
           <div>
@@ -186,7 +189,7 @@ class PointManageList extends Component {
     return (
       <div className={styles.pointManageList}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-        <Table
+        <CneTable
           loading={loading}
           rowSelection={rowSelection}
           onChange={this.tableChange}

@@ -94,6 +94,25 @@
       }
     }
   }
+
+  .tableStyle {
+    :global {
+      .ant-table .ant-table-thead > tr > th {
+        &:first-child {
+          padding: 0 10px;
+          text-align: center;
+        }
+      }
+
+      .ant-table .ant-table-thead > tr > th ,
+      .ant-table .ant-table-tbody > tr > td {
+        &:last-child {
+          padding: 0 0px;
+          text-align: center;
+        }
+      }
+    }
+  }
 }
 
 .dayReportSide{

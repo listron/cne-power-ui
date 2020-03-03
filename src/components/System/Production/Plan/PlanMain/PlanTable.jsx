@@ -10,6 +10,7 @@ import moment from 'moment';
 import EditableCell from './EditableCell';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { numWithComma, handleRight } from '../../../../../utils/utilFunc';
+import CneTable from '@components/Common/Power/CneTable';
 
 const { APIBasePath, originUri } = path.basePaths;
 const { system } = path.APISubPaths;
@@ -215,7 +216,7 @@ class PlanTable extends Component {
           return <div title={record.stationName} className={styles.stationName}>{textValue}</div>;
         },
       }, {
-        title: () => <TableColumnTitle title="装机容量" unit="MW" />,
+        title: () => <TableColumnTitle className={styles.tableCommonTitle} title="装机容量" unit="MW" />,
         dataIndex: 'stationCapacity',
         key: 'stationCapacity',
         sorter: true,
@@ -228,7 +229,7 @@ class PlanTable extends Component {
         // sorter: false, // 暂时不排序了
         className: styles.planYear,
       }, {
-        title: () => <TableColumnTitle title="年计划发电量" unit="万kWh" />,
+        title: () => <TableColumnTitle className={styles.tableCommonTitle} title="年计划发电量" unit="万kWh" />,
         dataIndex: 'planPower',
         key: 'planPower',
         className: styles.planPower,
@@ -247,7 +248,7 @@ class PlanTable extends Component {
       },
       ...MonthColumn,
       {
-        title: () => <TableColumnTitle title="PR年计划" unit="%" />,
+        title: () => <TableColumnTitle className={styles.tableCommonTitle} title="PR年计划" unit="%" />,
         dataIndex: 'yearPR',
         key: 'yearPR',
         editable: true,
@@ -432,7 +433,7 @@ class PlanTable extends Component {
           </div> : <div></div>}
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table
+        <CneTable
           className={styles.tableList}
           loading={loading}
           pagination={false}
