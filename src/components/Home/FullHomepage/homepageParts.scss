@@ -186,6 +186,7 @@
   height: 100%;
   .topData{
     display: flex;
+    z-index: 9999;
     padding-top: 20px;
     margin-left: 16px;
   }
@@ -214,6 +215,7 @@
   }
   .resource{
     display: flex;
+    z-index: 9999;
     height: 45px;
     margin-right: 16px;
     img{
