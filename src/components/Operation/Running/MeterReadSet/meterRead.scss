@@ -185,17 +185,22 @@
     }
 
     .meterName{
-      flex: 0 0 19%;
       padding: 0 9px 0 19px;
+      @media screen and (max-width: 1679px) { // 1679以下屏幕
+        flex: 0 0 15.13%;
+        width: 15.13%;
+      }
       @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
         flex: 0 0 18%;
+        width: 18%;
       }
       @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
-        flex: 0 0 18%;
+        flex: 0 0 19%;
+        width: 19%;
       }
     }
     .meterNumber{
-      flex: 0 0 8%;
+      flex: 0 0 8.265%;
       padding: 0 9px 0 8px;
       @media screen and (max-width: 1679px) {
         padding: 0 3px 0 3px;
@@ -216,11 +221,11 @@
       }
     }
     .meterType{
-      flex: 0 0 10%;
+      flex: 0 0 7.44%;
       text-align: center;
       padding-right: 7px;
       @media screen and (max-width: 1679px) { // 1679以下屏幕，
-        flex: 0 0 9%;
+        flex: 0 0 7.44%
       }
     }
     .initCode{
@@ -231,19 +236,19 @@
     .switchType{
       flex: 0 0 32%;
       @media screen and (max-width: 1679px) { // 1679以下屏幕，
-        flex: 0 0 36%;
+        flex: 0 0 37%;
       }
     }
     .updateTime{
-      flex: 0 0 14%;
+      flex: 0 0 13.54%;
       @media screen and (max-width: 1679px) { // 1679以下屏幕，
-        flex: 0 0 12%;
+        flex: 0 0 12.81%
       }
     }
     .handler{
-      flex: 0 0 10%;
+      flex: 0 0 12%;
       @media screen and (max-width: 1679px) { // 1679以下屏幕，
-        flex: 0 0 9%;
+        flex: 0 0 12.15%
       }
     }
 
@@ -307,7 +312,7 @@
         border-radius:10px;
       }
       .editableCell { // 抄表列表
-        display: flex;
+        // display: flex;
         &:hover {
           z-index: 10;
         }
@@ -397,32 +402,39 @@
           :global{
             @media screen and (min-width: 1680px) { // 1680 + 1919
               .ant-form-explain{
-                left: 281px;
+                left: 296px;
                 font-size: 1.2em;;
               }
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
-                left: 208px;
+                left: 161px;
               }
             }
           }
         }
         .meterType{
           :global{
+            @media screen and (max-width: 1679px) { // 1679以下屏幕，
+              .ant-form-explain{
+                left: 90px;
+              }
+              .ant-select-selection__rendered{
+                margin-right: 12px;
+                margin-left: 4px;
+              }
+              .ant-select-arrow{
+                right: 4px;
+              }
+            }
             @media screen and (min-width: 1680px) { // 1680 + 1919
               .ant-form-explain{
-                left: 165px;
+                left: 125px;
                 font-size: 1.2em;;
               }
             }
-            @media screen and (max-width: 1679px) { // 1679以下屏幕，
-              .ant-form-explain{
-                left: 110px;
-              }
-            }
             .ant-select-selection{
-              margin-left: 8px;
+              margin-left: 3px;
             }
           }
         }
@@ -436,7 +448,7 @@
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
-                left: 97px;
+                left: 100px;
               }
             }
           }
@@ -451,7 +463,7 @@
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
-                left: 73px;
+                left: 77px;
               }
             }
           }
@@ -483,6 +495,12 @@
                 margin-bottom: 0;
               }
             }
+          }
+        }
+        .meterInfo{
+          display: flex;
+          .meterName{
+            @include overflowText();
           }
         }
       }
@@ -1026,11 +1044,11 @@
   .tableMain{
     .switchType{
       .switchTypeParent{
-        border-bottom: 2px solid #8bc9b9;
+        border-bottom: 1px solid #fff;
       }
       .switchTypeChild{
         > span {
-          border-right: 2px solid #8bc9b9;
+          border-right: 1px solid #fff;
         }
       }
     }
@@ -1039,7 +1057,7 @@
       background: #199475;
       color: #fff;
       > div {
-        border-right: 2px solid #8bc9b9;
+        border-right: 1px solid #fff;
       }
     }
     .tableContent {
