@@ -162,11 +162,16 @@ function *getPriceDetail({ payload = {} }){ // 查看电价详情
   const { stationCode } = payload;
   const url = `${APIBasePath}${operation.getPriceDetail}/${stationCode}`;
   try{
+    yield put({
+      type: meterReadSetAction.changeMeterReadSetStore,
+      payload: { tableLoading: true},
+    });
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
         type: meterReadSetAction.changeMeterReadSetStore,
         payload: {
+          tableLoading: false,
           priceDetailData: response.data.data || {},
         },
       });
@@ -177,6 +182,7 @@ function *getPriceDetail({ payload = {} }){ // 查看电价详情
     yield put({
       type: meterReadSetAction.changeMeterReadSetStore,
       payload: {
+        tableLoading: false,
         priceDetailData: {},
       },
     });
@@ -186,18 +192,31 @@ function *getPriceDetail({ payload = {} }){ // 查看电价详情
 function *getMeterPrice({ payload = {} }){ // 编辑电价
   const url = `${APIBasePath}${operation.getMeterPrice}`;
   try{
+    yield put({
+      type: meterReadSetAction.changeMeterReadSetStore,
+      payload: { tableLoading: true },
+    });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       message.success('编辑成功');
       const params = yield select(state => state.operation.meterReadSet.get('stationCode'));
       yield put({
         type: meterReadSetAction.getPriceDetail,
-        payload: {stationCode: params},
+        payload: {
+          tableLoading: true,
+          stationCode: params,
+        },
       });
     }else{ throw response.data; }
   }catch(error){
     console.log(error);
     message.error(error.message ? error.message : '编辑电价详情失败，请重试！');
+    yield put({
+      type: meterReadSetAction.changeMeterReadSetStore,
+      payload: {
+        tableLoading: false,
+      },
+    });
   }
 }
 
