@@ -127,6 +127,7 @@ class AddEditPlan extends PureComponent {
       cycleTypeCode = initialCycleTypeCode,
       planTypeCode = initialPlanTypeCode,
     } = getFieldsValue(['inspectTypeCode', 'firstStartTime', 'deviceTypeCodes', 'cycleTypeCode', 'planTypeCode']);
+
     return (
       <section className={`${styles.addEditPlan} ${styles[theme]}`}>
         <h3 className={styles.top}>
@@ -199,7 +200,7 @@ class AddEditPlan extends PureComponent {
             <FormItem label="循环周期" colon={false} className={styles.eachPlanForm} >
               {getFieldDecorator('cycleTypeCode', {
                 rules: [{ required: true, message: '请选择循环周期' }],
-                initialValue: (planPageKey === 'edit' ? planTypeCode === '100' : planTypeCode === 100) ? initialCycleTypeCode : 154,
+                initialValue: (planPageKey === 'edit') ? initialCycleTypeCode : 154,
                 // initialValue: initialCycleTypeCode,
               })(
                 <Select style={{width: '200px'}} getPopupContainer={() => this.cycleTypeRef}>
@@ -233,7 +234,7 @@ class AddEditPlan extends PureComponent {
                   },
                 }],
                 // initialValue: initialValidPeriod,
-                initialValue: (planPageKey === 'edit' ? planTypeCode === '100' : planTypeCode === 100) ? initialValidPeriod : 2,
+                initialValue: planPageKey === 'edit' ? initialValidPeriod : 2,
               })(
                 <Input style={{width: '200px', marginRight: '4px'}} placeholder="请输入..." />
               )}

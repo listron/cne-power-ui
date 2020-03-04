@@ -197,7 +197,7 @@ class Lists extends PureComponent {
                 okText="确定"
                 cancelText="取消"
               >
-                <Button>批量删除</Button>
+                <Button disabled={selectedRowKeys.length === 0}>批量删除</Button>
               </Popconfirm>
           </span> : <span />}
           <CommonPagination
