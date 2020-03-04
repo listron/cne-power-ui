@@ -1013,6 +1013,13 @@
       i{
         color: $themeColor;
       }
+      .line{
+        width: 10px;
+        height: 1px;
+        background: #199475;
+        margin: 12px 10px 0 5px;
+        display: inline-block;
+      }
     }
     .backIcon{
       color: $themeColor;
