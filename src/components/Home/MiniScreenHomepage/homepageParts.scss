@@ -168,6 +168,7 @@
   height: 100%;
   .topData{
     display: flex;
+    z-index: 9999;
     justify-content: center;
   }
   .bottomData{
@@ -181,6 +182,7 @@
       color:#a6e8ff;
       .stationTotalStatic{
         flex: 0 0 175px;
+        z-index: 9999;
         text-align: center;
         .count{
           margin: 0 4px 0 8px;
@@ -192,6 +194,7 @@
       }
       .stationStatusStatic{
         display: flex;
+        z-index: 9999;
         align-items: center;
         flex: 1;
         .eachStatus{
