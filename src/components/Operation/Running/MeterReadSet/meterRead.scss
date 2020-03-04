@@ -936,14 +936,15 @@
       }
       .discountRateInfo{
         :global{
-          @media screen and (max-width: 1679px) { // 1679以下屏幕
-            .ant-form-explain{
-              left: 107px;
-            }
-          }
-          @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+          @media screen and (min-width: 1680px) { // 1680 + 1919
             .ant-form-explain{
               left: 148px;
+              font-size: 1.2em;
+            }
+          }
+          @media screen and (max-width: 1679px) { // 1679以下屏幕，
+            .ant-form-explain{
+              left: 86px;
             }
           }
         }
