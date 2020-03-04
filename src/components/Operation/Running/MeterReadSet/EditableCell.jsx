@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes, { number } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Form, Input, Select } from 'antd';
 import styles from './meterRead.scss';
 import moment from 'moment';
@@ -126,7 +126,7 @@ class EditableCell extends Component {
                       onChange={(value) => { this.onChangeColumn('meterName', value); }}
                     >
                       {baseDeviceData.map((item, index) => (
-                        <Option key={index} value={item.deviceName + index}>{item.deviceName}</Option>
+                        <Option key={item.deviceId} value={item.deviceName}>{item.deviceName}</Option>
                       ))}
                       <Option value="disabled" disabled>
                         <div className={!eventData.meterName && styles.noDataText}>
@@ -143,12 +143,9 @@ class EditableCell extends Component {
                 {getFieldDecorator('meterNumber', {
                   rules: [{
                     required: true,
-                    pattern: new RegExp(/(^[0-9]{1,10}$)/),
-                    message: '最多输入10位整数',
+                    pattern: new RegExp(/(^[0-9]{2,10}$)/),
+                    message: '最多输入2-10位整数',
                   }],
-                  getValueFromEvent: (event) => {
-                    return event.target.value.replace(/[^\d.]/g, '');
-                  },
                   initialValue: eventData.meterNumber,
                   })(
                     <Input placeholder="请输入" onChange={(e) => { this.onChangeColumn('meterNumber', e.target.value); }} />
@@ -166,6 +163,7 @@ class EditableCell extends Component {
                 })(
                   <Select
                     className={((!eventData.meterType && meterTypeValue === 'noData') && styles.meterInpNull) || (meterTypeValue === '' && styles.meterInpDel)}
+                    dropdownClassName={styles.meterTypeSelect}
                     placeholder="请选择"
                     onChange={(value) => { this.onChangeColumn('meterType', value); }}
                   >
@@ -180,12 +178,9 @@ class EditableCell extends Component {
                 {getFieldDecorator('magnification', {
                   rules: [{
                     required: true,
-                    pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                    message: '最多输入6位整数和2位小数',
+                    pattern: new RegExp(/(^[0-9]{1,6}$)/),
+                    message: '最多输入6位整数',
                   }],
-                  getValueFromEvent: (event) => {
-                    return event.target.value.replace(/[^\d.]/g, '');
-                  },
                   initialValue: eventData.magnification,
                   })(
               <Input placeholder="请输入" onChange={(e) => { this.onChangeColumn('magnification', e.target.value); }} />
@@ -199,12 +194,20 @@ class EditableCell extends Component {
                     {getFieldDecorator('totalStartCode', {
                       rules: [{
                         required: true,
-                        pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                        message: '最多输入6位整数和2位小数',
-                      }],
-                      getValueFromEvent: (event) => {
-                        return event.target.value.replace(/[^\d.]/g, '');
-                      },
+                        message: ' ',
+                        },
+                        {validator: (rule, value, callback) => {
+                          if (/^[0-9]{1,6}$/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                            callback();
+                          }else{
+                            callback('最多输入6位整数和2位小数');
+                          }
+                        }},
+                      ],
                       initialValue: eventData.totalStartCode,
                       })(
                       <Input placeholder="请输入" onChange={(e) => { this.onChangeColumn('totalStartCode', e.target.value); }} />
@@ -216,12 +219,20 @@ class EditableCell extends Component {
                     {getFieldDecorator('topStartCode', {
                       rules: [{
                         required: true,
-                        pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                        message: '最多输入6位整数和2位小数',
-                      }],
-                      getValueFromEvent: (event) => {
-                        return event.target.value.replace(/[^\d.]/g, '');
-                      },
+                        message: ' ',
+                        },
+                        {validator: (rule, value, callback) => {
+                          if (/^[0-9]{1,6}$/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                            callback();
+                          }else{
+                            callback('最多输入6位整数和2位小数');
+                          }
+                        }},
+                      ],
                       initialValue: eventData.topStartCode,
                       })(
                       <Input placeholder="请输入" onChange={(e) => { this.onChangeColumn('topStartCode', e.target.value); }} />
@@ -233,12 +244,20 @@ class EditableCell extends Component {
                     {getFieldDecorator('peakStartCode', {
                       rules: [{
                         required: true,
-                        pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                        message: '最多输入6位整数和2位小数',
-                      }],
-                      getValueFromEvent: (event) => {
-                        return event.target.value.replace(/[^\d.]/g, '');
-                      },
+                        message: ' ',
+                        },
+                        {validator: (rule, value, callback) => {
+                          if (/^[0-9]{1,6}$/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                            callback();
+                          }else{
+                            callback('最多输入6位整数和2位小数');
+                          }
+                        }},
+                      ],
                       initialValue: eventData.peakStartCode,
                       })(
                       <Input placeholder="请输入" onChange={(e) => { this.onChangeColumn('peakStartCode', e.target.value); }} />
@@ -250,12 +269,20 @@ class EditableCell extends Component {
                     {getFieldDecorator('flatStartCode', {
                       rules: [{
                         required: true,
-                        pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                        message: '最多输入6位整数和2位小数',
-                      }],
-                      getValueFromEvent: (event) => {
-                        return event.target.value.replace(/[^\d.]/g, '');
-                      },
+                        message: ' ',
+                        },
+                        {validator: (rule, value, callback) => {
+                          if (/^[0-9]{1,6}$/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                            callback();
+                          }else{
+                            callback('最多输入6位整数和2位小数');
+                          }
+                        }},
+                      ],
                       initialValue: eventData.flatStartCode,
                       })(
                       <Input placeholder="请输入" onChange={(e) => { this.onChangeColumn('flatStartCode', e.target.value); }} />
@@ -267,12 +294,20 @@ class EditableCell extends Component {
                     {getFieldDecorator('lowStartCode', {
                       rules: [{
                         required: true,
-                        pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                        message: '最多输入6位整数和2位小数',
-                      }],
-                      getValueFromEvent: (event) => {
-                        return event.target.value.replace(/[^\d.]/g, '');
-                      },
+                        message: ' ',
+                        },
+                        {validator: (rule, value, callback) => {
+                          if (/^[0-9]{1,6}$/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                            callback();
+                          }else{
+                            callback('最多输入6位整数和2位小数');
+                          }
+                        }},
+                      ],
                       initialValue: eventData.lowStartCode,
                       })(
                       <Input placeholder="请输入" onChange={(e) => { this.onChangeColumn('lowStartCode', e.target.value); }} />
@@ -281,7 +316,7 @@ class EditableCell extends Component {
                 </span>
               </div>
             </div>
-            <div className={styles.updateTime}>{eventData.updateTime ? eventData.updateTime : '--'}</div>
+            <div className={styles.updateTime}>{eventData.updateTime ? moment(eventData.updateTime).format('YYYY-MM-DD HH:mm:ss') : '--'}</div>
             <div className={styles.handler}>
               <i title={'取消'} className={`iconfont icon-closeall ${styles.cancel}`} onClick={() => { this.cancelEvent(eventData); }} />
               <i title={'保存'} className={`iconfont icon-save ${styles.save}`} onClick={() => { this.saveEvent(eventData); }} />

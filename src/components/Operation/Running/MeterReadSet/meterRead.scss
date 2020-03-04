@@ -7,7 +7,7 @@
   flex-direction: column;
   .title{
     display: flex;
-    padding: 0 0 14px 20px;
+    padding-bottom: 14px;
     font-size: 18px;
     i{
       display: flex;
@@ -157,18 +157,60 @@
     }
   }
   .tableMain{
+    @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+      :global{
+        .ant-select-selection,.ant-input{
+          font-size: 1.2em;
+        }
+      }
+    }
+    @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+      :global{
+        .ant-select-selection,.ant-input{
+          font-size: 1.3em;
+        }
+      }
+    }
     .meterName,.meterNumber,.meterType,.initCode,.switchType,.updateTime,.handler{
       @include overflowText();
       overflow: visible;
+    }
+    .meterName,.meterNumber,.meterType,.initCode,.switchType,.updateTime{
+      @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+        font-size: 1.2em;
+      }
+      @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+        font-size: 1.3em;
+      }
     }
 
     .meterName{
       flex: 0 0 19%;
       padding: 0 9px 0 19px;
+      @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+        flex: 0 0 18%;
+      }
+      @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+        flex: 0 0 18%;
+      }
     }
     .meterNumber{
       flex: 0 0 8%;
       padding: 0 9px 0 8px;
+      @media screen and (max-width: 1679px) {
+        padding: 0 3px 0 3px;
+        :global{
+          .ant-input{
+            padding-left: 0px;
+          }
+        }
+      }
+      @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+        flex: 0 0 9%;
+      }
+      @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+        flex: 0 0 9%;
+      }
       .meterNumberText{
         position: absolute;
       }
@@ -176,21 +218,33 @@
     .meterType{
       flex: 0 0 10%;
       text-align: center;
-      padding: 0 9px;
+      padding-right: 7px;
+      @media screen and (max-width: 1679px) { // 1679以下屏幕，
+        flex: 0 0 9%;
+      }
     }
     .initCode{
       flex: 0 0 7%;
       text-align: right;
-      padding: 0 9px;
+      padding: 0 7px;
     }
     .switchType{
       flex: 0 0 32%;
+      @media screen and (max-width: 1679px) { // 1679以下屏幕，
+        flex: 0 0 36%;
+      }
     }
     .updateTime{
       flex: 0 0 14%;
+      @media screen and (max-width: 1679px) { // 1679以下屏幕，
+        flex: 0 0 12%;
+      }
     }
     .handler{
       flex: 0 0 10%;
+      @media screen and (max-width: 1679px) { // 1679以下屏幕，
+        flex: 0 0 9%;
+      }
     }
 
     .totalStartCode,.topStartCode,.peakStartCode,.flatStartCode,.lowStartCode{
@@ -227,6 +281,14 @@
       }
       .meterName,.meterNumber,.meterType,.initCode,.updateTime,.handler{
         line-height: 56px;
+      }
+      .handler{
+        @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+          font-size: 1.2em;
+        }
+        @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+          font-size: 1.3em;
+        }
       }
     }
     .tableContent {
@@ -290,6 +352,7 @@
             width: 100%;
           }
           .ant-input{
+            height: 30px;
             text-align: right;
           }
           .ant-input-number {
@@ -309,12 +372,22 @@
         .updateTime,.handler{
           text-align: center;
         }
+        .updateTime{
+          color: #353535;
+        }
         .handler{
           display: flex;
           border: none;
           i{
             flex: 1;
+            font-size: 19px;
             cursor: pointer;
+            @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+              font-size: 20px;
+            }
+            @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+              font-size: 20px;
+            }
           }
           .disableBtn{
             cursor: not-allowed; 
@@ -322,8 +395,11 @@
         }
         .meterName{
           :global{
-            .ant-form-explain{
-              left: 296px;
+            @media screen and (min-width: 1680px) { // 1680 + 1919
+              .ant-form-explain{
+                left: 281px;
+                font-size: 1.2em;;
+              }
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
@@ -334,32 +410,44 @@
         }
         .meterType{
           :global{
-            .ant-form-explain{
-              left: 155px;
+            @media screen and (min-width: 1680px) { // 1680 + 1919
+              .ant-form-explain{
+                left: 165px;
+                font-size: 1.2em;;
+              }
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
                 left: 110px;
               }
             }
+            .ant-select-selection{
+              margin-left: 8px;
+            }
           }
         }
         .meterNumber{
           :global{
-            .ant-form-explain{
-              left: 123px;
+            @media screen and (min-width: 1680px) { // 1680 + 1919
+              .ant-form-explain{
+                left: 140px;
+                font-size: 1.2em;;
+              }
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
-                left: 87px;
+                left: 97px;
               }
             }
           }
         }
         .initCode{
           :global{
-            .ant-form-explain{
-              left: 105px;
+            @media screen and (min-width: 1680px) { // 1680 + 1919
+              .ant-form-explain{
+                left: 109px;
+                font-size: 1.2em;;
+              }
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
@@ -380,12 +468,15 @@
               }
             }
             :global{
-              .ant-form-explain{
-                left: 96px;
+              @media screen and (min-width: 1680px) { // 1680 + 1919
+                .ant-form-explain{
+                  left: 96px;
+                  font-size: 1.2em;;
+                }
               }
               @media screen and (max-width: 1679px) { // 1679以下屏幕，
                 .ant-form-explain{
-                  left: 65px;
+                  left: 74px;
                 }
               }
               .ant-form-item{
@@ -407,6 +498,108 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    .loadEffect {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto;
+      margin-top:100px;
+      position: relative;
+      div{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        -webkit-animation: load 1s linear infinite;
+        &:nth-child(1){
+          -webkit-animation-delay:0.1s;
+          span{
+            width: 5px;
+            height: 5px;
+          }
+        }
+        &:nth-child(2){
+          -webkit-animation-delay:0.2s;
+          span{
+            width: 4px;
+            height: 4px;
+          }
+        }
+        &:nth-child(3){
+          -webkit-animation-delay:0.3s;
+          span{
+            width: 4px;
+            height: 4px;
+          }
+        }
+        &:nth-child(4){
+          -webkit-animation-delay:0.4s;
+          span{
+            width: 3px;
+            height: 3px;
+          }
+        }
+        &:nth-child(5){
+          -webkit-animation-delay:0.5s;
+          span{
+            width: 3px;
+            height: 3px;
+          }
+        }
+        &:nth-child(6){
+          -webkit-animation-delay:0.6s;
+          span{
+            width: 2px;
+            height: 2px;
+          }
+        }
+        &:nth-child(7){
+          -webkit-animation-delay:0.7s;
+          span{
+            width: 1px;
+            height: 1px;
+          }
+        }
+        &:nth-child(8){
+          -webkit-animation-delay:0.8s;
+          span{
+            width: 1px;
+            height: 1px;
+          }
+        }
+        span{
+          display: inline-block;
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          position: absolute;
+          left: 50%;
+          margin-top: 10px;
+          margin-left: 0px;
+        }
+      }
+      @-webkit-keyframes load{
+        0%{
+            -webkit-transform: rotate(0deg);
+        }
+        10%{
+            -webkit-transform: rotate(45deg);
+        }
+        50%{
+            -webkit-transform: rotate(160deg);
+        }
+        62%{
+          -webkit-transform: rotate(180deg);
+        }
+        65%{
+            -webkit-transform: rotate(200deg);
+        }
+        90%{
+            -webkit-transform: rotate(340deg);
+        }
+        100%{
+            -webkit-transform: rotate(360deg);
+        }
+      }
+    }
   }
 }
 
@@ -597,6 +790,20 @@
     }
   }
   .priceContent{
+    @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+      :global{
+        .ant-input{
+          font-size: 1.2em;
+        }
+      }
+    }
+    @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+      :global{
+        .ant-input{
+          font-size: 1.3em;
+        }
+      }
+    }
     margin: 13px 25px 0 25px;
     .priceInfo{
       display: flex;
@@ -611,6 +818,17 @@
           width: 100%;
           .ant-form-item{
             margin-bottom: 0;
+            @media screen and (max-width: 1679px) {
+              flex: 0 0 44%;
+            }
+            @media screen and (min-width: 1680px) {
+              flex: 0 0 50%;
+            }
+            .ant-col{
+              @media screen and (max-width: 1679px) {
+                width: 79%;
+              }
+            }
             .ant-form-explain{
               position: absolute;
               white-space: nowrap;
@@ -653,6 +871,7 @@
           }
         }
         .ant-input{
+          height: 30px;
           margin-right: 4px;
           text-align: right;
         }
@@ -664,7 +883,18 @@
         font-weight: bold;
       }
       .unit{
+        @media screen and (max-width: 1679px) {
+          margin-left: -17px;
+        }
         margin-left: 4px;
+      }
+      .topPrice,.peakPrice,.flatPrice,.lowPrice,.discountRate{
+        @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+          font-size: 1.2em;
+        }
+        @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+          font-size: 1.3em;
+        }
       }
       .topPrice,.peakPrice,.flatPrice,.lowPrice{
         flex: 0 0 20.9%;
@@ -678,6 +908,12 @@
       .discountRate{
         flex: 0 0 16%;
         line-height: 40px;
+        
+        :global{
+          .ant-form-item{
+            flex: 0 0 54%;
+          }
+        }
       }
       .priceData,.discountRateInfo{
         display: flex;
@@ -685,14 +921,15 @@
       }
       .priceData{
         :global{
-          @media screen and (max-width: 1679px) { // 1679以下屏幕
+          @media screen and (min-width: 1680px) { // 1680 + 1919
             .ant-form-explain{
-              left: 139px;
+              left: 176px;
+              font-size: 1.2em;
             }
           }
-          @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+          @media screen and (max-width: 1679px) { // 1679以下屏幕，
             .ant-form-explain{
-              left: 205px;
+              left: 91px;
             }
           }
         }
@@ -701,12 +938,12 @@
         :global{
           @media screen and (max-width: 1679px) { // 1679以下屏幕
             .ant-form-explain{
-              left: 122px;
+              left: 107px;
             }
           }
           @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
             .ant-form-explain{
-              left: 177px;
+              left: 148px;
             }
           }
         }
@@ -849,7 +1086,7 @@
           -webkit-box-shadow:0 0 0 1000px  #fff inset !important; 
         }
         .meterName,.meterNumber,.meterType,.initCode,.switchType,.updateTime,.handler{
-          border-right: 1px dashed #8bc9b9;
+          border-right: 1px dashed $borderColor;
         }
         .handler{
           border-right: 0;
@@ -875,7 +1112,7 @@
         .switchType{
           .switchTypeChild{
             > span {
-              border-right: 1px dashed #8bc9b9;
+              border-right: 1px dashed $borderColor;
             }
           }
         }
@@ -939,11 +1176,29 @@
       }
     }
   }
+  .spin{
+    .loadEffect {
+      div{
+        span{
+          background: #353535;
+        }
+      }
+    }
+    .loadText{
+      color: #999;
+    }
+  }
 }
 
-.meterNameSelect{ // 电表名称下拉框有值
+.meterNameSelect,.meterTypeSelect{ // 电表名称下拉框有值
   :global{
     .ant-select-dropdown-menu-item{
+      @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+        font-size: 1.2em;
+      }
+      @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+        font-size: 1.3em;
+      }
       &:hover{
         background-color: #e6f4ef;
       }

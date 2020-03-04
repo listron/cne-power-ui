@@ -83,21 +83,21 @@ class MeterReadTable extends Component{
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
         changeMeterReadSetStore({ isPriceTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (addEventList.length >= 1) { // 电表添加新行时提示先保存后再进行其他操作
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (isEditList) { // 编辑电表时提示先保存电表再进行其他操作
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     const keyIndex = addEventList.length > 0 && addEventList[addEventList.length - 1].key.split('add')[1] || 0;
@@ -125,28 +125,27 @@ class MeterReadTable extends Component{
   editEvent = (trData, type) => { // 编辑
     const { meterId } = trData;
     const { currentEventList, addEventList} = this.state;
-    const { addDataNum, changeMeterReadSetStore, isEditPrice, isEditList } = this.props;
-
+    const { changeMeterReadSetStore, isEditPrice, isEditList } = this.props;
     if (isEditPrice) {
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
         changeMeterReadSetStore({ isPriceTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (meterId) {
-      if (addDataNum > 1) {
+      if (addEventList.length >= 1) {
         changeMeterReadSetStore({ isListTip: true });
         setTimeout(() => {
           changeMeterReadSetStore({ isListTip: false });
-        }, 3000);
+        }, 2000);
         return;
       }
       if (type === 'editable' && isEditList) {
         changeMeterReadSetStore({ isListTip: true });
         setTimeout(() => {
           changeMeterReadSetStore({ isListTip: false });
-        }, 3000);
+        }, 2000);
         return;
       }
       const index = currentEventList.findIndex(e => e.meterId === meterId);
@@ -168,21 +167,21 @@ class MeterReadTable extends Component{
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
         changeMeterReadSetStore({ isPriceTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
-    if (addDataNum > 1) {
+    if (addDataNum >= 1) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (isEditList) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (meterId) {
@@ -212,7 +211,7 @@ class MeterReadTable extends Component{
   cancelEvent = (value) => { // 取消
     const { meterId } = value;
     const { currentEventList, addEventList } = this.state;
-    const { changeMeterReadSetStore, getMeterList, stationCode, isEditList } = this.props;
+    const { changeMeterReadSetStore, getMeterList, stationCode } = this.props;
     if (meterId) {
       const index = currentEventList.findIndex(e => e.meterId === meterId);
       currentEventList[index].editable = false;
@@ -233,21 +232,21 @@ class MeterReadTable extends Component{
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
         changeMeterReadSetStore({ isPriceTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
-    if (addDataNum > 1) {
+    if (addDataNum >= 1) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     if (isEditList) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
-      }, 3000);
+      }, 2000);
       return;
     }
     this.setState({
@@ -433,12 +432,20 @@ class MeterReadTable extends Component{
                         {getFieldDecorator('oldTotalEndCode', {
                             rules: [{
                               required: true,
-                              pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                              message: '最多输入6位整数和2位小数',
-                            }],
-                            getValueFromEvent: (event) => {
-                              return event.target.value.replace(/[^\d.]/g, '');
-                            },
+                              message: ' ',
+                              },
+                              {validator: (rule, value, callback) => {
+                                if (/^[0-9]{1,6}$/.test(value)) {
+                                  callback();
+                                }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                                  callback();
+                                }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                                  callback();
+                                }else{
+                                  callback('最多输入6位整数和2位小数');
+                                }
+                              }},
+                            ],
                             initialValue: '',
                           })(
                             <Input placeholder={'请输入'} onChange={(e) => this.meterChange('oldTotalEndCode', e)} />
@@ -448,14 +455,22 @@ class MeterReadTable extends Component{
                     <div className={`${styles.oldTopEndCode} ${(oldTopEndCode === 'noData' && styles.meterInpNull) || (!oldTopEndCode && styles.meterInpDel)}`}>
                       <FormItem label="尖" colon={false}>
                         {getFieldDecorator('oldTopEndCode', {
-                            rules: [{
-                              required: true,
-                              pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                              message: '最多输入6位整数和2位小数',
-                            }],
-                            getValueFromEvent: (event) => {
-                              return event.target.value.replace(/[^\d.]/g, '');
+                           rules: [{
+                            required: true,
+                            message: ' ',
                             },
+                            {validator: (rule, value, callback) => {
+                              if (/^[0-9]{1,6}$/.test(value)) {
+                                callback();
+                              }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                                callback();
+                              }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                                callback();
+                              }else{
+                                callback('最多输入6位整数和2位小数');
+                              }
+                            }},
+                          ],
                             initialValue: '',
                           })(
                             <Input placeholder={'请输入'} onChange={(e) => this.meterChange('oldTopEndCode', e)} />
@@ -467,12 +482,20 @@ class MeterReadTable extends Component{
                         {getFieldDecorator('oldPeakEndCode', {
                             rules: [{
                               required: true,
-                              pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                              message: '最多输入6位整数和2位小数',
-                            }],
-                            getValueFromEvent: (event) => {
-                              return event.target.value.replace(/[^\d.]/g, '');
-                            },
+                              message: ' ',
+                              },
+                              {validator: (rule, value, callback) => {
+                                if (/^[0-9]{1,6}$/.test(value)) {
+                                  callback();
+                                }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                                  callback();
+                                }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                                  callback();
+                                }else{
+                                  callback('最多输入6位整数和2位小数');
+                                }
+                              }},
+                            ],
                             initialValue: '',
                           })(
                             <Input placeholder={'请输入'} onChange={(e) => this.meterChange('oldPeakEndCode', e)} />
@@ -484,12 +507,20 @@ class MeterReadTable extends Component{
                         {getFieldDecorator('oldFlatEndCode', {
                           rules: [{
                             required: true,
-                            pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                            message: '最多输入6位整数和2位小数',
-                          }],
-                          getValueFromEvent: (event) => {
-                            return event.target.value.replace(/[^\d.]/g, '');
-                          },
+                            message: ' ',
+                            },
+                            {validator: (rule, value, callback) => {
+                              if (/^[0-9]{1,6}$/.test(value)) {
+                                callback();
+                              }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                                callback();
+                              }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                                callback();
+                              }else{
+                                callback('最多输入6位整数和2位小数');
+                              }
+                            }},
+                          ],
                           initialValue: '',
                         })(
                           <Input placeholder={'请输入'} onChange={(e) => this.meterChange('oldFlatEndCode', e)} />
@@ -501,12 +532,20 @@ class MeterReadTable extends Component{
                         {getFieldDecorator('oldLowEndCode', {
                             rules: [{
                               required: true,
-                              pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                              message: '最多输入6位整数和2位小数',
-                            }],
-                            getValueFromEvent: (event) => {
-                              return event.target.value.replace(/[^\d.]/g, '');
-                            },
+                              message: ' ',
+                              },
+                              {validator: (rule, value, callback) => {
+                                if (/^[0-9]{1,6}$/.test(value)) {
+                                  callback();
+                                }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                                  callback();
+                                }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                                  callback();
+                                }else{
+                                  callback('最多输入6位整数和2位小数');
+                                }
+                              }},
+                            ],
                             initialValue: '',
                           })(
                             <Input placeholder={'请输入'} onChange={(e) => this.meterChange('oldLowEndCode', e)} />
@@ -524,12 +563,9 @@ class MeterReadTable extends Component{
                             {getFieldDecorator('newMeterNumber', {
                                 rules: [{
                                   required: true,
-                                  pattern: new RegExp(/^[1-9][0-9]{0,10}$/),
-                                  message: '最多输入10位整数',
+                                  pattern: new RegExp(/^[0-9]{2,10}$/),
+                                  message: '最多输入2-10位整数',
                                 }],
-                                getValueFromEvent: (event) => {
-                                  return event.target.value.replace(/[^\d.]/g, '');
-                                },
                                 initialValue: '',
                             })(
                               <Input placeholder={'请输入'} onChange={(e) => this.meterChange('newMeterNumber', e)} />
@@ -543,12 +579,9 @@ class MeterReadTable extends Component{
                             {getFieldDecorator('newMagnification', {
                                 rules: [{
                                   required: true,
-                                  pattern: new RegExp(/^[1-9][0-9]{0,5}$/),
+                                  pattern: new RegExp(/^[0-9]{1,6}$/),
                                   message: '最多输入6位整数',
                                 }],
-                            getValueFromEvent: (event) => {
-                              return event.target.value.replace(/[^\d.]/g, '');
-                            },
                                 initialValue: '',
                               })(
                                 <Input placeholder={'请输入'} onChange={(e) => this.meterChange('newMagnification', e)} />
@@ -560,14 +593,22 @@ class MeterReadTable extends Component{
                     <div className={`${styles.newTotalStartCode} ${(newTotalStartCode === 'noData' && styles.meterInpNull) || (!newTotalStartCode && styles.meterInpDel)}`}>
                       <FormItem label="总" colon={false}>
                         {getFieldDecorator('newTotalStartCode', {
-                            rules: [{
-                              required: true,
-                              pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                              message: '最多输入6位整数和2位小数',
-                            }],
-                            getValueFromEvent: (event) => {
-                              return event.target.value.replace(/[^\d.]/g, '');
+                          rules: [{
+                            required: true,
+                            message: ' ',
                             },
+                            {validator: (rule, value, callback) => {
+                              if (/^[0-9]{1,6}$/.test(value)) {
+                                callback();
+                              }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                                callback();
+                              }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                                callback();
+                              }else{
+                                callback('最多输入6位整数和2位小数');
+                              }
+                            }},
+                          ],
                             initialValue: '',
                           })(
                             <Input placeholder={'请输入'} onChange={(e) => this.meterChange('newTotalStartCode', e)} />
@@ -577,14 +618,22 @@ class MeterReadTable extends Component{
                     <div className={`${styles.newTopStartCode} ${(newTopStartCode === 'noData' && styles.meterInpNull) || (!newTopStartCode && styles.meterInpDel)}`}>
                       <FormItem label="尖" colon={false}>
                         {getFieldDecorator('newTopStartCode', {
-                            rules: [{
-                              required: true,
-                              pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                              message: '最多输入6位整数和2位小数',
-                            }],
-                            getValueFromEvent: (event) => {
-                              return event.target.value.replace(/[^\d.]/g, '');
+                          rules: [{
+                            required: true,
+                            message: ' ',
                             },
+                            {validator: (rule, value, callback) => {
+                              if (/^[0-9]{1,6}$/.test(value)) {
+                                callback();
+                              }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                                callback();
+                              }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                                callback();
+                              }else{
+                                callback('最多输入6位整数和2位小数');
+                              }
+                            }},
+                          ],
                             initialValue: '',
                           })(
                             <Input placeholder={'请输入'} onChange={(e) => this.meterChange('newTopStartCode', e)} />
@@ -596,12 +645,20 @@ class MeterReadTable extends Component{
                         {getFieldDecorator('newPeakStartCode', {
                             rules: [{
                               required: true,
-                              pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                              message: '最多输入6位整数和2位小数',
-                            }],
-                            getValueFromEvent: (event) => {
-                              return event.target.value.replace(/[^\d.]/g, '');
-                            },
+                              message: ' ',
+                              },
+                              {validator: (rule, value, callback) => {
+                                if (/^[0-9]{1,6}$/.test(value)) {
+                                  callback();
+                                }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                                  callback();
+                                }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                                  callback();
+                                }else{
+                                  callback('最多输入6位整数和2位小数');
+                                }
+                              }},
+                            ],
                             initialValue: '',
                           })(
                             <Input placeholder={'请输入'} onChange={(e) => this.meterChange('newPeakStartCode', e)} />
@@ -613,12 +670,20 @@ class MeterReadTable extends Component{
                         {getFieldDecorator('newFlatStartCode', {
                             rules: [{
                               required: true,
-                              pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                              message: '最多输入6位整数和2位小数',
-                            }],
-                            getValueFromEvent: (event) => {
-                              return event.target.value.replace(/[^\d.]/g, '');
-                            },
+                              message: ' ',
+                              },
+                              {validator: (rule, value, callback) => {
+                                if (/^[0-9]{1,6}$/.test(value)) {
+                                  callback();
+                                }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                                  callback();
+                                }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                                  callback();
+                                }else{
+                                  callback('最多输入6位整数和2位小数');
+                                }
+                              }},
+                            ],
                             initialValue: '',
                           })(
                             <Input placeholder={'请输入'} onChange={(e) => this.meterChange('newFlatStartCode', e)} />
@@ -630,9 +695,20 @@ class MeterReadTable extends Component{
                         {getFieldDecorator('newLowStartCode', {
                             rules: [{
                               required: true,
-                              pattern: new RegExp(/(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/),
-                              message: '最多输入6位整数和2位小数',
-                            }],
+                              message: ' ',
+                              },
+                              {validator: (rule, value, callback) => {
+                                if (/^[0-9]{1,6}$/.test(value)) {
+                                  callback();
+                                }else if (/(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/.test(value)) {
+                                  callback();
+                                }else if (/(^[0-9]{1,6}[\.]{1}$)/.test(value)) {
+                                  callback();
+                                }else{
+                                  callback('最多输入6位整数和2位小数');
+                                }
+                              }},
+                            ],
                             initialValue: '',
                           })(
                             <Input placeholder={'请输入'} onChange={(e) => this.meterChange('newLowStartCode', e)} />
@@ -669,8 +745,8 @@ class MeterReadTable extends Component{
                 <span className={styles.lowStartCode}>谷</span>
               </div>
             </div>
-            <div className={styles.updateTime}> 更新时间</div>
-            <div className={styles.handler}> 操作</div>
+            <div className={styles.updateTime}>更新时间</div>
+            <div className={styles.handler}>操作</div>
           </div>
           <div className={styles.tableContent}>
             {currentEventList.map((e, index) => {
@@ -716,7 +792,19 @@ class MeterReadTable extends Component{
           </div>
         </div>
         {/* 数据加载loading */}
-        {tableLoading && <div className={styles.spin}><Spin tip="数据加载中"></Spin></div>}
+        {tableLoading && <div className={styles.spin}>
+          <div className={styles.loadEffect}>
+            <div><span></span></div>
+            <div><span></span></div>
+            <div><span></span></div>
+            <div><span></span></div>
+            <div><span></span></div>
+            <div><span></span></div>
+            <div><span></span></div>
+            <div><span></span></div>
+          </div>
+          <div className={styles.loadText}>数据加载中</div>
+        </div>}
       </div>
     );
   }
