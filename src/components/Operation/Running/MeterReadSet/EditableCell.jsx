@@ -325,7 +325,7 @@ class EditableCell extends Component {
           </Form>
         </React.Fragment>}
 
-          {!editable && <React.Fragment>
+          {!editable && <div className={styles.meterInfo}>
             <div className={styles.meterName}>{eventData.meterName}</div>
             <div className={styles.meterNumber}>{eventData.meterNumber}</div>
             <div className={styles.meterType}>{['上网计量', '发电计量'][eventData.meterType - 1]}</div>
@@ -345,7 +345,7 @@ class EditableCell extends Component {
               <i title={'换表'} className={`iconfont icon-changedb ${styles.updateBtn}`} onClick={() => { this.changeMeter(eventData); }} />
               {isRelDocket === 0 ? <i title={'删除'} className={`iconfont icon-del ${styles.delBtn}`} onClick={() => { this.delEvent(eventData); }} /> : <i className={`iconfont icon-del ${styles.disableBtn}`} />}
             </div>
-          </React.Fragment>}
+          </div>}
       </div>
     );
   }
