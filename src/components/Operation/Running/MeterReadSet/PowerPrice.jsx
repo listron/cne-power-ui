@@ -17,6 +17,7 @@ class PowerPrice extends Component{
     addDataNum: PropTypes.number,
     stationCode: PropTypes.number,
     isEditList: PropTypes.bool,
+    tableLoading: PropTypes.bool,
   }
 
   constructor(props){
@@ -41,7 +42,7 @@ class PowerPrice extends Component{
       lowPriceValue: 'noData',
       discountRateValue: 'noData',
     });
-    changeMeterReadSetStore({isEditPrice: false});
+    changeMeterReadSetStore({isEditPrice: false, isEditList: false});
   }
 
   saveEvent = (value) => { // 保存
@@ -60,6 +61,7 @@ class PowerPrice extends Component{
         this.setState({
           isEdit: false,
         });
+        changeMeterReadSetStore({isEditPrice: false, isEditList: false});
         getMeterPrice({
           stationCode,
           powerPriceId: priceDetailData.powerPriceId,
@@ -71,7 +73,6 @@ class PowerPrice extends Component{
         });
       }
     });
-    changeMeterReadSetStore({isEditPrice: false});
   }
 
   editEvent = () => { // 编辑
@@ -115,7 +116,7 @@ class PowerPrice extends Component{
 
   render(){
     const { isEdit, topPriceValue, peakPriceValue, flatPriceValue, lowPriceValue, discountRateValue } = this.state;
-    const { priceDetailData, theme, form } = this.props;
+    const { priceDetailData, theme, form, tableLoading } = this.props;
     const { updateTime } = priceDetailData;
     const { getFieldDecorator } = form;
     return(
@@ -150,12 +151,20 @@ class PowerPrice extends Component{
                     {getFieldDecorator('topPrice', {
                       rules: [{
                         required: true,
-                        pattern: new RegExp(/(^[0-9]{1,2}$)|(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/),
-                        message: '最多输入2位整数和4位小数',
-                      }],
-                      getValueFromEvent: (event) => {
-                        return event.target.value.replace(/[^\d.]/g, '');
-                      },
+                        message: ' ',
+                        },
+                        {validator: (rule, value, callback) => {
+                          if (/^[0-9]{1,2}$/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,2}[\.]{1}$)/.test(value)) {
+                            callback();
+                          }else{
+                            callback('最多输入2位整数和4位小数');
+                          }
+                        }},
+                      ],
                       initialValue: priceDetailData.topPrice,
                       })(
                         <Input placeholder="请输入" onChange={(e) => this.priceChange('topPrice', e)} />
@@ -171,12 +180,20 @@ class PowerPrice extends Component{
                       {getFieldDecorator('peakPrice', {
                         rules: [{
                           required: true,
-                          pattern: new RegExp(/(^[0-9]{1,2}$)|(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/),
-                          message: '最多输入2位整数和4位小数',
-                        }],
-                        getValueFromEvent: (event) => {
-                          return event.target.value.replace(/[^\d.]/g, '');
-                        },
+                          message: ' ',
+                          },
+                          {validator: (rule, value, callback) => {
+                            if (/^[0-9]{1,2}$/.test(value)) {
+                              callback();
+                            }else if (/(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/.test(value)) {
+                              callback();
+                            }else if (/(^[0-9]{1,2}[\.]{1}$)/.test(value)) {
+                              callback();
+                            }else{
+                              callback('最多输入2位整数和4位小数');
+                            }
+                          }},
+                        ],
                         initialValue: priceDetailData.peakPrice,
                         })(
                           <Input placeholder="请输入" onChange={(e) => this.priceChange('peakPrice', e)} />
@@ -192,12 +209,20 @@ class PowerPrice extends Component{
                     {getFieldDecorator('flatPrice', {
                       rules: [{
                         required: true,
-                        pattern: new RegExp(/(^[0-9]{1,2}$)|(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/),
-                        message: '最多输入2位整数和4位小数',
-                      }],
-                      getValueFromEvent: (event) => {
-                        return event.target.value.replace(/[^\d.]/g, '');
-                      },
+                        message: ' ',
+                        },
+                        {validator: (rule, value, callback) => {
+                          if (/^[0-9]{1,2}$/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,2}[\.]{1}$)/.test(value)) {
+                            callback();
+                          }else{
+                            callback('最多输入2位整数和4位小数');
+                          }
+                        }},
+                      ],
                       initialValue: priceDetailData.flatPrice,
                       })(
                         <Input placeholder="请输入" onChange={(e) => this.priceChange('flatPrice', e)} />
@@ -213,12 +238,20 @@ class PowerPrice extends Component{
                     {getFieldDecorator('lowPrice', {
                       rules: [{
                         required: true,
-                        pattern: new RegExp(/(^[0-9]{1,2}$)|(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/),
-                        message: '最多输入2位整数和4位小数',
-                      }],
-                      getValueFromEvent: (event) => {
-                        return event.target.value.replace(/[^\d.]/g, '');
-                      },
+                        message: ' ',
+                        },
+                        {validator: (rule, value, callback) => {
+                          if (/^[0-9]{1,2}$/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/.test(value)) {
+                            callback();
+                          }else if (/(^[0-9]{1,2}[\.]{1}$)/.test(value)) {
+                            callback();
+                          }else{
+                            callback('最多输入2位整数和4位小数');
+                          }
+                        }},
+                      ],
                       initialValue: priceDetailData.lowPrice,
                       })(
                         <Input placeholder="请输入" onChange={(e) => this.priceChange('lowPrice', e)} />
@@ -234,12 +267,9 @@ class PowerPrice extends Component{
                     {getFieldDecorator('discountRate', {
                       rules: [{
                         required: true,
-                        pattern: new RegExp(/^[0-9]\d*$/, 'g'),
+                        pattern: new RegExp(/^100$|^(\d|[1-9]\d)$/, 'g'),
                         message: '整数',
                       }],
-                      getValueFromEvent: (event) => {
-                        return event.target.value.replace(/[^\d]/g, '');
-                      },
                       initialValue: priceDetailData.discountRate,
                       })(
                         <Input placeholder="请输入" onChange={(e) => this.priceChange('discountRate', e)} />
@@ -252,11 +282,11 @@ class PowerPrice extends Component{
           </div>}
 
           {!isEdit && <div className={styles.priceInfo}>
-            <div className={styles.topPrice}><span className={styles.text}>尖时段</span><span className={styles.num}>{priceDetailData.topPrice || '--'}元/kWh</span></div>
-            <div className={styles.peakPrice}><span className={styles.text}>峰时段</span><span className={styles.num}>{priceDetailData.peakPrice || '--'}元/kWh</span></div>
-            <div className={styles.flatPrice}><span className={styles.text}>平时段</span><span className={styles.num}>{priceDetailData.flatPrice || '--'}元/kWh</span></div>
-            <div className={styles.lowPrice}><span className={styles.text}>谷时段</span><span className={styles.num}>{priceDetailData.lowPrice || '--'}元/kWh</span></div>
-            <div className={styles.discountRate}><span className={styles.text}>折扣率</span><span className={styles.num}>{priceDetailData.discountRate || '--'}%</span></div>
+            <div className={styles.topPrice}><span className={styles.text}>尖时段</span><span className={styles.num}>{!tableLoading ? (priceDetailData.topPrice || '--') : topPriceValue}元/kWh</span></div>
+            <div className={styles.peakPrice}><span className={styles.text}>峰时段</span><span className={styles.num}>{!tableLoading ? (priceDetailData.peakPrice || '--') : peakPriceValue}元/kWh</span></div>
+            <div className={styles.flatPrice}><span className={styles.text}>平时段</span><span className={styles.num}>{!tableLoading ? (priceDetailData.flatPrice || '--') : flatPriceValue}元/kWh</span></div>
+            <div className={styles.lowPrice}><span className={styles.text}>谷时段</span><span className={styles.num}>{!tableLoading ? (priceDetailData.lowPrice || '--') : lowPriceValue}元/kWh</span></div>
+            <div className={styles.discountRate}><span className={styles.text}>折扣率</span><span className={styles.num}>{!tableLoading ? (priceDetailData.discountRate || '--') : discountRateValue}%</span></div>
           </div>}
         </div>
       </div>
