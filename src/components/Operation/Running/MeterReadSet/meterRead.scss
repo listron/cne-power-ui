@@ -395,8 +395,11 @@
         }
         .meterName{
           :global{
-            .ant-form-explain{
-              left: 296px;
+            @media screen and (min-width: 1680px) { // 1680 + 1919
+              .ant-form-explain{
+                left: 281px;
+                font-size: 1.2em;;
+              }
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
@@ -407,8 +410,11 @@
         }
         .meterType{
           :global{
-            .ant-form-explain{
-              left: 155px;
+            @media screen and (min-width: 1680px) { // 1680 + 1919
+              .ant-form-explain{
+                left: 165px;
+                font-size: 1.2em;;
+              }
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
@@ -422,8 +428,11 @@
         }
         .meterNumber{
           :global{
-            .ant-form-explain{
-              left: 123px;
+            @media screen and (min-width: 1680px) { // 1680 + 1919
+              .ant-form-explain{
+                left: 140px;
+                font-size: 1.2em;;
+              }
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
@@ -434,8 +443,11 @@
         }
         .initCode{
           :global{
-            .ant-form-explain{
-              left: 105px;
+            @media screen and (min-width: 1680px) { // 1680 + 1919
+              .ant-form-explain{
+                left: 109px;
+                font-size: 1.2em;;
+              }
             }
             @media screen and (max-width: 1679px) { // 1679以下屏幕，
               .ant-form-explain{
@@ -456,8 +468,11 @@
               }
             }
             :global{
-              .ant-form-explain{
-                left: 96px;
+              @media screen and (min-width: 1680px) { // 1680 + 1919
+                .ant-form-explain{
+                  left: 96px;
+                  font-size: 1.2em;;
+                }
               }
               @media screen and (max-width: 1679px) { // 1679以下屏幕，
                 .ant-form-explain{
@@ -906,14 +921,15 @@
       }
       .priceData{
         :global{
-          @media screen and (max-width: 1679px) { // 1679以下屏幕
+          @media screen and (min-width: 1680px) { // 1680 + 1919
             .ant-form-explain{
-              left: 128px;
+              left: 176px;
+              font-size: 1.2em;
             }
           }
-          @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+          @media screen and (max-width: 1679px) { // 1679以下屏幕，
             .ant-form-explain{
-              left: 177px;
+              left: 91px;
             }
           }
         }
