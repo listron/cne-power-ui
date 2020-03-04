@@ -7,6 +7,8 @@ import searchUtil from '@utils/searchUtil';
 import styles from './defectDetail.scss';
 import { Icon } from 'antd';
 
+import DetailTopSubmit from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DetailTopSubmit/DetailTopSubmit';
+
 class DefectDetail extends Component {
 
   static propTypes = {
@@ -39,6 +41,7 @@ class DefectDetail extends Component {
     return (
       <div className={`${styles.detailWrap}`}>
         消缺详情
+        <DetailTopSubmit />
       </div>
     );
   }
