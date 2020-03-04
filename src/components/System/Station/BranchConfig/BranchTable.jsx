@@ -216,7 +216,7 @@ class BranchTable extends React.Component {
     const deviceFullCode = focus.split('_')[0];//设备名的code
     const branchIndex = focus.split('_')[1];//拿到索引
     const newTableData = this.editTableData(deviceFullCode, branchIndex, value);
-    console.log('newTableData: ', newTableData);
+
     // const editArr = this.filterEditData(deviceFullCode, branchIndex, value);
     changeBranchStore({ copyData: newTableData });
   }
