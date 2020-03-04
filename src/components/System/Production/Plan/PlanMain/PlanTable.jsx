@@ -43,6 +43,7 @@ class PlanTable extends Component {
     planYear: PropTypes.any,
     importFile: PropTypes.func,
     importLoading: PropTypes.bool,
+    keyword: PropTypes.string,
   };
 
   constructor(props) {
@@ -72,8 +73,8 @@ class PlanTable extends Component {
   };
 
   getPlanList = (value) => {
-    const { planYear, stationCodes, sortField, sortMethod, pageNum, pageSize } = this.props;
-    this.props.getPlanList({ year: planYear, stationCodes, sortField, sortMethod, pageNum, pageSize, ...value });
+    const { planYear, stationCodes, sortField, sortMethod, pageNum, pageSize, keyword } = this.props;
+    this.props.getPlanList({ year: planYear, stationCodes, sortField, sortMethod, pageNum, pageSize, keyword, ...value });
   }
 
 

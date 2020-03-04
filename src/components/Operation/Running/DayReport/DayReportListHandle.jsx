@@ -26,6 +26,7 @@ class DayReportListHandle extends Component {
     getDayReportList: PropTypes.func,
     toChangeDayReportStore: PropTypes.func,
     getReportUploadedStation: PropTypes.func,
+    keyword: PropTypes.string,
   }
 
   state = {
@@ -34,8 +35,8 @@ class DayReportListHandle extends Component {
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页器
-    const { stationType, stationNameSort, startTime, regionName } = this.props;
-    const params = { stationType, stationNameSort, startTime, regionName };
+    const { stationType, stationNameSort, startTime, regionName, keyword } = this.props;
+    const params = { stationType, stationNameSort, startTime, regionName, keyword };
     this.props.getDayReportList({
       ...params,
       pageSize,
