@@ -54,9 +54,6 @@ class BranchTable extends React.Component {
   }
   contrastValue = () => {
     const { copyData, deviceBranchInfo = [], newAdd = [] } = this.props;
-
-
-
     const editArr = [];
     const rowNum = deviceBranchInfo.length ? deviceBranchInfo.length : 0;
     for (let i = 0; i < rowNum; i++) {
@@ -80,7 +77,7 @@ class BranchTable extends React.Component {
           } else {
             const isEqual = lodash.isEqual(item, initBranchListItem);
             if (!isEqual) {
-              editArr.push({ branchCode, pvNums, isDelete: 0 });
+              editArr.push({ branchCode: item.branchCode, pvNums, isDelete: 0 });
             }
           }
         });
@@ -219,6 +216,7 @@ class BranchTable extends React.Component {
     const deviceFullCode = focus.split('_')[0];//设备名的code
     const branchIndex = focus.split('_')[1];//拿到索引
     const newTableData = this.editTableData(deviceFullCode, branchIndex, value);
+    console.log('newTableData: ', newTableData);
     // const editArr = this.filterEditData(deviceFullCode, branchIndex, value);
     changeBranchStore({ copyData: newTableData });
   }
