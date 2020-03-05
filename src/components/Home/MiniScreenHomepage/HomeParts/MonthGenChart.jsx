@@ -18,7 +18,7 @@ class MonthGenChart extends Component{
   constructor(props){
     super(props);
     this.state = {
-      monthType: 'wind'
+      monthType: 'pv'
     }
   }
 

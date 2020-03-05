@@ -21,7 +21,7 @@ class OutputPower extends Component{
   constructor(props){
     super(props);
     this.state = {
-      outputType: 'wind',
+      outputType: 'pv',
     }
   }
 

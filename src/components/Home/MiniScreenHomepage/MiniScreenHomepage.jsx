@@ -70,7 +70,7 @@ class FullHomepage extends Component {
   gettedStationInfo = (mapStation) => {
     const stationTypeSet = new Set(mapStation.map(e=>e.stationType));
     this.setState({ hasMultipleType: stationTypeSet.size > 1 });
-    const originType = stationTypeSet.has(0) ? 0 : 1;
+    const originType = stationTypeSet.has(1) ? 1 : 0;
     this.getOriginData(originType);
     this.getMonitorData();
   }

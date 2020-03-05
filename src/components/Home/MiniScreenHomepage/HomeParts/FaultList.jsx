@@ -18,7 +18,7 @@ class FaultList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      faultType: 'wind',
+      faultType: 'pv',
       currentIndex: 0,
     }
   }

@@ -16,7 +16,7 @@ class EqpHours extends Component{
   constructor(props){
     super(props);
     this.state = {
-      eqpType: 'wind',
+      eqpType: 'pv',
       rectNum: 20,
       rectWidth: 6,
     }
