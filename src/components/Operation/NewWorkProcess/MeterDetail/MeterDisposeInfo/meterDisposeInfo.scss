@@ -241,10 +241,12 @@
         margin-top: 20px;
         color: #353535;
         font-family: PingFangSC-Regular, serif;
-        text-align: center;
+        display: flex;
+        justify-content: center;
 
         .meterRouter {
           color: #df4b33;
+          cursor: pointer;
           text-decoration: underline;
 
           &:hover {

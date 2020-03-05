@@ -320,6 +320,23 @@ export default class MeterDisposeInfo extends React.Component {
     });
   };
 
+  meterSetFunc = () => {
+    // 跳转到抄表设置/operation/running/meterReadSet
+    const {
+      meterBaseData: {
+        stationCode,
+        stationName,
+      },
+    } = this.props;
+    // 跳转参数
+    const params = {
+      stationCode,
+      stationName,
+      showPage: 'singleStation',
+    };
+    window.open(`/#/operation/running/meterReadSet?searchParams=${JSON.stringify(params)}`, '_blank');
+  };
+
   render() {
     const {zoomVisible, styleLocation, changeDateFlag, imgIndex, curIndex, arrStr} = this.state;
     const {
@@ -344,14 +361,14 @@ export default class MeterDisposeInfo extends React.Component {
     const noDataRender = (
       <div className={styles.disposeNoDataBox}>
         <div className={styles.noDataIcon}>
-          <i className="iconfont icon-biao"/>
+          <i className="iconfont icon-biao" />
         </div>
         <div className={styles.noDataText}>
           还没有电表，请先配置电表。
         </div>
         <div className={styles.noDataRouter}>
           <span>点击前往：运维管理-电站运行-</span>
-          <Link to="/operation/running/meterReadSet" className={styles.meterRouter}>抄表</Link>
+          <div onClick={this.meterSetFunc} className={styles.meterRouter}>抄表设置</div>
         </div>
       </div>
     );
@@ -368,7 +385,7 @@ export default class MeterDisposeInfo extends React.Component {
           onClick={this.onSaveEdit}
           style={{width: '92px'}}
         >
-          <i className="iconfont icon-save"/>
+          <i className="iconfont icon-save" />
           <span>保存</span>
         </CneButton>
       </div>
@@ -380,7 +397,7 @@ export default class MeterDisposeInfo extends React.Component {
           onClick={this.onEdit}
           style={{width: '92px'}}
         >
-          <i className="iconfont icon-edit"/>
+          <i className="iconfont icon-edit" />
           <span>编辑</span>
         </CneButton>
       </div>
@@ -623,7 +640,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   >
                                     <div>
                                       <div className={styles.uploadButton}>
-                                        {cur.loading ? <div className={styles.antLoadingText}>上传中</div> : <img src="/img/uploadImg.png" alt=""/>}
+                                        {cur.loading ? <div className={styles.antLoadingText}>上传中</div> : <img src="/img/uploadImg.png" alt="" />}
                                         {cur.loading ? <Progress strokeColor="#199475" percent={cur.percent} /> : <div className="ant-upload-text">上传图片</div>}
                                       </div>
                                     </div>
@@ -649,7 +666,7 @@ export default class MeterDisposeInfo extends React.Component {
                                 </div>
                               ): (
                                 <div className={styles.netNoPhoto}>
-                                  <img src="/img/noImg.png" alt=""/>
+                                  <img src="/img/noImg.png" alt="" />
                                 </div>
                               )}
                           </div>
@@ -851,7 +868,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   >
                                     <div>
                                       <div className={styles.uploadButton}>
-                                        {cur.loading ? <div className={styles.antLoadingText}>上传中</div> : <img src="/img/uploadImg.png" alt=""/>}
+                                        {cur.loading ? <div className={styles.antLoadingText}>上传中</div> : <img src="/img/uploadImg.png" alt="" />}
                                         {cur.loading ? <Progress strokeColor="#199475" percent={cur.percent} /> : <div className="ant-upload-text">上传图片</div>}
                                       </div>
                                     </div>
@@ -877,7 +894,7 @@ export default class MeterDisposeInfo extends React.Component {
                               </div>
                               ) : (
                               <div className={styles.electricityNoPhoto}>
-                                <img src="/img/noImg.png" alt=""/>
+                                <img src="/img/noImg.png" alt="" />
                               </div>
                             )}
                           </div>
