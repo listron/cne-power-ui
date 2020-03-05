@@ -20,7 +20,7 @@ const initState = Immutable.fromJS({
   deviceBranchInfo: [],
   copyData: [],
   saveEditArr: [],
-  newAdd: [],
+
 
 });
 

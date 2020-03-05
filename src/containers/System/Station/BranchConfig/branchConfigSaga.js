@@ -180,36 +180,50 @@ function* getCheckData(action) {
 }
 function* editBranchData(action) {
   const { payload } = action;
-  const { copyData, isgetTable, stationCode, deviceTypeCode, deviceCodes } = payload;
+  const { saveEditArr, copyData, isgetTable, stationCode, deviceTypeCode, deviceCodes } = payload;
   const url = `${APIBasePath}${system.editBranchData}`;
   try {
     yield put({
       type: branchConfigAction.changeBranchStore,
       payload: {
-        ...payload,
+        saveEditArr,
         editLoadding: true,
       },
     });
     const response = yield call(axios.post, url, payload.saveEditArr);
-    const params = yield select(state => ({//继续请求部门列表
-      newAdd: state.system.branchConfigReducer.get('newAdd').toJS(),
-    }));
+
     if (response.data.code === '10000') {
       const data = response.data.data || [];
-      let newAdd = params.newAdd;
+      let newCopyData = copyData;
       if (data.length) {//如果是数组的话就对新增的这些支路数据，进行拼接到数组里，已有的就
-        const { branchCode } = data;
-        const preAdddata = newAdd.filter(e => e.branchCode !== branchCode);
-        newAdd = [...preAdddata, ...data];
+        const addDeviceFullcode = data.map(e => e.deviceFullCode);
+        const deviceFullCode = addDeviceFullcode ? addDeviceFullcode[0] : null;
+        newCopyData = copyData.map((e, i) => {
+          if (e.deviceFullCode === deviceFullCode) {
+            const branchList = e.branchList.map(item => {
+              const addIndex = data.map(m => m.branchIndex);
+              const istrue = addIndex.includes(item.branchIndex);
+              if (istrue) {
+                const filteraddItemData = data.filter(n => n.branchIndex === item.branchIndex)[0];
+                const { branchCode } = filteraddItemData;
+                return { ...item, branchCode };
+              }
+              return { ...item };
+            });
+            return { ...e, branchList };
+          }
+          return { ...e };
+        });
       }
       yield put({
         type: branchConfigAction.changeBranchStore,
         payload: {
           ...payload,
-          deviceBranchInfo: copyData,
+          deviceBranchInfo: newCopyData,
+          copyData: newCopyData,
           editLoadding: false,
           isCheckStatus: false,
-          newAdd,
+
         },
       });
       if (isgetTable) {
@@ -225,7 +239,6 @@ function* editBranchData(action) {
     } else {
       throw response.data.message;
     }
-
   } catch (e) {
     message.error('保存编辑失败');
     console.log(e, '编辑保存失败了');
