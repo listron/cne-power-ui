@@ -1,6 +1,6 @@
 @import "../../../../../theme/theme.scss";
 
-.defectBaseTitle{
+.defectBaseTitle{ // 基本信息
   display: flex;
   height: 60px;
   justify-content: space-between;
@@ -40,7 +40,54 @@
 }
 
 .defectBaseInfo{
-
+  border:1px solid #d4d4d4;
+  margin: 0 25px;
+  .infoRow{
+    line-height: 40px;
+    display: flex;
+    border-bottom: 1px solid var(--promptColor);
+  }
+  .infoTitle, .firstInfoTitle{
+    flex: 0 0 12%;
+    background-color: #f3f2f2;
+    border-left: 1px dashed var(--promptColor);
+    border-right: 1px dashed var(--promptColor);
+    padding: 0 10px;
+    text-align: left;
+  }
+  .firstInfoTitle{
+    flex: 0 0 10%;
+    border-left: none;
+  }
+  .infoContent{
+    padding: 0 10px;
+  }
+  .stations{
+    flex: 0 0 59%;
+  }
+  .creater, .responsor{
+    flex: 0 0 31%;
+  }
+  .createTime, .examiner{
+    flex: 0 0 16%;
+  }
+  .types, .expectTime, .finishTime{
+    flex: 1 0 auto;
+  }
+  .descRow{
+    min-height: 80px;
+    display: flex;
+    .desc, .descTextNum{
+      line-height: 40px;
+    }
+    .descTextNum{
+      color: var(--lightColor);
+    }
+    .infoContent{
+      flex: 1 0 auto;
+      padding: 7px 10px;
+    }
+  }
 }
 
 
