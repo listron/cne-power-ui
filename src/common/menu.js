@@ -165,7 +165,7 @@ const menuData = [
         name: '工单',
         iconStyle: 'icon-gd2',
         path: 'workProcess',
-        rightKey: 'operation_worklist',
+        rightKey: 'operation_worklist', // 老工单
         children: [
           {
             name: '工单列表',
@@ -174,10 +174,23 @@ const menuData = [
             rightKey: 'operation_worklist_work',
           },
           {
-            name: '新工单列表',
+            name: '工单统计',
+            path: 'statistics',
+            rightKey: 'operation_worklist_statistics',
+          },
+        ],
+      },
+      {
+        name: '工单',
+        iconStyle: 'icon-gd2',
+        path: 'workProcess',
+        rightKey: 'operation_newworklist', // 新工单
+        children: [
+          {
+            name: '工单列表',
             path: 'newView',
             defaultPath: true,
-            rightKey: 'operation_worklist_work',
+            rightKey: 'operation_newworklist_work',
           },
           {
             name: '工单统计',
