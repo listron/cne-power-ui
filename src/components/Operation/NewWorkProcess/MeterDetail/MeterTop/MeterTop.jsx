@@ -19,6 +19,7 @@ export default class MeterTop extends React.Component {
     changeStore: PropTypes.func,
     getReceiveAction: PropTypes.func,
     myMessageFlag: PropTypes.bool,
+    editFlag: PropTypes.bool,
   };
 
   constructor(props) {
@@ -35,11 +36,19 @@ export default class MeterTop extends React.Component {
 
   // 退出
   onCancelEdit = () => {
-    this.setState({
-      showWarningTip: true,
-      actionCode: '',
-      warningTipText: '返回后修改内容将不会保存，确认返回吗？',
-    });
+    const { editFlag, history } = this.props;
+    // 编辑状态
+    if(editFlag) {
+      return this.setState({
+        showWarningTip: true,
+        actionCode: '',
+        warningTipText: '返回后修改内容将不会保存，确认返回吗？',
+      });
+    }
+    // 非编辑状态
+    const { search, pathname } = history.location;
+    const { params } = searchUtil(search).parse(); // 抄表详情页
+    return history.push(`${pathname}?page=list&tab=meter&params=${params}`);
   };
 
   // 领取

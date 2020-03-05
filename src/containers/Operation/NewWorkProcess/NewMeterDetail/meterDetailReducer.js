@@ -28,6 +28,7 @@ const newMeterDetailAction = {
 };
 
 const initState = immutable.fromJS({
+  loading: false,
   operatorFlag: false, // 执行人是否换行
   stationFlag: false, // 电站名称是否换行
   meterBaseData: {// 基本信息

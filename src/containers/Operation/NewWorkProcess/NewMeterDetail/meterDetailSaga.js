@@ -16,7 +16,7 @@ function* getProcessBaseInfo(action) { // 获取基本信息数据
     yield put({
       type: newMeterDetailAction.changeStore,
       payload: {
-        baseLoading: true,
+        loading: true,
       },
     });
     const response = yield call(axios.get, url);
@@ -24,7 +24,7 @@ function* getProcessBaseInfo(action) { // 获取基本信息数据
       yield put({
         type: newMeterDetailAction.changeStore,
         payload: {
-          baseLoading: false,
+          loading: false,
           meterBaseData: response.data.data,
         },
       });
@@ -45,7 +45,7 @@ function* getProcessBaseInfo(action) { // 获取基本信息数据
     yield put({
       type: newMeterDetailAction.changeStore,
       payload: {
-        baseLoading: false,
+        loading: false,
       },
     });
     console.log(e);
@@ -93,7 +93,7 @@ function* getProcessList(action) { // 获取流程流转信息数据
     yield put({
       type: newMeterDetailAction.changeStore,
       payload: {
-        processListLoading: true,
+        loading: true,
       },
     });
     const response = yield call(axios.get, url);
@@ -101,7 +101,7 @@ function* getProcessList(action) { // 获取流程流转信息数据
       yield put({
         type: newMeterDetailAction.changeStore,
         payload: {
-          processListLoading: false,
+          loading: false,
           processList: response.data.data,
         },
       });
@@ -113,7 +113,7 @@ function* getProcessList(action) { // 获取流程流转信息数据
     yield put({
       type: newMeterDetailAction.changeStore,
       payload: {
-        processListLoading: false,
+        loading: false,
       },
     });
     console.log(e);
@@ -185,7 +185,7 @@ function* getReadMeter(action) { // 获取处理信息数据
     yield put({
       type: newMeterDetailAction.changeStore,
       payload: {
-        readMeterLoading: true,
+        loading: true,
       },
     });
     const response = yield call(axios.get, url);
@@ -205,7 +205,7 @@ function* getReadMeter(action) { // 获取处理信息数据
       yield put({
         type: newMeterDetailAction.changeStore,
         payload: {
-          readMeterLoading: false,
+          loading: false,
           readMeterData: { // 可以修改的数据
             ...response.data.data,
             onlineDatas: response.data.data.onlineDatas.map(cur => {
@@ -311,59 +311,6 @@ function* getReadMeter(action) { // 获取处理信息数据
           },
         },
       });
-      // yield put({
-      //   type: newMeterDetailAction.changeStore,
-      //   payload: {
-      //     readMeterLoading: false,
-      //     readMeterData: {
-      //       ...response.data.data,
-      //       onlineDatas: response.data.data.onlineDatas.map(cur => {
-      //         return Object.assign(cur, {
-      //           flag1: false,
-      //           flag2: false,
-      //           flag3: false,
-      //           flag4: false,
-      //           flag5: false,
-      //           type1: 0,
-      //           type2: 0,
-      //           type3: 0,
-      //           type4: 0,
-      //           type5: 0,
-      //           errorFlag1: false,
-      //           errorFlag2: false,
-      //           errorFlag3: false,
-      //           errorFlag4: false,
-      //           errorFlag5: false,
-      //           imgFlag: false,
-      //           loading: false,
-      //           percent: 0,
-      //         });
-      //       }),
-      //       generationDatas: response.data.data.generationDatas.map(cur => {
-      //         return Object.assign(cur, {
-      //           flag1: false,
-      //           flag2: false,
-      //           flag3: false,
-      //           flag4: false,
-      //           flag5: false,
-      //           type1: 0,
-      //           type2: 0,
-      //           type3: 0,
-      //           type4: 0,
-      //           type5: 0,
-      //           errorFlag1: false,
-      //           errorFlag2: false,
-      //           errorFlag3: false,
-      //           errorFlag4: false,
-      //           errorFlag5: false,
-      //           imgFlag: false,
-      //           loading: false,
-      //           percent: 0,
-      //         });
-      //       }),
-      //     },
-      //   },
-      // });
     } else {
       throw response.data;
     }
@@ -372,7 +319,7 @@ function* getReadMeter(action) { // 获取处理信息数据
     yield put({
       type: newMeterDetailAction.changeStore,
       payload: {
-        readMeterLoading: false,
+        loading: false,
       },
     });
     console.log(e);
