@@ -40,7 +40,6 @@ class DefectDetail extends Component {
     const { theme, defectDetail } = this.props;
     return (
       <div className={`${styles.detailWrap}`}>
-        消缺详情
         <DetailTopSubmit />
       </div>
     );
