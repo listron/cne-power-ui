@@ -235,7 +235,8 @@
 
         .link,
         .nolink,
-        .change {
+        .change,
+        .nolinkchange {
           border-radius: 12px;
           width: 22px;
           height: 22px;
@@ -243,7 +244,8 @@
           color: $themeColor
         }
 
-        .nolink {
+        .nolink,
+        .nolinkchange {
           background: #f1f1f1;
           border: 1px solid #999999;
         }
@@ -257,6 +259,21 @@
         .change {
           background: #ceebe0;
           border: 1px solid #199475;
+          position: relative;
+
+          div {
+            position: absolute;
+            top: -2px;
+            right: -4px;
+            background: #df4b33;
+            border: 2px solid #ffffff;
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+          }
+        }
+
+        .nolinkchange {
           position: relative;
 
           div {

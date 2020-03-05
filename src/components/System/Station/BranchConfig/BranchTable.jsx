@@ -14,7 +14,6 @@ class BranchTable extends React.Component {
     getCheckData: PropTypes.func,
     saveEditArr: PropTypes.array,
     deviceBranchInfo: PropTypes.array,
-    newAdd: PropTypes.array,
     deviceTypeCode: PropTypes.number,
     stationCode: PropTypes.number,
     deviceCodes: PropTypes.array,
@@ -53,7 +52,7 @@ class BranchTable extends React.Component {
     return copyData;
   }
   contrastValue = () => {
-    const { copyData, deviceBranchInfo = [], newAdd = [] } = this.props;
+    const { copyData, deviceBranchInfo = [] } = this.props;
     const editArr = [];
     const rowNum = deviceBranchInfo.length ? deviceBranchInfo.length : 0;
     for (let i = 0; i < rowNum; i++) {
@@ -67,9 +66,6 @@ class BranchTable extends React.Component {
       if (initBranchList.length <= currentBranchList.length) {//这一行的支路数新增的时候
         currentBranchList.forEach((item, index) => {
           const { pvNums, branchIndex } = item;
-          //newadd此处通过branchIndex筛选出新增的数据，拿出其中的branchCode
-          const addData = newAdd.filter(m => (m.branchIndex === branchIndex && m.deviceFullCode === deviceFullCode));
-          const branchCode = addData[0] ? addData[0].branchCode : null;
           const initBranchListItem = initBranchList[index] ? initBranchList[index] : {};//这是原数据的每一个支路的数据
           //比较两个支路数据是否相等。不相等的话，将item存起
           if (Object.keys(initBranchListItem).length === 0) {//新增的支路数据
@@ -128,7 +124,6 @@ class BranchTable extends React.Component {
     const branchList = selectedDevice ? selectedDevice.branchList : [];//支路的数据
     // const length = branchList ? branchList.length : 0;//支路得长度
     const length = selectedDevice ? selectedDevice.branchNums : 0;
-
     if (value > length) {
       const newTableData = copyData.map((e, i) => {
         if (e.deviceFullCode === selectDeviceFullCode) {
@@ -165,6 +160,7 @@ class BranchTable extends React.Component {
     if (!isCheckStatus) {//非检测状态下编辑table
       const editArr = this.contrastValue();
 
+
       changeBranchStore({ saveEditArr: editArr });
       editBranchData({ saveEditArr: editArr, copyData });
     }
@@ -185,7 +181,10 @@ class BranchTable extends React.Component {
         return styles.nolink;
       }
       //判断状态
-      return isChange && pvNums > 0 ? styles.change : checkStatus === 1 ? styles.link : styles.nolink;
+      const staus = checkStatus === 1 ? (isChange && pvNums > 0 ? styles.change : styles.link) : (isChange ? styles.nolinkchange : styles.nolink);
+      return staus;
+
+      // return isChange && pvNums > 0 ? styles.change : checkStatus === 1 ? styles.link : styles.nolink;
     }
     return branchStatus ? styles.link : styles.nolink;
   }
@@ -237,7 +236,8 @@ class BranchTable extends React.Component {
   }
 
   render() {
-    const { loadding, editLoadding, cancelloadding, copyData, checkTime, isCheckStatus, focus, checked, newAdd } = this.props;
+    const { loadding, editLoadding, cancelloadding, copyData, checkTime, isCheckStatus, focus, checked } = this.props;
+
 
     const pvNumsArr = [1, 2, 3, 4, 5];
     const filterCopyData = this.filterData(checked);
@@ -344,7 +344,7 @@ class BranchTable extends React.Component {
                               onClick={(info) => { this.editNum(info, branchId, item.deviceFullCode); }}
                               className={styleStatus}
                             >
-                              {branchListItem.pvNums ? branchListItem.pvNums : null}
+                              {(styleStatus === styles.link || styleStatus === styles.change) ? branchListItem.pvNums : null}
                               <div></div>
                             </div>}
                         </div>
