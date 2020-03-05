@@ -94,9 +94,14 @@ export default class MeterBaseInfo extends React.Component {
         stateId,
       },
       processActionData,
+      changeStore,
     } = this.props;
     const { search } = history.location;
     const { meterId } = searchUtil(search).parse(); // 抄表详情页
+    // 关闭弹框
+    changeStore({
+      addVisible: false,
+    });
     // 添加执行人
     if(checkedUserList.length !== 0) {
       processActionData.forEach(cur => {

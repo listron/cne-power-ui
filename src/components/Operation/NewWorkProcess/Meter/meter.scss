@@ -157,6 +157,8 @@
     :global {
       .ant-radio-button-wrapper {
         padding: 0 8px;
+        color: $themeColor;
+        border: 1px solid $themeColor;
 
         &-checked {
           background-color: $themeColor;
@@ -187,7 +189,10 @@
     @include overflowText();
   }
 
-  .stationName,
+  .stationName {
+    width: calc((100vw - 230px) * 0.17 - 1px);
+  }
+
   .operName{
     width: calc((100vw - 230px) * 0.17);
   }
@@ -200,18 +205,22 @@
     max-width: calc((100vw - 230px) * 0.17 - 20px);
   }
 
-  .settleMonth,
-  .createTime,
-  .keepLength{
+  .settleMonth {
     width: calc((100vw - 230px) * 0.15);
+  }
+
+  .createTime,
+  .keepLength {
+    width: calc((100vw - 230px) * 0.15 - 1px);
   }
 
   .stateName{
     position: relative;
-    width: calc((100vw - 230px) * 0.13);
+    width: calc((100vw - 230px) * 0.13 + 1px);
   }
 
   .stateNameBox{
+    max-width: calc((100vw - 230px) * 0.13 - 20px);
 
     i{
       position: absolute;

@@ -25,6 +25,7 @@ export default class MeterTable extends React.Component {
     changeStore: PropTypes.func,
     operatorValue: PropTypes.array,
     selectedStation: PropTypes.array,
+    tableLoading: PropTypes.bool,
   };
 
   onChangeStatus = e => {
@@ -148,6 +149,7 @@ export default class MeterTable extends React.Component {
         },
         stateAndTotalList,
       },
+      tableLoading,
     } = this.props;
     const pointListColumn = [
       {
@@ -246,6 +248,7 @@ export default class MeterTable extends React.Component {
         </div>
         <CneTable
           sortField={sortField}
+          loading={tableLoading}
           sortMethod={sortMethod}
           onChange={this.tableChange}
           columns={pointListColumn}

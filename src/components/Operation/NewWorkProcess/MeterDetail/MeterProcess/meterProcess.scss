@@ -12,6 +12,7 @@
     .processBanner {
       width: 166px;
       color: #ffffff;
+      font-family: PingFangSC-Medium, serif;
       padding-left: 17px;
       @include lineheight(36px);
       background-image: url("../../../../../../assets/img/bannerBgc.png");
@@ -20,7 +21,7 @@
   }
 
   .processContent {
-    padding: 18px 15px 0 15px;
+    padding: 18px 5px 0 15px;
 
     .processItem {
       min-height: 30px;
@@ -35,12 +36,16 @@
         justify-content: space-between;
 
         .processItemName {
+          width: 26%;
+          min-width: 70px;
           color: #353535;
           @include lineheight(30px);
           font-family: PingFangSC-Medium, serif;
         }
 
         .processErrorItemName{
+          width: 26%;
+          min-width: 70px;
           color: #df4b33;
           @include lineheight(30px);
           font-family: PingFangSC-Medium, serif;
@@ -48,17 +53,25 @@
 
         .itemRight {
           display: flex;
+          min-width: 183px;
+          width: 68%;
 
           .processItemDetail {
+            text-align: right;
             color: #353535;
+            width: 38%;
+            min-width: 70px;
+            @include overflowText();
             @include lineheight(30px);
-            font-family: arial, serif;
+            font-family: PingFangSC-Regular, serif;
           }
 
           .processItemTime {
-            margin-left: 5px;
+            width: 60%;
+            min-width: 111px;
+            margin-left: 3%;
             @include lineheight(30px);
-            font-family: arial, serif;
+            font-family: ArialMT, serif;
             color: #999999;
           }
         }
@@ -78,6 +91,7 @@
 
     .singleInfo {
       color: $themeColor;
+      font-family: PingFangSC-Medium, serif;
     }
 
     .processContentDetail {

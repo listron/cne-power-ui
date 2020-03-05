@@ -40,6 +40,7 @@
     .baseBanner {
       width: 166px;
       color: #ffffff;
+      font-family: PingFangSC-Medium, serif;
       padding-left: 17px;
       @include lineheight(36px);
       background-image: url("../../../../../../assets/img/bannerBgc.png");
@@ -71,6 +72,7 @@
         width: 70px;
         @include lineheight(34px);
         border-radius: 17px;
+        font-family: PingFangSC-Medium, serif;
         background-color: $slideSelectColor;
         color: $themeColor;
         text-align: center;
@@ -114,6 +116,7 @@
             color: #353535;
             word-break: break-word;
             min-width: 530px;
+            max-width: 530px;
             padding: 12px 0 0 10px;
           }
         }
@@ -250,6 +253,7 @@
             width: 37%;
             display: flex;
             min-width: 296px;
+            max-width: 296px;
             padding: 12px 0 0 10px;
             font-family: PingFangSC-Regular, serif;
 

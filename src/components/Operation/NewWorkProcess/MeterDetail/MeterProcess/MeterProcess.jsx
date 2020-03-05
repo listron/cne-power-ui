@@ -19,7 +19,7 @@ export default class MeterProcess extends React.Component {
               <div className={styles.processItemBox}>
                 <div className={Number(cur.colorCode) === 3002 ? styles.processErrorItemName : styles.processItemName}>{cur.nodeName}</div>
                 <div className={styles.itemRight}>
-                  <div className={styles.processItemDetail}>{cur.handleUser}</div>
+                  <div className={styles.processItemDetail} title={cur.handleUser}>{cur.handleUser}</div>
                   <div className={styles.processItemTime}>{moment(cur.endTime).format('YYYY-MM-DD HH:mm')}</div>
                 </div>
               </div>
