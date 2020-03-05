@@ -59,6 +59,7 @@
       width: 166px;
       color: #ffffff;
       font-family: PingFangSC-Medium, serif;
+      font-weight: bold;
       padding-left: 17px;
       @include lineheight(36px);
       background-image: url("../../../../../../assets/img/bannerBgc.png");
@@ -122,6 +123,7 @@
 
         .navPrevName {
           font-family: PingFangSC-Medium, serif;
+          font-weight: bold;
         }
 
         .navPrevTime {
@@ -150,6 +152,7 @@
 
         div:first-child {
           font-family: PingFangSC-Medium, serif;
+          font-weight: bold;
         }
 
         div:last-child {
@@ -169,6 +172,7 @@
 
         .navNowName {
           font-family: PingFangSC-Medium, serif;
+          font-weight: bold;
         }
 
         .navNowTime {
@@ -241,10 +245,12 @@
         margin-top: 20px;
         color: #353535;
         font-family: PingFangSC-Regular, serif;
-        text-align: center;
+        display: flex;
+        justify-content: center;
 
         .meterRouter {
           color: #df4b33;
+          cursor: pointer;
           text-decoration: underline;
 
           &:hover {
@@ -354,6 +360,7 @@
                 width: 50px;
                 border-right: 1px dashed #d4d4d4;
                 font-family: PingFangSC-Medium, serif;
+                font-weight: bold;
               }
 
               div:nth-of-type(2),
@@ -361,11 +368,13 @@
                 width: 86px;
                 border-right: 1px dashed #d4d4d4;
                 font-family: PingFangSC-Medium, serif;
+                font-weight: bold;
               }
 
               div:nth-of-type(4) {
                 width: 186px;
                 font-family: PingFangSC-Medium, serif;
+                font-weight: bold;
               }
             }
 
@@ -386,6 +395,7 @@
                     width: 50px;
                     text-align: center;
                     font-family: PingFangSC-Medium, serif;
+                    font-weight: bold;
                     color: #000000;
                     border-right: 1px dashed #d4d4d4;
                   }
@@ -679,6 +689,7 @@
                 width: 50px;
                 border-right: 1px dashed #d4d4d4;
                 font-family: PingFangSC-Medium, serif;
+                font-weight: bold;
               }
 
               div:nth-of-type(2),
@@ -686,11 +697,13 @@
                 width: 86px;
                 border-right: 1px dashed #d4d4d4;
                 font-family: PingFangSC-Medium, serif;
+                font-weight: bold;
               }
 
               div:nth-of-type(4) {
                 width: 186px;
                 font-family: PingFangSC-Medium, serif;
+                font-weight: bold;
               }
             }
 
@@ -711,6 +724,7 @@
                     width: 50px;
                     text-align: center;
                     font-family: PingFangSC-Medium, serif;
+                    font-weight: bold;
                     color: #000000;
                     border-right: 1px dashed #d4d4d4;
                   }

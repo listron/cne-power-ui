@@ -6,16 +6,29 @@ import MeterReadAllSatation from '../../../../components/Operation/Running/Meter
 import MeterReadSingleSatation from '../../../../components/Operation/Running/MeterReadSet/MeterReadSingleSatation';
 import Footer from '../../../../components/Common/Footer';
 import styles from './meterReadSet.scss';
+import searchUtil from '@utils/searchUtil';
 
 class MeterReadSet extends Component{
   static propTypes= {
     resetStore: PropTypes.func,
+    changeMeterReadSetStore: PropTypes.func,
     theme: PropTypes.string,
     showPage: PropTypes.string,
+    history: PropTypes.object,
   }
 
   constructor(props){
     super(props);
+  }
+
+  componentDidMount () {
+    const { history, changeMeterReadSetStore } = this.props;
+    const { search } = history.location;
+    const { searchParams } = searchUtil(search).parse();
+    const urlSearchParams = searchParams && JSON.parse(searchParams) || {}; // 判断从路由中过来的筛选条件
+    changeMeterReadSetStore({
+      ...urlSearchParams,
+    });
   }
 
   componentWillUnmount(){
@@ -24,7 +37,6 @@ class MeterReadSet extends Component{
 
   render(){
     const { showPage, theme } = this.props;
-
     return(
       <div className={`${styles.meterReadSet} ${styles[theme]}`}>
         <div className={styles.meterReadContent}>
