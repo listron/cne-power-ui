@@ -17,18 +17,18 @@ class PowerPrice extends Component{
     addDataNum: PropTypes.number,
     stationCode: PropTypes.number,
     isEditList: PropTypes.bool,
-    tableLoading: PropTypes.bool,
+    priceLoading: PropTypes.bool,
   }
 
   constructor(props){
     super(props);
     this.state = {
       isEdit: false, // 是否在编辑状态
-      topPriceValue: 'noData',
-      peakPriceValue: 'noData',
-      flatPriceValue: 'noData',
-      lowPriceValue: 'noData',
-      discountRateValue: 'noData',
+      topPriceValue: '--',
+      peakPriceValue: '--',
+      flatPriceValue: '--',
+      lowPriceValue: '--',
+      discountRateValue: '--',
     };
   }
 
@@ -36,11 +36,11 @@ class PowerPrice extends Component{
     const { changeMeterReadSetStore } = this.props;
     this.setState({
       isEdit: false,
-      topPriceValue: 'noData',
-      peakPriceValue: 'noData',
-      flatPriceValue: 'noData',
-      lowPriceValue: 'noData',
-      discountRateValue: 'noData',
+      topPriceValue: '--',
+      peakPriceValue: '--',
+      flatPriceValue: '--',
+      lowPriceValue: '--',
+      discountRateValue: '--',
     });
     changeMeterReadSetStore({isEditPrice: false, isEditList: false});
   }
@@ -116,7 +116,7 @@ class PowerPrice extends Component{
 
   render(){
     const { isEdit, topPriceValue, peakPriceValue, flatPriceValue, lowPriceValue, discountRateValue } = this.state;
-    const { priceDetailData, theme, form, tableLoading } = this.props;
+    const { priceDetailData, theme, form, priceLoading } = this.props;
     const { updateTime } = priceDetailData;
     const { getFieldDecorator } = form;
     return(
@@ -145,7 +145,7 @@ class PowerPrice extends Component{
           {isEdit && <div className={styles.priceInfo}>
             <Form>
               <div className={styles.topPrice}>
-                <div className={`${styles.priceData} ${topPriceValue === 'noData' ? ((priceDetailData.topPrice === undefined || priceDetailData.topPrice === null) && styles.meterInpNull) : (topPriceValue === '' && styles.meterInpDel)}`}>
+                <div className={`${styles.priceData} ${topPriceValue === '--' ? ((priceDetailData.topPrice === undefined || priceDetailData.topPrice === null) && styles.meterInpNull) : (topPriceValue === '' && styles.meterInpDel)}`}>
                   <span className={styles.text}>尖时段</span>
                   <FormItem>
                     {getFieldDecorator('topPrice', {
@@ -174,7 +174,7 @@ class PowerPrice extends Component{
                 </div>
               </div>
               <div className={styles.peakPrice}>
-                <div className={`${styles.priceData} ${peakPriceValue === 'noData' ? ((priceDetailData.peakPrice === undefined || priceDetailData.peakPrice === null) && styles.meterInpNull) : (peakPriceValue === '' && styles.meterInpDel)}`}>
+                <div className={`${styles.priceData} ${peakPriceValue === '--' ? ((priceDetailData.peakPrice === undefined || priceDetailData.peakPrice === null) && styles.meterInpNull) : (peakPriceValue === '' && styles.meterInpDel)}`}>
                   <span className={styles.text}>峰时段</span>
                     <FormItem>
                       {getFieldDecorator('peakPrice', {
@@ -203,7 +203,7 @@ class PowerPrice extends Component{
                 </div>
               </div>
               <div className={styles.flatPrice}>
-                <div className={`${styles.priceData} ${flatPriceValue === 'noData' ? ((priceDetailData.flatPrice === undefined || priceDetailData.flatPrice === null) && styles.meterInpNull) : (flatPriceValue === '' && styles.meterInpDel)}`}>
+                <div className={`${styles.priceData} ${flatPriceValue === '--' ? ((priceDetailData.flatPrice === undefined || priceDetailData.flatPrice === null) && styles.meterInpNull) : (flatPriceValue === '' && styles.meterInpDel)}`}>
                   <span className={styles.text}>平时段</span>
                   <FormItem>
                     {getFieldDecorator('flatPrice', {
@@ -232,7 +232,7 @@ class PowerPrice extends Component{
                 </div>
               </div>
               <div className={styles.lowPrice}>
-                <div className={`${styles.priceData}  ${lowPriceValue === 'noData' ? ((priceDetailData.lowPrice === undefined || priceDetailData.lowPrice === null) && styles.meterInpNull) : (lowPriceValue === '' && styles.meterInpDel)}`}>
+                <div className={`${styles.priceData}  ${lowPriceValue === '--' ? ((priceDetailData.lowPrice === undefined || priceDetailData.lowPrice === null) && styles.meterInpNull) : (lowPriceValue === '' && styles.meterInpDel)}`}>
                   <span className={styles.text}>谷时段</span>
                   <FormItem>
                     {getFieldDecorator('lowPrice', {
@@ -261,7 +261,7 @@ class PowerPrice extends Component{
                 </div>
               </div>
               <div className={styles.discountRate}>
-                <div className={`${styles.discountRateInfo} ${discountRateValue === 'noData' ? ((priceDetailData.discountRate === undefined || priceDetailData.discountRate === null) && styles.meterInpNull) : (discountRateValue === '' && styles.meterInpDel)}`}>
+                <div className={`${styles.discountRateInfo} ${discountRateValue === '--' ? ((priceDetailData.discountRate === undefined || priceDetailData.discountRate === null) && styles.meterInpNull) : (discountRateValue === '' && styles.meterInpDel)}`}>
                   <span className={styles.text}>折扣率</span>
                   <FormItem>
                     {getFieldDecorator('discountRate', {
@@ -282,11 +282,11 @@ class PowerPrice extends Component{
           </div>}
 
           {!isEdit && <div className={styles.priceInfo}>
-            <div className={styles.topPrice}><span className={styles.text}>尖时段</span><span className={styles.num}>{!tableLoading ? (priceDetailData.topPrice || '--') : topPriceValue}元/kWh</span></div>
-            <div className={styles.peakPrice}><span className={styles.text}>峰时段</span><span className={styles.num}>{!tableLoading ? (priceDetailData.peakPrice || '--') : peakPriceValue}元/kWh</span></div>
-            <div className={styles.flatPrice}><span className={styles.text}>平时段</span><span className={styles.num}>{!tableLoading ? (priceDetailData.flatPrice || '--') : flatPriceValue}元/kWh</span></div>
-            <div className={styles.lowPrice}><span className={styles.text}>谷时段</span><span className={styles.num}>{!tableLoading ? (priceDetailData.lowPrice || '--') : lowPriceValue}元/kWh</span></div>
-            <div className={styles.discountRate}><span className={styles.text}>折扣率</span><span className={styles.num}>{!tableLoading ? (priceDetailData.discountRate || '--') : discountRateValue}%</span></div>
+            <div className={styles.topPrice}><span className={styles.text}>尖时段</span><span className={styles.num}>{!priceLoading ? (priceDetailData.topPrice || '--') : topPriceValue}元/kWh</span></div>
+            <div className={styles.peakPrice}><span className={styles.text}>峰时段</span><span className={styles.num}>{!priceLoading ? (priceDetailData.peakPrice || '--') : peakPriceValue}元/kWh</span></div>
+            <div className={styles.flatPrice}><span className={styles.text}>平时段</span><span className={styles.num}>{!priceLoading ? (priceDetailData.flatPrice || '--') : flatPriceValue}元/kWh</span></div>
+            <div className={styles.lowPrice}><span className={styles.text}>谷时段</span><span className={styles.num}>{!priceLoading ? (priceDetailData.lowPrice || '--') : lowPriceValue}元/kWh</span></div>
+            <div className={styles.discountRate}><span className={styles.text}>折扣率</span><span className={styles.num}>{!priceLoading ? (priceDetailData.discountRate || '--') : discountRateValue}%</span></div>
           </div>}
         </div>
       </div>
