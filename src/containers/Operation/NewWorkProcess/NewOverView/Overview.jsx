@@ -85,7 +85,7 @@ class Overview extends Component {
                 <p className={`${tab === 'inspect' && styles.activeKey} `} onClick={() => { this.queryTargetData('inspect'); }}>巡检</p>
                 <p className={`${tab === 'meter' && styles.activeKey} `} onClick={() => { this.queryTargetData('meter'); }}>抄表</p>
               </div>
-              {tab === 'defect' && <EliminateDefectList {...this.props} />}
+              {tab === 'defect' && <EliminateDefectDetail {...this.props} />}
               {tab === 'inspect' && <InspectList {...this.props} />}
               {tab === 'meter' && <MeterList {...this.props} />}
             </div>}

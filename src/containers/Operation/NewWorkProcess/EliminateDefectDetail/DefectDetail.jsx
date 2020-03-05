@@ -5,9 +5,10 @@ import { eliminateDefectDetailAction } from './defectDetailReducer';
 import { commonAction } from '@containers/alphaRedux/commonAction';
 import searchUtil from '@utils/searchUtil';
 import styles from './defectDetail.scss';
-import { Icon } from 'antd';
 
 import DetailTopSubmit from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DetailTopSubmit/DetailTopSubmit';
+import DefectBaseTitle from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectBase/DefectBaseTitle';
+import DefectBaseInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectBase/DefectBaseInfo';
 
 class DefectDetail extends Component {
 
@@ -41,6 +42,8 @@ class DefectDetail extends Component {
     return (
       <div className={`${styles.detailWrap}`}>
         <DetailTopSubmit />
+        <DefectBaseTitle />
+        <DefectBaseInfo />
       </div>
     );
   }

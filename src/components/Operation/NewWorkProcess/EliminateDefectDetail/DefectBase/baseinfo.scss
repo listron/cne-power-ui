@@ -1,0 +1,46 @@
+@import "../../../../../theme/theme.scss";
+
+.defectBaseTitle{
+  display: flex;
+  height: 60px;
+  justify-content: space-between;
+  align-items: center;
+  .baseTitle{
+    flex: 0 0 166px;
+    line-height: 36px;
+    color: #fff;
+    padding-left: 17px;
+    background: url('/img/bannerBgc.png') no-repeat;
+  }
+  .statusPart{
+    position: relative;
+    .coordinate, .overtime{
+      margin-right: 15px;
+      font-size: 20px;
+      color: #df4b33;
+    }
+    .statusName{
+      display: inline-block;
+      height: 34px;
+      line-height: 34px;
+      padding: 0 14px;
+      background-color: #fbe6e3;
+      color:#df4b33;
+      border-radius: 17px;
+    }
+    .alreadyFinish{
+      position: absolute;
+      z-index: -1;
+      color: var(--themeColor);
+      font-size: 80px;
+      right: 5px;
+      top: -20px;
+    }
+  }
+}
+
+.defectBaseInfo{
+
+}
+
+
