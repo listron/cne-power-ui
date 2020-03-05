@@ -97,6 +97,12 @@
     }
   }
   .tableList {
+
+    background: #ffffff;
+    border: 1px solid #d4d4d4;
+    border-top: none;
+    box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+
     .edit {
       color: $themeColor;
       white-space: nowrap;
@@ -123,11 +129,7 @@
       .ant-table .ant-table-thead > tr > th,
       .ant-table .ant-table-tbody > tr > td {
         min-width: 48px;
-      }
-      .ant-table .ant-table-thead > tr > th.month,
-      .ant-table .ant-table-tbody > tr > td.month {
-        min-width: 48px;
-        padding: 0 3px;
+        padding: 0 5px;
       }
 
       .ant-table .ant-table-thead > tr > th {
@@ -136,8 +138,14 @@
           text-align: center;
         }
         &:last-child {
-          padding-right: 10px;
+          padding-right: 5px;
         }
+      }
+
+      .ant-table .ant-table-thead > tr > th.month,
+      .ant-table .ant-table-tbody > tr > td.month {
+        min-width: 48px;
+        padding: 0 3px;
       }
 
       .ant-table .ant-table-thead > tr > th.yearPR,
@@ -154,7 +162,7 @@
        {
         .ant-table-column-sorter{
           .ant-table-column-sorter-inner{
-            margin-top: -22px;
+            margin-top: -20px;
           }
         }
       }
@@ -185,12 +193,13 @@
     }
     .operation {
       width: 2.7%;
-      min-width: 50px;
+      min-width: 38px;
       text-align: center;
     }
     .planYear {
       width: 5%;
       min-width: 40px;
+      text-align: center;
     }
     .planPower {
       width: 10%;

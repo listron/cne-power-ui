@@ -265,12 +265,15 @@ class AllStationStatistic extends React.Component {
           //   activeKey={stationType}
           //   onChange={this.queryTargetData}
           // >
-          //   <TabPane tab="风电" key={'0'}>
-          //     <div className={styles.windContainer} />
-          //   </TabPane>
-          //   <TabPane tab="光伏" key={'1'}>
+          //    <TabPane tab="风电" key={'0'}>
+          //      <div className={styles.windContainer} />
+          //    </TabPane>
+          //    <TabPane tab="光伏" key={'1'}>
               <div className={styles.componentContainer}>
-                <div className={styles.timeSelect}> <TimeSelect showDayPick={false} onChange={this.onTimeChange} theme={theme} /></div>
+                <div className={styles.timeSelect}> 
+                  <TimeSelect showDayPick={false} onChange={this.onTimeChange} theme={theme} />
+                  {operations}
+                </div>
                 <PlanCompletionRate
                   dateType={dateType}
                   theme={theme}

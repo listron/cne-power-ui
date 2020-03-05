@@ -29,10 +29,64 @@
     flex: 1;
     background-color: #fff;
     border: 1px solid #e1e2e2;
+
+    // .tableBox {
+    //   border: 1px solid #d4d4d4;
+    //   border-top: none;
+    //   box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
+    //   background-color: red;
+    // }
+    .tableStyle {
+      background: #ffffff;
+      border: 1px solid #d4d4d4;
+      border-top: none;
+      box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+      height: 100%;
+
+      :global {
+        .ant-table .ant-table-thead > tr > th,
+        .ant-table .ant-table-tbody > tr > td {
+          &:last-child {
+            padding-right: 10px;
+          }
+        }
+
+        .ant-table-footer {
+          padding: 0 15px;
+        }
+
+        .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
+          overflow-y: scroll;
+          overflow-y: overlay;
+          overflow-x: hidden;
+          height: calc(100vh - 285px) !important;
+        }
+        .ant-table:not(.ant-table-empty) {
+          .ant-table-body:after {
+            content: url("/img/notabdata.png");
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 50px 10px 10px;
+          }
+        }
+        .ant-table-placeholder {
+          border-bottom: none;
+        }
+      }
+
+      .handlerBox, .operateNameBox {
+        text-align: center;
+      }
+
+    }
   }
-  .editRole, .deleteRole{
+  .editRole {
     cursor: pointer;
     margin-right: 12px;
+  }
+  .deleteRole {
+    cursor: pointer;
   }
   .roleListTop {
     background: #fff;
@@ -86,15 +140,16 @@
     }
   }
   .tableFooter{
-    background-color: #fff;
+    // background-color: #fff;
+    background-color: transparent;
     height: 45px;
     line-height: 45px;
-    border: 1px solid #e1e2e2;
+    // border: 1px solid #e1e2e2;
     border-top: none;
     .info{
       color: $darkColor;
       margin-right: 20px;
-      margin-left: 24px;
+      margin-left: 0px;
       .totalNum{
         color: rgb(250,185,7);
         margin: auto 4px;

@@ -1,176 +1,200 @@
 
 @import '../../../../../../theme/theme.scss';
 
-.listDepartmentName{ // 顶部 icon 及部门名称
-  display: flex;
-  height: 40px;
-  align-items: center;
-  padding-left: 24px;
-  .parentName{
-    margin: 0 8px;
-  }
-  :global{
-    .iconfont{
-      text-align: center;
-      flex-basis:24px;
-      height:24px;
-      margin-right: 8px;
-    }
-  }
-}
-
-.departmentStation{ // 负责电站栏目
-  display: flex;
-  padding: 6px 20px 6px 24px;
-  .stationTips{
-    flex: 0 0 auto;
-  }
-  .stationNames{
-    flex: 1;
-    word-break: break-all;
-  }
-  .editButton{
-    flex: 0 0 auto;
-    margin-left: 4px;
-    text-align: right;
-  }
-  :global{
-    .iconfont{
-      text-align: center;
-      flex-basis:24px;
-      height:24px;
-      margin-right: 8px;
-    }
-  }
-}
-
-.listSearch{ // 条件搜索： 姓名， 电话， 负责电站
-  display: flex;
-  height: 50px;
-  align-items: center;
-  padding-left: 24px;
-  .searchTitle{
-    margin-right: 4px;
-  }
-  input{
-    margin-right: 20px;
-    &:last-of-type{
-      margin-right: 10px;
-    }
-  }
-  .reset{
-    margin-left: 20px;
-    cursor: pointer;
-  }
-}
-
-.listHandle{ // 添加人员， 操作，分页器
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px 0 24px;
-  .leftHandle{
-    height: 56px;
-    flex: 0 0 300px;
+.personnelMain {
+  .listDepartmentName{ // 顶部 icon 及部门名称
     display: flex;
+    height: 40px;
     align-items: center;
-  }
-}
-
-.listMain{ // 表格部分
-  .username, .roleName{
-    @include overflowText();
-  }
-  .username{
-    max-width: 140px;
-    cursor: pointer;
-    &:hover{
-      text-decoration: underline;
+    padding-left: 24px;
+    .parentName{
+      margin: 0 8px;
     }
-  }
-  .roleName{
-    max-width: 210px;
-  }
-  .handle{
     :global{
       .iconfont{
-        margin-right: 12px;
-        cursor: pointer;
-        &:last-of-type{
-          margin-right: 4px;
+        text-align: center;
+        flex-basis:24px;
+        height:24px;
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .departmentStation{ // 负责电站栏目
+    display: flex;
+    padding: 6px 20px 6px 24px;
+    .stationTips{
+      flex: 0 0 auto;
+    }
+    .stationNames{
+      flex: 1;
+      word-break: break-all;
+    }
+    .editButton{
+      flex: 0 0 auto;
+      margin-left: 4px;
+      text-align: right;
+    }
+    :global{
+      .iconfont{
+        text-align: center;
+        flex-basis:24px;
+        height:24px;
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .listSearch{ // 条件搜索： 姓名， 电话， 负责电站
+    display: flex;
+    height: 50px;
+    align-items: center;
+    padding-left: 24px;
+    .searchTitle{
+      margin-right: 4px;
+    }
+    input{
+      margin-right: 20px;
+      &:last-of-type{
+        margin-right: 10px;
+      }
+    }
+    .reset{
+      margin-left: 20px;
+      cursor: pointer;
+    }
+  }
+
+  .listHandle{ // 添加人员， 操作，分页器
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 0 24px;
+    .leftHandle{
+      height: 56px;
+      flex: 0 0 300px;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .listMain{ // 表格部分
+    background: #ffffff;
+    border: 1px solid #d4d4d4;
+    border-top: none;
+    box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+    :global {
+      .ant-table .ant-table-thead > tr > th,
+      .ant-table .ant-table-tbody > tr > td {
+        &:last-child {
+          padding-right: 10px;
         }
       }
-      .icon-examine1, .icon-bumenx{
-        font-size: 14px;
+    }
+    .username, .roleName{
+      @include overflowText();
+    }
+    .username{
+      max-width: 140px;
+      cursor: pointer;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+    .roleName{
+      max-width: 210px;
+    }
+    .phoneNum {
+      text-align: right;
+    }
+    .enterpriseStatus {
+      text-align: center;
+    }
+    .handleBox {
+      text-align: center;
+      .handle{
+        :global{
+          .iconfont{
+            margin-right: 12px;
+            cursor: pointer;
+            &:last-of-type{
+              margin-right: 4px;
+            }
+          }
+          .icon-examine1, .icon-bumenx{
+            font-size: 14px;
+          }
+        }
       }
     }
   }
-}
 
-.listFooter{ // 地步选中项，取消选择
-  display: flex;
-  height: 46px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px 0 30px;
-  .footerValue{
-    margin: 0 4px;
+  .listFooter{ // 地步选中项，取消选择
+    display: flex;
+    height: 46px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px 0 30px;
+    background-color: transparent;
+    .footerValue{
+      margin: 0 4px;
+    }
+    .cancel{
+      margin-left: 24px;
+      cursor: pointer;
+    }
   }
-  .cancel{
-    margin-left: 24px;
-    cursor: pointer;
+
+  .icon{
+    margin-right: 6px;
+    font-size: 14px;
   }
-}
 
-.icon{
-  margin-right: 6px;
-  font-size: 14px;
-}
+  // 颜色部分
+  .listDepartmentName{
+    .parentName{
+      color: $lightColor;
+    }
+    :global{
+      .iconfont{
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
+  }
 
-// 颜色部分
-.listDepartmentName{
-  .parentName{
+  .departmentStation{
+    border-top: 1px solid $promptColor;
+    border-bottom: 1px solid $promptColor;
+    :global{
+      .iconfont{
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
+  }
+
+  .listSearch{
+    background:#f9f9f9;
+    .reset{
+      color: $themeColor;
+    }
+  }
+
+  .listMain{
+    .toExamine{
+      color:#e08031;
+    }
+  }
+
+  .listFooter{
     color: $lightColor;
-  }
-  :global{
-    .iconfont{
-      background-color: $themeColor;
-      color: #fff;
+    .footerValue{
+      color: rgb(249, 182, 0);
+    }
+    .cancel{
+      color: $themeColor;
     }
   }
-}
 
-.departmentStation{
-  border-top: 1px solid $promptColor;
-  border-bottom: 1px solid $promptColor;
-  :global{
-    .iconfont{
-      background-color: $themeColor;
-      color: #fff;
-    }
-  }
 }
-
-.listSearch{
-  background:#f9f9f9;
-  .reset{
-    color: $themeColor;
-  }
-}
-
-.listMain{
-  .toExamine{
-    color:#e08031;
-  }
-}
-
-.listFooter{
-  color: $lightColor;
-  .footerValue{
-    color: rgb(249, 182, 0);
-  }
-  .cancel{
-    color: $themeColor;
-  }
-}
-

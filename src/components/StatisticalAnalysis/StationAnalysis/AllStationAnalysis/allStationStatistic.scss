@@ -22,6 +22,22 @@
     color: $themeColor;
     margin-right: 50px;
   }
+  .timeSelect {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap; 
+    .operation {
+      margin-right: 50px;
+      width: 93px;
+      line-height: 40px;
+      :global {
+        .iconfont {
+          margin-left: 5px;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
   :global {
     .ant-tabs-bar {
       border: none;

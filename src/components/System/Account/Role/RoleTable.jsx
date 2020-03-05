@@ -3,6 +3,7 @@ import { Table, Select, Popover, Button, Icon, Modal, Spin } from 'antd';
 import WarningTip from '../../../Common/WarningTip';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
+import CneTable from '@components/Common/Power/CneTable';
 const { Option } = Select;
 
 // to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
@@ -83,17 +84,21 @@ class RoleTable extends Component {
         title: '名称',
         dataIndex: 'roleDesc',
         key: 'roleDesc',
+        width:'220px',
       },
       {
         title: '权限',
         dataIndex: 'operateName',
         key: 'operateName',
+        className: styles.operateNameBox,
+        width:'80px',
         render: text => (<span>{text}</span>),
       },
       {
         title: '功能定义',
         dataIndex: 'rightData',
         key: 'rightData',
+        width:'550px',
         render: (rightData, record)=>{
           const rightArr = this.getRightArr(rightData, '');
           return (<div className={styles.menu} onClick={() => this.showModel(record)}>{rightArr.join(' | ')}</div>);
@@ -108,6 +113,7 @@ class RoleTable extends Component {
         title: '操作',
         width: '100px',
         dataIndex: 'handler',
+        className: styles.handlerBox,
         render: (text, record) => (<span>
             {roleUpdateRight && <i
               className={`${styles.editRole} iconfont icon-edit`}
@@ -264,6 +270,12 @@ class RoleTable extends Component {
     const roleDeleteRight = rightHandler.split(',').includes('account_role_delete');
     const roleUpdateRight = rightHandler.split(',').includes('account_role_update');
     const roleConfigRight = rightHandler.split(',').includes('account_role_config');
+    const initTableScroll = roleData.length > 0 && { y: 900 } || {};
+    const footer = (        
+      <div className={styles.tableFooter}>
+        <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
+        {selectedRole.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
+      </div>);
     return (
       <div className={styles.roleList} style={{display: showPage==='list'?'flex':'none'}}>
       {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} />}
@@ -283,7 +295,7 @@ class RoleTable extends Component {
               </div>
             </div>
           </div>
-          <Table
+          <CneTable
             loading={roleTableLoading}
             rowKey={(record)=>{return record.roleId;}}
             rowSelection={{
@@ -294,12 +306,15 @@ class RoleTable extends Component {
             columns={this.createRoloeColumn()}
             onChange={this.tableChange}
             pagination={false}
+            scroll={initTableScroll}
+            className={styles.tableStyle}
+            footer={()=> selectedRole.length > 0 && footer }
           />
         </div>
-        <div className={styles.tableFooter}>
+        {/* <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
           {selectedRole.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
-        </div>
+        </div> */}
         <Modal
           title={modelName}
           visible={this.state.visibleModel}

@@ -7,6 +7,7 @@ import ListHandle from './ListHandle';
 import WarningTip from '@components/Common/WarningTip';
 import DepartmentAssignModal from '../Modals/DepartmentAssignModal';
 import { ListFooter } from './PureFunc';
+import CneTable from '@components/Common/Power/CneTable';
 
 import styles from './list.scss';
 
@@ -44,6 +45,7 @@ class List extends Component {
       }, {
         title: '电话',
         dataIndex: 'phoneNum',
+        className: styles.phoneNum,
         render: (text) => text || '--',
       }, {
         title: '角色',
@@ -52,6 +54,7 @@ class List extends Component {
       }, {
         title: '用户状态',
         dataIndex: 'enterpriseStatus',
+        className: styles.enterpriseStatus,
         render: (text) => {
           const statusText = this.enterpriseStatusInfo[text];
           return <span className={statusText === '待审核' ? styles.toExamine : styles.status}>{statusText || '--'}</span>;
@@ -166,6 +169,7 @@ class List extends Component {
   getHandleColumn = (editRight, assignRight, deleteRight, auditRight) => ({
     title: '操作',
     dataIndex: 'handle',
+    className: styles.handleBox,
     render: (text, record) => {
       const { enterpriseStatus } = record; // 5待审核，6审核不通过，可继续审核;  其余状态可进行分配操作;
       return (
@@ -200,7 +204,7 @@ class List extends Component {
     return (
       <div className={styles.personnelMain}>
         <ListHandle {...this.props} assignDeparts={this.assignDeparts} />
-        <Table
+        <CneTable
           dataSource={userList}
           columns={tableColumn}
           pagination={false}
