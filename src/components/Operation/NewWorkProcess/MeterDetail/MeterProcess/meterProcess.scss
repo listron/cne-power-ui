@@ -13,6 +13,7 @@
       width: 166px;
       color: #ffffff;
       font-family: PingFangSC-Medium, serif;
+      font-weight: bold;
       padding-left: 17px;
       @include lineheight(36px);
       background-image: url("../../../../../../assets/img/bannerBgc.png");
@@ -41,6 +42,7 @@
           color: #353535;
           @include lineheight(30px);
           font-family: PingFangSC-Medium, serif;
+          font-weight: bold;
         }
 
         .processErrorItemName{
@@ -49,6 +51,7 @@
           color: #df4b33;
           @include lineheight(30px);
           font-family: PingFangSC-Medium, serif;
+          font-weight: bold;
         }
 
         .itemRight {
@@ -64,7 +67,6 @@
             @include overflowText();
             @include lineheight(30px);
             font-family: PingFangSC-Regular, serif;
-            font-weight: bold;
           }
 
           .processItemTime {

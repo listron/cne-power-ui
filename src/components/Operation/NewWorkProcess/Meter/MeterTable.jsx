@@ -259,7 +259,7 @@ export default class MeterTable extends React.Component {
           className={styles.tableStyles}
           dataSource={dataList}
           rowKey={(record, index) => index || 'key'}
-          scroll={{ y: 462 }}
+          scroll={{ y: 420 }}
           pagination={false}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" alt="" /> }}
         />

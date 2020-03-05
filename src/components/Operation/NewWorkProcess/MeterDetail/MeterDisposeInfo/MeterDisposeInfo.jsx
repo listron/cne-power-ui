@@ -25,6 +25,7 @@ export default class MeterDisposeInfo extends React.Component {
     getRotateImg: PropTypes.func,
     newReadMeterData: PropTypes.object,
     otherReadMeterData: PropTypes.object,
+    readLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -354,6 +355,7 @@ export default class MeterDisposeInfo extends React.Component {
       changeStore,
       getRotateImg,
       newReadMeterData,
+      readLoading,
     } = this.props;
     const url = `${APIBasePath}${ticket.getUploadFile}`;
     const authData = localStorage.getItem('authData') || '';
@@ -446,7 +448,7 @@ export default class MeterDisposeInfo extends React.Component {
               </div>
             </div>
           </div>
-          {(onlineDatas.length === 0 && generationDatas.length === 0) ? noDataRender : (
+          {(onlineDatas.length === 0 && generationDatas.length === 0) ? (readLoading ? '' : noDataRender) : (
             <div className={styles.gaugeTableBox}>
               <div className={styles.netGaugeTable}>
                 <div className={styles.netGaugeTitle}>

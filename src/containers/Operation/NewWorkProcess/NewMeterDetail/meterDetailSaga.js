@@ -186,6 +186,7 @@ function* getReadMeter(action) { // 获取处理信息数据
       type: newMeterDetailAction.changeStore,
       payload: {
         loading: true,
+        readLoading: true,
       },
     });
     const response = yield call(axios.get, url);
@@ -206,6 +207,7 @@ function* getReadMeter(action) { // 获取处理信息数据
         type: newMeterDetailAction.changeStore,
         payload: {
           loading: false,
+          readLoading: false,
           readMeterData: { // 可以修改的数据
             ...response.data.data,
             onlineDatas: response.data.data.onlineDatas.map(cur => {
@@ -320,6 +322,7 @@ function* getReadMeter(action) { // 获取处理信息数据
       type: newMeterDetailAction.changeStore,
       payload: {
         loading: false,
+        readLoading: false,
       },
     });
     console.log(e);
