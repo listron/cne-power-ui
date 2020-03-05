@@ -13,12 +13,13 @@ class MeterReadSingleSatation extends Component{
     addDataNum: PropTypes.number,
     isEditPrice: PropTypes.bool,
     isEditList: PropTypes.bool,
+    history: PropTypes.object,
   }
   constructor(props){
     super(props);
   }
   onBack = () => {
-    const { addDataNum, changeMeterReadSetStore, isEditPrice, isEditList } = this.props;
+    const { addDataNum, changeMeterReadSetStore, isEditPrice, isEditList, history } = this.props;
     if (isEditPrice) {
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
@@ -40,6 +41,7 @@ class MeterReadSingleSatation extends Component{
       }, 2000);
       return;
     }
+    history.push('/operation/running/meterReadSet');
     changeMeterReadSetStore({showPage: 'allStation'});
   }
 

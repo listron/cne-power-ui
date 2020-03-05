@@ -64,6 +64,7 @@
             @include overflowText();
             @include lineheight(30px);
             font-family: PingFangSC-Regular, serif;
+            font-weight: bold;
           }
 
           .processItemTime {
@@ -92,6 +93,7 @@
     .singleInfo {
       color: $themeColor;
       font-family: PingFangSC-Medium, serif;
+      font-weight: bold;
     }
 
     .processContentDetail {
