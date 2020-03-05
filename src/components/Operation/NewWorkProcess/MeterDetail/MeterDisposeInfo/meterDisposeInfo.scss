@@ -58,6 +58,7 @@
     .disposeBanner {
       width: 166px;
       color: #ffffff;
+      font-family: PingFangSC-Medium, serif;
       padding-left: 17px;
       @include lineheight(36px);
       background-image: url("../../../../../../assets/img/bannerBgc.png");
@@ -146,6 +147,14 @@
         bottom: 0;
         left: 0;
         margin: auto;
+
+        div:first-child {
+          font-family: PingFangSC-Medium, serif;
+        }
+
+        div:last-child {
+          font-family: ArialMT, serif;
+        }
       }
 
       .navNow {
@@ -276,6 +285,7 @@
         .netGaugeTitle {
           width: 100%;
           color: $themeColor;
+          font-family: PingFangSC-Medium, serif;
           @include lineheight(30px);
           padding-left: 12px;
           margin-bottom: 14px;
@@ -335,7 +345,6 @@
               display: flex;
               @include lineheight(40px);
               text-align: center;
-              font-family: PingFangSC-Medium, serif;
               color: #000000;
               background-color: #f3f2f2;
               border-bottom: 1px solid #d4d4d4;
@@ -344,16 +353,19 @@
               div:nth-of-type(1) {
                 width: 50px;
                 border-right: 1px dashed #d4d4d4;
+                font-family: PingFangSC-Medium, serif;
               }
 
               div:nth-of-type(2),
               div:nth-of-type(3) {
                 width: 86px;
                 border-right: 1px dashed #d4d4d4;
+                font-family: PingFangSC-Medium, serif;
               }
 
               div:nth-of-type(4) {
                 width: 186px;
+                font-family: PingFangSC-Medium, serif;
               }
             }
 
@@ -598,6 +610,7 @@
         .electricityGaugeTitle {
           width: 100%;
           color: $themeColor;
+          font-family: PingFangSC-Medium, serif;
           @include lineheight(30px);
           padding-left: 12px;
           margin-bottom: 14px;
@@ -657,7 +670,6 @@
               display: flex;
               @include lineheight(40px);
               text-align: center;
-              font-family: PingFangSC-Medium, serif;
               color: #000000;
               background-color: #f3f2f2;
               border-bottom: 1px solid #d4d4d4;
@@ -666,16 +678,19 @@
               div:nth-of-type(1) {
                 width: 50px;
                 border-right: 1px dashed #d4d4d4;
+                font-family: PingFangSC-Medium, serif;
               }
 
               div:nth-of-type(2),
               div:nth-of-type(3) {
                 width: 86px;
                 border-right: 1px dashed #d4d4d4;
+                font-family: PingFangSC-Medium, serif;
               }
 
               div:nth-of-type(4) {
                 width: 186px;
+                font-family: PingFangSC-Medium, serif;
               }
             }
 

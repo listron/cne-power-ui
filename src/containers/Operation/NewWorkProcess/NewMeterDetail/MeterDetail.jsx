@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { message } from 'antd';
+import { Spin } from 'antd';
 import {newMeterDetailAction} from './meterDetailReducer';
 import MeterTop from '@components/Operation/NewWorkProcess/MeterDetail/MeterTop/MeterTop.jsx';
 import MeterBaseInfo from '@components/Operation/NewWorkProcess/MeterDetail/MeterBaseInfo/MeterBaseInfo.jsx';
@@ -9,13 +9,6 @@ import MeterProcess from '@components/Operation/NewWorkProcess/MeterDetail/Meter
 import MeterDisposeInfo from '@components/Operation/NewWorkProcess/MeterDetail/MeterDisposeInfo/MeterDisposeInfo.jsx';
 import searchUtil from '@utils/searchUtil';
 import styles from './meterDetail.scss';
-
-message.config({
-  top: 100,
-  duration: 2,
-  maxCount: 3,
-});
-
 
 class MeterDetail extends Component {
 
@@ -29,6 +22,7 @@ class MeterDetail extends Component {
     getProcessList: PropTypes.func,
     getReadMeter: PropTypes.func,
     getProcessAction: PropTypes.func,
+    loading: PropTypes.bool,
   };
 
   componentDidMount() {
@@ -60,19 +54,23 @@ class MeterDetail extends Component {
   }
 
   render() {
-    const { theme = 'light' } = this.props;
+    const { theme = 'light', loading } = this.props;
     return (
       <div className={`${styles.meterDetailBox} ${theme}`}>
         <MeterTop {...this.props} />
-        <div className={styles.meterContent}>
-          <div className={styles.contentLeft}>
-            <MeterBaseInfo {...this.props} />
-            <MeterDisposeInfo {...this.props} />
+        {loading ? <div className={styles.meterLoading}>
+            <Spin />
+          </div> : (
+          <div className={styles.meterContent}>
+            <div className={styles.contentLeft}>
+              <MeterBaseInfo {...this.props} />
+              <MeterDisposeInfo {...this.props} />
+            </div>
+            <div className={styles.contentRight}>
+              <MeterProcess {...this.props} />
+            </div>
           </div>
-          <div className={styles.contentRight}>
-            <MeterProcess {...this.props} />
-          </div>
-        </div>
+        )}
       </div>
     );
   }

@@ -157,6 +157,8 @@
     :global {
       .ant-radio-button-wrapper {
         padding: 0 8px;
+        color: $themeColor;
+        border: 1px solid $themeColor;
 
         &-checked {
           background-color: $themeColor;
