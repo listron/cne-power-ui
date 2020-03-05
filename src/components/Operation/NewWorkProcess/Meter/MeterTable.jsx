@@ -26,6 +26,7 @@ export default class MeterTable extends React.Component {
     operatorValue: PropTypes.array,
     selectedStation: PropTypes.array,
     tableLoading: PropTypes.bool,
+    resetStore: PropTypes.func,
   };
 
   onChangeStatus = e => {
@@ -91,6 +92,7 @@ export default class MeterTable extends React.Component {
       sortMethod,
       searchStatus,
       operatorValue,
+      resetStore,
     } = this.props;
     const { pathname } = history.location;
     // 下钻到详情页时保留当前查询参数，返回查询当前页面
@@ -102,6 +104,8 @@ export default class MeterTable extends React.Component {
       searchStatus,
       operatorValue,
     };
+    // 清空数据
+    resetStore();
     history.push(`${pathname}?page=meterDetail&meterId=${docketId}&params=${JSON.stringify(params)}`);
   };
 

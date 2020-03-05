@@ -41,6 +41,7 @@
       width: 166px;
       color: #ffffff;
       font-family: PingFangSC-Medium, serif;
+      font-weight: bold;
       padding-left: 17px;
       @include lineheight(36px);
       background-image: url("../../../../../../assets/img/bannerBgc.png");
@@ -73,6 +74,7 @@
         @include lineheight(34px);
         border-radius: 17px;
         font-family: PingFangSC-Medium, serif;
+        font-weight: bold;
         background-color: $slideSelectColor;
         color: $themeColor;
         text-align: center;
@@ -105,6 +107,7 @@
             display: flex;
             align-items: center;
             font-family: PingFangSC-Medium, serif;
+            font-weight: bold;
             padding-left: 10px;
             background-color: #f3f2f2;
             border-right: 1px dashed $borderColor;
@@ -130,6 +133,7 @@
             display: flex;
             align-items: center;
             font-family: PingFangSC-Medium, serif;
+            font-weight: bold;
             padding-left: 10px;
             background-color: #f3f2f2;
             border-right: 1px dashed $borderColor;
@@ -163,6 +167,7 @@
             display: flex;
             align-items: center;
             font-family: PingFangSC-Medium, serif;
+            font-weight: bold;
             padding-left: 10px;
             background-color: #f3f2f2;
             border-right: 1px dashed $borderColor;
@@ -187,6 +192,7 @@
             display: flex;
             align-items: center;
             font-family: PingFangSC-Medium, serif;
+            font-weight: bold;
             padding-left: 10px;
             background-color: #f3f2f2;
             border-right: 1px dashed $borderColor;
@@ -213,6 +219,7 @@
             display: flex;
             align-items: center;
             font-family: PingFangSC-Medium, serif;
+            font-weight: bold;
             padding-left: 10px;
             background-color: #f3f2f2;
             border-right: 1px dashed $borderColor;
@@ -244,6 +251,7 @@
             display: flex;
             align-items: center;
             font-family: PingFangSC-Medium, serif;
+            font-weight: bold;
             padding-left: 10px;
             background-color: #f3f2f2;
             border-right: 1px dashed $borderColor;
@@ -275,6 +283,7 @@
             display: flex;
             align-items: center;
             font-family: PingFangSC-Medium, serif;
+            font-weight: bold;
             padding-left: 10px;
             background-color: #f3f2f2;
             border-right: 1px dashed $borderColor;
@@ -301,6 +310,7 @@
             display: flex;
             align-items: center;
             font-family: PingFangSC-Medium, serif;
+            font-weight: bold;
             padding-left: 10px;
             background-color: #f3f2f2;
             border-right: 1px dashed $borderColor;
