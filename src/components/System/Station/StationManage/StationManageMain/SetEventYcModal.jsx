@@ -44,10 +44,14 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
   }
 
   numberChange = (value, list) => { // 改变阈值
+    let changeValue = value;
+    if (value) {
+      changeValue = value | 0;
+    }
     const { eventData } = this.state;
     const configCode = list.configCode;
     const resetData = eventData.findIndex(e => e.configCode === configCode);
-    eventData[resetData]['threshold'] = value;
+    eventData[resetData]['threshold'] = changeValue;
     setTimeout(() => { this.setState({ eventData }); }, 0);
   }
 
@@ -65,6 +69,7 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
   render() {
     const { eventData } = this.state;
     const { type, loading } = this.props;
+    console.log('eventData', eventData);
     return (
       <Modal
         title={<span>遥测诊断设置</span>}
@@ -100,7 +105,12 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
                   <Switch onChange={(e) => this.onChange(e, list)} checked={Boolean(+list.configEnabled)} />
                   {+list.configEnabled &&
                     <div className={styles.inputNumber}> 阈值
-                   <InputNumber min={1} max={100} value={list.threshold} onChange={(value) => this.numberChange(value, list)} />
+                   <InputNumber
+                        min={0}
+                        max={100}
+                        value={list.threshold}
+                        // formatter={value => value && (value | 0) || null}
+                        onChange={(value) => this.numberChange(value, list)} />
                       % </div> || ''}
                 </div>
               );

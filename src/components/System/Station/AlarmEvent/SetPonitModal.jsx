@@ -16,6 +16,9 @@ class SetPonitModal extends Component { //版本的设置
     closePointModal: PropTypes.func,
     setPointData: PropTypes.func,
     stationCode: PropTypes.number,
+    pointListError: PropTypes.bool,
+    deviceModeCode: PropTypes.number,
+    deviceTypeCode: PropTypes.number,
   }
 
   constructor(props) {
@@ -25,6 +28,8 @@ class SetPonitModal extends Component { //版本的设置
       selectedRowKeys: [], // 选择测点
       pointType: '', //测点类型
       selectStationCode: stationCode,
+      sortField: 'devicePointType',
+      sortMethod: 'descend',
     };
   }
 
@@ -36,7 +41,7 @@ class SetPonitModal extends Component { //版本的设置
     const { pointList } = this.props;
     const { selectedRowKeys } = this.state;
     if (selectedRowKeys.length > 0) {
-      const confirmList = pointList.filter(e => selectedRowKeys.includes(e.devicePointCode));
+      const confirmList = pointList.filter(e => selectedRowKeys.includes(e.devicePointId));
       this.props.setPointData(confirmList);
     }
     this.cancelSetting();
@@ -44,7 +49,7 @@ class SetPonitModal extends Component { //版本的设置
 
   onChangeStation = (value) => { // 切换电站
     const { deviceTypeCode, deviceModeCode } = this.props;
-    this.props.getPointList({
+    this.props.getPointList({ // 初始请求
       'stationCode': value,
       'deviceTypeCode': deviceTypeCode, // 设备类型
       'deviceModeCode': deviceModeCode, // 型号
@@ -73,7 +78,11 @@ class SetPonitModal extends Component { //版本的设置
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
     const { getPointList, deviceTypeCode, deviceModeCode } = this.props;
     const { field, order } = sorter;
-    const { selectStationCode } = this.state;
+    const { selectStationCode, sortField } = this.state;
+    let orderField = sortField;
+    if (field) {
+      orderField = field;
+    }
     getPointList({
       'stationCode': selectStationCode,
       'deviceTypeCode': deviceTypeCode, // 设备类型
@@ -82,14 +91,18 @@ class SetPonitModal extends Component { //版本的设置
       'pageSize': 100,
       'devicePointStandardCode': '', // 测点编号
       'devicePointName': '', // 测点名称
-      orderField: field ? field : '',
-      orderType: order ? (sorter.order === 'ascend' ? 0 : 1) : null,
+      orderField: orderField,
+      orderType: order === 'descend' ? 1 : 0,
+    });
+    this.setState({
+      sortField: orderField,
+      sortMethod: order === 'descend' ? 'descend' : 'ascend',
     });
   }
 
   render() {
-    const { stationCodes, pointList = [], type = 'add', stationCode } = this.props;
-    const { selectedRowKeys, pointType, selectStationCode } = this.state;
+    const { stationCodes, pointList = [], type = 'add', stationCode, pointListError } = this.props;
+    const { selectedRowKeys, pointType, selectStationCode, sortField, sortMethod } = this.state;
     const pointListColumn = [
       {
         title: '测点编号',
@@ -125,6 +138,7 @@ class SetPonitModal extends Component { //版本的设置
         title: '测点类型',
         dataIndex: 'devicePointType',
         sorter: true,
+        defaultSortOrder: 'descend',
         render: (text, record) => (<div title={text}>{text}</div>),
       },
     ];
@@ -165,7 +179,7 @@ class SetPonitModal extends Component { //版本的设置
               <Radio.Group onChange={this.changePointType} defaultValue="">
                 <Radio.Button value="">全部</Radio.Button>
                 {pointTypeArr.map(e => {
-                  return <Radio.Button value={e}>{e}</Radio.Button>;
+                  return <Radio.Button value={e} key={e}>{e}</Radio.Button>;
                 })}
               </Radio.Group>
             </div>
@@ -176,10 +190,13 @@ class SetPonitModal extends Component { //版本的设置
             onChange={this.tableChange}
             columns={pointListColumn}
             scroll={{ y: 470 }}
-            dataSource={initpointType.map((e, i) => ({ key: e.devicePointCode, ...e }))}
+            dataSource={initpointType.map((e, i) => ({ key: e.devicePointId, ...e }))}
             className={styles.tableStyles}
             pagination={false}
-            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+            sortField={sortField}
+            sortMethod={sortMethod}
+            pointListError={pointListError}
+          // locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           />
         </div>
       </Modal>

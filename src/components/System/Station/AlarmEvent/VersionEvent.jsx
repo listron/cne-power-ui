@@ -5,6 +5,7 @@ import { Input, Select, Tree, Button, Checkbox, Spin } from 'antd';
 import EventColumn from './EventColumn';
 import SetPonitModal from './SetPonitModal';
 import WarningTip from '../../../Common/WarningTip/index';
+
 class VersionEvent extends Component {
   static propTypes = {
     versionList: PropTypes.array,
@@ -14,28 +15,33 @@ class VersionEvent extends Component {
     addVersionEvent: PropTypes.func,
     editVersionEvent: PropTypes.func,
     delVersionEvent: PropTypes.func,
+    editPoint: PropTypes.object,
+    pointListError: PropTypes.bool,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      addEventList: [],
+      addEventList: [], // 新增的告警配置列表
+      currentEventList: [], // 已有告警的数据列表
+
       showWarningTip: false,
       showWarningEvent: false,
       delEvent: null,
       selectKeysArr: [],
       allSelect: false,
       indeterminate: false,
-      currentEventList: [],
 
     };
   }
 
+
   componentWillReceiveProps(nextProps) {
     const { stationCode, versionStationCodes, deviceTypeCode, deviceModeCode, diagModeVersionId, versionList } = nextProps;
+    const { currentEventList, addEventList } = this.state;
     if (diagModeVersionId !== this.props.diagModeVersionId) { // 切换版本，置空数据
       this.setState({
-        addEventList: [],
+        addEventList: [], // 添加的新的数据
         showWarningTip: false,
         showWarningEvent: false,
         delEvent: null,
@@ -45,6 +51,9 @@ class VersionEvent extends Component {
         currentEventList: [],
       });
     }
+    const allEventList = [...currentEventList, ...addEventList];
+    const initmodifyStatus = allEventList.length > 0 && allEventList.some(e => e.editable) || false;
+    this.props.changeStore({ modifyStatus: initmodifyStatus }); // 修改状态
     if (this.props.stationCode !== stationCode) {
       const stationCode = versionStationCodes.length > 0 && versionStationCodes[0].stationCode;
       this.props.getPointList({ // 请求测点数据
@@ -60,10 +69,9 @@ class VersionEvent extends Component {
       });
       this.props.changeStore({ stationCode });
     }
-
     if (this.props.versionEventLoading && !nextProps.versionEventLoading) {
       const { currentEventList } = this.state;
-      currentEventList.forEach(trData => {
+      currentEventList.forEach(trData => { // 进行一个优化
         if (trData.editable) {
           const index = versionList.findIndex(e => e.diagModeEventId === trData.diagModeEventId);
           versionList[index] = trData;
@@ -71,6 +79,7 @@ class VersionEvent extends Component {
       });
       this.setState({ currentEventList: versionList });
     }
+
   }
 
   closePointModal = (value) => { // 关闭测点编号的弹框
@@ -80,9 +89,9 @@ class VersionEvent extends Component {
   addEvent = () => { // 添加行
     const { addEventList } = this.state;
     const keyIndex = addEventList.length > 0 && addEventList[addEventList.length - 1].key.split('add')[1] || 0; // 从默认开始添加
-    const addKey = { key: `add${+keyIndex + 1}`, switchType: 1, enabled: 1, pointValue: 1 };
-    addEventList.push(addKey);
+    addEventList.push({ key: `add${+keyIndex + 1}`, switchType: 1, enabled: 1, pointValue: 1 });
     this.setState({ addEventList: addEventList });
+    this.props.changeStore({ modifyStatus: true });
   }
 
   changeEditPoint = (value) => { // 需要编辑的测点
@@ -94,19 +103,18 @@ class VersionEvent extends Component {
     const { addEventList, currentEventList } = this.state;
     const lastKey = addEventList.length > 0 && addEventList[addEventList.length - 1].key.split('add')[1] || 0;
     if (!editPoint.diagModeEventId) { // 新添加的
-      const findIndex = addEventList.findIndex(e => {
-        return e.key === editPoint.key;
-      });
+      const findIndex = addEventList.findIndex(e => e.key === editPoint.key); // 当前编辑进行修改
       addEventList[findIndex] = { ...addEventList[findIndex], pointCode: value[0].devicePointStandardCode, pointValueDesc: value[0].devicePointName };
       value.forEach((e, index) => { // 多条添加
         if (index > 0) {
           addEventList.push({
-            key: `add${+lastKey + 1}`,
+            key: `add${+lastKey + index}`,
             switchType: 1,
             enabled: 1,
             pointValue: 1,
             pointCode: e.devicePointStandardCode,
             pointValueDesc: e.devicePointName,
+            eventCode: editPoint.eventCode,
           });
         }
       });
@@ -208,7 +216,6 @@ class VersionEvent extends Component {
     this.setState({ allSelect: checked, selectKeysArr });
   }
 
-
   delSelectedRowKeys = () => { // 批量删除
     const { selectKeysArr } = this.state;
     this.setState({ showWarningTip: true, delEvent: selectKeysArr });
@@ -216,6 +223,7 @@ class VersionEvent extends Component {
 
   editEvent = (trData) => { // 编辑测点内容
     const { diagModeEventId } = trData;
+    this.props.changeStore({ modifyStatus: true }); // 修改状态的判断
     const { addEventList, currentEventList } = this.state;
     if (diagModeEventId) {
       const index = currentEventList.findIndex(e => e.diagModeEventId === diagModeEventId);
@@ -230,7 +238,7 @@ class VersionEvent extends Component {
   }
 
   render() {
-    const { versionList, versionStationCodes, stationCode } = this.props;
+    const { versionList, versionStationCodes, stationCode, versionError } = this.props;
     const { pointList, getPointList, deviceTypeCode, deviceModeCode, setPonitModal, editPoint, versionEventLoading, alarmEventType } = this.props;
     const { addEventList, currentEventList, showWarningTip, showWarningEvent, selectKeysArr, allSelect, indeterminate } = this.state;
     const type = editPoint.key && editPoint.key.includes('add') && 'add' || 'edit';
@@ -264,6 +272,7 @@ class VersionEvent extends Component {
             }).map(list => {
               return (<EventColumn
                 eventData={list}
+                key={list.key}
                 alarmEventType={alarmEventType}
                 changePoint={this.changeEditPoint}
                 saveEvent={this.saveEvent}
@@ -276,6 +285,7 @@ class VersionEvent extends Component {
             }).map(list => {
               return (<EventColumn
                 eventData={list}
+                key={list.key}
                 alarmEventType={alarmEventType}
                 changePoint={this.changeEditPoint}
                 saveEvent={this.saveEvent}
@@ -283,8 +293,15 @@ class VersionEvent extends Component {
                 checkSelect={this.selectKeys}
                 deleteEvent={this.deleteEvent} />);
             })}
-            {(addEventList.length === 0 && versionList.length === 0) &&
-              <div className={styles.img}><img width="223" height="164" src="/img/nodata.png" /></div>
+            {/* 没有更多数据的设置 */}
+            {(addEventList.length + currentEventList.length > 0) &&
+              <div className={styles.img}><img width="97" height="72" src="/img/notabdata.png" /></div>
+            }
+            {/* 没有数据，或者是数据请求失败 */}
+            {(addEventList.length === 0 && currentEventList.length === 0) &&
+              <div className={styles.img}>
+                {versionError && <img width="84" height="77" src="/img/datawrong.png" /> || <img width="223" height="164" src="/img/nodata.png" />}
+              </div>
             }
           </div>
           {versionEventLoading && <div className={styles.spin} />}
@@ -301,6 +318,7 @@ class VersionEvent extends Component {
             closePointModal={this.closePointModal}
             setPointData={this.setPointData}
             type={type}
+            pointListError={this.props.pointListError}
           />
         }
       </div>

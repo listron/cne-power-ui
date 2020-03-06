@@ -34,6 +34,44 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
+        name: '告警',
+        iconStyle: 'icon-alarm1',
+        path: 'alarm',
+        rightKey: 'monitor_alarm',
+        children: [
+          {
+            name: '实时告警',
+            path: 'realtime',
+            rightKey: 'monitor_alarm_realTime',
+          }, {
+            name: '已转工单',
+            path: 'transfer',
+            rightKey: 'monitor_alarm_realTime',
+          }, {
+            name: '手动解除',
+            path: 'relieve',
+            rightKey: 'monitor_alarm_realTime',
+          }, {
+            name: '历史告警',
+            path: 'history',
+            rightKey: 'monitor_alarm_history',
+          }, {
+            name: '告警统计',
+            path: 'statistic',
+            rightKey: 'monitor_alarm_statistics',
+          },
+          // {
+          //   name: '告警统计',
+          //   path: 'statistics',
+          //   rightKey: 'monitor_alarm_statistics',
+          // }
+        ],
+      }, {
+        name: '诊断中心',
+        iconStyle: 'icon-zhenduan',
+        path: 'diagnoseCenter',
+        rightKey: 'monitor_diagnosis',
+      }, {
         name: '功率曲线',
         iconStyle: 'icon-monitoring',
         path: 'powercurve',
@@ -93,45 +131,6 @@ const menuData = [
       //     },
       //   ],
       // },
-      {
-        name: '告警',
-        iconStyle: 'icon-alarm1',
-        path: 'alarm',
-        rightKey: 'monitor_alarm',
-        children: [
-          {
-            name: '实时告警',
-            path: 'realtime',
-            rightKey: 'monitor_alarm_realTime',
-          }, {
-            name: '已转工单',
-            path: 'transfer',
-            rightKey: 'monitor_alarm_realTime',
-          }, {
-            name: '手动解除',
-            path: 'relieve',
-            rightKey: 'monitor_alarm_realTime',
-          }, {
-            name: '历史告警',
-            path: 'history',
-            rightKey: 'monitor_alarm_history',
-          }, {
-            name: '告警统计',
-            path: 'statistic',
-            rightKey: 'monitor_alarm_statistics',
-          },
-          // {
-          //   name: '告警统计',
-          //   path: 'statistics',
-          //   rightKey: 'monitor_alarm_statistics',
-          // }
-        ],
-      }, {
-        name: '诊断中心',
-        iconStyle: 'icon-zhenduan',
-        path: 'diagnoseCenter',
-        rightKey: 'monitor_diagnosis',
-      },
     ],
   },
   {
@@ -344,7 +343,12 @@ const menuData = [
             rightKey: 'statistics_report_general',
           },
           {
-            name: '智能分析报告',
+            name: '日报查询',
+            path: 'dailyQuery',
+            rightKey: 'statistics_report_dailyQuery',
+          },
+          {
+            name: '智能报告',
             path: 'intelligentAnalysis',
             rightKey: 'statistics_report_report',
           },
@@ -353,11 +357,7 @@ const menuData = [
             path: 'intelligentReport',
             rightKey: 'statistics_report_table',
           },
-          {
-            name: '日报查询',
-            path: 'dailyQuery',
-            rightKey: 'statistics_report_dailyQuery',
-          },
+
         ],
       }, {
         name: '数据分析工具',
@@ -660,11 +660,6 @@ const menuData = [
             rightKey: 'system_station_stat',
           },
           {
-            name: '平台级告警事件',
-            path: 'alarmEvent',
-            rightKey: 'system_station_alertTemplate',
-          },
-          {
             name: '设备',
             path: 'deviceManage',
             rightKey: 'system_station_device',
@@ -672,7 +667,13 @@ const menuData = [
             name: '测点',
             path: 'pointManage',
             rightKey: 'system_station_point',
-          }, {
+          },
+          {
+            name: '平台级告警事件',
+            path: 'alarmEvent',
+            rightKey: 'system_station_alertTemplate',
+          },
+          {
             name: '告警事件',
             path: 'alarmManage',
             rightKey: 'system_station_alert',
@@ -695,10 +696,6 @@ const menuData = [
         rightKey: 'system_config',
         children: [
           {
-            name: '绩效评分',
-            path: 'performanceScore',
-            rightKey: 'system_config_score',
-          }, {
             name: '生产计划',
             path: 'plan',
             rightKey: 'system_config',
@@ -706,7 +703,11 @@ const menuData = [
             name: '预警配置',
             path: 'warning',
             rightKey: 'system_config_warning',
-          },
+          }, {
+            name: '绩效评分',
+            path: 'performanceScore',
+            rightKey: 'system_config_score',
+          }, 
         ],
       },
     ],

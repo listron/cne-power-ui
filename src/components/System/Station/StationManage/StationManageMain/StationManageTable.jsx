@@ -11,6 +11,7 @@ import Cookie from 'js-cookie';
 import path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
 import CneTable from '../../../../Common/Power/CneTable/index';
+import CneButton from '../../../../Common/Power/CneButton/index';
 import SetEventYxModal from './SetEventYxModal';
 import SetEventYcModal from './SetEventYcModal';
 const { Search } = Input;
@@ -54,8 +55,10 @@ class StationManageTable extends Component {
       deleteInfo: {},
       eventYxModal: false,
       eventYcModal: false,
-      stationCode: {}, // 选中的当前的电站
+      selectSataionInfo: {}, //选中的当前的电站
       type: 'yc', // 'yc' 遥测诊断 'data' 数据质量诊断
+      search: false, // 搜索框出现
+      conditionInfo: null, //筛选条件
     };
   }
 
@@ -132,24 +135,12 @@ class StationManageTable extends Component {
   tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
     const { getStationList, queryListParams, orderField, orderCommand } = this.props;
     const { field } = sorter;
-    const sortInfo = {
-      stationName: '1',
-      regionName: '2',
-      coverType: '3',
-      connectionType: '4',
-      stationCapacity: '5',
-      stationUnitCount: '6',
-      isConnected: '7',
-      pointStatus: '8',
-      alarmStatus: '9',
-    };
-    let newField = sortInfo[field] ? sortInfo[field] : orderField, newCommand = '2';
+    let newField = this.tableSortMap[field] ? this.tableSortMap[field] : orderField, newCommand = '2';
     if (orderField === this.sortFieldMap[field]) { // 点击的是正在排序的列
       newCommand = orderCommand === '2' ? '1' : '2'; // 交换排序方式
-    }else{ // 切换列
+    } else { // 切换列
       newField = this.sortFieldMap[field] ? this.sortFieldMap[field] : orderField;
     }
-
     getStationList({
       ...queryListParams,
       orderField: newField,
@@ -201,10 +192,10 @@ class StationManageTable extends Component {
   }
 
   setYxStatus = (list) => { // 设置遥信的数据
-    const { stationCode } = list;
+    const { stationCode, stationName } = list;
     const { getDiagconfigYx } = this.props;
     getDiagconfigYx({ stationCode });
-    this.setState({ eventYxModal: true, stationCode });
+    this.setState({ eventYxModal: true, selectSataionInfo: { stationCode, stationName } });
   }
 
   setYcStatus = (list, type) => {// 设置遥测数据和数据质量诊断
@@ -222,7 +213,7 @@ class StationManageTable extends Component {
     if (getName === 'eventYcModal') {
       this.props.changeStationManageStore({ YcConfigData: [] });
     }
-    this.setState({ ...value, stationCode: null });
+    this.setState({ ...value, selectSataionInfo: {} });
   }
 
   initColumn = () => {
@@ -233,11 +224,12 @@ class StationManageTable extends Component {
         key: 'stationName',
         sorter: true,
         className: styles.stationName,
+        defaultSortOrder: 'descend',
         render: (text, record, index) => {
           return (
             <div className={styles.stationNameWrap}>
               <i className={`iconfont icon-${['windgo', 'pvs'][record.stationType]}`} />
-              <span className={styles.stationNameText} onClick={() => this.toStationDetail(record, index)}>{record.stationName}</span>
+              <div className={styles.stationNameText} onClick={() => this.toStationDetail(record, index)}>{record.stationName}</div>
             </div>
           );
         },
@@ -277,7 +269,7 @@ class StationManageTable extends Component {
         render: (text, record, index) => {
           const { eventDataStatus, stationType } = record;
           const title = eventDataStatus && '已设置' || '未设置';
-          return (<div className={`${styles.eventStatusText} ${stationType === 0 && styles.windDisabled}`}>
+          return (<div className={`${styles.eventDataStatusText} ${stationType === 0 && styles.windDisabled}`}>
             <i className={`iconfont ${eventDataStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYcStatus(record, 'data')} />
           </div>);
         },
@@ -330,11 +322,19 @@ class StationManageTable extends Component {
     getStationList({ ...queryListParams, keyword: value });
   }
 
+  enterSearch = () => {
+    const { search } = this.state;
+    if (!search) {
+      this.setState({ search: true });
+    }
+  }
+
+
   render() {
     const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize, orderField, orderCommand, stationListError } = this.props;
     const { setDiagconfigYx, setDiagconfigYc, YxConfigData, YcConfigData, YxLoading, YcLoading, keyword } = this.props;
-    const { departmentModal, departmentSetInfo, uploading, fileList, showWarningTip, warningTipText, deleteInfo } = this.state;
-    const { eventYxModal, stationCode, eventYcModal, type } = this.state;
+    const { departmentModal, departmentSetInfo, uploading, fileList, showWarningTip, warningTipText, deleteInfo, conditionInfo } = this.state;
+    const { eventYxModal, eventYcModal, type, search, selectSataionInfo } = this.state;
     const authData = localStorage.getItem('authData') || '';
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
     const initTableScroll = stationList.length > 0 && { y: 900 } || {};
@@ -352,59 +352,68 @@ class StationManageTable extends Component {
               showUploadList={false}
               fileList={fileList}
             >
-              <div className={styles.addButton} >
+              <CneButton className={styles.addButton}>
                 <div className={styles.icon}> {uploading && <Icon type="loading" /> || <span className={'iconfont icon-newbuilt'} />}</div>新建
-              </div>
+              </CneButton>
             </Upload>
-            <Button href={downloadHref} download={downloadHref} target="_blank" className={styles.download}>
-              <span className={'iconfont icon-download'} /> 下载模板
-            </Button>
-            <div className={styles.conditionSearch}>
+            <CneButton href={downloadHref} download={downloadHref} target="_blank" className={styles.download}>
+              <span className={'iconfont icon-download'} />  下载模板
+            </CneButton>
+            <div className={`${styles.conditionSearch} ${!search && styles.closeConditionSearch}`} onMouseEnter={this.enterSearch}>
               <Search
                 placeholder="电站类型／区域／电站名称"
                 enterButton={<i className={'iconfont icon-search'} />}
                 onSearch={this.selectCondition}
+                onChange={(e) => this.setState({ conditionInfo: e.target.value })}
+                value={conditionInfo}
               />
+              <i className={`iconfont icon-wrong ${styles.closeSearch}`} onClick={() => this.setState({ search: false, conditionInfo: null })} />
             </div>
           </div>
           <div>合计：{totalNum}</div>
           {/* <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalNum} onPaginationChange={this.onPaginationChange} /> */}
         </div>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={() => this.confirmWarningTip(deleteInfo)} value={warningTipText} />}
-        <CneTable
-          loading={stationListLoading}
-          dataSource={stationList.map((e, i) => ({ ...e, key: i }))}
-          columns={this.initColumn()}
-          className={styles.stationTable}
-          onChange={this.tableChange}
-          pagination={false}
-          scroll={initTableScroll}
-          dataError={stationListError}
-          sortField={this.tableSortMap[orderField]}
-          sortMethod={this.sortMethodMap[orderCommand] || false}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-        />
-
-        {departmentModal && <SetDepartmentModal
-          departmentSetInfo={departmentSetInfo}
-          closeDepartmentModal={this.closeDepartmentModal}
-          allDepartmentData={allDepartmentData}
-        />}
-        {eventYxModal && <SetEventYxModal
-          closeEventModal={this.closeEventModal}
-          allEventYx={YxConfigData}
-          stationCode={stationCode}
-          setDiagconfigYx={setDiagconfigYx}
-          loading={YxLoading}
-        />}
-        {eventYcModal && <SetEventYcModal
-          closeEventModal={this.closeEventModal}
-          eventData={YcConfigData}
-          type={type}
-          setDiagconfigYc={setDiagconfigYc}
-          loading={YcLoading}
-        />}
-      </div>
+        <div className={styles.tableWrap}>
+          <CneTable
+            loading={stationListLoading}
+            dataSource={stationList.map((e, i) => ({ ...e, key: i }))}
+            columns={this.initColumn()}
+            className={styles.stationTable}
+            pagination={false}
+            scroll={initTableScroll}
+            dataError={stationListError}
+            sortField={this.tableSortMap[orderField]}
+            sortMethod={`${this.sortMethodMap[orderCommand]}` || false}
+            onChange={this.tableChange}
+          />
+        </div>
+        {
+          departmentModal && <SetDepartmentModal
+            departmentSetInfo={departmentSetInfo}
+            closeDepartmentModal={this.closeDepartmentModal}
+            allDepartmentData={allDepartmentData}
+          />
+        }
+        {
+          eventYxModal && <SetEventYxModal
+            closeEventModal={this.closeEventModal}
+            allEventYx={YxConfigData}
+            selectSataionInfo={selectSataionInfo}
+            setDiagconfigYx={setDiagconfigYx}
+            loading={YxLoading}
+          />
+        }
+        {
+          eventYcModal && <SetEventYcModal
+            closeEventModal={this.closeEventModal}
+            eventData={YcConfigData}
+            type={type}
+            setDiagconfigYc={setDiagconfigYc}
+            loading={YcLoading}
+          />
+        }
+      </div >
     );
   }
 }

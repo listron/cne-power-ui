@@ -13,6 +13,7 @@ class SetEventYxModal extends Component { // 电站管理列表页
     closeEventModal: PropTypes.func,
     stationCode: PropTypes.number,
     loading: PropTypes.bool,
+    selectSataionInfo: PropTypes.object,
   }
 
   constructor(props) {
@@ -25,7 +26,8 @@ class SetEventYxModal extends Component { // 电站管理列表页
 
   confirmSetting = () => {
     const { checkedKeys } = this.state;
-    const { allEventYx, stationCode, setDiagconfigYx } = this.props;
+    const { allEventYx, selectSataionInfo, setDiagconfigYx } = this.props;
+    const { stationCode } = selectSataionInfo;
     const defaultSelectKeys = {};
     allEventYx.forEach(list => { // 只有设备类型_设备型号 是唯一key值
       const deviceTypeCode = list.deviceTypeCode;
@@ -56,9 +58,8 @@ class SetEventYxModal extends Component { // 电站管理列表页
   }
 
 
-
   render() {
-    const { allEventYx, loading } = this.props;
+    const { allEventYx, loading, selectSataionInfo } = this.props;
     return (
       <Modal
         title={<span>请设置平台级告警规则</span>}
@@ -69,7 +70,7 @@ class SetEventYxModal extends Component { // 电站管理列表页
         wrapClassName={styles.eventYx}
         width={625}
         footer={<div className={styles.footer}>
-          <div className={styles.text}>若未找到需要的软件版本，去<a href={'/#/system/station/alarmEvent'}>添加平台级告警规则设置</a></div>
+          <div className={styles.text}>若未找到需要的软件版本，去<a href={`/#/system/station/alarmEvent?applyStation=${JSON.stringify(selectSataionInfo)}`}>添加平台级告警规则设置</a></div>
           <div className={styles.button}>
             <div onClick={this.cancelSetting} className={styles.cancel}>取 消</div>
             <Button onClick={this.confirmSetting} className={styles.confirm}>
@@ -91,13 +92,15 @@ class SetEventYxModal extends Component { // 电站管理列表页
                   return (
                     <React.Fragment>
                       <div key={`${mode.deviceModeCode}_${mode.manufactorCode}`} >{mode.deviceModeName}({mode.manufactorName})  </div>
-                      <Radio.Group
-                        name={`${list.deviceTypeCode}_${mode.deviceModeCode}`}
-                        onChange={this.onChange}
-                        defaultValue={`${diagModeVersionId}`}
-                      >
-                        {mode.versions.map(e => { return <Radio value={`${e.diagModeVersionId}`} key={e.diagModeVersionId} className={styles.version}> {e.version} </Radio>; })}
-                      </Radio.Group>
+                      {mode.versions.length > 0 &&
+                        <Radio.Group
+                          name={`${list.deviceTypeCode}_${mode.deviceModeCode}`}
+                          onChange={this.onChange}
+                          defaultValue={`${diagModeVersionId}`}
+                        >
+                          {mode.versions.map(e => { return <Radio value={`${e.diagModeVersionId}`} key={e.diagModeVersionId} className={styles.version}> {e.version} </Radio>; })}
+                        </Radio.Group>
+                      }
                     </React.Fragment>
                   );
                 })

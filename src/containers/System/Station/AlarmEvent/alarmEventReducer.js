@@ -15,6 +15,7 @@ const alarmEventAction = {
   getAlarmEvent: Symbol('getAlarmEvent'),
   getPointList: Symbol('getPointList'),
   getVersionStation: Symbol('getVersionStation'),
+  FilterConditionStations: Symbol('FilterConditionStations'),
 };
 
 
@@ -28,14 +29,22 @@ var initState = Immutable.fromJS({
   editVersionLoading: false, // 编辑版本的loading
   versionStationCodes: [], // 当前的制定版本涉及的电站
   versionList: [], // 选定的版本的告警事件
+  versionError: false, //获取列表失败
   versionEventLoading: false, //版本告警事件的loading
   editVersionStationCodes: [], // 编辑的版本涉及的电站
   alarmEventType: [], // 告警标准事件类型
   pointList: [], //测点数据
+  pointListError: false, // 测点数据错误
   editPoint: {}, // 测点编辑的数据
   setPonitModal: false, // 测点编辑的弹框
   warningTipText: '',
-  applayStations: [], //版本应用的电站
+  applyStations: [], //版本应用的电站
+
+  selectedNodesKey: '', // 选中的节点   manufactorCode_deviceModeCode_diagModeVersionId
+  expandedKeys: [], // 受控展开的树节点  manufactorCode manufactorCode_deviceModeCode
+  filterStations: [], //筛选的电站
+  modifyStatus: false, // 是否处于编辑状态
+
 });
 
 const alarmEventReducer = (state = initState, action) => {

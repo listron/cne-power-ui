@@ -109,22 +109,13 @@
               border: 1px solid #199475;
               box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
               border-radius: 2px;
-              color: $themeColor;
-              width: 90px;
-              height: 32px;
-              line-height: 30px;
               cursor: pointer;
               .icon {
-                margin: 0 14px 0 10px;
+                margin: 0 10px 0 0;
               }
             }
           }
           .download {
-            background: rgba(206, 235, 224, 0.3);
-            border: 1px solid #199475;
-            box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
-            color: $themeColor;
-            padding: 0 10px;
             margin-right: 13px;
           }
           .conditionSearch {
@@ -133,12 +124,18 @@
             border: 1px solid #007155;
             box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
             border-radius: 2px;
-            height: 30px;
+            height: 32px;
             align-items: center;
             color: #fff;
-            &:hover {
-              input {
-                display: block;
+            position: relative;
+            .closeSearch {
+              position: absolute;
+              left: 186px;
+              color: #999;
+              z-index: 9;
+              cursor: pointer;
+              &:hover {
+                color: #e08031;
               }
             }
             :global {
@@ -151,7 +148,10 @@
                 height: 22px;
                 margin: 3px 0;
                 width: 200px;
-                display: none;
+                border-radius: 2px;
+                padding-right: 20px;
+                padding-left: 5px;
+                display: block;
               }
               .ant-input-search-button {
                 padding: 0;
@@ -161,10 +161,31 @@
                 height: 30px;
                 width: 30px;
                 outline: none;
+                border-radius: 0;
+                box-shadow: none;
+              }
+            }
+          }
+          .closeConditionSearch {
+            .closeSearch {
+              display: none;
+            }
+            :global {
+              .ant-input {
+                display: none;
               }
             }
           }
         }
+      }
+      .textWrap{
+        width:100vw;
+        height:30px;
+        background: pink;
+      }
+      .tableWrap {
+        min-width: 1212px;
+        overflow-x: scroll;
       }
       .stationTable {
         // 表格区
@@ -177,6 +198,15 @@
             overflow-y: scroll;
             overflow-y: overlay;
             height: calc(100vh - 205px) !important;
+          }
+          .ant-table:not(.ant-table-empty) {
+            .ant-table-body:after {
+              content: url("/img/notabdata.png");
+              position: absolute;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              margin: 50px 10px 10px;
+            }
           }
           .ant-table-placeholder {
             border-bottom: none;
@@ -198,82 +228,80 @@
             font-size: 18px;
           }
         }
-        .stationNameText,
-        .regionNameText,
-        .defectTypeNameText,
-        .defectDescribeText {
-          @include overflowText();
+        .windDisabled {
+                  i {
+                    color: #999999;
+                    pointer-events: none;
+                    cursor: not-allowed;
+                  }
+         }
+        .stationName,.regionName,.stationCapacity,.stationUnitCount,.stationStatus,.isConnected,.pointStatus,.eventStatus,.eventDataStatus,.departmentStatus,.handler{
+           @include overflowText();
+          //  background: pink;
         }
+        .stationNameText,.regionNameText,.stationCapacityText,.stationUnitCountText,.isConnectedText,.eventStatusText,.stationStatusText,.pointStatusText,.handlerText,.eventDataStatusText{
+          @include overflowText();
+          height: 40px;
+          line-height: 40px;
+          // background: aqua;
+        }
+        .isConnectedText,.stationStatusText,.pointStatusText,.eventStatusText,.eventDataStatusText,.handlerText{
+          text-align: center;
+          // display: block;
+        }
+        .stationCapacityText,.stationUnitCountText {
+          text-align: right;
+        }
+        // 电站
         .stationName {
-          width: calc((100vw - 300px) * 0.14);
+          width: calc((100vw - 240px) * 0.12);
+          // width:153px; 
         }
         th.stationName {
+          text-align: left;
           padding-left: 40px !important;
         }
+        // .stationNameWrap{
+        //   max-width: calc((100vw - 280px) * 0.13 - 20px);
+          
+        // }
         .stationNameText {
-          width: calc((100vw - 300px) * 0.14 - 48px);
+          width: calc((100vw - 240px) * 0.12 - 55px);
           color: #199475;
           cursor: pointer;
         }
-
+        // 装机容量
         .stationCapacity {
-          text-align: right;
-          width: calc((100vw - 300px) * 0.098);
+          width: calc((100vw - 240px) * 0.09);
         }
         .stationCapacityText {
-          width: calc((100vw - 300px) * 0.1- 20px);
+          max-width: calc((100vw - 240px) * 0.09 - 20px);
         }
-        .stationStatus,
-        .pointStatus,
-        .isConnected,
-        .regionName,
-        .eventStatus,
-        .stationUnitCount {
-          width: calc((100vw - 300px) * 0.08);
+
+        .regionName,.stationUnitCount,.isConnected,.stationStatus,.pointStatus,.eventStatus{
+          width: calc((100vw - 240px) * 0.0785);
+          // width:93px;
+          // background: pink;
         }
-        .stationStatus,
-        .pointStatus,
-        .isConnected {
-          text-align: center;
-        }
-        .isConnectedText,
-        .stationUnitCountText,
-        .stationStatusText,
-        .regionNameText,
-        .eventStatusText,
-        .pointStatusText {
-          width: calc((100vw - 300px) * 0.08- 30px);
-        }
-        .windDisabled {
-          i {
-            color: #999999;
-            pointer-events: none;
-            cursor: not-allowed;
-          }
-        }
-        .eventDataStatus,
-        .eventStatus,
-        .handler,
-        .eventStatusText {
-          text-align: center;
-        }
-        .stationCapacity,
-        .stationUnitCount,
-        .stationCapacityText,
-        .stationUnitCountText {
-          text-align: right;
+
+        .regionNameText,.stationUnitCountText,.isConnectedText, .stationStatusText, .pointStatusText, .eventStatusText {
+          max-width: calc((100vw - 240px) * 0.0785- 20px);
         }
         .eventDataStatus {
-          width: calc((100vw - 300px) * 0.093);
+           width: calc((100vw - 240px) * 0.09);
         }
         .eventDataStatusText {
-          width: calc((100vw - 300px) * 0.093- 20px);
+          max-width: calc((100vw - 240px) * 0.09 - 20px);
+        }
+        .handler{
+          width: calc((100vw - 240px) * 0.07);
         }
         .handlerText {
           color: #fff;
           display: flex;
           align-items: center;
           justify-content: space-around;
+          max-width: calc((100vw - 240px) * 0.07 - 30px);
           span {
             display: flex;
             box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);

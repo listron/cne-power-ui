@@ -24,7 +24,7 @@ class AlarmEvent extends Component {
   }
 
   componentDidMount() {
-    this.props.getDiagVersion({ deviceTypeCode: this.props.deviceTypeCode });
+    this.props.getDiagVersion(); // 默认加载全部的设备类型
     this.props.getAlarmEvent({ eventType: 1, deviceTypeCode: this.props.deviceTypeCode });
   }
 
@@ -73,6 +73,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAlarmEvent: payload => dispatch({ type: alarmEventAction.getAlarmEvent, payload }),
   getPointList: payload => dispatch({ type: alarmEventAction.getPointList, payload }),
   getVersionStation: payload => dispatch({ type: alarmEventAction.getVersionStation, payload }),
+  FilterConditionStations: payload => dispatch({ type: alarmEventAction.FilterConditionStations, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlarmEvent);

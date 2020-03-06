@@ -1,5 +1,6 @@
 @import "../../../../theme/theme.scss";
 .VersionSelectCont {
+  overflow: hidden;
   .deviceType {
     background: #199475;
     width: 240px;
@@ -7,25 +8,36 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    &:after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      bottom: -7px;
+      width: 0px;
+      height: 0px;
+      border-top: solid var(--themeColor) 7px;
+      border-bottom: none;
+      border-left: solid transparent 7px;
+      border-right: solid transparent 7px;
+    }
   }
-  .cont {
-    .icon {
-      background: rgba(206, 235, 224, 0.3);
-      border: 1px solid #199475;
-      box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
-      border-radius: 2px;
-      width: 160px;
-      height: 30px;
-      color: #199475;
-      margin: 10px auto;
-      cursor: pointer;
-      // text-align: center;
-      i {
-        margin-left: 9px;
-      }
-      span {
-        margin-left: 25px;
-      }
+  .icon {
+    background: rgba(206, 235, 224, 0.3);
+    border: 1px solid #199475;
+    box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+    width: 160px;
+    height: 30px;
+    color: #199475;
+    margin: 13px auto;
+    cursor: pointer;
+    // text-align: center;
+    i {
+      margin-left: 9px;
+    }
+    span {
+      margin-left: 25px;
     }
   }
   .manufactorName {
@@ -262,7 +274,7 @@
 .versionModal {
   .addVersionWrap {
     padding: 21px 18px;
-    height: 460px;
+    height: 500px;
     overflow: scroll;
   }
   .addVersionForm {
@@ -395,7 +407,7 @@
       color: #ffffff;
       line-height: 36px;
       > div {
-        border-right: 1px solid #d4d4d4;
+        border-right: 1px solid #fff;
         padding: 0 8px;
         &:last-child {
           border: none;
@@ -411,18 +423,13 @@
     .pointValueDesc,
     .switchType,
     .enabled,
+    .operate,
     .eventName {
       @include overflowText();
       width: calc((100vw - 480px) * 0.145);
-    }
-    .pointValue{
-      text-align: right;
-    }
-    .switchType,.enabled{
       text-align: center;
     }
     .operate {
-      text-align: center;
       width: calc((100vw - 480px) * 0.124);
     }
   }
@@ -430,6 +437,8 @@
     overflow-y: scroll;
     overflow-y: overlay;
     height: calc(100vh - 205px);
+    display: flex;
+    flex-direction: column;
     .EventColumn {
       &:nth-child(odd) {
         background: #fff;
@@ -438,14 +447,16 @@
         background: #fbfbfb;
       }
       &:hover {
-        background: rgba(206, 235, 224, 0.3);
+        background: rgba(206, 235, 224, 0.5);
+        box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.3);
+        z-index: 10;
       }
     }
     .EventColumn {
       display: flex;
       border-bottom: 1px solid #d4d4d4;
       > div {
-        border-right: 1px solid #d4d4d4;
+        border-right: 1px dashed #d4d4d4;
         height: 40px;
         line-height: 40px;
         padding: 0 8px;
@@ -479,6 +490,7 @@
           font-size: 18px;
           margin: 0 8px;
           padding: 0 2px;
+          cursor: pointer;
         }
         .edit {
           color: #199475;
@@ -500,12 +512,19 @@
         }
       }
     }
+    .eventCode,
+    .eventName,
+    .pointValueDesc {
+      text-align: left;
+    }
+    .pointValue {
+      text-align: right;
+    }
   }
   .img {
     text-align: center;
     padding: 30px;
   }
-
   .spin {
     position: absolute;
     top: 0;
@@ -568,6 +587,23 @@
     .descStyleText {
       width: 170px;
       @include overflowText();
+    }
+  }
+}
+
+.modalWidth {
+  :global {
+    .ant-modal {
+      width: 260px !important;
+    }
+    .ant-btn {
+      font-size: 14px;
+    }
+    @media screen and (min-width: 1920px) {
+      // 1920及以上屏幕按1920px适配
+      .ant-btn {
+        font-size: 14px;
+      }
     }
   }
 }
