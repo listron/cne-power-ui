@@ -186,21 +186,26 @@ class Lists extends PureComponent {
     return (
       <div className={`${styles.lists} ${styles[theme]}`}>
         <div className={styles.listPageRow} >
-          {workPlanHandleRight ? <span className={styles.listBtns}>
-            <Button className={styles.addPlanBtn} type="add" onClick={this.toAddPlan} >
-              <i>+</i>
-              <span>添加计划</span>
-            </Button>
-            <Popconfirm
-                title="是否确认批量删除选中计划?"
-                onConfirm={() => this.deletePlans()}
-                okText="确定"
-                cancelText="取消"
-                disabled={selectedRowKeys.length === 0}
-              >
-                <Button disabled={selectedRowKeys.length === 0}>批量删除</Button>
-              </Popconfirm>
-          </span> : <span />}
+          {workPlanHandleRight ? (
+            <span className={styles.listBtns}>
+              <Button className={styles.addPlanBtn} type="add" onClick={this.toAddPlan} >
+                <i>+</i>
+                <span>添加计划</span>
+              </Button>
+              {selectedRowKeys.length === 0 ? (
+                <Button disabled={true}>批量删除</Button>
+              ) : (
+                  <Popconfirm
+                    title="是否确认批量删除选中计划?"
+                    onConfirm={() => this.deletePlans()}
+                    okText="确定"
+                    cancelText="取消"
+                  >
+                    <Button disabled={false}>批量删除</Button>
+                  </Popconfirm>
+                )}
+          </span>
+          ) : <span />}
           <CommonPagination
             pageSize={pageSize}
             currentPage={pageNum}
