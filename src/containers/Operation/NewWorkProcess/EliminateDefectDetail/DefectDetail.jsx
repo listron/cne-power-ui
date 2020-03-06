@@ -43,9 +43,13 @@ class DefectDetail extends Component {
     return (
       <div className={`${styles.detailWrap}`}>
         <DetailTopSubmit />
-        <DefectBaseTitle />
-        <DefectBaseInfo />
-        <ProcessInfo />
+        <div className={styles.detailContent}>
+          <div className={styles.leftParts}>
+            <DefectBaseTitle />
+            <DefectBaseInfo />
+          </div>
+          <ProcessInfo />
+        </div>
       </div>
     );
   }
