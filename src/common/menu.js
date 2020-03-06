@@ -68,7 +68,7 @@ const menuData = [
         ],
       }, {
         name: '诊断中心',
-        iconStyle: 'icon-monitoring',
+        iconStyle: 'icon-zhenduan',
         path: 'diagnoseCenter',
         rightKey: 'monitor_diagnosis',
       }, {
