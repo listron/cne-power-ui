@@ -10,6 +10,7 @@ import Footer from '@components/common/Footer';
 import DetailTopSubmit from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DetailTopSubmit/DetailTopSubmit';
 import DefectBaseTitle from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectBase/DefectBaseTitle';
 import DefectBaseInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectBase/DefectBaseInfo';
+import ProcessInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/ProcessInfo/ProcessInfo';
 
 class DefectDetail extends Component {
 
@@ -43,16 +44,13 @@ class DefectDetail extends Component {
     return (
       <div className={`${styles.detailWrap}`}>
         <DetailTopSubmit />
-        <div className={styles.defectCont}>
-          <div className={styles.leftCont}>
+        <div className={styles.detailContent}>
+          <div className={styles.leftParts}>
             <DefectBaseTitle />
             <DefectBaseInfo />
           </div>
-          <div className={styles.rightCont}>
-
-          </div>
+          <ProcessInfo />
         </div>
-        <Footer />
       </div>
     );
   }

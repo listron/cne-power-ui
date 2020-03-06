@@ -6,36 +6,15 @@
   background-color: #f0f2f5;
   z-index: 30;
   width: 100%;
-  height: 100%;
-  .top{
-   
-    // box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
-  }
-
-  .defectCont {
-    width: 100%;
+  .detailContent{
     display: flex;
-    padding: 0 24px;
-    justify-content: space-between;
-    z-index: 10;
-    flex: 1;
-
-    .leftCont {
-      display: flex;
-      flex-direction: column;
-      flex:1 0 73%;
-      min-width: 890px;
-      background-color: #fff;
-      box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.20);
-      justify-content: space-between;
-    }
-
-    .rightCont {
-      margin-left: 8px;
-      display: flex;
-      flex:0 0 307px;
-      box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.20);
-      background-color: #fff;
-    }
+    flex: 1 0 auto;
+  }
+  .leftParts{
+    flex: 1 0 auto;
+    max-width: calc(100% - 307px);
+    margin-right: 8px;
+    background-color: #fff;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
   }
 }
