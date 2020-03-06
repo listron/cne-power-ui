@@ -62,53 +62,17 @@ export default class MeterBaseInfo extends React.Component {
   timeoutIconFunc = () => {
     const {
       meterBaseData: {
-        planEndTime,
-        endTime,
+        isOverTime,
       },
     } = this.props;
     /**
-     * 1）状态=已结单，实际完成时间(endTime)＞要求完成时间(planEndTime)，记为超时
-     * 2）状态≠已结单，当前时间(本地时间)＞要求完成时间(planEndTime)，记为超时
+     * 1）isOverTime 1，记为超时
+     * 2）isOverTime 2，记为超时
      * */
-      // 当前时间
-    const currentTime = Math.round(new Date().getTime() / 1000);
-    // 获取时间戳
-    const planEndTimeStamp = planEndTime && Math.round(moment(planEndTime, 'YYYY-MM-DD HH:mm:ss').valueOf() / 1000) || '';
-    const endTimeStamp = endTime && Math.round(moment(endTime, 'YYYY-MM-DD HH:mm:ss').valueOf() / 1000) || '';
-    // 1)状态=已结单
-    if(endTimeStamp && planEndTimeStamp && endTimeStamp > planEndTimeStamp) {
-      return <i className={`iconfont icon-chaoshi ${styles.baseTimeout}`} />;
-    }
-    // 2)状态≠已结单
-    if(!endTimeStamp && planEndTimeStamp && currentTime > planEndTimeStamp) {
+    if(isOverTime === 1) {
       return <i className={`iconfont icon-chaoshi ${styles.baseTimeout}`} />;
     }
     return <i />;
-  };
-
-  // 处理超时颜色和背景
-  bgcFunc = () => {
-    const {
-      meterBaseData: {
-        planEndTime,
-        endTime,
-      },
-    } = this.props;
-    /**
-     * 1）状态=已结单，实际完成时间(endTime)＞要求完成时间(planEndTime)，记为超时
-     * 2）状态≠已结单，当前时间(本地时间)＞要求完成时间(planEndTime)，记为超时
-     * */
-      // 当前时间
-    const currentTime = Math.round(new Date().getTime() / 1000);
-    // 获取时间戳
-    const planEndTimeStamp = planEndTime && Math.round(moment(planEndTime, 'YYYY-MM-DD HH:mm:ss').valueOf() / 1000) || '';
-    const endTimeStamp = endTime && Math.round(moment(endTime, 'YYYY-MM-DD HH:mm:ss').valueOf() / 1000) || '';
-    // 1)状态=已结单
-    if(endTimeStamp && planEndTimeStamp && endTimeStamp > planEndTimeStamp) {
-      return false;
-    }
-    // 2)状态≠已结单 return false 反之return true
-    return !(!endTimeStamp && planEndTimeStamp && currentTime > planEndTimeStamp);
   };
 
   // 添加执行人 打开二次弹框
@@ -189,6 +153,7 @@ export default class MeterBaseInfo extends React.Component {
         planEndTime,
         endTime,
         stateName,
+        isOverTime,
       },
       operableUserData,
       checkedUserList,
@@ -205,7 +170,7 @@ export default class MeterBaseInfo extends React.Component {
           <div className={styles.baseIconBox}>
             {this.timeoutIconFunc()}
             {endTime && <i className={`iconfont icon-jiedan ${styles.baseEnd}`} />}
-            {!endTime && <div className={this.bgcFunc() ? styles.baseStatus : styles.errorStatus}>
+            {!endTime && <div className={isOverTime === 2 ? styles.baseStatus : styles.errorStatus}>
               {stateName || '- -'}
             </div>}
           </div>

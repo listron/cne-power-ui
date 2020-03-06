@@ -43,6 +43,7 @@ const initState = immutable.fromJS({
     stateId: '', // 当前状态id
     pageCode: '', // 前端页面组件编码
     stationCode: '', // 电站code
+    isOverTime: 2, // 是否超时 1-超时，2未超时
   },
   operableUserData: [{ // 可操作人数据
     ableUsers: null,
