@@ -183,7 +183,7 @@ const menuData = [
       {
         name: '工单',
         iconStyle: 'icon-gd2',
-        path: 'workProcess',
+        path: 'newWorkProcess',
         rightKey: 'operation_newworklist', // 新工单
         children: [
           {
@@ -191,11 +191,6 @@ const menuData = [
             path: 'newView',
             defaultPath: true,
             rightKey: 'operation_newworklist_work',
-          },
-          {
-            name: '工单统计',
-            path: 'statistics',
-            rightKey: 'operation_worklist_statistics',
           },
         ],
       },
