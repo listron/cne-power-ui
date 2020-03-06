@@ -12,6 +12,9 @@ class MeterReadSet extends Component{
   static propTypes= {
     resetStore: PropTypes.func,
     changeMeterReadSetStore: PropTypes.func,
+    getMeterList: PropTypes.func,
+    getBaseDevice: PropTypes.func,
+    getPriceDetail: PropTypes.func,
     theme: PropTypes.string,
     showPage: PropTypes.string,
     history: PropTypes.object,
@@ -22,13 +25,19 @@ class MeterReadSet extends Component{
   }
 
   componentDidMount () {
-    const { history, changeMeterReadSetStore } = this.props;
+    const { history, changeMeterReadSetStore, getMeterList, getBaseDevice, getPriceDetail } = this.props;
     const { search } = history.location;
     const { searchParams } = searchUtil(search).parse();
     const urlSearchParams = searchParams && JSON.parse(searchParams) || {}; // 判断从路由中过来的筛选条件
+    const { stationCode } = urlSearchParams;
     changeMeterReadSetStore({
       ...urlSearchParams,
     });
+    if(JSON.stringify(urlSearchParams) !== '{}'){
+      getMeterList({stationCode});
+      getBaseDevice({stationCode});
+      getPriceDetail({stationCode});
+    }
   }
 
   componentWillUnmount(){
