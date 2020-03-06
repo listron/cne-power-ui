@@ -16,7 +16,7 @@ function* getProcessBaseInfo(action) { // 获取基本信息数据
     yield put({
       type: newMeterDetailAction.changeStore,
       payload: {
-        loading: true,
+        loading: payload.loading,
       },
     });
     const response = yield call(axios.get, url);
@@ -93,7 +93,7 @@ function* getProcessList(action) { // 获取流程流转信息数据
     yield put({
       type: newMeterDetailAction.changeStore,
       payload: {
-        loading: true,
+        loading: payload.loading,
       },
     });
     const response = yield call(axios.get, url);
@@ -185,8 +185,8 @@ function* getReadMeter(action) { // 获取处理信息数据
     yield put({
       type: newMeterDetailAction.changeStore,
       payload: {
-        loading: true,
-        readLoading: true,
+        loading: payload.loading,
+        readLoading: payload.loading,
       },
     });
     const response = yield call(axios.get, url);
@@ -453,6 +453,7 @@ function* getSubmitAction(action) { // 提交验收按钮
         type: newMeterDetailAction.getProcessList,
         payload: {
           meterId: payload.docketId,
+          loading: false,
         },
       });
       // 获取流程可执行动作
@@ -460,6 +461,7 @@ function* getSubmitAction(action) { // 提交验收按钮
         type: newMeterDetailAction.getReadMeter,
         payload: {
           meterId: payload.docketId,
+          loading: false,
         },
       });
       // 获取抄表基本信息
@@ -474,6 +476,7 @@ function* getSubmitAction(action) { // 提交验收按钮
         type: newMeterDetailAction.getProcessBaseInfo,
         payload: {
           meterId: payload.docketId,
+          loading: false,
         },
       });
     } else {
@@ -524,6 +527,7 @@ function* getReceiveAction(action) { // 提交验收按钮
         type: newMeterDetailAction.getProcessList,
         payload: {
           meterId: payload.docketId,
+          loading: false,
         },
       });
       // 获取流程可执行动作
@@ -531,6 +535,7 @@ function* getReceiveAction(action) { // 提交验收按钮
         type: newMeterDetailAction.getReadMeter,
         payload: {
           meterId: payload.docketId,
+          loading: false,
         },
       });
       // 获取抄表基本信息
@@ -545,6 +550,7 @@ function* getReceiveAction(action) { // 提交验收按钮
         type: newMeterDetailAction.getProcessBaseInfo,
         payload: {
           meterId: payload.docketId,
+          loading: false,
         },
       });
     } else {
@@ -588,6 +594,7 @@ function* getSaveAction(action) { // 保存按钮
         type: newMeterDetailAction.getProcessBaseInfo,
         payload: {
           meterId: payload.docketId,
+          loading: false,
         },
       });
       // 获取流程信息
@@ -595,6 +602,7 @@ function* getSaveAction(action) { // 保存按钮
         type: newMeterDetailAction.getProcessList,
         payload: {
           meterId: payload.docketId,
+          loading: false,
         },
       });
       // 获取流程可执行动作
@@ -602,6 +610,7 @@ function* getSaveAction(action) { // 保存按钮
         type: newMeterDetailAction.getReadMeter,
         payload: {
           meterId: payload.docketId,
+          loading: false,
         },
       });
     } else {
