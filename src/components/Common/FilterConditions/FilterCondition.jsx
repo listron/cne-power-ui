@@ -22,6 +22,7 @@ class FilterCondition extends Component {
 
   static defaultProps = {
     filterBoxType: 'items', // items只要触发筛选条件即展示筛选项; none隐藏筛选项
+    onFilterBoxTypeChange: () => {},
   }
 
   /**
