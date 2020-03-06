@@ -17,11 +17,12 @@ class MeterList extends Component {
     getMeterList: PropTypes.func,
     getParticipant: PropTypes.func,
     listParams: PropTypes.object,
+    changeStore: PropTypes.func,
   };
 
   componentDidMount() {
     const { getMeterList, listParams, getParticipant } = this.props;
-    const { history } = this.props;
+    const { history, changeStore } = this.props;
     const { search } = history.location;
     const { listSearch, params } = searchUtil(search).parse(); // 抄表列表页
     const urlParamsSearch = listSearch && JSON.parse(listSearch) || {}; // 判断从路由中过来的筛选条件
@@ -35,6 +36,11 @@ class MeterList extends Component {
       ...listParams,
       ...urlParamsSearch,
     };
+    if(paramsSearch.listParams) {
+      changeStore({
+        ...paramsSearch,
+      });
+    }
     // 调用抄表列表页
     getMeterList(listSearchParams);
     // 获取所有执行人列表
