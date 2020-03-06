@@ -27,6 +27,15 @@ export const processIconFunc = (code) => {
     30015: 'iconfont icon-closeall', // 驳回按钮
     30016: 'iconfont icon-checkend', // 验收通过按钮
     30017: 'iconfont icon-addman', // 添加执行人按钮
+    30018: 'iconfont icon-dshen', // 审核按钮 待审核状态
+    30019: 'iconfont icon-btui', // 退回按钮 已退回状态
+    30020: 'iconfont icon-tijiao', // 提交按钮
+    30021: 'iconfont icon-newbuilt', // 添加按钮
+    30022: 'iconfont icon-paifa1', // 派发
+    30023: 'iconfont icon-tuihui', // 退回
+    30024: 'iconfont icon-del', // 删除
+    30025: 'iconfont icon-wrong', // 验收驳回按钮  关闭
+
   };
   return iconMap[code];
 };
