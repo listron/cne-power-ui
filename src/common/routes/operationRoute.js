@@ -22,7 +22,7 @@ const ticket = [
   },
   {
     // 运维管理-工单-工单列表
-    path: '/operation/workProcess/newView',
+    path: '/operation/newWorkProcess/newView',
     component: lazy(() => import('../../containers/Operation/NewWorkProcess/NewOverView/Overview.jsx')),
   },
   {
