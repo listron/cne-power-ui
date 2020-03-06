@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { eliminateDefectDetailAction } from './defectDetailReducer';
-import { commonAction } from '@containers/alphaRedux/commonAction';
+import { publicAction } from '@containers/alphaRedux/publicAction';
 import searchUtil from '@utils/searchUtil';
 import styles from './defectDetail.scss';
 import { Icon } from 'antd';
@@ -53,28 +53,36 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: eliminateDefectDetailAction.resetStore }),
   changeStore: payload => dispatch({ type: eliminateDefectDetailAction.changeStore, payload }),
-  getDefectDetail: payload => dispatch({ type: eliminateDefectDetailAction.getDefectDetail, payload }),
-  getDefectTypes: payload => dispatch({ type: eliminateDefectDetailAction.getDefectTypes, payload }),
-  sendDefect: payload => dispatch({ type: eliminateDefectDetailAction.sendDefect, payload }),
-  rejectDefect: payload => dispatch({ type: eliminateDefectDetailAction.rejectDefect, payload }),
-  closeDefect: payload => dispatch({ type: eliminateDefectDetailAction.closeDefect, payload }),
-  handleDefect: payload => dispatch({ type: eliminateDefectDetailAction.handleDefect, payload }),
-  checkDefect: payload => dispatch({ type: eliminateDefectDetailAction.checkDefect, payload }),
+  getDefectAction: payload => dispatch({ type: eliminateDefectDetailAction.getDefectAction, payload }),
   createDefect: payload => dispatch({ type: eliminateDefectDetailAction.createDefect, payload }),
-  getStationDeviceTypes: params => dispatch({ //  获取某一个电站下的设备
-    type: commonAction.getStationDeviceTypes,
+  getDefectBaseInfo: payload => dispatch({ type: eliminateDefectDetailAction.getDefectBaseInfo, payload }),
+  getDefectEventInfo: payload => dispatch({ type: eliminateDefectDetailAction.getDefectEventInfo, payload }),
+  getDefectHandleInfo: payload => dispatch({ type: eliminateDefectDetailAction.getDefectHandleInfo, payload }),
+  addDefectHandle: payload => dispatch({ type: eliminateDefectDetailAction.addDefectHandle, payload }),
+  getProcessInfo: payload => dispatch({ type: eliminateDefectDetailAction.getProcessInfo, payload }),
+  acceptanceDocket: payload => dispatch({ type: eliminateDefectDetailAction.acceptanceDocket, payload }),
+  verifyDocket: payload => dispatch({ type: eliminateDefectDetailAction.verifyDocket, payload }),
+  receiveDocket: payload => dispatch({ type: eliminateDefectDetailAction.receiveDocket, payload }),
+  getDefectMessage: payload => dispatch({ type: eliminateDefectDetailAction.getDefectMessage, payload }),
+  returnDocket: payload => dispatch({ type: eliminateDefectDetailAction.returnDocket, payload }),
+  deleteDocket: payload => dispatch({ type: eliminateDefectDetailAction.deleteDocket, payload }),
+  addAbleUser: payload => dispatch({ type: eliminateDefectDetailAction.addAbleUser, payload }),
+  submitAction: payload => dispatch({ type: eliminateDefectDetailAction.submitAction, payload }),
+  defectTypes: payload => dispatch({ type: eliminateDefectDetailAction.defectTypes, payload }),
+  getStationTypeDeviceModes: params => dispatch({ //  获取某一个电站下的设备
+    type: publicAction.getStationDeviceTypes,
+    payload: {
+      params,
+      deviceTypeAction: eliminateDefectDetailAction.changeStore,
+      resultName: 'deviceModes',
+    },
+  }),
+  getDeviceType: params => dispatch({ //  获取某一个电站下的设备
+    type: publicAction.getStationDeviceTypes,
     payload: {
       params,
       deviceTypeAction: eliminateDefectDetailAction.changeStore,
       resultName: 'deviceTypes',
-    },
-  }),
-  getLostGenType: params => dispatch({ // 获取缺陷类型
-    type: commonAction.getLostGenType,
-    payload: {
-      params,
-      actionName: eliminateDefectDetailAction.changeStore,
-      resultName: 'defectTypes',
     },
   }),
 });
