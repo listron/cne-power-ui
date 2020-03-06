@@ -50,7 +50,7 @@ class MeterReadSingleSatation extends Component{
     return(
       <div className={`${styles.meterReadSingle} ${styles[theme]}`}>
         <div className={styles.meterReadSingleTop}>
-          <div className={styles.text}><i className="iconfont icon-biao" />{stationName} - 电表设置</div>
+          <div className={styles.text}><i className="iconfont icon-biao" />{stationName}<span className={styles.line}></span>电表设置</div>
           <div className={styles.backIcon} onClick={this.onBack}><i className="iconfont icon-fanhui" /></div>
         </div>
         <MeterReadTable {...this.props} />

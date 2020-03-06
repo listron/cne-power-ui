@@ -52,7 +52,7 @@ class MeterReadAllSatation extends Component{
               <img width="97" height="72" src="/img/notabdata97-72.png" />
             </div>
           </div>
-            : 
+            :
             <div className={styles.nodata}><img width="223" height="164" src="/img/nodata.png" /></div>
             }
           </div>}

@@ -164,14 +164,14 @@ function *getPriceDetail({ payload = {} }){ // 查看电价详情
   try{
     yield put({
       type: meterReadSetAction.changeMeterReadSetStore,
-      payload: { tableLoading: true},
+      payload: { priceLoading: true},
     });
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
         type: meterReadSetAction.changeMeterReadSetStore,
         payload: {
-          tableLoading: false,
+          priceLoading: false,
           priceDetailData: response.data.data || {},
         },
       });
@@ -182,7 +182,7 @@ function *getPriceDetail({ payload = {} }){ // 查看电价详情
     yield put({
       type: meterReadSetAction.changeMeterReadSetStore,
       payload: {
-        tableLoading: false,
+        priceLoading: false,
         priceDetailData: {},
       },
     });
@@ -194,7 +194,7 @@ function *getMeterPrice({ payload = {} }){ // 编辑电价
   try{
     yield put({
       type: meterReadSetAction.changeMeterReadSetStore,
-      payload: { tableLoading: true },
+      payload: { priceLoading: true },
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
@@ -203,7 +203,7 @@ function *getMeterPrice({ payload = {} }){ // 编辑电价
       yield put({
         type: meterReadSetAction.getPriceDetail,
         payload: {
-          tableLoading: true,
+          priceLoading: true,
           stationCode: params,
         },
       });
@@ -214,7 +214,7 @@ function *getMeterPrice({ payload = {} }){ // 编辑电价
     yield put({
       type: meterReadSetAction.changeMeterReadSetStore,
       payload: {
-        tableLoading: false,
+        priceLoading: false,
       },
     });
   }

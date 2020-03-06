@@ -11,6 +11,7 @@ const FormItem = Form.Item;
 class MeterReadTable extends Component{
   static propTypes= {
     tableLoading: PropTypes.bool,
+    priceLoading: PropTypes.bool,
     meterListError: PropTypes.bool,
     isListTip: PropTypes.bool,
     isEditList: PropTypes.bool,
@@ -393,7 +394,7 @@ class MeterReadTable extends Component{
   }
 
   render(){
-    const { tableLoading, meterListError, baseDeviceData, isListTip, isPriceTip, changeMeterReadSetStore } = this.props;
+    const { tableLoading, priceLoading, meterListError, baseDeviceData, isListTip, isPriceTip, changeMeterReadSetStore } = this.props;
     const { getFieldDecorator } = this.props.form;
     const { addEventList, currentEventList, showWarningTip, showModalTip, warningTipText, modalTipText, modalVisible, modalMeterName, modalMeterType, modalMeterNumber, modalInitCode, oldTotalEndCode, oldTopEndCode, oldPeakEndCode, oldFlatEndCode, oldLowEndCode, newTotalStartCode, newTopStartCode, newPeakStartCode, newFlatStartCode, newLowStartCode, newMeterNumber, newMagnification } = this.state;
 
@@ -792,7 +793,7 @@ class MeterReadTable extends Component{
           </div>
         </div>
         {/* 数据加载loading */}
-        {tableLoading && <div className={styles.spin}>
+        {(priceLoading || tableLoading) && <div className={styles.spin}>
           <div className={styles.loadEffect}>
             <div><span></span></div>
             <div><span></span></div>

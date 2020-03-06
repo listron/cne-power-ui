@@ -276,7 +276,7 @@ const menuData = [
             name: '抄表设置',
             path: 'meterReadSet',
             defaultPath: true,
-            rightKey: 'operation_running_daily',
+            rightKey: 'operation_running_charge',
           },
         ],
       }, {

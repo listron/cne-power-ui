@@ -2,7 +2,8 @@ import Immutable from 'immutable';
 import { meterReadSetAction } from './meterReadSetAction';
 
 const initState = Immutable.fromJS({
-  tableLoading: false, // 进入主页面后loading
+  tableLoading: false, // 电表设置loading
+  priceLoading: false, // 电价设置loading
   meterListError: false, // 表格data error
   isListTip: false, // 是否显示未新增完电表设置提示语
   isPriceTip: false, // 是否显示未编辑完电价提示语
