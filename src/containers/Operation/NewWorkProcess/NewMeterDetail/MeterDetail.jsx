@@ -37,13 +37,13 @@ class MeterDetail extends Component {
     const { search } = history.location;
     const { meterId } = searchUtil(search).parse(); // 抄表详情页
     // 获取抄表基本信息
-    getProcessBaseInfo({meterId});
+    getProcessBaseInfo({meterId, loading: true});
     // 获取流程可操作人数据
     getOperableUser({meterId});
     // 获取流程信息
-    getProcessList({meterId});
+    getProcessList({meterId, loading: true});
     // 获取处理信息
-    getReadMeter({meterId});
+    getReadMeter({meterId, loading: true});
     // 获取流程可执行动作
     getProcessAction({meterId});
   }
