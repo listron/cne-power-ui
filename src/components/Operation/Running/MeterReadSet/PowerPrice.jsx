@@ -128,7 +128,6 @@ class PowerPrice extends Component{
     const { priceDetailData, theme, form, priceLoading } = this.props;
     const { updateTime, topPrice, peakPrice, flatPrice, lowPrice, discountRate } = priceDetailData;
     const { getFieldDecorator } = form;
-    console.log(topPrice === 0 ? topPrice.toString() : topPrice);
     return(
       <div className={`${styles.powerPrice} ${styles[theme]}`}>
         <div className={styles.priceTop}>
