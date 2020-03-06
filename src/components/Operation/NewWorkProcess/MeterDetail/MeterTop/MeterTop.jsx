@@ -20,6 +20,7 @@ export default class MeterTop extends React.Component {
     getReceiveAction: PropTypes.func,
     myMessageFlag: PropTypes.bool,
     editFlag: PropTypes.bool,
+    otherReadMeterData: PropTypes.object,
   };
 
   constructor(props) {
@@ -36,9 +37,101 @@ export default class MeterTop extends React.Component {
 
   // 退出
   onCancelEdit = () => {
-    const { editFlag, history } = this.props;
+    const { editFlag, history, otherReadMeterData, readMeterData } = this.props;
+    // 需要判断编辑状态下是否反生改变
+    // 改变就弹出提示，反之，直接返回
+    // 因为之前在saga返回的数据的时候做了处理，倒置两个数据进行对比之后，不准确，
+    // 所以把数据格式成后端返回的数据格式作对比，
+    // 可以修改的处理信息数据readMeterData
+    const readObj = {
+      ...readMeterData,
+      onlineDatas: readMeterData.onlineDatas.map(cur => {
+        const obj = {};
+        obj.magnification = cur.magnification;
+        obj.flatStartCode = cur.flatStartCode;
+        obj.meterNumber = cur.meterNumber;
+        obj.meterName = cur.meterName;
+        obj.totalEndCode = cur.totalEndCode;
+        obj.lowStartCode = cur.lowStartCode;
+        obj.topEndCode = cur.topEndCode;
+        obj.detailId = cur.detailId;
+        obj.lowEndCode = cur.lowEndCode;
+        obj.peakEndCode = cur.peakEndCode;
+        obj.topStartCode = cur.topStartCode;
+        obj.peakStartCode = cur.peakStartCode;
+        obj.meterImgs = cur.meterImgs;
+        obj.totalStartCode = cur.totalStartCode;
+        obj.flatEndCode = cur.flatEndCode;
+        obj.meterId = cur.meterId;
+        return obj;
+      }),
+      generationDatas: readMeterData.generationDatas.map(cur => {
+        const obj = {};
+        obj.magnification = cur.magnification;
+        obj.flatStartCode = cur.flatStartCode;
+        obj.meterNumber = cur.meterNumber;
+        obj.meterName = cur.meterName;
+        obj.totalEndCode = cur.totalEndCode;
+        obj.lowStartCode = cur.lowStartCode;
+        obj.topEndCode = cur.topEndCode;
+        obj.detailId = cur.detailId;
+        obj.lowEndCode = cur.lowEndCode;
+        obj.peakEndCode = cur.peakEndCode;
+        obj.topStartCode = cur.topStartCode;
+        obj.peakStartCode = cur.peakStartCode;
+        obj.meterImgs = cur.meterImgs;
+        obj.totalStartCode = cur.totalStartCode;
+        obj.flatEndCode = cur.flatEndCode;
+        obj.meterId = cur.meterId;
+        return obj;
+      }),
+    };
+    // 备份的处理信息数据otherReadMeterData
+    const otherObj = {
+      ...otherReadMeterData,
+      onlineDatas: otherReadMeterData.onlineDatas.map(cur => {
+        const obj = {};
+        obj.magnification = cur.magnification;
+        obj.flatStartCode = cur.flatStartCode;
+        obj.meterNumber = cur.meterNumber;
+        obj.meterName = cur.meterName;
+        obj.totalEndCode = cur.totalEndCode;
+        obj.lowStartCode = cur.lowStartCode;
+        obj.topEndCode = cur.topEndCode;
+        obj.detailId = cur.detailId;
+        obj.lowEndCode = cur.lowEndCode;
+        obj.peakEndCode = cur.peakEndCode;
+        obj.topStartCode = cur.topStartCode;
+        obj.peakStartCode = cur.peakStartCode;
+        obj.meterImgs = cur.meterImgs;
+        obj.totalStartCode = cur.totalStartCode;
+        obj.flatEndCode = cur.flatEndCode;
+        obj.meterId = cur.meterId;
+        return obj;
+      }),
+      generationDatas: otherReadMeterData.generationDatas.map(cur => {
+        const obj = {};
+        obj.magnification = cur.magnification;
+        obj.flatStartCode = cur.flatStartCode;
+        obj.meterNumber = cur.meterNumber;
+        obj.meterName = cur.meterName;
+        obj.totalEndCode = cur.totalEndCode;
+        obj.lowStartCode = cur.lowStartCode;
+        obj.topEndCode = cur.topEndCode;
+        obj.detailId = cur.detailId;
+        obj.lowEndCode = cur.lowEndCode;
+        obj.peakEndCode = cur.peakEndCode;
+        obj.topStartCode = cur.topStartCode;
+        obj.peakStartCode = cur.peakStartCode;
+        obj.meterImgs = cur.meterImgs;
+        obj.totalStartCode = cur.totalStartCode;
+        obj.flatEndCode = cur.flatEndCode;
+        obj.meterId = cur.meterId;
+        return obj;
+      }),
+    };
     // 编辑状态
-    if(editFlag) {
+    if(editFlag && JSON.stringify(readObj) !== JSON.stringify(otherObj)) {
       return this.setState({
         showWarningTip: true,
         actionCode: '',

@@ -266,6 +266,7 @@
             font-family: PingFangSC-Regular, serif;
 
             i {
+              margin-left: 4px;
               cursor: pointer;
               font-size: 20px;
               vertical-align: sub;
@@ -341,9 +342,9 @@
 
     .operatorList {
       width: 220px;
-      margin: 0 auto;
-      padding: 10px 0 30px;
-      height: 360px;
+      margin: 0 auto 26px;
+      padding-top: 10px;
+      height: 334px;
       overflow-y: auto;
     }
 

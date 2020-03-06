@@ -256,7 +256,7 @@ function* getReadMeter(action) { // 获取处理信息数据
             }),
           },
           otherReadMeterData: response.data.data, // 备份-作为参考的数据
-          newReadMeterData: {// 备份-作为参考的数据
+          newReadMeterData: {// 备份-作为参考的数据传给后端
             ...response.data.data,
             onlineDatas: response.data.data.onlineDatas.map(cur => {
               const obj = {};

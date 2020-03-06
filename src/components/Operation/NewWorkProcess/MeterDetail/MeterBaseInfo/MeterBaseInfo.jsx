@@ -227,6 +227,7 @@ export default class MeterBaseInfo extends React.Component {
                     {operableUserData[0].ableUsers ? operableUserData[0].ableUsers.split(',').join('、') : '- -'}
                     {processActionData.filter(cur => cur.actionCode === '3' && cur.isPermission === 0).length > 0 && (
                       <Popover
+                        trigger="click"
                         placement="rightTop"
                         visible={addVisible}
                         onVisibleChange={this.handleVisibleChange}
@@ -258,8 +259,8 @@ export default class MeterBaseInfo extends React.Component {
                               </div>
                             </div>
                           </div>
-                        )} trigger="hover">
-                        <i className="iconfont icon-addman" />
+                        )}>
+                        <i title="添加执行人" className="iconfont icon-addman" />
                       </Popover>
                     )}
                   </span>
