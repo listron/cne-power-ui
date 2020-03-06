@@ -28,6 +28,9 @@ export default {
     getStationDevicemode: '/v3/wind/report/fan/devicemode',
     getRegionStationDevice: '/v3/wind/report/fan/device',
   },
+  pubilcPath: {
+    getStationDevicetypes: '/v4/base/device', // 获取电站(必填), 设备类型下的设备型号
+  },
   APISubPaths: {
     // 新的登陆注册接口
     userNameLogin: '/v3/login',
@@ -127,6 +130,19 @@ export default {
       getOperaUser: '/v4/base/user/station/user', // 获取执行人
       getUploadFile: '/v4/common/fastdfs/uploadfile', // 上传图片
       getRotateImg: '/v4/common/fastdfs/rotateImg', // 旋转图片
+
+      // 新的消缺path
+      getEilminateDefectList: '/v4/opms/defect/page', // 消缺列表
+      getEliminateDefectAction: '/v4/opms/defect/ableActions', // 消缺可执行的动作
+      createEliminateDefect: '/v4/opms/defect/add', // 添加消缺工单
+      getEliminateBaseInfo: '/v4/opms/defect/base', // 消缺的基本信息
+      getEliminateEventInfo: '/v4/opms/defect/event', // 消缺的事件信息
+      getEliminateHandleInfo: '/v4/opms/defect/handle', // 消缺的处理信息
+      addEliminateHandle: '/v4/opms/defect/addHandl', // 添加工单处理信息
+      checkAndAcceptDefect: '/v4/opms/defect/checkAndAccep', // 消缺验收（通过和驳回）
+      verifyEilminateDefect: '/v4/opms/defect/verify', // 验收工单
+      delDocket: '/v4/opms/docket/del', // 删除工单
+
     },
     operation: {
       // 工作台

@@ -1,5 +1,6 @@
 import { all } from 'redux-saga/effects';
 import { watchCommon } from './alphaRedux/commonSaga';
+import { watchPublic } from './alphaRedux/publicSaga';
 import { watchLogin } from './Login/loginSaga';
 import { watchHomepage } from './Home/homepageSaga';
 
@@ -147,6 +148,7 @@ import { watchConfluenceBox } from './ReportManage/PvReport/ReportDevice/Conflue
 export default function* rootSaga() {
   yield all([
     watchCommon(), // common
+    watchPublic(), // public
     watchLogin(), // 登录注册
     watchHomepage(), // 主页
     //ticket

@@ -20,20 +20,17 @@ function* easyPut(actionName, payload) {
 
 function* getDefectList(action) { //获取缺陷工单列表
   const { payload } = action;
-  const url = `${APIBasePath}${ticket.getDefectList}`;
-  const { defectGroup, ...rest } = payload;
+  const url = `${APIBasePath}${ticket.getEilminateDefectList}`;
   try {
     yield call(easyPut, 'changeStore', {
       listLoading: true,
       listParams: payload,
     });
-    const response = yield call(axios.post, url,
-      {
-        ...rest,
-        defectGroup: (defectGroup.length > 1 || defectGroup.length === 0) ? '' : defectGroup[0],
-      });
+    const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-      const total = response.data.data.total || 0;
+      const { stateAndTotalList = [], tableData = {} } = response.data.data;
+      const { pageCount, dataList } = tableData;
+      const total = pageCount || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
       if (total === 0) { // 总数为0时，展示0页
@@ -44,10 +41,9 @@ function* getDefectList(action) { //获取缺陷工单列表
       yield call(easyPut, 'changeStore', {
         listParams: { ...payload, pageNum },
         total,
-        defectListData: response.data.data.defectList || [],
-        defectStatusStatistics: response.data.data.defectStatusStatistics || {},
+        defectListData: dataList || [],
+        stateAndTotalList: stateAndTotalList,
         listLoading: false,
-        selectedRowKeys: [],
       });
     } else {
       throw response.data;
@@ -56,16 +52,16 @@ function* getDefectList(action) { //获取缺陷工单列表
     message.error(`获取消缺列表失败 ${error.message}, 请重试`);
     yield call(easyPut, 'changeStore', {
       total: 0,
-      selectedRowKeys: [],
       defectListData: [],
-      defectStatusStatistics: {},
+      stateAndTotalList: {},
       listLoading: false,
     });
   }
 }
 
-function* getParticipant() { // 获取参与人所有列表
-  const url = `${APIBasePath}${ticket.getParticipant}`;
+function* getParticipant() { // 获取执行人所有列表
+  // const url = `${APIBasePath}${ticket.getParticipant}`;
+  const url = `${APIBasePath}${ticket.getOperaUser}`;
   try {
     const response = yield call(axios.get, url, {
       // params: { username: '张'}
