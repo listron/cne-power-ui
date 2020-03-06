@@ -9,6 +9,7 @@ import styles from './defectDetail.scss';
 import DetailTopSubmit from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DetailTopSubmit/DetailTopSubmit';
 import DefectBaseTitle from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectBase/DefectBaseTitle';
 import DefectBaseInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectBase/DefectBaseInfo';
+import ProcessInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/ProcessInfo/ProcessInfo';
 
 class DefectDetail extends Component {
 
@@ -44,6 +45,7 @@ class DefectDetail extends Component {
         <DetailTopSubmit />
         <DefectBaseTitle />
         <DefectBaseInfo />
+        <ProcessInfo />
       </div>
     );
   }
