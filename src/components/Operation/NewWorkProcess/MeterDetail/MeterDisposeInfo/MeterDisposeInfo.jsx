@@ -129,6 +129,7 @@ export default class MeterDisposeInfo extends React.Component {
         onlineDatas,
         generationDatas,
       },
+      readMeterData, // 判断是否有输入的值有错误的
       getSaveAction,
       meterBaseData: {
         stateId,
@@ -155,6 +156,7 @@ export default class MeterDisposeInfo extends React.Component {
       obj.meterId = cur.meterId;
       return obj;
     });
+    // 参数
     const params = {
       readmeterId,
       docketId,
@@ -174,8 +176,20 @@ export default class MeterDisposeInfo extends React.Component {
         });
       },
     };
-    // 保存修改
-    getSaveAction(params);
+    //
+    let flag = true;
+    // 合并上网计量表和发电计量表
+    readMeterData.onlineDatas.concat(readMeterData.generationDatas).forEach(cur => {
+      // 判断每个表的止码是否填写错误
+      if(cur.type1 === 2 || cur.type2 === 2 || cur.type3 === 2 || cur.type4 === 2 || cur.type5 === 2) {
+        flag = false;
+      }
+    });
+    // 请求
+    if(flag) {
+      // 保存修改
+      getSaveAction(params);
+    }
   };
 
   // 查看图片
