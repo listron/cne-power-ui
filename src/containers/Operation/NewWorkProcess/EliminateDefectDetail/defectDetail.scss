@@ -1,41 +1,41 @@
 @import "../../../../theme/theme.scss";
 .detailWrap {
   display: flex;
-  flex: 1 0 auto; //background-color: #fff;
+  flex: 1 0 auto; 
   flex-direction: column;
-  justify-content: space-between; //padding: 24px 24px 0;
-  background-color: #fff;
+  background-color: #f0f2f5;
   z-index: 30;
   width: 100%;
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid $promptColor;
-    .text {
-      font-size: 18px;
-      color: $darkColor;
-      letter-spacing: 4px;
-      margin-left: 44px;
-      width: calc(100% - 100px);
-      @include overflowText();
-    }
-    .backIcon {
-      display: inline-block;
-      color: $darkColor;
-      font-size: 20px;
-      border-left: 1px solid $promptColor;
-      margin-left: 10px;
-      height: 100%;
-      line-height: 64px;
-      width: 64px;
-      cursor: pointer;
-      flex: 0 0 64px;
-    }
+  height: 100%;
+  .top{
+   
+    // box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
   }
-  .defectDetailCont {
+
+  .defectCont {
+    width: 100%;
     display: flex;
+    padding: 0 24px;
+    justify-content: space-between;
+    z-index: 10;
     flex: 1;
-    padding: 24px 36px;
+
+    .leftCont {
+      display: flex;
+      flex-direction: column;
+      flex:1 0 73%;
+      min-width: 890px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.20);
+      justify-content: space-between;
+    }
+
+    .rightCont {
+      margin-left: 8px;
+      display: flex;
+      flex:0 0 307px;
+      box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.20);
+      background-color: #fff;
+    }
   }
 }

@@ -5,6 +5,7 @@ import { eliminateDefectDetailAction } from './defectDetailReducer';
 import { publicAction } from '@containers/alphaRedux/publicAction';
 import searchUtil from '@utils/searchUtil';
 import styles from './defectDetail.scss';
+import Footer from '@components/common/Footer';
 
 import DetailTopSubmit from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DetailTopSubmit/DetailTopSubmit';
 import DefectBaseTitle from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectBase/DefectBaseTitle';
@@ -42,8 +43,16 @@ class DefectDetail extends Component {
     return (
       <div className={`${styles.detailWrap}`}>
         <DetailTopSubmit />
-        <DefectBaseTitle />
-        <DefectBaseInfo />
+        <div className={styles.defectCont}>
+          <div className={styles.leftCont}>
+            <DefectBaseTitle />
+            <DefectBaseInfo />
+          </div>
+          <div className={styles.rightCont}>
+
+          </div>
+        </div>
+        <Footer />
       </div>
     );
   }
