@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Popover, Checkbox} from 'antd';
+import {Popover, Checkbox, Popconfirm} from 'antd';
 import moment from 'moment';
 import searchUtil from '@utils/searchUtil';
+import CneTips from '@components/Common/Power/CneTips';
 import styles from './meterBaseInfo.scss';
 
 const dateFormat = 'YYYY-MM-DD HH:mm';
@@ -25,6 +26,7 @@ export default class MeterBaseInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      showWarningTip: false,
     };
   }
 
@@ -84,8 +86,66 @@ export default class MeterBaseInfo extends React.Component {
     return <i />;
   };
 
-  // 添加执行人
+  // 处理超时颜色和背景
+  bgcFunc = () => {
+    const {
+      meterBaseData: {
+        planEndTime,
+        endTime,
+      },
+    } = this.props;
+    /**
+     * 1）状态=已结单，实际完成时间(endTime)＞要求完成时间(planEndTime)，记为超时
+     * 2）状态≠已结单，当前时间(本地时间)＞要求完成时间(planEndTime)，记为超时
+     * */
+      // 当前时间
+    const currentTime = Math.round(new Date().getTime() / 1000);
+    // 获取时间戳
+    const planEndTimeStamp = planEndTime && Math.round(moment(planEndTime, 'YYYY-MM-DD HH:mm:ss').valueOf() / 1000) || '';
+    const endTimeStamp = endTime && Math.round(moment(endTime, 'YYYY-MM-DD HH:mm:ss').valueOf() / 1000) || '';
+    // 1)状态=已结单
+    if(endTimeStamp && planEndTimeStamp && endTimeStamp > planEndTimeStamp) {
+      return false;
+    }
+    // 2)状态≠已结单 return false 反之return true
+    return !(!endTimeStamp && planEndTimeStamp && currentTime > planEndTimeStamp);
+  };
+
+  // 添加执行人 打开二次弹框
   addUsername = () => {
+    const { changeStore } = this.props;
+    this.setState({
+      showWarningTip: true,
+    }, () => {
+      // 关闭弹框
+      changeStore({
+        addVisible: false,
+      });
+    });
+  };
+
+  handleVisibleChange = (visible) => {
+    const { changeStore } = this.props;
+    changeStore({
+      addVisible: visible,
+    });
+  };
+
+  // 取消
+  cancelAdd = () => {
+    const { changeStore } = this.props;
+    changeStore({
+      addVisible: false,
+    });
+  };
+  // 关闭二次弹框
+  onCancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  };
+
+  onConfirmWarningTip = () => {
     const {
       history,
       checkedUserList,
@@ -94,13 +154,12 @@ export default class MeterBaseInfo extends React.Component {
         stateId,
       },
       processActionData,
-      changeStore,
     } = this.props;
     const { search } = history.location;
     const { meterId } = searchUtil(search).parse(); // 抄表详情页
-    // 关闭弹框
-    changeStore({
-      addVisible: false,
+    // 关闭二次弹框
+    this.setState({
+      showWarningTip: false,
     });
     // 添加执行人
     if(checkedUserList.length !== 0) {
@@ -118,22 +177,8 @@ export default class MeterBaseInfo extends React.Component {
     }
   };
 
-  handleVisibleChange = (visible) => {
-    const { changeStore } = this.props;
-    changeStore({
-      addVisible: visible,
-    });
-  };
-
-  // 取消
-  cancelAdd = () => {
-    const { changeStore } = this.props;
-    changeStore({
-      addVisible: false,
-    });
-  };
-
   render() {
+    const { showWarningTip } = this.state;
     const {
       stationFlag,
       operatorFlag,
@@ -160,7 +205,7 @@ export default class MeterBaseInfo extends React.Component {
           <div className={styles.baseIconBox}>
             {this.timeoutIconFunc()}
             {endTime && <i className={`iconfont icon-jiedan ${styles.baseEnd}`} />}
-            {!endTime && <div className={styles.baseStatus}>
+            {!endTime && <div className={this.bgcFunc() ? styles.baseStatus : styles.errorStatus}>
               {stateName || '- -'}
             </div>}
           </div>
@@ -285,6 +330,13 @@ export default class MeterBaseInfo extends React.Component {
             </div>
           </div>
         </div>
+        <CneTips
+          visible={showWarningTip}
+          width={260}
+          onCancel={this.onCancelWarningTip}
+          onConfirm={this.onConfirmWarningTip}
+          tipText="添加后不可删除，确认添加？"
+        />
       </div>
     );
   }

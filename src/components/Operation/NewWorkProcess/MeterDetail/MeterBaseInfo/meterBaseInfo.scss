@@ -79,6 +79,17 @@
         color: $themeColor;
         text-align: center;
       }
+
+      .errorStatus{
+        width: 70px;
+        @include lineheight(34px);
+        border-radius: 17px;
+        font-family: PingFangSC-Medium, serif;
+        font-weight: bold;
+        background-color: #fbe6e3;
+        color: #df4b33;
+        text-align: center;
+      }
     }
   }
 
