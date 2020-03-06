@@ -178,6 +178,7 @@ class BranchTable extends React.Component {
     const { branchStatus, checkStatus, isChange, pvNums } = e;
     if (isCheckStatus) {//当为检测支路状态
       if (pvNums === 0) {//如果是连接条数为0就是未连接状态
+        if (isChange) { return styles.nolinkchange; }
         return styles.nolink;
       }
       //判断状态
