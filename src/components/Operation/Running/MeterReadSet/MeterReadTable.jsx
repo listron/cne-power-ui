@@ -27,7 +27,6 @@ class MeterReadTable extends Component{
     getAddMeterList: PropTypes.func,
     getMeterList: PropTypes.func,
     stationCode: PropTypes.number,
-    addDataNum: PropTypes.number,
     form: PropTypes.object,
     stationName: PropTypes.string,
   }
@@ -163,7 +162,8 @@ class MeterReadTable extends Component{
 
   delEvent = (value) => { // 删除
     const { meterId } = value;
-    const { addDataNum, changeMeterReadSetStore, isEditPrice, isEditList } = this.props;
+    const { addEventList } = this.state;
+    const { changeMeterReadSetStore, isEditPrice, isEditList } = this.props;
     if (isEditPrice) {
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
@@ -171,7 +171,7 @@ class MeterReadTable extends Component{
       }, 2000);
       return;
     }
-    if (addDataNum >= 1) {
+    if (addEventList.length >= 1) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
@@ -228,7 +228,8 @@ class MeterReadTable extends Component{
   }
 
   changeMeter = (value) => { // 换表
-    const { addDataNum, changeMeterReadSetStore, isEditPrice, isEditList } = this.props;
+    const { addEventList } = this.state;
+    const { changeMeterReadSetStore, isEditPrice, isEditList } = this.props;
     if (isEditPrice) {
       changeMeterReadSetStore({isPriceTip: true});
       setTimeout(() => {
@@ -236,7 +237,7 @@ class MeterReadTable extends Component{
       }, 2000);
       return;
     }
-    if (addDataNum >= 1) {
+    if (addEventList.length >= 1) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });

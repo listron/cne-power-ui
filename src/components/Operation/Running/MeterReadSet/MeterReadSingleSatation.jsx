@@ -27,7 +27,7 @@ class MeterReadSingleSatation extends Component{
       }, 2000);
       return;
     }
-    if (addDataNum >= 1) {
+    if (addDataNum > 1) {
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
