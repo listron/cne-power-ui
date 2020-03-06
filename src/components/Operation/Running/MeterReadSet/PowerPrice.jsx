@@ -128,6 +128,7 @@ class PowerPrice extends Component{
     const { priceDetailData, theme, form, priceLoading } = this.props;
     const { updateTime, topPrice, peakPrice, flatPrice, lowPrice, discountRate } = priceDetailData;
     const { getFieldDecorator } = form;
+    console.log(topPrice === 0 ? topPrice.toString() : topPrice);
     return(
       <div className={`${styles.powerPrice} ${styles[theme]}`}>
         <div className={styles.priceTop}>
@@ -291,11 +292,11 @@ class PowerPrice extends Component{
           </div>}
 
           {!isEdit && <div className={styles.priceInfo}>
-            <div className={styles.topPrice}><span className={styles.text}>尖时段</span><span className={styles.num}>{!priceLoading ? (topPrice.toString() || '--') : topPriceValue}元/kWh</span></div>
-            <div className={styles.peakPrice}><span className={styles.text}>峰时段</span><span className={styles.num}>{!priceLoading ? (peakPrice.toString() || '--') : peakPriceValue}元/kWh</span></div>
-            <div className={styles.flatPrice}><span className={styles.text}>平时段</span><span className={styles.num}>{!priceLoading ? (flatPrice.toString() || '--') : flatPriceValue}元/kWh</span></div>
-            <div className={styles.lowPrice}><span className={styles.text}>谷时段</span><span className={styles.num}>{!priceLoading ? (lowPrice.toString() || '--') : lowPriceValue}元/kWh</span></div>
-            <div className={styles.discountRate}><span className={styles.text}>折扣率</span><span className={styles.num}>{!priceLoading ? (discountRate.toString() || '--') : discountRateValue}%</span></div>
+            <div className={styles.topPrice}><span className={styles.text}>尖时段</span><span className={styles.num}>{!priceLoading ? ((topPrice === 0 ? topPrice.toString() : topPrice) || '--') : topPriceValue}元/kWh</span></div>
+            <div className={styles.peakPrice}><span className={styles.text}>峰时段</span><span className={styles.num}>{!priceLoading ? ((peakPrice === 0 ? peakPrice.toString() : peakPrice) || '--') : peakPriceValue}元/kWh</span></div>
+            <div className={styles.flatPrice}><span className={styles.text}>平时段</span><span className={styles.num}>{!priceLoading ? ((flatPrice === 0 ? flatPrice.toString() : flatPrice) || '--') : flatPriceValue}元/kWh</span></div>
+            <div className={styles.lowPrice}><span className={styles.text}>谷时段</span><span className={styles.num}>{!priceLoading ? ((lowPrice === 0 ? lowPrice.toString() : lowPrice) || '--') : lowPriceValue}元/kWh</span></div>
+            <div className={styles.discountRate}><span className={styles.text}>折扣率</span><span className={styles.num}>{!priceLoading ? ((discountRate === 0 ? discountRate.toString() : discountRate) || '--') : discountRateValue}%</span></div>
           </div>}
         </div>
       </div>
