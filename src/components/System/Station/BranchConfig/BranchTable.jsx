@@ -19,8 +19,8 @@ class BranchTable extends React.Component {
     deviceCodes: PropTypes.array,
     editBranchData: PropTypes.func,
     copyData: PropTypes.array,
-    focus: PropTypes.bool,
-    selectDeviceFullCode: PropTypes.bool,
+    focus: PropTypes.any,
+    selectDeviceFullCode: PropTypes.any,
     isCheckStatus: PropTypes.bool,
     checked: PropTypes.bool,
     checkTime: PropTypes.str,
@@ -178,7 +178,7 @@ class BranchTable extends React.Component {
       editBranchData({ saveEditArr: editArr, copyData });
     }
     this.props.changeBranchStore({
-      focus: false,
+      focus: '',
     });
   }
 

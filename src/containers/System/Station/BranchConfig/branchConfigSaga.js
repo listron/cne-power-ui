@@ -111,6 +111,7 @@ function* getDeviceBranchInfo(action) {
       payload: {
         cancelloadding: true,
         loadding: true,
+        checked: false,
       },
     });
     const response = yield call(axios.post, url, { ...payload, deviceTypeCode, deviceCodes: deviceCodeArr });
@@ -125,6 +126,8 @@ function* getDeviceBranchInfo(action) {
           copyData: response.data.data.deviceList || [],
           cancelloadding: false,
           loadding: false,
+          checked: false,
+
         },
       });
     } else {
@@ -223,6 +226,7 @@ function* editBranchData(action) {
           copyData: newCopyData,
           editLoadding: false,
           isCheckStatus: false,
+
 
         },
       });
