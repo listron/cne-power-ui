@@ -72,9 +72,10 @@ class BranchTable extends React.Component {
             editArr.push({ deviceCode: deviceFullCode, deviceName, branchIndex, pvNums, isDelete: 0 });
           } else {
             if (isCheckStatus && item.isChange) {//检测状态下有小红点的要传参，branchCode有值就是编辑，没值就是新增
-              const { branchIndex, pvNums } = item;
-              item.branchCode ? editArr.push({ branchCode: item.branchCode, pvNums, isDelete: 0 }) : editArr.push({
-                deviceCode: deviceFullCode, deviceName, branchIndex, pvNums, isDelete: 0,
+              const { branchIndex, pvNums, checkStatus } = item;
+              const pvNumsValue = checkStatus ? pvNums : 0;
+              item.branchCode ? editArr.push({ branchCode: item.branchCode, pvNums: pvNumsValue, isDelete: 0 }) : editArr.push({
+                deviceCode: deviceFullCode, deviceName, branchIndex, pvNums: pvNumsValue, isDelete: 0,
               });
             }
             const isEqual = lodash.isEqual(item, initBranchListItem);
@@ -91,9 +92,10 @@ class BranchTable extends React.Component {
             editArr.push({ branchCode: item.branchCode, pvNums: item.pvNums, isDelete: 1 });
           } else {
             if (isCheckStatus && item.isChange) {//检测状态下有小红点的要传参，branchCode有值就是编辑，没值就是新增
-              const { branchIndex, pvNums } = item;
-              item.branchCode ? editArr.push({ branchCode: item.branchCode, pvNums, isDelete: 0 }) : editArr.push({
-                deviceCode: deviceFullCode, deviceName, branchIndex, pvNums, isDelete: 0,
+              const { branchIndex, pvNums, checkStatus } = item;
+              const pvNumsValue = checkStatus ? pvNums : 0;
+              item.branchCode ? editArr.push({ branchCode: item.branchCode, pvNums: pvNumsValue, isDelete: 0 }) : editArr.push({
+                deviceCode: deviceFullCode, deviceName, branchIndex, pvNums: pvNumsValue, isDelete: 0,
               });
             }
             const isEqual = lodash.isEqual(item, curBranchListItem);
