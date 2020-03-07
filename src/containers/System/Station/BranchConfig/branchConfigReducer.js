@@ -8,8 +8,8 @@ const initState = Immutable.fromJS({
   stationsInfo: [],
   deviceTypeData: [],
   deviceNameData: [],
-  focus: false,
-  selectDeviceFullCode: false,
+  focus: '',
+  selectDeviceFullCode: '',
   isCheckStatus: false,
   checked: false,
 
