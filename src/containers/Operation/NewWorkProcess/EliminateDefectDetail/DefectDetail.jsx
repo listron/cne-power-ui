@@ -12,6 +12,7 @@ import DefectBaseTitle from '@components/Operation/NewWorkProcess/EliminateDefec
 import DefectBaseInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectBase/DefectBaseInfo';
 import ProcessInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/ProcessInfo/ProcessInfo';
 import DefectEvent from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectEvent/DefectEvent';
+import HandleInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/HandleInfo/HandleInfo';
 
 class DefectDetail extends Component {
 
@@ -50,6 +51,7 @@ class DefectDetail extends Component {
             <DefectBaseTitle />
             <DefectBaseInfo />
             <DefectEvent {...this.props} />
+            <HandleInfo />
           </div>
           <ProcessInfo />
         </div>
