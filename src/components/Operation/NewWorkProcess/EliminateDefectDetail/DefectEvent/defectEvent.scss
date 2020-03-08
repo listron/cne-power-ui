@@ -1,0 +1,145 @@
+
+@import "../../../../../theme/theme.scss";
+
+.defectEventWrap{
+  margin-top: 19px;
+  padding: 0 24px;
+  .eventTitle{
+    color: $themeColor;
+  }
+
+  .eventDetail{
+    margin-top: 14px;
+    background:#ffffff;
+    border:1px solid #d4d4d4;
+    box-shadow:2px 2px 0 3px #f3f2f2;
+    border-radius:2px;
+    
+    position: relative;
+    p{
+      margin-bottom: 0;
+    }
+    .messageWrap{
+      display: flex;
+      flex-direction: column;
+      padding: 16px 30px 11px 21px ;
+    }
+    .status{
+      position: absolute;
+      right:0;
+      top:0;
+      .yijie{ color:$themeColor};
+      .weijie{ color:#df4b33};
+      .hulue1{color:#ff9900};
+    }
+    .close{
+      width: 24px;
+      height: 24px;
+      color:$themeColor;
+      display: inline-block;
+      text-align: center;
+      cursor: pointer;
+      &:hover{
+        color:#ff9900;
+      }
+    }
+    .oneLine{
+      display: flex;
+      .list{
+        display: flex;
+        margin-left: 20px;
+        line-height: 30px;
+        position: relative;
+        &:first-child{
+          margin-left: 0;
+        }
+        p{
+          margin-left: 11px;
+        }
+        .iconHelp{
+          position: absolute;
+          color: #999;
+          font-size: 12px;
+          right: -11px;
+          top:-7px;
+          cursor: pointer;
+        }
+      }
+    }
+    .twoLine{
+        border-top:1px dashed #d4d4d4;
+        display: flex;
+        line-height: 30px;
+        .descipt{
+          display: flex;
+          flex: 1;
+          b{
+            display: flex;
+            flex: 0 0 71px;
+          }
+          p{
+            word-break: break-all;
+            text-align: justify;
+          }
+        }
+        .analysize{
+          flex:0 0 92px;
+          margin-left: 70px;
+          display: flex;
+          align-items: flex-end;
+          padding-top: 4px;
+        }
+    }
+    .threeLine{
+       border-top:1px dashed #d4d4d4;
+       display: flex;
+       line-height: 30px;
+       padding: 7px 0  0 71px;
+       img{
+         width:58px;
+         height: 58px;
+         margin-right: 20px;
+
+       }
+    }
+  }
+  .footer{
+      background:#f3f2f2;
+      height:40px;
+      line-height: 40px;
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 30px;
+      align-items: center;
+      .stateBox{
+        width: 92px;
+        display: flex;
+        align-items: center;
+        margin-left: 13px;
+        border:1px solid #ff9900;
+        box-shadow:inset 1px 1px 0 0 rgba(255,255,255,0.50);
+        border-radius:2px;
+        background: #fff;
+        height: 28px;
+        line-height: 28px;
+        padding-right: 5px;
+        cursor: pointer;
+        i{
+          display: inline-block;
+          margin-left: 7px;
+        }
+        span{
+          flex: 1;
+          text-align: center;
+        }
+      }
+      .yijie{ color:#199475;border-color:#199475;}
+      .weijie{color:#df4b33;border-color:#df4b33;}
+      .hulue{color:#ff9900;border-color:#ff9900;}
+      .yijie.selected{ color:#fff; background: #199475;}
+      .weijie.selected{ color:#fff; background: #df4b33;}
+      .hulue.selected{ color:#fff; background: #ff9900;}
+    }
+
+
+}

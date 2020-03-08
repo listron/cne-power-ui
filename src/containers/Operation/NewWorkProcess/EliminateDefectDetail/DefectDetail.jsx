@@ -5,11 +5,13 @@ import { eliminateDefectDetailAction } from './defectDetailReducer';
 import { publicAction } from '@containers/alphaRedux/publicAction';
 import searchUtil from '@utils/searchUtil';
 import styles from './defectDetail.scss';
+import Footer from '@components/common/Footer';
 
 import DetailTopSubmit from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DetailTopSubmit/DetailTopSubmit';
 import DefectBaseTitle from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectBase/DefectBaseTitle';
 import DefectBaseInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectBase/DefectBaseInfo';
 import ProcessInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/ProcessInfo/ProcessInfo';
+import DefectEvent from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectEvent/DefectEvent';
 import HandleInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/HandleInfo/HandleInfo';
 
 class DefectDetail extends Component {
@@ -48,10 +50,12 @@ class DefectDetail extends Component {
           <div className={styles.leftParts}>
             <DefectBaseTitle />
             <DefectBaseInfo />
+            <DefectEvent {...this.props} />
             <HandleInfo />
           </div>
           <ProcessInfo />
         </div>
+        <Footer />
       </div>
     );
   }
