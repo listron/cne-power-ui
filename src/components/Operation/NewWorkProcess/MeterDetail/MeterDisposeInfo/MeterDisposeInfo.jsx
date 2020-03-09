@@ -241,7 +241,7 @@ export default class MeterDisposeInfo extends React.Component {
     // filed需要改变的value
     // type 样式类型
     readMeterData[arrStr][index][filed] = e.target.value === '' ? e.target.value : Number(e.target.value);
-    readMeterData[arrStr][index][type] = reg.test(e.target.value) ? 0 : 2;
+    readMeterData[arrStr][index][type] = reg.test(e.target.value) ? 0 : (e.target.value === '' ? 1 : 2);
     // 判断当前改变输入框的值和otherReadMeterData里面当前的值对比是否一样
     // 一样是-1，不一样就是当前e.target.value
     if(e.target.value !== '' && Number(e.target.value) === otherReadMeterData[arrStr][index][filed]) {

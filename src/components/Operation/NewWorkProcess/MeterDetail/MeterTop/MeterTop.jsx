@@ -21,6 +21,7 @@ export default class MeterTop extends React.Component {
     myMessageFlag: PropTypes.bool,
     editFlag: PropTypes.bool,
     otherReadMeterData: PropTypes.object,
+    receiveLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -418,7 +419,7 @@ export default class MeterTop extends React.Component {
 
   render() {
     const { showWarningTip, warningTipText, passVisible, rejectVisible, messageText } = this.state;
-    const { processActionData, thisReadTimeFlag, myMessageFlag } = this.props;
+    const { processActionData, thisReadTimeFlag, myMessageFlag, receiveLoading } = this.props;
 
     return (
       <React.Fragment>
@@ -486,7 +487,7 @@ export default class MeterTop extends React.Component {
           visible={showWarningTip}
           width={260}
           onCancel={this.onCancelWarningTip}
-          onConfirm={this.onConfirmWarningTip}
+          onConfirm={receiveLoading ? () => {} : this.onConfirmWarningTip}
           tipText={warningTipText}
         />
         <PassAlert
