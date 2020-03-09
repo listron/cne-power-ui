@@ -1,7 +1,7 @@
 @import "../../../../theme/theme.scss";
 .detailWrap {
   display: flex;
-  flex: 1 0 auto; //background-color: #fff;
+  flex: 1 0 auto; 
   flex-direction: column;
   background-color: #f0f2f5;
   z-index: 30;
@@ -9,6 +9,7 @@
   .detailContent{
     display: flex;
     flex: 1 0 auto;
+    padding: 0 24px;
   }
   .leftParts{
     flex: 1 0 auto;
