@@ -75,14 +75,12 @@ class CneInputSearch extends Component {
        this.setState({ displaySearchInput: false, value: '' });
     }
 
-
     render() {
         const {displaySearchInput, value} = this.state;
         const {placeholder, className} = this.props;
-
         return (
             <div className={`${styles.commonSearch} ${className}`}>
-                <div className={`${styles.conditionSearch} ${!displaySearchInput && styles.closeConditionSearch}`} onMouseEnter={this.enterSearch}>
+                <div className={`${styles.conditionSearch} ${!displaySearchInput ? styles.closeConditionSearch : styles.openConditionSearch}`} onMouseEnter={this.enterSearch}>
                     <Search
                         value= {value}
                         placeholder= {placeholder}

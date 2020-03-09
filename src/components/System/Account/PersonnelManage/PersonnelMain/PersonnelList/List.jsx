@@ -35,26 +35,34 @@ class List extends Component {
       {
         title: '用户名',
         dataIndex: 'username',
+        width:'16%',
         render: (text, record) => (
           <div className={styles.username} title={text} onClick={() => this.showDetail(record)}>{text || '--'}</div>
         ),
       }, {
         title: '真实姓名',
         dataIndex: 'userFullName',
+        width:'18%',
         render: (text) => text || '--',
+        ellipsis: true,
       }, {
         title: '电话',
         dataIndex: 'phoneNum',
+        width:'16%',
         className: styles.phoneNum,
         render: (text) => text || '--',
+        ellipsis: true,
       }, {
         title: '角色',
         dataIndex: 'roleName',
-        render: (text) => <div className={styles.roleName} title={text}>{text || '--'}</div>,
+        className:styles.roleNameBox,
+        render: (text) => text || '--',
+        ellipsis: true,
       }, {
         title: '用户状态',
         dataIndex: 'enterpriseStatus',
         className: styles.enterpriseStatus,
+        width:'13%',
         render: (text) => {
           const statusText = this.enterpriseStatusInfo[text];
           return <span className={statusText === '待审核' ? styles.toExamine : styles.status}>{statusText || '--'}</span>;
@@ -169,6 +177,7 @@ class List extends Component {
   getHandleColumn = (editRight, assignRight, deleteRight, auditRight) => ({
     title: '操作',
     dataIndex: 'handle',
+    width:'12%',
     className: styles.handleBox,
     render: (text, record) => {
       const { enterpriseStatus } = record; // 5待审核，6审核不通过，可继续审核;  其余状态可进行分配操作;

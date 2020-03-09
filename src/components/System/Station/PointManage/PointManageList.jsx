@@ -94,31 +94,41 @@ class PointManageList extends Component {
         title: '设备型号',
         dataIndex: 'deviceModeName',
         key: 'deviceModeName',
+        ellipsis: true,
+        // width:150,
+        width:'14%'
       },
       {
         title: '测点编号',
         dataIndex: 'devicePointStandardCode',
         key: 'devicePointStandardCode',
         render: (text, record) => (<div className={styles.pointCodeStyle} title={text} onClick={() => this.showPointDetail(record)} >{text}</div>),
+        // width:100,
+        width:'9%',
       }, {
         title: '测点描述',
         dataIndex: 'devicePointName',
         key: 'devicePointName',
         render: (text, record) => (<div className={styles.descStyle} title={text} >{text}</div>),
         sorter: true,
-
+        // width:200,
+        width:'19%',
       }, {
         title: '第三方测点名称',
         dataIndex: 'devicePointCode',
         key: 'devicePointCode',
         sorter: true,
-        render: (text, record) => (<div className={styles.descStyle} title={text} >{text}</div>),
+        render: (text, record) => (<div className={styles.devicePointCode} title={text} >{text}</div>),
+        // width:150,
+        width:'14%',
       }, {
         title: '英文名称',
         dataIndex: 'devicePointIecname',
         key: 'devicePointIecname',
         sorter: true,
-        render: (text, record) => (<div className={styles.descStyle} title={text}>{text}</div>),
+        render: (text, record) => (<div className={styles.devicePointIecname} title={text}>{text}</div>),
+        // width:150,
+        width:'14%',
       },
       // {
       //   title: '分组名称',
@@ -131,12 +141,16 @@ class PointManageList extends Component {
         key: 'devicePointDatatype',
         sorter: true,
         className: styles.deviceDataType,
+        // width:100,
+        width:'9%',
       }, {
         title: '测点类型',
         dataIndex: 'devicePointType',
         key: 'devicePointType',
         sorter: true,
         className: styles.devicePointType,
+        // width:100,
+        width:'9%',
       },
       // {
       //   title: '单位',
@@ -171,6 +185,8 @@ class PointManageList extends Component {
       title: '操作',
       key: 'caozuo',
       className:styles.operation,
+      // width:120,
+      width:'11%',
       render: (text, record, index) => {
         return (
           <div>

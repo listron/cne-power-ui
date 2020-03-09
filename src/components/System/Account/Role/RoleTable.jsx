@@ -84,21 +84,24 @@ class RoleTable extends Component {
         title: '名称',
         dataIndex: 'roleDesc',
         key: 'roleDesc',
-        width:'220px',
+        // width:'220px',
+        width:'24%',
       },
       {
         title: '权限',
         dataIndex: 'operateName',
         key: 'operateName',
         className: styles.operateNameBox,
-        width:'80px',
+        // width:'80px',
+        width:'8%',
         render: text => (<span>{text}</span>),
       },
       {
         title: '功能定义',
         dataIndex: 'rightData',
         key: 'rightData',
-        width:'550px',
+        // width:'550px',
+        width:'58%',
         render: (rightData, record)=>{
           const rightArr = this.getRightArr(rightData, '');
           return (<div className={styles.menu} onClick={() => this.showModel(record)}>{rightArr.join(' | ')}</div>);
@@ -111,7 +114,8 @@ class RoleTable extends Component {
     if (roleDeleteRight || roleUpdateRight) { // 至少有一个编辑或删除权限
       return column.concat({
         title: '操作',
-        width: '100px',
+        // width: '100px',
+        width:'10%',
         dataIndex: 'handler',
         className: styles.handlerBox,
         render: (text, record) => (<span>
@@ -271,6 +275,7 @@ class RoleTable extends Component {
     const roleUpdateRight = rightHandler.split(',').includes('account_role_update');
     const roleConfigRight = rightHandler.split(',').includes('account_role_config');
     const initTableScroll = roleData.length > 0 && { y: 900 } || {};
+    const totalNum = roleData.length;
     const footer = (        
       <div className={styles.tableFooter}>
         <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
@@ -294,6 +299,7 @@ class RoleTable extends Component {
               </Select>}
               </div>
             </div>
+            <div className={styles.totalNum}>合计：{totalNum}</div>
           </div>
           <CneTable
             loading={roleTableLoading}

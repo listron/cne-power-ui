@@ -12,9 +12,13 @@
         align-items: center;
         color: #fff;
         position: relative;
+        .searchBox {
+          display: flex;
+        }
         .closeSearch {
           position: absolute;
-          left: 186px;
+          //left: 186px;
+          right: 42px;
           color: #999;
           z-index: 9;
           cursor: pointer;
@@ -22,6 +26,7 @@
             color: #e08031;
           }
         }
+
         :global {
           .ant-input-search {
             margin: 0 4px;
@@ -31,11 +36,12 @@
           .ant-input {
             height: 22px;
             margin: 3px 0;
-            width: 200px;
-            border-radius: 2px;
-            padding-right: 20px;
-            padding-left: 5px;
+            width: 0px;
             display: block;
+            border: none;
+            transition: width .5s ease-out;
+            -moz-transition: width .5s ease-out;
+            -webkit-transition: width 0.5s ease-out;
           }
           .ant-input-search-button {
             padding: 0;
@@ -52,13 +58,29 @@
         }
       }
     .closeConditionSearch {
-        .closeSearch {
-          display: none;
-        }
-        :global {
-          .ant-input {
-            display: none;
-          }
+      .closeSearch {
+        display: none;
+      }
+      :global {
+        .ant-input {
+          padding-right: 0px;
+          padding-left: 0px;
+          border-radius: 0px;
+          width: 0px;
         }
       }
+    }
+    .openConditionSearch {
+      .closeSearch {
+        display: black;
+      }
+      :global {
+        .ant-input {
+          padding-right: 20px;
+          padding-left: 5px;
+          border-radius: 2px;
+          width: 200px;
+        }
+      }
+    }
 }

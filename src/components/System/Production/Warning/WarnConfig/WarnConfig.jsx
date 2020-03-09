@@ -94,6 +94,9 @@ class WarnConfig extends Component {
             title: '测点描述',
             dataIndex: 'devicePointDesc',
             key: 'devicePointDesc',
+            // width:150,
+            width:'11%',
+            ellipsis: true,
             render: (text, record) => (
                 <span onClick={() => { this.onShowDetail(record) }} className={styles.describe}>{text || '--'}</span>
             )
@@ -101,15 +104,23 @@ class WarnConfig extends Component {
             title: '测点编号',
             dataIndex: 'pointCode',
             key: 'pointCode',
+            // width:150,
+            width:'11%',
         }, {
             title: '预警描述',
             dataIndex: 'warningDescription',
             key: 'warningDescription',
-            width:'350px'
+            // width:'350px'
+            // width:350,
+            width:'27%',
+            ellipsis: true,
         }, {
             title: '预警规则',
             dataIndex: 'warningCheckRule',
             key: 'warningCheckRule',
+            // width:150,
+            width:'11%',
+            ellipsis: true,
         }, {
             title: '预警级别',
             dataIndex: 'warningLevel',
@@ -117,6 +128,8 @@ class WarnConfig extends Component {
             sorter: true,
             defaultSortOrder: 'ascend',
             className:styles.warningLevel,
+            // width:150,
+            width:'11%',
         }, {
             title: '是否启用',
             dataIndex: 'warningEnable',
@@ -124,6 +137,8 @@ class WarnConfig extends Component {
             sorter: true,
             className:styles.warningEnable,
             render: (text, record) => record.warningEnable ? '是' : '否',
+            // width:150,
+            width:'11%',
         }];
 
         const editColumn = {

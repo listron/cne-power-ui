@@ -105,6 +105,7 @@ class WeatherList extends Component {
     const operateColumn = {
             title: '操作',
             className: styles.operate,
+            width:'20%',
             render: (text, record) => {
                 const { subordinateStationCode, stationCode } = record;
                 return (
@@ -124,6 +125,8 @@ class WeatherList extends Component {
                 sorter: true,
                 className: styles.stationName,
                 render: text => text || '--',
+                width:'25%',
+                ellipsis: true,
             },
             {
                 title: '气象站所属电站',
@@ -132,6 +135,7 @@ class WeatherList extends Component {
                 sorter: false,
                 className: styles.inArea,
                 render: text => text || '--',
+                ellipsis: true,
             },
             {
                 title: '最近一次设置日期',
@@ -139,6 +143,8 @@ class WeatherList extends Component {
                 key: 'updateDate',
                 sorter: false,
                 className: styles.lastSetTime,
+                width:'20%',
+                ellipsis: true,
             },
             // {
             //     title: '操作',

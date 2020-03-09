@@ -49,31 +49,46 @@ class AlarmManageList extends Component {
         title: '测点描述',
         dataIndex: 'devicePointDesc',
         key: 'devicePointDesc',
+        // width:150,
+        width:'13%',
+        ellipsis: true,
       },
       {
         title: '测点编号',
         dataIndex: 'pointCode',
         key: 'pointCode',
+        // width:120,
+        width:'12%',
+        ellipsis: true,
       }, {
         title: '事件编码',
         dataIndex: 'warningCheckRule',
         key: 'warningCheckRule',
+        // width:100,
+        width:'9%',
       }, {
         title: '事件/告警描述',
         dataIndex: 'warningDescription',
         key: 'warningDescription',
+        // width:250,
+        width:'22%',
+        ellipsis: true,
       }, {
         title: '事件类别',
         dataIndex: 'warningType',
         key: 'warningType',
         render: text => warnTypeList.map(e => { if (e.warnTypeCode === +text) return e.warnTypeName }),
         className:styles.warningType,
+        // width:100,
+        width:'9%',
       }, {
         title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
         sorter: true,
-        className:styles.warningLevel
+        className:styles.warningLevel,
+        // width:100,
+        width:'9%',
       }, {
         title: '是否启用告警',
         dataIndex: 'warningEnable',
@@ -81,11 +96,16 @@ class AlarmManageList extends Component {
         sorter: true,
         render: text => text ? '是' : '否',
         className:styles.warningEnable,
+        // width:140,
+        width:'12%',
       }, {
         title: '所属部件',
         dataIndex: 'belongComponent',
         key: 'belongComponent',
-        render: text => (text || text === 0) ? text : '--'
+        render: text => (text || text === 0) ? text : '--',
+        // width:150,
+        width:'14%',
+        ellipsis: true,
       }
     ];
     const { loading, alarmList } = this.props;
