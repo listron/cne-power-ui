@@ -32,7 +32,7 @@ class RecordsList extends PureComponent {
           const { taskTypeName, taskTypeCode, deviceTypeName, taskName } = record;
           // const taskTypes = ['--', '计划', '消缺', '巡检', '记事'];
           // 消缺 2=> 设备类型； 巡检 3=> 巡检名称； 计划 1=> 巡检计划； 记事 4=> 工作记事
-          const recordKey = ['--', '巡检计划', deviceTypeName, taskName, '工作记事'];
+          const recordKey = ['--', taskName, deviceTypeName, taskName, '工作记事'];
           const recordText = recordKey[taskTypeCode] || '--';
           return ( // className={styles.taskTypeName}
             <div
