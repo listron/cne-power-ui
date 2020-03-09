@@ -515,6 +515,12 @@ function* getReceiveAction(action) { // 提交验收按钮
     const response = yield call(axios.post, url, objParams);
     if (response.data.code === '10000') {
       payload.func();
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          receiveLoading: false,
+        },
+      });
       // 获取流程可操作人数据
       yield put({
         type: newMeterDetailAction.getOperableUser,

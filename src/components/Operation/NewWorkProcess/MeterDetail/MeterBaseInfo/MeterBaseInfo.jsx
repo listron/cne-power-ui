@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Popover, Checkbox, Popconfirm} from 'antd';
+import {Popover, Checkbox} from 'antd';
 import moment from 'moment';
 import searchUtil from '@utils/searchUtil';
 import CneTips from '@components/Common/Power/CneTips';
@@ -58,23 +58,6 @@ export default class MeterBaseInfo extends React.Component {
     });
   };
 
-  // 处理超时图标
-  timeoutIconFunc = () => {
-    const {
-      meterBaseData: {
-        isOverTime,
-      },
-    } = this.props;
-    /**
-     * 1）isOverTime 1，记为超时
-     * 2）isOverTime 2，记为超时
-     * */
-    if(isOverTime === 1) {
-      return <i className={`iconfont icon-chaoshi ${styles.baseTimeout}`} />;
-    }
-    return <i />;
-  };
-
   // 添加执行人 打开二次弹框
   addUsername = () => {
     const { changeStore } = this.props;
@@ -102,6 +85,7 @@ export default class MeterBaseInfo extends React.Component {
       addVisible: false,
     });
   };
+
   // 关闭二次弹框
   onCancelWarningTip = () => {
     this.setState({
@@ -168,7 +152,7 @@ export default class MeterBaseInfo extends React.Component {
             基本信息
           </div>
           <div className={styles.baseIconBox}>
-            {this.timeoutIconFunc()}
+            {isOverTime === 2 ? <i /> : <i className={`iconfont icon-chaoshi ${styles.baseTimeout}`} />}
             {endTime && <i className={`iconfont icon-jiedan ${styles.baseEnd}`} />}
             {!endTime && <div className={isOverTime === 2 ? styles.baseStatus : styles.errorStatus}>
               {stateName || '- -'}
