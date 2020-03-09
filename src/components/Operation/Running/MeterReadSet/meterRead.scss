@@ -956,13 +956,15 @@
         :global{
           @media screen and (min-width: 1680px) { // 1680 + 1919
             .ant-form-explain{
-              left: 148px;
+              top: 40px !important;
+              left: 22px;
               font-size: 1.2em;
             }
           }
           @media screen and (max-width: 1679px) { // 1679以下屏幕，
             .ant-form-explain{
-              left: 86px;
+              top: 40px !important;
+              left: 18px;
             }
           }
         }
