@@ -6,7 +6,7 @@ import { commonAction } from '@containers/alphaRedux/commonAction';
 import styles from './defectList.scss';
 import { Button } from 'antd';
 import searchUtil from '@utils/searchUtil';
-import DefectSearch from '@components/Operation/NewWorkProcess/Defect/DefectSearch';
+import DefectSearch from '@components/Operation/NewWorkProcess/EliminateDefectList/DefectSearch';
 import DefectsHandler from '@components/Operation/NewWorkProcess/EliminateDefectList/DefectsHandler';
 import DefectTable from '@components/Operation/NewWorkProcess/EliminateDefectList/DefectTable';
 
@@ -56,6 +56,7 @@ class DefectList extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.cont} ${styles[theme]}`}>
+        <DefectSearch />
         <DefectsHandler />
         <DefectTable />
       </div>
