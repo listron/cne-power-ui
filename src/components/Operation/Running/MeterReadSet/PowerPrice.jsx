@@ -45,10 +45,19 @@ class PowerPrice extends Component{
     changeMeterReadSetStore({isEditPrice: false, isEditList: false});
   }
 
-  saveEvent = (value) => { // 保存
+  saveEvent = () => { // 保存
     const { form, getMeterPrice, stationCode, changeMeterReadSetStore, priceDetailData } = this.props;
     form.validateFieldsAndScroll((error, values)=>{
-      if (error) {
+      const topPrice = values.topPrice;
+      const peakPrice = values.peakPrice;
+      const flatPrice = values.flatPrice;
+      const lowPrice = values.lowPrice;
+      const discountRate = values.discountRate;
+      if (!topPrice && !peakPrice && !flatPrice && !lowPrice && !discountRate) { // 若都为空，则显示详情页；否则弹出提示语
+        this.setState({
+          isEdit: false,
+        });
+      }else if (error) {
         this.setState({
           topPriceValue: values.topPrice ? values.topPrice : '',
           peakPriceValue: values.peakPrice ? values.peakPrice : '',
@@ -77,7 +86,7 @@ class PowerPrice extends Component{
 
   editEvent = () => { // 编辑
     const { addDataNum, changeMeterReadSetStore, isEditList } = this.props;
-    if (addDataNum >= 1 || isEditList) { // 当电表添加或者编辑时，电价不可编辑
+    if (addDataNum > 1 || isEditList) { // 当电表添加或者编辑时，电价不可编辑
       changeMeterReadSetStore({ isListTip: true });
       setTimeout(() => {
         changeMeterReadSetStore({ isListTip: false });
@@ -117,7 +126,7 @@ class PowerPrice extends Component{
   render(){
     const { isEdit, topPriceValue, peakPriceValue, flatPriceValue, lowPriceValue, discountRateValue } = this.state;
     const { priceDetailData, theme, form, priceLoading } = this.props;
-    const { updateTime } = priceDetailData;
+    const { updateTime, topPrice, peakPrice, flatPrice, lowPrice, discountRate } = priceDetailData;
     const { getFieldDecorator } = form;
     return(
       <div className={`${styles.powerPrice} ${styles[theme]}`}>
@@ -282,11 +291,11 @@ class PowerPrice extends Component{
           </div>}
 
           {!isEdit && <div className={styles.priceInfo}>
-            <div className={styles.topPrice}><span className={styles.text}>尖时段</span><span className={styles.num}>{!priceLoading ? (priceDetailData.topPrice || '--') : topPriceValue}元/kWh</span></div>
-            <div className={styles.peakPrice}><span className={styles.text}>峰时段</span><span className={styles.num}>{!priceLoading ? (priceDetailData.peakPrice || '--') : peakPriceValue}元/kWh</span></div>
-            <div className={styles.flatPrice}><span className={styles.text}>平时段</span><span className={styles.num}>{!priceLoading ? (priceDetailData.flatPrice || '--') : flatPriceValue}元/kWh</span></div>
-            <div className={styles.lowPrice}><span className={styles.text}>谷时段</span><span className={styles.num}>{!priceLoading ? (priceDetailData.lowPrice || '--') : lowPriceValue}元/kWh</span></div>
-            <div className={styles.discountRate}><span className={styles.text}>折扣率</span><span className={styles.num}>{!priceLoading ? (priceDetailData.discountRate || '--') : discountRateValue}%</span></div>
+            <div className={styles.topPrice}><span className={styles.text}>尖时段</span><span className={styles.num}>{!priceLoading ? ((topPrice === 0 ? topPrice.toString() : topPrice) || '--') : topPriceValue}元/kWh</span></div>
+            <div className={styles.peakPrice}><span className={styles.text}>峰时段</span><span className={styles.num}>{!priceLoading ? ((peakPrice === 0 ? peakPrice.toString() : peakPrice) || '--') : peakPriceValue}元/kWh</span></div>
+            <div className={styles.flatPrice}><span className={styles.text}>平时段</span><span className={styles.num}>{!priceLoading ? ((flatPrice === 0 ? flatPrice.toString() : flatPrice) || '--') : flatPriceValue}元/kWh</span></div>
+            <div className={styles.lowPrice}><span className={styles.text}>谷时段</span><span className={styles.num}>{!priceLoading ? ((lowPrice === 0 ? lowPrice.toString() : lowPrice) || '--') : lowPriceValue}元/kWh</span></div>
+            <div className={styles.discountRate}><span className={styles.text}>折扣率</span><span className={styles.num}>{!priceLoading ? ((discountRate === 0 ? discountRate.toString() : discountRate) || '--') : discountRateValue}%</span></div>
           </div>}
         </div>
       </div>
