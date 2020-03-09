@@ -135,7 +135,7 @@ class BranchTable extends React.Component {
     const { copyData, changeBranchStore, focus, selectDeviceFullCode, isCheckStatus } = this.props;
     const selectedArr = copyData.filter((e, i) => e.deviceFullCode === focus);//筛选的设备名称
     const selectedDevice = selectedArr[0];//选中的设备名称的数据{...}
-    const branchList = selectedDevice ? selectedDevice.branchList : [];//支路的数据
+    // const branchList = selectedDevice ? selectedDevice.branchList : [];//支路的数据
     // const length = branchList ? branchList.length : 0;//支路得长度
     const length = selectedDevice ? isCheckStatus ? selectedDevice.checkNums : selectedDevice.branchNums : 0;
     if (value > length) {
@@ -322,6 +322,8 @@ class BranchTable extends React.Component {
               </div> :
               copyData.length ? filterCopyData.map((item, index) => {
                 const branchList = item.branchList;
+                const branchNums = item.branchNums;
+                const checkNums = item.checkNums;
                 return (
                   <div className={index % 2 === 0 ? styles.tabletd : styles.tableEventd} key={index}>
                     <div className={styles.name}>{item.deviceName}</div>
@@ -342,9 +344,12 @@ class BranchTable extends React.Component {
                       const branchListItem = branchList[i] ? branchList[i] : {};
                       const styleStatus = this.jugeStatus(branchListItem);
                       const branchId = `${item.deviceFullCode}_${branchListItem.branchIndex}`;
+                      const branchLength = isCheckStatus ? checkNums : branchNums;
+
                       return (
                         <div className={styles.titleStyle} key={i}>
-                          {focus === branchId ?
+
+                          {branchLength > i ? focus === branchId ?
                             <Select
                               defaultValue={branchListItem.pvNums}
                               style={{ width: 45 }}
@@ -362,9 +367,11 @@ class BranchTable extends React.Component {
                             >
                               {(styleStatus === styles.link || styleStatus === styles.change) ? branchListItem.pvNums : null}
                               <div></div>
-                            </div>}
+                            </div> : null}
                         </div>
                       );
+
+
                     })}
                   </div>
                 );
