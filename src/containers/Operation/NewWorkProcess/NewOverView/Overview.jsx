@@ -29,7 +29,7 @@ class Overview extends Component {
   constructor() {
     super();
     this.state = {
-      tab: 'defect',
+      tab: 'meter',
       page: 'list',
     };
   }
@@ -37,7 +37,7 @@ class Overview extends Component {
   componentDidMount() { // page list 列表页 defectDetail 缺陷详情 inspectDetail 巡检详情 defectId 缺陷ID inspectId 巡检ID
     const { history } = this.props;
     const { search, pathname } = history.location;
-    const { page = 'list', tab = 'defect' } = searchUtil(search).parse(); //默认为缺陷列表页
+    const { page = 'list', tab = 'meter' } = searchUtil(search).parse(); //默认为缺陷列表页
     this.setState({ page, tab });
 
   }
@@ -45,7 +45,7 @@ class Overview extends Component {
   componentWillReceiveProps(nextProps) {
     const { history } = nextProps;
     const { search, pathname } = history.location;
-    const { page = 'list', tab = 'defect' } = searchUtil(search).parse(); //默认为缺陷列表页
+    const { page = 'list', tab = 'meter' } = searchUtil(search).parse(); //默认为缺陷列表页
     this.setState({ page, tab });
   }
 
@@ -81,8 +81,8 @@ class Overview extends Component {
           {page === 'list' &&
             <div className={styles.list}>
               <div className={styles.tabTitle}>
-                <p className={`${tab === 'defect' && styles.activeKey} `} onClick={() => { this.queryTargetData('defect'); }}>消缺</p>
-                <p className={`${tab === 'inspect' && styles.activeKey} `} onClick={() => { this.queryTargetData('inspect'); }}>巡检</p>
+                {/*<p className={`${tab === 'defect' && styles.activeKey} `} onClick={() => { this.queryTargetData('defect'); }}>消缺</p>*/}
+                {/*<p className={`${tab === 'inspect' && styles.activeKey} `} onClick={() => { this.queryTargetData('inspect'); }}>巡检</p>*/}
                 <p className={`${tab === 'meter' && styles.activeKey} `} onClick={() => { this.queryTargetData('meter'); }}>抄表</p>
               </div>
               {tab === 'defect' && <DefectList {...this.props} />}

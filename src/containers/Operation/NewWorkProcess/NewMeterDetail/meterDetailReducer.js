@@ -32,6 +32,7 @@ const initState = immutable.fromJS({
   readLoading: true, // 处理信息loading
   operatorFlag: false, // 执行人是否换行
   stationFlag: false, // 电站名称是否换行
+  receiveLoading: false, // 领取
   meterBaseData: {// 基本信息
     stationName: '', // 电站名称
     processType: '', // 工单类型
