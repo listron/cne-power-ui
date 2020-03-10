@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Spin } from 'antd';
 import echarts from 'echarts';
 import moment from 'moment';
 import { dataFormats } from '@utils/utilFunc';
@@ -16,7 +15,6 @@ class ChartLine extends PureComponent {
 
   state = {
     legend: [],
-    isLoad: false,
   }
 
   componentDidMount(){
@@ -30,10 +28,7 @@ class ChartLine extends PureComponent {
     const preLoading = this.props.eventAnalysisLoading;
     const { eventAnalysisInfo, eventAnalysisLoading, analysisEvent } = nextProps;
     if (eventAnalysisLoading && !preLoading) {
-      this.chartLoading();
-      // this.setState({
-      //   isLoad: true,
-      // });
+      // this.chartLoading();
     }
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { period = [], data = {} } = eventAnalysisInfo || {};
@@ -44,10 +39,10 @@ class ChartLine extends PureComponent {
 
   lineColors = ['#ff9900', '#4d90fd', '#60c060', '#ff8d83', '#00cdff', '#9f98ff', '#d5c503', '#2ad7ab', '#b550b2', '#3e97d1', '#83bcc4', '#cc6500', '#5578c2', '#86acea', '#d3b08e', '#7286f1', '#512ca8', '#33cc27', '#bfbf95', '#986cff'];
 
-  chartLoading = () => {
-    const lineChart = echarts.init(this.lineRef);
-    lineChart.showLoading();
-  }
+  // chartLoading = () => {
+  //   const lineChart = echarts.init(this.lineRef);
+  //   lineChart.showLoading();
+  // }
 
   timeFormat = (timeStr, interval = 1) => { // 针对markArea时间进行处理
     if (!timeStr) {
@@ -65,7 +60,7 @@ class ChartLine extends PureComponent {
 
   drawChart = (period = [], data = {}, interval) => {
     const lineChart = echarts.init(this.lineRef);
-    lineChart.hideLoading();
+    // lineChart.hideLoading();
     const { time = [], pointData = [] } = data;
     // const legendData = [{
     //   name: '告警时段',
@@ -88,7 +83,7 @@ class ChartLine extends PureComponent {
         data: markAreaData,
       },
     }];
-    const colors = ['#FBE6E3'];
+    const colors = ['rgba(251,230,227,0.50)'];
     pointData.forEach((e, i) => {
       const pointName = `${e.deviceName} ${e.pointName || ''}`;
       colors.push(this.lineColors[i % this.lineColors.length]);
@@ -197,7 +192,7 @@ class ChartLine extends PureComponent {
   }
 
   render(){
-    const { legend, isLoad } = this.state;
+    const { legend } = this.state;
     return (
       <div className={styles.analysisChart}>
         <div className={styles.legends}>
@@ -212,7 +207,6 @@ class ChartLine extends PureComponent {
             </span>
           ))}
         </div>
-          {isLoad && <Spin />}
         <div style={{width: '100%', height: '506px'}} ref={(ref) => { this.lineRef = ref; } } />
       </div>
     );

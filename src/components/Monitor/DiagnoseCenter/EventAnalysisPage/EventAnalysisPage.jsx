@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Spin } from 'antd';
 import ChartLine from './ChartLine';
 import EventLineSearch from './EventLineSearch';
 import ChartBar from './ChartBar';
@@ -17,6 +17,7 @@ class EventAnalysisPage extends PureComponent {
     history: PropTypes.object,
     changeStore: PropTypes.func,
     getEventsAnalysis: PropTypes.func,
+    eventAnalysisLoading: PropTypes.bool,
   };
 
   titleName = {
@@ -38,7 +39,7 @@ class EventAnalysisPage extends PureComponent {
   }
 
   render(){
-    const { pageKey, analysisEvent, eventAnalysisInfo } = this.props;
+    const { pageKey, analysisEvent, eventAnalysisInfo, eventAnalysisLoading } = this.props;
     const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName } = analysisEvent || {};
     const { chartType } = eventAnalysisInfo || {};
     return (
@@ -71,8 +72,10 @@ class EventAnalysisPage extends PureComponent {
         <div className={styles.detailContent}>
           {chartType === 1 && <EventLineSearch {...this.props} />}
           {chartType === 2 && <EventBarSearch {...this.props} />}
-          {chartType === 1 && <ChartLine {...this.props} />}
-          {chartType === 2 && <ChartBar {...this.props} />}
+          {/* {chartType === 1 && <ChartLine {...this.props} />}
+          {chartType === 2 && <ChartBar {...this.props} />} */}
+          {chartType === 1 && (!eventAnalysisLoading ? <ChartLine {...this.props} /> : <div className={styles.spin}><Spin /></div>)}
+          {chartType === 2 && (!eventAnalysisLoading ? <ChartBar {...this.props} /> : <div className={styles.spin}><Spin /></div>)}
         </div>
       </section>
     );
