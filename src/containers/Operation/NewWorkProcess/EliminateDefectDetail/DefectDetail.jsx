@@ -8,32 +8,40 @@ import styles from './defectDetail.scss';
 import Footer from '@components/common/Footer';
 
 import DetailTopSubmit from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DetailTopSubmit/DetailTopSubmit';
-import DefectBaseTitle from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectBase/DefectBaseTitle';
-import DefectBaseInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectBase/DefectBaseInfo';
 import ProcessInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/ProcessInfo/ProcessInfo';
-import DefectEvent from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectEvent/DefectEvent';
-import HandleInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/HandleInfo/HandleInfo';
+import DefectCreate from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectCreate/DefectCreate';
+import DefectContent from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectContent/DefectContent';
+
 
 class DefectDetail extends Component {
 
   static propTypes = {
     theme: PropTypes.string,
     history: PropTypes.object,
+    changeStore: PropTypes.func,
   };
 
 
   constructor() {
     super();
-    this.state = {
-      showWarningTip: false,
-      warningTipText: '退出后信息无法保存!',
-    };
   }
 
+  // docketId, 缺陷ID  isFinish 0 未解决 1 已解决 3 派发(告警)
   componentDidMount() {
     const { history } = this.props;
     const { search } = history.location;
-    const { page = 'defectDetail', defectId } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
+    console.log('search', search);
+    const { page = 'defectDetail', docketId, isFinish } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
+    console.log('searchUtil(search).parse()', searchUtil(search).parse());
+    if (docketId) {
+      // getDefectMessage 可执行动作 基础信息 缺陷事件 处理信息 流程信息
+      // this.prop.getDefectMessage({ docketId });
+      this.props.changeStore({ docketId });
+    }
+    if (isFinish && isFinish === 0) {
+      // this.prop.getDefectAction({ isFinish });
+    }
+
   }
 
 
@@ -42,16 +50,14 @@ class DefectDetail extends Component {
   }
 
   render() {
-    const { theme, defectDetail } = this.props;
+    const { docketId, theme, defectDetail } = this.props;
     return (
       <div className={`${styles.detailWrap}`}>
-        <DetailTopSubmit />
+        <DetailTopSubmit docketId={docketId} />
         <div className={styles.detailContent}>
           <div className={styles.leftParts}>
-            <DefectBaseTitle />
-            <DefectBaseInfo />
-            <DefectEvent {...this.props} />
-            <HandleInfo />
+            {docketId && <DefectContent {...this.props} />}
+            {!docketId && <DefectCreate {...this.props} />}
           </div>
           <ProcessInfo />
         </div>
@@ -86,7 +92,7 @@ const mapDispatchToProps = (dispatch) => ({
   addAbleUser: payload => dispatch({ type: eliminateDefectDetailAction.addAbleUser, payload }),
   submitAction: payload => dispatch({ type: eliminateDefectDetailAction.submitAction, payload }),
   defectTypes: payload => dispatch({ type: eliminateDefectDetailAction.defectTypes, payload }),
-  getStationTypeDeviceModes: params => dispatch({ //  获取某一个电站下的设备
+  getStationTypeDeviceModes: params => dispatch({ //  获取某一个电站下的设备型号
     type: publicAction.getStationDeviceTypes,
     payload: {
       params,

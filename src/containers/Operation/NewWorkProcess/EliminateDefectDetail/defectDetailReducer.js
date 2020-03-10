@@ -24,6 +24,8 @@ const eliminateDefectDetailAction = {
 
 const initState = immutable.fromJS({
   docketId: '', // 缺陷ID
+  stateId: '', //  状态ID
+  stateName: '', // 状态名称  状态名称是确定的，不会根据不同的企业ID发生变化
 
   baseInfo: {}, // 基本信息
   eventInfo: [], // 缺陷事件信息
@@ -34,7 +36,13 @@ const initState = immutable.fromJS({
   deviceTypes: [], // 设备类型
   deviceModes: [], // 设备型号
 
+
   isVertify: false, // 是否验证状态
+  addbaseInfo: {}, // 添加的基本信息
+  addEventInfo: [], // 添加的缺陷事件
+  addhandleList: [], // 添加的处理记录
+  addOperater: [], // 新增加的操作人
+  eventStatus: [], // 验收工单的时候 缺陷事件状态
 });
 
 const eliminateDefectDetail = (state = initState, action) => {
