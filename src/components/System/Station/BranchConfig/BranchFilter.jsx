@@ -80,7 +80,7 @@ class BranchFilter extends React.Component {
         <div className={styles.stationSelect}>
           <span className={styles.text}>电站名称</span>
           <StationSelect
-            data={stationsInfo.filter((e) => (e.stationType === 1))}
+            data={stationsInfo.filter((e) => (e.stationType === 1 && e.isConnected === 1))}
             onOK={this.selectStation}
             value={stationsInfo.filter(e => e.stationCode === stationCode)}
             holderText="请输入关键字查询" />
