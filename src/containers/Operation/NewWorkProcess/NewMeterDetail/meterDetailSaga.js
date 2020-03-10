@@ -4,6 +4,7 @@ import axios from 'axios';
 import path from '@path';
 
 import {message} from 'antd';
+import moment from 'moment';
 
 const {basePaths, APISubPaths} = path;
 const {APIBasePath} = basePaths;
@@ -180,7 +181,7 @@ function* getBaseUsername(action) { // 获取有权限电站权限用户
 
 function* getReadMeter(action) { // 获取处理信息数据
   const {payload} = action;
-  const url = `${APIBasePath}${ticket.getReadMeter}/${payload.meterId}`;
+  const url = `${APIBasePath}${ticket.getReadMeter}`;
   try {
     yield put({
       type: newMeterDetailAction.changeStore,
@@ -189,7 +190,12 @@ function* getReadMeter(action) { // 获取处理信息数据
         readLoading: payload.loading,
       },
     });
-    const response = yield call(axios.get, url);
+    // 上次刷新时间
+    const { lastRefreshTime } = yield select(state => state.operation.newMeterDetail.toJS());
+    const response = yield call(axios.post, url, {
+      docketId: payload.meterId,
+      lastRefreshTime,
+    });
     if (response.data.code === '10000') {
       /**
        *
@@ -208,6 +214,7 @@ function* getReadMeter(action) { // 获取处理信息数据
         payload: {
           loading: false,
           readLoading: false,
+          lastRefreshTime: moment().format('YYYY-MM-DD HH:mm:ss'), // 记录本次刷新时间 格式yyyy-MM-dd HH:mm:ss
           readMeterData: { // 可以修改的数据
             ...response.data.data,
             onlineDatas: response.data.data.onlineDatas.map(cur => {
@@ -313,7 +320,15 @@ function* getReadMeter(action) { // 获取处理信息数据
           },
         },
       });
-    } else {
+    } else if(response.data.code === '15001') {
+      // 15001 提示工单状态已变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          stateChangeStatus: true,
+        },
+      });
+    }else {
       throw response.data;
     }
   } catch (e) {

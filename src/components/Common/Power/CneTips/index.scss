@@ -3,7 +3,7 @@
 .cneTipsBox {
   .cneTips {
     border-radius: 2px;
-    padding: 15px 20px 20px 20px;
+    padding: 0 20px 20px 20px;
 
     .tipsContent {
       display: flex;
@@ -17,9 +17,12 @@
         border-radius: 50%;
         text-align: center;
         font-weight: 700;
+        margin-top: 20px;
       }
 
       .tipText {
+        padding-top: 15px;
+        line-height: 30px;
         font-size: 14px;
       }
     }
