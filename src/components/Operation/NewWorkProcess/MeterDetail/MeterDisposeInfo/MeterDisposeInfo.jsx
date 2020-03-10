@@ -628,41 +628,7 @@ export default class MeterDisposeInfo extends React.Component {
                               </div>
                             </div>
                             {cur.imgFlag ? (
-                              <div className={`${styles.netTablePhoto} ${styles.clear}`}>
-                                {cur.meterImgs.map((cur, idx) => {
-                                  return (
-                                    <div
-                                      key={idx.toString()}
-                                      onClick={() => {
-                                        this.lookPic(index % 2 === 0, index, idx, 'onlineDatas');
-                                      }}
-                                      className={`${styles.netPhotoBox} ${styles.fl}`}
-                                    >
-                                      <img src={cur.url} alt="" />
-                                      <div className={styles.shadeBox} />
-                                    </div>
-                                  );
-                                })}
-                                {(cur.meterImgs.length !== 5) && (
-                                  <Upload
-                                    listType="picture-card"
-                                    className="avatar-uploader"
-                                    headers={{'Authorization': 'bearer ' + authData}}
-                                    showUploadList={false}
-                                    action={url}
-                                    beforeUpload={this.beforeUpload}
-                                    onChange={(info) => {this.handleChange(info, index, 'onlineDatas');}}
-                                  >
-                                    <div>
-                                      <div className={styles.uploadButton}>
-                                        {cur.loading ? <div className={styles.antLoadingText}>上传中</div> : <img src="/img/uploadImg.png" alt="" />}
-                                        {cur.loading ? <Progress strokeColor="#199475" percent={cur.percent} /> : <div className="ant-upload-text">上传图片</div>}
-                                      </div>
-                                    </div>
-                                  </Upload>
-                                )}
-                              </div>
-                            ) : cur.meterImgs.length > 0 ? (
+                              <div className={styles.netTablePhotoBox}>
                                 <div className={`${styles.netTablePhoto} ${styles.clear}`}>
                                   {cur.meterImgs.map((cur, idx) => {
                                     return (
@@ -678,6 +644,44 @@ export default class MeterDisposeInfo extends React.Component {
                                       </div>
                                     );
                                   })}
+                                  {(cur.meterImgs.length !== 5) && (
+                                    <Upload
+                                      listType="picture-card"
+                                      className="avatar-uploader"
+                                      headers={{'Authorization': 'bearer ' + authData}}
+                                      showUploadList={false}
+                                      action={url}
+                                      beforeUpload={this.beforeUpload}
+                                      onChange={(info) => {this.handleChange(info, index, 'onlineDatas');}}
+                                    >
+                                      <div>
+                                        <div className={styles.uploadButton}>
+                                          {cur.loading ? <div className={styles.antLoadingText}>上传中</div> : <img src="/img/uploadImg.png" alt="" />}
+                                          {cur.loading ? <Progress strokeColor="#199475" percent={cur.percent} /> : <div className="ant-upload-text">上传图片</div>}
+                                        </div>
+                                      </div>
+                                    </Upload>
+                                  )}
+                                </div>
+                              </div>
+                            ) : cur.meterImgs.length > 0 ? (
+                                <div className={styles.netTablePhotoBox}>
+                                  <div className={`${styles.netTablePhoto} ${styles.clear}`}>
+                                    {cur.meterImgs.map((cur, idx) => {
+                                      return (
+                                        <div
+                                          key={idx.toString()}
+                                          onClick={() => {
+                                            this.lookPic(index % 2 === 0, index, idx, 'onlineDatas');
+                                          }}
+                                          className={`${styles.netPhotoBox} ${styles.fl}`}
+                                        >
+                                          <img src={cur.url} alt="" />
+                                          <div className={styles.shadeBox} />
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
                                 </div>
                               ): (
                                 <div className={styles.netNoPhoto}>
@@ -856,56 +860,60 @@ export default class MeterDisposeInfo extends React.Component {
                               </div>
                             </div>
                             {cur.imgFlag ? (
-                              <div className={`${styles.electricityTablePhoto} ${styles.clear}`}>
-                                {cur.meterImgs.map((cur, idx) => {
-                                  return (
-                                    <div
-                                      key={idx.toString()}
-                                      onClick={() => {
-                                        this.lookPic(index % 2 === 0, index, idx, 'generationDatas');
-                                      }}
-                                      className={`${styles.electricityPhotoBox} ${styles.fl}`}
-                                    >
-                                      <img src={cur.url} alt="" />
-                                      <div className={styles.shadeBox} />
-                                    </div>
-                                  );
-                                })}
-                                {(cur.meterImgs.length !== 5) && (
-                                  <Upload
-                                    listType="picture-card"
-                                    className="avatar-uploader"
-                                    headers={{'Authorization': 'bearer ' + authData}}
-                                    showUploadList={false}
-                                    action={url}
-                                    beforeUpload={this.beforeUpload}
-                                    onChange={(info) => {this.handleChange(info, index, 'generationDatas');}}
-                                  >
-                                    <div>
-                                      <div className={styles.uploadButton}>
-                                        {cur.loading ? <div className={styles.antLoadingText}>上传中</div> : <img src="/img/uploadImg.png" alt="" />}
-                                        {cur.loading ? <Progress strokeColor="#199475" percent={cur.percent} /> : <div className="ant-upload-text">上传图片</div>}
+                              <div className={styles.electricityTablePhotoBox}>
+                                <div className={`${styles.electricityTablePhoto} ${styles.clear}`}>
+                                  {cur.meterImgs.map((cur, idx) => {
+                                    return (
+                                      <div
+                                        key={idx.toString()}
+                                        onClick={() => {
+                                          this.lookPic(index % 2 === 0, index, idx, 'generationDatas');
+                                        }}
+                                        className={`${styles.electricityPhotoBox} ${styles.fl}`}
+                                      >
+                                        <img src={cur.url} alt="" />
+                                        <div className={styles.shadeBox} />
                                       </div>
-                                    </div>
-                                  </Upload>
-                                )}
+                                    );
+                                  })}
+                                  {(cur.meterImgs.length !== 5) && (
+                                    <Upload
+                                      listType="picture-card"
+                                      className="avatar-uploader"
+                                      headers={{'Authorization': 'bearer ' + authData}}
+                                      showUploadList={false}
+                                      action={url}
+                                      beforeUpload={this.beforeUpload}
+                                      onChange={(info) => {this.handleChange(info, index, 'generationDatas');}}
+                                    >
+                                      <div>
+                                        <div className={styles.uploadButton}>
+                                          {cur.loading ? <div className={styles.antLoadingText}>上传中</div> : <img src="/img/uploadImg.png" alt="" />}
+                                          {cur.loading ? <Progress strokeColor="#199475" percent={cur.percent} /> : <div className="ant-upload-text">上传图片</div>}
+                                        </div>
+                                      </div>
+                                    </Upload>
+                                  )}
+                                </div>
                               </div>
                             ) : cur.meterImgs.length > 0 ? (
-                              <div className={`${styles.electricityTablePhoto} ${styles.clear}`}>
-                                {cur.meterImgs.map((cur, idx) => {
-                                  return (
-                                    <div
-                                      key={idx.toString()}
-                                      onClick={() => {
-                                        this.lookPic(index % 2 === 0, index, idx, 'generationDatas');
-                                      }}
-                                      className={`${styles.electricityPhotoBox} ${styles.fl}`}
-                                    >
-                                      <img src={cur.url} alt="" />
-                                      <div className={styles.shadeBox} />
-                                    </div>
-                                  );
-                                })}
+                              <div className={styles.electricityTablePhotoBox}>
+                                <div className={`${styles.electricityTablePhoto} ${styles.clear}`}>
+                                  {cur.meterImgs.map((cur, idx) => {
+                                    return (
+                                      <div
+                                        key={idx.toString()}
+                                        onClick={() => {
+                                          this.lookPic(index % 2 === 0, index, idx, 'generationDatas');
+                                        }}
+                                        className={`${styles.electricityPhotoBox} ${styles.fl}`}
+                                      >
+                                        <img src={cur.url} alt="" />
+                                        <div className={styles.shadeBox} />
+                                      </div>
+                                    );
+                                  })}
+                                </div>
                               </div>
                               ) : (
                               <div className={styles.electricityNoPhoto}>
