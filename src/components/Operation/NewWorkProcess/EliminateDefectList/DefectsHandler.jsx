@@ -29,7 +29,7 @@ export default class DefectsHandler extends Component {
     };
     return (
       <div className={styles.defectsHandler}>
-        <div>
+        <div className={styles.leftHandler}>
           <CneButton className={styles.addBtn} onClick={this.addDefect}>
             <i className={`iconfont icon-newbuilt ${styles.addIcon}`} />
             <span className={styles.text}>新建</span>

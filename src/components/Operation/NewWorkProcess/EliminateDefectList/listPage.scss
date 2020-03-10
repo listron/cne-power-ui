@@ -103,6 +103,10 @@
   height: 58px;
   justify-content: space-between;
   align-items: center;
+  .leftHandler{
+    display: flex;
+    align-items: center;
+  }
   .addBtn{
     width: 92px;
     padding-left: 6px;
@@ -110,6 +114,11 @@
     text-align: left;
     .addIcon{
       margin-right: 16px;
+    }
+  }
+  :global{
+    .ant-radio-group label.ant-radio-button-wrapper{
+      height: auto;
     }
   }
 }

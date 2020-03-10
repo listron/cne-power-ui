@@ -56,7 +56,7 @@ class DefectList extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.cont} ${styles[theme]}`}>
-        <DefectSearch />
+        <DefectSearch {...this.props} />
         <DefectsHandler />
         <DefectTable />
       </div>

@@ -16,7 +16,7 @@ export default class DefectSearch extends React.Component {
     operatorValue: PropTypes.array,
   };
 
-  selectStation = selectedStations => {
+  selectStation = selectedStations => { // [{stationCode, stationName}]
     console.log(selectedStations);
   };
 
@@ -24,7 +24,7 @@ export default class DefectSearch extends React.Component {
     console.log(value);
   };
 
-  onMineChange = checked => {
+  onMineChange = checked => { // true false
     console.log(checked);
   };
 
