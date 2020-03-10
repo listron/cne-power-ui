@@ -42,7 +42,7 @@ function* getDefectList(action) { //获取缺陷工单列表
         listParams: { ...payload, pageNum },
         total,
         defectListData: dataList || [],
-        stateAndTotalList: stateAndTotalList,
+        stateAndTotalList: stateAndTotalList || [],
         listLoading: false,
       });
     } else {
@@ -53,7 +53,7 @@ function* getDefectList(action) { //获取缺陷工单列表
     yield call(easyPut, 'changeStore', {
       total: 0,
       defectListData: [],
-      stateAndTotalList: {},
+      stateAndTotalList: [],
       listLoading: false,
     });
   }

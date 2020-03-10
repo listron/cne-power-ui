@@ -10,34 +10,37 @@ export default class DefectSearch extends React.Component {
   static propTypes = {
     listParams: PropTypes.object,
     stations: PropTypes.array,
-    selectedStation: PropTypes.array,
-    theme: PropTypes.string,
     participantList: PropTypes.array,
-    operatorValue: PropTypes.array,
+    getDefectList: PropTypes.func,
   };
 
-  selectStation = selectedStations => {
-    console.log(selectedStations);
+  selectStation = selectedStations => { // 选电站 [{stationCode, stationName}]
+    const { listParams } = this.props;
+    this.props.getDefectList({
+      ...listParams,
+      stationCodes: selectedStations.map(e => e.stationCode),
+    });
   };
 
-  handleChangeOperator = value => {
-    console.log(value);
+  handleChangeOperator = value => { // 选执行人
+    const { listParams } = this.props;
+    this.props.getDefectList({
+      ...listParams,
+      operName: value,
+    });
   };
 
-  onMineChange = checked => {
-    console.log(checked);
+  onMineChange = checked => { // 是否我参与的 true false
+    const { listParams } = this.props;
+    this.props.getDefectList({
+      ...listParams,
+      isMy: checked ? 1 : 0,
+    });
   };
 
   render() {
-    const { operatorValue = [] } = this.props;
-    const {
-      stations = [],
-      theme = 'light',
-      selectedStation = [],
-      participantList = [],
-      listParams = {},
-    } = this.props;
-    const { isMy } = listParams || {};
+    const { stations = [], participantList = [], listParams } = this.props;
+    const { isMy, operName, stationCodes } = listParams || {};
     return (
       <div className={styles.defectSearch}>
         <div className={styles.searchLeft}>
@@ -50,9 +53,8 @@ export default class DefectSearch extends React.Component {
               stationShowNumber={true}
               data={stations}
               onOK={this.selectStation}
-              value={selectedStation}
+              value={stationCodes}
               holderText="请输入关键字快速查询"
-              theme={theme}
             />
           </div>
           <div className={styles.operatorBox}>
@@ -64,13 +66,17 @@ export default class DefectSearch extends React.Component {
                 style={{width: 120, height: 32}}
                 dropdownMatchSelectWidth={true}
                 mode="multiple"
-                value={operatorValue}
+                value={operName}
                 dropdownClassName={styles.searchSelect}
                 onChange={this.handleChangeOperator}
               >
                 {participantList.map(cur => {
                   return (
-                    <Option key={cur.userId} title={cur.userFullname || cur.username} value={cur.userFullname || cur.username} >{cur.userFullname || cur.username}</Option>
+                    <Option
+                      key={cur.userId}
+                      title={cur.userFullname || cur.username}
+                      value={cur.userFullname || cur.username}
+                    >{cur.userFullname || cur.username}</Option>
                   );
                 })}
               </Select>
@@ -79,7 +85,7 @@ export default class DefectSearch extends React.Component {
           </div>
         </div>
         <div className={styles.searchRight}>
-          <Switch checked={isMy === 1} onChange={this.onMineChange} />
+          <Switch checked={!!isMy} onChange={this.onMineChange} />
           <span>只看我参与的</span>
         </div>
       </div>
