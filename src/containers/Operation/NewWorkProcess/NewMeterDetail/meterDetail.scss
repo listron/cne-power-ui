@@ -5,7 +5,7 @@
   flex-direction: column;
   flex: 1;
 
-  .meterLoading{
+  .meterLoading {
     width: 100%;
     height: 100%;
     margin-top: 16px;
@@ -15,7 +15,7 @@
     flex: 1;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 4px 2px rgba(0,0,0,0.20);
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.20);
   }
 
   .meterContent {
@@ -40,4 +40,5 @@
       background-color: #fff;
     }
   }
+
 }

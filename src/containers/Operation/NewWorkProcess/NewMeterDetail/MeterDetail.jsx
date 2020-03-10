@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Spin } from 'antd';
+import CneTips from '@components/Common/Power/CneTips';
 import {newMeterDetailAction} from './meterDetailReducer';
 import MeterTop from '@components/Operation/NewWorkProcess/MeterDetail/MeterTop/MeterTop.jsx';
 import MeterBaseInfo from '@components/Operation/NewWorkProcess/MeterDetail/MeterBaseInfo/MeterBaseInfo.jsx';
@@ -23,6 +24,8 @@ class MeterDetail extends Component {
     getReadMeter: PropTypes.func,
     getProcessAction: PropTypes.func,
     loading: PropTypes.bool,
+    readMeterData: PropTypes.object,
+    stateChangeStatus: PropTypes.bool,
   };
 
   componentDidMount() {
@@ -53,8 +56,13 @@ class MeterDetail extends Component {
     resetStore();
   }
 
+  onConfirmWarningTip = () => {
+    // 强制刷新
+    window.location.reload();
+  };
+
   render() {
-    const { theme = 'light', loading } = this.props;
+    const { theme = 'light', loading, readMeterData: {isChangeMeter}, stateChangeStatus } = this.props;
     return (
       <div className={`${styles.meterDetailBox} ${theme}`}>
         <MeterTop {...this.props} />
@@ -71,6 +79,14 @@ class MeterDetail extends Component {
             </div>
           </div>
         )}
+        <CneTips
+          visible={stateChangeStatus || isChangeMeter === 1}
+          width={260}
+          mode={'warning'}
+          onCancel={() => {}}
+          onConfirm={this.onConfirmWarningTip}
+          tipText={stateChangeStatus ? '当前工单状态已变更，点击“确定”刷新页面！' : '当前电表设置已变更，点击“确定”刷新页面！'}
+        />
       </div>
     );
   }

@@ -300,6 +300,8 @@
         }
 
         .netWrap {
+          width: 100%;
+
           > div {
             margin-top: 20px;
           }
@@ -311,7 +313,8 @@
         }
 
         .netGaugeListBox {
-          width: 410px;
+          width: 48.8%;
+          min-width: 410px;
           height: 324px;
           border: 1px solid $themeColor;
 
@@ -357,7 +360,8 @@
               border-top: 1px solid #d4d4d4;
 
               div:nth-of-type(1) {
-                width: 50px;
+                width: 12%;
+                min-width: 50px;
                 border-right: 1px dashed #d4d4d4;
                 font-family: PingFangSC-Medium, serif;
                 font-weight: bold;
@@ -365,14 +369,16 @@
 
               div:nth-of-type(2),
               div:nth-of-type(3) {
-                width: 86px;
+                width: 21%;
+                min-width: 86px;
                 border-right: 1px dashed #d4d4d4;
                 font-family: PingFangSC-Medium, serif;
                 font-weight: bold;
               }
 
               div:nth-of-type(4) {
-                width: 186px;
+                width: 46%;
+                min-width: 186px;
                 font-family: PingFangSC-Medium, serif;
                 font-weight: bold;
               }
@@ -383,7 +389,8 @@
               display: flex;
 
               .netTableLeft {
-                width: 222px;
+                width: 54%;
+                min-width: 222px;
 
                 .netTableTr {
                   width: 100%;
@@ -392,7 +399,8 @@
                   border-bottom: 1px solid #d4d4d4;
 
                   div:nth-of-type(1) {
-                    width: 50px;
+                    width: 22.3%;
+                    min-width: 50px;
                     text-align: center;
                     font-family: PingFangSC-Medium, serif;
                     font-weight: bold;
@@ -401,14 +409,16 @@
                   }
 
                   div:nth-of-type(2) {
-                    width: 86px;
+                    width: 38.85%;
+                    min-width: 86px;
                     text-align: right;
                     padding-right: 10px;
                     border-right: 1px dashed #d4d4d4;
                   }
 
                   .netStopCode {
-                    width: 86px;
+                    width: 38.85%;
+                    min-width: 86px;
                     text-align: right;
                     padding-right: 10px;
                     border-right: 1px dashed #d4d4d4;
@@ -417,7 +427,8 @@
                   }
 
                   .netErrorStopCode{
-                    width: 86px;
+                    width: 38.85%;
+                    min-width: 86px;
                     text-align: right;
                     padding-right: 10px;
                     border-right: 1px dashed #d4d4d4;
@@ -426,7 +437,8 @@
                   }
 
                   .netEditStopCode {
-                    width: 86px;
+                    width: 38.85%;
+                    min-width: 86px;
                     background-color: #f1f8ff;
                     padding-right: 0;
                     border-right: 1px dashed #d4d4d4;
@@ -436,12 +448,13 @@
                     position: relative;
 
                     .errorTip {
-                      @include tipStyle(5px, 95px);
+                      @include tipStyle(5px, 110%);
                     }
 
                     input {
                       padding: 4px 6px 4px 0;
-                      width: 80px;
+                      width: 93%;
+                      min-width: 80px;
                       height: 30px;
                       text-align: right;
                     }
@@ -485,123 +498,130 @@
                 }
               }
 
-              .netTablePhoto {
-                width: 186px;
-                height: 200px;
-                padding: 4px 13px 0 27px;
+              .netTablePhotoBox{
+                width: 46%;
+                min-width: 186px;
 
-                .netPhotoBox {
-                  width: 60px;
-                  height: 60px;
-                  cursor: pointer;
-                  position: relative;
-                  border-radius: 2px;
-                  overflow: hidden;
-                  margin-bottom: 6px;
-                  margin-right: 13px;
-                  border: 1px solid #d4d4d4;
+                .netTablePhoto {
+                  width: 186px;
+                  margin: 0 auto;
+                  height: 200px;
+                  padding: 4px 13px 0 27px;
 
-                  img {
-                    width: 100%;
-                    height: 100%;
-                    opacity: 0.5;
-                  }
+                  .netPhotoBox {
+                    width: 60px;
+                    height: 60px;
+                    cursor: pointer;
+                    position: relative;
+                    border-radius: 2px;
+                    overflow: hidden;
+                    margin-bottom: 6px;
+                    margin-right: 13px;
+                    border: 1px solid #d4d4d4;
 
-                  .shadeBox {
-                    width: 100%;
-                    height: 100%;
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    display: none;
-                    background-color: rgba(0, 0, 0, 1);
-                  }
-
-                  &:hover {
                     img {
-                      opacity: 1;
+                      width: 100%;
+                      height: 100%;
+                      opacity: 0.5;
                     }
 
                     .shadeBox {
-                      background-color: rgba(0, 0, 0, 0.50);
-                      display: block;
+                      width: 100%;
+                      height: 100%;
+                      position: absolute;
+                      top: 0;
+                      right: 0;
+                      display: none;
+                      background-color: rgba(0, 0, 0, 1);
                     }
-                  }
-                }
 
-                :global {
-                  .ant-upload.ant-upload-select-picture-card {
-                    width: 60px;
-                    height: 60px;
+                    &:hover {
+                      img {
+                        opacity: 1;
+                      }
 
-                    .ant-upload {
-                      padding: 0;
+                      .shadeBox {
+                        background-color: rgba(0, 0, 0, 0.50);
+                        display: block;
+                      }
                     }
-                  }
-
-                  .ant-upload-list-picture-card .ant-upload-list-item {
-                    width: 60px;
-                    height: 60px;
-                    padding: 0;
-                  }
-
-                  .ant-upload-list-item-info > span {
-                    width: 60px;
-                    height: 60px;
-                  }
-
-                  .ant-upload-list-item-actions {
-                    display: none;
-                  }
-                }
-
-                .uploadButton {
-
-                  i {
-                    color: $themeColor;
-                    font-size: 29px;
-                  }
-
-                  img {
-                    margin-top: 2px;
-                  }
-
-                  .antLoadingText {
-                    font-family: MicrosoftYaHei, serif;
-                    color: #353535;
-                    font-size: 12px;
                   }
 
                   :global {
+                    .ant-upload.ant-upload-select-picture-card {
+                      width: 60px;
+                      height: 60px;
 
-                    .ant-upload-text {
-                      margin-top: 5px;
-                      font-size: 12px;
-                      color: #999999;
+                      .ant-upload {
+                        padding: 0;
+                      }
                     }
 
-                    .ant-progress-bg {
-                      height: 2px !important;
+                    .ant-upload-list-picture-card .ant-upload-list-item {
+                      width: 60px;
+                      height: 60px;
+                      padding: 0;
                     }
 
-                    .ant-progress-text {
+                    .ant-upload-list-item-info > span {
+                      width: 60px;
+                      height: 60px;
+                    }
+
+                    .ant-upload-list-item-actions {
                       display: none;
                     }
+                  }
 
-                    .ant-progress-outer {
-                      margin-top: 0;
+                  .uploadButton {
+
+                    i {
+                      color: $themeColor;
+                      font-size: 29px;
                     }
 
-                    .ant-progress-show-info .ant-progress-outer {
-                      padding: 0 5px;
-                      margin: 0;
+                    img {
+                      margin-top: 2px;
+                    }
+
+                    .antLoadingText {
+                      font-family: MicrosoftYaHei, serif;
+                      color: #353535;
+                      font-size: 12px;
+                    }
+
+                    :global {
+
+                      .ant-upload-text {
+                        margin-top: 5px;
+                        font-size: 12px;
+                        color: #999999;
+                      }
+
+                      .ant-progress-bg {
+                        height: 2px !important;
+                      }
+
+                      .ant-progress-text {
+                        display: none;
+                      }
+
+                      .ant-progress-outer {
+                        margin-top: 0;
+                      }
+
+                      .ant-progress-show-info .ant-progress-outer {
+                        padding: 0 5px;
+                        margin: 0;
+                      }
                     }
                   }
                 }
               }
 
               .netNoPhoto {
-                width: 186px;
+                width: 46%;
+                min-width: 186px;
                 height: 200px;
                 display: flex;
                 justify-content: center;
@@ -629,6 +649,8 @@
         }
 
         .electricityWrap {
+          width: 100%;
+
           > div {
             margin-top: 20px;
           }
@@ -640,7 +662,8 @@
         }
 
         .electricityGaugeListBox {
-          width: 410px;
+          width: 48.8%;
+          min-width: 410px;
           height: 324px;
           border: 1px solid $themeColor;
 
@@ -686,7 +709,8 @@
               border-top: 1px solid #d4d4d4;
 
               div:nth-of-type(1) {
-                width: 50px;
+                width: 12%;
+                min-width: 50px;
                 border-right: 1px dashed #d4d4d4;
                 font-family: PingFangSC-Medium, serif;
                 font-weight: bold;
@@ -694,14 +718,16 @@
 
               div:nth-of-type(2),
               div:nth-of-type(3) {
-                width: 86px;
+                width: 21%;
+                min-width: 86px;
                 border-right: 1px dashed #d4d4d4;
                 font-family: PingFangSC-Medium, serif;
                 font-weight: bold;
               }
 
               div:nth-of-type(4) {
-                width: 186px;
+                width: 46%;
+                min-width: 186px;
                 font-family: PingFangSC-Medium, serif;
                 font-weight: bold;
               }
@@ -712,7 +738,8 @@
               display: flex;
 
               .electricityTableLeft {
-                width: 222px;
+                width: 54%;
+                min-width: 222px;
 
                 .electricityTableTr {
                   width: 100%;
@@ -721,7 +748,8 @@
                   border-bottom: 1px solid #d4d4d4;
 
                   div:nth-of-type(1) {
-                    width: 50px;
+                    width: 22.3%;
+                    min-width: 50px;
                     text-align: center;
                     font-family: PingFangSC-Medium, serif;
                     font-weight: bold;
@@ -730,14 +758,16 @@
                   }
 
                   div:nth-of-type(2) {
-                    width: 86px;
+                    width: 38.85%;
+                    min-width: 86px;
                     text-align: right;
                     padding-right: 10px;
                     border-right: 1px dashed #d4d4d4;
                   }
 
                   .electricityStopCode {
-                    width: 86px;
+                    width: 38.85%;
+                    min-width: 86px;
                     text-align: right;
                     padding-right: 10px;
                     border-right: 1px dashed #d4d4d4;
@@ -746,7 +776,8 @@
                   }
 
                   .electricityErrorStopCode {
-                    width: 86px;
+                    width: 38.85%;
+                    min-width: 86px;
                     text-align: right;
                     padding-right: 10px;
                     border-right: 1px dashed #d4d4d4;
@@ -755,7 +786,8 @@
                   }
 
                   .electricityEditStopCode {
-                    width: 86px;
+                    width: 38.85%;
+                    min-width: 86px;
                     background-color: #f1f8ff;
                     padding-right: 0;
                     border-right: 1px dashed #d4d4d4;
@@ -765,12 +797,13 @@
                     position: relative;
 
                     .errorTip {
-                      @include tipStyle(5px, 95px);
+                      @include tipStyle(5px, 110%);
                     }
 
                     input {
                       padding: 4px 6px 4px 0;
-                      width: 80px;
+                      width: 93%;
+                      min-width: 80px;
                       height: 30px;
                       text-align: right;
                     }
@@ -814,128 +847,274 @@
                 }
               }
 
-              .electricityTablePhoto {
-                width: 186px;
-                height: 200px;
-                padding: 4px 13px 0 27px;
+              .electricityTablePhotoBox{
+                width: 46%;
+                min-width: 186px;
 
-                .electricityPhotoBox {
-                  width: 60px;
-                  height: 60px;
-                  cursor: pointer;
-                  position: relative;
-                  border-radius: 2px;
-                  overflow: hidden;
-                  margin-bottom: 6px;
-                  margin-right: 13px;
-                  border: 1px solid #d4d4d4;
+                .electricityTablePhoto {
+                  width: 186px;
+                  margin: 0 auto;
+                  height: 200px;
+                  padding: 4px 13px 0 27px;
 
-                  img {
-                    width: 100%;
-                    height: 100%;
-                    opacity: 0.5;
-                  }
+                  .electricityPhotoBox {
+                    width: 60px;
+                    height: 60px;
+                    cursor: pointer;
+                    position: relative;
+                    border-radius: 2px;
+                    overflow: hidden;
+                    margin-bottom: 6px;
+                    margin-right: 13px;
+                    border: 1px solid #d4d4d4;
 
-                  .shadeBox {
-                    width: 100%;
-                    height: 100%;
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    display: none;
-                    background-color: rgba(0, 0, 0, 1);
-                  }
-
-                  &:hover {
                     img {
-                      opacity: 1;
+                      width: 100%;
+                      height: 100%;
+                      opacity: 0.5;
                     }
 
                     .shadeBox {
-                      background-color: rgba(0, 0, 0, 0.50);
-                      display: block;
+                      width: 100%;
+                      height: 100%;
+                      position: absolute;
+                      top: 0;
+                      right: 0;
+                      display: none;
+                      background-color: rgba(0, 0, 0, 1);
                     }
-                  }
-                }
 
-                :global {
-                  .ant-upload.ant-upload-select-picture-card {
-                    width: 60px;
-                    height: 60px;
+                    &:hover {
+                      img {
+                        opacity: 1;
+                      }
 
-                    .ant-upload {
-                      padding: 0;
+                      .shadeBox {
+                        background-color: rgba(0, 0, 0, 0.50);
+                        display: block;
+                      }
                     }
-                  }
-
-                  .ant-upload-list-picture-card .ant-upload-list-item {
-                    width: 60px;
-                    height: 60px;
-                    padding: 0;
-                  }
-
-                  .ant-upload-list-item-info > span {
-                    width: 60px;
-                    height: 60px;
-                  }
-
-                  .ant-upload-list-item-actions {
-                    display: none;
-                  }
-                }
-
-                .uploadButton {
-
-                  i {
-                    color: $themeColor;
-                    font-size: 29px;
-                  }
-
-                  img {
-                    margin-top: 2px;
-                  }
-
-                  .antLoadingText {
-                    font-family: MicrosoftYaHei, serif;
-                    color: #353535;
-                    font-size: 12px;
                   }
 
                   :global {
+                    .ant-upload.ant-upload-select-picture-card {
+                      width: 60px;
+                      height: 60px;
 
-                    .ant-upload-text {
-                      margin-top: 5px;
-                      font-size: 12px;
-                      color: #999999;
+                      .ant-upload {
+                        padding: 0;
+                      }
                     }
 
-                    .ant-progress-bg {
-                      height: 2px !important;
+                    .ant-upload-list-picture-card .ant-upload-list-item {
+                      width: 60px;
+                      height: 60px;
+                      padding: 0;
                     }
 
-                    .ant-progress-text {
+                    .ant-upload-list-item-info > span {
+                      width: 60px;
+                      height: 60px;
+                    }
+
+                    .ant-upload-list-item-actions {
                       display: none;
                     }
+                  }
 
-                    .ant-progress-outer {
-                      margin-top: 0;
+                  .uploadButton {
+
+                    i {
+                      color: $themeColor;
+                      font-size: 29px;
                     }
 
-                    .ant-progress-show-info .ant-progress-outer {
-                      padding: 0 5px;
-                      margin: 0;
+                    img {
+                      margin-top: 2px;
+                    }
+
+                    .antLoadingText {
+                      font-family: MicrosoftYaHei, serif;
+                      color: #353535;
+                      font-size: 12px;
+                    }
+
+                    :global {
+
+                      .ant-upload-text {
+                        margin-top: 5px;
+                        font-size: 12px;
+                        color: #999999;
+                      }
+
+                      .ant-progress-bg {
+                        height: 2px !important;
+                      }
+
+                      .ant-progress-text {
+                        display: none;
+                      }
+
+                      .ant-progress-outer {
+                        margin-top: 0;
+                      }
+
+                      .ant-progress-show-info .ant-progress-outer {
+                        padding: 0 5px;
+                        margin: 0;
+                      }
                     }
                   }
                 }
               }
 
               .electricityNoPhoto {
-                width: 186px;
+                width: 46%;
+                min-width: 186px;
                 height: 200px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 user-select: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
+  .meterDisposeInfo{
+    .gaugeTableBox{
+      .netGaugeTable{ // 上网计量表
+        .netWrap{
+          .netInfoBox{
+            font-size: 14px;
+          }
+          .netTableBox{
+            .netTableHead{
+              font-size: 14px;
+            }
+            .netTableBody{
+              .netTableTr{
+                div:nth-of-type(1){
+                  font-size: 14px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .electricityGaugeTable{// 发电计量表
+        .electricityWrap{
+          .electricityInfoBox{
+            font-size: 14px;
+          }
+          .electricityTableBox{
+            .electricityTableHead{
+              font-size: 14px;
+            }
+            .electricityTableBody{
+              .electricityTableTr{
+                div:nth-of-type(1){
+                  font-size: 14px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919 字号16px
+  .meterDisposeInfo{
+    .gaugeTableBox{
+      .netGaugeTable{ // 上网计量表
+        .netWrap{
+          .netInfoBox{
+            font-size: 16px;
+          }
+          .netTableBox{
+            .netTableHead{
+              font-size: 16px;
+            }
+            .netTableBody{
+              .netTableTr{
+                div:nth-of-type(1){
+                  font-size: 16px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .electricityGaugeTable{// 发电计量表
+        .electricityWrap{
+          .electricityInfoBox{
+            font-size: 16px;
+          }
+          .electricityTableBox{
+            .electricityTableHead{
+              font-size: 16px;
+            }
+            .electricityTableBody{
+              .electricityTableTr{
+                div:nth-of-type(1){
+                  font-size: 16px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配 字号18px
+  .meterDisposeInfo{
+    .gaugeTableBox{
+      .netGaugeTable{ // 上网计量表
+        .netWrap{
+          .netInfoBox{
+            font-size: 18px;
+          }
+          .netTableBox{
+            .netTableHead{
+              font-size: 18px;
+            }
+            .netTableBody{
+              .netTableTr{
+                div:nth-of-type(1){
+                  font-size: 18px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .electricityGaugeTable{// 发电计量表
+        .electricityWrap{
+          .electricityInfoBox{
+            font-size: 18px;
+          }
+          .electricityTableBox{
+            .electricityTableHead{
+              font-size: 18px;
+            }
+            .electricityTableBody{
+              .electricityTableTr{
+                div:nth-of-type(1){
+                  font-size: 18px;
+                }
               }
             }
           }

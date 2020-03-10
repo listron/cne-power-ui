@@ -33,6 +33,8 @@ const initState = immutable.fromJS({
   operatorFlag: false, // 执行人是否换行
   stationFlag: false, // 电站名称是否换行
   receiveLoading: false, // 领取
+  stateChangeStatus: false, // 工单状态变更
+  lastRefreshTime: '', // 上次刷新时间 格式yyyy-MM-dd HH:mm:ss
   meterBaseData: {// 基本信息
     stationName: '', // 电站名称
     processType: '', // 工单类型
@@ -65,6 +67,7 @@ const initState = immutable.fromJS({
     generationDatas: [], // 发电表信息
     readmeterId: '', // 抄表扩展信息id
     settleMonth: '', // 结算月份
+    isChangeMeter: 0, // 表设置是否变更  0：未变更 1：已变更
   },
   newReadMeterData: {}, // // 备份-作为参考的数据传给后端
   otherReadMeterData: {}, // 需要和原始数据作对比
