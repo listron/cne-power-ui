@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 const { memo, useEffect, useCallback, useMemo, useState } = React;
 import CneButton from '../../../../Common/Power/CneButton';
+import CneTips from '@components/Common/Power/CneTips';
 import { Tooltip } from 'antd';
 import styles from './defectEvent.scss';
 /** 
@@ -9,17 +10,27 @@ import styles from './defectEvent.scss';
 
 const DefectEventDetail = ({ defectMessage }) => {
   const [state, changeState] = useState();
-  const { eventId } = defectMessage;
+  const [visible, changeVisible] = useState(false);
+  const { eventId, diagWarningId, eventImgs = [] } = defectMessage;
   const eventStatus = ['yijie', 'weijie', 'hulue1'];
   const levelStatus = ['一级', '二级', '三级', '四级'];
   const stateArr = [{ name: '已解决', value: 'yijie' }, { name: '未解决', value: 'weijie' }, { name: '忽略', value: 'hulue' }];
   const delEvent = () => {
     console.log('需要删除么');
+    changeVisible(true);
     // this.props.change()
   };
   const handleChane = (value) => {
     changeState(value);
     // this.props.change()
+  };
+
+  const onConfirm = () => { // 只有在 待领取 事件派发 的页面缺陷事件才可以删除 
+    console.log('请求数据，去删除');
+  };
+
+  const onCancel = () => {
+    changeVisible(false);
   };
 
   return (
@@ -51,14 +62,14 @@ const DefectEventDetail = ({ defectMessage }) => {
             <b>缺陷描述:</b>
             <p>{defectMessage.eventDesc}</p>
           </div>
-          {defectMessage.eventId &&
+          {diagWarningId &&
             <div className={styles.analysize}>
               <CneButton> <i className={'iconfont icon-look'} /> 查看分析 </CneButton>
             </div>
           }
         </div>
         {
-          defectMessage.eventImgs.length > 0 &&
+          eventImgs.length > 0 &&
           <div className={styles.threeLine}>
             {
               defectMessage.eventImgs.map((e) => {
@@ -80,6 +91,15 @@ const DefectEventDetail = ({ defectMessage }) => {
           );
         })}
       </div>
+      <CneTips
+        tipText={'确认删除此事件'}
+        theme={'light'}
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+        confirmText={'确认'}
+        visible={visible}
+        width={260}
+      />
     </div>
   );
 };

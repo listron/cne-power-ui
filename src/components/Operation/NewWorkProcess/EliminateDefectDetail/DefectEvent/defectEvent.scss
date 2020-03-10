@@ -4,17 +4,19 @@
 .defectEventWrap{
   margin-top: 19px;
   padding: 0 24px;
+  .cneTips{
+    background: pink;
+    width: 260px;
+  }
   .eventTitle{
     color: $themeColor;
   }
-
   .eventDetail{
     margin-top: 14px;
     background:#ffffff;
     border:1px solid #d4d4d4;
     box-shadow:2px 2px 0 3px #f3f2f2;
     border-radius:2px;
-    
     position: relative;
     p{
       margin-bottom: 0;
@@ -139,7 +141,87 @@
       .yijie.selected{ color:#fff; background: #199475;}
       .weijie.selected{ color:#fff; background: #df4b33;}
       .hulue.selected{ color:#fff; background: #ff9900;}
-    }
-
-
+  }
 }
+
+ .infoEditBox{
+    border:1px solid var(--promptColor);
+    box-shadow:2px 2px 0 3px #f3f2f2;
+    border-radius:2px;
+    margin-bottom: 20px;
+    padding: 32px 33px 20px 20px;
+    margin-top: 13px;
+    position: relative;
+     .status{
+      position: absolute;
+      right:0;
+      top:0;
+        .close{
+        width: 24px;
+        height: 24px;
+        color:$themeColor;
+        display: inline-block;
+        text-align: center;
+        cursor: pointer;
+        &:hover{
+          color:#ff9900;
+        }
+      }
+    }
+    .editDevice,.editRecord,.editPic{
+      display: flex;
+      .editTitle{
+        line-height: 30px;
+      }
+      .recordName{
+        flex: 0 0 71px;
+        font-weight: 700;
+        display: flex;
+        line-height: 40px;
+        .star{
+          color:#df4b33;
+          padding: 0 5px;
+        }
+      }
+    }
+    .defectType,.deviceType,.deviceName,.defectLevel{
+      display: flex;
+      align-items: center;
+      margin-right: 15px;
+      margin-bottom: 11px;
+    }
+    .defectType{ width:22%;}
+    .deviceType{ width:26.5% }
+    .deviceName{ width:28% }
+    .defectLevel{ 
+      width:19%;
+      position: relative;
+      margin-right: 0;
+      .iconHelp{
+          position: absolute;
+          color: #999;
+          font-size: 12px;
+          right: -11px;
+          top:-7px;
+          cursor: pointer;
+        }
+    }
+     .editRecord{
+      margin-bottom: 8px;
+      .editTitle{
+        .editTitleName{
+          font-weight: 700;
+        }
+      }
+      textarea{
+        height: 62px;
+        flex: 1;
+      }
+      
+    }
+    :global{
+      .ant-select{
+        flex: 1;
+      }
+    }
+  }

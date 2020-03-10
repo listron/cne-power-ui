@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import { Timeline } from 'antd';
 import moment from 'moment';
+import CneButton from '@components/Common/Power/CneButton';
 import styles from './defectEvent.scss';
 import DefectEventDetail from './DefectEventDetail.jsx';
+import DefectEventEdit from './DefectEventEdit';
 
 
 
@@ -46,7 +48,7 @@ export default class DefectEvent extends Component {
       },
       {
         eventId: 89,
-        diagWarningId: 1123,
+        diagWarningId: 11233,
         eventName: '测试1233',
         eventDesc: '描述描述描述么，太难了，怎么这么难啊，我想出去走走描述描述描述么，太难了',
         deviceFullcode: '',
@@ -126,11 +128,15 @@ export default class DefectEvent extends Component {
       <div className={styles.defectEventWrap}>
         <div className={styles.eventTitle}>
           <div><i className={'iconfont icon-quex'} /> <span>缺陷事件</span></div>
+          <CneButton className={styles.addBtn} onClick={this.addHandleInfo}>
+            <i className={`iconfont icon-newbuilt ${styles.addIcon}`} />
+            <span className={styles.text}>添加缺陷</span>
+          </CneButton>
         </div>
         {MockData.map(list => {
           return <DefectEventDetail defectMessage={list} key={list.diagWarningId} />;
         })}
-
+        <DefectEventEdit {...this.props} />
       </div>
     );
   }
