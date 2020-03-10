@@ -63,7 +63,6 @@ export default class DefectTable extends Component {
       title: '执行人',
       dataIndex: 'operName',
       className: styles.operName,
-      sorter: true,
       render: (text) => (
         <div
           className={styles.operNameText}
@@ -76,25 +75,35 @@ export default class DefectTable extends Component {
       className: styles.status,
       sorter: true,
       render: (text, record) => {
-        const { stateName, stateId, isCoordinate, isOverTime } = record;
+        const { stateName, isCoordinate, isOverTime } = record;
         return (
           <div
             className={styles.statusContent}
             title={stateName || ''}
-          >{stateName || '--'}</div>
+          >
+            <span>{stateName || '--'}</span>
+            {!!isCoordinate && <span
+              className={`iconfont icon-xietiao ${styles.coordinateIcon}`}
+              style={{right: (!!isCoordinate && !!isOverTime) ? '26px' : '5px'}}
+              title="协调"
+            />}
+            {!!isOverTime && <span
+              className={`iconfont icon-chaoshi ${styles.overtimeIcon}`}
+              title="超时"
+            />}
+          </div>
         );
       },
     }, {
       title: '操作',
       dataIndex: 'handle',
       className: styles.handle,
-      sorter: true,
       render: (text, record) => (
-        <div
-          className={styles.handleContent}
-        >
-          <span title="查看" onClick={() => this.onDetailSearch(record)}>查看</span>
-        </div>
+          <span
+            className={`iconfont icon-viewplan ${styles.handleIcon}`}
+            title="查看"
+            onClick={() => this.onDetailSearch(record)}
+          />
       ),
     },
   ]
@@ -124,7 +133,9 @@ export default class DefectTable extends Component {
       keepLength: '21天22小时08分',
       createTime: '2019-07-12 14:00',
       operName: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-      status: '已结单',
+      stateName: '已结单',
+      isCoordinate: 1,
+      isOverTime: 1,
     }, {
       stationName: '电站1',
       docketDesc: '这是随手写的静态数据',
@@ -132,7 +143,9 @@ export default class DefectTable extends Component {
       keepLength: '21天22小时08分',
       createTime: '2019-09-20 00:00',
       operName: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-      status: '已结单',
+      stateName: '执行中',
+      isCoordinate: 1,
+      isOverTime: 1,
     },
   ]
 
