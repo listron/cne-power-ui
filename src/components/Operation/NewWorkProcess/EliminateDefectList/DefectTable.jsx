@@ -18,11 +18,11 @@ export default class DefectTable extends Component {
       ),
     }, {
       title: '工单描述',
-      dataIndex: 'defectDesc',
-      className: styles.defectDesc,
+      dataIndex: 'docketDesc',
+      className: styles.docketDesc,
       render: (text) => (
         <div
-          className={styles.defectDescText}
+          className={styles.docketDescText}
           title={text || ''}
         >{text || '--'}</div>
       ),
@@ -49,13 +49,23 @@ export default class DefectTable extends Component {
         >{text || '--'}</div>
       ),
     }, {
-      title: '执行人',
-      dataIndex: 'handlers',
-      className: styles.handlers,
+      title: '持续时间',
+      dataIndex: 'keepLength',
+      className: styles.keepLength,
       sorter: true,
       render: (text) => (
         <div
-          className={styles.handlersText}
+          className={styles.keepLengthText}
+          title={text || ''}
+        >{text || '--'}</div>
+      ),
+    }, {
+      title: '执行人',
+      dataIndex: 'operName',
+      className: styles.operName,
+      render: (text) => (
+        <div
+          className={styles.operNameText}
           title={text || ''}
         >{text || '--'}</div>
       ),
@@ -64,23 +74,36 @@ export default class DefectTable extends Component {
       dataIndex: 'status',
       className: styles.status,
       sorter: true,
-      render: (text) => (
-        <div
-          className={styles.statusText}
-          title={text || ''}
-        >{text || '--'}</div>
-      ),
+      render: (text, record) => {
+        const { stateName, isCoordinate, isOverTime } = record;
+        return (
+          <div
+            className={styles.statusContent}
+            title={stateName || ''}
+          >
+            <span>{stateName || '--'}</span>
+            {!!isCoordinate && <span
+              className={`iconfont icon-xietiao ${styles.coordinateIcon}`}
+              style={{right: (!!isCoordinate && !!isOverTime) ? '26px' : '5px'}}
+              title="协调"
+            />}
+            {!!isOverTime && <span
+              className={`iconfont icon-chaoshi ${styles.overtimeIcon}`}
+              title="超时"
+            />}
+          </div>
+        );
+      },
     }, {
       title: '操作',
       dataIndex: 'handle',
       className: styles.handle,
-      sorter: true,
       render: (text, record) => (
-        <div
-          className={styles.handleText}
-        >
-          <span title="查看" onClick={() => this.onDetailSearch(record)}>查看</span>
-        </div>
+          <span
+            className={`iconfont icon-viewplan ${styles.handleIcon}`}
+            title="查看"
+            onClick={() => this.onDetailSearch(record)}
+          />
       ),
     },
   ]
@@ -102,87 +125,32 @@ export default class DefectTable extends Component {
     // }
   }
 
+  defectMockListData = [
+    {
+      stationName: '电站1',
+      docketDesc: '这是随手写的静态数据',
+      eventNum: 12,
+      keepLength: '21天22小时08分',
+      createTime: '2019-07-12 14:00',
+      operName: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
+      stateName: '已结单',
+      isCoordinate: 1,
+      isOverTime: 1,
+    }, {
+      stationName: '电站1',
+      docketDesc: '这是随手写的静态数据',
+      eventNum: 12,
+      keepLength: '21天22小时08分',
+      createTime: '2019-09-20 00:00',
+      operName: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
+      stateName: '执行中',
+      isCoordinate: 1,
+      isOverTime: 1,
+    },
+  ]
+
   render() {
-    const defectListData = [
-      {
-        stationName: '电站1',
-        defectDesc: '这是随手写的静态数据',
-        eventNum: 12,
-        createTime: '21天22小时08分',
-        handlers: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-        status: '已结单',
-      }, {
-        stationName: '电站1',
-        defectDesc: '这是随手写的静态数据',
-        eventNum: 12,
-        createTime: '21天22小时08分',
-        handlers: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-        status: '已结单',
-      }, {
-        stationName: '电站1',
-        defectDesc: '这是随手写的静态数据',
-        eventNum: 12,
-        createTime: '21天22小时08分',
-        handlers: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-        status: '已结单',
-      }, {
-        stationName: '电站1',
-        defectDesc: '这是随手写的静态数据',
-        eventNum: 12,
-        createTime: '21天22小时08分',
-        handlers: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-        status: '已结单',
-      }, {
-        stationName: '电站1',
-        defectDesc: '这是随手写的静态数据',
-        eventNum: 12,
-        createTime: '21天22小时08分',
-        handlers: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-        status: '已结单',
-      }, {
-        stationName: '电站1',
-        defectDesc: '这是随手写的静态数据',
-        eventNum: 12,
-        createTime: '21天22小时08分',
-        handlers: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-        status: '已结单',
-      }, {
-        stationName: '电站1',
-        defectDesc: '这是随手写的静态数据',
-        eventNum: 12,
-        createTime: '21天22小时08分',
-        handlers: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-        status: '已结单',
-      }, {
-        stationName: '电站1',
-        defectDesc: '这是随手写的静态数据',
-        eventNum: 12,
-        createTime: '21天22小时08分',
-        handlers: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-        status: '已结单',
-      }, {
-        stationName: '电站1',
-        defectDesc: '这是随手写的静态数据',
-        eventNum: 12,
-        createTime: '21天22小时08分',
-        handlers: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-        status: '已结单',
-      }, {
-        stationName: '电站1',
-        defectDesc: '这是随手写的静态数据',
-        eventNum: 12,
-        createTime: '21天22小时08分',
-        handlers: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-        status: '已结单',
-      }, {
-        stationName: '电站1',
-        defectDesc: '这是随手写的静态数据',
-        eventNum: 12,
-        createTime: '21天22小时08分',
-        handlers: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-        status: '已结单',
-      },
-    ];
+    const { defectMockListData } = this;
     const sortField = 'stationName';
     const sortMethod = 'descend';
     return (
@@ -193,7 +161,7 @@ export default class DefectTable extends Component {
           onChange={this.tableSortChange}
           columns={this.defectColumn}
           className={styles.defectTable}
-          dataSource={defectListData}
+          dataSource={defectMockListData}
         />
       </div>
     );
