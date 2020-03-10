@@ -94,14 +94,13 @@ class RoleTable extends Component {
         className: styles.operateNameBox,
         // width:'80px',
         width:'8%',
-        render: text => (<span>{text}</span>),
       },
       {
         title: '功能定义',
         dataIndex: 'rightData',
         key: 'rightData',
         // width:'550px',
-        width:'58%',
+        className:styles.rightData,
         render: (rightData, record)=>{
           const rightArr = this.getRightArr(rightData, '');
           return (<div className={styles.menu} onClick={() => this.showModel(record)}>{rightArr.join(' | ')}</div>);

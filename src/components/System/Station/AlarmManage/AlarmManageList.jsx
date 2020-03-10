@@ -52,6 +52,7 @@ class AlarmManageList extends Component {
         // width:150,
         width:'13%',
         ellipsis: true,
+        render: (text, record) => (<div className={styles.devicePointDesc} title={text} >{text}</div>),
       },
       {
         title: '测点编号',
@@ -72,6 +73,7 @@ class AlarmManageList extends Component {
         key: 'warningDescription',
         // width:250,
         width:'22%',
+        render: (text, record) => (<div className={styles.warningDescription} title={text} >{text}</div>),
         ellipsis: true,
       }, {
         title: '事件类别',

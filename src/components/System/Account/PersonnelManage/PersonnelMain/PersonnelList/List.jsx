@@ -55,14 +55,18 @@ class List extends Component {
       }, {
         title: '角色',
         dataIndex: 'roleName',
-        className:styles.roleNameBox,
-        render: (text) => text || '--',
+        // render: (text) => text || '--',
+        // width:'25%',
         ellipsis: true,
+        className:styles.roleNameBox,
+        render:(text) => (
+          <div className={styles.roleName}>{text || '--'}</div>
+        ),
       }, {
         title: '用户状态',
         dataIndex: 'enterpriseStatus',
         className: styles.enterpriseStatus,
-        width:'13%',
+        width:'15%',
         render: (text) => {
           const statusText = this.enterpriseStatusInfo[text];
           return <span className={statusText === '待审核' ? styles.toExamine : styles.status}>{statusText || '--'}</span>;

@@ -106,6 +106,7 @@ class WarnConfig extends Component {
             key: 'pointCode',
             // width:150,
             width:'11%',
+            className:styles.pointCode,
         }, {
             title: '预警描述',
             dataIndex: 'warningDescription',
@@ -114,6 +115,9 @@ class WarnConfig extends Component {
             // width:350,
             width:'27%',
             ellipsis: true,
+            render: (text, record) => (
+                <span className={styles.warningDescription}>{text || '--'}</span>
+            )
         }, {
             title: '预警规则',
             dataIndex: 'warningCheckRule',
@@ -121,6 +125,9 @@ class WarnConfig extends Component {
             // width:150,
             width:'11%',
             ellipsis: true,
+            render: (text, record) => (
+                <span className={styles.warningCheckRule}>{text || '--'}</span>
+            )
         }, {
             title: '预警级别',
             dataIndex: 'warningLevel',

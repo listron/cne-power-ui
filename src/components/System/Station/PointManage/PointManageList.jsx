@@ -96,7 +96,8 @@ class PointManageList extends Component {
         key: 'deviceModeName',
         ellipsis: true,
         // width:150,
-        width:'14%'
+        width:'14%',
+        render: (text, record) => (<div className={styles.deviceModeName} title={text} >{text}</div>),
       },
       {
         title: '测点编号',

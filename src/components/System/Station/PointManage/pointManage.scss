@@ -139,8 +139,18 @@
     word-break:keep-all;
   }
 
+  .deviceModeName {
+    max-width: 120px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    // display: inline-block;
+    word-break:keep-all;
+  }
+
   .descStyle {
     width: inherit;
+    max-width: 200px;
     min-width: 90px;
     white-space: nowrap;
     text-overflow: ellipsis;
