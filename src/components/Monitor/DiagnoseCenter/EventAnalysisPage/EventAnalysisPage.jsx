@@ -72,10 +72,10 @@ class EventAnalysisPage extends PureComponent {
         <div className={styles.detailContent}>
           {chartType === 1 && <EventLineSearch {...this.props} />}
           {chartType === 2 && <EventBarSearch {...this.props} />}
-          {/* {chartType === 1 && <ChartLine {...this.props} />}
-          {chartType === 2 && <ChartBar {...this.props} />} */}
-          {chartType === 1 && (!eventAnalysisLoading ? <ChartLine {...this.props} /> : <div className={styles.spin}><Spin /></div>)}
-          {chartType === 2 && (!eventAnalysisLoading ? <ChartBar {...this.props} /> : <div className={styles.spin}><Spin /></div>)}
+          {chartType === 1 && <ChartLine {...this.props} />}
+          {chartType === 2 && <ChartBar {...this.props} />}
+          {/* {chartType === 1 && (!eventAnalysisLoading ? <ChartLine {...this.props} /> : <div className={styles.spin}><Spin /></div>)}
+          {chartType === 2 && (!eventAnalysisLoading ? <ChartBar {...this.props} /> : <div className={styles.spin}><Spin /></div>)} */}
         </div>
       </section>
     );
