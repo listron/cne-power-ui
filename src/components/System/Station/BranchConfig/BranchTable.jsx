@@ -38,7 +38,10 @@ class BranchTable extends React.Component {
   }
   changeSwitch = (checked) => {
     const { changeBranchStore } = this.props;
-    changeBranchStore({ checked: checked });
+    changeBranchStore({ checked: checked, loadding: true });
+    setTimeout(() => {//产品需求，筛选变更加一个2.5s的loading
+      changeBranchStore({ loadding: false });
+    }, 2500);
   }
   filterData = (checked) => { //筛选变动的
     const { copyData } = this.props;
@@ -253,12 +256,9 @@ class BranchTable extends React.Component {
 
   render() {
     const { loadding, editLoadding, cancelloadding, copyData, checkTime, isCheckStatus, focus, checked } = this.props;
-
-
     const pvNumsArr = [1, 2, 3, 4, 5];
     const filterCopyData = this.filterData(checked);
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-
     return (
       <div className={styles.tablebox}>
         <div className={styles.checkstyle}>
