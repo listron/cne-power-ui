@@ -363,7 +363,7 @@ class BranchTable extends React.Component {
                             </Select> :
                             <Tooltip
                               placement="bottomLeft"
-                              title={isCheckStatus && branchListItem.isChange === 1 ? `变更前:${branchListItem.pvNums}` : null}>
+                              title={isCheckStatus && branchListItem.isChange === 1 ? branchListItem.checkStatus === 1 ? '变更前:0' : `变更前:${branchListItem.pvNums}` : null}>
                               <div
                                 onClick={(info) => { this.editNum(info, branchId, item.deviceFullCode); }}
                                 className={styleStatus}
