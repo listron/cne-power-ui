@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Spin } from 'antd';
 import echarts from 'echarts';
 import moment from 'moment';
 import { dataFormats } from '@utils/utilFunc';
@@ -15,6 +16,7 @@ class ChartLine extends PureComponent {
 
   state = {
     legend: [],
+    isLoad: false,
   }
 
   componentDidMount(){
@@ -29,6 +31,9 @@ class ChartLine extends PureComponent {
     const { eventAnalysisInfo, eventAnalysisLoading, analysisEvent } = nextProps;
     if (eventAnalysisLoading && !preLoading) {
       this.chartLoading();
+      // this.setState({
+      //   isLoad: true,
+      // });
     }
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { period = [], data = {} } = eventAnalysisInfo || {};
@@ -192,7 +197,7 @@ class ChartLine extends PureComponent {
   }
 
   render(){
-    const { legend } = this.state;
+    const { legend, isLoad } = this.state;
     return (
       <div className={styles.analysisChart}>
         <div className={styles.legends}>
@@ -207,6 +212,7 @@ class ChartLine extends PureComponent {
             </span>
           ))}
         </div>
+          {isLoad && <Spin />}
         <div style={{width: '100%', height: '506px'}} ref={(ref) => { this.lineRef = ref; } } />
       </div>
     );
