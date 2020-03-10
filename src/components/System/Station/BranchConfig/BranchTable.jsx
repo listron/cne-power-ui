@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
-import { Select, Button, InputNumber, Switch, Icon, Spin } from 'antd';
+import { Select, Button, InputNumber, Switch, Icon, Spin, Tooltip } from 'antd';
 import lodash from 'lodash';
 
 const { Option } = Select;
@@ -361,13 +361,18 @@ class BranchTable extends React.Component {
                                 <Option key={pvNum} value={pvNum}>{pvNum}</Option>
                               ))}
                             </Select> :
-                            <div
-                              onClick={(info) => { this.editNum(info, branchId, item.deviceFullCode); }}
-                              className={styleStatus}
-                            >
-                              {(styleStatus === styles.link || styleStatus === styles.change) ? branchListItem.pvNums : null}
-                              <div></div>
-                            </div> : null}
+                            <Tooltip
+                              placement="bottomLeft"
+                              title={isCheckStatus && branchListItem.isChange === 1 ? `变更前:${branchListItem.pvNums}` : null}>
+                              <div
+                                onClick={(info) => { this.editNum(info, branchId, item.deviceFullCode); }}
+                                className={styleStatus}
+                              >
+                                {(styleStatus === styles.link || styleStatus === styles.change) ? branchListItem.pvNums : null}
+                                <div></div>
+                              </div>
+                            </Tooltip>
+                            : null}
                         </div>
                       );
 
