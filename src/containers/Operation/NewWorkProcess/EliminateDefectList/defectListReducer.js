@@ -1,5 +1,4 @@
 import immutable from 'immutable';
-import moment from 'moment';
 
 const eliminateDefectListAction = {
   fetchSuccess: Symbol('fetchSuccess'),
@@ -13,8 +12,8 @@ const initState = immutable.fromJS({
   listLoading: false,
   listParams: {
     stationCodes: [],
-    operName: null, // 执行人
-    isMy: null, // 1代表查询我参与过的
+    operName: [], // 执行人
+    isMy: 0, // 1代表查询我参与过的
     stateId: null, // 状态id
     sortField: 'create_time', // stationName eventNum createTime keepLength sort
     sortMethod: 'desc', // 'asc' 'desc'

@@ -106,15 +106,18 @@
   .leftHandler{
     display: flex;
     align-items: center;
+    padding-left: 20px;
   }
   .addBtn{
     width: 92px;
     padding-left: 6px;
-    margin-right: 20px;
     text-align: left;
     .addIcon{
       margin-right: 16px;
     }
+  }
+  .addBtn{
+    margin-right: 20px;
   }
   :global{
     .ant-radio-group label.ant-radio-button-wrapper{
@@ -122,6 +125,28 @@
     }
   }
 }
+.addDropDown{ // 新建 弹框
+  padding-top: 0;
+  margin-top: -2px;
+  .solveStatus{
+    display: flex;
+    flex-direction: column;
+    .undoneBtn, .alldoneBtn{
+      width: 92px;
+      padding-left: 6px;
+      text-align: left;
+      height: 40px;
+      line-height: 40px;
+      &::after{
+        display: none;
+      }
+      .undoneIcon, .alldoneIcon{
+        margin-right: 16px;
+      }
+    }
+  }
+}
+
 .defectTable{ // 表格部分
 
 }
@@ -136,6 +161,23 @@
     .ant-radio-button-wrapper-checked{
       color: #fff;
       background-color: var(--themeColor);
+    }
+  }
+}
+.addDropDown{ // 新建 弹框
+  .solveStatus{
+    .undoneBtn, .alldoneBtn{
+      background-color: #fff;
+      border: 1px solid var(--themeColor);
+      border-bottom: 1px dashed var(--promptColor);
+      &:hover{
+        background-color: var(--themeColor);
+        color: #fff;
+      }
+    }
+    .alldoneBtn{
+      border-top: none;
+      border-bottom: 1px solid var(--themeColor);
     }
   }
 }
