@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Popover, Checkbox} from 'antd';
 import moment from 'moment';
 import searchUtil from '@utils/searchUtil';
+import CneTips from '@components/Common/Power/CneTips';
 import styles from './meterBaseInfo.scss';
 
 const dateFormat = 'YYYY-MM-DD HH:mm';
@@ -25,6 +26,7 @@ export default class MeterBaseInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      showWarningTip: false,
     };
   }
 
@@ -56,66 +58,17 @@ export default class MeterBaseInfo extends React.Component {
     });
   };
 
-  // 处理超时图标
-  timeoutIconFunc = () => {
-    const {
-      meterBaseData: {
-        planEndTime,
-        endTime,
-      },
-    } = this.props;
-    /**
-     * 1）状态=已结单，实际完成时间(endTime)＞要求完成时间(planEndTime)，记为超时
-     * 2）状态≠已结单，当前时间(本地时间)＞要求完成时间(planEndTime)，记为超时
-     * */
-      // 当前时间
-    const currentTime = Math.round(new Date().getTime() / 1000);
-    // 获取时间戳
-    const planEndTimeStamp = planEndTime && Math.round(moment(planEndTime, 'YYYY-MM-DD HH:mm:ss').valueOf() / 1000) || '';
-    const endTimeStamp = endTime && Math.round(moment(endTime, 'YYYY-MM-DD HH:mm:ss').valueOf() / 1000) || '';
-    // 1)状态=已结单
-    if(endTimeStamp && planEndTimeStamp && endTimeStamp > planEndTimeStamp) {
-      return <i className={`iconfont icon-chaoshi ${styles.baseTimeout}`} />;
-    }
-    // 2)状态≠已结单
-    if(!endTimeStamp && planEndTimeStamp && currentTime > planEndTimeStamp) {
-      return <i className={`iconfont icon-chaoshi ${styles.baseTimeout}`} />;
-    }
-    return <i />;
-  };
-
-  // 添加执行人
+  // 添加执行人 打开二次弹框
   addUsername = () => {
-    const {
-      history,
-      checkedUserList,
-      getAddUser,
-      meterBaseData: {
-        stateId,
-      },
-      processActionData,
-      changeStore,
-    } = this.props;
-    const { search } = history.location;
-    const { meterId } = searchUtil(search).parse(); // 抄表详情页
-    // 关闭弹框
-    changeStore({
-      addVisible: false,
-    });
-    // 添加执行人
-    if(checkedUserList.length !== 0) {
-      processActionData.forEach(cur => {
-        if(cur.actionCode === '3') {
-          // 添加执行人
-          getAddUser({
-            stateId,
-            docketId: meterId,
-            ids: checkedUserList.toString(),
-            actionCode: cur.actionCode,
-          });
-        }
+    const { changeStore } = this.props;
+    this.setState({
+      showWarningTip: true,
+    }, () => {
+      // 关闭弹框
+      changeStore({
+        addVisible: false,
       });
-    }
+    });
   };
 
   handleVisibleChange = (visible) => {
@@ -133,7 +86,47 @@ export default class MeterBaseInfo extends React.Component {
     });
   };
 
+  // 关闭二次弹框
+  onCancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  };
+
+  onConfirmWarningTip = () => {
+    const {
+      history,
+      checkedUserList,
+      getAddUser,
+      meterBaseData: {
+        stateId,
+      },
+      processActionData,
+    } = this.props;
+    const { search } = history.location;
+    const { meterId } = searchUtil(search).parse(); // 抄表详情页
+    // 关闭二次弹框
+    this.setState({
+      showWarningTip: false,
+    });
+    // 添加执行人
+    if(checkedUserList.length !== 0) {
+      processActionData.forEach(cur => {
+        if(cur.actionCode === '3') {
+          // 添加执行人
+          getAddUser({
+            stateId,
+            docketId: meterId,
+            ids: checkedUserList.toString(),
+            actionCode: cur.actionCode,
+          });
+        }
+      });
+    }
+  };
+
   render() {
+    const { showWarningTip } = this.state;
     const {
       stationFlag,
       operatorFlag,
@@ -144,6 +137,7 @@ export default class MeterBaseInfo extends React.Component {
         planEndTime,
         endTime,
         stateName,
+        isOverTime,
       },
       operableUserData,
       checkedUserList,
@@ -158,9 +152,9 @@ export default class MeterBaseInfo extends React.Component {
             基本信息
           </div>
           <div className={styles.baseIconBox}>
-            {this.timeoutIconFunc()}
+            {isOverTime === 2 ? <i /> : <i className={`iconfont icon-chaoshi ${styles.baseTimeout}`} />}
             {endTime && <i className={`iconfont icon-jiedan ${styles.baseEnd}`} />}
-            {!endTime && <div className={styles.baseStatus}>
+            {!endTime && <div className={isOverTime === 2 ? styles.baseStatus : styles.errorStatus}>
               {stateName || '- -'}
             </div>}
           </div>
@@ -285,6 +279,13 @@ export default class MeterBaseInfo extends React.Component {
             </div>
           </div>
         </div>
+        <CneTips
+          visible={showWarningTip}
+          width={260}
+          onCancel={this.onCancelWarningTip}
+          onConfirm={this.onConfirmWarningTip}
+          tipText="添加后不可删除，确认添加？"
+        />
       </div>
     );
   }

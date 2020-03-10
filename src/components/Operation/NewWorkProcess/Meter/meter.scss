@@ -225,9 +225,10 @@
     i{
       position: absolute;
       right: 5px;
-      top: 1px;
+      top: 0;
       font-size: 20px;
       color: #df4b33;
+      @include lineheight(40px);
     }
   }
 

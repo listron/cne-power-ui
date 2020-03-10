@@ -79,6 +79,17 @@
         color: $themeColor;
         text-align: center;
       }
+
+      .errorStatus{
+        width: 70px;
+        @include lineheight(34px);
+        border-radius: 17px;
+        font-family: PingFangSC-Medium, serif;
+        font-weight: bold;
+        background-color: #fbe6e3;
+        color: #df4b33;
+        text-align: center;
+      }
     }
   }
 
@@ -339,12 +350,12 @@
 
   .operatorCenter {
     width: 250px;
+    padding-top: 22px;
 
     .operatorList {
       width: 220px;
-      margin: 0 auto 26px;
-      padding-top: 10px;
-      height: 334px;
+      margin: 0 auto 30px;
+      height: 308px;
       overflow-y: auto;
     }
 
@@ -409,7 +420,7 @@
       display: inline-block;
       margin-right: 0;
       width: 105px;
-      padding: 7px 0;
+      padding: 8px 0;
       border-radius: 2px;
     }
   }

@@ -196,25 +196,9 @@ export default class MeterTable extends React.Component {
         className: styles.stateName,
         sorter: true,
         render: (text, record) => {
-          const { endTime, planEndTime } = record;
-          // 当前时间
-          const currentTime = Math.round(new Date().getTime() / 1000);
-          /**
-           * 1）状态=已结单，实际完成时间(endTime)＞要求完成时间(planEndTime)，记为超时
-           * 2）状态≠已结单，当前时间(本地时间)＞要求完成时间(planEndTime)，记为超时
-           * 3）直接显示文本
-           * */
-          // 1)状态=已结单
-          if(endTime && planEndTime && endTime > planEndTime) {
-            return (
-              <div className={styles.stateNameBox} title={text}>
-                <div>{text || '- -'}</div>
-                <i className={'iconfont icon-chaoshi'} />
-              </div>
-            );
-          }
-          // 2)状态≠已结单
-          if(!endTime && planEndTime && currentTime > planEndTime) {
+          const { isOverTime } = record;
+          // isOverTime 1超时 2未超时
+          if(isOverTime === 1) {
             return (
               <div className={styles.stateNameBox} title={text}>
                 <div>{text || '- -'}</div>
