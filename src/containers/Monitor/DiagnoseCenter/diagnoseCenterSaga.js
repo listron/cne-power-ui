@@ -171,7 +171,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
     const { pageKey } = yield select(state => state.monitor.diagnoseCenter);
     const eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
     const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
-    yield call(easyPut, 'changeStore', { eventAnalysisLoading: true });
+    yield call(easyPut, 'changeStore', { eventAnalysisLoading: true, showAnalysisPage: true});
     const response = yield call(request.get, url, { params: {
       diagWarningId,
       deviceFullcode,
@@ -182,7 +182,6 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
     }});
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
-        showAnalysisPage: true,
         eventAnalysisLoading: false,
         analysisEvent: payload,
         // eventAnalysisInfo: {

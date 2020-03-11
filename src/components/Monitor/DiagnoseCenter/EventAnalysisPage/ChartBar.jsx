@@ -21,23 +21,23 @@ class ChartBar extends PureComponent {
     const preAnalysiInfo = this.props.eventAnalysisInfo;
     const preLoading = this.props.eventAnalysisLoading;
     const { eventAnalysisInfo, eventAnalysisLoading } = nextProps;
-    if (eventAnalysisLoading && !preLoading) { // 数据加载中
-      this.chartLoading();
-    }
+    // if (eventAnalysisLoading && !preLoading) { // 数据加载中
+    //   this.chartLoading();
+    // }
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { data = [] } = eventAnalysisInfo || {};
       this.drawChart(data);
     }
   }
 
-  chartLoading = () => {
-    const barChart = echarts.init(this.lineRef);
-    barChart.showLoading();
-  }
+  // chartLoading = () => {
+  //   const barChart = echarts.init(this.lineRef);
+  //   barChart.showLoading();
+  // }
 
   drawChart = (data = []) => {
     const barChart = echarts.init(this.barRef);
-    barChart.hideLoading();
+    // barChart.hideLoading();
     const xNames = [], baseData = [], theoryData = [], lineData = [];
     data.forEach((e) => {
       xNames.push(e.name);

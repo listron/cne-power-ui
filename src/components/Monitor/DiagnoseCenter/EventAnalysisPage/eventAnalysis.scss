@@ -89,14 +89,12 @@
       }
     }
   }
-  .detailContent{
-    .spin{
-      display: flex;
-      flex: 1;
-      height: 506px;
-      justify-content: center;
-      align-items: center;
-    }
+  .spin{
+    display: flex;
+    flex: 1;
+    height: 506px;
+    justify-content: center;
+    align-items: center;
   }
   .analysisLineSearch, .analysisBarSearch{
     padding: 0 30px;
@@ -437,8 +435,3 @@
     }
   }
 }
-
-
-
-
-
