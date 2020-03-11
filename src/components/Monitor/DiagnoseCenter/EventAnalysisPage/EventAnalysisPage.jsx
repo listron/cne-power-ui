@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Icon } from 'antd';
+import { Spin } from 'antd';
 import ChartLine from './ChartLine';
 import EventLineSearch from './EventLineSearch';
 import ChartBar from './ChartBar';
@@ -19,6 +19,7 @@ class EventAnalysisPage extends PureComponent {
     history: PropTypes.object,
     changeStore: PropTypes.func,
     getEventsAnalysis: PropTypes.func,
+    eventAnalysisLoading: PropTypes.bool,
   };
 
   titleName = {
@@ -36,8 +37,8 @@ class EventAnalysisPage extends PureComponent {
   }
 
   render(){
-    const { pageKey, analysisEvent, eventAnalysisInfo } = this.props;
-    const { eventName, pointValueDesc, deviceTypeName } = analysisEvent || {};
+    const { pageKey, analysisEvent, eventAnalysisInfo, eventAnalysisLoading } = this.props;
+    const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName } = analysisEvent || {};
     const { chartType, deviceFullcode } = eventAnalysisInfo || {};
     const [stationStr, devoceTypeStr] = deviceFullcode ? deviceFullcode.split('M') : [];
     let redirectPath = '/monitor/pvData/history';
@@ -48,10 +49,12 @@ class EventAnalysisPage extends PureComponent {
       <section className={styles.eventAnalysis}>
         <h3 className={styles.detailTop}>
           <span className={styles.titleInfo}>
-            <span className={styles.titleName}>诊断分析</span>
-            <span className={styles.infoText}>{this.titleName[pageKey]}： { eventName || '--'}</span>
-            {pageKey === 'alarm' && <span className={styles.infoText}>告警描述： { pointValueDesc || '--'}</span>}
-            <span className={styles.infoText}>设备类型： {deviceTypeName || '--'}</span>
+            <span className={styles.titleName}><span className={styles.icon}><i className="iconfont icon-zhenduan"></i></span>诊断分析</span>
+            <span className={styles.infoText}><span className={styles.text}>{this.titleName[pageKey]}：</span> { eventName || '--'}；</span>
+            {pageKey === 'alarm' && <span className={styles.infoText}><span className={styles.text}>告警描述：</span> { pointValueDesc || '--'}；</span>}
+            <span className={styles.infoText}><span className={styles.text}>设备类型：</span> {deviceTypeName || '--'}；</span>
+            <span className={styles.infoText}><span className={styles.text}>设备名称：</span> {deviceName || '--'}；</span>
+            <span className={styles.infoText}><span className={styles.text}>电站名称：</span><span className={styles.stationName} title={stationName}> {stationName || '--'}；</span></span>
           </span>
           <span className={styles.topHandle}>
             <Link to={redirectPath} target="_blank" className={styles.showMore}>
@@ -62,18 +65,29 @@ class EventAnalysisPage extends PureComponent {
                 </span>
               </CneButton>
             </Link>
-            <Icon onClick={this.backList} type="arrow-left" className={styles.backIcon} />
+            {/* <Button className={styles.showMore}>
+              <span className={styles.shadow}>
+                <span className="iconfont icon-gd4" />
+                <span>更多数据</span>
+              </span>
+            </Button> */}
+            <div className={styles.backIcon}><i className={'iconfont icon-fanhui'} onClick={this.backList} /></div>
           </span>
         </h3>
-        {chartType === 1 && <EventLineSearch {...this.props} />}
-        {chartType === 2 && <EventBarSearch {...this.props} />}
-        {chartType === 1 && <ChartLine {...this.props} />}
-        {chartType === 2 && <ChartBar {...this.props} />}
+        {!eventAnalysisLoading ?
+        <div className={styles.detailContent}>
+          {chartType === 1 && <EventLineSearch {...this.props} />}
+          {chartType === 2 && <EventBarSearch {...this.props} />}
+          {chartType === 1 && <ChartLine {...this.props} />}
+          {chartType === 2 && <ChartBar {...this.props} />}
+        </div> :
+        <div className={styles.spin}><Spin /></div>}
       </section>
     );
   }
 }
 
 export default EventAnalysisPage;
+
 
 

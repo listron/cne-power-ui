@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import ContentLayout from '@components/Common/ContentLayout';
 import styles from './overview.scss';
 import searchUtil from '@utils/searchUtil';
-import DefectList from '../NewDefectList/DefectList';
+import EliminateDefectList from '../EliminateDefectList/DefectList';
 import InspectList from '../NewInspectList/InspectList';
 import MeterList from '../NewMeterList/MeterList';
-import DefectDetail from '../NewDefectDetail/DefectDetail';
+import EliminateDefectDetail from '../EliminateDefectDetail//DefectDetail';
 import InspectDetail from '../NewInspectDetail/InspectDetail';
 import MeterDetail from '../NewMeterDetail/MeterDetail';
 
 
 /**
  *  params  url
- *   page=list&tab=defect&tab=meter 列表缺陷页面 teb inspect 巡检页面 meter 抄表列表页面
+ *   page=list&tab=defect 新工单列表页面  tab  defect 消缺页面  inspect 巡检页面 meter 抄表列表页面
  *   page=defectDetail&defectId=123 缺陷详情页面 缺陷ID
  *   page=inspectDetail&inspectId=123 巡检详情页面 巡检ID
  *   page=meterDetail&meterId=123 抄表详情页面 抄表ID
@@ -73,27 +73,33 @@ class Overview extends Component {
     const { theme = 'light' } = this.props;
     const { tab, page } = this.state;
     return (
-      <ContentLayout
-        theme={theme}
-        contentClassName={`${styles.overview} ${styles[theme]}`}
-      >
-        <div className={styles.container}>
-          {page === 'list' &&
-            <div className={styles.list}>
-              <div className={styles.tabTitle}>
-                {/*<p className={`${tab === 'defect' && styles.activeKey} `} onClick={() => { this.queryTargetData('defect'); }}>消缺</p>*/}
-                {/*<p className={`${tab === 'inspect' && styles.activeKey} `} onClick={() => { this.queryTargetData('inspect'); }}>巡检</p>*/}
-                <p className={`${tab === 'meter' && styles.activeKey} `} onClick={() => { this.queryTargetData('meter'); }}>抄表</p>
-              </div>
-              {tab === 'defect' && <DefectList {...this.props} />}
-              {tab === 'inspect' && <InspectList {...this.props} />}
-              {tab === 'meter' && <MeterList {...this.props} />}
-            </div>}
-          {page === 'defectDetail' && <DefectDetail {...this.props} />}
-          {page === 'inspectDeatail' && <InspectDetail {...this.props} />}
-          {page === 'meterDetail' && <MeterDetail {...this.props} />}
-        </div>
-      </ContentLayout>
+      <React.Fragment>
+        {page !== 'defectDetail' &&
+          <ContentLayout
+            theme={theme}
+            contentClassName={`${styles.overview} ${styles[theme]}`}
+          >
+            <div className={styles.container}>
+              {page === 'list' &&
+                <div className={styles.list}>
+                  <div className={styles.tabTitle}>
+                    {/*<p className={`${tab === 'defect' && styles.activeKey} `} onClick={() => { this.queryTargetData('defect'); }}>消缺</p>*/}
+                    {/*<p className={`${tab === 'inspect' && styles.activeKey} `} onClick={() => { this.queryTargetData('inspect'); }}>巡检</p>*/}
+                    <p className={`${tab === 'meter' && styles.activeKey} `} onClick={() => { this.queryTargetData('meter'); }}>抄表</p>
+                  </div>
+                  {tab === 'defect' && <EliminateDefectList {...this.props} />}
+                  {tab === 'inspect' && <InspectList {...this.props} />}
+                  {tab === 'meter' && <MeterList {...this.props} />}
+                </div>}
+              {page === 'inspectDeatail' && <InspectDetail {...this.props} />}
+              {page === 'meterDetail' && <MeterDetail {...this.props} />}
+            </div>
+          </ContentLayout>
+        }
+        {page === 'defectDetail' && <EliminateDefectDetail {...this.props} />}
+      </React.Fragment>
+
+
     );
   }
 }
@@ -101,3 +107,4 @@ class Overview extends Component {
 
 
 export default Overview;
+

@@ -1,0 +1,268 @@
+
+@import '../../../../theme/theme.scss';
+
+.defectSearch {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed $borderColor;
+  .searchLeft {
+    display: flex;
+    .stationBox {
+      display: flex;
+      @include lineheight(32px);
+      > span {
+        margin-right: 3px;
+      }
+      .selectModalIcon {
+        top: 0;
+      }
+    }
+    .operatorBox {
+      display: flex;
+      @include lineheight(32px);
+      > span {
+        margin-right: 3px;
+        margin-left: 20px;
+      }
+      .operatorWrap {
+        position: relative;
+        > i {
+          text-align: center;
+          position: absolute;
+          top: 1px;
+          left: 1px;
+          height: 30px;
+          width: 25px;
+          border-radius: 2px;
+          background-color: #fff;
+          font-size: 18px;
+          color: $lightColor;
+        }
+        :global {
+          .ant-select-selection--multiple {
+            height: 32px;
+          }
+          .ant-select-selection--multiple .ant-select-selection__rendered {
+            margin-left: 25px;
+            margin-right: 0;
+          }
+          .ant-select-selection--multiple .ant-select-selection__placeholder {
+            margin-left: 0;
+          }
+          .ant-select-selection--multiple .ant-select-selection__choice {
+            border: 1px solid #f1f1f1;
+            background: #f1f1f1;
+            border-radius: 2px;
+            &:hover {
+              cursor: pointer;
+              border: 1px solid #fcffe5;
+              background: #fcffe5;
+            }
+            &:hover .ant-select-selection__choice__content {
+              color: #e08031;
+            }
+            &:hover .ant-select-selection__choice__remove {
+              background: #e08031;
+            }
+          }
+          .ant-select-selection--multiple .ant-select-selection__choice__content {
+            color: #353535;
+          }
+          .ant-select-selection--multiple .ant-select-selection__choice__remove {
+            width: 16px;
+            height: 16px;
+            color: #fff;
+            line-height: 16px;
+            background: #999;
+            border-radius: 50%;
+            margin-top: 3px;
+          }
+          .ant-select-selection__choice__disabled {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  .searchRight {
+    @include lineheight(32px);
+    > span {
+      margin-left: 3px;
+    }
+  }
+  :global {
+    .ant-select-auto-complete.ant-select:not(.ant-select-disabed) .ant-input:hover {
+      border-color: $promptColor;
+    }
+  }
+}
+
+.defectsHandler{ // 新建, 按钮组及 分页组件
+  display: flex;
+  height: 58px;
+  justify-content: space-between;
+  align-items: center;
+  .leftHandler{
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+  }
+  .addBtn{
+    width: 92px;
+    padding-left: 6px;
+    text-align: left;
+    .addIcon{
+      margin-right: 16px;
+    }
+  }
+  .addBtn{
+    margin-right: 20px;
+  }
+  :global{
+    .ant-radio-group label.ant-radio-button-wrapper{
+      height: auto;
+    }
+  }
+}
+.addDropDown{ // 新建 弹框
+  padding-top: 0;
+  margin-top: -2px;
+  .solveStatus{
+    display: flex;
+    flex-direction: column;
+    .undoneBtn, .alldoneBtn{
+      width: 92px;
+      padding-left: 6px;
+      text-align: left;
+      height: 40px;
+      line-height: 40px;
+      &::after{
+        display: none;
+      }
+      .undoneIcon, .alldoneIcon{
+        margin-right: 16px;
+      }
+    }
+  }
+}
+
+.defectTable{ // 表格部分
+  .stationName, .docketDesc, .eventNum, .createTime, .keepLength, .operName, .status, .handle, .stationNameText, .docketDescText, .eventNumText, .createTimeText, .keepLengthText, .operNameText, .statusContent, .handleContent{
+    @include overflowText();
+  }
+  .createTimeText, .operNameText, .statusContent, .handle{ // 状态, 时间 居中
+    text-align: center;
+  }
+  .eventNumText{ // 数值 居右
+    text-align: right;
+  }
+  .stationName{
+    width: calc((100vw - 230px) * 0.176);
+  }
+  .stationNameText{
+    max-width: calc((100vw - 230px) * 0.176 - 20px);
+  }
+  .docketDesc{
+    width: calc((100vw - 230px) * 0.143);
+  }
+  .docketDescText{
+    max-width: calc((100vw - 230px) * 0.143 - 20px);
+  }
+  .eventNum{
+    width: calc((100vw - 230px) * 0.074);
+  }
+  .eventNumText{
+    max-width: calc((100vw - 230px) * 0.074 - 20px);
+  }
+  .createTime{
+    width: calc((100vw - 230px) * 0.132);
+  }
+  .createTime{
+    max-width: calc((100vw - 230px) * 0.132 - 20px);
+  }
+  .keepLength{
+    width: calc((100vw - 230px) * 0.119);
+  }
+  .keepLengthText{
+    max-width: calc((100vw - 230px) * 0.119 - 20px);
+  }
+  .operName{
+    width: calc((100vw - 230px) * 0.178);
+  }
+  .operNameText{
+    max-width: calc((100vw - 230px) * 0.178 - 20px);
+  }
+  .status{
+    padding: 0!important;
+    width: calc((100vw - 230px) * 0.115);
+  }
+  .statusContent{
+    position: relative;
+    .coordinateIcon, .overtimeIcon{
+      font-size: 20px;
+      position: absolute;
+      right: 5px;
+    }
+  }
+  .handle{
+    width: calc((100vw - 230px) * 0.06);
+    .handleIcon{
+      font-size: 18px;
+      cursor: pointer;
+      vertical-align: bottom;
+      padding: 0 10px;
+    }
+  }
+}
+
+// 颜色部分
+.defectsHandler {
+  border-top: 1px dashed var(--promptColor);
+  .ant-radio-button-wrapper {
+    color: var(--themeColor);
+  }
+  :global{
+    .ant-radio-button-wrapper-checked{
+      color: #fff;
+      background-color: var(--themeColor);
+    }
+  }
+}
+.addDropDown{ // 新建 弹框
+  .solveStatus{
+    .undoneBtn, .alldoneBtn{
+      background-color: #fff;
+      border: 1px solid var(--themeColor);
+      border-bottom: 1px dashed var(--promptColor);
+      &:hover{
+        background-color: var(--themeColor);
+        color: #fff;
+      }
+    }
+    .alldoneBtn{
+      border-top: none;
+      border-bottom: 1px solid var(--themeColor);
+    }
+  }
+}
+.defectTable{
+  .statusContent{
+    .coordinateIcon, .overtimeIcon{
+      color: #df4b33;
+    }
+    .coordinateIcon{
+
+    }
+    .overtimeIcon{
+      
+    }
+  }
+  .handleIcon{
+    color: var(--themeColor);
+    &:hover{
+      color: #f9b600;
+      background-color: #ff6cee;
+    }
+  }
+}

@@ -1,0 +1,162 @@
+
+@import "../../../../../theme/theme.scss";
+
+.handleInfo{
+  .handleTitle{ // 处理信息 + 添加记录按钮
+    display: flex;
+    height: 60px;
+    justify-content: space-between;
+    align-items: center;
+    .titleName{
+      flex: 0 0 166px;
+      line-height: 36px;
+      color: #fff;
+      padding-left: 17px;
+      background: url('/img/bannerBgc.png') no-repeat;
+    }
+    .addBtn{
+      width: 92px;
+      padding: 0 6px;
+      margin-right: 24px;
+      .addIcon{
+        margin-right: 4px;
+      }
+    }
+  }
+  .handleContents{
+    padding: 0 24px;
+  }
+  .eachInfo{
+    border:1px solid var(--promptColor);
+    box-shadow:2px 2px 0 3px #f3f2f2;
+    padding: 0 30px 0 20px;
+    border-radius:2px;
+    margin-bottom: 12px;
+    .userInfo{
+      display: flex;
+      justify-content: space-between;
+      height: 44px;
+      align-items: center;
+      .handleTime{
+        margin-right: 15px;
+      }
+      :global{
+        .icon-xietiao{
+          color: #df4b33;
+        }
+      }
+    }
+    .handleRecord, .coordinateRecord, .partRecord, .imgRecord{
+      display: flex;
+      border-top: 1px dashed var(--promptColor);
+      line-height: 30px;
+      .recordName{
+        flex: 0 0 68px;
+        line-height: 30px;
+        color: #000;
+        font-weight: 700;
+      }
+    }
+  }
+  .infoEditBox{
+    border:1px solid var(--promptColor);
+    box-shadow:2px 2px 0 3px #f3f2f2;
+    border-radius:2px;
+    margin-bottom: 20px;
+    padding: 0 0 0 20px;
+    // 编辑-新增处理信息
+    .editRecord, .editPic, .editVideo, .editParts, .editCoordinate{
+      display: flex;
+      .editTitle{
+        flex: 0 0 68px;
+        font-weight: 700;
+      }
+    }
+    .editRecord, .editPic, .editVideo, .editCoordinate{
+      .editTitle .editTitleName, .editTitle .titleTip{
+        line-height: 30px;
+      }
+      .editTitle .editTitleName{
+        font-weight: 700;
+      }
+      .editTitle .titleTip{
+        color: var(--lightColor);
+      }
+    }
+    .editRecord{
+      margin-bottom: 8px;
+      .editTitle{
+        margin-top: 16px;
+        .editTitleName{
+          font-weight: 700;
+        }
+      }
+      textarea{
+        margin-top: 20px;
+        height: 92px;
+        flex: 1;
+      }
+      .cancelEdit{
+        flex: 0 0 24px;
+        height: 24px;
+        margin-left: 12px;
+        color:$themeColor;
+        display: inline-block;
+        text-align: center;
+        cursor: pointer;
+        &:hover{
+          color:#ff9900;
+        }
+      }
+    }
+  }
+  .editPic{
+    margin-bottom: 21px;
+  }
+  .editVideo{
+    margin-bottom: 16px;
+  }
+  .editParts{
+    margin-bottom: 21px;
+    align-items: center;
+    .partsInput{
+      display: flex;
+      align-items: center;
+      input{
+        margin-left: 15px;
+        width: 300px;
+      }
+    }
+  }
+  .editCoordinate{
+    margin-bottom: 12px;
+    .coordinateInput{
+      flex: 1;
+      padding-right: 38px;
+      :global{
+        .ant-switch{
+          margin: 8px 0;
+        }
+      }
+      textarea{
+        height: 62px;
+      }
+    }
+  }
+  .saveEditRow{
+    text-align: right;
+    margin-bottom: 20px;
+    .saveEditButton{
+      width: 92px;
+      margin-right: 38px;
+      text-align: left;
+      padding: 0 6px;
+      :global{
+        .icon-save{
+          margin-right: 24px;
+        }
+      }
+    }
+  }
+}
+

@@ -6,6 +6,7 @@
   flex: 1 0 auto;
   flex-direction: column;
   .detailTop{ // 分析页顶部
+    margin-top: -20px;
     margin-bottom: 0;
     display: flex;
     align-items: center;
@@ -14,15 +15,35 @@
     .titleInfo{
       display: flex;
       align-items: center;
+      overflow: hidden;
+      flex: 0 0 85%;
       .titleName{
         font-size: 18px;
         flex: 0 0 142px;
         text-align: center;
+        .icon{
+          display: inline-block;
+          width: 25px;
+          height: 25px;
+          margin-right: 5px;
+        }
       }
       .infoText{
         flex: 0 0 auto;
         font-size: 14px;
-        margin-right: 16px;
+        margin-right: 4px;
+        .stationName{
+          // overflow: hidden;
+          // text-overflow: ellipsis;
+          // white-space: nowrap;
+          // vertical-align: top;
+          // display: inline-block;
+        }
+        // @media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
+        //   .stationName{
+        //     width: 40%;
+        //   }
+        // }
       }
     }
     .topHandle{
@@ -43,15 +64,33 @@
         }
       }
       .backIcon{
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
         cursor: pointer;
         flex: 0 0 60px;
         font-size: 20px;
-        line-height: 60px;
+        i{
+          display: flex;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          &:hover{
+            -webkit-background-clip: text;
+          }
+        }
       }
     }
   }
+  .spin{
+    display: flex;
+    flex: 1;
+    height: 506px;
+    justify-content: center;
+    align-items: center;
+  }
   .analysisLineSearch, .analysisBarSearch{
-    padding: 0 80px;
+    padding: 0 30px;
     .searchText{ // 标题
       font-size:18px;
     }
@@ -268,24 +307,37 @@
 // 颜色部分。
 .eventAnalysis{
   background-color: #fff;
-  box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
   .detailTop{
     border-bottom: 1px solid #d4d4d4;
     .titleInfo{
       .titleName{
-        color: #353535;
+        color: $themeColor;
+        .icon{
+          background-color: $themeColor;
+          i{
+            color: #fff;
+          }
+        }
       }
       .infoText{
-        color: var(--lightColor);
+        .text{
+          font-weight: bold;
+        }
       }
     }
     .topHandle{
       color: var(--themeColor);
       .backIcon{
-        border-left: 1px solid #d4d4d4;
-        color: var(--lightColor);
+        color: var(--themeColor);
+        i:hover{
+          background-image: linear-gradient(0deg, #00baff 1%, #5beda9 100%);
+          color: transparent;
+        }
       }
     }
+  }
+  .detailContent{
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
   }
   .analysisLineSearch, .analysisBarSearch{
     .searchText{
@@ -317,7 +369,8 @@
         }
       } 
       .theoryValue{
-        &::before{
+        
+	&::before{
           border: 1px solid #199475;
         }
       }
@@ -378,7 +431,6 @@
     }
   }
 }
-
 
 
 

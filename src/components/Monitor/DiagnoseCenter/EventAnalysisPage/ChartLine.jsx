@@ -14,7 +14,8 @@ class ChartLine extends PureComponent {
     analysisEvent: PropTypes.object,
   };
 
-  componentDidMount(){
+  
+componentDidMount(){
     const { eventAnalysisInfo, analysisEvent } = this.props;
     const { period = [], data = {} } = eventAnalysisInfo || {};
     const { interval } = analysisEvent;
@@ -25,9 +26,9 @@ class ChartLine extends PureComponent {
     const preAnalysiInfo = this.props.eventAnalysisInfo;
     const preLoading = this.props.eventAnalysisLoading;
     const { eventAnalysisInfo, eventAnalysisLoading, analysisEvent } = nextProps;
-    if (eventAnalysisLoading && !preLoading) {
-      this.chartLoading();
-    }
+    // if (eventAnalysisLoading && !preLoading) {
+    //   this.chartLoading();
+    // }
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { period = [], data = {} } = eventAnalysisInfo || {};
       const { interval } = analysisEvent;
@@ -37,10 +38,10 @@ class ChartLine extends PureComponent {
 
   lineColors = ['#ff9900', '#4d90fd', '#60c060', '#ff8d83', '#00cdff', '#9f98ff', '#d5c503', '#2ad7ab', '#b550b2', '#3e97d1', '#83bcc4', '#cc6500', '#5578c2', '#86acea', '#d3b08e', '#7286f1', '#512ca8', '#33cc27', '#bfbf95', '#986cff'];
 
-  chartLoading = () => {
-    const lineChart = echarts.init(this.lineRef);
-    lineChart.showLoading();
-  }
+  // chartLoading = () => {
+  //   const lineChart = echarts.init(this.lineRef);
+  //   lineChart.showLoading();
+  // }
 
   timeFormat = (timeStr, interval = 1) => { // 针对markArea时间进行处理
     if (!timeStr) {
@@ -65,7 +66,7 @@ class ChartLine extends PureComponent {
   drawChart = (period = [], data = {}, interval) => {
     const { pageKey } = this.props;
     const lineChart = echarts.init(this.lineRef);
-    lineChart.hideLoading();
+    // lineChart.hideLoading();
     const { time = [], pointData = [] } = data;
     const legends = [{
       name: '告警时段',
@@ -286,5 +287,6 @@ class ChartLine extends PureComponent {
 }
 
 export default ChartLine;
+
 
 

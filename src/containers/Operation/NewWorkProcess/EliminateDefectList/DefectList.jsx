@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {newDefectListAction} from './defectListReducer';
+import { eliminateDefectListAction } from './defectListReducer';
 import { commonAction } from '@containers/alphaRedux/commonAction';
 import styles from './defectList.scss';
 import { Button } from 'antd';
 import searchUtil from '@utils/searchUtil';
-import DefectSearch from '@components/Operation/NewWorkProcess/Defect/DefectSearch';
-import DefectTableList from '@components/Operation/NewWorkProcess/Defect/DefectTableList';
+import DefectSearch from '@components/Operation/NewWorkProcess/EliminateDefectList/DefectSearch';
+import DefectsHandler from '@components/Operation/NewWorkProcess/EliminateDefectList/DefectsHandler';
+import DefectTable from '@components/Operation/NewWorkProcess/EliminateDefectList/DefectTable';
 
 /**
  * 直接跳转进来的从路径上修改
@@ -32,14 +33,13 @@ class DefectList extends Component {
 
 
   componentDidMount() {
-    const { getDefectList, getParticipant, getLostGenType, listParams } = this.props;
+    const { getDefectList, getParticipant, listParams } = this.props;
     const { history } = this.props;
-    const { search, pathname } = history.location;
+    const { search } = history.location;
     const urlParams = searchUtil(search).parse(); //默认为缺陷列表页
     const urlParamsSerch = urlParams.listSearch && JSON.parse(urlParams.listSearch) || {}; // 判断从路由中过来的筛选条件
-    getLostGenType({ objectType: 1 }); //获取所有损失缺陷类型
-    getDefectList({ ...listParams, ...urlParamsSerch }); // 获取消缺列表
-    getParticipant(); //  获取所有参与者。
+    // getDefectList({ ...listParams, ...urlParamsSerch }); // 获取消缺列表
+    // getParticipant(); //  获取所有参与者。
   }
 
   componentWillUnmount() { // 卸载的时候要注意
@@ -53,11 +53,12 @@ class DefectList extends Component {
 
 
   render() {
-    const { theme = 'light' } = this.props;
+    const { theme } = this.props;
     return (
       <div className={`${styles.cont} ${styles[theme]}`}>
         <DefectSearch {...this.props} />
-        <DefectTableList {...this.props} />
+        <DefectsHandler {...this.props} />
+        <DefectTable />
       </div>
     );
   }
@@ -65,28 +66,19 @@ class DefectList extends Component {
 
 const mapStateToProps = (state) => {
   return ({
-    ...state.operation.newDefectList.toJS(),
+    ...state.operation.eliminateDefectList.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
     username: state.common.get('username'),
-    // theme: state.common.get('theme'),
     theme: 'light',
   });
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  resetStore: () => dispatch({ type: newDefectListAction.resetStore }),
-  changeStore: payload => dispatch({ type: newDefectListAction.changeStore, payload }),
-  getDefectList: payload => dispatch({ type: newDefectListAction.getDefectList, payload }),
-  getParticipant: payload => dispatch({ type: newDefectListAction.getParticipant, payload }),
-  getLostGenType: params => dispatch({ // 获取缺陷类型
-    type: commonAction.getLostGenType,
-    payload: {
-      params,
-      actionName: newDefectListAction.changeStore,
-      resultName: 'defectTypes',
-    },
-  }),
+  resetStore: () => dispatch({ type: eliminateDefectListAction.resetStore }),
+  changeStore: payload => dispatch({ type: eliminateDefectListAction.changeStore, payload }),
+  getDefectList: payload => dispatch({ type: eliminateDefectListAction.getDefectList, payload }),
+  getParticipant: payload => dispatch({ type: eliminateDefectListAction.getParticipant, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);

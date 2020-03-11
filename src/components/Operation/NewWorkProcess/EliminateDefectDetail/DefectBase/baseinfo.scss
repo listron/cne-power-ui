@@ -1,0 +1,93 @@
+@import "../../../../../theme/theme.scss";
+
+.defectBaseTitle{ // 基本信息
+  display: flex;
+  height: 60px;
+  justify-content: space-between;
+  align-items: center;
+  .baseTitle{
+    flex: 0 0 166px;
+    line-height: 36px;
+    color: #fff;
+    padding-left: 17px;
+    background: url('/img/bannerBgc.png') no-repeat;
+  }
+  .statusPart{
+    position: relative;
+    .coordinate, .overtime{
+      margin-right: 15px;
+      font-size: 20px;
+      color: #df4b33;
+    }
+    .statusName{
+      display: inline-block;
+      height: 34px;
+      line-height: 34px;
+      padding: 0 14px;
+      background-color: #fbe6e3;
+      color:#df4b33;
+      border-radius: 17px;
+    }
+    .alreadyFinish{
+      position: absolute;
+      z-index: -1;
+      color: var(--themeColor);
+      font-size: 80px;
+      right: 5px;
+      top: -20px;
+    }
+  }
+}
+
+.defectBaseInfo{
+  border:1px solid #d4d4d4;
+  margin: 0 25px;
+  .infoRow{
+    line-height: 40px;
+    display: flex;
+    border-bottom: 1px solid var(--promptColor);
+  }
+  .infoTitle, .firstInfoTitle{
+    flex: 0 0 13%;
+    background-color: #f3f2f2;
+    border-left: 1px dashed var(--promptColor);
+    border-right: 1px dashed var(--promptColor);
+    padding: 0 10px;
+    text-align: left;
+  }
+  .firstInfoTitle{
+    flex: 0 0 10%;
+    border-left: none;
+  }
+  .infoContent{
+    padding: 0 10px;
+  }
+  .stations{
+    flex: 0 0 60%;
+  }
+  .creater, .responsor{
+    flex: 0 0 31%;
+  }
+  .createTime, .examiner{
+    flex: 0 0 16%;
+  }
+  .types, .expectTime, .finishTime{
+    flex: 1 0 auto;
+  }
+  .descRow{
+    min-height: 80px;
+    display: flex;
+    .desc, .descTextNum{
+      line-height: 40px;
+    }
+    .descTextNum{
+      color: var(--lightColor);
+    }
+    .infoContent{
+      flex: 1 0 auto;
+      padding: 7px 10px;
+    }
+  }
+}
+
+
