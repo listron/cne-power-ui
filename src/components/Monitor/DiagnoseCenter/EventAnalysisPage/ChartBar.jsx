@@ -46,8 +46,7 @@ class ChartBar extends PureComponent {
       lineData.push(e.diff);
     });
     const option = {
-      
-grid: {
+      grid: {
         show: true,
         borderColor: '#d4d4d4',
         top: 0,

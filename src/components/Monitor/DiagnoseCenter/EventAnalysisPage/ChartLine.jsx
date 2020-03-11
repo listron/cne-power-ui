@@ -81,7 +81,7 @@ componentDidMount(){
         color: '#353535',
       },
     }];
-    const colors = ['#FBE6E3']; // 图标依次着色
+    const colors = ['rgba(251,230,227,0.50)']; // 图标依次着色
     const unitGroupSets = new Set();
     let unitsGroup = []; // 解出单位数组
     const unitSortTemplate = ['W/m2', 'kW', 'V', 'A'];

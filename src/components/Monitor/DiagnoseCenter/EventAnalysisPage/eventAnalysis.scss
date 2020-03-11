@@ -6,7 +6,6 @@
   flex: 1 0 auto;
   flex-direction: column;
   .detailTop{ // 分析页顶部
-    margin-top: -20px;
     margin-bottom: 0;
     display: flex;
     align-items: center;
@@ -84,8 +83,7 @@
   }
   .spin{
     display: flex;
-    flex: 1;
-    height: 506px;
+    height: 655px;
     justify-content: center;
     align-items: center;
   }
@@ -306,7 +304,7 @@
 
 // 颜色部分。
 .eventAnalysis{
-  background-color: #fff;
+  // background-color: #fff;
   .detailTop{
     border-bottom: 1px solid #d4d4d4;
     .titleInfo{
@@ -336,7 +334,12 @@
       }
     }
   }
+  .spin{
+    background: #fff;
+    box-shadow: 0 2px 4px 2px rgba(0,0,0,0.20);
+  }
   .detailContent{
+    background-color: #fff;
     box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
   }
   .analysisLineSearch, .analysisBarSearch{
