@@ -143,6 +143,23 @@ function* stopCircleQueryList(){ // 停止10s周期调用列表
   }
 }
 
+function * editEventsStatus({ payload }) { // 忽略 删除事件
+  const url = `${APIBasePath}${monitor.editEventsStatus}`;
+  // payload : {diagWarningIds: string[], type: 1忽略 2删除 }
+  try {
+    const response = yield call(request.delete, url, { ...payload });
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        selectedRowKeys: [],
+      });
+      const { listParams, listPage } = yield select(state => state.monitor.diagnoseCenter);
+      yield fork(getDiagnoseList, { payload: { ...listParams, ...listPage } });
+    } else { throw response.message; }
+  } catch (error) {
+    message.error(`操作失败, ${error}`);
+  }
+}
+
 function* getEventsAnalysis({ payload = {} }) { // 诊断分析
   //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒, date日期, eventCode事件类型编码eventType: 1告警事件2诊断事件3数据事件 }
   try {
@@ -193,5 +210,6 @@ export function* watchDiagnoseCenter() {
   yield takeLatest(diagnoseCenterAction.circlingQueryList, circlingQueryList);
   yield takeLatest(diagnoseCenterAction.stopCircleQueryList, stopCircleQueryList);
   yield takeLatest(diagnoseCenterAction.getEventsAnalysis, getEventsAnalysis);
+  yield takeLatest(diagnoseCenterAction.editEventsStatus, editEventsStatus);
 }
 

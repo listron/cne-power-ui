@@ -536,6 +536,7 @@ export default {
       getEventtypes: '/v3/diagconfig/eventtype', // 获取事件类型
       getDiagnoseList: '/v3/diagwarning', // 获取诊断中心事件列表
       getEventsAnalysis: '/v3/diagwarning/analysis', // 诊断中心事件分析
+      editEventsStatus: '/v3/diagwarning', // 忽略 删除 事件
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码

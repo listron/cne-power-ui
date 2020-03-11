@@ -85,6 +85,7 @@ const mapDispatchToProps = (dispatch) => ({
   circlingQueryList: payload => dispatch({ type: diagnoseCenterAction.circlingQueryList, payload }),
   stopCircleQueryList: payload => dispatch({ type: diagnoseCenterAction.stopCircleQueryList, payload }),
   getEventsAnalysis: payload => dispatch({ type: diagnoseCenterAction.getEventsAnalysis, payload }),
+  editEventsStatus: payload => dispatch({ type: diagnoseCenterAction.editEventsStatus, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiagnoseCenter);

@@ -47,6 +47,7 @@ class DiagnoseHeaderTabs extends Component {
       filterBoxType: 'none', // 关闭筛选条件展示
       listParams,
       listPage,
+      selectedRows: [],
       diagnoseListData: [],
       totalNum: 0, // 总量
       summaryInfo: {}, // 汇总统计
