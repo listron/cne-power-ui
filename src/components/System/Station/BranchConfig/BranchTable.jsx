@@ -27,9 +27,28 @@ class BranchTable extends React.Component {
   }
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      addShadow: '',
+    };
   }
+
+  componentDidMount() {
+    this.refs.scroll.addEventListener('scroll', this.handleScroll.bind(this));
+  }
+
   componentDidUpdate() {
     this.refs.input && this.refs.input.focus();
+  }
+  componentWillUnmount() { //一定要最后移除监听器，以防多个组件之间导致this的指向紊乱
+    this.refs.scroll.removeEventListener('scroll', this.handleScroll.bind(this));
+    window.removeEventListener('resize', this.handleResize);
+  }
+
+  handleScroll = (e) => {
+    const addShadow = e.srcElement.scrollTop > 0 ? styles.addShadow : '';
+    this.setState({
+      addShadow,
+    });
   }
   queryCheckData = () => {//获取检测支路配置的状态
     this.props.changeBranchStore({ isCheckStatus: true });
@@ -256,25 +275,31 @@ class BranchTable extends React.Component {
 
   render() {
     const { loadding, editLoadding, cancelloadding, copyData, checkTime, isCheckStatus, focus, checked } = this.props;
+    const { addShadow } = this.state;
     const pvNumsArr = [1, 2, 3, 4, 5];
     const filterCopyData = this.filterData(checked);
-    const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+    // const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+
     return (
       <div className={styles.tablebox}>
         <div className={styles.checkstyle}>
           <div className={styles.leftInfo}>
-            {!isCheckStatus ? <div> <Button type="primary"
-              icon="deployment-unit"
-              loading={loadding}
-              disabled={!checkTime}
-              onClick={this.queryCheckData}>
-              {/* <i className="iconfont icon-save" /> */}
-              支路检测
-            </Button><span className={styles.tipsStyles}>至少需要三天的电流数据或基础配置才会有检测结果</span></div> :
+            {!isCheckStatus ? <div>
+              <Button
+                className={styles.cnebtn}
+                icon="deployment-unit"
+                loading={loadding}
+                disabled={!checkTime}
+                onClick={this.queryCheckData}
+              >
+
+                支路检测
+              </Button>
+              <span className={styles.tipsStyles}>至少需要三天的电流数据或基础配置才会有检测结果</span></div> :
               <div>
                 <Button type="primary"
                   icon="save"
-                  className={styles.btnStyle}
+                  className={`${styles.btnStyle} ${styles.cnebtn}`}
                   loading={editLoadding}
                   onClick={this.saveCheckValue}>
                   {/* <i className="iconfont icon-addto" /> */}
@@ -282,7 +307,8 @@ class BranchTable extends React.Component {
                 </Button>
                 <Button type="primary"
                   loading={cancelloadding}
-                  className={styles.btnStyle}
+                  // className={styles.btnStyle}
+                  className={`${styles.btnStyle} ${styles.cnebtn}`}
                   onClick={this.cancleCheckValue}>
                   取消
                 </Button>
@@ -307,18 +333,18 @@ class BranchTable extends React.Component {
           </div>
         </div>
         <div className={styles.tableContainer}>
-          <div className={styles.tableTitle}>
+          <div className={`${styles.tableTitle} ${addShadow}`}>
             <div className={styles.name}>设备名称</div>
             <div className={styles.number}>支路条数</div>
             {Array.from({ length: 20 }, (item, index) => (
               <div className={styles.titleStyle} key={index + 1}>I{index + 1}</div>
             ))}
           </div>
-          <div className={styles.tablePart}>
+          <div className={`${styles.tablePart}`} ref="scroll">
 
             {loadding ?
               <div className={styles.spin}>
-                <Spin indicator={antIcon} tip="数据加载中" />
+                <Spin tip="数据加载中" />
               </div> :
               copyData.length ? filterCopyData.map((item, index) => {
                 const branchList = item.branchList;
@@ -386,8 +412,7 @@ class BranchTable extends React.Component {
             }
             {copyData.length > 20 && !loadding ?
               <div className={styles.nomoreData}>
-                <div className={styles.noDataIcon} > <Icon type="appstore" /></div>
-                <div className={styles.noDatatext}>没有更多得数据了</div>
+                <img src="img/notabdata97-72.png" width="97" height="72" />
               </div> : ''}
           </div>
         </div>
