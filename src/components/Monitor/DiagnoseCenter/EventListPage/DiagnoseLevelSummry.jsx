@@ -57,6 +57,7 @@ class DiagnoseLevelSummry extends Component {
       sortMethod: 'desc',
     };
     this.props.changeStore({ // 清空并重置筛选条件
+      selectedRows: [],
       listParams: newListParams,
       listPage,
     });
@@ -65,6 +66,7 @@ class DiagnoseLevelSummry extends Component {
 
   refresh = () => { // 以当前筛选条件再次请求列表
     const { listParams, listPage } = this.props;
+    this.props.changeStore({ selectedRows: [] });
     this.props.getDiagnoseList({ ...listParams, ...listPage }); // 请求列表
   }
 
