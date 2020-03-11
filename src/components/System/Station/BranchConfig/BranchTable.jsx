@@ -287,22 +287,22 @@ class BranchTable extends React.Component {
             {!isCheckStatus ? <div>
               <Button
                 className={styles.cnebtn}
-                icon="deployment-unit"
+                // icon="deployment-unit"
                 loading={loadding}
                 disabled={!checkTime}
                 onClick={this.queryCheckData}
               >
-
+                {loadding ? <spin /> : <i className="iconfont icon-zljc" />}
                 支路检测
               </Button>
               <span className={styles.tipsStyles}>至少需要三天的电流数据或基础配置才会有检测结果</span></div> :
               <div>
                 <Button type="primary"
-                  icon="save"
+                  // icon="save"
                   className={`${styles.btnStyle} ${styles.cnebtn}`}
                   loading={editLoadding}
                   onClick={this.saveCheckValue}>
-                  {/* <i className="iconfont icon-addto" /> */}
+                  {editLoadding ? <spin style={{ marginLeft: '-4px', marginRight: '24px' }} /> : <i className="iconfont icon-save" style={{ marginLeft: '-4px', marginRight: '24px' }} />}
                   保存检测结果
                 </Button>
                 <Button type="primary"
@@ -310,6 +310,7 @@ class BranchTable extends React.Component {
                   // className={styles.btnStyle}
                   className={`${styles.btnStyle} ${styles.cnebtn}`}
                   onClick={this.cancleCheckValue}>
+                  {cancelloadding ? <spin /> : null}
                   取消
                 </Button>
                 <span className={styles.fontcolor}>
