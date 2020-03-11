@@ -254,7 +254,7 @@
 
       .titleStyle {
         flex: 1;
-        padding: 0 8px;
+        padding: 0 2px;
       }
 
     }
@@ -273,6 +273,16 @@
 
       .name {
         border-left: 0;
+        width: calc((100vw -228px)*0.0759);
+      }
+
+      .number {
+        // width: 73px;
+        width: calc((100vw -228px)*0.0602);
+      }
+
+      .titleStyle {
+        width: calc((100vw -228px)*0.0431);
       }
     }
 
@@ -308,17 +318,20 @@
 
       .name {
         border-left: 0;
-        width: 92px;
+        // width: 92px;
+        width: calc((100vw -228px)*0.0759);
 
       }
 
       .number {
-        width: 73px;
+        // width: 73px;
+        width: calc((100vw -228px)*0.0602);
       }
 
       .titleStyle {
         flex: 1;
         padding: 0 2px;
+        width: calc((100vw -228px)*0.0431);
 
         .link,
         .nolink,
