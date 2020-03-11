@@ -12,18 +12,12 @@
     height: 50px;
     line-height: 50px;
 
+
   }
 
   .topSearch {
-    // padding: 20px 48px 0 10px;
     display: flex;
     flex-wrap: wrap;
-
-    // .stationSelect,
-    // .typeSelect,
-    // .deviceSelect {
-    //   flex: 1;
-    // }
 
     .stationSelect,
     .typeSelect,
@@ -101,6 +95,65 @@
         }
 
       }
+
+      .cnebtn {
+        overflow: hidden;
+        position: relative;
+        border-radius: 4px;
+        text-align: center;
+        border: 1px solid #199475;
+        color: $themeColor;
+        background: rgba(206, 235, 224, 0.30);
+        box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.50);
+
+        i {
+          font-size: 16px;
+        }
+
+
+        &>* {
+          position: relative;
+          z-index: 9;
+          line-height: 30px;
+        }
+
+        &::after {
+          position: absolute;
+          content: "";
+          transform: translate(-50%, -50%);
+          width: 0;
+          height: 0;
+          left: 50%;
+          top: 50%;
+          border-radius: 1000px;
+          opacity: 0;
+          transition: all 0.6s;
+          background: $slideSelectColor;
+        }
+
+        &:hover:after {
+          width: 120%;
+          height: 200%;
+          opacity: 1;
+        }
+      }
+
+
+
+      :global {
+        .ant-btn[disabled] {
+          background: #f1f1f1;
+          border: 1px solid #d4d4d4;
+          border-radius: 2px;
+          @include lineheight(32px);
+          color: #999;
+        }
+      }
+
+
+
+
+
     }
 
     .rightInfo {
@@ -142,10 +195,12 @@
     flex-direction: column;
     // height: 680px;
     min-width: 1212px;
+    box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.60);
 
     .tablePart {
       background: #fff;
-      height: 645px;
+      // height: 645px;
+      height: calc(100vh - 300px);
       overflow-y: auto;
       overflow-y: overlay;
 
@@ -157,7 +212,16 @@
         justify-content: center;
       }
 
+
+
     }
+
+    .addShadow {
+      position: relative;
+      z-index: 99;
+      box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30);
+    }
+
 
 
     .tableTitle,
@@ -173,7 +237,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border-right: 1px solid #fff;
+        // border-right: 1px solid #fff;
         color: #fff
       }
 
@@ -190,48 +254,84 @@
 
       .titleStyle {
         flex: 1;
-        padding: 0 8px;
+        padding: 0 2px;
       }
 
+    }
+
+    .tableTitle {
+
+      .name,
+      .number,
+      .titleStyle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-left: 1px solid #fff;
+        color: #fff
+      }
+
+      .name {
+        border-left: 0;
+        width: calc((100vw -228px)*0.0759);
+      }
+
+      .number {
+        // width: 73px;
+        width: calc((100vw -228px)*0.0602);
+      }
+
+      .titleStyle {
+        width: calc((100vw -228px)*0.0431);
+      }
     }
 
     .tabletd,
     .tableEventd {
       background: #fff;
       height: 40px;
+      position: relative;
 
       &:hover {
         background: rgba(206, 235, 224, 0.50);
+        box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30);
+        box-sizing: border-box;
+        z-index: 99;
       }
 
       .name,
       .number,
       .titleStyle {
         color: #666;
-        border-right: 1px dashed #d4d4d4;
+        border-left: 1px dashed #d4d4d4;
         border-bottom: 1px solid #d4d4d4;
 
       }
 
       .name,
       .number {
+
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
       }
 
       .name {
-        width: 93px;
+        border-left: 0;
+        // width: 92px;
+        width: calc((100vw -228px)*0.0759);
 
       }
 
       .number {
-        width: 73px;
+        // width: 73px;
+        width: calc((100vw -228px)*0.0602);
       }
 
       .titleStyle {
         flex: 1;
         padding: 0 2px;
+        width: calc((100vw -228px)*0.0431);
 
         .link,
         .nolink,
@@ -304,31 +404,64 @@
   }
 
   .nomoreData {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    text-align: center;
+    margin: 8px 0;
+  }
+}
 
-    .noDataIcon {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 auto;
-      background: #f6f6f6;
-      width: 40px;
-      height: 41px;
-      border-radius: 100%;
+@media screen and (max-width: 1679px) {
 
-      i {
-        font-size: 22px;
-        color: #bfbfbf;
-      }
-    }
+  // 1679以下屏幕，字号14px
+  .tableContainer {
+    font-size: 14px;
+    // :global{
+    //   .ant-table{
+    //     font-size: 14px;
+    //   }
+    //   .ant-table .ant-table-tbody > tr > td{
+    //     line-height: 40px;
+    //   }
+    //   .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
+    //     margin-top: -0.4em;
+    //   }
+    // }
+  }
+}
 
-    .noDatatext {
-      margin: 0 auto;
-      color: #999
-    }
+@media screen and (min-width: 1680px) and (max-width: 1919px) {
 
+  // 1680 + 1919
+  .tableContainer {
+    font-size: 1.2em;
+    // :global{
+    //   .ant-table{
+    //     font-size: 1.2em;
+    //   }
+    //   .ant-table .ant-table-tbody > tr > td{
+    //     line-height: 1em;
+    //   }
+    //   .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
+    //     margin-top: -0.25em;
+    //   }
+    // }
+  }
+}
 
+@media screen and (min-width: 1920px) {
+
+  // 1920及以上屏幕按1920px适配
+  .tableContainer {
+    font-size: 1.3em;
+    // :global{
+    //   .ant-table{
+    //     font-size: 1.3em;
+    //   }
+    //   .ant-table .ant-table-tbody > tr > td{
+    //     line-height: 1em;
+    //   }
+    //   .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
+    //     margin-top: -0.1em;
+    //   }
+    // }
   }
 }
