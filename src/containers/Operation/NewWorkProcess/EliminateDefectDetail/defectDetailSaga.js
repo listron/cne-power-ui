@@ -18,13 +18,14 @@ function* easyPut(actionName, payload) {
 }
 
 function* getDefectAction(action) { // 2.7.3.2.	查询消缺可执行动作 创建和追加的
+  console.log('action', action);
   const { payload } = action;
   const url = `${APIBasePath}${ticket.getEliminateDefectAction}`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield call(easyPut, 'changeStore', {
-        defectAction: response.data.data || [],
+        allowedActions: response.data.data || [],
       });
     } else {
       throw response.data;
@@ -63,6 +64,8 @@ function* getDefectBaseInfo(action) { // 2.7.3.4.查询消缺工单基本信息
     if (response.data.code === '10000') {
       yield call(easyPut, 'changeStore', {
         baseInfo: response.data.data || [],
+        stateName: response.data.data.stateName || '',
+        stateId: response.data.data.stateId || null,
       });
     } else {
       throw response.data;
@@ -81,7 +84,7 @@ function* getDefectEventInfo(action) { // 2.7.3.7.查询工单缺陷信息
   const { docketId } = payload;
   const url = `${APIBasePath}${ticket.getEliminateEventInfo}/${docketId}`;
   try {
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.post, url, { docketId });
     if (response.data.code === '10000') {
       yield call(easyPut, 'changeStore', {
         eventInfo: response.data.data || [],
@@ -103,7 +106,7 @@ function* getDefectHandleInfo(action) { // 2.7.3.8.	查询工单处理信息
   const { docketId } = payload;
   const url = `${APIBasePath}${ticket.getEliminateHandleInfo}/${docketId}`;
   try {
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.post, url, { docketId });
     if (response.data.code === '10000') {
       yield call(easyPut, 'changeStore', {
         handleInfo: response.data.data || [],
@@ -140,9 +143,10 @@ function* addDefectHandle(action) { // 2.7.3.9.	添加工单的处理信息
   }
 }
 
-function* getProcessInfo(action) { // 获取流程流转信息数据
+function* getProcessInfo(action) { //2.7.1.4  获取流程流转信息数据
   const { payload } = action;
-  const url = `${APIBasePath}${ticket.getProcessList}/${payload.meterId}`;
+  const { docketId } = payload;
+  const url = `${APIBasePath}${ticket.getProcessList}/${docketId}`;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -164,11 +168,12 @@ function* getProcessInfo(action) { // 获取流程流转信息数据
 function* getDefectMessage(action) { // 各种状态提交之后请求新的数据
   // 获取ID 重新请求处理信息
   const { payload } = action;
-  yield fork(getDefectAction, payload); // 可执行动作
-  yield fork(getDefectBaseInfo, payload); // 基础信息
-  yield fork(getDefectEventInfo, payload); //  缺陷事件
-  yield fork(getDefectHandleInfo, payload); // 处理信息
-  yield fork(getProcessInfo, payload); // 流程信息
+  console.log('payload', payload);
+  yield fork(getDefectAction, { payload }); // 可执行动作
+  yield fork(getDefectBaseInfo, { payload }); // 基础信息
+  yield fork(getDefectEventInfo, { payload }); //  缺陷事件
+  yield fork(getDefectHandleInfo, { payload }); // 处理信息
+  yield fork(getProcessInfo, { payload }); // 流程信息
 }
 
 function* acceptanceDocket(action) { // 2.7.3.10.	消缺验收（通过和驳回）

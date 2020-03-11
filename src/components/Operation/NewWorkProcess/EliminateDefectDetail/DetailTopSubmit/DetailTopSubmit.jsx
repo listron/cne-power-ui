@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import CneButton from '@components/Common/Power/CneButton';
 import CneTips from '@components/Common/Power/CneTips';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styles from './topSubmit.scss';
+import { processIconFunc } from '../../Common/processIconCode';
 
 
 
@@ -41,33 +42,51 @@ import styles from './topSubmit.scss';
 
 // 退回原因 驳回原因 验收意见
 
+/** 
+ * actionCode
+ * 提交 9 12 22
+ * 提交验收 10 11
+ * 派发 17 19 
+ * 退回 18
+ * 删除 24
+ * 领取 2
+ * 驳回 26
+ * 验收通过 25
+*/
+/** 
+ * actionCode:20 修改工单的缺陷 
+ *  13: { name: '添加接单人', tipText: '确认提交此工单' }, // 添加接单人
+ *  14: { name: '添加缺陷', tipText: '确认提交此工单' }, // 添加缺陷
+    15: { name: '添加记录', tipText: '确认提交此工单' }, // 添加记录
+    16: { name: '添加要求完成时间', tipText: '确认提交此工单' }, // 添加要求完成时间
+    20: { name: '修改工单说明', tipText: '确认提交此工单' }, // 修改工单说明
+    21: { name: '编辑缺陷', tipText: '确认提交此工单' }, // 编辑缺陷
+    23: { name: '编辑处理信息', tipText: '确认提交此工单' }, // 编辑处理信息
+*/
+
 const process = {
   2: { name: '领取', tipText: '确认领取此工单' }, // 领取
   9: { name: '提交', tipText: '确认提交此工单' }, // 新建工单
   10: { name: '提交验收', tipText: '确认将此工单提交验收' }, // 新建工单
   11: { name: '提交验收', tipText: '确认将此工单提交验收' }, // 新建工单
   12: { name: '提交', tipText: '确认提交此工单' }, // 新建工单
-  // 13: { name: '添加接单人', tipText: '确认提交此工单' }, // 添加接单人
-  14: { name: '提交', tipText: '确认提交此工单' }, // 添加缺陷
-  15: { name: '提交', tipText: '确认提交此工单' }, // 添加记录
-  16: { name: '提交', tipText: '确认提交此工单' }, // 添加要求完成时间
   17: { name: '派发', tipText: '确认派发此工单' }, // 审核工单
   18: { name: '退回', tipText: '确认提交此工单' }, // 审核工单  已退回
   19: { name: '派发', tipText: '确认派发此工单' }, // 新建工单 告警
-  20: { name: '修改工单说明', tipText: '确认提交此工单' }, // 修改工单说明
-  21: { name: '编辑缺陷', tipText: '确认提交此工单' }, // 编辑缺陷
   22: { name: '提交', tipText: '确认提交此工单' }, // 提交工单
-  23: { name: '编辑处理信息', tipText: '确认提交此工单' }, // 编辑处理信息
   24: { name: '删除', tipText: '确定要删除此工单' }, // 删除工单
-  25: { name: '验收通过', tipText: '确认提交此工单' }, // 验收通过  验收通过建议
-  26: { name: '驳回', tipText: '确认提交此工单' }, // 驳回  驳回原因
+  25: { name: '验收通过', modal: 'reject' }, // 验收通过  验收通过建议
+  26: { name: '驳回', modal: 'reject' }, // 驳回  驳回原因
 };
+
+// actionCode 中间有很多不需要东西，所以前端需要做的事情就是
 
 
 export default class DetailTopSubmit extends Component {
 
   static propTypes = {
-
+    changeStore: PropTypes.func,
+    allowedActions: PropTypes.array,
   };
 
   state = {
@@ -97,12 +116,93 @@ export default class DetailTopSubmit extends Component {
   }
 
 
+  onHandle = (action) => {
+    const operate = process[+action.actionCode];
+    this.props.changeStore({ isVertify: true });
+    // 首先做校验，校验是在这一层做的，如果返回true 则可以进行下去 
+    if (operate.tipText) {
+      this.setState({
+        showTip: true,
+        tipText: operate.tipText,
+      });
+    }
+    if (operate.modal) {
+      this.setState({
+        [operate.modal]: true,
+      });
+    }
+  }
+
 
 
   render() {
     // const { allowedActions } = allowedActions || [];
     const { showTip, tipText } = this.state;
-    const { docketId } = this.props;
+    const { docketId, allowedActions } = this.props;
+    const submitCode = ['9', '12', '22', '10', '11', '17', '19', '18', '24', '2', '26', '25'];
+    // const actionCode = [
+    //   {
+    //     'actionType': 1,
+    //     'actionPosition': null,
+    //     'actionIcon': '30020',
+    //     'actionColorCode': '3004',
+    //     'actionUrl': '/opms/defect/add',
+    //     'isPermission': 1,
+    //     'actionCode': '12',
+    //     'actionName': '提交',
+    //   },
+    //   {
+    //     'actionType': null,
+    //     'actionPosition': null,
+    //     'actionIcon': '30017',
+    //     'actionColorCode': '3006',
+    //     'actionUrl': null,
+    //     'isPermission': 1,
+    //     'actionCode': '10',
+    //     'actionName': '提交验收',
+    //   },
+    //   {
+    //     'actionType': null,
+    //     'actionPosition': null,
+    //     'actionIcon': '30021',
+    //     'actionColorCode': '3007',
+    //     'actionUrl': null,
+    //     'isPermission': 0,
+    //     'actionCode': '14',
+    //     'actionName': '添加缺陷',
+    //   },
+    //   {
+    //     'actionType': null,
+    //     'actionPosition': null,
+    //     'actionIcon': '30021',
+    //     'actionColorCode': '3007',
+    //     'actionUrl': null,
+    //     'isPermission': 0,
+    //     'actionCode': '15',
+    //     'actionName': '添加记录',
+    //   },
+    //   {
+    //     'actionType': null,
+    //     'actionPosition': null,
+    //     'actionIcon': null,
+    //     'actionColorCode': null,
+    //     'actionUrl': null,
+    //     'isPermission': 0,
+    //     'actionCode': '16',
+    //     'actionName': '添加要求完成时间',
+    //   },
+    //   {
+    //     'actionType': null,
+    //     'actionPosition': null,
+    //     'actionIcon': null,
+    //     'actionColorCode': null,
+    //     'actionUrl': null,
+    //     'isPermission': 0,
+    //     'actionCode': '20',
+    //     'actionName': '修改工单说明',
+    //   },
+    // ];
+    const submitActionCode = allowedActions.filter(e => submitCode.includes(e.actionCode));
     return (
       <React.Fragment>
         <div className={styles.topSubmit}>
@@ -111,19 +211,21 @@ export default class DetailTopSubmit extends Component {
             <span className={styles.titleText}>{docketId && '工单详情' || '创建工单'}</span>
           </div>
           <div className={styles.handlePart}>
-            <CneButton
-              onClick={this.onSendBack}
-              className={styles.handleButton}
-              style={{ width: '92px' }}
-            >
-              退回
-            </CneButton>
-            <CneButton
-              onClick={this.onPublish}
-              className={styles.handleButton}
-            >
-              派发
-            </CneButton>
+            {
+              submitActionCode.map(e => {
+                if (e.isPermission) {
+                  return (<CneButton
+                    onClick={() => this.onHandle(e)}
+                    className={styles.handleButton}
+                    style={{ width: '92px' }}
+                    color-code={e.actionColorCode}
+                    key={e.actionCode}
+                  >
+                    <i className={`${processIconFunc(e.actionIcon)}`}></i><span>{e.actionName}</span>
+                  </CneButton>);
+                }
+              })
+            }
             <i className="iconfont icon-fanhui" onClick={this.onBackHandle} />
           </div>
           <CneTips

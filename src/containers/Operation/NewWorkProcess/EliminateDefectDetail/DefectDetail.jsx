@@ -19,6 +19,8 @@ class DefectDetail extends Component {
     theme: PropTypes.string,
     history: PropTypes.object,
     changeStore: PropTypes.func,
+    getDefectMessage: PropTypes.func,
+    processInfo: PropTypes.array,
   };
 
 
@@ -31,11 +33,12 @@ class DefectDetail extends Component {
     const { history } = this.props;
     const { search } = history.location;
     console.log('search', search);
-    const { page = 'defectDetail', docketId, isFinish } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
+    // 503306196121088 503572404424192
+    const { page = 'defectDetail', docketId = '503306196121088', isFinish } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
     console.log('searchUtil(search).parse()', searchUtil(search).parse());
     if (docketId) {
       // getDefectMessage 可执行动作 基础信息 缺陷事件 处理信息 流程信息
-      // this.prop.getDefectMessage({ docketId });
+      this.props.getDefectMessage({ docketId, isFinish });
       this.props.changeStore({ docketId });
     }
     if (isFinish && isFinish === 0) {
@@ -50,16 +53,16 @@ class DefectDetail extends Component {
   }
 
   render() {
-    const { docketId, theme, defectDetail } = this.props;
+    const { docketId, theme, defectDetail, processInfo } = this.props;
     return (
       <div className={`${styles.detailWrap}`}>
-        <DetailTopSubmit docketId={docketId} />
+        <DetailTopSubmit docketId={docketId} {...this.props} />
         <div className={styles.detailContent}>
           <div className={styles.leftParts}>
             {docketId && <DefectContent {...this.props} />}
             {!docketId && <DefectCreate {...this.props} />}
           </div>
-          <ProcessInfo />
+          <ProcessInfo processInfo={processInfo} />
         </div>
         <Footer />
       </div>
