@@ -74,7 +74,7 @@ class EventAnalysisPage extends PureComponent {
             <div className={styles.backIcon}><i className={'iconfont icon-fanhui'} onClick={this.backList} /></div>
           </span>
         </h3>
-        {eventAnalysisLoading ?
+        {!eventAnalysisLoading ?
         <div className={styles.detailContent}>
           {chartType === 1 && <EventLineSearch {...this.props} />}
           {chartType === 2 && <EventBarSearch {...this.props} />}
