@@ -58,7 +58,7 @@ class DefectList extends Component {
       <div className={`${styles.cont} ${styles[theme]}`}>
         <DefectSearch {...this.props} />
         <DefectsHandler {...this.props} />
-        <DefectTable />
+        <DefectTable {...this.props} />
       </div>
     );
   }
