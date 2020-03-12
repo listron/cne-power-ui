@@ -1,4 +1,6 @@
 import immutable from 'immutable';
+import moment from 'moment';
+
 const newMeterDetailAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
@@ -17,8 +19,10 @@ const newMeterDetailAction = {
   getAddUser: Symbol('getAddUser'),
   // 获取流程可执行动作
   getProcessAction: Symbol('getProcessAction'),
-  // 提交验收
+  // 验收和驳回
   getSubmitAction: Symbol('getSubmitAction'),
+  // 提交
+  getCommitAction: Symbol('getCommitAction'),
   // 领取
   getReceiveAction: Symbol('getReceiveAction'),
   // 保存
@@ -34,7 +38,8 @@ const initState = immutable.fromJS({
   stationFlag: false, // 电站名称是否换行
   receiveLoading: false, // 领取
   stateChangeStatus: false, // 工单状态变更
-  lastRefreshTime: '', // 上次刷新时间 格式yyyy-MM-dd HH:mm:ss
+  lastRefreshTime: moment().format('YYYY-MM-DD HH:mm:ss'), // 上次刷新时间 格式yyyy-MM-dd HH:mm:ss
+  isChangeMeter: 0, // 表设置是否变更  0：未变更 1：已变更
   meterBaseData: {// 基本信息
     stationName: '', // 电站名称
     processType: '', // 工单类型
@@ -67,7 +72,6 @@ const initState = immutable.fromJS({
     generationDatas: [], // 发电表信息
     readmeterId: '', // 抄表扩展信息id
     settleMonth: '', // 结算月份
-    isChangeMeter: 0, // 表设置是否变更  0：未变更 1：已变更
   },
   newReadMeterData: {}, // // 备份-作为参考的数据传给后端
   otherReadMeterData: {}, // 需要和原始数据作对比
