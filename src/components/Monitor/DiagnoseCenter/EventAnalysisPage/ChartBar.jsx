@@ -58,6 +58,18 @@ class ChartBar extends PureComponent {
         trigger: 'axis',
         show: true,
         extraCssText: 'padding: 5px 10px; background-color: rgba(0,0,0,0.70); box-shadow:0 1px 4px 2px rgba(0,0,0,0.20); border-radius:2px;',
+        axisPointer: {
+          type: 'none',
+          animation: false,
+          label: {
+            show: true,
+            color: '#199475',
+            backgroundColor: '#fff',
+            fontSize: 14,
+            shadowColor: 'rgba(0, 0, 0, 0)',
+            shadowBlur: 0,
+          },
+        },
         formatter: (params = []) => {
           const { name, value: baseValue } = params[0] || {};
           const { value: theoryValue } = params[1] || {};
