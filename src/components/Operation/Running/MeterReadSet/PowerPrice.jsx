@@ -24,6 +24,16 @@ class PowerPrice extends Component{
     super(props);
     this.state = {
       isEdit: false, // 是否在编辑状态
+      isTopPriceError: false, // 所填项为空时添加input错误样式
+      isPeakPriceError: false,
+      isFlatPriceError: false,
+      isLowPriceError: false,
+      isDiscountRateError: false,
+      isTopPriceTip: false, // 所填项为空时弹出提示语
+      isPeakPriceTip: false,
+      isFlatPriceTip: false,
+      isLowPriceTip: false,
+      isDiscountRateTip: false,
       topPriceValue: '--',
       peakPriceValue: '--',
       flatPriceValue: '--',
@@ -36,6 +46,16 @@ class PowerPrice extends Component{
     const { changeMeterReadSetStore } = this.props;
     this.setState({
       isEdit: false,
+      isTopPriceError: false, // 所填项为空时添加input错误样式
+      isPeakPriceError: false,
+      isFlatPriceError: false,
+      isLowPriceError: false,
+      isDiscountRateError: false,
+      isTopPriceTip: false, // 所填项为空时弹出提示语
+      isPeakPriceTip: false,
+      isFlatPriceTip: false,
+      isLowPriceTip: false,
+      isDiscountRateTip: false,
       topPriceValue: '--',
       peakPriceValue: '--',
       flatPriceValue: '--',
@@ -46,18 +66,18 @@ class PowerPrice extends Component{
   }
 
   saveEvent = () => { // 保存
+    const { isTopPriceTip, isPeakPriceTip, isFlatPriceTip, isLowPriceTip, isDiscountRateTip } = this.state;
     const { form, getMeterPrice, stationCode, changeMeterReadSetStore, priceDetailData } = this.props;
     form.validateFieldsAndScroll((error, values)=>{
-      const topPrice = values.topPrice;
-      const peakPrice = values.peakPrice;
-      const flatPrice = values.flatPrice;
-      const lowPrice = values.lowPrice;
-      const discountRate = values.discountRate;
-      if (!topPrice && !peakPrice && !flatPrice && !lowPrice && !discountRate) { // 若都为空，则显示详情页；否则弹出提示语
+      if (values.topPrice === ('' || null) && values.peakPrice === ('' || null) && values.flatPrice === ('' || null) && values.lowPrice === ('' || null) && values.discountRate === ('' || null)) { // 若都为空，则显示详情页
         this.setState({
           isEdit: false,
         });
-      }else if (error) {
+        changeMeterReadSetStore({isEditPrice: false, isEditList: false});
+        return;
+      }
+
+      if (error) {
         this.setState({
           topPriceValue: values.topPrice ? values.topPrice : '',
           peakPriceValue: values.peakPrice ? values.peakPrice : '',
@@ -66,7 +86,48 @@ class PowerPrice extends Component{
           discountRateValue: values.discountRate ? values.discountRate : '',
         });
       }
+
       if(!error){
+        let priceValues = {};
+        priceValues = form.getFieldsValue(); // 得到所有input值
+        let priceArr = Object.values(priceValues); // 将对象变为数组
+        const priceData = priceArr.find(e =>{ // 发现有input输入为空或者本来就为null的值
+          return (e === '' || e === null);
+        });
+
+        if (priceData === '' || priceData === null) { // 如果有空值就显示错误样式
+          if (values.topPrice === ('' || null)) {
+            this.setState({
+              isTopPriceError: true,
+            });
+          }
+          if (values.peakPrice === ('' || null)) {
+            this.setState({
+              isPeakPriceError: true,
+            });
+          }
+          if (values.flatPrice === ('' || null)) {
+            this.setState({
+              isFlatPriceError: true,
+            });
+          }
+          if (values.lowPrice === ('' || null)) {
+            this.setState({
+              isLowPriceError: true,
+            });
+          }
+          if (values.discountRate === ('' || null)) {
+            this.setState({
+              isDiscountRateError: true,
+            });
+          }
+          return; // 有未填项不允许提交
+        }
+
+        if (isTopPriceTip || isPeakPriceTip || isFlatPriceTip || isLowPriceTip || isDiscountRateTip) { // 所填项的其中一项校验不通过就不能保存
+          return;
+        }
+
         this.setState({
           isEdit: false,
         });
@@ -99,24 +160,124 @@ class PowerPrice extends Component{
     changeMeterReadSetStore({isEditPrice: true});
   }
 
+
+
   priceChange = (type, e) => {
+    const { value } = e.target || {};
+    const regRules = [/^[0-9]{1,2}$/, /(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/, /(^[0-9]{1,2}[\.]{1}$)/, /(^\s*$)/];
+    const discountRateRegRules = [/^100$|^(\d|[1-9]\d)$/, /(^\s*$)/];
     if (type === 'topPrice') {
+      const resultPass = regRules.some(e => e.test(value));
+      if(resultPass){ // 通过正则校验
+        this.setState({
+          isTopPriceTip: false,
+        });
+      }else {
+        this.setState({
+          isTopPriceTip: true,
+        });
+      }
+      if (value === '') {
+        this.setState({
+          isTopPriceError: true,
+        });
+      }else{
+        this.setState({
+          isTopPriceError: false,
+        });
+      }
       this.setState({
         topPriceValue: e.target.value ? e.target.value : '',
       });
     }else if (type === 'peakPrice') {
+      const resultPass = regRules.some(e => e.test(value));
+      if(resultPass){ // 通过正则校验
+        this.setState({
+          isPeakPriceTip: false,
+        });
+      }else {
+        this.setState({
+          isPeakPriceTip: true,
+        });
+      }
+      if (value === '') {
+        this.setState({
+          isPeakPriceError: true,
+        });
+      }else{
+        this.setState({
+          isPeakPriceError: false,
+        });
+      }
       this.setState({
         peakPriceValue: e.target.value ? e.target.value : '',
       });
     }else if (type === 'flatPrice') {
+      const resultPass = regRules.some(e => e.test(value));
+      if(resultPass){ // 通过正则校验
+        this.setState({
+          isFlatPriceTip: false,
+        });
+      }else {
+        this.setState({
+          isFlatPriceTip: true,
+        });
+      }
+      if (value === '') {
+        this.setState({
+          isFlatPriceError: true,
+        });
+      }else{
+        this.setState({
+          isFlatPriceError: false,
+        });
+      }
       this.setState({
         flatPriceValue: e.target.value ? e.target.value : '',
       });
     }else if (type === 'lowPrice') {
+      const resultPass = regRules.some(e => e.test(value));
+      if(resultPass){ // 通过正则校验
+        this.setState({
+          isLowPriceTip: false,
+        });
+      }else {
+        this.setState({
+          isLowPriceTip: true,
+        });
+      }
+      if (value === '') {
+        this.setState({
+          isLowPriceError: true,
+        });
+      }else{
+        this.setState({
+          isLowPriceError: false,
+        });
+      }
       this.setState({
         lowPriceValue: e.target.value ? e.target.value : '',
       });
     }else if (type === 'discountRate') {
+      const resultPass = discountRateRegRules.some(e => e.test(value));
+      if(resultPass){ // 通过正则校验
+        this.setState({
+          isDiscountRateTip: false,
+        });
+      }else {
+        this.setState({
+          isDiscountRateTip: true,
+        });
+      }
+      if (value === '') {
+        this.setState({
+          isDiscountRateError: true,
+        });
+      }else{
+        this.setState({
+          isDiscountRateError: false,
+        });
+      }
       this.setState({
         discountRateValue: e.target.value ? e.target.value : '',
       });
@@ -124,7 +285,7 @@ class PowerPrice extends Component{
   }
 
   render(){
-    const { isEdit, topPriceValue, peakPriceValue, flatPriceValue, lowPriceValue, discountRateValue } = this.state;
+    const { isEdit, isTopPriceError, isPeakPriceError, isFlatPriceError, isLowPriceError, isDiscountRateError, topPriceValue, peakPriceValue, flatPriceValue, lowPriceValue, discountRateValue, isTopPriceTip, isPeakPriceTip, isFlatPriceTip, isLowPriceTip, isDiscountRateTip } = this.state;
     const { priceDetailData, theme, form, priceLoading } = this.props;
     const { updateTime, topPrice, peakPrice, flatPrice, lowPrice, discountRate } = priceDetailData;
     const { getFieldDecorator } = form;
@@ -154,136 +315,72 @@ class PowerPrice extends Component{
           {isEdit && <div className={styles.priceInfo}>
             <Form>
               <div className={styles.topPrice}>
-                <div className={`${styles.priceData} ${topPriceValue === '--' ? ((priceDetailData.topPrice === undefined || priceDetailData.topPrice === null) && styles.meterInpNull) : (topPriceValue === '' && styles.meterInpDel)}`}>
+                <div className={`${styles.priceData} ${topPriceValue === '--' ? ((priceDetailData.topPrice === undefined || priceDetailData.topPrice === null) && styles.meterInpNull) : (topPriceValue === '' && styles.meterInpDel)} ${isTopPriceError && styles.meterInpDel}`}>
                   <span className={styles.text}>尖时段</span>
                   <FormItem>
                     {getFieldDecorator('topPrice', {
-                      rules: [{
-                        required: true,
-                        message: ' ',
-                        },
-                        {validator: (rule, value, callback) => {
-                          if (/^[0-9]{1,2}$/.test(value)) {
-                            callback();
-                          }else if (/(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/.test(value)) {
-                            callback();
-                          }else if (/(^[0-9]{1,2}[\.]{1}$)/.test(value)) {
-                            callback();
-                          }else{
-                            callback('最多输入2位整数和4位小数');
-                          }
-                        }},
-                      ],
                       initialValue: priceDetailData.topPrice,
                       })(
                         <Input placeholder="请输入" onChange={(e) => this.priceChange('topPrice', e)} />
                     )}
                   </FormItem>
+                  {isTopPriceTip && <div className={styles.tipText}>最多输入2位整数和4位小数</div>}
                   <span className={styles.unit}>元/kWh</span>
                 </div>
               </div>
               <div className={styles.peakPrice}>
-                <div className={`${styles.priceData} ${peakPriceValue === '--' ? ((priceDetailData.peakPrice === undefined || priceDetailData.peakPrice === null) && styles.meterInpNull) : (peakPriceValue === '' && styles.meterInpDel)}`}>
+                <div className={`${styles.priceData} ${peakPriceValue === '--' ? ((priceDetailData.peakPrice === undefined || priceDetailData.peakPrice === null) && styles.meterInpNull) : (peakPriceValue === '' && styles.meterInpDel)} ${isPeakPriceError && styles.meterInpDel}`}>
                   <span className={styles.text}>峰时段</span>
                     <FormItem>
                       {getFieldDecorator('peakPrice', {
-                        rules: [{
-                          required: true,
-                          message: ' ',
-                          },
-                          {validator: (rule, value, callback) => {
-                            if (/^[0-9]{1,2}$/.test(value)) {
-                              callback();
-                            }else if (/(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/.test(value)) {
-                              callback();
-                            }else if (/(^[0-9]{1,2}[\.]{1}$)/.test(value)) {
-                              callback();
-                            }else{
-                              callback('最多输入2位整数和4位小数');
-                            }
-                          }},
-                        ],
                         initialValue: priceDetailData.peakPrice,
                         })(
                           <Input placeholder="请输入" onChange={(e) => this.priceChange('peakPrice', e)} />
                       )}
                     </FormItem>
+                    {isPeakPriceTip && <div className={styles.tipText}>最多输入2位整数和4位小数</div>}
                     <span className={styles.unit}>元/kWh</span>
                 </div>
               </div>
               <div className={styles.flatPrice}>
-                <div className={`${styles.priceData} ${flatPriceValue === '--' ? ((priceDetailData.flatPrice === undefined || priceDetailData.flatPrice === null) && styles.meterInpNull) : (flatPriceValue === '' && styles.meterInpDel)}`}>
+                <div className={`${styles.priceData} ${flatPriceValue === '--' ? ((priceDetailData.flatPrice === undefined || priceDetailData.flatPrice === null) && styles.meterInpNull) : (flatPriceValue === '' && styles.meterInpDel)} ${isFlatPriceError && styles.meterInpDel}`}>
                   <span className={styles.text}>平时段</span>
                   <FormItem>
                     {getFieldDecorator('flatPrice', {
-                      rules: [{
-                        required: true,
-                        message: ' ',
-                        },
-                        {validator: (rule, value, callback) => {
-                          if (/^[0-9]{1,2}$/.test(value)) {
-                            callback();
-                          }else if (/(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/.test(value)) {
-                            callback();
-                          }else if (/(^[0-9]{1,2}[\.]{1}$)/.test(value)) {
-                            callback();
-                          }else{
-                            callback('最多输入2位整数和4位小数');
-                          }
-                        }},
-                      ],
                       initialValue: priceDetailData.flatPrice,
                       })(
                         <Input placeholder="请输入" onChange={(e) => this.priceChange('flatPrice', e)} />
                     )}
                   </FormItem>
+                  {isFlatPriceTip && <div className={styles.tipText}>最多输入2位整数和4位小数</div>}
                   <span className={styles.unit}>元/kWh</span>
                 </div>
               </div>
               <div className={styles.lowPrice}>
-                <div className={`${styles.priceData}  ${lowPriceValue === '--' ? ((priceDetailData.lowPrice === undefined || priceDetailData.lowPrice === null) && styles.meterInpNull) : (lowPriceValue === '' && styles.meterInpDel)}`}>
+                <div className={`${styles.priceData}  ${lowPriceValue === '--' ? ((priceDetailData.lowPrice === undefined || priceDetailData.lowPrice === null) && styles.meterInpNull) : (lowPriceValue === '' && styles.meterInpDel)} ${isLowPriceError && styles.meterInpDel}`}>
                   <span className={styles.text}>谷时段</span>
                   <FormItem>
                     {getFieldDecorator('lowPrice', {
-                      rules: [{
-                        required: true,
-                        message: ' ',
-                        },
-                        {validator: (rule, value, callback) => {
-                          if (/^[0-9]{1,2}$/.test(value)) {
-                            callback();
-                          }else if (/(^[0-9]{1,2}[\.]{1}[0-9]{1,4}$)/.test(value)) {
-                            callback();
-                          }else if (/(^[0-9]{1,2}[\.]{1}$)/.test(value)) {
-                            callback();
-                          }else{
-                            callback('最多输入2位整数和4位小数');
-                          }
-                        }},
-                      ],
                       initialValue: priceDetailData.lowPrice,
                       })(
                         <Input placeholder="请输入" onChange={(e) => this.priceChange('lowPrice', e)} />
                     )}
                   </FormItem>
+                  {isLowPriceTip && <div className={styles.tipText}>最多输入2位整数和4位小数</div>}
                   <span className={styles.unit}>元/kWh</span>
                 </div>
               </div>
               <div className={styles.discountRate}>
-                <div className={`${styles.discountRateInfo} ${discountRateValue === '--' ? ((priceDetailData.discountRate === undefined || priceDetailData.discountRate === null) && styles.meterInpNull) : (discountRateValue === '' && styles.meterInpDel)}`}>
+                <div className={`${styles.discountRateInfo} ${discountRateValue === '--' ? ((priceDetailData.discountRate === undefined || priceDetailData.discountRate === null) && styles.meterInpNull) : (discountRateValue === '' && styles.meterInpDel)} ${isDiscountRateError && styles.meterInpDel}`}>
                   <span className={styles.text}>折扣率</span>
                   <FormItem>
                     {getFieldDecorator('discountRate', {
-                      rules: [{
-                        required: true,
-                        pattern: new RegExp(/^100$|^(\d|[1-9]\d)$/, 'g'),
-                        message: '整数',
-                      }],
                       initialValue: priceDetailData.discountRate,
                       })(
                         <Input placeholder="请输入" onChange={(e) => this.priceChange('discountRate', e)} />
                     )}
                   </FormItem>
+                  {isDiscountRateTip && <div className={styles.tipText}>1-100的整数</div>}
                   <span className={styles.unit}>%</span>
                 </div>
               </div>
