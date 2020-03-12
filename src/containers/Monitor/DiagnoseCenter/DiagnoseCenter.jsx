@@ -95,6 +95,7 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'stationDeviceTypes', //不能用deviceTypes， 因为deviceTypes 在站不限的时候用
     }
   }),
+  editEventsStatus: payload => dispatch({ type: diagnoseCenterAction.editEventsStatus, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiagnoseCenter);

@@ -84,7 +84,11 @@ class DiagnoseFilter extends Component {
       };
       newListPage = { ...listPage };
     }
-    this.props.changeStore({ listParams: newListParams, listPage: newListPage });
+    this.props.changeStore({
+      selectedRows: [],
+      listParams: newListParams,
+      listPage: newListPage,
+    });
     this.props.getDiagnoseList({ ...newListParams, ...newListParams });
   }
 
