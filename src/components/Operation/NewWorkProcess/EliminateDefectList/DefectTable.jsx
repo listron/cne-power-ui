@@ -11,6 +11,15 @@ export default class DefectTable extends Component {
     getDefectList: PropTypes.func,
   };
 
+  constructor(props){
+    super(props);
+    const { clientHeight } = document.body;
+    // footer 60; thead: 36, handler: 58; search 63; title 39; padding 15; menu 40;
+    this.state = {
+      tableListHeight: clientHeight - 315,
+    };
+  }
+
   defectColumn = [
     {
       title: '电站名称',
@@ -137,7 +146,6 @@ export default class DefectTable extends Component {
     this.props.getDefectList({ ...newListParams });
   }
 
-
   defectMockListData = [
     {
       stationName: '电站1',
@@ -163,8 +171,10 @@ export default class DefectTable extends Component {
   ]
 
   render() {
+    const { tableListHeight } = this.state;
     const { defectListData, listParams } = this.props;
     const { sortField, sortMethod } = listParams;
+    const mockTotalData = [1].map(e => this.defectMockListData).reduce((a = [], b = []) => b.concat(a));
     return (
       <div className={styles.eliminateDefectsList}>
         <CneTable
@@ -173,8 +183,9 @@ export default class DefectTable extends Component {
           onChange={this.tableSortChange}
           columns={this.defectColumn}
           className={styles.defectTable}
+          scroll={mockTotalData.length > 0 ? {y: tableListHeight} : {}}
           // dataSource={defectListData}
-          dataSource={this.defectMockListData}
+          dataSource={mockTotalData}
           dataError={false} // 数据是否请求失败
         />
       </div>
