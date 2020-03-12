@@ -24,7 +24,7 @@ class MeterDetail extends Component {
     getReadMeter: PropTypes.func,
     getProcessAction: PropTypes.func,
     loading: PropTypes.bool,
-    readMeterData: PropTypes.object,
+    isChangeMeter: PropTypes.number,
     stateChangeStatus: PropTypes.bool,
   };
 
@@ -62,7 +62,7 @@ class MeterDetail extends Component {
   };
 
   render() {
-    const { theme = 'light', loading, readMeterData: {isChangeMeter}, stateChangeStatus } = this.props;
+    const { theme = 'light', loading, isChangeMeter, stateChangeStatus } = this.props;
     return (
       <div className={`${styles.meterDetailBox} ${theme}`}>
         <MeterTop {...this.props} />
@@ -108,6 +108,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAddUser: payload => dispatch({ type: newMeterDetailAction.getAddUser, payload }),
   getProcessAction: payload => dispatch({ type: newMeterDetailAction.getProcessAction, payload }),
   getSubmitAction: payload => dispatch({ type: newMeterDetailAction.getSubmitAction, payload }),
+  getCommitAction: payload => dispatch({ type: newMeterDetailAction.getCommitAction, payload }),
   getReceiveAction: payload => dispatch({ type: newMeterDetailAction.getReceiveAction, payload }),
   getSaveAction: payload => dispatch({ type: newMeterDetailAction.getSaveAction, payload }),
   getRotateImg: payload => dispatch({ type: newMeterDetailAction.getRotateImg, payload }),

@@ -22,6 +22,7 @@ export default class MeterTop extends React.Component {
     editFlag: PropTypes.bool,
     otherReadMeterData: PropTypes.object,
     receiveLoading: PropTypes.bool,
+    getCommitAction: PropTypes.func,
   };
 
   constructor(props) {
@@ -263,6 +264,7 @@ export default class MeterTop extends React.Component {
       },
       getReceiveAction,
       changeStore,
+      getCommitAction,
     } = this.props;
     const { search, pathname } = history.location;
     const { meterId, params } = searchUtil(search).parse(); // 抄表详情页
@@ -279,7 +281,7 @@ export default class MeterTop extends React.Component {
       if(actionCode === '5') {
         processActionData.forEach(cur => {
           if(cur.actionCode === '5') {
-            getSubmitAction({
+            getCommitAction({
               docketId: meterId,
               actionCode: cur.actionCode,
               stateId,
