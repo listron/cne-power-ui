@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import CneTable from '@components/Common/Power/CneTable';
 import styles from './listPage.scss';
 
 export default class DefectTable extends Component {
+
+  static propTypes = {
+    listParams: PropTypes.object,
+    defectListData: PropTypes.array,
+    getDefectList: PropTypes.func,
+  };
 
   defectColumn = [
     {
@@ -84,7 +91,7 @@ export default class DefectTable extends Component {
             <span>{stateName || '--'}</span>
             {!!isCoordinate && <span
               className={`iconfont icon-xietiao ${styles.coordinateIcon}`}
-              style={{right: (!!isCoordinate && !!isOverTime) ? '26px' : '5px'}}
+              style={{right: (!!isCoordinate && !!isOverTime) ? '18.5%' : '3%'}}
               title="协调"
             />}
             {!!isOverTime && <span
@@ -109,21 +116,27 @@ export default class DefectTable extends Component {
   ]
 
   onDetailSearch =(record) => {
-    console.log(record);
+    console.log(record); // 点击某行进行操作;
   }
 
   tableSortChange = (pagination, filter, sorter) => {
     const { field } = sorter || {};
-    console.log(field);
-    // 排序字段
-    // const { sortField, sortMethod } = listParams || {};
-    // let newField = sortField, newSort = 'desc';
-    // if(!field || sortField === sortFieldMap[field]) {// 点击的是正在排序的列
-      // newSort = sortMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
-    // }else{
-      // newField = sortFieldMap[field];
-    // }
+    const { listParams } = this.props;
+    const { sortField, sortMethod } = listParams || {};
+    let newField = sortField, newSort = 'descend';
+    if(!field || sortField === field) { // 点击的是正在排序的列
+      newSort = sortMethod === 'descend' ? 'ascend' : 'descend'; // 交换排序方式
+    } else { // 切换列
+      newField = field;
+    }
+    const newListParams = {
+      ...listParams,
+      sortField: newField,
+      sortMethod: newSort,
+    };
+    this.props.getDefectList({ ...newListParams });
   }
+
 
   defectMockListData = [
     {
@@ -150,9 +163,8 @@ export default class DefectTable extends Component {
   ]
 
   render() {
-    const { defectMockListData } = this;
-    const sortField = 'stationName';
-    const sortMethod = 'descend';
+    const { defectListData, listParams } = this.props;
+    const { sortField, sortMethod } = listParams;
     return (
       <div className={styles.eliminateDefectsList}>
         <CneTable
@@ -161,7 +173,9 @@ export default class DefectTable extends Component {
           onChange={this.tableSortChange}
           columns={this.defectColumn}
           className={styles.defectTable}
-          dataSource={defectMockListData}
+          // dataSource={defectListData}
+          dataSource={this.defectMockListData}
+          dataError={false} // 数据是否请求失败
         />
       </div>
     );

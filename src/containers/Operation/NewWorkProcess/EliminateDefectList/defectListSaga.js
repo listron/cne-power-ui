@@ -26,7 +26,10 @@ function* getDefectList(action) { //获取缺陷工单列表
       listLoading: true,
       listParams: payload,
     });
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, {
+      ...payload,
+      sortMethod: ({ascend: 'asc', descend: 'desc'})[payload.sortMethod],
+    });
     if (response.data.code === '10000') {
       const { stateAndTotalList = [], tableData = {} } = response.data.data;
       const { pageCount, dataList } = tableData;
