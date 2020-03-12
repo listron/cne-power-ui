@@ -18,21 +18,21 @@ class ChartLine extends PureComponent {
 componentDidMount(){
     const { eventAnalysisInfo, analysisEvent } = this.props;
     const { period = [], data = {} } = eventAnalysisInfo || {};
-    const { interval } = analysisEvent;
-    this.drawChart(period, data, interval);
+    const { interval, eventCode } = analysisEvent;
+    this.drawChart(period, data, interval, eventCode);
   }
 
   componentWillReceiveProps(nextProps){
     const preAnalysiInfo = this.props.eventAnalysisInfo;
-    const preLoading = this.props.eventAnalysisLoading;
+    // const preLoading = this.props.eventAnalysisLoading;
     const { eventAnalysisInfo, eventAnalysisLoading, analysisEvent } = nextProps;
     // if (eventAnalysisLoading && !preLoading) {
     //   this.chartLoading();
     // }
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { period = [], data = {} } = eventAnalysisInfo || {};
-      const { interval } = analysisEvent;
-      this.drawChart(period, data, interval);
+      const { interval, eventCode } = analysisEvent;
+      this.drawChart(period, data, interval, eventCode);
     }
   }
 
@@ -63,11 +63,13 @@ componentDidMount(){
     return `${timeMinuteStr}${secondNumStr}`;
   }
 
-  drawChart = (period = [], data = {}, interval) => {
+  drawChart = (period = [], data = {}, interval, eventCode) => {
     const { pageKey } = this.props;
     const lineChart = echarts.init(this.lineRef);
     // lineChart.hideLoading();
     const { time = [], pointData = [] } = data;
+    const noAlarmTime = ['NB1036', 'NB1038', 'NB1040'].includes(eventCode); // 诊断事件组串低效、电压异常、并网延时中不展示告警时段，页面相应背景图移除
+    // const noDeviceName = ['NB1035', 'NB1036', 'NB1037']; // 诊断事件零电流、组串低效、固定物遮挡的legend要一行8列展示,以及不展示设备名称
     const legends = [{
       name: '告警时段',
       icon: 'rect',
@@ -81,7 +83,13 @@ componentDidMount(){
         color: '#353535',
       },
     }];
+    if (noAlarmTime) {
+      legends.shift();
+    }
     const colors = ['rgba(251,230,227,0.50)']; // 图标依次着色
+    if (noAlarmTime) {
+      colors.shift();
+    }
     const unitGroupSets = new Set();
     let unitsGroup = []; // 解出单位数组
     const unitSortTemplate = ['W/m2', 'kW', 'V', 'A'];
@@ -106,6 +114,9 @@ componentDidMount(){
         data: markAreaData,
       },
     }];
+    if (noAlarmTime) {
+      series.shift();
+    }
     const sortedPointData = pointData.sort((a, b) => { // 单位排序：w/m2 >kw>V>A；其余默认
       const aUnit = a.pointUnit || '';
       const bUnit = b.pointUnit || '';
@@ -130,8 +141,8 @@ componentDidMount(){
       legends.push({
         name: pointFullName,
         height: 30,
-        left: `${7 + (i + 1) % 4 * 21.5}%`,
-        top: `${Math.floor((i + 1) / 4) * 30}`,
+        left: `${noAlarmTime ? (7 + i % 4 * 21.5) : (7 + (i + 1) % 4 * 21.5)}%`, // 诊断事件组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置
+        top: `${noAlarmTime ? (Math.floor(i / 4) * 30) : Math.floor((i + 1) / 4) * 30}`,
         data: [pointFullName],
         textStyle: {
           color: e.isWarned && pageKey === 'diagnose' ? '#f5222d' : '#353535',
@@ -209,7 +220,7 @@ componentDidMount(){
               <h3 class=${styles.tooltipTitle}>${name}</h3>
               ${params.map(e => {
                 const { color, seriesIndex, value } = e || {};
-                const eachFullData = sortedPointData[seriesIndex - 1] || {};
+                const eachFullData = sortedPointData[noAlarmTime ? seriesIndex: seriesIndex - 1] || {}; // 诊断事件组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置
                 // 解析全数据使用， 因为系列中有个首条空线， series需减一对应。
                 const { isWarned, pointName, deviceName } = eachFullData;
                 const lineFullName = `${deviceName} ${pointName || ''}`;
