@@ -121,8 +121,9 @@ export default {
       getReadMeter: '/v4/opms/readMeter/meterDetail', // 获取处理信息
       getAddUser: '/v4/opms/docket/addAbleUser', // 添加处理人
       getProcessAction: '/v4/opms/docket/action', // 获取流程可执行动作
-      getSubmitAction: '/v4/opms/docket/handleState', // 提交按钮
-      getReceiveAction: '/v4/opms/docket/receiveDocket', // 领取
+      getSubmitAction: '/v4/opms/docket/handleState', // 验收通过和驳回按钮
+      getCommitAction: '/v4/opms/readMeter/checkaccept', // 提交按钮
+      getReceiveAction: '/v4/opms/readMeter/receiveDocket', // 领取
       getSaveAction: '/v4/opms/readMeter/updateMeter', // 更新
       getOperaUser: '/v4/base/user/station/user', // 获取执行人
       getUploadFile: '/v4/common/fastdfs/uploadfile', // 上传图片
