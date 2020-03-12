@@ -93,7 +93,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
-      // sorter: true,
+      sorter: true,
       className: styles.stationName,
       render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
@@ -110,7 +110,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
     }, {
       dataIndex: 'warningDuration',
       title: '持续时长(h)',
-      sorter: true,
+      // sorter: true,
       className: styles.warningDuration,
       render: (text) => (
         <div
@@ -179,7 +179,7 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
-      // sorter: true,
+      sorter: true,
       className: styles.stationName,
       render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
@@ -196,7 +196,7 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
     }, {
       dataIndex: 'warningDuration',
       title: '持续时长(h)',
-      sorter: true,
+      // sorter: true,
       className: styles.warningDuration,
       render: (text) => (
         <div
@@ -263,7 +263,7 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
-      // sorter: true,
+      sorter: true,
       className: styles.stationName,
       render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
@@ -280,7 +280,7 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
     }, {
       dataIndex: 'warningDuration',
       title: '持续时长(h)',
-      sorter: true,
+      //sorter: true,
       className: styles.warningDuration,
       render: (text) => (
         <div
