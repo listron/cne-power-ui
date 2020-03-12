@@ -286,7 +286,7 @@ class BranchTable extends React.Component {
           <div className={styles.leftInfo}>
             {!isCheckStatus ? <div>
               <Button
-                className={styles.cnebtn}
+                className={!checkTime ? `${styles.disabled}` : `${styles.cnebtn}`}
                 // icon="deployment-unit"
                 loading={loadding}
                 disabled={!checkTime}
