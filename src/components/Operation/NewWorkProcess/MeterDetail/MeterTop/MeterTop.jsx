@@ -256,7 +256,6 @@ export default class MeterTop extends React.Component {
   // 确认弹框 -- 要做事件区分，区分领取，提交验收，返回等操作
   onConfirmWarningTip = () => {
     const {
-      getSubmitAction,
       history,
       processActionData,
       meterBaseData: {
