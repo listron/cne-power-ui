@@ -451,6 +451,7 @@ export default {
       getVersionListPath: '/v3/diagconfig/event', // 获取型号指定版本的告警事件列表
       versionEvent: '/v3/diagconfig/event', //添加告警事件 编辑告警事件 删除告警事件
       getEventType: '/v3/diagconfig/eventtype', //获取标准事件告警类型
+      getEventDetail: '/v3/diagconfig/eventdetail', //获取标准告警事件详情
     },
     monitor: {
       //实时监控

@@ -37,8 +37,9 @@ class VersionEvent extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    const { stationCode, versionStationCodes, deviceTypeCode, deviceModeCode, diagModeVersionId, versionList } = nextProps;
+    const { stationCode, versionStationCodes, deviceTypeCode, deviceModeCode, diagModeVersionId, versionList, alarmEventDetial} = nextProps;
     const { currentEventList, addEventList } = this.state;
+    const eventListLength = currentEventList.length;
     if (diagModeVersionId !== this.props.diagModeVersionId) { // 切换版本，置空数据
       this.setState({
         addEventList: [], // 添加的新的数据
@@ -51,6 +52,16 @@ class VersionEvent extends Component {
         currentEventList: [],
       });
     }
+
+    //从告警中心跳转过来的页面需要特殊处理
+    const {diagModeEventId} = alarmEventDetial;
+    if (diagModeEventId && eventListLength >0 && typeof(this.firstInitAlarmEvent) === 'undefined') { 
+      this.firstInitAlarmEvent = true; //标识是不是第一次处理
+      this.setState({
+        selectKeysArr: [diagModeEventId],
+      });
+    }
+
     const allEventList = [...currentEventList, ...addEventList];
     const initmodifyStatus = allEventList.length > 0 && allEventList.some(e => e.editable) || false;
     this.props.changeStore({ modifyStatus: initmodifyStatus }); // 修改状态
@@ -80,6 +91,30 @@ class VersionEvent extends Component {
       this.setState({ currentEventList: versionList });
     }
 
+  }
+
+  componentDidUpdate() {
+
+    //用来处理告警中心的事件点击后，跳转的本页面时，定位记录行
+    //本方案不是最佳方案，有待优化，
+    if (this.firstInitAlarmEvent) {
+      const ele = this.refs.eventtable;
+      const {currentEventList} = this.state;
+      const {alarmEventDetial} = this.props;
+      const {diagModeEventId} = alarmEventDetial;
+      var indexpos = 0;
+      for (indexpos in currentEventList) {
+        if (currentEventList[indexpos].diagModeEventId === diagModeEventId) {
+          break;
+        }
+      }
+      // console.log(indexpos);
+      if (ele && indexpos > 0) {
+        ele.scrollTop = indexpos*41; //如果这个行高发生变化，就会有问题。
+      }
+
+      this.firstInitAlarmEvent = false;
+    }
   }
 
   closePointModal = (value) => { // 关闭测点编号的弹框
@@ -266,7 +301,7 @@ class VersionEvent extends Component {
             <div className={styles.enabled}> 是否启用</div>
             <div className={styles.operate}> 操作</div>
           </div>
-          <div className={`${styles.tableCont}`}>
+          <div className={`${styles.tableCont}`} ref='eventtable' id='tableCont'>
             {addEventList.map((e, index) => {
               return { ...e, key: e.key, editable: true, checked: selectKeysArr.includes(e.key) };
             }).map(list => {
