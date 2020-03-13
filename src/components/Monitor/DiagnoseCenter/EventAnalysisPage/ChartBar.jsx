@@ -19,7 +19,7 @@ class ChartBar extends PureComponent {
 
   componentWillReceiveProps(nextProps){
     const preAnalysiInfo = this.props.eventAnalysisInfo;
-    const preLoading = this.props.eventAnalysisLoading;
+    // const preLoading = this.props.eventAnalysisLoading;
     const { eventAnalysisInfo, eventAnalysisLoading } = nextProps;
     // if (eventAnalysisLoading && !preLoading) { // 数据加载中
     //   this.chartLoading();

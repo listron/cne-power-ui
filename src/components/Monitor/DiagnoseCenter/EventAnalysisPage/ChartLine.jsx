@@ -14,8 +14,7 @@ class ChartLine extends PureComponent {
     analysisEvent: PropTypes.object,
   };
 
-  
-componentDidMount(){
+  componentDidMount(){
     const { eventAnalysisInfo, analysisEvent } = this.props;
     const { period = [], data = {} } = eventAnalysisInfo || {};
     const { interval, eventCode } = analysisEvent;

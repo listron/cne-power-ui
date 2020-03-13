@@ -64,10 +64,11 @@ class DiagnoseList extends Component {
   }
 
   analysisEvent = (record) => { // √7. 分析点击 => 停止当前定时请求, 单独开启分析页面;
+    const eventCode = record.eventCode;
     const { pageKey } = this.props;
-    const interval = pageKey === 'alarm' ? 2 : 1;
+    const interval = (pageKey === 'alarm' || eventCode === 'NB1035') ? 2 : 1;
     this.props.stopCircleQueryList(); // 停止当前页面定时请求
-    // 告警事件-数据时间间隔5s interval = 2, 其他默认十分钟数据interval = 1;
+    // 告警事件和诊断事件的零电流-数据时间间隔5s interval = 2, 其他默认十分钟数据interval = 1;
     this.props.getEventsAnalysis({ ...record, interval });
   }
 
