@@ -1,8 +1,26 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import CneTable from '@components/Common/Power/CneTable';
+import PicUploader from '../Common/PicUploader';
 import styles from './listPage.scss';
 
 export default class DefectTable extends Component {
+
+  static propTypes = {
+    listParams: PropTypes.object,
+    defectListData: PropTypes.array,
+    getDefectList: PropTypes.func,
+  };
+
+  constructor(props){
+    super(props);
+    const { clientHeight } = document.body;
+    // footer 60; thead: 36, handler: 58; search 63; title 39; padding 15; menu 40;
+    this.state = {
+      tableListHeight: clientHeight - 315,
+      imgs: [],
+    };
+  }
 
   defectColumn = [
     {
@@ -84,7 +102,7 @@ export default class DefectTable extends Component {
             <span>{stateName || '--'}</span>
             {!!isCoordinate && <span
               className={`iconfont icon-xietiao ${styles.coordinateIcon}`}
-              style={{right: (!!isCoordinate && !!isOverTime) ? '26px' : '5px'}}
+              style={{right: (!!isCoordinate && !!isOverTime) ? '18.5%' : '3%'}}
               title="协调"
             />}
             {!!isOverTime && <span
@@ -109,20 +127,25 @@ export default class DefectTable extends Component {
   ]
 
   onDetailSearch =(record) => {
-    console.log(record);
+    console.log(record); // 点击某行进行操作;
   }
 
   tableSortChange = (pagination, filter, sorter) => {
     const { field } = sorter || {};
-    console.log(field);
-    // 排序字段
-    // const { sortField, sortMethod } = listParams || {};
-    // let newField = sortField, newSort = 'desc';
-    // if(!field || sortField === sortFieldMap[field]) {// 点击的是正在排序的列
-      // newSort = sortMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
-    // }else{
-      // newField = sortFieldMap[field];
-    // }
+    const { listParams } = this.props;
+    const { sortField, sortMethod } = listParams || {};
+    let newField = sortField, newSort = 'descend';
+    if(!field || sortField === field) { // 点击的是正在排序的列
+      newSort = sortMethod === 'descend' ? 'ascend' : 'descend'; // 交换排序方式
+    } else { // 切换列
+      newField = field;
+    }
+    const newListParams = {
+      ...listParams,
+      sortField: newField,
+      sortMethod: newSort,
+    };
+    this.props.getDefectList({ ...newListParams });
   }
 
   defectMockListData = [
@@ -149,19 +172,30 @@ export default class DefectTable extends Component {
     },
   ]
 
+  onPicChange = (imgs) => this.setState({ imgs })
+
   render() {
-    const { defectMockListData } = this;
-    const sortField = 'stationName';
-    const sortMethod = 'descend';
+    const { tableListHeight, imgs } = this.state;
+    const { defectListData, listParams } = this.props;
+    const { sortField, sortMethod } = listParams;
+    const mockTotalData = [1].map(e => this.defectMockListData).reduce((a = [], b = []) => b.concat(a));
     return (
       <div className={styles.eliminateDefectsList}>
+        {/* <PicUploader
+          value={imgs}
+          mode="edit"
+          onChange={this.onPicChange}
+        /> */}
         <CneTable
           sortField={sortField}
           sortMethod={sortMethod}
           onChange={this.tableSortChange}
           columns={this.defectColumn}
           className={styles.defectTable}
-          dataSource={defectMockListData}
+          scroll={mockTotalData.length > 0 ? {y: tableListHeight} : {}}
+          // dataSource={defectListData}
+          dataSource={mockTotalData}
+          dataError={false} // 数据是否请求失败
         />
       </div>
     );
