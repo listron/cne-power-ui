@@ -66,7 +66,7 @@ class PlanFilter extends PureComponent {
         />}
         {seletedTitle === 'stationCodes' && <PlanStations
           stationCodes={stationCodes}
-          stations={stations}
+          stations={stations.filter(e => (e.stationType === 1 && e.isConnected === 1))}
           onConditionChange={this.onConditionChange}
         />}
         {seletedTitle === 'cycleTypeCode' && <PlanCircleFilter
