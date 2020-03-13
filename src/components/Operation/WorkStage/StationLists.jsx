@@ -57,7 +57,7 @@ class StationLists extends PureComponent {
           multiple={true}
           oneStyleOnly={false}
           checkedStations={stageStations}
-          data={stations}
+          data={stations.filter(e => (e.stationType === 1 && e.isConnected === 1))}
           stationRef={this.stationRef}
           handleOK={this.handleOK}
           stationModalShow={stationModalShow}

@@ -39,7 +39,7 @@ class WorkStage extends Component {
   componentDidUpdate(preProps){
     const preStations = preProps.stations;
     const { stations } = this.props;
-    stations.length > 0 && preStations.length === 0 && this.stageQuery(stations, true); // 刷新 | 得到电站数据
+    stations.length > 0 && preStations.length === 0 && this.stageQuery(stations.filter(e => (e.stationType === 1 && e.isConnected === 1)), true); // 刷新 | 得到电站数据
   }
 
   componentWillUnmount(){
