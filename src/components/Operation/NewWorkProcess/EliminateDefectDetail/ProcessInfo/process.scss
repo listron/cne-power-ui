@@ -39,6 +39,8 @@
           .processItemDetail {
             color: var(--darkColor);
             @include lineheight(30px);
+            @include overflowText();
+            max-width: 70px;
           }
           .processItemTime {
             margin-left: 5px;

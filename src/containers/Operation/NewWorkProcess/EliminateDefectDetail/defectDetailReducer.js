@@ -24,9 +24,9 @@ const eliminateDefectDetailAction = {
 
 const initState = immutable.fromJS({
   docketId: '', // 缺陷ID
-  stateId: '', //  状态ID
+  stateId: null, //  状态ID
   stateName: '', // 状态名称  状态名称是确定的，不会根据不同的企业ID发生变化
-
+  allowedActions: [], //可执行的动作
   baseInfo: {}, // 基本信息
   eventInfo: [], // 缺陷事件信息
   handleInfo: [], // 处理信息

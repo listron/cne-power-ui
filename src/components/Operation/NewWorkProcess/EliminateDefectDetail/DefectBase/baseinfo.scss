@@ -5,6 +5,7 @@
   height: 60px;
   justify-content: space-between;
   align-items: center;
+  
   .baseTitle{
     flex: 0 0 166px;
     line-height: 36px;
@@ -13,7 +14,9 @@
     background: url('/img/bannerBgc.png') no-repeat;
   }
   .statusPart{
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .coordinate, .overtime{
       margin-right: 15px;
       font-size: 20px;
@@ -27,14 +30,17 @@
       background-color: #fbe6e3;
       color:#df4b33;
       border-radius: 17px;
+      margin-right: 24px;
+    } 
+    .statusName[stateName='execute']{
+      background:#ceebe0;
+      color:$themeColor;
     }
     .alreadyFinish{
-      position: absolute;
-      z-index: -1;
       color: var(--themeColor);
       font-size: 80px;
-      right: 5px;
-      top: -20px;
+      margin-top: 32px;
+      margin-right: 5px;
     }
   }
 }

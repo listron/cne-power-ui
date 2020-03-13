@@ -16,11 +16,11 @@ class DefectContent extends Component {
   };
 
   render() {
+    const { baseInfo } = this.props;
     return (
       <React.Fragment>
-        这是详情的页面
-        <DefectBaseTitle />
-        <DefectBaseInfo />
+        <DefectBaseTitle baseInfo={baseInfo} />
+        <DefectBaseInfo baseInfo={baseInfo} />
         <DefectEvent />
         <HandleInfo />
       </React.Fragment>
