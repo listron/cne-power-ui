@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './diagnoseCenter.scss';
 import { diagnoseCenterAction } from './diagnoseCenterReducer';
+import { commonAction } from '@containers/alphaRedux/commonAction';
 import DiagnoseHeaderTabs from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseHeaderTabs';
 import DiagnoseLevelSummry from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseLevelSummry';
 import DiagnoseFilter from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseFilter';
@@ -74,6 +75,7 @@ class DiagnoseCenter extends Component {
 const mapStateToProps = (state) => ({
   stations: state.common.get('stations').toJS(),
   deviceTypes: state.common.get('deviceTypes').toJS(),
+  stationDeviceTypes:[],
   ...state.monitor.diagnoseCenter,
 });
 const mapDispatchToProps = (dispatch) => ({
@@ -85,6 +87,15 @@ const mapDispatchToProps = (dispatch) => ({
   circlingQueryList: payload => dispatch({ type: diagnoseCenterAction.circlingQueryList, payload }),
   stopCircleQueryList: payload => dispatch({ type: diagnoseCenterAction.stopCircleQueryList, payload }),
   getEventsAnalysis: payload => dispatch({ type: diagnoseCenterAction.getEventsAnalysis, payload }),
+  getStationDeviceTypes: params => dispatch({
+    type: commonAction.getStationDeviceTypes,
+    payload: {
+      params,
+      deviceTypeAction: diagnoseCenterAction.fetchSuccess,
+      resultName: 'stationDeviceTypes', //不能用deviceTypes， 因为deviceTypes 在站不限的时候用
+    }
+  }),
+  editEventsStatus: payload => dispatch({ type: diagnoseCenterAction.editEventsStatus, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiagnoseCenter);

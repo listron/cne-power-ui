@@ -152,6 +152,13 @@
     .eventName, .eventNameText, .warningLevel, .warningLevelText, .pointValueDesc, .pointValueDescText, .deviceTypeName, .deviceTypeNameText, .deviceName, .deviceNameText, .stationName, .stationNameText, .beginTime, .beginTimeText, .warningDuration, .warningDurationText, .warningFrequency, .warningFrequencyText, .statusName, .statusNameText {
       @include overflowText();
     }
+    .eventNameTextHover {
+      color: #199475;
+      &:hover {
+        color: #ff9900;
+        cursor: pointer;
+      }
+    }
     .warningLevelText, .beginTimeText, .statusNameText{ // 状态, 等级, 时间 居中
       text-align: center;
       margin: 0 auto; // 盒子居td正中

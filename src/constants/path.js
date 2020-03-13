@@ -452,6 +452,7 @@ export default {
       getVersionListPath: '/v3/diagconfig/event', // 获取型号指定版本的告警事件列表
       versionEvent: '/v3/diagconfig/event', //添加告警事件 编辑告警事件 删除告警事件
       getEventType: '/v3/diagconfig/eventtype', //获取标准事件告警类型
+      getEventDetail: '/v3/diagconfig/eventdetail', //获取标准告警事件详情
     },
     monitor: {
       //实时监控
@@ -587,6 +588,7 @@ export default {
       getEventtypes: '/v3/diagconfig/eventtype', // 获取事件类型
       getDiagnoseList: '/v3/diagwarning', // 获取诊断中心事件列表
       getEventsAnalysis: '/v3/diagwarning/analysis', // 诊断中心事件分析
+      editEventsStatus: '/v3/diagwarning', // 忽略 删除 事件
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码

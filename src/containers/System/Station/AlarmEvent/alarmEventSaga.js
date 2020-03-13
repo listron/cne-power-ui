@@ -5,7 +5,8 @@ import Path from '../../../../constants/path';
 import { alarmEventAction } from './alarmEventReducer';
 import moment from 'moment';
 
-
+const { APIBasePath } = Path.basePaths;
+const { system } = Path.APISubPaths;
 
 function* getDiagVersion(action) { // 获取设备型号列表及版本
   const { payload } = action;
@@ -364,6 +365,131 @@ function* FilterConditionStations(action) { // 获取筛选条件的电站数据
   }
 }
 
+function* getEventDetail(action) { //获取标准告警事件详情
+  const { payload } = action;
+  try {
+    const {pointCode, deviceFullcode} = payload;
+    const url = `${APIBasePath}${system.getEventDetail}/${deviceFullcode}/${pointCode}`;
+    //console.log(url);
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      console.log(response.data.data);
+      yield put({
+        type: alarmEventAction.changeStore,
+        payload: {
+          alarmEventDetial: response.data.data || {},
+        },
+      });
+    }
+    else {
+      throw response.message;
+      //testcode. after delete.
+      // yield put({
+      //   type: alarmEventAction.changeStore,
+      //   payload: {
+      //     alarmEventDetial: {
+      //       diagModeVersionId: '1010006',//'496338816196096',
+      //       diagModeEventId: '1010006009',//'496339113991680',
+      //     },
+      //   },
+      // });
+    }
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: alarmEventAction.changeStore,
+      payload: {
+        alarmEventDetial: {},
+      },
+    });
+  }
+}
+
+function* alarmEventDetialFlow(action) { //获取详细信息的一系列处理过程
+  const { payload } = action;
+  try {
+    const {pointCode, deviceFullcode, deviceTypeCode, stationCode} = payload;
+
+    //1.获取事件详情
+    yield call(getEventDetail, {
+      payload: {
+        pointCode,
+        deviceFullcode,
+      },
+    });
+
+    //2.获取版本信息
+    yield call(getDiagVersion, {payload:undefined});
+
+    const alarmEventDetial = yield select(state => state.system.alarmEventReducer.get('alarmEventDetial'));
+    let diagConfigData = yield select(state => state.system.alarmEventReducer.get('diagConfigData'));
+    if (diagConfigData) {
+      diagConfigData = diagConfigData.toJS();
+    }
+    const verid = alarmEventDetial.get('diagModeVersionId');
+
+    //3.找出事件对应版本号的设备和厂商信息
+    let devInfo = null, over = false;
+    if (verid && deviceTypeCode && diagConfigData) {
+      for (let element of diagConfigData) {
+        if (over) break;
+        if (deviceTypeCode === element.deviceTypeCode) {
+          const {manufactors} = element;
+          for (let manufactorEle of manufactors) {
+            if (over) break;
+            const {deviceModes} = manufactorEle;
+            for (let dmEle of deviceModes) {
+              if (over) break;
+              const {versions} = dmEle;
+              for (let verEle of versions) {
+                if (verEle.diagModeVersionId == verid) {
+                  devInfo = {
+                    deviceModeCode : dmEle.deviceModeCode,
+                    manufactorCode : manufactorEle.manufactorCode,
+                  }
+                  over = true;
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // console.log(devInfo);
+    if (devInfo) {
+      //4.修改props的状态
+      const {deviceModeCode, manufactorCode} = devInfo;
+      yield put({
+        type: alarmEventAction.changeStore,
+        payload: {
+          deviceTypeCode,
+          stationCode,
+          diagModeVersionId: verid,
+          deviceModeCode: deviceModeCode,
+          manufactorCode: manufactorCode,
+          selectedNodesKey: `${manufactorCode}_${deviceModeCode}_${verid}`,
+          expandedKeys:[`${manufactorCode}`, `${manufactorCode}_${deviceModeCode}`],
+        },
+      });
+
+      //5.获取版本事件列表
+      yield put({
+        type: alarmEventAction.getVersionEvent,
+        payload: {
+          diagModeVersionId: verid,
+        }
+      });
+    }
+  }
+  catch (error) {
+    console.log(error);
+    console.log("error")
+  }
+
+}
+
 
 export function* watchAlarmEvent() {
   yield takeLatest(alarmEventAction.getDiagVersion, getDiagVersion);
@@ -378,4 +504,6 @@ export function* watchAlarmEvent() {
   yield takeLatest(alarmEventAction.getPointList, getPointList);
   yield takeLatest(alarmEventAction.getVersionStation, getVersionStation);
   yield takeLatest(alarmEventAction.FilterConditionStations, FilterConditionStations);
+  yield takeLatest(alarmEventAction.getEventDetail, getEventDetail);
+  yield takeLatest(alarmEventAction.alarmEventDetialFlow, alarmEventDetialFlow);
 }

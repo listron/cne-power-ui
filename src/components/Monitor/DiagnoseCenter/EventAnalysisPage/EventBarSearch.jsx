@@ -35,19 +35,8 @@ class EventBarSearch extends PureComponent {
     const forbidNextDay = !moment().isAfter(moment(beginTime), 'day');
     return (
         <div className={styles.analysisBarSearch}>
-          <h3 className={styles.searchText}>发电量对比图</h3>
-          <div className={styles.searchParts}>
-            <span className={styles.barTips}>
-              <span className={styles.acValue}>逆变器直流发电量(kWh)</span>
-              <span className={styles.theoryValue}>方阵理论发电量(kWh)</span>
-              <span className={styles.rateValue}>
-                <span className={styles.lineTip}>
-                  <span className={styles.line}></span>
-                  <span className={styles.rect}></span>
-                </span>
-                <span>对比差值(%)</span>
-              </span>
-            </span>
+          <div className={styles.searchTop}>
+            <h3 className={styles.searchText}>发电量对比图</h3>
             <span className={styles.dateCheck}>
               <Icon className={styles.leftIcon} type="left" onClick={this.prevDay} />
               <DatePicker
@@ -62,6 +51,19 @@ class EventBarSearch extends PureComponent {
                 type="right"
                 onClick={forbidNextDay ? null : this.nextDay}
               />
+            </span>
+          </div>
+          <div className={styles.searchParts}>
+            <span className={styles.barTips}>
+              <span className={styles.acValue}>逆变器直流发电量(kWh)</span>
+              <span className={styles.theoryValue}>方阵理论发电量(kWh)</span>
+              <span className={styles.rateValue}>
+                <span className={styles.lineTip}>
+                  <span className={styles.line}></span>
+                  <span className={styles.rect}></span>
+                </span>
+                <span>对比差值(%)</span>
+              </span>
             </span>
           </div>
         </div>
