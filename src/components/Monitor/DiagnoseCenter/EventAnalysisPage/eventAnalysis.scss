@@ -6,7 +6,6 @@
   flex: 1 0 auto;
   flex-direction: column;
   .detailTop{ // 分析页顶部
-    margin-top: -20px;
     margin-bottom: 0;
     display: flex;
     align-items: center;
@@ -84,8 +83,7 @@
   }
   .spin{
     display: flex;
-    flex: 1;
-    height: 506px;
+    height: 655px;
     justify-content: center;
     align-items: center;
   }
@@ -95,25 +93,25 @@
       font-size:18px;
     }
     .searchParts{ // 日期
-      .leftIcon, .rightIcon{
-        flex: 0 0 22px;
-        height: 24px;
-        line-height: 24px;
-        border-radius: 2px;
-        cursor: pointer;
-      }
       .forbidDay{
         cursor: not-allowed;
       }
-      .dateSelect{
-        margin: 0 4px;
-        width: 128px;
-        :global{
-          .ant-calendar-picker-input.ant-input{
-            height: 24px;
-          }
+    }
+    .dateSelect{
+      margin: 0 4px;
+      width: 128px;
+      :global{
+        .ant-calendar-picker-input.ant-input{
+          height: 24px;
         }
       }
+    }
+    .leftIcon, .rightIcon{
+      flex: 0 0 22px;
+      height: 24px;
+      line-height: 24px;
+      border-radius: 2px;
+      cursor: pointer;
     }
   }
   .analysisLineSearch{ // 线型图分析筛选
@@ -143,6 +141,14 @@
   }
   .analysisBarSearch{ // 柱图分析 筛选
     flex: 0 0 90px;
+    .searchTop{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .dateCheck{
+        display: flex;
+      }
+    }
     .searchText{
       height: 60px;
       line-height: 60px;
@@ -205,8 +211,15 @@
           }
         }
       }
-      .dateCheck{
-        display: flex;
+    }
+    @media screen and (max-width: 1679px) { // 1679以下屏幕
+      .searchParts{
+        padding-left: 43px;
+      }
+    }
+    @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+      .searchParts{
+        padding-left: 77px;
       }
     }
   }
@@ -306,7 +319,7 @@
 
 // 颜色部分。
 .eventAnalysis{
-  background-color: #fff;
+  // background-color: #fff;
   .detailTop{
     border-bottom: 1px solid #d4d4d4;
     .titleInfo{
@@ -336,7 +349,12 @@
       }
     }
   }
+  .spin{
+    background: #fff;
+    box-shadow: 0 2px 4px 2px rgba(0,0,0,0.20);
+  }
   .detailContent{
+    background-color: #fff;
     box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
   }
   .analysisLineSearch, .analysisBarSearch{
@@ -345,19 +363,19 @@
     }
     .searchParts{
       color: #353535;
-      .leftIcon, .rightIcon{
-        color: var(--themeColor);
-        background-color: #ceebe0;
-        border:1px solid var(--themeColor);
-        &:hover{
-          color: #fff;
-          background-color: var(--themeColor);
-        }
-      }
       .forbidDay, .forbidDay:hover{
         background-color:#f1f1f1;
         border:1px solid #999999;
         color: #999999;
+      }
+    }
+    .leftIcon, .rightIcon{
+      color: var(--themeColor);
+      background-color: #ceebe0;
+      border:1px solid var(--themeColor);
+      &:hover{
+        color: #fff;
+        background-color: var(--themeColor);
       }
     }
   }
