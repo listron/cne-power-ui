@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CneTable from '@components/Common/Power/CneTable';
+import PicUploader from '../Common/PicUploader';
 import styles from './listPage.scss';
 
 export default class DefectTable extends Component {
@@ -17,6 +18,7 @@ export default class DefectTable extends Component {
     // footer 60; thead: 36, handler: 58; search 63; title 39; padding 15; menu 40;
     this.state = {
       tableListHeight: clientHeight - 315,
+      imgs: [],
     };
   }
 
@@ -170,13 +172,20 @@ export default class DefectTable extends Component {
     },
   ]
 
+  onPicChange = (imgs) => this.setState({ imgs })
+
   render() {
-    const { tableListHeight } = this.state;
+    const { tableListHeight, imgs } = this.state;
     const { defectListData, listParams } = this.props;
     const { sortField, sortMethod } = listParams;
     const mockTotalData = [1].map(e => this.defectMockListData).reduce((a = [], b = []) => b.concat(a));
     return (
       <div className={styles.eliminateDefectsList}>
+        {/* <PicUploader
+          value={imgs}
+          mode="edit"
+          onChange={this.onPicChange}
+        /> */}
         <CneTable
           sortField={sortField}
           sortMethod={sortMethod}
