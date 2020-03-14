@@ -386,7 +386,23 @@ function* getAddUser(action) { // 添加处理人（执行人）
           checkedUserList: [],
         },
       });
-    } else {
+    } else if(response.data.code === '15001') {
+      // 15001 提示工单状态已变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          stateChangeStatus: true,
+        },
+      });
+    } else if(response.data.code === '15002') {
+      // 15002 表设置变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          isChangeMeter: 1,
+        },
+      });
+    }else {
       throw response.data;
     }
   } catch (e) {
@@ -495,7 +511,23 @@ function* getSubmitAction(action) { // 验收通过和驳回按钮
           loading: false,
         },
       });
-    } else {
+    } else if(response.data.code === '15001') {
+      // 15001 提示工单状态已变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          stateChangeStatus: true,
+        },
+      });
+    } else if(response.data.code === '15002') {
+      // 15002 表设置变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          isChangeMeter: 1,
+        },
+      });
+    }else {
       throw response.data;
     }
   } catch (e) {
@@ -750,7 +782,23 @@ function* getSaveAction(action) { // 保存按钮
           loading: false,
         },
       });
-    } else {
+    } else if(response.data.code === '15001') {
+      // 15001 提示工单状态已变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          stateChangeStatus: true,
+        },
+      });
+    } else if(response.data.code === '15002') {
+      // 15002 表设置变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          isChangeMeter: 1,
+        },
+      });
+    }else {
       throw response.data;
     }
   } catch (e) {
