@@ -95,20 +95,21 @@ const mapDispatchToProps = (dispatch) => ({
   addAbleUser: payload => dispatch({ type: eliminateDefectDetailAction.addAbleUser, payload }),
   submitAction: payload => dispatch({ type: eliminateDefectDetailAction.submitAction, payload }),
   defectTypes: payload => dispatch({ type: eliminateDefectDetailAction.defectTypes, payload }),
-  getStationTypeDeviceModes: params => dispatch({ //  获取某一个电站下的设备型号
-    type: publicAction.getStationDeviceTypes,
+  getBaseUsername: payload => dispatch({ type: eliminateDefectDetailAction.getBaseUsername, payload }),
+  getDeviceType: params => dispatch({ //  获取某一个电站下的设备
+    type: publicAction.getDeviceType,
     payload: {
       params,
-      deviceTypeAction: eliminateDefectDetailAction.changeStore,
-      resultName: 'deviceModes',
+      actionName: eliminateDefectDetailAction.changeStore,
+      resultName: 'deviceTypes',
     },
   }),
-  getDeviceType: params => dispatch({ //  获取某一个电站下的设备
-    type: publicAction.getStationDeviceTypes,
+  getStationTypeDeviceModes: params => dispatch({ //  获取某一个电站下的设备型号
+    type: publicAction.getStationTypeDeviceModes,
     payload: {
       params,
-      deviceTypeAction: eliminateDefectDetailAction.changeStore,
-      resultName: 'deviceTypes',
+      actionName: eliminateDefectDetailAction.changeStore,
+      resultName: 'deviceModes',
     },
   }),
 });

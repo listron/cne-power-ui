@@ -8,7 +8,7 @@ import styles from './defectEvent.scss';
  * 
 */
 
-const DefectEventDetail = ({ defectMessage }) => {
+const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false }) => {
   const [state, changeState] = useState();
   const [visible, changeVisible] = useState(false);
   const { eventId, diagWarningId, eventImgs = [] } = defectMessage;
@@ -16,13 +16,12 @@ const DefectEventDetail = ({ defectMessage }) => {
   const levelStatus = ['一级', '二级', '三级', '四级'];
   const stateArr = [{ name: '已解决', value: 'yijie' }, { name: '未解决', value: 'weijie' }, { name: '忽略', value: 'hulue' }];
   const delEvent = () => {
-    console.log('需要删除么');
     changeVisible(true);
-    // this.props.change()
+    this.props.delChange(diagWarningId);
   };
-  const handleChane = (value) => {
+  const handleChane = (value) => { // 状态改变的时候
     changeState(value);
-    // this.props.change()
+    this.props.eventChange({ eventId, eventState: value });
   };
 
   const onConfirm = () => { // 只有在 待领取 事件派发 的页面缺陷事件才可以删除 
@@ -39,10 +38,10 @@ const DefectEventDetail = ({ defectMessage }) => {
         <div className={styles.status}>
           {defectMessage.eventState &&
             <i className={`iconfont icon-${eventStatus[+defectMessage.eventState - 1]} ${styles[eventStatus[+defectMessage.eventState - 1]]}`} />}
-          <i className={`iconfont icon-wrong ${styles.close}`} onClick={delEvent} />
+          {del && <i className={`iconfont icon-wrong ${styles.close}`} onClick={delEvent} />}
         </div>
         <div className={styles.oneLine}>
-          <div className={styles.list}> <b>缺陷类型</b>:<p>{defectMessage.defectTypeName}</p> </div>
+          <div className={styles.list}> <b>缺陷类型</b>:<p>{defectMessage.defectTypeCode === 1 && '设备缺陷' || '其他缺陷'}</p> </div>
           {defectMessage.deviceTypeName && <div className={styles.list}> <b>设备类型</b>:<p>{defectMessage.deviceTypeName}</p> </div>}
           {defectMessage.deviceName && <div className={styles.list}> <b>设备名称</b>:<p>{defectMessage.deviceName}</p> </div>}
           {defectMessage.defectLevel &&
@@ -79,7 +78,7 @@ const DefectEventDetail = ({ defectMessage }) => {
           </div>
         }
       </div>
-      <div className={styles.footer}>
+      {allowedOpr && <div className={styles.footer}>
         {stateArr.map(e => {
           return (
             <div
@@ -90,7 +89,7 @@ const DefectEventDetail = ({ defectMessage }) => {
             </div>
           );
         })}
-      </div>
+      </div>}
       <CneTips
         tipText={'确认删除此事件'}
         theme={'light'}

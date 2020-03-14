@@ -66,6 +66,7 @@ function* getDefectBaseInfo(action) { // 2.7.3.4.查询消缺工单基本信息
         baseInfo: response.data.data || [],
         stateName: response.data.data.stateName || '',
         stateId: response.data.data.stateId || null,
+        operUserInfo: response.data.data.operUserInfo || [],
       });
     } else {
       throw response.data;
@@ -87,7 +88,8 @@ function* getDefectEventInfo(action) { // 2.7.3.7.查询工单缺陷信息
     const response = yield call(axios.post, url, { docketId });
     if (response.data.code === '10000') {
       yield call(easyPut, 'changeStore', {
-        eventInfo: response.data.data || [],
+        eventInfos: response.data.data || [],
+        eventStatus: response.data.data.map((e, index) => { return { eventId: e.eventId, 'eventState': null, key: index }; }),
       });
     } else {
       throw response.data;
@@ -96,7 +98,7 @@ function* getDefectEventInfo(action) { // 2.7.3.7.查询工单缺陷信息
     console.log(e);
     message.error(e.message);
     yield call(easyPut, 'changeStore', {
-      eventInfo: [],
+      eventInfos: [],
     });
   }
 }
@@ -109,7 +111,7 @@ function* getDefectHandleInfo(action) { // 2.7.3.8.	查询工单处理信息
     const response = yield call(axios.post, url, { docketId });
     if (response.data.code === '10000') {
       yield call(easyPut, 'changeStore', {
-        handleInfo: response.data.data || [],
+        handleInfos: response.data.data || [],
       });
     } else {
       throw response.data;
@@ -125,12 +127,14 @@ function* getDefectHandleInfo(action) { // 2.7.3.8.	查询工单处理信息
 
 function* addDefectHandle(action) { // 2.7.3.9.	添加工单的处理信息
   const { payload } = action;
+  const { record, func } = payload;
   const url = `${APIBasePath}${ticket.addEliminateHandle}`;
-  const { docketId } = payload;
+  const { docketId } = record;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       // 获取D 重新请求处理信息
+      func();
       yield call(easyPut, 'getDefectHandleInfo', {
         docketId,
       });
@@ -273,12 +277,12 @@ function* deleteDocket(action) { // 2.6.1.9.	删除工单
   }
 }
 
-function* addAbleUser(action) { // 2.6.1.3.	添加节点处理人
+function* addAbleUser(action) { // 2.6.1.3.	添加节点处理人 // 目前是执行操作单独添加
   const { payload } = action;
   const url = `${APIBasePath}${ticket.getAddUser}`;
-  const { docketId } = payload;
+  const { docketId, stateId } = yield select(state => state.operation.eliminateDefectDetail.toJS());
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, { ...payload, docketId, stateId });
     if (response.data.code === '10000') {
       // 添加完节点处理人，重新请求一次基本信息
       yield put({
@@ -336,6 +340,57 @@ function* defectTypes(action) { // 2.7.3.5.	查询缺陷类型列表
   }
 }
 
+function* getBaseUsername(action) { // 获取有权限电站权限用户
+  const { payload } = action;
+  const url = `${APIBasePath}${ticket.getBaseUsername}/${payload.stationCode}`;
+  try {
+    yield call(easyPut, 'changeStore', {
+      usernameLoading: true,
+    });
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      const { operUserInfo } = yield select(state => state.operation.eliminateDefectDetail.toJS());
+      const operableUserArr = operUserInfo[0].ableUserIds && operUserInfo[0].ableUserIds.split(',') || [];
+      const operateArr = response.data.data || [];
+      yield call(easyPut, 'changeStore', {
+        usernameLoading: false,
+        usernameList: response.data.data || [],
+
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    message.error(e.message);
+    yield call(easyPut, 'changeStore', {
+      usernameLoading: true,
+    });
+    console.log(e);
+  }
+}
+
+function* getDiagwarning(action) { // 获取有权限电站权限用户
+  const { payload } = action;
+  const url = `${APIBasePath}${ticket.getDiagWarnList}`;
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield call(easyPut, 'changeStore', {
+        warnEventInfos: response.data.data || [],
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    message.error(e.message);
+    yield call(easyPut, 'changeStore', {
+      warnEventInfos: [],
+    });
+    console.log(e);
+  }
+}
+
+
 
 
 export function* watchEliminateDefectDetail() {
@@ -355,5 +410,6 @@ export function* watchEliminateDefectDetail() {
   yield takeLatest(eliminateDefectDetailAction.addAbleUser, addAbleUser);
   yield takeLatest(eliminateDefectDetailAction.submitAction, submitAction);
   yield takeLatest(eliminateDefectDetailAction.defectTypes, defectTypes);
+  yield takeLatest(eliminateDefectDetailAction.getBaseUsername, getBaseUsername);
 }
 

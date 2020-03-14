@@ -18,7 +18,7 @@ class DefectCreate extends Component {
       <React.Fragment>
         这是创建的页面
         <DefectBaseTitle />
-        <DefectBaseInfo />
+        {/* <DefectBaseInfo /> */}
         <DefectEventEdit />
         <HandleInfo />
       </React.Fragment>
