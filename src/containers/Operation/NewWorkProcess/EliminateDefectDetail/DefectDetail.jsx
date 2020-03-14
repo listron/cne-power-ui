@@ -5,7 +5,7 @@ import { eliminateDefectDetailAction } from './defectDetailReducer';
 import { publicAction } from '@containers/alphaRedux/publicAction';
 import searchUtil from '@utils/searchUtil';
 import styles from './defectDetail.scss';
-import Footer from '@components/common/Footer';
+import Footer from '@components/Common/Footer';
 
 import DetailTopSubmit from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DetailTopSubmit/DetailTopSubmit';
 import ProcessInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/ProcessInfo/ProcessInfo';
