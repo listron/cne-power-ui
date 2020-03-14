@@ -38,7 +38,7 @@ const initState = immutable.fromJS({
   stationFlag: false, // 电站名称是否换行
   receiveLoading: false, // 领取
   stateChangeStatus: false, // 工单状态变更
-  lastRefreshTime: moment().format('YYYY-MM-DD HH:mm:ss'), // 上次刷新时间 格式yyyy-MM-dd HH:mm:ss
+  lastRefreshTime: '', // 上次刷新时间 格式yyyy-MM-dd HH:mm:ss
   isChangeMeter: 0, // 表设置是否变更  0：未变更 1：已变更
   meterBaseData: {// 基本信息
     stationName: '', // 电站名称
