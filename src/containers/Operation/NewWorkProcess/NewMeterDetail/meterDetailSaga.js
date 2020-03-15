@@ -215,6 +215,7 @@ function* getReadMeter(action) { // 获取处理信息数据
           loading: false,
           readLoading: false,
           lastRefreshTime: moment().format('YYYY-MM-DD HH:mm:ss'), // 记录本次刷新时间 格式yyyy-MM-dd HH:mm:ss
+          isChangeMeter: response.data.data.isChangeMeter, // 表设置是否变更  0：未变更 1：已变更
           readMeterData: { // 可以修改的数据
             ...response.data.data,
             onlineDatas: response.data.data.onlineDatas.map(cur => {
@@ -385,7 +386,23 @@ function* getAddUser(action) { // 添加处理人（执行人）
           checkedUserList: [],
         },
       });
-    } else {
+    } else if(response.data.code === '15001') {
+      // 15001 提示工单状态已变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          stateChangeStatus: true,
+        },
+      });
+    } else if(response.data.code === '15002') {
+      // 15002 表设置变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          isChangeMeter: 1,
+        },
+      });
+    }else {
       throw response.data;
     }
   } catch (e) {
@@ -435,7 +452,7 @@ function* getProcessAction(action) { // 获取流程可执行动作
   }
 }
 
-function* getSubmitAction(action) { // 提交验收按钮
+function* getSubmitAction(action) { // 验收通过和驳回按钮
   const {payload} = action;
   // 保存参数
   const objParams = {};
@@ -494,7 +511,23 @@ function* getSubmitAction(action) { // 提交验收按钮
           loading: false,
         },
       });
-    } else {
+    } else if(response.data.code === '15001') {
+      // 15001 提示工单状态已变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          stateChangeStatus: true,
+        },
+      });
+    } else if(response.data.code === '15002') {
+      // 15002 表设置变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          isChangeMeter: 1,
+        },
+      });
+    }else {
       throw response.data;
     }
   } catch (e) {
@@ -509,10 +542,108 @@ function* getSubmitAction(action) { // 提交验收按钮
   }
 }
 
-function* getReceiveAction(action) { // 提交验收按钮
+function* getCommitAction(action) { // 提交验收按钮
   const {payload} = action;
+  // 上次刷新时间
+  const { lastRefreshTime } = yield select(state => state.operation.newMeterDetail.toJS());
   // 保存参数
-  const objParams = {};
+  const objParams = {
+    lastRefreshTime,
+  };
+  // 过滤func函数
+  Object.keys(payload).forEach((key) => {
+    if (key !== 'func') {
+      objParams[key] = payload[key];
+    }
+  });
+  const url = `${APIBasePath}${ticket.getCommitAction}`;
+  try {
+    yield put({
+      type: newMeterDetailAction.changeStore,
+      payload: {
+        submitLoading: true,
+      },
+    });
+    const response = yield call(axios.post, url, objParams);
+    if (response.data.code === '10000') {
+      payload.func();
+      // 获取流程可操作人数据
+      yield put({
+        type: newMeterDetailAction.getOperableUser,
+        payload: {
+          meterId: payload.docketId,
+        },
+      });
+      // 获取流程信息
+      yield put({
+        type: newMeterDetailAction.getProcessList,
+        payload: {
+          meterId: payload.docketId,
+          loading: false,
+        },
+      });
+      // 获取流程可执行动作
+      yield put({
+        type: newMeterDetailAction.getReadMeter,
+        payload: {
+          meterId: payload.docketId,
+          loading: false,
+        },
+      });
+      // 获取抄表基本信息
+      yield put({
+        type: newMeterDetailAction.getProcessAction,
+        payload: {
+          meterId: payload.docketId,
+        },
+      });
+      // 获取抄表基本信息
+      yield put({
+        type: newMeterDetailAction.getProcessBaseInfo,
+        payload: {
+          meterId: payload.docketId,
+          loading: false,
+        },
+      });
+    } else if(response.data.code === '15001') {
+      // 15001 提示工单状态已变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          stateChangeStatus: true,
+        },
+      });
+    } else if(response.data.code === '15002') {
+      // 15002 表设置变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          isChangeMeter: 1,
+        },
+      });
+    }else {
+      throw response.data;
+    }
+  } catch (e) {
+    message.error(e.message);
+    yield put({
+      type: newMeterDetailAction.changeStore,
+      payload: {
+        submitLoading: false,
+      },
+    });
+    console.log(e);
+  }
+}
+
+function* getReceiveAction(action) { // 领取按钮
+  const {payload} = action;
+  // 上次刷新时间
+  const { lastRefreshTime } = yield select(state => state.operation.newMeterDetail.toJS());
+  // 保存参数
+  const objParams = {
+    lastRefreshTime,
+  };
   // 过滤func函数
   Object.keys(payload).forEach((key) => {
     if (key !== 'func') {
@@ -534,6 +665,7 @@ function* getReceiveAction(action) { // 提交验收按钮
         type: newMeterDetailAction.changeStore,
         payload: {
           receiveLoading: false,
+          lastRefreshTime: moment().format('YYYY-MM-DD HH:mm:ss'), // 记录本次刷新时间 格式yyyy-MM-dd HH:mm:ss
         },
       });
       // 获取流程可操作人数据
@@ -572,6 +704,22 @@ function* getReceiveAction(action) { // 提交验收按钮
         payload: {
           meterId: payload.docketId,
           loading: false,
+        },
+      });
+    } else if(response.data.code === '15001') {
+      // 15001 提示工单状态已变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          stateChangeStatus: true,
+        },
+      });
+    } else if(response.data.code === '15002') {
+      // 15002 表设置变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          isChangeMeter: 1,
         },
       });
     } else {
@@ -634,7 +782,23 @@ function* getSaveAction(action) { // 保存按钮
           loading: false,
         },
       });
-    } else {
+    } else if(response.data.code === '15001') {
+      // 15001 提示工单状态已变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          stateChangeStatus: true,
+        },
+      });
+    } else if(response.data.code === '15002') {
+      // 15002 表设置变更
+      yield put({
+        type: newMeterDetailAction.changeStore,
+        payload: {
+          isChangeMeter: 1,
+        },
+      });
+    }else {
       throw response.data;
     }
   } catch (e) {
@@ -695,6 +859,7 @@ export function* newWatchMeterDetail() {
   yield takeLatest(newMeterDetailAction.getAddUser, getAddUser);
   yield takeLatest(newMeterDetailAction.getProcessAction, getProcessAction);
   yield takeLatest(newMeterDetailAction.getSubmitAction, getSubmitAction);
+  yield takeLatest(newMeterDetailAction.getCommitAction, getCommitAction);
   yield takeLatest(newMeterDetailAction.getReceiveAction, getReceiveAction);
   yield takeLatest(newMeterDetailAction.getSaveAction, getSaveAction);
   yield takeLatest(newMeterDetailAction.getRotateImg, getRotateImg);
