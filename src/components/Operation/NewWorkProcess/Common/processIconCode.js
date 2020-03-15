@@ -58,7 +58,11 @@ export const localStateName = (name) => {
     '待验收': 'accept',
     '已结单': 'complete',
   };
-  return stateName[name];
+  if (name) {
+    return stateName[name.trim()];
+  }
+  return '';
+
 };
 /**
  * 根据后端返回code编码，匹配图标颜色

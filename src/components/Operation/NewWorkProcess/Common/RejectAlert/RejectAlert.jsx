@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Input } from 'antd';
 import CneButton from '@components/Common/Power/CneButton';
@@ -43,9 +43,9 @@ export default class RejectAlert extends Component {
 
   onConfirm = () => { // 确定按钮
     const { value } = this.state;
-    if(value && value.trim()) {
+    if (value && value.trim()) {
       return this.props.onConfirm(value, () => {
-        this.setState({value: null});
+        this.setState({ value: null });
       });
     }
     return this.setState({
@@ -56,7 +56,7 @@ export default class RejectAlert extends Component {
   onChange = e => {
     const num = computeLength(e.target.value);
     // 大于99
-    if(num > 999) {
+    if (num > 999) {
       return false;
     }
     this.setState({
@@ -69,13 +69,13 @@ export default class RejectAlert extends Component {
   render() {
     const { value, numberWord, errorFlag } = this.state;
     const {
-      visible, theme, tipClassname, width,
+      visible, theme, tipClassname, width, resonName,
     } = this.props;
     const defaultModalProps = {
       footer: null,
       closable: false,
       maskClosable: false,
-      maskStyle: {backgroundColor: 'rgba(153,153,153,0.2)'},
+      maskStyle: { backgroundColor: 'rgba(153,153,153,0.2)' },
     };
     width && (defaultModalProps.width = width);
     return (
@@ -88,7 +88,7 @@ export default class RejectAlert extends Component {
       >
         <div className={styles.rejectContentBox}>
           <div className={styles.rejectTitle}>
-            驳回
+            {resonName || '驳回'}
           </div>
           <div className={styles.rejectContent}>
             <div className={styles.rejectTextBox}>
@@ -116,7 +116,7 @@ export default class RejectAlert extends Component {
             </div>
             <CneButton
               onClick={this.onConfirm}
-              style={{width: '92px'}}
+              style={{ width: '92px' }}
             >
               确定
             </CneButton>

@@ -9,6 +9,7 @@ export default class ResponsorCheck extends Component {
   static propTypes = {
     usernameList: PropTypes.array,
     selelctedUser: PropTypes.func,
+    disabled: PropTypes.bool,
   };
 
   constructor() {
@@ -46,56 +47,7 @@ export default class ResponsorCheck extends Component {
 
   render() {
     const { addVisible, checkedUserList } = this.state;
-    const { disabled } = this.props;
-    // const { usernameList } = this.props;
-    const usernameList = [{
-      'userName': '梁朝伟tony',
-      'userId': 383284278591669,
-    },
-    {
-      'userName': '梁朝伟tonyhong',
-      'userId': 383285067120644,
-    },
-    {
-      'userName': '张惠妹',
-      'userId': 389099177848849,
-    },
-    {
-      'userName': '张惠妹本妹',
-      'userId': 389102063529984,
-    },
-    {
-      'userName': '刘德华',
-      'userId': 338690714173454,
-    },
-    {
-      'userName': '柴再平',
-      'userId': 328574567145472,
-    },
-    {
-      'userName': '管理员c',
-      'userId': 316696170602496,
-    },
-    {
-      'userName': 'default',
-      'userId': 323943291166720,
-    },
-    {
-      'userName': '费灿灿',
-      'userId': 329267038347264,
-    },
-    {
-      'userName': 'hanqk',
-      'userId': 388028745330688,
-    },
-    {
-      'userName': '侯强',
-      'userId': 324224850599938,
-    },
-    {
-      'userName': 'huangb',
-      'userId': 383294307172367,
-    }];
+    const { disabled, usernameList } = this.props;
     return (
       <React.Fragment>
         <span ref={(ref) => { this.userRef = ref; }} />

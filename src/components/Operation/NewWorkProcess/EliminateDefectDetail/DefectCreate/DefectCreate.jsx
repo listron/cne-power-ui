@@ -3,24 +3,27 @@ import PropTypes from 'prop-types';
 import styles from './defectCreate.scss';
 import DefectBaseTitle from '../DefectBase/DefectBaseTitle';
 import DefectBaseInfo from '../DefectBase/DefectBaseInfo';
-import DefectEventEdit from '../DefectEvent/DefectEventEdit';
+import DefcetEventTitle from '../DefectEvent/DefcetEventTitle';
+import DefectEvent from '../DefectEvent/DefectEvent';
 import HandleInfo from '../HandleInfo/HandleInfo';
 
 
 class DefectCreate extends Component {
   static propTypes = {
     actionCode: PropTypes.string,
+    isFinish: PropTypes.string,
 
   };
 
   render() {
+    const { isFinish } = this.props;
     return (
       <React.Fragment>
-        这是创建的页面
         <DefectBaseTitle />
-        {/* <DefectBaseInfo /> */}
-        <DefectEventEdit />
-        <HandleInfo />
+        <DefectBaseInfo {...this.props} />
+        <DefcetEventTitle {...this.props} />
+        <DefectEvent {...this.props} edit={true} />
+        <HandleInfo {...this.props} editDisplay={isFinish === '1'} />
       </React.Fragment>
     );
   }

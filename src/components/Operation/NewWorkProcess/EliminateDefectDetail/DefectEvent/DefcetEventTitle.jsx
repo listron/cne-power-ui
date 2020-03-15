@@ -31,14 +31,9 @@ export default class DefectEvent extends Component {
     this.props.changeStore({ addEventInfo });
   }
 
-  getDerivedStateFromProps(nextProps, prevState) {
-
-  }
-
-
   exchangeActioncode = (allActions, code) => {
     const cur = allActions.filter(e => e.actionCode === code);
-    return cur.length > 0 && !!cur[0].isPermission || false;
+    return cur.length > 0 && !cur[0].isPermission || false;
   }
 
   addHandleInfo = () => {

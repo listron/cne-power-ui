@@ -13,6 +13,7 @@ export default class InfoEdit extends Component {
     saveChange: PropTypes.func,
     delChange: PropTypes.func,
     key: PropTypes.number,
+    isVertify: PropTypes.bool,
   };
 
   constructor() {
@@ -93,12 +94,11 @@ export default class InfoEdit extends Component {
   }
 
   render() {
-    const { isFinish = 0, record = {} } = this.props;
+    const { isFinish = 0, record = {}, isVertify } = this.props;
     const {
       handleDesc, isChangePart, isCoordinate, partName, coordinateDesc, handleImg, handleVideo,
     } = record;
     const { handleVertify, visible, tipText } = this.state;
-    const isVertify = false;
     const inputRequire = (isVertify || handleVertify) && { required: true } || { pattern: '/^\s*$/g' };
     return (
       <div className={styles.infoEditBox}>

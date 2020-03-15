@@ -21,6 +21,8 @@ class DefectDetail extends Component {
     changeStore: PropTypes.func,
     getDefectMessage: PropTypes.func,
     processInfo: PropTypes.array,
+    getDefectAction: PropTypes.func,
+    resetStore: PropTypes.func,
   };
 
 
@@ -32,21 +34,24 @@ class DefectDetail extends Component {
   componentDidMount() {
     const { history } = this.props;
     const { search } = history.location;
-    console.log('search', search);
-    // 503306196121088 503572404424192
-    const { page = 'defectDetail', docketId = '503306196121088', isFinish } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
-    console.log('searchUtil(search).parse()', searchUtil(search).parse());
+    // 503306196121088 503572404424192 505877040300032
+    const { page = 'defectDetail', docketId, isFinish } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
     if (docketId) {
       // getDefectMessage 可执行动作 基础信息 缺陷事件 处理信息 流程信息
       this.props.getDefectMessage({ docketId, isFinish });
       this.props.changeStore({ docketId });
     }
-    if (isFinish && isFinish === 0) {
-      // this.prop.getDefectAction({ isFinish });
+    if (!docketId && (isFinish || isFinish === 0)) {
+      this.props.getDefectAction({ isFinish });
+      this.props.changeStore({
+        processInfo: [{
+          nodeName: '创建工单',
+          icon: '30006',
+        }],
+        isFinish,
+      });
     }
-
   }
-
 
   componentWillUnmount() {
     this.props.resetStore();

@@ -17,7 +17,7 @@ export default class DefectBaseInfo extends Component {
   };
 
 
-  infoEditCreater = (status = false) => {
+  infoEditCreater = (status) => {
     // true代表对应的是编辑态;
     // 3 执行人 13 添加接单人 20 修改工单说明 16 修改时间
     const { allowedActions = [] } = this.props;
@@ -32,7 +32,7 @@ export default class DefectBaseInfo extends Component {
 
   exchangeStauts = (allActions, code) => {
     const cur = allActions.filter(e => e.actionCode === code);
-    return cur.length > 0 && !!cur[0].isPermission || false;
+    return cur.length > 0 && !cur[0].isPermission || false;
   }
 
   onStationSelected = (stations) => { // 电站选择
@@ -85,16 +85,17 @@ export default class DefectBaseInfo extends Component {
   }
 
   render() {
-    const { baseInfo = {}, stateName, stations, addbaseInfo = {}, isVertify, usernameList = [] } = this.props;
-    const { isStationEdit, isExpectTimeEdit, isResponsorEdit, isDescEdit } = this.infoEditCreater(true);
+    const { baseInfo = {}, stateName, stations, addbaseInfo = {}, isVertify, usernameList = [], stationCode } = this.props;
+    const { isStationEdit, isExpectTimeEdit, isResponsorEdit, isDescEdit } = this.infoEditCreater(!stationCode);
     // 额外接收外界参数, 用于调整编辑态输入框的状态(必填, 出错);
     const timeFormat = 'YYYY-MM-DD HH:mm';
-    const { operUserInfo = [] } = baseInfo;
-    const { addUsers = [], stationCode, docketDesc = null, planEndTime = null } = addbaseInfo;
-    const operableUserId = operUserInfo.length > 0 && operUserInfo[0].ableUserIds.split(',') || [];
+    const { operUserInfo = [], stationName } = baseInfo;
+    const { addUsers = [], docketDesc = null, planEndTime = null } = addbaseInfo;
+    const addStationCode = addbaseInfo.stationCode;
+    const operableUserId = operUserInfo.length > 0 && operUserInfo[0].ableUserIds && operUserInfo[0].ableUserIds.split(',') || [];
     const curId = [...addUsers.map(e => e.userId), operableUserId];
     const filterUsernameList = usernameList.filter(cur => !curId.includes(`${cur.userId}`));
-    const operableUserName = operUserInfo.length > 0 && operUserInfo[0].ableUsers.split(',') || [];
+    const operableUserName = operUserInfo.length > 0 && operUserInfo[0].ableUsers && operUserInfo[0].ableUsers.split(',') || [];
     const curName = [...addUsers.map(e => e.userName), operableUserName];
 
     return (
@@ -105,17 +106,38 @@ export default class DefectBaseInfo extends Component {
           }>电站名称</div>
           <div className={`${styles.infoContent} ${styles.stations}`}>
             {isStationEdit ? <StationSelect
-              data={stations}
+              // data={stations}
+              data={[{
+                'enterpriseCode': 1007,
+                'isConnected': 1,
+                'planPower': null,
+                'planYear': null,
+                'provinceCode': 320000,
+                'provinceName': '江苏省',
+                'regionCode': null,
+                'regionName': '云南',
+                'reportType': '1',
+                'stationCapacity': 51.040000,
+                'stationCode': 56,
+                'stationEnabled': null,
+                'stationId': 157,
+                'stationName': '永仁',
+                'stationType': 1,
+                'stationUnitCount': 90,
+                'timeZone': 8,
+                'userId': null,
+                'version': null,
+              }]}
               onOK={this.onStationSelected}
               className={`${styles[this.errorTip('stationCode')]} ${styles[this.initTip('stationCode')]}`}
-            /> : <div>电站12345</div>}
+            /> : <div>{stationName}</div>}
           </div>
           <div className={styles.infoTitle}>工单类型</div>
           <div className={`${styles.infoContent} ${styles.types}`}>消缺工单</div>
         </div>
         <div className={styles.infoRow}>
           <div className={styles.firstInfoTitle}>创建人</div>
-          <div className={`${styles.infoContent} ${styles.creater}`}>{baseInfo.createUser || '--'}~</div>
+          <div className={`${styles.infoContent} ${styles.creater}`}>{baseInfo.createUser || '--'}</div>
           <div className={styles.infoTitle}>工单创建时间</div>
           <div className={`${styles.infoContent} ${styles.createTime}`}>
             {baseInfo.createTime && moment(baseInfo.createTime).format(timeFormat) || '--'}
@@ -134,14 +156,14 @@ export default class DefectBaseInfo extends Component {
         <div className={styles.infoRow}>
           <div className={
             `${styles.firstInfoTitle} ${isResponsorEdit ? styles.require : ''}`
-          }>{operUserInfo.length > 0 && operUserInfo[0].stateName}</div>
+          }>{operUserInfo.length > 0 && operUserInfo[0].stateName || '接单人'}</div>
           <div className={`${styles.infoContent} ${styles.responsor}`}>
             <div>{curName.length > 0 && curName.join(',') || '--'}</div>
             {isResponsorEdit &&
               <ResponsorCheck
                 usernameList={filterUsernameList}
                 selelctedUser={this.changePonsor}
-                disabled={!stationCode}
+                disabled={!stationCode || !addStationCode}
               />}
           </div>
           <div className={styles.infoTitle}>验收人</div>

@@ -91,7 +91,7 @@
   .createTime, .examiner{
     flex: 0 0 16%;
   }
-  .types, .expectTime, .finishTime{
+  .types, .finishTime{
     flex: 1 0 auto;
   }
   .descRow{
@@ -109,37 +109,21 @@
     }
   }
 
-  // textarea{
-  //   // &::placeholder{
-  //   //   color:#999;
-  //   //   background:#fcffe5;
-  //   //   border:1px solid #d4d4d4;
-  //   // }
-  //   &:required{
-  //     background:#fbe6e3;
-  //     border:1px solid #df4b33;
-  //   }
-  //   &:empty{
-  //     color:#999;
-  //     background:#fcffe5;
-  //     border:1px solid #d4d4d4;
-  //   }
-  // }
-
   .error{
     background:#fbe6e3;
     border:1px solid #df4b33;
   }
-  // .init{
-  //   background:#fcffe5;
-  //   border:1px solid #d4d4d4;
-  //   &::placeholder{
-  //     color:#999;
-  //   }
-  //   &:required{
-  //     background: pink;
-  //   }
-  // }
+  
+  .init{
+    background:#fcffe5;
+    border:1px solid #d4d4d4;
+    &::placeholder{
+      color:#999;
+    }
+    &:required{
+      background: pink;
+    }
+  }
 
 
   :global{

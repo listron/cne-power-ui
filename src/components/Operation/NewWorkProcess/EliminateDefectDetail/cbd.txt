@@ -117,4 +117,14 @@ addOperate '
 
         有一个函数 判断总体的
 
+
+// addbaseInfo  验证的是 电站名称 工单描述
+// addEventInfo  验证的是 缺陷类型       
+//                         设备缺陷    设备类型 设备名称 缺陷级别 缺陷描述
+//                         其他缺陷    缺陷描述
+//  addEventInfo 两种验证 一种创建的时候，未解决  addEventInfo.length>0  处理记录
+//                                    已解决  addEventInfo.length>0 && 处理记录
+//                执行中  addEventInfo.length>0  未保存内容将不被提交，确认将此工单提交验收
+//                                                  确认将此工单提交验收 
+
         

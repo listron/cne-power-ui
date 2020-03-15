@@ -4,7 +4,6 @@ import InfoDetail from './InfoDetail';
 import InfoEdit from './InfoEdit';
 import styles from './handle.scss';
 import PropTypes from 'prop-types';
-import { is } from 'immutable';
 
 export default class HandleInfo extends Component {
 
@@ -15,11 +14,31 @@ export default class HandleInfo extends Component {
     editDisplay: PropTypes.bool,
     allowedActions: PropTypes.array,
     addDefectHandle: PropTypes.func,
+    isFinish: PropTypes.string,
   };
 
   componentDidMount = () => {
     const { editDisplay, addhandleList, docketId } = this.props;
     if (editDisplay) {
+      const handleInfo = {
+        index: 0,
+        docketId,
+        handleDesc: null,
+        isChangePart: 0,
+        isCoordinate: 0,
+        partName: null,
+        coordinateDesc: null,
+        handleImg: [],
+        handleVideo: [],
+      };
+      addhandleList.push(handleInfo);
+      this.props.changeStore({ addhandleList });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { editDisplay, addhandleList, docketId } = nextProps;
+    if (!this.props.editDisplay && editDisplay) {
       const handleInfo = {
         index: 0,
         docketId,
@@ -57,7 +76,7 @@ export default class HandleInfo extends Component {
 
   exchangeActioncode = (allActions, code) => {
     const cur = allActions.filter(e => e.actionCode === code);
-    return cur.length > 0 && !!cur[0].isPermission || false;
+    return cur.length > 0 && !cur[0].isPermission || false;
   }
 
   infoChange = (value) => { // 处理信息的发生改变
@@ -79,7 +98,6 @@ export default class HandleInfo extends Component {
     });
   }
 
-
   delHandle = (record) => {
     const { index } = record;
     const { addhandleList } = this.props;
@@ -87,34 +105,15 @@ export default class HandleInfo extends Component {
     this.props.changeStore({ addhandleList });
   }
 
-  // mockHandleInfos = [
-  //   {
-  //     handleDesc: '一条处理信息描述',
-  //     isChangePart: 1, // 是否更换备件
-  //     isCoordinate: 1, // 是否协调
-  //     partName: '更换的名称', // 更换部件名称
-  //     coordinateDesc: '协调说明1111', // 协调说明
-  //     handleImgs: [], // 处理图片路径数组 [{imgId, url}]
-  //     handleVideos: [], // 处理视频
-  //   }, {
-  //     handleDesc: '两条处理信息描述',
-  //     isChangePart: 0, // 是否更换备件
-  //     isCoordinate: 0, // 是否协调
-  //     partName: '', // 更换部件名称
-  //     coordinateDesc: '', // 协调说明
-  //     handleImgs: [], // 处理图片路径数组
-  //     handleVideos: [], // 处理视频
-  //   },
-  // ]
-
   render() {
-    const { handleInfos = [], allowedActions = [], addhandleList = [] } = this.props;
+    const { handleInfos = [], allowedActions = [], addhandleList = [], isFinish, isVertify } = this.props;
     const isAdd = this.exchangeActioncode(allowedActions, '15'); // 添加的权限是14
+    const isAddStatus = (isFinish === '0' || isFinish === '1') && addhandleList.length !== 1; // 添加的时候只能添加一条
     return (
       <section className={styles.handleInfo}>
         <h4 className={styles.handleTitle}>
           <div className={styles.titleName}>处理信息</div>
-          {isAdd && <CneButton className={styles.addBtn} onClick={this.addHandleInfo}>
+          {(isAdd && isAddStatus) && <CneButton className={styles.addBtn} onClick={this.addHandleInfo}>
             <i className={`iconfont icon-newbuilt ${styles.addIcon}`} />
             <span className={styles.text}>添加记录</span>
           </CneButton>}
@@ -127,6 +126,7 @@ export default class HandleInfo extends Component {
               saveChange={this.saveHandle}
               onChange={this.infoChange}
               delChange={this.delHandle}
+              isVertify={isVertify}
             />
           ))}
           {handleInfos.map((e, i) => (

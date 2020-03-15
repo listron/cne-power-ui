@@ -18,8 +18,8 @@ function* easyPut(actionName, payload) {
 }
 
 function* getDefectAction(action) { // 2.7.3.2.	查询消缺可执行动作 创建和追加的
-  console.log('action', action);
   const { payload } = action;
+  console.log('payload1231423', payload);
   const url = `${APIBasePath}${ticket.getEliminateDefectAction}`;
   try {
     const response = yield call(axios.post, url, payload);
@@ -46,6 +46,10 @@ function* createDefect(action) { // 2.7.3.3.	创建消缺工单（提交）
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       const docketId = response.data.data.docketId;
+      yield put({
+        type: eliminateDefectDetailAction.getDefectMessage,
+        payload: { docketId },
+      });
     } else {
       throw response.data;
     }
@@ -67,6 +71,7 @@ function* getDefectBaseInfo(action) { // 2.7.3.4.查询消缺工单基本信息
         stateName: response.data.data.stateName || '',
         stateId: response.data.data.stateId || null,
         operUserInfo: response.data.data.operUserInfo || [],
+        stationCode: response.data.data.stationCode || null,
       });
     } else {
       throw response.data;
@@ -89,7 +94,7 @@ function* getDefectEventInfo(action) { // 2.7.3.7.查询工单缺陷信息
     if (response.data.code === '10000') {
       yield call(easyPut, 'changeStore', {
         eventInfos: response.data.data || [],
-        eventStatus: response.data.data.map((e, index) => { return { eventId: e.eventId, 'eventState': null, key: index }; }),
+        eventStatus: response.data.data.map((e, index) => { return { eventId: e.eventId, eventState: null, key: index }; }),
       });
     } else {
       throw response.data;
@@ -172,7 +177,6 @@ function* getProcessInfo(action) { //2.7.1.4  获取流程流转信息数据
 function* getDefectMessage(action) { // 各种状态提交之后请求新的数据
   // 获取ID 重新请求处理信息
   const { payload } = action;
-  console.log('payload', payload);
   yield fork(getDefectAction, { payload }); // 可执行动作
   yield fork(getDefectBaseInfo, { payload }); // 基础信息
   yield fork(getDefectEventInfo, { payload }); //  缺陷事件
@@ -298,7 +302,7 @@ function* addAbleUser(action) { // 2.6.1.3.	添加节点处理人 // 目前是�
   }
 }
 
-function* submitAction(action) { // 2.6.1.2.	处理节点  消缺现有的处理信息是 提交验收 派发
+function* submitAction(action) { // 2.6.1.2.	处理节点  消缺现有的处理信息是 提交验收
   const { payload } = action;
   const url = `${APIBasePath}${ticket.getSubmitAction}`;
   const { docketId } = payload;
@@ -349,13 +353,9 @@ function* getBaseUsername(action) { // 获取有权限电站权限用户
     });
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
-      const { operUserInfo } = yield select(state => state.operation.eliminateDefectDetail.toJS());
-      const operableUserArr = operUserInfo[0].ableUserIds && operUserInfo[0].ableUserIds.split(',') || [];
-      const operateArr = response.data.data || [];
       yield call(easyPut, 'changeStore', {
         usernameLoading: false,
         usernameList: response.data.data || [],
-
       });
     } else {
       throw response.data;
@@ -389,9 +389,6 @@ function* getDiagwarning(action) { // 获取有权限电站权限用户
     console.log(e);
   }
 }
-
-
-
 
 export function* watchEliminateDefectDetail() {
   yield takeLatest(eliminateDefectDetailAction.getDefectAction, getDefectAction);
