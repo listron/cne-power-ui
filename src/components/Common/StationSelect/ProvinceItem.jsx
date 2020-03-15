@@ -40,7 +40,7 @@ class ProvinceItem extends Component {
       const tmpStations = selectedStation.filter(e => {
         const notInProvince = e.provinceCode !== provinceInfo.provinceCode; // 不同省份
         const notSameStationType = e.stationType !== filterStationType; // 同省但不同电站类型
-        return notInProvince || notSameStationType;
+        return notInProvince && notSameStationType;
       });
       newSelectedStation = [...tmpStations, ...provinceInfo.stations];
       if (oneStyleOnly) { // 只能选一种类型电站
@@ -56,7 +56,7 @@ class ProvinceItem extends Component {
       newSelectedStation = selectedStation.filter(e => {
         const notInProvince = e.provinceCode !== provinceInfo.provinceCode;
         const notSameStationType = e.stationType !== filterStationType;
-        return notInProvince || notSameStationType;
+        return notInProvince && notSameStationType;
       });
     }
     this.props.checkStation(newSelectedStation);
