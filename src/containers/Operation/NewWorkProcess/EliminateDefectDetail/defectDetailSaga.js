@@ -19,7 +19,6 @@ function* easyPut(actionName, payload) {
 
 function* getDefectAction(action) { // 2.7.3.2.	查询消缺可执行动作 创建和追加的
   const { payload } = action;
-  console.log('payload1231423', payload);
   const url = `${APIBasePath}${ticket.getEliminateDefectAction}`;
   try {
     const response = yield call(axios.post, url, payload);
@@ -371,7 +370,7 @@ function* getBaseUsername(action) { // 获取有权限电站权限用户
   }
 }
 
-function* getDiagwarning(action) { // 获取有权限电站权限用户
+function* getDiagwarning(action) { // 获取告警事件转过来的ID
   const { payload } = action;
   const url = `${APIBasePath}${ticket.getDiagWarnList}`;
   try {
@@ -410,5 +409,6 @@ export function* watchEliminateDefectDetail() {
   yield takeLatest(eliminateDefectDetailAction.submitAction, submitAction);
   yield takeLatest(eliminateDefectDetailAction.defectTypes, defectTypes);
   yield takeLatest(eliminateDefectDetailAction.getBaseUsername, getBaseUsername);
+  yield takeLatest(eliminateDefectDetailAction.getDiagwarning, getDiagwarning);
 }
 

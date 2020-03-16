@@ -70,7 +70,7 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
           }
         </div>
         {
-          eventImgs.length > 0 &&
+          eventImgs && eventImgs.length > 0 &&
           <div className={styles.threeLine}>
             <PicUploader
               value={eventImgs.map(e => e.url)}

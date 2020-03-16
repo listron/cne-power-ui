@@ -38,9 +38,11 @@ export default class DefectBaseInfo extends Component {
   }
 
   onStationSelected = (stations) => { // 电站选择
-    const stationCode = stations.length > 0 && stations[0].stationCode || null;
+    const curStations = stations.length > 0 && stations[0];
+    const { stationCode, stationName } = curStations;
     const { addbaseInfo } = this.props;
     addbaseInfo['stationCode'] = stationCode;
+    addbaseInfo['stationName'] = stationName;
     this.props.getBaseUsername({ stationCode }); // 当前电站有权限的人
     this.props.getDeviceType({ stationCode }); // 获取当前电站下的设备类型
     this.props.changeStore({ addbaseInfo, stationCode });
@@ -87,8 +89,8 @@ export default class DefectBaseInfo extends Component {
   }
 
   render() {
-    const { baseInfo = {}, stateName, stations, addbaseInfo = {}, isVertify, usernameList = [], stationCode } = this.props;
-    const { isStationEdit, isExpectTimeEdit, isResponsorEdit, isDescEdit } = this.infoEditCreater(true);
+    const { baseInfo = {}, stateName, stations, addbaseInfo = {}, isVertify, usernameList = [], stationCode, editStation = false } = this.props;
+    const { isStationEdit, isExpectTimeEdit, isResponsorEdit, isDescEdit } = this.infoEditCreater(editStation);
     // 额外接收外界参数, 用于调整编辑态输入框的状态(必填, 出错);
     const timeFormat = 'YYYY-MM-DD HH:mm';
     const { operUserInfo = [], stationName } = baseInfo;
@@ -110,6 +112,7 @@ export default class DefectBaseInfo extends Component {
               data={stations}
               onOK={this.onStationSelected}
               className={`${styles[this.errorTip('stationCode')]} ${styles[this.initTip('stationCode')]}`}
+              value={[{ stationName: addbaseInfo.stationName, stationCode: addStationCode }]}
             /> : <div>{stationName}</div>}
           </div>
           <div className={styles.infoTitle}>工单类型</div>

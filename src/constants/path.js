@@ -142,7 +142,7 @@ export default {
       getEliminateBaseInfo: '/v4/opms/defect/base', // 消缺的基本信息
       getEliminateEventInfo: '/v4/opms/defect/event', // 消缺的事件信息
       getEliminateHandleInfo: '/v4/opms/defect/handle', // 消缺的处理信息
-      addEliminateHandle: '/v4/opms/defect/addHandl', // 添加工单处理信息
+      addEliminateHandle: '/v4/opms/defect/addHandle', // 添加工单处理信息
       checkAndAcceptDefect: '/v4/opms/defect/checkAndAccept', // 消缺验收（通过和驳回）
       verifyEilminateDefect: '/v4/opms/defect/verify', // 验收工单
       delDocket: '/v4/opms/docket/del', // 删除工单

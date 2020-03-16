@@ -20,6 +20,10 @@ export default class DefectEvent extends Component {
     changeStore: PropTypes.func,
   };
 
+  componentWillReceiveProps = () => {
+
+  }
+
   exchangeActioncode = (allActions, code) => {
     const cur = allActions.filter(e => e.actionCode === code);
     return cur.length > 0 && !cur[0].isPermission || false;

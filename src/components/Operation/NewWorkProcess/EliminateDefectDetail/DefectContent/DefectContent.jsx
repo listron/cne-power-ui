@@ -18,31 +18,43 @@ class DefectContent extends Component {
     baseInfo: PropTypes.object,
     addEventInfo: PropTypes.array,
     stateName: PropTypes.string,
+    handleInfos: PropTypes.array,
+    addhandleList: PropTypes.array,
   };
 
   componentWillReceiveProps(nextProps) {
-    const { eventInfos, addEventInfo, stateName } = nextProps;
-    if (this.props.addEventInfo.length === 0 && localStateName(stateName) === 'return') {
-      const list = eventInfos.map((e, index) => { return { index: index + 1, ...e }; });
-      this.props.changeStore({ addEventInfo: list });
+    const { eventInfos, addEventInfo, stateName, stationCode } = nextProps;
+    if (!this.props.stationCode && stationCode) {
+      this.props.getBaseUsername({ stationCode }); // 当前电站有权限的人
+      this.props.getDeviceType({ stationCode }); // 获取当前电站下的设备类型
     }
   }
 
   render() {
-    const { baseInfo, stateName } = this.props;
+    const { baseInfo, stateName, handleInfos, addhandleList } = this.props;
     return (
       <React.Fragment>
         <DefectBaseTitle baseInfo={baseInfo} />
-        <DefectBaseInfo baseInfo={baseInfo} {...this.props} />
+        <DefectBaseInfo baseInfo={baseInfo} {...this.props} editStation={false} />
         {stateName &&
           <React.Fragment>
             <DefcetEventTitle {...this.props} />
             <DefectEvent {...this.props} />
-            <HandleInfo
-              {...this.props}
-              editDisplay={localStateName(stateName) === 'execute'}
-              addMultipleEvent={localStateName(stateName) === 'execute'}
-            />
+            {/* 在执行的时候 需要默认显示一条 可以添加多条 */}
+            {localStateName(stateName) === 'execute' &&
+              <HandleInfo
+                {...this.props}
+                editDisplay={localStateName(stateName) === 'execute'}
+                addMultipleEvent={localStateName(stateName) === 'execute'}
+              />}
+            {/* 在其他时候如过不存在处理信息，则不显示 */}
+            {localStateName(stateName) !== 'execute' && handleInfos.length + addhandleList.length > 0 &&
+              <HandleInfo
+                {...this.props}
+                editDisplay={false}
+                addMultipleEvent={false}
+              />
+            }
           </React.Fragment>
         }
       </React.Fragment>

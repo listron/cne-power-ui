@@ -132,6 +132,7 @@ export default class DetailTopSubmit extends Component {
 
   evnetInfoCheck = (eventInfo) => { // 缺陷事件校验 单个
     const { defectTypeCode, deviceTypeCode, deviceFullcode, eventDesc } = eventInfo;
+    console.log('eventInfo', eventInfo);
     if (defectTypeCode === 0) { // 其他缺陷
       if (!eventDesc) {
         return false;
@@ -207,7 +208,6 @@ export default class DetailTopSubmit extends Component {
     const { planEndTime, addUsers } = addbaseInfo;
     const flag = true;
     // const flag=true = this.baseInfoCheck(addbaseInfo, stationCode);
-    console.log('flag', flag);
     if (flag) {
       const params = {
         docketId,
@@ -369,8 +369,8 @@ export default class DetailTopSubmit extends Component {
             <span className={styles.titleText}>{docketId && '工单详情' || '创建工单'}</span>
           </div>
           <div className={styles.handlePart}>
-            {/* 新建 */}
-            {this.createButton(['9', '10', '11', '12'], 'crete')}
+            {/* 新建  */}
+            {this.createButton(['9', '10', '11', '12', '22'], 'crete')}
             {/* 审核 派发 */}
             {this.createButton(['17'], 'verify')}
             {/* 退回 */}
@@ -401,7 +401,7 @@ export default class DetailTopSubmit extends Component {
             onConfirm={this.onConfirmPass}
           />
           <RejectAlert
-            reasonName={status == 'return' && '退回原因' || '驳回原因'}
+            reasonName={status === 'return' && '退回' || '驳回'}
             visible={requiredVisiable}
             width={450}
             onCancel={() => this.setState({ requiredVisiable: false })}

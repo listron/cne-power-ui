@@ -28,6 +28,8 @@ export default class DefectEvenrEdit extends Component {
     };
   }
 
+
+
   changeDefectType = (value) => { // 修改缺陷类型
     const { record, onChange } = this.props;
     onChange({ index: record.index, defectTypeCode: value });
@@ -167,7 +169,7 @@ export default class DefectEvenrEdit extends Component {
           </span>
           <span>{
             <PicUploader
-              value={defectImgs.map(e => e.url)}
+              value={defectImgs && defectImgs.map(e => e.url) || []}
               mode="edit"
               maxPicNum={4}
               onChange={this.onPicChange}

@@ -5,6 +5,10 @@ import styles from './handle.scss';
 const { TextArea } = Input;
 import CneTips from '@components/Common/Power/CneTips';
 import PropTypes from 'prop-types';
+import PicUploader from '../../Common/PicUploader';
+import VideoUploader from '../../Common/VideoUploader';
+import path from '../../../../../constants/path';
+
 
 export default class InfoEdit extends Component {
   static propTypes = {
@@ -60,6 +64,23 @@ export default class InfoEdit extends Component {
     onChange({ index: record.index, coordinateDesc: target.value });
   }
 
+  onPicChange = (value) => { // 图片上传
+    const { record, onChange } = this.props;
+    const handleImg = value.map(e => {
+      return {
+        url: e,
+        imgId: '',
+        updateSign: 1,
+      };
+    });
+    onChange({ index: record.index, handleImg });
+  }
+
+  onVideoChange = (value) => { // 视频编辑
+    const { record, onChange } = this.props;
+    onChange({ index: record.index, handleVideos: value });
+  }
+
   handleCheck = () => { // 校验
     const { record = {} } = this.props;
     const { handleDesc, isChangePart, partName, isCoordinate, coordinateDesc } = record;
@@ -93,13 +114,23 @@ export default class InfoEdit extends Component {
     this.setState({ visible: false });
   }
 
+  exchangeActioncode = (allActions, code) => {
+    const cur = allActions.filter(e => e.actionCode === code);
+    return cur.length > 0 && !cur[0].isPermission || false;
+  }
+
+
+
+
   render() {
-    const { isFinish = 0, record = {}, isVertify } = this.props;
+    const { isFinish, record = {}, isVertify, allowedActions = [] } = this.props;
     const {
-      handleDesc, isChangePart, isCoordinate, partName, coordinateDesc, handleImg, handleVideo,
+      handleDesc, isChangePart, isCoordinate, partName, coordinateDesc, handleImg = [], handleVideos,
     } = record;
     const { handleVertify, visible, tipText } = this.state;
     const inputRequire = (isVertify || handleVertify) && { required: true } || { pattern: '/^\s*$/g' };
+    const downloadTemplet = `${path.basePaths.APIBasePath}${path.pubilcPath.imgUploads}`;
+    const editRight = this.exchangeActioncode(allowedActions, '23');
     return (
       <div className={styles.infoEditBox}>
         <div className={styles.editRecord}>
@@ -110,7 +141,7 @@ export default class InfoEdit extends Component {
             </span>
           </span>
           <TextArea onChange={this.onDescChange} value={handleDesc} placeholder={'请填写处理记录，必填'} required={isVertify || handleVertify} />
-          {isFinish !== 1 && <i
+          {isFinish !== '1' && <i
             className={`iconfont icon-wrong ${styles.cancelEdit}`}
             onClick={this.cancelEdit}
           />}
@@ -120,14 +151,27 @@ export default class InfoEdit extends Component {
             <span className={styles.editTitleName}>添加照片</span>
             <span className={styles.titleTip}>最多4张</span>
           </span>
-          <span>{handleImg.join(',')}</span>
+          <span>{
+            <PicUploader
+              value={handleImg && handleImg.map(e => e.url) || []}
+              mode="edit"
+              maxPicNum={4}
+              onChange={this.onPicChange}
+              uploadUrl={downloadTemplet}
+            />}</span>
         </div>
         <div className={styles.editVideo}>
           <span className={styles.editTitle}>
             <span className={styles.editTitleName}>添加视频</span>
             <span className={styles.titleTip}>不超过15s</span>
           </span>
-          <span>{handleVideo.join(',')}</span>
+          <span>{
+            <VideoUploader
+              value={handleVideos && handleVideos.length > 0 && handleVideos || []}
+              onChange={this.onVideoChange}
+              maxNum={1}
+              uploadUrl={downloadTemplet}
+            />}</span>
         </div>
         <div className={styles.editParts}>
           <span className={styles.editTitle}>更换备件 {!!isChangePart && <span className={styles.star}>*</span>}</span>
@@ -152,7 +196,7 @@ export default class InfoEdit extends Component {
           </span>
         </div>
         <div className={styles.saveEditRow}>
-          {isFinish !== 0 || isFinish !== 1 &&
+          {!isFinish &&
             <CneButton className={styles.saveEditButton} onClick={this.onEditInfoSave}>
               <i className={'iconfont icon-save'} />
               保存

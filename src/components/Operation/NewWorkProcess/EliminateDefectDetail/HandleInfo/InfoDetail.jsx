@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './handle.scss';
 import PicUploader from '../../Common/PicUploader';
+import VideoUploader from '../../Common/VideoUploader';
 
 export default class InfoDetail extends Component {
 
@@ -47,15 +48,22 @@ export default class InfoDetail extends Component {
         </div>}
         <div className={styles.imgRecord}>
           <span className={styles.recordName} />
-          <span>
+          <span className={styles.picBox}>
             {
               handleImgs && handleImgs.length > 0 &&
-              <div className={styles.threeLine}>
+              <React.Fragment>
                 <PicUploader
                   value={handleImgs.map(e => e.url)}
                   mode="review"
                 />
-              </div>
+                {handleVideos && handleVideos.length > 0 &&
+                  <VideoUploader
+                    value={handleVideos}
+                    onChange={this.onVideoChange}
+                  />
+                }
+              </React.Fragment>
+
             }
           </span>
         </div>
