@@ -1,0 +1,38 @@
+@import "../../../../../../theme/theme.scss";
+
+.videoModalBox {
+  :global {
+    .ant-modal {
+      padding: 0;
+      border-radius: 2px;
+      .ant-modal-content{
+        box-shadow: none;
+        background-color: transparent;
+      }
+      .ant-modal-body {
+        padding: 0;
+      }
+    }
+  }
+
+  .videoModalContent {
+    .videoModalTitle {
+      height: 40px;
+      display: flex;
+      justify-content: flex-end;
+      .closeVideoIcon {
+        flex: 0 0 40px;
+        cursor: pointer;
+        text-align: center;
+        font-size: 20px;
+        padding:  5px;
+        color: #fff;
+      }
+    }
+    .videoPlayer{
+      max-width: 960px;
+      max-height: 640px;
+      box-shadow:0 0 20px 3px rgba(0,0,0,0.50);
+    }
+  }
+}
