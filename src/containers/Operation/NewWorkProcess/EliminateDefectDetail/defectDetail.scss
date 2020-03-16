@@ -18,4 +18,46 @@
     background-color: #fff;
     box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
   }
+
+   textarea{
+    &:required:invalid{
+      &::placeholder{
+        color:#df4b33;
+      }
+      background:#fbe6e3;
+      border:1px solid #df4b33;
+      
+    }
+    &:valid{
+      background: #fff;
+    }
+    &:empty{
+      color:#999;
+      background:#fcffe5;
+      border:1px solid #d4d4d4;
+    }
+    
+  }
+
+   input{
+     // 因为input的特殊性，现在只做空判断 所以出现了两种方式
+    &:invalid:required{
+      background:#fbe6e3;
+      border:1px solid #df4b33;
+       &::placeholder{
+        color:#df4b33;
+      }
+    }
+    &:valid:required{ // 无数据的时候
+      background: #fff;
+    }
+    &:valid{
+      color:#999;
+      background:#fcffe5;
+      border:1px solid #d4d4d4;
+    }
+    &:invalid{
+      background: #fff;
+    }
+  }
 }

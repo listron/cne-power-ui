@@ -29,7 +29,7 @@ class Overview extends Component {
   constructor() {
     super();
     this.state = {
-      tab: 'defect',
+      tab: '',
       page: 'list',
     };
   }
@@ -38,7 +38,8 @@ class Overview extends Component {
     const { history } = this.props;
     const { search, pathname } = history.location;
     const { page = 'list', tab = 'defect' } = searchUtil(search).parse(); //默认为缺陷列表页
-    this.setState({ page, tab });
+    console.log('page', page, tab);
+    setTimeout(() => this.setState({ page, tab }), 0);
 
   }
 
@@ -46,7 +47,7 @@ class Overview extends Component {
     const { history } = nextProps;
     const { search, pathname } = history.location;
     const { page = 'list', tab = 'defect' } = searchUtil(search).parse(); //默认为缺陷列表页
-    this.setState({ page, tab });
+    setTimeout(() => this.setState({ page, tab }), 0);
   }
 
   shouldComponentUpdate(nextProps) {

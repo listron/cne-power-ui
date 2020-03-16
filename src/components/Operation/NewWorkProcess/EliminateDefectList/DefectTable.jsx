@@ -4,6 +4,7 @@ import CneTable from '@components/Common/Power/CneTable';
 import PicUploader from '../Common/PicUploader';
 import VideoUploader from '../Common/VideoUploader';
 import styles from './listPage.scss';
+import moment from 'moment';
 
 export default class DefectTable extends Component {
 
@@ -13,7 +14,7 @@ export default class DefectTable extends Component {
     getDefectList: PropTypes.func,
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
     const { clientHeight } = document.body;
     // footer 60; thead: 36, handler: 58; search 63; title 39; padding 15; menu 40;
@@ -23,6 +24,24 @@ export default class DefectTable extends Component {
       videos: [],
     };
   }
+
+  formatMinutes = (minutes) => {
+    const day = parseInt(minutes / 60 / 24, 0);
+    const hour = parseInt(minutes / 60 % 24, 0);
+    const min = parseInt(minutes % 60, 0);
+    let time = '';
+    if (day > 0) {
+      time = day.toString().padStart(2, '0') + '天';
+    }
+    if (hour > 0) {
+      time += hour.toString().padStart(2, '0') + '小时';
+    }
+    if (min > 0) {
+      time += parseFloat(min).toString().padStart(2, '0') + '分钟';
+    }
+    //三元运算符 传入的分钟数不够一分钟 默认为0分钟
+    return time;
+  };
 
   defectColumn = [
     {
@@ -66,7 +85,7 @@ export default class DefectTable extends Component {
         <div
           className={styles.createTimeText}
           title={text || ''}
-        >{text || '--'}</div>
+        >{text && moment(text).format('YYYY-MM-DD HH:mm') || '--'}</div>
       ),
     }, {
       title: '持续时间',
@@ -77,7 +96,7 @@ export default class DefectTable extends Component {
         <div
           className={styles.keepLengthText}
           title={text || ''}
-        >{text || '--'}</div>
+        >{text && this.formatMinutes(+text) || '--'}</div>
       ),
     }, {
       title: '执行人',
@@ -104,7 +123,7 @@ export default class DefectTable extends Component {
             <span>{stateName || '--'}</span>
             {!!isCoordinate && <span
               className={`iconfont icon-xietiao ${styles.coordinateIcon}`}
-              style={{right: (!!isCoordinate && !!isOverTime) ? '18.5%' : '3%'}}
+              style={{ right: (!!isCoordinate && !!isOverTime) ? '18.5%' : '3%' }}
               title="协调"
             />}
             {!!isOverTime && <span
@@ -119,17 +138,21 @@ export default class DefectTable extends Component {
       dataIndex: 'handle',
       className: styles.handle,
       render: (text, record) => (
-          <span
-            className={`iconfont icon-viewplan ${styles.handleIcon}`}
-            title="查看"
-            onClick={() => this.onDetailSearch(record)}
-          />
+        <span
+          className={`iconfont icon-viewplan ${styles.handleIcon}`}
+          title="查看"
+          onClick={() => this.onDetailSearch(record)}
+        />
       ),
     },
   ]
 
-  onDetailSearch =(record) => {
+  onDetailSearch = (record) => {
     console.log(record); // 点击某行进行操作;
+    const { docketId } = record;
+    const { location, history } = this.props;
+    const { pathname } = location;
+    history.push(`${pathname}?page=defectDetail&docketId=${docketId}`);
   }
 
   tableSortChange = (pagination, filter, sorter) => {
@@ -137,7 +160,7 @@ export default class DefectTable extends Component {
     const { listParams } = this.props;
     const { sortField, sortMethod } = listParams || {};
     let newField = sortField, newSort = 'descend';
-    if(!field || sortField === field) { // 点击的是正在排序的列
+    if (!field || sortField === field) { // 点击的是正在排序的列
       newSort = sortMethod === 'descend' ? 'ascend' : 'descend'; // 交换排序方式
     } else { // 切换列
       newField = field;
@@ -179,7 +202,7 @@ export default class DefectTable extends Component {
 
   render() {
     const { tableListHeight, imgs, videos } = this.state;
-    const { defectListData, listParams } = this.props;
+    const { defectListData, listParams, listLoading } = this.props;
     const { sortField, sortMethod } = listParams;
     const mockTotalData = [1].map(e => this.defectMockListData).reduce((a = [], b = []) => b.concat(a));
     return (
@@ -194,14 +217,15 @@ export default class DefectTable extends Component {
           onChange={this.onVideoChange}
         />
         <CneTable
+          loading={listLoading}
           sortField={sortField}
           sortMethod={sortMethod}
           onChange={this.tableSortChange}
           columns={this.defectColumn}
           className={styles.defectTable}
-          scroll={mockTotalData.length > 0 ? {y: tableListHeight} : {}}
-          // dataSource={defectListData}
-          dataSource={mockTotalData}
+          scroll={mockTotalData.length > 0 ? { y: tableListHeight } : {}}
+          dataSource={defectListData.map((e, index) => { return { ...e, key: index }; })}
+          // dataSource={mockTotalData}
           dataError={false} // 数据是否请求失败
         />
       </div>

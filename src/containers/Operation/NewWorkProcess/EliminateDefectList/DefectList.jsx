@@ -33,13 +33,16 @@ class DefectList extends Component {
 
 
   componentDidMount() {
-    const { getDefectList, getParticipant, listParams } = this.props;
+    const { getDefectList, getParticipant, listParams, getDefectAction } = this.props;
     const { history } = this.props;
     const { search } = history.location;
     const urlParams = searchUtil(search).parse(); //默认为缺陷列表页
     const urlParamsSerch = urlParams.listSearch && JSON.parse(urlParams.listSearch) || {}; // 判断从路由中过来的筛选条件
+    console.log('我还进来一遍么');
     // getDefectList({ ...listParams, ...urlParamsSerch }); // 获取消缺列表
-    // getParticipant(); //  获取所有参与者。
+    getDefectList(listParams); // 获取消缺列表
+    getParticipant(); //  获取所有参与者。
+    getDefectAction({ isFinish: 2 });
   }
 
   componentWillUnmount() { // 卸载的时候要注意
@@ -79,6 +82,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeStore: payload => dispatch({ type: eliminateDefectListAction.changeStore, payload }),
   getDefectList: payload => dispatch({ type: eliminateDefectListAction.getDefectList, payload }),
   getParticipant: payload => dispatch({ type: eliminateDefectListAction.getParticipant, payload }),
+  getDefectAction: payload => dispatch({ type: eliminateDefectListAction.getDefectAction, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);
