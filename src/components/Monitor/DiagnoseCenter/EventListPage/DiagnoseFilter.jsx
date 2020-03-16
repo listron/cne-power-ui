@@ -15,12 +15,16 @@ class DiagnoseFilter extends Component {
     stopCircleQueryList: PropTypes.func,
     getDiagnoseList: PropTypes.func,
     changeStore: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
+    getEventtypes: PropTypes.func,
   }
 
   filterConditionChange = (conditions) => {
     this.props.stopCircleQueryList(); // 停止当前页面定时请求
     const { listParams, listPage } = this.props;
     const preFinish = listParams.finished;
+    const preStationCode = listParams.stationCode;
+    const preDeviceTypeCode = listParams.deviceTypeCode;
     const { stationCode, deviceTypeCode, rangeTimes, eventCode, eventStatus, finished } = conditions;
     let changeType = 'normal'; // switch-归档切换; clear-清空; normal-筛选条件改变
     if (finished === '') { // 清空条件时独特的返回值
@@ -48,13 +52,32 @@ class DiagnoseFilter extends Component {
         sortMethod: 'desc', // 排序方式 asc升序 + desc降序
       };
     } else {// 筛选条件点击或清空筛选条件 => 重新请求列表, 停止定时请求;
+      let tempDeviceTypeCode = deviceTypeCode;
+      let tempEventCode = eventCode;
+      if (!preStationCode || preStationCode.toString() != stationCode.toString()) {
+        tempDeviceTypeCode = null;
+        tempEventCode = null;
+        this.props.getStationDeviceTypes({
+          stationCodes: stationCode.join(','),
+        });
+      }
+      else if (preDeviceTypeCode != deviceTypeCode) {
+        tempEventCode = null;
+        const {eventType} = listParams;
+        let param = {eventType};
+        if (deviceTypeCode !== '') {
+          param = {eventType, deviceTypeCode};
+        }
+        // console.log(param);
+        this.props.getEventtypes(param);
+      }
       const [startTime, endTime] = rangeTimes || [];
       newListParams = { // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件, 
         ...listParams,
         stationCode,
         finished: preFinish,
-        deviceTypeCode,
-        eventCode,
+        deviceTypeCode: tempDeviceTypeCode,
+        eventCode: tempEventCode,
         eventStatus,
         startTime,
         endTime,
@@ -79,18 +102,26 @@ class DiagnoseFilter extends Component {
     data: 'dataEventtypes',
   }
 
+  eventTypeName = {
+    [1]:'告警事件',
+    [2]:'诊断事件',
+    [3]:'数据事件',
+  }
+
   render() {
-    const { stations, deviceTypes, allEventsStatus, pageKey, listParams, filterBoxType } = this.props;
-    const { stationCode, deviceTypeCode, startTime, endTime, eventCode, eventStatus, finished } = listParams;
+    const { stations, deviceTypes, allEventsStatus, pageKey, listParams, filterBoxType, stationDeviceTypes} = this.props;
+    const { stationCode, deviceTypeCode, startTime, endTime, eventCode, eventStatus, finished, eventType} = listParams;
     const eventTypesData = this.props[this.eventTypeInfo[pageKey]] || [];
     const statusArray = allEventsStatus.filter(e => e.statusType === (!!finished ? 2 : 1)); // statusType:1活动 2已归档
+    const eventTypeName = this.eventTypeName[eventType] || '';
+    const selDeviceTypes = !stationCode || stationCode.length === 0 ? deviceTypes : stationDeviceTypes;
     const pvStations = stations.filter(e => e.stationType === 1); // 只展示光伏电站
-    const pvDeviceTypes = deviceTypes.filter(e => [1, 2].includes(e.stationType)); // 只展示光伏设备类型;
+    const pvDeviceTypes = selDeviceTypes.filter(e => !e.stationType || [1, 2].includes(e.stationType)); // 只展示光伏设备类型;
     const options = [
       { name: '电站名称', type: 'stationName', typeName: 'stationCode', data: pvStations },
       { name: '设备类型', type: 'radioSelect', typeName: 'deviceTypeCode', rules: ['deviceTypeName', 'deviceTypeCode'], data: pvDeviceTypes },
       { name: '发生时间', type: 'time', typeName: 'rangeTimes' },
-      { name: '告警事件', type: 'radioSelect', typeName: 'eventCode', rules: ['eventName', 'eventCode'], data: eventTypesData },
+      { name:  eventTypeName, type: 'radioSelect', typeName: 'eventCode', rules: ['eventName', 'eventCode'], data: eventTypesData },
       { name: '事件状态', type: 'radioSelect', typeName: 'eventStatus', parentName: 'parentName', rules: ['statusName', 'statusCode'], data: statusArray },
       { name: '归档事件', type: 'switch', typeName: 'finished' },
     ];

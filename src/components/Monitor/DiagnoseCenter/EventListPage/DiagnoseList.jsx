@@ -34,6 +34,7 @@ class DiagnoseList extends Component {
     warningDuration: 'duration',
     warningFrequency: 'frequency',
     statusName: 'eventStatus',
+    stationName:'stationName',
   };
 
   tableSortMap = { // api存储字段 => 表格排序字段
@@ -45,6 +46,7 @@ class DiagnoseList extends Component {
     duration: 'warningDuration',
     frequency: 'warningFrequency',
     eventStatus: 'statusName',
+    stationName:'stationName',
   };
 
   sortMethodMap = {

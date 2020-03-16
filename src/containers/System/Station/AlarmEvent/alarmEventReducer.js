@@ -16,6 +16,8 @@ const alarmEventAction = {
   getPointList: Symbol('getPointList'),
   getVersionStation: Symbol('getVersionStation'),
   FilterConditionStations: Symbol('FilterConditionStations'),
+  getEventDetail: Symbol('getEventDetail'),
+  alarmEventDetialFlow: Symbol('alarmEventDetialFlow'),
 };
 
 
@@ -44,7 +46,7 @@ var initState = Immutable.fromJS({
   expandedKeys: [], // 受控展开的树节点  manufactorCode manufactorCode_deviceModeCode
   filterStations: [], //筛选的电站
   modifyStatus: false, // 是否处于编辑状态
-
+  alarmEventDetial:{},
 });
 
 const alarmEventReducer = (state = initState, action) => {
