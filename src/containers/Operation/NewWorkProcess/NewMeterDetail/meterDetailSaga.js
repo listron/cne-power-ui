@@ -519,7 +519,7 @@ function* getSubmitAction(action) { // 验收通过和驳回按钮
           stateChangeStatus: true,
         },
       });
-    } else if(response.data.code === '15002') {
+    } else if(response.data.code === '15002' && objParams.actionCode === '7') { // 驳回可以提示表设置变更
       // 15002 表设置变更
       yield put({
         type: newMeterDetailAction.changeStore,

@@ -46,7 +46,7 @@ export default class MeterPicZoom extends Component {
         // 重新改变当前旋转之后的图片
         data[arrStr][curIndex].meterImgs[imgIndex].url = res;
         // 成功之后添加旋转之后的照片, 和原来的imgId
-        newReadMeterData[arrStr][curIndex].meterImgs[imgIndex].updateSign = 3;
+        newReadMeterData[arrStr][curIndex].meterImgs[imgIndex].updateSign = imgId ? 3 : 1;// 判断imgId有就是修改-状态3，没有就是新增-状态1
         newReadMeterData[arrStr][curIndex].meterImgs[imgIndex].url = res;
         newReadMeterData[arrStr][curIndex].meterImgs[imgIndex].imgId = imgId;
         changeStore({
