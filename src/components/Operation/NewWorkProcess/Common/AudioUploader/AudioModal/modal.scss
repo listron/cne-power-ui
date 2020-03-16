@@ -1,0 +1,44 @@
+@import "../../../../../../theme/theme.scss";
+
+.audioModalBox {
+  :global {
+    .ant-modal {
+      padding: 0;
+      overflow: hidden;
+      border-radius: 2px;
+      .ant-modal-content{
+        background-color: transparent;
+      }
+      .ant-modal-body {
+        padding: 0;
+      }
+    }
+  }
+
+  .audioModalContent {
+    // width: 100%;
+    .audioModalTitle {
+      // width: 100%;
+      height: 40px;
+      display: flex;
+      justify-content: flex-end;
+      // padding: 0 13px 0 17px;
+      // position: relative;
+      .closeAudioIcon {
+        flex: 0 0 40px;
+        cursor: pointer;
+        font-size: 20px;
+        padding:  5px;
+        color: var(--lightColor);
+        &:hover{
+          color: var(--themeColor);
+        }
+      }
+    }
+    .audioPlayer{
+      max-width: 960px;
+      max-height: 640px;
+      box-shadow:0 0 20px 3px rgba(0,0,0,0.50);
+    }
+  }
+}
