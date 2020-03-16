@@ -14,6 +14,8 @@ export default class DefectBaseInfo extends Component {
     addbaseInfo: PropTypes.object,
     allowedActions: PropTypes.array,
     addAbleUser: PropTypes.func,
+    getDeviceType: PropTypes.func,
+    getBaseUsername: PropTypes.func,
   };
 
 
@@ -36,12 +38,14 @@ export default class DefectBaseInfo extends Component {
   }
 
   onStationSelected = (stations) => { // 电站选择
-    const stationCode = stations.length > 0 && stations[0].stationCode || null;
+    const curStations = stations.length > 0 && stations[0];
+    const { stationCode, stationName } = curStations;
     const { addbaseInfo } = this.props;
     addbaseInfo['stationCode'] = stationCode;
-    this.props.changeStore({ addbaseInfo, stationCode });
-    // this.props.getBaseUsername({ stationCode: 350 }); // 当前电站有权限的人
+    addbaseInfo['stationName'] = stationName;
+    this.props.getBaseUsername({ stationCode }); // 当前电站有权限的人
     this.props.getDeviceType({ stationCode }); // 获取当前电站下的设备类型
+    this.props.changeStore({ addbaseInfo, stationCode });
   }
 
   onExpectTimeChange = (value) => { // 要求完成时间选择
@@ -59,10 +63,10 @@ export default class DefectBaseInfo extends Component {
   }
 
   changePonsor = (userList) => { // 接单人或者是执行人添加
-    // const addUsers=[];
-    const { addbaseInfo, allowedActions } = this.props;
+    const { addbaseInfo = {}, allowedActions } = this.props;
     if (this.exchangeStauts(allowedActions, '13')) { //  添加接单人
-      addbaseInfo['addUsers'] = userList;
+      const userArr = addbaseInfo['addUsers'] && [...addbaseInfo['addUsers'], ...userList] || userList;
+      addbaseInfo['addUsers'] = userArr;
       this.props.changeStore({ addbaseInfo });
     }
     if (this.exchangeStauts(allowedActions, '3')) { //  添加执行人 直接走接口
@@ -85,8 +89,8 @@ export default class DefectBaseInfo extends Component {
   }
 
   render() {
-    const { baseInfo = {}, stateName, stations, addbaseInfo = {}, isVertify, usernameList = [], stationCode } = this.props;
-    const { isStationEdit, isExpectTimeEdit, isResponsorEdit, isDescEdit } = this.infoEditCreater(!stationCode);
+    const { baseInfo = {}, stateName, stations, addbaseInfo = {}, isVertify, usernameList = [], stationCode, editStation = false } = this.props;
+    const { isStationEdit, isExpectTimeEdit, isResponsorEdit, isDescEdit } = this.infoEditCreater(editStation);
     // 额外接收外界参数, 用于调整编辑态输入框的状态(必填, 出错);
     const timeFormat = 'YYYY-MM-DD HH:mm';
     const { operUserInfo = [], stationName } = baseInfo;
@@ -97,7 +101,6 @@ export default class DefectBaseInfo extends Component {
     const filterUsernameList = usernameList.filter(cur => !curId.includes(`${cur.userId}`));
     const operableUserName = operUserInfo.length > 0 && operUserInfo[0].ableUsers && operUserInfo[0].ableUsers.split(',') || [];
     const curName = [...addUsers.map(e => e.userName), operableUserName];
-
     return (
       <div className={styles.defectBaseInfo}>
         <div className={styles.infoRow}>
@@ -106,30 +109,10 @@ export default class DefectBaseInfo extends Component {
           }>电站名称</div>
           <div className={`${styles.infoContent} ${styles.stations}`}>
             {isStationEdit ? <StationSelect
-              // data={stations}
-              data={[{
-                'enterpriseCode': 1007,
-                'isConnected': 1,
-                'planPower': null,
-                'planYear': null,
-                'provinceCode': 320000,
-                'provinceName': '江苏省',
-                'regionCode': null,
-                'regionName': '云南',
-                'reportType': '1',
-                'stationCapacity': 51.040000,
-                'stationCode': 56,
-                'stationEnabled': null,
-                'stationId': 157,
-                'stationName': '永仁',
-                'stationType': 1,
-                'stationUnitCount': 90,
-                'timeZone': 8,
-                'userId': null,
-                'version': null,
-              }]}
+              data={stations}
               onOK={this.onStationSelected}
               className={`${styles[this.errorTip('stationCode')]} ${styles[this.initTip('stationCode')]}`}
+              value={[{ stationName: addbaseInfo.stationName, stationCode: addStationCode }]}
             /> : <div>{stationName}</div>}
           </div>
           <div className={styles.infoTitle}>工单类型</div>
@@ -182,11 +165,10 @@ export default class DefectBaseInfo extends Component {
             {isDescEdit ?
               <TextArea
                 onChange={this.onDescChange}
-                // className={`${styles[this.errorTip('docketDesc')]} ${styles[this.initTip('docketDesc')]}`}
                 placeholder={'请描述，必填'}
                 required={isVertify}
                 value={docketDesc}
-              /> : <div>{'验收人123'}</div>}
+              /> : <div>{baseInfo.docketDesc}</div>}
           </div>
         </div>
       </div>

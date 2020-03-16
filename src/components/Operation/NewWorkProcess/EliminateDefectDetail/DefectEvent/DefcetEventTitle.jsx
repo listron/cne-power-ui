@@ -11,24 +11,24 @@ export default class DefectEvent extends Component {
   };
 
   componentDidMount() {
-    const { addEventInfo } = this.props;
-    const eventInfos = {
-      index: 1,
-      eventId: null, // 缺陷ID，新建为空
-      diagWarningId: null, // 告警ID
-      defectTypeCode: null, // 缺陷类型
-      deviceTypeCode: null, // 设备类型
-      deviceTypeName: '', // 设备类型名称
-      deviceFullcode: null, // 设备全编码
-      deviceName: '', // 设备名称
-      defectLevel: 1, // 缺陷级别
-      eventDesc: '', // 缺陷描述
-      eventName: '', // 缺陷名称  设备缺陷还是其他缺陷
-      source: 1, // 缺陷来源 0 告警 1 手动 2 巡检 3 预警
-      defectImgs: [], //
-    };
-    addEventInfo.unshift(eventInfos);
-    this.props.changeStore({ addEventInfo });
+    // const { addEventInfo } = this.props;
+    // const eventInfos = {
+    //   index: 1,
+    //   eventId: null, // 缺陷ID，新建为空
+    //   diagWarningId: null, // 告警ID
+    //   defectTypeCode: null, // 缺陷类型
+    //   deviceTypeCode: null, // 设备类型
+    //   deviceTypeName: '', // 设备类型名称
+    //   deviceFullcode: null, // 设备全编码
+    //   deviceName: '', // 设备名称
+    //   defectLevel: 1, // 缺陷级别
+    //   eventDesc: '', // 缺陷描述
+    //   eventName: '', // 缺陷名称  设备缺陷还是其他缺陷
+    //   source: 1, // 缺陷来源 0 告警 1 手动 2 巡检 3 预警
+    //   defectImgs: [], //
+    // };
+    // addEventInfo.unshift(eventInfos);
+    // this.props.changeStore({ addEventInfo });
   }
 
   exchangeActioncode = (allActions, code) => {

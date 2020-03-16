@@ -12,6 +12,7 @@ const { TextArea } = Input;
   * onConfirm: func, 唯一输出函数(必须)
   * onCancel: func, 取消提示
   * tipClassname: object, 默认{}, 用于手动替换更变默认样式
+ *  reasonName 退回的text　
   */
 export default class RejectAlert extends Component {
   static propTypes = {
@@ -21,6 +22,7 @@ export default class RejectAlert extends Component {
     onConfirm: PropTypes.func,
     onCancel: PropTypes.func,
     width: PropTypes.number,
+    reasonName: PropTypes.string,
   };
 
   static defaultProps = {
@@ -69,7 +71,7 @@ export default class RejectAlert extends Component {
   render() {
     const { value, numberWord, errorFlag } = this.state;
     const {
-      visible, theme, tipClassname, width, resonName,
+      visible, theme, tipClassname, width, reasonName,
     } = this.props;
     const defaultModalProps = {
       footer: null,
@@ -88,12 +90,12 @@ export default class RejectAlert extends Component {
       >
         <div className={styles.rejectContentBox}>
           <div className={styles.rejectTitle}>
-            {resonName || '驳回'}
+            {reasonName || '驳回'}
           </div>
           <div className={styles.rejectContent}>
             <div className={styles.rejectTextBox}>
               <span className={styles.textImport}>*</span>
-              <span className={styles.rejectContentText}>驳回原因</span>
+              <span className={styles.rejectContentText}>{reasonName}原因</span>
             </div>
             <TextArea
               value={value}

@@ -168,9 +168,7 @@
   .operatorCenter {
     width: 250px;
     .operatorList {
-      width: 220px;
       margin: 0 auto;
-      padding: 10px 0 30px;
       height: 360px;
       overflow-y: auto;
     }
@@ -179,7 +177,6 @@
   .checkboxGroup{
      display: flex;
      flex-wrap: wrap;
-     justify-content: space-between;
   }
 
   .operatorItemBox{
@@ -187,6 +184,7 @@
     display: flex;
     justify-content: space-between;
     border-bottom: 1px dashed $borderColor;
+    margin-left: 11px;
     .operatorItem {
       display: inline-block;
       margin-right: 0;

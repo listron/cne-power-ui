@@ -21,6 +21,7 @@ const eliminateDefectDetailAction = {
   submitAction: Symbol('submitAction'),
   defectTypes: Symbol('defectTypes'),
   getBaseUsername: Symbol('getBaseUsername'),
+  getDiagwarning: Symbol('getDiagwarning'),
 };
 
 const initState = immutable.fromJS({

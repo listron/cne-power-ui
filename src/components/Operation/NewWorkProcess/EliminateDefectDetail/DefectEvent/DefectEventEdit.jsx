@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Input, Select, Tooltip } from 'antd';
 import styles from './defectEvent.scss';
 import CneTips from '@components/Common/Power/CneTips';
+import PicUploader from '../../Common/PicUploader';
+import path from '../../../../../constants/path';
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -25,6 +27,8 @@ export default class DefectEvenrEdit extends Component {
       visible: false,
     };
   }
+
+
 
   changeDefectType = (value) => { // 修改缺陷类型
     const { record, onChange } = this.props;
@@ -61,12 +65,27 @@ export default class DefectEvenrEdit extends Component {
   }
 
 
+  onPicChange = (value) => { // 图片旋转
+    console.log('value', value);
+    const { record, onChange } = this.props;
+    const defectImgs = value.map(e => {
+      return {
+        url: e,
+        imgId: '',
+        updateSign: 1,
+      };
+    });
+    onChange({ index: record.index, defectImgs });
+  }
+
+
   render() {
     const { deviceTypes = [], record = {}, stationCode, deviceModes = [], isVertify, del } = this.props;
     const {
-      eventDesc, defectTypeCode, deviceTypeCode, deviceTypeName, deviceName, deviceFullcode, defectLevel, handleImg = [],
+      eventDesc, defectTypeCode, deviceTypeCode, deviceTypeName, deviceName, deviceFullcode, defectLevel, defectImgs = [],
     } = record;
     const { visible } = this.state;
+    const downloadTemplet = `${path.basePaths.APIBasePath}${path.pubilcPath.imgUploads}`;
     return (
       <div className={styles.infoEditBox}>
         <div className={styles.status}>
@@ -122,10 +141,10 @@ export default class DefectEvenrEdit extends Component {
               <div className={styles.defectLevel} onChange={this.changeDefectLevel}>
                 <div className={styles.recordName}>缺陷级别 <span className={styles.star}>*</span> </div>
                 <Select placeholder={'请选择'} onChange={this.changeDefectLevel} value={defectLevel} required={isVertify}>
-                  <Option value="1" key={'1'}>一级</Option>
-                  <Option value="2" key={'2'}>二级</Option>
-                  <Option value="3" key={'3'}>三级</Option>
-                  <Option value="4" key={'4'}>四级</Option>
+                  <Option value={1} key={'1'}>一级</Option>
+                  <Option value={2} key={'2'}>二级</Option>
+                  <Option value={3} key={'3'}>三级</Option>
+                  <Option value={4} key={'4'}>四级</Option>
                 </Select>
                 <Tooltip placement="top" title="缺陷级别的定义，需要产品那边提供文案">
                   <i className={`iconfont icon-help ${styles.iconHelp}`} />
@@ -145,10 +164,18 @@ export default class DefectEvenrEdit extends Component {
         </div>
         <div className={styles.editPic}>
           <span className={styles.editTitle}>
-            <span className={styles.recordName}>添加照片</span>
+            <span className={styles.recordName}>添加照片  <span className={styles.star}>*</span></span>
             <span className={styles.titleTip}>最多4张</span>
           </span>
-          <span>{handleImg.join(',')}</span>
+          <span>{
+            <PicUploader
+              value={defectImgs && defectImgs.map(e => e.url) || []}
+              mode="edit"
+              maxPicNum={4}
+              onChange={this.onPicChange}
+              uploadUrl={downloadTemplet}
+            />
+          }</span>
         </div>
         <CneTips
           tipText={'确认删除此事件'}

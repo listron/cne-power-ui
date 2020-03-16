@@ -17,30 +17,12 @@ export default class HandleInfo extends Component {
     isFinish: PropTypes.string,
   };
 
-  componentDidMount = () => {
+
+  componentDidMount() {
     const { editDisplay, addhandleList, docketId } = this.props;
     if (editDisplay) {
       const handleInfo = {
-        index: 0,
-        docketId,
-        handleDesc: null,
-        isChangePart: 0,
-        isCoordinate: 0,
-        partName: null,
-        coordinateDesc: null,
-        handleImg: [],
-        handleVideo: [],
-      };
-      addhandleList.push(handleInfo);
-      this.props.changeStore({ addhandleList });
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { editDisplay, addhandleList, docketId } = nextProps;
-    if (!this.props.editDisplay && editDisplay) {
-      const handleInfo = {
-        index: 0,
+        index: 1,
         docketId,
         handleDesc: null,
         isChangePart: 0,
@@ -58,7 +40,7 @@ export default class HandleInfo extends Component {
   addHandleInfo = () => {
     // 添加记录, 新增一个新的可填写表单区域
     const { addhandleList, docketId } = this.props;
-    const index = addhandleList.length > 0 && addhandleList[0].index || -1; // 用于创建的删除使用
+    const index = addhandleList.length > 0 && addhandleList[0].index || 0; // 用于创建的删除使用
     const handleInfo = {
       index: index + 1,
       docketId: docketId,
@@ -82,17 +64,20 @@ export default class HandleInfo extends Component {
   infoChange = (value) => { // 处理信息的发生改变
     const { index, ...rest } = value;
     const { addhandleList } = this.props;
-    addhandleList[index] = { ...addhandleList[index], ...rest };
+    addhandleList[addhandleList.length - index] = { ...addhandleList[addhandleList.length - index], ...rest };
     this.props.changeStore({ addhandleList });
   }
 
   saveHandle = (record) => { // 保存处理信息(单独)
     const { index } = record;
+    const { handleImg = [] } = record;
+    const curImg = handleImg.length > 0 && handleImg.map(e => e.url) || [];
+    record['handleImg'] = curImg;
     const { addhandleList, addDefectHandle } = this.props;
     addDefectHandle({
       record,
       func: () => {
-        addhandleList.splice(index, 1);
+        addhandleList.splice(addhandleList.length - index, 1);
         this.props.changeStore({ addhandleList });
       },
     });
@@ -101,23 +86,23 @@ export default class HandleInfo extends Component {
   delHandle = (record) => {
     const { index } = record;
     const { addhandleList } = this.props;
-    addhandleList.splice(index, 1);
+    addhandleList.splice(addhandleList.length - index, 1);
     this.props.changeStore({ addhandleList });
   }
 
   render() {
-    const { handleInfos = [], allowedActions = [], addhandleList = [], isFinish, isVertify } = this.props;
+    const { handleInfos = [], allowedActions = [], addhandleList = [], isVertify, addMultipleEvent, isFinish } = this.props;
     const isAdd = this.exchangeActioncode(allowedActions, '15'); // 添加的权限是14
-    const isAddStatus = (isFinish === '0' || isFinish === '1') && addhandleList.length !== 1; // 添加的时候只能添加一条
+    const canAdd = addMultipleEvent ? isAdd : addhandleList.length === 0 && isAdd; // 可以添加一条还是添加多条
     return (
       <section className={styles.handleInfo}>
-        <h4 className={styles.handleTitle}>
+        {<h4 className={styles.handleTitle}>
           <div className={styles.titleName}>处理信息</div>
-          {(isAdd && isAddStatus) && <CneButton className={styles.addBtn} onClick={this.addHandleInfo}>
+          {canAdd && <CneButton className={styles.addBtn} onClick={this.addHandleInfo}>
             <i className={`iconfont icon-newbuilt ${styles.addIcon}`} />
             <span className={styles.text}>添加记录</span>
           </CneButton>}
-        </h4>
+        </h4>}
         <div className={styles.handleContents}>
           {addhandleList.map((e, i) => (
             <InfoEdit
@@ -127,6 +112,8 @@ export default class HandleInfo extends Component {
               onChange={this.infoChange}
               delChange={this.delHandle}
               isVertify={isVertify}
+              isFinish={isFinish}
+              allowedActions={allowedActions}
             />
           ))}
           {handleInfos.map((e, i) => (

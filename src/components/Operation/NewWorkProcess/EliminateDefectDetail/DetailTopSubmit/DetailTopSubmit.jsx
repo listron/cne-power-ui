@@ -108,7 +108,7 @@ export default class DetailTopSubmit extends Component {
       func: () => {
         const { location, history } = this.props;
         const { pathname } = location;
-        history.push(`${pathname}?page=defect`);
+        history.push(`${pathname}?page=list`);
       },
     });
   }
@@ -132,6 +132,7 @@ export default class DetailTopSubmit extends Component {
 
   evnetInfoCheck = (eventInfo) => { // 缺陷事件校验 单个
     const { defectTypeCode, deviceTypeCode, deviceFullcode, eventDesc } = eventInfo;
+    console.log('eventInfo', eventInfo);
     if (defectTypeCode === 0) { // 其他缺陷
       if (!eventDesc) {
         return false;
@@ -144,7 +145,6 @@ export default class DetailTopSubmit extends Component {
       }
       return true;
     }
-
     return false;
   }
 
@@ -177,6 +177,8 @@ export default class DetailTopSubmit extends Component {
 
   crete = (e) => { // 创建工单
     const { addbaseInfo, addEventInfo, addhandleList, isFinish, stationCode, docketId } = this.props;
+    const { location, history } = this.props;
+    const { pathname } = location;
     this.props.changeStore({ isVertify: true });
     const flag = this.allChecked();
     if (flag) {
@@ -189,7 +191,12 @@ export default class DetailTopSubmit extends Component {
         actionCode: e.actionCode,
       };
       this.setState({
-        func: () => this.props.createDefect(params),
+        func: () => this.props.createDefect({
+          params,
+          callback: (docketId) => {
+            history.push(`${pathname}?page=defectDetail&docketId=${docketId}`);
+          },
+        }),
         showTip: true,
         tipText: process[+e.actionCode].tipText,
       });
@@ -199,7 +206,8 @@ export default class DetailTopSubmit extends Component {
   verify = (e) => { // 审核 派发
     const { docketId, stateId, addbaseInfo, stationCode } = this.props;
     const { planEndTime, addUsers } = addbaseInfo;
-    const flag = this.baseInfoCheck(addbaseInfo, stationCode);
+    const flag = true;
+    // const flag=true = this.baseInfoCheck(addbaseInfo, stationCode);
     if (flag) {
       const params = {
         docketId,
@@ -272,21 +280,37 @@ export default class DetailTopSubmit extends Component {
       actionCode: e.actionCode,
       stateId,
     };
-    if (addhandleList.length === 0) {
-      this.setState({
-        func: () => this.props.submitAction(params),
-        showTip: true,
-        tipText,
-      });
-    }
+    this.setState({
+      func: () => {
+        this.props.submitAction(params);
+        this.props.changeStore({ addhandleList: [] });
+      },
+      showTip: true,
+      tipText,
+    });
   }
 
-  accept = (e) => { // 验收或者是驳回  驳回和验收
+  accept = (e) => { // 验收工单 验收通过
     const { docketId, stateId, eventStatus } = this.props;
     const params = {
       docketId,
       actionCode: e.actionCode,
-      stateDesc: '',
+      stateId,
+      events: eventStatus.map(e => { return { eventId: e.eventId, eventState: e.eventState }; }),
+      handleDesc: null,
+    };
+    this.setState({
+      passVisible: true,
+      params,
+      func: (params) => this.props.acceptanceDocket(params),
+    });
+  }
+
+  reject = (e) => { // 验收工单 驳回
+    const { docketId, stateId, eventStatus } = this.props;
+    const params = {
+      docketId,
+      actionCode: e.actionCode,
       stateId,
       events: eventStatus.map(e => { return { eventId: e.eventId, eventState: e.eventState }; }),
       handleDesc: null,
@@ -295,21 +319,17 @@ export default class DetailTopSubmit extends Component {
       status: 'reject',
       requiredVisiable: true,
       params,
-      func: (params) => this.props.returnDocket(params),
+      func: (params) => this.props.acceptanceDocket(params),
     });
-  }
-
-  reject = (e) => { // 拒收
-
   }
 
   onConfirmTip = () => { // 确定提示框
     const { func } = this.state;
-    func();
     this.setState({
       showTip: false,
       tipText: '',
     });
+    func();
   }
 
   onConfirmReject = (value, callBack) => { // 退回 驳回 同意提示
@@ -322,10 +342,18 @@ export default class DetailTopSubmit extends Component {
       func({ ...params, handleDesc: value });
       callBack();
     }
+    this.setState({
+      requiredVisiable: false,
+    });
   }
 
   onConfirmPass = (value, callBack) => {
-
+    const { func, params } = this.state;
+    func({ ...params, handleDesc: value });
+    callBack();
+    this.setState({
+      passVisible: false,
+    });
   }
 
   render() {
@@ -341,8 +369,8 @@ export default class DetailTopSubmit extends Component {
             <span className={styles.titleText}>{docketId && '工单详情' || '创建工单'}</span>
           </div>
           <div className={styles.handlePart}>
-            {/* 新建 */}
-            {this.createButton(['9', '10', '11', '12'], 'crete')}
+            {/* 新建  */}
+            {this.createButton(['9', '10', '11', '12', '22'], 'crete')}
             {/* 审核 派发 */}
             {this.createButton(['17'], 'verify')}
             {/* 退回 */}
@@ -354,9 +382,9 @@ export default class DetailTopSubmit extends Component {
             {/* 执行 提交验收 */}
             {this.createButton(['5'], 'execute')}
             {/* 验收通过 */}
-            {this.createButton(['25'], 'accept', acceptStuatus)}
+            {this.createButton(['25'], 'accept', !(acceptStuatus && !rejectStatu))}
             {/* 驳回 */}
-            {this.createButton(['26'], 'reject', rejectStatu)}
+            {this.createButton(['26'], 'reject', !(acceptStuatus && rejectStatu))}
             <i className="iconfont icon-fanhui" onClick={this.onBackHandle} />
           </div>
           <CneTips
@@ -373,7 +401,7 @@ export default class DetailTopSubmit extends Component {
             onConfirm={this.onConfirmPass}
           />
           <RejectAlert
-            reasonName={status == 'return' && '退回原因' || '驳回原因'}
+            reasonName={status === 'return' && '退回' || '驳回'}
             visible={requiredVisiable}
             width={450}
             onCancel={() => this.setState({ requiredVisiable: false })}
