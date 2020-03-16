@@ -245,7 +245,7 @@ export default class MeterTable extends React.Component {
           rowKey={(record, index) => index || 'key'}
           scroll={{ y: 420 }}
           pagination={false}
-          locale={{ emptyText: tableLoading ? <span /> : <img width="223" height="164" src="/img/nodata.png" alt="" /> }}
+          locale={{ emptyText: tableLoading ? <div style={{width: 223, height: 164}} /> : <img width="223" height="164" src="/img/nodata.png" alt="" /> }}
         />
       </div>
     );
