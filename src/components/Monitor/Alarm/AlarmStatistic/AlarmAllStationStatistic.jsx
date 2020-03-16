@@ -36,16 +36,16 @@ class ALarmAllStationStatistic extends React.Component {
       if (stationTypeOne) {
         stationType = stations.getIn([0, 'stationType']);
       }
-      this.props.getStationsAlarmStatistic({
-        startTime,
-        endTime,
-        stationType,
-        stationCode,
-        pageSize,
-        pageNum,
-        orderField,
-        orderCommand,
-      });
+      // this.props.getStationsAlarmStatistic({
+      //   startTime,
+      //   endTime,
+      //   stationType,
+      //   stationCode,
+      //   pageSize,
+      //   pageNum,
+      //   orderField,
+      //   orderCommand,
+      // });
     }
   }
 
