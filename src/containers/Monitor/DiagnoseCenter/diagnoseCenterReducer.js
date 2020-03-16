@@ -50,6 +50,9 @@ const initState = {
   summaryInfo: {}, // 汇总统计
   eventAnalysisLoading: false, // 时间分析loading状态
   eventAnalysisInfo: {}, // 告警事件分析结果
+  isNoDataTip: false, // 线型图页-所选周期无数据时弹出提示语
+  isCycleTip: false, // 线型图页-点击选择框时无数据弹提示语
+  isDataTip: false, // 线型图页-点击选择日期时无数据弹提示语
 };
 
 const diagnoseCenter = (state = initState, action) => {
