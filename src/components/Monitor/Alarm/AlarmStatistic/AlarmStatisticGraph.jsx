@@ -6,21 +6,22 @@ class AlarmStatisticGraph extends React.Component {
   static propTypes = {
     graphId: PropTypes.string,
     alarmStatistic: PropTypes.array,
+    allChartLoading: PropTypes.bool,
   }
   constructor(props) {
     super(props);
   }
   componentDidMount() {
-    const { graphId, alarmStatistic } = this.props;
+    const { graphId, alarmStatistic, allChartLoading } = this.props;
     const data = this.transferData(alarmStatistic);
-    this.alarmChart = echarts.init(document.getElementById(graphId));
-    this.renderChart(data);
+    // this.alarmChart = echarts.init(document.getElementById(graphId));
+    this.renderChart(data, allChartLoading);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { alarmStatistic } = nextProps;
+    const { alarmStatistic, allChartLoading } = nextProps;
     const data = this.transferData(alarmStatistic);
-    this.renderChart(data);
+    this.renderChart(data, allChartLoading);
   }
   transferData(alarmStatistic) {
     const stationNameData = alarmStatistic.map((item, index) => {
@@ -47,8 +48,11 @@ class AlarmStatisticGraph extends React.Component {
       stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime,
     };
   }
-  renderChart(data) {
+  renderChart(data, allChartLoading) {
+    const { graphId } = this.props;
     const { stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime } = data;
+    const alarmChart = echarts.init(document.getElementById(graphId));
+    allChartLoading ? alarmChart.showLoading('default', { color: '#199475' }) : alarmChart.hideLoading();
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -230,7 +234,7 @@ class AlarmStatisticGraph extends React.Component {
       ],
     };
 
-    this.alarmChart.setOption(option);
+    alarmChart.setOption(option);
   }
 
 

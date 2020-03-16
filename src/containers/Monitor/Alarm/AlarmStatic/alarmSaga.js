@@ -111,8 +111,8 @@ function* getStationsAlarmStatistic(action) { // 请求多电站告警统计
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationsAlarmStatistic;
   try {
     yield put({
-      type: alarmAction.CHANGE_ALARM_STATISTIC_STORE_SAGA,
-      payload: { ...payload },
+      type: alarmAction.changeAlarmStatisticStore,
+      payload: { ...payload, allChartLoading: true },
     });
     const response = yield call(axios.post, url, {
       ...payload,
@@ -121,14 +121,19 @@ function* getStationsAlarmStatistic(action) { // 请求多电站告警统计
     });
     if (response.data.code === '10000') {
       yield put({
-        type: alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS,
+        type: alarmAction.changeAlarmStatisticStore,
         payload: {
-          alarmStatistic: response.data.data,
-          ...payload,
+          // ...payload,
+          alarmStatistic: response.data.data || [],
+          allChartLoading: false,
         },
       });
-    }
+    }else { throw response.data; }
   } catch (e) {
+    yield put({
+      type: alarmAction.changeAlarmStatisticStore,
+      payload: { allChartLoading: false },
+    });
     console.log(e);
   }
 }
@@ -137,11 +142,15 @@ function* getSingleStationAlarmStatistic(action) { // 请求单电站告警统�
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getSingleStationAlarmStatistic;
   try {
-    yield put({ type: alarmAction.ALARM_FETCH });
+    yield put({
+      type: alarmAction.changeAlarmStatisticStore,
+      payload: { ...payload, singleChartLoading: true },
+    });
+    // yield put({ type: alarmAction.ALARM_FETCH });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield put({
-        type: alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS,
+        type: alarmAction.changeAlarmStatisticStore,
         payload: {
           singleAlarmStatistic: response.data.data.alarmChart,
           singleAlarmSummary: response.data.data.alarmSummary,
@@ -149,10 +158,15 @@ function* getSingleStationAlarmStatistic(action) { // 请求单电站告警统�
           endTime: payload.endTime,
           singleStationCode: payload.stationCode,
           summaryType: payload.summaryType,
+          singleChartLoading: false,
         },
       });
-    }
+    }else { throw response.data; }
   } catch (e) {
+    yield put({
+      type: alarmAction.changeAlarmStatisticStore,
+      payload: { singleChartLoading: false },
+    });
     console.log(e);
   }
 }
@@ -355,7 +369,7 @@ function* exportAlarmStatistic(action) { // 导出告警统计
 
 export function* watchAlarmMonitor() {
   yield takeLatest(alarmAction.CHANGE_ALARM_STORE_SAGA, changeAlarmStore);
-  yield takeLatest(alarmAction.CHANGE_ALARM_STATISTIC_STORE_SAGA, changeAlarmStatisticStore);
+  yield takeLatest(alarmAction.changeAlarmStatisticStore, changeAlarmStatisticStore);
   yield takeLatest(alarmAction.GET_REALTIME_ALARM_SAGA, getRealtimeAlarm);
   yield takeLatest(alarmAction.getTransferAlarm, getTransferAlarm);
   yield takeLatest(alarmAction.GET_HISTORY_ALARM_SAGA, getHistoryAlarm);

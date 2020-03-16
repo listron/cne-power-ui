@@ -5,21 +5,22 @@ import moment from 'moment';
 class AlarmSingleStationGraph extends React.Component {
   static propTypes = {
     singleAlarmStatistic: PropTypes.array,
+    singleChartLoading: PropTypes.bool,
   }
   constructor(props) {
     super(props);
   }
   componentDidMount() {
-    const { singleAlarmStatistic } = this.props;
+    const { singleAlarmStatistic, singleChartLoading } = this.props;
     const data = this.transferData(singleAlarmStatistic);
     this.alarmChart = echarts.init(document.getElementById('singleStationAlarmChart'));
-    this.renderChart(data);
+    this.renderChart(data, singleChartLoading);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { singleAlarmStatistic } = nextProps;
+    const { singleAlarmStatistic, singleChartLoading } = nextProps;
     const data = this.transferData(singleAlarmStatistic);
-    this.renderChart(data);
+    this.renderChart(data, singleChartLoading);
   }
   transferData(singleAlarmStatistic) {
     const timeData = singleAlarmStatistic && singleAlarmStatistic.map((item, index) => {
@@ -46,8 +47,10 @@ class AlarmSingleStationGraph extends React.Component {
       timeData, alarmNum, transferWorkAlarmNum, noTransferWorkAlarmNum, transferWorkRate
     };
   }
-  renderChart(data) {
+  renderChart(data, singleChartLoading) {
     const { timeData, transferWorkAlarmNum, noTransferWorkAlarmNum, transferWorkRate } = data;
+    const alarmChart = echarts.init(document.getElementById('singleStationAlarmChart'));
+    singleChartLoading ? alarmChart.showLoading('default', { color: '#199475' }) : alarmChart.hideLoading();
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -145,7 +148,7 @@ class AlarmSingleStationGraph extends React.Component {
       ]
     };
 
-    this.alarmChart.setOption(option)
+    alarmChart.setOption(option)
   }
 
 

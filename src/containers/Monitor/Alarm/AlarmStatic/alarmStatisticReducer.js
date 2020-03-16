@@ -4,7 +4,8 @@ import moment from 'moment';
 
 var initState = Immutable.fromJS({
   loading: false,
-
+  allChartLoading: false,
+  singleChartLoading: false,
   //筛选条件
   showPage: 'multiple', //multiple,single
 
@@ -34,9 +35,9 @@ const alarmStatisticReducer = (state = initState, action) => {
   switch (action.type) {
     case alarmAction.ALARM_STATISTIC_FETCH:
       return state.set('loading', true);
-    case alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS:
+      case alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS:
       return state.merge(Immutable.fromJS(action.payload)).set('loading', false);
-    case alarmAction.CHANGE_ALARM_STATISTIC_STORE_SAGA:
+    case alarmAction.changeAlarmStatisticStore:
       return state.merge(Immutable.fromJS(action.payload));
     case alarmAction.RESET_ALARM_STATISTIC:
       return initState;

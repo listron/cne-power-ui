@@ -72,7 +72,7 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  changeAlarmStatisticStore: payload => dispatch({ type: alarmAction.CHANGE_ALARM_STATISTIC_STORE_SAGA, payload }),
+  changeAlarmStatisticStore: payload => dispatch({ type: alarmAction.changeAlarmStatisticStore, payload }),
   getStationsAlarmStatistic: payload => dispatch({ type: alarmAction.GET_STATIONS_ALARM_STATISTIC_SAGA, payload }),
   getSingleStationAlarmStatistic: payload => dispatch({ type: alarmAction.GET_SINGLESTATION_ALARM_STATISTIC_SAGA, payload }),
   resetAlarm: payload => dispatch({ type: alarmAction.RESET_ALARM_STATISTIC_SAGA, payload }),

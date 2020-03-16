@@ -123,7 +123,7 @@ class ALarmAllStationStatistic extends React.Component {
         <i className="iconfont icon-filter"></i>
       </div>
     );
-    const { stationType, stations } = this.props;
+    const { stationType, stations, changeAlarmStatisticStore } = this.props;
     const { showStationSelect } = this.state;
     const stationTypeOne = this.stationIsOneType();
     // console.log(stationTypeOne);
@@ -157,6 +157,7 @@ class ALarmAllStationStatistic extends React.Component {
         }
         {showStationSelect &&
           <AlarmStationSelectModal
+            changeAlarmStatisticStore={changeAlarmStatisticStore}
             stations={stations}
             onClose={() => this.setState({ showStationSelect: false })}
             onChangeStation={this.onChangeStation} />}
