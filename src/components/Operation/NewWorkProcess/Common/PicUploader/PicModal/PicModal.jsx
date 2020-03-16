@@ -45,11 +45,14 @@ export default class PicModal extends Component {
     const { value, modalPicSrc } = this.props;
     if (value.length < 2) { // 删除后没图片了~
       this.props.onModalPicIndexChange(null);
-      this.props.onPicChange();
+      this.props.onPicChange([]);
+    } else {
+      const curIndex = value.indexOf(modalPicSrc);
+      const newIndex = curIndex === value.length - 1 ? curIndex - 1 : curIndex + 1;
+      const newValue = value.filter(e => e !== modalPicSrc);
+      this.props.onModalPicIndexChange(value[newIndex]);
+      this.props.onPicChange(newValue);
     }
-    const curIndex = value.indexOf(modalPicSrc);
-    const newIndex = curIndex === value.length - 1 ? curIndex - 1 : curIndex + 1;
-    this.props.onModalPicIndexChange(value[newIndex]);
   };
 
   prevPic = () => { // 前一张
