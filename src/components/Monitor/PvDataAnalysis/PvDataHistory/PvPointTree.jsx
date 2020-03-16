@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tree, message } from 'antd';
 import moment from 'moment';
+import searchUtil from '@utils/searchUtil';
 import styles from './pvHistoryStyle.scss';
 
 const { TreeNode } = Tree;
@@ -12,6 +13,7 @@ class PvPointTree extends Component {
     reRenderTree: PropTypes.number,
     queryParam: PropTypes.object,
     listParam: PropTypes.object,
+    history: PropTypes.object,
     pointInfo: PropTypes.array,
     getChartHistory: PropTypes.func,
     getListHistory: PropTypes.func,
@@ -22,15 +24,51 @@ class PvPointTree extends Component {
     halfCheckedKeys: [],
     expandedKeys: [],
     selectPointArr: [],
+    isNoDataTip: false, // 诊断中心传来的数据与历史趋势无数据相同时，提示用户
   };
 
+
   componentWillReceiveProps(nextProps) {
-    const { reRenderTree } = nextProps;
+    const { reRenderTree, pointInfo } = nextProps;
+    const { history, queryParam, listParam } = this.props;
     const preReRenderTree = this.props.reRenderTree;
+    const { location } = history;
+    const { search } = location;
     if (reRenderTree !== preReRenderTree) {
       this.setState({
         expandedKeys: [],
       });
+      if (search) {
+        const { devicePoints } = searchUtil(search).parse();
+        const selectPoints = devicePoints.split(','); // 诊断中心传来的devicePointId
+        const filterPoint = pointInfo.filter(e => selectPoints.indexOf(e.devicePointCode) !== -1); // 筛选出相同的devicePointId数组
+        const devicePointCodes = filterPoint.map(e => e.devicePointId);
+        this.props.changeHistoryStore({
+          queryParam: {
+            ...queryParam,
+            devicePoints: devicePointCodes,
+          },
+        });
+        this.props.getChartHistory({
+          queryParam: {
+            ...queryParam,
+            devicePoints: devicePointCodes,
+          },
+         });
+         this.props.getListHistory({
+          queryParam: {
+            ...queryParam,
+            devicePoints: devicePointCodes,
+          },
+          listParam,
+        });
+        if (filterPoint.length === 0) {
+          this.setState({ isNoDataTip: true });
+          setTimeout(() => {
+            this.setState({ isNoDataTip: false });
+          }, 3000);
+        }
+      }
     }
   }
 
@@ -193,10 +231,11 @@ class PvPointTree extends Component {
 
   render() {
     const { queryParam, pointInfo } = this.props;
-    const { halfCheckedKeys, expandedKeys } = this.state;
+    const { halfCheckedKeys, expandedKeys, isNoDataTip } = this.state;
     const { devicePoints } = queryParam;
     return (
       <section className={styles.pointTree}>
+        {isNoDataTip && <div className={styles.tipText}>数据不存在，请选择其他周期</div>}
         <h3>
           <span>选择测点（</span>
           <span className={styles.num}>{devicePoints.filter(e => !e.includes('group_')).length}</span>

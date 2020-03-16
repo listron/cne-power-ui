@@ -8,6 +8,7 @@ import ChartBar from './ChartBar';
 import EventBarSearch from './EventBarSearch';
 import styles from './eventAnalysis.scss';
 import CneButton from '@components/Common/Power/CneButton';
+import moment from 'moment';
 
 
 class EventAnalysisPage extends PureComponent {
@@ -38,12 +39,15 @@ class EventAnalysisPage extends PureComponent {
 
   render(){
     const { pageKey, analysisEvent, eventAnalysisInfo, eventAnalysisLoading } = this.props;
-    const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName } = analysisEvent || {};
-    const { chartType, deviceFullcode } = eventAnalysisInfo || {};
+    const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName, interval, beginTime } = analysisEvent || {};
+    const endTime = moment(beginTime).utc().endOf('day').format();
+    const { chartType, deviceFullcode, data } = eventAnalysisInfo || {};
+    const { pointData = [] } = data || {};
+    const pointCodes = pointData && pointData.map(e => e.pointCode);
     const [stationStr, devoceTypeStr] = deviceFullcode ? deviceFullcode.split('M') : [];
     let redirectPath = '/monitor/pvData/history';
     if (stationStr && devoceTypeStr) {
-      redirectPath = `${redirectPath}?stationCode=${stationStr}&deviceTypeCode=${devoceTypeStr}`;
+      redirectPath = `${redirectPath}?stationCode=${stationStr}&deviceTypeCode=${devoceTypeStr}&deviceName=${deviceName}&deviceFullcodes=${deviceFullcode}&timeInterval=${interval}&startTime=${beginTime}&endTime=${endTime}&devicePoints=${pointCodes}`;
     }
     return (
       <section className={styles.eventAnalysis}>
