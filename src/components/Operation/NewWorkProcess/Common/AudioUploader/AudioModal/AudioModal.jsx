@@ -31,7 +31,7 @@ export default class AudioModal extends Component {
         closable={null}
         maskClosable={null}
         maskStyle={{backgroundColor: 'rgba(0,0,0,0.5)'}}
-        width={630}
+        width={960}
       >
         <div className={styles.audioModalContent}>
           <div className={styles.audioModalTitle}>
@@ -48,7 +48,7 @@ export default class AudioModal extends Component {
             loop
             playing={false}
             className={styles.audioPlayer}
-            width="auto"
+            width="960px"
             height="auto"
           />
         </div>
