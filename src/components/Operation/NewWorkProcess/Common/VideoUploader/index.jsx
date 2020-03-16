@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Upload, Progress, message } from 'antd';
 import ReactPlayer from 'react-player';
-import AudioModal from './AudioModal/AudioModal';
+import VideoModal from './VideoModal/VideoModal';
 import path from '@path';
 import styles from './style.scss';
 
@@ -20,7 +20,7 @@ const { ticket } = APISubPaths;
  * 
  */
 
-export default class AudioUploader extends Component {
+export default class VideoUploader extends Component {
   static propTypes = {
     className: PropTypes.string,
     wrapModalClassName: PropTypes.string,
@@ -84,33 +84,32 @@ export default class AudioUploader extends Component {
     }
   }
 
-  onAudioDelete = (url) => { // 删除已上传视频
+  onVideoDelete = (url) => { // 删除已上传视频
     const { value } = this.props;
     const newValue = value.filter(e => e !== url);
     this.props.onChange(newValue);
   }
 
-  viewAudio = () => this.setState({ visible: true })
+  viewVideo = () => this.setState({ visible: true })
 
-  hideAudioModal = () => this.setState({ visible: false })
+  hideVideoModal = () => this.setState({ visible: false })
 
   render() {
     const { uploadPercent, uploadLoading, fileList, visible } = this.state;
     const { value, uploadUrl, maxNum, wrapModalClassName } = this.props;
     const authData = localStorage.getItem('authData') || '';
     return (
-      <div className={`${styles.audioUploader} ${styles.className}`}>
+      <div className={`${styles.videoUploader} ${styles.className}`}>
         {value.length > 0 && value.map((url, index) => (
           <div
             key={url}
-            onClick={() => this.reviewPic(url)}
-            className={`${styles.audioViewer} ${styles.fl}`}
+            className={`${styles.videoViewer} ${styles.fl}`}
           >
-            <div className={styles.delAudio}>
+            <div className={styles.delVideo}>
               <i
                 title="删除"
                 className={`iconfont icon-close1 ${styles.delIcon}`}
-                onClick={() => this.onAudioDelete(url)}
+                onClick={() => this.onVideoDelete(url)}
               />
             </div>
             <ReactPlayer
@@ -118,8 +117,8 @@ export default class AudioUploader extends Component {
               // url={url}
               url="/video/01-1000.mp4"
               playing={false}
-              onClick={this.viewAudio}
-              className={styles.eachAudio}
+              onClick={this.viewVideo}
+              className={styles.eachVideo}
               width="60px"
               height="auto"
               style={{ maxHeight: '46px' }}
@@ -142,10 +141,10 @@ export default class AudioUploader extends Component {
             {uploadLoading ? <Progress strokeColor="#199475" percent={uploadPercent} /> : <div className="ant-upload-text">上传视频</div>}
           </div>
         </Upload>}
-        <AudioModal
+        <VideoModal
           wrapModalClassName={wrapModalClassName}
           visible={visible}
-          hideAudioModal={this.hideAudioModal}
+          hideVideoModal={this.hideVideoModal}
         />
       </div>
     );

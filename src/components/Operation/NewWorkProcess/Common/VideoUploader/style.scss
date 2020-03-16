@@ -62,9 +62,9 @@
   }
 }
 
-.audioUploader {
+.videoUploader {
   display: flex;
-  .audioViewer {
+  .videoViewer {
     flex: 0 0 60px;
     height: 60px;
     position: relative;
@@ -72,7 +72,7 @@
     overflow: hidden;
     margin-right: 13px;
     border: 1px solid #d4d4d4;
-    .delAudio{ // 视频浏览顶部删除
+    .delVideo{ // 视频浏览顶部删除
       height: 14px;
       display: flex;
       justify-content: flex-end;
@@ -91,7 +91,7 @@
         }
       }
     }
-    .eachAudio {
+    .eachVideo {
       cursor: pointer;
     }
   }

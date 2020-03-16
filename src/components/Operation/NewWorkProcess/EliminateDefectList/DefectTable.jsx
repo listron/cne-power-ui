@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CneTable from '@components/Common/Power/CneTable';
 import PicUploader from '../Common/PicUploader';
-import AudioUploader from '../Common/AudioUploader';
+import VideoUploader from '../Common/VideoUploader';
 import styles from './listPage.scss';
 
 export default class DefectTable extends Component {
@@ -20,7 +20,7 @@ export default class DefectTable extends Component {
     this.state = {
       tableListHeight: clientHeight - 315,
       imgs: [],
-      audios: [],
+      videos: [],
     };
   }
 
@@ -175,10 +175,10 @@ export default class DefectTable extends Component {
   ]
 
   onPicChange = (imgs) => this.setState({ imgs })
-  onAudioChange = (audios) => this.setState({ audios })
+  onVideoChange = (videos) => this.setState({ videos })
 
   render() {
-    const { tableListHeight, imgs, audios } = this.state;
+    const { tableListHeight, imgs, videos } = this.state;
     const { defectListData, listParams } = this.props;
     const { sortField, sortMethod } = listParams;
     const mockTotalData = [1].map(e => this.defectMockListData).reduce((a = [], b = []) => b.concat(a));
@@ -189,9 +189,9 @@ export default class DefectTable extends Component {
           mode="edit"
           onChange={this.onPicChange}
         /> */}
-        <AudioUploader
-          value={audios}
-          onChange={this.onAudioChange}
+        <VideoUploader
+          value={videos}
+          onChange={this.onVideoChange}
         />
         <CneTable
           sortField={sortField}
