@@ -5,7 +5,7 @@
  　@param nativeCharSize，一个汉字的长度，optional，因数据库编码不同，汉字所占用的长度也不同，比如UTF-8编码中，汉字占用3个字符的长度，而GBK编码中汉字则是2个字符的长度。未制定时，默认按2个字符长度计算
  @return number
  */
-export const computeLength = (eleInputValue, maxLength = 99, nativeCharSize = 2) => {
+export const computeLength = (eleInputValue, maxLength = 99, nativeCharSize = 1) => {
   const nativeCharRegexp = /[\u4E00-\u9FFF]/;
   let char, length = 0;
 

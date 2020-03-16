@@ -57,16 +57,15 @@ export default class DefectsHandler extends Component {
   }
 
   exchangeActioncode = (allActions, code) => {
-    const cur = allActions.filter(e => e.actionCode === code);
+    const cur = allActions.filter(e => code.includes(e.actionCode));
     return cur.length > 0 && !cur[0].isPermission || false;
   }
 
   render() {
     const { stateAndTotalList = [], listParams = {}, total, allowedActions = [] } = this.props;
     const { pageSize = 30, pageNum = 1, stateId } = listParams || {};
-    // 为什么actionCode 一直在变化 k用户 11 12
-    const undoneBtn = this.exchangeActioncode(allowedActions, '11'); // 未解决‘
-    const alldoneBtn = this.exchangeActioncode(allowedActions, '12'); // 已解决‘
+    const undoneBtn = this.exchangeActioncode(allowedActions, ['9', '12']); // 未解决‘
+    const alldoneBtn = this.exchangeActioncode(allowedActions, ['10', '11']); // 已解决‘
     return (
       <div className={styles.defectsHandler}>
         <div className={styles.leftHandler}>

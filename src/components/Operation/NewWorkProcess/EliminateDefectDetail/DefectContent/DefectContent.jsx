@@ -13,22 +13,38 @@ class DefectContent extends Component {
     actionCode: PropTypes.string,
     eventInfos: PropTypes.array,
     eventStatus: PropTypes.array,
-    // changeStore: PropTypes.func,
+    changeStore: PropTypes.func,
     warnEventInfos: PropTypes.array,
     baseInfo: PropTypes.object,
+    addEventInfo: PropTypes.array,
+    stateName: PropTypes.string,
   };
+
+  componentWillReceiveProps(nextProps) {
+    const { eventInfos, addEventInfo, stateName } = nextProps;
+    if (this.props.addEventInfo.length === 0 && localStateName(stateName) === 'return') {
+      const list = eventInfos.map((e, index) => { return { index: index + 1, ...e }; });
+      this.props.changeStore({ addEventInfo: list });
+    }
+  }
 
   render() {
     const { baseInfo, stateName } = this.props;
-    const edit = localStateName(stateName) === 'receive';
-    const editDisplay = localStateName(stateName) === 'receive';
     return (
       <React.Fragment>
         <DefectBaseTitle baseInfo={baseInfo} />
         <DefectBaseInfo baseInfo={baseInfo} {...this.props} />
-        <DefcetEventTitle {...this.props} />
-        <DefectEvent {...this.props} edit={!edit} />
-        <HandleInfo {...this.props} editDisplay={!editDisplay} />
+        {stateName &&
+          <React.Fragment>
+            <DefcetEventTitle {...this.props} />
+            <DefectEvent {...this.props} />
+            <HandleInfo
+              {...this.props}
+              editDisplay={localStateName(stateName) === 'execute'}
+              addMultipleEvent={localStateName(stateName) === 'execute'}
+            />
+          </React.Fragment>
+        }
       </React.Fragment>
     );
   }

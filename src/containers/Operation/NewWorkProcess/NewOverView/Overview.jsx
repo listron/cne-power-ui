@@ -29,7 +29,7 @@ class Overview extends Component {
   constructor() {
     super();
     this.state = {
-      tab: '',
+      tab: 'defect',
       page: 'list',
     };
   }

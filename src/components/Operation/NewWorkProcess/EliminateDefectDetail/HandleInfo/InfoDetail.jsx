@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './handle.scss';
+import PicUploader from '../../Common/PicUploader';
 
 export default class InfoDetail extends Component {
 
@@ -18,7 +19,7 @@ export default class InfoDetail extends Component {
 
   render() {
     const {
-      handleDesc, isChangePart, isCoordinate, partName, coordinateDesc, handleImgs, handleVideos, createTime, createuUserName,
+      handleDesc, isChangePart, isCoordinate, partName, coordinateDesc, handleImgs = [], handleVideos, createTime, createuUserName,
     } = this.props;
     return (
       <div
@@ -47,7 +48,15 @@ export default class InfoDetail extends Component {
         <div className={styles.imgRecord}>
           <span className={styles.recordName} />
           <span>
-            图片 + 视频
+            {
+              handleImgs && handleImgs.length > 0 &&
+              <div className={styles.threeLine}>
+                <PicUploader
+                  value={handleImgs.map(e => e.url)}
+                  mode="review"
+                />
+              </div>
+            }
           </span>
         </div>
       </div>

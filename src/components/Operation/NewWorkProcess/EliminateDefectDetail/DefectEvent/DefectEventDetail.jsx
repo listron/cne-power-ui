@@ -4,11 +4,12 @@ import CneButton from '../../../../Common/Power/CneButton';
 import CneTips from '@components/Common/Power/CneTips';
 import { Tooltip } from 'antd';
 import styles from './defectEvent.scss';
+import PicUploader from '../../Common/PicUploader';
 /** 
  * 
 */
 
-const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false }) => {
+const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eventChange, delChange }) => {
   const [state, changeState] = useState();
   const [visible, changeVisible] = useState(false);
   const { eventId, diagWarningId, eventImgs = [] } = defectMessage;
@@ -17,11 +18,12 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false }) =
   const stateArr = [{ name: '已解决', value: 'yijie' }, { name: '未解决', value: 'weijie' }, { name: '忽略', value: 'hulue' }];
   const delEvent = () => {
     changeVisible(true);
-    this.props.delChange(diagWarningId);
+    delChange(diagWarningId);
   };
   const handleChane = (value) => { // 状态改变的时候
     changeState(value);
-    this.props.eventChange({ eventId, eventState: value });
+    const arr = { 'yijie': 1, 'weijie': 2, 'hulue': 3 };
+    eventChange({ eventId, eventState: arr[value] });
   };
 
   const onConfirm = () => { // 只有在 待领取 事件派发 的页面缺陷事件才可以删除 
@@ -70,11 +72,10 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false }) =
         {
           eventImgs.length > 0 &&
           <div className={styles.threeLine}>
-            {
-              defectMessage.eventImgs.map((e) => {
-                return <img src={e.url} key={e.imgId} />;
-              })
-            }
+            <PicUploader
+              value={eventImgs.map(e => e.url)}
+              mode="review"
+            />
           </div>
         }
       </div>

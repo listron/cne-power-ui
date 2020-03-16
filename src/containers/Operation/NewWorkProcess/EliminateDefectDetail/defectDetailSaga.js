@@ -41,11 +41,13 @@ function* getDefectAction(action) { // 2.7.3.2.	查询消缺可执行动作 创�
 
 function* createDefect(action) { // 2.7.3.3.	创建消缺工单（提交）
   const { payload } = action;
+  const { params, callback } = payload;
   const url = `${APIBasePath}${ticket.createEliminateDefect}`;
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
-      const docketId = response.data.data.docketId;
+      const docketId = response.data.data;
+      callback(docketId);
       yield put({
         type: eliminateDefectDetailAction.getDefectMessage,
         payload: { docketId },
@@ -136,7 +138,7 @@ function* addDefectHandle(action) { // 2.7.3.9.	添加工单的处理信息
   const url = `${APIBasePath}${ticket.addEliminateHandle}`;
   const { docketId } = record;
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, payload.record);
     if (response.data.code === '10000') {
       // 获取D 重新请求处理信息
       func();

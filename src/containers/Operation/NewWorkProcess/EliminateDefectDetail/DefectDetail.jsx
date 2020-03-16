@@ -35,6 +35,9 @@ class DefectDetail extends Component {
     const { history } = this.props;
     const { search } = history.location;
     // 503306196121088 503572404424192 505877040300032
+
+
+
     const { page = 'defectDetail', docketId, isFinish } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
     if (docketId) {
       // getDefectMessage 可执行动作 基础信息 缺陷事件 处理信息 流程信息

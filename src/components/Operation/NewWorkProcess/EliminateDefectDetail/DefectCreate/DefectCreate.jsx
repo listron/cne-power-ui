@@ -15,6 +15,15 @@ class DefectCreate extends Component {
 
   };
 
+  componentWillReceiveProps(nextProps) {
+    const { eventInfos, addEventInfo, stateName } = nextProps;
+    if (this.props.addEventInfo.length === 0 && localStateName(stateName) === 'return') {
+      const list = eventInfos.map((e, index) => { return { index: index + 1, ...e }; });
+      this.props.changeStore({ addEventInfo: list });
+    }
+  }
+
+
   render() {
     const { isFinish } = this.props;
     return (
@@ -22,7 +31,7 @@ class DefectCreate extends Component {
         <DefectBaseTitle />
         <DefectBaseInfo {...this.props} />
         <DefcetEventTitle {...this.props} />
-        <DefectEvent {...this.props} edit={true} />
+        <DefectEvent {...this.props} edit={true} addMultipleEvent={false} />
         <HandleInfo {...this.props} editDisplay={isFinish === '1'} />
       </React.Fragment>
     );

@@ -106,18 +106,19 @@ export default class HandleInfo extends Component {
   }
 
   render() {
-    const { handleInfos = [], allowedActions = [], addhandleList = [], isFinish, isVertify } = this.props;
+    const { handleInfos = [], allowedActions = [], addhandleList = [], isVertify, addMultipleEvent } = this.props;
     const isAdd = this.exchangeActioncode(allowedActions, '15'); // 添加的权限是14
-    const isAddStatus = (isFinish === '0' || isFinish === '1') && addhandleList.length !== 1; // 添加的时候只能添加一条
+    const canAdd = addMultipleEvent ? isAdd : addhandleList.length === 0 && isAdd; // 可以添加一条还是添加多条
     return (
       <section className={styles.handleInfo}>
-        <h4 className={styles.handleTitle}>
+        {!(addhandleList.length === 0 && handleInfos.length === 0) && <h4 className={styles.handleTitle}>
           <div className={styles.titleName}>处理信息</div>
-          {(isAdd && isAddStatus) && <CneButton className={styles.addBtn} onClick={this.addHandleInfo}>
+          {canAdd && <CneButton className={styles.addBtn} onClick={this.addHandleInfo}>
             <i className={`iconfont icon-newbuilt ${styles.addIcon}`} />
             <span className={styles.text}>添加记录</span>
           </CneButton>}
-        </h4>
+        </h4>}
+
         <div className={styles.handleContents}>
           {addhandleList.map((e, i) => (
             <InfoEdit

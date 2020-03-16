@@ -48,6 +48,15 @@
   }
 }
 
+.cnebtn[disabled]{
+  background:#f1f1f1 !important;
+  border:1px solid #d4d4d4 !important;
+  box-shadow:inset 1px 1px 0 0 #ffffff !important;
+  pointer-events: none;
+  color:#999999 !important;
+
+}
+
 .cnebtn.light{
   background: rgba(206, 235, 224, 0.3);
   border: 1px solid $themeColor;

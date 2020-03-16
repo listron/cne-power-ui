@@ -17,6 +17,7 @@ export default class DefectEvent extends Component {
     edit: PropTypes.bool,
     allowedActions: PropTypes.array,
     addEventInfo: PropTypes.array,
+    changeStore: PropTypes.func,
   };
 
   exchangeActioncode = (allActions, code) => {
@@ -24,10 +25,11 @@ export default class DefectEvent extends Component {
     return cur.length > 0 && !cur[0].isPermission || false;
   }
 
+
   eventChange = (value) => { // 缺陷事件 状态修改 详情
     const { eventId, eventState } = value;
     const { eventStatus, changeStore } = this.props;
-    const index = eventStatus.filter(e => e.eventId === eventId)[0].index;
+    const index = eventStatus.filter(e => e.eventId === eventId)[0].key;
     eventStatus[index]['eventState'] = eventState;
     changeStore({ eventStatus });
   }
