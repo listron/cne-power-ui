@@ -384,6 +384,12 @@ const menuData = [
             defaultPath: true,
             rightKey: 'statistics_report_dailyQuery',
           },
+          {
+            name: '分析报告',
+            path: 'analysisReport',
+            defaultPath: true,
+            rightKey: 'statistics_report_dailyQuery',
+          },
         ],
       }, {
         name: '数据分析工具',

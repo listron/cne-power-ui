@@ -1,0 +1,191 @@
+@import "../../../../theme/theme.scss";
+
+.analysisReportBox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 100%;
+
+  .analysisReportContainer {
+    @include contentBoxStyle();
+
+    .analysisReportMain {
+      display: flex;
+      flex: 1;
+
+      //日报
+      .dailyBox {
+        width: 25%;
+        min-width: 280px;
+        height: 186px;
+        margin-right: 25px;
+        display: flex;
+        flex-direction: column;
+
+        .boxTop {
+          display: flex;
+          margin: 24px 0 17px 24px;
+          align-self: flex-start;
+
+          .proOperation,
+          .eleInfo,
+          .defaultReport,
+          .dayReport {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 16px;
+          }
+
+          .title {
+            font-size: 16px;
+            font-weight: bold;
+          }
+        }
+
+        .dateSearch {
+          flex: 1;
+          align-self: center;
+        }
+
+        .dateSearch::before {
+          content: "*";
+          display: inline-block;
+          margin-right: 4px;
+        }
+
+        .downloadBtn {
+          width: 100%;
+          height: 40px;
+          line-height: 40px;
+          display: flex;
+          justify-content: space-between;
+          text-align: center;
+
+          .line {
+            width: 1px;
+            height: 40px;
+          }
+
+          .text {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            border: none;
+            border-radius: 0;
+          }
+        }
+
+        .stationSearchs {
+          margin-bottom: 6px;
+          display: flex;
+          line-height: 38px;
+          align-self: center;
+        }
+
+        .stationSearchs::before {
+          content: "*";
+          display: inline-block;
+          margin-right: 4px;
+        }
+      }
+
+    }
+  }
+}
+
+.light {
+  .analysisReportContainer {
+    background: $pageBackground;
+
+    .dailyBox {
+      background-color: #ffffff;
+
+      .boxTop {
+        .proOperation,
+        .eleInfo,
+        .defaultReport,
+        .dayReport {
+          background-color: #ffbf00;
+        }
+
+        .defaultReport {
+          background-color: #5bd171;
+        }
+
+        .eleInfo {
+          background-color: #719ee0;
+        }
+
+        .proOperation {
+          background-color: #72719c;
+        }
+      }
+
+      .dateSearch::before {
+        color: red;
+      }
+
+      .downloadBtn {
+        border-top: 1px solid $promptColor;
+
+        .line {
+          background-color: $promptColor;
+        }
+
+        .text {
+          color: #999;
+          background-color: #fff;
+        }
+      }
+
+      .stationSearchs::before {
+        color: red;
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../../theme/darkTheme.scss";
+  color: $fontColor;
+  background: $background;
+
+  .dailyBox {
+    background-color: $light-background;
+
+    .boxTop {
+      .dayReport {
+        background-color: #ffbf00;
+      }
+
+      .defaultReport {
+        background-color: #5bd171;
+      }
+
+      .eleInfo {
+        background-color: #719ee0;
+      }
+
+      .proOperation {
+        background-color: #72719c;
+      }
+    }
+
+    .dateSearch::before,
+    .stationSearchs::before {
+      color: #fd6e8f;
+    }
+
+    .downloadBtn {
+      border-top: 1px solid $border-color;
+
+      .line {
+        background-color: $border-color;
+      }
+    }
+  }
+}
