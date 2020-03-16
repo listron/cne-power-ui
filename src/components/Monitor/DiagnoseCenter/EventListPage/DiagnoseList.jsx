@@ -83,7 +83,7 @@ class DiagnoseList extends Component {
     const handleKeys = ['ignore', 'delete'];
     const diagWarningIds = selectedRows.map(e => e.diagWarningId);
     if (value === 'handout') {
-      console.log('需要跳转, 跳转路径等待更新');
+      window.open(`#/operation/workProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningIds.join(',')}`);
     }
     if (handleKeys.includes(value)) {
       this.props.editEventsStatus({
