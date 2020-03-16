@@ -67,17 +67,31 @@
   }
   .infoContent{
     padding: 0 10px;
+    i{
+      display: inline-block;
+      margin-left: 5px;
+      color: $themeColor;
+      cursor: pointer;
+      &:hover{
+        color: #f9b600;
+      }
+    }
+    .disabled{
+      color: #999999;
+      pointer-events: none;
+    }
   }
   .stations{
     flex: 0 0 60%;
   }
   .creater, .responsor{
+    display: flex;
     flex: 0 0 31%;
   }
   .createTime, .examiner{
     flex: 0 0 16%;
   }
-  .types, .expectTime, .finishTime{
+  .types, .finishTime{
     flex: 1 0 auto;
   }
   .descRow{
@@ -94,6 +108,106 @@
       padding: 7px 10px;
     }
   }
+
+  .error{
+    background:#fbe6e3;
+    border:1px solid #df4b33;
+  }
+  
+  .init{
+    background:#fcffe5;
+    border:1px solid #d4d4d4;
+    &::placeholder{
+      color:#999;
+    }
+    &:required{
+      background: pink;
+    }
+  }
+
+
+  :global{
+    .ant-popover-placement-rightTop{
+      padding: 0;
+    }
+    .ant-popover-inner-content{
+      padding: 0;
+    }
+    .ant-popover-arrow {
+      display: none;
+    }
+    .ant-checkbox-wrapper {
+      padding-left: 5px;
+      width: 100%;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+    }
+    .ant-checkbox{
+      margin-top: 2px;
+    }
+    .ant-checkbox + span{
+      width: 85px;
+      padding-right: 0;
+      @include overflowText();
+    }
+    .ant-checkbox-wrapper-checked{
+      background-color: $themeColor;
+      .ant-checkbox + span{
+        color: #fff;
+      }
+    }
+  }
 }
 
+
+.operatorWrap {
+  padding-left: 0;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px 4px rgba(0, 0, 0, 0.40);
+  .operatorCenter {
+    width: 250px;
+    .operatorList {
+      width: 220px;
+      margin: 0 auto;
+      padding: 10px 0 30px;
+      height: 360px;
+      overflow-y: auto;
+    }
+  }
+
+  .checkboxGroup{
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-between;
+  }
+
+  .operatorItemBox{
+    width: 105px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed $borderColor;
+    .operatorItem {
+      display: inline-block;
+      margin-right: 0;
+      width: 105px;
+      padding: 7px 0;
+      border-radius: 2px;
+    }
+  }
+  .operatorBtn{
+    background:#f1f1f1;
+    width:250px;
+    height:40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .cancelBtn {
+      cursor: pointer;
+      margin-right: 29px;
+    }
+  }
+
+}
 

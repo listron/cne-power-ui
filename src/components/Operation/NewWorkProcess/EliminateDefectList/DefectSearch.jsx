@@ -24,10 +24,13 @@ export default class DefectSearch extends React.Component {
 
   handleChangeOperator = value => { // 选执行人
     const { listParams } = this.props;
-    this.props.getDefectList({
-      ...listParams,
-      operName: value,
-    });
+    if ((value.length === 0 || value.length === 1)) {
+      // 调用抄表列表接口
+      this.props.getDefectList({
+        ...listParams,
+        operName: value.toString(),
+      });
+    }
   };
 
   onMineChange = checked => { // 是否我参与的 true false
@@ -63,10 +66,10 @@ export default class DefectSearch extends React.Component {
               <Select
                 maxTagCount={1}
                 placeholder="请输入关键字"
-                style={{width: 120, height: 32}}
+                style={{ width: 120, height: 32 }}
                 dropdownMatchSelectWidth={true}
                 mode="multiple"
-                value={operName}
+                value={operName && [operName] || []}
                 dropdownClassName={styles.searchSelect}
                 onChange={this.handleChangeOperator}
               >

@@ -30,6 +30,8 @@ export default {
   },
   pubilcPath: {
     getStationDevicetypes: '/v4/base/device', // 获取电站(必填), 设备类型下的设备型号
+    getDeviceType: '/v4/base/devicetype', // 获取电站(必填), 设备类型下的设备
+
   },
   APISubPaths: {
     // 新的登陆注册接口
@@ -142,6 +144,7 @@ export default {
       checkAndAcceptDefect: '/v4/opms/defect/checkAndAccep', // 消缺验收（通过和驳回）
       verifyEilminateDefect: '/v4/opms/defect/verify', // 验收工单
       delDocket: '/v4/opms/docket/del', // 删除工单
+      getDiagWarnList: '/v3/diagwarning/detail', // 1.2.3.	获取指定的告警事件
 
     },
     operation: {

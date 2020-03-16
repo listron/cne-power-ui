@@ -2,6 +2,7 @@
 @import "../../../../../theme/theme.scss";
 
 .handleInfo{
+  margin-bottom: 39px;
   .handleTitle{ // 处理信息 + 添加记录按钮
     display: flex;
     height: 60px;
@@ -68,8 +69,17 @@
     .editRecord, .editPic, .editVideo, .editParts, .editCoordinate{
       display: flex;
       .editTitle{
-        flex: 0 0 68px;
+        flex: 0 0 71px;
         font-weight: 700;
+      }
+      .star{
+        color:#df4b33;
+        padding: 0 5px;
+      }
+    }
+    .editParts{
+      .editTitle{
+        display: flex;
       }
     }
     .editRecord, .editPic, .editVideo, .editCoordinate{
@@ -78,9 +88,17 @@
       }
       .editTitle .editTitleName{
         font-weight: 700;
+        flex: 0 0 71px;
+        display: flex;
+        line-height: 40px;
       }
       .editTitle .titleTip{
         color: var(--lightColor);
+      }
+      .coorName{
+        text-align: right;
+        font-weight: 700;
+        width: 55px;
       }
     }
     .editRecord{
