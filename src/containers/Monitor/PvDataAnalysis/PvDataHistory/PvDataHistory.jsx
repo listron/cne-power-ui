@@ -11,6 +11,7 @@ import PvHistoryList from '../../../../components/Monitor/PvDataAnalysis/PvDataH
 import Footer from '../../../../components/Common/Footer/index';
 import Cookie from 'js-cookie';
 import searchUtil from '@utils/searchUtil';
+import moment from 'moment';
 
 class PvDataHistory extends Component {
   static propTypes = {
@@ -18,10 +19,15 @@ class PvDataHistory extends Component {
     enterpriseId: PropTypes.string,
     history: PropTypes.object,
     queryParam: PropTypes.object,
+    listParam: PropTypes.object,
+    location: PropTypes.object,
     resetHistoryStore: PropTypes.func,
     getSecendInterval: PropTypes.func,
     getAvailableDeviceType: PropTypes.func,
     changeHistoryStore: PropTypes.func,
+    getChartHistory: PropTypes.func,
+    getListHistory: PropTypes.func,
+    filterDevices: PropTypes.array,
   };
 
   componentDidMount() { // 获取数据时间间隔 + 若是携带路径参数进入该页面, 进行自动处理。
@@ -30,12 +36,16 @@ class PvDataHistory extends Component {
     const { search } = location;
     this.props.getSecendInterval({enterpriseId});
     if (search) {
-      const { stationCode, deviceTypeCode } = searchUtil(search).parse();
+      const { stationCode, deviceTypeCode, startTime, endTime, timeInterval } = searchUtil(search).parse();
+
       if (stationCode) {
         this.props.changeHistoryStore({
           queryParam: {
             ...queryParam,
             stationCode: parseFloat(stationCode),
+            startTime: moment(startTime),
+            endTime: moment(endTime),
+            timeInterval: [10, 5, 2][parseFloat(timeInterval - 1)], // 诊断中心1: 十分钟, 2: 5秒, 3: 1分钟
           },
         });
         this.props.getAvailableDeviceType({ stationCode, deviceTypeCode });

@@ -9,6 +9,7 @@ import styles from './pvHistoryStyle.scss';
 import { message } from 'antd';
 import cookie from 'js-cookie';
 import path from '@constants/path';
+import searchUtil from '@utils/searchUtil';
 
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
@@ -37,21 +38,31 @@ class PvHistorySearch extends Component {
     getListHistory: PropTypes.func,
     downloading: PropTypes.bool,
     partHistory: PropTypes.object,
+    history: PropTypes.object,
     downLoadFile: PropTypes.func,
     enterpriseId: PropTypes.string,
   };
 
   componentDidUpdate(prevProps) {
-    const { queryParam, changeHistoryStore, filterDevices } = this.props;
+    const { queryParam, changeHistoryStore, filterDevices, history } = this.props;
     const prevDevices = prevProps.filterDevices;
+    const { location } = history;
+    const { search } = location;
     if (prevDevices.length === 0 && filterDevices.length > 0) { // 得到初始设备数据
+      const { deviceName } = searchUtil(search).parse();
+        const devicefullcode = filterDevices.find(e => {
+          if (search && deviceName) {
+            return e.deviceName === deviceName;
+          }
+          return e;
+        });
       changeHistoryStore({
         queryParam: {
           ...queryParam,
-          deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
+          deviceFullCodes: [devicefullcode], // 默认选中第一个设备
         },
       });
-      this.selectedDevice([filterDevices[0]]);
+      this.selectedDevice([devicefullcode]);
     } else if (
       prevDevices.length > 0
       && filterDevices.length > 0

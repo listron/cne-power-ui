@@ -10,16 +10,24 @@ class EventLineSearch extends PureComponent {
   static propTypes = {
     analysisEvent: PropTypes.object,
     getEventsAnalysis: PropTypes.func,
+    changeStore: PropTypes.func,
+    isNoDataTip: PropTypes.bool,
   };
+
+  componentDidMount(){
+    setTimeout(() => {
+      this.props.changeStore({ isNoDataTip: false });
+    }, 3000);
+  }
 
   onIntervalChange = (interval) => {
     const { analysisEvent } = this.props;
-    this.props.getEventsAnalysis({ ...analysisEvent, interval }); // 默认十分钟数据
+    this.props.getEventsAnalysis({ ...analysisEvent, interval, isCycleTip: true }); // 默认十分钟数据
   }
 
   onDateChange = (momentTime, beginTime) => {
     const { analysisEvent } = this.props;
-    this.props.getEventsAnalysis({ ...analysisEvent, beginTime });
+    this.props.getEventsAnalysis({ ...analysisEvent, beginTime, isDataTip: true });
   }
 
   prevDay = () => this.onDayChange('subtract')
@@ -36,11 +44,12 @@ class EventLineSearch extends PureComponent {
   disabledDateFunc = (cur) => moment().isBefore(cur, 'day')
 
   render(){
-    const { analysisEvent } = this.props;
+    const { analysisEvent, isNoDataTip } = this.props;
     const { beginTime, interval } = analysisEvent || {};
     const forbidNextDay = !moment().isAfter(moment(beginTime), 'day');
     return (
         <div className={styles.analysisLineSearch}>
+          {isNoDataTip && <div className={styles.tipText}>数据不存在，请选择其他周期</div>}
           <strong className={styles.searchText}>告警诊断指标时序图</strong>
           <span className={styles.searchParts}>
             <span className={styles.intervalText}>数据时间间隔</span>
