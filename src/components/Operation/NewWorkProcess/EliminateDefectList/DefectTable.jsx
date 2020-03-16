@@ -207,11 +207,11 @@ export default class DefectTable extends Component {
     const mockTotalData = [1].map(e => this.defectMockListData).reduce((a = [], b = []) => b.concat(a));
     return (
       <div className={styles.eliminateDefectsList}>
-        {/* <PicUploader
+        <PicUploader
           value={imgs}
           mode="edit"
           onChange={this.onPicChange}
-        /> */}
+        />
         <VideoUploader
           value={videos}
           onChange={this.onVideoChange}
