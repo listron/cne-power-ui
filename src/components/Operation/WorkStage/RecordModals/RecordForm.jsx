@@ -82,7 +82,7 @@ class AddRecord extends PureComponent {
             initialValue: stageStations.filter(e => stations.map(m => m.stationCode).includes(e.stationCode)),
           })(
             <StationSelect
-              data={stageStations}
+              data={stageStations.filter(e => (e.stationType === 1 && e.isConnected === 1))}
               multiple={true}
               style={{ width: '200px' }}
               theme={theme}

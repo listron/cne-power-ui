@@ -122,7 +122,7 @@ class AddPlan extends PureComponent {
                 initialValue: [],
               })(
                 <StationSelect
-                  data={stageStations}
+                  data={stageStations.filter(e => (e.stationType === 1 && e.isConnected === 1))}
                   multiple={true}
                   style={{ width: '200px' }}
                   stationShowNumber={true}
