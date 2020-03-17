@@ -62,7 +62,9 @@ class DiagnoseList extends Component {
       diagnose: createDiagnoseColumn,
       data: createDataColumn,
     };
-    return eventNameCreator[pageKey](finished, this.analysisEvent);
+    return eventNameCreator[pageKey](
+      finished, this.analysisEvent, this.toDefect,
+    );
   }
 
   analysisEvent = (record) => { // √7. 分析点击 => 停止当前定时请求, 单独开启分析页面;
@@ -74,8 +76,17 @@ class DiagnoseList extends Component {
     this.props.getEventsAnalysis({ ...record, interval });
   }
 
-  onRowSelect = (selectedKeys, selectedRows) => {
-    this.props.changeStore({ selectedRows });
+  toDefect = (record) => {
+    const { diagWarningId, stationCode } = record || {};
+    window.open(`#/operation/workProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningId}]&stationCode=${stationCode}`);
+  }
+
+  onRowSelect = (selectedKeys, rows) => {
+    const { diagnoseListData, selectedRows } = this.props;
+    const newRowInfo = selectedRows.filter(e => {
+      return !diagnoseListData.find(m => m.diagWarningId === e.diagWarningId);
+    });
+    this.props.changeStore({ selectedRows: [...newRowInfo, ...rows] });
   }
 
   onSelectedHandle = (value) => {
@@ -83,7 +94,8 @@ class DiagnoseList extends Component {
     const handleKeys = ['ignore', 'delete'];
     const diagWarningIds = selectedRows.map(e => e.diagWarningId);
     if (value === 'handout') {
-      window.open(`#/operation/workProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningIds.join(',')}`);
+      const { stationCode } = selectedRows[0] || {};
+      window.open(`#/operation/workProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningIds.join(',')}]&stationCode=${stationCode}`);
     }
     if (handleKeys.includes(value)) {
       this.props.editEventsStatus({
@@ -125,27 +137,52 @@ class DiagnoseList extends Component {
     this.props.getDiagnoseList({ ...listParams, ...newListPage });
   }
 
+  handleCreator = (selectedRows) => {
+    // { "statusName":"待确认" "statusCode":2 },
+    // { "statusName":"未处理" "statusCode":1 },
+    // { "statusName":"已忽略", "statusCode":7 },
+    // { "statusName":"已派发", "statusCode":3 }
+    if (!selectedRows || selectedRows.length === 0) { // 数据不存在, 全部禁用
+      return {
+        handoutDisable: true,
+        ignoreDisable: true,
+        deleteDisable: true,
+        selectDisable: true,
+      };
+    }
+    // 已派发3, 可跳转至消缺工单
+    const selectCodesSet = new Set(selectedRows.map(e => e.stationCode));
+    const handoutDisable = selectCodesSet.size > 1 || selectedRows.some(e => ![1, 2].includes(e.statusCode)); // 未处理, 待确认且选中的属于同一个电站 可派发操作;
+    const ignoreDisable = selectedRows.some(e => ![1, 2].includes(e.statusCode)); // 未处理1, 待确认2 可忽略操作
+    const deleteDisable = selectedRows.some(e => ![1, 2, 7].includes(e.statusCode)); // 未处理1, 待确认2, 已忽略7 可删除操作
+    const selectDisable = handoutDisable && ignoreDisable && deleteDisable;
+    return {
+      handoutDisable,
+      ignoreDisable,
+      deleteDisable,
+      selectDisable,
+    };
+  }
+
   render() {
     const { listPage, listParams, totalNum, diagnoseListData, diagnoseListLoading, diagnoseListError, selectedRows } = this.props;
     const { pageNum, pageSize, sortField, sortMethod } = listPage || {};
     const { finished } = listParams;
-    // 基于 选中项判定哪些可用
-      // { "statusName":"待领取" "statusCode":3 },
-      // { "statusName":"待确认" "statusCode":2 },
-      // { "statusName":"待验收",  "statusCode":5 },
-      // { "statusName":"未处理" "statusCode":1 },
-      // { "statusName":"已忽略", "statusCode":7 },
-      // { "statusName":"已结单", "statusCode":6 },
-      // { "statusName":"执行中", "statusCode":4 }
-    // 昂，遍历了三次，垃圾代码····优化下，遍历一次就够了亲。
-    const handoutDisable = selectedRows.some(e => ![1, 2].includes(e.statusCode)); // 未处理, 未确认 可以进行派发操作;
-    const ignoreDisable = selectedRows.some(e => ![3, 4, 5].includes(e.statusCode)); // 待领取, 执行中, 待验收 可进行忽略操作
-    const deleteDisable = selectedRows.some(e => ![1, 2, 7].includes(e.statusCode)); // 未处理, 未确认, 已忽略 可进行忽略操作
-    const selectDisable = selectedRows.length === 0 || (handoutDisable && ignoreDisable && deleteDisable);
+    const {
+      handoutDisable,
+      ignoreDisable,
+      deleteDisable,
+      selectDisable,
+    } = this.handleCreator(selectedRows);
     return (
       <div className={styles.diagnoseList} >
         <div className={styles.pagination}>
-          <Select disabled={selectDisable} style={{width: '94px'}} value="操作" onChange={this.onSelectedHandle}>
+          <Select
+            disabled={selectDisable}
+            style={{width: '94px'}}
+            value="操作"
+            onChange={this.onSelectedHandle}
+          >
             <Option disabled={handoutDisable} value="handout">派发</Option>
             <Option disabled={ignoreDisable} value="ignore">忽略</Option>
             <Option disabled={deleteDisable} value="delete">删除</Option>

@@ -154,7 +154,14 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       className: styles.handleStyle,
       render: (text, record) => (
         <div className={styles.handlers}>
-          <span className={styles.handleAnalysis} onClick={() => handlers[0](record)}>分析</span>
+          <span
+            className={styles.handleAnalysis}
+            onClick={() => handlers[0] && handlers[0](record)}
+          >分析</span>
+          {record.statusCode === 3 && <span
+            className={styles.toDefect}
+            onClick={() => handlers[1] && handlers[1](record)}
+          >查看</span>}
         </div>
       ),
     },
@@ -234,7 +241,14 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       className: styles.handleStyle,
       render: (text, record) => (
         <div className={styles.handlers}>
-          <span className={styles.handleAnalysis} onClick={() => handlers[0](record)}>分析</span>
+          <span
+            className={styles.handleAnalysis}
+            onClick={() => handlers[0](record)}
+          >分析</span>
+          {record.statusCode === 3 && <span
+            className={styles.toDefect}
+            onClick={() => handlers[1] && handlers[1](record)}
+          >查看</span>}
         </div>
       ),
     },
@@ -318,7 +332,14 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       className: styles.handleStyle,
       render: (text, record) => (
         <div className={styles.handlers}>
-          <span className={styles.handleAnalysis} onClick={() => handlers[0](record)}>分析</span>
+          <span
+            className={styles.handleAnalysis}
+            onClick={() => handlers[0](record)}
+          >分析</span>
+          {record.statusCode === 3 && <span
+            className={styles.toDefect}
+            onClick={() => handlers[1] && handlers[1](record)}
+          >查看</span>}
         </div>
       ),
     },
