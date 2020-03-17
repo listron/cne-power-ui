@@ -9,6 +9,7 @@ import VersionEvent from '../../../../components/System/Station/AlarmEvent/Versi
 import Footer from '../../../../components/Common/Footer';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
+import searchUtil from '@utils/searchUtil';
 
 
 class AlarmEvent extends Component {
@@ -28,9 +29,11 @@ class AlarmEvent extends Component {
     this.props.getAlarmEvent({ eventType: 1, deviceTypeCode: this.props.deviceTypeCode });
 
     //只有在告警中心，跳转到本页面的时候，才触发一下处理
-    const pathParams = this.props.history.location.state || {};
-    const {deviceTypeCode, pointCode, deviceFullcode, stationCode} = pathParams;
-    if (deviceTypeCode && pointCode && deviceFullcode && stationCode) {
+    const search = this.props.history.location.search || '';
+    const paramData = searchUtil(search).parse() || {};
+    //console.log(paramData);
+    const {deviceTypeCode, pointCode, deviceFullcode, stationCode, source} = paramData;
+    if (source && source === 'diagnoseCenter' && deviceTypeCode && pointCode && deviceFullcode && stationCode) {
       this.props.alarmEventDetialFlow({deviceTypeCode, pointCode, deviceFullcode, stationCode});
     }
   }

@@ -3,6 +3,7 @@ import { dataFormats } from '@utils/utilFunc';
 import moment from 'moment';
 import styles from './eventListPage.scss';
 import { Link } from 'react-router-dom';
+import {stringify} from 'qs';
 
 // 告警事件筛选条件: 电站名称, 设备类型，发生时间， 告警事件， 事件状态， 归档按钮
 // 诊断事件筛选条件: 电站名称，设备类型，发生时间， 诊断事件， 事件状态， 归档按钮
@@ -69,10 +70,14 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       className: styles.eventName,
       render: (text, record) => {
         const {deviceTypeCode, pointCode, deviceFullcode, stationCode} = record;
+        const paramData={deviceTypeCode, pointCode, deviceFullcode, stationCode, source:'diagnoseCenter'};
+        const searchStr = stringify(paramData);
         return (
-          <Link to={{ pathname: '/system/station/alarmEvent', 
-                      state: {deviceTypeCode, pointCode, deviceFullcode, stationCode} }} 
-                      key={record.diagWarningId}>
+          <Link to={{ pathname: '/system/station/alarmEvent',
+                      search: `?${searchStr}`,
+                      state: paramData }} 
+                target= '_blank'
+                key={record.diagWarningId}>
             <div 
               title={text} 
               className={`${styles.eventNameText} ${styles.eventNameTextHover}`}
