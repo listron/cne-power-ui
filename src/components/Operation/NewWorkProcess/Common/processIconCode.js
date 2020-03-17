@@ -7,7 +7,6 @@
  * @return string
  * */
 
-
 export const processIconFunc = (code) => {
   const iconMap = {
     30001: '', // 新建 暂时没有定义图标
@@ -38,6 +37,32 @@ export const processIconFunc = (code) => {
 
   };
   return iconMap[code];
+};
+
+
+/**
+ * 根据后端返回stateName 前端自己匹配一次 由于stateID 是不同的企业有不同的ID，但是stateName不会发生改变，可以根据此来映射
+ * 后期可以自己增加
+ * @param {string}  stateName
+ * @return string
+ *
+ *
+ * */
+
+export const localStateName = (name) => {
+  const stateName = {
+    '待审核': 'review',
+    '已退回': 'return',
+    '待领取': 'receive',
+    '执行中': 'execute',
+    '待验收': 'accept',
+    '已结单': 'complete',
+  };
+  if (name) {
+    return stateName[name.trim()];
+  }
+  return '';
+
 };
 /**
  * 根据后端返回code编码，匹配图标颜色

@@ -3,53 +3,122 @@ import CneButton from '@components/Common/Power/CneButton';
 import InfoDetail from './InfoDetail';
 import InfoEdit from './InfoEdit';
 import styles from './handle.scss';
+import PropTypes from 'prop-types';
 
 export default class HandleInfo extends Component {
 
   static propTypes = {
-
+    handleInfos: PropTypes.array,
+    addhandleList: PropTypes.array,
+    changeStore: PropTypes.func,
+    editDisplay: PropTypes.bool,
+    allowedActions: PropTypes.array,
+    addDefectHandle: PropTypes.func,
+    isFinish: PropTypes.string,
   };
+
+
+  componentDidMount() {
+    const { editDisplay, addhandleList, docketId } = this.props;
+    if (editDisplay) {
+      const handleInfo = {
+        index: 1,
+        docketId,
+        handleDesc: null,
+        isChangePart: 0,
+        isCoordinate: 0,
+        partName: null,
+        coordinateDesc: null,
+        handleImg: [],
+        handleVideo: [],
+      };
+      addhandleList.push(handleInfo);
+      this.props.changeStore({ addhandleList });
+    }
+  }
 
   addHandleInfo = () => {
     // 添加记录, 新增一个新的可填写表单区域
+    const { addhandleList, docketId } = this.props;
+    const index = addhandleList.length > 0 && addhandleList[0].index || 0; // 用于创建的删除使用
+    const handleInfo = {
+      index: index + 1,
+      docketId: docketId,
+      handleDesc: null,
+      isChangePart: 0,
+      isCoordinate: 0,
+      partName: null,
+      coordinateDesc: null,
+      handleImg: [],
+      handleVideo: [],
+    };
+    addhandleList.unshift(handleInfo);
+    this.props.changeStore({ addhandleList });
   }
 
-  mockHandleInfos = [
-    {
-      handleDesc: '一条处理信息描述',
-      isChangePart: 1, // 是否更换备件
-      isCoordinate: 1, // 是否协调
-      partName: '更换的名称', // 更换部件名称
-      coordinateDesc: '协调说明1111', // 协调说明
-      handleImgs: [], // 处理图片路径数组 [{imgId, url}]
-      handleVideos: [], // 处理视频
-    }, {
-      handleDesc: '两条处理信息描述',
-      isChangePart: 0, // 是否更换备件
-      isCoordinate: 0, // 是否协调
-      partName: '', // 更换部件名称
-      coordinateDesc: '', // 协调说明
-      handleImgs: [], // 处理图片路径数组
-      handleVideos: [], // 处理视频
-    },
-  ]
+  exchangeActioncode = (allActions, code) => {
+    const cur = allActions.filter(e => e.actionCode === code);
+    return cur.length > 0 && !cur[0].isPermission || false;
+  }
+
+  infoChange = (value) => { // 处理信息的发生改变
+    const { index, ...rest } = value;
+    const { addhandleList } = this.props;
+    addhandleList[addhandleList.length - index] = { ...addhandleList[addhandleList.length - index], ...rest };
+    this.props.changeStore({ addhandleList });
+  }
+
+  saveHandle = (record) => { // 保存处理信息(单独)
+    const { index } = record;
+    const { handleImg = [] } = record;
+    const curImg = handleImg.length > 0 && handleImg.map(e => e.url) || [];
+    record['handleImg'] = curImg;
+    const { addhandleList, addDefectHandle } = this.props;
+    addDefectHandle({
+      record,
+      func: () => {
+        addhandleList.splice(addhandleList.length - index, 1);
+        this.props.changeStore({ addhandleList });
+      },
+    });
+  }
+
+  delHandle = (record) => {
+    const { index } = record;
+    const { addhandleList } = this.props;
+    addhandleList.splice(addhandleList.length - index, 1);
+    this.props.changeStore({ addhandleList });
+  }
 
   render() {
-    const { mockHandleInfos = {} } = this;
+    const { handleInfos = [], allowedActions = [], addhandleList = [], isVertify, addMultipleEvent, isFinish } = this.props;
+    const isAdd = this.exchangeActioncode(allowedActions, '15'); // 添加的权限是14
+    const canAdd = addMultipleEvent ? isAdd : addhandleList.length === 0 && isAdd; // 可以添加一条还是添加多条
     return (
       <section className={styles.handleInfo}>
-        <h4 className={styles.handleTitle}>
+        {<h4 className={styles.handleTitle}>
           <div className={styles.titleName}>处理信息</div>
-          <CneButton className={styles.addBtn} onClick={this.addHandleInfo}>
+          {canAdd && <CneButton className={styles.addBtn} onClick={this.addHandleInfo}>
             <i className={`iconfont icon-newbuilt ${styles.addIcon}`} />
             <span className={styles.text}>添加记录</span>
-          </CneButton>
-        </h4>
+          </CneButton>}
+        </h4>}
         <div className={styles.handleContents}>
-          {mockHandleInfos.map((e, i) => (
+          {addhandleList.map((e, i) => (
+            <InfoEdit
+              key={e.index}
+              record={e}
+              saveChange={this.saveHandle}
+              onChange={this.infoChange}
+              delChange={this.delHandle}
+              isVertify={isVertify}
+              isFinish={isFinish}
+              allowedActions={allowedActions}
+            />
+          ))}
+          {handleInfos.map((e, i) => (
             <InfoDetail key={i} {...e} />
           ))}
-          <InfoEdit />
         </div>
       </section>
     );

@@ -26,7 +26,10 @@ function* getDefectList(action) { //获取缺陷工单列表
       listLoading: true,
       listParams: payload,
     });
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, {
+      ...payload,
+      sortMethod: ({ ascend: 'asc', descend: 'desc' })[payload.sortMethod],
+    });
     if (response.data.code === '10000') {
       const { stateAndTotalList = [], tableData = {} } = response.data.data;
       const { pageCount, dataList } = tableData;
@@ -60,7 +63,6 @@ function* getDefectList(action) { //获取缺陷工单列表
 }
 
 function* getParticipant() { // 获取执行人所有列表
-  // const url = `${APIBasePath}${ticket.getParticipant}`;
   const url = `${APIBasePath}${ticket.getOperaUser}`;
   try {
     const response = yield call(axios.get, url, {
@@ -79,8 +81,30 @@ function* getParticipant() { // 获取执行人所有列表
   }
 }
 
+function* getDefectAction(action) { // 2.7.3.2.	查询消缺可执行动作 创建和追加的
+  const { payload } = action;
+  const url = `${APIBasePath}${ticket.getEliminateDefectAction}`;
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield call(easyPut, 'changeStore', {
+        allowedActions: response.data.data || [],
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    message.error(e.message);
+    yield call(easyPut, 'changeStore', {
+      defectAction: [],
+    });
+  }
+}
+
 export function* watchEliminateDefectList() {
   yield takeLatest(eliminateDefectListAction.getDefectList, getDefectList);
   yield takeLatest(eliminateDefectListAction.getParticipant, getParticipant);
+  yield takeLatest(eliminateDefectListAction.getDefectAction, getDefectAction);
 }
 

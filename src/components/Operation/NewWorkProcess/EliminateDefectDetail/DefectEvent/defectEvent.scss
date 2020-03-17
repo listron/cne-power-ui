@@ -1,18 +1,18 @@
 
 @import "../../../../../theme/theme.scss";
 
-.defectEventWrap{
-  margin-top: 19px;
-  padding: 0 24px;
-  .cneTips{
-    background: pink;
-    width: 260px;
-  }
-  .eventTitle{
+
+.eventTitle{
     color: $themeColor;
-  }
-  .eventDetail{
-    margin-top: 14px;
+    margin-top: 19px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.eventDetail{
+    margin: 14px 24px 0;
     background:#ffffff;
     border:1px solid #d4d4d4;
     box-shadow:2px 2px 0 3px #f3f2f2;
@@ -28,7 +28,7 @@
     }
     .status{
       position: absolute;
-      right:0;
+      right:3px;
       top:0;
       .yijie{ color:$themeColor};
       .weijie{ color:#df4b33};
@@ -104,8 +104,7 @@
 
        }
     }
-  }
-  .footer{
+    .footer{
       background:#f3f2f2;
       height:40px;
       line-height: 40px;
@@ -144,15 +143,15 @@
   }
 }
 
- .infoEditBox{
+.infoEditBox{
     border:1px solid var(--promptColor);
     box-shadow:2px 2px 0 3px #f3f2f2;
     border-radius:2px;
     margin-bottom: 20px;
     padding: 32px 33px 20px 20px;
-    margin-top: 13px;
+    margin: 14px 24px 0;
     position: relative;
-     .status{
+    .status{
       position: absolute;
       right:0;
       top:0;
@@ -175,6 +174,7 @@
       }
       .recordName{
         flex: 0 0 71px;
+        width: 71px;
         font-weight: 700;
         display: flex;
         line-height: 40px;
@@ -206,7 +206,7 @@
           cursor: pointer;
         }
     }
-     .editRecord{
+    .editRecord{
       margin-bottom: 8px;
       .editTitle{
         .editTitleName{
@@ -224,4 +224,4 @@
         flex: 1;
       }
     }
-  }
+}

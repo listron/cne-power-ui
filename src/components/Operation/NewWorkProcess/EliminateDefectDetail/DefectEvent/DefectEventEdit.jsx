@@ -1,63 +1,100 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Input, Select, Tooltip } from 'antd';
 import styles from './defectEvent.scss';
 import CneTips from '@components/Common/Power/CneTips';
+import PicUploader from '../../Common/PicUploader';
+import path from '../../../../../constants/path';
 const { TextArea } = Input;
 const { Option } = Select;
 
 
 
 export default class DefectEvenrEdit extends Component {
-
-  state = {
-    eventDesc: '处理记录信息',
-    defectTypeCode: null, // 缺陷类型
-    deviceTypeCode: null, // 设备类型
-    deviceFullcode: '234423', //设备全编码
-    defectLevel: '1', // 缺陷级别
-    partName: '哈哈哈不见',
-    coordinateDesc: '协调信息1122找大力他可以搞定所有',
-    handleImg: [], // 图片地址
+  static propTypes = {
+    deviceTypes: PropTypes.array,
+    record: PropTypes.object,
+    deviceModes: PropTypes.array,
+    stationCode: PropTypes.number,
+    record: PropTypes.object,
+    onChange: PropTypes.func,
+    isVertify: PropTypes.bool,
   }
 
-  cancelEdit = () => { // 取消处理信息添加
-    console.log('取消处理信息添加');
+  constructor() {
+    super();
+    this.state = {
+      visible: false,
+    };
   }
 
-  changeDefectType = (value) => {
-    console.log('e', value);
-    this.setState({ defectTypeCode: value });
+
+
+  changeDefectType = (value) => { // 修改缺陷类型
+    const { record, onChange } = this.props;
+    onChange({ index: record.index, defectTypeCode: value });
   }
 
-  changeDeviceType = (value) => {
-    console.log('e', value);
+  changeDeviceType = (value) => { // 修改设备类型
+    const { record, onChange, stationCode } = this.props;
+    const [deviceTypeCode, deviceTypeName] = value.split('_');
+    onChange({ index: record.index, deviceTypeCode, deviceTypeName });
+    this.props.getStationTypeDeviceModes({ stationCode, deviceTypeCode });
   }
 
-  changeDeviceName = (value) => {
-    console.log('e', value);
+  changeDeviceName = (value) => { // 改变设备型号
+    const { record, onChange } = this.props;
+    const [deviceFullcode, deviceName] = value.split('_');
+    onChange({ index: record.index, deviceFullcode, deviceName });
   }
 
-  changeDefectLevel = (value) => {
-    console.log('e', value);
+  changeDefectLevel = (value) => { // 修改缺陷级别
+    const { record, onChange } = this.props;
+    onChange({ index: record.index, defectLevel: value });
+  }
+
+
+  onDescChange = ({ target }) => {
+    const { record, onChange } = this.props;
+    onChange({ index: record.index, eventDesc: target.value || '' });
+  }
+
+  onConfirm = () => { // 确认删除
+    const { record, delChange } = this.props;
+    delChange(record);
+  }
+
+
+  onPicChange = (value) => { // 图片旋转
+    console.log('value', value);
+    const { record, onChange } = this.props;
+    const defectImgs = value.map(e => {
+      return {
+        url: e,
+        imgId: '',
+        updateSign: 1,
+      };
+    });
+    onChange({ index: record.index, defectImgs });
   }
 
 
   render() {
+    const { deviceTypes = [], record = {}, stationCode, deviceModes = [], isVertify, del } = this.props;
     const {
-      eventDesc, defectTypeCode, deviceTypeCode, deviceFullcode, defectLevel, handleImg,
-    } = this.state;
+      eventDesc, defectTypeCode, deviceTypeCode, deviceTypeName, deviceName, deviceFullcode, defectLevel, defectImgs = [],
+    } = record;
     const { visible } = this.state;
-    const deviceTypes = [{ deviceTypeCode: 201, deviceTypeName: '集中式逆变器' }, { deviceTypeCode: 206, deviceTypeName: '组串式逆变器' }];
-    const deviceModes = [{ deviceFullcode: 123, deviceName: 123 }];
+    const downloadTemplet = `${path.basePaths.APIBasePath}${path.pubilcPath.imgUploads}`;
     return (
       <div className={styles.infoEditBox}>
         <div className={styles.status}>
-          <i className={`iconfont icon-wrong ${styles.close}`} onClick={() => this.setState({ visible: true })} />
+          {del && <i className={`iconfont icon-wrong ${styles.close}`} onClick={() => this.setState({ visible: true })} />}
         </div>
         <div className={styles.editDevice}>
           <div className={styles.defectType}>
             <div className={styles.recordName}>缺陷类型 <span className={styles.star}>*</span></div>
-            <Select value={defectTypeCode} placeholder={'请选择'} onChange={this.changeDefectType}>
+            <Select value={defectTypeCode} placeholder={'请选择'} onChange={this.changeDefectType} required={isVertify}>
               <Option value={1} >设备缺陷</Option>
               <Option value={0} >其他缺陷</Option>
             </Select>
@@ -66,23 +103,48 @@ export default class DefectEvenrEdit extends Component {
             <React.Fragment>
               <div className={styles.deviceType} >
                 <div className={styles.recordName}>设备类型 <span className={styles.star}>*</span></div>
-                <Select placeholder={'请选择'} value={deviceTypeCode} onChange={this.changeDeviceType} >
-                  {deviceTypes.map(e => <Option value={e.deviceTypeCode} key={e.deviceTypeCode}>{e.deviceTypeName}</Option>)}
+                <Select
+                  placeholder={'请选择'}
+                  value={deviceTypeCode && `${deviceTypeCode}_${deviceTypeName}` || ''}
+                  onChange={this.changeDeviceType}
+                  disabled={deviceTypes.length === 0}
+                  required={isVertify}
+                >
+                  {deviceTypes.map(e => (
+                    <Option
+                      key={`${e.deviceTypeCode}_${e.deviceTypeName}`}
+                      value={`${e.deviceTypeCode}_${e.deviceTypeName}`}
+                      title={e.deviceTypeName}
+                    >
+                      {e.deviceTypeName}
+                    </Option>))}
                 </Select>
               </div>
               <div className={styles.deviceName}>
                 <div className={styles.recordName}>设备名称 <span className={styles.star}>*</span></div>
-                <Select placeholder={'请选择'} onChange={this.changeDeviceName} disabled={!deviceTypeCode}>
-                  {deviceModes.map(e => <Option value={e.deviceFullcode} key={e.deviceFullcode} title={e.deviceName}>{e.deviceName}</Option>)}
+                <Select
+                  placeholder={'请选择'}
+                  onChange={this.changeDeviceName}
+                  disabled={!deviceTypeCode}
+                  required={isVertify}
+                  value={deviceFullcode && `${deviceFullcode}_${deviceName}` || ''}
+                >
+                  {deviceModes.map(e =>
+                    (<Option
+                      value={`${e.deviceFullcode}_${e.deviceName}`}
+                      key={`${e.deviceFullcode}_${e.deviceName}`}
+                      title={e.deviceName}
+                    >{e.deviceName}
+                    </Option>))}
                 </Select>
               </div>
               <div className={styles.defectLevel} onChange={this.changeDefectLevel}>
                 <div className={styles.recordName}>缺陷级别 <span className={styles.star}>*</span> </div>
-                <Select placeholder={'请选择'} >
-                  <Option value="1">一级</Option>
-                  <Option value="2">二级</Option>
-                  <Option value="3">三级</Option>
-                  <Option value="4">四级</Option>
+                <Select placeholder={'请选择'} onChange={this.changeDefectLevel} value={defectLevel} required={isVertify}>
+                  <Option value={1} key={'1'}>一级</Option>
+                  <Option value={2} key={'2'}>二级</Option>
+                  <Option value={3} key={'3'}>三级</Option>
+                  <Option value={4} key={'4'}>四级</Option>
                 </Select>
                 <Tooltip placement="top" title="缺陷级别的定义，需要产品那边提供文案">
                   <i className={`iconfont icon-help ${styles.iconHelp}`} />
@@ -90,7 +152,6 @@ export default class DefectEvenrEdit extends Component {
               </div>
             </React.Fragment>
           }
-
         </div>
         <div className={styles.editRecord}>
           <span className={styles.editTitle}>
@@ -99,14 +160,22 @@ export default class DefectEvenrEdit extends Component {
               {eventDesc ? (`${eventDesc}`).length : 0}/999字
             </span>
           </span>
-          <TextArea onChange={this.onDescChange} value={eventDesc} placeholder={'请填写缺陷描述，必填！'} />
+          <TextArea onChange={this.onDescChange} value={eventDesc} placeholder={'请填写缺陷描述，必填！'} required={isVertify} />
         </div>
         <div className={styles.editPic}>
           <span className={styles.editTitle}>
-            <span className={styles.recordName}>添加照片</span>
+            <span className={styles.recordName}>添加照片  <span className={styles.star}>*</span></span>
             <span className={styles.titleTip}>最多4张</span>
           </span>
-          <span>{handleImg.join(',')}</span>
+          <span>{
+            <PicUploader
+              value={defectImgs && defectImgs.map(e => e.url) || []}
+              mode="edit"
+              maxPicNum={4}
+              onChange={this.onPicChange}
+              uploadUrl={downloadTemplet}
+            />
+          }</span>
         </div>
         <CneTips
           tipText={'确认删除此事件'}

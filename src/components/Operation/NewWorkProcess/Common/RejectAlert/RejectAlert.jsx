@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Input } from 'antd';
 import CneButton from '@components/Common/Power/CneButton';
@@ -12,6 +12,7 @@ const { TextArea } = Input;
   * onConfirm: func, 唯一输出函数(必须)
   * onCancel: func, 取消提示
   * tipClassname: object, 默认{}, 用于手动替换更变默认样式
+ *  reasonName 退回的text　
   */
 export default class RejectAlert extends Component {
   static propTypes = {
@@ -21,6 +22,7 @@ export default class RejectAlert extends Component {
     onConfirm: PropTypes.func,
     onCancel: PropTypes.func,
     width: PropTypes.number,
+    reasonName: PropTypes.string,
   };
 
   static defaultProps = {
@@ -43,9 +45,9 @@ export default class RejectAlert extends Component {
 
   onConfirm = () => { // 确定按钮
     const { value } = this.state;
-    if(value && value.trim()) {
+    if (value && value.trim()) {
       return this.props.onConfirm(value, () => {
-        this.setState({value: null});
+        this.setState({ value: null });
       });
     }
     return this.setState({
@@ -56,7 +58,7 @@ export default class RejectAlert extends Component {
   onChange = e => {
     const num = computeLength(e.target.value);
     // 大于99
-    if(num > 999) {
+    if (num > 999) {
       return false;
     }
     this.setState({
@@ -69,13 +71,13 @@ export default class RejectAlert extends Component {
   render() {
     const { value, numberWord, errorFlag } = this.state;
     const {
-      visible, theme, tipClassname, width,
+      visible, theme, tipClassname, width, reasonName,
     } = this.props;
     const defaultModalProps = {
       footer: null,
       closable: false,
       maskClosable: false,
-      maskStyle: {backgroundColor: 'rgba(153,153,153,0.2)'},
+      maskStyle: { backgroundColor: 'rgba(153,153,153,0.2)' },
     };
     width && (defaultModalProps.width = width);
     return (
@@ -88,12 +90,12 @@ export default class RejectAlert extends Component {
       >
         <div className={styles.rejectContentBox}>
           <div className={styles.rejectTitle}>
-            驳回
+            {reasonName || '驳回'}
           </div>
           <div className={styles.rejectContent}>
             <div className={styles.rejectTextBox}>
               <span className={styles.textImport}>*</span>
-              <span className={styles.rejectContentText}>驳回原因</span>
+              <span className={styles.rejectContentText}>{reasonName}原因</span>
             </div>
             <TextArea
               value={value}
@@ -116,7 +118,7 @@ export default class RejectAlert extends Component {
             </div>
             <CneButton
               onClick={this.onConfirm}
-              style={{width: '92px'}}
+              style={{ width: '92px' }}
             >
               确定
             </CneButton>

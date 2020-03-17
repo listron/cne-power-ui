@@ -14,6 +14,7 @@ export default class DefectsHandler extends Component {
     stateAndTotalList: PropTypes.array,
     total: PropTypes.number,
     getDefectList: PropTypes.func,
+    allowedActions: PropTypes.array,
   };
 
   state = {
@@ -21,12 +22,16 @@ export default class DefectsHandler extends Component {
   }
 
   toAddUndoneDefect = () => { // 新建未解决消缺工单
-    console.log('新建未解决消缺工单');
+    const { location, history } = this.props;
+    const { pathname } = location;
+    history.push(`${pathname}?page=defectDetail&isFinish=0`);
     this.setState({ visible: false });
   }
 
   toAddAlldoneDefect = () => { // 新建已解决消缺工单
-    console.log('新建已解决消缺工单');
+    const { location, history } = this.props;
+    const { pathname } = location;
+    history.push(`${pathname}?page=defectDetail&isFinish=1`);
     this.setState({ visible: false });
   }
 
@@ -51,35 +56,45 @@ export default class DefectsHandler extends Component {
     });
   }
 
+  exchangeActioncode = (allActions, code) => {
+    const cur = allActions.filter(e => code.includes(e.actionCode));
+    return cur.length > 0 && !cur[0].isPermission || false;
+  }
+
   render() {
-    const { stateAndTotalList = [], listParams = {}, total } = this.props;
+    const { stateAndTotalList = [], listParams = {}, total, allowedActions = [] } = this.props;
     const { pageSize = 30, pageNum = 1, stateId } = listParams || {};
+    const undoneBtn = this.exchangeActioncode(allowedActions, ['9', '12']); // 未解决‘
+    const alldoneBtn = this.exchangeActioncode(allowedActions, ['10', '11']); // 已解决‘
     return (
       <div className={styles.defectsHandler}>
         <div className={styles.leftHandler}>
-          <Dropdown
-            overlayClassName={styles.addDropDown}
-            trigger={['click']}
-            visible={this.state.visible}
-            overlay={<div className={styles.solveStatus}>
-              <CneButton className={styles.undoneBtn} onClick={this.toAddUndoneDefect}>
-                <i className={`iconfont icon-undone ${styles.undoneIcon}`} />
-                <span className={styles.text}>未解决</span>
+          {(undoneBtn || alldoneBtn) &&
+            <Dropdown
+              overlayClassName={styles.addDropDown}
+              trigger={['click']}
+              visible={this.state.visible}
+              overlay={<div className={styles.solveStatus}>
+                {undoneBtn && <CneButton className={styles.undoneBtn} onClick={this.toAddUndoneDefect}>
+                  <i className={`iconfont icon-undone ${styles.undoneIcon}`} />
+                  <span className={styles.text}>未解决</span>
+                </CneButton>
+                }
+                {alldoneBtn && <CneButton className={styles.alldoneBtn} onClick={this.toAddAlldoneDefect}>
+                  <i className={`iconfont icon-alldone ${styles.alldoneIcon}`} />
+                  <span className={styles.text}>已解决</span>
+                </CneButton>}
+              </div>}
+              placement="bottomLeft"
+              onVisibleChange={this.handleVisibleChange}
+            >
+              <CneButton className={styles.addBtn} onClick={this.toAddDefect}>
+                <i className={`iconfont icon-newbuilt ${styles.addIcon}`} />
+                <span className={styles.text}>新建</span>
               </CneButton>
-              <CneButton className={styles.alldoneBtn} onClick={this.toAddAlldoneDefect}>
-                <i className={`iconfont icon-alldone ${styles.alldoneIcon}`} />
-                <span className={styles.text}>已解决</span>
-              </CneButton>
-            </div>}
-            placement="bottomLeft"
-            onVisibleChange={this.handleVisibleChange}
-          >
-            <CneButton className={styles.addBtn} onClick={this.toAddDefect}>
-              <i className={`iconfont icon-newbuilt ${styles.addIcon}`} />
-              <span className={styles.text}>新建</span>
-            </CneButton>
-          </Dropdown>
-          <RadioGroup onChange={this.onChangeStatus} value={stateId || 0 }>
+            </Dropdown>
+          }
+          <RadioGroup onChange={this.onChangeStatus} value={stateId || 0}>
             <RadioButton value={0}>全部</RadioButton>
             {stateAndTotalList.map(e => (
               <RadioButton

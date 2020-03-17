@@ -151,67 +151,85 @@
   .stationName, .docketDesc, .eventNum, .createTime, .keepLength, .operName, .status, .handle, .stationNameText, .docketDescText, .eventNumText, .createTimeText, .keepLengthText, .operNameText, .statusContent, .handleContent{
     @include overflowText();
   }
-  .createTimeText, .operNameText, .statusContent, .handle{ // 状态, 时间 居中
+  .createTimeText, .statusContent, .handle{ // 状态, 时间 居中
     text-align: center;
   }
   .eventNumText{ // 数值 居右
     text-align: right;
   }
   .stationName{
-    width: calc((100vw - 230px) * 0.176);
+    width: calc((100vw - 250px) * 0.176);
   }
   .stationNameText{
-    max-width: calc((100vw - 230px) * 0.176 - 20px);
+    max-width: calc((100vw - 250px) * 0.176 - 20px);
   }
   .docketDesc{
-    width: calc((100vw - 230px) * 0.143);
+    width: calc((100vw - 250px) * 0.143);
   }
   .docketDescText{
-    max-width: calc((100vw - 230px) * 0.143 - 20px);
+    max-width: calc((100vw - 250px) * 0.143 - 20px);
   }
   .eventNum{
-    width: calc((100vw - 230px) * 0.074);
+    width: calc((100vw - 250px) * 0.074);
   }
   .eventNumText{
-    max-width: calc((100vw - 230px) * 0.074 - 20px);
+    max-width: calc((100vw - 250px) * 0.074 - 20px);
   }
   .createTime{
-    width: calc((100vw - 230px) * 0.132);
+    width: calc((100vw - 250px) * 0.132);
   }
   .createTime{
-    max-width: calc((100vw - 230px) * 0.132 - 20px);
+    max-width: calc((100vw - 250px) * 0.132 - 20px);
   }
   .keepLength{
-    width: calc((100vw - 230px) * 0.119);
+    width: calc((100vw - 250px) * 0.119);
   }
   .keepLengthText{
-    max-width: calc((100vw - 230px) * 0.119 - 20px);
+    max-width: calc((100vw - 250px) * 0.119 - 20px);
   }
   .operName{
-    width: calc((100vw - 230px) * 0.178);
+    width: calc((100vw - 250px) * 0.178);
   }
   .operNameText{
-    max-width: calc((100vw - 230px) * 0.178 - 20px);
+    max-width: calc((100vw - 250px) * 0.178 - 20px);
   }
-  .status{
+  table thead tr > th.status, table tbody tr > td.status{
     padding: 0!important;
-    width: calc((100vw - 230px) * 0.115);
+    line-height: 30px!important;
+    width: calc((100vw - 250px) * 0.115);
   }
   .statusContent{
     position: relative;
     .coordinateIcon, .overtimeIcon{
       font-size: 20px;
       position: absolute;
-      right: 5px;
+      right: 3%;
     }
   }
   .handle{
-    width: calc((100vw - 230px) * 0.06);
+    width: calc((100vw - 250px) * 0.06);
+    padding-right: 10px!important;
     .handleIcon{
       font-size: 18px;
       cursor: pointer;
       vertical-align: bottom;
-      padding: 0 10px;
+      padding: 10px 10px;
+    }
+  }
+  :global{
+    .ant-table:not(.ant-table-empty) {
+      .ant-table-body:after {
+        content: url("/img/notabdata97-72.png");
+        display: inline-block;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0);
+        height: 80px;
+        margin-top: 20px;
+      }
+    }
+    .ant-table-placeholder {
+      border-bottom: none;
     }
   }
 }
@@ -262,7 +280,6 @@
     color: var(--themeColor);
     &:hover{
       color: #f9b600;
-      background-color: #ff6cee;
     }
   }
 }
