@@ -67,13 +67,14 @@ class ChartLine extends PureComponent {
     const lineChart = echarts.init(this.lineRef);
     // lineChart.hideLoading();
     const { time = [], pointData = [] } = data;
-    const noAlarmTime = ['NB1036', 'NB1038', 'NB1040'].includes(eventCode); // 诊断事件组串低效、电压异常、并网延时中不展示告警时段，页面相应背景图移除
-    const noDeviceName = ['NB1035', 'NB1036', 'NB1037'].includes(eventCode); // 诊断事件零电流、组串低效、固定物遮挡的legend要一行8列展示,以及不展示设备名称
+    const noAlarmTime = ['NB1038', 'NB1040'].includes(eventCode); // 诊断事件电压异常、并网延时中不展示告警时段，页面相应背景图移除
+    const noDeviceName = ['NB1035', 'NB1037'].includes(eventCode); // 诊断事件零电流、固定物遮挡的legend要一行8列展示,以及不展示设备名称
+    const seriesInefficient = ['NB1036'].includes(eventCode); // 组串低效不展示告警、设备名称，且展示8行
     const legends = [{
       name: '告警时段',
       icon: 'rect',
       height: 30,
-      left: `${noDeviceName ? 2 : 7}%`,
+      left: `${(noDeviceName || seriesInefficient) ? 2 : 7}%`,
       top: 0,
       itemWidth: 14,
       selectedMode: false,
@@ -82,11 +83,11 @@ class ChartLine extends PureComponent {
         color: '#353535',
       },
     }];
-    if (noAlarmTime) { // 不展示告警时段
+    if (noAlarmTime || seriesInefficient) { // 不展示告警时段
       legends.shift();
     }
     const colors = ['rgba(251,230,227,0.50)']; // 图标依次着色
-    if (noAlarmTime) { // 不展示告警时段
+    if (noAlarmTime || seriesInefficient) { // 不展示告警时段
       colors.shift();
     }
     const unitGroupSets = new Set();
@@ -113,7 +114,7 @@ class ChartLine extends PureComponent {
         data: markAreaData,
       },
     }];
-    if (noAlarmTime) { // 不展示告警时段
+    if (noAlarmTime || seriesInefficient) { // 不展示告警时段
       series.shift();
     }
     const sortedPointData = pointData.sort((a, b) => { // 单位排序：w/m2 >kw>V>A；其余默认
@@ -134,17 +135,17 @@ class ChartLine extends PureComponent {
       unitsGroup = sortedPointData.map(e => e.pointUnit);
     }
     sortedPointData.forEach((e, i) => {
-      const pointName = `${!noDeviceName ? e.deviceName : ''} ${e.pointName || ''}`; // 诊断事件的零电流、组串低效、固定物遮挡不展示设备名称
+      const pointName = `${(!noDeviceName && !seriesInefficient) ? e.deviceName : ''} ${e.pointName || ''}`; // 诊断事件的零电流、组串低效、固定物遮挡不展示设备名称
       const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
       colors.push(this.lineColors[i % this.lineColors.length]);
-      if(e.isConnected === 0 && noDeviceName){ // 诊断事件的零电流、组串低效、固定物遮挡未接组串颜色设置为#999
+      if(e.isConnected === 0 && (noDeviceName || seriesInefficient)){ // 诊断事件的零电流、组串低效、固定物遮挡未接组串颜色设置为#999
         colors.splice((i + 1), 1, '#999');
       }
       legends.push({
         name: pointFullName,
         height: 30,
-        left: `${noAlarmTime ? (7 + i % 4 * 21.5) : (noDeviceName ? (3 + (i + 1) % 8 * 12) : (7 + (i + 1) % 4 * 21.5))}%`, // 诊断事件的组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置;  诊断事件零电流、组串低效、固定物遮挡的要一行8列展示
-        top: `${noAlarmTime ? (Math.floor(i / 4) * 30) : (noDeviceName ? (Math.floor((i + 1) / 8) * 30) : (Math.floor((i + 1) / 4) * 30))}`,
+        left: `${noAlarmTime ? (7 + i % 4 * 21.5) : (noDeviceName ? (3 + (i + 1) % 8 * 12) : (seriesInefficient ? (3 + i % 8 * 12) : (7 + (i + 1) % 4 * 21.5)))}%`, // 诊断事件的组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置;  诊断事件零电流、组串低效、固定物遮挡的要一行8列展示
+        top: `${noAlarmTime ? (Math.floor(i / 4) * 30) : (noDeviceName ? (Math.floor((i + 1) / 8) * 30) : (seriesInefficient ? (Math.floor(i / 8) * 30) : (Math.floor((i + 1) / 4) * 30)))}`,
         data: [pointFullName],
         textStyle: {
           color: e.isWarned && pageKey === 'diagnose' ? '#f5222d' : '#353535',
@@ -223,18 +224,18 @@ class ChartLine extends PureComponent {
               <h3 class=${styles.tooltipTitle}>${name}</h3>
               ${params.map(e => {
                 const { color, seriesIndex, value } = e || {};
-                const eachFullData = sortedPointData[noAlarmTime ? seriesIndex: seriesIndex - 1] || {}; // 诊断事件组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置
+                const eachFullData = sortedPointData[(noAlarmTime || seriesInefficient) ? seriesIndex: seriesIndex - 1] || {}; // 诊断事件组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置
                 // 解析全数据使用， 因为系列中有个首条空线， series需减一对应。
                 const { isWarned, pointName, deviceName, isConnected } = eachFullData;
                 const lineFullName = `${deviceName} ${pointName || ''}`;
                 return (
                   `<p class=${(isWarned && pageKey === 'diagnose') ? styles.warnedItem : styles.eachItem }>
                     <span class=${styles.tipIcon}>
-                      <span class=${styles.line} style="background-color:${isConnected === 0 && noDeviceName ? '#999' : color}"></span>
-                      <span class=${styles.rect} style="background-color:${isConnected === 0 && noDeviceName ? '#999' : color}"></span>
+                      <span class=${styles.line} style="background-color:${isConnected === 0 && (noDeviceName || seriesInefficient) ? '#999' : color}"></span>
+                      <span class=${styles.rect} style="background-color:${isConnected === 0 && (noDeviceName || seriesInefficient) ? '#999' : color}"></span>
                     </span>
                     <span class=${styles.tipName}>${lineFullName}</span>
-                    <span class=${styles.tipValue}>${isConnected === 0 && noDeviceName ? '--' : dataFormats(value, '--', 2, true)}</span>
+                    <span class=${styles.tipValue}>${isConnected === 0 && (noDeviceName || seriesInefficient) ? '--' : dataFormats(value, '--', 2, true)}</span>
                   </p>`
                 );
               }).join('')}

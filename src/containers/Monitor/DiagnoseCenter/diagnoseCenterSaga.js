@@ -185,10 +185,11 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
         eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
       });
 
-      const pointData = response.data.data.pointData; // 获取最开始得到的数据
+      const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 获取最开始得到的数据
       const resValue = pointData.filter(e => { // 请求的value数据是否都为空
-        return e.value.length > 0;
+        return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
       });
+      console.log('resValue: ', resValue);
 
       if (resValue.length === 0) {
         if (isDataTip) { // 如果所选日期无数据的时弹出提示语
@@ -218,9 +219,9 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
             eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
           });
 
-          const pointData = response.data.data.pointData; // 获取1分钟得到的数据
+          const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 获取1分钟得到的数据
           const resValue = pointData.filter(e => { // 请求的value数据是否都为空
-            return e.value.length > 0;
+            return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
           });
 
           const intervalState = resValue.length === 0;
@@ -244,9 +245,9 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
                 },
                 eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
               });
-              const pointData = response.data.data.pointData; // 获取10分钟得到的数据
+              const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 获取10分钟得到的数据
               const resValue = pointData.filter(e => { // 请求的value数据是否都为空
-                return e.value.length > 0;
+                return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
               });
               if (resValue.length === 0) { // 如果10分钟也没有value数据的话，就弹出提示语“无数据”
                 yield call(easyPut, 'changeStore', { isNoDataTip: true });
