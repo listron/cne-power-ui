@@ -31,10 +31,10 @@ export default class MeterDisposeInfo extends React.Component {
     super(props);
     this.state = {
       zoomVisible: false,
-      styleLocation: {},
+      styleLocation: '',
       changeDateFlag: false,
-      imgIndex: 0, // 当前图片下标
-      curIndex: 0, // 当前表格下标
+      imgIndex: '', // 当前图片下标
+      curIndex: '', // 当前表格下标
       arrStr: '', // 当前字段名称
     };
   }
@@ -194,12 +194,24 @@ export default class MeterDisposeInfo extends React.Component {
 
   // 查看图片
   lookPic = (flag, curIndex, imgIndex, str) => {
+    const { curIndex: thisIndex, imgIndex: thisImgIndex } = this.state;
+    // // 判断如果当前图片二次点击关闭弹框
+    if(curIndex === thisIndex && imgIndex === thisImgIndex) {
+      return this.setState({
+        zoomVisible: false,
+        styleLocation: '',
+        imgIndex: '',
+        curIndex: '',
+      });
+    }
+    console.log(curIndex, 'curIndex');
+    console.log(thisIndex, 'thisIndex');
+    console.log(imgIndex, 'imgIndex');
+    console.log(thisImgIndex, 'thisImgIndex');
     if (flag) {
       return this.setState({
         zoomVisible: true,
-        styleLocation: {
-          left: '245px',
-        },
+        styleLocation: 'left',
         imgIndex,
         curIndex,
         arrStr: str,
@@ -207,9 +219,7 @@ export default class MeterDisposeInfo extends React.Component {
     }
     return this.setState({
       zoomVisible: true,
-      styleLocation: {
-        right: '27%',
-      },
+      styleLocation: 'right',
       imgIndex,
       curIndex,
       arrStr: str,
@@ -220,7 +230,7 @@ export default class MeterDisposeInfo extends React.Component {
   closePicZoom = () => {
     this.setState({
       zoomVisible: false,
-      styleLocation: {},
+      styleLocation: '',
     });
   };
 
@@ -937,7 +947,7 @@ export default class MeterDisposeInfo extends React.Component {
             changeStore={changeStore}
             onCancel={this.closePicZoom}
             changeStateFunc={this.changeStateFunc}
-            style={styleLocation}
+            tipClassname={styleLocation === 'left' ? styles.modalLeft : styles.modalRight}
             visible={zoomVisible}
             width={630}
             imgIndex={imgIndex}

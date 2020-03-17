@@ -1030,6 +1030,13 @@
       }
     }
   }
+  .modalLeft{
+    left: 45%;
+  }
+
+  .modalRight{
+    left: 1%;
+  }
 }
 
 @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919 字号16px
@@ -1078,6 +1085,14 @@
       }
     }
   }
+
+  .modalLeft{
+    left: 43%;
+  }
+
+  .modalRight{
+    left: 5%;
+  }
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配 字号18px
@@ -1125,5 +1140,13 @@
         }
       }
     }
+  }
+
+  .modalLeft{
+    left: 43%;
+  }
+
+  .modalRight{
+    left: 9%;
   }
 }

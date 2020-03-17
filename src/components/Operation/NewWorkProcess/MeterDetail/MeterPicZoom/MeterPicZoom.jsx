@@ -139,6 +139,7 @@ export default class MeterPicZoom extends Component {
       footer: null,
       closable: false,
       maskClosable: false,
+      mask: false,
       maskStyle: {backgroundColor: 'rgba(153,153,153,0.2)'},
     };
     width && (defaultModalProps.width = width);
