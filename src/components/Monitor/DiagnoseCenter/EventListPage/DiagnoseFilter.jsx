@@ -52,18 +52,28 @@ class DiagnoseFilter extends Component {
         sortMethod: 'desc', // 排序方式 asc升序 + desc降序
       };
     } else {// 筛选条件点击或清空筛选条件 => 重新请求列表, 停止定时请求;
+      const {eventType} = listParams;
       let tempDeviceTypeCode = deviceTypeCode;
       let tempEventCode = eventCode;
-      if (!preStationCode || preStationCode.toString() != stationCode.toString()) {
+      if ((!preStationCode && stationCode.length > 0) ||
+        (preStationCode && preStationCode.toString() != stationCode.toString())) {
         tempDeviceTypeCode = null;
         tempEventCode = null;
-        this.props.getStationDeviceTypes({
-          stationCodes: stationCode.join(','),
-        });
+        if (stationCode.length === 0) { //把电站设备清成空串。 一定要清空，因为stationCode=[],设备要走deviceType分支
+          this.props.changeStore({
+            stationDeviceTypes: [],
+          });
+        }
+        else {
+          this.props.getStationDeviceTypes({
+            stationCodes: stationCode.join(','),
+          });
+        }
+
+        this.props.getEventtypes({eventType});
       }
-      else if (preDeviceTypeCode != deviceTypeCode) {
+      if (preDeviceTypeCode != deviceTypeCode) {
         tempEventCode = null;
-        const {eventType} = listParams;
         let param = {eventType};
         if (deviceTypeCode !== '') {
           param = {eventType, deviceTypeCode};
