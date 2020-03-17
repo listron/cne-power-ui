@@ -102,15 +102,22 @@ export default class DetailTopSubmit extends Component {
   }
 
   onBackHandle = () => { // 返回按钮 => 根据状态, 根据操作权限 是否提示弹框 c 操作权限的在验收 审核的直接退出
-    this.setState({
-      showTip: true,
-      tipText: '返回后修改内容将不会保存，确认返回吗',
-      func: () => {
-        const { location, history } = this.props;
-        const { pathname } = location;
-        history.push(`${pathname}?page=list`);
-      },
-    });
+    const { stateName, location, history } = this.props;
+    const statusArr = ['receive', 'complete']; // 已接单和领取退回不提示
+    const needTip = statusArr.includes(localStateName[stateName]);
+    const { pathname } = location;
+    if (needTip) {
+      this.setState({
+        showTip: true,
+        tipText: '返回后修改内容将不会保存，确认返回吗',
+        func: () => {
+          history.push(`${pathname}?page=list`);
+        },
+      });
+    }
+    if (!needTip) {
+      history.push(`${pathname}?page=list`);
+    }
   }
 
   handleCheck = (handleInfo) => { // 校验 执行不需要校验 提交的时候需要验证  创建或者是退回的时候需要验证
@@ -327,7 +334,6 @@ export default class DetailTopSubmit extends Component {
     const { func } = this.state;
     this.setState({
       showTip: false,
-      tipText: '',
     });
     func();
   }
@@ -358,12 +364,12 @@ export default class DetailTopSubmit extends Component {
 
   render() {
     const { showTip, tipText, status, requiredVisiable, passVisible } = this.state;
-    const { docketId, allowedActions, eventStatus = [] } = this.props;
+    const { docketId, allowedActions, eventStatus = [], scroll } = this.props;
     const acceptStuatus = !eventStatus.map(e => e.eventState).some(e => !e);
     const rejectStatu = eventStatus.map(e => e.eventState).some(e => e === 2);
     return (
       <React.Fragment>
-        <div className={styles.topSubmit}>
+        <div className={`${styles.topSubmit} ${scroll && styles.scroll}`}>
           <div className={styles.detailTitle}>
             <i className="iconfont icon-gdxq" />
             <span className={styles.titleText}>{docketId && '工单详情' || '创建工单'}</span>
