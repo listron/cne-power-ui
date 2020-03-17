@@ -147,7 +147,7 @@ export default {
       verifyEilminateDefect: '/v4/opms/defect/verify', // 验收工单
       delDocket: '/v4/opms/docket/del', // 删除工单
       getDiagWarnList: '/v3/diagwarning/detail', // 1.2.3.	获取指定的告警事件
-
+      getDefectState: '/v4/opms/defect/showuser', // 查询起始流程显示用户信息
     },
     operation: {
       // 工作台

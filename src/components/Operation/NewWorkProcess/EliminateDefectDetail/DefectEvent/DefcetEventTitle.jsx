@@ -25,7 +25,7 @@ export default class DefectEvent extends Component {
     //   eventDesc: '', // 缺陷描述
     //   eventName: '', // 缺陷名称  设备缺陷还是其他缺陷
     //   source: 1, // 缺陷来源 0 告警 1 手动 2 巡检 3 预警
-    //   defectImgs: [], //
+    //   eventImgs: [], //
     // };
     // addEventInfo.unshift(eventInfos);
     // this.props.changeStore({ addEventInfo });
@@ -52,7 +52,7 @@ export default class DefectEvent extends Component {
       eventDesc: '', // 缺陷描述
       eventName: '', // 缺陷名称  设备缺陷还是其他缺陷
       source: 1, // 缺陷来源 0 告警 1 手动 2 巡检 3 预警
-      defectImgs: [], //
+      eventImgs: [], //
     };
     addEventInfo.unshift(eventInfos);
     this.props.changeStore({ addEventInfo });

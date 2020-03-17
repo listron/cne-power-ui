@@ -66,14 +66,14 @@ export default class InfoEdit extends Component {
 
   onPicChange = (value) => { // 图片上传
     const { record, onChange } = this.props;
-    const handleImg = value.map(e => {
+    const handleImgs = value.map(e => {
       return {
         url: e,
         imgId: '',
         updateSign: 1,
       };
     });
-    onChange({ index: record.index, handleImg });
+    onChange({ index: record.index, handleImgs });
   }
 
   onVideoChange = (value) => { // 视频编辑
@@ -123,14 +123,15 @@ export default class InfoEdit extends Component {
 
 
   render() {
-    const { isFinish, record = {}, isVertify, allowedActions = [] } = this.props;
+    const { isFinish, record = {}, isVertify, allowedActions = [], sigleSave } = this.props;
     const {
-      handleDesc, isChangePart, isCoordinate, partName, coordinateDesc, handleImg = [], handleVideos,
+      handleDesc, isChangePart, isCoordinate, partName, coordinateDesc, handleImgs = [], handleVideos,
     } = record;
     const { handleVertify, visible, tipText } = this.state;
     const inputRequire = (isVertify || handleVertify) && { required: true } || { pattern: '/^\s*$/g' };
     const downloadTemplet = `${path.basePaths.APIBasePath}${path.pubilcPath.imgUploads}`;
     const editRight = this.exchangeActioncode(allowedActions, '23');
+    console.log('editRight', editRight);
     return (
       <div className={styles.infoEditBox}>
         <div className={styles.editRecord}>
@@ -153,7 +154,7 @@ export default class InfoEdit extends Component {
           </span>
           <span>{
             <PicUploader
-              value={handleImg && handleImg.map(e => e.url) || []}
+              value={handleImgs && handleImgs.map(e => e.url) || []}
               mode="edit"
               maxPicNum={4}
               onChange={this.onPicChange}
@@ -196,7 +197,7 @@ export default class InfoEdit extends Component {
           </span>
         </div>
         <div className={styles.saveEditRow}>
-          {!isFinish &&
+          {sigleSave &&
             <CneButton className={styles.saveEditButton} onClick={this.onEditInfoSave}>
               <i className={'iconfont icon-save'} />
               保存

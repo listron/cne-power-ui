@@ -65,6 +65,9 @@
     flex: 0 0 10%;
     border-left: none;
   }
+  .star{
+    color:#df4b33;
+  }
   .infoContent{
     padding: 0 10px;
     i{
@@ -109,22 +112,28 @@
     }
   }
 
-  .error{
-    background:#fbe6e3;
-    border:1px solid #df4b33;
-  }
-  
-  .init{
-    background:#fcffe5;
-    border:1px solid #d4d4d4;
-    &::placeholder{
-      color:#999;
-    }
-    &:required{
-      background: pink;
+.init{
+   background:#fcffe5;
+    :global{
+      .ant-calendar-picker-input{
+        background:#fcffe5;
+      }
     }
   }
 
+.error{
+    border: 1px solid #df4b33;
+    border-radius: 4px;
+    ::placeholder{
+      color:#df4b33;
+    }
+    :global{
+      .ant-calendar-picker-input{
+        background:#fbe6e3;
+        
+      }
+    }
+  }
 
   :global{
     .ant-popover-placement-rightTop{

@@ -225,3 +225,34 @@
       }
     }
 }
+
+.init{
+    &::placeholder{
+      color:#999;
+    }
+    &:required{
+      background: pink;
+    }
+    :global{
+      .ant-select-selection{
+        background:#fcffe5;
+      }
+      .ant-select-selection__placeholder{
+        display: block !important;
+      }
+    }
+  }
+
+.error{
+    border: 1px solid #df4b33;
+    border-radius: 4px;
+    :global{
+      .ant-select-selection{
+        background:#fbe6e3;
+      }
+      .ant-select-selection__placeholder{
+        display: block !important;
+         color:#df4b33 !important;
+      }
+    }
+  }

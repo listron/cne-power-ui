@@ -11,6 +11,7 @@ import DetailTopSubmit from '@components/Operation/NewWorkProcess/EliminateDefec
 import ProcessInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/ProcessInfo/ProcessInfo';
 import DefectCreate from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectCreate/DefectCreate';
 import DefectContent from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectContent/DefectContent';
+import DefectTask from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectTask/DefectTask';
 
 
 class DefectDetail extends Component {
@@ -42,7 +43,9 @@ class DefectDetail extends Component {
     const main = document.getElementById('main');
     main.addEventListener('scroll', (e) => this.bindScroll(e));
     // 503306196121088 503572404424192 505877040300032
-    const { page = 'defectDetail', docketId, isFinish, eventId, stationCode } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
+    //  477101364283914 477101364283925 477101364283965 360 diagWarningId
+    const { page = 'defectDetail', docketId, isFinish, eventId = ['499876992733094', '499876992732672', '499876992732928'] } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
+    const stationCode = 360;
     if (docketId) {
       // getDefectMessage 可执行动作 基础信息 缺陷事件 处理信息 流程信息
       this.props.getDefectMessage({ docketId });
@@ -57,12 +60,12 @@ class DefectDetail extends Component {
         }],
         isFinish,
       });
+      this.props.showUser();
     }
     if (isFinish === '3') { // 派发
       this.props.changeStore({ stationCode });
       this.props.getDiagwarning({ diagWarningIds: eventId });
       this.props.getBaseUsername({ stationCode }); // 当前电站有权限的人
-      this.props.getDeviceType({ stationCode }); // 获取当前电站下的设备类型
     }
   }
 
@@ -83,7 +86,7 @@ class DefectDetail extends Component {
 
 
   render() {
-    const { docketId, theme, defectDetail, processInfo, stateName } = this.props;
+    const { docketId, theme, defectDetail, processInfo, stateName, isFinish } = this.props;
     const { scroll } = this.state;
     return (
       <div className={`${styles.detailWrap}`} ref={'detailWrap'}>
@@ -91,8 +94,9 @@ class DefectDetail extends Component {
         <div className={styles.detailContent}>
           <div className={styles.leftParts}>
             {docketId && localStateName(stateName) !== 'return' && <DefectContent {...this.props} />}
-            {!docketId && <DefectCreate {...this.props} />}
+            {!docketId && isFinish !== '3' && <DefectCreate {...this.props} />}
             {docketId && localStateName(stateName) === 'return' && <DefectCreate {...this.props} />}
+            {isFinish === '3' && <DefectTask {...this.props} />}
           </div>
           <ProcessInfo processInfo={processInfo} />
         </div>
@@ -129,6 +133,7 @@ const mapDispatchToProps = (dispatch) => ({
   defectTypes: payload => dispatch({ type: eliminateDefectDetailAction.defectTypes, payload }),
   getBaseUsername: payload => dispatch({ type: eliminateDefectDetailAction.getBaseUsername, payload }),
   getDiagwarning: payload => dispatch({ type: eliminateDefectDetailAction.getDiagwarning, payload }),
+  showUser: payload => dispatch({ type: eliminateDefectDetailAction.showUser, payload }),
   getDeviceType: params => dispatch({ //  获取某一个电站下的设备
     type: publicAction.getDeviceType,
     payload: {

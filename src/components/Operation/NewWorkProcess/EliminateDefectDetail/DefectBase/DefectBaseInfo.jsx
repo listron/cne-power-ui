@@ -49,7 +49,7 @@ export default class DefectBaseInfo extends Component {
   }
 
   onExpectTimeChange = (value) => { // 要求完成时间选择
-    const planEndTime = moment(value).format('YYYY-MM-DD HH:mm:ss');
+    const planEndTime = value && moment(value).format('YYYY-MM-DD HH:mm:ss') || null;
     const { addbaseInfo } = this.props;
     addbaseInfo['planEndTime'] = planEndTime;
     this.props.changeStore({ addbaseInfo });
@@ -67,6 +67,7 @@ export default class DefectBaseInfo extends Component {
     if (this.exchangeStauts(allowedActions, '13')) { //  添加接单人
       const userArr = addbaseInfo['addUsers'] && [...addbaseInfo['addUsers'], ...userList] || userList;
       addbaseInfo['addUsers'] = userArr;
+      console.log('userArr', userArr);
       this.props.changeStore({ addbaseInfo });
     }
     if (this.exchangeStauts(allowedActions, '3')) { //  添加执行人 直接走接口
@@ -88,8 +89,12 @@ export default class DefectBaseInfo extends Component {
     }
   }
 
+  disabledDate = (current) => {
+    return current && current < moment().endOf('day');
+  }
+
   render() {
-    const { baseInfo = {}, stateName, stations, addbaseInfo = {}, isVertify, usernameList = [], stationCode, editStation = false } = this.props;
+    const { baseInfo = {}, stations, addbaseInfo = {}, isVertify, usernameList = [], stationCode, editStation = false } = this.props;
     const { isStationEdit, isExpectTimeEdit, isResponsorEdit, isDescEdit } = this.infoEditCreater(editStation);
     // 额外接收外界参数, 用于调整编辑态输入框的状态(必填, 出错);
     const timeFormat = 'YYYY-MM-DD HH:mm';
@@ -106,14 +111,14 @@ export default class DefectBaseInfo extends Component {
         <div className={styles.infoRow}>
           <div className={
             `${styles.firstInfoTitle} ${isStationEdit ? styles.require : ''}`
-          }>电站名称</div>
+          }>电站名称 <span className={styles.star}>*</span></div>
           <div className={`${styles.infoContent} ${styles.stations}`}>
             {isStationEdit ? <StationSelect
               data={stations}
               onOK={this.onStationSelected}
               className={`${styles[this.errorTip('stationCode')]} ${styles[this.initTip('stationCode')]}`}
               value={[{ stationName: addbaseInfo.stationName, stationCode: addStationCode }]}
-            /> : <div>{stationName}</div>}
+            /> : <div>{stationName || addbaseInfo.stationName}</div>}
           </div>
           <div className={styles.infoTitle}>工单类型</div>
           <div className={`${styles.infoContent} ${styles.types}`}>消缺工单</div>
@@ -131,8 +136,9 @@ export default class DefectBaseInfo extends Component {
           <div className={`${styles.infoContent} ${styles.expectTime}`}>
             {isExpectTimeEdit ? <DatePicker
               onChange={this.onExpectTimeChange}
-              value={planEndTime && moment(planEndTime)}
-              className={`${styles[this.errorTip('planEndTime')]} ${styles[this.initTip('planEndTime')]}`}
+              value={planEndTime && moment(planEndTime) || null}
+              disabledDate={this.disabledDate}
+              className={` ${styles[this.initTip('planEndTime')]}`}
             /> : <div> {baseInfo.planEndTime && moment(baseInfo.planEndTime).format(timeFormat) || '--'}</div>}
           </div>
         </div>
@@ -158,7 +164,7 @@ export default class DefectBaseInfo extends Component {
         </div>
         <div className={styles.descRow}>
           <div className={styles.firstInfoTitle}>
-            <div className={styles.desc}>工单描述</div>
+            <div className={styles.desc}>工单描述 <span className={styles.star}>*</span></div>
             <div className={styles.descTextNum}>0/999字</div>
           </div>
           <div className={styles.infoContent}>
