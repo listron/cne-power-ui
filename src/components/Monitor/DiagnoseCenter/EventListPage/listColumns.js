@@ -3,6 +3,7 @@ import { dataFormats } from '@utils/utilFunc';
 import moment from 'moment';
 import styles from './eventListPage.scss';
 import { Link } from 'react-router-dom';
+import {stringify} from 'qs';
 
 // 告警事件筛选条件: 电站名称, 设备类型，发生时间， 告警事件， 事件状态， 归档按钮
 // 诊断事件筛选条件: 电站名称，设备类型，发生时间， 诊断事件， 事件状态， 归档按钮
@@ -69,10 +70,14 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       className: styles.eventName,
       render: (text, record) => {
         const {deviceTypeCode, pointCode, deviceFullcode, stationCode} = record;
+        const paramData={deviceTypeCode, pointCode, deviceFullcode, stationCode, source:'diagnoseCenter'};
+        const searchStr = stringify(paramData);
         return (
-          <Link to={{ pathname: '/system/station/alarmEvent', 
-                      state: {deviceTypeCode, pointCode, deviceFullcode, stationCode} }} 
-                      key={record.diagWarningId}>
+          <Link to={{ pathname: '/system/station/alarmEvent',
+                      search: `?${searchStr}`,
+                      state: paramData }} 
+                target= '_blank'
+                key={record.diagWarningId}>
             <div 
               title={text} 
               className={`${styles.eventNameText} ${styles.eventNameTextHover}`}
@@ -149,7 +154,14 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       className: styles.handleStyle,
       render: (text, record) => (
         <div className={styles.handlers}>
-          <span className={styles.handleAnalysis} onClick={() => handlers[0](record)}>分析</span>
+          <span
+            className={styles.handleAnalysis}
+            onClick={() => handlers[0] && handlers[0](record)}
+          >分析</span>
+          {record.statusCode === 3 && <span
+            className={styles.toDefect}
+            onClick={() => handlers[1] && handlers[1](record)}
+          >查看</span>}
         </div>
       ),
     },
@@ -229,7 +241,14 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       className: styles.handleStyle,
       render: (text, record) => (
         <div className={styles.handlers}>
-          <span className={styles.handleAnalysis} onClick={() => handlers[0](record)}>分析</span>
+          <span
+            className={styles.handleAnalysis}
+            onClick={() => handlers[0](record)}
+          >分析</span>
+          {record.statusCode === 3 && <span
+            className={styles.toDefect}
+            onClick={() => handlers[1] && handlers[1](record)}
+          >查看</span>}
         </div>
       ),
     },
@@ -313,7 +332,14 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       className: styles.handleStyle,
       render: (text, record) => (
         <div className={styles.handlers}>
-          <span className={styles.handleAnalysis} onClick={() => handlers[0](record)}>分析</span>
+          <span
+            className={styles.handleAnalysis}
+            onClick={() => handlers[0](record)}
+          >分析</span>
+          {record.statusCode === 3 && <span
+            className={styles.toDefect}
+            onClick={() => handlers[1] && handlers[1](record)}
+          >查看</span>}
         </div>
       ),
     },
