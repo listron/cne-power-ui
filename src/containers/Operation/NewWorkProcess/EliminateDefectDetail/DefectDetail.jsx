@@ -29,12 +29,18 @@ class DefectDetail extends Component {
 
   constructor() {
     super();
+    this.state = {
+      scroll: false,
+    };
   }
+
 
   // docketId, 缺陷ID  isFinish 0 未解决 1 已解决 3 派发(告警)
   componentDidMount() {
     const { history } = this.props;
     const { search } = history.location;
+    const main = document.getElementById('main');
+    main.addEventListener('scroll', (e) => this.bindScroll(e));
     // 503306196121088 503572404424192 505877040300032
     const { page = 'defectDetail', docketId, isFinish, eventId, stationCode } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
     if (docketId) {
@@ -60,21 +66,28 @@ class DefectDetail extends Component {
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props.docketId !== nextProps.docketId) {
-  //     this.props.resetStore();
-  //   }
-  // }
-
   componentWillUnmount() {
     this.props.resetStore();
   }
 
+  bindScroll = (e) => {
+    const scrollTop = e.target.scrollTop;
+    const { scroll } = this.state;
+    if (scrollTop > 0 && !scroll) {
+      this.setState({ scroll: !scroll });
+    }
+    if (scrollTop === 0) {
+      this.setState({ scroll: false });
+    }
+  }
+
+
   render() {
     const { docketId, theme, defectDetail, processInfo, stateName } = this.props;
+    const { scroll } = this.state;
     return (
-      <div className={`${styles.detailWrap}`}>
-        <DetailTopSubmit docketId={docketId} {...this.props} />
+      <div className={`${styles.detailWrap}`} ref={'detailWrap'}>
+        <DetailTopSubmit docketId={docketId} {...this.props} scroll={scroll} />
         <div className={styles.detailContent}>
           <div className={styles.leftParts}>
             {docketId && localStateName(stateName) !== 'return' && <DefectContent {...this.props} />}
