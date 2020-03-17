@@ -204,10 +204,6 @@ export default class MeterDisposeInfo extends React.Component {
         curIndex: '',
       });
     }
-    console.log(curIndex, 'curIndex');
-    console.log(thisIndex, 'thisIndex');
-    console.log(imgIndex, 'imgIndex');
-    console.log(thisImgIndex, 'thisImgIndex');
     if (flag) {
       return this.setState({
         zoomVisible: true,
@@ -231,6 +227,9 @@ export default class MeterDisposeInfo extends React.Component {
     this.setState({
       zoomVisible: false,
       styleLocation: '',
+      imgIndex: '',
+      curIndex: '',
+      arrStr: '',
     });
   };
 
@@ -647,7 +646,7 @@ export default class MeterDisposeInfo extends React.Component {
                                         onClick={() => {
                                           this.lookPic(index % 2 === 0, index, idx, 'onlineDatas');
                                         }}
-                                        className={`${styles.netPhotoBox} ${styles.fl}`}
+                                        className={arrStr === 'onlineDatas' && curIndex === index && idx === imgIndex ? `${styles.netActivePhotoBox} ${styles.fl}` : `${styles.netPhotoBox} ${styles.fl}`}
                                       >
                                         <img src={cur.url} alt="" />
                                         <div className={styles.shadeBox} />
@@ -684,7 +683,7 @@ export default class MeterDisposeInfo extends React.Component {
                                           onClick={() => {
                                             this.lookPic(index % 2 === 0, index, idx, 'onlineDatas');
                                           }}
-                                          className={`${styles.netPhotoBox} ${styles.fl}`}
+                                          className={arrStr === 'onlineDatas' && curIndex === index && idx === imgIndex ? `${styles.netActivePhotoBox} ${styles.fl}` : `${styles.netPhotoBox} ${styles.fl}`}
                                         >
                                           <img src={cur.url} alt="" />
                                           <div className={styles.shadeBox} />
@@ -879,7 +878,7 @@ export default class MeterDisposeInfo extends React.Component {
                                         onClick={() => {
                                           this.lookPic(index % 2 === 0, index, idx, 'generationDatas');
                                         }}
-                                        className={`${styles.electricityPhotoBox} ${styles.fl}`}
+                                        className={arrStr === 'generationDatas' && curIndex === index && idx === imgIndex ? `${styles.electricityActivePhotoBox} ${styles.fl}` : `${styles.electricityPhotoBox} ${styles.fl}`}
                                       >
                                         <img src={cur.url} alt="" />
                                         <div className={styles.shadeBox} />
@@ -916,7 +915,7 @@ export default class MeterDisposeInfo extends React.Component {
                                         onClick={() => {
                                           this.lookPic(index % 2 === 0, index, idx, 'generationDatas');
                                         }}
-                                        className={`${styles.electricityPhotoBox} ${styles.fl}`}
+                                        className={arrStr === 'generationDatas' && curIndex === index && idx === imgIndex ? `${styles.electricityActivePhotoBox} ${styles.fl}` : `${styles.electricityPhotoBox} ${styles.fl}`}
                                       >
                                         <img src={cur.url} alt="" />
                                         <div className={styles.shadeBox} />

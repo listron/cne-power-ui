@@ -546,6 +546,34 @@
                     }
                   }
 
+                  .netActivePhotoBox {
+                    width: 60px;
+                    height: 60px;
+                    cursor: pointer;
+                    position: relative;
+                    border-radius: 2px;
+                    overflow: hidden;
+                    margin-bottom: 6px;
+                    margin-right: 13px;
+                    border: 1px solid #d4d4d4;
+
+                    img {
+                      width: 100%;
+                      height: 100%;
+                      opacity: 1;
+                    }
+
+                    .shadeBox {
+                      width: 100%;
+                      height: 100%;
+                      position: absolute;
+                      top: 0;
+                      right: 0;
+                      background-color: rgba(0, 0, 0, 0.50);
+                      display: block;
+                    }
+                  }
+
                   :global {
                     .ant-upload.ant-upload-select-picture-card {
                       width: 60px;
@@ -891,6 +919,34 @@
                         background-color: rgba(0, 0, 0, 0.50);
                         display: block;
                       }
+                    }
+                  }
+
+                  .electricityActivePhotoBox{
+                    width: 60px;
+                    height: 60px;
+                    cursor: pointer;
+                    position: relative;
+                    border-radius: 2px;
+                    overflow: hidden;
+                    margin-bottom: 6px;
+                    margin-right: 13px;
+                    border: 1px solid #d4d4d4;
+
+                    img {
+                      width: 100%;
+                      height: 100%;
+                      opacity: 1;
+                    }
+
+                    .shadeBox {
+                      width: 100%;
+                      height: 100%;
+                      position: absolute;
+                      top: 0;
+                      right: 0;
+                      background-color: rgba(0, 0, 0, 0.50);
+                      display: block;
                     }
                   }
 
