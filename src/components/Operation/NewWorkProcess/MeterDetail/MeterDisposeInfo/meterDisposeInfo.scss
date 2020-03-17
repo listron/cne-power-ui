@@ -546,6 +546,34 @@
                     }
                   }
 
+                  .netActivePhotoBox {
+                    width: 60px;
+                    height: 60px;
+                    cursor: pointer;
+                    position: relative;
+                    border-radius: 2px;
+                    overflow: hidden;
+                    margin-bottom: 6px;
+                    margin-right: 13px;
+                    border: 1px solid #d4d4d4;
+
+                    img {
+                      width: 100%;
+                      height: 100%;
+                      opacity: 1;
+                    }
+
+                    .shadeBox {
+                      width: 100%;
+                      height: 100%;
+                      position: absolute;
+                      top: 0;
+                      right: 0;
+                      background-color: rgba(0, 0, 0, 0.50);
+                      display: block;
+                    }
+                  }
+
                   :global {
                     .ant-upload.ant-upload-select-picture-card {
                       width: 60px;
@@ -894,6 +922,34 @@
                     }
                   }
 
+                  .electricityActivePhotoBox{
+                    width: 60px;
+                    height: 60px;
+                    cursor: pointer;
+                    position: relative;
+                    border-radius: 2px;
+                    overflow: hidden;
+                    margin-bottom: 6px;
+                    margin-right: 13px;
+                    border: 1px solid #d4d4d4;
+
+                    img {
+                      width: 100%;
+                      height: 100%;
+                      opacity: 1;
+                    }
+
+                    .shadeBox {
+                      width: 100%;
+                      height: 100%;
+                      position: absolute;
+                      top: 0;
+                      right: 0;
+                      background-color: rgba(0, 0, 0, 0.50);
+                      display: block;
+                    }
+                  }
+
                   :global {
                     .ant-upload.ant-upload-select-picture-card {
                       width: 60px;
@@ -1030,6 +1086,13 @@
       }
     }
   }
+  .modalLeft{
+    left: 45%;
+  }
+
+  .modalRight{
+    left: 1%;
+  }
 }
 
 @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919 字号16px
@@ -1078,6 +1141,14 @@
       }
     }
   }
+
+  .modalLeft{
+    left: 43%;
+  }
+
+  .modalRight{
+    left: 5%;
+  }
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配 字号18px
@@ -1125,5 +1196,13 @@
         }
       }
     }
+  }
+
+  .modalLeft{
+    left: 43%;
+  }
+
+  .modalRight{
+    left: 9%;
   }
 }

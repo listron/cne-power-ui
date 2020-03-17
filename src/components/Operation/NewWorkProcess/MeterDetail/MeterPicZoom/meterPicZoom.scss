@@ -1,6 +1,9 @@
 @import "../../../../../theme/theme.scss";
 
 .meterPicZoomBox {
+  width: 650px;
+  display: flex;
+  align-items: center;
 
   :global {
     .ant-modal {
