@@ -17,6 +17,7 @@ export default class HandleInfo extends Component {
     isFinish: PropTypes.string,
   };
 
+
   componentDidMount() {
     const { editDisplay, addhandleList, docketId } = this.props;
     if (editDisplay) {
@@ -28,7 +29,26 @@ export default class HandleInfo extends Component {
         isCoordinate: 0,
         partName: null,
         coordinateDesc: null,
-        handleImg: [],
+        handleImgs: [],
+        handleVideo: [],
+      };
+      addhandleList.push(handleInfo);
+      this.props.changeStore({ addhandleList });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { editDisplay, addhandleList, docketId } = nextProps;
+    if (!this.props.editDisplay && editDisplay) {
+      const handleInfo = {
+        index: 1,
+        docketId,
+        handleDesc: null,
+        isChangePart: 0,
+        isCoordinate: 0,
+        partName: null,
+        coordinateDesc: null,
+        handleImgs: [],
         handleVideo: [],
       };
       addhandleList.push(handleInfo);
@@ -48,7 +68,7 @@ export default class HandleInfo extends Component {
       isCoordinate: 0,
       partName: null,
       coordinateDesc: null,
-      handleImg: [],
+      handleImgs: [],
       handleVideo: [],
     };
     addhandleList.unshift(handleInfo);
@@ -67,11 +87,12 @@ export default class HandleInfo extends Component {
     this.props.changeStore({ addhandleList });
   }
 
+
   saveHandle = (record) => { // 保存处理信息(单独)
     const { index } = record;
-    const { handleImg = [] } = record;
-    const curImg = handleImg.length > 0 && handleImg.map(e => e.url) || [];
-    record['handleImg'] = curImg;
+    const { handleImgs = [] } = record;
+    const curImg = handleImgs.length > 0 && handleImgs.map(e => e.url) || [];
+    record['handleImgs'] = curImg;
     const { addhandleList, addDefectHandle } = this.props;
     addDefectHandle({
       record,

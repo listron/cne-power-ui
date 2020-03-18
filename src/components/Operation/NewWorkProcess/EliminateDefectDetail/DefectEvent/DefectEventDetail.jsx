@@ -65,7 +65,7 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
           </div>
           {diagWarningId &&
             <div className={styles.analysize}>
-              <CneButton> <i className={'iconfont icon-look'} /> 查看分析 </CneButton>
+              <CneButton className={styles.handleButton}> <i className={'iconfont icon-look'} /> 查看分析 </CneButton>
             </div>
           }
         </div>

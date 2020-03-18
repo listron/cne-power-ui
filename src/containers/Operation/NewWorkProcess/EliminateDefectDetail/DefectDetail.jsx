@@ -42,8 +42,6 @@ class DefectDetail extends Component {
     const { search } = history.location;
     const main = document.getElementById('main');
     main.addEventListener('scroll', (e) => this.bindScroll(e));
-    // 503306196121088 503572404424192 505877040300032
-    //  477101364283914 477101364283925 477101364283965 360 diagWarningId
     const { page = 'defectDetail', docketId, isFinish, eventId = ['499876992733094', '499876992732672', '499876992732928'] } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
     const stationCode = 360;
     if (docketId) {
@@ -69,9 +67,12 @@ class DefectDetail extends Component {
     }
   }
 
+
   componentWillUnmount() {
     this.props.resetStore();
   }
+
+
 
   bindScroll = (e) => {
     const scrollTop = e.target.scrollTop;
@@ -87,6 +88,7 @@ class DefectDetail extends Component {
 
   render() {
     const { docketId, theme, defectDetail, processInfo, stateName, isFinish } = this.props;
+    console.log('docketId', docketId, stateName);
     const { scroll } = this.state;
     return (
       <div className={`${styles.detailWrap}`} ref={'detailWrap'}>

@@ -34,6 +34,7 @@ class DefectCreate extends Component {
     }
     // 默认创建的时候会添加一条缺陷事件
     if (!this.props.isFinish && (isFinish === '0' || isFinish === '1' && addEventInfo.length === 0)) {
+      // 默认添加一个缺陷事件
       const eventInfos = {
         index: 1,
         eventId: null, // 缺陷ID，新建为空
