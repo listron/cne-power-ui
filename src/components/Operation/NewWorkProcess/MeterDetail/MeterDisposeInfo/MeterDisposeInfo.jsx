@@ -286,12 +286,14 @@ export default class MeterDisposeInfo extends React.Component {
       readMeterData[arrStr][index].loading = true;
       changeStore({
         readMeterData,
+        newReadMeterData,
       });
       if(info.event) {
         // 改变上传进度
         readMeterData[arrStr][index].percent = Math.floor(info.event.percent);
         changeStore({
           readMeterData,
+          newReadMeterData,
         });
       }
       return;

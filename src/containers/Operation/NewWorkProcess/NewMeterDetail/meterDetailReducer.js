@@ -1,5 +1,4 @@
 import immutable from 'immutable';
-import moment from 'moment';
 
 const newMeterDetailAction = {
   fetchSuccess: Symbol('fetchSuccess'),
