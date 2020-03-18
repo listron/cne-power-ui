@@ -217,17 +217,6 @@
     }
   }
   :global{
-    .ant-table:not(.ant-table-empty) {
-      .ant-table-body:after {
-        content: url("/img/notabdata97-72.png");
-        display: inline-block;
-        position: relative;
-        left: 50%;
-        transform: translate(-50%, 0);
-        height: 80px;
-        margin-top: 20px;
-      }
-    }
     .ant-table-placeholder {
       border-bottom: none;
     }
