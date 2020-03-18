@@ -51,17 +51,33 @@
 
 .cneTable{
   :global{
-    .ant-table .ant-table-thead > tr > th,
     .ant-table .ant-table-tbody > tr > td {
-      padding: 0 10px 0 10px;
-      &:first-child:not(.ant-table-selection-column) {
+      padding: 0 10px;
+      &.leftContent{
+        padding: 0 0 0 10px;
+        text-align: left;
+      }
+      &.middleContent{
+        padding: 0;
+        text-align: middle;
+      }
+      &.rightContent{
+        padding: 0 10px 0 0;
+        text-align: right;
+      }
+      &.noneContent{
+        padding: 0;
+        text-align: left;
+      }
+      &:first-child.leftContent {
         padding-left: 20px;
       }
-      &:last-child {
+      &:last-child.rightContent {
         padding-right: 20px;
       }
     }
     .ant-table .ant-table-thead > tr > th{
+      padding: 0 10px;
       line-height: 36px;
       text-align: center;
       border-radius: 0;
@@ -87,6 +103,25 @@
         .ant-table-column-sorter-down{
           margin-top: -0.35em;
         }
+      }
+    }
+    .ant-table-placeholder {
+      border-bottom: none;
+    }
+  }
+}
+
+.nomore {
+  :global{
+    .ant-table:not(.ant-table-empty) {
+      .ant-table-body:after {
+        content: url("/img/notabdata97-72.png");
+        display: inline-block;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0);
+        height: 80px;
+        margin-top: 20px;
       }
     }
   }
