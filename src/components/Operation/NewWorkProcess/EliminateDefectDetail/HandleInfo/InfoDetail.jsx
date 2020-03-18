@@ -15,12 +15,12 @@ export default class InfoDetail extends Component {
     handleImgs: PropTypes.array,
     handleVideos: PropTypes.array,
     createTime: PropTypes.string,
-    createuUserName: PropTypes.string,
+    createUserName: PropTypes.string,
   };
 
   render() {
     const {
-      handleDesc, isChangePart, isCoordinate, partName, coordinateDesc, handleImgs = [], handleVideos, createTime, createuUserName,
+      handleDesc, isChangePart, isCoordinate, partName, coordinateDesc, handleImgs = [], handleVideos, createTime, createUserName,
     } = this.props;
     return (
       <div
@@ -30,7 +30,7 @@ export default class InfoDetail extends Component {
         <div className={styles.userInfo}>
           <span>
             <span className={styles.handleTime}>{createTime}</span>
-            <span>{createuUserName || '--'}</span>
+            <span>{createUserName || '--'}</span>
           </span>
           <span className="iconfont icon-xietiao" />
         </div>

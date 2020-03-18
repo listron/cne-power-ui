@@ -44,6 +44,7 @@ export default class DefectSearch extends React.Component {
   render() {
     const { stations = [], participantList = [], listParams } = this.props;
     const { isMy, operName, stationCodes } = listParams || {};
+    const curStation = stations.filter(e => stationCodes.includes(e.stationCode));
     return (
       <div className={styles.defectSearch}>
         <div className={styles.searchLeft}>
@@ -56,7 +57,7 @@ export default class DefectSearch extends React.Component {
               stationShowNumber={true}
               data={stations}
               onOK={this.selectStation}
-              value={stationCodes}
+              value={curStation}
               holderText="请输入关键字快速查询"
             />
           </div>

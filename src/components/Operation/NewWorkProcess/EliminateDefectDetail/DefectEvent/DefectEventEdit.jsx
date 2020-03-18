@@ -128,7 +128,7 @@ export default class DefectEvenrEdit extends Component {
                   onChange={this.changeDeviceType}
                   disabled={deviceTypes.length === 0}
                   required={isVertify}
-                  className={`${styles[this.errorTip('deviceTypeCode')]} ${styles[this.initTip('deviceTypeCode')]}`}
+                  className={`${styles[this.errorTip('deviceTypeCode')]} ${deviceTypes.length !== 0 && styles[this.initTip('deviceTypeCode')]}`}
                 >
                   {deviceTypes.map(e => (
                     <Option
@@ -148,7 +148,7 @@ export default class DefectEvenrEdit extends Component {
                   disabled={!deviceTypeCode}
                   required={isVertify}
                   value={deviceFullcode && `${deviceFullcode}_${deviceName}` || ''}
-                  className={`${styles[this.errorTip('deviceFullcode')]} ${styles[this.initTip('deviceFullcode')]}`}
+                  className={`${styles[this.errorTip('deviceFullcode')]} ${deviceTypeCode && styles[this.initTip('deviceFullcode')]}`}
                 >
                   {deviceModes.map(e =>
                     (<Option

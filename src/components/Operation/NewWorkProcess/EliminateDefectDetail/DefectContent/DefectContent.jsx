@@ -35,7 +35,7 @@ class DefectContent extends Component {
     return (
       <React.Fragment>
         <DefectBaseTitle baseInfo={baseInfo} />
-        <DefectBaseInfo baseInfo={baseInfo} {...this.props} editStation={false} />
+        <DefectBaseInfo {...this.props} editStation={false} />
         {stateName &&
           <React.Fragment>
             <DefcetEventTitle {...this.props} />
