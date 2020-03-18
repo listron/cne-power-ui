@@ -51,17 +51,33 @@
 
 .cneTable{
   :global{
-    .ant-table .ant-table-thead > tr > th,
     .ant-table .ant-table-tbody > tr > td {
-      padding: 0 10px 0 10px;
-      &:first-child:not(.ant-table-selection-column) {
+      padding: 0 10px;
+      &.leftContent{
+        padding: 0 0 0 10px;
+        text-align: left;
+      }
+      &.middleContent{
+        padding: 0;
+        text-align: middle;
+      }
+      &.rightContent{
+        padding: 0 10px 0 0;
+        text-align: right;
+      }
+      &.noneContent{
+        padding: 0;
+        text-align: left;
+      }
+      &:first-child.leftContent {
         padding-left: 20px;
       }
-      &:last-child {
+      &:last-child.rightContent {
         padding-right: 20px;
       }
     }
     .ant-table .ant-table-thead > tr > th{
+      padding: 0 10px;
       line-height: 36px;
       text-align: center;
       border-radius: 0;
@@ -89,10 +105,29 @@
         }
       }
     }
+    .ant-table-placeholder {
+      border-bottom: none;
+    }
   }
 }
 
-.cneTable.light{
+.nomore {
+  :global{
+    .ant-table:not(.ant-table-empty) {
+      .ant-table-body:after {
+        content: url("/img/notabdata97-72.png");
+        display: inline-block;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0);
+        height: 80px;
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+.cneTable.light{ // 颜色部分
   :global{
     .ant-table .ant-table-thead > tr > th,
     .ant-table .ant-table-tbody > tr > td{
@@ -136,9 +171,11 @@
         background-color: #f3f2f2;
       }
       &.ant-table-row-hover{
+        transform: translate3d(0,0,0);
         box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
       }
       &:hover{
+        transform: translate3d(0,0,0);
         box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
         background-color:rgba(206,235,224,0.50);
       }
@@ -156,8 +193,14 @@
     .ant-table-fixed .ant-table-tbody > tr > td{
       &:last-child {
         border-right: 1px dashed var(--themeColor);
-        box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
+        // box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
       }
+    }
+    .ant-table.ant-table-scroll-position-left .ant-table-fixed-left{
+      box-shadow: none;
+    }
+    .ant-table-fixed-left{
+      box-shadow: 2px 0 6px -2px #199475;
     }
   }
 }
