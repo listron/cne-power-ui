@@ -131,7 +131,7 @@ export default class InfoEdit extends Component {
     const inputRequire = (isVertify || handleVertify) && { required: true } || { pattern: '/^\s*$/g' };
     const downloadTemplet = `${path.basePaths.APIBasePath}${path.pubilcPath.imgUploads}`;
     const editRight = this.exchangeActioncode(allowedActions, '23');
-    console.log('editRight', editRight);
+    // console.log('editRight', editRight);
     return (
       <div className={styles.infoEditBox}>
         <div className={styles.editRecord}>
@@ -142,8 +142,8 @@ export default class InfoEdit extends Component {
             </span>
           </span>
           <TextArea onChange={this.onDescChange} value={handleDesc} placeholder={'请填写处理记录，必填'} required={isVertify || handleVertify} />
-          {isFinish !== '1' && <i
-            className={`iconfont icon-wrong ${styles.cancelEdit}`}
+          {<i
+            className={`iconfont icon-wrong ${styles.cancelEdit} ${isFinish === '1' && styles.disDiplay}`}
             onClick={this.cancelEdit}
           />}
         </div>

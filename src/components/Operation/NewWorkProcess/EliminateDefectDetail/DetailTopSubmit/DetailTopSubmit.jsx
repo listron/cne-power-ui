@@ -115,14 +115,6 @@ export default class DetailTopSubmit extends Component {
     }
   }
 
-  handleCheck = (handleInfo) => { // 校验 执行不需要校验 提交的时候需要验证  创建或者是退回的时候需要验证
-    const { handleDesc, isChangePart, partName, isCoordinate, coordinateDesc } = handleInfo;
-    if (!handleDesc || (isChangePart && !partName) || (isCoordinate && !coordinateDesc)) {
-      return false;
-    }
-    return true;
-  }
-
   baseInfoCheck = (addbaseInfo, initStationCode) => { // 基本信息校验
     // 工单描述在后期可能被修改，所以两个来的地方不一样
     const { docketDesc, stationCode } = addbaseInfo;
@@ -147,6 +139,14 @@ export default class DetailTopSubmit extends Component {
       return true;
     }
     return false;
+  }
+
+  handleCheck = (handleInfo) => { // 校验 执行不需要校验 提交的时候需要验证  创建或者是退回的时候需要验证
+    const { handleDesc, isChangePart, partName, isCoordinate, coordinateDesc } = handleInfo;
+    if (!handleDesc || (isChangePart && !partName) || (isCoordinate && !coordinateDesc)) {
+      return false;
+    }
+    return true;
   }
 
   allChecked = () => { // 三个都需要验证 创建 退回
@@ -178,10 +178,11 @@ export default class DetailTopSubmit extends Component {
 
   crete = (e) => { // 创建工单
     const { addbaseInfo, addEventInfo, addhandleList, isFinish, stateId, stationCode, docketId, removeEventImg, removeHandleImg } = this.props;
-    const { location, history } = this.props;
+    const { location, history, warnEventInfos } = this.props;
     const { addUsers = [] } = addbaseInfo;
+    console.log(1234, e);
     if (addUsers.length > 0) {
-      addbaseInfo[addUsers] = [[{ stateId, userIds: addUsers.map(e => +e.userId) }]];
+      addbaseInfo['addUsers'] = [{ stateId, userIds: addUsers.map(e => +e.userId) }];
     }
     const { pathname } = location;
     if (removeEventImg.length > 0) {
@@ -201,12 +202,18 @@ export default class DetailTopSubmit extends Component {
       });
     }
     const flag = this.allChecked();
+    let events = addEventInfo;
     if (flag) {
+      if (e.actionCode === '19') {
+        events = warnEventInfos.map(e => {
+          return { ...e, source: 1, defectImgs: [] };
+        });
+      }
       const params = {
         ...addbaseInfo,
         docketId,
         stationCode,
-        events: addEventInfo,
+        events: events,
         handles: addhandleList,
         actionCode: e.actionCode,
       };
@@ -214,6 +221,7 @@ export default class DetailTopSubmit extends Component {
         func: () => this.props.createDefect({
           params,
           callback: (docketId) => {
+            this.props.resetStore();
             history.push(`${pathname}?page=defectDetail&docketId=${docketId}`);
           },
         }),
@@ -224,10 +232,14 @@ export default class DetailTopSubmit extends Component {
   }
 
   verify = (e) => { // 审核 派发
-    const { docketId, stateId, addbaseInfo, stationCode } = this.props;
-    const { planEndTime, addUsers } = addbaseInfo;
-    const flag = true;
-    // const flag=true = this.baseInfoCheck(addbaseInfo, stationCode);
+    const { docketId, addbaseInfo, stateId, stationCode, baseInfo } = this.props;
+    const { planEndTime = null, docketDesc } = addbaseInfo;
+    let { addUsers } = addbaseInfo;
+    const initStateId = baseInfo.operUserInfo[0].stateId;
+    if (addUsers.length > 0) {
+      addUsers = [{ stateId: initStateId, userIds: addUsers.map(e => +e.userId) }];
+    }
+    const flag = this.baseInfoCheck(docketDesc && addbaseInfo || baseInfo, stationCode);
     if (flag) {
       const params = {
         docketId,
@@ -389,7 +401,7 @@ export default class DetailTopSubmit extends Component {
           </div>
           <div className={styles.handlePart}>
             {/* 新建  */}
-            {this.createButton(['9', '10', '11', '12', '22'], 'crete')}
+            {this.createButton(['9', '10', '11', '12', '22', '19'], 'crete')}
             {/* 审核 派发 */}
             {this.createButton(['17'], 'verify')}
             {/* 退回 */}

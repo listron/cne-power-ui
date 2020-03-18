@@ -34,7 +34,7 @@ export default class VideoUploader extends Component {
     maxNum: 1,
     value: [],
     uploadUrl: `${APIBasePath}${ticket.getUploadFile}`,
-    onChange: () => {},
+    onChange: () => { },
   }
 
   constructor(props) {
@@ -56,7 +56,7 @@ export default class VideoUploader extends Component {
     const { code, data } = response || {};
     if (status === 'uploading') {
       let uploadPercent = 0;
-      if(event) { // 改变上传进度
+      if (event) { // 改变上传进度
         const { percent } = event || {};
         uploadPercent = Math.floor(percent);
       }
@@ -66,7 +66,7 @@ export default class VideoUploader extends Component {
         fileList,
       });
     } else if (status === 'done') { // 调试代码~不考虑上传失败
-    // } else if (status === 'done' && code === '10000') { // 上传保存url->恢复默认
+      // } else if (status === 'done' && code === '10000') { // 上传保存url->恢复默认
       const { value = [] } = this.props;
       this.setState({
         uploadPercent: 0, // 上传进度
@@ -114,8 +114,8 @@ export default class VideoUploader extends Component {
             </div>
             <ReactPlayer
               key={url}
-              // url={url}
-              url="/video/01-1000.mp4"
+              url={url}
+              // url="/video/01-1000.mp4"
               playing={false}
               onClick={this.viewVideo}
               className={styles.eachVideo}
@@ -128,7 +128,7 @@ export default class VideoUploader extends Component {
         {value.length < maxNum && <Upload
           listType="picture-card"
           className="avatar-uploader"
-          headers={{'Authorization': 'bearer ' + authData}}
+          headers={{ 'Authorization': 'bearer ' + authData }}
           multiple={true}
           fileList={fileList}
           showUploadList={false}

@@ -47,6 +47,9 @@ function* createDefect(action) { // 2.7.3.3.	创建消缺工单（提交）
     if (response.data.code === '10000') {
       const docketId = response.data.data;
       callback(docketId);
+      yield call(easyPut, 'changeStore', {
+        docketId: docketId,
+      });
       yield put({
         type: eliminateDefectDetailAction.getDefectMessage,
         payload: { docketId },

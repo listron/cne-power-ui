@@ -24,17 +24,6 @@ class DefectTask extends Component {
   };
 
 
-  componentWillReceiveProps(nextProps) {
-    const { stationCode, stations, stationName, addbaseInfo } = nextProps;
-    if (!stationName) {
-      const curStation = stations.filter(e => e.stationCode === stationCode);
-      const stationName = curStation.length > 0 && curStation[0].stationName;
-      console.log('234', stationName);
-      addbaseInfo['stationCode'] = stationCode;
-      addbaseInfo['stationName'] = stationName;
-      this.props.changeStore({ addbaseInfo, stationName: stationName });
-    }
-  }
 
   render() {
     const { baseInfo } = this.props;

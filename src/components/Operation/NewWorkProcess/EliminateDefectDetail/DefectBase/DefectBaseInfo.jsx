@@ -7,6 +7,18 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 const { TextArea } = Input;
 
+
+/**  
+ * baseInfo 基本信息
+ * stations 电站列表
+ * addbaseInfo 添加的基本信息
+ * isVertify 是否在验证 
+ * usernameList 电站下已有权限的人列表
+ * stationCode 电站名称
+ * editStation 电站是否处于编辑的状态 只有在新添加的，或者是才可以编辑
+ * 
+*/
+
 export default class DefectBaseInfo extends Component {
 
   static propTypes = {
@@ -16,6 +28,10 @@ export default class DefectBaseInfo extends Component {
     addAbleUser: PropTypes.func,
     getDeviceType: PropTypes.func,
     getBaseUsername: PropTypes.func,
+    stations: PropTypes.array,
+    usernameList: PropTypes.array,
+    editStation: PropTypes.bool,
+    baseInfo: PropTypes.object,
   };
 
 
@@ -63,15 +79,15 @@ export default class DefectBaseInfo extends Component {
   }
 
   changePonsor = (userList) => { // 接单人或者是执行人添加
-    const { addbaseInfo = {}, allowedActions } = this.props;
+    const { addbaseInfo = {}, allowedActions, baseInfo } = this.props;
     if (this.exchangeStauts(allowedActions, '13')) { //  添加接单人
       const userArr = addbaseInfo['addUsers'] && [...addbaseInfo['addUsers'], ...userList] || userList;
       addbaseInfo['addUsers'] = userArr;
-      console.log('userArr', userArr);
       this.props.changeStore({ addbaseInfo });
     }
     if (this.exchangeStauts(allowedActions, '3')) { //  添加执行人 直接走接口
-      this.props.addAbleUser({ actionCode: '3', ids: userList.map(e => e.userId).join(',') });
+      const initStateId = baseInfo.operUserInfo[0].stateId;
+      this.props.addAbleUser({ actionCode: '3', ids: userList.map(e => e.userId).join(','), stateId: initStateId });
     }
   }
 
@@ -95,8 +111,8 @@ export default class DefectBaseInfo extends Component {
 
   render() {
     const { baseInfo = {}, stations, addbaseInfo = {}, isVertify, usernameList = [], stationCode, editStation = false } = this.props;
-    const { isStationEdit, isExpectTimeEdit, isResponsorEdit, isDescEdit } = this.infoEditCreater(editStation);
     // 额外接收外界参数, 用于调整编辑态输入框的状态(必填, 出错);
+    const { isStationEdit, isExpectTimeEdit, isResponsorEdit, isDescEdit } = this.infoEditCreater(editStation);
     const timeFormat = 'YYYY-MM-DD HH:mm';
     const { operUserInfo = [], stationName } = baseInfo;
     const { addUsers = [], docketDesc = null, planEndTime = null } = addbaseInfo;
@@ -106,6 +122,7 @@ export default class DefectBaseInfo extends Component {
     const filterUsernameList = usernameList.filter(cur => !curId.includes(`${cur.userId}`));
     const operableUserName = operUserInfo.length > 0 && operUserInfo[0].ableUsers && operUserInfo[0].ableUsers.split(',') || [];
     const curName = [...addUsers.map(e => e.userName), operableUserName];
+    const curStationName = stations.filter(e => e.stationCode === stationCode);
     return (
       <div className={styles.defectBaseInfo}>
         <div className={styles.infoRow}>
@@ -118,7 +135,7 @@ export default class DefectBaseInfo extends Component {
               onOK={this.onStationSelected}
               className={`${styles[this.errorTip('stationCode')]} ${styles[this.initTip('stationCode')]}`}
               value={[{ stationName: addbaseInfo.stationName, stationCode: addStationCode }]}
-            /> : <div>{stationName || addbaseInfo.stationName}</div>}
+            /> : <div>{curStationName.length > 0 && curStationName[0].stationName || '--'}</div>}
           </div>
           <div className={styles.infoTitle}>工单类型</div>
           <div className={`${styles.infoContent} ${styles.types}`}>消缺工单</div>
@@ -152,7 +169,7 @@ export default class DefectBaseInfo extends Component {
               <ResponsorCheck
                 usernameList={filterUsernameList}
                 selelctedUser={this.changePonsor}
-                disabled={!stationCode || !addStationCode}
+                disabled={(!stationCode && !addStationCode)}
               />}
           </div>
           <div className={styles.infoTitle}>验收人</div>
