@@ -17,7 +17,6 @@ export default class HandleInfo extends Component {
     isFinish: PropTypes.string,
   };
 
-
   componentDidMount() {
     const { editDisplay, addhandleList, docketId } = this.props;
     if (editDisplay) {
@@ -91,7 +90,7 @@ export default class HandleInfo extends Component {
   }
 
   render() {
-    const { handleInfos = [], allowedActions = [], addhandleList = [], isVertify, addMultipleEvent, isFinish } = this.props;
+    const { handleInfos = [], allowedActions = [], addhandleList = [], isVertify, addMultipleEvent, isFinish, sigleSave } = this.props;
     const isAdd = this.exchangeActioncode(allowedActions, '15'); // 添加的权限是14
     const canAdd = addMultipleEvent ? isAdd : addhandleList.length === 0 && isAdd; // 可以添加一条还是添加多条
     return (
@@ -114,6 +113,7 @@ export default class HandleInfo extends Component {
               isVertify={isVertify}
               isFinish={isFinish}
               allowedActions={allowedActions}
+              sigleSave={sigleSave}
             />
           ))}
           {handleInfos.map((e, i) => (

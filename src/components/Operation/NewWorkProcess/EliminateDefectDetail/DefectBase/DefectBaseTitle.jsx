@@ -25,7 +25,7 @@ export default class DefectBaseTitle extends Component {
         <span className={styles.baseTitle}>基本信息</span>
         <span className={styles.statusPart}>
           {!!isCoordinate && <span className={`iconfont icon-xietiao ${styles.coordinate}`} title={'协调'} />}
-          {isOverTime === 2 && <span className={`iconfont icon-chaoshi ${styles.overtime}`} title={'超时'} />}
+          {isOverTime === 1 && <span className={`iconfont icon-chaoshi ${styles.overtime}`} title={'超时'} />}
           {stateName && localStateName(stateName) !== 'complete' &&
             <span className={styles.statusName} stateName={localStateName(stateName)}>{stateName} </span>}
           {localStateName(stateName) === 'complete' && <span className={`iconfont icon-jiedan ${styles.alreadyFinish}`} />}
