@@ -88,7 +88,6 @@ class DefectDetail extends Component {
 
   render() {
     const { docketId, theme, defectDetail, processInfo, stateName, isFinish } = this.props;
-    console.log('docketId', docketId, stateName);
     const { scroll } = this.state;
     return (
       <div className={`${styles.detailWrap}`} ref={'detailWrap'}>
