@@ -121,10 +121,10 @@ export default class DefectTable extends Component {
             <span>{stateName || '--'}</span>
             {!!isCoordinate && <span
               className={`iconfont icon-xietiao ${styles.coordinateIcon}`}
-              style={{ right: (!!isCoordinate && !!isOverTime) ? '18.5%' : '3%' }}
+              style={{ right: (!!isCoordinate && isOverTime === 1) ? '18.5%' : '3%' }}
               title="协调"
             />}
-            {!!isOverTime && <span
+            {isOverTime === 1 && <span
               className={`iconfont icon-chaoshi ${styles.overtimeIcon}`}
               title="超时"
             />}
@@ -171,29 +171,6 @@ export default class DefectTable extends Component {
     this.props.getDefectList({ ...newListParams });
   }
 
-  defectMockListData = [
-    {
-      stationName: '电站1',
-      docketDesc: '这是随手写的静态数据',
-      eventNum: 12,
-      keepLength: '21天22小时08分',
-      createTime: '2019-07-12 14:00',
-      operName: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-      stateName: '已结单',
-      isCoordinate: 1,
-      isOverTime: 1,
-    }, {
-      stationName: '电站1',
-      docketDesc: '这是随手写的静态数据',
-      eventNum: 12,
-      keepLength: '21天22小时08分',
-      createTime: '2019-09-20 00:00',
-      operName: '张三, 李四, 王五, 赵六, 祝七, 黑八, 林九',
-      stateName: '执行中',
-      isCoordinate: 1,
-      isOverTime: 1,
-    },
-  ]
 
   onPicChange = (imgs) => this.setState({ imgs })
   onVideoChange = (videos) => this.setState({ videos })
@@ -202,7 +179,6 @@ export default class DefectTable extends Component {
     const { tableListHeight, imgs, videos } = this.state;
     const { defectListData, listParams, listLoading } = this.props;
     const { sortField, sortMethod } = listParams;
-    const mockTotalData = [1].map(e => this.defectMockListData).reduce((a = [], b = []) => b.concat(a));
     return (
       <div className={styles.eliminateDefectsList}>
         <CneTable
@@ -212,9 +188,8 @@ export default class DefectTable extends Component {
           onChange={this.tableSortChange}
           columns={this.defectColumn}
           className={styles.defectTable}
-          scroll={mockTotalData.length > 0 ? { y: tableListHeight } : {}}
+          scroll={defectListData.length > 0 ? { y: tableListHeight } : {}}
           dataSource={defectListData.map((e, index) => { return { ...e, key: index }; })}
-          // dataSource={mockTotalData}
           dataError={false} // 数据是否请求失败
         />
       </div>

@@ -17,7 +17,7 @@ export default class DefectEvent extends Component {
     edit: PropTypes.bool,
     allowedActions: PropTypes.array,
     addEventInfo: PropTypes.array,
-    changeStore: PropTypes.func,
+    // changeStore: PropTypes.func,
   };
 
   componentWillReceiveProps = () => {

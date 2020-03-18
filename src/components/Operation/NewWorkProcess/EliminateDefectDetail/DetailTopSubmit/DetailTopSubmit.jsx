@@ -6,11 +6,6 @@ import styles from './topSubmit.scss';
 import { processIconFunc, localStateName } from '../../Common/processIconCode';
 import RejectAlert from '../../Common/RejectAlert/RejectAlert';
 import PassAlert from '../../Common/PassAlert/PassAlert';
-
-
-
-
-
 /**
  *
  * 提交 未解决   验证 addbaseInfo  addEventInfo addhandleList
@@ -139,7 +134,6 @@ export default class DetailTopSubmit extends Component {
 
   evnetInfoCheck = (eventInfo) => { // 缺陷事件校验 单个
     const { defectTypeCode, deviceTypeCode, deviceFullcode, eventDesc } = eventInfo;
-    console.log('eventInfo', eventInfo);
     if (defectTypeCode === 0) { // 其他缺陷
       if (!eventDesc) {
         return false;
@@ -183,10 +177,29 @@ export default class DetailTopSubmit extends Component {
   }
 
   crete = (e) => { // 创建工单
-    const { addbaseInfo, addEventInfo, addhandleList, isFinish, stationCode, docketId } = this.props;
+    const { addbaseInfo, addEventInfo, addhandleList, isFinish, stateId, stationCode, docketId, removeEventImg, removeHandleImg } = this.props;
     const { location, history } = this.props;
+    const { addUsers = [] } = addbaseInfo;
+    if (addUsers.length > 0) {
+      addbaseInfo[addUsers] = [[{ stateId, userIds: addUsers.map(e => +e.userId) }]];
+    }
     const { pathname } = location;
-    this.props.changeStore({ isVertify: true });
+    if (removeEventImg.length > 0) {
+      addEventInfo.forEach((e, index) => {
+        const { eventImgs } = e;
+        if (eventImgs && eventImgs.length > 0) {
+          addEventInfo[addEventInfo.length - index - 1]['eventImgs'] = [...eventImgs, ...removeEventImg[index]];
+        }
+      });
+    }
+    if (removeHandleImg.length > 0) {
+      addhandleList.forEach((e, index) => {
+        const { handleImgs } = e;
+        if (handleImgs && handleImgs.length > 0) {
+          addhandleList[addhandleList.length - index - 1]['handleImgs'] = [...handleImgs, ...removeHandleImg[index]];
+        }
+      });
+    }
     const flag = this.allChecked();
     if (flag) {
       const params = {

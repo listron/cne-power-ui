@@ -66,23 +66,36 @@ export default class DefectEvenrEdit extends Component {
 
 
   onPicChange = (value) => { // 图片旋转
-    console.log('value', value);
     const { record, onChange } = this.props;
-    const defectImgs = value.map(e => {
+    const eventImgs = value.map(e => {
       return {
         url: e,
         imgId: '',
         updateSign: 1,
       };
     });
-    onChange({ index: record.index, defectImgs });
+    onChange({ index: record.index, eventImgs });
+  }
+
+  errorTip = (value) => { //错误提示
+    const { isVertify, record = {} } = this.props;
+    if (isVertify && !record[value]) {
+      return 'error';
+    }
+  }
+
+  initTip = (value) => { // 默认提示
+    const { record = {} } = this.props;
+    if (!record[value] && record[value] !== 0) {
+      return 'init';
+    }
   }
 
 
   render() {
     const { deviceTypes = [], record = {}, stationCode, deviceModes = [], isVertify, del } = this.props;
     const {
-      eventDesc, defectTypeCode, deviceTypeCode, deviceTypeName, deviceName, deviceFullcode, defectLevel, defectImgs = [],
+      eventDesc, defectTypeCode, deviceTypeCode, deviceTypeName, deviceName, deviceFullcode, defectLevel, eventImgs = [],
     } = record;
     const { visible } = this.state;
     const downloadTemplet = `${path.basePaths.APIBasePath}${path.pubilcPath.imgUploads}`;
@@ -94,7 +107,13 @@ export default class DefectEvenrEdit extends Component {
         <div className={styles.editDevice}>
           <div className={styles.defectType}>
             <div className={styles.recordName}>缺陷类型 <span className={styles.star}>*</span></div>
-            <Select value={defectTypeCode} placeholder={'请选择'} onChange={this.changeDefectType} required={isVertify}>
+            <Select
+              value={defectTypeCode}
+              placeholder={'请选择'}
+              onChange={this.changeDefectType}
+              required={isVertify}
+              className={`${styles[this.errorTip('defectTypeCode')]} ${styles[this.initTip('defectTypeCode')]}`}
+            >
               <Option value={1} >设备缺陷</Option>
               <Option value={0} >其他缺陷</Option>
             </Select>
@@ -109,6 +128,7 @@ export default class DefectEvenrEdit extends Component {
                   onChange={this.changeDeviceType}
                   disabled={deviceTypes.length === 0}
                   required={isVertify}
+                  className={`${styles[this.errorTip('deviceTypeCode')]} ${styles[this.initTip('deviceTypeCode')]}`}
                 >
                   {deviceTypes.map(e => (
                     <Option
@@ -128,6 +148,7 @@ export default class DefectEvenrEdit extends Component {
                   disabled={!deviceTypeCode}
                   required={isVertify}
                   value={deviceFullcode && `${deviceFullcode}_${deviceName}` || ''}
+                  className={`${styles[this.errorTip('deviceFullcode')]} ${styles[this.initTip('deviceFullcode')]}`}
                 >
                   {deviceModes.map(e =>
                     (<Option
@@ -164,12 +185,12 @@ export default class DefectEvenrEdit extends Component {
         </div>
         <div className={styles.editPic}>
           <span className={styles.editTitle}>
-            <span className={styles.recordName}>添加照片  <span className={styles.star}>*</span></span>
+            <span className={styles.recordName}>添加照片</span>
             <span className={styles.titleTip}>最多4张</span>
           </span>
           <span>{
             <PicUploader
-              value={defectImgs && defectImgs.map(e => e.url) || []}
+              value={eventImgs && eventImgs.map(e => e.url) || []}
               mode="edit"
               maxPicNum={4}
               onChange={this.onPicChange}

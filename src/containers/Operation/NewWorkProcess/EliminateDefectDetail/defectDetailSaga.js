@@ -96,6 +96,10 @@ function* getDefectEventInfo(action) { // 2.7.3.7.查询工单缺陷信息
       yield call(easyPut, 'changeStore', {
         eventInfos: response.data.data || [],
         eventStatus: response.data.data.map((e, index) => { return { eventId: e.eventId, eventState: null, key: index }; }),
+        removeEventImg: response.data.data.map((e, index) => {
+          const { eventImgs = [] } = e;
+          return eventImgs.map(img => { return { imgId: img.imgId, url: img.url, updateSign: 2 }; });
+        }),
       });
     } else {
       throw response.data;
@@ -118,6 +122,10 @@ function* getDefectHandleInfo(action) { // 2.7.3.8.	查询工单处理信息
     if (response.data.code === '10000') {
       yield call(easyPut, 'changeStore', {
         handleInfos: response.data.data || [],
+        removeHandleImg: response.data.data.map((e, index) => {
+          const { eventImgs = [] } = e;
+          return eventImgs.map(img => { return { imgId: img.imgId, url: img.url, updateSign: 2 }; });
+        }),
       });
     } else {
       throw response.data;
@@ -391,6 +399,28 @@ function* getDiagwarning(action) { // 获取告警事件转过来的ID
   }
 }
 
+function* showUser(action) { // 2.7.3.13.	查询起始流程的显示用户信息
+  const url = `${APIBasePath}${ticket.getDefectState}`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      const data = response.data.data && response.data.data[0];
+      const stateId = data.stateId;
+      yield call(easyPut, 'changeStore', {
+        stateId,
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    message.error(e.message);
+    yield call(easyPut, 'changeStore', {
+      stateId: '',
+    });
+    console.log(e);
+  }
+}
+
 export function* watchEliminateDefectDetail() {
   yield takeLatest(eliminateDefectDetailAction.getDefectAction, getDefectAction);
   yield takeLatest(eliminateDefectDetailAction.createDefect, createDefect);
@@ -410,5 +440,6 @@ export function* watchEliminateDefectDetail() {
   yield takeLatest(eliminateDefectDetailAction.defectTypes, defectTypes);
   yield takeLatest(eliminateDefectDetailAction.getBaseUsername, getBaseUsername);
   yield takeLatest(eliminateDefectDetailAction.getDiagwarning, getDiagwarning);
+  yield takeLatest(eliminateDefectDetailAction.showUser, showUser);
 }
 

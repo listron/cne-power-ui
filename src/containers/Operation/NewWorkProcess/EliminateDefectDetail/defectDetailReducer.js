@@ -22,12 +22,14 @@ const eliminateDefectDetailAction = {
   defectTypes: Symbol('defectTypes'),
   getBaseUsername: Symbol('getBaseUsername'),
   getDiagwarning: Symbol('getDiagwarning'),
+  showUser: Symbol('showUser'),
 };
 
 const initState = immutable.fromJS({
   docketId: null, // 缺陷ID
   isFinish: null,
   stationCode: null, // 电站Code
+  stationName: null, // 电站名称
   allowedActions: [], //可执行的动作
   baseInfo: {}, // 基本信息
   stateId: null, //  状态ID
@@ -38,6 +40,8 @@ const initState = immutable.fromJS({
   warnEventInfos: [], // 告警缺陷事件
   handleInfos: [], // 处理信息
   processInfo: [], // 流程信息
+  removeEventImg: [], // 用于退回的时候 重新编辑 缺陷⌚️
+  removeHandleImg: [], // 用于退回的时候 重新编辑 处理信息
 
   defectTypes: [], //缺陷类型
   deviceTypes: [], // 设备类型
