@@ -92,7 +92,7 @@
   }
 }
 
-.cneTable.light{
+.cneTable.light{ // 颜色部分
   :global{
     .ant-table .ant-table-thead > tr > th,
     .ant-table .ant-table-tbody > tr > td{
@@ -158,8 +158,14 @@
     .ant-table-fixed .ant-table-tbody > tr > td{
       &:last-child {
         border-right: 1px dashed var(--themeColor);
-        box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
+        // box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
       }
+    }
+    .ant-table.ant-table-scroll-position-left .ant-table-fixed-left{
+      box-shadow: none;
+    }
+    .ant-table-fixed-left{
+      box-shadow: 2px 0 6px -2px #199475;
     }
   }
 }
