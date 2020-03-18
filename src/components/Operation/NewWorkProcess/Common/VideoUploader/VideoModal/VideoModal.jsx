@@ -58,7 +58,6 @@ export default class VideoModal extends Component {
             className={styles.videoPlayer}
             height="640px"
             width="960px"
-            // style={{ maxWidth: '960px', maxHeight: '640px'}}
           />
         </div>
       </Modal>

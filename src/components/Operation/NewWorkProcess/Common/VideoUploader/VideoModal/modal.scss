@@ -30,9 +30,13 @@
       }
     }
     .videoPlayer{
-      max-width: 960px;
-      max-height: 640px;
       box-shadow:0 0 20px 3px rgba(0,0,0,0.50);
+      background-color: #000;
+      video{
+        height: auto!important;
+        max-height: 640px;
+        max-width: 960px;
+      }
     }
   }
 }
