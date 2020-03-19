@@ -40,15 +40,27 @@ class EventAnalysisPage extends PureComponent {
   render(){
     const { pageKey, analysisEvent, eventAnalysisInfo, eventAnalysisLoading } = this.props;
     const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName, interval, beginTime } = analysisEvent || {};
-    const endTime = moment(beginTime).utc().endOf('day').format();
+    const startTime = moment(moment(beginTime).startOf('day').format()).utc().format();
+    const endTime = moment(moment(beginTime).endOf('day').format()).utc().format();
     const { chartType, deviceFullcode, data } = eventAnalysisInfo || {};
     const { pointData = [] } = data || {};
     const pointCodes = pointData && pointData.map(e => e.pointCode);
     const [stationStr, devoceTypeStr] = deviceFullcode ? deviceFullcode.split('M') : [];
     let redirectPath = '/monitor/pvData/history';
-    if (stationStr && devoceTypeStr) {
-      redirectPath = `${redirectPath}?stationCode=${stationStr}&deviceTypeCode=${devoceTypeStr}&deviceName=${deviceName}&deviceFullcodes=${deviceFullcode}&timeInterval=${interval}&startTime=${beginTime}&endTime=${endTime}&devicePoints=${pointCodes}`;
+    if (stationStr && devoceTypeStr && deviceName && deviceFullcode && interval && startTime && endTime && pointCodes) {
+      const params = {
+        stationCode: stationStr,
+        deviceTypeCode: devoceTypeStr,
+        deviceName: deviceName,
+        deviceFullcodes: deviceFullcode,
+        timeInterval: interval,
+        startTime: startTime,
+        endTime: endTime,
+        devicePoints: pointCodes,
+      };
+      redirectPath = `/monitor/pvData/history?searchParams=${JSON.stringify(params)}`;
     }
+
     return (
       <section className={styles.eventAnalysis}>
         <h3 className={styles.detailTop}>

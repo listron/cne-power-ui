@@ -30,7 +30,7 @@ class PvPointTree extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { reRenderTree, pointInfo } = nextProps;
-    const { history, queryParam, listParam } = this.props;
+    const { history, queryParam, listParam, changeHistoryStore, getChartHistory, getListHistory } = this.props;
     const preReRenderTree = this.props.reRenderTree;
     const { location } = history;
     const { search } = location;
@@ -39,35 +39,37 @@ class PvPointTree extends Component {
         expandedKeys: [],
       });
       if (search) {
-        const { devicePoints } = searchUtil(search).parse();
-        const selectPoints = devicePoints.split(','); // 诊断中心传来的devicePointId
-        const filterPoint = pointInfo.filter(e => selectPoints.indexOf(e.devicePointCode) !== -1); // 筛选出相同的devicePointId数组
+        const { searchParams } = searchUtil(search).parse();
+        const urlSearchParams = searchParams && JSON.parse(searchParams) || {}; // 判断从路由中过来的筛选条件
+        const { devicePoints } = urlSearchParams;
+        const filterPoint = pointInfo.filter(e => devicePoints.indexOf(e.devicePointCode) !== -1); //  // 诊断中心传来的devicePointId,筛选出相同的devicePointId数组
         const devicePointCodes = filterPoint.map(e => e.devicePointId);
-        this.props.changeHistoryStore({
-          queryParam: {
-            ...queryParam,
-            devicePoints: devicePointCodes,
-          },
-        });
-        this.props.getChartHistory({
-          queryParam: {
-            ...queryParam,
-            devicePoints: devicePointCodes,
-          },
-         });
-         this.props.getListHistory({
-          queryParam: {
-            ...queryParam,
-            devicePoints: devicePointCodes,
-          },
-          listParam,
-        });
         if (filterPoint.length === 0) {
           this.setState({ isNoDataTip: true });
           setTimeout(() => {
             this.setState({ isNoDataTip: false });
           }, 3000);
         }
+        changeHistoryStore({
+          queryParam: {
+            ...queryParam,
+            devicePoints: devicePointCodes,
+          },
+        });
+        getChartHistory({
+          queryParam: {
+            ...queryParam,
+            devicePoints: devicePointCodes,
+          },
+         });
+        getListHistory({
+          queryParam: {
+            ...queryParam,
+            devicePoints: devicePointCodes,
+          },
+          listParam,
+        });
+
       }
     }
   }

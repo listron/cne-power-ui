@@ -49,7 +49,9 @@ class PvHistorySearch extends Component {
     const { location } = history;
     const { search } = location;
     if (prevDevices.length === 0 && filterDevices.length > 0) { // 得到初始设备数据
-      const { deviceName } = searchUtil(search).parse();
+      const { searchParams } = searchUtil(search).parse();
+      const urlSearchParams = searchParams && JSON.parse(searchParams) || {}; // 判断从路由中过来的筛选条件
+      const { deviceName } = urlSearchParams;
         const devicefullcode = filterDevices.find(e => {
           if (search && deviceName) {
             return e.deviceName === deviceName;
