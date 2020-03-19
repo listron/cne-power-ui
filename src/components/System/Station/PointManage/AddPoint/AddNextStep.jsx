@@ -110,6 +110,8 @@ class AddNextStep extends React.Component {
     const { showDesc } = this.state;
     const domData = showPage === 'add' ? showleftInfo(payloadData) : showleftInfo(pointDetail);
     const { getFieldDecorator } = this.props.form;
+    const quality = this.dealPointDetail('dataQuality');
+    const dataQuality = '' === quality ? 0 : quality;
     return (
       <div className={styles.pageContainer}>
         <div className={styles.left}>
@@ -237,6 +239,17 @@ class AddNextStep extends React.Component {
             <FormItem label="是否显示" colon={false} className={styles.formItemStyle}>
               {getFieldDecorator('isShow', {
                 initialValue: showPage === 'add' ? 1 : this.dealPointDetail('isShow'),
+              })(
+                <Select>
+                  <Option value={1}>是</Option>
+                  <Option value={0}>否</Option>
+                </Select>
+              )}
+            </FormItem>
+
+            <FormItem label="数据质量" colon={false} className={styles.formItemStyle}>
+              {getFieldDecorator('dataQuality', {
+                initialValue: showPage === 'add' ? 1 : dataQuality,
               })(
                 <Select>
                   <Option value={1}>是</Option>

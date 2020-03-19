@@ -541,9 +541,24 @@
   .deviceTypeCont {
     padding: 7px 13px;
     line-height: 30px;
-    .version {
-      @include overflowText();
-      width: 124px;
+    .modeVersion {
+      display: flex;
+      height: 30px;
+      .iconBox{
+        margin-top: -4px;
+        :global {
+          .iconfont {
+            color: #4d90fd;
+            &:hover {
+              color: #f9b600;
+            }
+          }
+        }
+      }
+      .version {
+        @include overflowText();
+        max-width: 124px;
+      }
     }
   }
   .footer {

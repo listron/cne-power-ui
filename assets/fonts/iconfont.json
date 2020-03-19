@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "13497474",
+      "name": "goout",
+      "font_class": "goout",
+      "unicode": "e738",
+      "unicode_decimal": 59192
+    },
+    {
+      "icon_id": "13416559",
+      "name": "dianbao",
+      "font_class": "dianbao",
+      "unicode": "e736",
+      "unicode_decimal": 59190
+    },
+    {
+      "icon_id": "13416560",
+      "name": "companybao",
+      "font_class": "companybao",
+      "unicode": "e737",
+      "unicode_decimal": 59191
+    },
+    {
+      "icon_id": "13405446",
+      "name": "tianjia",
+      "font_class": "tianjia",
+      "unicode": "e735",
+      "unicode_decimal": 59189
+    },
+    {
       "icon_id": "13276508",
       "name": "twobg",
       "font_class": "twobg",
