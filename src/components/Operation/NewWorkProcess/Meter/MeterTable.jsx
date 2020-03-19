@@ -202,7 +202,7 @@ export default class MeterTable extends React.Component {
             return (
               <div className={styles.stateNameBox} title={text}>
                 <div>{text || '- -'}</div>
-                <i className={'iconfont icon-chaoshi'} />
+                <i title="超时" className={'iconfont icon-chaoshi'} />
               </div>
             );
           }

@@ -236,7 +236,7 @@ export default class MeterBaseInfo extends React.Component {
                                     <div className={styles.operatorItemBox} key={index.toString()}>
                                       {cur.map(item => {
                                         return (
-                                          <div className={styles.operatorItem} key={item.userId}>
+                                          <div className={styles.operatorItem} title={item.userName} key={item.userId}>
                                             <Checkbox value={item.userId}>{item.userName}</Checkbox>
                                           </div>
                                         );
