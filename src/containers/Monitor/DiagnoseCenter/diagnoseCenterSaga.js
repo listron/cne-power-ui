@@ -189,69 +189,46 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
       const resValue = pointData.filter(e => { // 请求的value数据是否都为空
         return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
       });
-      console.log('resValue: ', resValue);
-
-      if (resValue.length === 0) {
-        if (isDataTip) { // 如果所选日期无数据的时弹出提示语
-          yield call(easyPut, 'changeStore', { isNoDataTip: true });
-        }
+      if ((isDataTip || isCycleTip) && resValue.length === 0) {// 如果所选日期/数据间隔无数据的时弹出提示语
+        yield call(easyPut, 'changeStore', { isNoDataTip: true });
       }
 
-      const intervalState = interval === 2 && resValue.length === 0 && (eventType === 1 || eventCode === 'NB1035');
-      if (intervalState) { // 如果请求的是interval为5秒但value的数据为空，以及事件类型为零电流'NB1035'或者是告警事件时，就请求1分钟
+      if (!isCycleTip) { // 第一次进入页面且5秒无数据时才会请求去请求10分钟数据
+        const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 获取最开始得到的数据
+        const resValue = pointData.filter(e => { // 请求的value数据是否都为空
+          return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
+        });
 
-        if (isCycleTip) { // 如果所选数据间隔无数据的时弹出提示语
+        if (resValue.length === 0 && isDataTip) { // 如果所选日期无数据的时弹出提示语
           yield call(easyPut, 'changeStore', { isNoDataTip: true });
         }
 
-        yield call(easyPut, 'changeStore', { eventAnalysisLoading: true, showAnalysisPage: true });
-        const response = yield call(request.get, url, { params: {
-          ...params,
-          interval: 3, // 请求1分钟
-        }});
-        if (response.code === '10000') {
-          yield call(easyPut, 'fetchSuccess', {
-            eventAnalysisLoading: false,
-            analysisEvent: {
-              ...payload,
-              interval: 3, // 请求1分钟
-            },
-            eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
-          });
+        const intervalState = interval === 2 && resValue.length === 0 && (eventType === 1 || eventCode === 'NB1035');
+        if (intervalState) { // 如果请求的是interval为5秒但value的数据为空，以及事件类型为零电流'NB1035'或者是告警事件时，就请求10分钟
+          if (isCycleTip) { // 如果所选数据间隔无数据的时弹出提示语
+            yield call(easyPut, 'changeStore', { isNoDataTip: true });
+          }
 
-          const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 获取1分钟得到的数据
-          const resValue = pointData.filter(e => { // 请求的value数据是否都为空
-            return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
-          });
-
-          const intervalState = resValue.length === 0;
-          if (intervalState) { // 如果请求的是interval为5秒和1分钟的value数据为都为空时，就请求十分钟
-
-            if (isCycleTip) { // 如果所选数据间隔无数据的时弹出提示语
+          yield call(easyPut, 'changeStore', { eventAnalysisLoading: true, showAnalysisPage: true });
+          const response = yield call(request.get, url, { params: {
+            ...params,
+            interval: 1, // 请求10分钟
+          }});
+          if (response.code === '10000') {
+            yield call(easyPut, 'fetchSuccess', {
+              eventAnalysisLoading: false,
+              analysisEvent: {
+                ...payload,
+                interval: 1, // 请求10分钟
+              },
+              eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
+            });
+            const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 获取10分钟得到的数据
+            const resValue = pointData.filter(e => { // 请求的value数据是否都为空
+              return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
+            });
+            if (resValue.length === 0) { // 如果10分钟也没有value数据的话，就弹出提示语“无数据”
               yield call(easyPut, 'changeStore', { isNoDataTip: true });
-            }
-
-            yield call(easyPut, 'changeStore', { eventAnalysisLoading: true, showAnalysisPage: true });
-            const response = yield call(request.get, url, { params: {
-              ...params,
-              interval: 1, // 请求十分钟
-            }});
-            if (response.code === '10000') {
-              yield call(easyPut, 'fetchSuccess', {
-                eventAnalysisLoading: false,
-                analysisEvent: {
-                  ...payload,
-                  interval: 1, // 请求十分钟
-                },
-                eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
-              });
-              const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 获取10分钟得到的数据
-              const resValue = pointData.filter(e => { // 请求的value数据是否都为空
-                return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
-              });
-              if (resValue.length === 0) { // 如果10分钟也没有value数据的话，就弹出提示语“无数据”
-                yield call(easyPut, 'changeStore', { isNoDataTip: true });
-              }
             }
           }
         }

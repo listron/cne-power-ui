@@ -138,7 +138,7 @@ class ChartLine extends PureComponent {
       const pointName = `${(!noDeviceName && !seriesInefficient) ? e.deviceName : ''} ${e.pointName || ''}`; // 诊断事件的零电流、组串低效、固定物遮挡不展示设备名称
       const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
       colors.push(this.lineColors[i % this.lineColors.length]);
-      if(e.isConnected === 0 && (noDeviceName || seriesInefficient)){ // 诊断事件的零电流、组串低效、固定物遮挡未接组串颜色设置为#999
+      if(e.isConnected === 0){ // 诊断事件的零电流、组串低效、固定物遮挡未接组串颜色设置为#999
         colors.splice((i + 1), 1, '#999');
       }
       legends.push({
@@ -157,7 +157,7 @@ class ChartLine extends PureComponent {
         type: 'line',
         yAxisIndex: unitsGroup.indexOf(e.pointUnit || ''), // 空单位统一以''作为单位
         lineStyle: {
-          width: 3,
+          width: (e.isConnected === 0 && (noDeviceName || seriesInefficient)) ? 0 : 3,
         },
         data: e.value,
         symbol: 'circle',
@@ -229,13 +229,13 @@ class ChartLine extends PureComponent {
                 const { isWarned, pointName, deviceName, isConnected } = eachFullData;
                 const lineFullName = `${deviceName} ${pointName || ''}`;
                 return (
-                  `<p class=${(isWarned && pageKey === 'diagnose') ? styles.warnedItem : styles.eachItem }>
+                  `<p class=${(isWarned && pageKey === 'diagnose') ? styles.warnedItem : (isConnected === 0 && (noDeviceName || seriesInefficient) ? styles.connected : styles.eachItem)}>
                     <span class=${styles.tipIcon}>
-                      <span class=${styles.line} style="background-color:${isConnected === 0 && (noDeviceName || seriesInefficient) ? '#999' : color}"></span>
-                      <span class=${styles.rect} style="background-color:${isConnected === 0 && (noDeviceName || seriesInefficient) ? '#999' : color}"></span>
+                      <span class=${styles.line} style="background-color:${color}"></span>
+                      <span class=${styles.rect} style="background-color:${color}"></span>
                     </span>
                     <span class=${styles.tipName}>${lineFullName}</span>
-                    <span class=${styles.tipValue}>${isConnected === 0 && (noDeviceName || seriesInefficient) ? '--' : dataFormats(value, '--', 2, true)}</span>
+                    <span class=${styles.tipValue}>${isConnected === 0 ? '--' : dataFormats(value, '--', 2, true)}</span>
                   </p>`
                 );
               }).join('')}

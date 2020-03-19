@@ -36,15 +36,16 @@ class PvDataHistory extends Component {
     const { search } = location;
     this.props.getSecendInterval({enterpriseId});
     if (search) {
-      const { stationCode, deviceTypeCode, startTime, endTime, timeInterval } = searchUtil(search).parse();
-
+      const { searchParams } = searchUtil(search).parse();
+      const urlSearchParams = searchParams && JSON.parse(searchParams) || {}; // 判断从路由中过来的筛选条件
+      const { stationCode, deviceTypeCode, startTime, endTime, timeInterval } = urlSearchParams;
       if (stationCode) {
         this.props.changeHistoryStore({
           queryParam: {
             ...queryParam,
             stationCode: parseFloat(stationCode),
-            startTime: moment(startTime),
-            endTime: moment(endTime),
+            startTime: startTime,
+            endTime: endTime,
             timeInterval: [10, 5, 2][parseFloat(timeInterval - 1)], // 诊断中心1: 十分钟, 2: 5秒, 3: 1分钟
           },
         });
