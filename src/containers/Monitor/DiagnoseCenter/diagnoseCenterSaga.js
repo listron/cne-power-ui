@@ -193,7 +193,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
         yield call(easyPut, 'changeStore', { isNoDataTip: true });
       }
 
-      if (!isCycleTip) { // 第一次进入页面且5秒无数据时才会请求去请求10分钟数据
+      if (!isCycleTip && !isDataTip) { // 第一次进入页面且5秒无数据时才会请求去请求10分钟数据
         const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 获取最开始得到的数据
         const resValue = pointData.filter(e => { // 请求的value数据是否都为空
           return (response.data.chartType === 1 ? e.value.length : e.length) > 0;

@@ -45,7 +45,7 @@ const initState = Immutable.fromJS({
   allHistory: {}, // chart图 - 所有历史数据
   partHistory: {}, // 表格内 - 分页后的历史数据
   logPoint: null, // 请求时暂存的测点数据
-
+  isNoDataTip: false, // 诊断中心传来的值无数据时弹出提示语
 });
 
 const pvDataHistory = (state = initState, action) => {
