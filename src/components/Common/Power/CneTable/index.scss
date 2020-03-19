@@ -1,6 +1,5 @@
 @import '../../../../theme/theme.scss';
 
-
 @media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
   .cneTable{
     :global{
@@ -107,6 +106,18 @@
     }
     .ant-table-placeholder {
       border-bottom: none;
+    }
+  }
+}
+
+.headShadow{ // 表格顶部冻结 且滚动时 = 头部需有阴影
+  :global{
+    .ant-table-header.ant-table-hide-scrollbar{
+      overflow-x: hidden!important;
+      margin-bottom: 0!important;
+      box-shadow: 0 4px 2px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 99;
     }
   }
 }

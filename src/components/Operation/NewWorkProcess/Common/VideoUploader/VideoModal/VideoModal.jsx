@@ -7,7 +7,7 @@ import styles from './modal.scss';
 export default class VideoModal extends Component {
   static propTypes = {
     theme: PropTypes.string,
-    visible: PropTypes.bool,
+    modalVideoSrc: PropTypes.bool,
     wrapModalClassName: PropTypes.string,
     hideVideoModal: PropTypes.func,
   };
@@ -16,26 +16,15 @@ export default class VideoModal extends Component {
     theme: 'light',
   };
 
-  state = {
-    videoWidth: 0,
-    videoHeight: 0,
-  }
-
   closeModal = () => { // 关闭
     this.props.hideVideoModal();
   };
 
-  playerReady = (a) => {
-    // console.log(a.wrapper);
-    // console.log(a.wrapper.clientWidth)
-    // console.log(a.wrapper.clientHeight)
-  }
-
   render() {
-    const { theme, wrapModalClassName, visible } = this.props;
+    const { theme, wrapModalClassName, modalVideoSrc } = this.props;
     return (
       <Modal
-        visible={visible}
+        visible={!!modalVideoSrc}
         wrapClassName={`${styles.videoModalBox} ${styles[theme]} ${wrapModalClassName}`}
         footer={null}
         closable={null}
@@ -52,7 +41,7 @@ export default class VideoModal extends Component {
             />
           </div>
           <ReactPlayer
-            url="/video/01-1000.mp4"
+            url={modalVideoSrc}
             onReady={this.playerReady}
             controls={true}
             className={styles.videoPlayer}
