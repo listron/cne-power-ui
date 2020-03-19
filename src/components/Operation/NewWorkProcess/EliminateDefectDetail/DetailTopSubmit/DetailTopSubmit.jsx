@@ -96,10 +96,10 @@ export default class DetailTopSubmit extends Component {
     };
   }
 
-  onBackHandle = () => { // 返回按钮 => 根据状态, 根据操作权限 是否提示弹框 c 操作权限的在验收 审核的直接退出
+  onBackHandle = () => { // 返回按钮 => 根据状态, 根据操作权限 是否提示弹框 
     const { stateName, location, history } = this.props;
     const statusArr = ['receive', 'complete']; // 已接单和领取退回不提示
-    const needTip = statusArr.includes(localStateName[stateName]);
+    const needTip = stateName && statusArr.includes(localStateName[stateName]) || true;
     const { pathname } = location;
     if (needTip) {
       this.setState({
@@ -177,10 +177,10 @@ export default class DetailTopSubmit extends Component {
   }
 
   crete = (e) => { // 创建工单
+    this.props.changeStore({ isVertify: true });
     const { addbaseInfo, addEventInfo, addhandleList, isFinish, stateId, stationCode, docketId, removeEventImg, removeHandleImg } = this.props;
     const { location, history, warnEventInfos } = this.props;
     const { addUsers = [] } = addbaseInfo;
-    console.log(1234, e);
     if (addUsers.length > 0) {
       addbaseInfo['addUsers'] = [{ stateId, userIds: addUsers.map(e => +e.userId) }];
     }
@@ -232,6 +232,7 @@ export default class DetailTopSubmit extends Component {
   }
 
   verify = (e) => { // 审核 派发
+    this.props.changeStore({ isVertify: true });
     const { docketId, addbaseInfo, stateId, stationCode, baseInfo } = this.props;
     const { planEndTime = null, docketDesc } = addbaseInfo;
     let { addUsers } = addbaseInfo;
