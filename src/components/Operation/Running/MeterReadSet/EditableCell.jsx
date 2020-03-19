@@ -126,7 +126,7 @@ class EditableCell extends Component {
                       onChange={(value) => { this.onChangeColumn('meterName', value); }}
                     >
                       {baseDeviceData.map((item, index) => (
-                        <Option key={item.deviceId} value={item.deviceName}>{item.deviceName}</Option>
+                        <Option key={item.deviceId} value={item.deviceName} title={item.deviceName}>{item.deviceName}</Option>
                       ))}
                       <Option value="disabled" disabled>
                         <div className={!eventData.meterName && styles.noDataText}>
