@@ -90,12 +90,15 @@ export default class HandleInfo extends Component {
 
   saveHandle = (record) => { // 保存处理信息(单独)
     const { index } = record;
-    const { handleImgs = [] } = record;
+    const { handleImgs = [], handleVideos = [], ...rest } = record;
     const curImg = handleImgs.length > 0 && handleImgs.map(e => e.url) || [];
-    record['handleImgs'] = curImg;
     const { addhandleList, addDefectHandle } = this.props;
     addDefectHandle({
-      record,
+      record: {
+        ...rest,
+        handleImg: curImg,
+        handleVideo: handleVideos,
+      },
       func: () => {
         addhandleList.splice(addhandleList.length - index, 1);
         this.props.changeStore({ addhandleList });
