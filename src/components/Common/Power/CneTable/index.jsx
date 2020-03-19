@@ -56,7 +56,7 @@ export default class CneTable extends PureComponent {
   render(){
     const {
       theme = 'light',
-      className, sortField, sortMethod, columns, dataError, noMoreDataPic, scroll,
+      className, sortField, sortMethod, columns, dataError, noMoreDataPic,
       ...rest
     } = this.props;
     const { showHeaderShadow } = this.state;
@@ -81,7 +81,7 @@ export default class CneTable extends PureComponent {
     if (showHeaderShadow) { // 滚动后 - 冻结顶部
       totalClassName = `${totalClassName} ${styles.headShadow}`;
     }
-    if (scroll && scroll.y) {
+    if (rest.scroll && rest.scroll.y) {
       return (<div ref={ref => { this.tableRef = ref; }}>
         <Table
           columns={tableColumn}
