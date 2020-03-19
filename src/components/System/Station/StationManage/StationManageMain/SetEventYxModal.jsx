@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Tree, Modal, message, Checkbox, Button, Radio, Icon } from 'antd';
 import styles from './stationMain.scss';
 import { Link } from 'react-router-dom';
+import {stringify} from 'qs';
 
 class SetEventYxModal extends Component { // 电站管理列表页
   static propTypes = {
@@ -90,7 +91,7 @@ class SetEventYxModal extends Component { // 电站管理列表页
                   const defaultValue = mode.versions.filter(e => +e.selected);
                   const diagModeVersionId = defaultValue.length > 0 && defaultValue[0].diagModeVersionId || '';
                   return (
-                    <React.Fragment>
+                    <React.Fragment key={`${mode.deviceModeCode}_${mode.manufactorCode}`}>
                       <div key={`${mode.deviceModeCode}_${mode.manufactorCode}`} >{mode.deviceModeName}({mode.manufactorName})  </div>
                       {mode.versions.length > 0 &&
                         <Radio.Group
@@ -98,7 +99,25 @@ class SetEventYxModal extends Component { // 电站管理列表页
                           onChange={this.onChange}
                           defaultValue={`${diagModeVersionId}`}
                         >
-                          {mode.versions.map(e => { return <Radio value={`${e.diagModeVersionId}`} key={e.diagModeVersionId} className={styles.version}> {e.version} </Radio>; })}
+                          {mode.versions.map(e => {
+                            const {deviceTypeCode} = list;
+                            const {deviceModeCode, manufactorCode} = mode;
+                            const param = {deviceModeCode, manufactorCode, diagModeVersionId:e.diagModeVersionId, deviceTypeCode, source:'stationManage'};
+                            const searchStr = stringify(param);
+                            return (
+                              <div key={e.diagModeVersionId} className={styles.modeVersion}>
+                                <Radio value={`${e.diagModeVersionId}`} className={styles.version}> {e.version} </Radio>
+                                <Link to={{ pathname: '/system/station/alarmEvent',
+                                            search: `?${searchStr}`,
+                                            state: param }} 
+                                      target= '_blank'
+                                      key={e.diagModeVersionId}>
+                                  <div className={styles.iconBox}><i className={`iconfont icon-goout`} /></div>
+                                </Link>
+                              </div>
+                            ); 
+                            })
+                          }
                         </Radio.Group>
                       }
                     </React.Fragment>

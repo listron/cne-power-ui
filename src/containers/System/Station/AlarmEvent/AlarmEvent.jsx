@@ -31,11 +31,32 @@ class AlarmEvent extends Component {
     //只有在告警中心，跳转到本页面的时候，才触发一下处理
     const search = this.props.history.location.search || '';
     const paramData = searchUtil(search).parse() || {};
-    //console.log(paramData);
-    const {deviceTypeCode, pointCode, deviceFullcode, stationCode, source} = paramData;
-    if (source && source === 'diagnoseCenter' && deviceTypeCode && pointCode && deviceFullcode && stationCode) {
-      this.props.alarmEventDetialFlow({deviceTypeCode, pointCode, deviceFullcode, stationCode});
+    // console.log(paramData);
+    const {source} = paramData;
+    if (source && source === 'diagnoseCenter') { //告警中心进入
+      const {deviceTypeCode, pointCode, deviceFullcode, stationCode} = paramData;
+      if(deviceTypeCode && pointCode && deviceFullcode && stationCode) {
+        const devcode = (typeof deviceTypeCode === 'string') ?  parseInt(deviceTypeCode) : deviceTypeCode
+        this.props.alarmEventDetialFlow({devcode, pointCode, deviceFullcode, stationCode});
+      }
     }
+    else if (source && source === 'stationManage') {//电站管理进入
+      const {deviceModeCode, manufactorCode, diagModeVersionId, deviceTypeCode} = paramData;
+      if (deviceModeCode && manufactorCode && diagModeVersionId && deviceTypeCode) {
+        const {getVersionEvent, changeStore} = this.props;
+        changeStore({
+            deviceTypeCode: parseInt(deviceTypeCode),
+            diagModeVersionId,
+            deviceModeCode,
+            manufactorCode,
+            selectedNodesKey: `${manufactorCode}_${deviceModeCode}_${diagModeVersionId}`,
+            expandedKeys:[`${manufactorCode}`, `${manufactorCode}_${deviceModeCode}`],
+          });
+
+        getVersionEvent({diagModeVersionId});
+      }
+    }
+
   }
 
   componentWillUnmount() {
