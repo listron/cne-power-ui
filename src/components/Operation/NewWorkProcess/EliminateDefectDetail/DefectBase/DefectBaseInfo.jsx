@@ -118,10 +118,10 @@ export default class DefectBaseInfo extends Component {
     const { addUsers = [], docketDesc = null, planEndTime = null } = addbaseInfo;
     const addStationCode = addbaseInfo.stationCode;
     const operableUserId = operUserInfo.length > 0 && operUserInfo[0].ableUserIds && operUserInfo[0].ableUserIds.split(',') || [];
-    const curId = [...addUsers.map(e => e.userId), operableUserId];
+    const curId = [...addUsers.map(e => e.userId), ...operableUserId]; //过滤掉已经选择的数据
     const filterUsernameList = usernameList.filter(cur => !curId.includes(`${cur.userId}`));
     const operableUserName = operUserInfo.length > 0 && operUserInfo[0].ableUsers && operUserInfo[0].ableUsers.split(',') || [];
-    const curName = [...addUsers.map(e => e.userName), operableUserName];
+    const curName = [...addUsers.map(e => e.userName), ...operableUserName];
     const curStationName = stations.filter(e => e.stationCode === stationCode);
     return (
       <div className={styles.defectBaseInfo}>
@@ -164,7 +164,7 @@ export default class DefectBaseInfo extends Component {
             `${styles.firstInfoTitle} ${isResponsorEdit ? styles.require : ''}`
           }>{operUserInfo.length > 0 && operUserInfo[0].stateName || '接单人'}</div>
           <div className={`${styles.infoContent} ${styles.responsor}`}>
-            <div>{curName.length > 0 && curName.join(',') || '--'}</div>
+            <div>{curName.length > 0 && `${curName}` || '--'}</div>
             {isResponsorEdit &&
               <ResponsorCheck
                 usernameList={filterUsernameList}
@@ -173,7 +173,7 @@ export default class DefectBaseInfo extends Component {
               />}
           </div>
           <div className={styles.infoTitle}>验收人</div>
-          <div className={`${styles.infoContent} ${styles.examiner}`}>{operUserInfo.length > 0 && operUserInfo[1].ableUsers || '--'}</div>
+          <div className={`${styles.infoContent} ${styles.examiner}`}>{operUserInfo.length > 1 && operUserInfo[1].ableUsers || '--'}</div>
           <div className={styles.infoTitle}>实际完成时间</div>
           <div className={`${styles.infoContent} ${styles.finishTime}`}>
             {baseInfo.endTime && moment(baseInfo.endTime).format(timeFormat) || '--'}
