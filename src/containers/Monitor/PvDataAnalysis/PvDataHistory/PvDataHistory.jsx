@@ -36,6 +36,7 @@ class PvDataHistory extends Component {
     const { search } = location;
     this.props.getSecendInterval({enterpriseId});
     if (search) {
+      console.log(searchUtil(search).parse());
       const { stationCode, deviceTypeCode, startTime, endTime, timeInterval } = searchUtil(search).parse() || {};
       if (stationCode) {
         this.props.changeHistoryStore({

@@ -9,38 +9,28 @@ class ChartLine extends PureComponent {
 
   static propTypes = {
     pageKey: PropTypes.string,
-    eventAnalysisLoading: PropTypes.bool,
     eventAnalysisInfo: PropTypes.object,
     analysisEvent: PropTypes.object,
   };
 
   componentDidMount(){
     const { eventAnalysisInfo, analysisEvent } = this.props;
-    const { period = [], data = {} } = eventAnalysisInfo || {};
+    const { period = [], data = {}, dataDays } = eventAnalysisInfo || {};
     const { interval, eventCode } = analysisEvent;
-    this.drawChart(period, data, interval, eventCode);
+    this.drawChart(period, data, interval, eventCode, dataDays);
   }
 
   componentWillReceiveProps(nextProps){
     const preAnalysiInfo = this.props.eventAnalysisInfo;
-    // const preLoading = this.props.eventAnalysisLoading;
-    const { eventAnalysisInfo, eventAnalysisLoading, analysisEvent } = nextProps;
-    // if (eventAnalysisLoading && !preLoading) {
-    //   this.chartLoading();
-    // }
+    const { eventAnalysisInfo, analysisEvent } = nextProps;
     if (eventAnalysisInfo !== preAnalysiInfo) {
-      const { period = [], data = {} } = eventAnalysisInfo || {};
+      const { period = [], data = {}, dataDays } = eventAnalysisInfo || {};
       const { interval, eventCode } = analysisEvent;
-      this.drawChart(period, data, interval, eventCode);
+      this.drawChart(period, data, interval, eventCode, dataDays);
     }
   }
 
   lineColors = ['#ff9900', '#4d90fd', '#60c060', '#ff8d83', '#00cdff', '#9f98ff', '#d5c503', '#2ad7ab', '#b550b2', '#3e97d1', '#83bcc4', '#cc6500', '#5578c2', '#86acea', '#d3b08e', '#7286f1', '#512ca8', '#33cc27', '#bfbf95', '#986cff'];
-
-  // chartLoading = () => {
-  //   const lineChart = echarts.init(this.lineRef);
-  //   lineChart.showLoading();
-  // }
 
   timeFormat = (timeStr, interval = 1) => { // 针对markArea时间进行处理
     if (!timeStr) {
@@ -62,14 +52,29 @@ class ChartLine extends PureComponent {
     return `${timeMinuteStr}${secondNumStr}`;
   }
 
-  drawChart = (period = [], data = {}, interval, eventCode) => {
+  drawChart = (period = [], data = {}, interval, eventCode, dataDays) => {
+    const dataDay = { // 诊断事件固定物遮挡、组串低效、电压异常、并网延时；数据事件高值异常、低值异常展示dataZoom7天数据
+      1: '100',
+      7: '20',
+    };
     const { pageKey } = this.props;
     const lineChart = echarts.init(this.lineRef);
-    // lineChart.hideLoading();
     const { time = [], pointData = [] } = data;
+    // const newPointInfo = pointData.find(e => { // 找出脉冲信号的数据
+    //   return e.pointCode === 'NB027';
+    // });
+
+    // const delPointIndex = pointData.findIndex(e => { // 删除脉冲信号在原测点数组里的位置
+    //   return e.pointCode === 'NB027';
+    // });
+    // if (delPointIndex !== -1 && pageKey === 'alarm') { // 如果存在脉冲信号话，将脉冲信号抽出
+    //   pointData.splice(delPointIndex, 1);
+    // }
+
     const noAlarmTime = ['NB1038', 'NB1040'].includes(eventCode); // 诊断事件电压异常、并网延时中不展示告警时段，页面相应背景图移除
     const noDeviceName = ['NB1035', 'NB1037'].includes(eventCode); // 诊断事件零电流、固定物遮挡的legend要一行8列展示,以及不展示设备名称
     const seriesInefficient = ['NB1036'].includes(eventCode); // 组串低效不展示告警、设备名称，且展示8行
+    const fixedShelter = ['NB1037'].includes(eventCode); // 固定遮挡物
     const legends = [{
       name: '告警时段',
       icon: 'rect',
@@ -83,6 +88,7 @@ class ChartLine extends PureComponent {
         color: '#353535',
       },
     }];
+
     if (noAlarmTime || seriesInefficient) { // 不展示告警时段
       legends.shift();
     }
@@ -90,6 +96,7 @@ class ChartLine extends PureComponent {
     if (noAlarmTime || seriesInefficient) { // 不展示告警时段
       colors.shift();
     }
+
     const unitGroupSets = new Set();
     let unitsGroup = []; // 解出单位数组
     const unitSortTemplate = ['W/m2', 'kW', 'V', 'A'];
@@ -138,10 +145,12 @@ class ChartLine extends PureComponent {
       const pointName = `${(!noDeviceName && !seriesInefficient) ? e.deviceName : ''} ${e.pointName || ''}`; // 诊断事件的零电流、组串低效、固定物遮挡不展示设备名称
       const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
       colors.push(this.lineColors[i % this.lineColors.length]);
-      if(e.isConnected === 0){ // 诊断事件的零电流、组串低效、固定物遮挡未接组串颜色设置为#999
+      if(e.isConnected === 0 && (noDeviceName || seriesInefficient)){ // 零电流、组串低效、固定物遮挡未接组串为灰色
         colors.splice((i + 1), 1, '#999');
       }
+
       legends.push({
+        icon: (e.isConnected === 0 && (noDeviceName || seriesInefficient)) ? 'image:///img/wjr01.png' : '',
         name: pointFullName,
         height: 30,
         left: `${noAlarmTime ? (7 + i % 4 * 21.5) : (noDeviceName ? (3 + (i + 1) % 8 * 12) : (seriesInefficient ? (3 + i % 8 * 12) : (7 + (i + 1) % 4 * 21.5)))}%`, // 诊断事件的组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置;  诊断事件零电流、组串低效、固定物遮挡的要一行8列展示
@@ -157,7 +166,7 @@ class ChartLine extends PureComponent {
         type: 'line',
         yAxisIndex: unitsGroup.indexOf(e.pointUnit || ''), // 空单位统一以''作为单位
         lineStyle: {
-          width: (e.isConnected === 0 && (noDeviceName || seriesInefficient)) ? 0 : 3,
+          width: (e.isConnected === 0 && (noDeviceName || seriesInefficient)) ? 0 : 3, // 诊断事件的零电流、组串低效、固定物遮挡未接组串不显示折线
         },
         data: e.value,
         symbol: 'circle',
@@ -166,6 +175,24 @@ class ChartLine extends PureComponent {
         smooth: true,
       });
     });
+
+    // if (delPointIndex !== -1 && pageKey === 'alarm') {
+    //   series.push({ // 新增脉冲信号数据
+    //     name: '脉冲信号',
+    //     type: 'line',
+    //     xAxisIndex: pointData.length,
+    //     yAxisIndex: pointData.length,
+    //     lineStyle: {
+    //       width: 3,
+    //     },
+    //     data: newPointInfo.value,
+    //     symbol: 'circle',
+    //     symbolSize: 10,
+    //     showSymbol: false,
+    //     smooth: true,
+    //   });
+    // }
+
     const eachyAxis = { // 生成多y纵坐标, 相同单位对应一个y轴
       type: 'value',
       axisLabel: {
@@ -181,21 +208,116 @@ class ChartLine extends PureComponent {
         show: false,
       },
     };
-    const yAxis = unitsGroup.length > 0 ? unitsGroup.map(e => ({
+    const yAxis = unitsGroup.length > 0 ? unitsGroup.map((e, i) => ({
       ...eachyAxis,
     })) : eachyAxis; // 若返回异常数据导致无单位，使用默认单纵坐标即可
+    yAxis[0] = { // 选一个轴添加网格线
+      type: 'value',
+      axisLabel: {
+        show: false,
+      },
+      axisTick: {
+        show: false,
+      },
+      axisLine: {
+        show: false,
+      },
+      splitLine: {
+        lineStyle: {
+          type: 'dashed',
+        },
+      },
+    };
+    const xAxis = [{
+      type: 'category',
+      data: time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss')),
+      axisLine: {
+        show: false,
+      },
+      axisLabel: {
+        fontSize: 14,
+        color: '#353535',
+        lineHeight: 21,
+        formatter: (value = '') => value.split(' ').join('\n'),
+      },
+      axisTick: {
+        show: false,
+      },
+      splitLine: {
+        show: false,
+      },
+    }];
+
+    const grid = [{
+      show: true,
+      borderColor: '#d4d4d4',
+      bottom: 100,
+      // bottom: '27%',
+      top: legendHeight,
+      left: '7%',
+      right: '7%',
+      },
+    ];
+
+    // if (delPointIndex !== -1 && pageKey === 'alarm') { // 告警事件且存在脉冲信号时新增坐标系
+    //   yAxis.push({
+    //     gridIndex: pointData.length,
+    //     type: 'value',
+    //     min: -2,
+    //     max: 2,
+    //     axisLabel: {
+    //       show: false,
+    //     },
+    //     axisTick: {
+    //       show: false,
+    //     },
+    //     axisLine: {
+    //       show: false,
+    //     },
+    //     splitLine: {
+    //       show: false,
+    //     },
+    //   });
+
+    //   xAxis.push({
+    //     gridIndex: pointData.length,
+    //     show: false,
+    //     type: 'category',
+    //     data: time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss')),
+    //     axisLine: {
+    //       show: false,
+    //     },
+    //     axisLabel: {
+    //       fontSize: 14,
+    //       color: '#353535',
+    //       lineHeight: 21,
+    //       formatter: (value = '') => value.split(' ').join('\n'),
+    //     },
+    //     axisTick: {
+    //       show: false,
+    //     },
+    //     splitLine: {
+    //       show: false,
+    //     },
+    //   });
+
+    //   grid.push({
+    //     show: true,
+    //     borderColor: '#d4d4d4',
+    //     bottom: 100,
+    //     top: '73%',
+    //     left: '7%',
+    //     right: '7%',
+    //     height: 59,
+    //     backgroundColor: 'pink',
+    //   });
+    // }
+
     const legendHeight = Math.ceil(legends.length / 4) * 30;
     const option = {
       legend: legends,
       color: colors,
-      grid: {
-        show: true,
-        borderColor: '#d4d4d4',
-        bottom: 100,
-        top: legendHeight,
-        left: '7%',
-        right: '7%',
-      },
+      grid,
       tooltip: {
         trigger: 'axis',
         show: true,
@@ -211,14 +333,10 @@ class ChartLine extends PureComponent {
           const topPosition = legendHeight + 5; //悬浮框位于图形顶部, 防止溢出。
           return [leftPosition, topPosition];
         },
-        axisPointer: {
-          lineStyle: {
-            color: '#000',
-          },
-        },
         extraCssText: 'padding: 5px 10px; background-color: rgba(0,0,0,0.70); box-shadow:0 1px 4px 2px rgba(0,0,0,0.20); border-radius:2px;',
         formatter: (params = []) => {
           const { name } = params[0] || {};
+          const { warningDuration } = period; // 告警时长
           return (
             `<section class=${styles.chartTooltip}>
               <h3 class=${styles.tooltipTitle}>${name}</h3>
@@ -239,32 +357,27 @@ class ChartLine extends PureComponent {
                   </p>`
                 );
               }).join('')}
+              <p class=${(!noAlarmTime && !seriesInefficient) ? styles.eachItem : styles.noWarnItem}>
+                <span class=${styles.warningIcon}></span>
+                <span class=${styles.tipName}>告警时长</span>
+                <span class=${styles.tipValue}>${dataFormats(warningDuration, '--', 2, true)}h</span>
+              </p>
             </section>`
           );
         },
       },
-      xAxis: {
-        type: 'category',
-        data: time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss')),
-        axisLine: {
-          show: false,
-        },
-        axisLabel: {
-          fontSize: 14,
-          color: '#353535',
-          lineHeight: 21,
-          formatter: (value = '') => value.split(' ').join('\n'),
-        },
-        axisTick: {
-          show: false,
-        },
-        splitLine: {
-          show: false,
+      axisPointer: {
+        link: {xAxisIndex: 'all'},
+        type: 'line',
+        lineStyle: {
+          color: '#000',
         },
       },
+      xAxis,
       yAxis,
       series, // 若返回异常空数据, 则需要置空
     };
+    console.log(option);
     if (pointData.length > 0) {
       option.dataZoom = [
         {
@@ -272,6 +385,8 @@ class ChartLine extends PureComponent {
           height: 20,
           bottom: 16,
         }, {
+          start: (noAlarmTime || seriesInefficient || fixedShelter || pageKey === 'data') ? dataDay[dataDays] : 100, // 诊断事件组串低效、电压异常、并网延时、固定物遮挡；数据事件;
+          end: 100,
           type: 'inside',
         },
       ];
