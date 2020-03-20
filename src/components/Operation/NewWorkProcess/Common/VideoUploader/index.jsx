@@ -43,7 +43,7 @@ export default class VideoUploader extends Component {
       uploadPercent: 0, // 上传进度
       uploadLoading: false, // 上传loading
       fileList: [],
-      visible: false,
+      modalVideoSrc: null,
     };
   }
 
@@ -90,12 +90,12 @@ export default class VideoUploader extends Component {
     this.props.onChange(newValue);
   }
 
-  viewVideo = () => this.setState({ visible: true })
+  viewVideo = (modalVideoSrc) => this.setState({ modalVideoSrc })
 
-  hideVideoModal = () => this.setState({ visible: false })
+  hideVideoModal = () => this.setState({ modalVideoSrc: null })
 
   render() {
-    const { uploadPercent, uploadLoading, fileList, visible } = this.state;
+    const { uploadPercent, uploadLoading, fileList, modalVideoSrc } = this.state;
     const { value, uploadUrl, maxNum, wrapModalClassName } = this.props;
     const authData = localStorage.getItem('authData') || '';
     return (
@@ -117,7 +117,7 @@ export default class VideoUploader extends Component {
               url={url}
               // url="/video/01-1000.mp4"
               playing={false}
-              onClick={this.viewVideo}
+              onClick={() => this.viewVideo(url)}
               className={styles.eachVideo}
               width="60px"
               height="auto"
@@ -143,7 +143,7 @@ export default class VideoUploader extends Component {
         </Upload>}
         <VideoModal
           wrapModalClassName={wrapModalClassName}
-          visible={visible}
+          modalVideoSrc={modalVideoSrc}
           hideVideoModal={this.hideVideoModal}
         />
       </div>
