@@ -39,10 +39,8 @@ class PvPointTree extends Component {
         expandedKeys: [],
       });
       if (search) {
-        const { searchParams } = searchUtil(search).parse();
-        const urlSearchParams = searchParams && JSON.parse(searchParams) || {}; // 判断从路由中过来的筛选条件
-        const { devicePoints } = urlSearchParams;
-        const filterPoint = pointInfo.filter(e => devicePoints.indexOf(e.devicePointCode) !== -1); //  // 诊断中心传来的devicePointId,筛选出相同的devicePointId数组
+        const { devicePoints } = searchUtil(search).parse();
+        const filterPoint = pointInfo.filter(e => devicePoints.indexOf(e.devicePointCode) !== -1); // 诊断中心传来的devicePointId,筛选出相同的devicePointId数组
         const devicePointCodes = filterPoint.map(e => e.devicePointId);
         if (filterPoint.length === 0) {
           this.setState({ isNoDataTip: true });
@@ -69,7 +67,6 @@ class PvPointTree extends Component {
           },
           listParam,
         });
-
       }
     }
   }

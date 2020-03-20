@@ -37,6 +37,7 @@ class PvHistorySearch extends Component {
     getChartHistory: PropTypes.func,
     getListHistory: PropTypes.func,
     downloading: PropTypes.bool,
+    isNoDataTip: PropTypes.bool,
     partHistory: PropTypes.object,
     history: PropTypes.object,
     downLoadFile: PropTypes.func,
@@ -49,22 +50,34 @@ class PvHistorySearch extends Component {
     const { location } = history;
     const { search } = location;
     if (prevDevices.length === 0 && filterDevices.length > 0) { // 得到初始设备数据
-      const { searchParams } = searchUtil(search).parse();
-      const urlSearchParams = searchParams && JSON.parse(searchParams) || {}; // 判断从路由中过来的筛选条件
-      const { deviceName } = urlSearchParams;
+      const { deviceName } = searchUtil(search).parse();
+      if (search && deviceName) {
         const devicefullcode = filterDevices.find(e => {
-          if (search && deviceName) {
-            return e.deviceName === deviceName;
-          }
-          return e;
+          return e.deviceName === deviceName;
         });
-      changeHistoryStore({
-        queryParam: {
-          ...queryParam,
-          deviceFullCodes: [devicefullcode], // 默认选中第一个设备
-        },
-      });
-      this.selectedDevice([devicefullcode]);
+        if (devicefullcode) {
+          changeHistoryStore({
+            queryParam: {
+              ...queryParam,
+              deviceFullCodes: [devicefullcode], // 默认选中第一个设备
+            },
+          });
+          this.selectedDevice([devicefullcode]);
+        }else{
+          changeHistoryStore({ isNoDataTip: true });
+          setTimeout(() => {
+            changeHistoryStore({ isNoDataTip: false });
+          }, 3000);
+        }
+      }else{
+        changeHistoryStore({
+          queryParam: {
+            ...queryParam,
+            deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
+          },
+        });
+        this.selectedDevice([filterDevices[0]]);
+      }
     } else if (
       prevDevices.length > 0
       && filterDevices.length > 0
@@ -369,12 +382,13 @@ class PvHistorySearch extends Component {
 
   render() {
     const {
-      queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount, intervalInfo, downloading, partHistory,
+      queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount, intervalInfo, downloading, partHistory, isNoDataTip,
     } = this.props;
     const { dataList = [] } = partHistory;
     const { stationCode, startTime, endTime, timeInterval, deviceFullCodes } = queryParam;
     return (
       <div className={styles.historySearch}>
+        {isNoDataTip && <div className={styles.tipText}>数据不存在，请选择其他周期</div>}
         <div className={styles.searchPart}>
           <div className={styles.stationSelect}>
             <span className={styles.text}>电站名称</span>
