@@ -12,7 +12,6 @@
     .processBanner {
       width: 166px;
       color: #ffffff;
-      font-family: PingFangSC-Medium, serif;
       font-weight: bold;
       padding-left: 17px;
       @include lineheight(36px);
@@ -41,7 +40,6 @@
           min-width: 70px;
           color: #353535;
           @include lineheight(30px);
-          font-family: PingFangSC-Medium, serif;
           font-weight: bold;
         }
 
@@ -50,7 +48,6 @@
           min-width: 70px;
           color: #df4b33;
           @include lineheight(30px);
-          font-family: PingFangSC-Medium, serif;
           font-weight: bold;
         }
 
@@ -66,7 +63,6 @@
             min-width: 70px;
             @include overflowText();
             @include lineheight(30px);
-            font-family: PingFangSC-Regular, serif;
           }
 
           .processItemTime {
@@ -74,7 +70,6 @@
             min-width: 111px;
             margin-left: 3%;
             @include lineheight(30px);
-            font-family: ArialMT, serif;
             color: #999999;
           }
         }
@@ -94,7 +89,6 @@
 
     .singleInfo {
       color: $themeColor;
-      font-family: PingFangSC-Medium, serif;
       font-weight: bold;
     }
 
@@ -104,12 +98,11 @@
       border-top: 1px solid #8eb7a8;
 
       b {
-        font-family: PingFangSC-Medium, serif;
         color: #353535;
       }
 
       span {
-        font-family: PingFangSC-Regular, serif;
+        word-break: break-all;
         color: #353535
       }
     }

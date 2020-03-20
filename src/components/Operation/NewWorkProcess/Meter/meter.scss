@@ -165,6 +165,14 @@
           border: 1px solid $themeColor;
           color: #fff;
         }
+
+        &:not(:first-child)::before{
+          background-color: #ffffff;
+        }
+
+        &:hover::before{
+          background-color: #ceebe0;
+        }
       }
 
       .ant-btn-primary {
@@ -239,6 +247,10 @@
   .iconLookBtn {
     cursor: pointer;
     color: $themeColor;
+
+    i{
+      font-size: 20px;
+    }
 
     &:hover {
       color: #f9b600;

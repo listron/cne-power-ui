@@ -120,6 +120,7 @@ class EditableCell extends Component {
                     initialValue: eventData.meterName,
                   })(
                     <Select
+                      dropdownMatchSelectWidth={false}
                       className={((!eventData.meterName && meterNameValue === 'noData') && styles.meterInpNull) || (meterNameValue === '' && styles.meterInpDel)}
                       placeholder="请选择电能表"
                       dropdownClassName={styles.meterNameSelect}
