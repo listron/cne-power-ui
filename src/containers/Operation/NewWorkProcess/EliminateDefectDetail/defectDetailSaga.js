@@ -300,11 +300,16 @@ function* addAbleUser(action) { // 2.6.1.3.	添加节点处理人 // 目前是�
   try {
     const response = yield call(axios.post, url, { ...payload, docketId, stateId });
     if (response.data.code === '10000') {
-      // 添加完节点处理人，重新请求一次基本信息
+      // 添加完节点处理人，重新请求一次基本信息 流程信息
       yield put({
         type: eliminateDefectDetailAction.getDefectBaseInfo,
         payload: { docketId },
       });
+      yield put({
+        type: eliminateDefectDetailAction.getProcessInfo,
+        payload: { docketId },
+      });
+
     } else {
       throw response.data;
     }
