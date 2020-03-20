@@ -14,10 +14,23 @@ class EventLineSearch extends PureComponent {
     isNoDataTip: PropTypes.bool,
   };
 
-  componentDidMount(){
-    setTimeout(() => {
+  state = {
+    showNoDataTip: false,
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { isNoDataTip } = nextProps;
+    const preNoDataTip = this.props.isNoDataTip;
+    if (!preNoDataTip && isNoDataTip) { //无数据
       this.props.changeStore({ isNoDataTip: false });
-    }, 3000);
+      this.setState({ showNoDataTip: true });
+      if (this.dataTipTimer) {
+        clearTimeout(this.dataTipTimer);
+      }
+      this.dataTipTimer = setTimeout(() => {
+        this.setState({ showNoDataTip: false });
+      }, 3000);
+    }
   }
 
   onIntervalChange = (interval) => {
@@ -44,12 +57,14 @@ class EventLineSearch extends PureComponent {
   disabledDateFunc = (cur) => moment().isBefore(cur, 'day')
 
   render(){
-    const { analysisEvent, isNoDataTip } = this.props;
-    const { beginTime, interval } = analysisEvent || {};
+    const { analysisEvent } = this.props;
+    const { showNoDataTip } = this.state;
+    const { beginTime, interval, eventCode } = analysisEvent || {};
+    const noSecondEvent = ['NB1038', 'NB1040', 'NB1036', 'NB1037', 'NB2035', 'NB2036'].includes(eventCode); // 电压异常、并网延时、组串低效、固定物遮挡、高值异常、低值异常没有5秒数据
     const forbidNextDay = !moment().isAfter(moment(beginTime), 'day');
     return (
         <div className={styles.analysisLineSearch}>
-          {isNoDataTip && <div className={styles.tipText}>数据不存在，请选择其他周期</div>}
+          {showNoDataTip && <div className={styles.tipText}>数据不存在，请选择其他周期</div>}
           <strong className={styles.searchText}>告警诊断指标时序图</strong>
           <span className={styles.searchParts}>
             <span className={styles.intervalText}>数据时间间隔</span>
@@ -60,7 +75,7 @@ class EventLineSearch extends PureComponent {
             >
               <Option value={1}>10分钟</Option>
               <Option value={3}>1分钟</Option>
-              <Option value={2}>5秒钟</Option>
+              {!noSecondEvent && <Option value={2}>5秒钟</Option> }
             </Select>
             <Icon className={styles.leftIcon} type="left" onClick={this.prevDay} />
             <DatePicker

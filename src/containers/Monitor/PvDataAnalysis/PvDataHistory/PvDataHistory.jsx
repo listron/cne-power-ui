@@ -36,9 +36,7 @@ class PvDataHistory extends Component {
     const { search } = location;
     this.props.getSecendInterval({enterpriseId});
     if (search) {
-      const { searchParams } = searchUtil(search).parse();
-      const urlSearchParams = searchParams && JSON.parse(searchParams) || {}; // 判断从路由中过来的筛选条件
-      const { stationCode, deviceTypeCode, startTime, endTime, timeInterval } = urlSearchParams;
+      const { stationCode, deviceTypeCode, startTime, endTime, timeInterval } = searchUtil(search).parse() || {};
       if (stationCode) {
         this.props.changeHistoryStore({
           queryParam: {
