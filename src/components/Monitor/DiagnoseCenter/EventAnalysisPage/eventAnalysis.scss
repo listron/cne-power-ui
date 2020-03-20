@@ -283,6 +283,17 @@
           flex: 0 0 auto;
           line-height: 24px;
         }
+        .warningIcon{
+          background:rgba(251,230,227,0.50);
+          border:1px solid #fbe6e3;
+          width:6px;
+          height:6px;
+          display: inline-block;
+          margin-right: 5px;
+        }
+      }
+      .noWarnItem{
+        display: none;
       }
       .connected{
         display: none;

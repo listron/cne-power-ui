@@ -69,6 +69,7 @@ class EventAnalysisPage extends PureComponent {
             <span className={styles.titleName}><span className={styles.icon}><i className="iconfont icon-zhenduan"></i></span>诊断分析</span>
             <span className={styles.infoText}><span className={styles.text}>{this.titleName[pageKey]}：</span> { eventName || '--'}；</span>
             {pageKey === 'alarm' && <span className={styles.infoText}><span className={styles.text}>告警描述：</span> { pointValueDesc || '--'}；</span>}
+            {pageKey === 'data' && <span className={styles.infoText}><span className={styles.text}>测点描述：</span>{pointValueDesc || '--'}；</span>}
             <span className={styles.infoText}><span className={styles.text}>设备类型：</span> {deviceTypeName || '--'}；</span>
             <span className={styles.infoText}><span className={styles.text}>设备名称：</span> {deviceName || '--'}；</span>
             <span className={styles.infoText}><span className={styles.text}>电站名称：</span><span className={styles.stationName} title={stationName}> {stationName || '--'}；</span></span>

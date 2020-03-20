@@ -31,7 +31,8 @@ class EventBarSearch extends PureComponent {
 
   render(){
     const { analysisEvent } = this.props;
-    const { beginTime } = analysisEvent || {};
+    const { beginTime, eventCode } = analysisEvent || {};
+    const conversionEfficiency = ['NB1039'].includes(eventCode); // 转换效率偏低事件
     const forbidNextDay = !moment().isAfter(moment(beginTime), 'day');
     return (
         <div className={styles.analysisBarSearch}>
@@ -55,14 +56,14 @@ class EventBarSearch extends PureComponent {
           </div>
           <div className={styles.searchParts}>
             <span className={styles.barTips}>
-              <span className={styles.acValue}>逆变器直流发电量(kWh)</span>
-              <span className={styles.theoryValue}>方阵理论发电量(kWh)</span>
+              <span className={styles.acValue}>{conversionEfficiency ? '交流侧发电量' : '逆变器直流发电量'}(kWh)</span>
+              <span className={styles.theoryValue}>{conversionEfficiency ? '直流侧发电量' : '方阵理论发电量'}(kWh)</span>
               <span className={styles.rateValue}>
                 <span className={styles.lineTip}>
                   <span className={styles.line}></span>
                   <span className={styles.rect}></span>
                 </span>
-                <span>对比差值(%)</span>
+                <span>{conversionEfficiency ? '转换效率' : '方阵损耗'}(%)</span>
               </span>
             </span>
           </div>
