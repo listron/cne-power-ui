@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Spin } from 'antd';
 import ChartLine from './ChartLine';
+import { stringify } from 'qs';
 import EventLineSearch from './EventLineSearch';
 import ChartBar from './ChartBar';
 import EventBarSearch from './EventBarSearch';
@@ -58,7 +59,7 @@ class EventAnalysisPage extends PureComponent {
         endTime: endTime,
         devicePoints: pointCodes,
       };
-      redirectPath = `/monitor/pvData/history?searchParams=${JSON.stringify(params)}`;
+      redirectPath = `/monitor/pvData/history?${stringify(params)}`;
     }
 
     return (
