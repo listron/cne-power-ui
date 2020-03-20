@@ -62,7 +62,7 @@
     text-align: left;
   }
   .firstInfoTitle{
-    flex: 0 0 10.5%;
+    flex: 0 0 11%;
     border-left: none;
   }
   .star{
@@ -85,17 +85,17 @@
     }
   }
   .stations{
-    flex: 0 0 60%;
+    flex: 0 0 58%;
   }
   .creater, .responsor{
     display: flex;
-    flex: 0 0 31%;
+    flex: 0 0 27%;
   }
   .createTime, .examiner{
-    flex: 0 0 16%;
+    flex: 0 0 18%;
   }
   .types, .finishTime{
-    flex: 1 0 auto;
+    flex: 1 0 18%;
   }
   .descRow{
     min-height: 80px;
