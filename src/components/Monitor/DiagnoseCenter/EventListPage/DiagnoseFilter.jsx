@@ -124,9 +124,11 @@ class DiagnoseFilter extends Component {
     const eventTypesData = this.props[this.eventTypeInfo[pageKey]] || [];
     const statusArray = allEventsStatus.filter(e => e.statusType === (!!finished ? 2 : 1)); // statusType:1活动 2已归档
     const eventTypeName = this.eventTypeName[eventType] || '';
-    const selDeviceTypes = !stationCode || stationCode.length === 0 ? deviceTypes : stationDeviceTypes;
     const pvStations = stations.filter(e => e.stationType === 1); // 只展示光伏电站
-    const pvDeviceTypes = selDeviceTypes.filter(e => !e.stationType || [1, 2].includes(e.stationType)); // 只展示光伏设备类型;
+    let pvDeviceTypes = stationDeviceTypes;
+    if (!stationCode || stationCode.length === 0) {
+      pvDeviceTypes = deviceTypes.filter(e => [1, 2].includes(e.stationType)); // 只展示光伏设备类型;
+    }
     const options = [
       { name: '电站名称', type: 'stationName', typeName: 'stationCode', data: pvStations },
       { name: '设备类型', type: 'radioSelect', typeName: 'deviceTypeCode', rules: ['deviceTypeName', 'deviceTypeCode'], data: pvDeviceTypes },
