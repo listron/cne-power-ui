@@ -15,7 +15,6 @@
   //width: 200px;
   box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30);
   padding: 0 5px;
-  font-family: PingFangSC-Regular, serif;
   font-size: 14px;
   color: #df4b33;
   user-select: none;
@@ -58,7 +57,6 @@
     .disposeBanner {
       width: 166px;
       color: #ffffff;
-      font-family: PingFangSC-Medium, serif;
       font-weight: bold;
       padding-left: 17px;
       @include lineheight(36px);
@@ -122,12 +120,10 @@
         height: 36px;
 
         .navPrevName {
-          font-family: PingFangSC-Medium, serif;
           font-weight: bold;
         }
 
         .navPrevTime {
-          font-family: ArialMT, serif;
           margin-left: 15px;
         }
       }
@@ -151,12 +147,7 @@
         margin: auto;
 
         div:first-child {
-          font-family: PingFangSC-Medium, serif;
           font-weight: bold;
-        }
-
-        div:last-child {
-          font-family: ArialMT, serif;
         }
       }
 
@@ -171,15 +162,13 @@
         color: $themeColor;
 
         .navNowName {
-          font-family: PingFangSC-Medium, serif;
           font-weight: bold;
         }
 
         .navNowTime {
-          font-family: ArialMT, serif;
           margin-left: 15px;
 
-          .normalDate{
+          .normalDate {
             :global {
               .ant-input {
                 background-color: #ffffff;
@@ -187,7 +176,7 @@
             }
           }
 
-          .warnDate{
+          .warnDate {
             :global {
               .ant-input {
                 background-color: #fdffe8;
@@ -237,14 +226,12 @@
       .noDataText {
         margin-top: 20px;
         color: #353535;
-        font-family: PingFangSC-Regular, serif;
         text-align: center;
       }
 
       .noDataRouter {
         margin-top: 20px;
         color: #353535;
-        font-family: PingFangSC-Regular, serif;
         display: flex;
         justify-content: center;
 
@@ -291,7 +278,6 @@
         .netGaugeTitle {
           width: 100%;
           color: $themeColor;
-          font-family: PingFangSC-Medium, serif;
           @include lineheight(30px);
           padding-left: 12px;
           margin-bottom: 14px;
@@ -331,7 +317,6 @@
 
             span {
               color: #000000;
-              font-family: PingFangSC-Regular, serif;
               margin-left: 6px;
               font-size: 18px;
             }
@@ -340,7 +325,6 @@
           .netInfoBox {
             display: flex;
             color: #353535;
-            font-family: PingFangSC-Regular, serif;
             justify-content: space-between;
           }
 
@@ -362,7 +346,6 @@
                 width: 12%;
                 min-width: 50px;
                 border-right: 1px dashed #d4d4d4;
-                font-family: PingFangSC-Medium, serif;
                 font-weight: bold;
               }
 
@@ -371,14 +354,12 @@
                 width: 21%;
                 min-width: 86px;
                 border-right: 1px dashed #d4d4d4;
-                font-family: PingFangSC-Medium, serif;
                 font-weight: bold;
               }
 
               div:nth-of-type(4) {
                 width: 46%;
                 min-width: 186px;
-                font-family: PingFangSC-Medium, serif;
                 font-weight: bold;
               }
             }
@@ -401,7 +382,7 @@
                     width: 22.3%;
                     min-width: 50px;
                     text-align: center;
-                    font-family: PingFangSC-Medium, serif;
+                    background-color: #f3f2f2;
                     font-weight: bold;
                     color: #000000;
                     border-right: 1px dashed #d4d4d4;
@@ -425,7 +406,7 @@
                     background-color: #f1f8ff;
                   }
 
-                  .netErrorStopCode{
+                  .netErrorStopCode {
                     width: 38.85%;
                     min-width: 86px;
                     text-align: right;
@@ -497,7 +478,7 @@
                 }
               }
 
-              .netTablePhotoBox{
+              .netTablePhotoBox {
                 width: 46%;
                 min-width: 186px;
 
@@ -612,7 +593,6 @@
                     }
 
                     .antLoadingText {
-                      font-family: MicrosoftYaHei, serif;
                       color: #353535;
                       font-size: 12px;
                     }
@@ -626,7 +606,7 @@
                       }
 
                       .ant-progress-bg {
-                        height: 2px !important;
+                        height: 6px !important;
                       }
 
                       .ant-progress-text {
@@ -667,7 +647,6 @@
         .electricityGaugeTitle {
           width: 100%;
           color: $themeColor;
-          font-family: PingFangSC-Medium, serif;
           @include lineheight(30px);
           padding-left: 12px;
           margin-bottom: 14px;
@@ -707,7 +686,6 @@
 
             span {
               color: #000000;
-              font-family: PingFangSC-Regular, serif;
               margin-left: 6px;
               font-size: 18px;
             }
@@ -716,7 +694,6 @@
           .electricityInfoBox {
             display: flex;
             color: #353535;
-            font-family: PingFangSC-Regular, serif;
             justify-content: space-between;
           }
 
@@ -738,7 +715,6 @@
                 width: 12%;
                 min-width: 50px;
                 border-right: 1px dashed #d4d4d4;
-                font-family: PingFangSC-Medium, serif;
                 font-weight: bold;
               }
 
@@ -747,14 +723,12 @@
                 width: 21%;
                 min-width: 86px;
                 border-right: 1px dashed #d4d4d4;
-                font-family: PingFangSC-Medium, serif;
                 font-weight: bold;
               }
 
               div:nth-of-type(4) {
                 width: 46%;
                 min-width: 186px;
-                font-family: PingFangSC-Medium, serif;
                 font-weight: bold;
               }
             }
@@ -777,9 +751,9 @@
                     width: 22.3%;
                     min-width: 50px;
                     text-align: center;
-                    font-family: PingFangSC-Medium, serif;
                     font-weight: bold;
                     color: #000000;
+                    background-color: #f3f2f2;
                     border-right: 1px dashed #d4d4d4;
                   }
 
@@ -873,7 +847,7 @@
                 }
               }
 
-              .electricityTablePhotoBox{
+              .electricityTablePhotoBox {
                 width: 46%;
                 min-width: 186px;
 
@@ -922,7 +896,7 @@
                     }
                   }
 
-                  .electricityActivePhotoBox{
+                  .electricityActivePhotoBox {
                     width: 60px;
                     height: 60px;
                     cursor: pointer;
@@ -988,7 +962,6 @@
                     }
 
                     .antLoadingText {
-                      font-family: MicrosoftYaHei, serif;
                       color: #353535;
                       font-size: 12px;
                     }
@@ -1002,7 +975,7 @@
                       }
 
                       .ant-progress-bg {
-                        height: 2px !important;
+                        height: 6px !important;
                       }
 
                       .ant-progress-text {
@@ -1041,22 +1014,26 @@
 
 
 @media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
-  .meterDisposeInfo{
-    .gaugeTableBox{
-      .netGaugeTable{ // 上网计量表
-        .netWrap{
-          .netInfoBox{
+  .meterDisposeInfo {
+    .gaugeTableBox {
+      .netGaugeTable { // 上网计量表
+        .netWrap {
+          .netInfoBox {
             padding: 10px 20px;
             font-size: 14px;
           }
-          .netTableBox{
-            .netTableHead{
+
+          .netTableBox {
+            .netTableHead {
               font-size: 14px;
             }
-            .netTableBody{
-              .netTableTr{
-                div:nth-of-type(1){
-                  font-size: 14px;
+
+            .netTableBody {
+              .netTableLeft{
+                .netTableTr {
+                  div {
+                    font-size: 14px;
+                  }
                 }
               }
             }
@@ -1064,20 +1041,24 @@
         }
       }
 
-      .electricityGaugeTable{// 发电计量表
-        .electricityWrap{
-          .electricityInfoBox{
+      .electricityGaugeTable { // 发电计量表
+        .electricityWrap {
+          .electricityInfoBox {
             padding: 10px 20px;
             font-size: 14px;
           }
-          .electricityTableBox{
-            .electricityTableHead{
+
+          .electricityTableBox {
+            .electricityTableHead {
               font-size: 14px;
             }
-            .electricityTableBody{
-              .electricityTableTr{
-                div:nth-of-type(1){
-                  font-size: 14px;
+
+            .electricityTableBody {
+              .electricityTableLeft {
+                .electricityTableTr {
+                  div {
+                    font-size: 14px;
+                  }
                 }
               }
             }
@@ -1086,32 +1067,36 @@
       }
     }
   }
-  .modalLeft{
+  .modalLeft {
     left: 45%;
   }
 
-  .modalRight{
+  .modalRight {
     left: 1%;
   }
 }
 
 @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919 字号16px
-  .meterDisposeInfo{
-    .gaugeTableBox{
-      .netGaugeTable{ // 上网计量表
-        .netWrap{
-          .netInfoBox{
+  .meterDisposeInfo {
+    .gaugeTableBox {
+      .netGaugeTable { // 上网计量表
+        .netWrap {
+          .netInfoBox {
             padding: 9px 20px;
             font-size: 16px;
           }
-          .netTableBox{
-            .netTableHead{
+
+          .netTableBox {
+            .netTableHead {
               font-size: 16px;
             }
-            .netTableBody{
-              .netTableTr{
-                div:nth-of-type(1){
-                  font-size: 16px;
+
+            .netTableBody {
+              .netTableLeft{
+                .netTableTr {
+                  div {
+                    font-size: 16px;
+                  }
                 }
               }
             }
@@ -1119,20 +1104,24 @@
         }
       }
 
-      .electricityGaugeTable{// 发电计量表
-        .electricityWrap{
-          .electricityInfoBox{
+      .electricityGaugeTable { // 发电计量表
+        .electricityWrap {
+          .electricityInfoBox {
             padding: 9px 20px;
             font-size: 16px;
           }
-          .electricityTableBox{
-            .electricityTableHead{
+
+          .electricityTableBox {
+            .electricityTableHead {
               font-size: 16px;
             }
-            .electricityTableBody{
-              .electricityTableTr{
-                div:nth-of-type(1){
-                  font-size: 16px;
+
+            .electricityTableBody {
+              .electricityTableLeft {
+                .electricityTableTr {
+                  div {
+                    font-size: 16px;
+                  }
                 }
               }
             }
@@ -1142,32 +1131,36 @@
     }
   }
 
-  .modalLeft{
+  .modalLeft {
     left: 43%;
   }
 
-  .modalRight{
+  .modalRight {
     left: 5%;
   }
 }
 
-@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配 字号18px
-  .meterDisposeInfo{
-    .gaugeTableBox{
-      .netGaugeTable{ // 上网计量表
-        .netWrap{
-          .netInfoBox{
+@media screen and (min-width: 1920px) { // 1920及以上屏幕按1920px适配 字号18px
+  .meterDisposeInfo {
+    .gaugeTableBox {
+      .netGaugeTable { // 上网计量表
+        .netWrap {
+          .netInfoBox {
             padding: 7px 20px;
             font-size: 18px;
           }
-          .netTableBox{
-            .netTableHead{
+
+          .netTableBox {
+            .netTableHead {
               font-size: 18px;
             }
-            .netTableBody{
-              .netTableTr{
-                div:nth-of-type(1){
-                  font-size: 18px;
+
+            .netTableBody {
+              .netTableLeft{
+                .netTableTr {
+                  div {
+                    font-size: 18px;
+                  }
                 }
               }
             }
@@ -1175,20 +1168,24 @@
         }
       }
 
-      .electricityGaugeTable{// 发电计量表
-        .electricityWrap{
-          .electricityInfoBox{
+      .electricityGaugeTable { // 发电计量表
+        .electricityWrap {
+          .electricityInfoBox {
             padding: 7px 20px;
             font-size: 18px;
           }
-          .electricityTableBox{
-            .electricityTableHead{
+
+          .electricityTableBox {
+            .electricityTableHead {
               font-size: 18px;
             }
-            .electricityTableBody{
-              .electricityTableTr{
-                div:nth-of-type(1){
-                  font-size: 18px;
+
+            .electricityTableBody {
+              .electricityTableLeft {
+                .electricityTableTr {
+                  div {
+                    font-size: 18px;
+                  }
                 }
               }
             }
@@ -1198,11 +1195,11 @@
     }
   }
 
-  .modalLeft{
+  .modalLeft {
     left: 43%;
   }
 
-  .modalRight{
+  .modalRight {
     left: 9%;
   }
 }

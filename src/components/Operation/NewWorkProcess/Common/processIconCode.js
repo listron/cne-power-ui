@@ -12,7 +12,7 @@ export const processIconFunc = (code) => {
   const iconMap = {
     30001: '', // 新建 暂时没有定义图标
     30002: 'iconfont icon-liucheng1', // 待领取
-    30003: 'iconfont icon-liucheng2', // 执行中
+    30003: 'iconfont icon-liucheng4', // 执行中
     30004: 'iconfont icon-liucheng3', // 待验收
     30005: 'iconfont icon-congra', // 已结单
     30006: 'iconfont icon-liucheng', // 新建工单
