@@ -46,7 +46,6 @@
     span {
       color: $themeColor;
       font-size: 18px;
-      font-family: PingFangSC-Regular, serif;
     }
   }
 
@@ -79,10 +78,6 @@
         color: #999999;
         transition: all 0s;
         cursor: no-drop;
-
-        span {
-          font-family: PingFangSC-Regular, serif;
-        }
       }
 
       .am {
