@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
+import moment from 'moment';
 import { dataFormats } from '@utils/utilFunc';
 import styles from './eventAnalysis.scss';
 
@@ -13,34 +14,29 @@ class ChartBar extends PureComponent {
 
   componentDidMount(){
     const { eventAnalysisInfo } = this.props;
-    const { data = [] } = eventAnalysisInfo || {};
+    const { data = [], dataDays } = eventAnalysisInfo || {};
     this.drawChart(data);
   }
 
   componentWillReceiveProps(nextProps){
     const preAnalysiInfo = this.props.eventAnalysisInfo;
-    // const preLoading = this.props.eventAnalysisLoading;
-    const { eventAnalysisInfo, eventAnalysisLoading } = nextProps;
-    // if (eventAnalysisLoading && !preLoading) { // 数据加载中
-    //   this.chartLoading();
-    // }
+    const { eventAnalysisInfo } = nextProps;
     if (eventAnalysisInfo !== preAnalysiInfo) {
-      const { data = [] } = eventAnalysisInfo || {};
+      const { data = [], dataDays } = eventAnalysisInfo || {};
       this.drawChart(data);
     }
   }
 
-  // chartLoading = () => {
-  //   const barChart = echarts.init(this.lineRef);
-  //   barChart.showLoading();
-  // }
-
-  drawChart = (data = []) => {
+  drawChart = (data = [], dataDays) => {
+    const dataDay = { // 诊断事件阵列损耗、转换效率偏低事件默认展示7天数据，向前滚动30天
+      1: '100',
+      7: '70',
+      30: '90',
+    };
     const barChart = echarts.init(this.barRef);
-    // barChart.hideLoading();
     const xNames = [], baseData = [], theoryData = [], lineData = [];
     data.forEach((e) => {
-      xNames.push(e.name);
+      xNames.push(moment(e.time).format('YYYY-MM-DD'));
       baseData.push(e.gen);
       theoryData.push(e.theoryGen);
       lineData.push(e.diff);
@@ -131,7 +127,9 @@ class ChartBar extends PureComponent {
             show: false,
           },
           splitLine: {
-            show: false,
+            lineStyle: {
+              type: 'dashed',
+            },
           },
         }, {
           type: 'value',
@@ -169,7 +167,6 @@ class ChartBar extends PureComponent {
           barWidth: 34,
           barGap: '-100%',
           itemStyle: {
-            // color: '#FFF',
             color: 'transparent',
             borderWidth: 1,
             borderColor: '#199475',
@@ -177,11 +174,12 @@ class ChartBar extends PureComponent {
           },
           emphasis: {
             itemStyle: {
+              borderColor: '#ffc581',
               borderWidth: 3,
-              shadowColor: 'rgba(25,148,117,0.70)',
-              shadowBlur: 2,
+              shadowColor: 'rgba(248,231,28,0.70)',
+              shadowBlur: 9,
               shadowOffsetX: 0,
-              shadowOffsetY: 2,
+              shadowOffsetY: -4,
             },
           },
           data: theoryData,
@@ -196,10 +194,10 @@ class ChartBar extends PureComponent {
         },
       ],
     };
-    if (data.length > 10) {
+    // if (data.length > 10) {
       const handlerInfo = {
-        start: 0,
-        end: parseInt(10 / data.length * 100, 10),
+        start: 20,
+        end: 100,
         zoomLock: true,
       };
       option.dataZoom = [
@@ -213,7 +211,7 @@ class ChartBar extends PureComponent {
           ...handlerInfo,
         },
       ];
-    }
+    // }
     barChart.clear();
     barChart.setOption(option);
   }
