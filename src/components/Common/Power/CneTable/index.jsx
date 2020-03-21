@@ -32,12 +32,31 @@ export default class CneTable extends PureComponent {
   componentDidMount(){
     const { scroll } = this.props;
     if (scroll && scroll.y) { // 顶部冻结
-      const tableScrollBody = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-body');
-      tableScrollBody && tableScrollBody.addEventListener('scroll', this.shadowFixed);
+      this.tableScrollWatching();
+    }
+  }
+
+  componentDidUpdate(prevProps){
+    const scroll = this.props.scroll || {};
+    const preScroll = prevProps.scroll || {};
+    if (!preScroll.y && scroll.y > 0) {
+      this.tableScrollWatching();
+    }
+    if (preScroll.y > 0 && !scroll.y) {
+      this.tableUnWatching();
     }
   }
 
   componentWillUnmount() {
+    this.tableUnWatching();
+  }
+
+  tableScrollWatching = () => {
+    const tableScrollBody = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-body');
+      tableScrollBody && tableScrollBody.addEventListener('scroll', this.shadowFixed);
+  }
+
+  tableUnWatching = () => {
     const tableScrollBody = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-body');
     tableScrollBody && tableScrollBody.removeEventListener('scroll', this.shadowFixed);
   }

@@ -44,17 +44,37 @@ export default class VideoUploader extends Component {
       uploadLoading: false, // 上传loading
       fileList: [],
       modalVideoSrc: null,
+      videoDuration: 0,
     };
   }
 
   beforeUpload = (file) => { // 上传前校验 => 后期可考虑做成默认覆盖 允许自定义函数
+    const isMp4 = file.type === 'video/mp4';
+    if (!isMp4) {
+      message.error('只接受mp4视频');
+      return false;
+    }
+    const videoUrl = URL.createObjectURL(file);
+    const videoElement = new Audio(videoUrl);
+    videoElement.onloadedmetadata = () => {
+      this.setState({ videoDuration: videoElement.duration });
+    };
+    return true;
   };
 
   onUploading = (info) => {
     const { event, file, fileList } = info || {};
     const { status, response } = file || {};
     const { code, data } = response || {};
-    if (status === 'uploading') {
+    const { videoDuration } = this.state;
+    if (videoDuration > 15) { // 上传视频超出15s
+      message.error('视频上传请不要超出15s');
+      this.setState({
+        uploadPercent: 0,
+        uploadLoading: false,
+        fileList: [],
+      });
+    } else if (status === 'uploading') { // 上传进度
       let uploadPercent = 0;
       if (event) { // 改变上传进度
         const { percent } = event || {};
@@ -65,8 +85,8 @@ export default class VideoUploader extends Component {
         uploadPercent,
         fileList,
       });
-    } else if (status === 'done') { // 调试代码~不考虑上传失败
-      // } else if (status === 'done' && code === '10000') { // 上传保存url->恢复默认
+    // } else if (status === 'done') { // 调试代码~不考虑上传失败
+    } else if (status === 'done' && code === '10000') { // 上传保存url->恢复默认
       const { value = [] } = this.props;
       this.setState({
         uploadPercent: 0, // 上传进度
@@ -75,7 +95,7 @@ export default class VideoUploader extends Component {
       });
       this.props.onChange([...value, data]); // 上传成功, 得到的url信息输出;
     } else { // 上传失败, 清空信息
-      message.error(`上传失败, ${response.message}`);
+      message.error(`视频上传失败, ${response.message}`);
       this.setState({
         uploadPercent: 0,
         uploadLoading: false,
@@ -129,7 +149,6 @@ export default class VideoUploader extends Component {
           listType="picture-card"
           className="avatar-uploader"
           headers={{ 'Authorization': 'bearer ' + authData }}
-          multiple={true}
           fileList={fileList}
           showUploadList={false}
           action={uploadUrl}
