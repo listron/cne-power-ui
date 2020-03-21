@@ -7,7 +7,7 @@ import styles from './modal.scss';
 export default class VideoModal extends Component {
   static propTypes = {
     theme: PropTypes.string,
-    modalVideoSrc: PropTypes.bool,
+    modalVideoSrc: PropTypes.string,
     wrapModalClassName: PropTypes.string,
     hideVideoModal: PropTypes.func,
   };
