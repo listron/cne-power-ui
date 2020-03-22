@@ -104,17 +104,21 @@ class ALarmAllStationStatistic extends React.Component {
   }
 
   queryTargetData = (activeKey) => {
-    const { stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
-    this.props.getStationsAlarmStatistic({
+    // const { stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
+    this.props.changeAlarmStatisticStore({
       stationType: activeKey,
-      stationCode,
-      startTime,
-      endTime,
-      pageSize,
-      pageNum,
-      orderField,
-      orderCommand,
+      stationCode: [],
     });
+    // this.props.getStationsAlarmStatistic({
+    //   stationType: activeKey,
+    //   stationCode,
+    //   startTime,
+    //   endTime,
+    //   pageSize,
+    //   pageNum,
+    //   orderField,
+    //   orderCommand,
+    // });
   }
   render() {
     const operations = (
@@ -126,7 +130,6 @@ class ALarmAllStationStatistic extends React.Component {
     const { stationType, stations, changeAlarmStatisticStore } = this.props;
     const { showStationSelect } = this.state;
     const stationTypeOne = this.stationIsOneType();
-    // console.log(stationTypeOne);
     return (
       <div className={styles.alarmStatistTabs}>
         {stationTypeOne ?

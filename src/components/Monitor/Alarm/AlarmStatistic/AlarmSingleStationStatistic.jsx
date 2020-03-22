@@ -113,6 +113,7 @@ class ALarmSingleStationStatistic extends React.Component {
     this.props.changeAlarmStatisticStore({
       showPage: 'multiple',
       singleStationCode: '',
+      singleChartLoading: false,
     });
   }
 
