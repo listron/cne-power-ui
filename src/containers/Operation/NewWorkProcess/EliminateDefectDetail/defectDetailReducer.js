@@ -23,6 +23,7 @@ const eliminateDefectDetailAction = {
   getBaseUsername: Symbol('getBaseUsername'),
   getDiagwarning: Symbol('getDiagwarning'),
   showUser: Symbol('showUser'),
+  resetCont: Symbol('resetCont'),
 };
 
 const initState = immutable.fromJS({
@@ -47,12 +48,16 @@ const initState = immutable.fromJS({
   deviceTypes: [], // 设备类型
   deviceModes: [], // 设备型号
 
-  isVertify: false, // 是否验证状态
   addbaseInfo: {}, // 添加的基本信息
   addEventInfo: [], // 添加的缺陷事件
   addhandleList: [], // 添加的处理记录
   addOperater: [], // 新增加的操作人
   eventStatus: [], // 验收工单的时候 缺陷事件状态
+
+  isVertify: false, // 是否验证状态
+  showErrorTip: false, // 错误状态的提示 状态已经更新 工单节点已发生改变
+  myMessageFlag: false, // 状态更新完成的提示
+  handleMessageFlag: false, // 状态的更新状态 单条执行
 });
 
 const eliminateDefectDetail = (state = initState, action) => {

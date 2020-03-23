@@ -123,7 +123,7 @@ export default class InfoEdit extends Component {
 
 
   render() {
-    const { isFinish, record = {}, isVertify, allowedActions = [], sigleSave } = this.props;
+    const { isFinish, record = {}, isVertify, allowedActions = [], singleSave } = this.props;
     const {
       handleDesc, isChangePart, isCoordinate, partName, coordinateDesc, handleImgs = [], handleVideos,
     } = record;
@@ -197,7 +197,7 @@ export default class InfoEdit extends Component {
           </span>
         </div>
         <div className={styles.saveEditRow}>
-          {sigleSave &&
+          {singleSave &&
             <CneButton className={styles.saveEditButton} onClick={this.onEditInfoSave}>
               <i className={'iconfont icon-save'} />
               保存

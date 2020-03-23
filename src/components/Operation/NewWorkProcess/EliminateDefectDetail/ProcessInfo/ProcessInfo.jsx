@@ -67,15 +67,15 @@ export default class ProcessInfo extends Component {
           <Timeline>
             {processInfo.map((cur, index) => {
               const isLastProcess = processInfo.length - 1 === index;
-              if (isLastProcess) {
+              if (isLastProcess && cur.nodeName !== '已退回') {
                 return (
                   <Timeline.Item
                     key={index.toString()}
                     dot={<i
                       className={processIconFunc(cur.icon)}
-                      style={{ fontSize: '20px' }}
+                      style={+cur.colorCode === 3002 ? { fontSize: '20px', color: '#df4b33' } : { fontSize: '20px' }}
                     />}>
-                    <div className={styles.singleInfo}>{cur.nodeName}</div>
+                    <div className={styles.singleInfo} code={cur.colorCode}>{cur.nodeName}</div>
                   </Timeline.Item>
                 );
               }
@@ -84,19 +84,18 @@ export default class ProcessInfo extends Component {
                   key={index.toString()}
                   dot={<i
                     className={processIconFunc(cur.icon)}
-                    style={Number(cur.colorCode) === 3002 ? { fontSize: '20px', color: '#df4b33' } : { fontSize: '20px' }}
+                    style={+cur.colorCode === 3002 ? { fontSize: '20px', color: '#df4b33' } : { fontSize: '20px' }}
                   />}
                 >
                   <div className={styles.processItem}>
                     <div className={styles.processItemBox}>
                       <div
-                        className={Number(cur.colorCode) === 3002 ?
-                          styles.processErrorItemName
-                          : styles.processItemName}
+                        className={styles.processItemName}
+                        code={cur.colorCode}
                       >{cur.nodeName}</div>
                       <div className={styles.itemRight}>
                         <div className={styles.processItemDetail}>{cur.handleUser}</div>
-                        <div className={styles.processItemTime}>{moment(cur.endTime).format('YYYY-MM-DD HH: mm')}</div>
+                        <div className={styles.processItemTime}>{cur.endTime && moment(cur.endTime).format('YYYY-MM-DD HH: mm')}</div>
                       </div>
                     </div>
                     {cur.handleDesc && <div

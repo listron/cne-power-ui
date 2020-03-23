@@ -46,7 +46,7 @@ class DefectContent extends Component {
                 {...this.props}
                 editDisplay={localStateName(stateName) === 'execute'}
                 addMultipleEvent={localStateName(stateName) === 'execute'}
-                sigleSave={true}
+                singleSave={true}
               />}
             {/* 在其他时候如过不存在处理信息，则不显示 */}
             {localStateName(stateName) !== 'execute' && handleInfos.length + addhandleList.length > 0 &&
