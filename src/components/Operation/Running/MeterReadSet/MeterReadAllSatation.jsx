@@ -36,7 +36,7 @@ class MeterReadAllSatation extends Component{
         <div className={styles.stationsBox}>
           {stationsDataError ? <img width="84" height="77" src="/img/datawrong.png" /> : <div className={styles.stationData}>
           {dataList.length > 0 ?
-          <div>
+          <div className={styles.allStationData}>
             <div className={styles.stationsNameData}>
               {dataList.map(e => (
                 <div
@@ -52,9 +52,9 @@ class MeterReadAllSatation extends Component{
               <img width="97" height="72" src="/img/notabdata97-72.png" />
             </div>
           </div>
-            :
-            <div className={styles.nodata}><img width="223" height="164" src="/img/nodata.png" /></div>
-            }
+          :
+          <div className={styles.nodata}><img width="223" height="164" src="/img/nodata.png" /></div>
+          }
           </div>}
         </div>
       </div>
