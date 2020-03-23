@@ -7,11 +7,13 @@ import searchUtil from '@utils/searchUtil';
 import styles from './defectDetail.scss';
 import Footer from '@components/Common/Footer';
 import { localStateName } from '../../../../components/Operation/NewWorkProcess/Common/processIconCode';
+import CneTips from '../../../../components/Common/Power/CneTips/index';
 import DetailTopSubmit from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DetailTopSubmit/DetailTopSubmit';
 import ProcessInfo from '@components/Operation/NewWorkProcess/EliminateDefectDetail/ProcessInfo/ProcessInfo';
 import DefectCreate from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectCreate/DefectCreate';
 import DefectContent from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectContent/DefectContent';
 import DefectTask from '@components/Operation/NewWorkProcess/EliminateDefectDetail/DefectTask/DefectTask';
+import { message } from 'antd';
 
 
 class DefectDetail extends Component {
@@ -85,13 +87,26 @@ class DefectDetail extends Component {
     }
   }
 
+  resetRequest = () => {
+    const { docketId } = this.props;
+    this.props.getDefectMessage({ docketId });
+    this.props.changeStore({ showErrorTip: false });
+  }
+
 
   render() {
-    const { docketId, theme, defectDetail, processInfo, stateName, isFinish } = this.props;
+    const { docketId, theme, defectDetail, processInfo, stateName, isFinish, showErrorTip } = this.props;
     const { scroll } = this.state;
     return (
       <div className={`${styles.detailWrap}`} ref={'detailWrap'}>
         <DetailTopSubmit docketId={docketId} {...this.props} scroll={scroll} />
+        <CneTips
+          visible={showErrorTip}
+          mode={'warning'}
+          width={260}
+          onConfirm={this.resetRequest}
+          tipText={'操作失败,当前工单状态已变更。'}
+        />
         <div className={styles.detailContent}>
           <div className={styles.leftParts}>
             {docketId && localStateName(stateName) !== 'return' && <DefectContent {...this.props} />}

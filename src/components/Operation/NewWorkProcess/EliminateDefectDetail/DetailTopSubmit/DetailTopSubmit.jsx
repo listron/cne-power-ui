@@ -6,6 +6,7 @@ import styles from './topSubmit.scss';
 import { processIconFunc, localStateName } from '../../Common/processIconCode';
 import RejectAlert from '../../Common/RejectAlert/RejectAlert';
 import PassAlert from '../../Common/PassAlert/PassAlert';
+import { MyMessage } from '../../Common/MyMessage/MyMessage';
 /**
  *
  * 提交 未解决   验证 addbaseInfo  addEventInfo addhandleList
@@ -37,14 +38,16 @@ import PassAlert from '../../Common/PassAlert/PassAlert';
     '已结单': 'complete',
  * 
  * 
- * 提交 验证  addbaseInfo  addEventInfo addhandleList
- * 派发 验证  addbaseInfo  addEventInfo addhandleList
- * 审核 派发  派发  可以修改工单描述   接单人也可以修改
- *     退回  不验证
- * 退回 验证  addbaseInfo  addEventInfo addhandleList
- * 领取 不验证 但是接单人是可以修改的
- * 执行 验证  处理信息自己验证 但是需要判断 addhandleList.length
+ * 提交 验证  addbaseInfo  addEventInfo addhandleList  提交成功
+ * 派发 验证  addbaseInfo  addEventInfo addhandleList 
+ * 审核 派发  派发  可以修改工单描述   接单人也可以修改 派发成功
+ *     退回  不验证 退回成功
+ * 退回 验证  addbaseInfo  addEventInfo addhandleList   提交成功
+ *     删除  工单已删除
+ * 领取 不验证 但是接单人是可以修改的 已领取
+ * 执行 验证  处理信息自己验证 但是需要判断 addhandleList.length 提交成功
  * 验收 验证 驳回和 验收通过 需要验证  eventStatus  eventStatus.map(e=>e.eventState) .!some(e=>!e) 是否全选 .some(e=>e===2) 是否存在未解决的
+ *      驳回成功 验收通过
 */
 
 /** 
@@ -80,6 +83,14 @@ export default class DetailTopSubmit extends Component {
   static propTypes = {
     changeStore: PropTypes.func,
     allowedActions: PropTypes.array,
+    verifyDocket: PropTypes.func,
+    createDefect: PropTypes.func,
+    returnDocket: PropTypes.func,
+    deleteDocket: PropTypes.func,
+    receiveDocket: PropTypes.func,
+    submitAction: PropTypes.func,
+    acceptanceDocket: PropTypes.func,
+    resetStore: PropTypes.func,
 
   };
 
@@ -93,6 +104,7 @@ export default class DetailTopSubmit extends Component {
       showTip: false, // 提示按钮
       tipText: '',
       passVisible: false,
+      messageText: '保存成功', // 执行的时候是保存成功
     };
   }
 
@@ -176,6 +188,13 @@ export default class DetailTopSubmit extends Component {
     });
   }
 
+  displayTip = () => { // 提示
+    this.props.changeStore({ myMessageFlag: true });
+    setTimeout(() => {
+      this.props.changeStore({ myMessageFlag: false });
+    }, 2000);
+  }
+
   crete = (e) => { // 创建工单
     this.props.changeStore({ isVertify: true });
     const { addbaseInfo, addEventInfo, addhandleList, isFinish, stateId, stationCode, docketId, removeEventImg, removeHandleImg } = this.props;
@@ -222,11 +241,13 @@ export default class DetailTopSubmit extends Component {
           params,
           callback: (docketId) => {
             this.props.resetStore();
+            this.displayTip();
             history.push(`${pathname}?page=defectDetail&docketId=${docketId}`);
           },
         }),
         showTip: true,
         tipText: process[+e.actionCode].tipText,
+        messageText: '提交成功',
       });
     }
   }
@@ -235,7 +256,7 @@ export default class DetailTopSubmit extends Component {
     this.props.changeStore({ isVertify: true });
     const { docketId, addbaseInfo, stateId, stationCode, baseInfo } = this.props;
     const { planEndTime = null, docketDesc } = addbaseInfo;
-    let { addUsers } = addbaseInfo;
+    let { addUsers = [] } = addbaseInfo;
     const initStateId = baseInfo.operUserInfo[0].stateId;
     if (addUsers.length > 0) {
       addUsers = [{ stateId: initStateId, userIds: addUsers.map(e => +e.userId) }];
@@ -250,9 +271,13 @@ export default class DetailTopSubmit extends Component {
         addUsers,
       };
       this.setState({
-        func: () => this.props.verifyDocket(params),
+        func: () => this.props.verifyDocket({
+          params,
+          callback: this.displayTip,
+        }),
         showTip: true,
         tipText: process[+e.actionCode].tipText,
+        messageText: '派发成功',
       });
     }
   }
@@ -269,18 +294,30 @@ export default class DetailTopSubmit extends Component {
       status: 'return',
       requiredVisiable: true,
       params,
-      func: (params) => this.props.returnDocket(params),
+      messageText: '退回成功',
+      func: (params) => this.props.returnDocket({
+        params,
+        callback: this.displayTip,
+      }),
     });
   }
 
   delete = (e) => { // 删除
-    const { docketId } = this.props;
+    const { location, history, docketId } = this.props;
+    const { pathname } = location;
     const params = {
       docketId,
     };
     this.setState({
-      func: () => this.props.deleteDocket(params),
+      func: () => this.props.deleteDocket({
+        params,
+        callback: () => {
+          this.displayTip(),
+            history.push(`${pathname}?page=list&tab=defect`);
+        },
+      }),
       showTip: true,
+      messageText: '工单已删除',
       tipText: process[+e.actionCode].tipText,
     });
 
@@ -296,9 +333,13 @@ export default class DetailTopSubmit extends Component {
       stateId,
     };
     this.setState({
-      func: () => this.props.receiveDocket(params),
+      func: () => this.props.receiveDocket({
+        params,
+        callback: this.displayTip,
+      }),
       showTip: true,
       tipText: process[+e.actionCode].tipText,
+      messageText: '已领取',
     });
   }
 
@@ -315,11 +356,15 @@ export default class DetailTopSubmit extends Component {
     };
     this.setState({
       func: () => {
-        this.props.submitAction(params);
+        this.props.submitAction({
+          params,
+          callback: this.displayTip,
+        });
         this.props.changeStore({ addhandleList: [] });
       },
       showTip: true,
       tipText,
+      messageText: '提交成功',
     });
   }
 
@@ -335,7 +380,11 @@ export default class DetailTopSubmit extends Component {
     this.setState({
       passVisible: true,
       params,
-      func: (params) => this.props.acceptanceDocket(params),
+      messageText: '验收通过',
+      func: (params) => this.props.acceptanceDocket({
+        params,
+        callBack: this.displayTip,
+      }),
     });
   }
 
@@ -352,7 +401,11 @@ export default class DetailTopSubmit extends Component {
       status: 'reject',
       requiredVisiable: true,
       params,
-      func: (params) => this.props.acceptanceDocket(params),
+      messageText: '驳回成功',
+      func: (params) => this.props.acceptanceDocket({
+        params,
+        callBack: this.displayTip,
+      }),
     });
   }
 
@@ -388,14 +441,16 @@ export default class DetailTopSubmit extends Component {
     });
   }
 
+
   render() {
-    const { showTip, tipText, status, requiredVisiable, passVisible } = this.state;
-    const { docketId, allowedActions, eventStatus = [], scroll } = this.props;
+    const { showTip, tipText, status, requiredVisiable, passVisible, messageText } = this.state;
+    const { docketId, allowedActions, eventStatus = [], scroll, myMessageFlag } = this.props;
     const acceptStuatus = !eventStatus.map(e => e.eventState).some(e => !e);
     const rejectStatu = eventStatus.map(e => e.eventState).some(e => e === 2);
     return (
       <React.Fragment>
         <div className={`${styles.topSubmit} ${scroll && styles.scroll}`}>
+          {myMessageFlag && <MyMessage message={messageText} />}
           <div className={styles.detailTitle}>
             <i className="iconfont icon-gdxq" />
             <span className={styles.titleText}>{docketId && '工单详情' || '创建工单'}</span>

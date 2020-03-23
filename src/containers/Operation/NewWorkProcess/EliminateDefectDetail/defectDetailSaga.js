@@ -17,6 +17,30 @@ function* easyPut(actionName, payload) {
   });
 }
 
+// 请求新的数据，之前的为空
+function* resetCont() {
+  yield put({
+    type: eliminateDefectDetailAction.changeStore,
+    payload: {
+      allowedActions: [], //可执行的动作
+      baseInfo: {}, // 基本信息
+      stateId: null, //  状态ID
+      stateName: '', // 状态名称  状态名称是确定的，不会根据不同的企业ID发生变化
+      eventInfos: [], // 缺陷事件信息
+      warnEventInfos: [], // 告警缺陷事件
+      handleInfos: [], // 处理信息
+      processInfo: [], // 流程信息
+      removeEventImg: [], // 用于退回的时候 重新编辑 缺陷⌚️
+      removeHandleImg: [], // 用于退回的时候 重新编辑 处理信息
+      isVertify: false, // 是否验证状态
+      addbaseInfo: {}, // 添加的基本信息
+      addEventInfo: [], // 添加的缺陷事件
+      addhandleList: [], // 添加的处理记录
+      eventStatus: [], // 验收工单的时候 缺陷事件状态
+    },
+  });
+}
+
 function* getDefectAction(action) { // 2.7.3.2.	查询消缺可执行动作 创建和追加的
   const { payload } = action;
   const url = `${APIBasePath}${ticket.getEliminateDefectAction}`;
@@ -198,11 +222,14 @@ function* getDefectMessage(action) { // 各种状态提交之后请求新的数�
 
 function* acceptanceDocket(action) { // 2.7.3.10.	消缺验收（通过和驳回）
   const { payload } = action;
+  const { params, callback } = payload;
+  const { docketId } = params;
   const url = `${APIBasePath}${ticket.checkAndAcceptDefect}`;
-  const { docketId } = payload;
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
+      callback();
+      yield call(resetCont);
       yield put({
         type: eliminateDefectDetailAction.getDefectMessage,
         payload: { docketId },
@@ -212,17 +239,26 @@ function* acceptanceDocket(action) { // 2.7.3.10.	消缺验收（通过和驳回
     }
   } catch (e) {
     console.log(e);
-    message.error(e.message);
+    if (e.code === '15001') {
+      yield call(easyPut, 'changeStore', {
+        showErrorTip: true,
+      });
+    } else {
+      message.error(e.message);
+    }
   }
 }
 
 function* verifyDocket(action) { // 2.7.3.11.	审核消缺工单
   const { payload } = action;
+  const { params, callback } = payload;
+  const { docketId } = params;
   const url = `${APIBasePath}${ticket.verifyEilminateDefect}`;
-  const { docketId } = payload;
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
+      callback();
+      yield call(resetCont);
       yield put({
         type: eliminateDefectDetailAction.getDefectMessage,
         payload: { docketId },
@@ -232,17 +268,26 @@ function* verifyDocket(action) { // 2.7.3.11.	审核消缺工单
     }
   } catch (e) {
     console.log(e);
-    message.error(e.message);
+    if (e.code === '15001') {
+      yield call(easyPut, 'changeStore', {
+        showErrorTip: true,
+      });
+    } else {
+      message.error(e.message);
+    }
   }
 }
 
 function* receiveDocket(action) { // 2.6.1.4.	领取工单
   const { payload } = action;
+  const { params, callback } = payload;
+  const { docketId } = params;
   const url = `${APIBasePath}${ticket.getReceiveAction}`;
-  const { docketId } = payload;
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
+      callback();
+      yield call(resetCont);
       yield put({
         type: eliminateDefectDetailAction.getDefectMessage,
         payload: { docketId },
@@ -252,17 +297,26 @@ function* receiveDocket(action) { // 2.6.1.4.	领取工单
     }
   } catch (e) {
     console.log(e);
-    message.error(e.message);
+    if (e.code === '15001') {
+      yield call(easyPut, 'changeStore', {
+        showErrorTip: true,
+      });
+    } else {
+      message.error(e.message);
+    }
   }
 }
 
 function* returnDocket(action) { // 2.6.1.8.	退回功能
   const { payload } = action;
-  const url = `${APIBasePath}${ticket.getReceiveAction}`;
-  const { docketId } = payload;
+  const { params, callback } = payload;
+  const { docketId } = params;
+  const url = `${APIBasePath}${ticket.returnDocket}`;
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
+      callback();
+      yield call(resetCont);
       yield put({
         type: eliminateDefectDetailAction.getDefectMessage,
         payload: { docketId },
@@ -272,24 +326,38 @@ function* returnDocket(action) { // 2.6.1.8.	退回功能
     }
   } catch (e) {
     console.log(e);
-    message.error(e.message);
+    if (e.code === '15001') {
+      yield call(easyPut, 'changeStore', {
+        showErrorTip: true,
+      });
+    } else {
+      message.error(e.message);
+    }
   }
 }
 
 function* deleteDocket(action) { // 2.6.1.9.	删除工单
   const { payload } = action;
-  const { docketId } = payload;
+  const { params, callback } = payload;
+  const { docketId } = params;
   const url = `${APIBasePath}${ticket.delDocket}/${docketId}`;
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
       // 删除之后，回到列表页面 需要使用一个回调函数
+      callback();
     } else {
       throw response.data;
     }
   } catch (e) {
     console.log(e);
-    message.error(e.message);
+    if (e.code === '15001') {
+      yield call(easyPut, 'changeStore', {
+        showErrorTip: true,
+      });
+    } else {
+      message.error(e.message);
+    }
   }
 }
 
@@ -315,17 +383,26 @@ function* addAbleUser(action) { // 2.6.1.3.	添加节点处理人 // 目前是�
     }
   } catch (e) {
     console.log(e);
-    message.error(e.message);
+    if (e.code === '15001') {
+      yield call(easyPut, 'changeStore', {
+        showErrorTip: true,
+      });
+    } else {
+      message.error(e.message);
+    }
   }
 }
 
 function* submitAction(action) { // 2.6.1.2.	处理节点  消缺现有的处理信息是 提交验收
   const { payload } = action;
+  const { params, callback } = payload;
+  const { docketId } = params;
   const url = `${APIBasePath}${ticket.getSubmitAction}`;
-  const { docketId } = payload;
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
+      callback();
+      yield call(resetCont);
       yield put({
         type: eliminateDefectDetailAction.getDefectMessage,
         payload: { docketId },
@@ -335,7 +412,13 @@ function* submitAction(action) { // 2.6.1.2.	处理节点  消缺现有的处理
     }
   } catch (e) {
     console.log(e);
-    message.error(e.message);
+    if (e.code === '15001') {
+      yield call(easyPut, 'changeStore', {
+        showErrorTip: true,
+      });
+    } else {
+      message.error(e.message);
+    }
   }
 }
 
@@ -449,5 +532,6 @@ export function* watchEliminateDefectDetail() {
   yield takeLatest(eliminateDefectDetailAction.getBaseUsername, getBaseUsername);
   yield takeLatest(eliminateDefectDetailAction.getDiagwarning, getDiagwarning);
   yield takeLatest(eliminateDefectDetailAction.showUser, showUser);
+  yield takeLatest(eliminateDefectDetailAction.resetCont, resetCont);
 }
 

@@ -18,6 +18,8 @@ export default class DefectEvenrEdit extends Component {
     stationCode: PropTypes.number,
     record: PropTypes.object,
     onChange: PropTypes.func,
+    delChange: PropTypes.func,
+    getStationTypeDeviceModes: PropTypes.func,
     isVertify: PropTypes.bool,
   }
 
@@ -32,7 +34,20 @@ export default class DefectEvenrEdit extends Component {
 
   changeDefectType = (value) => { // 修改缺陷类型
     const { record, onChange } = this.props;
-    onChange({ index: record.index, defectTypeCode: value });
+    if (value) {
+      onChange({ index: record.index, defectTypeCode: value, defectLevel: record.defectLevel || 1 });
+    }
+    if (!value) { // 其他缺陷的时候置空
+      onChange({
+        index: record.index,
+        defectTypeCode: value,
+        deviceTypeCode: null,
+        deviceTypeName: '',
+        deviceFullcode: null,
+        deviceName: '',
+        defectLevel: null,
+      });
+    }
   }
 
   changeDeviceType = (value) => { // 修改设备类型
@@ -79,7 +94,7 @@ export default class DefectEvenrEdit extends Component {
 
   errorTip = (value) => { //错误提示
     const { isVertify, record = {} } = this.props;
-    if (isVertify && !record[value]) {
+    if (isVertify && !record[value] && record[value] !== 0) {
       return 'error';
     }
   }
@@ -95,7 +110,7 @@ export default class DefectEvenrEdit extends Component {
   render() {
     const { deviceTypes = [], record = {}, stationCode, deviceModes = [], isVertify, del } = this.props;
     const {
-      eventDesc, defectTypeCode, deviceTypeCode, deviceTypeName, deviceName, deviceFullcode, defectLevel, eventImgs = [],
+      eventDesc, defectTypeCode = 1, deviceTypeCode, deviceTypeName, deviceName, deviceFullcode, defectLevel = 1, eventImgs = [],
     } = record;
     const { visible } = this.state;
     const downloadTemplet = `${path.basePaths.APIBasePath}${path.pubilcPath.imgUploads}`;

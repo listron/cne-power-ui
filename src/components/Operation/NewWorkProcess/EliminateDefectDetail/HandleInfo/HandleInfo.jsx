@@ -4,6 +4,7 @@ import InfoDetail from './InfoDetail';
 import InfoEdit from './InfoEdit';
 import styles from './handle.scss';
 import PropTypes from 'prop-types';
+import { MyMessage } from '../../Common/MyMessage/MyMessage';
 
 export default class HandleInfo extends Component {
 
@@ -15,6 +16,7 @@ export default class HandleInfo extends Component {
     allowedActions: PropTypes.array,
     addDefectHandle: PropTypes.func,
     isFinish: PropTypes.string,
+    myMessageFlag: PropTypes.bool,
   };
 
 
@@ -101,7 +103,11 @@ export default class HandleInfo extends Component {
       },
       func: () => {
         addhandleList.splice(addhandleList.length - index, 1);
-        this.props.changeStore({ addhandleList });
+        this.props.changeStore({ addhandleList, myMessageFlag: true });
+        this.props.changeStore({ handleMessageFlag: true });
+        setTimeout(() => {
+          this.props.changeStore({ handleMessageFlag: false });
+        }, 2000);
       },
     });
   }
@@ -114,7 +120,7 @@ export default class HandleInfo extends Component {
   }
 
   render() {
-    const { handleInfos = [], allowedActions = [], addhandleList = [], isVertify, addMultipleEvent, isFinish, sigleSave } = this.props;
+    const { handleInfos = [], allowedActions = [], addhandleList = [], isVertify, addMultipleEvent, isFinish, singleSave, handleMessageFlag } = this.props;
     const isAdd = this.exchangeActioncode(allowedActions, '15'); // 添加的权限是14
     const canAdd = addMultipleEvent ? isAdd : addhandleList.length === 0 && isAdd; // 可以添加一条还是添加多条
     return (
@@ -126,6 +132,7 @@ export default class HandleInfo extends Component {
             <span className={styles.text}>添加记录</span>
           </CneButton>}
         </h4>}
+        {handleMessageFlag && <MyMessage message={'保存成功'} />}
         <div className={styles.handleContents}>
           {addhandleList.map((e, i) => (
             <InfoEdit
@@ -137,7 +144,7 @@ export default class HandleInfo extends Component {
               isVertify={isVertify}
               isFinish={isFinish}
               allowedActions={allowedActions}
-              sigleSave={sigleSave}
+              singleSave={singleSave}
             />
           ))}
           {handleInfos.map((e, i) => (
