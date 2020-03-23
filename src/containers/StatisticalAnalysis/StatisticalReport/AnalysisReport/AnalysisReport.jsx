@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import styles from './analysisReport.scss';
 
 const { APIBasePath } = path.basePaths;
-const { dailyreport } = path.APISubPaths.statisticalAnalysis;
+const { getReportDay } = path.APISubPaths.statisticalAnalysis;
 
 class AnalysisReport extends Component {
   static propTypes = {
@@ -46,8 +46,8 @@ class AnalysisReport extends Component {
     const { dayDate } = this.state;
     const newDate = dayDate.format('YYYY-MM-DD');
     const enterpriseName = Cookie.get('enterpriseName');
-    const downloadHref = `${APIBasePath}/${dailyreport}/${newDate}`;
-    const fileName = `${enterpriseName}光伏电站运行日报(${dayDate.format('YYYY年MM月DD日')}).xlsx`;
+    const downloadHref = `${APIBasePath}${getReportDay}?reportDate=${newDate}`;
+    const fileName = `${enterpriseName}光伏电站运行日报(${dayDate.format('YYYY年MM月DD日')}).docx`;
     this.setState({ typeDowning: 'dayReport' });
     if (typeDowning !== 'dayReport') {
       this.downLoadFun(downloadHref, fileName, newDate);
@@ -55,7 +55,9 @@ class AnalysisReport extends Component {
   };
 
   downLoadFun = (url, fileName, date) => { // 根据路径，名称，日期，通用下载函数。
-    axios.post(url, {}, { responseType: 'blob' }).then(response => {
+    axios.get(url, {
+      responseType: 'blob',
+    }).then(response => {
       const fileContent = response.data;
       const fileNameInfo = response.headers['content-disposition'];
       let newFileName = fileName;
@@ -83,6 +85,7 @@ class AnalysisReport extends Component {
 
       }
     }).catch(warning => {
+      this.setState({ typeDowning: '' });
       message.warning('下载失败！请重新下载');
       console.log(warning);
     });
