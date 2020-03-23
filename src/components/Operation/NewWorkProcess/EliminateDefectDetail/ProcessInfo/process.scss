@@ -29,11 +29,10 @@
           color: var(--darkColor);
           @include lineheight(30px);
         }
-
-        .processErrorItemName{
+        .processItemName[code='3002']{
           color: #df4b33;
-          @include lineheight(30px);
         }
+        
         .itemRight {
           display: flex;
           .processItemDetail {
@@ -62,6 +61,9 @@
     }
     .singleInfo {
       color: var(--themeColor);
+    }
+    .singleInfo[code='3002']{
+      color: #df4b33;
     }
     :global {
       .ant-timeline-item{

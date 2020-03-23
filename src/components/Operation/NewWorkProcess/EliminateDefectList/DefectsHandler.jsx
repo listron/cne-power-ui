@@ -100,7 +100,7 @@ export default class DefectsHandler extends Component {
               <RadioButton
                 key={e.stateId}
                 value={e.stateId}
-              >{`${e.stateName} ${e.stateName !== '已结单' && e.total || ''}`}</RadioButton>
+              >{`${e.stateName} ${e.stateName !== '已结单' ? e.total : ''}`}</RadioButton>
             ))}
           </RadioGroup>
         </div>
