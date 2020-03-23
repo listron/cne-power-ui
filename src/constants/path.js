@@ -642,6 +642,8 @@ export default {
       getExportQuota: '/v3/performance/report/index/list/export', // 关键指标列表导出
       getExportFault: '/v3/performance/report/fault/list/export', // 故障信息列表导出
       getExportLimit: '/v3/performance/report/limit/list/export', // 限电信息列表导出
+      // 分析报告
+      getReportDay: '/v4/report/support/station/report/day', // 2.7.2.1.集团日报导出
       // 电站评分
       singleStaionScore: '/v3/performance/score',
       getScoreList: '/v3/performance/score/list',

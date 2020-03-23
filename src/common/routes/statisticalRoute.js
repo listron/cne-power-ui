@@ -51,6 +51,9 @@ const statement = [ // 统计分析 - 统计报表
   }, { // 统计报表-日报查询
     path: '/statistical/statement/dailyQuery',
     component: lazy(() => import('../../containers/StatisticalAnalysis/StatisticalReport/DailyQuery/DailyQuery')),
+  }, { // 统计报表-分析报告
+    path: '/statistical/statement/analysisReport',
+    component: lazy(() => import('../../containers/StatisticalAnalysis/StatisticalReport/AnalysisReport/AnalysisReport')),
   },
 ];
 const analysisTool = [
