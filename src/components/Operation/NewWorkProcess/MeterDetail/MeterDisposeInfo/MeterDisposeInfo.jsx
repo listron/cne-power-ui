@@ -243,14 +243,18 @@ export default class MeterDisposeInfo extends React.Component {
      * */
     // 判断最多是6位整数和两位小数
     const reg = /(^[0-9]{1,6}$)|(^[0-9]{1,6}[\.]{1}[0-9]{1,2}$)/;
+    // 小数点正则
+    const pointReg = /(^[0-9]{1,6}[\.]{1}$)/;
+    // 判断输入只能是数字
+    const numberReg = /^\d+(\.\d+)?$/;
     // 改变当前input值
     // e当前event对象
     // index当前表格
     // arrStr需要改变的数组
     // filed需要改变的value
     // type 样式类型
-    readMeterData[arrStr][index][filed] = e.target.value === '' ? e.target.value : Number(e.target.value);
-    readMeterData[arrStr][index][type] = reg.test(e.target.value) ? 0 : (e.target.value === '' ? 1 : 2);
+    readMeterData[arrStr][index][filed] = e.target.value === '' || !numberReg.test(e.target.value) ? e.target.value : Number(e.target.value);
+    readMeterData[arrStr][index][type] = pointReg.test(e.target.value) || reg.test(e.target.value) ? 0 : (e.target.value === '' ? 1 : 2);
     // 判断当前改变输入框的值和otherReadMeterData里面当前的值对比是否一样
     // 一样是-1，不一样就是当前e.target.value
     if(e.target.value !== '' && Number(e.target.value) === otherReadMeterData[arrStr][index][filed]) {
@@ -517,7 +521,6 @@ export default class MeterDisposeInfo extends React.Component {
                                 {cur.flag1 ? (
                                   <div className={styles.netEditStopCode}>
                                     <Input
-                                      type="number"
                                       onChange={(e) => {
                                         this.changeStopCode(e, index, 'onlineDatas', 'totalEndCode', 'type1');
                                       }}
@@ -543,7 +546,6 @@ export default class MeterDisposeInfo extends React.Component {
                                 {cur.flag2 ? (
                                   <div className={styles.netEditStopCode}>
                                     <Input
-                                      type="number"
                                       onChange={(e) => {
                                         this.changeStopCode(e, index, 'onlineDatas', 'topEndCode', 'type2');
                                       }}
@@ -569,7 +571,6 @@ export default class MeterDisposeInfo extends React.Component {
                                 {cur.flag3 ? (
                                   <div className={styles.netEditStopCode}>
                                     <Input
-                                      type="number"
                                       onChange={(e) => {
                                         this.changeStopCode(e, index, 'onlineDatas', 'peakEndCode', 'type3');
                                       }}
@@ -595,7 +596,6 @@ export default class MeterDisposeInfo extends React.Component {
                                 {cur.flag4 ? (
                                   <div className={styles.netEditStopCode}>
                                     <Input
-                                      type="number"
                                       onChange={(e) => {
                                         this.changeStopCode(e, index, 'onlineDatas', 'flatEndCode', 'type4');
                                       }}
@@ -621,7 +621,6 @@ export default class MeterDisposeInfo extends React.Component {
                                 {cur.flag5 ? (
                                   <div className={styles.netEditStopCode}>
                                     <Input
-                                      type="number"
                                       onChange={(e) => {
                                         this.changeStopCode(e, index, 'onlineDatas', 'lowEndCode', 'type5');
                                       }}
@@ -749,7 +748,6 @@ export default class MeterDisposeInfo extends React.Component {
                                 {cur.flag1 ? (
                                   <div className={styles.electricityEditStopCode}>
                                     <Input
-                                      type="number"
                                       onChange={(e) => {
                                         this.changeStopCode(e, index, 'generationDatas', 'totalEndCode', 'type1');
                                       }}
@@ -775,7 +773,6 @@ export default class MeterDisposeInfo extends React.Component {
                                 {cur.flag2 ? (
                                   <div className={styles.electricityEditStopCode}>
                                     <Input
-                                      type="number"
                                       onChange={(e) => {
                                         this.changeStopCode(e, index, 'generationDatas', 'topEndCode', 'type2');
                                       }}
@@ -801,7 +798,6 @@ export default class MeterDisposeInfo extends React.Component {
                                 {cur.flag3 ? (
                                   <div className={styles.electricityEditStopCode}>
                                     <Input
-                                      type="number"
                                       onChange={(e) => {
                                         this.changeStopCode(e, index, 'generationDatas', 'peakEndCode', 'type3');
                                       }}
@@ -827,7 +823,6 @@ export default class MeterDisposeInfo extends React.Component {
                                 {cur.flag4 ? (
                                   <div className={styles.electricityEditStopCode}>
                                     <Input
-                                      type="number"
                                       onChange={(e) => {
                                         this.changeStopCode(e, index, 'generationDatas', 'flatEndCode', 'type4');
                                       }}
@@ -853,7 +848,6 @@ export default class MeterDisposeInfo extends React.Component {
                                 {cur.flag5 ? (
                                   <div className={styles.electricityEditStopCode}>
                                     <Input
-                                      type="number"
                                       onChange={(e) => {
                                         this.changeStopCode(e, index, 'generationDatas', 'lowEndCode', 'type5');
                                       }}

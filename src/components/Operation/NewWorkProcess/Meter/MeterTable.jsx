@@ -202,7 +202,7 @@ export default class MeterTable extends React.Component {
             return (
               <div className={styles.stateNameBox} title={text}>
                 <div>{text || '- -'}</div>
-                <i className={'iconfont icon-chaoshi'} />
+                <i title="超时" className={'iconfont icon-chaoshi'} />
               </div>
             );
           }
@@ -213,7 +213,7 @@ export default class MeterTable extends React.Component {
           );
         },
       }, {
-        title: '操作',
+        title: '查看',
         align: 'center',
         className: styles.meterDetails,
         render: (text, record) => {
@@ -228,7 +228,7 @@ export default class MeterTable extends React.Component {
             <RadioButton value="">全部</RadioButton>
             {stateAndTotalList.map(cur => {
               return (
-                <RadioButton key={cur.stateId} value={cur.stateId}>{`${cur.stateName} ${cur.total}`}</RadioButton>
+                <RadioButton key={cur.stateId} value={cur.stateId}>{cur.stateName === '已结单' ? `${cur.stateName}` : `${cur.stateName} ${cur.total}`}</RadioButton>
               );
             })}
           </RadioGroup>
