@@ -34,7 +34,7 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
-       name: '告警',
+        name: '告警',
 	iconStyle: 'icon-alarm1',
         path: 'alarm',
         rightKey: 'monitor_alarm',
@@ -393,7 +393,12 @@ const menuData = [
             defaultPath: true,
             rightKey: 'statistics_report_table',
           },
-
+	  {
+            name: '分析报告',
+            path: 'analysisReport',
+            defaultPath: true,
+            rightKey: 'statistics_report_dailyQuery',
+          },
         ],
       }, {
         name: '数据分析工具',
@@ -818,6 +823,8 @@ export const menu = formatter(menuData);
 //   monitor_alarm_realTime: ['alarm_remove','alarm_worklist','monitor_alarm_remove','monitor_alarm_history'],
 //   operation_worklist_work: ['workExamine_defect_review', 'workExamine_defect_check', 'workExamine_inspection_check'],
 // }
+       
 	
         
+
 
