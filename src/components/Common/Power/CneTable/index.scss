@@ -112,7 +112,7 @@
 
 .headShadow{ // 表格顶部冻结 且滚动时 = 头部需有阴影
   :global{
-    .ant-table-header.ant-table-hide-scrollbar{
+    .ant-table-scroll .ant-table-header{
       overflow-x: hidden!important;
       margin-bottom: 0!important;
       box-shadow: 0 4px 2px rgba(0, 0, 0, 0.3);
