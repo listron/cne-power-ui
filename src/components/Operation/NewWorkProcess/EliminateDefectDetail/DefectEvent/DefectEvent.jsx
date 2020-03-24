@@ -47,7 +47,8 @@ export default class DefectEvent extends Component {
   addEventChange = (value) => { // 添加缺陷
     const { index, ...rest } = value;
     const { addEventInfo } = this.props;
-    addEventInfo[addEventInfo.length - index] = { ...addEventInfo[addEventInfo.length - index], ...rest };
+    const curIndex = addEventInfo.findIndex(e => e.index === index);
+    addEventInfo[curIndex] = { ...addEventInfo[curIndex], ...rest };
     this.props.changeStore({ addEventInfo });
   }
 

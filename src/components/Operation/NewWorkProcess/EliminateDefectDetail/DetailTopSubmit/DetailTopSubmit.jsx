@@ -282,8 +282,9 @@ export default class DetailTopSubmit extends Component {
     }
   }
 
-  return = (e) => { // 审核 退回
-    const { docketId, stateId } = this.props;
+  return = (e) => { // 审核 退回  退回-> 列表页
+    const { location, history, docketId, stateId } = this.props;
+    const { pathname } = location;
     const params = {
       docketId,
       actionCode: e.actionCode,
@@ -297,12 +298,15 @@ export default class DetailTopSubmit extends Component {
       messageText: '退回成功',
       func: (params) => this.props.returnDocket({
         params,
-        callback: this.displayTip,
+        callback: () => {
+          this.displayTip();
+          history.push(`${pathname}?page=list&tab=defect`);
+        },
       }),
     });
   }
 
-  delete = (e) => { // 删除
+  delete = (e) => { // 删除 删除-> 列表页
     const { location, history, docketId } = this.props;
     const { pathname } = location;
     const params = {
@@ -312,8 +316,8 @@ export default class DetailTopSubmit extends Component {
       func: () => this.props.deleteDocket({
         params,
         callback: () => {
-          this.displayTip(),
-            history.push(`${pathname}?page=list&tab=defect`);
+          this.displayTip();
+          history.push(`${pathname}?page=list&tab=defect`);
         },
       }),
       showTip: true,
