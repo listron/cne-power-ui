@@ -111,9 +111,9 @@ export default class DetailTopSubmit extends Component {
   onBackHandle = () => { // 返回按钮 => 根据状态, 根据操作权限 是否提示弹框 
     const { stateName, location, history } = this.props;
     const statusArr = ['receive', 'complete']; // 已接单和领取退回不提示
-    const needTip = stateName && statusArr.includes(localStateName[stateName]) || true;
+    const needTip = stateName && statusArr.includes(localStateName(stateName)) || false;
     const { pathname } = location;
-    if (needTip) {
+    if (!needTip) {
       this.setState({
         showTip: true,
         tipText: '返回后修改内容将不会保存，确认返回吗',
@@ -122,7 +122,7 @@ export default class DetailTopSubmit extends Component {
         },
       });
     }
-    if (!needTip) {
+    if (needTip) {
       history.push(`${pathname}?page=list`);
     }
   }
@@ -383,7 +383,7 @@ export default class DetailTopSubmit extends Component {
       messageText: '验收通过',
       func: (params) => this.props.acceptanceDocket({
         params,
-        callBack: this.displayTip,
+        callback: this.displayTip,
       }),
     });
   }
@@ -404,7 +404,7 @@ export default class DetailTopSubmit extends Component {
       messageText: '驳回成功',
       func: (params) => this.props.acceptanceDocket({
         params,
-        callBack: this.displayTip,
+        callback: this.displayTip,
       }),
     });
   }

@@ -67,7 +67,7 @@ export default class ProcessInfo extends Component {
           <Timeline>
             {processInfo.map((cur, index) => {
               const isLastProcess = processInfo.length - 1 === index;
-              if (isLastProcess && cur.nodeName !== '已退回') {
+              if (isLastProcess) {
                 return (
                   <Timeline.Item
                     key={index.toString()}
