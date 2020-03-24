@@ -30,8 +30,14 @@ class DefectContent extends Component {
     }
   }
 
+  exchangeActioncode = (allActions, code) => {
+    const cur = allActions.filter(e => e.actionCode === code);
+    return cur.length > 0 && !cur[0].isPermission || false;
+  }
+
   render() {
-    const { baseInfo, stateName, handleInfos, addhandleList } = this.props;
+    const { baseInfo, stateName, handleInfos, addhandleList, allowedActions } = this.props;
+    console.log('allowedActions', this.props);
     return (
       <React.Fragment>
         <DefectBaseTitle baseInfo={baseInfo} />
@@ -44,8 +50,8 @@ class DefectContent extends Component {
             {localStateName(stateName) === 'execute' &&
               <HandleInfo
                 {...this.props}
-                editDisplay={localStateName(stateName) === 'execute'}
-                addMultipleEvent={localStateName(stateName) === 'execute'}
+                editDisplay={localStateName(stateName) === 'execute' && this.exchangeActioncode(allowedActions, '23')}
+                addMultipleEvent={localStateName(stateName) === 'execute' && this.exchangeActioncode(allowedActions, '15')}
                 singleSave={true}
               />}
             {/* 在其他时候如过不存在处理信息，则不显示 */}

@@ -342,7 +342,7 @@ function* deleteDocket(action) { // 2.6.1.9.	删除工单
   const { docketId } = params;
   const url = `${APIBasePath}${ticket.delDocket}/${docketId}`;
   try {
-    const response = yield call(axios.post, url, params);
+    const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       // 删除之后，回到列表页面 需要使用一个回调函数
       callback();
