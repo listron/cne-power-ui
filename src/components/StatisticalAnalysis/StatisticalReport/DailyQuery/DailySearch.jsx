@@ -292,7 +292,7 @@ class DailySearch extends Component {
       return e.value;
     });
 
-    tableType === 'quotaList' && getQuotaList({ stationCodes, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), pageNum, pageSize, indexCodes });
+    tableType === 'quotaList' && getQuotaList({ stationCodes, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), pageNum, pageSize, faultIds: indexCodes });
     tableType === 'faultList' && getFaultList({ stationCodes, startDate, endDate, pageNum, pageSize, faultIds: faults, keyWord });
     tableType === 'limitList' && getLimitList({ stationCodes, startDate, endDate, pageNum, pageSize, keyWord: powerInformation });
   }
