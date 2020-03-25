@@ -77,6 +77,7 @@ export default class DefectEvenrEdit extends Component {
   onConfirm = () => { // 确认删除
     const { record, delChange } = this.props;
     delChange(record);
+    this.setState({ visible: false });
   }
 
 

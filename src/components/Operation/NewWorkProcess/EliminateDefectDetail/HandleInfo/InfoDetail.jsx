@@ -32,7 +32,7 @@ export default class InfoDetail extends Component {
             <span className={styles.handleTime}>{createTime}</span>
             <span>{createUserName || '--'}</span>
           </span>
-          <span className="iconfont icon-xietiao" />
+          {!!isCoordinate && <span className="iconfont icon-xietiao" title={'协调'} />}
         </div>
         <div className={styles.handleRecord}>
           <span className={styles.recordName}>处理记录: </span>
@@ -63,7 +63,6 @@ export default class InfoDetail extends Component {
                   />
                 }
               </React.Fragment>
-
             }
           </span>
         </div>

@@ -146,7 +146,6 @@ export default class DefectTable extends Component {
   ]
 
   onDetailSearch = (record) => {
-    console.log(record); // 点击某行进行操作;
     const { docketId } = record;
     const { location, history } = this.props;
     const { pathname } = location;
