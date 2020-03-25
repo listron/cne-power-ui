@@ -83,6 +83,7 @@ export default class DefectEvenrEdit extends Component {
 
   onPicChange = (value) => { // 图片旋转
     const { record, onChange } = this.props;
+    // console.log('eventImgs', eventImgs);
     const eventImgs = value.map(e => {
       return {
         url: e,

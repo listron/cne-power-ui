@@ -96,6 +96,7 @@ export default class HandleInfo extends Component {
     const { handleImgs = [], handleVideos = [], ...rest } = record;
     const curImg = handleImgs.length > 0 && handleImgs.map(e => e.url) || [];
     const { addhandleList, addDefectHandle } = this.props;
+    const curIndex = addhandleList.findIndex(e => e.index === index);
     addDefectHandle({
       record: {
         ...rest,
@@ -103,7 +104,7 @@ export default class HandleInfo extends Component {
         handleVideo: handleVideos,
       },
       func: () => {
-        addhandleList.splice(addhandleList.length - index, 1);
+        addhandleList.splice(curIndex, 1);
         this.props.changeStore({ addhandleList, handleMessageFlag: true });
         setTimeout(() => {
           this.props.changeStore({ handleMessageFlag: false });
@@ -115,7 +116,8 @@ export default class HandleInfo extends Component {
   delHandle = (record) => {
     const { index } = record;
     const { addhandleList } = this.props;
-    addhandleList.splice(addhandleList.length - index, 1);
+    const curIndex = addhandleList.findIndex(e => e.index === index);
+    addhandleList.splice(curIndex, 1);
     this.props.changeStore({ addhandleList });
   }
 
