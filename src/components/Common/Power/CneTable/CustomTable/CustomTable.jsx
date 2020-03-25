@@ -1,21 +1,35 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styles from './index.scss';
+import styles from './custom.scss';
 
 /**
+ * title: 表头元素
+ * children: 内容元素
  */
 
 export default class CustomTable extends PureComponent {
 
   static propTypes = {
-    // theme: PropTypes.string,
+    className: PropTypes.string,
+    theme: PropTypes.string,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    children: PropTypes.any,
   }
 
+  static defaultProps = {
+    theme: 'light',
+  }
+
   render(){
-    const { theme = 'light' } = this.props;
+    // let totalClassName = `${styles.cneTable} ${className || ''} ${styles[theme] || ''}`;
+
+    const { theme, className, title, children } = this.props;
     return (
-      <div>
-        
+      <div className={`${styles.customTable} ${className || ''} ${styles[theme] || ''}`}>
+        {title}
+        <div className={styles.list}>
+          {children}
+        </div>
       </div>
     );
   }
