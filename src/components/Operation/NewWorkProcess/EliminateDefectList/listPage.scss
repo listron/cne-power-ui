@@ -116,6 +116,11 @@
       margin-right: 16px;
     }
   }
+   @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+      .addBtn{
+        width:102px;
+      }
+  }
   .addBtn{
     margin-right: 20px;
   }
@@ -142,6 +147,11 @@
       }
       .undoneIcon, .alldoneIcon{
         margin-right: 16px;
+      }
+    }
+    @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+      .undoneBtn, .alldoneBtn{
+        width:102px;
       }
     }
   }

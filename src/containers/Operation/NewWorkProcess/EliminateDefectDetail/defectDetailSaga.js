@@ -158,7 +158,7 @@ function* getDefectHandleInfo(action) { // 2.7.3.8.	查询工单处理信息
         handleInfos: response.data.data || [],
         removeHandleImg: response.data.data.map((e, index) => {
           const { handleImgs = [] } = e;
-          return handleImgs.map(img => { return { imgId: img.imgId, url: img.url, updateSign: 2 }; });
+          return handleImgs && handleImgs.map(img => { return { imgId: img.imgId, url: img.url, updateSign: 2 }; });
         }),
       });
     } else {

@@ -177,7 +177,7 @@ export default class DetailTopSubmit extends Component {
         return (<CneButton
           onClick={() => this[func](e)}
           className={styles.handleButton}
-          style={{ width: '92px' }}
+          // style={{ width: '92px' }}
           color-code={e.actionColorCode}
           key={e.actionCode}
           {...dis}
