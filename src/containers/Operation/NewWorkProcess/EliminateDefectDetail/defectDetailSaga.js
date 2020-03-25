@@ -119,14 +119,21 @@ function* getDefectEventInfo(action) { // 2.7.3.7.查询工单缺陷信息
   const url = `${APIBasePath}${ticket.getEliminateEventInfo}/${docketId}`;
   try {
     const response = yield call(axios.post, url, { docketId });
+    const removeEventImg = [];
+    response.data.data.forEach((e, index) => {
+      const { eventImgs = [], eventId } = e;
+      if (eventImgs.length > 0) {
+        removeEventImg.push({
+          eventId,
+          imgs: eventImgs.map(img => { return { imgId: img.imgId, url: img.url, updateSign: 2 }; }),
+        });
+      }
+    });
     if (response.data.code === '10000') {
       yield call(easyPut, 'changeStore', {
         eventInfos: response.data.data || [],
         eventStatus: response.data.data.map((e, index) => { return { eventId: e.eventId, eventState: null, key: index }; }),
-        removeEventImg: response.data.data.map((e, index) => {
-          const { eventImgs = [] } = e;
-          return eventImgs.map(img => { return { imgId: img.imgId, url: img.url, updateSign: 2 }; });
-        }),
+        removeEventImg,
       });
     } else {
       throw response.data;
