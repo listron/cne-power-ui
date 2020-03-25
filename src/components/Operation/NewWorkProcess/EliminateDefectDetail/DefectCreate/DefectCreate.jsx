@@ -61,7 +61,7 @@ class DefectCreate extends Component {
 
   dealImg = (imgs) => {
     if (imgs && imgs.length > 0) {
-      return imgs.map(e => { return { imgId: e.imgId, url: e.url, updateSign: 0 }; });
+      return imgs.map(e => { return { imgId: '', url: e.url, updateSign: 1 }; });
     }
     return [];
   }
@@ -87,7 +87,6 @@ class DefectCreate extends Component {
     // editStation 电站是否编辑 退回不可以编辑
     return (
       <React.Fragment>
-        '创建页面'
         <DefectBaseTitle baseInfo={baseInfo} />
         <DefectBaseInfo {...this.props} editStation={!stateName} />
         <DefcetEventTitle {...this.props} />
