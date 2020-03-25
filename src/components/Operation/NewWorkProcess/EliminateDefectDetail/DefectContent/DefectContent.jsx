@@ -37,7 +37,6 @@ class DefectContent extends Component {
 
   render() {
     const { baseInfo, stateName, handleInfos, addhandleList, allowedActions } = this.props;
-    console.log('allowedActions', this.props);
     return (
       <React.Fragment>
         <DefectBaseTitle baseInfo={baseInfo} />
@@ -50,7 +49,7 @@ class DefectContent extends Component {
             {localStateName(stateName) === 'execute' &&
               <HandleInfo
                 {...this.props}
-                editDisplay={localStateName(stateName) === 'execute' && this.exchangeActioncode(allowedActions, '23')}
+                editDisplay={localStateName(stateName) === 'execute' && this.exchangeActioncode(allowedActions, '15')}
                 addMultipleEvent={localStateName(stateName) === 'execute' && this.exchangeActioncode(allowedActions, '15')}
                 singleSave={true}
               />}

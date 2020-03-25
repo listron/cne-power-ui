@@ -15,12 +15,18 @@ class DefectCreate extends Component {
     isFinish: PropTypes.string,
     addEventInfo: PropTypes.array,
     handleInfos: PropTypes.array,
+    addhandleList: PropTypes.array,
+    changeStore: PropTypes.func,
+    getStationTypeDeviceModes: PropTypes.func,
+    getBaseUsername: PropTypes.func,
+    getDeviceType: PropTypes.func,
 
   };
 
   componentWillReceiveProps(nextProps) {
     const { eventInfos, stateName, handleInfos, baseInfo, isFinish, addEventInfo } = nextProps;
     const { stationCode, deviceTypeCode } = baseInfo;
+    console.log('addEventInfo', addEventInfo, stateName);
     if (this.props.addEventInfo.length === 0 && localStateName(stateName) === 'return') {
       const list = eventInfos.map((e, index) => { return { index: index + 1, ...e }; });
       this.props.changeStore({ addEventInfo: list, addbaseInfo: baseInfo });
@@ -58,13 +64,14 @@ class DefectCreate extends Component {
 
   // 505067296350208
   render() {
-    const { isFinish, addEventInfo, addhandleList, eventInfos } = this.props;
+    const { isFinish, addEventInfo, addhandleList, eventInfos, baseInfo, stateName } = this.props;
+    // editStation 电站是否编辑 退回不可以编辑
     return (
       <React.Fragment>
-        <DefectBaseTitle />
-        <DefectBaseInfo {...this.props} editStation={true} />
+        <DefectBaseTitle baseInfo={baseInfo} />
+        <DefectBaseInfo {...this.props} editStation={!stateName} />
         <DefcetEventTitle {...this.props} />
-        <DefectEvent {...this.props} edit={true} addMultipleEvent={false} />
+        <DefectEvent {...this.props} edit={true} />
         <HandleInfo {...this.props} editDisplay={isFinish === '1'} addMultipleEvent={false} />
       </React.Fragment>
     );

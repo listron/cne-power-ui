@@ -85,7 +85,8 @@ export default class HandleInfo extends Component {
   infoChange = (value) => { // 处理信息的发生改变
     const { index, ...rest } = value;
     const { addhandleList } = this.props;
-    addhandleList[addhandleList.length - index] = { ...addhandleList[addhandleList.length - index], ...rest };
+    const curIndex = addhandleList.findIndex(e => e.index === index);
+    addhandleList[curIndex] = { ...addhandleList[curIndex], ...rest };
     this.props.changeStore({ addhandleList });
   }
 
@@ -103,8 +104,7 @@ export default class HandleInfo extends Component {
       },
       func: () => {
         addhandleList.splice(addhandleList.length - index, 1);
-        this.props.changeStore({ addhandleList, myMessageFlag: true });
-        this.props.changeStore({ handleMessageFlag: true });
+        this.props.changeStore({ addhandleList, handleMessageFlag: true });
         setTimeout(() => {
           this.props.changeStore({ handleMessageFlag: false });
         }, 2000);
