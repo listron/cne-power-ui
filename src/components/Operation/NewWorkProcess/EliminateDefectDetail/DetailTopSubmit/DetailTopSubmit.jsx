@@ -64,19 +64,19 @@ import { MyMessage } from '../../Common/MyMessage/MyMessage';
 */
 
 const process = {
-  2: { name: '领取', tipText: '确认领取此工单' }, // 领取
-  9: { name: '提交', tipText: '确认提交此工单' }, // 新建工单
-  10: { name: '提交验收', tipText: '确认将此工单提交验收' }, // 新建工单
-  11: { name: '提交验收', tipText: '确认将此工单提交验收' }, // 新建工单
-  5: { name: '提交验收', tipText: '确认将此工单提交验收' }, // 执行工单 
-  12: { name: '提交', tipText: '确认提交此工单' }, // 新建工单
-  17: { name: '派发', tipText: '确认派发此工单' }, // 审核工单
-  18: { name: '退回', tipText: '确认提交此工单' }, // 审核工单  已退回
-  19: { name: '派发', tipText: '确认派发此工单' }, // 新建工单 告警
-  22: { name: '提交', tipText: '确认提交此工单' }, // 提交工单
-  24: { name: '删除', tipText: '确定要删除此工单' }, // 删除工单
-  25: { name: '验收通过', modal: 'reject' }, // 验收通过  验收通过建议
-  26: { name: '驳回', modal: 'reject' }, // 驳回  驳回原因
+  2: { name: '领取', tipText: '确认领取此工单', sucessMes: '已领取' }, // 领取
+  9: { name: '提交', tipText: '确认提交此工单', sucessMes: '提交成功' }, // 新建工单
+  10: { name: '提交验收', tipText: '确认将此工单提交验收', sucessMes: '提交成功' }, // 新建工单
+  11: { name: '提交验收', tipText: '确认将此工单提交验收', sucessMes: '提交成功' }, // 新建工单
+  5: { name: '提交验收', tipText: '确认将此工单提交验收', sucessMes: '提交成功' }, // 执行工单 
+  12: { name: '提交', tipText: '确认提交此工单', sucessMes: '提交成功' }, // 新建工单
+  17: { name: '派发', tipText: '确认派发此工单', sucessMes: '派发成功' }, // 审核工单
+  18: { name: '退回', tipText: '确认提交此工单', sucessMes: '退回成功' }, // 审核工单  已退回
+  19: { name: '派发', tipText: '确认派发此工单', sucessMes: '派发成功' }, // 新建工单 告警
+  22: { name: '提交', tipText: '确认提交此工单', sucessMes: '提交成功' }, // 提交工单
+  24: { name: '删除', tipText: '确定要删除此工单', sucessMes: '工单已删除' }, // 删除工单
+  25: { name: '验收通过', modal: 'reject', sucessMes: '验收通过' }, // 验收通过  验收通过建议
+  26: { name: '驳回', modal: 'reject', sucessMes: '驳回成功' }, // 驳回  驳回原因
 };
 
 export default class DetailTopSubmit extends Component {
@@ -205,10 +205,11 @@ export default class DetailTopSubmit extends Component {
     }
     const { pathname } = location;
     if (removeEventImg.length > 0) {
-      addEventInfo.forEach((e, index) => {
-        const { eventImgs } = e;
-        if (eventImgs && eventImgs.length > 0) {
-          addEventInfo[addEventInfo.length - index - 1]['eventImgs'] = [...eventImgs, ...removeEventImg[index]];
+      removeEventImg.forEach(remove => {
+        const curIndex = addEventInfo.findIndex(e => e.eventId === remove.eventId);
+        const { eventImgs = [] } = addEventInfo[curIndex];
+        if (eventImgs.length > 0) {
+          addEventInfo[curIndex]['eventImgs'] = [...remove.imgs, ...eventImgs];
         }
       });
     }
@@ -216,7 +217,7 @@ export default class DetailTopSubmit extends Component {
       addhandleList.forEach((e, index) => {
         const { handleImgs } = e;
         if (handleImgs && handleImgs.length > 0) {
-          addhandleList[addhandleList.length - index - 1]['handleImgs'] = [...handleImgs, ...removeHandleImg[index]];
+          addhandleList[addhandleList.length - index - 1]['handleImgs'] = [...removeHandleImg[index], ...handleImgs];
         }
       });
     }
@@ -247,7 +248,7 @@ export default class DetailTopSubmit extends Component {
         }),
         showTip: true,
         tipText: process[+e.actionCode].tipText,
-        messageText: '提交成功',
+        messageText: process[+e.actionCode].sucessMes,
       });
     }
   }
@@ -277,7 +278,7 @@ export default class DetailTopSubmit extends Component {
         }),
         showTip: true,
         tipText: process[+e.actionCode].tipText,
-        messageText: '派发成功',
+        messageText: process[+e.actionCode].sucessMes,
       });
     }
   }
@@ -295,7 +296,7 @@ export default class DetailTopSubmit extends Component {
       status: 'return',
       requiredVisiable: true,
       params,
-      messageText: '退回成功',
+      messageText: process[+e.actionCode].sucessMes,
       func: (params) => this.props.returnDocket({
         params,
         callback: () => {
@@ -321,7 +322,7 @@ export default class DetailTopSubmit extends Component {
         },
       }),
       showTip: true,
-      messageText: '工单已删除',
+      messageText: process[+e.actionCode].sucessMes,
       tipText: process[+e.actionCode].tipText,
     });
 
@@ -343,7 +344,7 @@ export default class DetailTopSubmit extends Component {
       }),
       showTip: true,
       tipText: process[+e.actionCode].tipText,
-      messageText: '已领取',
+      messageText: process[+e.actionCode].sucessMes,
     });
   }
 
@@ -368,7 +369,7 @@ export default class DetailTopSubmit extends Component {
       },
       showTip: true,
       tipText,
-      messageText: '提交成功',
+      messageText: process[+e.actionCode].sucessMes,
     });
   }
 
@@ -384,7 +385,7 @@ export default class DetailTopSubmit extends Component {
     this.setState({
       passVisible: true,
       params,
-      messageText: '验收通过',
+      messageText: process[+e.actionCode].sucessMes,
       func: (params) => this.props.acceptanceDocket({
         params,
         callback: this.displayTip,
@@ -405,7 +406,7 @@ export default class DetailTopSubmit extends Component {
       status: 'reject',
       requiredVisiable: true,
       params,
-      messageText: '驳回成功',
+      messageText: process[+e.actionCode].sucessMes,
       func: (params) => this.props.acceptanceDocket({
         params,
         callback: this.displayTip,

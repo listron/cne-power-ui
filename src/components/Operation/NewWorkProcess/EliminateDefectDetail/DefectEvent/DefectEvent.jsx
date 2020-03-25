@@ -55,7 +55,8 @@ export default class DefectEvent extends Component {
   deladdEvent = (record) => {
     const { index } = record;
     const { addEventInfo } = this.props;
-    addEventInfo.splice(addEventInfo.length - index, 1);
+    const curIndex = addEventInfo.findIndex(e => e.index === index);
+    addEventInfo.splice(curIndex, 1);
     this.props.changeStore({ addEventInfo });
   }
 
