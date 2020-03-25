@@ -67,11 +67,14 @@ class DefectCreate extends Component {
   }
 
   retrunDataSet = ({ addEventInfo, eventInfos, stateName, addhandleList, handleInfos, baseInfo }) => {
-    const { stationCode, deviceTypeCode } = baseInfo;
+    const { stationCode } = baseInfo;
     if (addEventInfo.length === 0 && eventInfos.length > 0 && localStateName(stateName) === 'return') {
-      const list = eventInfos.map((e, index) => { return { index: eventInfos.length - index, ...e, eventImgs: this.dealImg(e.eventImgs) }; });
+      const list = eventInfos.map((e, index) => {
+        const { deviceTypeCode } = e;
+        this.props.getStationTypeDeviceModes({ stationCode, deviceTypeCode }); // 获取设备类型
+        return { index: eventInfos.length - index, ...e, eventImgs: this.dealImg(e.eventImgs) };
+      });
       this.props.changeStore({ addEventInfo: list, addbaseInfo: baseInfo });
-      this.props.getStationTypeDeviceModes({ stationCode, deviceTypeCode }); // 获取设备类型
       this.props.getBaseUsername({ stationCode }); // 当前电站有权限的人
       this.props.getDeviceType({ stationCode }); // 获取当前电站下的设备类型
     }
