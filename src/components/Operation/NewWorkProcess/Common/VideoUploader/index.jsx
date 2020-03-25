@@ -50,6 +50,7 @@ export default class VideoUploader extends Component {
 
   beforeUpload = (file) => { // 上传前校验 => 后期可考虑做成默认覆盖 允许自定义函数
     const isMp4 = file.type === 'video/mp4';
+    this.setState({ videoDuration: 0 });
     if (!isMp4) {
       message.error('只接受mp4视频');
       return false;
