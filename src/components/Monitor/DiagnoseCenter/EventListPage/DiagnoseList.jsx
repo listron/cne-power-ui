@@ -95,7 +95,7 @@ class DiagnoseList extends Component {
     const diagWarningIds = selectedRows.map(e => e.diagWarningId);
     if (value === 'handout') {
       const { stationCode } = selectedRows[0] || {};
-      window.open(`#/operation/workProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningIds.join(',')}]&stationCode=${stationCode}`);
+      window.open(`#/operation/newWorkProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningIds.join(',')}]&stationCode=${stationCode}`);
     }
     if (handleKeys.includes(value)) {
       this.props.editEventsStatus({
