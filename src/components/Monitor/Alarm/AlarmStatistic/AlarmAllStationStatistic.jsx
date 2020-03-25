@@ -62,7 +62,13 @@ class ALarmAllStationStatistic extends React.Component {
       orderCommand,
     };
     const newFilter = { ...filter, ...obj, pageNum: 1 };
-    this.props.getStationsAlarmStatistic(newFilter);
+    if (obj.stationCode.length > 0) { // 选择电站为空时不发请求
+        this.props.getStationsAlarmStatistic(newFilter);
+      }else{
+        this.props.changeAlarmStatisticStore({
+          stationCode: [],
+        });
+    }
   }
 
   onTableChange = (params) => {
@@ -77,13 +83,6 @@ class ALarmAllStationStatistic extends React.Component {
       orderField,
       orderCommand,
     };
-    if (obj.stationCode.length > 0) { // 选择电站为空时不发请求
-      this.props.getStationsAlarmStatistic(newFilter);
-    }else{
-      this.props.changeAlarmStatisticStore({
-        stationCode: [],
-      });
-    }
   }
 
   onChangeStation = (stationCode) => {
