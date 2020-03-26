@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Table } from 'antd';
+import CustomTable from './CustomTable/CustomTable';
 import PropTypes from 'prop-types';
 import styles from './index.scss';
 
@@ -12,7 +13,7 @@ import styles from './index.scss';
  * column内参数textAlign: left /middle / right / none;
  */
 
-export default class CneTable extends PureComponent {
+class CneTable extends PureComponent {
 
   static propTypes = {
     theme: PropTypes.string,
@@ -132,3 +133,7 @@ export default class CneTable extends PureComponent {
     );
   }
 }
+
+CneTable.CustomTable = CustomTable;
+
+export default CneTable;
