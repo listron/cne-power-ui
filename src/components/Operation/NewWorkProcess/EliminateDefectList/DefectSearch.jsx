@@ -18,6 +18,7 @@ export default class DefectSearch extends React.Component {
     const { listParams } = this.props;
     this.props.getDefectList({
       ...listParams,
+      pageNum: 1,
       stationCodes: selectedStations.map(e => e.stationCode),
     });
   };
@@ -28,6 +29,7 @@ export default class DefectSearch extends React.Component {
       // 调用抄表列表接口
       this.props.getDefectList({
         ...listParams,
+        pageNum: 1,
         operName: value.toString(),
       });
     }
@@ -37,6 +39,7 @@ export default class DefectSearch extends React.Component {
     const { listParams } = this.props;
     this.props.getDefectList({
       ...listParams,
+      pageNum: 1,
       isMy: checked ? 1 : 0,
     });
   };
