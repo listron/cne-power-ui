@@ -144,7 +144,7 @@ function* stopCircleQueryList(){ // 停止10s周期调用列表
 }
 
 function * editEventsStatus({ payload }) { // 忽略 删除事件
-  const url = `${APIBasePath}${monitor.editEventsStatus}`;
+  const url = `${APIBasePath}${monitor.editEventsStatus}/`;
   // payload : {diagWarningIds: string[], type: 1忽略 2删除 }
   try {
     const response = yield call(request.delete, url, { ...payload });
