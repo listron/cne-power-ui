@@ -55,9 +55,7 @@ class AnalysisReport extends Component {
   };
 
   downLoadFun = (url, fileName, date) => { // 根据路径，名称，日期，通用下载函数。
-    axios.get(url, {
-      responseType: 'blob',
-    }).then(response => {
+    axios.post(url, {}, { responseType: 'blob' }).then(response => {
       const fileContent = response.data;
       const fileNameInfo = response.headers['content-disposition'];
       let newFileName = fileName;
