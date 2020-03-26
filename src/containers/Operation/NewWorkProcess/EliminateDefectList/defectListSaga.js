@@ -21,7 +21,6 @@ function* easyPut(actionName, payload) {
 function* getDefectList(action) { //获取缺陷工单列表
   const { payload } = action;
   const url = `${APIBasePath}${ticket.getEilminateDefectList}`;
-  console.log('payload.sortField', payload.sortField);
   try {
     yield call(easyPut, 'changeStore', {
       listLoading: true,
