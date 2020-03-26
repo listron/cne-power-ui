@@ -129,9 +129,9 @@ export default class HandleInfo extends Component {
       <section className={styles.handleInfo}>
         {<h4 className={styles.handleTitle}>
           <div className={styles.titleName}>处理信息</div>
-          {canAdd && <CneButton className={styles.addBtn} onClick={this.addHandleInfo}>
-            <i className={`iconfont icon-newbuilt ${styles.addIcon}`} />
-            <span className={styles.text}>添加记录</span>
+          {canAdd && <CneButton className={styles.btn} onClick={this.addHandleInfo}>
+            <i className={`iconfont icon-newbuilt ${styles.btnIcon}`} />
+            <span className={styles.actionName}>添加记录</span>
           </CneButton>}
         </h4>}
         {handleMessageFlag && <MyMessage message={'保存成功'} />}

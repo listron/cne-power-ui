@@ -61,17 +61,20 @@ class DefectCreate extends Component {
 
   dealImg = (imgs) => {
     if (imgs && imgs.length > 0) {
-      return imgs.map(e => { return { imgId: e.imgId, url: e.url, updateSign: 0 }; });
+      return imgs.map(e => { return { imgId: '', url: e.url, updateSign: 1 }; });
     }
     return [];
   }
 
   retrunDataSet = ({ addEventInfo, eventInfos, stateName, addhandleList, handleInfos, baseInfo }) => {
-    const { stationCode, deviceTypeCode } = baseInfo;
+    const { stationCode } = baseInfo;
     if (addEventInfo.length === 0 && eventInfos.length > 0 && localStateName(stateName) === 'return') {
-      const list = eventInfos.map((e, index) => { return { index: eventInfos.length - index, ...e, eventImgs: this.dealImg(e.eventImgs) }; });
+      const list = eventInfos.map((e, index) => {
+        const { deviceTypeCode } = e;
+        this.props.getStationTypeDeviceModes({ stationCode, deviceTypeCode }); // 获取设备类型
+        return { index: eventInfos.length - index, ...e, eventImgs: this.dealImg(e.eventImgs) };
+      });
       this.props.changeStore({ addEventInfo: list, addbaseInfo: baseInfo });
-      this.props.getStationTypeDeviceModes({ stationCode, deviceTypeCode }); // 获取设备类型
       this.props.getBaseUsername({ stationCode }); // 当前电站有权限的人
       this.props.getDeviceType({ stationCode }); // 获取当前电站下的设备类型
     }
@@ -87,7 +90,6 @@ class DefectCreate extends Component {
     // editStation 电站是否编辑 退回不可以编辑
     return (
       <React.Fragment>
-        '创建页面'
         <DefectBaseTitle baseInfo={baseInfo} />
         <DefectBaseInfo {...this.props} editStation={!stateName} />
         <DefcetEventTitle {...this.props} />

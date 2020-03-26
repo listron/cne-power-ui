@@ -177,7 +177,7 @@ export default class DetailTopSubmit extends Component {
         return (<CneButton
           onClick={() => this[func](e)}
           className={styles.handleButton}
-          style={{ width: '92px' }}
+          // style={{ width: '92px' }}
           color-code={e.actionColorCode}
           key={e.actionCode}
           {...dis}
@@ -213,7 +213,7 @@ export default class DetailTopSubmit extends Component {
         }
       });
     }
-    if (removeHandleImg.length > 0) {
+    if (removeHandleImg.length > 0 && addhandleList.length > 0) {
       addhandleList.forEach((e, index) => {
         const { handleImgs } = e;
         if (handleImgs && handleImgs.length > 0) {

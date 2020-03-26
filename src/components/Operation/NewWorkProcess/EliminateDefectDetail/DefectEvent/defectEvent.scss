@@ -11,17 +11,7 @@
     justify-content: space-between;
 }
 
-.eventDetail{
-    margin: 14px 24px 0;
-    background:#ffffff;
-    border:1px solid #d4d4d4;
-    box-shadow:2px 2px 0 3px #f3f2f2;
-    border-radius:2px;
-    position: relative;
-    p{
-      margin-bottom: 0;
-    }
-    .handleButton{
+ .handleButton{
       display: flex;
       flex:0 0 92px;
       margin-left: 14px;
@@ -35,6 +25,23 @@
         flex:1;
         align-items: center;
       }
+}
+
+ @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+    .handleButton{
+      flex:0 0 102px;
+      }
+  }
+
+.eventDetail{
+    margin: 14px 24px 0;
+    background:#ffffff;
+    border:1px solid #d4d4d4;
+    box-shadow:2px 2px 0 3px #f3f2f2;
+    border-radius:2px;
+    position: relative;
+    p{
+      margin-bottom: 0;
     }
     .messageWrap{
       display: flex;
