@@ -57,18 +57,11 @@ class AnalysisReport extends Component {
   downLoadFun = (url, fileName, date) => { // 根据路径，名称，日期，通用下载函数。
     axios.post(url, {}, { responseType: 'blob' }).then(response => {
       const fileContent = response.data;
-      const fileNameInfo = response.headers['content-disposition'];
-      let newFileName = fileName;
-      if (fileNameInfo) {
-        const fileString = fileNameInfo.split(';')[1];
-        const fileResult = fileString ? fileString.split('=')[1] : '';
-        fileResult && (newFileName = fileResult);
-      }
       if (fileContent) {
         const blob = new Blob([fileContent]);
         if ('download' in document.createElement('a')) { // 非IE下载
           const elink = document.createElement('a');
-          elink.download = newFileName;
+          elink.download = fileName;
           elink.style.display = 'none';
           elink.href = URL.createObjectURL(blob);
           document.body.appendChild(elink);
@@ -77,7 +70,7 @@ class AnalysisReport extends Component {
           document.body.removeChild(elink);
           this.setState({ typeDowning: '' });
         } else { // IE10+下载
-          navigator.msSaveBlob(blob, newFileName);
+          navigator.msSaveBlob(blob, fileName);
         }
 
       }
