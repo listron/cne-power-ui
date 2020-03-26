@@ -68,7 +68,7 @@ export default class ResponsorCheck extends Component {
                   {usernameList.map((cur, index) => {
                     return (
                       <div className={styles.operatorItemBox}>
-                        <div className={styles.operatorItem} key={cur.userId}>
+                        <div className={styles.operatorItem} key={cur.userId} title={cur.userName}>
                           <Checkbox value={`${cur.userId}_${cur.userName}`}>{cur.userName}</Checkbox>
                         </div>
                       </div>

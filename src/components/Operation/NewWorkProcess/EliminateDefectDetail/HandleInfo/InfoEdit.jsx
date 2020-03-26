@@ -131,7 +131,6 @@ export default class InfoEdit extends Component {
     const inputRequire = (isVertify || handleVertify) && { required: true } || { pattern: '/^\s*$/g' };
     const downloadTemplet = `${path.basePaths.APIBasePath}${path.pubilcPath.imgUploads}`;
     const editRight = this.exchangeActioncode(allowedActions, '23');
-    // console.log('editRight', editRight);
     return (
       <div className={styles.infoEditBox}>
         <div className={styles.editRecord}>
@@ -141,7 +140,13 @@ export default class InfoEdit extends Component {
               {handleDesc ? (`${handleDesc}`).length : 0}/999字
             </span>
           </span>
-          <TextArea onChange={this.onDescChange} value={handleDesc} placeholder={'请填写处理记录，必填'} required={isVertify || handleVertify} />
+          <TextArea
+            onChange={this.onDescChange}
+            value={handleDesc}
+            placeholder={'请填写处理记录，必填'}
+            required={isVertify || handleVertify}
+            maxLength="999"
+          />
           {<i
             className={`iconfont icon-wrong ${styles.cancelEdit} ${isFinish === '1' && styles.disDiplay}`}
             onClick={this.cancelEdit}
@@ -193,7 +198,14 @@ export default class InfoEdit extends Component {
           </span>
           <span className={styles.coordinateInput}>
             <Switch checked={!!isCoordinate} onChange={this.onCoordinateChange} />
-            {!!isCoordinate && <TextArea value={coordinateDesc} onChange={this.onCoordinateInfoChange} placeholder="请输入协调内容" required={isVertify || handleVertify} />}
+            {!!isCoordinate &&
+              <TextArea
+                value={coordinateDesc}
+                onChange={this.onCoordinateInfoChange}
+                placeholder="请输入协调内容"
+                required={isVertify || handleVertify}
+                maxLength="999"
+              />}
           </span>
         </div>
         <div className={styles.saveEditRow}>

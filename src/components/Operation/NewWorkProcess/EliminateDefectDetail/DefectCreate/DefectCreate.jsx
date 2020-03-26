@@ -43,7 +43,7 @@ class DefectCreate extends Component {
         index: 1,
         eventId: null, // 缺陷ID，新建为空
         diagWarningId: null, // 告警ID
-        defectTypeCode: null, // 缺陷类型
+        defectTypeCode: 1, // 缺陷类型
         deviceTypeCode: null, // 设备类型
         deviceTypeName: '', // 设备类型名称
         deviceFullcode: null, // 设备全编码
