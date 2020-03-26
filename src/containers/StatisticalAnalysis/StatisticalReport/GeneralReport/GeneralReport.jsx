@@ -166,7 +166,8 @@ class GeneralReport extends Component {
       let newFileName = fileName;
       if (fileNameInfo) {
         const fileString = fileNameInfo.split(';')[1];
-        const fileResult = fileString ? fileString.split('=')[1] : '';
+        const fileNameCode = fileString ? fileString.split('=')[1] : '';
+        const fileResult = fileNameCode ? decodeURIComponent(fileNameCode) : '';
         fileResult && (newFileName = fileResult);
       }
       if (fileContent) {
