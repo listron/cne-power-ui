@@ -61,8 +61,7 @@ class AnalysisReport extends Component {
       let newFileName = fileName;
       if (fileNameInfo) {
         const fileString = fileNameInfo.split(';')[1];
-        const fileNameCode = fileString ? fileString.split('=')[1] : '';
-        const fileResult = fileNameCode ? decodeURIComponent(fileNameCode) : '';
+        const fileResult = fileString ? fileString.split('=')[1] : '';
         fileResult && (newFileName = fileResult);
       }
       if (fileContent) {
