@@ -64,7 +64,7 @@ class FaultList extends Component {
         startDate,
         endDate,
         keyWord,
-        faultId,
+        faultIds: faultId,
       },
     });
   }
