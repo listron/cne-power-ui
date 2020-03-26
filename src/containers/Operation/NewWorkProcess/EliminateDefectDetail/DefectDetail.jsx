@@ -105,6 +105,7 @@ class DefectDetail extends Component {
           mode={'warning'}
           width={260}
           onConfirm={this.resetRequest}
+          confirmText={'确认'}
           tipText={'操作失败,当前工单状态已变更。'}
         />
         <div className={styles.detailContent}>

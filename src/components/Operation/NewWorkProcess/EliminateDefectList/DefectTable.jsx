@@ -108,7 +108,7 @@ export default class DefectTable extends Component {
       ),
     }, {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'sort',
       className: styles.status,
       sorter: true,
       render: (text, record) => {

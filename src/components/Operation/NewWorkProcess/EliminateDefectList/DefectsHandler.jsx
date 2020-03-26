@@ -43,6 +43,7 @@ export default class DefectsHandler extends Component {
     const { listParams } = this.props;
     this.props.getDefectList({
       ...listParams,
+      pageNum: 1,
       stateId: target.value === 0 ? null : target.value,
     });
   }

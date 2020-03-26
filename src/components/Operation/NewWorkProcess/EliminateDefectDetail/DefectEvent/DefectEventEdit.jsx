@@ -117,7 +117,7 @@ export default class DefectEvenrEdit extends Component {
   render() {
     const { deviceTypes = [], record = {}, stationCode, deviceModes = [], isVertify, del } = this.props;
     const {
-      eventDesc, defectTypeCode = 1, deviceTypeCode, deviceTypeName, deviceName, deviceFullcode, defectLevel = 1, eventImgs = [],
+      eventDesc, defectTypeCode, deviceTypeCode, deviceTypeName, deviceName, deviceFullcode, defectLevel = 1, eventImgs = [],
     } = record;
     const { visible } = this.state;
     const downloadTemplet = `${path.basePaths.APIBasePath}${path.pubilcPath.imgUploads}`;
@@ -211,7 +211,7 @@ export default class DefectEvenrEdit extends Component {
               {eventDesc ? (`${eventDesc}`).length : 0}/999字
             </span>
           </span>
-          <TextArea onChange={this.onDescChange} value={eventDesc} placeholder={'请填写缺陷描述，必填！'} required={isVertify} />
+          <TextArea onChange={this.onDescChange} value={eventDesc} placeholder={'请填写缺陷描述，必填！'} required={isVertify} maxLength="999" />
         </div>
         <div className={styles.editPic}>
           <span className={styles.editTitle}>

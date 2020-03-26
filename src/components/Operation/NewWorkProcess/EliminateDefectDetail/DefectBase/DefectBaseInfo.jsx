@@ -182,7 +182,7 @@ export default class DefectBaseInfo extends Component {
         <div className={styles.descRow}>
           <div className={styles.firstInfoTitle}>
             <div className={styles.desc}>工单描述 <span className={styles.star}>*</span></div>
-            <div className={styles.descTextNum}>0/999字</div>
+            <div className={styles.descTextNum}>{docketDesc ? docketDesc.length : 0}/999字</div>
           </div>
           <div className={styles.infoContent}>
             {isDescEdit ?
@@ -191,6 +191,7 @@ export default class DefectBaseInfo extends Component {
                 placeholder={'请描述，必填'}
                 required={isVertify}
                 value={docketDesc}
+                maxLength="999"
               /> : <div>{baseInfo.docketDesc}</div>}
           </div>
         </div>

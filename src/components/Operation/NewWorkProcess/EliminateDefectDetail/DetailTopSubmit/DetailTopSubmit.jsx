@@ -67,7 +67,7 @@ const process = {
   2: { name: '领取', tipText: '确认领取此工单', sucessMes: '已领取' }, // 领取
   9: { name: '提交', tipText: '确认提交此工单', sucessMes: '提交成功' }, // 新建工单
   10: { name: '提交验收', tipText: '确认将此工单提交验收', sucessMes: '提交成功' }, // 新建工单
-  11: { name: '提交验收', tipText: '确认将此工单提交验收', sucessMes: '提交成功' }, // 新建工单
+  11: { name: '提交验收', tipText: '确认提交此工单', sucessMes: '提交成功' }, // 新建工单
   5: { name: '提交验收', tipText: '确认将此工单提交验收', sucessMes: '提交成功' }, // 执行工单 
   12: { name: '提交', tipText: '确认提交此工单', sucessMes: '提交成功' }, // 新建工单
   17: { name: '派发', tipText: '确认派发此工单', sucessMes: '派发成功' }, // 审核工单
@@ -352,7 +352,7 @@ export default class DetailTopSubmit extends Component {
     const { docketId, stateId, addhandleList } = this.props;
     let tipText = '确认将此工单提交验收';
     if (addhandleList.length > 0) {
-      tipText = '为保存内容不会被提交，确认将此工单提交验收';
+      tipText = '未保存内容不会被提交，确认将此工单提交验收';
     }
     const params = {
       docketId,
@@ -484,6 +484,7 @@ export default class DetailTopSubmit extends Component {
             width={260}
             onCancel={() => this.setState({ showTip: false, tipText: '' })}
             onConfirm={this.onConfirmTip}
+            confirmText={'确认'}
             tipText={tipText}
           />
           <PassAlert

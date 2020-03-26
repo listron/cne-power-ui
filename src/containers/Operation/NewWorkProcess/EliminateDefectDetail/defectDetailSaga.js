@@ -183,6 +183,9 @@ function* addDefectHandle(action) { // 2.7.3.9.	添加工单的处理信息
     if (response.data.code === '10000') {
       // 获取D 重新请求处理信息
       func();
+      yield call(easyPut, 'getDefectBaseInfo', {
+        docketId,
+      });
       yield call(easyPut, 'getDefectHandleInfo', {
         docketId,
       });

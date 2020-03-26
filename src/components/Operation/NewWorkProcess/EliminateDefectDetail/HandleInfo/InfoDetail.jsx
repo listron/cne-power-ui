@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './handle.scss';
 import PicUploader from '../../Common/PicUploader';
 import VideoUploader from '../../Common/VideoUploader';
+import moment from 'moment';
 
 export default class InfoDetail extends Component {
 
@@ -29,7 +30,7 @@ export default class InfoDetail extends Component {
       >
         <div className={styles.userInfo}>
           <span>
-            <span className={styles.handleTime}>{createTime}</span>
+            <span className={styles.handleTime}>{createTime && moment(createTime).format('YYYY-MM-DD HH:mm')}</span>
             <span>{createUserName || '--'}</span>
           </span>
           {!!isCoordinate && <span className="iconfont icon-xietiao" title={'协调'} />}

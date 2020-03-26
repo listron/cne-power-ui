@@ -34,6 +34,7 @@ export const processIconFunc = (code) => {
     30023: 'iconfont icon-tuihui', // 退回
     30024: 'iconfont icon-del', // 删除
     30025: 'iconfont icon-wrong', // 验收驳回按钮  关闭
+    30026: 'iconfont icon-dshen', // 审核按钮 待审核状态
 
   };
   return iconMap[code];

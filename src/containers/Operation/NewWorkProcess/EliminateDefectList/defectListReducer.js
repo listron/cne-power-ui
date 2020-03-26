@@ -16,8 +16,8 @@ const initState = immutable.fromJS({
     operName: '', // 执行人
     isMy: 0, // 1代表查询我参与过的
     stateId: null, // 状态id
-    sortField: 'stationName', // stationName eventNum createTime keepLength sort
-    sortMethod: 'descend', // 'ascend' 'descend'
+    sortField: 'sort', // stationName eventNum createTime keepLength sort
+    sortMethod: 'ascend', // 'ascend' 'descend'
     pageSize: 10,
     pageNum: 1,
   },
