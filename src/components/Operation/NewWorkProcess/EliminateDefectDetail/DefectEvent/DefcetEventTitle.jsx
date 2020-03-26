@@ -64,9 +64,9 @@ export default class DefectEvent extends Component {
     return (
       <div className={styles.eventTitle}>
         <div><i className={'iconfont icon-quex'} /> <span>缺陷事件</span></div>
-        {isAdd && <CneButton className={styles.addBtn} onClick={this.addHandleInfo}>
+        {isAdd && <CneButton className={styles.handleButton} onClick={this.addHandleInfo}>
           <i className={`iconfont icon-newbuilt ${styles.addIcon}`} />
-          <span className={styles.text}>添加缺陷</span>
+          <span className={styles.actionName}>添加缺陷</span>
         </CneButton>}
       </div>
     );

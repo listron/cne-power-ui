@@ -4,6 +4,7 @@ import { Input, Select, Tooltip } from 'antd';
 import styles from './defectEvent.scss';
 import CneTips from '@components/Common/Power/CneTips';
 import PicUploader from '../../Common/PicUploader';
+import DeviceSelect from '../../../../Common/DeviceSelect/index';
 import path from '../../../../../constants/path';
 const { TextArea } = Input;
 const { Option } = Select;
@@ -78,6 +79,10 @@ export default class DefectEvenrEdit extends Component {
     const { record, delChange } = this.props;
     delChange(record);
     this.setState({ visible: false });
+  }
+
+  selectedDevice = (value) => {
+    console.log('value', value);
   }
 
 
@@ -175,6 +180,14 @@ export default class DefectEvenrEdit extends Component {
                     >{e.deviceName}
                     </Option>))}
                 </Select>
+                {/* <DeviceSelect
+                  disabled={!deviceTypeCode}
+                  stationCode={stationCode}
+                  deviceTypeCode={deviceTypeCode}
+                  // style={{ width: 'auto', minWidth: '198px' }}
+                  onChange={this.selectedDevice}
+                  holderText={'请选择'}
+                /> */}
               </div>
               <div className={styles.defectLevel} onChange={this.changeDefectLevel}>
                 <div className={styles.recordName}>缺陷级别 <span className={styles.star}>*</span> </div>

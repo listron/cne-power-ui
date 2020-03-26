@@ -37,7 +37,6 @@
     align-items: center;
     .handleButton{
       display: flex;
-      flex:0 0 92px;
       margin-left: 14px;
       align-items: center;
       padding: 0;
@@ -76,6 +75,15 @@
           color: transparent;
         }
       }
+    }
+  }
+  .handleButton{
+    flex:0 0 92px;
+  }
+  @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .handleButton{
+    flex:0 0 102px;
+    font-size: 18px;
     }
   }
 }

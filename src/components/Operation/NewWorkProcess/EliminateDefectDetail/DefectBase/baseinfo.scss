@@ -90,6 +90,7 @@
   .creater, .responsor{
     display: flex;
     flex: 0 0 27%;
+    word-break: break-all;
   }
   .createTime, .examiner{
     flex: 0 0 18%;
@@ -112,7 +113,7 @@
     }
   }
 
-.init{
+  .init{
    background:#fcffe5;
     :global{
       .ant-calendar-picker-input{
@@ -121,7 +122,7 @@
     }
   }
 
-.error{
+  .error{
     border: 1px solid #df4b33;
     border-radius: 4px;
     ::placeholder{
@@ -166,6 +167,24 @@
         color: #fff;
       }
     }
+  }
+}
+
+@media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
+  .defectBaseInfo{
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+  .defectBaseInfo{
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .defectBaseInfo{
+    font-size: 18px;
   }
 }
 

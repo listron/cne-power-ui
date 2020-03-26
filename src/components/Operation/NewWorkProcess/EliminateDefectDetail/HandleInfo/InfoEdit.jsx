@@ -198,10 +198,10 @@ export default class InfoEdit extends Component {
         </div>
         <div className={styles.saveEditRow}>
           {singleSave &&
-            <CneButton className={styles.saveEditButton} onClick={this.onEditInfoSave}>
-              <i className={'iconfont icon-save'} />
-              保存
-          </CneButton>
+            <CneButton className={styles.btn} onClick={this.onEditInfoSave}>
+              <i className={`iconfont icon-save ${styles.btnIcon}`} />
+              <span className={styles.actionName}>保存</span>
+            </CneButton>
           }
         </div>
         <CneTips

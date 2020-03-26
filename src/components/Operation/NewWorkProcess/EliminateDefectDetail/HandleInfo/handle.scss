@@ -15,15 +15,29 @@
       padding-left: 17px;
       background: url('/img/bannerBgc.png') no-repeat;
     }
-    .addBtn{
-      width: 92px;
-      padding: 0 6px;
-      margin-right: 24px;
-      .addIcon{
-        margin-right: 4px;
-      }
+   
+  }
+  .btn{
+    display: flex;
+    flex:0 0 92px;
+    margin-right: 24px;
+    align-items: center;
+    padding: 0;
+    i{
+      display:flex;
+      margin-left:7px;
+    }
+    .actionName{
+      flex:1;
+      align-items: center;
     }
   }
+ @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+    .btn{
+      flex:0 0 102px;
+    }
+  }
+
   .handleContents{
     padding: 0 24px;
   }
@@ -172,19 +186,10 @@
     }
   }
   .saveEditRow{
-    text-align: right;
     margin-bottom: 20px;
-    .saveEditButton{
-      width: 92px;
-      margin-right: 38px;
-      text-align: left;
-      padding: 0 6px;
-      :global{
-        .icon-save{
-          margin-right: 24px;
-        }
-      }
-    }
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
   }
 }
 
