@@ -120,7 +120,7 @@ export default class RejectAlert extends Component {
               onClick={this.onConfirm}
               style={{ width: '92px' }}
             >
-              确定
+              确认
             </CneButton>
           </div>
         </div>

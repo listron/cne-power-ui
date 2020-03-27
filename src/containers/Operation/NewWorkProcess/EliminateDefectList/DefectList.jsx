@@ -38,8 +38,12 @@ class DefectList extends Component {
     const { search } = history.location;
     const urlParams = searchUtil(search).parse(); //默认为缺陷列表页
     const urlParamsSerch = urlParams.listSearch && JSON.parse(urlParams.listSearch) || {}; // 判断从路由中过来的筛选条件
+    const { clientWidth } = document.body; //获取可是宽度
     // getDefectList({ ...listParams, ...urlParamsSerch }); // 获取消缺列表
-    getDefectList(listParams); // 获取消缺列表
+    getDefectList({
+      ...listParams,
+      pageSize: clientWidth >= 1920 ? 20 : 10,
+    }); // 获取消缺列表
     getParticipant(); //  获取所有参与者。
     getDefectAction({ isFinish: 2 });
   }

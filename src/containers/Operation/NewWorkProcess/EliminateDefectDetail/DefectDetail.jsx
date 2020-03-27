@@ -43,7 +43,7 @@ class DefectDetail extends Component {
     const { history } = this.props;
     const { search } = history.location;
     const main = document.getElementById('main');
-    main.addEventListener('scroll', (e) => this.bindScroll(e));
+    main.addEventListener('scroll', this.bindScroll);
     const { page = 'defectDetail', docketId, isFinish, eventId = ['499876992733094', '499876992732672', '499876992732928'] } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
     const stationCode = 360;
     if (docketId) {
@@ -71,13 +71,16 @@ class DefectDetail extends Component {
 
 
   componentWillUnmount() {
+    const main = document.getElementById('main');
+    main && main.removeEventListener('scroll', this.bindScroll, false);
     this.props.resetStore();
+
   }
 
 
-
-  bindScroll = (e) => {
-    const scrollTop = e.target.scrollTop;
+  bindScroll = () => {
+    const main = document.getElementById('main');
+    const scrollTop = main.scrollTop;
     const { scroll } = this.state;
     if (scrollTop > 0 && !scroll) {
       this.setState({ scroll: !scroll });
