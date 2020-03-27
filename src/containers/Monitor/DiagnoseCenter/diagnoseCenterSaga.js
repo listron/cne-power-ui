@@ -150,7 +150,7 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
     const response = yield call(request.delete, url, { ...payload });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
-        selectedRowKeys: [],
+        selectedRows: [],
       });
       const { listParams, listPage } = yield select(state => state.monitor.diagnoseCenter);
       yield fork(getDiagnoseList, { payload: { ...listParams, ...listPage } });
