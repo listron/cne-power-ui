@@ -126,12 +126,12 @@ export default class DefectBaseInfo extends Component {
     return (
       <div className={styles.defectBaseInfo}>
         <div className={styles.infoRow}>
-          <div className={
-            `${styles.firstInfoTitle} ${isStationEdit ? styles.require : ''}`
-          }>电站名称 <span className={styles.star}>*</span></div>
+          <div className={`${styles.firstInfoTitle} ${isStationEdit ? styles.require : ''}`}>
+            <div className={styles.stationName}> 电站名称 {isStationEdit && <span className={styles.star}>*</span>} </div>
+          </div>
           <div className={`${styles.infoContent} ${styles.stations}`}>
             {isStationEdit ? <StationSelect
-              data={stations}
+              data={stations.filter(e => e.stationType === 1)}
               onOK={this.onStationSelected}
               className={`${styles[this.errorTip('stationCode')]} ${styles[this.initTip('stationCode')]}`}
               value={[{ stationName: addbaseInfo.stationName, stationCode: addStationCode }]}
@@ -181,8 +181,8 @@ export default class DefectBaseInfo extends Component {
         </div>
         <div className={styles.descRow}>
           <div className={styles.firstInfoTitle}>
-            <div className={styles.desc}>工单描述 <span className={styles.star}>*</span></div>
-            <div className={styles.descTextNum}>{docketDesc ? docketDesc.length : 0}/999字</div>
+            <div className={styles.desc}>工单描述 {isDescEdit && <span className={styles.star}>*</span>}</div>
+            {isDescEdit && <div className={styles.descTextNum}>{docketDesc ? docketDesc.length : 0}/999字</div>}
           </div>
           <div className={styles.infoContent}>
             {isDescEdit ?
@@ -192,7 +192,7 @@ export default class DefectBaseInfo extends Component {
                 required={isVertify}
                 value={docketDesc}
                 maxLength="999"
-              /> : <div>{baseInfo.docketDesc}</div>}
+              /> : <div className={styles.docketDesc}>{baseInfo.docketDesc}</div>}
           </div>
         </div>
       </div>

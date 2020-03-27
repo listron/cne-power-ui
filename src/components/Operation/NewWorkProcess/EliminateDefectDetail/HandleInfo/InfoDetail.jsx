@@ -50,20 +50,18 @@ export default class InfoDetail extends Component {
         <div className={styles.imgRecord}>
           <span className={styles.recordName} />
           <span className={styles.picBox}>
-            {
-              handleImgs && handleImgs.length > 0 &&
-              <React.Fragment>
-                <PicUploader
-                  value={handleImgs.map(e => e.url)}
-                  mode="review"
-                />
-                {handleVideos && handleVideos.length > 0 &&
-                  <VideoUploader
-                    value={handleVideos}
-                    onChange={this.onVideoChange}
-                  />
-                }
-              </React.Fragment>
+            {handleImgs && handleImgs.length > 0 &&
+              <PicUploader
+                value={handleImgs.map(e => e.url)}
+                mode="review"
+              />
+            }
+            {handleVideos && handleVideos.length > 0 &&
+              <VideoUploader
+                value={handleVideos}
+                onChange={this.onVideoChange}
+                mode="review"
+              />
             }
           </span>
         </div>

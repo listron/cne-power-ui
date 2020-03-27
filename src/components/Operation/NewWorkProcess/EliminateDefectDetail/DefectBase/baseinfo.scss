@@ -55,15 +55,23 @@
   }
   .infoTitle, .firstInfoTitle{
     flex: 0 0 13%;
+    color:#353535;
     background-color: #f3f2f2;
+    font-weight: bolder;
     border-left: 1px dashed var(--promptColor);
     border-right: 1px dashed var(--promptColor);
     padding: 0 10px;
     text-align: left;
   }
+  .stationName,.desc{
+    font-weight: bolder;
+  }
   .firstInfoTitle{
     flex: 0 0 11%;
     border-left: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   .star{
     color:#df4b33;
@@ -108,9 +116,12 @@
       color: var(--lightColor);
     }
     .infoContent{
-      flex: 1 0 auto;
+      flex: 1 0;
       padding: 7px 10px;
     }
+  }
+  .docketDesc{
+    word-break: break-all;
   }
 
   .init{
