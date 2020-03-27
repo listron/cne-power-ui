@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
 import CneTable from '@components/Common/Power/CneTable';
+import CneTips from '@components/Common/Power/CneTips';
 import CommonPagination from '@components/Common/CommonPagination';
 import { createAlarmColumn, createDiagnoseColumn, createDataColumn } from './listColumns';
 import styles from './eventListPage.scss';
@@ -25,6 +26,10 @@ class DiagnoseList extends Component {
     editEventsStatus: PropTypes.func,
   }
 
+  state = {
+    deleteRecord: null,
+  }
+
   sortFieldMap = { // 表格排序字段 => api
     eventName: 'eventCode',
     warningLevel: 'eventLevel',
@@ -34,7 +39,7 @@ class DiagnoseList extends Component {
     warningDuration: 'duration',
     warningFrequency: 'frequency',
     statusName: 'eventStatus',
-    stationName:'stationName',
+    stationName: 'stationName',
   };
 
   tableSortMap = { // api存储字段 => 表格排序字段
@@ -46,7 +51,7 @@ class DiagnoseList extends Component {
     duration: 'warningDuration',
     frequency: 'warningFrequency',
     eventStatus: 'statusName',
-    stationName:'stationName',
+    stationName: 'stationName',
   };
 
   sortMethodMap = {
@@ -63,7 +68,10 @@ class DiagnoseList extends Component {
       data: createDataColumn,
     };
     return eventNameCreator[pageKey](
-      finished, this.analysisEvent, this.toDefect,
+      finished,
+      this.analysisEvent,
+      this.toDefect,
+      this.toDelete,
     );
   }
 
@@ -81,8 +89,25 @@ class DiagnoseList extends Component {
     window.open(`#/operation/workProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningId}]&stationCode=${stationCode}`);
   }
 
+  toDelete = (deleteRecord) => {
+    this.setState({ deleteRecord });
+  }
+
+  cancelDelte = () => this.setState({ deleteRecord: null })
+
+  confirmDelete = () => {
+    const { deleteRecord } = this.state;
+    this.setState({ deleteRecord: null });
+    const { diagWarningId } = deleteRecord || {};
+    this.props.editEventsStatus({
+      diagWarningIds: [diagWarningId],
+      type: 2, // 删除
+    });
+  }
+
   onRowSelect = (selectedKeys, rows) => {
     const { diagnoseListData, selectedRows } = this.props;
+    this.props.stopCircleQueryList(); // 停止当前页面定时请求
     const newRowInfo = selectedRows.filter(e => {
       return !diagnoseListData.find(m => m.diagWarningId === e.diagWarningId);
     });
@@ -165,6 +190,7 @@ class DiagnoseList extends Component {
   }
 
   render() {
+    const { deleteRecord } = this.state;
     const { listPage, listParams, totalNum, diagnoseListData, diagnoseListLoading, diagnoseListError, selectedRows } = this.props;
     const { pageNum, pageSize, sortField, sortMethod } = listPage || {};
     const { finished } = listParams;
@@ -182,10 +208,17 @@ class DiagnoseList extends Component {
             style={{width: '94px'}}
             value="操作"
             onChange={this.onSelectedHandle}
+            dropdownClassName={styles.handleSelects}
           >
-            <Option disabled={handoutDisable} value="handout">派发</Option>
-            <Option disabled={ignoreDisable} value="ignore">忽略</Option>
-            <Option disabled={deleteDisable} value="delete">删除</Option>
+            <Option disabled={handoutDisable} value="handout">
+              <span className="iconfont icon-paifa" />派发
+            </Option>
+            <Option disabled={ignoreDisable} value="ignore">
+              <span className="iconfont icon-hulue" />忽略
+            </Option>
+            <Option disabled={deleteDisable} value="delete">
+              <span className="iconfont icon-closeall" />删除
+            </Option>
           </Select>
           <span />
           <CommonPagination
@@ -209,6 +242,13 @@ class DiagnoseList extends Component {
             onChange: this.onRowSelect,
           }}
         />
+        {deleteRecord && <CneTips
+          visible
+          onCancel={this.cancelDelte}
+          onConfirm={this.confirmDelete}
+          tipText="是否确认删除?"
+          width={260}
+        />}
       </div>
     );
   }
