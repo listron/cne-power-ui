@@ -158,8 +158,9 @@ class OperateAnalysis extends React.Component {
 
   getLostPercentage = (molecule, denominator) => {
     // molecule 分子,denominator 分母
-    if (molecule && denominator && +denominator === 0) { return 0; }
-    return molecule && denominator && +denominator !== 0 && parseFloat((denominator - molecule) / denominator * 100).toFixed(2) || '--';
+    if (parseFloat(molecule) === 0 || parseFloat(denominator) === 0 ) { return 0; }
+    const perNum = (denominator - molecule) / denominator * 100;
+    return (perNum > 0 || perNum === 0) ? perNum.toFixed(2) : '--';
   }
 
 
