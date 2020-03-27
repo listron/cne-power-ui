@@ -160,7 +160,10 @@ class OperateAnalysis extends React.Component {
     // molecule 分子,denominator 分母
     if (parseFloat(molecule) === 0 || parseFloat(denominator) === 0 ) { return 0; }
     const perNum = (denominator - molecule) / denominator * 100;
-    return (perNum > 0 || perNum === 0) ? perNum.toFixed(2) : '--';
+    if ((perNum > 0 && perNum < 100) || perNum === 0) {
+      return perNum.toFixed(2);
+    }
+    return '--';
   }
 
 
