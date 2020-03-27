@@ -39,9 +39,15 @@ export default class DefectEvent extends Component {
   }
 
   delEvent = (value) => { // 删除告警 缺陷事件 (有两种状态 一种是直接删除，一种是走接口)
-    const { warnEventInfos, changeStore } = this.props;
-    const filterwarnEventInfo = warnEventInfos.filter(e => e.diagWarningId !== value);
-    changeStore({ warnEventInfos: filterwarnEventInfo });
+    const { allowedActions, docketId } = this.props;
+    if (this.exchangeActioncode(allowedActions, '21')) { // 创建缺陷的时候可以删除的按钮
+      const { warnEventInfos, changeStore } = this.props;
+      const filterwarnEventInfo = warnEventInfos.filter(e => e.diagWarningId !== value);
+      changeStore({ warnEventInfos: filterwarnEventInfo });
+    } else { // 领取的时候删除缺陷事件
+      this.prop.delEvent({ docketId, eventId: value });
+    }
+
   }
 
   addEventChange = (value) => { // 添加缺陷
@@ -52,7 +58,7 @@ export default class DefectEvent extends Component {
     this.props.changeStore({ addEventInfo });
   }
 
-  deladdEvent = (record) => {
+  deladdEvent = (record) => { // 删除添加的告警时间
     const { index } = record;
     const { addEventInfo } = this.props;
     const curIndex = addEventInfo.findIndex(e => e.index === index);
@@ -87,7 +93,7 @@ export default class DefectEvent extends Component {
             <DefectEventDetail
               defectMessage={list}
               key={list.eventId || list.diagWarningId}
-              del={this.exchangeActioncode(allowedActions, '21') && eventInfos.length > 0}
+              del={this.exchangeActioncode(allowedActions, '21') && newEventInfo.length > 1}
               allowedOpr={this.exchangeActioncode(allowedActions, '26')}
               eventChange={this.eventChange}
               delChange={this.delEvent}

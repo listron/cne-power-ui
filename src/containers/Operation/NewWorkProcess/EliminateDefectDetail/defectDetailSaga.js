@@ -522,6 +522,25 @@ function* showUser(action) { // 2.7.3.13.	查询起始流程的显示用户信�
   }
 }
 
+function* delEvent(action) { // 2.7.3.12.	删除缺陷事件
+  const { payload } = action;
+  const { docketId, eventId } = payload;
+  const url = `${APIBasePath}${ticket.delEvent}`;
+  try {
+    const response = yield call(axios.post, url, { docketId, eventId });
+    if (response.data.code === '10000') {
+      yield call(easyPut, 'getDefectEventInfo', {
+        docketId,
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    message.error(e.message);
+  }
+}
+
 export function* watchEliminateDefectDetail() {
   yield takeLatest(eliminateDefectDetailAction.getDefectAction, getDefectAction);
   yield takeLatest(eliminateDefectDetailAction.createDefect, createDefect);
@@ -543,5 +562,6 @@ export function* watchEliminateDefectDetail() {
   yield takeLatest(eliminateDefectDetailAction.getDiagwarning, getDiagwarning);
   yield takeLatest(eliminateDefectDetailAction.showUser, showUser);
   yield takeLatest(eliminateDefectDetailAction.resetCont, resetCont);
+  yield takeLatest(eliminateDefectDetailAction.delEvent, delEvent);
 }
 

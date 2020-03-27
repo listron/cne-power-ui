@@ -135,17 +135,17 @@ export default class DefectBaseInfo extends Component {
               onOK={this.onStationSelected}
               className={`${styles[this.errorTip('stationCode')]} ${styles[this.initTip('stationCode')]}`}
               value={[{ stationName: addbaseInfo.stationName, stationCode: addStationCode }]}
-            /> : <div>{curStationName.length > 0 && curStationName[0].stationName || '--'}</div>}
+            /> : <div>{curStationName.length > 0 && curStationName[0].stationName || '- -'}</div>}
           </div>
           <div className={styles.infoTitle}>工单类型</div>
           <div className={`${styles.infoContent} ${styles.types}`}>消缺工单</div>
         </div>
         <div className={styles.infoRow}>
           <div className={styles.firstInfoTitle}>创建人</div>
-          <div className={`${styles.infoContent} ${styles.creater}`}>{baseInfo.createUser || '--'}</div>
+          <div className={`${styles.infoContent} ${styles.creater}`}>{baseInfo.createUser || '- -'}</div>
           <div className={styles.infoTitle}>工单创建时间</div>
           <div className={`${styles.infoContent} ${styles.createTime}`}>
-            {baseInfo.createTime && moment(baseInfo.createTime).format(timeFormat) || '--'}
+            {baseInfo.createTime && moment(baseInfo.createTime).format(timeFormat) || '- -'}
           </div>
           <div className={
             `${styles.infoTitle} ${isExpectTimeEdit ? styles.require : ''}`
@@ -156,7 +156,7 @@ export default class DefectBaseInfo extends Component {
               value={planEndTime && moment(planEndTime) || null}
               disabledDate={this.disabledDate}
               className={` ${styles[this.initTip('planEndTime')]}`}
-            /> : <div> {baseInfo.planEndTime && moment(baseInfo.planEndTime).format(timeFormat) || '--'}</div>}
+            /> : <div> {baseInfo.planEndTime && moment(baseInfo.planEndTime).format(timeFormat) || '- -'}</div>}
           </div>
         </div>
         <div className={styles.infoRow}>
@@ -164,7 +164,7 @@ export default class DefectBaseInfo extends Component {
             `${styles.firstInfoTitle} ${isResponsorEdit ? styles.require : ''}`
           }>{operUserInfo.length > 0 && operUserInfo[0].stateName || '接单人'}</div>
           <div className={`${styles.infoContent} ${styles.responsor}`}>
-            <div>{curName.length > 0 && `${curName}` || '--'}</div>
+            <div>{curName.length > 0 && `${curName}` || '- -'}</div>
             {isResponsorEdit &&
               <ResponsorCheck
                 usernameList={filterUsernameList}
@@ -173,10 +173,10 @@ export default class DefectBaseInfo extends Component {
               />}
           </div>
           <div className={styles.infoTitle}>验收人</div>
-          <div className={`${styles.infoContent} ${styles.examiner}`}>{operUserInfo.length > 1 && operUserInfo[1].ableUsers || '--'}</div>
+          <div className={`${styles.infoContent} ${styles.examiner}`}>{operUserInfo.length > 1 && operUserInfo[1].ableUsers || '- -'}</div>
           <div className={styles.infoTitle}>实际完成时间</div>
           <div className={`${styles.infoContent} ${styles.finishTime}`}>
-            {baseInfo.endTime && moment(baseInfo.endTime).format(timeFormat) || '--'}
+            {baseInfo.endTime && moment(baseInfo.endTime).format(timeFormat) || '- -'}
           </div>
         </div>
         <div className={styles.descRow}>
