@@ -1,0 +1,165 @@
+@import "../../../theme/theme.scss";
+
+.deviceModal {
+  :global {
+    .ant-modal-body {
+      padding: 12px 20px 0;
+    }
+  }
+}
+.deviceSelect {
+  position: relative;
+  width: 198px;
+  :global {
+    .ant-select:not(.ant-select-disabled) {
+      &:active,
+      &:focus,
+      &:hover {
+        box-shadow: none;
+      }
+      .ant-select-selection:focus,
+      .ant-select-selection:active,
+      .ant.ant-select-selection:hover {
+        box-shadow: none;
+      }
+    }
+  }
+  .deviceSelectModal {
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    font-size: 18px;
+    right: 8px;
+    top: 6px;
+    height: 30px;
+    line-height: 30px;
+    :global {
+      .icon-filter {
+        font-size: 14px;
+        color: $darkColor;
+      }
+    }
+  }
+}
+
+.deviceContent {
+  display: flex;
+  flex-direction: column;
+  height: 470px;
+  .header {
+    display: flex;
+    flex: 0 0 44px;
+    align-items: center;
+    background-color: #f1f1f1;
+    border-radius: 2px;
+    margin-bottom: 12px;
+    padding-left: 24px;
+    .deviceType {
+      text-align: center;
+      background-color: #f7f7f7;
+      border: 1px solid #d4d4d4;
+      border-radius: 2px;
+      width: 112px;
+      margin: 0 24px 0 8px;
+    }
+    :global {
+      .ant-select {
+        margin-left: 8px;
+      }
+    }
+  }
+  .allCheckDevice {
+    padding: 0 8px 8px;
+  }
+  .deviceList,
+  .checkedList {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 0 0 320px;
+    overflow-y: auto;
+    align-content: flex-start;
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background: rgba(0, 0, 0, 0.5);
+    }
+    .eachDevice {
+      cursor: pointer;
+      background-color: #f1f1f1;
+      border-radius: 2px;
+      width: 135px;
+      height: 24px;
+      line-height: 24px;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      color: $darkColor;
+      font-size: 14px;
+      padding-left: 8px;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: flex;
+      :global {
+        .ant-checkbox-wrapper {
+          flex: 1;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          word-break: break-all;
+        }
+      }
+    }
+  }
+  .checkedList {
+    flex: 1;
+    border-top: 1px solid $promptColor;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    .top {
+      display: flex;
+      padding: 0 12px;
+      width: 100%;
+      justify-content: space-between;
+      height: 30px;
+      align-items: center;
+      .clear {
+        cursor: pointer;
+        padding: 4px 8px;
+        &:hover {
+          background-color: #f1f1f1;
+        }
+      }
+    }
+    .checkedInfo {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        background: rgba(0, 0, 0, 0.5);
+      }
+    }
+    .eachDevice {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      .cancel {
+        cursor: pointer;
+        padding-right: 4px;
+        padding-left: 4px;
+        border-radius: 2px;
+        &:hover {
+          color: #f9b600;
+        }
+      }
+    }
+  }
+}
