@@ -162,6 +162,10 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
             className={styles.toDefect}
             onClick={() => handlers[1] && handlers[1](record)}
           >查看</span>}
+          {record.statusCode === 7 && <span
+            className={styles.handleDelete}
+            onClick={() => handlers[2] && handlers[2](record)}
+          >删除</span>}
         </div>
       ),
     },
@@ -249,6 +253,10 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
             className={styles.toDefect}
             onClick={() => handlers[1] && handlers[1](record)}
           >查看</span>}
+          {record.statusCode === 7 && <span
+            className={styles.handleDelete}
+            onClick={() => handlers[2] && handlers[2](record)}
+          >删除</span>}
         </div>
       ),
     },
@@ -340,6 +348,10 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
             className={styles.toDefect}
             onClick={() => handlers[1] && handlers[1](record)}
           >查看</span>}
+          {record.statusCode === 7 && <span
+            className={styles.handleDelete}
+            onClick={() => handlers[2] && handlers[2](record)}
+          >删除</span>}
         </div>
       ),
     },
