@@ -6,6 +6,7 @@ import WarnConfigSearch from './WarnConfigSearch';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { handleRight } from '@utils/utilFunc';
 import CneTable from '@components/Common/Power/CneTable';
+import CneButton from '@components/Common/Power/CneButton';
 
 const Option = Select.Option;
 class WarnConfig extends Component {
@@ -172,10 +173,11 @@ class WarnConfig extends Component {
                 <WarnConfigSearch {...this.props} />
                 <div className={styles.warnListTop}>
                     {warnConfigOperation ? <div className={styles.warnListLeft}>
-                        <Button className={styles.rule} onClick={this.addRule}>
-                            <Icon type="plus" />
-                            <span className={styles.text}>预警规则</span>
-                        </Button>
+                        <CneButton className={styles.rule} onClick={this.addRule}>
+                            <div className={styles.icon}>
+                                <span className={'iconfont icon-newbuilt'} />
+                            </div>预警规则
+                        </CneButton>
                         <Select onChange={this.selectChange} placeholder="操作" value={'操作'} dropdownMatchSelectWidth={false} >
                             <Option value="deleate" disabled={!selectedRowKeys.length > 0}>删除</Option>
                         </Select>

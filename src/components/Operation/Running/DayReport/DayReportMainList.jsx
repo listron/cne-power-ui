@@ -68,6 +68,7 @@ class DayReportMainList extends Component {
       dataList && dataList.length > 0 && dataList.forEach(e=>{
         columns.push({
           title: moment(e.reportDate).format('DD'),
+          width:'2.6%',
           dataIndex: e.reportDate,
           render: (text, record) => { // available是否展示图表, isUpload是否已上报日报, status是否有异常信息未填。
             const stationDayInfo = record.dataList.find(info => info.reportDate === e.reportDate);
@@ -92,7 +93,7 @@ class DayReportMainList extends Component {
             }
             return ( // 未上报
               reportRight ? <span onClick={()=>this.toUploadReport(record, e.reportDate)}>
-                <Icon type="plus-circle" theme="outlined" />
+                <Icon type="plus-circle" className={styles.uploadReport} theme="outlined" />
               </span> : <span />
             );
           },

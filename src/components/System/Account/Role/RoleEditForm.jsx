@@ -3,6 +3,7 @@ import { Button, Input, Form, Radio } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
 import RoleTree from './RoleTree';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 
@@ -189,7 +190,7 @@ class RoleEditForm extends Component {
           )}
         </FormItem>
         <div className={styles.buttonGroup}>
-          <Button className={styles.save} onClick={this.onSaveRole} loading={!continueAdd&&loading}>保存</Button>
+          <CneButton className={styles.save} onClick={this.onSaveRole} loading={!continueAdd&&loading}>保存</CneButton>
         </div>
         <div style={{marginLeft:410}} className={styles.instructionText}>选择“保存”按钮后将跳转到对应的列表页</div>
       </Form>

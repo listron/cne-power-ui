@@ -89,6 +89,17 @@
       width: 82px;
       margin-right: 10px;
     }
+    .btns {
+      .cancelAssign {
+        border: none;
+        background-color: transparent;
+        color: #666666;
+        &:hover{
+          border: none;
+          box-shadow: none;
+        }
+      }
+    }
   }
 }
 
@@ -186,6 +197,13 @@
     padding: 0 30px 0 24px;
     .cancel{
       margin-right: 10px;
+      border: none;
+      background-color: transparent;
+      color: #666666;
+      &:hover{
+        border: none;
+        box-shadow: none;
+      }
     }
   }
 }

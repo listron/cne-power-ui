@@ -155,34 +155,11 @@
               cursor: pointer;
             }
 
-            .useBtn {
-              text-align: center;
-              border-color: $themeColor;
-              color: $themeColor;
-
-
-              &:hover {
-                background: $themeColor;
-                color: #fff;
-              }
-            }
-
           }
 
           .submitStyle {
             margin: 20px 0 50px 200px;
 
-
-            .preStyles,
-            .submitBtn {
-              border-color: $themeColor;
-              color: $themeColor;
-
-              &:hover {
-                background: $themeColor;
-                color: #fff;
-              }
-            }
 
             .preStyles {
               margin-right: 40px;
@@ -256,9 +233,9 @@
         .nextBtn {
           width: 198px;
           margin-left: 66px;
-          background: $themeColor;
-          color: #fff;
-          cursor: pointer;
+          // background: $themeColor;
+          // color: #fff;
+          // cursor: pointer;
         }
 
         .disabledBtn {

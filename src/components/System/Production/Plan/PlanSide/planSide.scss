@@ -89,11 +89,6 @@
         .addPlanNext {
           margin-left: 12px;
           margin-top: 4px;
-
-          &:hover {
-            background: $themeColor;
-            color: #fff;
-          }
         }
 
         .addPlanNextDisabled {
@@ -128,15 +123,10 @@
 
         .addPlanPrev {
           margin-top: 15px;
-          border: 1px solid $themeColor;
-          box-shadow: 0 0 2px $themeColor;
-          color: $themeColor;
         }
 
         .savePlan {
           margin: 15px 10px 0 22px;
-          background: $themeColor;
-          color: #fff;
         }
 
         .backIcon {
@@ -182,7 +172,7 @@
 
         .ant-table .ant-table-thead>tr>th,
         .ant-table .ant-table-tbody>tr>td {
-          padding: 0 0 0 5px;
+          padding: 0 0 0 0;
           line-height: 1;
           // min-width: 57px;
         }
@@ -258,6 +248,16 @@
       .operation {
         width: 2.7%;
         min-width: 38px;
+        text-align: center;
+        padding-left: 0;
+        :global {
+          .anticon {
+            color: #199475;
+            :hover {
+              color: #f9b600;
+            }
+          }
+        }
       }
 
       .planYear {

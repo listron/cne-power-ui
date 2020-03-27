@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import { Modal, Table, Icon, Switch, Input, Button } from 'antd';
 import WarningTip from '@components/Common/WarningTip';
 import styles from './modals.scss';
+import CneButton from '@components/Common/Power/CneButton';
+import CneTable from '@components/Common/Power/CneTable';
 const { Search } = Input;
 
 
@@ -194,7 +196,7 @@ class SingleAssignModal extends Component {
             />
           </span>
         </div>
-        <Table
+        <CneTable
           columns={column}
           pagination={false}
           dataSource={this.getUserSource(allBaseUserData)}
@@ -217,8 +219,8 @@ class SingleAssignModal extends Component {
             已选<span className={styles.footerNum}>{selectedUserRow.length}</span>个
           </span>
           <span className={styles.btns}>
-            <Button onClick={this.cancelAssign}>取消</Button>
-            <Button onClick={this.assignUsers} loading={assignUserLoading}>确定</Button>
+            <CneButton className={styles.cancelAssign} onClick={this.cancelAssign}>取消</CneButton>
+            <CneButton onClick={this.assignUsers} loading={assignUserLoading}>确定</CneButton>
           </span>
         </div>
       </Modal>

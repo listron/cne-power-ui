@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import StationModal from '@components/Common/StationSelect/StationModal';
 import styles from './list.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 class DepartmentStation extends Component {
   static propTypes = {
@@ -46,7 +47,7 @@ class DepartmentStation extends Component {
         <span className={styles.stationNames}>
           {departmentStations.map(e => e.stationName).join('、')}
         </span>
-        {updateRight && <Button className={styles.editButton} onClick={this.showStationModal}>编辑</Button>}
+        {updateRight && <CneButton className={styles.editButton} onClick={this.showStationModal}>编辑</CneButton>}
         <StationModal
           theme="light"
           multiple={true}

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Modal, Icon, Button } from 'antd';
 import DepartSubSelect from './DepartSubSelect';
 import styles from './modals.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 // 本身作为子组件使用, 也可以传入showControl与hiddenIcon配置后作为单独modal使用;
 class DepartmentAssignModal extends Component {
@@ -69,8 +70,8 @@ class DepartmentAssignModal extends Component {
           <div className={styles.footer}>
             <span>已选{fartherNum}个父部门, {sonNum}个子部门</span>
             <span>
-              <Button className={styles.cancel} onClick={this.props.hideModal}>取消</Button>
-              <Button onClick={this.handleOK}>确定</Button>
+              <CneButton className={styles.cancel} onClick={this.props.hideModal}>取消</CneButton>
+              <CneButton onClick={this.handleOK}>确定</CneButton>
             </span>
           </div>
         </section>

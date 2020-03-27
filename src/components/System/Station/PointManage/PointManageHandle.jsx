@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import path from '../../../../constants/path';
 import WarningTip from '../../../../components/Common/WarningTip';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 
 class PointManageHandle extends Component {
   static propTypes = {
@@ -133,10 +134,11 @@ class PointManageHandle extends Component {
       <div className={styles.pointManageHandle}>
         {pointOperation ? <div className={styles.leftHandler}>
           {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-          <Button onClick={this.showAddPage} className={styles.addButton}>
-            <span className={styles.plus}>+</span>
-            <span className={styles.name}>{'测点'}</span>
-          </Button>
+          <CneButton onClick={this.showAddPage} className={styles.addButton} >
+            <div className={styles.icon}>
+              <span className={'iconfont icon-newbuilt'} />
+            </div>测点
+          </CneButton>
           <SingleStationImportFileModel
             showPlusBtn={false}
             data={allStationBaseInfo}
@@ -145,22 +147,22 @@ class PointManageHandle extends Component {
             uploadExtraData={['stationCode']}
             loadedCallback={this.getUpdatePointList}
           />
-          <Button
+          <CneButton
             disabled={pointList.length === 0}
             className={styles.exportInfo}
             loading={exportLoading}
             onClick={this.toExport}
-          >导出测点表</Button>
+          >导出测点表</CneButton>
           {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
-          <Button disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePoint} className={styles.clearPoint}>清除测点</Button>
-          <Button disabled={pointList.length === 0 || selectedRowKeys.length === 0} onClick={this.deletePoints}> 删除 </Button>
-          <Button
+          <CneButton disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePoint} className={styles.clearPoint}>清除测点</CneButton>
+          <CneButton disabled={pointList.length === 0 || selectedRowKeys.length === 0} onClick={this.deletePoints}> 删除 </CneButton>
+          <CneButton
             className={styles.downloadStyle}
             href={downloadTemplet}
             download={downloadTemplet}
             target="_blank"
           >下载标准点表
-          </Button>
+          </CneButton>
         </div> : <div></div>}
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
       </div>

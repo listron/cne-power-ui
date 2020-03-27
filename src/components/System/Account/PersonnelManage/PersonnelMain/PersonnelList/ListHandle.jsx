@@ -2,10 +2,11 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Select } from 'antd';
+import { Select } from 'antd';
 import WarningTip from '@components/Common/WarningTip';
 import CommonPagination from '@components/Common/CommonPagination';
 import styles from './list.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 const { Option } = Select;
 
@@ -98,7 +99,11 @@ class ListHandle extends Component {
     return (
       <div className={styles.listHandle}>
         <span className={styles.leftHandle}>
-          {userCreateRight && <Button type="add" onClick={this.toAddUser}><i>+</i>添加人员</Button>}
+          {userCreateRight && <CneButton className={styles.addUser} type="add" onClick={this.toAddUser}>
+            <div className={styles.icon}>
+              <span className={'iconfont icon-newbuilt'} />
+            </div>添加人员
+          </CneButton>}
           {hasSelectRights && <Select
             onChange={this.handleUser}
             style={{width: '80px', margin: '0 28px 0 10px'}}

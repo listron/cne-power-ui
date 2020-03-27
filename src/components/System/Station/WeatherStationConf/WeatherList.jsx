@@ -101,6 +101,7 @@ class WeatherList extends Component {
     }
 
     render() {
+    
     const weatherOperation = handleRight('weatherConfig_operate');
     const operateColumn = {
             title: '操作',
@@ -108,10 +109,12 @@ class WeatherList extends Component {
             width:'20%',
             render: (text, record) => {
                 const { subordinateStationCode, stationCode } = record;
+                const editClassName = stationCode && !(subordinateStationCode === stationCode) ? styles.iconShow : styles.iconHide;
+                const refreshclassName = (stationCode && subordinateStationCode && subordinateStationCode !== stationCode) ? styles.iconShow : styles.iconHide;
                 return (
                     <span>
-                        {stationCode && !(subordinateStationCode === stationCode) && <i className="iconfont icon-edit" onClick={() => { this.editStaion(record); }} />}
-                        {(stationCode && subordinateStationCode && subordinateStationCode !== stationCode) && <i className="iconfont icon-refresh2" onClick={() => { this.refresh(record); }} />}
+                        {<i className={`iconfont icon-edit ${editClassName}`} onClick={() => { this.editStaion(record); }} />}
+                        {<i className={`iconfont icon-refresh2 ${refreshclassName}`} onClick={() => { this.refresh(record); }} />}             
                     </span>
                 );
             },
@@ -180,48 +183,48 @@ class WeatherList extends Component {
                     style={{ width: '210px', height: '100px' }}
                 />}
                 <div className={styles.weatherMain}>
-                <div className={styles.listContiner}>
-                    <div className={styles.selectCondition}>
-                        {/* <FilterCondition
-                            onChange={this.onChangeFilter}
-                            option={[
-                                {
-                                    name: '电站名称',
-                                    type: 'stationName',
-                                    typeName: 'stationCodes',
-                                    data: stations.filter(e => e.stationType === 1),
-                                },
-                            ]}
-                        /> */}
-                        <div className={styles.filterButton}>
-                            <span className={styles.setStause}>设置状态</span>
-                            <div className={styles.buttonGroup}>
-                                <span className={`${filterStatus === 'all' && styles.buttonActive}`} onClick={() => { this.changefilter('all'); }}>全部</span>
-                                <span className={`${filterStatus === 'set' && styles.buttonActive}`} onClick={() => { this.changefilter('set'); }}>已设置</span>
-                                <span className={`${filterStatus === 'noSet' && styles.buttonActive}`} onClick={() => { this.changefilter('noSet'); }}>未设置</span>
+                    <div className={styles.listContiner}>
+                        <div className={styles.selectCondition}>
+                            {/* <FilterCondition
+                                onChange={this.onChangeFilter}
+                                option={[
+                                    {
+                                        name: '电站名称',
+                                        type: 'stationName',
+                                        typeName: 'stationCodes',
+                                        data: stations.filter(e => e.stationType === 1),
+                                    },
+                                ]}
+                            /> */}
+                            <div className={styles.filterButton}>
+                                <span className={styles.setStause}>设置状态</span>
+                                <div className={styles.buttonGroup}>
+                                    <span className={`${filterStatus === 'all' && styles.buttonActive}`} onClick={() => { this.changefilter('all'); }}>全部</span>
+                                    <span className={`${filterStatus === 'set' && styles.buttonActive}`} onClick={() => { this.changefilter('set'); }}>已设置</span>
+                                    <span className={`${filterStatus === 'noSet' && styles.buttonActive}`} onClick={() => { this.changefilter('noSet'); }}>未设置</span>
+                                </div>
+                            </div>
+                            <div className={styles.searchButton}>
+                                <CneInputSearch 
+                                    placeholder="区域／电站名称"
+                                    onSearch={this.doSearch}    
+                                />
                             </div>
                         </div>
-                        <div className={styles.searchButton}>
-                            <CneInputSearch 
-                                placeholder="区域／电站名称"
-                                onSearch={this.doSearch}    
+                        <div className={styles.weatherListTable}>
+                            <div className={styles.pagination}>
+                                <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
+                                    onPaginationChange={this.onPaginationChange} />
+                            </div>
+                            <CneTable
+                                className={styles.weatherTable}
+                                loading={loading}
+                                dataSource={weatherData}
+                                columns={weatherOperation ? columns.concat(operateColumn) : columns}
+                                pagination={false}
+                                onChange={this.tableChange}
+                                locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
                             />
-                        </div>
-                    </div>
-                    <div className={styles.weatherListTable}>
-                        <div className={styles.pagination}>
-                            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-                                onPaginationChange={this.onPaginationChange} />
-                        </div>
-                        <CneTable
-                            className={styles.weatherTable}
-                            loading={loading}
-                            dataSource={weatherData}
-                            columns={weatherOperation ? columns.concat(operateColumn) : columns}
-                            pagination={false}
-                            onChange={this.tableChange}
-                            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-                        />
                         </div>
                     </div>
                 </div>

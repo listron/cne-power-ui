@@ -26,10 +26,12 @@ class PersonnelMain extends Component {
         <div className={styles.mainContent}>
           <DepartmentTree {...this.props} />
           <div className={styles.personnelList}>
-          <ListDepartmentName {...this.props} />
-          {`${departmentId}` !== '1' && <DepartmentStation {...this.props} />}
-            <ListSearch {...this.props} />
-            <List {...this.props} />
+              <div className={styles.listTopBox}>
+                <ListDepartmentName {...this.props} />
+                {`${departmentId}` !== '1' && <DepartmentStation {...this.props} />}
+                <ListSearch {...this.props} />
+              </div>
+              <List {...this.props} />
           </div>
           <ExamineDrawer {...this.props} />
           <DepartmentDrawer {...this.props} />

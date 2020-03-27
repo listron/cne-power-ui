@@ -4,6 +4,7 @@ import moment from 'moment';
 import StationSelect from '../../../../Common/StationSelect';
 import PropTypes from 'prop-types';
 import styles from './planSide.scss';
+import CneButton from '@components/Common/Power/CneButton';
 const Option = Select.Option;
 
 class AddPlan extends Component {
@@ -90,8 +91,8 @@ class AddPlan extends Component {
               disabled={continueAdd ? false : true}
               oneStyleOnly={true}
             />
-            <Button onClick={this.toPlanStations} disabled={!canAdd}
-              className={canAdd ? styles.addPlanNext : styles.addPlanNextDisabled}>下一步</Button>
+            <CneButton onClick={this.toPlanStations} disabled={!canAdd}
+              className={canAdd ? styles.addPlanNext : styles.addPlanNextDisabled}>下一步</CneButton>
           </div>
         </div>
       </div>

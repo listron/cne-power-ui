@@ -32,9 +32,15 @@
 
         .selectCondition {
             display: flex;
-            margin-top: 24px;
+            background: #ffffff;
+            border: 1px solid #d4d4d4;
+            box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.60);
+            margin-bottom: 8px;
+            height: 60px;
+            line-height: 60px;
 
             .searchButton {
+                margin-top: 14px;
                 margin-left: 20px;
             }
         }
@@ -42,7 +48,7 @@
         .pagination {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 20px;
+            height: 60px;
         }
 
         .filterButton {
@@ -54,21 +60,26 @@
 
             .buttonGroup {
                 display: inline-block;
-                border: 1px solid #d9d9d9;
+                border: 1px solid #199475;
                 border-radius: 2px;
                 line-height: 32px;
 
                 span {
                     padding: 0 5px;
-                    border-right: 1px solid #d9d9d9;
+                    border-right: 1px solid #199475;
                     display: inline-block;
                     cursor: pointer;
-                    margin-right: -2px;
+                    // margin-right: -2px;
+                    color: #199475;
+                    background-color: #fff;
                    &:last-child{
                     border-right: 0;
                    }
+                   &:hover {
+                       background-color: #ceebe0;
+                   }
                 }
-                .buttonActive {
+                .buttonActive, .buttonActive:hover{
                     background: #199475;
                     color: #fff;
                 }
@@ -105,10 +116,20 @@
                 .operate {
                     text-align: center;
 
+                    .iconShow {
+                        visibility: visible;
+                    }
+                    .iconHide {
+                        visibility: hidden;
+                    }
                     i {
                         cursor: pointer;
                         color: #199475;
                         padding: 0 8px;
+                        font-size: 20px;
+                        &:hover {
+                            color: #f9b600;
+                        }
                     }
                 }
 

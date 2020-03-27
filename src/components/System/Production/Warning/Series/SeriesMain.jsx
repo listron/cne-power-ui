@@ -3,6 +3,7 @@ import { Input, Switch, Button, message, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
 import styles from "./series.scss";
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 
 class SeriesMain extends Component {
   static propTypes = {
@@ -89,7 +90,7 @@ class SeriesMain extends Component {
     const { lostGenPercent, isSend, sendNum } = this.props;
     const seriesOperation = handleRight('inefficientDetect_modify');
     return (
-      <div className={styles.seriesBox}>
+      <div className={styles.seriesBox} style={{width:300}}>
         <div className={styles.thresholdt}>
           <span className={styles.thresholdtText}>电量损失比阈值</span>
           {!isShow ? <span className={styles.thresholdtNum}>{lostGenPercent || '--'}</span> :
@@ -114,12 +115,12 @@ class SeriesMain extends Component {
 
         {
           !isShow ? <div className={styles.btn}>
-            {seriesOperation && <Button onClick={this.modify} default >修改</Button>}
+            {seriesOperation && <CneButton onClick={this.modify} default >修改</CneButton>}
           </div> :
             <div className={styles.btn}>
-              <Button className={styles.btnBottom} onClick={this.handleClear} >恢复默认值</Button>
-              <Button className={styles.btnBottom} type="submit" onClick={this.handleSubmit} >保存</Button>
-              <Button className={styles.btnBottom} onClick={this.handleCancel}>取消</Button>
+              <CneButton className={styles.btnBottom} onClick={this.handleClear} >恢复默认值</CneButton>
+              <CneButton className={styles.btnBottom} type="submit" onClick={this.handleSubmit} >保存</CneButton>
+              <CneButton className={styles.btnBottom} onClick={this.handleCancel}>取消</CneButton>
             </div>
         }
       </div>

@@ -118,64 +118,6 @@
           .download {
             margin-right: 13px;
           }
-          .conditionSearch {
-            display: flex;
-            background: #199475;
-            border: 1px solid #007155;
-            box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
-            border-radius: 2px;
-            height: 32px;
-            align-items: center;
-            color: #fff;
-            position: relative;
-            .closeSearch {
-              position: absolute;
-              left: 186px;
-              color: #999;
-              z-index: 9;
-              cursor: pointer;
-              &:hover {
-                color: #e08031;
-              }
-            }
-            :global {
-              .ant-input-search {
-                margin: 0 4px;
-                height: 30px;
-                display: block;
-              }
-              .ant-input {
-                height: 22px;
-                margin: 3px 0;
-                width: 200px;
-                border-radius: 2px;
-                padding-right: 20px;
-                padding-left: 5px;
-                display: block;
-              }
-              .ant-input-search-button {
-                padding: 0;
-                background: #199475;
-                color: #fff;
-                border: none;
-                height: 30px;
-                width: 30px;
-                outline: none;
-                border-radius: 0;
-                box-shadow: none;
-              }
-            }
-          }
-          .closeConditionSearch {
-            .closeSearch {
-              display: none;
-            }
-            :global {
-              .ant-input {
-                display: none;
-              }
-            }
-          }
         }
       }
       .textWrap{
@@ -185,13 +127,15 @@
       }
       .tableWrap {
         min-width: 1212px;
-        overflow-x: scroll;
+        // overflow-x: scroll;
+        overflow-x: hidden;
+        box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.60);
       }
       .stationTable {
         // 表格区
         background: #ffffff;
         border: 1px solid #d4d4d4;
-        box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+        // box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
         height: 100%;
         :global {
           .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
@@ -319,14 +263,17 @@
           }
           .deleteStation {
             cursor: pointer;
-            color: #ff9900;
+            color: #199475;
             font-size: 20px;
           }
           .deleteDisable {
-            color: $darkColor;
+            color: #999;
             cursor: not-allowed;
             font-size: 20px;
             padding: 0 2px;
+            &:hover {
+              color: #999;
+            }
           }
         }
 
@@ -338,14 +285,23 @@
           .iconfont {
             color: #199475;
             cursor: pointer;
+            &:hover {
+              color:#f9b600;
+            }
           }
           .icon-look {
             color: #199475;
             font-size: 24px;
+            &:hover {
+              color:#f9b600;
+            }
           }
           .icon-goset1 {
             color: #4d90fd;
             font-size: 24px;
+            &:hover {
+              color:#f9b600;
+            }
           }
           .ant-table .ant-table-tbody > tr > td:first-child:not(.ant-table-selection-column) {
             padding-left: 10px;

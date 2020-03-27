@@ -4,6 +4,7 @@ import styles from './planSide.scss';
 import { Button, Icon } from 'antd';
 import WarningTip from '../../../../Common/WarningTip';
 import PlanAddTable from './AddPlanTable';
+import CneButton from '@components/Common/Power/CneButton';
 
 class PlanSide extends Component {
   static propTypes = {
@@ -145,10 +146,10 @@ class PlanSide extends Component {
         <div className={styles.editPlanTitle}>
           <span className={styles.sideEidtTitleTip}>添加</span>
           <div className={styles.sideEditTitleRight}>
-            <Button onClick={() => {
+            <CneButton onClick={() => {
               this.onWarningTipShow('prev');
-            }} className={styles.addPlanPrev}>上一步</Button>
-            <Button onClick={this.save} className={styles.savePlan}>保存</Button>
+            }} className={styles.addPlanPrev}>上一步</CneButton>
+            <CneButton onClick={this.save} className={styles.savePlan}>保存</CneButton>
             <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={() => { this.onWarningTipShow('quit'); }} />
           </div>
         </div>

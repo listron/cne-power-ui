@@ -11,9 +11,11 @@
 .warnConfig {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex: 1 0 auto;
     width: 100%;
+    box-shadow: 0 -2px 5px 0 rgba(208, 208, 208, 0.60) inset;
+
     .warnListTop {
         display: flex;
         justify-content: space-between;
@@ -21,37 +23,28 @@
         align-items: center;
         .warnListLeft {
             display: flex;
+
+            :global{
+                .ant-select{
+                  &:not(.ant-select-disabled) {
+                    .ant-select-selection__rendered .ant-select-selection-selected-value ,
+                    .ant-select-selection .ant-select-arrow {
+                      color:#199475;
+                    }
+                  }
+                  .ant-select-selection .ant-select-selection-selected-value {
+                    margin-left: 6px;
+                  }
+                }
+              }
         }
         .rule {
-            padding: 0;
             margin-left: 24px;
             margin-right: 12px;
-            font-size: 0;
-            border: 1px solid $themeColor;
-            i {
-                background-color: $themeColor;
-                color: #fff;
-                font-size: 14px;
-                vertical-align: top;
-                width: 28px;
-                line-height: 30px;
-                border-radius: 2px 0 0 2px;
-            }
-            .text {
-                border-radius: 0 2px 2px 0;
-                font-size: 14px;
-                color: $themeColor;
-                display: inline-block;
-                line-height: 30px;
-                margin: 0px;
-                text-align: center;
-            }
-            @include highLight($themeColor);
-            &:hover {
-                .text {
-                    background: $themeColor;
-                    color: #fff;
-                }
+            display: flex;
+            padding: 0 15px 0 6px;
+            .icon {
+              margin: 0 10px 0 0;
             }
         }
     }
@@ -87,13 +80,20 @@
     .edit {
         color: $themeColor;
         cursor: pointer;
+        :global {
+            .iconfont {
+                &:hover {
+                    color:#f9b600;
+                }
+            }
+        }
     }
 
     .tableStyle {
         background: #ffffff;
         border: 1px solid #d4d4d4;
         border-top: none;
-        box-shadow: 2px -0 5px 3px rgba(208, 208, 208, 0.6);
+        // box-shadow: 2px -0 5px 3px rgba(208, 208, 208, 0.6);
         min-width: 900px;
     
         .warningLevel, .warningEnable, .alarmEdit{
@@ -380,5 +380,23 @@
     }
     .typeSelect {
         margin-left: 12px;
+    }
+}
+
+body {
+    :global {
+      .ant-select-dropdown .ant-select-dropdown-menu {
+        .ant-select-dropdown-menu-item {
+          &:not(.ant-select-dropdown-menu-item-disabled) {
+            &:hover {
+              color: #199475;
+              background:rgba(206,235,224,0.30);
+            }
+          }
+          &.ant-select-dropdown-menu-item-active {
+            background-color: transparent;
+          }
+        }
+      }
     }
 }

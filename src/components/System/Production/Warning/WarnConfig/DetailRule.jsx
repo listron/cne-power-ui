@@ -3,6 +3,7 @@ import { Button, Icon, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import WarningTip from '../../../../Common/WarningTip';
 import styles from './warnConfig.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 class DetailRule extends Component {
   static propTypes = {
@@ -100,7 +101,7 @@ class DetailRule extends Component {
       <div className={styles.detailRule} >
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
-          <Button type="default" onClick={this.clickEdit}>编辑</Button>
+          <CneButton type="default" onClick={this.clickEdit}>编辑</CneButton>
           <div className={styles.action}>
             <i className="iconfont icon-last" title="上一个" onClick={this.onPrev} />
             <i className="iconfont icon-next" title="下一个" onClick={this.onNext} />

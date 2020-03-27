@@ -8,6 +8,7 @@ import styles from './dayReportAll.scss';
 import { Button, Upload, message } from 'antd';
 import moment from 'moment';
 import WarningTip from '@components/Common/WarningTip';
+import CneButton from '@components/Common/Power/CneButton/index';
 import { handleRights } from '@utils/utilFunc';
 
 const { basePaths, APISubPaths } = path;
@@ -107,9 +108,11 @@ class DayReportListHandle extends Component {
     return (
       <div className={styles.operateDayReport}>
         <span className={styles.leftButtons}>
-          {reportRight && <Button onClick={this.toUploadPage} icon="plus" className={styles.uploadReport} >
-            上报日报
-          </Button>}
+          {reportRight && <CneButton onClick={this.toUploadPage} className={styles.uploadReport} >
+            <div className={styles.icon}>
+              <span className={'iconfont icon-newbuilt'} />
+            </div>上报日报
+          </CneButton>}
           {importRight && <Upload
             action={`${APIBasePath}${operation.uploadReportFile}`}
             headers={{'Authorization': 'bearer ' + ((authData && authData !== 'undefined') ? authData : '')}}
@@ -118,9 +121,10 @@ class DayReportListHandle extends Component {
             multiple={true}
             className={styles.importReportFile}
           >
-            <Button loading={uploadLoading}>导入日报</Button>
+            <CneButton loading={uploadLoading}>导入日报</CneButton>
           </Upload>}
-          {importRight && <Button className={styles.templateBtn} href={`${originUri}/template/reportTemplate.zip`}>下载导入模板</Button>}
+          {importRight && <CneButton className={styles.templateBtn} href={`${originUri}/template/reportTemplate.zip`}>下载导入模板</CneButton>}
+
         </span>
         <CommonPagination
           pageSize={pageSize}

@@ -70,34 +70,36 @@ class DayReportListSearch extends Component {
     });
     // const showTypeChangeButtonGroup = stationTypeSet.size > 1; // 两种类型电站以上，才显示电站类型选择
     return (
-      <div className={styles.search}>
-        <div>
-          <span>条件查询</span>
-          <MonthPicker 
-            value={startTime?moment(startTime):null} 
-            className={styles.monthSearch} 
-            onChange={this.startTimeChange} 
-            disabledDate={this.disabledDate} 
+      <div className={styles.searchBox}>
+        <div className={styles.search}>
+          <div>
+            <span>条件查询</span>
+            <MonthPicker 
+              value={startTime?moment(startTime):null} 
+              className={styles.monthSearch} 
+              onChange={this.startTimeChange} 
+              disabledDate={this.disabledDate} 
+            />
+          </div>
+          <CneInputSearch 
+            placeholder="电站类型／区域／电站名称"
+            onSearch = {this.doSearch}
           />
+          {/* <Select onChange={this.regionSelect} placeholder="区域" value={!regionName? undefined: regionName} className={styles.regionSearch} >
+            <Option value={null}>全部</Option>
+            {[...regionSet].map(e=>(
+              <Option value={e} key={e}>{e}</Option>
+            ))}
+          </Select>
+          {showTypeChangeButtonGroup && <span>
+            <span>电站类型</span>
+            <Radio.Group value={stationType} onChange={this.stationTypeChange} className={styles.typeSearch} >
+              <Radio.Button value={2}>全部</Radio.Button>
+              <Radio.Button value={0}>风电</Radio.Button>
+              <Radio.Button value={1}>光伏</Radio.Button>
+            </Radio.Group>
+          </span>} */}
         </div>
-        <CneInputSearch 
-          placeholder="电站类型／区域／电站名称"
-          onSearch = {this.doSearch}
-        />
-        {/* <Select onChange={this.regionSelect} placeholder="区域" value={!regionName? undefined: regionName} className={styles.regionSearch} >
-          <Option value={null}>全部</Option>
-          {[...regionSet].map(e=>(
-            <Option value={e} key={e}>{e}</Option>
-          ))}
-        </Select>
-        {showTypeChangeButtonGroup && <span>
-          <span>电站类型</span>
-          <Radio.Group value={stationType} onChange={this.stationTypeChange} className={styles.typeSearch} >
-            <Radio.Button value={2}>全部</Radio.Button>
-            <Radio.Button value={0}>风电</Radio.Button>
-            <Radio.Button value={1}>光伏</Radio.Button>
-          </Radio.Group>
-        </span>} */}
       </div>
       
     )

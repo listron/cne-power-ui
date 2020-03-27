@@ -7,6 +7,7 @@ import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import path from '../../../../constants/path';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 
 class AlarmManageHandle extends Component {
   static propTypes = {
@@ -104,8 +105,8 @@ class AlarmManageHandle extends Component {
             loadedCallback={this.getUpdateAlarmList}
           />
           {/* <Button disabled={alarmList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}>导出告警事件信息表</Button> */}
-          <Button disabled={alarmList.length === 0} className={styles.exportInfo} onClick={this.downloadAlarmExcel}>导出告警事件信息表</Button>
-          <Button disabled={alarmList.length === 0} onClick={this.deleteAlarmList} className={styles.clearAlarm}>清除告警</Button>
+          <CneButton disabled={alarmList.length === 0} className={styles.exportInfo} onClick={this.downloadAlarmExcel}>导出告警事件信息表</CneButton>
+          <CneButton disabled={alarmList.length === 0} onClick={this.deleteAlarmList} className={styles.clearAlarm}>清除告警</CneButton>
           
         </div> : <div></div>}
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />

@@ -5,6 +5,7 @@ import { Upload, Button, message } from 'antd';
 import PropTypes from 'prop-types';
 import path from '@path';
 import Cookie from 'js-cookie';
+import CneButton from '@components/Common/Power/CneButton';
 
 class Uploader extends Component {
 
@@ -63,7 +64,7 @@ class Uploader extends Component {
     };
     return (
       <Upload {...uploadProps}>
-        <Button>批量导入</Button>
+        <CneButton>批量导入</CneButton>
       </Upload>
     );
   }

@@ -3,6 +3,7 @@ import { Input, Button, InputNumber, message } from 'antd';
 import styles from "./cleaning.scss";
 import PropTypes from 'prop-types';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 
 class CleaningMain extends Component {
   static propTypes = {
@@ -84,7 +85,7 @@ class CleaningMain extends Component {
           </div>
 
           {cleaningOperation && <div className={styles.btn}>
-            <Button onClick={this.modify}>修改</Button>
+            <CneButton onClick={this.modify}>修改</CneButton>
           </div>}
         </div> :
 
@@ -96,9 +97,9 @@ class CleaningMain extends Component {
           </div>
 
           <div className={styles.btn}>
-            <Button className={styles.btnBottom} onClick={this.handleClear} >恢复默认值</Button>
-            <Button className={styles.btnBottom} type="submit" onClick={this.handleSubmit} >保存</Button>
-            <Button className={styles.btnBottom} onClick={this.handleCancel}>取消</Button>
+            <CneButton className={styles.btnBottom} onClick={this.handleClear} >恢复默认值</CneButton>
+            <CneButton className={styles.btnBottom} type="submit" onClick={this.handleSubmit} >保存</CneButton>
+            <CneButton className={styles.btnBottom} onClick={this.handleCancel}>取消</CneButton>
           </div>
         </div>
     )

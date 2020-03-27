@@ -5,6 +5,7 @@ import WarningTip from '../../../../../components/Common/WarningTip';
 import StationSelect from '../../../../../components/Common/StationSelect';
 import AddNextStep from './AddNextStep';
 import styles from '../pointSide.scss';
+import CneButton from '@components/Common/Power/CneButton';
 const { Option } = Select;
 class AddPoint extends React.Component {
   static propTypes = {
@@ -221,7 +222,7 @@ class AddPoint extends React.Component {
               </Select>
             </div>
             <div className={styles.preStepItem}>
-              <Button disabled={!isNextStep} className={isNextStep ? styles.nextBtn : styles.disabledBtn} onClick={this.showNext}>下一步</Button>
+              <CneButton disabled={!isNextStep} className={isNextStep ? styles.nextBtn : styles.disabledBtn} onClick={this.showNext}>下一步</CneButton>
             </div>
           </div>
         }

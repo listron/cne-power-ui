@@ -2,31 +2,12 @@
 @import '../../../theme/theme.scss';
 
 .singleStationImportFileModel{
-  margin-left: 20px;
-  .addButton{
-    padding: 0;
+  margin-left: 12px;
+  .addButton {
     display: flex;
-    align-items: center;
-    .plus{
-      background-color: $themeColor;
-      color: #fff;
-      border-radius: 2px 0 0 2px;
-      line-height: 30px;
-      width: 28px;
-      font-size: 18px;
-    }
-    .name{
-      border-radius: 0 2px 2px 0;
-      color: $themeColor;
-      padding: 0 5px;
-      // width: 40px;
-      line-height: 30px;
-    }
-    &:hover{
-      .name{
-        color: #fff;
-        background-color: $themeColor;
-      }
+    padding: 0 15px 0 6px;
+    .icon {
+      margin: 0 10px 0 0;
     }
   }
 }

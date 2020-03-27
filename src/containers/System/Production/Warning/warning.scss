@@ -18,10 +18,58 @@
         .WarnCont {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            // justify-content: space-between;
             flex: 1 0 auto;
             width: 100%;
+
+            .headerTabs{
+                display: flex;
+                flex: 0 0 30px;
+                // z-index: 99;
+                .leftHolder{
+                    flex: 0 0 12px;
+                }
+                .tab{
+                    cursor: pointer;
+                    flex: 0 0 98px;
+                    text-align: center;
+                    line-height: 30px;
+                }
+                .tabHolder{
+                    flex: 0 0 28px;
+                }
+                .rightHolder{
+                    flex: 1;
+                }
+                    
+                .leftHolder, .tabHolder, .rightHolder{
+                    color: var(--themeColor);
+                    border-bottom: 1px solid var(--themeColor);
+                }
+                .tab{
+                    color: var(--themeColor);
+                }
+                .tab.active{
+                    background-color: #fff;
+                    border: 1px solid var(--themeColor);
+                    border-top: 2px solid var(--themeColor);
+                    border-bottom: none;
+                }
+                .tab.inactive{
+                    border: 1px solid transparent;
+                    border-top: 2px solid transparent;
+                    border-bottom: 1px solid var(--themeColor);
+                }
+            }
+
+            .mainPageStyle {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
         }
+
+
         :global {
             .ant-tabs-tabpane {
                 display: flex;

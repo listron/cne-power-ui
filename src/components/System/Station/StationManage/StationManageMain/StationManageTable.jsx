@@ -15,7 +15,7 @@ import CneTable from '../../../../Common/Power/CneTable/index';
 import CneButton from '../../../../Common/Power/CneButton/index';
 import SetEventYxModal from './SetEventYxModal';
 import SetEventYcModal from './SetEventYcModal';
-const { Search } = Input;
+import CneInputSearch from '@components/Common/Power/CneInputSearch';
 
 // to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
 // 动态确认/取消后，改回调重置为null。可减少诸多记录状态的变量，利用一个交互函数进行覆盖处理。
@@ -362,16 +362,12 @@ class StationManageTable extends Component {
               <CneButton href={downloadHref} download={downloadHref} target="_blank" className={styles.download}>
                 <span className={'iconfont icon-download'} />  下载模板
             </CneButton>}
-            <div className={`${styles.conditionSearch} ${!search && styles.closeConditionSearch}`} onMouseEnter={this.enterSearch}>
-              <Search
-                placeholder="电站类型／区域／电站名称"
-                enterButton={<i className={'iconfont icon-search'} />}
-                onSearch={this.selectCondition}
-                onChange={(e) => this.setState({ conditionInfo: e.target.value })}
-                value={conditionInfo}
-              />
-              <i className={`iconfont icon-wrong ${styles.closeSearch}`} onClick={() => this.setState({ search: false, conditionInfo: null })} />
-            </div>
+            <CneInputSearch 
+              placeholder="电站类型／区域／电站名称"
+              onSearch={this.selectCondition}
+              onChange={(e) => this.setState({ conditionInfo: e.target.value })}
+              value={conditionInfo}
+            /> 
           </div>
           <div>合计：{totalNum}</div>
           {/* <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalNum} onPaginationChange={this.onPaginationChange} /> */}

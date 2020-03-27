@@ -52,6 +52,18 @@ class Warning extends Component {
     // console.log('test')
   }
 
+  pages = [{
+    name: '低效组串',
+    value: 'series',
+  }, {
+    name: '清洗模型',
+    value: 'clean',
+  }, {
+    name: '预警配置',
+    value: 'warn',
+  }]
+
+
   render() {
     const { enterpriseId, showPage } = this.props;
     const { activeKey } = this.state;
@@ -60,7 +72,7 @@ class Warning extends Component {
         <div className={styles.warningContainer}>
           <div className={styles.warningContent}>
             <div className={styles.WarnCont}>
-              <Tabs type="card" onChange={this.onTabChange} activeKey={activeKey}>
+              {/* <Tabs type="card" onChange={this.onTabChange} activeKey={activeKey}>
                 <TabPane tab="低效组串" key="series">
                   <SeriesMain {...this.props} />
                 </TabPane>
@@ -71,7 +83,25 @@ class Warning extends Component {
                 <TabPane tab="预警配置" key="warn">
                   <WarnConfig {...this.props} enterpriseId={enterpriseId} />
                 </TabPane>
-              </Tabs>
+              </Tabs> */}
+
+              <div className={styles.headerTabs} >
+                <span className={styles.leftHolder} />
+                {this.pages.map(e => (
+                  <React.Fragment key={e.value}>
+                    <span
+                      onClick={() => this.onTabChange(e.value)}
+                      className={`${styles.tab} ${e.value === activeKey ? styles.active : styles.inactive}`}
+                    >{e.name}</span>
+                    <span className={styles.tabHolder} />
+                  </React.Fragment>
+                ))}
+                <span className={styles.rightHolder} />
+              </div>
+                  
+              {activeKey === 'series' && <div className={styles.mainPageStyle}><SeriesMain {...this.props} /> </div>}
+              {activeKey === 'clean' &&  <div className={styles.mainPageStyle}><CleaningMain {...this.props} enterpriseId={enterpriseId} /> </div>}
+              {activeKey === 'warn' && <WarnConfig {...this.props} enterpriseId={enterpriseId} />}
             </div>
             <TransitionContainer
               show={showPage !== 'home'}

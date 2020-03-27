@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
 import StationSelectModal from './StationSelectModal';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
+import CneButton from '@components/Common/Power/CneButton';
 
 /*
   模态框弹出单电站选择，选择电站后，针对该电站导入file
@@ -85,16 +85,17 @@ class SingleStationImportFileModel extends Component {
     const initHasExistedJudge = hasExistedJudge ? hasExistedJudge : false;
     return (
       <span className={styles.singleStationImportFileModel}>
-        {showPlusBtn && <Button onClick={this.showStationModal} className={styles.addButton}>
-          <span className={styles.plus}>+</span>
-          <span className={styles.name}>{uploaderName}</span>
-        </Button>}
+        {showPlusBtn && <CneButton onClick={this.showStationModal} className={styles.addButton}>
+          <div className={styles.icon}>
+            <span className={'iconfont icon-newbuilt'} />
+          </div>{uploaderName}
+        </CneButton>}
         {!showPlusBtn &&
-          <Button
+          <CneButton
             className={styles.intoInfo}
             onClick={this.showStationModal}
           >导入测点表
-       </Button>
+       </CneButton>
         }
         {modalShow && <StationSelectModal
           uploaderName={uploaderName}

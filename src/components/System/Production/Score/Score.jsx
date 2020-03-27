@@ -7,6 +7,7 @@ import DetailTable from './DetailTable';
 import EditTable from './EditTable';
 import { handleRight } from '@utils/utilFunc';
 import { ifError } from "assert";
+import CneButton from '@components/Common/Power/CneButton';
 class ScoreMain extends Component {
     static propTypes = {
         getScoreConfig: PropTypes.func,
@@ -199,7 +200,7 @@ class ScoreMain extends Component {
                 {!edit &&
                     <div className={styles.scoreLine}>
                         <div className={styles.initScore}>电站初始分 {this.props.basicScore}</div>
-                        {scoreOperation && <Button type="default" onClick={this.edit}>修改配置</Button>}
+                        {scoreOperation && <CneButton type="default" onClick={this.edit}>修改配置</CneButton>}
                     </div>}
                 {!!edit &&
                     <div className={styles.scoreLine}>
@@ -209,9 +210,9 @@ class ScoreMain extends Component {
                             <span>  注：请输入0-100分的初始分值</span>
                         </div>
                         <div className={styles.buttonGroups}>
-                            <Button onClick={this.cancle}>取消</Button>
-                            <Button type="default" onClick={this.default}>恢复默认</Button>
-                            <Button type="default" onClick={this.save}>保存</Button>
+                            <CneButton onClick={this.cancle}>取消</CneButton>
+                            <CneButton type="default" onClick={this.default}>恢复默认</CneButton>
+                            <CneButton type="default" onClick={this.save}>保存</CneButton>
                         </div>
                     </div>
                 }

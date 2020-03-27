@@ -2,9 +2,9 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input } from 'antd';
+import { Input } from 'antd';
 import styles from './list.scss';
-
+import CneButton from '@components/Common/Power/CneButton';
 // const { Option } = Select;
 
 class ListSearch extends Component {
@@ -134,7 +134,7 @@ class ListSearch extends Component {
         <Input style={{width: '160px'}} value={phoneText} placeholder="请输入..." onChange={this.phoneChange} />
         <span className={styles.searchTitle}>负责电站</span>
         <Input style={{width: '200px'}} value={stationText} placeholder="请输入..." onChange={this.stationChange} />
-        <Button onClick={this.toSearchList}>查询</Button>
+        <CneButton onClick={this.toSearchList}>查询</CneButton>
         {hasSearchCondition && <span className={styles.reset} onClick={this.toResetList}>重置</span>}
       </div>
     );

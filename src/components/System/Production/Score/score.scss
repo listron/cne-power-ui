@@ -5,6 +5,24 @@
     flex: 1;
     .topSelect {
         margin: 24px 0 0 24px;
+        :global {
+            .ant-radio-group {
+                .ant-radio-button-wrapper {
+                    color: #199475;
+                    border: 1px solid #199475;
+                    &:first-child {
+                        border: 1px solid #199475;
+                    }
+                    &:hover {
+                        background-color: #ceebe0;
+                    }
+                    &.ant-radio-button-wrapper-checked {
+                        background-color: #199475;
+                        color: #fff;
+                    }
+                }
+            }
+        }
     }
     .scoreLine {
         display: flex;
@@ -27,15 +45,6 @@
             width: 246px;
         }
         :global {
-            .ant-btn-default,
-            .ant-btn-default:active {
-                color: $themeColor;
-                border-color: $themeColor;
-                &:hover {
-                    background-color: $themeColor;
-                    color: #fff;
-                }
-            }
             .ant-input {
                 width: 60px;
                 padding: 4px 7px;

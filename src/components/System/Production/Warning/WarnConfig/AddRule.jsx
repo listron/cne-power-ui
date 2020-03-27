@@ -5,6 +5,7 @@ import styles from './warnConfig.scss';
 import StationSelect from '../../../../Common/StationSelect';
 import WarnRule from './WarnRule';
 import WarningTip from '../../../../Common/WarningTip';
+import CneButton from '@components/Common/Power/CneButton';
 const Option = Select.Option;
 const FormItem = Form.Item;
 class AddRule extends Component {
@@ -270,8 +271,8 @@ class AddRule extends Component {
               )}
             </FormItem>
             <div className={styles.buttonGroup}>
-              <Button onClick={() => { this.saveRule('save'); }} className={styles.save}>保存</Button>
-              <Button onClick={() => { this.saveRule('saveAndCon'); }} >保存并继续添加</Button>
+              <CneButton onClick={() => { this.saveRule('save'); }} className={styles.save}>保存</CneButton>
+              <CneButton onClick={() => { this.saveRule('saveAndCon'); }} >保存并继续添加</CneButton>
             </div>
           </div>
         </Form>

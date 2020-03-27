@@ -7,6 +7,7 @@ import WarningTip from '@components/Common/WarningTip';
 import PersonnelLogoUploader from './PersonnelLogoUploader';
 import DepartmentSelector from '../PersonnelMain/Modals/DepartmentSelector';
 import styles from './side.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -260,15 +261,15 @@ class HandlePersonnelInfo extends Component {
                 )}
               </FormItem> */}
             <div className={styles.buttonRow}>
-              <Button
+              <CneButton
                 onClick={this.saveUser}
                 loading={addMode === 'continue' && addUserLoading}
                 className={styles.saveUser}
-              >保存</Button>
-              <Button
+              >保存</CneButton>
+              <CneButton
                 onClick={this.saveContinue}
                 loading={pageKey === 'save' && addUserLoading}
-              >保存并继续添加</Button>
+              >保存并继续添加</CneButton>
             </div>
           </div>
         </Form>

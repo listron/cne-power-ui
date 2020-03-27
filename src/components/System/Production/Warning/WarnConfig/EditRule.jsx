@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import styles from './warnConfig.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import WarnRule from './WarnRule';
+import CneButton from '@components/Common/Power/CneButton';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 class EditRule extends Component {
@@ -148,7 +150,7 @@ class EditRule extends Component {
                   )}
                 </FormItem>
                 <div className={styles.buttonGroup}>
-                  <Button onClick={this.saveRule} className={styles.save} type={'default'} >保存</Button>
+                  <CneButton onClick={this.saveRule} className={styles.save} >保存</CneButton>
                 </div>
               </Form>
             </div>

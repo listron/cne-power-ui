@@ -76,6 +76,26 @@
     flex: 0 0 300px;
     display: flex;
     align-items: center;
+    .addUser {
+      display: flex;
+      padding: 0 15px 0 6px;
+      .icon {
+        margin: 0 10px 0 0;
+      }
+    }
+    :global {
+      .ant-select {
+        &:not(.ant-select-disabled) {
+          .ant-select-selection__rendered .ant-select-selection-selected-value ,
+          .ant-select-selection .ant-select-arrow {
+            color:#199475;
+          }
+        }
+        .ant-select-selection .ant-select-selection-selected-value {
+          margin-left: 6px;
+        }
+      }
+    }
   }
 }
 .personnelMain {
@@ -127,9 +147,14 @@
       :global{
         .iconfont{
           margin-right: 12px;
+          color: #199475;
+          font-size: 18px;
           cursor: pointer;
           &:last-of-type{
             margin-right: 4px;
+          }
+          &:hover {
+            color:#f9b600;
           }
         }
         .icon-examine1, .icon-bumenx{
@@ -154,6 +179,9 @@
   .cancel{
     margin-left: 24px;
     cursor: pointer;
+    &:hover {
+      color: #f9b600;
+    }
   }
 }
 
@@ -206,5 +234,23 @@
   }
   .cancel{
     color: $themeColor;
+  }
+}
+
+body {
+  :global {
+    .ant-select-dropdown .ant-select-dropdown-menu {
+      .ant-select-dropdown-menu-item {
+        &:not(.ant-select-dropdown-menu-item-disabled) {
+          &:hover {
+            color: #199475;
+            background:rgba(206,235,224,0.30);
+          }
+        }
+        &.ant-select-dropdown-menu-item-active {
+          background-color: transparent;
+        }
+      }
+    }
   }
 }

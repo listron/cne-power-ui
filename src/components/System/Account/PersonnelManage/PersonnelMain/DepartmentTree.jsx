@@ -7,6 +7,7 @@ import WarningTip from '@components/Common/WarningTip';
 import Uploader from './Uploader';
 import SingleAssignModal from './Modals/SingleAssignModal';
 import styles from './main.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -191,7 +192,7 @@ class DepartmentTree extends Component {
     return (
       <div className={styles.departmentTree}>
         <h3 className={styles.treeTop}>
-          <Button className={styles.templateDown} onClick={this.downloadTemplate} loading={templateLoading}>导入模板下载</Button>
+          <CneButton className={styles.templateDown} onClick={this.downloadTemplate} loading={templateLoading}>导入模板下载</CneButton>
           {uploaderRight && <Uploader {...this.props} />}
         </h3>
         <section className={styles.treeSection}>

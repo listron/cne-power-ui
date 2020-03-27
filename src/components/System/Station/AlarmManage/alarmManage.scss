@@ -6,10 +6,14 @@
 .alarmManageSearch{ // 条件查询
   display: flex;
   align-items: center;
-  height: 71px;
-  border-bottom: solid 1px $promptColor;
+  height: 60px;
   line-height: 40px;
   min-width: 1150px;
+  background: #ffffff;
+  border: 1px solid #d4d4d4;
+  box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.60);
+  margin-bottom: 8px;
+
   .titleText{
     color: $darkColor;
     margin-left: 28px;
@@ -27,7 +31,7 @@
 .alarmManageHandle{ // 导出设备， 翻页器
   display:flex;
   justify-content: space-between;
-  height: 72px;
+  height: 60px;
   align-items: center;
   .leftHandler{
     display: flex;

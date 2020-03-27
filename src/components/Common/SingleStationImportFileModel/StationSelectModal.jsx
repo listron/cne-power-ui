@@ -5,6 +5,7 @@ import styles from './style.scss';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
 import WarningTip from '../WarningTip';
+import CneButton from '@components/Common/Power/CneButton';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
@@ -170,7 +171,7 @@ class StationSelectModal extends Component {
             file,
           })}
         >
-          <Button disabled={!uploadAvailable} loading={uploading}>导入{uploaderName}</Button>
+          <CneButton disabled={!uploadAvailable} loading={uploading}>导入{uploaderName}</CneButton>
         </Upload>}
       >
        {hasExistedJudge && showWarningTip &&

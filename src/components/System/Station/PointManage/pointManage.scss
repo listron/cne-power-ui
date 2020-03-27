@@ -5,6 +5,10 @@
   display: flex;
   flex-direction: column;
   // height: 141px;
+  background: #ffffff;
+  border: 1px solid #d4d4d4;
+  box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.60);
+  margin-bottom: 8px;
 
   .topSearch,
   .bottomSeach {
@@ -49,7 +53,6 @@
       cursor: pointer;
     }
 
-    border-bottom: solid 1px $promptColor;
   }
 
 }
@@ -68,32 +71,10 @@
     display: flex;
 
     .addButton {
-      padding: 0;
       display: flex;
-      align-items: center;
-
-      .plus {
-        background-color: $themeColor;
-        color: #fff;
-        border-radius: 2px 0 0 2px;
-        line-height: 30px;
-        width: 28px;
-        font-size: 18px;
-      }
-
-      .name {
-        border-radius: 0 2px 2px 0;
-        color: $themeColor;
-        padding: 0 5px;
-        // width: 40px;
-        line-height: 30px;
-      }
-
-      &:hover {
-        .name {
-          color: #fff;
-          background-color: $themeColor;
-        }
+      padding: 0 15px 0 6px;
+      .icon {
+        margin: 0 10px 0 0;
       }
     }
 
@@ -137,6 +118,10 @@
     overflow: hidden;
     // display: inline-block;
     word-break:keep-all;
+    &:hover {
+      cursor: pointer;
+      color: #ff9900;
+    }
   }
 
   .deviceModeName {
@@ -193,6 +178,15 @@
       min-width: 90px;
       text-align: center;
       padding: 0px 0px;
+      
+      :global {
+        .iconfont {
+          font-size: 20px;
+          &:hover {
+            color:#ff9900;
+          }
+        }
+      }
     }
 
     :global {

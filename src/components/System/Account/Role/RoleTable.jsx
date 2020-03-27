@@ -4,6 +4,7 @@ import WarningTip from '../../../Common/WarningTip';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
 import CneTable from '@components/Common/Power/CneTable';
+import CneButton from '@components/Common/Power/CneButton';
 const { Option } = Select;
 
 // to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
@@ -286,11 +287,12 @@ class RoleTable extends Component {
       {showDeleteTip && <WarningTip onOK={this.deleteRole} value={warningTipText} onCancel={this.onCancelDelete} />}
         <div className={styles.roleContent}>
           <div className={styles.roleListTop} >
-            <div>
-              {roleCreateRight && <Button className={styles.addRole} onClick={this.onRoleAdd}>
-                <Icon type="plus" />
-                <span className={styles.text}>角色</span>
-              </Button>}
+            <div className={styles.rolelistTopBox}>
+              {roleCreateRight && <CneButton className={styles.addRole} onClick={this.onRoleAdd}>
+                <div className={styles.icon}>
+                  <span className={'iconfont icon-newbuilt'} />
+                </div>角色
+              </CneButton>}
               <div className={styles.handleRole}>
               {roleConfigRight && <Select onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName = {styles.roleTableHandleDropdown}>
                 {roleUpdateRight && <Option value="edit" disabled={selectedRole.length !== 1}>编辑</Option>}

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Drawer, Form, Select, Button, Radio } from 'antd';
 import DepartmentSelector from '../Modals/DepartmentSelector';
 import styles from './drawer.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -121,14 +122,14 @@ class ExamineDrawer extends Component {
             )}
           </FormItem>}
           <div className={styles.btns}>
-            <Button className={styles.cancelAdd} onClick={this.hideExamineDrawer}>取消</Button>
-            <Button
+            <CneButton className={styles.cancelAdd} onClick={this.hideExamineDrawer}>取消</CneButton>
+            <CneButton
               loading={examineLoading}
               className={styles.saveAdd}
               onClick={this.saveExamine}
             >
               确定
-            </Button>
+            </CneButton>
           </div>
         </Form>
       </Drawer>

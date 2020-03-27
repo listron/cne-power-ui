@@ -8,6 +8,7 @@ const FormItem = Form.Item;
 const EditableContext = React.createContext();
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../../utils/utilFunc';
+import CneTable from '@components/Common/Power/CneTable';
 
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
@@ -201,7 +202,7 @@ class PlanAddTable extends React.Component {
       },
     };
     return (
-      <Table
+      <CneTable
         components={components}
         rowClassName={() => 'editable-row'}
         pagination={false}

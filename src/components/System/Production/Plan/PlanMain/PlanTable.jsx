@@ -11,6 +11,7 @@ import EditableCell from './EditableCell';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { numWithComma, handleRight } from '../../../../../utils/utilFunc';
 import CneTable from '@components/Common/Power/CneTable';
+import CneButton from '@components/Common/Power/CneButton';
 
 const { APIBasePath, originUri } = path.basePaths;
 const { system } = path.APISubPaths;
@@ -425,12 +426,13 @@ class PlanTable extends Component {
         <div className={styles.planListTop}>
           {planOperation ?
           <div className={styles.buttons}>
-            <Button className={styles.addplan} onClick={this.onPlanAdd}>
-              <Icon type="plus" />
-              <span className={styles.text}>添加</span>
-            </Button>
-            <Button type={'default'} onClick={this.batchImport} >批量导入</Button>
-            <Button href={downloadHref} download={downloadHref} >导入模板下载</Button>
+            <CneButton className={styles.addplan} onClick={this.onPlanAdd}>
+              <div className={styles.icon}>
+                <span className={'iconfont icon-newbuilt'} />
+              </div>添加
+            </CneButton>
+            <CneButton type={'default'} onClick={this.batchImport} >批量导入</CneButton>
+            <CneButton href={downloadHref} download={downloadHref} >导入模板下载</CneButton>
           </div> : <div></div>}
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
@@ -468,12 +470,12 @@ class PlanTable extends Component {
               fileList={fileList}
               onRemove={this.removeFile}
               className={styles.importUser}>
-              <Button type={'default'} >选择文件</Button>
+              <CneButton>选择文件</CneButton>
               <span> 支持xls、xlsx文件</span>
             </Upload>
           </div>
           <div className={styles.import}>
-            <Button type={'primary'} onClick={this.importFile} disabled={fileList.length === 0} loading={importLoading}>导入</Button>
+            <CneButton onClick={this.importFile} disabled={fileList.length === 0} loading={importLoading}>导入</CneButton>
           </div>
         </Modal>
       </div>

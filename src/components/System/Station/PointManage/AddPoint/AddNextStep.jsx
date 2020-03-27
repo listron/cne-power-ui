@@ -4,6 +4,7 @@ import { Button, Input, Form, Select } from 'antd';
 import { showleftInfo } from '../DetailPoint/detailInfomation';
 import AddPointInfoPart from './AddPointInfoPart';
 import styles from '../pointSide.scss';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 const { Option } = Select;
 
@@ -147,7 +148,7 @@ class AddNextStep extends React.Component {
                 <span className={styles.usepoint}>
                   {/* <span> 标准点描述:{this.dealPointDetail('deviceStandardPointDesc')}</span> */}
                   <span className={styles.descStyle} title={showDesc}> 标准点描述:{showDesc}</span>
-                  <Button className={styles.useBtn} onClick={this.setDevicePointDesc}>使用</Button>
+                  <CneButton className={styles.useBtn} onClick={this.setDevicePointDesc}>使用</CneButton>
                 </span>
 
               )}
@@ -290,11 +291,11 @@ class AddNextStep extends React.Component {
               )}
             </FormItem>
             {showPage === 'add' && <div className={styles.submitStyle}>
-              <Button onClick={this.gobackPre} className={styles.preStyles}>上一步</Button>
-              <Button onClick={this.addsubmitForm} className={styles.submitBtn} >保存</Button>
+              <CneButton onClick={this.gobackPre} className={styles.preStyles}>上一步</CneButton>
+              <CneButton onClick={this.addsubmitForm} className={styles.submitBtn} >保存</CneButton>
             </div>}
             {showPage === 'edit' && <div className={styles.submitStyle}>
-              <Button onClick={this.editsubmitForm} className={styles.submitBtn} >保存</Button>
+              <CneButton onClick={this.editsubmitForm} className={styles.submitBtn} >保存</CneButton>
             </div>}
 
 
