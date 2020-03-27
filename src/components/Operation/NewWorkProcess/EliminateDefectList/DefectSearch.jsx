@@ -58,7 +58,7 @@ export default class DefectSearch extends React.Component {
               style={{ width: '200px' }}
               multiple={true}
               stationShowNumber={true}
-              data={stations}
+              data={stations.filter(e => e.stationType === 1)}
               onOK={this.selectStation}
               value={curStation}
               holderText="请输入关键字快速查询"

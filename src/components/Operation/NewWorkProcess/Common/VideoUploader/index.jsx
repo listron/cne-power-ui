@@ -17,7 +17,7 @@ const { ticket } = APISubPaths;
  * uploadUrl: string 视频上传地址
  * value: PropTypes.array,存储的上传url列表
  * onChange: PropTypes.func,数据改变后的主输出函数
- * 
+ * mode: PropTypes.string, 组件模式: edit编辑, review查看
  */
 
 export default class VideoUploader extends Component {
@@ -86,7 +86,7 @@ export default class VideoUploader extends Component {
         uploadPercent,
         fileList,
       });
-    // } else if (status === 'done') { // 调试代码~不考虑上传失败
+      // } else if (status === 'done') { // 调试代码~不考虑上传失败
     } else if (status === 'done' && code === '10000') { // 上传保存url->恢复默认
       const { value = [] } = this.props;
       this.setState({
@@ -117,7 +117,7 @@ export default class VideoUploader extends Component {
 
   render() {
     const { uploadPercent, uploadLoading, fileList, modalVideoSrc } = this.state;
-    const { value, uploadUrl, maxNum, wrapModalClassName } = this.props;
+    const { value, uploadUrl, maxNum, wrapModalClassName, mode } = this.props;
     const authData = localStorage.getItem('authData') || '';
     return (
       <div className={`${styles.videoUploader} ${styles.className}`}>
@@ -127,11 +127,12 @@ export default class VideoUploader extends Component {
             className={`${styles.videoViewer} ${styles.fl}`}
           >
             <div className={styles.delVideo}>
-              <i
+              {mode === 'edit' && <i
                 title="删除"
                 className={`iconfont icon-close1 ${styles.delIcon}`}
                 onClick={() => this.onVideoDelete(url)}
               />
+              }
             </div>
             <ReactPlayer
               key={url}
