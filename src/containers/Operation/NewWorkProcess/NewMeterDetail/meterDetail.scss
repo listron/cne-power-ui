@@ -4,11 +4,11 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  background-color: #f0f2f5;
 
   .meterLoading {
     width: 100%;
-    height: 100%;
-    margin-top: 16px;
+    min-height: calc(100vh - 40px - 54px - 60px);
     background-color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -20,8 +20,8 @@
 
   .meterContent {
     width: 100%;
-    margin-top: 16px;
     display: flex;
+    padding: 0 24px;
     justify-content: space-between;
 
     .contentLeft {

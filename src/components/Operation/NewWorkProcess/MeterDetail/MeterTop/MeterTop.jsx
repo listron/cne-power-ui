@@ -23,6 +23,7 @@ export default class MeterTop extends React.Component {
     otherReadMeterData: PropTypes.object,
     receiveLoading: PropTypes.bool,
     getCommitAction: PropTypes.func,
+    scroll: PropTypes.bool,
   };
 
   constructor(props) {
@@ -420,12 +421,14 @@ export default class MeterTop extends React.Component {
 
   render() {
     const { showWarningTip, warningTipText, passVisible, rejectVisible, messageText } = this.state;
-    const { processActionData, thisReadTimeFlag, myMessageFlag, receiveLoading } = this.props;
-
+    const { processActionData, thisReadTimeFlag, myMessageFlag, receiveLoading, scroll } = this.props;
     return (
       <React.Fragment>
         {myMessageFlag && <MyMessage message={messageText} />}
-        <div className={styles.meterTop} >
+        <div className={styles.meterTop} style={ scroll ? {
+          backgroundColor: '#ffffff',
+          boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.5)',
+        } : {}} >
           <div className={styles.meterTopTitle}>
             <div className={styles.titleBox}>
               <i className="iconfont icon-gdxq" />
