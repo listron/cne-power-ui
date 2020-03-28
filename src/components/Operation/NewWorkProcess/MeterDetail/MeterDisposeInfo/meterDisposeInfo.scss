@@ -171,6 +171,7 @@
           .normalDate {
             :global {
               .ant-input {
+                color: #353535;
                 background-color: #ffffff;
               }
             }
@@ -179,7 +180,11 @@
           .warnDate {
             :global {
               .ant-input {
+                color: #353535;
                 background-color: #fdffe8;
+              }
+              .ant-calendar-picker-icon{
+                color: #999999;
               }
             }
           }
@@ -451,6 +456,7 @@
                     .normalInput {
                       background-color: #ffffff;
                       border: 1px solid #d4d4d4;
+                      color: #353535;
 
                       &::-webkit-input-placeholder {
                         color: #999999;
@@ -460,6 +466,7 @@
                     .warnInput {
                       background-color: #fcffe5;
                       border: 1px solid #d4d4d4;
+                      color: #353535;
 
                       &::-webkit-input-placeholder {
                         color: #999999;
@@ -469,6 +476,7 @@
                     .errorInput {
                       background-color: #fbe6e3;
                       border: 1px solid #df4b33;
+                      color: #353535;
 
                       &::-webkit-input-placeholder {
                         color: #df4b33;
@@ -820,6 +828,7 @@
                     .normalInput {
                       background-color: #ffffff;
                       border: 1px solid #d4d4d4;
+                      color: #353535;
 
                       &::-webkit-input-placeholder {
                         color: #999999;
@@ -829,6 +838,7 @@
                     .warnInput {
                       background-color: #fcffe5;
                       border: 1px solid #d4d4d4;
+                      color: #353535;
 
                       &::-webkit-input-placeholder {
                         color: #999999;
@@ -838,6 +848,7 @@
                     .errorInput {
                       background-color: #fbe6e3;
                       border: 1px solid #df4b33;
+                      color: #353535;
 
                       &::-webkit-input-placeholder {
                         color: #df4b33;

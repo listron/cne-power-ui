@@ -29,6 +29,16 @@ export default class MeterTable extends React.Component {
     resetStore: PropTypes.func,
   };
 
+  constructor(props) {
+    super(props);
+    const { clientHeight } = document.body;
+    // footer 60; thead: 36, handler: 57; search 63; title 39; padding 15; menu 40;
+    this.state = {
+      tableListHeight: clientHeight - 314,
+    };
+  }
+
+
   onChangeStatus = e => {
     const { getMeterList, changeStore, listParams } = this.props;
     changeStore({
@@ -137,6 +147,7 @@ export default class MeterTable extends React.Component {
   };
 
   render() {
+    const { tableListHeight } = this.state;
     const {
       listParams: {
         pageSize,
@@ -243,7 +254,7 @@ export default class MeterTable extends React.Component {
           className={styles.tableStyles}
           dataSource={dataList}
           rowKey={(record, index) => index || 'key'}
-          scroll={{ y: 420 }}
+          scroll={dataList.length > 0 ? { y: tableListHeight } : {}}
           pagination={false}
           locale={{ emptyText: tableLoading ? <div style={{width: 223, height: 164}} /> : <img width="223" height="164" src="/img/nodata.png" alt="" /> }}
         />

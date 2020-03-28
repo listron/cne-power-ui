@@ -38,13 +38,13 @@ export default class MeterBaseInfo extends React.Component {
         changeStore,
       }} = this;
     // 执行人
-    if(operatorContent && operatorContent.clientHeight > 40) {
+    if(operatorContent && operatorContent.offsetHeight > 42) {
       changeStore({
         operatorFlag: true,
       });
     }
     // 电站名称
-    if(stationContent && stationContent.clientHeight > 40) {
+    if(stationContent && stationContent.offsetHeight > 40) {
       changeStore({
         stationFlag: true,
       });
@@ -166,7 +166,7 @@ export default class MeterBaseInfo extends React.Component {
                 <div className={styles.stationName}>
                   电站名称
                 </div>
-                <div className={styles.stationContent} style={stationFlag ? {padding: '12px 0 12px 10px'} : {}}
+                <div className={styles.stationContent} style={stationFlag ? {padding: '12px 0 12px 10px'} : {lineHeight: '40px', paddingLeft: '10px'}}
                      ref={ref => {
                        this.stationContent = ref;
                      }}>
@@ -213,11 +213,8 @@ export default class MeterBaseInfo extends React.Component {
                 <div className={styles.operator}>
                   {operableUserData[0].stateName || '- -'}
                 </div>
-                <div className={styles.operatorContent} style={operatorFlag ? {padding: '12px 0 12px 10px'} : {}}
-                     ref={ref => {
-                       this.operatorContent = ref;
-                     }}>
-                  <span>
+                <div className={styles.operatorContent} style={operatorFlag ? {padding: '12px 0 12px 10px'} : {lineHeight: '40px', paddingLeft: '10px'}}>
+                  <span ref={ref => {this.operatorContent = ref;}}>
                     {operableUserData[0].ableUsers ? operableUserData[0].ableUsers.split(',').join('、') : '- -'}
                     {processActionData.filter(cur => cur.actionCode === '3' && cur.isPermission === 0).length > 0 && (
                       <Popover

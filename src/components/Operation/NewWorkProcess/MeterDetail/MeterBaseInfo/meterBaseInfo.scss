@@ -108,9 +108,10 @@
 
         .stationNameBox {
           display: flex;
+          flex: 0 0 72.4%;
 
           .stationName {
-            width: 9%;
+            flex: 0 0 12.5%;
             min-width: 76px;
             display: flex;
             align-items: center;
@@ -121,20 +122,19 @@
           }
 
           .stationContent {
-            width: 64%;
+            flex: 0 0 87.5%;
             color: #353535;
             word-break: break-word;
-            min-width: 530px;
-            max-width: 530px;
-            padding: 12px 0 0 10px;
+            min-width: 531px;
           }
         }
 
         .workProcessBox {
           display: flex;
+          flex: 0 0 27.6%;
 
           .workProcessType {
-            width: 12%;
+            flex: 0 0 44%;
             min-width: 104px;
             display: flex;
             align-items: center;
@@ -146,7 +146,7 @@
           }
 
           .workProcessContent {
-            width: 15%;
+            flex: 0 0 56%;
             display: flex;
             align-items: center;
             min-width: 130px;
@@ -164,9 +164,10 @@
 
         .creatorBox {
           display: flex;
+          flex: 0 0 44%;
 
           .creator {
-            width: 9%;
+            flex: 0 0 20.4%;
             min-width: 76px;
             display: flex;
             align-items: center;
@@ -177,7 +178,7 @@
           }
 
           .creatorContent {
-            width: 37%;
+            flex: 0 0 79.6%;
             min-width: 296px;
             display: flex;
             align-items: center;
@@ -187,9 +188,10 @@
 
         .workProcessTimeBox {
           display: flex;
+          flex: 0 0 28%;
 
           .workProcessTime {
-            width: 12%;
+            flex: 0 0 44%;
             min-width: 104px;
             display: flex;
             align-items: center;
@@ -201,10 +203,9 @@
           }
 
           .workProcessTimeContent {
-            width: 15%;
+            flex: 0 0 56%;
             display: flex;
             align-items: center;
-            font-family: ArialMT, serif;
             min-width: 130px;
             padding-left: 10px;
           }
@@ -213,9 +214,10 @@
 
         .finishTimeBox {
           display: flex;
+          flex: 0 0 28%;
 
           .finishTime {
-            width: 12%;
+            flex: 0 0 44%;
             min-width: 104px;
             display: flex;
             align-items: center;
@@ -227,11 +229,10 @@
           }
 
           .finishTimeContent {
-            width: 15%;
+            flex: 0 0 56%;
             display: flex;
             align-items: center;
             min-width: 130px;
-            font-family: ArialMT, serif;
             padding-left: 10px;
           }
         }
@@ -244,9 +245,10 @@
 
         .operatorBox {
           display: flex;
+          flex: 0 0 44%;
 
           .operator {
-            width: 9%;
+            flex: 0 0 20.4%;
             min-width: 76px;
             display: flex;
             align-items: center;
@@ -257,11 +259,9 @@
           }
 
           .operatorContent {
-            width: 37%;
+            flex: 0 0 79.6%;
             display: flex;
             min-width: 296px;
-            max-width: 296px;
-            padding: 12px 0 0 10px;
 
             i {
               margin-left: 4px;
@@ -275,9 +275,10 @@
 
         .acceptorBox {
           display: flex;
+          flex: 0 0 28%;
 
           .acceptor {
-            width: 12%;
+            flex: 0 0 44%;
             min-width: 104px;
             display: flex;
             align-items: center;
@@ -289,7 +290,7 @@
           }
 
           .acceptorContent {
-            width: 15%;
+            flex: 0 0 56%;
             display: flex;
             align-items: center;
             min-width: 130px;
@@ -300,9 +301,10 @@
 
         .actualTimeBox {
           display: flex;
+          flex: 0 0 28%;
 
           .actualTime {
-            width: 12%;
+            flex: 0 0 44%;
             min-width: 104px;
             display: flex;
             align-items: center;
@@ -314,12 +316,11 @@
           }
 
           .actualTimeContent {
-            width: 15%;
+            flex: 0 0 56%;
             display: flex;
             align-items: center;
             min-width: 130px;
             padding-left: 10px;
-            font-family: ArialMT, serif;
           }
         }
       }
@@ -441,6 +442,246 @@
 
       .ant-checkbox + span{
         color: #fff;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
+  .baseTableInfo{
+    .baseTableContent{
+
+      .tableTop{
+        .stationNameBox{
+          .stationName{
+            font-size: 14px;
+          }
+          .stationContent{
+            font-size: 14px;
+          }
+        }
+        .workProcessBox{
+          .workProcessType{
+            font-size: 14px;
+          }
+          .workProcessContent{
+            font-size: 14px;
+          }
+        }
+      }
+
+      .tableMid{
+        .creatorBox{
+          .creator{
+            font-size: 14px;
+          }
+          .creatorContent{
+            font-size: 14px;
+          }
+        }
+        .workProcessTimeBox{
+          .workProcessTime{
+            font-size: 14px;
+          }
+          .workProcessTimeContent{
+            font-size: 14px;
+          }
+        }
+        .finishTimeBox{
+          .finishTime{
+            font-size: 14px;
+          }
+          .finishTimeContent{
+            font-size: 14px;
+          }
+        }
+      }
+
+      .tableBottom{
+        .operatorBox{
+          .operator{
+            font-size: 14px;
+          }
+          .operatorContent{
+            font-size: 14px;
+          }
+        }
+        .acceptorBox{
+          .acceptor{
+            font-size: 14px;
+          }
+          .acceptorContent{
+            font-size: 14px;
+          }
+        }
+        .actualTimeBox{
+          .actualTime{
+            font-size: 14px;
+          }
+          .actualTimeContent{
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+  .baseTableInfo{
+    .baseTableContent{
+
+      .tableTop{
+        .stationNameBox{
+          .stationName{
+            font-size: 16px;
+          }
+          .stationContent{
+            font-size: 16px;
+          }
+        }
+        .workProcessBox{
+          .workProcessType{
+            font-size: 16px;
+          }
+          .workProcessContent{
+            font-size: 16px;
+          }
+        }
+      }
+
+      .tableMid{
+        .creatorBox{
+          .creator{
+            font-size: 16px;
+          }
+          .creatorContent{
+            font-size: 16px;
+          }
+        }
+        .workProcessTimeBox{
+          .workProcessTime{
+            font-size: 16px;
+          }
+          .workProcessTimeContent{
+            font-size: 16px;
+          }
+        }
+        .finishTimeBox{
+          .finishTime{
+            font-size: 16px;
+          }
+          .finishTimeContent{
+            font-size: 16px;
+          }
+        }
+      }
+
+      .tableBottom{
+        .operatorBox{
+          .operator{
+            font-size: 16px;
+          }
+          .operatorContent{
+            font-size: 16px;
+          }
+        }
+        .acceptorBox{
+          .acceptor{
+            font-size: 16px;
+          }
+          .acceptorContent{
+            font-size: 16px;
+          }
+        }
+        .actualTimeBox{
+          .actualTime{
+            font-size: 16px;
+          }
+          .actualTimeContent{
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .baseTableInfo{
+    .baseTableContent{
+
+      .tableTop{
+        .stationNameBox{
+          .stationName{
+            font-size: 18px;
+          }
+          .stationContent{
+            font-size: 18px;
+          }
+        }
+        .workProcessBox{
+          .workProcessType{
+            font-size: 18px;
+          }
+          .workProcessContent{
+            font-size: 18px;
+          }
+        }
+      }
+
+      .tableMid{
+        .creatorBox{
+          .creator{
+            font-size: 18px;
+          }
+          .creatorContent{
+            font-size: 18px;
+          }
+        }
+        .workProcessTimeBox{
+          .workProcessTime{
+            font-size: 18px;
+          }
+          .workProcessTimeContent{
+            font-size: 18px;
+          }
+        }
+        .finishTimeBox{
+          .finishTime{
+            font-size: 18px;
+          }
+          .finishTimeContent{
+            font-size: 18px;
+          }
+        }
+      }
+
+      .tableBottom{
+        .operatorBox{
+          .operator{
+            font-size: 18px;
+          }
+          .operatorContent{
+            font-size: 18px;
+          }
+        }
+        .acceptorBox{
+          .acceptor{
+            font-size: 18px;
+          }
+          .acceptorContent{
+            font-size: 18px;
+          }
+        }
+        .actualTimeBox{
+          .actualTime{
+            font-size: 18px;
+          }
+          .actualTimeContent{
+            font-size: 18px;
+          }
+        }
       }
     }
   }

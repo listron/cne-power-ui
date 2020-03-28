@@ -27,14 +27,17 @@ class MeterList extends Component {
     const { listSearch, params } = searchUtil(search).parse(); // 抄表列表页
     const urlParamsSearch = listSearch && JSON.parse(listSearch) || {}; // 判断从路由中过来的筛选条件
     const paramsSearch = params && JSON.parse(params) || {}; // 判断从详情页中过来的筛选条件
+    const { clientWidth } = document.body; // 获取可视宽度
     // 列表查询参数
     const listSearchParams = paramsSearch.listParams ? {
       ...listParams,
       ...urlParamsSearch,
       ...paramsSearch.listParams,
+      pageSize: clientWidth >= 1920 ? 20 : 10,
     } : {
       ...listParams,
       ...urlParamsSearch,
+      pageSize: clientWidth >= 1920 ? 20 : 10,
     };
     if(paramsSearch.listParams) {
       changeStore({
