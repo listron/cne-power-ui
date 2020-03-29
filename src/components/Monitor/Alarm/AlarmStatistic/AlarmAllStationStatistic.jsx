@@ -49,43 +49,43 @@ class ALarmAllStationStatistic extends React.Component {
     }
   }
 
-  onChangeFilter = (obj) => {
-    const { stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
-    const filter = {
-      stationType,
-      stationCode,
-      startTime,
-      endTime,
-      pageSize,
-      pageNum,
-      orderField,
-      orderCommand,
-    };
-    const newFilter = { ...filter, ...obj, pageNum: 1 };
-    if ((obj.stationCode && obj.stationCode.length > 0)) { // 选择电站为空时不发请求
-      this.props.getStationsAlarmStatistic(newFilter);
-    }else{
-      this.props.changeAlarmStatisticStore({
-        stationCode: [],
-        alarmStatistic: [],
-        allChartLoading: false,
-      });
-    }
-  }
+  // onChangeFilter = (obj) => {
+  //   const { stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
+  //   const filter = {
+  //     stationType,
+  //     stationCode,
+  //     startTime,
+  //     endTime,
+  //     pageSize,
+  //     pageNum,
+  //     orderField,
+  //     orderCommand,
+  //   };
+  //   const newFilter = { ...filter, ...obj, pageNum: 1 };
+  //   if ((obj.stationCode && obj.stationCode.length > 0)) { // 选择电站为空时不发请求
+  //     this.props.getStationsAlarmStatistic(newFilter);
+  //   }else{
+  //     this.props.changeAlarmStatisticStore({
+  //       stationCode: [],
+  //       alarmStatistic: [],
+  //       allChartLoading: false,
+  //     });
+  //   }
+  // }
 
-  onTableChange = (params) => {
-    const { stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
-    const filter = {
-      stationType,
-      stationCode,
-      startTime,
-      endTime,
-      pageSize,
-      pageNum,
-      orderField,
-      orderCommand,
-    };
-  }
+  // onTableChange = (params) => {
+  //   const { stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
+  //   const filter = {
+  //     stationType,
+  //     stationCode,
+  //     startTime,
+  //     endTime,
+  //     pageSize,
+  //     pageNum,
+  //     orderField,
+  //     orderCommand,
+  //   };
+  // }
 
   onChangeStation = (stationCode) => {
     this.props.history.push(`/monitor/alarm/statistic/${stationCode}`);
@@ -112,7 +112,9 @@ class ALarmAllStationStatistic extends React.Component {
     // const { stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
     this.props.changeAlarmStatisticStore({
       stationType: activeKey,
-      stationCode: [],
+      stationCode: [],
+      alarmStatistic: [],
+      allChartLoading: false,
     });
     // this.props.getStationsAlarmStatistic({
     //   stationType: activeKey,
@@ -132,7 +134,7 @@ class ALarmAllStationStatistic extends React.Component {
         <i className="iconfont icon-filter"></i>
       </div>
     );
-    const { stationType, stations, changeAlarmStatisticStore, stationCode } = this.props;
+    const { stationType, stations, changeAlarmStatisticStore } = this.props;
     const { showStationSelect } = this.state;
     const stationTypeOne = this.stationIsOneType();
     return (
@@ -140,14 +142,17 @@ class ALarmAllStationStatistic extends React.Component {
         {stationTypeOne ?
           <div className={styles.AlarmStatisticByTypeBox} >
             <div className={styles.singleAlarmFilter} >{operations}</div>
-            <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="station" />
+            <AlarmStatisticByType
+              {...this.props}
+              // onChangeFilter={this.onChangeFilter}
+              graphId="station" />
           </div>
           :
           <Tabs type="card" activeKey={stationType} tabBarExtraContent={operations} onChange={this.queryTargetData} >
             <TabPane tab="风电" key="0">
               <AlarmStatisticByType
                 {...this.props}
-                onChangeFilter={this.onChangeFilter}
+                // onChangeFilter={this.onChangeFilter}
                 graphId="windStation"
                 stations={this.props.stations.filter(item => item.get('stationType') === 0)}
               />
@@ -155,9 +160,9 @@ class ALarmAllStationStatistic extends React.Component {
             <TabPane tab="光伏" key="1">
               <AlarmStatisticByType
                 {...this.props}
-                onChangeFilter={this.onChangeFilter}
+                // onChangeFilter={this.onChangeFilter}
                 graphId="pvStation"
-                onTableChange={this.onTableChange}
+                // onTableChange={this.onTableChange}
                 stations={this.props.stations.filter(item => item.get('stationType') === 1)}
               />
             </TabPane>
@@ -168,7 +173,8 @@ class ALarmAllStationStatistic extends React.Component {
             changeAlarmStatisticStore={changeAlarmStatisticStore}
             stations={stations}
             onClose={() => this.setState({ showStationSelect: false })}
-            onChangeStation={this.onChangeStation} />}
+            onChangeStation={this.onChangeStation}
+          />}
       </div>
     );
   }

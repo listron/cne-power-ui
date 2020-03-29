@@ -38,9 +38,7 @@ class AlarmStationSelectModal extends Component {
 
   onOk = () => {
     if(this.state.stationCode !== '') {
-      this.props.changeAlarmStatisticStore({
-        allChartLoading: false,
-      });
+      this.props.changeAlarmStatisticStore({ allChartLoading: false });
       this.props.onChangeStation(this.state.stationCode);
       this.props.onClose();
     }

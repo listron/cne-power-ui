@@ -39,7 +39,7 @@ const alarmStatisticReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('loading', false);
     case alarmAction.changeAlarmStatisticStore:
       return state.merge(Immutable.fromJS(action.payload));
-    case alarmAction.RESET_ALARM_STATISTIC:
+    case alarmAction.RESET_ALARM_STATISTIC_SAGA:
       return initState;
   }
   return state;

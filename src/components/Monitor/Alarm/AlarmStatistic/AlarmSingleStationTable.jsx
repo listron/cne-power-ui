@@ -14,17 +14,32 @@ class AlarmSingleStationTable extends React.Component {
     pageSize: PropTypes.number,
     orderField: PropTypes.string,
     orderCommand: PropTypes.string,
-    onChangeFilter: PropTypes.func,
+    stationType: PropTypes.string,
+    stationCode: PropTypes.array,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    // onChangeFilter: PropTypes.func,
     onPaginationChange: PropTypes.func,
-    singleChartLoading: false,
+    getStationsAlarmStatistic: PropTypes.func,
+    changeAlarmStatisticStore: PropTypes.func,
+    singleChartLoading: PropTypes.bool,
   }
 
   onChangeTable = (pagination, filters, sorter) => {
+    const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, startTime, endTime, pageSize, pageNum } = this.props;
     const field = sorter.field;
     const arr = ['time', 'alarmNum', 'transferWorkAlarmNum', 'noTransferWorkAlarmNum', 'transferWorkRate'];
-    this.props.onChangeFilter({
+    // this.props.onChangeFilter({
+    //   orderField: (arr.indexOf(field) + 1).toString(),
+    //   orderCommand: sorter.order === 'ascend' ? '1' : '2',
+    // });
+    changeAlarmStatisticStore({
       orderField: (arr.indexOf(field) + 1).toString(),
       orderCommand: sorter.order === 'ascend' ? '1' : '2',
+    });
+
+    getStationsAlarmStatistic({
+      stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField: (arr.indexOf(field) + 1).toString(), orderCommand: sorter.order === 'ascend' ? '1' : '2',
     });
   }
 

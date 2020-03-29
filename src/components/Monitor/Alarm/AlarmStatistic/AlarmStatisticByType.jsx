@@ -5,7 +5,7 @@ import { Button, Icon, Tabs, DatePicker, Select } from 'antd';
 import styles from './alarmStatistic.scss';
 import AlarmStatisticTable from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticTable.jsx';
 import AlarmStatisticGraph from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticGraph.jsx';
-import StationFilter from '../AlarmFilter/StationFilter';
+import StationFilter from './StationFilter';
 import { handleRight } from '@utils/utilFunc';
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
@@ -22,9 +22,11 @@ class AlarmStatisticByType extends Component {
     orderCommand: PropTypes.string,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
-    onChangeFilter: PropTypes.func,
     exportAlarm: PropTypes.func,
-    onTableChange: PropTypes.func,
+    changeAlarmStatisticStore: PropTypes.func,
+    getStationsAlarmStatistic: PropTypes.func,
+    // onTableChange: PropTypes.func,
+    // onChangeFilter: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -49,31 +51,63 @@ class AlarmStatisticByType extends Component {
 
   //改变时间的
   onChangeTime = (value, dateString) => {
-    const startTime = dateString[0];
-    const endTime = dateString[1];
-    this.props.onChangeFilter({
-      startTime,
-      endTime,
-    });
+    const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, pageSize, pageNum, orderField, orderCommand } = this.props;
+    const startDate = dateString[0];
+    const endDate = dateString[1];
+    // this.props.onChangeFilter({
+    //   startTime,
+    //   endTime,
+    // });
+    changeAlarmStatisticStore({ startTime: startDate, endTime: endDate });
+    if (stationCode.length > 0) {
+      getStationsAlarmStatistic({ stationType, stationCode, startTime: startDate, endTime: endDate, pageSize, pageNum, orderField, orderCommand });
+    }
   }
 
   //设置tabs按钮的
   onChangeTab = (key) => {
-    const { pageSize, pageNum, orderField, orderCommand } = this.props;
+    const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
     if (key === 'graph') {
-      this.props.onChangeFilter({
+      // this.props.onChangeFilter({
+      //   pageSize: null,
+      //   pageNum: null,
+      //   orderField: '',
+      //   orderCommand: '',
+      // });
+      changeAlarmStatisticStore({
         pageSize: null,
         pageNum: null,
         orderField: '',
         orderCommand: '',
       });
+      if (stationCode.length > 0) {
+        getStationsAlarmStatistic({ stationType, stationCode, startTime, endTime, pageSize: '', pageNum: '', orderField: '', orderCommand: '' });
+      }
     } else if (key === 'table') {
-      this.props.onChangeFilter({
+      // this.props.onChangeFilter({
+      //   pageSize: pageSize !== null ? pageSize : 10,
+      //   pageNum: pageNum !== null ? pageNum : 1,
+      //   orderField: orderField !== '' ? orderField : '',
+      //   orderCommand: orderField !== '' ? orderCommand : '',
+      // });
+      changeAlarmStatisticStore({
         pageSize: pageSize !== null ? pageSize : 10,
         pageNum: pageNum !== null ? pageNum : 1,
         orderField: orderField !== '' ? orderField : '',
         orderCommand: orderField !== '' ? orderCommand : '',
       });
+      if (stationCode.length > 0) {
+        getStationsAlarmStatistic({
+          stationType,
+          stationCode,
+          startTime,
+          endTime,
+          pageSize: pageSize !== null ? pageSize : 10,
+          pageNum: pageNum !== null ? pageNum : 1,
+          orderField: orderField !== '' ? orderField : '',
+          orderCommand: orderField !== '' ? orderCommand : '',
+        });
+      }
     }
     this.setState({ key });
   }
@@ -81,27 +115,36 @@ class AlarmStatisticByType extends Component {
 
   //筛选时间，出现日期框
   onChangeDuration = (value) => {
-    let startTime, endTime;
+    const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, pageSize, pageNum, orderField, orderCommand } = this.props;
+    let startDate, endDate;
     if (value === 'other') {
       this.onFilterShowChange('timeSelect');
     } else {
       if (value === 'today') {
-        startTime = moment().hour(0).minute(0).second(0).utc().format();
-        endTime = moment().utc().format();
+        startDate = moment().hour(0).minute(0).second(0).utc().format();
+        endDate = moment().utc().format();
       } else if (value === 'yesterday') {
-        startTime = moment().subtract(1, 'days').hour(0).minute(0).second(0).utc().format();
-        endTime = moment().subtract(1, 'days').hour(23).minute(59).second(59).utc().format();
+        startDate = moment().subtract(1, 'days').hour(0).minute(0).second(0).utc().format();
+        endDate = moment().subtract(1, 'days').hour(23).minute(59).second(59).utc().format();
       } else if (value === 'last7') {
-        startTime = moment().subtract(7, 'days').hour(0).minute(0).second(0).utc().format();
-        endTime = moment().utc().format();
+        startDate = moment().subtract(7, 'days').hour(0).minute(0).second(0).utc().format();
+        endDate = moment().utc().format();
       } else if (value === 'last30') {
-        startTime = moment().subtract(30, 'days').hour(0).minute(0).second(0).utc().format();
-        endTime = moment().utc().format();
+        startDate = moment().subtract(30, 'days').hour(0).minute(0).second(0).utc().format();
+        endDate = moment().utc().format();
       }
-      this.props.onChangeFilter({
-        startTime,
-        endTime,
+      // this.props.onChangeFilter({
+      //   startTime,
+      //   endTime,
+      // });
+      changeAlarmStatisticStore({
+        startTime: startDate,
+        endTime: endDate,
       });
+
+      if (stationCode.length > 0) {
+        getStationsAlarmStatistic({ stationType, stationCode, startTime: startDate, endTime: endDate, pageSize, pageNum, orderField, orderCommand });
+      }
     }
   }
   onCalendarChange = (dates) => {
@@ -177,7 +220,10 @@ class AlarmStatisticByType extends Component {
             tab={<i className="iconfont icon-table"></i>}
             key="table"
           >
-            <AlarmStatisticTable {...this.props} onTableChange={this.props.onTableChange} />
+            <AlarmStatisticTable
+              {...this.props}
+              // onTableChange={this.props.onTableChange}
+            />
           </TabPane>
         </Tabs>
       </div>

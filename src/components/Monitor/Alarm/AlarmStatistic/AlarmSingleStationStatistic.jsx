@@ -28,7 +28,6 @@ class ALarmSingleStationStatistic extends React.Component {
     summaryType: PropTypes.number,
     getSingleStationAlarmStatistic: PropTypes.func,
     changeAlarmStatisticStore: PropTypes.func,
-    showPage: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -102,7 +101,6 @@ class ALarmSingleStationStatistic extends React.Component {
   onChangeTime = (value, dateString) => {
     const startTime = moment(dateString[0]).utc().format();
     const endTime = moment(dateString[1]).endOf('day').utc().format();
-    console.log('endTime: ', endTime);
     this.onChangeFilter({
       startTime,
       endTime,
