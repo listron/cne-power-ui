@@ -15,6 +15,7 @@ class AlarmStatisticTable extends React.Component {
     stationDataList: PropTypes.array,
     alarmStatistic: PropTypes.array,
     onTableChange: PropTypes.func,
+    allChartLoading: PropTypes.bool,
   }
   constructor(props) {
     super(props);
@@ -136,7 +137,7 @@ class AlarmStatisticTable extends React.Component {
     return columns;
   }
   render() {
-    const { alarmStatistic, pageNum, pageSize } = this.props;
+    const { alarmStatistic, pageNum, pageSize, allChartLoading } = this.props;
     const totalNum = alarmStatistic.length;
     const startRow = (pageNum - 1) * pageSize;
     let endRow = pageNum * pageSize;
@@ -151,6 +152,7 @@ class AlarmStatisticTable extends React.Component {
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table
+          loading={allChartLoading}
           columns={this.renderColumn()}
           dataSource={data}
           onChange={this.onChangeTable}

@@ -16,6 +16,7 @@ class AlarmSingleStationTable extends React.Component {
     orderCommand: PropTypes.string,
     onChangeFilter: PropTypes.func,
     onPaginationChange: PropTypes.func,
+    singleChartLoading: false,
   }
 
   onChangeTable = (pagination, filters, sorter) => {
@@ -68,7 +69,7 @@ class AlarmSingleStationTable extends React.Component {
   }
 
   render() {
-    const { singleAlarmStatistic, pageNum, pageSize, onPaginationChange } = this.props;
+    const { singleAlarmStatistic, pageNum, pageSize, onPaginationChange, singleChartLoading } = this.props;
     const totalNum = singleAlarmStatistic && singleAlarmStatistic.length;
     const startRow = (pageNum - 1) * pageSize;
     let endRow = pageNum * pageSize;
@@ -83,6 +84,7 @@ class AlarmSingleStationTable extends React.Component {
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={onPaginationChange} />
         </div>
         <Table
+          loading={singleChartLoading}
           columns={this.renderColumn()}
           dataSource={data}
           onChange={this.onChangeTable}

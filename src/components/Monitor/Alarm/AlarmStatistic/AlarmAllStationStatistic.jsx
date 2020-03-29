@@ -62,12 +62,14 @@ class ALarmAllStationStatistic extends React.Component {
       orderCommand,
     };
     const newFilter = { ...filter, ...obj, pageNum: 1 };
-    if (obj.stationCode.length > 0) { // 选择电站为空时不发请求
-        this.props.getStationsAlarmStatistic(newFilter);
-      }else{
-        this.props.changeAlarmStatisticStore({
-          stationCode: [],
-        });
+    if ((obj.stationCode && obj.stationCode.length > 0)) { // 选择电站为空时不发请求
+      this.props.getStationsAlarmStatistic(newFilter);
+    }else{
+      this.props.changeAlarmStatisticStore({
+        stationCode: [],
+        alarmStatistic: [],
+        allChartLoading: false,
+      });
     }
   }
 
@@ -130,7 +132,7 @@ class ALarmAllStationStatistic extends React.Component {
         <i className="iconfont icon-filter"></i>
       </div>
     );
-    const { stationType, stations, changeAlarmStatisticStore } = this.props;
+    const { stationType, stations, changeAlarmStatisticStore, stationCode } = this.props;
     const { showStationSelect } = this.state;
     const stationTypeOne = this.stationIsOneType();
     return (
