@@ -44,10 +44,9 @@ class DefectDetail extends Component {
     const { search } = history.location;
     const main = document.getElementById('main');
     main.addEventListener('scroll', this.bindScroll);
-    const { page = 'defectDetail', docketId, isFinish, eventId = ['499876992733094', '499876992732672', '499876992732928'] } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
-    const stationCode = 360;
+    const { page = 'defectDetail', docketId, isFinish, eventId, stationCode } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
     if (docketId) {
-      // getDefectMessage 可执行动作 基础信息 缺陷事件 处理信息 流程信息
+      // 510036770215424 510036694717952 532
       this.props.getDefectMessage({ docketId });
       this.props.changeStore({ docketId });
     }
@@ -62,9 +61,10 @@ class DefectDetail extends Component {
       });
       this.props.showUser();
     }
-    if (isFinish === '3') { // 派发
-      this.props.changeStore({ stationCode });
-      this.props.getDiagwarning({ diagWarningIds: eventId });
+    if (isFinish === '3' && eventId) { // 派发
+      const curEventId = eventId.replace(/\[|]/g, '');
+      this.props.changeStore({ stationCode: +stationCode });
+      this.props.getDiagwarning({ diagWarningIds: curEventId.split(',') });
       this.props.getBaseUsername({ stationCode }); // 当前电站有权限的人
     }
   }
@@ -154,6 +154,7 @@ const mapDispatchToProps = (dispatch) => ({
   getBaseUsername: payload => dispatch({ type: eliminateDefectDetailAction.getBaseUsername, payload }),
   getDiagwarning: payload => dispatch({ type: eliminateDefectDetailAction.getDiagwarning, payload }),
   showUser: payload => dispatch({ type: eliminateDefectDetailAction.showUser, payload }),
+  delEvent: payload => dispatch({ type: eliminateDefectDetailAction.delEvent, payload }),
   getDeviceType: params => dispatch({ //  获取某一个电站下的设备
     type: publicAction.getDeviceType,
     payload: {

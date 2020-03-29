@@ -18,7 +18,6 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
   const stateArr = [{ name: '已解决', value: 'yijie' }, { name: '未解决', value: 'weijie' }, { name: '忽略', value: 'hulue' }];
   const delEvent = () => {
     changeVisible(true);
-    delChange(diagWarningId);
   };
   const handleChane = (value) => { // 状态改变的时候
     changeState(value);
@@ -28,10 +27,12 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
 
   const onConfirm = () => { // 只有在 待领取 事件派发 的页面缺陷事件才可以删除 
     console.log('请求数据，去删除');
+    delChange(diagWarningId);
   };
 
   const onCancel = () => {
     changeVisible(false);
+
   };
 
   return (
