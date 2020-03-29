@@ -170,10 +170,6 @@ export default class DefectTable extends Component {
     this.props.getDefectList({ ...newListParams });
   }
 
-
-  onPicChange = (imgs) => this.setState({ imgs })
-  onVideoChange = (videos) => this.setState({ videos })
-
   render() {
     const { tableListHeight, imgs, videos } = this.state;
     const { defectListData, listParams, listLoading } = this.props;

@@ -24,6 +24,7 @@ const eliminateDefectDetailAction = {
   getDiagwarning: Symbol('getDiagwarning'),
   showUser: Symbol('showUser'),
   resetCont: Symbol('resetCont'),
+  delEvent: Symbol('delEvent'),
 };
 
 const initState = immutable.fromJS({

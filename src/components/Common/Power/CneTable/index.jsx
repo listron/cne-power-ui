@@ -30,14 +30,14 @@ class CneTable extends PureComponent {
     showHeaderShadow: false,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { scroll } = this.props;
     if (scroll && scroll.y) { // 顶部冻结
       this.tableScrollWatching();
     }
   }
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     const scroll = this.props.scroll || {};
     const preScroll = prevProps.scroll || {};
     if (!preScroll.y && scroll.y > 0) {
@@ -54,7 +54,7 @@ class CneTable extends PureComponent {
 
   tableScrollWatching = () => {
     const tableScrollBody = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-body');
-      tableScrollBody && tableScrollBody.addEventListener('scroll', this.shadowFixed);
+    tableScrollBody && tableScrollBody.addEventListener('scroll', this.shadowFixed);
   }
 
   tableUnWatching = () => {
@@ -73,7 +73,7 @@ class CneTable extends PureComponent {
     }
   }
 
-  render(){
+  render() {
     const {
       theme = 'light',
       className, sortField, sortMethod, columns, dataError, noMoreDataPic,
@@ -110,7 +110,7 @@ class CneTable extends PureComponent {
             emptyText: dataError ? <img
               width="84" height="77" src="/img/datawrong.png"
             /> : <img width="223" height="164" src="/img/nodata.png"
-            />,
+              />,
           }}
           pagination={false}
           {...rest}
@@ -125,7 +125,7 @@ class CneTable extends PureComponent {
           emptyText: dataError ? <img
             width="84" height="77" src="/img/datawrong.png"
           /> : <img width="223" height="164" src="/img/nodata.png"
-          />,
+            />,
         }}
         pagination={false}
         {...rest}
