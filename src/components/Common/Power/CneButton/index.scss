@@ -5,17 +5,35 @@
   .cnebtn{
     font-size: 14px;
   }
+  .short{
+    width: 92px;
+  }
+  .long{
+    width: 162px;
+  }
 }
 
 @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
   .cnebtn{
     font-size: 16px;
   }
+  .short{
+    width: 92px;
+  }
+  .long{
+    width: 162px;
+  }
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
   .cnebtn{
     font-size: 18px;
+  }
+  .short{
+    width: 102px;
+  }
+  .long{
+    width: 182px;
   }
 }
 
@@ -48,13 +66,13 @@
   }
 }
 
-.cnebtn[disabled]{
-  background:#f1f1f1 !important;
-  border:1px solid #d4d4d4 !important;
-  box-shadow:inset 1px 1px 0 0 #ffffff !important;
-  pointer-events: none;
-  color:#999999 !important;
-
+.hasIcon{
+  display: flex;
+  :global{
+    .iconfont{
+      
+    }
+  }
 }
 
 .cnebtn.light{
@@ -64,6 +82,17 @@
   color: $themeColor;
   &:after {
     background: #ceebe0;
+  }
+}
+
+.cnebtn:disabled{
+  background:#f1f1f1;
+  border:1px solid #d4d4d4;
+  box-shadow:inset 1px 1px 0 0 #ffffff;
+  cursor: not-allowed;
+  color:#999999;
+  &:after{
+    display: none;
   }
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './index.scss';
 
@@ -11,12 +11,42 @@ import styles from './index.scss';
  */
 
 export default function CneButton ({ ...props }) {
-  const { theme = 'light', className, children, ...rest } = props;
+  const {
+    theme = 'light',
+    className, children, disabled,
+    iconname, antdIcon, lengthMode,
+    ...rest
+  } = props;
+  const lengthInfo = {
+    short: styles.short, // 默认
+    long: styles.long,
+  }
+  // const size
+  // iconname - iconfont
+  // antdIcon - antd 图标
+  // 图标的位置自动化
+  // button按钮宽度自适应
+  // button按钮支持长短模式;
+  let baseClassName = `${styles[theme]} ${styles.cnebtn} ${className || ''}`;
+  if (lengthMode) {
+    baseClassName = `${baseClassName} ${lengthInfo[lengthMode] || styles.short}`;
+  }
+  if (iconname || antdIcon) {
+    baseClassName = `${baseClassName} ${styles.hasIcon}`;
+  }
+  if (disabled) {
+    rest.onClick = null;
+  }
   return (
     <Button
-      className={`${styles[theme]} ${styles.cnebtn} ${className || ''}`}
+      className={baseClassName}
       {...rest}
-    >{children}</Button>
+      disabled
+    >
+      {iconname && <span className={`iconfont ${iconname}`} />}
+      {antdIcon && <Icon className="iconfont" type={antdIcon} />}
+      {children}
+    </Button>
   );
 }
 
@@ -28,4 +58,8 @@ CneButton.propTypes = {
   className: PropTypes.string,
   columns: PropTypes.array,
   children: PropTypes.any,
+  disabled: PropTypes.bool,
+  iconname: PropTypes.string,
+  antdIcon: PropTypes.string,
+  lengthMode: PropTypes.string
 };
