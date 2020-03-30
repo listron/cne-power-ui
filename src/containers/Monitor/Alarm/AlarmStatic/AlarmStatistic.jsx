@@ -23,6 +23,17 @@ class ALarmStatistic extends Component {
     super(props);
   }
 
+  componentDidMount(){
+    const pathname = this.props.location.pathname;
+    const stationCode = pathname.split('/')[4];
+    if (stationCode) {
+      this.props.changeAlarmStatisticStore({
+        showPage: 'single',
+        singleStationCode: stationCode.toString(),
+      });
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     const pathname = nextProps.location.pathname;
     const stationCode = pathname.split('/')[4];

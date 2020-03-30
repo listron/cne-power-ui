@@ -54,6 +54,7 @@ class ALarmSingleStationStatistic extends React.Component {
         orderField,
         orderCommand,
       });
+      this.props.history.push(`/monitor/alarm/statistic/${singleStationCode}`);
     }
   }
 
@@ -71,6 +72,7 @@ class ALarmSingleStationStatistic extends React.Component {
         orderField,
         orderCommand,
       });
+      this.props.history.push(`/monitor/alarm/statistic/${singleStationCode}`);
     }
   }
 
@@ -86,8 +88,8 @@ class ALarmSingleStationStatistic extends React.Component {
     const { pageSize } = this.state;
     const filter = {
       stationCode: singleStationCode,
-      startTime,
-      endTime,
+      // startTime,
+      // endTime,
       summaryType,
       pageSize,
       orderField,
@@ -155,11 +157,11 @@ class ALarmSingleStationStatistic extends React.Component {
         startTime = moment().subtract(1, 'days').hour(0).minute(0).second(0).utc().format();
         endTime = moment().subtract(1, 'days').hour(23).minute(59).second(59).utc().format();
       } else if (value === 'last7') {
-        startTime = moment().subtract(7, 'days').utc().format();
-        endTime = moment().utc().format();
+        startTime = moment().subtract(6, 'days').hour(0).minute(0).second(0).utc().format();
+        endTime = moment().hour(23).minute(59).second(59).utc().format();
       } else if (value === 'last30') {
-        startTime = moment().subtract(30, 'days').utc().format();
-        endTime = moment().utc().format();
+        startTime = moment().subtract(29, 'days').hour(0).minute(0).second(0).utc().format();
+        endTime = moment().hour(23).minute(59).second(59).utc().format();
       }
       this.onChangeFilter({
         startTime,

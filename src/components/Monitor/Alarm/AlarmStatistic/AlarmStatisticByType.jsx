@@ -127,10 +127,10 @@ class AlarmStatisticByType extends Component {
         startDate = moment().subtract(1, 'days').hour(0).minute(0).second(0).utc().format();
         endDate = moment().subtract(1, 'days').hour(23).minute(59).second(59).utc().format();
       } else if (value === 'last7') {
-        startDate = moment().subtract(7, 'days').hour(0).minute(0).second(0).utc().format();
+        startDate = moment().subtract(6, 'days').hour(0).minute(0).second(0).utc().format();
         endDate = moment().utc().format();
       } else if (value === 'last30') {
-        startDate = moment().subtract(30, 'days').hour(0).minute(0).second(0).utc().format();
+        startDate = moment().subtract(29, 'days').hour(0).minute(0).second(0).utc().format();
         endDate = moment().utc().format();
       }
       // this.props.onChangeFilter({

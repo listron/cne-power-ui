@@ -12,16 +12,16 @@ class AlarmStatisticTable extends React.Component {
     pageSize: PropTypes.number,
     orderField: PropTypes.string,
     orderCommand: PropTypes.string,
-    stationDataList: PropTypes.array,
     alarmStatistic: PropTypes.array,
     allChartLoading: PropTypes.bool,
     stationType: PropTypes.string,
     stationCode: PropTypes.array,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
-    onTableChange: PropTypes.func,
     getStationsAlarmStatistic: PropTypes.func,
     changeAlarmStatisticStore: PropTypes.func,
+    // stationDataList: PropTypes.array,
+    // onTableChange: PropTypes.func,
     // onChangeFilter: PropTypes.func,
   }
   constructor(props) {
@@ -29,10 +29,21 @@ class AlarmStatisticTable extends React.Component {
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    this.props.onTableChange({
-      pageNum: currentPage,
-      pageSize,
-    });
+    // this.props.onTableChange({
+    //   pageNum: currentPage,
+    //   pageSize,
+    // });
+    const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, startTime, endTime, orderField, orderCommand } = this.props;
+    if (stationCode.length > 0) {
+      changeAlarmStatisticStore({
+        pageNum: currentPage,
+        pageSize,
+      });
+
+      getStationsAlarmStatistic({
+        stationType, stationCode, startTime, endTime, pageSize, pageNum: currentPage, orderField, orderCommand,
+      });
+    }
   }
 
   onChangeTable = (pagination, filters, sorter) => {

@@ -88,13 +88,13 @@ class ALarmAllStationStatistic extends React.Component {
   // }
 
   onChangeStation = (stationCode) => {
-    this.props.history.push(`/monitor/alarm/statistic/${stationCode}`);
     this.props.changeAlarmStatisticStore({
       showPage: 'single',
+      allChartLoading: false,
       singleStationCode: stationCode.toString(),
     });
+    // this.props.history.push(`/monitor/alarm/statistic/${stationCode}`);
   }
-
 
   stationIsOneType() {
     const { stations } = this.props;
@@ -134,7 +134,7 @@ class ALarmAllStationStatistic extends React.Component {
         <i className="iconfont icon-filter"></i>
       </div>
     );
-    const { stationType, stations, changeAlarmStatisticStore } = this.props;
+    const { stationType, stations } = this.props;
     const { showStationSelect } = this.state;
     const stationTypeOne = this.stationIsOneType();
     return (
@@ -170,7 +170,6 @@ class ALarmAllStationStatistic extends React.Component {
         }
         {showStationSelect &&
           <AlarmStationSelectModal
-            changeAlarmStatisticStore={changeAlarmStatisticStore}
             stations={stations}
             onClose={() => this.setState({ showStationSelect: false })}
             onChangeStation={this.onChangeStation}

@@ -9,7 +9,7 @@ class AlarmStationSelectModal extends Component {
     stations: PropTypes.object,
     onClose: PropTypes.func,
     onChangeStation: PropTypes.func,
-    changeAlarmStatisticStore: PropTypes.func,
+    // changeAlarmStatisticStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -38,7 +38,7 @@ class AlarmStationSelectModal extends Component {
 
   onOk = () => {
     if(this.state.stationCode !== '') {
-      this.props.changeAlarmStatisticStore({ allChartLoading: false });
+      // this.props.changeAlarmStatisticStore({ allChartLoading: false });
       this.props.onChangeStation(this.state.stationCode);
       this.props.onClose();
     }
