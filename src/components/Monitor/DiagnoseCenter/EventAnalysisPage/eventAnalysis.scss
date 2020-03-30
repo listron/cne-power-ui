@@ -244,7 +244,7 @@
         height: 30px;
         line-height: 30px;
       }
-      .eachItem, .warnedItem{
+      .eachItem, .warnedItem, .specialWarnedItem{
         height: 24px;
         margin-bottom: 0;
         display: flex;
@@ -443,7 +443,7 @@
       .tooltipTitle{
         color: #fff;
       }
-      .eachItem, .warnedItem{
+      .eachItem, .warnedItem, .specialWarnedItem{
         .barRect{
           background-color: #7D8C87;
         }
@@ -461,6 +461,11 @@
       .warnedItem{
         .tipName, .tipValue{
           color: #f5222d;
+        }
+      }
+      .specialWarnedItem{
+        .tipName, .tipValue{
+          color: #f9b600;
         }
       }
     }

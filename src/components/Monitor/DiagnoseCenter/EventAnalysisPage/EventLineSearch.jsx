@@ -12,6 +12,7 @@ class EventLineSearch extends PureComponent {
     getEventsAnalysis: PropTypes.func,
     changeStore: PropTypes.func,
     isNoDataTip: PropTypes.bool,
+    pageKey: PropTypes.string,
   };
 
   state = {
@@ -51,13 +52,13 @@ class EventLineSearch extends PureComponent {
     const { analysisEvent } = this.props;
     const { beginTime } = analysisEvent || {};
     const newMonthStr = moment(beginTime)[method](1, 'day').format('YYYY-MM-DD');
-    this.props.getEventsAnalysis({ ...analysisEvent, beginTime: newMonthStr });
+    this.props.getEventsAnalysis({ ...analysisEvent, beginTime: newMonthStr, isDataTip: true });
   }
 
   disabledDateFunc = (cur) => moment().isBefore(cur, 'day')
 
   render(){
-    const { analysisEvent } = this.props;
+    const { analysisEvent, pageKey } = this.props;
     const { showNoDataTip } = this.state;
     const { beginTime, interval, eventCode } = analysisEvent || {};
     const noSecondEvent = ['NB1038', 'NB1040', 'NB1036', 'NB1037', 'NB2035', 'NB2036'].includes(eventCode); // 电压异常、并网延时、组串低效、固定物遮挡、高值异常、低值异常没有5秒数据
@@ -75,7 +76,7 @@ class EventLineSearch extends PureComponent {
             >
               <Option value={1}>10分钟</Option>
               <Option value={3}>1分钟</Option>
-              {!noSecondEvent && <Option value={2}>5秒钟</Option> }
+              {(!noSecondEvent && pageKey !== 'data') && <Option value={2}>5秒钟</Option> }
             </Select>
             <Icon className={styles.leftIcon} type="left" onClick={this.prevDay} />
             <DatePicker
