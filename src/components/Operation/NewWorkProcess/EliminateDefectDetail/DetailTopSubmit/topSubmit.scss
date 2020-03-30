@@ -49,7 +49,7 @@
         align-items: center;
       }
     }
-    .handleButton[color-code='3004'],.handleButton[color-code='3006']{
+    .handleButton[color-code='3004']:not(:disabled),.handleButton[color-code='3006']:not(:disabled){
         background:rgba(255,218,175,0.40);
         border: 1px solid #ff9900;
         box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
