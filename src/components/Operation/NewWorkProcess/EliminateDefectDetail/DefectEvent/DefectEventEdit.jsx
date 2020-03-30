@@ -82,7 +82,11 @@ export default class DefectEvenrEdit extends Component {
   }
 
   selectedDevice = (value) => {
-    console.log('value', value);
+    if (value.length > 0) {
+      const { deviceCode, deviceName } = value[0];
+      const { record, onChange } = this.props;
+      onChange({ index: record.index, deviceFullcode: deviceCode, deviceName });
+    }
   }
 
 
@@ -164,7 +168,7 @@ export default class DefectEvenrEdit extends Component {
               </div>
               <div className={styles.deviceName}>
                 <div className={styles.recordName}>设备名称 <span className={styles.star}>*</span></div>
-                <Select
+                {/* <Select
                   placeholder={'请选择'}
                   onChange={this.changeDeviceName}
                   disabled={!deviceTypeCode}
@@ -179,15 +183,16 @@ export default class DefectEvenrEdit extends Component {
                       title={e.deviceName}
                     >{e.deviceName}
                     </Option>))}
-                </Select>
-                {/* <DeviceSelect
+                </Select> */}
+                <DeviceSelect
                   disabled={!deviceTypeCode}
                   stationCode={stationCode}
                   deviceTypeCode={deviceTypeCode}
-                  // style={{ width: 'auto', minWidth: '198px' }}
+                  value={deviceFullcode && [{ deviceCode: +deviceFullcode, deviceName }] || []}
+                  className={`${styles[this.errorTip('deviceFullcode')]} ${deviceTypeCode && styles[this.initTip('deviceFullcode')]}`}
                   onChange={this.selectedDevice}
                   holderText={'请选择'}
-                /> */}
+                />
               </div>
               <div className={styles.defectLevel} onChange={this.changeDefectLevel}>
                 <div className={styles.recordName}>缺陷级别 <span className={styles.star}>*</span> </div>
