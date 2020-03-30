@@ -62,6 +62,7 @@ class DeviceSelect extends Component {
     partitions: PropTypes.array,
     filterDevices: PropTypes.array,
     filterKey: PropTypes.array,
+    className: PropTypes.string,
 
     getDevices: PropTypes.func, // 自带方法
     getPartition: PropTypes.func,
@@ -191,7 +192,7 @@ class DeviceSelect extends Component {
   }
 
   render() {
-    const { multiple, holderText, disabled, style, devices, deviceShowNumber, disabledDevice } = this.props;
+    const { multiple, holderText, disabled, style, devices, deviceShowNumber, disabledDevice, className } = this.props;
     const { deviceModalShow, autoCompleteDevice, checkedDevice, autoCompleteText } = this.state;
     const checkedDeviceCodes = checkedDevice.map(e => e.deviceCode);
     const deviceShow = checkedDeviceCodes.length > 0 && deviceShowNumber && {
@@ -199,7 +200,7 @@ class DeviceSelect extends Component {
       maxTagPlaceholder: `已选设备${checkedDeviceCodes.length}/${devices.length}`,
     } || {};
     return (
-      <div className={styles.deviceSelect} style={style}>
+      <div className={`${styles.deviceSelect} ${className}`} style={style}>
         {multiple ? <Select
           mode="multiple"
           disabled={disabled}
