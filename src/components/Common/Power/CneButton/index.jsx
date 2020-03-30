@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './index.scss';
 
@@ -11,12 +11,32 @@ import styles from './index.scss';
  */
 
 export default function CneButton ({ ...props }) {
-  const { theme = 'light', className, children, ...rest } = props;
+  const {
+    theme = 'light',
+    className, children,
+    iconname, antdIcon, lengthMode,
+    ...rest
+  } = props;
+  const lengthInfo = {
+    short: styles.short, // 默认
+    long: styles.long,
+  };
+  let baseClassName = `${styles[theme]} ${styles.cnebtn} ${className || ''}`;
+  if (lengthMode) {
+    baseClassName = `${baseClassName} ${lengthInfo[lengthMode] || styles.short}`;
+  }
+  if (iconname || antdIcon) {
+    baseClassName = `${baseClassName} ${styles.hasIcon}`;
+  }
   return (
     <Button
-      className={`${styles[theme]} ${styles.cnebtn} ${className || ''}`}
+      className={baseClassName}
       {...rest}
-    >{children}</Button>
+    >
+      {iconname && <span className={`iconfont ${iconname}`} />}
+      {antdIcon && <Icon className="iconfont" type={antdIcon} />}
+      {children}
+    </Button>
   );
 }
 
@@ -28,4 +48,7 @@ CneButton.propTypes = {
   className: PropTypes.string,
   columns: PropTypes.array,
   children: PropTypes.any,
+  iconname: PropTypes.string,
+  antdIcon: PropTypes.string,
+  lengthMode: PropTypes.string,
 };
