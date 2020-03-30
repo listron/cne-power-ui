@@ -64,11 +64,18 @@ class CneTable extends PureComponent {
 
   shadowFixed = () => {
     const tableScrollBody = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-body');
+    const tableScrollHeader = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-header');
     const { showHeaderShadow } = this.state;
+    console.log(tableScrollHeader.style)
     if (!showHeaderShadow && tableScrollBody && tableScrollBody.scrollTop > 0) { // 滚动开始
+      tableScrollHeader.style.overflowX = 'hidden';
+      tableScrollHeader.style.marginBottom = '0';
+      tableScrollHeader.style.paddingBottom = '0';
       this.setState({ showHeaderShadow: true });
     }
     if (showHeaderShadow && tableScrollBody && tableScrollBody.scrollTop === 0) { // 回到顶部
+      tableScrollHeader.style.overflowX = 'scroll';
+      tableScrollHeader.style.marginBottom = '-17px';
       this.setState({ showHeaderShadow: false });
     }
   }
