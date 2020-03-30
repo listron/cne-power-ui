@@ -107,14 +107,35 @@
     .ant-table-placeholder {
       border-bottom: none;
     }
+    .ant-table-scroll .ant-table-body{ // 滚动样式重置; 
+      &::-webkit-scrollbar{
+        width: 8px;
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      &::-webkit-scrollbar-track{
+        background-color: transparent;
+      }
+    }
+    .ant-table-scroll .ant-table-header{ // 滚动样式重置; 
+      // &::-webkit-scrollbar-thumb{
+      //   background-color: var(--themeColor);
+      // }
+      &::-webkit-scrollbar{
+        width: 8px;
+      }
+      &::-webkit-scrollbar-track{
+        background-color: var(--themeColor);
+      }
+    }
   }
 }
 
 .headShadow{ // 表格顶部冻结 且滚动时 = 头部需有阴影
   :global{
     .ant-table-scroll .ant-table-header{
-      overflow-x: hidden!important;
-      margin-bottom: 0!important;
       box-shadow: 0 4px 2px rgba(0, 0, 0, 0.3);
       position: relative;
       z-index: 99;
