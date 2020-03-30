@@ -28,6 +28,12 @@
     .thead{ // 顶部整体
       display: flex;
       position: relative;
+      &::-webkit-scrollbar{
+        width: 8px;
+      }
+      &::-webkit-scrollbar-track{
+        background-color: var(--themeColor);
+      }
     }
     .head{ // 顶部每个标题
       flex: 1;
@@ -46,6 +52,16 @@
       text-align: center;
       & > img{ // 数据错误 + 暂无数据
         margin: 16px;
+      }
+      &::-webkit-scrollbar{
+        width: 8px;
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      &::-webkit-scrollbar-track{
+        background-color: transparent;
       }
     }
     .row{
