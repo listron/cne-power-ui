@@ -348,11 +348,14 @@
     .ant-select-dropdown-menu-item{
       color: #353535;
       .iconfont{
-        color: #999;
+        color: #999999;
       }
       &:hover:not(.ant-select-dropdown-menu-item-disabled){
-        background-color:rgba(100, 100, 100, 0.3);
+        background-color:rgba(206,235,224,0.30);
         color: #199475;
+        .iconfont{
+          color: #199475;
+        }
       }
     }
   }
