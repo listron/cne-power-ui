@@ -42,6 +42,7 @@
   position: relative;
   border-radius: 2px;
   text-align: center;
+  height: 30px;
   & > *{
     position: relative;
     z-index: 9;
@@ -65,12 +66,23 @@
     opacity: 1;
   }
 }
-
 .hasIcon{
   display: flex;
-  :global{
+  align-items: center;
+  padding-left: 6px;
+  padding-right: 0;
+  text-align: left;
+  & > :nth-child(n){
+    flex: 1;
+    text-align: center;
+  }
+  :global{  
     .iconfont{
-      
+      font-size: 16px;
+      flex: 0 0 auto;
+    }
+    .anticon + span, span + .anticon{ // antd icon 样式覆盖
+      margin-left: 0;
     }
   }
 }
@@ -85,7 +97,7 @@
   }
 }
 
-.cnebtn:disabled{
+.cnebtn.light:disabled{
   background:#f1f1f1;
   border:1px solid #d4d4d4;
   box-shadow:inset 1px 1px 0 0 #ffffff;

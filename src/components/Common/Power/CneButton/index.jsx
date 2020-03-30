@@ -13,20 +13,14 @@ import styles from './index.scss';
 export default function CneButton ({ ...props }) {
   const {
     theme = 'light',
-    className, children, disabled,
+    className, children,
     iconname, antdIcon, lengthMode,
     ...rest
   } = props;
   const lengthInfo = {
     short: styles.short, // 默认
     long: styles.long,
-  }
-  // const size
-  // iconname - iconfont
-  // antdIcon - antd 图标
-  // 图标的位置自动化
-  // button按钮宽度自适应
-  // button按钮支持长短模式;
+  };
   let baseClassName = `${styles[theme]} ${styles.cnebtn} ${className || ''}`;
   if (lengthMode) {
     baseClassName = `${baseClassName} ${lengthInfo[lengthMode] || styles.short}`;
@@ -34,14 +28,10 @@ export default function CneButton ({ ...props }) {
   if (iconname || antdIcon) {
     baseClassName = `${baseClassName} ${styles.hasIcon}`;
   }
-  if (disabled) {
-    rest.onClick = null;
-  }
   return (
     <Button
       className={baseClassName}
       {...rest}
-      disabled
     >
       {iconname && <span className={`iconfont ${iconname}`} />}
       {antdIcon && <Icon className="iconfont" type={antdIcon} />}
@@ -58,8 +48,7 @@ CneButton.propTypes = {
   className: PropTypes.string,
   columns: PropTypes.array,
   children: PropTypes.any,
-  disabled: PropTypes.bool,
   iconname: PropTypes.string,
   antdIcon: PropTypes.string,
-  lengthMode: PropTypes.string
+  lengthMode: PropTypes.string,
 };
