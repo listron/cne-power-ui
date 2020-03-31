@@ -27,6 +27,8 @@ class DefectDetail extends Component {
     getDefectAction: PropTypes.func,
     resetStore: PropTypes.func,
     getDiagwarning: PropTypes.func,
+    showUser: PropTypes.func,
+    getBaseUsername: PropTypes.func,
   };
 
 
@@ -59,7 +61,7 @@ class DefectDetail extends Component {
         }],
         isFinish,
       });
-      this.props.showUser();
+      this.props.showUser(); // 只有新建的时候查看
     }
     if (isFinish === '3' && eventId) { // 派发
       const curEventId = eventId.replace(/\[|]/g, '');

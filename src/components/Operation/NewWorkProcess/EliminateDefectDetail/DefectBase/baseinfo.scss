@@ -76,8 +76,12 @@
   .star{
     color:#df4b33;
   }
+  .infoTitle,.infoContent{
+    display: flex;
+    align-items: center;
+  }
   .infoContent{
-    padding: 0 10px;
+    padding: 0 9px;
     i{
       display: inline-block;
       margin-left: 5px;
@@ -99,6 +103,8 @@
     display: flex;
     flex: 0 0 27%;
     word-break: break-all;
+    line-height: 22px;
+    padding: 9px;
   }
   .createTime, .examiner{
     flex: 0 0 18%;
@@ -107,7 +113,7 @@
     flex: 1 0 18%;
   }
   .descRow{
-    min-height: 80px;
+    // min-height: 80px;
     display: flex;
     .desc, .descTextNum{
       line-height: 40px;
@@ -118,10 +124,14 @@
     .infoContent{
       flex: 1 0;
       padding: 7px 10px;
+      textArea{
+        height: 62px;
+      }
     }
   }
   .docketDesc{
     word-break: break-all;
+    line-height: 22px;
   }
 
   .init{
@@ -177,6 +187,9 @@
       .ant-checkbox + span{
         color: #fff;
       }
+    }
+   .ant-calendar-picker .ant-calendar-picker-icon{
+      color:#999
     }
   }
 }

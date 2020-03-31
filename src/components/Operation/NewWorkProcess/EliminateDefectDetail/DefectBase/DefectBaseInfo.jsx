@@ -106,7 +106,7 @@ export default class DefectBaseInfo extends Component {
   }
 
   disabledDate = (current) => {
-    return current < moment().endOf('day');
+    return current < moment().subtract('1', 'day');
   }
 
   render() {
@@ -114,7 +114,7 @@ export default class DefectBaseInfo extends Component {
     // 额外接收外界参数, 用于调整编辑态输入框的状态(必填, 出错);
     const { isStationEdit, isExpectTimeEdit, isResponsorEdit, isDescEdit } = this.infoEditCreater(editStation);
     const timeFormat = 'YYYY-MM-DD HH:mm';
-    const { operUserInfo = [], stationName } = baseInfo;
+    const { operUserInfo = [] } = baseInfo;
     const { addUsers = [], docketDesc = null, planEndTime = null } = addbaseInfo;
     const addStationCode = addbaseInfo.stationCode;
     const operableUserId = operUserInfo.length > 0 && operUserInfo[0].ableUserIds && operUserInfo[0].ableUserIds.split(',') || [];
