@@ -136,7 +136,11 @@ class EachStationReport extends Component {
             <span className={styles.text}>添加异常</span>
             {hasAbnormal && <i className="iconfont icon-alert_01" />}
           </span>
-          <Icon onClick={this.removeStation} className={styles.removeStation} type="close-circle" theme="outlined" />
+          <span><i
+              className={`${styles.removeStation} iconfont icon-del`}
+              onClick={this.removeStation}
+            /></span>
+          {/* <Icon onClick={this.removeStation} className={styles.removeStation} type="close-circle" theme="outlined" /> */}
         </div>
       </div>
     )

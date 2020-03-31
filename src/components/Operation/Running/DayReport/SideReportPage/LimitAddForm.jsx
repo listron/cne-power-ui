@@ -6,6 +6,7 @@ import { Form, Input, DatePicker, Button,Row,Col, Select } from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
 import DeviceSelect from '../../../../Common/DeviceSelect';
 import moment from 'moment';
+import CneButton from '@components/Common/Power/CneButton';
 const { Option } = Select;
 
 class LimitAddForm extends Component {
@@ -336,8 +337,8 @@ class LimitAddForm extends Component {
         <Row style={{marginTop: '0px'}}>
           <Col span={8}>
             <Form.Item {...tailFormItemLayout}>
-              <Button onClick={this.confirmAddLimit} className={styles.confirmAddFault} >确定</Button>
-              <Button onClick={this.cancelAddLimit} className={styles.cancelAddFault} >取消</Button>
+              <CneButton onClick={this.confirmAddLimit} className={styles.confirmAddFault} >确定</CneButton>
+              <CneButton onClick={this.cancelAddLimit} className={styles.cancelAddFault} >取消</CneButton>
             </Form.Item>
           </Col>
         </Row>

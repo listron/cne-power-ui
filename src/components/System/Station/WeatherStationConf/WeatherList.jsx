@@ -216,15 +216,17 @@ class WeatherList extends Component {
                                 <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
                                     onPaginationChange={this.onPaginationChange} />
                             </div>
-                            <CneTable
-                                className={styles.weatherTable}
-                                loading={loading}
-                                dataSource={weatherData}
-                                columns={weatherOperation ? columns.concat(operateColumn) : columns}
-                                pagination={false}
-                                onChange={this.tableChange}
-                                locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-                            />
+                            <div className={styles.tableBox}>
+                                <CneTable
+                                    className={styles.weatherTable}
+                                    loading={loading}
+                                    dataSource={weatherData}
+                                    columns={weatherOperation ? columns.concat(operateColumn) : columns}
+                                    pagination={false}
+                                    onChange={this.tableChange}
+                                    locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

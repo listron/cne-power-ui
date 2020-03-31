@@ -11,6 +11,7 @@ import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
 import styles from './reportDetail.scss';
 import { reportBasefun } from '../reportBaseFun';
+import CneButton from '@components/Common/Power/CneButton';
 
 class ReportEdit extends Component {
   static propTypes = {
@@ -293,9 +294,9 @@ class ReportEdit extends Component {
               onConfirm={this.updateReport}
               okText="确定"
               cancelText="取消">
-              <Button
+              <CneButton
                 className={styles.reportEdit}
-              >保存</Button>
+              >保存</CneButton>
             </Popconfirm>
             <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.showDetaiTip} />
           </div>
@@ -307,7 +308,11 @@ class ReportEdit extends Component {
         />
         <div className={styles.lostElecInfo} >
           <span className={styles.reportSubTitle}>损失电量信息<Icon type="caret-right" theme="outlined" /></span>
-          <Button onClick={this.toAddGenLost} disabled={addLostFormShow} icon="plus" className={styles.uploadGenLost}>添加</Button>
+          <CneButton onClick={this.toAddGenLost} disabled={addLostFormShow} className={styles.uploadGenLost}>
+              <div className={styles.icon}>
+                  <span className={'iconfont icon-newbuilt'} />
+              </div>添加
+          </CneButton>
         </div>
         {faultList.length > 0 ? <div className={styles.lostGenTableBox} >
           <LostGenTable
@@ -338,7 +343,11 @@ class ReportEdit extends Component {
         />}
         <div className={styles.lostElecInfo} >
           <span className={styles.reportSubTitle}>限电信息<Icon type="caret-right" theme="outlined" /></span>
-          <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} icon="plus" className={styles.uploadGenLost}>添加</Button>
+          <CneButton disabled={addLimitFormShow} onClick={this.toAddGenLimit} className={styles.uploadGenLost}>
+            <div className={styles.icon}>
+              <span className={'iconfont icon-newbuilt'} />
+            </div>添加
+          </CneButton>
         </div>
         {limitList.length > 0 ? <div className={styles.lostGenTableBox} >
           <LimitGenTable

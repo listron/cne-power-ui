@@ -85,7 +85,17 @@
     }
     :global {
       .ant-select {
+        .ant-select-selection {
+          background-color:#ffffff;
+          border-radius:2px;
+          width:90px;
+        }
         &:not(.ant-select-disabled) {
+          .ant-select-selection {
+            border:1px solid #199475;
+            box-shadow:0 0 0 2px rgba(206,235,224,0.70);
+          }
+
           .ant-select-selection__rendered .ant-select-selection-selected-value ,
           .ant-select-selection .ant-select-arrow {
             color:#199475;
@@ -99,71 +109,82 @@
   }
 }
 .personnelMain {
-.listMain{ // 表格部分
-  background: #ffffff;
-  border: 1px solid #d4d4d4;
-  border-top: none;
-  min-width: 840px;
-  box-shadow: 0 -2px 4px 2px rgba(208, 208, 208, 0.6);
-  :global {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  .tableContent {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    background-color: #fff;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+    margin-bottom: 4px;
+    margin-right: 4px;
+  .tableBox {
+    .listMain{ // 表格部分
+      background: #ffffff;
+      min-width: 840px;
+      :global {
 
-    .ant-table .ant-table-thead > tr > th,
-    .ant-table .ant-table-tbody > tr > td {
-      &:last-child {
-        padding-right: 10px;
+        .ant-table .ant-table-thead > tr > th,
+        .ant-table .ant-table-tbody > tr > td {
+          &:last-child {
+            padding-right: 10px;
+          }
+        }
+      }
+
+      .roleNameBox {
+        // width: '23%';
+      }
+      .roleName {
+        max-width: 200px;
+        @include overflowText();
+      }
+
+      .username{
+        cursor: pointer;
+        // line-height: 40px;
+        width: inherit;
+        height: 30px;
+        line-height: 30px;
+        &:hover{
+          text-decoration: underline;
+          color: #60C060;
+        }
+      }
+      .phoneNum {
+        text-align: right;
+      }
+      .enterpriseStatus {
+        text-align: center;
+        min-width: 100px;
+      }
+      .handleBox {
+        text-align: center;
+        .handle{
+          :global{
+            .iconfont{
+              margin-right: 12px;
+              color: #199475;
+              font-size: 18px;
+              cursor: pointer;
+              &:last-of-type{
+                margin-right: 4px;
+              }
+              &:hover {
+                color:#f9b600;
+              }
+            }
+            .icon-examine1, .icon-bumenx{
+              font-size: 14px;
+            }
+          }
+        }
       }
     }
   }
-
-  .roleNameBox {
-    // width: '23%';
   }
-  .roleName {
-    max-width: 200px;
-    @include overflowText();
-  }
-
-  .username{
-    cursor: pointer;
-    // line-height: 40px;
-    width: inherit;
-    height: 30px;
-    line-height: 30px;
-    &:hover{
-      text-decoration: underline;
-      color: #60C060;
-    }
-  }
-  .phoneNum {
-    text-align: right;
-  }
-  .enterpriseStatus {
-    text-align: center;
-    min-width: 100px;
-  }
-  .handleBox {
-    text-align: center;
-    .handle{
-      :global{
-        .iconfont{
-          margin-right: 12px;
-          color: #199475;
-          font-size: 18px;
-          cursor: pointer;
-          &:last-of-type{
-            margin-right: 4px;
-          }
-          &:hover {
-            color:#f9b600;
-          }
-        }
-        .icon-examine1, .icon-bumenx{
-          font-size: 14px;
-        }
-      }
-    }
-  }
-}
 }
 
 .listFooter{ // 地步选中项，取消选择

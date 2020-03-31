@@ -436,16 +436,18 @@ class PlanTable extends Component {
           </div> : <div></div>}
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
-        <CneTable
-          className={styles.tableList}
-          loading={loading}
-          pagination={false}
-          components={components}
-          dataSource={data}
-          onChange={this.tableChange}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-          columns={this._createTableColumn()}
-        />
+        <div className={styles.tableBox}>
+          <CneTable
+            className={styles.tableList}
+            loading={loading}
+            pagination={false}
+            components={components}
+            dataSource={data}
+            onChange={this.tableChange}
+            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+            columns={this._createTableColumn()}
+          />
+        </div>
         <span ref={'modal'} />
         <Modal
           visible={importVisible}

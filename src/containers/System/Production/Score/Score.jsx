@@ -43,8 +43,8 @@ class Score extends Component {
                 <TabPane tab="光伏" key="pv"> <ScoreMain {...this.props} /> </TabPane>
               </Tabs>
             } */}
-            {stationTypeCount === 'multiple' && <div> <ScoreMain {...this.props} /></div>}
-            {stationTypeCount === 'pv' && <div> <ScoreMain {...this.props} /></div>}
+            {stationTypeCount === 'multiple' && <ScoreMain {...this.props} />}
+            {stationTypeCount === 'pv' && <ScoreMain {...this.props} />}
             {stationTypeCount === 'wind' && <div>风电</div>}
           </div>
           <Footer />

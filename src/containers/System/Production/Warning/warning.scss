@@ -12,7 +12,7 @@
         display: flex;
         flex-direction: row;
         flex: 1;
-        background: $pageGround;
+        // background: $pageGround;
         min-height: 100%;
         overflow: hidden;
         .WarnCont {
@@ -26,6 +26,7 @@
                 display: flex;
                 flex: 0 0 30px;
                 // z-index: 99;
+                z-index:0;
                 .leftHolder{
                     flex: 0 0 12px;
                 }
@@ -62,10 +63,19 @@
                 }
             }
 
-            .mainPageStyle {
+            .contentBox {
+                flex: 1;
                 display: flex;
-                flex-direction: row;
-                justify-content: center;
+                flex-direction: column;
+                .mainPageStyle {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    background-color: #fff;
+                    margin: 0 4px 4px 0;
+                    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+                }
             }
         }
 

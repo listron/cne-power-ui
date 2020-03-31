@@ -115,24 +115,26 @@ class DayReportMainList extends Component {
           <div className={styles.contentMain}>
             <DayReportListSearch {...this.props} />
             <DayReportListHandle {...this.props} />
-            <CneTable
-              loading={loading}
-              dataSource={dayReportList.map((e, i) => { // 二维数据结构调整解析至页面
-                const { dateList } = e;
-                const dataObj = { key: i, ...e };
-                dateList && dateList.length > 0 && dateList.forEach(m=>{
-                  dataObj[m.reportDate] = m.isUpload;
-                  dataObj.status = m.status;
-                });
-                delete dataObj.dateList;
-                return dataObj;
-              })}
-              locale={{emptyText: <img width="223" height="164" src="/img/nodata.png" />}}
-              columns={columns}
-              onChange={this.tableChange}
-              pagination={false}
-              className={styles.tableStyle}
-            />
+            <div className={styles.tableBox}>
+              <CneTable
+                loading={loading}
+                dataSource={dayReportList.map((e, i) => { // 二维数据结构调整解析至页面
+                  const { dateList } = e;
+                  const dataObj = { key: i, ...e };
+                  dateList && dateList.length > 0 && dateList.forEach(m=>{
+                    dataObj[m.reportDate] = m.isUpload;
+                    dataObj.status = m.status;
+                  });
+                  delete dataObj.dateList;
+                  return dataObj;
+                })}
+                locale={{emptyText: <img width="223" height="164" src="/img/nodata.png" />}}
+                columns={columns}
+                onChange={this.tableChange}
+                pagination={false}
+                className={styles.tableStyle}
+              />
+            </div>
           </div>
           <Footer />
         </div>

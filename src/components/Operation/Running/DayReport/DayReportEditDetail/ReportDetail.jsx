@@ -7,6 +7,7 @@ import moment from 'moment';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { dataFormat } from '../../../../../utils/utilFunc';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 
 const loseColumn = [
   {
@@ -204,7 +205,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore, dayRepo
           <span className={styles.titleInfo}>温度 {selectedDayReportDetail.temperature || '--'}</span>
         </div>
         <div className={styles.reportDetailTitleRight}>
-          {reportRight && <Button onClick={toEditDetail} className={styles.reportEdit}>编辑</Button>}
+          {reportRight && <CneButton onClick={toEditDetail} className={styles.reportEdit}>编辑</CneButton>}
           <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={toReportList} />
         </div>
       </div>

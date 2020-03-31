@@ -7,6 +7,7 @@ import LostGenTable from './LostGenTable';
 import LimitGenTable from './LimitGenTable';
 import LostAddForm from './LostAddForm';
 import LimitAddForm from './LimitAddForm';
+import CneButton from '@components/Common/Power/CneButton';
 
 class AbnormalReportModal extends Component {
   static propTypes = {
@@ -176,17 +177,22 @@ class AbnormalReportModal extends Component {
       <Modal
           title={`添加异常-${abnormalInfo.stationName}`}
           visible={abnormalModalshow}
-          onOk={this.confirmAbnormal}
-          onCancel={hideAbnormalModal}
           width="calc(100vw - 229px)"
-          okText="确认添加"
           wrapClassName={styles.addAbnormalModal}
           mask={false}
           maskClosable={false}
+          footer={[
+            <CneButton key="back" onClick={hideAbnormalModal}>取消</CneButton>,
+            <CneButton key="submit" onClick={this.confirmAbnormal}>确认添加</CneButton>
+          ]}
         >
         <div className={styles.addGenLostHeader} >
-          <span>损失电量信息<Icon type="caret-right" theme="outlined" /></span>
-          <Button onClick={this.toAddGenLost} disabled={addLostFormShow} icon="plus" className={styles.uploadGenLost} >添加</Button>
+          <span className={styles.reportSubTitle}>损失电量信息<Icon type="caret-right" theme="outlined" /></span>
+          <CneButton onClick={this.toAddGenLost} disabled={addLostFormShow} className={styles.uploadGenLost} >
+            <div className={styles.icon}>
+              <span className={'iconfont icon-newbuilt'} />
+            </div>添加
+          </CneButton>
         </div>
         {(faultGenList && faultGenList.length > 0) ? <LostGenTable 
           faultGenList={faultGenList}
@@ -208,8 +214,12 @@ class AbnormalReportModal extends Component {
           getLostGenType={getLostGenType}
         /> }
         <div className={styles.addLimitGenHeader} >
-          <span>限电信息<Icon type="caret-right" theme="outlined" /></span>
-          <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} icon="plus" className={styles.uploadGenLost}>添加</Button>
+          <span  className={styles.reportSubTitle}>限电信息<Icon type="caret-right" theme="outlined" /></span>
+          <CneButton disabled={addLimitFormShow} onClick={this.toAddGenLimit} className={styles.uploadGenLost}>
+            <div className={styles.icon}>
+              <span className={'iconfont icon-newbuilt'} />
+            </div>添加
+          </CneButton>
         </div>
         {(limitGenList && limitGenList.length > 0)? <LimitGenTable
           stationDeviceTypes={stationDeviceTypes}

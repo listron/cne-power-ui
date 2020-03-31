@@ -106,7 +106,7 @@ class ListHandle extends Component {
           </CneButton>}
           {hasSelectRights && <Select
             onChange={this.handleUser}
-            style={{width: '80px', margin: '0 28px 0 10px'}}
+            style={{width: '90px', margin: '0 28px 0 10px'}}
             value="操作"
             dropdownMatchSelectWidth={false}
             disabled={handleDisable}

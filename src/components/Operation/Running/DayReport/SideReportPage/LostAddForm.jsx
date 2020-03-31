@@ -7,6 +7,7 @@ import { Select, Cascader } from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
 import DeviceSelect from '../../../../Common/DeviceSelect';
 import moment from 'moment';
+import CneButton from '@components/Common/Power/CneButton';
 const { Option } = Select;
 
 class LostAddForm extends Component {
@@ -386,8 +387,8 @@ class LostAddForm extends Component {
         <Row style={{ marginTop: '0px' }}>
           <Col span={8}>
             <Form.Item {...tailFormItemLayout}>
-              <Button onClick={this.confirmAddFault} className={styles.confirmAddFault} >确定</Button>
-              <Button onClick={this.cancelAddFault} className={styles.cancelAddFault} >取消</Button>
+              <CneButton onClick={this.confirmAddFault} className={styles.confirmAddFault} >确定</CneButton>
+              <CneButton onClick={this.cancelAddFault} className={styles.cancelAddFault} >取消</CneButton>
             </Form.Item>
           </Col>
         </Row>

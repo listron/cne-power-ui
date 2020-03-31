@@ -8,9 +8,10 @@
   width: 100%;
   background: #f0f2f5;
   .contentMain {
-    background-color: #fff;
+    background-color: transparent;
     flex: 1;
-    border: 1px solid #e1e2e2;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -57,8 +58,11 @@
 }
 
 .planList {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
   .planListTop {
-    background: #fff;
+    background: transparent;
     display: flex;
     justify-content: space-between;
     margin-bottom: 16px;
@@ -77,128 +81,128 @@
       }
     }
   }
-  .tableList {
 
-    background: #ffffff;
-    border: 1px solid #d4d4d4;
-    border-top: none;
-    box-shadow: 2px -2px 5px 3px rgba(208, 208, 208, 0.6);
-
-    .edit {
-      color: #199475;
-      white-space: nowrap;
-      &:hover {
+  .tableBox {
+    flex: 1 0 auto;
+    margin: 0 4px 4px 0;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+    .tableList {
+      .edit {
+        color: #199475;
+        white-space: nowrap;
+        &:hover {
+          color: #f9b600;
+        }
+      }
+      .noEdit {
+        color: $promptColor;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+      .save {
         color: #f9b600;
-      }
-    }
-    .noEdit {
-      color: $promptColor;
-      pointer-events: none;
-      white-space: nowrap;
-    }
-    .save {
-      color: #f9b600;
-      margin-right: 0 !important;
-    }
-
-    :global {
-      .month .ant-input,
-      .yearPR .ant-input {
-        width: 48px;
-        background: #fcffe5;
-        padding: 0 3px;
-        border: 1px solid #f9b600;
+        margin-right: 0 !important;
       }
 
-      .ant-table .ant-table-thead > tr > th,
-      .ant-table .ant-table-tbody > tr > td {
-        min-width: 48px;
-        padding: 0 5px;
-      }
-
-      .ant-table .ant-table-thead > tr > th {
-        &:first-child:not(.ant-table-selection-column) {
-          padding: 0px 0px;
-          text-align: center;
+      :global {
+        .month .ant-input,
+        .yearPR .ant-input {
+          width: 48px;
+          background: #fcffe5;
+          padding: 0 3px;
+          border: 1px solid #f9b600;
         }
-        &:last-child {
-          padding-right: 5px;
+
+        .ant-table .ant-table-thead > tr > th,
+        .ant-table .ant-table-tbody > tr > td {
+          min-width: 48px;
+          padding: 0 5px;
         }
-      }
 
-      .ant-table .ant-table-thead > tr > th.month,
-      .ant-table .ant-table-tbody > tr > td.month {
-        min-width: 48px;
-        padding: 0 3px;
-      }
-
-      .ant-table .ant-table-thead > tr > th.yearPR,
-      .ant-table .ant-table-tbody > tr > td.yearPR {
-        min-width: 72px;
-        width: 72px;
-      }
-      .ant-table .ant-table-tbody > tr > td.yearPR {
-        padding: 0 3px;
-      }
-
-      .ant-table .ant-table-thead > tr > th[class*="stationCapacity"],
-      .ant-table .ant-table-thead > tr > th[class*="planPower"]
-       {
-        .ant-table-column-sorter{
-          .ant-table-column-sorter-inner{
-            margin-top: -20px;
+        .ant-table .ant-table-thead > tr > th {
+          &:first-child:not(.ant-table-selection-column) {
+            padding: 0px 0px;
+            text-align: center;
+          }
+          &:last-child {
+            padding-right: 5px;
           }
         }
+
+        .ant-table .ant-table-thead > tr > th.month,
+        .ant-table .ant-table-tbody > tr > td.month {
+          min-width: 48px;
+          padding: 0 3px;
+        }
+
+        .ant-table .ant-table-thead > tr > th.yearPR,
+        .ant-table .ant-table-tbody > tr > td.yearPR {
+          min-width: 72px;
+          width: 72px;
+        }
+        .ant-table .ant-table-tbody > tr > td.yearPR {
+          padding: 0 3px;
+        }
+
+        .ant-table .ant-table-thead > tr > th[class*="stationCapacity"],
+        .ant-table .ant-table-thead > tr > th[class*="planPower"]
+        {
+          .ant-table-column-sorter{
+            .ant-table-column-sorter-inner{
+              margin-top: -20px;
+            }
+          }
+        }
+
+        .ant-input.ant-input-disabled {
+          background: #f8f8f8;
+          border: 1px solid #d4d4d4;
+        }
+        .ant-input:focus {
+          background: #ffffff;
+          border: 1px solid #d4d4d4;
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+        .ant-table-placeholder {
+          border: none;
+        }
+      }
+      .regionName {
+        min-width: 50px;
+        white-space: nowrap;
+        width: 6%;
+      }
+      .stationName {
+        width: 90px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .operation {
+        width: 2.7%;
+        min-width: 38px;
+        text-align: center;
+      }
+      .planYear {
+        width: 5%;
+        min-width: 40px;
+        text-align: center;
+      }
+      .planPower {
+        width: 10%;
+        min-width: 105px;
+        text-align: end;
+      }
+      .stationCapacity {
+        width: 7.5%;
+        min-width: 70px;
+        text-align: end;
       }
 
-      .ant-input.ant-input-disabled {
-        background: #f8f8f8;
-        border: 1px solid #d4d4d4;
+      .tableCommonTitle {
+        height: 56px;
+        padding: 8px 0;
       }
-      .ant-input:focus {
-        background: #ffffff;
-        border: 1px solid #d4d4d4;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-      }
-      .ant-table-placeholder {
-        border: none;
-      }
-    }
-    .regionName {
-      min-width: 50px;
-      white-space: nowrap;
-      width: 6%;
-    }
-    .stationName {
-      width: 90px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .operation {
-      width: 2.7%;
-      min-width: 38px;
-      text-align: center;
-    }
-    .planYear {
-      width: 5%;
-      min-width: 40px;
-      text-align: center;
-    }
-    .planPower {
-      width: 10%;
-      min-width: 105px;
-      text-align: end;
-    }
-    .stationCapacity {
-      width: 7.5%;
-      min-width: 70px;
-      text-align: end;
-    }
-
-    .tableCommonTitle {
-      height: 56px;
-      padding: 8px 0;
     }
   }
   table {

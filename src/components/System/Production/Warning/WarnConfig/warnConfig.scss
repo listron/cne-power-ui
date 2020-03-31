@@ -14,7 +14,6 @@
     justify-content: flex-start;
     flex: 1 0 auto;
     width: 100%;
-    box-shadow: 0 -2px 5px 0 rgba(208, 208, 208, 0.60) inset;
 
     .warnListTop {
         display: flex;
@@ -26,15 +25,20 @@
 
             :global{
                 .ant-select{
-                  &:not(.ant-select-disabled) {
-                    .ant-select-selection__rendered .ant-select-selection-selected-value ,
-                    .ant-select-selection .ant-select-arrow {
-                      color:#199475;
+                    width: 90px;
+                    .ant-select-selection--single {
+                        border:1px solid #199475;
+                        border-radius:2px;
                     }
-                  }
-                  .ant-select-selection .ant-select-selection-selected-value {
-                    margin-left: 6px;
-                  }
+                    &:not(.ant-select-disabled) {
+                        .ant-select-selection__rendered .ant-select-selection-selected-value ,
+                        .ant-select-selection .ant-select-arrow {
+                            color:#199475;
+                        }
+                    }
+                    .ant-select-selection .ant-select-selection-selected-value {
+                        margin-left: 6px;
+                    }
                 }
               }
         }
@@ -89,21 +93,23 @@
         }
     }
 
-    .tableStyle {
-        background: #ffffff;
-        border: 1px solid #d4d4d4;
-        border-top: none;
-        // box-shadow: 2px -0 5px 3px rgba(208, 208, 208, 0.6);
-        min-width: 900px;
-    
-        .warningLevel, .warningEnable, .alarmEdit{
-            text-align: center;
-        }
-        .warningLevel, .warningEnable, .pointCode {
-            min-width: 130px;
-        }
-        .alarmEdit{ 
-            min-width: 90px;
+    .tableBox {
+        flex: 1 0 auto;
+        margin: 0 4px 4px 0;
+        background-color:#fff;
+        box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+        .tableStyle {
+            min-width: 900px;
+        
+            .warningLevel, .warningEnable, .alarmEdit{
+                text-align: center;
+            }
+            .warningLevel, .warningEnable, .pointCode {
+                min-width: 130px;
+            }
+            .alarmEdit{ 
+                min-width: 90px;
+            }
         }
     }
 }
@@ -365,8 +371,13 @@
     display: flex;
     align-items: center;
     height: 71px;
-    border-bottom: solid 1px $promptColor;
+    // border-bottom: solid 1px $promptColor;
     line-height: 40px;
+    background: #ffffff;
+    border: 1px solid #d4d4d4;
+    border-top: none;
+    box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.60);
+
     .titleText {
         color: $darkColor;
         margin-left: 28px;

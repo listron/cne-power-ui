@@ -24,74 +24,67 @@
   flex-direction: column;
   flex: 1 0 auto;
   padding: 24px 24px 0;
-  background-color: #ececec;
+  background-color: #F0F2F5;
   min-width: 1100px;
   .roleContent{
     flex: 1;
-    // display: flex;
-    // flex-direction: column;
-    background-color: #fff;
-    border: 1px solid #e1e2e2;
+    display: flex;
+    flex-direction: column;
 
-    // .tableBox {
-    //   border: 1px solid #d4d4d4;
-    //   border-top: none;
-    //   box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
-    //   background-color: red;
-    // }
-    .tableStyle {
-      background: #ffffff;
-      border: 1px solid #d4d4d4;
-      border-top: none;
-      box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
-      height: 100%;
-      min-width: 1000px;
-
-      :global {
-        .ant-table .ant-table-thead > tr > th,
-        .ant-table .ant-table-tbody > tr > td {
-          &:last-child {
-            padding-right: 10px;
+    .tableBox {
+      flex: 1;
+      box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+      margin-bottom: 4px;
+      .tableStyle {
+        height: 100%;
+        min-width: 1000px;
+  
+        :global {
+          .ant-table .ant-table-thead > tr > th,
+          .ant-table .ant-table-tbody > tr > td {
+            &:last-child {
+              padding-right: 10px;
+            }
+          }
+  
+          // .ant-table .ant-table-thead > tr > th.ant-table-selection-column,
+          // .ant-table .ant-table-tbody > tr > td.ant-table-selection-column {
+          //   width: 40px;
+          //   max-width: 40px;
+          //   min-width: 40px;
+          // }
+  
+          .ant-table-footer {
+            padding: 0 15px;
+          }
+  
+          .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
+            overflow-y: scroll;
+            overflow-y: overlay;
+            overflow-x: hidden;
+            height: calc(100vh - 285px) !important;
+          }
+          .ant-table:not(.ant-table-empty) {
+            .ant-table-body:after {
+              content: url("/img/notabdata.png");
+              position: absolute;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              margin: 50px 10px 10px;
+            }
+          }
+          .ant-table-placeholder {
+            border-bottom: none;
           }
         }
-
-        // .ant-table .ant-table-thead > tr > th.ant-table-selection-column,
-        // .ant-table .ant-table-tbody > tr > td.ant-table-selection-column {
-        //   width: 40px;
-        //   max-width: 40px;
-        //   min-width: 40px;
-        // }
-
-        .ant-table-footer {
-          padding: 0 15px;
+  
+        .handlerBox, .operateNameBox {
+          text-align: center;
         }
-
-        .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
-          overflow-y: scroll;
-          overflow-y: overlay;
-          overflow-x: hidden;
-          height: calc(100vh - 285px) !important;
+  
+        .rightData{
+          width: 550px;
         }
-        .ant-table:not(.ant-table-empty) {
-          .ant-table-body:after {
-            content: url("/img/notabdata.png");
-            position: absolute;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            margin: 50px 10px 10px;
-          }
-        }
-        .ant-table-placeholder {
-          border-bottom: none;
-        }
-      }
-
-      .handlerBox, .operateNameBox {
-        text-align: center;
-      }
-
-      .rightData{
-        width: 550px;
       }
     }
   }
@@ -107,7 +100,7 @@
     }
   }
   .roleListTop {
-    background: #fff;
+    // background: #fff;
     display: flex;
     min-height: 72px;
     line-height: 72px;
@@ -131,7 +124,11 @@
       display: inline-block;
       :global{
         .ant-select{
-          width: 78px;
+          width: 90px;
+          .ant-select-selection--single {
+            border:1px solid #199475;
+            border-radius:2px;
+          }
           &:not(.ant-select-disabled) {
             .ant-select-selection__rendered .ant-select-selection-selected-value ,
             .ant-select-selection .ant-select-arrow {

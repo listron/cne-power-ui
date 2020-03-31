@@ -178,6 +178,9 @@
                     pointer-events: none;
                     cursor: not-allowed;
                   }
+                  &:hover {
+                    cursor: no-drop;
+                  }
          }
         .stationName,.regionName,.stationCapacity,.stationUnitCount,.stationStatus,.isConnected,.pointStatus,.eventStatus,.eventDataStatus,.departmentStatus,.handler{
            @include overflowText();

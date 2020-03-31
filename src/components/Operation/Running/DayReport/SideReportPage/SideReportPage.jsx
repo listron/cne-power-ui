@@ -8,6 +8,7 @@ import UploadReportList from './UploadReportList';
 import moment from 'moment';
 import { reportBasefun, allReportCheck } from '../reportBaseFun';
 import WarningTip from '../../../../Common/WarningTip';
+import CneButton from '@components/Common/Power/CneButton';
 
 class SideReportPage extends Component {
   static propTypes = {
@@ -227,7 +228,7 @@ class SideReportPage extends Component {
         <div className={styles.sideReportTitle} >
           <span className={styles.sideReportTitleTip} >上报日报</span>
           <div className={styles.sideReportTitleRight} >
-            {showReportInputList && <Button onClick={this.toSelectCondition} className={styles.dayReportPrev} >上一步</Button>}
+            {showReportInputList && <CneButton onClick={this.toSelectCondition} className={styles.dayReportPrev} >上一步</CneButton>}
             {showReportInputList && <Popconfirm
               placement="leftTop"
               overlayClassName={styles.confirmBox}
@@ -235,10 +236,10 @@ class SideReportPage extends Component {
               onConfirm={this.saveDayReport}
               okText="确定"
               cancelText="取消">
-              <Button
+              <CneButton
                 className={styles.saveDayReport}
                 loading={loading}
-              >提交</Button>
+              >提交</CneButton>
             </Popconfirm>}
             <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backList} />
           </div>
@@ -262,7 +263,7 @@ class SideReportPage extends Component {
               onChange={this.stationSelected}
               oneStyleOnly={true}
             />
-            <Button onClick={this.toReportStations} disabled={!canReport} className={canReport ? styles.dayReportNext : styles.dayReportNextDisabled} >下一步</Button>
+            <CneButton onClick={this.toReportStations} disabled={!canReport} className={canReport ? styles.dayReportNext : styles.dayReportNextDisabled} >下一步</CneButton>
           </div>
         </div>}
         {showReportInputList && <UploadReportList

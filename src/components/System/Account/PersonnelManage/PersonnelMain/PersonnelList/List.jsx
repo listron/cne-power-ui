@@ -217,34 +217,38 @@ class List extends Component {
     return (
       <div className={styles.personnelMain}>
         <ListHandle {...this.props} assignDeparts={this.assignDeparts} />
-        <CneTable
-          dataSource={userList}
-          columns={tableColumn}
-          pagination={false}
-          loading={userListLoading}
-          className={styles.listMain}
-          rowSelection={{
-            onChange: this.rowSelect,
-            selectedRowKeys,
-          }}
-          onChange={this.sortList}
-        />
-        <DepartmentAssignModal
-          value={assignDepartChecked}
-          onCheck={this.onDepartChecked}
-          onChange={this.onAssignOK}
-          modalShow={assignDepartUsers.length > 0}
-          departmentTree={departmentTree.filter(e => e.departmentId !== '1')}
-          username={assignDepartUsers.map(e => e.username).join(',')}
-          hideModal={this.hideDepartModal}
-        />
-        {showLogout && <WarningTip
-          onOK={this.logoutUser}
-          style={{ width: '310px', height: '115px' }}
-          onCancel={this.cancelLogout}
-          value="注销后用户不再属于任何部门，会被移出系统。您确定注销该人员吗？"
-        />}
-        {userList.length > 0 && <ListFooter selectedLength={selectedRowKeys.length} cancel={this.cancelSelectRow} />}
+        <div className={styles.tableContent}>
+          <div className={styles.tableBox}>
+            <CneTable
+              dataSource={userList}
+              columns={tableColumn}
+              pagination={false}
+              loading={userListLoading}
+              className={styles.listMain}
+              rowSelection={{
+                onChange: this.rowSelect,
+                selectedRowKeys,
+              }}
+              onChange={this.sortList}
+            />
+          </div>
+          <DepartmentAssignModal
+            value={assignDepartChecked}
+            onCheck={this.onDepartChecked}
+            onChange={this.onAssignOK}
+            modalShow={assignDepartUsers.length > 0}
+            departmentTree={departmentTree.filter(e => e.departmentId !== '1')}
+            username={assignDepartUsers.map(e => e.username).join(',')}
+            hideModal={this.hideDepartModal}
+          />
+          {showLogout && <WarningTip
+            onOK={this.logoutUser}
+            style={{ width: '310px', height: '115px' }}
+            onCancel={this.cancelLogout}
+            value="注销后用户不再属于任何部门，会被移出系统。您确定注销该人员吗？"
+          />}
+          {userList.length > 0 && <ListFooter selectedLength={selectedRowKeys.length} cancel={this.cancelSelectRow} />}
+        </div>
       </div>
     );
   }

@@ -98,10 +98,11 @@ class Warning extends Component {
                 ))}
                 <span className={styles.rightHolder} />
               </div>
-                  
+              <div className={styles.contentBox}>
               {activeKey === 'series' && <div className={styles.mainPageStyle}><SeriesMain {...this.props} /> </div>}
               {activeKey === 'clean' &&  <div className={styles.mainPageStyle}><CleaningMain {...this.props} enterpriseId={enterpriseId} /> </div>}
               {activeKey === 'warn' && <WarnConfig {...this.props} enterpriseId={enterpriseId} />}
+              </div>
             </div>
             <TransitionContainer
               show={showPage !== 'home'}

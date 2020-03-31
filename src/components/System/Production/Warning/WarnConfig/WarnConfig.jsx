@@ -184,16 +184,18 @@ class WarnConfig extends Component {
                     </div> : <div></div>}
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
                 </div>
-                <CneTable
-                    loading={loading}
-                    onChange={this.tableChange}
-                    columns={warnConfigOperation ? warnListColumn.concat(editColumn) : warnListColumn}
-                    dataSource={warnList.map((e, i) => ({ key: e.warningCheckId, ...e, warningLevel: `${['一', '二', '三', '四', '五'][e.warningLevel - 1] || '--'}级` }))}
-                    pagination={false}
-                    rowSelection={rowSelection}
-                    className={styles.tableStyle}
-                    locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-                />
+                <div className={styles.tableBox}>
+                    <CneTable
+                        loading={loading}
+                        onChange={this.tableChange}
+                        columns={warnConfigOperation ? warnListColumn.concat(editColumn) : warnListColumn}
+                        dataSource={warnList.map((e, i) => ({ key: e.warningCheckId, ...e, warningLevel: `${['一', '二', '三', '四', '五'][e.warningLevel - 1] || '--'}级` }))}
+                        pagination={false}
+                        rowSelection={rowSelection}
+                        className={styles.tableStyle}
+                        locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+                    />
+                </div>
             </div>
 
         )

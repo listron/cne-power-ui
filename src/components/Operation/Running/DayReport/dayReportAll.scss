@@ -10,9 +10,11 @@
   padding: 24px 24px 0;
   background:#f0f2f5;
   .contentMain{
-    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
     flex: 1;
-    border: 1px solid #e1e2e2;
+    // border: 1px solid #e1e2e2;
     :global{
       .anticon-plus-circle{
         color: $themeColor;
@@ -65,38 +67,43 @@
     }
   }
 
-  .tableStyle {
-    .stationName {
-      min-width: 90px;
-      @include overflowText();
-    }
-    .uploadReport {
-      color:#4d90fd;
-      font-size: 20px;
-      &:hover {
-        color:#f9b600;
+  .tableBox {
+    flex: 1 0 auto;
+    z-index: 0;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+    .tableStyle {
+      .stationName {
+        min-width: 90px;
+        @include overflowText();
       }
-    }
-    :global {
-
-      .ant-table .ant-table-thead > tr > th ,
-      .ant-table .ant-table-tbody > tr > td {
-        padding: 0 0;
-        text-align: center;
-      }
-
-      .ant-table .ant-table-tbody > tr > td {
-        &:nth-child(1){
-          padding-left: 20px;
-          text-align: left;
-        }
-      }
-
-      .icon-look {
-        color:#199475;
+      .uploadReport {
+        color:#4d90fd;
         font-size: 20px;
         &:hover {
           color:#f9b600;
+        }
+      }
+      :global {
+
+        .ant-table .ant-table-thead > tr > th ,
+        .ant-table .ant-table-tbody > tr > td {
+          padding: 0 0;
+          text-align: center;
+        }
+
+        .ant-table .ant-table-tbody > tr > td {
+          &:nth-child(1){
+            padding-left: 20px;
+            text-align: left;
+          }
+        }
+
+        .icon-look {
+          color:#199475;
+          font-size: 20px;
+          &:hover {
+            color:#f9b600;
+          }
         }
       }
     }

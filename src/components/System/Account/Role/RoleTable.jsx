@@ -302,21 +302,23 @@ class RoleTable extends Component {
             </div>
             <div className={styles.totalNum}>合计：{totalNum}</div>
           </div>
-          <CneTable
-            loading={roleTableLoading}
-            rowKey={(record)=>{return record.roleId;}}
-            rowSelection={{
-              selectedRowKeys: selectedRole.map(e=>e.roleId),
-              onChange: this.onRowSelect,
-            }}
-            dataSource={roleData}
-            columns={this.createRoloeColumn()}
-            onChange={this.tableChange}
-            pagination={false}
-            scroll={initTableScroll}
-            className={styles.tableStyle}
-            footer={()=> selectedRole.length > 0 && footer }
-          />
+          <div className={styles.tableBox}>
+            <CneTable
+              loading={roleTableLoading}
+              rowKey={(record)=>{return record.roleId;}}
+              rowSelection={{
+                selectedRowKeys: selectedRole.map(e=>e.roleId),
+                onChange: this.onRowSelect,
+              }}
+              dataSource={roleData}
+              columns={this.createRoloeColumn()}
+              onChange={this.tableChange}
+              pagination={false}
+              scroll={initTableScroll}
+              className={styles.tableStyle}
+              footer={()=> selectedRole.length > 0 && footer }
+            />
+          </div>
         </div>
         {/* <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
