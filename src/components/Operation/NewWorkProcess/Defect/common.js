@@ -1,6 +1,0 @@
-const defectTypeArr = () => {
-
-};
-
-
-export { defectTypeArr };
