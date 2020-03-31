@@ -198,6 +198,7 @@ export default class DetailTopSubmit extends Component {
 
   crete = (e) => { // 创建工单
     this.props.changeStore({ isVertify: true });
+    // stateId 退回的和新建的时候不一 新建的时候stateId 
     const { addbaseInfo, addEventInfo, addhandleList, isFinish, stateId, stationCode, docketId, removeEventImg, removeHandleImg } = this.props;
     const { location, history, warnEventInfos } = this.props;
     const { addUsers = [] } = addbaseInfo;
@@ -233,6 +234,7 @@ export default class DetailTopSubmit extends Component {
       const params = {
         ...addbaseInfo,
         docketId,
+        stateId: e.actionCode === '22' ? stateId : '', // 再退回的时候需要提交stateId
         stationCode,
         events: events,
         handles: addhandleList,

@@ -202,7 +202,6 @@
         width: 74px;
         font-weight: 700;
         display: flex;
-        line-height: 40px;
         .star{
           color:#df4b33;
           padding: 0 5px;
@@ -246,6 +245,9 @@
         flex: 1;
       }
       
+    }
+    .titleTip{
+      color:#999999;
     }
     :global{
       .ant-select{
