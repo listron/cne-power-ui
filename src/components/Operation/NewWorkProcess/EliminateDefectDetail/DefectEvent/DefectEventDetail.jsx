@@ -5,6 +5,7 @@ import CneTips from '@components/Common/Power/CneTips';
 import { Tooltip } from 'antd';
 import styles from './defectEvent.scss';
 import PicUploader from '../../Common/PicUploader';
+import { Link } from 'react-router-dom';
 /** 
  * 
 */
@@ -26,7 +27,7 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
   };
 
   const onConfirm = () => { // 只有在 待领取 事件派发 的页面缺陷事件才可以删除 
-    console.log('请求数据，去删除');
+    // console.log('请求数据，去删除');
     delChange(diagWarningId);
   };
 
@@ -66,7 +67,9 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
           </div>
           {diagWarningId &&
             <div className={styles.analysize}>
-              <CneButton className={styles.handleButton}> <i className={'iconfont icon-look'} /> 查看分析 </CneButton>
+              <CneButton className={styles.handleButton}> <i className={'iconfont icon-look'} />
+                <Link to={`/monitor/diagnoseCenter#${diagWarningId}`}> 查看分析 </Link>
+              </CneButton>
             </div>
           }
         </div>

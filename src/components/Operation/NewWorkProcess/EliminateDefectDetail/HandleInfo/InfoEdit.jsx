@@ -174,6 +174,7 @@ export default class InfoEdit extends Component {
           <span>{
             <VideoUploader
               value={handleVideos && handleVideos.length > 0 && handleVideos || []}
+              mode="edit"
               onChange={this.onVideoChange}
               maxNum={1}
               uploadUrl={downloadTemplet}
