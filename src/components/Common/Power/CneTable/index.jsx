@@ -66,7 +66,6 @@ class CneTable extends PureComponent {
     const tableScrollBody = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-body');
     const tableScrollHeader = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-header');
     const { showHeaderShadow } = this.state;
-    console.log(tableScrollHeader.style)
     if (!showHeaderShadow && tableScrollBody && tableScrollBody.scrollTop > 0) { // 滚动开始
       tableScrollHeader.style.overflowX = 'hidden';
       tableScrollHeader.style.marginBottom = '0';
@@ -87,18 +86,19 @@ class CneTable extends PureComponent {
       ...rest
     } = this.props;
     const { showHeaderShadow } = this.state;
-    let tableColumn = [...columns];
+    let tableColumn = columns;
     if (sortField && sortMethod) {
       tableColumn = columns.map(e => {
-        const { sorter, dataIndex, textAlign, className } = e || {};
+        const newCol = e ? { ...e } : {};
+        const { sorter, dataIndex, textAlign, className } = newCol;
         if (sorter && sortField === dataIndex) {
-          e.sortOrder = sortMethod;
+          newCol.sortOrder = sortMethod;
         }
         // textAlign: 默认=left(左padding10px 居左), middle(无padding居中), right(右padding10px居右), none(无padding且居左)
         if (textAlign) {
-          e.className = className ? `${className} ${textAlign}Content` : `${textAlign}Content`;
+          newCol.className = className ? `${className} ${textAlign}Content` : `${textAlign}Content`;
         }
-        return { ...e };
+        return { ...newCol };
       });
     }
     let totalClassName = `${styles.cneTable} ${className || ''} ${styles[theme] || ''}`;
