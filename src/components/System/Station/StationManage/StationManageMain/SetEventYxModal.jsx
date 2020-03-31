@@ -28,7 +28,7 @@ class SetEventYxModal extends Component { // 电站管理列表页
   confirmSetting = () => {
     const { checkedKeys } = this.state;
     const { allEventYx, selectSataionInfo, setDiagconfigYx } = this.props;
-    const { stationCode } = selectSataionInfo;
+    const { stationCode, stationName } = selectSataionInfo;
     const defaultSelectKeys = {};
     allEventYx.forEach(list => { // 只有设备类型_设备型号 是唯一key值
       const deviceTypeCode = list.deviceTypeCode;
@@ -42,8 +42,12 @@ class SetEventYxModal extends Component { // 电站管理列表页
     });
     const selectKeys = { ...defaultSelectKeys, ...checkedKeys };
     const diagModeVersions = Object.values(selectKeys);
-    setDiagconfigYx({ diagModeVersions: diagModeVersions, stationCode, func: this.props.closeEventModal });
-
+    setDiagconfigYx({
+      diagModeVersions: diagModeVersions,
+      stationCode,
+      stationName,
+      func: this.props.closeEventModal,
+    });
   }
 
 
