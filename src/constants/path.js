@@ -147,6 +147,7 @@ export default {
       verifyEilminateDefect: '/v4/opms/defect/verify', // 验收工单
       delDocket: '/v4/opms/docket/del', // 删除工单
       getDiagWarnList: '/v3/diagwarning/detail', // 1.2.3.	获取指定的告警事件
+      // getDiagWarnList: '/v4/diag/warning/detail', // 新接口 - 待后台发布后替换。
       getDefectState: '/v4/opms/defect/showuser', // 查询起始流程显示用户信息
       returnDocket: '/v4/opms/docket/return', // 2.6.1.8.	退回功能
       delEvent: '/v4/opms/defect/delevent', // 2.7.3.12.	删除缺陷事件
