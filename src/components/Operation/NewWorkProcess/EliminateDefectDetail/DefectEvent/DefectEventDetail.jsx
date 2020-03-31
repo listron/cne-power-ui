@@ -45,7 +45,10 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
           {del && <i className={`iconfont icon-wrong ${styles.close}`} onClick={delEvent} />}
         </div>
         <div className={styles.oneLine}>
-          <div className={styles.list}> <b>缺陷类型</b>:<p>{defectMessage.defectTypeCode === 1 && '设备缺陷' || '其他缺陷'}</p> </div>
+          <div className={styles.list}>
+            <b>缺陷类型</b>:
+             <p>{defectMessage.defectTypeCode === 1 && '设备缺陷' || '其他缺陷'}</p>
+          </div>
           {defectMessage.deviceTypeName && <div className={styles.list}> <b>设备类型</b>:<p>{defectMessage.deviceTypeName}</p> </div>}
           {defectMessage.deviceName && <div className={styles.list}> <b>设备名称</b>:<p>{defectMessage.deviceName}</p> </div>}
           {defectMessage.defectLevel &&

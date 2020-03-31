@@ -76,20 +76,22 @@ export default class DefectsHandler extends Component {
               trigger={['click']}
               visible={this.state.visible}
               overlay={<div className={styles.solveStatus}>
-                {undoneBtn && <CneButton className={styles.undoneBtn} onClick={this.toAddUndoneDefect}>
-                  <i className={`iconfont icon-undone ${styles.undoneIcon}`} />
-                  <span className={styles.text}>未解决</span>
-                </CneButton>
+                {undoneBtn &&
+                  <CneButton className={styles.undoneBtn} onClick={this.toAddUndoneDefect} lengthMode={'short'}>
+                    <i className={`iconfont icon-undone ${styles.undoneIcon}`} />
+                    <span className={styles.text}>未解决</span>
+                  </CneButton>
                 }
-                {alldoneBtn && <CneButton className={styles.alldoneBtn} onClick={this.toAddAlldoneDefect}>
-                  <i className={`iconfont icon-alldone ${styles.alldoneIcon}`} />
-                  <span className={styles.text}>已解决</span>
-                </CneButton>}
+                {alldoneBtn &&
+                  <CneButton className={styles.alldoneBtn} onClick={this.toAddAlldoneDefect} lengthMode={'short'}>
+                    <i className={`iconfont icon-alldone ${styles.alldoneIcon}`} />
+                    <span className={styles.text}>已解决</span>
+                  </CneButton>}
               </div>}
               placement="bottomLeft"
               onVisibleChange={this.handleVisibleChange}
             >
-              <CneButton className={styles.addBtn} onClick={this.toAddDefect}>
+              <CneButton className={styles.addBtn} onClick={this.toAddDefect} lengthMode={'short'}>
                 <i className={`iconfont icon-newbuilt ${styles.addIcon}`} />
                 <span className={styles.text}>新建</span>
               </CneButton>
