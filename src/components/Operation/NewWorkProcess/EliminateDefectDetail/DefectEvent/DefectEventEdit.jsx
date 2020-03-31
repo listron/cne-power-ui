@@ -54,7 +54,7 @@ export default class DefectEvenrEdit extends Component {
   changeDeviceType = (value) => { // 修改设备类型
     const { record, onChange, stationCode } = this.props;
     const [deviceTypeCode, deviceTypeName] = value.split('_');
-    onChange({ index: record.index, deviceTypeCode, deviceTypeName });
+    onChange({ index: record.index, deviceTypeCode, deviceTypeName, deviceFullcode: null, deviceName: '' });
     this.props.getStationTypeDeviceModes({ stationCode, deviceTypeCode });
   }
 

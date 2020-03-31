@@ -132,7 +132,7 @@ export default class DefectTable extends Component {
         );
       },
     }, {
-      title: '操作',
+      title: '查看',
       dataIndex: 'handle',
       className: styles.handle,
       render: (text, record) => (

@@ -109,18 +109,15 @@
     padding-left: 20px;
   }
   .addBtn{
-    width: 92px;
     padding-left: 6px;
     text-align: left;
-    .addIcon{
-      margin-right: 16px;
+    .text{
+      text-align: center;
+      display: inline-block;
+      width: 100%;
     }
   }
-   @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
-      .addBtn{
-        width:102px;
-      }
-  }
+
   .addBtn{
     margin-right: 20px;
   }
@@ -137,21 +134,20 @@
     display: flex;
     flex-direction: column;
     .undoneBtn, .alldoneBtn{
-      width: 92px;
       padding-left: 6px;
-      text-align: left;
+      padding-right: 0;
       height: 40px;
-      line-height: 40px;
+      display: flex;
       &::after{
         display: none;
       }
-      .undoneIcon, .alldoneIcon{
-        margin-right: 16px;
+      .undoneIcon,.alldoneIcon{
+        font-size: 20px;
       }
-    }
-    @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
-      .undoneBtn, .alldoneBtn{
-        width:102px;
+      .text{
+        width:100%;
+        text-align: center;
+        margin-left: -1px;
       }
     }
   }
@@ -240,6 +236,13 @@
     color: var(--themeColor);
   }
   :global{
+    .ant-radio-button-wrapper{
+      border:1px solid $themeColor;
+      color:$themeColor;
+    }
+    .ant-radio-button-wrapper:not(:first-child)::before{
+      left:-2px;
+    }
     .ant-radio-button-wrapper-checked{
       color: #fff;
       background-color: var(--themeColor);
@@ -251,7 +254,7 @@
     .undoneBtn, .alldoneBtn{
       background-color: #fff;
       border: 1px solid var(--themeColor);
-      border-bottom: 1px dashed var(--promptColor);
+      border-bottom: 1px dashed var(--themeColor);
       &:hover{
         background-color: var(--themeColor);
         color: #fff;

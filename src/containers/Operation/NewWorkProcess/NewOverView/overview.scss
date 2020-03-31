@@ -31,7 +31,7 @@
 
     .activeKey {
       position: relative;
-
+      margin-left: 12px;
       &::before {
         content: "";
         position: absolute;
@@ -58,7 +58,6 @@
       background: $pageGround;
       border-right: 1px solid $themeColor;
       border-left: 1px solid $themeColor;
-
       &::before {
         background: $themeColor;
       }

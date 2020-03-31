@@ -10,7 +10,7 @@
   top:0;
   width: 100%;
   height: 54px;
-  z-index: 99;
+  z-index: 10;
   .detailTitle{
     line-height: 55px;
     font-size: 18px;
@@ -77,15 +77,15 @@
       }
     }
   }
-  .handleButton{
-    flex:0 0 92px;
-  }
-  @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
-  .handleButton{
-    flex:0 0 102px;
-    font-size: 18px;
-    }
-  }
+  // .handleButton{
+  //   flex:0 0 92px;
+  // }
+  // @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  // .handleButton{
+  //   flex:0 0 102px;
+  //   font-size: 18px;
+  //   }
+  // }
 }
 
 .scroll{
