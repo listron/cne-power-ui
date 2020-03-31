@@ -69,7 +69,6 @@ class CneTable extends PureComponent {
     if (!showHeaderShadow && tableScrollBody && tableScrollBody.scrollTop > 0) { // 滚动开始
       tableScrollHeader.style.overflowX = 'hidden';
       tableScrollHeader.style.marginBottom = '0';
-      tableScrollHeader.style.paddingBottom = '0';
       this.setState({ showHeaderShadow: true });
     }
     if (showHeaderShadow && tableScrollBody && tableScrollBody.scrollTop === 0) { // 回到顶部
