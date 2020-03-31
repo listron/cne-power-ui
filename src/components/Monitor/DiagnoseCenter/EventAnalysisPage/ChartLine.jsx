@@ -465,12 +465,12 @@ class ChartLine extends PureComponent {
           bottom: (delPointIndex !== -1 && pageKey === 'alarm') ? 10 : 16,
           start: (noAlarmTime || seriesInefficient || fixedShelter || pageKey === 'data') ? dataDay[dataDays] : 0, // 诊断事件组串低效、电压异常、并网延时、固定物遮挡；数据事件默认展示7天数据;
           end: 100,
-          xAxisIndex: [0, 1],
+          xAxisIndex: (delPointIndex !== -1 && pageKey === 'alarm') ? [0, 1] : [0],
         }, {
           type: 'inside',
           start: (noAlarmTime || seriesInefficient || fixedShelter || pageKey === 'data') ? dataDay[dataDays] : 0, // 诊断事件组串低效、电压异常、并网延时、固定物遮挡；数据事件默认展示7天数据;
           end: 100,
-          xAxisIndex: [0, 1],
+          xAxisIndex: (delPointIndex !== -1 && pageKey === 'alarm') ? [0, 1] : [0],
         },
       ];
     }
