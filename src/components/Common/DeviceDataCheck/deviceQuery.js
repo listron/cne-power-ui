@@ -25,7 +25,8 @@ export async function getPartition(payload){ // 获取分区信息
   try {
     const response = await request.get(url, { params: payload });
     if (response.code === '10000') {
-      partitions = response.data || [];
+      const data = response.data || {};
+      partitions = data.partitions || [];
     }
   } catch(error) {
     console.log(error);
@@ -33,12 +34,15 @@ export async function getPartition(payload){ // 获取分区信息
   return partitions;
 }
 
-export async function getMatrixDevices(payload){ // 获取筛选后的设备
+export async function getMatrixDevices(payload){ // 直接获取 所有设备 + 分区
   const getMatrixUrl = `${APIBasePath}${commonPaths.getPartitions}`;
   const getDevicesUrl = `${APIBasePath}${commonPaths.getDevices}`;
   let filterDevices = [], devices = [], partitions = [];
   try {
-    const response = await request.get(getMatrixUrl, { params: payload }); // 所有分区信息
+    const { stationCode, deviceTypeCode } = payload;
+    const response = await request.get(getMatrixUrl, {
+      params: { stationCode, deviceTypeCode },
+    }); // 所有分区信息
     if (response.code === '10000') {
       const partitionInfo = response.data || {};
       const devicesResponse = await request.get(getDevicesUrl, { params: payload });
@@ -47,9 +51,9 @@ export async function getMatrixDevices(payload){ // 获取筛选后的设备
       if (partitionInfo.partitions && response.data.partitions[0]) { // 有分区, 默认第一个.
         partitions = partitionInfo.partitions || [];
         const partitionCode = response.data.partitions[0].deviceCode; // 第一分区code
-        const filterDeviceResponse = await request.get(getDevicesUrl, { params: {
-          ...payload, partitionCode,
-        }});
+        const filterDeviceResponse = await request.get(getDevicesUrl, {
+            params: { stationCode, deviceTypeCode, partitionCode },
+        });
         filterDevices = filterDeviceResponse.data || [];
       }
     }

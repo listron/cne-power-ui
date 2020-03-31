@@ -190,7 +190,7 @@ export default class DefectBaseInfo extends Component {
                 onChange={this.onDescChange}
                 placeholder={'请描述，必填'}
                 required={isVertify}
-                value={docketDesc}
+                value={docketDesc || baseInfo.docketDesc}
                 maxLength="999"
               /> : <div className={styles.docketDesc}>{baseInfo.docketDesc}</div>}
           </div>

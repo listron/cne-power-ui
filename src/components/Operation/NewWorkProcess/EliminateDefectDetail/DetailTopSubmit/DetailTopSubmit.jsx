@@ -65,11 +65,11 @@ import { MyMessage } from '../../Common/MyMessage/MyMessage';
 
 const process = {
   2: { name: '领取', tipText: '确认领取此工单', sucessMes: '已领取' }, // 领取
-  9: { name: '提交', tipText: '确认提交此工单', sucessMes: '提交成功' }, // 新建工单
-  10: { name: '提交验收', tipText: '确认将此工单提交验收', sucessMes: '提交成功' }, // 新建工单
-  11: { name: '提交验收', tipText: '确认提交此工单', sucessMes: '提交成功' }, // 新建工单
   5: { name: '提交验收', tipText: '确认将此工单提交验收', sucessMes: '提交成功' }, // 执行工单 
-  12: { name: '提交', tipText: '确认提交此工单', sucessMes: '提交成功' }, // 新建工单
+  9: { name: '提交', tipText: '确认提交此工单', sucessMes: '提交成功' }, // 新建工单 C 未解决
+  10: { name: '提交验收', tipText: '确认将此工单提交验收', sucessMes: '提交成功' }, // 新建工单 C 已解决
+  11: { name: '提交', tipText: '确认提交此工单', sucessMes: '提交成功' }, // 新建工单 K 已解决
+  12: { name: '派发', tipText: '确认派发此工单', sucessMes: '派发成功' }, // 新建工单 K 未解决
   17: { name: '派发', tipText: '确认派发此工单', sucessMes: '派发成功' }, // 审核工单
   18: { name: '退回', tipText: '确认提交此工单', sucessMes: '退回成功' }, // 审核工单  已退回
   19: { name: '派发', tipText: '确认派发此工单', sucessMes: '派发成功' }, // 新建工单 告警
@@ -177,6 +177,7 @@ export default class DetailTopSubmit extends Component {
         return (<CneButton
           onClick={() => this[func](e)}
           className={styles.handleButton}
+          lengthMode={'short'}
           // style={{ width: '92px' }}
           color-code={e.actionColorCode}
           key={e.actionCode}
@@ -449,7 +450,7 @@ export default class DetailTopSubmit extends Component {
 
   render() {
     const { showTip, tipText, status, requiredVisiable, passVisible, messageText } = this.state;
-    const { docketId, allowedActions, eventStatus = [], scroll, myMessageFlag } = this.props;
+    const { docketId, allowedActions, eventStatus = [], scroll, myMessageFlag, handleInfos } = this.props;
     const acceptStuatus = !eventStatus.map(e => e.eventState).some(e => !e);
     const rejectStatu = eventStatus.map(e => e.eventState).some(e => e === 2);
     return (
@@ -472,7 +473,7 @@ export default class DetailTopSubmit extends Component {
             {/* 领取 */}
             {this.createButton(['2'], 'receive')}
             {/* 执行 提交验收 */}
-            {this.createButton(['5'], 'execute')}
+            {this.createButton(['5'], 'execute', handleInfos.length === 0)}
             {/* 验收通过 */}
             {this.createButton(['25'], 'accept', !(acceptStuatus && !rejectStatu))}
             {/* 驳回 */}

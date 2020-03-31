@@ -72,7 +72,7 @@ class DeviceSelect extends Component {
     disabled: false,
     deviceShowNumber: false,
     disabledDevice: [],
-    filterKey: [509],
+    filterKey: [509, '509'],
   }
 
   constructor(props) {
@@ -117,16 +117,18 @@ class DeviceSelect extends Component {
     }
   }
 
-  getMatrixDevices = async ({ stationCode, deviceTypeCode }) => {
+  getMatrixDevices = async (payload) => {
+    // payload: {stationCode, deviceTypeCode, partitionCode}
     const {
       filterDevices, devices, partitions,
-    } = await deviceQuery.getMatrixDevices({ stationCode, deviceTypeCode });
+    } = await deviceQuery.getMatrixDevices(payload);
     this.setState({ filterDevices, devices, partitions });
   }
 
-  getDevices = async ({stationCode, deviceTypeCode}, stateName) => {
-    // 直接请求电站+设备类型下所有设备。
-    const devices = await deviceQuery.getDevices({stationCode, deviceTypeCode});
+  getDevices = async (payload, stateName) => {
+    // payload: {stationCode, deviceTypeCode, partitionCode}
+    // 直接请求电站+设备类型 + (可有)分区下所有设备。
+    const devices = await deviceQuery.getDevices(payload);
     if (stateName) { // 指定存储
       this.setState({ [stateName]: devices });
     } else {
@@ -138,7 +140,7 @@ class DeviceSelect extends Component {
   }
 
   getPartition = async ({stationCode, deviceTypeCode}) => { // 分区数据
-    const { partitions } = await deviceQuery.getPartition({ stationCode, deviceTypeCode });
+    const partitions = await deviceQuery.getPartition({ stationCode, deviceTypeCode });
     this.setState({ partitions });
   }
 
@@ -220,7 +222,6 @@ class DeviceSelect extends Component {
       maxTagCount: 0,
       maxTagPlaceholder: `已选设备${checkedDeviceCodes.length}/${devices.length}`,
     } || {};
-    console.log(devices, partitions, filterDevices);
     return (
       <div className={styles.deviceSelect} style={style}>
         {multiple ? <Select
@@ -255,7 +256,7 @@ class DeviceSelect extends Component {
           </AutoComplete>}
         <DeviceSelectModal
           {...this.props}
-          devices={checkedDevice}
+          devices={devices}
           partitions={partitions}
           filterDevices={filterDevices}
           checkedDevice={checkedDevice}
@@ -265,6 +266,7 @@ class DeviceSelect extends Component {
           showModal={this.showModal}
           disabledDevice={disabledDevice}
           onStateSet={this.onStateSet}
+          getDevices={this.getDevices}
         />
       </div>
     );
