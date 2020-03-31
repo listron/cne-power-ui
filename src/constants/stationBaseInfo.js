@@ -102,7 +102,7 @@ export const interverStatus = { // 逆变器状态
 
 export const confluenceStatus = { // 汇流箱状态
   '400': '正常',
-  '500': '无通讯',
+  '500': '通讯中断',
   '900': '未接入',
   '801': '离散率>=10%',
   '802': '离散率>=20%',

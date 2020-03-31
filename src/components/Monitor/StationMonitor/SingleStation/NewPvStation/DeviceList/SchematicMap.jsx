@@ -115,7 +115,7 @@ class Schematic extends Component {
                     { 'id': 'normalSize', name: '正常数', unit: '台', point: 2 },
                     { 'id': 'smallerSize', name: '离散率≥10%数', unit: '台', point: 0, hot: true },
                     { 'id': 'largerSize', name: '离散率≥20%数', unit: '台', point: 0, hot: true },
-                    { 'id': 'breakSize', name: '无通讯数', unit: '台', point: 0, hot: true },
+                    { 'id': 'breakSize', name: '通讯中断数', unit: '台', point: 0, hot: true },
                 ],
             },
             '304': {

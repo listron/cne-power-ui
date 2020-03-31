@@ -114,7 +114,7 @@ class ConfluenceBoxList extends Component {
       case '400': result = [{ name: 'normal', text: '正常' }]; break;
       case '801': result = [{ name: 'moreThanTen', text: '离散率>10%' }]; break;
       case '802': result = [{ name: 'moreThanTwenty', text: '离散率>20%' }]; break;
-      case '500': result = [{ name: 'noContact', text: '无通讯' }]; break;
+      case '500': result = [{ name: 'noContact', text: '通讯中断' }]; break;
       case '900': result = [{ name: 'noAccess', text: '未接入' }]; break;
       default: result = [{ name: 'normal', text: '' }]; break;
     }
@@ -273,7 +273,7 @@ class ConfluenceBoxList extends Component {
         <Radio.Button value={400} >正常 {this.getStatusNum(400)}</Radio.Button>
         <Radio.Button value={801} >离散率>10% {this.getStatusNum(801)}</Radio.Button>
         <Radio.Button value={802} >离散率>20% {this.getStatusNum(802)}</Radio.Button>
-        <Radio.Button value={500} >无通讯 {this.getStatusNum(500)}</Radio.Button>
+        <Radio.Button value={500} >通讯中断 {this.getStatusNum(500)}</Radio.Button>
         <Radio.Button value={900} >未接入 {this.getStatusNum(900)}</Radio.Button>
       </Radio.Group>
     </div>);
