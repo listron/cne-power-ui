@@ -8,37 +8,41 @@ import styles from './eventAnalysis.scss';
 
 class ChartBar extends PureComponent {
   static propTypes = {
-    eventAnalysisLoading: PropTypes.bool,
     eventAnalysisInfo: PropTypes.object,
+    analysisEvent: PropTypes.object,
   };
 
   componentDidMount(){
-    const { eventAnalysisInfo } = this.props;
+    const { eventAnalysisInfo, analysisEvent } = this.props;
     const { data = [], dataDays } = eventAnalysisInfo || {};
-    this.drawChart(data);
+    const { eventCode } = analysisEvent;
+    this.drawChart(data, eventCode, dataDays);
   }
 
   componentWillReceiveProps(nextProps){
+    const { analysisEvent } = this.props;
     const preAnalysiInfo = this.props.eventAnalysisInfo;
     const { eventAnalysisInfo } = nextProps;
+    const { eventCode } = analysisEvent;
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { data = [], dataDays } = eventAnalysisInfo || {};
-      this.drawChart(data);
+      this.drawChart(data, eventCode, dataDays);
     }
   }
 
-  drawChart = (data = [], dataDays) => {
+  drawChart = (data = [], eventCode, dataDays) => {
     const dataDay = { // 诊断事件阵列损耗、转换效率偏低事件默认展示7天数据，向前滚动30天
       1: '100',
-      7: '70',
-      30: '90',
+      30: '75',
     };
     const barChart = echarts.init(this.barRef);
     const xNames = [], baseData = [], theoryData = [], lineData = [];
+    const dataEvent = ['NB1039', 'NB1041'].includes(eventCode); // 转换效率偏低、阵列损耗事件
+    const conversionEfficiency = ['NB1039'].includes(eventCode); // 转换效率偏低事件
     data.forEach((e) => {
       xNames.push(moment(e.time).format('YYYY-MM-DD'));
       baseData.push(e.gen);
-      theoryData.push(e.theoryGen);
+      theoryData.push(e.theory_gen);
       lineData.push(e.diff);
     });
     const option = {
@@ -76,12 +80,12 @@ class ChartBar extends PureComponent {
               <div>
                 <p class=${styles.eachItem}>
                   <span class=${styles.barRect}></span>
-                  <span class=${styles.tipName} style="flex: 0 0 176px">逆变器直流发电量(kWh)</span>
+                  <span class=${styles.tipName} style="flex: 0 0 76px">${conversionEfficiency ? '交流侧发电量' : '逆变器直流发电量'}(kWh)</span>
                   <span class=${styles.tipValue}>${dataFormats(baseValue, '--', 2, true)}</span>
                 </p>
                 <p class=${styles.eachItem}>
                   <span class=${styles.barBorderRect}></span>
-                  <span class=${styles.tipName} style="flex: 0 0 176px">方阵理论发电量(kWh)</span>
+                  <span class=${styles.tipName} style="flex: 0 0 76px">${conversionEfficiency ? '直流侧发电量' : '方阵理论发电量'}(kWh)</span>
                   <span class=${styles.tipValue}>${dataFormats(theoryValue, '--', 2, true)}</span>
                 </p>
                 <p class=${styles.eachItem}>
@@ -89,7 +93,7 @@ class ChartBar extends PureComponent {
                     <span class=${styles.line} style="background-color: #ff9900"></span>
                     <span class=${styles.rect} style="background-color: #ff9900; border: solid 1px #fff"></span>
                   </span>
-                  <span class=${styles.tipName} style="flex: 0 0 176px">对比差值(%)</span>
+                  <span class=${styles.tipName} style="flex: 0 0 76px">${conversionEfficiency ? '转换效率' : '方阵损耗'}(%)</span>
                   <span class=${styles.tipValue}>${dataFormats(rateValue * 100, '--', 2, true)}</span>
                 </p>
               </div>
@@ -149,7 +153,7 @@ class ChartBar extends PureComponent {
       ],
       series: [
         {
-          name: '逆变器直流发电量(kWh)',
+          name: conversionEfficiency ? '交流侧发电量(kWh)' : '逆变器直流发电量(kWh)',
           type: 'bar',
           itemStyle: {
             color: '#CEEBE0',
@@ -162,7 +166,7 @@ class ChartBar extends PureComponent {
           barWidth: 34,
           data: baseData,
         }, {
-          name: '方阵理论发电量(kWh)',
+          name: conversionEfficiency ? '方阵理论发电量(kWh)' : '方阵理论发电量(kWh)',
           type: 'bar',
           barWidth: 34,
           barGap: '-100%',
@@ -176,15 +180,15 @@ class ChartBar extends PureComponent {
             itemStyle: {
               borderColor: '#ffc581',
               borderWidth: 3,
-              shadowColor: 'rgba(248,231,28,0.70)',
-              shadowBlur: 9,
+              shadowColor: '#f8e71c',
+              shadowBlur: 10,
               shadowOffsetX: 0,
               shadowOffsetY: -4,
             },
           },
           data: theoryData,
         }, {
-          name: '对比差值(%)',
+          name: conversionEfficiency ? '转换效率(%)' : '方阵损耗(%)',
           type: 'line',
           data: lineData,
           yAxisIndex: 1,
@@ -194,11 +198,11 @@ class ChartBar extends PureComponent {
         },
       ],
     };
-    // if (data.length > 10) {
+    if (data.length > 10) {
       const handlerInfo = {
-        start: 20,
+        start: dataEvent ? dataDay[dataDays] : 0,
         end: 100,
-        zoomLock: true,
+        // zoomLock: true,
       };
       option.dataZoom = [
         {
@@ -211,7 +215,7 @@ class ChartBar extends PureComponent {
           ...handlerInfo,
         },
       ];
-    // }
+    }
     barChart.clear();
     barChart.setOption(option);
   }

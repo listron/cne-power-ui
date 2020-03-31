@@ -16,8 +16,8 @@ class ChartLine extends PureComponent {
   componentDidMount(){
     const { eventAnalysisInfo, analysisEvent } = this.props;
     const { period = [], data = {}, dataDays } = eventAnalysisInfo || {};
-    const { interval, eventCode } = analysisEvent;
-    this.drawChart(period, data, interval, eventCode, dataDays);
+    const { interval, eventCode, pointCode } = analysisEvent;
+    this.drawChart(period, data, interval, eventCode, dataDays, pointCode);
   }
 
   componentWillReceiveProps(nextProps){
@@ -25,8 +25,8 @@ class ChartLine extends PureComponent {
     const { eventAnalysisInfo, analysisEvent } = nextProps;
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { period = [], data = {}, dataDays } = eventAnalysisInfo || {};
-      const { interval, eventCode } = analysisEvent;
-      this.drawChart(period, data, interval, eventCode, dataDays);
+      const { interval, eventCode, pointCode } = analysisEvent;
+      this.drawChart(period, data, interval, eventCode, dataDays, pointCode);
     }
   }
 
@@ -52,29 +52,31 @@ class ChartLine extends PureComponent {
     return `${timeMinuteStr}${secondNumStr}`;
   }
 
-  drawChart = (period = [], data = {}, interval, eventCode, dataDays) => {
+  drawChart = (period = [], data = {}, interval, eventCode, dataDays, pointCode) => {
     const dataDay = { // 诊断事件固定物遮挡、组串低效、电压异常、并网延时；数据事件高值异常、低值异常展示dataZoom7天数据
       1: '100',
-      7: '20',
+      7: '85.9',
     };
     const { pageKey } = this.props;
     const lineChart = echarts.init(this.lineRef);
     const { time = [], pointData = [] } = data;
-    // const newPointInfo = pointData.find(e => { // 找出脉冲信号的数据
-    //   return e.pointCode === 'NB027';
-    // });
-
-    // const delPointIndex = pointData.findIndex(e => { // 删除脉冲信号在原测点数组里的位置
-    //   return e.pointCode === 'NB027';
-    // });
-    // if (delPointIndex !== -1 && pageKey === 'alarm') { // 如果存在脉冲信号话，将脉冲信号抽出
-    //   pointData.splice(delPointIndex, 1);
-    // }
 
     const noAlarmTime = ['NB1038', 'NB1040'].includes(eventCode); // 诊断事件电压异常、并网延时中不展示告警时段，页面相应背景图移除
     const noDeviceName = ['NB1035', 'NB1037'].includes(eventCode); // 诊断事件零电流、固定物遮挡的legend要一行8列展示,以及不展示设备名称
     const seriesInefficient = ['NB1036'].includes(eventCode); // 组串低效不展示告警、设备名称，且展示8行
     const fixedShelter = ['NB1037'].includes(eventCode); // 固定遮挡物
+    const dataAnomaly = ['NB2035', 'NB2036'].includes(eventCode); // 数据事件的高值异常、低值异常展示标准线
+
+    const pulseSignalInfo = pointData.find(e => { // 找到脉冲信号的数据
+      return e.pointCode === pointCode;
+    });
+    const delPointIndex = pointData.findIndex(e => { // 找到脉冲信号在原测点数组里的位置
+      return e.pointCode === pointCode;
+    });
+    if (delPointIndex >= 0 && pageKey === 'alarm') { // 如果存在脉冲信号，将脉冲信号抽出
+      pointData.splice(delPointIndex, 1);
+    }
+
     const legends = [{
       name: '告警时段',
       icon: 'rect',
@@ -120,6 +122,8 @@ class ChartLine extends PureComponent {
         },
         data: markAreaData,
       },
+      xAxisIndex: 0,
+      yAxisIndex: 0,
     }];
     if (noAlarmTime || seriesInefficient) { // 不展示告警时段
       series.shift();
@@ -145,8 +149,11 @@ class ChartLine extends PureComponent {
       const pointName = `${(!noDeviceName && !seriesInefficient) ? e.deviceName : ''} ${e.pointName || ''}`; // 诊断事件的零电流、组串低效、固定物遮挡不展示设备名称
       const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
       colors.push(this.lineColors[i % this.lineColors.length]);
-      if(e.isConnected === 0 && (noDeviceName || seriesInefficient)){ // 零电流、组串低效、固定物遮挡未接组串为灰色
+      if(e.isConnected === 0 && (noDeviceName || seriesInefficient)){ // 诊断事件零电流、组串低效、固定物遮挡未接组串为灰色
         colors.splice((i + 1), 1, '#999');
+      }
+      if (noAlarmTime || seriesInefficient) { // 诊断事件组串低效、电压异常、并网延时事件的曲线与图例颜色，默认绿色
+        colors.splice(i, 1, '#60c060');
       }
 
       legends.push({
@@ -157,13 +164,14 @@ class ChartLine extends PureComponent {
         top: `${noAlarmTime ? (Math.floor(i / 4) * 30) : (noDeviceName ? (Math.floor((i + 1) / 8) * 30) : (seriesInefficient ? (Math.floor(i / 8) * 30) : (Math.floor((i + 1) / 4) * 30)))}`,
         data: [pointFullName],
         textStyle: {
-          color: e.isWarned && pageKey === 'diagnose' ? '#f5222d' : '#353535',
+          color: e.isWarned && pageKey === 'diagnose' ? ((noAlarmTime || seriesInefficient) ? '#f9b600' : '#f5222d') : '#353535', // 诊断事件组串低效、电压异常、并网延时事件的异常曲线与图例颜色，默认黄色
         },
         selectedMode: e.isConnected === 0 ? false : true,
       });
       series.push({
         name: pointFullName,
         type: 'line',
+        xAxisIndex: 0,
         yAxisIndex: unitsGroup.indexOf(e.pointUnit || ''), // 空单位统一以''作为单位
         lineStyle: {
           width: (e.isConnected === 0 && (noDeviceName || seriesInefficient)) ? 0 : 3, // 诊断事件的零电流、组串低效、固定物遮挡未接组串不显示折线
@@ -176,24 +184,10 @@ class ChartLine extends PureComponent {
       });
     });
 
-    // if (delPointIndex !== -1 && pageKey === 'alarm') {
-    //   series.push({ // 新增脉冲信号数据
-    //     name: '脉冲信号',
-    //     type: 'line',
-    //     xAxisIndex: pointData.length,
-    //     yAxisIndex: pointData.length,
-    //     lineStyle: {
-    //       width: 3,
-    //     },
-    //     data: newPointInfo.value,
-    //     symbol: 'circle',
-    //     symbolSize: 10,
-    //     showSymbol: false,
-    //     smooth: true,
-    //   });
-    // }
-
+    const legendHeight = (delPointIndex !== -1 && pageKey === 'alarm') ? Math.ceil((legends.length + 1) / 4) * 30 : Math.ceil(legends.length / 4) * 30;
     const eachyAxis = { // 生成多y纵坐标, 相同单位对应一个y轴
+      // name: '其他测点',
+      gridIndex: 0,
       type: 'value',
       axisLabel: {
         show: false,
@@ -211,24 +205,15 @@ class ChartLine extends PureComponent {
     const yAxis = unitsGroup.length > 0 ? unitsGroup.map((e, i) => ({
       ...eachyAxis,
     })) : eachyAxis; // 若返回异常数据导致无单位，使用默认单纵坐标即可
-    yAxis[0] = { // 选一个轴添加网格线
-      type: 'value',
-      axisLabel: {
-        show: false,
-      },
-      axisTick: {
-        show: false,
-      },
-      axisLine: {
-        show: false,
-      },
-      splitLine: {
-        lineStyle: {
-          type: 'dashed',
-        },
+    yAxis[0].splitLine = { // 选一个y轴添加网格线
+      lineStyle: {
+        type: 'dashed',
       },
     };
+
     const xAxis = [{
+      show: (delPointIndex !== -1 && pageKey === 'alarm') ? false : true,
+      gridIndex: 0,
       type: 'category',
       data: time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss')),
       axisLine: {
@@ -251,69 +236,151 @@ class ChartLine extends PureComponent {
     const grid = [{
       show: true,
       borderColor: '#d4d4d4',
-      bottom: 100,
-      // bottom: '27%',
+      bottom: '27%',
       top: legendHeight,
       left: '7%',
       right: '7%',
       },
     ];
+    if (delPointIndex !== -1 && pageKey === 'alarm') { // 是告警事件且存在脉冲信号时新增坐标系
+      pointData.push(pulseSignalInfo);
+      colors.push('#f8e71c');
+      legends.push({
+        name: '脉冲信号',
+        height: 30,
+        left: `${7 + legends.length % 4 * 21.5}%`,
+        top: `${Math.floor(legends.length / 4) * 30}`,
+        selectedMode: true,
+        data: ['脉冲信号'],
+        textStyle: {
+          color: '#353535',
+        },
+      });
+      yAxis.push({
+        gridIndex: 1,
+        // name: '脉冲信号',
+        type: 'value',
+        min: -2,
+        max: 2,
+        axisLabel: {
+          show: false,
+        },
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          show: false,
+        },
+        splitLine: {
+          show: false,
+        },
+      });
 
-    // if (delPointIndex !== -1 && pageKey === 'alarm') { // 告警事件且存在脉冲信号时新增坐标系
-    //   yAxis.push({
-    //     gridIndex: pointData.length,
-    //     type: 'value',
-    //     min: -2,
-    //     max: 2,
-    //     axisLabel: {
-    //       show: false,
-    //     },
-    //     axisTick: {
-    //       show: false,
-    //     },
-    //     axisLine: {
-    //       show: false,
-    //     },
-    //     splitLine: {
-    //       show: false,
-    //     },
-    //   });
+      xAxis.push({
+        gridIndex: 1,
+        type: 'category',
+        data: time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss')),
+        axisLine: {
+          show: false,
+        },
+        axisLabel: {
+          fontSize: 14,
+          color: '#353535',
+          lineHeight: 21,
+          formatter: (value = '') => value.split(' ').join('\n'),
+        },
+        axisTick: {
+          show: false,
+        },
+        splitLine: {
+          show: false,
+        },
+      });
 
-    //   xAxis.push({
-    //     gridIndex: pointData.length,
-    //     show: false,
-    //     type: 'category',
-    //     data: time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss')),
-    //     axisLine: {
-    //       show: false,
-    //     },
-    //     axisLabel: {
-    //       fontSize: 14,
-    //       color: '#353535',
-    //       lineHeight: 21,
-    //       formatter: (value = '') => value.split(' ').join('\n'),
-    //     },
-    //     axisTick: {
-    //       show: false,
-    //     },
-    //     splitLine: {
-    //       show: false,
-    //     },
-    //   });
+      grid.push({
+        show: true,
+        borderColor: '#d4d4d4',
+        bottom: 100,
+        top: '73%',
+        left: '7%',
+        right: '7%',
+        height: 57,
+        backgroundColor: 'rgba(252,255,229,0.60)',
+      });
 
-    //   grid.push({
-    //     show: true,
-    //     borderColor: '#d4d4d4',
-    //     bottom: 100,
-    //     top: '73%',
-    //     left: '7%',
-    //     right: '7%',
-    //     height: 59,
-    //     backgroundColor: 'pink',
-    //   });
-    // }
+      series.push({ // 新增脉冲信号数据
+        name: '脉冲信号',
+        step: true,
+        type: 'line',
+        xAxisIndex: 1,
+        yAxisIndex: unitsGroup.length,
+        lineStyle: {
+          width: 3,
+          shadowColor: 'rgba(0, 0, 0, 0.5)',
+          shadowBlur: 4,
+          shadowOffsetX: 0,
+          shadowOffsetY: 4,
+        },
+        data: pulseSignalInfo.value,
+        symbol: 'circle',
+        symbolSize: 10,
+        showSymbol: false,
+        smooth: true,
+      });
+    }
 
-    const legendHeight = Math.ceil(legends.length / 4) * 30;
+    if (dataAnomaly) { // 是数据事件的高值异常、低值异常的标准值，要追加到原测点组后面
+      colors.push('#ffeb00');
+      const lastLegend = legends[legends.length - 1];
+      const pointInfo = pointData.filter(e => {
+        return e.standard;
+      });
+      const standard = pointInfo.length > 0 ? pointInfo[0].standard : ''; // 标准值
+      const standardData = standard ? `标准值(${pointInfo[0].pointUnit})` : '';
+      legends.push({
+        name: standardData,
+        show: standard ? true : false,
+        height: 30,
+        left: `${parseFloat(lastLegend.left.replace('%', '')) + 21.5}%`,
+        top: `${Math.floor(legends.length / 4) * 30}%`,
+        selectedMode: false,
+        data: [standardData],
+        textStyle: {
+          color: '#353535',
+        },
+      });
+      series.push({ // 新增标准线数据
+        name: standardData,
+        type: 'line',
+        symbol: 'circle',
+        data: [],
+        xAxisIndex: 0,
+        yAxisIndex: 0,
+        markLine: {
+          silent: true,
+          symbol: 'none',
+          label: {
+            show: false,
+          },
+          data: [
+            {
+              yAxis: standard,
+              name: 'Y轴水平线',
+              lineStyle: {
+                type: 'solid',
+                width: (dataAnomaly && standard) ? 3 : 0,
+                color: '#ffeb00',
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                shadowBlur: 4,
+                shadowOffsetX: 0,
+                shadowOffsetY: 4,
+              },
+            },
+          ],
+      },
+      });
+    }
+
     const option = {
       legend: legends,
       color: colors,
@@ -336,31 +403,44 @@ class ChartLine extends PureComponent {
         extraCssText: 'padding: 5px 10px; background-color: rgba(0,0,0,0.70); box-shadow:0 1px 4px 2px rgba(0,0,0,0.20); border-radius:2px;',
         formatter: (params = []) => {
           const { name } = params[0] || {};
-          const { warningDuration } = period; // 告警时长
+          const periodData = period.filter(e => {
+            return moment(name).isBetween(e.beginTime, e.endTime);
+          });
+
+          const pointInfo = pointData.filter(e => {
+            return e.standard;
+          });
+          const standard = pointInfo.length > 0 ? pointInfo[0].standard : ''; // 标准值
+
           return (
             `<section class=${styles.chartTooltip}>
               <h3 class=${styles.tooltipTitle}>${name}</h3>
               ${params.map(e => {
-                const { color, seriesIndex, value } = e || {};
+                const { color, seriesIndex, value, seriesName } = e || {};
                 const eachFullData = sortedPointData[(noAlarmTime || seriesInefficient) ? seriesIndex: seriesIndex - 1] || {}; // 诊断事件组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置
                 // 解析全数据使用， 因为系列中有个首条空线， series需减一对应。
                 const { isWarned, pointName, deviceName, isConnected } = eachFullData;
                 const lineFullName = `${deviceName} ${pointName || ''}`;
                 return (
-                  `<p class=${(isWarned && pageKey === 'diagnose') ? styles.warnedItem : (isConnected === 0 && (noDeviceName || seriesInefficient) ? styles.connected : styles.eachItem)}>
+                  `<p class=${(isWarned && pageKey === 'diagnose') ? ((noAlarmTime || seriesInefficient) ? styles.specialWarnedItem :styles.warnedItem) : (isConnected === 0 && (noDeviceName || seriesInefficient) ? styles.connected : styles.eachItem)}>
                     <span class=${styles.tipIcon}>
                       <span class=${styles.line} style="background-color:${color}"></span>
                       <span class=${styles.rect} style="background-color:${color}"></span>
                     </span>
-                    <span class=${styles.tipName}>${lineFullName}</span>
+                    <span class=${styles.tipName}>${(delPointIndex >= 0 && pageKey === 'alarm') ? seriesName : lineFullName}</span>
                     <span class=${styles.tipValue}>${isConnected === 0 ? '--' : dataFormats(value, '--', 2, true)}</span>
                   </p>`
                 );
               }).join('')}
-              <p class=${(!noAlarmTime && !seriesInefficient) ? styles.eachItem : styles.noWarnItem}>
+              <p class=${(dataAnomaly && standard) ? styles.eachItem : styles.noWarnItem}>
+                <span class=${styles.warningIcon}></span>
+                <span class=${styles.tipName}>标准值</span>
+                <span class=${styles.tipValue}>${dataFormats(standard, '--', 2, true)}</span>
+              </p>
+              <p class=${(periodData.length > 0 && !noAlarmTime && !seriesInefficient && (dataAnomaly || fixedShelter || pageKey === 'alarm')) ? styles.eachItem : styles.noWarnItem}>
                 <span class=${styles.warningIcon}></span>
                 <span class=${styles.tipName}>告警时长</span>
-                <span class=${styles.tipValue}>${dataFormats(warningDuration, '--', 2, true)}h</span>
+                <span class=${styles.tipValue}>${periodData.length > 0 ? dataFormats(periodData[0].warningDuration, '--', 2, true) : '--'}h</span>
               </p>
             </section>`
           );
@@ -377,17 +457,18 @@ class ChartLine extends PureComponent {
       yAxis,
       series, // 若返回异常空数据, 则需要置空
     };
-    console.log(option);
     if (pointData.length > 0) {
       option.dataZoom = [
         {
           show: true,
           height: 20,
-          bottom: 16,
-        }, {
-          start: (noAlarmTime || seriesInefficient || fixedShelter || pageKey === 'data') ? dataDay[dataDays] : 100, // 诊断事件组串低效、电压异常、并网延时、固定物遮挡；数据事件;
+          bottom: (delPointIndex !== -1 && pageKey === 'alarm') ? 10 : 16,
+          start: (noAlarmTime || seriesInefficient || fixedShelter || pageKey === 'data') ? dataDay[dataDays] : 0, // 诊断事件组串低效、电压异常、并网延时、固定物遮挡；数据事件默认展示7天数据;
           end: 100,
+        }, {
           type: 'inside',
+          start: (noAlarmTime || seriesInefficient || fixedShelter || pageKey === 'data') ? dataDay[dataDays] : 0, // 诊断事件组串低效、电压异常、并网延时、固定物遮挡；数据事件默认展示7天数据;
+          end: 100,
         },
       ];
     }
