@@ -2,7 +2,7 @@
 
 import React from 'react';
 import CommonBreadcrumb from '../CommonBreadcrumb';
-import Footer from '../Footer';
+import CneFooter from '@components/Common/Power/CneFooter';
 import styles from './index.scss';
 import PropTypes from 'prop-types';
 
@@ -16,7 +16,7 @@ export default function ContentLayout ({
       <div className={`${styles.contentBox} ${contentClassName}`}>
         {children}
       </div>
-      {hasFooter && <Footer />}
+      {hasFooter && <CneFooter />}
     </div>
   );
 }

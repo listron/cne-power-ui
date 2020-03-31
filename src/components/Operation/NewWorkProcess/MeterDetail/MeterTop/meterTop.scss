@@ -30,6 +30,13 @@
 .meterTop {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 54px;
+  z-index: 99;
 
   .meterTopTitle {
     display: flex;

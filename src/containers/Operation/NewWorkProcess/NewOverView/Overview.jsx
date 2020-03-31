@@ -73,27 +73,31 @@ class Overview extends Component {
     const { theme = 'light' } = this.props;
     const { tab, page } = this.state;
     return (
-      <ContentLayout
-        theme={theme}
-        contentClassName={`${styles.overview} ${styles[theme]}`}
-      >
-        <div className={styles.container}>
-          {page === 'list' &&
-            <div className={styles.list}>
-              <div className={styles.tabTitle}>
-                {/*<p className={`${tab === 'defect' && styles.activeKey} `} onClick={() => { this.queryTargetData('defect'); }}>消缺</p>*/}
-                {/*<p className={`${tab === 'inspect' && styles.activeKey} `} onClick={() => { this.queryTargetData('inspect'); }}>巡检</p>*/}
-                <p className={`${tab === 'meter' && styles.activeKey} `} onClick={() => { this.queryTargetData('meter'); }}>抄表</p>
-              </div>
-              {tab === 'defect' && <DefectList {...this.props} />}
-              {tab === 'inspect' && <InspectList {...this.props} />}
-              {tab === 'meter' && <MeterList {...this.props} />}
-            </div>}
-          {page === 'defectDetail' && <DefectDetail {...this.props} />}
-          {page === 'inspectDeatail' && <InspectDetail {...this.props} />}
-          {page === 'meterDetail' && <MeterDetail {...this.props} />}
-        </div>
-      </ContentLayout>
+      <React.Fragment>
+        {page !== 'meterDetail' && (
+          <ContentLayout
+            theme={theme}
+            contentClassName={`${styles.overview} ${styles[theme]}`}
+          >
+            <div className={styles.container}>
+              {page === 'list' &&
+              <div className={styles.list}>
+                <div className={styles.tabTitle}>
+                  {/*<p className={`${tab === 'defect' && styles.activeKey} `} onClick={() => { this.queryTargetData('defect'); }}>消缺</p>*/}
+                  {/*<p className={`${tab === 'inspect' && styles.activeKey} `} onClick={() => { this.queryTargetData('inspect'); }}>巡检</p>*/}
+                  <p className={`${tab === 'meter' && styles.activeKey} `} onClick={() => { this.queryTargetData('meter'); }}>抄表</p>
+                </div>
+                {tab === 'defect' && <DefectList {...this.props} />}
+                {tab === 'inspect' && <InspectList {...this.props} />}
+                {tab === 'meter' && <MeterList {...this.props} />}
+              </div>}
+              {page === 'defectDetail' && <DefectDetail {...this.props} />}
+              {page === 'inspectDeatail' && <InspectDetail {...this.props} />}
+            </div>
+          </ContentLayout>
+        )}
+        {page === 'meterDetail' && <MeterDetail {...this.props} />}
+      </React.Fragment>
     );
   }
 }

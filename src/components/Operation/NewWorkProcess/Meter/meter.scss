@@ -19,7 +19,24 @@
 
       .selectModalIcon {
         top: 0;
+
+        i {
+          color: #999999;
+        }
+
       }
+
+      :global {
+        .ant-select-selection {
+          box-shadow: none;
+          border: 1px solid #d4d4d4;
+        }
+
+        .ant-select-selection__placeholder {
+          color: #999999 !important;
+        }
+      }
+
     }
 
     .monthBox {
@@ -33,6 +50,21 @@
 
       .betweenIcon {
         margin: 0 3px;
+      }
+
+      :global{
+        .ant-input{
+          border: 1px solid #d4d4d4;
+        }
+
+        input::-webkit-input-placeholder {
+          color: #999999;
+        }
+
+
+        .ant-calendar-picker-icon{
+          color: #999999;
+        }
       }
     }
 
@@ -62,6 +94,10 @@
         }
 
         :global {
+          .ant-select-selection {
+            box-shadow: none;
+            border: 1px solid #d4d4d4;
+          }
           .ant-select-selection--multiple {
             height: 32px;
           }
@@ -73,6 +109,7 @@
 
           .ant-select-selection--multiple .ant-select-selection__placeholder {
             margin-left: 0;
+            color: #999999;
           }
 
           .ant-select-selection--multiple .ant-select-selection__choice {
@@ -245,10 +282,10 @@
   }
 
   .iconLookBtn {
-    cursor: pointer;
     color: $themeColor;
 
     i{
+      cursor: pointer;
       font-size: 20px;
     }
 
