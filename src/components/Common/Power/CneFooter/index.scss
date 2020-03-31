@@ -1,0 +1,19 @@
+@import '../../../../theme/theme.scss';
+
+.footerBox{
+  text-align: right;
+  height: 60px;
+  line-height: 60px;
+  padding: 0 24px;
+}
+
+// 浅色主题
+.footerBox.light{
+  color: #999999;
+  background-color: transparent;
+}
+
+// 深色主题
+.footerBox.dark{
+
+}

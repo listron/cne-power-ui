@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Spin } from 'antd';
 import CneTips from '@components/Common/Power/CneTips';
+import CneFooter from '@components/Common/Power/CneFooter';
 import {newMeterDetailAction} from './meterDetailReducer';
 import MeterTop from '@components/Operation/NewWorkProcess/MeterDetail/MeterTop/MeterTop.jsx';
 import MeterBaseInfo from '@components/Operation/NewWorkProcess/MeterDetail/MeterBaseInfo/MeterBaseInfo.jsx';
@@ -28,6 +29,14 @@ class MeterDetail extends Component {
     stateChangeStatus: PropTypes.bool,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      scroll: false,
+    };
+  }
+
+
   componentDidMount() {
     const {
       getProcessBaseInfo,
@@ -39,6 +48,8 @@ class MeterDetail extends Component {
     } = this.props;
     const { search } = history.location;
     const { meterId } = searchUtil(search).parse(); // 抄表详情页
+    const main = document.getElementById('main');
+    main.addEventListener('scroll', this.bindScroll);
     // 获取抄表基本信息
     getProcessBaseInfo({meterId, loading: true});
     // 获取流程可操作人数据
@@ -52,9 +63,23 @@ class MeterDetail extends Component {
   }
 
   componentWillUnmount() { // 卸载的时候要注意
+    const main = document.getElementById('main');
+    main && main.removeEventListener('scroll', this.bindScroll, false);
     const { resetStore } = this.props;
     resetStore();
   }
+
+  bindScroll = () => {
+    const main = document.getElementById('main');
+    const scrollTop = main.scrollTop;
+    const { scroll } = this.state;
+    if (scrollTop > 0 && !scroll) {
+      this.setState({ scroll: !scroll });
+    }
+    if (scrollTop === 0) {
+      this.setState({ scroll: false });
+    }
+  };
 
   onConfirmWarningTip = () => {
     // 强制刷新
@@ -62,10 +87,11 @@ class MeterDetail extends Component {
   };
 
   render() {
+    const { scroll } = this.state;
     const { theme = 'light', loading, isChangeMeter, stateChangeStatus } = this.props;
     return (
       <div className={`${styles.meterDetailBox} ${theme}`}>
-        <MeterTop {...this.props} />
+        <MeterTop {...this.props} scroll={scroll} />
         {loading ? <div className={styles.meterLoading}>
             <Spin />
           </div> : (
@@ -79,6 +105,7 @@ class MeterDetail extends Component {
             </div>
           </div>
         )}
+        <CneFooter />
         <CneTips
           visible={stateChangeStatus || isChangeMeter === 1}
           width={260}
