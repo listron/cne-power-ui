@@ -59,6 +59,7 @@
       :global{
         .icon-xietiao{
           color: #df4b33;
+          font-size: 20px;
         }
       }
     }
@@ -71,6 +72,9 @@
         line-height: 30px;
         color: #000;
         font-weight: 700;
+      }
+      .recordText{
+        word-break: break-all;
       }
     }
     .imgRecord{
