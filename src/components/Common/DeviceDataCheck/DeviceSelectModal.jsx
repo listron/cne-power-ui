@@ -77,6 +77,7 @@ class DeviceSelectModal extends Component {
   matrixChange = partitionCode => { // 请求分区数据。
     const { stationCode, deviceTypeCode } = this.props;
     this.setState({ checkedMatrix: partitionCode });
+    console.log(partitionCode);
     this.props.getDevices({ stationCode, deviceTypeCode, partitionCode }, 'filterDevices');
   }
 

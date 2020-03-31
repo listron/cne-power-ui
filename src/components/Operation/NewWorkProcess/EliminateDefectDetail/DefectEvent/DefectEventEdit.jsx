@@ -4,7 +4,7 @@ import { Input, Select, Tooltip } from 'antd';
 import styles from './defectEvent.scss';
 import CneTips from '@components/Common/Power/CneTips';
 import PicUploader from '../../Common/PicUploader';
-import DeviceSelect from '../../../../Common/DeviceSelect/index';
+import DeviceSelect from '../../../../Common/DeviceDataCheck';
 import path from '../../../../../constants/path';
 const { TextArea } = Input;
 const { Option } = Select;
