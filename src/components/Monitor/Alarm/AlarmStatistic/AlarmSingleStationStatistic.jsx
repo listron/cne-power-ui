@@ -41,27 +41,25 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.showPage === 'single') {
-      const { singleStationCode, summaryType, orderField, orderCommand } = this.props;
-      const { pageNum, pageSize } = this.state;
-      this.props.getSingleStationAlarmStatistic({
-        stationCode: singleStationCode,
-        startTime: moment().subtract(30, 'days').utc().format(),
-        endTime: moment().utc().format(),
-        summaryType,
-        pageSize,
-        pageNum,
-        orderField,
-        orderCommand,
-      });
-      this.props.history.push(`/monitor/alarm/statistic/${singleStationCode}`);
-    }
+    const { singleStationCode, summaryType, orderField, orderCommand } = this.props;
+    const { pageNum, pageSize } = this.state;
+    this.props.getSingleStationAlarmStatistic({
+      stationCode: singleStationCode,
+      startTime: moment().subtract(29, 'days').hour(0).minute(0).second(0).utc().format(),
+      endTime: moment().endOf('day').utc().format(),
+      summaryType,
+      pageSize,
+      pageNum,
+      orderField,
+      orderCommand,
+    });
+    // this.props.history.push(`/monitor/alarm/statistic/${singleStationCode}`);
   }
 
   componentWillReceiveProps(nextProps) {
     const { startTime, endTime, summaryType, singleStationCode, orderField, orderCommand, showPage } = nextProps;
     const { pageSize, pageNum } = this.state;
-    if (singleStationCode !== this.props.singleStationCode && showPage === 'single') {
+    if (singleStationCode !== this.props.singleStationCode) {
       this.props.getSingleStationAlarmStatistic({
         stationCode: singleStationCode,
         startTime: startTime,
@@ -152,7 +150,7 @@ class ALarmSingleStationStatistic extends React.Component {
       this.setState({ showTimeSelect: false });
       if (value === 'today') {
         startTime = moment().hour(0).minute(0).second(0).utc().format();
-        endTime = moment().utc().format();
+        endTime = moment().endOf('day').utc().format();
       } else if (value === 'yesterday') {
         startTime = moment().subtract(1, 'days').hour(0).minute(0).second(0).utc().format();
         endTime = moment().subtract(1, 'days').hour(23).minute(59).second(59).utc().format();

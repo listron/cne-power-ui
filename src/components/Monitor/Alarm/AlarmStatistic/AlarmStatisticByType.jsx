@@ -25,8 +25,8 @@ class AlarmStatisticByType extends Component {
     exportAlarm: PropTypes.func,
     changeAlarmStatisticStore: PropTypes.func,
     getStationsAlarmStatistic: PropTypes.func,
-    // onTableChange: PropTypes.func,
-    // onChangeFilter: PropTypes.func,
+    pvSelectTime: PropTypes.string,
+    windSelectTime: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -54,11 +54,18 @@ class AlarmStatisticByType extends Component {
     const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, pageSize, pageNum, orderField, orderCommand } = this.props;
     const startDate = dateString[0];
     const endDate = dateString[1];
-    // this.props.onChangeFilter({
-    //   startTime,
-    //   endTime,
-    // });
-    changeAlarmStatisticStore({ startTime: startDate, endTime: endDate });
+    if (stationType === '1') {
+      changeAlarmStatisticStore({
+        pvStartTime: startDate,
+        pvEndTime: endDate,
+      });
+    }else{
+      changeAlarmStatisticStore({
+        windStartTime: startDate,
+        windEndTime: endDate,
+      });
+    }
+    // changeAlarmStatisticStore({ startTime: startDate, endTime: endDate });
     if (stationCode.length > 0) {
       getStationsAlarmStatistic({ stationType, stationCode, startTime: startDate, endTime: endDate, pageSize, pageNum, orderField, orderCommand });
     }
@@ -68,12 +75,6 @@ class AlarmStatisticByType extends Component {
   onChangeTab = (key) => {
     const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
     if (key === 'graph') {
-      // this.props.onChangeFilter({
-      //   pageSize: null,
-      //   pageNum: null,
-      //   orderField: '',
-      //   orderCommand: '',
-      // });
       changeAlarmStatisticStore({
         pageSize: null,
         pageNum: null,
@@ -84,12 +85,6 @@ class AlarmStatisticByType extends Component {
         getStationsAlarmStatistic({ stationType, stationCode, startTime, endTime, pageSize: '', pageNum: '', orderField: '', orderCommand: '' });
       }
     } else if (key === 'table') {
-      // this.props.onChangeFilter({
-      //   pageSize: pageSize !== null ? pageSize : 10,
-      //   pageNum: pageNum !== null ? pageNum : 1,
-      //   orderField: orderField !== '' ? orderField : '',
-      //   orderCommand: orderField !== '' ? orderCommand : '',
-      // });
       changeAlarmStatisticStore({
         pageSize: pageSize !== null ? pageSize : 10,
         pageNum: pageNum !== null ? pageNum : 1,
@@ -124,8 +119,8 @@ class AlarmStatisticByType extends Component {
         startDate = moment().hour(0).minute(0).second(0).utc().format();
         endDate = moment().utc().format();
       } else if (value === 'yesterday') {
-        startDate = moment().subtract(1, 'days').hour(0).minute(0).second(0).utc().format();
-        endDate = moment().subtract(1, 'days').hour(23).minute(59).second(59).utc().format();
+        startDate = moment().subtract(1, 'days').startOf('day').format();
+        endDate = moment().subtract(1, 'days').endOf('day').format();
       } else if (value === 'last7') {
         startDate = moment().subtract(6, 'days').hour(0).minute(0).second(0).utc().format();
         endDate = moment().utc().format();
@@ -133,15 +128,21 @@ class AlarmStatisticByType extends Component {
         startDate = moment().subtract(29, 'days').hour(0).minute(0).second(0).utc().format();
         endDate = moment().utc().format();
       }
-      // this.props.onChangeFilter({
-      //   startTime,
-      //   endTime,
+      // changeAlarmStatisticStore({
+      //   startTime: startDate,
+      //   endTime: endDate,
       // });
-      changeAlarmStatisticStore({
-        startTime: startDate,
-        endTime: endDate,
-      });
-
+      if (stationType === '1') {
+        changeAlarmStatisticStore({
+          pvStartTime: startDate,
+          pvEndTime: endDate,
+        });
+      }else{
+        changeAlarmStatisticStore({
+          windStartTime: startDate,
+          windEndTime: endDate,
+        });
+      }
       if (stationCode.length > 0) {
         getStationsAlarmStatistic({ stationType, stationCode, startTime: startDate, endTime: endDate, pageSize, pageNum, orderField, orderCommand });
       }
@@ -180,6 +181,7 @@ class AlarmStatisticByType extends Component {
         <button className={styles.exportBtn} onClick={this.exportAlarm}>数据导出</button>
       </div >
     );
+
     return (
       <div className={styles.alarmStatisticType}>
         <div className={styles.filter}>
@@ -220,10 +222,7 @@ class AlarmStatisticByType extends Component {
             tab={<i className="iconfont icon-table"></i>}
             key="table"
           >
-            <AlarmStatisticTable
-              {...this.props}
-              // onTableChange={this.props.onTableChange}
-            />
+            <AlarmStatisticTable {...this.props} />
           </TabPane>
         </Tabs>
       </div>

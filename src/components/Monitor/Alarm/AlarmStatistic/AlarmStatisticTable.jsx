@@ -4,7 +4,6 @@ import styles from './alarmStatistic.scss';
 import { Table } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination';
 import { numWithComma } from '../../../../utils/utilFunc';
-import moment from 'moment';
 
 class AlarmStatisticTable extends React.Component {
   static propTypes = {
@@ -20,19 +19,12 @@ class AlarmStatisticTable extends React.Component {
     endTime: PropTypes.string,
     getStationsAlarmStatistic: PropTypes.func,
     changeAlarmStatisticStore: PropTypes.func,
-    // stationDataList: PropTypes.array,
-    // onTableChange: PropTypes.func,
-    // onChangeFilter: PropTypes.func,
   }
   constructor(props) {
     super(props);
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    // this.props.onTableChange({
-    //   pageNum: currentPage,
-    //   pageSize,
-    // });
     const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, startTime, endTime, orderField, orderCommand } = this.props;
     if (stationCode.length > 0) {
       changeAlarmStatisticStore({
@@ -50,10 +42,6 @@ class AlarmStatisticTable extends React.Component {
     const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, startTime, endTime, pageSize, pageNum } = this.props;
     const field = sorter.field;
     const arr = ['stationName', 'alarmNum', 'oneWarningNum', 'twoWarningNum', 'threeWarningNum', 'fourWarningNum', 'handleAvgTime', 'oneHandleAvgTime', 'twoHandleAvgTime', 'threeWarningNum', 'fourHandleAvgTime'];
-    // this.props.onTableChange({
-    //   orderField: (arr.indexOf(field) + 1).toString(),
-    //   orderCommand: sorter.order === 'ascend' ? '1' : '2',
-    // });
     if (stationCode.length > 0) {
       changeAlarmStatisticStore({
         orderField: (arr.indexOf(field) + 1).toString(),
@@ -67,17 +55,6 @@ class AlarmStatisticTable extends React.Component {
   }
 
   getDuration(seconds) {
-    // console.log('seconds: ', seconds);
-    // const milliseconds = seconds * 1000;
-    // const minuteNum = seconds / 60;
-    // const duration = moment.duration(milliseconds);
-    // const day = parseInt(minuteNum / (60 * 24)) > 99 ? 99 : parseInt(minuteNum / (60 * 24));
-    // const displayDay = (day < 10 && day !== 0) ? '0' + day : day;
-    // const hour = duration.hours();
-    // const displayHour = hour < 10 ? '0' + hour : hour;
-    // const minute = duration.minutes();
-    // const displayMiute = minute < 10 ? '0' + minute : minute; 
-    // return `${displayDay}天${displayHour}小时${displayMiute}分钟`;
     const date = (+seconds / 60 / 60).toFixed(2);
     return `${date}h`;
 

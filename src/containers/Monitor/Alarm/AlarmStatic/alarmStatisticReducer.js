@@ -12,10 +12,8 @@ var initState = Immutable.fromJS({
   stationType: '1', //电站类型
   stationCode: [], //电站名称
 
-  // startTime: null,//发生时间
-  // endTime: null,//结束时间
-  startTime: moment().subtract(30, 'days').hour(0).minute(0).second(0).utc().format(), //发生时间
-  endTime: moment().utc().format(), //结束时间
+  startTime: moment().subtract(29, 'days').hour(0).minute(0).second(0).utc().format(),
+  endTime: moment().endOf('day').utc().format(),
   deviceName: '', //设备名称，模糊查询
 
   summaryType: 2, //统计方式：1-按时，2-按日，3-按月
@@ -29,6 +27,11 @@ var initState = Immutable.fromJS({
   alarmStatistic: [], //多电站
   singleAlarmStatistic: [], //单电站
   singleAlarmSummary: {}, //单电站告警汇总
+
+  pvStartTime: '', // 光伏电站开始时间
+  pvEndTime: '', // 光伏电站结束时间
+  windStartTime: '', // 风电电站开始时间
+  windEndTime: '', // 风电电站开始时间
 });
 
 const alarmStatisticReducer = (state = initState, action) => {
