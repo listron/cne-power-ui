@@ -25,12 +25,14 @@ class RadioSelect extends Component {
     const { option } = this.props;
     const { checkedValue = '', data, rules = ['label', 'value'] } = option;
     const [label, value] = rules;
+    const defaultValue = `${checkedValue||''}`;
     return (
       <div className={styles.radioSelectItem}>
-        <Group onChange={this.onChange} defaultValue={`${checkedValue||''}`}>
-            <Button value='' key=''>不限</Button>
+        <Group onChange={this.onChange} defaultValue={defaultValue}>
+            <Button checked={defaultValue === ''} value='' key=''>不限</Button>
             {data.map(e => {
-              return <Button value={e[value]} key={e[value]}>{e[label]}</Button>;
+              const k = e[value];
+              return <Button checked={k.toString() === defaultValue} value={k} key={k}>{e[label]}</Button>;
             })}
         </Group>   
       </div>
