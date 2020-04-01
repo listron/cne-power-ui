@@ -28,6 +28,7 @@ class CneTable extends PureComponent {
 
   state = {
     showHeaderShadow: false,
+    isScrollBarShow: false,
   }
 
   componentDidMount() {
@@ -46,6 +47,17 @@ class CneTable extends PureComponent {
     if (preScroll.y > 0 && !scroll.y) {
       this.tableUnWatching();
     }
+    if (scroll.y > 0) { // 滚动模式
+      const tableScrollBody = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-body .ant-table-tbody');
+      const { isScrollBarShow } = this.state;
+      const tbodyHeight = tableScrollBody ? tableScrollBody.clientHeight : 0;
+      if (tbodyHeight > scroll.y && !isScrollBarShow) { // 数据长度大于表格长度 => 需要滚动
+        this.showScrollbar(); // 展示滚动
+      }
+      if (tbodyHeight <= scroll.y && isScrollBarShow) { // 隐藏滚动
+        this.hideScrollbar();
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -62,18 +74,17 @@ class CneTable extends PureComponent {
     tableScrollBody && tableScrollBody.removeEventListener('scroll', this.shadowFixed);
   }
 
+  showScrollbar = () => this.setState({ isScrollBarShow: true })
+
+  hideScrollbar = () => this.setState({ isScrollBarShow: false })
+
   shadowFixed = () => {
     const tableScrollBody = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-body');
-    const tableScrollHeader = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-header');
     const { showHeaderShadow } = this.state;
     if (!showHeaderShadow && tableScrollBody && tableScrollBody.scrollTop > 0) { // 滚动开始
-      tableScrollHeader.style.overflowX = 'hidden';
-      tableScrollHeader.style.marginBottom = '0';
       this.setState({ showHeaderShadow: true });
     }
     if (showHeaderShadow && tableScrollBody && tableScrollBody.scrollTop === 0) { // 回到顶部
-      tableScrollHeader.style.overflowX = 'scroll';
-      tableScrollHeader.style.marginBottom = '-17px';
       this.setState({ showHeaderShadow: false });
     }
   }
@@ -84,7 +95,7 @@ class CneTable extends PureComponent {
       className, sortField, sortMethod, columns, dataError, noMoreDataPic,
       ...rest
     } = this.props;
-    const { showHeaderShadow } = this.state;
+    const { showHeaderShadow, isScrollBarShow } = this.state;
     let tableColumn = columns;
     if (sortField && sortMethod) {
       tableColumn = columns.map(e => {
@@ -106,6 +117,9 @@ class CneTable extends PureComponent {
     }
     if (showHeaderShadow) { // 滚动后 - 冻结顶部
       totalClassName = `${totalClassName} ${styles.headShadow}`;
+    }
+    if (isScrollBarShow) { // 是否滚动模式
+      totalClassName = `${totalClassName} ${styles.scrollingBar}`;
     }
     if (rest.scroll && rest.scroll.y) {
       return (<div ref={ref => { this.tableRef = ref; }}>

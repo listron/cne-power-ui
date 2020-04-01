@@ -79,6 +79,7 @@ class DeviceSelect extends Component {
     super(props);
     this.state = {
       devices: [],
+      checkedMatrix: null,
       partitions: [],
       filterDevices: [],
 
@@ -89,9 +90,14 @@ class DeviceSelect extends Component {
     };
   }
   componentDidMount() {
-    const { stationCode, deviceTypeCode } = this.props;
+    const { stationCode, deviceTypeCode, filterKey } = this.props;
     if (stationCode && deviceTypeCode) {
-      this.getMatrixDevices({ stationCode, deviceTypeCode }); // 初始化所有数据
+      if (filterKey.includes(deviceTypeCode)) { // 需要直接根据分区直接请求处理数据
+        this.getMatrixDevices({ stationCode, deviceTypeCode });
+      } else { // 直接获取所有数据。
+        this.getDevices({ stationCode, deviceTypeCode });
+        this.getPartition({ stationCode, deviceTypeCode });
+      }
     }
   }
 
@@ -107,7 +113,13 @@ class DeviceSelect extends Component {
         autoCompleteText: checkedDevice[0] && checkedDevice[0].deviceName || '',
       });
     }
-    if (stationCode && deviceTypeCode && (stationCode !== preStation || deviceTypeCode !== preDeviceType)) { // 请求设备。
+    if (stationCode && deviceTypeCode && (stationCode !== preStation || deviceTypeCode !== preDeviceType)) { // 外部数据变化-请求设备。
+      this.setState({ // 清空缓存数
+        devices: [],
+        checkedMatrix: null,
+        partitions: [],
+        filterDevices: [],
+      });
       if (filterKey.includes(deviceTypeCode)) { // 需要直接根据分区直接请求处理数据
         this.getMatrixDevices({ stationCode, deviceTypeCode });
       } else { // 直接获取所有数据。
@@ -120,9 +132,9 @@ class DeviceSelect extends Component {
   getMatrixDevices = async (payload) => {
     // payload: {stationCode, deviceTypeCode, partitionCode}
     const {
-      filterDevices, devices, partitions,
+      filterDevices, devices, partitions, checkedMatrix,
     } = await deviceQuery.getMatrixDevices(payload);
-    this.setState({ filterDevices, devices, partitions });
+    this.setState({ filterDevices, devices, partitions, checkedMatrix });
   }
 
   getDevices = async (payload, stateName) => {
@@ -214,7 +226,7 @@ class DeviceSelect extends Component {
       deviceShowNumber, disabledDevice,
     } = this.props;
     const {
-      devices, partitions, filterDevices,
+      devices, partitions, filterDevices, checkedMatrix,
       deviceModalShow, autoCompleteDevice, checkedDevice, autoCompleteText,
     } = this.state;
     const checkedDeviceCodes = checkedDevice.map(e => e.deviceCode);
@@ -257,6 +269,7 @@ class DeviceSelect extends Component {
         <DeviceSelectModal
           {...this.props}
           devices={devices}
+          checkedMatrix={checkedMatrix}
           partitions={partitions}
           filterDevices={filterDevices}
           checkedDevice={checkedDevice}
