@@ -355,7 +355,7 @@ class ChartLine extends PureComponent {
         symbol: 'circle',
         data: [],
         xAxisIndex: 0,
-        yAxisIndex: 0,
+        yAxisIndex: 1,
         markLine: {
           silent: true,
           symbol: 'none',
@@ -433,7 +433,10 @@ class ChartLine extends PureComponent {
                 );
               }).join('')}
               <p class=${(dataAnomaly && standard) ? styles.eachItem : styles.noWarnItem}>
-                <span class=${styles.warningIcon}></span>
+                <span class=${styles.tipIcon}>
+                  <span class=${styles.line} style="background-color: #ffeb00"></span>
+                  <span class=${styles.rect} style="background-color: #ffeb00"></span>
+                </span>
                 <span class=${styles.tipName}>标准值</span>
                 <span class=${styles.tipValue}>${dataFormats(standard, '--', 2, true)}</span>
               </p>
