@@ -15,6 +15,7 @@ class DeviceSelectModal extends Component {
     filterDevices: PropTypes.array,
     disabledDevice: PropTypes.array,
     partitions: PropTypes.array,
+    checkedMatrix: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // 选中的方阵
     filterKey: PropTypes.array,
     devices: PropTypes.array,
     multiple: PropTypes.bool,
@@ -29,19 +30,15 @@ class DeviceSelectModal extends Component {
     this.state = {
       modalDevices: [], // modal弹框中的所有设备。
       checkedDevice: [...props.checkedDevice], // 选中的设备。
-      checkedMatrix: null, // 默认选中的方阵
       checkAll: false,
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    const { filterDevices, deviceTypeCode, filterKey, partitions } = nextProps;
-    const prePartitions = this.props.partitions;
-    const newState = { modalDevices: [...filterDevices] };
-    if (filterKey.includes(deviceTypeCode) && (partitions.length > 0 && prePartitions.length === 0)) {
-      newState.checkedMatrix = partitions[0].deviceCode;
+    const { filterDevices } = nextProps;
+    if (filterDevices !== this.props.filterDevices) { // filterDevices更新
+      this.setState({ modalDevices: filterDevices });
     }
-    this.setState({ ...newState });
     if (nextProps.checkedDevice.length !== nextProps.devices.length) { //所选设备不是全部 全选功能关闭
       this.setState({ checkAll: false });
     }
@@ -59,8 +56,10 @@ class DeviceSelectModal extends Component {
   handleOK = () => {
     const { devices, deviceTypeCode, filterKey } = this.props;
     if (!filterKey.includes(deviceTypeCode)) { // 非必须分区展示的设备类型,弹框内数据需重置。
-      this.props.onStateSet({ filterDevices: devices }); //  筛选后数据还原为原始所有设备
-      this.setState({ checkedMatrix: null });
+      this.props.onStateSet({
+        filterDevices: devices,
+        checkedMatrix: null,
+      }); //  筛选后数据还原为原始所有设备
     }
     this.props.handleOK(this.state.checkedDevice);
   }
@@ -68,15 +67,17 @@ class DeviceSelectModal extends Component {
   hideModal = () => {
     const { devices, deviceTypeCode, filterKey } = this.props;
     if (!filterKey.includes(deviceTypeCode)) { // 非必须分区展示的设备类型,弹框内数据需重置。
-      this.props.onStateSet({ filterDevices: devices }); // 筛选后数据还原为原始所有设备
-      this.setState({ checkedMatrix: null }); // 选中分区重置
+      this.props.onStateSet({
+        filterDevices: devices,
+        checkedMatrix: null, // 选中分区重置
+      }); // 筛选后数据还原为原始所有设备
     }
-    this.props.hideModal(); // 
+    this.props.hideModal();
   }
 
   matrixChange = partitionCode => { // 请求分区数据。
     const { stationCode, deviceTypeCode } = this.props;
-    this.setState({ checkedMatrix: partitionCode });
+    this.props.onStateSet({ checkedMatrix: partitionCode });
     this.props.getDevices({ stationCode, deviceTypeCode, partitionCode }, 'filterDevices');
   }
 
@@ -133,8 +134,8 @@ class DeviceSelectModal extends Component {
   }
 
   render() {
-    const { deviceModalShow, partitions, multiple, needAllCheck, max, disabledDevice } = this.props;
-    const { modalDevices, checkedDevice, checkedMatrix } = this.state;
+    const { deviceModalShow, partitions, multiple, needAllCheck, max, disabledDevice, checkedMatrix } = this.props;
+    const { modalDevices, checkedDevice } = this.state;
     const { deviceTypeName } = modalDevices[0] || {};
     return (
       <div className={styles.deviceSelectModal}>
