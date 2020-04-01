@@ -157,7 +157,7 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
     }
   }
   render() {
-    const { stationModalShow, hideStationModal, showStationModal, multiple, data, oneStyleOnly, disabledStation, classNameStyle } = this.props;
+    const { stationModalShow, hideStationModal, showStationModal, multiple, data, oneStyleOnly, disabledStation, classNameStyle, theme = 'light' } = this.props;
     const { filterStationType, stationType, showWarningTip, warningTipText, selectedStation } = this.state;
     const tmpStationSet = new Set(data.map(e => e.stationType));
     const hasMultipleType = tmpStationSet.size > 1;
@@ -175,8 +175,8 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
           okText="确定"
           title="请选择"
           width={625}
-          getContainer={() => this.refs.stations}
-          wrapClassName={styles.stationModal}
+          // getContainer={() => this.refs.stations}
+          wrapClassName={`${styles.stationModal} ${styles[theme]}`}
         >
           <div className={styles.stationStyleModal}>
             {hasMultipleType && <div className={styles.stationType}>

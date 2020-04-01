@@ -104,7 +104,7 @@ class StationModal extends Component { // 单独的弹框组件
   onClearSelected = () => {
     this.setState({
       showWarningTip: true,
-      warningTipText: '确认取消所有已选电站么'
+      warningTipText: '确认取消所有已选电站么',
     });
   }
 
@@ -119,7 +119,7 @@ class StationModal extends Component { // 单独的弹框组件
       showWarningTip: false,
     });
     this.setState({
-      selectedStation: []
+      selectedStation: [],
     });
   }
 

@@ -123,6 +123,7 @@ export default class DefectBaseInfo extends Component {
     const operableUserName = operUserInfo.length > 0 && operUserInfo[0].ableUsers && operUserInfo[0].ableUsers.split(',') || [];
     const curName = [...addUsers.map(e => e.userName), ...operableUserName];
     const curStationName = stations.filter(e => e.stationCode === stationCode);
+    const curDocketDesc = typeof docketDesc === 'string' ? docketDesc : baseInfo.docketDesc;
     return (
       <div className={styles.defectBaseInfo}>
         <div className={styles.infoRow}>
@@ -156,7 +157,7 @@ export default class DefectBaseInfo extends Component {
               value={planEndTime && moment(planEndTime) || null}
               disabledDate={this.disabledDate}
               className={` ${styles[this.initTip('planEndTime')]}`}
-            /> : <div> {baseInfo.planEndTime && moment(baseInfo.planEndTime).format(timeFormat) || '- -'}</div>}
+            /> : <div> {baseInfo.planEndTime && moment(baseInfo.planEndTime).format('YYYY-MM-DD') || '- -'}</div>}
           </div>
         </div>
         <div className={styles.infoRow}>
@@ -190,7 +191,7 @@ export default class DefectBaseInfo extends Component {
                 onChange={this.onDescChange}
                 placeholder={'请描述，必填'}
                 required={isVertify}
-                value={docketDesc || baseInfo.docketDesc}
+                value={curDocketDesc}
                 maxLength="999"
               /> : <div className={styles.docketDesc}>{baseInfo.docketDesc}</div>}
           </div>

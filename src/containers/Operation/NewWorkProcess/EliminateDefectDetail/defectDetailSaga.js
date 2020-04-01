@@ -456,7 +456,7 @@ function* defectTypes(action) { // 2.7.3.5.	查询缺陷类型列表
 
 function* getBaseUsername(action) { // 获取有权限电站权限用户
   const { payload } = action;
-  const url = `${APIBasePath}${ticket.getBaseUsername}/${payload.stationCode}`;
+  const url = `${APIBasePath}${ticket.getDocketBaseUsername}/${payload.stationCode}`;
   try {
     yield call(easyPut, 'changeStore', {
       usernameLoading: true,

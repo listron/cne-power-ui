@@ -265,7 +265,9 @@ export default class DetailTopSubmit extends Component {
     if (addUsers.length > 0) {
       addUsers = [{ stateId: initStateId, userIds: addUsers.map(e => +e.userId) }];
     }
-    const flag = this.baseInfoCheck(docketDesc && addbaseInfo || baseInfo, stationCode);
+    const curDocketDesc = typeof docketDesc === 'string' ? addbaseInfo : baseInfo;
+    console.log('curDocketDesc', curDocketDesc);
+    const flag = this.baseInfoCheck(curDocketDesc, stationCode);
     if (flag) {
       const params = {
         docketId,
@@ -273,6 +275,7 @@ export default class DetailTopSubmit extends Component {
         actionCode: e.actionCode,
         planEndTime,
         addUsers,
+        docketDesc: docketDesc && docketDesc || baseInfo.docketDesc,
       };
       this.setState({
         func: () => this.props.verifyDocket({
