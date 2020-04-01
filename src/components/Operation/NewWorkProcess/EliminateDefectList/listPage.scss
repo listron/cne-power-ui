@@ -248,6 +248,9 @@
       color: #fff;
       background-color: var(--themeColor);
     }
+    .ant-select:not(.ant-select-disabled) .ant-select-selection .ant-select-selection__rendered .ant-select-selection__placeholder{
+      color:#999;
+    }
   }
 }
 .addDropDown{ // 新建 弹框

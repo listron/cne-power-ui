@@ -45,7 +45,11 @@
 
    input{
      // 因为input的特殊性，现在只做空判断 所以出现了两种方式
-    &:invalid:required{
+     &::placeholder{
+       color:#999;
+     }
+    
+     &:invalid:required{
       background:#fbe6e3;
       border:1px solid #df4b33;
        &::placeholder{

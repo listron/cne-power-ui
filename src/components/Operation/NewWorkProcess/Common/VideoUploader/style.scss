@@ -77,6 +77,10 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      position: absolute;
+      background:#d4d4d4;
+      width:60px;
+      z-index: 2;
       .delIcon{
         color: var(--darkColor);
         cursor: pointer;
@@ -84,15 +88,19 @@
         transform: scale(0.8);
         padding: 0 0 0 6px;
       }
-      &:hover{
+    }
+    .eachVideo {
+      cursor: pointer;
+    }
+
+    &:hover{
+      border: 1px solid var(--themeColor);
+      .delVideo{
         background-color: var(--themeColor);
         .delIcon{
           color: #fff;
         }
       }
-    }
-    .eachVideo {
-      cursor: pointer;
     }
   }
   :global {

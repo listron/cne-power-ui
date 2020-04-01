@@ -3,6 +3,7 @@ import { Popover, Checkbox } from 'antd';
 import styles from './baseinfo.scss';
 import PropTypes from 'prop-types';
 import CneButton from '@components/Common/Power/CneButton';
+import CneTips from '@components/Common/Power/CneTips';
 
 export default class ResponsorCheck extends Component {
 
@@ -17,6 +18,8 @@ export default class ResponsorCheck extends Component {
     this.state = {
       addVisible: false,
       checkedUserList: [],
+      showTip: false,
+      tipText: '添加后不可删除，确认添加。',
     };
   }
 
@@ -33,6 +36,10 @@ export default class ResponsorCheck extends Component {
   }
 
   confirm = () => {
+    this.setState({ showTip: true });
+  }
+
+  onConfirmTip = () => { // 提示框的提示
     const { checkedUserList } = this.state;
     if (checkedUserList) {
       const changeObj = checkedUserList.map(e => {
@@ -41,12 +48,13 @@ export default class ResponsorCheck extends Component {
       });
       this.props.selelctedUser(changeObj);
     }
-    this.setState({ addVisible: false, checkedUserList: [] });
+    this.setState({ addVisible: false, showTip: false, checkedUserList: [] });
   }
 
 
+
   render() {
-    const { addVisible, checkedUserList } = this.state;
+    const { addVisible, checkedUserList, showTip, tipText } = this.state;
     const { disabled, usernameList } = this.props;
     return (
       <React.Fragment>
@@ -75,6 +83,7 @@ export default class ResponsorCheck extends Component {
                     );
                   })}
                 </Checkbox.Group>
+
               </div>
               <div className={styles.operatorBtn}>
                 <div className={styles.cancelBtn} onClick={this.cancelAdd}>取消</div>
@@ -84,6 +93,14 @@ export default class ResponsorCheck extends Component {
           )} trigger="hover">
           <i className={`iconfont icon-addman ${disabled && styles.disabled}`} />
         </Popover>
+        <CneTips
+          visible={showTip}
+          width={260}
+          onCancel={() => this.setState({ showTip: false })}
+          onConfirm={this.onConfirmTip}
+          confirmText={'确认'}
+          tipText={tipText}
+        />
       </React.Fragment>
     );
   }

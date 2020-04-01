@@ -28,6 +28,7 @@
         .processItemName {
           color: var(--darkColor);
           @include lineheight(30px);
+          font-weight: bold;
         }
         .processItemName[code='3002']{
           color: #df4b33;
@@ -61,6 +62,7 @@
     }
     .singleInfo {
       color: var(--themeColor);
+      font-weight: bold;
     }
     .singleInfo[code='3002']{
       color: #df4b33;
