@@ -37,7 +37,7 @@ class AlarmEvent extends Component {
       const {deviceTypeCode, pointCode, deviceFullcode, stationCode} = paramData;
       if(deviceTypeCode && pointCode && deviceFullcode && stationCode) {
         const devcode = (typeof deviceTypeCode === 'string') ?  parseInt(deviceTypeCode) : deviceTypeCode
-        this.props.alarmEventDetialFlow({devcode, pointCode, deviceFullcode, stationCode});
+        this.props.alarmEventDetialFlow({deviceTypeCode:devcode, pointCode, deviceFullcode, stationCode});
       }
     }
     else if (source && source === 'stationManage') {//电站管理进入

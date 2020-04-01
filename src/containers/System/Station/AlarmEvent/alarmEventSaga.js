@@ -373,7 +373,7 @@ function* getEventDetail(action) { //获取标准告警事件详情
     //console.log(url);
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
-      console.log(response.data.data);
+      // console.log(response.data.data);
       yield put({
         type: alarmEventAction.changeStore,
         payload: {
