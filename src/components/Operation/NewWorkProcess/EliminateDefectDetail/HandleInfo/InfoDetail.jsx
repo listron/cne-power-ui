@@ -47,7 +47,7 @@ export default class InfoDetail extends Component {
           <span className={styles.recordName}>更换备件:</span>
           <span className={styles.recordText}>{partName || '--'}</span>
         </div>}
-        {(handleImgs && handleImgs.length > 0) && (handleVideos && handleVideos.length > 0) &&
+        {((handleImgs && handleImgs.length > 0) || (handleVideos && handleVideos.length > 0)) &&
           <div className={styles.imgRecord}>
             <span className={styles.recordName} />
             <span className={styles.picBox}>
