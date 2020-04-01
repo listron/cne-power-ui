@@ -82,7 +82,7 @@ class AlarmStatisticByType extends Component {
         orderCommand: '',
       });
       if (stationCode.length > 0) {
-        getStationsAlarmStatistic({ stationType, stationCode, startTime, endTime, pageSize: '', pageNum: '', orderField: '', orderCommand: '' });
+        getStationsAlarmStatistic({ stationType, stationCode, startTime, endTime, pageSize: null, pageNum: null, orderField: '', orderCommand: '' });
       }
     } else if (key === 'table') {
       changeAlarmStatisticStore({
