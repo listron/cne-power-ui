@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-const { memo, useEffect, useCallback, useMemo, useState } = React;
+const { memo, useEffect, useCallback, useMemo, useState, useRef } = React;
 import CneButton from '../../../../Common/Power/CneButton';
 import CneTips from '@components/Common/Power/CneTips';
 import { Tooltip } from 'antd';
@@ -13,6 +13,11 @@ import { Link } from 'react-router-dom';
 const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eventChange, delChange }) => {
   const [state, changeState] = useState();
   const [visible, changeVisible] = useState(false);
+  const defectType = useRef();
+  const deviceTypeName = useRef();
+  const deviceName = useRef();
+  const defectLevel = useRef();
+  const allLine = useRef();
   const { eventId, diagWarningId, eventImgs = [] } = defectMessage;
   const eventStatus = ['yijie', 'weijie', 'hulue1'];
   const levelStatus = ['一级', '二级', '三级', '四级'];
@@ -36,6 +41,10 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
 
   };
 
+  const getWidth = (type) => {
+    return type.current && type.current.offsetWidth;
+  };
+  const width = defectMessage.defectTypeCode && getWidth(allLine) - getWidth(defectType) - getWidth(deviceTypeName) - getWidth(defectLevel) - 150 || 130;
   return (
     <div className={styles.eventDetail}>
       <div className={styles.messageWrap}>
@@ -44,22 +53,31 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
             <i className={`iconfont icon-${eventStatus[+defectMessage.eventState - 1]} ${styles[eventStatus[+defectMessage.eventState - 1]]}`} />}
           {del && <i className={`iconfont icon-wrong ${styles.close}`} onClick={delEvent} />}
         </div>
-        <div className={styles.oneLine}>
-          <div className={styles.list}>
-            <b>缺陷类型</b>:
-             <p>{defectMessage.defectTypeCode === 1 && '设备缺陷' || '其他缺陷'}</p>
+        <div className={styles.oneLine} ref={allLine}>
+          <div className={styles.list} ref={defectType}>
+            <span className={styles.recordName}>缺陷类型:</span>
+            <span className={styles.recordText}>{defectMessage.defectTypeCode === 1 && '设备缺陷' || '其他缺陷'}</span>
           </div>
-          {defectMessage.deviceTypeName && <div className={styles.list}> <b>设备类型</b>:<p>{defectMessage.deviceTypeName}</p> </div>}
-          {defectMessage.deviceName && <div className={styles.list}> <b>设备名称</b>:<p>{defectMessage.deviceName}</p> </div>}
+          {defectMessage.deviceTypeName &&
+            <div className={styles.list} ref={deviceTypeName}>
+              <span className={styles.recordName}>设备类型:</span>
+              <span className={styles.recordText}>{defectMessage.deviceTypeName}</span>
+            </div>
+          }
+          {defectMessage.deviceName &&
+            <div className={`${styles.list} `} ref={deviceName}>
+              <span className={styles.recordName}>设备名称:</span>
+              <span className={`${styles.recordText} ${styles.deviceName}`} style={{ maxWidth: width }}>{defectMessage.deviceName}</span>
+            </div>}
           {defectMessage.defectLevel &&
-            <div className={styles.list}>
-              <b>缺陷级别</b>:
-           <p>
+            <div className={styles.list} ref={defectLevel}>
+              <span className={styles.recordName}>缺陷级别:</span>
+              <span className={styles.recordText}>
                 {levelStatus[defectMessage.defectLevel - 1]}
                 <Tooltip placement="top" title="缺陷级别的定义，需要产品那边提供文案">
                   <i className={`iconfont icon-help ${styles.iconHelp}`} />
                 </Tooltip>
-              </p>
+              </span>
             </div>
           }
         </div>

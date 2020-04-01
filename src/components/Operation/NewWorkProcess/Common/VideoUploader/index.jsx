@@ -143,7 +143,7 @@ export default class VideoUploader extends Component {
               className={styles.eachVideo}
               width="60px"
               height="auto"
-              style={{ maxHeight: '46px' }}
+              style={{ maxHeight: '60px' }}
             />
           </div>
         ))}

@@ -229,14 +229,14 @@
   .checkboxGroup{
      display: flex;
      flex-wrap: wrap;
+     padding: 10px 14px;
   }
 
   .operatorItemBox{
-    width: 105px;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px dashed $borderColor;
-    margin-left: 11px;
+    flex: 1;
     .operatorItem {
       display: inline-block;
       margin-right: 0;

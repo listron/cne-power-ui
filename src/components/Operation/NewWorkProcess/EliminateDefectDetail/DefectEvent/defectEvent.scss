@@ -77,9 +77,6 @@
         &:first-child{
           margin-left: 0;
         }
-        p{
-          margin-left: 11px;
-        }
         .iconHelp{
           position: absolute;
           color: #999;
@@ -92,6 +89,21 @@
           }
         }
       }
+    }
+    .recordName{
+        // flex: 0 0 74px;
+        width:74px;
+        display: inline-block;
+        line-height: 30px;
+        color: #000;
+        font-weight: 700;
+    }
+    .recordText{
+       display: inline-block;
+       line-height: 30px;
+    }
+    .deviceName{
+      @include overflowText()
     }
     .twoLine{
         border-top:1px dashed #d4d4d4;
