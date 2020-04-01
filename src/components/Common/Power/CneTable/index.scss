@@ -6,11 +6,8 @@
       .ant-table{
         font-size: 14px;
       }
-      .ant-table .ant-table-tbody > tr > td{
-        line-height: 40px;
-      }
       .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
-        margin-top: -0.4em;
+        margin-top: -0.4rem;
       }
     }
   }
@@ -20,13 +17,10 @@
   .cneTable{
     :global{
       .ant-table{
-        font-size: 1.2em;
-      }
-      .ant-table .ant-table-tbody > tr > td{
-        line-height: 1em;
+        font-size: 1.2rem;
       }
       .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
-        margin-top: -0.25em;
+        margin-top: -0.25rem;
       }
     }
   }
@@ -36,13 +30,10 @@
   .cneTable{
     :global{
       .ant-table{
-        font-size: 1.3em;
-      }
-      .ant-table .ant-table-tbody > tr > td{
-        line-height: 1em;
+        font-size: 1.3rem;
       }
       .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
-        margin-top: -0.1em;
+        margin-top: -0.1rem;
       }
     }
   }
@@ -52,6 +43,7 @@
   :global{
     .ant-table .ant-table-tbody > tr > td {
       padding: 0 10px;
+      line-height: 40px;
       &.leftContent{
         padding: 0 0 0 10px;
         text-align: left;
@@ -86,7 +78,7 @@
         position: relative;
         .ant-table-column-sorter-inner{
           margin-left: 4px;
-          height: 1em;
+          height: 1.65rem;
         }
         .on, .off{
           transform: scale(1.25, 1);
@@ -96,39 +88,38 @@
           -o-transform: scale(1.25, 1);
         }
         .ant-table-column-sorter-up, .ant-table-column-sorter-down{
-          height: 1em;
-          line-height: 1em;
+          height: 1rem;
+          line-height: 1rem;
+        }
+        .ant-table-column-sorter-up{
+          padding-top: 0.1rem;
         }
         .ant-table-column-sorter-down{
-          margin-top: -0.35em;
+          margin-top: -0.25rem;
         }
       }
     }
     .ant-table-placeholder {
       border-bottom: none;
     }
-    .ant-table-scroll .ant-table-body{ // 滚动样式重置; 
+    .ant-table-scroll .ant-table-header{ // 隐藏滚动条，保留效果
+      margin-bottom: 0!important;
+      padding-bottom: 0!important;
       &::-webkit-scrollbar{
         width: 8px;
+        display: none;
+      }
+    }
+    .ant-table-scroll .ant-table-body{ // 默认隐藏纵向滚动条
+      &::-webkit-scrollbar{
+        width: 8px;
+        &:vertical{
+          display: none;
+        }
       }
       &::-webkit-scrollbar-thumb{
         border-radius: 4px;
         background-color: rgba(0, 0, 0, 0.5);
-      }
-      &::-webkit-scrollbar-track{
-        background-color: transparent;
-      }
-    }
-    .ant-table-scroll .ant-table-header{ // 滚动样式重置; 
-      // &::-webkit-scrollbar-thumb{
-      //   background-color: var(--themeColor);
-      // }
-      padding-bottom: 0;
-      &::-webkit-scrollbar{
-        width: 8px;
-      }
-      &::-webkit-scrollbar-track{
-        background-color: var(--themeColor);
       }
     }
   }
@@ -144,7 +135,26 @@
   }
 }
 
-.nomore {
+.scrollingBar{
+  :global{
+    .ant-table-scroll .ant-table-header{
+      &::-webkit-scrollbar:vertical{
+        display: block;
+        background-color: var(--themeColor);
+      }
+      &::-webkit-scrollbar-track-piece{
+        background-color: var(--themeColor);
+      }
+    }
+    .ant-table-scroll .ant-table-body{
+      &::-webkit-scrollbar:vertical{
+        display: block;
+      }
+    }
+  }
+}
+
+.nomore { // 需要展示： 没有更多数据的表格所需下部图片提示
   :global{
     .ant-table:not(.ant-table-empty) {
       .ant-table-body:after {
@@ -190,6 +200,9 @@
     .ant-table .ant-table-tbody{
       border: 1px solid #d4d4d4;
       border-top: none;
+    }
+    .ant-table-scroll .ant-table-tbody{
+      border-right: none;
     }
     .ant-table .ant-table-tbody > tr{
       & > td {
