@@ -155,6 +155,9 @@ class ChartLine extends PureComponent {
       if (noAlarmTime || seriesInefficient) { // 诊断事件组串低效、电压异常、并网延时事件的曲线与图例颜色，默认绿色
         colors.splice(i, 1, '#60c060');
       }
+      if (e.isWarned && pageKey === 'diagnose' && (noAlarmTime || seriesInefficient)) { // 诊断事件组串低效、电压异常、并网延时事件的告警曲线与图例颜色为黄色
+        colors.splice(i, 1, '#f9b600');
+      }
 
       legends.push({
         icon: (e.isConnected === 0 && (noDeviceName || seriesInefficient)) ? 'image:///img/wjr01.png' : '',
