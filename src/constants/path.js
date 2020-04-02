@@ -117,7 +117,7 @@ export default {
       getProcessBaseInfo: '/v4/opms/process/processInfo', // 获取抄表详情基本信息
       getOperableUser: '/v4/opms/process/operableUser', // 获取流程可操作人数据
       getProcessList: '/v4/opms/process/stateList', // 获取流程流转信息数据
-      getBaseUsername: '/v4/base/user/username', // 获取有权限电站权限用户
+      getBaseUsername: '/v4/opms/docket/username', // 获取有权限电站权限用户
       getReadMeter: '/v4/opms/readMeter/meterDetail', // 获取处理信息
       getAddUser: '/v4/opms/docket/addAbleUser', // 添加处理人
       getProcessAction: '/v4/opms/docket/action', // 获取流程可执行动作
