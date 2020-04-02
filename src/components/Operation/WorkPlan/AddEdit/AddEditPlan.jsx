@@ -26,6 +26,7 @@ class AddEditPlan extends PureComponent {
 
   state = {
     saveMode: 'normal', // 普通保存normal, 继续保存continue
+    planValue: 100, // 默认巡检
   }
 
   componentDidUpdate(preProps){ // 保存完成, 清除信息并关闭弹框;
@@ -94,6 +95,18 @@ class AddEditPlan extends PureComponent {
     return !startTime || cur.isBefore(startTime, 'day'); // || cur.isAfter(moment().add(5, 'year'), 'day');
   }
 
+  // 计划类型
+  planFunc = (value) => {
+    const { form } = this.props;
+    this.setState({
+      planValue: value,
+    });
+    // 切换抄表计划-默认选中每月
+    value === 200 && form.setFieldsValue({
+      cycleTypeCode: 154,
+    });
+  };
+
   validPeriodDays = {
     151: 100,
     152: 1,
@@ -105,7 +118,7 @@ class AddEditPlan extends PureComponent {
   }
 
   render(){
-    const { saveMode } = this.state;
+    const { saveMode, planValue } = this.state;
     const { planPageKey, form, stations, stationDeviceTypes, addPlanLoading, planDetail, theme } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const {
@@ -157,7 +170,7 @@ class AddEditPlan extends PureComponent {
               })(
                 planPageKey === 'edit' ? <span
                   style={{width: '200px', display: 'inline-block'}}
-                >{planTypeCode === '100' ? '巡视计划' : '抄表计划'}</span> : <Select style={{width: '200px'}} getPopupContainer={() => this.planTypeRef}>
+                >{planTypeCode === '100' ? '巡视计划' : '抄表计划'}</span> : <Select style={{width: '200px'}} getPopupContainer={() => this.planTypeRef} onChange={this.planFunc}>
                   <Option value={100}>巡视计划</Option>
                   <Option value={200}>抄表计划</Option>
                 </Select>
@@ -204,13 +217,13 @@ class AddEditPlan extends PureComponent {
                 // initialValue: initialCycleTypeCode,
               })(
                 <Select style={{width: '200px'}} getPopupContainer={() => this.cycleTypeRef}>
-                  <Option value={151}>单次</Option>
-                  <Option value={152}>每天</Option>
-                  <Option value={153}>每周</Option>
+                  {planValue !== 200 && <Option value={151}>单次</Option>}
+                  {planValue !== 200 && <Option value={152}>每天</Option>}
+                  {planValue !== 200 && <Option value={153}>每周</Option>}
                   <Option value={154}>每月</Option>
-                  <Option value={155}>每季度</Option>
-                  <Option value={156}>半年</Option>
-                  <Option value={157}>每年</Option>
+                  {planValue !== 200 && <Option value={155}>每季度</Option>}
+                  {planValue !== 200 && <Option value={156}>半年</Option>}
+                  {planValue !== 200 && <Option value={157}>每年</Option>}
                 </Select>
               )}
               <span ref={(ref) => { this.cycleTypeRef = ref; }} />
