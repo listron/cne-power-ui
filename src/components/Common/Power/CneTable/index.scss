@@ -6,9 +6,6 @@
       .ant-table{
         font-size: 14px;
       }
-      .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
-        margin-top: -0.4rem;
-      }
     }
   }
 }
@@ -19,9 +16,6 @@
       .ant-table{
         font-size: 1.2rem;
       }
-      .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
-        margin-top: -0.25rem;
-      }
     }
   }
 }
@@ -31,9 +25,6 @@
     :global{
       .ant-table{
         font-size: 1.3rem;
-      }
-      .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
-        margin-top: -0.1rem;
       }
     }
   }
@@ -68,7 +59,7 @@
       }
     }
     .ant-table .ant-table-thead > tr > th{
-      padding: 0 10px;
+      padding: 0;
       line-height: 36px;
       text-align: center;
       border-radius: 0;
@@ -79,6 +70,7 @@
         .ant-table-column-sorter-inner{
           margin-left: 4px;
           height: 1.65rem;
+          margin-top: -0.1rem;
         }
         .on, .off{
           transform: scale(1.25, 1);
