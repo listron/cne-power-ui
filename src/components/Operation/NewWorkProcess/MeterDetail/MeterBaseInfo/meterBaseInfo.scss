@@ -108,10 +108,9 @@
 
         .stationNameBox {
           display: flex;
-          flex: 0 0 72.4%;
+          flex: 0 0 72%;
 
           .stationName {
-            flex: 0 0 12.5%;
             min-width: 76px;
             display: flex;
             align-items: center;
@@ -122,7 +121,6 @@
           }
 
           .stationContent {
-            flex: 0 0 87.5%;
             color: #353535;
             word-break: break-word;
             min-width: 531px;
@@ -131,7 +129,7 @@
 
         .workProcessBox {
           display: flex;
-          flex: 0 0 27.6%;
+          flex: 0 0 28%;
 
           .workProcessType {
             flex: 0 0 44%;
@@ -454,9 +452,11 @@
       .tableTop{
         .stationNameBox{
           .stationName{
+            flex: 0 0 12.5%;
             font-size: 14px;
           }
           .stationContent{
+            flex: 0 0 87.5%;
             font-size: 14px;
           }
         }
@@ -532,13 +532,13 @@
     .baseTableContent{
 
       .tableTop{
-        .stationNameBox{
-          .stationName{
-            font-size: 16px;
-          }
-          .stationContent{
-            font-size: 16px;
-          }
+        .stationName{
+          flex: 0 0 12.5%;
+          font-size: 16px;
+        }
+        .stationContent{
+          flex: 0 0 87.5%;
+          font-size: 16px;
         }
         .workProcessBox{
           .workProcessType{
@@ -614,9 +614,11 @@
       .tableTop{
         .stationNameBox{
           .stationName{
+            flex: 0 0 12.4%;
             font-size: 18px;
           }
           .stationContent{
+            flex: 0 0 87.6%;
             font-size: 18px;
           }
         }
