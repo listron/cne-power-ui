@@ -46,6 +46,7 @@ class ALarmAllStationStatistic extends React.Component {
       allChartLoading: false,
       singleStationCode: stationCode.toString(),
     });
+    this.props.history.push(`/monitor/alarm/statistic/${stationCode}`);
   }
 
   stationIsOneType() {

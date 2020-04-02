@@ -57,7 +57,7 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { startTime, endTime, summaryType, singleStationCode, orderField, orderCommand, showPage } = nextProps;
+    const { startTime, endTime, summaryType, singleStationCode, orderField, orderCommand } = nextProps;
     const { pageSize, pageNum } = this.state;
     if (singleStationCode !== this.props.singleStationCode) {
       this.props.getSingleStationAlarmStatistic({
@@ -70,7 +70,7 @@ class ALarmSingleStationStatistic extends React.Component {
         orderField,
         orderCommand,
       });
-      this.props.history.push(`/monitor/alarm/statistic/${singleStationCode}`);
+      // this.props.history.push(`/monitor/alarm/statistic/${singleStationCode}`);
     }
   }
 
