@@ -4,10 +4,10 @@ import ContentLayout from '@components/Common/ContentLayout';
 import styles from './overview.scss';
 import searchUtil from '@utils/searchUtil';
 import EliminateDefectList from '../EliminateDefectList/DefectList';
-import InspectList from '../NewInspectList/InspectList';
+// import InspectList from '../NewInspectList/InspectList';
 import MeterList from '../NewMeterList/MeterList';
-import EliminateDefectDetail from '../EliminateDefectDetail//DefectDetail';
-import InspectDetail from '../NewInspectDetail/InspectDetail';
+import EliminateDefectDetail from '../EliminateDefectDetail/DefectDetail';
+// import InspectDetail from '../NewInspectDetail/InspectDetail';
 import MeterDetail from '../NewMeterDetail/MeterDetail';
 
 
@@ -74,7 +74,7 @@ class Overview extends Component {
     const { tab, page } = this.state;
     return (
       <React.Fragment>
-        {page !== 'defectDetail' &&
+        {page === 'list' &&
           <ContentLayout
             theme={theme}
             contentClassName={`${styles.overview} ${styles[theme]}`}
@@ -84,19 +84,19 @@ class Overview extends Component {
                 <div className={styles.list}>
                   <div className={styles.tabTitle}>
                     <p className={`${tab === 'defect' && styles.activeKey} `} onClick={() => { this.queryTargetData('defect'); }}>消缺</p>
-                    <p className={`${tab === 'inspect' && styles.activeKey} `} onClick={() => { this.queryTargetData('inspect'); }}>巡检</p>
+                    {/*<p className={`${tab === 'inspect' && styles.activeKey} `} onClick={() => { this.queryTargetData('inspect'); }}>巡检</p>*/}
                     <p className={`${tab === 'meter' && styles.activeKey} `} onClick={() => { this.queryTargetData('meter'); }}>抄表</p>
                   </div>
                   {tab === 'defect' && <EliminateDefectList {...this.props} />}
-                  {tab === 'inspect' && <InspectList {...this.props} />}
+                  {/*{tab === 'inspect' && <InspectList {...this.props} />}*/}
                   {tab === 'meter' && <MeterList {...this.props} />}
                 </div>}
-              {page === 'inspectDeatail' && <InspectDetail {...this.props} />}
-              {page === 'meterDetail' && <MeterDetail {...this.props} />}
             </div>
           </ContentLayout>
         }
         {page === 'defectDetail' && <EliminateDefectDetail {...this.props} />}
+        {/*{page === 'inspectDeatail' && <InspectDetail {...this.props} />}*/}
+        {page === 'meterDetail' && <MeterDetail {...this.props} />}
       </React.Fragment>
 
 
