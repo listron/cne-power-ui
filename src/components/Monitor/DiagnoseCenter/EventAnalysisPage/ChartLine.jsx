@@ -53,10 +53,10 @@ class ChartLine extends PureComponent {
   }
 
   drawChart = (period = [], data = {}, interval, eventCode, dataDays, pointCode) => {
-    const dataDay = { // 诊断事件固定物遮挡、组串低效、电压异常、并网延时；数据事件高值异常、低值异常展示dataZoom7天数据
-      1: '100',
-      7: '85.9',
-    };
+    // const dataDay = { // 诊断事件固定物遮挡、组串低效、电压异常、并网延时；数据事件高值异常、低值异常展示dataZoom7天数据
+    //   1: '100',
+    //   7: '85.9',
+    // };
     const { pageKey } = this.props;
     const lineChart = echarts.init(this.lineRef);
     const { time = [], pointData = [] } = data;
@@ -163,7 +163,9 @@ class ChartLine extends PureComponent {
         icon: (e.isConnected === 0 && (noDeviceName || seriesInefficient)) ? 'image:///img/wjr01.png' : '',
         name: pointFullName,
         height: 30,
-        left: `${noAlarmTime ? (7 + i % 4 * 21.5) : (noDeviceName ? (3 + (i + 1) % 8 * 12) : (seriesInefficient ? (3 + i % 8 * 12) : (7 + (i + 1) % 4 * 21.5)))}%`, // 诊断事件的组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置;  诊断事件零电流、组串低效、固定物遮挡的要一行8列展示
+        itemWidth: 20,
+        itemHeight: 10,
+        left: `${noAlarmTime ? (7 + i % 4 * 21.5) : (noDeviceName ? (2 + (i + 1) % 8 * 12) : (seriesInefficient ? (2 + i % 8 * 12) : (7 + (i + 1) % 4 * 21.5)))}%`, // 诊断事件的组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置;  诊断事件零电流、组串低效、固定物遮挡的要一行8列展示
         top: `${noAlarmTime ? (Math.floor(i / 4) * 30) : (noDeviceName ? (Math.floor((i + 1) / 8) * 30) : (seriesInefficient ? (Math.floor(i / 8) * 30) : (Math.floor((i + 1) / 4) * 30)))}`,
         data: [pointFullName],
         textStyle: {
@@ -187,7 +189,7 @@ class ChartLine extends PureComponent {
       });
     });
 
-    const legendHeight = (delPointIndex !== -1 && pageKey === 'alarm') ? Math.ceil((legends.length + 1) / 4) * 30 : Math.ceil(legends.length / 4) * 30;
+    const legendHeight = (noDeviceName || seriesInefficient) ? (Math.ceil(legends.length / 8) * 30) : ((delPointIndex !== -1 && pageKey === 'alarm') ? Math.ceil((legends.length + 1) / 4) * 30 : Math.ceil(legends.length / 4) * 30);
     const eachyAxis = { // 生成多y纵坐标, 相同单位对应一个y轴
       // name: '其他测点',
       gridIndex: 0,
@@ -239,10 +241,11 @@ class ChartLine extends PureComponent {
     const grid = [{
       show: true,
       borderColor: '#d4d4d4',
-      bottom: '27%',
+      bottom: (delPointIndex !== -1 && pageKey === 'alarm') ? '27%' : '',
       top: legendHeight,
       left: '7%',
       right: '7%',
+      height: (delPointIndex !== -1 && pageKey === 'alarm') ? '' : 407,
       },
     ];
     if (delPointIndex !== -1 && pageKey === 'alarm') { // 是告警事件且存在脉冲信号时新增坐标系
@@ -251,6 +254,8 @@ class ChartLine extends PureComponent {
       legends.push({
         name: '脉冲信号',
         height: 30,
+        itemWidth: 20,
+        itemHeight: 10,
         left: `${7 + legends.length % 4 * 21.5}%`,
         top: `${Math.floor(legends.length / 4) * 30}`,
         selectedMode: true,
@@ -469,13 +474,13 @@ class ChartLine extends PureComponent {
           show: true,
           height: 20,
           bottom: (delPointIndex !== -1 && pageKey === 'alarm') ? 10 : 16,
-          start: (noAlarmTime || seriesInefficient || fixedShelter || pageKey === 'data') ? dataDay[dataDays] : 0, // 诊断事件组串低效、电压异常、并网延时、固定物遮挡；数据事件默认展示7天数据;
-          end: 100,
+          // start: (noAlarmTime || seriesInefficient || fixedShelter || pageKey === 'data') ? dataDay[dataDays] : 0, // 诊断事件组串低效、电压异常、并网延时、固定物遮挡；数据事件默认展示7天数据;
+          // end: 100,
           xAxisIndex: (delPointIndex !== -1 && pageKey === 'alarm') ? [0, 1] : [0],
         }, {
           type: 'inside',
-          start: (noAlarmTime || seriesInefficient || fixedShelter || pageKey === 'data') ? dataDay[dataDays] : 0, // 诊断事件组串低效、电压异常、并网延时、固定物遮挡；数据事件默认展示7天数据;
-          end: 100,
+          // start: (noAlarmTime || seriesInefficient || fixedShelter || pageKey === 'data') ? dataDay[dataDays] : 0, // 诊断事件组串低效、电压异常、并网延时、固定物遮挡；数据事件默认展示7天数据;
+          // end: 100,
           xAxisIndex: (delPointIndex !== -1 && pageKey === 'alarm') ? [0, 1] : [0],
         },
       ];
@@ -485,6 +490,14 @@ class ChartLine extends PureComponent {
   }
 
   render(){
+    const { eventAnalysisInfo, analysisEvent } = this.props;
+    const { data = {} } = eventAnalysisInfo || {};
+    const { pointData } = data;
+    const { eventCode } = analysisEvent;
+    const noDeviceName = ['NB1035', 'NB1037', 'NB1036'].includes(eventCode); // 一行8个
+    const calcHeight = 480 + (noDeviceName ? Math.ceil(pointData.length / 8) * 30 : Math.ceil(pointData.length / 4) * 30);
+    const chartHeight = calcHeight > 593 ? calcHeight : 593; // 图表高度不小于593
+
     return (
       <div className={styles.analysisChart}>
         {/* <div className={styles.legends}>
@@ -499,7 +512,7 @@ class ChartLine extends PureComponent {
             </span>
           ))}
         </div> */}
-        <div style={{width: '100%', height: '506px'}} ref={(ref) => { this.lineRef = ref; } } />
+        <div style={{width: '100%', height: `${chartHeight}px`}} ref={(ref) => { this.lineRef = ref; } } />
       </div>
     );
   }
