@@ -283,7 +283,7 @@ class MeterReadTable extends Component{
       }
       this.setState({
         showModalTip: true,
-        modalTipText: '请确认信息填写无误，换表后将无法修改旧电表止码。',
+        modalTipText: '请确认信息填写无误，换表后将无法更改。',
       });
     });
   }
