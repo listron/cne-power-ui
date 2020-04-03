@@ -79,17 +79,17 @@ class DiagnoseCenter extends Component {
   }
 
   pathToAnalysis = (pathInfo) => {
-    const { eventType } = pathInfo;
-    const pageKey = ['alarm', 'diagnose', 'data'][eventType + 1] || 'alarm';
+    const { eventType, eventCode } = pathInfo;
+    const pageKey = ['alarm', 'diagnose', 'data'][eventType - 1] || 'alarm';
     this.props.changeStore({ pageKey, showAnalysisPage: true });
     this.setState({ sideTranslateX: 'translateX(100%)' });
-    // const interval = (pageKey === 'alarm' || eventCode === 'NB1035') ? 2 : 1;
+    const interval = (pageKey === 'alarm' || eventCode === 'NB1035') ? 2 : 1;
     // this.props.getEventsAnalysis({ ...record, interval });
     // {
     //   diagWarningId, deviceFullcode, eventCode, beginTime, interval,
     //   eventName, pointValueDesc, deviceTypeName, deviceName, stationName,
     // }
-    this.props.getEventsAnalysis({ ...pathInfo });
+    this.props.getEventsAnalysis({ interval, ...pathInfo });
   }
 
   render() {
