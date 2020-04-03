@@ -18,7 +18,7 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
   const deviceName = useRef();
   const defectLevel = useRef();
   const allLine = useRef();
-  const { eventId, diagWarningId, eventImgs = [] } = defectMessage;
+  const { eventId, diagWarningId, eventImgs = [], deviceFullcode } = defectMessage;
   const eventStatus = ['yijie', 'weijie', 'hulue1'];
   const levelStatus = ['一级', '二级', '三级', '四级'];
   const defectLevelMes = [
@@ -96,7 +96,7 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
           {diagWarningId &&
             <div className={styles.analysize}>
               <CneButton className={styles.handleButton}> <i className={'iconfont icon-look'} />
-                <Link to={`/monitor/diagnoseCenter#${diagWarningId}`}> 查看分析 </Link>
+                <Link to={`/monitor/diagnoseCenter?diagWarningId=${diagWarningId}&deviceFullcode=${deviceFullcode}`}> 查看分析 </Link>
               </CneButton>
             </div>
           }
