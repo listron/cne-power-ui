@@ -36,20 +36,6 @@ class DiagnoseCenter extends Component {
     const { location } = history;
     const { search } = location;
     const pathInfo = searchUtil(search).parse(); // 路径解析
-    // const pathInfo = {
-    //   diagWarningId: '511195509645825',
-    //   deviceFullcode: '360M206M3M999',
-    //   eventCode: 'NB0035',
-    //   eventType: 1,
-    //   interval: 2,
-    //   beginTime: '2020-03-30',
-    //   eventName: '事件1122',
-    //   pointValueDesc: '测点描述',
-    //   deviceTypeName: '类型',
-    //   deviceName: '设备名字',
-    //   stationName: '永远',
-    // }
-    // const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName, interval, beginTime } = analysisEvent || {};
     if (pathInfo && pathInfo.diagWarningId) { // 由外界手动控制直接进入分析页
       this.pathToAnalysis(pathInfo);
       this.props.getDiagnoseList({});
@@ -79,17 +65,10 @@ class DiagnoseCenter extends Component {
   }
 
   pathToAnalysis = (pathInfo) => {
-    const { eventType, eventCode } = pathInfo;
-    const pageKey = ['alarm', 'diagnose', 'data'][eventType - 1] || 'alarm';
-    this.props.changeStore({ pageKey, showAnalysisPage: true });
+    this.props.changeStore({ showAnalysisPage: true });
     this.setState({ sideTranslateX: 'translateX(100%)' });
-    const interval = (pageKey === 'alarm' || eventCode === 'NB1035') ? 2 : 1;
-    // this.props.getEventsAnalysis({ ...record, interval });
-    // {
-    //   diagWarningId, deviceFullcode, eventCode, beginTime, interval,
-    //   eventName, pointValueDesc, deviceTypeName, deviceName, stationName,
-    // }
-    this.props.getEventsAnalysis({ interval, ...pathInfo });
+    // { diagWarningId, deviceFullcode }
+    this.props.getEventsAnalysis({ ...pathInfo });
   }
 
   render() {

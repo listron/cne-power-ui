@@ -179,9 +179,14 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
     const response = yield call(request.get, url, { params });
 
     if (response.code === '10000') {
+      const analysisEvent = { ...(response.data.warning || {}) };
       yield call(easyPut, 'fetchSuccess', {
         eventAnalysisLoading: false,
-        analysisEvent: payload,
+        analysisEvent: {
+          interval: response.data.interval,
+          ...payload,
+          ...analysisEvent,
+        },
         eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
       });
 
@@ -215,10 +220,12 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
             interval: 1, // 请求10分钟
           }});
           if (response.code === '10000') {
+            const analysisEvent = { ...(response.data.warning || {}) };
             yield call(easyPut, 'fetchSuccess', {
               eventAnalysisLoading: false,
               analysisEvent: {
                 ...payload,
+                ...analysisEvent,
                 interval: 1, // 请求10分钟
               },
               eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
