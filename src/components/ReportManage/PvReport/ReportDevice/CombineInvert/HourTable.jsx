@@ -7,6 +7,8 @@ import { dataFormat } from '../../../../../utils/utilFunc';
 import CommonPagination from '@components/Common/CommonPagination';
 import TableColumnTitle from '@components/Common/TableColumnTitle';
 import path from '@constants/path';
+import CneTable from '@components/Common/Power/CneTable';
+import CneButton from '@components/Common/Power/CneButton';
 const { APIBasePath } = path.basePaths;
 
 class ReportSearch extends React.PureComponent {
@@ -39,29 +41,20 @@ class ReportSearch extends React.PureComponent {
   }
 
   initColumn = (type) => { // 表头的数据
+    const { maxPvCount } = this.props;
     const power = [
       { name: '直流输入功率', unit: 'kW', dataIndex: 'inverterDcPower', point: 2 },
       { name: '交流有功功率', unit: 'kW', dataIndex: 'acPower', point: 2 },
       { name: '交流无功功率', unit: 'kW', dataIndex: 'acReactivePower', point: 2 },
     ];
-    const DcPower = [ // 直流
-      { name: 'PV1电压', unit: 'V', dataIndex: 'voltagePv1', point: 2 },
-      { name: 'PV1电流', unit: 'A', dataIndex: 'currentPv1', point: 2 },
-      { name: 'PV2电压', unit: 'V', dataIndex: 'voltagePv2', point: 2 },
-      { name: 'PV2电流', unit: 'A', dataIndex: 'currentPv2', point: 2 },
-      { name: 'PV3电压', unit: 'V', dataIndex: 'voltagePv3', point: 2 },
-      { name: 'PV3电流', unit: 'A', dataIndex: 'currentPv3', point: 2 },
-      { name: 'PV4电压', unit: 'V', dataIndex: 'voltagePv4', point: 2 },
-      { name: 'PV4电流', unit: 'A', dataIndex: 'currentPv4', point: 2 },
-      { name: 'PV5电压', unit: 'V', dataIndex: 'voltagePv5', point: 2 },
-      { name: 'PV5电流', unit: 'A', dataIndex: 'currentPv5', point: 2 },
-      { name: 'PV6电压', unit: 'V', dataIndex: 'voltagePv6', point: 2 },
-      { name: 'PV6电流', unit: 'A', dataIndex: 'currentPv6', point: 2 },
-      { name: 'PV7电压', unit: 'V', dataIndex: 'voltagePv7', point: 2 },
-      { name: 'PV7电流', unit: 'A', dataIndex: 'currentPv7', point: 2 },
-      { name: 'PV8电压', unit: 'V', dataIndex: 'voltagePv8', point: 2 },
-      { name: 'PV8电流', unit: 'A', dataIndex: 'currentPv8', point: 2 },
-    ];
+    const DcPower = []; // 直流
+    for (let i = 0; i < maxPvCount; i++) {
+      DcPower.push(...[
+        { name: `PV${i+1}电压`, unit: 'V', dataIndex: `voltagePv${i+1}`, point: 2 },
+        { name: `PV${i+1}电流`, unit: 'A', dataIndex: `currentPv1${i+1}`, point: 2 }
+      ]);
+    }
+    
     const AcPower = [ // 交流
       { name: 'Uab', unit: 'V', dataIndex: 'Uab', point: 2 },
       { name: 'Ubc', unit: 'V', dataIndex: 'Ubc', point: 2 },
@@ -88,8 +81,8 @@ class ReportSearch extends React.PureComponent {
         width: 110,
         fixed: 'left',
         sorter: true,
-        // render: value => moment(value).format('HH:mm'),
         defaultSortOrder: 'ascend',
+        render: (text) => <div className={styles.statisticsDate} title={text}>{text}</div>,
       },
       {
         title: () => <TableColumnTitle title="当日发电量" unit="kWh" />,
@@ -216,23 +209,39 @@ class ReportSearch extends React.PureComponent {
   render() {
     const { total = 30, parmas, listLoading, downloading, theme, reportList } = this.props;
     const { pageSize = 1, pageNum = 10, deviceFullcodes } = parmas;
+    const datalist = [];
+    if (reportList) {
+      reportList.forEach((item, index) => {
+        let it = { ...item, key: index };
+        const {pvList} = item;
+        if (pvList) {
+          pvList.forEach((pvitem, pvindex) => {
+            it[`voltagePv${pvindex+1}`] = pvitem.voltagePv;
+            it[`currentPv1${pvindex+1}`] = pvitem.currentPv;
+          });
+        }
+        datalist.push(it);
+      });
+    }
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
-          <Button type={'primary'} onClick={this.exportFile} disabled={deviceFullcodes.length === 0} loading={downloading}> 导出</Button>
+          <CneButton onClick={this.exportFile} disabled={deviceFullcodes.length === 0} loading={downloading}> 导出</CneButton>
           <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={'theme'} />
         </div>
-        <Table
-          columns={this.initColumn()}
-          dataSource={reportList.map((e, index) => { return { ...e, key: index }; })}
-          bordered
-          scroll={{ x: 3700, y: 500 }}
-          pagination={false}
-          showHeader={true}
-          loading={listLoading}
-          onChange={this.tableChange}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-        />
+        <div className={styles.tableBox}>
+          <CneTable
+            columns={this.initColumn()}
+            dataSource={datalist}
+            bordered
+            scroll={{ x: 3700, y: 500 }}
+            pagination={false}
+            showHeader={true}
+            loading={listLoading}
+            onChange={this.tableChange}
+            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          />
+        </div>
       </div>
     );
   }

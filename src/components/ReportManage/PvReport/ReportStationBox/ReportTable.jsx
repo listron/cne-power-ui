@@ -7,6 +7,8 @@ import { Button, Table, message } from 'antd';
 import { dataFormat } from '../../../../utils/utilFunc';
 import path from '../../../../constants/path';
 import moment from 'moment';
+import CneButton from '@components/Common/Power/CneButton';
+import CneTable from '@components/Common/Power/CneTable';
 const { APIBasePath } = path.basePaths;
 const { reportManage } = path.APISubPaths;
 
@@ -126,6 +128,25 @@ class ReportTable extends React.Component {
       { name: '节省标准煤', unit: '吨', dataIndex: 'markCoal', key: 'markCoal' },
       { name: '减排二氧化碳', unit: '吨', dataIndex: 'carbonDioxide', key: 'carbonDioxide' },
     ];
+
+    let posx = 3592;
+    const losePowerCols = [
+      { name: '总损失电量', unit: '万kWh', dataIndex: 'totalLostPower', key: 'totalLostPower' },
+    ];
+    if (reportStationList.length > 0) {
+      const {lostPower} = reportStationList[0];
+      if (lostPower) {
+        const {lostList} = lostPower;
+        lostList.forEach((item, index) => {
+          const k = `lostPower${index}`;
+          posx += this.planWidth(item.name.length);
+          losePowerCols.push({
+            name: item.name, unit: '万kWh', dataIndex: k, key: k
+          });
+        });
+      }
+    }
+
     const columns = [
       {
         title: '电站名称',
@@ -143,7 +164,7 @@ class ReportTable extends React.Component {
         width: 125,
         fixed: 'left',
         sorter: true,
-        render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
+        render: (text) => (<div className={styles.statisticsDate} title={text}>{text ? text : '--'}</div>),
       },
       {
         title: '资源指标',
@@ -197,7 +218,7 @@ class ReportTable extends React.Component {
               title: '功率值(MW)',
               dataIndex: 'outputPowerMax',
               key: 'outputPowerMax',
-              // width: 120,
+              width: 120,
               className: styles.rightStyle,
               render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
 
@@ -214,29 +235,51 @@ class ReportTable extends React.Component {
         },
         ...sportArr,
         ],
-      }, {
+      }, 
+      {
+        title: '损失电量',
+        children: this.tableChildren(losePowerCols),
+      },
+      {
         title: '减排量',
         children: this.tableChildren(jianpai),
       },
     ];
+    const datalist = [];
+    if (reportStationList) {
+      reportStationList.forEach((e, i) => {
+        let item = { ...e, key: i };
+        const {lostPower} = e;
+        if (lostPower) {
+          item['totalLostPower'] = lostPower.total;
+          const {lostList} = lostPower;
+          lostList.forEach((e1, index) => {
+            const k = `lostPower${index}`;
+            item[k] = e1.power;
+          });
+        }
+        datalist.push(item);
+      });
+    }
     return (
       <div className={styles.reportList}>
         <div className={styles.handlePage}>
-          <div><Button type="primary" onClick={this.exportReportStation} loading={downloading} disabled={disabledExport}>导出</Button></div>
+          <div><CneButton onClick={this.exportReportStation} loading={downloading} disabled={disabledExport}>导出</CneButton></div>
           <div>
             <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.changePage} />
           </div>
-
         </div>
-        <Table
-          loading={loading}
-          columns={columns}
-          onChange={this.tableChange}
-          dataSource={reportStationList.map((e, i) => ({ ...e, key: i }))}
-          bordered
-          scroll={{ x: 3480, y: 450 }}
-          pagination={false}
-        />
+        <div className={styles.tableBox}>
+          <CneTable
+            loading={loading}
+            columns={columns}
+            onChange={this.tableChange}
+            dataSource={datalist}
+            bordered
+            scroll={{ x: posx, y: 450 }}
+            pagination={false}
+          />
+        </div>
 
       </div>
     );

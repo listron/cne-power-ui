@@ -20,6 +20,7 @@ function* getConfluenceBoxList(action) {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       const totalNum = response.data.data.pageCount || 0;
+      const maxPvCount = response.data.data.maxPvCount || 20;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(totalNum / pageSize);
       if (totalNum === 0) { // 总数为0时，展示0页
@@ -34,6 +35,7 @@ function* getConfluenceBoxList(action) {
         type: confluenceBoxAction.changeStore,
         payload: {
           total: totalNum,
+          maxPvCount,
           reportList: response.data.data.dataList || [],
           listLoading: false,
           [parmas.pageNum]: pageNum,

@@ -7,6 +7,8 @@ import { dataFormat } from '../../../../../utils/utilFunc';
 import CommonPagination from '@components/Common/CommonPagination';
 import TableColumnTitle from '@components/Common/TableColumnTitle';
 import path from '@constants/path';
+import CneTable from '@components/Common/Power/CneTable';
+import CneButton from '@components/Common/Power/CneButton';
 const { APIBasePath } = path.basePaths;
 
 class ReportSearch extends React.PureComponent {
@@ -68,7 +70,7 @@ class ReportSearch extends React.PureComponent {
         fixed: 'left',
         sorter: true,
         defaultSortOrder: 'ascend',
-        render: (text) => <div className={styles.deviceName} title={text}>{text ? text : '--'}</div>,
+        render: (text) => <div className={styles.statisticsDate} title={text}>{text ? text : '--'}</div>,
       }, {
         title: '环境温度',
         children: temperature.map(item => {
@@ -84,12 +86,12 @@ class ReportSearch extends React.PureComponent {
         title: () => <TableColumnTitle title="环境湿度Avg" unit="%RH" />,
         dataIndex: 'humidityAvg',
         width: 150,
-        render: (text) => <div className={styles.deviceName} title={text}>{text ? text.toFixed(2) : '--'}</div>,
+        render: (text) => <div className={styles.rightText} title={text}>{text ? text.toFixed(2) : '--'}</div>,
       }, {
         title: () => <TableColumnTitle title="瞬时斜面辐射Max" unit="W/m2" />,
         width: 150,
         dataIndex: 'slopeRadiationMax',
-        render: (text) => <div className={styles.deviceName} title={text}>{text ? text.toFixed(2) : '--'}</div>,
+        render: (text) => <div className={styles.rightText} title={text}>{text ? text.toFixed(2) : '--'}</div>,
       }, {
         title: '累计辐射强度',
         dataIndex: 'operateStatus',
@@ -175,20 +177,22 @@ class ReportSearch extends React.PureComponent {
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
-          <Button type={'primary'} onClick={this.exportFile} disabled={deviceFullcodes.length === 0} loading={downloading}>导出</Button>
+          <CneButton onClick={this.exportFile} disabled={deviceFullcodes.length === 0} loading={downloading}>导出</CneButton>
           <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
-        <Table
-          columns={this.initColumn()}
-          dataSource={reportList.map((e, i) => ({ ...e, key: i }))}
-          bordered
-          scroll={{ x: 1756, y: 500 }}
-          pagination={false}
-          showHeader={true}
-          loading={listLoading}
-          onChange={this.tableChange}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-        />
+        <div className={styles.tableBox}>
+          <CneTable
+            columns={this.initColumn()}
+            dataSource={reportList.map((e, i) => ({ ...e, key: i }))}
+            bordered
+            scroll={{ x: 1756, y: 500 }}
+            pagination={false}
+            showHeader={true}
+            loading={listLoading}
+            onChange={this.tableChange}
+            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          />
+        </div>
       </div>
     );
   }

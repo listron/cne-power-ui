@@ -20,6 +20,7 @@ const initState = immutable.fromJS({
     sortMethod: 'asc', //"asc"：正序 "desc"：倒序
   },
   total: 0,
+  maxPvCount: 20,
   stationName: '',// 电站名称
   reportTime: moment().subtract(1, 'day').format('YYYY-MM-DD'), // 日的时间
   deviceList: [], // 设备列表
