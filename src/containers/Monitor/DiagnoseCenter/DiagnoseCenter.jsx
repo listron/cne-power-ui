@@ -9,17 +9,22 @@ import DiagnoseFilter from '../../../components/Monitor/DiagnoseCenter/EventList
 import DiagnoseList from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseList';
 import EventAnalysisPage from '../../../components/Monitor/DiagnoseCenter/EventAnalysisPage/EventAnalysisPage';
 import Footer from '@components/Common/Footer';
+import searchUtil from '@utils/searchUtil';
 import { connect } from 'react-redux';
 
 
 class DiagnoseCenter extends Component {
   static propTypes = {
     showAnalysisPage: PropTypes.bool,
+    history: PropTypes.object,
     getEventstatus: PropTypes.func,
     getEventtypes: PropTypes.func,
     circlingQueryList: PropTypes.func,
     stopCircleQueryList: PropTypes.func,
+    getEventsAnalysis: PropTypes.func,
     reset: PropTypes.func,
+    changeStore: PropTypes.func,
+    getDiagnoseList: PropTypes.func,
   }
 
   state = {
@@ -27,11 +32,20 @@ class DiagnoseCenter extends Component {
   }
 
   componentDidMount(){
+    const { history } = this.props;
+    const { location } = history;
+    const { search } = location;
+    const pathInfo = searchUtil(search).parse(); // 路径解析
+    if (pathInfo && pathInfo.diagWarningId) { // 由外界手动控制直接进入分析页
+      this.pathToAnalysis(pathInfo);
+      this.props.getDiagnoseList({});
+    } else { // 默认
+      this.props.circlingQueryList({}); // 以默认参数启动告警中心数据请求;
+    }
     this.props.getEventstatus();
     this.props.getEventtypes({ eventType: 1 });
     this.props.getEventtypes({ eventType: 2 });
     this.props.getEventtypes({ eventType: 3 });
-    this.props.circlingQueryList({}); // 以默认参数启动告警中心数据请求;
   }
 
   componentWillReceiveProps(nextProps){
@@ -48,6 +62,13 @@ class DiagnoseCenter extends Component {
   componentWillUnmount(){
     this.props.stopCircleQueryList(); // 停止定时请求
     this.props.reset();
+  }
+
+  pathToAnalysis = (pathInfo) => {
+    this.props.changeStore({ showAnalysisPage: true });
+    this.setState({ sideTranslateX: 'translateX(100%)' });
+    // { diagWarningId, deviceFullcode }
+    this.props.getEventsAnalysis({ ...pathInfo });
   }
 
   render() {
