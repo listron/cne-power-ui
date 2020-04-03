@@ -91,6 +91,15 @@
     }
     .eachVideo {
       cursor: pointer;
+      position: relative;
+      // &::before{  等产品确认之后添加
+      //   content: url('/img/video34-26.png');
+      //   // background: pink;
+      //   // color: red;
+      //   position: absolute;
+      //   left:10px;
+      //   top:20px;
+      // }
     }
 
     &:hover{

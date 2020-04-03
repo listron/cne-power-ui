@@ -19,7 +19,8 @@
       }
       .ant-select-selection:focus,
       .ant-select-selection:active,
-      .ant.ant-select-selection:hover {
+      .ant-select-selection:hover {
+        border: none;
         box-shadow: none;
       }
     }

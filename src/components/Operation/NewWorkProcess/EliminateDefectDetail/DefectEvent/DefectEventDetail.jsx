@@ -18,9 +18,15 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
   const deviceName = useRef();
   const defectLevel = useRef();
   const allLine = useRef();
-  const { eventId, diagWarningId, eventImgs = [] } = defectMessage;
+  const { eventId, diagWarningId, eventImgs = [], deviceFullcode } = defectMessage;
   const eventStatus = ['yijie', 'weijie', 'hulue1'];
   const levelStatus = ['一级', '二级', '三级', '四级'];
+  const defectLevelMes = [
+    '一级:(示例)相关开关量决定的停机事件；设备疑似有重大隐患。',
+    '二级:(示例)相关测量值诊断的设备不发电或发电性能偏弱问题。',
+    '三级:(示例)由于设备不稳定或者外部环境影响造成的保护值越限问题。',
+    '四级:(示例)专指设备运行数据越界、恒值不变、缺失、错位问题。',
+  ];
   const stateArr = [{ name: '已解决', value: 'yijie' }, { name: '未解决', value: 'weijie' }, { name: '忽略', value: 'hulue' }];
   const delEvent = () => {
     changeVisible(true);
@@ -45,6 +51,7 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
     return type.current && type.current.offsetWidth;
   };
   const width = defectMessage.defectTypeCode && getWidth(allLine) - getWidth(defectType) - getWidth(deviceTypeName) - getWidth(defectLevel) - 150 || 130;
+
   return (
     <div className={styles.eventDetail}>
       <div className={styles.messageWrap}>
@@ -74,7 +81,7 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
               <span className={styles.recordName}>缺陷级别:</span>
               <span className={styles.recordText}>
                 {levelStatus[defectMessage.defectLevel - 1]}
-                <Tooltip placement="top" title="缺陷级别的定义，需要产品那边提供文案">
+                <Tooltip placement="top" title={`${defectLevelMes[defectMessage.defectLevel - 1]}`}>
                   <i className={`iconfont icon-help ${styles.iconHelp}`} />
                 </Tooltip>
               </span>
@@ -89,7 +96,7 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
           {diagWarningId &&
             <div className={styles.analysize}>
               <CneButton className={styles.handleButton}> <i className={'iconfont icon-look'} />
-                <Link to={`/monitor/diagnoseCenter#${diagWarningId}`}> 查看分析 </Link>
+                <Link to={`/monitor/diagnoseCenter?diagWarningId=${diagWarningId}&deviceFullcode=${deviceFullcode}`}> 查看分析 </Link>
               </CneButton>
             </div>
           }

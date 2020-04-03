@@ -117,6 +117,15 @@ export default class DefectEvenrEdit extends Component {
     }
   }
 
+  toolTip = () => {
+    return (<div>
+      <div>一级:(示例)相关开关量决定的停机事件；设备疑似有重大隐患。</div>
+      <div>二级:(示例)相关测量值诊断的设备不发电或发电性能偏弱问题。</div>
+      <div>三级:(示例)由于设备不稳定或者外部环境影响造成的保护值越限问题。</div>
+      <div>四级:(示例)专指设备运行数据越界、恒值不变、缺失、错位问题。</div>
+    </div>);
+  }
+
 
   render() {
     const { deviceTypes = [], record = {}, stationCode, deviceModes = [], isVertify, del } = this.props;
@@ -125,6 +134,7 @@ export default class DefectEvenrEdit extends Component {
     } = record;
     const { visible } = this.state;
     const downloadTemplet = `${path.basePaths.APIBasePath}${path.pubilcPath.imgUploads}`;
+
     return (
       <div className={styles.infoEditBox}>
         <div className={styles.status}>
@@ -202,7 +212,7 @@ export default class DefectEvenrEdit extends Component {
                   <Option value={3} key={'3'}>三级</Option>
                   <Option value={4} key={'4'}>四级</Option>
                 </Select>
-                <Tooltip placement="top" title="缺陷级别的定义，需要产品那边提供文案">
+                <Tooltip placement="top" title={this.toolTip}>
                   <i className={`iconfont icon-help ${styles.iconHelp}`} />
                 </Tooltip>
               </div>
