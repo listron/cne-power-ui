@@ -4,7 +4,7 @@ import PropType from 'prop-types';
 import StationSelect from '../../../../Common/StationSelect';
 import DeviceSelect from '../../../../Common/DeviceSelect/';
 import TimeSelect from '../TimeSelect/index';
-import { Button } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 import moment from 'moment';
 
 
@@ -118,7 +118,7 @@ class ReportSearch extends React.PureComponent {
             deviceShowNumber={true}
           />
         </div>
-        <Button type={'primary'} onClick={this.queryList} disabled={selectedDevice.length === 0}> 查询</Button>
+        <CneButton onClick={this.queryList} disabled={selectedDevice.length === 0}> 查询</CneButton>
 
       </div>
     );

@@ -20,6 +20,7 @@ const initState = immutable.fromJS({
     orderType: 'asc', //"asc"：正序 "desc"：倒序
   },
   total: 0,
+  maxPvCount:8,
   startTime: moment().startOf('year').format('YYYY-MM-DD'), // 开始时间
   endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'), // 结束时间
   reportTime: moment().subtract(1, 'day').format('YYYY-MM-DD'), // 日的时间

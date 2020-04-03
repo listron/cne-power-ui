@@ -6,6 +6,8 @@ import moment from 'moment';
 import { dataFormat } from '../../../../../utils/utilFunc';
 import CommonPagination from '@components/Common/CommonPagination';
 import path from '@constants/path';
+import CneTable from '@components/Common/Power/CneTable';
+import CneButton from '@components/Common/Power/CneButton';
 const { APIBasePath } = path.basePaths;
 
 class ReportSearch extends React.PureComponent {
@@ -114,7 +116,7 @@ class ReportSearch extends React.PureComponent {
           {
             title: '对应时间',
             dataIndex: 'acPowerTime',
-            // className: styles.rightText,
+            className: styles.centerText,
             width: 180,
             render: value => value && moment(value).format('YYYY-MM-DD HH:mm:ss') || '--',
           },
@@ -174,20 +176,22 @@ class ReportSearch extends React.PureComponent {
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
-          <Button type={'primary'} onClick={this.exportFile} disabled={deviceFullcodes.length === 0} loading={downloading}>导出</Button>
+          <CneButton onClick={this.exportFile} disabled={deviceFullcodes.length === 0} loading={downloading}>导出</CneButton>
           <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
-        <Table
-          columns={this.initColumn(dateType)}
-          dataSource={reportList.map((e, index) => { return { ...e, key: index }; })}
-          bordered
-          scroll={{ x: 2200, y: 500 }}
-          pagination={false}
-          showHeader={true}
-          loading={listLoading}
-          onChange={this.tableChange}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-        />
+        <div className={styles.tableBox}>
+          <CneTable
+            columns={this.initColumn(dateType)}
+            dataSource={reportList.map((e, index) => { return { ...e, key: index }; })}
+            bordered
+            scroll={{ x: 2200, y: 500 }}
+            pagination={false}
+            showHeader={true}
+            loading={listLoading}
+            onChange={this.tableChange}
+            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          />
+        </div>
       </div>
     );
   }

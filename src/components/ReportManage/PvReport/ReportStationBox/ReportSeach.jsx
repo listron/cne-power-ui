@@ -5,6 +5,7 @@ import { Radio, DatePicker, Button } from 'antd';
 import StationSelect from '../../../Common/StationSelect';
 import YearTime from './YearTime.jsx';
 import moment from 'moment';
+import CneButton from '@components/Common/Power/CneButton';
 const { RangePicker } = DatePicker;
 const dateFormat = 'YYYY-MM';
 class ReportSeach extends React.Component {
@@ -168,7 +169,7 @@ class ReportSeach extends React.Component {
             multiple={true}
             stationShowNumber={true}
             onChange={this.changeStation} />
-          <Button type="primary" className={styles.btnStyle} disabled={disabledBtn} onClick={this.searchReportData} >查询</Button>
+          <CneButton className={styles.btnStyle} disabled={disabledBtn} onClick={this.searchReportData} >查询</CneButton>
         </div>
       </div>
     );

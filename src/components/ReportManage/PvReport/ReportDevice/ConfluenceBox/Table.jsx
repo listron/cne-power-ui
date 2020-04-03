@@ -7,6 +7,8 @@ import { dataFormat } from '../../../../../utils/utilFunc';
 import CommonPagination from '@components/Common/CommonPagination';
 import TableColumnTitle from '@components/Common/TableColumnTitle';
 import path from '@constants/path';
+import CneTable from '@components/Common/Power/CneTable';
+import CneButton from '@components/Common/Power/CneButton';
 const { APIBasePath } = path.basePaths;
 
 class ReportTable extends React.PureComponent {
@@ -40,7 +42,8 @@ class ReportTable extends React.PureComponent {
   }
 
   initColumn = (type) => { // 表头的数据
-    const electric = Array.apply(null, Array(20)).map((item, e) => { return { name: `I${e + 1}`, unit: 'A', dataIndex: `i${e + 1}`, point: 2 }; });
+    const {maxPvCount} = this.props;
+    const electric = Array.apply(null, Array(maxPvCount)).map((item, e) => { return { name: `I${e + 1}`, unit: 'A', dataIndex: `i${e + 1}`, point: 2 }; });
     const columns = [
       {
         title: '设备名称',
@@ -56,8 +59,8 @@ class ReportTable extends React.PureComponent {
         width: 110,
         fixed: 'left',
         sorter: true,
-        render: value => moment(value).format('HH:mm'),
         defaultSortOrder: 'ascend',
+        render: (text) => <div className={styles.statisticsDate} title={text}>{moment(text).format('HH:mm')}</div>,
       },
       {
         title: () => <TableColumnTitle title="总电流" unit="A" />,
@@ -142,25 +145,42 @@ class ReportTable extends React.PureComponent {
 
 
   render() {
-    const { total = 30, parmas, listLoading, downloading, theme, reportList } = this.props;
+    const { total = 30, parmas, listLoading, downloading, theme, reportList, maxPvCount } = this.props;
     const { pageSize = 1, pageNum = 10, deviceFullcodes } = parmas;
+    const datalist = [];
+    if (reportList) {
+      reportList.forEach((item, index) => {
+        let it = { ...item, key: index };
+        const {pvList} = item;
+        if (pvList) {
+          pvList.forEach((currentItem, currentIndex) => {
+            const k = `i${currentIndex + 1}`;
+            it[k] = currentItem;
+          })
+        }
+        datalist.push(it);
+      })
+    }
+    const posx = 2150 - 83 * (20-maxPvCount);
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
-          <Button type={'primary'} onClick={this.exportFile} disabled={deviceFullcodes.length === 0} loading={downloading}> 导出</Button>
+          <CneButton onClick={this.exportFile} disabled={deviceFullcodes.length === 0} loading={downloading}> 导出</CneButton>
           <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={'theme'} />
         </div>
-        <Table
-          columns={this.initColumn()}
-          dataSource={reportList.map((e, index) => { return { ...e, key: index }; })}
-          bordered
-          scroll={{ x: 2150, y: 450 }}
-          pagination={false}
-          showHeader={true}
-          loading={listLoading}
-          onChange={this.tableChange}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-        />
+        <div className={styles.tableBox}>
+          <CneTable
+            columns={this.initColumn()}
+            dataSource={datalist}
+            bordered
+            scroll={{ x: posx, y: 450 }}
+            pagination={false}
+            showHeader={true}
+            loading={listLoading}
+            onChange={this.tableChange}
+            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          />
+        </div>
       </div>
     );
   }

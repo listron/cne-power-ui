@@ -12,7 +12,27 @@
     height: 60px;
     line-height: 40px;
     margin-bottom: 10px;
-
+    border: 1px solid #d4d4d4;
+    box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.60);
+    :global {
+      .ant-radio-group {
+          .ant-radio-button-wrapper {
+              color: #199475;
+              border: 1px solid #199475;
+              &:first-child {
+                  border: 1px solid #199475;
+              }
+              &:hover {
+                  background-color: #ceebe0;
+              }
+              &.ant-radio-button-wrapper-checked {
+                  background-color: #199475;
+                  color: #fff;
+              }
+          }
+      }
+  }
+  
     .timeStyle {
       display: flex;
       align-items: center;
@@ -44,7 +64,12 @@
     flex: 1;
     flex-direction: column;
 
-
+    .tableBox {
+      flex: 1 0 auto;
+      background-color: #fff;
+      margin: 0 4px 4px 0;
+      box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+    }
     :global {
       .ant-table .ant-table-thead>tr>th {
         padding: 0 8px;
@@ -69,11 +94,18 @@
     }
 
     .stationName,
+    .statisticsDate
     .timeStyle {
       width: 108px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+    .stationName {
+      padding-left: 20px;
+    }
+    .statisticsDate{
+      text-align: center;
     }
 
     .timeStyle {
@@ -101,7 +133,7 @@
   }
 
   .reportList {
-    background: #fff;
+    background: transparent;
   }
 }
 

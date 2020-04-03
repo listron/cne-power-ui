@@ -5,9 +5,22 @@
     margin-left: 8px;
   }
   :global {
-    // .ant-radio-button-wrapper {
-    //   padding: 0 8px;
-    // }
+    .ant-radio-group {
+      .ant-radio-button-wrapper {
+          color: #199475;
+          border: 1px solid #199475;
+          &:first-child {
+              border: 1px solid #199475;
+          }
+          &:hover {
+              background-color: #ceebe0;
+          }
+          &.ant-radio-button-wrapper-checked {
+              background-color: #199475;
+              color: #fff;
+          }
+      }
+    }
     .ant-input {
       width: 200px;
     }
