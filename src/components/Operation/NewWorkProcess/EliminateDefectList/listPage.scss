@@ -164,38 +164,38 @@
     text-align: right;
   }
   .stationName{
-    width: calc((100vw - 250px) * 0.176);
+    width: 17.5%;
   }
   .stationNameText{
     max-width: calc((100vw - 250px) * 0.176 - 20px);
     padding-left: 10px;
   }
   .docketDesc{
-    width: calc((100vw - 250px) * 0.143);
+    width: 14.5%;
   }
   .docketDescText{
     max-width: calc((100vw - 250px) * 0.143 - 20px);
   }
   .eventNum{
-    width: calc((100vw - 250px) * 0.074);
+    width: 7.5%;
   }
   .eventNumText{
     max-width: calc((100vw - 250px) * 0.074 - 20px);
   }
   .createTime{
-    width: calc((100vw - 250px) * 0.132);
+    width: 13%;
   }
   .createTimeText{
     max-width: calc((100vw - 250px) * 0.132 - 20px);
   }
   .keepLength{
-    width: calc((100vw - 250px) * 0.119);
+    width: 12%;
   }
   .keepLengthText{
     max-width: calc((100vw - 250px) * 0.119 - 20px);
   }
   .operName{
-    width: calc((100vw - 250px) * 0.178);
+    width: 18%;
   }
   .operNameText{
     max-width: calc((100vw - 250px) * 0.178 - 20px);
@@ -203,7 +203,7 @@
   table thead tr > th.status, table tbody tr > td.status{
     padding: 0!important;
     line-height: 30px!important;
-    width: calc((100vw - 250px) * 0.115);
+    width: 11.5%;
   }
   .statusContent{
     position: relative;
@@ -214,7 +214,6 @@
     }
   }
   .handle{
-    width: calc((100vw - 250px) * 0.06);
     padding-right: 10px!important;
     .handleIcon{
       font-size: 18px;
