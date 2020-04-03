@@ -20,6 +20,7 @@ class AlarmSingleStationTable extends React.Component {
     getSingleStationAlarmStatistic: PropTypes.func,
     changeAlarmStatisticStore: PropTypes.func,
     singleChartLoading: PropTypes.bool,
+    count: PropTypes.number,
   }
 
   onChangeTable = (pagination, filters, sorter) => {
@@ -77,24 +78,16 @@ class AlarmSingleStationTable extends React.Component {
   }
 
   render() {
-    const { singleAlarmStatistic, pageNum, pageSize, onPaginationChange, singleChartLoading } = this.props;
-    const totalNum = singleAlarmStatistic && singleAlarmStatistic.length;
-    const startRow = (pageNum - 1) * pageSize;
-    let endRow = pageNum * pageSize;
-    endRow = (endRow > totalNum) ? totalNum : endRow;
-    const data = singleAlarmStatistic && singleAlarmStatistic.slice(startRow, endRow).map((item, index) => {
-      item.key = index;
-      return item;
-    });
+    const { singleAlarmStatistic, pageNum, pageSize, onPaginationChange, singleChartLoading, count } = this.props;
     return (
       <div className={styles.singleStationTable}>
         <div className={styles.pagination}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={count} onPaginationChange={onPaginationChange} />
         </div>
         <Table
           loading={singleChartLoading}
           columns={this.renderColumn()}
-          dataSource={data}
+          dataSource={singleAlarmStatistic.map((e, i) => ({ ...e, key: i }))}
           onChange={this.onChangeTable}
           pagination={false}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }} />

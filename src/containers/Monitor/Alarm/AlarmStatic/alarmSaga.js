@@ -159,6 +159,7 @@ function* getSingleStationAlarmStatistic(action) { // 请求单电站告警统�
           singleStationCode: payload.stationCode,
           summaryType: payload.summaryType,
           singleChartLoading: false,
+          count: response.data.data.count,
         },
       });
     }else { throw response.data; }

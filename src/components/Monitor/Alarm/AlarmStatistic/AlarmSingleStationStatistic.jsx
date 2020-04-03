@@ -48,8 +48,8 @@ class ALarmSingleStationStatistic extends React.Component {
       startTime: moment().subtract(29, 'days').hour(0).minute(0).second(0).utc().format(),
       endTime: moment().endOf('day').utc().format(),
       summaryType,
-      pageSize,
-      pageNum,
+      // pageSize,
+      // pageNum,
       orderField,
       orderCommand,
     });
@@ -62,8 +62,8 @@ class ALarmSingleStationStatistic extends React.Component {
     if (singleStationCode !== this.props.singleStationCode) {
       this.props.getSingleStationAlarmStatistic({
         stationCode: singleStationCode,
-        startTime: startTime,
-        endTime: endTime,
+        startTime,
+        endTime,
         summaryType,
         pageSize,
         pageNum,
@@ -75,27 +75,40 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
+    const { startTime, endTime, summaryType, singleStationCode, orderField, orderCommand } = this.props;
     this.setState({
       pageNum: currentPage,
       pageSize,
     });
+    this.props.getSingleStationAlarmStatistic({
+      stationCode: singleStationCode,
+      startTime,
+      endTime,
+      summaryType,
+      pageNum: currentPage,
+      pageSize,
+      orderField,
+      orderCommand,
+    });
   }
 
   onChangeFilter = (obj) => {
-    const { singleStationCode, startTime, endTime, summaryType, orderField, orderCommand } = this.props;
-    const { pageSize } = this.state;
+    const { singleStationCode, summaryType, orderField, orderCommand } = this.props;
+    const { pageSize, key } = this.state;
     const filter = {
       stationCode: singleStationCode,
-      // startTime,
-      // endTime,
       summaryType,
-      pageSize,
       orderField,
       orderCommand,
     };
     this.setState({ pageNum: 1 });
-    const newFiter = { ...filter, ...obj, pageNum: 1 };
-    this.props.getSingleStationAlarmStatistic(newFiter);
+    const newFiter = { ...filter, ...obj };
+    const page = { pageSize, pageNum: 1};
+    if (key === 'graph') {
+      this.props.getSingleStationAlarmStatistic(newFiter);
+    }else{
+      this.props.getSingleStationAlarmStatistic({ ...newFiter, ...page});
+    }
   }
 
   onChangeTime = (value, dateString) => {
