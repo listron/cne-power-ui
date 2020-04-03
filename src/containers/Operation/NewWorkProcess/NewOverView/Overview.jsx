@@ -6,7 +6,7 @@ import searchUtil from '@utils/searchUtil';
 import EliminateDefectList from '../EliminateDefectList/DefectList';
 import InspectList from '../NewInspectList/InspectList';
 import MeterList from '../NewMeterList/MeterList';
-import EliminateDefectDetail from '../EliminateDefectDetail//DefectDetail';
+import EliminateDefectDetail from '../EliminateDefectDetail/DefectDetail';
 import InspectDetail from '../NewInspectDetail/InspectDetail';
 import MeterDetail from '../NewMeterDetail/MeterDetail';
 

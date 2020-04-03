@@ -307,7 +307,9 @@ export default class DetailTopSubmit extends Component {
         params,
         callback: () => {
           this.displayTip();
-          history.push(`${pathname}?page=list&tab=defect`);
+          setTimeout(() => {
+            history.push(`${pathname}?page=list&tab=defect`);
+          }, 500);
         },
       }),
     });
@@ -324,7 +326,9 @@ export default class DetailTopSubmit extends Component {
         params,
         callback: () => {
           this.displayTip();
-          history.push(`${pathname}?page=list&tab=defect`);
+          setTimeout(() => {
+            history.push(`${pathname}?page=list&tab=defect`);
+          }, 500);
         },
       }),
       showTip: true,
