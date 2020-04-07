@@ -12,7 +12,7 @@ import styles from './analysisReport.scss';
 const { MonthPicker } = DatePicker;
 
 const { APIBasePath } = path.basePaths;
-const { getReportDay } = path.APISubPaths.statisticalAnalysis;
+const { getReportDay, getReportMonth } = path.APISubPaths.statisticalAnalysis;
 
 class AnalysisReport extends Component {
   static propTypes = {
@@ -82,8 +82,15 @@ class AnalysisReport extends Component {
 
   downloadMonthReport = () => { // 月报下载
     const { typeDowning } = this.state;
-    console.log(typeDowning, 'typeDowning');
+    const { monthDate } = this.state;
+    const newDate = monthDate.format('YYYY-MM');
+    const enterpriseName = Cookie.get('enterpriseName');
+    const downloadHref = `${APIBasePath}${getReportMonth}?reportDate=${newDate}`;
+    const fileName = `${enterpriseName}${monthDate.format('YYYY年MM月')}运行分析报告.docx`;
     this.setState({ typeDowning: 'monthReport' });
+    if (typeDowning !== 'monthReport') {
+      this.downLoadFun(downloadHref, fileName, newDate);
+    }
   };
 
   downLoadFun = (url, fileName, date) => { // 根据路径，名称，日期，通用下载函数。
