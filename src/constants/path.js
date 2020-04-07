@@ -681,6 +681,7 @@ export default {
       getExportLimit: '/v3/performance/report/limit/list/export', // 限电信息列表导出
       // 分析报告
       getReportDay: '/v4/report/support/station/report/day', // 2.7.2.1.集团日报导出
+      getReportMonth: '/v4/report/support/station/report/month', // 2.7.2.2.集团月报导出
       // 电站评分
       singleStaionScore: '/v3/performance/score',
       getScoreList: '/v3/performance/score/list',
