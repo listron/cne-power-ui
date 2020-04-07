@@ -75,7 +75,7 @@ export default class ProcessInfo extends Component {
                       className={processIconFunc(cur.icon)}
                       style={+cur.colorCode === 3002 ? { fontSize: '20px', color: '#df4b33' } : { fontSize: '20px' }}
                     />}>
-                    <div className={styles.singleInfo} code={cur.colorCode}>{cur.nodeName}</div>
+                    <div className={styles.singleInfo} code={cur.colorCode} title={cur.nodeName}>{cur.nodeName}</div>
                   </Timeline.Item>
                 );
               }
@@ -92,9 +92,10 @@ export default class ProcessInfo extends Component {
                       <div
                         className={styles.processItemName}
                         code={cur.colorCode}
+                        title={cur.nodeName}
                       >{cur.nodeName}</div>
                       <div className={styles.itemRight}>
-                        <div className={styles.processItemDetail}>{cur.handleUser}</div>
+                        <div className={styles.processItemDetail} title={cur.handleUser}>{cur.handleUser}</div>
                         <div className={styles.processItemTime}>{cur.endTime && moment(cur.endTime).format('YYYY-MM-DD HH: mm')}</div>
                       </div>
                     </div>

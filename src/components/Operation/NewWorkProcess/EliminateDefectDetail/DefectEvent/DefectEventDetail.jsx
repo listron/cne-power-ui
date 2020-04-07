@@ -96,7 +96,7 @@ const DefectEventDetail = ({ defectMessage, del = false, allowedOpr = false, eve
           {diagWarningId &&
             <div className={styles.analysize}>
               <CneButton className={styles.handleButton}> <i className={'iconfont icon-look'} />
-                <Link to={`/monitor/diagnoseCenter?diagWarningId=${diagWarningId}&deviceFullcode=${deviceFullcode}`}> 查看分析 </Link>
+                <a href={`#/monitor/diagnoseCenter?diagWarningId=${diagWarningId}&deviceFullcode=${deviceFullcode}`} className={styles.actionName} target="_blank">查看分析</a>
               </CneButton>
             </div>
           }
