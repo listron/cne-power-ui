@@ -135,7 +135,7 @@ class PvStation extends React.Component {
             <i className={`${'iconfont icon-table iconTab'} ${pvStationShow === 'stationList' && styles.activeCard}`} onClick={() => { this.pvStationChange('stationList'); }}></i>
             <i className={`${'iconfont icon-map iconTab'} ${pvStationShow === 'stationMap' && styles.activeCard}`} onClick={() => { this.pvStationChange('stationMap'); }}></i>
           </div>
-          <div>
+          <div className={styles.filterItems}>
             {pvStationShow === 'stationBlock' &&
               <React.Fragment>
                 <Switch onChange={this.onHandleArea} checked={areaChecked} /> 按区域分组显示

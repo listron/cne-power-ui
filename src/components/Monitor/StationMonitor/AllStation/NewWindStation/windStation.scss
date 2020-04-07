@@ -88,6 +88,16 @@
     flex: 1;
   }
   .containerTabs {
+    .filterItems{
+      border: none;
+      display: flex;
+      align-items: center;
+      :global{
+        .ant-switch{
+          margin-right: 4px;
+        }
+      }
+    }
     :global {
       .ant-tabs-bar {
         border: none;

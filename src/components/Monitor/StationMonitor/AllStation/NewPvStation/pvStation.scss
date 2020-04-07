@@ -25,6 +25,15 @@
   }
   .StationTitle {
     border: 1px dashed #d4d4d4;
+    .filterItems{
+      display: flex;
+      align-items: center;
+      :global{
+        .ant-switch{
+          margin-right: 4px;
+        }
+      }
+    }
     :global {
       .iconTab {
         background: #f1f1f1;

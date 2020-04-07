@@ -143,7 +143,7 @@ class WindStation extends React.Component {
       { name: '通讯中断', value: 'interruptNum' },
     ];
     const operations = ( // 状态筛选部分样式
-      <div style={{ border: 'none' }}>
+      <div className={styles.filterItems}>
         <Switch onChange={this.onHandleAlarm} checked={checked} />  只看告警
         <Radio.Group
           defaultValue="all"
