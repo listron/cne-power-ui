@@ -86,17 +86,17 @@ class AllStation extends Component {
     return (
       <div className={`${styles.stationMonitor} ${styles[theme]}`}>
         <div className={styles.stationContainer}>
-          {stationTypeCount === 'multiple' &&
             <div className={styles.allStationTitle}>
-              <p className={`${stationType === '2' && styles.activeStation} `} onClick={() => { this.queryTargetData('2'); }}>全部</p>
-              <p className={`${stationType === '0' && styles.activeStation} `} onClick={() => { this.queryTargetData('0'); }}>风电</p>
-              <p className={`${stationType === '1' && styles.activeStation} `} onClick={() => { this.queryTargetData('1'); }}>光伏</p>
+              {stationTypeCount === 'multiple' ? <div className={styles.typeTabs}>
+                <p className={`${stationType === '2' && styles.activeStation} `} onClick={() => { this.queryTargetData('2'); }}>全部</p>
+                <p className={`${stationType === '0' && styles.activeStation} `} onClick={() => { this.queryTargetData('0'); }}>风电</p>
+                <p className={`${stationType === '1' && styles.activeStation} `} onClick={() => { this.queryTargetData('1'); }}>光伏</p>
+              </div> : <div />}
+              {(stationType === '1' || stationTypeCount === 'pv') &&
+                <div className={styles.allArea} onClick={this.showRegionSelect}>
+                  {regionName} <i className={'iconfont icon-content'}></i>
+                </div>}
             </div>
-          }
-          {(stationType === '1' || stationTypeCount === 'pv') &&
-            <div className={styles.allArea} onClick={this.showRegionSelect}>
-              {regionName} <i className={'iconfont icon-content'}></i>
-            </div>}
           {showRegion &&
             <div className={styles.regionSelect}>
               <div className={styles.regionSelectTop}>

@@ -21,8 +21,11 @@
 
     .allStationTitle {
       display: flex;
-      line-height: 40px;
-      // overflow: hidden;
+      justify-content: space-between;
+      .typeTabs{
+        display: flex;
+        line-height: 40px;
+      }
       p {
         width: 120px;
         margin-bottom: 0;
@@ -45,13 +48,14 @@
 
     .allArea {
       padding: 0 10px;
-      position: absolute;
-      top: 24px;
-      right: 24px;
-      line-height: 30px;
+      // position: absolute;
+      // top: 24px;
+      // right: 24px;
+      line-height: 40px;
       cursor: pointer;
-      z-index: 19;
+      // z-index: 19;
       display: flex;
+      align-items: center;
       justify-content: space-between;
       i {
         // color: $themeColor;
