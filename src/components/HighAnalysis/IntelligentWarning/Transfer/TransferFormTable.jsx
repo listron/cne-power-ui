@@ -59,7 +59,7 @@ class TransferFormTable extends Component {
 
 
   tableChange = (pagination, filters, sorter) => {
-    const { changeTransferFormStore, onChangeFilter, orderField } = this.props;
+    const { changeTransferFormStore, onChangeFilter, orderField, orderCommand } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
       warningLevel: '1',
@@ -71,8 +71,7 @@ class TransferFormTable extends Component {
     };
     let newOrderField = orderField, newOrderCommand = '2';
     if (!field || (sortInfo[field] === newOrderField)) { // 点击的是正在排序的列
-      newOrderCommand = newOrderCommand === '1' ? '1' : '2'; // 交换排序方式
-      console.log(newOrderCommand, 'newOrderCommand');
+      newOrderCommand = orderCommand === '1' ? '2' : '1'; // 交换排序方式
     } else { // 切换列
       newOrderField = sortInfo[field];
     }
