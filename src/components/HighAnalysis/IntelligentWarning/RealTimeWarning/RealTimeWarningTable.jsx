@@ -5,7 +5,8 @@ import TransferWarningModal from './TransferWarningModal';
 import HandleRemoveModal from './HandleRemoveModal';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Table, Select, Popover, Icon, Button } from 'antd';
+import { Select } from 'antd';
+import CneTable from '@components/Common/Power/CneTable';
 import moment from 'moment';
 import { handleRights } from '@utils/utilFunc';
 const Option = Select.Option;
@@ -81,19 +82,26 @@ class RealTimeWarningTable extends Component {
       {
         title: '预警级别',
         dataIndex: 'warningLevel',
+        textAlign: 'center',
         key: 'warningLevel',
-        render: (text, record, index) => {
-          return level[text - 1];
-        },
+        width: '8%',
         sorter: true,
+        render: (text) => {
+          return <div>{level[text - 1]}</div>;
+        },
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
+        textAlign: 'left',
         key: 'stationName',
         sorter: true,
+        render: (text) => {
+          return <div>{text}</div>;
+        },
       }, {
         title: '设备名称',
         dataIndex: 'deviceName',
+        textAlign: 'left',
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
@@ -112,24 +120,31 @@ class RealTimeWarningTable extends Component {
       }, {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
+        textAlign: 'left',
         key: 'deviceTypeName',
         sorter: true,
+        render: (text) => {
+          return <div className={styles.alarmDesc} title={text}>{text || '- -'}</div>;
+        },
       }, {
         title: '预警描述',
         dataIndex: 'warningCheckDesc',
+        textAlign: 'left',
         key: 'warningCheckDesc',
-        render: (text, record) => {
+        render: (text) => {
           return <div className={styles.alarmDesc} title={text}>{text}</div>;
         },
       }, {
         title: '发生时间',
         dataIndex: 'timeOn',
+        textAlign: 'center',
         key: 'timeOn',
-        render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm'),
         sorter: true,
       }, {
         title: '持续时间',
         dataIndex: 'durationTime',
+        textAlign: 'center',
         key: 'durationTime',
         sorter: true,
       },
@@ -148,6 +163,7 @@ class RealTimeWarningTable extends Component {
     const realTimeWarningColumns = {
       title: '操作',
       className: styles.iconDetail,
+      textAlign: 'center',
       render: (text, record) => (
         <div>
           <span>
@@ -197,14 +213,14 @@ class RealTimeWarningTable extends Component {
           </Select> : <div></div>}
           <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onPaginationChange} total={realtimeWarning.length} theme={this.props.theme} />
         </div>
-        <Table
+        <CneTable
           dataSource={tableSource}
           rowKey={record => record.warningLogId}
           rowSelection={rowSelection}
           columns={listOperation ? columns.concat(realTimeWarningColumns) : columns}
           pagination={false}
           onChange={this.tableChange}
-          locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
         {realtimeWarning.length > 0 && <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
