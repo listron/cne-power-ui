@@ -341,7 +341,7 @@ class ChartLine extends PureComponent {
       colors.push('#ffeb00');
       const lastLegend = legends[legends.length - 1];
       const pointInfo = pointData.filter(e => {
-        return e.standard;
+        return e.standard || e.standard === 0;
       });
       const standard = pointInfo.length > 0 ? pointInfo[0].standard : ''; // 标准值
       const standardData = standard ? `标准值(${pointInfo[0].pointUnit})` : '';
@@ -416,7 +416,7 @@ class ChartLine extends PureComponent {
           });
 
           const pointInfo = pointData.filter(e => {
-            return e.standard;
+            return e.standard || e.standard === 0;
           });
           const standard = pointInfo.length > 0 ? pointInfo[0].standard : ''; // 标准值
 
