@@ -86,18 +86,7 @@ class CleanWarningMain extends Component { // 电站管理列表页
   render() {
     const { loading, stations, total, listQueryParams, cleanWarningList, theme } = this.props;
     const { pageSize, pageNum, sortField, sortType } = listQueryParams;
-    // sortField: '', // 排序字段 stationName电站influencePercent占比futurePower未来收益cleanDays距上次清洗天数
-    // sortType: -1, // 排序方式 ;默认灰尘占比降序排列： 0-升序, 1-降序
-    // sortField && sortMethod
-    // listQueryParams: { // 请求列表所用参数
-    //   stationCodes: [], // 选中的电站。默认所有
-    //   pageNum: 1, // 当前页
-    //   pageSize: 10, // 每页条数
-    //   sortField: '', // 排序字段 stationName电站influencePercent占比futurePower未来收益cleanDays距上次清洗天数
-    //   sortType: -1, // 排序方式 ;默认灰尘占比降序排列： 0-升序, 1-降序
-    // },
     const sortMethod = sortType === 1 ? 'descend' : 'ascend';
-    console.log(sortField, sortMethod);
     return (
       <div className={`${styles.cleanWarningMain} ${styles[theme]}`}>
         <div className={styles.mainContent}>
@@ -132,14 +121,14 @@ class CleanWarningMain extends Component { // 电站管理列表页
                   className: styles.stationName,
                   sorter: true,
                 }, {
-                  title: () => <TableColumnTitle title="灰尘影响占比" unit="%" />,
+                  title: '灰尘影响占比(%)',
                   dataIndex: 'influencePercent',
                   textAlign: 'right',
                   className: styles.influencePercent,
                   render(text) { return numWithComma(text); },
                   sorter: true,
                 }, {
-                  title: () => <TableColumnTitle title="距离上次清洗" unit="天" />,
+                  title: '距离上次清洗(天)',
                   dataIndex: 'cleanDays',
                   textAlign: 'right',
                   className: styles.cleanDays,

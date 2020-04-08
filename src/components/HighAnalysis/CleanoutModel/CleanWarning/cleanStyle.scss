@@ -17,8 +17,9 @@
   }
   :global {
     .iconfont {
+      color: var(--themeColor);
       &:hover {
-        color: #199475;
+        color: #ff9900;
       }
     }
   }
