@@ -152,6 +152,7 @@ export default {
       returnDocket: '/v4/opms/docket/return', // 2.6.1.8.	退回功能
       delEvent: '/v4/opms/defect/delevent', // 2.7.3.12.	删除缺陷事件
       getDocketBaseUsername: '/v4/opms/docket/username', // 获取有权限电站权限用户
+      getDefectLevel: '/v4/opms/defect/defectlevel', // 获取查询缺陷级别
     },
     operation: {
       // 工作台

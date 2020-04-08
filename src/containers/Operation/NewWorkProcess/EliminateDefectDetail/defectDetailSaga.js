@@ -541,6 +541,26 @@ function* delEvent(action) { // 2.7.3.12.	删除缺陷事件
   }
 }
 
+function* getDefectLevel() {
+  const url = `${APIBasePath}${ticket.getDefectLevel}`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield call(easyPut, 'changeStore', {
+        defectLevelList: response.data.data || [],
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    message.error(e.message);
+    yield call(easyPut, 'changeStore', {
+      defectLevelList: [],
+    });
+    console.log(e);
+  }
+}
+
 export function* watchEliminateDefectDetail() {
   yield takeLatest(eliminateDefectDetailAction.getDefectAction, getDefectAction);
   yield takeLatest(eliminateDefectDetailAction.createDefect, createDefect);
@@ -563,5 +583,6 @@ export function* watchEliminateDefectDetail() {
   yield takeLatest(eliminateDefectDetailAction.showUser, showUser);
   yield takeLatest(eliminateDefectDetailAction.resetCont, resetCont);
   yield takeLatest(eliminateDefectDetailAction.delEvent, delEvent);
+  yield takeLatest(eliminateDefectDetailAction.getDefectLevel, getDefectLevel);
 }
 

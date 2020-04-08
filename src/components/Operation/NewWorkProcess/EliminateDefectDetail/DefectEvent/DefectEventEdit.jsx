@@ -10,18 +10,28 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 
+/**
+ * record 每一条的数据
+ * deviceTypes 设备类型的数组
+ * stationCode 电站名称
+ * onChange 数据发生改变时
+ * delChange 删除的时候
+ * delRight 删除的权限
+ * isVertify 验证的时候
+ * defectLevelList 缺陷级别的数据
+ */
 
 export default class DefectEvenrEdit extends Component {
   static propTypes = {
+    record: PropTypes.object,
     deviceTypes: PropTypes.array,
-    record: PropTypes.object,
-    deviceModes: PropTypes.array,
     stationCode: PropTypes.number,
-    record: PropTypes.object,
     onChange: PropTypes.func,
+    delRight: PropTypes.bool,
     delChange: PropTypes.func,
-    getStationTypeDeviceModes: PropTypes.func,
     isVertify: PropTypes.bool,
+    defectLevelList: PropTypes.array,
+
   }
 
   constructor() {
@@ -30,8 +40,6 @@ export default class DefectEvenrEdit extends Component {
       visible: false,
     };
   }
-
-
 
   changeDefectType = (value) => { // 修改缺陷类型
     const { record, onChange } = this.props;
@@ -52,16 +60,17 @@ export default class DefectEvenrEdit extends Component {
   }
 
   changeDeviceType = (value) => { // 修改设备类型
-    const { record, onChange, stationCode } = this.props;
+    const { record, onChange } = this.props;
     const [deviceTypeCode, deviceTypeName] = value.split('_');
     onChange({ index: record.index, deviceTypeCode, deviceTypeName, deviceFullcode: null, deviceName: '' });
-    this.props.getStationTypeDeviceModes({ stationCode, deviceTypeCode });
   }
 
-  changeDeviceName = (value) => { // 改变设备型号
-    const { record, onChange } = this.props;
-    const [deviceFullcode, deviceName] = value.split('_');
-    onChange({ index: record.index, deviceFullcode, deviceName });
+  selectedDevice = (value) => { // 修改设备类型
+    if (value.length > 0) {
+      const { deviceCode, deviceName } = value[0];
+      const { record, onChange } = this.props;
+      onChange({ index: record.index, deviceFullcode: deviceCode, deviceName });
+    }
   }
 
   changeDefectLevel = (value) => { // 修改缺陷级别
@@ -69,8 +78,7 @@ export default class DefectEvenrEdit extends Component {
     onChange({ index: record.index, defectLevel: value });
   }
 
-
-  onDescChange = ({ target }) => {
+  onDescChange = ({ target }) => { // 修改缺陷描述
     const { record, onChange } = this.props;
     onChange({ index: record.index, eventDesc: target.value || '' });
   }
@@ -81,18 +89,8 @@ export default class DefectEvenrEdit extends Component {
     this.setState({ visible: false });
   }
 
-  selectedDevice = (value) => {
-    if (value.length > 0) {
-      const { deviceCode, deviceName } = value[0];
-      const { record, onChange } = this.props;
-      onChange({ index: record.index, deviceFullcode: deviceCode, deviceName });
-    }
-  }
-
-
   onPicChange = (value) => { // 图片旋转
     const { record, onChange } = this.props;
-    // console.log('eventImgs', eventImgs);
     const eventImgs = value.map(e => {
       return {
         url: e,
@@ -118,27 +116,27 @@ export default class DefectEvenrEdit extends Component {
   }
 
   toolTip = () => {
+    const { defectLevelList } = this.props;
     return (<div>
-      <div>一级:(示例)相关开关量决定的停机事件；设备疑似有重大隐患。</div>
-      <div>二级:(示例)相关测量值诊断的设备不发电或发电性能偏弱问题。</div>
-      <div>三级:(示例)由于设备不稳定或者外部环境影响造成的保护值越限问题。</div>
-      <div>四级:(示例)专指设备运行数据越界、恒值不变、缺失、错位问题。</div>
+      {
+        defectLevelList.map(e => {
+          return <div key={e.defectLevel}>{e.defectDesc}</div>;
+        })
+      }
     </div>);
   }
 
-
   render() {
-    const { deviceTypes = [], record = {}, stationCode, deviceModes = [], isVertify, del } = this.props;
+    const { deviceTypes = [], record = {}, stationCode, isVertify, delRight, defectLevelList } = this.props;
     const {
       eventDesc, defectTypeCode, deviceTypeCode, deviceTypeName, deviceName, deviceFullcode, defectLevel = 1, eventImgs = [],
     } = record;
     const { visible } = this.state;
     const downloadTemplet = `${path.basePaths.APIBasePath}${path.pubilcPath.imgUploads}`;
-
     return (
       <div className={styles.infoEditBox}>
         <div className={styles.status}>
-          {del && <i className={`iconfont icon-wrong ${styles.close}`} onClick={() => this.setState({ visible: true })} />}
+          {delRight && <i className={`iconfont icon-wrong ${styles.close}`} onClick={() => this.setState({ visible: true })} />}
         </div>
         <div className={styles.editDevice}>
           <div className={styles.defectType}>
@@ -178,22 +176,6 @@ export default class DefectEvenrEdit extends Component {
               </div>
               <div className={styles.deviceName}>
                 <div className={styles.recordName}>设备名称 <span className={styles.star}>*</span></div>
-                {/* <Select
-                  placeholder={'请选择'}
-                  onChange={this.changeDeviceName}
-                  disabled={!deviceTypeCode}
-                  required={isVertify}
-                  value={deviceFullcode && `${deviceFullcode}_${deviceName}` || ''}
-                  className={`${styles[this.errorTip('deviceFullcode')]} ${deviceTypeCode && styles[this.initTip('deviceFullcode')]}`}
-                >
-                  {deviceModes.map(e =>
-                    (<Option
-                      value={`${e.deviceFullcode}_${e.deviceName}`}
-                      key={`${e.deviceFullcode}_${e.deviceName}`}
-                      title={e.deviceName}
-                    >{e.deviceName}
-                    </Option>))}
-                </Select> */}
                 <DeviceDataCheck
                   disabled={!deviceTypeCode}
                   stationCode={stationCode}
@@ -207,10 +189,7 @@ export default class DefectEvenrEdit extends Component {
               <div className={styles.defectLevel} onChange={this.changeDefectLevel}>
                 <div className={styles.recordName}>缺陷级别 <span className={styles.star}>*</span> </div>
                 <Select placeholder={'请选择'} onChange={this.changeDefectLevel} value={defectLevel} required={isVertify}>
-                  <Option value={1} key={'1'}>一级</Option>
-                  <Option value={2} key={'2'}>二级</Option>
-                  <Option value={3} key={'3'}>三级</Option>
-                  <Option value={4} key={'4'}>四级</Option>
+                  {defectLevelList.map(e => <Option value={e.defectLevel} key={e.defectLevel}>{e.defectLevelName}</Option>)}
                 </Select>
                 <Tooltip placement="top" title={this.toolTip}>
                   <i className={`iconfont icon-help ${styles.iconHelp}`} />

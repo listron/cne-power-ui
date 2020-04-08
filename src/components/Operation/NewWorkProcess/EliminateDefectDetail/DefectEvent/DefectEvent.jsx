@@ -1,34 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './defectEvent.scss';
 import DefectEventDetail from './DefectEventDetail.jsx';
 import DefectEventEdit from './DefectEventEdit';
 
-
-
-
-
 export default class DefectEvent extends Component {
   static propTypes = {
-    actionCode: PropTypes.string,
     eventInfos: PropTypes.array,
     eventStatus: PropTypes.array,
     warnEventInfos: PropTypes.array,
     edit: PropTypes.bool,
     allowedActions: PropTypes.array,
     addEventInfo: PropTypes.array,
-    // changeStore: PropTypes.func,
+    defectLevelList: PropTypes.array,
+    isVertify: PropTypes.bool,
+    stationCode: PropTypes.number,
+    changeStore: PropTypes.func,
+    docketId: PropTypes.string,
   };
-
-  componentWillReceiveProps = () => {
-
-  }
 
   exchangeActioncode = (allActions, code) => {
     const cur = allActions.filter(e => e.actionCode === code);
     return cur.length > 0 && !cur[0].isPermission || false;
   }
-
 
   eventChange = (value) => { // 缺陷事件 状态修改 详情
     const { eventId, eventState } = value;
@@ -47,7 +40,6 @@ export default class DefectEvent extends Component {
     } else { // 领取的时候删除缺陷事件
       this.prop.delEvent({ docketId, eventId: value });
     }
-
   }
 
   addEventChange = (value) => { // 添加缺陷
@@ -67,7 +59,7 @@ export default class DefectEvent extends Component {
   }
 
   render() {
-    const { eventInfos, warnEventInfos, edit, allowedActions, addEventInfo = [], deviceTypes, stationCode, isVertify, getStationTypeDeviceModes, deviceModes } = this.props;
+    const { eventInfos, warnEventInfos, edit, allowedActions, addEventInfo = [], deviceTypes, stationCode, isVertify, defectLevelList } = this.props;
     const newEventInfo = [...eventInfos, ...warnEventInfos];
     return (
       <React.Fragment>
@@ -79,13 +71,11 @@ export default class DefectEvent extends Component {
               onChange={this.addEventChange}
               delChange={this.deladdEvent}
               deviceTypes={deviceTypes}
-              deviceModes={deviceModes}
               stationCode={stationCode}
               isVertify={isVertify}
-              getStationTypeDeviceModes={getStationTypeDeviceModes}
-              del={this.exchangeActioncode(allowedActions, '21') && addEventInfo.length > 1}
-            />
-          );
+              delRight={this.exchangeActioncode(allowedActions, '21') && addEventInfo.length > 1}
+              defectLevelList={defectLevelList}
+            />);
         })
         }
         {!edit && newEventInfo.map(list => {
@@ -93,7 +83,7 @@ export default class DefectEvent extends Component {
             <DefectEventDetail
               defectMessage={list}
               key={list.eventId || list.diagWarningId}
-              del={this.exchangeActioncode(allowedActions, '21') && newEventInfo.length > 1}
+              delRight={this.exchangeActioncode(allowedActions, '21') && newEventInfo.length > 1}
               allowedOpr={this.exchangeActioncode(allowedActions, '26')}
               eventChange={this.eventChange}
               delChange={this.delEvent}
