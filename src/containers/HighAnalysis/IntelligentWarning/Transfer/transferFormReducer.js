@@ -7,8 +7,8 @@ var initState = Immutable.fromJS({
   pageName:'list',
   loading:false,
   warningTypeStatus:'3',//已转工单
-  orderField:'',
-  orderCommand:'',
+  orderField:'1',
+  orderCommand:'2',
   durationType:null,
   warningLevel:[],//告警级别多个
   deviceTypeCode:[],//设备类型多个
@@ -17,7 +17,7 @@ var initState = Immutable.fromJS({
   // endTime:'',//结束时间
   deviceName:null,//设备名称
   pageSize:10,
-  pageNum:1, 
+  pageNum:1,
   total:0,
   ticketInfo:{},
   currentPage:1,

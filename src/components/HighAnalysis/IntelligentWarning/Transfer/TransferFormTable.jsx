@@ -29,6 +29,18 @@ class TransferFormTable extends Component {
     this.state = {
       showTransferPopover: [],
     };
+    this.tableSortMap = { // api存储字段 => 表格排序字段
+      '1': 'warningLevel',
+      '2': 'stationName',
+      '3': 'deviceTypeName',
+      '5': 'timeOn',
+      '8': 'deviceName',
+      '9': 'durationTime',
+    };
+    this.sortMethodMap = {
+      '2': 'descend',
+      '1': 'ascend',
+    };
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
@@ -47,7 +59,7 @@ class TransferFormTable extends Component {
 
 
   tableChange = (pagination, filters, sorter) => {
-    const { changeTransferFormStore, onChangeFilter } = this.props;
+    const { changeTransferFormStore, onChangeFilter, orderField } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
       warningLevel: '1',
@@ -57,11 +69,16 @@ class TransferFormTable extends Component {
       timeOn: '5',
       durationTime: '9',
     };
-    const orderField = sortInfo[field] ? sortInfo[field] : '';
-    const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
-    changeTransferFormStore({ orderField, orderCommand });
+    let newOrderField = orderField, newOrderCommand = '2';
+    if (!field || (sortInfo[field] === newOrderField)) { // 点击的是正在排序的列
+      newOrderCommand = newOrderCommand === '1' ? '1' : '2'; // 交换排序方式
+      console.log(newOrderCommand, 'newOrderCommand');
+    } else { // 切换列
+      newOrderField = sortInfo[field];
+    }
+    changeTransferFormStore({ orderField: newOrderField, orderCommand: newOrderCommand });
     onChangeFilter({
-      orderField, orderCommand,
+      orderField: newOrderField, orderCommand: newOrderCommand,
     });
   }
 
@@ -207,7 +224,7 @@ class TransferFormTable extends Component {
         // }
       },
     ];
-    const { transferFormList, pageSize, pageNum, total, theme } = this.props;
+    const { transferFormList, pageSize, pageNum, total, theme, orderField, orderCommand } = this.props;
 
     return (
       <div className={styles.realTimeWarningTable}>
@@ -220,6 +237,8 @@ class TransferFormTable extends Component {
           rowKey={record => record.warningLogId}
           columns={columns}
           pagination={false}
+          sortField={this.tableSortMap[orderField]}
+          sortMethod={this.sortMethodMap[orderCommand]}
           onChange={this.tableChange}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
