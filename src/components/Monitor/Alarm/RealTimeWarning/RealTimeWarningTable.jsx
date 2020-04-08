@@ -8,7 +8,11 @@ import PropTypes from 'prop-types';
 import { Table, Select, Popover, Icon, Button } from 'antd';
 import moment from 'moment';
 import { handleRights } from '@utils/utilFunc';
+import CneTable from '../../../Common/Power/CneTable';
 const Option = Select.Option;
+
+
+// 默认排序是什么
 
 class RealTimeWarningTable extends Component {
   static propTypes = {
@@ -28,8 +32,8 @@ class RealTimeWarningTable extends Component {
     this.state = {
       showTransferTicketModal: false,
       showHandleRemoveModal: false,
-      sortName: '',
-      descend: false,
+      sortName: 'warningLevel',
+      sortMethod: 'descend',
     };
   }
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
@@ -63,13 +67,18 @@ class RealTimeWarningTable extends Component {
   }
 
   tableChange = (pagination, filters, sorter) => {
+    const { sortName, sortMethod } = this.state;
+    const { field } = sorter || {};
+    let newField = sortName, newSort = 'descend';
+    if (!field || (field === sortName)) { // 点击的是正在排序的列
+      newSort = sortMethod === 'descend' ? 'ascend' : 'descend'; // 交换排序方式
+    } else { // 切换列
+      newField = field;
+    }
     this.setState({
-      sortName: sorter.field,
-      descend: sorter.order === 'descend',
+      sortName: newField,
+      sortMethod: newSort,
     });
-    // this.props.changeRealtimeWarningStore({
-    //   sortName: sorter.field,
-    // });
   }
 
 
@@ -101,10 +110,10 @@ class RealTimeWarningTable extends Component {
           if (isClick) {
             let renderDom = (
               <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target='_blank' className={styles.underlin} >{text}</Link>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target="_blank" className={styles.underlin} >{text}</Link>
               </div>
             );
-            if(`${record.deviceTypeCode}` === '509') {
+            if (`${record.deviceTypeCode}` === '509') {
               // 获取支路的下标
               const deviceIndex = Number(record.deviceName.split('#')[1]) - 1;
               const paramsColor = {
@@ -123,7 +132,7 @@ class RealTimeWarningTable extends Component {
               // deviceTypeCode === 509 光伏组串 需要用父级的parentTypeCode
               renderDom = (
                 <div className={styles.deviceName}>
-                  <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.parentTypeCode.split('M')[1]}/${record.parentTypeCode}?pointParams=${JSON.stringify(params)}`} target='_blank' className={styles.underlin} >{text}</Link>
+                  <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.parentTypeCode.split('M')[1]}/${record.parentTypeCode}?pointParams=${JSON.stringify(params)}`} target="_blank" className={styles.underlin} >{text}</Link>
                 </div>
               );
             }
@@ -169,7 +178,7 @@ class RealTimeWarningTable extends Component {
     };
 
     const { realtimeWarning, selectedRowKeys, pageSize, currentPage, loading, selectedTransfer, getLostGenType, defectTypes, transferWarning, theme } = this.props;
-    const { sortName, descend, showTransferTicketModal, showHandleRemoveModal } = this.state;
+    const { sortName, sortMethod, showTransferTicketModal, showHandleRemoveModal } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -179,7 +188,7 @@ class RealTimeWarningTable extends Component {
       ...e,
       key: i,
     })).sort((a, b) => { // 手动排序
-      const sortType = descend ? -1 : 1;
+      const sortType = sortMethod === 'descend' ? -1 : 1;
       if (sortName === 'warningLevel') {
         return sortType * (a.warningLevel - b.warningLevel);
       } else if (nameSortArr.includes(sortName)) {
@@ -202,17 +211,17 @@ class RealTimeWarningTable extends Component {
       <div className={styles.realTimeWarningTable}>
         <span ref={'select'} />
         {removeRight ?
-        <div className={styles.tableHeader}>
-          <Select onChange={this.onHandle}
-            value="操作"
-            getPopupContainer={() => this.refs.select}
-            placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-            {/* <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option>  */}
-            <Option value="relieve" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>手动解除</Option>
-          </Select>
-          <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onPaginationChange} total={realtimeWarning.length} theme={this.props.theme} />
-        </div> : <div></div>}
-        <Table
+          <div className={styles.tableHeader}>
+            <Select onChange={this.onHandle}
+              value="操作"
+              getPopupContainer={() => this.refs.select}
+              placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+              {/* <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option>  */}
+              <Option value="relieve" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>手动解除</Option>
+            </Select>
+            <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onPaginationChange} total={realtimeWarning.length} theme={this.props.theme} />
+          </div> : <div></div>}
+        {/* <Table
           dataSource={tableSource}
           rowKey={record => record.warningLogId}
           rowSelection={rowSelection}
@@ -220,7 +229,23 @@ class RealTimeWarningTable extends Component {
           pagination={false}
           onChange={this.tableChange}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
+        /> */}
+
+        <CneTable
+          columns={worklistRight ? columns.concat(realTimeWarningColumn) : columns}
+          dataSource={tableSource}
+          rowSelection={rowSelection}
+          pagination={false}
+          // loading={diagnoseListLoading}
+          // dataError={diagnoseListError}
+          sortField={sortName}
+          sortMethod={sortMethod}
+          className={styles.diagnoseTable}
+          onChange={this.tableChange}
         />
+
+
+
         {realtimeWarning.length > 0 && <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
           {selectedRowKeys.length > 0 && <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
