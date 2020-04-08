@@ -53,20 +53,19 @@ class CleanWarningMain extends Component { // 电站管理列表页
 
   tableSort = (pagination, filters, sorter) => { // 表格排序
     const { listQueryParams, getCleanWarningList } = this.props;
-    const { field, order } = sorter;
-    if (!field) { // 无排序 => 恢复默认灰尘占比降序排列
-      getCleanWarningList({
-        ...listQueryParams,
-        sortField: 'influencePercent',
-        sortType: 1,
-      });
-    } else { // 按照指定排序规则请求列表数据
-      getCleanWarningList({
-        ...listQueryParams,
-        sortField: field,
-        sortType: order === 'descend' ? 1 : 0,
-      });
+    const { field } = sorter || {};
+    const { sortField, sortType } = listQueryParams;
+
+    let newField = field, newSort = 1;
+    if (!field || (sortField === field)) { // 点击的是正在排序的列
+      newField = sortField;
+      newSort = sortType === 1 ? 0 : 1; // 交换排序方式
     }
+    getCleanWarningList({
+      ...listQueryParams,
+      sortField: newField,
+      sortType: newSort,
+    });
   }
 
   toWarningDetail = record => { // 请求灰尘影响详情，默认30天的全局影响，方阵影响。
@@ -86,9 +85,19 @@ class CleanWarningMain extends Component { // 电站管理列表页
 
   render() {
     const { loading, stations, total, listQueryParams, cleanWarningList, theme } = this.props;
-    const { pageSize, pageNum } = listQueryParams;
+    const { pageSize, pageNum, sortField, sortType } = listQueryParams;
     // sortField: '', // 排序字段 stationName电站influencePercent占比futurePower未来收益cleanDays距上次清洗天数
     // sortType: -1, // 排序方式 ;默认灰尘占比降序排列： 0-升序, 1-降序
+    // sortField && sortMethod
+    // listQueryParams: { // 请求列表所用参数
+    //   stationCodes: [], // 选中的电站。默认所有
+    //   pageNum: 1, // 当前页
+    //   pageSize: 10, // 每页条数
+    //   sortField: '', // 排序字段 stationName电站influencePercent占比futurePower未来收益cleanDays距上次清洗天数
+    //   sortType: -1, // 排序方式 ;默认灰尘占比降序排列： 0-升序, 1-降序
+    // },
+    const sortMethod = sortType === 1 ? 'descend' : 'ascend';
+    console.log(sortField, sortMethod);
     return (
       <div className={`${styles.cleanWarningMain} ${styles[theme]}`}>
         <div className={styles.mainContent}>
@@ -120,30 +129,37 @@ class CleanWarningMain extends Component { // 电站管理列表页
                   title: '电站名称',
                   dataIndex: 'stationName',
                   textAlign: 'left',
+                  className: styles.stationName,
                   sorter: true,
                 }, {
                   title: () => <TableColumnTitle title="灰尘影响占比" unit="%" />,
                   dataIndex: 'influencePercent',
                   textAlign: 'right',
+                  className: styles.influencePercent,
                   render(text) { return numWithComma(text); },
                   sorter: true,
                 }, {
                   title: () => <TableColumnTitle title="距离上次清洗" unit="天" />,
                   dataIndex: 'cleanDays',
                   textAlign: 'right',
+                  className: styles.cleanDays,
                   render(text) { return numWithComma(text); },
                   sorter: true,
                 }, {
                   title: '本次预警时间',
                   dataIndex: 'warningTime',
+                  className: styles.warningTime,
                   textAlign: 'center',
                 }, {
                   title: '查看',
                   dataIndex: 'handle',
+                  className: styles.handle,
                   textAlign: 'center',
                   render: (text, record) => <span onClick={() => this.toWarningDetail(record)} className="iconfont icon-look" />,
                 },
               ]}
+              sortField={sortField}
+              sortMethod={sortMethod}
               loading={loading}
               pagination={false}
               dataSource={cleanWarningList.map((e, i) => ({ ...e, key: i }))}

@@ -5,6 +5,16 @@
   .mainContent {
     background-color: #fff;
   }
+  .stationName, .influencePercent, .cleanDays, .warningTime, .handle{
+    width: 20%;
+  }
+  .stationName{
+    :global{
+      .ant-table-column-sorter{
+        top: 2px;
+      }
+    }
+  }
   :global {
     .iconfont {
       &:hover {

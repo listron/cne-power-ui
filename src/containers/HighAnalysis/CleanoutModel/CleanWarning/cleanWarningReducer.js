@@ -10,8 +10,8 @@ var initState = Immutable.fromJS({
     stationCodes: [], // 选中的电站。默认所有
     pageNum: 1, // 当前页
     pageSize: 10, // 每页条数
-    sortField: '', // 排序字段 stationName电站influencePercent占比futurePower未来收益cleanDays距上次清洗天数
-    sortType: -1, // 排序方式 ;默认灰尘占比降序排列： 0-升序, 1-降序
+    sortField: 'influencePercent', // 排序字段 stationName电站influencePercent占比futurePower未来收益cleanDays距上次清洗天数
+    sortType: 1, // 排序方式 ;默认灰尘占比降序排列： 0-升序, 1-降序
   },
 
   cleanWarningList: [], // api => 清洗预警列表
