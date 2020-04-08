@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import styles from './recordDetailTable.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import AddCleanoutRecord from './AddCleanoutRecord';
-import InputLimit from '../../../../Common/InputLimit';
 import moment from 'moment';
-import { Table, Icon, Modal, Form, DatePicker, Input, Button, TreeSelect } from 'antd';
-import TableColumnTitle from '../../../../Common/TableColumnTitle';
+import { Modal, Form, DatePicker, Input, Button } from 'antd';
+// import TableColumnTitle from '../../../../Common/TableColumnTitle';
+import CneTable from '@components/Common/Power/CneTable';
 import { numWithComma, handleRight } from '../../../../../utils/utilFunc';
 const FormItem = Form.Item;
 
-const SHOW_PARENT = TreeSelect.SHOW_PARENT;
 const { RangePicker } = DatePicker;
 
 class RecordDetailTable extends Component {
@@ -25,8 +24,7 @@ class RecordDetailTable extends Component {
       showAddRecordModal: false,
     };
   }
-  tableChange = () => {
-  }
+
   showEditModal = (record) => {
     this.setState({
       showEditModal: true,
@@ -173,10 +171,7 @@ class RecordDetailTable extends Component {
             <Button onClick={this.cancelModal} >取消</Button>
             <Button onClick={this.confirmModal} className={styles.confirmExamine} >保存</Button>
           </div>
-
-
         </div>
-
       </Modal>
     );
   }
@@ -197,7 +192,8 @@ class RecordDetailTable extends Component {
       {
         title: '计划清洗时间',
         dataIndex: 'estimateStartTime',
-        key: 'estimateStartTime',
+        textAlign: 'center',
+        className: styles.estimateStartTime,
         render: (text, record, index) => {
           return (
             <span className={styles.estimateStartTime} title={record.estimateStartTime + '-' + record.estimateEndTime}>{record.estimateStartTime ? record.estimateStartTime : '-'}-{record.estimateEndTime}</span>
@@ -206,21 +202,24 @@ class RecordDetailTable extends Component {
       }, {
         title: '实际清洗时间',
         dataIndex: 'estimateEndTime',
-        key: 'estimateEndTime',
+        textAlign: 'center',
+        className: styles.estimateEndTime,
         render: (text, record, index) => {
           return (
             <span className={styles.estimateStartTime} title={record.actualStartTime + '-' + record.actualEndTime}>{record.actualStartTime ? record.actualStartTime : '-'}-{record.actualEndTime}</span>
           );
         },
       }, {
-        title: () => <TableColumnTitle title="实际清洗用时" unit="天" />,
+        title: '实际清洗用时(天)', // () => <TableColumnTitle title="实际清洗用时" unit="天" />,
         dataIndex: 'actualCleanTime',
-        key: 'actualCleanTime',
+        textAlign: 'right',
+        className: styles.actualCleanTime,
         render(text) { return numWithComma(text); },
       }, {
         title: '清洗方式',
         dataIndex: 'cleanType',
-        key: 'cleanType',
+        textAlign: 'center',
+        className: styles.cleanType,
         render: (text, record, index) => {
           return (
             <div className={styles.iconStyles}>
@@ -232,50 +231,23 @@ class RecordDetailTable extends Component {
       }, {
         title: '清洗公司',
         dataIndex: 'company',
-        key: 'company',
-        render: text => (<span>{text ? `${text}` : '- -'}</span>),
+        textAlign: 'left',
+        className: styles.company,
+        render: text => (<span className={styles.companyText}>{text ? `${text}` : '- -'}</span>),
       }, {
-        title: () => <TableColumnTitle title="清洗费用" unit="元" />,
+        title: '清洗费用(元)', // () => <TableColumnTitle title="清洗费用" unit="元" />,
         dataIndex: 'cleanCost',
-        key: '',
+        textAlign: 'right',
+        className: styles.cleanCost,
         render(text) { return numWithComma(text); },
 
       }, {
-        title: () => <TableColumnTitle title="清洗收益" unit="万kWh" />,
+        title: '清洗收益(万kWh)', //  () => <TableColumnTitle title="清洗收益" unit="万kWh" />,
         dataIndex: 'cleanProfit',
-        key: 'cleanProfit',
+        textAlign: 'right',
+        className: styles.cleanProfit,
         render(text) { return numWithComma(text); },
-      }, 
-      // {
-      //   title: '添加/查看清洗记录',
-      //   key: 'addRecord',
-      //   dataIndex: 'cleanType',
-      //   render: (text, record, index) => {
-      //     return (
-      //       text === 1 ? <div className={styles.iconStyles}>
-      //         <span style={{ marginRight: '8px' }} title="添加" className="iconfont icon-addto" onClick={() => this.addCleanRecord(record)}></span>
-      //         {/*   {this.addCleanoutRecord(record)} */}
-
-      //         <span title="查看" className="iconfont icon-viewplan" onClick={() => this.showRecodePlanModal(record, index)}></span>
-      //       </div> : ''
-      //     );
-      //   },
-      // }, {
-      //   title: '操作',
-      //   key: 'editAndDelet',
-      //   dataIndex: 'isDelete',
-      //   render: (text, record, index) => {
-      //     return (
-      //       <div>
-      //         <span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={() => this.showEditModal(record)}>
-      //         </span>
-
-      //         {text === 0 ? <span title="删除" className="iconfont icon-del" onClick={() => this.deleteCleanPlan(record)}></span> : ''}
-      //       </div>
-      //     );
-      //   },
-      // },
-
+      },
     ];
 
     const cleanOperation = [
@@ -283,6 +255,8 @@ class RecordDetailTable extends Component {
         title: '添加/查看清洗记录',
         key: 'addRecord',
         dataIndex: 'cleanType',
+        textAlign: 'center',
+        className: styles.addRecord,
         render: (text, record, index) => {
           return (
             text === 1 ? <div className={styles.iconStyles}>
@@ -297,6 +271,8 @@ class RecordDetailTable extends Component {
         title: '操作',
         key: 'editAndDelet',
         dataIndex: 'isDelete',
+        textAlign: 'center',
+        className: styles.editAndDelet,
         render: (text, record, index) => {
           return (
             <div>
@@ -313,12 +289,11 @@ class RecordDetailTable extends Component {
       <div className={styles[theme]}>
         {showWarningTip && <WarningTip style={{ width: '240px', height: '88px', marginTop: '312px' }} onOK={this.confirmWarningTip} onCancel={this.cancelWarningTip} value={warningTipText} />}
         <span ref="wrap" />
-        <Table
+        <CneTable
           loading={loading}
           dataSource={detailListData.map((e, i) => ({ ...e, key: i }))}
           columns={cleaningOperation ? column.concat(cleanOperation) : column}
           className={styles.stationTable}
-          onChange={this.tableChange}
           pagination={false}
           locale={{ emptyText: <img src="/img/nodata.png" /> }}
         />

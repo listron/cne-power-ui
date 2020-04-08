@@ -2,13 +2,9 @@ import React, { Component } from 'react';
 import AddCleanoutRecord from './AddCleanoutRecord';
 import styles from './PlanRecordTable.scss';
 import WarningTip from '../../../../Common/WarningTip';
-import InputLimit from '../../../../Common/InputLimit';
 import { handleRight } from '@utils/utilFunc';
-import moment from 'moment';
-import { Table, Icon, Modal, Form, DatePicker, Input, Button, TreeSelect } from 'antd';
-const FormItem = Form.Item;
-const matrix = TreeSelect.matrix;
-const { RangePicker } = DatePicker;
+import { Table, Form } from 'antd';
+
 class PlanRecordTable extends Component {
   constructor(props, context) {
     super(props, context);

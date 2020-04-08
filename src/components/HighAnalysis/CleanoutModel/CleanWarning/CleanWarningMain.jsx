@@ -6,7 +6,6 @@ import Footer from '../../../Common/Footer';
 import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
 import styles from './cleanStyle.scss';
-import TableColumnTitle from '../../../Common/TableColumnTitle';
 import CneTable from '@components/Common/Power/CneTable';
 import { numWithComma } from '../../../../utils/utilFunc';
 

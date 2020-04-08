@@ -1,3 +1,5 @@
+@import '../../../../../theme/theme.scss';
+
 .handle {
   display: flex;
   justify-content: center;
@@ -8,30 +10,27 @@
 }
 .stationTable {
   //table字体图表样式
+  .cleanType, .cleanCost{
+    width: 8%;
+  }
+  .actualCleanTime, .cleanProfit, .addRecord{
+    width: 12%;
+  }
+  .estimateStartTime, .estimateEndTime, .company{
+    width: 14%;
+  }
+  .companyText{
+    display: table-cell;
+    max-width: calc((100vw - 240px) * 0.14 - 10px);
+    @include overflowText();
+  }
+  .editAndDelet{ // 操作 最窄
+    width: 6%;
+  }
   :global {
-    .ant-table .ant-table-thead > tr > th {
-      padding: 0 24px;
-    }
-    .ant-table .ant-table-tbody > tr > td {
-      padding: 0 24px;
-    }
-    .ant-table-thead {
-      th > div {
-        height: 60px;
-      }
-    }
-    .ant-table-column-sorter {
-      top: 18px;
-    }
-    .iconfont {
+    .icon-addto, .icon-viewplan, .icon-edit, .icon-del{
+      cursor: pointer;
       font-size: 20px;
-      &:hover {
-        color: #199475;
-      }
-    }
-    .icon-edit,
-    .icon-del {
-      color: #199475;
     }
   }
 }
@@ -43,14 +42,12 @@
 .light {
   .stationTable {
     :global {
-      .iconfont {
+      .icon-addto, .icon-viewplan, .icon-edit, .icon-del{
+        padding: 0 4px;
+        color: var(--themeColor);
         &:hover {
-          color: #199475;
+          color: #ff9900;
         }
-      }
-      .icon-edit,
-      .icon-del {
-        color: #199475;
       }
     }
   }
@@ -60,17 +57,11 @@
   @import "../../../../../theme/darkTheme.scss";
   .stationTable {
     :global {
-      .iconfont {
+      .icon-addto, .icon-viewplan, .icon-edit, .icon-del{
+        color: $fontColor;
         &:hover {
           color: $fontColor-hover;
         }
-      }
-      .icon-edit,
-      .icon-del {
-        color: $fontColor;
-      }
-      .ant-table .ant-table-tbody > tr > td {
-        padding: 0 12px;
       }
     }
   }

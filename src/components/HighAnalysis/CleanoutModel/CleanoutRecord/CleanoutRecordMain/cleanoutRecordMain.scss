@@ -44,25 +44,22 @@
 }
 .stationTable {
   //table字体图表样式
+  .stationName, .cleanProfit{
+    width: 17%;
+  }
+  .cleanPlanNum, .cleanCycle, .cleanTime, .addplan{
+    width: 14%;
+  }
+  .check{
+    width: 10%;
+  }
   :global {
-    .ant-table .ant-table-thead > tr > th {
-      padding: 0 24px;
-    }
-    .ant-table .ant-table-tbody > tr > td {
-      padding: 0 24px;
-    }
-    .ant-table-thead {
-      th > div {
-        height: 60px;
-      }
-    }
-    .ant-table-column-sorter {
-      top: 18px;
-    }
     .iconfont {
+      color: var(--themeColor);
+      cursor: pointer;
       font-size: 20px;
       &:hover {
-        color: #199475;
+        color: #ff9900;
       }
     }
   }

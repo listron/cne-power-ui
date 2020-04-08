@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Modal, Form, DatePicker, Input, Button, Radio } from 'antd';
+import { Modal, Form, DatePicker, Input, Button, Radio } from 'antd';
 import styles from './cleanoutRecordMain.scss';
 import moment from 'moment';
-import TableColumnTitle from '../../../../Common/TableColumnTitle';
+import CneTable from '@components/Common/Power/CneTable';
 import { numWithComma } from '../../../../../utils/utilFunc';
 import { handleRight } from '@utils/utilFunc';
 
@@ -17,6 +17,7 @@ class CleanoutRecordTable extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     match: PropTypes.object,
+    form: PropTypes.object,
     stationCodes: PropTypes.array,
     onShowSideChange: PropTypes.func,
     changeCleanoutRecordStore: PropTypes.func,
@@ -26,6 +27,8 @@ class CleanoutRecordTable extends Component {
     mainListData: PropTypes.array,
     getMainList: PropTypes.func,
     history: PropTypes.object,
+    sortField: PropTypes.string,
+    sortType: PropTypes.number,
   }
 
   constructor(props, context) {
@@ -44,13 +47,18 @@ class CleanoutRecordTable extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
-    const { changeCleanoutRecordStore, getMainList, stationCodes, pageNum, pageSize } = this.props;
-    const { field, order } = sorter;
-    const sortField = field ? field : '';
-    const sortType = order ? (sorter.order === 'ascend' ? 0 : 1) : '';
-    changeCleanoutRecordStore({ sortField: field, sortType });
+    const { changeCleanoutRecordStore, getMainList, stationCodes, pageNum, pageSize, sortField, sortType } = this.props;
+    const { field } = sorter || {};
+    let newField = field, newSort = 1;
+    if (!field || (sortField === field)) { // 点击的是正在排序的列
+      newField = sortField;
+      newSort = sortType === 1 ? 0 : 1; // 交换排序方式
+    }
+    changeCleanoutRecordStore({ sortField: newField, sortType: newSort });
     getMainList({
-      stationCodes, pageNum, pageSize, sortField, sortType,
+      stationCodes, pageNum, pageSize,
+      sortField: newField,
+      sortType: newSort,
     });
   }
 
@@ -102,7 +110,7 @@ class CleanoutRecordTable extends Component {
   }
 
   render() {
-    const { loading, mainListData } = this.props;
+    const { loading, mainListData, sortField, sortType } = this.props;
     const { record } = this.state;
     const planRecorOperation = handleRight('analysis_cleanModel_planRecord_operate');
 
@@ -111,39 +119,47 @@ class CleanoutRecordTable extends Component {
         title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
+        className: styles.stationName,
+        textAlign: 'left',
         sorter: true,
         render: (text, record, index) => {
           return (
-            <span className={styles.stationName} title={record.stationName}>{record.stationName}</span>
+            <span title={record.stationName}>{record.stationName}</span>
           );
         },
       }, {
-        title: () => <TableColumnTitle title="清洗计划" unit="个" />,
+        title: '清洗计划(个)',
         dataIndex: 'cleanPlanNum',
-        key: 'cleanPlanNum',
+        textAlign: 'right',
+        className: styles.cleanPlanNum,
         render(text) { return numWithComma(text); },
         sorter: true,
       }, {
-        title: () => <TableColumnTitle title="平均清洗周期" unit="天" />,
+        title: '平均清洗周期(天)',
         dataIndex: 'cleanCycle',
-        key: 'cleanCycle',
+        textAlign: 'right',
+        className: styles.cleanCycle,
         render(text) { return numWithComma(text); },
         sorter: true,
       }, {
-        title: () => <TableColumnTitle title="累计清洗收益" unit="万kWh" />,
+        title: '累计清洗收益(万kWh)',
         dataIndex: 'cleanProfit',
-        key: 'cleanProfit',
         sorter: true,
+        textAlign: 'right',
+        className: styles.cleanProfit,
         render(text) { return numWithComma(text); },
       }, {
         title: '上次清洗时间',
         dataIndex: 'cleanTime',
-        key: 'cleanTime',
         sorter: true,
+        textAlign: 'center',
+        className: styles.cleanTime,
         render: text => (<span>{(text) ? `${text}` : '--'}</span>),
       }, {
         title: '查看',
-        key: 'check',
+        dataIndex: 'check',
+        textAlign: 'center',
+        className: styles.check,
         render: (text, record, index) => {
           return (record.cleanPlanNum > 0 ? <div className={styles.iconStyles}> <span title="查看" className="iconfont icon-plan" onClick={() => this.showDetailModal(record)}></span> </div> : '');
         },
@@ -152,7 +168,9 @@ class CleanoutRecordTable extends Component {
 
     const addColum = {
       title: '添加清洗计划/降雨',
-      key: 'addplan',
+      dataIndex: 'addplan',
+      textAlign: 'center',
+      className: styles.addplan,
       render: (text, record, index) => {
         return (
           <div className={styles.iconStyles}>
@@ -183,12 +201,15 @@ class CleanoutRecordTable extends Component {
     const rainConfig = {
       rules: [{ type: 'array', required: true, message: '请选择降雨时间' }],
     };
+    const sortMethod = sortType === 1 ? 'descend' : 'ascend';
     return (
       <div>
-        <Table
+        <CneTable
           loading={loading}
           dataSource={mainListData.map((e, i) => ({ ...e, key: i }))}
           columns={column}
+          sortField={sortField}
+          sortMethod={sortMethod}
           className={styles.stationTable}
           onChange={this.tableChange}
           pagination={false}
