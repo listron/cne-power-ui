@@ -90,28 +90,30 @@ class RealTimeWarningTable extends Component {
         title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
-        render: (text, record, index) => {
-          return level[text - 1];
-        },
+        className: styles.warningLevel,
+        textAlign: 'center',
+        render: (text, record, index) => level[text - 1],
         sorter: true,
+
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
+        className: styles.stationName,
+        render: (text) => (<div title={text || '--'} className={styles.stationNameText} title={text}>{text || '--'}</div>),
       }, {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
         sorter: true,
+        className: styles.deviceName,
         render: (text, record) => {
           const deviceTypeCodes = ['202', '304', '302', '201', '206', '101', '509'];
           const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
           if (isClick) {
             let renderDom = (
-              <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target="_blank" className={styles.underlin} >{text}</Link>
-              </div>
+              <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target="_blank" className={styles.deviceNameText} >{text}</Link>
             );
             if (`${record.deviceTypeCode}` === '509') {
               // 获取支路的下标
@@ -131,9 +133,7 @@ class RealTimeWarningTable extends Component {
               };
               // deviceTypeCode === 509 光伏组串 需要用父级的parentTypeCode
               renderDom = (
-                <div className={styles.deviceName}>
-                  <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.parentTypeCode.split('M')[1]}/${record.parentTypeCode}?pointParams=${JSON.stringify(params)}`} target="_blank" className={styles.underlin} >{text}</Link>
-                </div>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.parentTypeCode.split('M')[1]}/${record.parentTypeCode}?pointParams=${JSON.stringify(params)}`} target="_blank" className={styles.deviceNameText} >{text}</Link>
               );
             }
             return renderDom;
@@ -145,12 +145,15 @@ class RealTimeWarningTable extends Component {
         dataIndex: 'deviceTypeName',
         key: 'deviceTypeName',
         sorter: true,
+        className: styles.deviceTypeName,
+        render: (text) => (<div title={text || '--'} className={styles.deviceTypeNameText} title={text}>{text || '--'}</div>),
       }, {
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
         key: 'warningCheckDesc',
+        className: styles.warningCheckDesc,
         render: (text, record) => {
-          return <div className={styles.alarmDesc} title={text}>{text}</div>;
+          return <div className={styles.warningCheckDescText} title={text}>{text}</div>;
         },
       }, {
         title: '发生时间',
@@ -158,21 +161,24 @@ class RealTimeWarningTable extends Component {
         key: 'timeOn',
         render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
         sorter: true,
+        textAlign: 'center',
+        className: styles.timeOn,
       }, {
         title: '持续时间',
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
+        textAlign: 'right',
+        className: styles.durationTime,
       },
     ];
     const realTimeWarningColumn = {
       title: '操作',
       className: styles.iconDetail,
+      textAlign: 'center',
       render: (text, record) => (
-        <div>
-          <span>
-            <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
-          </span>
+        <div className={styles.iconDetailText}>
+          <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
         </div>
       ),
     };
@@ -221,16 +227,6 @@ class RealTimeWarningTable extends Component {
             </Select>
             <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onPaginationChange} total={realtimeWarning.length} theme={this.props.theme} />
           </div> : <div></div>}
-        {/* <Table
-          dataSource={tableSource}
-          rowKey={record => record.warningLogId}
-          rowSelection={rowSelection}
-          columns={worklistRight ? columns.concat(realTimeWarningColumn) : columns}
-          pagination={false}
-          onChange={this.tableChange}
-          locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
-        /> */}
-
         <CneTable
           columns={worklistRight ? columns.concat(realTimeWarningColumn) : columns}
           dataSource={tableSource}

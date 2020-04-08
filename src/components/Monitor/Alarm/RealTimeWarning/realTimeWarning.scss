@@ -14,13 +14,6 @@
       background-color: #fff;
     }
 
-    .iconDetail {
-      // i {
-      //   display: block;
-      //   color: $themeColor;
-      //   cursor: pointer;
-      // }
-    }
 
     :global {
       .icon-action {
@@ -34,18 +27,16 @@
       }
     }
 
-    .deviceName {
+     .deviceName {
       a {
-        border-bottom: 1px $darkColor solid;
-        color: $darkColor;
+        color: $themeColor;
         text-decoration: none;
-
-        &:hover {
-          border-bottom: 1px $themeColor solid;
-          color: $themeColor;
-        }
+      }
+      a:hover{
+        color: #ff9900;
       }
     }
+
   }
 
   .tableFooter {
@@ -85,26 +76,13 @@
     border: 1px solid $border-color;
     margin-top: 10px;
 
-    :global {
-      .ant-table-placeholder {}
-    }
 
-    // .iconDetail {
-    //   i {
-    //     color: $themeColor;
-    //     cursor: pointer;
-    //   }
-    // }
-
-    .deviceName {
+    .deviceNameText {
       a {
-        border-bottom: 1px solid $fontColor;
-        color: $fontColor;
+        color: $themeColor;
         text-decoration: none;
-
         &:hover {
-          border-bottom: 1px solid $fontColor-hover;
-          color: $fontColor-hover;
+          color: #ff9900;
         }
       }
     }

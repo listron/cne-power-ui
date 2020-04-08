@@ -45,9 +45,6 @@
       padding: 0 28px;
     }
 
-    .alarmDesc {
-      cursor: pointer;
-    }
   }
 
   .tableFooter {
@@ -77,13 +74,61 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      margin: 0 auto;
 
     }
+    .ant-table-selection{
+        width: 50px;
+      }
 
     .ant-table-placeholder {
       border-bottom: none;
     }
   }
+   .stationNameText,.deviceTypeNameText,.warningCheckDescText,.deviceNameText{
+      @include overflowText();
+    }
+
+    .warningLevel{
+      width:8%;
+    }
+    .stationName{
+      width:11%;
+    }
+    .stationNameText{
+       max-width: calc((100vw - 230px) * 0.11 - 20px);
+    }
+    .deviceTypeName{
+      width:11%;
+    }
+    .deviceName{
+      width:11%;
+    }
+    .deviceNameText{
+      display: block;
+      max-width: calc((100vw - 230px) * 0.11 - 20px);
+    }
+    .deviceTypeNameText{
+       max-width: calc((100vw - 230px) * 0.11 - 20px);
+    }
+    .warningCheckDesc{
+      width:20%
+    }
+    .warningCheckDescText{
+      max-width: calc((100vw - 230px) * 0.2 - 20px);  
+    }
+    .timeOn{
+       width:11%;
+    }
+    .durationTime{
+      width:10%;
+    }
+    .iconDetail{
+      width:8%;
+    }
+    .operation{
+      width:8%;
+    }
 }
 
 .relieveModal {

@@ -29,7 +29,6 @@
       .icon-action {
         background-color: #ceebe0;
         color: $themeColor;
-
         &:hover {
           background-color: $themeColor;
           color: #fff;
@@ -38,27 +37,13 @@
     }
 
     .deviceName {
-      :global {
-        a {
-          border-bottom: 1px $darkColor solid;
-          color: $darkColor;
-
-          &:hover {
-            border-bottom: 1px $themeColor solid;
-            color: $themeColor;
-          }
+      a {
+        color: $themeColor;
+        text-decoration: none;
+        &:hover{
+          color: #ff9900;
         }
       }
-    }
-
-    .selected {
-
-      // .icon-action {
-      //   background-color: $themeColor;
-      //   color: #fff;
-      // }
-
-
     }
   }
 

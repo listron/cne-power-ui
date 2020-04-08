@@ -9,6 +9,7 @@ import { Table, Select, Popover, Icon, Button } from 'antd';
 import moment from 'moment';
 import { handleRights } from '@utils/utilFunc';
 const Option = Select.Option;
+import CneTable from '../../../Common/Power/CneTable';
 
 class HandleRemoveTable extends Component {
   static propTypes = {
@@ -29,6 +30,22 @@ class HandleRemoveTable extends Component {
       showRelievePopover: [],
     };
   }
+
+
+  tableSortMap = { // api存储字段 => 表格排序字段
+    '1': 'warningLevel',
+    '2': 'stationName',
+    '3': 'deviceTypeName',
+    '5': 'timeOn',
+    '8': 'deviceName',
+    '9': 'durationTime',
+  };
+
+  sortMethodMap = {
+    '2': 'descend',
+    '1': 'ascend',
+  }
+
   onConfirmWarningTip = () => {
     const { selectedRowKeys } = this.props;
     this.setState({
@@ -86,7 +103,7 @@ class HandleRemoveTable extends Component {
   }
 
   tableChange = (pagination, filters, sorter) => {
-    const { changeHandleRemoveStore, onChangeFilter } = this.props;
+    const { changeHandleRemoveStore, onChangeFilter, orderField, orderCommand } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
       warningLevel: '1',
@@ -96,11 +113,15 @@ class HandleRemoveTable extends Component {
       timeOn: '5',
       durationTime: '9',
     };
-    const orderField = sortInfo[field] ? sortInfo[field] : '';
-    const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
-    changeHandleRemoveStore({ orderField, orderCommand });
+    let newOrderField = orderField, newOrderCommand = '2';
+    if (!field || (sortInfo[field] === newOrderField)) { // 点击的是正在排序的列
+      newOrderCommand = orderCommand === '1' ? '2' : '1'; // 交换排序方式
+    } else { // 切换列
+      newOrderField = sortInfo[field];
+    }
+    changeHandleRemoveStore({ orderField: newOrderField, orderCommand: newOrderCommand });
     onChangeFilter({
-      orderField, orderCommand,
+      orderField: newOrderField, orderCommand: newOrderCommand,
     });
   }
 
@@ -155,30 +176,31 @@ class HandleRemoveTable extends Component {
         title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
-        render: (text, record, index) => {
-          return level[text - 1];
-        },
+        render: (text, record, index) => level[text - 1],
+        className: styles.warningLevel,
+        textAlign: 'center',
         sorter: true,
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
+        className: styles.stationName,
+        render: (text) => (<div title={text || '--'} className={styles.stationNameText} title={text}>{text || '--'}</div>),
       }, {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
         sorter: true,
+        className: styles.deviceName,
         render: (text, record) => {
           const deviceTypeCodes = ['202', '304', '302', '201', '206', '101', '509'];
           const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
           if (isClick) {
             let renderDom = (
-              <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target='_blank' className={styles.underlin} >{text}</Link>
-              </div>
+              <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target="_blank" className={styles.deviceNameText} >{text}</Link>
             );
-            if(`${record.deviceTypeCode}` === '509') {
+            if (`${record.deviceTypeCode}` === '509') {
               // 获取支路的下标
               const deviceIndex = Number(record.deviceName.split('#')[1]) - 1;
               const paramsColor = {
@@ -196,9 +218,7 @@ class HandleRemoveTable extends Component {
               };
               // deviceTypeCode === 509 光伏组串 需要用父级的parentTypeCode
               renderDom = (
-                <div className={styles.deviceName}>
-                  <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.parentTypeCode.split('M')[1]}/${record.parentTypeCode}?pointParams=${JSON.stringify(params)}`} target='_blank' className={styles.underlin} >{text}</Link>
-                </div>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.parentTypeCode.split('M')[1]}/${record.parentTypeCode}?pointParams=${JSON.stringify(params)}`} target="_blank" className={styles.deviceNameText} >{text}</Link>
               );
             }
             return renderDom;
@@ -210,12 +230,15 @@ class HandleRemoveTable extends Component {
         dataIndex: 'deviceTypeName',
         key: 'deviceTypeName',
         sorter: true,
+        className: styles.deviceTypeName,
+        render: (text) => (<div title={text || '--'} className={styles.deviceTypeNameText}>{text || '--'}</div>),
       }, {
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
         key: 'warningCheckDesc',
+        className: styles.warningCheckDesc,
         render: (text, record) => {
-          return <div className={styles.alarmDesc} title={text}>{text}</div>;
+          return <div className={styles.warningCheckDescText} title={text}>{text}</div>;
         },
       }, {
         title: '发生时间',
@@ -223,15 +246,20 @@ class HandleRemoveTable extends Component {
         key: 'timeOn',
         render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
         sorter: true,
+        textAlign: 'center',
+        className: styles.timeOn,
       }, {
         title: '持续时间',
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
+        textAlign: 'right',
+        className: styles.durationTime,
       }, {
         title: '告警处理',
         dataIndex: 'operation',
         key: 'operation',
+        className: styles.operation,
         render: (text, record, index) => {
           return (
             <Popover content={this.renderRelievePopover(index)}
@@ -249,11 +277,10 @@ class HandleRemoveTable extends Component {
       }, {
         title: '操作',
         className: styles.iconDetail,
+        textAlign: 'center',
         render: (text, record) => (
           <div>
-            <span>
-              <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
-            </span>
+            <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
           </div>
         ),
       },
@@ -270,7 +297,7 @@ class HandleRemoveTable extends Component {
         </div>
       ),
     };
-    const { handleRemoveList, selectedRowKeys, pageSize, pageNum, total, loading, selectedTransfer, getLostGenType, theme } = this.props;
+    const { handleRemoveList, selectedRowKeys, pageSize, pageNum, total, loading, selectedTransfer, getLostGenType, theme, orderField, orderCommand } = this.props;
     const { showTransferTicketModal, showWarningTip, warningTipText } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -288,26 +315,29 @@ class HandleRemoveTable extends Component {
           value={warningTipText} />}
         <span ref={'select'} />
         {removeRight ?
-        <div className={styles.tableHeader}>
-          <Select onChange={this.onHandle}
-            value="操作"
-            placeholder="操作"
-            dropdownMatchSelectWidth={false}
-            getPopupContainer={() => this.refs.select}
-            dropdownClassName={styles.handleDropdown}>
-            {/* <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option> */}
-            <Option value="cancleRemove" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>取消手动解除</Option>
-          </Select>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} theme={theme} />
-        </div> : <div></div>}
-        <Table
+          <div className={styles.tableHeader}>
+            <Select onChange={this.onHandle}
+              value="操作"
+              placeholder="操作"
+              dropdownMatchSelectWidth={false}
+              getPopupContainer={() => this.refs.select}
+              dropdownClassName={styles.handleDropdown}>
+              {/* <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option> */}
+              <Option value="cancleRemove" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>取消手动解除</Option>
+            </Select>
+            <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} theme={theme} />
+          </div> : <div></div>}
+        <CneTable
+          columns={alarmRemoveRight ? columns.concat(operationColumn) : columns}
           dataSource={handleRemoveList}
           rowKey={record => record.warningLogId}
           rowSelection={rowSelection}
-          columns={alarmRemoveRight ? columns.concat(operationColumn) : columns}
           pagination={false}
+          loading={loading}
+          // dataError={diagnoseListError}
+          sortField={this.tableSortMap[orderField]}
+          sortMethod={this.sortMethodMap[orderCommand]}
           onChange={this.tableChange}
-          locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
         {handleRemoveList.length > 0 && <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>

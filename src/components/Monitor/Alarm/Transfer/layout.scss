@@ -53,10 +53,6 @@
       }
     }
 
-    .alarmDesc {
-      cursor: pointer;
-    }
-
     :global {
       .icon-action {
         width: 30px;
@@ -66,7 +62,49 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        margin: 0 auto;
       }
+    }
+    .stationNameText,.deviceTypeNameText,.warningCheckDescText,.deviceNameText{
+      @include overflowText();
+    }
+
+    .warningLevel{
+      width:8%;
+    }
+    .stationName{
+      width:12%;
+    }
+    .stationNameText{
+       max-width: calc((100vw - 230px) * 0.12 - 20px);
+    }
+    .deviceTypeName{
+      width:12%;
+    }
+    .deviceName{
+      width:12%;
+    }
+    .deviceNameText{
+      display: block;
+      max-width: calc((100vw - 230px) * 0.12 - 20px);
+    }
+    .deviceTypeNameText{
+       max-width: calc((100vw - 230px) * 0.12 - 20px);
+    }
+    .warningCheckDesc{
+      width:23%
+    }
+    .warningCheckDescText{
+      max-width: calc((100vw - 230px) * 0.23 - 20px);  
+    }
+    .timeOn{
+       width:12%;
+    }
+    .durationTime{
+      width:12%;
+    }
+    .warningRemove{
+      width:8%;
     }
   }
 

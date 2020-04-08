@@ -28,13 +28,10 @@
 
     .deviceName {
       a {
-        border-bottom: 1px $darkColor solid;
-        color: $darkColor;
+        color: $themeColor;
         text-decoration: none;
-
-        &:hover {
-          border-bottom: 1px $themeColor solid;
-          color: $themeColor;
+        &:hover{
+          color: #ff9900;
         }
       }
     }
