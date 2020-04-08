@@ -39,9 +39,9 @@
         padding: 0 0 0 10px;
         text-align: left;
       }
-      &.middleContent{
+      &.middleContent, &.centerContent{
         padding: 0;
-        text-align: middle;
+        text-align: center;
       }
       &.rightContent{
         padding: 0 10px 0 0;

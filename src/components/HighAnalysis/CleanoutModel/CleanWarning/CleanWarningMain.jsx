@@ -2,13 +2,12 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table } from 'antd';
-import moment from 'moment';
 import Footer from '../../../Common/Footer';
 import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
 import styles from './cleanStyle.scss';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
+import CneTable from '@components/Common/Power/CneTable';
 import { numWithComma } from '../../../../utils/utilFunc';
 
 class CleanWarningMain extends Component { // 电站管理列表页
@@ -22,7 +21,6 @@ class CleanWarningMain extends Component { // 电站管理列表页
     getCleanWarningDetail: PropTypes.func,
     getTotalDustEffect: PropTypes.func,
     getMatrixDustEffect: PropTypes.func,
-    changeCleanWarningStore: PropTypes.func,
     getWeather: PropTypes.func,
     theme: PropTypes.string,
     totalStartDay: PropTypes.object,
@@ -89,6 +87,8 @@ class CleanWarningMain extends Component { // 电站管理列表页
   render() {
     const { loading, stations, total, listQueryParams, cleanWarningList, theme } = this.props;
     const { pageSize, pageNum } = listQueryParams;
+    // sortField: '', // 排序字段 stationName电站influencePercent占比futurePower未来收益cleanDays距上次清洗天数
+    // sortType: -1, // 排序方式 ;默认灰尘占比降序排列： 0-升序, 1-降序
     return (
       <div className={`${styles.cleanWarningMain} ${styles[theme]}`}>
         <div className={styles.mainContent}>
@@ -114,29 +114,33 @@ class CleanWarningMain extends Component { // 电站管理列表页
                 theme={theme}
               />
             </div>
-            <Table
+            <CneTable
               columns={[
                 {
                   title: '电站名称',
                   dataIndex: 'stationName',
+                  textAlign: 'left',
                   sorter: true,
                 }, {
                   title: () => <TableColumnTitle title="灰尘影响占比" unit="%" />,
                   dataIndex: 'influencePercent',
+                  textAlign: 'right',
                   render(text) { return numWithComma(text); },
                   sorter: true,
                 }, {
                   title: () => <TableColumnTitle title="距离上次清洗" unit="天" />,
                   dataIndex: 'cleanDays',
+                  textAlign: 'right',
                   render(text) { return numWithComma(text); },
                   sorter: true,
                 }, {
                   title: '本次预警时间',
                   dataIndex: 'warningTime',
-                  // sorter: true,
+                  textAlign: 'center',
                 }, {
                   title: '查看',
                   dataIndex: 'handle',
+                  textAlign: 'center',
                   render: (text, record) => <span onClick={() => this.toWarningDetail(record)} className="iconfont icon-look" />,
                 },
               ]}

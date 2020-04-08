@@ -10,7 +10,7 @@ import styles from './index.scss';
  * sortField手动指定得排序字段:string, 与dataIndex对应
  * sortMethod手动指定排序方式:string: ascend descend
  * dataError 数据错误时, 占位图片为数据错误; 无数据时，占位图片为无数据;
- * column内参数textAlign: left /middle / right / none;
+ * column内参数textAlign: left /middle或center / right / none;
  */
 
 class CneTable extends PureComponent {
@@ -96,21 +96,18 @@ class CneTable extends PureComponent {
       ...rest
     } = this.props;
     const { showHeaderShadow, isScrollBarShow } = this.state;
-    let tableColumn = columns;
-    if (sortField && sortMethod) {
-      tableColumn = columns.map(e => {
-        const newCol = e ? { ...e } : {};
-        const { sorter, dataIndex, textAlign, className } = newCol;
-        if (sorter && sortField === dataIndex) {
-          newCol.sortOrder = sortMethod;
-        }
-        // textAlign: 默认=left(左padding10px 居左), middle(无padding居中), right(右padding10px居右), none(无padding且居左)
-        if (textAlign) {
-          newCol.className = className ? `${className} ${textAlign}Content` : `${textAlign}Content`;
-        }
-        return { ...newCol };
-      });
-    }
+    const tableColumn = columns.map(e => {
+      const newCol = e ? { ...e } : {};
+      const { sorter, dataIndex, textAlign, className } = newCol;
+      if (sortField && sortMethod && sorter && sortField === dataIndex) { // 添加指定排序
+        newCol.sortOrder = sortMethod;
+      }
+      // textAlign: 默认=left(左padding10px 居左), middle或center(无padding居中), right(右padding10px居右), none(无padding且居左)
+      if (textAlign) {
+        newCol.className = className ? `${className} ${textAlign}Content` : `${textAlign}Content`;
+      }
+      return { ...newCol };
+    });
     let totalClassName = `${styles.cneTable} ${className || ''} ${styles[theme] || ''}`;
     if (noMoreDataPic) { // 需展示 - 没有更多数据 图片
       totalClassName = `${totalClassName} ${styles.nomore}`;
