@@ -1,15 +1,37 @@
+@import '../../../../../theme/theme.scss';
+
+
 .stationTable {
   //table字体图表样式
+  .cleanTime{
+    width: 20%;
+  }
+  .matrix{
+    width: 35%;
+  }
+  .remark{
+    width: 23%;
+  }
+  .pr{
+    width: 12%;
+  }
+  .check{
+    width: 10%;
+  }
+  .matrixText, .remarkText{
+    display: table-cell;
+    @include overflowText();
+  }
+  .matrixText{
+    max-width: calc((100vw - 240px) * 0.35 - 10px);
+  }
+  .remarkText{
+    max-width: calc((100vw - 240px) * 0.23 - 10px);
+  }
   :global {
-    .iconfont {
+    .icon-edit, .icon-del{
+      cursor: pointer;
       font-size: 20px;
-      &:hover {
-        color: #199475;
-      }
-    }
-    .icon-edit,
-    .icon-del {
-      color: #199475;
     }
   }
 }
@@ -17,14 +39,12 @@
 .light {
   .stationTable {
     :global {
-      .iconfont {
+      .icon-edit, .icon-del{
+        padding: 0 4px;
+        color: var(--themeColor);
         &:hover {
-          color: #199475;
+          color: #ff9900;
         }
-      }
-      .icon-edit,
-      .icon-del {
-        color: #199475;
       }
     }
   }
@@ -34,17 +54,11 @@
   @import "../../../../../theme/darkTheme.scss";
   .stationTable {
     :global {
-      .iconfont {
+      .icon-addto, .icon-viewplan, .icon-edit, .icon-del{
+        color: $fontColor;
         &:hover {
           color: $fontColor-hover;
         }
-      }
-      .icon-edit,
-      .icon-del {
-        color: $fontColor;
-      }
-      .ant-table .ant-table-tbody > tr > td {
-        padding: 0 12px;
       }
     }
   }
