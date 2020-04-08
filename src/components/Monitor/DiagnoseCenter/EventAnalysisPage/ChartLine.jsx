@@ -344,10 +344,10 @@ class ChartLine extends PureComponent {
         return e.standard || e.standard === 0;
       });
       const standard = pointInfo.length > 0 ? pointInfo[0].standard : ''; // 标准值
-      const standardData = standard ? `标准值(${pointInfo[0].pointUnit})` : '';
+      const standardData = (standard || standard === 0) ? `标准值(${pointInfo[0].pointUnit})` : '';
       legends.push({
         name: standardData,
-        show: standard ? true : false,
+        show: (standard || standard === 0)? true : false,
         height: 30,
         left: `${parseFloat(lastLegend.left.replace('%', '')) + 21.5}%`,
         top: `${Math.floor(legends.length / 4) * 30}%`,
@@ -440,7 +440,7 @@ class ChartLine extends PureComponent {
                   </p>`
                 );
               }).join('')}
-              <p class=${(dataAnomaly && standard) ? styles.eachItem : styles.noWarnItem}>
+              <p class=${(dataAnomaly && (standard || standard === 0)) ? styles.eachItem : styles.noWarnItem}>
                 <span class=${styles.tipIcon}>
                   <span class=${styles.line} style="background-color: #ffeb00"></span>
                   <span class=${styles.rect} style="background-color: #ffeb00"></span>
