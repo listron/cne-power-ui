@@ -10,8 +10,8 @@ var initState = Immutable.fromJS({
   pageSize:10,
   pageNum:1,
   total:0,
-  orderField:'',
-  orderCommand:'',
+  orderField:'1',
+  orderCommand:'2',
   rangTime:[],//时间
   startTime:[],//开始时间
   endTime:[],//结束时间

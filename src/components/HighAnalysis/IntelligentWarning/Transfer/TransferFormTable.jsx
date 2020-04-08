@@ -191,7 +191,7 @@ class TransferFormTable extends Component {
         key: 'timeOn',
         textAlign: 'center',
         width: '12%',
-        render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm'),
         sorter: true,
       }, {
         title: '持续时间',
