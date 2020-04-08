@@ -25,6 +25,7 @@ const eliminateDefectDetailAction = {
   showUser: Symbol('showUser'),
   resetCont: Symbol('resetCont'),
   delEvent: Symbol('delEvent'),
+  getDefectLevel: Symbol('getDefectLevel'),
 };
 
 const initState = immutable.fromJS({
@@ -48,6 +49,7 @@ const initState = immutable.fromJS({
   defectTypes: [], //缺陷类型
   deviceTypes: [], // 设备类型
   deviceModes: [], // 设备型号
+  defectLevelList: [], // 缺陷级别list
 
   addbaseInfo: {}, // 添加的基本信息
   addEventInfo: [], // 添加的缺陷事件

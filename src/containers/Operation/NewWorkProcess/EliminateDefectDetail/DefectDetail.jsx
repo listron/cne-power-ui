@@ -29,6 +29,10 @@ class DefectDetail extends Component {
     getDiagwarning: PropTypes.func,
     showUser: PropTypes.func,
     getBaseUsername: PropTypes.func,
+    getDefectLevel: PropTypes.func,
+    showErrorTip: PropTypes.bool,
+    isFinish: PropTypes.bool,
+    stateName: PropTypes.string,
   };
 
 
@@ -46,9 +50,9 @@ class DefectDetail extends Component {
     const { search } = history.location;
     const main = document.getElementById('main');
     main.addEventListener('scroll', this.bindScroll);
-    const { page = 'defectDetail', docketId, isFinish, eventId, stationCode } = searchUtil(search).parse(); //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
+    //默认为缺陷列表页 判断是否存在缺陷，不存在则为添加
+    const { page = 'defectDetail', docketId, isFinish, eventId, stationCode } = searchUtil(search).parse();
     if (docketId) {
-      // 510036770215424 510036694717952 532
       this.props.getDefectMessage({ docketId });
       this.props.changeStore({ docketId });
     }
@@ -69,6 +73,7 @@ class DefectDetail extends Component {
       this.props.getDiagwarning({ diagWarningIds: curEventId.split(',') });
       this.props.getBaseUsername({ stationCode }); // 当前电站有权限的人
     }
+    this.props.getDefectLevel();
   }
 
 
@@ -76,7 +81,6 @@ class DefectDetail extends Component {
     const main = document.getElementById('main');
     main && main.removeEventListener('scroll', this.bindScroll, false);
     this.props.resetStore();
-
   }
 
 
@@ -100,7 +104,7 @@ class DefectDetail extends Component {
 
 
   render() {
-    const { docketId, theme, defectDetail, processInfo, stateName, isFinish, showErrorTip } = this.props;
+    const { docketId, theme, processInfo, stateName, isFinish, showErrorTip } = this.props;
     const { scroll } = this.state;
     return (
       <div className={`${styles.detailWrap}`} ref={'detailWrap'}>
@@ -157,20 +161,13 @@ const mapDispatchToProps = (dispatch) => ({
   getDiagwarning: payload => dispatch({ type: eliminateDefectDetailAction.getDiagwarning, payload }),
   showUser: payload => dispatch({ type: eliminateDefectDetailAction.showUser, payload }),
   delEvent: payload => dispatch({ type: eliminateDefectDetailAction.delEvent, payload }),
+  getDefectLevel: payload => dispatch({ type: eliminateDefectDetailAction.getDefectLevel, payload }),
   getDeviceType: params => dispatch({ //  获取某一个电站下的设备
     type: publicAction.getDeviceType,
     payload: {
       params,
       actionName: eliminateDefectDetailAction.changeStore,
       resultName: 'deviceTypes',
-    },
-  }),
-  getStationTypeDeviceModes: params => dispatch({ //  获取某一个电站下的设备型号
-    type: publicAction.getStationTypeDeviceModes,
-    payload: {
-      params,
-      actionName: eliminateDefectDetailAction.changeStore,
-      resultName: 'deviceModes',
     },
   }),
 });

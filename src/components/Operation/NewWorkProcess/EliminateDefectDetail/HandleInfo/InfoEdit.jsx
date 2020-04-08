@@ -10,14 +10,25 @@ import VideoUploader from '../../Common/VideoUploader';
 import path from '../../../../../constants/path';
 
 
+
+/** 
+ * record 每一条的信息
+ * onChange 状态改变的函数
+ * saveChange 保存的函数
+ * singleSave 单独保存
+ * delChange 删除的函数 两种删除方式，一种是直接删除，一种是删除本地的
+ * isVertify 验证的时候
+ * closeIconisShow 删除的按钮 是否存在 
+*/
 export default class InfoEdit extends Component {
   static propTypes = {
     record: PropTypes.object,
     onChange: PropTypes.func,
     saveChange: PropTypes.func,
     delChange: PropTypes.func,
-    key: PropTypes.number,
     isVertify: PropTypes.bool,
+    singleSave: PropTypes.bool, // 单独保存 只有执行的过程中有
+    closeIconisShow: PropTypes.bool, // 关闭按钮是否显示
   };
 
   constructor() {
@@ -119,18 +130,14 @@ export default class InfoEdit extends Component {
     return cur.length > 0 && !cur[0].isPermission || false;
   }
 
-
-
-
   render() {
-    const { isFinish, record = {}, isVertify, allowedActions = [], singleSave } = this.props;
+    const { closeIconisShow, record = {}, isVertify, singleSave } = this.props;
     const {
       handleDesc, isChangePart, isCoordinate, partName, coordinateDesc, handleImgs = [], handleVideos,
     } = record;
     const { handleVertify, visible, tipText } = this.state;
     const inputRequire = (isVertify || handleVertify) && { required: true } || { pattern: '/^\s*$/g' };
     const downloadTemplet = `${path.basePaths.APIBasePath}${path.pubilcPath.imgUploads}`;
-    const editRight = this.exchangeActioncode(allowedActions, '23');
     return (
       <div className={styles.infoEditBox}>
         <div className={styles.editRecord}>
@@ -148,7 +155,7 @@ export default class InfoEdit extends Component {
             maxLength="999"
           />
           {<i
-            className={`iconfont icon-wrong ${styles.cancelEdit} ${isFinish === '1' && styles.disDiplay}`}
+            className={`iconfont icon-wrong ${styles.cancelEdit} ${closeIconisShow && styles.disDiplay}`}
             onClick={this.cancelEdit}
           />}
         </div>
