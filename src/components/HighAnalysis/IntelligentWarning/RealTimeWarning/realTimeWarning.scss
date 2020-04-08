@@ -16,18 +16,26 @@
         display: block;
         color: $themeColor;
         cursor: pointer;
+
+        &:hover{
+          color: #f9b600;
+        }
       }
     }
     .deviceName {
+      max-width: calc((100vw - 230px) * 0.15 - 10px);
+      @include overflowText();
       a {
-        border-bottom: 1px $darkColor solid;
-        color: $darkColor;
         text-decoration: none;
+        color: $themeColor;
         &:hover {
-          border-bottom: 1px $themeColor solid;
-          color: $themeColor;
+          color: #f9b600;
         }
       }
+    }
+    .overflowText{
+      max-width: calc((100vw - 230px) * 0.15 - 10px);
+      @include overflowText();
     }
   }
   .tableFooter {

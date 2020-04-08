@@ -45,6 +45,9 @@
       //table表格排序下三角点击后的的颜色
       color: $themeColor;
     }
+    .ant-table-selection-column{
+      max-width: 50px;
+    }
   }
 
 

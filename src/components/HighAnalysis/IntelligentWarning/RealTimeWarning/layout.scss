@@ -58,6 +58,8 @@
       }
     }
     .alarmDesc {
+      max-width: calc((100vw - 230px) * 0.15 - 10px);
+      @include overflowText();
       cursor: pointer;
     }
   }

@@ -29,8 +29,8 @@ class RealTimeWarningTable extends Component {
     this.state = {
       showTransferTicketModal: false,
       showHandleRemoveModal: false,
-      sortName: '',
-      descend: false,
+      sortName: 'warningLevel',
+      sortMethod: 'descend',
     };
   }
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
@@ -64,13 +64,18 @@ class RealTimeWarningTable extends Component {
   }
 
   tableChange = (pagination, filters, sorter) => {
+    const { sortName, sortMethod } = this.state;
+    const { field } = sorter || {};
+    let newField = sortName, newSort = 'descend';
+    if (!field || (field === sortName)) { // 点击的是正在排序的列
+      newSort = sortMethod === 'descend' ? 'ascend' : 'descend'; // 交换排序方式
+    } else { // 切换列
+      newField = field;
+    }
     this.setState({
-      sortName: sorter.field,
-      descend: sorter.order === 'descend',
+      sortName: newField,
+      sortMethod: newSort,
     });
-    // this.props.changeRealtimeWarningStore({
-    //   sortName: sorter.field,
-    // });
   }
 
 
@@ -95,8 +100,9 @@ class RealTimeWarningTable extends Component {
         textAlign: 'left',
         key: 'stationName',
         sorter: true,
+        width: '15%',
         render: (text) => {
-          return <div>{text}</div>;
+          return <div className={styles.overflowText}>{text}</div>;
         },
       }, {
         title: '设备名称',
@@ -104,6 +110,7 @@ class RealTimeWarningTable extends Component {
         textAlign: 'left',
         key: 'deviceName',
         sorter: true,
+        width: '15%',
         render: (text, record) => {
           const deviceTypeCodes = ['202', '304', '302', '201', '206', '101'];
           const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
@@ -123,6 +130,7 @@ class RealTimeWarningTable extends Component {
         textAlign: 'left',
         key: 'deviceTypeName',
         sorter: true,
+        width: '15%',
         render: (text) => {
           return <div className={styles.alarmDesc} title={text}>{text || '- -'}</div>;
         },
@@ -131,6 +139,7 @@ class RealTimeWarningTable extends Component {
         dataIndex: 'warningCheckDesc',
         textAlign: 'left',
         key: 'warningCheckDesc',
+        width: '18%',
         render: (text) => {
           return <div className={styles.alarmDesc} title={text}>{text}</div>;
         },
@@ -139,6 +148,7 @@ class RealTimeWarningTable extends Component {
         dataIndex: 'timeOn',
         textAlign: 'center',
         key: 'timeOn',
+        width: '12%',
         render: (text) => moment(text).format('YYYY-MM-DD HH:mm'),
         sorter: true,
       }, {
@@ -147,6 +157,7 @@ class RealTimeWarningTable extends Component {
         textAlign: 'center',
         key: 'durationTime',
         sorter: true,
+        width: '8%',
       },
       //  {
       //   title: '操作',
@@ -164,6 +175,7 @@ class RealTimeWarningTable extends Component {
       title: '操作',
       className: styles.iconDetail,
       textAlign: 'center',
+      width: '6%',
       render: (text, record) => (
         <div>
           <span>
@@ -173,7 +185,7 @@ class RealTimeWarningTable extends Component {
       ),
     };
     const { realtimeWarning, selectedRowKeys, pageSize, currentPage, loading, selectedTransfer, getLostGenType, defectTypes, transferWarning, theme } = this.props;
-    const { sortName, descend, showTransferTicketModal, showHandleRemoveModal } = this.state;
+    const { sortName, showTransferTicketModal, showHandleRemoveModal, sortMethod } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -183,7 +195,7 @@ class RealTimeWarningTable extends Component {
       ...e,
       key: i,
     })).sort((a, b) => { // 手动排序
-      const sortType = descend ? -1 : 1;
+      const sortType = sortMethod ? -1 : 1;
       if (sortName === 'warningLevel') {
         return sortType * (a.warningLevel - b.warningLevel);
       } else if (nameSortArr.includes(sortName)) {
@@ -219,6 +231,8 @@ class RealTimeWarningTable extends Component {
           rowSelection={rowSelection}
           columns={listOperation ? columns.concat(realTimeWarningColumns) : columns}
           pagination={false}
+          sortField={sortName}
+          sortMethod={sortMethod}
           onChange={this.tableChange}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
