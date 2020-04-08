@@ -20,10 +20,14 @@ class DefectContent extends Component {
     stateName: PropTypes.string,
     handleInfos: PropTypes.array,
     addhandleList: PropTypes.array,
+    stationCode: PropTypes.number,
+    getBaseUsername: PropTypes.func,
+    getDeviceType: PropTypes.func,
+    allowedActions: PropTypes.array,
   };
 
   componentWillReceiveProps(nextProps) {
-    const { eventInfos, addEventInfo, stateName, stationCode } = nextProps;
+    const { stationCode } = nextProps;
     if (!this.props.stationCode && stationCode) {
       this.props.getBaseUsername({ stationCode }); // 当前电站有权限的人
       this.props.getDeviceType({ stationCode }); // 获取当前电站下的设备类型

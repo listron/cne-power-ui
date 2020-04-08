@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './defectCreate.scss';
 import DefectBaseTitle from '../DefectBase/DefectBaseTitle';
 import DefectBaseInfo from '../DefectBase/DefectBaseInfo';
 import DefcetEventTitle from '../DefectEvent/DefcetEventTitle';
@@ -17,9 +16,11 @@ class DefectCreate extends Component {
     handleInfos: PropTypes.array,
     addhandleList: PropTypes.array,
     changeStore: PropTypes.func,
-    getStationTypeDeviceModes: PropTypes.func,
     getBaseUsername: PropTypes.func,
     getDeviceType: PropTypes.func,
+    baseInfo: PropTypes.object,
+    stateName: PropTypes.string,
+    eventInfos: PropTypes.array,
 
   };
 
@@ -59,7 +60,7 @@ class DefectCreate extends Component {
     }
   }
 
-  dealImg = (imgs) => {
+  dealImg = (imgs) => { // 处理图片
     if (imgs && imgs.length > 0) {
       return imgs.map(e => { return { imgId: '', url: e.url, updateSign: 1 }; });
     }
@@ -70,8 +71,6 @@ class DefectCreate extends Component {
     const { stationCode } = baseInfo;
     if (addEventInfo.length === 0 && eventInfos.length > 0 && localStateName(stateName) === 'return') {
       const list = eventInfos.map((e, index) => {
-        const { deviceTypeCode } = e;
-        this.props.getStationTypeDeviceModes({ stationCode, deviceTypeCode }); // 获取设备类型
         return { index: eventInfos.length - index, ...e, eventImgs: this.dealImg(e.eventImgs) };
       });
       this.props.changeStore({ addEventInfo: list, addbaseInfo: baseInfo });
@@ -84,10 +83,9 @@ class DefectCreate extends Component {
     }
   }
 
-  // 505067296350208
   render() {
-    const { isFinish, handleInfos, baseInfo, stateName } = this.props;
-    // editStation 电站是否编辑 退回不可以编辑
+    const { isFinish, baseInfo, stateName } = this.props;
+    // editStation 电站是否编辑 退回不可以编辑 只有在创建的时候可以编辑
     return (
       <React.Fragment>
         <DefectBaseTitle baseInfo={baseInfo} />
