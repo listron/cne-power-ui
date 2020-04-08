@@ -20,21 +20,51 @@
       background-color: #fff;
     }
     .deviceName {
-      :global {
-        a {
-          border-bottom: 1px $darkColor solid;
-          color: $darkColor;
-          &:hover {
-            border-bottom: 1px $themeColor solid;
-            color: $themeColor;
-          }
+      max-width: calc((100vw - 230px) * 0.15);
+      @include overflowText();
+      a {
+        text-decoration: none;
+        color: $themeColor;
+        &:hover {
+          color: #f9b600;
         }
       }
     }
+    .overflowText{
+      max-width: calc((100vw - 230px) * 0.15);
+      @include overflowText();
+    }
+
+    .alarmType{
+      @include overflowText();
+      max-width: calc((100vw - 230px) * 0.15);
+    }
+
+    .alarmDescName{
+      @include overflowText();
+      max-width: calc((100vw - 230px) * 0.2);
+    }
     .selected {
-      .icon-action {
-        background-color: $themeColor;
-        color: #fff;
+      i {
+        background-color: #ceebe0;
+        color: $themeColor;
+
+        &:hover{
+          color: #ffffff;
+          background-color: $themeColor;
+        }
+      }
+    }
+
+    .hoverDiv{
+      i {
+        background-color: #ceebe0;
+        color: $themeColor;
+
+        &:hover{
+          color: #ffffff;
+          background-color: $themeColor;
+        }
       }
     }
   }

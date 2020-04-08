@@ -132,7 +132,7 @@ class RealTimeWarningTable extends Component {
         sorter: true,
         width: '15%',
         render: (text) => {
-          return <div className={styles.alarmDesc} title={text}>{text || '- -'}</div>;
+          return <div className={`${styles.alarmDesc} ${styles.alarmType}`} title={text}>{text || '- -'}</div>;
         },
       }, {
         title: '预警描述',
@@ -141,7 +141,7 @@ class RealTimeWarningTable extends Component {
         key: 'warningCheckDesc',
         width: '18%',
         render: (text) => {
-          return <div className={styles.alarmDesc} title={text}>{text}</div>;
+          return <div className={`${styles.alarmDesc} ${styles.alarmDescName}`} title={text}>{text}</div>;
         },
       }, {
         title: '发生时间',
@@ -154,7 +154,7 @@ class RealTimeWarningTable extends Component {
       }, {
         title: '持续时间',
         dataIndex: 'durationTime',
-        textAlign: 'center',
+        textAlign: 'right',
         key: 'durationTime',
         sorter: true,
         width: '8%',

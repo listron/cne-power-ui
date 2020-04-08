@@ -4,7 +4,8 @@ import styles from './transferForm.scss';
 import CommonPagination from '../../../Common/CommonPagination';
 
 import { Link } from 'react-router-dom';
-import { Table, Select, Popover, Icon, Button } from 'antd';
+import { Popover, Icon, Button } from 'antd';
+import CneTable from '@components/Common/Power/CneTable';
 import moment from 'moment';
 
 class TransferFormTable extends Component {
@@ -113,19 +114,28 @@ class TransferFormTable extends Component {
         title: '预警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
-        render: (text, record, index) => {
-          return level[text - 1];
+        width: '8%',
+        textAlign: 'center',
+        render: (text) => {
+          return <div>{level[text - 1]}</div>;
         },
         sorter: true,
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
+        textAlign: 'left',
+        width: '15%',
         sorter: true,
+        render: (text) => {
+          return <div className={styles.overflowText}>{text}</div>;
+        },
       }, {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
+        width: '15%',
+        textAlign: 'left',
         sorter: true,
         render: (text, record) => {
           const deviceTypeCodes = ['202', '304', '302', '201', '206', '101'];
@@ -144,28 +154,41 @@ class TransferFormTable extends Component {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
         key: 'deviceTypeName',
+        width: '15%',
+        textAlign: 'left',
         sorter: true,
+        render: (text) => {
+          return <div className={`${styles.alarmDesc} ${styles.alarmType}`} title={text}>{text || '- -'}</div>;
+        },
       }, {
         title: '预警描述',
         dataIndex: 'warningCheckDesc',
         key: 'warningCheckDesc',
-        render: (text, record) => {
-          return <div className={styles.alarmDesc} title={text}>{text}</div>;
+        textAlign: 'left',
+        width: '20%',
+        render: (text) => {
+          return <div className={`${styles.alarmDesc} ${styles.alarmDescName}`} title={text}>{text}</div>;
         },
       }, {
         title: '发生时间',
         dataIndex: 'timeOn',
         key: 'timeOn',
+        textAlign: 'center',
+        width: '12%',
         render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
         sorter: true,
       }, {
         title: '持续时间',
         dataIndex: 'durationTime',
         key: 'durationTime',
+        textAlign: 'right',
         sorter: true,
+        width: '9%',
       }, {
         title: '预警处理',
         key: 'warningRemove',
+        textAlign: 'center',
+        width: '6%',
         render: (text, record, index) => {
           // if (record.isTransferWork === 0) {
           return (
@@ -177,7 +200,7 @@ class TransferFormTable extends Component {
               arrowPointAtCenter
               getPopupContainer={() => this.refs.popover}
             >
-              <div className={this.state.showTransferPopover[index] ? styles.selected : null}><i className="iconfont icon-tranlist icon-action"></i></div>
+              <div style={{display: 'flex', justifyContent: 'center'}} className={this.state.showTransferPopover[index] ? styles.selected : styles.hoverDiv}><i className="iconfont icon-tranlist icon-action"></i></div>
             </Popover>
           );
         },
@@ -192,13 +215,13 @@ class TransferFormTable extends Component {
           <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} theme={theme} />
         </div>
         <span ref="popover" />
-        <Table
+        <CneTable
           dataSource={transferFormList}
           rowKey={record => record.warningLogId}
           columns={columns}
           pagination={false}
           onChange={this.tableChange}
-          locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
     );
