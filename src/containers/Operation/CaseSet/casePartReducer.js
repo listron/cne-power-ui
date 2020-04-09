@@ -12,8 +12,8 @@ const initState = immutable.fromJS({
   total: 0,
   pageNum: 1,
   pageSize: 10,
-  orderFiled: null,
-  orderType: null,
+  orderFiled: 'like',
+  orderType: 'desc',
   showPage: 'list',
   deviceModeData: [], //筛选条件的机型数据
   casePartTableData: [],

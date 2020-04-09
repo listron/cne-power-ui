@@ -6,9 +6,9 @@ var initState = Immutable.fromJS({
   warningType:'限值告警',//限值告警
   loading:false,
   warningTypeStatus:'0',//历史预警
-  orderField:'',
+  orderField:'1',
+  orderCommand:'2',
   pageName:'list',
-  orderCommand:'',
   durationType:null,
   warningLevel:[],//告警级别多个
   deviceTypeCode:[],//设备类型多个
@@ -18,7 +18,7 @@ var initState = Immutable.fromJS({
   // endTime:'',//结束时间
   deviceName:null,//设备名称
   pageSize:10,
-  pageNum:1, 
+  pageNum:1,
   total:0,
   stationCodes:[],//电站编码
   oneWarningNum:'--',//一级告警

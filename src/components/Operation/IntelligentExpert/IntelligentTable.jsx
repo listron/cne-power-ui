@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button } from 'antd';
+import { Button } from 'antd';
 import path from '../../../constants/path';
 import styles from './intelligentExpert.scss';
 import CommonPagination from '../../Common/CommonPagination';
 import ImportIntelligent from './ImportIntelligent';
 import WarningTip from '../../Common/WarningTip';
+import CneTable from '@components/Common/Power/CneTable';
 import moment from 'moment';
 import { handleRight } from '@utils/utilFunc';
 
@@ -38,6 +39,8 @@ class IntelligentTable extends Component {
       warningTipText: '确定要删除解决方案么', // 删除提示语
       deleteKnowledgeId: '', //删除的ID
       handleColumnDel: false, // 是否是单独删除解决方案
+      sortField: 'likeCount',
+      sortMethod: 'descend',
     };
   }
 
@@ -52,18 +55,28 @@ class IntelligentTable extends Component {
 
   tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
     const { getIntelligentTable, listParams } = this.props;
-    const { order } = sorter;
-    const sortMethod = order && (order === 'ascend' ? 'asc' : 'desc') || '';
-    const sortField = sorter.field ? this.toLine(sorter.field) : '';
-    getIntelligentTable({
-      ...listParams,
-      orderField: sortField,
-      sortMethod,
+    const { sortField, sortMethod } = listParams || {};
+    const { field } = sorter || {};
+    const sortFieldMap = {
+      likeCount: 'like_count',
+      updateTime: 'update_time',
+    };
+    let newField = sortField, newSort = 'desc';
+    if(!field || sortField === sortFieldMap[field]) {// 点击的是正在排序的列
+      newSort = sortMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
+    }else{
+      newField = sortFieldMap[field];
+    }
+    this.setState({
+      sortField: !field ? this.state.sortField : field,
+      sortMethod: newSort === 'asc' ? 'ascend' : 'descend',
+    }, () => {
+      getIntelligentTable({
+        ...listParams,
+        orderField: newField,
+        sortMethod: newSort,
+      });
     });
-  }
-
-  toLine = (name) => {
-    return name.replace(/([A-Z])/g, '_$1').toLowerCase();
   }
 
   onSelectChange = (keys, record) => { // 选中行
@@ -169,9 +182,9 @@ class IntelligentTable extends Component {
   }
 
   render() {
-    const { showModal, warningTipText, showDeleteWarning } = this.state;
+    const { showModal, warningTipText, showDeleteWarning, sortField, sortMethod } = this.state;
     const { intelligentTableData, tableLoading, listParams, selectedRowKeys, theme, stationType, templateLoading } = this.props;
-    const { pageNum, pageSize, orderField, sortMethod } = listParams;
+    const { pageNum, pageSize } = listParams;
     const { total, dataList = [] } = intelligentTableData;
     const rowSelection = {
       selectedRowKeys,
@@ -181,53 +194,70 @@ class IntelligentTable extends Component {
     const columns = [
       {
         title: '设备类型',
+        width: '8%',
+        textAlign: 'left',
         dataIndex: 'deviceTypeName',
+        render: (text) => {
+          return <div className={styles.faultTypeName} title={text}>{text || '--'}</div>;
+        },
       }, {
         title: '缺陷类型',
+        width: '8%',
+        textAlign: 'left',
         dataIndex: 'faultName',
         render: (text) => {
-          return <div className={styles.faultName} title={text}>{text || '--'}</div>;
+          return <div className={styles.faultTypeName} title={text}>{text || '--'}</div>;
         },
       },
       {
         title: '故障代码',
+        width: '15%',
+        textAlign: 'left',
         dataIndex: 'faultCode',
         render: (text) => {
           return <div className={styles.faultName} title={text}>{text || '--'}</div>;
         },
       }, {
         title: '缺陷描述',
+        width: '15%',
+        textAlign: 'left',
         dataIndex: 'faultDescription',
         render: (text) => {
           return <div className={styles.faultDescription} title={text}>{text || '--'}</div>;
         },
       }, {
         title: '故障原因',
+        width: '15%',
+        textAlign: 'left',
         dataIndex: 'checkItems',
         render: (text) => {
           return <div className={styles.checkItems} title={text}>{text || '--'}</div>;
         },
       }, {
         title: '处理方法',
+        width: '15%',
+        textAlign: 'left',
         dataIndex: 'processingMethod',
         render: (text) => {
           return <div className={styles.processingMethod} title={text}>{text || '--'}</div>;
         },
       }, {
         title: '更新时间',
+        width: '8%',
         dataIndex: 'updateTime',
-        render: (text, record) => moment(text).format('YYYY-MM-DD'),
+        textAlign: 'center',
+        render: (text) => moment(text).format('YYYY-MM-DD'),
         sorter: true,
-        sortOrder: orderField === 'update_time' ? sortMethod === 'asc' && 'ascend' || 'descend' : false,
       }, {
         title: '点赞数',
+        width: '7%',
+        textAlign: 'right',
         dataIndex: 'likeCount',
         sorter: true,
         className: styles.likeCount,
-        defaultSortOrder: 'descend',
-        sortOrder: orderField === 'like_count' ? (sortMethod && (sortMethod === 'asc' ? 'ascend' : 'descend') || false) : false,
       }, {
         title: '操作',
+        width: '6%',
         dataIndex: 'handler',
         className: styles.handler,
         render: (text, record, index) => (
@@ -262,8 +292,10 @@ class IntelligentTable extends Component {
           <CommonPagination currentPage={pageNum} pageSize={pageSize} total={total} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
         {showModal ? <ImportIntelligent {...this.props} showModal={showModal} cancelModal={this.cancelModal} /> : ''}
-        <Table
+        <CneTable
           loading={tableLoading}
+          sortField={sortField}
+          sortMethod={sortMethod}
           className={styles.intelligentList}
           dataSource={dataList.map((e, i) => ({ ...e, key: e.knowledgeBaseId }))}
           columns={columns}

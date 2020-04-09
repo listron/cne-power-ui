@@ -121,7 +121,7 @@ export const operationRoute = [
     path: '/operation/intelligentExpert',
     component: lazy(() => import('../../containers/Operation/IntelligentExpert/IntelligentExpert')),
   }, {
-    // 运维管理-智能专家库
+    // 运维管理-案例集
     path: '/operation/caseSet',
     component: lazy(() => import('../../containers/Operation/CaseSet/CasePart')),
   },

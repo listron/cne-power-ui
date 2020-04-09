@@ -98,20 +98,30 @@
     // flex: 1;
     .icon {
       cursor: pointer;
-      margin-right: 5px;
+      color: $themeColor;
     }
     .faultName,
     .checkItems,
-    .processingMethod {
+    .processingMethod,
+    .faultDescription{
       @include overflowText();
-      max-width: 140px;
+      max-width: calc((100vw - 230px) * 0.15);
     }
-    .faultDescription {
+    .faultTypeName{
       @include overflowText();
-      max-width: 180px;
+      max-width: calc((100vw - 230px) * 0.08);
     }
     .handler {
       text-align: center;
+
+      span{
+        display: flex;
+        justify-content: space-around;
+
+        i:hover{
+          color: #f9b600;
+        }
+      }
     }
     .likeCount {
       text-align: right;

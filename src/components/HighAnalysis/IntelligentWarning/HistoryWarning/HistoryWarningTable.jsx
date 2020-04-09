@@ -3,11 +3,15 @@ import styles from './historyWarning.scss';
 import CommonPagination from '../../../Common/CommonPagination';
 
 import { Link } from 'react-router-dom';
-import { Table, Select, Popover, Icon, Button } from 'antd';
+import { Popover, Icon, Button } from 'antd';
+import CneTable from '@components/Common/Power/CneTable';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 
 class HistoryWarningTable extends Component {
   static propTypes = {
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -16,6 +20,18 @@ class HistoryWarningTable extends Component {
       showTransferPopover: [],
       showAutoRelievePopover: [],
 
+    };
+    this.tableSortMap = { // api存储字段 => 表格排序字段
+      '1': 'warningLevel',
+      '2': 'stationName',
+      '3': 'deviceTypeName',
+      '5': 'timeOn',
+      '8': 'deviceName',
+      '6': 'timeOff',
+    };
+    this.sortMethodMap = {
+      '2': 'descend',
+      '1': 'ascend',
     };
   }
 
@@ -67,7 +83,7 @@ class HistoryWarningTable extends Component {
   }
 
   tableChange = (pagination, filters, sorter) => {
-    const { changeHistoryWarningStore, onChangeFilter } = this.props;
+    const { changeHistoryWarningStore, onChangeFilter, orderField, orderCommand } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
       warningLevel: '1',
@@ -77,11 +93,15 @@ class HistoryWarningTable extends Component {
       timeOn: '5',
       timeOff: '6',
     };
-    const orderField = sortInfo[field] ? sortInfo[field] : '';
-    const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
-    changeHistoryWarningStore({ orderField, orderCommand });
+    let newOrderField = orderField, newOrderCommand = '2';
+    if (!field || (sortInfo[field] === newOrderField)) { // 点击的是正在排序的列
+      newOrderCommand = orderCommand === '1' ? '2' : '1'; // 交换排序方式
+    } else { // 切换列
+      newOrderField = sortInfo[field];
+    }
+    changeHistoryWarningStore({ orderField: newOrderField, orderCommand: newOrderCommand });
     onChangeFilter({
-      orderField, orderCommand,
+      orderField: newOrderField, orderCommand: newOrderCommand
     });
   }
 
@@ -198,21 +218,30 @@ class HistoryWarningTable extends Component {
     const columns = [
       {
         title: '预警级别',
+        width: '7%',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
-        render: (text, record, index) => {
-          return level[text - 1];
+        textAlign: 'center',
+        render: (text) => {
+          return <div>{level[text - 1]}</div>;
         },
         sorter: true,
       }, {
         title: '电站名称',
+        width: '15%',
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
+        textAlign: 'left',
+        render: (text) => {
+          return <div className={styles.overflowText}>{text}</div>;
+        },
       }, {
         title: '设备名称',
+        width: '15%',
         dataIndex: 'deviceName',
         key: 'deviceName',
+        textAlign: 'left',
         sorter: true,
         render: (text, record) => {
           const deviceTypeCodes = ['202', '304', '302', '201', '206', '101'];
@@ -229,32 +258,45 @@ class HistoryWarningTable extends Component {
         },
       }, {
         title: '设备类型',
+        width: '15%',
         dataIndex: 'deviceTypeName',
         key: 'deviceTypeName',
+        textAlign: 'left',
         sorter: true,
+        render: (text) => {
+          return <div className={`${styles.alarmDesc} ${styles.alarmType}`} title={text}>{text || '- -'}</div>;
+        },
       }, {
         title: '预警描述',
+        width: '20%',
         dataIndex: 'warningCheckDesc',
         key: 'warningCheckDesc',
-        render: (text, record) => {
-          return <div className={styles.alarmDesc} title={text}>{text}</div>;
+        textAlign: 'left',
+        render: (text) => {
+          return <div className={`${styles.alarmDesc} ${styles.alarmDescName}`} title={text}>{text}</div>;
         },
       }, {
         title: '发生时间',
+        width: '11%',
         dataIndex: 'timeOn',
         key: 'timeOn',
-        render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
+        textAlign: 'center',
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm'),
         sorter: true,
       }, {
         title: '结束时间',
+        width: '11%',
         dataIndex: 'timeOff',
         key: 'timeOff',
         sorter: true,
-        render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
+        textAlign: 'center',
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm'),
       },
       {
         title: '预警处理',
+        width: '6%',
         key: 'warningRemove',
+        textAlign: 'center',
         render: (text, record, index) => {
           if (record.warningStatus === '3') {
             return (
@@ -264,7 +306,7 @@ class HistoryWarningTable extends Component {
                 getPopupContainer={() => this.refs.popover}
                 onVisibleChange={(visible) => this.onTransferChange(visible, record.workOrderId, index)}
               >
-                <div className={this.state.showTransferPopover[index] ? styles.selected : null}><i className="iconfont icon-tranlist icon-action"></i></div>
+                <div style={{display: 'flex', justifyContent: 'center'}} className={this.state.showTransferPopover[index] ? styles.selected : styles.hoverDiv}><i className="iconfont icon-tranlist icon-action"></i></div>
               </Popover>
             );
           }
@@ -276,7 +318,7 @@ class HistoryWarningTable extends Component {
                 getPopupContainer={() => this.refs.popover}
                 onVisibleChange={(visible) => this.onRelieveChange(visible, record.operateId, index)}
               >
-                <div className={this.state.showRelievePopover[index] ? styles.selected : null}><i className="iconfont icon-manual icon-action"></i></div>
+                <div style={{display: 'flex', justifyContent: 'center'}} className={this.state.showRelievePopover[index] ? styles.selected : styles.hoverDiv}><i className="iconfont icon-manual icon-action"></i></div>
               </Popover>
             );
           }
@@ -287,14 +329,14 @@ class HistoryWarningTable extends Component {
               content={this.renderAutoRelievePopover(record, index)}
               getPopupContainer={() => this.refs.popover}
               trigger="click">
-              <div className={this.state.showAutoRelievePopover[index] ? styles.selected : null}><i className="iconfont icon-lifted icon-action"></i></div>
+              <div style={{display: 'flex', justifyContent: 'center'}} className={this.state.showAutoRelievePopover[index] ? styles.selected : styles.hoverDiv}><i className="iconfont icon-lifted icon-action"></i></div>
             </Popover>
           );
         },
         // }
       },
     ];
-    const { historyWarningList, pageSize, pageNum, total, theme } = this.props;
+    const { historyWarningList, pageSize, pageNum, total, theme, orderField, orderCommand } = this.props;
 
     return (
       <div className={styles.realTimeWarningTable}>
@@ -302,13 +344,15 @@ class HistoryWarningTable extends Component {
           <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} theme={theme} />
         </div>
         <span ref={'popover'} />
-        <Table
+        <CneTable
           dataSource={historyWarningList}
           rowKey={record => record.warningLogId}
           columns={columns}
           pagination={false}
+          sortField={this.tableSortMap[orderField]}
+          sortMethod={this.sortMethodMap[orderCommand]}
           onChange={this.tableChange}
-          locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
     );

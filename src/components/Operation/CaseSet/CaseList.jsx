@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './CasePartContainer.scss';
-import { Table } from 'antd';
 import WarningTip from '../../../components/Common/WarningTip';
 import { handleRight } from '@utils/utilFunc';
 import moment from 'moment';
+import CneTable from '@components/Common/Power/CneTable';
 class CaseList extends React.Component {
   static propTypes = {
     changeCasePartStore: PropTypes.func,
@@ -20,6 +20,8 @@ class CaseList extends React.Component {
     tableLoading: PropTypes.bool,
     casePartTableData: PropTypes.array,
     selectedRowKeys: PropTypes.array,
+    orderFiled: PropTypes.string,
+    orderType: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -27,6 +29,8 @@ class CaseList extends React.Component {
       showWarningTip: false,
       warningTipText: '确定要删除解决方案吗?',
       currentPoint: {},
+      sortField: 'likeCount',
+      sortMethod: 'descend',
     };
   }
   cancelWarningTip = () => {
@@ -77,14 +81,27 @@ class CaseList extends React.Component {
     });
   }
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
-    const { getCasePartList, questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, pageSize, pageNum } = this.props;
+    const { getCasePartList, questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, pageSize, pageNum, orderFiled, orderType } = this.props;
     const queryParams = { questionTypeCodes, deviceModeList, stationCodes, faultDescription, userName, userId, pageSize, pageNum };
-    const { field, order } = sorter;
-    const orderFiled = field === 'likeCount' ? 'like' : field;
+    const { field } = sorter;
+    const sortFieldMap = {
+      likeCount: 'like',
+      updateTime: 'updateTime',
+    };
+    let newField = orderFiled, newSort = 'desc';
+    if(!field || orderFiled === sortFieldMap[field]) {// 点击的是正在排序的列
+      newSort = orderType === 'desc' ? 'asc' : 'desc'; // 交换排序方式
+    }else{
+      newField = sortFieldMap[field];
+    }
+    this.setState({
+      sortField: !field ? this.state.sortField : field,
+      sortMethod: newSort === 'asc' ? 'ascend' : 'descend',
+    });
     getCasePartList({
       ...queryParams,
-      orderFiled: orderFiled,
-      orderType: order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : null,
+      orderFiled: newField,
+      orderType: newSort,
     });
   }
   onSelectChange = (keys, record) => {
@@ -100,13 +117,15 @@ class CaseList extends React.Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    const { showWarningTip, warningTipText } = this.state;
+    const { showWarningTip, warningTipText, sortField, sortMethod } = this.state;
     const columns = [
       {
         title: '风场',
+        width: '8%',
+        textAlign: 'left',
         dataIndex: 'stationNames',
         key: 'stationNames',
-        render: (text, record, index) => {
+        render: (text) => {
           return (
             <div className={styles.stationWidth} title={text} >{text}</div>
           );
@@ -114,19 +133,23 @@ class CaseList extends React.Component {
       },
       {
         title: '机型',
+        width: '8%',
+        textAlign: 'left',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        render: (text, record, index) => {
+        render: (text) => {
           return (
-            <div className={styles.tableWidth} title={text} >{text}</div>
+            <div className={styles.tableTypeWidth} title={text} >{text}</div>
           );
         },
 
       }, {
         title: '问题类别',
+        width: '15%',
+        textAlign: 'left',
         dataIndex: 'questionTypeCodeName',
         key: 'questionTypeCodeName',
-        render: (text, record, index) => {
+        render: (text) => {
           return (
             <div className={styles.questionType} title={text} >{text}</div>
           );
@@ -134,19 +157,23 @@ class CaseList extends React.Component {
 
       }, {
         title: '相关故障代码',
+        width: '15%',
+        textAlign: 'left',
         dataIndex: 'faultCode',
         key: 'faultCode',
-        render: (text, record, index) => {
+        render: (text) => {
           return (
-            <div className={styles.tableWidth} title={text} >{text}</div>
+            <div className={styles.faultCode} title={text} >{text}</div>
           );
         },
 
       }, {
         title: '问题描述',
+        width: '15%',
+        textAlign: 'left',
         dataIndex: 'faultDescription',
         key: 'faultDescription',
-        render: (text, record, index) => {
+        render: (text) => {
           return (
             <div className={styles.questionDes} title={text} >{text}</div>
           );
@@ -154,47 +181,55 @@ class CaseList extends React.Component {
 
       }, {
         title: '处理措施',
+        width: '15%',
+        textAlign: 'left',
         dataIndex: 'processingMethod',
         key: 'processingMethod',
-        render: (text, record, index) => {
+        render: (text) => {
           return (
-            <div className={styles.tableWidth} title={text} >{text}</div>
+            <div className={styles.dealHandler} title={text} >{text}</div>
           );
         },
 
       }, {
         title: '更新时间',
+        width: '8%',
+        textAlign: 'center',
         dataIndex: 'updateTime',
         key: 'updateTime',
         sorter: true,
-        render: (text, record, index) => {
+        render: (text) => {
           return (
-            <div className={styles.tableWidth} title={text} >{moment(text).format('YYYY-MM-DD')}</div>
+            <div title={text} >{moment(text).format('YYYY-MM-DD')}</div>
           );
         },
 
       }, {
         title: '点赞数',
+        width: '7%',
+        textAlign: 'right',
         dataIndex: 'likeCount',
         key: 'likeCount',
         sorter: true,
-        render: (text, record, index) => {
+        render: (text) => {
           return (
-            <div className={styles.likeWidth} title={text} >{text}</div>
+            <div title={text} >{text}</div>
           );
         },
       },
       {
         title: '操作',
+        width: '6%',
+        textAlign: 'center',
         key: 'caozuo',
         className: styles.titleStyle,
-        render: (text, record, index) => {
+        render: (text, record) => {
           return (
-            <div>
-              <span className={`${styles.editPoint}  iconfont icon-look`} onClick={() => this.showCaseDetail(record)}></span>
-              {caseHandleRight && <span className={`${styles.editPoint}  iconfont icon-edit`} onClick={() => this.showEditPage(record)}></span>}
-              {caseHandleRight && <span className={`${styles.editPoint}  iconfont icon-del`} onClick={() => this.deleteCasePart(record)}></span>}
-            </div>
+            <span>
+              <i className={`${styles.editPoint}  iconfont icon-look`} onClick={() => this.showCaseDetail(record)}></i>
+              {caseHandleRight && <i className={`${styles.editPoint}  iconfont icon-edit`} onClick={() => this.showEditPage(record)}></i>}
+              {caseHandleRight && <i className={`${styles.editPoint}  iconfont icon-del`} onClick={() => this.deleteCasePart(record)}></i>}
+            </span>
           );
         },
 
@@ -203,8 +238,10 @@ class CaseList extends React.Component {
     return (
       <div className={styles.caseList}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-        <Table
+        <CneTable
           loading={tableLoading}
+          sortField={sortField}
+          sortMethod={sortMethod}
           rowSelection={rowSelection}
           onChange={this.tableChange}
           columns={columns}

@@ -139,6 +139,20 @@
 
   .titleStyle {
     text-align: center;
+    padding: 0 8px !important;
+
+    span{
+      display: flex;
+      justify-content: space-around;
+
+      i{
+        color: $themeColor;
+
+        &:hover{
+          color: #f9b600;
+        }
+      }
+    }
   }
 
   .selectKeyText {
@@ -158,7 +172,6 @@
   }
 
   .editPoint {
-    padding: 0 4px;
     cursor: pointer;
 
     &:hover {
@@ -168,17 +181,17 @@
   }
 
   .questionType,
-  .stationWidth,
-  .tableWidth,
-  .questionDes {
-    width: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .faultCode,
+  .questionDes,
+  .dealHandler{
+    @include overflowText();
+    max-width: calc((100vw - 230px) * 0.15);
   }
 
-  .questionDes {
-    width: 136px;
+  .tableTypeWidth,
+  .stationWidth{
+    @include overflowText();
+    max-width: calc((100vw - 230px) * 0.08);
   }
 
   .stationWidth {
