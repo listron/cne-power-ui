@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './operate.scss';
-import { Table, Modal, Button } from 'antd';
+import { Modal, Button } from 'antd';
 import ImgListModal from '../../../Common/Uploader/ImgListModal';
 import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
@@ -9,6 +9,7 @@ import moment from 'moment';
 import path from '../../../../constants/path';
 import ReviewForm from '../Common/HandleForm/ReviewForm';
 import Obsolete from '../Common/HandleForm/Obsolete';
+import CneTable from '@components/Common/Power/CneTable';
 import { handleRights, handleRight } from '@utils/utilFunc';
 import Cookie from 'js-cookie';
 
@@ -129,30 +130,42 @@ class TableList extends Component {
         });
     }
 
-    tableChange = (pagination, filter, sorter) => {// 点击表头 排序
-        const initSorterField = 'create_time';
-        let ascend = '';
-        const sortField = sorter.field ? this.sortField(sorter.field) : initSorterField;
-        ascend = sorter.order === 'ascend' ? 'asc' : 'desc';
-        const { listQueryParams, commonQueryParams } = this.props;
-        this.props.getFlowList({ listQueryParams: { ...listQueryParams, sortField, sortMethod: ascend }, commonQueryParams });
+    sortFieldMap = { // 表格排序字段 => api
+        docketCode: 'docket_code',
+        stationName: 'station_name',
+        docketName: 'docket_name',
+        createTime: 'create_time',
+        endTime: 'end_time',
+        stateDesc: 'state_sort',
     };
 
-    sortField(sortField) { // 排序
-        let result = '';
-        switch (sortField) {
-            case 'docketCode': result = 'docket_code'; break;
-            case 'docketTypeName': result = 'docket_type'; break;
-            case 'stationName': result = 'station_name'; break;
-            case 'docketName': result = 'docket_name'; break;
-            case 'createTime': result = 'create_time'; break;
-            case 'endTime': result = 'end_time'; break;
-            case 'stateCode': result = 'state_code'; break;
-            case 'dealUsers': result = 'deal_users'; break;
-            default: result = ''; break;
-        }
-        return result;
+    tableSortMap = { // api存储字段 => 表格排序字段
+        docket_code: 'docketCode',
+        station_name: 'stationName',
+        docket_name: 'docketName',
+        create_time: 'createTime',
+        end_time: 'endTime',
+        state_sort: 'stateDesc',
+    };
+
+    sortMethodMap = {
+        desc: 'descend',
+        asc: 'ascend',
     }
+
+    tableChange = (pagination, filter, sorter) => { // 点击表头 排序
+        const { field } = sorter || {};
+        const { listQueryParams, commonQueryParams } = this.props;
+        const { sortField, sortMethod } = listQueryParams || {};
+        let newField = sortField, newSort = 'desc';
+        if (!field || (sortField === this.sortFieldMap[field])) { // 点击的是正在排序的列
+          newSort = sortMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
+        } else { // 切换列
+          newField = this.sortFieldMap[field];
+        }
+        this.props.changeFlowStore({ listQueryParams: { ...listQueryParams, sortField: newField, sortMethod: newSort } });
+        this.props.getFlowList({ listQueryParams: { ...listQueryParams, sortField: newField, sortMethod: newSort }, commonQueryParams });
+    };
 
     addWorkFlow = () => {
         this.props.changeFlowStore({ showPage: 'add' });
@@ -176,8 +189,10 @@ class TableList extends Component {
                 dataIndex: 'docketCode',
                 key: 'docketCode',
                 sorter: true,
+                textAlign: 'left',
+                className: styles.docketCode,
                 render: (text) => {
-                    return <div className={styles.docketCode} title={text}>{text}</div>;
+                    return <div className={styles.docketCodeText} title={text}>{text}</div>;
                 },
             },
             {
@@ -185,45 +200,59 @@ class TableList extends Component {
                 dataIndex: 'stationName',
                 key: 'stationName',
                 sorter: true,
+                textAlign: 'left',
+                className: styles.stationName,
                 render: (text, record) => {
-                    return <div className={styles.stationName} title={text}>{text}</div>;
+                    return <div className={styles.stationNameText} title={text}>{text}</div>;
                 },
             }, {
                 title: '操作票名称',
                 dataIndex: 'docketName',
                 key: 'docketName',
                 sorter: true,
+                textAlign: 'left',
+                className: styles.docketName,
                 render: (text, record) => {
-                    return <div className={styles.docketName} title={text}>{text}</div>;
+                    return <div className={styles.docketNameText} title={text}>{text}</div>;
                 },
             }, {
                 title: '创建时间',
                 dataIndex: 'createTime',
                 key: 'createTime',
                 sorter: true,
-                render: text => <div className={styles.createTime} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss') || '--'}</div>,
+                textAlign: 'center',
+                className: styles.createTime,
+                render: text => <div className={styles.createTimeText} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss') || '--'}</div>,
             }, {
                 title: '完成时间',
                 dataIndex: 'endTime',
                 key: 'endTime',
                 sorter: true,
-                render: text => <div className={styles.createTime} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss')}</div>,
+                textAlign: 'center',
+                className: styles.endTime,
+                render: text => <div className={styles.createTimeText} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss')}</div>,
             }, {
                 title: '状态',
                 dataIndex: 'stateDesc',
                 key: 'stateDesc',
                 sorter: true,
+                textAlign: 'center',
+                className: styles.stateDesc,
             }, {
                 title: '操作人',
                 dataIndex: 'dealUserNames',
                 key: 'dealUserNames',
+                textAlign: 'left',
+                className: styles.dealUserNames,
                 render: (text) => {
-                    return <div className={styles.dealUserNames} title={text}>{text}</div>;
+                    return <div className={styles.dealUserNamesText} title={text}>{text}</div>;
                 },
             }, {
                 title: '照片',
                 dataIndex: 'picture',
                 key: 'picture',
+                textAlign: 'center',
+                className: styles.picture,
                 render: (text, record) => (
                     <i className="iconfont icon-todo" onClick={() => { this.showImgs(record); }} />
                 ),
@@ -232,10 +261,12 @@ class TableList extends Component {
                 title: '操作',
                 dataIndex: 'opreate',
                 key: 'opreate',
+                textAlign: 'center',
+                className: styles.opreate,
                 render: (text, record) => (
                     <div>
-                        <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record); }} />
-                        {handleRight('operationTicket_operate') && record.stateCode === '2' && <i className="iconfont icon-del" onClick={() => { this.delList('del', record.docketId); }} />}
+                        <i className={`iconfont icon-look ${styles.lookIcon}`} onClick={() => { this.onShowDetail(record); }} />
+                        <i className={`iconfont icon-del ${(handleRight('operationTicket_operate') && record.stateCode === '2') ? styles.iconShow : styles.iconHide}`} onClick={() => { this.delList('del', record.docketId); }} />
                     </div>
                 ),
             },
@@ -275,7 +306,7 @@ class TableList extends Component {
         const { totalNum, loading, docketList, stopRight, newImg, listQueryParams, downLoadFile, theme } = this.props;
         const { selectedRows, review, obsolete, currentImgIndex, showImgModal, downloadHref } = this.state;
         const { showWarningTip, warningTipText, operatType } = this.state;
-        const { pageSize, pageNum } = listQueryParams;
+        const { pageSize, pageNum, sortField, sortMethod } = listQueryParams;
         const rowSelection = {
             selectedRowKeys: selectedRows.map(e => e.docketId),
             onChange: this.onSelectChange,
@@ -318,14 +349,17 @@ class TableList extends Component {
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
                         onPaginationChange={this.onPaginationChange} theme={theme} />
                 </div>
-                <Table
+                <CneTable
                     loading={loading}
+                    className={styles.operateFlowTable}
                     dataSource={dataSource}
                     columns={this.initColumns()}
-                    pagination={false}
+                    sortField={this.tableSortMap[sortField]}
+                    sortMethod={this.sortMethodMap[sortMethod] || false}
                     rowSelection={rowSelection}
                     onChange={this.tableChange}
                     locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+                    dataError={false}
                 />
                 <span ref="modal" />
                 <ImgListModal

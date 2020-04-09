@@ -28,8 +28,53 @@
       box-shadow: none;
     }
   }
+  .workFlowTable{
+    .docketCode{
+      width: 9%;
+    }
+    .docketTypeName{
+      width: 13%;
+    }
+    .stationName{
+      width: 11%;
+    }
+    .docketName{
+      width: 12%;
+    }
+    .createTime,.endTime{
+      width: 11.5%;
+    }
+    .dealUserNames{
+      width: 8%;
+    }
+    .picture,.stateDesc,.opreate{
+      width: 6%;
+    }
+    .opreate{
+      .lookIcon{
+        margin-right: 14px;
+      }
+      .iconShow{
+        visibility: visible;
+      }
+      .iconHide{
+        visibility: hidden;
+      }
+    }
+    :global{
+      .iconfont{
+        font-size: 20px;
+        cursor: pointer;
+      }
+    }
+  }
 
   .stationName {
+    @include overflowText();
+    max-width: 175px;
+    min-width: 100px;
+  }
+  .docketTypeName{
     @include overflowText();
     max-width: 175px;
     min-width: 100px;

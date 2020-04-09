@@ -7,6 +7,16 @@
     line-height: 60px;
     height: 60px;
   }
+  .examinerTable{
+    :global{
+      .ant-table .ant-table-tbody > tr > td:last-child, .ant-table .ant-table-thead > tr > th:last-child{
+        padding-right: 0;
+      }
+    }
+    .stationName,.createTime,.state,.handle{
+      width: 25%;
+    }
+  }
   table { 
     .setted {
       color:#353535;
@@ -15,8 +25,15 @@
       color:#f9b600;
     }
     .handler{
+      .iconShow{
+        visibility: visible;
+      }
+      .iconHide{
+        visibility: hidden;
+      }
       :global{
         .iconfont{
+          font-size: 20px;
           cursor: pointer;
           margin-right: 24px;
         }

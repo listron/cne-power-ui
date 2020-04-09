@@ -5,6 +5,7 @@ import CommonPagination from '../../../../Common/CommonPagination';
 import { Table, message } from 'antd';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { numWithComma, dataFormats } from '../../../../../utils/utilFunc';
+import CneTable from '@components/Common/Power/CneTable';
 
 class WindStationList extends React.Component {
   static propTypes = {
@@ -17,9 +18,11 @@ class WindStationList extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+    const { clientHeight } = document.body;
     this.state = {
       sortName: 'regionName',
       descend: false,
+      tableListHeight: clientHeight - 432,
     };
   }
 
@@ -66,8 +69,8 @@ class WindStationList extends React.Component {
       {
         title: '电站名称',
         dataIndex: 'stationName',
-
         sorter: true,
+        className: styles.stationNames,
         render: (value, record) => {
           const stationStatus = record.stationStatus.stationStatus || '';
           if (stationStatus === '900') {
@@ -78,8 +81,6 @@ class WindStationList extends React.Component {
               <div title={value} className={styles.stationName}>{value}</div>
             </a>
           );
-
-
         },
       },
       {
@@ -87,33 +88,34 @@ class WindStationList extends React.Component {
         dataIndex: 'regionName',
         defaultSortOrder: 'ascend',
         sorter: true,
+        className: styles.regionNames,
         render: (value) => <div className={styles.stationrovince}>{value}</div>,
       },
       {
         title: () => <TableColumnTitle title="装机容量" unit={'MW'} />,
         dataIndex: 'stationCapacity',
         sorter: true,
-        className: styles.numberStyle,
+        className: `${styles.numberStyle} ${styles.stationCapacity}`,
         render: value => dataFormats(value, '--', 2, true),
       },
       {
         title: () => <TableColumnTitle title="装机" unit="台" />,
         dataIndex: 'stationUnitCount',
         sorter: true,
-        className: styles.numberStyle,
+        className: `${styles.numberStyle} ${styles.stationUnitCount}`,
         render: (value) => { return numWithComma(value); },
       },
       {
         title: () => <TableColumnTitle title="实时功率" unit={'MW'} />,
         dataIndex: 'stationPower',
         sorter: true,
-        className: styles.numberStyle,
+        className: `${styles.numberStyle} ${styles.stationPowerNum}`,
         render: value => dataFormats(value / 1000, '--', 2, true),
       },
       {
         title: () => <TableColumnTitle title="平均风速" unit="m/s" />,
         dataIndex: 'instantaneous',
-        className: styles.numberStyle,
+        className: `${styles.numberStyle} ${styles.instantaneous}`,
         render: (value) => dataFormats(value, '--', 2, true),
         sorter: true,
       },
@@ -121,14 +123,14 @@ class WindStationList extends React.Component {
         title: '出力比',
         dataIndex: 'capabilityRate',
         sorter: true,
-        className: styles.numberStyle,
+        className: `${styles.numberStyle} ${styles.capabilityRate}`,
         render: (value) => dataFormats(value, '--', 2, true) + '%',
       },
       {
         title: () => <TableColumnTitle title="日发电量" unit={'万kWh'} />,
         dataIndex: 'dayPower',
         sorter: true,
-        className: styles.numberStyle,
+        className: `${styles.numberStyle} ${styles.dayPower}`,
         render: value => this.powerPoint(this.unitFormarts(value, 10000)),
       },
       {
@@ -136,20 +138,20 @@ class WindStationList extends React.Component {
         dataIndex: 'monthPower',
         render: value => this.powerPoint(this.unitFormarts(value, 10000)),
         sorter: true,
-        className: styles.numberStyle,
+        className: `${styles.numberStyle} ${styles.monthPower}`,
       },
       {
         title: () => <TableColumnTitle title="年发电量" unit={'万kWh'} />,
         dataIndex: 'yearPower',
         render: value => this.powerPoint(this.unitFormarts(value, 10000)),
         sorter: true,
-        className: styles.numberStyle,
+        className: `${styles.numberStyle} ${styles.yearPower}`,
       },
       {
         title: '年完成率',
         dataIndex: 'yearPlanRate',
         sorter: true,
-        className: styles.numberStyle,
+        className: `${styles.numberStyle} ${styles.yearPlanRate}`,
         render: value => dataFormats(value, '--', 2, true) + '%',
       },
       // {
@@ -163,21 +165,21 @@ class WindStationList extends React.Component {
         title: () => <TableColumnTitle title="故障" unit={'台'} />,
         dataIndex: 'errorNum',
         sorter: true,
-        className: styles.numberStyle,
+        className: `${styles.numberStyle} ${styles.errorNum}`,
         render: value => value ? value : 0,
       },
       {
         title: () => <TableColumnTitle title="维护" unit={'台'} />,
         dataIndex: 'maintainNum',
         sorter: true,
-        className: styles.numberStyle,
+        className: `${styles.numberStyle} ${styles.maintainNum}`,
         render: value => value ? value : 0,
       },
       {
         title: () => <TableColumnTitle title="通讯中断" unit={'台'} />,
         dataIndex: 'interruptNum',
         sorter: true,
-        className: styles.numberStyle,
+        className: `${styles.numberStyle} ${styles.interruptNum}`,
         render: value => value ? value : 0,
       },
     ];
@@ -215,6 +217,7 @@ class WindStationList extends React.Component {
   }
 
   render() {
+    const { tableListHeight } = this.state;
     const { stationDataList, pageSize, currentPage, onPaginationChange } = this.props;
     const dataSort = this.createTableSource(stationDataList);
     const startRow = (currentPage - 1) * pageSize;
@@ -228,12 +231,14 @@ class WindStationList extends React.Component {
         <div className={styles.pagination}>
           <CommonPagination pageSize={pageSize} currentPage={currentPage} total={totalNum} onPaginationChange={onPaginationChange} />
         </div>
-        <Table
+        <CneTable
+          className={styles.windStationTable}
           columns={this.initColumn()}
           dataSource={datalist}
           onChange={this.ontableSort}
+          // scroll={stationDataList.length > 0 ? {y: tableListHeight} : {}}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-          pagination={false} />
+        />
       </div>
     );
   }

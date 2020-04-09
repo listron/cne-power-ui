@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Table } from 'antd';
+// import { Table } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
+import CneTable from '@components/Common/Power/CneTable';
 import { handleRight } from '@utils/utilFunc';
 import styles from './examinerComp.scss';
 
@@ -33,20 +34,37 @@ class WorkExaminer extends Component {
     getSettingList({ ...newParam });
   }
 
+  sortFieldMap = { // 表格排序字段 => api
+    stationName: 'station_name',
+    state: 'state',
+    createTime: 'create_time',
+  };
+
+  tableSortMap = { // api存储字段 => 表格排序字段
+    station_name: 'stationName',
+    state: 'state',
+    create_time: 'createTime',
+  };
+
+  sortMethodMap = {
+    desc: 'descend',
+    asc: 'ascend',
+  }
+
   tableChange = (pagination, filter, sorter) => {
-    const { field, order } = sorter;
+    const { field } = sorter || {};
     const { tableParams, getSettingList, changeStore } = this.props;
-    const sortTemplete = {
-      stationName: 'station_name',
-      state: 'state',
-      createTime: 'create_time',
-    };
-    const sortField = field ? sortTemplete[field] : '';
-    const sortMethod = order ? sortTemplete[order] : '';
+    const { sortField, sortMethod } = tableParams || {};
+    let newField = sortField, newSort = 'desc';
+    if (!field || (sortField === this.sortFieldMap[field])) { // 点击的是正在排序的列
+      newSort = sortMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
+    } else { // 切换列
+      newField = this.sortFieldMap[field];
+    }
     const newParam = {
       ...tableParams,
-      sortField,
-      sortMethod,
+      sortField: newField,
+      sortMethod: newSort,
     };
     changeStore({ tableParams: newParam });
     getSettingList({ ...newParam });
@@ -68,34 +86,43 @@ class WorkExaminer extends Component {
       title: '电站名称',
       dataIndex: 'stationName',
       sorter: true,
+      textAlign: 'left',
+      className: styles.stationName,
+      render: text => <div className={styles.stationNameText}>{text || '--'}</div>,
     }, {
       title: '设置时间',
       dataIndex: 'createTime',
+      textAlign: 'center',
       render: text => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--',
       sorter: true,
+      className: styles.createTime,
     }, {
       title: '状态',
       dataIndex: 'state',
+      textAlign: 'center',
       render: (text) => text > 0 ? <span className={styles.setted}>已设置</span> : <span className={styles.notSet}>未设置</span>,
       sorter: true,
+      className: styles.state,
     }, {
       title: '操作',
       dataIndex: 'handle',
+      textAlign: 'center',
+      className: styles.handle,
       render: (text, record) => {
         const { state } = record;
         const editRight = handleRight('twoTicket_config_edit');
         return (
           <div className={styles.handler}>
-            {editRight && <span
-              className="iconfont icon-edit"
+            <span
+              className={`iconfont icon-edit ${editRight ? styles.iconShow : styles.iconHide}`}
               onClick={() => {
                 state > 0 ? this.showEdit(record) : this.showCreate(record);
               }}
-            />}
-            {state > 0 && <span
-              className="iconfont icon-look"
+            />
+            <span
+              className={`iconfont icon-look ${state > 0 ? styles.iconShow : styles.iconHide}`}
               onClick={() => this.showDetail(record)}
-            />}
+            />
           </div>
         );
       },
@@ -125,7 +152,7 @@ class WorkExaminer extends Component {
 
   render() {
     const { stations, listLoading, settingList, total, tableParams } = this.props;
-    const { pageNum, pageSize } = tableParams;
+    const { pageNum, pageSize, sortField, sortMethod } = tableParams;
     return (
       <div className={styles.workExaminer}>
         <FilterCondition
@@ -147,13 +174,16 @@ class WorkExaminer extends Component {
             onPaginationChange={this.onPaginationChange}
           />
         </div>
-        <Table
+        <CneTable
+          className={styles.examinerTable}
           loading={listLoading}
           onChange={this.tableChange}
+          sortField={this.tableSortMap[sortField]}
+          sortMethod={this.sortMethodMap[sortMethod] || false}
           columns={this.workTicketColumn()}
           dataSource={settingList.map(e => ({ key: e.stationCode, ...e }))}
-          pagination={false}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          dataError={false}
         />
       </div>
     );

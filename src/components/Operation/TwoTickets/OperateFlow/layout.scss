@@ -28,6 +28,43 @@
       box-shadow: none;
     }
   }
+  .operateFlowTable{
+    .docketCode{
+      width: 10%;
+    }
+    .stationName{
+      width: 12%;
+    }
+    .docketName{
+      width: 15%;
+    }
+    .createTime,.endTime{
+      width: 14.5%;
+    }
+    .dealUserNames{
+      width: 9%;
+    }
+    .picture,.stateDesc,.opreate{
+      width: 7%;
+    }
+    .opreate{
+      .lookIcon{
+        margin-right: 14px;
+      }
+      .iconShow{
+        visibility: visible;
+      }
+      .iconHide{
+        visibility: hidden;
+      }
+    }
+    :global{
+      .iconfont{
+        font-size: 20px;
+        cursor: pointer;
+      }
+    }
+  }
 
   .stationName {
     @include overflowText();
