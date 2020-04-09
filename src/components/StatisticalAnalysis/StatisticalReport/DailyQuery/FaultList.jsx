@@ -71,7 +71,7 @@ class FaultList extends Component {
   }
 
   render(){
-    const { listParam, faultListData, tableLoading, exportLoading  } = this.props;
+    const { listParam, faultListData, tableLoading, exportLoading } = this.props;
     const { pageNum, pageSize } = listParam;
     const { total = 0, dataList = [] } = faultListData;
     const dailyOperation = handleRight('dailyQuery_export');
