@@ -235,6 +235,7 @@ class AssetStructure extends React.Component {
             {
               <CneTable
                 loading={false}
+                noMoreDataPic={true}
                 dataSource={childrenNodeDetail}
                 columns={columns}
                 scroll={{ y: tableListHeight }}
