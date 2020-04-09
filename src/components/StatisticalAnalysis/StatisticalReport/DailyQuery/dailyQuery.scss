@@ -86,9 +86,14 @@
 .quotaList,.limitList,.faultList{
   flex: 1;
   :global{
-    .ant-table{
-      .numberStyle{
-        text-align: right;
+    .ant-table .ant-table-thead > tr > th.numberStyle, .ant-table table .ant-table-tbody > tr > td.numberStyle{
+      padding: 0 10px;
+    }
+    .ant-table-scroll{
+      table{
+        .ant-table-fixed-columns-in-body{
+          visibility: visible;
+        }
       }
     }
   }
@@ -105,61 +110,36 @@
 
 .quotaList,.faultList,.limitList{
   :global{
-    .ant-table-scroll{
-      table{
-        .ant-table-fixed-columns-in-body{
-          visibility: visible;
-        }
-      }
-    }  
-  }
-}
-
-.quotaList{
-  :global{
-    .ant-table .ant-table-thead > tr > th{
-      padding: 0 16px;
+    // quotaList
+    .stationNameText, .regionNameText, .deviceTypeNameText, .deviceNameText, .reasonText, .faultTypeNameText, .manufactorNameText, .deviceModeNameText{
+      @include overflowText();
     }
-  }
-}
-
-.limitList,.faultList{
-  :global{
-    .ant-table{
-      .reason,.process,.manufactorName,.deviceName,.deviceModeName,.deviceTypeName{
-        div{
-          width: 150px;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          word-break: keep-all;
-        }
-      }
-      td{
-        padding: 0 16px;
-      }
+    // 关键指标
+    .stationNameText{
+      width: 120px;
     }
-  }
-}
-
-.limitList{
-  :global{
-    .ant-table{
-      .stationName,.regionName,.deviceTypeName,.deviceName,.limitPower,.totalHours,.totalGen,.statisticsHours,.statisticsGen,.reason{
-        div{
-          width: 100px;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          word-break: keep-all;
-        }
-      }
-      .startTime,.endTime{
-        width: 150px;
-      }
-      .ant-table-thead > tr > th{
-        padding: 0 17px;
-      }
+    .regionNameText{
+      width: 70px;
+    }
+    // 限电
+    .deviceTypeNameText{
+      width: 100px;
+    }
+    .deviceNameText{
+      width: 90px;
+    }
+    .reasonText{
+      width: 160px;
+    }
+    // 故障信息
+    .faultTypeNameText{
+      width: 130px;
+    }
+    .manufactorNameText{
+      width: 160px;
+    }
+    .deviceModeNameText{
+      width: 140px;
     }
   }
 }

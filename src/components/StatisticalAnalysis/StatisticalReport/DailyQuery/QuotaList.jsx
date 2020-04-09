@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Button, Table, Icon } from 'antd';
+import { Button } from 'antd';
 import moment from 'moment';
+import CneTable from '@components/Common/Power/CneTable';
 import path from '../../../../constants/path';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
@@ -83,7 +84,8 @@ class QuotaList extends Component {
       title: (e.unit && e.unit !== '%') ? () => (<TableColumnTitle title={e.label} unit={e.unit} style={{ maxWidth: '100%', height: '52px' }} />) : e.label,
       dataIndex: e.name,
       className: 'numberStyle',
-      render: (text) => <span title={text}>{(dataFormat(text, '--', 2))}{e.unit === '%' && `%`}</span>,
+      textAlign: 'right',
+      render: (text) => <span title={text}>{(dataFormat(text, '--', 2))}{e.unit === '%' && '%'}</span>,
     }));
 
     const columns = [{
@@ -91,22 +93,24 @@ class QuotaList extends Component {
       width: (otherCol.length > 9) ? 140 : 0,
       dataIndex: 'stationName',
       className: 'stationName',
+      textAlign: 'left',
       fixed: (otherCol.length > 9) ? 'left' : 'false',
-      render: (text) => <span title={text}>{text}</span>,
+      render: (text) => <div className="stationNameText" title={text}>{text}</div>,
     }, {
       title: '区域',
       width: (otherCol.length > 9) ? 80 : 0,
       dataIndex: 'regionName',
       className: 'regionName',
+      textAlign: 'left',
       fixed: (otherCol.length > 9) ? 'left' : 'false',
-      render: (text) => <span title={text}>{text}</span>,
+      render: (text) => <div className="regionNameText" title={text}>{text}</div>,
     }, {
       title: '时间',
       width: (otherCol.length > 9) ? 120 : 0,
       dataIndex: 'reportDate',
-      className: 'reportDate',
+      textAlign: 'center',
       fixed: (otherCol.length > 9) ? 'left' : 'false',
-      render: (text) => <span title={text}>{text}</span>,
+      render: (text) => <div title={text}>{text}</div>,
     }];
 
     return (
@@ -127,7 +131,7 @@ class QuotaList extends Component {
           />
         </div>
 
-        <Table
+        <CneTable
           loading={tableLoading}
           dataSource={dataList && dataList.map((e, i) => ({ ...e, key: i }))}
           columns={columns.concat(otherCol)}

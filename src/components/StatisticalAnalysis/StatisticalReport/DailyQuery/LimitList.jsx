@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Table, Icon } from 'antd';
+import { Button } from 'antd';
+import CneTable from '@components/Common/Power/CneTable';
 import path from '../../../../constants/path';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
@@ -75,76 +76,81 @@ class LimitList extends Component {
       dataIndex: 'stationName',
       className: 'stationName',
       fixed: 'left',
-      render: (text) => <div title={text}>{text || '--'}</div>,
+      textAlign: 'left',
+      render: (text) => <div className="stationNameText" title={text}>{text || '--'}</div>,
     }, {
       title: '区域',
       width: 80,
       dataIndex: 'regionName',
       className: 'regionName',
       fixed: 'left',
-      render: (text) => <div title={text}>{text || '--'}</div>,
+      textAlign: 'left',
+      render: (text) => <div className="regionNameText" title={text}>{text || '--'}</div>,
     }, {
       title: '设备类型',
       width: 110,
       dataIndex: 'deviceTypeName',
       className: 'deviceTypeName',
       fixed: 'left',
-      render: (text) => <div title={text}>{text || '--'}</div>,
+      textAlign: 'left',
+      render: (text) => <div className="deviceTypeNameText" title={text}>{text || '--'}</div>,
     }, {
       title: '设备名称',
       width: 100,
       dataIndex: 'deviceName',
       className: 'deviceName',
       fixed: 'left',
-      render: (text) => <div title={text}>{text || '--'}</div>,
+      textAlign: 'left',
+      render: (text) => <div className="deviceNameText" title={text}>{text || '--'}</div>,
     }, {
       title: '限功率',
-      width: 100,
       dataIndex: 'limitPower',
-      className: 'limitPower',
+      className: 'numberStyle',
+      textAlign: 'right',
       render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}%</div>,
     }, {
       title: '开始时间',
-      width: 150,
       dataIndex: 'startTime',
-      className: 'startTime',
+      className: 'numberStyle',
+      textAlign: 'center',
       render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: '截至时间',
-      width: 150,
       dataIndex: 'endTime',
-      className: 'endTime',
+      className: 'numberStyle',
+      textAlign: 'center',
       render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
       title: () => <TableColumnTitle title="总时长" unit="h" />,
-      width: 100,
       dataIndex: 'totalHours',
       className: 'numberStyle',
+      textAlign: 'right',
       render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: () => <TableColumnTitle title="总损失电量" unit="kWh" />,
-      width: 100,
       dataIndex: 'totalGen',
       className: 'numberStyle',
+      textAlign: 'right',
       render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: () => <TableColumnTitle title="统计时长" unit="h" />,
-      width: 100,
       dataIndex: 'statisticsHours',
       className: 'numberStyle',
+      textAlign: 'right',
       render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: () => <TableColumnTitle title="统计损失电量" unit="kWh" />,
-      width: 100,
       dataIndex: 'statisticsGen',
       className: 'numberStyle',
+      textAlign: 'right',
       render: (text) => <div title={text}>{(dataFormats(text, '--', 2, true))}</div>,
     }, {
       title: '原因',
       width: 170,
       dataIndex: 'reason',
       className: 'reason',
-      render: (text) => <div title={text}>{text || '--'}</div>,
+      textAlign: 'left',
+      render: (text) => <div className="reasonText" title={text}>{text || '--'}</div>,
     }];
 
     return (
@@ -164,8 +170,7 @@ class LimitList extends Component {
             onPaginationChange={this.onPaginationChange}
           />
         </div>
-
-        <Table
+        <CneTable
           loading={tableLoading}
           dataSource={dataList && dataList.map((e, i) => ({ ...e, key: i }))}
           columns={columns}
