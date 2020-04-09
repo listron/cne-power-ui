@@ -21,8 +21,8 @@ var initState = Immutable.fromJS({
 
   pageSize: 10,
   pageNum: 1,
-  orderField: '',
-  orderCommand: '',
+  orderField: '1',
+  orderCommand: '1',
 
   alarmStatistic: [], //多电站
   singleAlarmStatistic: [], //单电站
@@ -38,7 +38,7 @@ const alarmStatisticReducer = (state = initState, action) => {
   switch (action.type) {
     case alarmAction.ALARM_STATISTIC_FETCH:
       return state.set('loading', true);
-      case alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS:
+    case alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS:
       return state.merge(Immutable.fromJS(action.payload)).set('loading', false);
     case alarmAction.changeAlarmStatisticStore:
       return state.merge(Immutable.fromJS(action.payload));

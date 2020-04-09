@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './alarmStatistic.scss';
-import { Table } from 'antd';
 import moment from 'moment';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../utils/utilFunc';
+import CneTable from '../../../Common/Power/CneTable';
 
 class AlarmSingleStationTable extends React.Component {
   static propTypes = {
@@ -21,19 +21,30 @@ class AlarmSingleStationTable extends React.Component {
     changeAlarmStatisticStore: PropTypes.func,
     singleChartLoading: PropTypes.bool,
     count: PropTypes.number,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
   }
 
   onChangeTable = (pagination, filters, sorter) => {
-    const { getSingleStationAlarmStatistic, changeAlarmStatisticStore, stationCode, startTime, endTime, pageSize, pageNum, summaryType } = this.props;
+    const { getSingleStationAlarmStatistic, changeAlarmStatisticStore, stationCode, startTime, endTime, pageSize, pageNum, summaryType, orderField, orderCommand } = this.props;
     const field = sorter.field;
     const arr = ['time', 'alarmNum', 'transferWorkAlarmNum', 'noTransferWorkAlarmNum', 'transferWorkRate'];
+
+    let newOrderField = orderField, newOrderCommand = '2';
+    if (!field || (`${arr.findIndex(e => e === field) + 1}` === newOrderField)) { // 点击的是正在排序的列
+      newOrderCommand = orderCommand === '1' ? '2' : '1'; // 交换排序方式
+    } else { // 切换列
+      newOrderField = `${arr.findIndex(e => e === field) + 1}`;
+    }
     changeAlarmStatisticStore({
-      orderField: (arr.indexOf(field) + 1).toString(),
-      orderCommand: sorter.order === 'ascend' ? '1' : '2',
+      orderField: newOrderField,
+      orderCommand: newOrderCommand,
     });
 
     getSingleStationAlarmStatistic({
-      stationCode, startTime, endTime, pageSize, pageNum, orderField: (arr.indexOf(field) + 1).toString(), orderCommand: sorter.order === 'ascend' ? '1' : '2', summaryType,
+      stationCode, startTime, endTime, pageSize, pageNum,
+      orderField: newOrderField,
+      orderCommand: newOrderCommand,
     });
   }
 
@@ -44,6 +55,8 @@ class AlarmSingleStationTable extends React.Component {
         dataIndex: 'time',
         key: 'time',
         sorter: true,
+        textAlign: 'center',
+        width: '20%',
         render: (text, record) => moment(text).format('YYYY-MM-DD'),
       },
       {
@@ -52,6 +65,8 @@ class AlarmSingleStationTable extends React.Component {
         key: 'alarmNum',
         sorter: true,
         render: value => numWithComma(value),
+        textAlign: 'right',
+        width: '20%',
       },
       {
         title: '转工单数',
@@ -59,6 +74,8 @@ class AlarmSingleStationTable extends React.Component {
         key: 'transferWorkAlarmNum',
         sorter: true,
         render: value => numWithComma(value),
+        textAlign: 'right',
+        width: '20%',
       },
       {
         title: '未转工单数',
@@ -66,31 +83,40 @@ class AlarmSingleStationTable extends React.Component {
         key: 'noTransferWorkAlarmNum',
         sorter: true,
         render: value => numWithComma(value),
+        textAlign: 'right',
+        width: '20%',
       },
       {
-        title: () => <TableColumnTitle title="转工单率" unit="%" />,
+        title: () => '转工单率(%)',
         dataIndex: 'transferWorkRate',
         render: value => numWithComma(value),
         sorter: true,
+        textAlign: 'right',
+        width: '20%',
       },
     ];
     return columns;
   }
 
   render() {
-    const { singleAlarmStatistic, pageNum, pageSize, onPaginationChange, singleChartLoading, count } = this.props;
+    const { singleAlarmStatistic, pageNum, pageSize, onPaginationChange, singleChartLoading, count, orderField, orderCommand } = this.props;
+    const colunmnKeys = ['time', 'alarmNum', 'transferWorkAlarmNum', 'noTransferWorkAlarmNum', 'transferWorkRate'];
+    const sortMethod = ['ascend', 'descend'];
     return (
       <div className={styles.singleStationTable}>
         <div className={styles.pagination}>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={count} onPaginationChange={onPaginationChange} />
         </div>
-        <Table
-          loading={singleChartLoading}
+        <CneTable
           columns={this.renderColumn()}
           dataSource={singleAlarmStatistic.map((e, i) => ({ ...e, key: i }))}
-          onChange={this.onChangeTable}
           pagination={false}
-          locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }} />
+          loading={singleChartLoading}
+          // dataError={diagnoseListError}
+          sortField={colunmnKeys[orderField - 1]}
+          sortMethod={sortMethod[orderCommand - 1]}
+          onChange={this.onChangeTable}
+        />
       </div>
     );
   }
