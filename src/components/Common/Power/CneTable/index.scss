@@ -108,10 +108,16 @@
         &:vertical{
           display: none;
         }
+        &:horizontal{
+          height: 10px;
+        }
       }
       &::-webkit-scrollbar-thumb{
         border-radius: 4px;
         background-color: rgba(0, 0, 0, 0.5);
+      }
+      &::-webkit-scrollbar-thumb:horizontal{
+        border-radius: 5px;
       }
     }
   }

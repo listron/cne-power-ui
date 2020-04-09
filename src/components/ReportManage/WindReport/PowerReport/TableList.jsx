@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './powerReport.scss';
-import { Table } from 'antd';
+import CneTable from '@components/Common/Power/CneTable';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma, dataFormats } from '../../../../utils/utilFunc';
@@ -9,31 +9,26 @@ import { numWithComma, dataFormats } from '../../../../utils/utilFunc';
 
 class TableList extends Component {
   static propTypes = {
-    getPowerReportList: PropTypes.func,
     changePowerReportStore: PropTypes.func,
     onChangeFilter: PropTypes.func,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     total: PropTypes.number,
-    dateType: PropTypes.number,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
-    summaryType: PropTypes.number,
-    summaryData: PropTypes.array,
     powerReportList: PropTypes.array,
+    filterTable: PropTypes.number,
+    loading: PropTypes.bool,
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
-    filterTable: PropTypes.number,
-
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
     this.props.changePowerReportStore({ pageNum: currentPage, pageSize });
     this.props.onChangeFilter({ pageNum: currentPage, pageSize });
   }
+
   ontableSort = (pagination, filter, sorter) => {
-    const { onChangeFilter } = this.props;
-    const { field, order } = sorter;
+    const { sortField, sortMethod } = this.props;
+    const { field } = sorter;
     const sortInfo = {
       regionName: '0',
       stationName: '1',
@@ -49,10 +44,14 @@ class TableList extends Component {
       faultGen: '11',
       faultHours: '12',
     };
-    const sortField = sortInfo[field] ? sortInfo[field] : '';
-    const sortMethod = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
-    this.props.changePowerReportStore({ sortField, sortMethod });
-    onChangeFilter({ sortField, sortMethod });
+    let newField = sortField, newSort = 'desc';
+    if (!field || field === sortInfo[field]) { // 点击同一列
+      newSort = sortMethod === 'desc' ? 'asc' : 'desc';
+    } else { // 换列排序
+      newField = sortInfo[field];
+    }
+    this.props.changePowerReportStore({ sortField: newField, sortMethod: newSort });
+    this.props.onChangeFilter({ sortField: newField, sortMethod: newSort });
   }
 
   initMonthColumn = () => {
@@ -61,23 +60,26 @@ class TableList extends Component {
       title: '区域',
       dataIndex: 'regionName',
       sorter: true,
+      textAlign: 'left',
       className: styles.regionName,
       render: (text) => {
         return <div className={styles.regionName} title={text}>{text}</div>;
       },
-    },
-    {
+    }, {
       title: '电站名称',
       dataIndex: 'stationName',
       sorter: true,
+      textAlign: 'left',
+      className: styles.stationName,
       render: (text) => {
         return <div className={styles.stationName} title={text}>{text}</div>;
       },
-    },
-    {
+    }, {
       title: '设备型号',
       dataIndex: 'deviceModeName',
       sorter: true,
+      className: styles.deviceName,
+      textAlign: 'left',
       render: (text) => {
         return <div className={styles.deviceModeName} title={text}>{text}</div>;
       },
@@ -87,101 +89,105 @@ class TableList extends Component {
         title: '区域',
         dataIndex: 'regionName',
         sorter: true,
+        textAlign: 'left',
+        className: styles.regionName,
         render: (text) => {
-          return <div className={styles.regionName} title={text}>{text}</div>;
+          return <div className={styles.regionNameText} title={text}>{text}</div>;
         },
-        // width:40,
-      },
-      {
+      }, {
         title: '电站名称',
         dataIndex: 'stationName',
+        className: styles.stationName,
+        textAlign: 'left',
         sorter: true,
         render: (text) => {
-          return <div className={styles.stationName} title={text}>{text}</div>;
+          return <div className={styles.stationNameText} title={text}>{text}</div>;
         },
-      },
-      {
+      }, {
         title: '设备名称',
+        textAlign: 'left',
         dataIndex: 'deviceName',
+        className: styles.deviceName,
         sorter: true,
         render: (text) => {
-          return <div className={styles.deviceName} title={text}>{text}</div>;
+          return <div className={styles.deviceNameText} title={text}>{text}</div>;
         },
-      },
-      {
+      }, {
         title: '风机型号',
+        textAlign: 'left',
         dataIndex: 'deviceModeName',
+        className: styles.deviceModeName,
         sorter: true,
         render: (text) => {
-          return <div className={styles.deviceModeName} title={text}>{text}</div>;
+          return <div className={styles.deviceModeNameText} title={text}>{text}</div>;
         },
       },
     ];
     const show = filterTable > 3 ? filterShow.slice(0, filterTable) : filterDevice.slice(0, filterTable);
     const columns = [
-
       {
         title: '统计时段',
         dataIndex: 'date',
+        textAlign: 'center',
         sorter: true,
+        className: styles.shortQuota,
         render(text) { return text.replace(/-/g, '/').replace(',', '-'); },
-      },
-      {
+      }, {
         title: () => <TableColumnTitle title="平均风速" unit="m/s" />,
         dataIndex: 'windSpeedAvg',
+        textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.numRight,
-
-      },
-      {
+        className: styles.shortQuota,
+      }, {
         title: () => <TableColumnTitle title="发电量" unit="kWh" />,
         dataIndex: 'genValid',
+        textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.numRight,
-      },
-
-      {
+        className: styles.shortQuota,
+      }, {
         title: () => <TableColumnTitle title="发电时间" unit="h" />,
         dataIndex: 'genTime',
+        textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.numRight,
-      },
-      {
+        className: styles.shortQuota,
+      }, {
         title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
         dataIndex: 'equivalentHours',
+        textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.numRight,
-      },
-      {
+        className: styles.longQuota,
+      }, {
         title: () => <TableColumnTitle title="限电损失电量" unit="kWh" />,
         dataIndex: 'limitGen',
+        textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.numRight,
-      },
-      {
+        className: styles.longQuota,
+      }, {
         title: () => <TableColumnTitle title="限电时长" unit="h" />,
         dataIndex: 'limitTime',
+        textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.numRight,
-      },
-      {
+        className: styles.shortQuota,
+      }, {
         title: () => <TableColumnTitle title="故障损失电量" unit="kWh" />,
         dataIndex: 'faultGen',
+        textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.numRight,
+        className: styles.longQuota,
       }, {
         title: () => <TableColumnTitle title="故障时长" unit="h" />,
         dataIndex: 'faultHours',
+        textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.numRight,
+        className: styles.shortQuota,
       },
     ];
     columns.unshift(...show);
@@ -190,19 +196,22 @@ class TableList extends Component {
 
 
   render() {
-    const { total, pageSize, pageNum, loading, powerReportList, filterTable } = this.props;
+    const { total, pageSize, pageNum, loading, powerReportList, filterTable, sortField, sortMethod } = this.props;
     const columns = this.initMonthColumn();
     const dataSource = powerReportList.map((e, i) => ({
       ...e, key: i,
     }));
-    const xWidth = [1110, 1210, 1310, 1410];
+    const xWidth = [1090, 1220, 1350, 1480];
+    const sortMap = ['regionName', 'stationName', 'deviceName', 'deviceModeName', 'time', 'windSpeedAvg', 'genValid', 'genTime', 'equivalentHours', 'limitGen', 'limitTime', 'faultGen', 'faultHours'];
     return (
       <React.Fragment>
         <div className={styles.tableHeader}>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table
+        <CneTable
           loading={loading}
+          sortField={sortMap[sortField]}
+          sortMethod={sortMethod === 'desc' ? 'descend' : 'ascend'}
           columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}

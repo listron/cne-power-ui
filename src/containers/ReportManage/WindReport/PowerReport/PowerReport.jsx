@@ -35,7 +35,7 @@ class PowerReport extends Component {
 
   checkPv = () => this.props.changePowerReportStore({ selectStationType: '1' }) // 选中光伏电站
   render() {
-    const { stationTypeCount, selectStationType } = this.props;
+    // const { stationTypeCount, selectStationType } = this.props;
     return (
       <div className={styles.containerDiv}>
         <div className={styles.containerBg}>
