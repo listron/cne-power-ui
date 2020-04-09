@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './assetStructure.scss';
-import { Radio, Button, Table, Tree } from 'antd';
+import { Button, Tree } from 'antd';
 import AddNodeFrom from './AddNodeFrom';
 import EditNodeFrom from './EditNodeFrom';
 import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
-import { handleRights, handleRight } from '@utils/utilFunc';
+import { handleRight } from '@utils/utilFunc';
+import CneTable from '@components/Common/Power/CneTable';
 
 const { TreeNode } = Tree;
 class AssetStructure extends React.Component {
@@ -150,37 +151,55 @@ class AssetStructure extends React.Component {
     const baseColumns = [
       {
         title: '编码',
+        width: '6%',
         dataIndex: 'assetsCode',
+        textAlign: 'center',
         render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '节点名称',
+        width: '25%',
+        textAlign: 'left',
         dataIndex: 'assetsName',
-        render: (text) => <span title={text}>{text}</span>,
+        render: (text) => <div className={styles.nodeName} title={text}>{text}</div>,
       }, {
         title: '节点类型',
+        width: '12%',
+        textAlign: 'left',
         dataIndex: 'assetsType',
         render: (text) => <span title={text}>{text === 1 ? '系统' : text === 2 ? '设备' : '部件'}</span>,
       }, {
         title: '计量单位',
+        width: '14%',
+        textAlign: 'left',
         dataIndex: 'assetsUnit',
         render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '创建时间',
+        width: '21%',
+        textAlign: 'center',
         dataIndex: 'createTime',
         render: (text) => <span title={moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>,
       }, {
         title: '操作人',
+        width: '15%',
+        textAlign: 'left',
         dataIndex: 'operateUser',
-        render: (text) => <span title={text ? text : '系统'}>{text ? text : '系统'}</span>,
+        render: (text) => <div className={styles.operateUserName} title={text ? text : '系统'}>{text ? text : '系统'}</div>,
       }
     ];
     const columns = operateRight ? baseColumns.concat({
       title: '操作',
+      width: '7%',
+      textAlign: 'center',
       dataIndex: 'handle',
-      render: (text, record, index) => {
+      render: (text, record) => {
         return record.isBuild ? <span title="删除" className="iconfont icon-del" onClick={() => this.deleteNode(record)}></span> : '';
       },
     }) : baseColumns;
+    const { clientHeight } = document.body;
+    // footer 60; thead: 36; 添加子节点按钮: 32; 添加子节点按钮margin: 16; tabs: 40; padding 15; h:40; 添加子节点弹框: 270;
+    // operateRight && editNode判断添加子节点弹框是否打开，打开多减一个270
+    const tableListHeight = addNode ? clientHeight - 508 : clientHeight - 238;
     return (
       <div className={styles.box}>
         <div className={styles.titleType} >
@@ -214,12 +233,14 @@ class AssetStructure extends React.Component {
             }
             {operateRight && editNode && <EditNodeFrom {...this.props} closeFrom={this.closeEditFrom} assetsType={assetsType} />}
             {
-              <Table
+              <CneTable
                 loading={false}
                 dataSource={childrenNodeDetail}
                 columns={columns}
+                scroll={{ y: tableListHeight }}
+                rowKey={(record, index) => index || 'key'}
                 pagination={false}
-                childrenColumnName={['childrens']}
+                childrenColumnName="childrens"
                 locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
               />
             }

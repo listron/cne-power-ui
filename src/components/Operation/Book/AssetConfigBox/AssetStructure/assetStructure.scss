@@ -62,7 +62,12 @@
 
       :global {
         .icon-del {
+          cursor: pointer;
           color: #199475;
+
+          &:hover{
+            color: #f9b600;
+          }
         }
       }
 
@@ -131,6 +136,16 @@
           }
 
         }
+      }
+
+      .nodeName{
+        max-width: calc((100vw - 748px) * 0.25);
+        @include overflowText();
+      }
+
+      .operateUserName{
+        max-width: calc((100vw - 748px) * 0.15);
+        @include overflowText();
       }
 
 
