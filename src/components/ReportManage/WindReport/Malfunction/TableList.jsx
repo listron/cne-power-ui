@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './malfunction.scss';
-import { Table, Radio } from 'antd';
+import { Radio } from 'antd';
+import CneTable from '@components/Common/Power/CneTable';
 import CommonPagination from '../../../Common/CommonPagination';
-import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma, dataFormats } from '../../../../utils/utilFunc';
 
 
 class TableList extends Component {
   static propTypes = {
+    loading: PropTypes.bool,
     getMalfunctionList: PropTypes.func,
     changeMalfunctionStore: PropTypes.func,
     getMalfunctionDetail: PropTypes.func,
@@ -16,25 +17,20 @@ class TableList extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     total: PropTypes.number,
-    dateType: PropTypes.number,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
-    summaryType: PropTypes.number,
     filterTable: PropTypes.number,
-    summaryData: PropTypes.array,
     malfunctionList: PropTypes.array,
     malfunctionDetailList: PropTypes.array,
     tableType: PropTypes.string,
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
-    pageNum: PropTypes.number,
-    pageSize: PropTypes.number,
     params: PropTypes.object,
   }
+
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
     this.props.changeMalfunctionStore({ pageNum: currentPage, pageSize });
     this.props.onChangeFilter({ pageNum: currentPage, pageSize });
   }
+
   ontableSort = (pagination, filter, sorter) => {
     const { onChangeFilter, tableType } = this.props;
     const { field, order } = sorter;
@@ -49,7 +45,6 @@ class TableList extends Component {
       faultHours: '7',
       faultGen: '8',
       faultDescribe: '9',
-
     };
     const detailSortInfo = {
       regionName: '0',
@@ -75,39 +70,53 @@ class TableList extends Component {
       title: '区域',
       dataIndex: 'regionName',
       sorter: true,
-      // width:40,
-    },
-    {
+      textAlign: 'left',
+      className: styles.regionName,
+      render: (text) => <div className={styles.regionNameText} title={text}>{text}</div>,
+    }, {
       title: '电站名称',
       dataIndex: 'stationName',
       sorter: true,
-    },
-    {
+      textAlign: 'left',
+      className: styles.stationName,
+      render: (text) => <div className={styles.stationNameText} title={text}>{text}</div>,
+    }, {
       title: '设备型号',
       dataIndex: 'deviceModeName',
       sorter: true,
-    } ];
+      textAlign: 'left',
+      className: styles.deviceModeName,
+      render: (text) => <div className={styles.deviceModeNameText} title={text}>{text}</div>,
+    }];
     const filterShow = [
       {
         title: '区域',
         dataIndex: 'regionName',
         sorter: true,
-        // width:40,
-      },
-      {
+        textAlign: 'left',
+        className: styles.regionName,
+        render: (text) => <div className={styles.regionNameText} title={text}>{text}</div>,
+      }, {
         title: '电站名称',
         dataIndex: 'stationName',
         sorter: true,
-      },
-      {
+        textAlign: 'left',
+        className: styles.stationName,
+        render: (text) => <div className={styles.stationNameText} title={text}>{text}</div>,
+      }, {
         title: '设备名称',
         dataIndex: 'deviceName',
         sorter: true,
-      },
-      {
+        textAlign: 'left',
+        className: styles.deviceName,
+        render: (text) => <div className={styles.deviceNameText} title={text}>{text}</div>,
+      }, {
         title: '风机型号',
         dataIndex: 'deviceModeName',
         sorter: true,
+        textAlign: 'left',
+        className: styles.deviceModeName,
+        render: (text) => <div className={styles.deviceModeNameText} title={text}>{text}</div>,
       },
     ];
 
@@ -117,53 +126,57 @@ class TableList extends Component {
         title: '区域',
         dataIndex: 'regionName',
         sorter: true,
-        // width:40,
-      },
-      {
+        textAlign: 'left',
+        className: styles.regionName,
+        render: (text) => <div className={styles.regionNameText} title={text}>{text}</div>,
+      }, {
         title: '电站名称',
         dataIndex: 'stationName',
         sorter: true,
+        textAlign: 'left',
+        className: styles.stationName,
+        render: (text) => <div className={styles.stationNameText} title={text}>{text}</div>,
       }, {
         title: '故障描述',
         dataIndex: 'deviceFaultName',
         sorter: true,
-        defaultSortOrder: 'ascend',
+        textAlign: 'left',
+        className: styles.deviceFaultName,
+        render: (text) => <div className={styles.deviceFaultNameText} title={text}>{text}</div>,
       }];
-
     const columns = [
       {
         title: '统计时段',
         dataIndex: 'date',
         sorter: true,
+        textAlign: 'center',
         render(text) { return text.replace(/-/g, '/').replace(',', '-'); },
-      },
-      {
+      }, {
         title: '次数',
         dataIndex: 'num',
         sorter: true,
+        textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         className: styles.numRight,
-      },
-
-      {
-        title: () => <TableColumnTitle title="故障时长" unit="s" />,
+      }, {
+        title: '故障时长(s)',
         dataIndex: 'faultTime',
         sorter: true,
+        textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         className: styles.numRight,
-      },
-      {
-        title: () => <TableColumnTitle title="故障小时数" unit="h" />,
+      }, {
+        title: '故障小时数(h)',
         dataIndex: 'faultHours',
         sorter: true,
+        textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         className: styles.numRight,
-      },
-
-      {
+      }, {
         title: '损失电量',
         dataIndex: 'faultGen',
         sorter: true,
+        textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         className: styles.numRight,
       },
@@ -171,6 +184,7 @@ class TableList extends Component {
     filterTable > 4 ? columns.unshift(...showFault) : columns.unshift(...show);
     return columns;
   }
+
   detailColumn = () => {
     const columns = [
       {
@@ -179,8 +193,7 @@ class TableList extends Component {
         sorter: true,
         fixed: 'left',
         width: 80,
-      },
-      {
+      }, {
         title: '电站名称',
         dataIndex: 'stationName',
         sorter: true,
@@ -227,21 +240,19 @@ class TableList extends Component {
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
-        title: () => <TableColumnTitle title="故障时长" unit="s" />,
+        title: '故障时长(s)',
         dataIndex: 'faultTime',
         sorter: true,
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         className: styles.numRight,
-      },
-      {
-        title: () => <TableColumnTitle title="故障小时数" unit="h" />,
+      }, {
+        title: '故障小时数(h)',
         dataIndex: 'faultHours',
         sorter: true,
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         className: styles.numRight,
-
       }, {
         title: '损失电量',
         dataIndex: 'faultGen',
@@ -263,7 +274,6 @@ class TableList extends Component {
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         className: styles.numRight,
-
       }, {
         title: '发电机转速',
         dataIndex: 'speed',
@@ -275,20 +285,20 @@ class TableList extends Component {
         title: '桨叶角',
         dataIndex: 'bladeAngle',
         sorter: true,
-        // width:112,
+        width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         className: styles.numRight,
       },
     ];
     return columns;
   }
+
   changeTable = (e) => {
     const tableType = e.target.value;
     this.props.changeMalfunctionStore({ tableType });
     tableType === 'all' && this.props.getMalfunctionList({ ...this.props.params });
     tableType === 'detail' && this.props.getMalfunctionDetail({ ...this.props.params });
   }
-
 
   render() {
     const { total, pageSize, pageNum, malfunctionList, tableType, malfunctionDetailList, loading } = this.props;
@@ -305,12 +315,12 @@ class TableList extends Component {
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table
+        <CneTable
           loading={loading}
           columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={tableType === 'detail' ? { x: 1900 } : { x: 0 }}
+          scroll={tableType === 'detail' ? { x: 1804 } : { x: 0 }}
           className={styles.tableStyles}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           pagination={false} />
