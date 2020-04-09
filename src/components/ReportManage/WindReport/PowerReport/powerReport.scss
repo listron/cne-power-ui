@@ -32,15 +32,18 @@
       border: none
     }
   }
-  .regionNameText, .stationNameText, .deviceNameText, .deviceModeNameText, .shortQuota, .longQuota{
+  .regionNameText, .stationNameText, .deviceNameText, .deviceModeNameText{
     @include overflowText();
-    width: 130px;
+    width: 120px;
   }
   .regionName{
     width: 100px;
   }
   .regionNameText{
     width: 80px;
+  }
+  .stationName, .deviceName, .deviceModeName{
+    width: 130px;
   }
   .shortQuota{
     width: 100px;

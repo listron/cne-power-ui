@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceStatus.scss';
-import { Table, Radio } from 'antd';
+import { Radio } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination';
-import TableColumnTitle from '../../../Common/TableColumnTitle';
+import CneTable from '@components/Common/Power/CneTable';
 import { numWithComma, dataFormats } from '../../../../utils/utilFunc';
 
 
 class TableList extends Component {
   static propTypes = {
+    loading: PropTypes.bool,
     getDeviceStatusList: PropTypes.func,
     changeDeviceStatusStore: PropTypes.func,
     onChangeFilter: PropTypes.func,
@@ -17,11 +18,6 @@ class TableList extends Component {
     pageSize: PropTypes.number,
     total: PropTypes.number,
     filterTable: PropTypes.number,
-    dateType: PropTypes.number,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
-    summaryType: PropTypes.number,
-    summaryData: PropTypes.array,
     deviceStatusList: PropTypes.array,
     statusDetailList: PropTypes.array,
     tableType: PropTypes.string,
@@ -35,9 +31,10 @@ class TableList extends Component {
     this.props.changeDeviceStatusStore({ pageNum: currentPage, pageSize });
     this.props.onChangeFilter({ pageNum: currentPage, pageSize });
   }
+
   ontableSort = (pagination, filter, sorter) => {
-    const { onChangeFilter, tableType } = this.props;
-    const { field, order } = sorter;
+    const { onChangeFilter, tableType, sortField, sortMethod } = this.props;
+    const { field } = sorter;
     const sortInfo = {
       regionName: '0',
       stationName: '1',
@@ -61,162 +58,181 @@ class TableList extends Component {
       statusHours: '7',
       statusDescribe: '8',
     };
-    const sortField = tableType === 'all' ? (sortInfo[field] ? sortInfo[field] : '') : (detailSortInfo[field] ? detailSortInfo[field] : '');
-    const sortMethod = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
-    this.props.changeDeviceStatusStore({ sortField, sortMethod });
-    onChangeFilter({ sortField, sortMethod });
+    let newField = sortField, newSort = 'desc';
+    const tmpTableField = tableType === 'all' ? sortInfo[field] : detailSortInfo[field];
+    if (!field || field === tmpTableField) { // 同列点击
+      newSort = sortMethod === 'desc' ? 'asc' : 'desc';
+    } else { // 换列排序
+      newField = tmpTableField;
+    }
+    this.props.changeDeviceStatusStore({ sortField: newField, sortMethod: newSort });
+    onChangeFilter({ sortField: newField, sortMethod: newSort });
   }
+
   initMonthColumn = () => {
     const { filterTable } = this.props;
-
     const filterDevice = [{
       title: '区域',
       dataIndex: 'regionName',
+      textAlign: 'left',
+      className: styles.regionName,
+      render: (text) => <div className={styles.regionNameText} title={text}>{text}</div>,
       sorter: true,
-      // width:40,
-    },
-    {
+    }, {
       title: '电站名称',
+      textAlign: 'left',
+      className: styles.stationName,
       dataIndex: 'stationName',
       sorter: true,
-    },
-    {
+      render: (text) => <div className={styles.stationNameText} title={text}>{text}</div>,
+    }, {
       title: '设备型号',
       dataIndex: 'deviceModeName',
+      textAlign: 'left',
+      className: styles.deviceModeName,
       sorter: true,
+      render: (text) => <div className={styles.deviceModeNameText} title={text}>{text}</div>,
     }];
     const filterShow = [
       {
         title: '区域',
         dataIndex: 'regionName',
+        textAlign: 'left',
+        className: styles.regionName,
         sorter: true,
-        // width:40,
-      },
-      {
+        render: (text) => <div className={styles.regionNameText} title={text}>{text}</div>,
+      }, {
         title: '电站名称',
+        className: styles.stationName,
         dataIndex: 'stationName',
         sorter: true,
-      },
-      {
+        textAlign: 'left',
+        render: (text) => <div className={styles.stationNameText} title={text}>{text}</div>,
+      }, {
         title: '设备名称',
         dataIndex: 'deviceName',
+        className: styles.deviceName,
         sorter: true,
-      },
-      {
+        textAlign: 'left',
+        render: (text) => <div className={styles.deviceNameText} title={text}>{text}</div>,
+      }, {
         title: '风机型号',
         dataIndex: 'deviceModeName',
+        className: styles.deviceModeName,
         sorter: true,
+        textAlign: 'left',
+        render: (text) => <div className={styles.deviceModeNameText} title={text}>{text}</div>,
       },
     ];
     const show = filterTable > 3 ? filterShow.slice(0, filterTable) : filterDevice.slice(0, filterTable);
-    const showStatus = {
-      title: '统计时段',
-      dataIndex: 'date',
-      sorter: true,
-      render(text) { return text.replace(/-/g, '/').replace(',', '-'); },
-    };
     const columns = [{
       title: '统计时段',
       dataIndex: 'date',
       sorter: true,
+      textAlign: 'center',
+      className: styles.quotaVal,
       render(text) { return text.replace(/-/g, '/').replace(',', '-'); },
     }, {
       title: '设备状态',
       dataIndex: 'deviceStatusName',
+      className: styles.quotaVal,
+      textAlign: 'left',
       sorter: true,
-
-    },
-    {
+    }, {
       title: '次数',
       dataIndex: 'num',
+      className: styles.num,
       sorter: true,
+      textAlign: 'right',
       render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-      className: styles.numRight,
-    },
-
-    {
-      title: () => <TableColumnTitle title="状态时长" unit="s" />,
+    }, {
+      title: '状态时长(s)',
       dataIndex: 'statusTime',
       sorter: true,
+      textAlign: 'right',
       render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-      className: styles.numRight,
-    },
-    {
-      title: () => <TableColumnTitle title="状态小时数" unit="h" />,
+      className: styles.quotaVal,
+    }, {
+      title: '状态小时数(h)',
       dataIndex: 'statusHours',
       sorter: true,
+      textAlign: 'right',
       render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-      className: styles.numRight,
-    },
-
-    {
+      className: styles.quotaVal,
+    }, {
       title: '平均时长',
       dataIndex: 'avgTime',
       sorter: true,
-      className: styles.numRight,
-
-    },
-    ];
+      textAlign: 'right',
+      className: styles.quotaVal,
+    }];
     filterTable > 4 ? columns : columns.unshift(...show);
     return columns;
   }
+
   detailColumn = () => {
     const columns = [
       {
         title: '区域',
         dataIndex: 'regionName',
+        className: styles.regionName,
+        textAlign: 'left',
         sorter: true,
-        // width:40,
-      },
-      {
+        render: (text) => <div className={styles.regionNameText} title={text}>{text}</div>,
+      }, {
         title: '电站名称',
         dataIndex: 'stationName',
+        textAlign: 'left',
+        className: styles.stationName,
         sorter: true,
-      },
-      {
+        render: (text) => <div className={styles.stationNameText} title={text}>{text}</div>,
+      }, {
         title: '设备名称',
         dataIndex: 'deviceName',
+        textAlign: 'left',
+        className: styles.deviceName,
         sorter: true,
-      },
-      {
+        render: (text) => <div className={styles.deviceNameText} title={text}>{text}</div>,
+      }, {
         title: '风机型号',
         dataIndex: 'deviceModeName',
+        textAlign: 'left',
+        className: styles.deviceModeName,
         sorter: true,
-      },
-
-      {
+        render: (text) => <div className={styles.deviceModeNameText} title={text}>{text}</div>,
+      }, {
         title: '设备状态',
+        textAlign: 'left',
         dataIndex: 'deviceStatus',
+        className: styles.quotaVal,
         sorter: true,
-
-      },
-      {
+      }, {
         title: '发生时间',
+        textAlign: 'center',
         dataIndex: 'happenTime',
+        className: styles.quotaVal,
         sorter: true,
-      },
-      {
-        title: () => <TableColumnTitle title="状态时长" unit="s" />,
+      }, {
+        title: '状态时长(s)',
+        textAlign: 'right',
         dataIndex: 'statusTime',
         sorter: true,
+        className: styles.quotaVal,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
-
-      },
-      {
-        title: () => <TableColumnTitle title="状态小时数" unit="h" />,
+      }, {
+        title: '状态小时数(h)',
         dataIndex: 'statusHours',
         sorter: true,
+        textAlign: 'right',
+        className: styles.quotaVal,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
-
-      },
-
-      {
+      }, {
         title: '状态描述',
+        className: styles.statusDescribe,
         dataIndex: 'statusDescribe',
         sorter: true,
-
+        textAlign: 'left',
+        render: (text) => <div className={styles.statusDescribeText} title={text}>{text}</div>,
       },
     ];
     return columns;
@@ -224,15 +240,17 @@ class TableList extends Component {
 
   changeTable = (e) => {
     const tableType = e.target.value;
-    this.props.changeDeviceStatusStore({ tableType });
-    tableType === 'all' && this.props.getDeviceStatusList({ ...this.props.params });
-    tableType === 'detail' && this.props.getDeviceStatusDetail({ ...this.props.params });
+    this.props.changeDeviceStatusStore({ tableType, sortField: '0', sortMethod: 'asc' });
+    tableType === 'all' && this.props.getDeviceStatusList({ ...this.props.params, sortField: '0', sortMethod: 'asc' });
+    tableType === 'detail' && this.props.getDeviceStatusDetail({ ...this.props.params, sortField: '0', sortMethod: 'asc' });
   }
 
   render() {
-    const { total, pageSize, pageNum, deviceStatusList, tableType, statusDetailList, loading } = this.props;
+    const { total, pageSize, pageNum, deviceStatusList, tableType, statusDetailList, loading, sortField, sortMethod } = this.props;
     const columns = tableType === 'all' ? this.initMonthColumn() : this.detailColumn();
     const dataSource = tableType === 'all' ? deviceStatusList.map((e, i) => ({ ...e, key: i })) : statusDetailList.map((e, i) => ({ ...e, key: i }));
+    const sortInfoMap = ['regionName', 'stationName', 'deviceName', 'deviceModeName', 'date', 'deviceStatusName', 'num', 'statusTime', 'statusHours', 'avgTime'];
+    const detailSortInfo = ['regionName', 'stationName', 'deviceName', 'deviceModeName', 'deviceStatusName', 'happenTime', 'statusTime', 'statusHours', 'statusDescribe'];
     return (
       <React.Fragment>
         <div className={styles.tableHeader}>
@@ -244,12 +262,13 @@ class TableList extends Component {
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table
+        <CneTable
           loading={loading}
+          sortField={tableType === 'all' ? sortInfoMap[sortField] : detailSortInfo[sortField]}
+          sortMethod={sortMethod === 'desc' ? 'descend' : 'ascend'}
           columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          // scroll={{ x: 1440 }}
           className={styles.tableStyles}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           pagination={false} />

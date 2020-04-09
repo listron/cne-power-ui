@@ -28,6 +28,25 @@
 }
 
 .tableStyles {
+  .regionName, .num{
+    width: 8%;
+  }
+  .stationName, .deviceName, .deviceModeName, .quotaVal{
+    width: 10%;
+  }
+  .regionNameText, .stationNameText, .deviceNameText, .deviceModeNameText, .statusDescribeText{
+    @include overflowText();
+    width: 90%;
+  }
+  .regionNameText{
+    width: 78%;
+  }
+  .statusDescribe{
+    width: 14%;
+  }
+  .statusDescribeText{
+    width: 94%;
+  }
   :global {
     .ant-table-placeholder{
       border: none

@@ -63,7 +63,7 @@ class TableList extends Component {
       textAlign: 'left',
       className: styles.regionName,
       render: (text) => {
-        return <div className={styles.regionName} title={text}>{text}</div>;
+        return <div className={styles.regionNameText} title={text}>{text}</div>;
       },
     }, {
       title: '电站名称',
@@ -72,16 +72,16 @@ class TableList extends Component {
       textAlign: 'left',
       className: styles.stationName,
       render: (text) => {
-        return <div className={styles.stationName} title={text}>{text}</div>;
+        return <div className={styles.stationNameText} title={text}>{text}</div>;
       },
     }, {
       title: '设备型号',
       dataIndex: 'deviceModeName',
       sorter: true,
-      className: styles.deviceName,
+      className: styles.deviceModeName,
       textAlign: 'left',
       render: (text) => {
-        return <div className={styles.deviceModeName} title={text}>{text}</div>;
+        return <div className={styles.deviceModeNameText} title={text}>{text}</div>;
       },
     }];
     const filterShow = [
