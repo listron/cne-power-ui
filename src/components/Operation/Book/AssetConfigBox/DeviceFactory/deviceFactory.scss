@@ -103,32 +103,34 @@
 
     .assetsStyle {
       @include textOverflow();
-      width: 400px,
-    }
-
-    .createTime {
-      @include textOverflow();
-      width: 150px,
-    }
-
-    .manufactorCode {
-      @include textOverflow();
-      width: 60px,
+      max-width: calc((100vw - 230px) * 0.38 - 10px);
     }
 
     .manufactorName {
       @include textOverflow();
-      width: 250px,
+      max-width: calc((100vw - 230px) * 0.25 - 10px);
     }
 
     .operateUser {
       @include textOverflow();
-      width: 100px,
+      max-width: calc((100vw - 230px) * 0.12 - 10px);
     }
 
     .editStyle {
       @include textOverflow();
-      width: 100px,
+      width: 100%;
+      padding: 0 10px;
+      display: flex;
+      justify-content: space-between;
+
+      span{
+        cursor: pointer;
+        color: $themeColor;
+
+        &:hover{
+          color: #f9b600;
+        }
+      }
     }
   }
 }

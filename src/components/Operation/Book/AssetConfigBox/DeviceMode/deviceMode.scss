@@ -37,30 +37,41 @@
       word-break: keep-all;
     }
 
-    .deviceModeCode {
+    .deviceModeName{
       @include textOverflow();
-      width: 60px,
+      max-width: calc((100vw - 230px) * 0.24 - 10px);
     }
 
-    .deviceModeName,
     .manufactorName {
       @include textOverflow();
-      width: 150px,
+      max-width: calc((100vw - 230px) * 0.2 - 10px);
     }
 
     .stationType {
       @include textOverflow();
-      width: 100px,
+      max-width: calc((100vw - 230px) * 0.09 - 10px);
     }
 
     .assetsName {
       @include textOverflow();
-      width: 200px,
+      max-width: calc((100vw - 230px) * 0.15 - 10px);
     }
 
-    .createTime {
+    .editStyle {
       @include textOverflow();
-      width: 150px,
+      width: 100%;
+      padding: 0 10px;
+      display: flex;
+      justify-content: space-between;
+
+      span{
+        cursor: pointer;
+        color: $themeColor;
+
+        &:hover{
+          color: #f9b600;
+        }
+      }
     }
 
     :global {

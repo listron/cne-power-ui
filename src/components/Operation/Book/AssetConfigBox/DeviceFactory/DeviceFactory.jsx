@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceFactory.scss';
 import EditFactors from './EditFactors';
-import { Button, Table, Form, Input, Icon, message } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
 import Pagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
+import CneTable from '@components/Common/Power/CneTable';
 import { handleRight } from '@utils/utilFunc';
 
 
@@ -42,6 +43,16 @@ class DeviceFactory extends React.Component {
       editingKey: '',
       resetValue: false,
       showEditFactorModal: false,
+    };
+    this.tableSortMap = { // api存储字段 => 表格排序字段
+      '1': 'manufactorCode',
+      '2': 'manufactorName',
+      '3': 'createTime',
+      '4': 'operateUser',
+    };
+    this.sortMethodMap = {
+      'desc': 'descend',
+      'asc': 'ascend',
     };
   }
   componentDidMount() {
@@ -116,16 +127,21 @@ class DeviceFactory extends React.Component {
     });
   }
   tableChange = (pagination, filters, sorter) => {
-    const { field, order } = sorter;
+    const { orderField, orderMethod } = this.props;
+    const { field } = sorter;
     const sortInfo = {
       manufactorCode: '1',
       manufactorName: '2',
       createTime: '3',
       operateUser: '4',
     };
-    const orderField = sortInfo[field] ? sortInfo[field] : '';
-    const orderMethod = order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : '';
-    this.changFilter({ orderField, orderMethod });
+    let newOrderField = orderField, newOrderMethod = 'desc';
+    if (!field || (sortInfo[field] === newOrderField)) { // 点击的是正在排序的列
+      newOrderMethod = orderMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
+    } else { // 切换列
+      newOrderField = sortInfo[field];
+    }
+    this.changFilter({ orderField: newOrderField, orderMethod: newOrderMethod });
   }
   changFilter = (value) => {
     const { getDeviceFactorsList, orderField, orderMethod, pageNum, pageSize, manufactorName } = this.props;
@@ -150,7 +166,7 @@ class DeviceFactory extends React.Component {
     });
   }
   render() {
-    const { pageSize, pageNum, total, deviceFactorsList, assetList, stationTypeCount, stationType, handleEnterprisecodes } = this.props;
+    const { pageSize, pageNum, total, deviceFactorsList, assetList, stationTypeCount, stationType, handleEnterprisecodes, orderField, orderMethod } = this.props;
     // console.log('handleEnterprisecodes: ', handleEnterprisecodes);
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText, showEditFactorModal, tableRecord } = this.state;
@@ -158,30 +174,36 @@ class DeviceFactory extends React.Component {
     const basecolumns = [
       {
         title: '编码',
+        width: '6%',
+        textAlign: 'center',
         dataIndex: 'manufactorCode',
         sorter: true,
-        width: 80,
-        render: (text) => <div className={styles.manufactorCode} title={text}>{text}</div>,
+        render: (text) => <div title={text}>{text}</div>,
       }, {
         title: '设备厂家',
+        width: '25%',
+        textAlign: 'left',
         dataIndex: 'manufactorName',
         sorter: true,
         editable: true,
-
         render: (text) => <div className={styles.manufactorName} title={text}>{text}</div>,
       }, {
         title: '生产资产',
+        width: '38%',
         dataIndex: 'assetsNames',
-        // sorter: true,
+        textAlign: 'left',
         editable: true,
         render: (text) => <div className={styles.assetsStyle} title={text}>{text.join(',')}</div>,
       }, {
         title: '创建时间',
+        width: '13%',
+        textAlign: 'center',
         dataIndex: 'createTime',
         sorter: true,
-        render: (text) => <div className={styles.createTime} title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</div>,
+        render: (text) => <div title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</div>,
       }, {
         title: '操作人',
+        width: '12%',
         dataIndex: 'operateUser',
         sorter: true,
         render: (text, record) => {
@@ -191,12 +213,15 @@ class DeviceFactory extends React.Component {
     ];
     const columns = manufactureRight ? basecolumns.concat({
       title: '操作',
-      render: (text, record, index) => {
-        return (<div className={styles.editStyle}>
-          <a onClick={() => this.editFactors(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'}></span></a>
-
-          {record.isBuild === 0 ? <span title="删除" className={'iconfont icon-del'} onClick={() => this.deleteFactory(record)}></span> : ''}
-        </div>);
+      width: '6%',
+      textAlign: 'center',
+      render: (text, record) => {
+        return (
+          <div className={styles.editStyle}>
+            <span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'} onClick={() => this.editFactors(record)} />
+            {record.isBuild === 0 ? <span title="删除" className={'iconfont icon-del'} onClick={() => this.deleteFactory(record)} /> : ''}
+          </div>
+        );
       },
     }) : basecolumns;
     return (
@@ -242,7 +267,7 @@ class DeviceFactory extends React.Component {
             <Pagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
           </div>
 
-          <Table
+          <CneTable
             loading={false}
             dataSource={deviceFactorsList.map((e, i) => {
               e.assetsNames = [];
@@ -255,6 +280,8 @@ class DeviceFactory extends React.Component {
               });
               return { ...e };
             })}
+            sortField={this.tableSortMap[orderField]}
+            sortMethod={this.sortMethodMap[orderMethod]}
             onChange={this.tableChange}
             columns={columns}
             pagination={false}

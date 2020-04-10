@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import styles from './deviceMode.scss';
 import EditMode from './EditMode';
 import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
-import { Button, Table, Form, Input, Icon, Select } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import Pagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
+import CneTable from '@components/Common/Power/CneTable';
 import { handleRight } from '@utils/utilFunc';
 
 const FormItem = Form.Item;
@@ -40,6 +41,18 @@ class DeviceMode extends React.Component {
       assetsIds: [],
       resetValue: false,
       showEditModeModal: false,
+    };
+    this.tableSortMap = { // api存储字段 => 表格排序字段
+      '1': 'deviceModeCode',
+      '2': 'deviceModeName',
+      '3': 'manufactorName',
+      '4': 'createTime',
+      '5': 'operateUser',
+      '6': 'stationType',
+    };
+    this.sortMethodMap = {
+      'desc': 'descend',
+      'asc': 'ascend',
     };
   }
   componentDidMount() {
@@ -139,7 +152,8 @@ class DeviceMode extends React.Component {
     });
   }
   tableChange = (pagination, filters, sorter) => {
-    const { field, order } = sorter;
+    const { orderField, orderMethod } = this.props;
+    const { field } = sorter;
     const sortInfo = {
       deviceModeCode: '1',
       deviceModeName: '2',
@@ -148,9 +162,13 @@ class DeviceMode extends React.Component {
       operateUser: '5',
       stationType: '6',
     };
-    const orderField = sortInfo[field] ? sortInfo[field] : '';
-    const orderMethod = order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : '';
-    this.changFilter({ orderField, orderMethod });
+    let newOrderField = orderField, newOrderMethod = 'desc';
+    if (!field || (sortInfo[field] === newOrderField)) { // 点击的是正在排序的列
+      newOrderMethod = orderMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
+    } else { // 切换列
+      newOrderField = sortInfo[field];
+    }
+    this.changFilter({ orderField: newOrderField, orderMethod: newOrderMethod });
   }
   selectManufactor = (value, option) => {
   }
@@ -174,46 +192,60 @@ class DeviceMode extends React.Component {
     });
   }
   render() {
-    const { pageSize, pageNum, modePageCount, deviceFactorsList, deviceModesList, assetList, stationTypeCount, stationType } = this.props;
+    const { pageSize, pageNum, modePageCount, deviceFactorsList, deviceModesList, assetList, stationTypeCount, stationType, orderField, orderMethod } = this.props;
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText, showEditModeModal, tableRecord } = this.state;
     const modeHandleRight = handleRight('book_operateMode');
     const baseColumn = [
       {
         title: '编码',
+        width: '6%',
         dataIndex: 'deviceModeCode',
+        textAlign: 'center',
         sorter: true,
-        render: (text) => <div className={styles.deviceModeCode} title={text}>{text}</div>,
+        render: (text) => <div title={text}>{text}</div>,
       }, {
         title: '设备型号',
+        width: '24%',
+        textAlign: 'left',
         dataIndex: 'deviceModeName',
         sorter: true,
         editable: true,
         render: (text) => <div className={styles.deviceModeName} title={text}>{text}</div>,
       }, {
         title: '电站类型',
+        width: '7%',
+        textAlign: 'center',
         dataIndex: 'stationType',
         sorter: true,
         render: (text) => <div className={styles.stationType} >{text === '0' ? '风电' : '光伏'}</div>,
       }, {
         title: '生产资产',
+        width: '15%',
+        textAlign: 'left',
         dataIndex: 'assetsName',
         // sorter: true,
         editable: true,
         render: (text) => <div className={styles.assetsName} title={text ? text.replace(/,/g, '/') : ''}>{text ? text.replace(/,/g, '/') : '--'}</div>,
       }, {
         title: '设备厂家',
+        width: '20%',
+        textAlign: 'left',
         dataIndex: 'manufactorName',
         sorter: true,
         editable: true,
         render: (text) => <div className={styles.manufactorName} title={text}>{text}</div>,
       }, {
         title: '创建时间',
+        width: '13%',
+        textAlign: 'center',
         dataIndex: 'createTime',
         sorter: true,
-        render: (text) => <div className={styles.createTime} title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</div>,
+        render: (text) => <div title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</div>,
       }, {
         title: '操作人',
+        width: '9%',
+        textAlign: 'left',
         dataIndex: 'operateUser',
         sorter: true,
         render: (text) => <div className={styles.stationType} title={text}>{text ? text : '--'}</div>,
@@ -221,11 +253,15 @@ class DeviceMode extends React.Component {
     ];
     const columns = modeHandleRight ? baseColumn.concat({
       title: '操作',
+      width: '6%',
+      textAlign: 'center',
       render: (text, record, index) => {
-        return (<div>
-          <a onClick={() => this.editMode(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'}></span></a>
-          <span title="删除" className="iconfont icon-del" onClick={() => this.deleteDeviceMode(record)}></span>
-        </div>);
+        return (
+          <div className={styles.editStyle}>
+            <span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'} onClick={() => this.editMode(record)} />
+            <span title="删除" className="iconfont icon-del" onClick={() => this.deleteDeviceMode(record)} />
+          </div>
+        );
       },
     }) : baseColumn;
     return (
@@ -289,11 +325,14 @@ class DeviceMode extends React.Component {
             </div>
             <Pagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={modePageCount} />
           </div>
-          <Table
+          <CneTable
             loading={false}
             dataSource={deviceModesList}
             columns={columns}
             pagination={false}
+            rowKey={(record, index) => index || 'key'}
+            sortField={this.tableSortMap[orderField]}
+            sortMethod={this.sortMethodMap[orderMethod]}
             onChange={this.tableChange}
             locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           />

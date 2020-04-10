@@ -25,7 +25,7 @@ class AssetsConfig extends Component {
 
   queryTargetData = (activeKey) => { //头部tab切换
     const { changeAssetConfigStore } = this.props;
-    changeAssetConfigStore({ selectType: activeKey });
+    changeAssetConfigStore({ selectType: activeKey, deviceFactorsList: [] });
   }
 
   render() {

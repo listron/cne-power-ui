@@ -23,7 +23,7 @@
       }
     }
     .deviceName {
-      max-width: calc((100vw - 230px) * 0.15);
+      max-width: calc((100vw - 230px) * 0.15 - 10px);
       @include overflowText();
       a {
         text-decoration: none;
@@ -34,16 +34,16 @@
       }
     }
     .overflowText{
-      max-width: calc((100vw - 230px) * 0.15);
+      max-width: calc((100vw - 230px) * 0.15 - 10px);
       @include overflowText();
     }
 
     .alarmType{
-      max-width: calc((100vw - 230px) * 0.15);
+      max-width: calc((100vw - 230px) * 0.15 - 10px);
     }
 
     .alarmDescName{
-      max-width: calc((100vw - 230px) * 0.18);
+      max-width: calc((100vw - 230px) * 0.18 - 10px);
     }
   }
   .tableFooter {
