@@ -117,7 +117,7 @@ class DeviceManage extends Component {
               {showDeviceTip && (
                 <StationManageTip
                   hideManageTip={this.hideManageTip}
-                  text="请选择您要查看的电站！"
+                  text="请选择电站！"
                 />
               )}
               <div className={styles.allStationTitle}>

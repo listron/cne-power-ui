@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Select, Popover, Button, Icon, Modal, Spin } from 'antd';
+import { Select, Button, Icon, Modal, Spin } from 'antd';
 import WarningTip from '../../../Common/WarningTip';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
@@ -86,22 +86,20 @@ class RoleTable extends Component {
         dataIndex: 'roleDesc',
         key: 'roleDesc',
         // width:'220px',
-        width:'24%',
-      },
-      {
+        width: '24%',
+      }, {
         title: '权限',
         dataIndex: 'operateName',
         key: 'operateName',
         className: styles.operateNameBox,
         // width:'80px',
-        width:'8%',
-      },
-      {
+        width: '8%',
+      }, {
         title: '功能定义',
         dataIndex: 'rightData',
         key: 'rightData',
         // width:'550px',
-        className:styles.rightData,
+        className: styles.rightData,
         render: (rightData, record)=>{
           const rightArr = this.getRightArr(rightData, '');
           return (<div className={styles.menu} onClick={() => this.showModel(record)}>{rightArr.join(' | ')}</div>);
