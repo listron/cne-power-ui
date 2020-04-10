@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './transfer.scss';
 import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
 import moment from 'moment';
+import CneTable from '../../../Common/Power/CneTable';
 
 class Transfer extends Component {
   static propTypes = {
@@ -23,6 +23,8 @@ class Transfer extends Component {
     matrixList: PropTypes.array,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
+    theme: PropTypes.string,
+    loading: PropTypes.bool,
   }
   constructor(props, context) {
     super(props, context);
@@ -34,6 +36,18 @@ class Transfer extends Component {
     getMatrixlist({ stationCodes: stationCodes });
   }
 
+  tableSortMap = { // api存储字段 => 表格排序字段
+    'station_code': 'stationName',
+    'happen_time': 'happenTime',
+    'create_time': 'createTime',
+  };
+
+  sortMethodMap = {
+    'desc': 'descend',
+    'asc': 'ascend',
+  }
+
+
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
     this.getTransferList({ pageNum: currentPage, pageSize });
   }
@@ -44,13 +58,16 @@ class Transfer extends Component {
     this.props.getTransferList({ ...initParam, ...param });
   }
 
-
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
-    const initSorterField = 'create_time';
-    let ascend = '';
-    const sortField = sorter.field ? this.sortField(sorter.field) : initSorterField;
-    ascend = sorter.order === 'ascend' ? 'asc' : 'desc';
-    this.getTransferList({ sortField, sortMethod: ascend });
+    const { sortField, sortMethod } = this.props;
+    const { field } = sorter;
+    let newSortField = sortField, newSortMethod = 'desc';
+    if (!field || (this.sortField(field) === newSortField)) { // 点击的是正在排序的列
+      newSortMethod = sortMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
+    } else { // 切换列
+      newSortField = this.sortField(sorter.field);
+    }
+    this.getTransferList({ sortField: newSortField, sortMethod: newSortMethod });
   };
 
   sortField(sortField) {
@@ -76,44 +93,52 @@ class Transfer extends Component {
 
 
   render() {
-    const { stations, pageSize, pageNum, totalNum, loading, transferList, matrixList, theme } = this.props;
+    const { stations, pageSize, pageNum, totalNum, loading, transferList, matrixList, theme, sortField, sortMethod } = this.props;
     const columns = [
       {
         title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
+        className: styles.stationName,
+        render: (text) => (<div title={text || '--'} className={styles.stationNameText} title={text}>{text || '--'}</div>),
       },
       {
         title: '所属方阵',
         dataIndex: 'belongMatrix',
         key: 'belongMatrix',
-        render: text => text ? text : '--',
+        className: styles.belongMatrix,
+        render: (text) => (<div title={text || '--'} className={styles.belongMatrixText} title={text}>{text || '--'}</div>),
       },
       {
         title: '设备名称',
         dataIndex: 'parentDeviceName',
         key: 'parentDeviceName',
-        render: text => text ? text : '--',
+        className: styles.parentDeviceName,
+        render: (text) => (<div title={text || '--'} className={styles.parentDeviceNameText} title={text}>{text || '--'}</div>),
       },
       {
         title: '电流偏低支路',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        render: text => text ? text : '--',
+        className: styles.deviceName,
+        render: (text) => (<div title={text || '--'} className={styles.deviceNameText} title={text}>{text || '--'}</div>),
       },
       {
         title: '预警时间',
         dataIndex: 'happenTime',
         key: 'happenTime',
         sorter: true,
+        textAlign: 'center',
+        className: styles.happenTime,
       },
       {
         title: '下发时间',
         dataIndex: 'createTime',
         key: 'createTime',
         sorter: true,
-        defaultSortOrder: 'descend',
+        textAlign: 'center',
+        className: styles.createTime,
       },
       {
         title: '查看工单',
@@ -160,13 +185,14 @@ class Transfer extends Component {
             <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
               onPaginationChange={this.onPaginationChange} theme={theme} />
           </div>
-          <Table
-            loading={loading}
-            dataSource={dataSource}
+          <CneTable
             columns={columns}
+            dataSource={dataSource}
             pagination={false}
+            loading={loading}
+            sortField={this.tableSortMap[sortField]}
+            sortMethod={this.sortMethodMap[sortMethod]}
             onChange={this.tableChange}
-            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           />
         </div>
       </div>

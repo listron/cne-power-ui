@@ -25,13 +25,8 @@
       .ant-table-placeholder {
         border-bottom: none;
       }
-      .ant-table-thead {
-        th > div {
-          height: 60px;
-        }
-      }
-      .ant-table-column-sorter {
-        top: 18px;
+      .ant-table-selection{
+        width:50px;
       }
     }
     .iconDetail {
@@ -39,6 +34,27 @@
         display: block;
         cursor: pointer;
       }
+    }
+
+    .stationNameText,.belongMatrixText,.parentDeviceNameText,.deviceNameText{
+       @include overflowText();
+    }
+    
+    .stationName,.belongMatrix,.parentDeviceName,.deviceName,.lostGenPercent{
+      width:14%;
+    }
+    .stationNameText,.belongMatrixText,.parentDeviceNameText,.deviceNameText{
+      max-width: calc((100vw - 230px) * 0.15 - 20px);
+    }
+    .happenTime,.iconDetail{
+      width:14%;
+    }
+    .icon{
+      width:30px;
+      height: 30px;
+      display: inline-block;
+      font-size: 20px;
+      cursor: pointer;
     }
   }
   .unhandleSide {

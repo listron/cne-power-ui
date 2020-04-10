@@ -20,6 +20,17 @@
       border-bottom: none;
     }
   }
+   .stationNameText,.belongMatrixText,.parentDeviceNameText,.deviceNameText{
+       @include overflowText();
+   }   
+
+  .stationName,.belongMatrix,.parentDeviceName,.deviceName,.happenTime,.createTime,.iconDetail{
+    width:14%;
+  }
+  .stationNameText,.belongMatrixText,.parentDeviceNameText,.deviceNameText{
+    max-width: calc((100vw - 230px) * 0.14 - 20px);
+  }
+
   .iconDetail {
     .iconBox {
       display: flex;

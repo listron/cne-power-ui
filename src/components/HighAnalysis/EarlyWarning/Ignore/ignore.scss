@@ -21,7 +21,28 @@
       .ant-table-placeholder {
         border-bottom: none;
       }
+      .ant-table-selection-column{
+        width:50px;
+      }
     }
+
+    .stationNameText,.belongMatrixText,.parentDeviceNameText,.deviceNameText,.ignoreReasonText,.usernameText{
+       @include overflowText();
+    }
+    
+    .stationName,.belongMatrix,.parentDeviceName,.deviceName,.ignoreTime,.ignoreEndTime,.username{
+      width:11.5%;
+    }
+    .stationNameText,.belongMatrixText,.parentDeviceNameText,.deviceNameText,.usernameText{
+      max-width: calc((100vw - 230px) * 0.115 - 20px);
+    }
+    .ignoreReason{
+       width:15%;
+    }
+    .ignoreReasonText{
+      max-width: calc((100vw - 230px) * 0.15 - 20px);
+    }
+
   }
 }
 

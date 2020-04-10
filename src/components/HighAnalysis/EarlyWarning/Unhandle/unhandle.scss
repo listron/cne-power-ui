@@ -11,9 +11,10 @@
     .selectCondition {
       border-top: 1px solid $promptColor;
     }
-    .iconDetail {
-      span {
-        color: $themeColor;
+    .icon {
+       color: $themeColor;
+       &:hover{
+          color: #ff9900;
       }
     }
   }
@@ -29,10 +30,6 @@
           color: #fff;
         }
       }
-      // .backIcon {
-      //   color: $darkColor;
-      //   border-left: 1px solid $promptColor;
-      // }
     }
     .chartTop {
       background: $promptColor;

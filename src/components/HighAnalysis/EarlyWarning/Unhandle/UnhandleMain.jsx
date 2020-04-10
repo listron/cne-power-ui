@@ -9,6 +9,7 @@ import IgnoreModal from './IgnoreModal';
 import moment from 'moment';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma, handleRight } from '../../../../utils/utilFunc';
+import CneTable from '../../../Common/Power/CneTable';
 
 const Option = Select.Option;
 class Unhandle extends Component {
@@ -19,7 +20,6 @@ class Unhandle extends Component {
     ignoreList: PropTypes.func,
     getForewarningDetail: PropTypes.func,
     getSequencechart: PropTypes.func,
-    resetStore: PropTypes.func,
     getMatrixlist: PropTypes.func,
     stationCodes: PropTypes.array,
     belongMatrixs: PropTypes.array,
@@ -29,24 +29,35 @@ class Unhandle extends Component {
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
     unhandleList: PropTypes.array,
-    warnDetail: PropTypes.object,
-    Sequencechart: PropTypes.object,
     totalNum: PropTypes.number,
     stations: PropTypes.array,
     matrixList: PropTypes.array,
     ignoreReason: PropTypes.array,
     theme: PropTypes.string,
+    loading: PropTypes.bool,
   }
+
   constructor(props, context) {
     super(props, context);
     this.state = {
       selectedRowKeys: [], //选择的数据
       showWarningTip: false, //是否可见
       warningTipText: '确认选中预警生成工单？',
-      detailVisiable: false,
       ingoreVisible: false, // 忽略列表
     };
   }
+
+  tableSortMap = { // api存储字段 => 表格排序字段
+    'station_code': 'stationName',
+    'lost_gen_percent': 'lostGenPercent',
+    'happen_time': 'happenTime',
+  };
+
+  sortMethodMap = {
+    'desc': 'descend',
+    'asc': 'ascend',
+  }
+
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
     this.getUnhandleList({ pageNum: currentPage, pageSize });
@@ -81,11 +92,15 @@ class Unhandle extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
-    const initSorterField = 'lost_gen_percent';
-    const sortField = sorter.field ? this.sortField(sorter.field) : initSorterField;
-    let ascend = '';
-    ascend = sorter.order === 'ascend' ? 'asc' : 'desc';
-    this.getUnhandleList({ sortField, sortMethod: ascend });
+    const { sortField, sortMethod } = this.props;
+    const { field } = sorter;
+    let newSortField = sortField, newSortMethod = 'desc';
+    if (!field || (this.sortField(field) === newSortField)) { // 点击的是正在排序的列
+      newSortMethod = sortMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
+    } else { // 切换列
+      newSortField = this.sortField(sorter.field);
+    }
+    this.getUnhandleList({ sortField: newSortField, sortMethod: newSortMethod });
   };
 
   sortField(sortField) { // 排序转换
@@ -136,7 +151,7 @@ class Unhandle extends Component {
   }
 
   render() {
-    const { stations, pageSize, pageNum, totalNum, loading, unhandleList, matrixList, ignoreReason, theme } = this.props;
+    const { stations, pageSize, pageNum, totalNum, loading, unhandleList, matrixList, ignoreReason, theme, sortField, sortMethod } = this.props;
     const { selectedRowKeys, showWarningTip, warningTipText, ingoreVisible } = this.state;
     const unhandleOperation = handleRight('inefficientDetect_worklist');
     const columns = [
@@ -145,41 +160,48 @@ class Unhandle extends Component {
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
-        // render: text => (text || text === 0) ? text : '--'
+        className: styles.stationName,
+        render: (text) => (<div title={text || '--'} className={styles.stationNameText} title={text}>{text || '--'}</div>),
       }, {
         title: '所属方阵',
         dataIndex: 'belongMatrix',
         key: 'belongMatrix',
-        render: text => (text || text === 0) ? text : '--',
+        className: styles.belongMatrix,
+        render: (text) => (<div title={text || '--'} className={styles.belongMatrixText} title={text}>{text || '--'}</div>),
       }, {
         title: '设备名称',
         dataIndex: 'parentDeviceName',
         key: 'parentDeviceName',
-        render: text => (text || text === 0) ? text : '--',
+        className: styles.parentDeviceName,
+        render: (text) => (<div title={text || '--'} className={styles.parentDeviceNameText} title={text}>{text || '--'}</div>),
+
       }, {
         title: '电流偏低支路',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        render: text => (text || text === 0) ? text : '--',
+        className: styles.deviceName,
+        render: (text) => (<div title={text || '--'} className={styles.deviceNameText} title={text}>{text || '--'}</div>),
       }, {
         title: '预警时间',
         dataIndex: 'happenTime',
         key: 'happenTime',
         sorter: true,
+        textAlign: 'center',
+        className: styles.happenTime,
       }, {
-        title: () => <TableColumnTitle title="电量损失比" unit="%" />,
+        title: '电量损失比(%)',
         dataIndex: 'lostGenPercent',
         key: 'lostGenPercent',
         render(text) { return numWithComma(text); },
-        defaultSortOrder: 'descend',
         sorter: true,
+        textAlign: 'right',
+        className: styles.lostGenPercent,
       }, {
         title: '详情及处理',
         className: styles.iconDetail,
+        textAlign: 'center',
         render: (text, record) => (
-          <span>
-            <i className="iconfont icon-todo" onClick={() => { this.onShowDetail(record); }} />
-          </span>
+          <i className={`iconfont icon-todo ${styles.icon}`} onClick={() => { this.onShowDetail(record); }} />
         ),
       },
     ];
@@ -213,7 +235,7 @@ class Unhandle extends Component {
         <div className={styles.wrap}>
           <span ref={'select'} />
           <div className={styles.selectCondition}>
-          {unhandleOperation ? <Select onChange={this.selectChange} placeholder="操作" value={'操作'} dropdownMatchSelectWidth={false}
+            {unhandleOperation ? <Select onChange={this.selectChange} placeholder="操作" value={'操作'} dropdownMatchSelectWidth={false}
               getPopupContainer={() => this.refs.select}>
               <Option value="transfer" disabled={selectedRowKeys.length > 0 ? false : true} className={styles.option}>
                 <i className="iconfont icon-tranlist" />  转工单</Option>
@@ -223,14 +245,15 @@ class Unhandle extends Component {
             <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
               onPaginationChange={this.onPaginationChange} theme={theme} />
           </div>
-          <Table
-            loading={loading}
-            dataSource={dataSource}
+          <CneTable
             columns={columns}
+            dataSource={dataSource}
             pagination={false}
             rowSelection={rowSelection}
+            loading={loading}
+            sortField={this.tableSortMap[sortField]}
+            sortMethod={this.sortMethodMap[sortMethod]}
             onChange={this.tableChange}
-            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           />
         </div>
         <IgnoreModal ignoreReason={ignoreReason} onChange={this.addReason} ingoreVisible={ingoreVisible} theme={theme} />
