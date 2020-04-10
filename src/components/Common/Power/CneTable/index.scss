@@ -235,12 +235,12 @@
         box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
       }
     }
-    .ant-table-fixed .ant-table-thead > tr > th{ // 冻结列右侧样式
+    .ant-table-fixed-left .ant-table-thead > tr > th{ // 冻结列右侧样式
       &:last-child {
         border-right: 1px solid #fff;
       }
     }
-    .ant-table-fixed .ant-table-tbody > tr > td{
+    .ant-table-fixed-left .ant-table-tbody > tr > td{
       &:last-child {
         border-right: 1px dashed var(--themeColor);
         // box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);

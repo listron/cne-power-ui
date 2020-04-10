@@ -11,6 +11,7 @@ import styles from './index.scss';
  * sortMethod手动指定排序方式:string: ascend descend
  * dataError 数据错误时, 占位图片为数据错误; 无数据时，占位图片为无数据;
  * column内参数textAlign: left /middle或center / right / none;
+ * noMoreDataPic: bool, 是否展示"没有更多数据"图片提示用户
  */
 
 class CneTable extends PureComponent {

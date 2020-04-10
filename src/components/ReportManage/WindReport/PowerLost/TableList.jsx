@@ -100,7 +100,7 @@ class TableList extends Component {
         title: () => <TableColumnTitle title="限电时长" unit="h" />,
         dataIndex: 'limitHour',
         // sorter: true,
-        width: 120,
+        width: 100,
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
@@ -114,7 +114,7 @@ class TableList extends Component {
         title: () => <TableColumnTitle title="维护时长" unit="h" />,
         dataIndex: 'weihuHour',
         // sorter: true,
-        width: 120,
+        width: 100,
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
@@ -218,7 +218,7 @@ class TableList extends Component {
           sortMethod={sortMethod === 'desc' ? 'descend' : 'ascend'}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={{ x: 2350 }}
+          scroll={{ x: 2310 }}
           className={styles.tableStyles}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           pagination={false} />
