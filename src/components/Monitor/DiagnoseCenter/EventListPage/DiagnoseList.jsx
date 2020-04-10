@@ -85,8 +85,8 @@ class DiagnoseList extends Component {
   }
 
   toDefect = (record) => {
-    const { diagWarningId, stationCode } = record || {};
-    window.open(`#/operation/newWorkProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningId}]&stationCode=${stationCode}`);
+    const { workOrderId } = record || {};
+    window.open(`#/operation/newWorkProcess/newView?page=defectDetail&docketId=${workOrderId}`);
   }
 
   toDelete = (deleteRecord) => {
