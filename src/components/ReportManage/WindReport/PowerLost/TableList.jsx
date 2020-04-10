@@ -218,7 +218,7 @@ class TableList extends Component {
           sortMethod={sortMethod === 'desc' ? 'descend' : 'ascend'}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={{ x: 2330 }}
+          scroll={{ x: 2350 }}
           className={styles.tableStyles}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           pagination={false} />
