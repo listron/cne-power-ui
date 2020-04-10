@@ -88,7 +88,7 @@ class SetVersionModal extends Component { //版本的设置
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const { deviceTypeCode, manufactorCode, deviceModeCode, version, stations } = values;
-        const initStations = stations.map(e => e.stationCode);
+        const initStations = stations.map(e => ({ stationCode: e.stationCode, stationName: e.stationName }));
         let params = { deviceTypeCode, deviceModeCode, version, stations: initStations, extraInfo: { deviceTypeCode, manufactorCode, deviceModeCode } };
         if (type === 'edit') {
           params = {
