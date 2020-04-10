@@ -165,12 +165,6 @@ class TableList extends Component {
     }
 
     tableChange = (pagination, filter, sorter) => {// 点击表头 排序
-        // const initSorterField = 'create_time';
-        // let ascend = '';
-        // const sortField = sorter.field ? this.sortField(sorter.field) : initSorterField;
-        // ascend = sorter.order === 'ascend' ? 'asc' : 'desc';
-        // const { listQueryParams, commonQueryParams } = this.props;
-        // this.props.getFlowList({ listQueryParams: { ...listQueryParams, sortField, sortMethod: ascend }, commonQueryParams });
         const { field } = sorter || {};
         const { listQueryParams, commonQueryParams } = this.props;
         const { sortField, sortMethod } = listQueryParams || {};
@@ -220,7 +214,7 @@ class TableList extends Component {
                 textAlign: 'left',
                 className: styles.docketTypeName,
                 render: (text, record) => {
-                    return <div className={styles.docketNameText} title={text}>{text}</div>;
+                    return <div className={styles.docketTypeNameText} title={text}>{text}</div>;
                 },
             }, {
                 title: '电站名称',
@@ -249,7 +243,7 @@ class TableList extends Component {
                 sorter: true,
                 textAlign: 'center',
                 className: styles.createTime,
-                render: text => <div className={styles.createTimeText} >{moment(text).format('YYYY-MM-DD HH:mm:ss')}</div>,
+                render: text => <div className={styles.createTimeText} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss') || '--'}</div>,
             }, {
                 title: '完成时间',
                 dataIndex: 'endTime',
@@ -257,7 +251,7 @@ class TableList extends Component {
                 sorter: true,
                 textAlign: 'center',
                 className: styles.endTime,
-                render: text => <div className={styles.createTimeText} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss')}</div>,
+                render: text => <div className={styles.createTimeText} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss') || '--'}</div>,
             }, {
                 title: '状态',
                 dataIndex: 'stateDesc',

@@ -255,6 +255,7 @@
         .equipmentHours,
         .transferRate {
           display: flex;
+          justify-content: flex-end;
           .specialColor {
             color: #a22c30 !important;
           }

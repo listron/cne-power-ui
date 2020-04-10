@@ -3,10 +3,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
-import { Tabs, Switch, Spin, Table, Progress, Radio, Tooltip } from 'antd';
+import { Tabs, Switch, Spin, Progress, Radio, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../../Common/CommonPagination/index';
 import TableColumnTitle from '../../../../../Common/TableColumnTitle';
+import CneTable from '@components/Common/Power/CneTable';
 import { numWithComma, dataFormats } from '../../../../../../utils/utilFunc';
 const TabPane = Tabs.TabPane;
 import { throttle } from 'lodash';
@@ -34,6 +35,8 @@ class ConfluenceBoxList extends Component {
       spliceLength: 48, // 24条数据一渲染。
       topHeight: 550, // 假设的列表上方高度
       newList: [],
+      sortMethod: '', // 排序方式
+      sortField: '', // 排序字段
     };
   }
 
@@ -137,55 +140,70 @@ class ConfluenceBoxList extends Component {
         dataIndex: 'deviceName',
         key: 'deviceName',
         sorter: true,
+        textAlign: 'left',
         defaultSortOrder: 'ascend',
+        className: styles.deviceName,
         render: (text, record) => {
           return (
-            <div className={`${record.deviceStatus}` === '900' && styles.deviceCode || ''} >
-              <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName} >{text}</Link>
+            <div className={`${record.deviceStatus === '900' && styles.deviceCode} ${styles.deviceNameText}`}>
+              <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName} title={text}>{text}</Link>
             </div>);
         },
       }, {
-        title: () => <TableColumnTitle title="实时功率" unit="kW" />,
+        title: '实时功率(kW)',
         dataIndex: 'devicePower',
         key: 'devicePower',
+        textAlign: 'right',
+        className: styles.devicePower,
         render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: true,
       }, {
-        title: () => <TableColumnTitle title="装机容量" unit="kW" />,
+        title: '装机容量(kW)',
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
-        width: '140px',
+        textAlign: 'right',
+        className: styles.deviceCapacity,
         render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       },
       {
-        title: () => <TableColumnTitle title="电压" unit="V" />,
+        title: '电压(V)',
         dataIndex: 'voltage',
         key: 'voltage',
+        textAlign: 'right',
+        className: styles.voltage,
         render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: (a, b) => a.voltage - b.voltage,
       }, {
-        title: () => <TableColumnTitle title="电流" unit="A" />,
+        title: '电流(A)',
         dataIndex: 'electricity',
         key: 'electricity',
+        textAlign: 'right',
+        className: styles.electricity,
         render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: (a, b) => a.electricity - b.electricity,
       }, {
-        title: () => <TableColumnTitle title="离散率" unit="%" />,
+        title: '离散率(%)',
         dataIndex: 'dispersionRatio',
         key: 'dispersionRatio',
+        textAlign: 'right',
+        className: styles.dispersionRatio,
         render: value => dataFormats(value, '--', 2),
         sorter: (a, b) => a.dispersionRatio - b.dispersionRatio,
       }, {
-        title: () => <TableColumnTitle title="温度" unit="℃" />,
+        title: '温度(℃)',
         dataIndex: 'temp',
         key: 'temp',
+        textAlign: 'right',
+        className: styles.temp,
         render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: (a, b) => a.temp - b.temp,
       }, {
         title: '设备状态',
         dataIndex: 'deviceStatus',
         key: 'deviceStatus',
+        textAlign: 'center',
+        className: styles.deviceStatus,
         render: value => <span className={styles[this.getStatusName(`${value}`)[0].name]}>{this.getStatusName(`${value}`)[0].text}</span>,
         sorter: (a, b) => a.deviceStatus - b.deviceStatus,
       },
@@ -197,10 +215,47 @@ class ConfluenceBoxList extends Component {
     this.setState({ pageSize, currentPage });
   }
 
+  sortFieldMap = { // 表格排序字段 => api
+    deviceName: 'deviceName',
+    devicePower: 'devicePower',
+    deviceCapacity: 'deviceCapacity',
+    electricity: 'electricity',
+    voltage: 'voltage',
+    dispersionRatio: 'dispersionRatio',
+    temp: 'temp',
+    deviceStatus: 'deviceStatus',
+  };
+
+  tableSortMap = { // api存储字段 => 表格排序字段
+    deviceName: 'deviceName',
+    devicePower: 'devicePower',
+    deviceCapacity: 'deviceCapacity',
+    electricity: 'electricity',
+    voltage: 'voltage',
+    dispersionRatio: 'dispersionRatio',
+    temp: 'temp',
+    deviceStatus: 'deviceStatus',
+  };
+
+  sortMethodMap = {
+    descend: 'descend',
+    ascend: 'ascend',
+  }
+
   tableChange = (pagination, filters, sorter) => {
+    const { field } = sorter || {};
+    const { sortField, sortMethod } = this.state;
+    let newField = sortField, newSort = 'descend';
+    if (!field || (sortField === this.sortFieldMap[field])) { // 点击的是正在排序的列
+      newSort = sortMethod === 'descend' ? 'ascend' : 'descend'; // 交换排序方式
+    } else { // 切换列
+      newField = this.sortFieldMap[field];
+    }
     this.setState({
+      sortMethod: newSort,
+      sortField: newField,
       sortName: sorter.field,
-      descend: sorter.order === 'descend',
+      descend: newSort === 'descend',
     });
   }
 
@@ -260,7 +315,7 @@ class ConfluenceBoxList extends Component {
 
   render() {
     const { confluenceBoxList, deviceTypeCode, loading, theme } = this.props;
-    const { currentPage, pageSize, renderList } = this.state;
+    const { currentPage, pageSize, renderList, sortField, sortMethod } = this.state;
     const { deviceList = [] } = confluenceBoxList;
     const baseLinkPath = '/hidden/monitorDevice';
     const { stationCode } = this.props.match.params;
@@ -372,14 +427,15 @@ class ConfluenceBoxList extends Component {
                 <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length}
                   theme={theme} />
               </div>
-              <Table
+              <CneTable
                 dataSource={this.createTableSource(filteredDeviceList).map((e, i) => { return { ...e, key: e.deviceCode }; })}
                 columns={this.tableColumn()}
                 onChange={this.tableChange}
-                pagination={false}
-                className={styles.deviceTable}
+                sortField={this.tableSortMap[sortField]}
+                sortMethod={this.sortMethodMap[sortMethod] || false}
+                className={styles.confluenceBoxTable}
                 locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" /></div> }}
-              />
+                dataError={false} />
             </div>
           </TabPane>
         </Tabs>

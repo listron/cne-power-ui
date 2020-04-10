@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../../Common/CommonPagination/index';
 import TableColumnTitle from '../../../../../Common/TableColumnTitle';
 import { numWithComma, dataFormats } from '../../../../../../utils/utilFunc';
+import CneTable from '@components/Common/Power/CneTable';
 
 const TabPane = Tabs.TabPane;
 
@@ -30,6 +31,8 @@ class BoxTransformerList extends Component {
       sortName: '',
       descend: false,
       firstLoad: true,
+      sortMethod: '', // 排序方式
+      sortField: '', // 排序字段
     };
   }
 
@@ -96,30 +99,38 @@ class BoxTransformerList extends Component {
         dataIndex: 'deviceName',
         key: 'deviceName',
         sorter: true,
+        textAlign: 'left',
         defaultSortOrder: 'ascend',
+        className: styles.deviceName,
         render: (text, record) => {
           return (
-            <div className={`${record.deviceStatus}` === '900' && styles.deviceCode || ''} >
-              <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName} >{text}</Link>
+            <div className={`${record.deviceStatus === 900 && styles.deviceCode} ${styles.deviceNameText}`}>
+              <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName} title={text}>{text}</Link>
             </div>);
         },
       }, {
-        title: () => <TableColumnTitle title="实时功率" unit="kW" />,
+        title: '实时功率(kW)',
         dataIndex: 'devicePower',
         key: 'devicePower',
+        textAlign: 'right',
+        className: styles.devicePower,
         render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: true,
       }, {
-        title: () => <TableColumnTitle title="装机容量" unit="kW" />,
+        title: '装机容量(kw)',
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         width: '140px',
+        textAlign: 'right',
+        className: styles.deviceCapacity,
         render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
-        title: () => <TableColumnTitle title="告警" unit="个" />,
+        title: '告警(个)',
         dataIndex: 'alarmNum',
         key: 'alarmNum',
+        textAlign: 'right',
+        className: styles.alarmNum,
         render: value => numWithComma(value),
         sorter: (a, b) => a.alarmNum - b.alarmNum,
       },
@@ -131,10 +142,39 @@ class BoxTransformerList extends Component {
     this.setState({ pageSize, currentPage });
   }
 
+  sortFieldMap = { // 表格排序字段 => api
+    deviceName: 'deviceName',
+    devicePower: 'devicePower',
+    deviceCapacity: 'deviceCapacity',
+    alarmNum: 'alarmNum',
+  };
+
+  tableSortMap = { // api存储字段 => 表格排序字段
+    deviceName: 'deviceName',
+    devicePower: 'devicePower',
+    deviceCapacity: 'deviceCapacity',
+    alarmNum: 'alarmNum',
+  };
+
+  sortMethodMap = {
+    descend: 'descend',
+    ascend: 'ascend',
+  }
+
   tableChange = (pagination, filters, sorter) => {
+    const { field } = sorter || {};
+    const { sortField, sortMethod } = this.state;
+    let newField = sortField, newSort = 'descend';
+    if (!field || (sortField === this.sortFieldMap[field])) { // 点击的是正在排序的列
+      newSort = sortMethod === 'descend' ? 'ascend' : 'descend'; // 交换排序方式
+    } else { // 切换列
+      newField = this.sortFieldMap[field];
+    }
     this.setState({
+      sortMethod: newSort,
+      sortField: newField,
       sortName: sorter.field,
-      descend: sorter.order === 'descend',
+      descend: newSort === 'descend',
     });
   }
 
@@ -150,8 +190,11 @@ class BoxTransformerList extends Component {
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);
       } else if (arraySort.includes(sortName)) {
-        a[sortName] = a[sortName] ? a[sortName] : '';
-        return sortType * (a[sortName].length - b[sortName].length);
+        // a[sortName] = a[sortName] ? a[sortName] : '';
+        // return sortType * (a[sortName].length - b[sortName].length);
+        a[sortName] = a[sortName] && a[sortName] || '';
+        b[sortName] = b[sortName] && b[sortName] || '';
+        return sortType * (a[sortName].localeCompare(b[sortName]));
       }
     });
     return tableSource.splice((currentPage - 1) * pageSize, pageSize);
@@ -159,7 +202,7 @@ class BoxTransformerList extends Component {
 
   render() {
     const { boxTransformerList, deviceTypeCode, loading, theme } = this.props;
-    const { currentStatus, alarmSwitch, currentPage, pageSize } = this.state;
+    const { currentStatus, alarmSwitch, currentPage, pageSize, sortMethod, sortField } = this.state;
     const { deviceList = [] } = boxTransformerList;
     const filteredDeviceList = deviceList
       .filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0)))
@@ -244,13 +287,15 @@ class BoxTransformerList extends Component {
               <div className={styles.pagination} >
                 <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length} theme={theme} />
               </div>
-              <Table
+              <CneTable
                 dataSource={currentTableList}
                 columns={this.tableColumn()}
                 onChange={this.tableChange}
-                pagination={false}
-                className={styles.deviceTable}
+                sortField={this.tableSortMap[sortField]}
+                sortMethod={this.sortMethodMap[sortMethod] || false}
+                className={`${styles.deviceTable} ${styles.boxTransformerTable}`}
                 locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" /></div> }}
+                dataError={false} />
               />
             </div>
           </TabPane>

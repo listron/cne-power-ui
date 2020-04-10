@@ -87,6 +87,7 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
       dataIndex: 'stationName',
       sorter: true,
       className: styles.stationName,
+      render: text => <div className={styles.stationNameText}>{text || '--'}</div>,
     }, {
       title: '设置时间',
       dataIndex: 'createTime',

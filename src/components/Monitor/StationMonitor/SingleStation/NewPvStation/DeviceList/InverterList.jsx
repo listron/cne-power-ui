@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../../Common/CommonPagination/index';
 import TableColumnTitle from '../../../../../Common/TableColumnTitle';
 import { numWithComma, dataFormats } from '../../../../../../utils/utilFunc';
+import CneTable from '@components/Common/Power/CneTable';
 import { throttle } from 'lodash';
 
 const TabPane = Tabs.TabPane;
@@ -35,6 +36,8 @@ class InverterList extends Component {
       spliceLength: 36, // 18条数据一渲染。
       topHeight: 430, // 假设的列表上方高度
       newList: [],
+      sortMethod: '', // 排序方式
+      sortField: '', // 排序字段
     };
   }
 
@@ -125,24 +128,30 @@ class InverterList extends Component {
         dataIndex: 'deviceName',
         key: 'deviceName',
         sorter: true,
+        textAlign: 'left',
         defaultSortOrder: 'ascend',
+        className: styles.deviceName,
         render: (text, record, index) => (
-          <div className={record.deviceStatus === 900 ? styles.deviceCode : styles.normalCode} >
-            <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName} >{text}</Link>
+          <div className={`${record.deviceStatus === 900 ? styles.deviceCode : styles.normalCode} ${styles.deviceNameText}`} >
+            <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName} title={text}>{text}</Link>
           </div>
         ),
       },
       {
-        title: () => <TableColumnTitle title="日发电量" unit="kWh" />,
+        title: '日发电量(kWh)',
         dataIndex: 'dayPower',
         key: 'dayPower',
+        textAlign: 'right',
+        className: styles.deviceName,
         render: value => dataFormats(value, '--', 2),
         sorter: true,
       },
       {
-        title: () => <TableColumnTitle title="日等效时" unit="h" />,
+        title: '日等效时(h)',
         dataIndex: 'equipmentHours',
         key: 'equipmentHours',
+        textAlign: 'right',
+        className: styles.equipmentHour,
         render: (value, record, index) => {
           return (
             <div className={styles.equipmentHours}>
@@ -159,9 +168,11 @@ class InverterList extends Component {
         sorter: true,
       },
       {
-        title: () => <TableColumnTitle title="转换效率" unit="%" />,
+        title: '转换效率(%)',
         dataIndex: 'transferRate',
         key: 'transferRate',
+        textAlign: 'right',
+        className: styles.transferRates,
         render: (value, record, index) => {
           return (
             <div className={styles.transferRate}>
@@ -178,28 +189,35 @@ class InverterList extends Component {
         sorter: true,
       },
       {
-        title: () => <TableColumnTitle title="实时功率" unit="kW" />,
+        title: '实时功率(kw)',
         dataIndex: 'devicePower',
         key: 'devicePower',
+        textAlign: 'right',
+        className: styles.devicePower,
         render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: true,
       }, {
-        title: () => <TableColumnTitle title="装机容量" unit="kW" />,
+        title: '装机容量(kw)',
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
-        width: '140px',
+        textAlign: 'right',
+        className: styles.deviceCapacity,
         render: value => numWithComma(dataFormats(value, '--', 2)),
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
-        title: () => <TableColumnTitle title="告警" unit="个" />,
+        title: '告警(个)',
         dataIndex: 'alarmNum',
         key: 'alarmNum',
+        textAlign: 'right',
+        className: styles.alarmNum,
         render: value => numWithComma(value),
         sorter: (a, b) => a.alarmNum - b.alarmNum,
       }, {
         title: '设备状态',
         dataIndex: 'deviceStatus',
         key: 'deviceStatus',
+        textAlign: 'center',
+        className: styles.deviceStatus,
         sorter: (a, b) => a.deviceStatus - b.deviceStatus,
         render: (value, record) => {
           const nowList = this.inverterStatus[theme][`${value}`];
@@ -214,10 +232,47 @@ class InverterList extends Component {
     this.setState({ pageSize, currentPage });
   }
 
+  sortFieldMap = { // 表格排序字段 => api
+    deviceName: 'deviceName',
+    dayPower: 'dayPower',
+    equipmentHours: 'equipmentHours',
+    transferRate: 'transferRate',
+    devicePower: 'devicePower',
+    deviceCapacity: 'deviceCapacity',
+    alarmNum: 'alarmNum',
+    deviceStatus: 'deviceStatus',
+  };
+
+  tableSortMap = { // api存储字段 => 表格排序字段
+    deviceName: 'deviceName',
+    dayPower: 'dayPower',
+    equipmentHours: 'equipmentHours',
+    transferRate: 'transferRate',
+    devicePower: 'devicePower',
+    deviceCapacity: 'deviceCapacity',
+    alarmNum: 'alarmNum',
+    deviceStatus: 'deviceStatus',
+  };
+
+  sortMethodMap = {
+    descend: 'descend',
+    ascend: 'ascend',
+  }
+
   tableChange = (pagination, filters, sorter) => {
+    const { field } = sorter || {};
+    const { sortField, sortMethod } = this.state;
+    let newField = sortField, newSort = 'descend';
+    if (!field || (sortField === this.sortFieldMap[field])) { // 点击的是正在排序的列
+      newSort = sortMethod === 'descend' ? 'ascend' : 'descend'; // 交换排序方式
+    } else { // 切换列
+      newField = this.sortFieldMap[field];
+    }
     this.setState({
+      sortMethod: newSort,
+      sortField: newField,
       sortName: sorter.field,
-      descend: sorter.order === 'descend',
+      descend: newSort === 'descend',
     });
   }
 
@@ -228,13 +283,14 @@ class InverterList extends Component {
       key: i,
     })).sort((a, b) => { // 排序
       const sortType = descend ? -1 : 1;
-      const arraySort = ['parentDeviceName', 'deviceName'];
+      const arraySort = ['deviceName'];
       const arrayNumSort = ['devicePower', 'deviceStatus', 'deviceCapacity', 'alarmNum', 'transferRate', 'dayPower', 'equipmentHours'];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);
       } else if (arraySort.includes(sortName)) {
-        a[sortName] = a[sortName] ? a[sortName] : '';
-        return sortType * (a[sortName].length - b[sortName].length);
+        a[sortName] = a[sortName] && a[sortName] || '';
+        b[sortName] = b[sortName] && b[sortName] || '';
+        return sortType * (a[sortName].localeCompare(b[sortName]));
       }
     });
     return tableSource.splice((currentPage - 1) * pageSize, pageSize);
@@ -353,7 +409,7 @@ class InverterList extends Component {
 
   render() {
     const { deviceTypeCode, inverterList, loading, theme } = this.props;
-    const { currentPage, pageSize, renderList } = this.state;
+    const { currentPage, pageSize, renderList, sortField, sortMethod } = this.state;
     const baseLinkPath = '/hidden/monitorDevice';
     const { stationCode } = this.props.match.params;
     const { deviceList = [], deviceStatusSummary = [] } = inverterList;
@@ -487,15 +543,17 @@ class InverterList extends Component {
                 <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length}
                   theme={theme} />
               </div>
-              <Table
+              <CneTable
                 // dataSource={this.createTableSource(filteredDeviceList)}
                 dataSource={this.createTableSource(renderList)}
                 columns={this.tableColumn()}
                 onChange={this.tableChange}
                 pagination={false}
+                sortField={this.tableSortMap[sortField]}
+                sortMethod={this.sortMethodMap[sortMethod] || false}
                 className={styles.inverterTable}
                 locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" /></div> }}
-              />
+                dataError={false} />
             </div>
 
           </TabPane>

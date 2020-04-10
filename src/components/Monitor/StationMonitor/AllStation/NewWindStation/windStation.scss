@@ -436,91 +436,28 @@
       line-height: 45px;
     }
 
-    // @media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
-    //   .windStationTable{
-    //     .stationNames{
-    //       width: 7%;
-    //     }
-    //   }
-    // }
-    
-    // @media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
-    //   .windStationTable{
-    //     .stationNames{
-    //       width: 11%;
-    //     }
-    //   }
-    // }
-    
-    // @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
-    //   .windStationTable{
-    //     .stationNames{
-    //       width: 11%;
-    //     }
-    //   }
-    // }
-
-    .stationName {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      // width: ;
+    .stationNameText {
+      @include overflowText();
+      width: 95px;
       &:hover {
         color: $themeColor;
       }
     }
 
     .stationrovince {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      @include overflowText();
+      max-width: 96px;
     }
 
     .numberStyle {
       text-align: right;
     }
 
-    .stationNames{
-      width: 9.5%;
+    .stationName, .regionName{
+      width: 8%;
     }
-    .regionNames{
-      width: 8.3%;
-    }
-    .stationCapacity{
-      width: 7.2%;
-    }
-    .stationUnitCount{
-      width: 6.8%;
-    }
-    .stationPowerNum{
-      width: 7.2%;
-    }
-    .instantaneous{
-      width: 7.2%;
-    }
-    .capabilityRate{
-      width: 6.53%;
-    }
-    .dayPower{
-      width: 7.2%;
-    }
-    .monthPower{
-      width: 7.2%;
-    }
-    .yearPower{
-      width: 7.2%;
-    }
-    .yearPlanRate{
-      width: 7.2%;
-    }
-    .errorNum{
-      width: 6.2%;
-    }
-    .maintainNum{
-      width: 6.2%;
-    }
-    .interruptNum{
-      // width: 8%;
+    .stationCapacity, .stationUnitCount, .stationPowerNum, .instantaneous, .capabilityRate, .dayPower, .monthPower, .yearPower, .yearPlanRate,.errorNum, .maintainNum, .interruptNum{
+      width: 7%;
     }
   }
   // 地图

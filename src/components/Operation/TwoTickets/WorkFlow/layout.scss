@@ -36,7 +36,7 @@
       width: 13%;
     }
     .stationName{
-      width: 11%;
+      width: 13%;
     }
     .docketName{
       width: 12%;
@@ -69,30 +69,44 @@
     }
   }
 
-  .stationName {
+  .stationNameText {
     @include overflowText();
     max-width: 175px;
-    min-width: 100px;
+    min-width: 146px;
   }
-  .docketTypeName{
+  .docketTypeNameText{
     @include overflowText();
-    max-width: 175px;
-    min-width: 100px;
+    min-width: 146px;
   }
-  .dealUserNames {
+  .docketNameText{
     @include overflowText();
     max-width: 150px;
   }
-  .docketCode {
+  .dealUserNamesText {
+    @include overflowText();
+  }
+  .docketCodeText {
     @include overflowText();
     max-width: 100px;
   }
-  .docketName {
-    @include overflowText();
-    max-width: 125px;
-  }
   .createTime {
     min-width: 134px;
+  }
+  @media screen and (max-width: 1679px){
+    .dealUserNamesText{
+      max-width: 96px;
+    }
+    .docketTypeNameText{
+      max-width: 150px;
+    }
+  }
+  @media screen and (min-width: 1920px){
+    .dealUserNamesText{
+      max-width: 130px;
+    }
+    .docketTypeNameText{
+      max-width: 183px;
+    }
   }
 
   :global {

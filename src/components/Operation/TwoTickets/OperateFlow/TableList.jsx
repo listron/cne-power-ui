@@ -230,7 +230,7 @@ class TableList extends Component {
                 sorter: true,
                 textAlign: 'center',
                 className: styles.endTime,
-                render: text => <div className={styles.createTimeText} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss')}</div>,
+                render: text => <div className={styles.createTimeText} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss') || '--'}</div>,
             }, {
                 title: '状态',
                 dataIndex: 'stateDesc',

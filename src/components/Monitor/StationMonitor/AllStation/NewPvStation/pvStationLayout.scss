@@ -294,8 +294,15 @@
     line-height: 45px;
   }
 
-  .stationName {
-    width: 70px;
+  .stationName, .anomalousBranchNum{
+    width: 8%;
+  }
+  .regionName, .stationPower, .instantaneous, .loadRate, .dayPower, .equivalentHours, .monthPower, .yearPower, .stationCapacity, .stationUnitCount, .alarmNum, .stationStatus{
+    width: 7%;
+  }
+
+  .stationNameText {
+    width: 96px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -310,7 +317,7 @@
   .numberStyle {
     text-align: right;
   }
-  .equivalentHours {
+  .equivalentHoursText {
     display: flex;
     justify-content: flex-end;
     .tooltipName {
@@ -385,7 +392,7 @@
 :global {
   .ant-table .ant-table-thead > tr > th,
   .ant-table .ant-table-tbody > tr > td {
-    padding: 0px 5px;
+    // padding: 0px 5px;
     height: 40px;
     line-height: 30px;
   }

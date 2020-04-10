@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './windStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
-import { Table, message } from 'antd';
+import { message } from 'antd';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { numWithComma, dataFormats } from '../../../../../utils/utilFunc';
 import CneTable from '@components/Common/Power/CneTable';
@@ -14,23 +14,74 @@ class WindStationList extends React.Component {
     currentPage: PropTypes.number,
     onPaginationChange: PropTypes.func,
     windMonitorStation: PropTypes.object,
+    loading: PropTypes.bool,
   }
 
   constructor(props, context) {
     super(props, context);
-    const { clientHeight } = document.body;
     this.state = {
       sortName: 'regionName',
       descend: false,
-      tableListHeight: clientHeight - 432,
+      sortMethod: '', // 排序方式
+      sortField: '', // 排序字段
     };
   }
 
+  sortFieldMap = { // 表格排序字段 => api
+    stationName: 'stationName',
+    regionName: 'regionName',
+    stationCapacity: 'stationCapacity',
+    stationUnitCount: 'stationUnitCount',
+    stationPower: 'stationPower',
+    instantaneous: 'instantaneous',
+    capabilityRate: 'capabilityRate',
+    dayPower: 'dayPower',
+    monthPower: 'monthPower',
+    yearPower: 'yearPower',
+    yearPlanRate: 'yearPlanRate',
+    equivalentHours: 'equivalentHours',
+    errorNum: 'errorNum',
+    maintainNum: 'maintainNum',
+    interruptNum: 'interruptNum',
+  };
+
+  tableSortMap = { // api存储字段 => 表格排序字段
+    stationName: 'stationName',
+    regionName: 'regionName',
+    stationCapacity: 'stationCapacity',
+    stationUnitCount: 'stationUnitCount',
+    stationPower: 'stationPower',
+    instantaneous: 'instantaneous',
+    capabilityRate: 'capabilityRate',
+    dayPower: 'dayPower',
+    monthPower: 'monthPower',
+    yearPower: 'yearPower',
+    yearPlanRate: 'yearPlanRate',
+    equivalentHours: 'equivalentHours',
+    errorNum: 'errorNum',
+    maintainNum: 'maintainNum',
+    interruptNum: 'interruptNum',
+  };
+
+  sortMethodMap = {
+    descend: 'descend',
+    ascend: 'ascend',
+  }
 
   ontableSort = (pagination, filters, sorter) => {
+    const { field } = sorter || {};
+    const { sortField, sortMethod } = this.state;
+    let newField = sortField, newSort = 'descend';
+    if (!field || (sortField === this.sortFieldMap[field])) { // 点击的是正在排序的列
+      newSort = sortMethod === 'descend' ? 'ascend' : 'descend'; // 交换排序方式
+    } else { // 切换列
+      newField = this.sortFieldMap[field];
+    }
     this.setState({
+      sortMethod: newSort,
+      sortField: newField,
       sortName: sorter.field,
-      descend: sorter.order === 'descend',
+      descend: newSort === 'descend',
     });
   }
 
@@ -39,7 +90,6 @@ class WindStationList extends React.Component {
     message.config({ top: 225, maxCount: 1 });
     message.warning('电站未接入,无法查看详情', 2);
   }
-
 
   powerPoint = (data, quality) => { // 根据风电站特殊的需求
     let point = 2;
@@ -70,15 +120,16 @@ class WindStationList extends React.Component {
         title: '电站名称',
         dataIndex: 'stationName',
         sorter: true,
-        className: styles.stationNames,
+        textAlign: 'left',
+        className: styles.stationName,
         render: (value, record) => {
           const stationStatus = record.stationStatus.stationStatus || '';
           if (stationStatus === '900') {
-            return <div title={value} className={styles.stationName} onClick={this.showTip}>{value}</div>;
+            return <div title={value} className={styles.stationNameText} onClick={this.showTip}>{value}</div>;
           }
           return (
             <a href={`#/monitor/singleStation/${record.stationCode}`}>
-              <div title={value} className={styles.stationName}>{value}</div>
+              <div title={value} className={styles.stationNameText}>{value}</div>
             </a>
           );
         },
@@ -88,8 +139,9 @@ class WindStationList extends React.Component {
         dataIndex: 'regionName',
         defaultSortOrder: 'ascend',
         sorter: true,
-        className: styles.regionNames,
-        render: (value) => <div className={styles.stationrovince}>{value}</div>,
+        textAlign: 'left',
+        className: styles.regionName,
+        render: (value) => <div className={styles.stationrovince} title={value}>{value}</div>,
       },
       {
         title: () => <TableColumnTitle title="装机容量" unit={'MW'} />,
@@ -217,8 +269,8 @@ class WindStationList extends React.Component {
   }
 
   render() {
-    const { tableListHeight } = this.state;
-    const { stationDataList, pageSize, currentPage, onPaginationChange } = this.props;
+    const { sortMethod, sortField } = this.state;
+    const { stationDataList, pageSize, currentPage, onPaginationChange, loading } = this.props;
     const dataSort = this.createTableSource(stationDataList);
     const startRow = (currentPage - 1) * pageSize;
     let endRow = currentPage * pageSize;
@@ -232,13 +284,14 @@ class WindStationList extends React.Component {
           <CommonPagination pageSize={pageSize} currentPage={currentPage} total={totalNum} onPaginationChange={onPaginationChange} />
         </div>
         <CneTable
-          className={styles.windStationTable}
+          loading={loading}
           columns={this.initColumn()}
+          sortField={this.tableSortMap[sortField]}
+          sortMethod={this.sortMethodMap[sortMethod] || false}
           dataSource={datalist}
           onChange={this.ontableSort}
-          // scroll={stationDataList.length > 0 ? {y: tableListHeight} : {}}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-        />
+          dataError={false} />
       </div>
     );
   }

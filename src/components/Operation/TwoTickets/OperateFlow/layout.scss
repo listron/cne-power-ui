@@ -66,25 +66,44 @@
     }
   }
 
-  .stationName {
+  .stationNameText {
     @include overflowText();
     max-width: 175px;
     min-width: 100px;
   }
-  .dealUserNames {
+  .docketCodeText{
     @include overflowText();
     max-width: 150px;
+    min-width: 100px;
   }
-  .docketCode {
+  .dealUserNamesText {
+    @include overflowText();
+  }
+  .docketCodeText {
     @include overflowText();
     max-width: 100px;
   }
-  .docketName {
+  .docketNameText {
     @include overflowText();
-    max-width: 125px;
   }
   .createTime {
     min-width: 134px;
+  }
+  @media screen and (max-width: 1679px){
+    .dealUserNamesText{
+      max-width: 96px;
+    }
+    .docketNameText{
+      max-width: 170px;
+    }
+  }
+  @media screen and (min-width: 1920px){
+    .dealUserNamesText{
+      max-width: 130px;
+    }
+    .docketNameText{
+      max-width: 220px;
+    }
   }
 
   :global {

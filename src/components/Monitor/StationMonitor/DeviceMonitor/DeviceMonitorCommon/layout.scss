@@ -131,40 +131,61 @@
     }
   }
 
-  .level {
-    border-radius: 2px;
-    display: inline-block;
-    height: 18px;
-    line-height: 18px;
-    padding: 0 4px;
+  .deviceAlarmTable{
+    .warningLevel, .operation{
+      width: 14%;
+    }
+    .warningConfigName, .warningCheckDesc, .timeOn, .durationTime{
+      width: 18%;
+    }
+    .warningCheckDescText, .warningConfigNameText{
+      @include overflowText();
+      max-width: 260px;
+    }
+    @media screen and (max-width: 1679px){
+      .warningCheckDescText, .warningConfigNameText{
+        max-width: 210px;
+      }
+    }
+    @media screen and (min-width: 1920px){
+      .warningCheckDescText, .warningConfigNameText{
+        max-width: 260px;
+      }
+    }
+
+    .level {
+      border-radius: 2px;
+      display: inline-block;
+      height: 18px;
+      line-height: 18px;
+      padding: 0 4px;
+    }
+  
+    .actionBtnBox {
+      display: flex;
+      justify-content: center;
+      .operationBtn, .delBtn {
+        display: block;
+        width: 30px;
+        @include lineheight(30px);
+        cursor: pointer;
+        background: $slideSelectColor;
+        border-radius: 50%;
+        color: $themeColor;
+        &:hover {
+          background: $themeColor;
+          color: $slideFontColor;
+        }
+      }
+  
+      .delBtn {
+        margin-left: 15px;
+        i {
+          font-style: normal;
+        }
+      }
   }
 
-  .actionBtnBox {
-    display: flex;
-    justify-content: center;
-
-    .operationBtn, .delBtn {
-      display: block;
-      width: 30px;
-      @include lineheight(30px);
-      cursor: pointer;
-      background: $slideSelectColor;
-      border-radius: 50%;
-      color: $themeColor;
-
-      &:hover {
-        background: $themeColor;
-        color: $slideFontColor;
-      }
-    }
-
-    .delBtn {
-      margin-left: 15px;
-
-      i {
-        font-style: normal;
-      }
-    }
   }
 
   :global {

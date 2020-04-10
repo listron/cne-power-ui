@@ -16,6 +16,13 @@
     .stationName,.createTime,.state,.handle{
       width: 25%;
     }
+    .stationNameText{
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: calc((100vw - 250px) * 0.24 - 20px);
+    }
   }
   table { 
     .setted {

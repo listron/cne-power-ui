@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import CommonPagination from '../../../../Common/CommonPagination';
 import styles from './deviceMonitor.scss';
 import PropTypes from 'prop-types';
-import { Button, Table } from 'antd';
+import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import TransferWarningModal from './monitorModal/TransferWarningModal';
 import HandleRemoveModal from './monitorModal/HandleRemoveModal';
+import CneTable from '@components/Common/Power/CneTable';
 const warningLevelArray = [{
   levelName: '一级',
   levelColor: '#a42b2c',
@@ -51,13 +52,44 @@ class DeviceAlarmTable extends Component {
       showTransferTicketModal: false,
       showHandleRemoveModal: false,
       selectedRowKeys: [],
+      sortMethod: '', // 排序方式
+      sortField: '', // 排序字段
     };
   }
 
+  sortFieldMap = { // 表格排序字段 => api
+    warningLevel: 'warningLevel',
+    warningConfigName: 'warningConfigName',
+    timeOn: 'timeOn',
+    durationTime: 'durationTime',
+  };
+
+  tableSortMap = { // api存储字段 => 表格排序字段
+    warningLevel: 'warningLevel',
+    warningConfigName: 'warningConfigName',
+    timeOn: 'timeOn',
+    durationTime: 'durationTime',
+  };
+
+  sortMethodMap = {
+    descend: 'descend',
+    ascend: 'ascend',
+  }
+
   ontableSort = (pagination, filters, sorter) => {
+    const { field } = sorter || {};
+    const { sortField, sortMethod } = this.state;
+    let newField = sortField, newSort = 'descend';
+    if (!field || (sortField === this.sortFieldMap[field])) { // 点击的是正在排序的列
+      newSort = sortMethod === 'descend' ? 'ascend' : 'descend'; // 交换排序方式
+    } else { // 切换列
+      newField = this.sortFieldMap[field];
+    }
     this.setState({
+      sortMethod: newSort,
+      sortField: newField,
       sortName: sorter.field,
-      descend: sorter.order === 'descend',
+      descend: newSort === 'descend',
     });
   }
 
@@ -84,6 +116,8 @@ class DeviceAlarmTable extends Component {
         dataIndex: 'warningLevel',
         key: 'warningLevel',
         sorter: true,
+        textAlign: 'center',
+        className: styles.warningLevel,
         render: (text, record, index) => {
           const warningInfor = text && warningLevelArray[text - 1];
           return (text &&
@@ -97,33 +131,46 @@ class DeviceAlarmTable extends Component {
         dataIndex: 'warningConfigName',
         key: 'warningConfigName',
         sorter: true,
-        render: (text) => text > 200 ? '限制告警' : '事件告警',
+        textAlign: 'left',
+        className: styles.warningConfigName,
+        render: (text) => {
+          return <div className={styles.warningConfigNameText}>{text > 200 ? '限制告警' : '事件告警'}</div>;
+        },
       }, {
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
         key: 'warningCheckDesc',
+        textAlign: 'left',
+        className: styles.warningCheckDesc,
+        render: text => <div className={styles.warningCheckDescText}>{text}</div>,
       }, {
         title: '发生时间',
         dataIndex: 'timeOn',
         key: 'timeOn',
         sorter: true,
+        textAlign: 'center',
+        className: styles.timeOn,
         render: (text) => moment(text).format('YYYY-MM-DD HH:mm'),
       }, {
         title: '持续时间',
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
+        textAlign: 'center',
+        className: styles.durationTime,
       }, {
         title: '操作',
         align: 'center',
-        dataIndex: '操作',
-        key: '操作',
+        dataIndex: 'operation',
+        key: 'operation',
+        textAlign: 'center',
+        className: styles.operation,
         render: (text, record) => (
           <div className={styles.actionBtnBox}>
             <span className={styles.operationBtn} title="转工单">
               <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record); }} />
             </span>
-            <span className={styles.delBtn} title="手动解除" onClick={() => { this.onDelDetail(record) }}>
+            <span className={styles.delBtn} title="手动解除" onClick={() => { this.onDelDetail(record);}}>
               <i className="iconfont icon-manual" />
             </span>
           </div>
@@ -175,10 +222,11 @@ class DeviceAlarmTable extends Component {
       selectedTransfer,
       changeDeviceStore,
     } = this.props;
-    const { pageSize, currentPage, showTransferTicketModal, showHandleRemoveModal, selectedRowKeys } = this.state;
+    const { pageSize, currentPage, showTransferTicketModal, showHandleRemoveModal, selectedRowKeys, sortField, sortMethod } = this.state;
     const tableSource = this.createTableSource(deviceAlarmList);
     const columns = this.initColumn();
     const { deviceName } = deviceDetail;
+
     return (
       <div className={`${styles.alarmTable} ${styles[theme]}`} style={style}>
         <div className={styles.tableHeader}>
@@ -192,14 +240,15 @@ class DeviceAlarmTable extends Component {
             theme={theme}
           />
         </div>
-        <Table
+        <CneTable
           dataSource={tableSource}
           onChange={this.ontableSort}
           columns={columns}
-          pagination={false}
+          sortField={this.tableSortMap[sortField]}
+          sortMethod={this.sortMethodMap[sortMethod] || false}
+          className={styles.deviceAlarmTable}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-        // loading={loading}
-        />
+          dataError={false} />
         {showTransferTicketModal &&
           <TransferWarningModal
             deviceAlarmList={deviceAlarmList}

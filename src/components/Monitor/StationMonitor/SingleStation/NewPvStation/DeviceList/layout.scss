@@ -266,25 +266,42 @@
           justify-content: flex-end;
         }
 
-        .deviceTable {
-          .deviceCode {
+        .boxTransformerTable, .confluenceBoxTable {
+          .deviceCode{
             pointer-events: none;
-
+          }
+          .deviceCode, .deviceNameText{
+            @include overflowText();
             .tableDeviceName {
-              text-decoration: none;
+              // text-decoration: none;
             }
           }
-
           .tableDeviceName {
             text-decoration: underline;
           }
-
           margin-bottom: 60px;
+        }
 
-          :global {
-            .ant-table .ant-table-tbody>tr>td {
-              line-height: 20px;
-            }
+        .boxTransformerTable{
+          .deviceCode, .deviceNameText{
+            max-width: 303px;
+          }
+          .deviceName, .devicePower, .deviceCapacity, .alarmNum{
+            width: 25%;
+          }
+        }
+        .confluenceBoxTable{
+          .deviceCode, .deviceNameText{
+            max-width: 158px;
+          }
+          .deviceName{
+            width: 15%;
+          }
+          .devicePower, .deviceCapacity, .voltage, .electricity, .dispersionRatio, .temp{
+            width: 12%;
+          }
+          .deviceStatus{
+            width: 13%;
           }
         }
       }
@@ -709,6 +726,21 @@
           justify-content: flex-end;
         }
 
+        .inverterTable{
+          .deviceCode, .deviceNameText{
+            max-width: 158px;
+          }
+          .deviceName{
+            width: 15%;
+          }
+          .dayPower, .equipmentHour, .transferRates, .devicePower, .deviceCapacity, .alarmNum{
+            width: 12%;
+          }
+          .deviceStatus{
+            width: 13%;
+          }
+        }
+
         .deviceTable {
           .deviceCode {
             pointer-events: none;
@@ -829,18 +861,8 @@
   }
 
   :global {
-    .ant-table .ant-table-thead {
-      th>div {
-        height: 60px;
-      }
-    }
-
     .ant-table-placeholder {
       border: none;
-    }
-
-    .ant-table .ant-table-thead .ant-table-column-sorter {
-      top: 18px;
     }
 
     .ant-tabs-extra-content {
