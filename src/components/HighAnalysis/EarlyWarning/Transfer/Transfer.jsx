@@ -144,12 +144,9 @@ class Transfer extends Component {
         title: '查看工单',
         className: styles.iconDetail,
         render: (text, record) => (
-          <span className={styles.iconBox}>
-            <Link to={`/operation/workProcess/view?page=defectDetail&defectId=${record.defectId}`} target="_blank">
-              <i className="iconfont icon-tranlist icon-action" />
-            </Link>
-          </span>
-
+          <Link to={`/operation/workProcess/view?page=defectDetail&defectId=${record.defectId}`} target="_blank" className={styles.iconBox}>
+            <i className="iconfont icon-tranlist icon-action" />
+          </Link>
         ),
       },
     ];

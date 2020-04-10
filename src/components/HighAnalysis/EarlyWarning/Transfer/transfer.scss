@@ -15,11 +15,6 @@
     justify-content: flex-end;
     padding: 26px 0 20px 28px;
   }
-  :global {
-    .ant-table-placeholder {
-      border-bottom: none;
-    }
-  }
    .stationNameText,.belongMatrixText,.parentDeviceNameText,.deviceNameText{
        @include overflowText();
    }   
@@ -40,6 +35,7 @@
       border-radius: 50%;
       width: 30px;
       cursor: pointer;
+      margin: 0 auto;
       &:hover {
         display: flex;
         height: 30px;
@@ -59,7 +55,8 @@
     border-top: 1px solid $promptColor;
   }
   .iconBox {
-    background: #d1d1d1;
+    background-color: #ceebe0;
+    color: #199475
     &:hover {
       background: $themeColor;
       :global {

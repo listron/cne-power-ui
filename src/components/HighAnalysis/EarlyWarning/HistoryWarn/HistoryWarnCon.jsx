@@ -8,6 +8,7 @@ import { SequenceChart } from '../CommonChart/SequenceChart';
 import moment from 'moment';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../utils/utilFunc';
+import CneTable from '../../../Common/Power/CneTable';
 
 class HistoryWarnCon extends Component {
   static propTypes = {
@@ -45,6 +46,17 @@ class HistoryWarnCon extends Component {
     getHistoryWarnMatrixList({ stationCodes: stationCodes });
   }
 
+  tableSortMap = { // api存储字段 => 表格排序字段
+    'station_code': 'stationName',
+    'happen_time': 'happenTime',
+    'lost_gen_percent': 'lostGenPercent',
+  };
+
+  sortMethodMap = {
+    'desc': 'descend',
+    'asc': 'ascend',
+  }
+
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
     this.getHistoryWarnList({ pageNum: currentPage, pageSize });
   }
@@ -72,12 +84,17 @@ class HistoryWarnCon extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
-    const initSorterField = 'lost_gen_percent';
-    const sortField = sorter.field ? this.sortField(sorter.field) : initSorterField;
-    let ascend = '';
-    ascend = sorter.order === 'ascend' ? 'asc' : 'desc';
-    this.getHistoryWarnList({ sortField, sortMethod: ascend });
-  }
+    const { sortField, sortMethod } = this.props;
+    const { field } = sorter;
+    let newSortField = sortField, newSortMethod = 'desc';
+    if (!field || (this.sortField(field) === newSortField)) { // 点击的是正在排序的列
+      newSortMethod = sortMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
+    } else { // 切换列
+      newSortField = this.sortField(sorter.field);
+    }
+    this.getHistoryWarnList({ sortField: newSortField, sortMethod: newSortMethod });
+  };
+
 
   sortField(sortField) {
     let result = '';
@@ -117,7 +134,7 @@ class HistoryWarnCon extends Component {
   }
 
   render() {
-    const { stations, matrixList, loading, historyWarnList, pageSize, totalNum, pageNum, sequenceChartList, nowSequenceChartList, theme } = this.props;
+    const { stations, matrixList, loading, historyWarnList, pageSize, totalNum, pageNum, sequenceChartList, nowSequenceChartList, theme, sortField, sortMethod } = this.props;
     const { record } = this.state;
     const columns = [
       {
@@ -125,41 +142,46 @@ class HistoryWarnCon extends Component {
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
+        className: styles.stationName,
+        render: (text) => (<div title={text || '--'} className={styles.stationNameText} title={text}>{text || '--'}</div>),
       }, {
         title: '所属方阵',
         dataIndex: 'belongMatrix',
         key: 'belongMatrix',
-        render: text => text ? text : '--',
+        className: styles.belongMatrix,
+        render: (text) => (<div title={text || '--'} className={styles.belongMatrixText} title={text}>{text || '--'}</div>),
       }, {
         title: '设备名称',
         dataIndex: 'parentDeviceName',
         key: 'parentDeviceName',
-        render: text => text ? text : '--',
+        className: styles.parentDeviceName,
+        render: (text) => (<div title={text || '--'} className={styles.parentDeviceNameText} title={text}>{text || '--'}</div>),
       }, {
         title: '电流偏低支路',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        render: text => text ? text : '--',
+        className: styles.deviceName,
+        render: (text) => (<div title={text || '--'} className={styles.deviceNameText} title={text}>{text || '--'}</div>),
       }, {
         title: '预警时间',
         dataIndex: 'happenTime',
         key: 'happenTime',
         sorter: true,
-        defaultSortOrder: 'descend',
+        textAlign: 'center',
+        className: styles.happenTime,
       }, {
-        title: () => <TableColumnTitle title="电量损失比" unit="%" />,
+        title: '电量损失比(%)',
         dataIndex: 'lostGenPercent',
         key: 'lostGenPercent',
         render(text) { return numWithComma(text); },
         sorter: true,
+        textAlign: 'right',
+        className: styles.lostGenPercent,
       }, {
         title: '查看',
         className: styles.iconDetail,
-        render: (text, record) => (
-          <span>
-            <i className="iconfont icon-look" onClick={() => this.onShowDetail(record)} />
-          </span>
-        ),
+        textAlign: 'center',
+        render: (text, record) => <i className="iconfont icon-look" onClick={() => this.onShowDetail(record)} />,
       },
     ];
     const dataSource = historyWarnList.map((item, index) => ({
@@ -199,13 +221,14 @@ class HistoryWarnCon extends Component {
           <div className={styles.selectCondition}>
             <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} theme={theme} />
           </div>
-          <Table
-            loading={loading}
-            dataSource={dataSource}
+          <CneTable
             columns={columns}
+            dataSource={dataSource}
             pagination={false}
+            loading={loading}
+            sortField={this.tableSortMap[sortField]}
+            sortMethod={this.sortMethodMap[sortMethod]}
             onChange={this.tableChange}
-            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           />
         </div>
         <span ref="modal" />
