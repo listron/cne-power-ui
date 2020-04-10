@@ -91,6 +91,9 @@
         }
       }
     }
+    .ant-table .ant-table-thead > tr > .ant-table-selection-column {
+      min-width: 40px;
+    }
     .ant-table-placeholder {
       border-bottom: none;
     }
