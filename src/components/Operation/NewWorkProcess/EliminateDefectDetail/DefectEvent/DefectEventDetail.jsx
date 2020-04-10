@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 
 
-const DefectEventDetail = ({ defectMessage, delRight = false, allowedOpr = false, eventChange, delChange }) => {
+const DefectEventDetail = ({ defectMessage, delRight = false, allowedOpr = false, eventChange, delChange, defectLevelList }) => {
   const [state, changeState] = useState();
   const [visible, changeVisible] = useState(false);
   const defectType = useRef();
@@ -46,6 +46,7 @@ const DefectEventDetail = ({ defectMessage, delRight = false, allowedOpr = false
 
   const width = defectMessage.defectTypeCode && getWidth(allLine) - getWidth(defectType) - getWidth(deviceTypeName) - getWidth(defectLevel) - 150 || 130;
 
+  const defectLevelMes = defectLevelList.filter(e => e.defectLevel === defectMessage.defectLevel);
   return (
     <div className={styles.eventDetail}>
       <div className={styles.messageWrap}>
@@ -74,8 +75,8 @@ const DefectEventDetail = ({ defectMessage, delRight = false, allowedOpr = false
             <div className={styles.list} ref={defectLevel}>
               <span className={styles.recordName}>缺陷级别:</span>
               <span className={styles.recordText}>
-                {defectMessage.defectLevelName}
-                <Tooltip placement="top" title={`${defectMessage.defectLevelDesc}`}>
+                {defectLevelMes.length > 0 && defectLevelMes[0].defectLevelName}
+                <Tooltip placement="top" title={`${defectLevelMes.length > 0 && defectLevelMes[0].defectDesc}`}>
                   <i className={`iconfont icon-help ${styles.iconHelp}`} />
                 </Tooltip>
               </span>

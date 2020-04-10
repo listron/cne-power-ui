@@ -87,6 +87,7 @@ export default class DefectEvent extends Component {
               allowedOpr={this.exchangeActioncode(allowedActions, '26')}
               eventChange={this.eventChange}
               delChange={this.delEvent}
+              defectLevelList={defectLevelList}
             />
           );
         })}
