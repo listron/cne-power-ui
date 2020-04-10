@@ -27,12 +27,15 @@
     }
   }
 }
-.numRight{
-  text-align: right;
-  margin-right: 4px;
-}
 
 .tableStyles {
+  .regionNameText, .stationNameText, .deviceModeNameText, .deviceNameText, .deviceFaultNameText{
+    @include overflowText();
+    width: 90%;
+  }
+  .regionNameText{
+    width: 78%;
+  }
   :global {
     .ant-table-placeholder{
       border: none

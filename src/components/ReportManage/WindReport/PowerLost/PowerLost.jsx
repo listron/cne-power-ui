@@ -107,7 +107,7 @@ class PowerLost extends Component {
           <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
           <Button className={styles.btn} onClick={this.exportList} disabled={powerLostList.length===0} >导出</Button>
         </div>
-        <TableList {...this.props} />
+        <TableList {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>
     )
   }

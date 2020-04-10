@@ -32,8 +32,8 @@ class TableList extends Component {
   }
 
   ontableSort = (pagination, filter, sorter) => {
-    const { onChangeFilter, tableType } = this.props;
-    const { field, order } = sorter;
+    const { onChangeFilter, tableType, sortField, sortMethod } = this.props;
+    const { field } = sorter;
     const sortInfo = {
       regionName: '0',
       stationName: '1',
@@ -59,10 +59,15 @@ class TableList extends Component {
       faultTime: '9',
       faultHours: '10',
     };
-    const sortField = tableType === 'all' ? (sortInfo[field] ? sortInfo[field] : '') : (detailSortInfo[field] ? detailSortInfo[field] : '');
-    const sortMethod = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
-    this.props.changeMalfunctionStore({ sortField, sortMethod });
-    onChangeFilter({ sortField, sortMethod });
+    let newField = sortField, newSort = 'desc';
+    const tmpTableField = tableType === 'all' ? sortInfo[field] : detailSortInfo[field];
+    if (!field || field === tmpTableField) { // 同列点击
+      newSort = sortMethod === 'desc' ? 'asc' : 'desc';
+    } else { // 换列排序
+      newField = tmpTableField;
+    }
+    this.props.changeMalfunctionStore({ sortField: newField, sortMethod: newSort });
+    onChangeFilter({ sortField: newField, sortMethod: newSort });
   }
   initMonthColumn = () => {
     const { filterTable } = this.props;
@@ -71,22 +76,22 @@ class TableList extends Component {
       dataIndex: 'regionName',
       sorter: true,
       textAlign: 'left',
-      className: styles.regionName,
-      render: (text) => <div className={styles.regionNameText} title={text}>{text}</div>,
+      width: '8%',
+      render: (text) => <div className={styles.regionNameText} title={text || '--'}>{text || '--'}</div>,
     }, {
       title: '电站名称',
       dataIndex: 'stationName',
       sorter: true,
       textAlign: 'left',
-      className: styles.stationName,
-      render: (text) => <div className={styles.stationNameText} title={text}>{text}</div>,
+      width: '12%',
+      render: (text) => <div className={styles.stationNameText} title={text || '--'}>{text || '--'}</div>,
     }, {
       title: '设备型号',
       dataIndex: 'deviceModeName',
       sorter: true,
       textAlign: 'left',
-      className: styles.deviceModeName,
-      render: (text) => <div className={styles.deviceModeNameText} title={text}>{text}</div>,
+      width: '12%',
+      render: (text) => <div className={styles.deviceModeNameText} title={text || '--'}>{text || '--'}</div>,
     }];
     const filterShow = [
       {
@@ -94,29 +99,29 @@ class TableList extends Component {
         dataIndex: 'regionName',
         sorter: true,
         textAlign: 'left',
-        className: styles.regionName,
-        render: (text) => <div className={styles.regionNameText} title={text}>{text}</div>,
+        width: '8%',
+        render: (text) => <div className={styles.regionNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         sorter: true,
         textAlign: 'left',
-        className: styles.stationName,
-        render: (text) => <div className={styles.stationNameText} title={text}>{text}</div>,
+        width: '12%',
+        render: (text) => <div className={styles.stationNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '设备名称',
         dataIndex: 'deviceName',
         sorter: true,
         textAlign: 'left',
-        className: styles.deviceName,
-        render: (text) => <div className={styles.deviceNameText} title={text}>{text}</div>,
+        width: '12%',
+        render: (text) => <div className={styles.deviceNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '风机型号',
         dataIndex: 'deviceModeName',
         sorter: true,
         textAlign: 'left',
-        className: styles.deviceModeName,
-        render: (text) => <div className={styles.deviceModeNameText} title={text}>{text}</div>,
+        width: '12%',
+        render: (text) => <div className={styles.deviceModeNameText} title={text || '--'}>{text || '--'}</div>,
       },
     ];
 
@@ -127,22 +132,22 @@ class TableList extends Component {
         dataIndex: 'regionName',
         sorter: true,
         textAlign: 'left',
-        className: styles.regionName,
-        render: (text) => <div className={styles.regionNameText} title={text}>{text}</div>,
+        width: '8%',
+        render: (text) => <div className={styles.regionNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         sorter: true,
         textAlign: 'left',
-        className: styles.stationName,
-        render: (text) => <div className={styles.stationNameText} title={text}>{text}</div>,
+        width: '12%',
+        render: (text) => <div className={styles.stationNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '故障描述',
         dataIndex: 'deviceFaultName',
         sorter: true,
         textAlign: 'left',
-        className: styles.deviceFaultName,
-        render: (text) => <div className={styles.deviceFaultNameText} title={text}>{text}</div>,
+        width: '12%',
+        render: (text) => <div className={styles.deviceFaultNameText} title={text || '--'}>{text || '--'}</div>,
       }];
     const columns = [
       {
@@ -150,35 +155,36 @@ class TableList extends Component {
         dataIndex: 'date',
         sorter: true,
         textAlign: 'center',
+        width: '10%',
         render(text) { return text.replace(/-/g, '/').replace(',', '-'); },
       }, {
         title: '次数',
         dataIndex: 'num',
         sorter: true,
         textAlign: 'right',
+        width: '8%',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
       }, {
         title: '故障时长(s)',
         dataIndex: 'faultTime',
         sorter: true,
         textAlign: 'right',
+        width: '10%',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
       }, {
         title: '故障小时数(h)',
         dataIndex: 'faultHours',
         sorter: true,
         textAlign: 'right',
+        width: '10%',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
       }, {
         title: '损失电量',
         dataIndex: 'faultGen',
         sorter: true,
         textAlign: 'right',
+        width: '10%',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
       },
     ];
     filterTable > 4 ? columns.unshift(...showFault) : columns.unshift(...show);
@@ -192,102 +198,115 @@ class TableList extends Component {
         dataIndex: 'regionName',
         sorter: true,
         fixed: 'left',
+        textAlign: 'left',
         width: 80,
+        render: (text) => <div className={styles.regionNameText} title={text}>{text}</div>,
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         sorter: true,
         fixed: 'left',
+        textAlign: 'left',
         width: 108,
+        render: (text) => <div className={styles.stationNameText} title={text}>{text}</div>,
       }, {
         title: '设备名称',
         dataIndex: 'deviceName',
         sorter: true,
         fixed: 'left',
+        textAlign: 'left',
         width: 108,
+        render: (text) => <div className={styles.deviceNameText} title={text}>{text}</div>,
       }, {
         title: '风机型号',
         dataIndex: 'deviceModeName',
         sorter: true,
         fixed: 'left',
+        textAlign: 'left',
         width: 108,
+        render: (text) => <div className={styles.deviceModeNameText} title={text}>{text}</div>,
       }, {
         title: '所属部件',
         dataIndex: 'belongComponent',
         sorter: true,
+        textAlign: 'left',
         width: 112,
-        render(text) { return (text ? text : '--'); },
+        render: (text) => <div className={styles.belongComponentText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '故障描述',
         dataIndex: 'faultDescribe',
         sorter: true,
+        textAlign: 'left',
         width: 112,
-        render(text) { return (text ? text : '--'); },
+        render: (text) => <div className={styles.faultDescribeText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '故障开始时间',
         dataIndex: 'faultStartTime',
         sorter: true,
+        textAlign: 'center',
         width: 140,
       }, {
         title: '故障结束时间',
         dataIndex: 'faultEndTime',
+        textAlign: 'center',
         sorter: true,
         width: 140,
       }, {
         title: '故障代码',
         dataIndex: 'faultCode',
         sorter: true,
+        textAlign: 'right',
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: '故障时长(s)',
         dataIndex: 'faultTime',
         sorter: true,
+        textAlign: 'right',
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
       }, {
         title: '故障小时数(h)',
         dataIndex: 'faultHours',
+        textAlign: 'right',
         sorter: true,
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
       }, {
         title: '损失电量',
         dataIndex: 'faultGen',
-        sorter: true,
+        textAlign: 'right',
+        // sorter: true,
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
       }, {
         title: '风速',
         dataIndex: 'windSpeedAvg',
-        sorter: true,
+        // sorter: true,
+        textAlign: 'right',
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
       }, {
         title: '有功功率',
         dataIndex: 'usePower',
-        sorter: true,
+        textAlign: 'right',
+        // sorter: true,
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
       }, {
         title: '发电机转速',
         dataIndex: 'speed',
-        sorter: true,
+        textAlign: 'right',
+        // sorter: true,
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
       }, {
         title: '桨叶角',
         dataIndex: 'bladeAngle',
-        sorter: true,
+        textAlign: 'right',
+        // sorter: true,
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className: styles.numRight,
       },
     ];
     return columns;
@@ -301,9 +320,11 @@ class TableList extends Component {
   }
 
   render() {
-    const { total, pageSize, pageNum, malfunctionList, tableType, malfunctionDetailList, loading } = this.props;
+    const { total, pageSize, pageNum, malfunctionList, tableType, malfunctionDetailList, loading, sortField, sortMethod } = this.props;
     const columns = tableType === 'all' ? this.initMonthColumn() : this.detailColumn();
     const dataSource = tableType === 'all' ? malfunctionList.map((e, i) => ({ ...e, key: i })) : malfunctionDetailList.map((e, i) => ({ ...e, key: i }));
+    const sortInfoMap = ['regionName', 'stationName', 'deviceName', 'deviceModeName', 'date', 'num', 'faultTime', 'faultHours', 'faultGen', 'faultDescribe'];
+    const detailSortInfo = ['regionName', 'stationName', 'deviceName', 'deviceModeName', 'belongComponent', 'faultDescribe', 'faultStartTime', 'faultEndTime', 'faultCode', 'faultTime', 'faultHours'];
     return (
       <React.Fragment>
         <div className={styles.tableHeader}>
@@ -318,6 +339,8 @@ class TableList extends Component {
         <CneTable
           loading={loading}
           columns={columns}
+          sortField={tableType === 'all' ? sortInfoMap[sortField] : detailSortInfo[sortField]}
+          sortMethod={sortMethod === 'desc' ? 'descend' : 'ascend'}
           dataSource={dataSource}
           onChange={this.ontableSort}
           scroll={tableType === 'detail' ? { x: 1804 } : { x: 0 }}
