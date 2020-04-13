@@ -134,12 +134,19 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
     const response = yield call(request.delete, url, { ...payload });
     if (response.code === '10000') {
       const { diagWarningIds } = payload || {};
-      const statusChangeNum = response.num || 0;
-      // 1. 所有操作项, 均操作成功;
-      // 2. 选中操作项中，有部分操作成功，部分状态已变化
-      // 3. 选中操作项中，所有状态已经更变
+      const statusChangeNum = parseInt(response.data, 10) || 0;
+      let statusChangeText = '';
+      if (diagWarningIds.length === statusChangeNum) {// 情形一. 所有操作项, 均操作成功;
+        statusChangeText = '';
+      } else if (diagWarningIds.length > statusChangeNum && statusChangeNum > 0) { // 2. 选中操作项中，有部分操作成功，部分状态已变化
+        statusChangeText = `当前选择事件中有${statusChangeNum}条事件已发生状态变更, 其余事件操作成功`;
+      } else if (statusChangeNum === 0) { // 3. 选中操作项中，所有状态已经更变
+        statusChangeText = '当前选择事件发生状态变更, 将刷新页面';
+      }
+      console.log(diagWarningIds.length, statusChangeNum, statusChangeText);
       yield call(easyPut, 'fetchSuccess', {
         selectedRows: [],
+        statusChangeText,
       });
       const { listParams, listPage } = yield select(state => state.monitor.diagnoseCenter);
       yield fork(getDiagnoseList, { payload: { ...listParams, ...listPage } });
