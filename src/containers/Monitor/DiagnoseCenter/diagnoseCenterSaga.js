@@ -25,16 +25,6 @@ function* getEventstatus(){ // 获取事件状态
     const response = yield call(request.get, url, { params: { statusType: 0 }}); // 0全部 1活动 2已归档
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', { allEventsStatus: response.data || [] });
-      // yield call(easyPut, 'fetchSuccess', { allEventsStatus: [{
-      //   statusCode: 112,
-      //   statusName: '状态一种',
-      // }, {
-      //   statusCode: 123,
-      //   statusName: '二种',
-      // }, {
-      //   statusCode: 321,
-      //   statusName: '三兄弟',
-      // }]});
     } else { throw response.message; }
   } catch (error) {
     message.error(`事件状态获取失败, ${error}`);
@@ -59,12 +49,6 @@ function* getEventtypes({ payload = {} }) { // 获取事件类型
       });
       yield call(easyPut, 'fetchSuccess', {
         [eventTypeInfo[eventType - 1]]: result || [],
-        // [eventTypeInfo[eventType - 1]]: [1, 2, 3, 4].map(e => ({
-        //   eventCode: e * e,
-        //   eventName: `类型${e}`,
-        //   deviceTypeCode: e * (e + 1),
-        //   deviceTypeName: `设备${e*2}类型名`,
-        // })),
       });
     } else { throw response.message; }
   } catch (error) {
@@ -149,6 +133,11 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
   try {
     const response = yield call(request.delete, url, { ...payload });
     if (response.code === '10000') {
+      const { diagWarningIds } = payload || {};
+      const statusChangeNum = response.num || 0;
+      // 1. 所有操作项, 均操作成功;
+      // 2. 选中操作项中，有部分操作成功，部分状态已变化
+      // 3. 选中操作项中，所有状态已经更变
       yield call(easyPut, 'fetchSuccess', {
         selectedRows: [],
       });
