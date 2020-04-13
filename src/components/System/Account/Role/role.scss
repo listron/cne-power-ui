@@ -29,8 +29,8 @@
   .roleContent{
     flex: 1;
     display: flex;
+    background-color: #fff;
     flex-direction: column;
-
     .tableBox {
       flex: 1;
       box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
@@ -38,7 +38,6 @@
       .tableStyle {
         height: 100%;
         min-width: 1000px;
-  
         :global {
           .ant-table .ant-table-thead > tr > th,
           .ant-table .ant-table-tbody > tr > td {
@@ -46,14 +45,6 @@
               padding-right: 10px;
             }
           }
-  
-          // .ant-table .ant-table-thead > tr > th.ant-table-selection-column,
-          // .ant-table .ant-table-tbody > tr > td.ant-table-selection-column {
-          //   width: 40px;
-          //   max-width: 40px;
-          //   min-width: 40px;
-          // }
-  
           .ant-table-footer {
             padding: 0 15px;
           }
@@ -62,7 +53,7 @@
             overflow-y: scroll;
             overflow-y: overlay;
             overflow-x: hidden;
-            height: calc(100vh - 285px) !important;
+            height: calc(100vh - 237px) !important;
           }
           .ant-table:not(.ant-table-empty) {
             .ant-table-body:after {
