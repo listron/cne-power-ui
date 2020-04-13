@@ -32,6 +32,12 @@
       color:#f9b600;
     }
     .handler{
+      span{
+        color: $themeColor;
+        &:hover{
+          color: #f9b600;
+        }
+      }
       .iconShow{
         visibility: visible;
       }
