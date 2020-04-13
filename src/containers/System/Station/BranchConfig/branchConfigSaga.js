@@ -116,14 +116,31 @@ function* getDeviceBranchInfo(action) {
     });
     const response = yield call(axios.post, url, { ...payload, deviceTypeCode, deviceCodes: deviceCodeArr });
     if (response.data.code === '10000') {
+      // branchList里面的数据需要根据branchIndex排序
+      const newDeviceList = response.data.data.deviceList.map(cur => {
+        const obj = {};
+        obj.deviceFullCode = cur.deviceFullCode;
+        obj.branchList = cur.branchList.sort((a, b) => {
+          if (a.branchIndex < b.branchIndex) {
+            return -1;
+          } else if (a.branchIndex === b.branchIndex) {
+            return 0;
+          }
+          return 1;
+        });
+        obj.deviceFullCode = cur.deviceFullCode;
+        obj.branchNums = cur.branchNums;
+        obj.deviceName = cur.deviceName;
+        return obj;
+      });
       const checkTime = response.data.data.checkTime || '';
       yield put({
         type: branchConfigAction.changeBranchStore,
         payload: {
           ...payload,
           checkTime: checkTime ? moment(checkTime).format('YYYY-MM-DD') : '',
-          deviceBranchInfo: response.data.data.deviceList || [],
-          copyData: response.data.data.deviceList || [],
+          deviceBranchInfo: newDeviceList || [],
+          copyData: newDeviceList || [],
           cancelloadding: false,
           loadding: false,
           checked: false,
