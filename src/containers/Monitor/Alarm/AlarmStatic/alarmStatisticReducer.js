@@ -11,8 +11,9 @@ var initState = Immutable.fromJS({
 
   stationType: '1', //电站类型
   stationCode: [], //电站名称
+  selectedStation: [],
 
-  startTime: moment().subtract(29, 'days').hour(0).minute(0).second(0).utc().format(),
+  startTime: moment().subtract(6, 'days').hour(0).minute(0).second(0).utc().format(),
   endTime: moment().endOf('day').utc().format(),
   deviceName: '', //设备名称，模糊查询
 

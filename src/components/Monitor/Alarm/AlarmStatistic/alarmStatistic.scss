@@ -79,6 +79,7 @@
     width:100%;
     flex-direction: column;
     width: 100%;
+    
     .filter {
       height: 80px;
       display: flex;
@@ -88,6 +89,10 @@
       .stationType {
         margin: 0 16px;
         color: $darkColor;
+      }
+
+      .selectModalIcon {
+        top: 0;
       }
     }
     .filterBox {
@@ -452,4 +457,5 @@
     }
   }
 }
+
 

@@ -5,7 +5,7 @@ import { Button, Icon, Tabs, DatePicker, Select } from 'antd';
 import styles from './alarmStatistic.scss';
 import AlarmStatisticTable from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticTable.jsx';
 import AlarmStatisticGraph from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticGraph.jsx';
-import StationFilter from './StationFilter';
+import StationSelect from '@components/Common/StationSelect';
 import { handleRight } from '@utils/utilFunc';
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
@@ -27,6 +27,8 @@ class AlarmStatisticByType extends Component {
     getStationsAlarmStatistic: PropTypes.func,
     pvSelectTime: PropTypes.string,
     windSelectTime: PropTypes.string,
+    theme: PropTypes.string,
+    selectedStation: PropTypes.array,
   }
   constructor(props) {
     super(props);
@@ -174,6 +176,7 @@ class AlarmStatisticByType extends Component {
   }
   render() {
     const { showFilter, key } = this.state;
+    const { stations, selectedStation, theme } = this.props;
     const alarmStatisticOperation = handleRight('alarm_statistics_export');
     //数据导出按钮
     const operations = (
@@ -186,10 +189,18 @@ class AlarmStatisticByType extends Component {
       <div className={styles.alarmStatisticType}>
         <div className={styles.filter}>
           <span>筛选条件</span>
-          <Button className={styles.stationType} onClick={() => this.onFilterShowChange('stationSelect')}>
-            选择电站{showFilter === 'stationSelect' ? <Icon type="up" /> : <Icon type="down" />}
-          </Button>
-          <Select placeholder="统计时间" style={{ width: 120 }} onChange={this.onChangeDuration} defaultValue={'last30'}>
+          <StationSelect
+            classNameStyle={`${styles.selectModalIcon}`}
+            style={{ width: '200px' }}
+            multiple={true}
+            stationShowNumber={true}
+            data={stations.toJS()}
+            onOK={this.selectStation}
+            value={selectedStation}
+            holderText="请输入关键字快速查询"
+            theme={theme}
+          />
+          <Select placeholder="统计时间" style={{ width: 120 }} onChange={this.onChangeDuration} defaultValue={'last7'}>
             <Option value="today">今天</Option>
             <Option value="yesterday">昨天</Option>
             <Option value="last7">最近7天</Option>
@@ -198,28 +209,30 @@ class AlarmStatisticByType extends Component {
           </Select>
         </div>
         {showFilter !== '' && <div className={styles.filterBox}>
-          {showFilter === 'stationSelect' && <StationFilter {...this.props} />}
-          {
-            showFilter === 'timeSelect' &&
-            <div className={styles.datePicker}><RangePicker
+        {showFilter === 'stationSelect' && <StationFilter {...this.props} />}
+        {
+          showFilter === 'timeSelect' &&
+          <div className={styles.datePicker}>
+            <RangePicker
               showTime={false}
               disabledDate={this.disabledDate}
               onCalendarChange={this.onCalendarChange}
               format="YYYY-MM-DD"
               placeholder={['开始时间', '结束时间']}
               onChange={this.onChangeTime}
-            /></div>
-          }
+            />
+          </div>
+        }
         </div>}
         <Tabs animated={false} tabBarGutter={0} className={styles.tabContainer} activeKey={key} tabBarExtraContent={alarmStatisticOperation && operations} onChange={this.onChangeTab}>
           <TabPane
-            tab={<i className="iconfont icon-drawing"></i>}
+            tab={<i className="iconfont icon-drawing" />}
             key="graph"
           >
             <AlarmStatisticGraph {...this.props} />
           </TabPane>
           <TabPane
-            tab={<i className="iconfont icon-table"></i>}
+            tab={<i className="iconfont icon-table" />}
             key="table"
           >
             <AlarmStatisticTable {...this.props} />

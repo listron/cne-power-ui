@@ -58,7 +58,7 @@ class StationFilter extends Component {
         });
       }else{
         getStationsAlarmStatistic({
-          startTime: moment().subtract(29, 'days').hour(0).minute(0).second(0).utc().format(),
+          startTime: moment().subtract(6, 'days').hour(0).minute(0).second(0).utc().format(),
           endTime: moment().endOf('day').utc().format(),
           ...params,
         });
@@ -87,7 +87,7 @@ class StationFilter extends Component {
     const params = { stationType, stationCode, pageSize, pageNum, orderField, orderCommand };
     if(e.target.checked) {
       stationArray = stationCode.concat(checkedValue);
-      stationCode = Array.from(new Set(stationArray));   
+      stationCode = Array.from(new Set(stationArray));
     } else {
       stationArray = stationCode.filter(item => checkedValue.indexOf(item)===-1);
       stationCode = stationArray;
