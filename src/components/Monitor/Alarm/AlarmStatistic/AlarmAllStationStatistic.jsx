@@ -67,6 +67,7 @@ class ALarmAllStationStatistic extends React.Component {
       stationCode: [],
       alarmStatistic: [],
       allChartLoading: false,
+      selectedStation: [],
     });
   }
   render() {

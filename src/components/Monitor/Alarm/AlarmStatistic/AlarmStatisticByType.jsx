@@ -30,7 +30,9 @@ class AlarmStatisticByType extends Component {
     windSelectTime: PropTypes.string,
     theme: PropTypes.string,
     selectedStation: PropTypes.array,
-  }
+    allChartLoading: PropTypes.bool,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -50,33 +52,34 @@ class AlarmStatisticByType extends Component {
         showFilter: filterText,
       });
     }
-  }
+  };
 
   //改变时间的
   onChangeTime = (value, dateString) => {
-    const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, pageSize, pageNum, orderField, orderCommand } = this.props;
+    const { changeAlarmStatisticStore, stationType} = this.props;
     const startDate = dateString[0];
     const endDate = dateString[1];
     if (stationType === '1') {
-      changeAlarmStatisticStore({
+      return changeAlarmStatisticStore({
         pvStartTime: startDate,
         pvEndTime: endDate,
-      });
-    }else{
-      changeAlarmStatisticStore({
-        windStartTime: startDate,
-        windEndTime: endDate,
+        startTime: startDate,
+        endTime: endDate,
       });
     }
-    // changeAlarmStatisticStore({ startTime: startDate, endTime: endDate });
-    if (stationCode.length > 0) {
-      getStationsAlarmStatistic({ stationType, stationCode, startTime: startDate, endTime: endDate, pageSize, pageNum, orderField, orderCommand });
-    }
-  }
+    return changeAlarmStatisticStore({
+      windStartTime: startDate,
+      windEndTime: endDate,
+      startTime: startDate,
+      endTime: endDate,
+    });
+  };
 
   //设置tabs按钮的
   onChangeTab = (key) => {
-    const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
+    const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, startTime, endTime, pageSize, pageNum, orderField, orderCommand, selectedStation } = this.props;
+    // 电站code
+    const stationCode = selectedStation.map(cur => cur.stationCode);
     if (key === 'graph') {
       changeAlarmStatisticStore({
         pageSize: null,
@@ -108,12 +111,12 @@ class AlarmStatisticByType extends Component {
       }
     }
     this.setState({ key });
-  }
+  };
 
 
   //筛选时间，出现日期框
   onChangeDuration = (value) => {
-    const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, pageSize, pageNum, orderField, orderCommand } = this.props;
+    const { changeAlarmStatisticStore, stationType } = this.props;
     let startDate, endDate;
     // 保留原来时间参数
     const commonFunc = () => {
@@ -130,6 +133,10 @@ class AlarmStatisticByType extends Component {
     const paramsObj = {
       other: () => {
         this.onFilterShowChange('timeSelect');
+        changeAlarmStatisticStore({
+          startTime: '',
+          endTime: '',
+        });
       },
       today: () => {
         startDate = moment().hour(0).minute(0).second(0).utc().format();
@@ -153,9 +160,6 @@ class AlarmStatisticByType extends Component {
       },
     };
     paramsObj[value]();
-    // if (stationCode.length > 0 && value !== 'other') {
-    //   getStationsAlarmStatistic({ stationType, stationCode, startTime: startDate, endTime: endDate, pageSize, pageNum, orderField, orderCommand });
-    // }
   };
 
   onCalendarChange = (dates) => {
@@ -164,42 +168,55 @@ class AlarmStatisticByType extends Component {
     } else {
       this.start = null;
     }
-  }
+  };
+
   exportAlarm = () => {
-    const { stationCode, startTime, endTime, stationType } = this.props;
+    const { startTime, endTime, stationType, selectedStation } = this.props;
     this.props.exportAlarm({//导出
-      stationCode,
+      stationCode: selectedStation.map(cur => cur.stationCode),
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).endOf('day').utc().format(),
       stationType,
     });
-  }
+  };
+
   disabledDate = (current) => {
     if (this.start) {
       const end = moment(this.start).add(30, 'days');
       return current > moment.min(moment().endOf('day'), end);
     }
     return current && current > moment().endOf('day');
-
-  }
-
-  onQueryFunc = () => {
-    const { startTime, endTime } = this.props;
-    console.log(startTime, endTime, '112121212');
   };
 
-  selectStation = () => {
+  // 查询
+  onQueryFunc = () => {
+    const { getStationsAlarmStatistic, startTime, endTime, selectedStation, stationType, pageSize, pageNum, orderField, orderCommand } = this.props;
+    // 选中电站
+    const stationCode = selectedStation.map(cur => cur.stationCode);
+    getStationsAlarmStatistic({ stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand });
+  };
 
+  selectStation = selectedStation => {
+    const { changeAlarmStatisticStore } = this.props;
+    changeAlarmStatisticStore({
+      selectedStation: selectedStation,
+    });
   };
 
   render() {
     const { showFilter, key } = this.state;
-    const { stations, selectedStation, theme } = this.props;
+    const { stations, selectedStation, theme, startTime, endTime, allChartLoading } = this.props;
     const alarmStatisticOperation = handleRight('alarm_statistics_export');
     //数据导出按钮
     const operations = (
       <div className={styles.exportData}>
-        <button className={styles.exportBtn} onClick={this.exportAlarm}>数据导出</button>
+        <CneButton
+          lengthMode="short"
+          className={!allChartLoading ? styles.normalBtn : styles.disableBtn}
+          onClick={this.exportAlarm}
+        >
+          数据导出
+        </CneButton>
       </div >
     );
 
@@ -227,6 +244,7 @@ class AlarmStatisticByType extends Component {
           </Select>
           <CneButton
             lengthMode="short"
+            className={(selectedStation.length !== 0 && startTime && endTime) ? styles.normalBtn : styles.disableBtn}
             onClick={this.onQueryFunc}
           >
             查询

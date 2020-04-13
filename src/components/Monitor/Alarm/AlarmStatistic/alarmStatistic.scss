@@ -79,7 +79,27 @@
     width:100%;
     flex-direction: column;
     width: 100%;
-    
+
+    .disableBtn {
+      letter-spacing: 0;
+      background: #f1f1f1;
+      border: 1px solid #d4d4d4;
+      box-shadow: inset 1px 1px 0 0 #ffffff;
+      color: #999999;
+      transition: all 0s;
+      cursor: no-drop;
+
+      &:after {
+        background: #f1f1f1;
+      }
+    }
+
+    .normalBtn {
+
+    }
+
+
+
     .filter {
       height: 80px;
       display: flex;
@@ -149,7 +169,8 @@
     }
     .tabContainer {
       .exportData{
-        margin-right: 30px;
+        margin: 4px 30px 0 0;
+
         :global {
           button:focus {
             outline: none;
