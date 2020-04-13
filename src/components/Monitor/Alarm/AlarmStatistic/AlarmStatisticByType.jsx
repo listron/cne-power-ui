@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Button, Icon, Tabs, DatePicker, Select } from 'antd';
+import { Tabs, DatePicker, Select } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 import styles from './alarmStatistic.scss';
 import AlarmStatisticTable from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticTable.jsx';
 import AlarmStatisticGraph from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticGraph.jsx';
@@ -114,42 +115,49 @@ class AlarmStatisticByType extends Component {
   onChangeDuration = (value) => {
     const { getStationsAlarmStatistic, changeAlarmStatisticStore, stationType, stationCode, pageSize, pageNum, orderField, orderCommand } = this.props;
     let startDate, endDate;
-    if (value === 'other') {
-      this.onFilterShowChange('timeSelect');
-    } else {
-      if (value === 'today') {
+    // 保留原来时间参数
+    const commonFunc = () => {
+      stationType === '1' && changeAlarmStatisticStore({
+        pvStartTime: startDate,
+        pvEndTime: endDate,
+      });
+      stationType === '0' && changeAlarmStatisticStore({
+        windStartTime: startDate,
+        windEndTime: endDate,
+      });
+    };
+    // 天数对应方法
+    const paramsObj = {
+      other: () => {
+        this.onFilterShowChange('timeSelect');
+      },
+      today: () => {
         startDate = moment().hour(0).minute(0).second(0).utc().format();
         endDate = moment().utc().format();
-      } else if (value === 'yesterday') {
+        commonFunc();
+      },
+      yesterday: () => {
         startDate = moment().subtract(1, 'days').startOf('day').format();
         endDate = moment().subtract(1, 'days').endOf('day').format();
-      } else if (value === 'last7') {
+        commonFunc();
+      },
+      last7: () => {
         startDate = moment().subtract(6, 'days').hour(0).minute(0).second(0).utc().format();
         endDate = moment().utc().format();
-      } else if (value === 'last30') {
+        commonFunc();
+      },
+      last30: () => {
         startDate = moment().subtract(29, 'days').hour(0).minute(0).second(0).utc().format();
         endDate = moment().utc().format();
-      }
-      // changeAlarmStatisticStore({
-      //   startTime: startDate,
-      //   endTime: endDate,
-      // });
-      if (stationType === '1') {
-        changeAlarmStatisticStore({
-          pvStartTime: startDate,
-          pvEndTime: endDate,
-        });
-      }else{
-        changeAlarmStatisticStore({
-          windStartTime: startDate,
-          windEndTime: endDate,
-        });
-      }
-      if (stationCode.length > 0) {
-        getStationsAlarmStatistic({ stationType, stationCode, startTime: startDate, endTime: endDate, pageSize, pageNum, orderField, orderCommand });
-      }
-    }
-  }
+        commonFunc();
+      },
+    };
+    paramsObj[value]();
+    // if (stationCode.length > 0 && value !== 'other') {
+    //   getStationsAlarmStatistic({ stationType, stationCode, startTime: startDate, endTime: endDate, pageSize, pageNum, orderField, orderCommand });
+    // }
+  };
+
   onCalendarChange = (dates) => {
     if (dates.length === 1) {
       this.start = dates[0].format('YYYY-MM-DD');
@@ -174,6 +182,16 @@ class AlarmStatisticByType extends Component {
     return current && current > moment().endOf('day');
 
   }
+
+  onQueryFunc = () => {
+    const { startTime, endTime } = this.props;
+    console.log(startTime, endTime, '112121212');
+  };
+
+  selectStation = () => {
+
+  };
+
   render() {
     const { showFilter, key } = this.state;
     const { stations, selectedStation, theme } = this.props;
@@ -188,10 +206,10 @@ class AlarmStatisticByType extends Component {
     return (
       <div className={styles.alarmStatisticType}>
         <div className={styles.filter}>
-          <span>筛选条件</span>
+          <span style={{marginRight: '16px'}}>筛选条件</span>
           <StationSelect
             classNameStyle={`${styles.selectModalIcon}`}
-            style={{ width: '200px' }}
+            style={{ width: '200px', marginRight: '16px'}}
             multiple={true}
             stationShowNumber={true}
             data={stations.toJS()}
@@ -200,16 +218,21 @@ class AlarmStatisticByType extends Component {
             holderText="请输入关键字快速查询"
             theme={theme}
           />
-          <Select placeholder="统计时间" style={{ width: 120 }} onChange={this.onChangeDuration} defaultValue={'last7'}>
+          <Select placeholder="统计时间" style={{ width: 120, marginRight: '16px' }} onChange={this.onChangeDuration} defaultValue={'last7'}>
             <Option value="today">今天</Option>
             <Option value="yesterday">昨天</Option>
             <Option value="last7">最近7天</Option>
             <Option value="last30">最近30天</Option>
             <Option value="other">其他时间段</Option>
           </Select>
+          <CneButton
+            lengthMode="short"
+            onClick={this.onQueryFunc}
+          >
+            查询
+          </CneButton>
         </div>
         {showFilter !== '' && <div className={styles.filterBox}>
-        {showFilter === 'stationSelect' && <StationFilter {...this.props} />}
         {
           showFilter === 'timeSelect' &&
           <div className={styles.datePicker}>
