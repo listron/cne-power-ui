@@ -275,7 +275,7 @@ class TableList extends Component {
                 textAlign: 'center',
                 className: styles.picture,
                 render: (text, record) => (
-                    <i className={`iconfont icon-todo ${styles.pictureIcon}`} onClick={() => { this.showImgs(record); }} />
+                    <i className="iconfont icon-todo" onClick={() => { this.showImgs(record); }} />
                 ),
             },
             {
@@ -285,7 +285,7 @@ class TableList extends Component {
                 textAlign: 'center',
                 className: styles.opreate,
                 render: (text, record) => (
-                    <div className={styles.opreateIcon}>
+                    <div>
                         <i className={`iconfont icon-look ${styles.lookIcon}`} onClick={() => { this.onShowDetail(record); }} />
                         <i className={`iconfont icon-del ${(handleRight('workTicket_operate') && record.stateCode === '2') ? styles.iconShow : styles.iconHide}`} onClick={() => { this.delList('del', record.docketId); }} />
                     </div>
