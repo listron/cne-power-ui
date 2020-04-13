@@ -296,7 +296,6 @@ class BoxTransformerList extends Component {
                 className={`${styles.deviceTable} ${styles.boxTransformerTable}`}
                 locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" /></div> }}
                 dataError={false} />
-              />
             </div>
           </TabPane>
         </Tabs>

@@ -233,6 +233,20 @@
       display: flex;
       justify-content: flex-end;
     }
+    .windStationTable{
+      .deviceName{
+        width: 9%;
+      }
+      .lineName, .deviceModeName{
+        width: 10%;
+      }
+      .alternatorSpeed{
+        width: 8%;
+      }
+      .deviceCapacity, .devicePower, .windSpeed, .capabilityRate, .impellerSpeed, .windAngle, .angleOfYaw, .alarmNum, .deviceStatus{
+        width: 7%;
+      }
+    }
 
     .deviceCode {
       width: 70px;
@@ -246,7 +260,7 @@
     }
 
     .deviceStatus {
-      display: inline-block;
+      // display: inline-block;
       line-height: 22px;
       padding: 0 4px;
       border-radius: 2px;
@@ -276,37 +290,42 @@
     }
     .tableDeviceName {
       text-decoration: underline;
-      width: 90px;
+      display: block;
+    }
+    .tableDeviceName, .deviceNameText, .lineNameText, .deviceModeNameText {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .lineName {
-      width: 90px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    @media screen and (max-width: 1679px) {
+      .tableDeviceName, .deviceNameText, .lineNameText, .deviceModeNameText{
+        width: 108px;
+      }
     }
-    .deviceModeName {
-      width: 90px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    @media screen and (min-width: 1680px){
+      .tableDeviceName, .deviceNameText{
+        width: 125px;
+      }
+      .lineNameText, .deviceModeNameText{
+        width: 144px;
+      }
     }
+
+
     .numberStyle {
       text-align: right;
     }
-    :global {
-      .ant-table .ant-table-thead > tr > th,
-      .ant-table .ant-table-tbody > tr > td {
-        padding: 0px 10px;
-        height: 40px;
-        line-height: 30px;
-      }
-      .ant-table-placeholder {
-        border: none;
-      }
-    }
+    // :global {
+    //   .ant-table .ant-table-thead > tr > th,
+    //   .ant-table .ant-table-tbody > tr > td {
+    //     padding: 0px 10px;
+    //     height: 40px;
+    //     line-height: 30px;
+    //   }
+    //   .ant-table-placeholder {
+    //     border: none;
+    //   }
+    // }
   }
   .noData {
     text-align: center;
