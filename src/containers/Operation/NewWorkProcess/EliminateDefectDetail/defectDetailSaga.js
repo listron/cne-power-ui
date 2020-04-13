@@ -78,6 +78,9 @@ function* createDefect(action) { // 2.7.3.3.	创建消缺工单（提交）
         type: eliminateDefectDetailAction.getDefectMessage,
         payload: { docketId },
       });
+      yield put({ // 请求缺陷级别
+        type: eliminateDefectDetailAction.getDefectLevel,
+      });
     } else {
       throw response.data;
     }

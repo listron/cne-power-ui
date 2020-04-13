@@ -77,6 +77,7 @@
       width: 60px;
       max-height: 60px;
       opacity: 0.5;
+      height: 60px;
     }
     .shadeBox {
       width: 100%;
@@ -135,7 +136,7 @@
         color: #999999;
       }
       .ant-progress-bg {
-        height: 2px !important;
+        height: 6px !important;
       }
       .ant-progress-text {
         display: none;

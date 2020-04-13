@@ -14,8 +14,9 @@ export default class DefectEvent extends Component {
     defectLevelList: PropTypes.array,
     isVertify: PropTypes.bool,
     stationCode: PropTypes.number,
-    changeStore: PropTypes.func,
+    // changeStore: PropTypes.func,
     docketId: PropTypes.string,
+    deviceTypes: PropTypes.array,
   };
 
   exchangeActioncode = (allActions, code) => {

@@ -91,7 +91,22 @@ export default class DetailTopSubmit extends Component {
     submitAction: PropTypes.func,
     acceptanceDocket: PropTypes.func,
     resetStore: PropTypes.func,
-
+    stateName: PropTypes.string,
+    docketId: PropTypes.string,
+    location: PropTypes.object,
+    history: PropTypes.object,
+    addbaseInfo: PropTypes.object,
+    baseInfo: PropTypes.object,
+    addEventInfo: PropTypes.array,
+    addhandleList: PropTypes.array,
+    handleInfos: PropTypes.array,
+    warnEventInfos: PropTypes.array,
+    removeEventImg: PropTypes.array,
+    removeHandleImg: PropTypes.array,
+    eventStatus: PropTypes.array,
+    myMessageFlag: PropTypes.bool,
+    isFinish: PropTypes.string,
+    scroll: PropTypes.bool,
   };
 
   constructor() {
@@ -109,11 +124,11 @@ export default class DetailTopSubmit extends Component {
   }
 
   onBackHandle = () => { // 返回按钮 => 根据状态, 根据操作权限 是否提示弹框 
-    const { stateName, location, history } = this.props;
+    const { stateName, location, history, allowedActions } = this.props;
     const statusArr = ['receive', 'complete']; // 已接单和领取退回不提示
-    const needTip = stateName && statusArr.includes(localStateName(stateName)) || false;
+    const notTips = stateName && (statusArr.includes(localStateName(stateName)) || allowedActions.length === 0) || false;
     const { pathname } = location;
-    if (!needTip) {
+    if (!notTips) {
       this.setState({
         showTip: true,
         tipText: '返回后修改内容将不会保存，确认返回吗',
@@ -122,7 +137,7 @@ export default class DetailTopSubmit extends Component {
         },
       });
     }
-    if (needTip) {
+    if (notTips) {
       history.push(`${pathname}?page=list`);
     }
   }
@@ -178,7 +193,6 @@ export default class DetailTopSubmit extends Component {
           onClick={() => this[func](e)}
           className={styles.handleButton}
           lengthMode={'short'}
-          // style={{ width: '92px' }}
           color-code={e.actionColorCode}
           key={e.actionCode}
           {...dis}
@@ -199,7 +213,7 @@ export default class DetailTopSubmit extends Component {
   crete = (e) => { // 创建工单
     this.props.changeStore({ isVertify: true });
     // stateId 退回的和新建的时候不一 新建的时候stateId 
-    const { addbaseInfo, addEventInfo, addhandleList, isFinish, stateId, stationCode, docketId, removeEventImg, removeHandleImg } = this.props;
+    const { addbaseInfo, addEventInfo, addhandleList, stateId, stationCode, docketId, removeEventImg, removeHandleImg } = this.props;
     const { location, history, warnEventInfos } = this.props;
     const { addUsers = [] } = addbaseInfo;
     if (addUsers.length > 0) {
@@ -266,7 +280,6 @@ export default class DetailTopSubmit extends Component {
       addUsers = [{ stateId: initStateId, userIds: addUsers.map(e => +e.userId) }];
     }
     const curDocketDesc = typeof docketDesc === 'string' ? addbaseInfo : baseInfo;
-    console.log('curDocketDesc', curDocketDesc);
     const flag = this.baseInfoCheck(curDocketDesc, stationCode);
     if (flag) {
       const params = {
@@ -459,7 +472,7 @@ export default class DetailTopSubmit extends Component {
 
   render() {
     const { showTip, tipText, status, requiredVisiable, passVisible, messageText } = this.state;
-    const { docketId, allowedActions, eventStatus = [], scroll, myMessageFlag, handleInfos } = this.props;
+    const { docketId, eventStatus = [], scroll, myMessageFlag, handleInfos } = this.props;
     const acceptStuatus = !eventStatus.map(e => e.eventState).some(e => !e);
     const rejectStatu = eventStatus.map(e => e.eventState).some(e => e === 2);
     return (

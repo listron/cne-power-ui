@@ -31,13 +31,14 @@
     cursor: pointer;
     font-size: 18px;
     right: 8px;
-    top: 6px;
+    top:0;
+    bottom:0;
     height: 30px;
     line-height: 30px;
     :global {
       .icon-filter {
         font-size: 14px;
-        color: $darkColor;
+        color: var(--lightColor);
       }
     }
   }
