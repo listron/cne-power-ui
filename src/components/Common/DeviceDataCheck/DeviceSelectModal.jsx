@@ -161,9 +161,7 @@ class DeviceSelectModal extends Component {
                 value={checkedMatrix}
                 style={{ width: 112 }}
               >
-                {partitions.map(e => (<Option key={e.deviceCode} value={e.deviceCode}>
-                  {e.deviceName}
-                </Option>))}
+                {partitions.map(e => (<Option key={e} value={e}>{e}</Option>))}
               </Select>
             </div>
             {/*  多选 需要全选字段 无分区 */}

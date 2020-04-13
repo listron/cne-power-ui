@@ -13,7 +13,8 @@ export default {
     getStationDevicetypes: '/v3/station/devicetypes',
     getStationTypeDevicetypes: '/v3/station',
     getDevices: '/v3/station/stationdevices',
-    getPartitions: '/v3/station/partitions',
+    getPartitions: '/v3/station/partitions', // 待废弃 - 接口分区 后台可能有bug会导致数据丢失 - 后期不再使用。
+    belongmatrixs: '/v3/base/device/belongmatrixs', // 新获取 分区接口 
     getDeviceModel: '/v3/management/devicemodecode', // 获取电站(必填), 设备类型下的设备型号
     getStationPoints: '/v3/management/devicepointcode', // 电站(必填) 设备类型，设备型号，获取所有测点基本信息
     findDeviceExist: '/v3/performance/queryByDeviceName', // 验证设备是否存在
