@@ -129,7 +129,7 @@ class LoginLayout extends Component {
                 <Link to="/contactUs" >联系我们</Link>
               </div> */}
               <div className={styles.footerTitle}>
-              京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司        
+              京ICP备12030847号-2 © 2017-2020 北京动力协合科技有限公司        
               </div>
               <div className={styles.versionTitle}>
               V3.4.0.20190111        

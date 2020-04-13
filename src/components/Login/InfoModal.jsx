@@ -38,7 +38,7 @@ class InfoModal extends Component {
           <div className={styles.content} dangerouslySetInnerHTML={{ __html: htmlText }}></div>
           <div onClick={this.closeModal} className={styles.back}>返回登录页面</div>
           {/* <div className={styles.footerTitle}>
-            京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司        
+            京ICP备12030847号-2 © 2017-2020 北京动力协合科技有限公司        
           </div> */}
         </div>
       </Modal>

@@ -132,7 +132,7 @@ class User extends Component {
           </TransitionContainer>
           <div className={styles.userFooter}>
             <span className={styles.footerText}>
-              京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司
+              京ICP备12030847号-2 © 2017-2020 北京动力协合科技有限公司
           </span>
           </div>
         </div>

@@ -18,7 +18,7 @@ class Footer extends Component {
     const { className } = this.props;
     return (
       <div className={`${styles.footer} ${theme === 'dark' ? styles.darkFooter : styles.lightFooter} ${className}`}>
-        <span className={styles.footerText}>京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司</span>
+        <span className={styles.footerText}>京ICP备12030847号-2 © 2017-2020 北京动力协合科技有限公司</span>
       </div>
     );
   }
