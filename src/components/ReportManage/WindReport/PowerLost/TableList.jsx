@@ -121,7 +121,7 @@ class TableList extends Component {
         title: () => <TableColumnTitle title="风电维护损失电量" unit="万kWh" />,
         dataIndex: 'weihupower',
         // sorter: true,
-        width: 140,
+        width: 150,
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
@@ -135,7 +135,7 @@ class TableList extends Component {
         title: () => <TableColumnTitle title="技术待命损失电量" unit="万kWh" />,
         dataIndex: 'resourceRate',
         // sorter: true,
-        width: 140,
+        width: 150,
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
@@ -148,7 +148,7 @@ class TableList extends Component {
       }, {
         title: () => <TableColumnTitle title="远程停机损失电量" unit="万kWh" />,
         dataIndex: 'pr',
-        width: 140,
+        width: 150,
         // sorter: true,
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
@@ -162,7 +162,7 @@ class TableList extends Component {
       }, {
         title: () => <TableColumnTitle title="电网故障损失电量" unit="万kWh" />,
         dataIndex: 'limitPowerHours',
-        width: 140,
+        width: 150,
         // sorter: true,
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
@@ -176,7 +176,7 @@ class TableList extends Component {
       }, {
         title: () => <TableColumnTitle title="故障停机损失电量" unit="万kWh" />,
         dataIndex: 'guazhangpower',
-        width: 140,
+        width: 150,
         textAlign: 'right',
         // sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
@@ -190,7 +190,7 @@ class TableList extends Component {
       }, {
         title: () => <TableColumnTitle title="就地停机损失电量" unit="万kWh" />,
         dataIndex: 'jiudipower',
-        width: 140,
+        width: 150,
         textAlign: 'right',
         // sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
@@ -218,7 +218,7 @@ class TableList extends Component {
           sortMethod={sortMethod === 'desc' ? 'descend' : 'ascend'}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={{ x: 2310 }}
+          scroll={{ x: 2370 }}
           className={styles.tableStyles}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           pagination={false} />

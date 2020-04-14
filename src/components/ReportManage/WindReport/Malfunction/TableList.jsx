@@ -263,45 +263,45 @@ class TableList extends Component {
         dataIndex: 'faultTime',
         sorter: true,
         textAlign: 'right',
-        width: 112,
+        width: 140,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: '故障小时数(h)',
         dataIndex: 'faultHours',
         textAlign: 'right',
         sorter: true,
-        width: 112,
+        width: 140,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
-        title: '损失电量',
+        title: '损失电量(kWh)',
         dataIndex: 'faultGen',
         textAlign: 'right',
         // sorter: true,
-        width: 112,
+        width: 140,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
-        title: '风速',
+        title: '风速(m/s)',
         dataIndex: 'windSpeedAvg',
         // sorter: true,
         textAlign: 'right',
         width: 112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
-        title: '有功功率',
+        title: '有功功率(kW)',
         dataIndex: 'usePower',
         textAlign: 'right',
         // sorter: true,
-        width: 112,
+        width: 140,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
-        title: '发电机转速',
+        title: '发电机转速(Rpm)',
         dataIndex: 'speed',
         textAlign: 'right',
         // sorter: true,
-        width: 112,
+        width: 150,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
-        title: '桨叶角',
+        title: '桨叶角(℃)',
         dataIndex: 'bladeAngle',
         textAlign: 'right',
         // sorter: true,
@@ -343,7 +343,7 @@ class TableList extends Component {
           sortMethod={sortMethod === 'desc' ? 'descend' : 'ascend'}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={tableType === 'detail' ? { x: 1804 } : { x: 0 }}
+          scroll={tableType === 'detail' ? { x: 1954 } : { x: 0 }}
           className={styles.tableStyles}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           pagination={false} />
