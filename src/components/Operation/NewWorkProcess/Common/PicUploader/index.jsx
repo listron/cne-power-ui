@@ -37,7 +37,7 @@ export default class PicUploader extends Component {
     maxPicNum: 4,
     value: [],
     uploadUrl: `${APIBasePath}${ticket.getUploadFile}`,
-    onChange: () => {},
+    onChange: () => { },
     mode: 'edit', // edit review
   }
 
@@ -71,7 +71,7 @@ export default class PicUploader extends Component {
     const { code, data } = response || {};
     if (status === 'uploading') {
       let uploadPercent = 0;
-      if(event) { // 改变上传进度
+      if (event) { // 改变上传进度
         const { percent } = event || {};
         uploadPercent = Math.floor(percent);
       }
@@ -80,7 +80,7 @@ export default class PicUploader extends Component {
         uploadPercent,
         fileList,
       });
-    // } else if (status === 'done') { // 上传保存图片url->恢复默认
+      // } else if (status === 'done') { // 上传保存图片url->恢复默认
     } else if (status === 'done' && code === '10000') { // 上传保存url->恢复默认
       const { value = [] } = this.props;
       this.setState({
@@ -126,7 +126,7 @@ export default class PicUploader extends Component {
         {value.length < maxPicNum && mode === 'edit' && <Upload
           listType="picture-card"
           className="avatar-uploader"
-          headers={{'Authorization': 'bearer ' + authData}}
+          headers={{ 'Authorization': 'bearer ' + authData }}
           multiple={true}
           fileList={fileList}
           showUploadList={false}
