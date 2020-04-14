@@ -38,7 +38,7 @@
     :global {
       .icon-filter {
         font-size: 14px;
-        color: $darkColor;
+        color: var(--lightColor);
       }
     }
   }

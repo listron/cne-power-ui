@@ -1,10 +1,23 @@
 @import "../../../theme/theme.scss";
 @import "./layout.scss";
 .light {
+  :global{
+      .ant-select:not(.ant-select-disabled) .ant-select-selection .ant-select-selection__rendered .ant-select-selection__placeholder{
+        color: var(--lightColor);
+      }
+      input.ant-input.ant-select-search__field{
+        color: var(--darkColor);
+      }
+      input{
+        &::placeholder{
+          color: var(--lightColor);
+        }
+      }
+  }
   .stationSelectModal {
     :global {
       .icon-filter {
-        color: $darkColor;
+        color: var(--lightColor);
       }
     }
   }

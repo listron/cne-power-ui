@@ -31,7 +31,7 @@ class DefectDetail extends Component {
     getBaseUsername: PropTypes.func,
     getDefectLevel: PropTypes.func,
     showErrorTip: PropTypes.bool,
-    isFinish: PropTypes.bool,
+    isFinish: PropTypes.string,
     stateName: PropTypes.string,
   };
 
