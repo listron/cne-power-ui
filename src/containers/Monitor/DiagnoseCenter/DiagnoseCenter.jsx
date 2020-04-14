@@ -37,8 +37,7 @@ class DiagnoseCenter extends Component {
     const { search } = location;
     const pathInfo = searchUtil(search).parse(); // 路径解析
     if (pathInfo && pathInfo.diagWarningId) { // 由外界手动控制直接进入分析页
-      this.pathToAnalysis(pathInfo);
-      this.props.getDiagnoseList({});
+      this.pathToAnalysis({ ...pathInfo, fromPath: true });
     } else { // 默认
       this.props.circlingQueryList({}); // 以默认参数启动告警中心数据请求;
     }

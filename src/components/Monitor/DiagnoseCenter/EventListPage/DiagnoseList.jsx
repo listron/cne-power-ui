@@ -12,6 +12,7 @@ const { Option } = Select;
 class DiagnoseList extends Component {
   static propTypes = {
     pageKey: PropTypes.string,
+    statusChangeText: PropTypes.string,
     diagnoseListLoading: PropTypes.bool,
     diagnoseListError: PropTypes.bool,
     listParams: PropTypes.object,
@@ -27,7 +28,8 @@ class DiagnoseList extends Component {
   }
 
   state = {
-    deleteRecord: null,
+    tipType: 0, // 0无弹框; 1忽略; 2删除
+    deleteRecords: null,
   }
 
   sortFieldMap = { // 表格排序字段 => api
@@ -90,19 +92,16 @@ class DiagnoseList extends Component {
   }
 
   toDelete = (deleteRecord) => {
-    this.setState({ deleteRecord });
+    this.setState({ deleteRecords: [deleteRecord], tipType: 2 });
   }
 
-  cancelDelte = () => this.setState({ deleteRecord: null })
+  cancelTip = () => this.setState({ deleteRecords: null, tipType: 0 })
 
-  confirmDelete = () => {
-    const { deleteRecord } = this.state;
-    this.setState({ deleteRecord: null });
-    const { diagWarningId } = deleteRecord || {};
-    this.props.editEventsStatus({
-      diagWarningIds: [diagWarningId],
-      type: 2, // 删除
-    });
+  confirmTip = () => {
+    const { deleteRecords, tipType } = this.state;
+    const diagWarningIds = deleteRecords.map(e => e.diagWarningId);
+    this.props.editEventsStatus({ diagWarningIds, type: tipType });
+    this.setState({ deleteRecords: null, tipType: 0 });
   }
 
   onRowSelect = (selectedKeys, rows) => {
@@ -123,9 +122,9 @@ class DiagnoseList extends Component {
       window.open(`#/operation/newWorkProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningIds.join(',')}]&stationCode=${stationCode}`);
     }
     if (handleKeys.includes(value)) {
-      this.props.editEventsStatus({
-        diagWarningIds, // string[]
-        type: handleKeys.indexOf(value) + 1, // 1忽略 2删除
+      this.setState({
+        deleteRecords: selectedRows,
+        tipType: handleKeys.indexOf(value) + 1,
       });
     }
   }
@@ -189,9 +188,14 @@ class DiagnoseList extends Component {
     };
   }
 
+  confirmStatusChange = () => {
+    this.props.changeStore({ statusChangeText: '' });
+    this.props.getDiagnoseList(); // 基于当前请求, 刷新数据
+  }
+
   render() {
-    const { deleteRecord } = this.state;
-    const { listPage, listParams, totalNum, diagnoseListData, diagnoseListLoading, diagnoseListError, selectedRows } = this.props;
+    const { tipType } = this.state;
+    const { listPage, listParams, totalNum, diagnoseListData, diagnoseListLoading, diagnoseListError, selectedRows, statusChangeText } = this.props;
     const { pageNum, pageSize, sortField, sortMethod } = listPage || {};
     const { finished } = listParams;
     const {
@@ -242,11 +246,17 @@ class DiagnoseList extends Component {
             onChange: this.onRowSelect,
           }}
         />
-        {deleteRecord && <CneTips
+        {tipType !== 0 && <CneTips
           visible
-          onCancel={this.cancelDelte}
-          onConfirm={this.confirmDelete}
-          tipText="是否确认删除?"
+          onCancel={this.cancelTip}
+          onConfirm={this.confirmTip}
+          tipText={['确认忽略该事件?', '确认删除该事件?'][tipType - 1]}
+          width={260}
+        />}
+        {statusChangeText && <CneTips
+          visible
+          onConfirm={this.confirmStatusChange}
+          tipText={statusChangeText}
           width={260}
         />}
       </div>
