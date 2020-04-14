@@ -131,7 +131,7 @@ class FaultList extends Component {
       textAlign: 'center',
       render: (text) => <div title={text}>{text || '--'}</div>,
     }, {
-      title: '截至时间',
+      title: '截止时间',
       dataIndex: 'endTime',
       className: 'numberStyle',
       textAlign: 'center',
