@@ -133,6 +133,10 @@
       position: relative;
       z-index: 99;
     }
+    .ant-table-fixed-left .ant-table-header{ // 冻结列防止覆盖
+      position: relative;
+      z-index: 99;
+    }
   }
 }
 
