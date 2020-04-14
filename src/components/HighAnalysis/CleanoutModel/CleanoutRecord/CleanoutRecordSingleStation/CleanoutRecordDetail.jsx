@@ -199,8 +199,8 @@ class CleanoutRecordDetail extends Component {
               <div className={styles.filterData}>
                 <Radio.Group value={this.props.cleanType} buttonStyle="solid" onChange={this.changeCleanType}>
                   <Radio.Button value={0}>全部</Radio.Button>
-                  <Radio.Button value={1}>人工{handCleanNum}</Radio.Button>
-                  <Radio.Button value={2}>下雨{rainCleanNum}</Radio.Button>
+                  <Radio.Button value={1}>{`人工${handCleanNum}`}</Radio.Button>
+                  <Radio.Button value={2}>{`下雨${rainCleanNum}`}</Radio.Button>
                 </Radio.Group>
                 <Pagination total={detailtotal} pageSize={detailPageSize} currentPage={detailPageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
               </div>
