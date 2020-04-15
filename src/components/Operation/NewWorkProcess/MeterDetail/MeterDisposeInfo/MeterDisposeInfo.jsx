@@ -6,6 +6,7 @@ import CneButton from '@components/Common/Power/CneButton';
 import MeterPicZoom from '../MeterPicZoom/MeterPicZoom';
 import path from '@path';
 import styles from './meterDisposeInfo.scss';
+import {dataFormats} from '@utils/utilFunc';
 
 const {basePaths, APISubPaths} = path;
 const {APIBasePath} = basePaths;
@@ -516,7 +517,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   总
                                 </div>
                                 <div>
-                                  {cur.totalStartCode}
+                                  {dataFormats(cur.totalStartCode, '--', -1)}
                                 </div>
                                 {cur.flag1 ? (
                                   <div className={styles.netEditStopCode}>
@@ -532,7 +533,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   </div>
                                 ) : (
                                   <div className={cur.errorFlag1 ? styles.netErrorStopCode : styles.netStopCode}>
-                                    {cur.totalEndCode || '- -'}
+                                    {dataFormats(cur.totalEndCode, '--', -1)}
                                   </div>
                                 )}
                               </div>
@@ -541,7 +542,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   尖
                                 </div>
                                 <div>
-                                  {cur.topStartCode}
+                                  {dataFormats(cur.topStartCode, '--', -1)}
                                 </div>
                                 {cur.flag2 ? (
                                   <div className={styles.netEditStopCode}>
@@ -557,7 +558,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   </div>
                                 ) : (
                                   <div className={cur.errorFlag2 ? styles.netErrorStopCode : styles.netStopCode}>
-                                    {cur.topEndCode || '- -'}
+                                    {dataFormats(cur.topEndCode, '--', -1)}
                                   </div>
                                 )}
                               </div>
@@ -566,7 +567,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   峰
                                 </div>
                                 <div>
-                                  {cur.peakStartCode}
+                                  {dataFormats(cur.peakStartCode, '--', -1)}
                                 </div>
                                 {cur.flag3 ? (
                                   <div className={styles.netEditStopCode}>
@@ -582,7 +583,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   </div>
                                 ) : (
                                   <div className={cur.errorFlag3 ? styles.netErrorStopCode : styles.netStopCode}>
-                                    {cur.peakEndCode || '- -'}
+                                    {dataFormats(cur.peakEndCode, '--', -1)}
                                   </div>
                                 )}
                               </div>
@@ -591,7 +592,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   平
                                 </div>
                                 <div>
-                                  {cur.flatStartCode}
+                                  {dataFormats(cur.flatStartCode, '--', -1)}
                                 </div>
                                 {cur.flag4 ? (
                                   <div className={styles.netEditStopCode}>
@@ -607,7 +608,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   </div>
                                 ) : (
                                   <div className={cur.errorFlag4 ? styles.netErrorStopCode : styles.netStopCode}>
-                                    {cur.flatEndCode || '- -'}
+                                    {dataFormats(cur.flatEndCode, '--', -1)}
                                   </div>
                                 )}
                               </div>
@@ -616,7 +617,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   谷
                                 </div>
                                 <div>
-                                  {cur.lowStartCode}
+                                  {dataFormats(cur.lowStartCode, '--', -1)}
                                 </div>
                                 {cur.flag5 ? (
                                   <div className={styles.netEditStopCode}>
@@ -632,7 +633,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   </div>
                                 ) : (
                                   <div className={cur.errorFlag5 ? styles.netErrorStopCode : styles.netStopCode}>
-                                    {cur.lowEndCode || '- -'}
+                                    {dataFormats(cur.lowEndCode, '--', -1)}
                                   </div>
                                 )}
                               </div>
@@ -743,7 +744,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   总
                                 </div>
                                 <div>
-                                  {cur.totalStartCode}
+                                  {dataFormats(cur.totalStartCode, '--', -1)}
                                 </div>
                                 {cur.flag1 ? (
                                   <div className={styles.electricityEditStopCode}>
@@ -759,7 +760,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   </div>
                                 ) : (
                                   <div className={cur.errorFlag1 ? styles.electricityErrorStopCode : styles.electricityStopCode}>
-                                    {cur.totalEndCode || '- -'}
+                                    {dataFormats(cur.totalEndCode, '--', -1)}
                                   </div>
                                 )}
                               </div>
@@ -768,7 +769,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   尖
                                 </div>
                                 <div>
-                                  {cur.topStartCode}
+                                  {dataFormats(cur.topStartCode, '--', -1)}
                                 </div>
                                 {cur.flag2 ? (
                                   <div className={styles.electricityEditStopCode}>
@@ -784,7 +785,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   </div>
                                 ) : (
                                   <div className={cur.errorFlag2 ? styles.electricityErrorStopCode : styles.electricityStopCode}>
-                                    {cur.topEndCode || '- -'}
+                                    {dataFormats(cur.topEndCode, '--', -1)}
                                   </div>
                                 )}
                               </div>
@@ -793,7 +794,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   峰
                                 </div>
                                 <div>
-                                  {cur.peakStartCode}
+                                  {dataFormats(cur.peakStartCode, '--', -1)}
                                 </div>
                                 {cur.flag3 ? (
                                   <div className={styles.electricityEditStopCode}>
@@ -809,7 +810,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   </div>
                                 ) : (
                                   <div className={cur.errorFlag3 ? styles.electricityErrorStopCode : styles.electricityStopCode}>
-                                    {cur.peakEndCode || '- -'}
+                                    {dataFormats(cur.peakEndCode, '--', -1)}
                                   </div>
                                 )}
                               </div>
@@ -818,7 +819,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   平
                                 </div>
                                 <div>
-                                  {cur.flatStartCode}
+                                  {dataFormats(cur.flatStartCode, '--', -1)}
                                 </div>
                                 {cur.flag4 ? (
                                   <div className={styles.electricityEditStopCode}>
@@ -834,7 +835,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   </div>
                                 ) : (
                                   <div className={cur.errorFlag4 ? styles.electricityErrorStopCode : styles.electricityStopCode}>
-                                    {cur.flatEndCode || '- -'}
+                                    {dataFormats(cur.flatEndCode, '--', -1)}
                                   </div>
                                 )}
                               </div>
@@ -843,7 +844,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   谷
                                 </div>
                                 <div>
-                                  {cur.lowStartCode}
+                                  {dataFormats(cur.lowStartCode, '--', -1)}
                                 </div>
                                 {cur.flag5 ? (
                                   <div className={styles.electricityEditStopCode}>
@@ -859,7 +860,7 @@ export default class MeterDisposeInfo extends React.Component {
                                   </div>
                                 ) : (
                                   <div className={cur.errorFlag5 ? styles.electricityErrorStopCode : styles.electricityStopCode}>
-                                    {cur.lowEndCode || '- -'}
+                                    {dataFormats(cur.lowEndCode, '--', -1)}
                                   </div>
                                 )}
                               </div>
