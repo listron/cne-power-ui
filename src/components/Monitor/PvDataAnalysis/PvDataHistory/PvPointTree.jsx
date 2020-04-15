@@ -105,6 +105,7 @@ class PvPointTree extends Component {
     });
     const { queryParam, listParam, getChartHistory, getListHistory, changeHistoryStore } = this.props;
     const { startTime, endTime, timeInterval } = queryParam;
+    const startData = moment(startTime);
     const newQueryParam = {
       ...queryParam,
       devicePoints: selectedKeys,
@@ -120,7 +121,7 @@ class PvPointTree extends Component {
       2: '时间选择范围不可超过14天',
       5: '时间选择范围不可超过1天',
     };
-    if (startTime.isBefore(tmpAllowedEnd, 's')) {
+    if (startData.isBefore(tmpAllowedEnd, 's')) {
       message.error(tmpText[timeInterval]);
       changeHistoryStore({
         queryParam: newQueryParam,
