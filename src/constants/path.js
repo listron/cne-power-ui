@@ -12,7 +12,8 @@ export default {
     getMonitorDataUnit: '/v3/station/monitor/conf', //获取电站监控单位的单位以及精确值接口名
     getStationDevicetypes: '/v3/station/devicetypes',
     getStationTypeDevicetypes: '/v3/station',
-    getDevices: '/v3/station/stationdevices',
+    // getDevices: '/v3/station/stationdevices', // 待废弃 - 设备接口 后台可能有bug会导致数据丢失 - 后期不再使用。
+    getDevices: '/v3/base/device/devices/prev',
     getPartitions: '/v3/station/partitions', // 待废弃 - 接口分区 后台可能有bug会导致数据丢失 - 后期不再使用。
     belongmatrixs: '/v3/base/device/belongmatrixs', // 新获取 分区接口 
     getDeviceModel: '/v3/management/devicemodecode', // 获取电站(必填), 设备类型下的设备型号
