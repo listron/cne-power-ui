@@ -93,7 +93,7 @@
       font-size:18px;
       font-weight: bold;
     }
-    .searchParts{ // 日期
+    .searchParts, .dateCheck{ // 日期
       .forbidDay{
         cursor: not-allowed;
       }
@@ -390,7 +390,7 @@
     .searchText{
       color: #000;
     }
-    .searchParts{
+    .searchParts, .dateCheck{
       color: #353535;
       .forbidDay, .forbidDay:hover{
         background-color:#f1f1f1;
