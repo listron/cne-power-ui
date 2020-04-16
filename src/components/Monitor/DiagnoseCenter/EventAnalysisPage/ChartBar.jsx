@@ -42,7 +42,7 @@ class ChartBar extends PureComponent {
     data.forEach((e) => {
       xNames.push(moment(e.time).format('YYYY-MM-DD'));
       baseData.push(e.gen);
-      theoryData.push(e.theory_gen);
+      theoryData.push(e.theoryGen);
       lineData.push(e.diff);
     });
     const option = {
