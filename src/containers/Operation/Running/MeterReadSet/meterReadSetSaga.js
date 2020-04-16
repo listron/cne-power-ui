@@ -55,6 +55,10 @@ function *getAddMeterList({ payload = {} }){ // 新增列表行
   const { func, ...rest } = payload;
   const url = `${APIBasePath}${operation.getAddMeterList}`;
   try{
+    yield put({
+      type: meterReadSetAction.changeMeterReadSetStore,
+      payload: { tableLoading: true },
+    });
     const response = yield call(axios.post, url, rest);
     if (response.data.code === '10000') {
       message.success('添加成功');
@@ -62,12 +66,21 @@ function *getAddMeterList({ payload = {} }){ // 新增列表行
       func();
       yield put({
         type: meterReadSetAction.getMeterList,
-        payload: { stationCode: params },
+        payload: {
+          stationCode: params,
+          tableLoading: false,
+        },
       });
     } else { throw response.data; }
   } catch(error) {
     console.log(error);
     message.error(error.message ? error.message : '新增失败，请重试！');
+    yield put({
+      type: meterReadSetAction.changeMeterReadSetStore,
+      payload: {
+        tableLoading: false,
+      },
+    });
   }
 }
 

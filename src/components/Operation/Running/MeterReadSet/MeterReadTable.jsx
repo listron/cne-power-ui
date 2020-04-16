@@ -110,12 +110,18 @@ class MeterReadTable extends Component{
   saveEvent = (value) => { // 保存
     const { key, editable, updateTime, isRelDocket, meterId, ...rest } = value;
     const { addEventList, currentEventList } = this.state;
-    const { getUpDateMeterList, getAddMeterList, stationCode, stationName, changeMeterReadSetStore } = this.props;
+    const { getUpDateMeterList, getAddMeterList, stationCode, stationName, changeMeterReadSetStore, tableLoading } = this.props;
     if (meterId) { // 编辑行
+      if (tableLoading) {
+        return false;
+      }
       const index = currentEventList.findIndex(e => e.meterId === meterId);
       changeMeterReadSetStore({isEditList: false});
       getUpDateMeterList({ meterId, ...rest, func: () => { currentEventList[index].editable = false; this.setState({ currentEventList }); }});
     }else { // 添加行
+      if (tableLoading) {
+        return false;
+      }
       const addIndex = addEventList.findIndex(e => e.key === value.key);
       changeMeterReadSetStore({isEditList: false});
       getAddMeterList({ stationCode, stationName, ...rest, func: () => { addEventList.splice(addIndex, 1); this.setState({ addEventList });}});
