@@ -86,7 +86,7 @@ class ChartBar extends PureComponent {
                 <p class=${styles.eachItem}>
                   <span class=${styles.barBorderRect}></span>
                   <span class=${styles.tipName} style="flex: 0 0 76px">${conversionEfficiency ? '直流侧发电量' : '方阵理论发电量'}(kWh)</span>
-                  <span class=${styles.tipValue}>${dataFormats(rateValue, '--', 2, true)}</span>
+                  <span class=${styles.tipValue}>${dataFormats(theoryValue, '--', 2, true)}</span>
                 </p>
                 <p class=${styles.eachItem}>
                   <span class=${styles.tipIcon}>
@@ -94,7 +94,7 @@ class ChartBar extends PureComponent {
                     <span class=${styles.rect} style="background-color: #ff9900; border: solid 1px #fff"></span>
                   </span>
                   <span class=${styles.tipName} style="flex: 0 0 76px">${conversionEfficiency ? '转换效率' : '方阵损耗'}(%)</span>
-                  <span class=${styles.tipValue}>${dataFormats(theoryValue * 100, '--', 2, true)}</span>
+                  <span class=${styles.tipValue}>${dataFormats(rateValue * 100, '--', 2, true)}</span>
                 </p>
               </div>
             </section>`
