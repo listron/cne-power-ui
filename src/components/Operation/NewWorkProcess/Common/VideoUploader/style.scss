@@ -72,43 +72,35 @@
     overflow: hidden;
     margin-right: 13px;
     border: 1px solid #d4d4d4;
-    .delVideo{ // 视频浏览顶部删除
-      height: 14px;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      position: absolute;
-      background:#d4d4d4;
-      width:60px;
-      z-index: 2;
-      .delIcon{
-        color: var(--darkColor);
+    .delIcon{
+        color: var(--lightColor);
+        position: absolute;
+        right:1px;
+        top:0px;
         cursor: pointer;
-        font-size: 10px;
-        transform: scale(0.8);
+        font-size: 14px;
+        z-index: 2;
         padding: 0 0 0 6px;
-      }
-    }
+     }
     .eachVideo {
       cursor: pointer;
       position: relative;
-      // &::before{  等产品确认之后添加
-      //   content: url('/img/video34-26.png');
-      //   // background: pink;
-      //   // color: red;
-      //   position: absolute;
-      //   left:10px;
-      //   top:20px;
-      // }
+      &::before{  
+        content: url('/img/video.png');
+        position: absolute;
+        left:50%;
+        top:50%;
+        width: 40px;
+        height: 39px;
+        transform: translate(-50%,-50%);
+      }
     }
 
     &:hover{
       border: 1px solid var(--themeColor);
-      .delVideo{
-        background-color: var(--themeColor);
-        .delIcon{
-          color: #fff;
-        }
+      .delIcon{
+          color:var(--themeColor) ;
+          // background: #fff;
       }
     }
   }
@@ -155,7 +147,7 @@
         color: #999999;
       }
       .ant-progress-bg {
-        height: 2px !important;
+        height: 6px !important;
       }
       .ant-progress-text {
         display: none;

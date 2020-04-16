@@ -129,7 +129,7 @@ export default class VideoUploader extends Component {
             <div className={styles.delVideo}>
               {mode === 'edit' && <i
                 title="删除"
-                className={`iconfont icon-close1 ${styles.delIcon}`}
+                className={`iconfont icon-closeall ${styles.delIcon}`}
                 onClick={() => this.onVideoDelete(url)}
               />
               }

@@ -24,6 +24,10 @@
         box-shadow: none;
       }
     }
+
+    .ant-select:not(.ant-select-disabled) .ant-select-selection .ant-select-selection__rendered .ant-select-selection__placeholder{
+       color: var(--lightColor);
+    }
   }
   .deviceSelectModal {
     position: absolute;
