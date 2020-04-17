@@ -38,35 +38,41 @@ class PvPointTree extends Component {
       this.setState({
         expandedKeys: [],
       });
-      if (search) {
-        const { devicePoints } = searchUtil(search).parse();
-        const filterPoint = pointInfo.filter(e => devicePoints.indexOf(e.devicePointCode) !== -1); // 诊断中心传来的devicePointId,筛选出相同的devicePointId数组
-        const devicePointCodes = filterPoint.map(e => e.devicePointId);
-        if (filterPoint.length === 0) {
-          this.setState({ isNoDataTip: true });
-          setTimeout(() => {
-            this.setState({ isNoDataTip: false });
-          }, 3000);
-        }
-        changeHistoryStore({
-          queryParam: {
-            ...queryParam,
-            devicePoints: devicePointCodes,
-          },
-        });
-        getChartHistory({
-          queryParam: {
-            ...queryParam,
-            devicePoints: devicePointCodes,
-          },
-         });
-        getListHistory({
-          queryParam: {
-            ...queryParam,
-            devicePoints: devicePointCodes,
-          },
-          listParam,
-        });
+      const { devicePoints } = searchUtil(search).parse();
+
+      if (search && devicePoints) {
+          const filterPoint = pointInfo.filter(e => devicePoints.indexOf(e.devicePointCode) !== -1); // 诊断中心传来的devicePointId,筛选出相同的devicePointId数组
+          const devicePointCodes = filterPoint.map(e => e.devicePointId);
+          if (filterPoint.length === 0) {
+            this.setState({ isNoDataTip: true });
+            setTimeout(() => {
+              this.setState({ isNoDataTip: false });
+            }, 3000);
+          }
+          changeHistoryStore({
+            queryParam: {
+              ...queryParam,
+              devicePoints: devicePointCodes,
+            },
+          });
+          getChartHistory({
+            queryParam: {
+              ...queryParam,
+              devicePoints: devicePointCodes,
+            },
+           });
+          getListHistory({
+            queryParam: {
+              ...queryParam,
+              devicePoints: devicePointCodes,
+            },
+            listParam,
+          });
+      }else{
+        this.setState({ isNoDataTip: true });
+        setTimeout(() => {
+          this.setState({ isNoDataTip: false });
+        }, 3000);
       }
     }
   }
