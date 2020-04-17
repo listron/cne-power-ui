@@ -47,6 +47,8 @@ const DefectEventDetail = ({ defectMessage, delRight = false, allowedOpr = false
   const width = defectMessage.defectTypeCode && getWidth(allLine) - getWidth(defectType) - getWidth(deviceTypeName) - getWidth(defectLevel) - 150 || 130;
 
   const defectLevelMes = defectLevelList.filter(e => e.defectLevel === defectMessage.defectLevel);
+  const rightMenu = localStorage.getItem('rightMenu');
+  const lookRight = rightMenu.includes('monitor_diagnosis') || false;
   return (
     <div className={styles.eventDetail}>
       <div className={styles.messageWrap}>
@@ -88,7 +90,7 @@ const DefectEventDetail = ({ defectMessage, delRight = false, allowedOpr = false
             <b>缺陷描述:</b>
             <p>{defectMessage.eventDesc}</p>
           </div>
-          {diagWarningId &&
+          {diagWarningId && lookRight &&
             <div className={styles.analysize}>
               <CneButton className={styles.handleButton}> <i className={'iconfont icon-look'} />
                 <a href={`#/monitor/diagnoseCenter?diagWarningId=${diagWarningId}&deviceFullcode=${deviceFullcode}`} className={styles.actionName} target="_blank">查看分析</a>
