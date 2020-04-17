@@ -32,8 +32,10 @@ import {stringify} from 'qs';
 // deviceFullcode	string	设备全编码
 // deviceName	string	设备名称
 // beginTime	string	发生时间
+// updateTime string 更新时间
 // warningDuration	float	持续时长
 // warningFrequency	int	发生频次
+// warningFrequencyRate string 告警频次
 
 // listParams -> finished: 1归档事件, 0非归档事件
 // 是否归档, 生成两个表头: 归档需要状态图标, 不需要事件状态列; 非归档不需要状态图标列, 需要事件状态列;
@@ -75,11 +77,11 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
         return (
           <Link to={{ pathname: '/system/station/alarmEvent',
                       search: `?${searchStr}`,
-                      state: paramData }} 
+                      state: paramData }}
                 target= '_blank'
                 key={record.diagWarningId}>
-            <div 
-              title={text} 
+            <div
+              title={text}
               className={`${styles.eventNameText} ${styles.eventNameTextHover}`}
             >{text || '--'}</div>
           </Link>
@@ -125,24 +127,45 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
           className={styles.beginTimeText}
         >{text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}</div>
       ),
-    }, {
-      dataIndex: 'warningDuration',
-      title: '持续时长(h)',
-      // sorter: true,
-      className: styles.warningDuration,
+    },
+    // {
+    //   dataIndex: 'warningDuration',
+    //   title: '持续时长(h)',
+    //   // sorter: true,
+    //   className: styles.warningDuration,
+    //   render: (text) => (
+    //     <div
+    //       title={dataFormats(text, '--', 2, true)}
+    //       className={styles.warningDurationText}
+    //     >{dataFormats(text, '--', 2, true)}</div>
+    //   ),
+    // },
+    // {
+    //   dataIndex: 'warningFrequency',
+    //   title: '发生频次',
+    //   sorter: true,
+    //   className: styles.warningFrequency,
+    //   render: (text) => (<div title={text || '--'} className={styles.warningFrequencyText}>{text || '--'}</div>),
+    // },
+    {
+      dataIndex: 'updateTime',
+      title: '更新时间',
+      sorter: true,
+      className: styles.updateTime,
       render: (text) => (
         <div
-          title={dataFormats(text, '--', 2, true)}
-          className={styles.warningDurationText}
-        >{dataFormats(text, '--', 2, true)}</div>
+        title={text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}
+        className={styles.updateTimeText}
+      >{text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}</div>
       ),
     }, {
-      dataIndex: 'warningFrequency',
-      title: '发生频次',
+      dataIndex: 'warningFrequencyRate',
+      title: '告警频次',
       sorter: true,
-      className: styles.warningFrequency,
-      render: (text) => (<div title={text || '--'} className={styles.warningFrequencyText}>{text || '--'}</div>),
-    }, {
+      className: styles.warningFrequencyRate,
+      render: (text) => (<div title={dataFormats(text, '--', 2, true)} className={styles.warningFrequencyRateText}>{dataFormats(text, '--', 2, true)}</div>),
+    },
+    {
       dataIndex: 'statusName',
       title: '事件状态',
       sorter: true,
