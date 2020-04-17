@@ -368,8 +368,8 @@ function* FilterConditionStations(action) { // 获取筛选条件的电站数据
 function* getEventDetail(action) { //获取标准告警事件详情
   const { payload } = action;
   try {
-    const {pointCode, deviceFullcode} = payload;
-    const url = `${APIBasePath}${system.getEventDetail}/${deviceFullcode}/${pointCode}`;
+    const {pointCode, deviceFullcode, diagWarningId} = payload;
+    const url = `${APIBasePath}${system.getEventDetail}/${diagWarningId}`;
     //console.log(url);
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -408,13 +408,14 @@ function* getEventDetail(action) { //获取标准告警事件详情
 function* alarmEventDetialFlow(action) { //获取详细信息的一系列处理过程
   const { payload } = action;
   try {
-    const {pointCode, deviceFullcode, deviceTypeCode, stationCode} = payload;
+    const {pointCode, deviceFullcode, deviceTypeCode, stationCode, diagWarningId} = payload;
 
     //1.获取事件详情
     yield call(getEventDetail, {
       payload: {
-        pointCode,
-        deviceFullcode,
+        // pointCode,
+        // deviceFullcode,
+        diagWarningId,
       },
     });
 

@@ -19,6 +19,9 @@ class AlarmEvent extends Component {
     getAlarmEvent: PropTypes.func,
     deviceTypeCode: PropTypes.number,
     alarmEventDetialFlow: PropTypes.func,
+    getVersionEvent: PropTypes.func,
+    changeStore: PropTypes.func,
+    history: PropTypes.object,
   }
   constructor(props) {
     super(props);
@@ -34,13 +37,12 @@ class AlarmEvent extends Component {
     // console.log(paramData);
     const {source} = paramData;
     if (source && source === 'diagnoseCenter') { //告警中心进入
-      const {deviceTypeCode, pointCode, deviceFullcode, stationCode} = paramData;
+      const {deviceTypeCode, pointCode, deviceFullcode, stationCode, diagWarningId} = paramData;
       if(deviceTypeCode && pointCode && deviceFullcode && stationCode) {
-        const devcode = (typeof deviceTypeCode === 'string') ?  parseInt(deviceTypeCode) : deviceTypeCode
-        this.props.alarmEventDetialFlow({deviceTypeCode:devcode, pointCode, deviceFullcode, stationCode});
+        const devcode = (typeof deviceTypeCode === 'string') ? parseInt(deviceTypeCode) : deviceTypeCode;
+        this.props.alarmEventDetialFlow({deviceTypeCode: devcode, pointCode, deviceFullcode, stationCode, diagWarningId});
       }
-    }
-    else if (source && source === 'stationManage') {//电站管理进入
+    } else if (source && source === 'stationManage') {//电站管理进入
       const {deviceModeCode, manufactorCode, diagModeVersionId, deviceTypeCode} = paramData;
       if (deviceModeCode && manufactorCode && diagModeVersionId && deviceTypeCode) {
         const {getVersionEvent, changeStore} = this.props;
@@ -50,7 +52,7 @@ class AlarmEvent extends Component {
             deviceModeCode,
             manufactorCode,
             selectedNodesKey: `${manufactorCode}_${deviceModeCode}_${diagModeVersionId}`,
-            expandedKeys:[`${manufactorCode}`, `${manufactorCode}_${deviceModeCode}`],
+            expandedKeys: [`${manufactorCode}`, `${manufactorCode}_${deviceModeCode}`],
           });
 
         getVersionEvent({diagModeVersionId});
