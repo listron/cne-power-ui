@@ -38,8 +38,10 @@ class DiagnoseList extends Component {
     deviceTypeName: 'deviceTypeName',
     deviceName: 'deviceName',
     beginTime: 'beginTime',
+    updateTime: 'updateTime',
     warningDuration: 'duration',
-    warningFrequency: 'frequency',
+    // warningFrequency: 'frequency',
+    warningFrequencyRate: 'frequencyRate',
     statusName: 'eventStatus',
     stationName: 'stationName',
   };
@@ -51,7 +53,10 @@ class DiagnoseList extends Component {
     deviceName: 'deviceName',
     beginTime: 'beginTime',
     duration: 'warningDuration',
-    frequency: 'warningFrequency',
+    // frequency: 'warningFrequency',
+    updateTime: 'updateTime',
+    frequencyRate: 'warningFrequencyRate',
+    alarmFrequency: 'alarmFrequency',
     eventStatus: 'statusName',
     stationName: 'stationName',
   };
