@@ -152,11 +152,15 @@ class ChartLine extends PureComponent {
       if(e.isConnected === 0 && (noDeviceName || seriesInefficient)){ // 诊断事件零电流、组串低效、固定物遮挡未接组串为灰色
         colors.splice((i + 1), 1, '#999');
       }
-      if (noAlarmTime || seriesInefficient) { // 诊断事件组串低效、电压异常、并网延时事件的曲线与图例颜色，默认绿色
+      if (noAlarmTime || seriesInefficient) { // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的曲线与图例颜色，默认绿色
         colors.splice(i, 1, '#60c060');
+      }else if(fixedShelter){
+        colors.splice(i + 1, 1, '#60c060');
       }
-      if (e.isWarned && pageKey === 'diagnose' && (noAlarmTime || seriesInefficient)) { // 诊断事件组串低效、电压异常、并网延时事件的告警曲线与图例颜色为黄色
+      if (e.isWarned && pageKey === 'diagnose' && (noAlarmTime || seriesInefficient)) { // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的告警曲线与图例颜色为黄色
         colors.splice(i, 1, '#f9b600');
+      }else if(e.isWarned && pageKey === 'diagnose' && fixedShelter){
+        colors.splice(i + 1, 1, '#f9b600');
       }
 
       legends.push({
@@ -169,7 +173,7 @@ class ChartLine extends PureComponent {
         top: `${noAlarmTime ? (Math.floor(i / 4) * 30) : (noDeviceName ? (Math.floor((i + 1) / 8) * 30) : (seriesInefficient ? (Math.floor(i / 8) * 30) : (Math.floor((i + 1) / 4) * 30)))}`,
         data: [pointFullName],
         textStyle: {
-          color: e.isWarned && pageKey === 'diagnose' ? ((noAlarmTime || seriesInefficient) ? '#f9b600' : '#f5222d') : '#353535', // 诊断事件组串低效、电压异常、并网延时事件的异常曲线与图例颜色，默认黄色
+          color: e.isWarned && pageKey === 'diagnose' ? ((noAlarmTime || seriesInefficient || fixedShelter) ? '#f9b600' : '#f5222d') : '#353535', // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的异常曲线与图例颜色，默认黄色
         },
         selectedMode: e.isConnected === 0 ? false : true,
       });
@@ -419,7 +423,6 @@ class ChartLine extends PureComponent {
             return e.standard || e.standard === 0;
           });
           const standard = pointInfo.length > 0 ? pointInfo[0].standard : ''; // 标准值
-
           return (
             `<section class=${styles.chartTooltip}>
               <h3 class=${styles.tooltipTitle}>${name}</h3>
@@ -430,7 +433,7 @@ class ChartLine extends PureComponent {
                 const { isWarned, pointName, deviceName, isConnected } = eachFullData;
                 const lineFullName = `${deviceName} ${pointName || ''}`;
                 return (
-                  `<p class=${(isWarned && pageKey === 'diagnose') ? ((noAlarmTime || seriesInefficient) ? styles.specialWarnedItem :styles.warnedItem) : (isConnected === 0 && (noDeviceName || seriesInefficient) ? styles.connected : styles.eachItem)}>
+                  `<p class=${(isWarned && pageKey === 'diagnose') ? ((noAlarmTime || seriesInefficient || fixedShelter) ? styles.specialWarnedItem : styles.warnedItem) : (isConnected === 0 && (noDeviceName || seriesInefficient) ? styles.connected : styles.eachItem)}>
                     <span class=${styles.tipIcon}>
                       <span class=${styles.line} style="background-color:${color}"></span>
                       <span class=${styles.rect} style="background-color:${color}"></span>

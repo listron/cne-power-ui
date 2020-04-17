@@ -202,7 +202,6 @@ class ChartBar extends PureComponent {
       const handlerInfo = {
         start: dataEvent ? dataDay[dataDays] : 0,
         end: 100,
-        // zoomLock: true,
       };
       option.dataZoom = [
         {
