@@ -71,14 +71,14 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       sorter: true,
       className: styles.eventName,
       render: (text, record) => {
-        const {deviceTypeCode, pointCode, deviceFullcode, stationCode} = record;
-        const paramData={deviceTypeCode, pointCode, deviceFullcode, stationCode, source:'diagnoseCenter'};
+        const {deviceTypeCode, pointCode, deviceFullcode, stationCode, diagWarningId} = record;
+        const paramData={deviceTypeCode, pointCode, deviceFullcode, stationCode, diagWarningId, source: 'diagnoseCenter'};
         const searchStr = stringify(paramData);
         return (
           <Link to={{ pathname: '/system/station/alarmEvent',
                       search: `?${searchStr}`,
                       state: paramData }}
-                target= '_blank'
+                target= "_blank"
                 key={record.diagWarningId}>
             <div
               title={text}
