@@ -68,36 +68,13 @@
     border-top: none;
     flex: 1;
     min-width: 1050px;
-
-    .warningType, .warningLevel, .warningEnable {
-      text-align: center;
+    table{
+      width: 100%;
+      table-layout: fixed;
     }
-
-    .devicePointDesc {
-      max-width: 140px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      // display: inline-block;
-      word-break:keep-all;
-    }
-
-    .devicePointDesc {
-      max-width: 140px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      // display: inline-block;
-      word-break:keep-all;
-    }
-
-    .warningDescription {
-      max-width: 220px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      // display: inline-block;
-      word-break:keep-all;
+    .devicePointDesc, .warningDescription, .belongComponent{
+      @include overflowText();
+      width: calc(100% - 10px);
     }
   }
 }

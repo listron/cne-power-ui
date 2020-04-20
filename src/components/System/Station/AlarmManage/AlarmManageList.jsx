@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styles from './alarmManage.scss';
-import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import CneTable from '@components/Common/Power/CneTable';
 
@@ -9,29 +8,25 @@ class AlarmManageList extends Component {
     loading: PropTypes.bool,
     queryParams: PropTypes.object,
     alarmList: PropTypes.array,
+    sortField: PropTypes.string,
+    sortOrder: PropTypes.string,
     getAlarmList: PropTypes.func,
-  }
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    }
   }
 
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
-    const { getAlarmList, queryParams } = this.props;
-    const { field, order } = sorter;
-
-
-    getAlarmList({
+    const { queryParams, sortField, sortOrder } = this.props;
+    const { field } = sorter || {};
+    let newField = sortField, newOrder = '2';
+    if (!field || field === sortField) {
+      newOrder = sortOrder === '1' ? '2' : '1';
+    } else {
+      newField = field;
+    }
+    this.props.getAlarmList({
       ...queryParams,
-      //sortField: field?field:'',
-      sortField: field ? field === 'warningLevel' ? '1' : '2' : '',
-      sortOrder: order ? (sorter.order === 'ascend' ? '1' : '2') : '',
-
-      // sortOrder: order?(sorter.order==='ascend'?'asc':'desc'):'',
-
-    })
+      sortField: newField,
+      sortOrder: newOrder,
+    });
   }
 
 
@@ -42,80 +37,78 @@ class AlarmManageList extends Component {
       { warnTypeName: '故障', warnTypeCode: 103 },
       { warnTypeName: '设备状态', warnTypeCode: 104 },
       { warnTypeName: '开关状态', warnTypeCode: 105 },
-    ]
+    ];
 
     const alarmListColumn = [
       {
         title: '测点描述',
         dataIndex: 'devicePointDesc',
         key: 'devicePointDesc',
-        // width:150,
-        width:'13%',
-        ellipsis: true,
-        render: (text, record) => (<div className={styles.devicePointDesc} title={text} >{text}</div>),
+        textAlign: 'left',
+        width: '13%',
+        render: (text, record) => (<div className={styles.devicePointDesc} title={text || '--'}>{text || '--'}</div>),
       },
       {
         title: '测点编号',
         dataIndex: 'pointCode',
         key: 'pointCode',
-        // width:120,
-        width:'12%',
-        ellipsis: true,
+        textAlign: 'left',
+        width: '12%',
       }, {
         title: '事件编码',
         dataIndex: 'warningCheckRule',
         key: 'warningCheckRule',
-        // width:100,
-        width:'9%',
+        textAlign: 'left',
+        width: '9%',
       }, {
         title: '事件/告警描述',
         dataIndex: 'warningDescription',
         key: 'warningDescription',
-        // width:250,
-        width:'22%',
-        render: (text, record) => (<div className={styles.warningDescription} title={text} >{text}</div>),
-        ellipsis: true,
+        textAlign: 'left',
+        width: '22%',
+        render: (text, record) => (<div className={styles.warningDescription} title={text || '--'}>{text || '--'}</div>),
       }, {
         title: '事件类别',
         dataIndex: 'warningType',
         key: 'warningType',
-        render: text => warnTypeList.map(e => { if (e.warnTypeCode === +text) return e.warnTypeName }),
-        className:styles.warningType,
-        // width:100,
-        width:'9%',
+        textAlign: 'center',
+        render: text => {
+          const warnTypeInfo = warnTypeList.find(e => e.warnTypeCode === +text) || {};
+          return warnTypeInfo.warnTypeName || '--';
+        },
+        width: '9%',
       }, {
         title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
         sorter: true,
-        className:styles.warningLevel,
-        // width:100,
-        width:'9%',
+        textAlign: 'center',
+        width: '9%',
       }, {
         title: '是否启用告警',
         dataIndex: 'warningEnable',
         key: 'warningEnable',
         sorter: true,
+        textAlign: 'center',
         render: text => text ? '是' : '否',
-        className:styles.warningEnable,
-        // width:140,
-        width:'12%',
+        width: '12%',
       }, {
         title: '所属部件',
+        textAlign: 'left',
         dataIndex: 'belongComponent',
         key: 'belongComponent',
-        render: text => (text || text === 0) ? text : '--',
-        // width:150,
-        width:'14%',
-        ellipsis: true,
-      }
+        render: (text, record) => (<div className={styles.belongComponent} title={text || '--'}>{text || '--'}</div>),
+        width: '14%',
+      },
     ];
-    const { loading, alarmList } = this.props;
+    const { loading, alarmList, sortField, sortOrder } = this.props;
     return (
       <div className={styles.alarmManageList}>
         <CneTable
           loading={loading}
           onChange={this.tableChange}
+          sortField={sortField}
+          sortMethod={sortOrder === '1' ? 'ascend' : 'descend'}
           columns={alarmListColumn}
           dataSource={alarmList.map((e, i) => ({ key: i, ...e }))}
           pagination={false}
