@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table } from 'antd';
 import ListHandle from './ListHandle';
 import WarningTip from '@components/Common/WarningTip';
 import DepartmentAssignModal from '../Modals/DepartmentAssignModal';
@@ -35,38 +34,34 @@ class List extends Component {
       {
         title: '用户名',
         dataIndex: 'username',
-        width:'16%',
+        textAlign: 'left',
+        width: '16%',
         render: (text, record) => (
-          <div className={styles.username} title={text} onClick={() => this.showDetail(record)}>{text || '--'}</div>
+          <div className={styles.usernameText} title={text || '--'} onClick={() => this.showDetail(record)}>{text || '--'}</div>
         ),
       }, {
         title: '真实姓名',
         dataIndex: 'userFullName',
-        width:'18%',
-        render: (text) => text || '--',
-        ellipsis: true,
+        textAlign: 'left',
+        width: '18%',
+        render: (text) => <div className={styles.userFullNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '电话',
         dataIndex: 'phoneNum',
-        width:'16%',
-        className: styles.phoneNum,
+        textAlign: 'right',
+        width: '16%',
         render: (text) => text || '--',
-        ellipsis: true,
       }, {
         title: '角色',
         dataIndex: 'roleName',
-        // render: (text) => text || '--',
-        // width:'25%',
-        ellipsis: true,
-        className:styles.roleNameBox,
-        render:(text) => (
-          <div className={styles.roleName}>{text || '--'}</div>
-        ),
+        textAlign: 'left',
+        width: '18%',
+        render: (text) => <div className={styles.roleNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '用户状态',
+        textAlign: 'center',
         dataIndex: 'enterpriseStatus',
-        className: styles.enterpriseStatus,
-        width:'15%',
+        width: '15%',
         render: (text) => {
           const statusText = this.enterpriseStatusInfo[text];
           return <span className={statusText === '待审核' ? styles.toExamine : styles.status}>{statusText || '--'}</span>;
@@ -157,19 +152,11 @@ class List extends Component {
     this.props.changeStore({ selectedRowKeys });
   }
 
-  sortList = (pagination, filters, sorter) => {
-    const { order /*, field */ } = sorter || {}; // 现只有一列需排序，field暂无用;
+  sortList = () => { // 现只有一列需排序，参数暂无用;
     const { userListPageInfo } = this.props;
-    let sortField = 'u.create_time', sortMethod = 'desc';
-    if (order) {
-      sortField = 'eu.enterprise_user_status';
-      sortMethod = order === 'ascend' ? 'asc' : 'desc';
-    }
-    const newPageInfo = {
-      ...userListPageInfo,
-      sortField,
-      sortMethod,
-    };
+    const { sortMethod } = userListPageInfo || {};
+    const newSortMethod = sortMethod === 'desc' ? 'asc' : 'desc';
+    const newPageInfo = { ...userListPageInfo, sortMethod: newSortMethod };
     this.props.changeStore({ userListPageInfo: newPageInfo });
     this.props.getUserList({ ...newPageInfo });
   }
@@ -181,8 +168,8 @@ class List extends Component {
   getHandleColumn = (editRight, assignRight, deleteRight, auditRight) => ({
     title: '操作',
     dataIndex: 'handle',
-    width:'12%',
-    className: styles.handleBox,
+    width: '12%',
+    textAlign: 'center',
     render: (text, record) => {
       const { enterpriseStatus } = record; // 5待审核，6审核不通过，可继续审核;  其余状态可进行分配操作;
       return (
@@ -205,8 +192,9 @@ class List extends Component {
   })
 
   render(){
-    const { userList, userListLoading, selectedRowKeys, departmentTree } = this.props;
+    const { userList, userListLoading, selectedRowKeys, departmentTree, userListPageInfo } = this.props;
     const { column, showLogout, assignDepartUsers, assignDepartChecked } = this.state;
+    const { sortMethod } = userListPageInfo;
     const rights = localStorage.getItem('rightHandler');
     const editRight = rights && rights.split(',').includes('account_user_edit'); // 编辑
     const assignRight = rights && rights.split(',').includes('account_department_user'); // 部门 - 用户 分配
@@ -217,38 +205,36 @@ class List extends Component {
     return (
       <div className={styles.personnelMain}>
         <ListHandle {...this.props} assignDeparts={this.assignDeparts} />
-        <div className={styles.tableContent}>
-          <div className={styles.tableBox}>
-            <CneTable
-              dataSource={userList}
-              columns={tableColumn}
-              pagination={false}
-              loading={userListLoading}
-              className={styles.listMain}
-              rowSelection={{
-                onChange: this.rowSelect,
-                selectedRowKeys,
-              }}
-              onChange={this.sortList}
-            />
-          </div>
-          <DepartmentAssignModal
-            value={assignDepartChecked}
-            onCheck={this.onDepartChecked}
-            onChange={this.onAssignOK}
-            modalShow={assignDepartUsers.length > 0}
-            departmentTree={departmentTree.filter(e => e.departmentId !== '1')}
-            username={assignDepartUsers.map(e => e.username).join(',')}
-            hideModal={this.hideDepartModal}
-          />
-          {showLogout && <WarningTip
-            onOK={this.logoutUser}
-            style={{ width: '310px', height: '115px' }}
-            onCancel={this.cancelLogout}
-            value="注销后用户不再属于任何部门，会被移出系统。您确定注销该人员吗？"
-          />}
-          {userList.length > 0 && <ListFooter selectedLength={selectedRowKeys.length} cancel={this.cancelSelectRow} />}
-        </div>
+        <CneTable
+          dataSource={userList}
+          columns={tableColumn}
+          pagination={false}
+          loading={userListLoading}
+          className={styles.listMain}
+          sortField="enterpriseStatus"
+          sortMethod={sortMethod === 'asc' ? 'ascend' : 'descend'}
+          rowSelection={{
+            onChange: this.rowSelect,
+            selectedRowKeys,
+          }}
+          onChange={this.sortList}
+        />
+        <DepartmentAssignModal
+          value={assignDepartChecked}
+          onCheck={this.onDepartChecked}
+          onChange={this.onAssignOK}
+          modalShow={assignDepartUsers.length > 0}
+          departmentTree={departmentTree.filter(e => e.departmentId !== '1')}
+          username={assignDepartUsers.map(e => e.username).join(',')}
+          hideModal={this.hideDepartModal}
+        />
+        {showLogout && <WarningTip
+          onOK={this.logoutUser}
+          style={{ width: '310px', height: '115px' }}
+          onCancel={this.cancelLogout}
+          value="注销后用户不再属于任何部门，会被移出系统。您确定注销该人员吗？"
+        />}
+        {userList.length > 0 && <ListFooter selectedLength={selectedRowKeys.length} cancel={this.cancelSelectRow} />}
       </div>
     );
   }
