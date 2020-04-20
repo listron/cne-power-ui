@@ -1,13 +1,11 @@
 
 
 import React, { Component } from 'react';
-import { Upload, Button, Table, message, Icon, Input } from 'antd';
-import CommonPagination from '../../../../Common/CommonPagination';
+import { Upload, message, Icon, Input } from 'antd';
 import stationManageTableColumn from './stationManageTableColumn';
 import SetDepartmentModal from './SetDepartmentModal';
 import styles from './stationMain.scss';
 import PropTypes from 'prop-types';
-import Cookie from 'js-cookie';
 import path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
 import { handleRight } from '@utils/utilFunc';
@@ -135,12 +133,12 @@ class StationManageTable extends Component {
 
   tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
     const { getStationList, queryListParams, orderField, orderCommand } = this.props;
-    const { field } = sorter;
-    let newField = this.tableSortMap[field] ? this.tableSortMap[field] : orderField, newCommand = '2';
-    if (orderField === this.sortFieldMap[field]) { // 点击的是正在排序的列
-      newCommand = orderCommand === '2' ? '1' : '2'; // 交换排序方式
-    } else { // 切换列
-      newField = this.sortFieldMap[field] ? this.sortFieldMap[field] : orderField;
+    const { field } = sorter || {};
+    let newField = orderField, newCommand = '2';
+    if (!field || field === this.tableSortMap[orderField]) { // 点击的是正在排序的列
+      newCommand = orderCommand === '2' ? '1' : '2';
+    } else {
+      newField = this.sortFieldMap[field];
     }
     getStationList({
       ...queryListParams,
@@ -224,8 +222,8 @@ class StationManageTable extends Component {
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
-        className: styles.stationName,
-        defaultSortOrder: 'descend',
+        textAlign: 'left',
+        width: '12%',
         render: (text, record, index) => {
           return (
             <div className={styles.stationNameWrap}>
@@ -240,11 +238,12 @@ class StationManageTable extends Component {
         title: '遥信诊断',
         dataIndex: 'eventYxStatus',
         key: 'eventYxStatus',
-        className: styles.eventStatus,
+        textAlign: 'center',
+        width: '7.85%',
         render: (text, record) => {
           const { eventYxStatus, stationType } = record;
           const title = eventYxStatus && '已设置' || '未设置';
-          return (<div className={`${styles.eventStatusText} ${stationType === 0 && styles.windDisabled}`}>
+          return (<div className={`${stationType === 0 ? styles.windDisabled : styles.active}`}>
             <i className={`iconfont ${eventYxStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYxStatus(record)} />
           </div>);
         },
@@ -253,11 +252,12 @@ class StationManageTable extends Component {
         title: '遥测诊断',
         dataIndex: 'eventYcStatus',
         key: 'eventYcStatus',
-        className: styles.eventStatus,
+        textAlign: 'center',
+        width: '7.85%',
         render: (text, record, index) => {
           const { eventYcStatus, stationType } = record;
           const title = eventYcStatus && '已设置' || '未设置';
-          return (<div className={`${styles.eventStatusText} ${stationType === 0 && styles.windDisabled}`}>
+          return (<div className={`${stationType === 0 ? styles.windDisabled : styles.active}`}>
             <i className={`iconfont ${eventYcStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYcStatus(record, 'yc')} />
           </div>);
         },
@@ -266,11 +266,12 @@ class StationManageTable extends Component {
         title: '数据质量诊断',
         dataIndex: 'eventDataStatus',
         key: 'eventDataStatus',
-        className: styles.eventDataStatus,
+        textAlign: 'center',
+        width: '9%',
         render: (text, record, index) => {
           const { eventDataStatus, stationType } = record;
           const title = eventDataStatus && '已设置' || '未设置';
-          return (<div className={`${styles.eventDataStatusText} ${stationType === 0 && styles.windDisabled}`}>
+          return (<div className={`${stationType === 0 ? styles.windDisabled : styles.active}`}>
             <i className={`iconfont ${eventDataStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYcStatus(record, 'data')} />
           </div>);
         },
@@ -279,27 +280,25 @@ class StationManageTable extends Component {
         title: '部门设置',
         dataIndex: 'departmentStatus',
         key: 'departmentStatus',
-        className: styles.eventStatus,
+        textAlign: 'center',
+        width: '7.85%',
         render: (text, record, index) => {
           const { stationDepartments } = record;
           if (stationDepartments && stationDepartments.length > 0) {
             return (
-              <div className={styles.eventStatusText}>
-                <span title="查看" className="iconfont icon-look" onClick={() => this.showDepartmentModal(record)}></span>
-              </div>
+              <span title="查看" className="iconfont icon-look" onClick={() => this.showDepartmentModal(record)}></span>
             );
           }
           return (
-            <div className={styles.eventStatusText}>
-              <span title="去设置" className="iconfont icon-goset1" onClick={() => this.showDepartmentModal(record)}></span>
-            </div>
+            <span title="去设置" className="iconfont icon-goset1" onClick={() => this.showDepartmentModal(record)}></span>
           );
         },
       }, {
         title: '操作',
         dataIndex: 'handler',
         key: 'handler',
-        className: styles.handler,
+        textAlign: 'center',
+        width: '7%',
         render: (text, record, index) => { // 电站未接入且alarmStatus,departmentStatus,deviceStatus,pointStatus全部为0时，才能删除。
           const deletable = !record.alarmStatus && !record.departmentStatus && !record.pointStatus && !record.isConnected;
           return (
@@ -383,7 +382,7 @@ class StationManageTable extends Component {
             scroll={initTableScroll}
             dataError={stationListError}
             sortField={this.tableSortMap[orderField]}
-            sortMethod={`${this.sortMethodMap[orderCommand]}` || false}
+            sortMethod={orderCommand === '2' ? 'descend' : 'ascend'}
             onChange={this.tableChange}
           />
         </div>

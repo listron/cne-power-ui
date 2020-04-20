@@ -118,6 +118,64 @@
           .download {
             margin-right: 13px;
           }
+          .conditionSearch {
+            display: flex;
+            background: #199475;
+            border: 1px solid #007155;
+            box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            height: 32px;
+            align-items: center;
+            color: #fff;
+            position: relative;
+            .closeSearch {
+              position: absolute;
+              left: 186px;
+              color: #999;
+              z-index: 9;
+              cursor: pointer;
+              &:hover {
+                color: #e08031;
+              }
+            }
+            :global {
+              .ant-input-search {
+                margin: 0 4px;
+                height: 30px;
+                display: block;
+              }
+              .ant-input {
+                height: 22px;
+                margin: 3px 0;
+                width: 200px;
+                border-radius: 2px;
+                padding-right: 20px;
+                padding-left: 5px;
+                display: block;
+              }
+              .ant-input-search-button {
+                padding: 0;
+                background: #199475;
+                color: #fff;
+                border: none;
+                height: 30px;
+                width: 30px;
+                outline: none;
+                border-radius: 0;
+                box-shadow: none;
+              }
+            }
+          }
+          .closeConditionSearch {
+            .closeSearch {
+              display: none;
+            }
+            :global {
+              .ant-input {
+                display: none;
+              }
+            }
+          }
         }
       }
       .textWrap{
@@ -127,16 +185,17 @@
       }
       .tableWrap {
         min-width: 1212px;
-        // overflow-x: scroll;
-        overflow-x: hidden;
-        box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.60);
       }
       .stationTable {
         // 表格区
         background: #ffffff;
         border: 1px solid #d4d4d4;
-        // box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+        box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
         height: 100%;
+        table{
+          table-layout: fixed;
+          width: 100%;
+        }
         :global {
           .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
             overflow-y: scroll;
@@ -156,9 +215,27 @@
             border-bottom: none;
           }
         }
-        .stationNameWrap {
+        .active, .windDisabled{
+          height: 40px;
+          line-height: 40px;
+        }
+        .windDisabled {
+          i {
+            color: #999999;
+            pointer-events: none;
+            cursor: not-allowed;
+          }
+        }
+        .stationNameText, .regionNameText{
+          @include overflowText();
+          height: 40px;
+          line-height: 40px;
+          width: calc(100% - 10px);
+        }
+        .stationNameWrap {// 电站
           display: flex;
           align-items: center;
+          width: 100%;
           i {
             display: flex;
             flex: 0 0 24px;
@@ -171,84 +248,21 @@
             margin-right: 7px;
             font-size: 18px;
           }
-        }
-        .windDisabled {
-                  i {
-                    color: #999999;
-                    pointer-events: none;
-                    cursor: not-allowed;
-                  }
-                  &:hover {
-                    cursor: no-drop;
-                  }
-         }
-        .stationName,.regionName,.stationCapacity,.stationUnitCount,.stationStatus,.isConnected,.pointStatus,.eventStatus,.eventDataStatus,.departmentStatus,.handler{
-           @include overflowText();
-          //  background: pink;
-        }
-        .stationNameText,.regionNameText,.stationCapacityText,.stationUnitCountText,.isConnectedText,.eventStatusText,.stationStatusText,.pointStatusText,.handlerText,.eventDataStatusText{
-          @include overflowText();
-          height: 40px;
-          line-height: 40px;
-          // background: aqua;
-        }
-        .isConnectedText,.stationStatusText,.pointStatusText,.eventStatusText,.eventDataStatusText,.handlerText{
-          text-align: center;
-          // display: block;
-        }
-        .stationCapacityText,.stationUnitCountText {
-          text-align: right;
-        }
-        // 电站
-        .stationName {
-          width: calc((100vw - 240px) * 0.12);
-          // width:153px; 
-        }
-        th.stationName {
-          text-align: left;
-          padding-left: 40px !important;
-        }
-        // .stationNameWrap{
-        //   max-width: calc((100vw - 280px) * 0.13 - 20px);
-          
-        // }
-        .stationNameText {
-          width: calc((100vw - 240px) * 0.12 - 55px);
-          color: #199475;
-          cursor: pointer;
-        }
-        // 装机容量
-        .stationCapacity {
-          width: calc((100vw - 240px) * 0.09);
-        }
-        .stationCapacityText {
-          max-width: calc((100vw - 240px) * 0.09 - 20px);
-        }
-
-        .regionName,.stationUnitCount,.isConnected,.stationStatus,.pointStatus,.eventStatus{
-          width: calc((100vw - 240px) * 0.0785);
-          // width:93px;
-          // background: pink;
-        }
-
-        .regionNameText,.stationUnitCountText,.isConnectedText, .stationStatusText, .pointStatusText, .eventStatusText {
-          max-width: calc((100vw - 240px) * 0.0785- 20px);
-        }
-        .eventDataStatus {
-           width: calc((100vw - 240px) * 0.09);
-        }
-        .eventDataStatusText {
-          max-width: calc((100vw - 240px) * 0.09 - 20px);
-        }
-        .handler{
-          width: calc((100vw - 240px) * 0.07);
+          .stationNameText {
+            width: calc(100% - 35px);
+            color: #199475;
+            cursor: pointer;
+            &:hover{
+              color: #ff9900;
+            }
+          }
         }
         .handlerText {
           color: #fff;
+          padding: 0 10px;
           display: flex;
           align-items: center;
           justify-content: space-around;
-          max-width: calc((100vw - 240px) * 0.07 - 30px);
           span {
             display: flex;
             box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
@@ -266,17 +280,14 @@
           }
           .deleteStation {
             cursor: pointer;
-            color: #199475;
+            color: #ff9900;
             font-size: 20px;
           }
           .deleteDisable {
-            color: #999;
+            color: $darkColor;
             cursor: not-allowed;
             font-size: 20px;
             padding: 0 2px;
-            &:hover {
-              color: #999;
-            }
           }
         }
 
@@ -288,23 +299,14 @@
           .iconfont {
             color: #199475;
             cursor: pointer;
-            &:hover {
-              color:#f9b600;
-            }
           }
           .icon-look {
             color: #199475;
             font-size: 24px;
-            &:hover {
-              color:#f9b600;
-            }
           }
           .icon-goset1 {
             color: #4d90fd;
             font-size: 24px;
-            &:hover {
-              color:#f9b600;
-            }
           }
           .ant-table .ant-table-tbody > tr > td:first-child:not(.ant-table-selection-column) {
             padding-left: 10px;
@@ -500,36 +502,9 @@
   .deviceTypeCont {
     padding: 7px 13px;
     line-height: 30px;
-    :global {
-      .ant-radio-group {
-        width: 100%;
-      }
-    }
-    .radioBox {
-      display: flex;
-      flex-wrap: wrap;
-    }
-    .modeVersion {
-      display: flex;
-      height: 30px;
-      width: 122px;
-      margin-right: 20px;
-      .iconBox{
-        margin-top: -4px;
-        :global {
-          .iconfont {
-            color: #4d90fd;
-            &:hover {
-              color: #f9b600;
-            }
-          }
-        }
-      }
-      .version {
-        @include overflowText();
-        max-width: 120px;
-        margin-right: 0;
-      }
+    .version {
+      @include overflowText();
+      width: 124px;
     }
   }
   .footer {
