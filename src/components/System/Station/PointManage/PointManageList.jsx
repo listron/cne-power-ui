@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styles from './pointManage.scss';
-import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import WarningTip from '../../../../components/Common/WarningTip';
 import { handleRight } from '@utils/utilFunc';
@@ -12,11 +11,14 @@ class PointManageList extends Component {
     loading: PropTypes.bool,
     queryParams: PropTypes.object,
     pointList: PropTypes.array,
+    orderField: PropTypes.string,
+    orderType: PropTypes.number,
     getPointList: PropTypes.func,
     changePointManageStore: PropTypes.func,
     deletePoints: PropTypes.func,
     detailPoints: PropTypes.func,
     selectedRowKeys: PropTypes.array,
+    getStandardDesc: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -72,13 +74,18 @@ class PointManageList extends Component {
     });
   }
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
-    const { getPointList, queryParams } = this.props;
-    const { field, order } = sorter;
+    const { getPointList, queryParams, orderField, orderType } = this.props;
+    const { field } = sorter;
+    let newField = orderField, newOrder = 1;
+    if (!field || field === orderField) { // 当前列交换排序顺序
+      newOrder = orderType === 0 ? 1 : 0;
+    } else { // 其他列
+      newField = field;
+    }
     getPointList({
       ...queryParams,
-      orderField: field ? field : '',
-      //sortField: field ? field === 'warningLevel' ? '1' : '2' : '',
-      orderType: order ? (sorter.order === 'ascend' ? 0 : 1) : null,
+      orderField: newField,
+      orderType: newOrder,
     });
   }
   onSelectChange = (keys, record) => {
@@ -94,110 +101,74 @@ class PointManageList extends Component {
         title: '设备型号',
         dataIndex: 'deviceModeName',
         key: 'deviceModeName',
-        ellipsis: true,
-        // width:150,
-        width:'14%',
-        render: (text, record) => (<div className={styles.deviceModeName} title={text} >{text}</div>),
+        textAlign: 'left',
+        width: '14%',
+        render: (text, record) => (<div className={styles.deviceModeName} title={text || '--'} >{text || '--'}</div>),
       },
       {
         title: '测点编号',
         dataIndex: 'devicePointStandardCode',
         key: 'devicePointStandardCode',
-        render: (text, record) => (<div className={styles.pointCodeStyle} title={text} onClick={() => this.showPointDetail(record)} >{text}</div>),
-        // width:100,
-        width:'9%',
+        textAlign: 'left',
+        width: '9%',
+        render: (text, record) => (<div className={styles.pointCodeStyle} title={text || '--'} onClick={() => this.showPointDetail(record)} >{text || '--'}</div>),
       }, {
         title: '测点描述',
         dataIndex: 'devicePointName',
         key: 'devicePointName',
-        render: (text, record) => (<div className={styles.descStyle} title={text} >{text}</div>),
+        textAlign: 'left',
+        render: (text, record) => (<div className={styles.descStyle} title={text || '--'} >{text || '--'}</div>),
         sorter: true,
-        // width:200,
-        width:'19%',
+        width: '19%',
       }, {
         title: '第三方测点名称',
         dataIndex: 'devicePointCode',
         key: 'devicePointCode',
         sorter: true,
-        render: (text, record) => (<div className={styles.devicePointCode} title={text} >{text}</div>),
-        // width:150,
-        width:'14%',
+        textAlign: 'left',
+        render: (text, record) => (<div className={styles.devicePointCode} title={text || '--'} >{text || '--'}</div>),
+        width: '14%',
       }, {
         title: '英文名称',
         dataIndex: 'devicePointIecname',
         key: 'devicePointIecname',
         sorter: true,
-        render: (text, record) => (<div className={styles.devicePointIecname} title={text}>{text}</div>),
-        // width:150,
-        width:'14%',
+        textAlign: 'left',
+        render: (text, record) => (<div className={styles.devicePointIecname} title={text || '--'}>{text || '--'}</div>),
+        width: '14%',
       },
-      // {
-      //   title: '分组名称',
-      //   dataIndex: 'groupName',
-      //   key: 'groupName',
-      // }, 
       {
         title: '数据类型',
         dataIndex: 'devicePointDatatype',
         key: 'devicePointDatatype',
         sorter: true,
-        className: styles.deviceDataType,
-        // width:100,
-        width:'9%',
+        textAlign: 'center',
+        width: '9%',
       }, {
         title: '测点类型',
         dataIndex: 'devicePointType',
         key: 'devicePointType',
         sorter: true,
-        className: styles.devicePointType,
-        // width:100,
-        width:'9%',
+        textAlign: 'center',
+        width: '9%',
       },
-      // {
-      //   title: '单位',
-      //   dataIndex: 'devicePointUnit',
-      //   key: 'devicePointUnit',
-      // }, {
-      //   title: '系数',
-      //   dataIndex: 'devicePointIndex',
-      //   key: 'devicePointIndex',
-      // }, {
-      //   title: '点小数位',
-      //   dataIndex: 'devicePointDecimalplace',
-      //   key: 'devicePointDecimalplace',
-      // },
-      // {
-      //   title: '操作',
-      //   key: 'caozuo',
-      //   render: (text, record, index) => {
-      //     return (
-      //       <div>
-      //         <span className={`${styles.editPoint}  iconfont icon-edit`} onClick={() => this.showEditPage(record)}></span>
-      //         <span className={`${styles.editPoint}  iconfont icon-del`} onClick={() => this.deletePoint(record)}></span>
-      //       </div>
-      //     );
-      //   },
-
-      // },
     ];
-
     const pointOperation = handleRight('station_point_operate');
     const operationColumn = {
       title: '操作',
       key: 'caozuo',
-      className:styles.operation,
-      // width:120,
-      width:'11%',
+      width: '8%',
+      textAlign: 'center',
       render: (text, record, index) => {
         return (
-          <div>
+          <div className={styles.operation}>
             <span className={`${styles.editPoint}  iconfont icon-edit`} onClick={() => this.showEditPage(record)}></span>
             <span className={`${styles.editPoint}  iconfont icon-del`} onClick={() => this.deletePoint(record)}></span>
           </div>
         );
       },
     };
-    const { loading, pointList, selectedRowKeys } = this.props;
+    const { loading, pointList, selectedRowKeys, orderField, orderType } = this.props;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -210,6 +181,8 @@ class PointManageList extends Component {
           loading={loading}
           rowSelection={rowSelection}
           onChange={this.tableChange}
+          sortField={orderField}
+          sortMethod={orderType === 0 ? 'ascend' : 'descend'}
           columns={pointOperation ? pointListColumn.concat(operationColumn) : pointListColumn}
           dataSource={pointList.map((e, i) => ({ key: i, ...e }))}
           className={styles.tableStyles}

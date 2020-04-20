@@ -13,8 +13,8 @@ var initState = Immutable.fromJS({
   devicePointName: '', //测点描述
   pageNum: 1,
   pageSize: 10,
-  orderField: '', // 排序字段
-  orderType: null, // 排序方式0正序   1倒序
+  orderField: 'devicePointType', // 排序字段
+  orderType: 0, // 排序方式0正序   1倒序
   totalNum: 0, // 设备总数
   stationDeviceTypes: [], // 电站下设备类型。
   deviceModels: [], // 电站设备类型下设备型号
