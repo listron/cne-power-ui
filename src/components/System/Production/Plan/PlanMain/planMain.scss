@@ -105,46 +105,28 @@
         margin-right: 0 !important;
       }
 
+      table{
+        table-layout: fixed;
+      }
+
+      .regionNameText,.stationNameText,.stationCapacityText{
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: calc(100% - 2px);
+      }
+
       :global {
-        .month .ant-input,
-        .yearPR .ant-input {
-          width: 48px;
+         .ant-input {
+          width: calc(100% - 4px);
           background: #fcffe5;
-          padding: 0 3px;
+          padding: 0 2px;
           border: 1px solid #f9b600;
         }
-
-        .ant-table .ant-table-thead > tr > th,
-        .ant-table .ant-table-tbody > tr > td {
-          min-width: 48px;
-          padding: 0 5px;
+        .ant-table .ant-table-tbody > tr > td:first-child.leftContent{
+          padding-left: 10px;
         }
-
-        .ant-table .ant-table-thead > tr > th {
-          &:first-child:not(.ant-table-selection-column) {
-            padding: 0px 0px;
-            text-align: center;
-          }
-          &:last-child {
-            padding-right: 5px;
-          }
-        }
-
-        .ant-table .ant-table-thead > tr > th.month,
-        .ant-table .ant-table-tbody > tr > td.month {
-          min-width: 48px;
-          padding: 0 3px;
-        }
-
-        .ant-table .ant-table-thead > tr > th.yearPR,
-        .ant-table .ant-table-tbody > tr > td.yearPR {
-          min-width: 72px;
-          width: 72px;
-        }
-        .ant-table .ant-table-tbody > tr > td.yearPR {
-          padding: 0 3px;
-        }
-
         .ant-table .ant-table-thead > tr > th[class*="stationCapacity"],
         .ant-table .ant-table-thead > tr > th[class*="planPower"]
         {
@@ -154,7 +136,6 @@
             }
           }
         }
-
         .ant-input.ant-input-disabled {
           background: #f8f8f8;
           border: 1px solid #d4d4d4;
@@ -164,45 +145,6 @@
           border: 1px solid #d4d4d4;
           -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
-        .ant-table-placeholder {
-          border: none;
-        }
-      }
-      .regionName {
-        min-width: 50px;
-        white-space: nowrap;
-        width: 6%;
-      }
-      .stationName {
-        width: 90px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .operation {
-        width: 2.7%;
-        min-width: 38px;
-        text-align: center;
-      }
-      .planYear {
-        width: 5%;
-        min-width: 40px;
-        text-align: center;
-      }
-      .planPower {
-        width: 10%;
-        min-width: 105px;
-        text-align: end;
-      }
-      .stationCapacity {
-        width: 7.5%;
-        min-width: 70px;
-        text-align: end;
-      }
-
-      .tableCommonTitle {
-        height: 56px;
-        padding: 8px 0;
       }
     }
   }
@@ -234,7 +176,6 @@
 
     :global {
       .ant-upload-list-item-info {
-        // max-width: 260px;
         width: 260px;
       }
       .ant-upload-list-item {
@@ -244,10 +185,5 @@
   }
   .import {
     text-align: center;
-  }
-  :global {
-    .ant-modal-body {
-      // text-align: center;
-    }
   }
 }

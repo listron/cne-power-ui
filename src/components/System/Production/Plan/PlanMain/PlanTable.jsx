@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CommonPagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
-import { Table, Button, Icon, Input, Form, message, Upload, Modal, Select } from 'antd';
+import { Input, Form, message, Upload, Modal, Select } from 'antd';
 import { getDefectSortField, getDefaultMonth } from '../plan';
 import path from '../../../../../constants/path';
 import styles from './planMain.scss';
@@ -13,8 +13,7 @@ import { numWithComma, handleRight } from '../../../../../utils/utilFunc';
 import CneTable from '@components/Common/Power/CneTable';
 import CneButton from '@components/Common/Power/CneButton';
 
-const { APIBasePath, originUri } = path.basePaths;
-const { system } = path.APISubPaths;
+const { originUri } = path.basePaths;
 const EditableContext = React.createContext();
 const { Option } = Select;
 
@@ -78,8 +77,10 @@ class PlanTable extends Component {
     this.props.getPlanList({ year: planYear, stationCodes, sortField, sortMethod, pageNum, pageSize, keyword, ...value });
   }
 
-
   tableChange = (pagination, filter, sorter) => {//计划排序 排序还有误
+    // const sortFieldArr = ['region', 'stationName', 'stationCapacity', 'planYear', 'planPower'];
+    // const { sortField, sortMethod } = this.props;
+
     const sortField = getDefectSortField(sorter.field);
     const ascend = sorter.order === 'ascend' ? '1' : '2' || '';
     this.getPlanList({ sortField, sortMethod: ascend });
@@ -92,7 +93,7 @@ class PlanTable extends Component {
     }
   };
 
-  edit(key) { // 如果存在编辑，则不允许其他操作
+  edit = (key) => { // 如果存在编辑，则不允许其他操作
     const { editingKey } = this.state;
     this.setState({ currentClickKey: key });
     if (typeof editingKey !== 'string') {
@@ -109,7 +110,7 @@ class PlanTable extends Component {
   }
 
   // 点击保存之后处理的数据
-  save(form, key) {
+  save = (form, key) => {
     form.validateFields((error, row) => {
       if (!error) {
         const { data } = this.state;
@@ -146,21 +147,20 @@ class PlanTable extends Component {
 
   _createTableColumn = () => {//生成表头
     const planOperation = handleRight('config_production_operate');
-    const _this = this;
     const tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const MonthColumn = tabelKey.map((item, index) => {
       return {
         title: index + 1 + '月',
         dataIndex: item,
-        width: '40px',
+        width: '4.5%',
         key: item,
         editable: true,
+        textAlign: 'center',
         className: 'month',
         render: (text, record, index) => {
-          const textValue = text ? text : '--';
-          const editable = _this.isEditing(record);
+          const editable = this.isEditing(record);
           return (
-            <div> <Input defaultValue={textValue} disabled={editable ? false : true} placeholder="--" />  </div>
+            <Input defaultValue={text ? text : '--'} disabled={!editable} placeholder="--" />
           );
         },
       };
@@ -170,9 +170,10 @@ class PlanTable extends Component {
       title: '操作',
       dataIndex: 'operation',
       key: 'operation',
-      className: styles.operation,
+      width: '5%',
+      textAlign: 'center',
       render: (text, record) => {
-        const editable = _this.isEditing(record);
+        const editable = this.isEditing(record);
         const canEdit = moment().year() - record.planYear > 0;
         return (
           <div>
@@ -181,7 +182,9 @@ class PlanTable extends Component {
                 <EditableContext.Consumer>
                   {form => (
                     <a href="javascript:;" className={styles.save}
-                      onClick={() => _this.save(form, record.key)}
+                      onClick={() => {
+                        this.save(form, record.key);
+                      }}
                       style={{ marginRight: 8 }}
                     >
                       保存
@@ -189,7 +192,7 @@ class PlanTable extends Component {
                   )}
                 </EditableContext.Consumer>
               </span>
-            ) : (<a onClick={() => _this.edit(record.key)} className={canEdit ? styles.noEdit : styles.edit}>编辑</a>)}
+            ) : (<a onClick={() => this.edit(record.key)} className={canEdit ? styles.noEdit : styles.edit}>编辑</a>)}
           </div>
         );
       },
@@ -199,43 +202,42 @@ class PlanTable extends Component {
       {
         title: '区域',
         dataIndex: 'regionName',
-        key: 'regionName',
-        width: '50px',
+        width: '4.5%',
         className: styles.regionName,
         sorter: true,
-        render: text => {
-          return text ? text : '--';
-        },
+        textAlign: 'left',
+        render: text => <div className={styles.regionNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
-        key: 'stationName',
-        className: styles.stationNameBox,
         defaultSortOrder: 'descend',
         sorter: true,
+        width: '8.5%',
+        textAlign: 'left',
         render: (text, record) => {
-          const textValue = text ? text : '--';
-          return <div title={record.stationName} className={styles.stationName}>{textValue}</div>;
+          return <div title={text || '--'} className={styles.stationNameText} title={text || '--'}>{text || '--'}</div>;
         },
       }, {
         title: () => <TableColumnTitle className={styles.tableCommonTitle} title="装机容量" unit="MW" />,
         dataIndex: 'stationCapacity',
-        key: 'stationCapacity',
         sorter: true,
         className: styles.stationCapacity,
-        render(text) { return numWithComma(text); },
+        width: '7.5%',
+        textAlign: 'right',
+        render: (text) => <div title={numWithComma(text)} className={styles.stationCapacityText}>{numWithComma(text)}</div>,
       }, {
-        title: '年份',
+        title: '年份', // 暂时不排序了
         dataIndex: 'planYear',
         key: 'planYear',
-        // sorter: false, // 暂时不排序了
-        className: styles.planYear,
+        width: '5%',
+        textAlign: 'right',
       }, {
         title: () => <TableColumnTitle className={styles.tableCommonTitle} title="年计划发电量" unit="万kWh" />,
         dataIndex: 'planPower',
         key: 'planPower',
-        className: styles.planPower,
         sorter: true,
+        width: '9%',
+        textAlign: 'right',
         onCell: record => {
           return ({
             record,
@@ -244,8 +246,7 @@ class PlanTable extends Component {
           });
         },
         render: (text, record) => {
-          const textValue = numWithComma(text);
-          return <div className={this.isEditing(record) ? styles.save : ''}>{textValue}</div>;
+          return <div className={this.isEditing(record) ? styles.save : ''}>{numWithComma(text)}</div>;
         },
       },
       ...MonthColumn,
@@ -255,39 +256,13 @@ class PlanTable extends Component {
         key: 'yearPR',
         editable: true,
         className: 'yearPR',
+        width: '6%',
+        textAlign: 'center',
         render: text => {
           const textValue = text ? text : '--';
-          return (<span><Input defaultValue={textValue} disabled={true} /></span>);
+          return <Input defaultValue={textValue} disabled={true} />;
         },
       },
-      // {
-      //   title: '操作',
-      //   dataIndex: 'operation',
-      //   key: 'operation',
-      //   className: styles.operation,
-      //   render: (text, record) => {
-      //     const editable = this.isEditing(record);
-      //     const canEdit = moment().year() - record.planYear > 0;
-      //     return (
-      //       <div>
-      //         {editable ? (
-      //           <span>
-      //             <EditableContext.Consumer>
-      //               {form => (
-      //                 <a href="javascript:;" className={styles.save}
-      //                   onClick={() => this.save(form, record.key)}
-      //                   style={{ marginRight: 8 }}
-      //                 >
-      //                   保存
-      //                 </a>
-      //               )}
-      //             </EditableContext.Consumer>
-      //           </span>
-      //         ) : (<a onClick={() => this.edit(record.key)} className={canEdit ? styles.noEdit : styles.edit}>编辑</a>)}
-      //       </div>
-      //     );
-      //   },
-      // }
     ];
 
 
@@ -425,15 +400,15 @@ class PlanTable extends Component {
           <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.planListTop}>
           {planOperation ?
-          <div className={styles.buttons}>
-            <CneButton className={styles.addplan} onClick={this.onPlanAdd}>
-              <div className={styles.icon}>
-                <span className={'iconfont icon-newbuilt'} />
-              </div>添加
+            <div className={styles.buttons}>
+              <CneButton className={styles.addplan} onClick={this.onPlanAdd}>
+                <div className={styles.icon}>
+                  <span className={'iconfont icon-newbuilt'} />
+                </div>添加
             </CneButton>
-            <CneButton type={'default'} onClick={this.batchImport} >批量导入</CneButton>
-            <CneButton href={downloadHref} download={downloadHref} >导入模板下载</CneButton>
-          </div> : <div></div>}
+              <CneButton type={'default'} onClick={this.batchImport} >批量导入</CneButton>
+              <CneButton href={downloadHref} download={downloadHref} >导入模板下载</CneButton>
+            </div> : <div></div>}
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <div className={styles.tableBox}>

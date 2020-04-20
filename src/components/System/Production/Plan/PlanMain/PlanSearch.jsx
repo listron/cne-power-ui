@@ -9,73 +9,48 @@ const Option = Select.Option;
 
 class planSearch extends Component {
   static propTypes = {
-    stations: PropTypes.object,
-    pageNum: PropTypes.number,
-    pageSize: PropTypes.number,
-    getPlanList: PropTypes.func,
-    sortField: PropTypes.string,
     sortMethod: PropTypes.string,
     planYearList: PropTypes.array,
     changePlanStore: PropTypes.func,
     planYear: PropTypes.any,
     keyword: PropTypes.string,
+    getPlanList: PropTypes.func,
+    sortField: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
-    this.state = {
-      stationCodes: [],
-      selectStation: [],
-    };
   }
 
-  stationSelected = (rest) => {
-    const stationCodes = rest.map((item, index) => {
-      return item.stationCode;
-    });
-    this.setState({
-      selectStation: rest,
-      stationCodes: stationCodes,
-    });
+  selectYear = (e) => { // 选择年份选择
+    this.props.changePlanStore({ planYear: e });
+    this.planList({ year: e });
   };
 
-  /*
-  selectValue = () => {
-    const { stationCodes } = this.state;
-    const params = {
-      year: this.props.planYear,
-      stationCodes: stationCodes.length > 0 ? stationCodes : null,
-      sortField: this.props.sortField,
-      sortMethod: this.props.sortMethod,
+  doSearch = (str) => { // 请求搜索条件
+    this.planList({ keyword: str });
+  }
+
+  clearSearch = () => { // 清除搜素条件
+    this.planList({ keyword: '' });
+  }
+
+  planList = (params) => { // 请求列表
+    const { getPlanList, sortField, sortMethod, planYear, keyword } = this.props;
+    getPlanList({
+      sortField,
+      sortMethod,
+      year: planYear,
+      // stationCodes: stationCodes.length > 0 ? stationCodes : null,
       pageNum: 1,
       pageSize: 10,
-    };
-    this.props.getPlanList(params);
-  };
-  */
-
-  selectYear = (e) => {
-    this.props.changePlanStore({ planYear: e });
-  };
-
-  doSearch = (str) => {
-    const { stationCodes } = this.state;
-    const {getPlanList, sortField, sortMethod, planYear} = this.props;
-    let params = {
-        sortField, 
-        sortMethod,
-        year: planYear,
-        stationCodes: stationCodes.length > 0 ? stationCodes : null,
-        pageNum: 1,
-        pageSize: 10,
-        keyword: str,
-    }
-    getPlanList(params);
+      keyword: keyword,
+      ...params,
+    });
   }
 
   render() {
-    const { stations, planYearList, planYear } = this.props;
-    const { selectStation } = this.state;
+    const { planYearList, planYear } = this.props;
     return (
       <div className={styles.planSearch}>
         <div>
@@ -86,23 +61,14 @@ class planSearch extends Component {
             })}
           </Select>
         </div>
-        {/* <div className={styles.topLeft}>
-          <label className={styles.station}>电站选择</label>
-          <StationSelect
-            data={stations.toJS()}
-            multiple={true}
-            value={selectStation}
-            onChange={this.stationSelected}
-          />
-        </div>
-        <Button className={styles.searchButton} onClick={this.selectValue}>查询</Button> */}
         <div className={styles.topLeft} >
-          <CneInputSearch 
+          <CneInputSearch
             placeholder="电站类型／区域／电站名称"
             onSearch={this.doSearch}
+            clearSearch={this.clearSearch}
           />
         </div>
-        
+
       </div>
     );
   }
