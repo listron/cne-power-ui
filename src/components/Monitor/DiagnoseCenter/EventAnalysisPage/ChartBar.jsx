@@ -36,7 +36,7 @@ class ChartBar extends PureComponent {
       30: '75',
     };
     const barChart = echarts.init(this.barRef);
-    const xNames = [], baseData = [], theoryData = [], lineData = [];
+    const xNames = [], baseData = [], theoryData = [], lineData = [], pointData = data;
     const dataEvent = ['NB1039', 'NB1041'].includes(eventCode); // 转换效率偏低、阵列损耗事件
     const conversionEfficiency = ['NB1039'].includes(eventCode); // 转换效率偏低事件
     data.forEach((e) => {
@@ -170,23 +170,19 @@ class ChartBar extends PureComponent {
           type: 'bar',
           barWidth: 34,
           barGap: '-100%',
-          itemStyle: {
-            color: 'transparent',
-            borderWidth: 1,
-            borderColor: '#199475',
-            barBorderRadius: [2, 2, 0, 0],
-          },
-          emphasis: {
-            itemStyle: {
-              borderColor: '#ffc581',
-              borderWidth: 3,
-              shadowColor: '#f8e71c',
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowOffsetY: -4,
-            },
-          },
-          data: theoryData,
+          data: pointData.map(e => ({
+              value: e.theoryGen,
+              itemStyle: {
+                color: 'transparent',
+                borderWidth: e.isWarned ? 3 : 1,
+                borderColor: e.isWarned ? '#ffc581' : '#199475',
+                barBorderRadius: [2, 2, 0, 0],
+                shadowColor: e.isWarned ? '#f8e71c' :'#ffc581',
+                shadowBlur: e.isWarned ? 10 : 0,
+                shadowOffsetX: 0,
+                shadowOffsetY: e.isWarned ? -4 : 0,
+              },
+            })),
         }, {
           name: conversionEfficiency ? '转换效率(%)' : '方阵损耗(%)',
           type: 'line',
