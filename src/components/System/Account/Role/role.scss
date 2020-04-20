@@ -35,16 +35,15 @@
       flex: 1;
       box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
       margin-bottom: 4px;
+      
       .tableStyle {
         height: 100%;
         min-width: 1000px;
-        :global {
-          .ant-table .ant-table-thead > tr > th,
-          .ant-table .ant-table-tbody > tr > td {
-            &:last-child {
-              padding-right: 10px;
-            }
-          }
+      table{
+        width: 100%;
+        table-layout: fixed;
+      }
+      :global {
           .ant-table-footer {
             padding: 0 15px;
           }
@@ -53,7 +52,7 @@
             overflow-y: scroll;
             overflow-y: overlay;
             overflow-x: hidden;
-            height: calc(100vh - 237px) !important;
+            height: calc(100vh - 236px) !important;
           }
           .ant-table:not(.ant-table-empty) {
             .ant-table-body:after {
@@ -68,27 +67,17 @@
             border-bottom: none;
           }
         }
-  
-        .handlerBox, .operateNameBox {
-          text-align: center;
-        }
-  
-        .rightData{
-          width: 550px;
-        }
-      }
+    }
+  }
+  .editRole, .deleteRole{
+    cursor: pointer;
+    padding: 4px;
+    &:hover{
+      color: #ff9900;
     }
   }
   .editRole {
-    margin-right: 12px;
-  }
-  .deleteRole, .editRole  {
-    font-size: 18px;
-    cursor: pointer;
-    color:#199475;
-    &:hover {
-      color: #f9b600;
-    }
+    margin-right: 4px;
   }
   .roleListTop {
     // background: #fff;
@@ -162,17 +151,8 @@
   }
 
   .menu {
-    max-width: 500px;
-    // max-width: calc((100vw - 230px) * 0.5 - 30px);
-    // width: inherit;
-    height: 30px;
-    line-height: 30px;
-    // padding-top: 8px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    // display: inline-block;
-    word-break:keep-all;
+    @include overflowText();
+    width: calc(100% - 10px);
     cursor: pointer;
     &:hover {
       color:#60C060,

@@ -63,9 +63,9 @@ class RoleTable extends Component {
 
   getRightArr(rightData, frontText='') { // 递归生成权限数组['一级-二级-三级...',...]
     // const { defaultMenuData } = this.props;
-    let dataInfoArr = [];
+    const dataInfoArr = [];
     rightData && rightData.length > 0 && rightData.forEach(e=>{
-      const hasChildRight = e && e.childRightData && e.childRightData.length > 0
+      const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
       if(hasChildRight){
         const innerData = this.getRightArr(e.childRightData, e.rightName);
         dataInfoArr.push(...innerData);
@@ -80,25 +80,26 @@ class RoleTable extends Component {
   }
 
   createRoloeColumn = () => {
-    let column = [
+    const column = [
       {
         title: '名称',
         dataIndex: 'roleDesc',
         key: 'roleDesc',
-        // width:'220px',
+        textAlign: 'left',
         width: '24%',
       }, {
         title: '权限',
         dataIndex: 'operateName',
         key: 'operateName',
+        textAlign: 'center',
         className: styles.operateNameBox,
-        // width:'80px',
         width: '8%',
       }, {
         title: '功能定义',
         dataIndex: 'rightData',
         key: 'rightData',
-        // width:'550px',
+        width: '53%',
+        textAlign: 'left',
         className: styles.rightData,
         render: (rightData, record)=>{
           const rightArr = this.getRightArr(rightData, '');
@@ -112,18 +113,18 @@ class RoleTable extends Component {
     if (roleDeleteRight || roleUpdateRight) { // 至少有一个编辑或删除权限
       return column.concat({
         title: '操作',
-        // width: '100px',
-        width:'10%',
+        width: '10%',
         dataIndex: 'handler',
         className: styles.handlerBox,
+        textAlign: 'center',
         render: (text, record) => (<span>
             {roleUpdateRight && <i
               className={`${styles.editRole} iconfont icon-edit`}
-              onClick={() => this.ColumnEditRole(record)}
+              onClick={() => this.columnEditRole(record)}
             />}
             {roleDeleteRight && <i
               className={`${styles.deleteRole} iconfont icon-del`}
-              onClick={() => this.ColumnDeleteRole(record)}
+              onClick={() => this.columnEditRole(record)}
             />}
           </span>
         ),
@@ -134,7 +135,7 @@ class RoleTable extends Component {
 
   cancelRowSelect = () => {
     this.props.changeRoleStore({
-      selectedRole:[],
+      selectedRole: [],
     });
   }
 
@@ -146,7 +147,6 @@ class RoleTable extends Component {
       this.setState({
         showWarningTip: true,
         warningTipText,
-        showWarningCancel: false,
       });
     }else{
       value === 'edit'?changeRoleStore({ //编辑
@@ -211,13 +211,12 @@ class RoleTable extends Component {
     });
   };
 
-  ColumnEditRole = (record) => { // 列操作中直接编辑角色
+  columnEditRole = (record) => { // 列操作中直接编辑角色
     const forbiddenEdit = record.isPre === 0; // 预设角色不可删除
     if (forbiddenEdit) {
       this.setState({
         showWarningTip: true,
         warningTipText: '不得编辑预设角色',
-        showWarningCancel: false,
       });
     } else {
       this.props.changeRoleStore({ //编辑
@@ -233,7 +232,6 @@ class RoleTable extends Component {
       this.setState({
         showWarningTip: true,
         warningTipText: '不得删除预设角色',
-        showWarningCancel: false,
       });
     } else {
       this.setState({
@@ -274,15 +272,15 @@ class RoleTable extends Component {
     const roleConfigRight = rightHandler.split(',').includes('account_role_config');
     const initTableScroll = roleData.length > 0 && { y: 900 } || {};
     const totalNum = roleData.length;
-    const footer = (        
+    const footer = (
       <div className={styles.tableFooter}>
         <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
         {selectedRole.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
       </div>);
     return (
       <div className={styles.roleList} style={{display: showPage==='list'?'flex':'none'}}>
-      {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} />}
-      {showDeleteTip && <WarningTip onOK={this.deleteRole} value={warningTipText} onCancel={this.onCancelDelete} />}
+        {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        {showDeleteTip && <WarningTip onOK={this.deleteRole} value={warningTipText} onCancel={this.onCancelDelete} />}
         <div className={styles.roleContent}>
           <div className={styles.roleListTop} >
             <div className={styles.rolelistTopBox}>
