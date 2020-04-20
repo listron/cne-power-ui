@@ -77,13 +77,43 @@ class PlanTable extends Component {
     this.props.getPlanList({ year: planYear, stationCodes, sortField, sortMethod, pageNum, pageSize, keyword, ...value });
   }
 
-  tableChange = (pagination, filter, sorter) => {//计划排序 排序还有误
-    // const sortFieldArr = ['region', 'stationName', 'stationCapacity', 'planYear', 'planPower'];
-    // const { sortField, sortMethod } = this.props;
 
-    const sortField = getDefectSortField(sorter.field);
-    const ascend = sorter.order === 'ascend' ? '1' : '2' || '';
-    this.getPlanList({ sortField, sortMethod: ascend });
+
+  tableChange = (pagination, filters, sorter) => {
+    const { changeHistoryWarningStore, onChangeFilter, orderField, orderCommand } = this.props;
+    const { field } = sorter;
+    const sortInfo = {
+      warningLevel: '1',
+      stationName: '2',
+      deviceName: '8',
+      deviceTypeName: '3',
+      timeOn: '5',
+      timeOff: '6',
+    };
+    let newOrderField = orderField, newOrderCommand = '2';
+    if (!field || (sortInfo[field] === newOrderField)) { // 点击的是正在排序的列
+      newOrderCommand = orderCommand === '1' ? '2' : '1'; // 交换排序方式
+    } else { // 切换列
+      newOrderField = sortInfo[field];
+    }
+    changeHistoryWarningStore({ orderField: newOrderField, orderCommand: newOrderCommand });
+    onChangeFilter({
+      orderField: newOrderField, orderCommand: newOrderCommand,
+    });
+  }
+
+
+  tableChange = (pagination, filter, sorter) => {//计划排序 排序还有误
+    const sortFieldArr = ['region', 'stationName', 'stationCapacity', 'planYear', 'planPower'];
+    const { sortField, sortMethod } = this.props;
+    const { field } = sorter;
+    let newSortFild = sortField, newSortMethod = '2';
+    if (!field || sortFieldArr.findIndex(e => e === field) > -1) {
+      newSortMethod = sortMethod = '1' ? '2' : '1'; // 交换排序方式
+    } else {
+      newSortFild = sortFieldArr.findIndex(e => e === field);
+    }
+    this.getPlanList({ sortField: newSortMethod, sortMethod: newSortFild });
   };
 
   isEditing = (record) => { // 是否可以编辑(一个电站)
@@ -392,8 +422,8 @@ class PlanTable extends Component {
       },
     };
     const downloadHref = `${originUri}/template/proplan.xlsx`;
-
     const importYear = [moment().year(), moment().add(1, 'year').year()];
+    const sortFieldArr = ['region', 'stationName', 'stationCapacity', 'planYear', 'planPower'];
     return (
       <div className={styles.planList}>
         {showWarningTip &&
