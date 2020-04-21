@@ -1,0 +1,187 @@
+@import "../../../../theme/theme.scss";
+.searchStyle{
+  display: flex;
+  padding: 16px 0 14px 20px;
+  border-bottom: 1px dashed $borderColor;
+
+  .stationBox {
+    display: flex;
+    @include lineheight(32px);
+
+    > span {
+      margin-right: 4px;
+    }
+
+    .selectModalIcon {
+      top: 0;
+    }
+
+    :global {
+      .ant-select-selection {
+        box-shadow: none;
+        border: 1px solid $borderColor;
+      }
+
+      .ant-select-selection__placeholder {
+        color: #999999 !important;
+      }
+    }
+
+  }
+
+  .workType{
+    margin-left: 20px;
+    display: flex;
+    @include lineheight(32px);
+
+    > span {
+      margin-right: 4px;
+    }
+
+    :global{
+      .ant-select-selection{
+        border: 1px solid $borderColor;
+
+        .ant-select-arrow{
+          color: $lightColor;
+        }
+      }
+    }
+  }
+
+  .creatTime{
+    margin-left: 20px;
+    display: flex;
+    @include lineheight(32px);
+
+    > span {
+      margin-right: 4px;
+    }
+
+    :global{
+      .ant-select-selection{
+        border: 1px solid $borderColor;
+
+        .ant-select-arrow{
+          color: $lightColor;
+        }
+      }
+    }
+  }
+
+  .otherTime{
+    margin-left: 10px;
+
+    :global{
+      .ant-input{
+        border: 1px solid $borderColor;
+
+        input::-webkit-input-placeholder{
+          color: $lightColor;
+        }
+
+        .ant-calendar-range-picker-separator{
+          color: $lightColor;
+        }
+
+        .ant-calendar-picker-icon{
+          color: $lightColor;
+        }
+      }
+    }
+  }
+}
+
+//常复用代码块：最大宽度+padding：30 = 500px
+@mixin maxWidth() {
+  width: max-content;
+  max-width: 470px;
+}
+
+.searchTable{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .searchPage{
+    display: flex;
+    justify-content: flex-end;
+    padding: 9px 0 11px;
+  }
+
+  .tableStyles{
+    //min-width: 2000px;
+
+    :global{
+      .ant-table .ant-table-tbody > tr > td{
+        padding: 0 20px 0 10px;
+      }
+    }
+  }
+
+  .projectCompany,
+  .childName,
+  .mainName,
+  .workMajor{
+    min-width: 70px;
+    @include maxWidth();
+  }
+
+  .stationName{
+    min-width: 130px;
+    @include maxWidth();
+  }
+
+  .workCode{
+    min-width: 150px;
+    @include maxWidth();
+  }
+
+  .workDesc{
+    width: 470px;
+    @include overflowText();
+  }
+
+  .deviceCode{
+    min-width: 120px;
+    @include maxWidth();
+  }
+
+  .deviceName{
+    min-width: 190px;
+    @include maxWidth();
+  }
+
+  .workProcessType{
+    min-width: 56px;
+    @include maxWidth();
+  }
+
+  .creatName{
+    min-width: 45px;
+    @include maxWidth();
+  }
+
+  .statusName{
+    min-width: 60px;
+    @include maxWidth();
+  }
+
+  .dutyName{
+    min-width: 95px;
+    @include maxWidth();
+  }
+
+  .isGetName{
+    width: 70px;
+  }
+
+  .creatTimeName,
+  .closeTime{
+    width: 150px;
+  }
+
+  .noPaddingBox{
+    padding: 0 !important;
+  }
+}

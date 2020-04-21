@@ -66,7 +66,7 @@ const menuData = [
             rightKey: 'monitor_alarm_statistics',
           },
         ],
-      }, 
+      },
       {
         name: '诊断中心',
         iconStyle: 'icon-zhenduan',
@@ -134,7 +134,7 @@ const menuData = [
         defaultPath: true,
         rightKey: 'dataAnalysis_dataExport',
       },
-      
+
     ],
   },
 
@@ -159,6 +159,13 @@ const menuData = [
         name: '员工定位',
         path: 'gps',
         iconStyle: 'icon-mapman',
+        rightKey: 'operation_locate',
+        defaultPath: true,
+      },
+      {
+        name: 'EAM工单',
+        path: 'eam',
+        iconStyle: 'icon-eam',
         rightKey: 'operation_locate',
         defaultPath: true,
       },
@@ -195,7 +202,7 @@ const menuData = [
           },
         ],
       },
-      
+
 {
         name: '两票管理',
         path: 'twoTickets',
@@ -791,7 +798,7 @@ const menuData = [
             path: 'performanceScore',
 	    defaultPath: true,
             rightKey: 'system_config_score',
-          }, 
+          },
         ],
       },
     ],
@@ -823,8 +830,8 @@ export const menu = formatter(menuData);
 //   monitor_alarm_realTime: ['alarm_remove','alarm_worklist','monitor_alarm_remove','monitor_alarm_history'],
 //   operation_worklist_work: ['workExamine_defect_review', 'workExamine_defect_check', 'workExamine_inspection_check'],
 // }
-       
-	
-        
+
+
+
 
 

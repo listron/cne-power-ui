@@ -20,6 +20,7 @@ import stockRecords from './Book/StockRecords/stockRecordsReducer';
 import { warehouseManage } from './Book/WarehouseManage/warehouseManageReducer';
 import intelligentExpert from './IntelligentExpert/intelligentExpertReducer';
 import casePartReducer from './CaseSet/casePartReducer';
+import eamList from './EamWork/EamList/eamListReducer';
 
 import { examiner } from './TwoTickets/Examiner/examinerReducer'; // 两票 - 审核人
 import workFlow from './TwoTickets/WorkFlow/workFlowReducer'; // 两票 - 工作票
@@ -31,7 +32,7 @@ import { inspectList } from './WorkProcess/InspectList/inspectListReducer'; // �
 import { inspectDetail } from './WorkProcess/InspectDetail/inspectDetailReducer'; //巡检详情
 
 import { eliminateDefectList } from './NewWorkProcess/EliminateDefectList/defectListReducer'; // 新的消缺列表
-import { eliminateDefectDetail } from './NewWorkProcess/EliminateDefectDetail//defectDetailReducer'; //新消缺详情
+import { eliminateDefectDetail } from './NewWorkProcess/EliminateDefectDetail/defectDetailReducer'; //新消缺详情
 import { newInspectList } from './NewWorkProcess/NewInspectList/inspectListReducer'; // 新巡检列表
 import { newInspectDetail } from './NewWorkProcess/NewInspectDetail/inspectDetailReducer'; //新巡检详情
 import { newMeterList } from './NewWorkProcess/NewMeterList/meterListReducer'; // 新新抄表列表
@@ -43,6 +44,7 @@ const operationReducer = combineReducers({
   defect,
   inspect,
   ticket,
+  eamList,
   personnelGps,
   dayReport,
   meterReadSet,

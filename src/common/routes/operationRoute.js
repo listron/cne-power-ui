@@ -99,6 +99,15 @@ const runningReport = [
 
 ];
 
+ // EAM工单
+const eamRoute = [
+  {
+    // EAM工单
+    path: '/operation/eam',
+    component: lazy(() => import('../../containers/Operation/EamWork/EamList/EamList')),
+  },
+];
+
 export const operationRoute = [
   {
     path: '/operation/workStage',
@@ -113,6 +122,7 @@ export const operationRoute = [
     component: lazy(() => import('../../containers/Operation/PersonnelGps/PersonnelGps')),
   },
   ...ticket,
+  ...eamRoute,
   ...twoTickets,
   ...book,
   ...runningReport,

@@ -1,0 +1,23 @@
+@import '../../../../theme/theme.scss';
+
+.eamListBox {
+  min-height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background: #f0f2f5;
+
+  .eamListContent {
+    @include contentBoxStyle();
+
+    .eamListWrap {
+      width: 100%;
+      min-width: 1212px;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.20);
+    }
+  }
+}
