@@ -31,7 +31,10 @@
   .stationName,.belongMatrix,.parentDeviceName,.deviceName,.happenTime,.lostGenPercent,.iconDetail{
     width:14%;
   }
-  .stationNameText,.belongMatrixText,.parentDeviceNameText,.deviceNameText{
+  .stationNameText{
+    max-width: calc((100vw - 230px) * 0.14 - 20px);
+  }
+  .belongMatrixText,.parentDeviceNameText,.deviceNameText{
     max-width: calc((100vw - 230px) * 0.14 - 10px);
   }
 }

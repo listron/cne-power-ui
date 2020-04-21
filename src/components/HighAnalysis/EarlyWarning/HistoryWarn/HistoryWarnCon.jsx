@@ -142,6 +142,7 @@ class HistoryWarnCon extends Component {
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
+        textAlign: 'left',
         className: styles.stationName,
         render: (text) => (<div title={text || '--'} className={styles.stationNameText} title={text}>{text || '--'}</div>),
       }, {
