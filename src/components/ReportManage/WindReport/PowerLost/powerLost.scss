@@ -24,9 +24,16 @@
 }
 
 .tableStyles {
+  table{
+    table-layout: fixed;
+    width: 100%;
+  }
   .regionNameText, .stationNameText, .deviceModeNameText, .deviceNameText{
     @include overflowText();
-    width: 90%;
+    width: calc(100% - 10px);
+  }
+  .regionNameText{
+    width: calc(100% - 20px);
   }
   :global {
     .ant-table-placeholder{

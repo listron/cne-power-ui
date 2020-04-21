@@ -90,14 +90,14 @@ class TableList extends Component {
         dataIndex: 'regionName',
         sorter: true,
         textAlign: 'left',
-        className: styles.regionName,
+        width: 100,
         render: (text) => {
           return <div className={styles.regionNameText} title={text}>{text}</div>;
         },
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
-        className: styles.stationName,
+        width: 120,
         textAlign: 'left',
         sorter: true,
         render: (text) => {
@@ -107,7 +107,7 @@ class TableList extends Component {
         title: '设备名称',
         textAlign: 'left',
         dataIndex: 'deviceName',
-        className: styles.deviceName,
+        width: 120,
         sorter: true,
         render: (text) => {
           return <div className={styles.deviceNameText} title={text}>{text}</div>;
@@ -116,7 +116,7 @@ class TableList extends Component {
         title: '风机型号',
         textAlign: 'left',
         dataIndex: 'deviceModeName',
-        className: styles.deviceModeName,
+        width: 250,
         sorter: true,
         render: (text) => {
           return <div className={styles.deviceModeNameText} title={text}>{text}</div>;
@@ -130,7 +130,7 @@ class TableList extends Component {
         dataIndex: 'date',
         textAlign: 'center',
         sorter: true,
-        className: styles.shortQuota,
+        width: 100,
         render(text) { return text.replace(/-/g, '/').replace(',', '-'); },
       }, {
         title: () => <TableColumnTitle title="平均风速" unit="m/s" />,
@@ -138,56 +138,56 @@ class TableList extends Component {
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.shortQuota,
+        width: 100,
       }, {
         title: () => <TableColumnTitle title="发电量" unit="kWh" />,
         dataIndex: 'genValid',
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.shortQuota,
+        width: 100,
       }, {
         title: () => <TableColumnTitle title="发电时间" unit="h" />,
         dataIndex: 'genTime',
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.shortQuota,
+        width: 100,
       }, {
         title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
         dataIndex: 'equivalentHours',
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.longQuota,
+        width: 150,
       }, {
         title: () => <TableColumnTitle title="限电损失电量" unit="kWh" />,
         dataIndex: 'limitGen',
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.longQuota,
+        width: 125,
       }, {
         title: () => <TableColumnTitle title="限电时长" unit="h" />,
         dataIndex: 'limitTime',
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.shortQuota,
+        width: 100,
       }, {
         title: () => <TableColumnTitle title="故障损失电量" unit="kWh" />,
         dataIndex: 'faultGen',
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.longQuota,
+        width: 125,
       }, {
         title: () => <TableColumnTitle title="故障时长" unit="h" />,
         dataIndex: 'faultHours',
         textAlign: 'right',
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
         sorter: true,
-        className: styles.shortQuota,
+        width: 100,
       },
     ];
     columns.unshift(...show);
@@ -215,7 +215,7 @@ class TableList extends Component {
           columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={{ x: xWidth[filterTable - 1] }}
+          scroll={{ x: 'max-content' }}
           className={styles.tableStyles}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           pagination={false} />
