@@ -20,10 +20,6 @@ class EditableCell extends React.Component {
 
   getInput = (form) => { // 根据不同的设置不同的数据
     const { dataIndex, record = {} } = this.props;
-    if (dataIndex === 'yearPR') { // PR年计划
-      return (<Input onChange={(e) => this.valueChange(e, form, dataIndex, record, 'pr')}
-        defaultValue={record[dataIndex]} placeholder="--" />);
-    }
     if (record.setGridTime) {// 并网数据
       if (getMonth(dataIndex) < +(record.setGridTime)) {
         return <Input disabled={true} placeholder="--" />;
@@ -35,7 +31,8 @@ class EditableCell extends React.Component {
 
 
 
-  valueChange = (e, form, dataIndex, record, type) => {//月份的修改，修改完毕之后年计划跟着变化
+  valueChange = (e, form, dataIndex, record) => {//月份的修改，修改完毕之后年计划跟着变化
+    const type = dataIndex === 'yearPR' && 'pr' || 'month';
     const number = e.target.value;
     const pointLength = number.split('.')[1] ? number.split('.')[1].length : 0;
     const limitPointLength = type === 'pr' ? 2 : 4;
