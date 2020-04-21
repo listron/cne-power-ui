@@ -135,8 +135,9 @@
         padding: 4px;
         cursor: pointer;
         color: #199475;
-        &:first-child{
-          margin-right: 4px;
+        margin-right: 4px;
+        &:last-child{
+          margin-right: 0px;
         }
         &:hover{
           color: #ff9900;

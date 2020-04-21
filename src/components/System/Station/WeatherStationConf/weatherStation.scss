@@ -25,21 +25,16 @@
     }
 
     .listContiner {
+        background-color: #fff;
         display: flex;
         flex-direction: column;
         flex: 1;
 
         .selectCondition {
             display: flex;
-            background: #ffffff;
-            border: 1px solid #d4d4d4;
-            box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.60);
-            margin-bottom: 8px;
-            height: 60px;
-            line-height: 60px;
+            margin-top: 24px;
 
             .searchButton {
-                margin-top: 14px;
                 margin-left: 20px;
             }
         }
@@ -47,7 +42,7 @@
         .pagination {
             display: flex;
             justify-content: flex-end;
-            height: 60px;
+            margin-bottom: 20px;
         }
 
         .filterButton {
@@ -59,26 +54,21 @@
 
             .buttonGroup {
                 display: inline-block;
-                border: 1px solid #199475;
+                border: 1px solid #d9d9d9;
                 border-radius: 2px;
                 line-height: 32px;
 
                 span {
                     padding: 0 5px;
-                    border-right: 1px solid #199475;
+                    border-right: 1px solid #d9d9d9;
                     display: inline-block;
                     cursor: pointer;
-                    // margin-right: -2px;
-                    color: #199475;
-                    background-color: #fff;
+                    margin-right: -2px;
                    &:last-child{
                     border-right: 0;
                    }
-                   &:hover {
-                       background-color: #ceebe0;
-                   }
                 }
-                .buttonActive, .buttonActive:hover{
+                .buttonActive {
                     background: #199475;
                     color: #fff;
                 }
@@ -86,55 +76,46 @@
         }
 
         .weatherListTable {
-            display: flex;
-            flex-direction: column;
-            flex: 1 0 auto;
-            .tableBox {
-                flex: 1 0 auto;
-                box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
-                .weatherTable {
-                    // 表格区
-                    background: #ffffff;
-                    height: 100%;
+
+            .weatherTable {
+                // 表格区
+                background: #ffffff;
+                border: 1px solid #d4d4d4;
+                border-top: none;
+                box-shadow: 2px -2px 5px 3px rgba(208, 208, 208, 0.6);
+                height: 100%;
+                :global {
+                    .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
+                        overflow-y: scroll;
+                        overflow-y: overlay;
+                    }
+                    .ant-table-placeholder {
+                        border-bottom: none;
+                    }
+                }
+
+                .stationName .operate .inArea .lastSetTime {
+                    @include overflowText();
+                }
+
+                .operate {
                     :global {
-                        .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
-                            overflow-y: scroll;
-                            overflow-y: overlay;
-                        }
-                        .ant-table-placeholder {
-                            border-bottom: none;
-                        }
-                    }
-
-                    .stationName .operate .inArea .lastSetTime {
-                        @include overflowText();
-                    }
-
-                    .lastSetTime {
-                        text-align: center;
-                    }
-
-                    .operate {
-                        text-align: center;
-
-                        .iconShow {
-                            visibility: visible;
-                        }
-                        .iconHide {
-                            visibility: hidden;
-                        }
-                        i {
+                        .iconfont{
                             cursor: pointer;
                             color: #199475;
-                            padding: 0 8px;
-                            font-size: 20px;
-                            &:hover {
-                                color: #f9b600;
+                            padding: 4px;
+                            margin-right: 24px;
+                            &:last-child{
+                                margin-right: 0;
+                            }
+                            &:hover{
+                                color: #ff9900;
                             }
                         }
+                        
                     }
-
                 }
+
             }
         }
 

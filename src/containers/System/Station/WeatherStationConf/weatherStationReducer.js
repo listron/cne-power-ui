@@ -11,25 +11,25 @@ const weatherStationAction = {
 
 var initState = Immutable.fromJS({
   loading: false,
-  weatherList: [],// 天气列表
+  weatherList: [], // 天气列表
   listParameter: {
-    stationCodes: [],// 电站列表
+    stationCodes: [], // 电站列表
     pageSize: 10,
     pageNum: 1,
     orderFiled: 'stationName',
-    orderType: 1,
-    keyword: '',  //查询电站关键字
+    orderType: 1, // 1 正序 2 倒序
+    keyword: '', //查询电站关键字
   },
-  pageStatus:'list',
-  weatherStation:[],// 气象站列表
+  pageStatus: 'list',
+  weatherStation: [], // 气象站列表
 });
 
  const weatherStationReducer = (state = initState, action) => {
   switch (action.type) {
     case weatherStationAction.changeWeatherStationStore:
-      return state.merge(Immutable.fromJS(action.payload))
+      return state.merge(Immutable.fromJS(action.payload));
     case weatherStationAction.resetStore:
-      return initState
+      return initState;
   }
   return state;
 }

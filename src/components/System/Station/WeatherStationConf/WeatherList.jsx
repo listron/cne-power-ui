@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
-import { Table, Button, message } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './weatherStation.scss';
-import StationSelect from '../../../Common/StationSelect';
 import CommonPagination from '../../../Common/CommonPagination';
-import FilterCondition from '../../../Common/FilterConditions/FilterCondition';
 import WarningTip from '../../../Common/WarningTip';
 import TransitionContainer from '../../../Common/TransitionContainer';
 import CneInputSearch from '@components/Common/Power/CneInputSearch';
 import CneTable from '@components/Common/Power/CneTable';
 import { handleRight } from '@utils/utilFunc';
 import EditWeather from './Edit';
-const ButtonGroup = Button.Group;
-
 
 class WeatherList extends Component {
     static propTypes = {
@@ -50,18 +45,10 @@ class WeatherList extends Component {
         getWeatherList({ ...listParameter, pageNum: currentPage, pageSize });
     };
 
-    /*
-    onChangeFilter = (value) => {
-        const { listParameter, getWeatherList } = this.props;
-        getWeatherList({ ...listParameter, ...value });
-    }
-    */
-
     tableChange = (pagination, filter, sorter) => {// 点击表头 排序
-        const sortField = sorter.field;
-        const ascend = sorter.order === 'descend' ? 2 : 1; // 1 正序 2 倒序
         const { listParameter, getWeatherList } = this.props;
-        getWeatherList({ ...listParameter, orderFiled: sortField, orderType: ascend });
+        const { orderType } = listParameter;
+        getWeatherList({ ...listParameter, orderType: orderType === 2 ? 1 : 2 });
     };
 
 
@@ -101,20 +88,18 @@ class WeatherList extends Component {
     }
 
     render() {
-    
-    const weatherOperation = handleRight('weatherConfig_operate');
-    const operateColumn = {
+        const weatherOperation = handleRight('weatherConfig_operate');
+        const operateColumn = {
             title: '操作',
-            className: styles.operate,
-            width:'20%',
+            dataIndex: 'operate',
+            width: '20%',
+            textAlign: 'center',
             render: (text, record) => {
                 const { subordinateStationCode, stationCode } = record;
-                const editClassName = stationCode && !(subordinateStationCode === stationCode) ? styles.iconShow : styles.iconHide;
-                const refreshclassName = (stationCode && subordinateStationCode && subordinateStationCode !== stationCode) ? styles.iconShow : styles.iconHide;
                 return (
-                    <span>
-                        {<i className={`iconfont icon-edit ${editClassName}`} onClick={() => { this.editStaion(record); }} />}
-                        {<i className={`iconfont icon-refresh2 ${refreshclassName}`} onClick={() => { this.refresh(record); }} />}             
+                    <span className={styles.operate}>
+                        {stationCode && !(subordinateStationCode === stationCode) && <i className="iconfont icon-edit" onClick={() => { this.editStaion(record); }} />}
+                        {(stationCode && subordinateStationCode && subordinateStationCode !== stationCode) && <i className="iconfont icon-refresh2" onClick={() => { this.refresh(record); }} />}
                     </span>
                 );
             },
@@ -123,51 +108,28 @@ class WeatherList extends Component {
             {
                 title: '电站名称',
                 dataIndex: 'stationName',
-                key: 'stationName',
-                defaultSortOrder: 'ascend',
                 sorter: true,
-                className: styles.stationName,
-                render: text => text || '--',
-                width:'25%',
-                ellipsis: true,
+                textAlign: 'left',
+                render: (text) => (<div className={styles.stationName} title={text || '--'}>{text || '--'}</div>),
+                width: '25%',
             },
             {
                 title: '气象站所属电站',
                 dataIndex: 'subordinateStation',
-                key: 'subordinateStation',
-                sorter: false,
-                className: styles.inArea,
-                render: text => text || '--',
-                ellipsis: true,
+                width: '35%',
+                textAlign: 'left',
+                render: (text) => (<div className={styles.inArea} title={text || '--'}>{text || '--'}</div>),
             },
             {
                 title: '最近一次设置日期',
                 dataIndex: 'updateDate',
                 key: 'updateDate',
-                sorter: false,
-                className: styles.lastSetTime,
-                width:'20%',
-                ellipsis: true,
+                textAlign: 'center',
+                width: '20%',
             },
-            // {
-            //     title: '操作',
-            //     className: styles.operate,
-            //     render: (text, record) => {
-            //         const { subordinateStationCode, stationCode } = record;
-            //         return (
-            //             <span>
-            //                 {stationCode && !(subordinateStationCode === stationCode) && <i className="iconfont icon-edit" onClick={() => { this.editStaion(record); }} />}
-            //                 {(stationCode && subordinateStationCode && subordinateStationCode !== stationCode) && <i className="iconfont icon-refresh2" onClick={() => { this.refresh(record); }} />}
-            //             </span>
-            //         );
-            //     },
-
-
-            // },
         ];
-
-        const { stations = [], listParameter = {}, totalNum, loading, weatherList, pageStatus } = this.props;
-        const { pageSize, pageNum } = listParameter;
+        const { listParameter = {}, totalNum, loading, weatherList, pageStatus } = this.props;
+        const { pageSize, pageNum, orderFiled, orderType } = listParameter;
         const { showWarningTip, warningTipText, editList, filterStatus } = this.state;
         const weatherData = weatherList.map((e, index) => ({ ...e, key: index })).filter(e => {
             if (filterStatus === 'all') return true;
@@ -183,50 +145,39 @@ class WeatherList extends Component {
                     style={{ width: '210px', height: '100px' }}
                 />}
                 <div className={styles.weatherMain}>
-                    <div className={styles.listContiner}>
-                        <div className={styles.selectCondition}>
-                            {/* <FilterCondition
-                                onChange={this.onChangeFilter}
-                                option={[
-                                    {
-                                        name: '电站名称',
-                                        type: 'stationName',
-                                        typeName: 'stationCodes',
-                                        data: stations.filter(e => e.stationType === 1),
-                                    },
-                                ]}
-                            /> */}
-                            <div className={styles.filterButton}>
-                                <span className={styles.setStause}>设置状态</span>
-                                <div className={styles.buttonGroup}>
-                                    <span className={`${filterStatus === 'all' && styles.buttonActive}`} onClick={() => { this.changefilter('all'); }}>全部</span>
-                                    <span className={`${filterStatus === 'set' && styles.buttonActive}`} onClick={() => { this.changefilter('set'); }}>已设置</span>
-                                    <span className={`${filterStatus === 'noSet' && styles.buttonActive}`} onClick={() => { this.changefilter('noSet'); }}>未设置</span>
-                                </div>
-                            </div>
-                            <div className={styles.searchButton}>
-                                <CneInputSearch 
-                                    placeholder="区域／电站名称"
-                                    onSearch={this.doSearch}    
-                                />
+                <div className={styles.listContiner}>
+                    <div className={styles.selectCondition}>
+                        <div className={styles.filterButton}>
+                            <span className={styles.setStause}>设置状态</span>
+                            <div className={styles.buttonGroup}>
+                                <span className={`${filterStatus === 'all' && styles.buttonActive}`} onClick={() => { this.changefilter('all'); }}>全部</span>
+                                <span className={`${filterStatus === 'set' && styles.buttonActive}`} onClick={() => { this.changefilter('set'); }}>已设置</span>
+                                <span className={`${filterStatus === 'noSet' && styles.buttonActive}`} onClick={() => { this.changefilter('noSet'); }}>未设置</span>
                             </div>
                         </div>
-                        <div className={styles.weatherListTable}>
-                            <div className={styles.pagination}>
-                                <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-                                    onPaginationChange={this.onPaginationChange} />
-                            </div>
-                            <div className={styles.tableBox}>
-                                <CneTable
-                                    className={styles.weatherTable}
-                                    loading={loading}
-                                    dataSource={weatherData}
-                                    columns={weatherOperation ? columns.concat(operateColumn) : columns}
-                                    pagination={false}
-                                    onChange={this.tableChange}
-                                    locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-                                />
-                            </div>
+                        <div className={styles.searchButton}>
+                            <CneInputSearch
+                                placeholder="区域／电站名称"
+                                onSearch={this.doSearch}
+                            />
+                        </div>
+                    </div>
+                    <div className={styles.weatherListTable}>
+                        <div className={styles.pagination}>
+                            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
+                                onPaginationChange={this.onPaginationChange} />
+                        </div>
+                        <CneTable
+                            className={styles.weatherTable}
+                            loading={loading}
+                            dataSource={weatherData}
+                            sortField={orderFiled}
+                            sortMethod={orderType === 1 ? 'ascend' : 'descend'}
+                            columns={weatherOperation ? columns.concat(operateColumn) : columns}
+                            pagination={false}
+                            onChange={this.tableChange}
+                            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+                        />
                         </div>
                     </div>
                 </div>
