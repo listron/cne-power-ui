@@ -23,7 +23,6 @@ class PlanSide extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '是否放弃当前的修改!',
-      addValueChange: '', // 信息是否修改过
       leave: '', //判断离开之后返回到什么页面
       addSave: 'false', // 是否保存
       warningTipSaveText: '请先填写完整之后再保存',

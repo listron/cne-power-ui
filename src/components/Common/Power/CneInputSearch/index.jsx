@@ -73,7 +73,10 @@ class CneInputSearch extends Component {
      */
     doCloseSearch = () => {
         this.setState({ displaySearchInput: false, value: '' });
-        this.props.clearSearch();
+        const { clearSearch } = this.props;
+        if (clearSearch && typeof clearSearch === 'function') {
+            clearSearch();
+        }
     }
 
     render() {

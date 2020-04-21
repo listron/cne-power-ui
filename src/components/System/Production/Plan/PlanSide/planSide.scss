@@ -141,11 +141,14 @@
         cursor: pointer;
         line-height: 38px;
         display: block;
+        font-size: 18px;
+        &:hover{
+           color: #f9b600;
+        }
       }
 
       .save {
         color: #f9b600;
-        //margin-right: 0 !important;
       }
 
       .mainPartTop {
@@ -154,71 +157,38 @@
         font-size: 14px;
         color: #353535;
         margin-left: 30px;
-
         span {
           color: #199475;
         }
       }
 
+      table{
+        table-layout: fixed;
+      }
+
+      .regionNameText,.stationNameText,.stationCapacityText{
+        @include overflowText()
+        width: calc(100% - 2px);
+      }
+
+
       :global {
-
-        .month .ant-input,
-        .yearPR .ant-input {
-          width: 52px;
+        .ant-input {
           background: #fcffe5;
-          padding: 0 5px;
+          padding: 0 2px;
           border: 1px solid #f9b600;
+          text-align: right;
         }
 
-        .ant-table .ant-table-thead>tr>th,
-        .ant-table .ant-table-tbody>tr>td {
-          padding: 0 0 0 0;
-          line-height: 1;
-          // min-width: 57px;
-        }
-
-        .ant-table .ant-table-thead>tr>th.month,
-        .ant-table .ant-table-tbody>tr>td.month {
-          min-width: 48px;
-        }
-
-        .ant-table .ant-table-thead>tr>th.yearPR,
-        .ant-table .ant-table-tbody>tr>td.yearPR {
-          min-width: 72px;
-          width: 72px;
-        }
-
-        .ant-table-thead {
-          th>div {
-            height: 60px;
-          }
-
-          .month {
-            &>div {
-              padding-top: 13px;
-            }
-          }
-
-          :local {
-
-            .regionName,
-            .stationName,
-            .planYear,
-            .operation {
-              &>div {
-                padding-top: 13px;
-              }
-            }
-          }
-        }
-
-        .ant-table-column-sorter {
-          top: 18px;
+       .ant-table .ant-table-tbody > tr > td:first-child.leftContent{
+          padding-left: 10px;
         }
 
         .ant-input.ant-input-disabled {
           background: #f8f8f8;
           border: 1px solid #d4d4d4;
+          text-align: left;
+          color:var(--lightColor);
         }
 
         .ant-input:focus {
@@ -226,55 +196,12 @@
           border: 1px solid #d4d4d4;
           -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
-
-        .ant-table-placeholder {
-          border: none;
-        }
-      }
-
-      .regionName {
-        min-width: 50px;
-        width: 6%;
-        padding-left: 10px !important;
-      }
-
-      .stationName {
-        width: 90px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .operation {
-        width: 2.7%;
-        min-width: 38px;
-        text-align: center;
-        padding-left: 0;
-        :global {
-          .anticon {
-            color: #199475;
-            :hover {
-              color: #f9b600;
-            }
-          }
-        }
-      }
-
-      .planYear {
-        width: 6.2%;
-        min-width: 40px;
-      }
-
-      .planPower {
-        width: 9%;
-        min-width: 89px;
-      }
-
-      .stationCapacity {
-        width: 9%;
-        min-width: 70px;
       }
     }
+  }
+
+  .formItem{
+    margin:  0 2px;
   }
 
 }

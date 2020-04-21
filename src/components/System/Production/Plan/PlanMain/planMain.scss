@@ -96,7 +96,7 @@
         }
       }
       .noEdit {
-        color: $promptColor;
+        color: var(--lightColor);
         pointer-events: none;
         white-space: nowrap;
       }
@@ -110,10 +110,7 @@
       }
 
       .regionNameText,.stationNameText,.stationCapacityText{
-        word-break: break-all;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        @include overflowText()
         width: calc(100% - 2px);
       }
 
@@ -123,6 +120,7 @@
           background: #fcffe5;
           padding: 0 2px;
           border: 1px solid #f9b600;
+          text-align: right;
         }
         .ant-table .ant-table-tbody > tr > td:first-child.leftContent{
           padding-left: 10px;
@@ -139,6 +137,8 @@
         .ant-input.ant-input-disabled {
           background: #f8f8f8;
           border: 1px solid #d4d4d4;
+          color:var(--lightColor);
+          text-align: left;
         }
         .ant-input:focus {
           background: #ffffff;

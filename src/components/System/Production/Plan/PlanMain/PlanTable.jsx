@@ -77,43 +77,18 @@ class PlanTable extends Component {
     this.props.getPlanList({ year: planYear, stationCodes, sortField, sortMethod, pageNum, pageSize, keyword, ...value });
   }
 
-
-
-  tableChange = (pagination, filters, sorter) => {
-    const { changeHistoryWarningStore, onChangeFilter, orderField, orderCommand } = this.props;
-    const { field } = sorter;
-    const sortInfo = {
-      warningLevel: '1',
-      stationName: '2',
-      deviceName: '8',
-      deviceTypeName: '3',
-      timeOn: '5',
-      timeOff: '6',
-    };
-    let newOrderField = orderField, newOrderCommand = '2';
-    if (!field || (sortInfo[field] === newOrderField)) { // 点击的是正在排序的列
-      newOrderCommand = orderCommand === '1' ? '2' : '1'; // 交换排序方式
-    } else { // 切换列
-      newOrderField = sortInfo[field];
-    }
-    changeHistoryWarningStore({ orderField: newOrderField, orderCommand: newOrderCommand });
-    onChangeFilter({
-      orderField: newOrderField, orderCommand: newOrderCommand,
-    });
-  }
-
-
-  tableChange = (pagination, filter, sorter) => {//计划排序 排序还有误
-    const sortFieldArr = ['region', 'stationName', 'stationCapacity', 'planYear', 'planPower'];
+  tableChange = (pagination, filter, sorter) => { // 计划排序 排序还有误
+    // debugger;
+    const sortFieldArr = ['regionName', 'stationName', 'stationCapacity', 'planYear', 'planPower'];
     const { sortField, sortMethod } = this.props;
     const { field } = sorter;
     let newSortFild = sortField, newSortMethod = '2';
-    if (!field || sortFieldArr.findIndex(e => e === field) > -1) {
-      newSortMethod = sortMethod = '1' ? '2' : '1'; // 交换排序方式
+    if (!field || sortFieldArr.findIndex(e => e === field) === newSortFild - 1) {
+      newSortMethod = sortMethod === '2' ? '1' : '2'; // 交换排序方式
     } else {
-      newSortFild = sortFieldArr.findIndex(e => e === field);
+      newSortFild = sortFieldArr.findIndex(e => e === field) + 1;
     }
-    this.getPlanList({ sortField: newSortMethod, sortMethod: newSortFild });
+    this.getPlanList({ sortField: `${newSortFild}`, sortMethod: newSortMethod });
   };
 
   isEditing = (record) => { // 是否可以编辑(一个电站)
@@ -139,8 +114,8 @@ class PlanTable extends Component {
     }
   }
 
-  // 点击保存之后处理的数据
-  save = (form, key) => {
+
+  save = (form, key) => { // 点击保存之后处理的数据
     form.validateFields((error, row) => {
       if (!error) {
         const { data } = this.state;
@@ -175,7 +150,7 @@ class PlanTable extends Component {
     });
   }
 
-  _createTableColumn = () => {//生成表头
+  _createTableColumn = () => { // 生成表头
     const planOperation = handleRight('config_production_operate');
     const tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const MonthColumn = tabelKey.map((item, index) => {
@@ -240,7 +215,6 @@ class PlanTable extends Component {
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
-        defaultSortOrder: 'descend',
         sorter: true,
         width: '8.5%',
         textAlign: 'left',
@@ -260,7 +234,7 @@ class PlanTable extends Component {
         dataIndex: 'planYear',
         key: 'planYear',
         width: '5%',
-        textAlign: 'right',
+        textAlign: 'center',
       }, {
         title: () => <TableColumnTitle className={styles.tableCommonTitle} title="年计划发电量" unit="万kWh" />,
         dataIndex: 'planPower',
@@ -331,7 +305,7 @@ class PlanTable extends Component {
     return columnList;
   };
 
-  _dealTableData = (planData) => { //将12个月的数据分开
+  _dealTableData = (planData) => { // 将12个月的数据分开
     if (planData.length < 0) {
       return false;
     }
@@ -351,7 +325,6 @@ class PlanTable extends Component {
     });
     this.setState({ data: initPlanData });
   };
-
 
   cancelWarningTip = () => {
     this.setState({
@@ -406,7 +379,7 @@ class PlanTable extends Component {
   }
 
   render() {
-    const { pageSize, pageNum, totalNum, loading, importLoading } = this.props;
+    const { pageSize, pageNum, totalNum, loading, importLoading, sortField, sortMethod } = this.props;
     const { showWarningTip, warningTipText, data, importVisible, fileList } = this.state;
     const planOperation = handleRight('config_production_operate');
     const components = {
@@ -423,7 +396,7 @@ class PlanTable extends Component {
     };
     const downloadHref = `${originUri}/template/proplan.xlsx`;
     const importYear = [moment().year(), moment().add(1, 'year').year()];
-    const sortFieldArr = ['region', 'stationName', 'stationCapacity', 'planYear', 'planPower'];
+    const sortFieldArr = ['regionName', 'stationName', 'stationCapacity', 'planYear', 'planPower'];
     return (
       <div className={styles.planList}>
         {showWarningTip &&
@@ -449,6 +422,8 @@ class PlanTable extends Component {
             components={components}
             dataSource={data}
             onChange={this.tableChange}
+            sortField={sortFieldArr[sortField - 1]}
+            sortMethod={['ascend', 'descend'][sortMethod - 1]}
             locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
             columns={this._createTableColumn()}
           />

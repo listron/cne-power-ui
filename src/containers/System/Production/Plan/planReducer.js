@@ -6,9 +6,9 @@ const initState = Immutable.fromJS({
   // buttonLoading: false,//普通按钮交互loading
   showPage: 'list', //默认展示列表页list,可展示新建add,编辑edit
   planYear: null, // 年份选择，默认是当前年
-  sortMethod: '', //排序 => 'field,0/1'field代表排序字段，1升序,2降序
+  sortMethod: '1', //排序 => 'field,0/1'field代表排序字段，1升序,2降序
   stationCodes: null, // 电站编码
-  sortField: '', // 1:区域 2：电站名称 3:装机容量 4:年份 5: 年计划发电量
+  sortField: '2', // 1:区域 2：电站名称 3:装机容量 4:年份 5: 年计划发电量
   totalNum: 0, //生产计划总数
   pageNum: 1, //当前页号
   pageSize: 10, //每页容纳条数
@@ -22,7 +22,7 @@ const initState = Immutable.fromJS({
   stationType: null, //电站类型，只可以添加同类型电站
   // year: null, //年份选择，默认是当前年
   importLoading: false, //导入的loading
-  keyword:'', //查询关键字
+  keyword: '', //查询关键字
 });
 
 const planReducer = (state = initState, action) => {
