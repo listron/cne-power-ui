@@ -194,23 +194,22 @@ class ChartBar extends PureComponent {
         },
       ],
     };
-    if (data.length > 10) {
-      const handlerInfo = {
-        start: dataEvent ? dataDay[dataDays] : 0,
-        end: 100,
-      };
-      option.dataZoom = [
-        {
-          show: true,
-          height: 20,
-          bottom: 16,
-          ...handlerInfo,
-        }, {
-          type: 'inside',
-          ...handlerInfo,
-        },
-      ];
-    }
+
+    const handlerInfo = {
+      start: (data.length > 7) ? (100 - Math.floor(7 / data.length * 100)) : 0, // 页面默认显示7条数据，其他数据滑动显示
+      end: 100,
+    };
+    option.dataZoom = [
+      {
+        show: true,
+        height: 20,
+        bottom: 16,
+        ...handlerInfo,
+      }, {
+        type: 'inside',
+        ...handlerInfo,
+      },
+    ];
     barChart.clear();
     barChart.setOption(option);
   }
