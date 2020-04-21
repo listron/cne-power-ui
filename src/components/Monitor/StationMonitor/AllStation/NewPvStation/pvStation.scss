@@ -209,12 +209,10 @@
     display: flex;
     flex-direction: column;
 
-    a {
-      text-decoration: underline;
-      color: rgba(0, 0, 0, 0.65);
-
-      &:hover {
-        color: $themeColor;
+    .stationNameText{
+      color: var(--themeColor);
+      &:hover{
+        color: #FF9900;
       }
     }
 
@@ -227,17 +225,6 @@
       display: flex;
       justify-content: flex-end;
       line-height: 45px;
-    }
-
-    .stationName {
-      width: 70px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
-      &:hover {
-        color: $themeColor;
-      }
     }
     .equivalentHours {
       .tooltipName {

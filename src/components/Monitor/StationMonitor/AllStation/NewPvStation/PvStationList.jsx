@@ -109,62 +109,59 @@ class PvStationList extends React.Component {
         defaultSortOrder: 'ascend',
         sorter: true,
         textAlign: 'left',
-        className: styles.stationName,
+        width: '12%',
         render: (value, record) => {
           const stationStatus = record.stationStatus || '';
           if (stationStatus === '900') {
             return <div title={value} className={styles.stationNameText} onClick={this.showTip}>{value}</div>;
           }
           return (
-            <a href={`#/monitor/singleStation/${record.stationCode}`}>
-              <div title={value} className={styles.stationNameText}>{value}</div>
+            <a href={`#/monitor/singleStation/${record.stationCode}`} title={value} className={styles.stationNameText}>
+              {value}
             </a>
           );
-
         },
-      },
-      {
+      }, {
         title: '区域',
         dataIndex: 'regionName',
         sorter: true,
         textAlign: 'left',
-        className: styles.regionName,
-        render: (value) => <div className={styles.stationrovince} title={value}>{value}</div>,
-      },
-      {
+        width: '8%',
+        render: (value) => <div className={styles.regionNameText} title={value}>{value}</div>,
+      }, {
         title: () => <TableColumnTitle title="实时功率" unit={realCapacityUnit} className="nonePadding" />,
         dataIndex: 'stationPower',
         sorter: true,
-        className: `${styles.stationPower} ${styles.numberStyle}`,
+        textAlign: 'right',
+        width: '7%',
         render: value => dataFormats(divideFormarts(value, realTimePowerUnit), '--', 2, true),
-      },
-
-      {
+      }, {
         title: () => <TableColumnTitle title="瞬时辐照" unit="W/m²" className="nonePadding" />,
         dataIndex: 'instantaneous',
-        className: `${styles.instantaneous} ${styles.numberStyle}`,
+        textAlign: 'right',
+        width: '7%',
         render: (value) => dataFormats(value, '--', 2, true),
         sorter: true,
-      },
-      {
+      }, {
         title: '负荷率',
         dataIndex: 'loadRate',
         sorter: true,
-        className: `${styles.loadRate} ${styles.numberStyle}`,
+        textAlign: 'right',
+        width: '6%',
         render: (value) => dataFormats(value, '--', 2, true) + '%',
-      },
-      {
+      }, {
         title: () => <TableColumnTitle title="日发电量" unit={powerUnit} className="nonePadding" />,
         dataIndex: 'dayPower',
         sorter: true,
-        className: `${styles.dayPower} ${styles.numberStyle}`,
+        textAlign: 'right',
+        width: '7%',
         render: value => powerPoint(divideFormarts(value, powerUnit)),
-      },
-      {
+      }, {
         title: () => <TableColumnTitle title="日等效时" unit={'h'} className="nonePadding" />,
         dataIndex: 'equivalentHours',
         sorter: true,
-        className: `${styles.equivalentHours} ${styles.numberStyle}`,
+        textAlign: 'right',
+        width: '7%',
         render: (value, record) => {
           return (
             <div className={styles.equivalentHoursText}>
@@ -178,54 +175,54 @@ class PvStationList extends React.Component {
               </div>
             </div>);
         },
-      },
-      {
+      }, {
         title: () => <TableColumnTitle title="月发电量" unit={powerUnit} className="nonePadding" />,
         dataIndex: 'monthPower',
+        textAlign: 'right',
         render: value => powerPoint(divideFormarts(value, powerUnit)),
         sorter: true,
-        className: `${styles.monthPower} ${styles.numberStyle}`,
-      },
-      {
+        width: '7%',
+      }, {
         title: () => <TableColumnTitle title="年发电量" unit={powerUnit} className="nonePadding" />,
         dataIndex: 'yearPower',
+        textAlign: 'right',
         render: value => powerPoint(divideFormarts(value, powerUnit)),
         sorter: true,
-        className: `${styles.yearPower} ${styles.numberStyle}`,
-      },
-      {
+        width: '7%',
+      }, {
         title: () => <TableColumnTitle title="装机容量" unit={realCapacityUnit} className="nonePadding" />,
         dataIndex: 'stationCapacity',
         sorter: true,
-        className: `${styles.stationCapacity} ${styles.numberStyle}`,
+        textAlign: 'right',
+        width: '7%',
         render: (value) => dataFormats(realCapacityUnit === 'MW' ? value : multiplyFormarts(value, 1000), '--', 2),
-      },
-      {
+      }, {
         title: () => <TableColumnTitle title="装机" unit="台" className="nonePadding" />,
         dataIndex: 'stationUnitCount',
         sorter: true,
-        className: `${styles.stationUnitCount} ${styles.numberStyle}`,
+        textAlign: 'right',
+        width: '6%',
         render: (value) => { return numWithComma(value); },
-      },
-      {
+      }, {
         title: () => <TableColumnTitle title="异常支路数" unit={'个'} className="nonePadding" />,
         dataIndex: 'anomalousBranchNum',
         sorter: true,
-        className: `${styles.anomalousBranchNum} ${styles.numberStyle}`,
+        textAlign: 'right',
+        width: '8%',
         render: value => value ? value : 0,
-      },
-      {
+      }, {
         title: () => <TableColumnTitle title="告警" unit={'个'} className="nonePadding" />,
         dataIndex: 'alarmNum',
         sorter: true,
-        className: `${styles.alarmNum} ${styles.numberStyle}`,
+        textAlign: 'right',
+        width: '6%',
         render: value => value ? value : 0,
-      },
-      {
+      }, {
         title: '状态',
         dataIndex: 'stationStatus',
         sorter: true,
-        className: styles.stationStatus,
+        textAlign: 'center',
+        width: '5%',
         render: (value) => {
           return (
             <div className={styles.currentStation}>
@@ -288,6 +285,7 @@ class PvStationList extends React.Component {
           sortMethod={this.sortMethodMap[sortMethod] || false}
           onChange={this.ontableSort}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          className={styles.pvListTable}
           dataError={false} />
       </div>
     );

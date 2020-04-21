@@ -280,43 +280,28 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  a {
-    text-decoration: underline;
-  }
 
   .pagination {
-    a {
-      text-decoration: none;
-    }
     height: 45px;
     display: flex;
     justify-content: flex-end;
     line-height: 45px;
   }
+  .pvListTable{
+    table{
+      table-layout: fixed;
+      width: 100%;
+    }
+    .stationNameText, .regionNameText{
+      @include overflowText();
+      width: calc(100% - 5px);
+    }
+    .stationNameText {
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
 
-  .stationName, .anomalousBranchNum{
-    width: 8%;
-  }
-  .regionName, .stationPower, .instantaneous, .loadRate, .dayPower, .equivalentHours, .monthPower, .yearPower, .stationCapacity, .stationUnitCount, .alarmNum, .stationStatus{
-    width: 7%;
-  }
-
-  .stationNameText {
-    width: 96px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .stationrovince {
-    width: 50px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .numberStyle {
-    text-align: right;
-  }
   .equivalentHoursText {
     display: flex;
     justify-content: flex-end;
