@@ -25,8 +25,13 @@ function* getPowerList(action) { // 请求功率曲线列表
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getPowercurveList}`
   try {
     yield put({ type: powerCurveAction.powerCurveFetch });
+    let sortMethod = payload.sortMethod;
+    if (payload && payload.sortField === 'air_density_type') { // 空气密度类型的排序展示 需要反着请求 现场和标准的原因 
+      sortMethod = payload.sortMethod === 'DESC' ? 'ASC' : 'DESC';
+    }
     const response = yield call(axios.post, url, {
       ...payload,
+      sortMethod,
     });
     if (response.data.code === '10000') {
       const totalNum =  response.data.data && response.data.data.total || 0;

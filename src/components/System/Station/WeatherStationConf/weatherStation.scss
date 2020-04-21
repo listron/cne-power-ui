@@ -84,6 +84,10 @@
                 border-top: none;
                 box-shadow: 2px -2px 5px 3px rgba(208, 208, 208, 0.6);
                 height: 100%;
+                table{
+                    width: 100%;
+                    table-layout: fixed;
+                }
                 :global {
                     .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
                         overflow-y: scroll;

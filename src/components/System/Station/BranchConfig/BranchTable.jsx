@@ -278,8 +278,6 @@ class BranchTable extends React.Component {
     const { addShadow } = this.state;
     const pvNumsArr = [1, 2, 3, 4, 5];
     const filterCopyData = this.filterData(checked);
-    // const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-
     return (
       <div className={styles.tablebox}>
         <div className={styles.checkstyle}>
@@ -342,7 +340,6 @@ class BranchTable extends React.Component {
             ))}
           </div>
           <div className={`${styles.tablePart}`} ref="scroll">
-
             {loadding ?
               <div className={styles.spin}>
                 <Spin tip="数据加载中" />

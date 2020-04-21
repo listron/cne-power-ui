@@ -54,16 +54,19 @@
         }
         .PowerCurveTable {
             margin-top: -45px;
-        }
-        .look {
-            span {
+            .deviceModeName, .airDensityType, .stationName{
+                @include overflowText();
+                width: calc(100% - 10px);
+            }
+            .lookIcon{
                 cursor: pointer;
-                display: block;
-                &:hover i {
-                    color: $themeColor
+                padding: 4px;
+                &:hover{
+                    color: #ff9900;
                 }
             }
         }
+
         :global {
             .ant-table-placeholder {
                 border-bottom: none

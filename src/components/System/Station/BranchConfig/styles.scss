@@ -199,11 +199,9 @@
 
     .tablePart {
       background: #fff;
-      // height: 645px;
       height: calc(100vh - 300px);
       overflow-y: auto;
       overflow-y: overlay;
-
       .noData {
         height: 600px;
         display: flex;
@@ -211,9 +209,6 @@
         align-items: center;
         justify-content: center;
       }
-
-
-
     }
 
     .addShadow {
@@ -221,8 +216,6 @@
       z-index: 99;
       box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30);
     }
-
-
 
     .tableTitle,
     .tabletd,
@@ -237,7 +230,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        // border-right: 1px solid #fff;
         color: #fff
       }
 
@@ -247,11 +239,9 @@
       }
 
       .number {
-        // flex: 1 0 74px;
         padding: 0 8px;
 
       }
-
       .titleStyle {
         flex: 1;
         padding: 0 2px;
@@ -277,7 +267,6 @@
       }
 
       .number {
-        // width: 73px;
         width: calc((100vw -228px)*0.0602);
       }
 
@@ -291,7 +280,6 @@
       background: #fff;
       height: 40px;
       position: relative;
-
       &:hover {
         background: rgba(206, 235, 224, 0.50);
         box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30);
@@ -305,12 +293,10 @@
         color: #666;
         border-left: 1px dashed #d4d4d4;
         border-bottom: 1px solid #d4d4d4;
-
       }
 
       .name,
       .number {
-
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -318,13 +304,10 @@
 
       .name {
         border-left: 0;
-        // width: 92px;
         width: calc((100vw -228px)*0.0759);
-
       }
 
       .number {
-        // width: 73px;
         width: calc((100vw -228px)*0.0602);
       }
 
@@ -332,7 +315,6 @@
         flex: 1;
         padding: 0 2px;
         width: calc((100vw -228px)*0.0431);
-
         .link,
         .nolink,
         .change,
@@ -361,7 +343,6 @@
           background: #ceebe0;
           border: 1px solid #199475;
           position: relative;
-
           div {
             position: absolute;
             top: -4px;
@@ -376,7 +357,6 @@
 
         .nolinkchange {
           position: relative;
-
           div {
             position: absolute;
             top: -4px;
@@ -411,58 +391,22 @@
 }
 
 @media screen and (max-width: 1679px) {
-
   // 1679以下屏幕，字号14px
   .tableContainer {
     font-size: 14px;
-    // :global{
-    //   .ant-table{
-    //     font-size: 14px;
-    //   }
-    //   .ant-table .ant-table-tbody > tr > td{
-    //     line-height: 40px;
-    //   }
-    //   .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
-    //     margin-top: -0.4em;
-    //   }
-    // }
   }
 }
 
 @media screen and (min-width: 1680px) and (max-width: 1919px) {
-
   // 1680 + 1919
   .tableContainer {
-    font-size: 1.2em;
-    // :global{
-    //   .ant-table{
-    //     font-size: 1.2em;
-    //   }
-    //   .ant-table .ant-table-tbody > tr > td{
-    //     line-height: 1em;
-    //   }
-    //   .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
-    //     margin-top: -0.25em;
-    //   }
-    // }
+    font-size: 1.2rem;
   }
 }
 
 @media screen and (min-width: 1920px) {
-
   // 1920及以上屏幕按1920px适配
   .tableContainer {
-    font-size: 1.3em;
-    // :global{
-    //   .ant-table{
-    //     font-size: 1.3em;
-    //   }
-    //   .ant-table .ant-table-tbody > tr > td{
-    //     line-height: 1em;
-    //   }
-    //   .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
-    //     margin-top: -0.1em;
-    //   }
-    // }
+    font-size: 1.3rem;
   }
 }
