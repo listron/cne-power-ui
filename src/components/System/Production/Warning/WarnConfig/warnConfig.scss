@@ -22,7 +22,6 @@
         align-items: center;
         .warnListLeft {
             display: flex;
-
             :global{
                 .ant-select{
                     width: 90px;
@@ -52,44 +51,13 @@
             }
         }
     }
-    .warningDescription, .warningCheckRule {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        word-break:keep-all;
-    }
 
-    .warningDescription {
-        max-width: 320px;
-    }
-
-    .warningCheckRule {
-        max-width: 130px;
-    }
-
-    .describe {
-        color: #60C060;
-        text-decoration: underline;
-        cursor: pointer;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        word-break:keep-all;
-    }
-    :global {
-        .ant-table-placeholder {
-            border: none
-        }
-    }
     .edit {
         color: $themeColor;
         cursor: pointer;
-        :global {
-            .iconfont {
-                &:hover {
-                    color:#f9b600;
-                }
-            }
+        font-size: 18px;
+        &:hover {
+           color:#f9b600;
         }
     }
 
@@ -99,16 +67,18 @@
         background-color:#fff;
         box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
         .tableStyle {
-            min-width: 900px;
-        
-            .warningLevel, .warningEnable, .alarmEdit{
-                text-align: center;
+            table{
+                table-layout: fixed;
             }
-            .warningLevel, .warningEnable, .pointCode {
-                min-width: 130px;
+            .describeText,.pointCodeText,.warningDescriptionText,.warningCheckRuleText{
+                @include overflowText();
             }
-            .alarmEdit{ 
-                min-width: 90px;
+            .describeText{
+                color: $themeColor;
+                cursor: pointer;
+                &:hover{
+                    color:#f9b600;
+                }
             }
         }
     }

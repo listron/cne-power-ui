@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { Input, Button, Select, message, Table, Icon } from 'antd';
-import styles from "./warnConfig.scss";
+import styles from './warnConfig.scss';
 import PropTypes from 'prop-types';
 import WarnConfigSearch from './WarnConfigSearch';
 import CommonPagination from '../../../../Common/CommonPagination';
@@ -26,44 +26,48 @@ class WarnConfig extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedRowKeys: [],//选择的数据
-        }
+            selectedRowKeys: [], //选择的数据
+        };
 
     }
 
-    componentDidMount() {
-        // const { getWarnList, listQueryParams } = this.props;
-        // getWarnList(listQueryParams)
-    }
-
-
-    onSelectChange = (keys, record, c, d) => {  // 选择进行操作 删除
+    onSelectChange = (keys, record, c, d) => { // 选择进行操作 删除
         this.setState({ selectedRowKeys: keys });
     }
 
     onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
         const { getWarnList, listQueryParams } = this.props;
-        getWarnList({ ...listQueryParams, pageNum: currentPage, pageSize, });
+        getWarnList({ ...listQueryParams, pageNum: currentPage, pageSize });
     }
 
     onShowDetail = (record) => { // 查看详情
-        this.props.changeWarnStore({ showPage: 'detail' })
-        this.props.getDetail(record.warningCheckId)
+        this.props.changeWarnStore({ showPage: 'detail' });
+        this.props.getDetail(record.warningCheckId);
     }
 
     wranEdit = (record) => {
-        this.props.changeWarnStore({ showPage: 'edit' })
-        this.props.getDetail(record.warningCheckId)
+        this.props.changeWarnStore({ showPage: 'edit' });
+        this.props.getDetail(record.warningCheckId);
     }
+
 
     tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
         const { getWarnList, listQueryParams } = this.props;
-        const { field, order } = sorter;
+        const { sortField, sortOrder } = listQueryParams;
+        const sortFieldArr = ['warningLevel', 'warningEnable'];
+        const { field } = sorter;
+        let newSortFild = sortField, newSortOrder = '2';
+        if (!field || sortFieldArr.findIndex(e => e === field) === newSortFild - 1) {
+            newSortOrder = sortOrder === '2' ? '1' : '2'; // 交换排序方式
+        } else {
+            newSortFild = sortFieldArr.findIndex(e => e === field) + 1;
+        }
+
         getWarnList({
             ...listQueryParams,
-            sortField: field ? field === 'warningLevel' ? '1' : '2' : '',
-            sortOrder: order ? (sorter.order === 'ascend' ? '1' : '2') : '',
-        })
+            sortField: `${newSortFild}`,
+            sortOrder: newSortOrder,
+        });
     }
 
     selectChange = () => {
@@ -73,95 +77,60 @@ class WarnConfig extends Component {
     }
 
     addRule = () => { // 添加
-        this.props.changeWarnStore({ showPage: 'add' })
+        this.props.changeWarnStore({ showPage: 'add' });
     }
-
-    changeLevel = (e) => {
-        let result = '';
-        switch (e) {
-            case 1: result = '一'; break;
-            case 2: result = '二'; break;
-            case 3: result = '三'; break;
-            case 4: result = '四'; break;
-            case 5: result = '五'; break;
-            default: result = '--'; break;
-        }
-        return result
-    }
-
 
     render() {
         const warnListColumn = [{
             title: '测点描述',
             dataIndex: 'devicePointDesc',
-            key: 'devicePointDesc',
-            // width:150,
-            width:'11%',
-            ellipsis: true,
-            render: (text, record) => (
-                <span onClick={() => { this.onShowDetail(record) }} className={styles.describe}>{text || '--'}</span>
-            )
+            width: '14%',
+            render: (text, record) => <div onClick={() => { this.onShowDetail(record); }} className={styles.describeText} title={text || '--'}>{text || '--'}</div>,
         }, {
             title: '测点编号',
             dataIndex: 'pointCode',
-            key: 'pointCode',
-            // width:150,
-            width:'11%',
-            className:styles.pointCode,
+            width: '14%',
+            render: (text) => <div title={text || '--'} className={styles.pointCodeText}>{text || '--'}</div>,
         }, {
             title: '预警描述',
             dataIndex: 'warningDescription',
             key: 'warningDescription',
-            // width:'350px'
-            // width:350,
-            width:'27%',
-            ellipsis: true,
-            render: (text, record) => (
-                <span className={styles.warningDescription}>{text || '--'}</span>
-            )
+            width: '22%',
+            render: (text) => <div title={text || '--'} className={styles.warningDescriptionText}>{text || '--'}</div>,
         }, {
             title: '预警规则',
             dataIndex: 'warningCheckRule',
-            key: 'warningCheckRule',
-            // width:150,
-            width:'11%',
-            ellipsis: true,
-            render: (text, record) => (
-                <span className={styles.warningCheckRule}>{text || '--'}</span>
-            )
+            width: '15%',
+            render: (text) => <div title={text || '--'} className={styles.warningCheckRuleText}>{text || '--'}</div>,
         }, {
             title: '预警级别',
             dataIndex: 'warningLevel',
-            key: 'warningLevel',
             sorter: true,
-            defaultSortOrder: 'ascend',
-            className:styles.warningLevel,
-            // width:150,
-            width:'11%',
+            textAlign: 'center',
+            width: '9%',
         }, {
             title: '是否启用',
             dataIndex: 'warningEnable',
-            key: 'warningEnable',
             sorter: true,
-            className:styles.warningEnable,
+            textAlign: 'center',
             render: (text, record) => record.warningEnable ? '是' : '否',
-            // width:150,
-            width:'11%',
+            width: '9%',
         }];
 
         const editColumn = {
             title: '编辑',
             dataIndex: 'edit',
-            key: 'edit',
-            className:styles.alarmEdit,
+            width: '9%',
+            textAlign: 'center',
             render: (text, record) => (
                 <span className={styles.edit}>
                     <i className="iconfont icon-edit" onClick={() => { this.wranEdit(record); }} />
                 </span>
             ),
         };
+
         const { loading, warnList, listQueryParams, totalNum } = this.props;
-        const { pageSize, pageNum } = listQueryParams;
+        const { pageSize, pageNum, sortField, sortOrder } = listQueryParams;
         const { selectedRowKeys } = this.state;
         const warnConfigOperation = handleRight('intelligentWarning_operate');
         const rowSelection = {
@@ -172,33 +141,34 @@ class WarnConfig extends Component {
             <div className={styles.warnConfig}>
                 <WarnConfigSearch {...this.props} />
                 <div className={styles.warnListTop}>
-                    {warnConfigOperation ? <div className={styles.warnListLeft}>
+                    {warnConfigOperation && <div className={styles.warnListLeft}>
                         <CneButton className={styles.rule} onClick={this.addRule}>
                             <div className={styles.icon}>
                                 <span className={'iconfont icon-newbuilt'} />
-                            </div>预警规则
+                            </div> 预警规则
                         </CneButton>
                         <Select onChange={this.selectChange} placeholder="操作" value={'操作'} dropdownMatchSelectWidth={false} >
                             <Option value="deleate" disabled={!selectedRowKeys.length > 0}>删除</Option>
                         </Select>
-                    </div> : <div></div>}
+                    </div> || null}
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
                 </div>
                 <div className={styles.tableBox}>
                     <CneTable
                         loading={loading}
                         onChange={this.tableChange}
-                        columns={warnConfigOperation ? warnListColumn.concat(editColumn) : warnListColumn}
+                        columns={warnConfigOperation ? [...warnListColumn, editColumn] : warnListColumn}
                         dataSource={warnList.map((e, i) => ({ key: e.warningCheckId, ...e, warningLevel: `${['一', '二', '三', '四', '五'][e.warningLevel - 1] || '--'}级` }))}
                         pagination={false}
+                        sortField={['warningLevel', 'warningEnable'][sortField - 1]}
+                        sortMethod={['ascend', 'descend'][sortOrder - 1]}
                         rowSelection={rowSelection}
                         className={styles.tableStyle}
-                        locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
                     />
                 </div>
             </div>
 
-        )
+        );
     }
 }
 export default WarnConfig;
