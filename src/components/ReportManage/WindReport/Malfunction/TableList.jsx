@@ -76,21 +76,21 @@ class TableList extends Component {
       dataIndex: 'regionName',
       sorter: true,
       textAlign: 'left',
-      width: '8%',
+      width: '9%',
       render: (text) => <div className={styles.regionNameText} title={text || '--'}>{text || '--'}</div>,
     }, {
       title: '电站名称',
       dataIndex: 'stationName',
       sorter: true,
       textAlign: 'left',
-      width: '12%',
+      width: '10%',
       render: (text) => <div className={styles.stationNameText} title={text || '--'}>{text || '--'}</div>,
     }, {
       title: '设备型号',
       dataIndex: 'deviceModeName',
       sorter: true,
       textAlign: 'left',
-      width: '12%',
+      width: '10%',
       render: (text) => <div className={styles.deviceModeNameText} title={text || '--'}>{text || '--'}</div>,
     }];
     const filterShow = [
@@ -99,28 +99,28 @@ class TableList extends Component {
         dataIndex: 'regionName',
         sorter: true,
         textAlign: 'left',
-        width: '8%',
+        width: '9%',
         render: (text) => <div className={styles.regionNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         sorter: true,
         textAlign: 'left',
-        width: '12%',
+        width: '10%',
         render: (text) => <div className={styles.stationNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '设备名称',
         dataIndex: 'deviceName',
         sorter: true,
         textAlign: 'left',
-        width: '12%',
+        width: '10%',
         render: (text) => <div className={styles.deviceNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '风机型号',
         dataIndex: 'deviceModeName',
         sorter: true,
         textAlign: 'left',
-        width: '12%',
+        width: '15%',
         render: (text) => <div className={styles.deviceModeNameText} title={text || '--'}>{text || '--'}</div>,
       },
     ];
@@ -132,21 +132,21 @@ class TableList extends Component {
         dataIndex: 'regionName',
         sorter: true,
         textAlign: 'left',
-        width: '8%',
+        width: '9%',
         render: (text) => <div className={styles.regionNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         sorter: true,
         textAlign: 'left',
-        width: '12%',
+        width: '10%',
         render: (text) => <div className={styles.stationNameText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '故障描述',
         dataIndex: 'deviceFaultName',
         sorter: true,
         textAlign: 'left',
-        width: '12%',
+        width: '14%',
         render: (text) => <div className={styles.deviceFaultNameText} title={text || '--'}>{text || '--'}</div>,
       }];
     const columns = [
@@ -199,7 +199,7 @@ class TableList extends Component {
         sorter: true,
         fixed: 'left',
         textAlign: 'left',
-        width: 80,
+        width: 100,
         render: (text) => <div className={styles.regionNameText} title={text}>{text}</div>,
       }, {
         title: '电站名称',
@@ -207,7 +207,7 @@ class TableList extends Component {
         sorter: true,
         fixed: 'left',
         textAlign: 'left',
-        width: 108,
+        width: 120,
         render: (text) => <div className={styles.stationNameText} title={text}>{text}</div>,
       }, {
         title: '设备名称',
@@ -215,7 +215,7 @@ class TableList extends Component {
         sorter: true,
         fixed: 'left',
         textAlign: 'left',
-        width: 108,
+        width: 120,
         render: (text) => <div className={styles.deviceNameText} title={text}>{text}</div>,
       }, {
         title: '风机型号',
@@ -223,21 +223,21 @@ class TableList extends Component {
         sorter: true,
         fixed: 'left',
         textAlign: 'left',
-        width: 108,
+        width: 150,
         render: (text) => <div className={styles.deviceModeNameText} title={text}>{text}</div>,
       }, {
         title: '所属部件',
         dataIndex: 'belongComponent',
         sorter: true,
         textAlign: 'left',
-        width: 112,
+        width: 120,
         render: (text) => <div className={styles.belongComponentText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '故障描述',
         dataIndex: 'faultDescribe',
         sorter: true,
         textAlign: 'left',
-        width: 112,
+        width: 140,
         render: (text) => <div className={styles.faultDescribeText} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '故障开始时间',
@@ -256,7 +256,7 @@ class TableList extends Component {
         dataIndex: 'faultCode',
         sorter: true,
         textAlign: 'right',
-        width: 112,
+        width: 120,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: '故障时长(s)',
@@ -270,42 +270,42 @@ class TableList extends Component {
         dataIndex: 'faultHours',
         textAlign: 'right',
         sorter: true,
-        width: 140,
+        width: 150,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: '损失电量(kWh)',
         dataIndex: 'faultGen',
         textAlign: 'right',
         // sorter: true,
-        width: 140,
+        width: 150,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: '风速(m/s)',
         dataIndex: 'windSpeedAvg',
         // sorter: true,
         textAlign: 'right',
-        width: 112,
+        width: 120,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: '有功功率(kW)',
         dataIndex: 'usePower',
         textAlign: 'right',
         // sorter: true,
-        width: 140,
+        width: 150,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: '发电机转速(Rpm)',
         dataIndex: 'speed',
         textAlign: 'right',
         // sorter: true,
-        width: 150,
+        width: 160,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: '桨叶角(℃)',
         dataIndex: 'bladeAngle',
         textAlign: 'right',
         // sorter: true,
-        width: 112,
+        width: 120,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
     ];
@@ -343,7 +343,7 @@ class TableList extends Component {
           sortMethod={sortMethod === 'desc' ? 'descend' : 'ascend'}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={tableType === 'detail' ? { x: 1954 } : { x: 0 }}
+          scroll={{ x: 'max-content' }}
           className={styles.tableStyles}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           pagination={false} />
