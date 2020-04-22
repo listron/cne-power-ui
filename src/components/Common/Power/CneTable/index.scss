@@ -100,6 +100,8 @@
     .ant-table-scroll .ant-table-header{ // 隐藏滚动条，保留效果
       margin-bottom: 0!important;
       padding-bottom: 0!important;
+      border-left: 1px solid var(--themeColor);
+      border-right: 1px solid var(--themeColor);
       &::-webkit-scrollbar{
         width: 8px;
         display: none;
@@ -177,10 +179,17 @@
 
 .cneTable.light{ // 颜色部分
   :global{
-    .ant-table .ant-table-thead > tr > th,
-    .ant-table .ant-table-tbody > tr > td{
+    .ant-table .ant-table-thead > tr > th{
       &:last-child {
         border-right: none;
+      }
+    }
+    .ant-table .ant-table-tbody > tr > td{
+      &:first-child {
+        border-left: 1px solid #d4d4d4;
+      }
+      &:last-child {
+        border-right: 1px solid #d4d4d4;
       }
     }
     .ant-table .ant-table-thead > tr > th{
@@ -208,12 +217,22 @@
         border-bottom: none;
       }
     }
-    .ant-table .ant-table-tbody{
-      border: 1px solid #d4d4d4;
-      border-top: none;
+    // 表格外围边线设置: 非滚动模式下, 作用于tr内部td进行边线展示; 滚动模式下td取消
+    .ant-table-scroll .ant-table-header{ // 滚动模式下，上下两个表格添加外围边线: 上表格边线主题色
+      border-left: 1px solid var(--themeColor);
+      border-right: 1px solid var(--themeColor);
     }
-    .ant-table-scroll .ant-table-tbody{
-      border-right: none;
+    .ant-table-scroll .ant-table-body{ // 滚动模式下，上下两个表格添加外围边线: 下表格边线d4d4d4,取消内部td首末边线
+      border-left: 1px solid #d4d4d4;
+      border-right: 1px solid #d4d4d4;
+      tr > td {
+        &:first-child {
+          border-left: none;
+        }
+        &:last-child {
+          border-right: none;
+        }
+      }
     }
     .ant-table .ant-table-tbody > tr{
       & > td {
