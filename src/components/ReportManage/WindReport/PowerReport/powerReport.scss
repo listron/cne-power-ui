@@ -38,7 +38,7 @@
   }
   .regionNameText, .stationNameText, .deviceNameText, .deviceModeNameText{
     @include overflowText();
-    width: calc(100% - 10px);
+    width: calc(100% - 5px);
   }
   .regionNameText{
     width: 80px;

@@ -128,46 +128,49 @@ class WindStationList extends React.Component {
             return <div title={value} className={styles.stationNameText} onClick={this.showTip}>{value}</div>;
           }
           return (
-            <a href={`#/monitor/singleStation/${record.stationCode}`}>
-              <div title={value} className={styles.stationNameText}>{value}</div>
+            <a href={`#/monitor/singleStation/${record.stationCode}`} title={value} className={styles.stationNameText}>
+              {value}
             </a>
           );
         },
-      },
-      {
+      }, {
         title: '区域',
         dataIndex: 'regionName',
         defaultSortOrder: 'ascend',
         sorter: true,
         textAlign: 'left',
-        className: styles.regionName,
-        render: (value) => <div className={styles.stationrovince} title={value}>{value}</div>,
+        width: '8%',
+        render: (value) => <div className={styles.regionNameText} title={value}>{value}</div>,
       },
       {
         title: () => <TableColumnTitle title="装机容量" unit={'MW'} />,
         dataIndex: 'stationCapacity',
         sorter: true,
-        className: `${styles.numberStyle} ${styles.stationCapacity}`,
+        width: '7%',
+        textAlign: 'right',
         render: value => dataFormats(value, '--', 2, true),
       },
       {
         title: () => <TableColumnTitle title="装机" unit="台" />,
         dataIndex: 'stationUnitCount',
         sorter: true,
-        className: `${styles.numberStyle} ${styles.stationUnitCount}`,
+        width: '6%',
+        textAlign: 'right',
         render: (value) => { return numWithComma(value); },
       },
       {
         title: () => <TableColumnTitle title="实时功率" unit={'MW'} />,
         dataIndex: 'stationPower',
         sorter: true,
-        className: `${styles.numberStyle} ${styles.stationPowerNum}`,
+        width: '7%',
+        textAlign: 'right',
         render: value => dataFormats(value / 1000, '--', 2, true),
       },
       {
         title: () => <TableColumnTitle title="平均风速" unit="m/s" />,
         dataIndex: 'instantaneous',
-        className: `${styles.numberStyle} ${styles.instantaneous}`,
+        width: '7%',
+        textAlign: 'right',
         render: (value) => dataFormats(value, '--', 2, true),
         sorter: true,
       },
@@ -175,14 +178,16 @@ class WindStationList extends React.Component {
         title: '出力比',
         dataIndex: 'capabilityRate',
         sorter: true,
-        className: `${styles.numberStyle} ${styles.capabilityRate}`,
+        width: '6.5%',
+        textAlign: 'right',
         render: (value) => dataFormats(value, '--', 2, true) + '%',
       },
       {
         title: () => <TableColumnTitle title="日发电量" unit={'万kWh'} />,
         dataIndex: 'dayPower',
         sorter: true,
-        className: `${styles.numberStyle} ${styles.dayPower}`,
+        width: '7%',
+        textAlign: 'right',
         render: value => this.powerPoint(this.unitFormarts(value, 10000)),
       },
       {
@@ -190,20 +195,23 @@ class WindStationList extends React.Component {
         dataIndex: 'monthPower',
         render: value => this.powerPoint(this.unitFormarts(value, 10000)),
         sorter: true,
-        className: `${styles.numberStyle} ${styles.monthPower}`,
+        textAlign: 'right',
+        width: '7%',
       },
       {
         title: () => <TableColumnTitle title="年发电量" unit={'万kWh'} />,
         dataIndex: 'yearPower',
         render: value => this.powerPoint(this.unitFormarts(value, 10000)),
         sorter: true,
-        className: `${styles.numberStyle} ${styles.yearPower}`,
+        textAlign: 'right',
+        width: '7%',
       },
       {
         title: '年完成率',
         dataIndex: 'yearPlanRate',
         sorter: true,
-        className: `${styles.numberStyle} ${styles.yearPlanRate}`,
+        width: '6.5%',
+        textAlign: 'right',
         render: value => dataFormats(value, '--', 2, true) + '%',
       },
       // {
@@ -217,21 +225,24 @@ class WindStationList extends React.Component {
         title: () => <TableColumnTitle title="故障" unit={'台'} />,
         dataIndex: 'errorNum',
         sorter: true,
-        className: `${styles.numberStyle} ${styles.errorNum}`,
+        textAlign: 'right',
+        width: '6%',
         render: value => value ? value : 0,
       },
       {
         title: () => <TableColumnTitle title="维护" unit={'台'} />,
         dataIndex: 'maintainNum',
         sorter: true,
-        className: `${styles.numberStyle} ${styles.maintainNum}`,
+        textAlign: 'right',
+        width: '6%',
         render: value => value ? value : 0,
       },
       {
         title: () => <TableColumnTitle title="通讯中断" unit={'台'} />,
         dataIndex: 'interruptNum',
         sorter: true,
-        className: `${styles.numberStyle} ${styles.interruptNum}`,
+        textAlign: 'right',
+        width: '7%',
         render: value => value ? value : 0,
       },
     ];
@@ -290,6 +301,7 @@ class WindStationList extends React.Component {
           sortMethod={this.sortMethodMap[sortMethod] || false}
           dataSource={datalist}
           onChange={this.ontableSort}
+          className={styles.windListTable}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           dataError={false} />
       </div>

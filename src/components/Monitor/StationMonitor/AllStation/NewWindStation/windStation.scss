@@ -424,19 +424,23 @@
       justify-content: flex-end;
       line-height: 45px;
     }
-
-    .stationNameText{
-      color: var(--themeColor);
-      &:hover{
-        color: #FF9900;
+    .windListTable{
+      table{
+        table-layout: fixed;
+        width: 100%;
       }
-    }
-
-    .stationName, .regionName{
-      width: 8%;
-    }
-    .stationCapacity, .stationUnitCount, .stationPowerNum, .instantaneous, .capabilityRate, .dayPower, .monthPower, .yearPower, .yearPlanRate,.errorNum, .maintainNum, .interruptNum{
-      width: 7%;
+      .stationNameText, .regionNameText{
+        @include overflowText();
+        width: calc(100% - 5px);
+      }
+      .stationNameText{
+        vertical-align: middle;
+        display: inline-block;
+        color: var(--themeColor);
+        &:hover{
+          color: #FF9900;
+        }
+      }
     }
   }
   // 地图
