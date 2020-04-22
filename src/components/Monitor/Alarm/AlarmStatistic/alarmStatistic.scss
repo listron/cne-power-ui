@@ -119,17 +119,6 @@
       margin-top: -20px;
       margin-bottom: 10px;
       padding: 0 32px;
-      .datePicker {
-        margin-top: 10px;
-        display: flex;
-        flex: 1;
-        flex-shrink: 0;
-        min-height: 40px;
-        border-radius: 2px;
-        background-color: #f0f2f5;
-        align-items: center;
-        padding: 5px 26px;
-      }
       :global {//filterBox
         .ant-tabs-bar {
           background-color: #f0f2f5;

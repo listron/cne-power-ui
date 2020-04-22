@@ -29,10 +29,10 @@ var initState = Immutable.fromJS({
   singleAlarmStatistic: [], //单电站
   singleAlarmSummary: {}, //单电站告警汇总
 
-  pvStartTime: '', // 光伏电站开始时间
-  pvEndTime: '', // 光伏电站结束时间
-  windStartTime: '', // 风电电站开始时间
-  windEndTime: '', // 风电电站开始时间
+  pvStartTime: moment().subtract(6, 'days').hour(0).minute(0).second(0).utc().format(), // 光伏电站开始时间
+  pvEndTime: moment().endOf('day').utc().format(), // 光伏电站结束时间
+  windStartTime: moment().subtract(6, 'days').hour(0).minute(0).second(0).utc().format(), // 风电电站开始时间
+  windEndTime: moment().endOf('day').utc().format(), // 风电电站开始时间
 });
 
 const alarmStatisticReducer = (state = initState, action) => {
