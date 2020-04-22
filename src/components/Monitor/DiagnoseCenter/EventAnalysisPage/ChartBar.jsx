@@ -31,13 +31,13 @@ class ChartBar extends PureComponent {
   }
 
   drawChart = (data = [], eventCode, dataDays) => {
-    const dataDay = { // 诊断事件阵列损耗、转换效率偏低事件默认展示7天数据，向前滚动30天
-      1: '100',
-      30: '75',
-    };
+    // const dataDay = { // 诊断事件阵列损耗、转换效率偏低事件默认展示7天数据，向前滚动30天
+    //   1: '100',
+    //   30: '75',
+    // };
     const barChart = echarts.init(this.barRef);
     const xNames = [], baseData = [], theoryData = [], lineData = [], pointData = data;
-    const dataEvent = ['NB1039', 'NB1041'].includes(eventCode); // 转换效率偏低、阵列损耗事件
+    // const dataEvent = ['NB1039', 'NB1041'].includes(eventCode); // 转换效率偏低、阵列损耗事件
     const conversionEfficiency = ['NB1039'].includes(eventCode); // 转换效率偏低事件
     data.forEach((e) => {
       xNames.push(moment(e.time).format('YYYY-MM-DD'));
@@ -50,7 +50,7 @@ class ChartBar extends PureComponent {
         show: true,
         borderColor: '#d4d4d4',
         top: 0,
-        bottom: 104,
+        bottom: 80,
         left: '7%',
         right: '7%',
       },
@@ -215,9 +215,10 @@ class ChartBar extends PureComponent {
   }
 
   render(){
+    const clientWidth = document.body.clientWidth;
     return (
       <div className={styles.analysisChart}>
-        <div style={{width: '100%', height: '560px'}} ref={(ref) => { this.barRef = ref; } } />
+        <div style={{width: '100%', height: clientWidth === 1440 ? '300px' : '400px'}} ref={(ref) => { this.barRef = ref; } } />
       </div>
     );
   }

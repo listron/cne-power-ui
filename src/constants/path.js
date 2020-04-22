@@ -453,6 +453,7 @@ export default {
       versionEvent: '/v4/diag/config/event', //添加告警事件 编辑告警事件 删除告警事件
       getEventType: '/v4/diag/config/eventtype', //获取标准事件告警类型
       getEventDetail: '/v4/diag/config/eventdetail', //获取标准告警事件详情
+      getLinkageList: 'v4/diag/warning/relevant', //	获取多故障联动告警列表
     },
     monitor: {
       //实时监控

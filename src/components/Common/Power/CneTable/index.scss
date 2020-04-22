@@ -6,12 +6,6 @@
       .ant-table{
         font-size: 14px;
       }
-      .ant-table .ant-table-tbody > tr > td{
-        line-height: 40px;
-      }
-      .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
-        margin-top: -0.4em;
-      }
     }
   }
 }
@@ -20,13 +14,7 @@
   .cneTable{
     :global{
       .ant-table{
-        font-size: 1.2em;
-      }
-      .ant-table .ant-table-tbody > tr > td{
-        line-height: 1em;
-      }
-      .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
-        margin-top: -0.25em;
+        font-size: 1.2rem;
       }
     }
   }
@@ -36,13 +24,7 @@
   .cneTable{
     :global{
       .ant-table{
-        font-size: 1.3em;
-      }
-      .ant-table .ant-table-tbody > tr > td{
-        line-height: 1em;
-      }
-      .ant-table .ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner{
-        margin-top: -0.1em;
+        font-size: 1.3rem;
       }
     }
   }
@@ -52,13 +34,14 @@
   :global{
     .ant-table .ant-table-tbody > tr > td {
       padding: 0 10px;
+      line-height: 40px;
       &.leftContent{
         padding: 0 0 0 10px;
         text-align: left;
       }
-      &.middleContent{
+      &.middleContent, &.centerContent{
         padding: 0;
-        text-align: middle;
+        text-align: center;
       }
       &.rightContent{
         padding: 0 10px 0 0;
@@ -76,7 +59,7 @@
       }
     }
     .ant-table .ant-table-thead > tr > th{
-      padding: 0 10px;
+      padding: 0;
       line-height: 36px;
       text-align: center;
       border-radius: 0;
@@ -86,7 +69,8 @@
         position: relative;
         .ant-table-column-sorter-inner{
           margin-left: 4px;
-          height: 1em;
+          height: 1.65rem;
+          margin-top: -0.1rem;
         }
         .on, .off{
           transform: scale(1.25, 1);
@@ -96,16 +80,48 @@
           -o-transform: scale(1.25, 1);
         }
         .ant-table-column-sorter-up, .ant-table-column-sorter-down{
-          height: 1em;
-          line-height: 1em;
+          height: 1rem;
+          line-height: 1rem;
+        }
+        .ant-table-column-sorter-up{
+          padding-top: 0.1rem;
         }
         .ant-table-column-sorter-down{
-          margin-top: -0.35em;
+          margin-top: -0.25rem;
         }
       }
     }
+    .ant-table .ant-table-thead > tr > .ant-table-selection-column {
+      min-width: 40px;
+    }
     .ant-table-placeholder {
       border-bottom: none;
+    }
+    .ant-table-scroll .ant-table-header{ // 隐藏滚动条，保留效果
+      margin-bottom: 0!important;
+      padding-bottom: 0!important;
+      &::-webkit-scrollbar{
+        width: 8px;
+        display: none;
+      }
+    }
+    .ant-table-scroll .ant-table-body{ // 默认隐藏纵向滚动条
+      &::-webkit-scrollbar{
+        width: 8px;
+        &:vertical{
+          display: none;
+        }
+        &:horizontal{
+          height: 10px;
+        }
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      &::-webkit-scrollbar-thumb:horizontal{
+        border-radius: 5px;
+      }
     }
   }
 }
@@ -113,8 +129,6 @@
 .headShadow{ // 表格顶部冻结 且滚动时 = 头部需有阴影
   :global{
     .ant-table-scroll .ant-table-header{
-      overflow-x: hidden!important;
-      margin-bottom: 0!important;
       box-shadow: 0 4px 2px rgba(0, 0, 0, 0.3);
       position: relative;
       z-index: 99;
@@ -122,7 +136,26 @@
   }
 }
 
-.nomore {
+.scrollingBar{
+  :global{
+    .ant-table-scroll .ant-table-header{
+      &::-webkit-scrollbar:vertical{
+        display: block;
+        background-color: var(--themeColor);
+      }
+      &::-webkit-scrollbar-track-piece{
+        background-color: var(--themeColor);
+      }
+    }
+    .ant-table-scroll .ant-table-body{
+      &::-webkit-scrollbar:vertical{
+        display: block;
+      }
+    }
+  }
+}
+
+.nomore { // 需要展示： 没有更多数据的表格所需下部图片提示
   :global{
     .ant-table:not(.ant-table-empty) {
       .ant-table-body:after {
@@ -150,6 +183,7 @@
       background-color: var(--themeColor);
       color: #fff;
       border-right: 1px solid #fff;
+      border-bottom: 1px solid #fff;
       &.ant-table-column-sort{
         background-color: #06614A;
       }
@@ -165,9 +199,17 @@
         }
       }
     }
+    .ant-table .ant-table-thead > tr {
+      &:last-child > th {
+        border-bottom: none;
+      }
+    }
     .ant-table .ant-table-tbody{
       border: 1px solid #d4d4d4;
       border-top: none;
+    }
+    .ant-table-scroll .ant-table-tbody{
+      border-right: none;
     }
     .ant-table .ant-table-tbody > tr{
       & > td {
@@ -196,12 +238,12 @@
         box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
       }
     }
-    .ant-table-fixed .ant-table-thead > tr > th{ // 冻结列右侧样式
+    .ant-table-fixed-left .ant-table-thead > tr > th{ // 冻结列右侧样式
       &:last-child {
         border-right: 1px solid #fff;
       }
     }
-    .ant-table-fixed .ant-table-tbody > tr > td{
+    .ant-table-fixed-left .ant-table-tbody > tr > td{
       &:last-child {
         border-right: 1px dashed var(--themeColor);
         // box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);

@@ -9,6 +9,7 @@ import ChartBar from './ChartBar';
 import EventBarSearch from './EventBarSearch';
 import styles from './eventAnalysis.scss';
 import CneButton from '@components/Common/Power/CneButton';
+import LinkageList from './LinkageList';
 import moment from 'moment';
 
 
@@ -22,6 +23,7 @@ class EventAnalysisPage extends PureComponent {
     changeStore: PropTypes.func,
     getEventsAnalysis: PropTypes.func,
     eventAnalysisLoading: PropTypes.bool,
+    isMoreData: PropTypes.bool,
   };
 
   titleName = {
@@ -39,7 +41,7 @@ class EventAnalysisPage extends PureComponent {
   }
 
   render(){
-    const { pageKey, analysisEvent, eventAnalysisInfo, eventAnalysisLoading } = this.props;
+    const { pageKey, analysisEvent, eventAnalysisInfo, eventAnalysisLoading, isMoreData } = this.props;
     const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName, interval, beginTime } = analysisEvent || {};
     const startTime = moment(moment(beginTime).startOf('day').format()).utc().format();
     const endTime = moment(moment(beginTime).endOf('day').format()).utc().format();
@@ -75,14 +77,14 @@ class EventAnalysisPage extends PureComponent {
             <span className={styles.infoText}><span className={styles.text}>电站名称：</span><span className={styles.stationName} title={stationName}> {stationName || '--'}；</span></span>
           </span>
           <span className={styles.topHandle}>
-            <Link to={redirectPath} target="_blank" className={styles.showMore}>
+            {!isMoreData && <Link to={redirectPath} target="_blank" className={styles.showMore}>
               <CneButton className={styles.shadow}>
                 <span>
                   <span className="iconfont icon-moredata" />
                   <span>更多数据</span>
                 </span>
               </CneButton>
-            </Link>
+            </Link>}
             {/* <Button className={styles.showMore}>
               <span className={styles.shadow}>
                 <span className="iconfont icon-gd4" />
@@ -98,6 +100,7 @@ class EventAnalysisPage extends PureComponent {
           {chartType === 2 && <EventBarSearch {...this.props} />}
           {chartType === 1 && <ChartLine {...this.props} />}
           {chartType === 2 && <ChartBar {...this.props} />}
+          <LinkageList {...this.props} />
         </div> :
         <div className={styles.spin}><Spin /></div>}
       </section>

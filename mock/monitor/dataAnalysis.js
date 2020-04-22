@@ -271,6 +271,46 @@ module.exports = [
         })),
       }
       }
-    }
-  
-]
+    }, { // 诊断中心-线型图-列表
+      api: '/mock/monitor/diagnoseCenter/linkageList',
+      method: 'post',
+      response: {
+        code: '10000',
+        message: '请求成功',
+        data: [
+          {
+            relevantType: 1,
+            count: 9,
+            list: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42].map(e => ({
+              eventType: `${e}`,
+              pointValueDesc: `事件描述${e}`,
+              deviceTypeName: `类型${e * 1}`,
+              beginTime: `2020-04-20 14:0${e}`,
+              statusName: `状态${e}`,
+            })),
+          }, {
+            relevantType: 2,
+            count: 5,
+            list: [1, 2, 3, 4, 5].map(e => ({
+              eventType: `${e}`,
+              pointValueDesc: `事件描述${e}`,
+              deviceTypeName: `类型${e * 1}`,
+              beginTime: `2020-04-20 14:0${e}`,
+              statusName: `状态${e}`,
+            })),
+          }, {
+            relevantType: 3,
+            count: 4,
+            list: [1, 2, 3, 4].map(e => ({
+              eventType: `${e}`,
+              pointValueDesc: `事件描述${e}`,
+              deviceTypeName: `类型${e * 1}`,
+              beginTime: `2020-04-20 14:0${e}`,
+              statusName: `状态${e}`,
+            })),
+          }
+        ],
+        serviceCode: '3.0',
+      },
+      },
+];

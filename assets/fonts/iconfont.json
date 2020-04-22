@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "14196866",
+      "name": "fhdq",
+      "font_class": "fhdq",
+      "unicode": "e73d",
+      "unicode_decimal": 59197
+    },
+    {
+      "icon_id": "14178954",
+      "name": "eam",
+      "font_class": "eam",
+      "unicode": "e73c",
+      "unicode_decimal": 59196
+    },
+    {
+      "icon_id": "13871025",
+      "name": "fulu",
+      "font_class": "fulu",
+      "unicode": "e739",
+      "unicode_decimal": 59193
+    },
+    {
+      "icon_id": "13871014",
+      "name": "beizhu",
+      "font_class": "beizhu",
+      "unicode": "e73a",
+      "unicode_decimal": 59194
+    },
+    {
+      "icon_id": "13871015",
+      "name": "yizhuan",
+      "font_class": "yizhuan",
+      "unicode": "e73b",
+      "unicode_decimal": 59195
+    },
+    {
       "icon_id": "13497474",
       "name": "goout",
       "font_class": "goout",

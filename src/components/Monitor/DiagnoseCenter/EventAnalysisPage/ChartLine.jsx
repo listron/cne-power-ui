@@ -183,11 +183,11 @@ class ChartLine extends PureComponent {
         xAxisIndex: 0,
         yAxisIndex: unitsGroup.indexOf(e.pointUnit || ''), // 空单位统一以''作为单位
         lineStyle: {
-          width: (e.isConnected === 0 && (noDeviceName || seriesInefficient)) ? 0 : 3, // 诊断事件的零电流、组串低效、固定物遮挡未接组串不显示折线
+          width: (e.isConnected === 0 && (noDeviceName || seriesInefficient)) ? 0 : 1, // 诊断事件的零电流、组串低效、固定物遮挡未接组串不显示折线
         },
         data: e.value,
         symbol: 'circle',
-        symbolSize: 10,
+        symbolSize: 5,
         showSymbol: false,
         smooth: true,
       });
@@ -241,17 +241,16 @@ class ChartLine extends PureComponent {
         show: false,
       },
     }];
-
+    const clientWidth = document.body.clientWidth;
     const grid = [{
       show: true,
       borderColor: '#d4d4d4',
-      bottom: (delPointIndex !== -1 && pageKey === 'alarm') ? '27%' : '',
+      bottom: (delPointIndex !== -1 && pageKey === 'alarm') ? '37%' : '',
       top: legendHeight,
       left: '7%',
       right: '7%',
-      height: (delPointIndex !== -1 && pageKey === 'alarm') ? '' : 407,
-      },
-    ];
+      height: (delPointIndex !== -1 && pageKey === 'alarm') ? (clientWidth === 1440 ? 198 : 260) : (clientWidth === 1440 ? 220 : 280),
+    }];
     if (delPointIndex !== -1 && pageKey === 'alarm') { // 是告警事件且存在脉冲信号时新增坐标系
       pointData.push(pulseSignalInfo);
       colors.push('#f8e71c');
@@ -287,7 +286,6 @@ class ChartLine extends PureComponent {
           show: false,
         },
       });
-
       xAxis.push({
         gridIndex: 1,
         type: 'category',
@@ -308,12 +306,11 @@ class ChartLine extends PureComponent {
           show: false,
         },
       });
-
       grid.push({
         show: true,
         borderColor: '#d4d4d4',
         bottom: 100,
-        top: '73%',
+        top: '63%',
         left: '7%',
         right: '7%',
         height: 57,
@@ -327,15 +324,15 @@ class ChartLine extends PureComponent {
         xAxisIndex: 1,
         yAxisIndex: unitsGroup.length,
         lineStyle: {
-          width: 3,
+          width: 1,
           shadowColor: 'rgba(0, 0, 0, 0.5)',
-          shadowBlur: 4,
+          shadowBlur: 2,
           shadowOffsetX: 0,
-          shadowOffsetY: 4,
+          shadowOffsetY: 2,
         },
         data: pulseSignalInfo.value,
         symbol: 'circle',
-        symbolSize: 10,
+        symbolSize: 5,
         showSymbol: false,
         smooth: true,
       });
@@ -380,12 +377,12 @@ class ChartLine extends PureComponent {
               name: 'Y轴水平线',
               lineStyle: {
                 type: 'solid',
-                width: (dataAnomaly && standard) ? 3 : 0,
+                width: (dataAnomaly && standard) ? 1 : 0,
                 color: '#ffeb00',
                 shadowColor: 'rgba(0, 0, 0, 0.3)',
-                shadowBlur: 4,
+                shadowBlur: 2,
                 shadowOffsetX: 0,
-                shadowOffsetY: 4,
+                shadowOffsetY: 2,
               },
             },
           ],
@@ -477,13 +474,9 @@ class ChartLine extends PureComponent {
           show: true,
           height: 20,
           bottom: (delPointIndex !== -1 && pageKey === 'alarm') ? 10 : 16,
-          // start: (noAlarmTime || seriesInefficient || fixedShelter || pageKey === 'data') ? dataDay[dataDays] : 0, // 诊断事件组串低效、电压异常、并网延时、固定物遮挡；数据事件默认展示7天数据;
-          // end: 100,
           xAxisIndex: (delPointIndex !== -1 && pageKey === 'alarm') ? [0, 1] : [0],
         }, {
           type: 'inside',
-          // start: (noAlarmTime || seriesInefficient || fixedShelter || pageKey === 'data') ? dataDay[dataDays] : 0, // 诊断事件组串低效、电压异常、并网延时、固定物遮挡；数据事件默认展示7天数据;
-          // end: 100,
           xAxisIndex: (delPointIndex !== -1 && pageKey === 'alarm') ? [0, 1] : [0],
         },
       ];
@@ -493,13 +486,16 @@ class ChartLine extends PureComponent {
   }
 
   render(){
-    const { eventAnalysisInfo, analysisEvent } = this.props;
+    const { eventAnalysisInfo, analysisEvent, pageKey } = this.props;
     const { data = {} } = eventAnalysisInfo || {};
     const { pointData } = data;
     const { eventCode } = analysisEvent;
     const noDeviceName = ['NB1035', 'NB1037', 'NB1036'].includes(eventCode); // 一行8个
-    const calcHeight = 480 + (noDeviceName ? Math.ceil(pointData.length / 8) * 30 : Math.ceil(pointData.length / 4) * 30);
-    const chartHeight = calcHeight > 593 ? calcHeight : 593; // 图表高度不小于593
+    const clientWidth = document.body.clientWidth;
+    console.log(noDeviceName ? Math.ceil(pointData.length / 8) * 30 : Math.ceil(pointData.length / 4) * 30);
+    console.log(pageKey === 'alarm' ? (clientWidth === 1440 ? 335 : 428) : (clientWidth === 1440 ? 335 : 370));
+    const calcHeight = (pageKey === 'alarm' ? (clientWidth === 1440 ? 335 : 428) : (clientWidth === 1440 ? 335 : 372)) + (noDeviceName ? Math.ceil(pointData.length / 8) * 30 : Math.ceil(pointData.length / 4) * 30);
+    // const chartHeight = calcHeight > 335 ? calcHeight : 335;
 
     return (
       <div className={styles.analysisChart}>
@@ -515,7 +511,7 @@ class ChartLine extends PureComponent {
             </span>
           ))}
         </div> */}
-        <div style={{width: '100%', height: `${chartHeight}px`}} ref={(ref) => { this.lineRef = ref; } } />
+        <div style={{width: '100%', height: `${calcHeight}px`}} ref={(ref) => { this.lineRef = ref; } } />
       </div>
     );
   }

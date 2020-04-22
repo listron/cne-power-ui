@@ -150,6 +150,7 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
       });
       const { listParams, listPage } = yield select(state => state.monitor.diagnoseCenter);
       yield fork(getDiagnoseList, { payload: { ...listParams, ...listPage } });
+      yield fork(getLinkageList, { payload: { ...listParams, ...listPage } });
     } else { throw response.message; }
   } catch (error) {
     message.error(`操作失败, ${error}`);
@@ -249,6 +250,28 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
   }
 }
 
+function * getLinkageList({payload = {}}){ // 诊断分析-线型图-联动决策
+  const diagWarningId = payload.diagWarningId;
+  const url = `${APIBasePath}${monitor.getLinkageList}/${diagWarningId}`;
+  try{
+    const response = yield call(request.get, url, payload);
+    yield call(easyPut, 'changeStore', { linkageListLoading: true });
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        linkageListData: response.data || [],
+        linkageListLoading: false,
+        linkageListError: true,
+      });
+    } else { throw response.message; }
+  } catch(error){
+    message.error(`事件列表获取失败, ${error}`);
+    yield call(easyPut, 'changeStore', {
+      linkageListLoading: false,
+      linkageListError: false,
+    });
+  }
+}
+
 export function* watchDiagnoseCenter() {
   yield takeLatest(diagnoseCenterAction.getEventstatus, getEventstatus);
   yield takeEvery(diagnoseCenterAction.getEventtypes, getEventtypes);
@@ -257,5 +280,6 @@ export function* watchDiagnoseCenter() {
   yield takeLatest(diagnoseCenterAction.stopCircleQueryList, stopCircleQueryList);
   yield takeLatest(diagnoseCenterAction.getEventsAnalysis, getEventsAnalysis);
   yield takeLatest(diagnoseCenterAction.editEventsStatus, editEventsStatus);
+  yield takeLatest(diagnoseCenterAction.getLinkageList, getLinkageList);
 }
 
