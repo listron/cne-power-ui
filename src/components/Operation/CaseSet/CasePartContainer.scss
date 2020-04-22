@@ -135,35 +135,25 @@
 }
 
 .caseList {
-  // margin-bottom: 24px;
-
-  .titleStyle {
-    text-align: center;
-    padding: 0 8px !important;
-
-    span{
-      display: flex;
-      justify-content: space-around;
-
-      i{
-        color: $themeColor;
-
-        &:hover{
-          color: #f9b600;
-        }
-      }
+  .editPoint {
+    cursor: pointer;
+    color: $themeColor;
+    margin-right: 4px;
+    padding: 4px;
+    &:last-child{
+      margin-right: 0px;
+    }
+    &:hover{
+      color: #f9b600;
     }
   }
-
   .selectKeyText {
     margin-top: 16px;
     margin-left: 20px;
-
     .num {
       color: #fab907;
       margin: 0 4px;
     }
-
     .cancelSelect {
       color: $themeColor;
       margin-left: 4px;
@@ -171,37 +161,8 @@
     }
   }
 
-  .editPoint {
-    cursor: pointer;
-
-    &:hover {
-      color: $themeColor;
-      font-weight: 400;
-    }
-  }
-
-  .questionType,
-  .faultCode,
-  .questionDes,
-  .dealHandler{
+  .stationWidth, .tableTypeWidth, .questionType, .faultCode, .questionDes, .dealHandler{
     @include overflowText();
-    max-width: calc((100vw - 230px) * 0.15 - 10px);
+    width: calc(100% - 5px);
   }
-
-  .tableTypeWidth,
-  .stationWidth{
-    @include overflowText();
-    max-width: calc((100vw - 230px) * 0.08 - 10px);
-  }
-
-  .stationWidth {
-    width: 80px;
-  }
-
-  .likeWidth {
-    width: 68px;
-    text-align: right;
-  }
-
-
 }

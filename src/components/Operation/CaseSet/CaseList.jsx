@@ -121,108 +121,92 @@ class CaseList extends React.Component {
     const columns = [
       {
         title: '风场',
-        width: '8%',
+        width: '10%',
         textAlign: 'left',
         dataIndex: 'stationNames',
-        key: 'stationNames',
         render: (text) => {
           return (
-            <div className={styles.stationWidth} title={text} >{text}</div>
+            <div className={styles.stationWidth} title={text || '--'} >{text || '--'}</div>
           );
         },
-      },
-      {
+      }, {
         title: '机型',
-        width: '8%',
+        width: '15%',
         textAlign: 'left',
         dataIndex: 'deviceName',
-        key: 'deviceName',
         render: (text) => {
           return (
-            <div className={styles.tableTypeWidth} title={text} >{text}</div>
+            <div className={styles.tableTypeWidth} title={text || '--'} >{text || '--'}</div>
           );
         },
-
       }, {
         title: '问题类别',
-        width: '15%',
+        width: '11%',
         textAlign: 'left',
         dataIndex: 'questionTypeCodeName',
-        key: 'questionTypeCodeName',
         render: (text) => {
           return (
-            <div className={styles.questionType} title={text} >{text}</div>
+            <div className={styles.questionType} title={text || '--'} >{text || '--'}</div>
           );
         },
-
       }, {
         title: '相关故障代码',
-        width: '15%',
+        width: '11%',
         textAlign: 'left',
         dataIndex: 'faultCode',
-        key: 'faultCode',
         render: (text) => {
           return (
-            <div className={styles.faultCode} title={text} >{text}</div>
+            <div className={styles.faultCode} title={text || '--'} >{text || '--'}</div>
           );
         },
-
       }, {
         title: '问题描述',
-        width: '15%',
+        width: '14.5%',
         textAlign: 'left',
         dataIndex: 'faultDescription',
-        key: 'faultDescription',
         render: (text) => {
           return (
-            <div className={styles.questionDes} title={text} >{text}</div>
+            <div className={styles.questionDes} title={text || '--'} >{text || '--'}</div>
           );
         },
-
       }, {
         title: '处理措施',
-        width: '15%',
+        width: '14.5%',
         textAlign: 'left',
         dataIndex: 'processingMethod',
-        key: 'processingMethod',
         render: (text) => {
           return (
-            <div className={styles.dealHandler} title={text} >{text}</div>
+            <div className={styles.dealHandler} title={text || '--'} >{text || '--'}</div>
           );
         },
-
       }, {
         title: '更新时间',
-        width: '8%',
+        width: '7.5%',
         textAlign: 'center',
         dataIndex: 'updateTime',
-        key: 'updateTime',
         sorter: true,
         render: (text) => {
           return (
-            <div title={text} >{moment(text).format('YYYY-MM-DD')}</div>
+            <div title={text || '--'}>{text ? moment(text).format('YYYY-MM-DD') : '--'}</div>
           );
         },
-
       }, {
         title: '点赞数',
-        width: '7%',
+        width: '6%',
         textAlign: 'right',
         dataIndex: 'likeCount',
-        key: 'likeCount',
         sorter: true,
         render: (text) => {
           return (
-            <div title={text} >{text}</div>
+            <div title={(text || text === 0) ? text : '--'} >{(text || text === 0) ? text : '--'}</div>
           );
         },
       },
       {
         title: '操作',
-        width: '6%',
+        width: '7%',
         textAlign: 'center',
-        key: 'caozuo',
-        className: styles.titleStyle,
+        dataIndex: 'caozuo',
         render: (text, record) => {
           return (
             <span>
@@ -232,7 +216,6 @@ class CaseList extends React.Component {
             </span>
           );
         },
-
       },
     ];
     return (
