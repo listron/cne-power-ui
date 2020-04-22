@@ -357,6 +357,42 @@
         }
       }
 
+      .commonInfoBox{
+        width: 100%;
+        min-height: 100px;
+        border: 1px solid #199475;
+        padding-top: 6px;
+        box-shadow: 2px 2px 0 3px #ceebe0;
+        border-radius: 2px;
+        margin-top: 18px;
+
+        .tableBar{
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .commonIconBox{
+          display: flex;
+          align-items: center;
+
+          i {
+            color: $themeColor;
+            cursor: pointer;
+            font-size: 20px;
+            margin-left: 10px;
+
+            &:hover {
+              color: #f9b600;
+            }
+          }
+
+        }
+
+        .commonWrap{
+          padding: 15px 30px;
+        }
+      }
+
       .tableBar {
         width: 100%;
         display: flex;
@@ -371,6 +407,10 @@
           padding-left: 12px;
           border-left: 4px solid #199475;
           background-image: linear-gradient(90deg, #ceebe0 0%, #ffffff 100%);
+
+          span{
+            color: #4d90fd;
+          }
         }
 
         i {
@@ -414,7 +454,26 @@
           @include lineheight(40px);
           border-radius: 0;
         }
+
+        .ant-table .ant-table-thead > tr:last-child > th{
+          border-right: 1px solid $borderColor;
+        }
+
+        .ant-table .ant-table-tbody > tr > td {
+          padding: 0 0 0 10px;
+          line-height: normal;
+          word-break: break-all;
+        }
+
+        .ant-table .ant-table-tbody > tr:nth-of-type(even) {
+          background-color: #FFFFFF;
+        }
       }
     }
   }
+}
+
+.textAlignName{
+  text-align: center !important;
+  padding: 0 !important;
 }

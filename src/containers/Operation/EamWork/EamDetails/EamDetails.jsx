@@ -58,30 +58,292 @@ class EamDetails extends React.Component {
     const listColumn1 = [
       {
         title: '序号',
+        width: '8%',
         dataIndex: '1',
-        render: (text) => (<div className={styles.projectCompany} title={text || ''} >{text || '- -'}</div>),
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '检查项(设备名称)',
         dataIndex: '2',
-        render: (text) => (<div className={styles.stationName} title={text || ''} >{text || '- -'}</div>),
+        width: '18%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '异常类别',
         dataIndex: '3',
-        render: (text) => (<div className={styles.workCode} onClick={() => this.detailsFunc(text)} title={text || ''} >{text || '- -'}</div>),
+        width: '16%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '是否为故障主要原因',
         dataIndex: '4',
-        render: (text) => (<div className={styles.workDesc} title={text || ''} >{text || '- -'}</div>),
+        width: '14%',
+        className: styles.textAlignName,
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '异常原因分析',
         dataIndex: '5',
-        render: (text) => (<div className={styles.deviceCode} title={text || ''} >{text || '- -'}</div>),
+        width: '23%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '异常解决方案',
         dataIndex: '6',
-        render: (text) => (<div className={styles.deviceName} title={text || ''} >{text || '- -'}</div>),
+        width: '23%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+    ];
+
+    const listColumn2 = [
+      {
+        title: '设备编码',
+        width: '8%',
+        dataIndex: '1',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '设备名称',
+        dataIndex: '2',
+        width: '38%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '位置编码',
+        dataIndex: '3',
+        width: '16%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '位置名称',
+        dataIndex: '4',
+        width: '38%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+    ];
+
+    const listColumn3 = [
+      {
+        title: '编号',
+        width: '8%',
+        dataIndex: '1',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '工作票编号',
+        dataIndex: '2',
+        width: '12%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '类型',
+        dataIndex: '3',
+        width: '12%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '工作内容',
+        dataIndex: '4',
+        width: '22%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '计划开始时间',
+        dataIndex: '5',
+        width: '14%',
+        className: styles.textAlignName,
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '计划完成时间',
+        dataIndex: '6',
+        width: '14%',
+        className: styles.textAlignName,
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '工作负责人',
+        dataIndex: '7',
+        width: '10%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '状态',
+        dataIndex: '8',
+        width: '8%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+    ];
+
+    const listColumn4 = [
+      {
+        title: '编号',
+        width: '8%',
+        dataIndex: '1',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '操作票编号',
+        dataIndex: '2',
+        width: '12%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '操作任务',
+        dataIndex: '3',
+        width: '12%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '操作票类型',
+        dataIndex: '4',
+        width: '22%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '操作人',
+        dataIndex: '5',
+        width: '8%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '监护人',
+        dataIndex: '6',
+        width: '8%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '电场(站)描述',
+        dataIndex: '7',
+        width: '22%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '状态',
+        dataIndex: '8',
+        width: '8%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+    ];
+
+    const listColumn5 = [
+      {
+        title: '编号',
+        width: '12%',
+        dataIndex: '1',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '领料单编号',
+        dataIndex: '2',
+        width: '39%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '用途',
+        dataIndex: '3',
+        width: '39%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '状态',
+        dataIndex: '4',
+        width: '10%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+    ];
+
+    const listColumn6 = [
+      {
+        title: '物资编码',
+        width: '12%',
+        dataIndex: '1',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '物资描述',
+        dataIndex: '2',
+        width: '26%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '库存类型',
+        dataIndex: '3',
+        width: '18%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '数量',
+        dataIndex: '4',
+        width: '8%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '单位成本',
+        dataIndex: '5',
+        width: '8%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '行成本',
+        dataIndex: '6',
+        width: '8%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '库房',
+        dataIndex: '7',
+        width: '12%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '库房名称',
+        dataIndex: '8',
+        width: '8%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+    ];
+
+    const listColumn7 = [
+      {
+        title: '编号',
+        width: '6%',
+        dataIndex: '1',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '工单编号',
+        dataIndex: '2',
+        width: '12%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '工单描述',
+        dataIndex: '3',
+        width: '14%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      }, {
+        title: '工单类型',
+        dataIndex: '4',
+        width: '8%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '设备资产信息',
+        dataIndex: '5',
+        width: '12%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '设备资产名称',
+        dataIndex: '6',
+        width: '12%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '工单负责人',
+        dataIndex: '7',
+        width: '8%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '工单关闭时间',
+        dataIndex: '8',
+        width: '13%',
+        className: styles.textAlignName,
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '状态',
+        dataIndex: '9',
+        width: '7%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
+        title: '完成情况',
+        dataIndex: '10',
+        width: '8%',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       },
     ];
 
@@ -517,14 +779,243 @@ class EamDetails extends React.Component {
                   <div className={styles.explainProcessTable}>
                     <CneTable
                       columns={listColumn1}
-                      className={styles.tableStyles}
-                      dataSource={[]}
+                      dataSource={[{
+                        1: '86925',
+                        2: 'XG-WFJ-20-086',
+                        3: '工WHYG2020040327',
+                        4: '是',
+                        5: '41010000002044',
+                        6: '27#方阵09#汇流箱07#支路',
+                      }, {
+                        1: '86925',
+                        2: 'XG-WFJ-20-086',
+                        3: '工WHYG2020040327',
+                        4: '否',
+                        5: '41010000002044',
+                        6: '27#方阵09#汇流箱07#支路',
+                      }]}
                       rowKey={(record, index) => index || 'key'}
                       pagination={false}
                       locale={{ emptyText: '暂无数据'}}
                     />
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className={styles.commonInfoBox}>
+              <div className={styles.tableBar}>
+                <div className={styles.barProcess}>
+                  相关设备
+                </div>
+                <div className={styles.commonIconBox}>
+                  <span>{`合计：${1}`}</span>
+                  <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                </div>
+              </div>
+              <div className={styles.commonWrap}>
+                <CneTable
+                  columns={listColumn2}
+                  dataSource={[{
+                    1: '86925',
+                    2: 'XG-WFJ-20-086',
+                    3: '工WHYG2020040327',
+                    4: '升压站PT箱基础台水泥脱落，升压站围栏基础起皮脱落，主控楼顶起砂严重护栏水泥脱落严重，主控楼内墙面裂纹',
+                  }, {
+                    1: '86925',
+                    2: 'XG-WFJ-20-086',
+                    3: '工WHYG2020040327',
+                    4: '升压站PT箱基础台水泥脱落，升压站围栏基础起皮脱落，主控楼顶起砂严重护栏水泥脱落严重，主控楼内墙面裂纹',
+                  }]}
+                  rowKey={(record, index) => index || 'key'}
+                  pagination={false}
+                  locale={{ emptyText: '暂无数据'}}
+                />
+              </div>
+            </div>
+            <div className={styles.commonInfoBox}>
+              <div className={styles.tableBar}>
+                <div className={styles.barProcess}>
+                  工单&nbsp;<span>{`${'工YJWF2020010008'}`}</span>&nbsp;的工作票
+                </div>
+                <div className={styles.commonIconBox}>
+                  <span>{`合计：${1}`}</span>
+                  <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                </div>
+              </div>
+              <div className={styles.commonWrap}>
+                <CneTable
+                  columns={listColumn3}
+                  dataSource={[{
+                    1: '86925',
+                    2: 'XG-WFJ-20-086',
+                    3: '外包风机工作票',
+                    4: '集电#1234风机集电#1234风机风机集电',
+                    5: '2019-12-29 17:30:20',
+                    6: '2019-12-29 17:30:20',
+                    7: '李鸣宇',
+                    8: '执行中',
+                  }, {
+                    1: '86925',
+                    2: 'XG-WFJ-20-086',
+                    3: '外包风机工作票',
+                    4: '集电#1234风机集电#1234风机风机集电',
+                    5: '2019-12-29 17:30:20',
+                    6: '2019-12-29 17:30:20',
+                    7: '李鸣宇',
+                    8: '执行中',
+                  }]}
+                  rowKey={(record, index) => index || 'key'}
+                  pagination={false}
+                  locale={{ emptyText: '暂无数据'}}
+                />
+              </div>
+            </div>
+            <div className={styles.commonInfoBox}>
+              <div className={styles.tableBar}>
+                <div className={styles.barProcess}>
+                  工单&nbsp;<span>{`${'工YJWF2020010008'}`}</span>&nbsp;的操作票
+                </div>
+                <div className={styles.commonIconBox}>
+                  <span>{`合计：${1}`}</span>
+                  <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                </div>
+              </div>
+              <div className={styles.commonWrap}>
+                <CneTable
+                  columns={listColumn4}
+                  dataSource={[{
+                    1: '86925',
+                    2: 'XG-WFJ-20-086',
+                    3: '外包风机工作票',
+                    4: '集电#1234风机集电#1234风机风机集电',
+                    5: '张大滴',
+                    6: '李二世',
+                    7: '李鸣宇',
+                    8: '执行中',
+                  }, {
+                    1: '86925',
+                    2: 'XG-WFJ-20-086',
+                    3: '外包风机工作票',
+                    4: '集电#1234风机集电#1234风机风机集电',
+                    5: '张大滴',
+                    6: '李二世',
+                    7: '李鸣宇',
+                    8: '执行中',
+                  }]}
+                  rowKey={(record, index) => index || 'key'}
+                  pagination={false}
+                  locale={{ emptyText: '暂无数据'}}
+                />
+              </div>
+            </div>
+            <div className={styles.commonInfoBox}>
+              <div className={styles.tableBar}>
+                <div className={styles.barProcess}>
+                  关联的领料单
+                </div>
+                <div className={styles.commonIconBox}>
+                  <span>{`合计：${1}`}</span>
+                  <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                </div>
+              </div>
+              <div className={styles.commonWrap}>
+                <CneTable
+                  columns={listColumn5}
+                  dataSource={[{
+                    1: '86925',
+                    2: 'XG-WFJ-20-086',
+                    3: '外包风机工作票',
+                    4: '执行中',
+                  }, {
+                    1: '86925',
+                    2: 'XG-WFJ-20-086',
+                    3: '外包风机工作票',
+                    4: '执行中',
+                  }]}
+                  rowKey={(record, index) => index || 'key'}
+                  pagination={false}
+                  locale={{ emptyText: '暂无数据'}}
+                />
+              </div>
+            </div>
+            <div className={styles.commonInfoBox}>
+              <div className={styles.tableBar}>
+                <div className={styles.barProcess}>
+                  领料明细
+                </div>
+                <div className={styles.commonIconBox}>
+                  <span>{`合计：${1}`}</span>
+                  <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                </div>
+              </div>
+              <div className={styles.commonWrap}>
+                <CneTable
+                  columns={listColumn6}
+                  dataSource={[{
+                    1: '86925',
+                    2: 'XG-WFJ-20-086',
+                    3: '外包风机工作票',
+                    4: '1212',
+                    5: '张大滴',
+                    6: '李二世',
+                    7: '李鸣宇',
+                    8: '执行中',
+                  }, {
+                    1: '86925',
+                    2: 'XG-WFJ-20-086',
+                    3: '外包风机工作票',
+                    4: '12313',
+                    5: '张大滴',
+                    6: '李二世',
+                    7: '李鸣宇',
+                    8: '执行中',
+                  }]}
+                  rowKey={(record, index) => index || 'key'}
+                  pagination={false}
+                  locale={{ emptyText: '暂无数据'}}
+                />
+              </div>
+            </div>
+            <div className={styles.commonInfoBox}>
+              <div className={styles.tableBar}>
+                <div className={styles.barProcess}>
+                  工单&nbsp;<span>{`${'工YJWF2020010008'}`}</span>&nbsp;的子工单
+                </div>
+                <div className={styles.commonIconBox}>
+                  <span>{`合计：${1}`}</span>
+                  <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                </div>
+              </div>
+              <div className={styles.commonWrap}>
+                <CneTable
+                  columns={listColumn7}
+                  dataSource={[{
+                    1: '86925',
+                    2: 'XG-WFJ-20-086',
+                    3: '外包风机工作票',
+                    4: '集电集电电',
+                    5: '张大滴',
+                    6: '李二世',
+                    7: '李鸣宇',
+                    8: '2019-12-29 17:30:20',
+                    9: '李鸣宇',
+                    10: '执行中',
+                  }, {
+                    1: '86925',
+                    2: 'XG-WFJ-20-086',
+                    3: '外包风机工作票',
+                    4: '集电集电电',
+                    5: '张大滴',
+                    6: '李二世',
+                    7: '李鸣宇',
+                    8: '2019-12-29 17:30:20',
+                    9: '李鸣宇',
+                    10: '执行中',
+                  }]}
+                  rowKey={(record, index) => index || 'key'}
+                  pagination={false}
+                  locale={{ emptyText: '暂无数据'}}
+                />
               </div>
             </div>
           </div>
