@@ -17,12 +17,13 @@ class ReportSearch extends React.PureComponent {
     getCombineInvertList: PropType.func,
     total: PropType.number,
     listLoading: PropType.bool,
-    changeStore: PropType.func,
     reportTime: PropType.string,
     downLoadFile: PropType.func,
+    changeStore: PropType.func,
     downloading: PropType.bool,
     reportList: PropType.array,
     theme: PropType.string,
+    maxPvCount: PropType.number,
   }
 
   constructor() {
@@ -37,7 +38,7 @@ class ReportSearch extends React.PureComponent {
 
   calcWidth = (str, unit) => {
     const padding = 8;
-    return (str.length + unit.length) * 14 + (2 * padding) + 10;
+    return (str.length + unit.length) * 14 + (2 * padding) + 30;
   }
 
   initColumn = (type) => { // 表头的数据
@@ -50,11 +51,11 @@ class ReportSearch extends React.PureComponent {
     const DcPower = []; // 直流
     for (let i = 0; i < maxPvCount; i++) {
       DcPower.push(...[
-        { name: `PV${i+1}电压`, unit: 'V', dataIndex: `voltagePv${i+1}`, point: 2 },
-        { name: `PV${i+1}电流`, unit: 'A', dataIndex: `currentPv1${i+1}`, point: 2 }
+        { name: `PV${i + 1}电压`, unit: 'V', dataIndex: `voltagePv${i + 1}`, point: 2 },
+        { name: `PV${i + 1}电流`, unit: 'A', dataIndex: `currentPv1${i + 1}`, point: 2 },
       ]);
     }
-    
+
     const AcPower = [ // 交流
       { name: 'Uab', unit: 'V', dataIndex: 'Uab', point: 2 },
       { name: 'Ubc', unit: 'V', dataIndex: 'Ubc', point: 2 },
@@ -70,39 +71,40 @@ class ReportSearch extends React.PureComponent {
       {
         title: '设备名称',
         dataIndex: 'deviceName',
-        width: 140,
+        width: 160,
         fixed: 'left',
         sorter: true,
-        render: (text) => <div className={styles.deviceName} title={text}>{text}</div>,
+        textAlign: 'left',
+        render: (text) => <div className={styles.deviceNameText} title={text}>{text}</div>,
       },
       {
         title: '统计时段',
         dataIndex: 'date',
-        width: 110,
+        width: 130,
         fixed: 'left',
         sorter: true,
-        defaultSortOrder: 'ascend',
+        textAlign: 'center',
         render: (text) => <div className={styles.statisticsDate} title={text}>{text}</div>,
       },
       {
         title: () => <TableColumnTitle title="当日发电量" unit="kWh" />,
         dataIndex: 'inverterActualPower',
-        width: 120,
-        className: styles.rightText,
+        width: 140,
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
       {
         title: () => <TableColumnTitle title="瞬时辐射" unit="W/m²" />,
         dataIndex: 'resourceValue',
-        width: 100,
-        className: styles.rightText,
+        width: 120,
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
       {
         title: () => <TableColumnTitle title="逆变器效率" unit="%" />,
         dataIndex: 'invertEff',
-        width: 100,
-        className: styles.rightText,
+        width: 120,
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
       {
@@ -147,21 +149,21 @@ class ReportSearch extends React.PureComponent {
       {
         title: '功率因数COS',
         dataIndex: 'powerFactorAvg',
-        width: 120,
-        className: styles.rightText,
+        width: 140,
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
       {
         title: () => <TableColumnTitle title="电网频率" unit="Hz" />,
         dataIndex: 'powerFu',
-        width: 100,
-        className: styles.rightText,
+        width: 120,
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
       {
         title: () => <TableColumnTitle title="机内温度" unit="℃" />,
         dataIndex: 'temperature',
-        className: styles.rightText,
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
     ];
@@ -176,27 +178,31 @@ class ReportSearch extends React.PureComponent {
     });
   }
 
-
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变  
     this.props.changeStore({ parmas: { ...this.props.parmas, pageSize, pageNum: currentPage } });
     this.changeTableList({ pageSize, pageNum: currentPage });
   }
 
   tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
-    const { order } = sorter;
-    const orderType = order === 'ascend' ? 'asc' : 'desc';
-    const orderFiled = this.getSortField[sorter.field] || 'report_time';
-    this.props.changeStore({ parmas: { ...this.props.parmas, orderType, orderFiled } });
-    this.changeTableList({ orderType, orderFiled });
+    const { parmas = {} } = this.props;
+    const { orderType, orderFiled } = parmas;
+    let newSortFild = orderFiled, newSortMethod = 'desc';
+    const { field } = sorter;
+    const getSortField = {
+      'deviceName': 'device_name',
+      'date': 'report_time',
+    };
+    if (!field || getSortField[field] === orderFiled) {
+      newSortMethod = orderType === 'asc' ? 'desc' : 'asc'; // 交换排序方式
+    } else {
+      newSortFild = getSortField[field];
+    }
+    this.props.changeStore({ parmas: { ...this.props.parmas, orderType: newSortMethod, orderFiled: newSortFild } });
+    this.changeTableList({ orderType: newSortMethod, orderFiled: newSortFild });
   }
 
   toLine = (name) => { // 驼峰转下划线
     return name.replace(/([A-Z])/g, '_$1').toLowerCase();
-  }
-
-  getSortField = {
-    'deviceName': 'device_name',
-    'date': 'report_time',
   }
 
   changeTableList = (value) => {
@@ -208,16 +214,20 @@ class ReportSearch extends React.PureComponent {
 
   render() {
     const { total = 30, parmas, listLoading, downloading, theme, reportList } = this.props;
-    const { pageSize = 1, pageNum = 10, deviceFullcodes } = parmas;
+    const { pageSize = 1, pageNum = 10, deviceFullcodes, orderType, orderFiled } = parmas;
+    const { clientHeight } = document.body;
+    // footer 60; thead: 73, handler: 55; search 70; padding 15; menu 40;
+    const scrollY = clientHeight - 330;
+    const scroll = { x: 4450, y: scrollY };
     const datalist = [];
     if (reportList) {
       reportList.forEach((item, index) => {
-        let it = { ...item, key: index };
-        const {pvList} = item;
+        const it = { ...item, key: index };
+        const { pvList } = item;
         if (pvList) {
           pvList.forEach((pvitem, pvindex) => {
-            it[`voltagePv${pvindex+1}`] = pvitem.voltagePv;
-            it[`currentPv1${pvindex+1}`] = pvitem.currentPv;
+            it[`voltagePv${pvindex + 1}`] = pvitem.voltagePv;
+            it[`currentPv1${pvindex + 1}`] = pvitem.currentPv;
           });
         }
         datalist.push(it);
@@ -234,12 +244,13 @@ class ReportSearch extends React.PureComponent {
             columns={this.initColumn()}
             dataSource={datalist}
             bordered
-            scroll={{ x: 3700, y: 500 }}
+            scroll={scroll}
             pagination={false}
             showHeader={true}
             loading={listLoading}
             onChange={this.tableChange}
-            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+            sortField={{ 'device_name': 'deviceName', 'report_time': 'date' }[orderFiled]}
+            sortMethod={{ 'asc': 'ascend', 'desc': 'descend' }[orderType]}
           />
         </div>
       </div>

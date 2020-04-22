@@ -30,17 +30,19 @@ class ReportSearch extends React.PureComponent {
     this.width = 0;
   }
 
-  componentDidMount() {
-
-  }
-
-
   calcWidth = (str, unit) => {
     const padding = 8;
-    return (str.length + unit.length) * 14 + (2 * padding) + 20;
+    return (str.length + unit.length) * 14 + (2 * padding) + 30;
+  }
+
+  columnWidth = (width) => { // 因为是固定宽度，所以在1920的时候乘以了1.3 暂时不做
+    // const clientWidth = document.body.clientWidth > 1680;
+    // return clientWidth && width * 1.3 || width;
+    return width;
   }
 
   initColumn = (type) => { // 表头的数据
+
     const power = [
       { name: '直流输入功率', unit: 'kW', dataIndex: 'inverterDcPower', point: 2 },
       { name: '交流有功功率', unit: 'kW', dataIndex: 'acPower', point: 2 },
@@ -65,39 +67,41 @@ class ReportSearch extends React.PureComponent {
       {
         title: '设备名称',
         dataIndex: 'deviceName',
-        width: 140,
+        width: this.columnWidth(160),
         fixed: 'left',
         sorter: true,
-        render: (text) => <div className={styles.deviceName} title={text}>{text}</div>,
+        textAlign: 'left',
+        render: (text) => <div className={styles.deviceNameText} title={text}>{text}</div>,
       },
       {
         title: '统计时段',
         dataIndex: 'date',
-        width: 110,
+        width: this.columnWidth(130),
         fixed: 'left',
         sorter: true,
         defaultSortOrder: 'ascend',
+        textAlign: 'center',
         render: (text) => <div className={styles.statisticsDate} title={text}>{text}</div>,
       },
       {
         title: () => <TableColumnTitle title="当日发电量" unit="kWh" />,
         dataIndex: 'inverterActualPower',
-        width: 120,
-        className: styles.rightText,
+        width: this.columnWidth(140),
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
       {
         title: () => <TableColumnTitle title="瞬时辐射" unit="W/m²" />,
         dataIndex: 'resourceValue',
-        width: 100,
-        className: styles.rightText,
+        width: this.columnWidth(120),
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
       {
         title: () => <TableColumnTitle title="逆变器效率" unit="%" />,
         dataIndex: 'invertEff',
-        width: 100,
-        className: styles.rightText,
+        width: this.columnWidth(120),
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
       {
@@ -108,7 +112,7 @@ class ReportSearch extends React.PureComponent {
             title: `${item.name}${item.unit ? `(${item.unit})` : ''}`,
             dataIndex: item.dataIndex,
             className: styles.rightText,
-            width: this.calcWidth(item.name, item.unit),
+            width: this.columnWidth(this.calcWidth(item.name, item.unit)),
             render: value => dataFormat(value, '--', item.point),
           };
         }),
@@ -121,7 +125,7 @@ class ReportSearch extends React.PureComponent {
             title: `${item.name}${item.unit ? `(${item.unit})` : ''}`,
             dataIndex: item.dataIndex,
             className: styles.rightText,
-            width: this.calcWidth(item.name, item.unit),
+            width: this.columnWidth(this.calcWidth(item.name, item.unit)),
             render: value => dataFormat(value, '--', item.point),
           };
         }),
@@ -134,7 +138,7 @@ class ReportSearch extends React.PureComponent {
             title: `${item.name}${item.unit ? `(${item.unit})` : ''}`,
             dataIndex: item.dataIndex,
             className: styles.rightText,
-            width: this.calcWidth(item.name, item.unit),
+            width: this.columnWidth(this.calcWidth(item.name, item.unit)),
             render: value => dataFormat(value, '--', item.point),
           };
         }),
@@ -142,21 +146,22 @@ class ReportSearch extends React.PureComponent {
       {
         title: '功率因数COS',
         dataIndex: 'powerFactorAvg',
-        width: 120,
-        className: styles.rightText,
+        width: this.columnWidth(140),
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
       {
         title: () => <TableColumnTitle title="电网频率" unit="Hz" />,
         dataIndex: 'powerFu',
-        width: 100,
-        className: styles.rightText,
+        width: this.columnWidth(120),
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
       {
         title: () => <TableColumnTitle title="机内温度" unit="℃" />,
         dataIndex: 'temperature',
-        className: styles.rightText,
+        textAlign: 'right',
+        // width: this.columnWidth(100),
         render: value => dataFormat(value, '--', 2),
       },
     ];
@@ -178,21 +183,28 @@ class ReportSearch extends React.PureComponent {
   }
 
   tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
-    const { order } = sorter;
-    const orderType = order === 'ascend' ? 'asc' : 'desc';
-    const orderFiled = this.getSortField[sorter.field] || 'report_time';
-    this.props.changeStore({ parmas: { ...this.props.parmas, orderType, orderFiled } });
-    this.changeTableList({ orderType, orderFiled });
+    const { parmas = {} } = this.props;
+    const { orderType, orderFiled } = parmas;
+    let newSortFild = orderFiled, newSortMethod = 'desc';
+    const { field } = sorter;
+    const getSortField = {
+      'deviceName': 'device_name',
+      'date': 'report_time',
+    };
+    if (!field || getSortField[field] === orderFiled) {
+      newSortMethod = orderType === 'asc' ? 'desc' : 'asc'; // 交换排序方式
+    } else {
+      newSortFild = getSortField[field];
+    }
+    this.props.changeStore({ parmas: { ...this.props.parmas, orderType: newSortMethod, orderFiled: newSortFild } });
+    this.changeTableList({ orderType: newSortMethod, orderFiled: newSortFild });
   }
 
   toLine = (name) => { // 驼峰转下划线
     return name.replace(/([A-Z])/g, '_$1').toLowerCase();
   }
 
-  getSortField = {
-    'deviceName': 'device_name',
-    'date': 'report_time',
-  }
+
 
   changeTableList = (value) => {
     const { parmas, reportTime } = this.props;
@@ -203,7 +215,11 @@ class ReportSearch extends React.PureComponent {
 
   render() {
     const { total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
-    const { pageSize = 1, pageNum = 10, deviceFullcodes } = parmas;
+    const { pageSize = 1, pageNum = 10, deviceFullcodes, orderType, orderFiled } = parmas;
+    const { clientHeight } = document.body;
+    // footer 60; thead: 73, handler: 55; search 70; padding 15; menu 40;
+    const scrollY = clientHeight - 330;
+    const scroll = { x: 2620, y: scrollY };
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
@@ -214,13 +230,13 @@ class ReportSearch extends React.PureComponent {
           <CneTable
             columns={this.initColumn()}
             dataSource={reportList.map((e, index) => { return { ...e, key: index }; })}
-            bordered
-            scroll={{ x: 2290, y: 500 }}
+            scroll={scroll}
             pagination={false}
             showHeader={true}
             loading={listLoading}
             onChange={this.tableChange}
-            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+            sortField={{ 'device_name': 'deviceName', 'report_time': 'date' }[orderFiled]}
+            sortMethod={{ 'asc': 'ascend', 'desc': 'descend' }[orderType]}
           />
         </div>
       </div>

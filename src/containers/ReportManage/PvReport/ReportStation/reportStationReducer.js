@@ -11,8 +11,8 @@ const initState = immutable.fromJS({
   dateType: 'day',
   startTime: moment().startOf('year').format('YYYY-MM-DD'),
   endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
-  orderFiled: '', //电站名称：station_name 统计时间：report_time
-  orderType: '', //"asc"：正序 "desc"：倒序
+  orderFiled: 'report_time', //电站名称：station_name 统计时间：report_time
+  orderType: 'asc', //"asc"：正序 "desc"：倒序
   reportStationList: [],
 });
 const reportStationReducer = (state = initState, action) => {

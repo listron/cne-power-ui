@@ -38,7 +38,7 @@ class ReportSearch extends React.PureComponent {
 
   calcWidth = (str, unit) => {
     const padding = 8;
-    return (str.length + unit.length) * 14 + (2 * padding) + 20;
+    return (str.length + unit.length) * 14 + (2 * padding) + 40;
   }
 
   initColumn = (type) => { // 表头的数据
@@ -63,19 +63,19 @@ class ReportSearch extends React.PureComponent {
       {
         title: '设备名称',
         dataIndex: 'deviceName',
-        width: 140,
+        width: 160,
         fixed: 'left',
         sorter: true,
-        render: (text) => <div className={styles.deviceName} title={text}>{text}</div>,
+        textAlign: 'left',
+        render: (text) => <div className={styles.deviceNameText} title={text}>{text}</div>,
       },
       {
         title: '统计时段',
         dataIndex: 'date',
-        width: 120,
+        width: 140,
         fixed: 'left',
         sorter: true,
-        defaultSortOrder: 'ascend',
-
+        textAlign: 'center',
       },
       {
         title: '运行参数',
@@ -117,7 +117,7 @@ class ReportSearch extends React.PureComponent {
             title: '对应时间',
             dataIndex: 'acPowerTime',
             className: styles.centerText,
-            width: 180,
+            width: 200,
             render: value => value && moment(value).format('YYYY-MM-DD HH:mm:ss') || '--',
           },
         ],
@@ -149,20 +149,21 @@ class ReportSearch extends React.PureComponent {
   }
 
   tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
-    const { order } = sorter;
-    const orderType = order === 'ascend' ? 'asc' : 'desc';
-    const orderFiled = this.getSortField[sorter.field] || 'report_time';
-    this.props.changeStore({ parmas: { ...this.props.parmas, orderType, orderFiled } });
-    this.changeTableList({ orderType, orderFiled });
-  }
-
-  // toLine = (name) => { // 驼峰转下划线
-  //   return name.replace(/([A-Z])/g, '_$1').toLowerCase();
-  // }
-
-  getSortField = {
-    'deviceName': 'device_name',
-    'date': 'report_time',
+    const { parmas = {} } = this.props;
+    const { orderType, orderFiled } = parmas;
+    let newSortFild = orderFiled, newSortMethod = 'desc';
+    const { field } = sorter;
+    const getSortField = {
+      'deviceName': 'device_name',
+      'date': 'report_time',
+    };
+    if (!field || getSortField[field] === orderFiled) {
+      newSortMethod = orderType === 'asc' ? 'desc' : 'asc'; // 交换排序方式
+    } else {
+      newSortFild = getSortField[field];
+    }
+    this.props.changeStore({ parmas: { ...this.props.parmas, orderType: newSortMethod, orderFiled: newSortFild } });
+    this.changeTableList({ orderType: newSortMethod, orderFiled: newSortFild });
   }
 
   changeTableList = (value) => {
@@ -172,7 +173,11 @@ class ReportSearch extends React.PureComponent {
 
   render() {
     const { dateType = 'day', total = 30, parmas, listLoading, downloading, reportList, theme } = this.props;
-    const { pageSize, pageNum, deviceFullcodes } = parmas;
+    const { pageSize = 1, pageNum = 10, deviceFullcodes, orderType, orderFiled } = parmas;
+    const { clientHeight } = document.body;
+    // footer 60; thead: 73, handler: 55; search 70; padding 15; menu 40;
+    const scrollY = clientHeight - 330;
+    const scroll = { x: 2500, y: scrollY };
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
@@ -184,12 +189,13 @@ class ReportSearch extends React.PureComponent {
             columns={this.initColumn(dateType)}
             dataSource={reportList.map((e, index) => { return { ...e, key: index }; })}
             bordered
-            scroll={{ x: 2200, y: 500 }}
+            scroll={scroll}
             pagination={false}
             showHeader={true}
             loading={listLoading}
             onChange={this.tableChange}
-            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+            sortField={{ 'device_name': 'deviceName', 'report_time': 'date' }[orderFiled]}
+            sortMethod={{ 'asc': 'ascend', 'desc': 'descend' }[orderType]}
           />
         </div>
       </div>

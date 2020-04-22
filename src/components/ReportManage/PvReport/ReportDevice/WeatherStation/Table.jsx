@@ -34,14 +34,9 @@ class ReportSearch extends React.PureComponent {
     this.width = 0;
   }
 
-  componentDidMount() {
-
-  }
-
-
   calcWidth = (str, unit) => {
     const padding = 8;
-    return (str.length + unit.length) * 14 + (2 * padding) + 20;
+    return (str.length + unit.length) * 14 + (2 * padding) + 40;
   }
 
   initColumn = () => { // 表头的数据
@@ -58,18 +53,19 @@ class ReportSearch extends React.PureComponent {
       {
         title: '设备名称',
         dataIndex: 'deviceName',
-        width: 140,
+        width: 160,
         fixed: 'left',
         sorter: true,
-        render: (text) => <div className={styles.deviceName} title={text}>{text ? text : '--'}</div>,
+        textAlign: 'left',
+        render: (text) => <div className={styles.deviceNameText} title={text}>{text ? text : '--'}</div>,
       },
       {
         title: '统计时段',
         dataIndex: 'date',
-        width: 140,
+        width: 160,
         fixed: 'left',
         sorter: true,
-        defaultSortOrder: 'ascend',
+        textAlign: 'center',
         render: (text) => <div className={styles.statisticsDate} title={text}>{text ? text : '--'}</div>,
       }, {
         title: '环境温度',
@@ -85,12 +81,14 @@ class ReportSearch extends React.PureComponent {
       }, {
         title: () => <TableColumnTitle title="环境湿度Avg" unit="%RH" />,
         dataIndex: 'humidityAvg',
-        width: 150,
+        width: 170,
+        textAlign: 'right',
         render: (text) => <div className={styles.rightText} title={text}>{text ? text.toFixed(2) : '--'}</div>,
       }, {
         title: () => <TableColumnTitle title="瞬时斜面辐射Max" unit="W/m2" />,
-        width: 150,
+        width: 170,
         dataIndex: 'slopeRadiationMax',
+        textAlign: 'right',
         render: (text) => <div className={styles.rightText} title={text}>{text ? text.toFixed(2) : '--'}</div>,
       }, {
         title: '累计辐射强度',
@@ -108,21 +106,21 @@ class ReportSearch extends React.PureComponent {
       {
         title: () => <TableColumnTitle title="日照小时数" unit="h" />,
         dataIndex: 'sunshineHours',
-        width: 130,
-        className: styles.rightText,
+        width: 150,
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
       {
         title: () => <TableColumnTitle title="风速Max" unit="m/s" />,
         dataIndex: 'windSpeedMax',
-        width: 120,
-        className: styles.rightText,
+        width: 140,
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
       {
         title: () => <TableColumnTitle title="气压Avg" unit="Pa" />,
         dataIndex: 'pressureAvg',
-        className: styles.rightText,
+        textAlign: 'right',
         render: value => dataFormat(value, '--', 2),
       },
     ];
@@ -148,22 +146,21 @@ class ReportSearch extends React.PureComponent {
   }
 
   tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
-    const { order } = sorter;
-    // const orderType = order === 'ascend' ? 'asc' : 'desc';
-    const sortMethod = order === 'ascend' ? 'asc' : 'desc';
-    // const orderFiled = this.getSortField[sorter.field] || 'report_time';
-    const sortField = this.getSortField[sorter.field] || 'report_time';
-    this.props.changeStore({ parmas: { ...this.props.parmas, sortField, sortMethod } });
-    this.changeTableList({ sortField, sortMethod });
-  }
-
-  // toLine = (name) => { // 驼峰转下划线
-  //   return name.replace(/([A-Z])/g, '_$1').toLowerCase();
-  // }
-
-  getSortField = {
-    'deviceName': 'device_name',
-    'date': 'report_time',
+    const { parmas = {} } = this.props;
+    const { sortMethod, sortField } = parmas;
+    let newSortFild = sortField, newSortMethod = 'desc';
+    const { field } = sorter;
+    const getSortField = {
+      'deviceName': 'device_name',
+      'date': 'report_time',
+    };
+    if (!field || getSortField[field] === sortField) {
+      newSortMethod = sortMethod === 'asc' ? 'desc' : 'asc'; // 交换排序方式
+    } else {
+      newSortFild = getSortField[field];
+    }
+    this.props.changeStore({ parmas: { ...this.props.parmas, sortMethod: newSortMethod, sortField: newSortFild } });
+    this.changeTableList({ sortMethod: newSortMethod, sortField: newSortFild });
   }
 
   changeTableList = (value) => {
@@ -173,7 +170,11 @@ class ReportSearch extends React.PureComponent {
 
   render() {
     const { dateType = 'day', total, parmas, listLoading, downloading, reportList, theme } = this.props;
-    const { pageSize, pageNum, deviceFullcodes } = parmas;
+    const { pageSize = 1, pageNum = 10, deviceFullcodes, sortMethod, sortField } = parmas;
+    const { clientHeight } = document.body;
+    // footer 60; thead: 73, handler: 55; search 70; padding 15; menu 40;
+    const scrollY = clientHeight - 330;
+    const scroll = { x: 2010, y: scrollY };
     return (
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
@@ -185,12 +186,13 @@ class ReportSearch extends React.PureComponent {
             columns={this.initColumn()}
             dataSource={reportList.map((e, i) => ({ ...e, key: i }))}
             bordered
-            scroll={{ x: 1756, y: 500 }}
+            scroll={scroll}
             pagination={false}
             showHeader={true}
             loading={listLoading}
             onChange={this.tableChange}
-            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+            sortField={{ 'device_name': 'deviceName', 'report_time': 'date' }[sortField]}
+            sortMethod={{ 'asc': 'ascend', 'desc': 'descend' }[sortMethod]}
           />
         </div>
       </div>

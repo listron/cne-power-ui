@@ -115,7 +115,6 @@ class DeviceSelect extends Component {
       if (filterKey.includes(deviceTypeCode)) { // 需要直接根据分区直接请求处理数据
         getMatrixDevices({ stationCode, deviceTypeCode }); // 分区数据
       } else { // 直接获取所有数据。
-        console.log(1111);
         getDevices({ stationCode, deviceTypeCode }, 'devices');
         getDevices({ stationCode, deviceTypeCode }, 'filterDevices');
         getPartition({ stationCode, deviceTypeCode });

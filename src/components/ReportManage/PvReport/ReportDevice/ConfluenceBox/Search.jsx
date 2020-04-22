@@ -119,7 +119,6 @@ class ReportSearch extends React.PureComponent {
           />
         </div>
         <CneButton onClick={this.queryList} disabled={selectedDevice.length === 0}> 查询</CneButton>
-
       </div>
     );
   }

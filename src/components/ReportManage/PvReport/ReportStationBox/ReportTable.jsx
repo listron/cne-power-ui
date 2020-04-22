@@ -33,6 +33,7 @@ class ReportTable extends React.Component {
   constructor(props, context) {
     super(props, context);
   }
+
   changePage = ({ currentPage, pageSize }) => {
     this.props.changeStore({
       pageSize,
@@ -44,16 +45,23 @@ class ReportTable extends React.Component {
     });
 
   }
-  tableChange = (pagination, filter, sorter) => {
-    const { field, order } = sorter;
-    const orderFiled = field === 'stationName' ? 'station_name' : 'report_time';
-    const orderType = order === 'ascend' ? 'asc' : 'desc';
-    this.searchReportData({
-      orderFiled,
-      orderType,
-    });
 
+  tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
+    const { orderType, orderFiled } = this.props;
+    let newSortFild = orderFiled, newSortMethod = 'desc';
+    const { field } = sorter;
+    const getSortField = {
+      'stationName': 'station_name',
+      'date': 'report_time',
+    };
+    if (!field || getSortField[field] === orderFiled) {
+      newSortMethod = orderType === 'asc' ? 'desc' : 'asc'; // 交换排序方式
+    } else {
+      newSortFild = getSortField[field];
+    }
+    this.searchReportData({ orderType: newSortMethod, orderFiled: newSortFild });
   }
+
   searchReportData = (value) => {
     const { startTime, endTime, stationCodes, dateType, orderFiled, orderType, pageNum, pageSize } = this.props;
     const params = { startTime, endTime, stationCodes, dateType, orderFiled, orderType, pageNum, pageSize };
@@ -63,21 +71,23 @@ class ReportTable extends React.Component {
     });
   }
 
-  planWidth = (length, paddingSize = 16, width = 28) => {
+  planWidth = (length, paddingSize = 16, width = 48) => {
     return 14 * length + paddingSize + width;
   }
+
   tableChildren = (nameArr) => {
     return nameArr.map((e, i) => (
       {
         title: () => <TableColumnTitle title={e.name} unit={e.unit} />,
         dataIndex: e.dataIndex,
         key: e.dataIndex,
-        className: styles.rightStyle,
+        textAlign: 'center',
         width: (e.name && e.name.length) && this.planWidth(e.name.length),
-        render: (text) => (dataFormat(text, '--', 2)),
+        render: (text) => <div className={styles.rightText}>{(dataFormat(text, '--', 2))}</div>,
       }
     ));
   }
+
   exportReportStation = () => {
     const { startTime, endTime, stationCodes, dateType, orderFiled, orderType } = this.props;
     const timeLength = moment(endTime).diff(startTime, 'day') + 1;
@@ -93,8 +103,9 @@ class ReportTable extends React.Component {
     }
 
   }
+
   render() {
-    const { pageNum, pageSize, total, loading, reportStationList, downloading } = this.props;
+    const { pageNum, pageSize, total, loading, reportStationList, downloading, orderType, orderFiled } = this.props;
     const disabledExport = !reportStationList.length;
     const power = [
       { name: '理论发电量', unit: '万kWh', dataIndex: 'theoryPower', key: 'theoryPower' },
@@ -129,19 +140,19 @@ class ReportTable extends React.Component {
       { name: '减排二氧化碳', unit: '吨', dataIndex: 'carbonDioxide', key: 'carbonDioxide' },
     ];
 
-    let posx = 3592;
+    let posx = 3752;
     const losePowerCols = [
       { name: '总损失电量', unit: '万kWh', dataIndex: 'totalLostPower', key: 'totalLostPower' },
     ];
     if (reportStationList.length > 0) {
-      const {lostPower} = reportStationList[0];
+      const { lostPower } = reportStationList[0];
       if (lostPower) {
-        const {lostList} = lostPower;
+        const { lostList } = lostPower;
         lostList.forEach((item, index) => {
           const k = `lostPower${index}`;
           posx += this.planWidth(item.name.length);
           losePowerCols.push({
-            name: item.name, unit: '万kWh', dataIndex: k, key: k
+            name: item.name, unit: '万kWh', dataIndex: k, key: k,
           });
         });
       }
@@ -152,18 +163,20 @@ class ReportTable extends React.Component {
         title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
-        width: 120,
+        width: 160,
         fixed: 'left',
         sorter: true,
-        render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
+        textAlign: 'left',
+        render: (text) => (<div className={styles.overflowText} title={text}>{text ? text : '--'}</div>),
       },
       {
         title: '统计时段',
         dataIndex: 'date',
         key: 'date',
-        width: 125,
+        width: 145,
         fixed: 'left',
         sorter: true,
+        textAlign: 'center',
         render: (text) => (<div className={styles.statisticsDate} title={text}>{text ? text : '--'}</div>),
       },
       {
@@ -176,17 +189,15 @@ class ReportTable extends React.Component {
                 title: '水平面',
                 dataIndex: 'resourceValue',
                 key: 'resourceValue',
-                width: 120,
-                className: styles.rightStyle,
-                render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
+                width: 140,
+                render: (text) => (<div className={styles.rightText} title={text}>{text ? text : '--'}</div>),
               },
               {
                 title: '倾斜面',
                 dataIndex: 'slopeAccRadiationSum',
                 key: 'slopeAccRadiationSum',
-                width: 120,
-                className: styles.rightStyle,
-                render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
+                width: 140,
+                render: (text) => (<div className={styles.rightText} title={text}>{text ? text : '--'}</div>),
               },
             ],
           },
@@ -194,10 +205,9 @@ class ReportTable extends React.Component {
             title: () => <TableColumnTitle title="峰值日照时数" unit="h" />,
             dataIndex: 'topSunshineHours',
             key: 'topSunshineHours',
-            width: 120,
-            className: styles.rightStyle,
-            render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
-
+            width: 140,
+            textAlign: 'left',
+            render: (text) => (<div className={styles.rightText} title={text}>{text ? text : '--'}</div>),
           },
         ],
       }, {
@@ -218,24 +228,23 @@ class ReportTable extends React.Component {
               title: '功率值(MW)',
               dataIndex: 'outputPowerMax',
               key: 'outputPowerMax',
-              width: 120,
-              className: styles.rightStyle,
-              render: (text) => (<div className={styles.stationName} title={text}>{text ? text : '--'}</div>),
+              width: 140,
+              render: (text) => (<div className={styles.rightText} title={text}>{text ? text : '--'}</div>),
 
-            }, {
+            },
+            {
               title: '对应时间',
               dataIndex: 'dayPowerMaxTime',
               key: 'dayPowerMaxTime',
-              width: 180,
-              className: styles.rightStyle,
-              render: (text) => (<div className={styles.timeStyle} title={text}>{text ? text : '--'}</div>),
+              width: 200,
+              render: (text) => (<div className={styles.centerText} title={text}>{text ? text : '--'}</div>),
 
             },
           ],
         },
         ...sportArr,
         ],
-      }, 
+      },
       {
         title: '损失电量',
         children: this.tableChildren(losePowerCols),
@@ -245,14 +254,15 @@ class ReportTable extends React.Component {
         children: this.tableChildren(jianpai),
       },
     ];
+
     const datalist = [];
     if (reportStationList) {
       reportStationList.forEach((e, i) => {
-        let item = { ...e, key: i };
-        const {lostPower} = e;
+        const item = { ...e, key: i };
+        const { lostPower } = e;
         if (lostPower) {
           item['totalLostPower'] = lostPower.total;
-          const {lostList} = lostPower;
+          const { lostList } = lostPower;
           lostList.forEach((e1, index) => {
             const k = `lostPower${index}`;
             item[k] = e1.power;
@@ -261,6 +271,12 @@ class ReportTable extends React.Component {
         datalist.push(item);
       });
     }
+
+    const { clientHeight } = document.body;
+    // footer 60; thead: 159, handler: 55; search 70; padding 15; menu 40;
+    const scrollY = clientHeight - 357;
+    const scroll = { x: posx, y: scrollY };
+
     return (
       <div className={styles.reportList}>
         <div className={styles.handlePage}>
@@ -276,8 +292,10 @@ class ReportTable extends React.Component {
             onChange={this.tableChange}
             dataSource={datalist}
             bordered
-            scroll={{ x: posx, y: 450 }}
+            scroll={scroll}
             pagination={false}
+            sortField={{ 'station_name': 'stationName', 'report_time': 'date' }[orderFiled]}
+            sortMethod={{ 'asc': 'ascend', 'desc': 'descend' }[orderType]}
           />
         </div>
 
