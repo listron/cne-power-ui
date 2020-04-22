@@ -245,7 +245,7 @@ class AlarmStatisticByType extends Component {
           <CneButton
             lengthMode="short"
             className={(selectedStation.length !== 0 && startTime && endTime) ? styles.normalBtn : styles.disableBtn}
-            onClick={this.onQueryFunc}
+            onClick={(selectedStation.length !== 0 && startTime && endTime) ? this.onQueryFunc : () => {}}
           >
             查询
           </CneButton>
