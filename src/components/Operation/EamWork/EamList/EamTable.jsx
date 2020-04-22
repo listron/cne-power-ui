@@ -20,7 +20,6 @@ export default class EamTable extends React.Component {
     super(props);
     this.state = {
       scrollFlag: false,
-      tableShadowWidth: 0,
     };
   }
 
@@ -36,20 +35,16 @@ export default class EamTable extends React.Component {
 
   bindScroll = () => {
     const eamTable = document.getElementById('eamTable');
-    const tableBody = document.querySelector('.ant-table-tbody');
     const scrollTop = eamTable.scrollTop;
     const { scrollFlag } = this.state;
-    const tableShadowWidth = tableBody.getBoundingClientRect().width;
     if (scrollTop > 0 && !scrollFlag) {
       this.setState({
         scrollFlag: !scrollFlag,
-        tableShadowWidth,
       });
     }
     if (scrollTop === 0) {
       this.setState({
         scrollFlag: false,
-        tableShadowWidth: 0,
       });
     }
   };
@@ -64,7 +59,7 @@ export default class EamTable extends React.Component {
   };
 
   render() {
-    const { scrollFlag, tableShadowWidth } = this.state;
+    const { scrollFlag } = this.state;
     const {
       eamListData,
       pageSize,
@@ -171,11 +166,10 @@ export default class EamTable extends React.Component {
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={pageCount} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
         <div id="eamTable" style={{width: tableWidth, height: tableHeight, position: 'relative', overflow: 'auto'}}>
-          {scrollFlag && <div style={{width: tableShadowWidth}} className={styles.boxShadowWrap} />}
           <CneTable
             loading={tableLoading}
             columns={listColumn}
-            className={styles.tableStyles}
+            className={scrollFlag ? styles.tableScrollStyles : styles.tableStyles}
             dataSource={eamListData}
             rowKey={(record, index) => index || 'key'}
             pagination={false}

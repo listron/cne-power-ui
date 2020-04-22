@@ -73,13 +73,14 @@
 
     .eamBox {
       width: 100%;
+      min-height: calc(100vh - 40px - 60px - 54px);;
       background-color: #FFFFFF;
       padding: 20px 24px 40px 24px;
       box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.20);
 
       .baseInfoBox {
         width: 100%;
-        min-height: 100px;
+        min-height: 44px;
         border: 1px solid #199475;
         padding-top: 6px;
         box-shadow: 2px 2px 0 3px #ceebe0;
@@ -161,7 +162,7 @@
 
       .explainInfoBox {
         width: 100%;
-        min-height: 100px;
+        min-height: 44px;
         border: 1px solid #199475;
         padding-top: 6px;
         box-shadow: 2px 2px 0 3px #ceebe0;
@@ -308,14 +309,14 @@
 
           .explainProcessBox {
             width: 100%;
-            min-height: 100px;
+            min-height: 44px;
             border: 1px solid #d4d4d4;
             box-shadow: 2px 2px 0 3px #f3f2f2;
             border-radius: 2px;
 
             .explainProcessInfo {
               display: flex;
-              padding: 6px 15px 15px 10px;
+              padding: 6px 15px 0 10px;
               justify-content: space-between;
               align-items: center;
 
@@ -351,7 +352,7 @@
 
             .explainProcessTable {
               width: 100%;
-              padding: 0 17px 15px 16px;
+              padding: 15px 17px 15px 16px;
             }
           }
         }
@@ -359,7 +360,7 @@
 
       .commonInfoBox{
         width: 100%;
-        min-height: 100px;
+        min-height: 44px;
         border: 1px solid #199475;
         padding-top: 6px;
         box-shadow: 2px 2px 0 3px #ceebe0;
@@ -476,4 +477,190 @@
 .textAlignName{
   text-align: center !important;
   padding: 0 !important;
+}
+
+@media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
+  .eamContent {
+    .eamBox {
+      .baseInfoBox {
+        .workName {
+          font-size: 14px;
+        }
+
+        .workCode {
+          font-size: 14px;
+        }
+
+        .deviceName {
+          font-size: 14px;
+        }
+
+        .deviceCode {
+          font-size: 14px;
+        }
+
+        .statusName {
+          font-size: 14px;
+        }
+
+        .statusText {
+          font-size: 14px;
+        }
+      }
+
+      .explainInfoBox {
+        .tableBoxLeft {
+          .typeName {
+            font-size: 14px;
+          }
+
+          .typeCode {
+            font-size: 14px;
+          }
+
+          .faultName {
+            font-size: 14px;
+          }
+
+          .faultCode {
+            font-size: 14px;
+          }
+
+          .allText {
+            font-size: 14px;
+          }
+        }
+      }
+
+      :global {
+        .ant-table-placeholder {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+  .eamContent {
+    .eamBox {
+      .baseInfoBox {
+        .workName {
+          font-size: 16px;
+        }
+
+        .workCode {
+          font-size: 16px;
+        }
+
+        .deviceName {
+          font-size: 16px;
+        }
+
+        .deviceCode {
+          font-size: 16px;
+        }
+
+        .statusName {
+          font-size: 16px;
+        }
+
+        .statusText {
+          font-size: 16px;
+        }
+      }
+
+      .explainInfoBox {
+        .tableBoxLeft {
+          .typeName {
+            font-size: 16px;
+          }
+
+          .typeCode {
+            font-size: 16px;
+          }
+
+          .faultName {
+            font-size: 16px;
+          }
+
+          .faultCode {
+            font-size: 16px;
+          }
+
+          .allText {
+            font-size: 16px;
+          }
+        }
+      }
+
+      :global {
+        .ant-table-placeholder {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .eamContent {
+    .eamBox {
+      .baseInfoBox {
+        .workName {
+          font-size: 18px;
+        }
+
+        .workCode {
+          font-size: 18px;
+        }
+
+        .deviceName {
+          font-size: 18px;
+        }
+
+        .deviceCode {
+          font-size: 18px;
+        }
+
+        .statusName {
+          font-size: 18px;
+        }
+
+        .statusText {
+          font-size: 18px;
+        }
+      }
+
+      .explainInfoBox {
+        .tableBoxLeft {
+          .typeName {
+            font-size: 18px;
+          }
+
+          .typeCode {
+            font-size: 18px;
+          }
+
+          .faultName {
+            font-size: 18px;
+          }
+
+          .faultCode {
+            font-size: 18px;
+          }
+
+          .allText {
+            font-size: 18px;
+          }
+        }
+      }
+
+      :global {
+        .ant-table-placeholder {
+          font-size: 18px;
+        }
+      }
+    }
+  }
 }

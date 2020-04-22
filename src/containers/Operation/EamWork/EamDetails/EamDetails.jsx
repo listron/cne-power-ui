@@ -20,7 +20,16 @@ class EamDetails extends React.Component {
     super(props);
     this.state = {
       scroll: false,
-      flag: true,
+      baseFlag: true, // 工单基本信息
+      defectFlag: true, // 缺陷-检修交代
+      faultFlag: true, // 故障-检修交代
+      processFlag: true, // 检修过程记录
+      deviceFlag: true, // 相关设备
+      workFlag: true, // 工作票
+      operationFlag: true, // 操作票
+      pickListFlag: true, // 关联的领料单
+      detailFlag: true, // 领料明细
+      childFlag: true, // 子工单
     };
   }
 
@@ -52,8 +61,100 @@ class EamDetails extends React.Component {
     history.push('/operation/eam');
   };
 
+  // 工单基本信息
+  baseFlagFunc = () => {
+    const { baseFlag } = this.state;
+    this.setState({
+      baseFlag: !baseFlag,
+    });
+  };
+
+  // 缺陷-检修交代
+  defectFlagFunc = () => {
+    const { defectFlag } = this.state;
+    this.setState({
+      defectFlag: !defectFlag,
+    });
+  };
+
+  // 故障-检修交代
+  faultFlagFunc = () => {
+    const { faultFlag } = this.state;
+    this.setState({
+      faultFlag: !faultFlag,
+    });
+  };
+
+  // 检修过程记录
+  processFlagFunc = () => {
+    const { processFlag } = this.state;
+    this.setState({
+      processFlag: !processFlag,
+    });
+  };
+
+  // 相关设备
+  deviceFlagFunc = () => {
+    const { deviceFlag } = this.state;
+    this.setState({
+      deviceFlag: !deviceFlag,
+    });
+  };
+
+  // 工作票
+  workFlagFunc = () => {
+    const { workFlag } = this.state;
+    this.setState({
+      workFlag: !workFlag,
+    });
+  };
+
+  // 操作票
+  operationFlagFunc = () => {
+    const { operationFlag } = this.state;
+    this.setState({
+      operationFlag: !operationFlag,
+    });
+  };
+
+  // 关联的领料单
+  pickListFlagFunc = () => {
+    const { pickListFlag } = this.state;
+    this.setState({
+      pickListFlag: !pickListFlag,
+    });
+  };
+
+  // 领料明细
+  detailFlagFunc = () => {
+    const { detailFlag } = this.state;
+    this.setState({
+      detailFlag: !detailFlag,
+    });
+  };
+
+  // 子工单
+  childFlagFunc = () => {
+    const { childFlag } = this.state;
+    this.setState({
+      childFlag: !childFlag,
+    });
+  };
+
   render() {
-    const { scroll, flag } = this.state;
+    const {
+      scroll,
+      baseFlag, // 工单基本信息
+      defectFlag, // 缺陷-检修交代
+      faultFlag, // 故障-检修交代
+      processFlag, // 检修过程记录
+      deviceFlag, // 相关设备
+      workFlag, // 工作票
+      operationFlag, // 操作票
+      pickListFlag, // 关联的领料单
+      detailFlag, // 领料明细
+      childFlag, // 子工单
+    } = this.state;
     const { theme, loading } = this.props;
     const listColumn1 = [
       {
@@ -372,9 +473,9 @@ class EamDetails extends React.Component {
                 <div className={styles.barProcess}>
                   工单基本信息
                 </div>
-                <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                <i onClick={this.baseFlagFunc} className={baseFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
               </div>
-              <div className={styles.tableWrap}>
+              {baseFlag && <div className={styles.tableWrap}>
                 <div className={styles.tableBox}>
                   <div className={styles.tableTr}>
                     <div className={styles.workName}>
@@ -477,16 +578,16 @@ class EamDetails extends React.Component {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>}
             </div>
             <div className={styles.explainInfoBox}>
               <div className={styles.tableBar}>
                 <div className={styles.barProcess}>
                   检修交代
                 </div>
-                <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                <i onClick={this.defectFlagFunc} className={defectFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
               </div>
-              <div className={styles.explainWrap}>
+              {defectFlag && <div className={styles.explainWrap}>
                 <div className={styles.tableBoxLeft}>
                   <div className={styles.explainTr}>
                     <div className={styles.typeName}>
@@ -624,16 +725,16 @@ class EamDetails extends React.Component {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>}
             </div>
             <div className={styles.explainInfoBox}>
               <div className={styles.tableBar}>
                 <div className={styles.barProcess}>
                   检修交代
                 </div>
-                <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                <i onClick={this.faultFlagFunc} className={faultFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
               </div>
-              <div className={styles.explainWrap}>
+              {faultFlag && <div className={styles.explainWrap}>
                 <div className={styles.tableBoxLeft}>
                   <div className={styles.explainTr}>
                     <div className={styles.typeName}>
@@ -763,8 +864,8 @@ class EamDetails extends React.Component {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className={styles.explainProcessWrap}>
+              </div>}
+              {faultFlag && <div className={styles.explainProcessWrap}>
                 <div className={styles.explainProcessBox}>
                   <div className={styles.explainProcessInfo}>
                     <div className={styles.explainProcessName}>
@@ -773,10 +874,10 @@ class EamDetails extends React.Component {
                     </div>
                     <div className={styles.explainProcessIcon}>
                       <span>{`合计：${1}`}</span>
-                      <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                      <i onClick={this.processFlagFunc} className={processFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
                     </div>
                   </div>
-                  <div className={styles.explainProcessTable}>
+                  {processFlag && <div className={styles.explainProcessTable}>
                     <CneTable
                       columns={listColumn1}
                       dataSource={[{
@@ -798,9 +899,9 @@ class EamDetails extends React.Component {
                       pagination={false}
                       locale={{ emptyText: '暂无数据'}}
                     />
-                  </div>
+                  </div>}
                 </div>
-              </div>
+              </div>}
             </div>
             <div className={styles.commonInfoBox}>
               <div className={styles.tableBar}>
@@ -809,10 +910,10 @@ class EamDetails extends React.Component {
                 </div>
                 <div className={styles.commonIconBox}>
                   <span>{`合计：${1}`}</span>
-                  <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                  <i onClick={this.deviceFlagFunc} className={deviceFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
                 </div>
               </div>
-              <div className={styles.commonWrap}>
+              {deviceFlag && <div className={styles.commonWrap}>
                 <CneTable
                   columns={listColumn2}
                   dataSource={[{
@@ -830,7 +931,7 @@ class EamDetails extends React.Component {
                   pagination={false}
                   locale={{ emptyText: '暂无数据'}}
                 />
-              </div>
+              </div>}
             </div>
             <div className={styles.commonInfoBox}>
               <div className={styles.tableBar}>
@@ -839,10 +940,10 @@ class EamDetails extends React.Component {
                 </div>
                 <div className={styles.commonIconBox}>
                   <span>{`合计：${1}`}</span>
-                  <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                  <i onClick={this.workFlagFunc} className={workFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
                 </div>
               </div>
-              <div className={styles.commonWrap}>
+              {workFlag && <div className={styles.commonWrap}>
                 <CneTable
                   columns={listColumn3}
                   dataSource={[{
@@ -868,7 +969,7 @@ class EamDetails extends React.Component {
                   pagination={false}
                   locale={{ emptyText: '暂无数据'}}
                 />
-              </div>
+              </div>}
             </div>
             <div className={styles.commonInfoBox}>
               <div className={styles.tableBar}>
@@ -877,10 +978,10 @@ class EamDetails extends React.Component {
                 </div>
                 <div className={styles.commonIconBox}>
                   <span>{`合计：${1}`}</span>
-                  <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                  <i onClick={this.operationFlagFunc} className={operationFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
                 </div>
               </div>
-              <div className={styles.commonWrap}>
+              {operationFlag && <div className={styles.commonWrap}>
                 <CneTable
                   columns={listColumn4}
                   dataSource={[{
@@ -906,7 +1007,7 @@ class EamDetails extends React.Component {
                   pagination={false}
                   locale={{ emptyText: '暂无数据'}}
                 />
-              </div>
+              </div>}
             </div>
             <div className={styles.commonInfoBox}>
               <div className={styles.tableBar}>
@@ -915,10 +1016,10 @@ class EamDetails extends React.Component {
                 </div>
                 <div className={styles.commonIconBox}>
                   <span>{`合计：${1}`}</span>
-                  <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                  <i onClick={this.pickListFlagFunc} className={pickListFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
                 </div>
               </div>
-              <div className={styles.commonWrap}>
+              {pickListFlag && <div className={styles.commonWrap}>
                 <CneTable
                   columns={listColumn5}
                   dataSource={[{
@@ -936,7 +1037,7 @@ class EamDetails extends React.Component {
                   pagination={false}
                   locale={{ emptyText: '暂无数据'}}
                 />
-              </div>
+              </div>}
             </div>
             <div className={styles.commonInfoBox}>
               <div className={styles.tableBar}>
@@ -945,10 +1046,10 @@ class EamDetails extends React.Component {
                 </div>
                 <div className={styles.commonIconBox}>
                   <span>{`合计：${1}`}</span>
-                  <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                  <i onClick={this.detailFlagFunc} className={detailFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
                 </div>
               </div>
-              <div className={styles.commonWrap}>
+              {detailFlag && <div className={styles.commonWrap}>
                 <CneTable
                   columns={listColumn6}
                   dataSource={[{
@@ -974,7 +1075,7 @@ class EamDetails extends React.Component {
                   pagination={false}
                   locale={{ emptyText: '暂无数据'}}
                 />
-              </div>
+              </div>}
             </div>
             <div className={styles.commonInfoBox}>
               <div className={styles.tableBar}>
@@ -983,10 +1084,10 @@ class EamDetails extends React.Component {
                 </div>
                 <div className={styles.commonIconBox}>
                   <span>{`合计：${1}`}</span>
-                  <i className={flag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                  <i onClick={this.childFlagFunc} className={childFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
                 </div>
               </div>
-              <div className={styles.commonWrap}>
+              {childFlag && <div className={styles.commonWrap}>
                 <CneTable
                   columns={listColumn7}
                   dataSource={[{
@@ -1016,7 +1117,7 @@ class EamDetails extends React.Component {
                   pagination={false}
                   locale={{ emptyText: '暂无数据'}}
                 />
-              </div>
+              </div>}
             </div>
           </div>
         </div>}
