@@ -249,12 +249,14 @@ class DiagnoseList extends Component {
         {tipType !== 0 && <CneTips
           visible
           onCancel={this.cancelTip}
+          confirmText="确认"
           onConfirm={this.confirmTip}
           tipText={['确认忽略该事件?', '确认删除该事件?'][tipType - 1]}
           width={260}
         />}
         {statusChangeText && <CneTips
           visible
+          mode="warning"
           onConfirm={this.confirmStatusChange}
           tipText={statusChangeText}
           width={260}

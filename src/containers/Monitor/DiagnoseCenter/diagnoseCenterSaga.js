@@ -143,7 +143,6 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
       } else if (statusChangeNum === 0) { // 3. 选中操作项中，所有状态已经更变
         statusChangeText = '当前选择事件发生状态变更, 将刷新页面';
       }
-      console.log(diagWarningIds.length, statusChangeNum, statusChangeText);
       yield call(easyPut, 'fetchSuccess', {
         selectedRows: [],
         statusChangeText,
