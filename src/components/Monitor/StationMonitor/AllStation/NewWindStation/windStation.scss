@@ -415,42 +415,21 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-
-    a {
-      text-decoration: underline;
-      color: rgba(0, 0, 0, 0.65);
-
-      &:hover {
-        color: $themeColor;
-      }
-    }
-
     .pagination {
       a {
         text-decoration: none;
       }
-
       height: 45px;
       display: flex;
       justify-content: flex-end;
       line-height: 45px;
     }
 
-    .stationNameText {
-      @include overflowText();
-      width: 95px;
-      &:hover {
-        color: $themeColor;
+    .stationNameText{
+      color: var(--themeColor);
+      &:hover{
+        color: #FF9900;
       }
-    }
-
-    .stationrovince {
-      @include overflowText();
-      max-width: 96px;
-    }
-
-    .numberStyle {
-      text-align: right;
     }
 
     .stationName, .regionName{

@@ -234,16 +234,6 @@
         }
       }
     }
-
-    .stationrovince {
-      width: 50px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .numberStyle {
-      text-align: right;
-    }
     @mixin statusBox {
       width: 5px;
       height: 20px;

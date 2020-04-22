@@ -121,7 +121,7 @@ class WindStationList extends React.Component {
         dataIndex: 'stationName',
         sorter: true,
         textAlign: 'left',
-        className: styles.stationName,
+        width: '12%',
         render: (value, record) => {
           const stationStatus = record.stationStatus.stationStatus || '';
           if (stationStatus === '900') {
