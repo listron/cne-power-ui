@@ -38,7 +38,11 @@ export default class EamSearch extends React.Component {
             style={{ width: '200px' }}
             multiple={true}
             stationShowNumber={true}
-            data={[]}
+            data={[].map(e => ({
+              ...e,
+              provinceCode: e.provinceName,
+              stationCode: e.stationName,
+            }))}
             onOK={this.selectStation}
             value={selectedStation}
             holderText="请输入关键字快速查询"

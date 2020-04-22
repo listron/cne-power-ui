@@ -1,0 +1,420 @@
+@import '../../../../theme/theme.scss';
+
+.eamDetailBox {
+  width: 100%;
+  min-width: 1212px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: #f0f2f5;
+
+  .eamLoading {
+    width: 100%;
+    min-height: calc(100vh - 40px - 54px - 60px);
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.20);
+  }
+
+  .eamTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 54px;
+    z-index: 99;
+
+    .eamTopTitle {
+      display: flex;
+
+      .titleBox {
+        width: 25px;
+        @include lineheight(25px);
+        text-align: center;
+        background-color: $themeColor;
+        color: #fff;
+        margin-right: 5px;
+      }
+
+      span {
+        color: $themeColor;
+        font-size: 18px;
+      }
+    }
+
+    .btnBack {
+
+      i {
+        cursor: pointer;
+        font-size: 18px;
+        color: $themeColor;
+        -webkit-background-clip: text;
+
+        &:hover {
+          background: linear-gradient(0deg, #00baff 1%, #5beda9 100%);
+          -webkit-background-clip: text;
+          color: transparent;
+        }
+      }
+    }
+  }
+
+  .eamContent {
+    width: 100%;
+    display: flex;
+    padding: 0 24px;
+
+    .eamBox {
+      width: 100%;
+      background-color: #FFFFFF;
+      padding: 20px 24px 40px 24px;
+      box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.20);
+
+      .baseInfoBox {
+        width: 100%;
+        min-height: 100px;
+        border: 1px solid #199475;
+        padding-top: 6px;
+        box-shadow: 2px 2px 0 3px #ceebe0;
+        border-radius: 2px;
+
+        .tableBox {
+          width: 100%;
+          min-height: 100px;
+          border: 1px solid $borderColor;
+        }
+
+        .tableTr {
+          width: 100%;
+          display: flex;
+          border-bottom: 1px solid $borderColor;
+        }
+
+        .workName {
+          width: 9%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 40px;
+          background-color: #f3f2f2;
+          font-weight: bold;
+          border-right: 1px dashed $borderColor;
+        }
+
+        .workCode {
+          width: 34%;
+          padding-left: 10px;
+          display: flex;
+          word-break: break-all;
+          line-height: 22px;
+          min-height: 40px;
+          align-items: center;
+          border-right: 1px dashed $borderColor;
+        }
+
+        .deviceName {
+          width: 12%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 40px;
+          background-color: #f3f2f2;
+          font-weight: bold;
+          border-right: 1px dashed $borderColor;
+        }
+
+        .deviceCode {
+          width: 20%;
+          display: flex;
+          padding-left: 10px;
+          min-height: 40px;
+          align-items: center;
+          border-right: 1px dashed $borderColor;
+        }
+
+        .statusName {
+          width: 9%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 40px;
+          background-color: #f3f2f2;
+          font-weight: bold;
+          border-right: 1px dashed $borderColor;
+        }
+
+        .statusText {
+          width: 16%;
+          display: flex;
+          padding-left: 10px;
+          align-items: center;
+          min-height: 40px;
+        }
+      }
+
+      .explainInfoBox {
+        width: 100%;
+        min-height: 100px;
+        border: 1px solid #199475;
+        padding-top: 6px;
+        box-shadow: 2px 2px 0 3px #ceebe0;
+        border-radius: 2px;
+        margin-top: 18px;
+
+        .tableBoxLeft {
+          width: 75%;
+          height: max-content;
+          border: 1px solid $borderColor;
+
+          .explainTr {
+            display: flex;
+            border-bottom: 1px solid $borderColor;
+          }
+
+          .typeName {
+            width: 18.5%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            background-color: #f3f2f2;
+            font-weight: bold;
+            border-right: 1px dashed $borderColor;
+          }
+
+          .typeCode {
+            width: 39%;
+            display: flex;
+            padding-left: 10px;
+            word-break: break-all;
+            min-height: 40px;
+            align-items: center;
+            border-right: 1px dashed $borderColor;
+          }
+
+          .faultName {
+            width: 16%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            background-color: #f3f2f2;
+            font-weight: bold;
+            border-right: 1px dashed $borderColor;
+          }
+
+          .faultCode {
+            width: 26.5%;
+            display: flex;
+            padding-left: 10px;
+            min-height: 40px;
+            align-items: center;
+          }
+
+          .allText {
+            width: 81.5%;
+            display: flex;
+            padding-left: 10px;
+            min-height: 40px;
+            align-items: center;
+          }
+        }
+
+        .tableBoxRight {
+          width: calc(25% - 13px);
+          border: 1px solid $borderColor;
+
+          .rightTitle {
+            padding-left: 10px;
+            font-weight: bold;
+            @include lineheight(38px);
+            background-color: #f3f2f2;
+          }
+
+          .rightContent {
+            width: 100%;
+            overflow-y: auto;
+            padding: 7px 10px 0 10px;
+
+            .rightTr {
+              display: flex;
+
+              .rightName {
+                width: 85px;
+                font-weight: bold;
+                text-align: right;
+                margin-right: 10px;
+              }
+
+              .rightNote {
+                width: calc(100% - 105px);
+                word-break: break-all;
+              }
+
+              // 置灰色checkbox
+              :global {
+                .ant-checkbox-wrapper {
+
+                  .ant-checkbox {
+
+                    .ant-checkbox-inner {
+                      // 设置 checkbox 的大小
+                      width: 16px;
+                      height: 16px;
+                      background-color: #dfdfdf;
+                      border-color: #999999;
+                    }
+                  }
+                }
+
+                // 选中的
+                .ant-checkbox-wrapper-checked {
+
+                  .ant-checkbox {
+
+                    .ant-checkbox-inner {
+                      // 设置 checkbox 的大小
+                      width: 16px;
+                      height: 16px;
+                      background-color: #dfdfdf;
+
+                      // 设置对勾的 大小 位置 颜色
+                      &::after {
+                        border: 1px solid #999999;
+                        border-top: 0;
+                        border-left: 0;
+                        left: 24%;
+                        transform: rotate(45deg) scale(1) translate(-50%, -50%);
+                      }
+                    }
+                  }
+                }
+              }
+
+            }
+          }
+        }
+
+        .explainProcessWrap {
+          width: 100%;
+          padding: 0 15px 15px 15px;
+
+          .explainProcessBox {
+            width: 100%;
+            min-height: 100px;
+            border: 1px solid #d4d4d4;
+            box-shadow: 2px 2px 0 3px #f3f2f2;
+            border-radius: 2px;
+
+            .explainProcessInfo {
+              display: flex;
+              padding: 6px 15px 15px 10px;
+              justify-content: space-between;
+              align-items: center;
+
+              .explainProcessName {
+                display: flex;
+                align-items: center;
+
+                i {
+                  font-size: 18px;
+                  color: $themeColor;
+                  margin-right: 5px;
+                }
+
+                span {
+                  font-weight: bold;
+                }
+              }
+
+              .explainProcessIcon {
+                i {
+                  vertical-align: middle;
+                  margin-left: 10px;
+                  font-size: 20px;
+                  cursor: pointer;
+                  color: $themeColor;
+
+                  &:hover {
+                    color: #f9b600;
+                  }
+                }
+              }
+            }
+
+            .explainProcessTable {
+              width: 100%;
+              padding: 0 17px 15px 16px;
+            }
+          }
+        }
+      }
+
+      .tableBar {
+        width: 100%;
+        display: flex;
+        padding-right: 12px;
+        justify-content: space-between;
+
+        .barProcess {
+          width: 840px;
+          color: $themeColor;
+          height: 30px;
+          line-height: 30px;
+          padding-left: 12px;
+          border-left: 4px solid #199475;
+          background-image: linear-gradient(90deg, #ceebe0 0%, #ffffff 100%);
+        }
+
+        i {
+          color: $themeColor;
+          cursor: pointer;
+          font-size: 20px;
+
+          &:hover {
+            color: #f9b600;
+          }
+        }
+      }
+
+      .tableWrap {
+        width: 100%;
+        padding: 10px 15px 18px 15px;
+      }
+
+      .explainWrap {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 15px 16px 15px;
+      }
+
+      .deleteBorderRight {
+        border-right: none !important;
+      }
+
+      .deleteBorderBottom {
+        border-bottom: none !important;
+      }
+
+      :global {
+        .ant-table-placeholder {
+          border: 1px solid $borderColor;
+          color: #353535;
+          font-weight: bold;
+          border-top: none;
+          padding: 0;
+          @include lineheight(40px);
+          border-radius: 0;
+        }
+      }
+    }
+  }
+}

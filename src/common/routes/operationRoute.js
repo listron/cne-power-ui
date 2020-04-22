@@ -106,6 +106,11 @@ const eamRoute = [
     path: '/operation/eam',
     component: lazy(() => import('../../containers/Operation/EamWork/EamList/EamList')),
   },
+  {
+    // EAM工单详情
+    path: '/operation/eamDetails',
+    component: lazy(() => import('../../containers/Operation/EamWork/EamDetails/EamDetails')),
+  },
 ];
 
 export const operationRoute = [

@@ -13,12 +13,58 @@ export default class EamTable extends React.Component {
     pageNum: PropTypes.number,
     pageCount: PropTypes.number,
     tableLoading: PropTypes.bool,
+    history: PropTypes.object,
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      scrollFlag: false,
+      tableShadowWidth: 0,
+    };
+  }
+
+  componentDidMount () {
+    const eamTable = document.getElementById('eamTable');
+    eamTable.addEventListener('scroll', this.bindScroll);
+  }
+
+  componentWillUnmount() { // 卸载的时候要注意
+    const eamTable = document.getElementById('eamTable');
+    eamTable && eamTable.removeEventListener('scroll', this.bindScroll, false);
+  }
+
+  bindScroll = () => {
+    const eamTable = document.getElementById('eamTable');
+    const tableBody = document.querySelector('.ant-table-tbody');
+    const scrollTop = eamTable.scrollTop;
+    const { scrollFlag } = this.state;
+    const tableShadowWidth = tableBody.getBoundingClientRect().width;
+    if (scrollTop > 0 && !scrollFlag) {
+      this.setState({
+        scrollFlag: !scrollFlag,
+        tableShadowWidth,
+      });
+    }
+    if (scrollTop === 0) {
+      this.setState({
+        scrollFlag: false,
+        tableShadowWidth: 0,
+      });
+    }
   };
 
   // 分页
   onPaginationChange = () => {};
 
+  // 详情
+  detailsFunc = (code) => {
+    const { history } = this.props;
+    code && history.push('/operation/eamDetails');
+  };
+
   render() {
+    const { scrollFlag, tableShadowWidth } = this.state;
     const {
       eamListData,
       pageSize,
@@ -31,11 +77,8 @@ export default class EamTable extends React.Component {
     const { clientHeight, clientWidth } = document.body;
 
     const tableWidth = clientWidth - 228;
-    // footer 60; thead: 36, handler: 51; search 63; padding 15; menu 40;
-    const tableHeight = clientHeight - 265;
-
-    console.log(tableWidth, 'tableWidth');
-
+    // footer 60; handler: 51; search 63; padding 15; menu 40;
+    const tableHeight = clientHeight - 229;
     const listColumn = [
       {
         title: '项目公司',
@@ -48,7 +91,7 @@ export default class EamTable extends React.Component {
       }, {
         title: '工单编号',
         dataIndex: '3',
-        render: (text) => (<div className={styles.workCode} title={text || ''} >{text || '- -'}</div>),
+        render: (text) => (<div className={styles.workCode} onClick={() => this.detailsFunc(text)} title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '工单描述',
         dataIndex: '4',
@@ -117,6 +160,7 @@ export default class EamTable extends React.Component {
         title: '工单关闭时间',
         dataIndex: '16',
         align: 'center',
+        width: 150,
         className: styles.noPaddingBox,
         render: (text) => (<div className={styles.closeTime} title={text || ''} >{text || '- -'}</div>),
       },
@@ -126,30 +170,18 @@ export default class EamTable extends React.Component {
         <div className={styles.searchPage}>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={pageCount} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
-        {/*<div style={{width: tableWidth, overflowX: 'auto'}}>*/}
-          {/*<CneTable*/}
-            {/*loading={tableLoading}*/}
-            {/*onChange={this.tableChange}*/}
-            {/*columns={listColumn}*/}
-            {/*className={styles.tableStyles}*/}
-            {/*dataSource={eamListData}*/}
-            {/*rowKey={(record, index) => index || 'key'}*/}
-            {/*// scroll={{y: tableHeight}}*/}
-            {/*pagination={false}*/}
-            {/*locale={{ emptyText: tableLoading ? <div style={{width: 223, height: 164}} /> : <img width="223" height="164" src="/img/nodata.png" alt="" /> }}*/}
-          {/*/>*/}
-        {/*</div>*/}
-        <CneTable
-          loading={tableLoading}
-          onChange={this.tableChange}
-          columns={listColumn}
-          className={styles.tableStyles}
-          dataSource={eamListData}
-          rowKey={(record, index) => index || 'key'}
-          scroll={{y: tableHeight}}
-          pagination={false}
-          locale={{ emptyText: tableLoading ? <div style={{width: 223, height: 164}} /> : <img width="223" height="164" src="/img/nodata.png" alt="" /> }}
-        />
+        <div id="eamTable" style={{width: tableWidth, height: tableHeight, position: 'relative', overflow: 'auto'}}>
+          {scrollFlag && <div style={{width: tableShadowWidth}} className={styles.boxShadowWrap} />}
+          <CneTable
+            loading={tableLoading}
+            columns={listColumn}
+            className={styles.tableStyles}
+            dataSource={eamListData}
+            rowKey={(record, index) => index || 'key'}
+            pagination={false}
+            locale={{ emptyText: tableLoading ? <div style={{width: 223, height: 164}} /> : <img width="223" height="164" src="/img/nodata.png" alt="" /> }}
+          />
+        </div>
       </div>
     );
   }

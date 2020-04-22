@@ -1,5 +1,6 @@
 @import "../../../../theme/theme.scss";
-.searchStyle{
+
+.searchStyle {
   display: flex;
   padding: 16px 0 14px 20px;
   border-bottom: 1px dashed $borderColor;
@@ -29,7 +30,7 @@
 
   }
 
-  .workType{
+  .workType {
     margin-left: 20px;
     display: flex;
     @include lineheight(32px);
@@ -38,18 +39,18 @@
       margin-right: 4px;
     }
 
-    :global{
-      .ant-select-selection{
+    :global {
+      .ant-select-selection {
         border: 1px solid $borderColor;
 
-        .ant-select-arrow{
+        .ant-select-arrow {
           color: $lightColor;
         }
       }
     }
   }
 
-  .creatTime{
+  .creatTime {
     margin-left: 20px;
     display: flex;
     @include lineheight(32px);
@@ -58,33 +59,33 @@
       margin-right: 4px;
     }
 
-    :global{
-      .ant-select-selection{
+    :global {
+      .ant-select-selection {
         border: 1px solid $borderColor;
 
-        .ant-select-arrow{
+        .ant-select-arrow {
           color: $lightColor;
         }
       }
     }
   }
 
-  .otherTime{
+  .otherTime {
     margin-left: 10px;
 
-    :global{
-      .ant-input{
+    :global {
+      .ant-input {
         border: 1px solid $borderColor;
 
-        input::-webkit-input-placeholder{
+        input::-webkit-input-placeholder {
           color: $lightColor;
         }
 
-        .ant-calendar-range-picker-separator{
+        .ant-calendar-range-picker-separator {
           color: $lightColor;
         }
 
-        .ant-calendar-picker-icon{
+        .ant-calendar-picker-icon {
           color: $lightColor;
         }
       }
@@ -98,90 +99,129 @@
   max-width: 470px;
 }
 
-.searchTable{
+.searchTable {
   display: flex;
   flex-direction: column;
   flex: 1;
 
-  .searchPage{
+  .searchPage {
     display: flex;
     justify-content: flex-end;
     padding: 9px 0 11px;
   }
 
-  .tableStyles{
-    //min-width: 2000px;
+  .tableStyles {
 
-    :global{
-      .ant-table .ant-table-tbody > tr > td{
+    :global {
+      .ant-table .ant-table-tbody > tr > td {
         padding: 0 20px 0 10px;
       }
+
+      .ant-table .ant-table-thead > tr:last-child > th {
+        border-bottom: none;
+        position: sticky;
+        z-index: 1;
+        top: 0;
+      }
     }
+  }
+
+  .tableScrollStyles {
+    :global {
+      .ant-table .ant-table-tbody > tr > td {
+        padding: 0 20px 0 10px;
+      }
+
+      .ant-table .ant-table-thead{
+        position: sticky;
+        z-index: 1;
+        top: 0;
+        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.30);
+      }
+
+      .ant-table .ant-table-thead > tr:last-child > th {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .boxShadowWrap{
+    position: sticky;
+    top: 0;
+    height: 36px;
+    background-color: transparent;
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30);
   }
 
   .projectCompany,
   .childName,
   .mainName,
-  .workMajor{
+  .workMajor {
     min-width: 70px;
     @include maxWidth();
   }
 
-  .stationName{
+  .stationName {
     min-width: 130px;
     @include maxWidth();
   }
 
-  .workCode{
+  .workCode {
+    color: $themeColor;
+    cursor: pointer;
     min-width: 150px;
     @include maxWidth();
+
+    &:hover{
+      color: #f9b600;
+    }
   }
 
-  .workDesc{
+  .workDesc {
     width: 470px;
     @include overflowText();
   }
 
-  .deviceCode{
+  .deviceCode {
     min-width: 120px;
     @include maxWidth();
   }
 
-  .deviceName{
+  .deviceName {
     min-width: 190px;
     @include maxWidth();
   }
 
-  .workProcessType{
+  .workProcessType {
     min-width: 56px;
     @include maxWidth();
   }
 
-  .creatName{
+  .creatName {
     min-width: 45px;
     @include maxWidth();
   }
 
-  .statusName{
+  .statusName {
     min-width: 60px;
     @include maxWidth();
   }
 
-  .dutyName{
+  .dutyName {
     min-width: 95px;
     @include maxWidth();
   }
 
-  .isGetName{
+  .isGetName {
     width: 70px;
   }
 
   .creatTimeName,
-  .closeTime{
+  .closeTime {
     width: 150px;
   }
 
-  .noPaddingBox{
+  .noPaddingBox {
     padding: 0 !important;
   }
 }
