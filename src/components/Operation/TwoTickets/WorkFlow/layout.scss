@@ -29,90 +29,33 @@
     }
   }
   .workFlowTable{
-    .docketCode{
-      width: 9%;
+    table{
+      width: 100%;
+      table-layout: fixed;
     }
-    .docketTypeName{
-      width: 13%;
+    .iconShow{
+      display: inline;
     }
-    .stationName{
-      width: 13%;
-    }
-    .docketName{
-      width: 12%;
-    }
-    .createTime,.endTime{
-      width: 11.5%;
-    }
-    .dealUserNames{
-      width: 8%;
-    }
-    .picture,.stateDesc,.opreate{
-      width: 6%;
-    }
-    .opreate{
-      .lookIcon{
-        margin-right: 14px;
-      }
-      .iconShow{
-        visibility: visible;
-      }
-      .iconHide{
-        visibility: hidden;
-      }
+    .iconHide{
+      display: none;
     }
     :global{
       .iconfont{
         font-size: 20px;
+        padding: 4px;
         cursor: pointer;
+        margin-right: 4px;
+        &:last-child{
+          margin-right: 0;
+        }
       }
     }
-  }
-
-  .stationNameText {
-    @include overflowText();
-    max-width: 175px;
-    min-width: 146px;
-  }
-  .docketTypeNameText{
-    @include overflowText();
-    min-width: 146px;
-  }
-  .docketNameText{
-    @include overflowText();
-    max-width: 150px;
-  }
-  .dealUserNamesText {
-    @include overflowText();
-  }
-  .docketCodeText {
-    @include overflowText();
-    max-width: 100px;
-  }
-  .createTime {
-    min-width: 134px;
-  }
-  @media screen and (max-width: 1679px){
-    .dealUserNamesText{
-      max-width: 96px;
-    }
-    .docketTypeNameText{
-      max-width: 150px;
+    .docketCodeText, .docketTypeNameText, .stationNameText, .docketNameText, .createTimeText, .dealUserNamesText{
+      @include overflowText();
+      width: calc(100% - 5px);
     }
   }
-  @media screen and (min-width: 1920px){
-    .dealUserNamesText{
-      max-width: 130px;
-    }
-    .docketTypeNameText{
-      max-width: 183px;
-    }
-  }
-
   :global {
-    .ant-table .ant-table-tbody > tr > td {
-      padding: 0 4px;
-    }
     .ant-table-placeholder {
       border: none;
     }

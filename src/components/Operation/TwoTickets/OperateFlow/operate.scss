@@ -20,10 +20,12 @@
     }
   }
   .operateFlowTable{
-    i{
-      color: $themeColor;
-      &:hover{
-        color: #f9b600;
+    :global{
+      .iconfont{
+        color: $themeColor;
+        &:hover{
+          color: #f9b600;
+        }
       }
     }
   }

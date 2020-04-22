@@ -29,87 +29,30 @@
     }
   }
   .operateFlowTable{
-    .docketCode{
-      width: 10%;
+    .iconShow{
+      display: inline;
     }
-    .stationName{
-      width: 12%;
-    }
-    .docketName{
-      width: 15%;
-    }
-    .createTime,.endTime{
-      width: 14.5%;
-    }
-    .dealUserNames{
-      width: 9%;
-    }
-    .picture,.stateDesc,.opreate{
-      width: 7%;
-    }
-    .opreate{
-      .lookIcon{
-        margin-right: 14px;
-      }
-      .iconShow{
-        visibility: visible;
-      }
-      .iconHide{
-        visibility: hidden;
-      }
+    .iconHide{
+      display: none;
     }
     :global{
       .iconfont{
         font-size: 20px;
+        padding: 4px;
         cursor: pointer;
+        margin-right: 4px;
+        &:last-child{
+          margin-right: 0;
+        }
       }
     }
-  }
-
-  .stationNameText {
-    @include overflowText();
-    max-width: 175px;
-    min-width: 100px;
-  }
-  .docketCodeText{
-    @include overflowText();
-    max-width: 150px;
-    min-width: 100px;
-  }
-  .dealUserNamesText {
-    @include overflowText();
-  }
-  .docketCodeText {
-    @include overflowText();
-    max-width: 100px;
-  }
-  .docketNameText {
-    @include overflowText();
-  }
-  .createTime {
-    min-width: 134px;
-  }
-  @media screen and (max-width: 1679px){
-    .dealUserNamesText{
-      max-width: 96px;
-    }
-    .docketNameText{
-      max-width: 170px;
-    }
-  }
-  @media screen and (min-width: 1920px){
-    .dealUserNamesText{
-      max-width: 130px;
-    }
-    .docketNameText{
-      max-width: 220px;
+    .docketCodeText, .stationNameText, .docketNameText, .createTimeText, .dealUserNamesText{
+      @include overflowText();
+      width: calc(100% - 5px);
     }
   }
 
   :global {
-    .ant-table .ant-table-tbody > tr > td {
-      padding: 0 4px;
-    }
     .ant-table-placeholder {
       border: none;
     }
@@ -157,11 +100,5 @@
         margin-right: 28px;
       }
     }
-
-    // :global {
-    //   .ant-radio-button-wrapper {
-    //     padding: 0 8px;
-    //   }
-    // }
   }
 }

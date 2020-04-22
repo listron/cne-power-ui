@@ -29,7 +29,6 @@ class TableList extends Component {
 
     }
 
-
     constructor() {
         super();
         this.state = {
@@ -96,9 +95,6 @@ class TableList extends Component {
         }
     }
 
-
-
-
     onShowDetail = (value) => {
         this.props.changeFlowStore({ showPage: 'detail', docketId: value.docketId });
     }
@@ -120,7 +116,6 @@ class TableList extends Component {
                 },
             });
         }
-
     }
 
     resetStatus = () => { // 初始化状态
@@ -190,9 +185,9 @@ class TableList extends Component {
                 key: 'docketCode',
                 sorter: true,
                 textAlign: 'left',
-                className: styles.docketCode,
+                width: '13%',
                 render: (text) => {
-                    return <div className={styles.docketCodeText} title={text}>{text}</div>;
+                    return <div className={styles.docketCodeText} title={text || '--'}>{text || '--'}</div>;
                 },
             },
             {
@@ -201,9 +196,9 @@ class TableList extends Component {
                 key: 'stationName',
                 sorter: true,
                 textAlign: 'left',
-                className: styles.stationName,
+                width: '12%',
                 render: (text, record) => {
-                    return <div className={styles.stationNameText} title={text}>{text}</div>;
+                    return <div className={styles.stationNameText} title={text || '--'}>{text || '--'}</div>;
                 },
             }, {
                 title: '操作票名称',
@@ -211,9 +206,9 @@ class TableList extends Component {
                 key: 'docketName',
                 sorter: true,
                 textAlign: 'left',
-                className: styles.docketName,
+                width: '12.5%',
                 render: (text, record) => {
-                    return <div className={styles.docketNameText} title={text}>{text}</div>;
+                    return <div className={styles.docketNameText} title={text || '--'}>{text || '--'}</div>;
                 },
             }, {
                 title: '创建时间',
@@ -221,7 +216,7 @@ class TableList extends Component {
                 key: 'createTime',
                 sorter: true,
                 textAlign: 'center',
-                className: styles.createTime,
+                width: '12.5%',
                 render: text => <div className={styles.createTimeText} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss') || '--'}</div>,
             }, {
                 title: '完成时间',
@@ -229,7 +224,7 @@ class TableList extends Component {
                 key: 'endTime',
                 sorter: true,
                 textAlign: 'center',
-                className: styles.endTime,
+                width: '12.5%',
                 render: text => <div className={styles.createTimeText} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss') || '--'}</div>,
             }, {
                 title: '状态',
@@ -237,22 +232,22 @@ class TableList extends Component {
                 key: 'stateDesc',
                 sorter: true,
                 textAlign: 'center',
-                className: styles.stateDesc,
+                width: '9%',
             }, {
                 title: '操作人',
                 dataIndex: 'dealUserNames',
                 key: 'dealUserNames',
                 textAlign: 'left',
-                className: styles.dealUserNames,
+                width: '9%',
                 render: (text) => {
-                    return <div className={styles.dealUserNamesText} title={text}>{text}</div>;
+                    return <div className={styles.dealUserNamesText} title={text || '--'}>{text || '--'}</div>;
                 },
             }, {
                 title: '照片',
                 dataIndex: 'picture',
                 key: 'picture',
                 textAlign: 'center',
-                className: styles.picture,
+                width: '8%',
                 render: (text, record) => (
                     <i className="iconfont icon-todo" onClick={() => { this.showImgs(record); }} />
                 ),
@@ -262,9 +257,9 @@ class TableList extends Component {
                 dataIndex: 'opreate',
                 key: 'opreate',
                 textAlign: 'center',
-                className: styles.opreate,
+                width: '8%',
                 render: (text, record) => (
-                    <div>
+                    <div className={styles.opreate}>
                         <i className={`iconfont icon-look ${styles.lookIcon}`} onClick={() => { this.onShowDetail(record); }} />
                         <i className={`iconfont icon-del ${(handleRight('operationTicket_operate') && record.stateCode === '2') ? styles.iconShow : styles.iconHide}`} onClick={() => { this.delList('del', record.docketId); }} />
                     </div>
