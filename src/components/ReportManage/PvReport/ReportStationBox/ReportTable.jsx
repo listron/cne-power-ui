@@ -83,7 +83,7 @@ class ReportTable extends React.Component {
         key: e.dataIndex,
         textAlign: 'center',
         width: (e.name && e.name.length) && this.planWidth(e.name.length),
-        render: (text) => <div className={styles.rightText}>{(dataFormat(text, '--', 2))}</div>,
+        render: (text) => <div className={styles.rightText}>{(dataFormat(text, '--', e.demical || 2))}</div>,
       }
     ));
   }
@@ -108,19 +108,19 @@ class ReportTable extends React.Component {
     const { pageNum, pageSize, total, loading, reportStationList, downloading, orderType, orderFiled } = this.props;
     const disabledExport = !reportStationList.length;
     const power = [
-      { name: '理论发电量', unit: '万kWh', dataIndex: 'theoryPower', key: 'theoryPower' },
-      { name: '逆变器发电量', unit: '万kWh', dataIndex: 'genInverter', key: 'genInverter' },
-      { name: '集电线路发电量', unit: '万kWh', dataIndex: 'genIntegrated', key: 'genIntegrated' },
-      { name: '上网电量', unit: '万kWh', dataIndex: 'genInternet', key: 'genInternet' },
-      { name: '购网电量', unit: '万kWh', dataIndex: 'buyPower', key: 'buyPower' },
+      { name: '理论发电量', unit: '万kWh', dataIndex: 'theoryPower', key: 'theoryPower', demical: 4 },
+      { name: '逆变器发电量', unit: '万kWh', dataIndex: 'genInverter', key: 'genInverter', demical: 4 },
+      { name: '集电线路发电量', unit: '万kWh', dataIndex: 'genIntegrated', key: 'genIntegrated', demical: 4 },
+      { name: '上网电量', unit: '万kWh', dataIndex: 'genInternet', key: 'genInternet', demical: 4 },
+      { name: '购网电量', unit: '万kWh', dataIndex: 'buyPower', key: 'buyPower', demical: 4 },
       { name: '等效利用小时数', unit: 'h', dataIndex: 'equivalentHours', key: 'equivalentHours' },
     ];
     const powerUse = [
-      { name: '综合厂用电量', unit: '万kWh', dataIndex: 'comPlantPower', key: 'comPlantPower' },
+      { name: '综合厂用电量', unit: '万kWh', dataIndex: 'comPlantPower', key: 'comPlantPower', demical: 4 },
       { name: '综合厂用电率 ', unit: '%', dataIndex: 'complantPowerRate', key: 'complantPowerRate' },
-      { name: '厂用电量', unit: '万kWh', dataIndex: 'dayPlantUsePower', key: 'dayPlantUsePower' },
+      { name: '厂用电量', unit: '万kWh', dataIndex: 'dayPlantUsePower', key: 'dayPlantUsePower', demical: 4 },
       { name: '厂用电率', unit: '%', dataIndex: 'plantPowerRate', key: 'plantPowerRate' },
-      { name: '站用变电量', unit: '万kWh', dataIndex: 'genPlantConsume', key: 'genPlantConsume' },
+      { name: '站用变电量', unit: '万kWh', dataIndex: 'genPlantConsume', key: 'genPlantConsume', demical: 4 },
       { name: '厂损率', unit: '%', dataIndex: 'plantLossRate', key: 'plantLossRate' },
     ];
     const lost = [
@@ -142,7 +142,7 @@ class ReportTable extends React.Component {
 
     let posx = 3752;
     const losePowerCols = [
-      { name: '总损失电量', unit: '万kWh', dataIndex: 'totalLostPower', key: 'totalLostPower' },
+      { name: '总损失电量', unit: '万kWh', dataIndex: 'totalLostPower', key: 'totalLostPower', demical: 4 },
     ];
     if (reportStationList.length > 0) {
       const { lostPower } = reportStationList[0];
@@ -152,7 +152,7 @@ class ReportTable extends React.Component {
           const k = `lostPower${index}`;
           posx += this.planWidth(item.name.length);
           losePowerCols.push({
-            name: item.name, unit: '万kWh', dataIndex: k, key: k,
+            name: item.name, unit: '万kWh', dataIndex: k, key: k, demical: 4,
           });
         });
       }
@@ -304,3 +304,4 @@ class ReportTable extends React.Component {
   }
 }
 export default (ReportTable);
+
