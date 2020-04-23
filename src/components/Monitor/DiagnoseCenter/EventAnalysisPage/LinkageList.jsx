@@ -36,7 +36,7 @@ class LinkageList extends Component {
     };
   }
 
-  onBack =() => { // 显示原来的事件详情信息
+  onBack = () => { // 显示原来的事件详情信息
     const { oldAnalysisEvent, interval, changeStore, getEventsAnalysis, linkagePage } = this.props;
     changeStore({isMoreData: false, isBackEvent: false, pageKey: linkagePage});
     getEventsAnalysis({...oldAnalysisEvent, interval, isChartLoading: true});
@@ -76,14 +76,14 @@ class LinkageList extends Component {
     const { records, tipType } = this.state;
     const { diagWarningId, editEventsStatus } = this.props;
     const diagWarningIds = records.map(e => e.diagWarningId);
-    editEventsStatus({ diagWarningIds, diagWarningId, type: tipType });
+    editEventsStatus({ diagWarningIds, diagWarningId, type: tipType, isLinkage: true });
     this.setState({ records: null, tipType: 0 });
   }
 
   confirmStatusChange = () => {
-    const {analysisEvent} = this.props;
-    this.props.changeStore({ statusChangeText: '' });
-    this.props.getLinkageList({diagWarningId: analysisEvent.diagWarningId}); // 基于当前请求, 刷新数据
+    const { analysisEvent, changeStore, getLinkageList } = this.props;
+    changeStore({ statusChangeText: '' });
+    getLinkageList({diagWarningId: analysisEvent.diagWarningId}); // 基于当前请求, 刷新数据
   }
 
   createColumn = () => {

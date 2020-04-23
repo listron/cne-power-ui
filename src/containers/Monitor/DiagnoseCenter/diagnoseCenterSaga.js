@@ -129,12 +129,12 @@ function* stopCircleQueryList(){ // 停止10s周期调用列表
 
 function * editEventsStatus({ payload }) { // 忽略 删除事件
   const url = `${APIBasePath}${monitor.editEventsStatus}`;
-  // const { diagWarningId } = payload;
-  // payload : {diagWarningIds: string[], type: 1忽略 2删除 }
+      // payload : {diagWarningIds: string[], type: 1忽略 2删除 }
   try {
-    const response = yield call(request.delete, url, { ...payload });
+    const { diagWarningIds, diagWarningId, isLinkage, type } = payload || {};
+    const params = { diagWarningIds, type};
+    const response = yield call(request.delete, url, { ...params });
     if (response.code === '10000') {
-      const { diagWarningIds } = payload || {};
       const statusChangeNum = parseInt(response.data, 10) || 0;
       let statusChangeText = '';
       if (diagWarningIds.length === statusChangeNum) {// 情形一. 所有操作项, 均操作成功;
@@ -149,8 +149,11 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
         statusChangeText,
       });
       const { listParams, listPage } = yield select(state => state.monitor.diagnoseCenter);
-      yield fork(getDiagnoseList, { payload: { ...listParams, ...listPage } });
-      // yield fork(getLinkageList, diagWarningId);
+      if(isLinkage){ // 联动决策-操作
+        yield fork(getLinkageList, { payload: { diagWarningId }});
+      }else{
+        yield fork(getDiagnoseList, { payload: { ...listParams, ...listPage } });
+      }
     } else { throw response.message; }
   } catch (error) {
     message.error(`操作失败, ${error}`);
