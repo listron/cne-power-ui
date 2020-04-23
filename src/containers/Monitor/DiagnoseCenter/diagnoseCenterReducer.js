@@ -61,6 +61,11 @@ const initState = {
   linkageListData: [], // 线型图-联动决策表格数据
   oldAnalysisEvent: {}, // 最初选中的事件信息
   interval: null, // 最初选中的事件时间间隔
+  filterLoading: false, // 切换时间或者数据间隔时加载echarts图
+  isChartLoading: false, // 联动决策返回原线型图数据时加载echarts图
+  isBackEvent: false, // 显示原来的事件详情信息
+  linkagePage: '', // 联动决策返回原测点数据时的事件
+  diagWarningId: '', // 事件的告警记录Id
 };
 
 const diagnoseCenter = (state = initState, action) => {

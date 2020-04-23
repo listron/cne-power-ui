@@ -11,6 +11,7 @@ class ChartLine extends PureComponent {
     pageKey: PropTypes.string,
     eventAnalysisInfo: PropTypes.object,
     analysisEvent: PropTypes.object,
+    filterLoading: PropTypes.bool,
   };
 
   componentDidMount(){
@@ -22,7 +23,12 @@ class ChartLine extends PureComponent {
 
   componentWillReceiveProps(nextProps){
     const preAnalysiInfo = this.props.eventAnalysisInfo;
-    const { eventAnalysisInfo, analysisEvent } = nextProps;
+    const preLoading = this.props.filterLoading;
+    const { eventAnalysisInfo, analysisEvent, filterLoading } = nextProps;
+    const lineChart = echarts.init(this.lineRef);
+    if (filterLoading && !preLoading) {
+      lineChart.showLoading('default', { text: '', color: '#199475' });
+    }
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { period = [], data = {}, dataDays } = eventAnalysisInfo || {};
       const { interval, eventCode, pointCode } = analysisEvent;
@@ -53,14 +59,11 @@ class ChartLine extends PureComponent {
   }
 
   drawChart = (period = [], data = {}, interval, eventCode, dataDays, pointCode) => {
-    // const dataDay = { // 诊断事件固定物遮挡、组串低效、电压异常、并网延时；数据事件高值异常、低值异常展示dataZoom7天数据
-    //   1: '100',
-    //   7: '85.9',
-    // };
     const { pageKey } = this.props;
+    echarts.dispose(this.lineRef); // 重绘图形前需销毁实例。否则重绘失败。
     const lineChart = echarts.init(this.lineRef);
     const { time = [], pointData = [] } = data;
-
+    lineChart.hideLoading();
     const noAlarmTime = ['NB1038', 'NB1040'].includes(eventCode); // 诊断事件电压异常、并网延时中不展示告警时段，页面相应背景图移除
     const noDeviceName = ['NB1035', 'NB1037'].includes(eventCode); // 诊断事件零电流、固定物遮挡的legend要一行8列展示,以及不展示设备名称
     const seriesInefficient = ['NB1036'].includes(eventCode); // 组串低效不展示告警、设备名称，且展示8行
@@ -249,7 +252,7 @@ class ChartLine extends PureComponent {
       top: legendHeight,
       left: '7%',
       right: '7%',
-      height: (delPointIndex !== -1 && pageKey === 'alarm') ? (clientWidth === 1440 ? 198 : 260) : (clientWidth === 1440 ? 220 : 280),
+      height: (delPointIndex !== -1 && pageKey === 'alarm') ? (clientWidth === 1440 ? 198 : 259) : (clientWidth === 1440 ? 220 : 280),
     }];
     if (delPointIndex !== -1 && pageKey === 'alarm') { // 是告警事件且存在脉冲信号时新增坐标系
       pointData.push(pulseSignalInfo);
@@ -492,10 +495,7 @@ class ChartLine extends PureComponent {
     const { eventCode } = analysisEvent;
     const noDeviceName = ['NB1035', 'NB1037', 'NB1036'].includes(eventCode); // 一行8个
     const clientWidth = document.body.clientWidth;
-    console.log(noDeviceName ? Math.ceil(pointData.length / 8) * 30 : Math.ceil(pointData.length / 4) * 30);
-    console.log(pageKey === 'alarm' ? (clientWidth === 1440 ? 335 : 428) : (clientWidth === 1440 ? 335 : 370));
     const calcHeight = (pageKey === 'alarm' ? (clientWidth === 1440 ? 335 : 428) : (clientWidth === 1440 ? 335 : 372)) + (noDeviceName ? Math.ceil(pointData.length / 8) * 30 : Math.ceil(pointData.length / 4) * 30);
-    // const chartHeight = calcHeight > 335 ? calcHeight : 335;
 
     return (
       <div className={styles.analysisChart}>

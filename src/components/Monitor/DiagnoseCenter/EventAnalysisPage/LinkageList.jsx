@@ -11,13 +11,18 @@ class LinkageList extends Component {
     linkageListData: PropTypes.array,
     linkageListLoading: PropTypes.bool,
     linkageListError: PropTypes.bool,
+    isBackEvent: PropTypes.bool,
     statusChangeText: PropTypes.string,
     pageKey: PropTypes.string,
-    editEventsStatus: PropTypes.func,
+    linkagePage: PropTypes.string,
+    diagWarningId: PropTypes.string,
     oldAnalysisEvent: PropTypes.object,
     eventAnalysisInfo: PropTypes.object,
+    analysisEvent: PropTypes.object,
+    editEventsStatus: PropTypes.func,
     getEventsAnalysis: PropTypes.func,
     changeStore: PropTypes.func,
+    getLinkageList: PropTypes.func,
     interval: PropTypes.number,
   }
 
@@ -28,15 +33,13 @@ class LinkageList extends Component {
       records: null, // 列表某行的数据
       eventTypeCode: '1', // 联动类型默认‘实时联动’
       showIcon: false, // 是否显示列表某些操作按钮
-      isBackEvent: false, // 显示原来的事件详情信息
     };
   }
 
   onBack =() => { // 显示原来的事件详情信息
-    const { oldAnalysisEvent, interval, changeStore, getEventsAnalysis } = this.props;
-    this.setState({isBackEvent: false});
-    changeStore({isMoreData: false});
-    getEventsAnalysis({...oldAnalysisEvent, interval});
+    const { oldAnalysisEvent, interval, changeStore, getEventsAnalysis, linkagePage } = this.props;
+    changeStore({isMoreData: false, isBackEvent: false, pageKey: linkagePage});
+    getEventsAnalysis({...oldAnalysisEvent, interval, isChartLoading: true});
   }
 
   linkageCheck = (e) => { // 切换联动类型
@@ -52,10 +55,11 @@ class LinkageList extends Component {
   onShow = (record) => { // 查看
     const { pageKey, changeStore, getEventsAnalysis } = this.props;
     const eventCode = record.eventCode;
+    const eventType = {1: 'alarm', 2: 'diagnose', 3: 'data'};
+    const linkageEventType = record.eventType;
     const interval = (pageKey === 'alarm' || eventCode === 'NB1035') ? 2 : 1; // 告警事件和诊断事件的零电流-数据时间间隔5s interval = 2, 其他默认十分钟数据interval = 1;
-    this.setState({ isBackEvent: true });
-    changeStore({ isMoreData: true });
-    // getEventsAnalysis({ ...record, interval });
+    changeStore({ isMoreData: true, isBackEvent: true, pageKey: eventType[linkageEventType] });
+    getEventsAnalysis({ ...record, interval, isChartLoading: true });
   }
 
   onSuspend = (record) => { // 忽略
@@ -70,9 +74,16 @@ class LinkageList extends Component {
 
   confirmTip = () => { // 确认弹框
     const { records, tipType } = this.state;
+    const { diagWarningId, editEventsStatus } = this.props;
     const diagWarningIds = records.map(e => e.diagWarningId);
-    this.props.editEventsStatus({ diagWarningIds, type: tipType });
+    editEventsStatus({ diagWarningIds, diagWarningId, type: tipType });
     this.setState({ records: null, tipType: 0 });
+  }
+
+  confirmStatusChange = () => {
+    const {analysisEvent} = this.props;
+    this.props.changeStore({ statusChangeText: '' });
+    this.props.getLinkageList({diagWarningId: analysisEvent.diagWarningId}); // 基于当前请求, 刷新数据
   }
 
   createColumn = () => {
@@ -86,7 +97,7 @@ class LinkageList extends Component {
           render: (text) => {
             const eventType = ['告警事件', '诊断事件', '数据事件'];
             return (
-            <div className={styles.eventTypeText} title={eventType[text]}>{eventType[text] || '--'}</div>);
+            <div className={styles.eventTypeText} title={eventType[text - 1]}>{eventType[text - 1] || '--'}</div>);
           },
         },
         {
@@ -114,7 +125,7 @@ class LinkageList extends Component {
           textAlign: 'center',
           className: styles.beginTime,
           render: (text, record) => {
-              return <div className={styles.beginTimeText} title={text}>{text || '--'}</div>;
+              return <div className={styles.beginTimeText} title={moment(text).format('YYYY-MM-DD HH:mm')}>{moment(text).format('YYYY-MM-DD HH:mm') || '--'}</div>;
           },
         }, {
           title: '事件状态',
@@ -133,9 +144,9 @@ class LinkageList extends Component {
             const { showIcon } = this.state;
             return(
               <div className={styles.opreateText}>
-                  <i className={`iconfont icon-look ${styles.showIcon}`} onClick={() => { this.onShow(record); }} />
-                  {!showIcon && <i className={`iconfont icon-suspend ${styles.suspendIcon}`} onClick={() => { this.onSuspend(record); }} />}
-                  {!showIcon && <i className="iconfont icon-del" onClick={() => { this.onDel(record); }} />}
+                  <i className={`iconfont icon-look ${styles.lookIcon}`} onClick={() => { this.onShow(record); }} />
+                  {!showIcon && <i className={`iconfont icon-suspend ${styles.suspendIcon} ${record.statusCode === 3 && styles.hideIcon}`} onClick={() => { this.onSuspend(record); }} />}
+                  {!showIcon && <i className={`iconfont icon-del ${record.statusCode === 3 && styles.hideIcon}`} onClick={() => { this.onDel(record); }} />}
               </div>
             );
           },
@@ -144,8 +155,8 @@ class LinkageList extends Component {
   }
 
   render() {
-    const { eventTypeCode, tipType, isBackEvent } = this.state;
-    const { linkageListData = [], linkageListLoading, linkageListError, statusChangeText, eventAnalysisInfo } = this.props;
+    const { eventTypeCode, tipType } = this.state;
+    const { linkageListData = [], linkageListLoading, linkageListError, statusChangeText, eventAnalysisInfo, isBackEvent } = this.props;
     const realTimeData = [], historyData = [], overhaulData = [];
     linkageListData.forEach(e => {
       e.relevantType === 1 && realTimeData.push(e); // 实时联动列表数据
@@ -155,8 +166,7 @@ class LinkageList extends Component {
     const linkagedata = { 1: realTimeData, 2: historyData, 3: overhaulData };
     const dataSource = linkagedata[Number(eventTypeCode)];
     const linkageTableData = dataSource.length > 0 && dataSource[0].list; // 列表数据
-    const total = dataSource.length > 0 && dataSource[0].count; // 列表数据总数
-    const clientWidth = document.body.clientWidth;
+    const count = dataSource.length > 0 && dataSource[0].total; // 列表数据总数
     return (
       <div className={styles.linkageContent}>
         <div className={styles.linkageTop}>
@@ -170,7 +180,7 @@ class LinkageList extends Component {
           </div>
           <div className={styles.titleRight}>
             {isBackEvent && <div className={styles.backBtn} onClick={this.onBack}><i className={'iconfont icon-fhdq'} />返回当前分析</div>}
-            <span className={styles.count}>合计: {total || '--'}</span>
+            <span className={styles.count}>合计: {count || '--'}</span>
           </div>
         </div>
         <CneTable

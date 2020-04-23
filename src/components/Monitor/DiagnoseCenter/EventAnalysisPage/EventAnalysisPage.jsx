@@ -20,6 +20,7 @@ class EventAnalysisPage extends PureComponent {
     analysisEvent: PropTypes.object,
     eventAnalysisInfo: PropTypes.object,
     history: PropTypes.object,
+    listParams: PropTypes.object,
     changeStore: PropTypes.func,
     getEventsAnalysis: PropTypes.func,
     eventAnalysisLoading: PropTypes.bool,
@@ -33,10 +34,15 @@ class EventAnalysisPage extends PureComponent {
   }
 
   backList = () => { // 返回列表页, 清空数据;
+    const { listParams } = this.props;
+    const eventType = {1: 'alarm', 2: 'diagnose', 3: 'data'};
     this.props.changeStore({
       showAnalysisPage: false,
+      isBackEvent: false,
+      isMoreData: false,
       analysisEvent: {},
       eventAnalysisInfo: {},
+      pageKey: eventType[listParams.eventType],
     });
   }
 

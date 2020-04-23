@@ -399,8 +399,11 @@
         @include overflowText();
       }
       .opreateText{
-        .showIcon, .suspendIcon{
+        .lookIcon, .suspendIcon{
           margin-right: 38px;
+        }
+        .hideIcon{
+          visibility: hidden;
         }
         i{
           font-size: 20px;
