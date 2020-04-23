@@ -141,11 +141,11 @@
         &::after {
           content: "";
           position: absolute;
-          left: 0;
+          left: 1px;
           top: calc(100% - 1px);
-          width: 100%;
+          width: calc(100% - 2px);
           height: 1px;
-          background-color: transparent;
+          background-color: $themeColor;
           box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30);
         }
       }
